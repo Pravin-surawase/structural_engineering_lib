@@ -14,7 +14,6 @@ from fastapi_app.error_utils import (
     sanitize_error_string,
     sanitize_float,
 )
-from fastapi_app.models.response import APIResponse, error_response, success_response
 from fastapi_app.models.beam import (
     BeamDesignRequest,
     BeamDesignResponse,
@@ -23,6 +22,7 @@ from fastapi_app.models.beam import (
     CombinedBeamActions,
     CrackWidthCheckResult,
     DeflectionCheckResult,
+    EffectiveDepthResolutionResponse,
     EvidenceEnvelopeResponse,
     EnhancedShearRequest,
     EnhancedShearResponse,
@@ -44,6 +44,12 @@ from fastapi_app.models.compliance import (
     ComplianceReportRequest,
     ComplianceReportResponse,
     ComplianceCaseOutput,
+)
+from fastapi_app.models.response import (
+    APIResponse,
+    StructuralResultEnvelopeResponse,
+    error_response,
+    success_response,
 )
 from fastapi_app.models.metadata import DesignLimitsResponse
 
@@ -89,14 +95,29 @@ async def design_beam(request: BeamDesignRequest):
     """
     try:
         from structural_lib.services.api import design_beam_is456
-        from structural_lib.services.evidence import build_beam_evidence_envelope
+        from structural_lib.services.evidence import (
+            build_beam_evidence_envelope,
+            build_beam_result_envelope,
+        )
+        from structural_lib.services.project_beam import (
+            EffectiveDepthBasisV1,
+            resolve_effective_depth_v1,
+        )
 
-        # Calculate effective depth if not provided
-        effective_depth = request.effective_depth
-        if effective_depth is None:
-            stirrup = request.stirrup_dia_mm
-            bar = request.main_bar_dia_mm
-            effective_depth = request.depth - request.clear_cover - stirrup - bar / 2
+        depth_resolution = resolve_effective_depth_v1(
+            D_mm=request.depth,
+            d_mm=request.effective_depth,
+            effective_depth_basis=(
+                None
+                if request.effective_depth is not None
+                else EffectiveDepthBasisV1(
+                    clear_cover_mm=request.clear_cover,
+                    stirrup_diameter_mm=request.stirrup_dia_mm,
+                    tension_bar_diameter_mm=request.main_bar_dia_mm,
+                )
+            ),
+        )
+        effective_depth = depth_resolution.d_mm
 
         deflection_params = None
         crack_width_params = None
@@ -116,7 +137,16 @@ async def design_beam(request: BeamDesignRequest):
             units="IS456",
             b_mm=request.width,
             D_mm=request.depth,
-            d_mm=effective_depth,
+            d_mm=request.effective_depth,
+            effective_depth_basis=(
+                None
+                if request.effective_depth is not None
+                else EffectiveDepthBasisV1(
+                    clear_cover_mm=request.clear_cover,
+                    stirrup_diameter_mm=request.stirrup_dia_mm,
+                    tension_bar_diameter_mm=request.main_bar_dia_mm,
+                )
+            ),
             mu_knm=request.moment,
             vu_kn=request.shear if request.shear > 0 else 0.0,
             fck_nmm2=request.fck,
@@ -203,6 +233,13 @@ async def design_beam(request: BeamDesignRequest):
             governing_utilization=utilization,
             utilizations=result.utilizations,
         )
+        result_envelope = StructuralResultEnvelopeResponse.model_validate(
+            result.result_envelope
+            or build_beam_result_envelope(
+                is_ok=result.is_ok,
+                evidence=evidence,
+            ).to_dict()
+        )
         holds: list[str] = []
 
         deflection_check = None
@@ -276,6 +313,10 @@ async def design_beam(request: BeamDesignRequest):
                 asc_total=flexure.asc_required,
                 utilization_ratio=min(utilization, 2.0),
                 effective_depth_used=effective_depth,
+                effective_depth_basis=EffectiveDepthResolutionResponse.model_validate(
+                    result.effective_depth_resolution
+                ),
+                result_envelope=result_envelope,
                 deflection_check=deflection_check,
                 crack_width_check=crack_width_check,
                 combined_actions=combined_actions,
@@ -293,19 +334,34 @@ async def design_beam(request: BeamDesignRequest):
     except ImportError as e:
         return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            content=error_response(sanitize_error(e, "beam design")),
+            content=error_response(
+                {
+                    "code": "BEAM_DESIGN_UNAVAILABLE",
+                    "message": sanitize_error(e, "beam design"),
+                }
+            ),
         )
     except (ValueError, AttributeError, TypeError) as e:
         logger.exception("Invalid input for beam design")
         return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            content=error_response(sanitize_error(e, "beam design")),
+            content=error_response(
+                {
+                    "code": "BEAM_DESIGN_INPUT_INVALID",
+                    "message": sanitize_error(e, "beam design"),
+                }
+            ),
         )
     except (RuntimeError, KeyError) as e:
         logger.exception("Design calculation failed")
         return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            content=error_response(sanitize_error(e, "beam design")),
+            content=error_response(
+                {
+                    "code": "BEAM_DESIGN_CALCULATION_FAILED",
+                    "message": sanitize_error(e, "beam design"),
+                }
+            ),
         )
 
 

@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
   "last_updated": "2026-08-17",
-  "file_count": 73,
+  "file_count": 74,
   "files": [
     {
       "name": "README.md",
@@ -165,7 +165,7 @@
     {
       "name": "test_api_classification.py",
       "type": "python",
-      "size_lines": 55,
+      "size_lines": 105,
       "last_updated": "2026-08-17",
       "description": "Executable truth checks for the Alpha API classification registry.",
       "functions": [
@@ -177,13 +177,16 @@
         },
         {
           "name": "test_public_looking_callable_leakage_is_explicitly_internal"
+        },
+        {
+          "name": "test_canonical_task_api_is_capability_bound_and_artifact_scoped"
         }
       ],
       "constants": [
         "_SCRIPT",
         "_SPEC"
       ],
-      "content_hash": "1ce7bd206da6"
+      "content_hash": "893afdb79a2c"
     },
     {
       "name": "test_api_manifest_tools.py",
@@ -425,7 +428,7 @@
     {
       "name": "test_audit.py",
       "type": "python",
-      "size_lines": 468,
+      "size_lines": 471,
       "last_updated": "2026-08-17",
       "description": "Tests for audit module (TASK-278).",
       "classes": [
@@ -494,7 +497,39 @@
           ]
         }
       ],
-      "content_hash": "d1ae24b61db3"
+      "content_hash": "0a81700a5cb2"
+    },
+    {
+      "name": "test_audit_readiness_truth.py",
+      "type": "python",
+      "size_lines": 83,
+      "last_updated": "2026-08-17",
+      "description": "Readiness must aggregate semantic truth instead of reporting false green.",
+      "functions": [
+        {
+          "name": "test_required_api_parity_failure_makes_readiness_fail",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_advisory_quality_debt_prevents_false_green",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_all_contract_truth_controls_can_report_pass",
+          "params": [
+            "monkeypatch"
+          ]
+        }
+      ],
+      "constants": [
+        "_SCRIPT",
+        "_SPEC"
+      ],
+      "content_hash": "a173f9b39747"
     },
     {
       "name": "test_boq.py",
@@ -1822,7 +1857,7 @@
     {
       "name": "test_evidence.py",
       "type": "python",
-      "size_lines": 219,
+      "size_lines": 237,
       "last_updated": "2026-08-17",
       "description": "Focused tests for the supported IS 456 beam evidence envelope.",
       "functions": [
@@ -1839,6 +1874,12 @@
           "name": "test_disabled_serviceability_drafts_do_not_change_identity"
         },
         {
+          "name": "test_each_serviceability_check_can_be_identified_independently",
+          "params": [
+            "field"
+          ]
+        },
+        {
           "name": "test_metadata_only_change_is_recorded_without_changing_arithmetic_identity"
         },
         {
@@ -1851,7 +1892,7 @@
           "name": "test_beam_report_exports_evidence_without_approval_claim"
         }
       ],
-      "content_hash": "5c6a30385e98"
+      "content_hash": "c01bec0fd3de"
     },
     {
       "name": "test_exception_hierarchy.py",
@@ -2247,7 +2288,7 @@
     {
       "name": "test_generated_clients.py",
       "type": "python",
-      "size_lines": 71,
+      "size_lines": 123,
       "last_updated": "2026-08-17",
       "description": "Contract checks for the checked-in basic generated clients.",
       "functions": [
@@ -2256,13 +2297,16 @@
         },
         {
           "name": "test_import_validator_resolves_checked_in_generated_client"
+        },
+        {
+          "name": "test_python_client_preserves_canonical_problem_code_and_message"
         }
       ],
       "constants": [
         "REPO_ROOT",
         "CLIENT_ROOT"
       ],
-      "content_hash": "5f72938f65a1"
+      "content_hash": "6541adf72087"
     },
     {
       "name": "test_git_guidance_semantics.py",
@@ -2752,7 +2796,7 @@
     {
       "name": "test_install_preflight.py",
       "type": "python",
-      "size_lines": 27,
+      "size_lines": 33,
       "last_updated": "2026-08-17",
       "description": "Installed-package preflight is source-independent and decisive.",
       "functions": [
@@ -2763,7 +2807,7 @@
           ]
         }
       ],
-      "content_hash": "db057eb1e665"
+      "content_hash": "14de89e54d03"
     },
     {
       "name": "test_is456_common.py",
@@ -4482,7 +4526,7 @@
     {
       "name": "test_tool_manifest.py",
       "type": "python",
-      "size_lines": 101,
+      "size_lines": 105,
       "last_updated": "2026-08-17",
       "description": "Focused gates for the catalogue-derived beam tool manifest.",
       "functions": [
@@ -4509,7 +4553,7 @@
         "SAFE_INPUTS",
         "REPO_ROOT"
       ],
-      "content_hash": "a64b113ce718"
+      "content_hash": "ddc9974f80f1"
     },
     {
       "name": "test_visualization_edge_cases.py",
@@ -4816,7 +4860,7 @@
     {
       "name": "test_workflow_runner.py",
       "type": "python",
-      "size_lines": 189,
+      "size_lines": 203,
       "last_updated": "2026-08-17",
       "description": "Bounded-runner tests for the approved beam workflow only.",
       "functions": [
@@ -4837,6 +4881,9 @@
           "name": "test_unsafe_run_stops_before_export"
         },
         {
+          "name": "test_required_calculation_input_is_never_filled_from_display_defaults"
+        },
+        {
           "name": "test_timeout_and_idempotency_are_deterministic"
         },
         {
@@ -4852,7 +4899,7 @@
       "constants": [
         "SAFE_INPUTS"
       ],
-      "content_hash": "84c6cce1cff4"
+      "content_hash": "465f2d32b6f8"
     }
   ],
   "subfolders": [
@@ -4881,7 +4928,7 @@
     {
       "name": "integration",
       "path": "integration/",
-      "file_count": 54,
+      "file_count": 55,
       "is_package": true
     },
     {
@@ -4905,10 +4952,10 @@
     {
       "name": "unit",
       "path": "unit/",
-      "file_count": 36,
+      "file_count": 37,
       "is_package": true
     }
   ],
   "has_init": true,
-  "content_hash": "ee18020d52909780"
+  "content_hash": "015763d8049d5f4e"
 }

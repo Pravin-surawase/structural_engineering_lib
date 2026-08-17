@@ -34,6 +34,9 @@ import type {
 const INITIAL_VALUES: CatalogBeamValues = {
   width: 300,
   depth: 500,
+  clear_cover: 25,
+  stirrup_dia_mm: 8,
+  main_bar_dia_mm: 20,
   moment: 150,
   shear: 75,
   fck: 25,
@@ -80,7 +83,7 @@ export function WorkflowComposerPage() {
     active.controller.abort();
   }, []);
 
-  const updateValue = (name: CatalogBeamTransportName, value: number) => {
+  const updateValue = (name: CatalogBeamTransportName, value: number | undefined) => {
     setValues((current) => ({ ...current, [name]: value }));
     setValidation(null);
     setResult(null);
@@ -145,7 +148,7 @@ export function WorkflowComposerPage() {
     localStorage.setItem(
       WORKFLOW_DRAFT_STORAGE_KEY,
       serializeWorkflowDraft({
-        schema_version: '1.0',
+        schema_version: '2.0',
         definition,
         inputs: values,
         review_acknowledged: reviewAcknowledged,
@@ -177,7 +180,7 @@ export function WorkflowComposerPage() {
   const exportDraft = () => {
     if (!definition) return;
     const payload = serializeWorkflowDraft({
-      schema_version: '1.0',
+      schema_version: '2.0',
       definition,
       inputs: values,
       review_acknowledged: reviewAcknowledged,
@@ -185,7 +188,7 @@ export function WorkflowComposerPage() {
     const url = URL.createObjectURL(new Blob([payload], { type: 'application/json' }));
     const anchor = document.createElement('a');
     anchor.href = url;
-    anchor.download = 'beam-workflow-v1.json';
+    anchor.download = 'beam-workflow-v2.json';
     anchor.click();
     URL.revokeObjectURL(url);
   };
@@ -286,6 +289,9 @@ export function WorkflowComposerPage() {
             {result ? (
               <div className="rounded-xl border border-blue-400/30 bg-blue-400/10 p-4" aria-live="polite">
                 <p className="text-sm font-semibold text-blue-100">Run {result.status}</p>
+                <p className="mt-1 text-xs text-blue-100/80">
+                  Engineering: {result.result_envelope.engineering_status}
+                </p>
                 <p className="mt-1 break-all text-[10px] text-blue-100/60">{result.run_id}</p>
                 {result.audit.review_stop ? <p className="mt-2 text-xs text-amber-200">Stop: {result.audit.review_stop}</p> : null}
               </div>

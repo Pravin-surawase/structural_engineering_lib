@@ -16,6 +16,14 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
+from structural_lib.core.result_contract import (
+    CalculationStatus,
+    EngineeringStatus,
+    IntakeStatus,
+    ResultIdentityV1,
+    StructuralIssueV1,
+    StructuralResultEnvelopeV2,
+)
 from structural_lib.services.capabilities import (
     IS456_CODE_EDITION,
     get_supported_is456_capabilities,
@@ -29,6 +37,7 @@ from structural_lib.services.source_identity import (
 BEAM_EVIDENCE_ARTIFACT_SCHEMA = "structural_lib.beam-evidence"
 BEAM_EVIDENCE_SCHEMA_VERSION = "3.0"
 BEAM_CAPABILITY_ID = "design_beam_is456"
+BEAM_RESULT_CONTRACT_VERSION = "canonical-beam-result/v1"
 QUALIFIED_REVIEW_REQUIREMENT = (
     "Independent review by a qualified structural engineer is required before "
     "engineering or construction use."
@@ -122,19 +131,27 @@ def normalize_beam_design_inputs(inputs: Mapping[str, Any]) -> dict[str, Any]:
     if include_serviceability:
         deflection = inputs.get("deflection_params")
         crack_width = inputs.get("crack_width_params")
-        if not isinstance(deflection, Mapping) or not isinstance(crack_width, Mapping):
+        if deflection is None and crack_width is None:
             raise ValueError(
-                "Enabled serviceability requires deflection_params and "
-                "crack_width_params mappings"
+                "Enabled serviceability requires at least one maintained parameter mapping"
             )
-        normalized_deflection = _normalize_nested(deflection)
-        support = normalized_deflection.get("support_condition")
-        if support is not None:
-            normalized_deflection["support_condition"] = _SUPPORT_ALIASES.get(
-                support, support
-            )
+        if deflection is not None and not isinstance(deflection, Mapping):
+            raise ValueError("deflection_params must be a mapping when supplied")
+        if crack_width is not None and not isinstance(crack_width, Mapping):
+            raise ValueError("crack_width_params must be a mapping when supplied")
+        normalized_deflection = (
+            _normalize_nested(deflection) if deflection is not None else None
+        )
+        if normalized_deflection is not None:
+            support = normalized_deflection.get("support_condition")
+            if support is not None:
+                normalized_deflection["support_condition"] = _SUPPORT_ALIASES.get(
+                    support, support
+                )
         normalized["deflection_params"] = normalized_deflection
-        normalized["crack_width_params"] = _normalize_nested(crack_width)
+        normalized["crack_width_params"] = (
+            _normalize_nested(crack_width) if crack_width is not None else None
+        )
     else:
         normalized["deflection_params"] = None
         normalized["crack_width_params"] = None
@@ -208,6 +225,67 @@ def _beam_qualified_review_required() -> bool:
         capability.qualified_review_required
         for capability in get_supported_is456_capabilities()
         if capability.element == "beam"
+    )
+
+
+def build_beam_result_envelope(
+    *,
+    is_ok: bool,
+    evidence: Mapping[str, Any],
+) -> StructuralResultEnvelopeV2:
+    """Build the one canonical status/identity carrier for the beam route."""
+
+    evidence_status = str(evidence.get("status", "HOLD"))
+    issues: tuple[StructuralIssueV1, ...]
+    if evidence_status == "HOLD":
+        engineering_status = EngineeringStatus.HOLD
+        issues = (
+            StructuralIssueV1(
+                code="BEAM_EVIDENCE_HOLD",
+                path="$.evidence",
+                message="The beam evidence identity or supported-case basis is held.",
+            ),
+        )
+    elif is_ok:
+        engineering_status = EngineeringStatus.PASS
+        issues = ()
+    else:
+        engineering_status = EngineeringStatus.FAIL
+        issues = (
+            StructuralIssueV1(
+                code="BEAM_DESIGN_CHECK_FAILED",
+                path="$.calculation",
+                message="One or more evaluated beam design checks failed.",
+            ),
+        )
+
+    source_metadata = evidence.get("source_metadata")
+    artifact_sha256 = (
+        source_metadata.get("artifact_sha256")
+        if isinstance(source_metadata, Mapping)
+        and isinstance(source_metadata.get("artifact_sha256"), str)
+        else None
+    )
+    return StructuralResultEnvelopeV2(
+        intake_status=IntakeStatus.ACCEPTED,
+        calculation_status=CalculationStatus.CALCULATED,
+        engineering_status=engineering_status,
+        issues=issues,
+        result_identity=ResultIdentityV1(
+            contract_version=BEAM_RESULT_CONTRACT_VERSION,
+            library_version=str(evidence.get("library_version", "UNKNOWN")),
+            input_hash=(
+                str(evidence["normalized_input_hash"])
+                if evidence.get("normalized_input_hash") is not None
+                else None
+            ),
+            calculation_identity=(
+                str(evidence["calculation_identity"])
+                if evidence.get("calculation_identity") is not None
+                else None
+            ),
+            artifact_sha256=artifact_sha256,
+        ),
     )
 
 

@@ -1,4 +1,4 @@
-import { unwrapResponse } from '../../api/client';
+import { parseStructuralResultEnvelope, unwrapResponse } from '../../api/client';
 import { API_BASE_URL } from '../../config';
 import type { CatalogBeamValues } from '../catalog/types';
 import type {
@@ -60,7 +60,16 @@ export async function runBeamWorkflow(
     }),
     signal,
   });
-  return readPayload<WorkflowRunResult>(response);
+  const payload = await readPayload<unknown>(response);
+  if (typeof payload !== 'object' || payload === null || Array.isArray(payload)) {
+    throw new Error('Workflow run response must be an object');
+  }
+  return {
+    ...payload,
+    result_envelope: parseStructuralResultEnvelope(
+      (payload as Record<string, unknown>).result_envelope,
+    ),
+  } as WorkflowRunResult;
 }
 
 export async function cancelBeamWorkflow(runId: string): Promise<boolean> {

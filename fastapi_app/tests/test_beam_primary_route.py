@@ -4,6 +4,8 @@ import pytest
 from fastapi import status
 
 from fastapi_app.tests.conftest import unwrap
+from structural_lib.services.api import design_beam_is456
+from structural_lib.services.project_beam import EffectiveDepthBasisV1
 
 
 @pytest.fixture
@@ -33,6 +35,9 @@ def test_zero_torsion_preserves_primary_route_contract(
     assert explicit["torsion"] is None
     assert explicit["holds"] == []
     assert not any("Closed stirrups" in item for item in explicit["warnings"])
+    assert explicit["effective_depth_used"] == 457.0
+    assert explicit["effective_depth_basis"]["source"] == "DERIVED"
+    assert explicit["result_envelope"]["engineering_status"] == "PASS"
 
 
 def test_safe_torsion_is_integrated_into_primary_demands(
@@ -90,8 +95,11 @@ def test_unsafe_torsion_fails_primary_result(client) -> None:
     )
 
     assert response.status_code == status.HTTP_200_OK
+    assert response.json()["success"] is True
     data = unwrap(response)
     assert data["success"] is False
+    assert data["result_envelope"]["engineering_status"] == "FAIL"
+    assert data["result_envelope"]["overall_status"] == "FAIL"
     assert data["torsion"]["is_safe"] is False
     assert any(error["code"] == "E_TORSION_001" for error in data["torsion"]["errors"])
 
@@ -222,7 +230,7 @@ def test_stale_report_and_combined_bbs_dxf_fail_closed(
         },
     )
     assert stale.status_code == status.HTTP_409_CONFLICT
-    assert "STALE_CALCULATION_IDENTITY" in stale.json()["detail"]
+    assert "STALE_CALCULATION_IDENTITY" in str(stale.json()["error"])
 
     export_payload = {
         **ordinary_payload,
@@ -269,6 +277,72 @@ def test_primary_shear_quantity_is_asv_per_spacing(client, ordinary_payload) -> 
     assert shear["asv_required"] == pytest.approx(expected)
     assert shear["asv_required"] == pytest.approx(0.010375739761108373)
     assert shear["asv_required_unit"] == "mm²/mm"
+
+
+def test_depth_boundary_matches_the_canonical_failure_vector(client) -> None:
+    response = client.post(
+        "/api/v1/design/beam",
+        json={
+            "width": 300.0,
+            "depth": 500.0,
+            "clear_cover": 40.0,
+            "stirrup_dia_mm": 8.0,
+            "main_bar_dia_mm": 18.0,
+            "moment": 150.0,
+            "shear": 420.0,
+            "fck": 25.0,
+            "fy": 500.0,
+        },
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["success"] is True
+    data = unwrap(response)
+    assert data["effective_depth_used"] == 443.0
+    assert data["effective_depth_basis"]["source"] == "DERIVED"
+    assert data["success"] is False
+    assert data["utilization_ratio"] == pytest.approx(1.01944, rel=1e-4)
+    assert data["result_envelope"]["engineering_status"] == "FAIL"
+    direct = design_beam_is456(
+        units="IS456",
+        case_id="CASE-1",
+        b_mm=300.0,
+        D_mm=500.0,
+        d_mm=None,
+        effective_depth_basis=EffectiveDepthBasisV1(40.0, 8.0, 18.0),
+        d_dash_mm=57.0,
+        mu_knm=150.0,
+        vu_kn=420.0,
+        fck_nmm2=25.0,
+        fy_nmm2=500.0,
+        cover_mm=40.0,
+        stirrup_dia_mm=8.0,
+    )
+    assert data["result_envelope"] == direct.result_envelope
+
+
+def test_explicit_effective_depth_is_not_combined_with_adapter_basis(client) -> None:
+    response = client.post(
+        "/api/v1/design/beam",
+        json={
+            "width": 300.0,
+            "depth": 500.0,
+            "effective_depth": 450.0,
+            "clear_cover": 40.0,
+            "stirrup_dia_mm": 8.0,
+            "main_bar_dia_mm": 18.0,
+            "moment": 100.0,
+            "shear": 75.0,
+            "fck": 25.0,
+            "fy": 500.0,
+        },
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    resolution = unwrap(response)["effective_depth_basis"]
+    assert resolution["source"] == "EXPLICIT"
+    assert resolution["d_mm"] == 450.0
+    assert resolution["effective_depth_basis"] is None
 
 
 def test_separate_torsion_endpoint_contract_is_unchanged(client) -> None:

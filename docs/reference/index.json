@@ -3,7 +3,7 @@
   "type": "mixed",
   "description": "",
   "last_updated": "2026-08-17",
-  "file_count": 31,
+  "file_count": 32,
   "files": [
     {
       "name": "3d-json-contract.md",
@@ -44,23 +44,25 @@
       "last_updated": "2026-08-17",
       "top_level_keys": [
         "schema_version",
+        "claim_surface_matrix_schema_version",
         "generated",
         "package_version",
         "release_channel",
         "classifications",
-        "stable_exports",
-        "internal_policy",
-        "surfaces"
+        "claim_dispositions",
+        "canonical_task_exports",
+        "canonical_support_exports",
+        "advanced_capability_exports"
       ],
-      "content_hash": "3955a859aad4"
+      "content_hash": "a3e243e6ef69"
     },
     {
       "name": "api-levels.md",
       "type": "documentation",
-      "size_lines": 125,
+      "size_lines": 134,
       "last_updated": "2026-08-17",
       "description": "structural_lib exposes three API levels. All are Alpha-preview surfaces; the machine-readable classification is in api-classification.json.",
-      "content_hash": "3abb6eb48c37"
+      "content_hash": "c195f94a2a91"
     },
     {
       "name": "api-manifest.json",
@@ -73,23 +75,23 @@
         "count",
         "symbols"
       ],
-      "content_hash": "ce161301243e"
+      "content_hash": "690dcbd7bab4"
     },
     {
       "name": "api-stability.md",
       "type": "documentation",
-      "size_lines": 66,
+      "size_lines": 81,
       "last_updated": "2026-08-17",
       "description": "StructLib is a pre-1.0 Alpha. No exported Python symbol currently carries a post-1.0 stable compatibility promise, and passing software tests do not imply",
-      "content_hash": "05766f4516df"
+      "content_hash": "5bc0600b92fe"
     },
     {
       "name": "api.md",
       "type": "documentation",
-      "size_lines": 4460,
+      "size_lines": 4484,
       "last_updated": "2026-08-17",
       "description": "The public result dataclasses api.ComplianceCaseResult, api.ComplianceReport, and api.DesignAndDetailResult are Alpha-preview",
-      "content_hash": "2ffc0013e2fb"
+      "content_hash": "f8ed9dc4249d"
     },
     {
       "name": "automation-catalog.md",
@@ -119,15 +121,23 @@
         "source",
         "tools"
       ],
-      "content_hash": "a9cf3ac2fdab"
+      "content_hash": "03c41c2c7d25"
     },
     {
       "name": "beam-tool-manifest.md",
       "type": "documentation",
-      "size_lines": 32,
+      "size_lines": 34,
       "last_updated": "2026-08-17",
       "description": "The generated beam tool manifest describes the one approved is456.beam.design capability. It is a deterministic projection of the",
-      "content_hash": "744bdc879e86"
+      "content_hash": "946694aea0d6"
+    },
+    {
+      "name": "canonical-result-contract.md",
+      "type": "documentation",
+      "size_lines": 74,
+      "last_updated": "2026-08-17",
+      "description": "The reference beam journey uses three small, versioned contracts. They prevent Python, CLI, workflow, REST, and React transports from changing the engineering",
+      "content_hash": "df9ecb6793d7"
     },
     {
       "name": "clause-map.json",
@@ -184,18 +194,18 @@
     {
       "name": "error-schema.md",
       "type": "documentation",
-      "size_lines": 269,
+      "size_lines": 317,
       "last_updated": "2026-08-17",
       "description": "*Structured error format for machine-readable and human-friendly errors* This document defines the standard error schema for all structural_lib errors. The goal is:",
-      "content_hash": "c77bd236e119"
+      "content_hash": "7c8c14e70ebf"
     },
     {
       "name": "fastapi-rest-api.md",
       "type": "documentation",
-      "size_lines": 262,
+      "size_lines": 291,
       "last_updated": "2026-08-17",
-      "description": "The FastAPI application exposes the maintained Python calculation services to the React workbench and external clients. The current v0.23.0 application has 63",
-      "content_hash": "abd09495541a"
+      "description": "The FastAPI application exposes the maintained Python calculation services to the React workbench and external clients. The current v0.23.1a2 exact-head",
+      "content_hash": "9d9dbd878652"
     },
     {
       "name": "insights-api.md",
@@ -277,5 +287,5 @@
       "file_count": 1760
     }
   ],
-  "content_hash": "7954147b530c7685"
+  "content_hash": "9a1a7e1cad75a0b7"
 }

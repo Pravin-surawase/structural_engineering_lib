@@ -355,7 +355,34 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
                 ),
                 _field("b_mm", "section width", "mm", True, _MM),
                 _field("D_mm", "overall section depth", "mm", True, _MM),
-                _field("d_mm", "effective section depth", "mm", True, _MM),
+                _field(
+                    "d_mm",
+                    "explicit effective section depth",
+                    "mm",
+                    False,
+                    "finite positive and below D_mm; mutually exclusive with effective_depth_basis",
+                ),
+                _field(
+                    "effective_depth_basis.clear_cover_mm",
+                    "clear cover used by the effective-depth basis",
+                    "mm",
+                    False,
+                    _MM,
+                ),
+                _field(
+                    "effective_depth_basis.stirrup_diameter_mm",
+                    "stirrup diameter used by the effective-depth basis",
+                    "mm",
+                    False,
+                    _MM,
+                ),
+                _field(
+                    "effective_depth_basis.tension_bar_diameter_mm",
+                    "tension bar diameter used by the effective-depth basis",
+                    "mm",
+                    False,
+                    _MM,
+                ),
                 _field("fck_nmm2", "concrete strength", "N/mm2", True, _N_PER_MM2),
                 _field("fy_nmm2", "steel strength", "N/mm2", True, _N_PER_MM2),
                 _field("cover_mm", "clear cover for torsion core", "mm", False, _MM),
@@ -383,6 +410,13 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
                 _field(
                     "is_ok", "combined compliance outcome", "boolean", True, _BOOLEAN
                 ),
+                _field(
+                    "result_envelope.engineering_status",
+                    "canonical engineering disposition",
+                    "enumeration",
+                    True,
+                    "PASS, FAIL, HOLD, or NOT_EVALUATED",
+                ),
             ),
             statuses=(
                 IS456StatusContract(
@@ -393,9 +427,18 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
                         "Missing or invalid evidence identity is a HOLD, not a pass.",
                     ),
                 ),
+                IS456StatusContract(
+                    "result_envelope.engineering_status",
+                    "Canonical bounded engineering disposition for this result.",
+                    (
+                        "Transport success remains separate.",
+                        "Qualified review remains a separate status axis.",
+                    ),
+                ),
             ),
             limitations=(
                 "Optional torsion is limited to the ordinary solid rectangular route.",
+                "Exactly one explicit d_mm or complete effective_depth_basis is required.",
                 "Serviceability requires explicit maintained inputs.",
                 "Qualified engineering review remains required.",
             ),

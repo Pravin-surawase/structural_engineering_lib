@@ -9,6 +9,30 @@ import { unwrapResponse, designBeam, loadSampleData, generateBeamGeometry, check
 import * as fixtures from '../../test/api-fixtures';
 
 const API = 'http://localhost:8000';
+const DEPTH_CONTRACT = {
+  contract_version: 'effective-depth-basis/v1',
+  source: 'DERIVED',
+  D_mm: 500,
+  d_mm: 457,
+  effective_depth_basis: {
+    clear_cover_mm: 25,
+    stirrup_diameter_mm: 8,
+    tension_bar_diameter_mm: 20,
+  },
+};
+const RESULT_CONTRACT = {
+  schema_version: 'structural-result-envelope/v2',
+  intake_status: 'VALID',
+  calculation_status: 'COMPLETED',
+  engineering_status: 'PASS',
+  review_status: 'QUALIFIED_REVIEW_REQUIRED',
+  qualified_review_required: true,
+  freshness_status: 'CURRENT',
+  serviceability_escalation: null,
+  overall_status: 'PASS',
+  issues: [],
+  result_identity: null,
+};
 
 // ═══════════════════════════════════════════════════════════════════════
 // 0. RESPONSE UNWRAPPING
@@ -634,6 +658,8 @@ describe('API Response Contract — unwrap enforcement', () => {
       ast_total: 850,
       asc_total: 0,
       utilization_ratio: 0.87,
+      effective_depth_basis: DEPTH_CONTRACT,
+      result_envelope: RESULT_CONTRACT,
       warnings: [],
     };
     // Mock returns WRAPPED response (as FastAPI actually sends)
@@ -657,6 +683,8 @@ describe('API Response Contract — unwrap enforcement', () => {
       ast_total: 850,
       asc_total: 0,
       utilization_ratio: 0.87,
+      effective_depth_basis: DEPTH_CONTRACT,
+      result_envelope: RESULT_CONTRACT,
     };
     const fetchSpy = mockFetch({ success: true, data: innerData });
     const controller = new AbortController();
@@ -669,6 +697,65 @@ describe('API Response Contract — unwrap enforcement', () => {
     expect(fetchSpy).toHaveBeenCalledWith(
       `${API}/api/v1/design/beam`,
       expect.objectContaining({ signal: controller.signal }),
+    );
+  });
+
+  it('designBeam() fails visibly when canonical result status is missing', async () => {
+    mockFetch({
+      success: true,
+      data: {
+        success: true,
+        effective_depth_basis: DEPTH_CONTRACT,
+      },
+    });
+
+    await expect(designBeam({
+      width: 300,
+      depth: 500,
+      moment: 150,
+      fck: 25,
+      fy: 500,
+    })).rejects.toThrow('result envelope is missing or unsupported');
+  });
+
+  it('designBeam() rejects contradictory canonical status axes', async () => {
+    mockFetch({
+      success: true,
+      data: {
+        success: true,
+        effective_depth_basis: DEPTH_CONTRACT,
+        result_envelope: { ...RESULT_CONTRACT, overall_status: 'FAIL' },
+      },
+    });
+
+    await expect(designBeam({
+      width: 300,
+      depth: 500,
+      moment: 150,
+      fck: 25,
+      fy: 500,
+    })).rejects.toThrow('contradictory canonical status fields');
+  });
+
+  it('designBeam() preserves the canonical problem code and message', async () => {
+    mockFetch({
+      success: false,
+      data: null,
+      error: {
+        schema_version: 'structural-problem/v1',
+        code: 'BEAM_DESIGN_INPUT_INVALID',
+        message: 'Effective depth is invalid',
+      },
+    }, 422);
+
+    await expect(designBeam({
+      width: 300,
+      depth: 500,
+      moment: 150,
+      fck: 25,
+      fy: 500,
+    })).rejects.toThrow(
+      'BEAM_DESIGN_INPUT_INVALID: Effective depth is invalid',
     );
   });
 

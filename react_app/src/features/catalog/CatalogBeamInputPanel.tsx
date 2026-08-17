@@ -8,7 +8,7 @@ import { useWorkflowCatalog } from './useWorkflowCatalog';
 
 export interface CatalogBeamInputPanelProps {
   values: CatalogBeamValues;
-  onChange: (name: CatalogBeamTransportName, value: number) => void;
+  onChange: (name: CatalogBeamTransportName, value: number | undefined) => void;
   onUseManual: () => void;
   disabled?: boolean;
 }
@@ -20,8 +20,8 @@ function FieldControl({
   disabled,
 }: {
   field: CatalogField;
-  value: number;
-  onChange: (value: number) => void;
+  value: number | undefined;
+  onChange: (value: number | undefined) => void;
   disabled: boolean;
 }) {
   const inputId = `catalog-field-${field.field_id}`;
@@ -35,7 +35,7 @@ function FieldControl({
         <select
           id={inputId}
           aria-label={`${field.label} in ${field.unit}`}
-          value={value}
+          value={value ?? ''}
           disabled={disabled}
           onChange={(event) => onChange(Number(event.target.value))}
           className="w-full rounded-lg border border-white/10 bg-zinc-900 px-3 py-2 text-sm text-white outline-none focus:border-blue-400"
@@ -51,13 +51,18 @@ function FieldControl({
           id={inputId}
           aria-label={`${field.label} in ${field.unit}`}
           type="number"
-          value={value}
+          value={value ?? ''}
           min={field.minimum ?? undefined}
           max={field.maximum ?? undefined}
           step="any"
           required={field.required}
           disabled={disabled}
-          onChange={(event) => onChange(Number(event.target.value))}
+          onChange={(event) => {
+            const next = event.target.value;
+            onChange(
+              next === '' && field.default === null ? undefined : Number(next),
+            );
+          }}
           className="w-full rounded-lg border border-white/10 bg-zinc-900 px-3 py-2 text-sm text-white outline-none focus:border-blue-400"
         />
       )}

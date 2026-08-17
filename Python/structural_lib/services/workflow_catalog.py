@@ -23,6 +23,7 @@ __all__ = [
     "WorkflowCatalog",
     "get_workflow_catalog",
     "get_workflow_catalog_document",
+    "get_workflow_input_defaults",
     "migrate_workflow_catalog_document",
     "serialize_workflow_catalog",
     "validate_catalog",
@@ -30,11 +31,11 @@ __all__ = [
 ]
 
 CATALOG_SCHEMA_VERSION = "1.0"
-CATALOG_VERSION = "1.1.0"
-_COMPATIBLE_VERSIONS = ("1.0", "1.0.0", CATALOG_VERSION)
+CATALOG_VERSION = "1.2.0"
+_COMPATIBLE_VERSIONS = ("1.0", "1.0.0", "1.1.0", CATALOG_VERSION)
 _APPROVED_ADAPTERS = frozenset({"fastapi.design_beam.v1"})
 _APPROVED_REQUEST_SCHEMAS = frozenset({"fastapi.BeamDesignRequest.v1"})
-_APPROVED_RESULT_SCHEMAS = frozenset({"fastapi.BeamDesignResponse.v1"})
+_APPROVED_RESULT_SCHEMAS = frozenset({"fastapi.BeamDesignResponse.v2"})
 
 JsonScalar = str | int | float | bool | None
 
@@ -135,6 +136,58 @@ _BEAM_FIELDS = (
         3000.0,
     ),
     CatalogField(
+        "d_mm",
+        "effective_depth",
+        "workflows.design_beam_is456.fields.d_mm",
+        "Effective depth",
+        "Dimensions",
+        "number",
+        "mm",
+        False,
+        None,
+        1.0,
+        2999.0,
+    ),
+    CatalogField(
+        "clear_cover_mm",
+        "clear_cover",
+        "workflows.design_beam_is456.fields.effective_depth_basis.clear_cover_mm",
+        "Clear cover",
+        "Depth basis",
+        "number",
+        "mm",
+        False,
+        25.0,
+        20.0,
+        75.0,
+    ),
+    CatalogField(
+        "stirrup_dia_mm",
+        "stirrup_dia_mm",
+        "workflows.design_beam_is456.fields.effective_depth_basis.stirrup_diameter_mm",
+        "Stirrup diameter",
+        "Depth basis",
+        "number",
+        "mm",
+        False,
+        8.0,
+        6.0,
+        16.0,
+    ),
+    CatalogField(
+        "main_bar_dia_mm",
+        "main_bar_dia_mm",
+        "workflows.design_beam_is456.fields.effective_depth_basis.tension_bar_diameter_mm",
+        "Main bar diameter",
+        "Depth basis",
+        "number",
+        "mm",
+        False,
+        20.0,
+        8.0,
+        36.0,
+    ),
+    CatalogField(
         "mu_knm",
         "moment",
         "workflows.design_beam_is456.fields.mu_knm",
@@ -194,7 +247,7 @@ _CATALOG = WorkflowCatalog(
     capabilities=(
         WorkflowCapability(
             capability_id="is456.beam.design",
-            capability_version="1.1.0",
+            capability_version="1.2.0",
             element="beam",
             title="IS 456 beam design",
             summary=(
@@ -204,8 +257,11 @@ _CATALOG = WorkflowCatalog(
             semantic_workflow_id="design_beam_is456",
             service_adapter_id="fastapi.design_beam.v1",
             request_schema_id="fastapi.BeamDesignRequest.v1",
-            result_schema_id="fastapi.BeamDesignResponse.v1",
-            status_semantic_ref="workflows.design_beam_is456.statuses.is_ok",
+            result_schema_id="fastapi.BeamDesignResponse.v2",
+            status_semantic_ref=(
+                "workflows.design_beam_is456.statuses."
+                "result_envelope.engineering_status"
+            ),
             fields=_BEAM_FIELDS,
             prerequisites=(
                 "Factored bending moment and shear are supplied in the declared units.",
@@ -331,6 +387,18 @@ def validate_catalog(catalog: WorkflowCatalog) -> WorkflowCatalog:
 def get_workflow_catalog() -> WorkflowCatalog:
     """Return the validated immutable application catalogue."""
     return validate_catalog(_CATALOG)
+
+
+def get_workflow_input_defaults(
+    capability: WorkflowCapability,
+) -> dict[str, JsonScalar]:
+    """Return UI defaults only for optional calculation fields."""
+
+    return {
+        field.transport_name: field.default
+        for field in capability.fields
+        if not field.required and field.default is not None
+    }
 
 
 def _json_ready(value: Any) -> Any:

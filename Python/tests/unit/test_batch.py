@@ -184,14 +184,17 @@ def test_strict_service_negative_matrix_blocks_before_calculation(
         "overall_status": "BLOCKED",
         "qualified_review_required": True,
         "result_envelope": {
-            "schema_version": "structural-result-envelope/v1",
+            "schema_version": "structural-result-envelope/v2",
             "intake_status": "BLOCKED",
             "calculation_status": "NOT_EVALUATED",
             "engineering_status": "NOT_EVALUATED",
             "review_status": "QUALIFIED_REVIEW_REQUIRED",
             "qualified_review_required": True,
+            "freshness_status": "CURRENT",
             "serviceability_escalation": None,
             "overall_status": "BLOCKED",
+            "issues": [],
+            "result_identity": None,
         },
     }
     member = result["members"][0]
@@ -392,14 +395,17 @@ def test_mixed_batch_accounts_for_valid_and_blocked_members_without_pass() -> No
         "overall_status": "BLOCKED",
         "qualified_review_required": True,
         "result_envelope": {
-            "schema_version": "structural-result-envelope/v1",
+            "schema_version": "structural-result-envelope/v2",
             "intake_status": "BLOCKED",
             "calculation_status": "COMPLETED",
             "engineering_status": "PASS",
             "review_status": "QUALIFIED_REVIEW_REQUIRED",
             "qualified_review_required": True,
+            "freshness_status": "CURRENT",
             "serviceability_escalation": None,
             "overall_status": "BLOCKED",
+            "issues": [],
+            "result_identity": None,
         },
     }
 
@@ -567,7 +573,7 @@ def test_calculation_error_is_a_stable_hold_without_raw_exception(
     assert member["intake_status"] == "VALID"
     assert member["calculation_status"] == "ERROR"
     assert member["engineering_status"] == "HOLD"
-    assert member["overall_status"] == "HOLD"
+    assert member["overall_status"] == "ERROR"
     assert member["issues"] == [
         {
             "code": "PROJECT_BEAM_CALCULATION_ERROR",

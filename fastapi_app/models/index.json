@@ -69,7 +69,7 @@
     {
       "name": "beam.py",
       "type": "python",
-      "size_lines": 806,
+      "size_lines": 836,
       "last_updated": "2026-08-17",
       "description": "Beam Design and Detailing Pydantic Models.",
       "classes": [
@@ -110,6 +110,14 @@
           "description": "Traceable identity metadata, not a professional approval certificate."
         },
         {
+          "name": "EffectiveDepthBasisResponse",
+          "description": "Complete geometry basis used to derive beam effective depth."
+        },
+        {
+          "name": "EffectiveDepthResolutionResponse",
+          "description": "Explicit record of the effective depth consumed by the calculation."
+        },
+        {
           "name": "FlexureResult",
           "description": "Flexure design result."
         },
@@ -136,17 +144,9 @@
         {
           "name": "BeamDesignResponse",
           "description": "Response model for beam design calculation."
-        },
-        {
-          "name": "BeamCheckResponse",
-          "description": "Response model for beam adequacy check."
-        },
-        {
-          "name": "BarArrangement",
-          "description": "Reinforcement bar arrangement."
         }
       ],
-      "content_hash": "f93d275f7207"
+      "content_hash": "bf3da07bf2f1"
     },
     {
       "name": "boq.py",
@@ -886,27 +886,39 @@
     {
       "name": "response.py",
       "type": "python",
-      "size_lines": 71,
+      "size_lines": 162,
       "last_updated": "2026-08-17",
-      "description": "Standardized API response wrappers.",
+      "description": "Canonical FastAPI success, structural-result, and problem envelopes.",
       "classes": [
         {
+          "name": "StructuralIssueResponse",
+          "description": "Stable issue code, path, and explanation."
+        },
+        {
+          "name": "ResultIdentityResponse",
+          "description": "Replay identity attached to a calculation-bearing result."
+        },
+        {
+          "name": "StructuralResultEnvelopeResponse",
+          "description": "Transport model of the canonical structural-result envelope."
+        },
+        {
+          "name": "ProblemDetailResponse",
+          "description": "Versioned problem body used by every maintained JSON error response."
+        },
+        {
+          "name": "ProblemResponse",
+          "description": "Rejected transport envelope; never an engineering result."
+        },
+        {
           "name": "APIResponse",
-          "description": "Standardized response wrapper for all API endpoints."
-        },
-        {
-          "name": "RequestValidationErrorPayload",
-          "description": "Field-preserving Pydantic request validation error."
-        },
-        {
-          "name": "RequestValidationErrorResponse",
-          "description": "Documented 422 form of the maintained response envelope."
+          "description": "Accepted transport envelope."
         }
       ],
       "functions": [
         {
           "name": "success_response",
-          "description": "Wrap any response in standardized APIResponse format.",
+          "description": "Wrap an accepted transport payload without inferring engineering status.",
           "params": [
             "data",
             "clause_refs"
@@ -914,7 +926,7 @@
         },
         {
           "name": "error_response",
-          "description": "Wrap error in standardized APIResponse format.",
+          "description": "Wrap every rejected JSON transport in the canonical problem schema.",
           "params": [
             "error"
           ]
@@ -923,7 +935,7 @@
       "constants": [
         "T"
       ],
-      "content_hash": "303815ec1f8d"
+      "content_hash": "8e3720cbc3bd"
     },
     {
       "name": "staircase.py",
@@ -1050,7 +1062,7 @@
     {
       "name": "workflows.py",
       "type": "python",
-      "size_lines": 99,
+      "size_lines": 102,
       "last_updated": "2026-08-17",
       "description": "Typed models for the default-disabled bounded beam workflow transport.",
       "classes": [
@@ -1088,7 +1100,7 @@
           "name": "WorkflowCancellationResponse"
         }
       ],
-      "content_hash": "2dda37f6f900"
+      "content_hash": "a5fbfce7a665"
     }
   ],
   "subfolders": [],
@@ -1115,5 +1127,5 @@
     "DuctilityCheckRequest",
     "DuctilityCheckResponse"
   ],
-  "content_hash": "22f7a616f959af3f"
+  "content_hash": "cf6ccb5d0d255f4e"
 }

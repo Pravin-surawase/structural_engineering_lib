@@ -3,11 +3,11 @@ import { parseWorkflowDraft, serializeWorkflowDraft } from '../draft';
 import type { WorkflowDraft } from '../types';
 
 const DRAFT: WorkflowDraft = {
-  schema_version: '1.0',
+  schema_version: '2.0',
   definition: {
     schema_version: '1.0',
     workflow_id: 'is456.beam.review',
-    workflow_version: '1.0.0',
+    workflow_version: '1.1.0',
     title: 'Beam workflow',
     capability_id: 'is456.beam.design',
     steps: [],
@@ -24,7 +24,17 @@ const DRAFT: WorkflowDraft = {
       max_cached_runs: 128,
     },
   },
-  inputs: { width: 300, depth: 500, moment: 150, shear: 75, fck: 25, fy: 500 },
+  inputs: {
+    width: 300,
+    depth: 500,
+    clear_cover: 25,
+    stirrup_dia_mm: 8,
+    main_bar_dia_mm: 20,
+    moment: 150,
+    shear: 75,
+    fck: 25,
+    fy: 500,
+  },
   review_acknowledged: false,
 };
 
@@ -36,7 +46,11 @@ describe('workflow draft', () => {
   });
 
   it('fails closed on corrupt identity and incomplete inputs', () => {
-    expect(() => parseWorkflowDraft('{"schema_version":"2.0"}')).toThrow('unsupported');
+    expect(() => parseWorkflowDraft('{"schema_version":"1.0"}')).toThrow('unsupported');
+    expect(() => parseWorkflowDraft(JSON.stringify({
+      ...DRAFT,
+      definition: { ...DRAFT.definition, workflow_version: '1.0.0' },
+    }))).toThrow('identity is invalid');
     expect(() => parseWorkflowDraft(JSON.stringify({ ...DRAFT, inputs: { width: 300 } })))
       .toThrow('incomplete');
   });

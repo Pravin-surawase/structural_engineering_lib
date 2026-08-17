@@ -1,0 +1,175 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-17T14:16:07Z",
+      "query_status": "OK",
+      "reference": "task:A1-CANONICAL-TRUTH-TRANSPORT:user-approved-G0-and-start-A1",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-17T14:16:07Z",
+    "prohibited_actions": [
+      "START_A2",
+      "START_GRAVITY_IMPLEMENTATION",
+      "START_LIVE_ETABS",
+      "START_EXCEL_WRITE_BACK",
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "DISCARD_USER_CHANGE",
+      "CLOSE_PULL_REQUEST",
+      "PUBLISH_RELEASE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/a1-canonical-transport-contract",
+      "head_sha": "98927f1de4a1e8f60d1d9d66bf2e8a036c2a0dd2",
+      "task_id": "A1-CANONICAL-TRUTH-TRANSPORT"
+    }
+  },
+  "holds": [
+    "AUTHORIZATION_SOURCE_STALE_EVIDENCE",
+    "AUTHORIZATION_STALE_EVIDENCE",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_STALE_EVIDENCE",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "b69d2f00f25249b4eaeb7aad3fbe233bcada70bebcc999c8f0cf3a2ddca3dde6",
+    "state": {
+      "branch": "codex/a1-canonical-transport-contract",
+      "default_base": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 109.457,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-a1-canonical-transport",
+      "head_sha": "98927f1de4a1e8f60d1d9d66bf2e8a036c2a0dd2",
+      "hold_reasons": [
+        "changed paths: 3"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-17T14:49:06.086733+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a1-canonical-transport",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 3,
+        "modified_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/verification/a1-canonical-transport-git-handoff-source-evidence.json",
+          "fastapi_app/tests/test_beam_primary_route.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/codex/a1-canonical-transport-contract",
+        "sha": "98927f1de4a1e8f60d1d9d66bf2e8a036c2a0dd2",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a1-canonical-transport"
+    }
+  },
+  "local_state_receipt_hash": "sha256:b69d2f00f25249b4eaeb7aad3fbe233bcada70bebcc999c8f0cf3a2ddca3dde6",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-17T14:49:06.086874+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "evidence_error": "STALE_EVIDENCE",
+    "holds": [],
+    "observed_at_utc": "2026-08-17T14:16:07Z",
+    "owner": "Main Agent under owner-approved A1 execution",
+    "query_status": "UNKNOWN",
+    "status": "UNKNOWN"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/services/gravity",
+      "fastapi_app/routers/optimization.py",
+      "Python/structural_lib/excel_integration.py",
+      "Python/structural_lib/services/excel_bridge.py"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "Python/structural_lib",
+      "Python/tests",
+      "fastapi_app",
+      "react_app/src",
+      "clients",
+      "scripts/audit_readiness_report.py",
+      "scripts/generate_api_classification.py",
+      "scripts/generate_client_sdks.py",
+      "scripts/test_api_parity.py",
+      "scripts/verify_canonical_transport_artifact.py",
+      "docs/reference",
+      "docs/verification/a1-canonical-truth-transport-evidence.md",
+      "docs/verification/a1-canonical-transport-git-handoff-source-evidence.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/verification/index.json",
+      "docs/verification/index.md",
+      "docs/reference/index.json",
+      "docs/reference/index.md",
+      "scripts/index.json",
+      "scripts/index.md"
+    ],
+    "task_id": "A1-CANONICAL-TRUTH-TRANSPORT"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

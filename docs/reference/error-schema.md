@@ -1,20 +1,20 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-04-02
+last_updated: 2026-08-17
 doc_type: reference
 complexity: intermediate
 tags: []
 ---
 
-# Error Schema v1
+# Structural Issue and HTTP Problem Schemas
 
 **Type:** Reference
 **Audience:** Developers
 **Status:** Production Ready
 **Importance:** Medium
 **Created:** 2025-12-28
-**Last Updated:** 2026-04-02
+**Last Updated:** 2026-08-17
 
 ---
 
@@ -30,6 +30,54 @@ This document defines the standard error schema for all structural_lib errors. T
 - **Traceable:** Links to IS 456 clauses where applicable
 
 **Implementation:** See `structural_lib/errors.py` for the `DesignError` dataclass.
+
+Two boundaries are intentionally separate:
+
+- calculation and engineering issues belong to the structural result and use a
+  stable `code`, JSON-style `path`, and `message`;
+- rejected HTTP requests use the versioned `structural-problem/v1` transport
+  schema and never masquerade as a calculation result.
+
+An HTTP 200 only says that the operation returned its declared payload. It does
+not mean the structural calculation passed. Read engineering truth from
+`data.result_envelope.engineering_status` and its fail-closed `overall_status`.
+
+## HTTP problem schema
+
+Every maintained JSON 4xx/5xx response has this shape:
+
+```json
+{
+  "success": false,
+  "data": null,
+  "error": {
+    "schema_version": "structural-problem/v1",
+    "code": "REQUEST_VALIDATION_ERROR",
+    "message": "Request validation failed",
+    "details": [],
+    "request_id": "optional-request-id"
+  }
+}
+```
+
+OpenAPI declares this same `ProblemResponse` for 400, 401, 403, 404, 409, 422,
+429, 500, and 503 responses. `details` may contain structured validation or
+domain context; clients should branch on `code`, not parse `message`.
+
+## Structural result issues
+
+Calculation-bearing results use `structural-result-envelope/v2`. Its `issues`
+array uses:
+
+| Field | Meaning |
+|---|---|
+| `code` | Stable machine-readable issue identity |
+| `path` | Exact result/input location, such as `$.calculation` |
+| `message` | Human-readable explanation |
+
+The envelope independently records intake, calculation, engineering, freshness,
+qualified-review, and replay-identity state. A transport problem has no
+engineering disposition because calculation may not have occurred.
 
 ---
 

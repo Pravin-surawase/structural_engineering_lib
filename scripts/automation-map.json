@@ -2,7 +2,7 @@
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
   "_updated": "2026-08-17",
   "_usage": "Run: ./scripts/python_runtime.sh scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "110/110 scripts mapped",
+  "_coverage": "111/111 scripts mapped",
   "tasks": {
     "resolve python runtime": {
       "group": "Infrastructure",
@@ -563,6 +563,12 @@
       "group": "Testing",
       "script": "./scripts/python_runtime.sh scripts/test_api_parity.py",
       "description": "Verify library and FastAPI return identical results"
+    },
+    "verify canonical transport artifact": {
+      "group": "Testing",
+      "script": "./scripts/python_runtime.sh scripts/verify_canonical_transport_artifact.py --wheel <exact-wheel-path>",
+      "description": "Verify A1 source-free Python and CLI plus exact-head FastAPI binding to one wheel",
+      "permission": "ReadOnly"
     },
     "test import 3d pipeline": {
       "group": "Testing",

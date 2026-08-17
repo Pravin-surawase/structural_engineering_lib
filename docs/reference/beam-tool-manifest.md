@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-10
+last_updated: 2026-08-17
 doc_type: reference
 complexity: advanced
 tags: [catalogue, tools, ai-readiness]
@@ -26,6 +26,8 @@ integration. Execution remains default-disabled, user acknowledgement is
 required, and any output remains software evidence requiring qualified
 engineering review.
 
-The JSON Schema property names, units, defaults, bounds, choices, schema IDs,
-limitations, and adapter ID are all generated from the catalogue. The committed
-artifact is checked for exact drift by pre-commit and repository validation.
+The JSON Schema property names, units, declared optional defaults, bounds,
+choices, schema IDs, limitations, and adapter ID are all generated from the
+catalogue. A field with no catalogue default, such as explicit effective depth,
+does not acquire a hidden default in the tool schema. The committed artifact is
+checked for exact drift by pre-commit and repository validation.

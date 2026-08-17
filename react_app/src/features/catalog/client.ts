@@ -4,7 +4,7 @@ import type { WorkflowCatalog } from './types';
 import { parseWorkflowCatalog } from './validation';
 
 export async function fetchWorkflowCatalog(signal?: AbortSignal): Promise<WorkflowCatalog> {
-  const response = await fetch(`${API_BASE_URL}/api/v1/catalog/workflows?version=1.1.0`, {
+  const response = await fetch(`${API_BASE_URL}/api/v1/catalog/workflows?version=1.2.0`, {
     headers: { Accept: 'application/json' },
     signal,
   });

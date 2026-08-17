@@ -6,6 +6,8 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from fastapi_app.models.response import StructuralResultEnvelopeResponse
+
 
 class WorkflowStepDefinitionModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -42,7 +44,7 @@ class WorkflowDefinitionModel(BaseModel):
 
     schema_version: Literal["1.0"]
     workflow_id: Literal["is456.beam.review"]
-    workflow_version: Literal["1.0.0"]
+    workflow_version: Literal["1.1.0"]
     title: str
     capability_id: Literal["is456.beam.design"]
     steps: list[WorkflowStepDefinitionModel] = Field(min_length=5, max_length=5)
@@ -88,6 +90,7 @@ class WorkflowRunResponse(BaseModel):
     steps: list[WorkflowStepResultModel]
     export: dict[str, Any] | None
     audit: WorkflowAuditModel
+    result_envelope: StructuralResultEnvelopeResponse
     definition_hash: str
     input_hash: str
     idempotent_replay: bool

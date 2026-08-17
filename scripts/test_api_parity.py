@@ -7,8 +7,9 @@ API Parity Testing Script
 
 When to use: after changing a library service or its FastAPI endpoint.
 
-Tests that FastAPI endpoints return identical results to direct library calls.
-This ensures the React client receives the same engineering results as the library.
+Tests that the service, root, and compatibility Python facades return identical
+results and survive the maintained strict JSON transport normalization. Separate
+FastAPI integration tests own HTTP adapter parity.
 
 Usage:
     ./scripts/python_runtime.sh scripts/test_api_parity.py
@@ -22,11 +23,9 @@ Exit Codes:
     2 - Test infrastructure error
 
 Cross-layer context:
-    This script protects the active React/FastAPI architecture because:
-    1. React calls FastAPI instead of direct Python
-    2. Results MUST match for user trust
-    3. Serialization can lose precision - this catches that
-    4. Response structure must be identical
+    1. Every maintained Python facade delegates to one calculation authority.
+    2. Serialization can lose precision or reshape values.
+    3. HTTP tests compare the FastAPI adapter against these frozen vectors.
 
 Author: AI Agent (V3 Foundation Session)
 Created: 2026-01-24
@@ -37,7 +36,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from dataclasses import dataclass, is_dataclass, asdict
+from dataclasses import dataclass
 from decimal import Decimal
 from enum import Enum
 from pathlib import Path
@@ -51,6 +50,8 @@ TEST_CASES_PATH = SCRIPT_DIR / "test_data" / "api_parity_cases.json"
 
 # Add Python directory to path
 sys.path.insert(0, str(PYTHON_DIR))
+
+from structural_lib.services.serialization import to_transport_value  # noqa: E402
 
 
 @dataclass
@@ -128,14 +129,20 @@ STANDARD_TEST_CASES = [
 ]
 
 
-def load_api():
-    """Load the structural_lib.api module."""
+def load_apis() -> dict[str, Any]:
+    """Load the service authority, root facade, and compatibility facade."""
     try:
-        from structural_lib import api
+        import structural_lib
+        from structural_lib import api as compatibility_api
+        from structural_lib.services import api as service_api
 
-        return api
+        return {
+            "service": service_api,
+            "root": structural_lib,
+            "compatibility": compatibility_api,
+        }
     except ImportError as e:
-        print(f"❌ Cannot import structural_lib.api: {e}")
+        print(f"❌ Cannot import maintained structural_lib facades: {e}")
         sys.exit(2)
 
 
@@ -220,22 +227,13 @@ def compare_values(v1: Any, v2: Any, precision: float = 0.001) -> tuple[bool, st
 
 
 def result_to_dict(result: Any) -> dict:
-    """Convert a result object to a dictionary, handling nested dataclasses."""
+    """Convert a result through the maintained transport normalizer."""
     if result is None:
         return {}
-    if isinstance(result, dict):
-        # Recursively convert any nested dataclasses in dict values
-        return {
-            k: result_to_dict(v) if is_dataclass(v) else v for k, v in result.items()
-        }
-    if is_dataclass(result):
-        # Use asdict for proper deep conversion of nested dataclasses
-        return asdict(result)
-    if hasattr(result, "to_dict"):
-        return result.to_dict()
-    if hasattr(result, "__dict__"):
-        return {k: v for k, v in result.__dict__.items() if not k.startswith("_")}
-    return {"value": result}
+    normalized = to_transport_value(result)
+    if not isinstance(normalized, dict):
+        return {"value": normalized}
+    return normalized
 
 
 def simulate_api_call(api, function_name: str, inputs: dict) -> dict:
@@ -256,47 +254,50 @@ def simulate_api_call(api, function_name: str, inputs: dict) -> dict:
 
     # Simulate JSON round-trip (this is what FastAPI does)
     result_dict = result_to_dict(result)
-    json_str = json.dumps(result_dict, default=str)
+    json_str = json.dumps(result_dict, allow_nan=False)
     api_result = json.loads(json_str)
 
     return api_result
 
 
-def run_parity_test(api, test_case: ParityTestCase) -> ParityResult:
+def run_parity_test(apis: dict[str, Any], test_case: ParityTestCase) -> ParityResult:
     """Run a single parity test."""
     differences = []
     library_result = None
     api_result = None
 
     try:
-        # Get direct library result
-        func = getattr(api, test_case.function, None)
-        if func is None:
-            return ParityResult(
-                test_name=test_case.name,
-                passed=False,
-                library_result=None,
-                api_result=None,
-                differences=[f"Function '{test_case.function}' not found"],
-            )
+        transports: dict[str, dict] = {}
+        for facade_name, api in apis.items():
+            func = getattr(api, test_case.function, None)
+            if func is None:
+                differences.append(
+                    f"{facade_name} facade is missing '{test_case.function}'"
+                )
+                continue
+            direct = result_to_dict(func(**test_case.inputs))
+            serialized = simulate_api_call(api, test_case.function, test_case.inputs)
+            transports[f"{facade_name}:direct"] = direct
+            transports[f"{facade_name}:json"] = serialized
 
-        raw_result = func(**test_case.inputs)
-        library_result = result_to_dict(raw_result)
-
-        # Get simulated API result
-        api_result = simulate_api_call(api, test_case.function, test_case.inputs)
-
-        # Check expected keys are present
-        for key in test_case.expected_keys:
-            if key not in library_result:
-                differences.append(f"Expected key '{key}' missing from library result")
-            if key not in api_result:
-                differences.append(f"Expected key '{key}' missing from API result")
-
-        # Compare all values
-        equal, diff = compare_values(library_result, api_result, test_case.precision)
-        if not equal:
-            differences.append(diff)
+        library_result = transports.get("service:direct")
+        api_result = transports.get("service:json")
+        if library_result is None:
+            differences.append("Service authority produced no comparison result")
+        else:
+            for transport_name, transport in transports.items():
+                for key in test_case.expected_keys:
+                    if key not in transport:
+                        differences.append(
+                            f"{transport_name} is missing expected key '{key}'"
+                        )
+                equal, diff = compare_values(
+                    library_result,
+                    transport,
+                    test_case.precision,
+                )
+                if not equal:
+                    differences.append(f"{transport_name}: {diff}")
 
     except Exception as e:
         differences.append(f"Exception: {e}")
@@ -311,13 +312,15 @@ def run_parity_test(api, test_case: ParityTestCase) -> ParityResult:
 
 
 def run_all_tests(
-    api, test_cases: list[ParityTestCase], verbose: bool = False
+    apis: dict[str, Any],
+    test_cases: list[ParityTestCase],
+    verbose: bool = False,
 ) -> list[ParityResult]:
     """Run all parity tests."""
     results = []
 
     for test_case in test_cases:
-        result = run_parity_test(api, test_case)
+        result = run_parity_test(apis, test_case)
         results.append(result)
 
         if verbose:
@@ -393,7 +396,7 @@ def print_summary(results: list[ParityResult]):
 
     if failed == 0:
         print("✅ All parity tests passed!")
-        print("   FastAPI responses will match library results.")
+        print("   Service, root, compatibility, and JSON transports agree.")
     else:
         print("❌ Parity issues found:")
         for result in results:
@@ -405,7 +408,7 @@ def print_summary(results: list[ParityResult]):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Test API parity between library and FastAPI (V3 preparation)"
+        description="Test maintained Python facade and JSON transport parity"
     )
     parser.add_argument("--function", "-f", help="Test specific function only")
     parser.add_argument(
@@ -420,8 +423,7 @@ def main():
         generate_test_cases_file()
         return 0
 
-    # Load API
-    api = load_api()
+    apis = load_apis()
 
     # Get test cases
     custom_cases = load_custom_test_cases()
@@ -435,13 +437,13 @@ def main():
             return 2
 
     print("=" * 60)
-    print("API Parity Tests (V3 Preparation)")
+    print("Canonical Python and JSON Transport Parity")
     print("=" * 60)
     print(f"Testing {len(test_cases)} cases...")
     print()
 
     # Run tests
-    results = run_all_tests(api, test_cases, args.verbose)
+    results = run_all_tests(apis, test_cases, args.verbose)
 
     # Print summary
     print_summary(results)

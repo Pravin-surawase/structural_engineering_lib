@@ -36,6 +36,8 @@ def test_documented_beam_request_and_response_path(client: TestClient):
     assert envelope["success"] is True
     design = envelope["data"]
     assert design["success"] is True
+    assert design["result_envelope"]["engineering_status"] == "PASS"
+    assert design["effective_depth_basis"]["source"] == "DERIVED"
     assert design["flexure"]["ast_required"] > 0
     assert 0 <= design["utilization_ratio"] <= 1
 
@@ -65,5 +67,7 @@ def test_public_guides_retain_the_maintained_contract_language():
     assert '"width": 300' in api_levels
     assert "`.is_safe()`" not in api_levels
     assert 'design = payload["data"]' in rest_reference
+    assert "It is not an engineering PASS" in rest_reference
+    assert "structural-problem/v1" in rest_reference
     assert "result['flexure']" not in rest_reference
     assert '"version": "0.1.0"' not in rest_reference

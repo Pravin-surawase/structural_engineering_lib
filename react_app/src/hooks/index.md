@@ -12,7 +12,7 @@
 | [useBatchDesign.ts](useBatchDesign.ts) | BatchProgress, BatchResult, BatchStatus, BatchDesignState, useBatchDesign | 554 |
 | [useBeamGeometry.ts](useBeamGeometry.ts) | Point3D, RebarSegment, RebarPath, StirrupLoop, Beam3DGeometry (+4) | 180 |
 | [useCSVImport.ts](useCSVImport.ts) | ImportedBeam, BeamDesignPayload, DesignedBeam, useCSVFileImport, useCSVTextImport (+2) | 509 |
-| [useDesignWebSocket.ts](useDesignWebSocket.ts) | ConnectionStatus, WebSocketState, requiresCanonicalHttp, normalizeWebSocketDesignResult, useDesignWebSocket | 259 |
+| [useDesignWebSocket.ts](useDesignWebSocket.ts) | ConnectionStatus, WebSocketState, requiresCanonicalHttp, normalizeWebSocketDesignResult, useDesignWebSocket | 290 |
 | [useExport.ts](useExport.ts) | ExportBeamParams, ExportReportParams, useExportBBS, useExportDXF, useExportReport (+3) | 202 |
 | [useGeometryAdvanced.ts](useGeometryAdvanced.ts) | Point3D, BuildingBeamInput, BuildingBeamResult, BuildingGeometryResponse, CrossSectionRequest (+4) | 172 |
 | [useInsights.ts](useInsights.ts) | BeamResult, StoryStats, DashboardData, CheckDetail, CodeChecksResult (+10) | 346 |

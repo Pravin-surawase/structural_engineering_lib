@@ -55,7 +55,10 @@ async def validate_beam_workflow(request: WorkflowValidateRequest):
     if not get_settings().workflow_runner_enabled:
         return _runner_disabled()
 
-    from structural_lib.services.workflow_catalog import get_workflow_catalog
+    from structural_lib.services.workflow_catalog import (
+        get_workflow_catalog,
+        get_workflow_input_defaults,
+    )
     from structural_lib.services.workflow_runner import (
         WorkflowDefinitionError,
         WorkflowInputError,
@@ -66,11 +69,7 @@ async def validate_beam_workflow(request: WorkflowValidateRequest):
     try:
         definition = validate_workflow_definition(request.definition.model_dump())
         capability = get_workflow_catalog().capabilities[0]
-        defaults = {
-            field.transport_name: field.default
-            for field in capability.fields
-            if field.default is not None
-        }
+        defaults = get_workflow_input_defaults(capability)
         inputs = {**defaults, **request.inputs}
         validate_example_input(capability, inputs)
     except (WorkflowDefinitionError, WorkflowInputError, ValueError) as exc:

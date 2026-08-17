@@ -172,6 +172,10 @@ from structural_lib.services.multi_objective_optimizer import (  # noqa: F401
     ParetoOptimizationResult,
     optimize_pareto_front,
 )
+from structural_lib.services.project_beam import (  # noqa: F401
+    EffectiveDepthBasisV1,
+    EffectiveDepthResolutionV1,
+)
 from structural_lib.services.slab_api import (  # noqa: F401
     CompleteOneWaySlabDesignResult,
     ContinuousOneWaySlabDesignResult,
@@ -259,6 +263,8 @@ __all__ = [
     "CheckCodeReport",
     # Core design functions
     "design_beam_is456",
+    "EffectiveDepthBasisV1",
+    "EffectiveDepthResolutionV1",
     "design_flanged_beam_is456",
     "FlangedBeamDesignResult",
     "check_beam_is456",

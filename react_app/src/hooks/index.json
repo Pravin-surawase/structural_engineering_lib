@@ -94,7 +94,7 @@
     {
       "name": "useDesignWebSocket.ts",
       "type": "react-hook",
-      "size_lines": 259,
+      "size_lines": 290,
       "last_updated": "2026-08-17",
       "exports": [
         "ConnectionStatus",
@@ -104,7 +104,7 @@
         "useDesignWebSocket"
       ],
       "description": "useDesignWebSocket Hook",
-      "content_hash": "f93a3ee9540a"
+      "content_hash": "19cf9c2ff987"
     },
     {
       "name": "useExport.ts",
@@ -252,5 +252,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "96bd948e6b4f812c"
+  "content_hash": "ed8802ee4b7086f3"
 }

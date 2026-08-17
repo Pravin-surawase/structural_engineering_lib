@@ -15,10 +15,26 @@ from copy import deepcopy
 from dataclasses import dataclass
 from typing import Any, cast
 
+from structural_lib.core.result_contract import (
+    CalculationStatus,
+    EngineeringStatus,
+    IntakeStatus,
+    StructuralIssueV1,
+    StructuralResultEnvelopeV2,
+)
 from structural_lib.services.beam_api import design_beam_is456
+from structural_lib.services.evidence import (
+    build_beam_evidence_envelope,
+    build_beam_result_envelope,
+)
+from structural_lib.services.project_beam import (
+    EffectiveDepthBasisV1,
+    resolve_effective_depth_v1,
+)
 from structural_lib.services.workflow_catalog import (
     JsonScalar,
     get_workflow_catalog,
+    get_workflow_input_defaults,
     validate_example_input,
 )
 
@@ -43,7 +59,7 @@ __all__ = [
 ]
 
 WORKFLOW_SCHEMA_VERSION = "1.0"
-WORKFLOW_VERSION = "1.0.0"
+WORKFLOW_VERSION = "1.1.0"
 WORKFLOW_ID = "is456.beam.review"
 MAX_STEPS = 5
 MAX_DEFINITION_BYTES = 16_384
@@ -135,7 +151,7 @@ def get_beam_workflow_template_document() -> dict[str, Any]:
             {
                 "source": "design.result",
                 "target": "review.evidence",
-                "unit_contract": "fastapi.BeamDesignResponse.v1",
+                "unit_contract": "fastapi.BeamDesignResponse.v2",
             },
         ],
         "limits": {
@@ -215,11 +231,7 @@ def _normalize_inputs(values: Mapping[str, Any]) -> dict[str, float]:
     if len(_json_bytes(values)) > MAX_INPUT_BYTES:
         raise WorkflowInputError("Workflow input exceeds byte quota")
     capability = get_workflow_catalog().capabilities[0]
-    defaults = {
-        field.transport_name: field.default
-        for field in capability.fields
-        if field.default is not None
-    }
+    defaults = get_workflow_input_defaults(capability)
     merged = {**defaults, **dict(values)}
     try:
         validate_example_input(
@@ -389,25 +401,78 @@ class WorkflowRunner:
             return self._stopped(run_id, stop, steps)
         steps.append({"step_id": "validate", "status": "COMPLETED"})
 
-        effective_depth = inputs["depth"] - 43.0
-        if effective_depth <= 0:
-            raise WorkflowInputError("depth is too small for the approved beam adapter")
+        try:
+            depth_resolution = resolve_effective_depth_v1(
+                D_mm=inputs["depth"],
+                d_mm=inputs.get("effective_depth"),
+                effective_depth_basis=(
+                    None
+                    if inputs.get("effective_depth") is not None
+                    else EffectiveDepthBasisV1(
+                        clear_cover_mm=inputs["clear_cover"],
+                        stirrup_diameter_mm=inputs["stirrup_dia_mm"],
+                        tension_bar_diameter_mm=inputs["main_bar_dia_mm"],
+                    )
+                ),
+            )
+        except ValueError as exc:
+            raise WorkflowInputError(str(exc)) from exc
+        effective_depth = depth_resolution.d_mm
+        d_dash_mm = (
+            inputs["depth"] - effective_depth
+            if depth_resolution.source == "DERIVED"
+            else inputs["clear_cover"]
+            + inputs["stirrup_dia_mm"]
+            + inputs["main_bar_dia_mm"] / 2.0
+        )
         design = design_beam_is456(
             units="IS456",
             b_mm=inputs["width"],
             D_mm=inputs["depth"],
-            d_mm=effective_depth,
+            d_mm=inputs.get("effective_depth"),
+            effective_depth_basis=depth_resolution.effective_depth_basis,
             mu_knm=inputs["moment"],
             vu_kn=inputs["shear"],
             fck_nmm2=inputs["fck"],
             fy_nmm2=inputs["fy"],
-            d_dash_mm=43.0,
+            d_dash_mm=d_dash_mm,
+        )
+        evidence = build_beam_evidence_envelope(
+            inputs={
+                "units": "IS456",
+                "case_id": "CASE-1",
+                "mu_knm": inputs["moment"],
+                "vu_kn": inputs["shear"],
+                "b_mm": inputs["width"],
+                "D_mm": inputs["depth"],
+                "d_mm": effective_depth,
+                "fck_nmm2": inputs["fck"],
+                "fy_nmm2": inputs["fy"],
+                "d_dash_mm": d_dash_mm,
+                "asv_mm2": 100.0,
+            },
+            is_ok=design.is_ok,
+            governing_utilization=design.governing_utilization,
+            utilizations=getattr(design, "utilizations", {}),
+        )
+        result_envelope = deepcopy(
+            getattr(design, "result_envelope", None)
+            or build_beam_result_envelope(
+                is_ok=design.is_ok,
+                evidence=evidence,
+            ).to_dict()
         )
         design_payload = {
             "is_ok": bool(design.is_ok),
             "governing_utilization": float(design.governing_utilization),
             "ast_required_mm2": float(design.flexure.Ast_required),
             "remarks": str(design.remarks),
+            "effective_depth_used": effective_depth,
+            "effective_depth_basis": deepcopy(
+                getattr(design, "effective_depth_resolution", None)
+                or depth_resolution.to_dict()
+            ),
+            "result_envelope": result_envelope,
         }
         steps.append(
             {
@@ -435,6 +500,7 @@ class WorkflowRunner:
                 "steps": steps,
                 "export": None,
                 "audit": {"review_stop": "UNSAFE_RESULT"},
+                "result_envelope": result_envelope,
             }
         if not review_acknowledged:
             steps.append(
@@ -451,6 +517,7 @@ class WorkflowRunner:
                 "steps": steps,
                 "export": None,
                 "audit": {"review_stop": "USER_REVIEW_ACKNOWLEDGEMENT_REQUIRED"},
+                "result_envelope": result_envelope,
             }
 
         steps.append({"step_id": "review", "status": "ACKNOWLEDGED"})
@@ -460,6 +527,7 @@ class WorkflowRunner:
             "qualified_review_required": True,
             "inputs": inputs,
             "result": design_payload,
+            "result_envelope": result_envelope,
         }
         steps.append({"step_id": "export", "status": "COMPLETED"})
         return {
@@ -469,12 +537,25 @@ class WorkflowRunner:
             "steps": steps,
             "export": export,
             "audit": {"review_stop": None},
+            "result_envelope": result_envelope,
         }
 
     @staticmethod
     def _stopped(
         run_id: str, reason: str, steps: list[dict[str, Any]]
     ) -> dict[str, Any]:
+        result_envelope = StructuralResultEnvelopeV2(
+            intake_status=IntakeStatus.ACCEPTED,
+            calculation_status=CalculationStatus.NOT_CALCULATED,
+            engineering_status=EngineeringStatus.UNEVALUATED,
+            issues=(
+                StructuralIssueV1(
+                    code=f"WORKFLOW_{reason}",
+                    path="$.workflow",
+                    message=f"Workflow stopped before calculation: {reason}.",
+                ),
+            ),
+        ).to_dict()
         return {
             "run_id": run_id,
             "workflow_id": WORKFLOW_ID,
@@ -482,4 +563,5 @@ class WorkflowRunner:
             "steps": steps,
             "export": None,
             "audit": {"review_stop": reason},
+            "result_envelope": result_envelope,
         }

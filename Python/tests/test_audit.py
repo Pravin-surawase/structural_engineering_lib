@@ -8,6 +8,7 @@ import json
 import tempfile
 from pathlib import Path
 
+import structural_lib
 from structural_lib.services.audit import (
     AuditLogEntry,
     AuditTrail,
@@ -192,6 +193,7 @@ class TestAuditTrail:
         assert trail.project_id == "PROJECT-001"
         assert len(trail.entries) == 0
         assert trail.created_at
+        assert trail.library_version == structural_lib.__version__
 
     def test_log_design(self) -> None:
         """Test logging a design calculation."""
@@ -343,6 +345,7 @@ class TestCalculationCertificate:
         assert cert["project_id"] == "PROJECT-001"
         assert cert["beam_id"] == "B1"
         assert cert["engineer"] == "J. Smith"
+        assert cert["library_version"] == structural_lib.__version__
         assert "hash" in cert
         assert cert["hash"]["algorithm"] == "sha256"
 

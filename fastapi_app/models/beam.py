@@ -9,6 +9,8 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from fastapi_app.models.response import StructuralResultEnvelopeResponse
+
 # =============================================================================
 # Design Request Models
 # =============================================================================
@@ -129,7 +131,10 @@ class BeamDesignRequest(BaseModel):
     effective_depth: float | None = Field(
         default=None,
         gt=0,
-        description="Effective depth d (mm). Auto-calculated if not provided.",
+        description=(
+            "Explicit effective depth d (mm). When omitted, it is derived from "
+            "clear_cover, stirrup_dia_mm, and main_bar_dia_mm."
+        ),
     )
     stirrup_dia_mm: float = Field(
         default=8.0,
@@ -400,6 +405,24 @@ class EvidenceEnvelopeResponse(BaseModel):
     qualified_review_requirement: str
 
 
+class EffectiveDepthBasisResponse(BaseModel):
+    """Complete geometry basis used to derive beam effective depth."""
+
+    clear_cover_mm: float
+    stirrup_diameter_mm: float
+    tension_bar_diameter_mm: float
+
+
+class EffectiveDepthResolutionResponse(BaseModel):
+    """Explicit record of the effective depth consumed by the calculation."""
+
+    contract_version: Literal["effective-depth-basis/v1"]
+    source: Literal["EXPLICIT", "DERIVED"]
+    D_mm: float
+    d_mm: float
+    effective_depth_basis: EffectiveDepthBasisResponse | None = None
+
+
 class FlexureResult(BaseModel):
     """Flexure design result."""
 
@@ -483,7 +506,12 @@ class BeamDesignResponse(BaseModel):
     """Response model for beam design calculation."""
 
     # Status
-    success: bool = Field(description="Whether design is valid")
+    success: bool = Field(
+        description=(
+            "Compatibility engineering boolean; use result_envelope for the "
+            "canonical PASS, FAIL, or HOLD disposition"
+        )
+    )
     message: str = Field(description="Summary message")
 
     # Design results
@@ -502,6 +530,8 @@ class BeamDesignResponse(BaseModel):
         default=None,
         description="Actual effective depth used in calculation (mm)",
     )
+    effective_depth_basis: EffectiveDepthResolutionResponse
+    result_envelope: StructuralResultEnvelopeResponse
 
     # Serviceability results (populated when include_serviceability=True)
     deflection_check: DeflectionCheckResult | None = None

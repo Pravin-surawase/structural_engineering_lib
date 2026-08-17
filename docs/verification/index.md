@@ -4,11 +4,13 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-17
-**Files:** 175
+**Files:** 178
 
 ## Config Files
 
 - [INDIA-0-git-handoff.json](INDIA-0-git-handoff.json)
+- [a1-canonical-transport-git-handoff-receipt.json](a1-canonical-transport-git-handoff-receipt.json)
+- [a1-canonical-transport-git-handoff-source-evidence.json](a1-canonical-transport-git-handoff-source-evidence.json)
 - [alpha-0231a2-exact-candidate-review-receipt.json](alpha-0231a2-exact-candidate-review-receipt.json)
 - [exact-candidate-review-receipt-template.json](exact-candidate-review-receipt-template.json)
 - [footing-release-inclusion.json](footing-release-inclusion.json)
@@ -127,6 +129,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
 | [README.md](README.md) | Verification | Benchmark examples and verification packs for validating lib | 64 |
+| [a1-canonical-truth-transport-evidence.md](a1-canonical-truth-transport-evidence.md) |  | selection only. This record is not A2 or G1 acceptance, grav | 136 |
 | [alpha-0231-local-prepublication-rehearsal.md](alpha-0231-local-prepublication-rehearsal.md) | v0.23.1a1 Local Prepublication Rehearsal | not a CI artifact identity, tag, or publication approval | A | 72 |
 | [alpha-0231a2-local-prepublication-rehearsal.md](alpha-0231a2-local-prepublication-rehearsal.md) | v0.23.1a2 Local Prepublication Rehearsal | check receipt, exact-head Weekly Verification, independent r | 98 |
 | [bundled-sample-boq-evidence.md](bundled-sample-boq-evidence.md) |  | This is the reproducible software record for the bundled ETA | 58 |

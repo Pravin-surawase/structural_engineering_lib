@@ -11,13 +11,28 @@ export interface BeamDesignRequest {
   shear?: number;
   fck: number;
   fy: number;
+  clear_cover?: number;
+  stirrup_dia_mm?: number;
+  main_bar_dia_mm?: number;
+  effective_depth?: number;
 }
 
 export interface APIResponse<T> {
-  success: boolean;
+  success: true;
   data: T;
-  error?: string | Record<string, unknown>;
   clause_refs?: Record<string, string>;
+}
+
+export interface ProblemResponse {
+  success: false;
+  data: null;
+  error: {
+    schema_version: 'structural-problem/v1';
+    code: string;
+    message: string;
+    details?: unknown;
+    request_id?: string;
+  };
 }
 
 export interface FlexureResult {
@@ -49,6 +64,27 @@ export interface BeamDesignResponse {
   ast_total: number;
   asc_total: number;
   utilization_ratio: number;
+  effective_depth_used?: number;
+  effective_depth_basis: {
+    contract_version: 'effective-depth-basis/v1';
+    source: 'EXPLICIT' | 'DERIVED';
+    D_mm: number;
+    d_mm: number;
+    effective_depth_basis: Record<string, number> | null;
+  };
+  result_envelope: {
+    schema_version: 'structural-result-envelope/v2';
+    intake_status: 'VALID' | 'PARTIAL' | 'BLOCKED';
+    calculation_status: 'NOT_EVALUATED' | 'COMPLETED' | 'ERROR';
+    engineering_status: 'NOT_EVALUATED' | 'PASS' | 'FAIL' | 'HOLD';
+    review_status: 'QUALIFIED_REVIEW_REQUIRED' | 'REVIEWED_ACCEPTED' | 'REVIEWED_REJECTED';
+    qualified_review_required: boolean;
+    freshness_status: 'CURRENT' | 'STALE';
+    serviceability_escalation: string | null;
+    overall_status: 'BLOCKED' | 'ERROR' | 'NOT_EVALUATED' | 'STALE' | 'PASS' | 'FAIL' | 'HOLD';
+    result_identity: Record<string, string | null> | null;
+    issues: Array<{ code: string; path: string; message: string }>;
+  };
   warnings?: string[];
 }
 
@@ -101,14 +137,13 @@ export class StructuralDesignClient {
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(`Design failed: ${JSON.stringify(error.error) || response.status}`);
+      const problem = await response.json() as ProblemResponse;
+      throw new Error(
+        `Design failed: ${problem.error?.code ?? response.status}: ${problem.error?.message ?? 'Request failed'}`,
+      );
     }
 
     const envelope = await response.json() as APIResponse<BeamDesignResponse>;
-    if (!envelope.success) {
-      throw new Error(`Design failed: ${JSON.stringify(envelope.error)}`);
-    }
     return envelope.data;
   }
 
@@ -127,13 +162,13 @@ export class StructuralDesignClient {
     });
 
     if (!response.ok) {
-      throw new Error(`Geometry calculation failed: ${response.status}`);
+      const problem = await response.json() as ProblemResponse;
+      throw new Error(
+        `Geometry calculation failed: ${problem.error?.code ?? response.status}: ${problem.error?.message ?? 'Request failed'}`,
+      );
     }
 
     const envelope = await response.json() as APIResponse<GeometryResult>;
-    if (!envelope.success) {
-      throw new Error(`Geometry generation failed: ${JSON.stringify(envelope.error)}`);
-    }
     return envelope.data;
   }
 }

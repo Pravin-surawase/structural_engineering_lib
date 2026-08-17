@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-17",
-  "file_count": 175,
+  "file_count": 178,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -31,6 +31,44 @@
       "title": "Verification",
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards. | Document | Description |",
       "content_hash": "4763d5ab8b48"
+    },
+    {
+      "name": "a1-canonical-transport-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "96ceab57aeee"
+    },
+    {
+      "name": "a1-canonical-transport-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "30a6677ffa41"
+    },
+    {
+      "name": "a1-canonical-truth-transport-evidence.md",
+      "type": "documentation",
+      "size_lines": 136,
+      "last_updated": "2026-08-17",
+      "description": "selection only. This record is not A2 or G1 acceptance, gravity authorization, release authorization, hosted-check evidence, professional approval, or a claim",
+      "content_hash": "c9e2ecadd232"
     },
     {
       "name": "alpha-0231-local-prepublication-rehearsal.md",
@@ -2244,5 +2282,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "a831e6e97c527509"
+  "content_hash": "ec0b5d34fc0dfa52"
 }

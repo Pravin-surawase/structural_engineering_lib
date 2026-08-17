@@ -57,6 +57,10 @@ def test_manifest_preserves_units_limitations_and_review_boundary() -> None:
     assert tool["review_boundary"]["qualified_review_required"] is True
     assert tool["execution"]["enabled_by_default"] is False
 
+    properties = tool["input_schema"]["properties"]
+    assert "default" not in properties["effective_depth"]
+    assert properties["clear_cover"]["default"] == 25.0
+
 
 def test_manifest_schema_and_catalogue_validate_the_same_input() -> None:
     schema = get_tool_manifest_document()["tools"][0]["input_schema"]

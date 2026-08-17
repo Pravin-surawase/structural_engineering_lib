@@ -2313,6 +2313,113 @@ release, React, dependency, or broad final-gate work.
 - Generator/gates, hosted CI wait, merge closeout, and total wall time are
   reported by the final closeout observation.
 
+## 2026-08-17 — Session: A1 Canonical Truth and Transport Contract
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/a1-canonical-transport-contract` from clean base
+`09861d3d5ef758abbe0f7c40b8b49b2f90510765`; isolated linked-worktree runtime
+diagnosis reported `source_bound=true`.
+
+**Focus:** Complete M2 packet A1 only: canonical result/error/unit/identity/depth,
+serialization, API-surface classification, and transport adapters for the
+reference beam journey and applicable maintained consumers. Do not begin A2,
+gravity, live ETABS, Excel write-back, optimization, solver, or release work.
+
+### Summary
+
+- Added a shared fail-closed v2 structural-result envelope, stable issues and
+  replay identity, a strict JSON normalizer, and a shared explicit/derived beam
+  effective-depth contract.
+- Migrated the root/service/compatibility Python APIs, CLI, workflow, FastAPI,
+  OpenAPI, React catalogue/workflow/trust surfaces, and checked-in development
+  clients without creating a second calculation authority.
+- Separated HTTP transport acceptance from engineering PASS/FAIL/HOLD and
+  normalized maintained JSON 4xx/5xx declarations and framework exceptions to
+  `structural-problem/v1`.
+- Added source-versus-wheel version authority, claim/artifact classification,
+  readiness truth collection, and a reproducible source-free wheel plus
+  exact-head FastAPI import-binding verifier.
+- Kept the compatibility WebSocket on explicit HOLD when its old payload lacks
+  the canonical result envelope. No gravity or A2 implementation was started.
+
+### Issues encountered
+
+- Source imports could be labelled by unrelated stale installed distribution
+  metadata.
+- Effective-depth arithmetic and required-field defaults were duplicated in
+  workflow/transport consumers, including a hidden `D - 43` calculation.
+- The parity script compared the same implementation twice and used shallow
+  serialization while describing FastAPI parity.
+- Readiness omitted semantic parity/quality/input-validation outcomes and could
+  report false green.
+- HTTP error declarations and framework 404 responses did not share one
+  versioned problem contract.
+- React accepted allowed status words without proving that the axes, aggregate,
+  evidence, and replay identity agreed.
+- The workflow catalogue, UI, drafts, generated clients, and tool manifest
+  retained older schema versions or incomplete depth/status fields.
+- Evidence normalization assumed deflection and crack-width parameter mappings
+  always appeared together.
+- Several large or multi-file edit attempts failed before changing their target,
+  and one accidental signature edit was caught by syntax compilation.
+
+### Root causes and resolutions
+
+- Confirmed root cause: version lookup treated installed metadata as universal
+  authority. Resolution: source checkout uses the adjacent package project and
+  an installed wheel uses its distribution metadata. Proof selected: unit
+  identities plus source-free artifact import receipt.
+- Confirmed root cause: adapters owned calculation-bearing depth/default logic.
+  Resolution: one resolver requires explicit `d_mm` or a complete cover/stirrup/
+  bar basis; required workflow inputs are never filled from display defaults.
+  Proof selected: exact `d=443 mm` PASS/FAIL boundary across Python, CLI,
+  workflow, REST, React contract, and wheel probes.
+- Confirmed root cause: parity did not cross distinct facades and the generic
+  serializer did not reject non-finite JSON. Resolution: compare root, service,
+  and compatibility facades through one recursive strict JSON round trip; HTTP
+  parity remains owned by an actual FastAPI route test.
+- Confirmed root cause: readiness collected file-presence proxies instead of
+  semantic contract outcomes. Resolution: required API parity can fail the
+  report, while advisory quality/input debt produces PARTIAL rather than PASS.
+- Confirmed root cause: local route handlers and Starlette's framework 404 path
+  used different error shapes. Resolution: one problem builder, global OpenAPI
+  models, and shared request/HTTP/domain/generic handlers.
+- Confirmed root cause: React treated each status field independently and trust
+  presentation fell back to old booleans. Resolution: recompute overall status,
+  validate review/depth/identity structure, require current matching evidence,
+  and HOLD missing/contradictory WebSocket payloads.
+- Confirmed root cause: maintained consumer schemas and generated templates
+  were not bound to the new authority. Resolution: version/migrate catalogue,
+  workflow, draft, OpenAPI, clients, tool manifest, and claim-surface matrix in
+  the same packet; optional explicit depth has no hidden tool default.
+- Confirmed root cause: evidence normalization coupled two independently
+  optional serviceability mappings. Resolution: retain each supplied mapping
+  independently and require at least one only when serviceability is enabled.
+- ⚠️ TERMINAL ISSUE: one delete/add mega-patch and one malformed multi-file
+  patch did not apply -> inspected exact ranges and used bounded hunks.
+- ⚠️ TERMINAL ISSUE: an accidental broad signature edit failed targeted
+  `py_compile` -> restored the exact public signature before any test batch.
+
+### Validation through content freeze
+
+- Startup/source: clean isolated base, no operation marker, exact equality with
+  `origin/main`, and `source_bound=true`.
+- Implementation diagnostics only: changed Python files compile; exact direct,
+  workflow, and live FastAPI boundary vector agrees at `d=443 mm`, engineering
+  `FAIL`, utilization approximately `1.0194422195`; live invalid request and
+  framework 404 use the canonical problem envelope; all 82 HTTP operations
+  declared the selected problem responses at inspection time.
+- Post-freeze focused tests, deterministic projections, source-free wheel/app
+  binding, quick gate, hooks, immutable audit, and hosted checks remain the
+  frozen next steps; no broad suite was run during implementation.
+
+### Efficiency receipt through content freeze
+
+- Unchanged-suite reruns: 0.
+- Quick/full Python/full repository/React/FastAPI suite runs: 0.
+- Maintained index refreshes: 0; the one final refresh remains pending.
+
 ## 2026-08-16 — Session: Documentation Frontmatter Contract Repair
 
 **Agent:** Codex (`doc-master`, sole writer)
@@ -2401,3 +2508,156 @@ release, React, dependency, or broad-gate work.
   seconds.
 - Generator/gates, hosted CI wait, merge closeout, and total wall time are
   reported by the final closeout observation.
+
+## 2026-08-17 — Session: A1 Canonical Transport Closeout Continuation
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/a1-canonical-transport-contract`.
+
+**Focus:** Continue the immediately preceding full A1 session record through
+the repository closeout sequence. All scope, non-goals, issues, root causes,
+and frozen validation selections in that A1 record remain authoritative.
+
+### Issues encountered
+
+- The first append used a repeated historical closeout sentence as context and
+  placed the full A1 record before the final older session entry, so it was not
+  the physically newest entry consumed by session validation.
+- The first index-tool discovery guessed a nonexistent
+  `scripts/generate_folder_indexes.py` path and stopped without writing.
+- The first focused-test tool call lost its result because the output wrapper
+  referenced an undefined JavaScript variable; process inspection confirmed no
+  pytest process remained before the batch was relaunched once.
+- The focused React command exited before collection because this isolated
+  worktree had no ignored `react_app/node_modules` installation, while the
+  pinned dependency tree existed only in the primary checkout.
+- The first post-freeze TypeScript build found one imprecise draft-parser cast
+  and two older auto-design test fixtures without the required v2 result
+  envelope; lint itself passed.
+- The changed-file quality batch then rejected two missing optional-dependency
+  metadata names, one unused validation assignment, three import-order
+  findings, three formatting findings, and a guessed obsolete frontmatter
+  checker path. This was the second material rejection, so A1 returned to a
+  bounded replan before further validation.
+- The first candidate commit was blocked before creation: mypy found two depth
+  narrowing errors and one evidence tuple type error; the API-doc hook required
+  explicit `api.EffectiveDepth*` tokens; and the scripts hook found the new
+  artifact verifier absent from `automation-map.json`.
+- After those repairs, the maintained contract suite found that public
+  `design_beam_is456` had made `d_mm` omittable, contrary to its frozen
+  signature. A further bounded replan was required before another candidate.
+- A grouped command changed directory to `Python` for mypy, so two following
+  root-relative pytest commands did not start.
+- All other A1 material issues are recorded in the full
+  `A1 Canonical Truth and Transport Contract` entry above.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the session log contains repeated closeout phrases, so
+  a patch with only generic trailing context matched an earlier occurrence.
+  Resolution: add this bounded continuation after the uniquely identified
+  final documentation-frontmatter timing block. Proof: this continuation is
+  now the last session entry and contains both mandatory sections.
+- Confirmed root cause: the maintained index entrypoint is
+  `./run.sh generate indexes`, backed by `scripts/generate_enhanced_index.py`;
+  the guessed plural filename was never a maintained path. Resolution: discover
+  the entrypoint with targeted `rg` and use the documented targeted-folder
+  command for the final batch. ⚠️ TERMINAL ISSUE: guessed a nonexistent index
+  script -> discovered and used the maintained `run.sh` entrypoint.
+- Confirmed root cause: the command runner was correct, but the surrounding
+  result-rendering snippet referenced `rest` without defining it. Resolution:
+  inspect live processes first, confirm no test remained active, then launch
+  the one evidence-producing batch with a minimal output wrapper.
+- Confirmed root cause: linked Git worktrees do not share ignored dependency
+  directories. Resolution: run the pinned lockfile install in this worktree;
+  `react_app/.gitignore` keeps `node_modules` outside Git. Proof selected: the
+  failed command is rerun only after the dependency repair, followed by the
+  frozen TypeScript/lint checks. ⚠️ TERMINAL ISSUE: Vitest was absent in the
+  isolated lane -> install the exact lockfile dependencies locally and rerun
+  the failed React evidence only.
+- Confirmed root cause: `Object.fromEntries` loses the exact required-key shape,
+  and the two fixtures predated the canonical result carrier. Resolution: build
+  the already-validated draft object with explicit required keys and give both
+  fixtures a typed canonical PASS envelope. Proof: 7 impacted tests, lint, and
+  the production build pass.
+- Confirmed root cause: the library-version migration removed
+  `importlib.metadata` names that `show_versions()` still needs for optional
+  dependency reporting; the depth resolver assignment survived after its value
+  stopped being consumed; and changed import/test files had not received their
+  normal formatter pass. Resolution: restore only the dependency lookup names,
+  retain the resolver call as validation without assignment, and apply the
+  maintained formatters to the reported files. The maintained frontmatter
+  entrypoint is `scripts/check_docs.py --frontmatter`, not the guessed deleted
+  path. Proof: 108 impact-mapped tests, all 3 parity vectors, Ruff, Black,
+  frontmatter with zero invalid records, and all 1,363 links pass.
+- Confirmed root cause: optional `d_mm` was not explicitly narrowed in the
+  deflection helper, branch-specific tuple inference was too narrow, the API
+  checker recognizes `api.Symbol` tokens rather than prose mentions, and every
+  maintained script requires one automation-map task. Resolution: add the
+  explicit `None` guard and tuple annotation, document both public types with
+  recognized names, and register the verifier. Proof: mypy passes 236 source
+  files, API documentation passes, and automation coverage is 111/111.
+- Confirmed root cause: adding `=None` changed the frozen public signature even
+  though the intended contract change concerned accepted depth methods, not
+  keyword presence. Resolution: retain required `d_mm: float | None`; explicit
+  callers use a number, while derived-basis callers use `d_mm=None` plus the
+  complete basis. Proof: 42 affected tests, 18 frozen contract tests, all 3
+  parity vectors, generated signature registries, and the final source-free
+  wheel proof pass.
+- ⚠️ TERMINAL ISSUE: `cd Python` changed the directory for later commands in
+  the same shell block -> reran the two unstarted pytest commands from the
+  workspace root with `./scripts/python_runtime.sh`; both passed.
+- No additional calculation, API, transport, or engineering root cause was
+  discovered after the full A1 record.
+
+### Validation through the revised content freeze
+
+- The frozen focused Python/FastAPI selection passed. The focused React
+  selection passed with 10 files and 87 tests. The impact-mapped TypeScript
+  repair passed 7 tests, lint, and the production build.
+- The second-rejection replan passed its 108 impact-mapped tests, all 3 parity
+  vectors, changed-file Ruff/Black checks, frontmatter, and link validation.
+- API manifest, classification, beam tool manifest, and OpenAPI projections are
+  current; OpenAPI matches 82 endpoints and 362 schemas.
+- One external wheel passed source-free Python/CLI and exact-head FastAPI import
+  binding. All used effective depth 443 mm and engineering `FAIL`; installed
+  identity was version `0.23.1a2` with matching distribution metadata. The
+  final rebuilt wheel SHA-256 is
+  `2c943b2bbb61c8a2572ee7118b08b5650628ea25b83c2f87a71ed31afc359793`.
+- The first quick gate passed 10/10. The first hook attempt rejected the
+  candidate and created no commit. A revised-candidate quick gate, normal hooks,
+  immutable audit, and hosted checks remain after this final content freeze and
+  are not written back into the candidate.
+- No A2, gravity, live ETABS, Excel write-back, optimizer, solver, or release
+  work was started.
+
+## 2026-08-17 — Session: A1 Hosted FastAPI Repair
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/a1-canonical-transport-contract`.
+
+**Focus:** Repair only the single FastAPI validation failure on PR #822 at
+exact head `98927f1de4a1e8f60d1d9d66bf2e8a036c2a0dd2`.
+
+### Issues encountered
+
+- Hosted FastAPI Validation reported 449 passing tests and one failure in
+  `test_depth_boundary_matches_the_canonical_failure_vector`; the aggregate PR
+  Gate failed only because that required job failed.
+
+### Root causes and resolutions
+
+- Confirmed root cause: when A1 restored the frozen required `d_mm` keyword,
+  the production FastAPI adapter and the canonical Python test were updated to
+  pass `d_mm=None` with the complete derivation basis, but the direct comparison
+  call in this FastAPI test was missed. Resolution: add the same explicit
+  `d_mm=None` to that test fixture. Proof selected: run only the failed test,
+  then normal commit hooks and the automatically triggered hosted validation;
+  do not rerun unchanged local suites.
+
+### Boundary
+
+- No calculation, HTTP adapter, schema, React, A2, gravity, ETABS, Excel,
+  optimization, release, or professional-approval behavior is changed.

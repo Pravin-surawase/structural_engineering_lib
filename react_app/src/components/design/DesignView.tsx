@@ -90,7 +90,10 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
   const combinedCase = (inputs.torsion ?? 0) > 0 || Boolean(inputs.include_serviceability);
 
   const spanMeters = Number((length / 1000).toFixed(2));
-  const updateCatalogInput = (name: CatalogBeamTransportName, value: number) => {
+  const updateCatalogInput = (
+    name: CatalogBeamTransportName,
+    value: number | undefined,
+  ) => {
     actions.updateInputs({ [name]: value });
   };
   const updateCrackWidthInput = (
@@ -223,6 +226,10 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
               values={{
                 width: inputs.width,
                 depth: inputs.depth,
+                effective_depth: inputs.effective_depth,
+                clear_cover: inputs.clear_cover ?? 40,
+                stirrup_dia_mm: inputs.stirrup_dia_mm ?? 8,
+                main_bar_dia_mm: inputs.main_bar_dia_mm ?? 20,
                 moment: inputs.moment,
                 shear: inputs.shear ?? 0,
                 fck: inputs.fck,

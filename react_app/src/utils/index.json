@@ -50,7 +50,7 @@
     {
       "name": "trustPresentation.ts",
       "type": "typescript",
-      "size_lines": 71,
+      "size_lines": 81,
       "last_updated": "2026-08-17",
       "exports": [
         "TrustStatus",
@@ -61,9 +61,9 @@
         "formatPercent",
         "formatSignedRatio"
       ],
-      "content_hash": "6dca6af2bf1a"
+      "content_hash": "154b6c361148"
     }
   ],
   "subfolders": [],
-  "content_hash": "e2a0b97c6a8803e6"
+  "content_hash": "fbf370a631fbe034"
 }

@@ -38,7 +38,7 @@
 | [column.py](column.py) | Column Design Router. | 0 | 13 | 764 |
 | [combined_footing.py](combined_footing.py) | FastAPI transport for the bounded symmetric combined-footing | 0 | 1 | 72 |
 | [deep_beam.py](deep_beam.py) | FastAPI transport for the bounded simply supported deep-beam | 0 | 1 | 133 |
-| [design.py](design.py) | Beam Design Router. | 0 | 10 | 1027 |
+| [design.py](design.py) | Beam Design Router. | 0 | 10 | 1083 |
 | [detailing.py](detailing.py) | Beam Detailing Router. | 0 | 4 | 412 |
 | [export.py](export.py) | Export Router — BBS, DXF, and Report exports. | 4 | 5 | 805 |
 | [flat_slab.py](flat_slab.py) | FastAPI transport for the bounded regular interior flat-slab | 0 | 1 | 154 |
@@ -55,4 +55,4 @@
 | [streaming.py](streaming.py) | Server-Sent Events (SSE) Router for Batch Processing. | 3 | 3 | 387 |
 | [wall.py](wall.py) | FastAPI transport for the bounded braced-wall service. | 0 | 1 | 117 |
 | [websocket.py](websocket.py) | WebSocket Router for Live Design Updates. | 3 | 3 | 428 |
-| [workflows.py](workflows.py) | Default-disabled transport for the one allowlisted beam work | 0 | 4 | 172 |
+| [workflows.py](workflows.py) | Default-disabled transport for the one allowlisted beam work | 0 | 4 | 171 |

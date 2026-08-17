@@ -28,9 +28,13 @@ Task: TASK-DATA-001
 from __future__ import annotations
 
 import json
+import math
+from collections.abc import Mapping
+from dataclasses import asdict, is_dataclass
 from datetime import datetime
+from enum import Enum
 from pathlib import Path
-from typing import TypeVar
+from typing import Any, TypeVar
 
 from pydantic import BaseModel
 
@@ -44,6 +48,7 @@ from structural_lib.core.models import (
 )
 
 __all__ = [
+    "to_transport_value",
     "save_geometry",
     "load_geometry",
     "save_forces",
@@ -59,6 +64,28 @@ __all__ = [
 
 # Type variable for generic save/load
 T = TypeVar("T", bound=BaseModel)
+
+
+def to_transport_value(value: Any) -> Any:
+    """Normalize one value to the canonical JSON transport representation."""
+
+    if isinstance(value, Enum):
+        return to_transport_value(value.value)
+    if isinstance(value, BaseModel):
+        return to_transport_value(value.model_dump())
+    if is_dataclass(value) and not isinstance(value, type):
+        return to_transport_value(asdict(value))
+    if isinstance(value, Mapping):
+        return {str(key): to_transport_value(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [to_transport_value(item) for item in value]
+    if isinstance(value, float) and not math.isfinite(value):
+        raise ValueError("Canonical JSON transport does not allow NaN or infinity.")
+    if value is None or isinstance(value, (str, int, float, bool)):
+        return value
+    if hasattr(value, "to_dict"):
+        return to_transport_value(value.to_dict())
+    raise TypeError(f"Unsupported canonical transport value: {type(value).__name__}")
 
 
 # =============================================================================

@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-17",
-  "file_count": 20,
+  "file_count": 21,
   "files": [
     {
       "name": "__init__.py",
@@ -80,7 +80,7 @@
     {
       "name": "data_types.py",
       "type": "python",
-      "size_lines": 2141,
+      "size_lines": 2143,
       "last_updated": "2026-08-17",
       "description": "Module:       types",
       "classes": [
@@ -150,7 +150,7 @@
           "description": "Critical point on BMD/SFD diagram (max, min, zero crossing)."
         }
       ],
-      "content_hash": "1111a300d796"
+      "content_hash": "f8bc22a88b8b"
     },
     {
       "name": "deprecation.py",
@@ -848,17 +848,17 @@
     {
       "name": "result_contract.py",
       "type": "python",
-      "size_lines": 158,
+      "size_lines": 266,
       "last_updated": "2026-08-17",
-      "description": "Shared, fail-closed structural result status contract.",
+      "description": "Canonical, fail-closed structural result and issue contract.",
       "classes": [
         {
           "name": "IntakeStatus",
-          "description": "Whether the complete calculation-bearing input was accepted."
+          "description": "Whether all calculation-bearing input was accounted and accepted."
         },
         {
           "name": "CalculationStatus",
-          "description": "Whether a calculation was evaluated successfully."
+          "description": "Whether the declared calculation was evaluated successfully."
         },
         {
           "name": "EngineeringStatus",
@@ -866,15 +866,33 @@
         },
         {
           "name": "ReviewStatus",
-          "description": "Professional review boundary shared by every structural result."
+          "description": "Qualified-review state kept separate from software calculation status."
+        },
+        {
+          "name": "FreshnessStatus",
+          "description": "Whether the result still matches the inputs and calculation identity."
         },
         {
           "name": "OverallStatus",
-          "description": "Deterministic aggregate of the orthogonal status axes."
+          "description": "Deterministic fail-closed aggregate of the calculation-bearing axes."
         },
         {
-          "name": "StructuralResultEnvelopeV1",
-          "description": "Versioned status envelope reusable across structural element results.",
+          "name": "StructuralIssueV1",
+          "description": "Stable machine issue with an exact path and human explanation.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "ResultIdentityV1",
+          "description": "Minimum replay identity carried by a canonical structural result.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "StructuralResultEnvelopeV2",
+          "description": "Versioned status, issue, review, and replay-identity envelope.",
           "public_methods": [
             "overall_status",
             "to_dict"
@@ -884,25 +902,29 @@
       "functions": [
         {
           "name": "derive_overall_status",
-          "description": "Derive a fail-closed overall status from explicit orthogonal state.",
+          "description": "Derive the only permitted aggregate from explicit orthogonal state.",
           "params": [
             "intake_status",
             "calculation_status",
-            "engineering_status"
+            "engineering_status",
+            "freshness_status"
           ]
         },
         {
           "name": "adapt_legacy_result_status",
-          "description": "Translate explicit legacy axes while mapping every missing axis to HOLD.",
+          "description": "Translate explicit legacy axes while mapping missing truth to HOLD.",
           "params": [
             "payload"
           ]
         }
       ],
       "constants": [
-        "RESULT_ENVELOPE_SCHEMA_VERSION"
+        "RESULT_ENVELOPE_SCHEMA_VERSION",
+        "_INTAKE_ALIASES",
+        "_CALCULATION_ALIASES",
+        "_ENGINEERING_ALIASES"
       ],
-      "content_hash": "7a2e108adabb"
+      "content_hash": "f150c5ca4f32"
     },
     {
       "name": "source_identity.py",
@@ -1091,6 +1113,43 @@
         }
       ],
       "content_hash": "114bd96ff3ea"
+    },
+    {
+      "name": "version.py",
+      "type": "python",
+      "size_lines": 123,
+      "last_updated": "2026-08-17",
+      "description": "Runtime package-version identity without source/installation ambiguity.",
+      "classes": [
+        {
+          "name": "RuntimeVersionIdentityV1",
+          "description": "Identity of the code imported by the current interpreter.",
+          "public_methods": [
+            "to_dict"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "get_runtime_version_identity",
+          "description": "Return the authoritative version and comparison metadata for this import.",
+          "params": [
+            "package_origin"
+          ]
+        },
+        {
+          "name": "get_runtime_version",
+          "description": "Return the version authoritative for the imported code.",
+          "params": [
+            "package_origin"
+          ]
+        }
+      ],
+      "constants": [
+        "RUNTIME_VERSION_IDENTITY_SCHEMA_VERSION",
+        "_DISTRIBUTION_NAME"
+      ],
+      "content_hash": "2b3fecd53741"
     }
   ],
   "subfolders": [],
@@ -1109,5 +1168,5 @@
     "LSection",
     "CodeRegistry"
   ],
-  "content_hash": "f6cd370ee6e566ac"
+  "content_hash": "880cc2505671a6db"
 }

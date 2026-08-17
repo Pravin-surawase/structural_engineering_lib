@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
+import type { BeamDesignResponse } from '../../api/client';
 import { useAutoDesign } from '../../hooks/useAutoDesign';
 
 // Mock the API client
@@ -26,6 +27,38 @@ vi.mock('../../store/designStore', () => ({
 
 import { designBeam } from '../../api/client';
 
+function canonicalPassResult(): BeamDesignResponse {
+  return {
+    success: true,
+    message: 'ok',
+    flexure: {
+      ast_required: 500,
+      ast_min: 200,
+      ast_max: 3000,
+      xu: 50,
+      xu_max: 200,
+      is_under_reinforced: true,
+      moment_capacity: 180,
+    },
+    ast_total: 500,
+    asc_total: 0,
+    utilization_ratio: 0.83,
+    result_envelope: {
+      schema_version: 'structural-result-envelope/v2',
+      intake_status: 'VALID',
+      calculation_status: 'COMPLETED',
+      engineering_status: 'PASS',
+      review_status: 'QUALIFIED_REVIEW_REQUIRED',
+      qualified_review_required: true,
+      freshness_status: 'CURRENT',
+      serviceability_escalation: null,
+      overall_status: 'PASS',
+      issues: [],
+      result_identity: null,
+    },
+  };
+}
+
 describe('useAutoDesign', () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -42,14 +75,7 @@ describe('useAutoDesign', () => {
   });
 
   it('triggers design after debounce when enabled', async () => {
-    const mockResponse = {
-      success: true,
-      message: 'ok',
-      flexure: { ast_required: 500, ast_min: 200, ast_max: 3000, xu: 50, xu_max: 200, is_under_reinforced: true, moment_capacity: 180 },
-      ast_total: 500,
-      asc_total: 0,
-      utilization_ratio: 0.83,
-    };
+    const mockResponse = canonicalPassResult();
     vi.mocked(designBeam).mockResolvedValue(mockResponse);
 
     renderHook(() => useAutoDesign(true));
@@ -77,14 +103,7 @@ describe('useAutoDesign', () => {
   });
 
   it('sets loading state during design', async () => {
-    vi.mocked(designBeam).mockResolvedValue({
-      success: true,
-      message: 'ok',
-      flexure: { ast_required: 500, ast_min: 200, ast_max: 3000, xu: 50, xu_max: 200, is_under_reinforced: true, moment_capacity: 180 },
-      ast_total: 500,
-      asc_total: 0,
-      utilization_ratio: 0.83,
-    });
+    vi.mocked(designBeam).mockResolvedValue(canonicalPassResult());
 
     renderHook(() => useAutoDesign(true));
 

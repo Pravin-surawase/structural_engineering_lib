@@ -4,7 +4,7 @@ This document describes the test taxonomy and structure for the structural_engin
 
 **Type:** Python Package
 **Last Updated:** 2026-08-17
-**Files:** 73
+**Files:** 74
 
 ## Documentation Files
 
@@ -19,13 +19,14 @@ This document describes the test taxonomy and structure for the structural_engin
 | [__init__.py](__init__.py) |  | 0 | 0 | 1 |
 | [conftest.py](conftest.py) | Pytest configuration and Hypothesis profiles for the test su | 0 | 6 | 131 |
 | [test_agent_governance_automation.py](test_agent_governance_automation.py) | Regression tests for agent-governance automation controls. | 0 | 20 | 541 |
-| [test_api_classification.py](test_api_classification.py) | Executable truth checks for the Alpha API classification reg | 0 | 3 | 55 |
+| [test_api_classification.py](test_api_classification.py) | Executable truth checks for the Alpha API classification reg | 0 | 4 | 105 |
 | [test_api_manifest_tools.py](test_api_manifest_tools.py) | Regression tests for the single canonical public API manifes | 0 | 5 | 134 |
 | [test_api_results.py](test_api_results.py) | Tests for API result dataclasses. | 3 | 0 | 394 |
 | [test_api_stability.py](test_api_stability.py) | EA-9: Wheel API stability tests. | 6 | 0 | 233 |
 | [test_api_surface_snapshot.py](test_api_surface_snapshot.py) | Snapshot regression tests — assert minimum API surface count | 5 | 0 | 122 |
 | [test_assertion_helpers.py](test_assertion_helpers.py) | Tests for the IS 456 test assertion helpers. | 3 | 0 | 82 |
-| [test_audit.py](test_audit.py) | Tests for audit module (TASK-278). | 6 | 0 | 468 |
+| [test_audit.py](test_audit.py) | Tests for audit module (TASK-278). | 6 | 0 | 471 |
+| [test_audit_readiness_truth.py](test_audit_readiness_truth.py) | Readiness must aggregate semantic truth instead of reporting | 0 | 3 | 83 |
 | [test_boq.py](test_boq.py) | Tests for the BOQ (Bill of Quantities) aggregation module. | 1 | 0 | 190 |
 | [test_branch_disposition.py](test_branch_disposition.py) | Outcome tests for the inspection-only branch disposition cla | 0 | 12 | 437 |
 | [test_bump_version_semantics.py](test_bump_version_semantics.py) | Regression coverage for candidate-version documentation sema | 0 | 1 | 66 |
@@ -43,21 +44,21 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_design_from_input.py](test_design_from_input.py) | Tests for design_from_input API function. | 1 | 0 | 142 |
 | [test_error_messages.py](test_error_messages.py) | Tests for error message templates. | 7 | 0 | 294 |
 | [test_etabs_import_integration.py](test_etabs_import_integration.py) | Integration tests for etabs_import Pydantic conversion funct | 4 | 4 | 330 |
-| [test_evidence.py](test_evidence.py) | Focused tests for the supported IS 456 beam evidence envelop | 0 | 8 | 219 |
+| [test_evidence.py](test_evidence.py) | Focused tests for the supported IS 456 beam evidence envelop | 0 | 9 | 237 |
 | [test_exception_hierarchy.py](test_exception_hierarchy.py) | Tests for exception hierarchy in errors module. | 4 | 0 | 278 |
 | [test_footing.py](test_footing.py) | Tests for IS 456 footing design — TASK-650/651/652. | 11 | 1 | 1801 |
 | [test_footing_api.py](test_footing_api.py) | Focused contract tests for Phase B1 isolated-footing orchest | 0 | 14 | 388 |
 | [test_footing_detailing.py](test_footing_detailing.py) | Outcome-focused tests for the bounded footing detailing slic | 0 | 11 | 238 |
 | [test_footing_load_transfer.py](test_footing_load_transfer.py) | Focused independent arithmetic checks for IS 456 Cl. 34.4 lo | 0 | 7 | 165 |
 | [test_function_quality_checker.py](test_function_quality_checker.py) | Focused regressions for the IS 456 function-quality checker. | 0 | 2 | 56 |
-| [test_generated_clients.py](test_generated_clients.py) | Contract checks for the checked-in basic generated clients. | 0 | 2 | 71 |
+| [test_generated_clients.py](test_generated_clients.py) | Contract checks for the checked-in basic generated clients. | 0 | 3 | 123 |
 | [test_git_guidance_semantics.py](test_git_guidance_semantics.py) | Semantic live-guidance discovery and coherence regressions. | 0 | 10 | 362 |
 | [test_git_handoff_receipt.py](test_git_handoff_receipt.py) | Regressions for the durable, fail-closed task-to-Git handoff | 0 | 20 | 429 |
 | [test_git_state.py](test_git_state.py) | Outcome tests for the read-only, worktree-aware Git state au | 0 | 20 | 682 |
 | [test_india_2_truth_hygiene_38_2.py](test_india_2_truth_hygiene_38_2.py) | INDIA-2 Clause 38.2 truth-hygiene acceptance tests. | 0 | 5 | 109 |
 | [test_indian_code_manifest.py](test_indian_code_manifest.py) | INDIA-0 truth-manifest and reporting contract tests. | 0 | 10 | 228 |
 | [test_inputs.py](test_inputs.py) | Tests for the inputs module (TASK-276: Input Flexibility). | 7 | 0 | 464 |
-| [test_install_preflight.py](test_install_preflight.py) | Installed-package preflight is source-independent and decisi | 0 | 1 | 27 |
+| [test_install_preflight.py](test_install_preflight.py) | Installed-package preflight is source-independent and decisi | 0 | 1 | 33 |
 | [test_is456_common.py](test_is456_common.py) | Tests for IS 456:2000 common modules - stress_blocks, reinfo | 15 | 0 | 854 |
 | [test_is456_constants.py](test_is456_constants.py) | Tests for IS 456:2000 named design constants. | 1 | 0 | 163 |
 | [test_model_picker.py](test_model_picker.py) | Tests for the deterministic low-token model picker. | 0 | 8 | 132 |
@@ -81,12 +82,12 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_testing_strategies.py](test_testing_strategies.py) | Tests for the testing_strategies module (TASK-279). | 12 | 0 | 681 |
 | [test_timing_regression.py](test_timing_regression.py) | Regression tests for Windows-compatible timing. | 0 | 1 | 86 |
 | [test_token_efficiency.py](test_token_efficiency.py) | Regression tests for repository-side token-efficiency contro | 0 | 5 | 83 |
-| [test_tool_manifest.py](test_tool_manifest.py) | Focused gates for the catalogue-derived beam tool manifest. | 0 | 5 | 101 |
+| [test_tool_manifest.py](test_tool_manifest.py) | Focused gates for the catalogue-derived beam tool manifest. | 0 | 5 | 105 |
 | [test_visualization_edge_cases.py](test_visualization_edge_cases.py) | Edge case tests for 3D visualization / geometry module (TASK | 12 | 0 | 757 |
 | [test_visualization_geometry_3d.py](test_visualization_geometry_3d.py) | Tests for visualization.geometry_3d module. | 10 | 0 | 765 |
 | [test_visualization_integration.py](test_visualization_integration.py) | Integration tests for visualization.geometry_3d with detaili | 2 | 0 | 246 |
 | [test_workflow_catalog.py](test_workflow_catalog.py) | Focused contract tests for the one-beam application workflow | 0 | 4 | 89 |
-| [test_workflow_runner.py](test_workflow_runner.py) | Bounded-runner tests for the approved beam workflow only. | 0 | 7 | 189 |
+| [test_workflow_runner.py](test_workflow_runner.py) | Bounded-runner tests for the approved beam workflow only. | 0 | 8 | 203 |
 
 ## Subfolders
 
@@ -96,8 +97,8 @@ This document describes the test taxonomy and structure for the structural_engin
 | [data/](data/) | 5 |  |
 | [fixtures/](fixtures/) | 11 |  |
 | [helpers/](helpers/) 📦 | 2 |  |
-| [integration/](integration/) 📦 | 54 |  |
+| [integration/](integration/) 📦 | 55 |  |
 | [performance/](performance/) 📦 | 3 |  |
 | [property/](property/) 📦 | 9 |  |
 | [regression/](regression/) 📦 | 11 |  |
-| [unit/](unit/) 📦 | 36 |  |
+| [unit/](unit/) 📦 | 37 |  |

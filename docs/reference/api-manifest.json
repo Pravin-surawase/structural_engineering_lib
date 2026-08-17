@@ -1,8 +1,8 @@
 {
-  "generated": "2026-08-16",
+  "generated": "2026-08-17",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 168,
+  "count": 170,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -82,7 +82,7 @@
     {
       "name": "ComplianceCaseResult",
       "kind": "class",
-      "signature": "(case_id: 'str', Mu_knm: 'float', Vu_kn: 'float', flexure: 'FlexureResult', shear: 'ShearResult', deflection: 'DeflectionResult | None' = None, crack_width: 'CrackWidthResult | None' = None, is_ok: 'bool' = False, governing_utilization: 'float' = 0.0, utilizations: 'dict[str, float]' = <factory>, failed_checks: 'list[str]' = <factory>, remarks: 'str' = '', clause_refs: 'dict[str, str]' = <factory>, Tu_knm: 'float' = 0.0, Me_knm: 'float | None' = None, Ve_kn: 'float | None' = None, torsion: 'TorsionResult | None' = None) -> None"
+      "signature": "(case_id: 'str', Mu_knm: 'float', Vu_kn: 'float', flexure: 'FlexureResult', shear: 'ShearResult', deflection: 'DeflectionResult | None' = None, crack_width: 'CrackWidthResult | None' = None, is_ok: 'bool' = False, governing_utilization: 'float' = 0.0, utilizations: 'dict[str, float]' = <factory>, failed_checks: 'list[str]' = <factory>, remarks: 'str' = '', clause_refs: 'dict[str, str]' = <factory>, Tu_knm: 'float' = 0.0, Me_knm: 'float | None' = None, Ve_kn: 'float | None' = None, torsion: 'TorsionResult | None' = None, effective_depth_resolution: 'dict[str, Any] | None' = None, result_envelope: 'dict[str, Any] | None' = None) -> None"
     },
     {
       "name": "ComplianceReport",
@@ -138,6 +138,16 @@
       "name": "ETABSForceRow",
       "kind": "class",
       "signature": "(story: 'str', beam_id: 'str', case_id: 'str', station: 'float', m3: 'float', v2: 'float', unique_name: 'str' = '', p: 'float' = 0.0) -> None"
+    },
+    {
+      "name": "EffectiveDepthBasisV1",
+      "kind": "class",
+      "signature": "(clear_cover_mm: 'float', stirrup_diameter_mm: 'float', tension_bar_diameter_mm: 'float') -> None"
+    },
+    {
+      "name": "EffectiveDepthResolutionV1",
+      "kind": "class",
+      "signature": "(d_mm: 'float', source: \"Literal['EXPLICIT', 'DERIVED']\", D_mm: 'float', effective_depth_basis: 'EffectiveDepthBasisV1 | None' = None) -> None"
     },
     {
       "name": "FlangedBeamDesignResult",
@@ -592,7 +602,7 @@
     {
       "name": "design_beam_is456",
       "kind": "function",
-      "signature": "(*, units: 'str', case_id: 'str' = 'CASE-1', mu_knm: 'float', vu_kn: 'float', b_mm: 'float', D_mm: 'float', d_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0, pt_percent: 'float | None' = None, ast_mm2_for_shear: 'float | None' = None, deflection_params: 'DeflectionParams | None' = None, crack_width_params: 'CrackWidthParams | None' = None, tu_knm: 'float' = 0.0, cover_mm: 'float | None' = None, stirrup_dia_mm: 'float' = 8.0) -> 'ComplianceCaseResult'"
+      "signature": "(*, units: 'str', case_id: 'str' = 'CASE-1', mu_knm: 'float', vu_kn: 'float', b_mm: 'float', D_mm: 'float', d_mm: 'float | None', fck_nmm2: 'float', fy_nmm2: 'float', d_dash_mm: 'float | None' = None, asv_mm2: 'float' = 100.0, pt_percent: 'float | None' = None, ast_mm2_for_shear: 'float | None' = None, deflection_params: 'DeflectionParams | None' = None, crack_width_params: 'CrackWidthParams | None' = None, tu_knm: 'float' = 0.0, cover_mm: 'float | None' = None, stirrup_dia_mm: 'float' = 8.0, effective_depth_basis: 'EffectiveDepthBasisV1 | None' = None) -> 'ComplianceCaseResult'"
     },
     {
       "name": "design_braced_wall_is456",

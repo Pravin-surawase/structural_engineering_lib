@@ -32,6 +32,11 @@ def test_every_facade_symbol_has_exactly_one_classification() -> None:
             in {"stable", "preview", "compatibility", "internal"}
             for record in surface["symbols"]
         )
+        assert all(
+            record["claim_disposition"]
+            in {"canonical", "advanced", "compatibility", "hold", "internal"}
+            for record in surface["symbols"]
+        )
 
 
 def test_alpha_registry_makes_no_stable_export_promise() -> None:
@@ -52,3 +57,48 @@ def test_public_looking_callable_leakage_is_explicitly_internal() -> None:
         for record in surface["symbols"]:
             if not record["declared_export"]:
                 assert record["classification"] == "internal"
+                assert record["claim_disposition"] == "internal"
+
+
+def test_canonical_task_api_is_capability_bound_and_artifact_scoped() -> None:
+    registry = classification.build_registry()
+
+    assert registry["schema_version"] == "2.0"
+    assert registry["claim_surface_matrix_schema_version"] == (
+        "claim-surface-matrix/v1"
+    )
+    assert "design_beam_is456" in registry["canonical_task_exports"]
+    assert registry["canonical_support_exports"] == [
+        "EffectiveDepthBasisV1",
+        "EffectiveDepthResolutionV1",
+    ]
+    assert registry["artifact_boundaries"]["not_in_wheel"] == [
+        "fastapi_app",
+        "react_app",
+        "clients",
+    ]
+    journey = registry["canonical_reference_journey"]
+    assert journey["task_id"] == "design_beam_is456"
+    assert journey["result_contract"] == "structural-result-envelope/v2"
+    assert {surface["artifact"] for surface in journey["surfaces"]} == {
+        "wheel",
+        "exact_head_application",
+    }
+    assert journey["compatibility_holds"] == [
+        {
+            "surface": "websocket_design",
+            "locator": "/ws/design/{session_id}",
+            "condition": "missing structural-result-envelope/v2",
+            "outcome": "HOLD",
+        }
+    ]
+    service = next(
+        surface
+        for surface in registry["surfaces"]
+        if surface["module"] == "structural_lib.services.api"
+    )
+    dispositions = {
+        record["name"]: record["claim_disposition"] for record in service["symbols"]
+    }
+    assert dispositions["design_beam_is456"] == "canonical"
+    assert dispositions["create_jobs_from_etabs_csv"] == "hold"

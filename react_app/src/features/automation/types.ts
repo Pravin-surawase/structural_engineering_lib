@@ -1,3 +1,4 @@
+import type { StructuralResultEnvelope } from '../../api/client';
 import type { CatalogBeamValues } from '../catalog/types';
 
 export interface WorkflowStepDefinition {
@@ -15,7 +16,7 @@ export interface WorkflowBinding {
 export interface WorkflowDefinition {
   schema_version: '1.0';
   workflow_id: 'is456.beam.review';
-  workflow_version: '1.0.0';
+  workflow_version: '1.1.0';
   title: string;
   capability_id: 'is456.beam.design';
   steps: WorkflowStepDefinition[];
@@ -54,13 +55,14 @@ export interface WorkflowRunResult {
   steps: WorkflowStepResult[];
   export: Record<string, unknown> | null;
   audit: { review_stop: string | null };
+  result_envelope: StructuralResultEnvelope;
   definition_hash: string;
   input_hash: string;
   idempotent_replay: boolean;
 }
 
 export interface WorkflowDraft {
-  schema_version: '1.0';
+  schema_version: '2.0';
   definition: WorkflowDefinition;
   inputs: CatalogBeamValues;
   review_acknowledged: boolean;

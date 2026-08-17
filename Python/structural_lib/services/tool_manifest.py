@@ -17,7 +17,7 @@ from structural_lib.services.workflow_catalog import (
 )
 
 MANIFEST_SCHEMA_VERSION = "1.0"
-MANIFEST_VERSION = "1.0.0"
+MANIFEST_VERSION = "1.1.0"
 _TOOL_NAME_PATTERN = re.compile(r"^[a-z][a-z0-9_]{0,63}$")
 
 
@@ -39,10 +39,11 @@ def _field_schema(field: Any) -> dict[str, Any]:
         "type": "number",
         "title": field.label,
         "description": f"{field.label} in {field.unit}.",
-        "default": field.default,
         "x-unit": field.unit,
         "x-semantic-ref": field.semantic_ref,
     }
+    if field.default is not None:
+        schema["default"] = field.default
     if field.minimum is not None:
         schema["minimum"] = field.minimum
     if field.maximum is not None:

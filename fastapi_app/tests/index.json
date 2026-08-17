@@ -120,7 +120,7 @@
     {
       "name": "test_beam_primary_route.py",
       "type": "python",
-      "size_lines": 311,
+      "size_lines": 385,
       "last_updated": "2026-08-17",
       "description": "Focused FastAPI contract tests for the primary IS 456 beam route.",
       "functions": [
@@ -198,13 +198,25 @@
           ]
         },
         {
+          "name": "test_depth_boundary_matches_the_canonical_failure_vector",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_explicit_effective_depth_is_not_combined_with_adapter_basis",
+          "params": [
+            "client"
+          ]
+        },
+        {
           "name": "test_separate_torsion_endpoint_contract_is_unchanged",
           "params": [
             "client"
           ]
         }
       ],
-      "content_hash": "3d15d2210c25"
+      "content_hash": "e2b5ebd63d6d"
     },
     {
       "name": "test_bundled_sample_evidence.py",
@@ -1042,7 +1054,7 @@
           ]
         }
       ],
-      "content_hash": "714d08462577"
+      "content_hash": "a9520374ede0"
     },
     {
       "name": "test_geometry_full.py",
@@ -1346,7 +1358,7 @@
           ]
         }
       ],
-      "content_hash": "e0b65c959cc9"
+      "content_hash": "592aac9e99a7"
     },
     {
       "name": "test_load.py",
@@ -1647,7 +1659,7 @@
     {
       "name": "test_public_documentation_contract.py",
       "type": "python",
-      "size_lines": 70,
+      "size_lines": 74,
       "last_updated": "2026-08-17",
       "description": "Executable contracts for the public REST documentation.",
       "functions": [
@@ -1673,7 +1685,7 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "c75296b85c55"
+      "content_hash": "3ccfb4ff4781"
     },
     {
       "name": "test_security.py",
@@ -1828,7 +1840,7 @@
     {
       "name": "test_streaming.py",
       "type": "python",
-      "size_lines": 282,
+      "size_lines": 284,
       "last_updated": "2026-08-17",
       "description": "Tests for SSE Streaming Endpoint.",
       "classes": [
@@ -1856,12 +1868,12 @@
           ]
         }
       ],
-      "content_hash": "49d432f36198"
+      "content_hash": "b780c545e01e"
     },
     {
       "name": "test_typed_response_contracts.py",
       "type": "python",
-      "size_lines": 72,
+      "size_lines": 107,
       "last_updated": "2026-08-17",
       "description": "OpenAPI and envelope contracts for the typed column and library-core routes.",
       "functions": [
@@ -1885,12 +1897,24 @@
           "params": [
             "client"
           ]
+        },
+        {
+          "name": "test_every_json_operation_declares_the_canonical_problem_contract",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_framework_404_uses_the_canonical_problem_contract",
+          "params": [
+            "client"
+          ]
         }
       ],
       "constants": [
         "_SUCCESS_RESPONSE_SCHEMAS"
       ],
-      "content_hash": "5d973d54a33b"
+      "content_hash": "e90125aa31cc"
     },
     {
       "name": "test_wall.py",
@@ -1994,5 +2018,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "e48ab151aabd6ce6"
+  "content_hash": "0bd1484e3596f54d"
 }

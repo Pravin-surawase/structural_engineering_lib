@@ -320,6 +320,72 @@ def collect_static_analysis_evidence(report: AuditReport) -> None:
         )
 
 
+def _diagnostic_summary(stdout: str, stderr: str) -> str:
+    """Return a compact, single-line explanation from a diagnostic command."""
+
+    lines = [
+        line.strip() for line in (stdout + "\n" + stderr).splitlines() if line.strip()
+    ]
+    if not lines:
+        return "No diagnostic output was produced."
+    return " | ".join(lines[-3:])[:600]
+
+
+def collect_contract_truth_evidence(report: AuditReport) -> None:
+    """Include semantic controls that previously sat outside readiness truth."""
+
+    api_parity = Path("scripts/test_api_parity.py")
+    if api_parity.exists():
+        code, stdout, stderr = run_script(str(api_parity))
+        passed = code == 0
+        report.add_evidence(
+            EvidenceItem(
+                category="ContractTruth",
+                name="Canonical API Semantic Parity",
+                status="PASS" if passed else "FAIL",
+                required=True,
+                source=str(api_parity),
+                details=(
+                    "Python and serialized API vectors agree."
+                    if passed
+                    else _diagnostic_summary(stdout, stderr)
+                ),
+            )
+        )
+
+    function_quality = Path("scripts/check_function_quality.py")
+    if function_quality.exists():
+        code, stdout, stderr = run_script(
+            str(function_quality), ["--summary", "--strict"]
+        )
+        passed = code == 0
+        report.add_evidence(
+            EvidenceItem(
+                category="ContractTruth",
+                name="Function Quality Diagnostic",
+                status="PASS" if passed else "WARN",
+                required=False,
+                source=str(function_quality),
+                details=_diagnostic_summary(stdout, stderr),
+            )
+        )
+
+    input_validation = Path("scripts/audit_input_validation.py")
+    if input_validation.exists():
+        code, stdout, stderr = run_script(str(input_validation))
+        passed = code == 0
+        report.add_evidence(
+            EvidenceItem(
+                category="ContractTruth",
+                name="Input Validation Diagnostic",
+                status="PASS" if passed else "WARN",
+                required=False,
+                source=str(input_validation),
+                details=_diagnostic_summary(stdout, stderr),
+            )
+        )
+
+
 def collect_governance_evidence(report: AuditReport) -> None:
     """Collect governance and documentation evidence."""
 
@@ -751,6 +817,7 @@ Examples:
     # Collect all evidence
     collect_testing_evidence(report)
     collect_static_analysis_evidence(report)
+    collect_contract_truth_evidence(report)
     collect_governance_evidence(report)
     collect_security_evidence(report)
     collect_change_control_evidence(report)

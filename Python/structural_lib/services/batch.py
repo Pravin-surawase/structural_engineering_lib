@@ -335,7 +335,7 @@ def _calculated_member(
             intake_status=ProjectBeamIntakeStatus.VALID,
             calculation_status=ProjectBeamCalculationStatus.ERROR,
             engineering_status=ProjectBeamEngineeringStatus.HOLD,
-            overall_status=ProjectBeamOverallStatus.HOLD,
+            overall_status=ProjectBeamOverallStatus.ERROR,
             issues=(issue,),
         )
 
@@ -415,7 +415,9 @@ def _summarize(
 
     if intake_status is ProjectBeamIntakeStatus.BLOCKED:
         overall_status = ProjectBeamOverallStatus.BLOCKED
-    elif calculation_status is ProjectBeamCalculationStatus.ERROR or held:
+    elif calculation_status is ProjectBeamCalculationStatus.ERROR:
+        overall_status = ProjectBeamOverallStatus.ERROR
+    elif held:
         overall_status = ProjectBeamOverallStatus.HOLD
     elif engineering_status is ProjectBeamEngineeringStatus.FAIL:
         overall_status = ProjectBeamOverallStatus.FAIL
