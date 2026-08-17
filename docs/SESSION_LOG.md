@@ -44,6 +44,10 @@ behavior or authorizing publication/professional use.
   contract, retained `design -> bbs/detail/dxf` compatibility or explicit
   deprecation, advertised-entry-point inventory, and exact-wheel CLI negatives.
   Packet H whole-building planning remains inactive.
+- A follow-up publication-readiness replay added Packet J rather than widening
+  Packet I: scheduled/tag full suites must bind the setup-python interpreter,
+  and pre-bump, technical-candidate, and authorized-publication modes must emit
+  different verdicts. No version bump or release action was authorized.
 
 ### Verification
 
@@ -71,6 +75,17 @@ behavior or authorizing publication/professional use.
   contradiction. Independent release reviewer initially rejected two plan
   gaps; both the CLI output/downstream contract and post-plan-merge base wording
   were corrected, and the focused follow-up returned ACCEPT before closeout.
+- Provisional `./run.sh release preflight 0.23.1a2`: 6,387 Python tests passed,
+  446 FastAPI tests passed, and the React build passed; it also reported no
+  candidate wheel and still printed `READY TO RELEASE`, so it is accepted only
+  as green pre-bump local health—not publication readiness.
+- Hosted Weekly Verification run `31988837003` at exact A-G merge
+  `fe4ab025...`: Docker, locked dependency, and clean-wheel jobs passed; the
+  full suite failed six governance/session tests because recursive repository
+  launchers could not find a project interpreter, and the summary failed.
+- Publication authorization checks for provisional `0.23.1a2` correctly
+  returned non-zero for TestPyPI, PyPI, and GitHub Release because decision,
+  version, tag, targets, owner, time, and exact review receipt remain unset.
 
 ### Issues encountered
 
@@ -86,6 +101,17 @@ behavior or authorizing publication/professional use.
   `beams` artifact to the strict service `members` envelope could silently break
   advertised `bbs`, `detail`, and `dxf` consumers, and that the handoff's exact
   `fe4ab025…` future base would become stale after this plan merges.
+- The scheduled full workflow and publish full-suite step do not export the
+  selected setup-python interpreter, although their tests can recursively call
+  `run.sh`/`python_runtime.sh`; the scheduled run failed six such tests.
+- Pre-bump preflight uses the same success label as publication readiness even
+  when it has no exact wheel and does not evaluate immutable review, hosted
+  receipts, or exact target authorization.
+- ⚠️ TERMINAL ISSUE: a targeted workflow search included an unmatched
+  `.github/workflows/*.yaml` zsh glob and stopped that compound command; running
+  `rg` directly on `.github/workflows` produced the intended evidence.
+- The first I-J handoff draft duplicated detailed-plan history and commands,
+  reached 200 lines, and failed the repository's 150-line brief gate.
 
 ### Root causes and resolutions
 
@@ -118,6 +144,26 @@ behavior or authorizing publication/professional use.
   Resolution: freeze the CLI output/downstream contract and treat `fe4ab025…`
   as the required A-G ancestor while binding Packet I to exact fetched
   `origin/main` after this reviewed plan merges.
+- Confirmed hosted-interpreter root cause: setup-python selects an executable
+  but creates neither the repository `.venv` nor `VIRTUAL_ENV`; the launcher is
+  intentionally fail-closed, and nightly/publish full suites omitted the
+  supported `STRUCTURAL_LIB_PYTHON` binding already used by PR control-plane
+  checks. Resolution in the plan: Packet J exports the exact
+  `command -v python` path for recursive full suites, preserves strict launcher
+  selection, adds workflow-contract tests, and requires a fresh manual Weekly
+  Verification pass on the immutable J head.
+- Confirmed preflight-verdict root cause: local pre-bump, exact-wheel technical,
+  and authorized publication states share one `errors == 0` success label;
+  missing wheel is only a warning and authorization is a separate command.
+  Resolution in the plan: Packet J introduces mode-specific verdicts and
+  reserves `READY_TO_PUBLISH` for exact wheel/UAT, review, hosted receipts, and
+  target authorization. Evidence: the green provisional preflight coexisted
+  with the reproduced CLI failure, failed hosted full run, and three rejected
+  authorization checks.
+- Confirmed brief-length root cause: the handoff repeated A-G history and full
+  command blocks already owned by the detailed plan. Resolution: retain exact
+  branches, I/J ownership, evidence, and stop rules while linking execution
+  details to the plan; the brief is 141 lines and the brief-length gate passes.
 
 ### Limitations and handoff
 
@@ -126,9 +172,10 @@ behavior or authorizing publication/professional use.
 - The one-storey replay is a synthetic component/load-path regression, not a
   building analysis, source acceptance, geotechnical verification, qualified
   review, code-compliant deliverable, or professional approval.
-- Next routine action: implement only Packet I from the exact fetched
-  post-plan-merge `origin/main`, with `fe4ab025…` as required ancestor. Keep
-  publication and Packet H held.
+- Next routine action: merge this plan, implement and merge Packet I from exact
+  fetched post-plan `origin/main`, then implement Packet J from exact post-I
+  `origin/main`. Run broad/exact-wheel/full hosted evidence at J, stop before a
+  version bump, and keep publication and Packet H held.
 
 ## 2026-08-17 — Session: LIB-PRO-002 B-G Cumulative Safety Integration
 

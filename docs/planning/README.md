@@ -33,8 +33,8 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
-| `next-session-brief.md` | 2026-08-17 | 📋 LIB-PRO-002-I CLI convergence is the exact next implementation boundary |
-| `pre-release-input-safety-and-professional-readiness-plan.md` | 2026-08-17 | 🚧 A-G merged; post-fix CLI gap keeps publication held through Packet I |
+| `next-session-brief.md` | 2026-08-17 | 📋 LIB-PRO-002-I CLI closure then J release-signal convergence are the exact next sequence |
+| `pre-release-input-safety-and-professional-readiness-plan.md` | 2026-08-17 | 🚧 A-G merged; CLI, hosted-interpreter, preflight-verdict, and authorization holds remain through I-J |
 | `is456-solid-slabs-master-plan.md` | 2026-08-10 | 📋 Master plan ready; implementation has not started |
 | `ui-experience-foundation-master-plan.md` | 2026-08-10 | ✅ Two-session P0-P15 workbench/capability program accepted |
 | `compact-modernization-plan.md` | 2026-08-09 | 📋 Ready after PR #676 |

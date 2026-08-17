@@ -12,7 +12,7 @@
       "last_updated": "2026-08-17",
       "title": "Planning",
       "description": "Internal planning documents and research notes. | Document | Purpose |",
-      "content_hash": "adcf8d6c4483"
+      "content_hash": "d73132ea428c"
     },
     {
       "name": "adoption-trust-surface-plan.md",
@@ -131,11 +131,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 98,
+      "size_lines": 142,
       "last_updated": "2026-08-17",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-17",
-      "content_hash": "68687706ebe5"
+      "content_hash": "0413e4cbd7d6"
     },
     {
       "name": "pre-release-checklist.md",
@@ -149,11 +149,11 @@
     {
       "name": "pre-release-input-safety-and-professional-readiness-plan.md",
       "type": "documentation",
-      "size_lines": 651,
+      "size_lines": 732,
       "last_updated": "2026-08-17",
       "title": "Pre-Release Input Safety and Professional Readiness Plan",
       "description": "fe4ab025419b834c6d0f840e9492c0604ae74201 after Packets A-G merged through PR #815",
-      "content_hash": "7182a9a01427"
+      "content_hash": "408a2d1c6bf2"
     },
     {
       "name": "professional-library-remediation-plan.md",
@@ -182,5 +182,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "b4daa2c979a3d3bf"
+  "content_hash": "82f07a057bbf0649"
 }

@@ -3,7 +3,7 @@
 **Task:** LIB-PRO-002
 **Type:** Decision
 **Audience:** Maintainers
-**Status:** In Progress — Post-Fix Re-Audit
+**Status:** In Progress — Packets I-J Planned
 **Created:** 2026-08-17
 **Last Updated:** 2026-08-17
 **Importance:** Critical
@@ -40,6 +40,18 @@ declared cases because it does not execute this CLI path. The current PyPI
 and non-executable batch example. Therefore the current source is much safer,
 but the advertised package surface is not yet publication-ready.
 
+A subsequent publication-readiness replay found two independent release-signal
+defects. The scheduled full verification at A-G merge `fe4ab025...` failed six
+governance/session tests because `actions/setup-python` installs an interpreter
+without creating the `.venv` or `VIRTUAL_ENV` contract required by
+`scripts/python_runtime.sh`; the workflow did not export the already-supported
+`STRUCTURAL_LIB_PYTHON` path. The provisional next-Alpha command
+`./run.sh release preflight 0.23.1a2` then passed 6,387 Python tests, 446 FastAPI
+tests, and the React build, yet printed `READY TO RELEASE` while also reporting
+that no exact wheel was supplied. It does not evaluate the separate
+authorization record, which remains `HOLD`, or the omitted CLI negative. Local
+pre-bump health is therefore green, but the release verdict is not.
+
 The decision is:
 
 - Hold every next public package publication until the Alpha safety gate in
@@ -48,8 +60,11 @@ The decision is:
 - Do not claim whole-building design, professional approval, codewide formula
   certification, or project fitness from the pilot.
 - Complete Packet I CLI convergence and expand exact-wheel UAT to every
-  advertised calculation entry point before expanding formulas, load cases,
-  structural systems, or UI capability.
+  advertised calculation entry point.
+- Complete Packet J release-signal convergence so scheduled/tag workflows use
+  the selected interpreter and preflight reports mode-accurate readiness.
+- Finish I-J before expanding formulas, load cases, structural systems, or UI
+  capability.
 - Preserve the completed `LIB-PRO-001` ledger. This is a new remediation
   program caused by new end-user workflow evidence, not a reopening or rewrite
   of the completed historical packet.
@@ -112,6 +127,8 @@ or partial improvement.
 | API inventory | 187 root exports and 168 service-facade exports are machine-classified; no callable leakage is accepted | **Improved substantially** |
 | Exact-wheel negative UAT | A clean temporary environment installed the current built wheel and passed all 19 declared cases | **Improved but incomplete**; CLI is absent |
 | Advertised `design` CLI | One malformed row was skipped; warning text contaminated stdout; process exited `0`; output reported one of one beams passed | **Still blocking** |
+| Scheduled full verification | Weekly run `31988837003` on `fe4ab025...` failed six launcher-dependent tests because the workflow did not export the selected setup-python executable | **Still blocking**; PR checks alone are insufficient |
+| Pre-bump release verdict | Provisional `0.23.1a2` local tests/build passed, but preflight printed `READY TO RELEASE` with no exact wheel and while authorization remained `HOLD` | **Still blocking**; verdict conflates preparation with publication |
 | Published PyPI `0.23.1a1` | [Published on 2026-08-11](https://pypi.org/project/structural-lib-is456/0.23.1a1/) before A-G; page still says pin `0.23.0`, and its batch example raises `AttributeError` against the installed wheel | **Known old artifact; not fixed retroactively** |
 | Whole-building workflow | No controlled model generates or reconciles the complete slab-to-foundation load path | **Still not implemented** |
 
@@ -149,7 +166,7 @@ checks, lateral loads, geotechnical verification, or professional approval.
 
 ## 3. Confirmed root-cause map
 
-The apparent list of many failures reduces to seven root causes. Fixing symptoms
+The apparent list of many failures reduces to nine root causes. Fixing symptoms
 independently would create more formats and more drift.
 
 | Root cause | Confirmed mechanism | Main-process consequence | Required correction |
@@ -161,6 +178,8 @@ independently would create more formats and more drift.
 | RC-5: result/review semantics are not one contract | PASS/FAIL/HOLD, calculation success, review status, errors, and slab wording vary by element | A consumer can confuse software completion with engineering acceptance or professional review | One result envelope with orthogonal intake, calculation, engineering, and review states |
 | RC-6: release truth tests happy paths, not the advertised product | Version surfaces, examples, export classifications, exact-wheel negative paths, and source identity are not one gate | Green CI can coexist with stale or unsafe published guidance | Machine-checked API inventory, executable documentation, negative UAT, and exact artifact evidence |
 | RC-7: advertised-entry-point inventory was incomplete | A-G covered service, imports, HTTP/SSE/React, and selected exact-wheel examples but did not bind `python -m structural_lib design` to the same acceptance matrix | A public CLI can retain the original row-loss/defaulting hazard while all declared A-G checks pass | Generate the advertised entry-point inventory from docs/CLI/API surfaces and require every calculation-bearing entry point to delegate to the canonical boundary or be explicitly held |
+| RC-8: workflow interpreter identity was implicit | Full scheduled/tag suites invoke tests that recursively call `run.sh`/`python_runtime.sh`, but `actions/setup-python` creates neither a repository `.venv` nor `VIRTUAL_ENV`; the affected workflows omit the supported `STRUCTURAL_LIB_PYTHON` binding | Exact source can pass PR checks while the broader scheduled or publication suite deterministically fails before exercising its intended controls | Export the exact `command -v python` path for every full-suite workflow step that can invoke repository launchers; retain fail-closed launcher behavior and enforce the workflow contract in tests |
+| RC-9: release modes share one verdict label | Pre-bump validation may have no wheel, exact review, hosted receipt, or authorization, yet zero local test errors prints `READY TO RELEASE` | A maintainer can mistake permission to prepare a candidate for permission to publish | Give pre-bump, exact-candidate, and publication modes distinct machine-readable verdicts; only the final mode may report publication readiness |
 
 ## 4. Outcome-changing issue register
 
@@ -194,6 +213,8 @@ Rows from G0 preserve the original defect wording; Section 2.3 and each packet's
 | CLI-01 | P0 | Advertised `python -m structural_lib design` bypasses the lossless import and strict project command; its CSV reader applies hidden cover/depth assumptions and skips malformed rows | `Python/structural_lib/__main__.py`, `services/excel_integration.py` | CLI delegates to the lossless ledger plus strict project command; every source row is accepted or blocked, hidden structural defaults are absent, and any blocked row makes the command non-zero with no PASS summary |
 | CLI-02 | P0 | The current `design` CLI writes a `beams` artifact consumed by `bbs`, `detail`, and `dxf`, while the strict project service returns a different `members` envelope; warnings also contaminate stdout | `Python/structural_lib/__main__.py` and downstream CLI commands | Freeze a versioned CLI output/compatibility contract; diagnostics use stderr; valid JSON remains machine-readable; blocked input emits no partial-success artifact; exact-wheel tests prove advertised downstream consumers or explicitly deprecate/hold them |
 | REL-UAT-02 | P0 | The 19-case matrix passes without executing the advertised design CLI, so it cannot detect CLI-01 | `services/release_uat.py`, packaged matrix, publish workflow | Exact-wheel UAT discovers all advertised calculation entry points and runs valid, malformed, mixed-validity, empty, and unknown-field CLI cases in a source-free environment |
+| REL-CI-01 | P0 | Weekly Verification run `31988837003` failed six full-suite tests at A-G merge `fe4ab025...`: repository subprocesses could not find a project interpreter because the workflow did not export `STRUCTURAL_LIB_PYTHON`; the publish workflow has the same full-suite environment gap | `.github/workflows/nightly.yml`, `.github/workflows/publish.yml`, `scripts/python_runtime.sh`, workflow-contract tests | Scheduled and tag-publication full suites inherit the exact setup-python executable through the supported environment contract; no `.venv` assumption is introduced; workflow-contract tests and a fresh hosted full run pass |
+| REL-PREFLIGHT-01 | P0 | Pre-bump `release preflight 0.23.1a2` printed `READY TO RELEASE` with no exact wheel while exact authorization remained `HOLD` and the CLI negative was outside UAT | `scripts/release.py`, release-script tests, release-preflight skill | Pre-bump success says only `READY_TO_PREPARE_CANDIDATE`; exact-wheel success says `CANDIDATE_TECHNICALLY_READY` plus explicit remaining holds; `READY_TO_PUBLISH` requires exact wheel/UAT, immutable review and hosted receipts, and exact target authorization |
 | PUBLISHED-01 | P0 | PyPI `0.23.1a1` predates A-G, displays the wrong exact pin, and advertises a batch example that fails against its own wheel | [live PyPI 0.23.1a1 page](https://pypi.org/project/structural-lib-is456/0.23.1a1/) and installed-wheel replay | Do not imply A-G fixed the old artifact; the next separately authorized version must publish the corrected executable description and pass exact-wheel examples before upload |
 | INSTALL-01 | P1 | Repository operation depends on the selected `.venv`, while beginner guidance does not provide one decisive preflight and repair path | setup docs/runtime guidance | One documented command reports interpreter, installed extras, package origin/version, and a clear install command without repository-only assumptions |
 | API-NAME-01 | P1 | The 168-symbol service facade still includes 28 functions with unit-ambiguous parameter names such as `b`, `d`, `fck`, `fy`, `cover`, or `span`; several are compatibility aliases mixed into recommended functions | installed-facade signature audit | Each symbol is classified as canonical explicit-unit, compatibility-only, or internal; recommended APIs use unit-bearing names and compatibility aliases have a removal/migration policy |
@@ -217,8 +238,9 @@ for another public Alpha:
    IMPORT-03, EMPTY-01, COLUMN-01, REVIEW-01, RESULT-01, and PROV-01 are
    accepted.
 2. REL-TRUTH-01, REL-EXAMPLE-01, REL-UAT-01, CLI-01, CLI-02, REL-UAT-02,
-   PUBLISHED-01, and CLAIM-01 are accepted against the exact candidate wheel in
-   a source-free environment.
+   REL-CI-01, REL-PREFLIGHT-01, PUBLISHED-01, and CLAIM-01 are accepted against
+   the exact candidate wheel in a source-free environment and the matching
+   hosted source commit.
 3. The candidate describes only its bounded component capabilities. A missing
    whole-building workflow is an explicit limitation, not an implied feature.
 4. Focused, quick, cumulative Python/FastAPI/React, packaging, protected-source,
@@ -227,8 +249,12 @@ for another public Alpha:
    exact-head software/release-evidence review receipt are bound in release
    evidence. This Alpha review is not qualified structural-engineering review
    or professional approval.
-6. The repository owner separately authorizes the exact version/tag/package
-   publication. This plan is not that authorization.
+6. Pre-bump validation reports only readiness to prepare a candidate. Exact-
+   wheel validation reports technical candidate readiness and every remaining
+   hold. Neither state is publication readiness.
+7. The repository owner separately authorizes the exact version/tag/package
+   publication after immutable review. Only then may the final gate report
+   `READY_TO_PUBLISH`. This plan is not that authorization.
 
 ### 5.2 Stable or engineering-use gate
 
@@ -359,13 +385,25 @@ cannot omit cases.
 | Insufficient footing dowel length | VALID | COMPLETED | FAIL retained |
 | Safe supported calculation | VALID | COMPLETED | PASS plus qualified review required |
 
+Release-control cases are orthogonal to structural input cases and must also
+fail closed:
+
+| Release-control case | Required verdict | Required evidence |
+|---|---|---|
+| Pre-bump checks, no exact wheel | `READY_TO_PREPARE_CANDIDATE` | Valid version upgrade and green affected local suites; wheel/review/hosted/authorization explicitly pending |
+| Exact wheel, UAT or public example fails | `NOT_READY` | Exact failing artifact and case; no publication action |
+| Exact wheel passes, authorization absent or `HOLD` | `CANDIDATE_TECHNICALLY_READY` plus `PUBLICATION_HOLD` | Wheel/source identities, exact UAT, independent receipt, hosted receipts, and missing authorization fields |
+| Scheduled/full hosted interpreter unresolved | `NOT_READY` | Failing workflow/job and interpreter-resolution diagnostic |
+| Exact version/tag/targets authorized after immutable review | `READY_TO_PUBLISH` | Authorization JSON and SHA-bound review receipt match version, tag, targets, source/Python trees, reviewer, chronology, and hosted checks |
+
 ## 8. Dependency-ordered implementation packets
 
 WIP remains at most two, but these packets are implemented by one writer in
 dependency order wherever files overlap. Parallel agents are most useful for
 read-only audit and immutable review, not competing edits.
-Packet H was already reserved for the whole-building decision; the newly found
-Packet I is listed before H because it is now H's prerequisite.
+Packet H was already reserved for the whole-building decision. Newly found
+Packets I and J are listed before H because both are publication prerequisites;
+J also becomes H's immediate predecessor.
 
 ### G0 — Contract and claim freeze (`LIB-PRO-002-G0`, S)
 
@@ -530,19 +568,55 @@ source and exact-wheel environments. The old PyPI batch example is explicitly
 recorded as historical/broken; stdout JSON is parsed; valid `design` output is
 passed through every retained downstream command; and the next package
 description is executed from the candidate wheel.
-**Accept:** CLI-01, CLI-02, REL-UAT-02, and PUBLISHED-01 close. Re-run the complete
-Section 7 matrix, public examples, quick/full release gates, immutable review,
-and hosted checks on one exact candidate. Publication still requires separate
+**Accept:** CLI-01, CLI-02, REL-UAT-02, and PUBLISHED-01 close. Run the affected
+CLI/import/service/downstream tests together, the expanded matrix, quick gate,
+normal hooks, immutable review, and required hosted PR checks on the frozen
+Packet I head. Defer the next broad Python/FastAPI/React and full canonical run
+to the Packet J cumulative boundary. Publication still requires J and separate
 owner authorization.
 **Rollback:** retain publication HOLD; do not restore row skipping or hidden
 defaults for compatibility.
 
+### J — Release signal convergence (`LIB-PRO-002-J`, S)
+
+**State:** required after Packet I because live hosted and local preflight
+evidence currently disagree about publication readiness.
+
+**Depends on:** I.
+**Owns:** full-suite interpreter binding in scheduled/tag workflows,
+mode-specific release-preflight verdicts, workflow/release-script contract
+tests, and directly affected release guidance.
+**Deliver:** reuse the already-supported
+`STRUCTURAL_LIB_PYTHON="$(command -v python)"` contract in every hosted full-
+suite step that can recursively invoke repository launchers, including Weekly
+Verification and publish validation. Do not weaken `python_runtime.sh` to trust
+an arbitrary system interpreter. Split pre-bump, exact-wheel, and final
+publication states: pre-bump may report only `READY_TO_PREPARE_CANDIDATE`;
+exact-wheel success reports `CANDIDATE_TECHNICALLY_READY` and explicit holds;
+only exact authorization after immutable review can report
+`READY_TO_PUBLISH`.
+**Focused proof:** workflow-contract tests fail if a full suite lacks the
+interpreter binding; release-script tests cover every verdict/exit-code
+combination for missing wheel, failed UAT, absent review, `HOLD` authorization,
+wrong version/tag/target, and complete exact authorization. Run Weekly
+Verification by manual dispatch on the exact remote Packet J head and require
+the full Python, FastAPI, React, documentation, and summary jobs to pass.
+**Accept:** REL-CI-01 and REL-PREFLIGHT-01 close. After focused evidence freezes,
+run quick, hooks, broad Python, complete FastAPI/React, full canonical,
+packaging, protected-source, expanded exact-wheel UAT/public examples,
+immutable review, all required hosted PR checks, and the manually dispatched
+full workflow. Publication remains `HOLD` until an exact release candidate and
+separate owner authorization exist.
+**Rollback:** keep the strict launcher and publication HOLD; never recover a
+green label by bypassing interpreter identity, wheel evidence, review, hosted
+checks, or authorization.
+
 ### H — Whole-building workflow decision (`LIB-PRO-002-H`, planning only, L)
 
-**State:** not activated. Completing A-I does not activate this packet or
+**State:** not activated. Completing A-J does not activate this packet or
 authorize whole-building implementation.
 
-**Depends on:** I and separate owner activation.
+**Depends on:** J and separate owner activation.
 **Owns:** a new source-backed plan—not calculation code.
 **Deliver:** supported structural model, load provenance/takedown, combinations,
 equilibrium/load-path checks, element result aggregation, detailing/review
@@ -568,15 +642,18 @@ The fastest safe path is contract-first and evidence-last:
    for behavior the packet changes; avoid generic hardening.
 5. Run focused tests while editing. Run architecture/import checks when a layer
    boundary changes, then quick once on the frozen candidate.
-6. Reserve the next broad Python/FastAPI/React and full canonical gates for the
-   frozen Packet I cumulative repair unless an outcome-changing failure proves
-   repository-wide risk earlier.
+6. Packet I runs its focused/quick/hosted packet gates after content freeze.
+   Reserve the next broad Python/FastAPI/React and full canonical gates for the
+   frozen Packet J cumulative boundary unless an outcome-changing failure
+   proves repository-wide risk earlier.
 7. Use one candidate and at most one repair candidate. A material post-push
    defect creates a new reviewed candidate; status prose does not mutate the
    immutable head.
 8. Finish task, session, handoff, evidence, and pre-commit receipt first. Write
    affected indexes last, then validate without rewriting them.
-9. Independently review exact commit/tree and bind hosted checks before merge.
+9. Independently review each exact commit/tree and bind hosted checks before
+   merge. For J, manually dispatch Weekly Verification on the exact remote head
+   and bind that full-workflow receipt as well.
 10. Report total wall time including CI and closeout so later estimates improve.
 
 For a future publication, review the complete package candidate first. The
@@ -622,10 +699,11 @@ ledger and blocking rules are accepted.
 G0 has now frozen:
 
 - the bounded interpretation of the one-storey pilot;
-- seven root causes and an outcome-changing issue register;
+- nine root causes and an outcome-changing issue register;
 - canonical input, import-ledger, result, and compatibility contracts;
 - Alpha/stable/whole-building release boundaries;
-- a nine-packet dependency order and cumulative test cadence.
+- an implementation order through Packet J followed by the held Packet H
+  decision, with an implementation-first cumulative test cadence.
 
 Packet A merged through PR #814 and Packets B-G merged through PR #815 at
 `fe4ab025419b834c6d0f840e9492c0604ae74201`. The post-fix replay accepts the
@@ -634,17 +712,20 @@ one-storey arithmetic, but it rejects publication readiness because the public
 design CLI still skips malformed rows and the exact-wheel matrix omits that
 entry point.
 
-The exact next implementation packet is `LIB-PRO-002-I`. It converges the
-advertised CLI on the lossless/strict boundary, adds CLI cases to source-free
-exact-wheel UAT, and proves the candidate package description. This is a repair
-of acceptance scope, not evidence that A-G failed everywhere.
+The exact next implementation sequence is `LIB-PRO-002-I` followed by
+`LIB-PRO-002-J`. Packet I converges the advertised CLI on the lossless/strict
+boundary, adds CLI cases to source-free exact-wheel UAT, and proves the
+candidate package description. Packet J binds the selected interpreter in
+scheduled/tag full suites and makes release-preflight verdicts accurately name
+pre-bump, technical-candidate, and authorized-publication states. These repair
+acceptance and release-signal scope; they do not imply A-G failed everywhere.
 
 Packet H remains inactive because the owner has not separately activated a
-whole-building planning program. Even after Packet I acceptance, publication
+whole-building planning program. Even after Packets I-J are accepted, publication
 remains blocked until the owner separately authorizes the exact future version,
 tag, and publication targets recorded by
 `docs/verification/release-publication-authorization.json`.
 
-While Packet I is unresolved, the release state is:
+While Packets I-J are unresolved, the release state is:
 
-`NEXT_PUBLICATION = HOLD_ADVERTISED_CLI_AND_OWNER_AUTHORIZATION`
+`NEXT_PUBLICATION = HOLD_ADVERTISED_CLI_HOSTED_SIGNAL_AND_OWNER_AUTHORIZATION`
