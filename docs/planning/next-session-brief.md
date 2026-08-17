@@ -4,21 +4,23 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-17
-- Focus: exact technical-acceptance artifact steps 3 and 4 after LIB-PRO-002 I-J
-- Integrated predecessor: Packet I merged through PR #819 at `0ba2f397aec267bc74a31281f9158189fde2749d`
-- Packet J outcome: hosted full suites bind the setup-python interpreter; preflight verdicts are mode-accurate; generated indexes are content/date stable; session closeout has no hidden index writes; publication remains fail-closed
-- Git handoff receipt: `docs/verification/lib-pro-002-j-closeout-determinism-git-handoff-receipt.json`
-- Focused Packet J evidence: workflow/release/environment plus closeout/index determinism regressions pass
-- Release state: `PUBLICATION_HOLD`; no version bump, tag, upload, GitHub Release, or professional approval exists
+- Focus: exact v0.23.1a2 release-candidate hosted review, without tag or publication
+- Candidate branch: `codex/release-0231a2`; base `970a78c1931a3aa0439f487e6892a888bb113962`
+- Build anchor: `c71e4e27749a9da58fe0d689bc1a1ba8b396f14d`; Python tree `501fac1360f06ff2be4f6aea3b5e167f956ce840`
+- Exact wheel: `structural_lib_is456-0.23.1a2-py3-none-any.whl`; SHA-256 `5bca57ba12a35803715ad581420fa6ea5be32a0cd736fd42246b9a026584cc19`
+- Local evidence: 5,553 installed tests pass; 29/29 release UAT cases and 12/12 advertised commands pass
+- Evidence record: `docs/verification/alpha-0231a2-local-prepublication-rehearsal.md`
+- Git handoff receipt: `docs/verification/release-0231a2-preparation-git-handoff-receipt.json`
+- Release state: `CANDIDATE_TECHNICALLY_READY` locally and `PUBLICATION_HOLD`; tag, uploads, GitHub Release, and professional approval remain unauthorized
 - Whole-building workflow: Packet H remains inactive; component-only claims remain
-- Exact next action: perform release-preflight steps 3 and 4 only—build one temporary exact technical-acceptance wheel from synchronized `main`, then clean-install and verify that same artifact
+- Exact next action: freeze the final documentation-only descendant, push one release PR, run required PR checks and exact-head Weekly Verification, then obtain independent exact-candidate review
 <!-- HANDOFF:END -->
 
 | State | Boundary |
 |---|---|
-| **Current** | `v0.23.1a1` Alpha; Packets A-G and I-J correct current source, not the already-published old artifact |
-| **Next** | One temporary technical-acceptance wheel plus source-free clean-install/UAT evidence from unchanged synchronized `main` |
-| **Held** | Version bump, tag, TestPyPI/PyPI upload, GitHub Release, professional approval, Packet H, dependency work, and retained-lane cleanup |
+| **Current** | `v0.23.1a1` remains public; exact v0.23.1a2 source and wheel are locally prepared and verified |
+| **Next** | One release PR, required hosted checks, exact-head Weekly Verification, and independent review |
+| **Held** | TestPyPI/PyPI upload, tag, GitHub Release, professional approval, Packet H, dependency work, and retained-lane cleanup |
 
 ## Required Reading
 
@@ -47,46 +49,16 @@ present, or another candidate overlaps packaging, verification, indexes, or
 release guidance. Preserve unknown state; never reset, stash, clean, rebase, or
 delete it as recovery.
 
-## Step 3 — build the exact technical-acceptance artifact
+## Candidate evidence and next gate
 
-- Confirm Packet J's PR checks and exact-head Weekly Verification passed, and
-  verify synchronized `main` has the same accepted tree before building.
-- Use a new clean temporary output directory; do not reuse `Python/dist` or any
-  historical artifact.
-- Build exactly one wheel from unchanged synchronized `main` and record source
-  head, source tree, Python tree, filename, size, and SHA-256.
-- Verify wheel filename, METADATA version, contents, protected-source boundary,
-  advertised-entrypoint inventory, and source/library content identity.
-- Treat this as technical evidence for current source only. Because current
-  source still says `0.23.1a1`, the wheel must never replace or be confused with
-  the already-published `0.23.1a1` artifact.
-- Do not bump a version, write release notes, tag, upload, or authorize a target.
-
-## Step 4 — clean-install and verify the same artifact
-
-- Create a source-free temporary virtual environment and remove repository
-  `PYTHONPATH`/`VIRTUAL_ENV` inheritance.
-- Install the exact recorded wheel, then prove `structural_lib.__file__` comes
-  from that environment rather than the checkout.
-- Run expanded exact-wheel UAT and public examples, including all 29 declared
-  negative/positive cases and the 12-command advertised-entrypoint inventory.
-- Run the exact-wheel candidate check and preflight against the same path. The
-  expected successful technical verdict is `CANDIDATE_TECHNICALLY_READY` plus
-  `PUBLICATION_HOLD`, not `READY_TO_PUBLISH`.
-- Record the clean-install interpreter, imported version/origin, matrix hash,
-  case count, public-example result, wheel hash, and all remaining holds.
-- A failed or mismatched case is `NOT_READY`; do not repair by weakening the
-  launcher, UAT, artifact identity, review, hosted, or authorization controls.
-
-## Acceptance and stop rules
-
-Step 3 accepts only one exact, source-bound wheel with a recorded SHA-256 and
-no excluded/protected content. Step 4 accepts only source-free installation of
-that same hash with all entrypoint/UAT/public-example checks passing.
-
-Even after both steps pass, publication remains held. A later separately
-authorized release-preparation task must select and bump the next Alpha
-version, rebuild the final versioned artifact, repeat exact review and hosted
-gates, and obtain explicit target authorization. Do not publish, tag, create a
-GitHub Release, claim professional approval, activate Packet H, close work, or
-delete branches/worktrees in this technical-acceptance session.
+- Reuse the exact local rehearsal record; do not rebuild or rerun green local
+  suites while the Python tree remains `501fac1360f06ff2be4f6aea3b5e167f956ce840`.
+- Push the final candidate once and open one release PR against `main`.
+- Require PR Validation and manually dispatched Weekly Verification on the
+  same final head, followed by independent review of that exact head/tree.
+- If Python content changes, the wheel evidence expires. A documentation-only
+  repair may retain the wheel only after proving the Python tree is unchanged.
+- After review, add only the version-specific review receipt, authorization
+  JSON, and validator-permitted indexes. Do not pre-check publication approval.
+- Stop for direct owner authorization before any TestPyPI/PyPI upload, tag, or
+  GitHub Release. No current evidence grants professional approval.

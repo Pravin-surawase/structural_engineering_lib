@@ -81,7 +81,7 @@
       "size_lines": 66,
       "last_updated": "2026-08-17",
       "description": "StructLib is a pre-1.0 Alpha. No exported Python symbol currently carries a post-1.0 stable compatibility promise, and passing software tests do not imply",
-      "content_hash": "1790f69f98ed"
+      "content_hash": "05766f4516df"
     },
     {
       "name": "api.md",
@@ -89,7 +89,7 @@
       "size_lines": 4460,
       "last_updated": "2026-08-17",
       "description": "The public result dataclasses api.ComplianceCaseResult, api.ComplianceReport, and api.DesignAndDetailResult are Alpha-preview",
-      "content_hash": "36c6053042bf"
+      "content_hash": "2ffc0013e2fb"
     },
     {
       "name": "automation-catalog.md",
@@ -277,5 +277,5 @@
       "file_count": 1760
     }
   ],
-  "content_hash": "beffac6d8b9d81d9"
+  "content_hash": "7954147b530c7685"
 }

@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-17 — Packets I-J are software-complete; exact technical-acceptance artifact steps 3 and 4 are next, with publication still held
+**Updated:** 2026-08-17 — v0.23.1a2 is locally prepared and exact-wheel verified; hosted review and publication authorization remain held
 
 ---
 
@@ -127,21 +127,20 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-002-I | Converge the advertised `design` CLI on lossless/strict intake, freeze its JSON/downstream compatibility contract, and add every advertised calculation entry point to exact-wheel negative UAT | backend + tester + release | M | P0 | ✅ SOFTWARE COMPLETE — merged through PR #819; 150 focused tests prove strict whole-project blocking, retained `beams` compatibility, and expanded 29-case/12-command UAT contracts |
-| LIB-PRO-002-J | Bind hosted full suites to the selected Python interpreter, converge release verdicts, and remove cyclic closeout/index rewrites | ops + tester + release | S | P0 | ✅ SOFTWARE COMPLETE — full hosted suites inherit setup-python; only exact authorization can yield `READY_TO_PUBLISH`; index dates are content-stable and session closeout has no hidden index writes |
+| RELEASE-0231A2 | Prepare and review the exact v0.23.1a2 Alpha candidate without tagging or publishing | Main Agent + ops | M | P0 | 🔄 LOCAL CANDIDATE READY — source-bound wheel `5bca57ba…cc19`; 5,553 installed tests and 29/29 UAT pass; PR checks, Weekly Verification, independent review, exact receipt, and target authorization remain held |
 
 INDIA-2 remains administratively complete within its recorded accepted/held
-boundary. INDIA-3, dependency, release execution, further cleanup, and
-professional approval remain separately held.
+boundary. INDIA-3, dependency work, tag/publication execution, further cleanup,
+and professional approval remain separately held.
 
 `LIB-PRO-002-G0` was independently accepted and merged through PR #812 at
 `55104e11257937b0a42fb06f931a70b8484cef39`. Packet A was independently
 accepted and merged through PR #814 at
 `3986935ecb473c1f9d56dec44aeb4218d9192f84`; Packets B-G merged through PR #815
-at `fe4ab025419b834c6d0f840e9492c0604ae74201`. The next publication remains
-held through exact technical-acceptance steps 3 and 4, a later exact versioned
-release candidate, immutable review/hosted evidence, and a separate exact owner
-authorization.
+at `fe4ab025419b834c6d0f840e9492c0604ae74201`. Packets I-J are software-
+complete, and the exact v0.23.1a2 local artifact now passes installed-package
+and advertised-command UAT. Publication remains held through immutable
+review/hosted evidence and separate exact owner authorization.
 
 ## Up Next
 
@@ -182,6 +181,8 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| LIB-PRO-002-I | Converged the advertised `design` CLI on lossless/strict intake and expanded exact-wheel negative UAT | backend + tester + release | ✅ SOFTWARE COMPLETE — merged through PR #819; strict whole-project blocking, retained downstream compatibility, and 29-case/12-command UAT contracts pass |
+| LIB-PRO-002-J | Bound hosted full suites to the selected interpreter and converged release/closeout signals | ops + tester + release | ✅ SOFTWARE COMPLETE — mode-accurate release verdicts, content-stable indexes, and read-only closeout are merged through PR #820 |
 | MAINT-010-POST-INDIA2 | Refreshed generated truth, compacted session/task history without loss, archived superseded plans, completed review-only evolution, and removed cross-worktree timestamp and hidden-local-artifact index drift | Main Agent + governance | ✅ COMPLETE ON MERGE — deterministic affected-folder indexes, weekly read-only audit, immutable closeout freeze, health, audit, parity, focused governance, quick/full, hosted, and exact-tree gates recorded |
 | INDIA-2-CLOSEOUT | Reconciled the complete accepted/held evidence index, final truth, and cumulative validation without adding behavior | Main Agent + reviewer | ✅ COMPLETE ON MERGE — six bounded families accepted; pile-cap and raft remain `HELD / NOT_IMPLEMENTED`; broad Python and full 30/30 gate pass |
 | INDIA-2-FOUNDATION-RAFT-G0 | Audited one regular rectangular rigid-raft candidate, the conventional-method boundary, controlled-source inventory, and structural benchmark readiness | Main Agent + structural engineer | ⏸ HOLD — PR #805 merged as `d2885215`; no controlled IS 2950 source or accepted replayable structural benchmark; no calculation files created |

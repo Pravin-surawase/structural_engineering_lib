@@ -23,7 +23,7 @@ Current public release: v0.23.1a1 Alpha
 - [x] Owner authorizes preparation of v0.23.1a2 without tag or publication
 - [x] Base the release lane on synchronized `main` at `970a78c1931a3aa0439f487e6892a888bb113962`
 - [x] Run the canonical version preparation gate and update maintained release surfaces
-- [ ] Build and verify one exact v0.23.1a2 wheel from the frozen candidate
+- [x] Build and verify one exact v0.23.1a2 wheel from the frozen Python tree
 - [ ] Pass required PR checks, exact-head Weekly Verification, and independent candidate review
 - [ ] Record the exact review receipt and separate owner authorization for each publication target
 - [ ] Owner authorizes the v0.23.1a2 tag, production PyPI publication, and GitHub Release after exact CI evidence passes
@@ -32,6 +32,16 @@ Preparation authorization is not TestPyPI, PyPI, tag, or GitHub Release
 authorization. The publication checkbox above must remain open until the owner
 reviews the immutable candidate evidence and explicitly authorizes those exact
 targets.
+
+### v0.23.1a2 Local Candidate Evidence
+
+- Evidence: [v0.23.1a2 local rehearsal](../verification/alpha-0231a2-local-prepublication-rehearsal.md)
+- Build-anchor source: `c71e4e27749a9da58fe0d689bc1a1ba8b396f14d`
+- Python tree: `501fac1360f06ff2be4f6aea3b5e167f956ce840`
+- Wheel: 665,658 bytes, SHA-256 `5bca57ba12a35803715ad581420fa6ea5be32a0cd736fd42246b9a026584cc19`
+- Installed verification: 5,553 passed, 51 skipped, 2 deselected; installed CLI workflows green
+- Exact candidate UAT: 29/29 cases across 12/12 advertised commands
+- State: local candidate technically ready; hosted review and publication authorization remain held
 
 ### v0.23.1a1 Release Authorization
 

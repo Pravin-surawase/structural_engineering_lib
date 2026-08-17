@@ -66,9 +66,9 @@
       "name": "development-guide.md",
       "type": "documentation",
       "size_lines": 1523,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "1. Overview 2. Project Structure",
-      "content_hash": "80e1287aae2d"
+      "content_hash": "e9ed99ca0c67"
     },
     {
       "name": "doc-template.md",
@@ -200,5 +200,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "dbfb856e7dcb406d"
+  "content_hash": "d55a06747771cb4b"
 }

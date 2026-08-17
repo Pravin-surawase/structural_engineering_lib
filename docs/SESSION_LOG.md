@@ -5,6 +5,110 @@
 
 ---
 
+## 2026-08-17 — Session: v0.23.1a2 Release Candidate Preparation
+
+**Agent:** Codex (`ops`, sole writer)
+
+**Branch:** `codex/release-0231a2` from synchronized
+`main = 970a78c1931a3aa0439f487e6892a888bb113962`
+
+**Local evidence:** `docs/verification/alpha-0231a2-local-prepublication-rehearsal.md`
+
+**Git handoff receipt:** `docs/verification/release-0231a2-preparation-git-handoff-receipt.json`
+
+**Focus:** Prepare and locally verify the exact v0.23.1a2 Alpha candidate with
+one source-bound wheel, while keeping TestPyPI, PyPI, tag, GitHub Release,
+whole-building, professional-approval, and retained-lane actions explicitly
+unauthorized.
+
+### Summary
+
+- A fresh linked worktree was created from live GitHub `main`; it reported
+  `READY_LOCAL`, `source_bound=true`, and no open PR overlap. All retained
+  detached, dirty, and historical lanes were preserved unchanged.
+- The canonical release preparation changed source/package/documentation
+  version surfaces from `0.23.1a1` to `0.23.1a2`, retained the published
+  `v0.23.1a1` evidence, and added bounded candidate release notes.
+- The preparation gate passed 6,414 Python tests with 3 skipped and 6
+  deselected, then passed the repository-pinned Node 24 React production build.
+- Build anchor `c71e4e27749a9da58fe0d689bc1a1ba8b396f14d` produced one wheel and matching
+  sdist. The wheel is 665,658 bytes with SHA-256
+  `5bca57ba12a35803715ad581420fa6ea5be32a0cd736fd42246b9a026584cc19`.
+- The clean installed-wheel verifier passed 5,553 tests with 51 skipped and 2
+  deselected plus installed `job`, `critical`, and HTML `report` workflows.
+- The narrow exact candidate check passed the 29-case matrix, all 12 advertised
+  commands, public examples, content/version boundaries, and clean installed
+  package-origin assertion against the same wheel hash.
+- Candidate wording is historical and explicit: at freeze it is not tagged or
+  published. The current public Alpha remains `0.23.1a1`; publication and
+  professional approval remain separate holds.
+
+### Issues encountered
+
+- The release-preflight skill instructed maintainers to record a checked
+  publication authorization in the checklist before immutable review.
+- The general installed-wheel verifier passed its broad package suite and
+  legacy CLI workflows but did not execute the newer 29-case advertised-command
+  release matrix.
+- Version synchronization printed optional-pattern warnings for source files
+  that deliberately do not contain those optional tag/metadata forms.
+- The first direct index-generator command guessed the retired
+  `scripts/generate_folder_indexes.py` path and stopped before any write.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the skill retained the earlier checklist-marker
+  authorization sequence after publication authority moved to the exact JSON
+  authorization plus immutable review-receipt flow. Resolution: candidate
+  preparation now requires unpublished/on-hold wording and forbids pre-checking
+  tag/publication approval; post-review authorization is routed only through
+  validator-permitted exact evidence. Proof: focused release-document checks,
+  14 release environment/version regressions, and normal commit hooks pass
+  while the v0.23.1a2 publication checkbox remains open.
+- Confirmed root cause: `release verify` and `release candidate-check` have
+  distinct maintained responsibilities; only the latter invokes packaged
+  `structural_lib.release_uat`. Resolution: run the broad verifier once, then
+  the narrow candidate check once without replaying manual CLI cases. Proof:
+  both commands exit zero against wheel SHA-256 `5bca57ba...cc19`; the packaged
+  matrix contains 29 cases and the advertised inventory contains 12 commands.
+- Confirmed root cause: the version synchronizer reports absent optional regex
+  forms even when all required candidate surfaces agree. Resolution: inspect
+  the intended surfaces once and rely on `--check-docs`, release-doc checks,
+  exact candidate validation, and commit hooks; no non-outcome tooling change
+  was added. Proof: every maintained check exits zero and the warnings identify
+  only non-applicable optional forms.
+- Confirmed root cause: the direct script name was guessed instead of using the
+  maintained `run.sh generate indexes <folder>` entry point documented by the
+  live launcher. Resolution: discover the current command with `rg --files`
+  and use only targeted dry-run/final refresh calls. Proof: the guessed command
+  made no write; final affected-folder index checks pass. ⚠️ TERMINAL ISSUE:
+  nonexistent direct generator path -> maintained targeted `run.sh` command.
+
+### Validation through local candidate freeze
+
+- Live base/GitHub: `main = 970a78c1`; no open PRs; release worktree
+  `READY_LOCAL`; `source_bound=true`.
+- Focused release environment/version regressions: 14 passed.
+- Canonical release preparation: 6,414 passed, 3 skipped, 6 deselected; React
+  production build passed.
+- Normal build-anchor commit hooks: all passed.
+- Exact installed wheel: 5,553 passed, 51 skipped, 2 deselected; installed CLI
+  workflows passed.
+- Exact candidate: 29/29 UAT cases and 12/12 advertised commands passed.
+- Final affected indexes, quick 10/10, immutable final commit, hosted checks,
+  and exact-head review complete in the next closeout stage. The exact-wheel
+  publication preflight is intentionally reserved for the reviewed and
+  authorized target identity.
+
+### Timing through local candidate freeze
+
+- Orientation, release controls, and lane creation: approximately 2 minutes.
+- Canonical preparation, release-document correction, and focused checks:
+  approximately 6 minutes.
+- Exact build, installed verification, candidate UAT, and evidence recording:
+  approximately 5 minutes.
+- Hosted CI/review wait and final closeout are not included here.
+
 ## 2026-08-17 — Session: LIB-PRO-002-J Release Signal Convergence
 
 **Agent:** Codex (`ops`, sole writer)
