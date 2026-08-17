@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-17",
-  "file_count": 174,
+  "file_count": 175,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -40,6 +40,20 @@
       "title": "v0.23.1a1 Local Prepublication Rehearsal",
       "description": "not a CI artifact identity, tag, or publication approval | Artifact | Bytes | Members | SHA-256 |",
       "content_hash": "d6a173859f50"
+    },
+    {
+      "name": "alpha-0231a2-exact-candidate-review-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "schema_version",
+        "decision",
+        "reviewed_candidate",
+        "hosted_checks",
+        "reviewer",
+        "note"
+      ],
+      "content_hash": "0a2c60440cde"
     },
     {
       "name": "alpha-0231a2-local-prepublication-rehearsal.md",
@@ -2210,7 +2224,7 @@
         "exact_candidate_review_receipt_sha256",
         "qualified_structural_engineering_review"
       ],
-      "content_hash": "2f0f3892c9d9"
+      "content_hash": "4cba6e9d2696"
     },
     {
       "name": "ui-experience-session-2-acceptance.md",
@@ -2230,5 +2244,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "bb56ed5eb860103e"
+  "content_hash": "fbeff312389827df"
 }

@@ -1,0 +1,34 @@
+{
+  "schema_version": "exact-candidate-review-receipt/v1",
+  "decision": "ACCEPT",
+  "reviewed_candidate": {
+    "head_sha": "0c00f2fac9b19ad59086e850b82d71bf1d12b943",
+    "tree_sha": "772f760ed603845fb402e90d597710de031772dc",
+    "python_tree_sha": "501fac1360f06ff2be4f6aea3b5e167f956ce840",
+    "version": "0.23.1a2",
+    "tag": "v0.23.1a2",
+    "reviewed_targets": [
+      "testpypi",
+      "pypi",
+      "github-release"
+    ]
+  },
+  "hosted_checks": {
+    "required_pr_checks": {
+      "status": "PASS",
+      "head_sha": "0c00f2fac9b19ad59086e850b82d71bf1d12b943",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/32007226356"
+    },
+    "weekly_verification": {
+      "status": "PASS",
+      "head_sha": "0c00f2fac9b19ad59086e850b82d71bf1d12b943",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/32007376033"
+    }
+  },
+  "reviewer": {
+    "identity": "/root/release_0231a2_exact_review",
+    "independent": true,
+    "reviewed_at_utc": "2026-08-17T08:20:48Z"
+  },
+  "note": "Independent read-only review accepted the exact candidate with no blocking findings. The review covers bounded Alpha publication only and does not imply qualified structural-engineering review, professional approval, whole-building safety, or construction-use approval."
+}

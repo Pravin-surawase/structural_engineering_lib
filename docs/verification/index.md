@@ -4,11 +4,12 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-17
-**Files:** 174
+**Files:** 175
 
 ## Config Files
 
 - [INDIA-0-git-handoff.json](INDIA-0-git-handoff.json)
+- [alpha-0231a2-exact-candidate-review-receipt.json](alpha-0231a2-exact-candidate-review-receipt.json)
 - [exact-candidate-review-receipt-template.json](exact-candidate-review-receipt-template.json)
 - [footing-release-inclusion.json](footing-release-inclusion.json)
 - [git-001-phase-8-reconciliation-git-handoff-receipt.json](git-001-phase-8-reconciliation-git-handoff-receipt.json)
