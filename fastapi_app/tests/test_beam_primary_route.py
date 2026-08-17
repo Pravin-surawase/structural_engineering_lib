@@ -308,6 +308,7 @@ def test_depth_boundary_matches_the_canonical_failure_vector(client) -> None:
         case_id="CASE-1",
         b_mm=300.0,
         D_mm=500.0,
+        d_mm=None,
         effective_depth_basis=EffectiveDepthBasisV1(40.0, 8.0, 18.0),
         d_dash_mm=57.0,
         mu_knm=150.0,

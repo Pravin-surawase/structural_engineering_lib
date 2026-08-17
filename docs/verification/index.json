@@ -48,7 +48,7 @@
         "receipt_grants_authority",
         "receipt_kind"
       ],
-      "content_hash": "6183143b0f4e"
+      "content_hash": "96ceab57aeee"
     },
     {
       "name": "a1-canonical-transport-git-handoff-source-evidence.json",
@@ -60,7 +60,7 @@
         "retention",
         "task_archive"
       ],
-      "content_hash": "061babef304f"
+      "content_hash": "30a6677ffa41"
     },
     {
       "name": "a1-canonical-truth-transport-evidence.md",
@@ -2282,5 +2282,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "33b478f4a4484522"
+  "content_hash": "ec0b5d34fc0dfa52"
 }

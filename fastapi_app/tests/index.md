@@ -19,7 +19,7 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [__init__.py](__init__.py) | FastAPI Tests Package. | 0 | 0 | 6 |
 | [conftest.py](conftest.py) | Test Fixtures for FastAPI Tests. | 0 | 8 | 159 |
 | [test_auth.py](test_auth.py) | Tests for Authentication and Rate Limiting. | 3 | 2 | 243 |
-| [test_beam_primary_route.py](test_beam_primary_route.py) | Focused FastAPI contract tests for the primary IS 456 beam r | 0 | 14 | 384 |
+| [test_beam_primary_route.py](test_beam_primary_route.py) | Focused FastAPI contract tests for the primary IS 456 beam r | 0 | 14 | 385 |
 | [test_bundled_sample_evidence.py](test_bundled_sample_evidence.py) | Reproducible software evidence for the bundled 153-beam acce | 0 | 1 | 111 |
 | [test_capabilities.py](test_capabilities.py) | Cross-surface tests for canonical capability discovery. | 0 | 2 | 65 |
 | [test_catalog.py](test_catalog.py) | Cross-layer tests for the thin workflow catalogue transport. | 0 | 3 | 41 |

@@ -120,7 +120,7 @@
     {
       "name": "test_beam_primary_route.py",
       "type": "python",
-      "size_lines": 384,
+      "size_lines": 385,
       "last_updated": "2026-08-17",
       "description": "Focused FastAPI contract tests for the primary IS 456 beam route.",
       "functions": [
@@ -216,7 +216,7 @@
           ]
         }
       ],
-      "content_hash": "90a8006217bd"
+      "content_hash": "e2b5ebd63d6d"
     },
     {
       "name": "test_bundled_sample_evidence.py",
@@ -2018,5 +2018,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "71100c0d28e94f49"
+  "content_hash": "0bd1484e3596f54d"
 }

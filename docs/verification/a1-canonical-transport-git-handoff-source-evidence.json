@@ -36,7 +36,7 @@
         "CREATE_OR_UPDATE_DRAFT_PR"
       ],
       "branch": "codex/a1-canonical-transport-contract",
-      "head_sha": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+      "head_sha": "98927f1de4a1e8f60d1d9d66bf2e8a036c2a0dd2",
       "task_id": "A1-CANONICAL-TRUTH-TRANSPORT"
     }
   },

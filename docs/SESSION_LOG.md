@@ -2631,3 +2631,33 @@ and frozen validation selections in that A1 record remain authoritative.
   are not written back into the candidate.
 - No A2, gravity, live ETABS, Excel write-back, optimizer, solver, or release
   work was started.
+
+## 2026-08-17 — Session: A1 Hosted FastAPI Repair
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/a1-canonical-transport-contract`.
+
+**Focus:** Repair only the single FastAPI validation failure on PR #822 at
+exact head `98927f1de4a1e8f60d1d9d66bf2e8a036c2a0dd2`.
+
+### Issues encountered
+
+- Hosted FastAPI Validation reported 449 passing tests and one failure in
+  `test_depth_boundary_matches_the_canonical_failure_vector`; the aggregate PR
+  Gate failed only because that required job failed.
+
+### Root causes and resolutions
+
+- Confirmed root cause: when A1 restored the frozen required `d_mm` keyword,
+  the production FastAPI adapter and the canonical Python test were updated to
+  pass `d_mm=None` with the complete derivation basis, but the direct comparison
+  call in this FastAPI test was missed. Resolution: add the same explicit
+  `d_mm=None` to that test fixture. Proof selected: run only the failed test,
+  then normal commit hooks and the automatically triggered hosted validation;
+  do not rerun unchanged local suites.
+
+### Boundary
+
+- No calculation, HTTP adapter, schema, React, A2, gravity, ETABS, Excel,
+  optimization, release, or professional-approval behavior is changed.
