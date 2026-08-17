@@ -4,24 +4,25 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-17
-- Focus: LIB-PRO-002 cumulative A-G input safety and professional-readiness integration
-- Base: Packet A merge `3986935ecb473c1f9d56dec44aeb4218d9192f84` (PR #814)
-- Lane: `codex/lib-pro-002-b-lossless-import`; one isolated writer; unrelated worktrees preserved
-- Candidate: Packets B-G integrated; first exact-head review rejected a bypassable presence-only publication receipt check after all local/hosted gates passed
+- Focus: LIB-PRO-002 post-fix usability replay and advertised CLI safety gap
+- Required ancestor: A-G merge `fe4ab025419b834c6d0f840e9492c0604ae74201` (PR #815); Packet I starts from the exact fetched `origin/main` after this reviewed plan merges
+- Lane: `codex/lib-pro-002-usability-refresh`; documentation/evidence owner only; unrelated worktrees preserved
+- Accepted improvement: strict batch/import/HTTP/SSE/React, cross-element review truth, evidence identity, API classification, and the declared 19-case exact-wheel UAT pass the reproduced cases
+- New blocker: advertised `python -m structural_lib design` still skips malformed CSV rows, exits 0, and reports a partial PASS; the 19-case exact-wheel matrix omits the CLI
 - Release: HOLD; `docs/verification/release-publication-authorization.json` contains no exact version/tag/target authorization
 - Whole-building workflow: Packet H is not activated and component-only claims remain
-- Exact next action: finish the receipt head/tree/package/version/tag/target binding repair, then create one repaired immutable head and restart exact review plus hosted checks
+- Exact next action: implement Packet I CLI convergence and advertised-entry-point exact-wheel UAT, then repeat immutable review and hosted checks
 <!-- HANDOFF:END -->
 
 | State | Boundary |
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; no stable, professional-approval, or whole-building claim |
-| **Next** | LIB-PRO-002 A-G cumulative input/import/result/evidence/API/release-safety acceptance |
+| **Next** | LIB-PRO-002-I advertised CLI convergence and exact-wheel entry-point closure |
 | **Held** | Publication, professional approval, Packet H, INDIA-3, dependency work, branch/worktree cleanup, and unrelated retained lanes |
 
 ## Required Reading
 
-1. [Active A-G plan](pre-release-input-safety-and-professional-readiness-plan.md)
+1. [Active post-fix plan](pre-release-input-safety-and-professional-readiness-plan.md)
 2. [Current task board](../TASKS.md)
 3. [Git workflow single source](../git-automation/git-workflow-single-source.md)
 4. [Publication authorization record](../verification/release-publication-authorization.json)
@@ -29,9 +30,9 @@
 
 ## Resume safely
 
-Use only the existing cumulative worktree. Do not recreate the branch, move its
-changes to a retained lane, or mutate primary `main` while the candidate is
-open.
+Start Packet I in one fresh source-bound lane from the exact fetched
+`origin/main` after this reviewed plan merges. Do not mutate primary `main`,
+reuse the historical A-G candidate lane, or clean unrelated worktrees.
 
 ```bash
 ./run.sh session brief --agent orchestrator
@@ -40,12 +41,9 @@ open.
 ./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 ```
 
-Require the expected branch/head/diff, `source_bound=true`, no operation marker,
-and no new overlapping writer before mutation. The earlier Packet A Git issue
-was not an unclean-start failure: a later side packet advanced shared refs and
-overlapped closeout/index files after the original start check. The durable
-active-candidate dependency/path-overlap gate in `AGENTS.md` and the canonical
-Git workflow now covers that whole candidate lifetime.
+Require `fe4ab025…` as an ancestor, record the actual fetched base/head,
+`source_bound=true`, no operation marker, and no new overlapping writer before
+mutation. Preserve every unrelated lane.
 
 ## Integrated A-G boundary
 
@@ -66,12 +64,33 @@ Git workflow now covers that whole candidate lifetime.
   an actual independent-review JSON receipt, verifies reviewed Git/Python
   identity and permits only an evidence-only descendant delta.
 
+The post-fix replay did not invalidate these improvements. It found that their
+route inventory was incomplete.
+
+## Packet I boundary
+
+- replace the `design` CLI's row-skipping/defaulting intake with the lossless
+  ledger and strict project command;
+- block the whole CLI project on any malformed, missing, non-finite, unknown,
+  duplicate, ambiguous, or unaccounted design-bearing record;
+- require explicit effective-depth or complete derivation basis; do not supply
+  hidden cover/material/load/identity values;
+- freeze a versioned CLI output contract before migration; keep stdout/output
+  JSON parseable, send diagnostics to stderr, and prove retained `bbs`, `detail`,
+  and `dxf` consumers accept valid `design` output;
+- add valid, malformed-only, mixed-validity, empty, missing-depth/cover,
+  duplicate, unknown-field, and ambiguous-format CLI cases to exact-wheel UAT;
+- bind all advertised calculation entry points to a generated or validated
+  inventory so a future route cannot be omitted silently;
+- retain the corrected one-storey beam result for complete canonical input.
+
 ## Acceptance and stop rules
 
-Run the broad Python, complete FastAPI/React, full canonical, packaging,
-protected-source, and exact-wheel gates once at this cumulative boundary. Bind
-the immutable commit/tree to an independent software/release-evidence review
-and all required hosted checks before merge.
+After Packet I freezes, run its focused CLI/import/service tests, the complete
+negative matrix, public examples, broad Python, complete FastAPI/React, full
+canonical, packaging, protected-source, and exact-wheel gates once. Bind the
+immutable commit/tree to an independent software/release-evidence review and
+all required hosted checks before merge.
 
 Do not publish a package, create a tag or GitHub Release, claim professional
 approval, activate Packet H, close issues/PRs, delete branches, or clean retained

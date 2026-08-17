@@ -5,6 +5,131 @@
 
 ---
 
+## 2026-08-17 — Session: LIB-PRO-002 Post-Fix Usability Re-Audit
+
+**Agent:** Codex (`library-expert`, documentation/evidence owner)
+
+**Branch:** `codex/lib-pro-002-usability-refresh` from A-G merge
+`fe4ab025419b834c6d0f840e9492c0604ae74201` (PR #815)
+
+**Git handoff receipt:** `docs/verification/lib-pro-002-post-fix-recheck-git-handoff-receipt.json`
+
+**Focus:** Re-run the synthetic one-storey user workflow and manual comparison,
+verify whether A-G fixed the original usability hazards, audit professional API
+and publication surfaces, and update the active plan without changing runtime
+behavior or authorizing publication/professional use.
+
+### Summary
+
+- Confirmed that the A-G fixes are material: canonical and compatibility beam
+  services block malformed/empty inputs; named imports account rows/fields;
+  column materials are explicit; beam/slab/column/footing results retain
+  qualified-review truth; the current candidate wheel passes its declared
+  19-case negative UAT.
+- Recomputed a linked one-storey slab-to-beam-to-column-to-footing gravity
+  example. The library matches the independent load, action, flexure, shear,
+  column, footing pressure/moment/punching, and development-length arithmetic.
+  The footing correctly remains `FAIL` for inadequate dowel anchorage and
+  retains HOLD reasons for assumed load/soil/supporting-area bases.
+- Reproduced one unresolved advertised-path defect: the `design` CLI skipped a
+  malformed row, printed its warning to stdout, exited `0`, and emitted a
+  one-of-one PASS summary. Its old intake also supplies cover/effective-depth
+  assumptions outside the lossless/strict boundary.
+- Confirmed that the published PyPI `0.23.1a1` is the pre-A-G artifact: its page
+  has the wrong `0.23.0` pin and its displayed batch example raises
+  `AttributeError` against the exact installed wheel. No claim was made that
+  current source repairs the immutable old artifact.
+- Updated the active plan, task board, planning handoff, and planning README.
+  New Packet I owns CLI intake convergence, a versioned machine-readable output
+  contract, retained `design -> bbs/detail/dxf` compatibility or explicit
+  deprecation, advertised-entry-point inventory, and exact-wheel CLI negatives.
+  Packet H whole-building planning remains inactive.
+
+### Verification
+
+- Current source binding: `source_bound=true`; exact audit base
+  `fe4ab025419b834c6d0f840e9492c0604ae74201`.
+- Manual/library comparison matched the Section 2.4 values for slab, beam,
+  column, and footing, including `Ast_slab=207.012 mm2`,
+  `Ast_beam=465.092 mm2`, `Pu_column=68.789063 kN`,
+  `q_footing=89.027778 kPa`, `Mu_footing=1.533643 kNm`, punching utilization
+  `0.023010`, and required dowel `Ld=644.732 mm`.
+- Built the current wheel into a temporary directory, installed it into a clean
+  temporary environment, and ran `structural_lib.release_uat
+  --require-installed-wheel`: `PASS`, 19/19 declared cases, installed origin.
+- Focused current-source selection: 79/79 passed across batch, imports, column
+  project contract, result contract, release UAT, and Excel-integration edges.
+- Exact published-wheel replay: installed PyPI `0.23.1a1` into an isolated
+  environment; the displayed `GenericCSVAdapter` example failed with
+  `AttributeError: 'BeamGeometry' object has no attribute 'b_mm'`.
+- API audit: root `__all__` 187 symbols; service facade 168 symbols (91
+  functions, 77 classes); 28 service functions expose at least one audited
+  unit-ambiguous name requiring canonical/compatibility disposition before a
+  stable promise.
+- Independent structural reviewer: ACCEPT; independently reproduced every
+  Section 2.4 value and ran 101 focused tests, with no clause/claim
+  contradiction. Independent release reviewer initially rejected two plan
+  gaps; both the CLI output/downstream contract and post-plan-merge base wording
+  were corrected, and the focused follow-up returned ACCEPT before closeout.
+
+### Issues encountered
+
+- The advertised CLI retained the original row-loss/defaulting class after A-G
+  merged, even though the declared 19-case wheel UAT passed.
+- The first isolated PyPI replay inherited the repository `PYTHONPATH`, so it
+  imported current source rather than the installed wheel and then failed on a
+  missing dependency. That attempt was not accepted as package evidence.
+- The first synthetic footing call used human-readable basis text where the
+  strict contract requires exact controlled tokens. It blocked correctly before
+  calculation.
+- Independent release review found that a direct switch from the old CLI
+  `beams` artifact to the strict service `members` envelope could silently break
+  advertised `bbs`, `detail`, and `dxf` consumers, and that the handoff's exact
+  `fe4ab025…` future base would become stale after this plan merges.
+
+### Root causes and resolutions
+
+- Confirmed CLI root cause: A-G's route inventory covered service,
+  imports, HTTP/SSE/React, and selected package examples, but not every
+  advertised calculation entry point. The historical CLI therefore continued
+  calling `services.excel_integration.load_beam_data_from_csv`, which catches
+  parse errors, prints a warning, and continues with surviving rows. Resolution
+  in this documentation packet: add RC-7, CLI-01/CLI-02/REL-UAT-02, and Packet I
+  with whole-file blocking, row/field conservation, non-zero exit, stderr-only
+  diagnostics, versioned output compatibility, downstream workflow tests, and
+  an advertised-entry-point inventory. Evidence: mixed-row live replay and
+  direct source trace.
+- Confirmed UAT root cause: the packaged matrix proves its handler set is
+  complete relative to its data file, not complete relative to public docs/CLI
+  surfaces. Resolution: Packet I binds matrix coverage to the advertised
+  entry-point inventory and adds exact-wheel CLI cases. Evidence: 19/19 UAT PASS
+  alongside the reproduced CLI failure.
+- Confirmed installed-package evidence root cause: worktree-bound launchers set
+  source routing that is unsuitable for an isolation proof. Resolution: remove
+  `PYTHONPATH`/`PYTHONHOME`, install dependencies and the exact wheel in a fresh
+  temporary environment, verify `structural_lib.__file__`, then accept the
+  replay. Evidence: installed origin under temporary `site-packages` for both
+  current candidate and published-wheel runs.
+- The footing token failures were correct fail-closed validation, not product
+  defects. Resolution: use the maintained exact values
+  `includes_footing_self_weight_and_overburden` and
+  `largest_frustum_1v_2h`; the corrected call then matched manual arithmetic.
+- The independent review defects were plan incompleteness, not style issues.
+  Resolution: freeze the CLI output/downstream contract and treat `fe4ab025…`
+  as the required A-G ancestor while binding Packet I to exact fetched
+  `origin/main` after this reviewed plan merges.
+
+### Limitations and handoff
+
+- This session changed documentation and work state only; it did not implement
+  Packet I or alter structural calculations.
+- The one-storey replay is a synthetic component/load-path regression, not a
+  building analysis, source acceptance, geotechnical verification, qualified
+  review, code-compliant deliverable, or professional approval.
+- Next routine action: implement only Packet I from the exact fetched
+  post-plan-merge `origin/main`, with `fe4ab025…` as required ancestor. Keep
+  publication and Packet H held.
+
 ## 2026-08-17 — Session: LIB-PRO-002 B-G Cumulative Safety Integration
 
 **Agent:** Codex (`orchestrator`, sole writer)

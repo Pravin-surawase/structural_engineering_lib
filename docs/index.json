@@ -9,7 +9,7 @@
       "name": "README.md",
       "type": "documentation",
       "size_lines": 253,
-      "last_updated": "2026-08-17",
+      "last_updated": "2026-08-10",
       "title": "Docs Index (Start Here)",
       "description": "Guides, references, evidence, and contributor material for the structural-lib-is456 Python package and the React/FastAPI workbench.",
       "content_hash": "09e22d932251"
@@ -17,33 +17,33 @@
     {
       "name": "SESSION_LOG.md",
       "type": "documentation",
-      "size_lines": 1730,
+      "size_lines": 1855,
       "last_updated": "2026-08-17",
       "title": "Session Log",
       "description": "> Append-only decision log for AI agent sessions. > Earlier sessions (1-100): SESSION_LOG_through_session_100.md",
-      "content_hash": "d0afae34c2ce"
+      "content_hash": "06a016ef16a7"
     },
     {
       "name": "TASKS.md",
       "type": "documentation",
-      "size_lines": 708,
+      "size_lines": 709,
       "last_updated": "2026-08-17",
       "title": "Task Board",
       "description": "> **Single source of truth for active work.** Keep it short and current. - **WIP = 2** (max 2 active tasks at once)",
-      "content_hash": "58bced7e91f7"
+      "content_hash": "6bf5324656b3"
     },
     {
       "name": "WORKLOG.md",
       "type": "documentation",
       "size_lines": 354,
-      "last_updated": "2026-08-17",
+      "last_updated": "2026-08-10",
       "description": "> **One line per item. Compact. Append-only.** > Format: DATE | TASK-ID | what changed | commit",
       "content_hash": "99219f077170"
     },
     {
       "name": "docs-canonical.json",
       "type": "config",
-      "last_updated": "2026-08-17",
+      "last_updated": "2026-04-06",
       "top_level_keys": [
         "_comment",
         "_updated",
@@ -57,7 +57,7 @@
     {
       "name": "docs-index.json",
       "type": "config",
-      "last_updated": "2026-08-17",
+      "last_updated": "2026-08-16",
       "top_level_keys": [
         "version",
         "generated",
@@ -208,9 +208,9 @@
     {
       "name": "verification",
       "path": "verification/",
-      "file_count": 169,
+      "file_count": 170,
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
     }
   ],
-  "content_hash": "cd941b60eb4aab20"
+  "content_hash": "c5590034ee7b1a3e"
 }
