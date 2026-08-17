@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-17",
-  "file_count": 172,
+  "file_count": 175,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -42,6 +42,29 @@
       "content_hash": "d6a173859f50"
     },
     {
+      "name": "alpha-0231a2-exact-candidate-review-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "schema_version",
+        "decision",
+        "reviewed_candidate",
+        "hosted_checks",
+        "reviewer",
+        "note"
+      ],
+      "content_hash": "781fa60c35a6"
+    },
+    {
+      "name": "alpha-0231a2-local-prepublication-rehearsal.md",
+      "type": "documentation",
+      "size_lines": 98,
+      "last_updated": "2026-08-17",
+      "title": "v0.23.1a2 Local Prepublication Rehearsal",
+      "description": "check receipt, exact-head Weekly Verification, independent review, target authorization, tag, upload, GitHub Release, or professional approval.",
+      "content_hash": "79f7917f04dd"
+    },
+    {
       "name": "bundled-sample-boq-evidence.md",
       "type": "documentation",
       "size_lines": 58,
@@ -75,9 +98,9 @@
       "name": "examples.md",
       "type": "documentation",
       "size_lines": 1550,
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-17",
       "description": "This document provides benchmark examples that engineers can use to verify the library's calculations against: - Hand calculations",
-      "content_hash": "79cb3add7cbe"
+      "content_hash": "3e1117041432"
     },
     {
       "name": "external-cli-test.md",
@@ -2159,6 +2182,24 @@
       "content_hash": "c71c08113e06"
     },
     {
+      "name": "release-0231a2-preparation-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "c054fddfce70"
+    },
+    {
       "name": "release-artifact-evidence-template.md",
       "type": "documentation",
       "size_lines": 45,
@@ -2183,7 +2224,7 @@
         "exact_candidate_review_receipt_sha256",
         "qualified_structural_engineering_review"
       ],
-      "content_hash": "2f0f3892c9d9"
+      "content_hash": "0baeb5f8e1f0"
     },
     {
       "name": "ui-experience-session-2-acceptance.md",
@@ -2197,11 +2238,11 @@
       "name": "validation-pack.md",
       "type": "documentation",
       "size_lines": 396,
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-17",
       "description": "This pack provides 5 benchmark beams and 3 benchmark columns with IS 456 references that you can use to validate the library's calculations against hand calculations, SP 16 design aids, or other trust",
-      "content_hash": "63fd4822c78c"
+      "content_hash": "44fa1e2ffc9b"
     }
   ],
   "subfolders": [],
-  "content_hash": "a33f1baa276bcc47"
+  "content_hash": "a831e6e97c527509"
 }

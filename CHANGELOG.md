@@ -4,6 +4,49 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.23.1a2] — Prepared candidate (unreleased; on hold)
+
+Prepared Alpha candidate for strict project input safety, traceable result
+contracts, and additional bounded component workflows. At candidate freeze it
+is not tagged or published. Any later publication requires immutable review,
+hosted checks, and separate exact owner authorization. This is case-qualified
+software evidence, not whole-building safety or professional approval.
+
+### Added
+
+- Bounded public workflows for braced walls, straight-flight staircases,
+  simply supported deep beams, regular interior flat slabs, symmetric combined
+  footings, and property-line strap footings, with explicit limitations and
+  capability provenance.
+- Lossless import ledgers and versioned project/result envelopes that retain
+  every source row, normalization decision, blocked issue, source identity,
+  and qualified-review requirement.
+- Installed-wheel UAT covering 29 positive and negative cases across all 12
+  advertised commands, including the full `design` to `bbs`/`detail`/`dxf`
+  compatibility chain.
+
+### Fixed
+
+- Invalid, missing, conflicting, non-finite, or unknown project beam inputs no
+  longer receive structural defaults or produce partial-success results.
+- The advertised `design` command now fails the whole file on any blocked row,
+  exits non-zero, keeps stdout as clean JSON, and writes diagnostics to stderr.
+- Missing project column materials block calculation instead of silently using
+  concrete or steel defaults.
+- Result wording no longer equates successful arithmetic with qualified review
+  or professional approval.
+- Hosted full suites and local release preflight now use the selected Python
+  interpreter and emit mode-accurate preparation, candidate, and publication
+  verdicts.
+
+### Changed
+
+- Public API exports are classified by stability/compatibility level and
+  supported-case claims are separated from registration, evidence, review,
+  release, and professional approval.
+- Generated documentation indexes are content-derived, and release/session
+  closeout avoids cyclic or timestamp-only rewrites.
+
 ## [0.23.1a1] — 2026-08-11
 
 Alpha development preview of the bounded beam, column, isolated-footing, and
@@ -1442,6 +1485,8 @@ V3 Foundation release — everything built since v0.19.1. Full-stack maturity mi
 
 Format: Keep a section per release with Added/Changed/Fixed as needed. Tag releases as `vX.Y.Z`.
 
-[Unreleased]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.21.6...HEAD
+[Unreleased]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.23.1a2...HEAD
+[0.23.1a2]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.23.1a1...v0.23.1a2
+[0.23.1a1]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.23.0...v0.23.1a1
 [0.21.6]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.21.5...v0.21.6
 [0.21.4]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.21.3...v0.21.4

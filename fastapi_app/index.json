@@ -20,7 +20,7 @@
       "size_lines": 11,
       "last_updated": "2026-08-17",
       "description": "FastAPI backend for structural_engineering_lib.",
-      "content_hash": "a054fbd5a6f9"
+      "content_hash": "576f9b750dc6"
     },
     {
       "name": "auth.py",
@@ -143,7 +143,7 @@
         "_INSECURE_JWT_SECRET_MARKERS",
         "MINIMUM_JWT_SECRET_LENGTH"
       ],
-      "content_hash": "e5694e016279"
+      "content_hash": "2ceeed8bea62"
     },
     {
       "name": "error_utils.py",
@@ -256,7 +256,7 @@
         "paths",
         "tags"
       ],
-      "content_hash": "d05b02792923"
+      "content_hash": "d5a004447d9e"
     },
     {
       "name": "ruff.toml",
@@ -293,5 +293,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "538b1e3dc58ab686"
+  "content_hash": "bb3e0de5546ac907"
 }

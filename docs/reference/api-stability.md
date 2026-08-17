@@ -13,7 +13,7 @@ tags: [api, alpha, compatibility]
 **Audience:** Developers
 **Status:** Alpha Preview
 **Importance:** High
-**Version:** 0.23.1a1
+**Version:** 0.23.1a2
 **Last Updated:** 2026-08-17
 
 StructLib is a pre-1.0 Alpha. No exported Python symbol currently carries a
@@ -57,7 +57,7 @@ structural inputs, hide import loss, or convert missing status to PASS.
 Use exact Alpha pins for reproducibility:
 
 ```bash
-python3 -m pip install "structural-lib-is456===0.23.1a1"
+python3 -m pip install "structural-lib-is456===0.23.1a2"
 python3 -c "import structural_lib; print(structural_lib.__version__, structural_lib.__file__)"
 ```
 

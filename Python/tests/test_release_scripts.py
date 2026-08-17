@@ -205,10 +205,32 @@ class TestBumpVersionPatternMatch:
 # ─── release.py ──────────────────────────────────────────────────────────────
 
 
-def test_release_publication_authorization_holds_by_default() -> None:
+def test_release_publication_authorization_holds_by_default(tmp_path: Path) -> None:
+    authorization = tmp_path / "release-publication-authorization.json"
+    authorization.write_text(
+        json.dumps(
+            {
+                "schema_version": "release-publication-authorization/v1",
+                "decision": "HOLD",
+                "version": None,
+                "tag": None,
+                "authorized_targets": [],
+                "authorized_by": None,
+                "authorized_at_utc": None,
+                "exact_candidate_review_receipt": None,
+                "exact_candidate_review_receipt_sha256": None,
+                "qualified_structural_engineering_review": False,
+                "professional_approval": False,
+            }
+        ),
+        encoding="utf-8",
+    )
+
     errors = release._release_publication_authorization_errors(
         "0.23.1a1",
         "pypi",
+        authorization,
+        repo_root=tmp_path,
     )
 
     assert "release publication decision is HOLD, not AUTHORIZED" in errors

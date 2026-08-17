@@ -41,12 +41,14 @@ step 3, then establish the final green current-candidate preflight with:
 ./run.sh release preflight --wheel <exact-wheel-path>
 ```
 
-An owner-authorized release may carry its final dated CHANGELOG/CITATION
-metadata before the tag so that the tagged artifact is truthful. Record the
-checked owner authorization in `docs/planning/pre-release-checklist.md` first.
-The exact-wheel form accepts that release-ready state; preflight without an
-exact wheel continues to require unpublished-candidate wording and fails
-closed.
+A preparation-authorized candidate must retain explicit unpublished/on-hold
+CHANGELOG, release-ledger, and CITATION wording. Do not pre-check tag or
+publication authorization in `docs/planning/pre-release-checklist.md` before
+the immutable review. After that review, record exact target authorization only
+through the maintained authorization JSON and exact-candidate receipt flow;
+post-review changes remain limited to paths accepted by the release validator.
+The exact-wheel form accepts the historical candidate-freeze wording and fails
+closed unless those later evidence records authorize the selected target.
 
 This is read-only. Run it once. If local resource checks fail and Docker is the intended fallback, start Colima and run the Docker variant instead of running both full paths:
 

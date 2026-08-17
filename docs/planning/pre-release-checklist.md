@@ -5,24 +5,43 @@
 **Status:** Review
 **Importance:** High
 **Created:** 2026-03-31
-**Last Updated:** 2026-08-11
+**Last Updated:** 2026-08-17
 
 ## Current State
 
-Release-ready source metadata: 0.23.1a1
+Prepared candidate source metadata: 0.23.1a2
 Current public release: v0.23.1a1 Alpha
 
-- **Release source:** tag `v0.23.1a1` at `95bed5621c2ff6e5bbcf1a25b7ac476f92ae4307`
-- **Candidate PR:** #732 merged unchanged at `95bed562`; reviewed head `adb161b8` has the same tree
-- **Release target:** v0.23.1a1 Alpha, published 2026-08-11 local time
-- **Publication state:** PyPI and GitHub prerelease published; exact public-version UAT green
+- **Published source:** tag `v0.23.1a1` at `95bed5621c2ff6e5bbcf1a25b7ac476f92ae4307`
+- **Prepared target:** v0.23.1a2 Alpha candidate; not tagged or published
+- **Candidate base:** `970a78c1931a3aa0439f487e6892a888bb113962`
+- **Publication state:** `HOLD`; target authorization is recorded, while refreshed exact candidate review and hosted receipts remain pending
 - **Review policy:** qualified structural-engineering review is required before stable/engineering-use approval, not before this Alpha release
 
 ## Next Alpha Readiness Checklist
 
-- [x] Integrate the complete `FOOT-ISO-RC-V1` source head `886871ae` into the candidate ancestry through PR #730
-- [x] Pass `./run.sh release footing-inclusion-check` with exact footing-owned files and Python/FastAPI/React integration markers present
-- [x] Verify the frozen local wheel through isolated installed-package tests and CLI UAT; retain the inclusion receipt hash in the local rehearsal record
+- [x] Owner authorizes preparation of v0.23.1a2 without tag or publication
+- [x] Base the release lane on synchronized `main` at `970a78c1931a3aa0439f487e6892a888bb113962`
+- [x] Run the canonical version preparation gate and update maintained release surfaces
+- [x] Build and verify one exact v0.23.1a2 wheel from the frozen Python tree
+- [ ] Pass required PR checks, exact-head Weekly Verification, and independent candidate review
+- [ ] Record the refreshed exact review receipt after the repaired candidate passes hosted checks
+- [x] Owner authorizes the v0.23.1a2 TestPyPI rehearsal, tag, production PyPI publication, and GitHub Release after exact CI evidence passes
+
+The owner granted the target-specific authorization in the active Codex task on
+2026-08-17 and directed publication to continue without another approval after
+the refreshed independent review passes. This authorization remains bounded to
+the reviewed Alpha candidate and does not grant professional approval.
+
+### v0.23.1a2 Local Candidate Evidence
+
+- Evidence: [v0.23.1a2 local rehearsal](../verification/alpha-0231a2-local-prepublication-rehearsal.md)
+- Build-anchor source: `a115b16efbb85db0459c79836f55b6c43a586470`
+- Python tree: `25aa0468135c07d3c260eca43776fb451865f833`
+- Wheel: 665,658 bytes, SHA-256 `34892d867845d044249236f32b700ab5e10ec558225407a47717fe3c3c2614bb`
+- Installed verification: 5,553 passed, 51 skipped, 2 deselected; installed CLI workflows green
+- Exact candidate UAT: 29/29 cases across 12/12 advertised commands
+- State: local candidate technically ready; publication execution remains held until refreshed hosted review passes
 
 ### v0.23.1a1 Release Authorization
 

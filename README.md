@@ -12,7 +12,7 @@ An open-source Python library and visual workbench for supported beam, column,
 isolated-footing, and solid-slab workflows under IS 456:2000.
 
 [![PyPI version](https://img.shields.io/pypi/v/structural-lib-is456.svg)](https://pypi.org/project/structural-lib-is456/)
-[![Alpha](https://img.shields.io/badge/status-alpha-f59e0b)](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.23.1a1)
+[![Alpha](https://img.shields.io/badge/status-alpha-f59e0b)](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.23.1a2)
 [![PR Gate](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/fast-checks.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/fast-checks.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-22c55e)](LICENSE)
@@ -24,10 +24,11 @@ isolated-footing, and solid-slab workflows under IS 456:2000.
 ![StructLib beam inspector showing a 3D building model, reinforcement view, utilization, and IS 456 checks](docs/images/product/beam-inspector.jpg)
 
 > [!IMPORTANT]
-> **v0.23.1a1 is an Alpha development preview.** Support is case-qualified,
+> **v0.23.1a2 is an Alpha development preview.** Support is case-qualified,
 > not a claim of complete IS 456 coverage or professional design approval.
 > Outputs require independent review by a qualified structural engineer before
-> engineering or construction use.
+> engineering or construction use. This source is a prepared release candidate;
+> it has not yet been tagged or published.
 
 ## One workflow, four useful surfaces
 
@@ -85,14 +86,15 @@ reconciliation, or professional approval.
 ### Install the Python package
 
 ```bash
-python3 -m pip install "structural-lib-is456===0.23.1a1"
+python3 -m pip install "structural-lib-is456===0.23.1a2"
 ```
 
 The package is installed as `structural-lib-is456` and imported as
 `structural_lib`.
 
-`0.23.1a1` is the current published Alpha preview. Because it is a prerelease,
-use the exact PEP 440 pin above when reproducing an evaluation. See the
+`0.23.1a2` is the prepared, unpublished candidate. The current public Alpha is
+`0.23.1a1`; the exact `0.23.1a2` pin above becomes available only if this
+candidate is later authorized and published. See the
 [release policy](docs/getting-started/releases.md) before selecting a candidate.
 
 ```python

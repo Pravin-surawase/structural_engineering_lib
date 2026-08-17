@@ -31,7 +31,7 @@ This is the easiest path for beginners.
 python3 -m pip install --upgrade pip
 
 # Exact current Alpha install
-python3 -m pip install "structural-lib-is456===0.23.1a1"
+python3 -m pip install "structural-lib-is456===0.23.1a2"
 
 # Optional DXF support
 python3 -m pip install "structural-lib-is456[dxf]"
@@ -65,7 +65,7 @@ If you are on Windows, replace `python3` with `py`.
 3. Install the library:
    ```bash
    python3 -m pip install --upgrade pip
-   python3 -m pip install "structural-lib-is456===0.23.1a1"
+   python3 -m pip install "structural-lib-is456===0.23.1a2"
    python3 -m structural_lib install-preflight
    ```
 4. Optional DXF support:
