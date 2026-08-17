@@ -5,6 +5,133 @@
 
 ---
 
+## 2026-08-17 — Session: LIB-PRO-002-I Advertised CLI Convergence
+
+**Agent:** Codex (`backend`, sole writer)
+
+**Branch:** `codex/lib-pro-002-i-cli` from freshly fetched
+`origin/main = b3a9c367de012982a8b9adefda0db60e2d762d7b`
+
+**Git handoff receipt:** `docs/verification/lib-pro-002-i-git-handoff-receipt.json`
+
+**Focus:** Replace the advertised beam-design CLI's lossy/defaulting intake
+with a fail-closed lossless/strict project boundary while retaining the
+versioned `beams` output and its `bbs`, `detail`, and `dxf` consumers. Add the
+advertised-entrypoint inventory and CLI cases to source-free release UAT. Do
+not start Packet J, change formulas, bump a version, or publish.
+
+### Summary
+
+- Added one strict CLI design service. Generic CSV passes through the lossless
+  import ledger; JSON rejects duplicate keys, non-finite constants, unsupported
+  envelopes, unknown fields, alias conflicts, and empty projects.
+- The entire project, including duplicate member identities and explicit
+  effective-depth basis, validates before the first calculation call. Blocked
+  input returns non-zero, writes no result, emits no partial PASS, and keeps
+  stdout free of diagnostics.
+- Retained output schema version `1` and its top-level `beams` envelope. Valid
+  output remains accepted by BBS, detailing, and DXF consumers; the maintained
+  sample and CLI guidance now provide complete explicit inputs rather than
+  precomputed steel/status fields.
+- Expanded packaged release UAT from 19 to 29 cases and bound all 12 live CLI
+  commands to a packaged inventory classified as calculation entry, result
+  consumer, inspection, or compatibility.
+- Exposed a validation-only project-batch command so the CLI can prove whole-
+  batch acceptance without performing the strict calculation and legacy
+  compatibility calculation twice.
+
+### Issues encountered
+
+- The existing advertised `design` command silently skipped malformed CSV rows,
+  supplied effective depth/cover values through legacy defaults, contaminated
+  stdout with warnings, exited zero, and published a partial PASS artifact.
+- The first worktree-creation command could not start because its execution
+  working directory was the not-yet-created target path. No command ran and no
+  repository state changed.
+- The first formatting check found the expanded UAT and CLI test modules did
+  not match Black/import ordering, so candidate formatting was not yet frozen.
+- The first focused index refresh rewrote `last_updated` for many unchanged
+  files because the fresh linked worktree gave all checked-out files today's
+  filesystem mtime, creating unrelated candidate churn.
+- The first session-end check could not discover the existing valid receipt
+  because its Markdown path was wrapped onto the line after the required label.
+- The first normal commit-hook run stopped on strict typing for derived-depth
+  nullable values and Bandit's existing row-skip findings because the packet
+  had unnecessarily changed the legacy adapter file.
+- A follow-up direct hook diagnostic guessed a bare `pre-commit` executable,
+  which is not exposed on this shell's PATH even though it is installed in the
+  project-bound Python environment.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `cmd_design` directly called
+  `excel_integration.load_beam_data_from_csv`, whose compatibility parser
+  catches row exceptions and continues, and whose model constructor fills
+  structural defaults. Resolution: route CSV through `parse_single_csv_lossless`,
+  use a strict versioned JSON reader, account every accepted field, validate the
+  whole project through `validate_project_beam_batch_v1`, then call the retained
+  beam pipeline only after all records pass. Evidence: malformed-only, mixed,
+  empty, missing-depth, non-finite, unknown, duplicate, and ambiguous cases all
+  return non-zero with zero calculation calls and no output artifact.
+- Confirmed root cause: process creation resolves `workdir` before executing the
+  shell, so a command cannot create its own nonexistent working directory.
+  Resolution: create the linked worktree from the verified primary checkout,
+  then run session/source-binding checks inside it. Evidence: the lane reported
+  `source_bound=true`, `READY_LOCAL`, exact base equality, and a clean start.
+  ⚠️ TERMINAL ISSUE: new worktree path used as `workdir` before creation ->
+  created from the existing primary checkout, then changed command context.
+- Confirmed root cause: hand-written additions required deterministic formatter
+  wrapping and import sorting. Resolution: format only the two reported files
+  and apply Ruff's import-order fix. Evidence: Black, Ruff, and
+  `git diff --check` pass on all Packet I Python paths.
+- Confirmed root cause: index dates are still derived from filesystem mtime,
+  which is not stable provenance in a newly materialized linked worktree.
+  Resolution: restore only the task-generated indexes to their reviewed base,
+  set unchanged tracked source mtimes to their last commit time, and regenerate
+  the affected folders once; retain task entries and genuine content-hash
+  repairs while removing date-only churn. Evidence: final index checks pass and
+  the reviewed index diff contains no unchanged-file date rewrites.
+- Confirmed root cause: `_parse_git_receipt_path` requires the receipt label and
+  path on one line. Resolution: place the existing repository-relative path on
+  the label line without changing the receipt. Evidence: the repeated session-
+  end validator resolves and validates the task ID, branch, and receipt hash.
+- Confirmed root cause: runtime issue checks established complete numeric input,
+  but Mypy could not narrow values stored in a `dict[str, float | None]`; CLI
+  aliases were also added to the legacy adapter even though only the ledger
+  needs them. Resolution: explicitly narrow the operands, annotate UAT helper
+  arguments/parser choices, restore the adapter unchanged, and extend aliases
+  only in the lossless import boundary. Evidence: focused tests, Mypy, Bandit,
+  and the repeated normal hooks pass. No Bandit suppression was added.
+- Confirmed root cause: the shell PATH does not include the primary checkout's
+  virtual-environment scripts. Resolution: invoke the installed hook runner
+  through `./scripts/python_runtime.sh -m pre_commit`. Evidence: targeted Mypy
+  and Bandit diagnostics complete through the bound interpreter.
+  ⚠️ TERMINAL ISSUE: bare `pre-commit` was unavailable -> used the maintained
+  worktree-bound Python launcher with `-m pre_commit`.
+
+### Validation through content freeze
+
+- Startup: fetched `origin/main`; primary was clean/equal at `b3a9c367`; fresh
+  linked lane was `source_bound=true`, `READY_LOCAL`, with no operation marker.
+- Narrow contract diagnostic: 26 selected CLI tests and the release-UAT test
+  passed before documentation closeout.
+- Consolidated Packet I selection: 150 passed across CLI, Excel integration
+  edges, lossless imports, strict batch, and expanded release UAT.
+- Expanded source UAT: 29/29 cases pass; the live 12-command parser inventory
+  exactly matches the packaged classified inventory.
+- Black, Ruff, and `git diff --check` pass for every changed Python/test path.
+- Exact-wheel build/install verification is intentionally reserved for the
+  next release-preparation task at the owner's request; it is not publication
+  authority.
+
+### Timing through content freeze
+
+- Git/source orientation and safe lane creation: approximately 5 minutes.
+- Contract tracing, implementation, and focused repair: approximately 20
+  minutes.
+- Documentation, receipt, indexes, gates, hosted CI, and merge closeout are
+  completed after this content freeze.
+
 ## 2026-08-17 — Session: LIB-PRO-002 Post-Fix Usability Re-Audit
 
 **Agent:** Codex (`library-expert`, documentation/evidence owner)

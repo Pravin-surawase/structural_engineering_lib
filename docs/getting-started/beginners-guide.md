@@ -80,8 +80,8 @@ Status: OK
 ### Step 5: Run the CLI with a tiny CSV
 Create a file named `beams.csv` with this content:
 ```csv
-BeamID,Story,b,D,Span,Cover,fck,fy,Mu,Vu
-B1,Ground,300,500,4000,40,25,500,150,100
+BeamID,Story,b,D,eff_d,Span,Cover,fck,fy,Mu,Vu,Stirrup_Dia,Stirrup_Spacing
+B1,Ground,300,500,450,4000,40,25,500,150,100,8,150
 ```
 
 Now run the full pipeline:

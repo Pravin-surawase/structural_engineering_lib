@@ -157,6 +157,11 @@ complete path.
 
 ### Run a CLI pipeline
 
+The sample uses the strict CLI v1 input contract: every member supplies its
+identity, materials, actions, detailing dimensions, and either effective depth
+or a complete derivation basis. A blocked row prevents calculation of the
+whole file; diagnostics use stderr and result JSON remains machine-readable.
+
 ```bash
 python3 -m structural_lib design Python/examples/sample_beam_design.csv -o results.json
 python3 -m structural_lib detail results.json -o detailing.json

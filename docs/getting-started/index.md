@@ -25,6 +25,6 @@ Quick onboarding guides for new users of the structural engineering library.
 | [installation-notes.md](installation-notes.md) |  | All required packages have been installed successfully: - ** | 89 |
 | [mac-mini-setup.md](mac-mini-setup.md) |  | Complete instructions to clone and run the full stack on a f | 396 |
 | [product-tour.md](product-tour.md) |  | See the supported workflow before installing anything. These | 99 |
-| [python-quickstart.md](python-quickstart.md) |  | This guide shows how to install, run, and verify the Python  | 202 |
+| [python-quickstart.md](python-quickstart.md) |  | This guide shows how to install, run, and verify the Python  | 203 |
 | [releases.md](releases.md) |  | This document serves as the **immutable source of truth** fo | 1250 |
-| [user-guide.md](user-guide.md) |  | This guide walks you through a complete beam design workflow | 223 |
+| [user-guide.md](user-guide.md) |  | This guide walks you through a complete beam design workflow | 226 |

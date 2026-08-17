@@ -127,7 +127,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-002-I | Converge the advertised `design` CLI on lossless/strict intake, freeze its JSON/downstream compatibility contract, and add every advertised calculation entry point to exact-wheel negative UAT | backend + tester + release | M | P0 | 📋 READY — post-fix replay at `fe4ab025` reproduced partial-success CLI row loss: one malformed row skipped, warning contaminated stdout, exit 0, remaining row reported PASS |
+| LIB-PRO-002-I | Converge the advertised `design` CLI on lossless/strict intake, freeze its JSON/downstream compatibility contract, and add every advertised calculation entry point to exact-wheel negative UAT | backend + tester + release | M | P0 | 🛠️ CANDIDATE — strict CSV/JSON intake blocks whole-project malformed/mixed/empty/non-finite/unknown/duplicate/ambiguous inputs before calculation; retained `beams` output and downstream consumers pass 150 focused tests; immutable/hosted acceptance pending |
 | LIB-PRO-002-J | Bind hosted full suites to the selected Python interpreter and replace warning-compatible `READY TO RELEASE` pre-bump output with mode-accurate candidate/publication verdicts | ops + tester + release | S | P0 | 📋 BLOCKED BY I — Weekly Verification `31988837003` failed six launcher-dependent tests; pre-bump `0.23.1a2` checks passed locally without a wheel but overstated release readiness |
 
 INDIA-2 remains administratively complete within its recorded accepted/held

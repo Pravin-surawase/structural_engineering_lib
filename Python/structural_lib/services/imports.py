@@ -117,6 +117,9 @@ _NUMERIC_FIELDS = {
     "pu_kn",
     "span_mm",
     "station",
+    "stirrup_diameter_mm",
+    "stirrup_spacing_mm",
+    "tension_bar_diameter_mm",
     "v2",
     "vu_kn",
     "vu_max",
@@ -144,6 +147,9 @@ _UNITS = {
     "pu_kn": "kN",
     "span_mm": "mm",
     "station": "source-length-unit",
+    "stirrup_diameter_mm": "mm",
+    "stirrup_spacing_mm": "mm",
+    "tension_bar_diameter_mm": "mm",
     "v2": "kN",
     "vu_kn": "kN",
     "vu_max": "kN",
@@ -161,6 +167,29 @@ _CALCULATION_HEADER = re.compile(
 # geometry artifact, so the ledger records them as metadata rather than
 # silently treating them as force inputs.
 _EXPLICIT_METADATA_HEADERS = {"width_mm", "depth_mm", "span_m", "span_mm"}
+
+_GENERIC_CLI_GEOMETRY_COLUMNS: dict[str, list[str]] = {
+    "eff_depth_mm": ["eff_d", "effective_depth_mm"],
+    "stirrup_diameter_mm": [
+        "stirrup_diameter_mm",
+        "stirrup_dia_mm",
+        "stirrup_dia",
+        "Stirrup_Dia",
+        "Stirrup Diameter",
+    ],
+    "stirrup_spacing_mm": [
+        "stirrup_spacing_mm",
+        "stirrup_spacing",
+        "Stirrup_Spacing",
+        "Stirrup Spacing",
+    ],
+    "tension_bar_diameter_mm": [
+        "tension_bar_diameter_mm",
+        "main_bar_dia_mm",
+        "bar_dia_mm",
+        "Tension Bar Diameter",
+    ],
+}
 
 
 def _build_adapters() -> list[InputAdapter]:
@@ -289,7 +318,17 @@ def _column_spec(
         return merged
     attribute = "GEOMETRY_COLUMNS" if role == "geometry" else "FORCES_COLUMNS"
     value = getattr(adapter, attribute, None)
-    return value if isinstance(value, dict) else {}
+    result = (
+        {field: list(aliases) for field, aliases in value.items()}
+        if isinstance(value, dict)
+        else {}
+    )
+    if isinstance(adapter, GenericCSVAdapter) and role == "geometry":
+        for field, aliases in _GENERIC_CLI_GEOMETRY_COLUMNS.items():
+            result.setdefault(field, []).extend(
+                alias for alias in aliases if alias not in result.get(field, [])
+            )
+    return result
 
 
 def _canonical_headers(

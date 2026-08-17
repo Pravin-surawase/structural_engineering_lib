@@ -545,7 +545,9 @@ candidate pass.
 
 ### I — Advertised CLI convergence (`LIB-PRO-002-I`, M)
 
-**State:** required next repair packet after the post-fix user replay.
+**State:** implemented on the Packet I candidate from `b3a9c367`; 150 focused
+CLI/import/batch/UAT tests pass. Immutable review, hosted checks, and unchanged-
+head merge remain before Packet J starts.
 
 **Depends on:** A through G.
 **Owns:** the `design` CLI intake/orchestration path, its CSV/JSON compatibility

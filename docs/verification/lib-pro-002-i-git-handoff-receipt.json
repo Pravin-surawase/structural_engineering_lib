@@ -1,0 +1,177 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "7af55c4a084eec06eb54072d088f293641d7333b29928c38e2e520bda5ca194a",
+    "state": {
+      "branch": "codex/lib-pro-002-i-cli",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "b3a9c367de012982a8b9adefda0db60e2d762d7b",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 93.057,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-lib-pro-002-i-cli",
+      "head_sha": "b3a9c367de012982a8b9adefda0db60e2d762d7b",
+      "hold_reasons": [
+        "changed paths: 42"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-17T05:19:06.861132+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-i-cli",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 42,
+        "modified_paths": [
+          "Python/structural_lib/services/adapters.py",
+          "Python/structural_lib/services/cli_design.py",
+          "Python/structural_lib/services/imports.py",
+          "Python/structural_lib/services/release_uat.py",
+          "docs/SESSION_LOG.md"
+        ],
+        "staged_paths": [
+          "Python/README.md",
+          "Python/examples/index.json",
+          "Python/examples/index.md",
+          "Python/examples/sample_beam_design.csv",
+          "Python/index.json",
+          "Python/index.md",
+          "Python/structural_lib/__main__.py",
+          "Python/structural_lib/data/advertised_entry_points_v1.json",
+          "Python/structural_lib/data/release_negative_uat_v1.json",
+          "Python/structural_lib/index.json",
+          "Python/structural_lib/index.md",
+          "Python/structural_lib/services/adapters.py",
+          "Python/structural_lib/services/batch.py",
+          "Python/structural_lib/services/cli_design.py",
+          "Python/structural_lib/services/imports.py",
+          "Python/structural_lib/services/index.json",
+          "Python/structural_lib/services/index.md",
+          "Python/structural_lib/services/release_uat.py",
+          "Python/tests/index.json",
+          "Python/tests/index.md",
+          "Python/tests/integration/test_cli.py",
+          "Python/tests/test_release_uat.py",
+          "README.md",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/cookbook/cli-reference.md",
+          "docs/cookbook/index.json",
+          "docs/cookbook/index.md",
+          "docs/getting-started/beginners-guide.md",
+          "docs/getting-started/index.json",
+          "docs/getting-started/index.md",
+          "docs/getting-started/python-quickstart.md",
+          "docs/getting-started/user-guide.md",
+          "docs/index.json",
+          "docs/index.md",
+          "docs/planning/index.json",
+          "docs/planning/index.md",
+          "docs/planning/next-session-brief.md",
+          "docs/planning/pre-release-input-safety-and-professional-readiness-plan.md",
+          "docs/verification/index.json",
+          "docs/verification/index.md",
+          "docs/verification/lib-pro-002-i-git-handoff-receipt.json"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "b3a9c367de012982a8b9adefda0db60e2d762d7b",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-i-cli"
+    }
+  },
+  "local_state_receipt_hash": "sha256:7af55c4a084eec06eb54072d088f293641d7333b29928c38e2e520bda5ca194a",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-17T05:19:06.861310+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [],
+    "integration_owner": "Codex",
+    "owned_paths": [
+      "Python/README.md",
+      "Python/examples/sample_beam_design.csv",
+      "Python/structural_lib/__main__.py",
+      "Python/structural_lib/data/advertised_entry_points_v1.json",
+      "Python/structural_lib/data/release_negative_uat_v1.json",
+      "Python/structural_lib/services/batch.py",
+      "Python/structural_lib/services/cli_design.py",
+      "Python/structural_lib/services/imports.py",
+      "Python/structural_lib/services/release_uat.py",
+      "Python/tests/integration/test_cli.py",
+      "Python/tests/test_release_uat.py",
+      "README.md",
+      "docs/cookbook/cli-reference.md",
+      "docs/getting-started/beginners-guide.md",
+      "docs/getting-started/python-quickstart.md",
+      "docs/getting-started/user-guide.md",
+      "docs/verification/lib-pro-002-i-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md",
+      "docs/planning/pre-release-input-safety-and-professional-readiness-plan.md"
+    ],
+    "task_id": "LIB-PRO-002-I"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

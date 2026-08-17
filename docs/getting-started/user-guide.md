@@ -37,7 +37,7 @@ The fastest way to design a beam is via the CLI:
 
 ```bash
 # Create input file
-echo '{"beams": [{"id": "B1", "b": 300, "D": 500, "d": 450, "Mu_mid": 150, "Vu_max": 100, "fck": 25, "fy": 500}], "units": "IS456"}' > beam.json
+echo '{"schema_version":"cli-beam-design-input/v1","beams":[{"beam_id":"B1","story":"Ground","b":300,"D":500,"d":450,"span":4000,"cover":40,"fck":25,"fy":500,"Mu":150,"Vu":100,"stirrup_dia":8,"stirrup_spacing":150}]}' > beam.json
 
 # Run design
 python -m structural_lib design beam.json -o results.json
@@ -47,12 +47,15 @@ python -m structural_lib design beam.json -o results.json
 ```json
 {
   "schema_version": 1,
-  "units": {"length": "mm", "force": "kN", "moment": "kN.m", "stress": "N/mm2"},
+  "code": "IS456",
+  "units": "IS456",
   "beams": [{
-    "id": "B1",
-    "flexure": {"ast_required": 942.3, "mu_lim": 196.54, "is_safe": true},
-    "shear": {"spacing": 175, "is_safe": true}
-  }]
+    "beam_id": "B1",
+    "story": "Ground",
+    "flexure": {"ast_required_mm2": 942.3, "is_safe": true},
+    "shear": {"sv_required_mm": 175, "is_safe": true}
+  }],
+  "summary": {"total_beams": 1, "passed": 1, "failed": 0}
 }
 ```
 
@@ -63,10 +66,10 @@ python -m structural_lib design beam.json -o results.json
 Create a CSV file with your beam data:
 
 ```csv
-id,b,D,d,Mu_mid,Vu_max,fck,fy
-B1,300,500,450,150,100,25,500
-B2,230,450,400,80,75,20,415
-B3,350,600,550,250,150,30,500
+BeamID,Story,b,D,eff_d,Span,Cover,fck,fy,Mu,Vu,Stirrup_Dia,Stirrup_Spacing
+B1,Ground,300,500,450,4000,40,25,500,150,100,8,150
+B2,Ground,230,450,400,3500,40,20,415,80,75,8,175
+B3,First,350,600,550,5000,40,30,500,250,150,10,125
 ```
 
 Run:

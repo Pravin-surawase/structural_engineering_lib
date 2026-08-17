@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-17",
-  "file_count": 49,
+  "file_count": 50,
   "files": [
     {
       "name": "__init__.py",
@@ -234,13 +234,20 @@
     {
       "name": "batch.py",
       "type": "python",
-      "size_lines": 613,
+      "size_lines": 624,
       "last_updated": "2026-08-17",
       "description": "Strict project beam design plus a delegating legacy batch surface.",
       "functions": [
         {
           "name": "design_project_beams_v1",
           "description": "Validate the complete batch, then calculate only accepted unique members.",
+          "params": [
+            "beams"
+          ]
+        },
+        {
+          "name": "validate_project_beam_batch_v1",
+          "description": "Validate a complete project batch without calling calculation functions.",
           "params": [
             "beams"
           ]
@@ -271,7 +278,7 @@
         "_LEGACY_DIRECT_FIELDS",
         "_LEGACY_KNOWN_FIELDS"
       ],
-      "content_hash": "9805352746f7"
+      "content_hash": "3751aca23739"
     },
     {
       "name": "bbs.py",
@@ -866,6 +873,56 @@
         "_SLAB_REVIEW_ALIAS"
       ],
       "content_hash": "de07530b279f"
+    },
+    {
+      "name": "cli_design.py",
+      "type": "python",
+      "size_lines": 623,
+      "last_updated": "2026-08-17",
+      "description": "Strict, lossless intake and compatibility output for the advertised design CLI.",
+      "classes": [
+        {
+          "name": "CLIDesignIssueV1",
+          "description": "Stable blocked-intake diagnostic."
+        },
+        {
+          "name": "CLIDesignBlockedError",
+          "description": "Raised before calculation when any CLI project input is unsafe."
+        },
+        {
+          "name": "CLIDesignRecordV1",
+          "description": "Complete CLI record plus the canonical strict calculation payload."
+        },
+        {
+          "name": "CLIDesignIntakeV1",
+          "description": "Accounted input records and immutable source identity."
+        }
+      ],
+      "functions": [
+        {
+          "name": "load_cli_design_input_v1",
+          "description": "Load every source record without defaults, row loss, or field loss.",
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "design_cli_project_v1",
+          "description": "Validate the whole project, then calculate into the retained beams envelope.",
+          "params": [
+            "records"
+          ]
+        }
+      ],
+      "constants": [
+        "CLI_DESIGN_INPUT_SCHEMA_VERSION",
+        "CLI_DESIGN_OUTPUT_SCHEMA_VERSION",
+        "_ALIAS_TO_FIELD",
+        "_CSV_FIELD_MAP",
+        "_REQUIRED_FIELDS",
+        "_NUMERIC_FIELDS"
+      ],
+      "content_hash": "5fc2033e3d8c"
     },
     {
       "name": "column_api.py",
@@ -1984,7 +2041,7 @@
     {
       "name": "imports.py",
       "type": "python",
-      "size_lines": 1062,
+      "size_lines": 1101,
       "last_updated": "2026-08-17",
       "description": "Fail-closed multi-format CSV import boundary.",
       "classes": [
@@ -2047,7 +2104,7 @@
         "_CALCULATION_HEADER",
         "_EXPLICIT_METADATA_HEADERS"
       ],
-      "content_hash": "da3e3207e1aa"
+      "content_hash": "c64f70c5ce6e"
     },
     {
       "name": "intelligence.py",
@@ -2318,7 +2375,7 @@
     {
       "name": "release_uat.py",
       "type": "python",
-      "size_lines": 421,
+      "size_lines": 591,
       "last_updated": "2026-08-17",
       "description": "Source-free exact-wheel UAT for the pre-release input-safety contract.",
       "functions": [
@@ -2333,9 +2390,12 @@
         }
       ],
       "constants": [
-        "_MATRIX_RESOURCE"
+        "_MATRIX_RESOURCE",
+        "_ENTRYPOINT_RESOURCE",
+        "_CLI_HEADER",
+        "_CLI_VALID_ROW"
       ],
-      "content_hash": "d3cabb6a9220"
+      "content_hash": "edd91f23d9b8"
     },
     {
       "name": "report.py",
@@ -3108,5 +3168,5 @@
     "PropertyLineStrapFootingDesignStatus",
     "design_property_line_strap_footing_is456"
   ],
-  "content_hash": "35c4044743075de1"
+  "content_hash": "055c4f5fc19673a5"
 }

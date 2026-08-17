@@ -97,9 +97,9 @@ python -m structural_lib design <input> [-o <output>] [--deflection] [--summary 
 **Input CSV format:**
 
 ```csv
-BeamID,Story,b,D,Span,Cover,fck,fy,Mu,Vu,Ast_req,Asc_req,Stirrup_Dia,Stirrup_Spacing,Status
-B1,Story1,300,500,4000,40,25,500,150,100,942.5,0,8,150,OK
-B2,Story1,300,450,3000,40,25,500,100,80,628.3,0,8,175,OK
+BeamID,Story,b,D,eff_d,Span,Cover,fck,fy,Mu,Vu,Stirrup_Dia,Stirrup_Spacing
+B1,Story1,300,500,450,4000,40,25,500,150,100,8,150
+B2,Story1,300,450,400,3000,40,25,500,100,80,8,175
 ```
 
 | Column | Unit | Description |
@@ -108,23 +108,21 @@ B2,Story1,300,450,3000,40,25,500,100,80,628.3,0,8,175,OK
 | `Story` | — | Story/level name |
 | `b` | mm | Beam width |
 | `D` | mm | Overall depth |
+| `eff_d` | mm | Explicit effective depth |
 | `Span` | mm | Clear span |
 | `Cover` | mm | Clear cover |
 | `fck` | N/mm² | Concrete grade |
 | `fy` | N/mm² | Steel grade |
 | `Mu` | kN·m | Factored moment |
 | `Vu` | kN | Factored shear |
-| `d` | mm | Effective depth (optional; defaults to `D - Cover` if omitted) |
-| `Ast_req` | mm² | Required tension steel (used for detailing outputs) |
-| `Asc_req` | mm² | Required compression steel (optional; defaults to 0) |
 | `Stirrup_Dia` | mm | Stirrup diameter |
 | `Stirrup_Spacing` | mm | Stirrup spacing |
-| `Status` | — | Optional status field |
 
 Notes:
-- `Ast_req` / `Asc_req` are used to generate detailing and BBS outputs. If you want
-  detailing to reflect computed design results, provide those values explicitly.
-- If `d` is not provided, it is computed as `D - Cover`.
+- `Ast_req`, `Asc_req`, and `Status` are outputs, not accepted design inputs.
+- Replace `eff_d` with `tension_bar_diameter_mm` only to derive effective depth
+  from explicit `D`, cover, stirrup diameter, and tension-bar diameter.
+- Any invalid or unaccounted row/field blocks the whole file before calculation.
 
 **Examples:**
 

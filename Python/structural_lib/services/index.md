@@ -2,7 +2,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-17
-**Files:** 49
+**Files:** 50
 
 ## Public API
 
@@ -27,13 +27,14 @@
 | [api_hub.py](api_hub.py) | Module:       api | 0 | 0 | 238 |
 | [api_results.py](api_results.py) | Module:       api_results | 8 | 0 | 507 |
 | [audit.py](audit.py) | Module:       audit | 3 | 3 | 595 |
-| [batch.py](batch.py) | Strict project beam design plus a delegating legacy batch su | 0 | 4 | 613 |
+| [batch.py](batch.py) | Strict project beam design plus a delegating legacy batch su | 0 | 5 | 624 |
 | [bbs.py](bbs.py) | Bar Bending Schedule (BBS) Module — IS 2502:1999 / SP 34:198 | 3 | 19 | 1134 |
 | [beam_api.py](beam_api.py) | Module:       beam_api | 0 | 20 | 2297 |
 | [beam_pipeline.py](beam_pipeline.py) | beam_pipeline — Unified application-layer pipeline for beam  | 10 | 3 | 636 |
 | [boq.py](boq.py) | Project Bill of Quantities (BOQ) — Aggregation Module | 4 | 1 | 209 |
 | [calculation_report.py](calculation_report.py) | Module:       calculation_report | 4 | 1 | 722 |
 | [capabilities.py](capabilities.py) | Discoverable supported-case registry for the IS 456 public l | 7 | 3 | 1934 |
+| [cli_design.py](cli_design.py) | Strict, lossless intake and compatibility output for the adv | 4 | 2 | 623 |
 | [column_api.py](column_api.py) | Module:       column_api | 0 | 13 | 1546 |
 | [combined_footing_api.py](combined_footing_api.py) | Stable orchestration for the bounded symmetric combined-foot | 4 | 2 | 252 |
 | [common_api.py](common_api.py) | Module:       common_api | 0 | 5 | 721 |
@@ -48,7 +49,7 @@
 | [flat_slab_api.py](flat_slab_api.py) | Stable orchestration for the bounded regular interior flat-s | 4 | 2 | 339 |
 | [footing_api.py](footing_api.py) | Bounded orchestration for concentric isolated footings (IS 4 | 5 | 1 | 915 |
 | [import_ledger.py](import_ledger.py) | Versioned, lossless import evidence models. | 11 | 0 | 187 |
-| [imports.py](imports.py) | Fail-closed multi-format CSV import boundary. | 2 | 6 | 1062 |
+| [imports.py](imports.py) | Fail-closed multi-format CSV import boundary. | 2 | 6 | 1101 |
 | [intelligence.py](intelligence.py) | Compatibility shim for legacy imports. | 0 | 0 | 36 |
 | [job_cli.py](job_cli.py) | job_cli | 0 | 1 | 203 |
 | [job_runner.py](job_runner.py) | job_runner | 0 | 4 | 317 |
@@ -57,7 +58,7 @@
 | [project_beam.py](project_beam.py) | Versioned, fail-closed project beam input and result contrac | 7 | 1 | 605 |
 | [rebar.py](rebar.py) | Rebar configuration validation and application helpers. | 0 | 2 | 251 |
 | [rebar_optimizer.py](rebar_optimizer.py) | Rebar arrangement optimizer (deterministic). | 1 | 1 | 322 |
-| [release_uat.py](release_uat.py) | Source-free exact-wheel UAT for the pre-release input-safety | 0 | 2 | 421 |
+| [release_uat.py](release_uat.py) | Source-free exact-wheel UAT for the pre-release input-safety | 0 | 2 | 591 |
 | [report.py](report.py) | Report generation module for beam design results. | 5 | 14 | 1772 |
 | [report_svg.py](report_svg.py) | SVG helpers for report visuals (stdlib only). | 0 | 2 | 279 |
 | [serialization.py](serialization.py) | JSON serialization utilities for canonical data models. | 0 | 12 | 449 |

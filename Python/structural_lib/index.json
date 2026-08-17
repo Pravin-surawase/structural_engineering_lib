@@ -28,7 +28,7 @@
     {
       "name": "__main__.py",
       "type": "python",
-      "size_lines": 1632,
+      "size_lines": 1588,
       "last_updated": "2026-08-17",
       "description": "Unified CLI entrypoint for structural_lib.",
       "functions": [
@@ -124,7 +124,7 @@
           ]
         }
       ],
-      "content_hash": "cf9b6f526349"
+      "content_hash": "b2ffbf4ab3dc"
     },
     {
       "name": "adapters.py",
@@ -540,7 +540,7 @@
     {
       "name": "data",
       "path": "data/",
-      "file_count": 1
+      "file_count": 2
     },
     {
       "name": "insights",
@@ -563,7 +563,7 @@
     {
       "name": "services",
       "path": "services/",
-      "file_count": 51,
+      "file_count": 52,
       "is_package": true
     },
     {
@@ -596,5 +596,5 @@
     "serviceability",
     "shear"
   ],
-  "content_hash": "304a7b4260163ee9"
+  "content_hash": "197e2b3d289388dc"
 }
