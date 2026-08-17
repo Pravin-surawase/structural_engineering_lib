@@ -2661,3 +2661,141 @@ exact head `98927f1de4a1e8f60d1d9d66bf2e8a036c2a0dd2`.
 
 - No calculation, HTTP adapter, schema, React, A2, gravity, ETABS, Excel,
   optimization, release, or professional-approval behavior is changed.
+
+## 2026-08-17 — Session: A2 Lossless Intake and Calculation Root Causes
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/a2-lossless-intake-calculation`.
+
+**Focus:** Implement only Packet A2 bundles F3, F4, and the calculation/advice
+part of F5 on the merged A1 base. Gravity, live ETABS, Excel, write-back,
+optimization, solver, release, and professional approval remain excluded.
+
+### Issues encountered
+
+- The first exact-extrema diagnostic used `zip(..., strict=True)` for adjacent
+  boundary lists whose one-item length difference is intentional, so the point
+  load reproducer stopped before calculation.
+- After retaining both sides of a point-load jump, the generic critical-point
+  interpolator divided by zero between two samples at the same physical
+  location.
+- The frozen focused batch rejected five contract assertions: two tests still
+  required exactly the requested plot count, the schema freeze omitted the
+  intended additive ETABS provenance, one test used a nonexistent field
+  attribute, and semantic reflection could not see optional nested dataclasses.
+  Its first repair then exposed the same checker's inability to validate the
+  deliberately serialized canonical result-envelope mapping, so the candidate
+  returned to a bounded replan.
+- The architecture check rejected a direct UI-to-core import in the repaired
+  building route. The first service-facade repair then selected the facade's
+  visualization `Point3D` name rather than the canonical nested point model,
+  and two building-route cases returned 422.
+- This isolated worktree did not contain ignored React dependencies. A direct
+  `npm ci` used the shell's Node 26 and warned that the project requires Node
+  24, although the lockfile installation completed.
+- The cumulative Python run rejected 11 legacy assertions. Eight were one
+  public effective-depth error-message drift, while three audit-readiness tests
+  passed immediately in the isolated failed-only selection. The reconnect
+  removed the original process handle after pytest had written its exact
+  failed-node cache.
+- The first full repository gate passed 28 of 31 checks and rejected only the
+  intentionally changed ETABS API manifest, its additive `BeamForces` schema
+  snapshot, and the 404-file active-document count against the 400-file limit.
+- The first normal commit-hook attempt applied deterministic formatting/newline
+  fixes, then rejected the candidate because mypy treated the seven new
+  provenance fields as required constructor arguments and Bandit scanned three
+  pre-existing silent invalid-member skips plus the `PASS` enum string.
+- Hosted PR Validation passed repository, documentation, React, and Python but
+  failed three FastAPI plausibility-validator tests whose direct
+  `SmartAnalysisRequest` construction omitted A2's now-required explicit
+  effective depth and span.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `zip(boundaries, boundaries[1:])` is intentionally
+  non-equal. Resolution: declare `strict=False`. Evidence: exact off-grid point,
+  partial UDL, mirrored-location, and load-scaling vectors pass.
+- Confirmed root cause: discontinuity plotting represents left/right shear at
+  identical coordinates, but continuous zero-crossing interpolation assumed a
+  positive interval. Resolution: skip interpolation when adjacent coordinates
+  are equal while retaining both values. Evidence: applied moment and point-load
+  discontinuity tests pass without losing extrema.
+- Confirmed root cause: the contract tests encoded the old display-array and
+  `BeamForces` shapes, used `.canonical_unit` instead of `.unit`, and traversed
+  only direct dataclass annotations. Resolution: assert the exact critical-point
+  behavior, freeze the additive provenance fields, traverse optional dataclasses,
+  and validate serialized `result_envelope.*` paths against
+  `StructuralResultEnvelopeV2`. Evidence: all eight semantic-contract checks and
+  the failed schema/load assertions pass after the bounded replan.
+- Confirmed root cause: UI code bypassed the service layer, while the facade has
+  two historical `Point3D` meanings. Resolution: import only `BeamGeometry` and
+  `FrameType` from the service facade and pass validated point/section mappings
+  into the canonical Pydantic model. Evidence: six building-route tests pass;
+  architecture reports 209 files and zero violations; 668-file import validation
+  reports zero broken imports. ⚠️ TERMINAL ISSUE: direct core import failed the
+  architecture gate -> used the maintained service boundary and typed mappings.
+- Confirmed root cause: linked worktrees do not share ignored `node_modules`,
+  and the interactive shell runtime is not the repository-pinned Node version.
+  Resolution: install the exact lockfile once, then run every React command
+  through `./run.sh frontend`, which selected Node 24.19.0/npm 11.17.0. Evidence:
+  focused Vitest, production build, and lint pass. ⚠️ TERMINAL ISSUE: isolated
+  React dependencies were absent and direct npm used Node 26 -> installed once
+  and used the pinned frontend wrapper for evidence.
+- Confirmed root cause: `resolve_effective_depth_v1` combined non-finite,
+  non-positive, and geometric depth failures into newer generic messages after
+  A1, while the public beam contract still distinguishes those outcomes.
+  Resolution: retain the central validator and restore field-specific finite
+  messages plus the established overall-depth relationship message. Evidence:
+  all eight failed depth cases, the 46 canonical transport/batch cases, and
+  changed-file Ruff pass.
+- Root cause unconfirmed for the three audit-readiness failures: they passed in
+  the first isolated failed-only selection with no code or fixture change, so
+  no product behavior was changed for them. Their exact failed nodes were
+  recovered from pytest's cache and the remaining gate will determine whether
+  any reproducible repository-level issue remains. ⚠️ TERMINAL ISSUE: app
+  reconnect removed the completed pytest process/output handle -> recovered the
+  exact failed-node set from `Python/.pytest_cache/v/cache/lastfailed` and ran
+  only that set with verbose output.
+- Confirmed root cause: ETABS provenance fields changed the public dataclass and
+  serialized model intentionally, but the generated manifest and snapshot still
+  described the pre-A2 shapes. Resolution: regenerate each canonical artifact
+  once with its maintained generator; no calculation code changed.
+- Confirmed root cause: four documents already marked `archived` or `deprecated`
+  remained in the active documentation tree, so adding the A2 evidence record
+  exposed the hard limit. Resolution: preview and move exactly those four files
+  through `safe_file_move.py`, preserving content and updating ordinary links;
+  the active count is now 400 and link validation remains at zero broken links.
+  A tempting INDIA plan was explicitly excluded because its preview would have
+  rewritten immutable historical receipts.
+- Confirmed root cause: positional `Field(None, ...)` defaults were valid at
+  runtime but were not inferred as optional by the configured Pydantic mypy
+  plugin for the extended `BeamForces` signature. Resolution: express those
+  seven defaults as `default=None`; the exact configured mypy command passes all
+  236 source files and 55 affected model/adapter tests pass.
+- Confirmed root cause: touching the historical multi-format adapter brought
+  three broad `except Exception: continue` paths into Bandit's changed-file
+  scope, while `DesignStatus.PASS` is an engineering status false positive.
+  Resolution: narrow those catches to validation errors, log every skipped
+  member identity/reason, and annotate only the enum literal as non-credential
+  `B105`. Changed-file Bandit reports no issues. The hook's Black and EOF edits
+  were retained exactly.
+- Confirmed root cause: the three older tests exercised only the depth/width
+  validator and were outside the focused smart-route selection, so their setup
+  still relied on the removed hidden `D - 50` and `12D` assumptions. Resolution:
+  add realistic explicit `effective_depth` and `span_length` values without
+  changing the assertions or production model. The exact three failed tests are
+  the repair evidence; the unchanged hosted jobs are not rerun locally.
+
+### Validation through content freeze
+
+- Source binding: base `a0458e1935e9f14bcba47a838d5fe61b46174b05`,
+  `source_bound=true`.
+- Focused Python/FastAPI selection completed; every initially failed assertion
+  passed through impact-mapped repair without rerunning unchanged suites.
+- React contract `1/1`, production build, lint, changed-file Ruff, architecture,
+  import validation, and OpenAPI all pass. OpenAPI remains 82 endpoints and now
+  contains 368 schemas.
+- Broad Python, full repository, quick, hooks, immutable audit, push, and hosted
+  checks remain the cumulative M2/G1 closeout sequence after the final index
+  refresh.

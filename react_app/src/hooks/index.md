@@ -14,7 +14,7 @@
 | [useCSVImport.ts](useCSVImport.ts) | ImportedBeam, BeamDesignPayload, DesignedBeam, useCSVFileImport, useCSVTextImport (+2) | 509 |
 | [useDesignWebSocket.ts](useDesignWebSocket.ts) | ConnectionStatus, WebSocketState, requiresCanonicalHttp, normalizeWebSocketDesignResult, useDesignWebSocket | 290 |
 | [useExport.ts](useExport.ts) | ExportBeamParams, ExportReportParams, useExportBBS, useExportDXF, useExportReport (+3) | 202 |
-| [useGeometryAdvanced.ts](useGeometryAdvanced.ts) | Point3D, BuildingBeamInput, BuildingBeamResult, BuildingGeometryResponse, CrossSectionRequest (+4) | 172 |
+| [useGeometryAdvanced.ts](useGeometryAdvanced.ts) | Point3D, BuildingBeamInput, BuildingBeamResult, BuildingGeometryResponse, CrossSectionRequest (+3) | 176 |
 | [useInsights.ts](useInsights.ts) | BeamResult, StoryStats, DashboardData, CheckDetail, CodeChecksResult (+10) | 346 |
 | [useLiveDesign.ts](useLiveDesign.ts) | createQuickDesignIdentity, useLiveDesign | 365 |
 | [useLoadAnalysis.ts](useLoadAnalysis.ts) | useLoadAnalysis | 17 |
@@ -28,4 +28,4 @@
 
 | File | Exports | Lines |
 |------|---------|-------|
-| [index.ts](index.ts) | useAutoDesign, useDesignWebSocket, useBeamGeometry, useLiveDesign, useCSVFileImport (+10) | 87 |
+| [index.ts](index.ts) | useAutoDesign, useDesignWebSocket, useBeamGeometry, useLiveDesign, useCSVFileImport (+10) | 86 |

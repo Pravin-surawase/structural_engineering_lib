@@ -589,6 +589,7 @@ export interface LoadItem {
   load_type: 'udl' | 'point';
   magnitude: number;
   position_mm?: number;
+  end_position_mm?: number;
 }
 
 export interface LoadAnalysisRequest {

@@ -19,8 +19,8 @@ from fastapi_app.models.analysis import (
     SmartAnalysisResponse,
     Suggestion,
     CodeCheck,
-    EfficiencyMetrics,
-    CostEstimate,
+    SmartScoreMetrics,
+    SmartCostAnalysis,
 )
 from fastapi_app.models.metadata import CodeClausesResponse
 
@@ -71,6 +71,7 @@ async def analyze_loads(request: LoadAnalysisRequest):
                 load_type=lt,
                 magnitude=load.magnitude,
                 position_mm=load.position_mm,
+                end_position_mm=load.end_position_mm,
             )
         )
 
@@ -149,17 +150,14 @@ async def smart_analyze_beam(
     try:
         from structural_lib.services.api import smart_analyze_design
 
-        # Calculate effective depth
-        effective_depth = request.depth - 50  # Approximate
-
         result = smart_analyze_design(
             units="IS456",
-            span_mm=request.span_length if request.span_length else request.depth * 12,
+            span_mm=request.span_length,
             mu_knm=request.moment,
             vu_kn=request.shear,
             b_mm=request.width,
             D_mm=request.depth,
-            d_mm=effective_depth,
+            d_mm=request.effective_depth,
             fck_nmm2=request.fck,
             fy_nmm2=request.fy,
             include_cost=True,
@@ -171,25 +169,25 @@ async def smart_analyze_beam(
         # Get summary data from result
         summary_data = result.summary_data
 
-        # Parse code checks - not directly available, create from summary
+        # The core smart-analysis result owns check identity and arithmetic.
+        # The transport only serializes those canonical checks.
+        summary_checks = summary_data.get("checks", [])
         code_checks = []
         if request.include_code_checks:
-            # Create a basic compliance check based on safety_score
-            safety_passed = summary_data.get("safety_score", 0) < 1.0
-            code_checks.append(
-                CodeCheck(
-                    clause="IS 456 Cl. 38.1",
-                    description="Flexural capacity check",
-                    passed=safety_passed,
-                    calculated_value=summary_data.get("safety_score"),
-                    limit_value=1.0,
-                    message=(
-                        "Section is adequate"
-                        if safety_passed
-                        else "Section overstressed"
-                    ),
+            for check in summary_checks:
+                passed = bool(check["passed"])
+                code_checks.append(
+                    CodeCheck(
+                        clause=check["clause_ref"],
+                        description=f"{check['check_id'].title()} capacity check",
+                        passed=passed,
+                        calculated_value=check["utilization"],
+                        limit_value=1.0,
+                        message=(
+                            "Section is adequate" if passed else "Section overstressed"
+                        ),
+                    )
                 )
-            )
 
         # Parse suggestions from result.suggestions dict
         suggestions = []
@@ -207,50 +205,50 @@ async def smart_analyze_beam(
                     )
                 )
 
-        # Parse efficiency metrics from summary_data
-        efficiency = None
+        # Translate the core-owned score names without reinterpreting them.
+        scores = None
         if request.analyze_efficiency:
-            efficiency = EfficiencyMetrics(
-                utilization_ratio=summary_data.get("safety_score", 0.0),
-                steel_efficiency=1.0 - summary_data.get("safety_score", 0.0),
-                concrete_efficiency=summary_data.get("cost_efficiency", 0.0),
-                overall_efficiency=summary_data.get("overall_score", 0.0),
-                efficiency_grade=(
-                    "A" if summary_data.get("overall_score", 0) > 0.85 else "B"
-                ),
-                efficiency_comment=summary_data.get("design_status", ""),
+            scores = SmartScoreMetrics(
+                cost_efficiency=summary_data["cost_efficiency"],
+                constructability=summary_data["constructability"],
+                robustness=summary_data["robustness"],
+                overall_score=summary_data["overall_score"],
             )
 
-        # Parse cost estimate from result.cost dict
-        cost_estimate = None
+        # Serialize only values produced by the core cost analysis.
+        cost_analysis = None
         if result.cost:
             cost_data = result.cost
-            cost_estimate = CostEstimate(
-                relative_cost=(
-                    cost_data.get("current_cost", 0) / cost_data.get("optimal_cost", 1)
-                    if cost_data.get("optimal_cost")
-                    else 1.0
-                ),
-                estimated_concrete=request.width
-                * request.depth
-                / 1e6,  # Approximate m³/m
-                estimated_steel=0.0,  # Would need detailed calc
-                cost_rating=(
-                    "optimal" if cost_data.get("savings_percent", 0) < 5 else "moderate"
-                ),
+            cost_analysis = SmartCostAnalysis(
+                current_cost=cost_data["current_cost"],
+                optimal_cost=cost_data["optimal_cost"],
+                savings_percent=cost_data["savings_percent"],
+                baseline_alternative=cost_data.get("baseline_alternative"),
+                optimal_alternative=cost_data.get("optimal_alternative"),
+                alternatives=cost_data.get("alternatives", []),
             )
 
-        all_passed = all(c.passed for c in code_checks) if code_checks else True
+        all_passed = bool(summary_checks) and all(
+            bool(check["passed"]) for check in summary_checks
+        )
         critical_count = sum(1 for s in suggestions if s.priority == "high")
 
         # Build design summary
         design_summary = {
             "width_mm": request.width,
             "depth_mm": request.depth,
+            "effective_depth_mm": request.effective_depth,
+            "span_mm": request.span_length,
             "moment_knm": request.moment,
             "shear_kn": request.shear,
             "fck_nmm2": request.fck,
             "fy_nmm2": request.fy,
+            "design_status": summary_data["design_status"],
+            "governing_utilization": summary_data.get("governing_utilization"),
+            "capacity_margin": summary_data.get("safety_score"),
+            "governing_check": summary_data.get("governing_check"),
+            "key_issues": summary_data.get("key_issues", []),
+            "quick_wins": summary_data.get("quick_wins", []),
         }
 
         return success_response(
@@ -262,8 +260,8 @@ async def smart_analyze_beam(
                 all_checks_passed=all_passed,
                 suggestions=suggestions,
                 critical_suggestions=critical_count,
-                efficiency=efficiency,
-                cost_estimate=cost_estimate,
+                scores=scores,
+                cost_analysis=cost_analysis,
                 warnings=[],
             )
         )

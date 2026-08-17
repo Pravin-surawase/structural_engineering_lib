@@ -1062,8 +1062,12 @@ Notes:
   actionable steps. See [Design Suggestions Guide](../getting-started/design-suggestions-guide.md).
 - `smart_analyze_design()` (v0.15.0+) returns unified smart design dashboard combining cost
   optimization, design suggestions, sensitivity analysis, and constructability assessment.
-  Runs full design pipeline internally and returns comprehensive dashboard with overall scores,
-  ratings, and recommendations. Supports dict, JSON, or text output formats.
+  It runs the canonical beam pipeline internally. `governing_utilization` remains a
+  demand/capacity ratio; `safety_score` is the remaining-capacity margin
+  `max(0, 1 - governing_utilization)`; and flexure/shear check identity comes from
+  that pipeline. Normalized advisory scores remain on a `0..1` scale in data and
+  are multiplied by 100 only when rendered as text `/100`. Failed canonical
+  designs are reported as `FAIL`, not reclassified as invalid input.
 
 ---
 
@@ -1189,8 +1193,9 @@ def compute_bmd_sfd(
         LoadDiagramResult with positions, BMD, SFD, and critical points
 
     Raises:
-        ValueError: If span is non-positive or support_condition invalid
-        NotImplementedError: For TRIANGULAR or MOMENT load types
+        ValueError: If any input is non-finite, the span/load geometry is invalid,
+            num_points is not an integer >= 2, or the support/load combination is
+            unsupported
     """
 ```
 
@@ -1201,8 +1206,8 @@ def compute_bmd_sfd(
 class LoadType(Enum):
     UDL = auto()        # Uniformly distributed load (kN/m)
     POINT = auto()      # Concentrated load (kN)
-    TRIANGULAR = auto() # Triangular load (not yet implemented)
-    MOMENT = auto()     # Applied moment (not yet implemented)
+    TRIANGULAR = auto() # Simply supported only
+    MOMENT = auto()     # Applied concentrated moment, simply supported only
 ```
 
 **LoadDefinition** (Dataclass):
@@ -1214,6 +1219,11 @@ class LoadDefinition:
     position_mm: float = 0.0  # Position from left support
     end_position_mm: float | None = None  # For partial loads
 ```
+
+All magnitudes and locations must be finite. Magnitudes are positive, point and
+moment locations lie inside the span, and a UDL end must be greater than its
+start and no greater than the span. Partial UDL bounds are calculated exactly;
+they are never retained and ignored.
 
 **CriticalPoint** (Dataclass):
 ```python
@@ -1251,6 +1261,11 @@ class LoadDiagramResult:
 | Simply Supported | Point (P) at a from left | Pab/L | Load point | Pb/L or Pa/L |
 | Cantilever | UDL (w) | wL²/2 | Fixed end | wL |
 | Cantilever | Point (P) at tip | PL | Fixed end | P |
+
+The returned plot grid includes every load discontinuity and every detected
+zero-shear extremum in addition to the requested display points. Therefore
+`num_points` controls display density but cannot understate an off-grid
+engineering extremum; the returned arrays may contain extra points.
 
 ### 1B.5 Sign Conventions
 
@@ -2965,6 +2980,13 @@ class ETABSEnvelopeResult:
     mu_knm: float      # Maximum absolute moment (kN·m)
     vu_kn: float       # Maximum absolute shear (kN)
     station_count: int = 1  # Number of output stations processed
+    moment_signed_knm: float | None = None
+    moment_station: float | None = None
+    shear_signed_kn: float | None = None
+    shear_station: float | None = None
+    shear_at_moment_station_kn: float | None = None
+    moment_at_shear_station_knm: float | None = None
+    envelope_basis: str = "independent_absolute_extrema_with_concurrent_values"
 ```
 
 ### 14.2 CSV Validation
@@ -2975,7 +2997,7 @@ def validate_etabs_csv(
 ) -> tuple[bool, list[str], dict[str, str]]
 ```
 
-Validates ETABS CSV file structure and returns:
+Validates a non-empty ETABS CSV file structure and returns:
 - `is_valid`: True if all required columns found
 - `issues`: List of issue messages
 - `column_map`: Mapping of internal names to actual column names
@@ -2998,7 +3020,10 @@ def load_etabs_csv(
 ) -> list[ETABSForceRow]
 ```
 
-Loads and parses ETABS beam forces CSV file. Use `station_multiplier=1000` if stations are in meters.
+Loads and parses ETABS beam forces CSV file. Use `station_multiplier=1000` if
+stations are in meters. `Story`, member, case, station, M3, and V2 are required;
+malformed, missing, or non-finite calculation cells block with a source row
+number. They are never converted to zero or silently skipped.
 
 ### 14.4 Force Normalization (Envelope)
 
@@ -3010,7 +3035,11 @@ def normalize_etabs_forces(
 ) -> list[ETABSEnvelopeResult]
 ```
 
-Normalizes forces to envelope values (max absolute per beam/case). Groups by `(story, beam_id, case_id)` and takes maximum absolute M3 and V2 across all stations.
+Groups by `(story, beam_id, case_id)` and selects maximum absolute M3 and V2
+independently. The result preserves each signed extremum, its source station,
+and the concurrent companion action. This CSV workflow is read-only and
+beam-scoped; it does not prove ETABS model completeness, unit correctness,
+load-combination approval, analysis validity, or professional review.
 
 ### 14.5 Job Creation
 

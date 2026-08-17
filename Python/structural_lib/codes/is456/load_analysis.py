@@ -44,6 +44,249 @@ from structural_lib.core.data_types import (
 DEFAULT_NUM_POINTS = 101  # Default number of points for discretization
 
 
+def _require_finite(name: str, value: float) -> float:
+    """Return a finite float or fail before any structural calculation."""
+    try:
+        numeric = float(value)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"{name} must be a finite number") from exc
+    if not math.isfinite(numeric):
+        raise ValueError(f"{name} must be a finite number")
+    return numeric
+
+
+def _validate_combined_load_inputs(
+    span_mm: float,
+    loads: list[LoadDefinition],
+    num_points: int,
+) -> float:
+    """Validate calculation-bearing load data against the beam span."""
+    span = _require_finite("span_mm", span_mm)
+    if span <= 0:
+        raise ValueError(f"Span must be positive, got {span_mm}")
+    if (
+        isinstance(num_points, bool)
+        or not isinstance(num_points, int)
+        or num_points < 2
+    ):
+        raise ValueError(f"num_points must be an integer >= 2, got {num_points!r}")
+    if not loads:
+        raise ValueError("At least one load must be specified")
+
+    for index, load in enumerate(loads):
+        prefix = f"loads[{index}]"
+        magnitude = _require_finite(f"{prefix}.magnitude", load.magnitude)
+        if magnitude <= 0:
+            raise ValueError(f"{prefix}.magnitude must be positive, got {magnitude}")
+
+        position = _require_finite(f"{prefix}.position_mm", load.position_mm)
+        if position < 0 or position > span:
+            raise ValueError(
+                f"{prefix}.position_mm must be in [0, {span}], got {position}"
+            )
+
+        if load.end_position_mm is not None:
+            end = _require_finite(f"{prefix}.end_position_mm", load.end_position_mm)
+            if load.load_type is not LoadType.UDL:
+                raise ValueError(
+                    f"{prefix}.end_position_mm is only supported for UDL loads"
+                )
+            if end <= position or end > span:
+                raise ValueError(
+                    f"{prefix}.end_position_mm must be in ({position}, {span}], got {end}"
+                )
+
+    return span
+
+
+def _load_bounds_mm(load: LoadDefinition, span_mm: float) -> tuple[float, float]:
+    """Return the explicit loaded interval for a UDL."""
+    return load.position_mm, (
+        span_mm if load.end_position_mm is None else load.end_position_mm
+    )
+
+
+def _evaluate_load_at(
+    *,
+    span_mm: float,
+    support_condition: Literal["simply_supported", "cantilever"],
+    load: LoadDefinition,
+    x_mm: float,
+    side: Literal["left", "right"] = "right",
+) -> tuple[float, float]:
+    """Evaluate one load at an exact section; return (moment kN.m, shear kN)."""
+    span_m = span_mm / 1000.0
+    x_m = x_mm / 1000.0
+
+    if load.load_type is LoadType.UDL:
+        start_mm, end_mm = _load_bounds_mm(load, span_mm)
+        start_m = start_mm / 1000.0
+        end_m = end_mm / 1000.0
+        loaded_length_m = end_m - start_m
+        w = load.magnitude
+
+        if support_condition == "simply_supported":
+            total = w * loaded_length_m
+            centroid_m = (start_m + end_m) / 2.0
+            reaction_a = total * (span_m - centroid_m) / span_m
+            applied_length = min(max(x_m - start_m, 0.0), loaded_length_m)
+            shear = reaction_a - w * applied_length
+            moment = reaction_a * x_m
+            if applied_length:
+                moment -= w * applied_length * (x_m - (start_m + applied_length / 2.0))
+            return moment, shear
+
+        if x_m < start_m:
+            total = w * loaded_length_m
+            return -total * ((start_m + end_m) / 2.0 - x_m), -total
+        if x_m <= end_m:
+            remaining = end_m - x_m
+            return -w * remaining**2 / 2.0, -w * remaining
+        return 0.0, 0.0
+
+    if load.load_type is LoadType.POINT:
+        a_m = load.position_mm / 1000.0
+        is_left = x_m < a_m or (math.isclose(x_m, a_m) and side == "left")
+        if support_condition == "simply_supported":
+            reaction_a = load.magnitude * (span_m - a_m) / span_m
+            if is_left:
+                return reaction_a * x_m, reaction_a
+            return (
+                reaction_a * x_m - load.magnitude * (x_m - a_m),
+                reaction_a - load.magnitude,
+            )
+        if is_left:
+            return -load.magnitude * (a_m - x_m), -load.magnitude
+        return 0.0, 0.0
+
+    if load.load_type is LoadType.TRIANGULAR:
+        ascending = math.isclose(load.position_mm, 0.0, abs_tol=1e-6)
+        w = load.magnitude
+        if support_condition == "cantilever":
+            raise ValueError("Triangular loads are not supported for cantilever beams")
+        if ascending:
+            reaction_a = w * span_m / 6.0
+            return (
+                reaction_a * x_m - w * x_m**3 / (6.0 * span_m),
+                reaction_a - w * x_m**2 / (2.0 * span_m),
+            )
+        reaction_a = w * span_m / 3.0
+        return (
+            reaction_a * x_m - w * x_m**2 / 2.0 + w * x_m**3 / (6.0 * span_m),
+            reaction_a - w * x_m + w * x_m**2 / (2.0 * span_m),
+        )
+
+    if load.load_type is LoadType.MOMENT:
+        if support_condition == "cantilever":
+            raise ValueError("Applied moments are not supported for cantilever beams")
+        a_m = load.position_mm / 1000.0
+        reaction_a = -load.magnitude / span_m
+        is_left = x_m < a_m or (math.isclose(x_m, a_m) and side == "left")
+        moment = reaction_a * x_m
+        if not is_left:
+            moment += load.magnitude
+        return moment, reaction_a
+
+    raise ValueError(f"Unknown load type: {load.load_type}")
+
+
+def _evaluate_combined_at(
+    *,
+    span_mm: float,
+    support_condition: Literal["simply_supported", "cantilever"],
+    loads: list[LoadDefinition],
+    x_mm: float,
+    side: Literal["left", "right"] = "right",
+) -> tuple[float, float]:
+    moment = 0.0
+    shear = 0.0
+    for load in loads:
+        load_moment, load_shear = _evaluate_load_at(
+            span_mm=span_mm,
+            support_condition=support_condition,
+            load=load,
+            x_mm=x_mm,
+            side=side,
+        )
+        moment += load_moment
+        shear += load_shear
+    return moment, shear
+
+
+def _critical_sample_positions(
+    *,
+    span_mm: float,
+    support_condition: Literal["simply_supported", "cantilever"],
+    loads: list[LoadDefinition],
+    num_points: int,
+) -> list[tuple[float, Literal["left", "right"]]]:
+    """Build a plot grid augmented by load discontinuities and zero-shear roots."""
+    base = {span_mm * i / (num_points - 1) for i in range(num_points)}
+    boundaries = {0.0, span_mm}
+    discontinuities: set[float] = set()
+
+    for load in loads:
+        if load.load_type in (LoadType.POINT, LoadType.MOMENT):
+            boundaries.add(load.position_mm)
+            discontinuities.add(load.position_mm)
+        elif load.load_type is LoadType.UDL:
+            start, end = _load_bounds_mm(load, span_mm)
+            boundaries.update((start, end))
+
+    ordered_boundaries = sorted(boundaries)
+    roots: set[float] = set()
+    for left, right in zip(ordered_boundaries, ordered_boundaries[1:], strict=False):
+        if math.isclose(left, right):
+            continue
+        epsilon = max((right - left) * 1e-9, span_mm * 1e-12)
+        x_left = left + epsilon
+        x_right = right - epsilon
+        _, v_left = _evaluate_combined_at(
+            span_mm=span_mm,
+            support_condition=support_condition,
+            loads=loads,
+            x_mm=x_left,
+        )
+        _, v_right = _evaluate_combined_at(
+            span_mm=span_mm,
+            support_condition=support_condition,
+            loads=loads,
+            x_mm=x_right,
+        )
+        if math.isclose(v_left, 0.0, abs_tol=1e-10):
+            roots.add(x_left)
+        elif math.isclose(v_right, 0.0, abs_tol=1e-10):
+            roots.add(x_right)
+        elif v_left * v_right < 0:
+            lo, hi = x_left, x_right
+            for _ in range(60):
+                mid = (lo + hi) / 2.0
+                _, v_mid = _evaluate_combined_at(
+                    span_mm=span_mm,
+                    support_condition=support_condition,
+                    loads=loads,
+                    x_mm=mid,
+                )
+                if math.isclose(v_mid, 0.0, abs_tol=1e-12):
+                    lo = hi = mid
+                    break
+                if v_left * v_mid <= 0:
+                    hi = mid
+                    v_right = v_mid
+                else:
+                    lo = mid
+                    v_left = v_mid
+            roots.add((lo + hi) / 2.0)
+
+    all_positions = sorted(base | boundaries | roots)
+    samples: list[tuple[float, Literal["left", "right"]]] = []
+    for position in all_positions:
+        if position in discontinuities and position > 0:
+            samples.append((position, "left"))
+        samples.append((position, "right"))
+    return samples
+
+
 # =============================================================================
 # Core Computation Functions
 # =============================================================================
@@ -483,6 +726,11 @@ def _find_critical_points(
         if sfd_kn[i] * sfd_kn[i + 1] < 0:  # Sign change
             # Linear interpolation for more accurate position
             x1, x2 = positions_mm[i], positions_mm[i + 1]
+            if math.isclose(x1, x2):
+                # A point load creates a shear jump at one physical location.
+                # Both sides are retained for lossless plotting, but there is
+                # no continuous zero-shear section to interpolate between.
+                continue
             v1, v2 = sfd_kn[i], sfd_kn[i + 1]
             x_zero = x1 - v1 * (x2 - x1) / (v2 - v1)
 
@@ -543,64 +791,33 @@ def compute_bmd_sfd(
         ... ]
         >>> result = compute_bmd_sfd(6000, "simply_supported", loads)
     """
-    # Input validation
-    if span_mm <= 0:
-        raise ValueError(f"Span must be positive, got {span_mm}")
-
     if support_condition not in ("simply_supported", "cantilever"):
         raise ValueError(
             f"support_condition must be 'simply_supported' or 'cantilever', "
             f"got '{support_condition}'"
         )
+    span = _validate_combined_load_inputs(span_mm, loads, num_points)
+    samples = _critical_sample_positions(
+        span_mm=span,
+        support_condition=support_condition,
+        loads=loads,
+        num_points=num_points,
+    )
 
-    if not loads:
-        raise ValueError("At least one load must be specified")
-
-    # Initialize with zeros
-    positions_mm = [span_mm * i / (num_points - 1) for i in range(num_points)]
-    combined_bmd = [0.0] * num_points
-    combined_sfd = [0.0] * num_points
-
-    # Process each load
-    for load in loads:
-        if load.load_type == LoadType.UDL:
-            if support_condition == "simply_supported":
-                _, bmd, sfd = compute_udl_bmd_sfd(span_mm, load.magnitude, num_points)
-            else:  # cantilever
-                _, bmd, sfd = compute_cantilever_udl_bmd_sfd(
-                    span_mm, load.magnitude, num_points
-                )
-
-        elif load.load_type == LoadType.POINT:
-            if support_condition == "simply_supported":
-                _, bmd, sfd = compute_point_load_bmd_sfd(
-                    span_mm, load.magnitude, load.position_mm, num_points
-                )
-            else:  # cantilever
-                _, bmd, sfd = compute_cantilever_point_load_bmd_sfd(
-                    span_mm, load.magnitude, load.position_mm, num_points
-                )
-
-        elif load.load_type == LoadType.TRIANGULAR:
-            # Ascending by default; position_mm=0 → ascending, else descending
-            ascending = math.isclose(load.position_mm, 0.0, abs_tol=1e-6)
-            _, bmd, sfd, _ = compute_triangular_load_bmd_sfd(
-                span_mm, load.magnitude, ascending=ascending, num_points=num_points
-            )
-
-        elif load.load_type == LoadType.MOMENT:
-            position = load.position_mm if load.position_mm > 0 else None
-            _, bmd, sfd = compute_applied_moment_bmd_sfd(
-                span_mm, load.magnitude, a_mm=position, num_points=num_points
-            )
-
-        else:
-            raise ValueError(f"Unknown load type: {load.load_type}")
-
-        # Superimpose
-        combined_bmd, combined_sfd = _superimpose_diagrams(
-            combined_bmd, combined_sfd, bmd, sfd
+    positions_mm: list[float] = []
+    combined_bmd: list[float] = []
+    combined_sfd: list[float] = []
+    for position, side in samples:
+        moment, shear = _evaluate_combined_at(
+            span_mm=span,
+            support_condition=support_condition,
+            loads=loads,
+            x_mm=position,
+            side=side,
         )
+        positions_mm.append(position)
+        combined_bmd.append(moment)
+        combined_sfd.append(shear)
 
     # Find critical points
     critical_points = _find_critical_points(positions_mm, combined_bmd, combined_sfd)
@@ -616,7 +833,7 @@ def compute_bmd_sfd(
         bmd_knm=combined_bmd,
         sfd_kn=combined_sfd,
         critical_points=critical_points,
-        span_mm=span_mm,
+        span_mm=span,
         support_condition=support_condition,
         loads=loads,
         max_bm_knm=max_bm,

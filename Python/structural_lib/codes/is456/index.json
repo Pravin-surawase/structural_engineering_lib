@@ -2,7 +2,7 @@
   "folder": "Python/structural_lib/codes/is456",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-16",
+  "last_updated": "2026-08-17",
   "file_count": 14,
   "files": [
     {
@@ -94,8 +94,8 @@
     {
       "name": "load_analysis.py",
       "type": "python",
-      "size_lines": 627,
-      "last_updated": "2026-08-16",
+      "size_lines": 844,
+      "last_updated": "2026-08-17",
       "description": "Module:       load_analysis",
       "functions": [
         {
@@ -170,7 +170,7 @@
       "constants": [
         "DEFAULT_NUM_POINTS"
       ],
-      "content_hash": "eec451850955"
+      "content_hash": "fe9c30ec2bdd"
     },
     {
       "name": "materials.py",
@@ -468,5 +468,5 @@
     "list_clauses_by_category",
     "search_clauses"
   ],
-  "content_hash": "13f9199fc453ddba"
+  "content_hash": "b636637e363d3371"
 }

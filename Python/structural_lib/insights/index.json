@@ -2,7 +2,7 @@
   "folder": "Python/structural_lib/insights",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-16",
+  "last_updated": "2026-08-17",
   "file_count": 10,
   "files": [
     {
@@ -203,8 +203,8 @@
     {
       "name": "smart_designer.py",
       "type": "python",
-      "size_lines": 636,
-      "last_updated": "2026-08-16",
+      "size_lines": 654,
+      "last_updated": "2026-08-17",
       "description": "Smart Designer — Unified intelligent design analysis dashboard.",
       "classes": [
         {
@@ -256,7 +256,7 @@
           ]
         }
       ],
-      "content_hash": "2774f91c9cb0"
+      "content_hash": "6e474772c683"
     },
     {
       "name": "types.py",
@@ -335,5 +335,5 @@
     "DashboardReport",
     "DesignAlternative"
   ],
-  "content_hash": "3e78de9ebb85c4d2"
+  "content_hash": "e7c7416aa0bb86e2"
 }

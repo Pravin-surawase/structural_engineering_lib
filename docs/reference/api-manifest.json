@@ -132,7 +132,7 @@
     {
       "name": "ETABSEnvelopeResult",
       "kind": "class",
-      "signature": "(story: 'str', beam_id: 'str', case_id: 'str', mu_knm: 'float', vu_kn: 'float', station_count: 'int' = 1) -> None"
+      "signature": "(story: 'str', beam_id: 'str', case_id: 'str', mu_knm: 'float', vu_kn: 'float', station_count: 'int' = 1, moment_signed_knm: 'float | None' = None, moment_station: 'float | None' = None, shear_signed_kn: 'float | None' = None, shear_station: 'float | None' = None, shear_at_moment_station_kn: 'float | None' = None, moment_at_shear_station_knm: 'float | None' = None, envelope_basis: 'str' = 'independent_absolute_extrema_with_concurrent_values') -> None"
     },
     {
       "name": "ETABSForceRow",

@@ -16,17 +16,23 @@
     {
       "name": "analysis.py",
       "type": "python",
-      "size_lines": 264,
+      "size_lines": 306,
       "last_updated": "2026-08-17",
       "description": "Smart Analysis Pydantic Models.",
       "classes": [
         {
           "name": "LoadItem",
-          "description": "Single load definition."
+          "description": "Single load definition.",
+          "public_methods": [
+            "validate_partial_load_contract"
+          ]
         },
         {
           "name": "LoadAnalysisRequest",
-          "description": "Request model for simple load analysis (BMD/SFD)."
+          "description": "Request model for simple load analysis (BMD/SFD).",
+          "public_methods": [
+            "validate_load_locations"
+          ]
         },
         {
           "name": "CriticalPointResponse",
@@ -52,19 +58,23 @@
           "description": "Code compliance check result."
         },
         {
-          "name": "EfficiencyMetrics",
-          "description": "Design efficiency metrics."
+          "name": "SmartDesignSummary",
+          "description": "Explicit inputs and canonical design-check semantics."
         },
         {
-          "name": "CostEstimate",
-          "description": "Rough cost estimate for analysis."
+          "name": "SmartScoreMetrics",
+          "description": "Core-owned normalized advisory scores; no transport relabelling."
+        },
+        {
+          "name": "SmartCostAnalysis",
+          "description": "Cost-analysis values calculated by the core smart-design service."
         },
         {
           "name": "SmartAnalysisResponse",
           "description": "Response model for smart analysis."
         }
       ],
-      "content_hash": "26dc50c893b8"
+      "content_hash": "8f93521d985b"
     },
     {
       "name": "beam.py",
@@ -648,7 +658,7 @@
     {
       "name": "geometry.py",
       "type": "python",
-      "size_lines": 412,
+      "size_lines": 494,
       "last_updated": "2026-08-17",
       "description": "3D Geometry Pydantic Models.",
       "classes": [
@@ -688,38 +698,38 @@
           "description": "Single beam in building geometry (line representation)."
         },
         {
+          "name": "BuildingPointInput",
+          "description": "Source coordinate converted to millimetres by coordinate_scale_to_mm."
+        },
+        {
+          "name": "BuildingSectionInput",
+          "description": "Explicit section data required to construct canonical beam geometry."
+        },
+        {
+          "name": "BuildingBeamInput",
+          "description": "Typed canonical member input for building-line visualization only."
+        },
+        {
+          "name": "BuildingBoundingBox",
+          "description": "Exact output bounds in millimetres."
+        },
+        {
+          "name": "BuildingGeometryMetadata",
+          "description": "Applicability and coordinate-conversion receipt for display geometry."
+        },
+        {
           "name": "BuildingGeometryResponse",
           "description": "Response model for building-level 3D geometry."
         },
         {
           "name": "BuildingGeometryRequest",
-          "description": "Request model for building geometry generation."
-        },
-        {
-          "name": "CrossSectionRequest",
-          "description": "Request model for 2D cross-section geometry.",
+          "description": "Request model for building geometry generation.",
           "public_methods": [
-            "validate_cross_fields"
+            "validate_member_identity_and_filter"
           ]
-        },
-        {
-          "name": "CrossSectionResponse",
-          "description": "Response model for 2D cross-section geometry."
-        },
-        {
-          "name": "Geometry3DRequest",
-          "description": "Request model for 3D geometry generation."
-        },
-        {
-          "name": "MeshData",
-          "description": "3D mesh data in vertices/faces format."
-        },
-        {
-          "name": "BoundingBox",
-          "description": "Axis-aligned bounding box."
         }
       ],
-      "content_hash": "74e7662984d5"
+      "content_hash": "11d34369b086"
     },
     {
       "name": "library_core.py",
@@ -1127,5 +1137,5 @@
     "DuctilityCheckRequest",
     "DuctilityCheckResponse"
   ],
-  "content_hash": "cf6ccb5d0d255f4e"
+  "content_hash": "ab57c4e379fcf157"
 }

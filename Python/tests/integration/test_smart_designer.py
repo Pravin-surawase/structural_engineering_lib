@@ -138,6 +138,62 @@ def test_smart_designer_summary_structure():
     assert 0.0 <= summary.overall_score <= 1.0
     assert isinstance(summary.key_issues, list)
     assert isinstance(summary.quick_wins, list)
+    assert summary.safety_score == pytest.approx(
+        max(0.0, 1.0 - summary.governing_utilization)
+    )
+    assert summary.governing_check == dashboard.design_result.governing_check
+    assert {check["check_id"] for check in summary.checks} == {"flexure", "shear"}
+    assert all(check["basis"] == "canonical_beam_pipeline" for check in summary.checks)
+
+
+def test_lower_utilization_has_larger_remaining_capacity_margin():
+    light_params = {**_base_params(), "mu_knm": 60.0, "vu_kn": 40.0}
+    heavier_params = {**_base_params(), "mu_knm": 120.0, "vu_kn": 85.0}
+    light = SmartDesigner.analyze(
+        design=_run_pipeline(light_params),
+        span_mm=light_params["span_mm"],
+        mu_knm=light_params["mu_knm"],
+        vu_kn=light_params["vu_kn"],
+        include_cost=False,
+        include_suggestions=False,
+        include_sensitivity=False,
+        include_constructability=False,
+    )
+    heavier = SmartDesigner.analyze(
+        design=_run_pipeline(heavier_params),
+        span_mm=heavier_params["span_mm"],
+        mu_knm=heavier_params["mu_knm"],
+        vu_kn=heavier_params["vu_kn"],
+        include_cost=False,
+        include_suggestions=False,
+        include_sensitivity=False,
+        include_constructability=False,
+    )
+
+    assert light.summary.governing_utilization < heavier.summary.governing_utilization
+    assert light.summary.safety_score > heavier.summary.safety_score
+
+
+def test_failing_canonical_design_is_reported_not_reclassified_as_bad_input():
+    params = {**_base_params(), "vu_kn": 600.0}
+    design = _run_pipeline(params)
+    assert design.is_ok is False
+
+    dashboard = SmartDesigner.analyze(
+        design=design,
+        span_mm=params["span_mm"],
+        mu_knm=params["mu_knm"],
+        vu_kn=params["vu_kn"],
+        include_cost=False,
+        include_suggestions=False,
+        include_sensitivity=False,
+        include_constructability=False,
+    )
+
+    assert dashboard.summary.design_status == "FAIL"
+    assert dashboard.summary.governing_check.startswith("shear")
+    assert dashboard.summary.governing_utilization > 1.0
+    assert dashboard.summary.safety_score == 0.0
 
 
 def test_smart_designer_cost_analysis():

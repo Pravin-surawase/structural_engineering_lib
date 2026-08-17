@@ -77,7 +77,8 @@ class FrameType(StrEnum):
 class DesignStatus(StrEnum):
     """Design check status."""
 
-    PASS = "PASS"
+    # Engineering disposition, not a credential.
+    PASS = "PASS"  # nosec B105
     FAIL = "FAIL"
     WARNING = "WARNING"
     NOT_CHECKED = "NOT_CHECKED"
@@ -240,6 +241,28 @@ class BeamForces(BaseModel):
     vu_kn: float = Field(..., ge=0, description="Design shear in kN")
     pu_kn: float = Field(0.0, description="Axial force in kN")
     station_count: int = Field(1, ge=1, description="Number of stations processed")
+    moment_signed_knm: float | None = Field(
+        default=None, description="Signed moment at the absolute moment extremum"
+    )
+    moment_station: float | None = Field(
+        default=None, ge=0, description="Source station of the moment extremum"
+    )
+    shear_signed_kn: float | None = Field(
+        default=None, description="Signed shear at the absolute shear extremum"
+    )
+    shear_station: float | None = Field(
+        default=None, ge=0, description="Source station of the shear extremum"
+    )
+    shear_at_moment_station_kn: float | None = Field(
+        default=None, description="Concurrent signed shear at the moment extremum"
+    )
+    moment_at_shear_station_knm: float | None = Field(
+        default=None, description="Concurrent signed moment at the shear extremum"
+    )
+    envelope_basis: str | None = Field(
+        default=None,
+        description="How extrema were selected; independent extrema are explicit",
+    )
 
 
 class BeamDesignResult(BaseModel):

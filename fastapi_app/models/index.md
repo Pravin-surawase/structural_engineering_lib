@@ -32,7 +32,7 @@
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
 | [__init__.py](__init__.py) | Pydantic Models Package. | 0 | 0 | 88 |
-| [analysis.py](analysis.py) | Smart Analysis Pydantic Models. | 10 | 0 | 264 |
+| [analysis.py](analysis.py) | Smart Analysis Pydantic Models. | 11 | 0 | 306 |
 | [beam.py](beam.py) | Beam Design and Detailing Pydantic Models. | 15 | 0 | 836 |
 | [boq.py](boq.py) | Pydantic models for Project BOQ endpoint. | 8 | 0 | 107 |
 | [capabilities.py](capabilities.py) | Typed transport models for canonical IS 456 capability disco | 8 | 0 | 79 |
@@ -44,7 +44,7 @@
 | [deep_beam.py](deep_beam.py) | Transport models for the bounded simply supported deep-beam  | 9 | 0 | 143 |
 | [flat_slab.py](flat_slab.py) | Transport models for the bounded regular interior flat-slab  | 15 | 0 | 250 |
 | [footing.py](footing.py) | Transport models for the bounded concentric isolated-footing | 14 | 0 | 278 |
-| [geometry.py](geometry.py) | 3D Geometry Pydantic Models. | 15 | 0 | 412 |
+| [geometry.py](geometry.py) | 3D Geometry Pydantic Models. | 15 | 0 | 494 |
 | [library_core.py](library_core.py) | Requests for the bounded footing and slab public-library wor | 15 | 0 | 370 |
 | [metadata.py](metadata.py) | Typed payload models for maintained static JSON metadata rou | 9 | 0 | 97 |
 | [optimization.py](optimization.py) | Cost Optimization Pydantic Models. | 9 | 0 | 298 |

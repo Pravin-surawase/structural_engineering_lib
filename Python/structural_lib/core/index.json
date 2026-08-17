@@ -667,7 +667,7 @@
     {
       "name": "models.py",
       "type": "python",
-      "size_lines": 531,
+      "size_lines": 554,
       "last_updated": "2026-08-17",
       "description": "Canonical Data Models for Structural Engineering Library.",
       "classes": [
@@ -743,7 +743,7 @@
           ]
         }
       ],
-      "content_hash": "443dbe2f03ec"
+      "content_hash": "a4bf383116cf"
     },
     {
       "name": "numerics.py",
@@ -1168,5 +1168,5 @@
     "LSection",
     "CodeRegistry"
   ],
-  "content_hash": "880cc2505671a6db"
+  "content_hash": "86814058d8c20886"
 }

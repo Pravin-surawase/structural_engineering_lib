@@ -438,7 +438,7 @@ class SmartAnalysisResult(BaseResult):
     def summary(self) -> str:
         """Human-readable summary of analysis."""
         score = self.summary_data.get("overall_score", 0)
-        return f"Analysis Score: {score:.1f}/100"
+        return f"Analysis Score: {score * 100:.1f}/100"
 
     def to_json(self) -> str:
         """Convert to JSON string.
@@ -472,7 +472,7 @@ class SmartAnalysisResult(BaseResult):
 
         # Summary section
         score = self.summary_data.get("overall_score", 0)
-        lines.append(f"Overall Score: {score:.1f}/100")
+        lines.append(f"Overall Score: {score * 100:.1f}/100")
         lines.append("")
 
         # Cost section
@@ -499,8 +499,8 @@ class SmartAnalysisResult(BaseResult):
         # Constructability section
         if self.constructability:
             lines.append("Constructability Assessment: Available")
-            score = self.constructability.get("overall_score", 0)
-            lines.append(f"  Score: {score:.1f}/100")
+            score = self.constructability.get("score", 0)
+            lines.append(f"  Score: {score * 100:.1f}/100")
             lines.append("")
 
         return "\n".join(lines)

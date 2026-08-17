@@ -796,6 +796,62 @@ class TestAnalysisEndpoints:
         data = unwrap(response)
         assert "design_summary" in data
         assert "all_checks_passed" in data
+        assert data["design_summary"]["effective_depth_mm"] == 450.0
+        assert data["design_summary"]["span_mm"] == 5000.0
+        assert data["design_summary"]["governing_utilization"] >= 0.0
+        assert data["design_summary"]["capacity_margin"] == pytest.approx(
+            max(0.0, 1.0 - data["design_summary"]["governing_utilization"])
+        )
+        assert {check["description"] for check in data["code_checks"]} == {
+            "Flexure capacity check",
+            "Shear capacity check",
+        }
+        assert 0.0 <= data["scores"]["overall_score"] <= 1.0
+        assert data["cost_analysis"]["current_cost"] > 0
+        assert data["cost_analysis"]["optimal_cost"] > 0
+        assert "estimated_steel" not in data["cost_analysis"]
+
+    def test_smart_analysis_requires_explicit_depth_and_span(
+        self, client, sample_analysis_request
+    ):
+        for missing in ("effective_depth", "span_length"):
+            payload = dict(sample_analysis_request)
+            payload.pop(missing)
+
+            response = client.post("/api/v1/analysis/beam/smart", json=payload)
+
+            assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+            assert missing in response.text
+
+    def test_smart_analysis_preserves_canonical_fail_disposition(
+        self, client, sample_analysis_request
+    ):
+        payload = {**sample_analysis_request, "shear": 600.0}
+
+        response = client.post("/api/v1/analysis/beam/smart", json=payload)
+
+        assert response.status_code == status.HTTP_200_OK
+        data = unwrap(response)
+        assert data["design_summary"]["design_status"] == "FAIL"
+        assert data["design_summary"]["governing_utilization"] > 1.0
+        assert data["design_summary"]["capacity_margin"] == 0.0
+        assert data["all_checks_passed"] is False
+
+    def test_smart_analysis_hides_checks_without_changing_disposition(
+        self, client, sample_analysis_request
+    ):
+        payload = {
+            **sample_analysis_request,
+            "shear": 600.0,
+            "include_code_checks": False,
+        }
+
+        response = client.post("/api/v1/analysis/beam/smart", json=payload)
+
+        assert response.status_code == status.HTTP_200_OK
+        data = unwrap(response)
+        assert data["code_checks"] == []
+        assert data["all_checks_passed"] is False
 
     def test_get_code_clauses(self, client):
         """Test get code clauses endpoint."""
@@ -875,6 +931,63 @@ class TestAnalysisEndpoints:
             },
         )
         assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+    def test_load_analysis_rejects_point_outside_span(self, client):
+        response = client.post(
+            "/api/v1/analysis/loads/simple",
+            json={
+                "span_mm": 6000,
+                "support_condition": "simply_supported",
+                "loads": [
+                    {"load_type": "point", "magnitude": 50.0, "position_mm": 7000}
+                ],
+            },
+        )
+
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+    def test_load_analysis_reports_exact_off_grid_point_extremum(self, client):
+        response = client.post(
+            "/api/v1/analysis/loads/simple",
+            json={
+                "span_mm": 6000,
+                "support_condition": "simply_supported",
+                "loads": [
+                    {"load_type": "point", "magnitude": 100.0, "position_mm": 2345}
+                ],
+                "num_points": 11,
+            },
+        )
+
+        assert response.status_code == status.HTTP_200_OK
+        data = unwrap(response)
+        expected = 100.0 * (6.0 - 2.345) / 6.0 * 2.345
+        assert data["max_bm_knm"] == pytest.approx(expected)
+        assert 2345.0 in data["positions_mm"]
+
+    def test_load_analysis_honors_partial_udl_bounds(self, client):
+        response = client.post(
+            "/api/v1/analysis/loads/simple",
+            json={
+                "span_mm": 6000,
+                "support_condition": "simply_supported",
+                "loads": [
+                    {
+                        "load_type": "udl",
+                        "magnitude": 20.0,
+                        "position_mm": 1000,
+                        "end_position_mm": 3000,
+                    }
+                ],
+                "num_points": 11,
+            },
+        )
+
+        assert response.status_code == status.HTTP_200_OK
+        data = unwrap(response)
+        assert data["max_bm_knm"] == pytest.approx(44.4444444444)
+        assert data["max_sf_kn"] == pytest.approx(26.6666666667)
+        assert data["min_sf_kn"] == pytest.approx(-13.3333333333)
 
 
 class TestExportEndpoints:

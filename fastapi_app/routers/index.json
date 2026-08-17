@@ -16,7 +16,7 @@
     {
       "name": "analysis.py",
       "type": "python",
-      "size_lines": 338,
+      "size_lines": 336,
       "last_updated": "2026-08-17",
       "description": "Smart Analysis Router.",
       "functions": [
@@ -39,7 +39,7 @@
           "description": "Get IS 456:2000 code clause references."
         }
       ],
-      "content_hash": "8e86dcd8585a"
+      "content_hash": "d79e1982707c"
     },
     {
       "name": "capabilities.py",
@@ -429,7 +429,7 @@
     {
       "name": "geometry.py",
       "type": "python",
-      "size_lines": 653,
+      "size_lines": 630,
       "last_updated": "2026-08-17",
       "description": "3D Geometry Router.",
       "functions": [
@@ -466,7 +466,7 @@
           ]
         }
       ],
-      "content_hash": "c56bcb74da9e"
+      "content_hash": "52a7139599b3"
     },
     {
       "name": "health.py",
@@ -1068,5 +1068,5 @@
     "strap_footing",
     "streaming"
   ],
-  "content_hash": "6fedb431e590308b"
+  "content_hash": "d2170412d17bbe06"
 }

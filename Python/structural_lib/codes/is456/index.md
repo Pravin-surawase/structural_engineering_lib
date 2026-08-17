@@ -1,7 +1,7 @@
 # Is456
 
 **Type:** Python Package
-**Last Updated:** 2026-08-16
+**Last Updated:** 2026-08-17
 **Files:** 14
 
 ## Public API
@@ -39,7 +39,7 @@
 | [detailing.py](detailing.py) | Backward compatibility shim — detailing module moved to beam | 0 | 0 | 28 |
 | [ductile.py](ductile.py) | Backward compatibility shim — ductile module moved to codes/ | 0 | 0 | 30 |
 | [flexure.py](flexure.py) | Backward compatibility shim — flexure module moved to beam/  | 0 | 0 | 28 |
-| [load_analysis.py](load_analysis.py) | Module:       load_analysis | 0 | 7 | 627 |
+| [load_analysis.py](load_analysis.py) | Module:       load_analysis | 0 | 7 | 844 |
 | [materials.py](materials.py) | Module:       materials | 0 | 4 | 128 |
 | [serviceability.py](serviceability.py) | Backward compatibility shim — serviceability module moved to | 0 | 0 | 37 |
 | [shear.py](shear.py) | Backward compatibility shim — shear module moved to beam/ su | 0 | 0 | 28 |

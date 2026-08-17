@@ -126,36 +126,53 @@ class TestBuildingGeometry:
             "beams": [
                 {
                     "id": "B1",
+                    "label": "B1",
                     "story": "GF",
                     "frame_type": "beam",
                     "point1": {"x": 0, "y": 0, "z": 0},
-                    "point2": {"x": 6000, "y": 0, "z": 0},
+                    "point2": {"x": 6, "y": 0, "z": 0},
+                    "section": {
+                        "width_mm": 300,
+                        "depth_mm": 500,
+                        "fck_mpa": 25,
+                        "fy_mpa": 500,
+                        "cover_mm": 40,
+                    },
                 },
                 {
                     "id": "C1",
+                    "label": "C1",
                     "story": "GF",
                     "frame_type": "column",
                     "point1": {"x": 0, "y": 0, "z": 0},
-                    "point2": {"x": 0, "y": 0, "z": 3000},
+                    "point2": {"x": 0, "y": 0, "z": 3},
+                    "section": {
+                        "width_mm": 400,
+                        "depth_mm": 400,
+                        "fck_mpa": 25,
+                        "fy_mpa": 500,
+                        "cover_mm": 40,
+                    },
                 },
             ],
         }
         resp = client.post("/api/v1/geometry/building", json=payload)
         assert resp.status_code == 200
         data = unwrap(resp)
-        # success may be False if BeamGeometry parsing fails (dict format mismatch)
-        assert "beams" in data
-        assert "center" in data
+        assert data["success"] is True
+        assert len(data["beams"]) == 2
+        assert data["metadata"]["contract_scope"] == "visualization_only"
+        assert data["metadata"]["source_coordinate_basis"] == "source_units"
+        assert data["metadata"]["coordinate_scale_to_mm"] == 1000.0
+        assert data["metadata"]["input_member_count"] == 2
+        assert data["metadata"]["output_member_count"] == 2
+        assert data["metadata"]["filtered_member_count"] == 0
 
     def test_building_geometry_empty(self, client):
-        """Empty beams list returns failure message."""
+        """Empty buildings fail at the typed request boundary."""
         payload = {"beams": []}
         resp = client.post("/api/v1/geometry/building", json=payload)
-        assert resp.status_code == 200
-        body = resp.json()
-        assert body["success"] is True
-        data = body["data"]
-        assert data["success"] is False
+        assert resp.status_code == 422
 
     def test_building_geometry_with_scale(self, client):
         """Custom unit scale factor."""
@@ -163,16 +180,94 @@ class TestBuildingGeometry:
             "beams": [
                 {
                     "id": "B1",
+                    "label": "B1",
                     "story": "1F",
                     "frame_type": "beam",
                     "point1": {"x": 0, "y": 0, "z": 3},
                     "point2": {"x": 6, "y": 0, "z": 3},
+                    "section": {
+                        "width_mm": 300,
+                        "depth_mm": 500,
+                        "fck_mpa": 25,
+                        "fy_mpa": 500,
+                        "cover_mm": 40,
+                    },
                 },
             ],
             "unit_scale": 1000.0,
         }
         resp = client.post("/api/v1/geometry/building", json=payload)
         assert resp.status_code == 200
+
+    def test_invalid_member_blocks_whole_request(self, client):
+        payload = {
+            "beams": [
+                {
+                    "id": "B1",
+                    "label": "B1",
+                    "story": "1F",
+                    "frame_type": "beam",
+                    "point1": {"x": 0, "y": 0, "z": 3},
+                    "point2": {"x": 6, "y": 0, "z": 3},
+                }
+            ]
+        }
+
+        resp = client.post("/api/v1/geometry/building", json=payload)
+
+        assert resp.status_code == 422
+        assert "section" in resp.text
+
+    def test_duplicate_member_identity_blocks_whole_request(self, client):
+        member = {
+            "id": "B1",
+            "label": "B1",
+            "story": "1F",
+            "frame_type": "beam",
+            "point1": {"x": 0, "y": 0, "z": 3},
+            "point2": {"x": 6, "y": 0, "z": 3},
+            "section": {
+                "width_mm": 300,
+                "depth_mm": 500,
+                "fck_mpa": 25,
+                "fy_mpa": 500,
+                "cover_mm": 40,
+            },
+        }
+
+        resp = client.post(
+            "/api/v1/geometry/building", json={"beams": [member, member]}
+        )
+
+        assert resp.status_code == 422
+        assert "unique" in resp.text
+
+    def test_filter_that_excludes_every_member_is_rejected(self, client):
+        payload = {
+            "beams": [
+                {
+                    "id": "B1",
+                    "label": "B1",
+                    "story": "1F",
+                    "frame_type": "beam",
+                    "point1": {"x": 0, "y": 0, "z": 3},
+                    "point2": {"x": 6, "y": 0, "z": 3},
+                    "section": {
+                        "width_mm": 300,
+                        "depth_mm": 500,
+                        "fck_mpa": 25,
+                        "fy_mpa": 500,
+                        "cover_mm": 40,
+                    },
+                }
+            ],
+            "include_frame_types": ["column"],
+        }
+
+        resp = client.post("/api/v1/geometry/building", json=payload)
+
+        assert resp.status_code == 422
+        assert "excludes every input member" in resp.text
 
 
 # =============================================================================

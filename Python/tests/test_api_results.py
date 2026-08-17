@@ -331,22 +331,22 @@ class TestSmartAnalysisResult:
     def test_create_smart_analysis_result(self):
         """Test creating smart analysis result."""
         result = SmartAnalysisResult(
-            summary_data={"overall_score": 78.5, "recommendations_count": 8},
+            summary_data={"overall_score": 0.785, "recommendations_count": 8},
             metadata={"analysis_time_sec": 5.2, "modules_run": 4},
             cost={"savings_percent": 15.2},
             suggestions={"high_impact_count": 2},
             sensitivity={"critical_parameters": ["fck", "fy"]},
-            constructability={"overall_score": 82.0},
+            constructability={"score": 0.82},
         )
 
-        assert result.summary_data["overall_score"] == 78.5
+        assert result.summary_data["overall_score"] == 0.785
         assert result.cost["savings_percent"] == 15.2
         assert result.metadata["modules_run"] == 4
 
     def test_smart_analysis_summary(self):
         """Test summary method."""
         result = SmartAnalysisResult(
-            summary_data={"overall_score": 78.5},
+            summary_data={"overall_score": 0.785},
             metadata={},
         )
 
@@ -356,20 +356,20 @@ class TestSmartAnalysisResult:
     def test_smart_analysis_to_json(self):
         """Test to_json conversion."""
         result = SmartAnalysisResult(
-            summary_data={"overall_score": 78.5},
+            summary_data={"overall_score": 0.785},
             metadata={},
             cost={"savings_percent": 15.2},
         )
 
         json_str = result.to_json()
         data = json.loads(json_str)
-        assert data["summary_data"]["overall_score"] == 78.5
+        assert data["summary_data"]["overall_score"] == 0.785
         assert data["cost"]["savings_percent"] == 15.2
 
     def test_smart_analysis_to_text(self):
         """Test to_text conversion."""
         result = SmartAnalysisResult(
-            summary_data={"overall_score": 78.5},
+            summary_data={"overall_score": 0.785},
             metadata={},
             cost={"savings_percent": 15.2},
             suggestions={
@@ -378,7 +378,7 @@ class TestSmartAnalysisResult:
                 "low_impact_count": 2,
             },
             sensitivity={"critical": ["fck"]},
-            constructability={"overall_score": 82.0},
+            constructability={"score": 0.82},
         )
 
         text = result.to_text()

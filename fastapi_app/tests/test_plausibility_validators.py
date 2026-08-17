@@ -319,10 +319,12 @@ class TestSmartAnalysisRequestValidator:
         req = SmartAnalysisRequest(
             width=300,
             depth=500,
+            effective_depth=450,
             moment=150,
             shear=75,
             fck=25,
             fy=415,
+            span_length=6000,
         )
         assert req.depth == 500
 
@@ -331,20 +333,24 @@ class TestSmartAnalysisRequestValidator:
             SmartAnalysisRequest(
                 width=100,
                 depth=700,
+                effective_depth=650,
                 moment=100,
                 shear=50,
                 fck=25,
                 fy=415,
+                span_length=6000,
             )
 
     def test_depth_width_ratio_at_6_passes(self):
         req = SmartAnalysisRequest(
             width=100,
             depth=600,
+            effective_depth=550,
             moment=100,
             shear=50,
             fck=25,
             fy=415,
+            span_length=6000,
         )
         assert req.depth == 600
 

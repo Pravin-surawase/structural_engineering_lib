@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-17",
-  "file_count": 178,
+  "file_count": 181,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -69,6 +69,44 @@
       "last_updated": "2026-08-17",
       "description": "selection only. This record is not A2 or G1 acceptance, gravity authorization, release authorization, hosted-check evidence, professional approval, or a claim",
       "content_hash": "c9e2ecadd232"
+    },
+    {
+      "name": "a2-lossless-intake-calculation-evidence.md",
+      "type": "documentation",
+      "size_lines": 141,
+      "last_updated": "2026-08-17",
+      "description": "This record does not authorize gravity orchestration, live ETABS, Excel write-back, optimization, a release, or professional approval. Cumulative broad",
+      "content_hash": "bdad4cfb1363"
+    },
+    {
+      "name": "a2-lossless-intake-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "315975f4feee"
+    },
+    {
+      "name": "a2-lossless-intake-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "80f2a42f1492"
     },
     {
       "name": "alpha-0231-local-prepublication-rehearsal.md",
@@ -2282,5 +2320,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "ec0b5d34fc0dfa52"
+  "content_hash": "0fd42c21e392a509"
 }

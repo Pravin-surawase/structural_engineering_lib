@@ -67,7 +67,6 @@ export type {
   BuildingGeometryResponse,
   CrossSectionRequest,
   CrossSectionResponse,
-  BarPosition,
 } from './useGeometryAdvanced';
 export type {
   BeamParams as RebarBeamParams,

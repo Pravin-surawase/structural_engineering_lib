@@ -51,7 +51,10 @@ class SmartAnalysisSummary:
     """Summary of smart analysis for quick overview."""
 
     design_status: str  # "PASS", "FAIL", "WARNING"
-    safety_score: float  # 0.0-1.0 (1.0 = perfect safety margin)
+    safety_score: float  # Remaining capacity margin, 0.0-1.0 (higher is safer)
+    governing_utilization: float  # Demand/capacity ratio from canonical pipeline
+    governing_check: str
+    checks: list[dict[str, Any]]
     cost_efficiency: float  # 0.0-1.0 (1.0 = optimal)
     constructability: float  # 0.0-1.0 (1.0 = excellent)
     robustness: float  # 0.0-1.0 (1.0 = very robust)
@@ -301,7 +304,7 @@ class SmartDesigner:
             DashboardReport with all requested analyses
 
         Raises:
-            ValueError: If design result is invalid
+            ValueError: If no canonical design result is provided
         """
         import time
         from datetime import datetime
@@ -309,8 +312,8 @@ class SmartDesigner:
         from ..api import get_library_version
 
         # Validate inputs
-        if not design or not design.is_ok:
-            raise ValueError("Design must be a valid passing design result")
+        if not design:
+            raise ValueError("A canonical design result is required")
 
         # Default weights
         if weights is None:
@@ -518,11 +521,8 @@ class SmartDesigner:
             )
 
         # Calculate overall scores
-        safety_score = (
-            min(design.governing_utilization, 1.0)
-            if design.governing_utilization > 0
-            else 1.0
-        )
+        governing_utilization = max(design.governing_utilization, 0.0)
+        safety_score = max(0.0, 1.0 - governing_utilization)
         cost_efficiency = (
             1.0 - (cost_analysis.savings_percent / 100.0) if cost_analysis else 0.8
         )
@@ -544,8 +544,8 @@ class SmartDesigner:
         key_issues = []
         quick_wins = []
 
-        if safety_score < 0.7:
-            key_issues.append("Low safety margin - review design")
+        if governing_utilization >= 0.9:
+            key_issues.append("Low remaining capacity margin - review design")
         if cost_analysis and cost_analysis.savings_percent > 15:
             quick_wins.append(
                 f"Potential {cost_analysis.savings_percent:.0f}% cost savings"
@@ -558,7 +558,7 @@ class SmartDesigner:
             key_issues.append("Constructability concerns - congestion risk")
 
         # Design status
-        if design.is_ok and safety_score > 0.8:
+        if design.is_ok and governing_utilization < 0.9:
             status = "PASS"
         elif design.is_ok:
             status = "WARNING"
@@ -569,6 +569,24 @@ class SmartDesigner:
         summary = SmartAnalysisSummary(
             design_status=status,
             safety_score=safety_score,
+            governing_utilization=governing_utilization,
+            governing_check=design.governing_check,
+            checks=[
+                {
+                    "check_id": "flexure",
+                    "clause_ref": "IS 456 Cl 38.1",
+                    "passed": design.flexure.is_safe,
+                    "utilization": design.flexure.utilization,
+                    "basis": "canonical_beam_pipeline",
+                },
+                {
+                    "check_id": "shear",
+                    "clause_ref": "IS 456 Cl 40",
+                    "passed": design.shear.is_safe,
+                    "utilization": design.shear.utilization,
+                    "basis": "canonical_beam_pipeline",
+                },
+            ],
             cost_efficiency=cost_efficiency,
             constructability=constructability_score,
             robustness=robustness_score,

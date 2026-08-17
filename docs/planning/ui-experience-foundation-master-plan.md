@@ -67,7 +67,7 @@ two implementation sessions under sections 12 and 16.1; the already-merged
 planning branch does not count as an implementation session.
 
 It supersedes the execution status in
-`docs/planning/react-ux-improvement-plan.md`, while preserving that document as
+`docs/_archive/planning/react-ux-improvement-plan.md`, while preserving that document as
 useful implementation history. The older plan correctly established an
 import-first, visual-first direction, but its task ledger has drifted: the current
 repository already contains `HubPage`, `WorkflowBreadcrumb`, `SettingsPanel`,

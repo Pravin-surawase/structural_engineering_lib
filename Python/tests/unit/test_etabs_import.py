@@ -100,6 +100,15 @@ class TestValidateETABSCSV:
 
         assert is_valid is False
 
+    def test_validate_header_only_csv_is_blocked(self, tmp_path: Path) -> None:
+        csv_file = tmp_path / "header_only.csv"
+        csv_file.write_text("Story,Label,Output Case,Station,M3,V2\n")
+
+        is_valid, issues, _ = validate_etabs_csv(csv_file)
+
+        assert is_valid is False
+        assert "CSV file has no data rows" in issues
+
 
 class TestLoadETABSCSV:
     """Tests for load_etabs_csv function."""
@@ -141,6 +150,18 @@ class TestLoadETABSCSV:
         with pytest.raises(ValueError, match="Invalid ETABS CSV"):
             load_etabs_csv(csv_file)
 
+    @pytest.mark.parametrize("bad_value", ["not-a-number", "NaN", "inf"])
+    def test_load_invalid_numeric_row_blocks_with_location(
+        self, tmp_path: Path, bad_value: str
+    ) -> None:
+        csv_file = tmp_path / "invalid_numeric.csv"
+        csv_file.write_text(
+            f"Story,Label,Output Case,Station,M3,V2\nStory1,B1,ULS,0,{bad_value},50\n"
+        )
+
+        with pytest.raises(ValueError, match=r"row 2: m3"):
+            load_etabs_csv(csv_file)
+
 
 class TestNormalizeETABSForces:
     """Tests for normalize_etabs_forces function."""
@@ -166,6 +187,16 @@ class TestNormalizeETABSForces:
         # Max |V2| should be max(80.2, 10.1, 75.5) = 80.2
         assert b1_env.vu_kn == pytest.approx(80.2)
         assert b1_env.station_count == 3
+        assert b1_env.moment_signed_knm == pytest.approx(120.3)
+        assert b1_env.moment_station == pytest.approx(2000.0)
+        assert b1_env.shear_at_moment_station_kn == pytest.approx(10.1)
+        assert b1_env.shear_signed_kn == pytest.approx(80.2)
+        assert b1_env.shear_station == pytest.approx(0.0)
+        assert b1_env.moment_at_shear_station_knm == pytest.approx(50.5)
+        assert (
+            b1_env.envelope_basis
+            == "independent_absolute_extrema_with_concurrent_values"
+        )
 
     def test_normalize_exports_csv(self, tmp_path: Path) -> None:
         """Output CSV is created when path provided."""

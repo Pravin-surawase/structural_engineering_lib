@@ -126,6 +126,7 @@ def sample_analysis_request():
     return {
         "width": 300.0,
         "depth": 500.0,
+        "effective_depth": 450.0,
         "moment": 150.0,
         "shear": 75.0,
         "fck": 25.0,

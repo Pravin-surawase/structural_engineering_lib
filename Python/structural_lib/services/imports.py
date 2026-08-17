@@ -391,6 +391,7 @@ def _required_fields(
             return {
                 "label",
                 "story",
+                "section_name",
                 "point1_x",
                 "point1_y",
                 "point1_z",
@@ -410,6 +411,8 @@ def _required_fields(
         return {"beam_id"}
     if isinstance(adapter, GenericCSVAdapter):
         return {"beam_id", "mu_knm", "vu_kn"}
+    if isinstance(adapter, ETABSAdapter) and {"m3", "v2"}.issubset(available):
+        return {"beam_id", "case_id", "station", "m3", "v2"}
     if {"m3", "v2"}.issubset(available):
         return {"beam_id", "m3", "v2"}
     if "mu_max" in available or "vu_max" in available:

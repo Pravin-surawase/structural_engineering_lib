@@ -333,6 +333,27 @@ class TestETABSAdapterLoadGeometry:
         with pytest.raises(FileNotFoundError):
             etabs_adapter.load_geometry("/nonexistent/file.csv")
 
+    def test_invalid_geometry_row_is_not_silently_skipped(
+        self, etabs_adapter: ETABSAdapter, tmp_path: Path
+    ):
+        csv_path = tmp_path / "invalid_geometry.csv"
+        csv_path.write_text(
+            "Story,Label,ObjType,AnalSect,XI,YI,ZI,XJ,YJ,ZJ\n"
+            "Ground,B1,Beam,B300X500,not-a-number,0,0,5,0,0\n"
+        )
+
+        with pytest.raises(ValueError, match=r"geometry row 2"):
+            etabs_adapter.load_geometry(csv_path)
+
+    def test_header_only_geometry_is_blocked(
+        self, etabs_adapter: ETABSAdapter, tmp_path: Path
+    ):
+        csv_path = tmp_path / "header_only_geometry.csv"
+        csv_path.write_text("Story,Label,ObjType,AnalSect,XI,YI,ZI,XJ,YJ,ZJ\n")
+
+        with pytest.raises(ValueError, match="no data rows"):
+            etabs_adapter.load_geometry(csv_path)
+
 
 class TestETABSAdapterLoadForces:
     """Test force loading from CSV."""
@@ -403,6 +424,33 @@ class TestETABSAdapterLoadForces:
         with pytest.raises(FileNotFoundError):
             etabs_adapter.load_forces("/nonexistent/file.csv")
 
+    def test_force_extrema_retain_sign_station_and_concurrent_value(
+        self, etabs_adapter: ETABSAdapter, sample_forces_csv: Path
+    ):
+        force = next(
+            item
+            for item in etabs_adapter.load_forces(sample_forces_csv)
+            if item.id == "B1_Ground"
+        )
+
+        assert force.moment_signed_knm == pytest.approx(100.0)
+        assert force.moment_station == pytest.approx(0.5)
+        assert force.shear_at_moment_station_kn == pytest.approx(20.0)
+        assert force.shear_signed_kn == pytest.approx(-90.0)
+        assert force.shear_station == pytest.approx(1.0)
+        assert force.moment_at_shear_station_knm == pytest.approx(-60.0)
+
+    def test_invalid_force_row_is_not_silently_skipped(
+        self, etabs_adapter: ETABSAdapter, tmp_path: Path
+    ):
+        csv_path = tmp_path / "invalid_forces.csv"
+        csv_path.write_text(
+            "Story,Label,Output Case,Station,M3,V2\nGround,B1,ULS,0,not-a-number,50\n"
+        )
+
+        with pytest.raises(ValueError, match=r"forces row 2"):
+            etabs_adapter.load_forces(csv_path)
+
 
 class TestETABSAdapterSectionParsing:
     """Test section name parsing edge cases."""
@@ -432,14 +480,11 @@ class TestETABSAdapterSectionParsing:
         assert section.depth_mm == 500
         assert section.fck_mpa == 30  # From defaults
 
-    def test_parse_unparseable_uses_defaults(self, etabs_adapter: ETABSAdapter):
-        """Unparseable names should use defaults."""
+    def test_parse_unparseable_blocks(self, etabs_adapter: ETABSAdapter):
+        """An unknown section cannot become a plausible default beam."""
         defaults = DesignDefaults(fck_mpa=25, fy_mpa=500, cover_mm=40)
-        section = etabs_adapter._parse_section_name("UNKNOWN_SECTION", defaults)
-
-        assert section.width_mm == 300  # Default
-        assert section.depth_mm == 500  # Default
-        assert section.fck_mpa == 25
+        with pytest.raises(ValueError, match="does not contain explicit RC dimensions"):
+            etabs_adapter._parse_section_name("UNKNOWN_SECTION", defaults)
 
 
 # =============================================================================

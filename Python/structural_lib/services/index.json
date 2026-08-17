@@ -16,7 +16,7 @@
     {
       "name": "adapters.py",
       "type": "python",
-      "size_lines": 2006,
+      "size_lines": 2100,
       "last_updated": "2026-08-17",
       "description": "Adapters for converting various input formats to canonical models.",
       "classes": [
@@ -78,7 +78,7 @@
           ]
         }
       ],
-      "content_hash": "79e46de2c3c0"
+      "content_hash": "605681463531"
     },
     {
       "name": "api.py",
@@ -158,7 +158,7 @@
           ]
         }
       ],
-      "content_hash": "a60cf3488806"
+      "content_hash": "e7b1db9056de"
     },
     {
       "name": "audit.py",
@@ -813,7 +813,7 @@
     {
       "name": "capabilities.py",
       "type": "python",
-      "size_lines": 1977,
+      "size_lines": 2057,
       "last_updated": "2026-08-17",
       "description": "Discoverable supported-case registry for the IS 456 public library.",
       "classes": [
@@ -872,7 +872,7 @@
         "_REPORT_IS_SAFE_ALIAS",
         "_SLAB_REVIEW_ALIAS"
       ],
-      "content_hash": "6f2ea439ec04"
+      "content_hash": "ff96db9ce407"
     },
     {
       "name": "cli_design.py",
@@ -1575,7 +1575,7 @@
     {
       "name": "etabs_import.py",
       "type": "python",
-      "size_lines": 1018,
+      "size_lines": 1089,
       "last_updated": "2026-08-17",
       "description": "ETABS CSV Import Module.",
       "classes": [
@@ -1687,7 +1687,7 @@
           ]
         }
       ],
-      "content_hash": "1c41ffa82156"
+      "content_hash": "c037de7e6b0e"
     },
     {
       "name": "evidence.py",
@@ -2046,7 +2046,7 @@
     {
       "name": "imports.py",
       "type": "python",
-      "size_lines": 1101,
+      "size_lines": 1104,
       "last_updated": "2026-08-17",
       "description": "Fail-closed multi-format CSV import boundary.",
       "classes": [
@@ -2109,7 +2109,7 @@
         "_CALCULATION_HEADER",
         "_EXPLICIT_METADATA_HEADERS"
       ],
-      "content_hash": "c64f70c5ce6e"
+      "content_hash": "2efcc7cb0147"
     },
     {
       "name": "intelligence.py",
@@ -2257,7 +2257,7 @@
     {
       "name": "project_beam.py",
       "type": "python",
-      "size_lines": 710,
+      "size_lines": 716,
       "last_updated": "2026-08-17",
       "description": "Versioned, fail-closed project beam input and result contracts.",
       "classes": [
@@ -2341,7 +2341,7 @@
         "_REQUIRED_FIELDS",
         "_DEPTH_BASIS_FIELDS"
       ],
-      "content_hash": "bf628a383336"
+      "content_hash": "7d1f06347c7e"
     },
     {
       "name": "rebar.py",
@@ -3198,5 +3198,5 @@
     "PropertyLineStrapFootingDesignStatus",
     "design_property_line_strap_footing_is456"
   ],
-  "content_hash": "137d8f289cca97e2"
+  "content_hash": "8f2a463b20c7773d"
 }

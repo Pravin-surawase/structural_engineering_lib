@@ -17,11 +17,11 @@
     {
       "name": "SESSION_LOG.md",
       "type": "documentation",
-      "size_lines": 2664,
+      "size_lines": 2802,
       "last_updated": "2026-08-17",
       "title": "Session Log",
       "description": "> Append-only decision log for AI agent sessions. > Earlier sessions (1-100): SESSION_LOG_through_session_100.md",
-      "content_hash": "e3018afd57da"
+      "content_hash": "99ebeba5e4b2"
     },
     {
       "name": "TASKS.md",
@@ -57,7 +57,7 @@
     {
       "name": "docs-index.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "version",
         "generated",
@@ -65,7 +65,7 @@
         "docs",
         "navigation"
       ],
-      "content_hash": "d322a0ac3357"
+      "content_hash": "60d6af397a51"
     }
   ],
   "subfolders": [
@@ -95,7 +95,7 @@
     {
       "name": "audit",
       "path": "audit/",
-      "file_count": 11
+      "file_count": 10
     },
     {
       "name": "blog-drafts",
@@ -181,7 +181,7 @@
     {
       "name": "planning",
       "path": "planning/",
-      "file_count": 23
+      "file_count": 21
     },
     {
       "name": "publications",
@@ -192,7 +192,7 @@
     {
       "name": "reference",
       "path": "reference/",
-      "file_count": 1794
+      "file_count": 1793
     },
     {
       "name": "research",
@@ -208,9 +208,9 @@
     {
       "name": "verification",
       "path": "verification/",
-      "file_count": 180,
+      "file_count": 183,
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
     }
   ],
-  "content_hash": "77df5929bf573edb"
+  "content_hash": "684001d5eddfc5c9"
 }

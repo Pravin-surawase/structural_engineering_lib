@@ -1,0 +1,201 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-17T15:50:59Z",
+      "query_status": "OK",
+      "reference": "task:A2-LOSSLESS-INTAKE-CALCULATION:owner-approved-G0-A1-and-continuation-without-ordinary-approval-pauses",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR",
+      "MARK_READY_AND_MERGE_REVIEWED_HEAD_AFTER_REQUIRED_CHECKS"
+    ],
+    "next_action": "COMPLETE_M2_G1_VALIDATION",
+    "observed_at_utc": "2026-08-17T15:50:59Z",
+    "prohibited_actions": [
+      "START_GRAVITY_BEFORE_G1",
+      "START_LIVE_ETABS",
+      "START_EXCEL_WRITE_BACK",
+      "START_NIGHTLY_OPTIMIZATION",
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "DISCARD_USER_CHANGE",
+      "CLOSE_PULL_REQUEST",
+      "PUBLISH_RELEASE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR",
+        "MARK_READY_AND_MERGE_REVIEWED_HEAD_AFTER_REQUIRED_CHECKS"
+      ],
+      "branch": "codex/a2-lossless-intake-calculation",
+      "head_sha": "a0458e1935e9f14bcba47a838d5fe61b46174b05",
+      "task_id": "A2-LOSSLESS-INTAKE-CALCULATION"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "NEXT_ACTION_NOT_AUTHORIZED",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "5133ddc385d21c968592fbebd5c17a0cfe7d6b250cd2fcdea2a67013dc6cb26c",
+    "state": {
+      "branch": "codex/a2-lossless-intake-calculation",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "a0458e1935e9f14bcba47a838d5fe61b46174b05",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 82.994,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-a2-lossless-intake",
+      "head_sha": "a0458e1935e9f14bcba47a838d5fe61b46174b05",
+      "hold_reasons": [
+        "changed paths: 34"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-17T15:51:28.466236+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a2-lossless-intake",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 34,
+        "modified_paths": [
+          "Python/structural_lib/codes/is456/load_analysis.py",
+          "Python/structural_lib/core/models.py",
+          "Python/structural_lib/insights/smart_designer.py",
+          "Python/structural_lib/services/adapters.py",
+          "Python/structural_lib/services/api_results.py",
+          "Python/structural_lib/services/capabilities.py",
+          "Python/structural_lib/services/etabs_import.py",
+          "Python/structural_lib/services/imports.py",
+          "Python/tests/integration/test_api_contracts.py",
+          "Python/tests/integration/test_capability_semantics.py",
+          "Python/tests/integration/test_smart_designer.py",
+          "Python/tests/test_api_results.py",
+          "Python/tests/unit/test_adapters.py",
+          "Python/tests/unit/test_etabs_import.py",
+          "Python/tests/unit/test_imports.py",
+          "Python/tests/unit/test_load_analysis.py",
+          "docs/SESSION_LOG.md",
+          "docs/reference/api.md",
+          "docs/reference/fastapi-rest-api.md",
+          "docs/specs/csv-import-schema.md",
+          "fastapi_app/models/analysis.py",
+          "fastapi_app/models/geometry.py",
+          "fastapi_app/openapi_baseline.json",
+          "fastapi_app/routers/analysis.py",
+          "fastapi_app/routers/geometry.py",
+          "fastapi_app/tests/conftest.py",
+          "fastapi_app/tests/test_endpoints.py",
+          "fastapi_app/tests/test_geometry_full.py",
+          "react_app/src/api/client.ts",
+          "react_app/src/hooks/index.ts",
+          "react_app/src/hooks/useGeometryAdvanced.ts"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/a2-lossless-intake-calculation-evidence.md",
+          "docs/verification/a2-lossless-intake-git-handoff-source-evidence.json",
+          "react_app/src/hooks/__tests__/useGeometryAdvanced.test.ts"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "a0458e1935e9f14bcba47a838d5fe61b46174b05",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a2-lossless-intake"
+    }
+  },
+  "local_state_receipt_hash": "sha256:5133ddc385d21c968592fbebd5c17a0cfe7d6b250cd2fcdea2a67013dc6cb26c",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-17T15:51:28.466450+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-17T15:50:59Z",
+    "owner": "Main Agent under owner-approved A2 execution",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/services/gravity",
+      "Python/structural_lib/excel_integration.py",
+      "Python/structural_lib/services/excel_bridge.py",
+      "fastapi_app/routers/optimization.py"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "Python/structural_lib",
+      "Python/tests",
+      "fastapi_app",
+      "react_app/src",
+      "docs/reference",
+      "docs/specs/csv-import-schema.md",
+      "docs/verification/a2-lossless-intake-calculation-evidence.md",
+      "docs/verification/a2-lossless-intake-git-handoff-source-evidence.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/verification/index.json",
+      "docs/verification/index.md",
+      "docs/reference/index.json",
+      "docs/reference/index.md",
+      "docs/specs/index.json",
+      "docs/specs/index.md"
+    ],
+    "task_id": "A2-LOSSLESS-INTAKE-CALCULATION"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

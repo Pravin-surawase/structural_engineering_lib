@@ -30,8 +30,10 @@ Task: TASK-DATA-001
 from __future__ import annotations
 
 import csv
+import logging
+import math
 from abc import ABC, abstractmethod
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
@@ -43,6 +45,8 @@ from structural_lib.core.models import (
     Point3D,
     SectionProperties,
 )
+
+logger = logging.getLogger(__name__)
 
 __all__ = [
     "InputAdapter",
@@ -266,7 +270,7 @@ class ETABSAdapter(InputAdapter):
         Attempts to parse dimensions from naming patterns like:
         - B230X450M20 -> width=230, depth=450, fck=20
         - RC300x500 -> width=300, depth=500
-        - W12X26 -> (steel section, use defaults)
+        Unknown or non-RC names are rejected instead of receiving default geometry.
 
         Args:
             section_name: ETABS section name
@@ -312,13 +316,9 @@ class ETABSAdapter(InputAdapter):
                 cover_mm=defaults.cover_mm,
             )
 
-        # Use defaults if parsing fails
-        return SectionProperties(
-            width_mm=300,  # Default width
-            depth_mm=500,  # Default depth
-            fck_mpa=defaults.fck_mpa,
-            fy_mpa=defaults.fy_mpa,
-            cover_mm=defaults.cover_mm,
+        raise ValueError(
+            f"ETABS section {section_name!r} does not contain explicit RC dimensions; "
+            "provide a parseable section name such as B300X500 or an explicit section map"
         )
 
     def load_geometry(
@@ -352,7 +352,17 @@ class ETABSAdapter(InputAdapter):
             column_map = self._build_column_map(headers, self.GEOMETRY_COLUMNS)
 
             # Check required columns
-            required = ["label", "story", "point1_x", "point1_y", "point1_z"]
+            required = [
+                "label",
+                "story",
+                "section_name",
+                "point1_x",
+                "point1_y",
+                "point1_z",
+                "point2_x",
+                "point2_y",
+                "point2_z",
+            ]
             missing = [r for r in required if r not in column_map]
             if missing:
                 raise ValueError(
@@ -360,7 +370,9 @@ class ETABSAdapter(InputAdapter):
                     f"Available: {list(column_map.keys())}"
                 )
 
-            for row in reader:
+            input_rows = 0
+            for row_number, row in enumerate(reader, start=2):
+                input_rows += 1
                 # Skip non-beam elements
                 frame_type_col = column_map.get("frame_type")
                 if frame_type_col and row.get(frame_type_col, "").lower() not in (
@@ -369,40 +381,45 @@ class ETABSAdapter(InputAdapter):
                 ):
                     continue
 
-                # Extract coordinates
                 try:
+                    label = row[column_map["label"]].strip()
+                    story = row[column_map["story"]].strip()
+                    if not label or not story:
+                        raise ValueError("label and story must be non-empty")
+
+                    def finite_coordinate(
+                        field: str, current_row: Mapping[str, str | None] = row
+                    ) -> float:
+                        raw = current_row.get(column_map[field])
+                        if raw is None or not raw.strip():
+                            raise ValueError(f"{field} is missing")
+                        value = float(raw)
+                        if not math.isfinite(value):
+                            raise ValueError(f"{field} must be finite")
+                        return value
+
                     point1 = Point3D(
-                        x=float(row[column_map["point1_x"]]),
-                        y=float(row[column_map["point1_y"]]),
-                        z=float(row[column_map["point1_z"]]),
+                        x=finite_coordinate("point1_x"),
+                        y=finite_coordinate("point1_y"),
+                        z=finite_coordinate("point1_z"),
                     )
-
-                    point2_x_col = column_map.get("point2_x")
-                    point2_y_col = column_map.get("point2_y")
-                    point2_z_col = column_map.get("point2_z")
-
-                    if all([point2_x_col, point2_y_col, point2_z_col]):
-                        point2 = Point3D(
-                            x=float(row[point2_x_col]),
-                            y=float(row[point2_y_col]),
-                            z=float(row[point2_z_col]),
-                        )
-                    else:
-                        # Skip if no end point
-                        continue
-
-                except (KeyError, ValueError):
-                    # Skip rows with invalid coordinates
-                    continue
+                    point2 = Point3D(
+                        x=finite_coordinate("point2_x"),
+                        y=finite_coordinate("point2_y"),
+                        z=finite_coordinate("point2_z"),
+                    )
+                except (KeyError, TypeError, ValueError) as exc:
+                    raise ValueError(f"ETABS geometry row {row_number}: {exc}") from exc
 
                 # Extract section properties
                 section_name_col = column_map.get("section_name")
                 section_name = row.get(section_name_col, "") if section_name_col else ""
-                section = self._parse_section_name(section_name, defaults)
+                try:
+                    section = self._parse_section_name(section_name, defaults)
+                except ValueError as exc:
+                    raise ValueError(f"ETABS geometry row {row_number}: {exc}") from exc
 
                 # Build beam ID
-                label = row[column_map["label"]].strip()
-                story = row[column_map["story"]].strip()
                 beam_id = f"{label}_{story}"
 
                 # Extract source ID
@@ -413,7 +430,14 @@ class ETABSAdapter(InputAdapter):
 
                 # Extract angle
                 angle_col = column_map.get("angle")
-                angle = float(row.get(angle_col, 0)) if angle_col else 0.0
+                try:
+                    angle = float(row.get(angle_col, 0)) if angle_col else 0.0
+                    if not math.isfinite(angle):
+                        raise ValueError("angle must be finite")
+                except (TypeError, ValueError) as exc:
+                    raise ValueError(
+                        f"ETABS geometry row {row_number}: invalid angle"
+                    ) from exc
 
                 try:
                     beam = BeamGeometry(
@@ -428,9 +452,15 @@ class ETABSAdapter(InputAdapter):
                         source_id=source_id or None,
                     )
                     beams.append(beam)
-                except Exception:
-                    # Skip invalid beams (e.g., too short)
-                    continue
+                except (TypeError, ValueError) as exc:
+                    raise ValueError(
+                        f"ETABS geometry row {row_number}: invalid canonical beam: {exc}"
+                    ) from exc
+
+            if input_rows == 0:
+                raise ValueError("ETABS geometry CSV has headers but no data rows")
+            if not beams:
+                raise ValueError("ETABS geometry CSV contains no beam rows")
 
         return beams
 
@@ -482,7 +512,7 @@ class ETABSAdapter(InputAdapter):
                     )
             elif is_raw_etabs:
                 # Raw ETABS format with station data
-                required = ["beam_id", "case_id", "m3", "v2"]
+                required = ["beam_id", "case_id", "station", "m3", "v2"]
             else:
                 raise ValueError(
                     "Could not detect format. Need either M3/V2 columns "
@@ -497,11 +527,31 @@ class ETABSAdapter(InputAdapter):
                     f"Available: {list(column_map.keys())}"
                 )
 
-            for row in reader:
+            input_rows = 0
+            for row_number, row in enumerate(reader, start=2):
+                input_rows += 1
                 try:
                     beam_id = row[column_map["beam_id"]].strip()
                     story_col = column_map.get("story")
                     story = row.get(story_col, "").strip() if story_col else ""
+                    if not beam_id:
+                        raise ValueError("beam_id must be non-empty")
+
+                    def finite_value(
+                        column: str | None,
+                        *,
+                        default: float = 0.0,
+                        current_row: Mapping[str, str | None] = row,
+                    ) -> float:
+                        if column is None:
+                            return default
+                        raw = current_row.get(column, "")
+                        if raw is None or not str(raw).strip():
+                            raise ValueError(f"{column} is missing")
+                        value = float(raw)
+                        if not math.isfinite(value):
+                            raise ValueError(f"{column} must be finite")
+                        return value
 
                     if is_vba_envelope:
                         # VBA envelope format - values already enveloped
@@ -512,16 +562,21 @@ class ETABSAdapter(InputAdapter):
                         mu_min_col = column_map.get("mu_min")
 
                         mu = 0.0
+                        mu_signed = 0.0
                         if mu_max_col:
-                            mu_max_val = abs(float(row.get(mu_max_col, 0) or 0))
-                            mu = mu_max_val
+                            mu_max_signed = finite_value(mu_max_col)
+                            mu = abs(mu_max_signed)
+                            mu_signed = mu_max_signed
                         if mu_min_col:
-                            mu_min_val = abs(float(row.get(mu_min_col, 0) or 0))
-                            mu = max(mu, mu_min_val)
+                            mu_min_signed = finite_value(mu_min_col)
+                            if abs(mu_min_signed) > mu:
+                                mu = abs(mu_min_signed)
+                                mu_signed = mu_min_signed
 
                         # Get Vu
                         vu_col = column_map.get("vu_max")
-                        vu = abs(float(row.get(vu_col, 0) or 0)) if vu_col else 0.0
+                        vu_signed = finite_value(vu_col) if vu_col else 0.0
+                        vu = abs(vu_signed)
 
                         key = (beam_id, story, case_id)
                         envelopes[key] = {
@@ -532,17 +587,26 @@ class ETABSAdapter(InputAdapter):
                             "vu_max": vu,
                             "pu_max": 0.0,
                             "station_count": 1,
+                            "moment_signed_knm": mu_signed,
+                            "shear_signed_kn": vu_signed,
+                            "envelope_basis": "source_precomputed_extrema_provenance_unavailable",
                         }
 
                     else:
                         # Raw ETABS format - need to compute envelope
                         case_id = row[column_map["case_id"]].strip()
+                        if not case_id:
+                            raise ValueError("case_id must be non-empty")
 
-                        m3 = abs(float(row[column_map["m3"]]))
-                        v2 = abs(float(row[column_map["v2"]]))
+                        station = finite_value(column_map["station"])
+                        m3_signed = finite_value(column_map["m3"])
+                        v2_signed = finite_value(column_map["v2"])
+                        m3 = abs(m3_signed)
+                        v2 = abs(v2_signed)
 
                         p_col = column_map.get("p")
-                        p = abs(float(row.get(p_col, 0))) if p_col else 0.0
+                        p_signed = finite_value(p_col) if p_col else 0.0
+                        p = abs(p_signed)
 
                         key = (beam_id, story, case_id)
 
@@ -555,17 +619,34 @@ class ETABSAdapter(InputAdapter):
                                 "vu_max": v2,
                                 "pu_max": p,
                                 "station_count": 1,
+                                "moment_signed_knm": m3_signed,
+                                "moment_station": station,
+                                "shear_signed_kn": v2_signed,
+                                "shear_station": station,
+                                "shear_at_moment_station_kn": v2_signed,
+                                "moment_at_shear_station_knm": m3_signed,
+                                "envelope_basis": "independent_absolute_extrema_with_concurrent_values",
                             }
                         else:
                             env = envelopes[key]
-                            env["mu_max"] = max(env["mu_max"], m3)
-                            env["vu_max"] = max(env["vu_max"], v2)
+                            if m3 > env["mu_max"]:
+                                env["mu_max"] = m3
+                                env["moment_signed_knm"] = m3_signed
+                                env["moment_station"] = station
+                                env["shear_at_moment_station_kn"] = v2_signed
+                            if v2 > env["vu_max"]:
+                                env["vu_max"] = v2
+                                env["shear_signed_kn"] = v2_signed
+                                env["shear_station"] = station
+                                env["moment_at_shear_station_knm"] = m3_signed
                             env["pu_max"] = max(env["pu_max"], p)
                             env["station_count"] += 1
 
-                except (KeyError, ValueError):
-                    # Skip invalid rows
-                    continue
+                except (KeyError, TypeError, ValueError) as exc:
+                    raise ValueError(f"ETABS forces row {row_number}: {exc}") from exc
+
+            if input_rows == 0:
+                raise ValueError("ETABS forces CSV has headers but no data rows")
 
         # Convert to BeamForces models
         forces: list[BeamForces] = []
@@ -583,6 +664,13 @@ class ETABSAdapter(InputAdapter):
                     vu_kn=env["vu_max"],
                     pu_kn=env["pu_max"],
                     station_count=env["station_count"],
+                    moment_signed_knm=env.get("moment_signed_knm"),
+                    moment_station=env.get("moment_station"),
+                    shear_signed_kn=env.get("shear_signed_kn"),
+                    shear_station=env.get("shear_station"),
+                    shear_at_moment_station_kn=env.get("shear_at_moment_station_kn"),
+                    moment_at_shear_station_knm=env.get("moment_at_shear_station_knm"),
+                    envelope_basis=env.get("envelope_basis"),
                 )
             )
 
@@ -916,8 +1004,10 @@ class SAFEAdapter(InputAdapter):
                             source_id=None,
                         )
                         beams.append(beam)
-                    except Exception:
-                        # Skip invalid strips (e.g., too short)
+                    except ValueError as exc:
+                        logger.warning(
+                            "Skipping invalid SAFE strip %s: %s", beam_id, exc
+                        )
                         continue
 
                 except (KeyError, ValueError):
@@ -1347,8 +1437,10 @@ class STAADAdapter(InputAdapter):
                             source_id=beam_id,
                         )
                         beams.append(beam)
-                    except Exception:
-                        # Skip invalid members
+                    except ValueError as exc:
+                        logger.warning(
+                            "Skipping invalid STAAD member %s: %s", full_id, exc
+                        )
                         continue
 
                 except (KeyError, ValueError):
@@ -1860,8 +1952,10 @@ class GenericCSVAdapter(InputAdapter):
                             source_id=beam_id,
                         )
                         beams.append(beam)
-                    except Exception:
-                        # Skip invalid members
+                    except ValueError as exc:
+                        logger.warning(
+                            "Skipping invalid generic member %s: %s", full_id, exc
+                        )
                         continue
 
                 except (KeyError, ValueError):

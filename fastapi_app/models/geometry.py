@@ -4,6 +4,8 @@
 Models for 3D geometry generation API endpoints for visualization.
 """
 
+from typing import Literal
+
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 # =============================================================================
@@ -170,11 +172,72 @@ class BuildingBeamModel(BaseModel):
 
     beam_id: str = Field(max_length=200, description="Beam identifier")
     story: str = Field(max_length=200, description="Story/floor identifier")
-    frame_type: str = Field(
-        max_length=50, description="Frame type: beam, column, brace"
+    frame_type: Literal["beam", "column", "brace"] = Field(
+        description="Frame type: beam, column, brace"
     )
     start: Point3DModel = Field(description="Start point (mm)")
     end: Point3DModel = Field(description="End point (mm)")
+
+
+class BuildingPointInput(BaseModel):
+    """Source coordinate converted to millimetres by coordinate_scale_to_mm."""
+
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    x: float
+    y: float
+    z: float
+
+
+class BuildingSectionInput(BaseModel):
+    """Explicit section data required to construct canonical beam geometry."""
+
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    width_mm: float = Field(gt=0, le=2000, description="Section width (mm)")
+    depth_mm: float = Field(gt=0, le=3000, description="Overall depth (mm)")
+    fck_mpa: float = Field(gt=0, le=100)
+    fy_mpa: float = Field(gt=0, le=700)
+    cover_mm: float = Field(gt=0, le=100)
+
+
+class BuildingBeamInput(BaseModel):
+    """Typed canonical member input for building-line visualization only."""
+
+    model_config = ConfigDict(
+        extra="forbid", allow_inf_nan=False, str_strip_whitespace=True
+    )
+
+    id: str = Field(min_length=1, max_length=200)
+    label: str = Field(min_length=1, max_length=200)
+    story: str = Field(min_length=1, max_length=200)
+    frame_type: Literal["beam", "column", "brace"] = "beam"
+    point1: BuildingPointInput
+    point2: BuildingPointInput
+    section: BuildingSectionInput
+
+
+class BuildingBoundingBox(BaseModel):
+    """Exact output bounds in millimetres."""
+
+    min_x: float
+    max_x: float
+    min_y: float
+    max_y: float
+    min_z: float
+    max_z: float
+
+
+class BuildingGeometryMetadata(BaseModel):
+    """Applicability and coordinate-conversion receipt for display geometry."""
+
+    contract_scope: Literal["visualization_only"]
+    source_coordinate_basis: Literal["source_units"]
+    output_coordinate_units: Literal["mm"]
+    coordinate_scale_to_mm: float = Field(gt=0)
+    input_member_count: int = Field(ge=1)
+    output_member_count: int = Field(ge=1)
+    filtered_member_count: int = Field(ge=0)
 
 
 class BuildingGeometryResponse(BaseModel):
@@ -183,24 +246,43 @@ class BuildingGeometryResponse(BaseModel):
     success: bool = Field(description="Whether generation succeeded")
     message: str = Field(description="Summary message")
     beams: list[BuildingBeamModel] = Field(description="All building members")
-    bounding_box: dict[str, float] = Field(description="Overall bounding box")
+    bounding_box: BuildingBoundingBox = Field(description="Overall bounding box")
     center: Point3DModel = Field(description="Center point")
-    metadata: dict = Field(default_factory=dict, description="Additional metadata")
+    metadata: BuildingGeometryMetadata
     warnings: list[str] = Field(default_factory=list, description="Any warnings")
 
 
 class BuildingGeometryRequest(BaseModel):
     """Request model for building geometry generation."""
 
-    beams: list[dict] = Field(
-        description="List of beam geometry dicts with point1, point2, id, story, frame_type"
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    beams: list[BuildingBeamInput] = Field(
+        min_length=1,
+        description="Canonical members for visualization; every row must validate",
     )
     unit_scale: float = Field(
-        default=1000.0, description="Scale factor (default: m to mm)"
+        default=1000.0,
+        gt=0,
+        description="Millimetres per source coordinate unit (1000 converts metres)",
     )
-    include_frame_types: list[str] | None = Field(
-        default=None, description="Optional filter for frame types"
+    include_frame_types: list[Literal["beam", "column", "brace"]] | None = Field(
+        default=None,
+        min_length=1,
+        description="Optional non-empty display filter for frame types",
     )
+
+    @model_validator(mode="after")
+    def validate_member_identity_and_filter(self) -> "BuildingGeometryRequest":
+        """Block duplicate identities or a filter that removes every member."""
+        ids = [beam.id for beam in self.beams]
+        if len(ids) != len(set(ids)):
+            raise ValueError("beam ids must be unique")
+        if self.include_frame_types and not any(
+            beam.frame_type in self.include_frame_types for beam in self.beams
+        ):
+            raise ValueError("include_frame_types excludes every input member")
+        return self
 
 
 # =============================================================================

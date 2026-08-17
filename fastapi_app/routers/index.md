@@ -32,7 +32,7 @@
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
 | [__init__.py](__init__.py) | FastAPI Routers Package. | 0 | 0 | 58 |
-| [analysis.py](analysis.py) | Smart Analysis Router. | 0 | 3 | 338 |
+| [analysis.py](analysis.py) | Smart Analysis Router. | 0 | 3 | 336 |
 | [capabilities.py](capabilities.py) | Public discovery route for the canonical supported IS 456 co | 0 | 1 | 23 |
 | [catalog.py](catalog.py) | Thin read-only transport for the canonical application workf | 0 | 1 | 51 |
 | [column.py](column.py) | Column Design Router. | 0 | 13 | 764 |
@@ -43,7 +43,7 @@
 | [export.py](export.py) | Export Router — BBS, DXF, and Report exports. | 4 | 5 | 805 |
 | [flat_slab.py](flat_slab.py) | FastAPI transport for the bounded regular interior flat-slab | 0 | 1 | 154 |
 | [footing.py](footing.py) | FastAPI transport for the bounded concentric isolated-footin | 0 | 1 | 69 |
-| [geometry.py](geometry.py) | 3D Geometry Router. | 0 | 5 | 653 |
+| [geometry.py](geometry.py) | 3D Geometry Router. | 0 | 5 | 630 |
 | [health.py](health.py) | Health Check Router. | 3 | 3 | 208 |
 | [imports.py](imports.py) | CSV Import Router. | 9 | 7 | 1047 |
 | [insights.py](insights.py) | Insights Router. | 12 | 4 | 579 |
