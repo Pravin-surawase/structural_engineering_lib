@@ -214,6 +214,78 @@ def test_release_publication_authorization_holds_by_default() -> None:
     assert "release publication decision is HOLD, not AUTHORIZED" in errors
 
 
+@pytest.mark.parametrize(
+    ("errors", "wheel_supplied", "authorization_errors", "verdict", "exit_code"),
+    [
+        (1, False, None, "NOT_READY", 1),
+        (0, False, None, "READY_TO_PREPARE_CANDIDATE", 0),
+        (0, True, None, "CANDIDATE_TECHNICALLY_READY", 0),
+        (
+            0,
+            True,
+            ["release publication decision is HOLD, not AUTHORIZED"],
+            "CANDIDATE_TECHNICALLY_READY",
+            0,
+        ),
+        (0, True, [], "READY_TO_PUBLISH", 0),
+    ],
+)
+def test_preflight_verdicts_are_mode_accurate(
+    errors: int,
+    wheel_supplied: bool,
+    authorization_errors: list[str] | None,
+    verdict: str,
+    exit_code: int,
+) -> None:
+    actual, holds, actual_exit = release._preflight_verdict(
+        errors,
+        wheel_supplied=wheel_supplied,
+        authorization_errors=authorization_errors,
+    )
+
+    assert actual == verdict
+    assert actual_exit == exit_code
+    assert bool(holds) is (verdict not in {"NOT_READY", "READY_TO_PUBLISH"})
+
+
+@pytest.mark.parametrize(
+    ("target_version", "wheel_supplied", "publication_target", "expected"),
+    [
+        (
+            "0.24.0a1",
+            True,
+            None,
+            [
+                "positional target version is pre-bump-only and cannot accompany "
+                "--wheel"
+            ],
+        ),
+        (
+            None,
+            False,
+            "pypi",
+            ["publication target evaluation requires --wheel"],
+        ),
+        ("0.24.0a1", False, None, []),
+        (None, True, "pypi", []),
+    ],
+)
+def test_preflight_rejects_ambiguous_mode_combinations(
+    target_version: str | None,
+    wheel_supplied: bool,
+    publication_target: str | None,
+    expected: list[str],
+) -> None:
+    assert (
+        release._preflight_mode_errors(
+            target_version,
+            wheel_supplied=wheel_supplied,
+            publication_target=publication_target,
+        )
+        == expected
+    )
+
+
 def _git(repo: Path, *args: str) -> str:
     result = subprocess.run(
         ["git", "-C", str(repo), *args],
@@ -254,6 +326,18 @@ def _authorized_release_fixture(tmp_path: Path) -> tuple[Path, Path]:
             "version": "0.24.0a1",
             "tag": "v0.24.0a1",
             "reviewed_targets": ["pypi", "github-release"],
+        },
+        "hosted_checks": {
+            "required_pr_checks": {
+                "status": "PASS",
+                "head_sha": reviewed_head,
+                "url": "https://github.com/example/project/actions/runs/100",
+            },
+            "weekly_verification": {
+                "status": "PASS",
+                "head_sha": reviewed_head,
+                "url": "https://github.com/example/project/actions/runs/101",
+            },
         },
         "reviewer": {
             "identity": "independent-reviewer",
@@ -348,6 +432,32 @@ def test_release_publication_authorization_rejects_tampered_receipt(
     )
 
     assert errors == ["exact candidate review receipt SHA-256 does not match"]
+
+
+def test_release_publication_authorization_requires_exact_hosted_receipts(
+    tmp_path: Path,
+) -> None:
+    record, receipt_path = _authorized_release_fixture(tmp_path)
+    repo = record.parents[2]
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    receipt["hosted_checks"]["weekly_verification"]["head_sha"] = "0" * 40
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    authorization = json.loads(record.read_text(encoding="utf-8"))
+    authorization["exact_candidate_review_receipt_sha256"] = hashlib.sha256(
+        receipt_path.read_bytes()
+    ).hexdigest()
+    record.write_text(json.dumps(authorization), encoding="utf-8")
+    _git(repo, "add", "docs/verification")
+    _git(repo, "commit", "-q", "-m", "record mismatched hosted receipt")
+
+    errors = release._release_publication_authorization_errors(
+        "0.24.0a1", "pypi", record, repo_root=repo
+    )
+
+    assert (
+        "exact candidate review receipt weekly_verification head does not match"
+        in errors
+    )
 
 
 def test_release_publication_authorization_rejects_false_reviewed_tree(
@@ -465,6 +575,15 @@ class TestReleaseVerifyDependencies:
         assert '"--import-mode=importlib"' in verify_block
         assert '"not slow and not repo_only"' in verify_block
         assert "cwd=temp_root" in verify_block
+
+    def test_candidate_preflight_runs_the_exact_wheel_uat(self):
+        source = RELEASE_SCRIPT.read_text(encoding="utf-8")
+        helper = source.split("def _clean_wheel_import_version", 1)[1].split(
+            "def _print_version_errors", 1
+        )[0]
+
+        assert '"structural_lib.release_uat"' in helper
+        assert '"--require-installed-wheel"' in helper
 
     def test_wheel_verify_commands_are_package_scoped_and_isolated(
         self, tmp_path, monkeypatch

@@ -131,11 +131,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 141,
+      "size_lines": 93,
       "last_updated": "2026-08-17",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-17",
-      "content_hash": "418761e9e979"
+      "content_hash": "643669882147"
     },
     {
       "name": "pre-release-checklist.md",
@@ -153,7 +153,7 @@
       "last_updated": "2026-08-17",
       "title": "Pre-Release Input Safety and Professional Readiness Plan",
       "description": "fe4ab025419b834c6d0f840e9492c0604ae74201 after Packets A-G merged through PR #815",
-      "content_hash": "8fc7978f0371"
+      "content_hash": "1567a90e9f5f"
     },
     {
       "name": "professional-library-remediation-plan.md",
@@ -182,5 +182,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "93c512ff3c638761"
+  "content_hash": "276a15aabd87820b"
 }

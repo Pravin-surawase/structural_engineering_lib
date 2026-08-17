@@ -4,137 +4,89 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-17
-- Focus: LIB-PRO-002 Packet I immutable closeout, then Packet J release-signal closure
-- Packet I base/lane: exact fetched `origin/main = b3a9c367de012982a8b9adefda0db60e2d762d7b`; `codex/lib-pro-002-i-cli`; unrelated worktrees preserved
-- Packet I candidate: strict CSV/JSON intake, whole-project pre-calculation blocking, retained versioned `beams` output, downstream compatibility, and a validated 12-command advertised-entrypoint inventory
-- Focused evidence: 150/150 CLI, Excel-edge, import, batch, and expanded 29-case release-UAT tests pass; valid stdout is JSON and blocked input writes no partial result
-- Hosted blocker: Weekly Verification run `31988837003` failed six full-suite governance/session tests because the scheduled workflow did not export the selected setup-python interpreter; the publish full-suite step has the same environment gap
-- Verdict blocker: pre-bump `release preflight 0.23.1a2` passed 6,387 Python tests, 446 FastAPI tests, and the React build but incorrectly printed `READY TO RELEASE` with no exact wheel while authorization remained `HOLD`
-- Release: HOLD; `docs/verification/release-publication-authorization.json` contains no exact version/tag/target authorization
-- Whole-building workflow: Packet H is not activated and component-only claims remain
-- Exact next action: finish Packet I quick/hooks/immutable/hosted acceptance and unchanged-head merge; then create Packet J only from fetched post-I `origin/main`
+- Focus: exact technical-acceptance artifact steps 3 and 4 after LIB-PRO-002 I-J
+- Integrated predecessor: Packet I merged through PR #819 at `0ba2f397aec267bc74a31281f9158189fde2749d`
+- Packet J outcome: hosted full suites bind the setup-python interpreter; preflight verdicts are mode-accurate and publication remains fail-closed
+- Git handoff receipt: `docs/verification/lib-pro-002-j-git-handoff-receipt.json`
+- Focused Packet J evidence: 102 workflow/release/environment tests pass
+- Release state: `PUBLICATION_HOLD`; no version bump, tag, upload, GitHub Release, or professional approval exists
+- Whole-building workflow: Packet H remains inactive; component-only claims remain
+- Exact next action: perform release-preflight steps 3 and 4 only—build one temporary exact technical-acceptance wheel from synchronized `main`, then clean-install and verify that same artifact
 <!-- HANDOFF:END -->
 
 | State | Boundary |
 |---|---|
-| **Current** | `v0.23.1a1` Alpha; no stable, professional-approval, or whole-building claim |
-| **Next** | Merge unchanged Packet I candidate, then LIB-PRO-002-J; no release-candidate mutation or publication |
-| **Held** | Publication, professional approval, Packet H, INDIA-3, dependency work, branch/worktree cleanup, and unrelated retained lanes |
+| **Current** | `v0.23.1a1` Alpha; Packets A-G and I-J correct current source, not the already-published old artifact |
+| **Next** | One temporary technical-acceptance wheel plus source-free clean-install/UAT evidence from unchanged synchronized `main` |
+| **Held** | Version bump, tag, TestPyPI/PyPI upload, GitHub Release, professional approval, Packet H, dependency work, and retained-lane cleanup |
 
 ## Required Reading
 
-1. [Active post-fix plan](pre-release-input-safety-and-professional-readiness-plan.md)
+1. [Active readiness plan](pre-release-input-safety-and-professional-readiness-plan.md)
 2. [Current task board](../TASKS.md)
 3. [Git workflow single source](../git-automation/git-workflow-single-source.md)
 4. [Publication authorization record](../verification/release-publication-authorization.json)
-5. [Exact-candidate review receipt template](../verification/exact-candidate-review-receipt-template.json)
+5. [Exact-candidate review template](../verification/exact-candidate-review-receipt-template.json)
 
 ## Resume safely
 
-Packet I is implemented in source-bound lane `codex/lib-pro-002-i-cli` from
-exact base `b3a9c367…`. Accept and merge only its unchanged reviewed head after
-required hosted checks. Then start Packet J in fresh lane
-`codex/lib-pro-002-j-release-signal` from the new fetched `origin/main`. Never
-keep both packets as active writers. Do not mutate primary `main`, reuse
-historical candidate lanes, or clean unrelated worktrees.
+Start from the primary checkout. Fetch first, inspect every worktree and open
+task-owned PR, and require clean synchronized `main` plus `source_bound=true`.
+Do not reuse Packet I/J worktrees, disturb retained detached/dirty lanes, or
+assume this handoff's Git state is still current.
 
 ```bash
-./run.sh session brief --agent orchestrator
+./run.sh session brief --agent ops
 ./run.sh session start
 ./scripts/python_runtime.sh --diagnose
 ./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 ```
 
-Require `fe4ab025…` as an ancestor, record each actual fetched base/head,
-`source_bound=true`, no operation marker, and no new overlapping writer before
-mutation. Before Packet J starts, prove Packet I is integrated and compare all
-open task-owned candidate paths. Preserve every unrelated lane.
+Stop before mutation if `main` is behind/diverged/dirty, an operation marker is
+present, or another candidate overlaps packaging, verification, indexes, or
+release guidance. Preserve unknown state; never reset, stash, clean, rebase, or
+delete it as recovery.
 
-## Packet I boundary
+## Step 3 — build the exact technical-acceptance artifact
 
-- freeze the default valid output as the existing versioned `beams` envelope
-  before replacing orchestration; migrate by a compatibility adapter rather
-  than silently switching downstream consumers to the service `members` shape;
-- replace the `design` CLI's row-skipping/defaulting intake with the lossless
-  ledger and strict project command;
-- block the whole CLI project on any malformed, missing, non-finite, unknown,
-  duplicate, ambiguous, or unaccounted design-bearing record;
-- require explicit effective-depth or complete derivation basis; do not supply
-  hidden cover/material/load/identity values;
-- freeze a versioned CLI output contract before migration; keep stdout/output
-  JSON parseable, send diagnostics to stderr, and prove retained `bbs`, `detail`,
-  and `dxf` consumers accept valid `design` output;
-- add valid, malformed-only, mixed-validity, empty, missing-depth/cover,
-  duplicate, unknown-field, and ambiguous-format CLI cases to exact-wheel UAT;
-- bind all advertised calculation entry points to a generated or validated
-  inventory classifying calculation entry, result consumer, inspection,
-  compatibility, deprecated, and held surfaces so a future route cannot be
-  omitted silently;
-- retain the corrected one-storey beam result for complete canonical input.
+- Confirm Packet J's PR checks and exact-head Weekly Verification passed, and
+  verify synchronized `main` has the same accepted tree before building.
+- Use a new clean temporary output directory; do not reuse `Python/dist` or any
+  historical artifact.
+- Build exactly one wheel from unchanged synchronized `main` and record source
+  head, source tree, Python tree, filename, size, and SHA-256.
+- Verify wheel filename, METADATA version, contents, protected-source boundary,
+  advertised-entrypoint inventory, and source/library content identity.
+- Treat this as technical evidence for current source only. Because current
+  source still says `0.23.1a1`, the wheel must never replace or be confused with
+  the already-published `0.23.1a1` artifact.
+- Do not bump a version, write release notes, tag, upload, or authorize a target.
 
-Packet I owns only CLI/import/service/UAT and directly affected docs/tests. It
-does not own workflow interpreter policy, release verdict labels, dependency
-updates, new formulas, whole-building work, version bump, or publication.
+## Step 4 — clean-install and verify the same artifact
 
-## Packet J boundary
-
-- reuse `STRUCTURAL_LIB_PYTHON="$(command -v python)"` in the Weekly
-  Verification and publish full-suite steps so recursive repository launchers
-  inherit the exact setup-python interpreter;
-- preserve `python_runtime.sh` fail-closed selection; do not add a bare-system-
-  Python fallback;
-- add workflow-contract tests that fail if a hosted full suite can invoke
-  `run.sh`/`python_runtime.sh` without the interpreter binding;
-- replace the single preflight success label with
-  `READY_TO_PREPARE_CANDIDATE`, `CANDIDATE_TECHNICALLY_READY` plus explicit
-  holds, and `READY_TO_PUBLISH` only after exact authorization;
-- keep pre-bump validation read-only and allow it to run before authorization,
-  but never describe missing wheel/review/hosted/authorization evidence as a
-  warning-compatible release-ready state;
-- manually dispatch Weekly Verification on Packet J's exact remote head and
-  require every full Python/FastAPI/React/docs/summary job to pass.
-
-Packet J owns only `.github/workflows/nightly.yml`, the directly affected
-publish validation step, `scripts/release.py`, focused workflow/release tests,
-and directly affected release guidance. It does not bump a version, create a
-tag, authorize targets, upload a package, or activate Packet H.
-
-## Next-session execution order
-
-1. Fetch `origin/main`; inspect all worktrees/open task-owned PRs and require a
-   clean fresh Packet I lane with `source_bound=true`.
-2. Freeze Packet I tests before orchestration changes: valid legacy `beams`
-   output/downstream compatibility, whole-file blocking, stdout/stderr, exit
-   code, row/field conservation, and advertised-entry-point inventory.
-3. Implement all Packet I writes, then run its consolidated CLI, Excel-edge,
-   import, batch, release-UAT, and quick checks listed in the detailed plan.
-4. Complete Packet I session/handoff/index writes, hooks, immutable review,
-   hosted PR checks, and unchanged-head merge. Do not start J before merge.
-5. Create the fresh Packet J lane from fetched post-I `origin/main`; freeze
-   workflow/preflight verdict tests, then implement all J writes.
-6. Run Packet J's workflow-contract, release-script, release-environment, and
-   quick checks listed in the detailed plan.
-7. Freeze Packet J documentation/evidence/indexes, run normal hooks, then run
-   Python, FastAPI, React, and the full canonical gate once cumulatively.
-8. Build one clean technical-acceptance wheel for the unchanged current source,
-   run expanded source-free UAT/public examples and exact-wheel preflight, then
-   obtain immutable review, required PR checks, and the manual Weekly
-   Verification receipt. This wheel is evidence for I-J, not authority to
-   republish `0.23.1a1`.
-9. Merge only the unchanged accepted J head, synchronize clean primary `main`,
-   and stop. A later owner-authorized release-preparation session selects and
-   bumps the next version, writes release notes, builds the final versioned
-   wheel, repeats exact review/hosted gates, and requests exact target
-   authorization.
+- Create a source-free temporary virtual environment and remove repository
+  `PYTHONPATH`/`VIRTUAL_ENV` inheritance.
+- Install the exact recorded wheel, then prove `structural_lib.__file__` comes
+  from that environment rather than the checkout.
+- Run expanded exact-wheel UAT and public examples, including all 29 declared
+  negative/positive cases and the 12-command advertised-entrypoint inventory.
+- Run the exact-wheel candidate check and preflight against the same path. The
+  expected successful technical verdict is `CANDIDATE_TECHNICALLY_READY` plus
+  `PUBLICATION_HOLD`, not `READY_TO_PUBLISH`.
+- Record the clean-install interpreter, imported version/origin, matrix hash,
+  case count, public-example result, wheel hash, and all remaining holds.
+- A failed or mismatched case is `NOT_READY`; do not repair by weakening the
+  launcher, UAT, artifact identity, review, hosted, or authorization controls.
 
 ## Acceptance and stop rules
 
-Required final evidence is: Packet I and J base/head/tree receipts; source-
-bound diagnostics; focused counts; exact wheel filename and SHA-256; expanded
-entry-point matrix identity and result; public-example result; independent
-review decision; PR check URLs; Weekly Verification URL; and a publication
-authorization check that still returns `HOLD` until the owner separately acts.
+Step 3 accepts only one exact, source-bound wheel with a recorded SHA-256 and
+no excluded/protected content. Step 4 accepts only source-free installation of
+that same hash with all entrypoint/UAT/public-example checks passing.
 
-Do not publish a package, create a tag or GitHub Release, claim professional
-approval, activate Packet H, close issues/PRs, delete branches, or clean retained
-worktrees without the separately required authorization.
+Even after both steps pass, publication remains held. A later separately
+authorized release-preparation task must select and bump the next Alpha
+version, rebuild the final versioned artifact, repeat exact review and hosted
+gates, and obtain explicit target authorization. Do not publish, tag, create a
+GitHub Release, claim professional approval, activate Packet H, close work, or
+delete branches/worktrees in this technical-acceptance session.

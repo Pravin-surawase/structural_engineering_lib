@@ -57,7 +57,7 @@ jobs:
       - name: Full Python suite with coverage
         working-directory: Python
         run: |
-          python -m pytest tests -q --hypothesis-profile=ci \
+          STRUCTURAL_LIB_PYTHON="$(command -v python)" python -m pytest tests -q --hypothesis-profile=ci \
             --cov=structural_lib --cov-branch --cov-report=term-missing \
             --cov-fail-under=85
 

@@ -98,7 +98,7 @@ jobs:
           fi
 
       - name: Run release tests
-        run: python -m pytest tests -q --tb=short
+        run: STRUCTURAL_LIB_PYTHON="$(command -v python)" python -m pytest tests -q --tb=short
 
   build:
     name: Build and verify distributions

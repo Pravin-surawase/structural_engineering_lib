@@ -30,7 +30,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_branch_disposition.py](test_branch_disposition.py) | Outcome tests for the inspection-only branch disposition cla | 0 | 12 | 437 |
 | [test_bump_version_semantics.py](test_bump_version_semantics.py) | Regression coverage for candidate-version documentation sema | 0 | 1 | 66 |
 | [test_calculation_report.py](test_calculation_report.py) | Tests for the calculation_report module (TASK-277). | 9 | 4 | 745 |
-| [test_ci_workflow_contract.py](test_ci_workflow_contract.py) | Regression tests for fail-closed PR workflow routing. | 0 | 5 | 182 |
+| [test_ci_workflow_contract.py](test_ci_workflow_contract.py) | Regression tests for fail-closed PR workflow routing. | 0 | 6 | 202 |
 | [test_clause_traceability.py](test_clause_traceability.py) | Tests for IS 456 Traceability Module | 10 | 2 | 489 |
 | [test_column_axial.py](test_column_axial.py) | Tests for column axial module — effective_length() per IS 45 | 6 | 0 | 273 |
 | [test_column_biaxial.py](test_column_biaxial.py) | Tests for IS 456 Cl 39.6 biaxial bending check — TASK-635. | 8 | 0 | 958 |
@@ -68,7 +68,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_pipeline_state.py](test_pipeline_state.py) | Tests for scripts/pipeline_state.py — Pipeline step tracking | 7 | 0 | 353 |
 | [test_private_source_boundary.py](test_private_source_boundary.py) | Protected engineering-source material stays local and outsid | 0 | 2 | 40 |
 | [test_release_environment.py](test_release_environment.py) | Regression tests for local release preflight environment sel | 0 | 13 | 281 |
-| [test_release_scripts.py](test_release_scripts.py) | Tests for release scripts (bump_version.py, release.py). | 15 | 8 | 911 |
+| [test_release_scripts.py](test_release_scripts.py) | Tests for release scripts (bump_version.py, release.py). | 15 | 11 | 1030 |
 | [test_release_uat.py](test_release_uat.py) | The exact-wheel acceptance matrix remains data-driven and ex | 0 | 1 | 35 |
 | [test_report_edge_cases.py](test_report_edge_cases.py) | Edge case tests for report generation modules (TASK-520). | 4 | 0 | 303 |
 | [test_report_svg.py](test_report_svg.py) | Tests for the SVG report generation module. | 4 | 0 | 141 |

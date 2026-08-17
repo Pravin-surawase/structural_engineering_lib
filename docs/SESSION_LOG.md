@@ -5,6 +5,157 @@
 
 ---
 
+## 2026-08-17 — Session: LIB-PRO-002-J Release Signal Convergence
+
+**Agent:** Codex (`ops`, sole writer)
+
+**Branch:** `codex/lib-pro-002-j-release-signal` from Packet I merge
+`origin/main = 0ba2f397aec267bc74a31281f9158189fde2749d`
+
+**Git handoff receipt:** `docs/verification/lib-pro-002-j-git-handoff-receipt.json`
+
+**Focus:** Bind scheduled/tag full suites to the interpreter selected by
+`actions/setup-python`, replace the preflight's shared release-ready label with
+mode-accurate preparation/candidate/publication verdicts, and require exact-head
+hosted receipts before publication readiness. Do not build a wheel, bump a
+version, tag, publish, authorize targets, or activate Packet H; exact artifact
+steps 3 and 4 are reserved for the next session at the owner's request.
+
+### Summary
+
+- Weekly Verification and publish validation now pass the exact setup-python
+  executable through the supported `STRUCTURAL_LIB_PYTHON` contract when their
+  full Python suites execute launcher-dependent tests. The strict launcher was
+  not weakened and no bare-system fallback was introduced.
+- Preflight now reports `READY_TO_PREPARE_CANDIDATE` without a wheel,
+  `CANDIDATE_TECHNICALLY_READY` plus `PUBLICATION_HOLD` after exact-wheel/UAT
+  success without complete publication evidence, `NOT_READY` on technical
+  failure, and `READY_TO_PUBLISH` only for an exact authorized target.
+- Candidate-wheel preflight now runs the packaged source-free release UAT and
+  public examples in the disposable clean-install environment rather than
+  treating metadata/import/CLI help alone as technical candidate evidence.
+- The exact-candidate review receipt now binds passing required PR checks and
+  Weekly Verification to the reviewed head. Wrong/missing hosted status, head,
+  or run URL blocks publication readiness.
+- The next-session brief records the owner's requested boundary: step 3 builds
+  one temporary technical-acceptance wheel from unchanged synchronized `main`;
+  step 4 clean-installs and verifies that same hash. Neither step authorizes a
+  new version or publication.
+
+### Issues encountered
+
+- Hosted Weekly Verification run `31988837003` had failed six otherwise valid
+  governance/session tests because their recursive repository launchers could
+  not resolve a project Python, while the publish full-suite step contained the
+  same latent environment gap.
+- A zero-error pre-bump run with no wheel, exact review, hosted receipt, or
+  target authorization printed `READY TO RELEASE`, conflating permission to
+  prepare a candidate with permission to publish.
+- The exact-review receipt template and validator did not record hosted checks,
+  so the future publication verdict could not machine-prove the plan's required
+  exact-head PR and Weekly Verification evidence.
+- The first post-implementation formatting check found one deterministic Black
+  wrapping change in `scripts/release.py`; tests already passed, but the Python
+  candidate was not yet format-frozen.
+- The first focused index refresh again rewrote historical `last_updated` values
+  for unchanged files in the fresh linked worktree, producing unrelated
+  generated diff churn before the candidate freeze.
+- The first React-suite command stopped before collection because the fresh
+  Packet J worktree had no `react_app/node_modules`, so `vitest` was not found.
+  No test executed and the attempt was not accepted as React evidence.
+- Final semantic review found that the CLI still permitted two contradictory
+  combinations: a future pre-bump positional version together with an exact
+  current-source wheel, or a publication target without any wheel evidence.
+- The first normal commit-hook run rejected the rewritten handoff because its
+  `Required Reading` heading capitalization no longer matched the session
+  checker's exact required contract. No commit was created.
+- No Git, worktree, or Python interpreter-binding issue occurred in Packet J.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `actions/setup-python` changes the workflow `python`
+  path but does not create a repository `.venv` or set `VIRTUAL_ENV`; the full
+  suites recursively invoke `run.sh`/`python_runtime.sh`, whose fail-closed
+  contract accepts `STRUCTURAL_LIB_PYTHON` instead of guessing a system
+  interpreter. Resolution: prefix the Weekly and publish full pytest commands
+  with `STRUCTURAL_LIB_PYTHON="$(command -v python)"` and enforce both exact
+  workflow steps in repository tests. Evidence: the focused workflow contract
+  passes and the launcher remains unchanged.
+- Confirmed root cause: `cmd_preflight` selected its final text only from the
+  aggregate technical error count; wheel, review, hosted, target, and owner
+  authorization states did not participate. Resolution: centralize a pure
+  mode-specific verdict contract, add optional exact target evaluation, and
+  print every remaining publication hold. Evidence: parameterized tests cover
+  technical failure, missing wheel, technically ready/no target, authorization
+  HOLD, and fully authorized publication with their exact exit codes.
+- Confirmed root cause: clean-wheel preflight ran metadata inspection, import,
+  and CLI help but not the packaged negative UAT/public examples. Resolution:
+  run `structural_lib.release_uat --require-installed-wheel` inside the same
+  disposable source-free environment before technical readiness. Evidence: a
+  focused source contract test requires that exact invocation; live artifact
+  execution is intentionally deferred to next-session step 4.
+- Confirmed root cause: authorization validated an independent review receipt
+  but the receipt schema contained no hosted evidence. Resolution: require
+  `required_pr_checks` and `weekly_verification` PASS records, GitHub Actions
+  URLs, and head SHAs equal to the reviewed candidate. Evidence: the valid
+  authorization fixture passes and a mismatched Weekly head is rejected.
+- Confirmed root cause: the new verdict helper and summary branch exceeded
+  Black's canonical wrapping shape. Resolution: run Black on the one reported
+  source file only. Evidence: the repeated 102-test selection, Black, Ruff, and
+  `git diff --check` all pass.
+- Confirmed root cause: maintained index dates are still sourced from checkout
+  filesystem mtime, while a newly materialized linked worktree assigns today's
+  mtime to unchanged tracked files. Resolution: restore the ten generated
+  indexes to the exact Packet J base through patch edits, set only unchanged
+  tracked inputs to their last-commit times, then regenerate the five affected
+  folders once. Evidence: the final index diff retains only task files, their
+  hashes/counts, and the new receipt; unchanged historical dates do not move.
+- Confirmed root cause: linked worktrees share Git objects but not ignored
+  dependency directories, and `./run.sh test --react` intentionally executes
+  the pinned test command without installing packages. Resolution: select the
+  repository's healthy pinned Node 24 runtime, run `npm ci` from the lockfile in
+  the Packet J worktree, then execute the unchanged React command. Evidence:
+  48 files and 267 tests pass.
+  ⚠️ TERMINAL ISSUE: `vitest` was unavailable in the fresh worktree -> installed
+  lockfile dependencies with pinned Node 24, then reran the actual React suite.
+- Confirmed root cause: parser arguments represented independent options while
+  verdict modes are mutually exclusive; no cross-option contract rejected the
+  contradictory combinations. Resolution: add an explicit mode validator so
+  future-version checks remain pre-bump-only and publication-target evaluation
+  requires an exact wheel. Evidence: four mode-combination regressions pass and
+  both contradictory modes return `NOT_READY` through the normal error path.
+- Confirmed root cause: the handoff rewrite changed a machine-consumed heading
+  from `Required Reading` to sentence case even though the session validator
+  performs an exact heading match. Resolution: restore the canonical heading
+  without changing the handoff content. Evidence: the repeated session-doc and
+  normal commit-hook checks pass.
+
+### Validation through content freeze
+
+- Startup: Packet I PR #819 passed required checks and merged unchanged at
+  `0ba2f397`; primary `main` was clean/equal before a fresh Packet J linked lane
+  was created from that exact commit.
+- Source binding: Packet J reported `source_bound=true`, `READY_LOCAL`, clean
+  tree, no operation marker, and equality with fetched `origin/main`.
+- Focused Packet J selection: 102 workflow-contract, release-script, and release-
+  environment tests passed.
+- Consolidated repository boundary: quick gate 10/10; Python 6,406 passed, 3
+  skipped, and 6 deselected; FastAPI 452 passed; React 267 passed across 48
+  files; the full canonical gate passes after content freeze; normal commit
+  hooks pass on the immutable candidate.
+- Exact wheel build and clean-install verification were not run because the
+  owner explicitly assigned release-preflight steps 3 and 4 to the next
+  session. Publication remains `HOLD`.
+
+### Timing through content freeze
+
+- Packet I hosted acceptance, exact-head merge, and primary synchronization:
+  approximately 3 minutes.
+- Packet J safe-lane orientation, root-cause trace, implementation, and focused
+  proof: approximately 15 minutes.
+- Documentation, cumulative gates, hosted acceptance, and merge closeout follow
+  this content freeze.
+
 ## 2026-08-17 — Session: LIB-PRO-002-I Advertised CLI Convergence
 
 **Agent:** Codex (`backend`, sole writer)

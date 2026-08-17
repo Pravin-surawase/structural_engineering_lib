@@ -4227,7 +4227,7 @@
     {
       "name": "release.py",
       "type": "python",
-      "size_lines": 2125,
+      "size_lines": 2252,
       "last_updated": "2026-08-17",
       "description": "Unified release management CLI.",
       "functions": [
@@ -4309,7 +4309,7 @@
         "PYPROJECT",
         "FASTAPI_INIT"
       ],
-      "content_hash": "dd76f52f3d77"
+      "content_hash": "cabad3db6d34"
     },
     {
       "name": "repo_health_check.sh",
@@ -5549,5 +5549,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "f915a71ec7438601"
+  "content_hash": "d758053d32cc6bc3"
 }

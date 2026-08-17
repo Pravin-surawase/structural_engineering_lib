@@ -761,10 +761,13 @@
     {
       "name": "test_ci_workflow_contract.py",
       "type": "python",
-      "size_lines": 182,
+      "size_lines": 202,
       "last_updated": "2026-08-17",
       "description": "Regression tests for fail-closed PR workflow routing.",
       "functions": [
+        {
+          "name": "test_hosted_full_suites_bind_the_setup_python_interpreter"
+        },
         {
           "name": "test_changed_path_routes_cover_controls_docs_and_their_tests"
         },
@@ -794,9 +797,11 @@
         "REPO_ROOT",
         "FAST_CHECKS",
         "DEPLOY_DOCS",
+        "NIGHTLY",
+        "PUBLISH",
         "BASE_GATE_ENV"
       ],
-      "content_hash": "41b5fe48a58b"
+      "content_hash": "12e29bdc72bd"
     },
     {
       "name": "test_clause_traceability.py",
@@ -3424,7 +3429,7 @@
     {
       "name": "test_release_scripts.py",
       "type": "python",
-      "size_lines": 911,
+      "size_lines": 1030,
       "last_updated": "2026-08-17",
       "description": "Tests for release scripts (bump_version.py, release.py).",
       "classes": [
@@ -3496,6 +3501,7 @@
             "test_dev_extra_declares_hypothesis",
             "test_wheel_verify_installs_exact_test_dependencies",
             "test_wheel_verify_uses_isolated_pytest_configuration",
+            "test_candidate_preflight_runs_the_exact_wheel_uat",
             "test_wheel_verify_commands_are_package_scoped_and_isolated",
             "test_pypi_verify_forces_fresh_official_index"
           ]
@@ -3572,6 +3578,25 @@
           "name": "test_release_publication_authorization_holds_by_default"
         },
         {
+          "name": "test_preflight_verdicts_are_mode_accurate",
+          "params": [
+            "errors",
+            "wheel_supplied",
+            "authorization_errors",
+            "verdict",
+            "exit_code"
+          ]
+        },
+        {
+          "name": "test_preflight_rejects_ambiguous_mode_combinations",
+          "params": [
+            "target_version",
+            "wheel_supplied",
+            "publication_target",
+            "expected"
+          ]
+        },
+        {
           "name": "test_release_publication_authorization_binds_version_tag_and_target",
           "params": [
             "tmp_path"
@@ -3585,6 +3610,12 @@
         },
         {
           "name": "test_release_publication_authorization_rejects_tampered_receipt",
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_release_publication_authorization_requires_exact_hosted_receipts",
           "params": [
             "tmp_path"
           ]
@@ -3615,7 +3646,7 @@
         "RELEASE_SCRIPT",
         "VERSION_TRACKED_FILES"
       ],
-      "content_hash": "4a5ffbd933f4"
+      "content_hash": "dd9f3b769715"
     },
     {
       "name": "test_release_uat.py",
@@ -4868,5 +4899,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "c85fe235130d291b"
+  "content_hash": "7f10d604e7ff15fc"
 }

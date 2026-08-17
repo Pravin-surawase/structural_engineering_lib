@@ -581,8 +581,8 @@ defaults for compatibility.
 
 ### J — Release signal convergence (`LIB-PRO-002-J`, S)
 
-**State:** required after Packet I because live hosted and local preflight
-evidence currently disagree about publication readiness.
+**State:** software implementation complete; exact technical-acceptance artifact
+steps 3 and 4 remain separately held for the next session.
 
 **Depends on:** I.
 **Owns:** full-suite interpreter binding in scheduled/tag workflows,
