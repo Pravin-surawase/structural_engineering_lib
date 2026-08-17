@@ -46,7 +46,7 @@ Normal work mode:
   You: "I need to review Agent 6's PR"
   ↓
   Load Agent 8 context:
-    1. Open: docs/agents/guides/agent-8-git-ops.md
+    1. Open: docs/_archive/2026-08/agent-8-git-ops.md
     2. Follow: Agent 8 protocol for PR review
     3. Execute: Agent 8 decision logic (auto-merge criteria, CI monitoring)
     4. Validation: If Streamlit changes, scanner runs automatically
@@ -120,7 +120,7 @@ Done - back to work
 2. **You switch to Agent 8 mode:**
    ```bash
    # Open Agent 8 protocol (keep visible)
-   open docs/agents/guides/agent-8-git-ops.md
+   open docs/_archive/2026-08/agent-8-git-ops.md
 
    # Follow checklist:
    # [✓] 1. Validate handoff complete
@@ -234,7 +234,7 @@ Switch to Agent 8 mode when:
 ### Agent 8 Quick Workflow
 
 1. **Receive handoff notification**
-2. **Load Agent 8 context:** `docs/agents/guides/agent-8-git-ops.md`
+2. **Load Agent 8 context:** `docs/_archive/2026-08/agent-8-git-ops.md`
 3. **Follow decision matrix:**
    - Assess risk level (LOW/MEDIUM/HIGH)
    - Execute appropriate workflow
@@ -276,7 +276,7 @@ Add to "Workflow Patterns" section:
 # Background agent notifies you: "Handoff ready: streamlit/2026-01-08"
 
 # Option A: Manual (Phase 1)
-open docs/agents/guides/agent-8-git-ops.md
+open docs/_archive/2026-08/agent-8-git-ops.md
 # Follow checklist manually
 
 # Option B: Semi-automated (Phase 2)
@@ -326,9 +326,9 @@ if [[ "$GIT_AGENT_MODE" == true ]]; then
     # Display Agent 8 context
     echo "📋 Agent 8 Context:"
     echo "  • Quick Start: docs/agents/guides/agent-8-quick-start.md"
-    echo "  • Protocol: docs/agents/guides/agent-8-git-ops.md"
-    echo "  • Automation: docs/agents/guides/agent-8-automation.md"
-    echo "  • Decision Matrix: docs/agents/guides/agent-8-git-ops.md#decision-logic"
+    echo "  • Protocol: docs/_archive/2026-08/agent-8-git-ops.md"
+    echo "  • Automation: docs/_archive/2026-08/agent-8-automation.md"
+    echo "  • Decision Matrix: docs/_archive/2026-08/agent-8-git-ops.md#decision-logic"
     echo "  • Audit Log: git_operations_log/$(date +%Y-%m-%d).md"
     echo ""
 
@@ -519,7 +519,7 @@ Request: Please push, PR, and auto-merge if eligible
 **You (MAIN) switch to Agent 8 mode:**
 ```bash
 # 1. Open Agent 8 protocol
-open docs/agents/guides/agent-8-git-ops.md
+open docs/_archive/2026-08/agent-8-git-ops.md
 
 # 2. Follow checklist (5 minutes first time, 2 min after practice)
 git checkout streamlit/2026-01-08-add-beam-viz
@@ -770,7 +770,7 @@ Agent 6: (continues immediately)
 
 ### Immediate (Today)
 
-- [ ] **Read Agent 8 protocol:** `docs/agents/guides/agent-8-git-ops.md`
+- [ ] **Read Agent 8 protocol:** `docs/_archive/2026-08/agent-8-git-ops.md`
 - [ ] **Keep it open:** Put in 2nd monitor or print key sections
 - [ ] **Next handoff:** Use Agent 8 checklist manually (Model B)
 - [ ] **Time yourself:** See actual time improvement

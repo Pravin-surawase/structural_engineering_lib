@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
   "last_updated": "2026-08-17",
-  "file_count": 43,
+  "file_count": 44,
   "files": [
     {
       "name": "README.md",
@@ -217,6 +217,34 @@
         }
       ],
       "content_hash": "e2b5ebd63d6d"
+    },
+    {
+      "name": "test_building_gravity.py",
+      "type": "python",
+      "size_lines": 271,
+      "last_updated": "2026-08-17",
+      "description": "REST semantic vectors for Building Gravity Workflow V1.",
+      "functions": [
+        {
+          "name": "test_building_gravity_definition_declares_all_product_surfaces",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_building_gravity_route_preserves_actions_holds_and_calculation_book",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_building_gravity_route_rejects_unknown_input_without_calculation",
+          "params": [
+            "client"
+          ]
+        }
+      ],
+      "content_hash": "db16bab8dd61"
     },
     {
       "name": "test_bundled_sample_evidence.py",
@@ -2025,5 +2053,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "fcecff42e8ec885e"
+  "content_hash": "87fb0205b9dc49d6"
 }

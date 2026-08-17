@@ -75,7 +75,7 @@
       "also_see": ["docs/architecture/project-overview.md", "docs/architecture/mission-and-principles.md", "docs/planning/library-expansion-blueprint-v5.md"]
     },
     "agent-mistakes": {
-      "canonical": "docs/agents/guides/agent-8-mistakes-prevention-guide.md",
+      "canonical": "docs/_archive/2026-08/agent-8-mistakes-prevention-guide.md",
       "description": "Historical mistakes and prevention patterns",
       "also_see": []
     },

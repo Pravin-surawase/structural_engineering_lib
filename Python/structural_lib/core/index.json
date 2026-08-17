@@ -3,15 +3,15 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-17",
-  "file_count": 22,
+  "file_count": 23,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 95,
+      "size_lines": 122,
       "last_updated": "2026-08-17",
       "description": "Core module - Code-agnostic base classes and utilities.",
-      "content_hash": "642839e52a43"
+      "content_hash": "4e427c682848"
     },
     {
       "name": "base.py",
@@ -595,6 +595,69 @@
         }
       ],
       "content_hash": "4fc7947c9e1c"
+    },
+    {
+      "name": "gravity_workflow.py",
+      "type": "python",
+      "size_lines": 310,
+      "last_updated": "2026-08-17",
+      "description": "Versioned request, applicability, action, and result types for Gravity V1.",
+      "classes": [
+        {
+          "name": "GravityComponentKindV1"
+        },
+        {
+          "name": "GravityPrerequisiteDispositionV1"
+        },
+        {
+          "name": "GravitySlabDesignBasisV1"
+        },
+        {
+          "name": "GravityBeamDesignBasisV1"
+        },
+        {
+          "name": "GravityColumnDesignBasisV1"
+        },
+        {
+          "name": "GravityFootingDesignBasisV1",
+          "description": "External basis needed to advance one footing handoff beyond HOLD.",
+          "public_methods": [
+            "validate_external_basis"
+          ]
+        },
+        {
+          "name": "GravityWorkflowRequestV1",
+          "public_methods": [
+            "validate_identity_and_component_ids"
+          ]
+        },
+        {
+          "name": "GravityComponentApplicabilityV1"
+        },
+        {
+          "name": "ComponentApplicabilityMatrixV1"
+        },
+        {
+          "name": "GravityMemberActionV1",
+          "public_methods": [
+            "validate_action_shape"
+          ]
+        },
+        {
+          "name": "GravityComponentResultV1"
+        },
+        {
+          "name": "GravityWorkflowResultV1",
+          "public_methods": [
+            "workflow_result_hash"
+          ]
+        }
+      ],
+      "constants": [
+        "_ID_PATTERN",
+        "_SHA256_PATTERN"
+      ],
+      "content_hash": "e1d8b8ba6bb4"
     },
     {
       "name": "inputs.py",
@@ -1262,5 +1325,5 @@
     "GravityCombinationV1",
     "GravityFootingDestinationV1"
   ],
-  "content_hash": "df178532abd89c1b"
+  "content_hash": "ea03a34aa2eb356b"
 }

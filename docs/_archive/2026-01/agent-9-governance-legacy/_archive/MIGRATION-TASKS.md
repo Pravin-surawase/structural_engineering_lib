@@ -104,9 +104,9 @@ Option A splits migration into small, low-risk batches with validation after eve
 
 **Steps**
 1. Move Agent 8 Git Workflow docs first (priority for all agents):
-   - `docs/planning/agent-8-tasks-git-ops.md` → `docs/agents/guides/agent-8-git-ops.md`
+   - `docs/planning/agent-8-tasks-git-ops.md` → `docs/_archive/2026-08/agent-8-git-ops.md`
    - `docs/planning/agent-8-implementation-guide.md` → `docs/agents/guides/agent-8-implementation-guide.md`
-   - `docs/planning/agent-8-mistakes-prevention-guide.md` → `docs/agents/guides/agent-8-mistakes-prevention-guide.md`
+   - `docs/planning/agent-8-mistakes-prevention-guide.md` → `docs/_archive/2026-08/agent-8-mistakes-prevention-guide.md`
 2. Select 7-12 additional docs to move (start with low-risk docs).
 3. Update references in README files, `docs/reference/agent-automation-pitfalls.md`,
    and any agent docs that cite the old paths.

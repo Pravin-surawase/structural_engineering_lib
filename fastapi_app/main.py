@@ -37,6 +37,7 @@ from fastapi_app.models.metadata import APIInfoResponse
 from fastapi_app.models.response import ProblemResponse, error_response
 from fastapi_app.routers import (
     analysis,
+    building_gravity,
     catalog,
     capabilities,
     column,
@@ -168,6 +169,10 @@ API_TAGS_METADATA = [
     {
         "name": "analysis",
         "description": "Smart analysis with design suggestions and insights.",
+    },
+    {
+        "name": "building-gravity",
+        "description": "Bounded one-storey dead/live gravity load path and component review.",
     },
     {
         "name": "geometry",
@@ -606,6 +611,10 @@ app.include_router(
 )
 app.include_router(
     analysis.router,
+    prefix=API_V1_PREFIX,
+)
+app.include_router(
+    building_gravity.router,
     prefix=API_V1_PREFIX,
 )
 app.include_router(

@@ -28,10 +28,17 @@
     {
       "name": "__main__.py",
       "type": "python",
-      "size_lines": 1591,
+      "size_lines": 1655,
       "last_updated": "2026-08-17",
       "description": "Unified CLI entrypoint for structural_lib.",
       "functions": [
+        {
+          "name": "cmd_gravity_v1",
+          "description": "Run the bounded Building Gravity Workflow V1 from one JSON request.",
+          "params": [
+            "args"
+          ]
+        },
         {
           "name": "cmd_design",
           "description": "Run beam design from CSV/JSON input file.",
@@ -124,7 +131,7 @@
           ]
         }
       ],
-      "content_hash": "7e751656d4bd"
+      "content_hash": "7535550dd0c8"
     },
     {
       "name": "adapters.py",
@@ -534,7 +541,7 @@
     {
       "name": "core",
       "path": "core/",
-      "file_count": 23,
+      "file_count": 25,
       "is_package": true
     },
     {
@@ -563,7 +570,7 @@
     {
       "name": "services",
       "path": "services/",
-      "file_count": 52,
+      "file_count": 55,
       "is_package": true
     },
     {
@@ -596,5 +603,5 @@
     "serviceability",
     "shear"
   ],
-  "content_hash": "1c45d0f40df9e10b"
+  "content_hash": "5b2a3d2b82ae1306"
 }

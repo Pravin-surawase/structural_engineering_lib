@@ -216,7 +216,7 @@ cd worktree-AGENT_NAME-*
 ### Essential Documentation
 - **[agent-workflow-master-guide.md](../../agents/guides/agent-workflow-master-guide.md)** - Complete guide (400+ lines)
 - **[agent-quick-reference.md](../../agents/guides/agent-quick-reference.md)** - Quick reference (200+ lines)
-- **[agent-automation-system.md](../../agents/guides/agent-automation-system.md)** - System overview (600+ lines)
+- **[agent-automation-system.md](../2026-08/agent-automation-system.md)** - System overview (600+ lines)
 - **[git-workflow-ai-agents.md](../../contributing/git-workflow-ai-agents.md)** - Core workflow rules
 
 ### Project Documentation

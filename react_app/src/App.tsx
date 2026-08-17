@@ -30,6 +30,7 @@ const WorkflowComposerPage = lazy(() => import('./features/automation/WorkflowCo
 const SlabWorkbenchPage = lazy(() => import('./features/slabs/SlabWorkbenchPage').then(m => ({ default: m.SlabWorkbenchPage })));
 const ColumnReviewWorkspace = lazy(() => import('./features/columns/ColumnReviewWorkspace').then(m => ({ default: m.ColumnReviewWorkspace })));
 const ConcentricIsolatedFootingPage = lazy(() => import('./features/footing/ConcentricIsolatedFootingPage').then(m => ({ default: m.ConcentricIsolatedFootingPage })));
+const BuildingGravityReviewPage = lazy(() => import('./features/building-gravity/BuildingGravityReviewPage').then(m => ({ default: m.BuildingGravityReviewPage })));
 
 function RouteLoadingFallback() {
   return (
@@ -105,6 +106,7 @@ function App() {
                   <Route path="/workbench/slabs" element={<SlabWorkbenchPage />} />
                   <Route path="/workbench/columns/rectangular" element={<ColumnReviewWorkspace />} />
                   <Route path="/workbench/footing/isolated/concentric" element={<ConcentricIsolatedFootingPage />} />
+                  <Route path="/workbench/building-gravity/v1" element={<BuildingGravityReviewPage />} />
                   <Route path="/workbench/projects" element={<WorkbenchHomePage initialView="projects" />} />
                   <Route path="/workbench/projects/new" element={<ImportView />} />
                   <Route path="/workbench/projects/:projectId/import" element={<ProjectStageRoute stage="import"><ImportView /></ProjectStageRoute>} />

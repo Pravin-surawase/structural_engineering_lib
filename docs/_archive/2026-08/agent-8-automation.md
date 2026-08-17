@@ -72,7 +72,7 @@ All Agent 8 scripts are in: **`scripts/`** (project root)
   - Calls safe_push.sh for direct commits
   - Calls create_task_pr.sh for PR workflow
   - Logs all operations
-- **Doc:** See [agent-8-git-ops.md](agent-8-git-ops.md) for full protocol
+- **Doc:** See [agent-8-git-ops.md](../../_archive/2026-08/agent-8-git-ops.md) for full protocol
 
 ### Core Workflow Engine
 
@@ -238,7 +238,7 @@ All Agent 8 scripts are in: **`scripts/`** (project root)
 
 **Git Operations Log** (`git_operations_log/`)
 - All operations logged automatically
-- Format spec: [agent-8-operations-log-spec.md](agent-8-operations-log-spec.md)
+- Format spec: [agent-8-operations-log-spec.md](../../_archive/2026-08/agent-8-operations-log-spec.md)
 
 ---
 
@@ -328,10 +328,10 @@ gh pr merge <num> --squash --delete-branch
 
 ## Full Documentation
 
-- **[Git Operations Protocol](agent-8-git-ops.md)** - Core mission & detailed workflow (primary doc)
-- **[Mistake Prevention](agent-8-mistakes-prevention-guide.md)** - Historical mistakes database
-- **[Multi-Agent Coordination](agent-8-multi-agent-coordination.md)** - Coordination patterns
-- **[Automation System](agent-automation-system.md)** - System overview & benefits
+- **[Git Operations Protocol](../../_archive/2026-08/agent-8-git-ops.md)** - Core mission & detailed workflow (primary doc)
+- **[Mistake Prevention](../../_archive/2026-08/agent-8-mistakes-prevention-guide.md)** - Historical mistakes database
+- **[Multi-Agent Coordination](../../_archive/2026-08/agent-8-multi-agent-coordination.md)** - Coordination patterns
+- **[Automation System](../../_archive/2026-08/agent-automation-system.md)** - System overview & benefits
 
 ---
 

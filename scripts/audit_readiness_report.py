@@ -33,6 +33,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+
 
 @dataclass
 class EvidenceItem:
@@ -100,10 +102,13 @@ class AuditReport:
 
 def run_script(script_path: str, args: List[str] = None) -> Tuple[int, str, str]:
     """Run a Python script and capture output."""
-    cmd = [sys.executable, script_path] + (args or [])
+    resolved_path = Path(script_path)
+    if not resolved_path.is_absolute():
+        resolved_path = _REPO_ROOT / resolved_path
+    cmd = [sys.executable, str(resolved_path)] + (args or [])
     try:
         result = subprocess.run(
-            cmd, capture_output=True, text=True, timeout=120, cwd=Path.cwd()
+            cmd, capture_output=True, text=True, timeout=120, cwd=_REPO_ROOT
         )
         return result.returncode, result.stdout, result.stderr
     except subprocess.TimeoutExpired:
@@ -335,7 +340,7 @@ def collect_contract_truth_evidence(report: AuditReport) -> None:
     """Include semantic controls that previously sat outside readiness truth."""
 
     api_parity = Path("scripts/test_api_parity.py")
-    if api_parity.exists():
+    if (_REPO_ROOT / api_parity).exists():
         code, stdout, stderr = run_script(str(api_parity))
         passed = code == 0
         report.add_evidence(
@@ -354,7 +359,7 @@ def collect_contract_truth_evidence(report: AuditReport) -> None:
         )
 
     function_quality = Path("scripts/check_function_quality.py")
-    if function_quality.exists():
+    if (_REPO_ROOT / function_quality).exists():
         code, stdout, stderr = run_script(
             str(function_quality), ["--summary", "--strict"]
         )
@@ -371,7 +376,7 @@ def collect_contract_truth_evidence(report: AuditReport) -> None:
         )
 
     input_validation = Path("scripts/audit_input_validation.py")
-    if input_validation.exists():
+    if (_REPO_ROOT / input_validation).exists():
         code, stdout, stderr = run_script(str(input_validation))
         passed = code == 0
         report.add_evidence(

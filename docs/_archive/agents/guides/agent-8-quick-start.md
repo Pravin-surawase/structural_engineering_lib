@@ -1,6 +1,6 @@
 # Agent 8 Quick Start - Git Operations Automation
 
-> **⚠️ ARCHIVED:** 2026-01-11 | Content merged into [agent-8-automation.md](../../../agents/guides/agent-8-automation.md)
+> **⚠️ ARCHIVED:** 2026-01-11 | Content merged into [agent-8-automation.md](../../2026-08/agent-8-automation.md)
 
 **Get started with Agent 8 in 60 seconds.**
 
@@ -137,11 +137,11 @@ git commit --no-edit
 
 ## Full Documentation
 
-- **[Git Operations Protocol](../../../agents/guides/agent-8-git-ops.md)** (1,320 lines) - Core mission & workflow
-- **[Automation Index](../../../agents/guides/agent-8-automation.md)** - All scripts & tools
-- **[Mistake Prevention](../../../agents/guides/agent-8-mistakes-prevention-guide.md)** (1,096 lines) - Historical mistakes DB
+- **[Git Operations Protocol](../../2026-08/agent-8-git-ops.md)** (1,320 lines) - Core mission & workflow
+- **[Automation Index](../../2026-08/agent-8-automation.md)** - All scripts & tools
+- **[Mistake Prevention](../../2026-08/agent-8-mistakes-prevention-guide.md)** (1,096 lines) - Historical mistakes DB
 - **[Implementation Guide](agent-8-implementation-guide.md)** - Setup & implementation
-- **[Multi-Agent Coordination](../../../agents/guides/agent-8-multi-agent-coordination.md)** - Coordination workflows
+- **[Multi-Agent Coordination](../../2026-08/agent-8-multi-agent-coordination.md)** - Coordination workflows
 
 ---
 

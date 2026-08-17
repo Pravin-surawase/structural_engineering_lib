@@ -2,7 +2,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-17
-**Files:** 22
+**Files:** 23
 
 ## Public API
 
@@ -31,7 +31,7 @@
 
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
-| [__init__.py](__init__.py) | Core module - Code-agnostic base classes and utilities. | 0 | 0 | 95 |
+| [__init__.py](__init__.py) | Core module - Code-agnostic base classes and utilities. | 0 | 0 | 122 |
 | [base.py](base.py) | Abstract base classes for design code implementations. | 5 | 0 | 139 |
 | [building_gravity.py](building_gravity.py) | Versioned physical-model and load-basis contracts for gravit | 15 | 2 | 686 |
 | [constants.py](constants.py) | Module:       constants | 0 | 0 | 20 |
@@ -40,6 +40,7 @@
 | [error_messages.py](error_messages.py) | Module:       error_messages | 0 | 15 | 496 |
 | [errors.py](errors.py) | Module:       errors | 11 | 1 | 884 |
 | [geometry.py](geometry.py) | Code-agnostic geometry definitions. | 4 | 2 | 254 |
+| [gravity_workflow.py](gravity_workflow.py) | Versioned request, applicability, action, and result types f | 12 | 0 | 310 |
 | [inputs.py](inputs.py) | Module:       inputs | 6 | 3 | 635 |
 | [logging_config.py](logging_config.py) | Module:       logging_config | 0 | 1 | 66 |
 | [materials.py](materials.py) | Code-agnostic material models. | 3 | 0 | 159 |

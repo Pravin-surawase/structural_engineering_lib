@@ -63,7 +63,7 @@ Moved 7 Agent 8 documentation files using `git mv` (preserves history):
 
 **Git History:**
 ```
-git log --follow docs/agents/guides/agent-8-git-ops.md
+git log --follow docs/_archive/2026-08/agent-8-git-ops.md
 # Shows full history back to original creation
 ```
 
@@ -74,7 +74,7 @@ Updated references in 8 files:
 1. `.github/copilot/instructions.md` - Added quick-start + automation links
 2. `docs/getting-started/copilot-quick-start.md` - Updated all Agent 8 links
 3. `docs/planning/AGENT-8-SUMMARY.md` - Updated onboarding flow
-4. `docs/agents/guides/agent-8-git-ops.md` - Fixed internal reference
+4. `docs/_archive/2026-08/agent-8-git-ops.md` - Fixed internal reference
 5. `docs/agents/guides/agent-8-implementation-guide.md` - Updated 7 references
 6. `docs/SESSION_LOG.md` - Updated week 1 summary path
 7. `docs/agents/sessions/2026-01/agent-8-week1-completion-summary.md` - Self-reference
@@ -154,7 +154,7 @@ git_operations_log/                    # Operational logs (unchanged)
 ### Git History Test
 ```bash
 # Test 1: Full history preserved
-git log --follow docs/agents/guides/agent-8-git-ops.md
+git log --follow docs/_archive/2026-08/agent-8-git-ops.md
 # ✅ Shows complete history back to 2026-01-05
 
 # Test 2: Moves recorded correctly
@@ -361,7 +361,7 @@ To minimize risk and preserve existing functionality:
 **For reviewer:**
 - [ ] Review structure: `docs/agents/` makes sense
 - [ ] Test quick-start: `docs/agents/guides/agent-8-quick-start.md`
-- [ ] Verify git history: `git log --follow docs/agents/guides/agent-8-git-ops.md`
+- [ ] Verify git history: `git log --follow docs/_archive/2026-08/agent-8-git-ops.md`
 - [ ] Check links: All references work
 - [ ] Approve merge to main
 

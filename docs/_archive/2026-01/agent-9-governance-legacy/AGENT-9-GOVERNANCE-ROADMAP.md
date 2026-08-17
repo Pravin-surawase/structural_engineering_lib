@@ -63,7 +63,7 @@ It is designed to be safe, incremental, and measurable.
 ### B1) Agent Entry Points for All Agents (6/8/9 + future)
 **Why:** fast onboarding and low context overhead for AI agents.
 **Action:**
-- Create `docs/agents/guides/agent-6-quick-start.md`.
+- Create `docs/_archive/2026-08/agent-6-quick-start.md`.
 - Create `docs/agents/guides/agent-6-streamlit-hub.md` linking to Streamlit docs.
 - Create `docs/agents/guides/agent-9-quick-start.md` + `agent-9-governance-hub.md`.
 - Add placeholders for future roles: tester, researcher.

@@ -3718,7 +3718,7 @@
     {
       "name": "test_release_uat.py",
       "type": "python",
-      "size_lines": 35,
+      "size_lines": 45,
       "last_updated": "2026-08-17",
       "description": "The exact-wheel acceptance matrix remains data-driven and executable.",
       "functions": [
@@ -3726,7 +3726,7 @@
           "name": "test_release_negative_matrix_and_public_examples_pass"
         }
       ],
-      "content_hash": "690b99d2beb0"
+      "content_hash": "96121b3030ee"
     },
     {
       "name": "test_report_edge_cases.py",
@@ -4969,10 +4969,10 @@
     {
       "name": "unit",
       "path": "unit/",
-      "file_count": 38,
+      "file_count": 39,
       "is_package": true
     }
   ],
   "has_init": true,
-  "content_hash": "fa2ef2b90152cdb1"
+  "content_hash": "e2b5f3ca2f224e8a"
 }

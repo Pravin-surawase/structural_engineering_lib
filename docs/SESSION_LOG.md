@@ -2919,3 +2919,128 @@ and professional approval remain excluded.
   commit. The repaired-candidate quick gate also passed `10/10`; final hooks,
   immutable audit, push, and hosted validation remain. Broad Python and the full
   repository gate remain reserved for cumulative M2+M3 closeout.
+
+## 2026-08-17 — Session: B2 Building Gravity Workflow V1
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/b2-gravity-workflow-v1`.
+
+**Focus:** Bind the frozen B1 model/load identities to exact member actions,
+component applicability, canonical slab/beam/column/footing APIs, a calculation
+book, CLI, versioned REST routes, and a review UI. Excel, live ETABS, write-back,
+optimization, multi-storey/general analysis, release, and professional approval
+remain excluded.
+
+### Issues encountered
+
+- Eagerly exporting the new gravity service from `services/__init__.py` caused
+  a circular import through the established beam service pipeline.
+- The first FastAPI response converted the already validated bundle to a
+  dictionary containing its computed workflow hash. Response-model validation
+  then treated that computed field as unknown input and rejected the request.
+- The isolated B2 worktree did not contain ignored React `node_modules`.
+  Attempts to invoke Vitest from the primary checkout could not resolve the B2
+  worktree's dependencies.
+- A zsh inspection loop used `path` as its variable name. In zsh, `path` is tied
+  to `PATH`, so normal commands became unavailable inside that shell.
+- The maintained safe-move tool rewrote normal links while archiving two guides
+  but missed three links that included Markdown anchors, then correctly failed
+  its link gate after completing each affected move.
+- A guessed standalone documentation front-matter script name was not present;
+  the repository now exposes that check through its unified documentation tool.
+- The first frozen architecture check found that the new FastAPI router imported
+  `GravityWorkflowRequestV1` directly from the core layer.
+- The strict documentation batch exposed one unchanged A2 evidence document
+  that had neither the current YAML metadata contract nor the complete legacy
+  Type/Audience/Status header.
+- The cumulative Python run passed 6,488 cases but rejected the new CLI because
+  its maintained advertised-entry-point inventory had not been updated. The
+  same run reproduced three audit-readiness tests that returned an empty
+  evidence set only under the `run.sh test` working directory.
+- Adding B2 evidence would otherwise return the active documentation tree to
+  its enforced file limit, while the user requested that up to ten obsolete
+  files be removed if safely possible.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `services.__init__` initialization reached
+  `gravity_workflow`, which imports `beam_api`, before the existing service
+  facade had finished initializing. Resolution: remove the eager facade export
+  and keep the exact public module import
+  `structural_lib.services.gravity_workflow`. Focused imports and workflow tests
+  load without a cycle.
+- Confirmed root cause: FastAPI revalidated a serialized response as new model
+  input, while `workflow_result_hash` is an output-only Pydantic computed field
+  under an `extra="forbid"` contract. Resolution: pass the validated model object
+  to the response wrapper and let FastAPI serialize it once. The three focused
+  REST definition/run/rejection tests pass.
+- Confirmed root cause: linked worktrees share Git objects but not ignored npm
+  dependencies, and a shared binary still resolves packages relative to the
+  calling worktree. Resolution: perform one lockfile-pinned, offline-preferred
+  `npm ci` in the B2 worktree, then run the focused React test through the
+  repository runtime. Both UI cases pass. ⚠️ TERMINAL ISSUE: shared Vitest could
+  not resolve worktree dependencies -> installed the exact lockfile once.
+- Confirmed root cause: zsh exposes `path` as a special array synchronized with
+  the executable search path. Resolution: rename the loop variable to
+  `doc_file`; inspection commands then ran normally. ⚠️ TERMINAL ISSUE: using
+  `path` hid `basename`, `rg`, `wc`, and `tr` -> reran with `doc_file`.
+- Confirmed root cause: the safe-move reference matcher handled file links but
+  did not rewrite the same paths when an anchor suffix was present. Resolution:
+  repair only the three exact anchored references with `apply_patch` and rerun
+  link validation before each next move. Link validation remains at zero broken
+  links. The tool itself is not changed in this feature packet.
+- Confirmed root cause: front-matter validation was consolidated into
+  `scripts/check_docs.py` while the old single-purpose implementation is
+  archived. Resolution: use `scripts/check_docs.py --frontmatter`; the unified
+  check reports zero invalid front matter. ⚠️ TERMINAL ISSUE: the guessed
+  `scripts/check_docs_frontmatter.py` path did not exist -> used the maintained
+  unified documentation checker.
+- Confirmed root cause: the router reused the type's defining module instead of
+  the service boundary required for UI/transport consumers. Resolution: export
+  the request contract from the exact `services.gravity_workflow` module and
+  import it there in the router, without adding the eager package-level export
+  that caused the earlier cycle. The affected architecture, import, REST, Ruff,
+  Black, and type checks form the repair evidence.
+- Confirmed root cause: the A2 evidence body predated its integration into the
+  strict active-document metadata set. Resolution: add the canonical lowercase
+  front matter without changing its evidence claims. The B2 documents already
+  had valid front matter; the failed-only documentation batch is repeated after
+  the affected index refresh.
+- Confirmed root cause: the CLI parser and implementation contained
+  `gravity-v1`, while `advertised_entry_points_v1.json` still described the
+  preceding parser surface. Resolution: add the command as a calculation entry
+  bound to its exact CLI acceptance test and advance the frozen UAT inventory
+  count from 12 to 13 with an explicit entry assertion; the failed release-UAT
+  node is the repair evidence.
+- Confirmed root cause: `collect_contract_truth_evidence` tested repo-relative
+  `scripts/...` paths against the process working directory. `run.sh test`
+  correctly runs pytest from `Python/`, so all three checks were silently
+  skipped and the report falsely appeared empty/PASS; an isolated root-level
+  test had previously masked that defect. Resolution: bind existence checks,
+  script execution paths, and subprocess cwd to the audit script's repository
+  root while retaining stable relative evidence labels. The exact three failed
+  nodes are the repair evidence.
+- Confirmed root cause: ten documents marked deprecated or superseded still
+  occupied active guide/contributing locations. Resolution: archive exactly
+  those ten through `safe_file_move.py`; content remains recoverable under
+  `docs/_archive/2026-08`, ordinary references point to the preserved copies,
+  and widely referenced active guides plus immutable historical receipts were
+  excluded from cleanup. Active Markdown documents fall from 400 to 390 before
+  the required B2 evidence record is added.
+
+### Validation through content freeze
+
+- Source binding: base `cb49234f93283e35a87789bf631596f35c8cfcb1`,
+  `source_bound=true`.
+- Exact hand output: 22 actions; beam service/ULS line actions 20.25/30.375
+  kN/m; moments 91.125/136.6875 kNm; shears 60.75/91.125 kN; footing ULS
+  handoff 101.25 kN; all 26 ledger boundaries have zero residual.
+- The first focused implementation checks passed six Python workflow cases,
+  three REST cases, and two React review cases. Subsequent adverse vectors add
+  exact footing and CLI coverage to the frozen consolidated selection.
+- Ten safe archive moves complete with 390 active Markdown files before the B2
+  evidence record and zero broken links across 1,336 internal references.
+- The consolidated focused, OpenAPI, index, quick, cumulative broad, hook,
+  immutable-audit, push, and hosted-check results remain the closeout sequence
+  for the frozen candidate.

@@ -31,7 +31,7 @@
 | [audit_error_handling.py](audit_error_handling.py) | Audit error handling compliance across structural_lib module | 2 | 3 | 286 |
 | [audit_input_validation.py](audit_input_validation.py) | Audit Input Validation Coverage for structural_lib. | 2 | 5 | 393 |
 | [audit_permissions.py](audit_permissions.py) | Permission audit report for all agents. | 3 | 3 | 468 |
-| [audit_readiness_report.py](audit_readiness_report.py) | Audit Readiness Report Generator | 2 | 12 | 850 |
+| [audit_readiness_report.py](audit_readiness_report.py) | Audit Readiness Report Generator | 2 | 12 | 855 |
 | [batch_migrate_runner.py](batch_migrate_runner.py) | Batch migration runner with per-operation rollback logs. | 1 | 2 | 467 |
 | [benchmark_api.py](benchmark_api.py) | API Performance Benchmark Script. | 4 | 9 | 837 |
 | [bump_version.py](bump_version.py) | Version Bump Script — Single Source of Truth | 0 | 4 | 484 |

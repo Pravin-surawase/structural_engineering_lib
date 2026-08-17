@@ -3,6 +3,7 @@
   "entry_points": [
     {"id": "cli.install-preflight", "command": "install-preflight", "classification": "inspection", "acceptance": ["installed_origin_check"]},
     {"id": "cli.capabilities", "command": "capabilities", "classification": "inspection", "acceptance": ["capability_contract_test"]},
+    {"id": "cli.gravity-v1", "command": "gravity-v1", "classification": "calculation_entry", "acceptance": ["test_cli_emits_same_versioned_bundle_from_json_request"]},
     {"id": "cli.design", "command": "design", "classification": "calculation_entry", "acceptance": ["cli_design_valid", "cli_design_malformed_only", "cli_design_mixed_validity", "cli_design_empty", "cli_design_missing_depth_basis", "cli_design_non_finite", "cli_design_unknown_field", "cli_design_duplicate_identity", "cli_design_ambiguous_format"]},
     {"id": "cli.bbs", "command": "bbs", "classification": "result_consumer", "acceptance": ["cli_design_downstream_consumers"]},
     {"id": "cli.detail", "command": "detail", "classification": "result_consumer", "acceptance": ["cli_design_downstream_consumers"]},

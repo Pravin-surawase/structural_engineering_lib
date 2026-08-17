@@ -2,7 +2,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-17
-**Files:** 25
+**Files:** 26
 
 ## Public API
 
@@ -33,6 +33,7 @@
 |------|-------------|---------|-----------|-------|
 | [__init__.py](__init__.py) | FastAPI Routers Package. | 0 | 0 | 58 |
 | [analysis.py](analysis.py) | Smart Analysis Router. | 0 | 3 | 336 |
+| [building_gravity.py](building_gravity.py) | Versioned REST transport for Building Gravity Workflow V1. | 0 | 2 | 57 |
 | [capabilities.py](capabilities.py) | Public discovery route for the canonical supported IS 456 co | 0 | 1 | 23 |
 | [catalog.py](catalog.py) | Thin read-only transport for the canonical application workf | 0 | 1 | 51 |
 | [column.py](column.py) | Column Design Router. | 0 | 13 | 764 |

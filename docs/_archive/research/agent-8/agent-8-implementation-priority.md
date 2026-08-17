@@ -547,7 +547,7 @@ cat logs/ci_monitor.log
 ## 📚 Resources
 
 - **Full research:** [agent-8-optimization-research.md](../../research-completed/agent-8-optimization-research.md)
-- **Current implementation:** [agent-8-git-ops.md](../../../agents/guides/agent-8-git-ops.md)
+- **Current implementation:** [agent-8-git-ops.md](../../2026-08/agent-8-git-ops.md)
 - **Test framework:** [test_git_workflow.sh](../../scripts/test_git_workflow.sh)
 
 ---

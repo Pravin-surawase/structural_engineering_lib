@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Guides for developers and maintainers of the structural engineering library.",
   "last_updated": "2026-08-17",
-  "file_count": 23,
+  "file_count": 21,
   "files": [
     {
       "name": "README.md",
@@ -103,14 +103,6 @@
       "content_hash": "7be09837c9ca"
     },
     {
-      "name": "git-workflow-testing.md",
-      "type": "documentation",
-      "size_lines": 346,
-      "last_updated": "2026-08-16",
-      "description": "> Historical test strategy for the retired wrapper layer. Do not execute these > commands; current enforcement is scripts/check_codex_git_workflow.py.",
-      "content_hash": "8e9b091fe332"
-    },
-    {
       "name": "github-workflow.md",
       "type": "documentation",
       "size_lines": 55,
@@ -181,16 +173,8 @@
       "last_updated": "2026-08-16",
       "description": "- Location: Python/tests/ - Runner: pytest",
       "content_hash": "6f72025a7f7f"
-    },
-    {
-      "name": "workflow-professional-review.md",
-      "type": "documentation",
-      "size_lines": 460,
-      "last_updated": "2026-08-16",
-      "description": "> Historical review of the retired wrapper design. It is not current guidance. | Feature | Status | Notes |",
-      "content_hash": "4871421bb24a"
     }
   ],
   "subfolders": [],
-  "content_hash": "9ee238644eb807be"
+  "content_hash": "ae2535813a92a61b"
 }

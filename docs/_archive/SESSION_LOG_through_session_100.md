@@ -8737,7 +8737,7 @@ All 7 IS 456-specific modules migrated to `codes/is456/` with backward compatibi
 - `docs/getting-started/current-state-and-goals.md`
 
 **Broken Links Fixed (5):**
-- `docs/contributing/git-workflow-testing.md` → troubleshooting path
+- `docs/_archive/2026-08/git-workflow-testing.md` → troubleshooting path
 - `docs/getting-started/ai-context-pack.md` → next-session-brief path
 - `docs/reference/deferred-integrations.md` → production-roadmap path
 - `docs/README.md` → 2 paths updated
@@ -9332,7 +9332,7 @@ Based on Faros AI, Statsig, Axon, and Shopify research:
 - `Python/tests/test_rebar_optimizer.py` (31 new tests, 46 total)
 - `docs/reference/api.md` (added function signature and usage notes)
 - Workflow automation: `create_task_pr.sh`, `finish_task_pr.sh`, `safe_push_v2.sh`, `test_git_workflow.sh`
-- Git workflow documentation: `docs/contributing/workflow-professional-review.md`, `docs/contributing/git-workflow-testing.md`
+- Git workflow documentation: `docs/_archive/2026-08/workflow-professional-review.md`, `docs/_archive/2026-08/git-workflow-testing.md`
 - Multiple commits: f5305b9 (comparison), 740d4f5 (smart_designer), 49c697f (docs), 193b0b9 (API wrapper), 5f2a708 (workflow tools), 864195d (rebar tests)
 
 ### Next Actions

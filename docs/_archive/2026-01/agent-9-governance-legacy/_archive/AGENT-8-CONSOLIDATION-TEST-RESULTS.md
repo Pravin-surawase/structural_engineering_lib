@@ -61,7 +61,7 @@
 
 ### Test 5: Git History Preservation ✅
 ```bash
-$ git log --follow --oneline docs/agents/guides/agent-8-git-ops.md | head -3
+$ git log --follow --oneline docs/_archive/2026-08/agent-8-git-ops.md | head -3
 d832b0a Agent 8 Documentation Consolidation (#320)
 777fd5e chore(governance): centralize governance docs under agent-9 (#319)
 3de5483 docs: add agent 8 pre-flight checklist
