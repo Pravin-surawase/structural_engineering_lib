@@ -3432,7 +3432,7 @@
     {
       "name": "test_release_scripts.py",
       "type": "python",
-      "size_lines": 1030,
+      "size_lines": 1052,
       "last_updated": "2026-08-17",
       "description": "Tests for release scripts (bump_version.py, release.py).",
       "classes": [
@@ -3578,7 +3578,10 @@
           ]
         },
         {
-          "name": "test_release_publication_authorization_holds_by_default"
+          "name": "test_release_publication_authorization_holds_by_default",
+          "params": [
+            "tmp_path"
+          ]
         },
         {
           "name": "test_preflight_verdicts_are_mode_accurate",
@@ -3649,7 +3652,7 @@
         "RELEASE_SCRIPT",
         "VERSION_TRACKED_FILES"
       ],
-      "content_hash": "dd9f3b769715"
+      "content_hash": "6b60f771a6c9"
     },
     {
       "name": "test_release_uat.py",
@@ -4907,5 +4910,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "5d7c5e2836f6c5a4"
+  "content_hash": "ee18020d52909780"
 }

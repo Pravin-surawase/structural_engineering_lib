@@ -60,6 +60,10 @@ unauthorized.
   skipped after that failure.
 - The first repair closeout invocation passed two folder arguments to the
   single-folder index command; argument parsing stopped before either write.
+- The first authorized exact-wheel publication preflight passed clean-wheel
+  UAT, 6,413 Python tests, FastAPI, React, docs, and version checks, but one
+  release test failed because it read the live authorization record after the
+  owner correctly changed that record from `HOLD` to `AUTHORIZED`.
 
 ### Root causes and resolutions
 
@@ -100,6 +104,13 @@ unauthorized.
   positional folder, not a folder list. Resolution: invoke it once for `docs`
   and once for `docs/verification`; both targeted refreshes pass. ⚠️ TERMINAL
   ISSUE: combined two-folder index refresh -> separate maintained invocations.
+- Confirmed root cause: `test_release_publication_authorization_holds_by_default`
+  tested the mutable repository authorization record instead of an isolated
+  default-HOLD fixture, making a genuine authorization state fail the release
+  suite by construction. Resolution: create a temporary HOLD record inside the
+  test and pass it explicitly to the validator. Evidence: the focused
+  regression passes for the isolated HOLD state while the live three-target
+  authorization checks remain reserved for the refreshed reviewed candidate.
 
 ### Validation through local candidate freeze
 
