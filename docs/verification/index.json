@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-17",
-  "file_count": 181,
+  "file_count": 182,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -139,6 +139,14 @@
       "title": "v0.23.1a2 Local Prepublication Rehearsal",
       "description": "check receipt, exact-head Weekly Verification, independent review, target authorization, tag, upload, GitHub Release, or professional approval.",
       "content_hash": "79f7917f04dd"
+    },
+    {
+      "name": "b1-gravity-model-load-ledger-evidence.md",
+      "type": "documentation",
+      "size_lines": 96,
+      "last_updated": "2026-08-17",
+      "description": "deterministic transfer ledger, and exact balance checks only. This record does not claim component design or Gravity Workflow V1 completion.",
+      "content_hash": "3229115dbbb6"
     },
     {
       "name": "bundled-sample-boq-evidence.md",
@@ -2320,5 +2328,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "0fd42c21e392a509"
+  "content_hash": "b26ad3c2005a2485"
 }

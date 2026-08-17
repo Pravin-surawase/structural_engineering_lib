@@ -2799,3 +2799,123 @@ optimization, solver, release, and professional approval remain excluded.
 - Broad Python, full repository, quick, hooks, immutable audit, push, and hosted
   checks remain the cumulative M2/G1 closeout sequence after the final index
   refresh.
+
+## 2026-08-17 — Session: B1 Gravity Model and Load Ledger
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/b1-gravity-model-load-ledger`.
+
+**Focus:** Freeze the exact one-storey physical model, dead/live source basis,
+self-weight ownership, deterministic slab-to-footing transfer ledger, and
+balance evidence. Component design, Gravity Workflow V1 orchestration, REST,
+CLI, React, Excel, live ETABS, solver, lateral loads, optimization, release,
+and professional approval remain excluded.
+
+### Issues encountered
+
+- The initial ledger labelled a combined dead reaction/action as slab
+  superimposed dead or column self-weight even though it contained several
+  separately owned dead sources. The numbers balanced, but the provenance label
+  would have misrepresented the engineering basis.
+- The first physical-model validator permitted an extra unused section and did
+  not reject a second accepted source record pointing to the same canonical
+  entity, so exact model/source closure was incomplete.
+- The first narrow test run had two test-fixture errors: one exception-message
+  regex was narrower than the actual contract and one serialized nested model
+  was treated as a model object instead of a dictionary.
+- A root-level targeted mypy invocation combined the `Python.` and installed
+  `structural_lib.` module identities, then the package-context invocation
+  exposed the known Pydantic computed-property decorator diagnostic for the
+  four new computed fields.
+- Adding the B1 specification and evidence raised active documentation from the
+  enforced limit of 400 to 402.
+- The first frozen focused batch rejected the new specification's front matter
+  because it used `doc_type: specification` instead of the repository's exact
+  `doc_type: spec` vocabulary. Its parallel style/type lane also started in the
+  `Python/` directory with a root-relative `./scripts/` path and did not run.
+- The corrected changed-file Ruff lane then rejected one import-order rule and
+  two constant-attribute `getattr` calls in the new model/test files.
+- The first normal commit-hook attempt passed every substantive hook but its EOF
+  fixer changed the freshly generated `docs/docs-index.json`, so no commit was
+  created.
+- The second hook attempt proved the EOF repair but Black reformatted the new
+  docs-index regression test, so it also correctly created no commit.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the entry category type had only source categories, so
+  the implementation reused a source label after aggregation. Resolution: add
+  the derived `COMBINED_DEAD` category and use it only after separately traced
+  dead sources combine. Evidence: the hand vector preserves nine distinct
+  sources, 41 accepted ledger entries, and exact zero-residual balances.
+- Confirmed root cause: set equality proved that every canonical ID appeared
+  but did not prove one-to-one source mapping, and the topology count did not
+  freeze the three-section boundary. Resolution: require one material, one
+  section of each exact kind, complete participation, one accepted source row
+  per canonical entity, and one common base elevation. Evidence: the focused
+  orphan and duplicate-source vectors reject before calculation.
+- Confirmed root cause: `model_dump(mode="python")` serializes nested Pydantic
+  models as dictionaries, and the test expected a different but equivalent
+  error phrase. Resolution: mutate the serialized dictionaries and assert the
+  stable contract phrase. No production behavior changed; the repaired test
+  file passes all 10 cases.
+- Confirmed root cause: running configured mypy against a repository-root path
+  conflicted with its `explicit_package_bases` package context, while Pydantic
+  computed fields require the same narrow `prop-decorator` suppression already
+  used by repository Pydantic models. Resolution: run from `Python/`, add only
+  the four exact ignores, and correct real type errors exposed in the first
+  pass. Evidence: configured mypy reports no issues in both new source modules.
+  ⚠️ TERMINAL ISSUE: root-level targeted mypy found one file under two module
+  names -> ran the exact modules from the configured Python package directory.
+- Confirmed root cause: the active-doc count was already exactly at its hard
+  limit before the two required B1 records. Resolution: use the safe-file-ops
+  preview and maintained move script to archive exactly two already-deprecated,
+  unreferenced retired Git-wrapper documents. They remain recoverable under
+  `docs/_archive/2026-08`; active count is 400 and all 1,361 links pass.
+- Confirmed root cause: the human term "specification" differs from the
+  generator/checker's controlled `spec` metadata token, and the parallel lane's
+  workdir did not match its first command path. Resolution: change only the
+  front-matter token, start changed-file Ruff from the repository root, and run
+  configured mypy separately from `Python/`. The impact-mapped repair repeats
+  documentation and the previously unexecuted style/type evidence only.
+  ⚠️ TERMINAL ISSUE: a Python-workdir lane used `./scripts/python_runtime.sh` ->
+  split root Ruff and package-context mypy commands with explicit workdirs.
+- Confirmed root cause: the initial formatting pass normalized layout but did
+  not run Ruff's import and bugbear rules. Resolution: group the Pydantic import
+  deterministically and replace both constant `getattr` calls with typed direct
+  attributes; the generic canonical sorter now declares its small `id`
+  protocol and the test helper declares the exact ledger type. The repair
+  repeats only changed-file Ruff, configured mypy, and the 10 directly affected
+  gravity vectors.
+- Confirmed root cause: `generate_docs_index.py --write` serialized JSON without
+  a final newline, while the mandatory EOF hook adds one. This deterministic
+  mismatch had also caused hook churn in an earlier packet. Resolution: make
+  the maintained generator write UTF-8 JSON with one final newline and add a
+  temporary-file regression proving valid JSON and the EOF contract. The hook's
+  newline-only edit is retained; gravity evidence is unchanged.
+- Confirmed root cause: the narrow generator repair check ran pytest and Ruff
+  but omitted Black after creating the regression file. Resolution: retain the
+  hook's formatting, refresh the test index, and add Black to the failed-only
+  repair evidence before the next normal hook run. All other hooks passed and
+  are not independently repeated.
+
+### Validation through content freeze
+
+- Source binding: base `32daa0138b969be0b77b59dd33d938ad170f3a9e`,
+  `source_bound=true`.
+- Hand arithmetic and adverse-contract file: `10 passed`; configured mypy for
+  both new modules: no issues.
+- Exact expected actions are 198 kN DL and 72 kN LL at foundation level, with
+  49.5 kN DL, 18 kN LL, 67.5 kN service, and 101.25 kN factored action at each
+  footing destination. All 26 reconciliation records have zero residual.
+- The consolidated focused selection passed `52/52`; architecture checked 210
+  files with zero violations, 238-file library import validation found zero
+  broken imports, and 191-file circular analysis found no cycle. Documentation
+  passes all five checks at 400 active files and zero broken links. The first
+  quick gate passed `10/10`.
+- The first normal hooks passed every substantive check, including 238-file
+  mypy and Bandit; only the repaired generator/EOF mismatch prevented the
+  commit. The repaired-candidate quick gate also passed `10/10`; final hooks,
+  immutable audit, push, and hosted validation remain. Broad Python and the full
+  repository gate remain reserved for cumulative M2+M3 closeout.

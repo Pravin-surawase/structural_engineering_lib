@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2026-08-17T21:42:58.577266",
+  "generated": "2026-08-17T22:10:26.211282",
   "total_docs": 372,
   "docs": {
     "docs/SESSION_LOG.md": {
@@ -21,7 +21,7 @@
         "2026-08-16 \u2014 Session: Index Local-Artifact Determinism Repair",
         "2026-08-16 \u2014 Session: Post-INDIA-2 Index Determinism Repair"
       ],
-      "size_bytes": 167701
+      "size_bytes": 175397
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",
@@ -1123,6 +1123,31 @@
       ],
       "size_bytes": 10183
     },
+    "docs/specs/building-gravity-v1.md": {
+      "title": "Building Gravity V1 Model and Load Contract",
+      "type": "specification",
+      "complexity": "intermediate",
+      "folder": "specs",
+      "tags": [
+        "building-model",
+        "design",
+        "gravity",
+        "load-model",
+        "provenance",
+        "reconciliation",
+        "requirements"
+      ],
+      "sections": [
+        "Purpose and boundary",
+        "Accepted topology",
+        "Identity and determinism",
+        "Frozen load basis",
+        "Load path and reconciliation",
+        "Approved exclusions and holds",
+        "Hand example"
+      ],
+      "size_bytes": 5341
+    },
     "docs/specs/v0.9-job-schema.md": {
       "title": "v0.9 \u2014 Job Schema (Draft)",
       "type": "specification",
@@ -1189,30 +1214,7 @@
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 704
-    },
-    "docs/contributing/lesson-incomplete-implementation.md": {
-      "title": "Lesson Learned: Incomplete Implementation (2026-01-09)",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "contributing",
-      "tags": [
-        "development",
-        "workflow"
-      ],
-      "sections": [
-        "What Happened",
-        "Root Cause Analysis",
-        "How It Was Caught",
-        "The Fix (Commit ef1ce7f)",
-        "Prevention Checklist",
-        "Code Review Anti-Patterns",
-        "Similar Bugs to Watch For",
-        "Testing Framework Additions",
-        "Documentation Updates",
-        "Behavioral Verification (CRITICAL)"
-      ],
-      "size_bytes": 9154
+      "size_bytes": 829
     },
     "docs/contributing/workflow-professional-review.md": {
       "title": "Git Workflow Professional Review & Recommendations",
@@ -1480,7 +1482,7 @@
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 3256
+      "size_bytes": 3105
     },
     "docs/contributing/repo-professionalism.md": {
       "title": "Repo Professionalism Playbook",
@@ -1812,26 +1814,6 @@
         "Suggested weekly schedule (6 weeks)"
       ],
       "size_bytes": 3171
-    },
-    "docs/publications/research-paper-git-infrastructure.md": {
-      "title": "Self-Evolving Multi-Agent Git Infrastructure for AI-Assisted Structural Engineering Software Development: Architecture, Automation, and Lessons Learned",
-      "type": "research",
-      "complexity": "advanced",
-      "folder": "publications",
-      "tags": [],
-      "sections": [
-        "Abstract",
-        "1. Introduction",
-        "2. Related Work",
-        "3. System Architecture",
-        "4. Multi-Agent Orchestration System",
-        "5. Session Continuity Mechanism",
-        "6. Self-Evolving Infrastructure",
-        "7. Safety Mechanisms",
-        "8. Documentation Infrastructure",
-        "9. Metrics and Results"
-      ],
-      "size_bytes": 52634
     },
     "docs/publications/README.md": {
       "title": "Publications & Blog Posts",
@@ -3607,6 +3589,29 @@
       ],
       "size_bytes": 2347
     },
+    "docs/verification/b1-gravity-model-load-ledger-evidence.md": {
+      "title": "B1 Gravity Model and Load Ledger Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "b1",
+        "evidence",
+        "gravity",
+        "load-ledger",
+        "reconciliation",
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Source identity",
+        "Implemented contract",
+        "Independent hand arithmetic",
+        "Verification through implementation freeze",
+        "Efficiency receipt through implementation freeze"
+      ],
+      "size_bytes": 4364
+    },
     "docs/verification/india-2-cumulative-gate-evidence.md": {
       "title": "INDIA-2 Cumulative Gate Evidence",
       "type": "documentation",
@@ -3731,7 +3736,7 @@
         "Config Files",
         "Documentation Files"
       ],
-      "size_bytes": 23159
+      "size_bytes": 23319
     },
     "docs/verification/india-2-wall-d-publication-evidence.md": {
       "title": "INDIA-2-WALL-D Publication Evidence",
@@ -7120,7 +7125,6 @@
         "docs/contributing/solo-maintainer-operating-system.md",
         "docs/contributing/git-workflow-ai-agents.md",
         "docs/learning/glossary.md",
-        "docs/publications/research-paper-git-infrastructure.md",
         "docs/planning/compact-modernization-plan.md",
         "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
         "docs/planning/india-2-remaining-is456-elements-plan.md",
@@ -7156,7 +7160,6 @@
       ],
       "excel_user": [],
       "contributor": [
-        "docs/contributing/lesson-incomplete-implementation.md",
         "docs/contributing/workflow-professional-review.md",
         "docs/contributing/quickstart-checklist.md",
         "docs/contributing/development-guide.md",
@@ -7181,7 +7184,6 @@
         "docs/contributing/handoff.md",
         "docs/contributing/testing-strategy.md",
         "docs/contributing/changelog-deprecation-template.md",
-        "docs/publications/research-paper-git-infrastructure.md",
         "docs/migration/12-innovation-ideas-new.md",
         "docs/migration/12-innovation-ideas.md",
         "docs/migration/learning/day-28-innovation-tools.md"
@@ -7238,6 +7240,7 @@
       ],
       "design": [
         "docs/specs/csv-import-schema.md",
+        "docs/specs/building-gravity-v1.md",
         "docs/specs/v0.9-job-schema.md",
         "docs/specs/README.md",
         "docs/specs/v0.7-data-mapping.md",
@@ -7258,13 +7261,30 @@
       ],
       "requirements": [
         "docs/specs/csv-import-schema.md",
+        "docs/specs/building-gravity-v1.md",
         "docs/specs/v0.9-job-schema.md",
         "docs/specs/README.md",
         "docs/specs/v0.7-data-mapping.md",
         "docs/specs/index.md"
       ],
+      "building-model": [
+        "docs/specs/building-gravity-v1.md"
+      ],
+      "gravity": [
+        "docs/specs/building-gravity-v1.md",
+        "docs/verification/b1-gravity-model-load-ledger-evidence.md"
+      ],
+      "load-model": [
+        "docs/specs/building-gravity-v1.md"
+      ],
+      "provenance": [
+        "docs/specs/building-gravity-v1.md"
+      ],
+      "reconciliation": [
+        "docs/specs/building-gravity-v1.md",
+        "docs/verification/b1-gravity-model-load-ledger-evidence.md"
+      ],
       "development": [
-        "docs/contributing/lesson-incomplete-implementation.md",
         "docs/contributing/workflow-professional-review.md",
         "docs/contributing/quickstart-checklist.md",
         "docs/contributing/development-guide.md",
@@ -7291,7 +7311,6 @@
         "docs/contributing/changelog-deprecation-template.md"
       ],
       "workflow": [
-        "docs/contributing/lesson-incomplete-implementation.md",
         "docs/contributing/workflow-professional-review.md",
         "docs/contributing/quickstart-checklist.md",
         "docs/contributing/development-guide.md",
@@ -7537,6 +7556,7 @@
         "docs/verification/india-2-foundation-strap-g0-scope-evidence.md",
         "docs/verification/ui-experience-session-2-acceptance.md",
         "docs/verification/README.md",
+        "docs/verification/b1-gravity-model-load-ledger-evidence.md",
         "docs/verification/india-2-cumulative-gate-evidence.md",
         "docs/verification/india-2-wall-a-axial-kernel-evidence.md",
         "docs/verification/a1-canonical-truth-transport-evidence.md",
@@ -7604,6 +7624,7 @@
         "docs/verification/india-2-foundation-strap-g0-scope-evidence.md",
         "docs/verification/ui-experience-session-2-acceptance.md",
         "docs/verification/README.md",
+        "docs/verification/b1-gravity-model-load-ledger-evidence.md",
         "docs/verification/india-2-cumulative-gate-evidence.md",
         "docs/verification/india-2-wall-a-axial-kernel-evidence.md",
         "docs/verification/a1-canonical-truth-transport-evidence.md",
@@ -7647,6 +7668,7 @@
       "evidence": [
         "docs/verification/a2-lossless-intake-calculation-evidence.md",
         "docs/verification/bundled-sample-boq-evidence.md",
+        "docs/verification/b1-gravity-model-load-ledger-evidence.md",
         "docs/verification/a1-canonical-truth-transport-evidence.md"
       ],
       "load-analysis": [
@@ -7691,6 +7713,12 @@
       ],
       "uix": [
         "docs/verification/ui-experience-session-2-acceptance.md"
+      ],
+      "b1": [
+        "docs/verification/b1-gravity-model-load-ledger-evidence.md"
+      ],
+      "load-ledger": [
+        "docs/verification/b1-gravity-model-load-ledger-evidence.md"
       ],
       "a1": [
         "docs/verification/a1-canonical-truth-transport-evidence.md"

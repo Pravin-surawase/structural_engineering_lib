@@ -4,7 +4,7 @@ Guides for developers and maintainers of the structural engineering library.
 
 **Type:** Documentation
 **Last Updated:** 2026-08-17
-**Files:** 24
+**Files:** 23
 
 ## Documentation Files
 
@@ -26,7 +26,6 @@ Guides for developers and maintainers of the structural engineering library.
 | [github-workflow.md](github-workflow.md) |  | Codex owns the repository's Git and GitHub lifecycle. The ol | 55 |
 | [handoff.md](handoff.md) |  | > Current Git/session boundary: start with ./run.sh session  | 119 |
 | [learning-paths.md](learning-paths.md) |  | Pick the smallest reading path that still protects quality.  | 99 |
-| [lesson-incomplete-implementation.md](lesson-incomplete-implementation.md) |  | > Historical incident lesson. Wrapper commands below were re | 374 |
 | [naming-conventions.md](naming-conventions.md) |  | This document defines naming standards for files, modules, a | 77 |
 | [quickstart-checklist.md](quickstart-checklist.md) |  | Quick reference for common development tasks with step-by-st | 509 |
 | [repo-professionalism.md](repo-professionalism.md) |  | This doc does not replace existing rules. It links to the ca | 220 |

@@ -229,7 +229,7 @@ def main():
         print(f"     {t}: {count}")
 
     if args.write:
-        OUTPUT_FILE.write_text(json.dumps(index, indent=2))
+        OUTPUT_FILE.write_text(json.dumps(index, indent=2) + "\n", encoding="utf-8")
         print(f"\n✅ Written to {OUTPUT_FILE}")
     else:
         print(f"\n💡 Run with --write to save to {OUTPUT_FILE}")

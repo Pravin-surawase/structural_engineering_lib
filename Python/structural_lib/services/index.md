@@ -2,7 +2,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-17
-**Files:** 50
+**Files:** 51
 
 ## Public API
 
@@ -11,6 +11,15 @@
 - `SymmetricCombinedFootingDesignResult`
 - `SymmetricCombinedFootingDesignStatus`
 - `design_symmetric_combined_footing_is456`
+- `GravityBalanceBoundaryV1`
+- `GravityBalanceV1`
+- `GravityCombinationActionV1`
+- `GravityCombinationContributionV1`
+- `GravityLedgerEntryV1`
+- `GravityLedgerStageV1`
+- `GravityLoadLedgerError`
+- `GravityLoadLedgerV1`
+- `build_gravity_load_ledger_v1`
 - `PropertyLineStrapFootingDesignInput`
 - `PropertyLineStrapFootingDesignProvenance`
 - `PropertyLineStrapFootingDesignResult`
@@ -21,7 +30,7 @@
 
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
-| [__init__.py](__init__.py) | Application-layer public workflow exports. | 0 | 0 | 30 |
+| [__init__.py](__init__.py) | Application-layer public workflow exports. | 0 | 0 | 50 |
 | [adapters.py](adapters.py) | Adapters for converting various input formats to canonical m | 6 | 0 | 2100 |
 | [api.py](api.py) | Module:       api | 0 | 0 | 454 |
 | [api_hub.py](api_hub.py) | Module:       api | 0 | 0 | 238 |
@@ -48,6 +57,7 @@
 | [excel_integration.py](excel_integration.py) | Excel Integration Module — Bridge between Excel data and Det | 2 | 9 | 489 |
 | [flat_slab_api.py](flat_slab_api.py) | Stable orchestration for the bounded regular interior flat-s | 4 | 2 | 339 |
 | [footing_api.py](footing_api.py) | Bounded orchestration for concentric isolated footings (IS 4 | 5 | 1 | 915 |
+| [gravity_loads.py](gravity_loads.py) | Deterministic dead/live source, transfer, combination, and b | 8 | 1 | 631 |
 | [import_ledger.py](import_ledger.py) | Versioned, lossless import evidence models. | 11 | 0 | 187 |
 | [imports.py](imports.py) | Fail-closed multi-format CSV import boundary. | 2 | 6 | 1104 |
 | [intelligence.py](intelligence.py) | Compatibility shim for legacy imports. | 0 | 0 | 36 |
