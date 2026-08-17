@@ -43,7 +43,7 @@ Agent 8 files are currently scattered across:
 
 ### Automation Scripts (13 total)
 
-**Core Workflow (stay in scripts/, index in docs/agents/guides/agent-8-automation.md)**
+**Core Workflow (stay in scripts/, index in docs/_archive/2026-08/agent-8-automation.md)**
 1. `ai_commit.sh` (2.6K) - Entry point for commits
 2. `safe_push.sh` (13K) - Core 7-step workflow
 3. `safe_push_v2.sh` (11K) - Version 2 (backup)
@@ -123,12 +123,12 @@ git_operations_log/    # No move (index from docs/agents/guides/)
 
 ### 1. Discoverability
 - **Single entry point:** `docs/agents/guides/agent-8-quick-start.md`
-- **Quick reference:** `docs/agents/guides/agent-8-git-ops.md` (protocol)
+- **Quick reference:** `docs/_archive/2026-08/agent-8-git-ops.md` (protocol)
 - **Organized by purpose:** guides, sessions, research, scripts (indexed)
 
 ### 2. Script Organization
 - **Stable paths:** scripts stay in `scripts/` (no breakage)
-- **Single index:** `docs/agents/guides/agent-8-automation.md`
+- **Single index:** `docs/_archive/2026-08/agent-8-automation.md`
 - **Legacy preserved:** keep legacy scripts where they are (documented)
 
 ### 3. Documentation Clarity
@@ -148,7 +148,7 @@ git_operations_log/    # No move (index from docs/agents/guides/)
 ### Phase 1: Create Doc Entry Points (Safe)
 1. Ensure `docs/agents/guides/` and `docs/agents/sessions/2026-01/` exist.
 2. Add `docs/agents/guides/agent-8-quick-start.md` (entry point).
-3. Add `docs/agents/guides/agent-8-automation.md` (script index).
+3. Add `docs/_archive/2026-08/agent-8-automation.md` (script index).
 4. **Checkpoint:** Commit entry points.
 
 ### Phase 2: Move Protocol & Guides (Preserve Git History)
@@ -184,7 +184,7 @@ git_operations_log/    # No move (index from docs/agents/guides/)
 ### Risk 1: Script References Drift
 **Mitigation:**
 - Keep scripts in `scripts/` (no path changes)
-- Centralize references in `docs/agents/guides/agent-8-automation.md`
+- Centralize references in `docs/_archive/2026-08/agent-8-automation.md`
 - Update any docs that hardcode old script paths
 
 ### Risk 2: Git History Lost

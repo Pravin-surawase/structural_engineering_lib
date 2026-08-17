@@ -1862,6 +1862,102 @@
         "title": "APIResponse[Geometry3DResponse]",
         "type": "object"
       },
+      "APIResponse_GravityWorkflowDefinitionV1_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/GravityWorkflowDefinitionV1"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProblemDetailResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[GravityWorkflowDefinitionV1]",
+        "type": "object"
+      },
+      "APIResponse_GravityWorkflowRunBundleV1_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/GravityWorkflowRunBundleV1"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProblemDetailResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[GravityWorkflowRunBundleV1]",
+        "type": "object"
+      },
       "APIResponse_HelicalCheckResponse_": {
         "example": {
           "data": {
@@ -6552,6 +6648,110 @@
         "title": "BuildingGeometryResponse",
         "type": "object"
       },
+      "BuildingModelV1": {
+        "additionalProperties": false,
+        "description": "Exact physical-model contract for the selected one-storey V1 topology.",
+        "properties": {
+          "coordinate_system": {
+            "$ref": "#/components/schemas/CoordinateSystemV1",
+            "default": "RIGHT_HANDED_XY_HORIZONTAL_Z_UP"
+          },
+          "footing_destinations": {
+            "items": {
+              "$ref": "#/components/schemas/GravityFootingDestinationV1"
+            },
+            "title": "Footing Destinations",
+            "type": "array"
+          },
+          "materials": {
+            "items": {
+              "$ref": "#/components/schemas/GravityMaterialV1"
+            },
+            "title": "Materials",
+            "type": "array"
+          },
+          "members": {
+            "items": {
+              "$ref": "#/components/schemas/GravityMemberV1"
+            },
+            "title": "Members",
+            "type": "array"
+          },
+          "model_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Model Id",
+            "type": "string"
+          },
+          "nodes": {
+            "items": {
+              "$ref": "#/components/schemas/GravityNodeV1"
+            },
+            "title": "Nodes",
+            "type": "array"
+          },
+          "panels": {
+            "items": {
+              "$ref": "#/components/schemas/GravityPanelV1"
+            },
+            "title": "Panels",
+            "type": "array"
+          },
+          "project_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "raw_source_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Raw Source Hash",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "building-model/v1",
+            "default": "building-model/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "sections": {
+            "items": {
+              "$ref": "#/components/schemas/GravitySectionV1"
+            },
+            "title": "Sections",
+            "type": "array"
+          },
+          "source_records": {
+            "items": {
+              "$ref": "#/components/schemas/BuildingSourceRecordV1"
+            },
+            "title": "Source Records",
+            "type": "array"
+          },
+          "units": {
+            "const": "mm",
+            "default": "mm",
+            "title": "Units",
+            "type": "string"
+          }
+        },
+        "required": [
+          "model_id",
+          "project_id",
+          "raw_source_hash",
+          "nodes",
+          "materials",
+          "sections",
+          "panels",
+          "members",
+          "footing_destinations",
+          "source_records"
+        ],
+        "title": "BuildingModelV1",
+        "type": "object"
+      },
       "BuildingPointInput": {
         "additionalProperties": false,
         "description": "Source coordinate converted to millimetres by coordinate_scale_to_mm.",
@@ -6622,6 +6822,59 @@
           "cover_mm"
         ],
         "title": "BuildingSectionInput",
+        "type": "object"
+      },
+      "BuildingSourceRecordV1": {
+        "additionalProperties": false,
+        "description": "Raw-source accounting; order is provenance, not canonical-model identity.",
+        "properties": {
+          "canonical_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Canonical Id"
+          },
+          "disposition": {
+            "$ref": "#/components/schemas/SourceDispositionV1"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "maxLength": 512,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "source_id": {
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Source Id",
+            "type": "string"
+          },
+          "source_index": {
+            "minimum": 0.0,
+            "title": "Source Index",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "source_index",
+          "source_id",
+          "disposition"
+        ],
+        "title": "BuildingSourceRecordV1",
         "type": "object"
       },
       "BuiltinContinuousOneWaySlabDesignRequest": {
@@ -10677,6 +10930,29 @@
         "title": "ComplianceReportResponse",
         "type": "object"
       },
+      "ComponentApplicabilityMatrixV1": {
+        "additionalProperties": false,
+        "properties": {
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/GravityComponentApplicabilityV1"
+            },
+            "title": "Entries",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "component-applicability-matrix/v1",
+            "default": "component-applicability-matrix/v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "entries"
+        ],
+        "title": "ComponentApplicabilityMatrixV1",
+        "type": "object"
+      },
       "ConcentricIsolatedFootingRequest": {
         "additionalProperties": false,
         "description": "Explicit inputs for the sole supported concentric isolated footing case.",
@@ -11521,6 +11797,14 @@
         ],
         "title": "ContinuousOneWaySlabDesignResponse",
         "type": "object"
+      },
+      "CoordinateSystemV1": {
+        "description": "Only coordinate system accepted by the bounded V1 topology.",
+        "enum": [
+          "RIGHT_HANDED_XY_HORIZONTAL_Z_UP"
+        ],
+        "title": "CoordinateSystemV1",
+        "type": "string"
       },
       "CostBreakdown": {
         "description": "Detailed cost breakdown.",
@@ -13625,6 +13909,23 @@
         ],
         "title": "EvidenceEnvelopeResponse",
         "type": "object"
+      },
+      "ExcludedGravityActionV1": {
+        "enum": [
+          "WALL",
+          "FACADE",
+          "EQUIPMENT",
+          "TANK",
+          "STAIR",
+          "ROOF_SPECIAL",
+          "LATERAL",
+          "SOIL",
+          "FOOTING_SELF_WEIGHT",
+          "OVERBURDEN",
+          "LIVE_LOAD_REDUCTION"
+        ],
+        "title": "ExcludedGravityActionV1",
+        "type": "string"
       },
       "ExportBeamRequest": {
         "description": "Beam parameters for generating export artifacts.",
@@ -16412,6 +16713,1764 @@
         "title": "GeometryComponent",
         "type": "object"
       },
+      "GravityActionCategoryV1": {
+        "description": "Source categories plus the derived aggregate used after load transfer.",
+        "enum": [
+          "SLAB_SELF_WEIGHT",
+          "SLAB_SUPERIMPOSED_DEAD",
+          "BEAM_SELF_WEIGHT",
+          "COLUMN_SELF_WEIGHT",
+          "LIVE_OCCUPANCY",
+          "COMBINED_DEAD"
+        ],
+        "title": "GravityActionCategoryV1",
+        "type": "string"
+      },
+      "GravityApprovedExclusionV1": {
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "$ref": "#/components/schemas/ExcludedGravityActionV1"
+          },
+          "reason": {
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Reason",
+            "type": "string"
+          },
+          "source_ref_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Source Ref Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "category",
+          "reason",
+          "source_ref_id"
+        ],
+        "title": "GravityApprovedExclusionV1",
+        "type": "object"
+      },
+      "GravityBeamDesignBasisV1": {
+        "additionalProperties": false,
+        "properties": {
+          "ast_mm2_for_shear": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ast Mm2 For Shear"
+          },
+          "asv_mm2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Asv Mm2",
+            "type": "number"
+          },
+          "beam_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Beam Id",
+            "type": "string"
+          },
+          "cover_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cover Mm"
+          },
+          "d_dash_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "D Dash Mm"
+          },
+          "d_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "D Mm",
+            "type": "number"
+          },
+          "effective_depth_source_reference": {
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Effective Depth Source Reference",
+            "type": "string"
+          },
+          "fy_nmm2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Fy Nmm2",
+            "type": "number"
+          },
+          "pt_percent": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pt Percent"
+          },
+          "stirrup_dia_mm": {
+            "default": 8.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Stirrup Dia Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "beam_id",
+          "d_mm",
+          "fy_nmm2",
+          "asv_mm2",
+          "effective_depth_source_reference"
+        ],
+        "title": "GravityBeamDesignBasisV1",
+        "type": "object"
+      },
+      "GravityCalculationBookV1": {
+        "additionalProperties": false,
+        "description": "Complete machine-readable review record; not professional approval.",
+        "properties": {
+          "actions": {
+            "items": {
+              "$ref": "#/components/schemas/GravityMemberActionV1"
+            },
+            "title": "Actions",
+            "type": "array"
+          },
+          "applicability": {
+            "$ref": "#/components/schemas/ComponentApplicabilityMatrixV1"
+          },
+          "approved_exclusions": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Approved Exclusions",
+            "type": "array"
+          },
+          "components": {
+            "items": {
+              "$ref": "#/components/schemas/GravityComponentResultV1"
+            },
+            "title": "Components",
+            "type": "array"
+          },
+          "formula_version": {
+            "const": "gravity-load-path/v1",
+            "default": "gravity-load-path/v1",
+            "title": "Formula Version",
+            "type": "string"
+          },
+          "issues": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "ledger_hash": {
+            "title": "Ledger Hash",
+            "type": "string"
+          },
+          "ledger_snapshot": {
+            "additionalProperties": true,
+            "title": "Ledger Snapshot",
+            "type": "object"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "load_model_hash": {
+            "title": "Load Model Hash",
+            "type": "string"
+          },
+          "load_snapshot": {
+            "additionalProperties": true,
+            "title": "Load Snapshot",
+            "type": "object"
+          },
+          "model_hash": {
+            "title": "Model Hash",
+            "type": "string"
+          },
+          "model_snapshot": {
+            "additionalProperties": true,
+            "title": "Model Snapshot",
+            "type": "object"
+          },
+          "reconciliation": {
+            "additionalProperties": true,
+            "title": "Reconciliation",
+            "type": "object"
+          },
+          "result_envelope": {
+            "additionalProperties": true,
+            "title": "Result Envelope",
+            "type": "object"
+          },
+          "review_disposition": {
+            "const": "QUALIFIED_REVIEW_REQUIRED",
+            "default": "QUALIFIED_REVIEW_REQUIRED",
+            "title": "Review Disposition",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "gravity-calculation-book/v1",
+            "default": "gravity-calculation-book/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "workflow_result_hash": {
+            "title": "Workflow Result Hash",
+            "type": "string"
+          },
+          "workflow_version": {
+            "const": "building-gravity-workflow/v1",
+            "default": "building-gravity-workflow/v1",
+            "title": "Workflow Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "model_hash",
+          "load_model_hash",
+          "ledger_hash",
+          "workflow_result_hash",
+          "model_snapshot",
+          "load_snapshot",
+          "ledger_snapshot",
+          "reconciliation",
+          "applicability",
+          "actions",
+          "components",
+          "result_envelope",
+          "approved_exclusions",
+          "limitations",
+          "issues"
+        ],
+        "title": "GravityCalculationBookV1",
+        "type": "object"
+      },
+      "GravityColumnDesignBasisV1": {
+        "additionalProperties": false,
+        "properties": {
+          "Asc_mm2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Asc Mm2",
+            "type": "number"
+          },
+          "axial_only_action_acknowledged": {
+            "const": true,
+            "title": "Axial Only Action Acknowledged",
+            "type": "boolean"
+          },
+          "braced_acknowledged": {
+            "const": true,
+            "title": "Braced Acknowledged",
+            "type": "boolean"
+          },
+          "column_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Column Id",
+            "type": "string"
+          },
+          "d_prime_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "D Prime Mm",
+            "type": "number"
+          },
+          "end_condition": {
+            "enum": [
+              "FIXED_FIXED",
+              "FIXED_HINGED",
+              "FIXED_FIXED_SWAY",
+              "FIXED_FREE",
+              "HINGED_HINGED",
+              "FIXED_PARTIAL",
+              "HINGED_PARTIAL"
+            ],
+            "title": "End Condition",
+            "type": "string"
+          },
+          "end_condition_source_reference": {
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "End Condition Source Reference",
+            "type": "string"
+          },
+          "fy_nmm2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Fy Nmm2",
+            "type": "number"
+          },
+          "reinforcement_source_reference": {
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Reinforcement Source Reference",
+            "type": "string"
+          }
+        },
+        "required": [
+          "column_id",
+          "fy_nmm2",
+          "Asc_mm2",
+          "d_prime_mm",
+          "end_condition",
+          "end_condition_source_reference",
+          "reinforcement_source_reference",
+          "braced_acknowledged",
+          "axial_only_action_acknowledged"
+        ],
+        "title": "GravityColumnDesignBasisV1",
+        "type": "object"
+      },
+      "GravityCombinationFactorV1": {
+        "additionalProperties": false,
+        "properties": {
+          "case_id": {
+            "$ref": "#/components/schemas/GravityLoadCaseV1"
+          },
+          "factor": {
+            "exclusiveMinimum": 0.0,
+            "title": "Factor",
+            "type": "number"
+          }
+        },
+        "required": [
+          "case_id",
+          "factor"
+        ],
+        "title": "GravityCombinationFactorV1",
+        "type": "object"
+      },
+      "GravityCombinationV1": {
+        "additionalProperties": false,
+        "properties": {
+          "factors": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "$ref": "#/components/schemas/GravityCombinationFactorV1"
+              },
+              {
+                "$ref": "#/components/schemas/GravityCombinationFactorV1"
+              }
+            ],
+            "title": "Factors",
+            "type": "array"
+          },
+          "id": {
+            "enum": [
+              "SERVICE_DL_LL",
+              "ULS_1_5_DL_LL"
+            ],
+            "title": "Id",
+            "type": "string"
+          },
+          "source_ref_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Source Ref Id",
+            "type": "string"
+          },
+          "state": {
+            "$ref": "#/components/schemas/GravityLoadStateV1"
+          }
+        },
+        "required": [
+          "id",
+          "state",
+          "factors",
+          "source_ref_id"
+        ],
+        "title": "GravityCombinationV1",
+        "type": "object"
+      },
+      "GravityComponentApplicabilityV1": {
+        "additionalProperties": false,
+        "properties": {
+          "canonical_function": {
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Canonical Function",
+            "type": "string"
+          },
+          "component_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Component Id",
+            "type": "string"
+          },
+          "disposition": {
+            "$ref": "#/components/schemas/GravityPrerequisiteDispositionV1"
+          },
+          "hold_reasons": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Hold Reasons",
+            "type": "array"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/GravityComponentKindV1"
+          },
+          "required_generated_inputs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Required Generated Inputs",
+            "type": "array"
+          },
+          "required_supplied_inputs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Required Supplied Inputs",
+            "type": "array"
+          },
+          "supported_case_id": {
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Supported Case Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "component_id",
+          "kind",
+          "canonical_function",
+          "supported_case_id",
+          "required_generated_inputs",
+          "required_supplied_inputs",
+          "disposition"
+        ],
+        "title": "GravityComponentApplicabilityV1",
+        "type": "object"
+      },
+      "GravityComponentKindV1": {
+        "enum": [
+          "SLAB",
+          "BEAM",
+          "COLUMN",
+          "FOOTING"
+        ],
+        "title": "GravityComponentKindV1",
+        "type": "string"
+      },
+      "GravityComponentResultV1": {
+        "additionalProperties": false,
+        "properties": {
+          "action_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Action Ids",
+            "type": "array"
+          },
+          "canonical_function": {
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Canonical Function",
+            "type": "string"
+          },
+          "component_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Component Id",
+            "type": "string"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/GravityComponentKindV1"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Result"
+          },
+          "result_envelope": {
+            "additionalProperties": true,
+            "title": "Result Envelope",
+            "type": "object"
+          }
+        },
+        "required": [
+          "component_id",
+          "kind",
+          "canonical_function",
+          "action_ids",
+          "result_envelope"
+        ],
+        "title": "GravityComponentResultV1",
+        "type": "object"
+      },
+      "GravityFootingDesignBasisV1": {
+        "additionalProperties": false,
+        "description": "External basis needed to advance one footing handoff beyond HOLD.",
+        "properties": {
+          "allowable_soil_pressure_is_externally_approved": {
+            "const": true,
+            "title": "Allowable Soil Pressure Is Externally Approved",
+            "type": "boolean"
+          },
+          "allowable_soil_pressure_kpa": {
+            "exclusiveMinimum": 0.0,
+            "title": "Allowable Soil Pressure Kpa",
+            "type": "number"
+          },
+          "allowable_soil_pressure_origin": {
+            "enum": [
+              "provided",
+              "verified"
+            ],
+            "title": "Allowable Soil Pressure Origin",
+            "type": "string"
+          },
+          "allowable_soil_pressure_source_reference": {
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Allowable Soil Pressure Source Reference",
+            "type": "string"
+          },
+          "available_dowel_development_length_into_column_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Available Dowel Development Length Into Column Mm",
+            "type": "number"
+          },
+          "available_dowel_development_length_into_footing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Available Dowel Development Length Into Footing Mm",
+            "type": "number"
+          },
+          "column_longitudinal_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Column Longitudinal Bar Diameter Mm",
+            "type": "number"
+          },
+          "complete_factored_axial_load_kn": {
+            "exclusiveMinimum": 0.0,
+            "title": "Complete Factored Axial Load Kn",
+            "type": "number"
+          },
+          "complete_service_axial_load_kn": {
+            "exclusiveMinimum": 0.0,
+            "title": "Complete Service Axial Load Kn",
+            "type": "number"
+          },
+          "cover_exposure_basis": {
+            "anyOf": [
+              {
+                "maxLength": 512,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cover Exposure Basis"
+          },
+          "cover_exposure_basis_is_approved": {
+            "default": false,
+            "title": "Cover Exposure Basis Is Approved",
+            "type": "boolean"
+          },
+          "dowel_bar_type": {
+            "default": "deformed",
+            "enum": [
+              "deformed",
+              "plain"
+            ],
+            "title": "Dowel Bar Type",
+            "type": "string"
+          },
+          "dowel_count": {
+            "exclusiveMinimum": 0.0,
+            "title": "Dowel Count",
+            "type": "integer"
+          },
+          "dowel_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Dowel Diameter Mm",
+            "type": "number"
+          },
+          "effective_depth_offset_b_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Effective Depth Offset B Mm",
+            "type": "number"
+          },
+          "effective_depth_offset_l_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Effective Depth Offset L Mm",
+            "type": "number"
+          },
+          "effective_supporting_area_a1_mm2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Effective Supporting Area A1 Mm2",
+            "type": "number"
+          },
+          "effective_supporting_area_basis": {
+            "const": "largest_frustum_1v_2h",
+            "title": "Effective Supporting Area Basis",
+            "type": "string"
+          },
+          "effective_supporting_area_is_approved": {
+            "const": true,
+            "title": "Effective Supporting Area Is Approved",
+            "type": "boolean"
+          },
+          "effective_supporting_area_origin": {
+            "enum": [
+              "provided",
+              "verified"
+            ],
+            "title": "Effective Supporting Area Origin",
+            "type": "string"
+          },
+          "factored_load_combination_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Factored Load Combination Id",
+            "type": "string"
+          },
+          "footing_bottom_bar_type": {
+            "anyOf": [
+              {
+                "enum": [
+                  "deformed",
+                  "plain"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Footing Bottom Bar Type"
+          },
+          "footing_concrete_fck_nmm2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Footing Concrete Fck Nmm2",
+            "type": "number"
+          },
+          "footing_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Footing Id",
+            "type": "string"
+          },
+          "footing_type": {
+            "enum": [
+              "SQUARE",
+              "RECTANGULAR"
+            ],
+            "title": "Footing Type",
+            "type": "string"
+          },
+          "lower_bottom_bar_direction": {
+            "anyOf": [
+              {
+                "enum": [
+                  "L",
+                  "B"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lower Bottom Bar Direction"
+          },
+          "maximum_overall_thickness_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Maximum Overall Thickness Mm",
+            "type": "number"
+          },
+          "minimum_overall_thickness_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Minimum Overall Thickness Mm",
+            "type": "number"
+          },
+          "nominal_cover_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nominal Cover Mm"
+          },
+          "nominal_max_aggregate_size_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nominal Max Aggregate Size Mm"
+          },
+          "permitted_bottom_bar_diameters_mm": {
+            "default": [],
+            "items": {
+              "type": "integer"
+            },
+            "title": "Permitted Bottom Bar Diameters Mm",
+            "type": "array"
+          },
+          "service_load_basis": {
+            "const": "includes_footing_self_weight_and_overburden",
+            "title": "Service Load Basis",
+            "type": "string"
+          },
+          "service_load_combination_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Service Load Combination Id",
+            "type": "string"
+          },
+          "service_load_origin": {
+            "enum": [
+              "provided",
+              "verified"
+            ],
+            "title": "Service Load Origin",
+            "type": "string"
+          },
+          "steel_fy_nmm2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Steel Fy Nmm2",
+            "type": "number"
+          },
+          "thickness_increment_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Thickness Increment Mm",
+            "type": "number"
+          },
+          "upper_bottom_bar_direction": {
+            "anyOf": [
+              {
+                "enum": [
+                  "L",
+                  "B"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Upper Bottom Bar Direction"
+          }
+        },
+        "required": [
+          "footing_id",
+          "complete_service_axial_load_kn",
+          "service_load_combination_id",
+          "service_load_basis",
+          "service_load_origin",
+          "complete_factored_axial_load_kn",
+          "factored_load_combination_id",
+          "allowable_soil_pressure_kpa",
+          "allowable_soil_pressure_source_reference",
+          "allowable_soil_pressure_origin",
+          "allowable_soil_pressure_is_externally_approved",
+          "footing_type",
+          "minimum_overall_thickness_mm",
+          "maximum_overall_thickness_mm",
+          "thickness_increment_mm",
+          "effective_depth_offset_l_mm",
+          "effective_depth_offset_b_mm",
+          "footing_concrete_fck_nmm2",
+          "steel_fy_nmm2",
+          "effective_supporting_area_a1_mm2",
+          "effective_supporting_area_basis",
+          "effective_supporting_area_origin",
+          "effective_supporting_area_is_approved",
+          "dowel_count",
+          "dowel_diameter_mm",
+          "column_longitudinal_bar_diameter_mm",
+          "available_dowel_development_length_into_footing_mm",
+          "available_dowel_development_length_into_column_mm"
+        ],
+        "title": "GravityFootingDesignBasisV1",
+        "type": "object"
+      },
+      "GravityFootingDestinationV1": {
+        "additionalProperties": false,
+        "properties": {
+          "action_idealization": {
+            "const": "CONCENTRIC_AXIAL_ONLY",
+            "default": "CONCENTRIC_AXIAL_ONLY",
+            "title": "Action Idealization",
+            "type": "string"
+          },
+          "column_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Column Id",
+            "type": "string"
+          },
+          "id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Id",
+            "type": "string"
+          },
+          "load_path_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Load Path Id",
+            "type": "string"
+          },
+          "node_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Node Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "column_id",
+          "node_id",
+          "load_path_id"
+        ],
+        "title": "GravityFootingDestinationV1",
+        "type": "object"
+      },
+      "GravityInclusionDispositionV1": {
+        "enum": [
+          "GENERATED",
+          "SUPPLIED"
+        ],
+        "title": "GravityInclusionDispositionV1",
+        "type": "string"
+      },
+      "GravityInclusionRuleV1": {
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "$ref": "#/components/schemas/GravityActionCategoryV1"
+          },
+          "disposition": {
+            "$ref": "#/components/schemas/GravityInclusionDispositionV1"
+          },
+          "owner": {
+            "const": "GRAVITY_LOAD_LEDGER",
+            "default": "GRAVITY_LOAD_LEDGER",
+            "title": "Owner",
+            "type": "string"
+          },
+          "source_ref_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Source Ref Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "category",
+          "disposition",
+          "source_ref_id"
+        ],
+        "title": "GravityInclusionRuleV1",
+        "type": "object"
+      },
+      "GravityLoadCaseV1": {
+        "enum": [
+          "DL",
+          "LL"
+        ],
+        "title": "GravityLoadCaseV1",
+        "type": "string"
+      },
+      "GravityLoadStateV1": {
+        "enum": [
+          "SERVICE",
+          "FACTORED"
+        ],
+        "title": "GravityLoadStateV1",
+        "type": "string"
+      },
+      "GravityMaterialV1": {
+        "additionalProperties": false,
+        "properties": {
+          "fck_nmm2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Fck Nmm2",
+            "type": "number"
+          },
+          "id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Id",
+            "type": "string"
+          },
+          "material_kind": {
+            "const": "CONCRETE",
+            "default": "CONCRETE",
+            "title": "Material Kind",
+            "type": "string"
+          },
+          "unit_weight_kn_m3": {
+            "exclusiveMinimum": 0.0,
+            "title": "Unit Weight Kn M3",
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "unit_weight_kn_m3",
+          "fck_nmm2"
+        ],
+        "title": "GravityMaterialV1",
+        "type": "object"
+      },
+      "GravityMemberActionV1": {
+        "additionalProperties": false,
+        "properties": {
+          "action_id": {
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Action Id",
+            "type": "string"
+          },
+          "area_load_kn_m2": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Area Load Kn M2"
+          },
+          "axial_kn": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Axial Kn"
+          },
+          "combination_id": {
+            "enum": [
+              "SERVICE_DL_LL",
+              "ULS_1_5_DL_LL"
+            ],
+            "title": "Combination Id",
+            "type": "string"
+          },
+          "component_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Component Id",
+            "type": "string"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/GravityComponentKindV1"
+          },
+          "line_load_kn_m": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Line Load Kn M"
+          },
+          "moment_knm": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Moment Knm"
+          },
+          "shear_kn": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shear Kn"
+          },
+          "sign_convention": {
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Sign Convention",
+            "type": "string"
+          },
+          "source_entry_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Entry Ids",
+            "type": "array"
+          },
+          "state": {
+            "enum": [
+              "SERVICE",
+              "FACTORED"
+            ],
+            "title": "State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "action_id",
+          "component_id",
+          "kind",
+          "combination_id",
+          "state",
+          "source_entry_ids",
+          "sign_convention"
+        ],
+        "title": "GravityMemberActionV1",
+        "type": "object"
+      },
+      "GravityMemberKindV1": {
+        "enum": [
+          "BEAM",
+          "COLUMN"
+        ],
+        "title": "GravityMemberKindV1",
+        "type": "string"
+      },
+      "GravityMemberV1": {
+        "additionalProperties": false,
+        "properties": {
+          "end_node_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "End Node Id",
+            "type": "string"
+          },
+          "id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/GravityMemberKindV1"
+          },
+          "load_path_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Load Path Id",
+            "type": "string"
+          },
+          "render_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Render Id",
+            "type": "string"
+          },
+          "section_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Section Id",
+            "type": "string"
+          },
+          "start_node_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Start Node Id",
+            "type": "string"
+          },
+          "support_idealization": {
+            "$ref": "#/components/schemas/GravitySupportIdealizationV1"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "start_node_id",
+          "end_node_id",
+          "section_id",
+          "support_idealization",
+          "load_path_id",
+          "render_id"
+        ],
+        "title": "GravityMemberV1",
+        "type": "object"
+      },
+      "GravityNodeV1": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Id",
+            "type": "string"
+          },
+          "x_mm": {
+            "title": "X Mm",
+            "type": "number"
+          },
+          "y_mm": {
+            "title": "Y Mm",
+            "type": "number"
+          },
+          "z_mm": {
+            "title": "Z Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "x_mm",
+          "y_mm",
+          "z_mm"
+        ],
+        "title": "GravityNodeV1",
+        "type": "object"
+      },
+      "GravityPanelV1": {
+        "additionalProperties": false,
+        "properties": {
+          "corner_node_ids": {
+            "maxItems": 4,
+            "minItems": 4,
+            "prefixItems": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Corner Node Ids",
+            "type": "array"
+          },
+          "id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Id",
+            "type": "string"
+          },
+          "load_path_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Load Path Id",
+            "type": "string"
+          },
+          "render_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Render Id",
+            "type": "string"
+          },
+          "section_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Section Id",
+            "type": "string"
+          },
+          "span_direction": {
+            "const": "Y",
+            "default": "Y",
+            "title": "Span Direction",
+            "type": "string"
+          },
+          "supporting_beam_ids": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Supporting Beam Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "corner_node_ids",
+          "section_id",
+          "supporting_beam_ids",
+          "load_path_id",
+          "render_id"
+        ],
+        "title": "GravityPanelV1",
+        "type": "object"
+      },
+      "GravityPrerequisiteDispositionV1": {
+        "enum": [
+          "READY",
+          "HOLD"
+        ],
+        "title": "GravityPrerequisiteDispositionV1",
+        "type": "string"
+      },
+      "GravitySectionKindV1": {
+        "enum": [
+          "SLAB",
+          "BEAM",
+          "COLUMN"
+        ],
+        "title": "GravitySectionKindV1",
+        "type": "string"
+      },
+      "GravitySectionV1": {
+        "additionalProperties": false,
+        "properties": {
+          "depth_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Depth Mm"
+          },
+          "id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/GravitySectionKindV1"
+          },
+          "material_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Material Id",
+            "type": "string"
+          },
+          "thickness_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thickness Mm"
+          },
+          "width_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Width Mm"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "material_id"
+        ],
+        "title": "GravitySectionV1",
+        "type": "object"
+      },
+      "GravitySlabDesignBasisV1": {
+        "additionalProperties": false,
+        "properties": {
+          "d_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "D Mm",
+            "type": "number"
+          },
+          "distribution_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Distribution Bar Diameter Mm",
+            "type": "number"
+          },
+          "distribution_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Distribution Bar Spacing Mm",
+            "type": "number"
+          },
+          "effective_depth_source_reference": {
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Effective Depth Source Reference",
+            "type": "string"
+          },
+          "fy_nmm2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Fy Nmm2",
+            "type": "number"
+          },
+          "main_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Main Bar Diameter Mm",
+            "type": "number"
+          },
+          "main_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Main Bar Spacing Mm",
+            "type": "number"
+          },
+          "panel_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Panel Id",
+            "type": "string"
+          },
+          "qualified_serviceability_acceptance_acknowledged": {
+            "const": true,
+            "title": "Qualified Serviceability Acceptance Acknowledged",
+            "type": "boolean"
+          },
+          "qualified_serviceability_acceptance_reference": {
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Qualified Serviceability Acceptance Reference",
+            "type": "string"
+          },
+          "reviewed_aggregate_modification_factor": {
+            "exclusiveMinimum": 0.0,
+            "title": "Reviewed Aggregate Modification Factor",
+            "type": "number"
+          },
+          "reviewed_base_span_depth_limit": {
+            "exclusiveMinimum": 0.0,
+            "title": "Reviewed Base Span Depth Limit",
+            "type": "number"
+          },
+          "serviceability_limit_source_is_approved": {
+            "const": true,
+            "title": "Serviceability Limit Source Is Approved",
+            "type": "boolean"
+          },
+          "serviceability_limit_source_reference": {
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Serviceability Limit Source Reference",
+            "type": "string"
+          }
+        },
+        "required": [
+          "panel_id",
+          "d_mm",
+          "fy_nmm2",
+          "main_bar_diameter_mm",
+          "main_bar_spacing_mm",
+          "distribution_bar_diameter_mm",
+          "distribution_bar_spacing_mm",
+          "reviewed_base_span_depth_limit",
+          "reviewed_aggregate_modification_factor",
+          "serviceability_limit_source_reference",
+          "serviceability_limit_source_is_approved",
+          "qualified_serviceability_acceptance_reference",
+          "qualified_serviceability_acceptance_acknowledged",
+          "effective_depth_source_reference"
+        ],
+        "title": "GravitySlabDesignBasisV1",
+        "type": "object"
+      },
+      "GravitySourceReferenceV1": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Id",
+            "type": "string"
+          },
+          "reference": {
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Reference",
+            "type": "string"
+          },
+          "source_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Source Hash",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "reference",
+          "source_hash"
+        ],
+        "title": "GravitySourceReferenceV1",
+        "type": "object"
+      },
+      "GravitySupportIdealizationV1": {
+        "enum": [
+          "BEAM_SIMPLY_SUPPORTED",
+          "COLUMN_BRACED_AXIAL_ONLY"
+        ],
+        "title": "GravitySupportIdealizationV1",
+        "type": "string"
+      },
+      "GravityWorkflowDefinitionV1": {
+        "additionalProperties": false,
+        "description": "Discoverable, non-executable capability definition for product surfaces.",
+        "properties": {
+          "accepted_topology": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Accepted Topology",
+            "type": "array"
+          },
+          "capability_id": {
+            "const": "building.gravity.dead-live.v1",
+            "default": "building.gravity.dead-live.v1",
+            "title": "Capability Id",
+            "type": "string"
+          },
+          "component_adapters": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Component Adapters",
+            "type": "object"
+          },
+          "exclusions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Exclusions",
+            "type": "array"
+          },
+          "product_surfaces": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Product Surfaces",
+            "type": "object"
+          },
+          "qualified_review_required": {
+            "const": true,
+            "default": true,
+            "title": "Qualified Review Required",
+            "type": "boolean"
+          },
+          "schema_version": {
+            "const": "gravity-workflow-definition/v1",
+            "default": "gravity-workflow-definition/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "status_contract": {
+            "const": "structural-result-envelope/v2",
+            "default": "structural-result-envelope/v2",
+            "title": "Status Contract",
+            "type": "string"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "workflow_version": {
+            "const": "building-gravity-workflow/v1",
+            "default": "building-gravity-workflow/v1",
+            "title": "Workflow Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "summary",
+          "accepted_topology",
+          "component_adapters",
+          "product_surfaces",
+          "exclusions"
+        ],
+        "title": "GravityWorkflowDefinitionV1",
+        "type": "object"
+      },
+      "GravityWorkflowRequestV1": {
+        "additionalProperties": false,
+        "properties": {
+          "beam_design_bases": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/GravityBeamDesignBasisV1"
+            },
+            "title": "Beam Design Bases",
+            "type": "array"
+          },
+          "building": {
+            "$ref": "#/components/schemas/BuildingModelV1"
+          },
+          "column_design_bases": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/GravityColumnDesignBasisV1"
+            },
+            "title": "Column Design Bases",
+            "type": "array"
+          },
+          "footing_design_bases": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/GravityFootingDesignBasisV1"
+            },
+            "title": "Footing Design Bases",
+            "type": "array"
+          },
+          "formula_version": {
+            "const": "gravity-load-path/v1",
+            "default": "gravity-load-path/v1",
+            "title": "Formula Version",
+            "type": "string"
+          },
+          "load_model_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Load Model Hash",
+            "type": "string"
+          },
+          "loads": {
+            "$ref": "#/components/schemas/LoadModelV1"
+          },
+          "model_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Model Hash",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "gravity-workflow-request/v1",
+            "default": "gravity-workflow-request/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "slab_design_bases": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/GravitySlabDesignBasisV1"
+            },
+            "title": "Slab Design Bases",
+            "type": "array"
+          },
+          "workflow_version": {
+            "const": "building-gravity-workflow/v1",
+            "default": "building-gravity-workflow/v1",
+            "title": "Workflow Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "model_hash",
+          "load_model_hash",
+          "building",
+          "loads"
+        ],
+        "title": "GravityWorkflowRequestV1",
+        "type": "object"
+      },
+      "GravityWorkflowResultV1": {
+        "additionalProperties": false,
+        "properties": {
+          "actions": {
+            "items": {
+              "$ref": "#/components/schemas/GravityMemberActionV1"
+            },
+            "title": "Actions",
+            "type": "array"
+          },
+          "applicability": {
+            "$ref": "#/components/schemas/ComponentApplicabilityMatrixV1"
+          },
+          "components": {
+            "items": {
+              "$ref": "#/components/schemas/GravityComponentResultV1"
+            },
+            "title": "Components",
+            "type": "array"
+          },
+          "formula_version": {
+            "const": "gravity-load-path/v1",
+            "default": "gravity-load-path/v1",
+            "title": "Formula Version",
+            "type": "string"
+          },
+          "ledger_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Ledger Hash",
+            "type": "string"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "load_model_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Load Model Hash",
+            "type": "string"
+          },
+          "model_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Model Hash",
+            "type": "string"
+          },
+          "result_envelope": {
+            "additionalProperties": true,
+            "title": "Result Envelope",
+            "type": "object"
+          },
+          "schema_version": {
+            "const": "gravity-workflow-result/v1",
+            "default": "gravity-workflow-result/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "workflow_result_hash": {
+            "readOnly": true,
+            "title": "Workflow Result Hash",
+            "type": "string"
+          },
+          "workflow_version": {
+            "const": "building-gravity-workflow/v1",
+            "default": "building-gravity-workflow/v1",
+            "title": "Workflow Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "model_hash",
+          "load_model_hash",
+          "ledger_hash",
+          "applicability",
+          "actions",
+          "components",
+          "result_envelope",
+          "limitations",
+          "workflow_result_hash"
+        ],
+        "title": "GravityWorkflowResultV1",
+        "type": "object"
+      },
+      "GravityWorkflowRunBundleV1": {
+        "additionalProperties": false,
+        "properties": {
+          "calculation_book": {
+            "$ref": "#/components/schemas/GravityCalculationBookV1"
+          },
+          "schema_version": {
+            "const": "gravity-workflow-run-bundle/v1",
+            "default": "gravity-workflow-run-bundle/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "workflow_result": {
+            "$ref": "#/components/schemas/GravityWorkflowResultV1"
+          }
+        },
+        "required": [
+          "workflow_result",
+          "calculation_book"
+        ],
+        "title": "GravityWorkflowRunBundleV1",
+        "type": "object"
+      },
       "HealthStatus": {
         "description": "Health check response model.",
         "properties": {
@@ -17232,6 +19291,99 @@
           "magnitude"
         ],
         "title": "LoadItem",
+        "type": "object"
+      },
+      "LoadModelV1": {
+        "additionalProperties": false,
+        "description": "Frozen dead/live basis; walls, lateral loads and footing weights are excluded.",
+        "properties": {
+          "approved_exclusions": {
+            "items": {
+              "$ref": "#/components/schemas/GravityApprovedExclusionV1"
+            },
+            "title": "Approved Exclusions",
+            "type": "array"
+          },
+          "balance_tolerance_kn": {
+            "default": 1e-09,
+            "exclusiveMinimum": 0.0,
+            "maximum": 0.001,
+            "title": "Balance Tolerance Kn",
+            "type": "number"
+          },
+          "combinations": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "$ref": "#/components/schemas/GravityCombinationV1"
+              },
+              {
+                "$ref": "#/components/schemas/GravityCombinationV1"
+              }
+            ],
+            "title": "Combinations",
+            "type": "array"
+          },
+          "inclusion_rules": {
+            "items": {
+              "$ref": "#/components/schemas/GravityInclusionRuleV1"
+            },
+            "title": "Inclusion Rules",
+            "type": "array"
+          },
+          "live_load_category": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Live Load Category",
+            "type": "string"
+          },
+          "live_load_kn_m2": {
+            "minimum": 0.0,
+            "title": "Live Load Kn M2",
+            "type": "number"
+          },
+          "model_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Model Hash",
+            "type": "string"
+          },
+          "raw_source_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Raw Source Hash",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "load-model/v1",
+            "default": "load-model/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "source_references": {
+            "items": {
+              "$ref": "#/components/schemas/GravitySourceReferenceV1"
+            },
+            "title": "Source References",
+            "type": "array"
+          },
+          "superimposed_dead_load_kn_m2": {
+            "minimum": 0.0,
+            "title": "Superimposed Dead Load Kn M2",
+            "type": "number"
+          }
+        },
+        "required": [
+          "model_hash",
+          "raw_source_hash",
+          "superimposed_dead_load_kn_m2",
+          "live_load_kn_m2",
+          "live_load_category",
+          "source_references",
+          "inclusion_rules",
+          "combinations",
+          "approved_exclusions"
+        ],
+        "title": "LoadModelV1",
         "type": "object"
       },
       "LongColumnRequest": {
@@ -20899,6 +23051,14 @@
         ],
         "title": "SmartScoreMetrics",
         "type": "object"
+      },
+      "SourceDispositionV1": {
+        "enum": [
+          "ACCEPTED",
+          "APPROVED_EXCLUSION"
+        ],
+        "title": "SourceDispositionV1",
+        "type": "string"
       },
       "StaircaseDesignCheckResponse": {
         "properties": {
@@ -25578,6 +27738,239 @@
         "summary": "Simple Load Analysis (BMD/SFD)",
         "tags": [
           "analysis"
+        ]
+      }
+    },
+    "/api/v1/building-gravity/v1/definition": {
+      "get": {
+        "operationId": "get_building_gravity_definition_v1_api_v1_building_gravity_v1_definition_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_GravityWorkflowDefinitionV1_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Authentication required"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "State conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Concurrency or rate limit"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Internal application error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Capability unavailable"
+          }
+        },
+        "summary": "Discover the bounded Building Gravity Workflow V1 contract",
+        "tags": [
+          "building-gravity"
+        ]
+      }
+    },
+    "/api/v1/building-gravity/v1/run": {
+      "post": {
+        "description": "Validate one accepted model/load identity and return its review dossier.",
+        "operationId": "run_building_gravity_v1_api_v1_building_gravity_v1_run_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GravityWorkflowRequestV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_GravityWorkflowRunBundleV1_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Authentication required"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "State conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Concurrency or rate limit"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Internal application error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Capability unavailable"
+          }
+        },
+        "summary": "Run the bounded one-storey dead/live gravity workflow",
+        "tags": [
+          "building-gravity"
         ]
       }
     },
@@ -35184,6 +37577,10 @@
     {
       "description": "Smart analysis with design suggestions and insights.",
       "name": "analysis"
+    },
+    {
+      "description": "Bounded one-storey dead/live gravity load path and component review.",
+      "name": "building-gravity"
     },
     {
       "description": "3D geometry generation for visualization.",

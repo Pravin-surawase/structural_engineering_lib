@@ -151,7 +151,7 @@ Update after each phase or batch.
 
 ### B1+B2: Agent 6 Entry Points + Registry ✅
 **Commit:** ce57e44
-- Created `docs/agents/guides/agent-6-quick-start.md` (60-second onboarding)
+- Created `docs/_archive/2026-08/agent-6-quick-start.md` (60-second onboarding)
 - Created `docs/agents/guides/agent-6-streamlit-hub.md` (Streamlit doc navigation)
 - Added Agent Registry table to `docs/agents/README.md`
 - All 3 agents (6, 8, 9) now have consistent entry point pattern
@@ -189,13 +189,13 @@ Update after each phase or batch.
 
 ### Entry Points Created
 **Agent 6:**
-- [docs/agents/guides/agent-6-quick-start.md](../../../agents/guides/agent-6-quick-start.md)
+- [docs/_archive/2026-08/agent-6-quick-start.md](../../2026-08/agent-6-quick-start.md)
 - [docs/agents/guides/agent-6-streamlit-hub.md](../../../agents/guides/agent-6-streamlit-hub.md)
 
 **Agent 8:**
 - [docs/agents/guides/agent-8-quick-start.md](../../agents/guides/agent-8-quick-start.md)
-- [docs/agents/guides/agent-8-automation.md](../../../agents/guides/agent-8-automation.md)
-- [docs/agents/guides/agent-8-git-ops.md](../../../agents/guides/agent-8-git-ops.md) (core protocol)
+- [docs/_archive/2026-08/agent-8-automation.md](../../2026-08/agent-8-automation.md)
+- [docs/_archive/2026-08/agent-8-git-ops.md](../../2026-08/agent-8-git-ops.md) (core protocol)
 
 **Agent 9:**
 - [docs/agents/guides/agent-9-quick-start.md](../../../agents/guides/agent-9-quick-start.md)

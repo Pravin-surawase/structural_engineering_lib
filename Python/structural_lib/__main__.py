@@ -13,6 +13,7 @@ Usage:
     python -m structural_lib report ./output/ --format=html
     python -m structural_lib critical ./output/ --top=10 --format=csv
     python -m structural_lib capabilities --json
+    python -m structural_lib gravity-v1 request.json -o calculation-book.json
     python -m structural_lib mark-diff --bbs schedule.csv --dxf drawings.dxf
 
 This module provides a unified command-line interface with subcommands
@@ -83,6 +84,49 @@ def _format_validation_text(report: ValidationReport) -> str:
             lines.append(f"  - {err}")
 
     return "\n".join(lines)
+
+
+def cmd_gravity_v1(args: argparse.Namespace) -> int:
+    """Run the bounded Building Gravity Workflow V1 from one JSON request."""
+
+    input_path = Path(args.input)
+    if not input_path.is_file():
+        _print_error(f"Input file not found: {input_path}")
+        return 1
+    try:
+        from structural_lib.core.gravity_workflow import GravityWorkflowRequestV1
+        from structural_lib.services.gravity_calculation_book import (
+            render_gravity_calculation_book_markdown_v1,
+            run_gravity_workflow_with_book_v1,
+        )
+
+        request = GravityWorkflowRequestV1.model_validate_json(
+            input_path.read_text(encoding="utf-8")
+        )
+        bundle = run_gravity_workflow_with_book_v1(request)
+        output = (
+            render_gravity_calculation_book_markdown_v1(bundle.calculation_book)
+            if args.format == "markdown"
+            else json.dumps(
+                bundle.model_dump(mode="json"),
+                allow_nan=False,
+                ensure_ascii=True,
+                indent=2,
+                sort_keys=True,
+            )
+            + "\n"
+        )
+    except (OSError, TypeError, ValueError) as exc:
+        _print_error(f"Gravity V1 request was not accepted: {exc}")
+        return 1
+
+    if args.output:
+        output_path = Path(args.output)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(output, encoding="utf-8")
+    else:
+        print(output, end="" if output.endswith("\n") else "\n")
+    return 0
 
 
 def _format_mark_diff_text(result: dict) -> str:
@@ -1193,6 +1237,26 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Emit the canonical machine-readable JSON contract",
     )
     capabilities_parser.set_defaults(func=cmd_capabilities)
+
+    gravity_parser = subparsers.add_parser(
+        "gravity-v1",
+        help="Run the bounded Building Gravity Workflow V1",
+        description=(
+            "Validate one versioned JSON request, reconcile its dead/live load "
+            "path, run only ready component adapters, and emit a calculation book."
+        ),
+    )
+    gravity_parser.add_argument("input", help="GravityWorkflowRequestV1 JSON file")
+    gravity_parser.add_argument(
+        "--format",
+        choices=["json", "markdown"],
+        default="json",
+        help="Output format (default: json)",
+    )
+    gravity_parser.add_argument(
+        "-o", "--output", help="Output file (if omitted, prints to stdout)"
+    )
+    gravity_parser.set_defaults(func=cmd_gravity_v1)
 
     # Design subcommand
     design_parser = subparsers.add_parser(

@@ -1216,7 +1216,7 @@
       ],
       "size_bytes": 829
     },
-    "docs/contributing/workflow-professional-review.md": {
+    "docs/_archive/2026-08/workflow-professional-review.md": {
       "title": "Git Workflow Professional Review & Recommendations",
       "type": "documentation",
       "complexity": "advanced",
@@ -1404,7 +1404,7 @@
       ],
       "size_bytes": 3128
     },
-    "docs/contributing/git-workflow-testing.md": {
+    "docs/_archive/2026-08/git-workflow-testing.md": {
       "title": "Git Workflow Testing Strategy",
       "type": "documentation",
       "complexity": "advanced",
@@ -2625,7 +2625,7 @@
       ],
       "size_bytes": 21939
     },
-    "docs/agents/guides/agent-6-quick-start.md": {
+    "docs/_archive/2026-08/agent-6-quick-start.md": {
       "title": "Agent 6 Quick Start (Streamlit UI Specialist)",
       "type": "documentation",
       "complexity": "intermediate",
@@ -2662,7 +2662,7 @@
       ],
       "size_bytes": 7880
     },
-    "docs/agents/guides/agent-8-git-ops.md": {
+    "docs/_archive/2026-08/agent-8-git-ops.md": {
       "title": "Agent 8: GIT OPERATIONS SPECIALIST",
       "type": "documentation",
       "complexity": "advanced",
@@ -2682,7 +2682,7 @@
       ],
       "size_bytes": 37217
     },
-    "docs/agents/guides/agent-6-comprehensive-onboarding.md": {
+    "docs/_archive/2026-08/agent-6-comprehensive-onboarding.md": {
       "title": "Agent 6 Comprehensive Onboarding Guide",
       "type": "documentation",
       "complexity": "advanced",
@@ -2702,7 +2702,7 @@
       ],
       "size_bytes": 12922
     },
-    "docs/agents/guides/agent-8-operations-log-spec.md": {
+    "docs/_archive/2026-08/agent-8-operations-log-spec.md": {
       "title": "Agent 8 Operations Log Spec",
       "type": "specification",
       "complexity": "beginner",
@@ -2795,7 +2795,7 @@
       ],
       "size_bytes": 19829
     },
-    "docs/agents/guides/agent-8-automation.md": {
+    "docs/_archive/2026-08/agent-8-automation.md": {
       "title": "Agent 8 Automation - Scripts & Tools Index",
       "type": "documentation",
       "complexity": "advanced",
@@ -2833,7 +2833,7 @@
       ],
       "size_bytes": 4007
     },
-    "docs/agents/guides/agent-8-mistakes-prevention-guide.md": {
+    "docs/_archive/2026-08/agent-8-mistakes-prevention-guide.md": {
       "title": "Agent 8: Mistakes Prevention Guide (Lessons Learned)",
       "type": "guide",
       "complexity": "advanced",
@@ -2851,7 +2851,7 @@
       ],
       "size_bytes": 30075
     },
-    "docs/agents/guides/agent-automation-system.md": {
+    "docs/_archive/2026-08/agent-automation-system.md": {
       "title": "Agent Automation System v1.1.0",
       "type": "documentation",
       "complexity": "advanced",
@@ -2871,7 +2871,7 @@
       ],
       "size_bytes": 8859
     },
-    "docs/agents/guides/agent-8-multi-agent-coordination.md": {
+    "docs/_archive/2026-08/agent-8-multi-agent-coordination.md": {
       "title": "Agent 8 Multi-Agent Coordination",
       "type": "documentation",
       "complexity": "intermediate",
@@ -7160,7 +7160,7 @@
       ],
       "excel_user": [],
       "contributor": [
-        "docs/contributing/workflow-professional-review.md",
+        "docs/_archive/2026-08/workflow-professional-review.md",
         "docs/contributing/quickstart-checklist.md",
         "docs/contributing/development-guide.md",
         "docs/contributing/naming-conventions.md",
@@ -7169,7 +7169,7 @@
         "docs/contributing/agent-coding-standards.md",
         "docs/contributing/commit-message-conventions.md",
         "docs/contributing/learning-paths.md",
-        "docs/contributing/git-workflow-testing.md",
+        "docs/_archive/2026-08/git-workflow-testing.md",
         "docs/contributing/solo-maintainer-operating-system.md",
         "docs/contributing/github-workflow.md",
         "docs/contributing/index.md",
@@ -7285,7 +7285,7 @@
         "docs/verification/b1-gravity-model-load-ledger-evidence.md"
       ],
       "development": [
-        "docs/contributing/workflow-professional-review.md",
+        "docs/_archive/2026-08/workflow-professional-review.md",
         "docs/contributing/quickstart-checklist.md",
         "docs/contributing/development-guide.md",
         "docs/contributing/naming-conventions.md",
@@ -7294,7 +7294,7 @@
         "docs/contributing/agent-coding-standards.md",
         "docs/contributing/commit-message-conventions.md",
         "docs/contributing/learning-paths.md",
-        "docs/contributing/git-workflow-testing.md",
+        "docs/_archive/2026-08/git-workflow-testing.md",
         "docs/contributing/solo-maintainer-operating-system.md",
         "docs/contributing/github-workflow.md",
         "docs/contributing/index.md",
@@ -7311,7 +7311,7 @@
         "docs/contributing/changelog-deprecation-template.md"
       ],
       "workflow": [
-        "docs/contributing/workflow-professional-review.md",
+        "docs/_archive/2026-08/workflow-professional-review.md",
         "docs/contributing/quickstart-checklist.md",
         "docs/contributing/development-guide.md",
         "docs/contributing/naming-conventions.md",
@@ -7320,7 +7320,7 @@
         "docs/contributing/agent-coding-standards.md",
         "docs/contributing/commit-message-conventions.md",
         "docs/contributing/learning-paths.md",
-        "docs/contributing/git-workflow-testing.md",
+        "docs/_archive/2026-08/git-workflow-testing.md",
         "docs/contributing/solo-maintainer-operating-system.md",
         "docs/contributing/github-workflow.md",
         "docs/contributing/index.md",

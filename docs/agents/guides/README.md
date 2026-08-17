@@ -19,14 +19,14 @@ doc_type: reference
 **Mission:** Single source of truth for all git operations, preventing conflicts and ensuring consistency.
 
 ### Core Documentation
-- [agent-8-automation.md](agent-8-automation.md) - Quick start + script index (start here)
-- [agent-8-git-ops.md](agent-8-git-ops.md) - Core protocol (1,320 lines)
-- [agent-8-mistakes-prevention-guide.md](agent-8-mistakes-prevention-guide.md) - Historical mistakes DB (1,096 lines)
-- [agent-8-multi-agent-coordination.md](agent-8-multi-agent-coordination.md) - Multi-agent workflows
-- [agent-8-operations-log-spec.md](agent-8-operations-log-spec.md) - Log format specification
+- [agent-8-automation.md](../../_archive/2026-08/agent-8-automation.md) - Quick start + script index (start here)
+- [agent-8-git-ops.md](../../_archive/2026-08/agent-8-git-ops.md) - Core protocol (1,320 lines)
+- [agent-8-mistakes-prevention-guide.md](../../_archive/2026-08/agent-8-mistakes-prevention-guide.md) - Historical mistakes DB (1,096 lines)
+- [agent-8-multi-agent-coordination.md](../../_archive/2026-08/agent-8-multi-agent-coordination.md) - Multi-agent workflows
+- [agent-8-operations-log-spec.md](../../_archive/2026-08/agent-8-operations-log-spec.md) - Log format specification
 
 ### Tools & Scripts
-All Agent 8 scripts are in `scripts/` - see [agent-8-automation.md](agent-8-automation.md) for complete index.
+All Agent 8 scripts are in `scripts/` - see [agent-8-automation.md](../../_archive/2026-08/agent-8-automation.md) for complete index.
 
 ### Research & Analysis
 Agent 8 research documents remain in `docs/research/` for centralized research organization.

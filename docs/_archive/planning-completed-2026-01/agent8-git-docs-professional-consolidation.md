@@ -398,15 +398,15 @@ NEW: Automation Scripts → git-automation/automation-scripts.md
 mkdir -p docs/_archive/agents/agent-8-guides/
 
 .venv/bin/python scripts/safe_file_move.py \
-  docs/agents/guides/agent-8-git-ops.md \
+  docs/_archive/2026-08/agent-8-git-ops.md \
   docs/_archive/agents/agent-8-guides/agent-8-git-ops.md
 
 .venv/bin/python scripts/safe_file_move.py \
-  docs/agents/guides/agent-8-automation.md \
+  docs/_archive/2026-08/agent-8-automation.md \
   docs/_archive/agents/agent-8-guides/agent-8-automation.md
 
 .venv/bin/python scripts/safe_file_move.py \
-  docs/agents/guides/agent-8-multi-agent-coordination.md \
+  docs/_archive/2026-08/agent-8-multi-agent-coordination.md \
   docs/_archive/agents/agent-8-guides/agent-8-multi-agent-coordination.md
 
 # Keep these (still useful):

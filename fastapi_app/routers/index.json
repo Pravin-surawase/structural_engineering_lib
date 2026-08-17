@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-17",
-  "file_count": 25,
+  "file_count": 26,
   "files": [
     {
       "name": "__init__.py",
@@ -40,6 +40,26 @@
         }
       ],
       "content_hash": "d79e1982707c"
+    },
+    {
+      "name": "building_gravity.py",
+      "type": "python",
+      "size_lines": 57,
+      "last_updated": "2026-08-17",
+      "description": "Versioned REST transport for Building Gravity Workflow V1.",
+      "functions": [
+        {
+          "name": "get_building_gravity_definition_v1"
+        },
+        {
+          "name": "run_building_gravity_v1",
+          "description": "Validate one accepted model/load identity and return its review dossier.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "content_hash": "6aa896bfb52f"
     },
     {
       "name": "capabilities.py",
@@ -1068,5 +1088,5 @@
     "strap_footing",
     "streaming"
   ],
-  "content_hash": "d2170412d17bbe06"
+  "content_hash": "e01ae12b7946b0ea"
 }

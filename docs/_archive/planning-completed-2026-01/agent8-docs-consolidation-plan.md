@@ -477,11 +477,11 @@ grep -r "agent_start.sh --quick" .github/copilot-instructions.md
 - [agent-start-modes-analysis.md](../research-completed/agent-start-modes-analysis.md) - Full vs quick comparison
 
 ### Active Guides (No Changes)
-- [agent-8-automation.md](../../agents/guides/agent-8-automation.md) - Script index
-- [agent-8-git-ops.md](../../agents/guides/agent-8-git-ops.md) - Core protocol
-- [agent-8-multi-agent-coordination.md](../../agents/guides/agent-8-multi-agent-coordination.md) - Worktrees
-- [agent-8-mistakes-prevention-guide.md](../../agents/guides/agent-8-mistakes-prevention-guide.md) - Historical lessons
-- [agent-8-operations-log-spec.md](../../agents/guides/agent-8-operations-log-spec.md) - Audit format
+- [agent-8-automation.md](../2026-08/agent-8-automation.md) - Script index
+- [agent-8-git-ops.md](../2026-08/agent-8-git-ops.md) - Core protocol
+- [agent-8-multi-agent-coordination.md](../2026-08/agent-8-multi-agent-coordination.md) - Worktrees
+- [agent-8-mistakes-prevention-guide.md](../2026-08/agent-8-mistakes-prevention-guide.md) - Historical lessons
+- [agent-8-operations-log-spec.md](../2026-08/agent-8-operations-log-spec.md) - Audit format
 
 ### Governance
 - [folder-structure-governance.md](../../guidelines/folder-structure-governance.md) - Archival rules
@@ -492,11 +492,11 @@ grep -r "agent_start.sh --quick" .github/copilot-instructions.md
 ## Appendix A: Files NOT Being Changed
 
 ### Active Guides (Keep As-Is)
-- docs/agents/guides/agent-8-automation.md
-- docs/agents/guides/agent-8-git-ops.md
-- docs/agents/guides/agent-8-multi-agent-coordination.md
-- docs/agents/guides/agent-8-mistakes-prevention-guide.md
-- docs/agents/guides/agent-8-operations-log-spec.md
+- docs/_archive/2026-08/agent-8-automation.md
+- docs/_archive/2026-08/agent-8-git-ops.md
+- docs/_archive/2026-08/agent-8-multi-agent-coordination.md
+- docs/_archive/2026-08/agent-8-mistakes-prevention-guide.md
+- docs/_archive/2026-08/agent-8-operations-log-spec.md
 
 ### Session Summaries (Keep As-Is)
 - docs/agents/sessions/2026-01/agent-8-week1-completion-summary.md
@@ -509,7 +509,7 @@ grep -r "agent_start.sh --quick" .github/copilot-instructions.md
 
 ### Git Workflow (Keep As-Is)
 - docs/contributing/git-workflow-ai-agents.md (canonical, 87 lines)
-- docs/contributing/git-workflow-testing.md
+- docs/_archive/2026-08/git-workflow-testing.md
 - docs/contributing/github-workflow.md
 - docs/_internal/git-governance.md
 

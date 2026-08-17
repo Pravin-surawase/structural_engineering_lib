@@ -78,6 +78,31 @@ export function WorkbenchHomePage({
         ) : null}
 
         <WorkbenchPanel
+          title="Building gravity V1"
+          description="One-storey dead/live load path with a complete calculation book."
+        >
+          <div className="flex items-start gap-3">
+            <span className="rounded-xl bg-cyan-500/10 p-2.5 text-cyan-300">
+              <Layers3 className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm leading-6 text-zinc-400">
+                Review accepted topology, exact load reconciliation, transferred
+                actions, component PASS/FAIL/HOLD, and immutable calculation identity.
+              </p>
+              <button
+                type="button"
+                onClick={() => navigate('/workbench/building-gravity/v1')}
+                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-200"
+              >
+                Open gravity review
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+        </WorkbenchPanel>
+
+        <WorkbenchPanel
           title="Isolated footing"
           description="Centred square or rectangular footing with maintained server evidence."
         >

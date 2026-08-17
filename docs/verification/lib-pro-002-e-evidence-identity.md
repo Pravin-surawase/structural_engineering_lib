@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-08-17
+doc_type: reference
+complexity: advanced
+tags: [provenance, identity, is456, evidence]
+---
+
 # LIB-PRO-002-E evidence and source identity
 
 **State:** implementation evidence; not release authorization or professional approval

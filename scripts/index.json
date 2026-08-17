@@ -808,7 +808,7 @@
     {
       "name": "audit_readiness_report.py",
       "type": "python",
-      "size_lines": 850,
+      "size_lines": 855,
       "last_updated": "2026-08-17",
       "description": "Audit Readiness Report Generator",
       "classes": [
@@ -906,7 +906,10 @@
           "description": "Main entry point."
         }
       ],
-      "content_hash": "2c130d8d13b8"
+      "constants": [
+        "_REPO_ROOT"
+      ],
+      "content_hash": "e925aec86e17"
     },
     {
       "name": "automation-map.json",
@@ -5585,5 +5588,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "44aa0f5a2e619ae4"
+  "content_hash": "192d3525a0b415f8"
 }

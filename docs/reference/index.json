@@ -36,7 +36,7 @@
       "size_lines": 634,
       "last_updated": "2026-08-17",
       "description": "<!-- lint-ignore-git --> > ⚠️ **Note:** This document includes manual git examples only to illustrate pitfalls.",
-      "content_hash": "5f47a5126c6d"
+      "content_hash": "892b0ccbd3e6"
     },
     {
       "name": "api-classification.json",
@@ -279,5 +279,5 @@
       "file_count": 1760
     }
   ],
-  "content_hash": "2b31c0ed087a6365"
+  "content_hash": "ce6face1a63d9004"
 }

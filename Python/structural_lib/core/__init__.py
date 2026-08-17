@@ -45,6 +45,20 @@ from structural_lib.core.building_gravity import (
     canonical_load_model_hash_v1,
 )
 from structural_lib.core.geometry import LSection, RectangularSection, Section, TSection
+from structural_lib.core.gravity_workflow import (
+    ComponentApplicabilityMatrixV1,
+    GravityBeamDesignBasisV1,
+    GravityColumnDesignBasisV1,
+    GravityComponentApplicabilityV1,
+    GravityComponentKindV1,
+    GravityComponentResultV1,
+    GravityFootingDesignBasisV1,
+    GravityMemberActionV1,
+    GravityPrerequisiteDispositionV1,
+    GravitySlabDesignBasisV1,
+    GravityWorkflowRequestV1,
+    GravityWorkflowResultV1,
+)
 from structural_lib.core.materials import Concrete, MaterialFactory, Steel
 from structural_lib.core.registry import CodeRegistry
 
@@ -91,4 +105,17 @@ __all__ = [
     "SourceDispositionV1",
     "canonical_building_model_hash_v1",
     "canonical_load_model_hash_v1",
+    # Building Gravity Workflow V1 contracts
+    "ComponentApplicabilityMatrixV1",
+    "GravityBeamDesignBasisV1",
+    "GravityColumnDesignBasisV1",
+    "GravityComponentApplicabilityV1",
+    "GravityComponentKindV1",
+    "GravityComponentResultV1",
+    "GravityFootingDesignBasisV1",
+    "GravityMemberActionV1",
+    "GravityPrerequisiteDispositionV1",
+    "GravitySlabDesignBasisV1",
+    "GravityWorkflowRequestV1",
+    "GravityWorkflowResultV1",
 ]

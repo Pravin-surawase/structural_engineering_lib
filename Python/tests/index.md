@@ -71,7 +71,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_private_source_boundary.py](test_private_source_boundary.py) | Protected engineering-source material stays local and outsid | 0 | 2 | 40 |
 | [test_release_environment.py](test_release_environment.py) | Regression tests for local release preflight environment sel | 0 | 13 | 281 |
 | [test_release_scripts.py](test_release_scripts.py) | Tests for release scripts (bump_version.py, release.py). | 15 | 11 | 1052 |
-| [test_release_uat.py](test_release_uat.py) | The exact-wheel acceptance matrix remains data-driven and ex | 0 | 1 | 35 |
+| [test_release_uat.py](test_release_uat.py) | The exact-wheel acceptance matrix remains data-driven and ex | 0 | 1 | 45 |
 | [test_report_edge_cases.py](test_report_edge_cases.py) | Edge case tests for report generation modules (TASK-520). | 4 | 0 | 303 |
 | [test_report_svg.py](test_report_svg.py) | Tests for the SVG report generation module. | 4 | 0 | 141 |
 | [test_reports.py](test_reports.py) | Tests for the reports module. | 8 | 0 | 447 |
@@ -102,4 +102,4 @@ This document describes the test taxonomy and structure for the structural_engin
 | [performance/](performance/) 📦 | 3 |  |
 | [property/](property/) 📦 | 9 |  |
 | [regression/](regression/) 📦 | 11 |  |
-| [unit/](unit/) 📦 | 38 |  |
+| [unit/](unit/) 📦 | 39 |  |

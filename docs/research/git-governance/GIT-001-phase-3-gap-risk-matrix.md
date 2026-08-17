@@ -145,7 +145,7 @@ small list of live files. It does not reject these current examples:
 
 - `.github/copilot-instructions.md` and terminal instructions prescribe
   unsupported `cleanup_stale_branches.py --dry-run`;
-- `docs/contributing/git-workflow-testing.md` prescribes retired
+- `docs/_archive/2026-08/git-workflow-testing.md` prescribes retired
   `validate_git_state.sh --fix`;
 - `docs/contributing/background-agent-guide.md` permits direct commits to main;
 - an agent guide chains historical `sync-main` and `cleanup-stale-branches`

@@ -43,11 +43,11 @@ Time-bucketed session logs and summaries by month:
 ### Legacy Agent 8 material
 **Status:** Historical. Do not follow its wrapper-script commands for current work.
 
-- [Automation Index](guides/agent-8-automation.md) - Quick start + all scripts & tools
-- [Git Operations Protocol](guides/agent-8-git-ops.md) - Core mission & workflow
-- [Mistake Prevention](guides/agent-8-mistakes-prevention-guide.md) - Historical mistakes database
-- [Multi-Agent Coordination](guides/agent-8-multi-agent-coordination.md) - Work with background agents
-- [Operations Log Spec](guides/agent-8-operations-log-spec.md) - Log format specification
+- [Automation Index](../_archive/2026-08/agent-8-automation.md) - Quick start + all scripts & tools
+- [Git Operations Protocol](../_archive/2026-08/agent-8-git-ops.md) - Core mission & workflow
+- [Mistake Prevention](../_archive/2026-08/agent-8-mistakes-prevention-guide.md) - Historical mistakes database
+- [Multi-Agent Coordination](../_archive/2026-08/agent-8-multi-agent-coordination.md) - Work with background agents
+- [Operations Log Spec](../_archive/2026-08/agent-8-operations-log-spec.md) - Log format specification
 
 ### Agent 9 - Governance & Documentation Structure
 **Mission:** Maintain sustainable information architecture, govern folder structure, ensure migration safety

@@ -59,13 +59,13 @@
 **Commit:** (pending)
 
 **Steps:**
-1. [x] Create `docs/agents/guides/agent-6-quick-start.md`
+1. [x] Create `docs/_archive/2026-08/agent-6-quick-start.md`
 2. [x] Create `docs/agents/guides/agent-6-streamlit-hub.md`
 3. [x] Update `docs/agents/README.md` with Agent 6 section + registry table
 4. [x] Run link check → 0 broken
 
 **Files Created:**
-- `docs/agents/guides/agent-6-quick-start.md` (60-second onboarding)
+- `docs/_archive/2026-08/agent-6-quick-start.md` (60-second onboarding)
 - `docs/agents/guides/agent-6-streamlit-hub.md` (links to all Streamlit docs)
 
 **Validation:**
