@@ -10,7 +10,7 @@ tags: [api, reference]
 # Which API Should I Use?
 
 **Type:** Reference | **Audience:** Developers | **Status:** Active
-**Importance:** High | **Created:** 2026-04-05 | **Last Updated:** 2026-08-10
+**Importance:** High | **Created:** 2026-04-05 | **Last Updated:** 2026-08-17
 
 ---
 
@@ -27,9 +27,15 @@ import structural_lib as sl
 
 # Beam design (flexure + shear + serviceability)
 result = sl.design_beam_is456(
-    units="IS456", b_mm=300, D_mm=500, d_mm=450,
+    units="IS456", b_mm=300, D_mm=500,
+    effective_depth_basis=sl.EffectiveDepthBasisV1(
+        clear_cover_mm=40,
+        stirrup_diameter_mm=8,
+        tension_bar_diameter_mm=20,
+    ),
     fck_nmm2=25, fy_nmm2=500, mu_knm=150, vu_kn=100,
 )
+assert result.result_envelope["engineering_status"] in {"PASS", "FAIL", "HOLD"}
 
 # Complete short-column workflow, including biaxial interaction
 col = sl.design_column_is456(
@@ -50,9 +56,9 @@ full = sl.design_and_detail_beam_is456(
 )
 ```
 
-**Returns:** Beam workflows return typed result dataclasses. Use `.is_ok` for the
-aggregate beam status and `.to_dict()`, `.to_json()`, or `.summary()` for the
-supported representations. Column service functions currently return their
+**Returns:** The canonical beam task returns a typed result carrying
+`result_envelope`, `effective_depth_resolution`, and compatibility `is_ok`.
+Transport completion and engineering disposition are separate. Column service functions currently return their
 documented result type: `design_column_is456()` returns a dictionary with
 `is_safe` and `governing_check`, while `design_column_axial_is456()` returns a
 `ColumnAxialResult` with an `is_safe` field and `.to_dict()`.
@@ -95,10 +101,12 @@ curl -X POST http://localhost:8000/api/v1/design/beam \
 JSON calculation endpoints use the maintained response envelope:
 
 ```json
-{"success": true, "data": {"success": true, "flexure": {}}}
+{"success": true, "data": {"success": false, "result_envelope": {"engineering_status": "FAIL"}}}
 ```
 
-Read the calculation payload from `response.json()["data"]`. Health checks,
+The example is deliberate: a successful HTTP operation may return an engineering
+failure. Read the calculation payload from `response.json()["data"]`, then read
+`result_envelope.engineering_status`. Health checks,
 file downloads, streaming responses, and WebSockets use their endpoint-specific
 contracts.
 
@@ -115,10 +123,11 @@ contracts.
 | Get only flexure capacity | Level 2: `flexure.design_singly_reinforced()` |
 | Build a web frontend | Level 3: `POST /api/v1/design/beam` |
 | Run a full pipeline (design → detail → BBS → report) | Level 1: `design_and_detail_beam_is456()` + `compute_bbs()` |
-| Import ETABS CSV and batch-design | Level 1: `create_jobs_from_etabs_csv()` |
+| Inspect the retained ETABS CSV preview | Explicit `HOLD`; do not treat `create_jobs_from_etabs_csv()` as a canonical task API |
 | Get xu_max/d for Fe500 | Level 2: `materials.get_xu_max_d(500)` |
 
 ## See Also
 
+- [Canonical result and transport contract](canonical-result-contract.md)
 - [API Reference](api.md) — full function signatures
 - [End-to-end example](../../Python/examples/end_to_end_workflow.py) — complete workflow

@@ -9,14 +9,16 @@ from collections.abc import Mapping
 from copy import deepcopy
 from dataclasses import dataclass
 from numbers import Real
-from typing import Any
+from typing import Any, Literal
 
 from structural_lib.core.result_contract import (
     CalculationStatus,
     EngineeringStatus,
     IntakeStatus,
     OverallStatus,
+    ResultIdentityV1,
     ReviewStatus,
+    StructuralIssueV1,
     StructuralResultEnvelopeV1,
 )
 
@@ -24,6 +26,7 @@ __all__ = [
     "PROJECT_BEAM_RESULT_SCHEMA_VERSION",
     "PROJECT_BEAM_SCHEMA_VERSION",
     "EffectiveDepthBasisV1",
+    "EffectiveDepthResolutionV1",
     "ProjectBeamBatchResultV1",
     "ProjectBeamBatchSummaryV1",
     "ProjectBeamCalculationStatus",
@@ -34,6 +37,7 @@ __all__ = [
     "ProjectBeamIntakeStatus",
     "ProjectBeamMemberResultV1",
     "ProjectBeamOverallStatus",
+    "resolve_effective_depth_v1",
     "validate_project_beam_design_input_v1",
 ]
 
@@ -76,6 +80,76 @@ class EffectiveDepthBasisV1:
 
 
 @dataclass(frozen=True)
+class EffectiveDepthResolutionV1:
+    """One explicit or auditably derived effective-depth decision."""
+
+    d_mm: float
+    source: Literal["EXPLICIT", "DERIVED"]
+    D_mm: float
+    effective_depth_basis: EffectiveDepthBasisV1 | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "contract_version": "effective-depth-basis/v1",
+            "source": self.source,
+            "D_mm": self.D_mm,
+            "d_mm": self.d_mm,
+            "effective_depth_basis": (
+                self.effective_depth_basis.to_dict()
+                if self.effective_depth_basis is not None
+                else None
+            ),
+        }
+
+
+def resolve_effective_depth_v1(
+    *,
+    D_mm: float,
+    d_mm: float | None = None,
+    effective_depth_basis: EffectiveDepthBasisV1 | None = None,
+) -> EffectiveDepthResolutionV1:
+    """Resolve effective depth from exactly one complete, finite basis."""
+
+    if isinstance(D_mm, bool) or not isinstance(D_mm, Real):
+        raise ValueError("D_mm must be a finite real number.")
+    overall_depth = float(D_mm)
+    if not math.isfinite(overall_depth) or overall_depth <= 0:
+        raise ValueError("D_mm must be a finite positive value.")
+    if d_mm is not None and effective_depth_basis is not None:
+        raise ValueError("Supply d_mm or effective_depth_basis, not both.")
+    if d_mm is None and effective_depth_basis is None:
+        raise ValueError("Supply d_mm or a complete effective_depth_basis.")
+
+    if d_mm is not None:
+        if isinstance(d_mm, bool) or not isinstance(d_mm, Real):
+            raise ValueError("d_mm must be a finite real number.")
+        resolved = float(d_mm)
+        source: Literal["EXPLICIT", "DERIVED"] = "EXPLICIT"
+        basis = None
+    else:
+        assert effective_depth_basis is not None
+        for name, value in effective_depth_basis.to_dict().items():
+            if isinstance(value, bool) or not isinstance(value, Real):
+                raise ValueError(f"{name} must be a finite real number.")
+            if not math.isfinite(float(value)) or float(value) <= 0:
+                raise ValueError(f"{name} must be a finite positive value.")
+        resolved = effective_depth_basis.derive_d_mm(overall_depth)
+        source = "DERIVED"
+        basis = effective_depth_basis
+
+    if not math.isfinite(resolved) or not 0 < resolved < overall_depth:
+        raise ValueError(
+            "Effective depth must be finite, positive, and less than D_mm."
+        )
+    return EffectiveDepthResolutionV1(
+        d_mm=resolved,
+        source=source,
+        D_mm=overall_depth,
+        effective_depth_basis=basis,
+    )
+
+
+@dataclass(frozen=True)
 class ProjectBeamDesignInputV1:
     """Canonical calculation-bearing project input with explicit units."""
 
@@ -95,11 +169,11 @@ class ProjectBeamDesignInputV1:
     def resolved_d_mm(self) -> float:
         """Return the explicit or completely derived effective depth."""
 
-        if self.d_mm is not None:
-            return self.d_mm
-        if self.effective_depth_basis is None:  # pragma: no cover - validator invariant
-            raise ValueError("effective depth is unavailable")
-        return self.effective_depth_basis.derive_d_mm(self.D_mm)
+        return resolve_effective_depth_v1(
+            D_mm=self.D_mm,
+            d_mm=self.d_mm,
+            effective_depth_basis=self.effective_depth_basis,
+        ).d_mm
 
     def to_dict(self) -> dict[str, Any]:
         data: dict[str, Any] = {
@@ -173,10 +247,47 @@ class ProjectBeamMemberResultV1:
             raise ValueError("qualified structural review is always required")
 
     def to_dict(self) -> dict[str, Any]:
+        evidence = (
+            self.calculation.get("evidence")
+            if isinstance(self.calculation, Mapping)
+            else None
+        )
+        source_metadata = (
+            evidence.get("source_metadata") if isinstance(evidence, Mapping) else None
+        )
+        result_identity = (
+            ResultIdentityV1(
+                contract_version="canonical-beam-result/v1",
+                library_version=str(evidence.get("library_version", "UNKNOWN")),
+                input_hash=(
+                    str(evidence["normalized_input_hash"])
+                    if evidence.get("normalized_input_hash") is not None
+                    else None
+                ),
+                calculation_identity=(
+                    str(evidence["calculation_identity"])
+                    if evidence.get("calculation_identity") is not None
+                    else None
+                ),
+                artifact_sha256=(
+                    str(source_metadata["artifact_sha256"])
+                    if isinstance(source_metadata, Mapping)
+                    and source_metadata.get("artifact_sha256") is not None
+                    else None
+                ),
+            )
+            if isinstance(evidence, Mapping)
+            else None
+        )
         result_envelope = StructuralResultEnvelopeV1(
             intake_status=self.intake_status,
             calculation_status=self.calculation_status,
             engineering_status=self.engineering_status,
+            issues=tuple(
+                StructuralIssueV1(issue.code, issue.path, issue.message)
+                for issue in self.issues
+            ),
+            result_identity=result_identity,
         )
         return {
             "schema_version": PROJECT_BEAM_RESULT_SCHEMA_VERSION,
@@ -535,20 +646,14 @@ def validate_project_beam_design_input_v1(
             values.get("effective_depth_basis"), issues
         )
 
-    resolved_d_mm = d_mm
-    if resolved_d_mm is None and depth_basis is not None and D_mm is not None:
-        resolved_d_mm = depth_basis.derive_d_mm(D_mm)
-        if not math.isfinite(resolved_d_mm):
-            issues.append(
-                _issue(
-                    "PROJECT_BEAM_NON_FINITE",
-                    "effective_depth_basis",
-                    "Derived effective depth must be finite.",
-                )
+    if D_mm is not None and (d_mm is not None or depth_basis is not None):
+        try:
+            resolve_effective_depth_v1(
+                D_mm=D_mm,
+                d_mm=d_mm,
+                effective_depth_basis=depth_basis,
             )
-            resolved_d_mm = None
-    if resolved_d_mm is not None and D_mm is not None:
-        if not 0 < resolved_d_mm < D_mm or resolved_d_mm > 5000:
+        except ValueError:
             _range_issue(
                 issues,
                 "d_mm" if has_d else "effective_depth_basis",

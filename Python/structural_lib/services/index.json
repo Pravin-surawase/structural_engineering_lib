@@ -83,10 +83,10 @@
     {
       "name": "api.py",
       "type": "python",
-      "size_lines": 448,
+      "size_lines": 454,
       "last_updated": "2026-08-17",
       "description": "Module:       api",
-      "content_hash": "5dedcb016cbb"
+      "content_hash": "5b4fb9fa0356"
     },
     {
       "name": "api_hub.py",
@@ -163,7 +163,7 @@
     {
       "name": "audit.py",
       "type": "python",
-      "size_lines": 595,
+      "size_lines": 587,
       "last_updated": "2026-08-17",
       "description": "Module:       audit",
       "classes": [
@@ -229,12 +229,12 @@
           ]
         }
       ],
-      "content_hash": "fa0469c4fc9c"
+      "content_hash": "ad6a2d127e63"
     },
     {
       "name": "batch.py",
       "type": "python",
-      "size_lines": 624,
+      "size_lines": 626,
       "last_updated": "2026-08-17",
       "description": "Strict project beam design plus a delegating legacy batch surface.",
       "functions": [
@@ -278,7 +278,7 @@
         "_LEGACY_DIRECT_FIELDS",
         "_LEGACY_KNOWN_FIELDS"
       ],
-      "content_hash": "3751aca23739"
+      "content_hash": "e8e778b1aad8"
     },
     {
       "name": "bbs.py",
@@ -472,7 +472,7 @@
     {
       "name": "beam_api.py",
       "type": "python",
-      "size_lines": 2297,
+      "size_lines": 2367,
       "last_updated": "2026-08-17",
       "description": "Module:       beam_api",
       "functions": [
@@ -643,12 +643,12 @@
       "constants": [
         "_T"
       ],
-      "content_hash": "3119ed270e6a"
+      "content_hash": "a493b5d38320"
     },
     {
       "name": "beam_pipeline.py",
       "type": "python",
-      "size_lines": 636,
+      "size_lines": 660,
       "last_updated": "2026-08-17",
       "description": "beam_pipeline — Unified application-layer pipeline for beam design.",
       "classes": [
@@ -721,7 +721,7 @@
         "IS456_UNITS",
         "_VALID_UNIT_NORMALIZED"
       ],
-      "content_hash": "dd9d316df7f8"
+      "content_hash": "f48de2eb382f"
     },
     {
       "name": "boq.py",
@@ -813,7 +813,7 @@
     {
       "name": "capabilities.py",
       "type": "python",
-      "size_lines": 1934,
+      "size_lines": 1977,
       "last_updated": "2026-08-17",
       "description": "Discoverable supported-case registry for the IS 456 public library.",
       "classes": [
@@ -872,12 +872,12 @@
         "_REPORT_IS_SAFE_ALIAS",
         "_SLAB_REVIEW_ALIAS"
       ],
-      "content_hash": "de07530b279f"
+      "content_hash": "6f2ea439ec04"
     },
     {
       "name": "cli_design.py",
       "type": "python",
-      "size_lines": 623,
+      "size_lines": 628,
       "last_updated": "2026-08-17",
       "description": "Strict, lossless intake and compatibility output for the advertised design CLI.",
       "classes": [
@@ -922,7 +922,7 @@
         "_REQUIRED_FIELDS",
         "_NUMERIC_FIELDS"
       ],
-      "content_hash": "5fc2033e3d8c"
+      "content_hash": "510972b8b0ed"
     },
     {
       "name": "column_api.py",
@@ -1128,13 +1128,13 @@
     {
       "name": "common_api.py",
       "type": "python",
-      "size_lines": 721,
+      "size_lines": 709,
       "last_updated": "2026-08-17",
       "description": "Module:       common_api",
       "functions": [
         {
           "name": "get_library_version",
-          "description": "Return the installed package version."
+          "description": "Return the version authoritative for the code imported at runtime."
         },
         {
           "name": "validate_job_spec",
@@ -1166,7 +1166,7 @@
         "_EXEMPT_PARAMS",
         "_DIMENSIONAL_STEMS"
       ],
-      "content_hash": "16fafd8be51d"
+      "content_hash": "1f09421a1f94"
     },
     {
       "name": "costing.py",
@@ -1692,7 +1692,7 @@
     {
       "name": "evidence.py",
       "type": "python",
-      "size_lines": 308,
+      "size_lines": 386,
       "last_updated": "2026-08-17",
       "description": "Canonical evidence identity for the supported IS 456 beam design route.",
       "functions": [
@@ -1708,6 +1708,10 @@
           "description": "Hash installed package code/data so evidence binds the executing library."
         },
         {
+          "name": "build_beam_result_envelope",
+          "description": "Build the one canonical status/identity carrier for the beam route."
+        },
+        {
           "name": "build_beam_evidence_envelope",
           "description": "Build the serializable evidence envelope for one beam design result."
         }
@@ -1716,11 +1720,12 @@
         "BEAM_EVIDENCE_ARTIFACT_SCHEMA",
         "BEAM_EVIDENCE_SCHEMA_VERSION",
         "BEAM_CAPABILITY_ID",
+        "BEAM_RESULT_CONTRACT_VERSION",
         "QUALIFIED_REVIEW_REQUIREMENT",
         "_REQUIRED_CONSUMED_INPUTS",
         "_SUPPORT_ALIASES"
       ],
-      "content_hash": "f160209ecb68"
+      "content_hash": "3d703fe4959e"
     },
     {
       "name": "excel_bridge.py",
@@ -2252,7 +2257,7 @@
     {
       "name": "project_beam.py",
       "type": "python",
-      "size_lines": 605,
+      "size_lines": 710,
       "last_updated": "2026-08-17",
       "description": "Versioned, fail-closed project beam input and result contracts.",
       "classes": [
@@ -2261,6 +2266,13 @@
           "description": "Complete, auditable basis for deriving beam effective depth.",
           "public_methods": [
             "derive_d_mm",
+            "to_dict"
+          ]
+        },
+        {
+          "name": "EffectiveDepthResolutionV1",
+          "description": "One explicit or auditably derived effective-depth decision.",
+          "public_methods": [
             "to_dict"
           ]
         },
@@ -2310,6 +2322,10 @@
       ],
       "functions": [
         {
+          "name": "resolve_effective_depth_v1",
+          "description": "Resolve effective depth from exactly one complete, finite basis."
+        },
+        {
           "name": "validate_project_beam_design_input_v1",
           "description": "Validate one canonical project member without coercion or defaults.",
           "params": [
@@ -2325,7 +2341,7 @@
         "_REQUIRED_FIELDS",
         "_DEPTH_BASIS_FIELDS"
       ],
-      "content_hash": "37b81b9919c0"
+      "content_hash": "bf628a383336"
     },
     {
       "name": "rebar.py",
@@ -2555,10 +2571,17 @@
     {
       "name": "serialization.py",
       "type": "python",
-      "size_lines": 449,
+      "size_lines": 476,
       "last_updated": "2026-08-17",
       "description": "JSON serialization utilities for canonical data models.",
       "functions": [
+        {
+          "name": "to_transport_value",
+          "description": "Normalize one value to the canonical JSON transport representation.",
+          "params": [
+            "value"
+          ]
+        },
         {
           "name": "save_geometry",
           "description": "Save beam geometry to JSON file.",
@@ -2651,7 +2674,7 @@
       "constants": [
         "T"
       ],
-      "content_hash": "b4c2f663abd6"
+      "content_hash": "6047fa61e555"
     },
     {
       "name": "slab_api.py",
@@ -2929,7 +2952,7 @@
     {
       "name": "tool_manifest.py",
       "type": "python",
-      "size_lines": 162,
+      "size_lines": 163,
       "last_updated": "2026-08-17",
       "description": "Deterministic AI-tool descriptors projected from the workflow catalogue.",
       "classes": [
@@ -2967,7 +2990,7 @@
         "MANIFEST_VERSION",
         "_TOOL_NAME_PATTERN"
       ],
-      "content_hash": "ca33bca03feb"
+      "content_hash": "c9323c6ec676"
     },
     {
       "name": "wall_api.py",
@@ -3007,7 +3030,7 @@
     {
       "name": "workflow_catalog.py",
       "type": "python",
-      "size_lines": 377,
+      "size_lines": 445,
       "last_updated": "2026-08-17",
       "description": "Versioned, transport-neutral catalogue for approved application workflows.",
       "classes": [
@@ -3057,6 +3080,13 @@
           "description": "Return the validated immutable application catalogue."
         },
         {
+          "name": "get_workflow_input_defaults",
+          "description": "Return UI defaults only for optional calculation fields.",
+          "params": [
+            "capability"
+          ]
+        },
+        {
           "name": "get_workflow_catalog_document",
           "description": "Return the deterministic JSON-native catalogue for a compatible version.",
           "params": [
@@ -3088,12 +3118,12 @@
         "_BEAM_FIELDS",
         "_CATALOG"
       ],
-      "content_hash": "34117c197d79"
+      "content_hash": "617b15e64e60"
     },
     {
       "name": "workflow_runner.py",
       "type": "python",
-      "size_lines": 486,
+      "size_lines": 568,
       "last_updated": "2026-08-17",
       "description": "Bounded in-memory runner for one approved beam review workflow.",
       "classes": [
@@ -3151,7 +3181,7 @@
         "MAX_CACHED_RUNS",
         "_RUN_ID_PATTERN"
       ],
-      "content_hash": "5f1e313d2eed"
+      "content_hash": "0ed799dee1b3"
     }
   ],
   "subfolders": [],
@@ -3168,5 +3198,5 @@
     "PropertyLineStrapFootingDesignStatus",
     "design_property_line_strap_footing_is456"
   ],
-  "content_hash": "055c4f5fc19673a5"
+  "content_hash": "137d8f289cca97e2"
 }

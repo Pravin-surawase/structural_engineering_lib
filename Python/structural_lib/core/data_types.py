@@ -775,6 +775,8 @@ class ComplianceCaseResult:
     Me_knm: float | None = None
     Ve_kn: float | None = None
     torsion: TorsionResult | None = None
+    effective_depth_resolution: dict[str, Any] | None = None
+    result_envelope: dict[str, Any] | None = None
 
     @property
     def mu_knm(self) -> float:

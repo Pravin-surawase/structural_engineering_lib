@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "> Development, validation, discovery, release-preparation, and maintenance tools.",
   "last_updated": "2026-08-17",
-  "file_count": 112,
+  "file_count": 113,
   "files": [
     {
       "name": "README.md",
@@ -808,7 +808,7 @@
     {
       "name": "audit_readiness_report.py",
       "type": "python",
-      "size_lines": 783,
+      "size_lines": 850,
       "last_updated": "2026-08-17",
       "description": "Audit Readiness Report Generator",
       "classes": [
@@ -848,6 +848,13 @@
         {
           "name": "collect_static_analysis_evidence",
           "description": "Collect static analysis evidence.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "collect_contract_truth_evidence",
+          "description": "Include semantic controls that previously sat outside readiness truth.",
           "params": [
             "report"
           ]
@@ -899,7 +906,7 @@
           "description": "Main entry point."
         }
       ],
-      "content_hash": "51667640e375"
+      "content_hash": "2c130d8d13b8"
     },
     {
       "name": "automation-map.json",
@@ -912,7 +919,7 @@
         "_coverage",
         "tasks"
       ],
-      "content_hash": "db22f9fb350d"
+      "content_hash": "9929026159d6"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -3091,7 +3098,7 @@
     {
       "name": "generate_api_classification.py",
       "type": "python",
-      "size_lines": 152,
+      "size_lines": 314,
       "last_updated": "2026-08-17",
       "description": "Generate or validate the Alpha public API classification registry.",
       "functions": [
@@ -3104,9 +3111,13 @@
       ],
       "constants": [
         "DEFAULT_OUT",
-        "SURFACE_POLICY"
+        "SURFACE_POLICY",
+        "_ADVANCED_MODULE_PREFIXES",
+        "_HOLD_MODULE_PREFIXES",
+        "_CANONICAL_TASK_EXPORTS",
+        "_CANONICAL_SUPPORT_EXPORTS"
       ],
-      "content_hash": "5d48bbf7da72"
+      "content_hash": "45d1bdf284c9"
     },
     {
       "name": "generate_api_manifest.py",
@@ -3161,7 +3172,7 @@
     {
       "name": "generate_client_sdks.py",
       "type": "python",
-      "size_lines": 560,
+      "size_lines": 624,
       "last_updated": "2026-08-17",
       "description": "Generate client SDKs from FastAPI OpenAPI specification.",
       "functions": [
@@ -3209,7 +3220,7 @@
         "OPENAPI_SPEC",
         "OUTPUT_DIR"
       ],
-      "content_hash": "b4f568c13228"
+      "content_hash": "2d5587dce12b"
     },
     {
       "name": "generate_docs_index.py",
@@ -4814,7 +4825,7 @@
     {
       "name": "test_api_parity.py",
       "type": "python",
-      "size_lines": 457,
+      "size_lines": 459,
       "last_updated": "2026-08-17",
       "description": "API Parity Testing Script",
       "classes": [
@@ -4829,8 +4840,8 @@
       ],
       "functions": [
         {
-          "name": "load_api",
-          "description": "Load the structural_lib.api module."
+          "name": "load_apis",
+          "description": "Load the service authority, root facade, and compatibility facade."
         },
         {
           "name": "compare_values",
@@ -4843,7 +4854,7 @@
         },
         {
           "name": "result_to_dict",
-          "description": "Convert a result object to a dictionary, handling nested dataclasses.",
+          "description": "Convert a result through the maintained transport normalizer.",
           "params": [
             "result"
           ]
@@ -4861,7 +4872,7 @@
           "name": "run_parity_test",
           "description": "Run a single parity test.",
           "params": [
-            "api",
+            "apis",
             "test_case"
           ]
         },
@@ -4869,7 +4880,7 @@
           "name": "run_all_tests",
           "description": "Run all parity tests.",
           "params": [
-            "api",
+            "apis",
             "test_cases",
             "verbose"
           ]
@@ -4900,7 +4911,7 @@
         "TEST_CASES_PATH",
         "STANDARD_TEST_CASES"
       ],
-      "content_hash": "df3407456994"
+      "content_hash": "9a554db0c632"
     },
     {
       "name": "test_changed.py",
@@ -5533,6 +5544,31 @@
       "content_hash": "37d7df67276e"
     },
     {
+      "name": "verify_canonical_transport_artifact.py",
+      "type": "python",
+      "size_lines": 280,
+      "last_updated": "2026-08-17",
+      "description": "Verify A1's source-free wheel and exact-head application import boundary.",
+      "functions": [
+        {
+          "name": "verify",
+          "description": "Return a machine-readable receipt for one exact wheel.",
+          "params": [
+            "wheel"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "_PYTHON_PROBE",
+        "_FASTAPI_PROBE"
+      ],
+      "content_hash": "a78f2ba3f821"
+    },
+    {
       "name": "watch_tests.sh",
       "type": "shell-script",
       "size_lines": 102,
@@ -5549,5 +5585,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "cc526c1c8b4f0e18"
+  "content_hash": "a103e64ee877af48"
 }

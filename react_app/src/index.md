@@ -30,7 +30,7 @@
 | [app/](app/) | 6 |  |
 | [assets/](assets/) | 1 |  |
 | [components/](components/) | 76 |  |
-| [features/](features/) | 40 |  |
+| [features/](features/) | 41 |  |
 | [hooks/](hooks/) | 25 |  |
 | [lib/](lib/) | 1 |  |
 | [store/](store/) | 6 |  |

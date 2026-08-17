@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-10
+last_updated: 2026-08-17
 doc_type: reference
 complexity: intermediate
 tags: [fastapi, rest, openapi, is456]
@@ -14,15 +14,15 @@ tags: [fastapi, rest, openapi, is456]
 **Status:** Active
 **Importance:** High
 **Created:** 2026-01-24
-**Last Updated:** 2026-08-10
+**Last Updated:** 2026-08-17
 
 ---
 
 ## Overview
 
 The FastAPI application exposes the maintained Python calculation services to
-the React workbench and external clients. The current v0.23.0 application has 63
-HTTP operations plus streaming and WebSocket workflows.
+the React workbench and external clients. The current v0.23.1a2 exact-head
+application surface is recorded by its generated OpenAPI document.
 
 | Environment | Base URL |
 |---|---|
@@ -66,14 +66,15 @@ Maintained JSON calculation endpoints return a common outer envelope:
 ```json
 {
   "success": true,
-  "data": {},
-  "error": null
+  "data": {}
 }
 ```
 
-The runtime may omit optional `error` or `clause_refs` keys when they are not
-needed. Read calculation fields from `data`; an inner calculation model may also
-have its own `success`, `is_safe`, or `is_adequate` field.
+`success: true` means only that the HTTP operation returned its declared payload.
+It is not an engineering PASS. Read calculation fields from `data`, and read the
+canonical disposition from `data.result_envelope.engineering_status` whenever a
+calculation-bearing response exposes it. Compatibility booleans such as
+`data.success`, `is_safe`, or `is_adequate` do not replace that envelope.
 
 Validation failures use the same boundary:
 
@@ -82,12 +83,16 @@ Validation failures use the same boundary:
   "success": false,
   "data": null,
   "error": {
+    "schema_version": "structural-problem/v1",
     "code": "REQUEST_VALIDATION_ERROR",
     "message": "Request validation failed",
     "details": []
   }
 }
 ```
+
+The same `ProblemResponse` is declared for every maintained JSON 400, 401, 403,
+404, 409, 422, 429, 500, and 503 response.
 
 Health checks, file downloads, server-sent events, and WebSockets use their
 endpoint-specific response contracts rather than the JSON calculation envelope.
@@ -99,7 +104,7 @@ endpoint-specific response contracts rather than the JSON calculation envelope.
 ```json
 {
   "status": "healthy",
-  "version": "0.23.0",
+  "version": "0.23.1a2",
   "timestamp": "<ISO-8601 timestamp>",
   "uptime_seconds": 0.0
 }
@@ -121,7 +126,7 @@ endpoint-specific response contracts rather than the JSON calculation envelope.
 
 ```json
 {
-  "api_version": "0.23.0",
+  "api_version": "0.23.1a2",
   "python_version": "<runtime version>",
   "platform": "<runtime platform>",
   "structural_lib_available": true
@@ -174,6 +179,28 @@ not frozen in the guide; calculation regression evidence owns exact values.
     "asc_total": 0.0,
     "utilization_ratio": 0.0,
     "effective_depth_used": 0.0,
+    "effective_depth_basis": {
+      "contract_version": "effective-depth-basis/v1",
+      "source": "DERIVED",
+      "D_mm": 500.0,
+      "d_mm": 457.0,
+      "effective_depth_basis": {
+        "clear_cover_mm": 25.0,
+        "stirrup_diameter_mm": 8.0,
+        "tension_bar_diameter_mm": 20.0
+      }
+    },
+    "result_envelope": {
+      "schema_version": "structural-result-envelope/v2",
+      "intake_status": "VALID",
+      "calculation_status": "COMPLETED",
+      "engineering_status": "PASS",
+      "review_status": "QUALIFIED_REVIEW_REQUIRED",
+      "qualified_review_required": true,
+      "freshness_status": "CURRENT",
+      "overall_status": "PASS",
+      "issues": []
+    },
     "warnings": []
   }
 }
@@ -200,6 +227,7 @@ response = httpx.post(
 response.raise_for_status()
 payload = response.json()
 design = payload["data"]
+assert design["result_envelope"]["engineering_status"] in {"PASS", "FAIL", "HOLD"}
 print(f"Ast required: {design['flexure']['ast_required']:.1f} mm²")
 ```
 
@@ -232,7 +260,7 @@ names because unit conversion occurs at the service boundary.
 ## Client generation status
 
 Raw HTTP plus the live OpenAPI document is the supported integration path for
-v0.23.0 Alpha. Every maintained JSON 2xx operation now declares a response
+v0.23.1a2 Alpha. Every maintained JSON 2xx operation now declares a response
 schema; binary downloads and SSE routes declare their non-JSON response class.
 The development clients under `clients/` have been regenerated from this
 snapshot and correctly unwrap `{success, data}`. They remain unpublished Alpha
@@ -255,6 +283,7 @@ Regenerate after an intentional OpenAPI change with:
 
 ## Related documents
 
+- [Canonical result and transport contract](canonical-result-contract.md)
 - [Which API should I use?](api-levels.md)
 - [Python API reference](api.md)
 - [FastAPI deployment guide](../guides/fastapi-deployment-guide.md)

@@ -18,6 +18,25 @@ function result(utilization: number, status: 'PASS' | 'FAIL' | 'HOLD'): BeamDesi
     ast_total: 500,
     asc_total: 0,
     utilization_ratio: utilization,
+    result_envelope: {
+      schema_version: 'structural-result-envelope/v2',
+      intake_status: 'VALID',
+      calculation_status: 'COMPLETED',
+      engineering_status: status,
+      review_status: 'QUALIFIED_REVIEW_REQUIRED',
+      qualified_review_required: true,
+      freshness_status: 'CURRENT',
+      serviceability_escalation: null,
+      overall_status: status,
+      issues: status === 'PASS' ? [] : [{ code: `BEAM_${status}`, path: '$.calculation', message: status }],
+      result_identity: {
+        contract_version: 'canonical-beam-result/v1',
+        library_version: '0.23.0',
+        input_hash: 'input-hash',
+        calculation_identity: 'calculation-id',
+        artifact_sha256: null,
+      },
+    },
     evidence: {
       artifact_schema: 'structural_lib.beam-evidence',
       artifact_schema_version: '2.0',
@@ -78,6 +97,17 @@ describe('trust presentation', () => {
   it('fails closed when evidence contradicts the combined primary result', () => {
     const contradictory = result(0.5, 'PASS');
     contradictory.success = false;
+    expect(getTrustPresentation(contradictory).status).toBe('HOLD');
+  });
+
+  it('fails closed when freshness or aggregate status is not a current outcome', () => {
+    const stale = result(0.5, 'PASS');
+    stale.result_envelope.freshness_status = 'STALE';
+    stale.result_envelope.overall_status = 'STALE';
+    expect(getTrustPresentation(stale).status).toBe('HOLD');
+
+    const contradictory = result(0.5, 'PASS');
+    contradictory.result_envelope.overall_status = 'FAIL';
     expect(getTrustPresentation(contradictory).status).toBe('HOLD');
   });
 });

@@ -41,6 +41,10 @@ describe('normalizeWebSocketDesignResult', () => {
     expect(result.shear?.shear_capacity).toBe(92);
     expect(result.shear?.asv_required_unit).toBe('mm²/mm');
     expect(result.holds).toContain('WEBSOCKET_EVIDENCE_IDENTITY_MISSING');
+    expect(result.result_envelope.engineering_status).toBe('HOLD');
+    expect(result.result_envelope.issues[0].code).toBe(
+      'WEBSOCKET_CANONICAL_ENVELOPE_MISSING',
+    );
   });
 
   it('continues to read legacy WebSocket field names', () => {

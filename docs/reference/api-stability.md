@@ -43,6 +43,21 @@ The four classifications mean:
 | `compatibility` | Retained migration facade; new callers should use the recommended facade. |
 | `internal` | No public compatibility promise. |
 
+Each tracked symbol also has one claim disposition:
+
+| Disposition | Meaning |
+|---|---|
+| `canonical` | Small capability-bound task API; currently the reference beam journey |
+| `advanced` | Maintained specialist/capability tool outside the small task API |
+| `compatibility` | Retained public migration surface without a canonical-task claim |
+| `hold` | Callable preview whose broader advertised use is blocked by a named gate |
+| `internal` | Undeclared implementation detail |
+
+Artifact claims are separate. The wheel ships the `structural_lib` Python API and
+CLI. `fastapi_app` and `react_app` are exact-head application surfaces and are not
+inside the wheel. The checked-in development clients under `clients/` are also
+repository artifacts, not wheel contents.
+
 CI regenerates the registry from the installed candidate and fails when a
 declared export, public-looking callable, facade classification, or package
 version changes without an intentional registry update.

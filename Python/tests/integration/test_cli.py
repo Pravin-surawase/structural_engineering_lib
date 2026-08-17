@@ -453,7 +453,7 @@ def test_design_non_finite_json_blocks_before_calculation(
 def test_design_duplicate_json_key_is_rejected(tmp_path, capsys):
     input_path = tmp_path / "duplicate-key.json"
     input_path.write_text(
-        '{"schema_version":"cli-beam-design-input/v1","beams":[],' '"beams":[]}',
+        '{"schema_version":"cli-beam-design-input/v1","beams":[],"beams":[]}',
         encoding="utf-8",
     )
 
@@ -512,6 +512,45 @@ def test_design_complete_depth_basis_derives_effective_depth(tmp_path):
     assert rc == 0
     payload = json.loads(output_path.read_text(encoding="utf-8"))
     assert payload["beams"][0]["geometry"]["d_mm"] == 442.0
+
+
+def test_design_depth_boundary_keeps_canonical_engineering_failure(tmp_path):
+    input_path = tmp_path / "depth-boundary.json"
+    output_path = tmp_path / "result.json"
+    input_path.write_text(
+        json.dumps(
+            {
+                "schema_version": "cli-beam-design-input/v1",
+                "beams": [
+                    {
+                        "member_id": "B-BOUNDARY",
+                        "story": "L1",
+                        "b_mm": 300.0,
+                        "D_mm": 500.0,
+                        "span_mm": 5000.0,
+                        "clear_cover_mm": 40.0,
+                        "stirrup_diameter_mm": 8.0,
+                        "stirrup_spacing_mm": 150.0,
+                        "tension_bar_diameter_mm": 18.0,
+                        "mu_knm": 150.0,
+                        "vu_kn": 420.0,
+                        "fck_nmm2": 25.0,
+                        "fy_nmm2": 500.0,
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    rc = cli_main.main(["design", str(input_path), "-o", str(output_path)])
+
+    assert rc == 0
+    beam = json.loads(output_path.read_text(encoding="utf-8"))["beams"][0]
+    assert beam["geometry"]["d_mm"] == 443.0
+    assert beam["effective_depth_resolution"]["source"] == "DERIVED"
+    assert beam["result_envelope"]["engineering_status"] == "FAIL"
+    assert beam["result_envelope"]["overall_status"] == "FAIL"
 
 
 def test_design_with_deflection(sample_csv_file, tmp_path):

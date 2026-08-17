@@ -69,3 +69,38 @@ def test_typed_import_format_metadata_does_not_add_null_fields(client):
     formats = response.json()["data"]["formats"]
     assert "example" not in formats[0]
     assert "example" in formats[-1]
+
+
+def test_every_json_operation_declares_the_canonical_problem_contract(client):
+    schema = client.get("/openapi.json").json()
+    expected = {"$ref": "#/components/schemas/ProblemResponse"}
+    error_codes = {"400", "401", "403", "404", "409", "422", "429", "500", "503"}
+
+    for path_item in schema["paths"].values():
+        for method, operation in path_item.items():
+            if method not in {"get", "post", "put", "patch", "delete"}:
+                continue
+            assert error_codes.issubset(operation["responses"])
+            for code in error_codes:
+                assert (
+                    operation["responses"][code]["content"]["application/json"][
+                        "schema"
+                    ]
+                    == expected
+                )
+
+
+def test_framework_404_uses_the_canonical_problem_contract(client):
+    response = client.get("/definitely-not-a-maintained-route")
+
+    assert response.status_code == 404
+    assert response.json() == {
+        "success": False,
+        "data": None,
+        "error": {
+            "schema_version": "structural-problem/v1",
+            "code": "HTTP_404",
+            "message": "Not Found",
+            "request_id": response.json()["error"]["request_id"],
+        },
+    }

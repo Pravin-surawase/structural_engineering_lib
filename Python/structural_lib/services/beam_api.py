@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Sequence
+from dataclasses import asdict, is_dataclass
 from pathlib import Path
 from typing import Any, TypeVar
 
@@ -32,6 +33,10 @@ from structural_lib.services.common_api import (
     _require_finite_real,
     _require_is456_units,
     _validate_plausibility,
+)
+from structural_lib.services.project_beam import (
+    EffectiveDepthBasisV1,
+    resolve_effective_depth_v1,
 )
 
 from .api_results import (
@@ -1086,10 +1091,10 @@ def design_beam_is456(
     vu_kn: float,
     b_mm: float,
     D_mm: float,
-    d_mm: float,
+    d_mm: float | None,
     fck_nmm2: float,
     fy_nmm2: float,
-    d_dash_mm: float = 50.0,
+    d_dash_mm: float | None = None,
     asv_mm2: float = 100.0,
     pt_percent: float | None = None,
     ast_mm2_for_shear: float | None = None,
@@ -1098,6 +1103,7 @@ def design_beam_is456(
     tu_knm: float = 0.0,
     cover_mm: float | None = None,
     stirrup_dia_mm: float = 8.0,
+    effective_depth_basis: EffectiveDepthBasisV1 | None = None,
 ) -> ComplianceCaseResult:
     """Design/check a single IS 456 beam case (strength + optional serviceability).
 
@@ -1110,10 +1116,13 @@ def design_beam_is456(
         vu_kn: Factored shear (kN).
         b_mm: Beam width (mm).
         D_mm: Overall depth (mm).
-        d_mm: Effective depth (mm).
+        d_mm: Explicit effective depth (mm), mutually exclusive with
+            ``effective_depth_basis``.
         fck_nmm2: Concrete strength (N/mm²).
         fy_nmm2: Steel yield strength (N/mm²).
-        d_dash_mm: Compression steel depth from top (mm).
+        d_dash_mm: Compression steel depth from top (mm). When omitted it is
+            derived from the complete effective-depth basis, or retains the
+            historical 50 mm default for an explicit ``d_mm``.
         asv_mm2: Area of stirrup legs (mm²).
         pt_percent: Percentage steel for shear table lookup (optional).
         ast_mm2_for_shear: Use this Ast for shear table lookup (optional).
@@ -1123,6 +1132,8 @@ def design_beam_is456(
             flexure/shear-only route.
         cover_mm: Clear cover (mm), required when ``tu_knm > 0``.
         stirrup_dia_mm: Closed-stirrup diameter (mm) used for torsion design.
+        effective_depth_basis: Complete cover/stirrup/tension-bar basis used to
+            derive ``d_mm`` without transport-specific arithmetic.
 
     Returns:
         ComplianceCaseResult with flexure, shear, and optional serviceability checks.
@@ -1152,6 +1163,14 @@ def design_beam_is456(
     """
 
     _require_is456_units(units)
+    depth_resolution = resolve_effective_depth_v1(
+        D_mm=D_mm,
+        d_mm=d_mm,
+        effective_depth_basis=effective_depth_basis,
+    )
+    d_mm = depth_resolution.d_mm
+    if d_dash_mm is None:
+        d_dash_mm = D_mm - d_mm if effective_depth_basis is not None else 50.0
 
     for name, value in (
         ("mu_knm", mu_knm),
@@ -1214,7 +1233,7 @@ def design_beam_is456(
         ast_mm2_for_shear=ast_mm2_for_shear,
     )
 
-    return compliance.check_compliance_case(
+    result = compliance.check_compliance_case(
         case_id=case_id,
         mu_knm=mu_knm,
         vu_kn=vu_kn,
@@ -1233,6 +1252,57 @@ def design_beam_is456(
         cover_mm=cover_mm,
         stirrup_dia_mm=stirrup_dia_mm,
     )
+    result.effective_depth_resolution = depth_resolution.to_dict()
+    from structural_lib.services.evidence import (
+        build_beam_evidence_envelope,
+        build_beam_result_envelope,
+    )
+
+    def _parameter_mapping(value: object | None) -> dict[str, Any] | None:
+        if value is None:
+            return None
+        if is_dataclass(value) and not isinstance(value, type):
+            return asdict(value)
+        model_dump = getattr(value, "model_dump", None)
+        if callable(model_dump):
+            return dict(model_dump(exclude_none=True))
+        if isinstance(value, dict):
+            return dict(value)
+        raise TypeError("Serviceability parameters must expose a mapping contract.")
+
+    evidence = build_beam_evidence_envelope(
+        inputs={
+            "units": units,
+            "case_id": case_id,
+            "mu_knm": mu_knm,
+            "vu_kn": vu_kn,
+            "b_mm": b_mm,
+            "D_mm": D_mm,
+            "d_mm": d_mm,
+            "fck_nmm2": fck_nmm2,
+            "fy_nmm2": fy_nmm2,
+            "d_dash_mm": d_dash_mm,
+            "asv_mm2": asv_mm2,
+            "pt_percent": pt_percent,
+            "ast_mm2_for_shear": ast_mm2_for_shear,
+            "tu_knm": tu_knm,
+            "cover_mm": cover_mm,
+            "stirrup_dia_mm": stirrup_dia_mm,
+            "include_serviceability": (
+                deflection_params is not None or crack_width_params is not None
+            ),
+            "deflection_params": _parameter_mapping(deflection_params),
+            "crack_width_params": _parameter_mapping(crack_width_params),
+        },
+        is_ok=result.is_ok,
+        governing_utilization=result.governing_utilization,
+        utilizations=result.utilizations,
+    )
+    result.result_envelope = build_beam_result_envelope(
+        is_ok=result.is_ok,
+        evidence=evidence,
+    ).to_dict()
+    return result
 
 
 def design_flanged_beam_is456(

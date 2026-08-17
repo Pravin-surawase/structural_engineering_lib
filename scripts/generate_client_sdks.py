@@ -123,7 +123,7 @@ Provides type-safe access to the FastAPI structural design API.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
+from typing import Any, Optional
 
 import httpx
 
@@ -159,10 +159,12 @@ class BeamDesignResponse:
     success: bool
     message: str
     flexure: FlexureResult
+    result_envelope: dict[str, Any]
     shear: Optional[ShearResult] = None
     ast_total: float = 0.0
     asc_total: float = 0.0
     utilization_ratio: float = 0.0
+    effective_depth_basis: dict[str, Any] | None = None
     warnings: list[str] | None = None
 
 
@@ -200,6 +202,10 @@ class StructuralDesignClient:
         fck: float,
         fy: float,
         shear: Optional[float] = None,
+        clear_cover: float = 25.0,
+        stirrup_dia_mm: float = 8.0,
+        main_bar_dia_mm: float = 20.0,
+        effective_depth: float | None = None,
     ) -> BeamDesignResponse:
         """
         Design a reinforced concrete beam.
@@ -211,6 +217,10 @@ class StructuralDesignClient:
             fck: Concrete strength in MPa
             fy: Steel yield strength in MPa
             shear: Design shear in kN (optional)
+            clear_cover: Clear cover in mm for derived effective depth
+            stirrup_dia_mm: Stirrup diameter in mm for derived effective depth
+            main_bar_dia_mm: Tension bar diameter in mm for derived effective depth
+            effective_depth: Explicit effective depth in mm; omit to derive it
 
         Returns:
             BeamDesignResponse with flexure and shear calculations
@@ -221,12 +231,23 @@ class StructuralDesignClient:
             "moment": moment,
             "fck": fck,
             "fy": fy,
+            "clear_cover": clear_cover,
+            "stirrup_dia_mm": stirrup_dia_mm,
+            "main_bar_dia_mm": main_bar_dia_mm,
         }
         if shear is not None:
             payload["shear"] = shear
+        if effective_depth is not None:
+            payload["effective_depth"] = effective_depth
 
         response = self._client.post("/api/v1/design/beam", json=payload)
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except httpx.HTTPStatusError as exc:
+            problem = response.json().get("error", {})
+            code = problem.get("code", response.status_code)
+            message = problem.get("message", "Request failed")
+            raise RuntimeError(f"Design failed: {code}: {message}") from exc
         envelope = response.json()
         if envelope.get("success") is not True:
             raise RuntimeError(f"Design failed: {envelope.get('error', 'unknown error')}")
@@ -250,6 +271,7 @@ class StructuralDesignClient:
         return BeamDesignResponse(
             success=data["success"],
             message=data["message"],
+            result_envelope=data["result_envelope"],
             flexure=FlexureResult(
                 ast_required=data["flexure"]["ast_required"],
                 ast_min=data["flexure"]["ast_min"],
@@ -264,6 +286,7 @@ class StructuralDesignClient:
             ast_total=data["ast_total"],
             asc_total=data.get("asc_total", 0.0),
             utilization_ratio=data["utilization_ratio"],
+            effective_depth_basis=data.get("effective_depth_basis"),
             warnings=data.get("warnings"),
         )
 
@@ -288,7 +311,13 @@ class StructuralDesignClient:
             "/api/v1/geometry/beam/3d",
             json={"width": width, "depth": depth, "length": length},
         )
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except httpx.HTTPStatusError as exc:
+            problem = response.json().get("error", {})
+            code = problem.get("code", response.status_code)
+            message = problem.get("message", "Request failed")
+            raise RuntimeError(f"Geometry generation failed: {code}: {message}") from exc
         envelope = response.json()
         if envelope.get("success") is not True:
             raise RuntimeError(
@@ -369,13 +398,28 @@ export interface BeamDesignRequest {
   shear?: number;
   fck: number;
   fy: number;
+  clear_cover?: number;
+  stirrup_dia_mm?: number;
+  main_bar_dia_mm?: number;
+  effective_depth?: number;
 }
 
 export interface APIResponse<T> {
-  success: boolean;
+  success: true;
   data: T;
-  error?: string | Record<string, unknown>;
   clause_refs?: Record<string, string>;
+}
+
+export interface ProblemResponse {
+  success: false;
+  data: null;
+  error: {
+    schema_version: 'structural-problem/v1';
+    code: string;
+    message: string;
+    details?: unknown;
+    request_id?: string;
+  };
 }
 
 export interface FlexureResult {
@@ -407,6 +451,27 @@ export interface BeamDesignResponse {
   ast_total: number;
   asc_total: number;
   utilization_ratio: number;
+  effective_depth_used?: number;
+  effective_depth_basis: {
+    contract_version: 'effective-depth-basis/v1';
+    source: 'EXPLICIT' | 'DERIVED';
+    D_mm: number;
+    d_mm: number;
+    effective_depth_basis: Record<string, number> | null;
+  };
+  result_envelope: {
+    schema_version: 'structural-result-envelope/v2';
+    intake_status: 'VALID' | 'PARTIAL' | 'BLOCKED';
+    calculation_status: 'NOT_EVALUATED' | 'COMPLETED' | 'ERROR';
+    engineering_status: 'NOT_EVALUATED' | 'PASS' | 'FAIL' | 'HOLD';
+    review_status: 'QUALIFIED_REVIEW_REQUIRED' | 'REVIEWED_ACCEPTED' | 'REVIEWED_REJECTED';
+    qualified_review_required: boolean;
+    freshness_status: 'CURRENT' | 'STALE';
+    serviceability_escalation: string | null;
+    overall_status: 'BLOCKED' | 'ERROR' | 'NOT_EVALUATED' | 'STALE' | 'PASS' | 'FAIL' | 'HOLD';
+    result_identity: Record<string, string | null> | null;
+    issues: Array<{ code: string; path: string; message: string }>;
+  };
   warnings?: string[];
 }
 
@@ -459,14 +524,13 @@ export class StructuralDesignClient {
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(`Design failed: ${JSON.stringify(error.error) || response.status}`);
+      const problem = await response.json() as ProblemResponse;
+      throw new Error(
+        `Design failed: ${problem.error?.code ?? response.status}: ${problem.error?.message ?? 'Request failed'}`,
+      );
     }
 
     const envelope = await response.json() as APIResponse<BeamDesignResponse>;
-    if (!envelope.success) {
-      throw new Error(`Design failed: ${JSON.stringify(envelope.error)}`);
-    }
     return envelope.data;
   }
 
@@ -485,13 +549,13 @@ export class StructuralDesignClient {
     });
 
     if (!response.ok) {
-      throw new Error(`Geometry calculation failed: ${response.status}`);
+      const problem = await response.json() as ProblemResponse;
+      throw new Error(
+        `Geometry calculation failed: ${problem.error?.code ?? response.status}: ${problem.error?.message ?? 'Request failed'}`,
+      );
     }
 
     const envelope = await response.json() as APIResponse<GeometryResult>;
-    if (!envelope.success) {
-      throw new Error(`Geometry generation failed: ${JSON.stringify(envelope.error)}`);
-    }
     return envelope.data;
   }
 }

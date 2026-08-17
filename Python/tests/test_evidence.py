@@ -135,6 +135,24 @@ def test_disabled_serviceability_drafts_do_not_change_identity() -> None:
     )
 
 
+@pytest.mark.parametrize("field", ["deflection_params", "crack_width_params"])
+def test_each_serviceability_check_can_be_identified_independently(field: str) -> None:
+    inputs = {
+        **_beam_inputs(),
+        "include_serviceability": True,
+        field: (
+            {"span_mm": 5000.0} if field == "deflection_params" else {"acr_mm": 45.0}
+        ),
+    }
+
+    evidence = _evidence(inputs)
+
+    assert (
+        evidence["normalized_input_hash"]
+        != _evidence(_beam_inputs())["normalized_input_hash"]
+    )
+
+
 def test_metadata_only_change_is_recorded_without_changing_arithmetic_identity() -> (
     None
 ):

@@ -23,6 +23,8 @@ export function isBeamResultExportable(result: BeamDesignResponse): boolean {
 /** Keep decision logic on exact values while presenting enough precision to audit it. */
 export function getTrustPresentation(result: BeamDesignResponse): TrustPresentation {
   const evidence = result.evidence;
+  const envelope = result.result_envelope;
+  const identity = envelope.result_identity;
   const exactUtilization = evidence?.exact_utilization ?? result.utilization_ratio;
   const margin = evidence?.margin ?? 1 - exactUtilization;
   const hasIdentity = Boolean(
@@ -31,13 +33,21 @@ export function getTrustPresentation(result: BeamDesignResponse): TrustPresentat
     && (evidence.status === 'PASS' || evidence.status === 'FAIL')
     && Number.isFinite(evidence.exact_utilization)
     && Number.isFinite(evidence.margin)
-    && hasText(evidence.normalized_input_hash)
-    && hasText(evidence.calculation_identity),
+    && hasText(identity?.library_version)
+    && hasText(identity?.input_hash)
+    && hasText(identity?.calculation_identity)
+    && identity?.input_hash === evidence.normalized_input_hash
+    && identity?.calculation_identity === evidence.calculation_identity,
   );
-  const hasHold = (result.holds?.length ?? 0) > 0;
-  const outcomeMatches = evidence?.status === (result.success ? 'PASS' : 'FAIL');
+  const hasHold =
+    (result.holds?.length ?? 0) > 0
+    || (envelope.overall_status !== 'PASS' && envelope.overall_status !== 'FAIL');
+  const outcomeMatches =
+    evidence?.status === envelope.engineering_status
+    && envelope.overall_status === envelope.engineering_status
+    && envelope.engineering_status === (result.success ? 'PASS' : 'FAIL');
   const status: TrustStatus = hasIdentity && !hasHold && outcomeMatches
-    ? evidence.status as 'PASS' | 'FAIL'
+    ? envelope.engineering_status as 'PASS' | 'FAIL'
     : 'HOLD';
   const canExport =
     status === 'PASS'

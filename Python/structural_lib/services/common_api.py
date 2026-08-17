@@ -25,6 +25,7 @@ from structural_lib.core.data_types import (
     ValidationReport,
     VersionInfo,
 )
+from structural_lib.core.version import get_runtime_version
 from structural_lib.services import beam_pipeline, job_runner
 
 # ============================================================================
@@ -130,22 +131,9 @@ def _validate_plausibility(
 
 
 def get_library_version() -> str:
-    """Return the installed package version.
+    """Return the version authoritative for the code imported at runtime."""
 
-    Returns:
-        Package version string. Falls back to a default when package metadata
-        is unavailable (e.g., running from a source checkout).
-    """
-    try:
-        return version("structural-lib-is456")
-    except PackageNotFoundError:
-        pyproject = Path(__file__).resolve().parents[1] / "pyproject.toml"
-        if pyproject.exists():
-            content = pyproject.read_text(encoding="utf-8")
-            for line in content.splitlines():
-                if line.strip().startswith("version"):
-                    return line.split("=", 1)[1].strip().strip('"')
-        return "0.0.0-dev"
+    return get_runtime_version()
 
 
 def validate_job_spec(path: str | Path) -> ValidationReport:

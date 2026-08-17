@@ -5,7 +5,7 @@ import { WorkflowComposerPage } from '../WorkflowComposerPage';
 const TEMPLATE = {
   schema_version: '1.0',
   workflow_id: 'is456.beam.review',
-  workflow_version: '1.0.0',
+  workflow_version: '1.1.0',
   title: 'Beam workflow',
   capability_id: 'is456.beam.design',
   steps: ['input', 'validate', 'design', 'review', 'export'].map((step_id, index) => ({
@@ -45,6 +45,19 @@ beforeEach(() => {
     steps: TEMPLATE.steps.slice(0, 4).map((step) => ({ step_id: step.step_id, status: 'COMPLETED' })),
     export: null,
     audit: { review_stop: 'USER_REVIEW_ACKNOWLEDGEMENT_REQUIRED' },
+    result_envelope: {
+      schema_version: 'structural-result-envelope/v2',
+      intake_status: 'VALID',
+      calculation_status: 'COMPLETED',
+      engineering_status: 'PASS',
+      review_status: 'QUALIFIED_REVIEW_REQUIRED',
+      qualified_review_required: true,
+      freshness_status: 'CURRENT',
+      serviceability_escalation: null,
+      overall_status: 'PASS',
+      issues: [],
+      result_identity: null,
+    },
     definition_hash: 'a',
     input_hash: 'b',
     idempotent_replay: false,
@@ -69,6 +82,7 @@ describe('WorkflowComposerPage', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Run sample' }));
     expect(await screen.findByText('Run REVIEW_REQUIRED')).toBeInTheDocument();
+    expect(screen.getByText('Engineering: PASS')).toBeInTheDocument();
     expect(screen.getByText(/USER_REVIEW_ACKNOWLEDGEMENT_REQUIRED/)).toBeInTheDocument();
   });
 

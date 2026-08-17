@@ -234,5 +234,5 @@ def test_main_app_mount_and_error_openapi_contract(client):
         "$ref"
     ].endswith("APIResponse_ConcentricIsolatedFootingResponse_")
     assert operation["responses"]["422"]["content"]["application/json"]["schema"] == {
-        "$ref": "#/components/schemas/RequestValidationErrorResponse"
+        "$ref": "#/components/schemas/ProblemResponse"
     }

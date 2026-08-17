@@ -226,7 +226,9 @@ class TestJobStatus:
 
         assert response.status_code == 404
         data = response.json()
-        assert data["detail"] == "Job not found"
+        assert data["success"] is False
+        assert data["error"]["code"] == "HTTP_404"
+        assert data["error"]["message"] == "Job not found"
 
     def test_get_job_status_is_in_progress_until_every_item_completes(self):
         """A partial batch must not report a provisional engineering PASS."""

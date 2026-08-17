@@ -78,6 +78,9 @@ def test_safe_run_stops_for_review_then_completes_with_acknowledgement() -> None
 
     assert held["status"] == "REVIEW_REQUIRED"
     assert held["export"] is None
+    assert held["steps"][2]["output"]["effective_depth_used"] == 457.0
+    assert held["steps"][2]["output"]["effective_depth_basis"]["source"] == ("DERIVED")
+    assert held["result_envelope"]["engineering_status"] == "PASS"
     assert completed["status"] == "COMPLETED"
     assert completed["export"]["status"] == "PASS"
     assert completed["export"]["qualified_review_required"] is True
@@ -97,6 +100,17 @@ def test_unsafe_run_stops_before_export() -> None:
     assert result["status"] == "UNSAFE"
     assert result["export"] is None
     assert result["steps"][-1]["reason"] == "UNSAFE_RESULT"
+
+
+def test_required_calculation_input_is_never_filled_from_display_defaults() -> None:
+    missing_width = {key: value for key, value in SAFE_INPUTS.items() if key != "width"}
+
+    with pytest.raises(WorkflowInputError, match="Missing required fields: width"):
+        WorkflowRunner().run(
+            definition=get_beam_workflow_template_document(),
+            inputs=missing_width,
+            run_id="missing-width",
+        )
 
 
 def test_timeout_and_idempotency_are_deterministic() -> None:

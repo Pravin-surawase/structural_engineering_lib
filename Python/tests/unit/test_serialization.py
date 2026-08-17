@@ -33,11 +33,29 @@ from structural_lib.services.serialization import (
     save_batch_result,
     save_forces,
     save_geometry,
+    to_transport_value,
 )
 
 # =============================================================================
 # Test Fixtures
 # =============================================================================
+
+
+def test_transport_normalizer_recurses_through_enums_and_tuples() -> None:
+    normalized = to_transport_value(
+        {"status": DesignStatus.PASS, "nested": (1, {"values": (2, 3)})}
+    )
+
+    assert normalized == {
+        "status": DesignStatus.PASS.value,
+        "nested": [1, {"values": [2, 3]}],
+    }
+
+
+@pytest.mark.parametrize("value", [float("nan"), float("inf"), float("-inf")])
+def test_transport_normalizer_rejects_non_finite_json_numbers(value: float) -> None:
+    with pytest.raises(ValueError, match="does not allow"):
+        to_transport_value({"value": value})
 
 
 @pytest.fixture

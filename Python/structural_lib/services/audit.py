@@ -27,6 +27,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from structural_lib.core.version import get_runtime_version
+
 _logger = logging.getLogger(__name__)
 
 # -----------------------------------------------------------------------------
@@ -225,12 +227,7 @@ class AuditTrail:
     def __post_init__(self) -> None:
         """Initialize library version if not provided."""
         if not self.library_version:
-            try:
-                from importlib.metadata import version
-
-                self.library_version = version("structural-lib-is456")
-            except Exception:
-                self.library_version = "unknown"
+            self.library_version = get_runtime_version()
 
     def _generate_entry_id(self) -> str:
         """Generate unique entry ID."""
@@ -529,12 +526,7 @@ def create_calculation_certificate(
     """
     calc_hash = CalculationHash.from_calculation(inputs, outputs)
 
-    try:
-        from importlib.metadata import version
-
-        lib_version = version("structural-lib-is456")
-    except Exception:
-        lib_version = "unknown"
+    lib_version = get_runtime_version()
 
     return {
         "certificate_type": "structural_calculation",

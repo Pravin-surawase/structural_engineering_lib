@@ -32,6 +32,10 @@ from structural_lib.core.data_types import (
     StirrupDict,
 )
 from structural_lib.core.errors import DesignError
+from structural_lib.services.project_beam import (
+    EffectiveDepthBasisV1,
+    resolve_effective_depth_v1,
+)
 
 from . import api
 
@@ -218,6 +222,8 @@ class BeamDesignOutput:
     governing_utilization: float = 0.0
     governing_check: str = ""
     remarks: str = ""
+    effective_depth_resolution: dict[str, Any] | None = None
+    result_envelope: dict[str, Any] | None = None
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for JSON serialization."""
@@ -262,7 +268,7 @@ def _dataclass_to_dict(obj: Any) -> Any:
 
 def _auto_construct_deflection_params(
     span_mm: float,
-    d_mm: float,
+    d_mm: float | None,
     support_condition: str = "SIMPLY_SUPPORTED",
 ) -> DeflectionParams | None:
     """Auto-construct deflection params from geometry when serviceability is requested.
@@ -276,7 +282,7 @@ def _auto_construct_deflection_params(
     Returns:
         DeflectionParams dict, or None if inputs are invalid.
     """
-    if span_mm <= 0 or d_mm <= 0:
+    if span_mm <= 0 or d_mm is None or d_mm <= 0:
         return None
 
     # Normalize support_condition to a valid string for DeflectionParams
@@ -301,7 +307,7 @@ def design_single_beam(
     story: str,
     b_mm: float,
     D_mm: float,
-    d_mm: float,
+    d_mm: float | None,
     span_mm: float,
     cover_mm: float,
     fck_nmm2: float,
@@ -309,7 +315,7 @@ def design_single_beam(
     mu_knm: float,
     vu_kn: float,
     case_id: str = "CASE-1",
-    d_dash_mm: float = 50.0,
+    d_dash_mm: float | None = None,
     asv_mm2: float = 100.0,
     pt_percent: float | None = None,
     include_detailing: bool = True,
@@ -321,6 +327,7 @@ def design_single_beam(
     crack_width_params: CrackWidthParams | None = None,
     include_serviceability: bool = False,
     support_condition: str = "SIMPLY_SUPPORTED",
+    effective_depth_basis: EffectiveDepthBasisV1 | None = None,
 ) -> BeamDesignOutput:
     """
     Run complete beam design pipeline for a single beam/case.
@@ -333,7 +340,8 @@ def design_single_beam(
         story: Story/floor identifier.
         b_mm: Beam width (mm).
         D_mm: Overall depth (mm).
-        d_mm: Effective depth (mm).
+        d_mm: Explicit effective depth (mm), or ``None`` when the complete
+            ``effective_depth_basis`` is supplied.
         span_mm: Span length (mm).
         cover_mm: Clear cover (mm).
         fck_nmm2: Concrete strength (N/mm²).
@@ -364,12 +372,23 @@ def design_single_beam(
     """
     # Validate units at boundary
     validated_units = validate_units(units)
+    depth_resolution = resolve_effective_depth_v1(
+        D_mm=D_mm,
+        d_mm=d_mm,
+        effective_depth_basis=effective_depth_basis,
+    )
+    resolved_d_mm = depth_resolution.d_mm
+    resolved_d_dash_mm = (
+        d_dash_mm
+        if d_dash_mm is not None
+        else (D_mm - resolved_d_mm if effective_depth_basis is not None else 50.0)
+    )
 
     # Auto-construct deflection params when serviceability is opted-in
     if include_serviceability and deflection_params is None:
         deflection_params = _auto_construct_deflection_params(
             span_mm=span_mm,
-            d_mm=d_mm,
+            d_mm=resolved_d_mm,
             support_condition=support_condition,
         )
 
@@ -380,7 +399,8 @@ def design_single_beam(
         b_mm=b_mm,
         D_mm=D_mm,
         d_mm=d_mm,
-        d_dash_mm=d_dash_mm,
+        effective_depth_basis=effective_depth_basis,
+        d_dash_mm=resolved_d_dash_mm,
         fck_nmm2=fck_nmm2,
         fy_nmm2=fy_nmm2,
         mu_knm=mu_knm,
@@ -395,10 +415,10 @@ def design_single_beam(
     geometry = BeamGeometry(
         b_mm=b_mm,
         D_mm=D_mm,
-        d_mm=d_mm,
+        d_mm=resolved_d_mm,
         span_mm=span_mm,
         cover_mm=cover_mm,
-        d_dash_mm=d_dash_mm,
+        d_dash_mm=resolved_d_dash_mm,
     )
 
     materials = BeamMaterials(
@@ -419,7 +439,9 @@ def design_single_beam(
         xu_mm=case_result.flexure.xu,
         xu_max_mm=case_result.flexure.xu_max,
         mu_lim_knm=case_result.flexure.Mu_lim,
-        xu_d_ratio=case_result.flexure.xu / d_mm if d_mm > 0 else 0.0,
+        xu_d_ratio=(
+            case_result.flexure.xu / resolved_d_mm if resolved_d_mm > 0 else 0.0
+        ),
         section_type=_section_type_str(case_result.flexure.section_type),
         is_safe=case_result.flexure.is_safe,
         utilization=case_result.utilizations.get("flexure", 0.0),
@@ -548,6 +570,8 @@ def design_single_beam(
         governing_utilization=case_result.governing_utilization,
         governing_check=governing_check,
         remarks=case_result.remarks,
+        effective_depth_resolution=case_result.effective_depth_resolution,
+        result_envelope=case_result.result_envelope,
     )
 
 

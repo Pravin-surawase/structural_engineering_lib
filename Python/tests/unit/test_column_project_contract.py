@@ -37,12 +37,15 @@ def test_column_result_uses_shared_qualified_review_envelope() -> None:
     assert result["qualified_review_required"] is True
     assert result["review_status"] == "QUALIFIED_REVIEW_REQUIRED"
     assert result["result_envelope"] == {
-        "schema_version": "structural-result-envelope/v1",
+        "schema_version": "structural-result-envelope/v2",
         "intake_status": "VALID",
         "calculation_status": "COMPLETED",
         "engineering_status": "PASS" if result["is_safe"] else "FAIL",
         "review_status": "QUALIFIED_REVIEW_REQUIRED",
         "qualified_review_required": True,
+        "freshness_status": "CURRENT",
         "serviceability_escalation": None,
         "overall_status": "PASS" if result["is_safe"] else "FAIL",
+        "issues": [],
+        "result_identity": None,
     }

@@ -1,5 +1,20 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+import type { StructuralResultEnvelope } from '../../api/client';
 import { useDesignStore } from '../../store/designStore';
+
+const RESULT_ENVELOPE: StructuralResultEnvelope = {
+  schema_version: 'structural-result-envelope/v2',
+  intake_status: 'VALID',
+  calculation_status: 'COMPLETED',
+  engineering_status: 'PASS',
+  review_status: 'QUALIFIED_REVIEW_REQUIRED',
+  qualified_review_required: true,
+  freshness_status: 'CURRENT',
+  serviceability_escalation: null,
+  overall_status: 'PASS',
+  issues: [],
+  result_identity: null,
+};
 
 describe('designStore', () => {
   beforeEach(() => {
@@ -57,6 +72,7 @@ describe('designStore', () => {
       ast_total: 500,
       asc_total: 0,
       utilization_ratio: 0.83,
+      result_envelope: RESULT_ENVELOPE,
     };
     store.setResult(mockResult);
 
@@ -84,6 +100,7 @@ describe('designStore', () => {
       ast_total: 500,
       asc_total: 0,
       utilization_ratio: 0.83,
+      result_envelope: RESULT_ENVELOPE,
     });
 
     const settledRevision = useDesignStore.getState().inputRevision;
@@ -116,6 +133,7 @@ describe('designStore', () => {
       ast_total: 500,
       asc_total: 0,
       utilization_ratio: 0.83,
+      result_envelope: RESULT_ENVELOPE,
     }, oldRevision)).toBe(false);
     expect(store.setError('late error', oldRevision)).toBe(false);
     expect(store.setLoading(false, oldRevision)).toBe(false);

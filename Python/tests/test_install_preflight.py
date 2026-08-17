@@ -15,6 +15,12 @@ def test_install_preflight_reports_origin_version_extras_and_repair(capsys) -> N
     assert report["python_version"]
     assert report["package_version"]
     assert report["package_origin"].endswith("structural_lib/__init__.py")
+    assert report["runtime_identity"]["package_version"] == report["package_version"]
+    assert report["runtime_identity"]["package_origin"] == report["package_origin"]
+    assert report["runtime_identity"]["execution_mode"] in {
+        "SOURCE_CHECKOUT",
+        "INSTALLED_DISTRIBUTION",
+    }
     assert set(report["optional_extras"]) == {
         "dxf",
         "report",

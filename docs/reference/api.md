@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-16
+last_updated: 2026-08-17
 doc_type: reference
 complexity: intermediate
 tags: []
@@ -223,12 +223,29 @@ Frozen dataclass: `code_id`, `all_importable`, `all_decorated`, `all_frozen`, `a
 
 These entrypoints are intended to remain stable even as internal modules evolve.
 
+### `api.EffectiveDepthBasisV1`
+
+Frozen input record for deriving effective depth from clear cover, stirrup
+diameter, and tension-bar diameter. It is the complete alternative to supplying
+an explicit `d_mm`.
+
+### `api.EffectiveDepthResolutionV1`
+
+Frozen output record that states whether effective depth was explicit or
+derived, the overall and effective depths used, and the derivation basis when
+applicable.
+
 ### 1A.1 Single-Case Design/Check (`design_beam_is456`)
 
 **Notes:**
 - Strength checks are always run.
 - Serviceability checks run only when their params are provided.
 - `units` is **mandatory** to enforce explicit units at the API boundary.
+- The `d_mm` keyword remains required for compatibility. Supply exactly one of
+  a numeric `d_mm` or `d_mm=None` with a complete `effective_depth_basis`; the
+  public `EffectiveDepthBasisV1` provides the derived form, and the returned
+  `EffectiveDepthResolutionV1` transport record states what the calculation
+  consumed.
 
 ```python
 def design_beam_is456(
@@ -239,17 +256,24 @@ def design_beam_is456(
     vu_kn: float,
     b_mm: float,
     D_mm: float,
-    d_mm: float,
+    d_mm: float | None,
     fck_nmm2: float,
     fy_nmm2: float,
-    d_dash_mm: float = 50.0,
+    d_dash_mm: float | None = None,
     asv_mm2: float = 100.0,
     pt_percent: float | None = None,
     ast_mm2_for_shear: float | None = None,
-    deflection_params: dict | None = None,
-    crack_width_params: dict | None = None,
+    deflection_params: DeflectionParams | None = None,
+    crack_width_params: CrackWidthParams | None = None,
+    tu_knm: float = 0.0,
+    cover_mm: float | None = None,
+    stirrup_dia_mm: float = 8.0,
+    effective_depth_basis: EffectiveDepthBasisV1 | None = None,
 ) -> ComplianceCaseResult
 ```
+
+`ComplianceCaseResult.result_envelope` is the canonical PASS/FAIL/HOLD carrier;
+`is_ok` remains a compatibility boolean.
 
 ### 1A.1A Bounded Sagging T-Beam (`design_flanged_beam_is456`)
 

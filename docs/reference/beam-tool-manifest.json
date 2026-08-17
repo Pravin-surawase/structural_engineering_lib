@@ -5,17 +5,17 @@
     "model_integration": false
   },
   "manifest_id": "structural-lib.workflow-tools",
-  "manifest_version": "1.0.0",
+  "manifest_version": "1.1.0",
   "schema_version": "1.0",
   "source": {
     "catalog_schema_version": "1.0",
-    "catalog_sha256": "0aad993b7755b4c34c234652260767247a9396e16d53c5c2d18a3d956c5bdfae",
-    "catalog_version": "1.1.0"
+    "catalog_sha256": "c59574067a1ffccfe3de4dcf23f1ed552f7756cb95862c69a1cb630939cb3cd8",
+    "catalog_version": "1.2.0"
   },
   "tools": [
     {
       "capability_id": "is456.beam.design",
-      "capability_version": "1.1.0",
+      "capability_version": "1.2.0",
       "description": "Discover the ordinary solid rectangular primary beam route; this catalogue adapter exposes declared flexure and shear inputs.",
       "execution": {
         "adapter_id": "fastapi.design_beam.v1",
@@ -27,6 +27,16 @@
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "additionalProperties": false,
         "properties": {
+          "clear_cover": {
+            "default": 25.0,
+            "description": "Clear cover in mm.",
+            "maximum": 75.0,
+            "minimum": 20.0,
+            "title": "Clear cover",
+            "type": "number",
+            "x-semantic-ref": "workflows.design_beam_is456.fields.effective_depth_basis.clear_cover_mm",
+            "x-unit": "mm"
+          },
           "depth": {
             "default": 500.0,
             "description": "Depth in mm.",
@@ -35,6 +45,15 @@
             "title": "Depth",
             "type": "number",
             "x-semantic-ref": "workflows.design_beam_is456.fields.D_mm",
+            "x-unit": "mm"
+          },
+          "effective_depth": {
+            "description": "Effective depth in mm.",
+            "maximum": 2999.0,
+            "minimum": 1.0,
+            "title": "Effective depth",
+            "type": "number",
+            "x-semantic-ref": "workflows.design_beam_is456.fields.d_mm",
             "x-unit": "mm"
           },
           "fck": {
@@ -67,6 +86,16 @@
             "x-semantic-ref": "workflows.design_beam_is456.fields.fy_nmm2",
             "x-unit": "N/mm2"
           },
+          "main_bar_dia_mm": {
+            "default": 20.0,
+            "description": "Main bar diameter in mm.",
+            "maximum": 36.0,
+            "minimum": 8.0,
+            "title": "Main bar diameter",
+            "type": "number",
+            "x-semantic-ref": "workflows.design_beam_is456.fields.effective_depth_basis.tension_bar_diameter_mm",
+            "x-unit": "mm"
+          },
           "moment": {
             "default": 150.0,
             "description": "Moment (Mu) in kN m.",
@@ -86,6 +115,16 @@
             "type": "number",
             "x-semantic-ref": "workflows.design_beam_is456.fields.vu_kn",
             "x-unit": "kN"
+          },
+          "stirrup_dia_mm": {
+            "default": 8.0,
+            "description": "Stirrup diameter in mm.",
+            "maximum": 16.0,
+            "minimum": 6.0,
+            "title": "Stirrup diameter",
+            "type": "number",
+            "x-semantic-ref": "workflows.design_beam_is456.fields.effective_depth_basis.stirrup_diameter_mm",
+            "x-unit": "mm"
           },
           "width": {
             "default": 300.0,
@@ -113,13 +152,13 @@
         "Flanged, hollow/box, deep, prestressed, axially loaded, and torsion-redistribution cases are held.",
         "The result is software evidence and requires qualified engineering review."
       ],
-      "result_schema_id": "fastapi.BeamDesignResponse.v1",
+      "result_schema_id": "fastapi.BeamDesignResponse.v2",
       "review_boundary": {
         "qualified_review_required": true,
         "statement": "This descriptor does not authorize autonomous execution. Outputs remain software evidence requiring qualified engineering review.",
         "user_acknowledgement_required_before_execution": true
       },
-      "status_semantic_ref": "workflows.design_beam_is456.statuses.is_ok",
+      "status_semantic_ref": "workflows.design_beam_is456.statuses.result_envelope.engineering_status",
       "title": "IS 456 beam design",
       "tool_name": "is456_beam_design"
     }

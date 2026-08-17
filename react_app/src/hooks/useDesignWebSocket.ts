@@ -8,7 +8,11 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { useDesignStore } from '../store/designStore';
-import type { BeamDesignResponse } from '../api/client';
+import {
+  parseStructuralResultEnvelope,
+  type BeamDesignResponse,
+  type StructuralResultEnvelope,
+} from '../api/client';
 
 import { WS_BASE_URL } from '../config';
 
@@ -48,6 +52,31 @@ type WebSocketDesignData = Omit<Partial<BeamDesignResponse>, 'flexure' | 'shear'
 export function normalizeWebSocketDesignResult(data: WebSocketDesignData): BeamDesignResponse {
   const flexure = data.flexure ?? {};
   const shear = data.shear;
+  const holdEnvelope = (code: string): StructuralResultEnvelope => ({
+    schema_version: 'structural-result-envelope/v2',
+    intake_status: 'PARTIAL',
+    calculation_status: 'NOT_EVALUATED',
+    engineering_status: 'HOLD',
+    review_status: 'QUALIFIED_REVIEW_REQUIRED',
+    qualified_review_required: true,
+    freshness_status: 'CURRENT',
+    serviceability_escalation: null,
+    overall_status: 'HOLD',
+    issues: [{
+      code,
+      path: '$.result_envelope',
+      message: 'The compatibility WebSocket payload has no valid canonical result status.',
+    }],
+    result_identity: null,
+  });
+  let resultEnvelope: StructuralResultEnvelope;
+  try {
+    resultEnvelope = data.result_envelope
+      ? parseStructuralResultEnvelope(data.result_envelope)
+      : holdEnvelope('WEBSOCKET_CANONICAL_ENVELOPE_MISSING');
+  } catch {
+    resultEnvelope = holdEnvelope('WEBSOCKET_CANONICAL_ENVELOPE_INVALID');
+  }
 
   return {
     success: data.success ?? flexure.is_safe ?? false,
@@ -78,6 +107,8 @@ export function normalizeWebSocketDesignResult(data: WebSocketDesignData): BeamD
     asc_total: data.asc_total ?? flexure.asc_required ?? 0,
     utilization_ratio: data.utilization_ratio ?? 0,
     effective_depth_used: data.effective_depth_used,
+    effective_depth_basis: data.effective_depth_basis,
+    result_envelope: resultEnvelope,
     warnings: data.warnings ?? [],
     evidence: data.evidence,
     holds: data.evidence ? data.holds ?? [] : ['WEBSOCKET_EVIDENCE_IDENTITY_MISSING'],

@@ -392,5 +392,5 @@ def test_openapi_documents_the_maintained_422_envelope(client):
         response_schema = schema["paths"][path]["post"]["responses"]["422"]
         assert response_schema["description"] == "Request validation failed"
         assert response_schema["content"]["application/json"]["schema"] == {
-            "$ref": "#/components/schemas/RequestValidationErrorResponse"
+            "$ref": "#/components/schemas/ProblemResponse"
         }

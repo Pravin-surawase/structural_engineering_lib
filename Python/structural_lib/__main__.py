@@ -1107,6 +1107,7 @@ def cmd_capabilities(args: argparse.Namespace) -> int:
 def cmd_install_preflight(args: argparse.Namespace) -> int:
     """Report the exact interpreter, package origin/version, and optional extras."""
     import structural_lib
+    from structural_lib.core.version import get_runtime_version_identity
 
     optional_modules = {
         "dxf": "ezdxf",
@@ -1117,6 +1118,7 @@ def cmd_install_preflight(args: argparse.Namespace) -> int:
     }
     origin = str(Path(structural_lib.__file__).resolve())
     version = structural_lib.__version__
+    runtime_identity = get_runtime_version_identity(origin)
     optional_extras: dict[str, bool] = {
         name: importlib.util.find_spec(module_name) is not None
         for name, module_name in optional_modules.items()
@@ -1127,6 +1129,7 @@ def cmd_install_preflight(args: argparse.Namespace) -> int:
         "python_version": sys.version.split()[0],
         "package_version": version,
         "package_origin": origin,
+        "runtime_identity": runtime_identity.to_dict(),
         "optional_extras": optional_extras,
         "qualified_review_required": True,
         "repair_command": (

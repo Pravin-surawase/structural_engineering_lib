@@ -71,7 +71,7 @@
     {
       "name": "features",
       "path": "features/",
-      "file_count": 40
+      "file_count": 41
     },
     {
       "name": "hooks",
@@ -109,5 +109,5 @@
       "file_count": 20
     }
   ],
-  "content_hash": "395b08192c956f40"
+  "content_hash": "3b6736fc361fa258"
 }

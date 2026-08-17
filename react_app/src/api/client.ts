@@ -95,6 +95,38 @@ export interface IntegratedTorsionResult {
   clause_refs: Record<string, string>;
 }
 
+export interface StructuralResultEnvelope {
+  schema_version: 'structural-result-envelope/v2';
+  intake_status: 'VALID' | 'PARTIAL' | 'BLOCKED';
+  calculation_status: 'NOT_EVALUATED' | 'COMPLETED' | 'ERROR';
+  engineering_status: 'NOT_EVALUATED' | 'PASS' | 'FAIL' | 'HOLD';
+  review_status: 'QUALIFIED_REVIEW_REQUIRED' | 'REVIEWED_ACCEPTED' | 'REVIEWED_REJECTED';
+  qualified_review_required: boolean;
+  freshness_status: 'CURRENT' | 'STALE';
+  serviceability_escalation: string | null;
+  overall_status: 'BLOCKED' | 'ERROR' | 'NOT_EVALUATED' | 'STALE' | 'PASS' | 'FAIL' | 'HOLD';
+  issues: Array<{ code: string; path: string; message: string }>;
+  result_identity: {
+    contract_version: string;
+    library_version: string;
+    input_hash: string | null;
+    calculation_identity: string | null;
+    artifact_sha256: string | null;
+  } | null;
+}
+
+export interface EffectiveDepthResolution {
+  contract_version: 'effective-depth-basis/v1';
+  source: 'EXPLICIT' | 'DERIVED';
+  D_mm: number;
+  d_mm: number;
+  effective_depth_basis: {
+    clear_cover_mm: number;
+    stirrup_diameter_mm: number;
+    tension_bar_diameter_mm: number;
+  } | null;
+}
+
 export interface BeamDesignResponse {
   success: boolean;
   message: string;
@@ -104,6 +136,8 @@ export interface BeamDesignResponse {
   asc_total: number;
   utilization_ratio: number;
   effective_depth_used?: number;
+  effective_depth_basis?: EffectiveDepthResolution;
+  result_envelope: StructuralResultEnvelope;
   deflection_check?: DeflectionCheckResult | null;
   crack_width_check?: CrackWidthCheckResult | null;
   combined_actions?: CombinedBeamActions | null;
@@ -227,6 +261,138 @@ function unwrapResponse<T>(json: unknown): T {
 
 export { unwrapResponse };
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+export function parseStructuralResultEnvelope(
+  value: unknown,
+): StructuralResultEnvelope {
+  if (!isRecord(value) || value.schema_version !== 'structural-result-envelope/v2') {
+    throw new Error('Structural result envelope is missing or unsupported');
+  }
+  const validIntake = ['VALID', 'PARTIAL', 'BLOCKED'].includes(String(value.intake_status));
+  const validCalculation = ['NOT_EVALUATED', 'COMPLETED', 'ERROR'].includes(
+    String(value.calculation_status),
+  );
+  const validEngineering = ['NOT_EVALUATED', 'PASS', 'FAIL', 'HOLD'].includes(
+    String(value.engineering_status),
+  );
+  const validReview = [
+    'QUALIFIED_REVIEW_REQUIRED',
+    'REVIEWED_ACCEPTED',
+    'REVIEWED_REJECTED',
+  ].includes(String(value.review_status));
+  const validFreshness = ['CURRENT', 'STALE'].includes(String(value.freshness_status));
+  const validOverall = [
+    'BLOCKED',
+    'ERROR',
+    'NOT_EVALUATED',
+    'STALE',
+    'PASS',
+    'FAIL',
+    'HOLD',
+  ].includes(String(value.overall_status));
+  const identity = value.result_identity;
+  const validIdentity = identity === null || (
+    isRecord(identity)
+    && typeof identity.contract_version === 'string'
+    && typeof identity.library_version === 'string'
+    && (identity.input_hash === null || typeof identity.input_hash === 'string')
+    && (
+      identity.calculation_identity === null
+      || typeof identity.calculation_identity === 'string'
+    )
+    && (identity.artifact_sha256 === null || typeof identity.artifact_sha256 === 'string')
+  );
+  if (
+    !validIntake
+    || !validCalculation
+    || !validEngineering
+    || !validReview
+    || !validFreshness
+    || !validOverall
+    || !Array.isArray(value.issues)
+    || value.issues.some(
+      (issue) => !isRecord(issue)
+        || typeof issue.code !== 'string'
+        || typeof issue.path !== 'string'
+        || typeof issue.message !== 'string',
+    )
+    || !validIdentity
+    || typeof value.qualified_review_required !== 'boolean'
+    || (
+      value.serviceability_escalation !== null
+      && typeof value.serviceability_escalation !== 'string'
+    )
+  ) {
+    throw new Error('Structural result envelope has invalid canonical status fields');
+  }
+  const expectedOverall = value.intake_status === 'BLOCKED'
+    ? 'BLOCKED'
+    : value.calculation_status === 'ERROR'
+      ? 'ERROR'
+      : value.freshness_status === 'STALE'
+        ? 'STALE'
+        : value.intake_status === 'PARTIAL'
+          ? 'HOLD'
+          : value.calculation_status === 'NOT_EVALUATED'
+            ? 'NOT_EVALUATED'
+            : value.engineering_status === 'PASS'
+              ? 'PASS'
+              : value.engineering_status === 'FAIL'
+                ? 'FAIL'
+                : 'HOLD';
+  const reviewRequiresQualification = value.review_status === 'QUALIFIED_REVIEW_REQUIRED';
+  if (
+    value.overall_status !== expectedOverall
+    || value.qualified_review_required !== reviewRequiresQualification
+  ) {
+    throw new Error('Structural result envelope has contradictory canonical status fields');
+  }
+  return value as unknown as StructuralResultEnvelope;
+}
+
+function parseBeamDesignResponse(value: unknown): BeamDesignResponse {
+  if (!isRecord(value)) throw new Error('Beam design response must be an object');
+  const depth = value.effective_depth_basis;
+  const depthBasis = isRecord(depth) ? depth.effective_depth_basis : null;
+  const validDerivedBasis = isRecord(depthBasis)
+    && typeof depthBasis.clear_cover_mm === 'number'
+    && Number.isFinite(depthBasis.clear_cover_mm)
+    && depthBasis.clear_cover_mm > 0
+    && typeof depthBasis.stirrup_diameter_mm === 'number'
+    && Number.isFinite(depthBasis.stirrup_diameter_mm)
+    && depthBasis.stirrup_diameter_mm > 0
+    && typeof depthBasis.tension_bar_diameter_mm === 'number'
+    && Number.isFinite(depthBasis.tension_bar_diameter_mm)
+    && depthBasis.tension_bar_diameter_mm > 0;
+  if (
+    !isRecord(depth)
+    || depth.contract_version !== 'effective-depth-basis/v1'
+    || (depth.source !== 'EXPLICIT' && depth.source !== 'DERIVED')
+    || typeof depth.d_mm !== 'number'
+    || !Number.isFinite(depth.d_mm)
+    || typeof depth.D_mm !== 'number'
+    || !Number.isFinite(depth.D_mm)
+    || depth.d_mm <= 0
+    || depth.D_mm <= depth.d_mm
+    || (depth.source === 'EXPLICIT' && depthBasis !== null)
+    || (depth.source === 'DERIVED' && !validDerivedBasis)
+    || (
+      typeof value.effective_depth_used === 'number'
+      && value.effective_depth_used !== depth.d_mm
+    )
+  ) {
+    throw new Error('Beam design response has no valid effective-depth record');
+  }
+  return {
+    ...value,
+    effective_depth_basis: depth,
+    result_envelope: parseStructuralResultEnvelope(value.result_envelope),
+  } as unknown as BeamDesignResponse;
+}
+
 /**
  * Check API health status.
  */
@@ -259,11 +425,13 @@ export async function designBeam(
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({ detail: response.statusText }));
+    const code = error?.error?.code ?? response.status;
     const message = error?.error?.message ?? error?.detail ?? response.status;
-    throw new Error(`Design failed: ${message}`);
+    throw new Error(`Design failed: ${code}: ${message}`);
   }
 
-  return response.json().then(unwrapResponse<BeamDesignResponse>);
+  const payload = unwrapResponse<unknown>(await response.json());
+  return parseBeamDesignResponse(payload);
 }
 
 /**

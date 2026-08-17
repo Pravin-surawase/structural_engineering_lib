@@ -5,22 +5,20 @@ Package:      structural_lib
 Description:  IS 456:2000 Structural Engineering Library
 License:      MIT
 
-Version is read dynamically from pyproject.toml via importlib.metadata.
+Version is read from the imported source checkout or installed distribution.
 Use api.get_library_version() to get the current version.
 """
 
 from __future__ import annotations
 
 import importlib
-from importlib.metadata import PackageNotFoundError as _PackageNotFoundError
-from importlib.metadata import version as _get_version
 from types import ModuleType as _ModuleType
 
-# Dynamic version from installed package metadata
-try:
-    __version__ = _get_version("structural-lib-is456")
-except _PackageNotFoundError:
-    __version__ = "0.0.0-dev"  # Not installed, development mode
+from .core.version import get_runtime_version as _get_runtime_version
+
+# Source checkout and installed-wheel modes have different authorities. The
+# resolver prevents unrelated installed metadata from relabelling source code.
+__version__ = _get_runtime_version(__file__)
 
 # Expose key modules
 from . import (
@@ -68,6 +66,8 @@ from .services.api import (  # Audit & Verification; Input dataclasses; Calculat
     CriticalPoint,
     DesignAndDetailResult,
     DetailingConfigInput,
+    EffectiveDepthBasisV1,
+    EffectiveDepthResolutionV1,
     ETABSEnvelopeResult,
     ETABSForceRow,
     FlangedBeamDesignResult,
@@ -272,6 +272,8 @@ __all__ = [
     "validate_design_results",
     # Core design functions
     "design_beam_is456",
+    "EffectiveDepthBasisV1",
+    "EffectiveDepthResolutionV1",
     "design_flanged_beam_is456",
     "check_beam_is456",
     "detail_beam_is456",

@@ -211,7 +211,7 @@
     {
       "name": "design.py",
       "type": "python",
-      "size_lines": 1027,
+      "size_lines": 1083,
       "last_updated": "2026-08-17",
       "description": "Beam Design Router.",
       "functions": [
@@ -283,7 +283,7 @@
           ]
         }
       ],
-      "content_hash": "29136770d0f3"
+      "content_hash": "7cb0259abd1a"
     },
     {
       "name": "detailing.py",
@@ -1012,7 +1012,7 @@
     {
       "name": "workflows.py",
       "type": "python",
-      "size_lines": 172,
+      "size_lines": 171,
       "last_updated": "2026-08-17",
       "description": "Default-disabled transport for the one allowlisted beam workflow.",
       "functions": [
@@ -1041,7 +1041,7 @@
       "constants": [
         "_RUNNER"
       ],
-      "content_hash": "e99d13ab2776"
+      "content_hash": "4f1eccee6013"
     }
   ],
   "subfolders": [],
@@ -1068,5 +1068,5 @@
     "strap_footing",
     "streaming"
   ],
-  "content_hash": "e867e8f8fc1f30c2"
+  "content_hash": "6fedb431e590308b"
 }

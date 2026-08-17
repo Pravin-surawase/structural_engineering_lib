@@ -4,7 +4,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-17
-**Files:** 112
+**Files:** 113
 
 ## Config Files
 
@@ -31,7 +31,7 @@
 | [audit_error_handling.py](audit_error_handling.py) | Audit error handling compliance across structural_lib module | 2 | 3 | 286 |
 | [audit_input_validation.py](audit_input_validation.py) | Audit Input Validation Coverage for structural_lib. | 2 | 5 | 393 |
 | [audit_permissions.py](audit_permissions.py) | Permission audit report for all agents. | 3 | 3 | 468 |
-| [audit_readiness_report.py](audit_readiness_report.py) | Audit Readiness Report Generator | 2 | 11 | 783 |
+| [audit_readiness_report.py](audit_readiness_report.py) | Audit Readiness Report Generator | 2 | 12 | 850 |
 | [batch_migrate_runner.py](batch_migrate_runner.py) | Batch migration runner with per-operation rollback logs. | 1 | 2 | 467 |
 | [benchmark_api.py](benchmark_api.py) | API Performance Benchmark Script. | 4 | 9 | 837 |
 | [bump_version.py](bump_version.py) | Version Bump Script — Single Source of Truth | 0 | 4 | 484 |
@@ -75,10 +75,10 @@
 | [external_cli_test.py](external_cli_test.py) | External CLI smoke test (S-007). | 1 | 1 | 401 |
 | [find_automation.py](find_automation.py) | Find the right automation script for a task. | 0 | 8 | 192 |
 | [fix_broken_links.py](fix_broken_links.py) | Fix broken internal links in markdown files. | 0 | 6 | 268 |
-| [generate_api_classification.py](generate_api_classification.py) | Generate or validate the Alpha public API classification reg | 0 | 2 | 152 |
+| [generate_api_classification.py](generate_api_classification.py) | Generate or validate the Alpha public API classification reg | 0 | 2 | 314 |
 | [generate_api_manifest.py](generate_api_manifest.py) | Generate or validate the public API manifest for structural_ | 0 | 1 | 159 |
 | [generate_beam_tool_manifest.py](generate_beam_tool_manifest.py) | Generate and byte-check the catalogue-derived beam tool mani | 0 | 4 | 64 |
-| [generate_client_sdks.py](generate_client_sdks.py) | Generate client SDKs from FastAPI OpenAPI specification. | 0 | 6 | 560 |
+| [generate_client_sdks.py](generate_client_sdks.py) | Generate client SDKs from FastAPI OpenAPI specification. | 0 | 6 | 624 |
 | [generate_docs_index.py](generate_docs_index.py) | Generate machine-readable JSON index of documentation. | 0 | 7 | 246 |
 | [generate_enhanced_index.py](generate_enhanced_index.py) | Generate enhanced index.json + index.md for ANY folder type. | 0 | 11 | 947 |
 | [generate_error_docs.py](generate_error_docs.py) | Generate docs/reference/error-codes.md from core/errors.py. | 0 | 4 | 139 |
@@ -102,7 +102,7 @@
 | [session_store.py](session_store.py) | JSON-based session state persistence for AI agent sessions. | 1 | 14 | 374 |
 | [skill_tiers.py](skill_tiers.py) | Skill tier classification and management for AI agents. | 1 | 11 | 485 |
 | [sync_numbers.py](sync_numbers.py) | Scan codebase and sync stale numbers across documentation fi | 2 | 11 | 502 |
-| [test_api_parity.py](test_api_parity.py) | API Parity Testing Script | 2 | 10 | 457 |
+| [test_api_parity.py](test_api_parity.py) | API Parity Testing Script | 2 | 10 | 459 |
 | [test_changed.py](test_changed.py) | Smart test runner — run only tests related to changed files. | 0 | 3 | 219 |
 | [test_cli_smoke.py](test_cli_smoke.py) | CLI Smoke Tests — validate all key scripts work correctly. | 0 | 3 | 298 |
 | [test_import_pipeline.py](test_import_pipeline.py) | End-to-end test of all import paths. | 0 | 20 | 412 |
@@ -113,6 +113,7 @@
 | [validate_imports.py](validate_imports.py) | Validate Python imports across the project after migration. | 0 | 6 | 365 |
 | [validate_schema_snapshots.py](validate_schema_snapshots.py) | Schema Snapshot Validator. | 0 | 6 | 257 |
 | [validate_script_refs.py](validate_script_refs.py) | Validate that active control paths reference existing script | 0 | 6 | 235 |
+| [verify_canonical_transport_artifact.py](verify_canonical_transport_artifact.py) | Verify A1's source-free wheel and exact-head application imp | 0 | 2 | 280 |
 
 ## Shell Script Files
 

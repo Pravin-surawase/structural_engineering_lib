@@ -578,7 +578,8 @@ def design_cli_project_v1(
                 story=record.story,
                 b_mm=validation.value.b_mm,
                 D_mm=validation.value.D_mm,
-                d_mm=validation.value.resolved_d_mm,
+                d_mm=validation.value.d_mm,
+                effective_depth_basis=validation.value.effective_depth_basis,
                 span_mm=record.span,
                 cover_mm=record.cover,
                 fck_nmm2=validation.value.fck_nmm2,
@@ -586,7 +587,11 @@ def design_cli_project_v1(
                 mu_knm=validation.value.mu_knm,
                 vu_kn=validation.value.vu_kn,
                 case_id=f"{record.story}_{record.beam_id}",
-                d_dash_mm=record.cover,
+                d_dash_mm=(
+                    record.cover
+                    if validation.value.effective_depth_basis is None
+                    else None
+                ),
                 asv_mm2=asv_mm2,
                 include_detailing=True,
                 stirrup_dia_mm=record.stirrup_dia,

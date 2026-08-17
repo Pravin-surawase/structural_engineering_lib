@@ -19,7 +19,7 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [__init__.py](__init__.py) | FastAPI Tests Package. | 0 | 0 | 6 |
 | [conftest.py](conftest.py) | Test Fixtures for FastAPI Tests. | 0 | 8 | 159 |
 | [test_auth.py](test_auth.py) | Tests for Authentication and Rate Limiting. | 3 | 2 | 243 |
-| [test_beam_primary_route.py](test_beam_primary_route.py) | Focused FastAPI contract tests for the primary IS 456 beam r | 0 | 12 | 311 |
+| [test_beam_primary_route.py](test_beam_primary_route.py) | Focused FastAPI contract tests for the primary IS 456 beam r | 0 | 14 | 384 |
 | [test_bundled_sample_evidence.py](test_bundled_sample_evidence.py) | Reproducible software evidence for the bundled 153-beam acce | 0 | 1 | 111 |
 | [test_capabilities.py](test_capabilities.py) | Cross-surface tests for canonical capability discovery. | 0 | 2 | 65 |
 | [test_catalog.py](test_catalog.py) | Cross-layer tests for the thin workflow catalogue transport. | 0 | 3 | 41 |
@@ -49,12 +49,12 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [test_maintenance_route_coverage.py](test_maintenance_route_coverage.py) | Direct contract coverage for routes identified by the MAINT- | 0 | 8 | 150 |
 | [test_optimization_pareto.py](test_optimization_pareto.py) | Tests for Pareto multi-objective beam optimization endpoint. | 1 | 0 | 158 |
 | [test_plausibility_validators.py](test_plausibility_validators.py) | Tests for cross-field plausibility validators (TASK-729). | 14 | 0 | 761 |
-| [test_public_documentation_contract.py](test_public_documentation_contract.py) | Executable contracts for the public REST documentation. | 0 | 3 | 70 |
+| [test_public_documentation_contract.py](test_public_documentation_contract.py) | Executable contracts for the public REST documentation. | 0 | 3 | 74 |
 | [test_security.py](test_security.py) | Security Tests for FastAPI Application. | 7 | 3 | 407 |
 | [test_staircase.py](test_staircase.py) | Contract tests for the straight-flight staircase FastAPI sli | 0 | 6 | 146 |
 | [test_strap_footing.py](test_strap_footing.py) | Contract tests for the bounded property-line strap-footing F | 0 | 6 | 276 |
-| [test_streaming.py](test_streaming.py) | Tests for SSE Streaming Endpoint. | 2 | 0 | 282 |
-| [test_typed_response_contracts.py](test_typed_response_contracts.py) | OpenAPI and envelope contracts for the typed column and libr | 0 | 3 | 72 |
+| [test_streaming.py](test_streaming.py) | Tests for SSE Streaming Endpoint. | 2 | 0 | 284 |
+| [test_typed_response_contracts.py](test_typed_response_contracts.py) | OpenAPI and envelope contracts for the typed column and libr | 0 | 5 | 107 |
 | [test_wall.py](test_wall.py) | Contract tests for the bounded braced-wall FastAPI slice. | 0 | 6 | 163 |
 | [test_websocket.py](test_websocket.py) | Tests for WebSocket Live Design Endpoint. | 1 | 0 | 211 |
 | [test_workflows.py](test_workflows.py) | Transport gates for the explicitly activated bounded workflo | 0 | 5 | 176 |

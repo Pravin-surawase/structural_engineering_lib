@@ -12,4 +12,4 @@
 | [materialOverrides.ts](materialOverrides.ts) | MaterialOverrides, applyMaterialOverrides | 43 |
 | [quantities.ts](quantities.ts) | calculateSteelWeightKg | 8 |
 | [sampleData.ts](sampleData.ts) | mapSampleBeamsToRows | 29 |
-| [trustPresentation.ts](trustPresentation.ts) | TrustStatus, TrustPresentation, isBeamResultExportable, getTrustPresentation, formatRatio (+2) | 71 |
+| [trustPresentation.ts](trustPresentation.ts) | TrustStatus, TrustPresentation, isBeamResultExportable, getTrustPresentation, formatRatio (+2) | 81 |

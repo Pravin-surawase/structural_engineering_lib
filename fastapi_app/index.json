@@ -181,7 +181,7 @@
     {
       "name": "main.py",
       "type": "python",
-      "size_lines": 635,
+      "size_lines": 728,
       "last_updated": "2026-08-17",
       "description": "FastAPI Application Entry Point.",
       "classes": [
@@ -217,6 +217,14 @@
           ]
         },
         {
+          "name": "http_exception_handler",
+          "description": "Normalize explicit HTTP rejections into the maintained problem contract.",
+          "params": [
+            "request",
+            "exc"
+          ]
+        },
+        {
           "name": "generic_exception_handler",
           "description": "Catch-all for unhandled exceptions. Logs full traceback server-side,",
           "params": [
@@ -243,7 +251,7 @@
         "API_TAGS_METADATA",
         "API_V1_PREFIX"
       ],
-      "content_hash": "26f44d22cbf9"
+      "content_hash": "4023c97d13c3"
     },
     {
       "name": "openapi_baseline.json",
@@ -256,7 +264,7 @@
         "paths",
         "tags"
       ],
-      "content_hash": "d5a004447d9e"
+      "content_hash": "8db4b516b151"
     },
     {
       "name": "ruff.toml",
@@ -293,5 +301,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "bb3e0de5546ac907"
+  "content_hash": "b0b663142e636dc9"
 }

@@ -26,14 +26,15 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse as StarletteJSONResponse
 
 from fastapi_app import __version__
 from fastapi_app.auth import RateLimiter
 from fastapi_app.config import get_settings
-from fastapi_app.models.response import RequestValidationErrorResponse, error_response
 from fastapi_app.models.metadata import APIInfoResponse
+from fastapi_app.models.response import ProblemResponse, error_response
 from fastapi_app.routers import (
     analysis,
     catalog,
@@ -211,10 +212,18 @@ app = FastAPI(
         "url": "https://github.com/yourusername/structural_engineering_lib",
     },
     responses={
+        400: {"model": ProblemResponse, "description": "Bad request"},
+        401: {"model": ProblemResponse, "description": "Authentication required"},
+        403: {"model": ProblemResponse, "description": "Forbidden"},
+        404: {"model": ProblemResponse, "description": "Resource not found"},
+        409: {"model": ProblemResponse, "description": "State conflict"},
         422: {
-            "model": RequestValidationErrorResponse,
+            "model": ProblemResponse,
             "description": "Request validation failed",
-        }
+        },
+        429: {"model": ProblemResponse, "description": "Concurrency or rate limit"},
+        500: {"model": ProblemResponse, "description": "Internal application error"},
+        503: {"model": ProblemResponse, "description": "Capability unavailable"},
     },
 )
 
@@ -231,7 +240,36 @@ async def request_validation_error_handler(
                 "code": "REQUEST_VALIDATION_ERROR",
                 "message": "Request validation failed",
                 "details": jsonable_encoder(exc.errors()),
-            }
+            },
+            request_id=getattr(request.state, "request_id", None),
+        ),
+    )
+
+
+@app.exception_handler(StarletteHTTPException)
+async def http_exception_handler(
+    request: Request, exc: StarletteHTTPException
+) -> JSONResponse:
+    """Normalize explicit HTTP rejections into the maintained problem contract."""
+
+    detail = exc.detail
+    if isinstance(detail, dict):
+        problem = dict(detail)
+        problem.setdefault("code", f"HTTP_{exc.status_code}")
+        problem.setdefault(
+            "message", str(problem.get("detail", "Request was rejected"))
+        )
+    else:
+        problem = {
+            "code": f"HTTP_{exc.status_code}",
+            "message": str(detail),
+        }
+    return JSONResponse(
+        status_code=exc.status_code,
+        headers=exc.headers,
+        content=error_response(
+            problem,
+            request_id=getattr(request.state, "request_id", None),
         ),
     )
 
@@ -258,7 +296,14 @@ class AuthMiddleware(BaseHTTPMiddleware):
         auth_header = request.headers.get("authorization", "")
         if not auth_header.startswith("Bearer "):
             return StarletteJSONResponse(
-                status_code=401, content={"detail": "Not authenticated"}
+                status_code=401,
+                content=error_response(
+                    {
+                        "code": "AUTHENTICATION_REQUIRED",
+                        "message": "Not authenticated",
+                    },
+                    request_id=getattr(request.state, "request_id", None),
+                ),
             )
 
         token = auth_header.removeprefix("Bearer ")
@@ -269,7 +314,13 @@ class AuthMiddleware(BaseHTTPMiddleware):
         except (jwt.PyJWTError, KeyError, AttributeError):
             return StarletteJSONResponse(
                 status_code=401,
-                content={"detail": "Invalid or expired token"},
+                content=error_response(
+                    {
+                        "code": "AUTHENTICATION_TOKEN_INVALID",
+                        "message": "Invalid or expired token",
+                    },
+                    request_id=getattr(request.state, "request_id", None),
+                ),
             )
 
         return await call_next(request)
@@ -307,7 +358,13 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         if not allowed:
             return JSONResponse(
                 status_code=429,
-                content={"detail": "Too many requests. Please try again later."},
+                content=error_response(
+                    {
+                        "code": "RATE_LIMIT_EXCEEDED",
+                        "message": "Too many requests. Please try again later.",
+                    },
+                    request_id=getattr(request.state, "request_id", None),
+                ),
                 headers=headers,
             )
 
@@ -375,13 +432,18 @@ try:
         """Handle input validation errors from structural_lib."""
         return JSONResponse(
             status_code=422,
-            content={
-                "error_code": "VALIDATION_ERROR",
-                "message": exc.message,
-                "suggestion": exc.suggestion,
-                "clause_ref": exc.clause_ref,
-                "details": exc.details,
-            },
+            content=error_response(
+                {
+                    "code": "VALIDATION_ERROR",
+                    "message": exc.message,
+                    "details": {
+                        "suggestion": exc.suggestion,
+                        "clause_ref": exc.clause_ref,
+                        "error_details": exc.details,
+                    },
+                },
+                request_id=getattr(request.state, "request_id", None),
+            ),
         )
 
     @app.exception_handler(DesignConstraintError)
@@ -389,13 +451,18 @@ try:
         """Handle infeasible design errors from structural_lib."""
         return JSONResponse(
             status_code=422,
-            content={
-                "error_code": "DESIGN_CONSTRAINT_ERROR",
-                "message": exc.message,
-                "suggestion": exc.suggestion,
-                "clause_ref": exc.clause_ref,
-                "details": exc.details,
-            },
+            content=error_response(
+                {
+                    "code": "DESIGN_CONSTRAINT_ERROR",
+                    "message": exc.message,
+                    "details": {
+                        "suggestion": exc.suggestion,
+                        "clause_ref": exc.clause_ref,
+                        "error_details": exc.details,
+                    },
+                },
+                request_id=getattr(request.state, "request_id", None),
+            ),
         )
 
     @app.exception_handler(ComplianceError)
@@ -403,13 +470,18 @@ try:
         """Handle IS 456 compliance violations from structural_lib."""
         return JSONResponse(
             status_code=422,
-            content={
-                "error_code": "COMPLIANCE_ERROR",
-                "message": exc.message,
-                "suggestion": exc.suggestion,
-                "clause_ref": exc.clause_ref,
-                "details": exc.details,
-            },
+            content=error_response(
+                {
+                    "code": "COMPLIANCE_ERROR",
+                    "message": exc.message,
+                    "details": {
+                        "suggestion": exc.suggestion,
+                        "clause_ref": exc.clause_ref,
+                        "error_details": exc.details,
+                    },
+                },
+                request_id=getattr(request.state, "request_id", None),
+            ),
         )
 
     @app.exception_handler(ConfigurationError)
@@ -417,12 +489,17 @@ try:
         """Handle library misconfiguration errors."""
         return JSONResponse(
             status_code=500,
-            content={
-                "error_code": "CONFIGURATION_ERROR",
-                "message": exc.message,
-                "suggestion": exc.suggestion,
-                "details": exc.details,
-            },
+            content=error_response(
+                {
+                    "code": "CONFIGURATION_ERROR",
+                    "message": exc.message,
+                    "details": {
+                        "suggestion": exc.suggestion,
+                        "error_details": exc.details,
+                    },
+                },
+                request_id=getattr(request.state, "request_id", None),
+            ),
         )
 
     @app.exception_handler(CalculationError)
@@ -430,12 +507,17 @@ try:
         """Handle numerical/calculation errors from structural_lib."""
         return JSONResponse(
             status_code=500,
-            content={
-                "error_code": "CALCULATION_ERROR",
-                "message": exc.message,
-                "suggestion": exc.suggestion,
-                "details": exc.details,
-            },
+            content=error_response(
+                {
+                    "code": "CALCULATION_ERROR",
+                    "message": exc.message,
+                    "details": {
+                        "suggestion": exc.suggestion,
+                        "error_details": exc.details,
+                    },
+                },
+                request_id=getattr(request.state, "request_id", None),
+            ),
         )
 
     @app.exception_handler(StructuralLibError)
@@ -443,13 +525,18 @@ try:
         """Catch-all for any StructuralLibError not handled above."""
         return JSONResponse(
             status_code=500,
-            content={
-                "error_code": "STRUCTURAL_LIB_ERROR",
-                "message": exc.message,
-                "suggestion": exc.suggestion,
-                "clause_ref": exc.clause_ref,
-                "details": exc.details,
-            },
+            content=error_response(
+                {
+                    "code": "STRUCTURAL_LIB_ERROR",
+                    "message": exc.message,
+                    "details": {
+                        "suggestion": exc.suggestion,
+                        "clause_ref": exc.clause_ref,
+                        "error_details": exc.details,
+                    },
+                },
+                request_id=getattr(request.state, "request_id", None),
+            ),
         )
 
 except ImportError:
@@ -473,7 +560,13 @@ async def generic_exception_handler(request: Request, exc: Exception):
     )
     return JSONResponse(
         status_code=500,
-        content={"detail": "Internal server error", "status_code": 500},
+        content=error_response(
+            {
+                "code": "INTERNAL_SERVER_ERROR",
+                "message": "Internal server error",
+            },
+            request_id=getattr(request.state, "request_id", None),
+        ),
     )
 
 

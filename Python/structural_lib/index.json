@@ -17,18 +17,18 @@
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 469,
+      "size_lines": 471,
       "last_updated": "2026-08-17",
       "description": "Package:      structural_lib",
       "constants": [
         "_LAZY_MODULES"
       ],
-      "content_hash": "b58d1c67fc4b"
+      "content_hash": "1f812a093998"
     },
     {
       "name": "__main__.py",
       "type": "python",
-      "size_lines": 1588,
+      "size_lines": 1591,
       "last_updated": "2026-08-17",
       "description": "Unified CLI entrypoint for structural_lib.",
       "functions": [
@@ -124,7 +124,7 @@
           ]
         }
       ],
-      "content_hash": "b2ffbf4ab3dc"
+      "content_hash": "7e751656d4bd"
     },
     {
       "name": "adapters.py",
@@ -534,7 +534,7 @@
     {
       "name": "core",
       "path": "core/",
-      "file_count": 22,
+      "file_count": 23,
       "is_package": true
     },
     {
@@ -596,5 +596,5 @@
     "serviceability",
     "shear"
   ],
-  "content_hash": "197e2b3d289388dc"
+  "content_hash": "1c45d0f40df9e10b"
 }
