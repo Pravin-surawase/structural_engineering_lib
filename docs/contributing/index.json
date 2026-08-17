@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Guides for developers and maintainers of the structural engineering library.",
   "last_updated": "2026-08-17",
-  "file_count": 24,
+  "file_count": 23,
   "files": [
     {
       "name": "README.md",
@@ -135,14 +135,6 @@
       "content_hash": "3ab159a5ad1c"
     },
     {
-      "name": "lesson-incomplete-implementation.md",
-      "type": "documentation",
-      "size_lines": 374,
-      "last_updated": "2026-08-16",
-      "description": "> Historical incident lesson. Wrapper commands below were retired on 2026-08-09. ✅ \"Background agents work on worktrees (local commits only)\"",
-      "content_hash": "8784afe1f209"
-    },
-    {
       "name": "naming-conventions.md",
       "type": "documentation",
       "size_lines": 77,
@@ -200,5 +192,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "d55a06747771cb4b"
+  "content_hash": "9ee238644eb807be"
 }

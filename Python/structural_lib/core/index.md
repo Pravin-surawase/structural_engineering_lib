@@ -2,7 +2,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-17
-**Files:** 21
+**Files:** 22
 
 ## Public API
 
@@ -18,13 +18,22 @@
 - `TSection`
 - `LSection`
 - `CodeRegistry`
+- `BuildingModelV1`
+- `BuildingSourceRecordV1`
+- `ExcludedGravityActionV1`
+- `GravityActionCategoryV1`
+- `GravityApprovedExclusionV1`
+- `GravityCombinationFactorV1`
+- `GravityCombinationV1`
+- `GravityFootingDestinationV1`
 
 ## Python Files
 
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
-| [__init__.py](__init__.py) | Core module - Code-agnostic base classes and utilities. | 0 | 0 | 42 |
+| [__init__.py](__init__.py) | Core module - Code-agnostic base classes and utilities. | 0 | 0 | 95 |
 | [base.py](base.py) | Abstract base classes for design code implementations. | 5 | 0 | 139 |
+| [building_gravity.py](building_gravity.py) | Versioned physical-model and load-basis contracts for gravit | 15 | 2 | 686 |
 | [constants.py](constants.py) | Module:       constants | 0 | 0 | 20 |
 | [data_types.py](data_types.py) | Module:       types | 15 | 0 | 2143 |
 | [deprecation.py](deprecation.py) | Module:       deprecation | 0 | 2 | 156 |

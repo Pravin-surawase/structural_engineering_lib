@@ -3,15 +3,15 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-17",
-  "file_count": 50,
+  "file_count": 51,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 30,
+      "size_lines": 50,
       "last_updated": "2026-08-17",
       "description": "Application-layer public workflow exports.",
-      "content_hash": "bad70205f642"
+      "content_hash": "aee90b1497b9"
     },
     {
       "name": "adapters.py",
@@ -1990,6 +1990,55 @@
       "content_hash": "89b3bce33bdc"
     },
     {
+      "name": "gravity_loads.py",
+      "type": "python",
+      "size_lines": 631,
+      "last_updated": "2026-08-17",
+      "description": "Deterministic dead/live source, transfer, combination, and balance ledger.",
+      "classes": [
+        {
+          "name": "GravityLoadLedgerError",
+          "description": "The accepted model/load contracts cannot produce a V1 ledger."
+        },
+        {
+          "name": "GravityLedgerStageV1"
+        },
+        {
+          "name": "GravityBalanceBoundaryV1"
+        },
+        {
+          "name": "GravityLedgerEntryV1"
+        },
+        {
+          "name": "GravityBalanceV1"
+        },
+        {
+          "name": "GravityCombinationContributionV1"
+        },
+        {
+          "name": "GravityCombinationActionV1"
+        },
+        {
+          "name": "GravityLoadLedgerV1",
+          "public_methods": [
+            "all_balanced",
+            "ledger_hash"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "build_gravity_load_ledger_v1",
+          "description": "Build the exact V1 vertical load path with complete source accounting.",
+          "params": [
+            "building",
+            "loads"
+          ]
+        }
+      ],
+      "content_hash": "ba3b97977e83"
+    },
+    {
       "name": "import_ledger.py",
       "type": "python",
       "size_lines": 187,
@@ -3192,11 +3241,20 @@
     "SymmetricCombinedFootingDesignResult",
     "SymmetricCombinedFootingDesignStatus",
     "design_symmetric_combined_footing_is456",
+    "GravityBalanceBoundaryV1",
+    "GravityBalanceV1",
+    "GravityCombinationActionV1",
+    "GravityCombinationContributionV1",
+    "GravityLedgerEntryV1",
+    "GravityLedgerStageV1",
+    "GravityLoadLedgerError",
+    "GravityLoadLedgerV1",
+    "build_gravity_load_ledger_v1",
     "PropertyLineStrapFootingDesignInput",
     "PropertyLineStrapFootingDesignProvenance",
     "PropertyLineStrapFootingDesignResult",
     "PropertyLineStrapFootingDesignStatus",
     "design_property_line_strap_footing_is456"
   ],
-  "content_hash": "8f2a463b20c7773d"
+  "content_hash": "b9a38ef754134242"
 }

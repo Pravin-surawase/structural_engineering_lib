@@ -17,11 +17,11 @@
     {
       "name": "SESSION_LOG.md",
       "type": "documentation",
-      "size_lines": 2802,
+      "size_lines": 2922,
       "last_updated": "2026-08-17",
       "title": "Session Log",
       "description": "> Append-only decision log for AI agent sessions. > Earlier sessions (1-100): SESSION_LOG_through_session_100.md",
-      "content_hash": "99ebeba5e4b2"
+      "content_hash": "a53a5a2ba088"
     },
     {
       "name": "TASKS.md",
@@ -65,7 +65,7 @@
         "docs",
         "navigation"
       ],
-      "content_hash": "60d6af397a51"
+      "content_hash": "8a57feafb352"
     }
   ],
   "subfolders": [
@@ -106,7 +106,7 @@
     {
       "name": "contributing",
       "path": "contributing/",
-      "file_count": 26,
+      "file_count": 25,
       "description": "Guides for developers and maintainers of the structural engineering library."
     },
     {
@@ -186,7 +186,7 @@
     {
       "name": "publications",
       "path": "publications/",
-      "file_count": 11,
+      "file_count": 10,
       "description": "This directory contains blog posts, technical articles, and academic papers documenting the research and development work on this structural engineeri"
     },
     {
@@ -202,15 +202,15 @@
     {
       "name": "specs",
       "path": "specs/",
-      "file_count": 6,
+      "file_count": 7,
       "description": "Technical specifications for data formats and schemas."
     },
     {
       "name": "verification",
       "path": "verification/",
-      "file_count": 183,
+      "file_count": 184,
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
     }
   ],
-  "content_hash": "684001d5eddfc5c9"
+  "content_hash": "dec0487263deb4c0"
 }

@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Technical specifications for data formats and schemas.",
   "last_updated": "2026-08-17",
-  "file_count": 4,
+  "file_count": 5,
   "files": [
     {
       "name": "README.md",
@@ -13,6 +13,14 @@
       "title": "Specifications",
       "description": "Technical specifications for data formats and schemas. | Spec | Description |",
       "content_hash": "97ed87d97ee9"
+    },
+    {
+      "name": "building-gravity-v1.md",
+      "type": "documentation",
+      "size_lines": 128,
+      "last_updated": "2026-08-17",
+      "description": "This specification freezes the B1 physical-model and dead/live load-ledger foundation. It establishes a deterministic, hand-checkable load path before",
+      "content_hash": "1473ee654dea"
     },
     {
       "name": "csv-import-schema.md",
@@ -40,5 +48,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "fb6657c13181dffa"
+  "content_hash": "5386405935fd2368"
 }

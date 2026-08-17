@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
   "last_updated": "2026-08-17",
-  "file_count": 74,
+  "file_count": 75,
   "files": [
     {
       "name": "README.md",
@@ -1702,6 +1702,23 @@
         }
       ],
       "content_hash": "a79e49ca6ed7"
+    },
+    {
+      "name": "test_docs_index_generator.py",
+      "type": "python",
+      "size_lines": 32,
+      "last_updated": "2026-08-17",
+      "description": "Regression tests for deterministic docs-index file output.",
+      "functions": [
+        {
+          "name": "test_write_ends_with_newline_and_remains_valid_json",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        }
+      ],
+      "content_hash": "4b675204bef1"
     },
     {
       "name": "test_error_messages.py",
@@ -4952,10 +4969,10 @@
     {
       "name": "unit",
       "path": "unit/",
-      "file_count": 37,
+      "file_count": 38,
       "is_package": true
     }
   ],
   "has_init": true,
-  "content_hash": "7dfd3a1f1d17fadf"
+  "content_hash": "fa2ef2b90152cdb1"
 }

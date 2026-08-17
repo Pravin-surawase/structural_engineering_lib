@@ -3,15 +3,15 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-17",
-  "file_count": 21,
+  "file_count": 22,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 42,
+      "size_lines": 95,
       "last_updated": "2026-08-17",
       "description": "Core module - Code-agnostic base classes and utilities.",
-      "content_hash": "8fde979e76f9"
+      "content_hash": "642839e52a43"
     },
     {
       "name": "base.py",
@@ -61,6 +61,92 @@
         }
       ],
       "content_hash": "6e16697cfa31"
+    },
+    {
+      "name": "building_gravity.py",
+      "type": "python",
+      "size_lines": 686,
+      "last_updated": "2026-08-17",
+      "description": "Versioned physical-model and load-basis contracts for gravity workflow V1.",
+      "classes": [
+        {
+          "name": "CoordinateSystemV1",
+          "description": "Only coordinate system accepted by the bounded V1 topology."
+        },
+        {
+          "name": "GravitySectionKindV1"
+        },
+        {
+          "name": "GravityMemberKindV1"
+        },
+        {
+          "name": "GravitySupportIdealizationV1"
+        },
+        {
+          "name": "SourceDispositionV1"
+        },
+        {
+          "name": "GravityLoadCaseV1"
+        },
+        {
+          "name": "GravityLoadStateV1"
+        },
+        {
+          "name": "GravityActionCategoryV1",
+          "description": "Source categories plus the derived aggregate used after load transfer."
+        },
+        {
+          "name": "GravityInclusionDispositionV1"
+        },
+        {
+          "name": "ExcludedGravityActionV1"
+        },
+        {
+          "name": "GravityNodeV1"
+        },
+        {
+          "name": "GravityMaterialV1"
+        },
+        {
+          "name": "GravitySectionV1",
+          "public_methods": [
+            "validate_dimensions"
+          ]
+        },
+        {
+          "name": "GravityPanelV1",
+          "public_methods": [
+            "validate_unique_references"
+          ]
+        },
+        {
+          "name": "GravityMemberV1",
+          "public_methods": [
+            "validate_member_contract"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "canonical_building_model_hash_v1",
+          "description": "Hash normalized accepted geometry; raw-source ordering is provenance only.",
+          "params": [
+            "model"
+          ]
+        },
+        {
+          "name": "canonical_load_model_hash_v1",
+          "description": "Hash the accepted dead/live basis independently of raw-source serialization.",
+          "params": [
+            "model"
+          ]
+        }
+      ],
+      "constants": [
+        "_ID_PATTERN",
+        "_SHA256_PATTERN"
+      ],
+      "content_hash": "406279171a03"
     },
     {
       "name": "constants.py",
@@ -1166,7 +1252,15 @@
     "RectangularSection",
     "TSection",
     "LSection",
-    "CodeRegistry"
+    "CodeRegistry",
+    "BuildingModelV1",
+    "BuildingSourceRecordV1",
+    "ExcludedGravityActionV1",
+    "GravityActionCategoryV1",
+    "GravityApprovedExclusionV1",
+    "GravityCombinationFactorV1",
+    "GravityCombinationV1",
+    "GravityFootingDestinationV1"
   ],
-  "content_hash": "86814058d8c20886"
+  "content_hash": "df178532abd89c1b"
 }

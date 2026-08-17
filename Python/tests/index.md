@@ -4,7 +4,7 @@ This document describes the test taxonomy and structure for the structural_engin
 
 **Type:** Python Package
 **Last Updated:** 2026-08-17
-**Files:** 74
+**Files:** 75
 
 ## Documentation Files
 
@@ -42,6 +42,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_core_types.py](test_core_types.py) | Tests for core types and error dataclasses. | 11 | 0 | 391 |
 | [test_dashboard.py](test_dashboard.py) | Tests for the dashboard analytics module. | 4 | 0 | 259 |
 | [test_design_from_input.py](test_design_from_input.py) | Tests for design_from_input API function. | 1 | 0 | 142 |
+| [test_docs_index_generator.py](test_docs_index_generator.py) | Regression tests for deterministic docs-index file output. | 0 | 1 | 32 |
 | [test_error_messages.py](test_error_messages.py) | Tests for error message templates. | 7 | 0 | 294 |
 | [test_etabs_import_integration.py](test_etabs_import_integration.py) | Integration tests for etabs_import Pydantic conversion funct | 4 | 4 | 330 |
 | [test_evidence.py](test_evidence.py) | Focused tests for the supported IS 456 beam evidence envelop | 0 | 9 | 237 |
@@ -101,4 +102,4 @@ This document describes the test taxonomy and structure for the structural_engin
 | [performance/](performance/) 📦 | 3 |  |
 | [property/](property/) 📦 | 9 |  |
 | [regression/](regression/) 📦 | 11 |  |
-| [unit/](unit/) 📦 | 37 |  |
+| [unit/](unit/) 📦 | 38 |  |
