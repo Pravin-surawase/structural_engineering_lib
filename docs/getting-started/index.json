@@ -25,10 +25,10 @@
     {
       "name": "agent-bootstrap.md",
       "type": "documentation",
-      "size_lines": 738,
+      "size_lines": 753,
       "last_updated": "2026-08-17",
       "description": "> **This is THE canonical bootstrap for all AI agents.** Entry points (CLAUDE.md, .github/copilot-instructions.md) link here. | # | Critical Warning | Why it matters |",
-      "content_hash": "c412341efee9"
+      "content_hash": "868ca236ff1b"
     },
     {
       "name": "agent-essentials.md",
@@ -152,5 +152,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "da2253c1c0b39eb2"
+  "content_hash": "00471c64b93ad651"
 }

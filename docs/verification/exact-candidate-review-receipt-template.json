@@ -9,10 +9,22 @@
     "tag": null,
     "reviewed_targets": []
   },
+  "hosted_checks": {
+    "required_pr_checks": {
+      "status": "HOLD",
+      "head_sha": null,
+      "url": null
+    },
+    "weekly_verification": {
+      "status": "HOLD",
+      "head_sha": null,
+      "url": null
+    }
+  },
   "reviewer": {
     "identity": null,
     "independent": false,
     "reviewed_at_utc": null
   },
-  "note": "Create a version-specific copy only after independent exact-candidate review. Add that receipt and the owner authorization in an evidence-only descendant commit; any Python or non-evidence path change blocks publication."
+  "note": "Create a version-specific copy only after required PR checks, exact-head Weekly Verification, and independent exact-candidate review pass. Add that receipt and the owner authorization in an evidence-only descendant commit; any Python or non-evidence path change blocks publication."
 }

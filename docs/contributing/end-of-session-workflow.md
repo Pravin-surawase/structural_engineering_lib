@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-17
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -13,9 +13,9 @@ tags: []
 **Audience:** All Agents
 **Status:** Approved
 **Importance:** Critical
-**Version:** 1.2.0
+**Version:** 1.3.0
 **Created:** 2026-01-08
-**Last Updated:** 2026-03-29
+**Last Updated:** 2026-08-17
 
 ---
 
@@ -28,13 +28,15 @@ tags: []
 ## ⚡ Quick Checklist (5 Minutes)
 
 ```bash
-# 1. Run automated checks
-.venv/bin/python scripts/session.py end --fix
-
-# 2. Review output and fix any issues
-# 3. Commit uncommitted work (if any)
-# 4. Update handoff docs (if needed)
-# 5. Done!
+# 1. Finish code, docs, SESSION_LOG, task/handoff state, and receipt
+# 2. If preparation automation is explicitly needed, run it before the freeze
+./run.sh session end --agent <role> --fix
+# 3. Review every resulting write
+# 4. Refresh only affected indexes once (the final repository write)
+# 5. Commit the immutable local candidate
+# 6. Run final validation read-only on the clean commit
+./run.sh session end --agent <role>
+# 7. Push and use hosted GitHub facts externally
 ```
 
 **That's it for routine sessions.** The steps below are detailed explanations.
@@ -43,24 +45,31 @@ tags: []
 
 ## 📋 Full Workflow (Step-by-Step)
 
-### Step 1: Run Automated End-Session Checks ⚡
+### Step 1: Prepare Closeout Documents When Needed ⚡
 
 ```bash
-cd /path/to/structural_engineering_lib
-.venv/bin/python scripts/session.py end --fix
+./run.sh session end --agent <role> --fix
 ```
+
+This is preparation mode, not a final closeout verdict. It may update handoff
+or task files, but it never generates indexes. Review its writes before the
+final index freeze.
 
 **What it checks:**
 - ✅ Uncommitted changes (reminds you to commit)
-- ✅ Session log entry for today (creates if missing)
+- ✅ Session log entry for today and required issue/root-cause sections
 - ✅ Handoff freshness (next-session-brief.md date)
 - ✅ Test count drift (ensures test_stats.json is current)
 - ✅ Version consistency (package version matches docs)
 - ✅ Active task status (checks TASKS.md Active section)
 
 **Options:**
-- `--fix` - Auto-fix issues where possible
-- `--quick` - Skip expensive checks (test counts, version checks)
+- `--fix` - Prepare supported handoff/task files before the final index refresh
+- no `--fix` - Read-only final validation
+
+Preparation returns exit status `2` when its checks otherwise pass. That
+non-zero status is intentional: callers must not treat a potentially mutating
+preparation run as the final closeout success.
 
 **Expected output:**
 ```
@@ -73,7 +82,7 @@ cd /path/to/structural_engineering_lib
 [✓] No active tasks need attention
 [i] Remember to update TASKS.md if work completed
 
-All checks passed! Ready to hand off.
+Preparation mode completed; this is not a final closeout verdict.
 ============================================================
 ```
 
@@ -87,8 +96,7 @@ All checks passed! Ready to hand off.
 ```
 
 **❌ Session log entry missing:**
-- Script auto-creates entry with `--fix`
-- Or manually add to `docs/SESSION_LOG.md`:
+- Add it to `docs/SESSION_LOG.md` before the index freeze:
   ```markdown
   ## 2026-01-06 — Session (Brief Title)
 
@@ -100,10 +108,12 @@ All checks passed! Ready to hand off.
   - Decisions made
   ```
 
-**Commit accuracy rules:**
-- If a PR was squash-merged, record the **merge commit hash** (from main).
-- Do not list pre-squash branch commits unless explicitly labeled as such.
-- Prefer: `gh pr view <PR> --json mergeCommit -q .mergeCommit.oid` for accuracy.
+**Candidate accuracy rules:**
+- Record the PR number and frozen candidate head before publication.
+- Keep hosted-check and merge facts in GitHub and the external handoff after
+  push; do not rewrite `SESSION_LOG.md` only to add them.
+- A material post-push defect is a separate repair candidate, not a status-log
+  commit.
 
 **❌ Next session brief outdated:**
 - Update `docs/planning/next-session-brief.md`:
@@ -200,27 +210,36 @@ Add to `docs/contributing/session-issues.md`:
 
 ```bash
 # Test basic functionality (if code changed)
-cd Python && .venv/bin/python -m pytest -q
+./scripts/python_runtime.sh -m pytest <focused-test-paths> -q
 
 # Check for obvious formatting issues (if Python changed)
-.venv/bin/python -m black Python/ --check
+./scripts/python_runtime.sh -m black <changed-python-paths> --check
 
 # Verify docs links aren't broken (if docs changed)
-.venv/bin/python scripts/check_links.py docs/
+./scripts/python_runtime.sh scripts/check_links.py docs/
 ```
 
-**Don't run full CI locally** - that's what CI is for. Just catch obvious issues.
+Follow the repository's packet and cumulative verification cadence in
+`AGENTS.md`; required hosted checks are never bypassed.
 
 ### Step 7: Confirm Handoff Readiness ✨
 
+Before this final read-only step, finish all session/task/handoff/evidence
+writes and the pre-commit Git handoff receipt. Refresh only the affected
+indexes once and commit the immutable local candidate. Nothing in the
+repository may be rewritten after that refresh.
+
 **Final checklist:**
 
-- [ ] All work committed and pushed
 - [ ] TASKS.md reflects current state
 - [ ] Session log has today's entry
 - [ ] Next session brief updated (if major work)
 - [ ] Issues documented (if encountered)
-- [ ] Working tree clean (`git status`)
+- [ ] Pre-commit handoff receipt created
+- [ ] Affected indexes refreshed once as the final repository write
+- [ ] Intended paths committed locally
+- [ ] Plain `./run.sh session end --agent <role>` passes read-only
+- [ ] Candidate pushed without rewriting history
 - [ ] No active work left in limbo
 
 **Verify:**
@@ -292,33 +311,28 @@ git log --oneline -3    # Verify your commits are there
 ## 🔄 Quick Reference by Session Type
 
 ### ✅ Session Docs Rule (Avoid the Commit Loop)
-Update `docs/SESSION_LOG.md` and `docs/planning/next-session-brief.md` **in the same PR**
-before asking Codex to close out the PR. Record the **PR number** (not the merge hash) in the
-SESSION_LOG entry so you never need a post-merge log commit.
+Update `docs/SESSION_LOG.md` and `docs/planning/next-session-brief.md` in the
+same candidate when their state changes. Record a PR number only if it is
+already known before the freeze. Never rewrite the candidate merely to add a
+new PR number, hosted status, or merge hash.
 
 ### Routine Bug Fix (1-2 hours)
-1. Run `session.py end --quick`
-2. Commit work with clear message
-3. Update TASKS.md if task completed
-4. Done!
+1. Finish the log/task/handoff/receipt writes.
+2. Refresh affected indexes once.
+3. Commit the candidate and run plain `session.py end` read-only.
+4. Push the unchanged candidate.
 
 ### Feature Implementation (2-4 hours)
-1. Run `session.py end --fix`
-2. Commit all work
-3. Update TASKS.md (move to Done)
-4. Update next-session-brief.md with summary
-5. Document any issues in session-issues.md
-6. Done!
+1. Update TASKS, next-session brief, session issues, and receipt.
+2. Use `session.py end --fix` only if preparation automation is needed.
+3. Review all writes and refresh affected indexes once.
+4. Commit, run plain `session.py end` read-only, then push unchanged.
 
 ### Major Enhancement (4+ hours)
-1. Run `session.py end --fix`
-2. Commit all work
-3. Update TASKS.md comprehensively
-4. Update next-session-brief.md with details
-5. Create session research document (optional)
-6. Document issues/learnings in session-issues.md
-7. Add SESSION_LOG entry with full context
-8. Done!
+1. Complete every task, brief, research, issue, session-log, and receipt write.
+2. Use `session.py end --fix` only before the freeze if needed.
+3. Review all writes and refresh affected indexes once.
+4. Commit, run plain `session.py end` read-only, then push unchanged.
 
 ### Research Session (No Code Changes)
 1. Commit research documents
@@ -342,6 +356,7 @@ SESSION_LOG entry so you never need a post-merge log commit.
 | Document issues | ❌ No | ✅ Yes (if encountered) |
 | Commit uncommitted work | ❌ No | ✅ Yes |
 | Create research doc | ❌ No | 🟡 Optional (major work) |
+| Generate maintained indexes | ❌ Never | ✅ Once, after all source docs freeze |
 
 **Legend:**
 - ✅ Fully automated
@@ -354,7 +369,8 @@ SESSION_LOG entry so you never need a post-merge log commit.
 
 ### Failure #1: "I don't know what was done last"
 **Cause:** Session log not updated, no handoff brief
-**Prevention:** Run `session.py end --fix` (auto-creates entry)
+**Prevention:** Add the required session entry before the final index refresh;
+plain `session.py end` validates it.
 
 ### Failure #2: "The working tree is dirty"
 **Cause:** Uncommitted changes left in workspace
@@ -380,9 +396,9 @@ SESSION_LOG entry so you never need a post-merge log commit.
 
 ## 💡 Pro Tips
 
-**Tip 1: Use session.py end early and often**
-- Run it before your last commit (catches issues early)
-- Easier to fix issues during session than after
+**Tip 1: Separate preparation from the final verdict**
+- Use `session.py end --fix` only before the final index refresh.
+- Use plain `session.py end` once after the freeze for the read-only verdict.
 
 **Tip 2: Update docs as you work, not at the end**
 - Update TASKS.md when you complete each task

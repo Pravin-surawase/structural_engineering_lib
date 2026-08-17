@@ -1,0 +1,183 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "230a095b45cfc9f4395ac986133cd8512229ea6d004b300dd8bbe9bd3b6c4a48",
+    "state": {
+      "branch": "codex/lib-pro-002-j-release-signal",
+      "default_base": {
+        "ahead": 2,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "0ba2f397aec267bc74a31281f9158189fde2749d",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 102.29,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-lib-pro-002-j-release-signal",
+      "head_sha": "d81369f2a6a7ec407c3c01e08ebff9de99366fb5",
+      "hold_reasons": [
+        "changed paths: 30"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-17T06:07:48.438186+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-j-release-signal",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 30,
+        "modified_paths": [
+          ".github/copilot-instructions.md",
+          "AGENTS.md",
+          "Python/tests/test_session_automation.py",
+          "docs/SESSION_LOG.md",
+          "docs/contributing/end-of-session-workflow.md",
+          "docs/getting-started/agent-bootstrap.md",
+          "scripts/session.py"
+        ],
+        "staged_paths": [
+          ".github/copilot-instructions.md",
+          "AGENTS.md",
+          "Python/tests/index.json",
+          "Python/tests/index.md",
+          "Python/tests/test_session_automation.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/agents/guides/agent-workflow-master-guide.md",
+          "docs/agents/guides/index.json",
+          "docs/agents/guides/index.md",
+          "docs/contributing/end-of-session-workflow.md",
+          "docs/contributing/index.json",
+          "docs/contributing/index.md",
+          "docs/contributing/repo-professionalism.md",
+          "docs/getting-started/agent-bootstrap.md",
+          "docs/getting-started/index.json",
+          "docs/getting-started/index.md",
+          "docs/index.json",
+          "docs/index.md",
+          "docs/planning/index.json",
+          "docs/planning/index.md",
+          "docs/planning/next-session-brief.md",
+          "docs/planning/pre-release-input-safety-and-professional-readiness-plan.md",
+          "docs/verification/index.json",
+          "docs/verification/index.md",
+          "docs/verification/lib-pro-002-j-closeout-determinism-git-handoff-receipt.json",
+          "scripts/generate_enhanced_index.py",
+          "scripts/index.json",
+          "scripts/index.md",
+          "scripts/session.py"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/codex/lib-pro-002-j-release-signal",
+        "sha": "d81369f2a6a7ec407c3c01e08ebff9de99366fb5",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-j-release-signal"
+    }
+  },
+  "local_state_receipt_hash": "sha256:230a095b45cfc9f4395ac986133cd8512229ea6d004b300dd8bbe9bd3b6c4a48",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-17T06:07:48.438360+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [],
+    "integration_owner": "Codex",
+    "owned_paths": [
+      ".github/workflows/nightly.yml",
+      ".github/workflows/publish.yml",
+      "scripts/release.py",
+      "scripts/generate_enhanced_index.py",
+      "scripts/session.py",
+      "Python/tests/test_ci_workflow_contract.py",
+      "Python/tests/test_release_scripts.py",
+      "Python/tests/test_release_environment.py",
+      "Python/tests/test_session_automation.py",
+      "docs/verification/exact-candidate-review-receipt-template.json",
+      "docs/verification/lib-pro-002-j-closeout-determinism-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "AGENTS.md",
+      ".github/copilot-instructions.md",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md",
+      "docs/planning/pre-release-input-safety-and-professional-readiness-plan.md",
+      "docs/contributing/end-of-session-workflow.md",
+      "docs/contributing/repo-professionalism.md",
+      "docs/getting-started/agent-bootstrap.md",
+      "docs/agents/guides/agent-workflow-master-guide.md",
+      "Python/tests/index.json",
+      "Python/tests/index.md",
+      "scripts/index.json",
+      "scripts/index.md",
+      "docs/index.json",
+      "docs/index.md",
+      "docs/contributing/index.json",
+      "docs/contributing/index.md",
+      "docs/getting-started/index.json",
+      "docs/getting-started/index.md",
+      "docs/agents/guides/index.json",
+      "docs/agents/guides/index.md",
+      "docs/planning/index.json",
+      "docs/planning/index.md",
+      "docs/verification/index.json",
+      "docs/verification/index.md"
+    ],
+    "task_id": "LIB-PRO-002-J-CLOSEOUT-DETERMINISM"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

@@ -14,6 +14,8 @@ pytestmark = pytest.mark.repo_only
 REPO_ROOT = Path(__file__).resolve().parents[2]
 FAST_CHECKS = REPO_ROOT / ".github" / "workflows" / "fast-checks.yml"
 DEPLOY_DOCS = REPO_ROOT / ".github" / "workflows" / "deploy-docs.yml"
+NIGHTLY = REPO_ROOT / ".github" / "workflows" / "nightly.yml"
+PUBLISH = REPO_ROOT / ".github" / "workflows" / "publish.yml"
 
 BASE_GATE_ENV = {
     "CHANGES_RESULT": "success",
@@ -33,6 +35,41 @@ BASE_GATE_ENV = {
 
 def _workflow() -> dict:
     return yaml.safe_load(FAST_CHECKS.read_text(encoding="utf-8"))
+
+
+def _named_step_run(workflow_path: Path, job: str, step_name: str) -> str:
+    workflow = yaml.safe_load(workflow_path.read_text(encoding="utf-8"))
+    steps = workflow["jobs"][job]["steps"]
+    return next(step["run"] for step in steps if step["name"] == step_name)
+
+
+def test_hosted_full_suites_bind_the_setup_python_interpreter():
+    expected = 'STRUCTURAL_LIB_PYTHON="$(command -v python)" python -m pytest'
+
+    weekly = _named_step_run(
+        NIGHTLY, "full-verification", "Full Python suite with coverage"
+    )
+    publication = _named_step_run(PUBLISH, "validate", "Run release tests")
+
+    assert expected in weekly
+    assert expected in publication
+
+
+def test_weekly_benchmark_evidence_does_not_mutate_indexed_docs():
+    workflow = yaml.safe_load(NIGHTLY.read_text(encoding="utf-8"))
+    steps = workflow["jobs"]["full-verification"]["steps"]
+    benchmark = next(
+        step
+        for step in steps
+        if step["name"] == "FastAPI benchmark evidence (scheduled/manual lane)"
+    )
+    upload = next(
+        step for step in steps if step["name"] == "Upload API benchmark evidence"
+    )
+
+    assert '"$RUNNER_TEMP/fastapi-benchmark-report.json"' in benchmark["run"]
+    assert upload["with"]["path"] == "${{ runner.temp }}/fastapi-benchmark-report.json"
+    assert "docs/reference/fastapi-benchmark-report.json" not in benchmark["run"]
 
 
 def _pr_gate_script() -> str:

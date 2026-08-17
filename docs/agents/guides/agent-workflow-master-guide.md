@@ -204,7 +204,7 @@ START
 ./scripts/ai_commit.sh "fix: update benchmark function calls"
 
 # 4. Update session docs in this PR
-# - Log PR number (not merge hash) in SESSION_LOG
+# - Include a PR number only if already known; never restart a candidate for it
 .venv/bin/python scripts/session.py handoff
 
 # 5. Finish and create PR

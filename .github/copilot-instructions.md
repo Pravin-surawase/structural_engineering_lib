@@ -174,11 +174,12 @@ This feeds the improvement loop — recurring issues get fixed in agent instruct
 
 ```bash
 ./run.sh check --quick
-# Codex inspects the diff, stages intended paths, commits, pushes, and manages the PR.
+# Codex inspects the diff, stages intended paths, and commits the candidate.
 ./run.sh session end --agent <role> # Validate; no hidden writes
+# Codex pushes and manages the PR.
 ```
 
-`session summary`, `session sync`, and `session end` are read-only by default. Use `--write` or `--fix` only when that mutation is explicitly required.
+`session summary`, `session sync`, and `session end` are read-only by default. Use `--write` or `--fix` only when that mutation is explicitly required. `session end --fix` is preparation mode: run it before the final explicit index refresh, never after it, expect exit `2` rather than final-success `0`, and rerun plain `session end` for the final read-only verdict.
 
 ## IMPORTANT: Session Logging (MANDATORY)
 
@@ -195,14 +196,16 @@ Every coding session uses the bounded workflow below.
 ### Session End (REQUIRED — do NOT skip)
 1. Update `docs/TASKS.md` and `docs/planning/next-session-brief.md` only when their state changed or a durable handoff is needed.
 2. Run `./run.sh check --quick` once before commit.
-3. Have Codex inspect the final diff, commit and push the intended paths, and create or update the PR.
-4. Run `./run.sh session end --agent <role>` to validate the clean handoff.
-5. Log feedback only when a concrete stale or missing control was found.
+3. Have Codex inspect the final diff and commit the intended paths.
+4. Run `./run.sh session end --agent <role>` on the clean local commit.
+5. Have Codex push and create or update the PR.
+6. Log feedback only when a concrete stale or missing control was found.
 
 Freeze all versioned logs, task/handoff state, evidence, and the pre-commit Git
 receipt before refreshing affected indexes once. Index refresh is the final
-repository write. Do not write PR, hosted-check, or merge status back into the
-same candidate after push; report it through GitHub and the external handoff.
+repository write before the candidate commit. Do not write PR, hosted-check, or
+merge status back into the same candidate after push; report it through GitHub
+and the external handoff.
 
 ### Why This Matters
 - **next-session-brief.md** carries task-specific continuation state.

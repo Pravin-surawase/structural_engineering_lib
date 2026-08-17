@@ -357,6 +357,33 @@ def _exact_candidate_review_receipt_errors(
             f"exact candidate review receipt does not include target {target!r}"
         )
 
+    hosted_checks = receipt.get("hosted_checks")
+    if not isinstance(hosted_checks, dict):
+        errors.append("exact candidate review receipt hosted_checks is invalid")
+    else:
+        for check_name in ("required_pr_checks", "weekly_verification"):
+            hosted_check = hosted_checks.get(check_name)
+            if not isinstance(hosted_check, dict):
+                errors.append(f"exact candidate review receipt {check_name} is invalid")
+                continue
+            if hosted_check.get("status") != "PASS":
+                errors.append(
+                    f"exact candidate review receipt {check_name} did not pass"
+                )
+            if hosted_check.get("head_sha") != reviewed_head:
+                errors.append(
+                    f"exact candidate review receipt {check_name} head does not match"
+                )
+            hosted_url = hosted_check.get("url")
+            if (
+                not isinstance(hosted_url, str)
+                or not hosted_url.startswith("https://github.com/")
+                or "/actions/runs/" not in hosted_url
+            ):
+                errors.append(
+                    f"exact candidate review receipt {check_name} URL is invalid"
+                )
+
     reviewer = receipt.get("reviewer")
     if not isinstance(reviewer, dict):
         errors.append("exact candidate review receipt reviewer is invalid")
@@ -780,7 +807,7 @@ def _sha256(path: Path) -> str:
 
 
 def _clean_wheel_import_version(wheel: Path) -> str:
-    """Install one wheel in a disposable venv and return imported package version."""
+    """Install and exercise one wheel, then return its imported package version."""
     with tempfile.TemporaryDirectory(prefix="release_candidate_") as tmp:
         temp_root = Path(tmp)
         venv_dir = temp_root / "venv"
@@ -818,6 +845,20 @@ def _clean_wheel_import_version(wheel: Path) -> str:
             cwd=temp_root,
             env=clean_env,
             timeout=120,
+        )
+        subprocess.run(
+            [
+                str(python),
+                "-m",
+                "structural_lib.release_uat",
+                "--require-installed-wheel",
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+            cwd=temp_root,
+            env=clean_env,
+            timeout=300,
         )
         return result.stdout.strip()
 
@@ -1689,6 +1730,55 @@ def _run_local_pytest_gate(section: str, test_path: str) -> bool:
     return True
 
 
+def _preflight_verdict(
+    errors: int,
+    *,
+    wheel_supplied: bool,
+    authorization_errors: list[str] | None,
+) -> tuple[str, list[str], int]:
+    """Return the mode-accurate verdict, publication holds, and exit code."""
+    if errors:
+        return "NOT_READY", [], 1
+    if not wheel_supplied:
+        return (
+            "READY_TO_PREPARE_CANDIDATE",
+            [
+                "exact wheel and source-free UAT are pending",
+                "immutable review, hosted receipts, and owner authorization are pending",
+            ],
+            0,
+        )
+    if authorization_errors is None:
+        return (
+            "CANDIDATE_TECHNICALLY_READY",
+            [
+                "publication target was not selected",
+                "exact review, hosted receipts, and target authorization were not evaluated",
+            ],
+            0,
+        )
+    if authorization_errors:
+        return "CANDIDATE_TECHNICALLY_READY", authorization_errors, 0
+    return "READY_TO_PUBLISH", [], 0
+
+
+def _preflight_mode_errors(
+    target_version: str | None,
+    *,
+    wheel_supplied: bool,
+    publication_target: str | None,
+) -> list[str]:
+    """Reject combinations that mix pre-bump and exact-artifact modes."""
+    errors = []
+    if target_version and wheel_supplied:
+        errors.append(
+            "positional target version is pre-bump-only and cannot accompany --wheel"
+        )
+    if publication_target and not wheel_supplied:
+        errors.append("publication target evaluation requires --wheel")
+    return errors
+
+
 def cmd_preflight(args: argparse.Namespace) -> int:
     """Run all pre-release validation checks without making changes."""
     print("=" * 60)
@@ -1738,6 +1828,15 @@ def cmd_preflight(args: argparse.Namespace) -> int:
     print(f"  → Current: {current}")
 
     wheel_arg = getattr(args, "wheel", None)
+    publication_target = getattr(args, "target", None)
+    mode_errors = _preflight_mode_errors(
+        args.version,
+        wheel_supplied=bool(wheel_arg),
+        publication_target=publication_target,
+    )
+    if mode_errors:
+        _print_version_errors(mode_errors)
+        errors += len(mode_errors)
     source_version_errors = _source_surface_version_errors(
         current, allow_authorized_release=True
     )
@@ -1786,12 +1885,15 @@ def cmd_preflight(args: argparse.Namespace) -> int:
                     )
                     errors += 1
                 else:
-                    print("  ✓ Clean installed package and structural_lib CLI agree")
+                    print(
+                        "  ✓ Clean installed package, exact-wheel UAT/public "
+                        "examples, and structural_lib CLI agree"
+                    )
     else:
         print("  ⚠ No candidate wheel supplied; clean-install evidence is pending")
         warnings += 1
 
-    if args.version:
+    if args.version and not wheel_arg:
         if not ALPHA_VERSION_RE.fullmatch(args.version):
             print(f"  ✗ Invalid version format: {args.version}")
             print("    Expected PEP 440 Alpha format X.Y.ZaN (for example, 0.24.0a1)")
@@ -1991,16 +2093,33 @@ def cmd_preflight(args: argparse.Namespace) -> int:
         print("  ⚠ Could not check version files")
         warnings += 1
 
+    authorization_errors: list[str] | None = None
+    if wheel_arg and publication_target:
+        authorization_errors = _release_publication_authorization_errors(
+            current, publication_target
+        )
+
+    verdict, publication_holds, exit_code = _preflight_verdict(
+        errors,
+        wheel_supplied=bool(wheel_arg),
+        authorization_errors=authorization_errors,
+    )
+
     # Summary
     print()
     print("=" * 60)
-    if errors == 0:
-        print(f"✓ READY TO RELEASE ({warnings} warnings)")
+    if verdict == "NOT_READY":
+        print(f"✗ NOT_READY — {errors} error(s), {warnings} warning(s)")
+    elif verdict == "READY_TO_PUBLISH":
+        print(f"✓ READY_TO_PUBLISH ({warnings} warnings)")
     else:
-        print(f"✗ NOT READY — {errors} error(s), {warnings} warning(s)")
+        print(f"✓ {verdict} ({warnings} warnings)")
+        print("✗ PUBLICATION_HOLD")
+        for hold in publication_holds:
+            print(f"  - {hold}")
     print("=" * 60)
 
-    return 1 if errors > 0 else 0
+    return exit_code
 
 
 # ─── CLI ─────────────────────────────────────────────────────────────────────
@@ -2080,6 +2199,14 @@ def build_parser() -> argparse.ArgumentParser:
     p_preflight.add_argument(
         "--wheel",
         help="Candidate wheel to inspect against the current source version",
+    )
+    p_preflight.add_argument(
+        "--target",
+        choices=["testpypi", "pypi", "github-release"],
+        help=(
+            "Publication target to evaluate after exact-wheel validation; "
+            "omitting it keeps the candidate on publication hold"
+        ),
     )
 
     # candidate-check

@@ -3277,7 +3277,7 @@
     {
       "name": "generate_enhanced_index.py",
       "type": "python",
-      "size_lines": 879,
+      "size_lines": 947,
       "last_updated": "2026-08-17",
       "description": "Generate enhanced index.json + index.md for ANY folder type.",
       "functions": [
@@ -3362,7 +3362,7 @@
         "SKIP_DIRS",
         "KEY_FOLDERS"
       ],
-      "content_hash": "5cdc98e56451"
+      "content_hash": "a5edb837c5c0"
     },
     {
       "name": "generate_error_docs.py",
@@ -4227,7 +4227,7 @@
     {
       "name": "release.py",
       "type": "python",
-      "size_lines": 2125,
+      "size_lines": 2252,
       "last_updated": "2026-08-17",
       "description": "Unified release management CLI.",
       "functions": [
@@ -4309,7 +4309,7 @@
         "PYPROJECT",
         "FASTAPI_INIT"
       ],
-      "content_hash": "dd76f52f3d77"
+      "content_hash": "cabad3db6d34"
     },
     {
       "name": "repo_health_check.sh",
@@ -4419,7 +4419,7 @@
     {
       "name": "session.py",
       "type": "python",
-      "size_lines": 2521,
+      "size_lines": 2512,
       "last_updated": "2026-08-17",
       "description": "Unified session management CLI.",
       "functions": [
@@ -4535,7 +4535,7 @@
         "HANDOFF_DATE_RE",
         "COMMIT_HASH_RE"
       ],
-      "content_hash": "0f36765ec817"
+      "content_hash": "549307d86352"
     },
     {
       "name": "session_store.py",
@@ -5549,5 +5549,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "f915a71ec7438601"
+  "content_hash": "cc526c1c8b4f0e18"
 }

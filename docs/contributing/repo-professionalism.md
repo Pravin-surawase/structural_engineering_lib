@@ -70,7 +70,9 @@ Canonical sources:
 - Docs index structure is enforced locally and in CI: `scripts/check_docs.py --index`.
 - Release docs consistency is enforced locally and in CI: `scripts/release.py check-docs`.
 - Session docs consistency is enforced locally and in CI: `scripts/session.py check`.
-- Handoff brief is derived from SESSION_LOG: `scripts/session.py handoff` (or `scripts/session.py end --fix`).
+- Handoff brief is derived from SESSION_LOG: `scripts/session.py handoff` or
+  preparation-only `scripts/session.py end --fix`. Run either before the final
+  explicit index refresh; plain `session.py end` supplies the read-only verdict.
 - API docs sync is enforced locally and in CI: `scripts/check_api.py --sync`.
 - Pre-release checklist structure is enforced locally and in CI: `scripts/release.py checklist`.
 - API doc signatures are enforced locally and in CI: `scripts/check_api.py --docs`.
@@ -192,8 +194,10 @@ If any check modifies files, re-stage and re-commit.
 2) Pick one TASK and finish it.
 3) Run the relevant checks (docs or code).
 4) Update `docs/SESSION_LOG.md` and `docs/TASKS.md`.
-5) Run `scripts/session.py handoff` (or `scripts/session.py end --fix`).
-6) Stop.
+5) Run `scripts/session.py handoff` or preparation-only `session.py end --fix`.
+6) Freeze all logs/tasks/receipts, refresh affected indexes once, and commit.
+7) Run plain `scripts/session.py end` read-only, then push unchanged.
+8) Stop; keep later hosted/merge facts external.
 
 **Release checklist (high level)**
 - CI green

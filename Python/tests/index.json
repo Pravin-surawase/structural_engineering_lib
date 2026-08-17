@@ -761,10 +761,16 @@
     {
       "name": "test_ci_workflow_contract.py",
       "type": "python",
-      "size_lines": 182,
+      "size_lines": 219,
       "last_updated": "2026-08-17",
       "description": "Regression tests for fail-closed PR workflow routing.",
       "functions": [
+        {
+          "name": "test_hosted_full_suites_bind_the_setup_python_interpreter"
+        },
+        {
+          "name": "test_weekly_benchmark_evidence_does_not_mutate_indexed_docs"
+        },
         {
           "name": "test_changed_path_routes_cover_controls_docs_and_their_tests"
         },
@@ -794,9 +800,11 @@
         "REPO_ROOT",
         "FAST_CHECKS",
         "DEPLOY_DOCS",
+        "NIGHTLY",
+        "PUBLISH",
         "BASE_GATE_ENV"
       ],
-      "content_hash": "41b5fe48a58b"
+      "content_hash": "9a4fa1290484"
     },
     {
       "name": "test_clause_traceability.py",
@@ -3424,7 +3432,7 @@
     {
       "name": "test_release_scripts.py",
       "type": "python",
-      "size_lines": 911,
+      "size_lines": 1030,
       "last_updated": "2026-08-17",
       "description": "Tests for release scripts (bump_version.py, release.py).",
       "classes": [
@@ -3496,6 +3504,7 @@
             "test_dev_extra_declares_hypothesis",
             "test_wheel_verify_installs_exact_test_dependencies",
             "test_wheel_verify_uses_isolated_pytest_configuration",
+            "test_candidate_preflight_runs_the_exact_wheel_uat",
             "test_wheel_verify_commands_are_package_scoped_and_isolated",
             "test_pypi_verify_forces_fresh_official_index"
           ]
@@ -3572,6 +3581,25 @@
           "name": "test_release_publication_authorization_holds_by_default"
         },
         {
+          "name": "test_preflight_verdicts_are_mode_accurate",
+          "params": [
+            "errors",
+            "wheel_supplied",
+            "authorization_errors",
+            "verdict",
+            "exit_code"
+          ]
+        },
+        {
+          "name": "test_preflight_rejects_ambiguous_mode_combinations",
+          "params": [
+            "target_version",
+            "wheel_supplied",
+            "publication_target",
+            "expected"
+          ]
+        },
+        {
           "name": "test_release_publication_authorization_binds_version_tag_and_target",
           "params": [
             "tmp_path"
@@ -3585,6 +3613,12 @@
         },
         {
           "name": "test_release_publication_authorization_rejects_tampered_receipt",
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_release_publication_authorization_requires_exact_hosted_receipts",
           "params": [
             "tmp_path"
           ]
@@ -3615,7 +3649,7 @@
         "RELEASE_SCRIPT",
         "VERSION_TRACKED_FILES"
       ],
-      "content_hash": "4a5ffbd933f4"
+      "content_hash": "dd9f3b769715"
     },
     {
       "name": "test_release_uat.py",
@@ -3976,7 +4010,7 @@
     {
       "name": "test_session_automation.py",
       "type": "python",
-      "size_lines": 1465,
+      "size_lines": 1547,
       "last_updated": "2026-08-17",
       "description": "Regression tests for maintenance session automation.",
       "functions": [
@@ -4060,6 +4094,20 @@
           ]
         },
         {
+          "name": "test_session_end_fix_never_writes_indexes_or_claims_final_closeout",
+          "params": [
+            "monkeypatch",
+            "capsys"
+          ]
+        },
+        {
+          "name": "test_session_end_fix_clean_preparation_cannot_exit_as_final_success",
+          "params": [
+            "monkeypatch",
+            "capsys"
+          ]
+        },
+        {
           "name": "test_session_end_query_failure_cannot_pass_or_print_clean",
           "params": [
             "monkeypatch",
@@ -4096,21 +4144,12 @@
           "params": [
             "heading"
           ]
-        },
-        {
-          "name": "test_task_brief_reports_lane_route_and_safe_workflow",
-          "params": [
-            "monkeypatch"
-          ]
-        },
-        {
-          "name": "test_run_task_brief_and_index_help_are_read_only"
         }
       ],
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "4b105414fbb8"
+      "content_hash": "64cc2d5900fd"
     },
     {
       "name": "test_session_store.py",
@@ -4868,5 +4907,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "c85fe235130d291b"
+  "content_hash": "5d7c5e2836f6c5a4"
 }
