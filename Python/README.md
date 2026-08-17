@@ -2,7 +2,7 @@
 
 IS 456 RC Beam Design Library (Python package).
 
-**Version:** 0.23.1a1 (Alpha development preview)
+**Version:** 0.23.1a2 (Alpha development preview)
 **Status:** [![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 
 > ⚠️ **Development Preview:** APIs may change until v1.0. For reproducible results, pin to a release tag.
@@ -12,18 +12,25 @@ IS 456 RC Beam Design Library (Python package).
 > qualified structural-engineering review. Use official standards as the
 > authoritative source.
 
-## New in v0.23.1a1
+## New in v0.23.1a2
 
-- **Security hardening:** 14 cross-field plausibility validators, error sanitization
-- **Code quality:** `check_code()` and `show_versions()` diagnostics
-- **Column API:** Full column design pipeline (axial, uniaxial, biaxial, slender, detailing)
-- **OpenAPI freeze:** Baseline drift detection in CI
+- **Fail-closed project intake:** malformed, missing, unknown, or mixed-validity
+  beam rows block the whole project instead of being defaulted or skipped.
+- **Safe public CLI:** `design` keeps JSON on stdout, sends diagnostics to stderr,
+  exits non-zero on blocked input, and preserves the `bbs`/`detail`/`dxf` chain.
+- **Traceable results:** import ledgers, input/result provenance, API classification,
+  and qualified-review boundaries are explicit and machine-readable.
+- **Additional bounded workflows:** braced walls, straight-flight staircases,
+  simply supported deep beams, regular interior flat slabs, symmetric combined
+  footings, and property-line strap footings expose case-qualified APIs.
+- **Release evidence:** exact-wheel UAT covers 29 positive and negative cases
+  across all 12 advertised commands, with hosted and local verdicts aligned.
 
 ## Install
 
 ```bash
-pip install structural-lib-is456===0.23.1a1       # current Alpha preview
-pip install "structural-lib-is456[dxf]===0.23.1a1" # Alpha with DXF export
+pip install structural-lib-is456===0.23.1a2       # current Alpha preview
+pip install "structural-lib-is456[dxf]===0.23.1a2" # Alpha with DXF export
 python -m structural_lib install-preflight          # interpreter/origin/extras
 ```
 

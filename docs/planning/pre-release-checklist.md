@@ -5,24 +5,33 @@
 **Status:** Review
 **Importance:** High
 **Created:** 2026-03-31
-**Last Updated:** 2026-08-11
+**Last Updated:** 2026-08-17
 
 ## Current State
 
-Release-ready source metadata: 0.23.1a1
+Prepared candidate source metadata: 0.23.1a2
 Current public release: v0.23.1a1 Alpha
 
-- **Release source:** tag `v0.23.1a1` at `95bed5621c2ff6e5bbcf1a25b7ac476f92ae4307`
-- **Candidate PR:** #732 merged unchanged at `95bed562`; reviewed head `adb161b8` has the same tree
-- **Release target:** v0.23.1a1 Alpha, published 2026-08-11 local time
-- **Publication state:** PyPI and GitHub prerelease published; exact public-version UAT green
+- **Published source:** tag `v0.23.1a1` at `95bed5621c2ff6e5bbcf1a25b7ac476f92ae4307`
+- **Prepared target:** v0.23.1a2 Alpha candidate; not tagged or published
+- **Candidate base:** `970a78c1931a3aa0439f487e6892a888bb113962`
+- **Publication state:** `HOLD`; exact candidate review, hosted receipts, and target authorization remain pending
 - **Review policy:** qualified structural-engineering review is required before stable/engineering-use approval, not before this Alpha release
 
 ## Next Alpha Readiness Checklist
 
-- [x] Integrate the complete `FOOT-ISO-RC-V1` source head `886871ae` into the candidate ancestry through PR #730
-- [x] Pass `./run.sh release footing-inclusion-check` with exact footing-owned files and Python/FastAPI/React integration markers present
-- [x] Verify the frozen local wheel through isolated installed-package tests and CLI UAT; retain the inclusion receipt hash in the local rehearsal record
+- [x] Owner authorizes preparation of v0.23.1a2 without tag or publication
+- [x] Base the release lane on synchronized `main` at `970a78c1931a3aa0439f487e6892a888bb113962`
+- [x] Run the canonical version preparation gate and update maintained release surfaces
+- [ ] Build and verify one exact v0.23.1a2 wheel from the frozen candidate
+- [ ] Pass required PR checks, exact-head Weekly Verification, and independent candidate review
+- [ ] Record the exact review receipt and separate owner authorization for each publication target
+- [ ] Owner authorizes the v0.23.1a2 tag, production PyPI publication, and GitHub Release after exact CI evidence passes
+
+Preparation authorization is not TestPyPI, PyPI, tag, or GitHub Release
+authorization. The publication checkbox above must remain open until the owner
+reviews the immutable candidate evidence and explicitly authorizes those exact
+targets.
 
 ### v0.23.1a1 Release Authorization
 

@@ -1247,3 +1247,31 @@ pip install structural-lib-is456===0.23.1a1
 
 This remains case-qualified software evidence, not complete IS 456 coverage,
 professional validation, or engineering-use approval.
+
+---
+
+## v0.23.1a2 — Prepared candidate (unreleased; on hold)
+
+**Status at candidate freeze (2026-08-17):** Prepared candidate; not tagged or
+published. A later append-only entry must record any exact authorization or
+publication; this historical preparation state will not be rewritten.
+
+**Candidate base:** `970a78c1931a3aa0439f487e6892a888bb113962`
+
+**Scope:** Strict lossless project intake, fail-closed public CLI behavior,
+versioned input/result provenance, expanded exact-wheel UAT, and bounded
+case-qualified braced-wall, staircase, deep-beam, flat-slab, combined-footing,
+and strap-footing workflows.
+
+**Release boundary:** Component calculations and their evidence remain distinct
+from a complete building model, qualified structural-engineering review,
+professional approval, and construction use. Packet H whole-building
+orchestration remains inactive.
+
+**Publication gate:** One exact wheel, source-free installed-package
+verification, required PR checks, exact-head Weekly Verification, independent
+review, an exact candidate receipt, and separate owner authorization for each
+target are required before TestPyPI, PyPI, a tag, or a GitHub Release.
+
+**Full changelog:** See
+[CHANGELOG.md](../../CHANGELOG.md#0231a2--prepared-candidate-unreleased-on-hold)
