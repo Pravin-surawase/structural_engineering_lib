@@ -11,12 +11,25 @@
 
 **Branch:** `codex/e1-excel-routine-workbench`.
 
+**Git handoff receipt:** `docs/verification/e1-excel-routine-workbench-git-handoff-receipt.json`
+
 **Focus:** Implement the frozen E1 selected-table rectangular-beam workflow,
 including strict intake and row reconciliation, canonical Python/CLI/REST
 results, calculation passports and freshness, one macro-free workbook, a
 bounded Office.js task pane, installed-wheel artifact identity, documentation,
 and evidence. ETABS file/live work, write-back, optimization, nightly work,
 release, and professional approval remain excluded.
+
+### Summary
+
+- Implemented the strict selected-table Python/CLI/REST workflow, canonical row
+  ledger, calculation passports, four-hash freshness, and explicit capability
+  truth without adding a second structural calculation path.
+- Packaged and verified one macro-free six-sheet workbook plus a bounded
+  Office.js task pane; focused tests, source-free wheel proof, documentation,
+  quick gates, and normal commit hooks pass.
+- Retained `TO_VERIFY_WINDOWS` for the separate installed Windows Excel G3 cell
+  and held ETABS, write-back, optimization, release, and approval work.
 
 ### Issues encountered
 
@@ -49,6 +62,8 @@ release, and professional approval remain excluded.
   values even though all E1 links and the repository quick gate passed.
 - The first normal commit hook run rejected the new session order and the new
   wheel verifier's missing automation-map registration.
+- The first immutable read-only session audit could not find completion items
+  or the Git handoff receipt in the newest E1 entry.
 
 ### Root causes and resolutions
 
@@ -119,6 +134,12 @@ release, and professional approval remain excluded.
   the top and register the verifier as a read-only Testing task with exact-wheel
   usage. The two failed hook checks and impact-mapped quick gate are the repair
   evidence; no calculation suite is repeated.
+- Confirmed root cause: the audit parser recognizes completed work only below
+  `### Summary` or `**Completed:**` and discovers a receipt only from the exact
+  bold label in the same newest session block. Resolution: add those two
+  machine-readable boundaries without changing any implementation or evidence
+  claim. The failed-only session check and exact-head read-only audit are the
+  repair proof.
 
 ### Validation through content freeze
 
