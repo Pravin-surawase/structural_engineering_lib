@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generated": "2026-08-15T16:12:41.232901",
-  "total_docs": 322,
+  "generated": "2026-08-17T21:37:21.067508",
+  "total_docs": 372,
   "docs": {
     "docs/SESSION_LOG.md": {
       "title": "Session Log",
@@ -10,18 +10,18 @@
       "folder": "root",
       "tags": [],
       "sections": [
-        "2026-08-15 \u2014 Session: GIT-7E Semantic Guidance and Durable Handoff",
-        "2026-08-15 \u2014 Session: Eight-Branch Retirement Authorization Proposal",
-        "2026-08-15 \u2014 Session: GIT-7D Cleanup and Retrospective Reconciliation",
-        "2026-08-15 \u2014 Session: GIT-7D2 Inspection-Only Branch Disposition",
-        "2026-08-15 \u2014 Session: GIT-7C2 Receipt and GIT-7D1 Targeted Generation",
-        "2026-08-14 \u2014 Session: GIT-001 Phase 7C1 Required CI Topology",
-        "2026-08-13 \u2014 Session: GIT-001 Phase 7B State and Intake Kernel",
-        "2026-08-13 \u2014 Session: GIT-001 Phases 2-6 Upgrade Proposal",
-        "2026-08-13 \u2014 Session: GIT-001 Phase 1 Completion",
-        "2026-08-12 \u2014 Session: GIT-001 Future-Work Plan Closeout"
+        "2026-08-17 \u2014 Session: v0.23.1a2 Release Candidate Preparation",
+        "2026-08-17 \u2014 Session: LIB-PRO-002-J Release Signal Convergence",
+        "2026-08-17 \u2014 Session: LIB-PRO-002-I Advertised CLI Convergence",
+        "2026-08-17 \u2014 Session: LIB-PRO-002 Post-Fix Usability Re-Audit",
+        "2026-08-17 \u2014 Session: LIB-PRO-002 B-G Cumulative Safety Integration",
+        "2026-08-17 \u2014 Session: LIB-PRO-002-A Strict Service Intake",
+        "2026-08-17 \u2014 Session: Implementation-First Verification Policy",
+        "2026-08-17 \u2014 Session: Pre-Release Input-Safety Contract Freeze",
+        "2026-08-16 \u2014 Session: Index Local-Artifact Determinism Repair",
+        "2026-08-16 \u2014 Session: Post-INDIA-2 Index Determinism Repair"
       ],
-      "size_bytes": 266057
+      "size_bytes": 166991
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",
@@ -61,7 +61,7 @@
         "Completed (Archived)",
         "External Audit Remediation \u2014 v0.21.6 \u2705 DONE"
       ],
-      "size_bytes": 49873
+      "size_bytes": 57047
     },
     "docs/WORKLOG.md": {
       "title": "Work Log",
@@ -86,75 +86,7 @@
         "Documentation Files",
         "Subfolders"
       ],
-      "size_bytes": 3022
-    },
-    "docs/_archive/planning/maintenance-plan-v0-21-sprint.md": {
-      "title": "Maintenance Plan \u2014 Post v0.20.0 Sprint",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "_active",
-      "tags": [
-        "maintenance",
-        "planning"
-      ],
-      "sections": [
-        "Executive Summary",
-        "Workstream 1: Stale Reference Cleanup (Priority: HIGH)",
-        "Workstream 2: Test Health & Coverage (Priority: HIGH)",
-        "Workstream 3: FastAPI Version & API Hygiene (Priority: HIGH)",
-        "Workstream 4: Security Hardening (Priority: MEDIUM)",
-        "Workstream 5: Documentation & Session Infrastructure (Priority: MEDIUM)",
-        "Workstream 6: Code Cleanup (Priority: LOW)",
-        "Workstream 7: Phase 1 Continuation (Priority: MEDIUM)",
-        "Execution Priority Matrix",
-        "Success Criteria"
-      ],
-      "size_bytes": 16808
-    },
-    "docs/_archive/planning/git-workflow-hardening-plan.md": {
-      "title": "Git Workflow Hardening Plan v1.0",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "_active",
-      "tags": [],
-      "sections": [
-        "Executive Summary",
-        "Root Cause Analysis: TASK-640 Incident",
-        "Gap Inventory (19 Gaps, Prioritized)",
-        "Agent Review Summary",
-        "Implementation Plan",
-        "Governance Metrics (New)",
-        "Agent Instruction Updates Required",
-        "Implementation Notes",
-        "Related Documents"
-      ],
-      "size_bytes": 16683
-    },
-    "docs/_archive/planning/agent-evolver-plan.md": {
-      "title": "Agent-Evolver: Self-Evolving Meta-Agent \u2014 v2.0",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "_active",
-      "tags": [
-        "agent-evolver",
-        "meta-agent",
-        "metrics",
-        "paper-data",
-        "self-improvement"
-      ],
-      "sections": [
-        "Table of Contents",
-        "1. Executive Summary",
-        "2. Research Foundation",
-        "3. Operational Philosophy",
-        "4. Infrastructure Audit",
-        "5. Agent Design",
-        "6. Three-Phase Rollout",
-        "7. Helper Scripts (Agent Toolkit)",
-        "8. Performance Scoring Framework (11 Dimensions)",
-        "9. Scoring Rubric (Anchored Examples)"
-      ],
-      "size_bytes": 56812
+      "size_bytes": 3023
     },
     "docs/_active/README.md": {
       "title": "Active Work Directory",
@@ -168,7 +100,7 @@
         "\ud83d\udcc1 Current Active Work",
         "\ud83d\udcda Related Documentation"
       ],
-      "size_bytes": 1771
+      "size_bytes": 1698
     },
     "docs/research/innovation-structural-design-companion.md": {
       "title": "Innovation: The Structural Design Companion",
@@ -412,6 +344,22 @@
       ],
       "size_bytes": 7062
     },
+    "docs/research/git-governance/GIT-001-phase-8-adoption-closeout.md": {
+      "title": "GIT-001 Phase 8 \u2014 Adoption and Preservation Closeout",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Decision",
+        "Exact Phase 7 integration",
+        "Adoption sample",
+        "Preservation and disposition",
+        "Root cause and recurrence guard",
+        "Closeout boundary"
+      ],
+      "size_bytes": 6750
+    },
     "docs/research/git-governance/GIT-001-phase-2-incident-register.md": {
       "title": "GIT-001 Phase 2 \u2014 Project Incident Register",
       "type": "documentation",
@@ -430,7 +378,7 @@
         "GIT-I06 \u2014 nondeterministic timing blocked unrelated PRs",
         "GIT-I07 \u2014 release preflight and CI surface skew"
       ],
-      "size_bytes": 21146
+      "size_bytes": 21156
     },
     "docs/research/git-governance/GIT-001-eight-branch-retirement-authorization-proposal.md": {
       "title": "GIT-001 Eight-Branch Retirement Authorization Proposal",
@@ -460,7 +408,7 @@
         "Receipt contract",
         "Validation boundary"
       ],
-      "size_bytes": 4801
+      "size_bytes": 5604
     },
     "docs/research/git-governance/GIT-001-next-agent-disposition-plan.md": {
       "title": "GIT-001 \u2014 Reconciled Future-Work and Disposition Plan",
@@ -480,7 +428,7 @@
         "Priority 3 \u2014 preserve and reassess merged Alpha worktrees",
         "Priority 4 \u2014 future branch-disposition packet"
       ],
-      "size_bytes": 22367
+      "size_bytes": 23209
     },
     "docs/research/git-governance/GIT-001-README.md": {
       "title": "GIT-001 \u2014 Git Research, Project Workflow, and Future-Proof Governance",
@@ -497,7 +445,7 @@
         "Ownership and non-goals",
         "Research method"
       ],
-      "size_bytes": 6618
+      "size_bytes": 7330
     },
     "docs/research/git-governance/GIT-001-phase-7D-cleanup-reconciliation.md": {
       "title": "GIT-001 Phase 7D \u2014 Non-Destructive Cleanup Reconciliation",
@@ -544,7 +492,7 @@
         "Config Files",
         "Documentation Files"
       ],
-      "size_bytes": 3635
+      "size_bytes": 3973
     },
     "docs/research/git-governance/GIT-001-phase-7A-preservation-workflow-recovery.md": {
       "title": "GIT-001 Phase 7A \u2014 Preservation and Workflow Recovery",
@@ -860,7 +808,7 @@
         "Part 8: Real Example \u2014 Four-Layer Architecture",
         "Part 9: Architecture Decisions to Make Early"
       ],
-      "size_bytes": 17102
+      "size_bytes": 17153
     },
     "docs/learning-foundations/12-starting-from-scratch.md": {
       "title": "Module 12: Starting a Project From Scratch \u2014 The Complete Guide",
@@ -1173,7 +1121,7 @@
         "References",
         "Changelog"
       ],
-      "size_bytes": 9123
+      "size_bytes": 10183
     },
     "docs/specs/v0.9-job-schema.md": {
       "title": "v0.9 \u2014 Job Schema (Draft)",
@@ -1241,7 +1189,7 @@
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 793
+      "size_bytes": 704
     },
     "docs/contributing/lesson-incomplete-implementation.md": {
       "title": "Lesson Learned: Incomplete Implementation (2026-01-09)",
@@ -1331,7 +1279,7 @@
         "8. Error Handling",
         "9. Documentation Standards"
       ],
-      "size_bytes": 42539
+      "size_bytes": 42566
     },
     "docs/contributing/naming-conventions.md": {
       "title": "Naming Conventions",
@@ -1555,7 +1503,7 @@
         "8) Confidence loop (minimal but effective)",
         "9) Quick links"
       ],
-      "size_bytes": 7339
+      "size_bytes": 7660
     },
     "docs/contributing/docstring-style-guide.md": {
       "title": "Docstring Style Guide",
@@ -1601,7 +1549,7 @@
         "\ud83d\udca1 Pro Tips",
         "\ud83d\udcdd Templates"
       ],
-      "size_bytes": 13451
+      "size_bytes": 15076
     },
     "docs/contributing/session-issues.md": {
       "title": "Session Issues and Fixes",
@@ -2108,7 +2056,7 @@
     "docs/git-automation/git-workflow-single-source.md": {
       "title": "Codex-Native Git and GitHub Workflow",
       "type": "documentation",
-      "complexity": "intermediate",
+      "complexity": "advanced",
       "folder": "git-automation",
       "tags": [
         "codex",
@@ -2118,6 +2066,7 @@
       ],
       "sections": [
         "Ownership boundary",
+        "Compact audited integration",
         "Read-only Git state authority",
         "Durable task-to-Git handoff",
         "Verification before publication",
@@ -2127,7 +2076,7 @@
         "Local hooks",
         "Historical material"
       ],
-      "size_bytes": 7910
+      "size_bytes": 13066
     },
     "docs/git-automation/README.md": {
       "title": "Codex-Native Git and GitHub",
@@ -2217,16 +2166,12 @@
         "tasks"
       ],
       "sections": [
-        "Latest Handoff (auto)",
+        "Latest handoff",
         "Required Reading",
-        "Start commands",
-        "Verified current Git facts",
-        "Preservation and disposition holds",
-        "GIT-7E exact boundary",
-        "Destructive-action holds",
-        "Session closeout"
+        "Resume safely",
+        "Candidate evidence and next gate"
       ],
-      "size_bytes": 7872
+      "size_bytes": 3853
     },
     "docs/planning/is456-solid-slabs-master-plan.md": {
       "title": "IS 456 Solid Slabs Expansion Master Plan",
@@ -2295,10 +2240,10 @@
         "9. 3D product plan",
         "10. Schema-driven capability foundation"
       ],
-      "size_bytes": 123750
+      "size_bytes": 123759
     },
-    "docs/planning/adoption-trust-surface-plan.md": {
-      "title": "ADOPT-001 Adoption and Trust Surface Plan",
+    "docs/planning/indian-code-completion-plan.md": {
+      "title": "Indian-Code Completion Waves",
       "type": "documentation",
       "complexity": "advanced",
       "folder": "planning",
@@ -2307,18 +2252,15 @@
         "tasks"
       ],
       "sections": [
-        "1. Outcome",
-        "2. Main-process contract",
-        "3. Verified starting problems",
-        "4. Recent-session incident review",
-        "5. Protected areas and non-goals",
-        "6. Execution rules",
-        "7. Dependency-ordered packets",
-        "8. Completed implementation",
-        "9. Gate ladder",
-        "10. Stop conditions"
+        "1. Purpose and authority",
+        "2. Finish-line status",
+        "3. INDIA-2 family packets",
+        "4. INDIA-3 companion-code order",
+        "5. INDIA-4 final acceptance",
+        "6. Required contract for every calculation packet",
+        "7. Claim boundaries"
       ],
-      "size_bytes": 16366
+      "size_bytes": 8490
     },
     "docs/planning/next-phase-improvements-plan.md": {
       "title": "Next Phase: What to Build and Why",
@@ -2364,7 +2306,7 @@
         "9. Agent operating model",
         "10. Verification and gate ladder"
       ],
-      "size_bytes": 72809
+      "size_bytes": 73605
     },
     "docs/planning/library-expansion-blueprint-v5.md": {
       "title": "Library Expansion Blueprint v5.0 \u2014 Multi-Code, Multi-Element",
@@ -2387,7 +2329,7 @@
         "8. Phase 4 \u2014 EC2 (EN 1992-1-1)",
         "9. Phase 5 \u2014 Fill the Matrix"
       ],
-      "size_bytes": 48808
+      "size_bytes": 49159
     },
     "docs/planning/pre-release-checklist.md": {
       "title": "Pre-Release Checklist",
@@ -2403,7 +2345,7 @@
         "Next Alpha Readiness Checklist",
         "Beta Readiness Checklist"
       ],
-      "size_bytes": 5263
+      "size_bytes": 6510
     },
     "docs/planning/README.md": {
       "title": "Planning",
@@ -2423,7 +2365,7 @@
         "Templates & Workflow",
         "Rules"
       ],
-      "size_bytes": 8124
+      "size_bytes": 8553
     },
     "docs/planning/memory.md": {
       "title": "Project Memory - Persistent Context",
@@ -2483,7 +2425,30 @@
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 2667
+      "size_bytes": 3117
+    },
+    "docs/planning/india-2-next-session-publication-and-closeout-plan.md": {
+      "title": "Next Session Git Reconciliation, Issue Repairs, and INDIA-2 Finish Plan",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "planning",
+      "tags": [
+        "roadmap",
+        "tasks"
+      ],
+      "sections": [
+        "1. Outcome and stop boundary",
+        "2. Verified planning baseline",
+        "3. Packet 1 \u2014 GIT-001 Phase 8 reconciliation",
+        "4. Packet 2 \u2014 frontmatter checker and record repair (complete on merge)",
+        "5. Packet 3 \u2014 Clause 38.2 flexure truth hygiene",
+        "6. Packets 4 onward \u2014 remaining foundation decisions",
+        "7. Completed closeout execution card",
+        "8. Efficiency and speed controls",
+        "9. Known root causes, guards, and reactivation rules",
+        "10. INDIA-2 final boundary \u2014 complete on closeout merge"
+      ],
+      "size_bytes": 29082
     },
     "docs/planning/professional-library-remediation-plan.md": {
       "title": "Professional Library Remediation Plan",
@@ -2508,8 +2473,8 @@
       ],
       "size_bytes": 28931
     },
-    "docs/planning/react-ux-improvement-plan.md": {
-      "title": "React App \u2014 UX & Visual Improvement Plan",
+    "docs/planning/pre-release-input-safety-and-professional-readiness-plan.md": {
+      "title": "Pre-Release Input Safety and Professional Readiness Plan",
       "type": "documentation",
       "complexity": "advanced",
       "folder": "planning",
@@ -2518,18 +2483,18 @@
         "tasks"
       ],
       "sections": [
-        "The Design Philosophy",
-        "Core Principle: The Editor is the Center",
-        "Current State \u2014 Navigation Flowchart",
-        "Future State \u2014 Navigation Flowchart",
-        "The Central Feature: Beam Selection \u2192 Split Detail Panel",
-        "What Each Component Does in the New Model",
-        "Bugs Found & Fixed (Session 98)",
-        "Improvement Plan (3 Phases)",
-        "Visual System",
-        "Implementation Priority"
+        "1. Executive decision",
+        "2. What the pilot establishes\u2014and what it does not",
+        "3. Confirmed root-cause map",
+        "4. Outcome-changing issue register",
+        "5. Publication gates",
+        "6. Frozen target contracts from G0",
+        "7. Mandatory negative acceptance matrix",
+        "8. Dependency-ordered implementation packets",
+        "9. Efficient execution controls",
+        "10. Non-goals and parking lot"
       ],
-      "size_bytes": 38724
+      "size_bytes": 54221
     },
     "docs/planning/dependency-security-baseline.md": {
       "title": "Dependency and Security Baseline",
@@ -2547,6 +2512,28 @@
         "Automation"
       ],
       "size_bytes": 3459
+    },
+    "docs/planning/india-2-remaining-is456-elements-plan.md": {
+      "title": "INDIA-2 Remaining Practical IS 456 Elements Plan",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "planning",
+      "tags": [
+        "roadmap",
+        "tasks"
+      ],
+      "sections": [
+        "1. The simple meaning",
+        "2. Authority and truth sources",
+        "3. Current status",
+        "4. Recommended execution order",
+        "5. The packet pattern used for every new family",
+        "6. Family-specific plan",
+        "7. Validation and Git cadence",
+        "8. INDIA-2 completion criteria",
+        "9. Closed boundary"
+      ],
+      "size_bytes": 22535
     },
     "docs/planning/democratization-vision.md": {
       "title": "Democratizing Structural Engineering",
@@ -2599,7 +2586,7 @@
         "Documentation Files",
         "Subfolders"
       ],
-      "size_bytes": 533
+      "size_bytes": 550
     },
     "docs/agents/sessions/2026-01/agent-8-week1-completion-summary.md": {
       "title": "Agent 8 Week 1 Completion Summary",
@@ -2824,7 +2811,7 @@
         "\ud83c\udfad Agent Role Patterns",
         "\ud83d\udcca Quality Gates"
       ],
-      "size_bytes": 19799
+      "size_bytes": 19829
     },
     "docs/agents/guides/agent-8-automation.md": {
       "title": "Agent 8 Automation - Scripts & Tools Index",
@@ -2951,7 +2938,7 @@
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 623
+      "size_bytes": 596
     },
     "docs/cookbook/cli-reference.md": {
       "title": "CLI Reference",
@@ -2971,7 +2958,7 @@
         "Exit Codes",
         "Related"
       ],
-      "size_bytes": 14127
+      "size_bytes": 13957
     },
     "docs/cookbook/python-recipes.md": {
       "title": "Python Recipes",
@@ -2996,6 +2983,45 @@
       ],
       "size_bytes": 8318
     },
+    "docs/verification/indian-code-truth-baseline.md": {
+      "title": "INDIA-0 Indian-Code Truth Baseline",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Purpose",
+        "Generated sources",
+        "Reconciled scope",
+        "Root-cause corrections",
+        "Reproduction",
+        "Remaining gates"
+      ],
+      "size_bytes": 4854
+    },
+    "docs/verification/india-2-final-closeout-evidence.md": {
+      "title": "INDIA-2 Final Closeout Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Closeout decision",
+        "Exact starting tree and truth target",
+        "Accepted family evidence index",
+        "Held foundation decisions",
+        "Cross-cutting truth correction",
+        "Final cumulative validation",
+        "Final boundary"
+      ],
+      "size_bytes": 7477
+    },
     "docs/verification/examples.md": {
       "title": "Verification Examples Pack",
       "type": "documentation",
@@ -3019,6 +3045,231 @@
       ],
       "size_bytes": 43515
     },
+    "docs/verification/india-2-foundation-pile-cap-g0-hold-evidence.md": {
+      "title": "INDIA-2 Foundation Pile-Cap G0 Hold Evidence",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Decision",
+        "Exact inspected baseline",
+        "Discovery evidence and authority boundary",
+        "Why neither structural model is selected",
+        "Frozen candidate and caller-owned boundary",
+        "Decision matrix retained while held",
+        "Exact reactivation contract",
+        "Dormant packet shape after a future GO",
+        "G0 acceptance and next boundary"
+      ],
+      "size_bytes": 9597
+    },
+    "docs/verification/india-1b-column-decision-evidence.md": {
+      "title": "INDIA-1B rectangular-column decision evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Decision",
+        "Governing model and provenance",
+        "Executable boundary",
+        "Acceptance and remaining boundary"
+      ],
+      "size_bytes": 3403
+    },
+    "docs/verification/lib-pro-002-e-evidence-identity.md": {
+      "title": "LIB-PRO-002-E evidence and source identity",
+      "type": "documentation",
+      "complexity": "beginner",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [],
+      "size_bytes": 1450
+    },
+    "docs/verification/india-2-deep-b-reinforcement-evidence.md": {
+      "title": "INDIA-2-DEEP-B Reinforcement Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Implemented boundary",
+        "Public clause formulas and limits",
+        "Benchmark and unsafe evidence"
+      ],
+      "size_bytes": 3735
+    },
+    "docs/verification/india-2-flat-g0-scope-evidence.md": {
+      "title": "INDIA-2-FLAT-G0 Scope and Evidence Decision",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Decision",
+        "Governing public source set",
+        "Confirmed source interpretation",
+        "Frozen supported case",
+        "Independent benchmark contract",
+        "Required dispositions and fail-closed boundaries",
+        "Explicit exclusions",
+        "Activated packets and validation cadence",
+        "G0 focused verification"
+      ],
+      "size_bytes": 12439
+    },
+    "docs/verification/alpha-0231a2-local-prepublication-rehearsal.md": {
+      "title": "v0.23.1a2 Local Prepublication Rehearsal",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Source identity",
+        "Exact artifacts",
+        "Installed-wheel verification",
+        "Exact candidate and advertised-command UAT",
+        "Bound standing controls",
+        "Verdict and remaining holds"
+      ],
+      "size_bytes": 3748
+    },
+    "docs/verification/india-2-wall-g0-scope-evidence.md": {
+      "title": "INDIA-2-WALL-G0 Braced Wall Scope and Evidence Decision",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Decision",
+        "Governing public source set",
+        "Frozen supported case",
+        "Independent benchmark contract",
+        "Required dispositions",
+        "Explicit exclusions",
+        "Activated packets and gates"
+      ],
+      "size_bytes": 6185
+    },
+    "docs/verification/india-2-foundation-raft-g0-hold-evidence.md": {
+      "title": "INDIA-2 Foundation Raft G0 Hold Evidence",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Decision",
+        "Exact inspected baseline",
+        "Discovery evidence and authority boundary",
+        "Why no analysis model is activated",
+        "Frozen candidate and caller-owned boundary",
+        "Decision matrix retained while held",
+        "Exact reactivation contract",
+        "Dormant packet shape after a future GO",
+        "G0 acceptance and next boundary"
+      ],
+      "size_bytes": 10772
+    },
+    "docs/verification/a2-lossless-intake-calculation-evidence.md": {
+      "title": "A2 Lossless Intake and Calculation Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "a2",
+        "etabs",
+        "evidence",
+        "load-analysis",
+        "lossless-import",
+        "smart-analysis",
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Authorization and source",
+        "Root-cause closure",
+        "Focused verification",
+        "Holds at G1 candidate boundary",
+        "Efficiency receipt through content freeze"
+      ],
+      "size_bytes": 7160
+    },
+    "docs/verification/india-2-foundation-strap-family-acceptance-evidence.md": {
+      "title": "INDIA-2-FOUNDATION-STRAP Focused Family Acceptance Evidence",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Acceptance decision",
+        "Integrated publication chain",
+        "Frozen and non-frozen benchmark replay",
+        "Acceptance findings and root-cause corrections",
+        "Focused acceptance gates"
+      ],
+      "size_bytes": 9662
+    },
+    "docs/verification/india-2-deep-c-public-workflow-evidence.md": {
+      "title": "INDIA-2-DEEP-C Public Python Workflow Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Published composition",
+        "Public clause, source, and approval truth",
+        "Executable benchmark and gates"
+      ],
+      "size_bytes": 2908
+    },
+    "docs/verification/india-2-deep-a-geometry-evidence.md": {
+      "title": "INDIA-2-DEEP-A Geometry and Lever-Arm Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Implemented boundary",
+        "Normalized Clause 29 behavior",
+        "Public clause registration",
+        "Benchmark and unsafe evidence"
+      ],
+      "size_bytes": 3373
+    },
     "docs/verification/bundled-sample-boq-evidence.md": {
       "title": "Bundled Sample BOQ Evidence",
       "type": "documentation",
@@ -3037,6 +3288,226 @@
         "Reconciliation of the older record"
       ],
       "size_bytes": 2326
+    },
+    "docs/verification/india-2-flat-b-moment-evidence.md": {
+      "title": "INDIA-2-FLAT-B Direct-Design Moment Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Implemented boundary",
+        "Source and traceability",
+        "Frozen benchmark",
+        "Verification and retained holds"
+      ],
+      "size_bytes": 3765
+    },
+    "docs/verification/india-2-flat-d-punching-evidence.md": {
+      "title": "INDIA-2-FLAT-D Centred Punching Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Implemented boundary",
+        "Source and traceability",
+        "Frozen benchmark",
+        "Verification and retained holds"
+      ],
+      "size_bytes": 3845
+    },
+    "docs/verification/india-2-truth-hygiene-38-2-evidence.md": {
+      "title": "INDIA-2 Clause 38.2 Truth-Hygiene Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Decision",
+        "Controlled-source binding",
+        "Consumer and provenance repair",
+        "Independent arithmetic replay",
+        "Validation",
+        "Remaining boundary"
+      ],
+      "size_bytes": 5512
+    },
+    "docs/verification/india-2-foundation-combined-c-public-workflow-evidence.md": {
+      "title": "INDIA-2-FOUNDATION-COMBINED-C Public Workflow Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Accepted outcome",
+        "Implementation identity",
+        "Composition and provenance contract",
+        "Frozen benchmark replay",
+        "Retained truth and held cases",
+        "Inherited B receipt correction",
+        "Focused verification"
+      ],
+      "size_bytes": 6939
+    },
+    "docs/verification/india-2-foundation-strap-b-strength-evidence.md": {
+      "title": "INDIA-2 Foundation Strap B Strength Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Scope and retained boundary",
+        "Frozen benchmark",
+        "Dispositions and provenance",
+        "Verification"
+      ],
+      "size_bytes": 2844
+    },
+    "docs/verification/india-2-foundation-strap-a-analysis-evidence.md": {
+      "title": "INDIA-2 Foundation Strap A Analysis Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Scope and retained boundary",
+        "Frozen and independent evidence",
+        "Provenance and cadence",
+        "Verification"
+      ],
+      "size_bytes": 2604
+    },
+    "docs/verification/india-2-flat-a-geometry-evidence.md": {
+      "title": "INDIA-2-FLAT-A Geometry and Eligibility Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Implemented boundary",
+        "Normalized Clause 31 behavior",
+        "Public clause registration",
+        "Benchmark and unsafe evidence"
+      ],
+      "size_bytes": 4545
+    },
+    "docs/verification/india-1a-beam-route-evidence.md": {
+      "title": "INDIA-1A Sagging T-Beam Route Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "beam",
+        "flanged",
+        "india-1",
+        "is456",
+        "testing",
+        "validation",
+        "verification"
+      ],
+      "sections": [
+        "Supported outcome",
+        "Governing source and units",
+        "Independent benchmark",
+        "Fail-closed boundary",
+        "Verification commands"
+      ],
+      "size_bytes": 4068
+    },
+    "docs/verification/india-1-cumulative-gate-evidence.md": {
+      "title": "INDIA-1 Cumulative Gate Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Deferred gates",
+        "Cumulative review conclusion"
+      ],
+      "size_bytes": 2389
+    },
+    "docs/verification/india-2-flat-e-publication-evidence.md": {
+      "title": "INDIA-2-FLAT-E Publication Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Published boundary",
+        "Public result and provenance",
+        "Frozen benchmark and fail-closed proof",
+        "Capability truth and retained holds",
+        "Verification boundary"
+      ],
+      "size_bytes": 4483
+    },
+    "docs/verification/india-2-wall-c-public-workflow-evidence.md": {
+      "title": "INDIA-2-WALL-C Public Python Workflow Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Published boundary",
+        "Public IS 456 provenance",
+        "Frozen end-to-end result",
+        "Retained holds",
+        "Focused verification"
+      ],
+      "size_bytes": 3457
+    },
+    "docs/verification/india-2-foundation-combined-g0-scope-evidence.md": {
+      "title": "INDIA-2-FOUNDATION-COMBINED-G0 Scope and Evidence Decision",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Decision",
+        "Governing source set",
+        "Confirmed source interpretation",
+        "Frozen supported case",
+        "Independent benchmark contract",
+        "Required dispositions and fail-closed boundaries",
+        "Explicit exclusions",
+        "Activated packets and validation cadence",
+        "G0 focused verification"
+      ],
+      "size_bytes": 13197
     },
     "docs/verification/validation-pack.md": {
       "title": "Validation Pack \u2014 Benchmark Beams & Columns",
@@ -3073,7 +3544,29 @@
         "Implementation verification \u2014 2026-08-10",
         "IS456-SLAB-001A closeout evidence \u2014 2026-08-10"
       ],
-      "size_bytes": 8573
+      "size_bytes": 9359
+    },
+    "docs/verification/india-2-foundation-strap-g0-scope-evidence.md": {
+      "title": "INDIA-2-FOUNDATION-STRAP-G0 Scope and Evidence Decision",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Decision",
+        "Governing source set",
+        "Confirmed source interpretation",
+        "Frozen supported case",
+        "Independent benchmark contract",
+        "Required dispositions and fail-closed boundaries",
+        "Explicit exclusions",
+        "Activated packets and validation cadence",
+        "G0 focused verification"
+      ],
+      "size_bytes": 15438
     },
     "docs/verification/ui-experience-session-2-acceptance.md": {
       "title": "UIX-001 Session 2 Acceptance",
@@ -3114,6 +3607,66 @@
       ],
       "size_bytes": 2347
     },
+    "docs/verification/india-2-cumulative-gate-evidence.md": {
+      "title": "INDIA-2 Cumulative Gate Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Integrated packet receipts",
+        "Cumulative validation",
+        "Essential integrated review",
+        "Claim boundary"
+      ],
+      "size_bytes": 3392
+    },
+    "docs/verification/india-2-wall-a-axial-kernel-evidence.md": {
+      "title": "INDIA-2-WALL-A Geometry and Axial-Capacity Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Implemented boundary",
+        "Public code references and normalized rules",
+        "Frozen benchmark result",
+        "Fail-closed and unsafe evidence",
+        "Verification"
+      ],
+      "size_bytes": 3721
+    },
+    "docs/verification/a1-canonical-truth-transport-evidence.md": {
+      "title": "A1 Canonical Truth and Transport Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "a1",
+        "api",
+        "evidence",
+        "result",
+        "testing",
+        "transport",
+        "validation"
+      ],
+      "sections": [
+        "Authorization and source",
+        "A1 contract closure",
+        "Explicit holds and non-goals",
+        "Frozen verification selection",
+        "Efficiency receipt targets",
+        "Local evidence through the revised content freeze",
+        "Efficiency receipt through content freeze"
+      ],
+      "size_bytes": 6221
+    },
     "docs/verification/external-cli-test.md": {
       "title": "External CLI Test (S-007)",
       "type": "documentation",
@@ -3131,10 +3684,44 @@
       ],
       "size_bytes": 2203
     },
+    "docs/verification/india-2-foundation-combined-d-publication-evidence.md": {
+      "title": "INDIA-2-FOUNDATION-COMBINED-D Publication Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Published boundary",
+        "Capability and semantic truth",
+        "Retained holds",
+        "Verification boundary"
+      ],
+      "size_bytes": 4826
+    },
+    "docs/verification/india-2-foundation-strap-d-publication-evidence.md": {
+      "title": "INDIA-2-FOUNDATION-STRAP-D Publication Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Published boundary",
+        "Capability and semantic truth",
+        "Retained holds",
+        "Verification boundary"
+      ],
+      "size_bytes": 5070
+    },
     "docs/verification/index.md": {
       "title": "Verification",
       "type": "documentation",
-      "complexity": "intermediate",
+      "complexity": "advanced",
       "folder": "verification",
       "tags": [
         "testing",
@@ -3144,7 +3731,25 @@
         "Config Files",
         "Documentation Files"
       ],
-      "size_bytes": 2309
+      "size_bytes": 23159
+    },
+    "docs/verification/india-2-wall-d-publication-evidence.md": {
+      "title": "INDIA-2-WALL-D Publication Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Published boundary",
+        "Public clause and source visibility",
+        "Transport evidence",
+        "Retained holds",
+        "Focused verification"
+      ],
+      "size_bytes": 3663
     },
     "docs/verification/pack.md": {
       "title": "Verification Pack",
@@ -3162,6 +3767,22 @@
         "Notes"
       ],
       "size_bytes": 1835
+    },
+    "docs/verification/india-2-foundation-strap-c-public-workflow-evidence.md": {
+      "title": "INDIA-2 Foundation Strap C Public Python Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Published Python contract",
+        "Provenance and truth boundary",
+        "Verification"
+      ],
+      "size_bytes": 2400
     },
     "docs/verification/alpha-0231-local-prepublication-rehearsal.md": {
       "title": "v0.23.1a1 Local Prepublication Rehearsal",
@@ -3191,7 +3812,61 @@
         "validation"
       ],
       "sections": [],
-      "size_bytes": 1284
+      "size_bytes": 1761
+    },
+    "docs/verification/india-2-flat-family-acceptance-evidence.md": {
+      "title": "INDIA-2-FLAT Focused Family Acceptance Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Acceptance decision",
+        "Public clause and source evidence",
+        "Independent benchmark replay",
+        "Acceptance finding and truth correction",
+        "Focused acceptance gates"
+      ],
+      "size_bytes": 5120
+    },
+    "docs/verification/india-2b-staircase-actions-evidence.md": {
+      "title": "INDIA-2B Staircase Geometry and Action Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Implemented calculation boundary",
+        "Independent benchmark",
+        "Fail-closed evidence",
+        "Verification cadence"
+      ],
+      "size_bytes": 2833
+    },
+    "docs/verification/india-2-foundation-combined-a-analysis-evidence.md": {
+      "title": "INDIA-2-FOUNDATION-COMBINED-A Analysis Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Accepted outcome",
+        "Implementation identity",
+        "Typed eligibility contract",
+        "Frozen benchmark replay",
+        "Retained holds",
+        "Focused verification"
+      ],
+      "size_bytes": 5466
     },
     "docs/verification/column-pmm-benchmark.md": {
       "title": "Column PMM independent analytical benchmark",
@@ -3212,6 +3887,95 @@
       ],
       "size_bytes": 4317
     },
+    "docs/verification/post-india2-cleanup-authorization-proposal.md": {
+      "title": "Post-INDIA-2 Cleanup Authorization Proposal",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Decision",
+        "Live inventory boundary",
+        "Candidate actions",
+        "Classifier boundary",
+        "Frozen holds and exclusions",
+        "Phase B authorization and stop rules",
+        "Issues encountered",
+        "Root causes and resolutions"
+      ],
+      "size_bytes": 30193
+    },
+    "docs/verification/india-2c-staircase-design-evidence.md": {
+      "title": "INDIA-2C Staircase Structural-Design Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Implemented calculation boundary",
+        "Independent benchmark",
+        "Retained holds",
+        "Verification cadence"
+      ],
+      "size_bytes": 2794
+    },
+    "docs/verification/india-2-deep-family-acceptance-evidence.md": {
+      "title": "INDIA-2-DEEP Focused Family Acceptance Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Acceptance decision",
+        "Public clause and source evidence",
+        "Independent benchmark replay",
+        "Acceptance finding and truth correction",
+        "Focused acceptance gates"
+      ],
+      "size_bytes": 4687
+    },
+    "docs/verification/india-2-deep-d-publication-evidence.md": {
+      "title": "INDIA-2-DEEP-D Publication Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Published transport",
+        "Capability and semantic truth",
+        "Deterministic truth and verification boundary"
+      ],
+      "size_bytes": 3611
+    },
+    "docs/verification/india-2d-staircase-publication-evidence.md": {
+      "title": "INDIA-2D Staircase Public-Workflow Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Canonical workflow",
+        "Independent public benchmark",
+        "Capability reconciliation",
+        "Focused verification"
+      ],
+      "size_bytes": 3672
+    },
     "docs/verification/insights-verification-pack.md": {
       "title": "Insights Module Verification Pack",
       "type": "documentation",
@@ -3230,6 +3994,64 @@
         "For Contributors"
       ],
       "size_bytes": 3640
+    },
+    "docs/verification/india-1d-slab-boundary-evidence.md": {
+      "title": "INDIA-1D Solid-Slab Boundary Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Supported outcome",
+        "Boundary benchmark",
+        "Retained boundaries"
+      ],
+      "size_bytes": 3062
+    },
+    "docs/verification/india-2-foundation-combined-b-strength-evidence.md": {
+      "title": "INDIA-2-FOUNDATION-COMBINED-B Strength Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Accepted outcome",
+        "Implementation identity",
+        "Exact source and registry binding",
+        "Typed eligibility and provision contract",
+        "Frozen benchmark replay",
+        "Retained holds",
+        "Focused verification"
+      ],
+      "size_bytes": 7480
+    },
+    "docs/verification/india-2-deep-g0-scope-evidence.md": {
+      "title": "INDIA-2-DEEP-G0 Scope and Evidence Decision",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Decision",
+        "Governing public source set",
+        "Confirmed source interpretation",
+        "Frozen supported case",
+        "Independent benchmark contract",
+        "Required dispositions and fail-closed boundaries",
+        "Explicit exclusions",
+        "Activated packets and validation cadence",
+        "G0 focused verification"
+      ],
+      "size_bytes": 8969
     },
     "docs/verification/is456-library-first-evidence.md": {
       "title": "IS 456 Library-First Evidence and Claim Crosswalk",
@@ -3250,6 +4072,113 @@
         "C4 frozen review scope"
       ],
       "size_bytes": 9847
+    },
+    "docs/verification/india-2-foundation-combined-family-acceptance-evidence.md": {
+      "title": "INDIA-2-FOUNDATION-COMBINED Focused Family Acceptance Evidence",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Acceptance decision",
+        "Integrated publication chain",
+        "Frozen benchmark replay",
+        "Acceptance findings and root-cause corrections",
+        "Focused acceptance gates"
+      ],
+      "size_bytes": 8633
+    },
+    "docs/verification/india-2-flat-c-reinforcement-evidence.md": {
+      "title": "INDIA-2-FLAT-C Reinforcement and Serviceability Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Implemented boundary",
+        "Source and traceability",
+        "Frozen benchmark",
+        "Verification and retained holds"
+      ],
+      "size_bytes": 4295
+    },
+    "docs/verification/india-2a-staircase-scope-evidence.md": {
+      "title": "INDIA-2A Straight-Flight Staircase Scope and Evidence Decision",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Decision",
+        "Governing source set",
+        "Frozen supported case",
+        "Independent benchmark contract",
+        "Required dispositions",
+        "Explicit exclusions",
+        "Packet sequence and gates"
+      ],
+      "size_bytes": 5431
+    },
+    "docs/verification/india-2-wall-b-reinforcement-evidence.md": {
+      "title": "INDIA-2-WALL-B Reinforcement Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Implemented boundary",
+        "Public clause references and normalized rules",
+        "Frozen benchmark result",
+        "Fail-closed and unsafe evidence",
+        "Verification"
+      ],
+      "size_bytes": 3539
+    },
+    "docs/verification/india-2-wall-family-acceptance-evidence.md": {
+      "title": "INDIA-2-WALL Focused Family Acceptance Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Acceptance decision",
+        "Public clause and source evidence",
+        "Independent benchmark replay",
+        "Acceptance finding and root-cause correction",
+        "Focused acceptance gates"
+      ],
+      "size_bytes": 4000
+    },
+    "docs/verification/india-1c-isolated-footing-workflow-evidence.md": {
+      "title": "INDIA-1C Composed Isolated-Footing Workflow Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Supported outcome",
+        "Accepted public benchmark",
+        "Retained boundaries"
+      ],
+      "size_bytes": 2369
     },
     "docs/architecture/unified-architecture-v1.md": {
       "title": "Unified Architecture \u2014 structural_engineering_lib v1.0",
@@ -3272,7 +4201,7 @@
         "9. Version Roadmap",
         "10. API Design Principles (Inspired by NumPy/pandas/scikit-learn)"
       ],
-      "size_bytes": 75968
+      "size_bytes": 76048
     },
     "docs/architecture/architecture-review-2025-12-27.md": {
       "title": "Architecture Review \u2014 2025-12-27",
@@ -3627,7 +4556,7 @@
         "Documentation Files",
         "Subfolders"
       ],
-      "size_bytes": 1548
+      "size_bytes": 1401
     },
     "docs/audit/evidence-bundle-template.md": {
       "title": "Evidence Bundle Template \u2014 Release vX.Y.Z",
@@ -3647,22 +4576,6 @@
         "Appendix: File Manifest"
       ],
       "size_bytes": 4635
-    },
-    "docs/audit/agent-testing-audit-2026-03-28.md": {
-      "title": "Agent System Testing & Audit Report",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "audit",
-      "tags": [],
-      "sections": [
-        "Overview",
-        "Pre-Test Fixes Applied (5 Audit Fixes)",
-        "Agent Test Results",
-        "Score Summary",
-        "All Issues Discovered (Consolidated by Priority)",
-        "Resolution Log"
-      ],
-      "size_bytes": 12323
     },
     "docs/audit/git-workflow-audit-pr436.md": {
       "title": "Git Workflow Audit",
@@ -3764,7 +4677,7 @@
         "v0.21.0",
         "v0.17.0"
       ],
-      "size_bytes": 52681
+      "size_bytes": 53951
     },
     "docs/getting-started/cost-optimization-guide.md": {
       "title": "Cost Optimization Guide",
@@ -3825,7 +4738,7 @@
         "8. Units Reference",
         "9. Getting Help"
       ],
-      "size_bytes": 4752
+      "size_bytes": 4983
     },
     "docs/getting-started/mac-mini-setup.md": {
       "title": "Mac Mini Setup Guide",
@@ -3871,7 +4784,7 @@
         "8. Key Scripts",
         "9. Golden Rules"
       ],
-      "size_bytes": 37298
+      "size_bytes": 38163
     },
     "docs/getting-started/python-quickstart.md": {
       "title": "Python Quickstart (Beginner-Friendly)",
@@ -3894,7 +4807,7 @@
         "7) Column Design (IS 456)",
         "8) Packaging notes (contributors only)"
       ],
-      "size_bytes": 6424
+      "size_bytes": 6841
     },
     "docs/getting-started/index.md": {
       "title": "Getting Started",
@@ -3960,7 +4873,7 @@
         "Common fixes",
         "Next steps"
       ],
-      "size_bytes": 4105
+      "size_bytes": 4149
     },
     "docs/getting-started/ai-context-pack.md": {
       "title": "AI Context Pack",
@@ -4258,7 +5171,7 @@
         "9. Release Checklist",
         "10. Incident Response"
       ],
-      "size_bytes": 6795
+      "size_bytes": 6924
     },
     "docs/guidelines/documentation-standard.md": {
       "title": "API Documentation & Discoverability Standard",
@@ -4373,7 +5286,7 @@
         "Reusable Task Preamble",
         "Official References"
       ],
-      "size_bytes": 10770
+      "size_bytes": 13795
     },
     "docs/guidelines/result-object-standard.md": {
       "title": "Result Object Design Standard",
@@ -5361,7 +6274,7 @@
         "What You'll Learn",
         "\ud83d\udcd6 Theory"
       ],
-      "size_bytes": 2181
+      "size_bytes": 2186
     },
     "docs/migration/learning/day-27-multi-code-design.md": {
       "title": "Day 27: Multi-Code Design \u2014 IS 456 vs ACI 318 vs Eurocode 2",
@@ -5603,7 +6516,7 @@
         "2. Flexure Module (`M06_Flexure` / `flexure.py`)",
         "3. Shear Module (`M07_Shear` / `shear.py`)"
       ],
-      "size_bytes": 128420
+      "size_bytes": 150793
     },
     "docs/reference/clause-map.md": {
       "title": "IS 456 Clause-to-Function Mapping",
@@ -5626,7 +6539,7 @@
         "Column \u2014 Biaxial (`codes/is456/column/biaxial.py`)",
         "Column \u2014 Slenderness (`codes/is456/column/slenderness.py`)"
       ],
-      "size_bytes": 11043
+      "size_bytes": 11076
     },
     "docs/reference/known-pitfalls.md": {
       "title": "IS 456 RC Beam Design Library \u2014 Known Pitfalls and Traps",
@@ -5651,29 +6564,6 @@
       ],
       "size_bytes": 7285
     },
-    "docs/reference/sdk-api-contract-v1.md": {
-      "title": "Historical Structural SDK Target Contract \u2014 v1.0",
-      "type": "reference",
-      "complexity": "advanced",
-      "folder": "reference",
-      "tags": [
-        "api",
-        "technical"
-      ],
-      "sections": [
-        "Overview",
-        "Namespace Structure",
-        "Core Data Types",
-        "Engine API (`sk.engine`)",
-        "Visualization API (`sk.viz`)",
-        "I/O API (`sk.io`)",
-        "Utility API (`sk.utils`)",
-        "Code-Specific API (`sk.codes`)",
-        "Error Handling",
-        "Backward Compatibility"
-      ],
-      "size_bytes": 24063
-    },
     "docs/reference/troubleshooting.md": {
       "title": "Troubleshooting Guide",
       "type": "reference",
@@ -5696,27 +6586,21 @@
       "size_bytes": 14559
     },
     "docs/reference/api-stability.md": {
-      "title": "API Stability",
+      "title": "API Stability and Classification",
       "type": "reference",
-      "complexity": "advanced",
+      "complexity": "intermediate",
       "folder": "reference",
       "tags": [
+        "alpha",
         "api",
+        "compatibility",
         "technical"
       ],
       "sections": [
-        "Versioning Policy",
-        "Stable API (Safe to Depend On)",
-        "Stable API (v0.12)",
-        "Planned API (v0.12 Target)",
-        "Experimental API (Preview Features)",
-        "Internal API (May Change Without Notice)",
-        "Deprecated API (Will Be Removed)",
-        "CLI Stability",
-        "Output Schema Stability",
-        "How to Report Breaking Changes"
+        "Machine-readable classification",
+        "Compatibility policy"
       ],
-      "size_bytes": 20512
+      "size_bytes": 3176
     },
     "docs/reference/dxf-layer-standards.md": {
       "title": "DXF Layer Standards & Drawing Conventions",
@@ -5779,6 +6663,27 @@
       ],
       "size_bytes": 1276
     },
+    "docs/reference/canonical-result-contract.md": {
+      "title": "Canonical Result and Transport Contract",
+      "type": "reference",
+      "complexity": "intermediate",
+      "folder": "reference",
+      "tags": [
+        "api",
+        "identity",
+        "result",
+        "status",
+        "technical",
+        "transport"
+      ],
+      "sections": [
+        "1. Effective depth",
+        "2. Structural result",
+        "3. HTTP transport problem",
+        "Artifact boundary"
+      ],
+      "size_bytes": 2719
+    },
     "docs/reference/beam-tool-manifest.md": {
       "title": "Beam Tool Manifest",
       "type": "reference",
@@ -5792,10 +6697,10 @@
         "tools"
       ],
       "sections": [],
-      "size_bytes": 1135
+      "size_bytes": 1276
     },
     "docs/reference/error-schema.md": {
-      "title": "Error Schema v1",
+      "title": "Structural Issue and HTTP Problem Schemas",
       "type": "reference",
       "complexity": "advanced",
       "folder": "reference",
@@ -5805,6 +6710,8 @@
       ],
       "sections": [
         "Overview",
+        "HTTP problem schema",
+        "Structural result issues",
         "Error Schema",
         "Error Code Catalog",
         "Integration with Result Dataclasses",
@@ -5812,12 +6719,12 @@
         "Implementation Plan",
         "Migration Notes"
       ],
-      "size_bytes": 9329
+      "size_bytes": 10993
     },
     "docs/reference/fastapi-rest-api.md": {
       "title": "FastAPI REST API Reference",
       "type": "reference",
-      "complexity": "intermediate",
+      "complexity": "advanced",
       "folder": "reference",
       "tags": [
         "api",
@@ -5838,7 +6745,7 @@
         "Validation commands",
         "Related documents"
       ],
-      "size_bytes": 6899
+      "size_bytes": 9100
     },
     "docs/reference/README.md": {
       "title": "Reference Documentation",
@@ -5901,7 +6808,7 @@
         "9. Shear Reinforcement (Clause 40.4)",
         "10. Shear Design Flowchart"
       ],
-      "size_bytes": 6136
+      "size_bytes": 6196
     },
     "docs/reference/deferred-integrations.md": {
       "title": "Deferred Integrations Tracker",
@@ -5934,7 +6841,7 @@
         "Documentation Files",
         "Subfolders"
       ],
-      "size_bytes": 3597
+      "size_bytes": 3660
     },
     "docs/reference/bbs-dxf-contract.md": {
       "title": "BBS + DXF Contract (v1.x)",
@@ -6034,7 +6941,7 @@
         "Decision Tree",
         "See Also"
       ],
-      "size_bytes": 4186
+      "size_bytes": 5198
     },
     "docs/reference/error-codes.md": {
       "title": "Error Code Reference",
@@ -6208,7 +7115,6 @@
   "navigation": {
     "by_role": {
       "ai_agent": [
-        "docs/_archive/planning/maintenance-plan-v0-21-sprint.md",
         "docs/research/innovation-sustainability-scoring.md",
         "docs/research/2026-python-toolchain-report.md",
         "docs/contributing/solo-maintainer-operating-system.md",
@@ -6216,9 +7122,15 @@
         "docs/learning/glossary.md",
         "docs/publications/research-paper-git-infrastructure.md",
         "docs/planning/compact-modernization-plan.md",
+        "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
+        "docs/planning/india-2-remaining-is456-elements-plan.md",
         "docs/agents/README.md",
         "docs/agents/index.md",
+        "docs/verification/india-2b-staircase-actions-evidence.md",
+        "docs/verification/india-2c-staircase-design-evidence.md",
+        "docs/verification/india-2d-staircase-publication-evidence.md",
         "docs/verification/is456-library-first-evidence.md",
+        "docs/verification/india-2a-staircase-scope-evidence.md",
         "docs/audit/maintenance-recovery-audit-2026-08-07.md",
         "docs/getting-started/ai-context-pack.md",
         "docs/guides/ai-agent-coding-guide.md",
@@ -6234,6 +7146,9 @@
         "docs/research/2026-python-toolchain-report.md",
         "docs/contributing/testing-strategy.md",
         "docs/cookbook/python-recipes.md",
+        "docs/verification/india-2-deep-c-public-workflow-evidence.md",
+        "docs/verification/india-2-wall-c-public-workflow-evidence.md",
+        "docs/verification/india-2-foundation-strap-c-public-workflow-evidence.md",
         "docs/architecture/deep-project-map.md",
         "docs/architecture/dependencies.md",
         "docs/getting-started/python-quickstart.md",
@@ -6273,13 +7188,7 @@
       ]
     },
     "by_topic": {
-      "maintenance": [
-        "docs/_archive/planning/maintenance-plan-v0-21-sprint.md",
-        "docs/audit/automation-scripts-audit-2026-08-09.md",
-        "docs/audit/maintenance-recovery-audit-2026-08-07.md"
-      ],
-      "planning": [
-        "docs/_archive/planning/maintenance-plan-v0-21-sprint.md",
+      "investigation": [
         "docs/research/innovation-structural-design-companion.md",
         "docs/research/claw-code-harness-ideas.md",
         "docs/research/innovation-sustainability-scoring.md",
@@ -6288,22 +7197,7 @@
         "docs/research/2026-python-toolchain-report.md",
         "docs/research/index.md"
       ],
-      "agent-evolver": [
-        "docs/_archive/planning/agent-evolver-plan.md"
-      ],
-      "meta-agent": [
-        "docs/_archive/planning/agent-evolver-plan.md"
-      ],
-      "metrics": [
-        "docs/_archive/planning/agent-evolver-plan.md"
-      ],
-      "paper-data": [
-        "docs/_archive/planning/agent-evolver-plan.md"
-      ],
-      "self-improvement": [
-        "docs/_archive/planning/agent-evolver-plan.md"
-      ],
-      "investigation": [
+      "planning": [
         "docs/research/innovation-structural-design-companion.md",
         "docs/research/claw-code-harness-ideas.md",
         "docs/research/innovation-sustainability-scoring.md",
@@ -6549,7 +7443,7 @@
         "docs/planning/is456-solid-slabs-master-plan.md",
         "docs/planning/compact-modernization-plan.md",
         "docs/planning/ui-experience-foundation-master-plan.md",
-        "docs/planning/adoption-trust-surface-plan.md",
+        "docs/planning/indian-code-completion-plan.md",
         "docs/planning/next-phase-improvements-plan.md",
         "docs/planning/is456-library-first-master-plan.md",
         "docs/planning/library-expansion-blueprint-v5.md",
@@ -6558,9 +7452,11 @@
         "docs/planning/memory.md",
         "docs/planning/etabs-killer-masterplan.md",
         "docs/planning/index.md",
+        "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
         "docs/planning/professional-library-remediation-plan.md",
-        "docs/planning/react-ux-improvement-plan.md",
+        "docs/planning/pre-release-input-safety-and-professional-readiness-plan.md",
         "docs/planning/dependency-security-baseline.md",
+        "docs/planning/india-2-remaining-is456-elements-plan.md",
         "docs/planning/democratization-vision.md"
       ],
       "tasks": [
@@ -6569,7 +7465,7 @@
         "docs/planning/is456-solid-slabs-master-plan.md",
         "docs/planning/compact-modernization-plan.md",
         "docs/planning/ui-experience-foundation-master-plan.md",
-        "docs/planning/adoption-trust-surface-plan.md",
+        "docs/planning/indian-code-completion-plan.md",
         "docs/planning/next-phase-improvements-plan.md",
         "docs/planning/is456-library-first-master-plan.md",
         "docs/planning/library-expansion-blueprint-v5.md",
@@ -6578,9 +7474,11 @@
         "docs/planning/memory.md",
         "docs/planning/etabs-killer-masterplan.md",
         "docs/planning/index.md",
+        "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
         "docs/planning/professional-library-remediation-plan.md",
-        "docs/planning/react-ux-improvement-plan.md",
+        "docs/planning/pre-release-input-safety-and-professional-readiness-plan.md",
         "docs/planning/dependency-security-baseline.md",
+        "docs/planning/india-2-remaining-is456-elements-plan.md",
         "docs/planning/democratization-vision.md"
       ],
       "ai": [
@@ -6606,49 +7504,181 @@
         "docs/cookbook/python-recipes.md"
       ],
       "testing": [
+        "docs/verification/indian-code-truth-baseline.md",
+        "docs/verification/india-2-final-closeout-evidence.md",
         "docs/verification/examples.md",
+        "docs/verification/india-2-foundation-pile-cap-g0-hold-evidence.md",
+        "docs/verification/india-1b-column-decision-evidence.md",
+        "docs/verification/lib-pro-002-e-evidence-identity.md",
+        "docs/verification/india-2-deep-b-reinforcement-evidence.md",
+        "docs/verification/india-2-flat-g0-scope-evidence.md",
+        "docs/verification/alpha-0231a2-local-prepublication-rehearsal.md",
+        "docs/verification/india-2-wall-g0-scope-evidence.md",
+        "docs/verification/india-2-foundation-raft-g0-hold-evidence.md",
+        "docs/verification/a2-lossless-intake-calculation-evidence.md",
+        "docs/verification/india-2-foundation-strap-family-acceptance-evidence.md",
+        "docs/verification/india-2-deep-c-public-workflow-evidence.md",
+        "docs/verification/india-2-deep-a-geometry-evidence.md",
         "docs/verification/bundled-sample-boq-evidence.md",
+        "docs/verification/india-2-flat-b-moment-evidence.md",
+        "docs/verification/india-2-flat-d-punching-evidence.md",
+        "docs/verification/india-2-truth-hygiene-38-2-evidence.md",
+        "docs/verification/india-2-foundation-combined-c-public-workflow-evidence.md",
+        "docs/verification/india-2-foundation-strap-b-strength-evidence.md",
+        "docs/verification/india-2-foundation-strap-a-analysis-evidence.md",
+        "docs/verification/india-2-flat-a-geometry-evidence.md",
+        "docs/verification/india-1a-beam-route-evidence.md",
+        "docs/verification/india-1-cumulative-gate-evidence.md",
+        "docs/verification/india-2-flat-e-publication-evidence.md",
+        "docs/verification/india-2-wall-c-public-workflow-evidence.md",
+        "docs/verification/india-2-foundation-combined-g0-scope-evidence.md",
         "docs/verification/validation-pack.md",
         "docs/verification/is456-slab-evidence.md",
+        "docs/verification/india-2-foundation-strap-g0-scope-evidence.md",
         "docs/verification/ui-experience-session-2-acceptance.md",
         "docs/verification/README.md",
+        "docs/verification/india-2-cumulative-gate-evidence.md",
+        "docs/verification/india-2-wall-a-axial-kernel-evidence.md",
+        "docs/verification/a1-canonical-truth-transport-evidence.md",
         "docs/verification/external-cli-test.md",
+        "docs/verification/india-2-foundation-combined-d-publication-evidence.md",
+        "docs/verification/india-2-foundation-strap-d-publication-evidence.md",
         "docs/verification/index.md",
+        "docs/verification/india-2-wall-d-publication-evidence.md",
         "docs/verification/pack.md",
+        "docs/verification/india-2-foundation-strap-c-public-workflow-evidence.md",
         "docs/verification/alpha-0231-local-prepublication-rehearsal.md",
         "docs/verification/release-artifact-evidence-template.md",
+        "docs/verification/india-2-flat-family-acceptance-evidence.md",
+        "docs/verification/india-2b-staircase-actions-evidence.md",
+        "docs/verification/india-2-foundation-combined-a-analysis-evidence.md",
         "docs/verification/column-pmm-benchmark.md",
+        "docs/verification/post-india2-cleanup-authorization-proposal.md",
+        "docs/verification/india-2c-staircase-design-evidence.md",
+        "docs/verification/india-2-deep-family-acceptance-evidence.md",
+        "docs/verification/india-2-deep-d-publication-evidence.md",
+        "docs/verification/india-2d-staircase-publication-evidence.md",
         "docs/verification/insights-verification-pack.md",
-        "docs/verification/is456-library-first-evidence.md"
+        "docs/verification/india-1d-slab-boundary-evidence.md",
+        "docs/verification/india-2-foundation-combined-b-strength-evidence.md",
+        "docs/verification/india-2-deep-g0-scope-evidence.md",
+        "docs/verification/is456-library-first-evidence.md",
+        "docs/verification/india-2-foundation-combined-family-acceptance-evidence.md",
+        "docs/verification/india-2-flat-c-reinforcement-evidence.md",
+        "docs/verification/india-2a-staircase-scope-evidence.md",
+        "docs/verification/india-2-wall-b-reinforcement-evidence.md",
+        "docs/verification/india-2-wall-family-acceptance-evidence.md",
+        "docs/verification/india-1c-isolated-footing-workflow-evidence.md"
       ],
       "validation": [
+        "docs/verification/indian-code-truth-baseline.md",
+        "docs/verification/india-2-final-closeout-evidence.md",
         "docs/verification/examples.md",
+        "docs/verification/india-2-foundation-pile-cap-g0-hold-evidence.md",
+        "docs/verification/india-1b-column-decision-evidence.md",
+        "docs/verification/lib-pro-002-e-evidence-identity.md",
+        "docs/verification/india-2-deep-b-reinforcement-evidence.md",
+        "docs/verification/india-2-flat-g0-scope-evidence.md",
+        "docs/verification/alpha-0231a2-local-prepublication-rehearsal.md",
+        "docs/verification/india-2-wall-g0-scope-evidence.md",
+        "docs/verification/india-2-foundation-raft-g0-hold-evidence.md",
+        "docs/verification/a2-lossless-intake-calculation-evidence.md",
+        "docs/verification/india-2-foundation-strap-family-acceptance-evidence.md",
+        "docs/verification/india-2-deep-c-public-workflow-evidence.md",
+        "docs/verification/india-2-deep-a-geometry-evidence.md",
         "docs/verification/bundled-sample-boq-evidence.md",
+        "docs/verification/india-2-flat-b-moment-evidence.md",
+        "docs/verification/india-2-flat-d-punching-evidence.md",
+        "docs/verification/india-2-truth-hygiene-38-2-evidence.md",
+        "docs/verification/india-2-foundation-combined-c-public-workflow-evidence.md",
+        "docs/verification/india-2-foundation-strap-b-strength-evidence.md",
+        "docs/verification/india-2-foundation-strap-a-analysis-evidence.md",
+        "docs/verification/india-2-flat-a-geometry-evidence.md",
+        "docs/verification/india-1a-beam-route-evidence.md",
+        "docs/verification/india-1-cumulative-gate-evidence.md",
+        "docs/verification/india-2-flat-e-publication-evidence.md",
+        "docs/verification/india-2-wall-c-public-workflow-evidence.md",
+        "docs/verification/india-2-foundation-combined-g0-scope-evidence.md",
         "docs/verification/validation-pack.md",
         "docs/verification/is456-slab-evidence.md",
+        "docs/verification/india-2-foundation-strap-g0-scope-evidence.md",
         "docs/verification/ui-experience-session-2-acceptance.md",
         "docs/verification/README.md",
+        "docs/verification/india-2-cumulative-gate-evidence.md",
+        "docs/verification/india-2-wall-a-axial-kernel-evidence.md",
+        "docs/verification/a1-canonical-truth-transport-evidence.md",
         "docs/verification/external-cli-test.md",
+        "docs/verification/india-2-foundation-combined-d-publication-evidence.md",
+        "docs/verification/india-2-foundation-strap-d-publication-evidence.md",
         "docs/verification/index.md",
+        "docs/verification/india-2-wall-d-publication-evidence.md",
         "docs/verification/pack.md",
+        "docs/verification/india-2-foundation-strap-c-public-workflow-evidence.md",
         "docs/verification/alpha-0231-local-prepublication-rehearsal.md",
         "docs/verification/release-artifact-evidence-template.md",
+        "docs/verification/india-2-flat-family-acceptance-evidence.md",
+        "docs/verification/india-2b-staircase-actions-evidence.md",
+        "docs/verification/india-2-foundation-combined-a-analysis-evidence.md",
         "docs/verification/column-pmm-benchmark.md",
+        "docs/verification/post-india2-cleanup-authorization-proposal.md",
+        "docs/verification/india-2c-staircase-design-evidence.md",
+        "docs/verification/india-2-deep-family-acceptance-evidence.md",
+        "docs/verification/india-2-deep-d-publication-evidence.md",
+        "docs/verification/india-2d-staircase-publication-evidence.md",
         "docs/verification/insights-verification-pack.md",
-        "docs/verification/is456-library-first-evidence.md"
+        "docs/verification/india-1d-slab-boundary-evidence.md",
+        "docs/verification/india-2-foundation-combined-b-strength-evidence.md",
+        "docs/verification/india-2-deep-g0-scope-evidence.md",
+        "docs/verification/is456-library-first-evidence.md",
+        "docs/verification/india-2-foundation-combined-family-acceptance-evidence.md",
+        "docs/verification/india-2-flat-c-reinforcement-evidence.md",
+        "docs/verification/india-2a-staircase-scope-evidence.md",
+        "docs/verification/india-2-wall-b-reinforcement-evidence.md",
+        "docs/verification/india-2-wall-family-acceptance-evidence.md",
+        "docs/verification/india-1c-isolated-footing-workflow-evidence.md"
+      ],
+      "a2": [
+        "docs/verification/a2-lossless-intake-calculation-evidence.md"
+      ],
+      "etabs": [
+        "docs/verification/a2-lossless-intake-calculation-evidence.md",
+        "docs/verification/bundled-sample-boq-evidence.md"
+      ],
+      "evidence": [
+        "docs/verification/a2-lossless-intake-calculation-evidence.md",
+        "docs/verification/bundled-sample-boq-evidence.md",
+        "docs/verification/a1-canonical-truth-transport-evidence.md"
+      ],
+      "load-analysis": [
+        "docs/verification/a2-lossless-intake-calculation-evidence.md"
+      ],
+      "lossless-import": [
+        "docs/verification/a2-lossless-intake-calculation-evidence.md"
+      ],
+      "smart-analysis": [
+        "docs/verification/a2-lossless-intake-calculation-evidence.md"
       ],
       "boq": [
         "docs/verification/bundled-sample-boq-evidence.md"
       ],
-      "etabs": [
-        "docs/verification/bundled-sample-boq-evidence.md"
-      ],
-      "evidence": [
-        "docs/verification/bundled-sample-boq-evidence.md"
-      ],
       "verification": [
         "docs/verification/bundled-sample-boq-evidence.md",
+        "docs/verification/india-1a-beam-route-evidence.md",
         "docs/verification/ui-experience-session-2-acceptance.md"
+      ],
+      "beam": [
+        "docs/verification/india-1a-beam-route-evidence.md"
+      ],
+      "flanged": [
+        "docs/verification/india-1a-beam-route-evidence.md"
+      ],
+      "india-1": [
+        "docs/verification/india-1a-beam-route-evidence.md"
+      ],
+      "is456": [
+        "docs/verification/india-1a-beam-route-evidence.md",
+        "docs/migration/01-adr-library-separation.md",
+        "docs/reference/fastapi-rest-api.md"
       ],
       "fastapi": [
         "docs/verification/ui-experience-session-2-acceptance.md",
@@ -6661,6 +7691,47 @@
       ],
       "uix": [
         "docs/verification/ui-experience-session-2-acceptance.md"
+      ],
+      "a1": [
+        "docs/verification/a1-canonical-truth-transport-evidence.md"
+      ],
+      "api": [
+        "docs/verification/a1-canonical-truth-transport-evidence.md",
+        "docs/reference/tech-stack-rationale.md",
+        "docs/reference/api.md",
+        "docs/reference/clause-map.md",
+        "docs/reference/known-pitfalls.md",
+        "docs/reference/troubleshooting.md",
+        "docs/reference/api-stability.md",
+        "docs/reference/dxf-layer-standards.md",
+        "docs/reference/deprecation-policy.md",
+        "docs/reference/repo-health-baseline-2026-01-07.md",
+        "docs/reference/canonical-result-contract.md",
+        "docs/reference/beam-tool-manifest.md",
+        "docs/reference/error-schema.md",
+        "docs/reference/fastapi-rest-api.md",
+        "docs/reference/README.md",
+        "docs/reference/3d-visualization-performance.md",
+        "docs/reference/is456-formulas.md",
+        "docs/reference/deferred-integrations.md",
+        "docs/reference/index.md",
+        "docs/reference/bbs-dxf-contract.md",
+        "docs/reference/library-contract.md",
+        "docs/reference/3d-json-contract.md",
+        "docs/reference/agent-automation-pitfalls.md",
+        "docs/reference/api-levels.md",
+        "docs/reference/error-codes.md",
+        "docs/reference/third-party-licenses.md",
+        "docs/reference/automation-catalog.md",
+        "docs/reference/insights-api.md"
+      ],
+      "result": [
+        "docs/verification/a1-canonical-truth-transport-evidence.md",
+        "docs/reference/canonical-result-contract.md"
+      ],
+      "transport": [
+        "docs/verification/a1-canonical-truth-transport-evidence.md",
+        "docs/reference/canonical-result-contract.md"
       ],
       "structure": [
         "docs/architecture/unified-architecture-v1.md",
@@ -6686,6 +7757,10 @@
       ],
       "maint-008": [
         "docs/audit/automation-scripts-audit-2026-08-09.md"
+      ],
+      "maintenance": [
+        "docs/audit/automation-scripts-audit-2026-08-09.md",
+        "docs/audit/maintenance-recovery-audit-2026-08-07.md"
       ],
       "mac-mini": [
         "docs/audit/maintenance-recovery-audit-2026-08-07.md"
@@ -6753,10 +7828,6 @@
       "ec2": [
         "docs/migration/01-adr-library-separation.md"
       ],
-      "is456": [
-        "docs/migration/01-adr-library-separation.md",
-        "docs/reference/fastapi-rest-api.md"
-      ],
       "library": [
         "docs/migration/01-adr-library-separation.md"
       ],
@@ -6775,17 +7846,17 @@
       "separation": [
         "docs/migration/01-adr-library-separation.md"
       ],
-      "api": [
+      "technical": [
         "docs/reference/tech-stack-rationale.md",
         "docs/reference/api.md",
         "docs/reference/clause-map.md",
         "docs/reference/known-pitfalls.md",
-        "docs/reference/sdk-api-contract-v1.md",
         "docs/reference/troubleshooting.md",
         "docs/reference/api-stability.md",
         "docs/reference/dxf-layer-standards.md",
         "docs/reference/deprecation-policy.md",
         "docs/reference/repo-health-baseline-2026-01-07.md",
+        "docs/reference/canonical-result-contract.md",
         "docs/reference/beam-tool-manifest.md",
         "docs/reference/error-schema.md",
         "docs/reference/fastapi-rest-api.md",
@@ -6804,34 +7875,17 @@
         "docs/reference/automation-catalog.md",
         "docs/reference/insights-api.md"
       ],
-      "technical": [
-        "docs/reference/tech-stack-rationale.md",
-        "docs/reference/api.md",
-        "docs/reference/clause-map.md",
-        "docs/reference/known-pitfalls.md",
-        "docs/reference/sdk-api-contract-v1.md",
-        "docs/reference/troubleshooting.md",
-        "docs/reference/api-stability.md",
-        "docs/reference/dxf-layer-standards.md",
-        "docs/reference/deprecation-policy.md",
-        "docs/reference/repo-health-baseline-2026-01-07.md",
-        "docs/reference/beam-tool-manifest.md",
-        "docs/reference/error-schema.md",
-        "docs/reference/fastapi-rest-api.md",
-        "docs/reference/README.md",
-        "docs/reference/3d-visualization-performance.md",
-        "docs/reference/is456-formulas.md",
-        "docs/reference/deferred-integrations.md",
-        "docs/reference/index.md",
-        "docs/reference/bbs-dxf-contract.md",
-        "docs/reference/library-contract.md",
-        "docs/reference/3d-json-contract.md",
-        "docs/reference/agent-automation-pitfalls.md",
-        "docs/reference/api-levels.md",
-        "docs/reference/error-codes.md",
-        "docs/reference/third-party-licenses.md",
-        "docs/reference/automation-catalog.md",
-        "docs/reference/insights-api.md"
+      "alpha": [
+        "docs/reference/api-stability.md"
+      ],
+      "compatibility": [
+        "docs/reference/api-stability.md"
+      ],
+      "identity": [
+        "docs/reference/canonical-result-contract.md"
+      ],
+      "status": [
+        "docs/reference/canonical-result-contract.md"
       ],
       "ai-readiness": [
         "docs/reference/beam-tool-manifest.md"

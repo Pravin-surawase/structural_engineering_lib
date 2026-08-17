@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-17
 doc_type: spec
 complexity: intermediate
 tags: []
@@ -14,14 +14,17 @@ tags: []
 **Status:** Active
 **Importance:** High
 **Created:** 2026-01-20
-**Last Updated:** 2026-04-04
+**Last Updated:** 2026-08-17
 **Related Tasks:** TASK-CSV-01, TASK-CSV-02, TASK-3D-002
 
 ---
 
 ## Overview
 
-This document defines the CSV schemas for importing beam data and geometry from structural analysis software (ETABS, SAFE, and generic formats) into structural_engineering_lib for design and visualization.
+This document defines the strict CSV schemas for importing beam data and geometry
+from structural analysis software into `structural_engineering_lib`. ETABS CSV
+support is read-only and beam-scoped; it does not establish global-model,
+load-basis, analysis-validity, or professional-review approval.
 
 **Scope:**
 - ETABS beam force exports (beam_forces.csv)
@@ -50,16 +53,16 @@ ETABS exports beam forces via: Display → Show Tables → Element Forces - Beam
 | `Story` | Level, Floor | Floor/level name | Text |
 | `Label` | Frame, Element, Beam, Name | Beam identifier | Text |
 | `Output Case` | Load Case/Combo, Load Case, LoadCase, Combo, Case | Load combination | Text |
-| `M3` | Moment3, Mz, BendingMoment | Bending moment about local 3 axis | kN·m |
-| `V2` | Shear2, Vy, ShearForce | Shear force in local 2 plane | kN |
+| `Station` | Distance, Location, Loc | Source location along the beam | Declared source length unit |
+| `M3` | Moment, M, Mu, MomentY, Myy | Signed bending moment about local 3 axis | kN·m |
+| `V2` | Shear, V, Vu, ShearY, Vyy | Signed shear force in local 2 plane | kN |
 
 #### Optional Columns
 
 | Column | Aliases | Description | Units | Default |
 |--------|---------|-------------|-------|---------|
-| `Station` | Distance, Location, Loc | Location along beam | mm or m | 0 |
 | `Unique Name` | UniqueName, Unique, GUID | Internal ID | Text | "" |
-| `P` | Axial, N, AxialForce | Axial force | kN | 0 |
+| `P` | Axial, N, Pu, AxialForce | Signed axial force when supplied | kN | Not supplied / `0` in beam-only output |
 
 #### Example ETABS CSV
 
@@ -76,20 +79,17 @@ Story1,B2,1.5(DL+LL),3000,145.6,0,0
 
 ### 1b. ETABS Frames Geometry Format (NEW)
 
-ETABS exports frame geometry via the VBA export tool (frames_geometry.csv).
-This provides 3D coordinates for real building visualization.
+ETABS exports frame geometry via the VBA export tool (`frames_geometry.csv`).
+This file supports read-only member geometry and visualization. It is not a
+gravity-analysis model.
 
 #### Required Columns
 
 | Column | Description | Units | Example |
 |--------|-------------|-------|---------|
-| `UniqueName` | Internal ETABS ID | Text | "C1", "B23" |
 | `Label` | User-friendly label | Text | "B1", "C2" |
 | `Story` | Floor/level name | Text | "Story1", "Ground" |
-| `FrameType` | Element type | Text | "Beam" or "Column" |
 | `SectionName` | Section identifier | Text | "B230X450M20" |
-| `Point1Name` | Node at start | Text | "1" |
-| `Point2Name` | Node at end | Text | "2" |
 | `Point1X` | X coordinate of start | m | 0.0 |
 | `Point1Y` | Y coordinate of start | m | 0.0 |
 | `Point1Z` | Z coordinate of start | m | 3.0 |
@@ -101,8 +101,16 @@ This provides 3D coordinates for real building visualization.
 
 | Column | Description | Units | Default |
 |--------|-------------|-------|---------|
+| `UniqueName` | Internal ETABS ID | Text | Empty |
+| `FrameType` | Element type; non-beams are deliberately excluded | Text | Beam |
+| `Point1Name` | Node at start | Text | Empty |
+| `Point2Name` | Node at end | Text | Empty |
 | `Angle` | Rotation angle | degrees | 0.0 |
 | `CardinalPoint` | Insertion point | 1-11 | 10 |
+
+`SectionName` must contain explicit RC dimensions such as `B300X500`, or the
+caller must provide an explicit section map. Unknown names never become a
+default `300 x 500` section.
 
 #### Example Frames Geometry CSV
 
@@ -178,35 +186,35 @@ Simplified format for custom data or manual entry.
 | `mu_knm` | Design moment (factored) | kN·m | 180.5 |
 | `vu_kn` | Design shear (factored) | kN | 125.0 |
 
-#### Optional Columns
+#### Required calculation columns for strict import
 
-| Column | Description | Units | Default |
-|--------|-------------|-------|---------|
-| `story` | Level/floor identifier | Text | "" |
-| `span_mm` | Clear span | mm | 5000 |
-| `b_mm` | Beam width | mm | 300 |
-| `D_mm` | Total depth | mm | 500 |
-| `d_mm` | Effective depth | mm | 450 |
-| `fck_nmm2` | Concrete strength | N/mm² | 25 |
-| `fy_nmm2` | Steel yield strength | N/mm² | 500 |
-| `exposure` | Exposure condition | Text | "Moderate" |
-| `support` | Support condition | Text | "Simply Supported" |
+| Column | Description | Units |
+|--------|-------------|-------|
+| `b_mm` / `b (mm)` | Beam width | mm |
+| `D_mm` / `D (mm)` | Total depth | mm |
+| `fck_nmm2` / `fck` | Concrete strength | N/mm² |
+| `fy_nmm2` / `fy` | Steel yield strength | N/mm² |
+| `cover_mm` / `Cover (mm)` | Explicit clear cover basis | mm |
+
+`story`, `span_mm`, effective-depth metadata, exposure, support, and notes may be
+retained when present, but no missing calculation value is silently invented.
 
 #### Example Generic CSV
 
 ```csv
-beam_id,story,mu_knm,vu_kn,span_mm,b_mm,D_mm,fck_nmm2
-B1,GF,180.5,125.0,5000,300,500,25
-B2,GF,145.2,98.3,4500,300,450,25
-B3,FF,210.8,140.5,6000,350,600,30
-B4,FF,165.0,110.2,5500,300,550,25
+beam_id,story,mu_knm,vu_kn,span_mm,b_mm,D_mm,fck_nmm2,fy_nmm2,cover_mm
+B1,GF,180.5,125.0,5000,300,500,25,500,40
+B2,GF,145.2,98.3,4500,300,450,25,500,40
+B3,FF,210.8,140.5,6000,350,600,30,500,45
+B4,FF,165.0,110.2,5500,300,550,25,500,40
 ```
 
 ---
 
 ## Envelope Processing
 
-For ETABS/SAFE formats with multiple stations per beam, the library computes envelopes:
+For raw ETABS station data, the library selects moment and shear extrema
+independently and preserves their provenance:
 
 ```python
 # Per beam, compute:
@@ -214,7 +222,12 @@ mu_max = max(abs(m3) for all stations)
 vu_max = max(abs(v2) for all stations)
 ```
 
-This ensures conservative design using the maximum forces along the beam length.
+Each result also retains the signed governing value, its station, and the
+concurrent companion action at that station. The basis is recorded as
+`independent_absolute_extrema_with_concurrent_values`. A source-precomputed VBA
+envelope is labelled `source_precomputed_extrema_provenance_unavailable`; it is
+not represented as though station provenance existed. Raw row values remain in
+the lossless import ledger.
 
 ---
 
@@ -222,10 +235,10 @@ This ensures conservative design using the maximum forces along the beam length.
 
 ### File Validation
 
-1. **Encoding:** UTF-8 (with fallback to Latin-1)
-2. **Size Limit:** 50 MB recommended, 100 MB max
-3. **Row Limit:** 1,000,000 rows max
-4. **Header Required:** First row must be column headers
+1. **Encoding:** UTF-8 or UTF-8 with BOM; decoding failure blocks.
+2. **Header required:** the first row must contain recognized headers.
+3. **Data required:** header-only inputs block.
+4. **Conservation:** every physical row is accepted or blocked and appears in the ledger.
 
 ### Data Validation
 
@@ -234,9 +247,10 @@ This ensures conservative design using the maximum forces along the beam length.
 | Required columns missing | Error | "Required column 'M3' not found" |
 | Empty beam_id | Error | "Row 5: Empty beam identifier" |
 | Non-numeric force value | Error | "Row 10: Invalid moment value '---'" |
-| Negative dimensions | Warning | "Row 15: Negative width (-300 mm)" |
-| Unusual M/V ratio | Warning | "B1: M/V ratio > 15m, verify loads" |
-| Duplicate beam_id | Warning | "B1 appears 3 times (will use envelope)" |
+| Non-finite number (`NaN`, `inf`) | Error | Row is blocked; no calculation batch is exposed |
+| Unknown section dimensions | Error | Explicit section map or parseable source name required |
+| Duplicate source record identity | Error | Every duplicate row is ledgered and blocked |
+| Unmatched geometry/force member | Error | Batch is blocked |
 
 ### Value Ranges (Warnings)
 
@@ -255,45 +269,31 @@ This ensures conservative design using the maximum forces along the beam length.
 ### Python API
 
 ```python
-from structural_lib import (
-    validate_etabs_csv,
-    load_etabs_csv,
-    create_jobs_from_etabs_csv,
+from structural_lib.core.models import DesignDefaults
+from structural_lib.services.imports import (
+    parse_dual_csv_lossless,
 )
 
-# Validate first
-is_valid, issues, col_map = validate_etabs_csv("forces.csv")
-if not is_valid:
-    for issue in issues:
-        print(f"Error: {issue}")
-    return
+result = parse_dual_csv_lossless(
+    "frames_geometry.csv",
+    "beam_forces.csv",
+    format_hint="etabs",
+    defaults=DesignDefaults(fck_mpa=25, fy_mpa=500, cover_mm=40),
+)
 
-# Load and process
-rows = load_etabs_csv("forces.csv")
-jobs = create_jobs_from_etabs_csv(
-    csv_path="forces.csv",
-    b_mm=300,
-    D_mm=500,
-    fck_nmm2=25,
-    fy_nmm2=500,
+if result.batch is None:
+    for issue in result.issues:
+        print(issue.code, issue.path, issue.message)
+    raise SystemExit("ETABS import blocked")
+
+assert result.ledger.totals.source_rows == (
+    result.ledger.totals.accepted_rows + result.ledger.totals.blocked_rows
 )
 ```
 
-### Streamlit Import (Phase 2)
-
-```python
-# File uploader with validation
-uploaded = st.file_uploader("Upload beam forces CSV", type=["csv"])
-if uploaded:
-    is_valid, issues, _ = validate_etabs_csv(uploaded)
-    if is_valid:
-        beams = load_etabs_csv(uploaded)
-        st.success(f"Loaded {len(beams)} beams")
-    else:
-        st.error("Validation failed")
-        for issue in issues:
-            st.warning(issue)
-```
+UI transports must present the same ledger/result. They may not calculate from a
+blocked result, replace malformed cells with zero, or report a partial row count
+as a successful import.
 
 ---
 
@@ -309,7 +309,7 @@ if uploaded:
 
 ## References
 
-- [ETABS Import Module](../../Python/structural_lib/etabs_import.py)
+- [ETABS Import Module](../../Python/structural_lib/services/etabs_import.py)
 - [8-Week Development Plan](../_archive/planning-completed-2026-03/8-week-development-plan.md)
 - [API Documentation](../reference/api.md)
 - ETABS User Manual: Table Export Format
@@ -321,5 +321,6 @@ if uploaded:
 
 | Date | Version | Change |
 |------|---------|--------|
+| 2026-08-17 | 1.2 | Froze lossless ETABS/section/envelope and strict generic-input contracts |
 | 2026-01-21 | 1.1 | Added frames_geometry.csv schema for 3D visualization |
 | 2026-01-20 | 1.0 | Initial schema definition |

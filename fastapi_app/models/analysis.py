@@ -16,6 +16,8 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 class LoadItem(BaseModel):
     """Single load definition."""
 
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
     load_type: Literal["udl", "point"] = Field(
         description="Load type: 'udl' (kN/m) or 'point' (kN)"
     )
@@ -27,12 +29,25 @@ class LoadItem(BaseModel):
         ge=0,
         description="Position from left support (mm), required for point loads",
     )
+    end_position_mm: float | None = Field(
+        default=None,
+        ge=0,
+        description="UDL end position (mm); omitted means the right support",
+    )
+
+    @model_validator(mode="after")
+    def validate_partial_load_contract(self) -> "LoadItem":
+        if self.end_position_mm is not None and self.load_type != "udl":
+            raise ValueError("end_position_mm is only valid for UDL loads")
+        return self
 
 
 class LoadAnalysisRequest(BaseModel):
     """Request model for simple load analysis (BMD/SFD)."""
 
     model_config = ConfigDict(
+        extra="forbid",
+        allow_inf_nan=False,
         json_schema_extra={
             "examples": [
                 {
@@ -48,7 +63,7 @@ class LoadAnalysisRequest(BaseModel):
                     "num_points": 51,
                 }
             ]
-        }
+        },
     )
 
     span_mm: float = Field(gt=0, le=30000, description="Beam span (mm)")
@@ -63,6 +78,20 @@ class LoadAnalysisRequest(BaseModel):
     num_points: int = Field(
         default=51, ge=11, le=201, description="Discretization points"
     )
+
+    @model_validator(mode="after")
+    def validate_load_locations(self) -> "LoadAnalysisRequest":
+        for index, load in enumerate(self.loads):
+            if load.position_mm > self.span_mm:
+                raise ValueError(f"loads[{index}].position_mm exceeds span_mm")
+            if load.end_position_mm is not None:
+                if load.end_position_mm <= load.position_mm:
+                    raise ValueError(
+                        f"loads[{index}].end_position_mm must exceed position_mm"
+                    )
+                if load.end_position_mm > self.span_mm:
+                    raise ValueError(f"loads[{index}].end_position_mm exceeds span_mm")
+        return self
 
 
 class CriticalPointResponse(BaseModel):
@@ -100,6 +129,10 @@ class SmartAnalysisRequest(BaseModel):
     # Section dimensions
     width: float = Field(gt=0, le=2000.0, description="Beam width (mm)")
     depth: float = Field(gt=0, le=3000.0, description="Beam depth (mm)")
+    effective_depth: float = Field(
+        gt=0,
+        description="Explicit effective depth d (mm); no hidden cover assumption",
+    )
 
     # Loading
     moment: float = Field(ge=0, description="Factored moment Mu (kN·m)")
@@ -110,10 +143,9 @@ class SmartAnalysisRequest(BaseModel):
     fy: float = Field(default=500.0, ge=250.0, le=600.0, description="fy (N/mm²)")
 
     # Context for analysis
-    span_length: float | None = Field(
-        default=None,
+    span_length: float = Field(
         gt=0,
-        description="Beam span length (mm) for deflection analysis",
+        description="Explicit beam span length (mm)",
     )
     exposure_class: str = Field(
         default="moderate",
@@ -145,6 +177,11 @@ class SmartAnalysisRequest(BaseModel):
             raise ValueError(
                 f"Depth/width ratio {self.depth / self.width:.1f} exceeds "
                 f"practical limit of 6"
+            )
+        if self.effective_depth >= self.depth:
+            raise ValueError(
+                f"effective_depth ({self.effective_depth}mm) must be less than "
+                f"depth ({self.depth}mm)"
             )
         return self
 
@@ -187,38 +224,43 @@ class CodeCheck(BaseModel):
     message: str | None = Field(default=None, description="Additional message")
 
 
-class EfficiencyMetrics(BaseModel):
-    """Design efficiency metrics."""
+class SmartDesignSummary(BaseModel):
+    """Explicit inputs and canonical design-check semantics."""
 
-    utilization_ratio: float = Field(
-        ge=0, le=2.0, description="Moment utilization ratio Mu/Mu_cap"
-    )
-    steel_efficiency: float = Field(
-        ge=0, le=1.0, description="Steel utilization vs max allowed"
-    )
-    concrete_efficiency: float = Field(
-        ge=0, le=1.0, description="Concrete utilization vs capacity"
-    )
-    overall_efficiency: float = Field(
-        ge=0, le=1.0, description="Overall design efficiency score"
-    )
-    efficiency_grade: str = Field(
-        description="Efficiency grade (A-F)",
-        pattern="^[A-F]$",
-    )
-    efficiency_comment: str = Field(description="Explanation of efficiency grade")
+    width_mm: float
+    depth_mm: float
+    effective_depth_mm: float
+    span_mm: float
+    moment_knm: float
+    shear_kn: float
+    fck_nmm2: float
+    fy_nmm2: float
+    design_status: Literal["PASS", "WARNING", "FAIL"]
+    governing_utilization: float = Field(ge=0)
+    capacity_margin: float = Field(ge=0, le=1)
+    governing_check: str
+    key_issues: list[str] = Field(default_factory=list)
+    quick_wins: list[str] = Field(default_factory=list)
 
 
-class CostEstimate(BaseModel):
-    """Rough cost estimate for analysis."""
+class SmartScoreMetrics(BaseModel):
+    """Core-owned normalized advisory scores; no transport relabelling."""
 
-    relative_cost: float = Field(description="Relative cost index (1.0 = baseline)")
-    estimated_concrete: float = Field(description="Estimated concrete (m³/m)")
-    estimated_steel: float = Field(description="Estimated steel (kg/m)")
-    cost_rating: str = Field(
-        description="Cost rating",
-        examples=["economical", "moderate", "expensive"],
-    )
+    cost_efficiency: float = Field(ge=0, le=1)
+    constructability: float = Field(ge=0, le=1)
+    robustness: float = Field(ge=0, le=1)
+    overall_score: float = Field(ge=0, le=1)
+
+
+class SmartCostAnalysis(BaseModel):
+    """Cost-analysis values calculated by the core smart-design service."""
+
+    current_cost: float = Field(ge=0)
+    optimal_cost: float = Field(ge=0)
+    savings_percent: float = Field(ge=0)
+    baseline_alternative: dict | None = None
+    optimal_alternative: dict | None = None
+    alternatives: list[dict] = Field(default_factory=list)
 
 
 class SmartAnalysisResponse(BaseModel):
@@ -228,7 +270,7 @@ class SmartAnalysisResponse(BaseModel):
     message: str = Field(description="Summary message")
 
     # Design summary
-    design_summary: dict = Field(description="Summary of design parameters and results")
+    design_summary: SmartDesignSummary
 
     # Code compliance
     code_checks: list[CodeCheck] = Field(
@@ -247,16 +289,16 @@ class SmartAnalysisResponse(BaseModel):
         description="Number of high-priority suggestions",
     )
 
-    # Efficiency
-    efficiency: EfficiencyMetrics | None = Field(
+    # Core-owned advisory scores
+    scores: SmartScoreMetrics | None = Field(
         default=None,
-        description="Design efficiency metrics",
+        description="Normalized advisory scores calculated by the core service",
     )
 
-    # Cost estimate
-    cost_estimate: CostEstimate | None = Field(
+    # Core-owned cost analysis
+    cost_analysis: SmartCostAnalysis | None = Field(
         default=None,
-        description="Rough cost estimate",
+        description="Cost analysis calculated by the core service",
     )
 
     # Warnings

@@ -260,6 +260,25 @@ class TestInputValidation:
         with pytest.raises(ValueError, match="At least one load"):
             compute_bmd_sfd(6000, "simply_supported", [])
 
+    @pytest.mark.parametrize("value", [float("nan"), float("inf"), -float("inf")])
+    def test_non_finite_calculation_input_is_rejected(self, value: float) -> None:
+        loads = [LoadDefinition(LoadType.UDL, magnitude=20.0)]
+        with pytest.raises(ValueError, match="finite"):
+            compute_bmd_sfd(value, "simply_supported", loads)
+
+    def test_point_location_outside_span_is_rejected(self) -> None:
+        loads = [LoadDefinition(LoadType.POINT, magnitude=100.0, position_mm=7000.0)]
+        with pytest.raises(ValueError, match=r"position_mm must be in \[0"):
+            compute_bmd_sfd(6000.0, "simply_supported", loads)
+
+    @pytest.mark.parametrize("num_points", [0, 1, 2.5, True])
+    def test_invalid_plot_density_is_rejected(self, num_points: object) -> None:
+        loads = [LoadDefinition(LoadType.UDL, magnitude=20.0)]
+        with pytest.raises(ValueError, match="num_points"):
+            compute_bmd_sfd(  # type: ignore[arg-type]
+                6000.0, "simply_supported", loads, num_points=num_points
+            )
+
     def test_triangular_load_works(self) -> None:
         """Triangular load should compute valid results."""
         loads = [LoadDefinition(LoadType.TRIANGULAR, magnitude=20.0)]
@@ -267,7 +286,8 @@ class TestInputValidation:
 
         # w_max * L^2 / (9*sqrt(3)) ≈ 46.19 kNm
         assert result.max_bm_knm > 40.0
-        assert len(result.bmd_knm) == 101
+        assert len(result.bmd_knm) >= 101
+        assert len(result.positions_mm) == len(result.bmd_knm)
 
     def test_moment_load_works(self) -> None:
         """Applied moment should compute valid results."""
@@ -276,7 +296,8 @@ class TestInputValidation:
 
         # Max |BM| = M/2 = 12.5 for midspan moment
         assert abs(result.max_bm_knm - 12.5) < 0.1
-        assert len(result.bmd_knm) == 101
+        assert result.positions_mm.count(3000.0) == 2
+        assert len(result.positions_mm) == len(result.bmd_knm)
 
 
 class TestCustomNumPoints:
@@ -299,6 +320,96 @@ class TestCustomNumPoints:
         # Max moment should still be accurate (at midspan)
         expected_max_m = 20.0 * 6.0**2 / 8.0
         assert abs(result.max_bm_knm - expected_max_m) < 0.5
+
+    def test_off_grid_point_load_extremum_is_exact(self) -> None:
+        """Plot density cannot understate the engineering extremum."""
+        loads = [LoadDefinition(LoadType.POINT, magnitude=100.0, position_mm=2345.0)]
+        result = compute_bmd_sfd(6000.0, "simply_supported", loads, num_points=11)
+
+        expected = 100.0 * (6.0 - 2.345) / 6.0 * 2.345
+        assert result.max_bm_knm == pytest.approx(expected)
+        assert 2345.0 in result.positions_mm
+
+    def test_plot_density_does_not_change_engineering_extrema(self) -> None:
+        loads = [LoadDefinition(LoadType.POINT, magnitude=100.0, position_mm=2345.0)]
+
+        coarse = compute_bmd_sfd(6000.0, "simply_supported", loads, num_points=11)
+        fine = compute_bmd_sfd(6000.0, "simply_supported", loads, num_points=151)
+
+        assert coarse.max_bm_knm == pytest.approx(fine.max_bm_knm)
+        assert coarse.max_sf_kn == pytest.approx(fine.max_sf_kn)
+        assert coarse.min_sf_kn == pytest.approx(fine.min_sf_kn)
+
+    def test_mirrored_point_location_preserves_moment_and_swaps_shear(self) -> None:
+        left = compute_bmd_sfd(
+            6000.0,
+            "simply_supported",
+            [LoadDefinition(LoadType.POINT, magnitude=90.0, position_mm=1800.0)],
+            num_points=17,
+        )
+        right = compute_bmd_sfd(
+            6000.0,
+            "simply_supported",
+            [LoadDefinition(LoadType.POINT, magnitude=90.0, position_mm=4200.0)],
+            num_points=17,
+        )
+
+        assert left.max_bm_knm == pytest.approx(right.max_bm_knm)
+        assert left.max_sf_kn == pytest.approx(abs(right.min_sf_kn))
+        assert abs(left.min_sf_kn) == pytest.approx(right.max_sf_kn)
+
+    def test_load_scaling_scales_every_engineering_extremum(self) -> None:
+        base = compute_bmd_sfd(
+            6000.0,
+            "simply_supported",
+            [LoadDefinition(LoadType.UDL, magnitude=12.0)],
+            num_points=21,
+        )
+        doubled = compute_bmd_sfd(
+            6000.0,
+            "simply_supported",
+            [LoadDefinition(LoadType.UDL, magnitude=24.0)],
+            num_points=21,
+        )
+
+        assert doubled.max_bm_knm == pytest.approx(2 * base.max_bm_knm)
+        assert doubled.max_sf_kn == pytest.approx(2 * base.max_sf_kn)
+        assert doubled.min_sf_kn == pytest.approx(2 * base.min_sf_kn)
+
+    def test_partial_udl_uses_explicit_start_and_end(self) -> None:
+        loads = [
+            LoadDefinition(
+                LoadType.UDL,
+                magnitude=20.0,
+                position_mm=1000.0,
+                end_position_mm=3000.0,
+            )
+        ]
+        result = compute_bmd_sfd(6000.0, "simply_supported", loads, num_points=11)
+
+        assert result.max_sf_kn == pytest.approx(26.6666666667)
+        assert result.min_sf_kn == pytest.approx(-13.3333333333)
+        assert result.max_bm_knm == pytest.approx(44.4444444444)
+
+    def test_partial_udl_invalid_bounds_are_rejected(self) -> None:
+        loads = [
+            LoadDefinition(
+                LoadType.UDL,
+                magnitude=20.0,
+                position_mm=3000.0,
+                end_position_mm=1000.0,
+            )
+        ]
+        with pytest.raises(ValueError, match="end_position_mm"):
+            compute_bmd_sfd(6000.0, "simply_supported", loads)
+
+    def test_applied_moment_at_zero_is_not_rewritten_to_midspan(self) -> None:
+        loads = [LoadDefinition(LoadType.MOMENT, magnitude=30.0, position_mm=0.0)]
+        result = compute_bmd_sfd(6000.0, "simply_supported", loads, num_points=11)
+
+        assert result.positions_mm[0] == 0.0
+        assert result.bmd_knm[0] == pytest.approx(30.0)
+        assert result.max_bm_knm == pytest.approx(30.0)
 
 
 # =============================================================================

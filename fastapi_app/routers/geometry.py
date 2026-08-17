@@ -455,55 +455,22 @@ async def generate_building_geometry(
     to compute line geometry for all structural members.
     """
     try:
-        from structural_lib.services.api import BeamGeometry, Point3D, FrameType
+        from structural_lib.services.api import BeamGeometry, FrameType
 
-        # Convert request dicts to BeamGeometry objects
-        beam_objects = []
-        for beam_dict in request.beams:
-            try:
-                # Parse frame type
-                frame_type_str = beam_dict.get("frame_type", "beam").lower()
-                frame_type = FrameType.BEAM
-                if frame_type_str == "column":
-                    frame_type = FrameType.COLUMN
-                elif frame_type_str == "brace":
-                    frame_type = FrameType.BRACE
-
-                # Parse points
-                p1 = beam_dict.get("point1", {})
-                p2 = beam_dict.get("point2", {})
-
-                beam_geom = BeamGeometry(
-                    id=beam_dict.get("id", f"beam_{len(beam_objects)}"),
-                    story=beam_dict.get("story", "1F"),
-                    frame_type=frame_type,
-                    point1=Point3D(
-                        x=float(p1.get("x", 0)),
-                        y=float(p1.get("y", 0)),
-                        z=float(p1.get("z", 0)),
-                    ),
-                    point2=Point3D(
-                        x=float(p2.get("x", 0)),
-                        y=float(p2.get("y", 0)),
-                        z=float(p2.get("z", 0)),
-                    ),
-                )
-                beam_objects.append(beam_geom)
-            except (KeyError, ValueError, TypeError):
-                continue  # Skip invalid beams
-
-        if not beam_objects:
-            return success_response(
-                BuildingGeometryResponse(
-                    success=False,
-                    message="No valid beams could be parsed from request",
-                    beams=[],
-                    bounding_box={},
-                    center=Point3DModel(x=0, y=0, z=0),
-                    metadata={},
-                    warnings=["No beams parsed - check input format"],
-                )
+        # Pydantic validates every member before this route runs. Conversion is
+        # therefore all-or-nothing: no member can disappear through a skip.
+        beam_objects = [
+            BeamGeometry(
+                id=beam.id,
+                label=beam.label,
+                story=beam.story,
+                frame_type=FrameType(beam.frame_type),
+                point1=beam.point1.model_dump(),
+                point2=beam.point2.model_dump(),
+                section=beam.section.model_dump(),
             )
+            for beam in request.beams
+        ]
 
         from structural_lib.visualization.geometry_3d import building_to_3d_geometry
 
@@ -529,6 +496,16 @@ async def generate_building_geometry(
             for b in geometry.beams
         ]
 
+        metadata = {
+            "contract_scope": "visualization_only",
+            "source_coordinate_basis": "source_units",
+            "output_coordinate_units": "mm",
+            "coordinate_scale_to_mm": request.unit_scale,
+            "input_member_count": len(request.beams),
+            "output_member_count": len(beam_models),
+            "filtered_member_count": len(request.beams) - len(beam_models),
+        }
+
         return success_response(
             BuildingGeometryResponse(
                 success=True,
@@ -540,7 +517,7 @@ async def generate_building_geometry(
                     y=geometry.center.y,
                     z=geometry.center.z,
                 ),
-                metadata=geometry.metadata,
+                metadata=metadata,
                 warnings=[],
             )
         )

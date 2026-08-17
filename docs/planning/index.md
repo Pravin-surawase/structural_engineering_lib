@@ -2,14 +2,13 @@
 
 **Type:** Documentation
 **Last Updated:** 2026-08-17
-**Files:** 21
+**Files:** 19
 
 ## Documentation Files
 
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
 | [README.md](README.md) | Planning | Internal planning documents and research notes. | Document | | 156 |
-| [adoption-trust-surface-plan.md](adoption-trust-surface-plan.md) |  | Make the released Alpha straightforward to evaluate from fou | 380 |
 | [compact-modernization-plan.md](compact-modernization-plan.md) |  | Modernize the repository's CI, maintenance controls, and age | 794 |
 | [democratization-vision.md](democratization-vision.md) |  | > **"What was not possible few years back, or only possible  | 273 |
 | [dependency-security-baseline.md](dependency-security-baseline.md) |  | This record makes MAINT-003 reproducible. It separates confi | 69 |
@@ -27,5 +26,4 @@
 | [pre-release-checklist.md](pre-release-checklist.md) | Pre-Release Checklist | Prepared candidate source metadata: 0.23.1a2 Current public  | 111 |
 | [pre-release-input-safety-and-professional-readiness-plan.md](pre-release-input-safety-and-professional-readiness-plan.md) | Pre-Release Input Safety and Professiona | fe4ab025419b834c6d0f840e9492c0604ae74201 after Packets A-G m | 742 |
 | [professional-library-remediation-plan.md](professional-library-remediation-plan.md) | Professional Library Remediation Plan | This document is no longer the active implementation plan. T | 562 |
-| [react-ux-improvement-plan.md](react-ux-improvement-plan.md) |  | > **Historical implementation record.** Execution status in  | 709 |
 | [ui-experience-foundation-master-plan.md](ui-experience-foundation-master-plan.md) |  | The product will move from a collection of equally weighted  | 2408 |

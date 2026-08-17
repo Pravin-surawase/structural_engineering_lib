@@ -286,11 +286,11 @@ def test_auto_detection_blocks_when_multiple_adapters_match(tmp_path: Path) -> N
                 "Strip,Story,StartX,StartY,EndX,EndY,Width,Depth,fck,fy\n"
                 "S1,Slab,0,0,5,0,1000,200,30,500"
             ),
-            ("Strip,Story,LoadCombo,Position,M22,V23\n" "S1,Slab,1.5DL+1.5LL,0,120,80"),
+            ("Strip,Story,LoadCombo,Position,M22,V23\nS1,Slab,1.5DL+1.5LL,0,120,80"),
         ),
         (
             "staad",
-            ("Member,X1,Y1,X2,Y2,Width,Depth,fck,fy\n" "B1,0,0,5,0,300,500,30,500"),
+            ("Member,X1,Y1,X2,Y2,Width,Depth,fck,fy\nB1,0,0,5,0,300,500,30,500"),
             "Member,LC,Dist,My,Fy\nB1,101,0,120,80",
         ),
     ],
@@ -345,3 +345,98 @@ def test_non_generic_adapter_blocks_without_explicit_project_defaults(
     assert ImportIssueCode.MISSING_PROJECT_DEFAULTS in {
         issue.code for issue in result.issues
     }
+
+
+def test_etabs_lossless_import_ledgers_malformed_force_without_substitution(
+    tmp_path: Path,
+) -> None:
+    geometry_csv = tmp_path / "geometry.csv"
+    forces_csv = tmp_path / "forces.csv"
+    _write_csv(
+        geometry_csv,
+        (
+            "Story,Label,ObjType,AnalSect,XI,YI,ZI,XJ,YJ,ZJ\n"
+            "Ground,B1,Beam,B300X500,0,0,0,5,0,0"
+        ),
+    )
+    _write_csv(
+        forces_csv,
+        ("Story,Label,Output Case,Station,M3,V2\nGround,B1,ULS,0,not-a-number,50"),
+    )
+
+    result = parse_dual_csv_lossless(
+        geometry_csv,
+        forces_csv,
+        format_hint="etabs",
+        defaults=DesignDefaults(fck_mpa=25, fy_mpa=500, cover_mm=40),
+    )
+
+    assert result.status is ImportStatus.BLOCKED
+    assert result.batch is None
+    assert result.ledger.totals.source_rows == 2
+    assert result.ledger.totals.accepted_rows == 1
+    assert result.ledger.totals.blocked_rows == 1
+    assert ImportIssueCode.MALFORMED_NUMBER in {issue.code for issue in result.issues}
+
+
+def test_etabs_lossless_import_blocks_unknown_section_dimensions(
+    tmp_path: Path,
+) -> None:
+    geometry_csv = tmp_path / "geometry.csv"
+    forces_csv = tmp_path / "forces.csv"
+    _write_csv(
+        geometry_csv,
+        (
+            "Story,Label,ObjType,AnalSect,XI,YI,ZI,XJ,YJ,ZJ\n"
+            "Ground,B1,Beam,UNKNOWN_SECTION,0,0,0,5,0,0"
+        ),
+    )
+    _write_csv(
+        forces_csv,
+        "Story,Label,Output Case,Station,M3,V2\nGround,B1,ULS,0,120,50",
+    )
+
+    result = parse_dual_csv_lossless(
+        geometry_csv,
+        forces_csv,
+        format_hint="etabs",
+        defaults=DesignDefaults(fck_mpa=25, fy_mpa=500, cover_mm=40),
+    )
+
+    assert result.status is ImportStatus.BLOCKED
+    assert result.batch is None
+    assert ImportIssueCode.ADAPTER_PARSE_ERROR in {
+        issue.code for issue in result.issues
+    }
+
+
+def test_etabs_lossless_ledger_requires_case_station_and_section_identity(
+    tmp_path: Path,
+) -> None:
+    geometry_csv = tmp_path / "geometry.csv"
+    forces_csv = tmp_path / "forces.csv"
+    _write_csv(
+        geometry_csv,
+        "Story,Label,XI,YI,ZI,XJ,YJ,ZJ\nGround,B1,0,0,0,5,0,0",
+    )
+    _write_csv(
+        forces_csv,
+        "Story,Label,M3,V2\nGround,B1,120,50",
+    )
+
+    result = parse_dual_csv_lossless(
+        geometry_csv,
+        forces_csv,
+        format_hint="etabs",
+        defaults=DesignDefaults(fck_mpa=25, fy_mpa=500, cover_mm=40),
+    )
+
+    assert result.status is ImportStatus.BLOCKED
+    missing_paths = {
+        issue.path
+        for issue in result.issues
+        if issue.code is ImportIssueCode.MISSING_REQUIRED_HEADER
+    }
+    assert "geometry.headers.section_name" in missing_paths
+    assert "forces.headers.case_id" in missing_paths
+    assert "forces.headers.station" in missing_paths

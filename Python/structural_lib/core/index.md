@@ -34,7 +34,7 @@
 | [inputs.py](inputs.py) | Module:       inputs | 6 | 3 | 635 |
 | [logging_config.py](logging_config.py) | Module:       logging_config | 0 | 1 | 66 |
 | [materials.py](materials.py) | Code-agnostic material models. | 3 | 0 | 159 |
-| [models.py](models.py) | Canonical Data Models for Structural Engineering Library. | 11 | 0 | 531 |
+| [models.py](models.py) | Canonical Data Models for Structural Engineering Library. | 11 | 0 | 554 |
 | [numerics.py](numerics.py) | Numeric safety utilities for structural calculations. | 0 | 3 | 78 |
 | [registry.py](registry.py) | Design code registry for multi-code support. | 1 | 1 | 98 |
 | [result_base.py](result_base.py) | Module:       result_base | 3 | 0 | 191 |

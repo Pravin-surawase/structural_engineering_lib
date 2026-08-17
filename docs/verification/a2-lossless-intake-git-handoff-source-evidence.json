@@ -1,0 +1,61 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-17T15:50:59Z",
+      "query_status": "OK",
+      "reference": "task:A2-LOSSLESS-INTAKE-CALCULATION:owner-approved-G0-A1-and-continuation-without-ordinary-approval-pauses",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR",
+      "MARK_READY_AND_MERGE_REVIEWED_HEAD_AFTER_REQUIRED_CHECKS"
+    ],
+    "next_action": "COMPLETE_M2_G1_VALIDATION",
+    "observed_at_utc": "2026-08-17T15:50:59Z",
+    "prohibited_actions": [
+      "START_GRAVITY_BEFORE_G1",
+      "START_LIVE_ETABS",
+      "START_EXCEL_WRITE_BACK",
+      "START_NIGHTLY_OPTIMIZATION",
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "DISCARD_USER_CHANGE",
+      "CLOSE_PULL_REQUEST",
+      "PUBLISH_RELEASE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR",
+        "MARK_READY_AND_MERGE_REVIEWED_HEAD_AFTER_REQUIRED_CHECKS"
+      ],
+      "branch": "codex/a2-lossless-intake-calculation",
+      "head_sha": "a0458e1935e9f14bcba47a838d5fe61b46174b05",
+      "task_id": "A2-LOSSLESS-INTAKE-CALCULATION"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-17T15:50:59Z",
+    "owner": "Main Agent under owner-approved A2 execution",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

@@ -253,6 +253,22 @@ families are:
 | Export | BBS, DXF, HTML/PDF reports, CSV summaries, and BOQ |
 | Runtime | health, readiness, system information, SSE, and WebSocket updates |
 
+Three preview contracts have additional fail-closed boundaries:
+
+- `POST /api/v1/analysis/loads/simple` accepts finite UDL/point inputs,
+  validates every location against `span_mm`, honors explicit partial-UDL
+  `end_position_mm`, and inserts off-grid discontinuities/extrema into the
+  returned arrays. `num_points` is display density, not engineering accuracy.
+- `POST /api/v1/analysis/beam/smart` requires explicit `effective_depth` and
+  `span_length`. It exposes canonical flexure/shear checks, utilization,
+  remaining-capacity margin, core advisory scores, and core cost analysis; the
+  transport does not invent a depth, span, clause check, score meaning, or cost.
+- `POST /api/v1/geometry/building` is visualization-only. Every member and its
+  section are typed and validated together, duplicate identities block, and
+  `unit_scale` is receipted as millimetres per source coordinate unit. This
+  route does not create an analysis model, infer connectivity or loads, design
+  members, or approve a building.
+
 Use Swagger/ReDoc or the OpenAPI JSON instead of copying an undocumented model
 from another endpoint. Some Python-level names intentionally differ from REST
 names because unit conversion occurs at the service boundary.

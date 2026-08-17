@@ -22,29 +22,32 @@ export interface Point3D {
 }
 
 export interface BuildingBeamInput {
-  beam_id: string;
+  id: string;
+  label: string;
   story: string;
+  frame_type: "beam" | "column" | "brace";
   point1: Point3D;
   point2: Point3D;
-  width_mm: number;
-  depth_mm: number;
-  is_valid?: boolean;
-  utilization?: number;
+  section: {
+    width_mm: number;
+    depth_mm: number;
+    fck_mpa: number;
+    fy_mpa: number;
+    cover_mm: number;
+  };
 }
 
 export interface BuildingBeamResult {
   beam_id: string;
-  start: [number, number, number];
-  end: [number, number, number];
-  width_m: number;
-  depth_m: number;
-  status: string;
+  story: string;
+  frame_type: "beam" | "column" | "brace";
+  start: Point3D;
+  end: Point3D;
 }
 
 export interface BuildingGeometryResponse {
   success: boolean;
   message: string;
-  beam_count: number;
   beams: BuildingBeamResult[];
   bounding_box: {
     min_x: number;
@@ -54,44 +57,45 @@ export interface BuildingGeometryResponse {
     min_z: number;
     max_z: number;
   };
-  center: [number, number, number];
-  suggested_camera_distance: number;
+  center: Point3D;
+  metadata: {
+    contract_scope: "visualization_only";
+    source_coordinate_basis: "source_units";
+    output_coordinate_units: "mm";
+    coordinate_scale_to_mm: number;
+    input_member_count: number;
+    output_member_count: number;
+    filtered_member_count: number;
+    [key: string]: unknown;
+  };
+  warnings: string[];
 }
 
 export interface CrossSectionRequest {
-  width_mm: number;
-  depth_mm: number;
-  cover_mm?: number;
-  top_bars?: number;
-  top_dia_mm?: number;
-  bottom_bars?: number;
-  bottom_dia_mm?: number;
-  stirrup_dia_mm?: number;
-  layers?: number;
-}
-
-export interface BarPosition {
-  center: [number, number];
-  radius: number;
-  is_top: boolean;
-  layer: number;
+  width: number;
+  depth: number;
+  cover?: number;
+  tension_bars?: number;
+  compression_bars?: number;
+  bar_dia?: number;
+  stirrup_dia?: number;
 }
 
 export interface CrossSectionResponse {
   success: boolean;
   message: string;
-  outline: {
+  outline: Point3D[];
+  tension_bars: Point3D[];
+  compression_bars: Point3D[];
+  stirrup_path: Point3D[];
+  dimensions: {
     width_mm: number;
     depth_mm: number;
-    corners: [[number, number], [number, number], [number, number], [number, number]];
+    cover_mm: number;
+    bar_dia_mm: number;
+    stirrup_dia_mm: number;
   };
-  bars: BarPosition[];
-  stirrup: {
-    outer_corners: [[number, number], [number, number], [number, number], [number, number]];
-    diameter_mm: number;
-  };
-  neutral_axis_mm?: number;
-  compression_zone_mm?: number;
+  warnings: string[];
 }
 
 // =============================================================================
@@ -100,8 +104,8 @@ export interface CrossSectionResponse {
 
 interface BuildingGeometryRequest {
   beams: BuildingBeamInput[];
-  lod?: "low" | "medium" | "high" | "auto";
-  floor_height_m?: number;
+  unit_scale?: number;
+  include_frame_types?: Array<"beam" | "column" | "brace">;
 }
 
 async function fetchBuildingGeometry(
@@ -161,7 +165,7 @@ async function fetchCrossSectionGeometry(
  *
  * @example
  * const { mutate, data, isPending } = useCrossSectionGeometry();
- * mutate({ width_mm: 300, depth_mm: 500, bottom_bars: 4, bottom_dia_mm: 16 });
+ * mutate({ width: 300, depth: 500, tension_bars: 4, bar_dia: 16 });
  */
 export function useCrossSectionGeometry() {
   return useMutation({

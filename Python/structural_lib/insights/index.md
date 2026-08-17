@@ -1,7 +1,7 @@
 # Insights
 
 **Type:** Python Package
-**Last Updated:** 2026-08-16
+**Last Updated:** 2026-08-17
 **Files:** 10
 
 ## Public API
@@ -39,5 +39,5 @@
 | [design_suggestions.py](design_suggestions.py) | Design suggestion engine for beam design optimization. | 4 | 1 | 686 |
 | [precheck.py](precheck.py) | Heuristic pre-checks for quick design guidance (advisory onl | 0 | 1 | 206 |
 | [sensitivity.py](sensitivity.py) | Sensitivity analysis for beam designs (advisory only). | 0 | 2 | 252 |
-| [smart_designer.py](smart_designer.py) | Smart Designer — Unified intelligent design analysis dashboa | 7 | 1 | 636 |
+| [smart_designer.py](smart_designer.py) | Smart Designer — Unified intelligent design analysis dashboa | 7 | 1 | 654 |
 | [types.py](types.py) | Dataclasses for advisory insights (precheck, sensitivity, co | 6 | 0 | 145 |

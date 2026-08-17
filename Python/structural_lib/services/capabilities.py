@@ -1932,6 +1932,86 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
                 "Footing overall_thickness_mm belongs to footing_flexure; it is not a FastAPI load-transfer request field.",
             ),
         ),
+        IS456AdapterContract(
+            adapter="etabs_csv_read_only",
+            fields=(
+                _field(
+                    "import_ledger.totals.source_rows",
+                    "physical CSV rows",
+                    "count",
+                    True,
+                    "exactly conserved as accepted plus blocked rows",
+                ),
+                _field(
+                    "section.width_mm",
+                    "explicit imported or mapped section width",
+                    "mm",
+                    True,
+                    _MM,
+                ),
+                _field(
+                    "section.depth_mm",
+                    "explicit imported or mapped section depth",
+                    "mm",
+                    True,
+                    _MM,
+                ),
+                _field(
+                    "envelope_basis",
+                    "force-extrema selection basis",
+                    "enumeration",
+                    True,
+                    "independent extrema with signed station and concurrent companion values, or explicit source-precomputed hold basis",
+                ),
+            ),
+            statuses=(
+                IS456StatusContract(
+                    "import_status",
+                    "ACCEPTED only when every calculation-bearing row and field is accounted and canonical matching succeeds.",
+                    (
+                        "A blocked import exposes no calculable batch.",
+                        "Successful import is not proof that the ETABS model or load basis is complete or correct.",
+                    ),
+                ),
+            ),
+            limitations=(
+                "CSV file intake is read-only and beam-member scoped; live ETABS automation and write-back are excluded.",
+                "The adapter does not establish global-model completeness, local-axis correctness, analysis validity, gravity/load-generation basis, load-combination approval, or professional review.",
+                "Header-only files, malformed or non-finite numbers, unknown sections, row loss, and unmatched records block.",
+            ),
+        ),
+        IS456AdapterContract(
+            adapter="building_geometry_visualization",
+            fields=(
+                _field(
+                    "beams",
+                    "typed visualization members",
+                    "structured input",
+                    True,
+                    "non-empty and fully validated",
+                ),
+                _field(
+                    "metadata.contract_scope",
+                    "surface applicability",
+                    "enumeration",
+                    True,
+                    "visualization_only",
+                ),
+                _field(
+                    "unit_scale",
+                    "coordinate scale to output millimetres",
+                    "mm per source coordinate unit",
+                    True,
+                    "> 0 with an exact response receipt",
+                ),
+            ),
+            statuses=(),
+            limitations=(
+                "The building endpoint returns display line geometry only.",
+                "Every member and section is typed; duplicate member identity or an all-excluding filter blocks the request.",
+                "It does not create an analysis model, infer connectivity, calculate loads, design members, or approve a building.",
+            ),
+        ),
     ),
 )
 

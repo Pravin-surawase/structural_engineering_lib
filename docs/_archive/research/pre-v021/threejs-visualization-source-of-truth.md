@@ -54,7 +54,7 @@ Other documents should link here and avoid duplicating details.
 
 - Canonical contract: `docs/reference/3d-json-contract.md`.
 - API reference: `docs/reference/api.md` section 15.
-- SDK contract reference: `docs/reference/sdk-api-contract-v1.md`.
+- SDK contract reference: `docs/_archive/2026-08/sdk-api-contract-v1.md`.
 - POC uses embedded JSON in HTML to avoid CORS and timing issues.
 
 ---

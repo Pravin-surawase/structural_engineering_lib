@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "description": "Schema snapshots for API contract testing - auto-generated, do not edit manually",
-  "generated": "2026-08-06",
+  "generated": "2026-08-17",
   "version": "1.0.0",
   "models": {
     "Point3D": {
@@ -67,10 +67,17 @@
         "vu_kn"
       ],
       "properties": [
+        "envelope_basis",
         "id",
         "load_case",
+        "moment_at_shear_station_knm",
+        "moment_signed_knm",
+        "moment_station",
         "mu_knm",
         "pu_kn",
+        "shear_at_moment_station_kn",
+        "shear_signed_kn",
+        "shear_station",
         "station_count",
         "vu_kn"
       ]

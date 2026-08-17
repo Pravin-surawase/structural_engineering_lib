@@ -6265,6 +6265,59 @@
         "title": "BracedWallResponse",
         "type": "object"
       },
+      "BuildingBeamInput": {
+        "additionalProperties": false,
+        "description": "Typed canonical member input for building-line visualization only.",
+        "properties": {
+          "frame_type": {
+            "default": "beam",
+            "enum": [
+              "beam",
+              "column",
+              "brace"
+            ],
+            "title": "Frame Type",
+            "type": "string"
+          },
+          "id": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Id",
+            "type": "string"
+          },
+          "label": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Label",
+            "type": "string"
+          },
+          "point1": {
+            "$ref": "#/components/schemas/BuildingPointInput"
+          },
+          "point2": {
+            "$ref": "#/components/schemas/BuildingPointInput"
+          },
+          "section": {
+            "$ref": "#/components/schemas/BuildingSectionInput"
+          },
+          "story": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Story",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "story",
+          "point1",
+          "point2",
+          "section"
+        ],
+        "title": "BuildingBeamInput",
+        "type": "object"
+      },
       "BuildingBeamModel": {
         "description": "Single beam in building geometry (line representation).",
         "properties": {
@@ -6280,7 +6333,11 @@
           },
           "frame_type": {
             "description": "Frame type: beam, column, brace",
-            "maxLength": 50,
+            "enum": [
+              "beam",
+              "column",
+              "brace"
+            ],
             "title": "Frame Type",
             "type": "string"
           },
@@ -6305,15 +6362,106 @@
         "title": "BuildingBeamModel",
         "type": "object"
       },
+      "BuildingBoundingBox": {
+        "description": "Exact output bounds in millimetres.",
+        "properties": {
+          "max_x": {
+            "title": "Max X",
+            "type": "number"
+          },
+          "max_y": {
+            "title": "Max Y",
+            "type": "number"
+          },
+          "max_z": {
+            "title": "Max Z",
+            "type": "number"
+          },
+          "min_x": {
+            "title": "Min X",
+            "type": "number"
+          },
+          "min_y": {
+            "title": "Min Y",
+            "type": "number"
+          },
+          "min_z": {
+            "title": "Min Z",
+            "type": "number"
+          }
+        },
+        "required": [
+          "min_x",
+          "max_x",
+          "min_y",
+          "max_y",
+          "min_z",
+          "max_z"
+        ],
+        "title": "BuildingBoundingBox",
+        "type": "object"
+      },
+      "BuildingGeometryMetadata": {
+        "description": "Applicability and coordinate-conversion receipt for display geometry.",
+        "properties": {
+          "contract_scope": {
+            "const": "visualization_only",
+            "title": "Contract Scope",
+            "type": "string"
+          },
+          "coordinate_scale_to_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Coordinate Scale To Mm",
+            "type": "number"
+          },
+          "filtered_member_count": {
+            "minimum": 0.0,
+            "title": "Filtered Member Count",
+            "type": "integer"
+          },
+          "input_member_count": {
+            "minimum": 1.0,
+            "title": "Input Member Count",
+            "type": "integer"
+          },
+          "output_coordinate_units": {
+            "const": "mm",
+            "title": "Output Coordinate Units",
+            "type": "string"
+          },
+          "output_member_count": {
+            "minimum": 1.0,
+            "title": "Output Member Count",
+            "type": "integer"
+          },
+          "source_coordinate_basis": {
+            "const": "source_units",
+            "title": "Source Coordinate Basis",
+            "type": "string"
+          }
+        },
+        "required": [
+          "contract_scope",
+          "source_coordinate_basis",
+          "output_coordinate_units",
+          "coordinate_scale_to_mm",
+          "input_member_count",
+          "output_member_count",
+          "filtered_member_count"
+        ],
+        "title": "BuildingGeometryMetadata",
+        "type": "object"
+      },
       "BuildingGeometryRequest": {
+        "additionalProperties": false,
         "description": "Request model for building geometry generation.",
         "properties": {
           "beams": {
-            "description": "List of beam geometry dicts with point1, point2, id, story, frame_type",
+            "description": "Canonical members for visualization; every row must validate",
             "items": {
-              "additionalProperties": true,
-              "type": "object"
+              "$ref": "#/components/schemas/BuildingBeamInput"
             },
+            "minItems": 1,
             "title": "Beams",
             "type": "array"
           },
@@ -6321,20 +6469,27 @@
             "anyOf": [
               {
                 "items": {
+                  "enum": [
+                    "beam",
+                    "column",
+                    "brace"
+                  ],
                   "type": "string"
                 },
+                "minItems": 1,
                 "type": "array"
               },
               {
                 "type": "null"
               }
             ],
-            "description": "Optional filter for frame types",
+            "description": "Optional non-empty display filter for frame types",
             "title": "Include Frame Types"
           },
           "unit_scale": {
             "default": 1000.0,
-            "description": "Scale factor (default: m to mm)",
+            "description": "Millimetres per source coordinate unit (1000 converts metres)",
+            "exclusiveMinimum": 0.0,
             "title": "Unit Scale",
             "type": "number"
           }
@@ -6357,12 +6512,8 @@
             "type": "array"
           },
           "bounding_box": {
-            "additionalProperties": {
-              "type": "number"
-            },
-            "description": "Overall bounding box",
-            "title": "Bounding Box",
-            "type": "object"
+            "$ref": "#/components/schemas/BuildingBoundingBox",
+            "description": "Overall bounding box"
           },
           "center": {
             "$ref": "#/components/schemas/Point3DModel",
@@ -6374,10 +6525,7 @@
             "type": "string"
           },
           "metadata": {
-            "additionalProperties": true,
-            "description": "Additional metadata",
-            "title": "Metadata",
-            "type": "object"
+            "$ref": "#/components/schemas/BuildingGeometryMetadata"
           },
           "success": {
             "description": "Whether generation succeeded",
@@ -6398,9 +6546,82 @@
           "message",
           "beams",
           "bounding_box",
-          "center"
+          "center",
+          "metadata"
         ],
         "title": "BuildingGeometryResponse",
+        "type": "object"
+      },
+      "BuildingPointInput": {
+        "additionalProperties": false,
+        "description": "Source coordinate converted to millimetres by coordinate_scale_to_mm.",
+        "properties": {
+          "x": {
+            "title": "X",
+            "type": "number"
+          },
+          "y": {
+            "title": "Y",
+            "type": "number"
+          },
+          "z": {
+            "title": "Z",
+            "type": "number"
+          }
+        },
+        "required": [
+          "x",
+          "y",
+          "z"
+        ],
+        "title": "BuildingPointInput",
+        "type": "object"
+      },
+      "BuildingSectionInput": {
+        "additionalProperties": false,
+        "description": "Explicit section data required to construct canonical beam geometry.",
+        "properties": {
+          "cover_mm": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 100.0,
+            "title": "Cover Mm",
+            "type": "number"
+          },
+          "depth_mm": {
+            "description": "Overall depth (mm)",
+            "exclusiveMinimum": 0.0,
+            "maximum": 3000.0,
+            "title": "Depth Mm",
+            "type": "number"
+          },
+          "fck_mpa": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 100.0,
+            "title": "Fck Mpa",
+            "type": "number"
+          },
+          "fy_mpa": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 700.0,
+            "title": "Fy Mpa",
+            "type": "number"
+          },
+          "width_mm": {
+            "description": "Section width (mm)",
+            "exclusiveMinimum": 0.0,
+            "maximum": 2000.0,
+            "title": "Width Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "width_mm",
+          "depth_mm",
+          "fck_mpa",
+          "fy_mpa",
+          "cover_mm"
+        ],
+        "title": "BuildingSectionInput",
         "type": "object"
       },
       "BuiltinContinuousOneWaySlabDesignRequest": {
@@ -11340,44 +11561,6 @@
         "title": "CostBreakdown",
         "type": "object"
       },
-      "CostEstimate": {
-        "description": "Rough cost estimate for analysis.",
-        "properties": {
-          "cost_rating": {
-            "description": "Cost rating",
-            "examples": [
-              "economical",
-              "moderate",
-              "expensive"
-            ],
-            "title": "Cost Rating",
-            "type": "string"
-          },
-          "estimated_concrete": {
-            "description": "Estimated concrete (m\u00b3/m)",
-            "title": "Estimated Concrete",
-            "type": "number"
-          },
-          "estimated_steel": {
-            "description": "Estimated steel (kg/m)",
-            "title": "Estimated Steel",
-            "type": "number"
-          },
-          "relative_cost": {
-            "description": "Relative cost index (1.0 = baseline)",
-            "title": "Relative Cost",
-            "type": "number"
-          }
-        },
-        "required": [
-          "relative_cost",
-          "estimated_concrete",
-          "estimated_steel",
-          "cost_rating"
-        ],
-        "title": "CostEstimate",
-        "type": "object"
-      },
       "CostOptimizationRequest": {
         "description": "Request model for beam cost optimization.",
         "properties": {
@@ -13152,60 +13335,6 @@
           "method"
         ],
         "title": "EffectiveLengthResponse",
-        "type": "object"
-      },
-      "EfficiencyMetrics": {
-        "description": "Design efficiency metrics.",
-        "properties": {
-          "concrete_efficiency": {
-            "description": "Concrete utilization vs capacity",
-            "maximum": 1.0,
-            "minimum": 0.0,
-            "title": "Concrete Efficiency",
-            "type": "number"
-          },
-          "efficiency_comment": {
-            "description": "Explanation of efficiency grade",
-            "title": "Efficiency Comment",
-            "type": "string"
-          },
-          "efficiency_grade": {
-            "description": "Efficiency grade (A-F)",
-            "pattern": "^[A-F]$",
-            "title": "Efficiency Grade",
-            "type": "string"
-          },
-          "overall_efficiency": {
-            "description": "Overall design efficiency score",
-            "maximum": 1.0,
-            "minimum": 0.0,
-            "title": "Overall Efficiency",
-            "type": "number"
-          },
-          "steel_efficiency": {
-            "description": "Steel utilization vs max allowed",
-            "maximum": 1.0,
-            "minimum": 0.0,
-            "title": "Steel Efficiency",
-            "type": "number"
-          },
-          "utilization_ratio": {
-            "description": "Moment utilization ratio Mu/Mu_cap",
-            "maximum": 2.0,
-            "minimum": 0.0,
-            "title": "Utilization Ratio",
-            "type": "number"
-          }
-        },
-        "required": [
-          "utilization_ratio",
-          "steel_efficiency",
-          "concrete_efficiency",
-          "overall_efficiency",
-          "efficiency_grade",
-          "efficiency_comment"
-        ],
-        "title": "EfficiencyMetrics",
         "type": "object"
       },
       "EnhancedShearRequest": {
@@ -16928,6 +17057,7 @@
         "type": "object"
       },
       "LoadAnalysisRequest": {
+        "additionalProperties": false,
         "description": "Request model for simple load analysis (BMD/SFD).",
         "examples": [
           {
@@ -17058,8 +17188,22 @@
         "type": "object"
       },
       "LoadItem": {
+        "additionalProperties": false,
         "description": "Single load definition.",
         "properties": {
+          "end_position_mm": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "UDL end position (mm); omitted means the right support",
+            "title": "End Position Mm"
+          },
           "load_type": {
             "description": "Load type: 'udl' (kN/m) or 'point' (kN)",
             "enum": [
@@ -20397,6 +20541,12 @@
             "title": "Depth",
             "type": "number"
           },
+          "effective_depth": {
+            "description": "Explicit effective depth d (mm); no hidden cover assumption",
+            "exclusiveMinimum": 0.0,
+            "title": "Effective Depth",
+            "type": "number"
+          },
           "exposure_class": {
             "default": "moderate",
             "description": "Exposure condition per IS 456",
@@ -20457,17 +20607,10 @@
             "type": "number"
           },
           "span_length": {
-            "anyOf": [
-              {
-                "exclusiveMinimum": 0.0,
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Beam span length (mm) for deflection analysis",
-            "title": "Span Length"
+            "description": "Explicit beam span length (mm)",
+            "exclusiveMinimum": 0.0,
+            "title": "Span Length",
+            "type": "number"
           },
           "width": {
             "description": "Beam width (mm)",
@@ -20480,7 +20623,9 @@
         "required": [
           "width",
           "depth",
-          "moment"
+          "effective_depth",
+          "moment",
+          "span_length"
         ],
         "title": "SmartAnalysisRequest",
         "type": "object"
@@ -20501,16 +20646,16 @@
             "title": "Code Checks",
             "type": "array"
           },
-          "cost_estimate": {
+          "cost_analysis": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/CostEstimate"
+                "$ref": "#/components/schemas/SmartCostAnalysis"
               },
               {
                 "type": "null"
               }
             ],
-            "description": "Rough cost estimate"
+            "description": "Cost analysis calculated by the core service"
           },
           "critical_suggestions": {
             "default": 0,
@@ -20519,26 +20664,23 @@
             "type": "integer"
           },
           "design_summary": {
-            "additionalProperties": true,
-            "description": "Summary of design parameters and results",
-            "title": "Design Summary",
-            "type": "object"
-          },
-          "efficiency": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/EfficiencyMetrics"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Design efficiency metrics"
+            "$ref": "#/components/schemas/SmartDesignSummary"
           },
           "message": {
             "description": "Summary message",
             "title": "Message",
             "type": "string"
+          },
+          "scores": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SmartScoreMetrics"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Normalized advisory scores calculated by the core service"
           },
           "success": {
             "description": "Whether analysis succeeded",
@@ -20569,6 +20711,193 @@
           "all_checks_passed"
         ],
         "title": "SmartAnalysisResponse",
+        "type": "object"
+      },
+      "SmartCostAnalysis": {
+        "description": "Cost-analysis values calculated by the core smart-design service.",
+        "properties": {
+          "alternatives": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Alternatives",
+            "type": "array"
+          },
+          "baseline_alternative": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Baseline Alternative"
+          },
+          "current_cost": {
+            "minimum": 0.0,
+            "title": "Current Cost",
+            "type": "number"
+          },
+          "optimal_alternative": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Optimal Alternative"
+          },
+          "optimal_cost": {
+            "minimum": 0.0,
+            "title": "Optimal Cost",
+            "type": "number"
+          },
+          "savings_percent": {
+            "minimum": 0.0,
+            "title": "Savings Percent",
+            "type": "number"
+          }
+        },
+        "required": [
+          "current_cost",
+          "optimal_cost",
+          "savings_percent"
+        ],
+        "title": "SmartCostAnalysis",
+        "type": "object"
+      },
+      "SmartDesignSummary": {
+        "description": "Explicit inputs and canonical design-check semantics.",
+        "properties": {
+          "capacity_margin": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Capacity Margin",
+            "type": "number"
+          },
+          "depth_mm": {
+            "title": "Depth Mm",
+            "type": "number"
+          },
+          "design_status": {
+            "enum": [
+              "PASS",
+              "WARNING",
+              "FAIL"
+            ],
+            "title": "Design Status",
+            "type": "string"
+          },
+          "effective_depth_mm": {
+            "title": "Effective Depth Mm",
+            "type": "number"
+          },
+          "fck_nmm2": {
+            "title": "Fck Nmm2",
+            "type": "number"
+          },
+          "fy_nmm2": {
+            "title": "Fy Nmm2",
+            "type": "number"
+          },
+          "governing_check": {
+            "title": "Governing Check",
+            "type": "string"
+          },
+          "governing_utilization": {
+            "minimum": 0.0,
+            "title": "Governing Utilization",
+            "type": "number"
+          },
+          "key_issues": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Key Issues",
+            "type": "array"
+          },
+          "moment_knm": {
+            "title": "Moment Knm",
+            "type": "number"
+          },
+          "quick_wins": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Quick Wins",
+            "type": "array"
+          },
+          "shear_kn": {
+            "title": "Shear Kn",
+            "type": "number"
+          },
+          "span_mm": {
+            "title": "Span Mm",
+            "type": "number"
+          },
+          "width_mm": {
+            "title": "Width Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "width_mm",
+          "depth_mm",
+          "effective_depth_mm",
+          "span_mm",
+          "moment_knm",
+          "shear_kn",
+          "fck_nmm2",
+          "fy_nmm2",
+          "design_status",
+          "governing_utilization",
+          "capacity_margin",
+          "governing_check"
+        ],
+        "title": "SmartDesignSummary",
+        "type": "object"
+      },
+      "SmartScoreMetrics": {
+        "description": "Core-owned normalized advisory scores; no transport relabelling.",
+        "properties": {
+          "constructability": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Constructability",
+            "type": "number"
+          },
+          "cost_efficiency": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Cost Efficiency",
+            "type": "number"
+          },
+          "overall_score": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Overall Score",
+            "type": "number"
+          },
+          "robustness": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Robustness",
+            "type": "number"
+          }
+        },
+        "required": [
+          "cost_efficiency",
+          "constructability",
+          "robustness",
+          "overall_score"
+        ],
+        "title": "SmartScoreMetrics",
         "type": "object"
       },
       "StaircaseDesignCheckResponse": {

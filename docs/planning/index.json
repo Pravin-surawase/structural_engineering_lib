@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-17",
-  "file_count": 21,
+  "file_count": 19,
   "files": [
     {
       "name": "README.md",
@@ -13,14 +13,6 @@
       "title": "Planning",
       "description": "Internal planning documents and research notes. | Document | Purpose |",
       "content_hash": "d73132ea428c"
-    },
-    {
-      "name": "adoption-trust-surface-plan.md",
-      "type": "documentation",
-      "size_lines": 380,
-      "last_updated": "2026-08-10",
-      "description": "Make the released Alpha straightforward to evaluate from four perspectives: - a user can copy every public quick start and receive the documented result;",
-      "content_hash": "ce4b11ed46d5"
     },
     {
       "name": "compact-modernization-plan.md",
@@ -165,22 +157,14 @@
       "content_hash": "31095ffcf998"
     },
     {
-      "name": "react-ux-improvement-plan.md",
-      "type": "documentation",
-      "size_lines": 709,
-      "last_updated": "2026-08-10",
-      "description": "> **Historical implementation record.** Execution status in this document is > superseded by",
-      "content_hash": "706c92bd3f7a"
-    },
-    {
       "name": "ui-experience-foundation-master-plan.md",
       "type": "documentation",
       "size_lines": 2408,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-17",
       "description": "The product will move from a collection of equally weighted pages to one compact, professional structural workbench.",
-      "content_hash": "fc8042fee46a"
+      "content_hash": "b0a7ecdf7297"
     }
   ],
   "subfolders": [],
-  "content_hash": "af69511e67780b87"
+  "content_hash": "1f96da77bbc0f039"
 }

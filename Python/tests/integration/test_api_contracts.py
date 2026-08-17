@@ -643,6 +643,13 @@ class TestSchemaVersioning:
         "vu_kn",
         "pu_kn",
         "station_count",
+        "moment_signed_knm",
+        "moment_station",
+        "shear_signed_kn",
+        "shear_station",
+        "shear_at_moment_station_kn",
+        "moment_at_shear_station_knm",
+        "envelope_basis",
     }
 
     EXPECTED_BEAM_DESIGN_RESULT_FIELDS = {

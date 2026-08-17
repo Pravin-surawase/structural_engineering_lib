@@ -30,6 +30,8 @@ from __future__ import annotations
 
 import csv
 import json
+import math
+import re
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
@@ -175,6 +177,13 @@ class ETABSEnvelopeResult:
     mu_knm: float
     vu_kn: float
     station_count: int = 1
+    moment_signed_knm: float | None = None
+    moment_station: float | None = None
+    shear_signed_kn: float | None = None
+    shear_station: float | None = None
+    shear_at_moment_station_kn: float | None = None
+    moment_at_shear_station_knm: float | None = None
+    envelope_basis: str = "independent_absolute_extrema_with_concurrent_values"
 
 
 # =============================================================================
@@ -324,8 +333,8 @@ def validate_etabs_csv(
             headers = list(reader.fieldnames)
 
             # Required columns
-            required = ["story", "beam_id", "case_id", "m3", "v2"]
-            optional = ["unique_name", "station", "p"]
+            required = ["story", "beam_id", "case_id", "station", "m3", "v2"]
+            optional = ["unique_name", "p"]
 
             for field in required:
                 col_name = _find_column(headers, field)
@@ -353,7 +362,7 @@ def validate_etabs_csv(
     except csv.Error as e:
         return False, [f"CSV parsing error: {e}"], {}
 
-    is_valid = len([i for i in issues if "Required" in i]) == 0
+    is_valid = not issues
     return is_valid, issues, column_map
 
 
@@ -392,7 +401,7 @@ def load_etabs_csv(
 
     with open(path, encoding="utf-8") as f:
         reader = csv.DictReader(f)
-        for row in reader:
+        for row_number, row in enumerate(reader, start=2):
             try:
                 # Extract values using column map
                 story = row.get(column_map.get("story", ""), "").strip()
@@ -405,10 +414,15 @@ def load_etabs_csv(
                 v2_str = row.get(column_map.get("v2", ""), "0")
                 p_str = row.get(column_map.get("p", ""), "0")
 
-                station = _parse_float(station_str) * station_multiplier
-                m3 = _parse_float(m3_str)
-                v2 = _parse_float(v2_str)
-                p = _parse_float(p_str)
+                if not story or not beam_id or not case_id:
+                    raise ValueError("story, beam_id, and case_id must be non-empty")
+
+                station = (
+                    _parse_float(station_str, field="station") * station_multiplier
+                )
+                m3 = _parse_float(m3_str, field="m3")
+                v2 = _parse_float(v2_str, field="v2")
+                p = _parse_float(p_str, field="p", allow_missing=True)
 
                 unique_name = row.get(column_map.get("unique_name", ""), "").strip()
 
@@ -424,21 +438,30 @@ def load_etabs_csv(
                         p=p,
                     )
                 )
-            except (ValueError, TypeError):
-                # Skip rows with parsing errors
-                continue
+            except (ValueError, TypeError) as exc:
+                raise ValueError(f"ETABS CSV row {row_number}: {exc}") from exc
 
     return rows
 
 
-def _parse_float(value: str) -> float:
-    """Parse float, handling common ETABS format issues."""
+def _parse_float(
+    value: str,
+    *,
+    field: str,
+    allow_missing: bool = False,
+) -> float:
+    """Parse a finite numeric cell without converting invalid data to zero."""
     if not value or value.strip() in ("", "-", "N/A", "NA"):
-        return 0.0
+        if allow_missing:
+            return 0.0
+        raise ValueError(f"{field} is missing")
     try:
-        return float(value.strip())
-    except ValueError:
-        return 0.0
+        numeric = float(value.strip())
+    except ValueError as exc:
+        raise ValueError(f"{field} is not numeric: {value!r}") from exc
+    if not math.isfinite(numeric):
+        raise ValueError(f"{field} must be finite, got {value!r}")
+    return numeric
 
 
 # =============================================================================
@@ -481,16 +504,22 @@ def normalize_etabs_forces(
     # Calculate envelopes
     envelopes: list[ETABSEnvelopeResult] = []
     for (story, beam_id, case_id), stations in grouped.items():
-        max_mu = max(abs(s.m3) for s in stations)
-        max_vu = max(abs(s.v2) for s in stations)
+        moment_row = max(stations, key=lambda station: abs(station.m3))
+        shear_row = max(stations, key=lambda station: abs(station.v2))
         envelopes.append(
             ETABSEnvelopeResult(
                 story=story,
                 beam_id=beam_id,
                 case_id=case_id,
-                mu_knm=max_mu,
-                vu_kn=max_vu,
+                mu_knm=abs(moment_row.m3),
+                vu_kn=abs(shear_row.v2),
                 station_count=len(stations),
+                moment_signed_knm=moment_row.m3,
+                moment_station=moment_row.station,
+                shear_signed_kn=shear_row.v2,
+                shear_station=shear_row.station,
+                shear_at_moment_station_kn=moment_row.v2,
+                moment_at_shear_station_knm=shear_row.m3,
             )
         )
 
@@ -519,7 +548,23 @@ def export_normalized_csv(
 
     with open(path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["story", "beam_id", "case_id", "mu_knm", "vu_kn", "stations"])
+        writer.writerow(
+            [
+                "story",
+                "beam_id",
+                "case_id",
+                "mu_knm",
+                "vu_kn",
+                "stations",
+                "moment_signed_knm",
+                "moment_station",
+                "shear_signed_kn",
+                "shear_station",
+                "shear_at_moment_station_kn",
+                "moment_at_shear_station_knm",
+                "envelope_basis",
+            ]
+        )
         for env in envelopes:
             writer.writerow(
                 [
@@ -529,6 +574,13 @@ def export_normalized_csv(
                     f"{env.mu_knm:.3f}",
                     f"{env.vu_kn:.3f}",
                     env.station_count,
+                    env.moment_signed_knm,
+                    env.moment_station,
+                    env.shear_signed_kn,
+                    env.shear_station,
+                    env.shear_at_moment_station_kn,
+                    env.moment_at_shear_station_knm,
+                    env.envelope_basis,
                 ]
             )
 
@@ -926,6 +978,13 @@ def to_beam_forces(envelope: ETABSEnvelopeResult) -> BeamForces:
         vu_kn=envelope.vu_kn,
         pu_kn=0.0,  # Axial not in envelope
         station_count=envelope.station_count,
+        moment_signed_knm=envelope.moment_signed_knm,
+        moment_station=envelope.moment_station,
+        shear_signed_kn=envelope.shear_signed_kn,
+        shear_station=envelope.shear_station,
+        shear_at_moment_station_kn=envelope.shear_at_moment_station_kn,
+        moment_at_shear_station_knm=envelope.moment_at_shear_station_knm,
+        envelope_basis=envelope.envelope_basis,
     )
 
 
@@ -933,8 +992,6 @@ def frames_to_beam_geometries(
     frames: list[FrameGeometry],
     section_map: dict[str, dict[str, float]] | None = None,
     *,
-    default_width_mm: float = 300.0,
-    default_depth_mm: float = 500.0,
     default_fck_mpa: float = 25.0,
     default_fy_mpa: float = 500.0,
     default_cover_mm: float = 40.0,
@@ -948,8 +1005,6 @@ def frames_to_beam_geometries(
         frames: List of FrameGeometry from load_frames_geometry()
         section_map: Optional dict mapping section_name to properties.
             Each entry can have: width_mm, depth_mm, fck_mpa, fy_mpa, cover_mm
-        default_width_mm: Default width if not in section_map
-        default_depth_mm: Default depth if not in section_map
         default_fck_mpa: Default concrete strength
         default_fy_mpa: Default steel strength
         default_cover_mm: Default cover
@@ -975,10 +1030,26 @@ def frames_to_beam_geometries(
         if beam_only and frame.frame_type != "Beam":
             continue
 
-        # Get section properties from map or use defaults
-        props = section_map.get(frame.section_name, {})
-        width_mm = props.get("width_mm", default_width_mm)
-        depth_mm = props.get("depth_mm", default_depth_mm)
+        # Dimensions must come from an explicit map or the source section name;
+        # never substitute a plausible-looking design section.
+        props = section_map.get(frame.section_name)
+        if props is None:
+            match = re.search(r"(\d+(?:\.\d+)?)[Xx](\d+(?:\.\d+)?)", frame.section_name)
+            if match is None:
+                raise ValueError(
+                    f"ETABS section {frame.section_name!r} has no explicit dimensions; "
+                    "provide section_map properties"
+                )
+            props = {
+                "width_mm": float(match.group(1)),
+                "depth_mm": float(match.group(2)),
+            }
+        if "width_mm" not in props or "depth_mm" not in props:
+            raise ValueError(
+                f"section_map[{frame.section_name!r}] must provide width_mm and depth_mm"
+            )
+        width_mm = props["width_mm"]
+        depth_mm = props["depth_mm"]
         fck_mpa = props.get("fck_mpa", default_fck_mpa)
         fy_mpa = props.get("fy_mpa", default_fy_mpa)
         cover_mm = props.get("cover_mm", default_cover_mm)

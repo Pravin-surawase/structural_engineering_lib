@@ -113,7 +113,9 @@ def resolve_effective_depth_v1(
     if isinstance(D_mm, bool) or not isinstance(D_mm, Real):
         raise ValueError("D_mm must be a finite real number.")
     overall_depth = float(D_mm)
-    if not math.isfinite(overall_depth) or overall_depth <= 0:
+    if not math.isfinite(overall_depth):
+        raise ValueError("D_mm must be a finite real number.")
+    if overall_depth <= 0:
         raise ValueError("D_mm must be a finite positive value.")
     if d_mm is not None and effective_depth_basis is not None:
         raise ValueError("Supply d_mm or effective_depth_basis, not both.")
@@ -137,10 +139,14 @@ def resolve_effective_depth_v1(
         source = "DERIVED"
         basis = effective_depth_basis
 
-    if not math.isfinite(resolved) or not 0 < resolved < overall_depth:
-        raise ValueError(
-            "Effective depth must be finite, positive, and less than D_mm."
-        )
+    if not math.isfinite(resolved):
+        name = "d_mm" if source == "EXPLICIT" else "Derived effective depth"
+        raise ValueError(f"{name} must be a finite real number.")
+    if resolved <= 0:
+        name = "d_mm" if source == "EXPLICIT" else "Derived effective depth"
+        raise ValueError(f"{name} must be a finite positive value.")
+    if resolved >= overall_depth:
+        raise ValueError("Effective depth must be less than overall depth D_mm.")
     return EffectiveDepthResolutionV1(
         d_mm=resolved,
         source=source,

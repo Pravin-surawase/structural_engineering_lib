@@ -10,9 +10,10 @@ import re
 import sys
 from collections.abc import Callable
 from pathlib import Path
-from typing import Any, get_type_hints
+from typing import Any, get_args, get_type_hints
 
 import structural_lib
+from structural_lib.core.result_contract import StructuralResultEnvelopeV2
 from structural_lib.reports.generator import _normalize_report_context
 from structural_lib.services import api as services_api
 from structural_lib.services.capabilities import (
@@ -55,11 +56,29 @@ def _nested_dataclass_field_names(
         field_name = f"{prefix}.{field.name}" if prefix else field.name
         names.add(field_name)
         nested_type = type_hints.get(field.name)
-        if nested_type and dataclasses.is_dataclass(nested_type):
+        nested_dataclasses = (
+            (nested_type,)
+            if nested_type and dataclasses.is_dataclass(nested_type)
+            else tuple(
+                item for item in get_args(nested_type) if dataclasses.is_dataclass(item)
+            )
+        )
+        for nested_dataclass in nested_dataclasses:
             names.update(
                 _nested_dataclass_field_names(
                     field_name,
-                    nested_type,
+                    nested_dataclass,
+                    next_ancestors,
+                )
+            )
+        if field.name == "result_envelope":
+            # Public results deliberately serialize this canonical dataclass to
+            # a JSON-ready mapping. Validate nested contract keys against the
+            # schema authority instead of accepting arbitrary dict paths.
+            names.update(
+                _nested_dataclass_field_names(
+                    field_name,
+                    StructuralResultEnvelopeV2,
                     next_ancestors,
                 )
             )
@@ -77,8 +96,19 @@ def _published_field_names(workflow: Callable[..., Any]) -> set[str]:
     type_hints = get_type_hints(workflow)
     for parameter_name in inspect.signature(workflow).parameters:
         parameter_type = type_hints.get(parameter_name)
-        if parameter_type and dataclasses.is_dataclass(parameter_type):
-            names.update(_nested_dataclass_field_names(parameter_name, parameter_type))
+        parameter_dataclasses = (
+            (parameter_type,)
+            if parameter_type and dataclasses.is_dataclass(parameter_type)
+            else tuple(
+                item
+                for item in get_args(parameter_type)
+                if dataclasses.is_dataclass(item)
+            )
+        )
+        for parameter_dataclass in parameter_dataclasses:
+            names.update(
+                _nested_dataclass_field_names(parameter_name, parameter_dataclass)
+            )
 
     result_type = type_hints.get("return")
     if not result_type or not dataclasses.is_dataclass(result_type):
@@ -189,6 +219,22 @@ def test_fastapi_footing_and_slab_models_match_contract_field_names() -> None:
     assert fields["thickness_mm"].unit == "mm"
     assert {"dowel_count", "dowel_diameter_mm"} <= footing_properties.keys()
     assert "thickness_mm" in slab_properties
+
+
+def test_read_only_etabs_and_geometry_adapters_publish_held_boundaries() -> None:
+    etabs = _adapter("etabs_csv_read_only")
+    geometry = _adapter("building_geometry_visualization")
+
+    assert "read-only" in etabs.limitations[0]
+    assert "live ETABS" in etabs.limitations[0]
+    assert "global-model completeness" in etabs.limitations[1]
+    assert "gravity/load-generation basis" in etabs.limitations[1]
+    assert etabs.statuses[0].canonical_name == "import_status"
+    assert "no calculable batch" in etabs.statuses[0].limitations[0]
+    assert geometry.fields[1].finite_physical_domain == "visualization_only"
+    assert geometry.fields[2].unit == "mm per source coordinate unit"
+    assert "duplicate member identity" in geometry.limitations[1]
+    assert "does not create an analysis model" in geometry.limitations[2]
 
 
 def test_slab_compatibility_aliases_are_intentionally_indefinite() -> None:

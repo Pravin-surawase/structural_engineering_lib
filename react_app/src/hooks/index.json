@@ -8,7 +8,7 @@
     {
       "name": "index.ts",
       "type": "typescript",
-      "size_lines": 87,
+      "size_lines": 86,
       "last_updated": "2026-08-17",
       "exports": [
         "useAutoDesign",
@@ -28,7 +28,7 @@
         "useCodeChecks"
       ],
       "description": "Hooks barrel export",
-      "content_hash": "a9d3aff2d9fb"
+      "content_hash": "f7220817e299"
     },
     {
       "name": "useAutoDesign.ts",
@@ -127,7 +127,7 @@
     {
       "name": "useGeometryAdvanced.ts",
       "type": "react-hook",
-      "size_lines": 172,
+      "size_lines": 176,
       "last_updated": "2026-08-17",
       "exports": [
         "Point3D",
@@ -135,13 +135,12 @@
         "BuildingBeamResult",
         "BuildingGeometryResponse",
         "CrossSectionRequest",
-        "BarPosition",
         "CrossSectionResponse",
         "useBuildingGeometry",
         "useCrossSectionGeometry"
       ],
       "description": "useGeometryAdvanced Hook",
-      "content_hash": "19cbdd44e1d3"
+      "content_hash": "1c2d8699cd08"
     },
     {
       "name": "useInsights.ts",
@@ -252,5 +251,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "ed8802ee4b7086f3"
+  "content_hash": "4476d33c7ac26275"
 }

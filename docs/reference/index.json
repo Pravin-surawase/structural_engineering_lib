@@ -3,7 +3,7 @@
   "type": "mixed",
   "description": "",
   "last_updated": "2026-08-17",
-  "file_count": 32,
+  "file_count": 31,
   "files": [
     {
       "name": "3d-json-contract.md",
@@ -75,7 +75,7 @@
         "count",
         "symbols"
       ],
-      "content_hash": "690dcbd7bab4"
+      "content_hash": "13b0d9723820"
     },
     {
       "name": "api-stability.md",
@@ -88,10 +88,10 @@
     {
       "name": "api.md",
       "type": "documentation",
-      "size_lines": 4484,
+      "size_lines": 4513,
       "last_updated": "2026-08-17",
       "description": "The public result dataclasses api.ComplianceCaseResult, api.ComplianceReport, and api.DesignAndDetailResult are Alpha-preview",
-      "content_hash": "f8ed9dc4249d"
+      "content_hash": "2ca47dc4304f"
     },
     {
       "name": "automation-catalog.md",
@@ -202,10 +202,10 @@
     {
       "name": "fastapi-rest-api.md",
       "type": "documentation",
-      "size_lines": 291,
+      "size_lines": 307,
       "last_updated": "2026-08-17",
       "description": "The FastAPI application exposes the maintained Python calculation services to the React workbench and external clients. The current v0.23.1a2 exact-head",
-      "content_hash": "9d9dbd878652"
+      "content_hash": "c2f9676e67bc"
     },
     {
       "name": "insights-api.md",
@@ -248,14 +248,6 @@
       "content_hash": "b9ffe291bbbd"
     },
     {
-      "name": "sdk-api-contract-v1.md",
-      "type": "documentation",
-      "size_lines": 934,
-      "last_updated": "2026-08-17",
-      "description": "This document records an earlier target architecture. It does not define the installed package contract and its structural_sdk examples are not current",
-      "content_hash": "ca1758f762d6"
-    },
-    {
       "name": "tech-stack-rationale.md",
       "type": "documentation",
       "size_lines": 61,
@@ -287,5 +279,5 @@
       "file_count": 1760
     }
   ],
-  "content_hash": "9a1a7e1cad75a0b7"
+  "content_hash": "2b31c0ed087a6365"
 }

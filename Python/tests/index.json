@@ -274,7 +274,7 @@
           ]
         }
       ],
-      "content_hash": "5bb1f0f94b11"
+      "content_hash": "5880ec16c250"
     },
     {
       "name": "test_api_stability.py",
@@ -4957,5 +4957,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "015763d8049d5f4e"
+  "content_hash": "7dfd3a1f1d17fadf"
 }
