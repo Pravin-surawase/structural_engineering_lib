@@ -3,8 +3,8 @@
 Benchmark examples and verification packs for validating library calculations against IS 456 standards.
 
 **Type:** Documentation
-**Last Updated:** 2026-08-17
-**Files:** 185
+**Last Updated:** 2026-08-18
+**Files:** 186
 
 ## Config Files
 
@@ -141,6 +141,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | [b2-gravity-workflow-v1-evidence.md](b2-gravity-workflow-v1-evidence.md) |  | This record covers the bounded B2 orchestration candidate bu | 113 |
 | [bundled-sample-boq-evidence.md](bundled-sample-boq-evidence.md) |  | This is the reproducible software record for the bundled ETA | 58 |
 | [column-pmm-benchmark.md](column-pmm-benchmark.md) |  | This record independently checks the experimental rectangula | 107 |
+| [e1-excel-routine-workbench-v1-evidence.md](e1-excel-routine-workbench-v1-evidence.md) |  | - branch: codex/e1-excel-routine-workbench; - merged base: c | 107 |
 | [examples.md](examples.md) |  | This document provides benchmark examples that engineers can | 1550 |
 | [external-cli-test.md](external-cli-test.md) |  | Purpose: capture a repeatable, human-run CLI test from a fre | 98 |
 | [india-1-cumulative-gate-evidence.md](india-1-cumulative-gate-evidence.md) |  | INDIA-1A through INDIA-1D are integrated on main as four ind | 56 |

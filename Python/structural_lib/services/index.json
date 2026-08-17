@@ -2,8 +2,8 @@
   "folder": "Python/structural_lib/services",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-17",
-  "file_count": 51,
+  "last_updated": "2026-08-18",
+  "file_count": 54,
   "files": [
     {
       "name": "__init__.py",
@@ -1892,6 +1892,58 @@
       "content_hash": "846290659ccd"
     },
     {
+      "name": "excel_workbench.py",
+      "type": "python",
+      "size_lines": 868,
+      "last_updated": "2026-08-18",
+      "description": "Strict selected-table orchestration for Excel Routine Workbench V1.",
+      "functions": [
+        {
+          "name": "get_excel_workbench_definition_v1"
+        },
+        {
+          "name": "build_excel_mapping_preview_v1",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "run_excel_workbook_v1",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "check_excel_workbook_freshness_v1",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "retain_excel_workbook_evidence_v1",
+          "params": [
+            "result"
+          ]
+        },
+        {
+          "name": "render_excel_review_bundle_markdown_v1",
+          "params": [
+            "result"
+          ]
+        }
+      ],
+      "constants": [
+        "_REQUIRED_FIELDS",
+        "_HELD_SCOPES",
+        "_EXACT_HEADER_ALIASES",
+        "_FOLDED_HEADER_ALIASES",
+        "_KNOWN_HELD_HEADERS",
+        "_WORKBOOK_ARTIFACT_NAME",
+        "_WORKBOOK_RESOURCE_DIR"
+      ],
+      "content_hash": "c63bcf13878c"
+    },
+    {
       "name": "flat_slab_api.py",
       "type": "python",
       "size_lines": 339,
@@ -1990,6 +2042,55 @@
       "content_hash": "89b3bce33bdc"
     },
     {
+      "name": "gravity_calculation_book.py",
+      "type": "python",
+      "size_lines": 254,
+      "last_updated": "2026-08-18",
+      "description": "Deterministic review dossier for Building Gravity Workflow V1.",
+      "classes": [
+        {
+          "name": "GravityCalculationBookV1",
+          "description": "Complete machine-readable review record; not professional approval."
+        },
+        {
+          "name": "GravityWorkflowRunBundleV1"
+        },
+        {
+          "name": "GravityWorkflowDefinitionV1",
+          "description": "Discoverable, non-executable capability definition for product surfaces."
+        }
+      ],
+      "functions": [
+        {
+          "name": "get_gravity_workflow_definition_v1",
+          "description": "Return the single canonical discovery record for Gravity Workflow V1."
+        },
+        {
+          "name": "build_gravity_calculation_book_v1",
+          "description": "Bind accepted inputs, ledger, actions, results, and holds in one dossier.",
+          "params": [
+            "request",
+            "result"
+          ]
+        },
+        {
+          "name": "run_gravity_workflow_with_book_v1",
+          "description": "Run the workflow and create its bound calculation book.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "render_gravity_calculation_book_markdown_v1",
+          "description": "Render a compact human review view without changing calculation truth.",
+          "params": [
+            "book"
+          ]
+        }
+      ],
+      "content_hash": "8a5209f27dda"
+    },
+    {
       "name": "gravity_loads.py",
       "type": "python",
       "size_lines": 631,
@@ -2037,6 +2138,49 @@
         }
       ],
       "content_hash": "ba3b97977e83"
+    },
+    {
+      "name": "gravity_workflow.py",
+      "type": "python",
+      "size_lines": 914,
+      "last_updated": "2026-08-18",
+      "description": "Fail-closed component orchestration for Building Gravity Workflow V1.",
+      "functions": [
+        {
+          "name": "build_gravity_member_actions_v1",
+          "description": "Derive service/factored component actions from the reconciled B1 ledger.",
+          "params": [
+            "request",
+            "ledger"
+          ]
+        },
+        {
+          "name": "build_component_applicability_matrix_v1",
+          "description": "Declare every component prerequisite before invoking any design function.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "run_gravity_workflow_v1",
+          "description": "Run the bounded V1 ledger, exact actions, and conditional components.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "constants": [
+        "_LIMITATIONS",
+        "_SLAB_GENERATED",
+        "_SLAB_SUPPLIED",
+        "_BEAM_GENERATED",
+        "_BEAM_SUPPLIED",
+        "_COLUMN_GENERATED",
+        "_COLUMN_SUPPLIED",
+        "_FOOTING_GENERATED",
+        "_FOOTING_SUPPLIED"
+      ],
+      "content_hash": "0e7951623e39"
     },
     {
       "name": "import_ledger.py",
@@ -3256,5 +3400,5 @@
     "PropertyLineStrapFootingDesignStatus",
     "design_property_line_strap_footing_is456"
   ],
-  "content_hash": "b9a38ef754134242"
+  "content_hash": "f38c58c33a85ccf1"
 }

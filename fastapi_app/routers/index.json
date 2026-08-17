@@ -2,8 +2,8 @@
   "folder": "fastapi_app/routers",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-17",
-  "file_count": 26,
+  "last_updated": "2026-08-18",
+  "file_count": 27,
   "files": [
     {
       "name": "__init__.py",
@@ -342,6 +342,37 @@
         }
       ],
       "content_hash": "ad4f898f9ee6"
+    },
+    {
+      "name": "excel_workbench.py",
+      "type": "python",
+      "size_lines": 79,
+      "last_updated": "2026-08-18",
+      "description": "Versioned REST transport for Excel Routine Workbench V1.",
+      "functions": [
+        {
+          "name": "get_excel_workbench_definition"
+        },
+        {
+          "name": "preview_excel_workbook_mapping",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "run_excel_workbook",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "check_excel_workbook_freshness",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "content_hash": "265f8d22c4b8"
     },
     {
       "name": "export.py",
@@ -1088,5 +1119,5 @@
     "strap_footing",
     "streaming"
   ],
-  "content_hash": "e01ae12b7946b0ea"
+  "content_hash": "bef1b0f9d9de102a"
 }

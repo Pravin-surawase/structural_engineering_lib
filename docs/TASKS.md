@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-17 — M2/M3 are merged through Gravity Workflow V1; E1 Excel Routine Workbench is frozen for the next session
+**Updated:** 2026-08-18 — E1 Excel Routine Workbench software candidate is locally complete; installed Windows Excel G3 remains held
 
 ---
 
@@ -151,7 +151,7 @@ write-back/nightly work remain outside E1.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| E1-EXCEL-ROUTINE-WORKBENCH | Implement one safe selected-table rectangular-beam Excel journey against the canonical result contract | Main Agent | L | P1 | ⏭ NEXT SESSION — [scope and validation frozen](planning/e1-excel-routine-workbench-v1-plan.md); no E1 code started; real Windows Excel evidence remains a mandatory G3 cell |
+| E1-EXCEL-ROUTINE-WORKBENCH | Implement one safe selected-table rectangular-beam Excel journey against the canonical result contract | Main Agent | L | P1 | 🔄 SOFTWARE CANDIDATE — [implementation and focused evidence complete](verification/e1-excel-routine-workbench-v1-evidence.md); real Windows Excel evidence remains the mandatory G3 cell |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
 ## Backlog

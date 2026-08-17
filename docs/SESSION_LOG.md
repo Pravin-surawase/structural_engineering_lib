@@ -5,6 +5,140 @@
 
 ---
 
+## 2026-08-18 — Session: E1 Excel Routine Workbench V1 implementation
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/e1-excel-routine-workbench`.
+
+**Focus:** Implement the frozen E1 selected-table rectangular-beam workflow,
+including strict intake and row reconciliation, canonical Python/CLI/REST
+results, calculation passports and freshness, one macro-free workbook, a
+bounded Office.js task pane, installed-wheel artifact identity, documentation,
+and evidence. ETABS file/live work, write-back, optimization, nightly work,
+release, and professional approval remain excluded.
+
+### Issues encountered
+
+- The previous session's time-bounded Git handoff evidence had expired before
+  implementation resumed.
+- The first header mapper case-folded structural notation `D` and `d`, so seven
+  of ten new service vectors were blocked as duplicate mappings.
+- Two first-pass REST cases asked pytest for an `unwrap` fixture although the
+  maintained helper is an ordinary function.
+- The artifact patch helper created its temporary builder under the primary
+  checkout instead of the visualization workspace, and the E1 safe-move script
+  could not move a file whose source was outside the current worktree.
+- The first workbook's placeholder row populated both categorical dropdown
+  cells, so it was not a blank row and would have become `BLOCKED` instead of
+  explicitly `EXCLUDED`. Its first render also expanded the input sheet to 204
+  rows and cramped the information-sheet workflow text.
+- The first workbook location was a repository output outside Python package
+  data, so a built wheel could not prove or expose the exact artifact.
+- Retaining the complete result bundle in Office document settings would scale
+  poorly for a large selected table even though full evidence already persists
+  in workbook tables.
+- The first frozen architecture/import commands used guessed script names, and
+  root-level mypy saw the same module through both `Python.structural_lib` and
+  `structural_lib` package identities. The corrected mypy run then exposed
+  literal, inherited-schema, and untyped-constructor weaknesses.
+- The root `Excel/` ignore rule also matched the lower-case installed package
+  data directory on the default macOS filesystem, hiding the workbook and its
+  manifest from an ordinary Git add.
+- The first strict documentation closeout rejected descriptive E1 front-matter
+  values even though all E1 links and the repository quick gate passed.
+- The first normal commit hook run rejected the new session order and the new
+  wheel verifier's missing automation-map registration.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the start receipt intentionally expires and cannot be
+  reused as current authorization. Resolution: bind fresh user continuation to
+  exact branch head `64f3518a`, regenerate the handoff receipt, and validate it
+  before writes. Evidence: the receipt validator returned valid `HOLD` with the
+  E1 task authority and unchanged base.
+- Confirmed root cause: case folding erased the semantically significant
+  uppercase/lowercase depth distinction. Resolution: preserve exact `D_mm` and
+  `d_mm` aliases before folded aliases. Evidence: all 13 consolidated Python
+  E1/workbook cases pass, including PASS/FAIL/HOLD/blocked and mapping vectors.
+- Confirmed root cause: the new REST file copied a fixture-style call pattern
+  for a helper exported from `fastapi_app.tests.conftest`. Resolution: import
+  and call the helper directly. Evidence: all three consolidated REST cases
+  pass.
+- Confirmed root cause: `apply_patch` is rooted at the desktop session workspace,
+  not the per-command shell workdir, and `safe_file_move.py` intentionally
+  rejects cross-worktree sources. Resolution: run the generated builder only
+  from the exact temporary primary path, verify the output, safely delete the
+  one untracked builder, validate and unlink only its known dependency symlink,
+  and recheck the primary checkout. It is clean. ⚠️ TERMINAL ISSUE: patch
+  workdir assumption placed one temporary file in the primary checkout -> used
+  exact-path cleanup and prefixed all later E1 patches with the linked-worktree
+  path.
+- Confirmed root cause: preset dropdown values are data, and formatting/data
+  validation across 200 unused rows expanded the workbook used range.
+  Resolution: leave the placeholder's 17 cells null, retain validation only on
+  the compact three-row table, widen/wrap the workflow panel, and visually
+  inspect all six final renders. Open XML checks prove the exact sheets/tables,
+  no formulas, no formula errors, and no VBA/macros.
+- Confirmed root cause: root `outputs/` is not inside the setuptools package
+  tree. Resolution: move, do not copy, the single workbook and manifest into
+  maintained package data and make the definition service verify installed
+  bytes, size, and SHA-256. The repaired source-free wheel contains the exact
+  workbook and reports canonical PASS for one installed-package row.
+- Confirmed root cause: complete row ledgers and result JSON grow with table
+  size, while freshness needs only bundle, source-table, mapping, and engine
+  identities. Resolution: persist those four hashes plus the stale flag and
+  workbook ID in Office settings; keep full ledgers, results, and passports in
+  their named worksheets. The focused Python, REST, and seven Office.js tests
+  pass.
+- Confirmed root cause: the maintained commands are
+  `check_architecture_boundaries.py` and `validate_imports.py`, and configured
+  mypy requires the `Python/` package workdir. Resolution: correct the frozen
+  evidence commands, then fix the real type roots with literal-final constants,
+  a standalone run-request schema, and a direct typed result constructor.
+  Evidence: 217 architecture files have zero violations, 685 Python files have
+  zero broken imports, and mypy reports no issues in both new modules.
+  ⚠️ TERMINAL ISSUE: guessed architecture/import script paths and root-level
+  mypy failed -> discovered the registered commands and ran mypy from `Python/`.
+- Confirmed root cause: Git's case-insensitive path matching on the current
+  filesystem applied the broad `Excel/` output ignore to the new lower-case
+  package-data path. Resolution: force-stage only the exact verified workbook
+  and manifest; once tracked, later changes remain visible normally. Evidence:
+  `git ls-files --stage` lists both exact package-data paths and their SHA-256
+  values remain bound by the workbook manifest and artifact verifier.
+- Confirmed root cause: the three new E1 documents used human-readable workflow
+  states where the maintained checker accepts only its controlled `status` and
+  `doc_type` vocabularies. Resolution: retain the exact software-candidate/G3
+  hold in document content while using `status: active` and the supported
+  `spec`/`log` document types. The failed-only strict documentation rerun and
+  impact-mapped quick gate are the repair evidence.
+- Confirmed root cause: the implementation session was appended after older
+  entries even though the maintained checker requires newest-first ordering,
+  and adding a maintained script requires both its generated index and the
+  hand-maintained automation map. Resolution: move only the new E1 session to
+  the top and register the verifier as a read-only Testing task with exact-wheel
+  usage. The two failed hook checks and impact-mapped quick gate are the repair
+  evidence; no calculation suite is repeated.
+
+### Validation through content freeze
+
+- Focused Python workbook/service/CLI/Open XML: 13 passed; focused REST: 3
+  passed; Office.js: 7 passed plus syntax and XML parsing; advertised-command
+  UAT: passed.
+- Architecture: 217 files, zero violations. Imports: 685 files and 4,729
+  imports, zero broken. OpenAPI: 88 endpoints and 432 schemas match baseline.
+  Black and Ruff pass on every changed Python path; configured mypy passes both
+  new source modules.
+- Repaired source-free wheel SHA-256:
+  `c4c5d09872d080ac5b1bee9e72c5af87e52df65c893358a15cc478cc4b5753b9`;
+  installed library content identity:
+  `6b2d8f43c4fecd8eaa0c3ec692db13db4118ac04fe141458307e114421ab1764`;
+  workbook SHA-256:
+  `497dd44d8dbe30ca8a6f3154b17d1d3598c517d96ffe0923e3ca44778450ac85`.
+- Documentation/index, quick gate, normal hooks, immutable session audit, push,
+  and hosted validation remain the closeout sequence. The supported real
+  Windows Excel journey remains `TO_VERIFY_WINDOWS`, so Gate G3 is held.
+
 ## 2026-08-17 — Session: v0.23.1a2 Release Candidate Preparation
 
 **Agent:** Codex (`ops`, sole writer)

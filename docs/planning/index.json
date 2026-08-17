@@ -2,7 +2,7 @@
   "folder": "docs/planning",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-08-17",
+  "last_updated": "2026-08-18",
   "file_count": 20,
   "files": [
     {
@@ -41,10 +41,10 @@
     {
       "name": "e1-excel-routine-workbench-v1-plan.md",
       "type": "documentation",
-      "size_lines": 250,
-      "last_updated": "2026-08-17",
-      "description": "The next session starts Milestone M4, Packet E1, from merged Gravity Workflow V1 commit c127e4b2325fceb9adebf3d29d59e549f7ae4aa6 on the isolated branch",
-      "content_hash": "5a444e241877"
+      "size_lines": 260,
+      "last_updated": "2026-08-18",
+      "description": "The planned E1 software is implemented on the isolated branch. The frozen Python, REST, Office.js, Open XML, architecture, import, OpenAPI, type, style,",
+      "content_hash": "51cb5752fa2e"
     },
     {
       "name": "etabs-killer-masterplan.md",
@@ -132,10 +132,10 @@
       "name": "next-session-brief.md",
       "type": "documentation",
       "size_lines": 98,
-      "last_updated": "2026-08-17",
+      "last_updated": "2026-08-18",
       "title": "Next Session Briefing",
-      "description": "<!-- HANDOFF:START --> - Date: 2026-08-17",
-      "content_hash": "190c26d5bd76"
+      "description": "<!-- HANDOFF:START --> - Date: 2026-08-18",
+      "content_hash": "7dcd71f09513"
     },
     {
       "name": "pre-release-checklist.md",
@@ -174,5 +174,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "570b6a09f001b152"
+  "content_hash": "4ae569ad37030ac8"
 }

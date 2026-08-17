@@ -14,6 +14,9 @@ Usage:
     python -m structural_lib critical ./output/ --top=10 --format=csv
     python -m structural_lib capabilities --json
     python -m structural_lib gravity-v1 request.json -o calculation-book.json
+    python -m structural_lib excel-v1 definition
+    python -m structural_lib excel-v1 preview workbook-table.json
+    python -m structural_lib excel-v1 run workbook-table.json --mapping-hash HASH
     python -m structural_lib mark-diff --bbs schedule.csv --dxf drawings.dxf
 
 This module provides a unified command-line interface with subcommands
@@ -116,8 +119,104 @@ def cmd_gravity_v1(args: argparse.Namespace) -> int:
             )
             + "\n"
         )
-    except (OSError, TypeError, ValueError) as exc:
+    except (OSError, RuntimeError, TypeError, ValueError) as exc:
         _print_error(f"Gravity V1 request was not accepted: {exc}")
+        return 1
+
+    if args.output:
+        output_path = Path(args.output)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(output, encoding="utf-8")
+    else:
+        print(output, end="" if output.endswith("\n") else "\n")
+    return 0
+
+
+def cmd_excel_v1(args: argparse.Namespace) -> int:
+    """Preview or run the bounded selected-table Excel Workbench V1."""
+
+    try:
+        from structural_lib.core.excel_workbook import (
+            ExcelWorkbookPreviewRequestV1,
+            ExcelWorkbookRunRequestV1,
+        )
+        from structural_lib.services.excel_workbench import (
+            build_excel_mapping_preview_v1,
+            get_excel_workbench_definition_v1,
+            render_excel_review_bundle_markdown_v1,
+            run_excel_workbook_v1,
+        )
+
+        if args.phase == "definition":
+            if args.format != "json":
+                raise ValueError(
+                    "Excel workbench definition supports JSON output only."
+                )
+            output = (
+                json.dumps(
+                    get_excel_workbench_definition_v1().model_dump(mode="json"),
+                    allow_nan=False,
+                    ensure_ascii=True,
+                    indent=2,
+                    sort_keys=True,
+                )
+                + "\n"
+            )
+            preview_request = None
+        else:
+            if not args.input:
+                raise ValueError(f"Excel {args.phase} requires an input JSON file.")
+            input_path = Path(args.input)
+            if not input_path.is_file():
+                raise ValueError(f"Input file not found: {input_path}")
+            preview_request = ExcelWorkbookPreviewRequestV1.model_validate_json(
+                input_path.read_text(encoding="utf-8")
+            )
+
+        if args.phase == "preview":
+            assert preview_request is not None
+            if args.format != "json":
+                raise ValueError("Excel mapping preview supports JSON output only.")
+            payload = build_excel_mapping_preview_v1(preview_request).model_dump(
+                mode="json"
+            )
+            output = (
+                json.dumps(
+                    payload,
+                    allow_nan=False,
+                    ensure_ascii=True,
+                    indent=2,
+                    sort_keys=True,
+                )
+                + "\n"
+            )
+        elif args.phase == "run":
+            assert preview_request is not None
+            if not args.mapping_hash:
+                raise ValueError(
+                    "Excel run requires --mapping-hash from the reviewed preview."
+                )
+            run_request = ExcelWorkbookRunRequestV1(
+                selection=preview_request.selection,
+                headers=preview_request.headers,
+                rows=preview_request.rows,
+                confirmed_mapping_hash=args.mapping_hash,
+            )
+            result = run_excel_workbook_v1(run_request)
+            output = (
+                render_excel_review_bundle_markdown_v1(result)
+                if args.format == "markdown"
+                else json.dumps(
+                    result.model_dump(mode="json"),
+                    allow_nan=False,
+                    ensure_ascii=True,
+                    indent=2,
+                    sort_keys=True,
+                )
+                + "\n"
+            )
+    except (OSError, TypeError, ValueError) as exc:
+        _print_error(f"Excel Workbench V1 request was not accepted: {exc}")
         return 1
 
     if args.output:
@@ -1257,6 +1356,33 @@ def _build_parser() -> argparse.ArgumentParser:
         "-o", "--output", help="Output file (if omitted, prints to stdout)"
     )
     gravity_parser.set_defaults(func=cmd_gravity_v1)
+
+    excel_parser = subparsers.add_parser(
+        "excel-v1",
+        help="Discover, preview, or run Excel Routine Workbench V1",
+        description=(
+            "Discover the installed workbook identity, preview the selected-table "
+            "mapping, then run only with the exact reviewed mapping hash."
+        ),
+    )
+    excel_parser.add_argument("phase", choices=["definition", "preview", "run"])
+    excel_parser.add_argument(
+        "input", nargs="?", help="ExcelWorkbookPreviewRequestV1 JSON file"
+    )
+    excel_parser.add_argument(
+        "--mapping-hash",
+        help="Exact mapping hash emitted by the preview phase",
+    )
+    excel_parser.add_argument(
+        "--format",
+        choices=["json", "markdown"],
+        default="json",
+        help="Run output format (preview is JSON only)",
+    )
+    excel_parser.add_argument(
+        "-o", "--output", help="Output file (if omitted, prints to stdout)"
+    )
+    excel_parser.set_defaults(func=cmd_excel_v1)
 
     # Design subcommand
     design_parser = subparsers.add_parser(

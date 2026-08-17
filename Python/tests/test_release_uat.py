@@ -17,7 +17,7 @@ def test_release_negative_matrix_and_public_examples_pass() -> None:
     assert receipt["professional_approval"] is False
     inventory = receipt["advertised_entry_points"]
     assert inventory["schema_version"] == "advertised-entry-point-inventory/v1"
-    assert inventory["entry_count"] == 13
+    assert inventory["entry_count"] == 14
     gravity = next(
         entry for entry in inventory["entries"] if entry["id"] == "cli.gravity-v1"
     )
@@ -27,10 +27,20 @@ def test_release_negative_matrix_and_public_examples_pass() -> None:
         "classification": "calculation_entry",
         "acceptance": ["test_cli_emits_same_versioned_bundle_from_json_request"],
     }
+    excel = next(
+        entry for entry in inventory["entries"] if entry["id"] == "cli.excel-v1"
+    )
+    assert excel == {
+        "id": "cli.excel-v1",
+        "command": "excel-v1",
+        "classification": "calculation_entry",
+        "acceptance": ["test_cli_requires_preview_hash_and_matches_python_result"],
+    }
     assert {entry["command"] for entry in inventory["entries"]} == {
         "install-preflight",
         "capabilities",
         "gravity-v1",
+        "excel-v1",
         "design",
         "bbs",
         "detail",

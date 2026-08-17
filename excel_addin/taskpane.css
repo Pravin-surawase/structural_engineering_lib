@@ -1,0 +1,35 @@
+:root {
+  color-scheme: light;
+  font-family: Inter, "Segoe UI", system-ui, sans-serif;
+  color: #16324f;
+  background: #f4f7f9;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 280px; }
+header { padding: 22px 20px 18px; color: white; background: #16324f; }
+h1 { margin: 2px 0 8px; font-size: 23px; line-height: 1.15; }
+h2 { margin: 0 0 8px; font-size: 16px; }
+p { margin: 6px 0; line-height: 1.45; }
+.eyebrow { color: #8fe0e5; font-size: 11px; font-weight: 700; letter-spacing: .08em; }
+.lede { color: #d9e7f1; font-size: 13px; }
+main { display: grid; gap: 12px; padding: 14px; }
+.card, aside { padding: 14px; border: 1px solid #c8d2da; border-radius: 8px; background: white; }
+.card p, aside p, .detail, label { font-size: 12px; color: #536471; }
+.context { padding: 8px; border-radius: 4px; background: #eaf1f8; overflow-wrap: anywhere; }
+.status { display: grid; gap: 3px; padding: 11px 13px; border-left: 5px solid; border-radius: 5px; font-size: 12px; }
+.status.ready { border-color: #137333; background: #e6f4ea; }
+.status.hold { border-color: #9a6700; background: #fff4ce; }
+.status.blocked { border-color: #b3261e; background: #fce8e6; }
+.status.working { border-color: #087e8b; background: #e7f5f6; }
+.status span { color: #536471; }
+button { width: 100%; margin-top: 10px; padding: 10px 12px; border: 0; border-radius: 5px; color: white; background: #087e8b; font-weight: 700; cursor: pointer; }
+button.secondary { color: #16324f; border: 1px solid #9fb0bc; background: white; }
+button:disabled { cursor: not-allowed; opacity: .45; }
+.check { display: flex; gap: 8px; align-items: flex-start; margin-top: 10px; }
+.check input { margin-top: 2px; }
+code { font-size: 11px; }
+details summary { cursor: pointer; font-weight: 700; }
+details label { display: block; margin: 10px 0 5px; }
+input[type="password"] { width: 100%; padding: 8px; border: 1px solid #9fb0bc; border-radius: 4px; }
+aside { border-color: #d7b45c; background: #fff9e8; }

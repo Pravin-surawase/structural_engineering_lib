@@ -45,6 +45,7 @@ from fastapi_app.routers import (
     deep_beam,
     design,
     detailing,
+    excel_workbench,
     export,
     flat_slab,
     footing,
@@ -173,6 +174,10 @@ API_TAGS_METADATA = [
     {
         "name": "building-gravity",
         "description": "Bounded one-storey dead/live gravity load path and component review.",
+    },
+    {
+        "name": "excel-workbench",
+        "description": "Selected-table Excel mapping, canonical beam review, and stale evidence.",
     },
     {
         "name": "geometry",
@@ -615,6 +620,10 @@ app.include_router(
 )
 app.include_router(
     building_gravity.router,
+    prefix=API_V1_PREFIX,
+)
+app.include_router(
+    excel_workbench.router,
     prefix=API_V1_PREFIX,
 )
 app.include_router(

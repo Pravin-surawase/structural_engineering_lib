@@ -4,15 +4,27 @@ title: Excel Routine Workbench V1 Execution Plan
 status: active
 owner: Main Agent
 created: 2026-08-17
-last_updated: 2026-08-17
+last_updated: 2026-08-18
 doc_type: spec
 ---
 
 # Excel Routine Workbench V1 Execution Plan
 
+## Implementation status — 2026-08-18
+
+The planned E1 software is implemented on the isolated branch. The frozen
+Python, REST, Office.js, Open XML, architecture, import, OpenAPI, type, style,
+advertised-command, and source-free wheel evidence passes. The single workbook
+is installed package data and retains SHA-256
+`497dd44d8dbe30ca8a6f3154b17d1d3598c517d96ffe0923e3ca44778450ac85`.
+
+This is a software candidate, not a G3 pass. The mandatory installed Windows
+11 x64 plus Microsoft 365 Excel x64 journey remains `TO_VERIFY_WINDOWS`; T1/T2
+ETABS and all write-back/nightly work remain held.
+
 ## 1. Outcome and start boundary
 
-The next session starts Milestone M4, Packet E1, from merged Gravity Workflow
+Implementation started Milestone M4, Packet E1, from merged Gravity Workflow
 V1 commit `c127e4b2325fceb9adebf3d29d59e549f7ae4aa6` on the isolated branch
 `codex/e1-excel-routine-workbench`.
 
@@ -22,8 +34,8 @@ canonical `design_beam_is456` calculation and
 surface; it does not implement structural formulas or create a second safety
 status.
 
-This planning handoff makes no implementation change. The next session may
-implement E1 without another ordinary approval. It must not start ETABS file
+The accepted boundary authorized E1 without another ordinary approval. It does
+not authorize ETABS file
 ingestion, live ETABS, model write-back, analysis, optimization, nightly work,
 release publication, or professional-approval claims.
 
@@ -52,7 +64,7 @@ release publication, or professional-approval claims.
 
 ### 3.1 Workbook and table identity
 
-- contract: `structural-lib/excel-workbook-contract/v1`;
+- contract: `excel-workbook-contract/v1`;
 - template ID: `structural-lib-rectangular-beam-workbench`;
 - template version: `1.0`;
 - input worksheet: `Beam_Workbench`;
@@ -130,8 +142,8 @@ canonical engineering result or imply professional approval.
 
 ## 4. Implementation map
 
-The next session should confirm names against the folder indexes, then keep the
-change within these boundaries:
+The implemented change was confirmed against the folder indexes and remains
+within these boundaries:
 
 1. Core contract types in `Python/structural_lib/core/` for workbook, mapping,
    row-ledger, passport, capability, and bundle identities. Core contains no
@@ -139,10 +151,9 @@ change within these boundaries:
 2. `Python/structural_lib/services/excel_workbench.py` for strict table
    normalization, row reconciliation, canonical beam calls, passport creation,
    stale comparison, and deterministic review-bundle export.
-3. A versioned macro-free workbook template/generator and golden fixtures in a
-   dedicated maintained Excel artifact folder. The workbook contains labels,
-   tables, validation, and display formulas only; structural results are written
-   from canonical structured responses.
+3. A versioned macro-free workbook and golden artifact checks in maintained
+   installed package data. The workbook contains labels, tables, and validation
+   only; structural results are written from canonical structured responses.
 4. A bounded Office.js task-pane client in a dedicated `excel_addin/` package.
    It reads only the explicitly selected named table, previews the mapping, sends
    canonical requests to the local service, and writes structured results. It
@@ -209,10 +220,9 @@ boundaries. It does not merely change the visible status formula.
 - broad Python and full repository gates only at the cumulative M4 closeout or
   when an outcome-changing shared-surface failure requires them.
 
-The next session must write the exact test paths and command lines into the E1
-evidence record before the first consolidated batch. Failed checks are
-root-caused, repaired together, and only failed/impact-mapped evidence is
-repeated.
+The exact test paths and command lines are frozen in the E1 evidence record.
+Failed checks were root-caused, repaired together, and only failed or
+impact-mapped evidence was repeated.
 
 ### Required real Excel matrix cell
 

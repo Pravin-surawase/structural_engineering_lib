@@ -1,8 +1,8 @@
 # Services
 
 **Type:** Python Package
-**Last Updated:** 2026-08-17
-**Files:** 51
+**Last Updated:** 2026-08-18
+**Files:** 54
 
 ## Public API
 
@@ -55,9 +55,12 @@
 | [evidence.py](evidence.py) | Canonical evidence identity for the supported IS 456 beam de | 0 | 4 | 386 |
 | [excel_bridge.py](excel_bridge.py) | Excel UDF Bridge - Exposes structural_lib functions to Excel | 0 | 7 | 305 |
 | [excel_integration.py](excel_integration.py) | Excel Integration Module — Bridge between Excel data and Det | 2 | 9 | 489 |
+| [excel_workbench.py](excel_workbench.py) | Strict selected-table orchestration for Excel Routine Workbe | 0 | 6 | 868 |
 | [flat_slab_api.py](flat_slab_api.py) | Stable orchestration for the bounded regular interior flat-s | 4 | 2 | 339 |
 | [footing_api.py](footing_api.py) | Bounded orchestration for concentric isolated footings (IS 4 | 5 | 1 | 915 |
+| [gravity_calculation_book.py](gravity_calculation_book.py) | Deterministic review dossier for Building Gravity Workflow V | 3 | 4 | 254 |
 | [gravity_loads.py](gravity_loads.py) | Deterministic dead/live source, transfer, combination, and b | 8 | 1 | 631 |
+| [gravity_workflow.py](gravity_workflow.py) | Fail-closed component orchestration for Building Gravity Wor | 0 | 3 | 914 |
 | [import_ledger.py](import_ledger.py) | Versioned, lossless import evidence models. | 11 | 0 | 187 |
 | [imports.py](imports.py) | Fail-closed multi-format CSV import boundary. | 2 | 6 | 1104 |
 | [intelligence.py](intelligence.py) | Compatibility shim for legacy imports. | 0 | 0 | 36 |

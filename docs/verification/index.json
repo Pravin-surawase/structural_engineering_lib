@@ -2,8 +2,8 @@
   "folder": "docs/verification",
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
-  "last_updated": "2026-08-17",
-  "file_count": 185,
+  "last_updated": "2026-08-18",
+  "file_count": 186,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -175,7 +175,7 @@
     {
       "name": "e1-excel-routine-workbench-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-17",
+      "last_updated": "2026-08-18",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -188,19 +188,27 @@
         "receipt_grants_authority",
         "receipt_kind"
       ],
-      "content_hash": "74d85805cead"
+      "content_hash": "78f3860de267"
     },
     {
       "name": "e1-excel-routine-workbench-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-17",
+      "last_updated": "2026-08-18",
       "top_level_keys": [
         "authorization",
         "integration",
         "retention",
         "task_archive"
       ],
-      "content_hash": "b5b456a1d2e2"
+      "content_hash": "b2a07780a206"
+    },
+    {
+      "name": "e1-excel-routine-workbench-v1-evidence.md",
+      "type": "documentation",
+      "size_lines": 107,
+      "last_updated": "2026-08-18",
+      "description": "- branch: codex/e1-excel-routine-workbench; - merged base: c127e4b2325fceb9adebf3d29d59e549f7ae4aa6;",
+      "content_hash": "e89a8c516b3e"
     },
     {
       "name": "exact-candidate-review-receipt-template.json",
@@ -2365,5 +2373,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "641dcec442a347ae"
+  "content_hash": "f75a9195b4b19e5c"
 }

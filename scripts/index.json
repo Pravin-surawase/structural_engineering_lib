@@ -2,8 +2,8 @@
   "folder": "scripts",
   "type": "python-package",
   "description": "> Development, validation, discovery, release-preparation, and maintenance tools.",
-  "last_updated": "2026-08-17",
-  "file_count": 113,
+  "last_updated": "2026-08-18",
+  "file_count": 114,
   "files": [
     {
       "name": "README.md",
@@ -914,7 +914,7 @@
     {
       "name": "automation-map.json",
       "type": "config",
-      "last_updated": "2026-08-17",
+      "last_updated": "2026-08-18",
       "top_level_keys": [
         "_comment",
         "_updated",
@@ -922,7 +922,7 @@
         "_coverage",
         "tasks"
       ],
-      "content_hash": "9929026159d6"
+      "content_hash": "ba9371486507"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -5572,6 +5572,31 @@
       "content_hash": "a78f2ba3f821"
     },
     {
+      "name": "verify_excel_workbench_artifact.py",
+      "type": "python",
+      "size_lines": 217,
+      "last_updated": "2026-08-18",
+      "description": "Verify E1 workbook identity and behavior from one source-free wheel.",
+      "functions": [
+        {
+          "name": "verify",
+          "params": [
+            "wheel"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "_RESOURCE_DIR",
+        "_WORKBOOK_MEMBER",
+        "_MANIFEST_MEMBER",
+        "_INSTALLED_PROBE"
+      ],
+      "content_hash": "e73687b2a972"
+    },
+    {
       "name": "watch_tests.sh",
       "type": "shell-script",
       "size_lines": 102,
@@ -5588,5 +5613,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "192d3525a0b415f8"
+  "content_hash": "4a6202dfd46f3204"
 }
