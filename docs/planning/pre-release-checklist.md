@@ -15,7 +15,7 @@ Current public release: v0.23.1a1 Alpha
 - **Published source:** tag `v0.23.1a1` at `95bed5621c2ff6e5bbcf1a25b7ac476f92ae4307`
 - **Prepared target:** v0.23.1a2 Alpha candidate; not tagged or published
 - **Candidate base:** `970a78c1931a3aa0439f487e6892a888bb113962`
-- **Publication state:** `HOLD`; exact candidate review, hosted receipts, and target authorization remain pending
+- **Publication state:** `HOLD`; target authorization is recorded, while refreshed exact candidate review and hosted receipts remain pending
 - **Review policy:** qualified structural-engineering review is required before stable/engineering-use approval, not before this Alpha release
 
 ## Next Alpha Readiness Checklist
@@ -25,23 +25,23 @@ Current public release: v0.23.1a1 Alpha
 - [x] Run the canonical version preparation gate and update maintained release surfaces
 - [x] Build and verify one exact v0.23.1a2 wheel from the frozen Python tree
 - [ ] Pass required PR checks, exact-head Weekly Verification, and independent candidate review
-- [ ] Record the exact review receipt and separate owner authorization for each publication target
-- [ ] Owner authorizes the v0.23.1a2 tag, production PyPI publication, and GitHub Release after exact CI evidence passes
+- [ ] Record the refreshed exact review receipt after the repaired candidate passes hosted checks
+- [x] Owner authorizes the v0.23.1a2 TestPyPI rehearsal, tag, production PyPI publication, and GitHub Release after exact CI evidence passes
 
-Preparation authorization is not TestPyPI, PyPI, tag, or GitHub Release
-authorization. The publication checkbox above must remain open until the owner
-reviews the immutable candidate evidence and explicitly authorizes those exact
-targets.
+The owner granted the target-specific authorization in the active Codex task on
+2026-08-17 and directed publication to continue without another approval after
+the refreshed independent review passes. This authorization remains bounded to
+the reviewed Alpha candidate and does not grant professional approval.
 
 ### v0.23.1a2 Local Candidate Evidence
 
 - Evidence: [v0.23.1a2 local rehearsal](../verification/alpha-0231a2-local-prepublication-rehearsal.md)
-- Build-anchor source: `c71e4e27749a9da58fe0d689bc1a1ba8b396f14d`
-- Python tree: `501fac1360f06ff2be4f6aea3b5e167f956ce840`
-- Wheel: 665,658 bytes, SHA-256 `5bca57ba12a35803715ad581420fa6ea5be32a0cd736fd42246b9a026584cc19`
+- Build-anchor source: `a115b16efbb85db0459c79836f55b6c43a586470`
+- Python tree: `25aa0468135c07d3c260eca43776fb451865f833`
+- Wheel: 665,658 bytes, SHA-256 `34892d867845d044249236f32b700ab5e10ec558225407a47717fe3c3c2614bb`
 - Installed verification: 5,553 passed, 51 skipped, 2 deselected; installed CLI workflows green
 - Exact candidate UAT: 29/29 cases across 12/12 advertised commands
-- State: local candidate technically ready; hosted review and publication authorization remain held
+- State: local candidate technically ready; publication execution remains held until refreshed hosted review passes
 
 ### v0.23.1a1 Release Authorization
 

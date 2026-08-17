@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-17 — v0.23.1a2 is locally prepared and exact-wheel verified; hosted review and publication authorization remain held
+**Updated:** 2026-08-17 — v0.23.1a2 is locally prepared and exact-wheel verified; target publication is authorized after refreshed hosted review
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| RELEASE-0231A2 | Prepare and review the exact v0.23.1a2 Alpha candidate without tagging or publishing | Main Agent + ops | M | P0 | 🔄 LOCAL CANDIDATE READY — source-bound wheel `5bca57ba…cc19`; 5,553 installed tests and 29/29 UAT pass; PR checks, Weekly Verification, independent review, exact receipt, and target authorization remain held |
+| RELEASE-0231A2 | Review and publish the exact v0.23.1a2 Alpha candidate | Main Agent + ops | M | P0 | 🔄 LOCAL CANDIDATE READY — source-bound wheel `34892d86…14bb`; 5,553 installed tests and 29/29 UAT pass; target publication is authorized after refreshed PR checks, Weekly Verification, independent review, and exact receipt |
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. INDIA-3, dependency work, tag/publication execution, further cleanup,
@@ -139,8 +139,8 @@ accepted and merged through PR #814 at
 `3986935ecb473c1f9d56dec44aeb4218d9192f84`; Packets B-G merged through PR #815
 at `fe4ab025419b834c6d0f840e9492c0604ae74201`. Packets I-J are software-
 complete, and the exact v0.23.1a2 local artifact now passes installed-package
-and advertised-command UAT. Publication remains held through immutable
-review/hosted evidence and separate exact owner authorization.
+and advertised-command UAT. Publication is owner-authorized after refreshed
+immutable review and hosted evidence pass.
 
 ## Up Next
 

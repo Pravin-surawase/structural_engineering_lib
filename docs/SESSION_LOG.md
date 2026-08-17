@@ -31,9 +31,9 @@ unauthorized.
   `v0.23.1a1` evidence, and added bounded candidate release notes.
 - The preparation gate passed 6,414 Python tests with 3 skipped and 6
   deselected, then passed the repository-pinned Node 24 React production build.
-- Build anchor `c71e4e27749a9da58fe0d689bc1a1ba8b396f14d` produced one wheel and matching
-  sdist. The wheel is 665,658 bytes with SHA-256
-  `5bca57ba12a35803715ad581420fa6ea5be32a0cd736fd42246b9a026584cc19`.
+- Repaired build anchor `a115b16efbb85db0459c79836f55b6c43a586470`
+  produced one wheel and matching sdist. The wheel is 665,658 bytes with
+  SHA-256 `34892d867845d044249236f32b700ab5e10ec558225407a47717fe3c3c2614bb`.
 - The clean installed-wheel verifier passed 5,553 tests with 51 skipped and 2
   deselected plus installed `job`, `critical`, and HTML `report` workflows.
 - The narrow exact candidate check passed the 29-case matrix, all 12 advertised
@@ -64,6 +64,9 @@ unauthorized.
   UAT, 6,413 Python tests, FastAPI, React, docs, and version checks, but one
   release test failed because it read the live authorization record after the
   owner correctly changed that record from `HOLD` to `AUTHORIZED`.
+- A read-only generated-artifact inspection loop used the zsh variable name
+  `path`, after which standard commands in that loop were reported as missing;
+  the failed inspection made no writes.
 
 ### Root causes and resolutions
 
@@ -79,7 +82,7 @@ unauthorized.
   distinct maintained responsibilities; only the latter invokes packaged
   `structural_lib.release_uat`. Resolution: run the broad verifier once, then
   the narrow candidate check once without replaying manual CLI cases. Proof:
-  both commands exit zero against wheel SHA-256 `5bca57ba...cc19`; the packaged
+  both commands exit zero against wheel SHA-256 `34892d86...14bb`; the packaged
   matrix contains 29 cases and the advertised inventory contains 12 commands.
 - Confirmed root cause: the version synchronizer reports absent optional regex
   forms even when all required candidate surfaces agree. Resolution: inspect
@@ -111,6 +114,15 @@ unauthorized.
   test and pass it explicitly to the validator. Evidence: the focused
   regression passes for the isolated HOLD state while the live three-target
   authorization checks remain reserved for the refreshed reviewed candidate.
+- Confirmed root cause: zsh reserves `path` as an array tied to `PATH`, so the
+  loop assignment replaced command lookup for that shell process. Resolution:
+  rerun the inspection with the task-specific variable `release_artifact` and
+  absolute command paths, then move only the inspected ignored, non-symlink
+  build directories recoverably before the clean rebuild. Evidence: the
+  corrected inspection identified exactly `Python/dist` and
+  `Python/structural_lib_is456.egg-info`; the clean build, candidate check, and
+  installed-wheel verifier all passed. ⚠️ TERMINAL ISSUE: zsh special variable
+  `path` shadowed `PATH` -> task-specific variable plus absolute commands.
 
 ### Validation through local candidate freeze
 
@@ -120,8 +132,8 @@ unauthorized.
 - Canonical release preparation: 6,414 passed, 3 skipped, 6 deselected; React
   production build passed.
 - Normal build-anchor commit hooks: all passed.
-- Exact installed wheel: 5,553 passed, 51 skipped, 2 deselected; installed CLI
-  workflows passed.
+- Rebuilt exact installed wheel: SHA-256 `34892d86...14bb`; 5,553 passed, 51
+  skipped, 2 deselected; installed CLI workflows passed.
 - Exact candidate: 29/29 UAT cases and 12/12 advertised commands passed.
 - Final affected indexes, quick 10/10, immutable final commit, hosted checks,
   and exact-head review complete in the next closeout stage. The exact-wheel

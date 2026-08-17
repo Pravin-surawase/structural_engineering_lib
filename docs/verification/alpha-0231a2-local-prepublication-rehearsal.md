@@ -13,9 +13,9 @@ authorization, tag, upload, GitHub Release, or professional approval.
 
 ## Source identity
 
-- Build-anchor head: `c71e4e27749a9da58fe0d689bc1a1ba8b396f14d`
-- Build-anchor tree: `f0b1730c8880147b1019d5df90a64a530475fdcb`
-- Python tree: `501fac1360f06ff2be4f6aea3b5e167f956ce840`
+- Build-anchor head: `a115b16efbb85db0459c79836f55b6c43a586470`
+- Build-anchor tree: `a1d8a3cb06127bf3914438de82624baf89ca896f`
+- Python tree: `25aa0468135c07d3c260eca43776fb451865f833`
 - Base: `970a78c1931a3aa0439f487e6892a888bb113962`
 - Runtime diagnosis: `source_bound=true`
 
@@ -27,8 +27,8 @@ the artifact.
 
 | Artifact | Bytes | Members | SHA-256 |
 |---|---:|---:|---|
-| `structural_lib_is456-0.23.1a2-py3-none-any.whl` | 665,658 | 239 | `5bca57ba12a35803715ad581420fa6ea5be32a0cd736fd42246b9a026584cc19` |
-| `structural_lib_is456-0.23.1a2.tar.gz` | 551,149 | 271 | `5e25b42d8a78f14b5ce915d1ef26d0680257336c7da07033b5afe8ef74a9a479` |
+| `structural_lib_is456-0.23.1a2-py3-none-any.whl` | 665,658 | 239 | `34892d867845d044249236f32b700ab5e10ec558225407a47717fe3c3c2614bb` |
+| `structural_lib_is456-0.23.1a2.tar.gz` | 551,207 | 271 | `2684aa80ab2d56ace0fe4bc7c3af2b5ebe8cd1a63bb4f87251a69410cf985297` |
 
 Maintained build command:
 
@@ -36,9 +36,10 @@ Maintained build command:
 ./scripts/python_runtime.sh -m build Python
 ```
 
-No earlier artifact or generated build directory existed in this fresh
-worktree. The command built one wheel and its matching sdist. Both generated
-paths are ignored and the tracked worktree remained clean.
+The earlier generated artifacts were inspected as ignored directories with no
+symbolic links, moved recoverably out of the worktree, and replaced by one
+cleanly built wheel and its matching sdist. Both generated paths are ignored
+and the tracked worktree remained clean.
 
 ## Installed-wheel verification
 
@@ -89,8 +90,8 @@ Maintained command:
 
 **Publication state:** `HOLD`
 
-Remaining gates are the final candidate commit, required PR checks, exact-head
-Weekly Verification, independent exact-candidate review, a version-specific
-review receipt, and separate owner authorization for each requested target.
-The final exact-wheel publication preflight is reserved for that reviewed and
-authorized identity so its target verdict is not duplicated or misleading.
+Owner authorization is recorded for TestPyPI, PyPI, and GitHub Releases,
+conditional on the repaired exact candidate passing required PR checks,
+exact-head Weekly Verification, independent exact-candidate review, and the
+final exact-wheel publication preflight. The authorization does not include
+professional approval.

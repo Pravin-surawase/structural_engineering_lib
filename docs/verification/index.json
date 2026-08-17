@@ -58,11 +58,11 @@
     {
       "name": "alpha-0231a2-local-prepublication-rehearsal.md",
       "type": "documentation",
-      "size_lines": 97,
+      "size_lines": 98,
       "last_updated": "2026-08-17",
       "title": "v0.23.1a2 Local Prepublication Rehearsal",
       "description": "check receipt, exact-head Weekly Verification, independent review, target authorization, tag, upload, GitHub Release, or professional approval.",
-      "content_hash": "720611d21ef3"
+      "content_hash": "79f7917f04dd"
     },
     {
       "name": "bundled-sample-boq-evidence.md",
@@ -2244,5 +2244,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "fbeff312389827df"
+  "content_hash": "182910beaf96a69b"
 }

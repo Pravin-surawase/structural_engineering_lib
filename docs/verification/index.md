@@ -128,7 +128,7 @@ Benchmark examples and verification packs for validating library calculations ag
 |------|-------|-------------|-------|
 | [README.md](README.md) | Verification | Benchmark examples and verification packs for validating lib | 64 |
 | [alpha-0231-local-prepublication-rehearsal.md](alpha-0231-local-prepublication-rehearsal.md) | v0.23.1a1 Local Prepublication Rehearsal | not a CI artifact identity, tag, or publication approval | A | 72 |
-| [alpha-0231a2-local-prepublication-rehearsal.md](alpha-0231a2-local-prepublication-rehearsal.md) | v0.23.1a2 Local Prepublication Rehearsal | check receipt, exact-head Weekly Verification, independent r | 97 |
+| [alpha-0231a2-local-prepublication-rehearsal.md](alpha-0231a2-local-prepublication-rehearsal.md) | v0.23.1a2 Local Prepublication Rehearsal | check receipt, exact-head Weekly Verification, independent r | 98 |
 | [bundled-sample-boq-evidence.md](bundled-sample-boq-evidence.md) |  | This is the reproducible software record for the bundled ETA | 58 |
 | [column-pmm-benchmark.md](column-pmm-benchmark.md) |  | This record independently checks the experimental rectangula | 107 |
 | [examples.md](examples.md) |  | This document provides benchmark examples that engineers can | 1550 |
