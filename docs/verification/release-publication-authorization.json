@@ -9,10 +9,10 @@
     "github-release"
   ],
   "authorized_by": "Pravin Surawase (repository owner)",
-  "authorized_at_utc": "2026-08-17T08:21:19Z",
+  "authorized_at_utc": "2026-08-17T08:41:30Z",
   "exact_candidate_review_receipt": "docs/verification/alpha-0231a2-exact-candidate-review-receipt.json",
-  "exact_candidate_review_receipt_sha256": "0a2c60440cded2560dd7880404c2685fa0c8229d71630aba6c6a9ca44f76d797",
+  "exact_candidate_review_receipt_sha256": "781fa60c35a6d399625adf61eae5c51bfc1c1d940c4f6b7060fb1e9dcab82f92",
   "qualified_structural_engineering_review": false,
   "professional_approval": false,
-  "note": "The repository owner explicitly authorized publication of v0.23.1a2 to TestPyPI, production PyPI, and GitHub Releases in the active Codex task after exact-head CI and independent review passed. This authorization does not imply professional approval."
+  "note": "The repository owner explicitly authorized publication of v0.23.1a2 to TestPyPI, production PyPI, and GitHub Releases in the active Codex task, conditional on refreshed exact-head CI and independent review passing. Both conditions passed before this binding was recorded. This authorization does not imply professional approval."
 }
