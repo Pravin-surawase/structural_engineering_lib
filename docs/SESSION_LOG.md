@@ -5,6 +5,186 @@
 
 ---
 
+## 2026-08-17 — Session: LIB-PRO-002 Post-Fix Usability Re-Audit
+
+**Agent:** Codex (`library-expert`, documentation/evidence owner)
+
+**Branch:** `codex/lib-pro-002-usability-refresh` from A-G merge
+`fe4ab025419b834c6d0f840e9492c0604ae74201` (PR #815)
+
+**Git handoff receipt:** `docs/verification/lib-pro-002-post-fix-recheck-git-handoff-receipt.json`
+
+**Focus:** Re-run the synthetic one-storey user workflow and manual comparison,
+verify whether A-G fixed the original usability hazards, audit professional API
+and publication surfaces, and update the active plan without changing runtime
+behavior or authorizing publication/professional use.
+
+### Summary
+
+- Confirmed that the A-G fixes are material: canonical and compatibility beam
+  services block malformed/empty inputs; named imports account rows/fields;
+  column materials are explicit; beam/slab/column/footing results retain
+  qualified-review truth; the current candidate wheel passes its declared
+  19-case negative UAT.
+- Recomputed a linked one-storey slab-to-beam-to-column-to-footing gravity
+  example. The library matches the independent load, action, flexure, shear,
+  column, footing pressure/moment/punching, and development-length arithmetic.
+  The footing correctly remains `FAIL` for inadequate dowel anchorage and
+  retains HOLD reasons for assumed load/soil/supporting-area bases.
+- Reproduced one unresolved advertised-path defect: the `design` CLI skipped a
+  malformed row, printed its warning to stdout, exited `0`, and emitted a
+  one-of-one PASS summary. Its old intake also supplies cover/effective-depth
+  assumptions outside the lossless/strict boundary.
+- Confirmed that the published PyPI `0.23.1a1` is the pre-A-G artifact: its page
+  has the wrong `0.23.0` pin and its displayed batch example raises
+  `AttributeError` against the exact installed wheel. No claim was made that
+  current source repairs the immutable old artifact.
+- Updated the active plan, task board, planning handoff, and planning README.
+  New Packet I owns CLI intake convergence, a versioned machine-readable output
+  contract, retained `design -> bbs/detail/dxf` compatibility or explicit
+  deprecation, advertised-entry-point inventory, and exact-wheel CLI negatives.
+  Packet H whole-building planning remains inactive.
+- A follow-up publication-readiness replay added Packet J rather than widening
+  Packet I: scheduled/tag full suites must bind the setup-python interpreter,
+  and pre-bump, technical-candidate, and authorized-publication modes must emit
+  different verdicts. No version bump or release action was authorized.
+
+### Verification
+
+- Current source binding: `source_bound=true`; exact audit base
+  `fe4ab025419b834c6d0f840e9492c0604ae74201`.
+- Manual/library comparison matched the Section 2.4 values for slab, beam,
+  column, and footing, including `Ast_slab=207.012 mm2`,
+  `Ast_beam=465.092 mm2`, `Pu_column=68.789063 kN`,
+  `q_footing=89.027778 kPa`, `Mu_footing=1.533643 kNm`, punching utilization
+  `0.023010`, and required dowel `Ld=644.732 mm`.
+- Built the current wheel into a temporary directory, installed it into a clean
+  temporary environment, and ran `structural_lib.release_uat
+  --require-installed-wheel`: `PASS`, 19/19 declared cases, installed origin.
+- Focused current-source selection: 79/79 passed across batch, imports, column
+  project contract, result contract, release UAT, and Excel-integration edges.
+- Exact published-wheel replay: installed PyPI `0.23.1a1` into an isolated
+  environment; the displayed `GenericCSVAdapter` example failed with
+  `AttributeError: 'BeamGeometry' object has no attribute 'b_mm'`.
+- API audit: root `__all__` 187 symbols; service facade 168 symbols (91
+  functions, 77 classes); 28 service functions expose at least one audited
+  unit-ambiguous name requiring canonical/compatibility disposition before a
+  stable promise.
+- Independent structural reviewer: ACCEPT; independently reproduced every
+  Section 2.4 value and ran 101 focused tests, with no clause/claim
+  contradiction. Independent release reviewer initially rejected two plan
+  gaps; both the CLI output/downstream contract and post-plan-merge base wording
+  were corrected, and the focused follow-up returned ACCEPT before closeout.
+- Provisional `./run.sh release preflight 0.23.1a2`: 6,387 Python tests passed,
+  446 FastAPI tests passed, and the React build passed; it also reported no
+  candidate wheel and still printed `READY TO RELEASE`, so it is accepted only
+  as green pre-bump local health—not publication readiness.
+- Hosted Weekly Verification run `31988837003` at exact A-G merge
+  `fe4ab025...`: Docker, locked dependency, and clean-wheel jobs passed; the
+  full suite failed six governance/session tests because recursive repository
+  launchers could not find a project interpreter, and the summary failed.
+- Publication authorization checks for provisional `0.23.1a2` correctly
+  returned non-zero for TestPyPI, PyPI, and GitHub Release because decision,
+  version, tag, targets, owner, time, and exact review receipt remain unset.
+
+### Issues encountered
+
+- The advertised CLI retained the original row-loss/defaulting class after A-G
+  merged, even though the declared 19-case wheel UAT passed.
+- The first isolated PyPI replay inherited the repository `PYTHONPATH`, so it
+  imported current source rather than the installed wheel and then failed on a
+  missing dependency. That attempt was not accepted as package evidence.
+- The first synthetic footing call used human-readable basis text where the
+  strict contract requires exact controlled tokens. It blocked correctly before
+  calculation.
+- Independent release review found that a direct switch from the old CLI
+  `beams` artifact to the strict service `members` envelope could silently break
+  advertised `bbs`, `detail`, and `dxf` consumers, and that the handoff's exact
+  `fe4ab025…` future base would become stale after this plan merges.
+- The scheduled full workflow and publish full-suite step do not export the
+  selected setup-python interpreter, although their tests can recursively call
+  `run.sh`/`python_runtime.sh`; the scheduled run failed six such tests.
+- Pre-bump preflight uses the same success label as publication readiness even
+  when it has no exact wheel and does not evaluate immutable review, hosted
+  receipts, or exact target authorization.
+- ⚠️ TERMINAL ISSUE: a targeted workflow search included an unmatched
+  `.github/workflows/*.yaml` zsh glob and stopped that compound command; running
+  `rg` directly on `.github/workflows` produced the intended evidence.
+- The first I-J handoff draft duplicated detailed-plan history and commands,
+  reached 200 lines, and failed the repository's 150-line brief gate.
+- Normal commit hooks accepted the plan but warned that the descriptive status
+  `In Progress — Packets I-J Planned` was outside the canonical metadata enum.
+- ⚠️ TERMINAL ISSUE: the first repair check guessed the nonexistent
+  `scripts/check_doc_metadata.py`; `./run.sh find "doc metadata"` resolved the
+  maintained command to `scripts/check_docs.py --metadata --strict`.
+
+### Root causes and resolutions
+
+- Confirmed CLI root cause: A-G's route inventory covered service,
+  imports, HTTP/SSE/React, and selected package examples, but not every
+  advertised calculation entry point. The historical CLI therefore continued
+  calling `services.excel_integration.load_beam_data_from_csv`, which catches
+  parse errors, prints a warning, and continues with surviving rows. Resolution
+  in this documentation packet: add RC-7, CLI-01/CLI-02/REL-UAT-02, and Packet I
+  with whole-file blocking, row/field conservation, non-zero exit, stderr-only
+  diagnostics, versioned output compatibility, downstream workflow tests, and
+  an advertised-entry-point inventory. Evidence: mixed-row live replay and
+  direct source trace.
+- Confirmed UAT root cause: the packaged matrix proves its handler set is
+  complete relative to its data file, not complete relative to public docs/CLI
+  surfaces. Resolution: Packet I binds matrix coverage to the advertised
+  entry-point inventory and adds exact-wheel CLI cases. Evidence: 19/19 UAT PASS
+  alongside the reproduced CLI failure.
+- Confirmed installed-package evidence root cause: worktree-bound launchers set
+  source routing that is unsuitable for an isolation proof. Resolution: remove
+  `PYTHONPATH`/`PYTHONHOME`, install dependencies and the exact wheel in a fresh
+  temporary environment, verify `structural_lib.__file__`, then accept the
+  replay. Evidence: installed origin under temporary `site-packages` for both
+  current candidate and published-wheel runs.
+- The footing token failures were correct fail-closed validation, not product
+  defects. Resolution: use the maintained exact values
+  `includes_footing_self_weight_and_overburden` and
+  `largest_frustum_1v_2h`; the corrected call then matched manual arithmetic.
+- The independent review defects were plan incompleteness, not style issues.
+  Resolution: freeze the CLI output/downstream contract and treat `fe4ab025…`
+  as the required A-G ancestor while binding Packet I to exact fetched
+  `origin/main` after this reviewed plan merges.
+- Confirmed hosted-interpreter root cause: setup-python selects an executable
+  but creates neither the repository `.venv` nor `VIRTUAL_ENV`; the launcher is
+  intentionally fail-closed, and nightly/publish full suites omitted the
+  supported `STRUCTURAL_LIB_PYTHON` binding already used by PR control-plane
+  checks. Resolution in the plan: Packet J exports the exact
+  `command -v python` path for recursive full suites, preserves strict launcher
+  selection, adds workflow-contract tests, and requires a fresh manual Weekly
+  Verification pass on the immutable J head.
+- Confirmed preflight-verdict root cause: local pre-bump, exact-wheel technical,
+  and authorized publication states share one `errors == 0` success label;
+  missing wheel is only a warning and authorization is a separate command.
+  Resolution in the plan: Packet J introduces mode-specific verdicts and
+  reserves `READY_TO_PUBLISH` for exact wheel/UAT, review, hosted receipts, and
+  target authorization. Evidence: the green provisional preflight coexisted
+  with the reproduced CLI failure, failed hosted full run, and three rejected
+  authorization checks.
+- Confirmed brief-length root cause: the handoff repeated A-G history and full
+  command blocks already owned by the detailed plan. Resolution: retain exact
+  branches, I/J ownership, evidence, and stop rules while linking execution
+  details to the plan; the brief is 141 lines and the brief-length gate passes.
+- Confirmed metadata root cause: a descriptive suffix was placed in the strict
+  `Status` field instead of plan prose. Resolution: restore canonical
+  `In Progress`; validate through the discovered consolidated metadata command.
+
+### Limitations and handoff
+
+- This session changed documentation and work state only; it did not implement
+  Packet I or alter structural calculations.
+- The one-storey replay is a synthetic component/load-path regression, not a
+  building analysis, source acceptance, geotechnical verification, qualified
+  review, code-compliant deliverable, or professional approval.
+- Next routine action: merge this plan, implement and merge Packet I from exact
+  fetched post-plan `origin/main`, then implement Packet J from exact post-I
+  `origin/main`. Run broad/exact-wheel/full hosted evidence at J, stop before a
+  version bump, and keep publication and Packet H held.
+
 ## 2026-08-17 — Session: LIB-PRO-002 B-G Cumulative Safety Integration
 
 **Agent:** Codex (`orchestrator`, sole writer)

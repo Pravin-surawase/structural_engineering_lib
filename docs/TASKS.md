@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-17 — LIB-PRO-002 A-G cumulative candidate integrated; acceptance and publication authorization held
+**Updated:** 2026-08-17 — A-G merged; next session closes CLI Packet I and release-signal Packet J before any release preparation
 
 ---
 
@@ -127,7 +127,8 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-002-B-G | Integrate lossless imports, route/client convergence, result/review truth, evidence identity, API/doc truth, and exact-wheel negative UAT | backend + tester + API + frontend + release | cumulative | P0 | 🚧 REPAIR CANDIDATE — first exact-head review rejected presence-only publication receipt validation at `c66160c7`; bind the actual receipt to reviewed Git/package identity, then restart exact review and hosted checks |
+| LIB-PRO-002-I | Converge the advertised `design` CLI on lossless/strict intake, freeze its JSON/downstream compatibility contract, and add every advertised calculation entry point to exact-wheel negative UAT | backend + tester + release | M | P0 | 📋 READY — post-fix replay at `fe4ab025` reproduced partial-success CLI row loss: one malformed row skipped, warning contaminated stdout, exit 0, remaining row reported PASS |
+| LIB-PRO-002-J | Bind hosted full suites to the selected Python interpreter and replace warning-compatible `READY TO RELEASE` pre-bump output with mode-accurate candidate/publication verdicts | ops + tester + release | S | P0 | 📋 BLOCKED BY I — Weekly Verification `31988837003` failed six launcher-dependent tests; pre-bump `0.23.1a2` checks passed locally without a wheel but overstated release readiness |
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. INDIA-3, dependency, release execution, further cleanup, and
@@ -136,14 +137,16 @@ professional approval remain separately held.
 `LIB-PRO-002-G0` was independently accepted and merged through PR #812 at
 `55104e11257937b0a42fb06f931a70b8484cef39`. Packet A was independently
 accepted and merged through PR #814 at
-`3986935ecb473c1f9d56dec44aeb4218d9192f84`. The next publication remains held
-through cumulative A-G acceptance and a separate exact owner authorization.
+`3986935ecb473c1f9d56dec44aeb4218d9192f84`; Packets B-G merged through PR #815
+at `fe4ab025419b834c6d0f840e9492c0604ae74201`. The next publication remains
+held through Packets I-J, an exact versioned release candidate, immutable
+review/hosted evidence, and a separate exact owner authorization.
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-002-H | Decide whether to activate a separately source-backed whole-building workflow planning program | repository owner | decision gate | P2 | ⏸ NOT ACTIVATED — component-only claims remain; no whole-building implementation is authorized |
+| LIB-PRO-002-H | Decide whether to activate a separately source-backed whole-building workflow planning program after Packets I-J | repository owner | decision gate | P2 | ⏸ NOT ACTIVATED — component-only claims remain; no whole-building implementation is authorized |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
 ## Backlog
