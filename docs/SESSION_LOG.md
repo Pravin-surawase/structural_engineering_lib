@@ -12,8 +12,7 @@
 **Branch:** `codex/e1-w0-maintenance-plan`, stacked on the immutable E1 head
 `ef5ee05c785904e1a01c2d09cc65649edc8745ab`.
 
-**Git handoff receipt:**
-`docs/verification/e1-w0-maintenance-git-handoff-receipt.json`
+**Git handoff receipt:** `docs/verification/e1-w0-maintenance-git-handoff-receipt.json`
 
 **Focus:** Record the completed Windows setup and legacy VBA/API handoff,
 reconcile current library progress, run a non-destructive maintenance pass,
@@ -62,6 +61,8 @@ and freeze the next controlled work sequence.
 - The first normal commit hook rejected the rewritten next-session brief because
   its `Required Reading` heading used lowercase `reading`; the failed-only
   session check then exposed missing exact `Current` and `Next` table labels.
+- The first clean exact-head session audit could not discover the valid handoff
+  receipt because its path was wrapped onto the following line.
 
 ### Root causes and resolutions
 
@@ -91,6 +92,10 @@ and freeze the next controlled work sequence.
   content, refresh only the affected docs/planning and docs indexes, and rerun
   the failed check before the normal commit hooks; all other first-pass hooks
   had passed.
+- The session-end receipt parser requires the label and tracked path on the same
+  line. Resolution: bind the existing valid receipt on that line and create a
+  minimal repair commit after refreshing only the root docs index; no product,
+  Windows, G3, or ETABS evidence was repeated.
 
 ### Notes
 
