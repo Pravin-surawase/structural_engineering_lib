@@ -1,0 +1,212 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-21T20:05:48Z",
+      "query_status": "OK",
+      "reference": "task:E1-REVIEW-BUNDLE-EXPORT:user-said-proceed-with-E1-export",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_DRAFT_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-21T20:05:48Z",
+    "prohibited_actions": [
+      "AMEND_PREDECESSOR_PR",
+      "MERGE_PULL_REQUEST",
+      "START_G3_BEFORE_EXACT_CANDIDATE_CLOSEOUT",
+      "START_ETABS_FILE_SNAPSHOT",
+      "START_LIVE_ETABS",
+      "RUN_ETABS_ANALYSIS",
+      "START_ETABS_WRITE_BACK",
+      "START_NIGHTLY_OPTIMIZATION",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "DISCARD_USER_CHANGE",
+      "CLOSE_PULL_REQUEST",
+      "PUBLISH_RELEASE",
+      "CLAIM_PROFESSIONAL_APPROVAL"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_DRAFT_PR"
+      ],
+      "branch": "codex/e1-review-bundle-export",
+      "head_sha": "514155b266af6dff3e30bf39ee28671c17345454",
+      "task_id": "E1-REVIEW-BUNDLE-EXPORT"
+    }
+  },
+  "holds": [
+    "E1_PRS_826_TO_828_NOT_INTEGRATED",
+    "EXPORT_SUCCESSOR_NOT_REVIEWED",
+    "G3_NOT_RUN",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "STACKED_BEHIND_E1_PR_SEQUENCE_AND_G3_NOT_RUN",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "5d0b6dfa9b5615dd8c04590cc3d8591577614974742cc92c7b149897a59f9187",
+    "state": {
+      "branch": "codex/e1-review-bundle-export",
+      "default_base": {
+        "ahead": 7,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "c127e4b2325fceb9adebf3d29d59e549f7ae4aa6",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 92.024,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-e1-review-bundle-export",
+      "head_sha": "514155b266af6dff3e30bf39ee28671c17345454",
+      "hold_reasons": [
+        "changed paths: 22"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-21T20:06:22.532323+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-review-bundle-export",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 22,
+        "modified_paths": [
+          "Python/structural_lib/core/excel_workbook.py",
+          "Python/structural_lib/services/excel_workbench.py",
+          "Python/tests/unit/test_excel_workbench_v1.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/e1-excel-routine-workbench-v1-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/e1-blank-workbook-guard-evidence.md",
+          "docs/verification/e1-excel-routine-workbench-v1-evidence.md",
+          "excel_addin/README.md",
+          "excel_addin/taskpane-core.mjs",
+          "excel_addin/taskpane.css",
+          "excel_addin/taskpane.html",
+          "excel_addin/taskpane.mjs",
+          "excel_addin/tests/serve-static-files.test.mjs",
+          "excel_addin/tests/taskpane-core.test.mjs",
+          "fastapi_app/openapi_baseline.json",
+          "fastapi_app/routers/excel_workbench.py",
+          "fastapi_app/tests/test_excel_workbench.py",
+          "scripts/verify_excel_workbench_artifact.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/e1-review-bundle-export-evidence.md",
+          "docs/verification/e1-review-bundle-export-git-handoff-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-review-bundle-export"
+    }
+  },
+  "local_state_receipt_hash": "sha256:5d0b6dfa9b5615dd8c04590cc3d8591577614974742cc92c7b149897a59f9187",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-21T20:06:22.532480+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [
+      "E1_PRS_826_TO_828_NOT_INTEGRATED",
+      "EXPORT_SUCCESSOR_NOT_REVIEWED",
+      "G3_NOT_RUN"
+    ],
+    "observed_at_utc": "2026-08-21T20:05:48Z",
+    "owner": "Main Agent under the user-authorized E1 export successor",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/services/beam_api.py",
+      "Python/structural_lib/codes/is456",
+      "Python/structural_lib/data/excel/outputs/e1-excel-routine-workbench/structural-lib-rectangular-beam-workbench-v1.xlsx",
+      "excel_addin/manifest.xml",
+      "Etabs_CSV"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "Python/structural_lib/core/excel_workbook.py",
+      "Python/structural_lib/services/excel_workbench.py",
+      "Python/tests/unit/test_excel_workbench_v1.py",
+      "fastapi_app/routers/excel_workbench.py",
+      "fastapi_app/tests/test_excel_workbench.py",
+      "excel_addin/README.md",
+      "excel_addin/taskpane-core.mjs",
+      "excel_addin/taskpane.css",
+      "excel_addin/taskpane.html",
+      "excel_addin/taskpane.mjs",
+      "excel_addin/tests/serve-static-files.test.mjs",
+      "excel_addin/tests/taskpane-core.test.mjs",
+      "scripts/verify_excel_workbench_artifact.py",
+      "docs/verification/e1-review-bundle-export-evidence.md",
+      "docs/verification/e1-review-bundle-export-git-handoff-source-evidence.json",
+      "docs/verification/e1-review-bundle-export-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "fastapi_app/openapi_baseline.json",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/e1-excel-routine-workbench-v1-plan.md",
+      "docs/planning/next-session-brief.md",
+      "docs/verification/e1-blank-workbook-guard-evidence.md",
+      "docs/verification/e1-excel-routine-workbench-v1-evidence.md",
+      "docs/index.json",
+      "docs/index.md",
+      "docs/planning/index.json",
+      "docs/planning/index.md",
+      "docs/verification/index.json",
+      "docs/verification/index.md"
+    ],
+    "task_id": "E1-REVIEW-BUNDLE-EXPORT"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

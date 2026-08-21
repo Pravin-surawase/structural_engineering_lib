@@ -4,6 +4,7 @@ const TEMPLATE = Object.freeze({
   worksheet_name: "Beam_Workbench",
   table_name: "tbl_Beam_Workbench_V1",
 });
+const SHA256_PATTERN = /^[0-9a-f]{64}$/;
 
 export const SETTINGS_KEYS = Object.freeze({
   workbookId: "excel_workbench_v1.workbook_instance_id",
@@ -59,7 +60,7 @@ export function buildPreviewRequest({
 }
 
 export function buildRunRequest(previewRequest, confirmedMappingHash) {
-  if (!/^[0-9a-f]{64}$/.test(String(confirmedMappingHash ?? ""))) {
+  if (!SHA256_PATTERN.test(String(confirmedMappingHash ?? ""))) {
     throw new Error("A reviewed 64-character mapping hash is required.");
   }
   return {
@@ -69,9 +70,56 @@ export function buildRunRequest(previewRequest, confirmedMappingHash) {
   };
 }
 
+export function buildReviewBundleExportRequest(
+  currentRequest,
+  previousEvidence,
+  confirmedMappingHash,
+) {
+  if (!currentRequest || currentRequest.schema_version !== "excel-workbook-preview-request/v1") {
+    throw new Error("A current selected-table snapshot is required for export.");
+  }
+  if (
+    !previousEvidence ||
+    previousEvidence.schema_version !== "excel-retained-evidence/v1" ||
+    ![
+      previousEvidence.bundle_hash,
+      previousEvidence.source_table_hash,
+      previousEvidence.mapping_hash,
+      previousEvidence.library_content_identity,
+    ].every((value) => SHA256_PATTERN.test(String(value ?? "")))
+  ) {
+    throw new Error("Complete retained result evidence is required for export.");
+  }
+  if (!SHA256_PATTERN.test(String(confirmedMappingHash ?? ""))) {
+    throw new Error("A confirmed current mapping hash is required for export.");
+  }
+  return {
+    schema_version: "excel-review-bundle-export-request/v1",
+    current_request: currentRequest,
+    previous_evidence: previousEvidence,
+    confirmed_mapping_hash: confirmedMappingHash,
+  };
+}
+
 export function sameSourceSnapshot(left, right) {
   if (!left || !right) return false;
   return JSON.stringify(left) === JSON.stringify(right);
+}
+
+export function reviewBundleExportEligible({
+  workbookSurfaceAvailable,
+  busy,
+  previousEvidence,
+  stale,
+  freshnessVerified,
+}) {
+  return Boolean(
+    workbookSurfaceAvailable &&
+      !busy &&
+      previousEvidence &&
+      !stale &&
+      freshnessVerified,
+  );
 }
 
 export function unwrapApiResponse(body) {
@@ -129,6 +177,130 @@ export async function getWorkbenchApi(
     throw new Error(body?.error?.message || `The local API returned HTTP ${response.status}.`);
   }
   return unwrapApiResponse(body);
+}
+
+function responseHeader(response, name) {
+  return response.headers?.get?.(name) ?? null;
+}
+
+export function reviewBundleFilename(contentDisposition, resultBundleHash) {
+  if (!SHA256_PATTERN.test(String(resultBundleHash ?? ""))) {
+    throw new Error("The review-bundle response has an invalid result identity.");
+  }
+  const expected = `e1-review-bundle-${resultBundleHash}.json`;
+  const match = /^attachment;\s*filename="([A-Za-z0-9._-]+)"$/i.exec(
+    String(contentDisposition ?? ""),
+  );
+  if (!match || match[1] !== expected) {
+    throw new Error("The review-bundle response has an invalid attachment filename.");
+  }
+  return expected;
+}
+
+export async function sha256Hex(bytes, { cryptoImpl = globalThis.crypto } = {}) {
+  if (!cryptoImpl?.subtle) throw new Error("WebCrypto SHA-256 is unavailable.");
+  const view = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
+  const digest = await cryptoImpl.subtle.digest("SHA-256", view);
+  return Array.from(new Uint8Array(digest), (value) =>
+    value.toString(16).padStart(2, "0"),
+  ).join("");
+}
+
+export async function postReviewBundleApi(
+  baseUrl,
+  path,
+  payload,
+  { token = "", fetchImpl = globalThis.fetch, cryptoImpl = globalThis.crypto } = {},
+) {
+  const root = String(baseUrl || "").replace(/\/$/, "");
+  if (!root) throw new Error("The local API base URL is required.");
+  const headers = { "Content-Type": "application/json", Accept: "application/json" };
+  if (token.trim()) headers.Authorization = `Bearer ${token.trim()}`;
+  const response = await fetchImpl(`${root}${path}`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) {
+    let body;
+    try {
+      body = await response.json();
+    } catch {
+      throw new Error(`The local API returned non-JSON HTTP ${response.status}.`);
+    }
+    throw new Error(body?.error?.message || `The local API returned HTTP ${response.status}.`);
+  }
+
+  if (!String(responseHeader(response, "Content-Type") ?? "").includes("application/json")) {
+    throw new Error("The review-bundle response is not JSON.");
+  }
+  const fileHash = responseHeader(response, "X-E1-File-SHA256");
+  const reviewBundleHash = responseHeader(response, "X-E1-Review-Bundle-Hash");
+  const resultBundleHash = responseHeader(response, "X-E1-Result-Bundle-Hash");
+  if (![fileHash, reviewBundleHash, resultBundleHash].every((value) => SHA256_PATTERN.test(String(value ?? "")))) {
+    throw new Error("The review-bundle response is missing a valid identity header.");
+  }
+  if (resultBundleHash !== payload.previous_evidence?.bundle_hash) {
+    throw new Error("The exported result identity does not match retained evidence.");
+  }
+
+  const bytes = new Uint8Array(await response.arrayBuffer());
+  const actualFileHash = await sha256Hex(bytes, { cryptoImpl });
+  if (actualFileHash !== fileHash) {
+    throw new Error("The downloaded review-bundle bytes failed SHA-256 verification.");
+  }
+  let bundle;
+  try {
+    bundle = JSON.parse(new TextDecoder().decode(bytes));
+  } catch {
+    throw new Error("The downloaded review bundle is not valid JSON.");
+  }
+  if (
+    bundle?.schema_version !== "excel-review-bundle/v1" ||
+    bundle?.export_disposition !== "EVIDENCE_FOR_QUALIFIED_REVIEW" ||
+    bundle?.freshness_check?.freshness_status !== "CURRENT" ||
+    bundle?.result?.qualified_review_required !== true ||
+    bundle?.review_bundle_hash !== reviewBundleHash ||
+    bundle?.result?.bundle_hash !== resultBundleHash
+  ) {
+    throw new Error("The downloaded review-bundle content failed identity validation.");
+  }
+  return {
+    bytes,
+    fileHash,
+    reviewBundleHash,
+    resultBundleHash,
+    filename: reviewBundleFilename(
+      responseHeader(response, "Content-Disposition"),
+      resultBundleHash,
+    ),
+  };
+}
+
+export function downloadReviewBundle(
+  download,
+  {
+    documentImpl = globalThis.document,
+    urlImpl = globalThis.URL,
+    BlobImpl = globalThis.Blob,
+  } = {},
+) {
+  if (!download?.bytes || !download?.filename) {
+    throw new Error("Verified review-bundle bytes are required for download.");
+  }
+  const blob = new BlobImpl([download.bytes], { type: "application/json" });
+  const href = urlImpl.createObjectURL(blob);
+  const anchor = documentImpl.createElement("a");
+  anchor.href = href;
+  anchor.download = download.filename;
+  anchor.hidden = true;
+  documentImpl.body.append(anchor);
+  try {
+    anchor.click();
+  } finally {
+    anchor.remove();
+    urlImpl.revokeObjectURL(href);
+  }
 }
 
 export function projectMappingRows(preview) {

@@ -3,7 +3,7 @@
 Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.
 
 **Type:** Python Package
-**Last Updated:** 2026-08-18
+**Last Updated:** 2026-08-22
 **Files:** 45
 
 ## Documentation Files
@@ -38,7 +38,7 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [test_detailing_anchorage.py](test_detailing_anchorage.py) | Tests for detailing router anchorage endpoint. | 1 | 1 | 98 |
 | [test_endpoints.py](test_endpoints.py) | Integration Tests for FastAPI Endpoints. | 11 | 0 | 1242 |
 | [test_error_sanitization.py](test_error_sanitization.py) | Tests for error sanitization utilities (TASK-796). | 2 | 0 | 118 |
-| [test_excel_workbench.py](test_excel_workbench.py) | REST semantic vectors for Excel Routine Workbench V1. | 0 | 3 | 128 |
+| [test_excel_workbench.py](test_excel_workbench.py) | REST semantic vectors for Excel Routine Workbench V1. | 0 | 6 | 242 |
 | [test_export_bbs_dxf.py](test_export_bbs_dxf.py) | Tests for export router endpoints. | 3 | 2 | 202 |
 | [test_flat_slab.py](test_flat_slab.py) | Contract tests for the bounded regular interior flat-slab Fa | 0 | 6 | 199 |
 | [test_footing.py](test_footing.py) | Contract tests for the isolated concentric-footing FastAPI s | 0 | 7 | 239 |

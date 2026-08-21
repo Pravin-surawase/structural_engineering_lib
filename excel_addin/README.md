@@ -1,6 +1,6 @@
 # Excel Routine Workbench V1 task pane
 
-This macro-free Office.js task pane reads only `Beam_Workbench / tbl_Beam_Workbench_V1`, previews the strict mapping, and sends a confirmed snapshot through the local FastAPI Excel Workbench V1 endpoints. It writes the returned row ledger, canonical result projections, and calculation passports to their named workbook tables.
+This macro-free Office.js task pane reads only `Beam_Workbench / tbl_Beam_Workbench_V1`, previews the strict mapping, and sends a confirmed snapshot through the local FastAPI Excel Workbench V1 endpoints. It writes the returned row ledger, canonical result projections, and calculation passports to their named workbook tables. After a current run or an explicit `CURRENT` freshness check, it can download a complete deterministic JSON review bundle whose bytes and result identities are verified before save.
 
 ## Local development transport
 
@@ -20,6 +20,8 @@ The HTTPS server exposes `https://localhost:3000/taskpane.html` and proxies same
 - If the exact E1 worksheet/table is not open, the pane may prove the local API identity but remains read-only: it does not create document settings, register events, or enable calculation controls.
 - A Run is rejected unless the current selected-table snapshot equals the previewed snapshot and the 64-character mapping hash is confirmed.
 - The Office document settings retain the workbook instance ID, four-hash freshness evidence, and stale flag across task-pane sessions; complete ledgers, results, and passports remain in their workbook tables.
+- Export sends the current source snapshot and retained identities back to Python. The service regenerates the canonical result, requires exact source/mapping/library/result agreement, and returns complete JSON evidence; Excel never packages a client-supplied old result.
+- Any edit disables export immediately. A reopened workbook must pass an explicit freshness check before export is re-enabled.
 - Excel does not execute structural-design formulas. VBA/macros, torsion, serviceability, ETABS access, write-back, release claims, and professional approval are outside E1.
 
 Installed Windows Excel evidence is a separate gate and remains `TO_VERIFY_WINDOWS` until executed on the supported environment.

@@ -5,6 +5,75 @@
 
 ---
 
+## 2026-08-22 — Session: E1 complete review-bundle export
+
+**Agent:** Codex (`reviewer`, sole writer)
+
+**Branch:** `codex/e1-review-bundle-export`, stacked on exact Windows-validated
+predecessor `514155b266af6dff3e30bf39ee28671c17345454`.
+
+**Git handoff receipt:** `docs/verification/e1-review-bundle-export-git-handoff-receipt.json`
+
+**Focus:** Close the G3 export-surface gap with one complete, deterministic,
+fail-closed Python/REST/Office.js successor; preserve workbook bytes,
+calculations, manifest, ETABS/VBA, release, merge, cleanup, and professional
+approval boundaries.
+
+### Summary
+
+- Added a versioned complete review-bundle request/result contract and
+  deterministic JSON serialization.
+- Added a same-origin REST attachment whose file, logical bundle, and canonical
+  result identities are explicit.
+- Added an installed-pane Export control that is eligible only after a current
+  run or explicit freshness check and verifies response bytes before download.
+- Extended focused Python, REST, Office.js, source-free wheel, plan, evidence,
+  and Windows acceptance surfaces.
+
+### Issues encountered
+
+- The frozen G3 journey required pane-accessible deterministic review-bundle
+  export, but the installed pane and REST router exposed no export operation.
+- The existing deterministic Markdown renderer was a compact status summary;
+  it omitted the complete mapping, structured results, passports, raw ledger
+  detail, and issues required for qualified review.
+- The first OpenAPI assertion found the new route documented no response
+  content even though its runtime JSON attachment passed.
+- The first affected-file Ruff run stopped before mypy because two new service
+  contract imports were not in canonical order.
+
+### Root causes and resolutions
+
+- Confirmed root cause: local renderer determinism had been accepted as proof
+  of a complete installed Excel export journey even though no source-to-pane
+  route existed. Resolution: add one typed export request, service regeneration
+  boundary, raw JSON attachment route, pane action, and exact identity checks.
+- Confirmed root cause: the old renderer was designed as a human-readable
+  summary and its tests asserted repeatability plus hash presence, not complete
+  artifact content. Resolution: make `ExcelReviewBundleV1` contain the full
+  canonical run result, preserve the renderer as a summary-only compatibility
+  surface, and add nested-content plus deterministic-byte tests.
+- Confirmed root cause: setting generic `Response` as the decorator response
+  class suppressed FastAPI's schema content even with a response model.
+  Resolution: keep `ExcelReviewBundleV1` as the documented response model and
+  return a raw `Response` instance only at runtime. Proof: the failed OpenAPI
+  assertion and refreshed 89-endpoint/434-schema baseline check pass.
+- Confirmed root cause: the new retained/export contract imports were added in
+  semantic rather than Ruff alphabetical order. Resolution: reorder only those
+  imports; affected Black/Ruff and the previously skipped configured mypy pass.
+
+### Validation through content freeze
+
+- Focused Python/REST/Open XML: 22 cases pass using one impact-mapped repair
+  rerun; Office.js: 21/21; four JavaScript modules and the manifest parse.
+- Black, Ruff, configured mypy, 217-file architecture, 685-file/4,732-import
+  validation, and the 89-endpoint/434-schema OpenAPI baseline pass.
+- A source-free wheel proves unchanged workbook SHA-256 `497dd44d…ac85`, new
+  library content identity `87ae4fbe…d57a5`, and complete deterministic 8,987-
+  byte review evidence with both structured result and passport.
+- Documentation, maintained indexes, quick gate, hooks, immutable commit/audit,
+  hosted checks, and Windows G3 remain in the closeout sequence.
+
 ## 2026-08-22 — Session: E1 blank-workbook guard repair
 
 **Agent:** Codex (`backend`, sole writer)

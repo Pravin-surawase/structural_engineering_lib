@@ -1,19 +1,29 @@
 import assert from "node:assert/strict";
+import { createHash, webcrypto } from "node:crypto";
 import test from "node:test";
 
 import {
   buildPreviewRequest,
+  buildReviewBundleExportRequest,
   buildRunRequest,
+  downloadReviewBundle,
   getWorkbenchApi,
   normalizeCalculationMode,
   postWorkbenchApi,
+  postReviewBundleApi,
   projectLedgerRows,
   projectPassportRows,
   projectResultRows,
   reconciliationSummary,
+  reviewBundleExportEligible,
   retainEvidence,
   sameSourceSnapshot,
 } from "../taskpane-core.mjs";
+
+const HASH_A = "a".repeat(64);
+const HASH_B = "b".repeat(64);
+const HASH_C = "c".repeat(64);
+const HASH_D = "d".repeat(64);
 
 const snapshot = {
   workbookInstanceId: "EXCEL-WORKBOOK-1",
@@ -49,6 +59,49 @@ test("run request requires a reviewed mapping hash", () => {
   const run = buildRunRequest(preview, "a".repeat(64));
   assert.equal(run.confirmed_mapping_hash, "a".repeat(64));
   assert.equal(run.schema_version, "excel-workbook-run-request/v1");
+});
+
+test("review-bundle request requires complete retained and mapping identities", () => {
+  const current = buildPreviewRequest(snapshot);
+  const evidence = {
+    schema_version: "excel-retained-evidence/v1",
+    bundle_hash: HASH_A,
+    source_table_hash: HASH_B,
+    mapping_hash: HASH_C,
+    library_content_identity: HASH_D,
+  };
+  assert.throws(
+    () => buildReviewBundleExportRequest(current, null, HASH_C),
+    /retained result evidence/,
+  );
+  assert.throws(
+    () => buildReviewBundleExportRequest(current, evidence, "bad"),
+    /mapping hash/,
+  );
+  assert.deepEqual(buildReviewBundleExportRequest(current, evidence, HASH_C), {
+    schema_version: "excel-review-bundle-export-request/v1",
+    current_request: current,
+    previous_evidence: evidence,
+    confirmed_mapping_hash: HASH_C,
+  });
+});
+
+test("review-bundle eligibility is fail-closed for busy, stale, and reopened state", () => {
+  const ready = {
+    workbookSurfaceAvailable: true,
+    busy: false,
+    previousEvidence: { bundle_hash: HASH_A },
+    stale: false,
+    freshnessVerified: true,
+  };
+  assert.equal(reviewBundleExportEligible(ready), true);
+  assert.equal(reviewBundleExportEligible({ ...ready, busy: true }), false);
+  assert.equal(reviewBundleExportEligible({ ...ready, stale: true }), false);
+  assert.equal(reviewBundleExportEligible({ ...ready, previousEvidence: null }), false);
+  assert.equal(
+    reviewBundleExportEligible({ ...ready, freshnessVerified: false }),
+    false,
+  );
 });
 
 test("source snapshot detects any row or selection change", () => {
@@ -130,4 +183,95 @@ test("non-reconciling API output is rejected", () => {
     () => reconciliationSummary({ counts: { source_rows: 2, accepted_rows: 1, blocked_rows: 0, excluded_rows: 0 } }),
     /non-reconciling/,
   );
+});
+
+function headerBag(values) {
+  const normalized = new Map(
+    Object.entries(values).map(([key, value]) => [key.toLowerCase(), value]),
+  );
+  return { get: (name) => normalized.get(name.toLowerCase()) ?? null };
+}
+
+function reviewBundleResponse({ fileHashOverride } = {}) {
+  const bundle = {
+    schema_version: "excel-review-bundle/v1",
+    export_disposition: "EVIDENCE_FOR_QUALIFIED_REVIEW",
+    freshness_check: { freshness_status: "CURRENT" },
+    result: { qualified_review_required: true, bundle_hash: HASH_A },
+    review_bundle_hash: HASH_B,
+  };
+  const bytes = new TextEncoder().encode(`${JSON.stringify(bundle)}\n`);
+  const fileHash = createHash("sha256").update(bytes).digest("hex");
+  return {
+    ok: true,
+    status: 200,
+    headers: headerBag({
+      "Content-Type": "application/json",
+      "Content-Disposition": `attachment; filename="e1-review-bundle-${HASH_A}.json"`,
+      "X-E1-File-SHA256": fileHashOverride ?? fileHash,
+      "X-E1-Review-Bundle-Hash": HASH_B,
+      "X-E1-Result-Bundle-Hash": HASH_A,
+    }),
+    arrayBuffer: async () => bytes.buffer.slice(
+      bytes.byteOffset,
+      bytes.byteOffset + bytes.byteLength,
+    ),
+  };
+}
+
+test("review-bundle download verifies exact bytes and logical identities", async () => {
+  const payload = { previous_evidence: { bundle_hash: HASH_A } };
+  const download = await postReviewBundleApi(
+    "/api/v1",
+    "/review-bundle",
+    payload,
+    { fetchImpl: async () => reviewBundleResponse(), cryptoImpl: webcrypto },
+  );
+
+  assert.equal(download.resultBundleHash, HASH_A);
+  assert.equal(download.reviewBundleHash, HASH_B);
+  assert.equal(download.filename, `e1-review-bundle-${HASH_A}.json`);
+  assert.equal(download.fileHash.length, 64);
+  await assert.rejects(
+    postReviewBundleApi("/api/v1", "/review-bundle", payload, {
+      fetchImpl: async () => reviewBundleResponse({ fileHashOverride: HASH_D }),
+      cryptoImpl: webcrypto,
+    }),
+    /failed SHA-256/,
+  );
+});
+
+test("verified review bundle triggers exactly one temporary download", () => {
+  let clicks = 0;
+  let removals = 0;
+  let appends = 0;
+  let revocations = 0;
+  const anchor = {
+    click() { clicks += 1; },
+    remove() { removals += 1; },
+  };
+  const documentImpl = {
+    createElement: () => anchor,
+    body: { append: () => { appends += 1; } },
+  };
+  const urlImpl = {
+    createObjectURL: () => "blob:e1",
+    revokeObjectURL: () => { revocations += 1; },
+  };
+  class FakeBlob {
+    constructor(parts, options) {
+      this.parts = parts;
+      this.options = options;
+    }
+  }
+
+  downloadReviewBundle(
+    { bytes: new Uint8Array([1, 2, 3]), filename: `e1-review-bundle-${HASH_A}.json` },
+    { documentImpl, urlImpl, BlobImpl: FakeBlob },
+  );
+
+  assert.equal(appends, 1);
+  assert.equal(clicks, 1);
+  assert.equal(removals, 1);
+  assert.equal(revocations, 1);
 });

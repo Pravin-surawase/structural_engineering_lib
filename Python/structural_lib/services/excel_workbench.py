@@ -21,6 +21,8 @@ from structural_lib.core.excel_workbook import (
     ExcelMappingFieldV1,
     ExcelMappingPreviewV1,
     ExcelRetainedEvidenceV1,
+    ExcelReviewBundleExportRequestV1,
+    ExcelReviewBundleV1,
     ExcelReviewStateV1,
     ExcelRowCountV1,
     ExcelRowDispositionV1,
@@ -46,12 +48,15 @@ from structural_lib.services.project_beam import EffectiveDepthBasisV1
 from structural_lib.services.serialization import to_transport_value
 
 __all__ = [
+    "ExcelReviewBundleConflictError",
+    "build_excel_review_bundle_v1",
     "build_excel_mapping_preview_v1",
     "check_excel_workbook_freshness_v1",
     "get_excel_workbench_definition_v1",
     "retain_excel_workbook_evidence_v1",
     "render_excel_review_bundle_markdown_v1",
     "run_excel_workbook_v1",
+    "serialize_excel_review_bundle_v1",
 ]
 
 _REQUIRED_FIELDS = (
@@ -173,6 +178,24 @@ def _canonical_json_hash(value: Any) -> str:
         sort_keys=True,
     ).encode("utf-8")
     return hashlib.sha256(encoded).hexdigest()
+
+
+def _canonical_json_bytes(value: Any) -> bytes:
+    payload = to_transport_value(value)
+    return (
+        json.dumps(
+            payload,
+            allow_nan=False,
+            ensure_ascii=True,
+            separators=(",", ":"),
+            sort_keys=True,
+        )
+        + "\n"
+    ).encode("utf-8")
+
+
+class ExcelReviewBundleConflictError(ValueError):
+    """The retained result identity conflicts with the current workbook state."""
 
 
 def _contract() -> ExcelWorkbookContractV1:
@@ -811,6 +834,66 @@ def retain_excel_workbook_evidence_v1(
         mapping_hash=result.mapping.mapping_hash,
         library_content_identity=result.library_content_identity,
     )
+
+
+def build_excel_review_bundle_v1(
+    request: ExcelReviewBundleExportRequestV1,
+) -> ExcelReviewBundleV1:
+    preview = build_excel_mapping_preview_v1(request.current_request)
+    if preview.is_blocked:
+        raise ValueError(
+            "Excel mapping preview is blocked; review bundle was not exported."
+        )
+    if request.confirmed_mapping_hash != preview.mapping_hash:
+        raise ValueError(
+            "confirmed_mapping_hash does not match the current mapping preview"
+        )
+    if request.previous_evidence.mapping_hash != request.confirmed_mapping_hash:
+        raise ExcelReviewBundleConflictError(
+            "Retained mapping identity does not match the confirmed mapping."
+        )
+
+    freshness = check_excel_workbook_freshness_v1(
+        ExcelFreshnessRequestV1(
+            previous_evidence=request.previous_evidence,
+            current_request=request.current_request,
+        )
+    )
+    if freshness.freshness_status != "CURRENT":
+        raise ExcelReviewBundleConflictError(
+            "Retained Excel result is stale: " + ", ".join(freshness.reasons)
+        )
+
+    result = run_excel_workbook_v1(
+        ExcelWorkbookRunRequestV1(
+            selection=request.current_request.selection,
+            headers=request.current_request.headers,
+            rows=request.current_request.rows,
+            confirmed_mapping_hash=request.confirmed_mapping_hash,
+        )
+    )
+    if result.bundle_hash != request.previous_evidence.bundle_hash:
+        raise ExcelReviewBundleConflictError(
+            "Regenerated result identity does not match the retained result."
+        )
+
+    payload = {
+        "schema_version": "excel-review-bundle/v1",
+        "export_disposition": "EVIDENCE_FOR_QUALIFIED_REVIEW",
+        "freshness_check": freshness.model_dump(mode="json"),
+        "result": result.model_dump(mode="json"),
+    }
+    return ExcelReviewBundleV1(
+        freshness_check=freshness,
+        result=result,
+        review_bundle_hash=_canonical_json_hash(payload),
+    )
+
+
+def serialize_excel_review_bundle_v1(bundle: ExcelReviewBundleV1) -> bytes:
+    """Return deterministic complete review evidence as UTF-8 JSON plus one LF."""
+
+    return _canonical_json_bytes(bundle.model_dump(mode="json"))
 
 
 def render_excel_review_bundle_markdown_v1(

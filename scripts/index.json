@@ -2,7 +2,7 @@
   "folder": "scripts",
   "type": "python-package",
   "description": "> Development, validation, discovery, release-preparation, and maintenance tools.",
-  "last_updated": "2026-08-18",
+  "last_updated": "2026-08-22",
   "file_count": 114,
   "files": [
     {
@@ -5574,8 +5574,8 @@
     {
       "name": "verify_excel_workbench_artifact.py",
       "type": "python",
-      "size_lines": 217,
-      "last_updated": "2026-08-18",
+      "size_lines": 244,
+      "last_updated": "2026-08-22",
       "description": "Verify E1 workbook identity and behavior from one source-free wheel.",
       "functions": [
         {
@@ -5594,7 +5594,7 @@
         "_MANIFEST_MEMBER",
         "_INSTALLED_PROBE"
       ],
-      "content_hash": "e73687b2a972"
+      "content_hash": "6dba9bcda7cf"
     },
     {
       "name": "watch_tests.sh",
@@ -5613,5 +5613,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "4a6202dfd46f3204"
+  "content_hash": "53a1db3a947d3dfd"
 }

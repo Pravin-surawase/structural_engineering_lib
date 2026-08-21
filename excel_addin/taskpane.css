@@ -26,6 +26,7 @@ main { display: grid; gap: 12px; padding: 14px; }
 button { width: 100%; margin-top: 10px; padding: 10px 12px; border: 0; border-radius: 5px; color: white; background: #087e8b; font-weight: 700; cursor: pointer; }
 button.secondary { color: #16324f; border: 1px solid #9fb0bc; background: white; }
 button:disabled { cursor: not-allowed; opacity: .45; }
+button:focus-visible, input:focus-visible, summary:focus-visible { outline: 3px solid #f0a202; outline-offset: 2px; }
 .check { display: flex; gap: 8px; align-items: flex-start; margin-top: 10px; }
 .check input { margin-top: 2px; }
 code { font-size: 11px; }

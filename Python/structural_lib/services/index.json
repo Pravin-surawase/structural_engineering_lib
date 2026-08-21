@@ -2,7 +2,7 @@
   "folder": "Python/structural_lib/services",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-18",
+  "last_updated": "2026-08-22",
   "file_count": 54,
   "files": [
     {
@@ -1894,9 +1894,15 @@
     {
       "name": "excel_workbench.py",
       "type": "python",
-      "size_lines": 868,
-      "last_updated": "2026-08-18",
+      "size_lines": 951,
+      "last_updated": "2026-08-22",
       "description": "Strict selected-table orchestration for Excel Routine Workbench V1.",
+      "classes": [
+        {
+          "name": "ExcelReviewBundleConflictError",
+          "description": "The retained result identity conflicts with the current workbook state."
+        }
+      ],
       "functions": [
         {
           "name": "get_excel_workbench_definition_v1"
@@ -1926,6 +1932,19 @@
           ]
         },
         {
+          "name": "build_excel_review_bundle_v1",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "serialize_excel_review_bundle_v1",
+          "description": "Return deterministic complete review evidence as UTF-8 JSON plus one LF.",
+          "params": [
+            "bundle"
+          ]
+        },
+        {
           "name": "render_excel_review_bundle_markdown_v1",
           "params": [
             "result"
@@ -1941,7 +1960,7 @@
         "_WORKBOOK_ARTIFACT_NAME",
         "_WORKBOOK_RESOURCE_DIR"
       ],
-      "content_hash": "c63bcf13878c"
+      "content_hash": "090d514bfa97"
     },
     {
       "name": "flat_slab_api.py",
@@ -3400,5 +3419,5 @@
     "PropertyLineStrapFootingDesignStatus",
     "design_property_line_strap_footing_is456"
   ],
-  "content_hash": "f38c58c33a85ccf1"
+  "content_hash": "96688dfaf6b7e525"
 }

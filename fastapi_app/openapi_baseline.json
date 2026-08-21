@@ -14416,6 +14416,70 @@
         "title": "ExcelRetainedEvidenceV1",
         "type": "object"
       },
+      "ExcelReviewBundleExportRequestV1": {
+        "additionalProperties": false,
+        "properties": {
+          "confirmed_mapping_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Confirmed Mapping Hash",
+            "type": "string"
+          },
+          "current_request": {
+            "$ref": "#/components/schemas/ExcelWorkbookPreviewRequestV1"
+          },
+          "previous_evidence": {
+            "$ref": "#/components/schemas/ExcelRetainedEvidenceV1"
+          },
+          "schema_version": {
+            "const": "excel-review-bundle-export-request/v1",
+            "default": "excel-review-bundle-export-request/v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "current_request",
+          "previous_evidence",
+          "confirmed_mapping_hash"
+        ],
+        "title": "ExcelReviewBundleExportRequestV1",
+        "type": "object"
+      },
+      "ExcelReviewBundleV1": {
+        "additionalProperties": false,
+        "properties": {
+          "export_disposition": {
+            "const": "EVIDENCE_FOR_QUALIFIED_REVIEW",
+            "default": "EVIDENCE_FOR_QUALIFIED_REVIEW",
+            "title": "Export Disposition",
+            "type": "string"
+          },
+          "freshness_check": {
+            "$ref": "#/components/schemas/ExcelFreshnessCheckV1"
+          },
+          "result": {
+            "$ref": "#/components/schemas/ExcelWorkbookRunResultV1"
+          },
+          "review_bundle_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Review Bundle Hash",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "excel-review-bundle/v1",
+            "default": "excel-review-bundle/v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "freshness_check",
+          "result",
+          "review_bundle_hash"
+        ],
+        "title": "ExcelReviewBundleV1",
+        "type": "object"
+      },
       "ExcelReviewStateV1": {
         "enum": [
           "NOT_REVIEWED",
@@ -34668,6 +34732,127 @@
           }
         },
         "summary": "Preview and hash the selected Excel table mapping",
+        "tags": [
+          "excel-workbench"
+        ]
+      }
+    },
+    "/api/v1/excel-workbench/v1/review-bundle": {
+      "post": {
+        "operationId": "export_excel_review_bundle_api_v1_excel_workbench_v1_review_bundle_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExcelReviewBundleExportRequestV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExcelReviewBundleV1"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Authentication required"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "State conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Concurrency or rate limit"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Internal application error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Capability unavailable"
+          }
+        },
+        "summary": "Export complete current Excel evidence for qualified review",
         "tags": [
           "excel-workbench"
         ]

@@ -1,14 +1,18 @@
 import {
   SETTINGS_KEYS,
   buildPreviewRequest,
+  buildReviewBundleExportRequest,
   buildRunRequest,
+  downloadReviewBundle,
   getWorkbenchApi,
   postWorkbenchApi,
+  postReviewBundleApi,
   projectLedgerRows,
   projectMappingRows,
   projectPassportRows,
   projectResultRows,
   reconciliationSummary,
+  reviewBundleExportEligible,
   retainEvidence,
   sameSourceSnapshot,
 } from "./taskpane-core.mjs";
@@ -31,6 +35,9 @@ const state = {
   previousEvidence: null,
   definition: null,
   stale: true,
+  freshnessVerified: false,
+  confirmedMappingHash: null,
+  inputRevision: 0,
   eventRegistered: false,
   workbookSurfaceAvailable: false,
 };
@@ -49,6 +56,14 @@ function setBusy(busy) {
   ui.freshness.disabled = busy || unavailable || !state.previousEvidence;
   ui.review.disabled = busy || unavailable || !state.mapping || state.mapping.is_blocked;
   ui.run.disabled = busy || unavailable || !ui.review.checked || state.stale;
+  ui.export.disabled = !reviewBundleExportEligible({
+    workbookSurfaceAvailable: !unavailable,
+    busy,
+    previousEvidence: state.previousEvidence,
+    stale: state.stale,
+    freshnessVerified: state.freshnessVerified,
+  });
+  ui.status.setAttribute("aria-busy", busy ? "true" : "false");
 }
 
 async function persistEvidence(evidence, stale) {
@@ -150,11 +165,15 @@ async function writeRunResult(result) {
 
 let staleTimer;
 function markStale() {
+  state.inputRevision += 1;
   state.stale = true;
+  state.freshnessVerified = false;
+  state.confirmedMappingHash = null;
   state.previewRequest = null;
   state.mapping = null;
   ui.review.checked = false;
   ui.mapping.textContent = "Mapping review required after the latest input edit.";
+  ui.exportDetail.textContent = "Export is disabled until the edited table is recalculated.";
   setStatus("hold", "STALE", "Preview and review the mapping before running again.");
   setBusy(false);
   clearTimeout(staleTimer);
@@ -187,7 +206,10 @@ async function previewMapping() {
     state.previewRequest = request;
     state.mapping = preview;
     state.stale = true;
+    state.freshnessVerified = false;
+    state.confirmedMappingHash = null;
     ui.review.checked = false;
+    ui.exportDetail.textContent = "Run a reviewed current mapping before export.";
     ui.mapping.textContent = preview.is_blocked
       ? `${preview.issues.length} mapping issue(s); Run remains blocked.`
       : `${preview.mapped_fields.length} fields mapped. Hash ${preview.mapping_hash}`;
@@ -238,7 +260,10 @@ async function runCalculation() {
     await writeRunResult(result);
     state.previousEvidence = retainEvidence(result);
     state.stale = false;
+    state.freshnessVerified = true;
+    state.confirmedMappingHash = result.mapping.mapping_hash;
     await persistEvidence(state.previousEvidence, false);
+    ui.exportDetail.textContent = "The current result is eligible for deterministic evidence export.";
     setStatus("ready", "RESULT CURRENT", `${summary}. Qualified review remains required.`);
   } catch (error) {
     setStatus("blocked", "RUN FAILED", error.message);
@@ -259,18 +284,68 @@ async function checkFreshness() {
       { token: ui.token.value },
     );
     state.stale = check.freshness_status === "STALE";
+    state.freshnessVerified = !state.stale;
+    state.confirmedMappingHash = state.stale ? null : check.current_mapping_hash;
     if (state.stale) {
       state.previewRequest = null;
       state.mapping = null;
       ui.review.checked = false;
     }
+    ui.exportDetail.textContent = state.stale
+      ? "Export is blocked because retained evidence is stale."
+      : "Retained evidence is current and eligible for export.";
     setStatus(
       state.stale ? "hold" : "ready",
       check.freshness_status,
       state.stale ? check.reasons.join(", ") : "Source, mapping, and library identity match.",
     );
   } catch (error) {
+    state.freshnessVerified = false;
+    state.confirmedMappingHash = null;
+    ui.exportDetail.textContent = "Freshness could not be verified; export remains disabled.";
     setStatus("blocked", "FRESHNESS CHECK FAILED", error.message);
+  } finally {
+    setBusy(false);
+  }
+}
+
+async function exportReviewBundle() {
+  setBusy(true);
+  setStatus(
+    "working",
+    "EXPORTING",
+    "Regenerating and verifying the current review evidence.",
+  );
+  const revision = state.inputRevision;
+  try {
+    const current = await captureInput();
+    const request = buildReviewBundleExportRequest(
+      current,
+      state.previousEvidence,
+      state.confirmedMappingHash,
+    );
+    const download = await postReviewBundleApi(
+      API_ROOT,
+      "/excel-workbench/v1/review-bundle",
+      request,
+      { token: ui.token.value },
+    );
+    if (state.inputRevision !== revision || state.stale) {
+      throw new Error("The selected table changed during export; no file was saved.");
+    }
+    downloadReviewBundle(download);
+    ui.exportDetail.textContent = `${download.filename} · SHA-256 ${download.fileHash}`;
+    setStatus(
+      "ready",
+      "REVIEW BUNDLE SAVED",
+      "The complete current JSON evidence was verified before download. Qualified review remains required.",
+    );
+  } catch (error) {
+    state.freshnessVerified = false;
+    state.confirmedMappingHash = null;
+    ui.exportDetail.textContent = "Check freshness or recalculate before trying export again.";
+    setStatus("blocked", "EXPORT BLOCKED", error.message);
+    ui.status.focus();
   } finally {
     setBusy(false);
   }
@@ -284,6 +359,8 @@ async function initialize() {
   ui.review = document.getElementById("review");
   ui.run = document.getElementById("run");
   ui.freshness = document.getElementById("freshness");
+  ui.export = document.getElementById("export");
+  ui.exportDetail = document.getElementById("export-detail");
   ui.mapping = document.getElementById("mapping");
   ui.context = document.getElementById("context");
   ui.token = document.getElementById("token");
@@ -291,6 +368,7 @@ async function initialize() {
   ui.review.addEventListener("change", mappingReviewChanged);
   ui.run.addEventListener("click", runCalculation);
   ui.freshness.addEventListener("click", checkFreshness);
+  ui.export.addEventListener("click", exportReviewBundle);
   setBusy(true);
 
   let surface;
@@ -331,6 +409,8 @@ async function initialize() {
     );
     state.stale =
       Office.context.document.settings.get(SETTINGS_KEYS.stale) !== false;
+    state.freshnessVerified = false;
+    state.confirmedMappingHash = null;
     await registerInputChange();
     state.workbookSurfaceAvailable = true;
     setStatus(
@@ -340,6 +420,9 @@ async function initialize() {
         ? "Use Check freshness before relying on retained evidence."
         : "Start by previewing the exact selected-table mapping.",
     );
+    ui.exportDetail.textContent = state.previousEvidence && !state.stale
+      ? "Check retained-result freshness before export."
+      : "Export becomes available after a current reviewed run.";
   } catch (error) {
     setStatus("blocked", "WORKBOOK INITIALIZATION FAILED", officeErrorDetail(error));
   }

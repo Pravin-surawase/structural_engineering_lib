@@ -104,20 +104,18 @@ evidence of document-settings mutation. The workbook was discarded, Excel and
 ETABS closed, services stopped, ports freed, and both Git worktrees remained
 clean.
 
-## Remaining Windows revalidation
+## Windows revalidation result
 
-Against the exact immutable repair head:
+The fresh W2 task revalidated exact final head
+`514155b266af6dff3e30bf39ee28671c17345454` and tree
+`57e563909f84736a0d3b1a161d2e4d02ee4a4fe3` on the supported Windows host.
+All three local modules returned HTTP 200 with exact content, the definition
+API returned 200, and a blank workbook displayed connected identity plus
+`E1 WORKBOOK NOT OPEN` with Preview, Review, Run, and freshness disabled. Excel
+and ETABS closed cleanly and ports 3000/8000 were free. W2 returned
+`READY_FOR_G3`.
 
-1. Reuse the installed entitlement, restricted SMB catalog, certificate, wheel,
-   workbook, and local API identities already proven by W0.
-2. Update only the trusted catalog and served add-in files to the exact repair
-   head; require HTTP 200 for every local module before opening Excel.
-3. Start the two loopback services and load the add-in in one unsaved blank
-   workbook.
-4. Require connected identity plus `E1 WORKBOOK NOT OPEN`, disabled controls,
-   no generic contract error, and a completed definition API request.
-5. Close and discard the unsaved blank workbook; record any prompt without
-   treating it as settings evidence. Stop services and verify clean Git and no
-   orphan processes.
-
-G3 remains held until this narrow W0 revalidation returns `READY_FOR_G3`.
+The subsequent G3 preflight found a separate missing review-bundle export
+surface before opening the product workbook. That gap does not invalidate the
+blank-workbook guard result; it is owned by the separately authorized
+`codex/e1-review-bundle-export` successor.

@@ -18,7 +18,7 @@ doc_type: log
 - template: `structural-lib-rectangular-beam-workbench` version `1.0`;
 - canonical function/result: `design_beam_is456` / `canonical-beam-result/v1`;
 - workbook trust: `MACRO_FREE_OFFICE_JS`;
-- installed Windows Excel evidence: `W0_REPAIR_REQUIRED / G3_NOT_RUN`.
+- installed Windows Excel evidence: `READY_FOR_G3 / G3_BLOCKED_EXPORT_SURFACE`.
 
 ETABS file/live access, write-back, optimization, nightly execution, release publication, and professional approval are outside this candidate.
 
@@ -53,7 +53,9 @@ Broad Python and full repository validation are reserved for cumulative M4 close
 4. Four-hash retained evidence avoids storing a potentially large result bundle in Office settings while keeping reopen-time freshness verifiable.
 5. The single workbook artifact is installed package data. Its manifest and definition endpoint fail on byte/hash/size mismatch.
 6. The task pane clears approval on worksheet edits, requires exact preview snapshot plus mapping hash, and writes separate ledger/result/passport tables.
-7. OpenAPI baseline now contains 88 endpoints and 432 schemas after adding the four E1 endpoints.
+7. The original OpenAPI baseline contains 88 endpoints and 432 schemas after
+   adding the first four E1 endpoints. The authorized export successor adds a
+   fifth typed E1 endpoint and records its new baseline separately.
 
 ## Consolidated focused results
 
@@ -87,7 +89,7 @@ Python/REST/OpenAPI/wheel evidence were repeated; all pass.
 | Structural formulas | none |
 | VBA/macros | none |
 | Visual review | PASS on all six rendered sheets, 2026-08-18 |
-| Installed Windows Excel | `W0_REPAIR_REQUIRED / G3_NOT_RUN`; see [Windows W0 evidence](e1-windows-w0-setup-evidence.md) |
+| Installed Windows Excel | `READY_FOR_G3 / G3_BLOCKED_EXPORT_SURFACE`; see [Windows W0 evidence](e1-windows-w0-setup-evidence.md) and [export successor evidence](e1-review-bundle-export-evidence.md) |
 
 ## Focused implementation diagnostics already completed
 
@@ -101,14 +103,21 @@ These diagnostics are recorded separately from the passing consolidated batch.
 
 ## Current verdict
 
-`SOFTWARE CANDIDATE / G3 HELD`.
+`SOFTWARE CANDIDATE / G3 BLOCKED ON EXPORT SURFACE`.
 
 The focused batch, source-free wheel proof, immutable candidate closeout, and
 hosted PR #826 checks pass. Windows W0 subsequently proved the active Microsoft
 365 entitlement, exact clean candidate, isolated installed wheel identity,
 restricted trusted catalog, localhost HTTPS, and loopback service readiness.
 The exact add-in loaded in a blank workbook but exposed a pre-API
-`ItemNotFound` defect in eager `Beam_Workbench` event registration. A stacked
-[blank-workbook guard repair](e1-blank-workbook-guard-evidence.md) now has local
-focused evidence; narrow W0 revalidation remains required before G3. G3 was not
-run.
+`ItemNotFound` defect in eager `Beam_Workbench` event registration. The stacked
+[blank-workbook guard repair](e1-blank-workbook-guard-evidence.md) was then
+repaired for its missing static-module route and returned `READY_FOR_G3` on
+Windows at exact head `514155b2`.
+
+The first G3 preflight stopped before workbook creation because the installed
+pane and REST API had no complete review-bundle export. Source inspection also
+proved that the existing Markdown renderer is a compact status summary, not
+the mapping/result/passport/issue artifact required by the frozen plan. The
+authorized [export successor](e1-review-bundle-export-evidence.md) closes both
+gaps before the single G3 rerun.

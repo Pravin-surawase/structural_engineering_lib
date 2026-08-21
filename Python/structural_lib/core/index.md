@@ -1,7 +1,7 @@
 # Core
 
 **Type:** Python Package
-**Last Updated:** 2026-08-18
+**Last Updated:** 2026-08-22
 **Files:** 24
 
 ## Public API
@@ -39,7 +39,7 @@
 | [deprecation.py](deprecation.py) | Module:       deprecation | 0 | 2 | 156 |
 | [error_messages.py](error_messages.py) | Module:       error_messages | 0 | 15 | 496 |
 | [errors.py](errors.py) | Module:       errors | 11 | 1 | 884 |
-| [excel_workbook.py](excel_workbook.py) | Versioned, calculation-free contracts for Excel Routine Work | 15 | 0 | 279 |
+| [excel_workbook.py](excel_workbook.py) | Versioned, calculation-free contracts for Excel Routine Work | 15 | 0 | 300 |
 | [geometry.py](geometry.py) | Code-agnostic geometry definitions. | 4 | 2 | 254 |
 | [gravity_workflow.py](gravity_workflow.py) | Versioned request, applicability, action, and result types f | 12 | 0 | 310 |
 | [inputs.py](inputs.py) | Module:       inputs | 6 | 3 | 635 |

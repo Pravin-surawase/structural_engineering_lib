@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-22
-**Files:** 194
+**Files:** 197
 
 ## Config Files
 
@@ -20,6 +20,8 @@ Benchmark examples and verification packs for validating library calculations ag
 - [e1-blank-workbook-guard-repair-git-handoff-source-evidence.json](e1-blank-workbook-guard-repair-git-handoff-source-evidence.json)
 - [e1-excel-routine-workbench-git-handoff-receipt.json](e1-excel-routine-workbench-git-handoff-receipt.json)
 - [e1-excel-routine-workbench-git-handoff-source-evidence.json](e1-excel-routine-workbench-git-handoff-source-evidence.json)
+- [e1-review-bundle-export-git-handoff-receipt.json](e1-review-bundle-export-git-handoff-receipt.json)
+- [e1-review-bundle-export-git-handoff-source-evidence.json](e1-review-bundle-export-git-handoff-source-evidence.json)
 - [e1-w0-maintenance-git-handoff-receipt.json](e1-w0-maintenance-git-handoff-receipt.json)
 - [e1-w0-maintenance-git-handoff-source-evidence.json](e1-w0-maintenance-git-handoff-source-evidence.json)
 - [exact-candidate-review-receipt-template.json](exact-candidate-review-receipt-template.json)
@@ -147,8 +149,9 @@ Benchmark examples and verification packs for validating library calculations ag
 | [b2-gravity-workflow-v1-evidence.md](b2-gravity-workflow-v1-evidence.md) |  | This record covers the bounded B2 orchestration candidate bu | 113 |
 | [bundled-sample-boq-evidence.md](bundled-sample-boq-evidence.md) |  | This is the reproducible software record for the bundled ETA | 58 |
 | [column-pmm-benchmark.md](column-pmm-benchmark.md) |  | This record independently checks the experimental rectangula | 107 |
-| [e1-blank-workbook-guard-evidence.md](e1-blank-workbook-guard-evidence.md) |  | - repair branch: codex/e1-blank-workbook-guard; - stacked ba | 124 |
-| [e1-excel-routine-workbench-v1-evidence.md](e1-excel-routine-workbench-v1-evidence.md) |  | - branch: codex/e1-excel-routine-workbench; - merged base: c | 115 |
+| [e1-blank-workbook-guard-evidence.md](e1-blank-workbook-guard-evidence.md) |  | - repair branch: codex/e1-blank-workbook-guard; - stacked ba | 122 |
+| [e1-excel-routine-workbench-v1-evidence.md](e1-excel-routine-workbench-v1-evidence.md) |  | - branch: codex/e1-excel-routine-workbench; - merged base: c | 124 |
+| [e1-review-bundle-export-evidence.md](e1-review-bundle-export-evidence.md) |  | - branch: codex/e1-review-bundle-export; - exact stacked bas | 126 |
 | [e1-windows-w0-setup-evidence.md](e1-windows-w0-setup-evidence.md) |  | SETUP_BLOCKED — the Windows host/catalog setup now passes, b | 143 |
 | [examples.md](examples.md) |  | This document provides benchmark examples that engineers can | 1550 |
 | [external-cli-test.md](external-cli-test.md) |  | Purpose: capture a repeatable, human-run CLI test from a fre | 98 |

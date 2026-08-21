@@ -4,21 +4,27 @@ from __future__ import annotations
 
 import json
 
+import pytest
+
 from structural_lib.__main__ import main
 from structural_lib.core.excel_workbook import (
     ExcelFreshnessRequestV1,
+    ExcelReviewBundleExportRequestV1,
     ExcelWorkbookPreviewRequestV1,
     ExcelWorkbookRunRequestV1,
     ExcelWorkbookSelectionV1,
 )
 from structural_lib.services.beam_api import design_beam_is456
 from structural_lib.services.excel_workbench import (
+    ExcelReviewBundleConflictError,
     build_excel_mapping_preview_v1,
+    build_excel_review_bundle_v1,
     check_excel_workbook_freshness_v1,
     get_excel_workbench_definition_v1,
     render_excel_review_bundle_markdown_v1,
     retain_excel_workbook_evidence_v1,
     run_excel_workbook_v1,
+    serialize_excel_review_bundle_v1,
 )
 from structural_lib.services.project_beam import EffectiveDepthBasisV1
 from structural_lib.services.serialization import to_transport_value
@@ -118,6 +124,19 @@ def _run_request(
         selection=preview_request.selection,
         headers=headers,
         rows=rows,
+        confirmed_mapping_hash=preview.mapping_hash,
+    )
+
+
+def _export_request(
+    rows: tuple[tuple[object, ...], ...],
+) -> ExcelReviewBundleExportRequestV1:
+    current = _preview_request(rows)
+    preview = build_excel_mapping_preview_v1(current)
+    result = run_excel_workbook_v1(_run_request(rows))
+    return ExcelReviewBundleExportRequestV1(
+        current_request=current,
+        previous_evidence=retain_excel_workbook_evidence_v1(result),
         confirmed_mapping_hash=preview.mapping_hash,
     )
 
@@ -308,6 +327,75 @@ def test_run_and_review_bundle_are_deterministic() -> None:
     assert first.bundle_hash == second.bundle_hash
     assert first.row_ledger[0].passport == second.row_ledger[0].passport
     assert first.bundle_hash in render_excel_review_bundle_markdown_v1(first)
+
+
+def test_complete_review_bundle_and_file_bytes_are_deterministic() -> None:
+    request = _export_request((_derived_row(), _explicit_row()))
+
+    first = build_excel_review_bundle_v1(request)
+    second = build_excel_review_bundle_v1(request)
+    first_bytes = serialize_excel_review_bundle_v1(first)
+    second_bytes = serialize_excel_review_bundle_v1(second)
+    decoded = json.loads(first_bytes)
+
+    assert first == second
+    assert first_bytes == second_bytes
+    assert first_bytes.endswith(b"\n")
+    assert len(first.review_bundle_hash) == 64
+    assert first.freshness_check.freshness_status == "CURRENT"
+    assert first.result.bundle_hash == request.previous_evidence.bundle_hash
+    assert decoded["export_disposition"] == "EVIDENCE_FOR_QUALIFIED_REVIEW"
+    assert decoded["result"]["mapping"]["mapped_fields"]
+    assert len(decoded["result"]["row_ledger"]) == 2
+    assert decoded["result"]["row_ledger"][0]["result"] is not None
+    assert decoded["result"]["row_ledger"][0]["passport"] is not None
+    assert decoded["result"]["qualified_review_required"] is True
+    assert decoded["result"]["review_state"] == "NOT_REVIEWED"
+
+
+def test_review_bundle_fails_closed_for_stale_source_and_result_identity() -> None:
+    request = _export_request((_derived_row(),))
+    edited = list(_derived_row())
+    edited[3] = 151.0
+    stale_request = request.model_copy(
+        update={"current_request": _preview_request((tuple(edited),))}
+    )
+    mismatched_result = request.model_copy(
+        update={
+            "previous_evidence": request.previous_evidence.model_copy(
+                update={"bundle_hash": "f" * 64}
+            )
+        }
+    )
+
+    with pytest.raises(ExcelReviewBundleConflictError, match="SOURCE_TABLE_CHANGED"):
+        build_excel_review_bundle_v1(stale_request)
+    with pytest.raises(ExcelReviewBundleConflictError, match="Regenerated result"):
+        build_excel_review_bundle_v1(mismatched_result)
+
+
+def test_review_bundle_rejects_unconfirmed_blocked_and_engine_mismatch(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    request = _export_request((_derived_row(),))
+    unconfirmed = request.model_copy(update={"confirmed_mapping_hash": "0" * 64})
+    blocked_current = _preview_request(
+        (_derived_row(),),
+        tuple(item for item in HEADERS if item != "Beam ID"),
+    )
+    blocked = request.model_copy(update={"current_request": blocked_current})
+
+    with pytest.raises(ValueError, match="confirmed_mapping_hash"):
+        build_excel_review_bundle_v1(unconfirmed)
+    with pytest.raises(ValueError, match="mapping preview is blocked"):
+        build_excel_review_bundle_v1(blocked)
+
+    monkeypatch.setattr(
+        "structural_lib.services.excel_workbench.get_library_content_identity",
+        lambda: "f" * 64,
+    )
+    with pytest.raises(ExcelReviewBundleConflictError, match="ENGINE_CHANGED"):
+        build_excel_review_bundle_v1(request)
 
 
 def test_definition_does_not_claim_real_windows_excel_evidence() -> None:

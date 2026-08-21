@@ -19,6 +19,7 @@ _WORKBOOK_MEMBER = f"{_RESOURCE_DIR}/structural-lib-rectangular-beam-workbench-v
 _MANIFEST_MEMBER = f"{_RESOURCE_DIR}/workbook-manifest.json"
 
 _INSTALLED_PROBE = r"""
+import hashlib
 import json
 import os
 from importlib import resources
@@ -26,14 +27,18 @@ from pathlib import Path
 
 import structural_lib
 from structural_lib.core.excel_workbook import (
+    ExcelReviewBundleExportRequestV1,
     ExcelWorkbookPreviewRequestV1,
     ExcelWorkbookRunRequestV1,
     ExcelWorkbookSelectionV1,
 )
 from structural_lib.services.excel_workbench import (
     build_excel_mapping_preview_v1,
+    build_excel_review_bundle_v1,
     get_excel_workbench_definition_v1,
+    retain_excel_workbook_evidence_v1,
     run_excel_workbook_v1,
+    serialize_excel_review_bundle_v1,
 )
 
 installed_root = Path(os.environ["E1_INSTALLED_ROOT"]).resolve()
@@ -78,6 +83,25 @@ result = run_excel_workbook_v1(ExcelWorkbookRunRequestV1(
 ))
 if result.row_ledger[0].result_envelope["overall_status"] != "PASS":
     raise AssertionError(result.row_ledger[0])
+export_request = ExcelReviewBundleExportRequestV1(
+    current_request=preview_request,
+    previous_evidence=retain_excel_workbook_evidence_v1(result),
+    confirmed_mapping_hash=preview.mapping_hash,
+)
+review_bundle = build_excel_review_bundle_v1(export_request)
+review_bytes = serialize_excel_review_bundle_v1(review_bundle)
+repeat_bytes = serialize_excel_review_bundle_v1(
+    build_excel_review_bundle_v1(export_request)
+)
+if review_bytes != repeat_bytes:
+    raise AssertionError("Installed review-bundle bytes are not deterministic.")
+decoded_bundle = json.loads(review_bytes)
+if decoded_bundle["result"]["bundle_hash"] != result.bundle_hash:
+    raise AssertionError("Installed review bundle changed the result identity.")
+if not decoded_bundle["result"]["row_ledger"][0]["result"]:
+    raise AssertionError("Installed review bundle omitted the structured result.")
+if not decoded_bundle["result"]["row_ledger"][0]["passport"]:
+    raise AssertionError("Installed review bundle omitted the calculation passport.")
 
 resource = resources.files("structural_lib").joinpath(
     "data/excel/outputs/e1-excel-routine-workbench/structural-lib-rectangular-beam-workbench-v1.xlsx"
@@ -93,6 +117,9 @@ print(json.dumps({
     "installed_windows_excel_evidence": definition.installed_windows_excel_evidence,
     "row_counts": result.counts.model_dump(mode="json"),
     "overall_status": result.row_ledger[0].result_envelope["overall_status"],
+    "review_bundle_hash": review_bundle.review_bundle_hash,
+    "review_bundle_file_sha256": hashlib.sha256(review_bytes).hexdigest(),
+    "review_bundle_size_bytes": len(review_bytes),
 }))
 """
 

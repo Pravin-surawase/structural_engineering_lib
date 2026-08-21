@@ -19,6 +19,8 @@ __all__ = [
     "ExcelFreshnessRequestV1",
     "ExcelMappingFieldV1",
     "ExcelMappingPreviewV1",
+    "ExcelReviewBundleExportRequestV1",
+    "ExcelReviewBundleV1",
     "ExcelRetainedEvidenceV1",
     "ExcelReviewStateV1",
     "ExcelRowCountV1",
@@ -254,6 +256,25 @@ class ExcelFreshnessCheckV1(_FrozenModel):
     current_source_table_hash: str = Field(pattern=_SHA256_PATTERN)
     current_mapping_hash: str = Field(pattern=_SHA256_PATTERN)
     current_library_content_identity: str = Field(pattern=_SHA256_PATTERN)
+
+
+class ExcelReviewBundleExportRequestV1(_FrozenModel):
+    schema_version: Literal["excel-review-bundle-export-request/v1"] = (
+        "excel-review-bundle-export-request/v1"
+    )
+    current_request: ExcelWorkbookPreviewRequestV1
+    previous_evidence: ExcelRetainedEvidenceV1
+    confirmed_mapping_hash: str = Field(pattern=_SHA256_PATTERN)
+
+
+class ExcelReviewBundleV1(_FrozenModel):
+    schema_version: Literal["excel-review-bundle/v1"] = "excel-review-bundle/v1"
+    export_disposition: Literal["EVIDENCE_FOR_QUALIFIED_REVIEW"] = (
+        "EVIDENCE_FOR_QUALIFIED_REVIEW"
+    )
+    freshness_check: ExcelFreshnessCheckV1
+    result: ExcelWorkbookRunResultV1
+    review_bundle_hash: str = Field(pattern=_SHA256_PATTERN)
 
 
 class ExcelWorkbenchDefinitionV1(_FrozenModel):

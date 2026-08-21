@@ -2,7 +2,7 @@
   "folder": "Python/structural_lib/core",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-18",
+  "last_updated": "2026-08-22",
   "file_count": 24,
   "files": [
     {
@@ -525,8 +525,8 @@
     {
       "name": "excel_workbook.py",
       "type": "python",
-      "size_lines": 279,
-      "last_updated": "2026-08-18",
+      "size_lines": 300,
+      "last_updated": "2026-08-22",
       "description": "Versioned, calculation-free contracts for Excel Routine Workbench V1.",
       "classes": [
         {
@@ -582,7 +582,7 @@
         "_ID_PATTERN",
         "_SHA256_PATTERN"
       ],
-      "content_hash": "293f06fa91f5"
+      "content_hash": "f033578bb1ed"
     },
     {
       "name": "geometry.py",
@@ -1387,5 +1387,5 @@
     "GravityCombinationV1",
     "GravityFootingDestinationV1"
   ],
-  "content_hash": "b087b3639cd82bcf"
+  "content_hash": "afb02181eae5959e"
 }

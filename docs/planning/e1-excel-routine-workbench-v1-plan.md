@@ -4,7 +4,7 @@ title: Excel Routine Workbench V1 Execution Plan
 status: active
 owner: Main Agent
 created: 2026-08-17
-last_updated: 2026-08-18
+last_updated: 2026-08-22
 doc_type: spec
 ---
 
@@ -21,6 +21,13 @@ is installed package data and retains SHA-256
 This is a software candidate, not a G3 pass. The mandatory installed Windows
 11 x64 plus Microsoft 365 Excel x64 journey remains `TO_VERIFY_WINDOWS`; T1/T2
 ETABS and all write-back/nightly work remain held.
+
+Windows W0 later reached `READY_FOR_G3` on blank-workbook guard head
+`514155b266af6dff3e30bf39ee28671c17345454`. The first G3 preflight then
+stopped before opening a disposable workbook because the installed pane had no
+supported complete review-bundle export. The authorized successor
+`codex/e1-review-bundle-export` adds that missing end-user surface without
+changing workbook bytes, structural calculations, or the Office manifest.
 
 ## 1. Outcome and start boundary
 
@@ -59,6 +66,13 @@ release publication, or professional-approval claims.
    identity changes the current hash and marks the retained result `STALE`.
 8. Review/export produces a deterministic bundle containing the mapping,
    reconciled row ledger, structured results, passports, issues, and hashes.
+
+Export is eligible only after the current mapping has been confirmed and the
+retained result is `CURRENT`. The service regenerates the canonical result from
+the exact current source snapshot, requires its result hash to equal the
+retained hash, and returns canonical JSON plus file and logical identity
+headers. An edit, mapping change, engine change, or result mismatch blocks the
+download.
 
 ## 3. Frozen `ExcelWorkbookContractV1`
 
@@ -193,7 +207,8 @@ boundaries. It does not merely change the visible status formula.
 3. Implement strict row mapping and reconciliation before workbook I/O.
 4. Bind accepted rows to `design_beam_is456` and its canonical result envelope;
    add parity vectors against Python, CLI, and REST.
-5. Add deterministic passports, stale detection, and review-bundle export.
+5. Add deterministic passports and stale detection, then expose complete
+   review-bundle export through the service, REST route, and installed pane.
 6. Generate the macro-free workbook and golden reopen/recalculate fixtures.
 7. Add the selected-table task pane and explicit installation/capability view.
 8. Complete code, tests, docs, fixtures, packaging, and evidence before the one
@@ -234,8 +249,9 @@ identity.
 
 Required journey: install exact wheel and task pane, open exact workbook, select
 the named table, preview mapping, run frozen vectors, edit one input, observe
-`STALE`, recalculate, export the review bundle, close/reopen, and prove identities
-and statuses persist.
+`STALE`, prove export is disabled, recalculate, export the complete bundle
+twice with identical bytes, close/reopen, pass freshness, export again, and
+prove identities and statuses persist.
 
 macOS, Linux, Open XML, jsdom, and hosted CI checks do not prove installed Excel.
 If the Windows cell is unavailable, record `TO_VERIFY_WINDOWS`; the software

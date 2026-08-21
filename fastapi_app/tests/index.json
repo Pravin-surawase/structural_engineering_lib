@@ -2,7 +2,7 @@
   "folder": "fastapi_app/tests",
   "type": "python-package",
   "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
-  "last_updated": "2026-08-18",
+  "last_updated": "2026-08-22",
   "file_count": 45,
   "files": [
     {
@@ -981,8 +981,8 @@
     {
       "name": "test_excel_workbench.py",
       "type": "python",
-      "size_lines": 128,
-      "last_updated": "2026-08-18",
+      "size_lines": 242,
+      "last_updated": "2026-08-22",
       "description": "REST semantic vectors for Excel Routine Workbench V1.",
       "functions": [
         {
@@ -1002,12 +1002,30 @@
           "params": [
             "client"
           ]
+        },
+        {
+          "name": "test_review_bundle_exports_complete_deterministic_json_attachment",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_review_bundle_returns_409_for_stale_or_mismatched_retained_result",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_review_bundle_openapi_exposes_fifth_typed_endpoint",
+          "params": [
+            "client"
+          ]
         }
       ],
       "constants": [
         "HEADERS"
       ],
-      "content_hash": "dc4202f091bd"
+      "content_hash": "d9b8dba4c993"
     },
     {
       "name": "test_export_bbs_dxf.py",
@@ -2084,5 +2102,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "e94f86d04ab48714"
+  "content_hash": "d07d4203d3885a66"
 }

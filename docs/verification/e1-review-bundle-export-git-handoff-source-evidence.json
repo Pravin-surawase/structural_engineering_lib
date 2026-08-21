@@ -1,0 +1,67 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-21T20:05:48Z",
+      "query_status": "OK",
+      "reference": "task:E1-REVIEW-BUNDLE-EXPORT:user-said-proceed-with-E1-export",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_DRAFT_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-21T20:05:48Z",
+    "prohibited_actions": [
+      "AMEND_PREDECESSOR_PR",
+      "MERGE_PULL_REQUEST",
+      "START_G3_BEFORE_EXACT_CANDIDATE_CLOSEOUT",
+      "START_ETABS_FILE_SNAPSHOT",
+      "START_LIVE_ETABS",
+      "RUN_ETABS_ANALYSIS",
+      "START_ETABS_WRITE_BACK",
+      "START_NIGHTLY_OPTIMIZATION",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "DISCARD_USER_CHANGE",
+      "CLOSE_PULL_REQUEST",
+      "PUBLISH_RELEASE",
+      "CLAIM_PROFESSIONAL_APPROVAL"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_DRAFT_PR"
+      ],
+      "branch": "codex/e1-review-bundle-export",
+      "head_sha": "514155b266af6dff3e30bf39ee28671c17345454",
+      "task_id": "E1-REVIEW-BUNDLE-EXPORT"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "STACKED_BEHIND_E1_PR_SEQUENCE_AND_G3_NOT_RUN",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [
+      "E1_PRS_826_TO_828_NOT_INTEGRATED",
+      "EXPORT_SUCCESSOR_NOT_REVIEWED",
+      "G3_NOT_RUN"
+    ],
+    "observed_at_utc": "2026-08-21T20:05:48Z",
+    "owner": "Main Agent under the user-authorized E1 export successor",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}
