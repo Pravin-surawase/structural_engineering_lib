@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-22",
-  "file_count": 192,
+  "file_count": 194,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -175,10 +175,10 @@
     {
       "name": "e1-blank-workbook-guard-evidence.md",
       "type": "documentation",
-      "size_lines": 98,
+      "size_lines": 124,
       "last_updated": "2026-08-22",
       "description": "- repair branch: codex/e1-blank-workbook-guard; - stacked base: codex/e1-w0-maintenance-plan at",
-      "content_hash": "7621d6976ce3"
+      "content_hash": "236effa4592d"
     },
     {
       "name": "e1-blank-workbook-guard-git-handoff-receipt.json",
@@ -209,6 +209,36 @@
         "task_archive"
       ],
       "content_hash": "5e6cc5e13cea"
+    },
+    {
+      "name": "e1-blank-workbook-guard-repair-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-22",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "9845a1b1b8f8"
+    },
+    {
+      "name": "e1-blank-workbook-guard-repair-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-22",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "78173c0cca69"
     },
     {
       "name": "e1-excel-routine-workbench-git-handoff-receipt.json",
@@ -281,10 +311,10 @@
     {
       "name": "e1-windows-w0-setup-evidence.md",
       "type": "documentation",
-      "size_lines": 135,
+      "size_lines": 143,
       "last_updated": "2026-08-22",
       "description": "SETUP_BLOCKED — the Windows host/catalog setup now passes, but the exact E1 candidate fails the required blank-workbook pane check and needs one software",
-      "content_hash": "5d79dc293014"
+      "content_hash": "8768fb67c9b7"
     },
     {
       "name": "exact-candidate-review-receipt-template.json",
@@ -2449,5 +2479,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "510d80db8c3d51aa"
+  "content_hash": "8bded3424c0c77f5"
 }

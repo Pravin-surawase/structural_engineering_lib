@@ -13,7 +13,7 @@
 `codex/e1-w0-maintenance-plan` at
 `654e40b1370d098fca4d001146a030b9937536a8`.
 
-**Git handoff receipt:** `docs/verification/e1-blank-workbook-guard-git-handoff-receipt.json`
+**Git handoff receipt:** `docs/verification/e1-blank-workbook-guard-repair-git-handoff-receipt.json`
 
 **Focus:** Diagnose the exact Windows blank-workbook pane failure, repair only
 the Office.js startup boundary, freeze local evidence, and leave G3 and all
@@ -51,6 +51,12 @@ ETABS/VBA work held.
   settings initialization stage because W0 did not capture `error.code`,
   `debugInfo`, or a JavaScript stack. Treating that visible message as the root
   cause would have repaired the wrong boundary.
+- The first immutable repair head reached Windows with a new local module
+  import but no matching `serve.mjs` route. `/taskpane-office.mjs` returned 404,
+  leaving the pane at `INITIALIZING` and preventing the definition request.
+- Closing the blank workbook produced a save prompt even though the missing
+  module meant the repaired JavaScript never executed. Save-prompt presence is
+  therefore not a reliable proxy for document-settings writes.
 
 ### Root causes and resolutions
 
@@ -71,6 +77,17 @@ ETABS/VBA work held.
   compared the blank workbook contents with Microsoft Office.js semantics;
   production now reports workbook check, local API, and strict workbook
   initialization failures separately and preserves Office code/debug location.
+- Confirmed root cause of the Windows repair-load failure: `serve.mjs` uses an
+  explicit static-file map, and the initial repair added a module import without
+  adding its route. Resolution: serve `/taskpane-office.mjs` from the trusted
+  origin and add a focused test that compares local `taskpane.mjs` imports with
+  the server map. The original W2 receipt proves the 404 and clean shutdown;
+  the consolidated local Office suite provides the repaired route evidence.
+- Confirmed root cause of the misleading save-prompt criterion: inserting an
+  Office add-in can itself dirty an unsaved workbook independently of document
+  settings. Resolution: discard the W0 workbook and rely on exact code/test
+  evidence plus the controlled visible state; record, but do not interpret, any
+  close prompt.
 
 ### Notes
 

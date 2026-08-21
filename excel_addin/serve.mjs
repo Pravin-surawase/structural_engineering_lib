@@ -20,6 +20,7 @@ const staticFiles = new Map([
   ["/taskpane.css", ["taskpane.css", "text/css; charset=utf-8"]],
   ["/taskpane.mjs", ["taskpane.mjs", "text/javascript; charset=utf-8"]],
   ["/taskpane-core.mjs", ["taskpane-core.mjs", "text/javascript; charset=utf-8"]],
+  ["/taskpane-office.mjs", ["taskpane-office.mjs", "text/javascript; charset=utf-8"]],
 ]);
 
 function proxyApi(request, response) {

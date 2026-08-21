@@ -72,6 +72,13 @@ absence of an API request rather than a JavaScript stack. The repair uses
 unexpected Office errors strict. See the
 [blank-workbook guard evidence](e1-blank-workbook-guard-evidence.md).
 
+The first exact-head W2 repair check then exposed one additional transport
+defect: the new helper module was absent from the trusted HTTPS server's static
+map and returned 404, so the pane stayed at `INITIALIZING`. That candidate was
+not worked around on Windows. The single consolidated repair adds the exact
+route and a module-map regression test; W0 remains `SETUP_BLOCKED` until the
+new immutable head completes the same narrow check.
+
 ## Legacy VBA/API handoff on Windows
 
 The historical reference packet is preserved at
@@ -123,7 +130,8 @@ an exact handoff instead of extending the long setup history.
 
 ## Next controlled sequence
 
-1. Freeze and review the stacked blank-workbook guard repair.
+1. Freeze and review the consolidated blank-workbook guard plus HTTPS-route
+   repair.
 2. Reuse the passing Windows host/catalog evidence and rerun only the blank-
    workbook pane check against the exact repair head.
 3. If W0 returns `READY_FOR_G3`, run G3 in a fresh task against that unchanged

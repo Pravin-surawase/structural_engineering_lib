@@ -9,7 +9,7 @@
 - Ordered predecessor: `codex/e1-w0-maintenance-plan` at `654e40b1370d098fca4d001146a030b9937536a8`
 - Repair lane: `codex/e1-blank-workbook-guard`, stacked on the predecessor
 - Evidence: `docs/verification/e1-blank-workbook-guard-evidence.md`
-- Git handoff receipt: `docs/verification/e1-blank-workbook-guard-git-handoff-receipt.json` (`HOLD`; file SHA-256 `925d8017af0f24e21652502466301361eb0e43c9c87df7183891b6e928c456cb`)
+- Git handoff receipt: `docs/verification/e1-blank-workbook-guard-repair-git-handoff-receipt.json` (`HOLD`; file SHA-256 `9845a1b1b8f810f66796eddf027c13fcfad87fd084f1272eae9bf93b5f1901aa`)
 - Current verdict: `LOCAL_REPAIR_VALIDATION_PASS / W0_REVALIDATION_PENDING`; G3 has not started
 - Held: product-workbook G3 until W0 passes; all ETABS file/live work, write-back, optimization, nightly work, publication, release, and professional approval
 <!-- HANDOFF:END -->
@@ -40,10 +40,15 @@ The repair:
   settings initialization, and event registration succeed;
 - preserves genuine settings, permission, and Office sync errors with useful
   code/debug details;
+- serves every locally imported task-pane module over the trusted HTTPS origin;
 - leaves Python calculations, REST contracts, workbook bytes, manifest, and
   structural-engineering behavior unchanged.
 
-Local focused evidence passes 15 Office.js tests, JavaScript/manifest parsing,
+The first Windows attempt against head `a52233a2` proved the new helper returned
+HTTP 404 because `serve.mjs` lacked its route. The pane stayed at `INITIALIZING`
+and made no definition request. The consolidated repair adds the route and a
+module-map regression test. Local focused evidence passes 16 Office.js tests,
+JavaScript/manifest parsing,
 and all 217 architecture files with zero violations.
 
 ## Frozen Windows W0 revalidation
@@ -54,14 +59,16 @@ evidence; do not repeat setup.
 
 1. Update only the catalog task-pane files to the exact repair head and verify
    their Git blob/content identities.
-2. Start FastAPI and the trusted HTTPS pane on loopback only.
+2. Start FastAPI and the trusted HTTPS pane on loopback only; require HTTP 200
+   for `taskpane.mjs`, `taskpane-core.mjs`, and `taskpane-office.mjs`.
 3. Open one unsaved blank workbook and load `Excel Routine Workbench V1` from
    `SHARED FOLDER`.
 4. Require the connected library/workbook identity and the precise
    `E1 WORKBOOK NOT OPEN` hold.
 5. Require Preview, Review, Run, and freshness controls to remain disabled.
-6. Close the blank workbook without saving; require no save prompt, no orphan
-   Excel process, and no listeners on ports 3000 or 8000.
+6. Close and discard the unsaved blank workbook; record any save prompt but do
+   not use it as evidence of settings mutation. Require no orphan Excel process
+   and no listeners on ports 3000 or 8000.
 7. Stop with exactly `READY_FOR_G3` or `SETUP_BLOCKED` and one compact receipt.
 
 Do not open the packaged product workbook during W0 and do not start G3 in the

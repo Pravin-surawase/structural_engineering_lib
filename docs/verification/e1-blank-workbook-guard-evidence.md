@@ -73,7 +73,8 @@ The manifest's ExcelApi 1.7 requirement is above the 1.4 requirement for
 |---|---|
 | `excel_addin/taskpane-office.mjs` | Adds testable workbook-surface inspection, settings persistence, ID creation, strict event registration, and Office error details |
 | `excel_addin/taskpane.mjs` | Reorders startup so blank-workbook inspection and API identity precede any workbook mutation; controls remain disabled until strict initialization completes |
-| Office.js focused suite | PASS — 15 tests: 7 retained core cases plus 8 blank/surface/settings/event cases |
+| `excel_addin/serve.mjs` | Serves the new Office helper from the same trusted HTTPS origin; a dependency-map test prevents future local module imports from returning 404 |
+| Office.js focused suite | PASS — 16 tests: 7 retained core cases, 8 blank/surface/settings/event cases, and 1 HTTPS module-map case |
 | JavaScript and manifest parsing | PASS — four maintained modules parse; `manifest.xml` validates |
 | Architecture boundaries | PASS — 217 files, zero violations |
 
@@ -81,17 +82,42 @@ Focused tests prove missing worksheet, missing table, complete surface,
 missing/existing workbook ID, settings failure metadata, unexpected sync
 failure propagation, and strict change-handler registration.
 
+## First W2 exact-head result and consolidated repair
+
+The first Windows revalidation used clean head
+`a52233a29f3461e9931c500ee39cd72d6b20a3bc` and tree
+`7bd259dfd30e8cfbfa6903410eae6aa66a4c5677`. File and manifest identities
+matched, but `/taskpane-office.mjs` returned HTTP 404. The pane therefore
+remained at `INITIALIZING`, made no definition request, and could not execute
+the guarded startup path.
+
+Confirmed root cause: `taskpane.mjs` imported the new module, while the static
+file map in `serve.mjs` still listed only the original module graph. The
+consolidated repair adds the missing same-origin route plus a focused test that
+derives every local import from `taskpane.mjs` and requires a matching HTTPS
+server-map entry.
+
+Closing the blank workbook displayed a save prompt even though the repaired
+module never executed. Inserting the add-in itself can dirty an unsaved
+workbook, so the presence or absence of a save prompt is not accepted as
+evidence of document-settings mutation. The workbook was discarded, Excel and
+ETABS closed, services stopped, ports freed, and both Git worktrees remained
+clean.
+
 ## Remaining Windows revalidation
 
 Against the exact immutable repair head:
 
 1. Reuse the installed entitlement, restricted SMB catalog, certificate, wheel,
    workbook, and local API identities already proven by W0.
-2. Update only the trusted catalog files to the exact repair head.
+2. Update only the trusted catalog and served add-in files to the exact repair
+   head; require HTTP 200 for every local module before opening Excel.
 3. Start the two loopback services and load the add-in in one unsaved blank
    workbook.
 4. Require connected identity plus `E1 WORKBOOK NOT OPEN`, disabled controls,
-   no generic contract error, and no save prompt on close.
-5. Close Excel, stop services, and verify clean Git and no orphan processes.
+   no generic contract error, and a completed definition API request.
+5. Close and discard the unsaved blank workbook; record any prompt without
+   treating it as settings evidence. Stop services and verify clean Git and no
+   orphan processes.
 
 G3 remains held until this narrow W0 revalidation returns `READY_FOR_G3`.
