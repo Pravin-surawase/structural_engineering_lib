@@ -4,7 +4,7 @@ title: E1 Windows W0 Setup and Handoff Evidence
 status: active
 owner: Main Agent
 created: 2026-08-21
-last_updated: 2026-08-21
+last_updated: 2026-08-22
 doc_type: log
 ---
 
@@ -12,7 +12,9 @@ doc_type: log
 
 ## Verdict
 
-`SETUP_BLOCKED` — one user-approved administrator action remains.
+`SETUP_BLOCKED` — the Windows host/catalog setup now passes, but the exact E1
+candidate fails the required blank-workbook pane check and needs one software
+repair before W0 can become `READY_FOR_G3`.
 
 This is not `READY_FOR_G3` and is not `G3 PASS`. The E1 workbook was not
 opened, the frozen G3 journey was not run, and no ETABS operation, repository
@@ -34,6 +36,8 @@ edit, publication, or release action occurred on the Windows host.
 | Built wheel | `structural_lib_is456-0.23.1a2-py3-none-any.whl`; remote summary recorded SHA-256 `10a65cff…abf52` |
 | Installed library content | `6b2d8f43c4fecd8eaa0c3ec692db13db4118ac04fe141458307e114421ab1764` |
 | Add-in manifest SHA-256 | `5b38538e6ab6cb28855542065e5de2ed06bc3e583e3c76248b1b2c3d16099970` |
+| Restricted catalog share | `\\localhost\E1W0Addin` resolves to `C:\CodexWork\office-addin-catalog`; read access only for `LAPTOP-360-PRAV\P`; no `Everyone` grant; access-based enumeration enabled |
+| Excel trusted catalog | Existing catalog persisted with `Flags=1` (`Show in Menu`); `SHARED FOLDER` displayed the exact `Excel Routine Workbench V1` add-in |
 | HTTPS | Trusted localhost certificate created outside Git; certificate verification passed |
 | Service readiness | FastAPI and task-pane checks passed over loopback only; both services stopped cleanly |
 | Final process state | Excel and ETABS closed; no listeners remained on ports 3000 or 8000 |
@@ -43,22 +47,30 @@ endings because of Git's Windows configuration. The immutable LF Git blob
 matched the frozen add-in hash. The catalog copy uses those exact LF Git bytes;
 the clean checkout was not edited to hide the platform line-ending difference.
 
-## Single remaining W0 action
+## Blank-workbook outcome and confirmed root cause
 
-Open PowerShell as Administrator on the Windows laptop and run:
+The blank workbook exposed the exact trusted add-in and loaded its pane over
+HTTPS. Initialization then stopped before the definition API request with:
 
-```powershell
-New-SmbShare `
-  -Name 'E1W0Addin' `
-  -Path 'C:\CodexWork\office-addin-catalog' `
-  -ReadAccess 'LAPTOP-360-PRAV\P' `
-  -FolderEnumerationMode AccessBased
+```text
+WORKBOOK CONTRACT ERROR — The requested resource doesn't exist.
 ```
 
-Do not grant `Everyone` access. After the command succeeds, resume only W0 to
-register the network-share catalog in Excel and load the E1 task pane in a
-blank workbook. Keep the E1 product workbook closed until W0 returns
-`READY_FOR_G3`.
+The source-bound Windows diagnosis traced startup from `Office.onReady()` to
+`ensureWorkbookId()` and then `registerInputChange()`. The settings read is not
+the cause: an absent `Office.Settings` key returns no value and can be created.
+The failing batch instead calls
+`worksheets.getItem("Beam_Workbench")` in a workbook containing only `Sheet1`;
+the following `context.sync()` raises Office `ItemNotFound`, whose documented
+message matches the observation. The failure occurs before the local API
+definition request.
+
+Runtime `error.code`/`debugInfo` was not captured during W0, so the exact source
+line is bound by the observed message, workbook contents, source order, and
+absence of an API request rather than a JavaScript stack. The repair uses
+`getItemOrNullObject()` for the intentionally absent sheet/table path and keeps
+unexpected Office errors strict. See the
+[blank-workbook guard evidence](e1-blank-workbook-guard-evidence.md).
 
 ## Legacy VBA/API handoff on Windows
 
@@ -104,18 +116,19 @@ evidence. Network/app/remote-host synchronization is the working diagnosis,
 not a confirmed cause.
 
 Resolution: preserve and reuse the completed W0 evidence; do not rebuild or
-repeat passing checks. After the administrator share exists, reconnect to the
-existing `C:\CodexWork` state and run only the catalog registration plus blank-
-workbook add-in check. If remote task visibility is still unavailable, create
-a small continuation task on the same host that begins by inspecting those
-paths and identities.
+repeat passing checks. The original remote task was recovered, the restricted
+share and trusted catalog were completed, and a separate context-light Windows
+task produced the read-only source diagnosis. New work uses a fresh task with
+an exact handoff instead of extending the long setup history.
 
 ## Next controlled sequence
 
-1. User creates the restricted `E1W0Addin` share.
-2. W0 registers the catalog and proves the add-in in a blank workbook, ending
-   only `READY_FOR_G3` or `SETUP_BLOCKED`.
-3. G3 runs the frozen real-Excel journey against unchanged head `ef5ee05c`.
-4. Review the G3 receipt, then decide whether PR #826 can leave draft and merge.
+1. Freeze and review the stacked blank-workbook guard repair.
+2. Reuse the passing Windows host/catalog evidence and rerun only the blank-
+   workbook pane check against the exact repair head.
+3. If W0 returns `READY_FOR_G3`, run G3 in a fresh task against that unchanged
+   repair head; otherwise preserve the new blocker and stop.
+4. Review the G3 receipt, then decide whether the stacked E1 PR sequence can
+   leave draft and integrate.
 5. Only after E1 integration, plan the bounded ETABS snapshot/CSV intake packet;
    live COM write-back, analysis control, and optimization remain held.

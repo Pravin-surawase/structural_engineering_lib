@@ -3,56 +3,71 @@
 ## Latest handoff
 
 <!-- HANDOFF:START -->
-- Date: 2026-08-21
-- Focus: finish the last Windows W0 catalog step, then run the separate frozen E1 real-Excel G3 journey
-- E1 candidate: `codex/e1-excel-routine-workbench` at `ef5ee05c785904e1a01c2d09cc65649edc8745ab`
-- E1 PR: #826, draft, clean, required hosted checks passing
-- Follow-up record lane: `codex/e1-w0-maintenance-plan`, stacked on the exact E1 head and held behind PR #826
-- Windows evidence: `docs/verification/e1-windows-w0-setup-evidence.md`
-- Current verdict: `SETUP_BLOCKED`; one administrator SMB-share action remains, G3 has not started
-- Held: ETABS file/live integration, ETABS analysis, write-back, optimization, nightly work, release publication, and professional approval
+- Date: 2026-08-22
+- Focus: freeze the blank-workbook guard repair, then rerun only the final W0 blank-workbook check on Windows
+- Original E1 candidate: `codex/e1-excel-routine-workbench` at `ef5ee05c785904e1a01c2d09cc65649edc8745ab`
+- Ordered predecessor: `codex/e1-w0-maintenance-plan` at `654e40b1370d098fca4d001146a030b9937536a8`
+- Repair lane: `codex/e1-blank-workbook-guard`, stacked on the predecessor
+- Evidence: `docs/verification/e1-blank-workbook-guard-evidence.md`
+- Git handoff receipt: `docs/verification/e1-blank-workbook-guard-git-handoff-receipt.json` (`HOLD`; file SHA-256 `925d8017af0f24e21652502466301361eb0e43c9c87df7183891b6e928c456cb`)
+- Current verdict: `LOCAL_REPAIR_VALIDATION_PASS / W0_REVALIDATION_PENDING`; G3 has not started
+- Held: product-workbook G3 until W0 passes; all ETABS file/live work, write-back, optimization, nightly work, publication, release, and professional approval
 <!-- HANDOFF:END -->
 
 | State | Boundary |
 |---|---|
-| **Current** | A1, A2, B1, and B2 are merged; E1 software/hosted checks pass in draft PR #826; W0 host/runtime/identity/HTTPS checks pass but setup remains `SETUP_BLOCKED` |
-| **Next** | Create the restricted catalog share, then register/load the E1 add-in in a blank workbook and stop at `READY_FOR_G3` or `SETUP_BLOCKED` |
-| **After W0** | Run the separately controlled product-workbook G3 journey only after `READY_FOR_G3` |
-| **Held** | ETABS work, publication, release, and professional approval were not run |
+| **Current** | Windows entitlement, candidate identity, wheel, restricted catalog, trusted HTTPS, loopback API, and add-in discovery pass; the original E1 pane exposed an eager missing-sheet lookup before its API call |
+| **Next** | Commit and independently inspect the local repair, then send its exact immutable head to a fresh Windows task for the single blank-workbook revalidation |
+| **After W0** | Run the frozen product-workbook G3 journey only if the unchanged repair head returns `READY_FOR_G3` |
+| **Held** | ETABS/VBA execution, real model access, analysis control, write-back, optimization, publication, release, and professional approval remain outside this packet |
 
-## First user action on the Windows laptop
+## Confirmed failure and repair
 
-Open PowerShell as Administrator and run:
+The original pane loaded from Excel's trusted `SHARED FOLDER` catalog but then
+reported `WORKBOOK CONTRACT ERROR — The requested resource doesn't exist`.
+Read-only source tracing proved that `registerInputChange()` eagerly called
+`worksheets.getItem("Beam_Workbench")` in a blank workbook containing only
+`Sheet1`. The next `context.sync()` therefore failed with the documented Office
+`ItemNotFound` message before the definition API request. Missing document
+settings were not the cause.
 
-```powershell
-New-SmbShare `
-  -Name 'E1W0Addin' `
-  -Path 'C:\CodexWork\office-addin-catalog' `
-  -ReadAccess 'LAPTOP-360-PRAV\P' `
-  -FolderEnumerationMode AccessBased
-```
+The repair:
 
-Do not grant `Everyone` access. Preserve all existing `C:\CodexWork` content.
+- probes the exact sheet and table with `getItemOrNullObject()`;
+- contacts the local definition endpoint but leaves a blank/wrong workbook
+  read-only with `E1 WORKBOOK NOT OPEN`;
+- disables every calculation control until the complete workbook surface,
+  settings initialization, and event registration succeed;
+- preserves genuine settings, permission, and Office sync errors with useful
+  code/debug details;
+- leaves Python calculations, REST contracts, workbook bytes, manifest, and
+  structural-engineering behavior unchanged.
 
-## Then resume W0 only
+Local focused evidence passes 15 Office.js tests, JavaScript/manifest parsing,
+and all 217 architecture files with zero violations.
 
-1. Inspect the share and existing catalog manifest; do not recreate passing
-   runtime, wheel, certificate, or service work.
-2. Register the network-share catalog using Excel's supported trusted-catalog
-   flow.
-3. Open a blank workbook only and prove the `Excel Routine Workbench V1` task
-   pane loads from the trusted localhost service.
-4. Stop with exactly `READY_FOR_G3` or `SETUP_BLOCKED`.
-5. Keep the E1 product workbook closed; W0 must not claim G3.
+## Frozen Windows W0 revalidation
 
-If the old remote task remains unreadable, a small continuation task may use the
-same host and paths after first verifying the recorded identities. The remote
-visibility failure is unconfirmed and did not invalidate the completed setup.
+Use a fresh Windows task and the exact immutable repair head. Reuse all passing
+host, entitlement, share/catalog, certificate, wheel, workbook, and service
+evidence; do not repeat setup.
+
+1. Update only the catalog task-pane files to the exact repair head and verify
+   their Git blob/content identities.
+2. Start FastAPI and the trusted HTTPS pane on loopback only.
+3. Open one unsaved blank workbook and load `Excel Routine Workbench V1` from
+   `SHARED FOLDER`.
+4. Require the connected library/workbook identity and the precise
+   `E1 WORKBOOK NOT OPEN` hold.
+5. Require Preview, Review, Run, and freshness controls to remain disabled.
+6. Close the blank workbook without saving; require no save prompt, no orphan
+   Excel process, and no listeners on ports 3000 or 8000.
+7. Stop with exactly `READY_FOR_G3` or `SETUP_BLOCKED` and one compact receipt.
+
+Do not open the packaged product workbook during W0 and do not start G3 in the
+repair-validation task.
 
 ## Frozen G3 journey after `READY_FOR_G3`
-
-Use unchanged candidate head `ef5ee05c` and record the exact Windows/Excel,
-manifest, workbook, wheel, Python, and library-content identities.
 
 1. Open the exact packaged workbook.
 2. Select `tbl_Beam_Workbench_V1` and preview the visible mapping.
@@ -63,43 +78,16 @@ manifest, workbook, wheel, Python, and library-content identities.
 7. Close and reopen Excel; prove identities, results, and freshness persist.
 8. Capture the receipt and stop. Do not start ETABS in the G3 task.
 
-## Product sequence after G3
-
-1. Review the G3 receipt against the frozen E1 acceptance matrix.
-2. If it passes and the head is unchanged, move PR #826 through final review and
-   integration without editing the frozen candidate for status-only notes.
-3. Integrate this stacked maintenance/evidence record after E1 so shared docs
-   remain ordered.
-4. Start a planning-only ETABS snapshot/CSV intake packet using the preserved
-   legacy VBA/API material as reference and parity evidence.
-5. Approve a narrow read-only live COM probe only after snapshot intake passes;
-   analysis, model changes, write-back, and optimization stay separately gated.
-
-## Maintenance result
-
-- Health issue found and corrected: four stale endpoint/router counts.
-- Runtime/wiring status: 88/88 endpoints directly tested, 13/13 React hooks
-  connected, source binding valid.
-- Cleanup status: no destructive cleanup authorized. All 25 classified local
-  branches remain `HOLD_UNKNOWN_OWNER`; existing dirty/detached and task-owned
-  worktrees remain preserved.
-- Index maintenance: three inherited E1 parent-index drifts and three current
-  documentation-index drifts were repaired; the new verification record was
-  added to its targeted folder index.
-- Verification economy: run documentation and focused governance checks after
-  content freezes, then one quick gate. Do not rerun broad Python/full suites
-  for this documentation/evidence-only packet unless an outcome-changing shared
-  failure requires them.
-
 ## Required Reading
 
-1. [Windows W0 evidence](../verification/e1-windows-w0-setup-evidence.md)
-2. [E1 evidence](../verification/e1-excel-routine-workbench-v1-evidence.md)
-3. [E1 execution plan](e1-excel-routine-workbench-v1-plan.md)
-4. [Current task board](../TASKS.md)
-5. [Git workflow single source](../git-automation/git-workflow-single-source.md)
+1. [Blank-workbook guard evidence](../verification/e1-blank-workbook-guard-evidence.md)
+2. [Windows W0 evidence](../verification/e1-windows-w0-setup-evidence.md)
+3. [E1 evidence](../verification/e1-excel-routine-workbench-v1-evidence.md)
+4. [E1 execution plan](e1-excel-routine-workbench-v1-plan.md)
+5. [Current task board](../TASKS.md)
+6. [Git workflow single source](../git-automation/git-workflow-single-source.md)
 
-Historical handoff files are preserved on Windows at
-`C:\CodexWork\reference\etabs-vba-handoff`. Treat them as unvalidated reference
-material, open legacy workbooks with macros disabled, and use only copied
-disposable ETABS models in any later approved probe.
+Historical VBA/API reference files remain preserved at
+`C:\CodexWork\reference\etabs-vba-handoff`. They are not part of this repair.
+Keep macros disabled and do not run ETABS or legacy VBA until a separately
+approved, bounded packet begins.

@@ -5,6 +5,80 @@
 
 ---
 
+## 2026-08-22 — Session: E1 blank-workbook guard repair
+
+**Agent:** Codex (`backend`, sole writer)
+
+**Branch:** `codex/e1-blank-workbook-guard`, stacked on
+`codex/e1-w0-maintenance-plan` at
+`654e40b1370d098fca4d001146a030b9937536a8`.
+
+**Git handoff receipt:** `docs/verification/e1-blank-workbook-guard-git-handoff-receipt.json`
+
+**Focus:** Diagnose the exact Windows blank-workbook pane failure, repair only
+the Office.js startup boundary, freeze local evidence, and leave G3 and all
+ETABS/VBA work held.
+
+### Summary
+
+- Recovered the long Windows W0 task, completed the restricted SMB/trusted-
+  catalog setup, and loaded the exact E1 add-in from `SHARED FOLDER`.
+- Moved the new source diagnosis into a fresh, read-only Windows task and bound
+  it to E1 head `ef5ee05c` and tree `30d8eb79`.
+- Added a guarded, testable Office.js workbook-surface boundary that leaves
+  blank/wrong workbooks read-only and keeps controls disabled.
+- Preserved strict complete-workbook initialization and genuine Office/API
+  failure reporting; no calculation, workbook, manifest, Python, ETABS/VBA, or
+  G3 behavior changed.
+
+### PRs Merged
+
+- None.
+
+### Key Deliverables
+
+- `excel_addin/taskpane-office.mjs`
+- `excel_addin/tests/taskpane-office.test.mjs`
+- `docs/verification/e1-blank-workbook-guard-evidence.md`
+- Updated W0/E1 evidence, task state, and next-session handoff.
+
+### Issues encountered
+
+- The exact trusted add-in loaded in a new blank workbook but stopped with
+  `WORKBOOK CONTRACT ERROR — The requested resource doesn't exist` before its
+  definition API request. This blocks W0 and therefore G3.
+- The first remote task initially described the failure at the broad document-
+  settings initialization stage because W0 did not capture `error.code`,
+  `debugInfo`, or a JavaScript stack. Treating that visible message as the root
+  cause would have repaired the wrong boundary.
+
+### Root causes and resolutions
+
+- Confirmed root cause: startup saved/read the workbook ID, then
+  `registerInputChange()` called `worksheets.getItem("Beam_Workbench")` in a
+  blank workbook containing only `Sheet1`. The following `context.sync()`
+  raised Office `ItemNotFound`; this documented error message and the source
+  order match the observed pre-API failure. Resolution: inspect both the sheet
+  and table with `getItemOrNullObject()` before any settings write/event
+  registration, return the controlled `E1 WORKBOOK NOT OPEN` state when absent,
+  and retain strict failures after the complete surface exists. Proof: 15/15
+  Office.js tests, four JavaScript parse checks, manifest XML validation, and
+  217-file architecture validation pass.
+- Confirmed root cause of the initial broad attribution: the UI catch grouped
+  settings, event registration, and API startup under one generic `WORKBOOK
+  CONTRACT ERROR`, while the W0 receipt lacked runtime error metadata.
+  Resolution: the read-only Windows source trace followed execution order and
+  compared the blank workbook contents with Microsoft Office.js semantics;
+  production now reports workbook check, local API, and strict workbook
+  initialization failures separately and preserves Office code/debug location.
+
+### Notes
+
+- The repair base and original E1 candidate remain clean and immutable.
+- Windows revalidation must use the exact repair commit and reuse passing setup
+  evidence; no broad rebuild or G3 work is authorized by this local result.
+
+
 ## 2026-08-21 — Session: E1 Windows W0 evidence and maintenance
 
 **Agent:** Codex (`governance`, sole writer)

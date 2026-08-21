@@ -128,7 +128,7 @@
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
 | RELEASE-0231A2 | Review and publish the exact v0.23.1a2 Alpha candidate | Main Agent + ops | M | P0 | 🔄 LOCAL CANDIDATE READY — source-bound wheel `34892d86…14bb`; 5,553 installed tests and 29/29 UAT pass; target publication is authorized after refreshed PR checks, Weekly Verification, independent review, and exact receipt |
-| E1-EXCEL-ROUTINE-WORKBENCH | Complete the real Windows Excel gate for the frozen selected-table workbench | Main Agent | M | P1 | ⏸ W0 `SETUP_BLOCKED` — [all host/runtime/identity/HTTPS checks pass](verification/e1-windows-w0-setup-evidence.md); one restricted admin SMB share and the blank-workbook add-in check remain before G3 |
+| E1-EXCEL-ROUTINE-WORKBENCH | Complete the real Windows Excel gate for the frozen selected-table workbench | Main Agent | M | P1 | 🔄 W0 repair locally validated — [host/catalog/add-in discovery pass](verification/e1-windows-w0-setup-evidence.md); the [blank-workbook guard](verification/e1-blank-workbook-guard-evidence.md) needs exact-head Windows revalidation before G3 |
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. INDIA-3, dependency work, tag/publication execution, further cleanup,
@@ -145,8 +145,10 @@ immutable review and hosted evidence pass.
 
 The separately accepted integrated component/gravity program has completed A1,
 A2, B1, and B2 through PRs #822-#825. Building Gravity Workflow V1 is merged at
-`c127e4b2`. E1 software is complete in draft PR #826 at `ef5ee05c`; Windows W0
-host setup has one user-only catalog-share blocker, and G3 has not started.
+`c127e4b2`. E1 software remains in draft PR #826 at `ef5ee05c`; Windows W0
+proved the host, catalog, and add-in discovery, then exposed an eager missing-
+sheet startup defect. Its stacked blank-workbook guard passes local focused
+checks and awaits exact-head Windows revalidation. G3 has not started.
 ETABS file/live work and all write-back/nightly work remain outside E1.
 
 ## Up Next

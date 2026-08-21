@@ -12,6 +12,13 @@ import {
   retainEvidence,
   sameSourceSnapshot,
 } from "./taskpane-core.mjs";
+import {
+  ensureWorkbookId,
+  inspectWorkbookSurface,
+  officeErrorDetail,
+  registerWorksheetChange,
+  saveDocumentSettings,
+} from "./taskpane-office.mjs";
 
 const INPUT_SHEET = "Beam_Workbench";
 const INPUT_TABLE = "tbl_Beam_Workbench_V1";
@@ -25,6 +32,7 @@ const state = {
   definition: null,
   stale: true,
   eventRegistered: false,
+  workbookSurfaceAvailable: false,
 };
 
 const ui = {};
@@ -36,41 +44,18 @@ function setStatus(kind, title, detail = "") {
 }
 
 function setBusy(busy) {
-  ui.preview.disabled = busy;
-  ui.freshness.disabled = busy || !state.previousEvidence;
-  ui.review.disabled = busy || !state.mapping || state.mapping.is_blocked;
-  ui.run.disabled = busy || !ui.review.checked || state.stale;
-}
-
-function saveSettings() {
-  return new Promise((resolve, reject) => {
-    Office.context.document.settings.saveAsync((result) => {
-      if (result.status === Office.AsyncResultStatus.Failed) {
-        reject(new Error(result.error.message));
-      } else {
-        resolve();
-      }
-    });
-  });
+  const unavailable = !state.workbookSurfaceAvailable;
+  ui.preview.disabled = busy || unavailable;
+  ui.freshness.disabled = busy || unavailable || !state.previousEvidence;
+  ui.review.disabled = busy || unavailable || !state.mapping || state.mapping.is_blocked;
+  ui.run.disabled = busy || unavailable || !ui.review.checked || state.stale;
 }
 
 async function persistEvidence(evidence, stale) {
   const settings = Office.context.document.settings;
   settings.set(SETTINGS_KEYS.previousEvidence, evidence);
   settings.set(SETTINGS_KEYS.stale, stale);
-  await saveSettings();
-}
-
-async function ensureWorkbookId() {
-  const settings = Office.context.document.settings;
-  let value = settings.get(SETTINGS_KEYS.workbookId);
-  if (!value) {
-    const random = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
-    value = `EXCEL-${random}`.replace(/[^A-Za-z0-9_.:-]/g, "-");
-    settings.set(SETTINGS_KEYS.workbookId, value);
-    await saveSettings();
-  }
-  return value;
+  await saveDocumentSettings(Office);
 }
 
 async function captureInput() {
@@ -180,10 +165,9 @@ function markStale() {
 
 async function registerInputChange() {
   if (state.eventRegistered) return;
-  await Excel.run(async (context) => {
-    const sheet = context.workbook.worksheets.getItem(INPUT_SHEET);
-    sheet.onChanged.add(markStale);
-    await context.sync();
+  await registerWorksheetChange(Excel, {
+    worksheetName: INPUT_SHEET,
+    handler: markStale,
   });
   state.eventRegistered = true;
 }
@@ -307,20 +291,48 @@ async function initialize() {
   ui.review.addEventListener("change", mappingReviewChanged);
   ui.run.addEventListener("click", runCalculation);
   ui.freshness.addEventListener("click", checkFreshness);
+  setBusy(true);
+
+  let surface;
   try {
-    state.workbookId = await ensureWorkbookId();
+    surface = await inspectWorkbookSurface(Excel, {
+      worksheetName: INPUT_SHEET,
+      tableName: INPUT_TABLE,
+    });
+  } catch (error) {
+    setStatus("blocked", "WORKBOOK CHECK FAILED", officeErrorDetail(error));
+    setBusy(false);
+    return;
+  }
+
+  try {
+    state.definition = await getWorkbenchApi(
+      API_ROOT,
+      "/excel-workbench/v1/definition",
+      { token: ui.token.value },
+    );
+  } catch (error) {
+    setStatus("blocked", "LOCAL API CONNECTION FAILED", error.message);
+    setBusy(false);
+    return;
+  }
+
+  ui.context.textContent = `Connected · library ${state.definition.library_version} · engine ${state.definition.library_content_identity.slice(0, 12)}… · workbook ${state.definition.workbook_artifact_sha256.slice(0, 12)}… · Windows ${state.definition.installed_windows_excel_evidence}`;
+  if (!surface.available) {
+    setStatus("hold", "E1 WORKBOOK NOT OPEN", surface.detail);
+    setBusy(false);
+    return;
+  }
+
+  try {
+    state.workbookId = await ensureWorkbookId(Office, SETTINGS_KEYS.workbookId);
     state.previousEvidence = Office.context.document.settings.get(
       SETTINGS_KEYS.previousEvidence,
     );
     state.stale =
       Office.context.document.settings.get(SETTINGS_KEYS.stale) !== false;
     await registerInputChange();
-    state.definition = await getWorkbenchApi(
-      API_ROOT,
-      "/excel-workbench/v1/definition",
-      { token: ui.token.value },
-    );
-    ui.context.textContent = `Connected · library ${state.definition.library_version} · engine ${state.definition.library_content_identity.slice(0, 12)}… · workbook ${state.definition.workbook_artifact_sha256.slice(0, 12)}… · Windows ${state.definition.installed_windows_excel_evidence}`;
+    state.workbookSurfaceAvailable = true;
     setStatus(
       state.previousEvidence && !state.stale ? "ready" : "hold",
       state.previousEvidence && !state.stale ? "RETAINED RESULT" : "PREVIEW REQUIRED",
@@ -329,7 +341,7 @@ async function initialize() {
         : "Start by previewing the exact selected-table mapping.",
     );
   } catch (error) {
-    setStatus("blocked", "WORKBOOK CONTRACT ERROR", error.message);
+    setStatus("blocked", "WORKBOOK INITIALIZATION FAILED", officeErrorDetail(error));
   }
   setBusy(false);
 }

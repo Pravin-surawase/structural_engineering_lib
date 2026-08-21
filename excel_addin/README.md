@@ -17,6 +17,7 @@ The HTTPS server exposes `https://localhost:3000/taskpane.html` and proxies same
 ## Safety boundary
 
 - Any change on `Beam_Workbench` immediately marks retained output stale, clears the reviewed mapping, and disables Run.
+- If the exact E1 worksheet/table is not open, the pane may prove the local API identity but remains read-only: it does not create document settings, register events, or enable calculation controls.
 - A Run is rejected unless the current selected-table snapshot equals the previewed snapshot and the 64-character mapping hash is confirmed.
 - The Office document settings retain the workbook instance ID, four-hash freshness evidence, and stale flag across task-pane sessions; complete ledgers, results, and passports remain in their workbook tables.
 - Excel does not execute structural-design formulas. VBA/macros, torsion, serviceability, ETABS access, write-back, release claims, and professional approval are outside E1.
