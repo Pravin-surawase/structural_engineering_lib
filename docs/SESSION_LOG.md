@@ -5,6 +5,103 @@
 
 ---
 
+## 2026-08-21 — Session: E1 Windows W0 evidence and maintenance
+
+**Agent:** Codex (`governance`, sole writer)
+
+**Branch:** `codex/e1-w0-maintenance-plan`, stacked on the immutable E1 head
+`ef5ee05c785904e1a01c2d09cc65649edc8745ab`.
+
+**Git handoff receipt:**
+`docs/verification/e1-w0-maintenance-git-handoff-receipt.json`
+
+**Focus:** Record the completed Windows setup and legacy VBA/API handoff,
+reconcile current library progress, run a non-destructive maintenance pass,
+and freeze the next controlled work sequence.
+
+### Summary
+
+- Recorded W0 as `SETUP_BLOCKED`, with all entitlement, candidate, wheel,
+  artifact, HTTPS, and loopback checks passing and one restricted SMB catalog
+  share remaining before the blank-workbook add-in check.
+- Preserved the 2019-2021 ETABS/VBA, exporter, structural-design, and legacy
+  workbook bundles as historical reference evidence with hashes and explicit
+  no-live-model/no-macro-execution boundaries.
+- Verified live GitHub progress: PRs #822, #823, and #825 are merged; draft PR
+  #826 is clean at the exact E1 head and all required hosted checks pass.
+- Ran health, audit, parity, efficiency, feedback, source-binding, and local
+  branch-disposition checks. Corrected four confirmed endpoint/router count
+  drifts and preserved all uncertain lanes.
+
+### PRs Merged
+| PR | Summary |
+|----|---------|
+| None | This session did not merge or close a pull request. |
+
+### Key Deliverables
+
+- `docs/verification/e1-windows-w0-setup-evidence.md`
+- Updated E1 evidence, task board, next-session brief, and four onboarding/API
+  counts.
+- Non-destructive cleanup result: 25 local non-default branches classify
+  `HOLD_UNKNOWN_OWNER` without refreshed per-branch ownership, PR, remote-ref,
+  and retention evidence; no branch, worktree, file, or stash was removed.
+
+### Issues encountered
+
+- The Mac controller lost readable access to the remote Windows Codex task,
+  even though the task continued and completed on Windows.
+- Documentation health found four stale endpoint/router counts after the recent
+  API additions.
+- Cleanup classification found 25 local branches without enough refreshed
+  authority for safe retirement; one separate detached worktree is also dirty
+  and remains preserved.
+- The all-folder index audit found six stale aggregate indexes. Three were
+  inherited from E1 (`Python/structural_lib`, `Python/tests`, and `fastapi_app`)
+  and three reflected this session's documentation changes.
+- The first normal commit hook rejected the rewritten next-session brief because
+  its `Required Reading` heading used lowercase `reading`; the failed-only
+  session check then exposed missing exact `Current` and `Next` table labels.
+
+### Root causes and resolutions
+
+- Remote disconnect root cause is `unconfirmed`. Completed Windows commands,
+  clean Git, stopped services, and the final receipt localize the symptom to the
+  Codex remote-control/task-visibility path rather than the build or candidate.
+  The passing work is retained and will not be rerun; only the remaining catalog
+  and blank-workbook checks will resume after the user action.
+- E1 and preceding API work raised the maintained surface to 88 endpoints and
+  26 routers, but four descriptive counts remained at 81/24. The four exact
+  values were updated; direct `sync_numbers.py` and documentation checks provide
+  the correction evidence.
+- Branch age or apparent merge history is not retirement authority. Without
+  current owner, PR, remote-ref, and retention receipts, the classifier correctly
+  fails closed. All 25 branches and every existing worktree remain untouched;
+  any destructive cleanup requires a separately reviewed proposal and explicit
+  user authorization.
+- E1 refreshed its directly changed nested indexes but did not refresh three
+  maintained parent aggregate indexes whose hashes include those descendants.
+  This session also changed three indexed documentation folders. Resolution:
+  refresh exactly the six reported stale folders plus `docs/verification` for
+  its newly added evidence; the final all-folder read-only check must report
+  32/32 current.
+- The session checker intentionally treats the exact `Required Reading` heading
+  and `Current`/`Next` table labels as a machine-readable handoff contract.
+  Resolution: restore those canonical tokens without losing the clearer W0/G3
+  content, refresh only the affected docs/planning and docs indexes, and rerun
+  the failed check before the normal commit hooks; all other first-pass hooks
+  had passed.
+
+### Notes
+
+- Health initially reported 94/100 only because of the four stale numbers;
+  code, agents, infrastructure, and feedback were 100/100.
+- Audit was 21/22 with one non-blocking function-quality diagnostic warning;
+  parity showed 88/88 endpoint tests and 13/13 React hook connections.
+- ETABS snapshot/live work, Excel G3, repository publication, release, and
+  professional approval were not run.
+
+
 ## 2026-08-18 — Session: E1 Excel Routine Workbench V1 implementation
 
 **Agent:** Codex (`orchestrator`, sole writer)

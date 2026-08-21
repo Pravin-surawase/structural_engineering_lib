@@ -3,8 +3,8 @@
 Benchmark examples and verification packs for validating library calculations against IS 456 standards.
 
 **Type:** Documentation
-**Last Updated:** 2026-08-18
-**Files:** 186
+**Last Updated:** 2026-08-21
+**Files:** 189
 
 ## Config Files
 
@@ -16,6 +16,8 @@ Benchmark examples and verification packs for validating library calculations ag
 - [alpha-0231a2-exact-candidate-review-receipt.json](alpha-0231a2-exact-candidate-review-receipt.json)
 - [e1-excel-routine-workbench-git-handoff-receipt.json](e1-excel-routine-workbench-git-handoff-receipt.json)
 - [e1-excel-routine-workbench-git-handoff-source-evidence.json](e1-excel-routine-workbench-git-handoff-source-evidence.json)
+- [e1-w0-maintenance-git-handoff-receipt.json](e1-w0-maintenance-git-handoff-receipt.json)
+- [e1-w0-maintenance-git-handoff-source-evidence.json](e1-w0-maintenance-git-handoff-source-evidence.json)
 - [exact-candidate-review-receipt-template.json](exact-candidate-review-receipt-template.json)
 - [footing-release-inclusion.json](footing-release-inclusion.json)
 - [git-001-phase-8-reconciliation-git-handoff-receipt.json](git-001-phase-8-reconciliation-git-handoff-receipt.json)
@@ -141,7 +143,8 @@ Benchmark examples and verification packs for validating library calculations ag
 | [b2-gravity-workflow-v1-evidence.md](b2-gravity-workflow-v1-evidence.md) |  | This record covers the bounded B2 orchestration candidate bu | 113 |
 | [bundled-sample-boq-evidence.md](bundled-sample-boq-evidence.md) |  | This is the reproducible software record for the bundled ETA | 58 |
 | [column-pmm-benchmark.md](column-pmm-benchmark.md) |  | This record independently checks the experimental rectangula | 107 |
-| [e1-excel-routine-workbench-v1-evidence.md](e1-excel-routine-workbench-v1-evidence.md) |  | - branch: codex/e1-excel-routine-workbench; - merged base: c | 107 |
+| [e1-excel-routine-workbench-v1-evidence.md](e1-excel-routine-workbench-v1-evidence.md) |  | - branch: codex/e1-excel-routine-workbench; - merged base: c | 113 |
+| [e1-windows-w0-setup-evidence.md](e1-windows-w0-setup-evidence.md) |  | SETUP_BLOCKED — one user-approved administrator action remai | 122 |
 | [examples.md](examples.md) |  | This document provides benchmark examples that engineers can | 1550 |
 | [external-cli-test.md](external-cli-test.md) |  | Purpose: capture a repeatable, human-run CLI test from a fre | 98 |
 | [india-1-cumulative-gate-evidence.md](india-1-cumulative-gate-evidence.md) |  | INDIA-1A through INDIA-1D are integrated on main as four ind | 56 |

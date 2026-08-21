@@ -4,7 +4,7 @@ title: Excel Routine Workbench V1 Evidence
 status: active
 owner: Main Agent
 created: 2026-08-18
-last_updated: 2026-08-18
+last_updated: 2026-08-21
 doc_type: log
 ---
 
@@ -18,7 +18,7 @@ doc_type: log
 - template: `structural-lib-rectangular-beam-workbench` version `1.0`;
 - canonical function/result: `design_beam_is456` / `canonical-beam-result/v1`;
 - workbook trust: `MACRO_FREE_OFFICE_JS`;
-- installed Windows Excel evidence: `TO_VERIFY_WINDOWS`.
+- installed Windows Excel evidence: `W0_SETUP_BLOCKED / G3_NOT_RUN`.
 
 ETABS file/live access, write-back, optimization, nightly execution, release publication, and professional approval are outside this candidate.
 
@@ -87,7 +87,7 @@ Python/REST/OpenAPI/wheel evidence were repeated; all pass.
 | Structural formulas | none |
 | VBA/macros | none |
 | Visual review | PASS on all six rendered sheets, 2026-08-18 |
-| Installed Windows Excel | `TO_VERIFY_WINDOWS` |
+| Installed Windows Excel | `W0_SETUP_BLOCKED / G3_NOT_RUN`; see [Windows W0 evidence](e1-windows-w0-setup-evidence.md) |
 
 ## Focused implementation diagnostics already completed
 
@@ -103,4 +103,10 @@ These diagnostics are recorded separately from the passing consolidated batch.
 
 `SOFTWARE CANDIDATE / G3 HELD`.
 
-The focused batch and source-free wheel proof pass. The local implementation can become an immutable reviewed candidate after documentation/index validation, the quick gate, hooks, and read-only audit pass. G3 cannot pass until the exact installed Windows 11 x64 and Microsoft 365 Excel x64 journey records workbook, manifest, wheel, engine, and result identities plus edit-to-stale, recalculation, export, and reopen behavior.
+The focused batch, source-free wheel proof, immutable candidate closeout, and
+hosted PR #826 checks pass. Windows W0 subsequently proved the active Microsoft
+365 entitlement, exact clean candidate, isolated installed wheel identity,
+trusted localhost HTTPS, and loopback service readiness. W0 stopped before the
+blank-workbook add-in load because the restricted catalog share requires an
+administrator action. G3 was not run. The exact remaining setup action and the
+separate G3 journey are recorded in the [Windows W0 evidence](e1-windows-w0-setup-evidence.md).

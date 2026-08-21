@@ -2,7 +2,7 @@
   "folder": "docs/planning",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-08-18",
+  "last_updated": "2026-08-21",
   "file_count": 20,
   "files": [
     {
@@ -131,11 +131,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 98,
-      "last_updated": "2026-08-18",
+      "size_lines": 106,
+      "last_updated": "2026-08-21",
       "title": "Next Session Briefing",
-      "description": "<!-- HANDOFF:START --> - Date: 2026-08-18",
-      "content_hash": "7dcd71f09513"
+      "description": "<!-- HANDOFF:START --> - Date: 2026-08-21",
+      "content_hash": "de03cba39c39"
     },
     {
       "name": "pre-release-checklist.md",
@@ -174,5 +174,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "4ae569ad37030ac8"
+  "content_hash": "32f304353b5c1045"
 }

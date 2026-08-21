@@ -2,7 +2,7 @@
   "folder": "fastapi_app",
   "type": "python-package",
   "description": "REST API + WebSocket bridge between the React frontend and the Python `structural_lib`.",
-  "last_updated": "2026-08-17",
+  "last_updated": "2026-08-21",
   "file_count": 9,
   "files": [
     {
@@ -181,8 +181,8 @@
     {
       "name": "main.py",
       "type": "python",
-      "size_lines": 737,
-      "last_updated": "2026-08-17",
+      "size_lines": 746,
+      "last_updated": "2026-08-21",
       "description": "FastAPI Application Entry Point.",
       "classes": [
         {
@@ -251,12 +251,12 @@
         "API_TAGS_METADATA",
         "API_V1_PREFIX"
       ],
-      "content_hash": "d7495b1b9460"
+      "content_hash": "5f0d8413fc4c"
     },
     {
       "name": "openapi_baseline.json",
       "type": "config",
-      "last_updated": "2026-08-17",
+      "last_updated": "2026-08-21",
       "top_level_keys": [
         "components",
         "info",
@@ -264,7 +264,7 @@
         "paths",
         "tags"
       ],
-      "content_hash": "2723fffb7250"
+      "content_hash": "22feee992a14"
     },
     {
       "name": "ruff.toml",
@@ -289,17 +289,17 @@
     {
       "name": "routers",
       "path": "routers/",
-      "file_count": 28,
+      "file_count": 29,
       "is_package": true
     },
     {
       "name": "tests",
       "path": "tests/",
-      "file_count": 46,
+      "file_count": 47,
       "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
       "is_package": true
     }
   ],
   "has_init": true,
-  "content_hash": "a6b7f0d2e1ef41ae"
+  "content_hash": "d673b776f6dc3e65"
 }
