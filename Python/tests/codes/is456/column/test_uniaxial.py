@@ -496,37 +496,37 @@ class TestUniaxialErrors:
                 d_prime_mm=50.0,
             )
 
-    def test_steel_below_min_warning(self):
-        """Steel ratio < 0.8% -> warning in result."""
+    def test_steel_below_minimum_is_rejected(self):
+        """Steel ratio < 0.8% is outside the maintained design domain."""
         # Ag = 300*500 = 150000. 0.8% = 1200mm2. Use 1000.
-        result = design_short_column_uniaxial(
-            Pu_kN=200.0,
-            Mu_kNm=30.0,
-            b_mm=300.0,
-            D_mm=500.0,
-            le_mm=3000.0,
-            fck=25.0,
-            fy=415.0,
-            Asc_mm2=1000.0,
-            d_prime_mm=50.0,
-        )
-        assert any("below minimum" in w.lower() or "0.8%" in w for w in result.warnings)
+        with pytest.raises(DimensionError, match="0.8-4.0%"):
+            design_short_column_uniaxial(
+                Pu_kN=200.0,
+                Mu_kNm=30.0,
+                b_mm=300.0,
+                D_mm=500.0,
+                le_mm=3000.0,
+                fck=25.0,
+                fy=415.0,
+                Asc_mm2=1000.0,
+                d_prime_mm=50.0,
+            )
 
-    def test_steel_above_max_warning(self):
-        """Steel ratio > 4% -> warning in result."""
+    def test_steel_above_maximum_is_rejected(self):
+        """Steel ratio > 4% is outside the maintained design domain."""
         # Ag = 300*500 = 150000. 4% = 6000mm2. Use 7000.
-        result = design_short_column_uniaxial(
-            Pu_kN=500.0,
-            Mu_kNm=100.0,
-            b_mm=300.0,
-            D_mm=500.0,
-            le_mm=3000.0,
-            fck=25.0,
-            fy=415.0,
-            Asc_mm2=7000.0,
-            d_prime_mm=50.0,
-        )
-        assert any("exceeds maximum" in w.lower() or "4%" in w for w in result.warnings)
+        with pytest.raises(DimensionError, match="0.8-4.0%"):
+            design_short_column_uniaxial(
+                Pu_kN=500.0,
+                Mu_kNm=100.0,
+                b_mm=300.0,
+                D_mm=500.0,
+                le_mm=3000.0,
+                fck=25.0,
+                fy=415.0,
+                Asc_mm2=7000.0,
+                d_prime_mm=50.0,
+            )
 
     def test_fck_above_80_warning(self):
         """fck > 80 -> warning about exceeding IS 456 range."""

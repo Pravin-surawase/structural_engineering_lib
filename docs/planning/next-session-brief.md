@@ -13,8 +13,8 @@
 
 | State | Boundary |
 |---|---|
-| **Current** | `LIB-PRO-003-A` is active against exact hosted `main`: close non-finite calculation inputs, empty compliance success, and rounded column safety decisions |
-| **Next** | Complete the dependency-ordered `LIB-PRO-003` A-D public-route safety closure before capability expansion |
+| **Current** | `LIB-PRO-003-B` is active from exact hosted `main` at `e7698a63`: close beam/column domains, stale column result access, and footing provenance |
+| **Next** | Complete Packets C-D for structured slab/CSV/BOQ failure and decisive CI/audit/documentation truth |
 | **Why** | Direct replay reproduced 13 outcome-changing behaviours still exposed outside the newer bounded Gravity/E1 workflows |
 | **Held** | INDIA-3, new formulas/support claims, ETABS, package publication, stable/professional claims, and qualified approval remain separate and held |
 
@@ -42,20 +42,17 @@ authority. Results remain `NOT_REVIEWED` with
 
 ## Correct next library packet
 
-`LIB-PRO-003-A` is the active bounded implementation packet.
+`LIB-PRO-003-B` is the active bounded implementation packet. Packet A was
+exact-tree merged through PR #832 at `e7698a63`.
 
-1. Reject booleans, NaN, and infinity before lower-level beam flexure, beam
-   shear, compliance, or column arithmetic can produce a safety result.
-2. Reject an empty compliance report instead of accepting `all([])`.
-3. Reject non-finite unified-column moments before minimum-moment
-   amplification can replace them with finite values.
-4. Compare exact uniaxial utilization to `1.0`; round only the returned display
-   field.
-5. Preserve valid arithmetic, public result shapes, and all formula/source
-   boundaries.
+1. Reject unsupported beam material and Table 19 percentage domains.
+2. Reject supplied non-positive shear steel instead of replacing it.
+3. Enforce 0.8-4.0% column longitudinal steel before a safety result.
+4. Read the current typed uniaxial safety field in unified column routing.
+5. Reject unknown footing provenance origins before replay identity is built.
 
-Packets B-D then close material/reinforcement/provenance domains, structured
-slab/CSV/BOQ failures, and decisive CI/audit/documentation truth. Do not start
+Packets C-D then close structured slab/CSV/BOQ failures and decisive
+CI/audit/documentation truth. Do not start
 new engineering formulas, IS 13920 expansion, IS 875, IS 1893, FEM, or ETABS.
 
 ## Other live work

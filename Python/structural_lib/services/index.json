@@ -472,8 +472,8 @@
     {
       "name": "beam_api.py",
       "type": "python",
-      "size_lines": 2367,
-      "last_updated": "2026-08-17",
+      "size_lines": 2384,
+      "last_updated": "2026-08-22",
       "description": "Module:       beam_api",
       "functions": [
         {
@@ -643,7 +643,7 @@
       "constants": [
         "_T"
       ],
-      "content_hash": "a493b5d38320"
+      "content_hash": "62cde2e2895b"
     },
     {
       "name": "beam_pipeline.py",
@@ -1074,7 +1074,7 @@
       "constants": [
         "_T"
       ],
-      "content_hash": "64068f55a652"
+      "content_hash": "6dd8ed0db3dc"
     },
     {
       "name": "combined_footing_api.py",
@@ -1128,8 +1128,8 @@
     {
       "name": "common_api.py",
       "type": "python",
-      "size_lines": 709,
-      "last_updated": "2026-08-17",
+      "size_lines": 703,
+      "last_updated": "2026-08-22",
       "description": "Module:       common_api",
       "functions": [
         {
@@ -1166,7 +1166,7 @@
         "_EXEMPT_PARAMS",
         "_DIMENSIONAL_STEMS"
       ],
-      "content_hash": "1f09421a1f94"
+      "content_hash": "919ea5d1abe9"
     },
     {
       "name": "costing.py",
@@ -2012,8 +2012,8 @@
     {
       "name": "footing_api.py",
       "type": "python",
-      "size_lines": 915,
-      "last_updated": "2026-08-17",
+      "size_lines": 927,
+      "last_updated": "2026-08-22",
       "description": "Bounded orchestration for concentric isolated footings (IS 456:2000).",
       "classes": [
         {
@@ -2053,12 +2053,13 @@
       "constants": [
         "_A1_BASIS",
         "_SERVICE_LOAD_BASIS",
+        "_PROVENANCE_ORIGINS",
         "_SUPPORTED_CASE",
         "_DETAILING_INPUT_HOLD_REASON",
         "_DETAILING_NOT_EVALUATED_REASON",
         "_EXCLUSIONS"
       ],
-      "content_hash": "89b3bce33bdc"
+      "content_hash": "82a42397dc3f"
     },
     {
       "name": "gravity_calculation_book.py",
@@ -3419,5 +3420,5 @@
     "PropertyLineStrapFootingDesignStatus",
     "design_property_line_strap_footing_is456"
   ],
-  "content_hash": "fff25116f32d6d15"
+  "content_hash": "7fb28e9f04f9288d"
 }

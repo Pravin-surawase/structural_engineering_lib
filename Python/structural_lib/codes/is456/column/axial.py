@@ -19,10 +19,9 @@ from __future__ import annotations
 
 import math
 
+from structural_lib.codes.is456.column._common import _require_column_steel_ratio
 from structural_lib.codes.is456.common.constants import (
     COLUMN_CONCRETE_COEFF,
-    COLUMN_MAX_STEEL_RATIO,
-    COLUMN_MIN_STEEL_RATIO,
     COLUMN_STEEL_COEFF,
     MIN_ECCENTRICITY_MM,
     SHORT_COLUMN_SLENDERNESS_LIMIT,
@@ -240,14 +239,16 @@ def short_axial_capacity(
         fck: Characteristic compressive strength of concrete (N/mm²). Must be > 0.
         fy: Characteristic yield strength of steel (N/mm²). Must be > 0.
         Ag_mm2: Gross cross-sectional area (mm²). Must be > 0.
-        Asc_mm2: Area of longitudinal reinforcement (mm²). Must be >= 0.
+        Asc_mm2: Area of longitudinal reinforcement (mm²). Must be 0.8–4.0%
+            of Ag_mm2.
 
     Returns:
         ColumnAxialResult with capacity, steel ratio, warnings.
 
     Raises:
         MaterialError: If fck <= 0 or fy <= 0.
-        DimensionError: If Ag_mm2 <= 0 or Asc_mm2 > Ag_mm2 or Asc_mm2 < 0.
+        DimensionError: If Ag_mm2 <= 0 or Asc_mm2 is outside 0.8–4.0%
+            of Ag_mm2.
 
     References:
         IS 456:2000, Cl 39.3
@@ -263,8 +264,9 @@ def short_axial_capacity(
           e_min ≤ 0.05D. For uniaxial bending use
           ``design_short_column_uniaxial`` (Cl. 39.5), for biaxial
           bending use the ``biaxial`` module (Cl. 39.6).
-        - Does not check detailing requirements (tie spacing, min bars);
-          use ``create_column_detailing`` for Cl. 26.5.3 checks.
+        - Enforces the 0.8–4.0% longitudinal-steel analysis domain, but does
+          not check tie spacing, minimum bar count, or lap-zone detailing;
+          use ``create_column_detailing`` for those Cl. 26.5.3 checks.
         - IS 456 scope limits fck to 60 N/mm² for columns; values above
           60 N/mm² trigger a warning.
     """
@@ -306,17 +308,7 @@ def short_axial_capacity(
     warnings: list[str] = []
 
     # IS 456 Cl 26.5.3.1: steel ratio limits
-    steel_ratio = Asc_mm2 / Ag_mm2
-    if steel_ratio < COLUMN_MIN_STEEL_RATIO:
-        warnings.append(
-            f"Steel ratio {steel_ratio:.4f} below minimum "
-            f"{COLUMN_MIN_STEEL_RATIO} (0.8%) per Cl 26.5.3.1"
-        )
-    if steel_ratio > COLUMN_MAX_STEEL_RATIO:
-        warnings.append(
-            f"Steel ratio {steel_ratio:.4f} exceeds maximum "
-            f"{COLUMN_MAX_STEEL_RATIO} (4%) per Cl 26.5.3.1"
-        )
+    steel_ratio = _require_column_steel_ratio(Ag_mm2, Asc_mm2)
 
     # IS 456 scope warning for high-performance concrete
     if fck > 60:

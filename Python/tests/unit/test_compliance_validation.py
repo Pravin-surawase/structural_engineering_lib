@@ -42,6 +42,18 @@ def test_compliance_case_rejects_non_finite_optional_shear_inputs(field):
         check_compliance_case(**kwargs)
 
 
+@pytest.mark.parametrize("supplied", [0.0, -100.0])
+def test_compliance_case_rejects_nonpositive_supplied_shear_steel(supplied):
+    with pytest.raises(ValueError, match="ast_mm2_for_shear must be > 0"):
+        check_compliance_case(
+            case_id="NONPOSITIVE_SHEAR_STEEL",
+            mu_knm=20.0,
+            vu_kn=20.0,
+            ast_mm2_for_shear=supplied,
+            **COMMON,
+        )
+
+
 def test_public_compliance_report_rejects_numeric_text_nan():
     with pytest.raises(ValueError, match="mu_knm must be a finite real number"):
         check_public_compliance_report(

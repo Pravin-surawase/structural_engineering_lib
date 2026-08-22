@@ -574,14 +574,13 @@ class TestDesignShearExtremePt:
         # Higher pt → higher tc → potentially larger spacing
         assert result_high.spacing >= result_low.spacing
 
-    def test_pt_zero_still_works(self):
-        """pt=0 should return valid result (minimum tc from table)."""
+    def test_pt_zero_is_rejected_instead_of_clamped(self):
+        """pt=0 is outside Table 19 and must not be silently clamped."""
         result = shear.design_shear(
             vu_kn=100, b=250, d=450, fck=25, fy=415, asv=157, pt=0.0
         )
-        # Should use minimum tc value from IS 456 Table 19
-        assert result.spacing > 0
-        assert isinstance(result.is_safe, bool)
+        assert result.is_safe is False
+        assert any(error.code == "E_SHEAR_006" for error in result.errors)
 
 
 class TestDesignShearExtremeBeamSizes:

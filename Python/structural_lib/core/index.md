@@ -38,7 +38,7 @@
 | [data_types.py](data_types.py) | Module:       types | 15 | 0 | 2143 |
 | [deprecation.py](deprecation.py) | Module:       deprecation | 0 | 2 | 156 |
 | [error_messages.py](error_messages.py) | Module:       error_messages | 0 | 15 | 496 |
-| [errors.py](errors.py) | Module:       errors | 11 | 1 | 884 |
+| [errors.py](errors.py) | Module:       errors | 11 | 1 | 918 |
 | [excel_workbook.py](excel_workbook.py) | Versioned, calculation-free contracts for Excel Routine Work | 15 | 0 | 300 |
 | [geometry.py](geometry.py) | Code-agnostic geometry definitions. | 4 | 2 | 254 |
 | [gravity_workflow.py](gravity_workflow.py) | Versioned request, applicability, action, and result types f | 12 | 0 | 310 |
@@ -53,5 +53,5 @@
 | [source_identity.py](source_identity.py) | Layer-neutral identities for the exact controlled IS 456 sou | 0 | 0 | 13 |
 | [types.py](types.py) | Compatibility shim for the renamed data_types module. | 0 | 0 | 51 |
 | [utilities.py](utilities.py) | Module:       utilities | 0 | 4 | 70 |
-| [validation.py](validation.py) | Module:       validation | 0 | 15 | 684 |
+| [validation.py](validation.py) | Module:       validation | 0 | 15 | 690 |
 | [version.py](version.py) | Runtime package-version identity without source/installation | 1 | 2 | 123 |

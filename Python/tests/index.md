@@ -37,7 +37,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_column_biaxial.py](test_column_biaxial.py) | Tests for IS 456 Cl 39.6 biaxial bending check — TASK-635. | 8 | 0 | 958 |
 | [test_column_helical.py](test_column_helical.py) | Tests for IS 456 Cl 39.4 helical reinforcement check. | 7 | 0 | 356 |
 | [test_column_long.py](test_column_long.py) | Tests for IS 456 Cl 39.7 long (slender) column design. | 15 | 0 | 662 |
-| [test_column_return_types.py](test_column_return_types.py) | Tests for UX-02: Column API return type unification. | 7 | 4 | 312 |
+| [test_column_return_types.py](test_column_return_types.py) | Tests for UX-02: Column API return type unification. | 7 | 6 | 349 |
 | [test_core.py](test_core.py) | Tests for structural_lib.core module. | 6 | 0 | 176 |
 | [test_core_types.py](test_core_types.py) | Tests for core types and error dataclasses. | 11 | 0 | 391 |
 | [test_dashboard.py](test_dashboard.py) | Tests for the dashboard analytics module. | 4 | 0 | 259 |
@@ -48,7 +48,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_evidence.py](test_evidence.py) | Focused tests for the supported IS 456 beam evidence envelop | 0 | 9 | 237 |
 | [test_exception_hierarchy.py](test_exception_hierarchy.py) | Tests for exception hierarchy in errors module. | 4 | 0 | 278 |
 | [test_footing.py](test_footing.py) | Tests for IS 456 footing design — TASK-650/651/652. | 11 | 1 | 1801 |
-| [test_footing_api.py](test_footing_api.py) | Focused contract tests for Phase B1 isolated-footing orchest | 0 | 14 | 388 |
+| [test_footing_api.py](test_footing_api.py) | Focused contract tests for Phase B1 isolated-footing orchest | 0 | 15 | 401 |
 | [test_footing_detailing.py](test_footing_detailing.py) | Outcome-focused tests for the bounded footing detailing slic | 0 | 11 | 238 |
 | [test_footing_load_transfer.py](test_footing_load_transfer.py) | Focused independent arithmetic checks for IS 456 Cl. 34.4 lo | 0 | 7 | 165 |
 | [test_function_quality_checker.py](test_function_quality_checker.py) | Focused regressions for the IS 456 function-quality checker. | 0 | 2 | 56 |
@@ -60,7 +60,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_indian_code_manifest.py](test_indian_code_manifest.py) | INDIA-0 truth-manifest and reporting contract tests. | 0 | 10 | 228 |
 | [test_inputs.py](test_inputs.py) | Tests for the inputs module (TASK-276: Input Flexibility). | 7 | 0 | 464 |
 | [test_install_preflight.py](test_install_preflight.py) | Installed-package preflight is source-independent and decisi | 0 | 1 | 33 |
-| [test_is456_common.py](test_is456_common.py) | Tests for IS 456:2000 common modules - stress_blocks, reinfo | 15 | 0 | 854 |
+| [test_is456_common.py](test_is456_common.py) | Tests for IS 456:2000 common modules - stress_blocks, reinfo | 15 | 0 | 900 |
 | [test_is456_constants.py](test_is456_constants.py) | Tests for IS 456:2000 named design constants. | 1 | 0 | 163 |
 | [test_model_picker.py](test_model_picker.py) | Tests for the deterministic low-token model picker. | 0 | 8 | 132 |
 | [test_multi_objective_optimizer.py](test_multi_objective_optimizer.py) | Tests for the multi-objective optimizer module (NSGA-II). | 5 | 0 | 319 |

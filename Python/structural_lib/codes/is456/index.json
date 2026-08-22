@@ -45,7 +45,7 @@
     {
       "name": "compliance.py",
       "type": "python",
-      "size_lines": 626,
+      "size_lines": 628,
       "last_updated": "2026-08-22",
       "description": "Module: compliance",
       "functions": [
@@ -65,7 +65,7 @@
           ]
         }
       ],
-      "content_hash": "54dcc958301e"
+      "content_hash": "d390bf6a6102"
     },
     {
       "name": "detailing.py",
@@ -468,5 +468,5 @@
     "list_clauses_by_category",
     "search_clauses"
   ],
-  "content_hash": "d19571f00012cc9a"
+  "content_hash": "949db3f51ec67945"
 }

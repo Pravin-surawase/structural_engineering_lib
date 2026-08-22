@@ -25,6 +25,8 @@ from .errors import (
     E_INPUT_013,
     E_INPUT_014,
     E_INPUT_015,
+    E_INPUT_018,
+    E_INPUT_019,
     DesignError,
     E_INPUT_003a,
     Severity,
@@ -128,9 +130,13 @@ def validate_materials(fck: float, fy: float) -> list[DesignError]:
 
     if fck <= 0:
         errors.append(E_INPUT_004)
+    elif not 15 <= fck <= 80:
+        errors.append(E_INPUT_018)
 
     if fy <= 0:
         errors.append(E_INPUT_005)
+    elif not 250 <= fy <= 550:
+        errors.append(E_INPUT_019)
 
     return errors
 

@@ -46,6 +46,7 @@ __all__ = [
 
 _A1_BASIS = "largest_frustum_1v_2h"
 _SERVICE_LOAD_BASIS = "includes_footing_self_weight_and_overburden"
+_PROVENANCE_ORIGINS = frozenset({"provided", "assumed", "verified"})
 _SUPPORTED_CASE = "concentric_centred_isolated_square_or_rectangular_footing"
 _DETAILING_INPUT_HOLD_REASON = (
     "DETAILING_INPUTS_NOT_PROVIDED: explicit inputs for bar selection, "
@@ -289,6 +290,17 @@ def _validate_request(request: ConcentricIsolatedFootingInput) -> None:
         "available_dowel_development_length_into_column_mm",
     ):
         _require_positive_finite(name, getattr(request, name))
+    for name in (
+        "service_load_origin",
+        "allowable_soil_pressure_origin",
+        "effective_supporting_area_origin",
+    ):
+        origin = getattr(request, name)
+        if origin not in _PROVENANCE_ORIGINS:
+            raise ValidationError(
+                f"{name} must be one of provided, assumed, or verified",
+                details={name: origin},
+            )
     if request.footing_type not in {
         FootingType.ISOLATED_SQUARE,
         FootingType.ISOLATED_RECTANGULAR,

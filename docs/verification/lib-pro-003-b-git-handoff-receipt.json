@@ -1,0 +1,240 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-22T10:17:09Z",
+      "query_status": "OK",
+      "reference": "task:LIB-PRO-003:user-request-continue-this-work",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-22T10:17:09Z",
+    "prohibited_actions": [
+      "PUBLISH_RELEASE",
+      "CLAIM_PROFESSIONAL_APPROVAL",
+      "START_INDIA_3",
+      "START_ETABS_OR_DESKTOP_EXCEL",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR"
+      ],
+      "branch": "codex/public-route-domain-provenance",
+      "head_sha": "e7698a63b86d2db6db2f3970871122af1ce562f6",
+      "task_id": "LIB-PRO-003-B"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "0493b464497247f96b3bf202596978afa6ae40ef2290995a54dfe2c580967feb",
+    "state": {
+      "branch": "codex/public-route-domain-provenance",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "e7698a63b86d2db6db2f3970871122af1ce562f6",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 83.656,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-public-route-domain-provenance",
+      "head_sha": "e7698a63b86d2db6db2f3970871122af1ce562f6",
+      "hold_reasons": [
+        "changed paths: 33"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-22T10:17:47.220797+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-domain-provenance",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 33,
+        "modified_paths": [
+          "Python/structural_lib/codes/is456/beam/shear.py",
+          "Python/structural_lib/codes/is456/column/_common.py",
+          "Python/structural_lib/codes/is456/column/axial.py",
+          "Python/structural_lib/codes/is456/column/biaxial.py",
+          "Python/structural_lib/codes/is456/column/long_column.py",
+          "Python/structural_lib/codes/is456/column/uniaxial.py",
+          "Python/structural_lib/codes/is456/compliance.py",
+          "Python/structural_lib/core/errors.py",
+          "Python/structural_lib/core/validation.py",
+          "Python/structural_lib/errors.py",
+          "Python/structural_lib/services/beam_api.py",
+          "Python/structural_lib/services/column_api.py",
+          "Python/structural_lib/services/common_api.py",
+          "Python/structural_lib/services/footing_api.py",
+          "Python/tests/codes/is456/column/test_axial.py",
+          "Python/tests/codes/is456/column/test_uniaxial.py",
+          "Python/tests/test_column_return_types.py",
+          "Python/tests/test_footing_api.py",
+          "Python/tests/test_is456_common.py",
+          "Python/tests/unit/test_compliance_validation.py",
+          "Python/tests/unit/test_error_schema.py",
+          "Python/tests/unit/test_input_validation.py",
+          "Python/tests/unit/test_shear.py",
+          "Python/tests/unit/test_validation.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/README.md",
+          "docs/planning/next-session-brief.md",
+          "docs/planning/public-route-safety-closure-plan.md",
+          "docs/reference/error-codes.md",
+          "docs/reference/error-schema.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/lib-pro-003-b-domain-provenance-evidence.md",
+          "docs/verification/lib-pro-003-b-git-handoff-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "e7698a63b86d2db6db2f3970871122af1ce562f6",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-domain-provenance"
+    }
+  },
+  "local_state_receipt_hash": "sha256:0493b464497247f96b3bf202596978afa6ae40ef2290995a54dfe2c580967feb",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-22T10:17:47.220940+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-22T10:17:09Z",
+    "owner": "Main Agent under repository retention policy; destructive cleanup remains separately owner-authorized",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/services/adapters.py",
+      "Python/structural_lib/codes/is456/slab/**",
+      "fastapi_app/**",
+      "react_app/**",
+      "excel_addin/**",
+      ".github/workflows/**"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "Python/structural_lib/core/errors.py",
+      "Python/structural_lib/core/validation.py",
+      "Python/structural_lib/errors.py",
+      "Python/structural_lib/codes/is456/beam/shear.py",
+      "Python/structural_lib/codes/is456/compliance.py",
+      "Python/structural_lib/codes/is456/column/_common.py",
+      "Python/structural_lib/codes/is456/column/axial.py",
+      "Python/structural_lib/codes/is456/column/uniaxial.py",
+      "Python/structural_lib/codes/is456/column/biaxial.py",
+      "Python/structural_lib/codes/is456/column/long_column.py",
+      "Python/structural_lib/services/common_api.py",
+      "Python/structural_lib/services/beam_api.py",
+      "Python/structural_lib/services/column_api.py",
+      "Python/structural_lib/services/footing_api.py",
+      "Python/tests/unit/test_validation.py",
+      "Python/tests/unit/test_input_validation.py",
+      "Python/tests/unit/test_compliance_validation.py",
+      "Python/tests/unit/test_shear.py",
+      "Python/tests/unit/test_error_schema.py",
+      "Python/tests/codes/is456/column/test_axial.py",
+      "Python/tests/codes/is456/column/test_uniaxial.py",
+      "Python/tests/test_column_return_types.py",
+      "Python/tests/test_footing_api.py",
+      "Python/tests/test_is456_common.py",
+      "docs/reference/error-schema.md",
+      "docs/reference/error-codes.md",
+      "docs/planning/public-route-safety-closure-plan.md",
+      "docs/planning/next-session-brief.md",
+      "docs/planning/README.md",
+      "docs/TASKS.md",
+      "docs/SESSION_LOG.md",
+      "docs/verification/lib-pro-003-b-domain-provenance-evidence.md",
+      "docs/verification/lib-pro-003-b-git-handoff-source-evidence.json",
+      "docs/verification/lib-pro-003-b-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "Python/structural_lib/index.json",
+      "Python/structural_lib/index.md",
+      "Python/structural_lib/core/index.json",
+      "Python/structural_lib/core/index.md",
+      "Python/structural_lib/codes/is456/index.json",
+      "Python/structural_lib/codes/is456/index.md",
+      "Python/structural_lib/codes/is456/beam/index.json",
+      "Python/structural_lib/codes/is456/beam/index.md",
+      "Python/structural_lib/codes/is456/column/index.json",
+      "Python/structural_lib/codes/is456/column/index.md",
+      "Python/structural_lib/services/index.json",
+      "Python/structural_lib/services/index.md",
+      "Python/tests/index.json",
+      "Python/tests/index.md",
+      "Python/tests/codes/is456/column/index.json",
+      "Python/tests/codes/is456/column/index.md",
+      "Python/tests/unit/index.json",
+      "Python/tests/unit/index.md",
+      "docs/index.json",
+      "docs/index.md",
+      "docs/planning/index.json",
+      "docs/planning/index.md",
+      "docs/reference/index.json",
+      "docs/reference/index.md",
+      "docs/verification/index.json",
+      "docs/verification/index.md"
+    ],
+    "task_id": "LIB-PRO-003-B"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

@@ -63,12 +63,7 @@ def _validate_plausibility(
     pt_percent: float | None = None,
     ast_mm2_for_shear: float | None = None,
 ) -> None:
-    """Catch common unit-confusion mistakes at the API boundary.
-
-    Guards are deliberately generous (e.g. fck ≤ 120 allows UHPC).
-    The goal is to catch Pa-vs-MPa and μm-vs-mm mistakes, not to
-    enforce IS 456 material limits.
-    """
+    """Enforce finite, physical, and supported beam-service inputs."""
     for name, value in (
         ("fck_nmm2", fck_nmm2),
         ("fy_nmm2", fy_nmm2),
@@ -84,25 +79,15 @@ def _validate_plausibility(
     ):
         _require_finite_real(name, value, optional=True)
 
-    if fck_nmm2 is not None and fck_nmm2 <= 0:
+    if fck_nmm2 is not None and not 15 <= fck_nmm2 <= 80:
         raise ValueError(
-            f"fck_nmm2={fck_nmm2} must be positive. "
-            "Concrete strength cannot be zero or negative."
+            f"fck_nmm2={fck_nmm2} is outside the supported IS 456 "
+            "range of 15-80 N/mm²."
         )
-    if fck_nmm2 is not None and fck_nmm2 > 120:
+    if fy_nmm2 is not None and not 250 <= fy_nmm2 <= 550:
         raise ValueError(
-            f"fck_nmm2={fck_nmm2} seems too large. "
-            "Expected N/mm² (e.g., 25), not Pa or kPa."
-        )
-    if fy_nmm2 is not None and fy_nmm2 <= 0:
-        raise ValueError(
-            f"fy_nmm2={fy_nmm2} must be positive. "
-            "Steel strength cannot be zero or negative."
-        )
-    if fy_nmm2 is not None and fy_nmm2 > 700:
-        raise ValueError(
-            f"fy_nmm2={fy_nmm2} seems too large. "
-            "Expected N/mm² (e.g., 415), not Pa or kPa."
+            f"fy_nmm2={fy_nmm2} is outside the supported IS 456 "
+            "range of 250-550 N/mm²."
         )
     if b_mm is not None and b_mm > 5000:
         raise ValueError(
@@ -123,6 +108,15 @@ def _validate_plausibility(
             f"d = D − clear_cover − stirrup_dia − bar_dia/2. "
             f"Typical: d ≈ D − 40 to D − 60 mm."
         )
+    if asv_mm2 is not None and asv_mm2 <= 0:
+        raise ValueError("asv_mm2 must be > 0 when supplied.")
+    if pt_percent is not None and not 0.15 <= pt_percent <= 3.0:
+        raise ValueError(
+            "pt_percent must be within the maintained IS 456 Table 19 "
+            "range of 0.15-3.0 percent."
+        )
+    if ast_mm2_for_shear is not None and ast_mm2_for_shear <= 0:
+        raise ValueError("ast_mm2_for_shear must be > 0 when supplied.")
 
 
 # ============================================================================

@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-22 — E1 merged with installed-desktop-Excel `G3_PASS`; public Alpha and next-wave records reconciled
+**Updated:** 2026-08-22 — LIB-PRO-003-A merged; Packet B domain and provenance closure active
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-003-A | Close non-finite public calculation inputs, empty compliance success, and rounded column safety decisions | backend + tester | M | P0 | 🚧 ACTIVE — exact-tree audit accepted; implementation and focused regression evidence in progress |
+| LIB-PRO-003-B | Enforce beam/column material and reinforcement domains, repair the stale column key, and close footing provenance | backend + tester | M | P0 | 🚧 ACTIVE — adversarial replay and focused implementation evidence green; final candidate gates pending |
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. The reproduced public-route safety defects take priority over new
@@ -135,7 +135,9 @@ capability work. INDIA-3, dependency work, the next package version, further
 cleanup, and professional approval remain separately held until `LIB-PRO-003`
 closes and their own packet is activated.
 
-`LIB-PRO-002-G0` was independently accepted and merged through PR #812 at
+`LIB-PRO-003-A` was accepted and exact-tree merged through PR #832 at
+`e7698a63b86d2db6db2f3970871122af1ce562f6`. `LIB-PRO-002-G0` was
+independently accepted and merged through PR #812 at
 `55104e11257937b0a42fb06f931a70b8484cef39`. Packet A was independently
 accepted and merged through PR #814 at
 `3986935ecb473c1f9d56dec44aeb4218d9192f84`; Packets B-G merged through PR #815
@@ -158,7 +160,6 @@ write-back/nightly work remain outside E1.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-003-B | Enforce beam/column material and reinforcement domains, repair the stale column key, and close footing provenance | backend + tester | M | P0 | ⏸ NEXT AFTER A — bounded outcome-changing safety repair |
 | LIB-PRO-003-C | Convert slab capacity, malformed legacy CSV, and negative BOQ inputs to structured fail-closed outcomes | backend + API developer + tester | M | P0 | ⏸ AFTER B |
 | LIB-PRO-003-D | Make Excel CI and input audits decisive and synchronize release/route-count truth | ops + governance | S | P0 | ⏸ AFTER C |
 | INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ AFTER LIB-PRO-003 — truth/benchmark/contract audit only; no new formulas or support claims |

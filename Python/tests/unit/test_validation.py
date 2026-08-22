@@ -14,6 +14,8 @@ from structural_lib.core.errors import (
     E_INPUT_013,
     E_INPUT_014,
     E_INPUT_015,
+    E_INPUT_018,
+    E_INPUT_019,
     E_INPUT_003a,
 )
 
@@ -120,6 +122,16 @@ class TestValidateMaterials:
         """Negative fy returns E_INPUT_005."""
         errors = validation.validate_materials(fck=25, fy=-500)
         assert E_INPUT_005 in errors
+
+    @pytest.mark.parametrize("fck", [10, 81])
+    def test_unsupported_fck_returns_domain_error(self, fck):
+        errors = validation.validate_materials(fck=fck, fy=500)
+        assert errors == [E_INPUT_018]
+
+    @pytest.mark.parametrize("fy", [249, 551, 700])
+    def test_unsupported_fy_returns_domain_error(self, fy):
+        errors = validation.validate_materials(fck=25, fy=fy)
+        assert errors == [E_INPUT_019]
 
     def test_zero_fy(self):
         """Zero fy returns E_INPUT_005."""

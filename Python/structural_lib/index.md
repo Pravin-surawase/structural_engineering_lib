@@ -58,7 +58,7 @@
 | [ductile.py](ductile.py) | Backward compatibility stub. | 0 | 0 | 35 |
 | [dxf_export.py](dxf_export.py) | Backward compatibility stub. | 0 | 0 | 54 |
 | [error_messages.py](error_messages.py) | Backward compatibility stub. | 0 | 0 | 26 |
-| [errors.py](errors.py) | Backward compatibility stub. | 0 | 0 | 52 |
+| [errors.py](errors.py) | Backward compatibility stub. | 0 | 0 | 55 |
 | [etabs_import.py](etabs_import.py) | Backward compatibility stub. | 0 | 0 | 26 |
 | [excel_bridge.py](excel_bridge.py) | Backward compatibility stub. *(stub)* | 0 | 0 | 28 |
 | [excel_integration.py](excel_integration.py) | Backward compatibility stub. *(stub)* | 0 | 0 | 32 |

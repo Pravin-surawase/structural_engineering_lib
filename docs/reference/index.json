@@ -186,18 +186,18 @@
     {
       "name": "error-codes.md",
       "type": "documentation",
-      "size_lines": 87,
-      "last_updated": "2026-08-17",
+      "size_lines": 90,
+      "last_updated": "2026-08-22",
       "description": "> Auto-generated from Python/structural_lib/core/errors.py. > Run scripts/generate_error_docs.py to regenerate.",
-      "content_hash": "3649f701e5e0"
+      "content_hash": "23d3a8e4f272"
     },
     {
       "name": "error-schema.md",
       "type": "documentation",
-      "size_lines": 318,
+      "size_lines": 321,
       "last_updated": "2026-08-22",
       "description": "*Structured error format for machine-readable and human-friendly errors* This document defines the standard error schema for all structural_lib errors. The goal is:",
-      "content_hash": "337c94f04699"
+      "content_hash": "84c1deaf4995"
     },
     {
       "name": "fastapi-rest-api.md",
@@ -279,5 +279,5 @@
       "file_count": 1760
     }
   ],
-  "content_hash": "e1a93ead62b556c1"
+  "content_hash": "abcdf9bf13e28992"
 }

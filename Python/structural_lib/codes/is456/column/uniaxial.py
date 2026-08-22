@@ -21,12 +21,11 @@ from __future__ import annotations
 import math
 import warnings as _warnings_mod
 
+from structural_lib.codes.is456.column._common import _require_column_steel_ratio
 from structural_lib.codes.is456.column.axial import classify_column, min_eccentricity
 from structural_lib.codes.is456.common.constants import (
     COLUMN_AXIAL_EMIN_FACTOR,
     COLUMN_CONCRETE_COEFF,
-    COLUMN_MAX_STEEL_RATIO,
-    COLUMN_MIN_STEEL_RATIO,
     COLUMN_STEEL_COEFF,
     EPSILON_CU,
     STRESS_BLOCK_DEPTH,
@@ -313,7 +312,8 @@ def design_short_column_uniaxial(
         fy: Characteristic yield strength of steel (N/mm2).
             IS 456 range: 250-550.
         Asc_mm2: Total area of longitudinal reinforcement (mm2).
-            Assumed symmetrically placed (half on each face).
+            Must be 0.8–4.0% of the gross section and is assumed
+            symmetrically placed (half on each face).
         d_prime_mm: Distance from nearest face to centroid of steel (mm).
             Must be > 0 and < D_mm / 2.
         l_unsupported_mm: Unsupported length (mm) for minimum eccentricity
@@ -454,23 +454,13 @@ def design_short_column_uniaxial(
 
     # --- Steel area ---
     Ag_mm2 = b_mm * D_mm
-    steel_ratio = safe_divide(Asc_mm2, Ag_mm2, default=0.0)
     if Asc_mm2 < 0:
         raise DimensionError(
             f"Total steel area Asc_mm2 must be >= 0, got {Asc_mm2}",
             details={"Asc_mm2": Asc_mm2},
             clause_ref="Cl. 26.5.3.1",
         )
-    if steel_ratio < COLUMN_MIN_STEEL_RATIO:
-        warnings.append(
-            f"Steel ratio {steel_ratio:.4f} below minimum "
-            f"{COLUMN_MIN_STEEL_RATIO} (0.8%) per Cl 26.5.3.1"
-        )
-    if steel_ratio > COLUMN_MAX_STEEL_RATIO:
-        warnings.append(
-            f"Steel ratio {steel_ratio:.4f} exceeds maximum "
-            f"{COLUMN_MAX_STEEL_RATIO} (4%) per Cl 26.5.3.1"
-        )
+    _require_column_steel_ratio(Ag_mm2, Asc_mm2)
 
     # ===========================================================
     # 2. Column classification
@@ -717,7 +707,7 @@ def pm_interaction_curve(
         fy: Characteristic yield strength of steel (N/mm²).
             IS 456 range: 250–550.
         Asc_mm2: Total area of longitudinal reinforcement (mm²).
-            Must be > 0.
+            Must be 0.8–4.0% of the gross section.
         d_prime_mm: Distance from nearest face to centroid of steel (mm).
             Must be > 0 and < D_mm / 2.
         n_points: Number of envelope points to generate (default 50).
@@ -806,17 +796,7 @@ def pm_interaction_curve(
             clause_ref="Cl. 26.5.3.1",
         )
     Ag_mm2 = b_mm * D_mm
-    steel_ratio = safe_divide(Asc_mm2, Ag_mm2, default=0.0)
-    if steel_ratio < COLUMN_MIN_STEEL_RATIO:
-        warnings.append(
-            f"Steel ratio {steel_ratio:.4f} below minimum "
-            f"{COLUMN_MIN_STEEL_RATIO} (0.8%) per Cl 26.5.3.1"
-        )
-    if steel_ratio > COLUMN_MAX_STEEL_RATIO:
-        warnings.append(
-            f"Steel ratio {steel_ratio:.4f} exceeds maximum "
-            f"{COLUMN_MAX_STEEL_RATIO} (4%) per Cl 26.5.3.1"
-        )
+    _require_column_steel_ratio(Ag_mm2, Asc_mm2)
 
     # --- n_points ---
     if n_points < 10:

@@ -385,3 +385,16 @@ def test_required_external_and_load_provenance_fail_closed(
 ):
     with pytest.raises(ValidationError, match=match):
         design_concentric_isolated_footing_is456(_input(**overrides))
+
+
+@pytest.mark.parametrize(
+    "origin_field",
+    [
+        "service_load_origin",
+        "allowable_soil_pressure_origin",
+        "effective_supporting_area_origin",
+    ],
+)
+def test_unknown_provenance_origins_are_rejected(origin_field):
+    with pytest.raises(ValidationError, match=origin_field):
+        design_concentric_isolated_footing_is456(_input(**{origin_field: "invented"}))
