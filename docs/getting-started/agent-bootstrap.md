@@ -745,7 +745,8 @@ Load these only when working on that specific area:
 
 ### Machine-Readable Indexes
 
-- `scripts/automation-map.json` — task-to-script mapping
+- `scripts/control-plane.json` — canonical operation, command, alias, and permission registry
+- `scripts/automation-map.json` — generated temporary compatibility projection
 - `docs/docs-canonical.json` — topic-to-canonical-doc mapping
 - `scripts/index.json` — full automation catalog
 

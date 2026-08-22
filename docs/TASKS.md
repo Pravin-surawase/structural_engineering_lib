@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-22 — LIB-PRO-005 merged; MAINT-011 complete on merge
+**Updated:** 2026-08-23 — MAINT-012A canonical control-registry foundation active
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| — | No active implementation packet after MAINT-011 merge | — | — | — | Next capability work requires a separately frozen scope |
+| MAINT-012A | Establish the canonical operation registry, schema, loader, CLI, explicit permissions, and deterministic compatibility projection | Main Agent + governance | M | P0 | 🔄 ACTIVE — isolated source-bound lane; implementation and focused contracts complete; consolidated closeout pending |
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. The reproduced public-route safety packet is integrated. INDIA-3,
@@ -164,6 +164,7 @@ write-back/nightly work remain outside E1.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
+| MAINT-012B | Replace high-churn generic indexes with authoritative manifests and on-demand summaries, preserving only proven-useful views | Main Agent + governance | M | P0 | ⏸ AFTER MAINT-012A — separate frozen candidate |
 | INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ AFTER LIB-PRO-003 — truth/benchmark/contract audit only; no new formulas or support claims |
 | SPARK-001-G0 | Reassess the stale Spark work-program proposal before any implementation | repository owner | review gate | P2 | ⏸ OWNER REVIEW — the 2026-08-11 model/preview assumptions and bulk wave require refresh or rejection |
 

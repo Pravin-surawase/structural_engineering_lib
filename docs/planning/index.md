@@ -1,8 +1,8 @@
 # Planning
 
 **Type:** Documentation
-**Last Updated:** 2026-08-22
-**Files:** 24
+**Last Updated:** 2026-08-23
+**Files:** 25
 
 ## Documentation Files
 
@@ -24,9 +24,10 @@
 | [lib-pro-005-release-safety-closure-plan.md](lib-pro-005-release-safety-closure-plan.md) |  | Close the reproduced release-safety defects found after LIB- | 59 |
 | [library-expansion-blueprint-v5.md](library-expansion-blueprint-v5.md) | Library Expansion Blueprint v5.0 — Multi | > Master plan for expanding structural_engineering_lib from  | 1121 |
 | [maint-011-developer-gate-hygiene-follow-up.md](maint-011-developer-gate-hygiene-follow-up.md) |  | Preserve the tooling and process defects encountered during  | 83 |
+| [maint-012-control-plane-modernization.md](maint-012-control-plane-modernization.md) |  | Modernize the old script, discovery, permission, index, scan | 133 |
 | [memory.md](memory.md) |  | - Development resumed after a four-month pause and a Mac lap | 411 |
 | [next-phase-improvements-plan.md](next-phase-improvements-plan.md) |  | > This document is a result of a full audit of the beam libr | 1445 |
-| [next-session-brief.md](next-session-brief.md) | Next Session Briefing | <!-- HANDOFF:START --> - Date: 2026-08-22 | 47 |
+| [next-session-brief.md](next-session-brief.md) | Next Session Briefing | <!-- HANDOFF:START --> - Date: 2026-08-23 | 41 |
 | [pre-release-checklist.md](pre-release-checklist.md) | Pre-Release Checklist | Current source metadata: 0.23.1a2 Current public Alpha: v0.2 | 114 |
 | [pre-release-input-safety-and-professional-readiness-plan.md](pre-release-input-safety-and-professional-readiness-plan.md) | Pre-Release Input Safety and Professiona | fe4ab025419b834c6d0f840e9492c0604ae74201 after Packets A-G m | 742 |
 | [professional-library-remediation-plan.md](professional-library-remediation-plan.md) | Professional Library Remediation Plan | This document is no longer the active implementation plan. T | 562 |

@@ -38,6 +38,7 @@ project_health = importlib.import_module("project_health")
 preflight = importlib.import_module("preflight")
 tool_permissions = importlib.import_module("tool_permissions")
 tool_registry = importlib.import_module("tool_registry")
+control_plane = importlib.import_module("control_plane")
 
 
 def test_python_runtime_launcher_uses_explicit_interpreter():
@@ -453,7 +454,7 @@ def test_tool_registry_does_not_infer_permission_from_git_text():
 
     assert registry["check git state"].permission == "ReadOnly"
     assert registry["project health"].permission_modes == {"--fix": "WorkspaceWrite"}
-    assert registry["governance health score"].permission is None
+    assert registry["governance health score"].permission == "ReadOnlyTerminal"
 
 
 @pytest.mark.parametrize(
@@ -477,10 +478,10 @@ def test_remaining_automation_permissions_match_modes(operation, mode, expected)
 
 
 def test_automation_discovery_metadata_is_single_source():
-    automation_map = json.loads(
-        (SCRIPTS_DIR / "automation-map.json").read_text(encoding="utf-8")
-    )
+    registry = control_plane.load_registry()
+    automation_map = control_plane.legacy_projection(registry)
 
+    assert control_plane.legacy_is_current(registry)
     assert check_scripts_index._automation_semantic_issues(automation_map) == {
         "legacy_categories": [],
         "missing_group": [],
@@ -625,17 +626,14 @@ def test_permission_metadata_audit_accepts_current_declarations():
     assert audit_permissions.audit_automation_permission_metadata() == []
 
 
-def test_permission_metadata_audit_rejects_modes_without_default(tmp_path, monkeypatch):
-    automation_map = tmp_path / "automation-map.json"
-    automation_map.write_text(
-        json.dumps(
-            {"tasks": {"broken": {"permission_modes": {"--fix": "WorkspaceWrite"}}}}
-        ),
-        encoding="utf-8",
-    )
-    monkeypatch.setattr(audit_permissions, "_AUTOMATION_MAP", automation_map)
+def test_permission_metadata_audit_rejects_missing_default(tmp_path, monkeypatch):
+    registry_data = control_plane.load_registry()
+    del registry_data["operations"]["project health"]["permission"]
+    registry_path = tmp_path / "control-plane.json"
+    registry_path.write_text(json.dumps(registry_data), encoding="utf-8")
+    monkeypatch.setattr(audit_permissions, "_CONTROL_PLANE", registry_path)
 
     anomalies = audit_permissions.audit_automation_permission_metadata()
 
     assert len(anomalies) == 1
-    assert "explicit default" in anomalies[0].message
+    assert "permission" in anomalies[0].message

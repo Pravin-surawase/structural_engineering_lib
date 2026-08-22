@@ -14,13 +14,18 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import json
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from _lib.output import StatusLine, print_json  # noqa: E402
+from control_plane import (  # noqa: E402
+    REGISTRY_PATH,
+    ControlPlaneError,
+    load_registry as load_control_registry,
+    operation_map,
+)
 from tool_permissions import (  # noqa: E402
     DANGER_OPS,
     READ_OPS,
@@ -66,7 +71,7 @@ class AuditReport:
 # Write-capable tool keywords
 _WRITE_TOOLS = {"editFiles", "edit", "write", "create"}
 _RUN_TOOLS = {"runInTerminal", "run", "terminal"}
-_AUTOMATION_MAP = Path(__file__).resolve().parent / "automation-map.json"
+_CONTROL_PLANE = REGISTRY_PATH
 _KNOWN_LEVELS = {"ReadOnly", "ReadOnlyTerminal", "WorkspaceWrite", "DangerFullAccess"}
 
 
@@ -81,27 +86,27 @@ def _has_run_tools(tools: list[str]) -> bool:
 
 
 def audit_automation_permission_metadata() -> list[Anomaly]:
-    """Validate only explicitly declared automation permission metadata."""
+    """Validate canonical operation permission metadata fail-closed."""
     try:
-        data = json.loads(_AUTOMATION_MAP.read_text(encoding="utf-8"))
-    except (FileNotFoundError, json.JSONDecodeError, OSError) as exc:
+        data = load_control_registry(path=_CONTROL_PLANE)
+    except ControlPlaneError as exc:
         return [
             Anomaly(
-                agent="automation-map",
+                agent="control-plane",
                 severity="CONFLICT",
                 message=f"Cannot load automation permission metadata: {exc}",
             )
         ]
 
     anomalies: list[Anomaly] = []
-    for task_name, task in data.get("tasks", {}).items():
+    for task_name, task in operation_map(data).items():
         if not isinstance(task, dict):
             continue
         default_level = task.get("permission")
         modes = task.get("permission_modes")
         subject = f"automation:{task_name}"
 
-        if default_level is not None and default_level not in _KNOWN_LEVELS:
+        if default_level not in _KNOWN_LEVELS:
             anomalies.append(
                 Anomaly(
                     agent=subject,
@@ -112,14 +117,6 @@ def audit_automation_permission_metadata() -> list[Anomaly]:
 
         if modes is None:
             continue
-        if default_level is None:
-            anomalies.append(
-                Anomaly(
-                    agent=subject,
-                    severity="CONFLICT",
-                    message="permission_modes requires an explicit default permission",
-                )
-            )
         if not isinstance(modes, dict):
             anomalies.append(
                 Anomaly(

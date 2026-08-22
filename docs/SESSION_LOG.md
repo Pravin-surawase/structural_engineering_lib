@@ -5,6 +5,108 @@
 
 ---
 
+## 2026-08-23 — Session: MAINT-012A canonical control-registry foundation
+
+**Agent:** Codex (`governance`, sole writer)
+
+**Branch:** `codex/maint-012a-control-registry`, from exact `origin/main`
+commit `fc904511cc7b9683b2b464cdef71a45d2e9ee277`.
+
+**Git handoff receipt:**
+`docs/verification/maint-012a-git-handoff-receipt.json`
+
+**Focus:** Implement MAINT-012A canonical operation registry and compatibility projection.
+
+The versioned registry replaces duplicated and implicit metadata while
+preserving existing commands during migration.
+
+### Summary
+
+- Added the Draft 2020-12 control-plane schema, fail-closed loader, and
+  `./run.sh control` validation/search/list/statistics/projection interface.
+- Migrated discovery, tool search, prompt routing, permission enforcement and
+  audit, governance permission validation, script coverage, and session context
+  guidance to `scripts/control-plane.json`.
+- Represented 128 total/125 active operations and 113/113 top-level scripts;
+  all active operations now have explicit default permissions and structured
+  command steps. `automation-map.json` is an exact generated projection.
+- Froze MAINT-012B-D as separate successor packets for index architecture,
+  evidence reuse/validation scheduling, and scanner/script consolidation.
+
+### PRs Merged
+
+- None. MAINT-012A remains an unpushed local candidate until the post-freeze
+  local gates, exact-head review, required hosted checks, and merge complete.
+
+### Key Deliverables
+
+- `scripts/control-plane.json` and `scripts/control-plane.schema.json`
+- `scripts/control_plane/` validated loader and CLI
+- `Python/tests/test_control_plane.py` parity, schema, alias, permission,
+  structured-command, missing-target, duplicate-key, and determinism contracts
+- `docs/planning/maint-012-control-plane-modernization.md`
+- `docs/verification/maint-012a-git-handoff-receipt.json`
+
+### Issues encountered
+
+- The legacy map contained 78 active operations without default permissions,
+  plus three deprecated Git-compatibility operations omitted from the initial
+  active-only inventory. The first import therefore stopped fail-closed rather
+  than silently assigning them.
+- One legacy alias used mixed case (`release CI parity`), so canonical alias
+  normalization correctly rejected the first generated candidate.
+- Placing the loader and CLI as new top-level `.py` files would have changed the
+  frozen script inventory from 113 to 115 and forced self-registration churn.
+- The inherited next-session brief still described the uncommitted MAINT-011
+  candidate even though MAINT-011 was already merged.
+- Active bootstrap, automation-catalog, and cross-agent instruction surfaces
+  still named the legacy automation map without a canonical/projection boundary.
+- The first generated handoff block selected MAINT-011 instead of MAINT-012A.
+- The first staged session-doc hook rejected the new brief's lowercase
+  `Required reading` heading.
+- The first hosted repository, Python, and control-plane jobs could not import
+  `jsonschema`; their aggregate PR Gate therefore failed.
+
+### Root causes and resolutions
+
+- Permission metadata had been added incrementally to only 47 of 125 active
+  operations; absence was tolerated by discovery even though permission lookup
+  failed closed. Every canonical operation now declares one of the four known
+  levels, with explicit mode elevations for mixed read/write commands.
+- Aliases previously lived in both per-task fields and a hard-coded tool map,
+  with no normalization/ownership invariant. All aliases now live normalized in
+  the canonical registry; duplicate owners and operation collisions fail.
+- The script counter intentionally covers only active top-level tools. The new
+  implementation was placed in `scripts/control_plane/`, leaving 113/113
+  coverage exact while providing a namespaced control module.
+- The stale brief had no live-state guard after the predecessor merge. It now
+  records the exact MAINT-012A base, boundary, current parity, and next action.
+- Active entry documents now point to the control registry and compact validator;
+  historical audits, deprecated guides, and immutable receipts remain unchanged.
+- Session handoff discovery recognizes dated headings only when they retain the
+  `Session` marker. Restoring `Session: MAINT-012A` made the generated block bind
+  to the current entry and exact MAINT-012A receipt.
+- The session checker intentionally treats `Required Reading` as an exact
+  structural contract. Restoring that capitalization made the focused staged
+  hook decisive without weakening the checker.
+- `jsonschema` is an existing optional `validation` extra, while the affected
+  hosted lanes intentionally install `Python[dev]`. The local full environment
+  masked that difference. The loader now evaluates the exact schema keywords it
+  uses with the Python standard library, preserving strict validation without a
+  dependency or workflow change.
+- Proof: `./run.sh control validate` reports PASS at 125 active operations and
+  113/113 scripts; the two focused control/governance files pass 61 tests; the
+  legacy projection check, tool stats, find alias smoke, and permission audit
+  pass. Final consolidated gates remain acceptance evidence outside the frozen
+  candidate content.
+
+### Notes
+
+- MAINT-012A does not retire indexes, cache test evidence, reschedule scanners,
+  delete/move legacy scripts, change CI topology, or alter product/release
+  behavior. Those boundaries remain separately reviewable.
+
+
 ## 2026-08-22 — Session: MAINT-011 developer gate hygiene
 
 **Agent:** Codex (`governance` + `ops`, sole writer)

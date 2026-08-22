@@ -2,17 +2,17 @@
   "folder": "scripts",
   "type": "python-package",
   "description": "> Development, validation, discovery, release-preparation, and maintenance tools.",
-  "last_updated": "2026-08-22",
-  "file_count": 116,
+  "last_updated": "2026-08-23",
+  "file_count": 118,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 80,
-      "last_updated": "2026-08-17",
+      "size_lines": 86,
+      "last_updated": "2026-08-23",
       "title": "Scripts",
       "description": "> Development, validation, discovery, release-preparation, and maintenance tools. > Git/GitHub lifecycle wrappers were retired on 2026-08-09; Codex owns that",
-      "content_hash": "fdbadaf7daa1"
+      "content_hash": "0ea3bd3f5b98"
     },
     {
       "name": "agent_brief.sh",
@@ -787,8 +787,8 @@
     {
       "name": "audit_permissions.py",
       "type": "python",
-      "size_lines": 468,
-      "last_updated": "2026-08-17",
+      "size_lines": 465,
+      "last_updated": "2026-08-23",
       "description": "Permission audit report for all agents.",
       "classes": [
         {
@@ -807,7 +807,7 @@
       "functions": [
         {
           "name": "audit_automation_permission_metadata",
-          "description": "Validate only explicitly declared automation permission metadata."
+          "description": "Validate canonical operation permission metadata fail-closed."
         },
         {
           "name": "audit_permissions",
@@ -823,10 +823,10 @@
       "constants": [
         "_WRITE_TOOLS",
         "_RUN_TOOLS",
-        "_AUTOMATION_MAP",
+        "_CONTROL_PLANE",
         "_KNOWN_LEVELS"
       ],
-      "content_hash": "eb0554d88a5b"
+      "content_hash": "b64e5bc14879"
     },
     {
       "name": "audit_readiness_report.py",
@@ -944,15 +944,15 @@
     {
       "name": "automation-map.json",
       "type": "config",
-      "last_updated": "2026-08-22",
+      "last_updated": "2026-08-23",
       "top_level_keys": [
         "_comment",
-        "_updated",
         "_usage",
+        "_source",
         "_coverage",
         "tasks"
       ],
-      "content_hash": "73e9fbfe2870"
+      "content_hash": "1adffba8d581"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -1799,7 +1799,7 @@
       "name": "check_governance.py",
       "type": "python",
       "size_lines": 1042,
-      "last_updated": "2026-08-17",
+      "last_updated": "2026-08-23",
       "description": "Unified governance checker — folder structure + compliance validation.",
       "classes": [
         {
@@ -1953,7 +1953,7 @@
         "DEFAULT_RULES",
         "RULES"
       ],
-      "content_hash": "451b50e738a1"
+      "content_hash": "f8fb48767430"
     },
     {
       "name": "check_instruction_drift.py",
@@ -2295,9 +2295,9 @@
     {
       "name": "check_scripts_index.py",
       "type": "python",
-      "size_lines": 223,
-      "last_updated": "2026-08-17",
-      "description": "Ensure scripts/index.json and automation-map.json match the scripts folder contents.",
+      "size_lines": 244,
+      "last_updated": "2026-08-23",
+      "description": "Ensure script indexes and the canonical control plane match scripts on disk.",
       "functions": [
         {
           "name": "main"
@@ -2310,7 +2310,7 @@
         "AUTOMATION_MAP_PATH",
         "SCRIPT_EXTENSIONS"
       ],
-      "content_hash": "1531f18bde50"
+      "content_hash": "90c9c1af7a2f"
     },
     {
       "name": "check_tasks_format.py",
@@ -2593,6 +2593,35 @@
         }
       ],
       "content_hash": "c584f427c308"
+    },
+    {
+      "name": "control-plane.json",
+      "type": "config",
+      "last_updated": "2026-08-23",
+      "top_level_keys": [
+        "$schema",
+        "schema_version",
+        "registry_kind",
+        "metadata",
+        "operations"
+      ],
+      "content_hash": "548958e4e9f3"
+    },
+    {
+      "name": "control-plane.schema.json",
+      "type": "config",
+      "last_updated": "2026-08-23",
+      "top_level_keys": [
+        "$schema",
+        "$id",
+        "title",
+        "type",
+        "additionalProperties",
+        "required",
+        "properties",
+        "$defs"
+      ],
+      "content_hash": "80229b1c082c"
     },
     {
       "name": "create_doc.py",
@@ -3025,13 +3054,13 @@
     {
       "name": "find_automation.py",
       "type": "python",
-      "size_lines": 192,
-      "last_updated": "2026-08-17",
-      "description": "Find the right automation script for a task.",
+      "size_lines": 191,
+      "last_updated": "2026-08-23",
+      "description": "Find the right registered operation for a task.",
       "functions": [
         {
           "name": "load_automation_map",
-          "description": "Load the automation map."
+          "description": "Return the legacy-shaped view generated from the canonical registry."
         },
         {
           "name": "active_tasks",
@@ -3082,7 +3111,7 @@
           "name": "main"
         }
       ],
-      "content_hash": "f204343ade3b"
+      "content_hash": "198a3584a2fe"
     },
     {
       "name": "fix_broken_links.py",
@@ -4242,8 +4271,8 @@
     {
       "name": "prompt_router.py",
       "type": "python",
-      "size_lines": 700,
-      "last_updated": "2026-08-17",
+      "size_lines": 697,
+      "last_updated": "2026-08-23",
       "description": "Prompt router — routes natural language queries to the best agent + skills.",
       "classes": [
         {
@@ -4282,11 +4311,10 @@
         }
       ],
       "constants": [
-        "AUTOMATION_MAP_PATH",
         "STOPWORDS",
         "GENERIC_TASK_WORDS"
       ],
-      "content_hash": "74fff5403eef"
+      "content_hash": "bdbaed7dbf78"
     },
     {
       "name": "python_runtime.sh",
@@ -4492,7 +4520,7 @@
       "name": "session.py",
       "type": "python",
       "size_lines": 2580,
-      "last_updated": "2026-08-22",
+      "last_updated": "2026-08-23",
       "description": "Unified session management CLI.",
       "functions": [
         {
@@ -4607,7 +4635,7 @@
         "HANDOFF_DATE_RE",
         "COMMIT_HASH_RE"
       ],
-      "content_hash": "3096c0f11f01"
+      "content_hash": "45380a77d517"
     },
     {
       "name": "session_store.py",
@@ -5144,8 +5172,8 @@
     {
       "name": "tool_permissions.py",
       "type": "python",
-      "size_lines": 437,
-      "last_updated": "2026-08-17",
+      "size_lines": 454,
+      "last_updated": "2026-08-23",
       "description": "Tool permission enforcement for agent operations.",
       "classes": [
         {
@@ -5195,16 +5223,15 @@
       ],
       "constants": [
         "_PERMISSION_LEVELS",
-        "_REGISTRY_PATH",
-        "_AUTOMATION_MAP_PATH"
+        "_REGISTRY_PATH"
       ],
-      "content_hash": "0642c1206c41"
+      "content_hash": "c7f8b3cd8b71"
     },
     {
       "name": "tool_registry.py",
       "type": "python",
-      "size_lines": 559,
-      "last_updated": "2026-08-22",
+      "size_lines": 540,
+      "last_updated": "2026-08-23",
       "description": "Unified tool registry — connects agents, skills, scripts, and operations.",
       "classes": [
         {
@@ -5223,7 +5250,7 @@
         },
         {
           "name": "load_registry",
-          "description": "Load unified tool registry from agent_registry.json and automation-map.json."
+          "description": "Load unified tools from the agent and canonical control registries."
         },
         {
           "name": "infer_agent_from_task",
@@ -5302,10 +5329,9 @@
         }
       ],
       "constants": [
-        "TOOL_ALIASES",
         "STOPWORDS"
       ],
-      "content_hash": "aa83afa41096"
+      "content_hash": "d4d93888cabd"
     },
     {
       "name": "update_test_stats.py",
@@ -5665,11 +5691,17 @@
   ],
   "subfolders": [
     {
+      "name": "control_plane",
+      "path": "control_plane/",
+      "file_count": 2,
+      "is_package": true
+    },
+    {
       "name": "hooks",
       "path": "hooks/",
       "file_count": 3,
       "is_package": true
     }
   ],
-  "content_hash": "3c1a1215f364e643"
+  "content_hash": "da46d3aa131b4d25"
 }

@@ -2,8 +2,8 @@
   "folder": "docs/planning",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-08-22",
-  "file_count": 24,
+  "last_updated": "2026-08-23",
+  "file_count": 25,
   "files": [
     {
       "name": "README.md",
@@ -137,6 +137,14 @@
       "content_hash": "e98785dedb6b"
     },
     {
+      "name": "maint-012-control-plane-modernization.md",
+      "type": "documentation",
+      "size_lines": 133,
+      "last_updated": "2026-08-23",
+      "description": "Modernize the old script, discovery, permission, index, scanner, and validation control system as one planned program without a repository-wide rewrite in one",
+      "content_hash": "8d38402859f5"
+    },
+    {
       "name": "memory.md",
       "type": "documentation",
       "size_lines": 411,
@@ -155,11 +163,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 47,
-      "last_updated": "2026-08-22",
+      "size_lines": 41,
+      "last_updated": "2026-08-23",
       "title": "Next Session Briefing",
-      "description": "<!-- HANDOFF:START --> - Date: 2026-08-22",
-      "content_hash": "b12807ca29e5"
+      "description": "<!-- HANDOFF:START --> - Date: 2026-08-23",
+      "content_hash": "d7368bc043ee"
     },
     {
       "name": "pre-release-checklist.md",
@@ -206,5 +214,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "555febd8f6dd499e"
+  "content_hash": "d1341c7213fd04b9"
 }

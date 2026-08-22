@@ -3,8 +3,8 @@
 This document describes the test taxonomy and structure for the structural_engineering_lib test suite.
 
 **Type:** Python Package
-**Last Updated:** 2026-08-22
-**Files:** 75
+**Last Updated:** 2026-08-23
+**Files:** 76
 
 ## Documentation Files
 
@@ -18,7 +18,7 @@ This document describes the test taxonomy and structure for the structural_engin
 |------|-------------|---------|-----------|-------|
 | [__init__.py](__init__.py) |  | 0 | 0 | 1 |
 | [conftest.py](conftest.py) | Pytest configuration and Hypothesis profiles for the test su | 0 | 6 | 131 |
-| [test_agent_governance_automation.py](test_agent_governance_automation.py) | Regression tests for agent-governance automation controls. | 0 | 20 | 642 |
+| [test_agent_governance_automation.py](test_agent_governance_automation.py) | Regression tests for agent-governance automation controls. | 0 | 20 | 640 |
 | [test_api_classification.py](test_api_classification.py) | Executable truth checks for the Alpha API classification reg | 0 | 4 | 105 |
 | [test_api_manifest_tools.py](test_api_manifest_tools.py) | Regression tests for the single canonical public API manifes | 0 | 5 | 134 |
 | [test_api_results.py](test_api_results.py) | Tests for API result dataclasses. | 3 | 0 | 394 |
@@ -38,6 +38,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_column_helical.py](test_column_helical.py) | Tests for IS 456 Cl 39.4 helical reinforcement check. | 7 | 0 | 356 |
 | [test_column_long.py](test_column_long.py) | Tests for IS 456 Cl 39.7 long (slender) column design. | 15 | 0 | 662 |
 | [test_column_return_types.py](test_column_return_types.py) | Tests for UX-02: Column API return type unification. | 7 | 6 | 349 |
+| [test_control_plane.py](test_control_plane.py) | Contract tests for the canonical repository control plane. | 0 | 10 | 156 |
 | [test_core.py](test_core.py) | Tests for structural_lib.core module. | 6 | 0 | 176 |
 | [test_core_types.py](test_core_types.py) | Tests for core types and error dataclasses. | 11 | 0 | 391 |
 | [test_dashboard.py](test_dashboard.py) | Tests for the dashboard analytics module. | 4 | 0 | 259 |

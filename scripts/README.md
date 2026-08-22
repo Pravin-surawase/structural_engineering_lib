@@ -17,6 +17,7 @@
 ./run.sh frontend check
 ./run.sh find "topic"
 ./run.sh find --api function_name
+./run.sh control validate
 ./run.sh audit
 ./run.sh health
 ./run.sh generate indexes
@@ -50,6 +51,7 @@ hook enforcement and scripts that automate the Git lifecycle are prohibited.
 | Task intake | `run.sh task brief` | Read-only lane, base, worktree, route, and safe-start summary |
 | Python runtime | `python_runtime.sh --diagnose` | Prove linked-worktree import identity with `source_bound=true` |
 | Discovery | `find_automation.py` | Find an existing project automation |
+| Control registry | `run.sh control` | Validate/query canonical operations, permissions, targets, and compatibility projection |
 | API discovery | `discover_api_signatures.py` | Exact Python API signatures |
 | Files | `safe_file_move.py` | Move files after a dry run and link scan |
 | Files | `safe_file_delete.py` | Delete files after a dry run and reference scan |
@@ -77,3 +79,7 @@ hook enforcement and scripts that automate the Git lifecycle are prohibited.
 The generated inventories [index.json](index.json) and [index.md](index.md) are
 the exhaustive script catalog. Regenerate them after adding, removing, or
 renaming scripts.
+
+Operation metadata is canonical in [control-plane.json](control-plane.json).
+[automation-map.json](automation-map.json) is generated compatibility data;
+refresh it only with `./run.sh control export-legacy --write`.

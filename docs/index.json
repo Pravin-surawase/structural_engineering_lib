@@ -2,7 +2,7 @@
   "folder": "docs",
   "type": "documentation",
   "description": "Guides, references, evidence, and contributor material for the",
-  "last_updated": "2026-08-22",
+  "last_updated": "2026-08-23",
   "file_count": 6,
   "files": [
     {
@@ -17,20 +17,20 @@
     {
       "name": "SESSION_LOG.md",
       "type": "documentation",
-      "size_lines": 4652,
-      "last_updated": "2026-08-22",
+      "size_lines": 4754,
+      "last_updated": "2026-08-23",
       "title": "Session Log",
       "description": "> Append-only decision log for AI agent sessions. > Earlier sessions (1-100): SESSION_LOG_through_session_100.md",
-      "content_hash": "722e099733d2"
+      "content_hash": "27ae59a1a2e2"
     },
     {
       "name": "TASKS.md",
       "type": "documentation",
-      "size_lines": 742,
-      "last_updated": "2026-08-22",
+      "size_lines": 743,
+      "last_updated": "2026-08-23",
       "title": "Task Board",
       "description": "> **Single source of truth for active work.** Keep it short and current. - **WIP = 2** (max 2 active tasks at once)",
-      "content_hash": "822d948e5769"
+      "content_hash": "d867fcf174f7"
     },
     {
       "name": "WORKLOG.md",
@@ -57,7 +57,7 @@
     {
       "name": "docs-index.json",
       "type": "config",
-      "last_updated": "2026-08-22",
+      "last_updated": "2026-08-23",
       "top_level_keys": [
         "version",
         "generated",
@@ -65,7 +65,7 @@
         "docs",
         "navigation"
       ],
-      "content_hash": "a8a96943df55"
+      "content_hash": "cf688735e887"
     }
   ],
   "subfolders": [
@@ -181,7 +181,7 @@
     {
       "name": "planning",
       "path": "planning/",
-      "file_count": 26
+      "file_count": 27
     },
     {
       "name": "publications",
@@ -208,9 +208,9 @@
     {
       "name": "verification",
       "path": "verification/",
-      "file_count": 226,
+      "file_count": 227,
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
     }
   ],
-  "content_hash": "a6accaf9f5c0599e"
+  "content_hash": "bb6e2bafe6cf03bf"
 }

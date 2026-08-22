@@ -883,7 +883,7 @@ def check_automation_permissions(report: GovernanceReport) -> None:
     for anomaly in anomalies:
         report.add_error(
             anomaly.message,
-            location="scripts/automation-map.json",
+            location="scripts/control-plane.json",
             rule=f"Permission metadata ({anomaly.agent})",
         )
 

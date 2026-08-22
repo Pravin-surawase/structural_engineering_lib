@@ -3,18 +3,20 @@
 > Development, validation, discovery, release-preparation, and maintenance tools.
 
 **Type:** Python Package
-**Last Updated:** 2026-08-22
-**Files:** 116
+**Last Updated:** 2026-08-23
+**Files:** 118
 
 ## Config Files
 
 - [automation-map.json](automation-map.json)
+- [control-plane.json](control-plane.json)
+- [control-plane.schema.json](control-plane.schema.json)
 
 ## Documentation Files
 
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
-| [README.md](README.md) | Scripts | > Development, validation, discovery, release-preparation, a | 80 |
+| [README.md](README.md) | Scripts | > Development, validation, discovery, release-preparation, a | 86 |
 
 ## Python Files
 
@@ -30,7 +32,7 @@
 | [agent_trends.py](agent_trends.py) | Agent trends — time series analysis and degradation detectio | 0 | 7 | 383 |
 | [audit_error_handling.py](audit_error_handling.py) | Audit error handling compliance across structural_lib module | 2 | 3 | 286 |
 | [audit_input_validation.py](audit_input_validation.py) | Audit validation ownership across maintained IS 456 calculat | 4 | 5 | 588 |
-| [audit_permissions.py](audit_permissions.py) | Permission audit report for all agents. | 3 | 3 | 468 |
+| [audit_permissions.py](audit_permissions.py) | Permission audit report for all agents. | 3 | 3 | 465 |
 | [audit_readiness_report.py](audit_readiness_report.py) | Audit Readiness Report Generator | 2 | 13 | 930 |
 | [batch_migrate_runner.py](batch_migrate_runner.py) | Batch migration runner with per-operation rollback logs. | 1 | 2 | 467 |
 | [benchmark_api.py](benchmark_api.py) | API Performance Benchmark Script. | 4 | 9 | 837 |
@@ -59,7 +61,7 @@
 | [check_public_route_safety.py](check_public_route_safety.py) | Run the frozen adversarial regressions for maintained public | 0 | 1 | 97 |
 | [check_python_version.py](check_python_version.py) | Python Version Consistency Checker | 0 | 5 | 208 |
 | [check_repo_hygiene.py](check_repo_hygiene.py) | Fail if tracked hygiene artifacts exist in the repository. | 0 | 1 | 44 |
-| [check_scripts_index.py](check_scripts_index.py) | Ensure scripts/index.json and automation-map.json match the  | 0 | 1 | 223 |
+| [check_scripts_index.py](check_scripts_index.py) | Ensure script indexes and the canonical control plane match  | 0 | 1 | 244 |
 | [check_tasks_format.py](check_tasks_format.py) | Validate docs/TASKS.md structure and WIP rules. | 0 | 1 | 161 |
 | [check_token_efficiency.py](check_token_efficiency.py) | Validate repository-side Codex token-efficiency controls. | 0 | 2 | 206 |
 | [check_type_annotations.py](check_type_annotations.py) | Type Annotation Checker for the Python Structural Library | 4 | 1 | 542 |
@@ -74,7 +76,7 @@
 | [evolve.py](evolve.py) | Self-evolution engine — orchestrates project health, feedbac | 0 | 12 | 552 |
 | [export_paper_data.py](export_paper_data.py) | Export agent performance data for academic paper. | 0 | 8 | 388 |
 | [external_cli_test.py](external_cli_test.py) | External CLI smoke test (S-007). | 1 | 1 | 401 |
-| [find_automation.py](find_automation.py) | Find the right automation script for a task. | 0 | 8 | 192 |
+| [find_automation.py](find_automation.py) | Find the right registered operation for a task. | 0 | 8 | 191 |
 | [fix_broken_links.py](fix_broken_links.py) | Fix broken internal links in markdown files. | 0 | 6 | 268 |
 | [generate_api_classification.py](generate_api_classification.py) | Generate or validate the Alpha public API classification reg | 0 | 2 | 314 |
 | [generate_api_manifest.py](generate_api_manifest.py) | Generate or validate the public API manifest for structural_ | 0 | 1 | 159 |
@@ -95,7 +97,7 @@
 | [pipeline_state.py](pipeline_state.py) | Pipeline state tracking for multi-step agent workflows. | 2 | 17 | 868 |
 | [preflight.py](preflight.py) | Pre-flight check — catch common mistakes BEFORE they happen. | 0 | 10 | 219 |
 | [project_health.py](project_health.py) | Unified project health scanner with auto-fix capability. | 3 | 9 | 908 |
-| [prompt_router.py](prompt_router.py) | Prompt router — routes natural language queries to the best  | 1 | 5 | 700 |
+| [prompt_router.py](prompt_router.py) | Prompt router — routes natural language queries to the best  | 1 | 5 | 697 |
 | [release.py](release.py) | Unified release management CLI. | 0 | 11 | 2276 |
 | [safe_file_delete.py](safe_file_delete.py) | Safe file delete script with reference checking. | 0 | 5 | 355 |
 | [safe_file_move.py](safe_file_move.py) | Safe file move script with automatic link updates. | 0 | 6 | 500 |
@@ -107,8 +109,8 @@
 | [test_changed.py](test_changed.py) | Smart test runner — run only tests related to changed files. | 0 | 3 | 219 |
 | [test_cli_smoke.py](test_cli_smoke.py) | CLI Smoke Tests — validate all key scripts work correctly. | 0 | 3 | 298 |
 | [test_import_pipeline.py](test_import_pipeline.py) | End-to-end test of all import paths. | 0 | 20 | 412 |
-| [tool_permissions.py](tool_permissions.py) | Tool permission enforcement for agent operations. | 1 | 5 | 437 |
-| [tool_registry.py](tool_registry.py) | Unified tool registry — connects agents, skills, scripts, an | 1 | 12 | 559 |
+| [tool_permissions.py](tool_permissions.py) | Tool permission enforcement for agent operations. | 1 | 5 | 454 |
+| [tool_registry.py](tool_registry.py) | Unified tool registry — connects agents, skills, scripts, an | 1 | 12 | 540 |
 | [update_test_stats.py](update_test_stats.py) | Update Test Stats — Dynamic test count updater. | 0 | 5 | 211 |
 | [validate_api_contracts.py](validate_api_contracts.py) | API Contract Validator. | 2 | 9 | 647 |
 | [validate_imports.py](validate_imports.py) | Validate Python imports across the project after migration. | 0 | 6 | 365 |
@@ -141,4 +143,5 @@
 
 | Folder | Files | Description |
 |--------|-------|-------------|
+| [control_plane/](control_plane/) 📦 | 2 |  |
 | [hooks/](hooks/) 📦 | 3 |  |

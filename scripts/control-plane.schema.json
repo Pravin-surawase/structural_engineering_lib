@@ -1,0 +1,196 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://structural-engineering-lib.dev/schemas/control-plane-v1.json",
+  "title": "Structural Engineering Library Control Plane",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_version",
+    "registry_kind",
+    "metadata",
+    "operations"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "./control-plane.schema.json"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "registry_kind": {
+      "const": "structural-engineering-control-plane"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner", "purpose", "compatibility_projection"],
+      "properties": {
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "compatibility_projection": {
+          "const": "scripts/automation-map.json"
+        },
+        "initial_import": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "operations": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^[a-z0-9][a-z0-9 ._:/+-]*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/operation"
+      }
+    }
+  },
+  "$defs": {
+    "permission": {
+      "enum": [
+        "ReadOnly",
+        "ReadOnlyTerminal",
+        "WorkspaceWrite",
+        "DangerFullAccess"
+      ]
+    },
+    "stringList": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "commandStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["argv", "cwd"],
+      "properties": {
+        "argv": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "cwd": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "command": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["display", "steps"],
+      "properties": {
+        "display": {
+          "type": "string",
+          "minLength": 1
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/commandStep"
+          }
+        }
+      }
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "group",
+        "description",
+        "status",
+        "command",
+        "permission"
+      ],
+      "properties": {
+        "group": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": ["active", "deprecated"]
+        },
+        "command": {
+          "$ref": "#/$defs/command"
+        },
+        "permission": {
+          "$ref": "#/$defs/permission"
+        },
+        "permission_modes": {
+          "type": "object",
+          "propertyNames": {
+            "minLength": 1
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/permission"
+          }
+        },
+        "options": {
+          "type": "object",
+          "propertyNames": {
+            "minLength": 1
+          },
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "aliases": {
+          "$ref": "#/$defs/stringList"
+        },
+        "never_use": {
+          "$ref": "#/$defs/stringList"
+        },
+        "context_docs": {
+          "$ref": "#/$defs/stringList"
+        },
+        "replacement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "agent": {
+          "type": "string",
+          "minLength": 1
+        },
+        "prereq": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "deprecated"
+              }
+            }
+          },
+          "then": {
+            "required": ["replacement"]
+          }
+        }
+      ]
+    }
+  }
+}

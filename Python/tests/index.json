@@ -2,8 +2,8 @@
   "folder": "Python/tests",
   "type": "python-package",
   "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
-  "last_updated": "2026-08-22",
-  "file_count": 75,
+  "last_updated": "2026-08-23",
+  "file_count": 76,
   "files": [
     {
       "name": "README.md",
@@ -64,8 +64,8 @@
     {
       "name": "test_agent_governance_automation.py",
       "type": "python",
-      "size_lines": 642,
-      "last_updated": "2026-08-22",
+      "size_lines": 640,
+      "last_updated": "2026-08-23",
       "description": "Regression tests for agent-governance automation controls.",
       "functions": [
         {
@@ -155,7 +155,7 @@
         "REPO_ROOT",
         "SCRIPTS_DIR"
       ],
-      "content_hash": "76d20b516a7f"
+      "content_hash": "96c6d18aaa24"
     },
     {
       "name": "test_api_classification.py",
@@ -1513,6 +1513,53 @@
         }
       ],
       "content_hash": "eff4f4a8aa06"
+    },
+    {
+      "name": "test_control_plane.py",
+      "type": "python",
+      "size_lines": 156,
+      "last_updated": "2026-08-23",
+      "description": "Contract tests for the canonical repository control plane.",
+      "functions": [
+        {
+          "name": "test_current_registry_has_frozen_operation_and_script_parity"
+        },
+        {
+          "name": "test_control_validator_runs_without_site_packages"
+        },
+        {
+          "name": "test_legacy_projection_is_exact_and_deterministic"
+        },
+        {
+          "name": "test_aliases_have_one_owner_and_drive_all_discovery_consumers"
+        },
+        {
+          "name": "test_permission_lookup_uses_explicit_canonical_defaults_and_modes"
+        },
+        {
+          "name": "test_structured_commands_do_not_store_shell_chains_as_one_step"
+        },
+        {
+          "name": "test_schema_rejects_missing_permission"
+        },
+        {
+          "name": "test_schema_rejects_unknown_fields_wrong_types_and_missing_replacement"
+        },
+        {
+          "name": "test_semantics_reject_alias_collision_missing_target_and_display_drift"
+        },
+        {
+          "name": "test_loader_rejects_duplicate_json_keys",
+          "params": [
+            "tmp_path"
+          ]
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "SCRIPTS_DIR"
+      ],
+      "content_hash": "0b4d69ec3dae"
     },
     {
       "name": "test_core.py",
@@ -5065,5 +5112,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "9dd1f288ece63337"
+  "content_hash": "e61de0b51878cc8e"
 }

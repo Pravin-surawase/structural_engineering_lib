@@ -20,6 +20,7 @@
 #   generate  Generate indexes, SDKs, manifests
 #   route     Route tasks to the right agent
 #   tools     Tool & script discovery
+#   control   Canonical control-plane registry
 #   pipeline  Pipeline state tracking
 #   parity    Cross-layer implementation/test parity dashboard
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -803,6 +804,13 @@ _cmd_tools() {
     esac
 }
 
+# ── Command: control ───────────────────────────────────────────────────────
+
+_cmd_control() {
+    _require_venv
+    "$VENV" "$SCRIPTS/control_plane/cli.py" "$@"
+}
+
 # ── Command: pipeline ──────────────────────────────────────────────────────
 
 _cmd_pipeline() {
@@ -934,6 +942,7 @@ _print_usage() {
     echo -e "  ${GREEN}route${NC}       Route natural language to the right agent"
     echo -e "  ${GREEN}task${NC}        Build a lane-safe task intake brief"
     echo -e "  ${GREEN}tools${NC}       Tool & script discovery (list, find,stats)"
+    echo -e "  ${GREEN}control${NC}     Validate and query the canonical operation registry"
     echo -e "  ${GREEN}pipeline${NC}    Pipeline state tracking (new, advance, show)"
     echo -e "  ${GREEN}coverage${NC}    Namespaced decorator registration report"
     echo -e "  ${GREEN}parity${NC}      Declared capability and cross-layer parity dashboard"
@@ -969,6 +978,7 @@ _dispatch_help() {
         route)    _cmd_route ;;
         task)     _help_task ;;
         tools)    _cmd_tools ;;
+        control)  _cmd_control --help ;;
         pipeline) _cmd_pipeline ;;
         coverage) _cmd_coverage ;;
         parity)   _help_parity ;;
@@ -1001,6 +1011,7 @@ _run_sh() {
         'route:Route tasks to the right agent'
         'task:Build a lane-safe task intake brief'
         'tools:Tool and script discovery'
+        'control:Canonical operation registry'
         'pipeline:Pipeline state tracking'
         'parity:Cross-layer parity dashboard'
         'efficiency:Validate low-token controls'
@@ -1019,6 +1030,7 @@ _run_sh() {
     local -a audit_opts=('--score' '--errors' '--inputs' '--diagnostics')
     local -a release_subs=('preflight' 'run' 'verify' 'check-docs' 'checklist' 'permission-check' 'footing-inclusion-check')
     local -a efficiency_subs=('check' 'prompt')
+    local -a control_subs=('validate' 'find' 'list' 'stats' 'export-legacy')
 
     if (( CURRENT == 2 )); then
         _describe 'command' commands
@@ -1036,6 +1048,7 @@ _run_sh() {
             audit) _values 'option' $audit_opts ;;
             release) _values 'subcommand' $release_subs ;;
             efficiency) _values 'subcommand' $efficiency_subs ;;
+            control) _values 'subcommand' $control_subs ;;
         esac
     elif (( CURRENT == 4 )); then
         case "${words[2]}" in
@@ -1101,6 +1114,7 @@ main() {
         route)    _cmd_route "$@" ;;
         task)     _cmd_task "$@" ;;
         tools)    _cmd_tools "$@" ;;
+        control)  _cmd_control "$@" ;;
         coverage) _cmd_coverage "$@" ;;
         parity)    _cmd_parity "$@" ;;
         diagnose) _require_venv; "$VENV" "$SCRIPTS/diagnose_ci.py" "$@" ;;

@@ -21,11 +21,18 @@ import fnmatch
 import json
 import sys
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from _lib.output import print_json  # noqa: E402
 from _lib.utils import REPO_ROOT  # noqa: E402
+from control_plane import (  # noqa: E402
+    REGISTRY_PATH,
+    ControlPlaneError,
+    load_registry as load_control_registry,
+    operation_map,
+)
 
 # ---------------------------------------------------------------------------
 # Operation classifications
@@ -102,7 +109,6 @@ def _level_rank(level: str) -> int:
 # ---------------------------------------------------------------------------
 
 _REGISTRY_PATH = REPO_ROOT / "agents" / "agent_registry.json"
-_AUTOMATION_MAP_PATH = REPO_ROOT / "scripts" / "automation-map.json"
 
 
 def _load_registry() -> list[dict]:
@@ -128,14 +134,25 @@ def _find_agent(agents: list[dict], name: str) -> dict | None:
     return None
 
 
-def _load_automation_tasks() -> dict[str, dict]:
-    """Load explicit operation metadata from the automation map."""
+@lru_cache(maxsize=4)
+def _load_cached_automation_tasks(
+    modified_ns: int, size: int
+) -> dict[str, dict]:
+    """Load validated operation metadata for one exact registry file state."""
+    del modified_ns, size
     try:
-        data = json.loads(_AUTOMATION_MAP_PATH.read_text(encoding="utf-8"))
-    except (FileNotFoundError, json.JSONDecodeError, OSError):
+        return operation_map(load_control_registry())
+    except ControlPlaneError:
         return {}
-    tasks = data.get("tasks", {})
-    return tasks if isinstance(tasks, dict) else {}
+
+
+def _load_automation_tasks() -> dict[str, dict]:
+    """Load operation metadata, revalidating only when registry bytes change."""
+    try:
+        stat = REGISTRY_PATH.stat()
+    except OSError:
+        return {}
+    return _load_cached_automation_tasks(stat.st_mtime_ns, stat.st_size)
 
 
 def resolve_required_permission(operation: str, *, mode: str | None = None) -> str:
