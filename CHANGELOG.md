@@ -4,13 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.23.1a2] — Prepared candidate (unreleased; on hold)
+## [0.23.1a2] — Released Alpha (2026-08-17)
 
-Prepared Alpha candidate for strict project input safety, traceable result
-contracts, and additional bounded component workflows. At candidate freeze it
-is not tagged or published. Any later publication requires immutable review,
-hosted checks, and separate exact owner authorization. This is case-qualified
-software evidence, not whole-building safety or professional approval.
+Published the reviewed Alpha for strict project input safety, traceable result
+contracts, and additional bounded component workflows. Tag `v0.23.1a2` targets
+`09861d3d5ef758abbe0f7c40b8b49b2f90510765`; the public wheel SHA-256 is
+`279b827052e453db5cedc2664d8d3036ffd4d315d4067c34628356c2671843a9`.
+This remains case-qualified software evidence, not whole-building safety or
+professional approval. Later Gravity and E1 merges are not part of this
+immutable release.
 
 ### Added
 

@@ -5,17 +5,18 @@
 **Status:** Review
 **Importance:** High
 **Created:** 2026-03-31
-**Last Updated:** 2026-08-17
+**Last Updated:** 2026-08-22
 
 ## Current State
 
-Prepared candidate source metadata: 0.23.1a2
-Current public release: v0.23.1a1 Alpha
+Current source metadata: 0.23.1a2
+Current public Alpha: v0.23.1a2
 
-- **Published source:** tag `v0.23.1a1` at `95bed5621c2ff6e5bbcf1a25b7ac476f92ae4307`
-- **Prepared target:** v0.23.1a2 Alpha candidate; not tagged or published
-- **Candidate base:** `970a78c1931a3aa0439f487e6892a888bb113962`
-- **Publication state:** `HOLD`; target authorization is recorded, while refreshed exact candidate review and hosted receipts remain pending
+- **Published source:** tag `v0.23.1a2` at `09861d3d5ef758abbe0f7c40b8b49b2f90510765`
+- **Published wheel:** 665,658 bytes; SHA-256 `279b827052e453db5cedc2664d8d3036ffd4d315d4067c34628356c2671843a9`
+- **Published sdist:** 549,464 bytes; SHA-256 `64eb3468e20b2dbaf576d0f3862bea6447c293aad330224efb166a6c02043422`
+- **Publication state:** `RELEASED_ALPHA` on PyPI and GitHub on 2026-08-17
+- **Current main boundary:** Gravity Workflow V1 and E1 merged after the tag and are not part of the published artifact
 - **Review policy:** qualified structural-engineering review is required before stable/engineering-use approval, not before this Alpha release
 
 ## Next Alpha Readiness Checklist
@@ -24,14 +25,15 @@ Current public release: v0.23.1a1 Alpha
 - [x] Base the release lane on synchronized `main` at `970a78c1931a3aa0439f487e6892a888bb113962`
 - [x] Run the canonical version preparation gate and update maintained release surfaces
 - [x] Build and verify one exact v0.23.1a2 wheel from the frozen Python tree
-- [ ] Pass required PR checks, exact-head Weekly Verification, and independent candidate review
-- [ ] Record the refreshed exact review receipt after the repaired candidate passes hosted checks
+- [x] Pass required PR checks, exact-head Weekly Verification, and independent candidate review
+- [x] Record the refreshed exact review receipt after the repaired candidate passes hosted checks
 - [x] Owner authorizes the v0.23.1a2 TestPyPI rehearsal, tag, production PyPI publication, and GitHub Release after exact CI evidence passes
 
 The owner granted the target-specific authorization in the active Codex task on
-2026-08-17 and directed publication to continue without another approval after
-the refreshed independent review passes. This authorization remains bounded to
-the reviewed Alpha candidate and does not grant professional approval.
+2026-08-17. The exact Alpha was subsequently tagged and published. This
+authorization remains bounded to that immutable artifact and does not grant
+professional approval or authorize republishing the same version from later
+source.
 
 ### v0.23.1a2 Local Candidate Evidence
 
@@ -41,7 +43,8 @@ the reviewed Alpha candidate and does not grant professional approval.
 - Wheel: 665,658 bytes, SHA-256 `34892d867845d044249236f32b700ab5e10ec558225407a47717fe3c3c2614bb`
 - Installed verification: 5,553 passed, 51 skipped, 2 deselected; installed CLI workflows green
 - Exact candidate UAT: 29/29 cases across 12/12 advertised commands
-- State: local candidate technically ready; publication execution remains held until refreshed hosted review passes
+- State: historical local candidate evidence; the public CI-built artifact was
+  subsequently published with the distinct hashes recorded above
 
 ### v0.23.1a1 Release Authorization
 

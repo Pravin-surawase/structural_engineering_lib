@@ -98,7 +98,7 @@ work.
 | Structural formulas | none |
 | VBA/macros | none |
 | Six-sheet visual review | PASS on 2026-08-22 |
-| Installed desktop Excel | `TO_VERIFY_WINDOWS` against the immutable repair candidate |
+| Installed desktop Excel | PASS — exact workbook opened without recovery or silent repair and retained its pre-open bytes |
 
 ## Frozen D2 verification
 
@@ -127,19 +127,48 @@ impact-mapped check may be repaired and rerun once with its exact evidence.
 | Installed E1 probe | PASS — one accepted row, canonical overall `PASS`; 9,007-byte deterministic review bundle with file SHA-256 `e2920253815f26c7ee005fbc4703fca93fc43f87134965400e9cf427f4273551` and logical hash `cb4df94e331247ad0825fb9a4936fc5ca1dd62bd4b882778cf09aabb39882089` |
 
 Documentation/index validation, the single quick gate, normal hooks, immutable
-commit, source-bound clean audit, hosted checks, and Windows D3 remain in the
-closeout sequence.
+commit, and source-bound clean audit passed before publication. The later
+cumulative integration closeout passed 6,508 Python tests, 31/31 repository
+checks, and exact-head hosted PR Validation without changing the G3 candidate.
 
 ## D3 Windows acceptance
 
-Against the exact immutable repair head, Windows must verify head/tree/wheel,
-library, workbook, and manifest identities; open an unchanged disposable copy
-without recovery or silent repair; then complete the frozen row reconciliation,
-deterministic export, stale/edit, rerun, and close/reopen freshness journey.
-The supported pane Blob download is mandatory. The final result is exactly
-`G3_PASS` or `G3_BLOCKED`, followed by a clean host receipt. ETABS does not
-start.
+Windows validated exact head
+`ede01ef4fb6182a27e3f176e872478304fb5f256`, tree
+`bcc7fcf1b22212950ae530ca87c8bab907b6391f`, one source-bound wheel, the
+15,101-byte packaged workbook, and the installed library identity. The Windows
+wheel SHA-256 was
+`a26d7c367e1bea509a4748e35ceae1ea70d9a952f515b0e761b80bed07d9c56f`;
+the installed library content identity was
+`eafb869ad1f8c1e9c25112a89b6f722bf53331e8499b4e85140b91a8bce68ebf`;
+and the packaged workbook SHA-256 was
+`4cc492bfcbba456342c6358a8dcfe2749cafd723e9ee4fdaefa585f29e35ce63`.
+
+| Evidence | Result |
+|---|---|
+| Native workbook open | PASS — no recovery prompt, silent repair, new repair log, or close-without-save byte change |
+| Frozen rows | PASS — `5 = 2 accepted + 2 blocked + 1 excluded`; residual zero |
+| Required outcomes | derived-depth `PASS`; explicit-depth `FAIL`; numeric-text `BLOCKED`; blank row `EXCLUDED`; populated Torsion `HOLD` |
+| Snapshot 1 | two supported pane downloads byte-identical; file SHA-256 `ea120eef575944db059d053f52d3a9389978af406b67e37d61edeaacc860ceb7` |
+| Stale boundary | calculation-bearing edit immediately produced `STALE` and disabled Export |
+| Snapshot 2 | two downloads byte-identical; file SHA-256 `9db5208a261d23d8c0ccb1104d552e34172502a8c19a01191017c39d5109a08c` |
+| Reopen | explicit Freshness returned `CURRENT`; reopened export matched snapshot 2 byte-for-byte |
+| Review boundary | `NOT_REVIEWED`; `qualified_review_required=true` |
+| Host closeout | `DAY_CLOSE_CLEAN` — Excel/ETABS closed, services stopped, ports free, retained worktrees clean |
+
+The supported pane Blob download completed. No CLI, Python, browser, or manual
+copy substituted for the product export.
+
+## Integration receipt
+
+Cumulative PR #830 contained all predecessor E1 commits as ancestors and passed
+the required local and hosted gates at the unchanged reviewed head. It merged
+to `main` as squash commit
+`b720119ea6a22a2b1963be0a0b9b300fca333d4a`. The merged tree is
+`bcc7fcf1b22212950ae530ca87c8bab907b6391f`, exactly equal to the accepted
+candidate tree. Superseded draft PRs #826-#829 were closed with preservation
+comments; no branch, worktree, artifact, or evidence was deleted.
 
 ## Current verdict
 
-`D0_ROOT_CAUSE_CONFIRMED / REPAIR CONTENT READY / D2 PENDING / G3 HELD`.
+`E1_COMPLETE / G3_PASS / MERGED / DAY_CLOSE_CLEAN`.

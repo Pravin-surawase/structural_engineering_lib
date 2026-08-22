@@ -1,0 +1,66 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-22T07:56:59Z",
+      "query_status": "OK",
+      "reference": "task:E1-G3-CLOSEOUT:user-requested-log-and-close",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_PULL_REQUEST",
+      "MARK_PULL_REQUEST_READY",
+      "MERGE_AFTER_REQUIRED_CHECKS"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-22T07:56:59Z",
+    "prohibited_actions": [
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_ARTIFACT",
+      "DISCARD_USER_CHANGE",
+      "PUBLISH_RELEASE",
+      "REPUBLISH_VERSION_0_23_1A2",
+      "START_INDIA_3_IMPLEMENTATION",
+      "START_ETABS_FILE_SNAPSHOT",
+      "START_LIVE_ETABS",
+      "RUN_ETABS_ANALYSIS",
+      "CLAIM_PROFESSIONAL_APPROVAL"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_PULL_REQUEST",
+        "MARK_PULL_REQUEST_READY",
+        "MERGE_AFTER_REQUIRED_CHECKS"
+      ],
+      "branch": "codex/e1-g3-closeout",
+      "head_sha": "b720119ea6a22a2b1963be0a0b9b300fca333d4a",
+      "task_id": "E1-G3-CLOSEOUT"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "CLOSEOUT_PULL_REQUEST_NOT_CREATED",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_ALL_E1_BRANCHES_WORKTREES_ARTIFACTS_AND_EVIDENCE",
+    "holds": [
+      "NO_BRANCH_OR_WORKTREE_DELETION_AUTHORIZED",
+      "WINDOWS_AND_MAC_EVIDENCE_RETAINED"
+    ],
+    "observed_at_utc": "2026-08-22T07:56:59Z",
+    "owner": "Main Agent under the user-requested E1 log and closeout",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}
