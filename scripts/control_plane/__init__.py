@@ -62,6 +62,16 @@ def _schema_errors(data: dict[str, Any], schema_path: Path) -> list[str]:
     return _validate_schema_value(data, schema, schema, ())
 
 
+def read_strict_json(path: Path) -> dict[str, Any]:
+    """Read a duplicate-key-safe JSON object for another control contract."""
+    return _read_json(path)
+
+
+def schema_errors(data: dict[str, Any], schema_path: Path) -> list[str]:
+    """Validate data with the repository's dependency-free JSON Schema subset."""
+    return _schema_errors(data, schema_path)
+
+
 def _schema_path(path: tuple[str | int, ...]) -> str:
     return "/".join(str(part) for part in path) or "<root>"
 

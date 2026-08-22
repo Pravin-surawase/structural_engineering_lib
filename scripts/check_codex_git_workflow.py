@@ -13,7 +13,11 @@ import json
 import re
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+SCRIPT_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPT_DIR))
+from verification import VerificationError, classify_paths, load_manifest  # noqa: E402
+
+REPO_ROOT = SCRIPT_DIR.parent
 CANONICAL = REPO_ROOT / "docs/git-automation/git-workflow-single-source.md"
 GIT_STATE_AUTHORITY = REPO_ROOT / "scripts/git_state.py"
 HANDOFF_RECEIPT = REPO_ROOT / "scripts/git_handoff_receipt.py"
@@ -553,7 +557,7 @@ def main() -> int:
     if pre_commit.exists():
         pre_commit_text = pre_commit.read_text(encoding="utf-8")
         expected_completion_guard = (
-            "bash scripts/check_unfinished_merge.sh --allow-operation-completion"
+            "scripts/check_all.py --quick --allow-operation-completion"
         )
         if expected_completion_guard not in pre_commit_text:
             errors.append(
@@ -567,8 +571,9 @@ def main() -> int:
         for token in (
             "control_plane:",
             "docs:",
-            "'scripts/**'",
-            "'docs/**'",
+            "python scripts/verification.py plan",
+            "steps.impact.outputs.control_plane",
+            "steps.impact.outputs.docs",
             "control-plane-validation:",
             "documentation-validation:",
             "needs.changes.outputs.control_plane == 'true'",
@@ -607,6 +612,22 @@ def main() -> int:
                 errors.append(
                     "control-plane CI tests do not bind the setup-python interpreter"
                 )
+
+        try:
+            verification_manifest = load_manifest()
+        except VerificationError as exc:
+            errors.append(f"canonical verification routing is invalid: {exc}")
+        else:
+            expected_routes = {
+                "scripts/check_codex_git_workflow.py": "control_plane",
+                "docs/contributing/testing-strategy.md": "docs",
+            }
+            for path, domain in expected_routes.items():
+                plan = classify_paths((path,), verification_manifest)
+                if domain not in plan.domains:
+                    errors.append(
+                        f"required PR Gate routing is missing: {path} -> {domain}"
+                    )
 
     if not DEPLOY_DOCS.exists():
         errors.append("post-merge documentation workflow is missing")

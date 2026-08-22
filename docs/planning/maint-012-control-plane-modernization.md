@@ -28,8 +28,8 @@ evidence a change invalidates.
 | Packet | Outcome | Boundary |
 |---|---|---|
 | `MAINT-012A` | Canonical control registry, schema, loader, CLI, complete permissions, structured commands, and deterministic legacy projection | Complete through PR #840 |
-| `MAINT-012B` | Replace broad generated folder-index dependence with small authoritative manifests and on-demand summaries; retain only indexes proven useful | Active isolated candidate after A |
-| `MAINT-012C` | Add content-addressed impact/evidence reuse and migrate quick/full/hosted validation scheduling to explicit change domains | Separate candidate; no safety gate may be skipped without a proved input identity |
+| `MAINT-012B` | Replace broad generated folder-index dependence with small authoritative manifests and on-demand summaries; retain only indexes proven useful | Complete through PR #841 |
+| `MAINT-012C` | Add content-addressed impact/evidence reuse and migrate quick/full/hosted validation scheduling to explicit change domains | Active isolated candidate; no safety gate may be skipped without a proved input identity |
 | `MAINT-012D` | Consolidate scanners and retire/move obsolete scripts using live callers, ownership, runtime, and replacement evidence | Separate candidate; every deletion/move requires preservation-aware proof |
 
 The order is deliberate: B-D consume the registry contract from A. They must not
@@ -156,6 +156,91 @@ normalization. Those are architecture costs, not isolated formatting defects.
    quick/full gates, normal hooks, and required hosted checks pass on one frozen
    candidate.
 
+## MAINT-012C frozen scope
+
+### Confirmed baseline
+
+- Local `./run.sh check --changed` inspected only `HEAD~1..HEAD`, used a private
+  prefix table, and treated an unmapped path or failed Git query as no work. A
+  real candidate spanning multiple commits could therefore omit earlier impact,
+  while a new root/path could produce a misleading green result.
+- Hosted PR scheduling repeated a separate hand-authored path map inside YAML.
+  Local and hosted ownership could drift without either validator knowing.
+- Quick/full gates had no reusable result identity. The normal commit hook then
+  invoked six controls through separate entry points; four duplicated the quick
+  gate while two were legitimate commit-only controls.
+- The parallel check runner's aggregate-timeout path could omit unfinished
+  futures from its result set instead of failing them explicitly.
+- PR #841's unchanged hosted candidate spent 35-86 seconds in each applicable
+  validation job after a 9-second classifier; retrying the same bytes could not
+  reuse the earlier PASS result.
+
+### Canonical contract
+
+- `scripts/verification-manifest.json` is the single seven-domain map for
+  `python`, `fastapi`, `react`, `excel`, `control_plane`, `docs`, and
+  `repository`. Each path rule is used for both scheduling and evidence inputs,
+  so there is no second fingerprint map to synchronize. Its strict schema and
+  semantic validator cover every current tracked/untracked non-ignored path. A
+  new/unmapped path, invalid base, or Git query failure selects every domain.
+  An unmapped live path is also rejected by strict registry validation, so the
+  all-domain run cannot turn missing ownership into a mergeable green result.
+- `./run.sh verification validate|plan|fingerprint|probe` exposes the read-only
+  schedule and evidence contract; `record` writes only to the Git-common or
+  hosted runner evidence directory after PASS. Local candidate discovery compares
+  the whole branch to `origin/main` plus staged, unstaged, and untracked work;
+  hosted discovery uses the exact event base/head.
+- A PASS identity binds the profile, normalized command, declared domain set,
+  current input-file bytes (including deletions), verification implementation,
+  platform/Python identity, installed distribution versions, and any supplied
+  Node/runner identity. Failed, missing, malformed, partial, or non-matching
+  receipts never skip execution.
+- Local receipts live outside tracked content in the shared Git common
+  directory. Quick and full profiles share receipts for the exact same check;
+  Git-state checks remain fresh. `--no-reuse` forces a new execution.
+- The normal pre-commit hook invokes the quick orchestrator once, so a prior
+  frozen-candidate quick PASS is reused instead of rerunning four overlapping
+  checks. Its two non-overlapping CLI/registry controls remain explicit, and
+  merge-completion commits retain their prior Git-operation exception.
+- Hosted jobs resolve their dependencies/runtime first, then use one exact
+  `actions/cache@v6` key with no prefix restore through one small composite
+  action. Only a separately verified PASS receipt skips the validation body; a
+  cache miss executes and records evidence only after every job step succeeds.
+- The previously unconditional repository bundle is split by ownership:
+  documentation owns versions/tasks/links, Python/FastAPI own architecture,
+  control owns registries/CLI policy, and repository owns YAML, hygiene, and
+  maintenance-script checks. No validation is discarded merely to gain a skip.
+- `test_changed.py` consumes the same whole-candidate plan, retains proved
+  Python/FastAPI focused mappings, runs React/Excel when their domains change,
+  and expands unclear ownership to the applicable full suite.
+
+### MAINT-012C exclusions
+
+- No scanner consolidation, compatibility-script deletion/move, or broad
+  physical script retirement; those remain MAINT-012D.
+- No dependency version, product calculation, public API, FastAPI behavior,
+  React UI, Excel workflow, ETABS, package, release, GitHub-setting, or
+  professional-approval change.
+- No reuse across a runtime/dependency identity that has not been observed, no
+  failed-result cache, no approximate/prefix cache key, and no calendar-only
+  claim that evidence remains valid.
+
+### MAINT-012C acceptance
+
+1. The live manifest is strict, covers every current repository path, and maps
+   unknown paths/query failures to all seven domains in local and hosted plans.
+2. Relevant bytes, commands, domain ownership, runtime/dependencies, and
+   verification-control changes alter the evidence fingerprint; irrelevant
+   domain bytes do not.
+3. Only an exact PASS receipt reuses a check/job. Malformed, failed, missing, or
+   mismatched evidence executes normally, and `--no-reuse` proves the fresh path.
+4. Local changed-test/check scheduling and hosted applicability use the same
+   manifest; `PR Gate` rejects missing flags, partial fail-closed routing, and
+   skipped applicable jobs.
+5. The frozen candidate passes focused scheduler/cache/workflow/control tests,
+   the quick and cumulative full gates, ordinary hooks, and every required
+   hosted check without changing product behavior.
+
 ## Efficient operating contract
 
 For an operation-metadata change, edit only `control-plane.json`, run
@@ -188,6 +273,14 @@ root, read-first authority, retained index-named surface, or canonical operation
 changes. It does not require a calendar refresh. A bounded quarterly review may
 measure whether routing is still useful, but unchanged live summaries never
 need regeneration.
+
+MAINT-012C's verification manifest is also event-driven: update its rules
+whenever a path owner, validation job, check command, dependency boundary, or
+verification implementation changes. The same rule changes scheduling and
+fingerprint inputs. Receipts need no manual refresh because their content
+address invalidates automatically; cache eviction only causes fresh execution.
+A quarterly review may compare observed job/check time and unknown-path events,
+but unchanged contracts need no rewrite.
 
 ## MAINT-012A acceptance
 

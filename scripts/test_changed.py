@@ -23,6 +23,9 @@ import os
 import subprocess
 import sys
 import glob
+from pathlib import Path
+
+import verification as verification_control
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 VENV_PYTHON = os.path.join(REPO_ROOT, "scripts", "python_runtime.sh")
@@ -113,12 +116,13 @@ def get_changed_files(mode: str = "diff") -> list[str]:
     elif mode == "last-commit":
         cmd = ["git", "diff", "--name-only", "HEAD~1", "HEAD"]
     else:
-        # Changes vs current HEAD (uncommitted)
-        cmd = ["git", "diff", "--name-only", "HEAD"]
+        return list(verification_control.changed_paths(root=Path(REPO_ROOT)))
 
     result = subprocess.run(cmd, capture_output=True, text=True, cwd=REPO_ROOT)
     if result.returncode != 0:
-        return []
+        raise verification_control.VerificationError(
+            f"changed-file Git query failed: {' '.join(cmd)}"
+        )
 
     return [f for f in result.stdout.strip().split("\n") if f]
 
@@ -129,6 +133,13 @@ def map_to_tests(changed_files: list[str]) -> set[str]:
 
     for filepath in changed_files:
         mapped = False
+        if filepath.endswith(".py") and (
+            filepath.startswith("Python/tests/")
+            or filepath.startswith("fastapi_app/tests/")
+        ):
+            test_files.add(filepath)
+            _log(f"{filepath} → exact changed test")
+            continue
         for prefix, finder in SOURCE_TO_TEST_MAP:
             if filepath.startswith(prefix):
                 tests = finder(filepath)
@@ -149,6 +160,11 @@ def map_to_tests(changed_files: list[str]) -> set[str]:
     return test_files
 
 
+def _run(cmd: list[str]) -> int:
+    _log("running: " + " ".join(cmd))
+    return subprocess.run(cmd, cwd=REPO_ROOT).returncode
+
+
 def main() -> None:
     global VERBOSE
 
@@ -165,9 +181,26 @@ def main() -> None:
         else:
             extra_pytest_args.append(arg)
 
-    changed = get_changed_files(mode)
+    try:
+        manifest = verification_control.load_manifest(require_coverage=False)
+        if mode == "diff":
+            plan = verification_control.plan_changes(manifest)
+        else:
+            try:
+                discovered = get_changed_files(mode)
+            except verification_control.VerificationError as exc:
+                plan = verification_control.classify_paths(
+                    (), manifest, failure_reasons=(str(exc),)
+                )
+            else:
+                plan = verification_control.classify_paths(discovered, manifest)
+    except verification_control.VerificationError as exc:
+        print(f"ERROR: verification control is invalid: {exc}", file=sys.stderr)
+        raise SystemExit(2) from exc
 
-    if not changed:
+    changed = list(plan.changed_paths)
+
+    if not changed and not plan.fail_closed:
         print("No changed files detected. Nothing to test.")
         return
 
@@ -177,41 +210,115 @@ def main() -> None:
     if len(changed) > 10:
         print(f"  ... and {len(changed) - 10} more")
 
-    # If too many files changed, just run everything
-    if len(changed) > 30:
-        print("\n\033[33m30+ files changed — running full test suite\033[0m")
-        os.chdir(os.path.join(REPO_ROOT, "Python"))
-        os.execv(
-            VENV_PYTHON,
-            [VENV_PYTHON, "-m", "pytest", "tests/", "-v"] + extra_pytest_args,
+    print(f"\n\033[1mImpacted domains:\033[0m {', '.join(plan.domains)}")
+    if plan.fail_closed:
+        reasons = [*plan.unknown_paths, *plan.failure_reasons]
+        print(
+            "\033[33mUnknown impact — every product test domain is required: "
+            + "; ".join(reasons)
+            + "\033[0m"
         )
-        return
 
     test_files = map_to_tests(changed)
-
-    if not test_files:
-        print("\nNo matching test files found for changes. Skipping.")
-        return
-
-    # Deduplicate and filter to existing files
     existing = sorted(
         t for t in test_files if os.path.exists(os.path.join(REPO_ROOT, t))
     )
+    domains = set(plan.domains)
+    full_python = "python" in domains and (
+        len(changed) > 30
+        or not existing
+        or any(
+            path.startswith("Python/")
+            and not path.startswith("Python/tests/")
+            and not any(
+                path.startswith(prefix) for prefix, _finder in SOURCE_TO_TEST_MAP
+            )
+            for path in changed
+        )
+    )
+    full_fastapi = "fastapi" in domains and (
+        len(changed) > 30
+        or not any(
+            path.startswith("fastapi_app/") or path.startswith("Python/structural_lib/")
+            for path in changed
+        )
+        or not any(path.startswith("fastapi_app/tests/") for path in existing)
+    )
 
-    if not existing:
-        print("\nMapped test files don't exist. Skipping.")
+    commands: list[list[str]] = []
+    if full_python:
+        commands.append(
+            [VENV_PYTHON, "-m", "pytest", "Python/tests/", "-v", *extra_pytest_args]
+        )
+    if full_fastapi:
+        commands.append(
+            [
+                VENV_PYTHON,
+                "-m",
+                "pytest",
+                "fastapi_app/tests/",
+                "-v",
+                *extra_pytest_args,
+            ]
+        )
+
+    focused = [
+        path
+        for path in existing
+        if not (full_python and path.startswith("Python/tests/"))
+        and not (full_fastapi and path.startswith("fastapi_app/tests/"))
+    ]
+    focused_python = [path for path in focused if path.startswith("Python/tests/")]
+    focused_fastapi = [
+        path for path in focused if path.startswith("fastapi_app/tests/")
+    ]
+    if focused_python:
+        commands.append(
+            [
+                VENV_PYTHON,
+                "-m",
+                "pytest",
+                "-v",
+                *extra_pytest_args,
+                *focused_python,
+            ]
+        )
+    if focused_fastapi:
+        commands.append(
+            [
+                VENV_PYTHON,
+                "-m",
+                "pytest",
+                "-v",
+                *extra_pytest_args,
+                *focused_fastapi,
+            ]
+        )
+    if "react" in domains:
+        commands.append([os.path.join(REPO_ROOT, "run.sh"), "test", "--react"])
+    if "excel" in domains:
+        commands.append(
+            [
+                VENV_PYTHON,
+                os.path.join(REPO_ROOT, "scripts", "node_runtime.py"),
+                "--",
+                "npm",
+                "--prefix",
+                "excel_addin",
+                "test",
+            ]
+        )
+
+    if not commands:
+        print("\nNo product test suite is owned by the impacted non-product domains.")
         return
 
-    print(f"\n\033[1mRunning {len(existing)} test file(s):\033[0m")
-    for t in existing:
-        print(f"  \033[32m→\033[0m {t}")
-
-    # Run pytest with the specific test files
-    cmd = [VENV_PYTHON, "-m", "pytest", "-v"] + extra_pytest_args + existing
-    print()
-    os.chdir(REPO_ROOT)
-    result = subprocess.run(cmd)
-    sys.exit(result.returncode)
+    failed = 0
+    for command in commands:
+        print("\n\033[1mRunning:\033[0m " + " ".join(command))
+        if _run(command) != 0:
+            failed += 1
+    raise SystemExit(1 if failed else 0)
 
 
 if __name__ == "__main__":

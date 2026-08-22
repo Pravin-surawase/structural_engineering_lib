@@ -90,25 +90,12 @@ repos:
         files: ^Python/structural_lib/(api|data_types|beam_pipeline)\.py$
         verbose: true
 
-  # Doc version drift check (local script, non-blocking)
+  # Consolidated quick gate plus two non-overlapping commit-only controls.
   - repo: local
     hooks:
-      - id: check-unfinished-merge
-        name: Check for unfinished merge
-        entry: bash scripts/check_unfinished_merge.sh --allow-operation-completion
-        language: system
-        pass_filenames: false
-        always_run: true
-      - id: check-repo-hygiene
-        name: Check repo hygiene artifacts
-        entry: ./scripts/python_runtime.sh scripts/check_repo_hygiene.py
-        language: system
-        pass_filenames: false
-        always_run: true
-        verbose: true
-      - id: check-doc-versions
-        name: Check doc version drift
-        entry: ./scripts/python_runtime.sh scripts/check_doc_versions.py
+      - id: verification-quick
+        name: Reuse or run the exact quick validation set
+        entry: ./scripts/python_runtime.sh scripts/check_all.py --quick --allow-operation-completion
         language: system
         pass_filenames: false
         always_run: true
@@ -190,13 +177,6 @@ repos:
         pass_filenames: false
         files: ^(Python/structural_lib/services/(workflow_catalog|tool_manifest)\.py|scripts/generate_beam_tool_manifest\.py|docs/reference/beam-tool-manifest\.json)$
         verbose: true
-      - id: check-next-session-brief-length
-        name: Check next-session brief length
-        entry: ./scripts/python_runtime.sh scripts/check_next_session_brief_length.py
-        language: system
-        pass_filenames: false
-        always_run: true
-        verbose: true
       - id: check-cli-reference
         name: Check CLI reference commands
         entry: ./scripts/python_runtime.sh scripts/check_cli_reference.py
@@ -205,7 +185,7 @@ repos:
         always_run: true
         verbose: true
       - id: check-scripts-index
-        name: Check control and context registries
+        name: Check control, context, and verification registries
         entry: ./scripts/python_runtime.sh scripts/check_scripts_index.py
         language: system
         pass_filenames: false
@@ -217,13 +197,6 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
-        verbose: true
-      - id: check-markdown-links
-        name: Check markdown internal links
-        entry: ./scripts/python_runtime.sh scripts/check_links.py
-        language: system
-        pass_filenames: false
-        files: ^docs/.*\.md$
         verbose: true
       - id: check-api-signatures
         name: Check React/FastAPI endpoint contract

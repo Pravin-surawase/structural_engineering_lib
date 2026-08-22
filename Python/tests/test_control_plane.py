@@ -28,13 +28,16 @@ def test_current_registry_has_frozen_operation_and_script_parity():
     all_operations = control_plane.operation_map(registry)
     active_operations = control_plane.operation_map(registry, active_only=True)
 
-    assert len(all_operations) == 129
-    assert len(active_operations) == 123
-    assert len(control_plane.top_level_scripts()) == 114
+    assert len(all_operations) == 130
+    assert len(active_operations) == 124
+    assert len(control_plane.top_level_scripts()) == 115
     assert control_plane.referenced_top_level_scripts(registry) == (
         control_plane.top_level_scripts()
     )
     assert all(operation.get("permission") for operation in active_operations.values())
+    assert active_operations["verification impact"]["command"]["display"] == (
+        "./scripts/python_runtime.sh scripts/verification.py validate"
+    )
 
 
 def test_control_validator_runs_without_site_packages():
@@ -98,6 +101,12 @@ def test_permission_lookup_uses_explicit_canonical_defaults_and_modes():
     )
     assert tool_permissions.resolve_required_permission("unknown operation") == (
         "DangerFullAccess"
+    )
+    assert (
+        tool_permissions.resolve_required_permission(
+            "verification impact", mode="record"
+        )
+        == "WorkspaceWrite"
     )
 
 

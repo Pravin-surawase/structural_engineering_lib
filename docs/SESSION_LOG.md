@@ -5,6 +5,140 @@
 
 ---
 
+## 2026-08-23 — Session: MAINT-012C evidence scheduling and exact PASS reuse
+
+**Agent:** Codex (`governance`, sole writer)
+
+**Branch:** `codex/maint-012c-evidence-scheduling`, from exact merged
+`origin/main` commit `646660e323b65118a805b554c6cf4dbef46ef479`.
+
+**Git handoff receipt:**
+`docs/verification/maint-012c-git-handoff-receipt.json`
+
+**Focus:** Modernize validation scheduling and reuse only exact PASS evidence.
+
+### Summary
+
+- Added a strict seven-domain verification manifest and one read-only CLI for
+  validation planning, fingerprints, receipt probing, and PASS recording.
+- Migrated local changed checks/tests and hosted applicability to the same
+  whole-candidate plan. Unknown paths or Git-query failures select every domain.
+- Added shared-Git local PASS reuse, exact-key hosted evidence reuse after
+  runtime/dependency resolution, a fresh-run override, and one consolidated
+  quick pre-commit hook. Git-state checks always execute.
+- Product behavior, dependencies, scanners, physical compatibility scripts,
+  release authority, settings, and professional approval remain unchanged.
+
+### Issues encountered
+
+- The startup command batch executed in the primary checkout after creating the
+  new linked worktree, so its first session/source/Git proof described `main`
+  instead of the 12C lane.
+- The inherited local changed-check path used only `HEAD~1..HEAD` and returned
+  no work for unmapped paths or Git-query failures; hosted CI separately owned a
+  second YAML path map.
+- The first partial-tree quick diagnostic failed CLI discovery because the new
+  top-level verification script existed before its control-registry transaction
+  and generated compatibility projection were complete.
+- The first focused workflow-test batch retained one assertion for the removed
+  YAML path-filter variable, so that test failed after the canonical planner
+  replaced the duplicate filter.
+- Inspection found that the parallel check runner could reach its aggregate
+  timeout without adding a result for each unfinished future; the final total
+  could therefore omit required checks.
+- The initial manifest draft routed every known `scripts/**` change to all seven
+  product domains, which was safe but would preserve unnecessary broad reruns.
+- The old unconditional repository job mixed docs, architecture, registries,
+  CLI policy, YAML, and migration checks, so making it conditional without
+  reallocating ownership would either skip evidence or keep broad scheduling.
+- The active link-governance and CI learning guides still taught the retired
+  per-link hook, `dorny/paths-filter`, 28-check/17-workflow topology, bare
+  `.venv` commands, and a retired commit helper.
+- The first consolidated focused selection found one governance test still
+  looking for CLI smoke in the repository job after that check moved to its
+  natural control-plane owner.
+- Preparation produced an incomplete auto-handoff focus because the session
+  entry's `Focus` value wrapped onto continuation lines.
+- The cumulative full gate initially passed 30/31; the Git-workflow checker
+  still required the retired standalone merge hook and literal YAML
+  `scripts/**`/`docs/**` filters.
+- The repaired checker passed as a script but its focused semantic-test import
+  initially failed to resolve the sibling verification module.
+
+### Root causes and resolutions
+
+- Confirmed root cause: one terminal call has a static working directory;
+  creating a worktree does not retarget later commands in that call. Resolution:
+  rerun session brief/start, context routing, source diagnosis, and Git-state
+  authority with the 12C worktree as the explicit working directory; it reported
+  `source_bound=true` and `READY_LOCAL`, while primary `main` remained clean.
+  ⚠️ TERMINAL ISSUE: post-creation startup commands stayed in primary `main` ->
+  reran the complete startup proof with the explicit 12C worktree.
+- Confirmed root cause: local and hosted classification evolved independently
+  from prefix/path filters with no coverage invariant or fail-closed unknown
+  state. Resolution: both now load the strict manifest, compare the whole
+  candidate, and expand unknown/query-failed impact to all seven domains; PR
+  Gate rejects missing flags and partial fallback.
+- Confirmed root cause: top-level script coverage intentionally fails during an
+  incomplete registry transaction. Resolution: add the active read-only
+  `verification impact` operation, refresh the deterministic legacy projection,
+  and add the CLI smoke contract. Control validation then reported 124 active
+  operations and 115/115 scripts.
+- Confirmed root cause: the workflow test refactor removed the local
+  `control_paths` collection but left one membership assertion behind.
+  Resolution: replace it with assertions against the canonical planner command
+  and exact control-test command; the failed node and then the complete focused
+  workflow/control selection passed.
+- Confirmed root cause: `as_completed(...)` returned only observed futures, and
+  the timeout handler cancelled the rest without materializing failed results.
+  Resolution: every missing future now becomes an explicit timed-out failure;
+  a regression proves an omitted result cannot produce a green total.
+- Confirmed root cause: a blanket script rule confused verification-engine
+  changes with known domain-specific check scripts. Resolution: one rule set now
+  drives both scheduling and fingerprint inputs; verification-engine changes
+  select all domains, known API/docs/control scripts select their affected
+  domains, and only unknown paths use the all-domain fallback.
+- Confirmed root cause: repository validation had accumulated checks belonging
+  to four other authorities because it was previously always-run. Resolution:
+  documentation now owns versions/tasks/links, Python/FastAPI own architecture,
+  control owns registries/CLI policy, and repository owns YAML, hygiene, and
+  exact maintenance-script contracts. Workflow regressions prove no command was
+  lost and every command file belongs to its fingerprint domain.
+- Confirmed root cause: the two active teaching guides were not migrated when
+  MAINT-008 consolidated workflows and the current packet consolidated hooks.
+  Resolution: update both to the 10/31-check topology, manifest planner,
+  repository runtime commands, exact quick hook, four retained workflow lanes,
+  and explicit release authority.
+- Confirmed root cause: the runtime-launcher regression encoded the old job
+  location rather than the check's ownership contract. Resolution: retarget it
+  to the control-plane job while retaining the required install-before-smoke
+  assertion; the failed node and consolidated focused selection then passed.
+- Confirmed root cause: the handoff formatter reads the physical `Focus` line,
+  not Markdown continuation lines. Resolution: make the bounded focus a single
+  complete line and regenerate the preparation handoff block.
+- Confirmed root cause: the Git-workflow checker duplicated the pre-12C hook
+  and hosted path-routing topology instead of consuming their new authorities.
+  Resolution: require the consolidated quick hook's explicit completion flag,
+  require the workflow planner outputs, and verify script/docs ownership through
+  the canonical manifest. The failed check and then the cumulative gate passed.
+- Confirmed root cause: direct script execution adds `scripts/` to `sys.path`,
+  while importing it as `scripts.check_codex_git_workflow` from pytest does not.
+  Resolution: bind the checker's own script directory before importing the
+  sibling verification control; direct and package-import regressions passed.
+
+### Validation through content freeze
+
+- Focused verification/control/workflow/Git/session/migration regression
+  selection: PASS after the recorded ownership-test repair.
+- Black and Ruff on every changed Python file: PASS. YAML compose validation:
+  PASS. `git diff --check`: PASS.
+- Verification manifest: PASS, 7 domains and 24 rules; control plane: PASS,
+  124 active operations and 115/115 scripts; context manifest: PASS, 10 areas
+  and zero generated folder indexes; CLI smoke: 16/16; token efficiency: PASS.
+- Pre-commit handoff receipt: valid fail-closed `HOLD`, local-state hash
+  `sha256:f4662fdc2b557aeb1c0011ce4f7aac795b09a4cb7cd704923e9dd4b0054da485`.
+- Pending final quick, cumulative full, hook, exact-head, and hosted evidence.
+
 ## 2026-08-23 — Session: MAINT-012B index architecture and retirement
 
 **Agent:** Codex (`governance`, sole writer)

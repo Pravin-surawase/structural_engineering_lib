@@ -1,0 +1,161 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "f4662fdc2b557aeb1c0011ce4f7aac795b09a4cb7cd704923e9dd4b0054da485",
+    "state": {
+      "branch": "codex/maint-012c-evidence-scheduling",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "646660e323b65118a805b554c6cf4dbef46ef479",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 83.549,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib9",
+      "head_sha": "646660e323b65118a805b554c6cf4dbef46ef479",
+      "hold_reasons": [
+        "changed paths: 31"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-22T22:01:50.569614+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/maint-012c/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 31,
+        "modified_paths": [
+          ".github/workflows/README.md",
+          ".github/workflows/fast-checks.yml",
+          ".pre-commit-config.yaml",
+          "AGENTS.md",
+          "Python/tests/test_agent_governance_automation.py",
+          "Python/tests/test_ci_workflow_contract.py",
+          "Python/tests/test_control_plane.py",
+          "agents/agent-9/workflows/LINK_GOVERNANCE.md",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/_internal/git-governance.md",
+          "docs/contributing/testing-strategy.md",
+          "docs/guidelines/ai-token-efficiency.md",
+          "docs/migration/learning/day-23-ci-cd.md",
+          "docs/planning/maint-012-control-plane-modernization.md",
+          "docs/planning/next-session-brief.md",
+          "run.sh",
+          "scripts/README.md",
+          "scripts/automation-map.json",
+          "scripts/check_all.py",
+          "scripts/check_scripts_index.py",
+          "scripts/context-manifest.json",
+          "scripts/control-plane.json",
+          "scripts/control_plane/__init__.py",
+          "scripts/test_changed.py",
+          "scripts/test_cli_smoke.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          ".github/actions/verification-evidence/action.yml",
+          "Python/tests/test_verification_control.py",
+          "scripts/verification-manifest.json",
+          "scripts/verification-manifest.schema.json",
+          "scripts/verification.py"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "646660e323b65118a805b554c6cf4dbef46ef479",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/maint-012c/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:f4662fdc2b557aeb1c0011ce4f7aac795b09a4cb7cd704923e9dd4b0054da485",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-22T22:01:50.569785+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/**/*.py",
+      "fastapi_app/**/*.py",
+      "react_app/**/*.{ts,tsx}",
+      "excel_addin/**",
+      "Etabs_CSV/**",
+      "requirements*.txt"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "scripts/**",
+      ".github/**",
+      ".pre-commit-config.yaml",
+      "Python/tests/**",
+      "agents/**",
+      "docs/**",
+      "AGENTS.md",
+      "run.sh"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md",
+      "scripts/control-plane.json",
+      "scripts/automation-map.json",
+      "scripts/context-manifest.json"
+    ],
+    "task_id": "MAINT-012C"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

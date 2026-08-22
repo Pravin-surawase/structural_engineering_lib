@@ -136,7 +136,12 @@
         "docs/contributing/testing-strategy.md",
         "docs/guidelines/ai-token-efficiency.md"
       ],
-      "operations": ["run tests", "parity dashboard", "run all checks"]
+      "operations": [
+        "run tests",
+        "parity dashboard",
+        "run all checks",
+        "verification impact"
+      ]
     }
   }
 }

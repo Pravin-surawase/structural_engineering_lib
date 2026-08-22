@@ -57,7 +57,7 @@ Standard pre-commit validation may run, but the repository must not install a
 custom `core.hooksPath` or reintroduce lifecycle wrappers. The read-only guard is:
 
 ```bash
-.venv/bin/python scripts/check_codex_git_workflow.py
+./scripts/python_runtime.sh scripts/check_codex_git_workflow.py
 ```
 
 ## Maintenance rule
