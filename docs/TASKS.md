@@ -127,12 +127,13 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| — | No implementation packet active | — | — | — | Awaiting owner activation of the next bounded program |
+| LIB-PRO-003-A | Close non-finite public calculation inputs, empty compliance success, and rounded column safety decisions | backend + tester | M | P0 | 🚧 ACTIVE — exact-tree audit accepted; implementation and focused regression evidence in progress |
 
 INDIA-2 remains administratively complete within its recorded accepted/held
-boundary. INDIA-3, dependency work, the next package version, further cleanup,
-and professional approval remain separately held until their own packet is
-activated.
+boundary. The reproduced public-route safety defects take priority over new
+capability work. INDIA-3, dependency work, the next package version, further
+cleanup, and professional approval remain separately held until `LIB-PRO-003`
+closes and their own packet is activated.
 
 `LIB-PRO-002-G0` was independently accepted and merged through PR #812 at
 `55104e11257937b0a42fb06f931a70b8484cef39`. Packet A was independently
@@ -157,7 +158,10 @@ write-back/nightly work remain outside E1.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ READY FOR OWNER ACTIVATION — truth/benchmark/contract audit first; no new formulas or support claims |
+| LIB-PRO-003-B | Enforce beam/column material and reinforcement domains, repair the stale column key, and close footing provenance | backend + tester | M | P0 | ⏸ NEXT AFTER A — bounded outcome-changing safety repair |
+| LIB-PRO-003-C | Convert slab capacity, malformed legacy CSV, and negative BOQ inputs to structured fail-closed outcomes | backend + API developer + tester | M | P0 | ⏸ AFTER B |
+| LIB-PRO-003-D | Make Excel CI and input audits decisive and synchronize release/route-count truth | ops + governance | S | P0 | ⏸ AFTER C |
+| INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ AFTER LIB-PRO-003 — truth/benchmark/contract audit only; no new formulas or support claims |
 | SPARK-001-G0 | Reassess the stale Spark work-program proposal before any implementation | repository owner | review gate | P2 | ⏸ OWNER REVIEW — the 2026-08-11 model/preview assumptions and bulk wave require refresh or rejection |
 
 ## Backlog
@@ -180,7 +184,8 @@ with exact beam stress-block arithmetic and controlled Clause 38.1/Annex G
 provenance. Exact post-INDIA-2 cleanup is complete for frozen candidate set
 `POST-INDIA2-2499DF4ADE0DF704`: 58 worktrees, 64 local branches, and 71 remote
 branches were removed; every non-candidate lane remains retained or held.
-The v0.23.1a1 Alpha is published.
+The v0.23.1a2 Alpha is published; Gravity and E1 are later `main` work and are
+not part of that immutable artifact.
 UIX-001 P0-P15 is accepted: the revision-safe workbench, authoritative
 3D inspection, versioned capability catalogue, curated renderer, bounded
 development workflow, generated beam manifest, canonical routes, and integrated

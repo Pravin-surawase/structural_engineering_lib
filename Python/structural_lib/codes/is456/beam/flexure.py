@@ -43,7 +43,11 @@ from structural_lib.core.errors import (
     E_INPUT_003a,
     MaterialError,
 )
-from structural_lib.core.validation import validate_dimensions, validate_materials
+from structural_lib.core.validation import (
+    validate_dimensions,
+    validate_finite_real,
+    validate_materials,
+)
 
 __all__ = [
     "calculate_mu_lim",
@@ -373,6 +377,7 @@ def design_singly_reinforced(
     """
     # Input validation with structured errors using validation utilities
     input_errors = validate_dimensions(b, d, d_total)
+    input_errors.extend(validate_finite_real(mu_knm, "mu_knm"))
 
     if input_errors:
         # Build specific error message based on which fields failed

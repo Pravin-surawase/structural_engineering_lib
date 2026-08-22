@@ -4,19 +4,19 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-22
-- Focus: Close accepted E1, reconcile release/task truth, and select the next bounded library decision packet without ETABS or new engineering implementation.
-- Git receipt: docs/verification/e1-g3-closeout-git-handoff-receipt.json | sha256:7237912b87c081142c2bda364d639fb96f4c9a1eca48a4c520586f048a34ef85 | HOLD
-- Git identity: codex/e1-g3-closeout@b720119ea6a22a2b1963be0a0b9b300fca333d4a | upstream=origin/main@b720119ea6a22a2b1963be0a0b9b300fca333d4a | base=origin/main@b720119ea6a22a2b1963be0a0b9b300fca333d4a | tree=dirty | operation=none
+- Focus: Close reproduced non-finite public calculation outcomes, empty
+- Git receipt: docs/verification/lib-pro-003-a-git-handoff-receipt.json | sha256:5f9f0b31deb4a96d04f826319cd8594a7f23e7a30d7e9820e9b80a7a43cbb57d | HOLD
+- Git identity: codex/public-route-numeric-boundaries@e40c0b564acae82f6696e204e8b382342fbf4321 | upstream=origin/main@e40c0b564acae82f6696e204e8b382342fbf4321 | base=origin/main@e40c0b564acae82f6696e204e8b382342fbf4321 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: COMMIT_INTENDED_PATHS
 <!-- HANDOFF:END -->
 
 | State | Boundary |
 |---|---|
-| **Current** | E1 passed the real installed Windows Excel journey and is integrated into `main` |
-| **Next** | Owner may activate `INDIA-3-G0`: audit existing IS 13920 beam/column/joint truth and freeze one bounded acceptance sequence |
-| **Why** | INDIA-0, INDIA-1, and bounded INDIA-2 are complete; INDIA-4 depends on a frozen INDIA-3 scope |
-| **Held** | No new formulas, support claims, IS 875/IS 1893 work, ETABS work, package publication, or professional approval in G0 |
+| **Current** | `LIB-PRO-003-A` is active against exact hosted `main`: close non-finite calculation inputs, empty compliance success, and rounded column safety decisions |
+| **Next** | Complete the dependency-ordered `LIB-PRO-003` A-D public-route safety closure before capability expansion |
+| **Why** | Direct replay reproduced 13 outcome-changing behaviours still exposed outside the newer bounded Gravity/E1 workflows |
+| **Held** | INDIA-3, new formulas/support claims, ETABS, package publication, stable/professional claims, and qualified approval remain separate and held |
 
 ## E1 final acceptance
 
@@ -42,27 +42,29 @@ authority. Results remain `NOT_REVIEWED` with
 
 ## Correct next library packet
 
-`INDIA-3-G0` is a decision and truth-audit packet, not implementation.
+`LIB-PRO-003-A` is the active bounded implementation packet.
 
-1. Inventory the currently implemented and advertised IS 13920 beam, column,
-   and joint checks.
-2. Bind every claimed case to exact source provenance, units, applicability,
-   result/status contracts, and independent benchmarks.
-3. Identify false registration, missing cross-layer exposure, or unsupported
-   claims that change user outcomes.
-4. Freeze one small acceptance sequence and explicit exclusions before any new
-   calculation, API, or UI work.
-5. Return `ACCEPT`, `REVISE`, or `HOLD` plus the exact first implementation
-   packet.
+1. Reject booleans, NaN, and infinity before lower-level beam flexure, beam
+   shear, compliance, or column arithmetic can produce a safety result.
+2. Reject an empty compliance report instead of accepting `all([])`.
+3. Reject non-finite unified-column moments before minimum-moment
+   amplification can replace them with finite values.
+4. Compare exact uniaxial utilization to `1.0`; round only the returned display
+   field.
+5. Preserve valid arithmetic, public result shapes, and all formula/source
+   boundaries.
 
-Do not start IS 13920 wall/foundation expansion, IS 875, IS 1893, response
-spectrum, FEM, or ETABS during G0.
+Packets B-D then close material/reinforcement/provenance domains, structured
+slab/CSV/BOQ failures, and decisive CI/audit/documentation truth. Do not start
+new engineering formulas, IS 13920 expansion, IS 875, IS 1893, FEM, or ETABS.
 
 ## Other live work
 
 - `v0.23.1a2` is already public. Gravity and E1 were merged afterward, so any
   next package must use a new version and fresh exact-artifact evidence; never
   republish `0.23.1a2`.
+- `INDIA-3-G0` remains the next capability-truth packet, but it is deferred
+  until the reproduced public-route safety closure is complete.
 - `SPARK-001-G0` remains an owner-review proposal. Its model/preview assumptions
   date from 2026-08-11 and must be refreshed or rejected before a wave starts.
 - Dependabot PRs are separate maintenance work and do not outrank the
@@ -74,8 +76,7 @@ spectrum, FEM, or ETABS during G0.
 
 ## Required Reading
 
-1. [Indian-code completion plan](indian-code-completion-plan.md)
-2. [IS 456 library-first master plan](is456-library-first-master-plan.md)
-3. [E1 workbook-open repair evidence](../verification/e1-workbook-open-repair-evidence.md)
-4. [Current task board](../TASKS.md)
-5. [Git workflow single source](../git-automation/git-workflow-single-source.md)
+1. [Public route safety closure plan](public-route-safety-closure-plan.md)
+2. [Current task board](../TASKS.md)
+3. [Pre-release input safety plan](pre-release-input-safety-and-professional-readiness-plan.md)
+4. [Git workflow single source](../git-automation/git-workflow-single-source.md)

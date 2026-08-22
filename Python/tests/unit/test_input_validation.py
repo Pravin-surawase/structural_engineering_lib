@@ -84,6 +84,27 @@ def test_flexure_design_singly_reinforced_rejects_invalid_inputs(
     ) or _has_error_with_message(res.errors, expected_substring)
 
 
+@pytest.mark.parametrize("field", ["b", "d", "d_total", "mu_knm", "fck", "fy"])
+@pytest.mark.parametrize("invalid", [float("nan"), float("inf"), float("-inf")])
+def test_flexure_design_singly_reinforced_rejects_non_finite_inputs(field, invalid):
+    kwargs = {
+        "b": 230.0,
+        "d": 450.0,
+        "d_total": 500.0,
+        "mu_knm": 100.0,
+        "fck": 25.0,
+        "fy": 415.0,
+    }
+    kwargs[field] = invalid
+
+    result = flexure.design_singly_reinforced(**kwargs)
+
+    assert result.is_safe is False
+    assert any(
+        error.code == "E_INPUT_017" and error.field == field for error in result.errors
+    )
+
+
 def test_flexure_design_doubly_reinforced_rejects_nonpositive_d_dash():
     b, d, d_total = 230.0, 450.0, 500.0
     res = flexure.design_doubly_reinforced(
@@ -188,4 +209,29 @@ def test_shear_design_rejects_invalid_inputs(kwargs, expected_field):
     # Check that error for the expected field is in the errors list
     assert _has_error_with_field(res.errors, expected_field) or _has_error_with_message(
         res.errors, expected_field
+    )
+
+
+@pytest.mark.parametrize(
+    "field", ["vu_kn", "b", "d", "fck", "fy", "asv", "pt", "av_mm"]
+)
+@pytest.mark.parametrize("invalid", [float("nan"), float("inf"), float("-inf")])
+def test_shear_design_rejects_non_finite_inputs(field, invalid):
+    kwargs = {
+        "vu_kn": 100.0,
+        "b": 230.0,
+        "d": 450.0,
+        "fck": 25.0,
+        "fy": 415.0,
+        "asv": 100.0,
+        "pt": 1.0,
+        "av_mm": 900.0,
+    }
+    kwargs[field] = invalid
+
+    result = shear.design_shear(**kwargs)
+
+    assert result.is_safe is False
+    assert any(
+        error.code == "E_INPUT_017" and error.field == field for error in result.errors
     )

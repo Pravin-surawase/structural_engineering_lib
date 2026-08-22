@@ -156,6 +156,7 @@ engineering disposition because calculation may not have occurred.
 | `E_INPUT_014` | `Df` | `Df must be > 0` | Check flange thickness input. |
 | `E_INPUT_015` | `bf` | `bf must be >= bw` | Ensure flange width is not smaller than web width. |
 | `E_INPUT_016` | `Df` | `Df must be < d` | Ensure flange thickness is less than effective depth. |
+| `E_INPUT_017` | dynamic | `<field> must be a finite real number` | Replace NaN, infinity, booleans, or non-numeric values. |
 
 #### Flexure (`E_FLEXURE_`)
 

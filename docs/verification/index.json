@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-22",
-  "file_count": 202,
+  "file_count": 205,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -2267,6 +2267,44 @@
       "content_hash": "2ae22416068d"
     },
     {
+      "name": "lib-pro-003-a-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-22",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "ae682506d54c"
+    },
+    {
+      "name": "lib-pro-003-a-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-22",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "6cc77e879c31"
+    },
+    {
+      "name": "lib-pro-003-a-numeric-boundaries-evidence.md",
+      "type": "documentation",
+      "size_lines": 68,
+      "last_updated": "2026-08-22",
+      "description": "- Source base: hosted main at e40c0b564acae82f6696e204e8b382342fbf4321.",
+      "content_hash": "770c3d6c52a5"
+    },
+    {
       "name": "next-session-git-issues-plan-git-handoff-receipt.json",
       "type": "config",
       "last_updated": "2026-08-16",
@@ -2585,5 +2623,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "9201082f19508939"
+  "content_hash": "1cff27079d48d61b"
 }

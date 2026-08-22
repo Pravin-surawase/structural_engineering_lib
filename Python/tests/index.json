@@ -2,7 +2,7 @@
   "folder": "Python/tests",
   "type": "python-package",
   "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
-  "last_updated": "2026-08-21",
+  "last_updated": "2026-08-22",
   "file_count": 75,
   "files": [
     {
@@ -1360,8 +1360,8 @@
     {
       "name": "test_column_return_types.py",
       "type": "python",
-      "size_lines": 281,
-      "last_updated": "2026-08-17",
+      "size_lines": 312,
+      "last_updated": "2026-08-22",
       "description": "Tests for UX-02: Column API return type unification.",
       "classes": [
         {
@@ -1443,9 +1443,15 @@
         {
           "name": "uniaxial_result",
           "description": "Standard uniaxial result for a 300x450 column."
+        },
+        {
+          "name": "test_unified_column_rejects_infinite_moment_before_minimum_amplification"
+        },
+        {
+          "name": "test_public_uniaxial_column_rejects_non_finite_action"
         }
       ],
-      "content_hash": "376e193ec460"
+      "content_hash": "6863ccf8df17"
     },
     {
       "name": "test_core.py",
@@ -4974,5 +4980,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "764196b61d0427a8"
+  "content_hash": "c8b3b9e466ca453b"
 }

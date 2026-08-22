@@ -48,11 +48,29 @@ from structural_lib.core.errors import (
     MaterialError,
 )
 from structural_lib.core.numerics import safe_divide
+from structural_lib.core.validation import validate_finite_real
 
 __all__ = [
     "design_short_column_uniaxial",
     "pm_interaction_curve",
 ]
+
+
+def _require_finite_column_value(
+    name: str,
+    value: object,
+    error_type: type[DimensionError] | type[MaterialError],
+    clause_ref: str,
+) -> None:
+    """Apply the shared finite-real invariant using column exception types."""
+    errors = validate_finite_real(value, name)
+    if errors:
+        raise error_type(
+            errors[0].message,
+            details={name: value},
+            clause_ref=clause_ref,
+        )
+
 
 # ---------------------------------------------------------------------------
 # SP:16 Table I -- Stress-block coefficients for xu > D
@@ -338,6 +356,26 @@ def design_short_column_uniaxial(
     # ===========================================================
     warnings: list[str] = []
 
+    for name, value, clause_ref in (
+        ("b_mm", b_mm, "Cl. 39.5"),
+        ("D_mm", D_mm, "Cl. 39.5"),
+        ("le_mm", le_mm, "Cl. 25.1.2"),
+        ("d_prime_mm", d_prime_mm, "Cl. 26.4"),
+        ("Pu_kN", Pu_kN, "Cl. 39.5"),
+        ("Mu_kNm", Mu_kNm, "Cl. 39.5"),
+        ("Asc_mm2", Asc_mm2, "Cl. 26.5.3.1"),
+    ):
+        _require_finite_column_value(name, value, DimensionError, clause_ref)
+    if l_unsupported_mm is not None:
+        _require_finite_column_value(
+            "l_unsupported_mm",
+            l_unsupported_mm,
+            DimensionError,
+            "Cl. 25.4",
+        )
+    for name, value in (("fck", fck), ("fy", fy)):
+        _require_finite_column_value(name, value, MaterialError, "Cl. 39.5")
+
     # --- Dimensions ---
     if b_mm <= 0:
         raise DimensionError(
@@ -615,7 +653,7 @@ def design_short_column_uniaxial(
         )
 
     utilization_ratio = round(utilization, 4)
-    is_safe = utilization_ratio <= 1.0
+    is_safe = utilization <= 1.0
 
     # Determine governing check description
     if not is_safe:

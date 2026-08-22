@@ -11,6 +11,8 @@ from structural_lib.core.validation import (  # noqa: F401, E402
     validate_beam_inputs,
     validate_cover,
     validate_dimensions,
+    validate_finite_real,
+    validate_finite_reals,
     validate_geometry_relationship,
     validate_loads,
     validate_material_grades,

@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-22
-**Files:** 202
+**Files:** 205
 
 ## Config Files
 
@@ -122,6 +122,8 @@ Benchmark examples and verification packs for validating library calculations ag
 - [lib-pro-002-j-git-handoff-receipt.json](lib-pro-002-j-git-handoff-receipt.json)
 - [lib-pro-002-j-hosted-repair-git-handoff-receipt.json](lib-pro-002-j-hosted-repair-git-handoff-receipt.json)
 - [lib-pro-002-post-fix-recheck-git-handoff-receipt.json](lib-pro-002-post-fix-recheck-git-handoff-receipt.json)
+- [lib-pro-003-a-git-handoff-receipt.json](lib-pro-003-a-git-handoff-receipt.json)
+- [lib-pro-003-a-git-handoff-source-evidence.json](lib-pro-003-a-git-handoff-source-evidence.json)
 - [next-session-git-issues-plan-git-handoff-receipt.json](next-session-git-issues-plan-git-handoff-receipt.json)
 - [next-session-git-issues-plan-git-handoff-source-evidence.json](next-session-git-issues-plan-git-handoff-source-evidence.json)
 - [post-india2-cleanup-disposition-evidence.json](post-india2-cleanup-disposition-evidence.json)
@@ -210,6 +212,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | [is456-library-first-evidence.md](is456-library-first-evidence.md) | IS 456 Library-First Evidence and Claim  | | Source | SHA-256 | Pages | Use | |---|---|---:|---| | 169 |
 | [is456-slab-evidence.md](is456-slab-evidence.md) | IS 456 Solid Slab Source and Benchmark L | | ID | Identity | Permitted implementation use | State | |-- | 125 |
 | [lib-pro-002-e-evidence-identity.md](lib-pro-002-e-evidence-identity.md) |  | The bounded design_beam_is456 strength route is bound to the | 37 |
+| [lib-pro-003-a-numeric-boundaries-evidence.md](lib-pro-003-a-numeric-boundaries-evidence.md) |  | - Source base: hosted main at e40c0b564acae82f6696e204e8b382 | 68 |
 | [pack.md](pack.md) |  | This repo’s unit tests validate correctness and edge cases,  | 56 |
 | [post-india2-cleanup-authorization-proposal.md](post-india2-cleanup-authorization-proposal.md) |  | Exact candidate set POST-INDIA2-2499DF4ADE0DF704 contains ** | 162 |
 | [release-artifact-evidence-template.md](release-artifact-evidence-template.md) | Release Artifact Evidence Template | Complete this record from the CI run that built the exact ca | 45 |

@@ -2,7 +2,7 @@
   "folder": "Python/structural_lib/codes/is456",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-17",
+  "last_updated": "2026-08-22",
   "file_count": 14,
   "files": [
     {
@@ -45,8 +45,8 @@
     {
       "name": "compliance.py",
       "type": "python",
-      "size_lines": 583,
-      "last_updated": "2026-08-16",
+      "size_lines": 626,
+      "last_updated": "2026-08-22",
       "description": "Module: compliance",
       "functions": [
         {
@@ -65,7 +65,7 @@
           ]
         }
       ],
-      "content_hash": "084d68bf329d"
+      "content_hash": "54dcc958301e"
     },
     {
       "name": "detailing.py",
@@ -468,5 +468,5 @@
     "list_clauses_by_category",
     "search_clauses"
   ],
-  "content_hash": "b636637e363d3371"
+  "content_hash": "d19571f00012cc9a"
 }

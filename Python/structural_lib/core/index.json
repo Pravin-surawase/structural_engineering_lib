@@ -1203,10 +1203,22 @@
     {
       "name": "validation.py",
       "type": "python",
-      "size_lines": 643,
-      "last_updated": "2026-08-17",
+      "size_lines": 684,
+      "last_updated": "2026-08-22",
       "description": "Module:       validation",
       "functions": [
+        {
+          "name": "validate_finite_real",
+          "description": "Validate that a numeric input is a finite real value.",
+          "params": [
+            "value",
+            "field_name"
+          ]
+        },
+        {
+          "name": "validate_finite_reals",
+          "description": "Validate multiple named numeric inputs with stable field attribution."
+        },
         {
           "name": "validate_dimensions",
           "description": "Validate beam dimensions (b, d, D).",
@@ -1323,7 +1335,7 @@
           ]
         }
       ],
-      "content_hash": "114bd96ff3ea"
+      "content_hash": "b908ade80916"
     },
     {
       "name": "version.py",
@@ -1387,5 +1399,5 @@
     "GravityCombinationV1",
     "GravityFootingDestinationV1"
   ],
-  "content_hash": "afb02181eae5959e"
+  "content_hash": "eec7be7d95778c07"
 }

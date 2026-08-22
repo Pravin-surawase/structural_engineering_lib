@@ -44,7 +44,7 @@
 | [calculation_report.py](calculation_report.py) | Module:       calculation_report | 4 | 1 | 722 |
 | [capabilities.py](capabilities.py) | Discoverable supported-case registry for the IS 456 public l | 7 | 3 | 2057 |
 | [cli_design.py](cli_design.py) | Strict, lossless intake and compatibility output for the adv | 4 | 2 | 628 |
-| [column_api.py](column_api.py) | Module:       column_api | 0 | 13 | 1546 |
+| [column_api.py](column_api.py) | Module:       column_api | 0 | 13 | 1592 |
 | [combined_footing_api.py](combined_footing_api.py) | Stable orchestration for the bounded symmetric combined-foot | 4 | 2 | 252 |
 | [common_api.py](common_api.py) | Module:       common_api | 0 | 5 | 709 |
 | [costing.py](costing.py) | Cost calculation utilities for structural elements. | 2 | 8 | 376 |
@@ -55,7 +55,7 @@
 | [evidence.py](evidence.py) | Canonical evidence identity for the supported IS 456 beam de | 0 | 4 | 386 |
 | [excel_bridge.py](excel_bridge.py) | Excel UDF Bridge - Exposes structural_lib functions to Excel | 0 | 7 | 305 |
 | [excel_integration.py](excel_integration.py) | Excel Integration Module — Bridge between Excel data and Det | 2 | 9 | 489 |
-| [excel_workbench.py](excel_workbench.py) | Strict selected-table orchestration for Excel Routine Workbe | 1 | 8 | 951 |
+| [excel_workbench.py](excel_workbench.py) | Strict selected-table orchestration for Excel Routine Workbe | 1 | 8 | 952 |
 | [flat_slab_api.py](flat_slab_api.py) | Stable orchestration for the bounded regular interior flat-s | 4 | 2 | 339 |
 | [footing_api.py](footing_api.py) | Bounded orchestration for concentric isolated footings (IS 4 | 5 | 1 | 915 |
 | [gravity_calculation_book.py](gravity_calculation_book.py) | Deterministic review dossier for Building Gravity Workflow V | 3 | 4 | 254 |

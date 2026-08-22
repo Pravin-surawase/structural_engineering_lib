@@ -3,7 +3,7 @@
 This document describes the test taxonomy and structure for the structural_engineering_lib test suite.
 
 **Type:** Python Package
-**Last Updated:** 2026-08-21
+**Last Updated:** 2026-08-22
 **Files:** 75
 
 ## Documentation Files
@@ -37,7 +37,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_column_biaxial.py](test_column_biaxial.py) | Tests for IS 456 Cl 39.6 biaxial bending check — TASK-635. | 8 | 0 | 958 |
 | [test_column_helical.py](test_column_helical.py) | Tests for IS 456 Cl 39.4 helical reinforcement check. | 7 | 0 | 356 |
 | [test_column_long.py](test_column_long.py) | Tests for IS 456 Cl 39.7 long (slender) column design. | 15 | 0 | 662 |
-| [test_column_return_types.py](test_column_return_types.py) | Tests for UX-02: Column API return type unification. | 7 | 2 | 281 |
+| [test_column_return_types.py](test_column_return_types.py) | Tests for UX-02: Column API return type unification. | 7 | 4 | 312 |
 | [test_core.py](test_core.py) | Tests for structural_lib.core module. | 6 | 0 | 176 |
 | [test_core_types.py](test_core_types.py) | Tests for core types and error dataclasses. | 11 | 0 | 391 |
 | [test_dashboard.py](test_dashboard.py) | Tests for the dashboard analytics module. | 4 | 0 | 259 |

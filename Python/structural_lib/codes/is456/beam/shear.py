@@ -20,6 +20,7 @@ from structural_lib.core.errors import (
     E_SHEAR_005,
     DimensionError,
 )
+from structural_lib.core.validation import validate_finite_reals
 
 from .. import tables
 from ..traceability import clause
@@ -347,8 +348,31 @@ def design_shear(
         - Assumes uniform beam cross-section; haunched beams or
           variable-depth members are not handled.
     """
-    # Input validation with structured errors
-    input_errors = []
+    # Input validation with structured errors.  Relational checks alone are
+    # insufficient because every comparison with NaN is false.
+    finite_inputs: dict[str, object] = {
+        "vu_kn": vu_kn,
+        "b": b,
+        "d": d,
+        "fck": fck,
+        "fy": fy,
+        "asv": asv,
+        "pt": pt,
+    }
+    if av_mm is not None:
+        finite_inputs["av_mm"] = av_mm
+    input_errors = validate_finite_reals(**finite_inputs)
+    if input_errors:
+        return ShearResult(
+            tau_v=0.0,
+            tau_c=0.0,
+            tau_c_max=0.0,
+            Vus=0.0,
+            spacing=0.0,
+            is_safe=False,
+            errors=tuple(input_errors),
+        )
+
     if b <= 0:
         input_errors.append(E_INPUT_001)
     if d <= 0:

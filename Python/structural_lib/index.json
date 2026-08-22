@@ -2,7 +2,7 @@
   "folder": "Python/structural_lib",
   "type": "python-package",
   "description": "> **Purpose:** IS 456:2000 RC beam design calculations",
-  "last_updated": "2026-08-21",
+  "last_updated": "2026-08-22",
   "file_count": 52,
   "files": [
     {
@@ -526,10 +526,10 @@
     {
       "name": "validation.py",
       "type": "python",
-      "size_lines": 24,
-      "last_updated": "2026-08-17",
+      "size_lines": 26,
+      "last_updated": "2026-08-22",
       "description": "Backward compatibility stub.",
-      "content_hash": "f86adfaa535d"
+      "content_hash": "5aa4120aa18a"
     }
   ],
   "subfolders": [
@@ -610,5 +610,5 @@
     "serviceability",
     "shear"
   ],
-  "content_hash": "9754fb00c4dba902"
+  "content_hash": "5086d117e5f622a3"
 }
