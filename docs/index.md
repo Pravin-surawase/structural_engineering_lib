@@ -16,7 +16,7 @@ Guides, references, evidence, and contributor material for the
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
 | [README.md](README.md) | Docs Index (Start Here) | Guides, references, evidence, and contributor material for t | 253 |
-| [SESSION_LOG.md](SESSION_LOG.md) | Session Log | > Append-only decision log for AI agent sessions. > Earlier  | 4266 |
+| [SESSION_LOG.md](SESSION_LOG.md) | Session Log | > Append-only decision log for AI agent sessions. > Earlier  | 4273 |
 | [TASKS.md](TASKS.md) | Task Board | > **Single source of truth for active work.** Keep it short  | 739 |
 | [WORKLOG.md](WORKLOG.md) |  | > **One line per item. Compact. Append-only.** > Format: DAT | 354 |
 

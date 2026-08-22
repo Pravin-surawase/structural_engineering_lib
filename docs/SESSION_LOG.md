@@ -68,6 +68,8 @@ cleanup, or professional approval was in scope.
   workspace-root-relative test launcher from the persisted subdirectory.
 - One `apply_patch` transaction could not delete and add the same scanner path
   in one call during early implementation.
+- The first committed candidate revealed that the scanner replacement had
+  changed `audit_input_validation.py` from executable to non-executable.
 
 ### Root causes and resolutions
 
@@ -124,6 +126,11 @@ cleanup, or professional approval was in scope.
   content was lost.
   ⚠️ TERMINAL ISSUE: same-path delete/add patch rejected -> used two
   bounded `apply_patch` operations.
+- Root cause: recreating the script through the patch tool used the default
+  regular-file mode and did not preserve its executable bit. Resolution:
+  restore mode `100755` in an explicit post-candidate repair commit. Evidence:
+  the final Git diff reports no unintended mode change and the direct script
+  help path executes.
 
 ### Validation through content freeze
 

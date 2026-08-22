@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2026-08-22T18:26:57.209752",
+  "generated": "2026-08-22T18:27:39.385021",
   "total_docs": 375,
   "docs": {
     "docs/SESSION_LOG.md": {
@@ -21,7 +21,7 @@
         "2026-08-22 \u2014 Session: E1 blank-workbook guard repair",
         "2026-08-21 \u2014 Session: E1 Windows W0 evidence and maintenance"
       ],
-      "size_bytes": 251959
+      "size_bytes": 252433
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",
