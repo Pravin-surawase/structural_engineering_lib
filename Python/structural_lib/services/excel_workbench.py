@@ -97,6 +97,7 @@ _EXACT_HEADER_ALIASES = {
     "D (mm)": "D_mm",
     "D_mm": "D_mm",
     "Depth Basis": "depth_basis_mode",
+    "Effective d (mm)": "d_mm",
     "d (mm)": "d_mm",
     "d_mm": "d_mm",
     "Clear Cover (mm)": "clear_cover_mm",

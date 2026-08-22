@@ -23,8 +23,8 @@ doc_type: log
   export only.
 
 Workbook bytes, Office manifest, beam formulas, canonical calculation results,
-ETABS/VBA, professional approval, release, merge, and cleanup remain unchanged
-or held.
+ETABS/VBA, professional approval, release, merge, and cleanup remained
+unchanged or held in this candidate.
 
 ## G3 blocker and confirmed root cause
 
@@ -123,3 +123,18 @@ but suppressed typed OpenAPI response content. The route now retains its
 which stopped the chained type check. Only the OpenAPI assertion/baseline and
 affected style/type checks were repeated; Office.js, architecture, imports,
 and unchanged behavior tests were not rerun.
+
+## External Windows G3 outcome
+
+The exact candidate reached Windows with its expected wheel, library-content,
+manifest, pane-resource, and workbook identities. Its blank unsaved workbook
+guard passed. Opening an unchanged disposable product workbook then caused
+Excel to offer content recovery before the workbook opened, so no mapping,
+calculation, stale-state, reopen, or supported Blob-download export ran. G3 is
+therefore `G3_BLOCKED` for this exact head.
+
+The export candidate did not alter workbook bytes and is not the cause of the
+prompt. A separately controlled diagnostic recovery later identified a case-
+insensitive `D (mm)` / `d (mm)` collision in `table1.xml`; that file-level
+repair belongs exclusively to the stacked
+[workbook-open repair](e1-workbook-open-repair-evidence.md).

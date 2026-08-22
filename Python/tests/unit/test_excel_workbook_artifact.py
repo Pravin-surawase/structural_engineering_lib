@@ -38,7 +38,7 @@ EXPECTED_INPUT_HEADERS = [
     "b (mm)",
     "D (mm)",
     "Depth Basis",
-    "d (mm)",
+    "Effective d (mm)",
     "Clear Cover (mm)",
     "Stirrup Dia (mm)",
     "Tension Bar Dia (mm)",
@@ -87,6 +87,12 @@ def test_workbook_has_exact_sheets_tables_headers_and_no_structural_formulas() -
             "tbl_Results_V1",
             "tbl_Passports_V1",
         }
+        for table in tables:
+            table_columns = table.find(f"{{{main_ns}}}tableColumns")
+            assert table_columns is not None
+            header_names = [item.attrib["name"] for item in table_columns]
+            assert len({name.casefold() for name in header_names}) == len(header_names)
+
         input_table = next(
             table for table in tables if table.attrib["name"] == "tbl_Beam_Workbench_V1"
         )

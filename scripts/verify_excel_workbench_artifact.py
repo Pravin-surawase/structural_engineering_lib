@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
 import os
 import subprocess
@@ -13,6 +14,7 @@ import tempfile
 import zipfile
 from pathlib import Path
 from typing import Any
+from xml.etree import ElementTree
 
 _RESOURCE_DIR = "structural_lib/data/excel/outputs/e1-excel-routine-workbench"
 _WORKBOOK_MEMBER = f"{_RESOURCE_DIR}/structural-lib-rectangular-beam-workbench-v1.xlsx"
@@ -54,7 +56,7 @@ if definition.installed_windows_excel_evidence != "TO_VERIFY_WINDOWS":
 
 headers = (
     "Row ID", "Beam ID", "Case ID", "Mu (kN·m)", "Vu (kN)", "b (mm)",
-    "D (mm)", "Depth Basis", "d (mm)", "Clear Cover (mm)",
+    "D (mm)", "Depth Basis", "Effective d (mm)", "Clear Cover (mm)",
     "Stirrup Dia (mm)", "Tension Bar Dia (mm)", "d' (mm)", "Asv (mm²)",
     "fck (N/mm²)", "fy (N/mm²)", "Shear Basis",
 )
@@ -179,6 +181,28 @@ def verify(wheel: Path) -> dict[str, Any]:
             raise AssertionError("Wheel workbook does not match its artifact manifest.")
         if manifest["artifact_size_bytes"] != len(workbook):
             raise AssertionError("Wheel workbook size does not match its manifest.")
+
+        with zipfile.ZipFile(io.BytesIO(workbook)) as workbook_archive:
+            table_members = sorted(
+                name
+                for name in workbook_archive.namelist()
+                if name.startswith("xl/tables/table") and name.endswith(".xml")
+            )
+            for table_member in table_members:
+                table = ElementTree.fromstring(workbook_archive.read(table_member))
+                namespace = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+                columns = table.find(f"{{{namespace}}}tableColumns")
+                if columns is None:
+                    raise AssertionError(
+                        f"Workbook table has no columns: {table_member}"
+                    )
+                table_headers = [item.attrib["name"] for item in columns]
+                if len({header.casefold() for header in table_headers}) != len(
+                    table_headers
+                ):
+                    raise AssertionError(
+                        f"Workbook table headers collide case-insensitively: {table_member}"
+                    )
 
     with tempfile.TemporaryDirectory(prefix="e1_excel_workbench_") as raw_temp:
         temp_root = Path(raw_temp)

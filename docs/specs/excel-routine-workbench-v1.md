@@ -43,6 +43,11 @@ The workbook contract fixes:
 - unit system `IS456` and trust mode `MACRO_FREE_OFFICE_JS`;
 - torsion and serviceability modes `DISABLED_E1`.
 
+The packaged input table uses the distinct display headers `D (mm)` for overall
+depth and `Effective d (mm)` for explicit effective depth. Table-column names
+must remain unique under case-insensitive comparison because desktop Excel
+repairs case-only collisions before opening the workbook.
+
 ## Selected-table intake
 
 The task pane reads the table header and data-body values as typed by Excel. It records workbook instance ID, template and table identity, first source row, locale, decimal convention, Excel calculation mode, unit system, and trust mode.

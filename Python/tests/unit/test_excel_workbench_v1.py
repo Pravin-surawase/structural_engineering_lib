@@ -38,7 +38,7 @@ HEADERS = (
     "b (mm)",
     "D (mm)",
     "Depth Basis",
-    "d (mm)",
+    "Effective d (mm)",
     "Clear Cover (mm)",
     "Stirrup Dia (mm)",
     "Tension Bar Dia (mm)",

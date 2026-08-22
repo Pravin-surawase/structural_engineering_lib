@@ -18,7 +18,7 @@ doc_type: log
 - template: `structural-lib-rectangular-beam-workbench` version `1.0`;
 - canonical function/result: `design_beam_is456` / `canonical-beam-result/v1`;
 - workbook trust: `MACRO_FREE_OFFICE_JS`;
-- installed Windows Excel evidence: `READY_FOR_G3 / G3_BLOCKED_EXPORT_SURFACE`.
+- installed Windows Excel evidence: `G3_BLOCKED_WORKBOOK_OPEN / D0_ROOT_CAUSE_CONFIRMED`.
 
 ETABS file/live access, write-back, optimization, nightly execution, release publication, and professional approval are outside this candidate.
 
@@ -82,14 +82,15 @@ Python/REST/OpenAPI/wheel evidence were repeated; all pass.
 | Field | Value |
 |---|---|
 | Path | `Python/structural_lib/data/excel/outputs/e1-excel-routine-workbench/structural-lib-rectangular-beam-workbench-v1.xlsx` |
-| SHA-256 | `497dd44d8dbe30ca8a6f3154b17d1d3598c517d96ffe0923e3ca44778450ac85` |
-| Size | `15204` bytes |
+| Original SHA-256 | `497dd44d8dbe30ca8a6f3154b17d1d3598c517d96ffe0923e3ca44778450ac85` |
+| Repair candidate SHA-256 | `4cc492bfcbba456342c6358a8dcfe2749cafd723e9ee4fdaefa585f29e35ce63` |
+| Repair candidate size | `15101` bytes |
 | Sheets | `Workbook_Info`, `Beam_Workbench`, `Mapping_Preview`, `Row_Ledger`, `Results`, `Passports` |
-| Input table | `Beam_Workbench / tbl_Beam_Workbench_V1 / A4:Q7` |
+| Input table | `Beam_Workbench / tbl_Beam_Workbench_V1 / A4:Q7`; distinct `D (mm)` and `Effective d (mm)` headers |
 | Structural formulas | none |
 | VBA/macros | none |
-| Visual review | PASS on all six rendered sheets, 2026-08-18 |
-| Installed Windows Excel | `READY_FOR_G3 / G3_BLOCKED_EXPORT_SURFACE`; see [Windows W0 evidence](e1-windows-w0-setup-evidence.md) and [export successor evidence](e1-review-bundle-export-evidence.md) |
+| Visual review | PASS on all six regenerated sheets, 2026-08-22 |
+| Installed Windows Excel | `G3_BLOCKED_WORKBOOK_OPEN / D0_ROOT_CAUSE_CONFIRMED`; see [workbook-open repair evidence](e1-workbook-open-repair-evidence.md) |
 
 ## Focused implementation diagnostics already completed
 
@@ -103,7 +104,7 @@ These diagnostics are recorded separately from the passing consolidated batch.
 
 ## Current verdict
 
-`SOFTWARE CANDIDATE / G3 BLOCKED ON EXPORT SURFACE`.
+`WORKBOOK-OPEN REPAIR CONTENT READY / D2 PENDING / G3 HELD`.
 
 The focused batch, source-free wheel proof, immutable candidate closeout, and
 hosted PR #826 checks pass. Windows W0 subsequently proved the active Microsoft
@@ -115,9 +116,18 @@ The exact add-in loaded in a blank workbook but exposed a pre-API
 repaired for its missing static-module route and returned `READY_FOR_G3` on
 Windows at exact head `514155b2`.
 
-The first G3 preflight stopped before workbook creation because the installed
-pane and REST API had no complete review-bundle export. Source inspection also
-proved that the existing Markdown renderer is a compact status summary, not
-the mapping/result/passport/issue artifact required by the frozen plan. The
-authorized [export successor](e1-review-bundle-export-evidence.md) closes both
-gaps before the single G3 rerun.
+The authorized [export successor](e1-review-bundle-export-evidence.md) closes
+the missing source-to-pane review-bundle path. The next frozen Windows journey
+then reached the unchanged product workbook and stopped at Excel's content-
+recovery prompt before mapping or calculation. Recovery was accepted only on a
+diagnostic copy. Excel's retained repair log identifies `table1.xml`, and its
+repaired evidence copy changed the ninth table header from `d (mm)` to
+`d (mm)2`; the seventh was `D (mm)`. The exact file-level cause is therefore a
+case-insensitive duplicate table-column name, not a copy failure, generic
+workbook corruption, or export-code change.
+
+The [workbook-open repair](e1-workbook-open-repair-evidence.md) regenerates the
+same bounded artifact from maintained source with `Effective d (mm)`, preserves
+the legacy service alias, and adds a package regression that rejects case-
+colliding table columns. Its deterministic local artifact must still pass the
+consolidated D2 checks and the exact installed-Excel D3 journey.

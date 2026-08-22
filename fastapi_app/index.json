@@ -2,7 +2,7 @@
   "folder": "fastapi_app",
   "type": "python-package",
   "description": "REST API + WebSocket bridge between the React frontend and the Python `structural_lib`.",
-  "last_updated": "2026-08-21",
+  "last_updated": "2026-08-22",
   "file_count": 9,
   "files": [
     {
@@ -256,7 +256,7 @@
     {
       "name": "openapi_baseline.json",
       "type": "config",
-      "last_updated": "2026-08-21",
+      "last_updated": "2026-08-22",
       "top_level_keys": [
         "components",
         "info",
@@ -264,7 +264,7 @@
         "paths",
         "tags"
       ],
-      "content_hash": "22feee992a14"
+      "content_hash": "bef2c56a65ed"
     },
     {
       "name": "ruff.toml",
@@ -301,5 +301,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "d673b776f6dc3e65"
+  "content_hash": "eb774357e0f19ccf"
 }

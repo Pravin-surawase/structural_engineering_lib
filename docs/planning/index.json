@@ -41,10 +41,10 @@
     {
       "name": "e1-excel-routine-workbench-v1-plan.md",
       "type": "documentation",
-      "size_lines": 276,
+      "size_lines": 290,
       "last_updated": "2026-08-22",
       "description": "The planned E1 software is implemented on the isolated branch. The frozen Python, REST, Office.js, Open XML, architecture, import, OpenAPI, type, style,",
-      "content_hash": "c186cd5106f0"
+      "content_hash": "1e177cd01a0b"
     },
     {
       "name": "etabs-killer-masterplan.md",
@@ -131,11 +131,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 66,
+      "size_lines": 70,
       "last_updated": "2026-08-22",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-22",
-      "content_hash": "777013afbc4d"
+      "content_hash": "b280df1dabdb"
     },
     {
       "name": "pre-release-checklist.md",
@@ -174,5 +174,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "60a583b3674cb340"
+  "content_hash": "466f4e1bdcca2c4d"
 }

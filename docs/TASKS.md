@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-22 — E1 Windows W0 is ready; G3 preflight exposed the missing complete export surface, now in one authorized successor
+**Updated:** 2026-08-22 — E1 export is locally complete; desktop Excel diagnosed a case-insensitive table-header collision, now isolated in one workbook-open repair
 
 ---
 
@@ -128,7 +128,7 @@
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
 | RELEASE-0231A2 | Review and publish the exact v0.23.1a2 Alpha candidate | Main Agent + ops | M | P0 | 🔄 LOCAL CANDIDATE READY — source-bound wheel `34892d86…14bb`; 5,553 installed tests and 29/29 UAT pass; target publication is authorized after refreshed PR checks, Weekly Verification, independent review, and exact receipt |
-| E1-EXCEL-ROUTINE-WORKBENCH | Complete the real Windows Excel gate for the frozen selected-table workbench | Main Agent | M | P1 | 🔄 W0 `READY_FOR_G3`; first G3 preflight correctly stopped on the missing complete review-bundle export, now owned by the [single authorized successor](verification/e1-review-bundle-export-evidence.md) |
+| E1-EXCEL-ROUTINE-WORKBENCH | Complete the real Windows Excel gate for the frozen selected-table workbench | Main Agent | M | P1 | 🔄 G3 is blocked before workbook open; Excel identified case-colliding `D (mm)` / `d (mm)` table headers, and the [bounded workbook-open repair](verification/e1-workbook-open-repair-evidence.md) is in progress |
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. INDIA-3, dependency work, tag/publication execution, further cleanup,
@@ -145,13 +145,16 @@ immutable review and hosted evidence pass.
 
 The separately accepted integrated component/gravity program has completed A1,
 A2, B1, and B2 through PRs #822-#825. Building Gravity Workflow V1 is merged at
-`c127e4b2`. E1 software remains in draft PR #826 at `ef5ee05c`; Windows W0
-proved the host, catalog, and add-in discovery, then exposed an eager missing-
-sheet startup defect. Its stacked blank-workbook guard passed exact-head
-Windows revalidation at `514155b2`. The first G3 preflight stopped before
-workbook creation because the pane/API had no complete export surface. The
-authorized `codex/e1-review-bundle-export` successor closes that gap before one
-G3 rerun.
+`c127e4b2`. E1 software remains in the open draft PR stack. Windows W0 proved
+the host, catalog, and add-in discovery, and the stacked blank-workbook guard
+passed exact-head revalidation at `514155b2`. The deterministic review-bundle
+export is locally complete at `98c60bc1`. Its first frozen G3 run then stopped
+at desktop Excel's content-recovery prompt before any product-workbook work. A
+diagnostic-only recovered copy and Excel's repair log confirmed that the input
+table contained case-insensitive duplicate column names: `D (mm)` and
+`d (mm)`. The isolated `codex/e1-workbook-open-repair` successor regenerates
+the macro-free workbook with the unique label `Effective d (mm)` before one
+exact-candidate G3 retry.
 ETABS file/live work and all write-back/nightly work remain outside E1.
 
 ## Up Next

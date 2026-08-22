@@ -5,6 +5,90 @@
 
 ---
 
+## 2026-08-22 — Session: E1 desktop-Excel workbook-open repair
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/e1-workbook-open-repair`, stacked on immutable export
+candidate `98c60bc1f7c3899c28f662e82399cb25d80bbf26`.
+
+**Git handoff receipt:**
+`docs/verification/e1-workbook-open-repair-git-handoff-receipt.json`
+
+**Focus:** Diagnose Excel's content-recovery prompt on an evidence-only copy,
+repair the confirmed workbook-package defect from maintained source, and return
+one deterministic candidate for the frozen G3 journey without starting ETABS.
+
+### Summary
+
+- Accepted recovery only on a uniquely named diagnostic copy and preserved the
+  original, repaired evidence copy, Excel repair log, hashes, package delta,
+  visible outcome, and clean Windows shutdown receipt.
+- Added a maintained spreadsheet-artifact generator for all six sheets and five
+  named tables; the generated workbook contains no macros or structural
+  formulas.
+- Replaced the case-colliding effective-depth table header with
+  `Effective d (mm)`, retained the old service alias, refreshed the manifest,
+  and added source/wheel package regressions.
+- Normalized volatile relationship identifiers and ZIP timestamps so two clean
+  generator runs produce byte-identical workbooks.
+
+### Issues encountered
+
+- Excel displayed “We found a problem with some content” before the exact
+  product workbook opened, blocking mapping, calculation, freshness, reopen,
+  and supported export. The prompt alone did not identify the rejected part.
+- The workbook was tracked only as binary package data; no maintained generator
+  for reproducing a corrected artifact was present.
+- The first two artifact-tool exports had equivalent worksheet content but
+  different bytes, so manifest identity could not be reproduced reliably.
+- Windows `Ctrl+Shift+S` did not open Save As for the recovered evidence copy;
+  `F12` opened the dialog and permitted preservation under the frozen diagnosis
+  contract.
+- ⚠️ TERMINAL ISSUE: an orientation `shasum excel_addin/*.xlsx` command failed
+  because zsh rejected the unmatched glob → the exact package-data workbook
+  path was used instead; this was a shell-selection issue, not workbook damage.
+
+### Root causes and resolutions
+
+- Confirmed file root cause: `tbl_Beam_Workbench_V1` declared `D (mm)` and
+  `d (mm)`, which collide under Excel's case-insensitive table-column naming.
+  Excel's repair log named `/xl/tables/table1.xml`, and the recovered evidence
+  changed only the latter logical header to `d (mm)2`. Resolution: generate the
+  supported artifact with `Effective d (mm)` and reject case-insensitive
+  duplicate table names in source and installed-wheel probes.
+- Confirmed process root cause: the original gate verified ZIP/XML structure,
+  tables, formulas/macros, hashes, and rendered appearance, but did not require
+  an immutable desktop-Excel open. Resolution: make the no-recovery real-Excel
+  open a required D3 gate before the remaining frozen journey.
+- Confirmed reproducibility gap: the binary artifact had no maintained creation
+  path. Resolution: add `scripts/generate_e1_workbook.mjs` using the approved
+  spreadsheet artifact workflow and preserve the exact six-sheet contract.
+- Confirmed byte-instability cause: artifact-tool emitted random relationship
+  identifiers and current ZIP timestamps. Resolution: normalize relationship
+  IDs consistently across targets/references and set fixed ZIP member dates;
+  two clean executions then matched byte for byte.
+- Confirmed shortcut issue: the diagnostic Excel session did not respond to
+  `Ctrl+Shift+S`; using Excel's `F12` Save As path preserved the recovered copy
+  without changing the production artifact. The host was returned with Excel
+  and ETABS closed, services stopped, ports free, and retained worktrees clean.
+- Confirmed terminal issue: the unmatched zsh glob had no target files in the
+  add-in directory. Resolution: select the exact installed package-data path;
+  its original SHA-256 matched the frozen receipt.
+
+### Validation through content freeze
+
+- Generator determinism: PASS — two clean runs produced the same 15,101-byte
+  workbook, SHA-256 `4cc492bfcbba456342c6358a8dcfe2749cafd723e9ee4fdaefa585f29e35ce63`.
+- Final six-sheet render/inspection is readable and formula/error-free; focused
+  workbook/service/REST evidence passes 22/22 cases.
+- Affected Black/Ruff pass after formatting only the failed verifier slice.
+  The source-free wheel SHA-256 is `0943e277…ba43`; its isolated install reports
+  library content `eafb869a…8ebf`, the exact repaired workbook identity, one
+  canonical `PASS` row, and deterministic complete review-bundle bytes.
+- Documentation/index validation, quick gate, hooks, immutable commit, and
+  read-only session audit remain pending in the consolidated closeout sequence.
+
 ## 2026-08-22 — Session: E1 complete review-bundle export
 
 **Agent:** Codex (`reviewer`, sole writer)

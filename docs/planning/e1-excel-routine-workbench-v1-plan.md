@@ -10,24 +10,33 @@ doc_type: spec
 
 # Excel Routine Workbench V1 Execution Plan
 
-## Implementation status — 2026-08-18
+## Implementation status — 2026-08-22
 
 The planned E1 software is implemented on the isolated branch. The frozen
 Python, REST, Office.js, Open XML, architecture, import, OpenAPI, type, style,
 advertised-command, and source-free wheel evidence passes. The single workbook
-is installed package data and retains SHA-256
+is installed package data. The original artifact SHA-256 was
 `497dd44d8dbe30ca8a6f3154b17d1d3598c517d96ffe0923e3ca44778450ac85`.
 
 This is a software candidate, not a G3 pass. The mandatory installed Windows
 11 x64 plus Microsoft 365 Excel x64 journey remains `TO_VERIFY_WINDOWS`; T1/T2
 ETABS and all write-back/nightly work remain held.
 
-Windows W0 later reached `READY_FOR_G3` on blank-workbook guard head
+Windows W0 reached `READY_FOR_G3` on blank-workbook guard head
 `514155b266af6dff3e30bf39ee28671c17345454`. The first G3 preflight then
-stopped before opening a disposable workbook because the installed pane had no
-supported complete review-bundle export. The authorized successor
-`codex/e1-review-bundle-export` adds that missing end-user surface without
+identified the missing supported complete review-bundle export. The authorized
+`codex/e1-review-bundle-export` successor closed that end-user gap without
 changing workbook bytes, structural calculations, or the Office manifest.
+
+The frozen Windows journey against that exact export candidate was then blocked
+before the product workbook opened by Excel's content-recovery prompt. A
+diagnostic-only recovery copy and Excel's repair log confirmed that
+`tbl_Beam_Workbench_V1` used case-insensitive duplicate headers: `D (mm)` and
+`d (mm)`. The isolated `codex/e1-workbook-open-repair` successor adds a
+maintained workbook generator, changes the effective-depth label to
+`Effective d (mm)`, and adds an exact regression against case-colliding table
+column names. G3 remains held until the generated artifact passes the immutable
+desktop-Excel open gate and the full frozen journey.
 
 ## 1. Outcome and start boundary
 
@@ -126,8 +135,11 @@ implicit conversion. Optional shear inputs use explicit mode tokens such as
 `AUTO_FROM_FLEXURE` rather than blank-cell meaning.
 
 Headers may use contract-listed aliases, but aliases must be displayed in the
-mapping preview. Unknown columns remain visible as excluded metadata. Duplicate
-canonical mappings or missing required mappings block the batch.
+mapping preview. The packaged template uses `D (mm)` for overall depth and the
+case-insensitively distinct `Effective d (mm)` for effective depth. Unknown
+columns remain visible as excluded metadata. Duplicate canonical mappings,
+case-insensitive duplicate Excel table-column names, or missing required
+mappings block the batch.
 
 ### 3.3 Row accounting and status
 
@@ -209,7 +221,9 @@ boundaries. It does not merely change the visible status formula.
    add parity vectors against Python, CLI, and REST.
 5. Add deterministic passports and stale detection, then expose complete
    review-bundle export through the service, REST route, and installed pane.
-6. Generate the macro-free workbook and golden reopen/recalculate fixtures.
+6. Generate the macro-free workbook from the maintained artifact-tool source,
+   normalize package identities for deterministic bytes, and verify that every
+   table's column names are case-insensitively unique.
 7. Add the selected-table task pane and explicit installation/capability view.
 8. Complete code, tests, docs, fixtures, packaging, and evidence before the one
    post-freeze verification batch.
