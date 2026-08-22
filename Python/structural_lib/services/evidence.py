@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from collections.abc import Mapping
 from datetime import UTC, datetime
 from functools import lru_cache
@@ -35,7 +36,7 @@ from structural_lib.services.source_identity import (
 )
 
 BEAM_EVIDENCE_ARTIFACT_SCHEMA = "structural_lib.beam-evidence"
-BEAM_EVIDENCE_SCHEMA_VERSION = "3.0"
+BEAM_EVIDENCE_SCHEMA_VERSION = "3.1"
 BEAM_CAPABILITY_ID = "design_beam_is456"
 BEAM_RESULT_CONTRACT_VERSION = "canonical-beam-result/v1"
 QUALIFIED_REVIEW_REQUIREMENT = (
@@ -315,12 +316,27 @@ def build_beam_evidence_envelope(
     source_basis_hash = _sha256_json(source_basis_payload)
     source_resolved = source_basis.is_resolved
     supported = supported and source_resolved
-    exact_utilization = (
-        None
-        if not supported or governing_utilization is None
-        else float(governing_utilization)
+    raw_utilization = (
+        None if governing_utilization is None else float(governing_utilization)
     )
-    status = "HOLD" if not supported else ("PASS" if is_ok else "FAIL")
+    if not supported or raw_utilization is None:
+        exact_utilization = None
+        utilization_disposition = "NOT_EVALUATED"
+    elif math.isfinite(raw_utilization):
+        exact_utilization = raw_utilization
+        utilization_disposition = "FINITE"
+    else:
+        exact_utilization = None
+        utilization_disposition = "UNBOUNDED_FAILURE"
+    status = (
+        "HOLD"
+        if not supported
+        else (
+            "PASS"
+            if is_ok and utilization_disposition != "UNBOUNDED_FAILURE"
+            else "FAIL"
+        )
+    )
     governing_check = _governing_check(utilizations or {})
     calculation_identity = _sha256_json(
         {
@@ -335,6 +351,7 @@ def build_beam_evidence_envelope(
             "support_status": "SUPPORTED" if supported else "HELD",
             "governing_check": governing_check,
             "exact_utilization": exact_utilization,
+            "utilization_disposition": utilization_disposition,
             "status": status,
         }
     )
@@ -377,6 +394,7 @@ def build_beam_evidence_envelope(
         "replay_receipt_hash": replay_receipt_hash,
         "governing_check": governing_check,
         "exact_utilization": exact_utilization,
+        "utilization_disposition": utilization_disposition,
         "margin": None if exact_utilization is None else 1.0 - exact_utilization,
         "status": status,
         "generated_at": generated_at or datetime.now(UTC).isoformat(),

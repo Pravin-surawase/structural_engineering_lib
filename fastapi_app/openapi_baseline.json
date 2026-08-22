@@ -14083,6 +14083,15 @@
           "unit_system": {
             "title": "Unit System",
             "type": "string"
+          },
+          "utilization_disposition": {
+            "enum": [
+              "FINITE",
+              "UNBOUNDED_FAILURE",
+              "NOT_EVALUATED"
+            ],
+            "title": "Utilization Disposition",
+            "type": "string"
           }
         },
         "required": [
@@ -14108,6 +14117,7 @@
           "replay_receipt_hash",
           "governing_check",
           "exact_utilization",
+          "utilization_disposition",
           "margin",
           "status",
           "generated_at",

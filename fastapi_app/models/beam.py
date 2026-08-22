@@ -398,6 +398,7 @@ class EvidenceEnvelopeResponse(BaseModel):
     replay_receipt_hash: str
     governing_check: str
     exact_utilization: float | None
+    utilization_disposition: Literal["FINITE", "UNBOUNDED_FAILURE", "NOT_EVALUATED"]
     margin: float | None
     status: Literal["PASS", "FAIL", "HOLD"]
     generated_at: str

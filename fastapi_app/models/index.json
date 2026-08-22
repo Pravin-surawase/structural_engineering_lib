@@ -79,8 +79,8 @@
     {
       "name": "beam.py",
       "type": "python",
-      "size_lines": 836,
-      "last_updated": "2026-08-17",
+      "size_lines": 837,
+      "last_updated": "2026-08-22",
       "description": "Beam Design and Detailing Pydantic Models.",
       "classes": [
         {
@@ -156,7 +156,7 @@
           "description": "Response model for beam design calculation."
         }
       ],
-      "content_hash": "bf3da07bf2f1"
+      "content_hash": "ced9425aba28"
     },
     {
       "name": "boq.py",
@@ -1137,5 +1137,5 @@
     "DuctilityCheckRequest",
     "DuctilityCheckResponse"
   ],
-  "content_hash": "2eeed4f1fc7bed16"
+  "content_hash": "b51ba87ccb6818e6"
 }

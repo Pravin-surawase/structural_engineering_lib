@@ -2,7 +2,7 @@
   "authorization": {
     "authority_source": {
       "kind": "USER_DELEGATION",
-      "observed_at_utc": "2026-08-22T10:43:10Z",
+      "observed_at_utc": "2026-08-22T10:57:58Z",
       "query_status": "OK",
       "reference": "task:LIB-PRO-003:user-request-continue-this-work",
       "status": "OBSERVED"
@@ -13,7 +13,7 @@
       "CREATE_OR_UPDATE_PR"
     ],
     "next_action": "COMMIT_INTENDED_PATHS",
-    "observed_at_utc": "2026-08-22T10:43:10Z",
+    "observed_at_utc": "2026-08-22T10:57:58Z",
     "prohibited_actions": [
       "PUBLISH_RELEASE",
       "CLAIM_PROFESSIONAL_APPROVAL",
@@ -32,7 +32,7 @@
         "CREATE_OR_UPDATE_PR"
       ],
       "branch": "codex/public-route-failure-contracts",
-      "head_sha": "e19b757ccb9922061369a236501f037ec20503ab",
+      "head_sha": "60ceb7b9af7ec91fd09a637816bd68166ac4a05d",
       "task_id": "LIB-PRO-003-C"
     }
   },
@@ -44,7 +44,7 @@
   "retention": {
     "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
     "holds": [],
-    "observed_at_utc": "2026-08-22T10:43:10Z",
+    "observed_at_utc": "2026-08-22T10:57:58Z",
     "owner": "Main Agent under repository retention policy; destructive cleanup remains separately owner-authorized",
     "query_status": "OK",
     "status": "OBSERVED"

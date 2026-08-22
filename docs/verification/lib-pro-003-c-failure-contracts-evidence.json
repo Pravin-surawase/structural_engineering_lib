@@ -34,7 +34,18 @@
     "package version or publication",
     "ETABS or desktop Excel"
   ],
-  "status": "READY_FOR_CANDIDATE",
+  "status": "READY_FOR_REPAIR_CANDIDATE",
+  "hosted_repair": {
+    "affected_tests_passed": 14,
+    "api_contract_tests_passed": 20,
+    "corrected_outcome": "Valid but unsafe beams with unbounded derived utilization return SUPPORTED/FAIL without non-finite JSON.",
+    "first_hosted_fastapi_result": "471 passed, 2 failed",
+    "first_pr_gate": "FAIL",
+    "openapi_breaking_drift": false,
+    "root_cause": "Beam evidence schema 3.0 attempted to hash mathematical infinity as strict JSON.",
+    "schema_version": "3.1",
+    "utilization_disposition": "UNBOUNDED_FAILURE"
+  },
   "verification": {
     "api_contract_tests_passed": 20,
     "api_surface": {

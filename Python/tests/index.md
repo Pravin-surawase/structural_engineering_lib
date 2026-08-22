@@ -45,7 +45,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_docs_index_generator.py](test_docs_index_generator.py) | Regression tests for deterministic docs-index file output. | 0 | 1 | 32 |
 | [test_error_messages.py](test_error_messages.py) | Tests for error message templates. | 7 | 0 | 294 |
 | [test_etabs_import_integration.py](test_etabs_import_integration.py) | Integration tests for etabs_import Pydantic conversion funct | 4 | 4 | 330 |
-| [test_evidence.py](test_evidence.py) | Focused tests for the supported IS 456 beam evidence envelop | 0 | 9 | 237 |
+| [test_evidence.py](test_evidence.py) | Focused tests for the supported IS 456 beam evidence envelop | 0 | 10 | 254 |
 | [test_exception_hierarchy.py](test_exception_hierarchy.py) | Tests for exception hierarchy in errors module. | 4 | 0 | 278 |
 | [test_footing.py](test_footing.py) | Tests for IS 456 footing design — TASK-650/651/652. | 11 | 1 | 1801 |
 | [test_footing_api.py](test_footing_api.py) | Focused contract tests for Phase B1 isolated-footing orchest | 0 | 15 | 401 |

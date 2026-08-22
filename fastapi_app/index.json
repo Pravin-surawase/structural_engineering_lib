@@ -264,7 +264,7 @@
         "paths",
         "tags"
       ],
-      "content_hash": "504473a458d3"
+      "content_hash": "306094953038"
     },
     {
       "name": "ruff.toml",
@@ -301,5 +301,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "9685a4bf482ba93d"
+  "content_hash": "b4286acd222eef35"
 }

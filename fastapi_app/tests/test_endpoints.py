@@ -160,6 +160,7 @@ class TestDesignEndpoints:
             "normalized_input_hash",
             "calculation_identity",
             "exact_utilization",
+            "utilization_disposition",
             "margin",
             "status",
             "qualified_review_required",
@@ -186,7 +187,8 @@ class TestDesignEndpoints:
 
         assert evidence["support_status"] == "SUPPORTED"
         assert evidence["status"] == "FAIL"
-        assert evidence["exact_utilization"] > 1.0
+        assert evidence["exact_utilization"] is None
+        assert evidence["utilization_disposition"] == "UNBOUNDED_FAILURE"
         assert evidence["qualified_review_required"] is True
 
         report_response = client.post(

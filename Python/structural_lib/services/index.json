@@ -1692,8 +1692,8 @@
     {
       "name": "evidence.py",
       "type": "python",
-      "size_lines": 386,
-      "last_updated": "2026-08-17",
+      "size_lines": 404,
+      "last_updated": "2026-08-22",
       "description": "Canonical evidence identity for the supported IS 456 beam design route.",
       "functions": [
         {
@@ -1725,7 +1725,7 @@
         "_REQUIRED_CONSUMED_INPUTS",
         "_SUPPORT_ALIASES"
       ],
-      "content_hash": "3d703fe4959e"
+      "content_hash": "44e3c3ba064b"
     },
     {
       "name": "excel_bridge.py",
@@ -3420,5 +3420,5 @@
     "PropertyLineStrapFootingDesignStatus",
     "design_property_line_strap_footing_is456"
   ],
-  "content_hash": "737f10dce7c477eb"
+  "content_hash": "4f7274c8ab0e9a23"
 }

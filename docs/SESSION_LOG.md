@@ -54,6 +54,9 @@ contracts, without changing supported engineering formulas.
 - The first normal commit-hook run blocked on three repository-wide mypy
   errors: Gravity Workflow read optional slab shear/serviceability results and
   release UAT read optional detailing without narrowing the new failure union.
+- Hosted FastAPI validation on PR #834 left 471 tests green but failed two
+  unsafe-beam routes with HTTP 422 because strict evidence hashing received an
+  infinite derived utilization; `PR Gate` correctly failed with it.
 - ⚠️ TERMINAL ISSUE: the first slab lookup guessed a nonexistent
   `one_way_flexure.py`; `rg --files` identified the maintained `one_way.py`.
 - ⚠️ TERMINAL ISSUE: a direct complete-workflow replay omitted six required
@@ -123,6 +126,15 @@ contracts, without changing supported engineering formulas.
   Evidence: 13 affected Gravity/UAT tests pass, the overloaded workflow result
   is `VALID/COMPLETED/FAIL`, and targeted mypy passes all three affected source
   modules.
+- Symptom: valid but grossly unsafe beam designs could not return their
+  expected HTTP 200 engineering `FAIL`. Root cause: a zero/invalid calculated
+  capacity intentionally produced mathematical infinity, but beam evidence
+  schema 3.0 inserted that value into strict JSON identity. Resolution: schema
+  3.1 records `UNBOUNDED_FAILURE`, leaves `exact_utilization` and margin null,
+  and forces `SUPPORTED/FAIL` even if a contradictory caller supplies
+  `is_ok=True`. Evidence: the two hosted reproductions plus the evidence
+  fail-closed regression pass; 14 affected tests and 20 API-contract tests are
+  green with no OpenAPI breaking drift.
 
 ### Verification through content freeze
 
@@ -131,6 +143,9 @@ contracts, without changing supported engineering formulas.
   independent API surface/manifest tests pass.
 - 13 affected downstream Gravity Workflow and release-UAT tests pass after the
   full-source typing repair.
+- The first hosted run passed Python, documentation, and repository validation
+  but failed FastAPI 2/473 and therefore failed `PR Gate`; the exact two failed
+  nodes, evidence regressions, and 20 API-contract tests pass after repair.
 - The schema snapshot authority reports five models and two enums unchanged;
   the canonical OpenAPI baseline contains the reviewed response-model update.
 - Targeted mypy reports no issues in seven changed source modules; focused

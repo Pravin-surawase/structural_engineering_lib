@@ -33,7 +33,7 @@
 |------|-------------|---------|-----------|-------|
 | [__init__.py](__init__.py) | Pydantic Models Package. | 0 | 0 | 88 |
 | [analysis.py](analysis.py) | Smart Analysis Pydantic Models. | 11 | 0 | 306 |
-| [beam.py](beam.py) | Beam Design and Detailing Pydantic Models. | 15 | 0 | 836 |
+| [beam.py](beam.py) | Beam Design and Detailing Pydantic Models. | 15 | 0 | 837 |
 | [boq.py](boq.py) | Pydantic models for Project BOQ endpoint. | 8 | 0 | 112 |
 | [capabilities.py](capabilities.py) | Typed transport models for canonical IS 456 capability disco | 8 | 0 | 79 |
 | [catalog.py](catalog.py) | Typed transport models for the application workflow catalogu | 4 | 0 | 56 |

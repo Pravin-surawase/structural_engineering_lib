@@ -2351,10 +2351,11 @@
         "outcomes",
         "scope_exclusions",
         "status",
+        "hosted_repair",
         "verification",
         "holds"
       ],
-      "content_hash": "3c5c07100ee1"
+      "content_hash": "f32a1f07ffa3"
     },
     {
       "name": "lib-pro-003-c-git-handoff-receipt.json",
@@ -2372,7 +2373,7 @@
         "receipt_grants_authority",
         "receipt_kind"
       ],
-      "content_hash": "d9748fdaae40"
+      "content_hash": "3f2fc4b49c6f"
     },
     {
       "name": "lib-pro-003-c-git-handoff-source-evidence.json",
@@ -2384,7 +2385,7 @@
         "retention",
         "task_archive"
       ],
-      "content_hash": "dc0eb616043d"
+      "content_hash": "1c53deea3c97"
     },
     {
       "name": "next-session-git-issues-plan-git-handoff-receipt.json",
@@ -2705,5 +2706,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "bac87fb74cfcb859"
+  "content_hash": "93ad80366ea2d8c1"
 }

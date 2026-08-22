@@ -120,8 +120,8 @@
     {
       "name": "test_beam_primary_route.py",
       "type": "python",
-      "size_lines": 385,
-      "last_updated": "2026-08-17",
+      "size_lines": 388,
+      "last_updated": "2026-08-22",
       "description": "Focused FastAPI contract tests for the primary IS 456 beam route.",
       "functions": [
         {
@@ -216,7 +216,7 @@
           ]
         }
       ],
-      "content_hash": "e2b5ebd63d6d"
+      "content_hash": "3e4389e8c8fc"
     },
     {
       "name": "test_building_gravity.py",
@@ -812,8 +812,8 @@
     {
       "name": "test_endpoints.py",
       "type": "python",
-      "size_lines": 1242,
-      "last_updated": "2026-08-17",
+      "size_lines": 1244,
+      "last_updated": "2026-08-22",
       "description": "Integration Tests for FastAPI Endpoints.",
       "classes": [
         {
@@ -939,7 +939,7 @@
           ]
         }
       ],
-      "content_hash": "e13dcc9e94f8"
+      "content_hash": "8e02b7da1ecb"
     },
     {
       "name": "test_error_sanitization.py",
@@ -2116,5 +2116,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "0ee453d3d45c5113"
+  "content_hash": "9e2f78fdf16bcdd8"
 }
