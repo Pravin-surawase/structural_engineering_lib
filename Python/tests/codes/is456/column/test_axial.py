@@ -383,16 +383,10 @@ class TestShortAxialCapacity:
 
     # ----- 3b. Boundary tests -----
 
-    def test_zero_steel(self):
-        """Degenerate: Asc = 0 (pure concrete).
-
-        Pu = 0.4 * 25 * 90000 = 900000 N = 900 kN.
-        Should produce warning about steel ratio below minimum.
-        """
-        result = short_axial_capacity(fck=25, fy=415, Ag_mm2=90000, Asc_mm2=0)
-        assert result.Pu_kN == pytest.approx(900.0, rel=0.001)
-        assert result.steel_ratio == 0.0
-        assert any("below minimum" in w for w in result.warnings)
+    def test_zero_steel_is_rejected(self):
+        """A reinforced-concrete column cannot omit longitudinal steel."""
+        with pytest.raises(DimensionError, match="0.8-4.0%"):
+            short_axial_capacity(fck=25, fy=415, Ag_mm2=90000, Asc_mm2=0)
 
     def test_steel_at_minimum_ratio(self):
         """Asc/Ag = 0.8% -- at minimum limit."""
@@ -408,29 +402,29 @@ class TestShortAxialCapacity:
         result = short_axial_capacity(fck=25, fy=415, Ag_mm2=Ag, Asc_mm2=Asc)
         assert result.steel_ratio == pytest.approx(0.04, rel=1e-9)
 
-    def test_steel_above_maximum_ratio(self):
-        """Asc/Ag = 5% -- above maximum, should warn."""
+    def test_steel_above_maximum_ratio_is_rejected(self):
+        """Asc/Ag = 5% is outside the maintained design domain."""
         Ag = 90000
         Asc = 0.05 * Ag
-        result = short_axial_capacity(fck=25, fy=415, Ag_mm2=Ag, Asc_mm2=Asc)
-        assert any("exceeds maximum" in w for w in result.warnings)
+        with pytest.raises(DimensionError, match="0.8-4.0%"):
+            short_axial_capacity(fck=25, fy=415, Ag_mm2=Ag, Asc_mm2=Asc)
 
-    def test_steel_below_minimum_ratio(self):
-        """Asc/Ag = 0.5% -- below minimum, should warn."""
+    def test_steel_below_minimum_ratio_is_rejected(self):
+        """Asc/Ag = 0.5% is outside the maintained design domain."""
         Ag = 90000
         Asc = 0.005 * Ag
-        result = short_axial_capacity(fck=25, fy=415, Ag_mm2=Ag, Asc_mm2=Asc)
-        assert any("below minimum" in w for w in result.warnings)
+        with pytest.raises(DimensionError, match="0.8-4.0%"):
+            short_axial_capacity(fck=25, fy=415, Ag_mm2=Ag, Asc_mm2=Asc)
 
-    def test_steel_equals_gross_area(self):
-        """Degenerate: Asc = Ag -> Ac = 0 (all steel, no concrete).
-
-        Pu = 0.67 * 415 * 90000 / 1000 kN.
-        """
-        result = short_axial_capacity(fck=25, fy=415, Ag_mm2=90000, Asc_mm2=90000)
-        expected_Pu_kN = 0.67 * 415 * 90000 / 1000
-        assert result.Pu_kN == pytest.approx(expected_Pu_kN, rel=0.001)
-        assert result.Ac_mm2 == pytest.approx(0.0)
+    def test_steel_equals_gross_area_is_rejected(self):
+        """An all-steel section is outside the RC column design domain."""
+        with pytest.raises(DimensionError, match="0.8-4.0%"):
+            short_axial_capacity(
+                fck=25,
+                fy=415,
+                Ag_mm2=90000,
+                Asc_mm2=90000,
+            )
 
     # ----- 3c. Edge-case / error tests -----
 
@@ -517,14 +511,9 @@ class TestShortAxialCapacity:
 
     # ----- 3e. Textbook verification tests -----
 
-    def test_textbook_pure_concrete(self):
-        """Textbook: pure concrete column (Asc=0).
-
-        300x300, M25: Pu = 0.4 * 25 * 90000 = 900,000 N = 900 kN
-        Source: Direct IS 456 Cl 39.3 formula
-        """
-        result = short_axial_capacity(fck=25, fy=415, Ag_mm2=90000, Asc_mm2=0)
-        assert result.Pu_kN == pytest.approx(900.0, rel=0.001)
+    def test_pure_concrete_is_not_reported_as_safe_rc_column(self):
+        with pytest.raises(DimensionError, match="0.8-4.0%"):
+            short_axial_capacity(fck=25, fy=415, Ag_mm2=90000, Asc_mm2=0)
 
     def test_textbook_hand_calculation(self):
         """Textbook: 300x500 column, M25/Fe415, Asc=2000 mm2.
@@ -554,7 +543,7 @@ class TestShortAxialCapacity:
         fck=st.sampled_from([20, 25, 30, 35, 40]),
         fy=st.sampled_from([415, 500]),
         Ag=st.floats(min_value=10000, max_value=500000),
-        ratio=st.floats(min_value=0.001, max_value=0.04),
+        ratio=st.floats(min_value=0.008, max_value=0.04),
     )
     @settings(max_examples=200)
     def test_Pu_always_positive(self, fck, fy, Ag, ratio):
@@ -607,7 +596,7 @@ class TestShortAxialCapacity:
         fck=st.sampled_from([20, 25, 30]),
         fy=st.sampled_from([415, 500]),
         Ag=st.floats(min_value=40000, max_value=300000),
-        ratio=st.floats(min_value=0.005, max_value=0.04),
+        ratio=st.floats(min_value=0.008, max_value=0.04),
     )
     @settings(max_examples=200)
     def test_matches_formula(self, fck, fy, Ag, ratio):

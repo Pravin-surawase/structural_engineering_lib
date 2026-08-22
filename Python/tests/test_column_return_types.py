@@ -26,6 +26,7 @@ from structural_lib.core.data_types import (
     ColumnAxialResult,
     ColumnUniaxialResult,
 )
+from structural_lib.core.errors import DimensionError
 
 # ============================================================================
 # Fixtures
@@ -307,5 +308,41 @@ def test_public_uniaxial_column_rejects_non_finite_action():
             fck_nmm2=25.0,
             fy_nmm2=415.0,
             Asc_mm2=2700.0,
+            d_prime_mm=50.0,
+        )
+
+
+def test_unified_column_uses_current_uniaxial_safety_key():
+    result = design_column_is456(
+        Pu_kN=0.0,
+        Mux_kNm=10.0,
+        Muy_kNm=0.0,
+        b_mm=300.0,
+        D_mm=450.0,
+        l_mm=3000.0,
+        fck_nmm2=25.0,
+        fy_nmm2=415.0,
+        Asc_mm2=2700.0,
+        d_prime_mm=50.0,
+    )
+
+    uniaxial = result["checks"]["uniaxial_x"]
+    assert result["governing_check"] == "uniaxial_x"
+    assert result["is_safe"] is uniaxial.is_safe
+
+
+@pytest.mark.parametrize("asc_mm2", [100.0, 20_000.0])
+def test_unified_column_rejects_out_of_domain_reinforcement(asc_mm2):
+    with pytest.raises(DimensionError, match="0.8-4.0%"):
+        design_column_is456(
+            Pu_kN=0.0,
+            Mux_kNm=10.0,
+            Muy_kNm=0.0,
+            b_mm=300.0,
+            D_mm=450.0,
+            l_mm=3000.0,
+            fck_nmm2=25.0,
+            fy_nmm2=415.0,
+            Asc_mm2=asc_mm2,
             d_prime_mm=50.0,
         )

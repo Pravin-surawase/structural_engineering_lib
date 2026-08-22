@@ -1360,7 +1360,7 @@
     {
       "name": "test_column_return_types.py",
       "type": "python",
-      "size_lines": 312,
+      "size_lines": 349,
       "last_updated": "2026-08-22",
       "description": "Tests for UX-02: Column API return type unification.",
       "classes": [
@@ -1449,9 +1449,18 @@
         },
         {
           "name": "test_public_uniaxial_column_rejects_non_finite_action"
+        },
+        {
+          "name": "test_unified_column_uses_current_uniaxial_safety_key"
+        },
+        {
+          "name": "test_unified_column_rejects_out_of_domain_reinforcement",
+          "params": [
+            "asc_mm2"
+          ]
         }
       ],
-      "content_hash": "6863ccf8df17"
+      "content_hash": "eff4f4a8aa06"
     },
     {
       "name": "test_core.py",
@@ -2150,8 +2159,8 @@
     {
       "name": "test_footing_api.py",
       "type": "python",
-      "size_lines": 388,
-      "last_updated": "2026-08-17",
+      "size_lines": 401,
+      "last_updated": "2026-08-22",
       "description": "Focused contract tests for Phase B1 isolated-footing orchestration.",
       "functions": [
         {
@@ -2199,9 +2208,15 @@
             "overrides",
             "match"
           ]
+        },
+        {
+          "name": "test_unknown_provenance_origins_are_rejected",
+          "params": [
+            "origin_field"
+          ]
         }
       ],
-      "content_hash": "b54f14c74ac5"
+      "content_hash": "1a8088af1708"
     },
     {
       "name": "test_footing_detailing.py",
@@ -2835,8 +2850,8 @@
     {
       "name": "test_is456_common.py",
       "type": "python",
-      "size_lines": 854,
-      "last_updated": "2026-08-17",
+      "size_lines": 900,
+      "last_updated": "2026-08-22",
       "description": "Tests for IS 456:2000 common modules - stress_blocks, reinforcement, validation.",
       "classes": [
         {
@@ -3006,7 +3021,7 @@
         "_FE500_POINT1",
         "_FE500_POINT5"
       ],
-      "content_hash": "5250f92ea06c"
+      "content_hash": "73d76a86252a"
     },
     {
       "name": "test_is456_constants.py",
@@ -4980,5 +4995,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "c8b3b9e466ca453b"
+  "content_hash": "e32abdf31e8e6c0e"
 }

@@ -27,7 +27,10 @@ from __future__ import annotations
 
 import math
 
-from structural_lib.codes.is456.column._common import _calculate_puz
+from structural_lib.codes.is456.column._common import (
+    _calculate_puz,
+    _require_column_steel_ratio,
+)
 from structural_lib.codes.is456.column.axial import classify_column, min_eccentricity
 from structural_lib.codes.is456.column.biaxial import biaxial_bending_check
 from structural_lib.codes.is456.column.slenderness import _additional_eccentricity
@@ -96,7 +99,8 @@ def design_long_column(
         ley_mm: Effective length about y-axis (mm). Must be > 0.
         fck: Concrete compressive strength (N/mm²). Must be > 0.
         fy: Steel yield strength (N/mm²). Must be > 0.
-        Asc_mm2: Total longitudinal steel area (mm²). Must be > 0.
+        Asc_mm2: Total longitudinal steel area (mm²). Must be 0.8–4.0%
+            of the gross section.
         d_prime_mm: Cover to centroid of reinforcement (mm). Must be > 0.
         braced: True if column is braced against sidesway (default True).
         l_unsupported_mm: Unsupported member length (mm), required to enforce
@@ -163,6 +167,7 @@ def design_long_column(
             details={"Asc_mm2": Asc_mm2},
             clause_ref="Cl. 39.7",
         )
+    _require_column_steel_ratio(b_mm * D_mm, Asc_mm2)
     if d_prime_mm <= 0:
         raise DimensionError(
             f"d_prime_mm must be > 0, got {d_prime_mm}",

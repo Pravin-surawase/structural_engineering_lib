@@ -163,6 +163,15 @@ def _extract_beam_params_from_schema(beam: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _require_table_19_concrete_domain(fck_nmm2: float) -> None:
+    """Reject beam-service concrete strengths that require shear-table clamping."""
+    if not 15 <= fck_nmm2 <= 40:
+        raise ValueError(
+            "fck_nmm2 must be within 15-40 N/mm² for the maintained "
+            "IS 456 Table 19 shear lookup."
+        )
+
+
 def _detailing_result_to_dict(
     result: detailing.BeamDetailingResult,
 ) -> dict[str, Any]:
@@ -1068,7 +1077,12 @@ def enhanced_shear_strength_is456(
         Enhanced τc: 0.880 N/mm²
     """
     # Unit plausibility guards (catch common mistakes)
-    _validate_plausibility(fck_nmm2=fck_nmm2, d_mm=d_mm)
+    _validate_plausibility(
+        fck_nmm2=fck_nmm2,
+        d_mm=d_mm,
+        pt_percent=pt_percent,
+    )
+    _require_table_19_concrete_domain(fck_nmm2)
 
     return enhanced_shear_strength(
         fck=fck_nmm2,
@@ -1232,6 +1246,7 @@ def design_beam_is456(
         pt_percent=pt_percent,
         ast_mm2_for_shear=ast_mm2_for_shear,
     )
+    _require_table_19_concrete_domain(fck_nmm2)
 
     result = compliance.check_compliance_case(
         case_id=case_id,
@@ -1446,6 +1461,7 @@ def design_flanged_beam_is456(
         pt_percent=pt_percent,
         ast_mm2_for_shear=ast_mm2_for_shear,
     )
+    _require_table_19_concrete_domain(fck_nmm2)
 
     if deflection_params is not None:
         if float(deflection_params.get("span_mm", -1.0)) != float(span_mm):
@@ -1609,6 +1625,7 @@ def check_beam_is456(
         asv_mm2=asv_mm2,
         pt_percent=pt_percent,
     )
+    _require_table_19_concrete_domain(fck_nmm2)
 
     for case in cases:
         if isinstance(case, dict):

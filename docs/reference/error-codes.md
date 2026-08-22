@@ -69,6 +69,8 @@ tags: []
 | `E_INPUT_014` | error | Df must be > 0 | Df | Check flange thickness input. | — |
 | `E_INPUT_015` | error | bf must be >= bw | bf | Ensure flange width is not smaller than web width. | — |
 | `E_INPUT_016` | error | Df must be < d | Df | Ensure flange thickness is less than effective depth. | — |
+| `E_INPUT_018` | error | fck must be within the supported IS 456 range (15-80 N/mm²) | fck | Use a supported concrete strength without extrapolation. | — |
+| `E_INPUT_019` | error | fy must be within the supported IS 456 range (250-550 N/mm²) | fy | Use a supported reinforcement steel strength without extrapolation. | — |
 
 ## SHEAR
 
@@ -77,7 +79,8 @@ tags: []
 | `E_SHEAR_001` | error | tv exceeds tc_max | tv | Increase section size. | Cl. 40.2.3 |
 | `E_SHEAR_002` | warning | Spacing exceeds maximum | spacing | Reduce stirrup spacing. | Cl. 26.5.1.6 |
 | `E_SHEAR_003` | info | Nominal shear < Tc. Provide minimum shear reinforcement. | tv | Minimum stirrups per Cl. 26.5.1.6. | Cl. 26.5.1.6 |
-| `E_SHEAR_004` | warning | fck outside Table 19 range (15-40). Using nearest bound values. | fck | Use fck within 15-40 for Table 19 or confirm conservative design. | Table 19 |
+| `E_SHEAR_004` | error | fck must be within Table 19 range (15-40); no bound substitution is permitted. | fck | Use fck within 15-40 for the maintained lookup. | Table 19 |
+| `E_SHEAR_006` | error | pt must be within Table 19 range (0.15-3.0 percent) | pt | Do not rely on hidden clamping. | Table 19 |
 
 ## TORSION
 

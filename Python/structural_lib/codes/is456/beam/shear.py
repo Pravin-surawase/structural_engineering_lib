@@ -10,17 +10,16 @@ from structural_lib.core.error_messages import dimension_too_small
 from structural_lib.core.errors import (
     E_INPUT_001,
     E_INPUT_002,
-    E_INPUT_004,
-    E_INPUT_005,
     E_INPUT_008,
     E_INPUT_009,
     E_SHEAR_001,
     E_SHEAR_003,
     E_SHEAR_004,
     E_SHEAR_005,
+    E_SHEAR_006,
     DimensionError,
 )
-from structural_lib.core.validation import validate_finite_reals
+from structural_lib.core.validation import validate_finite_reals, validate_materials
 
 from .. import tables
 from ..traceability import clause
@@ -343,8 +342,8 @@ def design_shear(
         - Does not consider torsion-shear interaction; for combined
           torsion and shear use ``design_torsion`` (Cl. 41).
         - Concrete shear strength τc from Table 19 is valid for
-          fck = 15–40 N/mm² only; values outside this range trigger
-          a warning but may not be code-compliant.
+          fck = 15–40 N/mm² and pt = 0.15–3.0% only; inputs outside
+          either table domain return a structured unsafe result.
         - Assumes uniform beam cross-section; haunched beams or
           variable-depth members are not handled.
     """
@@ -389,11 +388,7 @@ def design_shear(
             errors=tuple(input_errors),
         )
 
-    material_errors = []
-    if fck <= 0:
-        material_errors.append(E_INPUT_004)
-    if fy <= 0:
-        material_errors.append(E_INPUT_005)
+    material_errors = validate_materials(fck, fy)
 
     if material_errors:
         return ShearResult(
@@ -428,9 +423,27 @@ def design_shear(
             errors=(E_INPUT_009,),
         )
 
-    warning_errors = []
     if fck < 15 or fck > 40:
-        warning_errors.append(E_SHEAR_004)
+        return ShearResult(
+            tau_v=0.0,
+            tau_c=0.0,
+            tau_c_max=0.0,
+            Vus=0.0,
+            spacing=0.0,
+            is_safe=False,
+            errors=(E_SHEAR_004,),
+        )
+
+    if not 0.15 <= pt <= 3.0:
+        return ShearResult(
+            tau_v=0.0,
+            tau_c=0.0,
+            tau_c_max=0.0,
+            Vus=0.0,
+            spacing=0.0,
+            is_safe=False,
+            errors=(E_SHEAR_006,),
+        )
 
     # 1. Calculate Tv
     tv = calculate_tv(vu_kn, b, d)
@@ -447,7 +460,7 @@ def design_shear(
             Vus=0.0,
             spacing=0.0,
             is_safe=False,
-            errors=tuple(warning_errors + [E_SHEAR_001]),
+            errors=(E_SHEAR_001,),
         )
 
     # 3. Get Tc (with optional Cl. 40.3 enhancement)
@@ -460,7 +473,7 @@ def design_shear(
     # 4. Calculate Vus and Spacing
     vu_n = abs(vu_kn) * 1000.0
     vc_n = tc * b * d
-    design_errors = list(warning_errors)
+    design_errors = []
 
     if tv <= tc:
         # Nominal shear < Design strength

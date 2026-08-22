@@ -38,7 +38,7 @@
 | [audit.py](audit.py) | Module:       audit | 3 | 3 | 587 |
 | [batch.py](batch.py) | Strict project beam design plus a delegating legacy batch su | 0 | 5 | 626 |
 | [bbs.py](bbs.py) | Bar Bending Schedule (BBS) Module — IS 2502:1999 / SP 34:198 | 3 | 19 | 1134 |
-| [beam_api.py](beam_api.py) | Module:       beam_api | 0 | 20 | 2367 |
+| [beam_api.py](beam_api.py) | Module:       beam_api | 0 | 20 | 2384 |
 | [beam_pipeline.py](beam_pipeline.py) | beam_pipeline — Unified application-layer pipeline for beam  | 10 | 3 | 660 |
 | [boq.py](boq.py) | Project Bill of Quantities (BOQ) — Aggregation Module | 4 | 1 | 209 |
 | [calculation_report.py](calculation_report.py) | Module:       calculation_report | 4 | 1 | 722 |
@@ -46,7 +46,7 @@
 | [cli_design.py](cli_design.py) | Strict, lossless intake and compatibility output for the adv | 4 | 2 | 628 |
 | [column_api.py](column_api.py) | Module:       column_api | 0 | 13 | 1592 |
 | [combined_footing_api.py](combined_footing_api.py) | Stable orchestration for the bounded symmetric combined-foot | 4 | 2 | 252 |
-| [common_api.py](common_api.py) | Module:       common_api | 0 | 5 | 709 |
+| [common_api.py](common_api.py) | Module:       common_api | 0 | 5 | 703 |
 | [costing.py](costing.py) | Cost calculation utilities for structural elements. | 2 | 8 | 376 |
 | [dashboard.py](dashboard.py) | Insights module for dashboard aggregation and live code chec | 4 | 3 | 512 |
 | [deep_beam_api.py](deep_beam_api.py) | Stable orchestration for the bounded IS 456 simply supported | 3 | 1 | 247 |
@@ -57,7 +57,7 @@
 | [excel_integration.py](excel_integration.py) | Excel Integration Module — Bridge between Excel data and Det | 2 | 9 | 489 |
 | [excel_workbench.py](excel_workbench.py) | Strict selected-table orchestration for Excel Routine Workbe | 1 | 8 | 952 |
 | [flat_slab_api.py](flat_slab_api.py) | Stable orchestration for the bounded regular interior flat-s | 4 | 2 | 339 |
-| [footing_api.py](footing_api.py) | Bounded orchestration for concentric isolated footings (IS 4 | 5 | 1 | 915 |
+| [footing_api.py](footing_api.py) | Bounded orchestration for concentric isolated footings (IS 4 | 5 | 1 | 927 |
 | [gravity_calculation_book.py](gravity_calculation_book.py) | Deterministic review dossier for Building Gravity Workflow V | 3 | 4 | 254 |
 | [gravity_loads.py](gravity_loads.py) | Deterministic dead/live source, transfer, combination, and b | 8 | 1 | 631 |
 | [gravity_workflow.py](gravity_workflow.py) | Fail-closed component orchestration for Building Gravity Wor | 0 | 3 | 914 |

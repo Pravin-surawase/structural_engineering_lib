@@ -20,7 +20,10 @@ from __future__ import annotations
 
 import math
 
-from structural_lib.codes.is456.column._common import _calculate_puz
+from structural_lib.codes.is456.column._common import (
+    _calculate_puz,
+    _require_column_steel_ratio,
+)
 from structural_lib.codes.is456.column.axial import classify_column, min_eccentricity
 from structural_lib.codes.is456.column.uniaxial import pm_interaction_curve
 from structural_lib.codes.is456.traceability import clause
@@ -174,7 +177,8 @@ def biaxial_bending_check(
             IS 456 range: 15-80.
         fy: Characteristic yield strength of steel (N/mm2).
             IS 456 range: 250-550.
-        Asc_mm2: Total area of longitudinal reinforcement (mm2). Must be > 0.
+        Asc_mm2: Total area of longitudinal reinforcement (mm2). Must be
+            0.8–4.0% of the gross section.
         d_prime_mm: Distance from nearest face to centroid of steel (mm).
             Must be > 0 and less than half the smaller dimension.
         l_unsupported_mm: Unsupported length (mm) for slenderness warning.
@@ -284,6 +288,7 @@ def biaxial_bending_check(
             details={"Asc_mm2": Asc_mm2},
             clause_ref="Cl. 26.5.3.1",
         )
+    _require_column_steel_ratio(b_mm * D_mm, Asc_mm2)
 
     # ===========================================================
     # 2. Column classification

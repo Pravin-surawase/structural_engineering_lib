@@ -5,6 +5,103 @@
 
 ---
 
+## 2026-08-22 — Session: LIB-PRO-003-B domains and footing provenance
+
+**Agent:** Codex (`backend`, sole writer)
+
+**Branch:** `codex/public-route-domain-provenance`, from hosted `main` at
+`e7698a63b86d2db6db2f3970871122af1ce562f6` after exact-tree merge of
+`LIB-PRO-003-A` PR #832.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-003-b-git-handoff-receipt.json`
+
+**Focus:** Close reproduced beam material/shear-table domains, column
+longitudinal-steel limits and stale result access, and isolated-footing
+provenance origins without changing engineering formulas.
+
+### Summary
+
+- Replaced permissive beam material extrapolation, Table 19 percentage
+  clamping, and supplied-shear-steel substitution with explicit public
+  boundary rejection and stable structured errors.
+- Enforced the maintained 0.8-4.0% column longitudinal-steel domain across
+  axial, uniaxial, biaxial, and long-column safety routes.
+- Repaired unified column orchestration to consume the typed uniaxial
+  `is_safe` field instead of the removed `ok` key.
+- Added runtime validation for service-load, allowable-soil-pressure, and
+  effective-supporting-area provenance origins before calculation or replay
+  hashing.
+- Preserved all valid benchmark arithmetic and public result shapes; Packets
+  C-D, release authority, INDIA-3, ETABS, and professional approval remain
+  held.
+
+### Issues encountered
+
+- The first 656-test focused run had seven failures: one expected error-code
+  mismatch, three high-shear paths still referenced a removed warning list,
+  two property tests generated newly invalid column steel ratios, and the
+  fck=50 service replay reached evidence serialization with infinite
+  utilization instead of rejecting at the boundary.
+- The first focused style check found one Black formatting change and two Ruff
+  import-order changes.
+- ⚠️ TERMINAL ISSUE: a guessed prior handoff filename omitted the repository's
+  `-source-evidence` suffix; the tracked exact filename was then used.
+- ⚠️ TERMINAL ISSUE: quiet pytest collection output contained no node lines for
+  `rg` to count; verbose collection produced the exact 656 and 294 counts.
+
+### Root causes and resolutions
+
+- Symptom: direct M10/Fe700 and impossible shear percentages could still be
+  accepted. Root cause: material validation checked only positivity and Table
+  19 helpers clamped unsupported inputs. Resolution: add supported material
+  errors, make out-of-range Table 19 concrete decisive, and reject percentages
+  outside 0.15-3.0%. Evidence: the direct adversarial replay rejects service
+  inputs and returns structured unsafe lower-level results.
+- Symptom: supplied zero/negative shear steel was replaced by flexural steel.
+  Root cause: the optional value entered the supplied branch only when greater
+  than zero. Resolution: reject every supplied non-positive value before the
+  fallback decision. Evidence: direct compliance and public single/multi-case
+  regressions pass.
+- Symptom: column steel outside 0.8-4.0% could return safe. Root cause: core
+  routes appended warnings but did not change disposition. Resolution: one
+  shared Clause 26.5.3.1 validator now rejects the invalid domain before
+  capacity/safety calculation. Evidence: axial/uniaxial focused tests plus 294
+  independent biaxial, long-column, P-M, golden-vector, and API tests pass.
+- Symptom: a valid unified uniaxial branch raised `KeyError: 'ok'`. Root cause:
+  orchestration retained the old dictionary key after the result became a
+  typed dataclass with `is_safe`. Resolution: use the typed field for both
+  axes. Evidence: the exact low-axial replay returns `uniaxial_x` normally.
+- Symptom: unknown footing origins could return `PASS` and enter replay hashes.
+  Root cause: `Literal` annotations had no runtime enforcement. Resolution:
+  validate all three origin fields before calculation. Evidence: every unknown
+  origin raises `ValidationError`; composed footing publication remains green.
+- Symptom: fck=50 reached JSON evidence with an infinite failed utilization.
+  Root cause: the service allowed the core shear failure to continue into a
+  strict finite JSON identity. Resolution: reject outside-Table-19 concrete at
+  the service boundary before calculation/evidence construction. Evidence: the
+  failed node and the original public replay now pass with explicit rejection.
+
+### Verification through content freeze
+
+- 656 selected focused tests are green by consolidated-run plus affected-node
+  replay; 294 independent benchmark/public-contract tests pass.
+- The original adversarial examples now fail closed, while the stale-key valid
+  branch returns normally.
+- Focused Black and Ruff checks pass, targeted mypy reports no issues in the
+  13 changed source modules, and `git diff --check` passes. The consolidated
+  quick gate passes 10/10; normal commit hooks, immutable commit, hosted checks,
+  and exact-tree merge remain in the candidate sequence.
+
+### Remaining holds
+
+- `LIB-PRO-003-C` and D remain open.
+- No package publication, version bump, stable/professional-use claim,
+  qualified-engineer approval, INDIA-3 work, ETABS, or desktop Excel work is
+  authorized by this packet.
+
+---
+
 ## 2026-08-22 — Session: LIB-PRO-003-A public numeric boundaries
 
 **Agent:** Codex (`backend`, sole writer)

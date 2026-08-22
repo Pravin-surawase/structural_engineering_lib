@@ -42,7 +42,8 @@ historical `LIB-PRO-001` or `LIB-PRO-002` ledgers.
 
 ### Packet A — Numeric and aggregate fail-closed boundaries
 
-**Status:** active.
+**Status:** integrated through PR #832 at `e7698a63` with reviewed and merged
+trees equal.
 
 **Owned behaviour:**
 
@@ -58,6 +59,9 @@ column, and `1.0000` rounded-utilization cases fail closed; all affected valid
 tests and independent column benchmarks remain unchanged.
 
 ### Packet B — Beam, column, and provenance domains
+
+**Status:** active on `codex/public-route-domain-provenance` from
+`e7698a63`.
 
 Reject supplied non-positive shear steel instead of substituting it; reject
 out-of-domain steel percentages and unsupported material grades; enforce

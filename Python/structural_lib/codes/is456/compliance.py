@@ -249,6 +249,8 @@ def check_compliance_case(
         if value is not None:
             finite_inputs[name] = value
     _require_finite_inputs(**finite_inputs)
+    if ast_mm2_for_shear is not None and ast_mm2_for_shear <= 0:
+        raise ValueError("ast_mm2_for_shear must be > 0 when supplied.")
 
     failed_checks: list[str] = []
     assumptions: list[str] = []

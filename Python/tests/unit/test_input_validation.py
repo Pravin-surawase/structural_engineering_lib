@@ -127,6 +127,25 @@ def test_flexure_design_doubly_reinforced_rejects_nonpositive_d_dash():
 
 
 @pytest.mark.parametrize(
+    "overrides,error_code",
+    [({"fck": 10.0}, "E_INPUT_018"), ({"fy": 700.0}, "E_INPUT_019")],
+)
+def test_flexure_rejects_unsupported_material_domains(overrides, error_code):
+    kwargs = {
+        "b": 230.0,
+        "d": 450.0,
+        "d_total": 500.0,
+        "mu_knm": 100.0,
+        "fck": 25.0,
+        "fy": 415.0,
+    }
+    result = flexure.design_singly_reinforced(**(kwargs | overrides))
+
+    assert result.is_safe is False
+    assert any(error.code == error_code for error in result.errors)
+
+
+@pytest.mark.parametrize(
     "kwargs, expected_field",
     [
         (
@@ -210,6 +229,32 @@ def test_shear_design_rejects_invalid_inputs(kwargs, expected_field):
     assert _has_error_with_field(res.errors, expected_field) or _has_error_with_message(
         res.errors, expected_field
     )
+
+
+@pytest.mark.parametrize(
+    "overrides,error_code",
+    [
+        ({"fck": 10.0}, "E_INPUT_018"),
+        ({"fck": 50.0}, "E_SHEAR_004"),
+        ({"fy": 700.0}, "E_INPUT_019"),
+        ({"pt": 0.0}, "E_SHEAR_006"),
+        ({"pt": 100.0}, "E_SHEAR_006"),
+    ],
+)
+def test_shear_rejects_material_and_table_domains(overrides, error_code):
+    kwargs = {
+        "vu_kn": 50.0,
+        "b": 230.0,
+        "d": 450.0,
+        "fck": 25.0,
+        "fy": 415.0,
+        "asv": 100.0,
+        "pt": 0.5,
+    }
+    result = shear.design_shear(**(kwargs | overrides))
+
+    assert result.is_safe is False
+    assert any(error.code == error_code for error in result.errors)
 
 
 @pytest.mark.parametrize(

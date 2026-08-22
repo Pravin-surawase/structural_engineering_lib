@@ -30,8 +30,8 @@
 | [deferred-integrations.md](deferred-integrations.md) |  | - Uses conservative default (0.7) in comparison scoring - Fu | 150 |
 | [deprecation-policy.md](deprecation-policy.md) |  | This document defines the deprecation policy for the structu | 368 |
 | [dxf-layer-standards.md](dxf-layer-standards.md) |  | This document defines CAD layer standards used in DXF drawin | 469 |
-| [error-codes.md](error-codes.md) |  | > Auto-generated from Python/structural_lib/core/errors.py.  | 87 |
-| [error-schema.md](error-schema.md) |  | *Structured error format for machine-readable and human-frie | 318 |
+| [error-codes.md](error-codes.md) |  | > Auto-generated from Python/structural_lib/core/errors.py.  | 90 |
+| [error-schema.md](error-schema.md) |  | *Structured error format for machine-readable and human-frie | 321 |
 | [fastapi-rest-api.md](fastapi-rest-api.md) |  | The FastAPI application exposes the maintained Python calcul | 307 |
 | [insights-api.md](insights-api.md) |  | > **Status:** Preview (v0.13.0+) > **Stability:** Experiment | 994 |
 | [is456-formulas.md](is456-formulas.md) |  | $$d = D - c_{clear} - \phi_{stirrup} - \frac{\phi_{main}}{2} | 245 |

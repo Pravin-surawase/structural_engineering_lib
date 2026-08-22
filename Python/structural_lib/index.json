@@ -280,10 +280,10 @@
     {
       "name": "errors.py",
       "type": "python",
-      "size_lines": 52,
-      "last_updated": "2026-08-17",
+      "size_lines": 55,
+      "last_updated": "2026-08-22",
       "description": "Backward compatibility stub.",
-      "content_hash": "a95b899f74d9"
+      "content_hash": "68f7d79cc29b"
     },
     {
       "name": "etabs_import.py",
@@ -610,5 +610,5 @@
     "serviceability",
     "shear"
   ],
-  "content_hash": "5086d117e5f622a3"
+  "content_hash": "10c4836959dd9ff9"
 }

@@ -789,6 +789,32 @@ class TestBeamFiniteNumericBoundary:
             design_beam_is456(**kwargs)  # type: ignore[arg-type]
 
     @pytest.mark.parametrize(
+        "field,invalid_value,match",
+        [
+            ("fck_nmm2", 10.0, "supported IS 456 range"),
+            ("fy_nmm2", 700.0, "supported IS 456 range"),
+            ("pt_percent", 100.0, "Table 19 range"),
+            ("ast_mm2_for_shear", 0.0, "must be > 0"),
+            ("ast_mm2_for_shear", -100.0, "must be > 0"),
+        ],
+    )
+    def test_design_rejects_unsupported_material_and_shear_domains(
+        self, field: str, invalid_value: float, match: str
+    ) -> None:
+        kwargs = self._design_kwargs()
+        kwargs[field] = invalid_value
+
+        with pytest.raises(ValueError, match=match):
+            design_beam_is456(**kwargs)  # type: ignore[arg-type]
+
+    def test_design_rejects_concrete_outside_shear_table_domain(self) -> None:
+        kwargs = self._design_kwargs()
+        kwargs["fck_nmm2"] = 50.0
+
+        with pytest.raises(ValueError, match="Table 19 shear lookup"):
+            design_beam_is456(**kwargs)  # type: ignore[arg-type]
+
+    @pytest.mark.parametrize(
         "invalid_value", [float("nan"), float("inf"), float("-inf"), True, "100"]
     )
     @pytest.mark.parametrize("field", ["mu_knm", "vu_kn", "ast_mm2_for_shear"])
@@ -819,6 +845,26 @@ class TestBeamFiniteNumericBoundary:
             check_beam_is456(
                 units="IS456",
                 cases=[{"case_id": "ULS", "mu_knm": None, "vu_kn": 50.0}],
+                b_mm=230.0,
+                D_mm=500.0,
+                d_mm=450.0,
+                fck_nmm2=25.0,
+                fy_nmm2=500.0,
+            )
+
+    @pytest.mark.parametrize("supplied", [0.0, -100.0])
+    def test_check_rejects_nonpositive_case_shear_steel(self, supplied: float) -> None:
+        with pytest.raises(ValueError, match="ast_mm2_for_shear must be > 0"):
+            check_beam_is456(
+                units="IS456",
+                cases=[
+                    {
+                        "case_id": "ULS",
+                        "mu_knm": 100.0,
+                        "vu_kn": 50.0,
+                        "ast_mm2_for_shear": supplied,
+                    }
+                ],
                 b_mm=230.0,
                 D_mm=500.0,
                 d_mm=450.0,

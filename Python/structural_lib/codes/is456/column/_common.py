@@ -10,6 +10,12 @@ slenderness, long_column) to avoid code duplication.
 
 from __future__ import annotations
 
+from structural_lib.codes.is456.common.constants import (
+    COLUMN_MAX_STEEL_RATIO,
+    COLUMN_MIN_STEEL_RATIO,
+)
+from structural_lib.core.errors import DimensionError
+
 # ---------------------------------------------------------------------------
 # IS 456 Cl 39.6a: Puz coefficients
 # Puz = 0.45 * fck * Ac + 0.75 * fy * Asc
@@ -19,6 +25,29 @@ from __future__ import annotations
 # ---------------------------------------------------------------------------
 _PUZ_CONCRETE_COEFF: float = 0.45
 _PUZ_STEEL_COEFF: float = 0.75
+
+
+def _require_column_steel_ratio(
+    gross_area_mm2: float,
+    steel_area_mm2: float,
+    *,
+    clause_ref: str = "Cl. 26.5.3.1",
+) -> float:
+    """Require the maintained 0.8-4.0% longitudinal-steel domain."""
+    ratio = steel_area_mm2 / gross_area_mm2
+    if not COLUMN_MIN_STEEL_RATIO <= ratio <= COLUMN_MAX_STEEL_RATIO:
+        raise DimensionError(
+            "Column longitudinal steel ratio must be within 0.8-4.0%",
+            details={
+                "gross_area_mm2": gross_area_mm2,
+                "steel_area_mm2": steel_area_mm2,
+                "steel_ratio": ratio,
+                "minimum_ratio": COLUMN_MIN_STEEL_RATIO,
+                "maximum_ratio": COLUMN_MAX_STEEL_RATIO,
+            },
+            clause_ref=clause_ref,
+        )
+    return ratio
 
 
 def _calculate_puz(

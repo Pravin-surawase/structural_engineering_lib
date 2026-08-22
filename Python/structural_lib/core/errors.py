@@ -411,6 +411,27 @@ E_INPUT_016 = DesignError(
     recovery="Flange thickness Df must be < effective depth d. If Df \u2265 d, section behaves as rectangular, not flanged.",
 )
 
+E_INPUT_018 = DesignError(
+    code="E_INPUT_018",
+    severity=Severity.ERROR,
+    message="fck must be within the supported IS 456 range (15-80 N/mm²)",
+    field="fck",
+    hint="Use a supported concrete strength without extrapolation.",
+    recovery=(
+        "Provide fck from 15 to 80 N/mm²; shear-table routes are further "
+        "limited to 15-40 N/mm²."
+    ),
+)
+
+E_INPUT_019 = DesignError(
+    code="E_INPUT_019",
+    severity=Severity.ERROR,
+    message="fy must be within the supported IS 456 range (250-550 N/mm²)",
+    field="fy",
+    hint="Use a supported reinforcement steel strength without extrapolation.",
+    recovery="Provide fy from 250 to 550 N/mm².",
+)
+
 # Flexure Errors
 E_FLEXURE_001 = DesignError(
     code="E_FLEXURE_001",
@@ -487,12 +508,15 @@ E_SHEAR_003 = DesignError(
 
 E_SHEAR_004 = DesignError(
     code="E_SHEAR_004",
-    severity=Severity.WARNING,
-    message="fck outside Table 19 range (15-40). Using nearest bound values.",
+    severity=Severity.ERROR,
+    message=(
+        "fck must be within Table 19 range (15-40); "
+        "no bound substitution is permitted."
+    ),
     field="fck",
-    hint="Use fck within 15-40 for Table 19 or confirm conservative design.",
+    hint="Use fck within 15-40 for the maintained Table 19 lookup.",
     clause="Table 19",
-    recovery="Use fck within 15\u201340 N/mm\u00b2 for IS 456 Table 19. For higher grades, \u03c4c values are conservative.",
+    recovery="Provide fck within 15-40 N/mm² for IS 456 Table 19.",
 )
 
 E_SHEAR_005 = DesignError(
@@ -503,6 +527,16 @@ E_SHEAR_005 = DesignError(
     hint="Provide distance from face of support to nearest edge of concentrated load.",
     clause="Cl. 40.3",
     recovery="Provide distance from face of support to load point. For enhanced shear near supports per Cl 40.3.",
+)
+
+E_SHEAR_006 = DesignError(
+    code="E_SHEAR_006",
+    severity=Severity.ERROR,
+    message="pt must be within Table 19 range (0.15-3.0 percent)",
+    field="pt",
+    hint="Do not rely on hidden clamping of the supplied steel percentage.",
+    clause="Table 19",
+    recovery="Provide tension steel percentage pt from 0.15 to 3.0 percent.",
 )
 
 # Ductile Detailing Errors

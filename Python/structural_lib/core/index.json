@@ -441,8 +441,8 @@
     {
       "name": "errors.py",
       "type": "python",
-      "size_lines": 884,
-      "last_updated": "2026-08-17",
+      "size_lines": 918,
+      "last_updated": "2026-08-22",
       "description": "Module:       errors",
       "classes": [
         {
@@ -520,7 +520,7 @@
         "E_INPUT_009",
         "E_INPUT_010"
       ],
-      "content_hash": "231a53bd99a5"
+      "content_hash": "dfe63815ac20"
     },
     {
       "name": "excel_workbook.py",
@@ -1203,7 +1203,7 @@
     {
       "name": "validation.py",
       "type": "python",
-      "size_lines": 684,
+      "size_lines": 690,
       "last_updated": "2026-08-22",
       "description": "Module:       validation",
       "functions": [
@@ -1335,7 +1335,7 @@
           ]
         }
       ],
-      "content_hash": "b908ade80916"
+      "content_hash": "7a15846d5b46"
     },
     {
       "name": "version.py",
@@ -1399,5 +1399,5 @@
     "GravityCombinationV1",
     "GravityFootingDestinationV1"
   ],
-  "content_hash": "eec7be7d95778c07"
+  "content_hash": "ed429d9a1ac4ce02"
 }

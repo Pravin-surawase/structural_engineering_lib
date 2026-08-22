@@ -255,7 +255,7 @@ def design_column_axial_is456(
 
     where:
     - Ac = Ag - Asc (net concrete area)
-    - Asc = area of longitudinal steel (must be 0.8% to 6% of Ag)
+    - Asc = area of longitudinal steel (must be 0.8% to 4.0% of Ag)
 
     NOTE: This applies ONLY to SHORT columns with minimum eccentricity.
     For slender columns or significant eccentricity, use interaction diagrams.
@@ -264,18 +264,18 @@ def design_column_axial_is456(
         fck_nmm2: Characteristic concrete strength (N/mm²). Must be > 0.
         fy_nmm2: Yield strength of steel (N/mm²). Must be > 0.
         Ag_mm2: Gross cross-sectional area (mm²). Must be > 0.
-        Asc_mm2: Area of longitudinal reinforcement (mm²). Must be ≥ 0.
+        Asc_mm2: Area of longitudinal reinforcement (mm²). Must be 0.8–4.0%
+            of Ag_mm2.
 
     Returns:
         Dictionary with:
             - Pu_kN: Axial load capacity (kN)
             - steel_ratio: Asc/Ag (percentage)
-            - warnings: List of warnings (e.g., steel ratio out of code limits)
+            - warnings: List of non-fatal applicability warnings
 
     Raises:
         E_COLUMN_003: If fck ≤ 0, fy ≤ 0, or Ag_mm2 ≤ 0.
-        E_COLUMN_004: If Asc_mm2 < 0.
-        E_COLUMN_005: If Asc_mm2 > Ag_mm2.
+        DimensionError: If Asc_mm2 is outside 0.8–4.0% of Ag_mm2.
 
     References:
         IS 456:2000, Cl. 39.3
@@ -383,7 +383,7 @@ def design_short_column_uniaxial_is456(
         ...     d_prime_mm=50.0,
         ...     l_unsupported_mm=3000.0,
         ... )
-        >>> print(f"Safe: {result['ok']}")
+        >>> print(f"Safe: {result['is_safe']}")
         >>> print(f"Utilization: {result['utilization']:.1%}")
 
     See Also:
@@ -1116,7 +1116,7 @@ def design_column_is456(
             ``fy`` alias is supplied.
             IS 456 range: 250-550.
         Asc_mm2: Total longitudinal steel area (mm²). Default: 0.0.
-            For initial sizing, use 0.8-6% of gross area.
+            Supported analysis range is 0.8–4.0% of gross area.
         d_prime_mm: Cover to centroid of reinforcement (mm). Default: 50.0.
         l_unsupported_mm: Unsupported length for min eccentricity (mm).
             If None, uses l_mm. Used for Cl 25.4 minimum eccentricity.
@@ -1333,7 +1333,7 @@ def design_column_is456(
                     d_prime_mm=d_prime_mm,
                 )
                 result["checks"]["uniaxial_x"] = uniaxial_result
-                result["is_safe"] = uniaxial_result["ok"]
+                result["is_safe"] = uniaxial_result.is_safe
                 result["governing_check"] = "uniaxial_x"
             else:
                 # Y-axis bending dominant (swap dimensions)
@@ -1349,7 +1349,7 @@ def design_column_is456(
                     d_prime_mm=d_prime_mm,
                 )
                 result["checks"]["uniaxial_y"] = uniaxial_result
-                result["is_safe"] = uniaxial_result["ok"]
+                result["is_safe"] = uniaxial_result.is_safe
                 result["governing_check"] = "uniaxial_y"
 
             result["clause_refs"].append("Cl. 39.5")
