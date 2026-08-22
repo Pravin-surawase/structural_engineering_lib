@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-22",
-  "file_count": 214,
+  "file_count": 217,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -2436,6 +2436,44 @@
       "content_hash": "06d1e6f4e0e6"
     },
     {
+      "name": "lib-pro-004-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-22",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "07d8917724cf"
+    },
+    {
+      "name": "lib-pro-004-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-22",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "a056d9457362"
+    },
+    {
+      "name": "lib-pro-004-lower-level-safety-and-diagnostic-evidence.md",
+      "type": "documentation",
+      "size_lines": 106,
+      "last_updated": "2026-08-22",
+      "description": "function-quality diagnostic pass. The rebuilt input-validation audit is decisive and non-green because it exposes 370 unresolved parameter owners and",
+      "content_hash": "f64dcc6869eb"
+    },
+    {
       "name": "next-session-git-issues-plan-git-handoff-receipt.json",
       "type": "config",
       "last_updated": "2026-08-16",
@@ -2754,5 +2792,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "0c9e2949a3f9eb92"
+  "content_hash": "67a1d74557d9ab70"
 }

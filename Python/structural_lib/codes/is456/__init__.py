@@ -44,6 +44,7 @@ from structural_lib.codes.is456 import (
     tables,
     traceability,
 )
+from structural_lib.codes.is456._validation import require_range
 from structural_lib.codes.is456.beam import (
     detailing,
     flexure,
@@ -102,10 +103,12 @@ class IS456Code(DesignCode):
 
     def get_design_strength_concrete(self, fck: float) -> float:
         """Design compressive strength of concrete (0.67*fck/γc)."""
+        require_range("fck", fck, minimum=15.0, maximum=80.0)
         return 0.67 * fck / self.GAMMA_C
 
     def get_design_strength_steel(self, fy: float) -> float:
         """Design yield strength of steel (fy/γs)."""
+        require_range("fy", fy, minimum=250.0, maximum=550.0)
         return fy / self.GAMMA_S
 
     # Convenience methods that delegate to submodules

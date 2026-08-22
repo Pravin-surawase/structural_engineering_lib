@@ -5,6 +5,152 @@
 
 ---
 
+## 2026-08-22 — Session: LIB-PRO-004 lower-level safety and diagnostic truth
+
+**Agent:** Codex (`reviewer` + `backend` + `governance`, sole writer)
+
+**Branch:** `codex/lib-pro-004-safety-auditors`, from exact hosted Packet D
+merge `640c7839f043adb0e7db02d924a9e1a3a06e1131`.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-004-git-handoff-receipt.json`
+
+**Focus:** Review the proposed diagnostic/lower-level safety plan, verify Git
+and all retained lanes first, repair the bounded six-helper defect family,
+replace misleading diagnostics, and run one cumulative verification sequence.
+No wider route remediation, new formula, release, ETABS, `INDIA-3`, branch
+cleanup, or professional approval was in scope.
+
+### Summary
+
+- Fast-forwarded the clean primary checkout to the exact merged PR #835 tree,
+  preserved every retained lane, and created one isolated task branch.
+- Added a shared finite-real/range boundary to the six table/material helpers,
+  legacy exports, and relevant `IS456Code` methods. Public Table 19 lookup is
+  strict; a separate private path owns valid internally derived row bounding.
+- Replaced the legacy input percentage/grade with parameter-owned `PROVEN`,
+  `DELEGATED`, `UNPROVEN`, and `NOT_APPLICABLE` evidence from 101 maintained
+  owners. All 370 unresolved parameters are reported and exit nonzero.
+- Calibrated function quality to 88/88 without renaming public signatures or
+  hiding ambiguous units; all three exact comparisons have review contracts.
+- G0 returned `REVISE`: additional torsion, development-length, and geometry
+  routes accept booleans/NaN, so this packet remains truthfully `PARTIAL` and a
+  successor route-safety packet is required.
+
+### Issues encountered
+
+- Versioned task/handoff files still described Packet D as a local candidate
+  even though PR #835 was merged, and the primary checkout was ten commits
+  behind before the preflight.
+- The proposed G0 conflated the `@clause` quality inventory with declared
+  public route ownership and assumed a scanner rewrite would leave few or no
+  genuine defects.
+- The first input-auditor pass used the wrong inventory and weak attribution,
+  first reporting 161/135 and then 370 unresolved parameters as discovery was
+  corrected.
+- Exact-diff review found that the repaired scanner still treated ordinary
+  `Path`, `Callable`, and `Any` annotations as delegated validation owners.
+- The first focused direct-call batch had 12 failures from obsolete clamping,
+  unsupported Fe600 coverage, and legacy error-message assertions; the wider
+  property batch then generated M50 for Table 19/20 in four cases.
+- The first broad Python run had six composite failures after strict public
+  Table 19 validation exposed mixed public and derived-value contracts.
+- The first FastAPI run had two evidence-contract failures after a compatibility
+  bridge incorrectly bounded the decisive shear input.
+- The first immutable-commit attempt was blocked by the normal mypy hook because
+  the new validation helper did not return a narrowed numeric type and the
+  resolved compliance percentage remained statically optional.
+- The isolated worktree had no Node dependencies. React used its lockfile;
+  Excel has no lockfile because it has no package dependencies.
+- A focused command named a nonexistent slab test path before `rg` located the
+  maintained integration file.
+- A combined mypy/test command changed into `Python/` and then attempted a
+  workspace-root-relative test launcher from the persisted subdirectory.
+- One `apply_patch` transaction could not delete and add the same scanner path
+  in one call during early implementation.
+- The first committed candidate revealed that the scanner replacement had
+  changed `audit_input_validation.py` from executable to non-executable.
+
+### Root causes and resolutions
+
+- Root cause: the primary and frozen handoff predated hosted Packet D closure.
+  Resolution: verify PR #835 checks/tree, fast-forward only the clean primary,
+  and start from exact `640c7839`. Evidence: strict source binding and Git state
+  were `READY_LOCAL` before mutation; the unrelated dirty detached lane remains
+  untouched.
+- Root cause: `@clause` selects calculation-quality functions but is not the
+  public API authority. Resolution: bind input discovery to
+  `api-classification.json`, supplement the six helpers and `IS456Code`, and
+  keep the clause inventory in the function-quality checker. Evidence: 101
+  owners/719 parameters are deterministic; synthetic/current-source tests pass.
+- Root cause: a generic non-numeric-type fallback confused type hints with
+  validated domain models. Resolution: permit `DELEGATED` only for recognized
+  domain-model suffixes and make ordinary objects/raw collections `UNPROVEN`.
+  Evidence: the new ordinary-object regression passes and the final decisive
+  inventory reports 132 proven, 86 delegated, 370 unproven, and 131 not
+  applicable parameters.
+- Root cause: legacy tests encoded invalid substitution and message details
+  rather than the frozen domains. Resolution: preserve compatible message
+  fragments, use valid Fe550 for fallback coverage, constrain Table properties
+  to M15-M40, and require invalid public percentages to raise. Evidence: all
+  failed nodes and the complete Python suite pass.
+- Root cause: `get_tc_value` owned both caller-supplied validation and internal
+  derived row bounding. Resolution: keep the public helper strict and add a
+  private finite/non-negative derived lookup used only by footing/slab; beam
+  torsion receives a bounded lookup while decisive shear keeps the exact value.
+  Evidence: 76 affected composite/boundary tests, 6,728 Python, and 479 FastAPI
+  tests pass; failed HTTP evidence again has no invented exact utilization.
+- Root cause: runtime checks do not automatically narrow an `object` or
+  `float | None` for mypy across helper/control-flow boundaries. Resolution:
+  make the scalar validators return the validated float and add an explicit
+  fail-closed postcondition after percentage resolution. Evidence: the normal
+  mypy hook and affected boundary/compliance tests pass before recommit.
+- Root cause: linked worktrees do not share ignored Node dependencies, while the
+  dependency-free Excel package intentionally has no lockfile. Resolution:
+  install React with Node 24 `npm ci` and run Excel's direct Node 24 `npm test`.
+  Evidence: 276 React and 21 Excel tests pass.
+  ⚠️ TERMINAL ISSUE: `excel_addin` has no lockfile, so `npm ci` returned
+  `EUSAGE` -> used its maintained dependency-free `npm test` command.
+- Root cause: the guessed slab test path did not exist. Resolution: use `rg` to
+  locate `Python/tests/integration/test_slab_boundary_closure.py`; the affected
+  set then passed.
+  ⚠️ TERMINAL ISSUE: nonexistent slab test path -> located and ran the
+  maintained integration file.
+- Root cause: shell working-directory changes persist for later lines in the
+  same command. Resolution: rerun the 69 affected tests from the explicit
+  workspace root; all pass.
+  ⚠️ TERMINAL ISSUE: root-relative launcher failed after `cd Python` ->
+  reran from the explicit workspace root.
+- Root cause: the patch tool rejects a same-path delete/add transaction.
+  Resolution: restored the scanner through two immediate patch operations; no
+  content was lost.
+  ⚠️ TERMINAL ISSUE: same-path delete/add patch rejected -> used two
+  bounded `apply_patch` operations.
+- Root cause: recreating the script through the patch tool used the default
+  regular-file mode and did not preserve its executable bit. Resolution:
+  restore mode `100755` in an explicit post-candidate repair commit. Evidence:
+  the final Git diff reports no unintended mode change and the direct script
+  help path executes.
+
+### Validation through content freeze
+
+- Boundary/diagnostic tests: 90 pass; public-route gate: 20 Python + 4 FastAPI
+  targets; function quality: 88/88.
+- Architecture/imports: 218 files with zero violations; 244 source files and
+  1,459 imports with zero broken imports.
+- Complete suites: 6,728 Python pass (3 skipped, 6 deselected), 479 FastAPI,
+  276 React, and 21 Excel add-in tests pass.
+- Quick repository gate: 10/10 pass. The rebuilt input diagnostic exits 1 with
+  370 `UNPROVEN` parameters, preserving readiness `PARTIAL` and release hold.
+
+### Handoff
+
+Create the immutable local candidate after the one focused index refresh, run
+the final read-only repository/session gates, then push one branch and create
+one PR. Hosted checks may merge the unchanged reviewed head when eligible.
+Retain the branch/worktree and do not begin the wider route successor without a
+new bounded plan.
+
 ## 2026-08-22 — Session: LIB-PRO-003-D decisive gates and cumulative safety closure
 
 **Agent:** Codex (`ops` + `governance`, sole writer)

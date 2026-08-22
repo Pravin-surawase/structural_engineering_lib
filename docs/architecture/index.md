@@ -3,7 +3,7 @@
 Deep dives into project structure, design decisions, and system architecture.
 
 **Type:** Mixed
-**Last Updated:** 2026-08-16
+**Last Updated:** 2026-08-22
 **Files:** 13
 
 ## Documentation Files

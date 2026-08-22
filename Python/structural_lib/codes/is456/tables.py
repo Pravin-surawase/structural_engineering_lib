@@ -6,6 +6,7 @@ Description:  Data tables from IS 456:2000 (Table 19, Table 20, etc.)
 """
 
 from structural_lib import utilities
+from structural_lib.codes.is456._validation import require_finite_real, require_range
 
 __all__ = ["get_tc_value", "get_tc_max_value"]
 
@@ -54,16 +55,38 @@ def get_tc_value(fck: float, pt: float) -> float:
     """
     Get Design Shear Strength (Tc) from Table 19.
     Interpolates in pt, uses nearest lower grade column (no fck interpolation).
+
+    ``fck`` and ``pt`` must be inside the maintained Table 19 lookup domain.
+    The internal row helper retains its clamping only for already-validated
+    interpolation input; the public route never substitutes an invalid bound.
     """
-    grades = sorted(_TC_COLUMNS.keys())
+    require_range("fck", fck, minimum=15.0, maximum=40.0)
+    require_range("pt", pt, minimum=0.15, maximum=3.0)
+    return _get_tc_for_grade(_nearest_lower_grade(fck), pt)
 
-    # Select nearest lower grade (clamped to bounds).
-    grade = grades[0]
-    for g in grades:
-        if fck >= g:
-            grade = g
 
-    return _get_tc_for_grade(grade, pt)
+def _get_tc_value_for_derived_reinforcement(fck: float, pt: float) -> float:
+    """Look up Table 19 for a validated, internally derived percentage.
+
+    Reinforcement computed from a valid section can lie outside the tabulated
+    0.15-3.0 percent rows. The standard lookup then uses the nearest boundary
+    row. This private path keeps that rule distinct from ``get_tc_value``,
+    whose public caller-supplied domain is fail-closed.
+    """
+    require_range("fck", fck, minimum=15.0, maximum=40.0)
+    require_finite_real("pt", pt)
+    if pt < 0:
+        raise ValueError(f"pt must be non-negative, got {pt!r}")
+    return _get_tc_for_grade(_nearest_lower_grade(fck), pt)
+
+
+def _nearest_lower_grade(fck: float) -> int:
+    """Return the maintained Table 19 grade column for validated concrete."""
+    grade = min(_TC_COLUMNS)
+    for candidate in sorted(_TC_COLUMNS):
+        if fck >= candidate:
+            grade = candidate
+    return grade
 
 
 # ------------------------------------------------------------------------------
@@ -76,6 +99,7 @@ def get_tc_max_value(fck: float) -> float:
     Get Maximum Shear Stress (Tc_max) from Table 20.
     Interpolates for Fck.
     """
+    require_range("fck", fck, minimum=15.0, maximum=40.0)
     if fck >= 40:
         return 4.0
     elif fck <= 15:

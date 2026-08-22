@@ -26,7 +26,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_api_surface_snapshot.py](test_api_surface_snapshot.py) | Snapshot regression tests — assert minimum API surface count | 5 | 0 | 122 |
 | [test_assertion_helpers.py](test_assertion_helpers.py) | Tests for the IS 456 test assertion helpers. | 3 | 0 | 82 |
 | [test_audit.py](test_audit.py) | Tests for audit module (TASK-278). | 6 | 0 | 471 |
-| [test_audit_readiness_truth.py](test_audit_readiness_truth.py) | Readiness must aggregate semantic truth instead of reporting | 0 | 7 | 151 |
+| [test_audit_readiness_truth.py](test_audit_readiness_truth.py) | Readiness must aggregate semantic truth instead of reporting | 0 | 13 | 239 |
 | [test_boq.py](test_boq.py) | Tests for the BOQ (Bill of Quantities) aggregation module. | 1 | 0 | 213 |
 | [test_branch_disposition.py](test_branch_disposition.py) | Outcome tests for the inspection-only branch disposition cla | 0 | 12 | 437 |
 | [test_bump_version_semantics.py](test_bump_version_semantics.py) | Regression coverage for candidate-version documentation sema | 0 | 1 | 66 |
@@ -51,7 +51,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_footing_api.py](test_footing_api.py) | Focused contract tests for Phase B1 isolated-footing orchest | 0 | 15 | 401 |
 | [test_footing_detailing.py](test_footing_detailing.py) | Outcome-focused tests for the bounded footing detailing slic | 0 | 11 | 238 |
 | [test_footing_load_transfer.py](test_footing_load_transfer.py) | Focused independent arithmetic checks for IS 456 Cl. 34.4 lo | 0 | 7 | 165 |
-| [test_function_quality_checker.py](test_function_quality_checker.py) | Focused regressions for the IS 456 function-quality checker. | 0 | 2 | 56 |
+| [test_function_quality_checker.py](test_function_quality_checker.py) | Focused regressions for the IS 456 function-quality checker. | 0 | 6 | 132 |
 | [test_generated_clients.py](test_generated_clients.py) | Contract checks for the checked-in basic generated clients. | 0 | 3 | 123 |
 | [test_git_guidance_semantics.py](test_git_guidance_semantics.py) | Semantic live-guidance discovery and coherence regressions. | 0 | 10 | 362 |
 | [test_git_handoff_receipt.py](test_git_handoff_receipt.py) | Regressions for the durable, fail-closed task-to-Git handoff | 0 | 20 | 429 |
@@ -102,4 +102,4 @@ This document describes the test taxonomy and structure for the structural_engin
 | [performance/](performance/) 📦 | 3 |  |
 | [property/](property/) 📦 | 9 |  |
 | [regression/](regression/) 📦 | 11 |  |
-| [unit/](unit/) 📦 | 41 |  |
+| [unit/](unit/) 📦 | 42 |  |

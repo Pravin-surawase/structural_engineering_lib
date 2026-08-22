@@ -79,9 +79,8 @@ BOQ rates at the request boundary.
 
 ### Packet D — Decisive gates and repository truth
 
-**Status:** local candidate accepted on `codex/public-route-decisive-gates`
-from exact hosted Packet C merge `02755445`; hosted and exact-tree merge
-closure remain.
+**Status:** integrated through PR #835 at `640c7839` with reviewed and merged
+trees equal.
 
 Run the Excel add-in tests for `excel_addin/**` changes, require the frozen
 public-route adversarial regressions in readiness evidence, return nonzero for
@@ -93,10 +92,10 @@ After A-D pass focused, quick, broad, and hosted acceptance, the owner may
 resume `INDIA-3-G0`. A future package remains a separate versioned artifact and
 owner-authorized release operation.
 
-The local A-D regression set is green, but readiness remains `PARTIAL`/exit 2
+The integrated A-D regression set is green, but readiness remains `PARTIAL`/exit 2
 because two heuristic diagnostics remain unresolved. This preserves a package
 and professional-use `HOLD`; it does not block a later read-only INDIA-3 truth
-audit after Packet D merges.
+audit once the successor lower-level safety work is truthfully dispositioned.
 
 ## Non-goals
 

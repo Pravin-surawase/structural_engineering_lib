@@ -1,0 +1,55 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-22T12:49:36Z",
+      "query_status": "OK",
+      "reference": "task:LIB-PRO-004:user-request-check-git-start-and-finish-all-steps",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-22T12:49:36Z",
+    "prohibited_actions": [
+      "PUBLISH_RELEASE",
+      "CLAIM_PROFESSIONAL_APPROVAL",
+      "START_INDIA_3",
+      "START_ETABS_OR_DESKTOP_EXCEL",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR"
+      ],
+      "branch": "codex/lib-pro-004-safety-auditors",
+      "head_sha": "640c7839f043adb0e7db02d924a9e1a3a06e1131",
+      "task_id": "LIB-PRO-004"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-22T12:49:36Z",
+    "owner": "Main Agent under repository retention policy; destructive cleanup remains separately owner-authorized",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

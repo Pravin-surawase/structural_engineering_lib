@@ -26,6 +26,10 @@ PYTHON_TARGETS = (
     "Python/tests/unit/test_generic_csv_adapter.py::TestGenericCSVAdapterLoadForces::test_rejects_malformed_force_instead_of_coercing_zero",
     "Python/tests/test_boq.py::TestAggregateProjectBOQ::test_rejects_invalid_cost_domains",
     "Python/tests/test_evidence.py::test_unbounded_derived_utilization_is_a_structured_supported_failure",
+    "Python/tests/unit/test_table_material_boundaries.py::test_canonical_helpers_reject_non_finite_or_non_real_inputs",
+    "Python/tests/unit/test_table_material_boundaries.py::test_canonical_helpers_reject_unsupported_domains",
+    "Python/tests/unit/test_table_material_boundaries.py::test_compatibility_exports_and_is456_delegates_share_boundaries",
+    "Python/tests/unit/test_table_material_boundaries.py::test_is456_design_strength_methods_share_material_domains",
 )
 
 FASTAPI_TARGETS = (

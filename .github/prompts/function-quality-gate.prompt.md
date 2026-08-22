@@ -28,7 +28,7 @@ You are adding a new function to `Python/structural_lib/codes/is456/`. This prom
 
 4. **Delegate to specialists:**
    - @structural-engineer → clause research + math verification
-   - @structural-math → implementation (12-point checklist)
+   - @structural-math → implementation (critical diagnostic + advisory review)
    - @tester → comprehensive tests (unit + benchmark + property + degenerate)
    - @reviewer → two-pass review (math + code)
    - @backend → API wiring

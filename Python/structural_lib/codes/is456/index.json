@@ -3,13 +3,13 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-22",
-  "file_count": 14,
+  "file_count": 15,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 148,
-      "last_updated": "2026-08-16",
+      "size_lines": 151,
+      "last_updated": "2026-08-22",
       "description": "IS 456:2000 - Indian Standard for Plain and Reinforced Concrete.",
       "classes": [
         {
@@ -26,7 +26,33 @@
           ]
         }
       ],
-      "content_hash": "eab49c0651c4"
+      "content_hash": "63de8fa433e7"
+    },
+    {
+      "name": "_validation.py",
+      "type": "python",
+      "size_lines": 41,
+      "last_updated": "2026-08-22",
+      "description": "Private scalar validation shared by lower-level IS 456 helpers.",
+      "functions": [
+        {
+          "name": "require_finite_real",
+          "description": "Reject invalid scalars and return the finite real as a float.",
+          "params": [
+            "name",
+            "value"
+          ]
+        },
+        {
+          "name": "require_range",
+          "description": "Require and return a finite real inside one inclusive domain.",
+          "params": [
+            "name",
+            "value"
+          ]
+        }
+      ],
+      "content_hash": "95841acdee03"
     },
     {
       "name": "clauses.json",
@@ -45,7 +71,7 @@
     {
       "name": "compliance.py",
       "type": "python",
-      "size_lines": 628,
+      "size_lines": 640,
       "last_updated": "2026-08-22",
       "description": "Module: compliance",
       "functions": [
@@ -65,7 +91,7 @@
           ]
         }
       ],
-      "content_hash": "d390bf6a6102"
+      "content_hash": "790c8b7a86ef"
     },
     {
       "name": "detailing.py",
@@ -175,8 +201,8 @@
     {
       "name": "materials.py",
       "type": "python",
-      "size_lines": 128,
-      "last_updated": "2026-08-16",
+      "size_lines": 123,
+      "last_updated": "2026-08-22",
       "description": "Module:       materials",
       "functions": [
         {
@@ -209,7 +235,7 @@
           ]
         }
       ],
-      "content_hash": "702bfdcb7344"
+      "content_hash": "24a8779bc372"
     },
     {
       "name": "serviceability.py",
@@ -279,8 +305,8 @@
     {
       "name": "tables.py",
       "type": "python",
-      "size_lines": 97,
-      "last_updated": "2026-08-16",
+      "size_lines": 121,
+      "last_updated": "2026-08-22",
       "description": "Module:       tables",
       "functions": [
         {
@@ -303,7 +329,7 @@
         "_PT_ROWS",
         "_TC_COLUMNS"
       ],
-      "content_hash": "4996975fad5f"
+      "content_hash": "727fdd59e413"
     },
     {
       "name": "torsion.py",
@@ -468,5 +494,5 @@
     "list_clauses_by_category",
     "search_clauses"
   ],
-  "content_hash": "949db3f51ec67945"
+  "content_hash": "9ef9976d5a2ef132"
 }

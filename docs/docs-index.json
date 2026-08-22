@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generated": "2026-08-22T16:59:39.968604",
-  "total_docs": 373,
+  "generated": "2026-08-22T18:27:39.385021",
+  "total_docs": 375,
   "docs": {
     "docs/SESSION_LOG.md": {
       "title": "Session Log",
@@ -10,6 +10,7 @@
       "folder": "root",
       "tags": [],
       "sections": [
+        "2026-08-22 \u2014 Session: LIB-PRO-004 lower-level safety and diagnostic truth",
         "2026-08-22 \u2014 Session: LIB-PRO-003-D decisive gates and cumulative safety closure",
         "2026-08-22 \u2014 Session: LIB-PRO-003-C public failure contracts",
         "2026-08-22 \u2014 Session: LIB-PRO-003-B domains and footing provenance",
@@ -18,10 +19,9 @@
         "2026-08-22 \u2014 Session: E1 desktop-Excel workbook-open repair",
         "2026-08-22 \u2014 Session: E1 complete review-bundle export",
         "2026-08-22 \u2014 Session: E1 blank-workbook guard repair",
-        "2026-08-21 \u2014 Session: E1 Windows W0 evidence and maintenance",
-        "2026-08-18 \u2014 Session: E1 Excel Routine Workbench V1 implementation"
+        "2026-08-21 \u2014 Session: E1 Windows W0 evidence and maintenance"
       ],
-      "size_bytes": 243792
+      "size_bytes": 252433
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",
@@ -61,7 +61,7 @@
         "Completed (Archived)",
         "External Audit Remediation \u2014 v0.21.6 \u2705 DONE"
       ],
-      "size_bytes": 59755
+      "size_bytes": 60115
     },
     "docs/WORKLOG.md": {
       "title": "Work Log",
@@ -2127,12 +2127,11 @@
       ],
       "sections": [
         "Latest Handoff (auto)",
-        "E1 final acceptance",
         "Correct next library packet",
         "Other live work",
         "Required Reading"
       ],
-      "size_bytes": 4360
+      "size_bytes": 3139
     },
     "docs/planning/public-route-safety-closure-plan.md": {
       "title": "Public Route Safety Closure Plan",
@@ -2152,7 +2151,7 @@
         "Frozen sequence",
         "Non-goals"
       ],
-      "size_bytes": 4536
+      "size_bytes": 4516
     },
     "docs/planning/is456-solid-slabs-master-plan.md": {
       "title": "IS 456 Solid Slabs Expansion Master Plan",
@@ -2310,7 +2309,7 @@
         "8. Phase 4 \u2014 EC2 (EN 1992-1-1)",
         "9. Phase 5 \u2014 Fill the Matrix"
       ],
-      "size_bytes": 49159
+      "size_bytes": 49178
     },
     "docs/planning/pre-release-checklist.md": {
       "title": "Pre-Release Checklist",
@@ -2406,7 +2405,7 @@
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 3423
+      "size_bytes": 3626
     },
     "docs/planning/india-2-next-session-publication-and-closeout-plan.md": {
       "title": "Next Session Git Reconciliation, Issue Repairs, and INDIA-2 Finish Plan",
@@ -2558,6 +2557,28 @@
         "References"
       ],
       "size_bytes": 9719
+    },
+    "docs/planning/lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md": {
+      "title": "LIB-PRO-004 Lower-Level Safety and Diagnostic Closure",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "planning",
+      "tags": [
+        "diagnostics",
+        "public-api",
+        "roadmap",
+        "safety",
+        "tasks",
+        "validation"
+      ],
+      "sections": [
+        "Corrected truth model",
+        "Frozen lower-level domains",
+        "One-lane execution",
+        "Confirmed successor boundary",
+        "Non-goals"
+      ],
+      "size_bytes": 4873
     },
     "docs/agents/README.md": {
       "title": "Agent Documentation Hub",
@@ -3766,7 +3787,7 @@
         "Config Files",
         "Documentation Files"
       ],
-      "size_bytes": 26973
+      "size_bytes": 27342
     },
     "docs/verification/india-2-wall-d-publication-evidence.md": {
       "title": "INDIA-2-WALL-D Publication Evidence",
@@ -3848,6 +3869,27 @@
       ],
       "sections": [],
       "size_bytes": 1761
+    },
+    "docs/verification/lib-pro-004-lower-level-safety-and-diagnostic-evidence.md": {
+      "title": "LIB-PRO-004 Lower-Level Safety and Diagnostic Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "diagnostics",
+        "public-api",
+        "safety",
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Boundary outcome",
+        "Diagnostic outcome",
+        "G0 correction evidence",
+        "Verification",
+        "Authority and limits"
+      ],
+      "size_bytes": 4229
     },
     "docs/verification/india-2-flat-family-acceptance-evidence.md": {
       "title": "INDIA-2-FLAT Focused Family Acceptance Evidence",
@@ -4257,7 +4299,7 @@
         "9. Version Roadmap",
         "10. API Design Principles (Inspired by NumPy/pandas/scikit-learn)"
       ],
-      "size_bytes": 76048
+      "size_bytes": 76067
     },
     "docs/architecture/architecture-review-2025-12-27.md": {
       "title": "Architecture Review \u2014 2025-12-27",
@@ -5227,7 +5269,7 @@
         "9. Release Checklist",
         "10. Incident Response"
       ],
-      "size_bytes": 6926
+      "size_bytes": 6954
     },
     "docs/guidelines/documentation-standard.md": {
       "title": "API Documentation & Discoverability Standard",
@@ -7537,7 +7579,8 @@
         "docs/planning/dependency-security-baseline.md",
         "docs/planning/india-2-remaining-is456-elements-plan.md",
         "docs/planning/e1-excel-routine-workbench-v1-plan.md",
-        "docs/planning/democratization-vision.md"
+        "docs/planning/democratization-vision.md",
+        "docs/planning/lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md"
       ],
       "tasks": [
         "docs/planning/gpt-5-3-codex-spark-work-program.md",
@@ -7561,22 +7604,28 @@
         "docs/planning/dependency-security-baseline.md",
         "docs/planning/india-2-remaining-is456-elements-plan.md",
         "docs/planning/e1-excel-routine-workbench-v1-plan.md",
-        "docs/planning/democratization-vision.md"
+        "docs/planning/democratization-vision.md",
+        "docs/planning/lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md"
       ],
       "public-api": [
         "docs/planning/public-route-safety-closure-plan.md",
-        "docs/verification/lib-pro-003-a-numeric-boundaries-evidence.md"
+        "docs/planning/lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md",
+        "docs/verification/lib-pro-003-a-numeric-boundaries-evidence.md",
+        "docs/verification/lib-pro-004-lower-level-safety-and-diagnostic-evidence.md"
       ],
       "release-hold": [
         "docs/planning/public-route-safety-closure-plan.md"
       ],
       "safety": [
         "docs/planning/public-route-safety-closure-plan.md",
+        "docs/planning/lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md",
         "docs/verification/lib-pro-003-b-domain-provenance-evidence.md",
-        "docs/verification/lib-pro-003-a-numeric-boundaries-evidence.md"
+        "docs/verification/lib-pro-003-a-numeric-boundaries-evidence.md",
+        "docs/verification/lib-pro-004-lower-level-safety-and-diagnostic-evidence.md"
       ],
       "validation": [
         "docs/planning/public-route-safety-closure-plan.md",
+        "docs/planning/lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md",
         "docs/verification/indian-code-truth-baseline.md",
         "docs/verification/india-2-final-closeout-evidence.md",
         "docs/verification/examples.md",
@@ -7630,6 +7679,7 @@
         "docs/verification/india-2-foundation-strap-c-public-workflow-evidence.md",
         "docs/verification/alpha-0231-local-prepublication-rehearsal.md",
         "docs/verification/release-artifact-evidence-template.md",
+        "docs/verification/lib-pro-004-lower-level-safety-and-diagnostic-evidence.md",
         "docs/verification/india-2-flat-family-acceptance-evidence.md",
         "docs/verification/india-2b-staircase-actions-evidence.md",
         "docs/verification/india-2-foundation-combined-a-analysis-evidence.md",
@@ -7651,6 +7701,10 @@
         "docs/verification/india-2-wall-b-reinforcement-evidence.md",
         "docs/verification/india-2-wall-family-acceptance-evidence.md",
         "docs/verification/india-1c-isolated-footing-workflow-evidence.md"
+      ],
+      "diagnostics": [
+        "docs/planning/lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md",
+        "docs/verification/lib-pro-004-lower-level-safety-and-diagnostic-evidence.md"
       ],
       "ai": [
         "docs/agents/README.md",
@@ -7728,6 +7782,7 @@
         "docs/verification/india-2-foundation-strap-c-public-workflow-evidence.md",
         "docs/verification/alpha-0231-local-prepublication-rehearsal.md",
         "docs/verification/release-artifact-evidence-template.md",
+        "docs/verification/lib-pro-004-lower-level-safety-and-diagnostic-evidence.md",
         "docs/verification/india-2-flat-family-acceptance-evidence.md",
         "docs/verification/india-2b-staircase-actions-evidence.md",
         "docs/verification/india-2-foundation-combined-a-analysis-evidence.md",

@@ -282,15 +282,12 @@ class TestStructuralLib(unittest.TestCase):
         # So expected spacing is 300.
         self.assertEqual(res.spacing, 300.0)
 
-    def test_tables_pt_clamping(self):
-        """Test that pt is clamped to 0.15 and 3.0 for Tc lookup."""
-        # Low pt (< 0.15) -> should use 0.15 value
-        # M20, pt=0.05 -> use pt=0.15 -> 0.28
-        self.assertAlmostEqual(tables.get_tc_value(20, 0.05), 0.28)
-
-        # High pt (> 3.0) -> should use 3.0 value
-        # M20, pt=4.0 -> use pt=3.0 -> 0.82
-        self.assertAlmostEqual(tables.get_tc_value(20, 4.0), 0.82)
+    def test_tables_reject_pt_outside_lookup_domain(self):
+        """Public Table 19 lookup must not substitute invalid percentages."""
+        with self.assertRaisesRegex(ValueError, "pt must be between"):
+            tables.get_tc_value(20, 0.05)
+        with self.assertRaisesRegex(ValueError, "pt must be between"):
+            tables.get_tc_value(20, 4.0)
 
 
 if __name__ == "__main__":

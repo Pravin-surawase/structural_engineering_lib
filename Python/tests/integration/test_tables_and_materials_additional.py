@@ -37,7 +37,7 @@ def test_get_tc_for_grade_nan_pt_returns_last_value():
 
 def test_get_steel_stress_other_grade_fallback_branches():
     # Cover the fallback branch for grades other than 250/415/500.
-    fy = 600.0
+    fy = 550.0
 
     # Below yield_strain but strain*Es exceeds 0.87fy => min(...) path clamps to 0.87fy.
     s = materials.get_steel_stress(0.003, fy)

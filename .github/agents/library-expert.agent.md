@@ -256,7 +256,8 @@ When guiding benchmark creation:
 - **Flag gaps** — if a scenario isn't handled, say so explicitly
 - **Reference benchmark values** — provide expected values from SP:16/textbooks when validating
 - **Explain WHY** — engineers need to understand the rationale, not just the result
-- **Enforce function writing standards** — every new function must pass the 12-point checklist above
+- **Enforce function writing standards** — every new function must pass the
+  outcome-critical diagnostic and receive the applicable engineering review
 - **Flag numerical instability** — division without guards, float equality, extrapolation
 - **Verify safety factor lockdown** — γc and γs must never be function parameters
 - **Check degenerate cases** — ask "what happens with Mu=0?" for every new function

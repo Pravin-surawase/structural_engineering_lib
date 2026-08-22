@@ -262,17 +262,15 @@ class TestMinimumStirrupSpacing:
 class TestTableBoundaries:
     """Test IS 456 table boundary conditions."""
 
-    def test_tc_clamped_for_pt_below_0_15(self):
-        """pt < 0.15% should use tc at pt=0.15%."""
-        tc_low = tables.get_tc_value(25, 0.05)
-        tc_min = tables.get_tc_value(25, 0.15)
-        assert tc_low == tc_min
+    def test_tc_rejects_pt_below_0_15(self):
+        """The public lookup must not substitute the minimum pt row."""
+        with pytest.raises(ValueError, match="pt must be between"):
+            tables.get_tc_value(25, 0.05)
 
-    def test_tc_clamped_for_pt_above_3(self):
-        """pt > 3% should use tc at pt=3%."""
-        tc_high = tables.get_tc_value(25, 4.0)
-        tc_max_pt = tables.get_tc_value(25, 3.0)
-        assert tc_high == tc_max_pt
+    def test_tc_rejects_pt_above_3(self):
+        """The public lookup must not substitute the maximum pt row."""
+        with pytest.raises(ValueError, match="pt must be between"):
+            tables.get_tc_value(25, 4.0)
 
     def test_tc_between_grades_uses_lower_bound(self):
         """fck between table values uses lower bound (conservative).
@@ -285,11 +283,10 @@ class TestTableBoundaries:
         # Conservative: use lower grade value
         assert tc_m22 == tc_m20
 
-    def test_tc_max_extrapolation_above_m40(self):
-        """fck > 40 should use M40 value (no extrapolation)."""
-        tc_max_m40 = tables.get_tc_max_value(40)
-        tc_max_m50 = tables.get_tc_max_value(50)
-        assert tc_max_m40 == tc_max_m50
+    def test_tc_max_rejects_above_m40(self):
+        """The public Table 20 lookup must reject unsupported concrete."""
+        with pytest.raises(ValueError, match="fck must be between"):
+            tables.get_tc_max_value(50)
 
 
 # =============================================================================

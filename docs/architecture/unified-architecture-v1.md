@@ -459,7 +459,7 @@ Every new structural function MUST:
 ```
 1. PLAN          → Orchestrator identifies clause + formula + benchmark
 2. MATH REVIEW   → @structural-engineer verifies formula independently
-3. IMPLEMENT     → @structural-math writes code (12-point checklist)
+3. IMPLEMENT     → @structural-math writes code (critical diagnostic + advisory review)
 4. TEST          → @tester writes 6 test types
 5. REVIEW        → Two-pass: @structural-engineer (math) + @reviewer (code)
 6. API WIRE      → @backend adds to services/api.py

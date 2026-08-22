@@ -44,12 +44,11 @@ class TestMaterialsEdges(unittest.TestCase):
 
 
 class TestTablesEdges(unittest.TestCase):
-    def test_tc_value_grade_clamping(self):
-        # Below minimum grade: clamps to M15 column
-        self.assertAlmostEqual(tables.get_tc_value(10, 0.15), 0.28)
-
-        # Above maximum grade: clamps to M40 column
-        self.assertAlmostEqual(tables.get_tc_value(60, 0.15), 0.30)
+    def test_tc_value_grade_domain_is_decisive(self):
+        with self.assertRaises(ValueError):
+            tables.get_tc_value(10, 0.15)
+        with self.assertRaises(ValueError):
+            tables.get_tc_value(60, 0.15)
 
     def test_tc_value_grade_selection_nearest_lower(self):
         # For fck just below 40, nearest lower grade column is M35
@@ -64,8 +63,10 @@ class TestTablesEdges(unittest.TestCase):
         self.assertAlmostEqual(tables.get_tc_value(25, 3.0), 0.92)
 
     def test_tc_max_value_bounds_and_interpolation(self):
-        self.assertEqual(tables.get_tc_max_value(10), 2.5)
-        self.assertEqual(tables.get_tc_max_value(45), 4.0)
+        with self.assertRaises(ValueError):
+            tables.get_tc_max_value(10)
+        with self.assertRaises(ValueError):
+            tables.get_tc_max_value(45)
 
         # Interpolation between M25 (3.1) and M30 (3.5) at 27.5 should be 3.3
         self.assertAlmostEqual(tables.get_tc_max_value(27.5), 3.3)

@@ -502,7 +502,7 @@
     {
       "name": "test_audit_readiness_truth.py",
       "type": "python",
-      "size_lines": 151,
+      "size_lines": 239,
       "last_updated": "2026-08-22",
       "description": "Readiness must aggregate semantic truth instead of reporting false green.",
       "functions": [
@@ -543,10 +543,27 @@
         {
           "name": "test_input_validation_diagnostic_exit_is_decisive",
           "params": [
-            "high_risk",
-            "coverage",
+            "unproven",
             "expected"
           ]
+        },
+        {
+          "name": "test_input_auditor_attributes_keyword_only_guards_per_parameter"
+        },
+        {
+          "name": "test_input_auditor_recognizes_delegated_validator_and_typed_model"
+        },
+        {
+          "name": "test_input_auditor_does_not_treat_raw_collection_hint_as_validation"
+        },
+        {
+          "name": "test_input_auditor_does_not_treat_ordinary_object_hint_as_model_validation"
+        },
+        {
+          "name": "test_input_auditor_nested_function_state_does_not_leak"
+        },
+        {
+          "name": "test_current_input_audit_uses_registry_and_reports_every_unproven"
         }
       ],
       "constants": [
@@ -557,7 +574,7 @@
         "_INPUT_AUDIT_SCRIPT",
         "_INPUT_AUDIT_SPEC"
       ],
-      "content_hash": "538b5ef3d300"
+      "content_hash": "30e3961a6c24"
     },
     {
       "name": "test_boq.py",
@@ -2337,12 +2354,21 @@
     {
       "name": "test_function_quality_checker.py",
       "type": "python",
-      "size_lines": 56,
-      "last_updated": "2026-08-17",
+      "size_lines": 132,
+      "last_updated": "2026-08-22",
       "description": "Focused regressions for the IS 456 function-quality checker.",
       "functions": [
         {
           "name": "test_checker_accepts_current_unit_names_objects_and_sample_counts"
+        },
+        {
+          "name": "test_checker_accepts_case_insensitive_units_and_semantic_parameters"
+        },
+        {
+          "name": "test_checker_keeps_ambiguous_numeric_names_as_failures"
+        },
+        {
+          "name": "test_exact_float_equality_requires_module_bound_review"
         },
         {
           "name": "test_module_filter_ignores_matching_parent_worktree_name",
@@ -2350,9 +2376,12 @@
             "tmp_path",
             "monkeypatch"
           ]
+        },
+        {
+          "name": "test_current_clause_inventory_has_no_unreviewed_quality_failures"
         }
       ],
-      "content_hash": "9b1d503f456c"
+      "content_hash": "4e953749d488"
     },
     {
       "name": "test_generated_clients.py",
@@ -5021,10 +5050,10 @@
     {
       "name": "unit",
       "path": "unit/",
-      "file_count": 41,
+      "file_count": 42,
       "is_package": true
     }
   ],
   "has_init": true,
-  "content_hash": "e7fb56558d7ed0d1"
+  "content_hash": "17e03da0a86ef44b"
 }

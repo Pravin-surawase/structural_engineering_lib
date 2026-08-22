@@ -173,24 +173,26 @@ These checks prevent the specific failures that shipped in v0.21.0-v0.21.3:
 
 ### IS 456 Function Quality (for structural math changes)
 
-When reviewing changes to `codes/is456/` or `core/`, apply the 12-point function quality checklist:
+When reviewing changes to `codes/is456/` or `core/`, run the function-quality
+diagnostic and separately apply engineering judgment to its advisories:
 
-**12-Point Checklist (EVERY function must pass):**
-- [ ] `@clause("XX.X")` decorator present with correct IS 456 clause
+**Outcome-critical static contracts:**
 - [ ] Frozen dataclass return type with `is_safe()`, `to_dict()`, `summary()`
 - [ ] Docstring includes: IS 456 clause, formula, args, returns, raises
 - [ ] Every formula preceded by `# IS 456 Cl XX.X: [symbolic form]` comment
-- [ ] No `float ==` comparisons — uses `abs(a-b) < TOLERANCE`
-- [ ] Division guarded (checked > 0 or uses `safe_divide()`)
-- [ ] Output checked for NaN/Inf before return
-- [ ] Intermediate variables used (not one-line complex expressions)
+- [ ] Exact float comparisons have a function-level rationale and decisive test
 - [ ] Units explicit in parameter names (`_mm`, `_kNm`, `_kN`)
 - [ ] No I/O, no file reads, no env vars, no network calls
+
+**Advisory engineering review:**
+- [ ] Division has a domain-appropriate guard; `safe_divide()` is not automatic proof
+- [ ] Non-finite inputs and results are rejected at the owned boundary
+- [ ] Intermediate variables remain readable where the formula needs them
 - [ ] `validate_*()` called before calculation
 - [ ] Errors accumulated as `tuple[DesignError, ...]`, not raised individually
 
 **Numerical Stability Red Flags (REJECT immediately):**
-- `if result == 0.0:` → WRONG. Must use `if abs(result) < EPSILON:`
+- Unreviewed exact float equality in a safety threshold → REJECT
 - Division without checking denominator → DANGEROUS
 - `gamma_c` or `gamma_s` as function parameters → FORBIDDEN (hardcoded only)
 - Extrapolating beyond IS 456 table bounds → FORBIDDEN
@@ -208,7 +210,7 @@ When reviewing changes to `codes/is456/` or `core/`, apply the 12-point function
 | Pass | Focus | Reviewer |
 |------|-------|----------|
 | Pass 1 — Math | Formula matches IS 456 text, benchmarks pass, edge cases correct, safety factors locked | @structural-engineer (or self) |
-| Pass 2 — Code | 12-point checklist, architecture, no duplication, tests exist, security | @reviewer (you) |
+| Pass 2 — Code | Critical diagnostic, applicable advisories, architecture, tests, security | @reviewer (you) |
 
 Both passes must be APPROVED before handing off to @doc-master.
 

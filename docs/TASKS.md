@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-22 — LIB-PRO-003-C merged; Packet D decisive-gate closure active
+**Updated:** 2026-08-22 — LIB-PRO-003-D merged; LIB-PRO-004 bounded diagnostic closure active
 
 ---
 
@@ -127,13 +127,14 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-003-D | Make Excel CI and readiness audits decisive and synchronize release/route-count/documentation truth | ops + governance | S | P0 | ✅ LOCAL CANDIDATE — 78 safety cases, 21 Excel, 6,653 Python, 479 FastAPI, 276 React, quick 10/10, and full 31/31 pass; hosted/exact-tree closure pending; readiness remains truthful PARTIAL/exit 2 and release HOLD |
+| LIB-PRO-003-D | Make Excel CI and readiness audits decisive and synchronize release/route-count/documentation truth | ops + governance | S | P0 | ✅ DONE — integrated through PR #835 at exact merge `640c7839`; readiness remains truthful PARTIAL/exit 2 and release HOLD |
+| LIB-PRO-004 | Repair six lower-level boundaries and replace misleading validation/function-quality diagnostics with evidence-bearing results | reviewer + backend + governance | M | P0 | 🟡 LOCAL CANDIDATE — bounded repair is green across 6,728 Python, 479 FastAPI, 276 React, and 21 Excel tests; rebuilt audit truthfully retains 370 UNPROVEN parameters and requires a successor route-safety packet |
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. The reproduced public-route safety defects take priority over new
 capability work. INDIA-3, dependency work, the next package version, further
-cleanup, and professional approval remain separately held until `LIB-PRO-003`
-closes and their own packet is activated.
+cleanup, and professional approval remain separately held until `LIB-PRO-004`
+and its resulting route-safety successor are resolved or explicitly replanned.
 
 `LIB-PRO-003-A` was accepted and exact-tree merged through PR #832 at
 `e7698a63b86d2db6db2f3970871122af1ce562f6`; Packet B was accepted and
