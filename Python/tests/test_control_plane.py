@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 import importlib
+import subprocess
 import sys
 from pathlib import Path
 
@@ -34,6 +35,24 @@ def test_current_registry_has_frozen_operation_and_script_parity():
         control_plane.top_level_scripts()
     )
     assert all(operation.get("permission") for operation in active_operations.values())
+
+
+def test_control_validator_runs_without_site_packages():
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-S",
+            str(SCRIPTS_DIR / "control_plane" / "cli.py"),
+            "validate",
+        ],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert "Control plane: PASS" in result.stdout
 
 
 def test_legacy_projection_is_exact_and_deterministic():
@@ -99,6 +118,19 @@ def test_schema_rejects_missing_permission():
     errors = control_plane.validate_registry_data(registry)
 
     assert any("permission" in error for error in errors)
+
+
+def test_schema_rejects_unknown_fields_wrong_types_and_missing_replacement():
+    registry = copy.deepcopy(control_plane.load_registry())
+    registry["unexpected"] = True
+    registry["operations"]["project health"]["aliases"] = [42]
+    del registry["operations"]["compat branch guard"]["replacement"]
+
+    errors = control_plane.validate_registry_data(registry)
+
+    assert any("additional property" in error for error in errors)
+    assert any("expected string" in error for error in errors)
+    assert any("replacement" in error for error in errors)
 
 
 def test_semantics_reject_alias_collision_missing_target_and_display_drift():

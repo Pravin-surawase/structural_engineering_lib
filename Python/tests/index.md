@@ -38,7 +38,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_column_helical.py](test_column_helical.py) | Tests for IS 456 Cl 39.4 helical reinforcement check. | 7 | 0 | 356 |
 | [test_column_long.py](test_column_long.py) | Tests for IS 456 Cl 39.7 long (slender) column design. | 15 | 0 | 662 |
 | [test_column_return_types.py](test_column_return_types.py) | Tests for UX-02: Column API return type unification. | 7 | 6 | 349 |
-| [test_control_plane.py](test_control_plane.py) | Contract tests for the canonical repository control plane. | 0 | 8 | 124 |
+| [test_control_plane.py](test_control_plane.py) | Contract tests for the canonical repository control plane. | 0 | 10 | 156 |
 | [test_core.py](test_core.py) | Tests for structural_lib.core module. | 6 | 0 | 176 |
 | [test_core_types.py](test_core_types.py) | Tests for core types and error dataclasses. | 11 | 0 | 391 |
 | [test_dashboard.py](test_dashboard.py) | Tests for the dashboard analytics module. | 4 | 0 | 259 |

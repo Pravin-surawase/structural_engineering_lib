@@ -46,6 +46,9 @@ invent another operation list, permission table, alias store, or script parser.
   contract. Unknown fields, absent permissions, invalid statuses, and malformed
   commands fail closed.
 - `scripts/control_plane/` owns the validated Python loader and the control CLI.
+  Its evaluator covers the exact schema keywords used here with the Python
+  standard library, so minimal repository/control CI lanes need no optional
+  validation extra.
 - `scripts/automation-map.json` remains temporarily for compatibility, but it is
   generated deterministically from the canonical registry and must never be
   edited independently.

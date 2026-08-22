@@ -139,10 +139,10 @@
     {
       "name": "maint-012-control-plane-modernization.md",
       "type": "documentation",
-      "size_lines": 130,
+      "size_lines": 133,
       "last_updated": "2026-08-23",
       "description": "Modernize the old script, discovery, permission, index, scanner, and validation control system as one planned program without a repository-wide rewrite in one",
-      "content_hash": "4808c1762154"
+      "content_hash": "8d38402859f5"
     },
     {
       "name": "memory.md",
@@ -214,5 +214,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "0294813a769207d2"
+  "content_hash": "d1341c7213fd04b9"
 }

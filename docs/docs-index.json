@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2026-08-23T01:28:48.246879",
+  "generated": "2026-08-23T01:33:45.673839",
   "total_docs": 379,
   "docs": {
     "docs/SESSION_LOG.md": {
@@ -21,7 +21,7 @@
         "2026-08-22 \u2014 Session: E1 G3 integration and roadmap closeout",
         "2026-08-22 \u2014 Session: E1 desktop-Excel workbook-open repair"
       ],
-      "size_bytes": 281903
+      "size_bytes": 282390
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",
@@ -2176,7 +2176,7 @@
         "Future maintenance policy",
         "MAINT-012A acceptance"
       ],
-      "size_bytes": 6394
+      "size_bytes": 6565
     },
     "docs/planning/is456-solid-slabs-master-plan.md": {
       "title": "IS 456 Solid Slabs Expansion Master Plan",

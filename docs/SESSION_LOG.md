@@ -64,6 +64,8 @@ preserving existing commands during migration.
 - The first generated handoff block selected MAINT-011 instead of MAINT-012A.
 - The first staged session-doc hook rejected the new brief's lowercase
   `Required reading` heading.
+- The first hosted repository, Python, and control-plane jobs could not import
+  `jsonschema`; their aggregate PR Gate therefore failed.
 
 ### Root causes and resolutions
 
@@ -87,6 +89,11 @@ preserving existing commands during migration.
 - The session checker intentionally treats `Required Reading` as an exact
   structural contract. Restoring that capitalization made the focused staged
   hook decisive without weakening the checker.
+- `jsonschema` is an existing optional `validation` extra, while the affected
+  hosted lanes intentionally install `Python[dev]`. The local full environment
+  masked that difference. The loader now evaluates the exact schema keywords it
+  uses with the Python standard library, preserving strict validation without a
+  dependency or workflow change.
 - Proof: `./run.sh control validate` reports PASS at 125 active operations and
   113/113 scripts; the two focused control/governance files pass 61 tests; the
   legacy projection check, tool stats, find alias smoke, and permission audit

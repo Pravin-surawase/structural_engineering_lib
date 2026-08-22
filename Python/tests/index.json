@@ -1517,12 +1517,15 @@
     {
       "name": "test_control_plane.py",
       "type": "python",
-      "size_lines": 124,
+      "size_lines": 156,
       "last_updated": "2026-08-23",
       "description": "Contract tests for the canonical repository control plane.",
       "functions": [
         {
           "name": "test_current_registry_has_frozen_operation_and_script_parity"
+        },
+        {
+          "name": "test_control_validator_runs_without_site_packages"
         },
         {
           "name": "test_legacy_projection_is_exact_and_deterministic"
@@ -1540,6 +1543,9 @@
           "name": "test_schema_rejects_missing_permission"
         },
         {
+          "name": "test_schema_rejects_unknown_fields_wrong_types_and_missing_replacement"
+        },
+        {
           "name": "test_semantics_reject_alias_collision_missing_target_and_display_drift"
         },
         {
@@ -1553,7 +1559,7 @@
         "REPO_ROOT",
         "SCRIPTS_DIR"
       ],
-      "content_hash": "1761164accf4"
+      "content_hash": "0b4d69ec3dae"
     },
     {
       "name": "test_core.py",
@@ -5106,5 +5112,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "2252f5949ad2a25d"
+  "content_hash": "e61de0b51878cc8e"
 }
