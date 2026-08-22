@@ -162,6 +162,45 @@ class TestAggregateProjectBOQ:
         expected_vol = 300.0 * 500.0 * 5000.0 / 1e9
         assert concrete_m30.cost_inr == pytest.approx(expected_vol * 10000.0, abs=0.01)
 
+    def test_custom_concrete_costs_must_cover_every_used_grade(self):
+        bbs_docs = [
+            _make_bbs_doc(member_id="B1"),
+            _make_bbs_doc(member_id="B2"),
+        ]
+        metas = [_make_meta(fck=25), _make_meta(fck=30)]
+
+        with pytest.raises(ValueError, match=r"missing required grade rates: M30"):
+            aggregate_project_boq(
+                bbs_docs,
+                metas,
+                concrete_costs={25: 6500.0},
+            )
+
+    def test_default_concrete_costs_reject_unknown_grade(self):
+        with pytest.raises(ValueError, match=r"missing required grade rates: M45"):
+            aggregate_project_boq(
+                [_make_bbs_doc()],
+                [_make_meta(fck=45)],
+            )
+
+    def test_story_cost_uses_each_beams_exact_concrete_rate(self):
+        bbs_docs = [
+            _make_bbs_doc(member_id="B1", total_weight_kg=0.0),
+            _make_bbs_doc(member_id="B2", total_weight_kg=0.0),
+        ]
+        metas = [
+            _make_meta(story="GF", span_mm=1000.0, fck=25),
+            _make_meta(story="GF", span_mm=2000.0, fck=30),
+        ]
+        rates = {25: 6000.0, 30: 9000.0}
+
+        boq = aggregate_project_boq(bbs_docs, metas, concrete_costs=rates)
+
+        m25_volume = 300.0 * 500.0 * 1000.0 / 1e9
+        m30_volume = 300.0 * 500.0 * 2000.0 / 1e9
+        expected = m25_volume * rates[25] + m30_volume * rates[30]
+        assert boq.by_story[0].cost_inr == pytest.approx(expected, abs=0.01)
+
     @pytest.mark.parametrize(
         ("steel_rate", "concrete_costs", "message"),
         [

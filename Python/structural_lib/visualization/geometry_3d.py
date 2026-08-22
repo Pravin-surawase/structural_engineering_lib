@@ -49,6 +49,7 @@ from __future__ import annotations
 import math
 from collections.abc import Iterable
 from dataclasses import dataclass, field
+from numbers import Real
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -73,6 +74,16 @@ __all__ = [
     "beam_to_3d_geometry",
     "building_to_3d_geometry",
 ]
+
+
+def _require_positive_finite_dimension(name: str, value: object) -> float:
+    """Return one usable geometry dimension without accepting bool or NaN."""
+    if isinstance(value, bool) or not isinstance(value, Real):
+        raise ValueError(f"{name} must be a finite real number")
+    normalized = float(value)
+    if not math.isfinite(normalized) or normalized <= 0.0:
+        raise ValueError(f"{name} must be finite and greater than zero")
+    return normalized
 
 
 # =============================================================================
@@ -758,6 +769,9 @@ def compute_beam_outline(
         >>> corners[0]  # Bottom-left-front at x=0
         Point3D(x=0.0, y=-150.0, z=0.0)
     """
+    beam_width = _require_positive_finite_dimension("beam_width", beam_width)
+    beam_depth = _require_positive_finite_dimension("beam_depth", beam_depth)
+    span = _require_positive_finite_dimension("span", span)
     half_width = beam_width / 2
 
     # Bottom face (z=0), counter-clockwise from front-left

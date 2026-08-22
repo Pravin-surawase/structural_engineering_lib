@@ -2,7 +2,7 @@
   "folder": "react_app/src/hooks",
   "type": "react-source",
   "description": "",
-  "last_updated": "2026-08-17",
+  "last_updated": "2026-08-22",
   "file_count": 16,
   "files": [
     {
@@ -44,16 +44,17 @@
     {
       "name": "useBatchDesign.ts",
       "type": "react-hook",
-      "size_lines": 554,
-      "last_updated": "2026-08-17",
+      "size_lines": 586,
+      "last_updated": "2026-08-22",
       "exports": [
         "BatchProgress",
         "BatchResult",
+        "BatchOverallStatus",
         "BatchStatus",
         "BatchDesignState",
         "useBatchDesign"
       ],
-      "content_hash": "7c9d29d9d971"
+      "content_hash": "19c26702f006"
     },
     {
       "name": "useBeamGeometry.ts",
@@ -251,5 +252,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "4476d33c7ac26275"
+  "content_hash": "a413695c8e70ea33"
 }

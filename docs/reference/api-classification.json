@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "claim_surface_matrix_schema_version": "claim-surface-matrix/v1",
-  "generated": "2026-08-17",
+  "generated": "2026-08-22",
   "package_version": "0.23.1a2",
   "release_channel": "alpha",
   "classifications": {
@@ -143,8 +143,8 @@
     {
       "module": "structural_lib",
       "export_classification": "preview",
-      "declared_export_count": 189,
-      "classified_symbol_count": 189,
+      "declared_export_count": 193,
+      "classified_symbol_count": 193,
       "symbols": [
         {
           "name": "AuditLogEntry",
@@ -855,6 +855,15 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.data_types",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "WorkflowCatalog",
+          "qualified_name": "structural_lib.WorkflowCatalog",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.workflow_catalog",
           "claim_disposition": "compatibility"
         },
         {
@@ -1623,6 +1632,24 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "get_workflow_catalog",
+          "qualified_name": "structural_lib.get_workflow_catalog",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.workflow_catalog",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "get_workflow_catalog_document",
+          "qualified_name": "structural_lib.get_workflow_catalog_document",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.workflow_catalog",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "imports",
           "qualified_name": "structural_lib.imports",
           "kind": "module",
@@ -1737,6 +1764,15 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "serialize_workflow_catalog",
+          "qualified_name": "structural_lib.serialize_workflow_catalog",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.workflow_catalog",
           "claim_disposition": "compatibility"
         },
         {

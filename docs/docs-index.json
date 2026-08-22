@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generated": "2026-08-22T18:27:39.385021",
-  "total_docs": 375,
+  "generated": "2026-08-22T21:12:28.846689",
+  "total_docs": 378,
   "docs": {
     "docs/SESSION_LOG.md": {
       "title": "Session Log",
@@ -10,6 +10,7 @@
       "folder": "root",
       "tags": [],
       "sections": [
+        "2026-08-22 \u2014 Session: LIB-PRO-005 confirmed release-safety closure",
         "2026-08-22 \u2014 Session: LIB-PRO-004 lower-level safety and diagnostic truth",
         "2026-08-22 \u2014 Session: LIB-PRO-003-D decisive gates and cumulative safety closure",
         "2026-08-22 \u2014 Session: LIB-PRO-003-C public failure contracts",
@@ -18,10 +19,9 @@
         "2026-08-22 \u2014 Session: E1 G3 integration and roadmap closeout",
         "2026-08-22 \u2014 Session: E1 desktop-Excel workbook-open repair",
         "2026-08-22 \u2014 Session: E1 complete review-bundle export",
-        "2026-08-22 \u2014 Session: E1 blank-workbook guard repair",
-        "2026-08-21 \u2014 Session: E1 Windows W0 evidence and maintenance"
+        "2026-08-22 \u2014 Session: E1 blank-workbook guard repair"
       ],
-      "size_bytes": 252433
+      "size_bytes": 266120
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",
@@ -61,7 +61,7 @@
         "Completed (Archived)",
         "External Audit Remediation \u2014 v0.21.6 \u2705 DONE"
       ],
-      "size_bytes": 60115
+      "size_bytes": 60766
     },
     "docs/WORKLOG.md": {
       "title": "Work Log",
@@ -2131,7 +2131,7 @@
         "Other live work",
         "Required Reading"
       ],
-      "size_bytes": 3139
+      "size_bytes": 2945
     },
     "docs/planning/public-route-safety-closure-plan.md": {
       "title": "Public Route Safety Closure Plan",
@@ -2241,6 +2241,29 @@
         "7. Claim boundaries"
       ],
       "size_bytes": 8490
+    },
+    "docs/planning/lib-pro-005-release-safety-closure-plan.md": {
+      "title": "LIB-PRO-005 Release-Safety Closure Plan",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "planning",
+      "tags": [
+        "boq",
+        "packaging",
+        "react",
+        "roadmap",
+        "safety",
+        "tasks",
+        "validation",
+        "websocket"
+      ],
+      "sections": [
+        "Goal",
+        "Source and authorization boundary",
+        "Frozen dispositions",
+        "Verification sequence"
+      ],
+      "size_bytes": 3278
     },
     "docs/planning/next-phase-improvements-plan.md": {
       "title": "Next Phase: What to Build and Why",
@@ -2405,7 +2428,7 @@
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 3626
+      "size_bytes": 3960
     },
     "docs/planning/india-2-next-session-publication-and-closeout-plan.md": {
       "title": "Next Session Git Reconciliation, Issue Repairs, and INDIA-2 Finish Plan",
@@ -2557,6 +2580,29 @@
         "References"
       ],
       "size_bytes": 9719
+    },
+    "docs/planning/maint-011-developer-gate-hygiene-follow-up.md": {
+      "title": "MAINT-011 Developer Gate Hygiene Follow-up",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "planning",
+      "tags": [
+        "ci",
+        "developer-experience",
+        "git",
+        "maintenance",
+        "pre-commit",
+        "roadmap",
+        "tasks",
+        "tooling"
+      ],
+      "sections": [
+        "Purpose",
+        "Confirmed issue register",
+        "Constraints for the maintenance session",
+        "Exit criteria"
+      ],
+      "size_bytes": 9001
     },
     "docs/planning/lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md": {
       "title": "LIB-PRO-004 Lower-Level Safety and Diagnostic Closure",
@@ -3787,7 +3833,7 @@
         "Config Files",
         "Documentation Files"
       ],
-      "size_bytes": 27342
+      "size_bytes": 27870
     },
     "docs/verification/india-2-wall-d-publication-evidence.md": {
       "title": "INDIA-2-WALL-D Publication Evidence",
@@ -4005,6 +4051,30 @@
         "External Windows G3 outcome"
       ],
       "size_bytes": 7975
+    },
+    "docs/verification/lib-pro-005-release-safety-closure-evidence.md": {
+      "title": "LIB-PRO-005 Release-Safety Closure Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "boq",
+        "evidence",
+        "packaging",
+        "react",
+        "safety",
+        "testing",
+        "validation",
+        "websocket"
+      ],
+      "sections": [
+        "Corrected runtime outcomes",
+        "Diagnostic result",
+        "Conditional audit items",
+        "Verification through repaired content freeze",
+        "Authority and limits"
+      ],
+      "size_bytes": 4687
     },
     "docs/verification/india-2c-staircase-design-evidence.md": {
       "title": "INDIA-2C Staircase Structural-Design Evidence",
@@ -7221,6 +7291,7 @@
         "docs/planning/compact-modernization-plan.md",
         "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
         "docs/planning/india-2-remaining-is456-elements-plan.md",
+        "docs/planning/maint-011-developer-gate-hygiene-follow-up.md",
         "docs/agents/README.md",
         "docs/agents/index.md",
         "docs/verification/e1-blank-workbook-guard-evidence.md",
@@ -7454,6 +7525,7 @@
         "docs/git-automation/git-workflow-single-source.md",
         "docs/git-automation/README.md",
         "docs/git-automation/git-recovery-case-study-column-pmm.md",
+        "docs/planning/maint-011-developer-gate-hygiene-follow-up.md",
         "docs/getting-started/copilot-quick-start.md"
       ],
       "github": [
@@ -7565,6 +7637,7 @@
         "docs/planning/compact-modernization-plan.md",
         "docs/planning/ui-experience-foundation-master-plan.md",
         "docs/planning/indian-code-completion-plan.md",
+        "docs/planning/lib-pro-005-release-safety-closure-plan.md",
         "docs/planning/next-phase-improvements-plan.md",
         "docs/planning/is456-library-first-master-plan.md",
         "docs/planning/library-expansion-blueprint-v5.md",
@@ -7580,6 +7653,7 @@
         "docs/planning/india-2-remaining-is456-elements-plan.md",
         "docs/planning/e1-excel-routine-workbench-v1-plan.md",
         "docs/planning/democratization-vision.md",
+        "docs/planning/maint-011-developer-gate-hygiene-follow-up.md",
         "docs/planning/lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md"
       ],
       "tasks": [
@@ -7590,6 +7664,7 @@
         "docs/planning/compact-modernization-plan.md",
         "docs/planning/ui-experience-foundation-master-plan.md",
         "docs/planning/indian-code-completion-plan.md",
+        "docs/planning/lib-pro-005-release-safety-closure-plan.md",
         "docs/planning/next-phase-improvements-plan.md",
         "docs/planning/is456-library-first-master-plan.md",
         "docs/planning/library-expansion-blueprint-v5.md",
@@ -7605,6 +7680,7 @@
         "docs/planning/india-2-remaining-is456-elements-plan.md",
         "docs/planning/e1-excel-routine-workbench-v1-plan.md",
         "docs/planning/democratization-vision.md",
+        "docs/planning/maint-011-developer-gate-hygiene-follow-up.md",
         "docs/planning/lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md"
       ],
       "public-api": [
@@ -7618,13 +7694,16 @@
       ],
       "safety": [
         "docs/planning/public-route-safety-closure-plan.md",
+        "docs/planning/lib-pro-005-release-safety-closure-plan.md",
         "docs/planning/lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md",
         "docs/verification/lib-pro-003-b-domain-provenance-evidence.md",
         "docs/verification/lib-pro-003-a-numeric-boundaries-evidence.md",
-        "docs/verification/lib-pro-004-lower-level-safety-and-diagnostic-evidence.md"
+        "docs/verification/lib-pro-004-lower-level-safety-and-diagnostic-evidence.md",
+        "docs/verification/lib-pro-005-release-safety-closure-evidence.md"
       ],
       "validation": [
         "docs/planning/public-route-safety-closure-plan.md",
+        "docs/planning/lib-pro-005-release-safety-closure-plan.md",
         "docs/planning/lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md",
         "docs/verification/indian-code-truth-baseline.md",
         "docs/verification/india-2-final-closeout-evidence.md",
@@ -7686,6 +7765,7 @@
         "docs/verification/column-pmm-benchmark.md",
         "docs/verification/post-india2-cleanup-authorization-proposal.md",
         "docs/verification/e1-review-bundle-export-evidence.md",
+        "docs/verification/lib-pro-005-release-safety-closure-evidence.md",
         "docs/verification/india-2c-staircase-design-evidence.md",
         "docs/verification/india-2-deep-family-acceptance-evidence.md",
         "docs/verification/india-2-deep-d-publication-evidence.md",
@@ -7701,6 +7781,43 @@
         "docs/verification/india-2-wall-b-reinforcement-evidence.md",
         "docs/verification/india-2-wall-family-acceptance-evidence.md",
         "docs/verification/india-1c-isolated-footing-workflow-evidence.md"
+      ],
+      "boq": [
+        "docs/planning/lib-pro-005-release-safety-closure-plan.md",
+        "docs/verification/bundled-sample-boq-evidence.md",
+        "docs/verification/lib-pro-005-release-safety-closure-evidence.md"
+      ],
+      "packaging": [
+        "docs/planning/lib-pro-005-release-safety-closure-plan.md",
+        "docs/verification/lib-pro-005-release-safety-closure-evidence.md",
+        "docs/migration/01-adr-library-separation.md"
+      ],
+      "react": [
+        "docs/planning/lib-pro-005-release-safety-closure-plan.md",
+        "docs/verification/ui-experience-session-2-acceptance.md",
+        "docs/verification/lib-pro-005-release-safety-closure-evidence.md",
+        "docs/getting-started/product-tour.md"
+      ],
+      "websocket": [
+        "docs/planning/lib-pro-005-release-safety-closure-plan.md",
+        "docs/verification/lib-pro-005-release-safety-closure-evidence.md"
+      ],
+      "ci": [
+        "docs/planning/maint-011-developer-gate-hygiene-follow-up.md"
+      ],
+      "developer-experience": [
+        "docs/planning/maint-011-developer-gate-hygiene-follow-up.md"
+      ],
+      "maintenance": [
+        "docs/planning/maint-011-developer-gate-hygiene-follow-up.md",
+        "docs/audit/automation-scripts-audit-2026-08-09.md",
+        "docs/audit/maintenance-recovery-audit-2026-08-07.md"
+      ],
+      "pre-commit": [
+        "docs/planning/maint-011-developer-gate-hygiene-follow-up.md"
+      ],
+      "tooling": [
+        "docs/planning/maint-011-developer-gate-hygiene-follow-up.md"
       ],
       "diagnostics": [
         "docs/planning/lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md",
@@ -7789,6 +7906,7 @@
         "docs/verification/column-pmm-benchmark.md",
         "docs/verification/post-india2-cleanup-authorization-proposal.md",
         "docs/verification/e1-review-bundle-export-evidence.md",
+        "docs/verification/lib-pro-005-release-safety-closure-evidence.md",
         "docs/verification/india-2c-staircase-design-evidence.md",
         "docs/verification/india-2-deep-family-acceptance-evidence.md",
         "docs/verification/india-2-deep-d-publication-evidence.md",
@@ -7811,7 +7929,8 @@
         "docs/verification/b2-gravity-workflow-v1-evidence.md",
         "docs/verification/bundled-sample-boq-evidence.md",
         "docs/verification/b1-gravity-model-load-ledger-evidence.md",
-        "docs/verification/a1-canonical-truth-transport-evidence.md"
+        "docs/verification/a1-canonical-truth-transport-evidence.md",
+        "docs/verification/lib-pro-005-release-safety-closure-evidence.md"
       ],
       "identity": [
         "docs/verification/lib-pro-002-e-evidence-identity.md",
@@ -7848,9 +7967,6 @@
       "component-api": [
         "docs/verification/b2-gravity-workflow-v1-evidence.md"
       ],
-      "boq": [
-        "docs/verification/bundled-sample-boq-evidence.md"
-      ],
       "verification": [
         "docs/verification/bundled-sample-boq-evidence.md",
         "docs/verification/india-1a-beam-route-evidence.md",
@@ -7876,10 +7992,6 @@
         "docs/verification/ui-experience-session-2-acceptance.md",
         "docs/getting-started/product-tour.md",
         "docs/reference/fastapi-rest-api.md"
-      ],
-      "react": [
-        "docs/verification/ui-experience-session-2-acceptance.md",
-        "docs/getting-started/product-tour.md"
       ],
       "uix": [
         "docs/verification/ui-experience-session-2-acceptance.md"
@@ -7959,10 +8071,6 @@
       "maint-008": [
         "docs/audit/automation-scripts-audit-2026-08-09.md"
       ],
-      "maintenance": [
-        "docs/audit/automation-scripts-audit-2026-08-09.md",
-        "docs/audit/maintenance-recovery-audit-2026-08-07.md"
-      ],
       "mac-mini": [
         "docs/audit/maintenance-recovery-audit-2026-08-07.md"
       ],
@@ -8033,9 +8141,6 @@
         "docs/migration/01-adr-library-separation.md"
       ],
       "multi-code": [
-        "docs/migration/01-adr-library-separation.md"
-      ],
-      "packaging": [
         "docs/migration/01-adr-library-separation.md"
       ],
       "professional": [

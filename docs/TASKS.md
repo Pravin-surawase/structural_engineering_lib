@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-22 — LIB-PRO-003-D merged; LIB-PRO-004 bounded diagnostic closure active
+**Updated:** 2026-08-22 — LIB-PRO-004 merged; LIB-PRO-005 release-safety closure active
 
 ---
 
@@ -127,14 +127,13 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-003-D | Make Excel CI and readiness audits decisive and synchronize release/route-count/documentation truth | ops + governance | S | P0 | ✅ DONE — integrated through PR #835 at exact merge `640c7839`; readiness remains truthful PARTIAL/exit 2 and release HOLD |
-| LIB-PRO-004 | Repair six lower-level boundaries and replace misleading validation/function-quality diagnostics with evidence-bearing results | reviewer + backend + governance | M | P0 | 🟡 LOCAL CANDIDATE — bounded repair is green across 6,728 Python, 479 FastAPI, 276 React, and 21 Excel tests; rebuilt audit truthfully retains 370 UNPROVEN parameters and requires a successor route-safety packet |
+| LIB-PRO-005 | Close confirmed WebSocket, BOQ, lower-level scalar, PMM packaging, root-export, and React status defects without overstating diagnostic coverage | backend + api + frontend + ops | M | P0 | 🟡 LOCAL CANDIDATE — reproduced families repaired; diagnostic now records 361 UNPROVEN parameters and readiness remains truthfully PARTIAL pending cumulative/hosted gates |
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. The reproduced public-route safety defects take priority over new
 capability work. INDIA-3, dependency work, the next package version, further
-cleanup, and professional approval remain separately held until `LIB-PRO-004`
-and its resulting route-safety successor are resolved or explicitly replanned.
+cleanup, and professional approval remain separately held until `LIB-PRO-005`
+and any resulting route-safety successor are resolved or explicitly replanned.
 
 `LIB-PRO-003-A` was accepted and exact-tree merged through PR #832 at
 `e7698a63b86d2db6db2f3970871122af1ce562f6`; Packet B was accepted and
@@ -165,6 +164,7 @@ write-back/nightly work remain outside E1.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
+| MAINT-011 | Repair staged/all-file hook parity, legacy baseline handling, stale gate counts, and developer-command discoverability | Main Agent + ops + governance | M | P1 | 📋 NEXT MAINTENANCE — detailed issue/root-cause register frozen in `planning/maint-011-developer-gate-hygiene-follow-up.md`; keep separate from LIB-PRO-005 |
 | INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ AFTER LIB-PRO-003 — truth/benchmark/contract audit only; no new formulas or support claims |
 | SPARK-001-G0 | Reassess the stale Spark work-program proposal before any implementation | repository owner | review gate | P2 | ⏸ OWNER REVIEW — the 2026-08-11 model/preview assumptions and bulk wave require refresh or rejection |
 
@@ -201,6 +201,8 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| LIB-PRO-004 | Repaired six lower-level boundaries and replaced misleading validation/function-quality diagnostics with evidence-bearing results | reviewer + backend + governance | ✅ DONE — integrated through PR #836 at exact merge `f1a9937c`; diagnostic truthfully retained 370 UNPROVEN parameters and required a successor route-safety packet |
+| LIB-PRO-003-D | Made Excel CI and readiness audits decisive and synchronized release/route-count/documentation truth | ops + governance | ✅ DONE — integrated through PR #835 at exact merge `640c7839`; readiness remains truthful PARTIAL/exit 2 and release HOLD |
 | E1-EXCEL-ROUTINE-WORKBENCH | Delivered the macro-free selected-table Excel workbench, deterministic review bundle, workbook-open repair, and installed Excel acceptance | Main Agent | ✅ COMPLETE — `G3_PASS`; cumulative PR #830 merged as `b720119e` with exact candidate/merged tree `bcc7fcf1`; no ETABS or professional-approval claim |
 | RELEASE-0231A2 | Published the exact v0.23.1a2 Alpha artifact | Main Agent + ops | ✅ RELEASED — tag target `09861d3d`; PyPI/GitHub wheel SHA-256 `279b8270…43a9`; later main changes require a new version |
 | B2-GRAVITY-WORKFLOW-V1 | Bound the B1 ledger to canonical components, calculation book, CLI, REST, and review UI | Main Agent | ✅ COMPLETE — PR #825 merged at `c127e4b2`; focused, broad, full, hosted, and exact-head gates pass |

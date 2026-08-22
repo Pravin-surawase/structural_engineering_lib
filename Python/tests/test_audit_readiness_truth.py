@@ -190,6 +190,23 @@ def route(value: float, model: BeamInput, mode: str) -> float:
     }
 
 
+def test_input_auditor_recognizes_guarded_development_length_adapter() -> None:
+    finding = _analyze_source("""
+def route(bar_diameter: float, fck: float, fy: float) -> dict[str, float]:
+    return calculate_development_length(
+        bar_dia=bar_diameter,
+        fck=fck,
+        fy=fy,
+    )
+""")
+
+    assert {item.name: item.status for item in finding.parameters} == {
+        "bar_diameter": input_audit.ValidationStatus.DELEGATED,
+        "fck": input_audit.ValidationStatus.DELEGATED,
+        "fy": input_audit.ValidationStatus.DELEGATED,
+    }
+
+
 def test_input_auditor_does_not_treat_raw_collection_hint_as_validation() -> None:
     finding = _analyze_source("""
 def route(values: list[float]) -> float:

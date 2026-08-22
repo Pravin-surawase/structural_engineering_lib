@@ -32,6 +32,6 @@
 | [detailing.py](detailing.py) | Module:       detailing | 0 | 8 | 634 |
 | [helical.py](helical.py) | Module:       helical | 0 | 1 | 237 |
 | [long_column.py](long_column.py) | Module:       long_column | 0 | 1 | 421 |
-| [pmm.py](pmm.py) | Experimental strain-compatibility analysis for rectangular c | 0 | 3 | 514 |
+| [pmm.py](pmm.py) | Experimental strain-compatibility analysis for rectangular c | 0 | 3 | 520 |
 | [slenderness.py](slenderness.py) | Module:       slenderness | 0 | 1 | 225 |
 | [uniaxial.py](uniaxial.py) | Module:       uniaxial | 0 | 2 | 898 |

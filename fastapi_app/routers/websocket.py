@@ -190,24 +190,20 @@ async def design_websocket(
 class WSDesignParams(BaseModel):
     """Validated parameters for design_beam WebSocket messages."""
 
-    width: float = Field(default=300, ge=100, le=2000, description="Beam width in mm")
-    depth: float = Field(
-        default=500, ge=150, le=3000, description="Overall beam depth in mm"
-    )
-    moment: float = Field(default=100, ge=0, description="Factored moment Mu in kN·m")
-    shear: float = Field(default=50, ge=0, description="Factored shear Vu in kN")
-    fck: float = Field(
-        default=25, ge=15, le=80, description="Concrete strength fck in N/mm²"
-    )
+    width: float = Field(..., ge=100, le=2000, description="Beam width in mm")
+    depth: float = Field(..., ge=150, le=3000, description="Overall beam depth in mm")
+    moment: float = Field(..., ge=0, description="Factored moment Mu in kN·m")
+    shear: float = Field(..., ge=0, description="Factored shear Vu in kN")
+    fck: float = Field(..., ge=15, le=80, description="Concrete strength fck in N/mm²")
     fy: float = Field(
-        default=500, ge=250, le=600, description="Steel yield strength fy in N/mm²"
+        ..., ge=250, le=550, description="Steel yield strength fy in N/mm²"
     )
-    cover: float = Field(default=40, ge=20, le=75, description="Clear cover in mm")
+    cover: float = Field(..., ge=20, le=75, description="Clear cover in mm")
     stirrup_dia_mm: float = Field(
-        default=8, ge=6, le=16, description="Stirrup diameter in mm"
+        ..., ge=6, le=16, description="Stirrup diameter in mm"
     )
     main_bar_dia_mm: float = Field(
-        default=20, ge=8, le=36, description="Main bar diameter in mm"
+        ..., ge=8, le=36, description="Main bar diameter in mm"
     )
 
 

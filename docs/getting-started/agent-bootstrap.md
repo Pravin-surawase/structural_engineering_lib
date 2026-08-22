@@ -205,7 +205,7 @@ not the operation count. The WebSocket route is also outside OpenAPI:
 
 | Module | Key Functions |
 |--------|---------------|
-| `services/api.py` | 91 public API functions; implementations split across `beam_api.py`, `column_api.py`, and `common_api.py` (16 private helpers) |
+| `services/api.py` | 91 public API functions; implementations split across `beam_api.py`, `column_api.py`, and `common_api.py` (18 private helpers) |
 | `api.py` | **Backward-compat stub only** — imports from `services/api.py` |
 | `services/adapters.py` | `GenericCSVAdapter`, `ETABSAdapter`, `SAFEAdapter` |
 | `visualization/geometry_3d.py` | `beam_to_3d_geometry()` — 3D rebar/stirrup positions |

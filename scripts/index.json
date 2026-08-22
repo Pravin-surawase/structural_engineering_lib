@@ -701,7 +701,7 @@
     {
       "name": "audit_input_validation.py",
       "type": "python",
-      "size_lines": 587,
+      "size_lines": 588,
       "last_updated": "2026-08-22",
       "description": "Audit validation ownership across maintained IS 456 calculation inputs.",
       "classes": [
@@ -782,7 +782,7 @@
         "CALCULATION_DELEGATES",
         "NUMERIC_ANNOTATIONS"
       ],
-      "content_hash": "07d2a3e18906"
+      "content_hash": "f86ab4b5e130"
     },
     {
       "name": "audit_permissions.py",
@@ -5662,5 +5662,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "80cd9ef1429e321a"
+  "content_hash": "f9b93a21261c0048"
 }

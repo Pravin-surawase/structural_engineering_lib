@@ -685,6 +685,22 @@ class TestComputeBeamOutline:
         assert min(y_values) == -150  # -b/2
         assert max(y_values) == 150  # +b/2
 
+    @pytest.mark.parametrize(
+        ("field", "value"),
+        [
+            ("beam_width", True),
+            ("beam_width", float("nan")),
+            ("beam_depth", float("inf")),
+            ("span", 0),
+        ],
+    )
+    def test_rejects_invalid_dimensions(self, field, value):
+        values = {"beam_width": 300, "beam_depth": 450, "span": 4000}
+        values[field] = value
+
+        with pytest.raises(ValueError, match=field):
+            compute_beam_outline(**values)
+
 
 # =============================================================================
 # Integration Tests

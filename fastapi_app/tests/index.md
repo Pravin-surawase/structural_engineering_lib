@@ -44,7 +44,7 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [test_footing.py](test_footing.py) | Contract tests for the isolated concentric-footing FastAPI s | 0 | 7 | 239 |
 | [test_geometry_full.py](test_geometry_full.py) | Tests for geometry router advanced endpoints. | 3 | 1 | 339 |
 | [test_imports_formats.py](test_imports_formats.py) | Tests for import router extended endpoints. | 2 | 1 | 98 |
-| [test_insights_dashboard.py](test_insights_dashboard.py) | Tests for insights router endpoints. | 4 | 1 | 436 |
+| [test_insights_dashboard.py](test_insights_dashboard.py) | Tests for insights router endpoints. | 4 | 1 | 479 |
 | [test_integration.py](test_integration.py) | Integration tests for FastAPI structural design endpoints. | 7 | 1 | 390 |
 | [test_library_core.py](test_library_core.py) | Request-to-public-library evidence for the new footing and s | 0 | 17 | 441 |
 | [test_load.py](test_load.py) | Load Tests for FastAPI Application. | 6 | 2 | 278 |
@@ -58,5 +58,5 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [test_streaming.py](test_streaming.py) | Tests for SSE Streaming Endpoint. | 2 | 0 | 284 |
 | [test_typed_response_contracts.py](test_typed_response_contracts.py) | OpenAPI and envelope contracts for the typed column and libr | 0 | 5 | 107 |
 | [test_wall.py](test_wall.py) | Contract tests for the bounded braced-wall FastAPI slice. | 0 | 6 | 163 |
-| [test_websocket.py](test_websocket.py) | Tests for WebSocket Live Design Endpoint. | 1 | 0 | 211 |
+| [test_websocket.py](test_websocket.py) | Tests for WebSocket Live Design Endpoint. | 1 | 0 | 213 |
 | [test_workflows.py](test_workflows.py) | Transport gates for the explicitly activated bounded workflo | 0 | 5 | 176 |

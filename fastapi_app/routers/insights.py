@@ -411,13 +411,12 @@ async def project_boq(request: ProjectBOQRequest):
     across all beams, grouped by story and material grade.
     """
     try:
-        from structural_lib.services.boq import DEFAULT_CONCRETE_COSTS
+        from structural_lib.services.boq import resolve_concrete_costs
         from structural_lib.services.common_api import get_library_version
 
-        concrete_costs = (
-            request.concrete_costs
-            if request.concrete_costs is not None
-            else dict(DEFAULT_CONCRETE_COSTS)
+        concrete_costs = resolve_concrete_costs(
+            (beam.fck for beam in request.beams),
+            request.concrete_costs,
         )
         steel_rate = request.steel_cost_per_kg
         normalized_input = {
@@ -451,7 +450,7 @@ async def project_boq(request: ProjectBOQRequest):
         for beam in request.beams:
             # Concrete volume: b × D × span (mm³ → m³)
             concrete_vol = beam.b_mm * beam.D_mm * beam.span_mm / 1e9
-            c_rate = concrete_costs.get(beam.fck, 6000.0)
+            c_rate = concrete_costs[beam.fck]
             c_cost = c_rate * concrete_vol
             s_cost = steel_rate * beam.steel_weight_kg
 
@@ -569,6 +568,11 @@ async def project_boq(request: ProjectBOQRequest):
                     ),
                 ),
             )
+        )
+    except ValueError as exc:
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            content=error_response(str(exc)),
         )
     except (RuntimeError, KeyError, ImportError):
         logger.exception("Internal error in project_boq")

@@ -5,6 +5,215 @@
 
 ---
 
+## 2026-08-22 — Session: LIB-PRO-005 confirmed release-safety closure
+
+**Agent:** Codex (`backend` + `api-developer` + `frontend` + `ops`, sole writer)
+
+**Branch:** `codex/lib-pro-005-release-safety-closure`, from exact merged PR
+#836 commit `f1a9937cfdba4c72c22e6219ffaf02f94809f1a5`.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-005-git-handoff-receipt-2.json`
+
+**Focus:** Independently reproduce the post-`LIB-PRO-004` audit claims, repair
+only confirmed outcome-changing defects, batch all writes before cumulative
+verification, and complete the normal Git/PR/check lifecycle. Tag, publication,
+professional approval, ETABS, new structural capability, and destructive lane
+cleanup remain excluded.
+
+### Summary
+
+- Made all nine WebSocket beam-design values explicit and fail-closed; an empty
+  payload now returns a sanitized error and cannot produce a default beam.
+- Removed concrete-rate invention from both BOQ surfaces, required complete
+  coverage for used grades, and corrected mixed-grade story cost arithmetic to
+  use exact per-beam rates.
+- Added finite-real/type ownership at equivalent shear, pure development
+  length/bond stress, and beam-outline boundaries, with direct regressions.
+- Declared the experimental PMM NumPy extra, restored four workflow-catalogue
+  root exports, and preserved canonical fail-closed streaming statuses in
+  React while keeping blocked records non-exportable.
+- Confirmed that performance CI is intentionally parked and Excel CI is
+  intentionally path-aware, so neither required workflow rewiring. Updated the
+  two exact active counts identified by the maintained number synchronizer.
+- Rebound the input auditor to the guarded development-length delegate. It now
+  reports 132 `PROVEN`, 96 `DELEGATED`, 361 `UNPROVEN`, and 130
+  `NOT_APPLICABLE` parameters; its expected exit 1 keeps readiness `PARTIAL`.
+- Preserved the encountered hook/CI/legacy-tool issues, root causes, evidence,
+  safety constraints, and measurable exit criteria in the separate
+  `MAINT-011` follow-up; no adjacent tooling repair was mixed into this packet.
+
+### Issues encountered
+
+- The active task board and next-session handoff still described
+  `LIB-PRO-004` as a local candidate, although PR #836 and all required checks
+  were merged at `f1a9937c`.
+- Root-cause tracing found that the service BOQ did not only invent missing
+  rates; it also priced each story with an average of project grade rates.
+- The repaired development-length adapter remained a static-auditor false
+  negative because its guarded pure calculation was absent from the explicit
+  delegate set.
+- The first empty-WebSocket regression expected Pydantic's detailed "required"
+  wording, but the maintained error sanitizer intentionally returned a generic
+  invalid-input message.
+- The linked worktree had no ignored React dependencies. A shared Vitest binary
+  could not resolve Vite from this worktree, and the first direct npm test had
+  no local Vitest command.
+- Three inspection commands used unmatched zsh globs or unescaped backticks,
+  and one guessed `sync_numbers.py --check` flag did not exist.
+- The first final index batch named three folders that have no maintained
+  folder-level index topology; the live generator correctly refused them, and
+  the subsequent all-index check found two stale parent indexes.
+- The first readiness run reported the documentation contract as failed while
+  its compact detail ended with the permitted 405-file soft-budget warning;
+  the direct checker exposed one invalid front-matter value in the new plan.
+- The first full repository gate passed 29/31 checks but rejected a stale API
+  classification registry and three rows in the WIP-limited Active task table.
+- The first exact-wheel PMM-extra install command let zsh interpret `[pmm]` as
+  an array subscript instead of part of the wheel requirement.
+- A direct task-format rerun guessed `check_tasks.py` even though the search
+  result identified the maintained script as `check_tasks_format.py`.
+- The first repaired-index command guessed an active
+  `generate_folder_index.py`; that legacy helper is archived and the maintained
+  generator has a different name.
+- The all-file hook mode normalized 1,738 out-of-scope vendored/reference files,
+  rejected two existing JSON-with-comments configs as strict JSON, repeated
+  known repository Bandit findings, and found one in-scope BOQ mypy error.
+- A combined focused-proof shell changed into `Python/` for mypy and then tried
+  later workspace-root launcher paths from that persisted directory.
+- The first `MAINT-011` front matter used intuitive status `planned`, which is
+  not in the enforced lowercase status vocabulary.
+- The original time-bound transition receipt aged past its evidence window
+  during cumulative tests and correctly failed with three stale-evidence holds.
+
+### Root causes and resolutions
+
+- Confirmed root cause: durable task state predated the merged `LIB-PRO-004`
+  candidate. Resolution: verify PR #836 live, bind this lane to its exact merge,
+  mark the predecessor done, and write a bounded `LIB-PRO-005` plan/evidence
+  handoff. Evidence: PR #836 is merged with required PR Gate success and local
+  `origin/main` equality at `f1a9937c` before mutation.
+- Confirmed root cause: BOQ rate selection used `.get(..., 6000)` and story
+  totals multiplied all concrete by a project-wide mean rate. Resolution: add
+  one shared rate-table resolver, reject uncovered used grades, use direct
+  indexing after proof, and accumulate exact concrete cost per story. Evidence:
+  missing custom/default grade regressions and exact mixed-grade arithmetic pass.
+- Confirmed root cause: the audit recognizes only named guarded calculation
+  delegates and could not infer the validated pure detailing implementation
+  behind the service adapter. Resolution: add exactly
+  `calculate_development_length` to that evidence set and freeze a synthetic
+  delegation regression. Evidence: all five adapter parameters are delegated
+  and unresolved ownership falls from 370 to 361 without hiding other rows.
+- Confirmed root cause: production sanitization deliberately avoids returning
+  raw validation detail. Resolution: assert the safe public message and the
+  absence of design data, not internal Pydantic prose. The failed-only node
+  passes with all nine fields logged internally as missing.
+- Confirmed root cause: Git worktrees do not share ignored `node_modules`, and
+  ESM resolves config dependencies relative to the worktree. Resolution: run
+  one exact-lockfile `npm ci`, then the focused hook test locally; the final
+  frontend gate uses the repository's pinned Node 24 runtime. Evidence: 17/17
+  hook tests pass.
+  ⚠️ TERMINAL ISSUE: Vitest/Vite were unavailable from the fresh worktree ->
+  installed its exact lockfile once and reran the failed React check.
+- Confirmed root cause: zsh rejects unmatched globs, shell backticks execute
+  command substitution, and the synchronizer's read-only mode is its default
+  invocation. Resolution: use exact discovered paths, quote literal search
+  text safely, and run `sync_numbers.py` without the invented flag.
+  ⚠️ TERMINAL ISSUE: two unmatched globs, one backtick substitution, and an
+  unsupported `--check` flag aborted read-only inspections -> reran each with
+  exact paths/literal quoting/the documented default command.
+- Confirmed root cause: a recursive dry-run can display prospective indexes in
+  unmaintained subfolders, while live mode requires explicit topology approval;
+  changed child indexes also invalidate maintained parent hashes. Resolution:
+  do not create new `beam/`, `tests/integration/`, or `tests/unit/` indexes;
+  retain the refreshed parent test index and regenerate only the reported
+  `codes/` and `docs/` parents in dependency order.
+  ⚠️ TERMINAL ISSUE: the live index generator refused three unmaintained
+  folders -> preserved topology and used the authoritative all-index stale
+  check to identify the two maintained parent refreshes.
+- Confirmed root cause: `doc_type: plan` is not in the enforced documentation
+  vocabulary, and the readiness summary retained only the tail of combined
+  front-matter/budget output. Resolution: classify the execution plan as the
+  allowed `spec` type and rerun the exact documentation/readiness checks. The
+  405 active files remain below the owner-selected hard cap of 500.
+- Confirmed root cause: adding four supported root exports changes the generated
+  API registry, while two merged predecessor tasks had not been moved out of
+  the Active section. Resolution: regenerate the classification registry and
+  move `LIB-PRO-003-D`/`LIB-PRO-004` to Recently Done, leaving one active task.
+  Evidence: the generator's `--check` mode and direct task-format check pass.
+- Confirmed root cause: unquoted square brackets are zsh glob/subscript syntax.
+  Resolution: quote the exact wheel-plus-extra requirement and rerun only the
+  failed clean-environment install. PMM imports with NumPy 2.4.6 and the wheel
+  metadata declares the `pmm` extra.
+  ⚠️ TERMINAL ISSUE: the first wheel `[pmm]` install lost its extra selector ->
+  quoted the complete wheel requirement and reran only that failed install.
+- Confirmed root cause: the direct task-check filename was inferred instead of
+  copied from the preceding search result. Resolution: run the discovered
+  `scripts/check_tasks_format.py` path exactly.
+  ⚠️ TERMINAL ISSUE: guessed task-check filename did not exist -> used the exact
+  filename returned by `rg`.
+- Confirmed root cause: the index command was inferred from an old naming
+  pattern instead of discovered first. Resolution: locate and use the maintained
+  `scripts/generate_enhanced_index.py` entry point.
+  ⚠️ TERMINAL ISSUE: guessed active index-generator path did not exist -> used
+  the repository's discovered enhanced-index generator.
+- Confirmed root cause: `pre-commit --all-files` applies normalizers and legacy
+  scans to the entire historical/vendor tree, whereas the normal commit path is
+  staged-file scoped. The BOQ resolver also reused `fck` first as an integer
+  mapping key and then as an object-typed iterable value, preventing mypy from
+  narrowing the second loop. Resolution: reverse only the hook-created
+  out-of-scope patch, retain every task-owned change, rename/narrow the required
+  grade variable, and use the normal staged-file hook path. Evidence: the
+  worktree returns to exactly 60 intended paths before the source repair; focused
+  BOQ/mypy and staged-hook results are the decisive follow-up.
+  ⚠️ TERMINAL ISSUE: all-file hooks rewrote 1,738 unrelated files and failed on
+  existing JSONC/Bandit baseline findings -> reversed only that generated patch
+  and switched to the repository's actual staged commit-hook path.
+- Confirmed root cause: directory changes persist for every later line in one
+  shell command. Resolution: keep every command rooted and run mypy through an
+  explicit subshell so subsequent launchers remain workspace-relative.
+  ⚠️ TERMINAL ISSUE: post-mypy commands resolved `./scripts` from `Python/` ->
+  reran them from the workspace root and avoided a persistent `cd`.
+- Confirmed root cause: task-board states and documentation front-matter states
+  use different controlled vocabularies. Resolution: classify the not-yet-active
+  follow-up document as `draft`; direct documentation validation is the proof.
+- Confirmed root cause: authorization/retention observations in a transition
+  receipt deliberately expire; the receipt is not final merge evidence.
+  Resolution: retain the historical receipt unchanged, use the user's current
+  continuation to create a second exact-branch transition observation, and
+  reserve hosted/check/tree facts for the separate post-merge observation.
+  Evidence: successor receipt validation returns `LIB-PRO-005 | HOLD` with only
+  the expected dirty/pre-PR holds.
+
+### Validation through repaired content freeze
+
+- Focused Python/FastAPI/manual-comparison selection is 306/306; focused React
+  hook is 17/17; Excel add-in is 21/21.
+- The complete product gate passes its Python phase, 482 FastAPI tests, and 277
+  React tests. The public-route gate passes 20 Python and 4 FastAPI targets.
+- The exact built wheel passes minimal/root import, actionable missing-PMM-extra
+  failure, and installed `[pmm]` import in clean environments.
+- Diagnostic evidence is deterministic at 719 parameters across 101 owners:
+  132 proven, 96 delegated, 361 unproven, and 130 not applicable.
+- `sync_numbers.py` reports 6,760 Python tests, 89 endpoints/26 routers, 91
+  public plus 18 private API helpers, and updates only its two stale targets.
+- Readiness is truthfully `PARTIAL` with 22/23 passing checks and the input
+  diagnostic as the sole expected warning. The quick repository gate is 10/10;
+  direct API-classification and task-format checks pass after their repairs.
+- The full repository rerun, hooks, immutable-candidate review, and hosted
+  checks remain the final read-only closeout sequence after index refresh.
+- After the hook-directed BOQ narrowing repair, mypy passes all 244 library
+  source files and the exact BOQ/insights selection passes 36/36. The new
+  `MAINT-011` record passes strict metadata, task-format, and brief-length checks.
+
+### Handoff
+
+Refresh the affected indexes once, freeze the repaired tree, run the focused
+BOQ/mypy proof and normal staged hooks, create the immutable commit, push one
+PR, and merge only if the exact reviewed head is unchanged and every required
+hosted check succeeds. Retain the branch/worktree; deletion remains a separate
+owner decision. Execute `MAINT-011` only later in a separate clean lane.
+
 ## 2026-08-22 — Session: LIB-PRO-004 lower-level safety and diagnostic truth
 
 **Agent:** Codex (`reviewer` + `backend` + `governance`, sole writer)

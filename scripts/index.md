@@ -29,7 +29,7 @@
 | [agent_session_collector.py](agent_session_collector.py) | Agent session collector — gather all session artifacts for s | 0 | 9 | 320 |
 | [agent_trends.py](agent_trends.py) | Agent trends — time series analysis and degradation detectio | 0 | 7 | 383 |
 | [audit_error_handling.py](audit_error_handling.py) | Audit error handling compliance across structural_lib module | 2 | 3 | 286 |
-| [audit_input_validation.py](audit_input_validation.py) | Audit validation ownership across maintained IS 456 calculat | 4 | 5 | 587 |
+| [audit_input_validation.py](audit_input_validation.py) | Audit validation ownership across maintained IS 456 calculat | 4 | 5 | 588 |
 | [audit_permissions.py](audit_permissions.py) | Permission audit report for all agents. | 3 | 3 | 468 |
 | [audit_readiness_report.py](audit_readiness_report.py) | Audit Readiness Report Generator | 2 | 13 | 882 |
 | [batch_migrate_runner.py](batch_migrate_runner.py) | Batch migration runner with per-operation rollback logs. | 1 | 2 | 467 |

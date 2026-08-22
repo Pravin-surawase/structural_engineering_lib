@@ -26,6 +26,7 @@ from structural_lib.core.errors import (
     MaterialError,
 )
 
+from .._validation import require_finite_real
 from ..traceability import clause
 
 __all__ = [
@@ -190,6 +191,18 @@ def get_bond_stress(fck: float, bar_type: str = "deformed") -> float:
         - Uses nearest lower concrete grade from IS 456 Table 5.3.
         - "deformed" bars use the table value; "plain" bars reduce τbd by 1.6.
     """
+    fck = require_finite_real("fck", fck)
+    if fck <= 0:
+        raise MaterialError(
+            material_property_out_of_range(
+                "concrete strength fck", fck, 0, 100, "Cl. 6.2"
+            ),
+            details={"fck": fck, "minimum": 0, "maximum": 100},
+            clause_ref="Cl. 6.2",
+        )
+    if bar_type not in {"plain", "deformed"}:
+        raise ValueError("bar_type must be either 'plain' or 'deformed'")
+
     # Use nearest lower grade
     available_grades = sorted(BOND_STRESS_DEFORMED.keys())
     grade = available_grades[0]
@@ -237,6 +250,11 @@ def calculate_development_length(
     Reference:
         IS 456:2000, Clause 26.2.1
     """
+    bar_dia = require_finite_real("bar_dia", bar_dia)
+    fck = require_finite_real("fck", fck)
+    fy = require_finite_real("fy", fy)
+    stress_ratio = require_finite_real("stress_ratio", stress_ratio)
+
     if bar_dia <= 0:
         raise MaterialError(
             material_property_out_of_range(
@@ -260,6 +278,14 @@ def calculate_development_length(
             ),
             details={"fy": fy, "minimum": 0, "maximum": 600},
             clause_ref="Cl. 6.2",
+        )
+    if stress_ratio <= 0:
+        raise MaterialError(
+            material_property_out_of_range(
+                "stress ratio", stress_ratio, 0, 1, "Cl. 26.2.1"
+            ),
+            details={"stress_ratio": stress_ratio, "minimum": 0, "maximum": 1},
+            clause_ref="Cl. 26.2.1",
         )
 
     sigma_s = stress_ratio * fy

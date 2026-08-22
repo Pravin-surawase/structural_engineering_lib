@@ -1,0 +1,230 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-22T15:41:29Z",
+      "query_status": "OK",
+      "reference": "task:LIB-PRO-005:user-continuation-and-requested-next-session-issue-log",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR",
+      "MERGE_PULL_REQUEST"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-22T15:41:29Z",
+    "prohibited_actions": [
+      "PUBLISH_RELEASE",
+      "CREATE_TAG",
+      "CLAIM_PROFESSIONAL_APPROVAL",
+      "START_INDIA_3",
+      "START_ETABS_OR_DESKTOP_EXCEL",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR",
+        "MERGE_PULL_REQUEST"
+      ],
+      "branch": "codex/lib-pro-005-release-safety-closure",
+      "head_sha": "f1a9937cfdba4c72c22e6219ffaf02f94809f1a5",
+      "task_id": "LIB-PRO-005"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "d5518052d6ad746ef3ac4cba69979801ad041f9bc60a68c5a2d1591e570d9b87",
+    "state": {
+      "branch": "codex/lib-pro-005-release-safety-closure",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "f1a9937cfdba4c72c22e6219ffaf02f94809f1a5",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 104.768,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-lib-pro-005-release-safety-closure",
+      "head_sha": "f1a9937cfdba4c72c22e6219ffaf02f94809f1a5",
+      "hold_reasons": [
+        "changed paths: 62"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-22T15:42:03.685661+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-005-release-safety-closure",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 62,
+        "modified_paths": [],
+        "staged_paths": [
+          "Python/pyproject.toml",
+          "Python/structural_lib/__init__.py",
+          "Python/structural_lib/codes/index.json",
+          "Python/structural_lib/codes/index.md",
+          "Python/structural_lib/codes/is456/beam/detailing.py",
+          "Python/structural_lib/codes/is456/beam/torsion.py",
+          "Python/structural_lib/codes/is456/column/index.json",
+          "Python/structural_lib/codes/is456/column/index.md",
+          "Python/structural_lib/codes/is456/column/pmm.py",
+          "Python/structural_lib/index.json",
+          "Python/structural_lib/index.md",
+          "Python/structural_lib/services/boq.py",
+          "Python/structural_lib/services/index.json",
+          "Python/structural_lib/services/index.md",
+          "Python/structural_lib/visualization/geometry_3d.py",
+          "Python/structural_lib/visualization/index.json",
+          "Python/structural_lib/visualization/index.md",
+          "Python/tests/index.json",
+          "Python/tests/index.md",
+          "Python/tests/integration/test_api_entrypoints_is456.py",
+          "Python/tests/test_audit_readiness_truth.py",
+          "Python/tests/test_boq.py",
+          "Python/tests/test_packaging.py",
+          "Python/tests/test_visualization_geometry_3d.py",
+          "Python/tests/unit/test_detailing.py",
+          "Python/tests/unit/test_torsion.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/docs-index.json",
+          "docs/getting-started/agent-bootstrap.md",
+          "docs/getting-started/index.json",
+          "docs/index.json",
+          "docs/index.md",
+          "docs/planning/index.json",
+          "docs/planning/index.md",
+          "docs/planning/lib-pro-005-release-safety-closure-plan.md",
+          "docs/planning/maint-011-developer-gate-hygiene-follow-up.md",
+          "docs/planning/next-session-brief.md",
+          "docs/reference/api-classification.json",
+          "docs/reference/index.json",
+          "docs/verification/index.json",
+          "docs/verification/index.md",
+          "docs/verification/lib-pro-005-git-handoff-receipt.json",
+          "docs/verification/lib-pro-005-git-handoff-source-evidence.json",
+          "docs/verification/lib-pro-005-release-safety-closure-evidence.md",
+          "fastapi_app/routers/index.json",
+          "fastapi_app/routers/index.md",
+          "fastapi_app/routers/insights.py",
+          "fastapi_app/routers/websocket.py",
+          "fastapi_app/tests/index.json",
+          "fastapi_app/tests/index.md",
+          "fastapi_app/tests/test_insights_dashboard.py",
+          "fastapi_app/tests/test_websocket.py",
+          "llms.txt",
+          "react_app/src/hooks/__tests__/useBatchDesign.test.ts",
+          "react_app/src/hooks/index.json",
+          "react_app/src/hooks/index.md",
+          "react_app/src/hooks/useBatchDesign.ts",
+          "scripts/audit_input_validation.py",
+          "scripts/index.json",
+          "scripts/index.md"
+        ],
+        "untracked_paths": [
+          "docs/verification/lib-pro-005-git-handoff-source-evidence-2.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "f1a9937cfdba4c72c22e6219ffaf02f94809f1a5",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-005-release-safety-closure"
+    }
+  },
+  "local_state_receipt_hash": "sha256:d5518052d6ad746ef3ac4cba69979801ad041f9bc60a68c5a2d1591e570d9b87",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-22T15:42:03.685816+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-22T15:41:29Z",
+    "owner": "Main Agent under repository retention policy; destructive cleanup remains separately owner-authorized",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      ".github/workflows/release.yml",
+      "Python/structural_lib/services/etabs_import.py"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "Python/pyproject.toml",
+      "Python/structural_lib/**",
+      "Python/tests/**",
+      "fastapi_app/routers/**",
+      "fastapi_app/tests/**",
+      "react_app/src/hooks/**",
+      "scripts/audit_input_validation.py",
+      "llms.txt",
+      "docs/getting-started/agent-bootstrap.md",
+      "docs/planning/lib-pro-005-release-safety-closure-plan.md",
+      "docs/planning/maint-011-developer-gate-hygiene-follow-up.md",
+      "docs/verification/lib-pro-005-release-safety-closure-evidence.md",
+      "docs/verification/lib-pro-005-git-handoff-source-evidence.json",
+      "docs/verification/lib-pro-005-git-handoff-receipt.json",
+      "docs/verification/lib-pro-005-git-handoff-source-evidence-2.json",
+      "docs/verification/lib-pro-005-git-handoff-receipt-2.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md",
+      "**/index.json",
+      "**/index.md",
+      "docs/docs-index.json"
+    ],
+    "task_id": "LIB-PRO-005"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

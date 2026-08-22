@@ -26,8 +26,8 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_api_surface_snapshot.py](test_api_surface_snapshot.py) | Snapshot regression tests — assert minimum API surface count | 5 | 0 | 122 |
 | [test_assertion_helpers.py](test_assertion_helpers.py) | Tests for the IS 456 test assertion helpers. | 3 | 0 | 82 |
 | [test_audit.py](test_audit.py) | Tests for audit module (TASK-278). | 6 | 0 | 471 |
-| [test_audit_readiness_truth.py](test_audit_readiness_truth.py) | Readiness must aggregate semantic truth instead of reporting | 0 | 13 | 239 |
-| [test_boq.py](test_boq.py) | Tests for the BOQ (Bill of Quantities) aggregation module. | 1 | 0 | 213 |
+| [test_audit_readiness_truth.py](test_audit_readiness_truth.py) | Readiness must aggregate semantic truth instead of reporting | 0 | 14 | 256 |
+| [test_boq.py](test_boq.py) | Tests for the BOQ (Bill of Quantities) aggregation module. | 1 | 0 | 252 |
 | [test_branch_disposition.py](test_branch_disposition.py) | Outcome tests for the inspection-only branch disposition cla | 0 | 12 | 437 |
 | [test_bump_version_semantics.py](test_bump_version_semantics.py) | Regression coverage for candidate-version documentation sema | 0 | 1 | 66 |
 | [test_calculation_report.py](test_calculation_report.py) | Tests for the calculation_report module (TASK-277). | 9 | 4 | 745 |
@@ -66,7 +66,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_multi_objective_optimizer.py](test_multi_objective_optimizer.py) | Tests for the multi-objective optimizer module (NSGA-II). | 5 | 0 | 319 |
 | [test_new_element_completeness.py](test_new_element_completeness.py) | Regression tests for nested element completeness discovery. | 0 | 3 | 45 |
 | [test_numerics.py](test_numerics.py) | Tests for structural_lib.core.numerics - safe arithmetic uti | 4 | 0 | 136 |
-| [test_packaging.py](test_packaging.py) | Tests for package distribution correctness. | 9 | 0 | 452 |
+| [test_packaging.py](test_packaging.py) | Tests for package distribution correctness. | 9 | 0 | 462 |
 | [test_pipeline_state.py](test_pipeline_state.py) | Tests for scripts/pipeline_state.py — Pipeline step tracking | 7 | 0 | 353 |
 | [test_private_source_boundary.py](test_private_source_boundary.py) | Protected engineering-source material stays local and outsid | 0 | 2 | 40 |
 | [test_release_environment.py](test_release_environment.py) | Regression tests for local release preflight environment sel | 0 | 13 | 281 |
@@ -85,7 +85,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_token_efficiency.py](test_token_efficiency.py) | Regression tests for repository-side token-efficiency contro | 0 | 5 | 83 |
 | [test_tool_manifest.py](test_tool_manifest.py) | Focused gates for the catalogue-derived beam tool manifest. | 0 | 5 | 105 |
 | [test_visualization_edge_cases.py](test_visualization_edge_cases.py) | Edge case tests for 3D visualization / geometry module (TASK | 12 | 0 | 757 |
-| [test_visualization_geometry_3d.py](test_visualization_geometry_3d.py) | Tests for visualization.geometry_3d module. | 10 | 0 | 765 |
+| [test_visualization_geometry_3d.py](test_visualization_geometry_3d.py) | Tests for visualization.geometry_3d module. | 10 | 0 | 781 |
 | [test_visualization_integration.py](test_visualization_integration.py) | Integration tests for visualization.geometry_3d with detaili | 2 | 0 | 246 |
 | [test_workflow_catalog.py](test_workflow_catalog.py) | Focused contract tests for the one-beam application workflow | 0 | 4 | 89 |
 | [test_workflow_runner.py](test_workflow_runner.py) | Bounded-runner tests for the approved beam workflow only. | 0 | 8 | 203 |

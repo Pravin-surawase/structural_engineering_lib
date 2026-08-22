@@ -55,6 +55,22 @@ class TestEquivalentShear:
         with pytest.raises(DimensionError):
             calculate_equivalent_shear(vu_kn=100, tu_knm=10, b=-300)
 
+    @pytest.mark.parametrize(
+        ("field", "value"),
+        [
+            ("vu_kn", True),
+            ("vu_kn", float("nan")),
+            ("tu_knm", float("inf")),
+            ("b", True),
+        ],
+    )
+    def test_rejects_non_finite_or_boolean_scalars(self, field, value):
+        values = {"vu_kn": 100, "tu_knm": 10, "b": 300}
+        values[field] = value
+
+        with pytest.raises(ValueError, match=field):
+            calculate_equivalent_shear(**values)
+
 
 class TestEquivalentMoment:
     """Tests for equivalent moment calculation per IS 456 Cl 41.4.2."""

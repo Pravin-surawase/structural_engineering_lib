@@ -9,6 +9,7 @@ import json
 import shutil
 import subprocess
 import sys
+import tomllib
 import zipfile
 from pathlib import Path
 
@@ -55,6 +56,15 @@ class TestPackageScope:
 
         # Verify structural_lib itself is importable
         assert hasattr(structural_lib, "__version__") or hasattr(structural_lib, "api")
+
+    def test_experimental_pmm_declares_numpy_extra(self):
+        """Users can request every dependency needed to import the PMM module."""
+        pyproject = Path(__file__).resolve().parents[1] / "pyproject.toml"
+        metadata = tomllib.loads(pyproject.read_text(encoding="utf-8"))
+
+        assert metadata["project"]["optional-dependencies"]["pmm"] == [
+            "numpy>=2.0,<2.5"
+        ]
 
     @pytest.mark.parametrize(
         "excluded_dir",

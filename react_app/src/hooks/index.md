@@ -1,7 +1,7 @@
 # Hooks
 
 **Type:** React Source
-**Last Updated:** 2026-08-17
+**Last Updated:** 2026-08-22
 **Files:** 16
 
 ## React Hook Files
@@ -9,7 +9,7 @@
 | File | Exports | Lines |
 |------|---------|-------|
 | [useAutoDesign.ts](useAutoDesign.ts) | useAutoDesign | 73 |
-| [useBatchDesign.ts](useBatchDesign.ts) | BatchProgress, BatchResult, BatchStatus, BatchDesignState, useBatchDesign | 554 |
+| [useBatchDesign.ts](useBatchDesign.ts) | BatchProgress, BatchResult, BatchOverallStatus, BatchStatus, BatchDesignState (+1) | 586 |
 | [useBeamGeometry.ts](useBeamGeometry.ts) | Point3D, RebarSegment, RebarPath, StirrupLoop, Beam3DGeometry (+4) | 180 |
 | [useCSVImport.ts](useCSVImport.ts) | ImportedBeam, BeamDesignPayload, DesignedBeam, useCSVFileImport, useCSVTextImport (+2) | 509 |
 | [useDesignWebSocket.ts](useDesignWebSocket.ts) | ConnectionStatus, WebSocketState, requiresCanonicalHttp, normalizeWebSocketDesignResult, useDesignWebSocket | 290 |
