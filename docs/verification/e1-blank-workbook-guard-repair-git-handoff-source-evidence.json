@@ -1,0 +1,67 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-21T19:05:00Z",
+      "query_status": "OK",
+      "reference": "task:E1-BLANK-WORKBOOK-GUARD-REPAIR:user-requested-continue-and-send-windows-work",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "UPDATE_DRAFT_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-21T19:05:00Z",
+    "prohibited_actions": [
+      "CREATE_THIRD_REPAIR_CANDIDATE",
+      "MERGE_AHEAD_OF_E1_SEQUENCE",
+      "START_G3_BEFORE_W0_READY",
+      "START_ETABS_FILE_SNAPSHOT",
+      "START_LIVE_ETABS",
+      "RUN_ETABS_ANALYSIS",
+      "START_ETABS_WRITE_BACK",
+      "START_NIGHTLY_OPTIMIZATION",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "DISCARD_USER_CHANGE",
+      "CLOSE_PULL_REQUEST",
+      "PUBLISH_RELEASE",
+      "CLAIM_PROFESSIONAL_APPROVAL"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/e1-blank-workbook-guard",
+      "head_sha": "a52233a29f3461e9931c500ee39cd72d6b20a3bc",
+      "task_id": "E1-BLANK-WORKBOOK-GUARD-REPAIR"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "STACKED_BEHIND_E1_AND_W0_REVALIDATION",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [
+      "E1_PR_826_NOT_INTEGRATED",
+      "W0_REVALIDATION_PENDING",
+      "G3_NOT_RUN"
+    ],
+    "observed_at_utc": "2026-08-21T19:05:00Z",
+    "owner": "Main Agent under the user-requested E1 continuation",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

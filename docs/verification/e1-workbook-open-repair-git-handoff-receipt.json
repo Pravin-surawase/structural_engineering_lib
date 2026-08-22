@@ -1,0 +1,210 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-22T06:29:32Z",
+      "query_status": "OK",
+      "reference": "task:E1-WORKBOOK-OPEN-REPAIR:delegated-diagnosis-and-confirmed-root-cause-repair",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_DRAFT_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-22T06:29:32Z",
+    "prohibited_actions": [
+      "AMEND_PREDECESSOR_PR",
+      "MERGE_PULL_REQUEST",
+      "START_G3_BEFORE_EXACT_CANDIDATE_CLOSEOUT",
+      "START_ETABS_FILE_SNAPSHOT",
+      "START_LIVE_ETABS",
+      "RUN_ETABS_ANALYSIS",
+      "START_ETABS_WRITE_BACK",
+      "START_NIGHTLY_OPTIMIZATION",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "DISCARD_USER_CHANGE",
+      "CLOSE_PULL_REQUEST",
+      "PUBLISH_RELEASE",
+      "CLAIM_PROFESSIONAL_APPROVAL"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_DRAFT_PR"
+      ],
+      "branch": "codex/e1-workbook-open-repair",
+      "head_sha": "98c60bc1f7c3899c28f662e82399cb25d80bbf26",
+      "task_id": "E1-WORKBOOK-OPEN-REPAIR"
+    }
+  },
+  "holds": [
+    "E1_PRS_826_TO_829_NOT_INTEGRATED",
+    "G3_NOT_RUN",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED",
+    "WORKBOOK_OPEN_REPAIR_NOT_REVIEWED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "STACKED_BEHIND_E1_PR_SEQUENCE_AND_G3_NOT_RUN",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "132d778c1c945ad8b613b4e4fce20e51e97b565e7c4898f71a62362f39242104",
+    "state": {
+      "branch": "codex/e1-workbook-open-repair",
+      "default_base": {
+        "ahead": 8,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "c127e4b2325fceb9adebf3d29d59e549f7ae4aa6",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 103.521,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-e1-workbook-open-repair",
+      "head_sha": "98c60bc1f7c3899c28f662e82399cb25d80bbf26",
+      "hold_reasons": [
+        "changed paths: 17"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-22T06:33:52.376832+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-workbook-open-repair",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 17,
+        "modified_paths": [
+          "Python/structural_lib/data/excel/outputs/e1-excel-routine-workbench/structural-lib-rectangular-beam-workbench-v1.xlsx",
+          "Python/structural_lib/data/excel/outputs/e1-excel-routine-workbench/workbook-manifest.json",
+          "Python/structural_lib/services/excel_workbench.py",
+          "Python/tests/unit/test_excel_workbench_v1.py",
+          "Python/tests/unit/test_excel_workbook_artifact.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/e1-excel-routine-workbench-v1-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/specs/excel-routine-workbench-v1.md",
+          "docs/verification/e1-excel-routine-workbench-v1-evidence.md",
+          "docs/verification/e1-review-bundle-export-evidence.md",
+          "fastapi_app/tests/test_excel_workbench.py",
+          "scripts/verify_excel_workbench_artifact.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/e1-workbook-open-repair-evidence.md",
+          "docs/verification/e1-workbook-open-repair-git-handoff-source-evidence.json",
+          "scripts/generate_e1_workbook.mjs"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-workbook-open-repair"
+    }
+  },
+  "local_state_receipt_hash": "sha256:132d778c1c945ad8b613b4e4fce20e51e97b565e7c4898f71a62362f39242104",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-22T06:33:52.376995+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_WORKTREE_AND_DIAGNOSTIC_EVIDENCE",
+    "holds": [
+      "E1_PRS_826_TO_829_NOT_INTEGRATED",
+      "WORKBOOK_OPEN_REPAIR_NOT_REVIEWED",
+      "G3_NOT_RUN"
+    ],
+    "observed_at_utc": "2026-08-22T06:29:32Z",
+    "owner": "Main Agent under the user-authorized E1 workbook-open repair",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/core/excel_workbook.py",
+      "Python/structural_lib/codes/is456",
+      "fastapi_app/routers/excel_workbench.py",
+      "excel_addin",
+      "Etabs_CSV"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "Python/structural_lib/data/excel/outputs/e1-excel-routine-workbench/structural-lib-rectangular-beam-workbench-v1.xlsx",
+      "Python/structural_lib/data/excel/outputs/e1-excel-routine-workbench/workbook-manifest.json",
+      "Python/structural_lib/services/excel_workbench.py",
+      "Python/tests/unit/test_excel_workbench_v1.py",
+      "Python/tests/unit/test_excel_workbook_artifact.py",
+      "fastapi_app/tests/test_excel_workbench.py",
+      "scripts/generate_e1_workbook.mjs",
+      "scripts/verify_excel_workbench_artifact.py",
+      "docs/verification/e1-workbook-open-repair-evidence.md",
+      "docs/verification/e1-workbook-open-repair-git-handoff-source-evidence.json",
+      "docs/verification/e1-workbook-open-repair-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/e1-excel-routine-workbench-v1-plan.md",
+      "docs/planning/next-session-brief.md",
+      "docs/specs/excel-routine-workbench-v1.md",
+      "docs/verification/e1-excel-routine-workbench-v1-evidence.md",
+      "docs/verification/e1-review-bundle-export-evidence.md",
+      "docs/index.json",
+      "docs/index.md",
+      "docs/planning/index.json",
+      "docs/planning/index.md",
+      "docs/specs/index.json",
+      "docs/specs/index.md",
+      "docs/verification/index.json",
+      "docs/verification/index.md",
+      "Python/structural_lib/services/index.json",
+      "Python/structural_lib/services/index.md",
+      "Python/tests/unit/index.json",
+      "Python/tests/unit/index.md",
+      "scripts/index.json",
+      "scripts/index.md"
+    ],
+    "task_id": "E1-WORKBOOK-OPEN-REPAIR"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

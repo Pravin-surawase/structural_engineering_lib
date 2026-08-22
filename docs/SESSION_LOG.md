@@ -5,6 +5,507 @@
 
 ---
 
+## 2026-08-22 — Session: E1 desktop-Excel workbook-open repair
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/e1-workbook-open-repair`, stacked on immutable export
+candidate `98c60bc1f7c3899c28f662e82399cb25d80bbf26`.
+
+**Git handoff receipt:**
+`docs/verification/e1-workbook-open-repair-git-handoff-receipt.json`
+
+**Focus:** Diagnose Excel's content-recovery prompt on an evidence-only copy,
+repair the confirmed workbook-package defect from maintained source, and return
+one deterministic candidate for the frozen G3 journey without starting ETABS.
+
+### Summary
+
+- Accepted recovery only on a uniquely named diagnostic copy and preserved the
+  original, repaired evidence copy, Excel repair log, hashes, package delta,
+  visible outcome, and clean Windows shutdown receipt.
+- Added a maintained spreadsheet-artifact generator for all six sheets and five
+  named tables; the generated workbook contains no macros or structural
+  formulas.
+- Replaced the case-colliding effective-depth table header with
+  `Effective d (mm)`, retained the old service alias, refreshed the manifest,
+  and added source/wheel package regressions.
+- Normalized volatile relationship identifiers and ZIP timestamps so two clean
+  generator runs produce byte-identical workbooks.
+
+### Issues encountered
+
+- Excel displayed “We found a problem with some content” before the exact
+  product workbook opened, blocking mapping, calculation, freshness, reopen,
+  and supported export. The prompt alone did not identify the rejected part.
+- The workbook was tracked only as binary package data; no maintained generator
+  for reproducing a corrected artifact was present.
+- The first two artifact-tool exports had equivalent worksheet content but
+  different bytes, so manifest identity could not be reproduced reliably.
+- Windows `Ctrl+Shift+S` did not open Save As for the recovered evidence copy;
+  `F12` opened the dialog and permitted preservation under the frozen diagnosis
+  contract.
+- ⚠️ TERMINAL ISSUE: an orientation `shasum excel_addin/*.xlsx` command failed
+  because zsh rejected the unmatched glob → the exact package-data workbook
+  path was used instead; this was a shell-selection issue, not workbook damage.
+
+### Root causes and resolutions
+
+- Confirmed file root cause: `tbl_Beam_Workbench_V1` declared `D (mm)` and
+  `d (mm)`, which collide under Excel's case-insensitive table-column naming.
+  Excel's repair log named `/xl/tables/table1.xml`, and the recovered evidence
+  changed only the latter logical header to `d (mm)2`. Resolution: generate the
+  supported artifact with `Effective d (mm)` and reject case-insensitive
+  duplicate table names in source and installed-wheel probes.
+- Confirmed process root cause: the original gate verified ZIP/XML structure,
+  tables, formulas/macros, hashes, and rendered appearance, but did not require
+  an immutable desktop-Excel open. Resolution: make the no-recovery real-Excel
+  open a required D3 gate before the remaining frozen journey.
+- Confirmed reproducibility gap: the binary artifact had no maintained creation
+  path. Resolution: add `scripts/generate_e1_workbook.mjs` using the approved
+  spreadsheet artifact workflow and preserve the exact six-sheet contract.
+- Confirmed byte-instability cause: artifact-tool emitted random relationship
+  identifiers and current ZIP timestamps. Resolution: normalize relationship
+  IDs consistently across targets/references and set fixed ZIP member dates;
+  two clean executions then matched byte for byte.
+- Confirmed shortcut issue: the diagnostic Excel session did not respond to
+  `Ctrl+Shift+S`; using Excel's `F12` Save As path preserved the recovered copy
+  without changing the production artifact. The host was returned with Excel
+  and ETABS closed, services stopped, ports free, and retained worktrees clean.
+- Confirmed terminal issue: the unmatched zsh glob had no target files in the
+  add-in directory. Resolution: select the exact installed package-data path;
+  its original SHA-256 matched the frozen receipt.
+
+### Validation through content freeze
+
+- Generator determinism: PASS — two clean runs produced the same 15,101-byte
+  workbook, SHA-256 `4cc492bfcbba456342c6358a8dcfe2749cafd723e9ee4fdaefa585f29e35ce63`.
+- Final six-sheet render/inspection is readable and formula/error-free; focused
+  workbook/service/REST evidence passes 22/22 cases.
+- Affected Black/Ruff pass after formatting only the failed verifier slice.
+  The source-free wheel SHA-256 is `0943e277…ba43`; its isolated install reports
+  library content `eafb869a…8ebf`, the exact repaired workbook identity, one
+  canonical `PASS` row, and deterministic complete review-bundle bytes.
+- Documentation/index validation, quick gate, hooks, immutable commit, and
+  read-only session audit remain pending in the consolidated closeout sequence.
+
+## 2026-08-22 — Session: E1 complete review-bundle export
+
+**Agent:** Codex (`reviewer`, sole writer)
+
+**Branch:** `codex/e1-review-bundle-export`, stacked on exact Windows-validated
+predecessor `514155b266af6dff3e30bf39ee28671c17345454`.
+
+**Git handoff receipt:** `docs/verification/e1-review-bundle-export-git-handoff-receipt.json`
+
+**Focus:** Close the G3 export-surface gap with one complete, deterministic,
+fail-closed Python/REST/Office.js successor; preserve workbook bytes,
+calculations, manifest, ETABS/VBA, release, merge, cleanup, and professional
+approval boundaries.
+
+### Summary
+
+- Added a versioned complete review-bundle request/result contract and
+  deterministic JSON serialization.
+- Added a same-origin REST attachment whose file, logical bundle, and canonical
+  result identities are explicit.
+- Added an installed-pane Export control that is eligible only after a current
+  run or explicit freshness check and verifies response bytes before download.
+- Extended focused Python, REST, Office.js, source-free wheel, plan, evidence,
+  and Windows acceptance surfaces.
+
+### Issues encountered
+
+- The frozen G3 journey required pane-accessible deterministic review-bundle
+  export, but the installed pane and REST router exposed no export operation.
+- The existing deterministic Markdown renderer was a compact status summary;
+  it omitted the complete mapping, structured results, passports, raw ledger
+  detail, and issues required for qualified review.
+- The first OpenAPI assertion found the new route documented no response
+  content even though its runtime JSON attachment passed.
+- The first affected-file Ruff run stopped before mypy because two new service
+  contract imports were not in canonical order.
+
+### Root causes and resolutions
+
+- Confirmed root cause: local renderer determinism had been accepted as proof
+  of a complete installed Excel export journey even though no source-to-pane
+  route existed. Resolution: add one typed export request, service regeneration
+  boundary, raw JSON attachment route, pane action, and exact identity checks.
+- Confirmed root cause: the old renderer was designed as a human-readable
+  summary and its tests asserted repeatability plus hash presence, not complete
+  artifact content. Resolution: make `ExcelReviewBundleV1` contain the full
+  canonical run result, preserve the renderer as a summary-only compatibility
+  surface, and add nested-content plus deterministic-byte tests.
+- Confirmed root cause: setting generic `Response` as the decorator response
+  class suppressed FastAPI's schema content even with a response model.
+  Resolution: keep `ExcelReviewBundleV1` as the documented response model and
+  return a raw `Response` instance only at runtime. Proof: the failed OpenAPI
+  assertion and refreshed 89-endpoint/434-schema baseline check pass.
+- Confirmed root cause: the new retained/export contract imports were added in
+  semantic rather than Ruff alphabetical order. Resolution: reorder only those
+  imports; affected Black/Ruff and the previously skipped configured mypy pass.
+
+### Validation through content freeze
+
+- Focused Python/REST/Open XML: 22 cases pass using one impact-mapped repair
+  rerun; Office.js: 21/21; four JavaScript modules and the manifest parse.
+- Black, Ruff, configured mypy, 217-file architecture, 685-file/4,732-import
+  validation, and the 89-endpoint/434-schema OpenAPI baseline pass.
+- A source-free wheel proves unchanged workbook SHA-256 `497dd44d…ac85`, new
+  library content identity `87ae4fbe…d57a5`, and complete deterministic 8,987-
+  byte review evidence with both structured result and passport.
+- Documentation, maintained indexes, quick gate, hooks, immutable commit/audit,
+  hosted checks, and Windows G3 remain in the closeout sequence.
+
+## 2026-08-22 — Session: E1 blank-workbook guard repair
+
+**Agent:** Codex (`backend`, sole writer)
+
+**Branch:** `codex/e1-blank-workbook-guard`, stacked on
+`codex/e1-w0-maintenance-plan` at
+`654e40b1370d098fca4d001146a030b9937536a8`.
+
+**Git handoff receipt:** `docs/verification/e1-blank-workbook-guard-repair-git-handoff-receipt.json`
+
+**Focus:** Diagnose the exact Windows blank-workbook pane failure, repair only
+the Office.js startup boundary, freeze local evidence, and leave G3 and all
+ETABS/VBA work held.
+
+### Summary
+
+- Recovered the long Windows W0 task, completed the restricted SMB/trusted-
+  catalog setup, and loaded the exact E1 add-in from `SHARED FOLDER`.
+- Moved the new source diagnosis into a fresh, read-only Windows task and bound
+  it to E1 head `ef5ee05c` and tree `30d8eb79`.
+- Added a guarded, testable Office.js workbook-surface boundary that leaves
+  blank/wrong workbooks read-only and keeps controls disabled.
+- Preserved strict complete-workbook initialization and genuine Office/API
+  failure reporting; no calculation, workbook, manifest, Python, ETABS/VBA, or
+  G3 behavior changed.
+
+### PRs Merged
+
+- None.
+
+### Key Deliverables
+
+- `excel_addin/taskpane-office.mjs`
+- `excel_addin/tests/taskpane-office.test.mjs`
+- `docs/verification/e1-blank-workbook-guard-evidence.md`
+- Updated W0/E1 evidence, task state, and next-session handoff.
+
+### Issues encountered
+
+- The exact trusted add-in loaded in a new blank workbook but stopped with
+  `WORKBOOK CONTRACT ERROR — The requested resource doesn't exist` before its
+  definition API request. This blocks W0 and therefore G3.
+- The first remote task initially described the failure at the broad document-
+  settings initialization stage because W0 did not capture `error.code`,
+  `debugInfo`, or a JavaScript stack. Treating that visible message as the root
+  cause would have repaired the wrong boundary.
+- The first immutable repair head reached Windows with a new local module
+  import but no matching `serve.mjs` route. `/taskpane-office.mjs` returned 404,
+  leaving the pane at `INITIALIZING` and preventing the definition request.
+- Closing the blank workbook produced a save prompt even though the missing
+  module meant the repaired JavaScript never executed. Save-prompt presence is
+  therefore not a reliable proxy for document-settings writes.
+
+### Root causes and resolutions
+
+- Confirmed root cause: startup saved/read the workbook ID, then
+  `registerInputChange()` called `worksheets.getItem("Beam_Workbench")` in a
+  blank workbook containing only `Sheet1`. The following `context.sync()`
+  raised Office `ItemNotFound`; this documented error message and the source
+  order match the observed pre-API failure. Resolution: inspect both the sheet
+  and table with `getItemOrNullObject()` before any settings write/event
+  registration, return the controlled `E1 WORKBOOK NOT OPEN` state when absent,
+  and retain strict failures after the complete surface exists. Proof: 15/15
+  Office.js tests, four JavaScript parse checks, manifest XML validation, and
+  217-file architecture validation pass.
+- Confirmed root cause of the initial broad attribution: the UI catch grouped
+  settings, event registration, and API startup under one generic `WORKBOOK
+  CONTRACT ERROR`, while the W0 receipt lacked runtime error metadata.
+  Resolution: the read-only Windows source trace followed execution order and
+  compared the blank workbook contents with Microsoft Office.js semantics;
+  production now reports workbook check, local API, and strict workbook
+  initialization failures separately and preserves Office code/debug location.
+- Confirmed root cause of the Windows repair-load failure: `serve.mjs` uses an
+  explicit static-file map, and the initial repair added a module import without
+  adding its route. Resolution: serve `/taskpane-office.mjs` from the trusted
+  origin and add a focused test that compares local `taskpane.mjs` imports with
+  the server map. The original W2 receipt proves the 404 and clean shutdown;
+  the consolidated local Office suite provides the repaired route evidence.
+- Confirmed root cause of the misleading save-prompt criterion: inserting an
+  Office add-in can itself dirty an unsaved workbook independently of document
+  settings. Resolution: discard the W0 workbook and rely on exact code/test
+  evidence plus the controlled visible state; record, but do not interpret, any
+  close prompt.
+
+### Notes
+
+- The repair base and original E1 candidate remain clean and immutable.
+- Windows revalidation must use the exact repair commit and reuse passing setup
+  evidence; no broad rebuild or G3 work is authorized by this local result.
+
+
+## 2026-08-21 — Session: E1 Windows W0 evidence and maintenance
+
+**Agent:** Codex (`governance`, sole writer)
+
+**Branch:** `codex/e1-w0-maintenance-plan`, stacked on the immutable E1 head
+`ef5ee05c785904e1a01c2d09cc65649edc8745ab`.
+
+**Git handoff receipt:** `docs/verification/e1-w0-maintenance-git-handoff-receipt.json`
+
+**Focus:** Record the completed Windows setup and legacy VBA/API handoff,
+reconcile current library progress, run a non-destructive maintenance pass,
+and freeze the next controlled work sequence.
+
+### Summary
+
+- Recorded W0 as `SETUP_BLOCKED`, with all entitlement, candidate, wheel,
+  artifact, HTTPS, and loopback checks passing and one restricted SMB catalog
+  share remaining before the blank-workbook add-in check.
+- Preserved the 2019-2021 ETABS/VBA, exporter, structural-design, and legacy
+  workbook bundles as historical reference evidence with hashes and explicit
+  no-live-model/no-macro-execution boundaries.
+- Verified live GitHub progress: PRs #822, #823, and #825 are merged; draft PR
+  #826 is clean at the exact E1 head and all required hosted checks pass.
+- Ran health, audit, parity, efficiency, feedback, source-binding, and local
+  branch-disposition checks. Corrected four confirmed endpoint/router count
+  drifts and preserved all uncertain lanes.
+
+### PRs Merged
+| PR | Summary |
+|----|---------|
+| None | This session did not merge or close a pull request. |
+
+### Key Deliverables
+
+- `docs/verification/e1-windows-w0-setup-evidence.md`
+- Updated E1 evidence, task board, next-session brief, and four onboarding/API
+  counts.
+- Non-destructive cleanup result: 25 local non-default branches classify
+  `HOLD_UNKNOWN_OWNER` without refreshed per-branch ownership, PR, remote-ref,
+  and retention evidence; no branch, worktree, file, or stash was removed.
+
+### Issues encountered
+
+- The Mac controller lost readable access to the remote Windows Codex task,
+  even though the task continued and completed on Windows.
+- Documentation health found four stale endpoint/router counts after the recent
+  API additions.
+- Cleanup classification found 25 local branches without enough refreshed
+  authority for safe retirement; one separate detached worktree is also dirty
+  and remains preserved.
+- The all-folder index audit found six stale aggregate indexes. Three were
+  inherited from E1 (`Python/structural_lib`, `Python/tests`, and `fastapi_app`)
+  and three reflected this session's documentation changes.
+- The first normal commit hook rejected the rewritten next-session brief because
+  its `Required Reading` heading used lowercase `reading`; the failed-only
+  session check then exposed missing exact `Current` and `Next` table labels.
+- The first clean exact-head session audit could not discover the valid handoff
+  receipt because its path was wrapped onto the following line.
+
+### Root causes and resolutions
+
+- Remote disconnect root cause is `unconfirmed`. Completed Windows commands,
+  clean Git, stopped services, and the final receipt localize the symptom to the
+  Codex remote-control/task-visibility path rather than the build or candidate.
+  The passing work is retained and will not be rerun; only the remaining catalog
+  and blank-workbook checks will resume after the user action.
+- E1 and preceding API work raised the maintained surface to 88 endpoints and
+  26 routers, but four descriptive counts remained at 81/24. The four exact
+  values were updated; direct `sync_numbers.py` and documentation checks provide
+  the correction evidence.
+- Branch age or apparent merge history is not retirement authority. Without
+  current owner, PR, remote-ref, and retention receipts, the classifier correctly
+  fails closed. All 25 branches and every existing worktree remain untouched;
+  any destructive cleanup requires a separately reviewed proposal and explicit
+  user authorization.
+- E1 refreshed its directly changed nested indexes but did not refresh three
+  maintained parent aggregate indexes whose hashes include those descendants.
+  This session also changed three indexed documentation folders. Resolution:
+  refresh exactly the six reported stale folders plus `docs/verification` for
+  its newly added evidence; the final all-folder read-only check must report
+  32/32 current.
+- The session checker intentionally treats the exact `Required Reading` heading
+  and `Current`/`Next` table labels as a machine-readable handoff contract.
+  Resolution: restore those canonical tokens without losing the clearer W0/G3
+  content, refresh only the affected docs/planning and docs indexes, and rerun
+  the failed check before the normal commit hooks; all other first-pass hooks
+  had passed.
+- The session-end receipt parser requires the label and tracked path on the same
+  line. Resolution: bind the existing valid receipt on that line and create a
+  minimal repair commit after refreshing only the root docs index; no product,
+  Windows, G3, or ETABS evidence was repeated.
+
+### Notes
+
+- Health initially reported 94/100 only because of the four stale numbers;
+  code, agents, infrastructure, and feedback were 100/100.
+- Audit was 21/22 with one non-blocking function-quality diagnostic warning;
+  parity showed 88/88 endpoint tests and 13/13 React hook connections.
+- ETABS snapshot/live work, Excel G3, repository publication, release, and
+  professional approval were not run.
+
+
+## 2026-08-18 — Session: E1 Excel Routine Workbench V1 implementation
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/e1-excel-routine-workbench`.
+
+**Git handoff receipt:** `docs/verification/e1-excel-routine-workbench-git-handoff-receipt.json`
+
+**Focus:** Implement the frozen E1 selected-table rectangular-beam workflow,
+including strict intake and row reconciliation, canonical Python/CLI/REST
+results, calculation passports and freshness, one macro-free workbook, a
+bounded Office.js task pane, installed-wheel artifact identity, documentation,
+and evidence. ETABS file/live work, write-back, optimization, nightly work,
+release, and professional approval remain excluded.
+
+### Summary
+
+- Implemented the strict selected-table Python/CLI/REST workflow, canonical row
+  ledger, calculation passports, four-hash freshness, and explicit capability
+  truth without adding a second structural calculation path.
+- Packaged and verified one macro-free six-sheet workbook plus a bounded
+  Office.js task pane; focused tests, source-free wheel proof, documentation,
+  quick gates, and normal commit hooks pass.
+- Retained `TO_VERIFY_WINDOWS` for the separate installed Windows Excel G3 cell
+  and held ETABS, write-back, optimization, release, and approval work.
+
+### Issues encountered
+
+- The previous session's time-bounded Git handoff evidence had expired before
+  implementation resumed.
+- The first header mapper case-folded structural notation `D` and `d`, so seven
+  of ten new service vectors were blocked as duplicate mappings.
+- Two first-pass REST cases asked pytest for an `unwrap` fixture although the
+  maintained helper is an ordinary function.
+- The artifact patch helper created its temporary builder under the primary
+  checkout instead of the visualization workspace, and the E1 safe-move script
+  could not move a file whose source was outside the current worktree.
+- The first workbook's placeholder row populated both categorical dropdown
+  cells, so it was not a blank row and would have become `BLOCKED` instead of
+  explicitly `EXCLUDED`. Its first render also expanded the input sheet to 204
+  rows and cramped the information-sheet workflow text.
+- The first workbook location was a repository output outside Python package
+  data, so a built wheel could not prove or expose the exact artifact.
+- Retaining the complete result bundle in Office document settings would scale
+  poorly for a large selected table even though full evidence already persists
+  in workbook tables.
+- The first frozen architecture/import commands used guessed script names, and
+  root-level mypy saw the same module through both `Python.structural_lib` and
+  `structural_lib` package identities. The corrected mypy run then exposed
+  literal, inherited-schema, and untyped-constructor weaknesses.
+- The root `Excel/` ignore rule also matched the lower-case installed package
+  data directory on the default macOS filesystem, hiding the workbook and its
+  manifest from an ordinary Git add.
+- The first strict documentation closeout rejected descriptive E1 front-matter
+  values even though all E1 links and the repository quick gate passed.
+- The first normal commit hook run rejected the new session order and the new
+  wheel verifier's missing automation-map registration.
+- The first immutable read-only session audit could not find completion items
+  or the Git handoff receipt in the newest E1 entry.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the start receipt intentionally expires and cannot be
+  reused as current authorization. Resolution: bind fresh user continuation to
+  exact branch head `64f3518a`, regenerate the handoff receipt, and validate it
+  before writes. Evidence: the receipt validator returned valid `HOLD` with the
+  E1 task authority and unchanged base.
+- Confirmed root cause: case folding erased the semantically significant
+  uppercase/lowercase depth distinction. Resolution: preserve exact `D_mm` and
+  `d_mm` aliases before folded aliases. Evidence: all 13 consolidated Python
+  E1/workbook cases pass, including PASS/FAIL/HOLD/blocked and mapping vectors.
+- Confirmed root cause: the new REST file copied a fixture-style call pattern
+  for a helper exported from `fastapi_app.tests.conftest`. Resolution: import
+  and call the helper directly. Evidence: all three consolidated REST cases
+  pass.
+- Confirmed root cause: `apply_patch` is rooted at the desktop session workspace,
+  not the per-command shell workdir, and `safe_file_move.py` intentionally
+  rejects cross-worktree sources. Resolution: run the generated builder only
+  from the exact temporary primary path, verify the output, safely delete the
+  one untracked builder, validate and unlink only its known dependency symlink,
+  and recheck the primary checkout. It is clean. ⚠️ TERMINAL ISSUE: patch
+  workdir assumption placed one temporary file in the primary checkout -> used
+  exact-path cleanup and prefixed all later E1 patches with the linked-worktree
+  path.
+- Confirmed root cause: preset dropdown values are data, and formatting/data
+  validation across 200 unused rows expanded the workbook used range.
+  Resolution: leave the placeholder's 17 cells null, retain validation only on
+  the compact three-row table, widen/wrap the workflow panel, and visually
+  inspect all six final renders. Open XML checks prove the exact sheets/tables,
+  no formulas, no formula errors, and no VBA/macros.
+- Confirmed root cause: root `outputs/` is not inside the setuptools package
+  tree. Resolution: move, do not copy, the single workbook and manifest into
+  maintained package data and make the definition service verify installed
+  bytes, size, and SHA-256. The repaired source-free wheel contains the exact
+  workbook and reports canonical PASS for one installed-package row.
+- Confirmed root cause: complete row ledgers and result JSON grow with table
+  size, while freshness needs only bundle, source-table, mapping, and engine
+  identities. Resolution: persist those four hashes plus the stale flag and
+  workbook ID in Office settings; keep full ledgers, results, and passports in
+  their named worksheets. The focused Python, REST, and seven Office.js tests
+  pass.
+- Confirmed root cause: the maintained commands are
+  `check_architecture_boundaries.py` and `validate_imports.py`, and configured
+  mypy requires the `Python/` package workdir. Resolution: correct the frozen
+  evidence commands, then fix the real type roots with literal-final constants,
+  a standalone run-request schema, and a direct typed result constructor.
+  Evidence: 217 architecture files have zero violations, 685 Python files have
+  zero broken imports, and mypy reports no issues in both new modules.
+  ⚠️ TERMINAL ISSUE: guessed architecture/import script paths and root-level
+  mypy failed -> discovered the registered commands and ran mypy from `Python/`.
+- Confirmed root cause: Git's case-insensitive path matching on the current
+  filesystem applied the broad `Excel/` output ignore to the new lower-case
+  package-data path. Resolution: force-stage only the exact verified workbook
+  and manifest; once tracked, later changes remain visible normally. Evidence:
+  `git ls-files --stage` lists both exact package-data paths and their SHA-256
+  values remain bound by the workbook manifest and artifact verifier.
+- Confirmed root cause: the three new E1 documents used human-readable workflow
+  states where the maintained checker accepts only its controlled `status` and
+  `doc_type` vocabularies. Resolution: retain the exact software-candidate/G3
+  hold in document content while using `status: active` and the supported
+  `spec`/`log` document types. The failed-only strict documentation rerun and
+  impact-mapped quick gate are the repair evidence.
+- Confirmed root cause: the implementation session was appended after older
+  entries even though the maintained checker requires newest-first ordering,
+  and adding a maintained script requires both its generated index and the
+  hand-maintained automation map. Resolution: move only the new E1 session to
+  the top and register the verifier as a read-only Testing task with exact-wheel
+  usage. The two failed hook checks and impact-mapped quick gate are the repair
+  evidence; no calculation suite is repeated.
+- Confirmed root cause: the audit parser recognizes completed work only below
+  `### Summary` or `**Completed:**` and discovers a receipt only from the exact
+  bold label in the same newest session block. Resolution: add those two
+  machine-readable boundaries without changing any implementation or evidence
+  claim. The failed-only session check and exact-head read-only audit are the
+  repair proof.
+
+### Validation through content freeze
+
+- Focused Python workbook/service/CLI/Open XML: 13 passed; focused REST: 3
+  passed; Office.js: 7 passed plus syntax and XML parsing; advertised-command
+  UAT: passed.
+- Architecture: 217 files, zero violations. Imports: 685 files and 4,729
+  imports, zero broken. OpenAPI: 88 endpoints and 432 schemas match baseline.
+  Black and Ruff pass on every changed Python path; configured mypy passes both
+  new source modules.
+- Repaired source-free wheel SHA-256:
+  `c4c5d09872d080ac5b1bee9e72c5af87e52df65c893358a15cc478cc4b5753b9`;
+  installed library content identity:
+  `6b2d8f43c4fecd8eaa0c3ec692db13db4118ac04fe141458307e114421ab1764`;
+  workbook SHA-256:
+  `497dd44d8dbe30ca8a6f3154b17d1d3598c517d96ffe0923e3ca44778450ac85`.
+- Documentation/index, quick gate, normal hooks, immutable session audit, push,
+  and hosted validation remain the closeout sequence. The supported real
+  Windows Excel journey remains `TO_VERIFY_WINDOWS`, so Gate G3 is held.
+
 ## 2026-08-17 — Session: v0.23.1a2 Release Candidate Preparation
 
 **Agent:** Codex (`ops`, sole writer)
@@ -3044,3 +3545,62 @@ remain excluded.
 - The consolidated focused, OpenAPI, index, quick, cumulative broad, hook,
   immutable-audit, push, and hosted-check results remain the closeout sequence
   for the frozen candidate.
+
+## 2026-08-17 — Session: E1 Excel Routine Workbench next-session freeze
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/e1-excel-routine-workbench`.
+
+**Focus:** Stop before M4 implementation and leave a durable, source-bound E1
+plan and next-session handoff on the exact merged B2 base. ETABS file/live work,
+write-back, optimization, release, and professional approval remain excluded.
+
+### Issues encountered
+
+- The first worktree-creation tool composition embedded shell `${name:?}`
+  expressions in a JavaScript template literal, so JavaScript parsed them as
+  incomplete interpolation before any shell command ran.
+- A dependency search passed an unmatched `Python/requirements*.txt` glob to
+  zsh, which rejected the command before the intended read-only search.
+- The inherited task board and next-session briefing still described the older
+  Alpha release/whole-building decision state even though A1, A2, B1, and B2
+  are merged and E1 is now the requested next packet.
+- The first two session handoff checks rejected the new briefing because its
+  `Required Reading` heading used sentence-case capitalization and its state
+  table used `Complete` where the parser requires the exact `Current` row.
+
+### Root causes and resolutions
+
+- Confirmed root cause: two interpreters were competing for the same `${...}`
+  syntax in the tool wrapper. Resolution: pass the command as a normal
+  JavaScript string so `${target_path:?}` reaches zsh unchanged; the isolated
+  worktree was then created at exact base `c127e4b2`. No partial Git mutation
+  occurred. ⚠️ TERMINAL ISSUE: JavaScript consumed shell parameter syntax ->
+  reran with a non-template command string.
+- Confirmed root cause: zsh uses `nomatch` for unmatched globs. Resolution:
+  enumerate maintained dependency manifests with `rg --files`, then search only
+  existing exact paths. ⚠️ TERMINAL ISSUE: unmatched dependency glob aborted a
+  read-only search -> used exact discovered files.
+- Confirmed root cause: the durable task/handoff records predated the integrated
+  master-plan execution. Resolution: add the exact E1 execution plan, replace
+  the next-session handoff, and minimally reconcile task state with PRs
+  #822-#825. No E1 production or test code was changed.
+- Confirmed root cause: the session parser matches the required handoff heading
+  and `Current`/`Next` state rows literally. Resolution: use those exact
+  contract labels; the failed handoff checks are the repair evidence.
+
+### Validation through content freeze
+
+- Source-bound isolated lane created from merged B2 commit
+  `c127e4b2325fceb9adebf3d29d59e549f7ae4aa6`; session start reported
+  `READY_LOCAL` and `Python source binding: current worktree`.
+- The E1 plan freezes the selected-table journey, workbook/table identities,
+  strict field and row-accounting rules, canonical status/passport/stale
+  behavior, implementation map, exact validation categories, Windows Excel
+  matrix cell, and G3 stop conditions.
+- Implementation remains intentionally unstarted. Only planning, task, session,
+  and handoff records changed; calculation, FastAPI, React, Excel, ETABS, and
+  broad repository suites are therefore unchanged and not rerun.
+
+**Git handoff receipt:** `docs/verification/e1-excel-routine-workbench-git-handoff-receipt.json`

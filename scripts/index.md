@@ -3,8 +3,8 @@
 > Development, validation, discovery, release-preparation, and maintenance tools.
 
 **Type:** Python Package
-**Last Updated:** 2026-08-17
-**Files:** 113
+**Last Updated:** 2026-08-22
+**Files:** 115
 
 ## Config Files
 
@@ -114,6 +114,7 @@
 | [validate_schema_snapshots.py](validate_schema_snapshots.py) | Schema Snapshot Validator. | 0 | 6 | 257 |
 | [validate_script_refs.py](validate_script_refs.py) | Validate that active control paths reference existing script | 0 | 6 | 235 |
 | [verify_canonical_transport_artifact.py](verify_canonical_transport_artifact.py) | Verify A1's source-free wheel and exact-head application imp | 0 | 2 | 280 |
+| [verify_excel_workbench_artifact.py](verify_excel_workbench_artifact.py) | Verify E1 workbook identity and behavior from one source-fre | 0 | 2 | 268 |
 
 ## Shell Script Files
 

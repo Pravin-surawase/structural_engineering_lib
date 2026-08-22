@@ -1,0 +1,62 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-17T18:59:13Z",
+      "query_status": "OK",
+      "reference": "task:E1-EXCEL-ROUTINE-WORKBENCH:user-requested-continue-work",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR",
+      "MARK_READY_AND_MERGE_AFTER_G3"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-17T18:59:13Z",
+    "prohibited_actions": [
+      "START_ETABS_FILE_SNAPSHOT",
+      "START_LIVE_ETABS",
+      "RUN_ETABS_ANALYSIS",
+      "START_ETABS_WRITE_BACK",
+      "START_NIGHTLY_OPTIMIZATION",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "DISCARD_USER_CHANGE",
+      "CLOSE_PULL_REQUEST",
+      "PUBLISH_RELEASE",
+      "CLAIM_PROFESSIONAL_APPROVAL"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR",
+        "MARK_READY_AND_MERGE_AFTER_G3"
+      ],
+      "branch": "codex/e1-excel-routine-workbench",
+      "head_sha": "64f3518aa20e837a132e4d02fdd694d3f946293f",
+      "task_id": "E1-EXCEL-ROUTINE-WORKBENCH"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "G3_WINDOWS_EXCEL_HELD",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-17T18:59:13Z",
+    "owner": "Main Agent under owner-approved M4 sequence",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

@@ -2,8 +2,8 @@
   "folder": "docs/specs",
   "type": "documentation",
   "description": "Technical specifications for data formats and schemas.",
-  "last_updated": "2026-08-17",
-  "file_count": 5,
+  "last_updated": "2026-08-18",
+  "file_count": 6,
   "files": [
     {
       "name": "README.md",
@@ -17,10 +17,10 @@
     {
       "name": "building-gravity-v1.md",
       "type": "documentation",
-      "size_lines": 128,
-      "last_updated": "2026-08-17",
-      "description": "This specification freezes the B1 physical-model and dead/live load-ledger foundation. It establishes a deterministic, hand-checkable load path before",
-      "content_hash": "1473ee654dea"
+      "size_lines": 244,
+      "last_updated": "2026-08-18",
+      "description": "This specification freezes the B1 physical-model and dead/live load-ledger foundation and the B2 component-orchestration contract built on it. The result",
+      "content_hash": "7677f2588d5f"
     },
     {
       "name": "csv-import-schema.md",
@@ -29,6 +29,14 @@
       "last_updated": "2026-08-17",
       "description": "This document defines the strict CSV schemas for importing beam data and geometry from structural analysis software into structural_engineering_lib. ETABS CSV",
       "content_hash": "66972b19ea9f"
+    },
+    {
+      "name": "excel-routine-workbench-v1.md",
+      "type": "documentation",
+      "size_lines": 108,
+      "last_updated": "2026-08-18",
+      "description": "Excel Routine Workbench V1 is one bounded, macro-free rectangular-beam workflow. Excel supplies typed cells and presents review evidence; all structural arithmetic runs through the existing design_bea",
+      "content_hash": "78cf2262cbf0"
     },
     {
       "name": "v0.7-data-mapping.md",
@@ -48,5 +56,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "5386405935fd2368"
+  "content_hash": "33ca73f851653cb6"
 }

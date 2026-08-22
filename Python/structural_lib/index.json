@@ -2,7 +2,7 @@
   "folder": "Python/structural_lib",
   "type": "python-package",
   "description": "> **Purpose:** IS 456:2000 RC beam design calculations",
-  "last_updated": "2026-08-17",
+  "last_updated": "2026-08-21",
   "file_count": 52,
   "files": [
     {
@@ -28,13 +28,20 @@
     {
       "name": "__main__.py",
       "type": "python",
-      "size_lines": 1655,
-      "last_updated": "2026-08-17",
+      "size_lines": 1781,
+      "last_updated": "2026-08-21",
       "description": "Unified CLI entrypoint for structural_lib.",
       "functions": [
         {
           "name": "cmd_gravity_v1",
           "description": "Run the bounded Building Gravity Workflow V1 from one JSON request.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_excel_v1",
+          "description": "Preview or run the bounded selected-table Excel Workbench V1.",
           "params": [
             "args"
           ]
@@ -131,7 +138,7 @@
           ]
         }
       ],
-      "content_hash": "7535550dd0c8"
+      "content_hash": "318e100dd35c"
     },
     {
       "name": "adapters.py",
@@ -541,13 +548,13 @@
     {
       "name": "core",
       "path": "core/",
-      "file_count": 25,
+      "file_count": 26,
       "is_package": true
     },
     {
       "name": "data",
       "path": "data/",
-      "file_count": 2
+      "file_count": 4
     },
     {
       "name": "insights",
@@ -570,7 +577,7 @@
     {
       "name": "services",
       "path": "services/",
-      "file_count": 55,
+      "file_count": 56,
       "is_package": true
     },
     {
@@ -603,5 +610,5 @@
     "serviceability",
     "shear"
   ],
-  "content_hash": "5b2a3d2b82ae1306"
+  "content_hash": "9754fb00c4dba902"
 }

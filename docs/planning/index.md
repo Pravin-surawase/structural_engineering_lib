@@ -1,8 +1,8 @@
 # Planning
 
 **Type:** Documentation
-**Last Updated:** 2026-08-17
-**Files:** 19
+**Last Updated:** 2026-08-22
+**Files:** 20
 
 ## Documentation Files
 
@@ -12,6 +12,7 @@
 | [compact-modernization-plan.md](compact-modernization-plan.md) |  | Modernize the repository's CI, maintenance controls, and age | 794 |
 | [democratization-vision.md](democratization-vision.md) |  | > **"What was not possible few years back, or only possible  | 273 |
 | [dependency-security-baseline.md](dependency-security-baseline.md) |  | This record makes MAINT-003 reproducible. It separates confi | 69 |
+| [e1-excel-routine-workbench-v1-plan.md](e1-excel-routine-workbench-v1-plan.md) |  | The planned E1 software is implemented on the isolated branc | 290 |
 | [etabs-killer-masterplan.md](etabs-killer-masterplan.md) | Project BHEEM: Open-Source Structural De | > **BHEEM** — **B**uilding **H**olistic **E**ngineering **E* | 2855 |
 | [gpt-5-3-codex-spark-work-program.md](gpt-5-3-codex-spark-work-program.md) |  | Use GPT-5.3-Codex-Spark as a high-throughput implementation  | 614 |
 | [india-2-next-session-publication-and-closeout-plan.md](india-2-next-session-publication-and-closeout-plan.md) |  | Combined-footing and strap-footing G0/A-D plus focused famil | 529 |
@@ -22,7 +23,7 @@
 | [library-expansion-blueprint-v5.md](library-expansion-blueprint-v5.md) | Library Expansion Blueprint v5.0 — Multi | > Master plan for expanding structural_engineering_lib from  | 1121 |
 | [memory.md](memory.md) |  | - Development resumed after a four-month pause and a Mac lap | 411 |
 | [next-phase-improvements-plan.md](next-phase-improvements-plan.md) |  | > This document is a result of a full audit of the beam libr | 1445 |
-| [next-session-brief.md](next-session-brief.md) | Next Session Briefing | <!-- HANDOFF:START --> - Date: 2026-08-17 | 68 |
+| [next-session-brief.md](next-session-brief.md) | Next Session Briefing | <!-- HANDOFF:START --> - Date: 2026-08-22 | 70 |
 | [pre-release-checklist.md](pre-release-checklist.md) | Pre-Release Checklist | Prepared candidate source metadata: 0.23.1a2 Current public  | 111 |
 | [pre-release-input-safety-and-professional-readiness-plan.md](pre-release-input-safety-and-professional-readiness-plan.md) | Pre-Release Input Safety and Professiona | fe4ab025419b834c6d0f840e9492c0604ae74201 after Packets A-G m | 742 |
 | [professional-library-remediation-plan.md](professional-library-remediation-plan.md) | Professional Library Remediation Plan | This document is no longer the active implementation plan. T | 562 |

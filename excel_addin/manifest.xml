@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp
+  xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:type="TaskPaneApp">
+  <Id>eb4565d8-42f5-4ccd-a7f2-5cfd17ac70d9</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>structural_engineering_lib</ProviderName>
+  <DefaultLocale>en-IN</DefaultLocale>
+  <DisplayName DefaultValue="Excel Routine Workbench V1" />
+  <Description DefaultValue="Reviewed selected-table access to canonical IS 456 rectangular-beam results." />
+  <SupportUrl DefaultValue="https://github.com/Pravin-surawase/structural_engineering_lib" />
+  <Hosts>
+    <Host Name="Workbook" />
+  </Hosts>
+  <Requirements>
+    <Sets DefaultMinVersion="1.7">
+      <Set Name="ExcelApi" />
+    </Sets>
+  </Requirements>
+  <DefaultSettings>
+    <SourceLocation DefaultValue="https://localhost:3000/taskpane.html" />
+  </DefaultSettings>
+  <Permissions>ReadWriteDocument</Permissions>
+</OfficeApp>

@@ -2,8 +2,8 @@
   "folder": "Python/structural_lib/core",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-17",
-  "file_count": 23,
+  "last_updated": "2026-08-22",
+  "file_count": 24,
   "files": [
     {
       "name": "__init__.py",
@@ -521,6 +521,68 @@
         "E_INPUT_010"
       ],
       "content_hash": "231a53bd99a5"
+    },
+    {
+      "name": "excel_workbook.py",
+      "type": "python",
+      "size_lines": 300,
+      "last_updated": "2026-08-22",
+      "description": "Versioned, calculation-free contracts for Excel Routine Workbench V1.",
+      "classes": [
+        {
+          "name": "ExcelCalculationModeV1"
+        },
+        {
+          "name": "ExcelTrustModeV1"
+        },
+        {
+          "name": "ExcelRowDispositionV1"
+        },
+        {
+          "name": "ExcelReviewStateV1"
+        },
+        {
+          "name": "ExcelCapabilityStateV1"
+        },
+        {
+          "name": "ExcelWorkbookContractV1"
+        },
+        {
+          "name": "ExcelWorkbookSelectionV1"
+        },
+        {
+          "name": "ExcelWorkbookPreviewRequestV1"
+        },
+        {
+          "name": "ExcelWorkbookRunRequestV1"
+        },
+        {
+          "name": "ExcelRowIssueV1"
+        },
+        {
+          "name": "ExcelMappingFieldV1"
+        },
+        {
+          "name": "ExcelMappingPreviewV1"
+        },
+        {
+          "name": "ExcelRowCountV1",
+          "public_methods": [
+            "validate_reconciliation"
+          ]
+        },
+        {
+          "name": "ExcelCalculationPassportV1"
+        },
+        {
+          "name": "ExcelRowLedgerEntryV1"
+        }
+      ],
+      "constants": [
+        "_ID_PATTERN",
+        "_SHA256_PATTERN"
+      ],
+      "content_hash": "f033578bb1ed"
     },
     {
       "name": "geometry.py",
@@ -1325,5 +1387,5 @@
     "GravityCombinationV1",
     "GravityFootingDestinationV1"
   ],
-  "content_hash": "ea03a34aa2eb356b"
+  "content_hash": "afb02181eae5959e"
 }

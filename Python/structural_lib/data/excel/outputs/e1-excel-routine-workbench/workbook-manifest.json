@@ -1,0 +1,23 @@
+{
+  "schema_version": "excel-workbook-artifact-manifest/v1",
+  "artifact": "Python/structural_lib/data/excel/outputs/e1-excel-routine-workbench/structural-lib-rectangular-beam-workbench-v1.xlsx",
+  "artifact_sha256": "4cc492bfcbba456342c6358a8dcfe2749cafd723e9ee4fdaefa585f29e35ce63",
+  "artifact_size_bytes": 15101,
+  "template_id": "structural-lib-rectangular-beam-workbench",
+  "template_version": "1.0",
+  "contract_schema": "excel-workbook-contract/v1",
+  "trust_mode": "MACRO_FREE_OFFICE_JS",
+  "visual_review": {
+    "reviewed_on": "2026-08-22",
+    "status": "PASS",
+    "worksheets": [
+      "Workbook_Info",
+      "Beam_Workbench",
+      "Mapping_Preview",
+      "Row_Ledger",
+      "Results",
+      "Passports"
+    ]
+  },
+  "installed_windows_excel_evidence": "TO_VERIFY_WINDOWS"
+}

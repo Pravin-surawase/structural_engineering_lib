@@ -1766,6 +1766,198 @@
         "title": "APIResponse[EnhancedShearResponse]",
         "type": "object"
       },
+      "APIResponse_ExcelFreshnessCheckV1_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ExcelFreshnessCheckV1"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProblemDetailResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[ExcelFreshnessCheckV1]",
+        "type": "object"
+      },
+      "APIResponse_ExcelMappingPreviewV1_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ExcelMappingPreviewV1"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProblemDetailResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[ExcelMappingPreviewV1]",
+        "type": "object"
+      },
+      "APIResponse_ExcelWorkbenchDefinitionV1_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ExcelWorkbenchDefinitionV1"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProblemDetailResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[ExcelWorkbenchDefinitionV1]",
+        "type": "object"
+      },
+      "APIResponse_ExcelWorkbookRunResultV1_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ExcelWorkbookRunResultV1"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProblemDetailResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[ExcelWorkbookRunResultV1]",
+        "type": "object"
+      },
       "APIResponse_FootingLoadTransferResponse_": {
         "example": {
           "data": {
@@ -13908,6 +14100,1074 @@
           "qualified_review_requirement"
         ],
         "title": "EvidenceEnvelopeResponse",
+        "type": "object"
+      },
+      "ExcelCalculationModeV1": {
+        "enum": [
+          "AUTOMATIC",
+          "MANUAL",
+          "AUTOMATIC_EXCEPT_TABLES"
+        ],
+        "title": "ExcelCalculationModeV1",
+        "type": "string"
+      },
+      "ExcelCalculationPassportV1": {
+        "additionalProperties": false,
+        "properties": {
+          "beam_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Beam Id",
+            "type": "string"
+          },
+          "calculation_identity": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Calculation Identity",
+            "type": "string"
+          },
+          "case_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Case Id",
+            "type": "string"
+          },
+          "library_content_identity": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Library Content Identity",
+            "type": "string"
+          },
+          "library_version": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Library Version",
+            "type": "string"
+          },
+          "mapping_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Mapping Hash",
+            "type": "string"
+          },
+          "normalized_input_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Normalized Input Hash",
+            "type": "string"
+          },
+          "passport_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Passport Hash",
+            "type": "string"
+          },
+          "raw_row_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Raw Row Hash",
+            "type": "string"
+          },
+          "result_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Result Hash",
+            "type": "string"
+          },
+          "row_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Row Id",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "excel-calculation-passport/v1",
+            "default": "excel-calculation-passport/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "workbook_selection_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Workbook Selection Hash",
+            "type": "string"
+          }
+        },
+        "required": [
+          "row_id",
+          "beam_id",
+          "case_id",
+          "raw_row_hash",
+          "normalized_input_hash",
+          "calculation_identity",
+          "result_hash",
+          "library_version",
+          "library_content_identity",
+          "workbook_selection_hash",
+          "mapping_hash",
+          "passport_hash"
+        ],
+        "title": "ExcelCalculationPassportV1",
+        "type": "object"
+      },
+      "ExcelCapabilityStateV1": {
+        "enum": [
+          "AVAILABLE",
+          "UNAVAILABLE",
+          "TO_VERIFY_WINDOWS"
+        ],
+        "title": "ExcelCapabilityStateV1",
+        "type": "string"
+      },
+      "ExcelFreshnessCheckV1": {
+        "additionalProperties": false,
+        "properties": {
+          "current_library_content_identity": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Current Library Content Identity",
+            "type": "string"
+          },
+          "current_mapping_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Current Mapping Hash",
+            "type": "string"
+          },
+          "current_source_table_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Current Source Table Hash",
+            "type": "string"
+          },
+          "freshness_status": {
+            "enum": [
+              "CURRENT",
+              "STALE"
+            ],
+            "title": "Freshness Status",
+            "type": "string"
+          },
+          "previous_bundle_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Previous Bundle Hash",
+            "type": "string"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reasons",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "excel-freshness-check/v1",
+            "default": "excel-freshness-check/v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "freshness_status",
+          "reasons",
+          "previous_bundle_hash",
+          "current_source_table_hash",
+          "current_mapping_hash",
+          "current_library_content_identity"
+        ],
+        "title": "ExcelFreshnessCheckV1",
+        "type": "object"
+      },
+      "ExcelFreshnessRequestV1": {
+        "additionalProperties": false,
+        "properties": {
+          "current_request": {
+            "$ref": "#/components/schemas/ExcelWorkbookPreviewRequestV1"
+          },
+          "previous_evidence": {
+            "$ref": "#/components/schemas/ExcelRetainedEvidenceV1"
+          },
+          "schema_version": {
+            "const": "excel-freshness-request/v1",
+            "default": "excel-freshness-request/v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "previous_evidence",
+          "current_request"
+        ],
+        "title": "ExcelFreshnessRequestV1",
+        "type": "object"
+      },
+      "ExcelMappingFieldV1": {
+        "additionalProperties": false,
+        "properties": {
+          "canonical_field": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Canonical Field",
+            "type": "string"
+          },
+          "source_column_index": {
+            "minimum": 0.0,
+            "title": "Source Column Index",
+            "type": "integer"
+          },
+          "source_header": {
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Source Header",
+            "type": "string"
+          }
+        },
+        "required": [
+          "canonical_field",
+          "source_header",
+          "source_column_index"
+        ],
+        "title": "ExcelMappingFieldV1",
+        "type": "object"
+      },
+      "ExcelMappingPreviewV1": {
+        "additionalProperties": false,
+        "properties": {
+          "excluded_headers": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Excluded Headers",
+            "type": "array"
+          },
+          "is_blocked": {
+            "title": "Is Blocked",
+            "type": "boolean"
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/ExcelRowIssueV1"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "mapped_fields": {
+            "items": {
+              "$ref": "#/components/schemas/ExcelMappingFieldV1"
+            },
+            "title": "Mapped Fields",
+            "type": "array"
+          },
+          "mapping_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Mapping Hash",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "excel-mapping-preview/v1",
+            "default": "excel-mapping-preview/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "source_headers": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Headers",
+            "type": "array"
+          }
+        },
+        "required": [
+          "source_headers",
+          "mapped_fields",
+          "excluded_headers",
+          "issues",
+          "is_blocked",
+          "mapping_hash"
+        ],
+        "title": "ExcelMappingPreviewV1",
+        "type": "object"
+      },
+      "ExcelRetainedEvidenceV1": {
+        "additionalProperties": false,
+        "properties": {
+          "bundle_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Bundle Hash",
+            "type": "string"
+          },
+          "library_content_identity": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Library Content Identity",
+            "type": "string"
+          },
+          "mapping_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Mapping Hash",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "excel-retained-evidence/v1",
+            "default": "excel-retained-evidence/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "source_table_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Source Table Hash",
+            "type": "string"
+          }
+        },
+        "required": [
+          "bundle_hash",
+          "source_table_hash",
+          "mapping_hash",
+          "library_content_identity"
+        ],
+        "title": "ExcelRetainedEvidenceV1",
+        "type": "object"
+      },
+      "ExcelReviewBundleExportRequestV1": {
+        "additionalProperties": false,
+        "properties": {
+          "confirmed_mapping_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Confirmed Mapping Hash",
+            "type": "string"
+          },
+          "current_request": {
+            "$ref": "#/components/schemas/ExcelWorkbookPreviewRequestV1"
+          },
+          "previous_evidence": {
+            "$ref": "#/components/schemas/ExcelRetainedEvidenceV1"
+          },
+          "schema_version": {
+            "const": "excel-review-bundle-export-request/v1",
+            "default": "excel-review-bundle-export-request/v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "current_request",
+          "previous_evidence",
+          "confirmed_mapping_hash"
+        ],
+        "title": "ExcelReviewBundleExportRequestV1",
+        "type": "object"
+      },
+      "ExcelReviewBundleV1": {
+        "additionalProperties": false,
+        "properties": {
+          "export_disposition": {
+            "const": "EVIDENCE_FOR_QUALIFIED_REVIEW",
+            "default": "EVIDENCE_FOR_QUALIFIED_REVIEW",
+            "title": "Export Disposition",
+            "type": "string"
+          },
+          "freshness_check": {
+            "$ref": "#/components/schemas/ExcelFreshnessCheckV1"
+          },
+          "result": {
+            "$ref": "#/components/schemas/ExcelWorkbookRunResultV1"
+          },
+          "review_bundle_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Review Bundle Hash",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "excel-review-bundle/v1",
+            "default": "excel-review-bundle/v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "freshness_check",
+          "result",
+          "review_bundle_hash"
+        ],
+        "title": "ExcelReviewBundleV1",
+        "type": "object"
+      },
+      "ExcelReviewStateV1": {
+        "enum": [
+          "NOT_REVIEWED",
+          "REVIEW_ACCEPTED",
+          "REVIEW_REJECTED"
+        ],
+        "title": "ExcelReviewStateV1",
+        "type": "string"
+      },
+      "ExcelRowCountV1": {
+        "additionalProperties": false,
+        "properties": {
+          "accepted_rows": {
+            "minimum": 0.0,
+            "title": "Accepted Rows",
+            "type": "integer"
+          },
+          "blocked_rows": {
+            "minimum": 0.0,
+            "title": "Blocked Rows",
+            "type": "integer"
+          },
+          "excluded_rows": {
+            "minimum": 0.0,
+            "title": "Excluded Rows",
+            "type": "integer"
+          },
+          "source_rows": {
+            "minimum": 0.0,
+            "title": "Source Rows",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "source_rows",
+          "accepted_rows",
+          "blocked_rows",
+          "excluded_rows"
+        ],
+        "title": "ExcelRowCountV1",
+        "type": "object"
+      },
+      "ExcelRowDispositionV1": {
+        "enum": [
+          "ACCEPTED",
+          "BLOCKED",
+          "EXCLUDED"
+        ],
+        "title": "ExcelRowDispositionV1",
+        "type": "string"
+      },
+      "ExcelRowIssueV1": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "maxLength": 1024,
+            "minLength": 1,
+            "title": "Message",
+            "type": "string"
+          },
+          "path": {
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Path",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "path",
+          "message"
+        ],
+        "title": "ExcelRowIssueV1",
+        "type": "object"
+      },
+      "ExcelRowLedgerEntryV1": {
+        "additionalProperties": false,
+        "properties": {
+          "beam_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Beam Id"
+          },
+          "disposition": {
+            "$ref": "#/components/schemas/ExcelRowDispositionV1"
+          },
+          "issues": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ExcelRowIssueV1"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "normalized_input": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Normalized Input"
+          },
+          "passport": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ExcelCalculationPassportV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "raw_row_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Raw Row Hash",
+            "type": "string"
+          },
+          "raw_values": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": "Raw Values",
+            "type": "array"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Result"
+          },
+          "result_envelope": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Result Envelope"
+          },
+          "row_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Row Id"
+          },
+          "source_row_number": {
+            "minimum": 2.0,
+            "title": "Source Row Number",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "source_row_number",
+          "raw_values",
+          "raw_row_hash",
+          "disposition"
+        ],
+        "title": "ExcelRowLedgerEntryV1",
+        "type": "object"
+      },
+      "ExcelWorkbenchDefinitionV1": {
+        "additionalProperties": false,
+        "properties": {
+          "canonical_function": {
+            "const": "design_beam_is456",
+            "default": "design_beam_is456",
+            "title": "Canonical Function",
+            "type": "string"
+          },
+          "canonical_result_contract": {
+            "const": "canonical-beam-result/v1",
+            "default": "canonical-beam-result/v1",
+            "title": "Canonical Result Contract",
+            "type": "string"
+          },
+          "contract": {
+            "$ref": "#/components/schemas/ExcelWorkbookContractV1"
+          },
+          "held_scopes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Held Scopes",
+            "type": "array"
+          },
+          "installed_windows_excel_evidence": {
+            "$ref": "#/components/schemas/ExcelCapabilityStateV1"
+          },
+          "library_content_identity": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Library Content Identity",
+            "type": "string"
+          },
+          "library_version": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Library Version",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "excel-workbench-definition/v1",
+            "default": "excel-workbench-definition/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "software_capability": {
+            "$ref": "#/components/schemas/ExcelCapabilityStateV1"
+          },
+          "supported_scope": {
+            "title": "Supported Scope",
+            "type": "string"
+          },
+          "workbook_artifact_name": {
+            "const": "structural-lib-rectangular-beam-workbench-v1.xlsx",
+            "default": "structural-lib-rectangular-beam-workbench-v1.xlsx",
+            "title": "Workbook Artifact Name",
+            "type": "string"
+          },
+          "workbook_artifact_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Workbook Artifact Sha256",
+            "type": "string"
+          },
+          "workbook_artifact_size_bytes": {
+            "exclusiveMinimum": 0.0,
+            "title": "Workbook Artifact Size Bytes",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "contract",
+          "software_capability",
+          "installed_windows_excel_evidence",
+          "workbook_artifact_sha256",
+          "workbook_artifact_size_bytes",
+          "library_version",
+          "library_content_identity",
+          "supported_scope",
+          "held_scopes"
+        ],
+        "title": "ExcelWorkbenchDefinitionV1",
+        "type": "object"
+      },
+      "ExcelWorkbookContractV1": {
+        "additionalProperties": false,
+        "properties": {
+          "held_scopes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Held Scopes",
+            "type": "array"
+          },
+          "input_table": {
+            "const": "tbl_Beam_Workbench_V1",
+            "default": "tbl_Beam_Workbench_V1",
+            "title": "Input Table",
+            "type": "string"
+          },
+          "input_worksheet": {
+            "const": "Beam_Workbench",
+            "default": "Beam_Workbench",
+            "title": "Input Worksheet",
+            "type": "string"
+          },
+          "ledger_worksheet": {
+            "const": "Row_Ledger",
+            "default": "Row_Ledger",
+            "title": "Ledger Worksheet",
+            "type": "string"
+          },
+          "mapping_worksheet": {
+            "const": "Mapping_Preview",
+            "default": "Mapping_Preview",
+            "title": "Mapping Worksheet",
+            "type": "string"
+          },
+          "metadata_worksheet": {
+            "const": "Workbook_Info",
+            "default": "Workbook_Info",
+            "title": "Metadata Worksheet",
+            "type": "string"
+          },
+          "passport_worksheet": {
+            "const": "Passports",
+            "default": "Passports",
+            "title": "Passport Worksheet",
+            "type": "string"
+          },
+          "required_fields": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Required Fields",
+            "type": "array"
+          },
+          "result_worksheet": {
+            "const": "Results",
+            "default": "Results",
+            "title": "Result Worksheet",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "excel-workbook-contract/v1",
+            "default": "excel-workbook-contract/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "serviceability_mode": {
+            "const": "DISABLED_E1",
+            "default": "DISABLED_E1",
+            "title": "Serviceability Mode",
+            "type": "string"
+          },
+          "template_id": {
+            "const": "structural-lib-rectangular-beam-workbench",
+            "default": "structural-lib-rectangular-beam-workbench",
+            "title": "Template Id",
+            "type": "string"
+          },
+          "template_version": {
+            "const": "1.0",
+            "default": "1.0",
+            "title": "Template Version",
+            "type": "string"
+          },
+          "torsion_mode": {
+            "const": "DISABLED_E1",
+            "default": "DISABLED_E1",
+            "title": "Torsion Mode",
+            "type": "string"
+          },
+          "trust_mode": {
+            "const": "MACRO_FREE_OFFICE_JS",
+            "default": "MACRO_FREE_OFFICE_JS",
+            "title": "Trust Mode",
+            "type": "string"
+          },
+          "unit_system": {
+            "const": "IS456",
+            "default": "IS456",
+            "title": "Unit System",
+            "type": "string"
+          }
+        },
+        "required": [
+          "required_fields",
+          "held_scopes"
+        ],
+        "title": "ExcelWorkbookContractV1",
+        "type": "object"
+      },
+      "ExcelWorkbookPreviewRequestV1": {
+        "additionalProperties": false,
+        "properties": {
+          "headers": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 128,
+            "minItems": 1,
+            "title": "Headers",
+            "type": "array"
+          },
+          "rows": {
+            "items": {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "type": "array"
+            },
+            "maxItems": 10000,
+            "title": "Rows",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "excel-workbook-preview-request/v1",
+            "default": "excel-workbook-preview-request/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "selection": {
+            "$ref": "#/components/schemas/ExcelWorkbookSelectionV1"
+          }
+        },
+        "required": [
+          "selection",
+          "headers",
+          "rows"
+        ],
+        "title": "ExcelWorkbookPreviewRequestV1",
+        "type": "object"
+      },
+      "ExcelWorkbookRunRequestV1": {
+        "additionalProperties": false,
+        "properties": {
+          "confirmed_mapping_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Confirmed Mapping Hash",
+            "type": "string"
+          },
+          "headers": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 128,
+            "minItems": 1,
+            "title": "Headers",
+            "type": "array"
+          },
+          "rows": {
+            "items": {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "type": "array"
+            },
+            "maxItems": 10000,
+            "title": "Rows",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "excel-workbook-run-request/v1",
+            "default": "excel-workbook-run-request/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "selection": {
+            "$ref": "#/components/schemas/ExcelWorkbookSelectionV1"
+          }
+        },
+        "required": [
+          "selection",
+          "headers",
+          "rows",
+          "confirmed_mapping_hash"
+        ],
+        "title": "ExcelWorkbookRunRequestV1",
+        "type": "object"
+      },
+      "ExcelWorkbookRunResultV1": {
+        "additionalProperties": false,
+        "properties": {
+          "bundle_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Bundle Hash",
+            "type": "string"
+          },
+          "contract": {
+            "$ref": "#/components/schemas/ExcelWorkbookContractV1"
+          },
+          "counts": {
+            "$ref": "#/components/schemas/ExcelRowCountV1"
+          },
+          "library_content_identity": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Library Content Identity",
+            "type": "string"
+          },
+          "library_version": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Library Version",
+            "type": "string"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "mapping": {
+            "$ref": "#/components/schemas/ExcelMappingPreviewV1"
+          },
+          "normalized_input_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Normalized Input Hash",
+            "type": "string"
+          },
+          "qualified_review_required": {
+            "const": true,
+            "default": true,
+            "title": "Qualified Review Required",
+            "type": "boolean"
+          },
+          "review_state": {
+            "$ref": "#/components/schemas/ExcelReviewStateV1",
+            "default": "NOT_REVIEWED"
+          },
+          "row_ledger": {
+            "items": {
+              "$ref": "#/components/schemas/ExcelRowLedgerEntryV1"
+            },
+            "title": "Row Ledger",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "excel-workbook-run-result/v1",
+            "default": "excel-workbook-run-result/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "selection": {
+            "$ref": "#/components/schemas/ExcelWorkbookSelectionV1"
+          },
+          "source_table_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Source Table Hash",
+            "type": "string"
+          },
+          "workbook_selection_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Workbook Selection Hash",
+            "type": "string"
+          }
+        },
+        "required": [
+          "contract",
+          "selection",
+          "workbook_selection_hash",
+          "source_table_hash",
+          "mapping",
+          "counts",
+          "row_ledger",
+          "normalized_input_hash",
+          "library_version",
+          "library_content_identity",
+          "limitations",
+          "bundle_hash"
+        ],
+        "title": "ExcelWorkbookRunResultV1",
+        "type": "object"
+      },
+      "ExcelWorkbookSelectionV1": {
+        "additionalProperties": false,
+        "properties": {
+          "calculation_mode": {
+            "$ref": "#/components/schemas/ExcelCalculationModeV1"
+          },
+          "decimal_separator": {
+            "const": ".",
+            "default": ".",
+            "title": "Decimal Separator",
+            "type": "string"
+          },
+          "first_data_row_number": {
+            "minimum": 2.0,
+            "title": "First Data Row Number",
+            "type": "integer"
+          },
+          "locale": {
+            "maxLength": 32,
+            "minLength": 2,
+            "title": "Locale",
+            "type": "string"
+          },
+          "table_name": {
+            "const": "tbl_Beam_Workbench_V1",
+            "default": "tbl_Beam_Workbench_V1",
+            "title": "Table Name",
+            "type": "string"
+          },
+          "template_id": {
+            "const": "structural-lib-rectangular-beam-workbench",
+            "default": "structural-lib-rectangular-beam-workbench",
+            "title": "Template Id",
+            "type": "string"
+          },
+          "template_version": {
+            "const": "1.0",
+            "default": "1.0",
+            "title": "Template Version",
+            "type": "string"
+          },
+          "trust_mode": {
+            "const": "MACRO_FREE_OFFICE_JS",
+            "default": "MACRO_FREE_OFFICE_JS",
+            "title": "Trust Mode",
+            "type": "string"
+          },
+          "unit_system": {
+            "const": "IS456",
+            "default": "IS456",
+            "title": "Unit System",
+            "type": "string"
+          },
+          "workbook_instance_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Workbook Instance Id",
+            "type": "string"
+          },
+          "worksheet_name": {
+            "const": "Beam_Workbench",
+            "default": "Beam_Workbench",
+            "title": "Worksheet Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "workbook_instance_id",
+          "first_data_row_number",
+          "locale",
+          "calculation_mode"
+        ],
+        "title": "ExcelWorkbookSelectionV1",
         "type": "object"
       },
       "ExcludedGravityActionV1": {
@@ -33124,6 +34384,601 @@
         ]
       }
     },
+    "/api/v1/excel-workbench/v1/definition": {
+      "get": {
+        "operationId": "get_excel_workbench_definition_api_v1_excel_workbench_v1_definition_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_ExcelWorkbenchDefinitionV1_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Authentication required"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "State conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Concurrency or rate limit"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Internal application error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Capability unavailable"
+          }
+        },
+        "summary": "Discover the bounded Excel Routine Workbench V1 contract",
+        "tags": [
+          "excel-workbench"
+        ]
+      }
+    },
+    "/api/v1/excel-workbench/v1/freshness": {
+      "post": {
+        "operationId": "check_excel_workbook_freshness_api_v1_excel_workbench_v1_freshness_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExcelFreshnessRequestV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_ExcelFreshnessCheckV1_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Authentication required"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "State conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Concurrency or rate limit"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Internal application error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Capability unavailable"
+          }
+        },
+        "summary": "Compare retained Excel evidence with the current selected table",
+        "tags": [
+          "excel-workbench"
+        ]
+      }
+    },
+    "/api/v1/excel-workbench/v1/mapping-preview": {
+      "post": {
+        "operationId": "preview_excel_workbook_mapping_api_v1_excel_workbench_v1_mapping_preview_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExcelWorkbookPreviewRequestV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_ExcelMappingPreviewV1_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Authentication required"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "State conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Concurrency or rate limit"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Internal application error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Capability unavailable"
+          }
+        },
+        "summary": "Preview and hash the selected Excel table mapping",
+        "tags": [
+          "excel-workbench"
+        ]
+      }
+    },
+    "/api/v1/excel-workbench/v1/review-bundle": {
+      "post": {
+        "operationId": "export_excel_review_bundle_api_v1_excel_workbench_v1_review_bundle_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExcelReviewBundleExportRequestV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExcelReviewBundleV1"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Authentication required"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "State conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Concurrency or rate limit"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Internal application error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Capability unavailable"
+          }
+        },
+        "summary": "Export complete current Excel evidence for qualified review",
+        "tags": [
+          "excel-workbench"
+        ]
+      }
+    },
+    "/api/v1/excel-workbench/v1/run": {
+      "post": {
+        "operationId": "run_excel_workbook_api_v1_excel_workbench_v1_run_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExcelWorkbookRunRequestV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_ExcelWorkbookRunResultV1_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Authentication required"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "State conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Concurrency or rate limit"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Internal application error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Capability unavailable"
+          }
+        },
+        "summary": "Run a reviewed selected-table rectangular-beam batch",
+        "tags": [
+          "excel-workbench"
+        ]
+      }
+    },
     "/api/v1/export/bbs": {
       "post": {
         "description": "Generate BBS from beam parameters and return as CSV download.",
@@ -37581,6 +39436,10 @@
     {
       "description": "Bounded one-storey dead/live gravity load path and component review.",
       "name": "building-gravity"
+    },
+    {
+      "description": "Selected-table Excel mapping, canonical beam review, and stale evidence.",
+      "name": "excel-workbench"
     },
     {
       "description": "3D geometry generation for visualization.",

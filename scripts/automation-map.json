@@ -2,7 +2,7 @@
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
   "_updated": "2026-08-17",
   "_usage": "Run: ./scripts/python_runtime.sh scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "111/111 scripts mapped",
+  "_coverage": "112/112 scripts mapped",
   "tasks": {
     "resolve python runtime": {
       "group": "Infrastructure",
@@ -568,6 +568,12 @@
       "group": "Testing",
       "script": "./scripts/python_runtime.sh scripts/verify_canonical_transport_artifact.py --wheel <exact-wheel-path>",
       "description": "Verify A1 source-free Python and CLI plus exact-head FastAPI binding to one wheel",
+      "permission": "ReadOnly"
+    },
+    "verify excel workbench artifact": {
+      "group": "Testing",
+      "script": "./scripts/python_runtime.sh scripts/verify_excel_workbench_artifact.py --wheel <exact-wheel-path>",
+      "description": "Verify the E1 workbook, manifest, installed identity, and canonical sample row from one source-free wheel",
       "permission": "ReadOnly"
     },
     "test import 3d pipeline": {

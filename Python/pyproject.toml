@@ -74,7 +74,14 @@ exclude = [
 ]
 
 [tool.setuptools.package-data]
-structural_lib = ["py.typed", "codes/is456/clauses.json", "data/*.json", "reports/templates/*.j2"]
+structural_lib = [
+  "py.typed",
+  "codes/is456/clauses.json",
+  "data/*.json",
+  "data/excel/outputs/e1-excel-routine-workbench/*.json",
+  "data/excel/outputs/e1-excel-routine-workbench/*.xlsx",
+  "reports/templates/*.j2",
+]
 
 [tool.ruff]
 target-version = "py311"

@@ -2,8 +2,8 @@
   "folder": "docs/planning",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-08-17",
-  "file_count": 19,
+  "last_updated": "2026-08-22",
+  "file_count": 20,
   "files": [
     {
       "name": "README.md",
@@ -37,6 +37,14 @@
       "last_updated": "2026-08-09",
       "description": "This record makes MAINT-003 reproducible. It separates confirmed vulnerabilities from transferred-environment residue and records every temporary exception.",
       "content_hash": "7870e2a5028a"
+    },
+    {
+      "name": "e1-excel-routine-workbench-v1-plan.md",
+      "type": "documentation",
+      "size_lines": 290,
+      "last_updated": "2026-08-22",
+      "description": "The planned E1 software is implemented on the isolated branch. The frozen Python, REST, Office.js, Open XML, architecture, import, OpenAPI, type, style,",
+      "content_hash": "1e177cd01a0b"
     },
     {
       "name": "etabs-killer-masterplan.md",
@@ -123,11 +131,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 68,
-      "last_updated": "2026-08-17",
+      "size_lines": 70,
+      "last_updated": "2026-08-22",
       "title": "Next Session Briefing",
-      "description": "<!-- HANDOFF:START --> - Date: 2026-08-17",
-      "content_hash": "4875ea7e4f38"
+      "description": "<!-- HANDOFF:START --> - Date: 2026-08-22",
+      "content_hash": "b280df1dabdb"
     },
     {
       "name": "pre-release-checklist.md",
@@ -166,5 +174,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "1f96da77bbc0f039"
+  "content_hash": "466f4e1bdcca2c4d"
 }

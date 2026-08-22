@@ -134,7 +134,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 
 ### FastAPI Endpoints (`fastapi_app/routers/`)
 
-81 endpoints across 24 routers (59 REST + 1 WebSocket):
+88 endpoints across 26 routers (59 REST + 1 WebSocket):
 
 | Router | Endpoint | Purpose |
 |--------|----------|---------|

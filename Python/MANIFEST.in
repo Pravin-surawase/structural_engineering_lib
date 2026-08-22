@@ -1,6 +1,8 @@
 include structural_lib/py.typed
 include structural_lib/codes/is456/clauses.json
 include structural_lib/data/*.json
+include structural_lib/data/excel/outputs/e1-excel-routine-workbench/*.json
+include structural_lib/data/excel/outputs/e1-excel-routine-workbench/*.xlsx
 recursive-include structural_lib/reports/templates *.j2
 include LICENSE
 include README.md

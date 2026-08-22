@@ -1,0 +1,193 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-21T17:34:54Z",
+      "query_status": "OK",
+      "reference": "task:E1-WINDOWS-W0-MAINTENANCE:user-requested-log-maintenance-cleaning-plan",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-21T17:34:54Z",
+    "prohibited_actions": [
+      "MERGE_AHEAD_OF_E1",
+      "START_G3",
+      "START_ETABS_FILE_SNAPSHOT",
+      "START_LIVE_ETABS",
+      "RUN_ETABS_ANALYSIS",
+      "START_ETABS_WRITE_BACK",
+      "START_NIGHTLY_OPTIMIZATION",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "DISCARD_USER_CHANGE",
+      "CLOSE_PULL_REQUEST",
+      "PUBLISH_RELEASE",
+      "CLAIM_PROFESSIONAL_APPROVAL"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/e1-w0-maintenance-plan",
+      "head_sha": "ef5ee05c785904e1a01c2d09cc65649edc8745ab",
+      "task_id": "E1-WINDOWS-W0-MAINTENANCE"
+    }
+  },
+  "holds": [
+    "E1_PR_826_NOT_INTEGRATED",
+    "G3_NOT_RUN",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "STACKED_BEHIND_E1_G3",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "6586048f795d2b214894bed7b220785eebd8710a043db6dc4d4b72f37c2dd058",
+    "state": {
+      "branch": "codex/e1-w0-maintenance-plan",
+      "default_base": {
+        "ahead": 3,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "c127e4b2325fceb9adebf3d29d59e549f7ae4aa6",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 80.57,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-e1-w0-maintenance",
+      "head_sha": "ef5ee05c785904e1a01c2d09cc65649edc8745ab",
+      "hold_reasons": [
+        "changed paths: 10"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-21T17:35:48.738309+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-w0-maintenance",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 10,
+        "modified_paths": [
+          ".github/copilot-instructions.md",
+          "CLAUDE.md",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/getting-started/agent-bootstrap.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/e1-excel-routine-workbench-v1-evidence.md",
+          "llms.txt"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/e1-w0-maintenance-git-handoff-source-evidence.json",
+          "docs/verification/e1-windows-w0-setup-evidence.md"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-w0-maintenance"
+    }
+  },
+  "local_state_receipt_hash": "sha256:6586048f795d2b214894bed7b220785eebd8710a043db6dc4d4b72f37c2dd058",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-21T17:35:48.738475+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [
+      "E1_PR_826_NOT_INTEGRATED",
+      "G3_NOT_RUN"
+    ],
+    "observed_at_utc": "2026-08-21T17:34:54Z",
+    "owner": "Main Agent under user-requested E1 maintenance sequence",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Etabs_CSV",
+      "excel_addin",
+      "Python/structural_lib/core/excel_workbook.py",
+      "Python/structural_lib/services/excel_workbench.py",
+      "fastapi_app/routers/excel_workbench.py"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "docs/verification/e1-windows-w0-setup-evidence.md",
+      "docs/verification/e1-w0-maintenance-git-handoff-source-evidence.json",
+      "docs/verification/e1-w0-maintenance-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "CLAUDE.md",
+      ".github/copilot-instructions.md",
+      "llms.txt",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/getting-started/agent-bootstrap.md",
+      "docs/planning/next-session-brief.md",
+      "docs/verification/e1-excel-routine-workbench-v1-evidence.md",
+      "Python/structural_lib/index.json",
+      "Python/structural_lib/index.md",
+      "Python/tests/index.json",
+      "Python/tests/index.md",
+      "fastapi_app/index.json",
+      "fastapi_app/index.md",
+      "docs/index.json",
+      "docs/index.md",
+      "docs/getting-started/index.json",
+      "docs/getting-started/index.md",
+      "docs/planning/index.json",
+      "docs/planning/index.md",
+      "docs/verification/index.json",
+      "docs/verification/index.md"
+    ],
+    "task_id": "E1-WINDOWS-W0-MAINTENANCE"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

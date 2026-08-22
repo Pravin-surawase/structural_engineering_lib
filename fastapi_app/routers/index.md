@@ -1,8 +1,8 @@
 # Routers
 
 **Type:** Python Package
-**Last Updated:** 2026-08-17
-**Files:** 26
+**Last Updated:** 2026-08-22
+**Files:** 27
 
 ## Public API
 
@@ -41,6 +41,7 @@
 | [deep_beam.py](deep_beam.py) | FastAPI transport for the bounded simply supported deep-beam | 0 | 1 | 133 |
 | [design.py](design.py) | Beam Design Router. | 0 | 10 | 1083 |
 | [detailing.py](detailing.py) | Beam Detailing Router. | 0 | 4 | 412 |
+| [excel_workbench.py](excel_workbench.py) | Versioned REST transport for Excel Routine Workbench V1. | 0 | 5 | 127 |
 | [export.py](export.py) | Export Router — BBS, DXF, and Report exports. | 4 | 5 | 805 |
 | [flat_slab.py](flat_slab.py) | FastAPI transport for the bounded regular interior flat-slab | 0 | 1 | 154 |
 | [footing.py](footing.py) | FastAPI transport for the bounded concentric isolated-footin | 0 | 1 | 69 |

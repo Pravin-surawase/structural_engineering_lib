@@ -1,0 +1,67 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-22T06:29:32Z",
+      "query_status": "OK",
+      "reference": "task:E1-WORKBOOK-OPEN-REPAIR:delegated-diagnosis-and-confirmed-root-cause-repair",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_DRAFT_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-22T06:29:32Z",
+    "prohibited_actions": [
+      "AMEND_PREDECESSOR_PR",
+      "MERGE_PULL_REQUEST",
+      "START_G3_BEFORE_EXACT_CANDIDATE_CLOSEOUT",
+      "START_ETABS_FILE_SNAPSHOT",
+      "START_LIVE_ETABS",
+      "RUN_ETABS_ANALYSIS",
+      "START_ETABS_WRITE_BACK",
+      "START_NIGHTLY_OPTIMIZATION",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "DISCARD_USER_CHANGE",
+      "CLOSE_PULL_REQUEST",
+      "PUBLISH_RELEASE",
+      "CLAIM_PROFESSIONAL_APPROVAL"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_DRAFT_PR"
+      ],
+      "branch": "codex/e1-workbook-open-repair",
+      "head_sha": "98c60bc1f7c3899c28f662e82399cb25d80bbf26",
+      "task_id": "E1-WORKBOOK-OPEN-REPAIR"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "STACKED_BEHIND_E1_PR_SEQUENCE_AND_G3_NOT_RUN",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_WORKTREE_AND_DIAGNOSTIC_EVIDENCE",
+    "holds": [
+      "E1_PRS_826_TO_829_NOT_INTEGRATED",
+      "WORKBOOK_OPEN_REPAIR_NOT_REVIEWED",
+      "G3_NOT_RUN"
+    ],
+    "observed_at_utc": "2026-08-22T06:29:32Z",
+    "owner": "Main Agent under the user-authorized E1 workbook-open repair",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

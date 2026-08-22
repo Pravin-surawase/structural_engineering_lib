@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://appsforoffice.microsoft.com; script-src 'self' https://appsforoffice.microsoft.com; style-src 'self'; connect-src 'self'; img-src 'self' data:;" />
+    <title>Excel Routine Workbench V1</title>
+    <link rel="stylesheet" href="./taskpane.css" />
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <script type="module" src="./taskpane.mjs"></script>
+  </head>
+  <body>
+    <header>
+      <p class="eyebrow">STRUCTURAL_LIB · IS 456</p>
+      <h1>Routine Workbench V1</h1>
+      <p class="lede">One selected rectangular-beam table, evaluated by the canonical Python library.</p>
+    </header>
+
+    <main>
+      <section id="status" class="status hold" aria-live="polite" aria-atomic="true" aria-busy="true" tabindex="-1">
+        <strong id="status-title">INITIALIZING</strong>
+        <span id="status-detail">Checking the workbook contract.</span>
+      </section>
+
+      <section class="card">
+        <h2>1. Preview mapping</h2>
+        <p>Reads only <code>Beam_Workbench / tbl_Beam_Workbench_V1</code>. Every table row remains accounted for.</p>
+        <p id="context" class="context">Connecting to the local capability endpoint.</p>
+        <button id="preview" type="button">Preview selected table</button>
+        <p id="mapping" class="detail">No mapping has been reviewed in this session.</p>
+      </section>
+
+      <section class="card">
+        <h2>2. Review and run</h2>
+        <label class="check">
+          <input id="review" type="checkbox" disabled />
+          <span>I reviewed the exact mapping shown in Excel.</span>
+        </label>
+        <button id="run" type="button" disabled>Run canonical design</button>
+        <button id="freshness" class="secondary" type="button" disabled>Check retained-result freshness</button>
+      </section>
+
+      <section class="card">
+        <h2>3. Export review evidence</h2>
+        <p>Regenerates the current result through the local library and verifies its hashes before saving complete JSON evidence.</p>
+        <button id="export" type="button" aria-describedby="export-detail" disabled>Export current review bundle</button>
+        <p id="export-detail" class="detail" aria-live="polite" aria-atomic="true">Export becomes available after a current reviewed run.</p>
+      </section>
+
+      <details class="card">
+        <summary>Local API authentication</summary>
+        <label for="token">Bearer token (only when local auth is enabled)</label>
+        <input id="token" type="password" autocomplete="off" />
+      </details>
+
+      <aside>
+        <strong>Boundaries</strong>
+        <p>No VBA, structural formulas, torsion, serviceability, ETABS access, write-back, or professional-approval claim.</p>
+      </aside>
+    </main>
+  </body>
+</html>
