@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2026-08-22T21:12:28.846689",
+  "generated": "2026-08-22T21:13:49.452319",
   "total_docs": 378,
   "docs": {
     "docs/SESSION_LOG.md": {
@@ -21,7 +21,7 @@
         "2026-08-22 \u2014 Session: E1 complete review-bundle export",
         "2026-08-22 \u2014 Session: E1 blank-workbook guard repair"
       ],
-      "size_bytes": 266120
+      "size_bytes": 266705
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",
@@ -2602,7 +2602,7 @@
         "Constraints for the maintenance session",
         "Exit criteria"
       ],
-      "size_bytes": 9001
+      "size_bytes": 9740
     },
     "docs/planning/lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md": {
       "title": "LIB-PRO-004 Lower-Level Safety and Diagnostic Closure",

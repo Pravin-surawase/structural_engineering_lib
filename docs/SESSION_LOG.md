@@ -85,6 +85,8 @@ cleanup remain excluded.
   not in the enforced lowercase status vocabulary.
 - The original time-bound transition receipt aged past its evidence window
   during cumulative tests and correctly failed with three stale-evidence holds.
+- The manually refreshed next-session brief used the successor receipt file hash
+  where the handoff contract requires its embedded local-state receipt hash.
 
 ### Root causes and resolutions
 
@@ -184,6 +186,12 @@ cleanup remain excluded.
   reserve hosted/check/tree facts for the separate post-merge observation.
   Evidence: successor receipt validation returns `LIB-PRO-005 | HOLD` with only
   the expected dirty/pre-PR holds.
+- Confirmed root cause: the receipt artifact hash and embedded state hash are
+  both SHA-256 values but represent different identities, and the brief was
+  manually refreshed instead of generated from the receipt object. Resolution:
+  use the embedded `local_state_receipt_hash` printed by `session end`, correct
+  the brief in a separate documentation repair commit, and preserve an
+  `MAINT-011` consistency-check follow-up.
 
 ### Validation through repaired content freeze
 

@@ -5,7 +5,7 @@
 <!-- HANDOFF:START -->
 - Date: 2026-08-22
 - Focus: Close the confirmed post-LIB-PRO-004 release-safety defects
-- Git receipt: docs/verification/lib-pro-005-git-handoff-receipt-2.json | sha256:d6b5c82505613e89407032fd5a29f894b2dc2f85ff9c02ca43a73fe96ed5f567 | HOLD
+- Git receipt: docs/verification/lib-pro-005-git-handoff-receipt-2.json | sha256:d5518052d6ad746ef3ac4cba69979801ad041f9bc60a68c5a2d1591e570d9b87 | HOLD
 - Git identity: codex/lib-pro-005-release-safety-closure@f1a9937cfdba4c72c22e6219ffaf02f94809f1a5 | upstream=origin/main@f1a9937cfdba4c72c22e6219ffaf02f94809f1a5 | base=origin/main@f1a9937cfdba4c72c22e6219ffaf02f94809f1a5 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: COMMIT_INTENDED_PATHS
