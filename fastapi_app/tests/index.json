@@ -1790,8 +1790,8 @@
     {
       "name": "test_security.py",
       "type": "python",
-      "size_lines": 407,
-      "last_updated": "2026-08-17",
+      "size_lines": 403,
+      "last_updated": "2026-08-22",
       "description": "Security Tests for FastAPI Application.",
       "classes": [
         {
@@ -1873,7 +1873,7 @@
           "description": "Create an expired JWT token."
         }
       ],
-      "content_hash": "1045cfefe897"
+      "content_hash": "d6b73c410d83"
     },
     {
       "name": "test_staircase.py",
@@ -2119,5 +2119,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "e359b84fd7501536"
+  "content_hash": "3c1fd92b036e65c1"
 }

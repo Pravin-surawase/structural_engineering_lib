@@ -229,7 +229,7 @@ def load_registry() -> dict[str, ToolEntry]:
                 permission_modes=permission_modes,
                 keywords=keywords,
                 skill=None,
-                aliases=[],
+                aliases=[str(alias) for alias in task_info.get("aliases", [])],
             )
 
     # Add aliases to entries
@@ -285,7 +285,10 @@ def find_tools(
 
     for tool in registry.values():
         score = 0.0
-        searchable = f"{tool.name} {tool.description} {' '.join(tool.keywords)}".lower()
+        searchable = (
+            f"{tool.name} {tool.description} {' '.join(tool.keywords)} "
+            f"{' '.join(tool.aliases)}"
+        ).lower()
 
         for token in tokens:
             if not token:

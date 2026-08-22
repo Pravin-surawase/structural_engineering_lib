@@ -2,14 +2,14 @@
   "folder": "fastapi_app/examples",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-16",
+  "last_updated": "2026-08-22",
   "file_count": 2,
   "files": [
     {
       "name": "test_client.py",
       "type": "python",
-      "size_lines": 260,
-      "last_updated": "2026-08-16",
+      "size_lines": 261,
+      "last_updated": "2026-08-22",
       "description": "Python Test Client for FastAPI Live Design Endpoints.",
       "functions": [
         {
@@ -31,9 +31,10 @@
       ],
       "constants": [
         "BASE_URL",
-        "WS_URL"
+        "WS_URL",
+        "REQUEST_TIMEOUT_SECONDS"
       ],
-      "content_hash": "57ab1e38d2f3"
+      "content_hash": "b2536a8e0a1f"
     },
     {
       "name": "test_client.ts",
@@ -50,5 +51,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "ade976ef2d67513a"
+  "content_hash": "ef606e54fc1b1fbd"
 }

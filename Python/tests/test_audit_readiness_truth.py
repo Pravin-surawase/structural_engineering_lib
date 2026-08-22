@@ -103,6 +103,39 @@ def test_all_contract_truth_controls_can_report_pass(monkeypatch) -> None:
     assert report.verdict == "PASS"
 
 
+def test_diagnostic_summary_keeps_first_hard_error_and_final_context() -> None:
+    summary = readiness._diagnostic_summary(
+        "\n".join(
+            [
+                "Documentation validation",
+                "ERROR: invalid doc_type 'plan' in docs/planning/new.md",
+                "Checked 405 active files",
+                "WARNING: soft documentation budget exceeded",
+            ]
+        ),
+        "Final context: hard cap is 500",
+    )
+
+    assert "ERROR: invalid doc_type 'plan'" in summary
+    assert "WARNING: soft documentation budget exceeded" in summary
+    assert "Final context: hard cap is 500" in summary
+
+
+def test_readiness_distinguishes_executable_performance_thresholds_from_reporting():
+    report = readiness.AuditReport()
+
+    readiness.collect_testing_evidence(report)
+
+    performance = next(
+        item
+        for item in report.evidence
+        if item.name == "Performance Threshold Authority"
+    )
+    assert performance.status == "PASS"
+    assert "executable latency/degradation thresholds" in performance.details
+    assert "reporting is intentionally parked" in performance.details
+
+
 def test_public_route_regression_failure_makes_readiness_fail(monkeypatch) -> None:
     report, calls = _collect(
         monkeypatch,

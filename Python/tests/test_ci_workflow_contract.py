@@ -192,6 +192,19 @@ def test_pr_gate_topology_and_cancellation_are_scoped_per_pr():
     assert "group: deploy-docs" not in deploy_docs
 
 
+def test_workflow_guidance_explains_excel_skip_and_performance_authorities():
+    guidance = (REPO_ROOT / ".github" / "workflows" / "README.md").read_text(
+        encoding="utf-8"
+    )
+
+    assert "Excel Add-in Validation` is expected to show `skipped`" in guidance
+    assert "`excel_addin/**` path changed" in guidance
+    assert "complete local Excel suite" in guidance
+    assert "fastapi_app/tests/test_load.py" in guidance
+    assert "executable latency and degradation thresholds" in guidance
+    assert "baseline/comment reporting is parked" in guidance
+
+
 def test_pr_gate_accepts_successful_applicable_routes():
     result = _run_pr_gate(
         EXCEL_CHANGED="true",

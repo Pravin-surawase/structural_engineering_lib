@@ -23,7 +23,7 @@
 | [lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md](lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md) |  | 640c7839f043adb0e7db02d924a9e1a3a06e1131. function-quality f | 108 |
 | [lib-pro-005-release-safety-closure-plan.md](lib-pro-005-release-safety-closure-plan.md) |  | Close the reproduced release-safety defects found after LIB- | 59 |
 | [library-expansion-blueprint-v5.md](library-expansion-blueprint-v5.md) | Library Expansion Blueprint v5.0 — Multi | > Master plan for expanding structural_engineering_lib from  | 1121 |
-| [maint-011-developer-gate-hygiene-follow-up.md](maint-011-developer-gate-hygiene-follow-up.md) |  | Preserve the tooling and process defects encountered during  | 59 |
+| [maint-011-developer-gate-hygiene-follow-up.md](maint-011-developer-gate-hygiene-follow-up.md) |  | Preserve the tooling and process defects encountered during  | 83 |
 | [memory.md](memory.md) |  | - Development resumed after a four-month pause and a Mac lap | 411 |
 | [next-phase-improvements-plan.md](next-phase-improvements-plan.md) |  | > This document is a result of a full audit of the beam libr | 1445 |
 | [next-session-brief.md](next-session-brief.md) | Next Session Briefing | <!-- HANDOFF:START --> - Date: 2026-08-22 | 47 |

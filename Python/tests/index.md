@@ -18,7 +18,7 @@ This document describes the test taxonomy and structure for the structural_engin
 |------|-------------|---------|-----------|-------|
 | [__init__.py](__init__.py) |  | 0 | 0 | 1 |
 | [conftest.py](conftest.py) | Pytest configuration and Hypothesis profiles for the test su | 0 | 6 | 131 |
-| [test_agent_governance_automation.py](test_agent_governance_automation.py) | Regression tests for agent-governance automation controls. | 0 | 20 | 541 |
+| [test_agent_governance_automation.py](test_agent_governance_automation.py) | Regression tests for agent-governance automation controls. | 0 | 20 | 642 |
 | [test_api_classification.py](test_api_classification.py) | Executable truth checks for the Alpha API classification reg | 0 | 4 | 105 |
 | [test_api_manifest_tools.py](test_api_manifest_tools.py) | Regression tests for the single canonical public API manifes | 0 | 5 | 134 |
 | [test_api_results.py](test_api_results.py) | Tests for API result dataclasses. | 3 | 0 | 394 |
@@ -26,12 +26,12 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_api_surface_snapshot.py](test_api_surface_snapshot.py) | Snapshot regression tests — assert minimum API surface count | 5 | 0 | 122 |
 | [test_assertion_helpers.py](test_assertion_helpers.py) | Tests for the IS 456 test assertion helpers. | 3 | 0 | 82 |
 | [test_audit.py](test_audit.py) | Tests for audit module (TASK-278). | 6 | 0 | 471 |
-| [test_audit_readiness_truth.py](test_audit_readiness_truth.py) | Readiness must aggregate semantic truth instead of reporting | 0 | 14 | 256 |
+| [test_audit_readiness_truth.py](test_audit_readiness_truth.py) | Readiness must aggregate semantic truth instead of reporting | 0 | 16 | 289 |
 | [test_boq.py](test_boq.py) | Tests for the BOQ (Bill of Quantities) aggregation module. | 1 | 0 | 252 |
 | [test_branch_disposition.py](test_branch_disposition.py) | Outcome tests for the inspection-only branch disposition cla | 0 | 12 | 437 |
 | [test_bump_version_semantics.py](test_bump_version_semantics.py) | Regression coverage for candidate-version documentation sema | 0 | 1 | 66 |
 | [test_calculation_report.py](test_calculation_report.py) | Tests for the calculation_report module (TASK-277). | 9 | 4 | 745 |
-| [test_ci_workflow_contract.py](test_ci_workflow_contract.py) | Regression tests for fail-closed PR workflow routing. | 0 | 7 | 242 |
+| [test_ci_workflow_contract.py](test_ci_workflow_contract.py) | Regression tests for fail-closed PR workflow routing. | 0 | 8 | 255 |
 | [test_clause_traceability.py](test_clause_traceability.py) | Tests for IS 456 Traceability Module | 10 | 2 | 489 |
 | [test_column_axial.py](test_column_axial.py) | Tests for column axial module — effective_length() per IS 45 | 6 | 0 | 273 |
 | [test_column_biaxial.py](test_column_biaxial.py) | Tests for IS 456 Cl 39.6 biaxial bending check — TASK-635. | 8 | 0 | 958 |
@@ -63,7 +63,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_is456_common.py](test_is456_common.py) | Tests for IS 456:2000 common modules - stress_blocks, reinfo | 15 | 0 | 900 |
 | [test_is456_constants.py](test_is456_constants.py) | Tests for IS 456:2000 named design constants. | 1 | 0 | 163 |
 | [test_model_picker.py](test_model_picker.py) | Tests for the deterministic low-token model picker. | 0 | 8 | 132 |
-| [test_multi_objective_optimizer.py](test_multi_objective_optimizer.py) | Tests for the multi-objective optimizer module (NSGA-II). | 5 | 0 | 319 |
+| [test_multi_objective_optimizer.py](test_multi_objective_optimizer.py) | Tests for the multi-objective optimizer module (NSGA-II). | 5 | 0 | 339 |
 | [test_new_element_completeness.py](test_new_element_completeness.py) | Regression tests for nested element completeness discovery. | 0 | 3 | 45 |
 | [test_numerics.py](test_numerics.py) | Tests for structural_lib.core.numerics - safe arithmetic uti | 4 | 0 | 136 |
 | [test_packaging.py](test_packaging.py) | Tests for package distribution correctness. | 9 | 0 | 462 |
@@ -75,9 +75,9 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_report_edge_cases.py](test_report_edge_cases.py) | Edge case tests for report generation modules (TASK-520). | 4 | 0 | 303 |
 | [test_report_svg.py](test_report_svg.py) | Tests for the SVG report generation module. | 4 | 0 | 141 |
 | [test_reports.py](test_reports.py) | Tests for the reports module. | 8 | 0 | 447 |
-| [test_research_prototypes.py](test_research_prototypes.py) | Tests for research prototypes: Sustainability, Generative De | 4 | 0 | 910 |
+| [test_research_prototypes.py](test_research_prototypes.py) | Tests for research prototypes: Sustainability, Generative De | 4 | 0 | 949 |
 | [test_result_base.py](test_result_base.py) | Tests for result_base module. | 7 | 0 | 217 |
-| [test_session_automation.py](test_session_automation.py) | Regression tests for maintenance session automation. | 0 | 20 | 1547 |
+| [test_session_automation.py](test_session_automation.py) | Regression tests for maintenance session automation. | 0 | 20 | 1583 |
 | [test_session_store.py](test_session_store.py) | Tests for scripts/session_store.py — JSON session persistenc | 7 | 0 | 287 |
 | [test_slenderness.py](test_slenderness.py) | Unit tests for slenderness module. | 5 | 0 | 360 |
 | [test_testing_strategies.py](test_testing_strategies.py) | Tests for the testing_strategies module (TASK-279). | 12 | 0 | 681 |

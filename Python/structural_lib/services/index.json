@@ -2391,8 +2391,8 @@
     {
       "name": "multi_objective_optimizer.py",
       "type": "python",
-      "size_lines": 642,
-      "last_updated": "2026-08-17",
+      "size_lines": 653,
+      "last_updated": "2026-08-22",
       "description": "Multi-Objective Optimization Module",
       "classes": [
         {
@@ -2439,7 +2439,7 @@
         "_HIGH_UTILIZATION_THRESHOLD",
         "GOVERNING_CLAUSES"
       ],
-      "content_hash": "dbf586cd350a"
+      "content_hash": "891d98e55de5"
     },
     {
       "name": "optimization.py",
@@ -3428,5 +3428,5 @@
     "PropertyLineStrapFootingDesignStatus",
     "design_property_line_strap_footing_is456"
   ],
-  "content_hash": "12969415e17cdb89"
+  "content_hash": "d33e399df22bf218"
 }

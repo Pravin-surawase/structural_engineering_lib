@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-22 — LIB-PRO-004 merged; LIB-PRO-005 release-safety closure active
+**Updated:** 2026-08-22 — LIB-PRO-005 merged; MAINT-011 complete on merge
 
 ---
 
@@ -127,13 +127,13 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-005 | Close confirmed WebSocket, BOQ, lower-level scalar, PMM packaging, root-export, and React status defects without overstating diagnostic coverage | backend + api + frontend + ops | M | P0 | 🟡 LOCAL CANDIDATE — reproduced families repaired; diagnostic now records 361 UNPROVEN parameters and readiness remains truthfully PARTIAL pending cumulative/hosted gates |
+| — | No active implementation packet after MAINT-011 merge | — | — | — | Next capability work requires a separately frozen scope |
 
 INDIA-2 remains administratively complete within its recorded accepted/held
-boundary. The reproduced public-route safety defects take priority over new
-capability work. INDIA-3, dependency work, the next package version, further
-cleanup, and professional approval remain separately held until `LIB-PRO-005`
-and any resulting route-safety successor are resolved or explicitly replanned.
+boundary. The reproduced public-route safety packet is integrated. INDIA-3,
+dependency work, the next package version, further cleanup, and professional
+approval remain separately held until a successor is explicitly selected and
+scoped.
 
 `LIB-PRO-003-A` was accepted and exact-tree merged through PR #832 at
 `e7698a63b86d2db6db2f3970871122af1ce562f6`; Packet B was accepted and
@@ -164,7 +164,6 @@ write-back/nightly work remain outside E1.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| MAINT-011 | Repair staged/all-file hook parity, legacy baseline handling, stale gate counts, and developer-command discoverability | Main Agent + ops + governance | M | P1 | 📋 NEXT MAINTENANCE — detailed issue/root-cause register frozen in `planning/maint-011-developer-gate-hygiene-follow-up.md`; keep separate from LIB-PRO-005 |
 | INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ AFTER LIB-PRO-003 — truth/benchmark/contract audit only; no new formulas or support claims |
 | SPARK-001-G0 | Reassess the stale Spark work-program proposal before any implementation | repository owner | review gate | P2 | ⏸ OWNER REVIEW — the 2026-08-11 model/preview assumptions and bulk wave require refresh or rejection |
 
@@ -201,6 +200,8 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| MAINT-011 | Repaired staged/all-file hook parity, JSONC/Bandit dispositions, developer readiness, and audit/session truth | Main Agent + ops + governance | ✅ COMPLETE ON MERGE — 15 root-cause dispositions implemented; all-file byte cleanliness, focused/quick/full/local hooks, and required hosted checks are merge prerequisites |
+| LIB-PRO-005 | Closed confirmed WebSocket, BOQ, lower-level scalar, PMM packaging, root-export, React-status, and evidence-truth defects without hiding the wider audit hold | backend + api + frontend + ops | ✅ DONE — PR #837 merged at `3f61bd93`; every required check passed and remaining 361 UNPROVEN parameters stay explicit |
 | LIB-PRO-004 | Repaired six lower-level boundaries and replaced misleading validation/function-quality diagnostics with evidence-bearing results | reviewer + backend + governance | ✅ DONE — integrated through PR #836 at exact merge `f1a9937c`; diagnostic truthfully retained 370 UNPROVEN parameters and required a successor route-safety packet |
 | LIB-PRO-003-D | Made Excel CI and readiness audits decisive and synchronized release/route-count/documentation truth | ops + governance | ✅ DONE — integrated through PR #835 at exact merge `640c7839`; readiness remains truthful PARTIAL/exit 2 and release HOLD |
 | E1-EXCEL-ROUTINE-WORKBENCH | Delivered the macro-free selected-table Excel workbench, deterministic review bundle, workbook-open repair, and installed Excel acceptance | Main Agent | ✅ COMPLETE — `G3_PASS`; cumulative PR #830 merged as `b720119e` with exact candidate/merged tree `bcc7fcf1`; no ETABS or professional-approval claim |

@@ -96,4 +96,3 @@ This is one of the most-used tables in structural design. Here's a portion:
 
 Notice how $\\tau_c$ **saturates** for M15 at around $p_t = 1.75\%%$ (stays 0.71).
 Higher grade concretes keep gaining strength up to $p_t = 3\%%$.
-

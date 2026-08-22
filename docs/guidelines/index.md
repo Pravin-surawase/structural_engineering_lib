@@ -1,7 +1,7 @@
 # Guidelines
 
 **Type:** Documentation
-**Last Updated:** 2026-08-17
+**Last Updated:** 2026-08-22
 **Files:** 16
 
 ## Config Files
@@ -17,7 +17,7 @@
 | [api-design-guidelines.md](api-design-guidelines.md) |  | This document consolidates all Phase 1 and Phase 2 API resea | 2626 |
 | [api-evolution-standard.md](api-evolution-standard.md) |  | > **Standard for API versioning, deprecation, and backward c | 1691 |
 | [blog-writing-guide.md](blog-writing-guide.md) |  | | Audience | Tone | Example | |----------|------|---------| | 860 |
-| [doc-naming-conventions.md](doc-naming-conventions.md) |  | Reduce duplication, improve findability, and ensure every to | 92 |
+| [doc-naming-conventions.md](doc-naming-conventions.md) |  | Reduce duplication, improve findability, and ensure every to | 91 |
 | [documentation-standard.md](documentation-standard.md) |  | > **Standard for documentation, docstrings, and API discover | 1614 |
 | [error-handling-standard.md](error-handling-standard.md) |  | > **Standard for exception design, error messages, and valid | 1935 |
 | [file-operations-safety-guide.md](file-operations-safety-guide.md) |  | File operations (delete, move, rename) can break: - Internal | 308 |

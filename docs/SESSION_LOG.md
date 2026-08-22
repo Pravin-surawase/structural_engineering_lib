@@ -5,6 +5,168 @@
 
 ---
 
+## 2026-08-22 — Session: MAINT-011 developer gate hygiene
+
+**Agent:** Codex (`governance` + `ops`, sole writer)
+
+**Branch:** `codex/maint-011-developer-gate-hygiene`, from exact merged PR #837
+commit `3f61bd93d92b7092a55e25b8ca99eda4b3335ff1`.
+
+**Git handoff receipt:**
+`docs/verification/maint-011-git-handoff-receipt.json`
+
+**Focus:** Complete the 13 confirmed MAINT-011 findings plus any additional
+reproduced root cause in one branch/PR. Finish all implementation, tests,
+documentation, task/handoff records, and the receipt before one consolidated
+focused/hook/quick/full validation sequence. Formula work, Excel features,
+ETABS, INDIA-3 implementation, release publication, and destructive cleanup
+remain excluded.
+
+### Summary
+
+- Gave all three text normalizers one explicit preservation boundary for
+  archived, vendored, and frozen artifacts while retaining active-file hygiene;
+  excluded only the two deliberate TypeScript JSONC configs from strict JSON.
+- Dispositioned all eight Bandit findings without a broad exclusion: candidate
+  searches now log expected domain rejections and propagate unexpected faults,
+  HTTP examples have finite timeouts, and vacuous security tests now assert
+  exact HTTP/WebSocket behavior.
+- Preserved staged mypy, documented typed loop-variable ownership, reconciled
+  active instructions to the live 31-check registry, repaired alias discovery,
+  and documented the global/leaf/deepest-parent index sequence.
+- Added a worktree-local React readiness probe and exact pinned-Node `npm ci`
+  remediation; added shell-safe zsh examples for globs, literal backticks, and
+  package extras.
+- Made audit summaries retain the first hard failure plus final context, added
+  explicit executable-versus-parked performance authority, clarified Excel
+  skip semantics, and separated historical transition receipts from successor
+  final-merge observations.
+- Made the next-session brief's receipt path, embedded local-state hash, and
+  status machine-checked against the selected receipt object. Added M11-14 for
+  the live bare-`pre-commit` PATH failure and converted maintained commands to
+  the repository-bound Python launcher.
+
+### Issues encountered
+
+- The documented all-file hook path could rewrite 1,738 preserved files and
+  then fail on two JSONC configs, three core Bandit findings, and five FastAPI
+  findings even though the cumulative gate was green.
+- Three research/service candidate loops silently swallowed every exception;
+  three FastAPI security tests allowed any exception to count as success; two
+  live HTTP examples had no finite timeout.
+- Active developer instructions carried a stale 30-check count, automation
+  aliases were stored but ignored by the unified tool registry, and a fresh
+  worktree's `node_modules` directory was not a reliable readiness contract.
+- Compact readiness details retained only trailing warning lines, and the
+  session checker did not compare the brief's receipt identity with the
+  selected receipt object.
+- Live preparation confirmed that the repository runtime can import
+  `pre_commit` while the bare executable is absent from this shell's PATH.
+- One MAINT-011 inspection used an unquoted speculative test-file glob; zsh
+  rejected it before `rg` ran.
+- The first handoff-receipt command also left `**` path contracts unquoted;
+  zsh expanded them into hundreds of arguments before the generator ran.
+- The first final all-file replay still normalized 38 tracked paths and the
+  session hook could not resolve the newly generated receipt from the log.
+- The task board still called merged LIB-PRO-005 a local candidate because its
+  immutable predecessor correctly did not receive a post-push status commit.
+
+### Root causes and resolutions
+
+- M11-01/02 root cause: generic normalizers and strict JSON selection had no
+  representation of repository-owned preserved bytes or deliberate JSONC.
+  Resolution: share exact preservation roots across every mutating text hook
+  and exclude only `tsconfig.app.json`/`tsconfig.node.json` from `check-json`.
+  Proof contract: configuration regressions require preserved roots to match,
+  active docs to remain included, and ordinary project JSON to remain strict.
+- M11-03 root cause: broad exception swallowing conflated expected candidate
+  rejection with implementation faults, while example/security code lacked
+  decisive network and authentication assertions. Resolution: catch/log only
+  expected value/type/arithmetic errors, let unexpected failures propagate,
+  set 30-second HTTP timeouts, and assert public no-token ping plus invalid-token
+  close code 4001. Both Bandit hooks retain full source-tree scope.
+- M11-04 root cause: mypy retains the first loop variable's inferred type in a
+  function. Resolution: keep staged mypy and document distinct ownership names
+  plus narrowing for differently typed iterables.
+- M11-05 root cause: count-bearing instructions were manually duplicated after
+  the 31st registry check was added. Resolution: update all three active
+  surfaces and bind their statement to `check_all.CATEGORIES` in a regression.
+- M11-06 root cause: the automation map had weak aliases and `tool_registry.py`
+  discarded task aliases entirely. Resolution: add maintained/legacy/intention
+  aliases, index them in both discovery paths, document default dry-run modes,
+  and freeze global catalog then leaf-to-parent index ordering.
+- M11-07 root cause: ignored dependencies are worktree-local and directory
+  existence does not prove Vite/Vitest/TypeScript/ESLint readiness. Resolution:
+  probe exact local tools before React commands and print one root-stable pinned
+  Node `npm ci` command; never copy dependency trees between worktrees.
+- M11-08 root cause: zsh expands unmatched globs, backticks, and square-bracket
+  extras before the intended program receives them. Resolution: add quoted
+  literal examples and prefer exact paths discovered with `rg --files`.
+  ⚠️ TERMINAL ISSUE: an unquoted `test_sync_numbers*` inspection aborted in zsh
+  and unquoted receipt `**` contracts expanded before argument parsing -> reran
+  with exact maintained paths/literal quoted contracts and added the governing
+  examples; neither failed command mutated repository state.
+- M11-09 root cause: `_diagnostic_summary()` selected only the final three
+  lines. Resolution: select the first error/failure/invalid/exception line and
+  append the last two distinct context lines, with a mixed error/warning test.
+- M11-10 root cause: a time-bound transition receipt and a final merge
+  observation have different identities and lifetimes. Resolution: validate
+  the receipt during final pre-push session closeout, retain it unchanged after
+  expiry, and keep hosted/merge facts in the successor external observation.
+- M11-11 root cause: selective path classification was being read as missing
+  Excel validation. Resolution: document that non-applicable Excel must skip,
+  required PR Gate verifies the classification/skip pair, and cross-product
+  local Excel acceptance remains separate.
+- M11-12 root cause: parked reporting automation was conflated with missing
+  executable thresholds. Resolution: readiness names
+  `fastapi_app/tests/test_load.py` as latency/degradation authority and the
+  workflow document as the parked standalone reporter disposition.
+- M11-13 root cause: artifact SHA-256 and embedded local-state SHA-256 are both
+  valid-looking but semantically different, and only the generated output knew
+  which one was required. Resolution: compare brief path/hash/status with the
+  receipt object during preservation, session check, and session end.
+- M11-14 root cause: `pre-commit` is installed in the approved repository
+  environment, not guaranteed on the interactive shell PATH. Resolution:
+  convert maintained install/run examples to
+  `./scripts/python_runtime.sh -m pre_commit`.
+- M11-15 root cause: the session-log convention permits the receipt path on the
+  line after its bold label, while `_parse_git_receipt_path()` accepted only an
+  inline value. Resolution: parse either maintained representation and freeze a
+  wrapped-Markdown regression, so the session hook resolves the selected
+  receipt before comparing its brief identity.
+- Final-hook root cause: the first preservation boundary still omitted the
+  generated `.vite/` cache and React migration fixtures, while 34 active
+  text/config/index assets on `main` genuinely lacked canonical terminal
+  newlines. Resolution: restore the four generated/frozen files byte-for-byte,
+  add their exact roots to every normalizer exclusion, and retain the hook's
+  one-time newline normalization only for the 34 active assets. The affected
+  indexes and byte-clean hook evidence are regenerated once after this repair.
+- Task-state root cause: closeout freeze forbids updating a reviewed candidate
+  only to add hosted/merge facts. Resolution: re-observe PR #837 from the new
+  authorized MAINT lane and reconcile LIB-PRO-005 as merged at `3f61bd93`.
+
+### Validation boundary
+
+- All intended source, test, instruction, task, handoff, issue, and receipt
+  content is frozen before validation. The final write is the affected-index
+  refresh in dependency order.
+- One consolidated sequence owns formatting/lint/type checks, focused Python
+  and FastAPI regressions, strict JSON/Bandit, command discovery, staged/all-file
+  hook parity in a disposable clean worktree, quick 10/10, full 31/31, audit,
+  immutable candidate review, required hosted checks, and merge.
+- Excel/product/release/ETABS suites are not rerun because no changed path owns
+  those implementations; Excel skip semantics are proven by the CI contract.
+- Exact pass/fail, PR, hosted, and merge facts remain external read-only
+  closeout evidence after this candidate freezes.
+
+### Handoff
+
+Commit only the MAINT-011 paths after the consolidated local acceptance passes,
+push one branch, open one PR, and merge only the unchanged reviewed head when
+every required hosted check succeeds. Retain the branch and worktree; deletion
+remains separately authorized. Select core Indian-code/earthquake/ETABS work in
+a new bounded task rather than extending this maintenance candidate.
+
 ## 2026-08-22 — Session: LIB-PRO-005 confirmed release-safety closure
 
 **Agent:** Codex (`backend` + `api-developer` + `frontend` + `ops`, sole writer)

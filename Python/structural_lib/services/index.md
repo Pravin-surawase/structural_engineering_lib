@@ -66,7 +66,7 @@
 | [intelligence.py](intelligence.py) | Compatibility shim for legacy imports. | 0 | 0 | 36 |
 | [job_cli.py](job_cli.py) | job_cli | 0 | 1 | 203 |
 | [job_runner.py](job_runner.py) | job_runner | 0 | 4 | 317 |
-| [multi_objective_optimizer.py](multi_objective_optimizer.py) | Multi-Objective Optimization Module | 2 | 2 | 642 |
+| [multi_objective_optimizer.py](multi_objective_optimizer.py) | Multi-Objective Optimization Module | 2 | 2 | 653 |
 | [optimization.py](optimization.py) | Optimization algorithms for structural design. | 2 | 1 | 311 |
 | [project_beam.py](project_beam.py) | Versioned, fail-closed project beam input and result contrac | 8 | 2 | 716 |
 | [rebar.py](rebar.py) | Rebar configuration validation and application helpers. | 0 | 2 | 251 |

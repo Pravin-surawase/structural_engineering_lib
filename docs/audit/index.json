@@ -2,7 +2,7 @@
   "folder": "docs/audit",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-08-17",
+  "last_updated": "2026-08-22",
   "file_count": 8,
   "files": [
     {
@@ -33,10 +33,10 @@
     {
       "name": "comprehensive-library-audit-2026-04-04.md",
       "type": "documentation",
-      "size_lines": 1069,
-      "last_updated": "2026-08-09",
+      "size_lines": 1070,
+      "last_updated": "2026-08-22",
       "description": "| Workstream | Agent | Score | Key Finding | |-----------|-------|-------|-------------|",
-      "content_hash": "7fa83524aff8"
+      "content_hash": "97636f5f585c"
     },
     {
       "name": "evidence-bundle-template.md",
@@ -78,5 +78,5 @@
       "file_count": 0
     }
   ],
-  "content_hash": "4576a9f87351fecd"
+  "content_hash": "4ddb48a5de80f1e5"
 }

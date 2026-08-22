@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
 from dataclasses import dataclass, field
@@ -236,6 +237,39 @@ def collect_testing_evidence(report: AuditReport) -> None:
         )
     )
 
+    load_tests = Path("fastapi_app/tests/test_load.py")
+    workflow_contract = Path(".github/workflows/README.md")
+    load_text = load_tests.read_text(encoding="utf-8") if load_tests.exists() else ""
+    workflow_text = (
+        workflow_contract.read_text(encoding="utf-8")
+        if workflow_contract.exists()
+        else ""
+    )
+    executable_thresholds = all(
+        token in load_text for token in ("LOAD_P95_MS", "LOAD_DEGRADATION_PCT")
+    )
+    reporting_parked = (
+        "Standalone baseline/comment reporting is parked" in workflow_text
+    )
+    performance_ready = executable_thresholds and reporting_parked
+    report.add_evidence(
+        EvidenceItem(
+            category="Testing",
+            name="Performance Threshold Authority",
+            status="PASS" if performance_ready else "WARN",
+            required=False,
+            source=f"{load_tests}; {workflow_contract}",
+            details=(
+                "FastAPI load tests enforce executable latency/degradation "
+                "thresholds; standalone baseline/comment reporting is "
+                "intentionally parked"
+                if performance_ready
+                else "Executable thresholds or the parked-reporting disposition "
+                "could not be confirmed"
+            ),
+        )
+    )
+
     # Check coverage configuration
     pytest_ini = Path("Python/pytest.ini")
     coverage_rc = Path("Python/.coveragerc")
@@ -339,7 +373,21 @@ def _diagnostic_summary(stdout: str, stderr: str) -> str:
     ]
     if not lines:
         return "No diagnostic output was produced."
-    return " | ".join(lines[-3:])[:600]
+
+    decisive_pattern = re.compile(
+        r"(?:^|\b)(?:error|failed|failure|invalid|exception|traceback)(?:\b|:)",
+        re.IGNORECASE,
+    )
+    decisive = next((line for line in lines if decisive_pattern.search(line)), None)
+    selected: list[str] = []
+    if decisive is not None:
+        selected.append(decisive)
+    elif lines:
+        selected.append(lines[0])
+    for line in lines[-2:]:
+        if line not in selected:
+            selected.append(line)
+    return " | ".join(selected)[:600]
 
 
 def collect_contract_truth_evidence(report: AuditReport) -> None:

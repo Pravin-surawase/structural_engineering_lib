@@ -93,7 +93,7 @@ cd ..
 ### Install pre-commit hooks
 
 ```bash
-pre-commit install
+./scripts/python_runtime.sh -m pre_commit install
 ```
 
 ### Verify Python setup
@@ -336,8 +336,8 @@ cd Python && pip install -e ".[dev]" && cd ..
 ### pre-commit hooks fail on first run
 
 ```bash
-pre-commit install --install-hooks
-pre-commit run --all-files
+./scripts/python_runtime.sh -m pre_commit install --install-hooks
+./scripts/python_runtime.sh -m pre_commit run --all-files
 ```
 
 ### Docker build fails (WeasyPrint/Cairo)

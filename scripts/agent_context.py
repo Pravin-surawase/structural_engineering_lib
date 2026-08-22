@@ -247,9 +247,18 @@ def ctx_frontend():
     bullet("useImportedBeamsStore — imported CSV beams + selection")
 
     section("ENVIRONMENT")
-    nm_exists = (ROOT / "react_app" / "node_modules").exists()
+    react_tools_ready = all(
+        (ROOT / "react_app" / "node_modules" / ".bin" / tool).exists()
+        for tool in ("eslint", "tsc", "vite", "vitest")
+    )
     print(
-        f"  node_modules: {'✓ installed' if nm_exists else '✗ run: cd react_app && npm install'}"
+        "  React dependencies: "
+        + (
+            "✓ ready"
+            if react_tools_ready
+            else "✗ run: ./scripts/python_runtime.sh scripts/node_runtime.py -- "
+            "npm --prefix react_app ci"
+        )
     )
     node = run("node --version 2>/dev/null")
     print(f"  Node: {node if node else '✗ not found'}")

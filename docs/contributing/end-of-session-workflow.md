@@ -248,6 +248,26 @@ git status -sb          # Should show "## main...origin/main"
 git log --oneline -3    # Verify your commits are there
 ```
 
+### Maintained index refresh order
+
+Index projections depend on their children, so refresh from the changed leaf
+toward the repository root. Do not infer generator names or combine unrelated
+folder arguments.
+
+1. If documentation membership or indexed metadata changed, write the global
+   catalog first with
+   `./scripts/python_runtime.sh scripts/generate_docs_index.py --write`.
+2. Refresh each changed maintained leaf folder with
+   `./scripts/python_runtime.sh scripts/generate_enhanced_index.py <folder>`.
+3. Refresh maintained parent folders deepest-first, ending with `docs` when a
+   documentation child or `docs/docs-index.json` changed.
+4. Check the finished topology read-only with
+   `./scripts/python_runtime.sh scripts/generate_enhanced_index.py --all --check`.
+
+The no-flag `sync_numbers.py` command is a read-only report. Only `--fix`
+writes. A refused unmaintained index location is a topology decision, not a
+reason to add `--allow-new-index` automatically.
+
 ---
 
 ## 🎓 Best Practices
@@ -315,6 +335,12 @@ Update `docs/SESSION_LOG.md` and `docs/planning/next-session-brief.md` in the
 same candidate when their state changes. Record a PR number only if it is
 already known before the freeze. Never rewrite the candidate merely to add a
 new PR number, hosted status, or merge hash.
+
+The final read-only `session end` validates the fresh transition receipt before
+push. After hosted CI or merge, retain that historical receipt unchanged even
+when its time-bound observations later expire. Record the final PR/check/head/
+tree facts in the successor external closeout observation; do not rerun or
+rewrite the reviewed candidate merely to make its historical receipt current.
 
 ### Routine Bug Fix (1-2 hours)
 1. Finish the log/task/handoff/receipt writes.

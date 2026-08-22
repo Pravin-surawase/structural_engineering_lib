@@ -1,0 +1,59 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-22T17:41:31Z",
+      "query_status": "OK",
+      "reference": "task:MAINT-011:user-request-to-complete-maintenance-and-resolve-root-causes",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR",
+      "MERGE_PULL_REQUEST"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-22T17:41:31Z",
+    "prohibited_actions": [
+      "PUBLISH_RELEASE",
+      "CREATE_TAG",
+      "CLAIM_PROFESSIONAL_APPROVAL",
+      "START_INDIA_3",
+      "START_ETABS_OR_DESKTOP_EXCEL",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR",
+        "MERGE_PULL_REQUEST"
+      ],
+      "branch": "codex/maint-011-developer-gate-hygiene",
+      "head_sha": "3f61bd93d92b7092a55e25b8ca99eda4b3335ff1",
+      "task_id": "MAINT-011"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-22T17:41:31Z",
+    "owner": "Main Agent under repository retention policy; destructive cleanup remains separately owner-authorized",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

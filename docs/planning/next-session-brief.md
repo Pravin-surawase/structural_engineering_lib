@@ -4,43 +4,43 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-22
-- Focus: Close the confirmed post-LIB-PRO-004 release-safety defects
-- Git receipt: docs/verification/lib-pro-005-git-handoff-receipt-2.json | sha256:d5518052d6ad746ef3ac4cba69979801ad041f9bc60a68c5a2d1591e570d9b87 | HOLD
-- Git identity: codex/lib-pro-005-release-safety-closure@f1a9937cfdba4c72c22e6219ffaf02f94809f1a5 | upstream=origin/main@f1a9937cfdba4c72c22e6219ffaf02f94809f1a5 | base=origin/main@f1a9937cfdba4c72c22e6219ffaf02f94809f1a5 | tree=dirty | operation=none
+- Focus: Complete the 13 confirmed MAINT-011 findings plus any additional
+- Git receipt: docs/verification/maint-011-git-handoff-receipt.json | sha256:38d1d1642c7b89e61fe7050c6f3824e28761ea2678853840d26fd7e26617d5a1 | HOLD
+- Git identity: codex/maint-011-developer-gate-hygiene@3f61bd93d92b7092a55e25b8ca99eda4b3335ff1 | upstream=NONE@UNKNOWN | base=origin/main@3f61bd93d92b7092a55e25b8ca99eda4b3335ff1 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: COMMIT_INTENDED_PATHS
 <!-- HANDOFF:END -->
 
 | State | Boundary |
 |---|---|
-| **Current** | `LIB-PRO-005` local candidate from merged PR #836 base `f1a9937c`: confirmed WebSocket, BOQ, lower-level scalar, PMM packaging, root-export, React status, and two active documentation-count defects are repaired |
-| **Next** | Finish the pre-commit handoff receipt and one affected-index refresh, run cumulative read-only gates, create one immutable commit, push one PR, and let exact-head hosted checks decide merge eligibility |
-| **Why** | Direct runtime replay proved specific unsafe behaviors; performance and Excel claims were dispositioned without unnecessary CI rewiring |
-| **Held** | Remaining 361 unproven parameters, wider route remediation, INDIA-3, ETABS, package publication, stable/professional claims, and qualified approval remain separate and held |
+| **Current** | `LIB-PRO-005` is merged through PR #837 at `3f61bd93`; MAINT-011 implements 15 developer-gate root-cause dispositions in one separate candidate |
+| **Next** | Let the frozen MAINT-011 local gates, exact-head review, required hosted checks, and merge decide acceptance; then select a new library packet separately |
+| **Why** | Ordinary staged and all-file hooks must be equally decisive and byte-clean before more library capability work begins |
+| **Held** | Remaining 361 unproven parameters, wider route remediation, INDIA-3 implementation, ETABS, package publication, stable/professional claims, and qualified approval remain separate and held |
 
 ## Correct next library packet
 
-Do not restart the confirmed defect repairs. The maintained input auditor now
-assigns equivalent shear, development length, and beam outline to explicit
-validator/delegation evidence while truthfully exiting 1 for 361 unresolved
-parameters. Any successor must start from runtime reproducers and an
-outcome-changing maintained-route scope, not the raw static count.
+Do not restart LIB-PRO-005 or MAINT-011 after their merge prerequisites pass.
+The next library decision should compare a bounded input-safety successor with
+INDIA-3-G0 earthquake-code truth/benchmark intake. It must start from exact
+maintained routes and controlled sources, not from the raw count of 361
+unproven parameters.
 
 ## Other live work
 
-- PR #836 is integrated at `f1a9937c`. `v0.23.1a2` is already public; later
-  safety work is not in that artifact, so never republish that version.
-- `INDIA-3-G0` remains deferred until route-safety disposition is complete.
+- PR #837 is integrated at `3f61bd93`. `v0.23.1a2` is already public; later
+  safety and maintenance work is not in that artifact, so never republish it.
+- `INDIA-3-G0` remains a planning/source/benchmark audit only until separately
+  activated; no earthquake formulas are part of MAINT-011.
 - The unrelated dirty detached worktree at `.codex/worktrees/e54a` remains
   retained and untouched. Dependabot PRs are separate maintenance work.
-- `MAINT-011` preserves the all-file hook/JSONC/Bandit/vendor-normalization,
-  stale gate-count, command-discovery, shell, index, audit-summary, receipt, and
-  CI-semantics issues found here. Handle it only in a separate clean lane.
+- The MAINT-011 candidate preserves vendored/frozen bytes, repairs JSONC and
+  Bandit dispositions, and makes dependency, discovery, audit, receipt, Excel,
+  and performance truth explicit without starting ETABS or Excel feature work.
 
 ## Required Reading
 
-1. [LIB-PRO-005 plan](lib-pro-005-release-safety-closure-plan.md)
+1. [MAINT-011 tooling follow-up](maint-011-developer-gate-hygiene-follow-up.md)
 2. [LIB-PRO-005 evidence](../verification/lib-pro-005-release-safety-closure-evidence.md)
 3. [Current task board](../TASKS.md)
 4. [Git workflow single source](../git-automation/git-workflow-single-source.md)
-5. [MAINT-011 tooling follow-up](maint-011-developer-gate-hygiene-follow-up.md)

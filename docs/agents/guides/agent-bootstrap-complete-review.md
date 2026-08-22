@@ -121,4 +121,3 @@ The bootstrap also references these tools or docs without linking them directly:
 1. docs/planning/next-session-brief.md
 2. docs/TASKS.md
 3. .github/copilot-instructions.md (if any workflow change)
-

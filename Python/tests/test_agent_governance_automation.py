@@ -5,12 +5,14 @@ from __future__ import annotations
 import importlib
 import json
 import os
+import re
 import subprocess
 import sys
 from datetime import date
 from pathlib import Path
 
 import pytest
+import yaml
 
 pytestmark = pytest.mark.repo_only
 
@@ -33,6 +35,7 @@ evolve = importlib.import_module("evolve")
 external_cli = importlib.import_module("external_cli_test")
 find_automation = importlib.import_module("find_automation")
 project_health = importlib.import_module("project_health")
+preflight = importlib.import_module("preflight")
 tool_permissions = importlib.import_module("tool_permissions")
 tool_registry = importlib.import_module("tool_registry")
 
@@ -150,6 +153,84 @@ def test_control_paths_use_python_runtime_launcher():
     )
     smoke_offset = repository_validation.index("python scripts/test_cli_smoke.py")
     assert install_offset < smoke_offset
+
+
+def test_pre_commit_all_file_contract_preserves_owned_artifacts_and_strict_json():
+    config = yaml.safe_load(
+        (REPO_ROOT / ".pre-commit-config.yaml").read_text(encoding="utf-8")
+    )
+    hooks = [hook for repo in config["repos"] for hook in repo["hooks"]]
+
+    check_json = next(hook for hook in hooks if hook["id"] == "check-json")
+    jsonc_exclude = re.compile(check_json["exclude"])
+    assert jsonc_exclude.match("react_app/tsconfig.app.json")
+    assert jsonc_exclude.match("react_app/tsconfig.node.json")
+    assert not jsonc_exclude.match("react_app/package.json")
+    assert not jsonc_exclude.match("docs/reference/api-manifest.json")
+
+    normalizers = {
+        hook["id"]: re.compile(hook["exclude"])
+        for hook in hooks
+        if hook["id"]
+        in {"end-of-file-fixer", "trailing-whitespace", "mixed-line-ending"}
+    }
+    assert set(normalizers) == {
+        "end-of-file-fixer",
+        "trailing-whitespace",
+        "mixed-line-ending",
+    }
+    preserved = (
+        "VBA/legacy.bas",
+        "Excel/frozen.xlsm",
+        "docs/_archive/historical.md",
+        "docs/reference/vendor/etabs/help.html",
+        ".vite/deps/_metadata.json",
+        "Python/tests/data/golden_vectors_is456.json",
+        "Python/tests/fixtures/frozen.txt",
+        "react_app/src/__fixtures__/migration/SampleWidget.tsx",
+        "tests/fixtures/migration/golden/sample.txt",
+    )
+    for matcher in normalizers.values():
+        assert all(matcher.match(path) for path in preserved)
+        assert not matcher.match("docs/contributing/development-guide.md")
+
+    bandit_hooks = [hook for hook in hooks if hook["id"] == "bandit"]
+    assert len(bandit_hooks) == 2
+    assert all("exclude" not in hook for hook in bandit_hooks)
+
+
+def test_pre_commit_manual_command_uses_repository_runtime():
+    source = (REPO_ROOT / ".pre-commit-config.yaml").read_text(encoding="utf-8")
+    assert "./scripts/python_runtime.sh -m pre_commit run --all-files" in source
+    assert "# Run manually: pre-commit" not in source
+
+
+def test_react_dependency_probe_is_worktree_local_and_actionable(tmp_path):
+    assert preflight.missing_react_dependencies(tmp_path) == [
+        "eslint",
+        "tsc",
+        "vite",
+        "vitest",
+    ]
+
+    bin_dir = tmp_path / "react_app" / "node_modules" / ".bin"
+    bin_dir.mkdir(parents=True)
+    for tool in preflight.REACT_REQUIRED_TOOLS:
+        (bin_dir / tool).touch()
+
+    assert preflight.missing_react_dependencies(tmp_path) == []
+    assert "npm --prefix react_app ci" in preflight.REACT_INSTALL_COMMAND
+
+
+def test_live_full_gate_count_matches_active_instructions():
+    full_count = sum(len(category.checks) for category in check_all.CATEGORIES)
+    assert full_count == 31
+    for path in (
+        REPO_ROOT / "AGENTS.md",
+        REPO_ROOT / "docs/guidelines/ai-token-efficiency.md",
+        REPO_ROOT / "docs/getting-started/agent-bootstrap.md",
+    ):
+        assert "31 checks" in path.read_text(encoding="utf-8"), path
 
 
 def test_active_agent_instructions_use_worktree_safe_python_launcher():
@@ -422,6 +503,26 @@ def test_automation_discovery_resolves_retired_checker_names():
         find_automation.find_task("check_markdown_links.py", automation_map)[0][0]
         == "check markdown links"
     )
+
+
+@pytest.mark.parametrize(
+    ("query", "expected"),
+    [
+        ("check_tasks.py", "check tasks format"),
+        ("generate_folder_index.py", "generate folder index"),
+        ("sync_numbers.py", "sync doc numbers"),
+        ("global docs index", "generate docs index"),
+    ],
+)
+def test_maintenance_commands_are_discoverable_by_legacy_and_intent_queries(
+    query, expected
+):
+    automation_map = find_automation.load_automation_map()
+    assert find_automation.find_task(query, automation_map)[0][0] == expected
+
+    registry = tool_registry.load_registry()
+    results = tool_registry.find_tools(query, registry, limit=10)
+    assert expected in {tool.name for tool, _score in results}
 
 
 def test_metadata_parser_recognizes_multiword_fields():

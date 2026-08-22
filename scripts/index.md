@@ -21,7 +21,7 @@
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
 | [agent_compliance_checker.py](agent_compliance_checker.py) | Agent compliance checker — verify agents followed their .age | 0 | 12 | 541 |
-| [agent_context.py](agent_context.py) | Agent Context Loader — gives each agent its tailored startup | 0 | 20 | 642 |
+| [agent_context.py](agent_context.py) | Agent Context Loader — gives each agent its tailored startup | 0 | 20 | 651 |
 | [agent_drift_detector.py](agent_drift_detector.py) | Agent drift detector — detect when agents deviate from presc | 0 | 9 | 649 |
 | [agent_evolve_instructions.py](agent_evolve_instructions.py) | Agent instruction evolver — self-improving agent customizati | 0 | 12 | 550 |
 | [agent_feedback.py](agent_feedback.py) | Agent feedback collection and analysis. | 0 | 6 | 423 |
@@ -31,7 +31,7 @@
 | [audit_error_handling.py](audit_error_handling.py) | Audit error handling compliance across structural_lib module | 2 | 3 | 286 |
 | [audit_input_validation.py](audit_input_validation.py) | Audit validation ownership across maintained IS 456 calculat | 4 | 5 | 588 |
 | [audit_permissions.py](audit_permissions.py) | Permission audit report for all agents. | 3 | 3 | 468 |
-| [audit_readiness_report.py](audit_readiness_report.py) | Audit Readiness Report Generator | 2 | 13 | 882 |
+| [audit_readiness_report.py](audit_readiness_report.py) | Audit Readiness Report Generator | 2 | 13 | 930 |
 | [batch_migrate_runner.py](batch_migrate_runner.py) | Batch migration runner with per-operation rollback logs. | 1 | 2 | 467 |
 | [benchmark_api.py](benchmark_api.py) | API Performance Benchmark Script. | 4 | 9 | 837 |
 | [bump_version.py](bump_version.py) | Version Bump Script — Single Source of Truth | 0 | 4 | 484 |
@@ -93,13 +93,13 @@
 | [node_runtime.py](node_runtime.py) | Select and run the healthy Node.js major pinned by ``.nvmrc` | 0 | 4 | 205 |
 | [parity_dashboard.py](parity_dashboard.py) | Parity dashboard across declared Indian-code scope and appli | 0 | 6 | 466 |
 | [pipeline_state.py](pipeline_state.py) | Pipeline state tracking for multi-step agent workflows. | 2 | 17 | 868 |
-| [preflight.py](preflight.py) | Pre-flight check — catch common mistakes BEFORE they happen. | 0 | 9 | 203 |
+| [preflight.py](preflight.py) | Pre-flight check — catch common mistakes BEFORE they happen. | 0 | 10 | 219 |
 | [project_health.py](project_health.py) | Unified project health scanner with auto-fix capability. | 3 | 9 | 908 |
 | [prompt_router.py](prompt_router.py) | Prompt router — routes natural language queries to the best  | 1 | 5 | 700 |
 | [release.py](release.py) | Unified release management CLI. | 0 | 11 | 2276 |
 | [safe_file_delete.py](safe_file_delete.py) | Safe file delete script with reference checking. | 0 | 5 | 355 |
 | [safe_file_move.py](safe_file_move.py) | Safe file move script with automatic link updates. | 0 | 6 | 500 |
-| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2512 |
+| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2580 |
 | [session_store.py](session_store.py) | JSON-based session state persistence for AI agent sessions. | 1 | 14 | 374 |
 | [skill_tiers.py](skill_tiers.py) | Skill tier classification and management for AI agents. | 1 | 11 | 485 |
 | [sync_numbers.py](sync_numbers.py) | Scan codebase and sync stale numbers across documentation fi | 2 | 11 | 502 |
@@ -108,7 +108,7 @@
 | [test_cli_smoke.py](test_cli_smoke.py) | CLI Smoke Tests — validate all key scripts work correctly. | 0 | 3 | 298 |
 | [test_import_pipeline.py](test_import_pipeline.py) | End-to-end test of all import paths. | 0 | 20 | 412 |
 | [tool_permissions.py](tool_permissions.py) | Tool permission enforcement for agent operations. | 1 | 5 | 437 |
-| [tool_registry.py](tool_registry.py) | Unified tool registry — connects agents, skills, scripts, an | 1 | 12 | 556 |
+| [tool_registry.py](tool_registry.py) | Unified tool registry — connects agents, skills, scripts, an | 1 | 12 | 559 |
 | [update_test_stats.py](update_test_stats.py) | Update Test Stats — Dynamic test count updater. | 0 | 5 | 211 |
 | [validate_api_contracts.py](validate_api_contracts.py) | API Contract Validator. | 2 | 9 | 647 |
 | [validate_imports.py](validate_imports.py) | Validate Python imports across the project after migration. | 0 | 6 | 365 |

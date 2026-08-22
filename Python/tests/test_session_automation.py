@@ -370,6 +370,7 @@ def _patch_cmd_end_dependencies(
             [],
         ),
     )
+    monkeypatch.setattr(session, "_brief_receipt_identity_errors", lambda *_args: [])
     monkeypatch.setattr(session, "check_doc_links", lambda: (True, "All links valid"))
     monkeypatch.setattr(session, "archive_completed_tasks", lambda fix=False: (0, 0))
     monkeypatch.setattr(session, "get_today_prs", list)
@@ -1256,7 +1257,10 @@ def test_session_end_preserves_current_same_day_handoff(
         session,
         "_resolve_git_receipt",
         lambda block, explicit_path=None: (
-            {"local_state_receipt_hash": "sha256:test-hash"},
+            {
+                "local_state_receipt_hash": "sha256:test-hash",
+                "receipt_status": "READY",
+            },
             "docs/receipt.json",
             [],
         ),
@@ -1267,6 +1271,38 @@ def test_session_end_preserves_current_same_day_handoff(
     assert ok is True
     assert "Preserved" in message
     assert next_brief.read_text(encoding="utf-8") == expected
+
+
+def test_brief_receipt_identity_rejects_artifact_hash_substitution():
+    receipt = {
+        "local_state_receipt_hash": "sha256:" + "a" * 64,
+        "receipt_status": "HOLD",
+    }
+    lines = [
+        "- Git receipt: docs/verification/receipt.json | "
+        + "sha256:"
+        + "b" * 64
+        + " | HOLD"
+    ]
+
+    errors = session._brief_receipt_identity_errors(
+        lines, receipt, "docs/verification/receipt.json"
+    )
+
+    assert len(errors) == 1
+    assert "local-state hash mismatch" in errors[0]
+
+
+def test_session_receipt_path_accepts_wrapped_markdown_value():
+    assert (
+        session._parse_git_receipt_path(
+            [
+                "**Git handoff receipt:**",
+                "`docs/verification/maint-011-git-handoff-receipt.json`",
+            ]
+        )
+        == "docs/verification/maint-011-git-handoff-receipt.json"
+    )
 
 
 def test_handoff_round_trip_embeds_valid_receipt_identity(

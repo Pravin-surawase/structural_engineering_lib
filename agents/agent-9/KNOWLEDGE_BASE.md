@@ -81,7 +81,7 @@ test(integration): add regression snapshot for B1
 
 ```bash
 # One-time installation
-pre-commit install
+./scripts/python_runtime.sh -m pre_commit install
 ```
 
 **Installed Hooks:**

@@ -2,7 +2,7 @@
   "folder": "docs/guides",
   "type": "documentation",
   "description": "End-user and developer guides for specific workflows.",
-  "last_updated": "2026-08-16",
+  "last_updated": "2026-08-22",
   "file_count": 9,
   "files": [
     {
@@ -66,9 +66,9 @@
       "name": "testing-and-cicd-strategy.md",
       "type": "documentation",
       "size_lines": 278,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-22",
       "description": "This project has a **mature, production-grade** CI/CD setup. This document reflects what EXISTS and what's MISSING. ",
-      "content_hash": "53ef9dea7864"
+      "content_hash": "9bfcec2a6b61"
     },
     {
       "name": "week3-realtime-features-guide.md",
@@ -80,5 +80,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "d11a13edc45d2d11"
+  "content_hash": "e8c4d245b7f2312f"
 }

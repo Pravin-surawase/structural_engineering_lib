@@ -3,7 +3,7 @@
 Guides for developers and maintainers of the structural engineering library.
 
 **Type:** Documentation
-**Last Updated:** 2026-08-17
+**Last Updated:** 2026-08-22
 **Files:** 21
 
 ## Documentation Files
@@ -17,10 +17,10 @@ Guides for developers and maintainers of the structural engineering library.
 | [background-agent-guide.md](background-agent-guide.md) |  | - **Background AI Agents:** Other AI assistant instances (Cl | 594 |
 | [changelog-deprecation-template.md](changelog-deprecation-template.md) |  | This template guides you when adding deprecation entries to  | 186 |
 | [commit-message-conventions.md](commit-message-conventions.md) |  |  <type>(<scope>): <subject> | 205 |
-| [development-guide.md](development-guide.md) |  | 1. Overview 2. Project Structure | 1523 |
+| [development-guide.md](development-guide.md) |  | 1. Overview 2. Project Structure | 1529 |
 | [doc-template.md](doc-template.md) |  | Copy this header to new documentation files and fill in the  | 92 |
 | [docstring-style-guide.md](docstring-style-guide.md) |  | > **Purpose:** Standard docstring format for all Python modu | 377 |
-| [end-of-session-workflow.md](end-of-session-workflow.md) |  | > **Standard procedure for ALL agents when ending a session. | 514 |
+| [end-of-session-workflow.md](end-of-session-workflow.md) |  | > **Standard procedure for ALL agents when ending a session. | 540 |
 | [git-workflow-ai-agents.md](git-workflow-ai-agents.md) |  | The canonical workflow is git-workflow-single-source.md. | 29 |
 | [github-workflow.md](github-workflow.md) |  | Codex owns the repository's Git and GitHub lifecycle. The ol | 55 |
 | [handoff.md](handoff.md) |  | > Current Git/session boundary: start with ./run.sh session  | 119 |

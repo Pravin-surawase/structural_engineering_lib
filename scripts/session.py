@@ -1042,10 +1042,20 @@ def cmd_end(args: argparse.Namespace) -> int:
             print(f"  ⚠️  {issue}")
         all_passed = False
     else:
-        print(
-            f"  ✅ {receipt_path} | {receipt['local_state_receipt_hash']} | "
-            f"{receipt['receipt_status']}"
+        assert receipt is not None and receipt_path is not None
+        brief_lines = NEXT_BRIEF.read_text(encoding="utf-8").splitlines()
+        identity_errors = _brief_receipt_identity_errors(
+            brief_lines, receipt, receipt_path
         )
+        if identity_errors:
+            for issue in identity_errors:
+                print(f"  ⚠️  {issue}")
+            all_passed = False
+        else:
+            print(
+                f"  ✅ {receipt_path} | {receipt['local_state_receipt_hash']} | "
+                f"{receipt['receipt_status']}"
+            )
     print()
 
     # 6. Link check
@@ -1235,10 +1245,16 @@ def _parse_prs(block: list[str]) -> list[str]:
 
 
 def _parse_git_receipt_path(block: list[str]) -> str | None:
-    for line in block:
-        match = re.match(r"\*\*Git handoff receipt:\*\*\s+`?([^`\s]+)`?", line)
+    for index, line in enumerate(block):
+        match = re.match(r"\*\*Git handoff receipt:\*\*\s*(.*)$", line)
         if match:
-            return match.group(1)
+            inline_path = match.group(1).strip().strip("`")
+            if inline_path:
+                return inline_path
+            if index + 1 < len(block):
+                next_line = block[index + 1].strip().strip("`")
+                if next_line:
+                    return next_line
     return None
 
 
@@ -1285,6 +1301,41 @@ def _git_handoff_lines(receipt: dict, relative_path: str) -> list[str]:
         f"review={receipt['review']['status']} | "
         f"retention={receipt['retention']['status']}",
         f"- Next action: {receipt['authorization']['next_action']}",
+    ]
+
+
+def _brief_receipt_identity(lines: list[str]) -> tuple[str, str, str] | None:
+    """Parse the generated receipt path, state hash, and status from a brief."""
+    pattern = re.compile(r"^- Git receipt:\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*(\S+)\s*$")
+    for line in lines:
+        if match := pattern.match(line.strip()):
+            return (
+                match.group(1).strip(),
+                match.group(2).strip(),
+                match.group(3).strip(),
+            )
+    return None
+
+
+def _brief_receipt_identity_errors(
+    lines: list[str], receipt: dict, relative_path: str
+) -> list[str]:
+    """Return semantic mismatches between a brief and its selected receipt."""
+    identity = _brief_receipt_identity(lines)
+    if identity is None:
+        return ["Latest Handoff is missing its generated Git receipt identity"]
+    expected = (
+        relative_path,
+        receipt["local_state_receipt_hash"],
+        receipt["receipt_status"],
+    )
+    if identity == expected:
+        return []
+    labels = ("path", "local-state hash", "status")
+    return [
+        f"Latest Handoff Git receipt {label} mismatch: expected {want}, found {got}"
+        for label, want, got in zip(labels, expected, identity)
+        if want != got
     ]
 
 
@@ -1366,11 +1417,14 @@ def _do_handoff(
                 current_brief,
             )
             current_block = current_match.group(1) if current_match else ""
-            receipt_hash = receipt["local_state_receipt_hash"] if receipt else ""
             if (
                 f"- Date: {date_str}" in current_block
                 and "- Focus:" in current_block
-                and receipt_hash in current_block
+                and receipt is not None
+                and receipt_path is not None
+                and not _brief_receipt_identity_errors(
+                    current_block.splitlines(), receipt, receipt_path
+                )
             ):
                 return True, "Preserved current same-day handoff block"
         handoff_lines = _build_handoff_lines(
@@ -1548,6 +1602,20 @@ def cmd_check(args: argparse.Namespace) -> int:
             f"ERROR: SESSION_LOG.md entry for {date_str} missing "
             "'Root causes and resolutions' section"
         )
+        return 1
+
+    receipt, receipt_path, receipt_errors = _resolve_git_receipt(session_block)
+    if receipt_errors:
+        print("ERROR: Latest session Git handoff receipt is not valid:")
+        for issue in receipt_errors:
+            print(f"  - {issue}")
+        return 1
+    assert receipt is not None and receipt_path is not None
+    identity_errors = _brief_receipt_identity_errors(next_lines, receipt, receipt_path)
+    if identity_errors:
+        print("ERROR: Latest Handoff does not match the selected Git receipt:")
+        for issue in identity_errors:
+            print(f"  - {issue}")
         return 1
 
     hash_errors = _validate_commit_hashes(session_lines, "SESSION_LOG.md")

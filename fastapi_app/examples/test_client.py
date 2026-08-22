@@ -27,6 +27,7 @@ import httpx
 # Default server URL
 BASE_URL = "http://localhost:8000"
 WS_URL = "ws://localhost:8000"
+REQUEST_TIMEOUT_SECONDS = 30.0
 
 
 # =============================================================================
@@ -138,7 +139,7 @@ async def test_sse_batch_design():
     print()
 
     try:
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(timeout=REQUEST_TIMEOUT_SECONDS) as client:
             async with client.stream("GET", url) as response:
                 current_event = None
 
@@ -198,7 +199,7 @@ async def test_rest_endpoints():
     print("🌐 Testing REST Endpoints")
     print("=" * 60)
 
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=REQUEST_TIMEOUT_SECONDS) as client:
         try:
             # Health check
             print("\n📤 GET /health")

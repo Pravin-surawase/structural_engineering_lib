@@ -88,4 +88,3 @@ If a session doc contains long-lived guidance, **promote it** to a canonical gui
 ---
 
 *This standard aligns with `docs/docs-canonical.json` and is enforced in `scripts/check_doc_metadata.py`.*
-

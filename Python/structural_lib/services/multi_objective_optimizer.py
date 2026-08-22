@@ -26,6 +26,7 @@ Version: 1.0.0
 
 from __future__ import annotations
 
+import logging
 import math
 import random
 import time
@@ -34,6 +35,8 @@ from typing import Any
 
 from structural_lib import flexure
 from structural_lib.services.costing import CostProfile, calculate_beam_cost
+
+logger = logging.getLogger(__name__)
 
 _PT_MIN_COEFF = 0.85  # IS 456 Cl 26.5.1.1
 _MU_LIM_WARNING_RATIO = 0.9
@@ -494,7 +497,15 @@ def optimize_pareto_front(
                     design = flexure.design_singly_reinforced(
                         b=b, d=d, d_total=D, mu_knm=mu_knm, fck=fck, fy=fy
                     )
-                except Exception:
+                except (ValueError, TypeError, ArithmeticError) as exc:
+                    logger.debug(
+                        "Candidate %sx%s M%s Fe%s rejected by flexure design: %s",
+                        b,
+                        D,
+                        fck,
+                        fy,
+                        exc,
+                    )
                     continue
 
                 if not design.is_safe or design.Ast_required <= 0:

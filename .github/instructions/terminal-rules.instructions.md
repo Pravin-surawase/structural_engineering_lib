@@ -28,6 +28,26 @@ SAFE:    ./run.sh frontend build                     ← root-stable, pinned Nod
 DANGER:  npm run build                              ← cwd and Node are implicit
 ```
 
+## Shell-Safe Literal Arguments (zsh)
+
+Quote patterns and package extras before the shell can interpret them. Prefer
+an exact path discovered with `rg --files` over a speculative glob.
+
+```bash
+# Globs passed as data: quote the whole pattern.
+rg "design_beam" --glob '*.py' Python/
+
+# Literal backticks: single quotes prevent command substitution.
+rg -n 'the `local_state_receipt_hash` field' docs/
+
+# Wheel/package extras: quote the complete requirement.
+./scripts/python_runtime.sh -m pip install 'structural-lib-is456[pmm]'
+```
+
+An unmatched unquoted glob is a command error in zsh; it is not evidence that
+the intended path is absent. Discover the path, then rerun the inspection with
+the exact path or a quoted pattern.
+
 ## run.sh Fallback Chain
 If `./run.sh <cmd>` produces no output or fails:
 1. Try: `bash run.sh <cmd>`

@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2026-08-22T21:13:49.452319",
+  "generated": "2026-08-22T23:12:29.619539",
   "total_docs": 378,
   "docs": {
     "docs/SESSION_LOG.md": {
@@ -10,6 +10,7 @@
       "folder": "root",
       "tags": [],
       "sections": [
+        "2026-08-22 \u2014 Session: MAINT-011 developer gate hygiene",
         "2026-08-22 \u2014 Session: LIB-PRO-005 confirmed release-safety closure",
         "2026-08-22 \u2014 Session: LIB-PRO-004 lower-level safety and diagnostic truth",
         "2026-08-22 \u2014 Session: LIB-PRO-003-D decisive gates and cumulative safety closure",
@@ -18,10 +19,9 @@
         "2026-08-22 \u2014 Session: LIB-PRO-003-A public numeric boundaries",
         "2026-08-22 \u2014 Session: E1 G3 integration and roadmap closeout",
         "2026-08-22 \u2014 Session: E1 desktop-Excel workbook-open repair",
-        "2026-08-22 \u2014 Session: E1 complete review-bundle export",
-        "2026-08-22 \u2014 Session: E1 blank-workbook guard repair"
+        "2026-08-22 \u2014 Session: E1 complete review-bundle export"
       ],
-      "size_bytes": 266705
+      "size_bytes": 276890
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",
@@ -61,7 +61,7 @@
         "Completed (Archived)",
         "External Audit Remediation \u2014 v0.21.6 \u2705 DONE"
       ],
-      "size_bytes": 60766
+      "size_bytes": 60770
     },
     "docs/WORKLOG.md": {
       "title": "Work Log",
@@ -73,7 +73,7 @@
         "Rules",
         "Log"
       ],
-      "size_bytes": 40200
+      "size_bytes": 40401
     },
     "docs/index.md": {
       "title": "Docs",
@@ -192,7 +192,7 @@
         "9. Top 10 Features That Would Make This the BEST Structural Engineering Library in the World",
         "10. Action Items by Priority"
       ],
-      "size_bytes": 27667
+      "size_bytes": 27668
     },
     "docs/research/innovation-generative-design-intelligence.md": {
       "title": "Innovation: Generative Design Intelligence \u2014 Pareto-Optimal Beam Explorer with Engineering Narratives",
@@ -215,7 +215,7 @@
         "Feasibility Score",
         "Next Steps"
       ],
-      "size_bytes": 6702
+      "size_bytes": 6703
     },
     "docs/research/2026-python-toolchain-report.md": {
       "title": "2026 Python Toolchain Report \u2014 Best-in-Class Tools for a Structural Engineering Library",
@@ -1282,7 +1282,7 @@
         "8. Error Handling",
         "9. Documentation Standards"
       ],
-      "size_bytes": 42566
+      "size_bytes": 43010
     },
     "docs/contributing/naming-conventions.md": {
       "title": "Naming Conventions",
@@ -1483,7 +1483,7 @@
         "8) Confidence loop (minimal but effective)",
         "9) Quick links"
       ],
-      "size_bytes": 7660
+      "size_bytes": 7691
     },
     "docs/contributing/docstring-style-guide.md": {
       "title": "Docstring Style Guide",
@@ -1529,7 +1529,7 @@
         "\ud83d\udca1 Pro Tips",
         "\ud83d\udcdd Templates"
       ],
-      "size_bytes": 15076
+      "size_bytes": 16445
     },
     "docs/contributing/session-issues.md": {
       "title": "Session Issues and Fixes",
@@ -2036,7 +2036,7 @@
         "Local hooks",
         "Historical material"
       ],
-      "size_bytes": 13066
+      "size_bytes": 13399
     },
     "docs/git-automation/README.md": {
       "title": "Codex-Native Git and GitHub",
@@ -2091,7 +2091,7 @@
         "Visualization",
         "Core Types"
       ],
-      "size_bytes": 2046
+      "size_bytes": 2047
     },
     "docs/planning/gpt-5-3-codex-spark-work-program.md": {
       "title": "GPT-5.3-Codex-Spark Work Program",
@@ -2131,7 +2131,7 @@
         "Other live work",
         "Required Reading"
       ],
-      "size_bytes": 2945
+      "size_bytes": 2751
     },
     "docs/planning/public-route-safety-closure-plan.md": {
       "title": "Public Route Safety Closure Plan",
@@ -2600,9 +2600,10 @@
         "Purpose",
         "Confirmed issue register",
         "Constraints for the maintenance session",
-        "Exit criteria"
+        "Exit criteria",
+        "Implemented disposition"
       ],
-      "size_bytes": 9740
+      "size_bytes": 13117
     },
     "docs/planning/lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md": {
       "title": "LIB-PRO-004 Lower-Level Safety and Diagnostic Closure",
@@ -2749,7 +2750,7 @@
         "Startup Flow Notes",
         "Suggested Reading Path"
       ],
-      "size_bytes": 4508
+      "size_bytes": 4507
     },
     "docs/agents/guides/agent-quick-reference.md": {
       "title": "Agent Workflow Quick Reference Card",
@@ -3833,7 +3834,7 @@
         "Config Files",
         "Documentation Files"
       ],
-      "size_bytes": 27870
+      "size_bytes": 28036
     },
     "docs/verification/india-2-wall-d-publication-evidence.md": {
       "title": "INDIA-2-WALL-D Publication Evidence",
@@ -4712,7 +4713,7 @@
         "8. Project Health Audit (Score: 7.5/10)",
         "9. Structural Math Audit (@structural-math)"
       ],
-      "size_bytes": 65991
+      "size_bytes": 65992
     },
     "docs/audit/index.md": {
       "title": "Audit",
@@ -4929,7 +4930,7 @@
         "Daily Workflow Commands",
         "Architecture Overview"
       ],
-      "size_bytes": 9489
+      "size_bytes": 9582
     },
     "docs/getting-started/agent-bootstrap.md": {
       "title": "Agent Bootstrap \u2014 structural_engineering_lib",
@@ -5201,7 +5202,7 @@
         "4. Implementation Checklist",
         "Summary"
       ],
-      "size_bytes": 6461
+      "size_bytes": 6523
     },
     "docs/guides/fastapi-deployment-guide.md": {
       "title": "FastAPI Deployment Guide",
@@ -5377,7 +5378,7 @@
         "Examples (Good)",
         "Examples (Bad)"
       ],
-      "size_bytes": 2582
+      "size_bytes": 2581
     },
     "docs/guidelines/file-operations-safety-guide.md": {
       "title": "File Operations Safety Guide",
@@ -5414,7 +5415,7 @@
         "Phase 3: Plan (Prepare Operations)",
         "Phase 4: Execute (Apply Changes)"
       ],
-      "size_bytes": 6758
+      "size_bytes": 6769
     },
     "docs/guidelines/migration-workflow-guide.md": {
       "title": "IS 456 Module Migration Workflow",
@@ -5802,7 +5803,7 @@
         "7. REFERENCE TABLES",
         "8. IMPLEMENTATION PRIORITY"
       ],
-      "size_bytes": 79865
+      "size_bytes": 79866
     },
     "docs/migration/05-agents-and-automation.md": {
       "title": "GitHub Copilot Agents & Automation",
@@ -6006,7 +6007,7 @@
         "Part 8: Exercises",
         "Part 9: Self-Check Q&A"
       ],
-      "size_bytes": 20405
+      "size_bytes": 20406
     },
     "docs/migration/learning/day-13-exports-reports.md": {
       "title": "Day 13: Exports & Reports (Deep Dive)",
@@ -6029,7 +6030,7 @@
         "Part 8: Can You Explain? (Self-Check)",
         "Part 9: Things to Know (Critical Knowledge)"
       ],
-      "size_bytes": 18825
+      "size_bytes": 18826
     },
     "docs/migration/learning/day-09-type-system.md": {
       "title": "Day 9: Type System \u2014 Dataclasses, Pydantic, and TypedDicts (Deep Dive)",
@@ -6052,7 +6053,7 @@
         "Part 8: Numeric Safety \u2014 Floating-Point Gotchas",
         "Part 9: Enums \u2014 Type-Safe Constants"
       ],
-      "size_bytes": 56573
+      "size_bytes": 56574
     },
     "docs/migration/learning/day-10-error-handling.md": {
       "title": "Day 10: Error Handling & Validation (Deep Dive)",
@@ -6075,7 +6076,7 @@
         "Part 8: Can You Explain? (Self-Check)",
         "Part 9: Things to Know (Critical Knowledge)"
       ],
-      "size_bytes": 33998
+      "size_bytes": 33999
     },
     "docs/migration/learning/day-04-beam-detailing.md": {
       "title": "Day 4: Beam Detailing & Serviceability",
@@ -6139,7 +6140,7 @@
         "Part 8: Error Propagation",
         "Part 9: Exercises"
       ],
-      "size_bytes": 20348
+      "size_bytes": 20349
     },
     "docs/migration/learning/day-29-performance-scale.md": {
       "title": "Day 29: Performance & Scale",
@@ -6182,7 +6183,7 @@
         "Part 8: Things to Know (Critical Knowledge)",
         "Part 9: What Can Be Done Better"
       ],
-      "size_bytes": 20071
+      "size_bytes": 20072
     },
     "docs/migration/learning/day-30-mastery-review.md": {
       "title": "Day 30: Mastery Review",
@@ -6290,7 +6291,7 @@
         "Progress Tracker",
         "Legend"
       ],
-      "size_bytes": 8385
+      "size_bytes": 8386
     },
     "docs/migration/learning/day-23-ci-cd.md": {
       "title": "Day 23: CI/CD Pipeline",
@@ -6377,7 +6378,7 @@
         "Part 8: Hands-On Exercises",
         "Part 9: Quick Reference Cards"
       ],
-      "size_bytes": 50853
+      "size_bytes": 50854
     },
     "docs/migration/learning/day-07-is456-big-picture.md": {
       "title": "Day 7: IS 456 Big Picture & Clause Navigation",
@@ -6407,7 +6408,7 @@
         "1. What is Shear in a Beam?",
         "2. Concrete Shear Capacity ($\\tau_c$)"
       ],
-      "size_bytes": 3713
+      "size_bytes": 3712
     },
     "docs/migration/learning/day-25-code-quality.md": {
       "title": "Day 25: Code Quality Tools",
@@ -6555,7 +6556,7 @@
         "Part 8: CORS \u2014 Why Two Ports Need Permission to Talk",
         "Part 9: OpenAPI Docs \u2014 Self-Documenting API"
       ],
-      "size_bytes": 33069
+      "size_bytes": 33070
     },
     "docs/migration/learning/day-24-ai-agents.md": {
       "title": "Day 24: AI Agent System",
@@ -6575,7 +6576,7 @@
         "\ud83d\udcac Can You Explain?",
         "\ud83d\udcce References"
       ],
-      "size_bytes": 15483
+      "size_bytes": 15484
     },
     "docs/migration/learning/day-28-innovation-tools.md": {
       "title": "Day 28: Innovation & Development Infrastructure",
@@ -6621,7 +6622,7 @@
         "Part 8: Exercises",
         "Part 9: Can You Explain? (Self-Check)"
       ],
-      "size_bytes": 19227
+      "size_bytes": 19228
     },
     "docs/migration/learning/day-11-services-api.md": {
       "title": "Day 11: Services Layer \u2014 API, Adapters & Pipeline (Deep Dive)",
@@ -6644,7 +6645,7 @@
         "Part 8: Things to Know (Critical Knowledge)",
         "Part 9: What Can Be Done Better"
       ],
-      "size_bytes": 27835
+      "size_bytes": 27836
     },
     "docs/reference/tech-stack-rationale.md": {
       "title": "Tech Stack Rationale",

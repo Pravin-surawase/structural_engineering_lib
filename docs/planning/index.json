@@ -131,10 +131,10 @@
     {
       "name": "maint-011-developer-gate-hygiene-follow-up.md",
       "type": "documentation",
-      "size_lines": 59,
+      "size_lines": 83,
       "last_updated": "2026-08-22",
       "description": "Preserve the tooling and process defects encountered during LIB-PRO-005 for one separate maintenance session. None of these items changes the safety",
-      "content_hash": "afd3db42edd3"
+      "content_hash": "e98785dedb6b"
     },
     {
       "name": "memory.md",
@@ -159,7 +159,7 @@
       "last_updated": "2026-08-22",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-22",
-      "content_hash": "4ecfe9bfd5bd"
+      "content_hash": "b12807ca29e5"
     },
     {
       "name": "pre-release-checklist.md",
@@ -206,5 +206,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "386cf48788b885c2"
+  "content_hash": "555febd8f6dd499e"
 }

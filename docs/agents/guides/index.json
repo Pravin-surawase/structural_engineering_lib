@@ -2,7 +2,7 @@
   "folder": "docs/agents/guides",
   "type": "documentation",
   "description": "owner: Main Agent",
-  "last_updated": "2026-08-17",
+  "last_updated": "2026-08-22",
   "file_count": 6,
   "files": [
     {
@@ -32,10 +32,10 @@
     {
       "name": "agent-bootstrap-complete-review.md",
       "type": "documentation",
-      "size_lines": 125,
-      "last_updated": "2026-08-16",
+      "size_lines": 124,
+      "last_updated": "2026-08-22",
       "description": "docs/getting-started/agent-bootstrap.md is the 60-second onboarding entrypoint for any agent. This review enumerates every link in that file, explains why it exists, and notes the current startup flow",
-      "content_hash": "616528f6eb9c"
+      "content_hash": "5b18ed29bd0d"
     },
     {
       "name": "agent-quick-reference.md",
@@ -55,5 +55,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "c37cafbff2c0fb3f"
+  "content_hash": "7063e8e2fbedf6b2"
 }

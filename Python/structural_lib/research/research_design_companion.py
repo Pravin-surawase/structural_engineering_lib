@@ -70,6 +70,7 @@ Scope Limitations:
 
 from __future__ import annotations
 
+import logging
 import math
 import time
 from dataclasses import dataclass
@@ -84,6 +85,8 @@ from structural_lib.core.data_types import ComplianceCaseResult
 from structural_lib.research.research_sustainability import score_beam_carbon
 from structural_lib.services.api import design_beam_is456
 from structural_lib.services.costing import CostProfile, calculate_beam_cost
+
+logger = logging.getLogger(__name__)
 
 # Safety factors — HARDCODED constants, IS 456:2000 Table 18
 # NEVER parameters, NEVER modifiable
@@ -1460,7 +1463,8 @@ def _generate_alternatives(
                 mu_knm=mu_knm,
                 vu_kn=vu_kn,
             )
-        except Exception:
+        except (ValueError, TypeError, ArithmeticError) as exc:
+            logger.debug("Alternative %s rejected by beam design: %s", label, exc)
             continue
 
         if not alt_result.flexure.is_safe or not alt_result.shear.is_safe:

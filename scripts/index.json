@@ -119,8 +119,8 @@
     {
       "name": "agent_context.py",
       "type": "python",
-      "size_lines": 642,
-      "last_updated": "2026-08-17",
+      "size_lines": 651,
+      "last_updated": "2026-08-22",
       "description": "Agent Context Loader — gives each agent its tailored startup context.",
       "functions": [
         {
@@ -218,7 +218,7 @@
         "ROOT",
         "AGENT_REGISTRY"
       ],
-      "content_hash": "2b34ac845478"
+      "content_hash": "85abdf2f5fc8"
     },
     {
       "name": "agent_drift_detector.py",
@@ -831,7 +831,7 @@
     {
       "name": "audit_readiness_report.py",
       "type": "python",
-      "size_lines": 882,
+      "size_lines": 930,
       "last_updated": "2026-08-22",
       "description": "Audit Readiness Report Generator",
       "classes": [
@@ -939,7 +939,7 @@
       "constants": [
         "_REPO_ROOT"
       ],
-      "content_hash": "ac5688567634"
+      "content_hash": "21e18788a89d"
     },
     {
       "name": "automation-map.json",
@@ -952,7 +952,7 @@
         "_coverage",
         "tasks"
       ],
-      "content_hash": "0fd47f1687db"
+      "content_hash": "73e9fbfe2870"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -4073,8 +4073,8 @@
     {
       "name": "preflight.py",
       "type": "python",
-      "size_lines": 203,
-      "last_updated": "2026-08-17",
+      "size_lines": 219,
+      "last_updated": "2026-08-22",
       "description": "Pre-flight check — catch common mistakes BEFORE they happen.",
       "functions": [
         {
@@ -4106,8 +4106,15 @@
           ]
         },
         {
+          "name": "missing_react_dependencies",
+          "description": "Return missing local React tools required by repository commands.",
+          "params": [
+            "repo_root"
+          ]
+        },
+        {
           "name": "check_node_modules",
-          "description": "Ensure react_app/node_modules exists."
+          "description": "Report whether this worktree has its lockfile-pinned React tools."
         },
         {
           "name": "check_stub_not_modified",
@@ -4120,6 +4127,8 @@
       "constants": [
         "REPO_ROOT",
         "PYTHON_RUNTIME",
+        "REACT_INSTALL_COMMAND",
+        "REACT_REQUIRED_TOOLS",
         "GREEN",
         "RED",
         "YELLOW",
@@ -4127,7 +4136,7 @@
         "BOLD",
         "NC"
       ],
-      "content_hash": "0743bdc001d2"
+      "content_hash": "ec035ea6b111"
     },
     {
       "name": "project_health.py",
@@ -4482,8 +4491,8 @@
     {
       "name": "session.py",
       "type": "python",
-      "size_lines": 2512,
-      "last_updated": "2026-08-17",
+      "size_lines": 2580,
+      "last_updated": "2026-08-22",
       "description": "Unified session management CLI.",
       "functions": [
         {
@@ -4598,7 +4607,7 @@
         "HANDOFF_DATE_RE",
         "COMMIT_HASH_RE"
       ],
-      "content_hash": "549307d86352"
+      "content_hash": "3096c0f11f01"
     },
     {
       "name": "session_store.py",
@@ -5194,8 +5203,8 @@
     {
       "name": "tool_registry.py",
       "type": "python",
-      "size_lines": 556,
-      "last_updated": "2026-08-17",
+      "size_lines": 559,
+      "last_updated": "2026-08-22",
       "description": "Unified tool registry — connects agents, skills, scripts, and operations.",
       "classes": [
         {
@@ -5296,7 +5305,7 @@
         "TOOL_ALIASES",
         "STOPWORDS"
       ],
-      "content_hash": "f17589315903"
+      "content_hash": "aa83afa41096"
     },
     {
       "name": "update_test_stats.py",
@@ -5662,5 +5671,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "f9b93a21261c0048"
+  "content_hash": "3c1a1215f364e643"
 }

@@ -11,7 +11,7 @@
 #   pip install -e "Python[dev,dxf,render,report,pdf,validation,cad]"
 #
 # For development, also install pre-commit hooks:
-#   pre-commit install
+#   ./scripts/python_runtime.sh -m pre_commit install
 #
 # Synced: 2026-04-04
 # ============================================================

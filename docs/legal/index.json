@@ -2,7 +2,7 @@
   "folder": "docs/legal",
   "type": "documentation",
   "description": "Engineering certification templates and usage guidelines.",
-  "last_updated": "2026-03-24",
+  "last_updated": "2026-08-22",
   "file_count": 4,
   "files": [
     {
@@ -17,31 +17,28 @@
     {
       "name": "certification-template.md",
       "type": "documentation",
-      "size_lines": 112,
-      "last_updated": "2026-01-23",
-      "title": "Professional Certification Template",
+      "size_lines": 121,
+      "last_updated": "2026-08-22",
       "description": "This document provides guidance for licensed professional engineers who wish to use outputs from structural-lib-is456 in their professional practice. It is",
-      "content_hash": "bd0ad3d978ed"
+      "content_hash": "484c30ad50f5"
     },
     {
       "name": "usage-guidelines.md",
       "type": "documentation",
-      "size_lines": 53,
-      "last_updated": "2026-01-23",
-      "title": "Professional Use Guidelines",
+      "size_lines": 62,
+      "last_updated": "2026-08-22",
       "description": "These guidelines describe professional responsibilities when using this library. They are a companion to LICENSE_ENGINEERING.md and are not legal",
-      "content_hash": "605807f9a014"
+      "content_hash": "589b04d49970"
     },
     {
       "name": "verification-checklist.md",
       "type": "documentation",
-      "size_lines": 130,
-      "last_updated": "2026-01-23",
-      "title": "Independent Verification Checklist",
+      "size_lines": 139,
+      "last_updated": "2026-08-22",
       "description": "This checklist provides a structured approach for independent verification of calculations produced by structural-lib-is456. Use this for quality control",
-      "content_hash": "a97b87787d21"
+      "content_hash": "b1000c33cb72"
     }
   ],
   "subfolders": [],
-  "content_hash": "a1529c3320bd0a0a"
+  "content_hash": "2eb5c30e67509500"
 }
