@@ -610,7 +610,7 @@ def _print_task_brief(brief: dict[str, Any]) -> None:
         print(f" - {item['name']} [{item['permission']}] -> {item['command']}")
     if not brief["matching_tools"]:
         print(
-            " - No task-specific automation match; inspect the affected folder index."
+            " - No task-specific automation match; use ./run.sh context show <area> and targeted rg."
         )
     print("\nSafe start: " + " -> ".join(brief["workflow"]["start"]))
     print("Safe close: " + " -> ".join(brief["workflow"]["close"]))

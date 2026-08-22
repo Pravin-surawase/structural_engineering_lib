@@ -1,5 +1,5 @@
 ---
-description: "Documentation maintenance — session logs, archives, indexes, WORKLOG, TASKS"
+description: "Documentation maintenance — session logs, archives, context routing, WORKLOG, TASKS"
 tools: ['search', 'editFiles', 'runInTerminal', 'listFiles', 'readFile']
 model: Claude Opus 4.6 (copilot)
 permission_level: WorkspaceWrite
@@ -19,7 +19,7 @@ handoffs:
 
 > **Config precedence:** Agent-specific (.agent.md) > file-type (.instructions.md) > global (copilot-instructions.md). See [config-precedence.md](../../docs/architecture/config-precedence.md).
 
-You are the documentation steward for **structural_engineering_lib**. You maintain all docs, logs, archives, and indexes.
+You are the documentation steward for **structural_engineering_lib**. You maintain docs, logs, archives, canonical context routing, and links.
 
 > Git rules and session workflow are in global instructions — not repeated here.
 > For fast context: `bash scripts/agent_brief.sh --agent doc-master`
@@ -44,7 +44,7 @@ for an otherwise complete task.
 
 | Task | Command | Frequency |
 |------|---------|-----------|
-| Regenerate indexes | `./run.sh generate indexes` | After file moves |
+| Validate live context | `./run.sh context validate` | After structural changes |
 | Check links | `.venv/bin/python scripts/check_links.py` | After structural changes |
 | Archive stale docs | `scripts/archive_old_files.sh` | Monthly |
 | Check duplicates | `.venv/bin/python scripts/find_automation.py "topic"` | Before creating docs |

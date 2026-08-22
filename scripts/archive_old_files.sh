@@ -195,8 +195,8 @@ else
         echo -e "${GREEN}✅ Archival complete${NC}"
         echo ""
         echo "Next steps:"
-        echo "  1. Regenerate indexes: ./scripts/python_runtime.sh scripts/generate_enhanced_index.py scripts/"
-        echo "  2. Check for phantom entries: ./scripts/python_runtime.sh scripts/check_scripts_index.py"
+        echo "  1. Validate live context: ./run.sh context validate"
+        echo "  2. Check control coverage: ./scripts/python_runtime.sh scripts/check_scripts_index.py"
         echo "  3. Have Codex review and include the archive in the scoped commit"
     else
         echo -e "${GREEN}✅ No files archived (all up to date)${NC}"

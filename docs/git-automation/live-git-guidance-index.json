@@ -22,12 +22,12 @@
     ".github/instructions/*.md",
     ".github/skills/*/SKILL.md"
   ],
-  "indexed_surface_sets": [
+  "live_surface_sets": [
     {
-      "index": "docs/agents/guides/index.json",
       "root": "docs/agents/guides",
+      "glob": "*.md",
       "historical_statuses": ["deprecated"],
-      "ignore_names": ["index.md"]
+      "ignore_names": []
     }
   ],
   "historical_exclusions": [

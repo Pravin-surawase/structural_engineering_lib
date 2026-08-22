@@ -25,7 +25,6 @@ What's your background?
 |-------|----------|------|
 | [user-guide.md](user-guide.md) | All users - comprehensive overview | 10 min |
 | [beginners-guide.md](beginners-guide.md) | First-time users - step by step | 30 min |
-| [index.md](index.md) | Quick index of all guides | 2 min |
 
 ## Platform-Specific Quickstarts
 

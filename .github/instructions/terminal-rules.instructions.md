@@ -63,7 +63,7 @@ If `./run.sh <cmd>` produces no output or fails:
 | `./run.sh check --quick` | `./scripts/python_runtime.sh scripts/check_all.py --quick` | — |
 | `./run.sh find --api func` | `./scripts/python_runtime.sh scripts/discover_api_signatures.py func` | — |
 | `./run.sh session summary` | `./scripts/python_runtime.sh scripts/session.py summary` | Add `--write` only intentionally |
-| `./run.sh generate indexes` | `./scripts/python_runtime.sh scripts/generate_enhanced_index.py --all` | — |
+| `./run.sh context summary <area-or-folder>` | `./scripts/python_runtime.sh scripts/repo_context.py summary <area-or-folder>` | — |
 | `./run.sh dev` | `bash scripts/launch_stack.sh` | `colima start && docker compose up --build` |
 | `./run.sh dev --docker` | `bash scripts/launch_stack.sh --docker` | `colima start && docker compose up --build` |
 | `./run.sh dev --kill-only` | `bash scripts/launch_stack.sh --kill-only` | Stop only listeners started for this task; never kill arbitrary port owners |

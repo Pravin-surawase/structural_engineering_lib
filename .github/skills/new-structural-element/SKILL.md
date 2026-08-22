@@ -31,7 +31,10 @@ rg -n "<element>" Python/structural_lib Python/tests fastapi_app react_app/src
 ./run.sh find --api <candidate_function>
 ```
 
-Read the nearest existing element subpackage and its folder index. Current complex elements use subpackages such as `codes/is456/beam/`, `column/`, and `footing/`; do not assume a flat `<element>.py` layout.
+Use `./run.sh context show is456`, then inspect the nearest existing element
+subpackage and targeted callers. Current complex elements use subpackages such
+as `codes/is456/beam/`, `column/`, and `footing/`; do not assume a flat
+`<element>.py` layout.
 
 ## 2. Prepare the Implementation Packet
 

@@ -27,8 +27,8 @@ evidence a change invalidates.
 
 | Packet | Outcome | Boundary |
 |---|---|---|
-| `MAINT-012A` | Canonical control registry, schema, loader, CLI, complete permissions, structured commands, and deterministic legacy projection | Active implementation packet |
-| `MAINT-012B` | Replace broad generated folder-index dependence with small authoritative manifests and on-demand summaries; retain only indexes proven useful | Separate candidate after A is merged |
+| `MAINT-012A` | Canonical control registry, schema, loader, CLI, complete permissions, structured commands, and deterministic legacy projection | Complete through PR #840 |
+| `MAINT-012B` | Replace broad generated folder-index dependence with small authoritative manifests and on-demand summaries; retain only indexes proven useful | Active isolated candidate after A |
 | `MAINT-012C` | Add content-addressed impact/evidence reuse and migrate quick/full/hosted validation scheduling to explicit change domains | Separate candidate; no safety gate may be skipped without a proved input identity |
 | `MAINT-012D` | Consolidate scanners and retire/move obsolete scripts using live callers, ownership, runtime, and replacement evidence | Separate candidate; every deletion/move requires preservation-aware proof |
 
@@ -92,6 +92,70 @@ resolution remains fail-closed for an unknown operation or mode.
 - No structural arithmetic, public API, FastAPI, React, Excel, ETABS, package,
   dependency, release, GitHub setting, or professional-approval change.
 
+## MAINT-012B frozen scope
+
+### Confirmed baseline
+
+The live repository contained 70 generic `index.json` files, 70 paired
+`index.md` files, and the separate `docs/docs-index.json` catalogue: 141
+generated artifacts totalling 1,391,320 bytes and 43,141 lines. The canonical
+`--all --check` route validated only 32 of the 70 folder JSON indexes. From
+2026-05-01 through packet start, the most frequently changed parent projections
+appeared in 80-95 commits, while a live targeted `rg --files` lookup completed
+below the timer's 0.01-second resolution.
+
+The prior logs also record cross-worktree timestamp drift, checkout-local hidden
+artifact drift, accidental 31-file regeneration, leaf/global/parent ordering
+errors, stale-parent CI failures, and commit-hook restarts after generated index
+normalization. Those are architecture costs, not isolated formatting defects.
+
+### Canonical replacement
+
+- `scripts/context-manifest.json` is the small authoritative map from repository
+  areas to roots, read-first sources, and canonical control-plane operations.
+- `./run.sh context validate|list|show|summary` validates that map and produces
+  bounded summaries from current worktree files. It never writes a projection.
+- Operation, documentation-topic, agent, Git, task, and public-API truth remain
+  with their existing specialized authorities. The context manifest points to
+  them instead of duplicating their contents.
+- Generic folder inventories and the global generated docs catalogue are
+  retired. `docs/index.md` becomes a concise authored MkDocs home;
+  `docs/api-reference/index.md` remains the API landing page; and
+  `docs/git-automation/live-git-guidance-index.json` remains a separately
+  validated policy manifest.
+- Former generator commands stay as read-only compatibility bridges during this
+  packet. They either validate or summarize live context and cannot recreate
+  index topology. Physical script retirement remains MAINT-012D.
+- Session closeout, agent orientation, maintenance, file-move, documentation,
+  control coverage, nightly drift, and release-candidate guidance use the new
+  read-only contract. There is no leaf/global/parent refresh or final index
+  write.
+
+### MAINT-012B exclusions
+
+- No content-addressed test/evidence reuse, change-domain scheduler, quick/full
+  profile redesign, pre-commit consolidation, or hosted CI topology redesign;
+  those remain MAINT-012C.
+- No scanner consolidation and no deletion/move of the compatibility generator
+  scripts; those remain MAINT-012D.
+- No structural calculation, public API, FastAPI, React, Excel, ETABS,
+  dependency, package, release, GitHub-setting, or professional-approval change.
+
+### MAINT-012B acceptance
+
+1. The context manifest fails closed on duplicate keys, bad paths, unknown
+   operations, unknown fields, and any unapproved generic index topology.
+2. Live summaries are deterministic, bounded, current-worktree based, and
+   contain no timestamps or repository writes.
+3. All 141 generated artifacts are either deleted (140) or converted to the one
+   authored docs home; only the three explicitly owned index-named surfaces
+   remain.
+4. Old generator routes cannot recreate indexes, while maintained discovery and
+   direct callers receive a clear migration path.
+5. Focused context/control/session/release tests, links, documentation,
+   quick/full gates, normal hooks, and required hosted checks pass on one frozen
+   candidate.
+
 ## Efficient operating contract
 
 For an operation-metadata change, edit only `control-plane.json`, run
@@ -118,6 +182,12 @@ Each successor packet must publish before/after evidence for AI orientation
 reads, affected-check time, full-gate time, generated churn, and false/stale
 scanner findings. If a proposed abstraction does not materially reduce one of
 those outcomes, it does not belong in MAINT-012.
+
+MAINT-012B's context manifest is event-driven: update it only when an area's
+root, read-first authority, retained index-named surface, or canonical operation
+changes. It does not require a calendar refresh. A bounded quarterly review may
+measure whether routing is still useful, but unchanged live summaries never
+need regeneration.
 
 ## MAINT-012A acceptance
 

@@ -14,9 +14,10 @@ Define the decision to support, intended user, current main-process gap, constra
 
 ## 1. Establish Current Capability
 
-Use targeted indexes and searches:
+Use canonical context routing and targeted searches:
 
 ```bash
+./run.sh context show <area>
 ./run.sh parity
 rg -n "<capability>" Python/structural_lib fastapi_app react_app/src docs/TASKS.md
 ./run.sh find --api <candidate_function>

@@ -205,7 +205,7 @@ repos:
         always_run: true
         verbose: true
       - id: check-scripts-index
-        name: Check scripts index
+        name: Check control and context registries
         entry: ./scripts/python_runtime.sh scripts/check_scripts_index.py
         language: system
         pass_filenames: false

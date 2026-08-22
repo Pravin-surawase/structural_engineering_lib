@@ -104,7 +104,7 @@ CATEGORIES: list[Category] = [
             Check("CLI reference", _py("check_cli_reference.py")),
             Check("Tasks format", _py("check_tasks_format.py")),
             Check("Brief length", _py("check_next_session_brief_length.py")),
-            Check("Scripts index", _py("check_scripts_index.py")),
+            Check("Control and context", _py("check_scripts_index.py")),
         ],
     ),
     Category(

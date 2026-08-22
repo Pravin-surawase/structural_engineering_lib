@@ -51,8 +51,8 @@ archive path. Resolve the maintained command with `./run.sh find "task"`.
    provenance and a next action bound to that authority or the closed safe-hold
    set.
 3. Freeze all owned versioned logs, task/handoff state, evidence, and the
-   pre-commit receipt. Refresh only affected maintained indexes once; that
-   refresh is the final repository write for the candidate.
+   pre-commit receipt. Validate live repository context read-only; generic
+   folder indexes are retired.
 4. Run the pre-commit gate once:
 
    ```bash
@@ -69,7 +69,7 @@ archive path. Resolve the maintained command with `./run.sh find "task"`.
    ./run.sh session end --agent <role>
    ```
 
-Do not run global doc syncing, index regeneration, evolution fixes, release
+Do not run global doc syncing, legacy index generation, evolution fixes, release
 checks, or a second documentation commit by default. After push or PR creation,
 keep hosted-check and merge facts in GitHub and the external handoff; do not
 write them back into the same candidate. If session end identifies an essential

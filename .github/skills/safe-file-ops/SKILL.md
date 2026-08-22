@@ -79,13 +79,14 @@ git diff --summary
 ./scripts/python_runtime.sh scripts/check_links.py
 ```
 
-Regenerate an index only when the affected folder has a generated index:
+Validate live context after the batch; no generated folder refresh is needed:
 
 ```bash
-./scripts/python_runtime.sh scripts/generate_enhanced_index.py affected/folder
+./run.sh context validate
+./run.sh context summary affected/folder
 ```
 
-For source migrations, also run the narrow import/build check for that language. Do not regenerate all indexes unless the task actually changes all indexed folders.
+For source migrations, also run the narrow import/build check for that language.
 
 ## Stop Conditions
 

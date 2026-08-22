@@ -100,8 +100,8 @@ DEFAULT_RULES = {
         ],
     },
     "agents_root": {
-        "max_files": 5,
-        "allowed_files": ["README.md", "index.md", "index.json"],
+        "max_files": 1,
+        "allowed_files": ["README.md"],
     },
     "category_folders": {
         "required": [

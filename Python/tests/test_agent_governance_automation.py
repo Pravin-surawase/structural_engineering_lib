@@ -460,8 +460,7 @@ def test_tool_registry_does_not_infer_permission_from_git_text():
 @pytest.mark.parametrize(
     ("operation", "mode", "expected"),
     [
-        ("generate folder index", None, "WorkspaceWrite"),
-        ("generate folder index", "--dry-run", "ReadOnly"),
+        ("repository context", None, "ReadOnly"),
         ("batch migration", None, "WorkspaceWrite"),
         ("batch migration", "--dry-run", "ReadOnly"),
         ("pipeline state", "new", "WorkspaceWrite"),
@@ -497,6 +496,9 @@ def test_automation_discovery_metadata_is_single_source():
 def test_automation_discovery_resolves_retired_checker_names():
     automation_map = find_automation.load_automation_map()
 
+    assert find_automation.find_task("check_scripts_index.py", automation_map)[0][
+        0
+    ] == ("check control coverage")
     assert find_automation.find_task("check_doc_metadata.py", automation_map)[0][0] == (
         "check docs metadata"
     )
@@ -510,9 +512,10 @@ def test_automation_discovery_resolves_retired_checker_names():
     ("query", "expected"),
     [
         ("check_tasks.py", "check tasks format"),
-        ("generate_folder_index.py", "generate folder index"),
+        ("generate_all_indexes.sh", "repository context"),
+        ("generate_folder_index.py", "repository context"),
         ("sync_numbers.py", "sync doc numbers"),
-        ("global docs index", "generate docs index"),
+        ("global docs index", "repository context"),
     ],
 )
 def test_maintenance_commands_are_discoverable_by_legacy_and_intent_queries(

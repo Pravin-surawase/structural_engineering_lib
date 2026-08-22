@@ -230,11 +230,12 @@ docs/agents/
 
 ---
 
-## 📇 Machine-Readable Indexes
+## 📇 Machine-Readable Authorities
 
 - `scripts/automation-map.json` (task → script)
 - `docs/docs-canonical.json` (topic → canonical doc)
-- `scripts/index.json` + `docs/docs-index.json` (automation + docs catalog)
+- `scripts/control-plane.json` (canonical operations and permissions)
+- `scripts/context-manifest.json` (repository-area routing)
 
 ---
 

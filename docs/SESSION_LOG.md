@@ -5,6 +5,124 @@
 
 ---
 
+## 2026-08-23 — Session: MAINT-012B index architecture and retirement
+
+**Agent:** Codex (`governance`, sole writer)
+
+**Branch:** `codex/maint-012b-index-architecture`, from exact `origin/main`
+commit `efd219178c4293ab106f43e37b903c5c268283aa`.
+
+**Git handoff receipt:**
+`docs/verification/maint-012b-git-handoff-receipt.json`
+
+**Focus:** Replace high-churn generic indexes with a small validated context
+manifest and read-only live summaries without changing product, structural,
+release, or hosted-check behavior.
+
+### Summary
+
+- Retired 140 generated artifacts: all generic folder `index.json` files, 69
+  generic folder `index.md` files, and the 8,254-line global docs projection.
+  Retained only two authored MkDocs route pages and one specialized Git-policy
+  manifest under an explicit allowlist.
+- Added `scripts/context-manifest.json`, `scripts/repo_context.py`, and
+  `./run.sh context` for strict routing validation plus bounded, deterministic
+  live-worktree summaries. Validation rejects unknown fields, duplicate JSON
+  keys, path escapes, missing authorities, inactive operations, and tracked or
+  untracked generic-index reintroduction.
+- Converted the three legacy generator entry points to read-only deprecation
+  bridges, migrated session/evolution/nightly/governance consumers, preserved
+  command discovery through the canonical control plane, and removed all
+  active instructions requiring an index refresh.
+- Measured the retired baseline at 141 generated/index-named artifacts,
+  1,391,320 bytes, and 43,141 lines. The old all-index check covered only 32 of
+  70 folder JSON indexes, while direct targeted `rg --files` was effectively
+  instantaneous and the live context summary stays bounded without committed
+  timestamps or hashes.
+
+### PRs Merged
+
+- None. MAINT-012B remains a local frozen-candidate workflow until its quick,
+  full, hook, hosted, and exact-head acceptance evidence completes.
+
+### Issues encountered
+
+- The first inventory assumed a repository-root `index.md`, but no such file
+  existed, so the read-only command failed before the exact topology was known.
+- The initial validator reported every intended deleted index as still present.
+- Retiring the generated Markdown indexes exposed three current README links
+  that still pointed directly to those generated files.
+- The first focused contract run had four failures: three tests still expected
+  deprecated generator operations to own permissions/discovery, and one
+  session test still expected changed-document index scheduling.
+- Review of the first validator revision showed that an untracked regenerated
+  generic index would not be rejected until it was staged.
+- The affected documentation/governance batch used `check_governance.py --all`,
+  but that validator exposes the complete profile as `--full`.
+- The current documentation hub still paired its old index generators with a
+  removed governance `--index-links` option.
+- The first full 31-check gate passed 30 checks but the Git-workflow checker
+  still opened the deleted `docs/agents/guides/index.json` projection.
+
+### Root causes and resolutions
+
+- Confirmed root cause: root-index presence was inferred from the old indexing
+  convention instead of discovered from Git. Resolution: inventory exact paths
+  with `rg --files` and `git ls-files`; the measured baseline is 70 generic
+  JSON indexes, 70 generic Markdown indexes, and one global docs projection.
+  ⚠️ TERMINAL ISSUE: assumed a root `index.md` existed -> used `rg --files` to
+  inventory exact maintained index paths.
+- Confirmed root cause: `git ls-files --cached` includes paths deleted in the
+  working tree. Resolution: subtract `git ls-files --deleted`, fail closed if
+  that query cannot complete, and retain the filesystem fallback only when Git
+  inventory is unavailable. Live manifest validation then passed with zero
+  generated folder indexes.
+- Confirmed root cause: three authored README tables used generated index pages
+  as navigation targets. Resolution: remove only those obsolete rows; the full
+  link scan passes 379 Markdown files, 935 internal links, and zero failures.
+- Confirmed root cause: permission resolution intentionally considers active
+  operations only, but compatibility queries and tests still treated the three
+  deprecated generators as active owners. Resolution: move their legacy names
+  into the active read-only `repository context` aliases, keep the old entries
+  visibly deprecated, and remove changed-folder scheduling expectations. The
+  exact four failed nodes then passed without weakening permission failure.
+- Confirmed root cause: the first topology scan combined tracked and fallback
+  behavior but omitted Git's untracked set. Resolution: include
+  `--others --exclude-standard` and add a temporary-repository regression that
+  proves an untracked `index.md` fails immediately.
+- Confirmed root cause: the broad-profile flag was inferred from the adjacent
+  documentation checker instead of read from the governance CLI. Resolution:
+  inspect `--help` and run the maintained `check_governance.py --full` profile.
+  ⚠️ TERMINAL ISSUE: `check_governance.py --all` is unsupported -> used its
+  documented `--full` profile; the earlier command made no repository writes.
+- Confirmed root cause: the documentation-maintenance snippet predated both the
+  unified docs checker and MAINT-012B routing. Resolution: replace it with
+  `context validate`, optional live summary, `check_docs.py --all`, and the
+  maintained link checker. Every displayed command now exists and is read-only.
+- Confirmed root cause: the specialized live-Git guidance manifest delegated
+  one surface set to the generic folder-index format, so its checker had a
+  hidden runtime dependency that the earlier reference scan did not classify.
+  Resolution: define a bounded `live_surface_sets` root/glob contract, discover
+  those Markdown files from the current worktree, preserve explicit deprecated
+  boundaries, and fail closed if the retired indexed form returns. The failed
+  Git-workflow check and its semantic regression file are the repair evidence.
+
+### Validation through content freeze
+
+- Source binding is `source_bound=true`; the isolated lane is based on exact
+  merged `origin/main` commit `efd219178c4293ab106f43e37b903c5c268283aa`.
+- Black and Ruff pass every changed Python contract. The context validator
+  passes under `python -S`, and control validation reports 123 active
+  operations with 114/114 top-level scripts represented.
+- CLI smoke passes 15/15, including live context validation and bounded summary.
+  The consolidated focused selection passes 271 tests across repository
+  context, control plane, governance, session, release, and CI-workflow
+  contracts. The link scanner validates all 935 internal links.
+- MAINT-012C evidence reuse/change-domain scheduling, MAINT-012D physical
+  compatibility-script retirement and scanner consolidation, dependency work,
+  product code, formula/API/UI/Excel/ETABS behavior, release publication, and
+  professional approval remain excluded.
+
 ## 2026-08-23 — Session: MAINT-012A canonical control-registry foundation
 
 **Agent:** Codex (`governance`, sole writer)

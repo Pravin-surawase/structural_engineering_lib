@@ -493,8 +493,8 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 **Session docs rule:** Update `SESSION_LOG.md` + `next-session-brief.md` in the
 same candidate when their state changes. Include a PR number only when it is
 already known before the freeze; never rewrite the candidate solely to add one.
-Finish every session/task/handoff/receipt write, generate affected indexes once
-as the final repository write, create the candidate commit, then run plain
+Finish every session/task/handoff/receipt write, validate live repository
+context read-only, create the candidate commit, then run plain
 `session end` read-only before pushing. Keep later PR, hosted, and merge facts
 external so they cannot restart the candidate. Preparation-only
 `session end --fix` intentionally exits `2`, never final-success `0`.
@@ -516,7 +516,7 @@ END:    □ Codex reviews the scoped diff
         □ Update next-session-brief.md           ← what NEXT agent should do
         □ Update TASKS.md                        ← mark done, add new
         □ Create pre-commit Git handoff receipt
-        □ Generate affected indexes once         ← FINAL repository write
+        □ ./run.sh context validate              ← read-only topology check
         □ Commit intended paths                  ← immutable local candidate
         □ ./run.sh session end --agent <role>    ← read-only verdict
         □ Push, hosted checks, merge              ← facts stay external
@@ -548,7 +548,8 @@ END:    □ Codex reviews the scoped diff
 | Create doc | N/A | `./scripts/python_runtime.sh scripts/create_doc.py path "Title"` |
 | Fix links | `./run.sh check --category docs --fix` | `./scripts/python_runtime.sh scripts/check_links.py --fix` |
 | Session end | `./run.sh session end` | `./scripts/python_runtime.sh scripts/session.py end` |
-| Gen indexes | `./run.sh generate indexes` | `./scripts/generate_all_indexes.sh` |
+| Live context | `./run.sh context show <area>` | `./scripts/python_runtime.sh scripts/repo_context.py show <area>` |
+| Context summary | `./run.sh context summary <area-or-folder>` | `./scripts/python_runtime.sh scripts/repo_context.py summary <area-or-folder>` |
 
 **Never do:** automated Git recovery, history rewriting, raw `rm`/`mv` for repository docs, or documents without metadata.
 
@@ -584,7 +585,7 @@ END:    □ Codex reviews the scoped diff
 | Create duplicate docs | Clutter, confusion | Check `docs-canonical.json` first |
 | Mix architecture layers | Import errors | Core → IS456 → Services → UI (one direction only) |
 | Use `python` directly | Wrong env, missing deps | Always use `./scripts/python_runtime.sh` |
-| Forget to update indexes | Out-of-sync navigation | Run `generate_all_indexes.sh` after structural changes |
+| Add/move a maintained area without context validation | Stale agent routing | Update `context-manifest.json`, then run `./run.sh context validate` |
 | Run `docker` without Colima | "permission denied" errors | Run `colima start` before any `docker` command |
 | `uvicorn --host 0.0.0.0` on Mac Mini | Browser "Cannot connect" but `curl` works | macOS resolves `localhost` to IPv6 `::1`; use `--host "::"` for dual-stack |
 | `Path.read_text()` without encoding | Windows CI fails with UnicodeDecodeError | Always use `encoding="utf-8"` with `.read_text()` / `.write_text()` |
@@ -617,7 +618,7 @@ These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claud
 | `@structural-engineer` | IS 456 compliance | Formula validation, code review |
 | `@reviewer` | Code review | Pre-commit quality check |
 | `@ui-designer` | Visual design (read-only) | Layout planning before coding |
-| `@doc-master` | Documentation | Session logs, archives, indexes |
+| `@doc-master` | Documentation | Session logs, archives, routing, links |
 | `@ops` | Git, CI/CD, Docker | Commits, PRs, environment issues |
 | `@tester` | Test creation & coverage | Test suites, coverage analysis |
 | `@governance` | Project health & maintenance | Health scans, doc archival |
@@ -718,7 +719,7 @@ and what's left. Write it to docs/planning/next-session-brief.md
 ### Key Principle
 
 The **next-session-brief.md** file is the single source of truth for resuming
-work. Update it when the handoff state changes, before the final index refresh;
+work. Update it when the handoff state changes, before the candidate freeze;
 plain `session end` validates it without rewriting it. If context is lost, this
 file + TASKS.md + recent git log is enough to resume.
 
@@ -743,12 +744,12 @@ Load these only when working on that specific area:
 | Architecture overview | [project-overview.md](../architecture/project-overview.md) |
 | Agent roles | [agents/README.md](../../agents/README.md) |
 
-### Machine-Readable Indexes
+### Machine-Readable Authorities
 
 - `scripts/control-plane.json` — canonical operation, command, alias, and permission registry
 - `scripts/automation-map.json` — generated temporary compatibility projection
 - `docs/docs-canonical.json` — topic-to-canonical-doc mapping
-- `scripts/index.json` — full automation catalog
+- `scripts/context-manifest.json` — repository-area roots and read-first routing
 
 ---
 

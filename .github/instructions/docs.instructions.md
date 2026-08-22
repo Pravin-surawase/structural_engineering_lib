@@ -59,4 +59,5 @@ Non-archived docs must stay under 400 files. Check with:
 
 ## After structural changes
 
-Update indexes: `./scripts/generate_all_indexes.sh`
+Update `scripts/context-manifest.json` only when routing changes, then run the
+read-only `./run.sh context validate`. Generic folder indexes are retired.

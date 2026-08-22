@@ -92,7 +92,7 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 
 ```bash
 ./run.sh session start              # Begin work (verify env, read priorities)
-./run.sh check                      # Validate everything (29 checks, parallel)
+./run.sh check                      # Validate all registered checks in parallel
 ./run.sh check --quick              # Fast validation (<30s)
 # Codex handles branch, commit, push, and PR operations directly.
 ./run.sh session end                # Validate closeout (read-only by default)
@@ -101,7 +101,8 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 ./run.sh test                       # Run test suite
 ./run.sh test --ci                  # Full local CI
 ./run.sh audit                      # Full readiness audit
-./run.sh generate indexes           # Regenerate folder indexes
+./run.sh context validate           # Validate canonical context routing
+./run.sh context summary <area>     # Summarize live files on demand
 ./run.sh health                     # Project health scan (0-100 score)
 ./run.sh health --fix               # Auto-fix fixable issues
 ./run.sh feedback log --agent X     # Log concrete feedback when found
@@ -201,8 +202,8 @@ Every coding session uses the bounded workflow below.
 5. Log feedback only when a concrete stale or missing control was found.
 
 Freeze all versioned logs, task/handoff state, evidence, and the pre-commit Git
-receipt before refreshing affected indexes once. Index refresh is the final
-repository write. Do not write PR, hosted-check, or merge status back into the
+receipt before creating the candidate. Validate repository context read-only;
+generic folder indexes are retired. Do not write PR, hosted-check, or merge status back into the
 same candidate after push; report it through GitHub and the external handoff.
 
 ### Why This Matters
@@ -217,17 +218,17 @@ same candidate after push; report it through GitHub and the external handoff.
 .venv/bin/python scripts/migrate_react_component.py <src> <dst> --dry-run # Move React component + update imports
 .venv/bin/python scripts/validate_imports.py --scope structural_lib       # Check for broken imports
 .venv/bin/python scripts/check_governance.py --structure                  # Validate folder conventions
-.venv/bin/python scripts/generate_enhanced_index.py <folder>              # Generate index.json + index.md
-.venv/bin/python scripts/generate_enhanced_index.py --all                 # Regenerate all folder indexes
+./run.sh context show <area>                                             # Authoritative roots and read-first paths
+./run.sh context summary <area-or-folder>                                 # Bounded live inventory
 ```
 
-## Folder Indexes (AI Agent Context)
+## Live Repository Context
 
-Each key folder has `index.json` + `index.md` for fast context loading:
-- `index.json` — Machine-readable: file list, classes, functions, params, descriptions
-- `index.md` — Human-readable: tables with descriptions, exports, line counts
-- **Read indexes FIRST** before diving into individual files
-- After moving files, regenerate: `.venv/bin/python scripts/generate_enhanced_index.py <folder>`
+`scripts/context-manifest.json` provides small authoritative area routing.
+Use `./run.sh context show <area>` before broad inspection, then targeted
+`rg`. Use `./run.sh context summary <area-or-folder>` only when a live file
+inventory is useful. These commands are read-only; generic folder indexes are
+retired and require no refresh after file changes.
 
 Always use `.venv/bin/python`, never bare `python`.
 

@@ -102,7 +102,7 @@
     "automation-catalog": {
       "canonical": "docs/reference/automation-catalog.md",
       "description": "All automation scripts with usage",
-      "also_see": ["scripts/index.json"]
+      "also_see": ["scripts/control-plane.json", "scripts/context-manifest.json"]
     },
     "3d-visualization": {
       "canonical": "docs/research/live-3d-visualization-architecture.md",

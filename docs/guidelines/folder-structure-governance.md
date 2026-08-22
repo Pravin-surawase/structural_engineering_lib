@@ -26,7 +26,7 @@ tags: []
 2. **Clear Ownership** - Every folder has a clear purpose and maintainer
 3. **Automation First** - Rules are enforced by code, not conversation
 4. **Long-term Stability** - Structure supports multi-year growth without major reorganization
-5. **Discoverability** - Every document is reachable from a README index
+5. **Discoverability** - Every maintained area has a concise hub or canonical context entry
 
 ### Source of Truth (Limits)
 
@@ -71,7 +71,7 @@ Both the validator (`scripts/check_governance.py`) and this guide must stay alig
 **Purpose:** All user-facing and developer documentation
 **Max root files:** 3-5 (hub documents only)
 **Structure:** Three levels
-1. **Root (3-5 files):** Quick links, landing page, index
+1. **Root (3-5 files):** Quick links, landing page, task and session state
 2. **Categories (15-20 folders):** Organized by audience/purpose
 3. **Detail (files in folders):** Actual content
 
@@ -79,7 +79,7 @@ Both the validator (`scripts/check_governance.py`) and this guide must stay alig
 
 | File | Purpose |
 |------|---------|
-| README.md | Hub index with quick-start paths |
+| README.md | Authored hub with quick-start paths |
 | TASKS.md | Active task tracking |
 | SESSION_LOG.md | Session history and decisions |
 
@@ -134,7 +134,7 @@ Both the validator (`scripts/check_governance.py`) and this guide must stay alig
 **Status (verified 2026-01-11):**
 - blog-drafts/ - 4 files ✅
 - publications/ - archived ✅
-- agents/ - 3 root files + 2 folders ✅ (README.md, index.md, index.json, roles/, agent-9/)
+- agents/ - 1 root file + 2 folders ✅ (README.md, roles/, agent-9/)
 - _archive/ - properly structured ✅
 - _internal/ - exists, used ✅
 - _references/ - exists, used ✅
@@ -322,7 +322,7 @@ react_app/src/
 |------|-------|--------|
 | TypeScript compilation | `npm run build` (catches all import errors) | 2754 modules |
 | Component moves | Use `migrate_react_component.py` | Updates all imports + barrel exports |
-| Index generation | `generate_enhanced_index.py` | Per-folder index.json + index.md |
+| Live context | `./run.sh context summary <area-or-folder>` | Read-only current file inventory |
 
 ---
 
@@ -351,13 +351,13 @@ fastapi_app/
 
 ## VII. Agents Folder (agents/)
 
-**Purpose:** Agent definitions, role descriptions, index
+**Purpose:** Agent definitions, role descriptions, and registry
 **Structure (ENFORCED):**
 
 ```
 agents/
 ├── README.md                    ← Hub (list all agents)
-├── index.md                     ← Registry (metadata JSON/YAML format)
+├── agent_registry.json          ← Canonical machine-readable registry
 ├── roles/                       ← REQUIRED
 │   ├── README.md                (hub for roles)
 │   ├── ARCHITECT.md
@@ -386,7 +386,7 @@ agents/
 1. ✅ **agents/roles/ exists** - All 12 role files properly organized
 2. ✅ **agents/roles/GOVERNANCE.md** - In correct location
 3. ✅ **docs/agents/guides/** - All agent guides properly nested
-4. ✅ **agents/ root** - Only 4 files (README.md, index.json, index.md, roles/, agent-9/)
+4. ✅ **agents/ root** - README plus the `roles/` and `agent-9/` subfolders
 
 **Note:** Historical governance docs archived at `docs/_archive/2026-01/agent-9-governance-legacy/`
 

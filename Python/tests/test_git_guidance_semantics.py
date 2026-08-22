@@ -22,7 +22,7 @@ def _write_index(root: Path, **overrides) -> Path:
         "canonical": "guide.md",
         "live_surfaces": ["guide.md"],
         "live_globs": [],
-        "indexed_surface_sets": [],
+        "live_surface_sets": [],
         "historical_exclusions": [],
         "forbidden_tokens": ["ai_commit.sh", "--finish"],
         "forbidden_command_patterns": [r"(^|[` ])git\s+reset\s+--hard(?:[` ]|$)"],
@@ -84,7 +84,7 @@ def test_live_semantic_contradiction_fails_and_coherent_guidance_passes(tmp_path
     assert checker.check_semantic_guidance(tmp_path, index) == []
 
 
-def test_indexed_deprecated_history_is_excluded_only_with_explicit_boundary(
+def test_live_set_deprecated_history_is_excluded_only_with_explicit_boundary(
     tmp_path: Path,
 ):
     guides = tmp_path / "guides"
@@ -100,18 +100,13 @@ status: deprecated
 """,
         encoding="utf-8",
     )
-    generated = guides / "index.json"
-    generated.write_text(
-        json.dumps({"files": [{"name": "current.md"}, {"name": "old.md"}]}),
-        encoding="utf-8",
-    )
     index = _write_index(
         tmp_path,
         live_surfaces=[],
-        indexed_surface_sets=[
+        live_surface_sets=[
             {
-                "index": "guides/index.json",
                 "root": "guides",
+                "glob": "*.md",
                 "historical_statuses": ["deprecated"],
                 "ignore_names": [],
             }
@@ -133,6 +128,19 @@ Use ./scripts/ai_commit.sh --finish.
     )
     _surfaces, errors, _config = checker.discover_guidance_surfaces(tmp_path, index)
     assert any("lacks an explicit boundary" in error for error in errors)
+
+
+def test_retired_indexed_guidance_set_fails_closed(tmp_path: Path):
+    guide = tmp_path / "guide.md"
+    guide.write_text("Current coherent guidance.\n", encoding="utf-8")
+    index = _write_index(
+        tmp_path,
+        indexed_surface_sets=[{"index": "guides/index.json", "root": "guides"}],
+    )
+
+    _surfaces, errors, _config = checker.discover_guidance_surfaces(tmp_path, index)
+
+    assert "indexed guidance sets are retired; use live_surface_sets" in errors
 
 
 def test_archive_path_is_explicitly_excluded_from_live_authority(tmp_path: Path):

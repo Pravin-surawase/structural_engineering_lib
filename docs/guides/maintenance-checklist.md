@@ -64,7 +64,7 @@ Run every 5th session or weekly:
 # 2. Full health scan
 ./run.sh health
 
-# 3. Full validation (29 checks)
+# 3. Full registered validation
 ./run.sh check
 
 # 4. Run test suite
@@ -73,8 +73,8 @@ Run every 5th session or weekly:
 # 5. Check feedback backlog
 ./run.sh feedback summary
 
-# 6. Regenerate indexes (if files changed)
-./run.sh generate indexes
+# 6. Validate canonical live context
+./run.sh context validate
 ```
 
 ### Weekly Manual Checks
@@ -166,7 +166,7 @@ Run every 5th session or weekly:
 
 ```
 orchestrator  → diagnose (./run.sh health, ./run.sh check)
-  → governance  → auto-fixes (evolve --fix, indexes, sync)
+  → governance  → bounded fixes (evolve --fix, context validation, sync)
   → backend     → code fixes (architecture, imports, cycles)
   → tester      → verify no regressions
   → doc-master  → doc fixes (dates, drift, references)

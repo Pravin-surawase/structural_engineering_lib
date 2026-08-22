@@ -34,7 +34,6 @@ Deep dives into project structure, design decisions, and system architecture.
 |----------|-------------|
 | [project-overview.md](project-overview.md) | High-level scope, layers, and workflows |
 | [mission-and-principles.md](mission-and-principles.md) | Core principles and non-negotiables |
-| [index.md](index.md) | Architecture index |
 
 ### Detailed Architecture
 

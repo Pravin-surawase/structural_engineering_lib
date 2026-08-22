@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "description": "Small canonical routing manifest for live, on-demand repository context.",
+  "summary_policy": {
+    "source": "live-worktree-files",
+    "default_file_limit": 30,
+    "generated_folder_indexes": "retired"
+  },
+  "authorities": {
+    "agents": {
+      "path": "agents/agent_registry.json",
+      "description": "Agent roles, permissions, skills, and routing metadata"
+    },
+    "automation": {
+      "path": "scripts/control-plane.json",
+      "description": "Operations, commands, aliases, permissions, and operation context documents"
+    },
+    "documentation": {
+      "path": "docs/docs-canonical.json",
+      "description": "Canonical document owner for each maintained documentation topic"
+    },
+    "git": {
+      "path": "docs/git-automation/git-workflow-single-source.md",
+      "description": "Git, worktree, candidate, review, and closeout workflow"
+    },
+    "public_api": {
+      "path": "docs/reference/api-manifest.json",
+      "description": "Generated public Python API contract with its own dedicated validator"
+    },
+    "tasks": {
+      "path": "docs/TASKS.md",
+      "description": "Current task and priority truth"
+    }
+  },
+  "retained_indexes": {
+    "docs/api-reference/index.md": {
+      "kind": "site-entry",
+      "owner": "MkDocs API reference",
+      "reason": "Required landing page for the generated API documentation route"
+    },
+    "docs/git-automation/live-git-guidance-index.json": {
+      "kind": "specialized-manifest",
+      "owner": "Git governance",
+      "reason": "Validated policy surface manifest, not a generic folder inventory"
+    },
+    "docs/index.md": {
+      "kind": "site-entry",
+      "owner": "MkDocs documentation home",
+      "reason": "Required home route; maintained as a concise authored page"
+    }
+  },
+  "areas": {
+    "repository": {
+      "description": "Task state, repository rules, runtime identity, and cross-project orientation",
+      "roots": ["."],
+      "read_first": [
+        "AGENTS.md",
+        "docs/TASKS.md",
+        "docs/planning/next-session-brief.md"
+      ],
+      "operations": [
+        "diagnose python runtime",
+        "validate token efficiency",
+        "run all checks"
+      ]
+    },
+    "python": {
+      "description": "Python package layout, public API, tests, and package guidance",
+      "roots": ["Python"],
+      "read_first": [
+        "Python/README.md",
+        "Python/structural_lib/README.md",
+        "docs/reference/api.md"
+      ],
+      "operations": ["run tests", "check architecture boundaries"]
+    },
+    "is456": {
+      "description": "IS 456 pure-math implementation and its focused tests",
+      "roots": [
+        "Python/structural_lib/codes/is456",
+        "Python/tests/codes/is456"
+      ],
+      "read_first": [
+        "Python/structural_lib/codes/is456/__init__.py",
+        "docs/reference/is456-formulas.md"
+      ],
+      "operations": ["run tests", "check public route safety"]
+    },
+    "services": {
+      "description": "Service orchestration, adapters, workflow contracts, and cross-layer parity",
+      "roots": ["Python/structural_lib/services"],
+      "read_first": [
+        "docs/architecture/project-overview.md",
+        "docs/architecture/data-flow-diagrams.md"
+      ],
+      "operations": [
+        "run tests",
+        "check architecture boundaries",
+        "test api parity"
+      ]
+    },
+    "fastapi": {
+      "description": "FastAPI routers, models, application tests, and OpenAPI contract",
+      "roots": ["fastapi_app"],
+      "read_first": ["fastapi_app/README.md", "fastapi_app/openapi_baseline.json"],
+      "operations": ["run tests", "check fastapi issues", "test api parity"]
+    },
+    "react": {
+      "description": "React application, components, hooks, state, and frontend tests",
+      "roots": ["react_app"],
+      "read_first": ["react_app/README.md", ".nvmrc"],
+      "operations": ["select frontend node runtime", "run tests"]
+    },
+    "docs": {
+      "description": "Canonical documentation, task records, plans, evidence, and contributor guidance",
+      "roots": ["docs"],
+      "read_first": ["docs/README.md", "docs/docs-canonical.json"],
+      "operations": ["check docs", "check markdown links"]
+    },
+    "automation": {
+      "description": "Repository commands, control registry, session tools, and validation scripts",
+      "roots": ["scripts"],
+      "read_first": ["scripts/README.md", "scripts/control-plane.json"],
+      "operations": ["validate script references", "check governance"]
+    },
+    "agents": {
+      "description": "Agent roles, repository skills, prompts, and permission boundaries",
+      "roots": ["agents", ".github/agents", ".github/skills"],
+      "read_first": ["agents/README.md", "agents/agent_registry.json"],
+      "operations": ["agent brief", "check governance"]
+    },
+    "verification": {
+      "description": "Test strategy, evidence records, efficiency policy, and parity views",
+      "roots": ["Python/tests", "fastapi_app/tests", "docs/verification"],
+      "read_first": [
+        "docs/contributing/testing-strategy.md",
+        "docs/guidelines/ai-token-efficiency.md"
+      ],
+      "operations": ["run tests", "parity dashboard", "run all checks"]
+    }
+  }
+}

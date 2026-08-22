@@ -35,7 +35,10 @@ rg -n "<function_or_concept>" Python/structural_lib Python/tests fastapi_app
 ./run.sh find --api <function_name>
 ```
 
-Inspect the folder index and the nearest implemented calculation. Reuse current validators, result types, constants, traceability utilities, and error conventions. Do not create a parallel formula or public name.
+Use `./run.sh context show is456` and targeted `rg`, then inspect the nearest
+implemented calculation. Reuse current validators, result types, constants,
+traceability utilities, and error conventions. Do not create a parallel formula
+or public name.
 
 ## 2. Define the Calculation Contract
 

@@ -284,25 +284,26 @@ def discover_guidance_surfaces(
             errors.append(f"indexed live guidance glob matched nothing: {pattern}")
         surfaces.update(path for path in matches if path.is_file())
 
-    for surface_set in config.get("indexed_surface_sets", []):
-        index = repo_root / surface_set.get("index", "")
+    if config.get("indexed_surface_sets"):
+        errors.append("indexed guidance sets are retired; use live_surface_sets")
+
+    for surface_set in config.get("live_surface_sets", []):
         root = repo_root / surface_set.get("root", "")
-        try:
-            entries = json.loads(index.read_text(encoding="utf-8")).get("files", [])
-        except (OSError, json.JSONDecodeError, AttributeError) as exc:
-            errors.append(f"indexed guidance set is malformed: {index}: {exc}")
+        pattern = surface_set.get("glob", "*.md")
+        if not root.is_dir():
+            errors.append(f"live guidance root is missing: {root}")
+            continue
+        matches = sorted(path for path in root.glob(pattern) if path.is_file())
+        if not matches:
+            errors.append(
+                f"live guidance set matched nothing: "
+                f"{root.relative_to(repo_root)}/{pattern}"
+            )
             continue
         ignored = set(surface_set.get("ignore_names", []))
         historical_statuses = set(surface_set.get("historical_statuses", []))
-        for entry in entries:
-            name = entry.get("name") if isinstance(entry, dict) else None
-            if not name or name in ignored or not name.endswith(".md"):
-                continue
-            path = root / name
-            if not path.is_file():
-                errors.append(
-                    f"indexed guidance entry is missing: {path.relative_to(repo_root)}"
-                )
+        for path in matches:
+            if path.name in ignored:
                 continue
             content = path.read_text(encoding="utf-8", errors="replace")
             status = _front_matter_status(content)

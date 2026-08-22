@@ -131,7 +131,9 @@ git status --short --branch
 
 Then:
 
-- Read folder `index.json` or `index.md` before individual files.
+- Use `./run.sh context show <area>` for authoritative routing, then targeted
+  `rg`; request a bounded live inventory with
+  `./run.sh context summary <area-or-folder>` only when useful.
 - Search with `rg` and read only the matching sections.
 - Load the full bootstrap, a full agent file, or large logs only when the task
   actually depends on them.
@@ -154,8 +156,8 @@ is an exception used to guide or debug the change, not a ritual after each edit.
 3. While implementing, run only the narrowest reproducer, test, lint, or
    diagnostic needed to answer a current question or repair a failure. Do not
    rerun quick, full, or unchanged suites after each edit.
-4. Freeze the packet content, including its single maintained-index refresh
-   when indexes are affected.
+4. Freeze the packet content and validate the live repository-context manifest;
+   generic committed folder indexes require no refresh.
 5. Run the affected focused tests, benchmarks, and architecture/import checks
    together as one consolidated selection.
 6. Add one or two independent reviews only when risk justifies them, then run
@@ -177,9 +179,9 @@ For work requiring independent acceptance, use these stricter efficiency
 controls:
 
 - one writer owns all mutable, shared, and generated surfaces;
-- freeze acceptance rows, maintained callers, and index scope before editing;
-- use focused gates during iteration; after content freezes, update maintained
-  indexes once, rerun focused checks, and run the sole quick gate;
+- freeze acceptance rows, maintained callers, and context scope before editing;
+- use focused gates during iteration; after content freezes, validate live
+  context once, rerun focused checks, and run the sole quick gate;
 - only then commit an immutable local candidate for a read-only independent
   audit and return one consolidated blocker list after the full audit matrix;
 - run no hosted CI before `PASS <head> <tree>` from that local audit;

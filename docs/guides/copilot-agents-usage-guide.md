@@ -138,12 +138,12 @@ The orchestrator will:
 
 ### Doc Master: `@doc-master`
 
-**Use when:** Updating docs, running session end, archiving old files, fixing indexes.
+**Use when:** Updating docs, running session end, archiving old files, or validating context.
 
 ```
 @doc-master run session end
 @doc-master archive the old planning docs from Q1
-@doc-master regenerate folder indexes after the file moves
+@doc-master validate repository context after the file moves
 ```
 
 **It knows about:** Session workflow, safe file ops, doc metadata, archive policy, canonical docs.
@@ -538,7 +538,7 @@ Then continue from where I left off.
 | Use `next-session-brief.md` as scratchpad | It survives between chats |
 | Keep conversations focused | One feature per chat session |
 | Use `@orchestrator` to re-plan | When resuming, it reads priorities and re-orients |
-| Read `index.json` files first | Faster than reading individual files |
+| Use `./run.sh context show <area>` first | Small authoritative routing without stale generated files |
 | Use `grep_search` before `read_file` | Find the right lines without reading entire files |
 
 ### Large Files — Read Selectively
@@ -588,7 +588,7 @@ Start with a prompt template, then refine with an agent:
 
 For repetitive tasks across files:
 ```
-@doc-master regenerate all folder indexes after the restructure
+@doc-master validate context and summarize the changed area after the restructure
 @ops commit all the doc changes in one batch
 ```
 

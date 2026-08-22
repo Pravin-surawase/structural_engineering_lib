@@ -74,6 +74,16 @@ def test_weekly_benchmark_evidence_does_not_mutate_indexed_docs():
     assert "docs/reference/fastapi-benchmark-report.json" not in benchmark["run"]
 
 
+def test_weekly_repository_context_check_is_read_only():
+    drift_step = _named_step_run(
+        NIGHTLY, "full-verification", "Documentation and repository drift"
+    )
+
+    assert "python scripts/repo_context.py validate" in drift_step
+    assert "generate_enhanced_index.py" not in drift_step
+    assert "generate_docs_index.py" not in drift_step
+
+
 def _pr_gate_script() -> str:
     steps = _workflow()["jobs"]["pr-gate"]["steps"]
     return next(

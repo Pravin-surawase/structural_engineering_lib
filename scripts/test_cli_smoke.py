@@ -73,6 +73,26 @@ SMOKE_TESTS: list[dict[str, Any]] = [
         "cmd": [VENV, "scripts/prompt_router.py", "--json", "fix test"],
         "expect_rc": 0,
     },
+    # Live repository context (replaces committed generic folder indexes)
+    {
+        "name": "repository_context_validate",
+        "cmd": [VENV, "scripts/repo_context.py", "validate"],
+        "expect_rc": 0,
+        "expect_output": "PASS context manifest",
+    },
+    {
+        "name": "repository_context_summary",
+        "cmd": [
+            VENV,
+            "scripts/repo_context.py",
+            "summary",
+            "automation",
+            "--limit",
+            "3",
+        ],
+        "expect_rc": 0,
+        "expect_output": "Context summary: automation",
+    },
     # Permission tools
     {
         "name": "permissions_check_read",

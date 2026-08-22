@@ -186,13 +186,14 @@ Enforced by `check_governance.py`:
 
 ---
 
-## 8. Documentation Sync
+## 8. Documentation and Context Validation
 
 After structural changes (file moves, renames, new modules):
 
 ```bash
-# Regenerate folder indexes
-.venv/bin/python scripts/generate_enhanced_index.py --all
+# Validate canonical routing and inspect the affected area if useful
+./run.sh context validate
+./run.sh context summary docs
 
 # Sync numbers in docs
 .venv/bin/python scripts/sync_numbers.py --fix
