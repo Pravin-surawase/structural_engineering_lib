@@ -2,7 +2,7 @@
   "folder": "Python/tests/codes/is456",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-16",
+  "last_updated": "2026-08-22",
   "file_count": 1,
   "files": [
     {
@@ -50,6 +50,12 @@
       "is_package": true
     },
     {
+      "name": "strap_footing",
+      "path": "strap_footing/",
+      "file_count": 5,
+      "is_package": true
+    },
+    {
       "name": "wall",
       "path": "wall/",
       "file_count": 5,
@@ -57,5 +63,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "6d00940ee8221505"
+  "content_hash": "30fbf199a535ecf7"
 }

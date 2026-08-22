@@ -15,8 +15,10 @@ Units:
 
 from __future__ import annotations
 
+import math
 from collections import defaultdict
 from dataclasses import dataclass, field
+from numbers import Real
 from typing import Any
 
 from structural_lib.services.bbs import BBSDocument
@@ -75,6 +77,17 @@ class ProjectBOQ:
     grand_total_cost_inr: float
 
 
+def _require_positive_rate(value: object, field_name: str) -> float:
+    """Return a finite positive rate or reject the costing input."""
+
+    if isinstance(value, bool) or not isinstance(value, Real):
+        raise ValueError(f"{field_name} must be a real monetary rate")
+    normalized = float(value)
+    if not math.isfinite(normalized) or normalized <= 0.0:
+        raise ValueError(f"{field_name} must be finite and greater than zero")
+    return normalized
+
+
 def aggregate_project_boq(
     bbs_documents: list[BBSDocument],
     beam_metadata: list[dict[str, Any]],
@@ -98,9 +111,25 @@ def aggregate_project_boq(
 
     Units:
         Steel: kg, Concrete: m³, Cost: ₹ (INR), Dimensions: mm (inputs).
+
+    Raises:
+        ValueError: If a steel or concrete rate, or a concrete-grade key, is
+            outside its finite positive domain.
     """
+    steel_cost_per_kg = _require_positive_rate(steel_cost_per_kg, "steel_cost_per_kg")
     if concrete_costs is None:
         concrete_costs = dict(DEFAULT_CONCRETE_COSTS)
+    else:
+        validated_concrete_costs: dict[int, float] = {}
+        for fck, rate in concrete_costs.items():
+            if isinstance(fck, bool) or not isinstance(fck, int) or fck <= 0:
+                raise ValueError(
+                    "concrete_costs keys must be positive integer fck grades"
+                )
+            validated_concrete_costs[fck] = _require_positive_rate(
+                rate, f"concrete_costs[{fck}]"
+            )
+        concrete_costs = validated_concrete_costs
 
     # Accumulators keyed by grade/story
     steel_acc: dict[str, dict[str, Any]] = defaultdict(

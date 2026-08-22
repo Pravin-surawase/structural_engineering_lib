@@ -444,6 +444,7 @@ def _case_safe_result_review_boundary() -> dict[str, Any]:
         distribution_bar_diameter_mm=8,
         distribution_bar_spacing_mm=250,
     )
+    assert slab.detailing is not None
     assert slab.detailing.qualified_review_required is True
     serialized = repr(slab.detailing).lower()
     assert "no_qualified_review_required" not in serialized

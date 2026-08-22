@@ -162,6 +162,29 @@ class TestAggregateProjectBOQ:
         expected_vol = 300.0 * 500.0 * 5000.0 / 1e9
         assert concrete_m30.cost_inr == pytest.approx(expected_vol * 10000.0, abs=0.01)
 
+    @pytest.mark.parametrize(
+        ("steel_rate", "concrete_costs", "message"),
+        [
+            (-1.0, {25: 6000.0}, "steel_cost_per_kg"),
+            (60.0, {25: -1.0}, r"concrete_costs\[25\]"),
+            (60.0, {25: float("inf")}, r"concrete_costs\[25\]"),
+            (60.0, {-5: 6000.0}, "positive integer fck grades"),
+        ],
+    )
+    def test_rejects_invalid_cost_domains(
+        self,
+        steel_rate: float,
+        concrete_costs: dict[int, float],
+        message: str,
+    ):
+        with pytest.raises(ValueError, match=message):
+            aggregate_project_boq(
+                [_make_bbs_doc()],
+                [_make_meta()],
+                steel_cost_per_kg=steel_rate,
+                concrete_costs=concrete_costs,
+            )
+
     def test_multiple_steel_grades(self):
         """Beams with different steel grades produce separate SteelSummary entries."""
         bbs_docs = [

@@ -14,17 +14,90 @@ from dataclasses import dataclass
 from enum import StrEnum
 from numbers import Real
 
+from structural_lib.core.result_contract import (
+    CalculationStatus,
+    EngineeringStatus,
+    IntakeStatus,
+    StructuralIssueV1,
+    StructuralResultEnvelopeV1,
+)
+
 __all__ = [
     "SlabClassification",
     "SlabClassificationResult",
+    "SlabCapacityFailureResult",
     "SlabContractError",
     "SlabScopeStatus",
     "SolidRectangularSlabGeometry",
+    "slab_capacity_failure",
 ]
 
 
 class SlabContractError(ValueError):
     """Raised when input is outside the P6 solid rectangular slab contract."""
+
+
+@dataclass(frozen=True)
+class SlabCapacityFailureResult:
+    """Structured engineering failure for supported slab flexural demand."""
+
+    component: str
+    governing_region: str
+    factored_moment_knm: float
+    limiting_moment_knm: float
+    utilization_ratio: float
+    clause_refs: tuple[str, ...]
+    source_refs: tuple[str, ...]
+    status: EngineeringStatus
+    qualified_review_required: bool
+    result_envelope: StructuralResultEnvelopeV1
+
+    @property
+    def is_safe(self) -> bool:
+        """Capacity exceedance is always an engineering failure."""
+
+        return False
+
+
+def slab_capacity_failure(
+    *,
+    component: str,
+    governing_region: str,
+    factored_moment_knm: float,
+    limiting_moment_knm: float,
+    clause_refs: tuple[str, ...],
+    source_refs: tuple[str, ...],
+) -> SlabCapacityFailureResult:
+    """Build the canonical VALID/COMPLETED/FAIL slab-capacity result."""
+
+    utilization_ratio = factored_moment_knm / limiting_moment_knm
+    issue = StructuralIssueV1(
+        code="SLAB_FLEXURE_CAPACITY_EXCEEDED",
+        path="$.factored_area_load_kn_per_m2",
+        message=(
+            f"{governing_region} factored moment {factored_moment_knm:.6g} kN m "
+            f"exceeds limiting singly reinforced capacity "
+            f"{limiting_moment_knm:.6g} kN m."
+        ),
+    )
+    result_envelope = StructuralResultEnvelopeV1(
+        intake_status=IntakeStatus.VALID,
+        calculation_status=CalculationStatus.COMPLETED,
+        engineering_status=EngineeringStatus.FAIL,
+        issues=(issue,),
+    )
+    return SlabCapacityFailureResult(
+        component=component,
+        governing_region=governing_region,
+        factored_moment_knm=factored_moment_knm,
+        limiting_moment_knm=limiting_moment_knm,
+        utilization_ratio=utilization_ratio,
+        clause_refs=clause_refs,
+        source_refs=source_refs,
+        status=EngineeringStatus.FAIL,
+        qualified_review_required=True,
+        result_envelope=result_envelope,
+    )
 
 
 class SlabClassification(StrEnum):

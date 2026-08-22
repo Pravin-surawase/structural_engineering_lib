@@ -380,6 +380,54 @@ class TestProjectBOQ:
         resp = client.post("/api/v1/insights/project-boq", json=payload)
         assert resp.status_code == 200
 
+    @pytest.mark.parametrize(
+        "payload_override",
+        [
+            {"concrete_costs": {25: -1000.0}},
+            {"steel_cost_per_kg": -60.0},
+        ],
+    )
+    def test_project_boq_rejects_negative_rates(self, client, payload_override):
+        payload = {
+            "beams": [
+                {
+                    "beam_id": "B1",
+                    "story": "GF",
+                    "b_mm": 300.0,
+                    "D_mm": 500.0,
+                    "span_mm": 1000.0,
+                    "fck": 25,
+                    "steel_weight_kg": 0.0,
+                }
+            ],
+            **payload_override,
+        }
+
+        response = client.post("/api/v1/insights/project-boq", json=payload)
+
+        assert response.status_code == 422
+        assert response.json()["success"] is False
+
+    def test_project_boq_rejects_non_positive_concrete_grade(self, client):
+        payload = {
+            "beams": [
+                {
+                    "beam_id": "B1",
+                    "story": "GF",
+                    "b_mm": 300.0,
+                    "D_mm": 500.0,
+                    "span_mm": 1000.0,
+                    "fck": -5,
+                    "steel_weight_kg": 0.0,
+                }
+            ]
+        }
+
+        response = client.post("/api/v1/insights/project-boq", json=payload)
+
+        assert response.status_code == 422
+        assert response.json()["success"] is False
+
     def test_project_boq_empty_beams(self, client):
         """Empty beams list should fail validation."""
         payload = {"beams": []}

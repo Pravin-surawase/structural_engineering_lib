@@ -663,7 +663,9 @@ def run_gravity_workflow_v1(
             )
             passed = (
                 slab_result.reinforcement.is_detailing_adequate
+                and slab_result.shear is not None
                 and slab_result.shear.is_safe_without_shear_reinforcement
+                and slab_result.serviceability is not None
                 and slab_result.serviceability.is_satisfied
             )
             components.append(

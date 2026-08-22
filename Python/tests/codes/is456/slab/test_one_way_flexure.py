@@ -9,6 +9,7 @@ from dataclasses import FrozenInstanceError
 import pytest
 
 from structural_lib.codes.is456.slab.models import (
+    SlabCapacityFailureResult,
     SlabContractError,
     SolidRectangularSlabGeometry,
 )
@@ -18,6 +19,11 @@ from structural_lib.codes.is456.slab.one_way import (
     design_simply_supported_one_way_slab_flexure,
 )
 from structural_lib.codes.is456.traceability import get_clause_refs
+from structural_lib.core.result_contract import (
+    CalculationStatus,
+    EngineeringStatus,
+    IntakeStatus,
+)
 
 
 def _benchmark_input() -> OneWaySlabFlexureInput:
@@ -146,8 +152,17 @@ def test_over_capacity_demand_fails_closed() -> None:
         fy_n_per_mm2=415,
     )
 
-    with pytest.raises(SlabContractError, match="singly reinforced"):
-        design_simply_supported_one_way_slab_flexure(design_input)
+    result = design_simply_supported_one_way_slab_flexure(design_input)
+
+    assert isinstance(result, SlabCapacityFailureResult)
+    assert result.factored_moment_knm == pytest.approx(45.0)
+    assert result.limiting_moment_knm == pytest.approx(43.113, abs=0.001)
+    assert result.utilization_ratio > 1.0
+    assert result.status is EngineeringStatus.FAIL
+    assert result.result_envelope.intake_status is IntakeStatus.VALID
+    assert result.result_envelope.calculation_status is CalculationStatus.COMPLETED
+    assert result.result_envelope.engineering_status is EngineeringStatus.FAIL
+    assert result.result_envelope.issues[0].code == ("SLAB_FLEXURE_CAPACITY_EXCEEDED")
 
 
 def test_input_and_result_are_frozen() -> None:

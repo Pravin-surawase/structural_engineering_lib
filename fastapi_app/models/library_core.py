@@ -284,6 +284,21 @@ class SlabGoverningCheckResponse(BaseModel):
     passed: bool | None = None
 
 
+class SlabCapacityFailureResponse(BaseModel):
+    """Supported slab demand that exceeds its bounded flexural capacity."""
+
+    component: str
+    governing_region: str
+    factored_moment_knm: float
+    limiting_moment_knm: float
+    utilization_ratio: float
+    clause_refs: list[str]
+    source_refs: list[str]
+    status: Literal["FAIL"]
+    qualified_review_required: Literal[True]
+    result_envelope: dict[str, Any]
+
+
 class OneWaySlabFlexureResponse(BaseModel):
     """Bounded one-way slab flexure result."""
 
@@ -340,14 +355,14 @@ class OneWaySlabDetailingResponse(BaseModel):
 class OneWaySlabDesignResponse(BaseModel):
     """Complete bounded one-way slab flexure and detailing response."""
 
-    flexure: OneWaySlabFlexureResponse
-    detailing: OneWaySlabDetailingResponse
+    flexure: OneWaySlabFlexureResponse | SlabCapacityFailureResponse
+    detailing: OneWaySlabDetailingResponse | None
 
 
 class CompleteOneWaySlabDesignResponse(BaseModel):
     reinforcement: dict[str, Any]
-    shear: dict[str, Any]
-    serviceability: dict[str, Any]
+    shear: dict[str, Any] | None
+    serviceability: dict[str, Any] | None
     punching_shear_disposition: str
     complete_engineering_design_approved: bool
 
@@ -365,5 +380,5 @@ class ContinuousOneWaySlabDesignResponse(BaseModel):
 
 class TwoWaySlabPanelDesignResponse(BaseModel):
     panel: dict[str, Any]
-    serviceability: dict[str, Any]
+    serviceability: dict[str, Any] | None
     complete_engineering_design_approved: bool

@@ -162,6 +162,22 @@ class TestGenericCSVAdapterLoadForces:
         assert b3.mu_knm == pytest.approx(250.0)
         assert b3.vu_kn == pytest.approx(150.0)
 
+    @pytest.mark.parametrize("bad_value", ["not-a-number", "NaN", "inf", "-inf"])
+    def test_rejects_malformed_force_instead_of_coercing_zero(
+        self,
+        adapter: GenericCSVAdapter,
+        tmp_path: Path,
+        bad_value: str,
+    ):
+        csv_path = tmp_path / "malformed_force.csv"
+        with open(csv_path, "w", newline="") as file_obj:
+            writer = csv.writer(file_obj)
+            writer.writerow(["beam_id", "Mu", "Vu"])
+            writer.writerow(["B1", bad_value, "10"])
+
+        with pytest.raises(ValueError, match=r"mu_knm.*CSV row 2"):
+            adapter.load_forces(csv_path)
+
     def test_load_forces_with_load_case(
         self, adapter: GenericCSVAdapter, tmp_path: Path
     ):
@@ -428,10 +444,10 @@ class TestGenericCSVAdapterColumnMapping:
 class TestGenericCSVAdapterEdgeCases:
     """Test edge cases and error handling."""
 
-    def test_handles_non_numeric_forces(
+    def test_rejects_non_numeric_forces(
         self, adapter: GenericCSVAdapter, tmp_path: Path
     ):
-        """Handle non-numeric force values gracefully."""
+        """Reject a malformed row instead of preserving it with zero forces."""
         csv_path = tmp_path / "bad_forces.csv"
         with open(csv_path, "w", newline="") as f:
             writer = csv.writer(f)
@@ -439,13 +455,8 @@ class TestGenericCSVAdapterEdgeCases:
             writer.writerow(["B1", "150.0", "100.0"])
             writer.writerow(["B2", "N/A", "---"])  # Invalid values
 
-        forces = adapter.load_forces(csv_path)
-
-        assert len(forces) == 2
-        # B2 should have 0 for invalid forces
-        b2 = next(f for f in forces if f.id == "B2")
-        assert b2.mu_knm == pytest.approx(0.0)
-        assert b2.vu_kn == pytest.approx(0.0)
+        with pytest.raises(ValueError, match=r"mu_knm.*CSV row 3"):
+            adapter.load_forces(csv_path)
 
     def test_handles_bom_encoding(self, adapter: GenericCSVAdapter, tmp_path: Path):
         """Handle UTF-8 BOM encoding from Excel exports."""

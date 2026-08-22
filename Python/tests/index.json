@@ -534,8 +534,8 @@
     {
       "name": "test_boq.py",
       "type": "python",
-      "size_lines": 190,
-      "last_updated": "2026-08-17",
+      "size_lines": 213,
+      "last_updated": "2026-08-22",
       "description": "Tests for the BOQ (Bill of Quantities) aggregation module.",
       "classes": [
         {
@@ -549,13 +549,13 @@
             "test_story_grouping",
             "test_empty_input_returns_empty_schedule",
             "test_custom_concrete_costs",
+            "test_rejects_invalid_cost_domains",
             "test_multiple_steel_grades",
-            "test_default_concrete_costs_used",
-            "test_project_name_default"
+            "test_default_concrete_costs_used"
           ]
         }
       ],
-      "content_hash": "5b94d7b3d0bd"
+      "content_hash": "b0c041f2f234"
     },
     {
       "name": "test_branch_disposition.py",
@@ -4995,5 +4995,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "e32abdf31e8e6c0e"
+  "content_hash": "a594000243f6c3cc"
 }

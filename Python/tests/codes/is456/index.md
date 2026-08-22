@@ -1,7 +1,7 @@
 # Is456
 
 **Type:** Python Package
-**Last Updated:** 2026-08-16
+**Last Updated:** 2026-08-22
 **Files:** 1
 
 ## Python Files
@@ -20,4 +20,5 @@
 | [flat_slab/](flat_slab/) 📦 | 7 |  |
 | [slab/](slab/) | 7 |  |
 | [staircase/](staircase/) 📦 | 5 |  |
+| [strap_footing/](strap_footing/) 📦 | 5 |  |
 | [wall/](wall/) 📦 | 5 |  |

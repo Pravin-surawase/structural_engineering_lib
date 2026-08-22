@@ -60,8 +60,8 @@ tests and independent column benchmarks remain unchanged.
 
 ### Packet B — Beam, column, and provenance domains
 
-**Status:** active on `codex/public-route-domain-provenance` from
-`e7698a63`.
+**Status:** integrated through PR #833 at `e19b757c` with reviewed and merged
+trees equal.
 
 Reject supplied non-positive shear steel instead of substituting it; reject
 out-of-domain steel percentages and unsupported material grades; enforce
@@ -70,6 +70,9 @@ a declared footing provenance origin.
 
 ### Packet C — Structured failure and intake truth
 
+**Status:** active on `codex/public-route-failure-contracts` from
+`e19b757c`; adversarial, focused, independent, and API-contract checks pass.
+
 Return a structured slab capacity `FAIL`, make the legacy CSV route block
 malformed numeric cells without zero coercion or row loss, and reject negative
 BOQ rates at the request boundary.
@@ -77,8 +80,9 @@ BOQ rates at the request boundary.
 ### Packet D — Decisive gates and repository truth
 
 Run the Excel add-in tests for `excel_addin/**` changes, make the input audit
-surface and exit result decisive, and reconcile release and endpoint-count
-wording with clearly named metrics.
+surface and exit result decisive, reconcile release and endpoint-count wording
+with clearly named metrics, and make the inherited documentation audit state
+truthful without weakening its gate.
 
 After A-D pass focused, quick, broad, and hosted acceptance, the owner may
 resume `INDIA-3-G0`. A future package remains a separate versioned artifact and

@@ -22,7 +22,10 @@ from structural_lib.codes.is456.slab.detailing import (
 from structural_lib.codes.is456.slab.external_coefficients import (
     record_external_two_way_slab_coefficients,
 )
-from structural_lib.codes.is456.slab.models import SolidRectangularSlabGeometry
+from structural_lib.codes.is456.slab.models import (
+    SlabCapacityFailureResult,
+    SolidRectangularSlabGeometry,
+)
 from structural_lib.codes.is456.slab.one_way import (
     OneWaySlabFlexureInput,
     OneWaySlabFlexureResult,
@@ -105,14 +108,14 @@ _SINGLE_ACTION_LOAD_BOUNDARY = (
 class OneWaySlabDesignResult:
     """Flexure and provided-bar checks for the supported one-way slab strip."""
 
-    flexure: OneWaySlabFlexureResult
-    detailing: OneWaySlabDetailingResult
+    flexure: OneWaySlabFlexureResult | SlabCapacityFailureResult
+    detailing: OneWaySlabDetailingResult | None
     load_envelope_status: str = _SINGLE_ACTION_LOAD_BOUNDARY
 
     @property
     def is_detailing_adequate(self) -> bool:
         """Return the bounded provided-bar detailing outcome."""
-        return self.detailing.is_detailing_adequate
+        return self.detailing is not None and self.detailing.is_detailing_adequate
 
 
 @dataclass(frozen=True)
@@ -120,8 +123,8 @@ class CompleteOneWaySlabDesignResult:
     """Compatibility one-way design plus explicit shear and serviceability."""
 
     reinforcement: OneWaySlabDesignResult
-    shear: SlabShearResult
-    serviceability: SlabServiceabilityResult
+    shear: SlabShearResult | None
+    serviceability: SlabServiceabilityResult | None
     punching_shear_disposition: str
     complete_engineering_design_approved: bool = False
     load_envelope_status: str = _SINGLE_ACTION_LOAD_BOUNDARY
@@ -146,8 +149,8 @@ class ContinuousOneWaySlabDesignResult:
 class TwoWaySlabPanelWorkflowResult:
     """Bounded common two-way panel design with explicit serviceability carrier."""
 
-    panel: TwoWayPanelDesignResult
-    serviceability: SlabServiceabilityResult
+    panel: TwoWayPanelDesignResult | SlabCapacityFailureResult
+    serviceability: SlabServiceabilityResult | None
     complete_engineering_design_approved: bool = False
     load_envelope_status: str = _SINGLE_ACTION_LOAD_BOUNDARY
 
@@ -188,6 +191,8 @@ def design_one_way_slab_is456(
             fy_n_per_mm2=fy_n_per_mm2,
         )
     )
+    if isinstance(flexure, SlabCapacityFailureResult):
+        return OneWaySlabDesignResult(flexure=flexure, detailing=None)
     detailing = check_simply_supported_one_way_slab_detailing(
         OneWaySlabDetailingInput(
             flexure_result=flexure,
@@ -236,6 +241,17 @@ def design_complete_one_way_slab_is456(
         distribution_bar_spacing_mm=distribution_bar_spacing_mm,
         strip_width_mm=strip_width_mm,
     )
+    if isinstance(reinforcement.flexure, SlabCapacityFailureResult):
+        return CompleteOneWaySlabDesignResult(
+            reinforcement=reinforcement,
+            shear=None,
+            serviceability=None,
+            punching_shear_disposition=(
+                "not_evaluated_due_to_flexural_capacity_failure"
+            ),
+        )
+    if reinforcement.detailing is None:  # pragma: no cover - guarded invariant
+        raise RuntimeError("accepted slab flexure must include detailing")
     factored_shear_kn = (
         reinforcement.flexure.line_load_kn_per_m
         * (reinforcement.flexure.effective_short_span_mm / 1000.0)
@@ -648,6 +664,8 @@ def design_two_way_slab_panel_is456(
             ),
         )
     )
+    if isinstance(panel, SlabCapacityFailureResult):
+        return TwoWaySlabPanelWorkflowResult(panel=panel, serviceability=None)
     serviceability = check_slab_span_depth_serviceability(
         SlabServiceabilityInput(
             effective_span_mm=x_effective_span_mm,
@@ -775,6 +793,8 @@ def design_two_way_slab_panel_builtin_is456(
             qualified_serviceability_acceptance_acknowledged
         ),
     )
+    if isinstance(result.panel, SlabCapacityFailureResult):
+        return result
     built_in_input = replace(result.panel.input, coefficients=coefficients)
     built_in_panel = replace(
         result.panel,
@@ -803,7 +823,7 @@ def design_two_way_slab_is456(
     fck_n_per_mm2: float,
     fy_n_per_mm2: float,
     strip_width_mm: float = 1000.0,
-) -> TwoWaySlabFlexureResult:
+) -> TwoWaySlabFlexureResult | SlabCapacityFailureResult:
     """Compute flexure for the sole externally accepted-coefficient case.
 
     Coefficients are caller supplied and must carry explicit source approval

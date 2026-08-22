@@ -2,7 +2,12 @@
 # Copyright (c) 2024-2026 Pravin Surawase
 """Pydantic models for Project BOQ endpoint."""
 
+from typing import Annotated
+
 from pydantic import BaseModel, Field
+
+PositiveConcreteGrade = Annotated[int, Field(gt=0)]
+PositiveRate = Annotated[float, Field(gt=0, allow_inf_nan=False)]
 
 
 class DatasetReference(BaseModel):
@@ -21,7 +26,7 @@ class BeamMetadata(BaseModel):
     b_mm: float = Field(..., gt=0, description="Beam width in mm")
     D_mm: float = Field(..., gt=0, description="Overall depth in mm")
     span_mm: float = Field(..., gt=0, description="Span length in mm")
-    fck: int = Field(default=25, description="Concrete grade (N/mm²)")
+    fck: PositiveConcreteGrade = Field(default=25, description="Concrete grade (N/mm²)")
     steel_weight_kg: float = Field(
         default=0.0, ge=0, description="Total steel weight for this beam in kg"
     )
@@ -34,8 +39,8 @@ class ProjectBOQRequest(BaseModel):
         default="Project", max_length=200, description="Display name"
     )
     beams: list[BeamMetadata] = Field(min_length=1, description="List of beam metadata")
-    steel_cost_per_kg: float = Field(default=60.0, gt=0, description="Steel rate ₹/kg")
-    concrete_costs: dict[int, float] | None = Field(
+    steel_cost_per_kg: PositiveRate = Field(default=60.0, description="Steel rate ₹/kg")
+    concrete_costs: dict[PositiveConcreteGrade, PositiveRate] | None = Field(
         default=None,
         description=(
             "Concrete costs by grade {fck: ₹/m³}. "

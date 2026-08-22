@@ -44,9 +44,9 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [test_footing.py](test_footing.py) | Contract tests for the isolated concentric-footing FastAPI s | 0 | 7 | 239 |
 | [test_geometry_full.py](test_geometry_full.py) | Tests for geometry router advanced endpoints. | 3 | 1 | 339 |
 | [test_imports_formats.py](test_imports_formats.py) | Tests for import router extended endpoints. | 2 | 1 | 98 |
-| [test_insights_dashboard.py](test_insights_dashboard.py) | Tests for insights router endpoints. | 4 | 1 | 388 |
+| [test_insights_dashboard.py](test_insights_dashboard.py) | Tests for insights router endpoints. | 4 | 1 | 436 |
 | [test_integration.py](test_integration.py) | Integration tests for FastAPI structural design endpoints. | 7 | 1 | 390 |
-| [test_library_core.py](test_library_core.py) | Request-to-public-library evidence for the new footing and s | 0 | 15 | 397 |
+| [test_library_core.py](test_library_core.py) | Request-to-public-library evidence for the new footing and s | 0 | 17 | 441 |
 | [test_load.py](test_load.py) | Load Tests for FastAPI Application. | 6 | 2 | 278 |
 | [test_maintenance_route_coverage.py](test_maintenance_route_coverage.py) | Direct contract coverage for routes identified by the MAINT- | 0 | 8 | 150 |
 | [test_optimization_pareto.py](test_optimization_pareto.py) | Tests for Pareto multi-objective beam optimization endpoint. | 1 | 0 | 158 |

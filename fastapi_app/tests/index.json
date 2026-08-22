@@ -1218,8 +1218,8 @@
     {
       "name": "test_insights_dashboard.py",
       "type": "python",
-      "size_lines": 388,
-      "last_updated": "2026-08-17",
+      "size_lines": 436,
+      "last_updated": "2026-08-22",
       "description": "Tests for insights router endpoints.",
       "classes": [
         {
@@ -1257,6 +1257,8 @@
             "test_project_boq_basic",
             "test_project_boq_identity_binds_dataset_and_normalized_inputs",
             "test_project_boq_custom_costs",
+            "test_project_boq_rejects_negative_rates",
+            "test_project_boq_rejects_non_positive_concrete_grade",
             "test_project_boq_empty_beams"
           ]
         }
@@ -1266,7 +1268,7 @@
           "name": "client"
         }
       ],
-      "content_hash": "67ed5adf7cfa"
+      "content_hash": "5620dca4f971"
     },
     {
       "name": "test_integration.py",
@@ -1346,8 +1348,8 @@
     {
       "name": "test_library_core.py",
       "type": "python",
-      "size_lines": 397,
-      "last_updated": "2026-08-17",
+      "size_lines": 441,
+      "last_updated": "2026-08-22",
       "description": "Request-to-public-library evidence for the new footing and slab consumers.",
       "functions": [
         {
@@ -1382,6 +1384,12 @@
           ]
         },
         {
+          "name": "test_one_way_slab_capacity_miss_serializes_engineering_fail",
+          "params": [
+            "client"
+          ]
+        },
+        {
           "name": "test_complete_one_way_slab_endpoint_serializes_composed_workflow_truth",
           "params": [
             "client"
@@ -1401,6 +1409,12 @@
         },
         {
           "name": "test_two_way_slab_panel_endpoint_returns_b04_topology_and_torsion",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_two_way_slab_capacity_miss_serializes_engineering_fail",
           "params": [
             "client"
           ]
@@ -1442,7 +1456,7 @@
           ]
         }
       ],
-      "content_hash": "592aac9e99a7"
+      "content_hash": "5a9a803f0be3"
     },
     {
       "name": "test_load.py",
@@ -2102,5 +2116,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "bb5b13e63e28e937"
+  "content_hash": "0ee453d3d45c5113"
 }

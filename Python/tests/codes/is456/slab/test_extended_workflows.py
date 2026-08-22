@@ -6,7 +6,10 @@ from __future__ import annotations
 
 import pytest
 
-from structural_lib.codes.is456.slab.models import SlabContractError
+from structural_lib.codes.is456.slab.models import (
+    SlabCapacityFailureResult,
+    SlabContractError,
+)
 from structural_lib.codes.is456.slab.one_way import OneWaySlabFlexureStatus
 from structural_lib.codes.is456.slab.serviceability import (
     SlabServiceabilityInput,
@@ -21,6 +24,7 @@ from structural_lib.codes.is456.slab.topology import (
     SlabSupportTopology,
     SlabSupportTopologyKind,
 )
+from structural_lib.core.result_contract import EngineeringStatus
 from structural_lib.services.slab_api import (
     design_complete_one_way_slab_is456,
     design_continuous_one_way_slab_is456,
@@ -277,3 +281,46 @@ def test_complete_simply_supported_route_adds_shear_and_strict_serviceability() 
     assert result.shear.is_safe_without_shear_reinforcement is True
     assert result.serviceability.is_satisfied is True
     assert result.complete_engineering_design_approved is False
+
+
+def test_complete_one_way_capacity_miss_returns_structured_fail() -> None:
+    result = design_complete_one_way_slab_is456(
+        short_effective_span_mm=3000,
+        long_effective_span_mm=7000,
+        thickness_mm=150,
+        d_mm=100,
+        factored_area_load_kn_per_m2=50,
+        fck_n_per_mm2=20,
+        fy_n_per_mm2=415,
+        main_bar_diameter_mm=10,
+        main_bar_spacing_mm=200,
+        distribution_bar_diameter_mm=8,
+        distribution_bar_spacing_mm=250,
+        reviewed_base_span_depth_limit=20,
+        reviewed_aggregate_modification_factor=1.0,
+        serviceability_limit_source_reference="reviewed:packet-c",
+        serviceability_limit_source_is_approved=True,
+        qualified_serviceability_acceptance_reference="review:packet-c",
+        qualified_serviceability_acceptance_acknowledged=True,
+    )
+
+    failure = result.reinforcement.flexure
+    assert isinstance(failure, SlabCapacityFailureResult)
+    assert failure.factored_moment_knm == pytest.approx(56.25)
+    assert failure.limiting_moment_knm == pytest.approx(27.5925, abs=0.001)
+    assert failure.result_envelope.engineering_status is EngineeringStatus.FAIL
+    assert result.reinforcement.detailing is None
+    assert result.shear is None
+    assert result.serviceability is None
+    assert result.punching_shear_disposition == (
+        "not_evaluated_due_to_flexural_capacity_failure"
+    )
+
+
+def test_complete_two_way_capacity_miss_returns_structured_fail() -> None:
+    result = _two_way_b04(factored_area_load_kn_per_m2=100)
+
+    assert isinstance(result.panel, SlabCapacityFailureResult)
+    assert result.panel.governing_region == "x_negative_continuous_edge"
+    assert result.panel.result_envelope.engineering_status is EngineeringStatus.FAIL
+    assert result.serviceability is None

@@ -34,9 +34,15 @@ def _request(
     *,
     with_supported_component_bases: bool = False,
     beam_effective_depth_mm: float = 450,
+    superimposed_dead_load_kn_m2: float = 1.5,
+    live_load_kn_m2: float = 3.0,
 ) -> GravityWorkflowRequestV1:
     building = building or _building()
-    loads = _loads(building)
+    loads = _loads(
+        building,
+        superimposed_dead_load_kn_m2=superimposed_dead_load_kn_m2,
+        live_load_kn_m2=live_load_kn_m2,
+    )
     slab_bases: tuple[GravitySlabDesignBasisV1, ...] = ()
     beam_bases: tuple[GravityBeamDesignBasisV1, ...] = ()
     column_bases: tuple[GravityColumnDesignBasisV1, ...] = ()
@@ -259,6 +265,26 @@ def test_component_failure_remains_fail_while_other_missing_basis_holds_aggregat
     assert by_id["B2"].result_envelope["overall_status"] == "FAIL"
     assert by_id["F1"].result_envelope["overall_status"] == "HOLD"
     assert result.result_envelope["overall_status"] == "HOLD"
+
+
+def test_slab_capacity_failure_remains_structured_component_fail() -> None:
+    request = _request(
+        _building_with_x_span(10_000),
+        with_supported_component_bases=True,
+        superimposed_dead_load_kn_m2=50,
+        live_load_kn_m2=50,
+    )
+
+    result = run_gravity_workflow_v1(request)
+    slab = next(item for item in result.components if item.component_id == "P1")
+
+    assert slab.result_envelope["intake_status"] == "VALID"
+    assert slab.result_envelope["calculation_status"] == "COMPLETED"
+    assert slab.result_envelope["engineering_status"] == "FAIL"
+    assert slab.result is not None
+    assert slab.result["reinforcement"]["flexure"]["status"] == "FAIL"
+    assert slab.result["shear"] is None
+    assert slab.result["serviceability"] is None
 
 
 def test_footing_cannot_relabel_superstructure_handoff_as_complete_external_action() -> (

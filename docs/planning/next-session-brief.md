@@ -13,8 +13,8 @@
 
 | State | Boundary |
 |---|---|
-| **Current** | `LIB-PRO-003-B` is active from exact hosted `main` at `e7698a63`: close beam/column domains, stale column result access, and footing provenance |
-| **Next** | Complete Packets C-D for structured slab/CSV/BOQ failure and decisive CI/audit/documentation truth |
+| **Current** | `LIB-PRO-003-C` is active from exact hosted `main` at `e19b757c`: close slab-capacity, malformed CSV, and BOQ-rate failure contracts |
+| **Next** | Complete Packet D for decisive CI/audit/documentation truth, then run one cumulative broad acceptance sequence |
 | **Why** | Direct replay reproduced 13 outcome-changing behaviours still exposed outside the newer bounded Gravity/E1 workflows |
 | **Held** | INDIA-3, new formulas/support claims, ETABS, package publication, stable/professional claims, and qualified approval remain separate and held |
 
@@ -42,17 +42,18 @@ authority. Results remain `NOT_REVIEWED` with
 
 ## Correct next library packet
 
-`LIB-PRO-003-B` is the active bounded implementation packet. Packet A was
-exact-tree merged through PR #832 at `e7698a63`.
+`LIB-PRO-003-C` is the active bounded implementation packet. Packets A-B were
+exact-tree merged through PRs #832-#833 at `e7698a63` and `e19b757c`.
 
-1. Reject unsupported beam material and Table 19 percentage domains.
-2. Reject supplied non-positive shear steel instead of replacing it.
-3. Enforce 0.8-4.0% column longitudinal steel before a safety result.
-4. Read the current typed uniaxial safety field in unified column routing.
-5. Reject unknown footing provenance origins before replay identity is built.
+1. Return a typed `VALID/COMPLETED/FAIL` result when a supported one-way or
+   two-way slab demand exceeds capacity.
+2. Reject malformed or non-finite legacy CSV force cells instead of replacing
+   them with zero or dropping their rows.
+3. Reject non-positive concrete grades and non-finite/non-positive BOQ rates at
+   both the public Python and FastAPI boundaries.
 
-Packets C-D then close structured slab/CSV/BOQ failures and decisive
-CI/audit/documentation truth. Do not start
+Packet D then closes decisive CI/audit/documentation truth before one
+cumulative broad acceptance run. Do not start
 new engineering formulas, IS 13920 expansion, IS 875, IS 1893, FEM, or ETABS.
 
 ## Other live work
