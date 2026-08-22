@@ -250,6 +250,36 @@ describe('useBatchDesign', () => {
     });
   });
 
+  it('preserves a server BLOCKED result instead of relabeling it HOLD', () => {
+    const beam = { ...mockBeam('B-BLOCKED'), source_id: 'B-BLOCKED' };
+    useImportedBeamsStore.getState().setBeams([beam]);
+    const { result } = renderHook(() => useBatchDesign());
+
+    act(() => result.current.startBatchDesign([beam]));
+    act(() => {
+      MockEventSource.instances[0].emit('design_result', {
+        beam_id: 'B-BLOCKED',
+        design_succeeded: false,
+        is_safe: false,
+        status: 'BLOCKED',
+        issues: [{ code: 'PROJECT_BEAM_REQUIRED_FIELD', message: 'vu_kn is required' }],
+      });
+    });
+
+    expect(result.current.results[0]).toMatchObject({
+      status: 'BLOCKED',
+      error: 'The batch result did not include a traceable evidence identity.',
+    });
+    expect(useWorkspaceStore.getState().snapshot!.members[0].result).toMatchObject({
+      lifecycle: 'unsupported',
+      decision: 'HOLD',
+    });
+    expect(useImportedBeamsStore.getState().beams[0]).toMatchObject({
+      status: 'pending',
+      is_valid: false,
+    });
+  });
+
   it('handles progress events', () => {
     const { result } = renderHook(() => useBatchDesign());
 

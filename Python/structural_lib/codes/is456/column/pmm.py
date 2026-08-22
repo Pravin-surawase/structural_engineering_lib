@@ -16,7 +16,13 @@ from __future__ import annotations
 
 import math
 
-import numpy as np
+try:
+    import numpy as np
+except ModuleNotFoundError as exc:  # pragma: no cover - exercised by wheel smoke test
+    raise ModuleNotFoundError(
+        "Experimental column P-M-M analysis requires the optional 'pmm' extra. "
+        "Install structural-lib-is456[pmm]."
+    ) from exc
 
 from structural_lib.codes.is456.common.constants import (
     COLUMN_CONCRETE_COEFF,

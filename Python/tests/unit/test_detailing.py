@@ -56,6 +56,15 @@ class TestBondStress:
         tau = get_bond_stress(22, "deformed")
         assert tau == pytest.approx(1.92, rel=0.01)
 
+    @pytest.mark.parametrize("fck", [True, float("nan"), float("inf")])
+    def test_rejects_invalid_concrete_strength_type(self, fck):
+        with pytest.raises(ValueError, match="fck"):
+            get_bond_stress(fck)
+
+    def test_rejects_unknown_bar_type(self):
+        with pytest.raises(ValueError, match="bar_type"):
+            get_bond_stress(25, "invented")
+
 
 class TestDevelopmentLength:
     """Tests for development length calculation."""
@@ -82,6 +91,28 @@ class TestDevelopmentLength:
         ld = calculate_development_length(12, 30, 415)
         expected = (12 * 0.87 * 415) / (4 * 2.40)
         assert ld == pytest.approx(expected, abs=5)
+
+    @pytest.mark.parametrize(
+        ("field", "value"),
+        [
+            ("bar_dia", True),
+            ("bar_dia", float("nan")),
+            ("fck", float("inf")),
+            ("fy", True),
+            ("stress_ratio", float("nan")),
+        ],
+    )
+    def test_rejects_non_finite_or_boolean_scalars(self, field, value):
+        values = {
+            "bar_dia": 16,
+            "fck": 25,
+            "fy": 500,
+            "stress_ratio": 0.87,
+        }
+        values[field] = value
+
+        with pytest.raises(ValueError, match=field):
+            calculate_development_length(**values)
 
 
 class TestLapLength:

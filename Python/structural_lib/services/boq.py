@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import math
 from collections import defaultdict
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass, field
 from numbers import Real
 from typing import Any
@@ -88,6 +89,41 @@ def _require_positive_rate(value: object, field_name: str) -> float:
     return normalized
 
 
+def resolve_concrete_costs(
+    required_grades: Iterable[object],
+    concrete_costs: Mapping[int, object] | None,
+) -> dict[int, float]:
+    """Validate a costing table and prove every required grade has a rate.
+
+    Repository defaults are used only when the complete table is omitted. A
+    caller-supplied partial table is never supplemented with an invented rate.
+    """
+    source: Mapping[int, object] = (
+        DEFAULT_CONCRETE_COSTS if concrete_costs is None else concrete_costs
+    )
+    validated: dict[int, float] = {}
+    for fck, rate in source.items():
+        if isinstance(fck, bool) or not isinstance(fck, int) or fck <= 0:
+            raise ValueError("concrete_costs keys must be positive integer fck grades")
+        validated[fck] = _require_positive_rate(rate, f"concrete_costs[{fck}]")
+
+    normalized_required: set[int] = set()
+    for required_fck in required_grades:
+        if (
+            isinstance(required_fck, bool)
+            or not isinstance(required_fck, int)
+            or required_fck <= 0
+        ):
+            raise ValueError("required concrete grades must be positive integers")
+        normalized_required.add(required_fck)
+
+    missing = sorted(normalized_required.difference(validated))
+    if missing:
+        formatted = ", ".join(f"M{fck}" for fck in missing)
+        raise ValueError(f"concrete_costs is missing required grade rates: {formatted}")
+    return validated
+
+
 def aggregate_project_boq(
     bbs_documents: list[BBSDocument],
     beam_metadata: list[dict[str, Any]],
@@ -117,19 +153,11 @@ def aggregate_project_boq(
             outside its finite positive domain.
     """
     steel_cost_per_kg = _require_positive_rate(steel_cost_per_kg, "steel_cost_per_kg")
-    if concrete_costs is None:
-        concrete_costs = dict(DEFAULT_CONCRETE_COSTS)
-    else:
-        validated_concrete_costs: dict[int, float] = {}
-        for fck, rate in concrete_costs.items():
-            if isinstance(fck, bool) or not isinstance(fck, int) or fck <= 0:
-                raise ValueError(
-                    "concrete_costs keys must be positive integer fck grades"
-                )
-            validated_concrete_costs[fck] = _require_positive_rate(
-                rate, f"concrete_costs[{fck}]"
-            )
-        concrete_costs = validated_concrete_costs
+    beam_pairs = list(zip(bbs_documents, beam_metadata, strict=False))
+    concrete_costs = resolve_concrete_costs(
+        (meta.get("fck", 25) for _, meta in beam_pairs),
+        concrete_costs,
+    )
 
     # Accumulators keyed by grade/story
     steel_acc: dict[str, dict[str, Any]] = defaultdict(
@@ -141,10 +169,15 @@ def aggregate_project_boq(
     )
     concrete_acc: dict[int, float] = defaultdict(float)
     story_acc: dict[str, dict[str, float]] = defaultdict(
-        lambda: {"beam_count": 0, "steel_kg": 0.0, "concrete_m3": 0.0}
+        lambda: {
+            "beam_count": 0,
+            "steel_kg": 0.0,
+            "concrete_m3": 0.0,
+            "concrete_cost_inr": 0.0,
+        }
     )
 
-    for bbs_doc, meta in zip(bbs_documents, beam_metadata, strict=False):
+    for bbs_doc, meta in beam_pairs:
         story = meta.get("story", "Unknown")
         b_mm = float(meta.get("b_mm", 0))
         d_mm = float(meta.get("D_mm", 0))
@@ -165,12 +198,14 @@ def aggregate_project_boq(
 
         # --- Concrete volume: b × D × span (mm³ → m³) ---
         concrete_m3 = (b_mm * d_mm * span_mm) / 1e9
+        concrete_cost = concrete_m3 * concrete_costs[fck]
         concrete_acc[fck] += concrete_m3
 
         # --- Story accumulation ---
         story_acc[story]["beam_count"] += 1
         story_acc[story]["steel_kg"] += beam_steel_kg
         story_acc[story]["concrete_m3"] += concrete_m3
+        story_acc[story]["concrete_cost_inr"] += concrete_cost
 
     # --- Build SteelSummary list ---
     steel_list: list[SteelSummary] = []
@@ -195,7 +230,7 @@ def aggregate_project_boq(
     total_concrete_m3 = 0.0
     total_concrete_cost = 0.0
     for fck, vol in sorted(concrete_acc.items()):
-        rate = concrete_costs.get(fck, 6000.0)
+        rate = concrete_costs[fck]
         cost = vol * rate
         concrete_list.append(
             ConcreteSummary(
@@ -211,17 +246,16 @@ def aggregate_project_boq(
     story_list: list[StorySummary] = []
     for story, data in sorted(story_acc.items()):
         story_steel_cost = data["steel_kg"] * steel_cost_per_kg
-        avg_concrete_rate = sum(
-            concrete_costs.get(fck, 6000.0) for fck in concrete_acc
-        ) / max(len(concrete_acc), 1)
-        story_concrete_cost = data["concrete_m3"] * avg_concrete_rate
         story_list.append(
             StorySummary(
                 story=story,
                 beam_count=int(data["beam_count"]),
                 steel_kg=round(data["steel_kg"], 2),
                 concrete_m3=round(data["concrete_m3"], 4),
-                cost_inr=round(story_steel_cost + story_concrete_cost, 2),
+                cost_inr=round(
+                    story_steel_cost + data["concrete_cost_inr"],
+                    2,
+                ),
             )
         )
 

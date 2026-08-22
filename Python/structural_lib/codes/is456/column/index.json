@@ -226,8 +226,8 @@
     {
       "name": "pmm.py",
       "type": "python",
-      "size_lines": 514,
-      "last_updated": "2026-08-12",
+      "size_lines": 520,
+      "last_updated": "2026-08-22",
       "description": "Experimental strain-compatibility analysis for rectangular columns.",
       "functions": [
         {
@@ -249,7 +249,7 @@
         "_MIN_ANGLES",
         "_AXIAL_TOLERANCE_KN"
       ],
-      "content_hash": "5fff434638fa"
+      "content_hash": "6c21a8ed2adb"
     },
     {
       "name": "slenderness.py",
@@ -331,5 +331,5 @@
     "slenderness",
     "uniaxial"
   ],
-  "content_hash": "a616c916c2b70827"
+  "content_hash": "bc6999ea9663f02d"
 }

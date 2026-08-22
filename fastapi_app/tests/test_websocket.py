@@ -8,6 +8,22 @@ from fastapi.testclient import TestClient
 from fastapi_app.main import app
 
 
+def _design_params(**overrides):
+    params = {
+        "width": 300,
+        "depth": 500,
+        "moment": 150,
+        "shear": 75,
+        "fck": 25,
+        "fy": 500,
+        "cover": 40,
+        "stirrup_dia_mm": 8,
+        "main_bar_dia_mm": 20,
+    }
+    params.update(overrides)
+    return params
+
+
 class TestWebSocketDesign:
     """Test WebSocket design endpoint."""
 
@@ -30,14 +46,7 @@ class TestWebSocketDesign:
             websocket.send_json(
                 {
                     "type": "design_beam",
-                    "params": {
-                        "width": 300,
-                        "depth": 500,
-                        "moment": 150,
-                        "shear": 75,
-                        "fck": 25,
-                        "fy": 500,
-                    },
+                    "params": _design_params(),
                 }
             )
             response = websocket.receive_json()
@@ -103,13 +112,7 @@ class TestWebSocketDesign:
             websocket.send_json(
                 {
                     "type": "design_beam",
-                    "params": {
-                        "width": 300,
-                        "depth": 500,
-                        "moment": 150,
-                        "fck": 25,
-                        "fy": 500,
-                    },
+                    "params": _design_params(),
                 }
             )
             response = websocket.receive_json()
@@ -118,6 +121,17 @@ class TestWebSocketDesign:
             assert (
                 response["latency_ms"] < 100
             ), f"Latency {response['latency_ms']}ms exceeds 100ms target"
+
+    def test_websocket_design_beam_rejects_empty_params(self):
+        """No calculation may run from implicit engineering defaults."""
+        client = TestClient(app)
+        with client.websocket_connect("/ws/design/missing-inputs") as websocket:
+            websocket.send_json({"type": "design_beam", "params": {}})
+            response = websocket.receive_json()
+
+        assert response["type"] == "error"
+        assert "invalid input" in response["message"].lower()
+        assert "data" not in response
 
     def test_websocket_unknown_message_type(self):
         """Test handling of unknown message types."""
@@ -178,13 +192,7 @@ class TestWebSocketDesign:
             websocket.send_json(
                 {
                     "type": "design_beam",
-                    "params": {
-                        "width": 300,
-                        "depth": 500,
-                        "moment": 100,
-                        "fck": 25,
-                        "fy": 500,
-                    },
+                    "params": _design_params(moment=100),
                 }
             )
             resp1 = websocket.receive_json()
@@ -194,13 +202,7 @@ class TestWebSocketDesign:
             websocket.send_json(
                 {
                     "type": "design_beam",
-                    "params": {
-                        "width": 300,
-                        "depth": 500,
-                        "moment": 200,
-                        "fck": 25,
-                        "fy": 500,
-                    },
+                    "params": _design_params(moment=200),
                 }
             )
             resp2 = websocket.receive_json()

@@ -46,6 +46,7 @@ VALIDATOR_PREFIXES = (
     "validate",
 )
 CALCULATION_DELEGATES = {
+    "calculate_development_length",
     "get_ec",
     "get_fcr",
     "get_steel_stress",

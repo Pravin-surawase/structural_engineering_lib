@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-22",
-  "file_count": 22,
+  "file_count": 24,
   "files": [
     {
       "name": "README.md",
@@ -112,6 +112,14 @@
       "content_hash": "222997fc7278"
     },
     {
+      "name": "lib-pro-005-release-safety-closure-plan.md",
+      "type": "documentation",
+      "size_lines": 59,
+      "last_updated": "2026-08-22",
+      "description": "Close the reproduced release-safety defects found after LIB-PRO-004 without turning the diagnostic inventory into a claim that every unproven parameter is",
+      "content_hash": "3b868989f3ad"
+    },
+    {
       "name": "library-expansion-blueprint-v5.md",
       "type": "documentation",
       "size_lines": 1121,
@@ -119,6 +127,14 @@
       "title": "Library Expansion Blueprint v5.0 — Multi-Code, Multi-Element",
       "description": "> Master plan for expanding structural_engineering_lib from single-code beam-only (IS 456) to multi-code (IS 456, ACI 318-19, EC2), multi-element (beam, column, slab, footing, wall, stair) with comple",
       "content_hash": "3bf2f8972659"
+    },
+    {
+      "name": "maint-011-developer-gate-hygiene-follow-up.md",
+      "type": "documentation",
+      "size_lines": 59,
+      "last_updated": "2026-08-22",
+      "description": "Preserve the tooling and process defects encountered during LIB-PRO-005 for one separate maintenance session. None of these items changes the safety",
+      "content_hash": "afd3db42edd3"
     },
     {
       "name": "memory.md",
@@ -139,11 +155,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 53,
+      "size_lines": 47,
       "last_updated": "2026-08-22",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-22",
-      "content_hash": "99c784290bfc"
+      "content_hash": "4ecfe9bfd5bd"
     },
     {
       "name": "pre-release-checklist.md",
@@ -190,5 +206,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "17e0118dc532b180"
+  "content_hash": "386cf48788b885c2"
 }

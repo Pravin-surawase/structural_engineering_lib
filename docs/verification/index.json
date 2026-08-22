@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-22",
-  "file_count": 217,
+  "file_count": 222,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -2474,6 +2474,74 @@
       "content_hash": "f64dcc6869eb"
     },
     {
+      "name": "lib-pro-005-git-handoff-receipt-2.json",
+      "type": "config",
+      "last_updated": "2026-08-22",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "d6b5c8250561"
+    },
+    {
+      "name": "lib-pro-005-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-22",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "b404e0811747"
+    },
+    {
+      "name": "lib-pro-005-git-handoff-source-evidence-2.json",
+      "type": "config",
+      "last_updated": "2026-08-22",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "ccd4c76eeb94"
+    },
+    {
+      "name": "lib-pro-005-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-22",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "90bbf049c14b"
+    },
+    {
+      "name": "lib-pro-005-release-safety-closure-evidence.md",
+      "type": "documentation",
+      "size_lines": 96,
+      "last_updated": "2026-08-22",
+      "description": "packet are repaired, but static ownership evidence still reports 361 unproven parameters across the maintained 101-owner inventory. No package publication",
+      "content_hash": "04ba9311f17d"
+    },
+    {
       "name": "next-session-git-issues-plan-git-handoff-receipt.json",
       "type": "config",
       "last_updated": "2026-08-16",
@@ -2792,5 +2860,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "67a1d74557d9ab70"
+  "content_hash": "344075fb12593005"
 }

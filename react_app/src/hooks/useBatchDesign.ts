@@ -24,7 +24,7 @@ export interface BatchResult {
   beam_id: string;
   design_succeeded: boolean;
   is_safe: boolean;
-  status: 'PASS' | 'FAIL' | 'HOLD';
+  status: BatchOverallStatus;
   flexure?: {
     ast_required: number;
     asc_required: number;
@@ -48,7 +48,17 @@ export interface BatchResult {
   evidence?: EvidenceEnvelope;
 }
 
-type ServerBatchResult = BatchResult & {
+export type BatchOverallStatus =
+  | 'BLOCKED'
+  | 'ERROR'
+  | 'NOT_EVALUATED'
+  | 'STALE'
+  | 'PASS'
+  | 'FAIL'
+  | 'HOLD';
+
+type ServerBatchResult = Omit<BatchResult, 'status'> & {
+  status?: string;
   input?: {
     member_id?: string;
     beam_id?: string;
@@ -61,6 +71,24 @@ type ServerBatchResult = BatchResult & {
   issues?: Array<{ code: string; message: string }>;
   message?: string;
 };
+
+const BATCH_OVERALL_STATUSES = new Set<BatchOverallStatus>([
+  'BLOCKED',
+  'ERROR',
+  'NOT_EVALUATED',
+  'STALE',
+  'PASS',
+  'FAIL',
+  'HOLD',
+]);
+
+const FAIL_CLOSED_SERVER_STATUSES = new Set<BatchOverallStatus>([
+  'BLOCKED',
+  'ERROR',
+  'NOT_EVALUATED',
+  'STALE',
+  'HOLD',
+]);
 
 export type BatchStatus = 'idle' | 'running' | 'complete' | 'error';
 
@@ -213,11 +241,9 @@ function settleUnreceived(
 function normalizedResult(data: ServerBatchResult): BatchResult | null {
   const beamId = data.beam_id ?? data.input?.member_id;
   if (!beamId) return null;
-  const status = data.status === 'PASS'
-    ? 'PASS'
-    : data.status === 'FAIL'
-      ? 'FAIL'
-      : 'HOLD';
+  const status = BATCH_OVERALL_STATUSES.has(data.status as BatchOverallStatus)
+    ? data.status as BatchOverallStatus
+    : 'HOLD';
   return {
     beam_id: beamId,
     design_succeeded: data.design_succeeded === true,
@@ -419,7 +445,13 @@ export function useBatchDesign() {
             updateCompatibilityBeam(memberId, (beam) => applyBatchResultToBeam(beam, result));
           } else {
             const message = record.error?.message ?? 'This result is outside the supported evidence boundary.';
-            presentedResult = { ...result, status: 'HOLD', error: message };
+            presentedResult = {
+              ...result,
+              status: FAIL_CLOSED_SERVER_STATUSES.has(result.status)
+                ? result.status
+                : 'HOLD',
+              error: message,
+            };
             updateCompatibilityBeam(memberId, (beam) => ({
               ...beam,
               status: 'pending',

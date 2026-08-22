@@ -40,7 +40,7 @@
 | [bbs.py](bbs.py) | Bar Bending Schedule (BBS) Module — IS 2502:1999 / SP 34:198 | 3 | 19 | 1134 |
 | [beam_api.py](beam_api.py) | Module:       beam_api | 0 | 20 | 2384 |
 | [beam_pipeline.py](beam_pipeline.py) | beam_pipeline — Unified application-layer pipeline for beam  | 10 | 3 | 660 |
-| [boq.py](boq.py) | Project Bill of Quantities (BOQ) — Aggregation Module | 4 | 1 | 238 |
+| [boq.py](boq.py) | Project Bill of Quantities (BOQ) — Aggregation Module | 4 | 2 | 272 |
 | [calculation_report.py](calculation_report.py) | Module:       calculation_report | 4 | 1 | 722 |
 | [capabilities.py](capabilities.py) | Discoverable supported-case registry for the IS 456 public l | 7 | 3 | 2057 |
 | [cli_design.py](cli_design.py) | Strict, lossless intake and compatibility output for the adv | 4 | 2 | 628 |

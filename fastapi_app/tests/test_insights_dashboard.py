@@ -380,6 +380,49 @@ class TestProjectBOQ:
         resp = client.post("/api/v1/insights/project-boq", json=payload)
         assert resp.status_code == 200
 
+    def test_project_boq_rejects_missing_custom_grade_rate(self, client):
+        payload = {
+            "beams": [
+                {
+                    "beam_id": "B1",
+                    "story": "GF",
+                    "b_mm": 300.0,
+                    "D_mm": 500.0,
+                    "span_mm": 6000.0,
+                    "fck": 30,
+                    "steel_weight_kg": 50.0,
+                }
+            ],
+            "concrete_costs": {25: 6500.0},
+        }
+
+        response = client.post("/api/v1/insights/project-boq", json=payload)
+
+        assert response.status_code == 422
+        assert response.json()["success"] is False
+        assert "M30" in response.json()["error"]["message"]
+
+    def test_project_boq_rejects_grade_absent_from_default_table(self, client):
+        payload = {
+            "beams": [
+                {
+                    "beam_id": "B1",
+                    "story": "GF",
+                    "b_mm": 300.0,
+                    "D_mm": 500.0,
+                    "span_mm": 6000.0,
+                    "fck": 45,
+                    "steel_weight_kg": 50.0,
+                }
+            ]
+        }
+
+        response = client.post("/api/v1/insights/project-boq", json=payload)
+
+        assert response.status_code == 422
+        assert response.json()["success"] is False
+        assert "M45" in response.json()["error"]["message"]
+
     @pytest.mark.parametrize(
         "payload_override",
         [

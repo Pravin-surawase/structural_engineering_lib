@@ -678,8 +678,8 @@
     {
       "name": "insights.py",
       "type": "python",
-      "size_lines": 579,
-      "last_updated": "2026-08-17",
+      "size_lines": 583,
+      "last_updated": "2026-08-22",
       "description": "Insights Router.",
       "classes": [
         {
@@ -761,7 +761,7 @@
           ]
         }
       ],
-      "content_hash": "c9c66c19afbf"
+      "content_hash": "7c163d8e890b"
     },
     {
       "name": "library_core.py",
@@ -1014,8 +1014,8 @@
     {
       "name": "websocket.py",
       "type": "python",
-      "size_lines": 428,
-      "last_updated": "2026-08-17",
+      "size_lines": 424,
+      "last_updated": "2026-08-22",
       "description": "WebSocket Router for Live Design Updates.",
       "classes": [
         {
@@ -1064,7 +1064,7 @@
           ]
         }
       ],
-      "content_hash": "bc24dda9664d"
+      "content_hash": "ec090397688f"
     },
     {
       "name": "workflows.py",
@@ -1125,5 +1125,5 @@
     "strap_footing",
     "streaming"
   ],
-  "content_hash": "a6b9b18f33d5c08a"
+  "content_hash": "bfde6b05469511a9"
 }

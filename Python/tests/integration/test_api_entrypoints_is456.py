@@ -11,6 +11,7 @@ from structural_lib import api
 from structural_lib.services import api as services_api
 
 PUBLIC_COMPLETION_SYMBOLS = (
+    "WorkflowCatalog",
     "calculate_development_length",
     "check_anchorage_at_simple_support",
     "check_isolated_footing_load_transfer",
@@ -19,6 +20,9 @@ PUBLIC_COMPLETION_SYMBOLS = (
     "get_supported_is456_capability_document",
     "get_supported_is456_capabilities",
     "get_supported_is456_semantic_contract",
+    "get_workflow_catalog",
+    "get_workflow_catalog_document",
+    "serialize_workflow_catalog",
 )
 
 

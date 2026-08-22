@@ -41,7 +41,7 @@
     {
       "name": "api-classification.json",
       "type": "config",
-      "last_updated": "2026-08-17",
+      "last_updated": "2026-08-22",
       "top_level_keys": [
         "schema_version",
         "claim_surface_matrix_schema_version",
@@ -54,7 +54,7 @@
         "canonical_support_exports",
         "advanced_capability_exports"
       ],
-      "content_hash": "a3e243e6ef69"
+      "content_hash": "fc4ab11e6d33"
     },
     {
       "name": "api-levels.md",
@@ -279,5 +279,5 @@
       "file_count": 1760
     }
   ],
-  "content_hash": "3212e9b0731538fc"
+  "content_hash": "42d77b76c85f8a23"
 }

@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-22
-**Files:** 217
+**Files:** 222
 
 ## Config Files
 
@@ -134,6 +134,10 @@ Benchmark examples and verification packs for validating library calculations ag
 - [lib-pro-003-d-git-handoff-source-evidence.json](lib-pro-003-d-git-handoff-source-evidence.json)
 - [lib-pro-004-git-handoff-receipt.json](lib-pro-004-git-handoff-receipt.json)
 - [lib-pro-004-git-handoff-source-evidence.json](lib-pro-004-git-handoff-source-evidence.json)
+- [lib-pro-005-git-handoff-receipt-2.json](lib-pro-005-git-handoff-receipt-2.json)
+- [lib-pro-005-git-handoff-receipt.json](lib-pro-005-git-handoff-receipt.json)
+- [lib-pro-005-git-handoff-source-evidence-2.json](lib-pro-005-git-handoff-source-evidence-2.json)
+- [lib-pro-005-git-handoff-source-evidence.json](lib-pro-005-git-handoff-source-evidence.json)
 - [next-session-git-issues-plan-git-handoff-receipt.json](next-session-git-issues-plan-git-handoff-receipt.json)
 - [next-session-git-issues-plan-git-handoff-source-evidence.json](next-session-git-issues-plan-git-handoff-source-evidence.json)
 - [post-india2-cleanup-disposition-evidence.json](post-india2-cleanup-disposition-evidence.json)
@@ -225,6 +229,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | [lib-pro-003-a-numeric-boundaries-evidence.md](lib-pro-003-a-numeric-boundaries-evidence.md) |  | - Source base: hosted main at e40c0b564acae82f6696e204e8b382 | 68 |
 | [lib-pro-003-b-domain-provenance-evidence.md](lib-pro-003-b-domain-provenance-evidence.md) |  | - Source base: hosted main at e7698a63b86d2db6db2f3970871122 | 69 |
 | [lib-pro-004-lower-level-safety-and-diagnostic-evidence.md](lib-pro-004-lower-level-safety-and-diagnostic-evidence.md) |  | function-quality diagnostic pass. The rebuilt input-validati | 106 |
+| [lib-pro-005-release-safety-closure-evidence.md](lib-pro-005-release-safety-closure-evidence.md) |  | packet are repaired, but static ownership evidence still rep | 96 |
 | [pack.md](pack.md) |  | This repo’s unit tests validate correctness and edge cases,  | 56 |
 | [post-india2-cleanup-authorization-proposal.md](post-india2-cleanup-authorization-proposal.md) |  | Exact candidate set POST-INDIA2-2499DF4ADE0DF704 contains ** | 162 |
 | [release-artifact-evidence-template.md](release-artifact-evidence-template.md) | Release Artifact Evidence Template | Complete this record from the CI run that built the exact ca | 45 |

@@ -33,6 +33,7 @@ from structural_lib.core.errors import (
 )
 
 from .. import tables
+from .._validation import require_finite_real
 from ..traceability import clause
 
 __all__ = [
@@ -76,6 +77,10 @@ def calculate_equivalent_shear(vu_kn: float, tu_knm: float, b: float) -> float:
     Reference:
         IS 456:2000, Clause 41.3.1
     """
+    vu_kn = require_finite_real("vu_kn", vu_kn)
+    tu_knm = require_finite_real("tu_knm", tu_knm)
+    b = require_finite_real("b", b)
+
     if b <= 0:
         raise DimensionError(
             dimension_too_small("beam width b", b, 0, "Cl. 41.3.1"),

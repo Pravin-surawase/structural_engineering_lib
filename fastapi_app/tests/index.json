@@ -1218,7 +1218,7 @@
     {
       "name": "test_insights_dashboard.py",
       "type": "python",
-      "size_lines": 436,
+      "size_lines": 479,
       "last_updated": "2026-08-22",
       "description": "Tests for insights router endpoints.",
       "classes": [
@@ -1257,6 +1257,8 @@
             "test_project_boq_basic",
             "test_project_boq_identity_binds_dataset_and_normalized_inputs",
             "test_project_boq_custom_costs",
+            "test_project_boq_rejects_missing_custom_grade_rate",
+            "test_project_boq_rejects_grade_absent_from_default_table",
             "test_project_boq_rejects_negative_rates",
             "test_project_boq_rejects_non_positive_concrete_grade",
             "test_project_boq_empty_beams"
@@ -1268,7 +1270,7 @@
           "name": "client"
         }
       ],
-      "content_hash": "5620dca4f971"
+      "content_hash": "133e0ca83ea5"
     },
     {
       "name": "test_integration.py",
@@ -2048,8 +2050,8 @@
     {
       "name": "test_websocket.py",
       "type": "python",
-      "size_lines": 211,
-      "last_updated": "2026-08-17",
+      "size_lines": 213,
+      "last_updated": "2026-08-22",
       "description": "Tests for WebSocket Live Design Endpoint.",
       "classes": [
         {
@@ -2060,6 +2062,7 @@
             "test_websocket_design_beam",
             "test_websocket_and_rest_share_calculation_identity",
             "test_websocket_design_beam_latency",
+            "test_websocket_design_beam_rejects_empty_params",
             "test_websocket_unknown_message_type",
             "test_websocket_check_beam",
             "test_websocket_check_beam_no_cases",
@@ -2067,7 +2070,7 @@
           ]
         }
       ],
-      "content_hash": "6065b0583354"
+      "content_hash": "8884e94c118b"
     },
     {
       "name": "test_workflows.py",
@@ -2116,5 +2119,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "9e2f78fdf16bcdd8"
+  "content_hash": "e359b84fd7501536"
 }

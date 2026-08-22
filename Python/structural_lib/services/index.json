@@ -726,7 +726,7 @@
     {
       "name": "boq.py",
       "type": "python",
-      "size_lines": 238,
+      "size_lines": 272,
       "last_updated": "2026-08-22",
       "description": "Project Bill of Quantities (BOQ) — Aggregation Module",
       "classes": [
@@ -749,6 +749,14 @@
       ],
       "functions": [
         {
+          "name": "resolve_concrete_costs",
+          "description": "Validate a costing table and prove every required grade has a rate.",
+          "params": [
+            "required_grades",
+            "concrete_costs"
+          ]
+        },
+        {
           "name": "aggregate_project_boq",
           "description": "Aggregate BBS data from multiple beams into a project-level BOQ.",
           "params": [
@@ -760,7 +768,7 @@
           ]
         }
       ],
-      "content_hash": "678c3e359d5a"
+      "content_hash": "8b76c642322d"
     },
     {
       "name": "calculation_report.py",
@@ -3420,5 +3428,5 @@
     "PropertyLineStrapFootingDesignStatus",
     "design_property_line_strap_footing_is456"
   ],
-  "content_hash": "4f7274c8ab0e9a23"
+  "content_hash": "12969415e17cdb89"
 }

@@ -502,7 +502,7 @@
     {
       "name": "test_audit_readiness_truth.py",
       "type": "python",
-      "size_lines": 239,
+      "size_lines": 256,
       "last_updated": "2026-08-22",
       "description": "Readiness must aggregate semantic truth instead of reporting false green.",
       "functions": [
@@ -554,6 +554,9 @@
           "name": "test_input_auditor_recognizes_delegated_validator_and_typed_model"
         },
         {
+          "name": "test_input_auditor_recognizes_guarded_development_length_adapter"
+        },
+        {
           "name": "test_input_auditor_does_not_treat_raw_collection_hint_as_validation"
         },
         {
@@ -574,12 +577,12 @@
         "_INPUT_AUDIT_SCRIPT",
         "_INPUT_AUDIT_SPEC"
       ],
-      "content_hash": "30e3961a6c24"
+      "content_hash": "e332409fe321"
     },
     {
       "name": "test_boq.py",
       "type": "python",
-      "size_lines": 213,
+      "size_lines": 252,
       "last_updated": "2026-08-22",
       "description": "Tests for the BOQ (Bill of Quantities) aggregation module.",
       "classes": [
@@ -594,13 +597,13 @@
             "test_story_grouping",
             "test_empty_input_returns_empty_schedule",
             "test_custom_concrete_costs",
-            "test_rejects_invalid_cost_domains",
-            "test_multiple_steel_grades",
-            "test_default_concrete_costs_used"
+            "test_custom_concrete_costs_must_cover_every_used_grade",
+            "test_default_concrete_costs_reject_unknown_grade",
+            "test_story_cost_uses_each_beams_exact_concrete_rate"
           ]
         }
       ],
-      "content_hash": "b0c041f2f234"
+      "content_hash": "4a6924828e2b"
     },
     {
       "name": "test_branch_disposition.py",
@@ -3292,8 +3295,8 @@
     {
       "name": "test_packaging.py",
       "type": "python",
-      "size_lines": 452,
-      "last_updated": "2026-08-17",
+      "size_lines": 462,
+      "last_updated": "2026-08-22",
       "description": "Tests for package distribution correctness.",
       "classes": [
         {
@@ -3310,6 +3313,7 @@
           "description": "Verify no test/dev packages leak into the distribution.",
           "public_methods": [
             "test_no_tests_in_top_level",
+            "test_experimental_pmm_declares_numpy_extra",
             "test_manifest_prunes_non_product_namespaces"
           ]
         },
@@ -3381,7 +3385,7 @@
           ]
         }
       ],
-      "content_hash": "9dfa7df6929e"
+      "content_hash": "2c658dbe96ad"
     },
     {
       "name": "test_pipeline_state.py",
@@ -4780,8 +4784,8 @@
     {
       "name": "test_visualization_geometry_3d.py",
       "type": "python",
-      "size_lines": 765,
-      "last_updated": "2026-08-17",
+      "size_lines": 781,
+      "last_updated": "2026-08-22",
       "description": "Tests for visualization.geometry_3d module.",
       "classes": [
         {
@@ -4885,7 +4889,8 @@
             "test_outline_bottom_at_z0",
             "test_outline_top_at_depth",
             "test_outline_x_range",
-            "test_outline_y_symmetric"
+            "test_outline_y_symmetric",
+            "test_rejects_invalid_dimensions"
           ]
         },
         {
@@ -4897,7 +4902,7 @@
           ]
         }
       ],
-      "content_hash": "927bc7451355"
+      "content_hash": "bde143df1e6c"
     },
     {
       "name": "test_visualization_integration.py",
@@ -5055,5 +5060,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "17e03da0a86ef44b"
+  "content_hash": "442360cb57c1cf94"
 }
