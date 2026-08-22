@@ -22,13 +22,24 @@ import os
 import subprocess
 import sys
 import time
-from concurrent.futures import as_completed
-from dataclasses import dataclass
+from concurrent.futures import Future, as_completed
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
 from _lib.output import StatusLine, print_json
+from verification import (
+    REQUIRED_DOMAINS,
+    EvidenceIdentity,
+    FingerprintContext,
+    VerificationError,
+    load_manifest,
+    local_evidence_path,
+    plan_changes,
+    probe_receipt,
+    write_receipt,
+)
 
 SCRIPTS_DIR = REPO_ROOT / "scripts"
 VENV_PYTHON = str(SCRIPTS_DIR / "python_runtime.sh")
@@ -47,6 +58,7 @@ class Check:
     cmd: list[str]
     timeout: int = 60
     fix_cmd: list[str] | None = None  # command to run with --fix
+    cacheable: bool = True
 
 
 @dataclass
@@ -56,6 +68,7 @@ class Category:
     name: str
     label: str
     checks: list[Check]
+    impact_domains: tuple[str, ...]
     description: str = ""
 
 
@@ -76,6 +89,7 @@ CATEGORIES: list[Category] = [
         name="api",
         label="API",
         description="API contracts, manifest, endpoint validation",
+        impact_domains=("python", "fastapi"),
         checks=[
             Check("API validation", _py("check_api.py", "--all")),
             Check("API contracts", _py("validate_api_contracts.py")),
@@ -93,6 +107,7 @@ CATEGORIES: list[Category] = [
         name="docs",
         label="Docs",
         description="Links, doc versions, metadata, tasks format",
+        impact_domains=("docs",),
         checks=[
             Check(
                 "Doc validation",
@@ -111,6 +126,7 @@ CATEGORIES: list[Category] = [
         name="arch",
         label="Architecture",
         description="Layer boundaries, circular imports, import validation",
+        impact_domains=("python", "fastapi"),
         checks=[
             Check(
                 "Architecture boundaries",
@@ -125,6 +141,7 @@ CATEGORIES: list[Category] = [
         name="governance",
         label="Governance",
         description="Governance rules, repo hygiene, Python version, schemas",
+        impact_domains=("control_plane", "repository"),
         checks=[
             Check("Governance rules", _py("check_governance.py", "--full")),
             Check("Repo hygiene", _py("check_repo_hygiene.py")),
@@ -137,6 +154,7 @@ CATEGORIES: list[Category] = [
         name="fastapi",
         label="FastAPI",
         description="FastAPI issues, Docker config, OpenAPI snapshot",
+        impact_domains=("fastapi",),
         checks=[
             Check("FastAPI issues", _py("check_fastapi_issues.py")),
             Check("Docker config", _py("check_docker_config.py")),
@@ -147,17 +165,35 @@ CATEGORIES: list[Category] = [
         name="git",
         label="Git",
         description="Read-only Git state, active operations, version consistency",
+        impact_domains=REQUIRED_DOMAINS,
         checks=[
-            Check("Git state", _py("git_state.py", "--guard", "validation")),
-            Check("Unfinished operation", _py("git_state.py", "--guard", "operation")),
-            Check("Version consistency", _sh("check_version_consistency.sh")),
-            Check("Codex-native Git workflow", _py("check_codex_git_workflow.py")),
+            Check(
+                "Git state",
+                _py("git_state.py", "--guard", "validation"),
+                cacheable=False,
+            ),
+            Check(
+                "Unfinished operation",
+                _py("git_state.py", "--guard", "operation"),
+                cacheable=False,
+            ),
+            Check(
+                "Version consistency",
+                _sh("check_version_consistency.sh"),
+                cacheable=False,
+            ),
+            Check(
+                "Codex-native Git workflow",
+                _py("check_codex_git_workflow.py"),
+                cacheable=False,
+            ),
         ],
     ),
     Category(
         name="stale",
         label="Stale Refs",
         description="Stale script references, instruction drift, bootstrap freshness",
+        impact_domains=("control_plane", "docs", "repository"),
         checks=[
             Check("Script references", _py("validate_script_refs.py")),
             Check("CLI smoke", _py("test_cli_smoke.py")),
@@ -169,6 +205,7 @@ CATEGORIES: list[Category] = [
         name="code",
         label="Code Quality",
         description="Type annotations",
+        impact_domains=("python", "fastapi"),
         checks=[
             Check("Type annotations", _py("check_type_annotations.py"), timeout=90),
         ],
@@ -184,64 +221,21 @@ QUICK_CHECKS: dict[str, list[str]] = {
     "stale": ["Script references", "CLI smoke"],
 }
 
-# File path patterns → categories for --changed mode
-_PATH_TO_CATEGORIES: list[tuple[str, list[str]]] = [
-    ("Python/structural_lib/services/api", ["api"]),
-    ("Python/structural_lib/", ["arch", "code"]),
-    ("fastapi_app/", ["api", "fastapi"]),
-    ("docs/", ["docs", "stale"]),
-    ("scripts/", ["docs", "stale", "governance"]),
-    (".codex/", ["governance"]),
-    ("react_app/", []),  # No script-based checks for React yet
-    (".pre-commit", ["governance"]),
-    ("docker-compose", ["fastapi"]),
-    ("Dockerfile", ["fastapi"]),
-    ("pyproject.toml", ["governance", "arch"]),
-]
 
-
-def _detect_changed_categories() -> set[str]:
-    """Detect which categories to run based on git diff."""
+def _detect_changed_domains() -> tuple[set[str], bool, tuple[str, ...]]:
+    """Use the canonical impact planner; invalid control state selects all."""
     try:
-        result = subprocess.run(
-            ["git", "diff", "--name-only", "HEAD~1", "HEAD"],
-            cwd=str(REPO_ROOT),
-            capture_output=True,
-            text=True,
-            timeout=10,
-        )
-        if result.returncode != 0:
-            # Fallback: diff against working tree
-            result = subprocess.run(
-                ["git", "diff", "--name-only", "HEAD"],
-                cwd=str(REPO_ROOT),
-                capture_output=True,
-                text=True,
-                timeout=10,
-            )
-    except Exception:
-        return set()  # On error, return empty (caller falls back to all)
-
-    changed_files = result.stdout.strip().splitlines()
-    if not changed_files:
-        return set()
-
-    categories: set[str] = set()
-    # Always run git checks
-    categories.add("git")
-
-    for filepath in changed_files:
-        for pattern, cats in _PATH_TO_CATEGORIES:
-            if filepath.startswith(pattern):
-                categories.update(cats)
-                break
-
-    return categories
+        manifest = load_manifest(require_coverage=False)
+        plan = plan_changes(manifest)
+    except VerificationError as exc:
+        return set(REQUIRED_DOMAINS), True, (str(exc),)
+    reasons = (*plan.unknown_paths, *plan.failure_reasons)
+    return set(plan.domains), plan.fail_closed, reasons
 
 
 def _run_pre_commit(fix: bool = False) -> int:
     """Run pre-commit hooks and return exit code."""
-    cmd = ["pre-commit", "run", "--all-files"]
+    cmd = [VENV_PYTHON, "-m", "pre_commit", "run", "--all-files"]
     if fix:
         # pre-commit auto-fixes by default for formatters
         pass
@@ -278,12 +272,57 @@ class CheckResult:
     stderr: str = ""
     timed_out: bool = False
     error: str = ""
+    reused: bool = False
+    fingerprint: str = ""
 
 
-def _run_check(check: Check, category_name: str, use_fix: bool = False) -> CheckResult:
+def _append_missing_results(
+    results: list[CheckResult],
+    futures: dict[Future[CheckResult], tuple[Check, str]],
+) -> None:
+    """Turn an aggregate-runner omission into an explicit failed result."""
+    observed = {(result.category, result.name) for result in results}
+    for future, (check, cat_name) in futures.items():
+        if (cat_name, check.name) in observed:
+            continue
+        future.cancel()
+        results.append(
+            CheckResult(
+                name=check.name,
+                category=cat_name,
+                passed=False,
+                exit_code=-1,
+                duration=0.0,
+                timed_out=True,
+                error="aggregate runner did not return a result",
+            )
+        )
+
+
+def _run_check(
+    check: Check,
+    category_name: str,
+    use_fix: bool = False,
+    identity: EvidenceIdentity | None = None,
+    receipt_path: Path | None = None,
+    reuse: bool = True,
+) -> CheckResult:
     """Run a single check and return the result."""
     cmd = check.fix_cmd if (use_fix and check.fix_cmd) else check.cmd
     start = time.monotonic()
+
+    if reuse and identity is not None and receipt_path is not None:
+        valid, _reason = probe_receipt(receipt_path, identity)
+        if valid:
+            return CheckResult(
+                name=check.name,
+                category=category_name,
+                passed=True,
+                exit_code=0,
+                duration=time.monotonic() - start,
+                reused=True,
+                fingerprint=identity.fingerprint,
+            )
 
     try:
         result = subprocess.run(
@@ -304,6 +343,7 @@ def _run_check(check: Check, category_name: str, use_fix: bool = False) -> Check
             duration=elapsed,
             stdout=result.stdout,
             stderr=result.stderr,
+            fingerprint=identity.fingerprint if identity is not None else "",
         )
     except subprocess.TimeoutExpired:
         elapsed = time.monotonic() - start
@@ -315,6 +355,7 @@ def _run_check(check: Check, category_name: str, use_fix: bool = False) -> Check
             duration=elapsed,
             timed_out=True,
             error=f"Timed out after {check.timeout}s",
+            fingerprint=identity.fingerprint if identity is not None else "",
         )
     except FileNotFoundError as e:
         elapsed = time.monotonic() - start
@@ -325,6 +366,7 @@ def _run_check(check: Check, category_name: str, use_fix: bool = False) -> Check
             exit_code=-1,
             duration=elapsed,
             error=f"Script not found: {e}",
+            fingerprint=identity.fingerprint if identity is not None else "",
         )
     except Exception as e:
         elapsed = time.monotonic() - start
@@ -335,13 +377,14 @@ def _run_check(check: Check, category_name: str, use_fix: bool = False) -> Check
             exit_code=-1,
             duration=elapsed,
             error=str(e),
+            fingerprint=identity.fingerprint if identity is not None else "",
         )
 
 
 def _collect_checks(
     category_filter: str | None,
     quick: bool,
-    changed_categories: set[str] | None = None,
+    changed_domains: set[str] | None = None,
 ) -> list[tuple[Check, str]]:
     """Collect checks to run based on filters."""
     checks: list[tuple[Check, str]] = []
@@ -351,8 +394,10 @@ def _collect_checks(
         if category_filter and cat.name != category_filter:
             continue
 
-        # Changed-file filter
-        if changed_categories is not None and cat.name not in changed_categories:
+        # Canonical impact-domain filter
+        if changed_domains is not None and not (
+            set(cat.impact_domains) & changed_domains
+        ):
             continue
 
         if quick:
@@ -368,6 +413,23 @@ def _collect_checks(
                 checks.append((check, cat.name))
 
     return checks
+
+
+def _allow_operation_completion(
+    checks: list[tuple[Check, str]],
+) -> list[tuple[Check, str]]:
+    """Preserve the pre-commit merge-completion exception on the shared gate."""
+    return [
+        (
+            (
+                replace(check, cmd=[*check.cmd, "--allow-operation-completion"])
+                if check.name == "Unfinished operation"
+                else check
+            ),
+            category,
+        )
+        for check, category in checks
+    ]
 
 
 # ── Output ─────────────────────────────────────────────────────────────────
@@ -396,6 +458,7 @@ def _print_results_table(results: list[CheckResult]) -> None:
     total_passed = 0
     total_failed = 0
     total_timeout = 0
+    total_reused = 0
     fixable = 0
 
     for cat_name in [c.name for c in CATEGORIES]:
@@ -407,14 +470,17 @@ def _print_results_table(results: list[CheckResult]) -> None:
         passed = sum(1 for r in cat_results if r.passed)
         failed = len(cat_results) - passed
         timed_out = sum(1 for r in cat_results if r.timed_out)
+        reused = sum(1 for r in cat_results if r.reused)
 
         total_passed += passed
         total_failed += failed
         total_timeout += timed_out
+        total_reused += reused
 
         if failed == 0:
             icon = "✅"
-            detail = f"{passed}/{len(cat_results)} passed"
+            suffix = f", {reused} reused" if reused else ""
+            detail = f"{passed}/{len(cat_results)} passed{suffix}"
         elif timed_out > 0:
             icon = "⏱️ "
             detail = f"{passed}/{len(cat_results)} passed ({timed_out} timed out)"
@@ -435,7 +501,8 @@ def _print_results_table(results: list[CheckResult]) -> None:
 
     if total_failed == 0:
         print(
-            f"  ✅ Total: {total_passed}/{total} passed  ({_format_duration(total_time)})"
+            f"  ✅ Total: {total_passed}/{total} passed, {total_reused} reused  "
+            f"({_format_duration(total_time)})"
         )
     else:
         print(
@@ -487,6 +554,7 @@ def _print_json_results(results: list[CheckResult]) -> None:
         "passed": sum(1 for r in results if r.passed),
         "failed": sum(1 for r in results if not r.passed),
         "duration": round(sum(r.duration for r in results), 2),
+        "reused": sum(1 for r in results if r.reused),
         "categories": {},
         "checks": [],
     }
@@ -510,6 +578,8 @@ def _print_json_results(results: list[CheckResult]) -> None:
                 "exit_code": r.exit_code,
                 "duration": round(r.duration, 2),
                 "timed_out": r.timed_out,
+                "reused": r.reused,
+                "fingerprint": r.fingerprint or None,
                 "error": r.error or None,
             }
         )
@@ -555,6 +625,7 @@ def main() -> int:
             "  ./run.sh check --category api        # API checks only\n"
             "  ./run.sh check --changed             # Changed paths only\n"
             "  ./run.sh check --pre-commit          # Run pre-commit hooks\n"
+            "  ./run.sh check --no-reuse            # Force fresh execution\n"
             "  ./run.sh check --fix                 # Auto-fix issues\n"
             "  ./run.sh check --json                # CI output\n"
             "  ./run.sh check --list                # Show categories\n"
@@ -604,6 +675,16 @@ def main() -> int:
         help="Run checks serially instead of in parallel (for debugging)",
     )
     parser.add_argument(
+        "--no-reuse",
+        action="store_true",
+        help="Run checks even when an exact content/runtime PASS receipt exists",
+    )
+    parser.add_argument(
+        "--allow-operation-completion",
+        action="store_true",
+        help=argparse.SUPPRESS,
+    )
+    parser.add_argument(
         "--workers",
         "-w",
         type=int,
@@ -621,17 +702,21 @@ def main() -> int:
     if args.pre_commit:
         return _run_pre_commit(fix=args.fix)
 
-    # Detect changed categories if --changed
-    changed_cats = None
+    # Detect canonical change domains if --changed
+    changed_domains = None
+    impact_fail_closed = False
+    impact_reasons: tuple[str, ...] = ()
     if args.changed:
-        changed_cats = _detect_changed_categories()
-        if not changed_cats:
+        changed_domains, impact_fail_closed, impact_reasons = _detect_changed_domains()
+        if not changed_domains:
             if not args.json:
                 print("✅ No changes detected — nothing to check")
             return 0
 
     # Collect checks to run
-    checks = _collect_checks(args.category, args.quick, changed_cats)
+    checks = _collect_checks(args.category, args.quick, changed_domains)
+    if args.allow_operation_completion:
+        checks = _allow_operation_completion(checks)
 
     if not checks:
         if args.category:
@@ -641,8 +726,8 @@ def main() -> int:
         return 1
 
     if not args.json:
-        if args.changed and changed_cats:
-            mode = f"changed: {', '.join(sorted(changed_cats))}"
+        if args.changed and changed_domains:
+            mode = f"changed domains: {', '.join(sorted(changed_domains))}"
         elif args.quick:
             mode = "quick"
         elif args.category:
@@ -651,6 +736,32 @@ def main() -> int:
             mode = "all"
         fix_tag = " (fix mode)" if args.fix else ""
         print(f"🔍 Running {len(checks)} check(s) [{mode}]{fix_tag}...")
+        if impact_fail_closed:
+            detail = "; ".join(impact_reasons) or "unknown impact"
+            print(f"  ⚠️  Impact is unknown; running every domain: {detail}")
+
+    evidence_context: FingerprintContext | None = None
+    evidence_manifest: dict[str, object] | None = None
+    prepared: dict[tuple[str, str], tuple[EvidenceIdentity, Path]] = {}
+    if not args.fix:
+        try:
+            evidence_manifest = load_manifest()
+            evidence_context = FingerprintContext(evidence_manifest)
+            category_domains = {cat.name: cat.impact_domains for cat in CATEGORIES}
+            for check, cat_name in checks:
+                if not check.cacheable:
+                    continue
+                identity = evidence_context.identity(
+                    profile=f"local-check:{cat_name}:{check.name}",
+                    domains=category_domains[cat_name],
+                    command=check.cmd,
+                )
+                receipt_path = local_evidence_path(REPO_ROOT, identity.fingerprint)
+                prepared[(cat_name, check.name)] = (identity, receipt_path)
+        except (OSError, VerificationError):
+            evidence_context = None
+            evidence_manifest = None
+            prepared = {}
 
     # Run checks
     results: list[CheckResult] = []
@@ -660,10 +771,24 @@ def main() -> int:
         for check, cat_name in checks:
             if not args.json:
                 print(f"  ▸ {check.name}...", end="", flush=True)
-            result = _run_check(check, cat_name, use_fix=args.fix)
+            identity, receipt_path = prepared.get((cat_name, check.name), (None, None))
+            result = _run_check(
+                check,
+                cat_name,
+                use_fix=args.fix,
+                identity=identity,
+                receipt_path=receipt_path,
+                reuse=not args.no_reuse,
+            )
             results.append(result)
             if not args.json:
-                icon = "✅" if result.passed else ("⏱️ " if result.timed_out else "❌")
+                icon = (
+                    "♻️ "
+                    if result.reused
+                    else (
+                        "✅" if result.passed else ("⏱️ " if result.timed_out else "❌")
+                    )
+                )
                 print(f" {icon} ({_format_duration(result.duration)})")
     else:
         # Parallel execution with ThreadPoolExecutor
@@ -672,7 +797,18 @@ def main() -> int:
         with ThreadPoolExecutor(max_workers=args.workers) as executor:
             futures = {}
             for check, cat_name in checks:
-                future = executor.submit(_run_check, check, cat_name, args.fix)
+                identity, receipt_path = prepared.get(
+                    (cat_name, check.name), (None, None)
+                )
+                future = executor.submit(
+                    _run_check,
+                    check,
+                    cat_name,
+                    args.fix,
+                    identity,
+                    receipt_path,
+                    not args.no_reuse,
+                )
                 futures[future] = (check, cat_name)
 
             aggregate_timeout = min(sum(c.timeout for c, _ in checks), 900)
@@ -682,9 +818,13 @@ def main() -> int:
                     results.append(result)
                     if not args.json:
                         icon = (
-                            "✅"
-                            if result.passed
-                            else ("⏱️ " if result.timed_out else "❌")
+                            "♻️ "
+                            if result.reused
+                            else (
+                                "✅"
+                                if result.passed
+                                else ("⏱️ " if result.timed_out else "❌")
+                            )
                         )
                         print(
                             f"  {icon} {result.name} ({_format_duration(result.duration)})"
@@ -696,10 +836,33 @@ def main() -> int:
                     )
                 for future in futures:
                     future.cancel()
+            _append_missing_results(results, futures)
 
     # Sort results by category order
     cat_order = {cat.name: i for i, cat in enumerate(CATEGORIES)}
     results.sort(key=lambda r: (cat_order.get(r.category, 99), r.name))
+
+    # Record only exact PASS identities that remained unchanged through the run.
+    if evidence_manifest is not None and prepared:
+        try:
+            post_context = FingerprintContext(evidence_manifest)
+            categories = {cat.name: cat.impact_domains for cat in CATEGORIES}
+            checks_by_key = {(cat, check.name): check for check, cat in checks}
+            for result in results:
+                key = (result.category, result.name)
+                if not result.passed or result.reused or key not in prepared:
+                    continue
+                check = checks_by_key[key]
+                before, receipt_path = prepared[key]
+                after = post_context.identity(
+                    profile=before.profile,
+                    domains=categories[result.category],
+                    command=check.cmd,
+                )
+                if after.fingerprint == before.fingerprint:
+                    write_receipt(receipt_path, after)
+        except (OSError, VerificationError):
+            pass
 
     # Output
     if args.json:

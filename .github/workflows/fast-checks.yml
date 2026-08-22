@@ -18,65 +18,32 @@ jobs:
     name: Detect Changes
     runs-on: ubuntu-latest
     outputs:
-      python: ${{ steps.filter.outputs.python }}
-      fastapi: ${{ steps.filter.outputs.fastapi }}
-      react: ${{ steps.filter.outputs.react }}
-      excel: ${{ steps.filter.outputs.excel }}
-      control_plane: ${{ steps.filter.outputs.control_plane }}
-      docs: ${{ steps.filter.outputs.docs }}
+      python: ${{ steps.impact.outputs.python }}
+      fastapi: ${{ steps.impact.outputs.fastapi }}
+      react: ${{ steps.impact.outputs.react }}
+      excel: ${{ steps.impact.outputs.excel }}
+      control_plane: ${{ steps.impact.outputs.control_plane }}
+      docs: ${{ steps.impact.outputs.docs }}
+      repository: ${{ steps.impact.outputs.repository }}
+      fail_closed: ${{ steps.impact.outputs.fail_closed }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-
-      - name: Classify changed paths
-        uses: dorny/paths-filter@v4
-        id: filter
         with:
-          filters: |
-            python:
-              - 'Python/**'
-              - 'Python/pyproject.toml'
-            fastapi:
-              - 'fastapi_app/**'
-              - 'requirements*.txt'
-              - 'Dockerfile.fastapi'
-              - 'docker-compose*.yml'
-            react:
-              - 'react_app/**'
-              - '**/package-lock.json'
-            excel:
-              - 'excel_addin/**'
-            control_plane:
-              - 'scripts/**'
-              - 'run.sh'
-              - 'agents/**'
-              - '.codex/**'
-              - '.github/agents/**'
-              - '.github/instructions/**'
-              - '.github/prompts/**'
-              - '.github/skills/**'
-              - '.github/workflows/**'
-              - '.github/copilot-instructions.md'
-              - '.pre-commit-config.yaml'
-              - 'AGENTS.md'
-              - 'CLAUDE.md'
-              - 'docs/git-automation/**'
-              - 'docs/guidelines/ai-token-efficiency.md'
-              - 'docs/research/git-governance/**'
-              - 'Python/tests/test_agent_governance_automation.py'
-              - 'Python/tests/test_audit_readiness_truth.py'
-              - 'Python/tests/test_ci_workflow_contract.py'
-              - 'Python/tests/test_git_state.py'
-              - 'Python/tests/test_git_handoff_receipt.py'
-              - 'Python/tests/test_git_guidance_semantics.py'
-              - 'Python/tests/test_pipeline_state.py'
-              - 'Python/tests/test_session_automation.py'
-              - 'Python/tests/test_session_store.py'
-            docs:
-              - 'docs/**'
-              - 'mkdocs.yml'
-              - 'Python/pyproject.toml'
-              - 'Python/structural_lib/**'
+          fetch-depth: 0
+
+      - name: Plan exact validation domains
+        id: impact
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python scripts/verification.py plan \
+            --base "$BASE_SHA" \
+            --head "$HEAD_SHA" \
+            --no-worktree \
+            --github-output "$GITHUB_OUTPUT" \
+            --json
 
   python-validation:
     name: Python Validation
@@ -100,16 +67,29 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e 'Python/[dev]'
 
+      - name: Probe exact Python PASS evidence
+        id: evidence
+        uses: ./.github/actions/verification-evidence
+        with:
+          domain: python
+          profile: hosted-python-validation-v1
+          identity-command: fast-checks:python-validation
+          cache-name: python
+          receipt: ${{ runner.temp }}/verification-evidence/python.json
+
       - name: Format and lint
+        if: steps.evidence.outputs.valid != 'true'
         run: |
           python -m black --check Python
           python -m ruff check Python
 
       - name: Type check
+        if: steps.evidence.outputs.valid != 'true'
         working-directory: Python
         run: python -m mypy
 
       - name: Contract and core tests
+        if: steps.evidence.outputs.valid != 'true'
         run: |
           python -m pytest Python/tests/integration/test_contracts.py -m contract -v
           python -m pytest \
@@ -119,10 +99,21 @@ jobs:
             -v --strict-markers
 
       - name: Architecture and code-quality policy
+        if: steps.evidence.outputs.valid != 'true'
         run: |
           python scripts/check_type_annotations.py --fail-threshold 50 --json > /dev/null
+          python scripts/check_architecture_boundaries.py
           python scripts/check_circular_imports.py
           python scripts/check_governance.py --structure --json > /tmp/governance-structure.json
+
+      - name: Record exact Python PASS evidence
+        if: steps.evidence.outputs.valid != 'true'
+        run: |
+          python scripts/verification.py record \
+            --profile hosted-python-validation-v1 \
+            --domain python \
+            --identity-command fast-checks:python-validation \
+            --receipt "$RUNNER_TEMP/verification-evidence/python.json"
 
   fastapi-validation:
     name: FastAPI Validation
@@ -149,20 +140,43 @@ jobs:
           python -m pip install -e 'Python/[dev]'
           python -m pip install -r requirements.txt
 
+      - name: Probe exact FastAPI PASS evidence
+        id: evidence
+        uses: ./.github/actions/verification-evidence
+        with:
+          domain: fastapi
+          profile: hosted-fastapi-validation-v1
+          identity-command: fast-checks:fastapi-validation
+          cache-name: fastapi
+          receipt: ${{ runner.temp }}/verification-evidence/fastapi.json
+
       - name: Format and lint
+        if: steps.evidence.outputs.valid != 'true'
         run: |
           python -m black --check fastapi_app
           python -m ruff check fastapi_app
 
       - name: FastAPI tests
+        if: steps.evidence.outputs.valid != 'true'
         run: python -m pytest -c fastapi_app/pytest.ini fastapi_app/tests -v --tb=short -m "not slow and not performance"
 
       - name: API and deployment contracts
+        if: steps.evidence.outputs.valid != 'true'
         run: |
           python scripts/validate_api_contracts.py
+          python scripts/check_architecture_boundaries.py
           python scripts/check_fastapi_issues.py
           python scripts/check_docker_config.py
           python scripts/check_openapi_snapshot.py
+
+      - name: Record exact FastAPI PASS evidence
+        if: steps.evidence.outputs.valid != 'true'
+        run: |
+          python scripts/verification.py record \
+            --profile hosted-fastapi-validation-v1 \
+            --domain fastapi \
+            --identity-command fast-checks:fastapi-validation \
+            --receipt "$RUNNER_TEMP/verification-evidence/fastapi.json"
 
   react-validation:
     name: React Validation
@@ -185,12 +199,42 @@ jobs:
         working-directory: react_app
         run: npm ci
 
+      - name: Record React runtime identity
+        run: |
+          {
+            node --version
+            npm --version
+            printf '%s\n' "${ImageOS:-unknown}" "${ImageVersion:-unknown}"
+          } > "$RUNNER_TEMP/react-runtime.txt"
+
+      - name: Probe exact React PASS evidence
+        id: evidence
+        uses: ./.github/actions/verification-evidence
+        with:
+          domain: react
+          profile: hosted-react-validation-v1
+          identity-command: fast-checks:react-validation
+          cache-name: react
+          receipt: ${{ runner.temp }}/verification-evidence/react.json
+          runtime-file: ${{ runner.temp }}/react-runtime.txt
+
       - name: Lint, build, and test
+        if: steps.evidence.outputs.valid != 'true'
         working-directory: react_app
         run: |
           npm run lint
           npm run build
           npx vitest run
+
+      - name: Record exact React PASS evidence
+        if: steps.evidence.outputs.valid != 'true'
+        run: |
+          python scripts/verification.py record \
+            --profile hosted-react-validation-v1 \
+            --domain react \
+            --identity-command fast-checks:react-validation \
+            --runtime-file "$RUNNER_TEMP/react-runtime.txt" \
+            --receipt "$RUNNER_TEMP/verification-evidence/react.json"
 
   excel-validation:
     name: Excel Add-in Validation
@@ -207,9 +251,39 @@ jobs:
         with:
           node-version: '24'
 
+      - name: Record Excel add-in runtime identity
+        run: |
+          {
+            node --version
+            npm --version
+            printf '%s\n' "${ImageOS:-unknown}" "${ImageVersion:-unknown}"
+          } > "$RUNNER_TEMP/excel-runtime.txt"
+
+      - name: Probe exact Excel add-in PASS evidence
+        id: evidence
+        uses: ./.github/actions/verification-evidence
+        with:
+          domain: excel
+          profile: hosted-excel-validation-v1
+          identity-command: fast-checks:excel-validation
+          cache-name: excel
+          receipt: ${{ runner.temp }}/verification-evidence/excel.json
+          runtime-file: ${{ runner.temp }}/excel-runtime.txt
+
       - name: Run all Excel add-in tests
+        if: steps.evidence.outputs.valid != 'true'
         working-directory: excel_addin
         run: npm test
+
+      - name: Record exact Excel add-in PASS evidence
+        if: steps.evidence.outputs.valid != 'true'
+        run: |
+          python scripts/verification.py record \
+            --profile hosted-excel-validation-v1 \
+            --domain excel \
+            --identity-command fast-checks:excel-validation \
+            --runtime-file "$RUNNER_TEMP/excel-runtime.txt" \
+            --receipt "$RUNNER_TEMP/verification-evidence/excel.json"
 
   control-plane-validation:
     name: Control Plane Validation
@@ -231,9 +305,25 @@ jobs:
       - name: Install control-plane test dependencies
         run: python -m pip install -e 'Python/[dev]' PyYAML
 
+      - name: Probe exact control-plane PASS evidence
+        id: evidence
+        uses: ./.github/actions/verification-evidence
+        with:
+          domain: control_plane
+          profile: hosted-control-plane-validation-v1
+          identity-command: fast-checks:control-plane-validation
+          cache-name: control-plane
+          receipt: ${{ runner.temp }}/verification-evidence/control-plane.json
+
       - name: Validate Git, intake, session, and governance controls
+        if: steps.evidence.outputs.valid != 'true'
         run: |
           STRUCTURAL_LIB_PYTHON="$(command -v python)" python scripts/check_codex_git_workflow.py
+          python scripts/check_scripts_index.py
+          python scripts/validate_script_refs.py
+          STRUCTURAL_LIB_PYTHON="$(command -v python)" python scripts/test_cli_smoke.py
+          python scripts/check_token_efficiency.py
+          python scripts/skill_tiers.py validate
           STRUCTURAL_LIB_PYTHON="$(command -v python)" python -m pytest \
             Python/tests/test_git_state.py \
             Python/tests/test_git_handoff_receipt.py \
@@ -245,7 +335,17 @@ jobs:
             Python/tests/test_agent_governance_automation.py \
             Python/tests/test_audit_readiness_truth.py \
             Python/tests/test_ci_workflow_contract.py \
+            Python/tests/test_verification_control.py \
             -q
+
+      - name: Record exact control-plane PASS evidence
+        if: steps.evidence.outputs.valid != 'true'
+        run: |
+          python scripts/verification.py record \
+            --profile hosted-control-plane-validation-v1 \
+            --domain control_plane \
+            --identity-command fast-checks:control-plane-validation \
+            --receipt "$RUNNER_TEMP/verification-evidence/control-plane.json"
 
   documentation-validation:
     name: Documentation Validation
@@ -269,12 +369,37 @@ jobs:
           python -m pip install "mkdocs-material>=9.5,<10" "mkdocstrings[python]>=0.25,<1"
           python -m pip install -e Python/
 
+      - name: Probe exact documentation PASS evidence
+        id: evidence
+        uses: ./.github/actions/verification-evidence
+        with:
+          domain: docs
+          profile: hosted-documentation-validation-v1
+          identity-command: fast-checks:documentation-validation
+          cache-name: docs
+          receipt: ${{ runner.temp }}/verification-evidence/docs.json
+
       - name: Build documentation strictly
-        run: mkdocs build --strict
+        if: steps.evidence.outputs.valid != 'true'
+        run: |
+          python scripts/check_doc_versions.py --ci
+          python scripts/check_tasks_format.py
+          python scripts/check_links.py
+          mkdocs build --strict
+
+      - name: Record exact documentation PASS evidence
+        if: steps.evidence.outputs.valid != 'true'
+        run: |
+          python scripts/verification.py record \
+            --profile hosted-documentation-validation-v1 \
+            --domain docs \
+            --identity-command fast-checks:documentation-validation \
+            --receipt "$RUNNER_TEMP/verification-evidence/docs.json"
 
   repository-validation:
     name: Repository Validation
     needs: changes
+    if: needs.changes.outputs.repository == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 6
     steps:
@@ -295,7 +420,18 @@ jobs:
       - name: Install validation dependencies
         run: python -m pip install -e 'Python/[dev]' PyYAML
 
+      - name: Probe exact repository PASS evidence
+        id: evidence
+        uses: ./.github/actions/verification-evidence
+        with:
+          domain: repository
+          profile: hosted-repository-validation-v1
+          identity-command: fast-checks:repository-validation
+          cache-name: repository
+          receipt: ${{ runner.temp }}/verification-evidence/repository.json
+
       - name: Validate YAML syntax
+        if: steps.evidence.outputs.valid != 'true'
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -310,18 +446,12 @@ jobs:
           PY
 
       - name: Validate repository policy
+        if: steps.evidence.outputs.valid != 'true'
         run: |
-          python scripts/check_doc_versions.py --ci
-          python scripts/check_tasks_format.py
-          python scripts/check_links.py
-          python scripts/check_scripts_index.py
-          python scripts/validate_script_refs.py
-          STRUCTURAL_LIB_PYTHON="$(command -v python)" python scripts/test_cli_smoke.py
-          python scripts/check_token_efficiency.py
-          python scripts/check_architecture_boundaries.py
-          python scripts/skill_tiers.py validate
+          python scripts/check_repo_hygiene.py
 
       - name: Validate maintenance scripts
+        if: steps.evidence.outputs.valid != 'true'
         run: |
           bash -n scripts/validate_git_state.sh
           bash -n scripts/check_unfinished_merge.sh
@@ -329,6 +459,15 @@ jobs:
           bash -n scripts/agent_start.sh
           python scripts/git_state.py --json > /dev/null
           python -m pytest tests/integration/test_migration_scripts.py -q
+
+      - name: Record exact repository PASS evidence
+        if: steps.evidence.outputs.valid != 'true'
+        run: |
+          python scripts/verification.py record \
+            --profile hosted-repository-validation-v1 \
+            --domain repository \
+            --identity-command fast-checks:repository-validation \
+            --receipt "$RUNNER_TEMP/verification-evidence/repository.json"
 
   pr-gate:
     name: PR Gate
@@ -359,7 +498,9 @@ jobs:
           CONTROL_PLANE_RESULT: ${{ needs.control-plane-validation.result }}
           DOCS_CHANGED: ${{ needs.changes.outputs.docs }}
           DOCS_RESULT: ${{ needs.documentation-validation.result }}
+          REPOSITORY_CHANGED: ${{ needs.changes.outputs.repository }}
           REPOSITORY_RESULT: ${{ needs.repository-validation.result }}
+          FAIL_CLOSED: ${{ needs.changes.outputs.fail_closed }}
         run: |
           failed=0
 
@@ -376,7 +517,10 @@ jobs:
             local name="$1"
             local changed="$2"
             local result="$3"
-            if [[ "$changed" == 'true' ]]; then
+            if [[ "$changed" != 'true' && "$changed" != 'false' ]]; then
+              echo "ERROR: $name applicability is '$changed', expected true or false"
+              failed=1
+            elif [[ "$changed" == 'true' ]]; then
               require_success "$name" "$result"
             elif [[ "$result" != 'skipped' ]]; then
               echo "ERROR: $name should be skipped for this change set, got '$result'"
@@ -384,14 +528,35 @@ jobs:
             fi
           }
 
+          require_fail_closed_all() {
+            if [[ "$FAIL_CLOSED" != 'true' && "$FAIL_CLOSED" != 'false' ]]; then
+              echo "ERROR: fail-closed output is '$FAIL_CLOSED', expected true or false"
+              failed=1
+              return
+            fi
+            if [[ "$FAIL_CLOSED" == 'true' ]]; then
+              for changed in \
+                "$PYTHON_CHANGED" "$FASTAPI_CHANGED" "$REACT_CHANGED" \
+                "$EXCEL_CHANGED" "$CONTROL_PLANE_CHANGED" "$DOCS_CHANGED" \
+                "$REPOSITORY_CHANGED"; do
+                if [[ "$changed" != 'true' ]]; then
+                  echo 'ERROR: unknown impact did not select every validation domain'
+                  failed=1
+                  return
+                fi
+              done
+            fi
+          }
+
           require_success 'Detect Changes' "$CHANGES_RESULT"
-          require_success 'Repository Validation' "$REPOSITORY_RESULT"
+          require_fail_closed_all
           require_component 'Python Validation' "$PYTHON_CHANGED" "$PYTHON_RESULT"
           require_component 'FastAPI Validation' "$FASTAPI_CHANGED" "$FASTAPI_RESULT"
           require_component 'React Validation' "$REACT_CHANGED" "$REACT_RESULT"
           require_component 'Excel Add-in Validation' "$EXCEL_CHANGED" "$EXCEL_RESULT"
           require_component 'Control Plane Validation' "$CONTROL_PLANE_CHANGED" "$CONTROL_PLANE_RESULT"
           require_component 'Documentation Validation' "$DOCS_CHANGED" "$DOCS_RESULT"
+          require_component 'Repository Validation' "$REPOSITORY_CHANGED" "$REPOSITORY_RESULT"
 
           if [[ "$failed" -ne 0 ]]; then
             exit 1

@@ -93,6 +93,12 @@ SMOKE_TESTS: list[dict[str, Any]] = [
         "expect_rc": 0,
         "expect_output": "Context summary: automation",
     },
+    {
+        "name": "verification_manifest_validate",
+        "cmd": [VENV, "scripts/verification.py", "validate"],
+        "expect_rc": 0,
+        "expect_output": "Verification manifest: PASS",
+    },
     # Permission tools
     {
         "name": "permissions_check_read",

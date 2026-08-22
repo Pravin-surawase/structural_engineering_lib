@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import fnmatch
+import json
 import os
+import re
 import subprocess
 from pathlib import Path
 
@@ -16,6 +19,10 @@ FAST_CHECKS = REPO_ROOT / ".github" / "workflows" / "fast-checks.yml"
 DEPLOY_DOCS = REPO_ROOT / ".github" / "workflows" / "deploy-docs.yml"
 NIGHTLY = REPO_ROOT / ".github" / "workflows" / "nightly.yml"
 PUBLISH = REPO_ROOT / ".github" / "workflows" / "publish.yml"
+EVIDENCE_ACTION = (
+    REPO_ROOT / ".github" / "actions" / "verification-evidence" / "action.yml"
+)
+VERIFICATION_MANIFEST = REPO_ROOT / "scripts" / "verification-manifest.json"
 
 BASE_GATE_ENV = {
     "CHANGES_RESULT": "success",
@@ -31,7 +38,9 @@ BASE_GATE_ENV = {
     "CONTROL_PLANE_RESULT": "skipped",
     "DOCS_CHANGED": "false",
     "DOCS_RESULT": "skipped",
-    "REPOSITORY_RESULT": "success",
+    "REPOSITORY_CHANGED": "false",
+    "REPOSITORY_RESULT": "skipped",
+    "FAIL_CLOSED": "false",
 }
 
 
@@ -104,39 +113,30 @@ def _run_pr_gate(**overrides: str) -> subprocess.CompletedProcess[str]:
     )
 
 
-def test_changed_path_routes_cover_controls_docs_and_their_tests():
+def test_hosted_change_routing_uses_the_canonical_fail_closed_planner():
     workflow = _workflow()
     jobs = workflow["jobs"]
-    filters_text = next(
-        step["with"]["filters"]
+    plan = next(
+        step
         for step in jobs["changes"]["steps"]
-        if step["name"] == "Classify changed paths"
+        if step["name"] == "Plan exact validation domains"
     )
-    filters = yaml.safe_load(filters_text)
-    control_paths = set(filters["control_plane"])
-    docs_paths = set(filters["docs"])
     control_command = next(
         step["run"]
         for step in jobs["control-plane-validation"]["steps"]
         if step["name"] == "Validate Git, intake, session, and governance controls"
     )
 
-    assert {
-        "scripts/**",
-        "run.sh",
-        "agents/**",
-        ".github/agents/**",
-        ".github/workflows/**",
-        "docs/git-automation/**",
-        "docs/research/git-governance/**",
-    } <= control_paths
-    assert {
-        "docs/**",
-        "mkdocs.yml",
-        "Python/pyproject.toml",
-        "Python/structural_lib/**",
-    } == docs_paths
-    assert filters["excel"] == ["excel_addin/**"]
+    assert "dorny/paths-filter" not in FAST_CHECKS.read_text(encoding="utf-8")
+    assert "python scripts/verification.py plan" in plan["run"]
+    assert '--github-output "$GITHUB_OUTPUT"' in plan["run"]
+    assert plan["env"] == {
+        "BASE_SHA": "${{ github.event.pull_request.base.sha || github.event.before }}",
+        "HEAD_SHA": "${{ github.event.pull_request.head.sha || github.sha }}",
+    }
+    assert jobs["changes"]["outputs"]["fail_closed"] == (
+        "${{ steps.impact.outputs.fail_closed }}"
+    )
 
     exact_tests = {
         "Python/tests/test_git_state.py",
@@ -146,8 +146,8 @@ def test_changed_path_routes_cover_controls_docs_and_their_tests():
         "Python/tests/test_agent_governance_automation.py",
         "Python/tests/test_audit_readiness_truth.py",
         "Python/tests/test_ci_workflow_contract.py",
+        "Python/tests/test_verification_control.py",
     }
-    assert exact_tests <= control_paths
     assert all(test_path in control_command for test_path in exact_tests)
 
 
@@ -169,6 +169,9 @@ def test_pr_gate_topology_and_cancellation_are_scoped_per_pr():
     assert jobs["documentation-validation"]["if"] == (
         "needs.changes.outputs.docs == 'true'"
     )
+    assert jobs["repository-validation"]["if"] == (
+        "needs.changes.outputs.repository == 'true'"
+    )
     docs_python = next(
         step["with"]["python-version"]
         for step in jobs["documentation-validation"]["steps"]
@@ -180,7 +183,10 @@ def test_pr_gate_topology_and_cancellation_are_scoped_per_pr():
         for step in jobs["documentation-validation"]["steps"]
         if step["name"] == "Build documentation strictly"
     )
-    assert docs_run == "mkdocs build --strict"
+    assert "python scripts/check_doc_versions.py --ci" in docs_run
+    assert "python scripts/check_tasks_format.py" in docs_run
+    assert "python scripts/check_links.py" in docs_run
+    assert docs_run.rstrip().endswith("mkdocs build --strict")
 
     excel_steps = jobs["excel-validation"]["steps"]
     excel_node = next(
@@ -202,13 +208,135 @@ def test_pr_gate_topology_and_cancellation_are_scoped_per_pr():
     assert "group: deploy-docs" not in deploy_docs
 
 
+def test_hosted_validation_checks_are_split_by_natural_domain_without_loss():
+    python_policy = _named_step_run(
+        FAST_CHECKS, "python-validation", "Architecture and code-quality policy"
+    )
+    fastapi_policy = _named_step_run(
+        FAST_CHECKS, "fastapi-validation", "API and deployment contracts"
+    )
+    control_policy = _named_step_run(
+        FAST_CHECKS,
+        "control-plane-validation",
+        "Validate Git, intake, session, and governance controls",
+    )
+    docs_policy = _named_step_run(
+        FAST_CHECKS, "documentation-validation", "Build documentation strictly"
+    )
+    repository_policy = _named_step_run(
+        FAST_CHECKS, "repository-validation", "Validate repository policy"
+    )
+
+    assert "check_architecture_boundaries.py" in python_policy
+    assert "check_architecture_boundaries.py" in fastapi_policy
+    for command in (
+        "check_scripts_index.py",
+        "validate_script_refs.py",
+        "test_cli_smoke.py",
+        "check_token_efficiency.py",
+        "skill_tiers.py validate",
+    ):
+        assert command in control_policy
+    for command in (
+        "check_doc_versions.py --ci",
+        "check_tasks_format.py",
+        "check_links.py",
+        "mkdocs build --strict",
+    ):
+        assert command in docs_policy
+    assert repository_policy.strip() == "python scripts/check_repo_hygiene.py"
+
+
+def test_every_hosted_command_file_is_an_input_of_its_scheduled_domain():
+    workflow = _workflow()
+    manifest = json.loads(VERIFICATION_MANIFEST.read_text(encoding="utf-8"))
+    scheduled = {
+        "python-validation": "python",
+        "fastapi-validation": "fastapi",
+        "react-validation": "react",
+        "excel-validation": "excel",
+        "control-plane-validation": "control_plane",
+        "documentation-validation": "docs",
+        "repository-validation": "repository",
+    }
+
+    for job_name, domain in scheduled.items():
+        run_source = "\n".join(
+            step.get("run", "") for step in workflow["jobs"][job_name]["steps"]
+        )
+        command_paths = set(
+            re.findall(
+                r"\b(?:scripts/[A-Za-z0-9_./-]+\.(?:py|sh)|Python/tests/[A-Za-z0-9_./*-]+\.py)\b",
+                run_source,
+            )
+        )
+        assert command_paths
+        for path in command_paths:
+            owners = {
+                owner
+                for rule in manifest["rules"]
+                if any(fnmatch.fnmatchcase(path, pattern) for pattern in rule["paths"])
+                for owner in rule["domains"]
+            }
+            assert domain in owners, f"{job_name} reads unbound input {path}"
+
+
+def test_every_scheduled_job_reuses_only_an_exact_verified_pass_receipt():
+    jobs = _workflow()["jobs"]
+    scheduled = {
+        "python-validation": "python",
+        "fastapi-validation": "fastapi",
+        "react-validation": "react",
+        "excel-validation": "excel",
+        "control-plane-validation": "control-plane",
+        "documentation-validation": "docs",
+        "repository-validation": "repository",
+    }
+
+    for job_name, cache_name in scheduled.items():
+        steps = jobs[job_name]["steps"]
+        evidence = next(step for step in steps if step.get("id") == "evidence")
+        record = next(step for step in steps if step["name"].startswith("Record exact"))
+        validation_steps = [
+            step
+            for step in steps
+            if step.get("if") == "steps.evidence.outputs.valid != 'true'"
+        ]
+
+        assert evidence["uses"] == "./.github/actions/verification-evidence"
+        assert evidence["with"]["cache-name"] == cache_name
+        assert evidence["with"]["domain"] == cache_name.replace("-", "_")
+        assert steps.index(evidence) < steps.index(record)
+        assert f"--profile {evidence['with']['profile']}" in record["run"]
+        assert f"--domain {evidence['with']['domain']}" in record["run"]
+        assert (
+            f"--identity-command {evidence['with']['identity-command']}"
+            in record["run"]
+        )
+        assert "verification.py record" in record["run"]
+        assert record["if"] == "steps.evidence.outputs.valid != 'true'"
+        assert len(validation_steps) >= 2
+
+    action = yaml.safe_load(EVIDENCE_ACTION.read_text(encoding="utf-8"))
+    steps = action["runs"]["steps"]
+    restore = next(step for step in steps if step.get("id") == "cache")
+    probe = next(step for step in steps if step.get("id") == "probe")
+
+    assert restore["uses"] == "actions/cache@v6"
+    assert "restore-keys" not in restore["with"]
+    assert "steps.identity.outputs.fingerprint" in restore["with"]["key"]
+    assert "verification.py" in probe["run"]
+    assert "probe" in probe["run"]
+
+
 def test_workflow_guidance_explains_excel_skip_and_performance_authorities():
     guidance = (REPO_ROOT / ".github" / "workflows" / "README.md").read_text(
         encoding="utf-8"
     )
 
     assert "Excel Add-in Validation` is expected to show `skipped`" in guidance
-    assert "`excel_addin/**` path changed" in guidance
+    assert "plan marks `excel` unchanged" in guidance
+    assert "`excel_addin/**`, `.nvmrc`" in guidance
     assert "complete local Excel suite" in guidance
     assert "fastapi_app/tests/test_load.py" in guidance
     assert "executable latency and degradation thresholds" in guidance
@@ -223,6 +351,8 @@ def test_pr_gate_accepts_successful_applicable_routes():
         CONTROL_PLANE_RESULT="success",
         DOCS_CHANGED="true",
         DOCS_RESULT="success",
+        REPOSITORY_CHANGED="true",
+        REPOSITORY_RESULT="success",
     )
 
     assert result.returncode == 0, result.stderr
@@ -232,9 +362,13 @@ def test_pr_gate_accepts_successful_applicable_routes():
 @pytest.mark.parametrize(
     ("changed_key", "result_key"),
     [
+        ("PYTHON_CHANGED", "PYTHON_RESULT"),
+        ("FASTAPI_CHANGED", "FASTAPI_RESULT"),
+        ("REACT_CHANGED", "REACT_RESULT"),
         ("EXCEL_CHANGED", "EXCEL_RESULT"),
         ("CONTROL_PLANE_CHANGED", "CONTROL_PLANE_RESULT"),
         ("DOCS_CHANGED", "DOCS_RESULT"),
+        ("REPOSITORY_CHANGED", "REPOSITORY_RESULT"),
     ],
 )
 @pytest.mark.parametrize("bad_result", ["failure", "cancelled", "skipped", "timed_out"])
@@ -250,9 +384,13 @@ def test_pr_gate_rejects_non_successful_applicable_route(
 @pytest.mark.parametrize(
     ("changed_key", "result_key"),
     [
+        ("PYTHON_CHANGED", "PYTHON_RESULT"),
+        ("FASTAPI_CHANGED", "FASTAPI_RESULT"),
+        ("REACT_CHANGED", "REACT_RESULT"),
         ("EXCEL_CHANGED", "EXCEL_RESULT"),
         ("CONTROL_PLANE_CHANGED", "CONTROL_PLANE_RESULT"),
         ("DOCS_CHANGED", "DOCS_RESULT"),
+        ("REPOSITORY_CHANGED", "REPOSITORY_RESULT"),
     ],
 )
 def test_pr_gate_rejects_unexpected_non_applicable_execution(
@@ -262,3 +400,35 @@ def test_pr_gate_rejects_unexpected_non_applicable_execution(
 
     assert result.returncode == 1
     assert "should be skipped" in result.stdout
+
+
+def test_pr_gate_rejects_missing_applicability_and_partial_fail_closed_plan():
+    missing = _run_pr_gate(PYTHON_CHANGED="")
+    assert missing.returncode == 1
+    assert "applicability is ''" in missing.stdout
+
+    partial = _run_pr_gate(FAIL_CLOSED="true")
+    assert partial.returncode == 1
+    assert "unknown impact did not select every validation domain" in partial.stdout
+
+
+def test_pr_gate_accepts_fail_closed_all_domain_success():
+    result = _run_pr_gate(
+        FAIL_CLOSED="true",
+        PYTHON_CHANGED="true",
+        PYTHON_RESULT="success",
+        FASTAPI_CHANGED="true",
+        FASTAPI_RESULT="success",
+        REACT_CHANGED="true",
+        REACT_RESULT="success",
+        EXCEL_CHANGED="true",
+        EXCEL_RESULT="success",
+        CONTROL_PLANE_CHANGED="true",
+        CONTROL_PLANE_RESULT="success",
+        DOCS_CHANGED="true",
+        DOCS_RESULT="success",
+        REPOSITORY_CHANGED="true",
+        REPOSITORY_RESULT="success",
+    )
+
+    assert result.returncode == 0, result.stdout

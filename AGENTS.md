@@ -194,6 +194,7 @@ grep -r "@router" fastapi_app/routers/ | head -30               # Existing API r
 ./run.sh audit                      # Full readiness audit
 ./run.sh context validate           # Validate canonical context and index retirement
 ./run.sh context summary <area>     # Summarize live worktree files on demand
+./run.sh verification plan          # Show whole-candidate validation domains
 ./run.sh health                     # Project health scan (0-100 score)
 ./run.sh health --fix               # Auto-fix fixable issues
 ./run.sh feedback log --agent X     # Log concrete feedback when found

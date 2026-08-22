@@ -1,0 +1,139 @@
+{
+  "$schema": "./verification-manifest.schema.json",
+  "schema_version": 1,
+  "registry_kind": "structural-engineering-verification-impact",
+  "metadata": {
+    "owner": "MAINT-012 verification control plane",
+    "purpose": "Classify changed paths once and bind reusable PASS evidence to exact commands, runtimes, and input bytes.",
+    "unknown_impact": "all_domains",
+    "local_evidence_store": "git_common_dir"
+  },
+  "domains": {
+    "python": {
+      "description": "Python package, tests, examples, and public-client contracts",
+      "hosted_job": "python-validation"
+    },
+    "fastapi": {
+      "description": "FastAPI application, imported Python package, and deployment inputs",
+      "hosted_job": "fastapi-validation"
+    },
+    "react": {
+      "description": "React application source, dependencies, tests, and build configuration",
+      "hosted_job": "react-validation"
+    },
+    "excel": {
+      "description": "Excel add-in source and its dependency-free Node test surface",
+      "hosted_job": "excel-validation"
+    },
+    "control_plane": {
+      "description": "Agent, script, session, Git, registry, workflow, and permission controls",
+      "hosted_job": "control-plane-validation"
+    },
+    "docs": {
+      "description": "Maintained documentation, MkDocs configuration, and imported API documentation inputs",
+      "hosted_job": "documentation-validation"
+    },
+    "repository": {
+      "description": "Repository configuration, hygiene, YAML, and maintenance-script contracts",
+      "hosted_job": "repository-validation"
+    }
+  },
+  "rules": [
+    {
+      "paths": ["Python/structural_lib/**"],
+      "domains": ["python", "fastapi", "docs"]
+    },
+    {
+      "paths": ["Python/examples/**"],
+      "domains": ["python", "docs"]
+    },
+    {
+      "paths": ["Python/tests/**", "Python/scripts/**", "Python/.benchmarks/**", "Python/.coveragerc", "Python/pytest.ini", "Python/test_stats.json"],
+      "domains": ["python"]
+    },
+    {
+      "paths": ["Python/tests/test_agent_governance_automation.py", "Python/tests/test_audit_readiness_truth.py", "Python/tests/test_branch_disposition.py", "Python/tests/test_ci_workflow_contract.py", "Python/tests/test_control_plane.py", "Python/tests/test_git_*.py", "Python/tests/test_pipeline_state.py", "Python/tests/test_repo_context.py", "Python/tests/test_session_*.py", "Python/tests/test_verification_control.py"],
+      "domains": ["control_plane"]
+    },
+    {
+      "paths": ["Python/pyproject.toml", "Python/MANIFEST.in"],
+      "domains": ["python", "fastapi", "docs"]
+    },
+    {
+      "paths": ["Python/README.md", "Python/LICENSE"],
+      "domains": ["python", "docs"]
+    },
+    {
+      "paths": ["fastapi_app/**"],
+      "domains": ["fastapi"]
+    },
+    {
+      "paths": ["react_app/**", ".vite/**"],
+      "domains": ["react"]
+    },
+    {
+      "paths": ["excel_addin/**"],
+      "domains": ["excel"]
+    },
+    {
+      "paths": ["scripts/verification.py", "scripts/verification-manifest.json", "scripts/verification-manifest.schema.json", "scripts/check_all.py", "scripts/control_plane/**", "scripts/_lib/**", ".github/workflows/fast-checks.yml", ".github/actions/verification-evidence/**"],
+      "domains": ["python", "fastapi", "react", "excel", "control_plane", "docs", "repository"]
+    },
+    {
+      "paths": ["scripts/python_runtime.sh", "scripts/check_api.py", "scripts/validate_api_contracts.py", "scripts/generate_api_manifest.py", "scripts/generate_api_classification.py", "scripts/check_architecture_boundaries.py", "scripts/check_circular_imports.py", "scripts/validate_imports.py", "scripts/check_type_annotations.py", "scripts/check_governance.py"],
+      "domains": ["python", "fastapi", "docs"]
+    },
+    {
+      "paths": ["scripts/check_fastapi_issues.py", "scripts/check_docker_config.py", "scripts/check_openapi_snapshot.py"],
+      "domains": ["fastapi"]
+    },
+    {
+      "paths": ["scripts/check_docs.py", "scripts/check_links.py", "scripts/check_doc_versions.py", "scripts/check_cli_reference.py", "scripts/check_tasks_format.py", "scripts/check_next_session_brief_length.py", "scripts/check_scripts_index.py", "scripts/validate_script_refs.py", "scripts/test_cli_smoke.py", "scripts/check_instruction_drift.py", "scripts/check_bootstrap_freshness.py"],
+      "domains": ["docs"]
+    },
+    {
+      "paths": ["scripts/**", "run.sh", "agents/**", ".codex/**", ".claude/**", "AGENTS.md", "CLAUDE.md"],
+      "domains": ["control_plane"]
+    },
+    {
+      "paths": ["scripts/check_repo_hygiene.py", "scripts/validate_git_state.sh", "scripts/check_unfinished_merge.sh", "scripts/check_not_main.sh", "scripts/agent_start.sh", "scripts/git_state.py", "scripts/migrate_python_module.py", "scripts/migrate_react_component.py", "scripts/safe_file_move.py", "scripts/safe_file_delete.py", "scripts/batch_migrate_runner.py", ".github/**", ".pre-commit-config.yaml"],
+      "domains": ["control_plane", "repository"]
+    },
+    {
+      "paths": ["Python/structural_lib/_migration_fixtures/**", "react_app/src/__fixtures__/migration/**", "tests/fixtures/migration/**"],
+      "domains": ["repository"]
+    },
+    {
+      "paths": ["docs/git-automation/**", "docs/guidelines/ai-token-efficiency.md", "docs/research/git-governance/**"],
+      "domains": ["control_plane", "docs"]
+    },
+    {
+      "paths": ["docs/**", "README.md", "AUTHORS.md", "CHANGELOG.md", "CITATION.cff", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md", "LICENSE", "LICENSE_ENGINEERING.md", "llms.txt"],
+      "domains": ["docs"]
+    },
+    {
+      "paths": ["mkdocs.yml"],
+      "domains": ["docs", "repository"]
+    },
+    {
+      "paths": ["requirements*.txt", "Dockerfile.fastapi", "docker-compose*.yml", ".dockerignore", ".env.example"],
+      "domains": ["fastapi", "repository"]
+    },
+    {
+      "paths": [".nvmrc"],
+      "domains": ["react", "excel"]
+    },
+    {
+      "paths": ["clients/**"],
+      "domains": ["python", "react"]
+    },
+    {
+      "paths": ["Etabs_CSV/**"],
+      "domains": ["python"]
+    },
+    {
+      "paths": ["tests/**", "logs/**", "pyrightconfig.json", ".python-version", ".editorconfig", ".gitattributes", ".gitignore", ".lycheeexclude"],
+      "domains": ["repository"]
+    }
+  ]
+}

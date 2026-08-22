@@ -107,7 +107,8 @@ Solo default:
 
 **Rules Enabled:**
 - ✅ Required status checks must pass on `main`:
-  - `PR Gate` — path-aware PR checks plus always-run repository validation
+  - `PR Gate` — manifest-planned PR checks; unknown impact selects every
+    domain and the gate rejects any skipped applicable job
 - ✅ Force pushes disabled
 - ✅ Branch deletion disabled
 - ✅ PR-first: required for code/CI/deps; docs-only direct commits allowed

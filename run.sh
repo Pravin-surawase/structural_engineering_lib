@@ -80,12 +80,13 @@ Run validation checks across the codebase.
 Options:
   (no args)            Run ALL checks (parallel by category)
   --quick              Fast subset: links, imports, hygiene (<30s)
-  --changed            Only run categories for recently changed files
+  --changed            Run categories for whole-candidate impact domains
   --pre-commit         Run pre-commit hooks (black, ruff, mypy, bandit)
   --category <name>    Run one category: api|docs|arch|governance|fastapi|git|stale|code
   --fix                Auto-fix what's fixable (sync numbers, etc.)
   --json               Machine-readable JSON output
   --list               Show available categories and their scripts
+  --no-reuse           Force fresh checks instead of exact PASS reuse
 
 Categories:
   api          API contracts, manifest, endpoint validation
@@ -810,6 +811,13 @@ _cmd_context() {
     "$VENV" "$SCRIPTS/repo_context.py" "$@"
 }
 
+# ── Command: verification ─────────────────────────────────────────────────
+
+_cmd_verification() {
+    _require_venv
+    "$VENV" "$SCRIPTS/verification.py" "$@"
+}
+
 # ── Command: pipeline ──────────────────────────────────────────────────────
 
 _cmd_pipeline() {
@@ -934,6 +942,7 @@ _print_usage() {
     echo -e "  ${GREEN}frontend${NC}    Run React checks with the pinned Node runtime"
     echo -e "  ${GREEN}generate${NC}    Generate SDKs, manifests, and scaffolds"
     echo -e "  ${GREEN}context${NC}     Validate/query live context without generated indexes"
+    echo -e "  ${GREEN}verification${NC} Plan change domains and inspect exact PASS evidence"
     echo -e "  ${GREEN}health${NC}      Project health scan (unified checker)"
     echo -e "  ${GREEN}feedback${NC}    Agent feedback collection & analysis"
     echo -e "  ${GREEN}dev${NC}         Launch full development stack (FastAPI + React)"
@@ -972,6 +981,7 @@ _dispatch_help() {
         frontend) _help_frontend ;;
         generate) _help_generate ;;
         context)  _cmd_context --help ;;
+        verification) _cmd_verification --help ;;
         health)   _help_health ;;
         feedback) _help_feedback ;;
         evolve)   _help_evolve ;;
@@ -1007,6 +1017,7 @@ _run_sh() {
         'frontend:Run React commands with pinned Node'
         'generate:Generate SDKs and manifests'
         'context:Query live repository context'
+        'verification:Plan change domains and exact PASS evidence'
         'health:Project health scan'
         'feedback:Agent feedback collection'
         'evolve:Self-evolution engine'
@@ -1019,7 +1030,7 @@ _run_sh() {
         'efficiency:Validate low-token controls'
         'model:Recommend model and reasoning profile'
     )
-    local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial')
+    local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial' '--no-reuse')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
     local -a session_subs=('start' 'end' 'handoff' 'summary' 'sync' 'check' 'context' 'brief' 'usage' 'costs' 'compact' 'trust')
     local -a task_subs=('brief')
@@ -1034,6 +1045,7 @@ _run_sh() {
     local -a efficiency_subs=('check' 'prompt')
     local -a control_subs=('validate' 'find' 'list' 'stats' 'export-legacy')
     local -a context_subs=('validate' 'list' 'show' 'summary')
+    local -a verification_subs=('validate' 'plan' 'fingerprint' 'probe' 'record')
 
     if (( CURRENT == 2 )); then
         _describe 'command' commands
@@ -1053,6 +1065,7 @@ _run_sh() {
             efficiency) _values 'subcommand' $efficiency_subs ;;
             control) _values 'subcommand' $control_subs ;;
             context) _values 'subcommand' $context_subs ;;
+            verification) _values 'subcommand' $verification_subs ;;
         esac
     elif (( CURRENT == 4 )); then
         case "${words[2]}" in
@@ -1111,6 +1124,7 @@ main() {
         frontend) _cmd_frontend "$@" ;;
         generate) _cmd_generate "$@" ;;
         context)  _cmd_context "$@" ;;
+        verification) _cmd_verification "$@" ;;
         health)   _cmd_health "$@" ;;
         feedback) _cmd_feedback "$@" ;;
         evolve)   _cmd_evolve "$@" ;;

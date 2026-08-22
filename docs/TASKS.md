@@ -127,7 +127,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| MAINT-012B | Replace high-churn generic indexes with a small validated context manifest and read-only on-demand summaries | Main Agent + governance | M | P0 | 🔄 ACTIVE — content frozen; consolidated local/hosted closeout pending |
+| MAINT-012C | Add content-addressed impact/evidence reuse and migrate local/hosted validation scheduling to explicit change domains | Main Agent + governance | M | P0 | 🔄 ACTIVE — isolated candidate; unknown impact runs every domain |
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. The reproduced public-route safety packet is integrated. INDIA-3,
@@ -164,7 +164,7 @@ write-back/nightly work remain outside E1.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| MAINT-012C | Add content-addressed impact/evidence reuse and migrate local/hosted validation scheduling to explicit change domains | Main Agent + governance | M | P0 | ⏸ AFTER MAINT-012B — separate frozen candidate; unknown impact fails closed |
+| MAINT-012D | Consolidate scanners and retire/move obsolete compatibility scripts using live callers, ownership, runtime, and replacement evidence | Main Agent + governance | M | P0 | ⏸ AFTER MAINT-012C — separate frozen candidate; preservation-aware proof required |
 | INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ AFTER LIB-PRO-003 — truth/benchmark/contract audit only; no new formulas or support claims |
 | SPARK-001-G0 | Reassess the stale Spark work-program proposal before any implementation | repository owner | review gate | P2 | ⏸ OWNER REVIEW — the 2026-08-11 model/preview assumptions and bulk wave require refresh or rejection |
 

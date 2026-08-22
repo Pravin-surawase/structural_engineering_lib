@@ -1,7 +1,7 @@
 ---
 owner: Governance Agent
 status: active
-last_updated: 2026-08-07
+last_updated: 2026-08-23
 doc_type: guide
 complexity: advanced
 tags: [agents, governance]
@@ -31,30 +31,33 @@ Internal markdown links break when:
 
 ### Layer 1: Pre-Commit Hook (Automatic)
 
-**Trigger:** Any commit that modifies `docs/**/*.md`
+**Trigger:** Every commit through the consolidated quick hook
 
 **Behavior:**
-- Runs `scripts/check_links.py`
+- Runs the quick orchestrator, whose `Broken links` check calls
+  `scripts/check_links.py`
 - Blocks commit if broken links detected in active docs
 - Excludes planning/archive/research directories
+- Reuses only an exact current-candidate PASS receipt; otherwise executes
 
 **Configuration:** `.pre-commit-config.yaml`
 ```yaml
-- id: check-markdown-links
-  name: Check markdown internal links
-  entry: python3 scripts/check_links.py
-  files: ^docs/.*\.md$
+- id: verification-quick
+  name: Reuse or run the exact quick validation set
+  entry: ./scripts/python_runtime.sh scripts/check_all.py --quick --allow-operation-completion
+  always_run: true
 ```
 
 ### Layer 2: CI Validation (Safety Net)
 
-**Trigger:** Every push to main, every PR
+**Trigger:** A PR/main candidate whose canonical plan includes `docs`
 
 **Workflow:** `.github/workflows/fast-checks.yml`
 ```yaml
-- name: Doc checks (parallel)
+- name: Build documentation strictly
   run: |
-    python scripts/check_links.py &
+    python scripts/check_links.py
+    mkdocs build --strict
 ```
 
 **Behavior:** Fails PR if broken links introduced.
@@ -69,10 +72,10 @@ Internal markdown links break when:
 **Command:**
 ```bash
 # Full check (includes archive/planning/research)
-python scripts/check_links.py --all
+./scripts/python_runtime.sh scripts/check_links.py --all
 
 # Active docs only (default)
-python scripts/check_links.py
+./scripts/python_runtime.sh scripts/check_links.py
 ```
 
 ---

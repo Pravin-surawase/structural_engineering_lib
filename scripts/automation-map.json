@@ -2,7 +2,7 @@
   "_comment": "GENERATED compatibility projection from scripts/control-plane.json; do not edit directly",
   "_usage": "Use ./run.sh find <query> or ./run.sh control find <query>",
   "_source": "scripts/control-plane.json",
-  "_coverage": "114/114 top-level scripts registered",
+  "_coverage": "115/115 top-level scripts registered",
   "tasks": {
     "resolve python runtime": {
       "script": "./scripts/python_runtime.sh --version",
@@ -49,7 +49,7 @@
     "run all checks": {
       "script": "./scripts/python_runtime.sh scripts/check_all.py",
       "group": "Quality",
-      "description": "Run all 30 validation checks across 8 categories in parallel (also: ./run.sh check)",
+      "description": "Run all 31 validation checks across 8 categories in parallel with exact PASS reuse (also: ./run.sh check)",
       "permission": "ReadOnly",
       "permission_modes": {
         "--fix": "WorkspaceWrite"
@@ -57,13 +57,32 @@
       "options": {
         "--quick": "Run 10 quick checks only (<30s)",
         "--category X": "Run checks for specific category",
-        "--changed": "Auto-detect categories from git diff",
+        "--changed": "Plan explicit domains from the whole candidate diff; unknown impact runs all domains",
         "--fix": "Auto-fix where possible",
         "--json": "JSON output for CI",
+        "--no-reuse": "Force fresh execution instead of accepting exact PASS receipts",
         "--serial": "Run sequentially (debugging)"
       },
       "aliases": [
         "check"
+      ]
+    },
+    "verification impact": {
+      "script": "./scripts/python_runtime.sh scripts/verification.py validate",
+      "group": "Quality",
+      "description": "Validate the canonical change-domain map and content-addressed PASS evidence contract",
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "record": "WorkspaceWrite"
+      },
+      "options": {
+        "plan": "Classify a candidate or explicit paths into validation domains",
+        "fingerprint": "Compute exact command, runtime, and input-byte identity",
+        "probe": "Check whether an exact PASS receipt exists",
+        "record": "Write a PASS receipt outside tracked repository content"
+      },
+      "aliases": [
+        "verification"
       ]
     },
     "validate script references": {

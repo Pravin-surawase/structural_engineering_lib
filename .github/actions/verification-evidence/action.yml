@@ -1,0 +1,85 @@
+name: Exact verification PASS evidence
+description: Restore and independently verify one content-addressed PASS receipt.
+
+inputs:
+  domain:
+    description: Canonical verification domain
+    required: true
+  profile:
+    description: Versioned hosted validation profile
+    required: true
+  identity-command:
+    description: Stable command identity for the hosted job
+    required: true
+  cache-name:
+    description: Stable cache/receipt label
+    required: true
+  receipt:
+    description: Absolute receipt path below runner.temp/verification-evidence
+    required: true
+  runtime-file:
+    description: Optional additional Node/runner runtime identity file
+    required: false
+    default: ''
+
+outputs:
+  valid:
+    description: true only when the restored receipt exactly matches
+    value: ${{ steps.probe.outputs.valid }}
+  fingerprint:
+    description: Exact current evidence fingerprint
+    value: ${{ steps.identity.outputs.fingerprint }}
+
+runs:
+  using: composite
+  steps:
+    - name: Compute exact evidence identity
+      id: identity
+      shell: bash
+      env:
+        DOMAIN: ${{ inputs.domain }}
+        PROFILE: ${{ inputs.profile }}
+        IDENTITY_COMMAND: ${{ inputs.identity-command }}
+        RUNTIME_FILE: ${{ inputs.runtime-file }}
+      run: |
+        args=(
+          fingerprint
+          --profile "$PROFILE"
+          --domain "$DOMAIN"
+          --identity-command "$IDENTITY_COMMAND"
+          --github-output "$GITHUB_OUTPUT"
+        )
+        if [[ -n "$RUNTIME_FILE" ]]; then
+          args+=(--runtime-file "$RUNTIME_FILE")
+        fi
+        python scripts/verification.py "${args[@]}"
+
+    - name: Restore exact PASS receipt
+      id: cache
+      uses: actions/cache@v6
+      with:
+        path: ${{ inputs.receipt }}
+        key: verification-pass-v1-${{ runner.os }}-${{ inputs.cache-name }}-${{ steps.identity.outputs.fingerprint }}
+
+    - name: Verify restored receipt
+      id: probe
+      shell: bash
+      env:
+        DOMAIN: ${{ inputs.domain }}
+        PROFILE: ${{ inputs.profile }}
+        IDENTITY_COMMAND: ${{ inputs.identity-command }}
+        RECEIPT: ${{ inputs.receipt }}
+        RUNTIME_FILE: ${{ inputs.runtime-file }}
+      run: |
+        args=(
+          probe
+          --profile "$PROFILE"
+          --domain "$DOMAIN"
+          --identity-command "$IDENTITY_COMMAND"
+          --receipt "$RECEIPT"
+          --github-output "$GITHUB_OUTPUT"
+        )
+        if [[ -n "$RUNTIME_FILE" ]]; then
+          args+=(--runtime-file "$RUNTIME_FILE")
+        fi
+        python scripts/verification.py "${args[@]}"

@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-17
+last_updated: 2026-08-23
 doc_type: guide
 ---
 
@@ -162,6 +162,8 @@ is an exception used to guide or debug the change, not a ritual after each edit.
    together as one consolidated selection.
 6. Add one or two independent reviews only when risk justifies them, then run
    `./run.sh check --quick` once before committing and allow normal hooks to run.
+   The hook calls the same quick orchestrator, so exact PASS receipts are reused
+   instead of rerunning unchanged checks; Git-state checks always execute fresh.
 7. If verification exposes an outcome-changing defect, repair its root cause,
    rerun the failed or affected narrow evidence, and repeat the consolidated
    gate once for the new frozen candidate.
@@ -173,7 +175,14 @@ is an exception used to guide or debug the change, not a ritual after each edit.
    Repeat only a failed portion unless the fix can affect other categories.
 10. Run either broad gate before cumulative closeout only when an
    outcome-changing failure or repository-wide surface makes it necessary.
-   Required hosted checks are never deferred or bypassed.
+Required hosted checks are never deferred or bypassed.
+
+Content-addressed reuse is evidence reuse, not a weakened gate. A receipt is
+accepted only for the same check command, declared domains, current input bytes,
+Python/platform/dependency identity, and verification contract. Failed or
+malformed evidence is never stored or reused. Use `./run.sh check --no-reuse`
+when a genuinely fresh execution is required; changing the input invalidates the
+receipt automatically, so calendar-based cache resets are unnecessary.
 
 For work requiring independent acceptance, use these stricter efficiency
 controls:

@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-23
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -14,7 +14,7 @@ tags: []
 **Status:** Production Ready
 **Importance:** High
 **Created:** 2025-01-01
-**Last Updated:** 2026-03-29
+**Last Updated:** 2026-08-23
 
 ---
 
@@ -35,10 +35,17 @@ tags: []
 **How to run locally (fast):**
 - From `Python/`: `python -m pytest -q`
 
-**Fast checks before commit (pick what changed):**
-- Docs-only: from repo root, `.venv/bin/python scripts/check_doc_versions.py`
-- Links touched: from repo root, `.venv/bin/python scripts/check_links.py`
-- Code + tests: from `Python/`, `python -m pytest -q`
+**Fast checks before commit:**
+
+- `./run.sh verification plan` shows the whole candidate's explicit domains.
+- `./run.sh check --changed` runs the mapped repository checks; an unknown path
+  or failed Git query expands to every domain.
+- `./run.sh test --changed` keeps focused Python/FastAPI mappings where proved,
+  runs the React/Excel suites for those domains, and falls back to complete
+  product suites when test ownership is unclear.
+- `./run.sh check --quick` remains the required pre-commit gate. Exact prior
+  PASS receipts are reused only when command, runtime, dependency set, and
+  current input bytes have the same content address.
 
 **How to run with coverage:**
 - From `Python/`: `python -m pytest --cov=structural_lib --cov-report=term-missing --cov-report=xml`
@@ -53,6 +60,11 @@ Workflows: `.github/workflows/fast-checks.yml` and
 
 - Pull requests receive path-aware format, lint, type, contract, focused test,
   frontend, API, and repository checks under the required `PR Gate`.
+- Local and hosted scheduling load `scripts/verification-manifest.json`; the
+  workflow does not maintain a second path-filter list. Applicable jobs may
+  reuse an exact PASS receipt only after their current runtime/dependencies are
+  resolved and fingerprinted. Cache misses, malformed receipts, and identity
+  changes execute the job normally.
 - Weekly/manual verification runs the full Ubuntu Python/FastAPI/React suite,
   branch coverage gate, clean-wheel/CLI verification, dependency audits, and
   Docker health checks.

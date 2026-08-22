@@ -102,7 +102,7 @@
     },
     "run all checks": {
       "group": "Quality",
-      "description": "Run all 30 validation checks across 8 categories in parallel (also: ./run.sh check)",
+      "description": "Run all 31 validation checks across 8 categories in parallel with exact PASS reuse (also: ./run.sh check)",
       "status": "active",
       "command": {
         "display": "./scripts/python_runtime.sh scripts/check_all.py",
@@ -123,13 +123,45 @@
       "options": {
         "--quick": "Run 10 quick checks only (<30s)",
         "--category X": "Run checks for specific category",
-        "--changed": "Auto-detect categories from git diff",
+        "--changed": "Plan explicit domains from the whole candidate diff; unknown impact runs all domains",
         "--fix": "Auto-fix where possible",
         "--json": "JSON output for CI",
+        "--no-reuse": "Force fresh execution instead of accepting exact PASS receipts",
         "--serial": "Run sequentially (debugging)"
       },
       "aliases": [
         "check"
+      ]
+    },
+    "verification impact": {
+      "group": "Quality",
+      "description": "Validate the canonical change-domain map and content-addressed PASS evidence contract",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/verification.py validate",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/verification.py",
+              "validate"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "record": "WorkspaceWrite"
+      },
+      "options": {
+        "plan": "Classify a candidate or explicit paths into validation domains",
+        "fingerprint": "Compute exact command, runtime, and input-byte identity",
+        "probe": "Check whether an exact PASS receipt exists",
+        "record": "Write a PASS receipt outside tracked repository content"
+      },
+      "aliases": [
+        "verification"
       ]
     },
     "validate script references": {

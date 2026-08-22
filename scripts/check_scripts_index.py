@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Ensure canonical control/context registries match the live repository.
+"""Ensure canonical control/context/verification registries match the repository.
 
 When to use: After adding or removing scripts from the scripts/ folder.
 Verifies every top-level script is registered, the legacy automation map is the
 exact deterministic compatibility projection, and generic folder indexes stay
-retired.
+retired. Also proves every current path has a fail-closed verification rule.
 """
 
 from __future__ import annotations
@@ -28,6 +28,10 @@ from control_plane import (  # noqa: E402
 from repo_context import (  # noqa: E402
     ContextManifestError,
     load_manifest as load_context_manifest,
+)
+from verification import (  # noqa: E402
+    VerificationError,
+    load_manifest as load_verification_manifest,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -108,6 +112,29 @@ def main() -> int:
             print(
                 "✓ context manifest: "
                 f"{len(context_manifest['areas'])} areas, 0 generated folder indexes"
+            )
+
+    try:
+        verification_manifest = load_verification_manifest()
+    except VerificationError as exc:
+        report["checks"]["verification_manifest"] = {
+            "status": "fail",
+            "reason": str(exc),
+        }
+        if not args.json:
+            print(f"ERROR: canonical verification manifest is invalid: {exc}")
+        errors += 1
+    else:
+        report["checks"]["verification_manifest"] = {
+            "status": "pass",
+            "domains": len(verification_manifest["domains"]),
+            "rules": len(verification_manifest["rules"]),
+        }
+        if not args.json:
+            print(
+                "✓ verification manifest: "
+                f"{len(verification_manifest['domains'])} domains, "
+                f"{len(verification_manifest['rules'])} rules"
             )
 
     # Check canonical control plane and exact compatibility projection.
