@@ -135,7 +135,7 @@ coverage:
 	cd Python && pytest --cov=structural_lib --cov-report=html tests/
 
 pre-commit:
-	pre-commit run --all-files
+	./scripts/python_runtime.sh -m pre_commit run --all-files
 ```
 
 ### 2.2 Performance Baseline Tracking
@@ -220,7 +220,7 @@ ruff check --fix Python/
 mypy Python/structural_lib/
 
 # All pre-commit hooks
-pre-commit run --all-files
+./scripts/python_runtime.sh -m pre_commit run --all-files
 ```
 
 ### CI Simulation

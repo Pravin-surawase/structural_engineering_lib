@@ -23,6 +23,13 @@ Validation` never skips, so a docs-only or control-plane PR still receives real
 validation. `PR Gate` checks each component result against the detected paths; a
 skipped applicable check cannot produce a green gate.
 
+For example, `Excel Add-in Validation` is expected to show `skipped` when no
+`excel_addin/**` path changed. That is a successful path-classification outcome,
+not missing validation: `PR Gate` verifies both the classifier result and the
+skip. A cross-product safety packet that relies on unchanged Excel behavior
+still runs the complete local Excel suite when its acceptance contract requires
+that evidence; the path-filtered hosted job does not replace that local proof.
+
 The active main-branch ruleset requires `PR Gate`. Do not rename that check without
 updating and verifying the ruleset in the same approved operation.
 
@@ -52,7 +59,7 @@ issues.
 | `governance-health.yml` | No main-process gate; repository policy checks remain in `fast-checks.yml` |
 | `leading-indicator-alerts.yml` | No main-process gate; issue and PR write automation removed |
 | `link-check.yml` | Internal link validation runs in both verification lanes |
-| `performance.yml` | Standalone baseline/comment automation parked; performance tests remain part of the full Python suite |
+| `performance.yml` | Standalone baseline/comment reporting is parked; executable latency and degradation thresholds remain in `fastapi_app/tests/test_load.py` and run in the full FastAPI/Python verification surfaces |
 | `python-tests.yml` | Full Python, FastAPI, React, coverage, drift, and clean-wheel checks run in `nightly.yml` |
 | `root-file-limit.yml` | Repository hygiene remains in the local quick gate |
 | `sbom.yml` | CycloneDX release asset is generated and attached by `publish.yml` |

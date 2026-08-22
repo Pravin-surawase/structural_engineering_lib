@@ -64,8 +64,8 @@
     {
       "name": "test_agent_governance_automation.py",
       "type": "python",
-      "size_lines": 541,
-      "last_updated": "2026-08-17",
+      "size_lines": 642,
+      "last_updated": "2026-08-22",
       "description": "Regression tests for agent-governance automation controls.",
       "functions": [
         {
@@ -82,6 +82,21 @@
         },
         {
           "name": "test_control_paths_use_python_runtime_launcher"
+        },
+        {
+          "name": "test_pre_commit_all_file_contract_preserves_owned_artifacts_and_strict_json"
+        },
+        {
+          "name": "test_pre_commit_manual_command_uses_repository_runtime"
+        },
+        {
+          "name": "test_react_dependency_probe_is_worktree_local_and_actionable",
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_live_full_gate_count_matches_active_instructions"
         },
         {
           "name": "test_active_agent_instructions_use_worktree_safe_python_launcher"
@@ -134,33 +149,13 @@
           "params": [
             "monkeypatch"
           ]
-        },
-        {
-          "name": "test_operation_permissions_are_explicit_and_fail_closed",
-          "params": [
-            "operation",
-            "mode",
-            "expected"
-          ]
-        },
-        {
-          "name": "test_abstract_permission_operations_remain_compatible"
-        },
-        {
-          "name": "test_agent_permission_check_uses_declared_task_mode"
-        },
-        {
-          "name": "test_undeclared_operation_is_denied_even_to_danger_level_agent",
-          "params": [
-            "monkeypatch"
-          ]
         }
       ],
       "constants": [
         "REPO_ROOT",
         "SCRIPTS_DIR"
       ],
-      "content_hash": "138c02929959"
+      "content_hash": "76d20b516a7f"
     },
     {
       "name": "test_api_classification.py",
@@ -502,7 +497,7 @@
     {
       "name": "test_audit_readiness_truth.py",
       "type": "python",
-      "size_lines": 256,
+      "size_lines": 289,
       "last_updated": "2026-08-22",
       "description": "Readiness must aggregate semantic truth instead of reporting false green.",
       "functions": [
@@ -523,6 +518,12 @@
           "params": [
             "monkeypatch"
           ]
+        },
+        {
+          "name": "test_diagnostic_summary_keeps_first_hard_error_and_final_context"
+        },
+        {
+          "name": "test_readiness_distinguishes_executable_performance_thresholds_from_reporting"
         },
         {
           "name": "test_public_route_regression_failure_makes_readiness_fail",
@@ -577,7 +578,7 @@
         "_INPUT_AUDIT_SCRIPT",
         "_INPUT_AUDIT_SPEC"
       ],
-      "content_hash": "e332409fe321"
+      "content_hash": "5c0c2c7881ad"
     },
     {
       "name": "test_boq.py",
@@ -844,7 +845,7 @@
     {
       "name": "test_ci_workflow_contract.py",
       "type": "python",
-      "size_lines": 242,
+      "size_lines": 255,
       "last_updated": "2026-08-22",
       "description": "Regression tests for fail-closed PR workflow routing.",
       "functions": [
@@ -859,6 +860,9 @@
         },
         {
           "name": "test_pr_gate_topology_and_cancellation_are_scoped_per_pr"
+        },
+        {
+          "name": "test_workflow_guidance_explains_excel_skip_and_performance_authorities"
         },
         {
           "name": "test_pr_gate_accepts_successful_applicable_routes"
@@ -887,7 +891,7 @@
         "PUBLISH",
         "BASE_GATE_ENV"
       ],
-      "content_hash": "df9433c67dd6"
+      "content_hash": "6f759e697a30"
     },
     {
       "name": "test_clause_traceability.py",
@@ -3159,8 +3163,8 @@
     {
       "name": "test_multi_objective_optimizer.py",
       "type": "python",
-      "size_lines": 319,
-      "last_updated": "2026-08-17",
+      "size_lines": 339,
+      "last_updated": "2026-08-22",
       "description": "Tests for the multi-objective optimizer module (NSGA-II).",
       "classes": [
         {
@@ -3203,11 +3207,12 @@
             "test_high_moment_design",
             "test_minimal_candidates",
             "test_varied_objectives",
-            "test_utilization_objective"
+            "test_utilization_objective",
+            "test_unexpected_flexure_failure_is_not_silenced"
           ]
         }
       ],
-      "content_hash": "2c69faffb29d"
+      "content_hash": "f76ff6d054f1"
     },
     {
       "name": "test_new_element_completeness.py",
@@ -4016,8 +4021,8 @@
     {
       "name": "test_research_prototypes.py",
       "type": "python",
-      "size_lines": 910,
-      "last_updated": "2026-08-17",
+      "size_lines": 949,
+      "last_updated": "2026-08-22",
       "description": "Tests for research prototypes: Sustainability, Generative Design, Design Companion.",
       "classes": [
         {
@@ -4059,13 +4064,13 @@
             "companion",
             "test_returns_companion_response",
             "test_design_result_present",
+            "test_alternative_search_does_not_hide_unexpected_failures",
             "test_reasoning_chain_has_8_steps",
             "test_reasoning_steps_sequential",
             "test_clause_refs_format",
             "test_reasoning_step_fields",
             "test_rebar_options_at_least_3",
-            "test_rebar_recommended_exists",
-            "test_rebar_narrative_non_empty"
+            "test_rebar_recommended_exists"
           ]
         },
         {
@@ -4085,7 +4090,7 @@
           ]
         }
       ],
-      "content_hash": "58d61e1db90d"
+      "content_hash": "f7337b3a266c"
     },
     {
       "name": "test_result_base.py",
@@ -4159,8 +4164,8 @@
     {
       "name": "test_session_automation.py",
       "type": "python",
-      "size_lines": 1547,
-      "last_updated": "2026-08-17",
+      "size_lines": 1583,
+      "last_updated": "2026-08-22",
       "description": "Regression tests for maintenance session automation.",
       "functions": [
         {
@@ -4298,7 +4303,7 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "64cc2d5900fd"
+      "content_hash": "3b503a4db4ed"
     },
     {
       "name": "test_session_store.py",
@@ -5060,5 +5065,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "442360cb57c1cf94"
+  "content_hash": "9dd1f288ece63337"
 }

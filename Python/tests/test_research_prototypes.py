@@ -10,6 +10,8 @@ from __future__ import annotations
 
 import pytest
 
+from structural_lib.research import research_design_companion as companion_module
+from structural_lib.research import research_generative_design as generative_module
 from structural_lib.research.research_design_companion import (
     CompanionResponse,
     ReasoningStep,
@@ -341,6 +343,22 @@ class TestGenerativeDesign:
         with pytest.raises((ValueError, Exception)):
             explore_design_space(span_mm=0, mu_knm=120, vu_kn=80)
 
+    def test_unexpected_design_failure_is_not_silenced(self, monkeypatch):
+        def fail_unexpectedly(**_kwargs):
+            raise RuntimeError("unexpected design failure")
+
+        monkeypatch.setattr(generative_module, "design_beam_is456", fail_unexpectedly)
+
+        with pytest.raises(RuntimeError, match="unexpected design failure"):
+            explore_design_space(
+                span_mm=5000,
+                mu_knm=120,
+                vu_kn=80,
+                widths=[230],
+                grades=[25],
+                steel_grades=[500],
+            )
+
     # ── Extremes in candidates ──
 
     def test_cheapest_greenest_conservative_exist(self, design_result):
@@ -386,6 +404,27 @@ class TestDesignCompanion:
     def test_design_result_present(self, companion):
         assert companion.design_result is not None
         assert companion.design_result.is_ok  # Standard beam should be safe
+
+    def test_alternative_search_does_not_hide_unexpected_failures(self, monkeypatch):
+        def fail_unexpectedly(**_kwargs):
+            raise RuntimeError("unexpected alternative failure")
+
+        monkeypatch.setattr(companion_module, "design_beam_is456", fail_unexpectedly)
+
+        with pytest.raises(RuntimeError, match="unexpected alternative failure"):
+            companion_module._generate_alternatives(
+                b_mm=300,
+                D_mm=500,
+                d_mm=450,
+                fck=25,
+                fy=500,
+                mu_knm=120,
+                vu_kn=80,
+                span_mm=5000,
+                primary_cost=10000,
+                primary_carbon=500,
+                primary_util=0.8,
+            )
 
     # ── Reasoning chain has 8 steps ──
 

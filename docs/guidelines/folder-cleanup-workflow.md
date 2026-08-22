@@ -208,7 +208,7 @@ After each commit:
 .venv/bin/python scripts/find_orphan_files.py
 
 # Pre-commit hooks pass
-.venv/bin/python -m pre_commit run --all-files
+./scripts/python_runtime.sh -m pre_commit run --all-files
 ```
 
 ### Step 5.2: Update Documentation

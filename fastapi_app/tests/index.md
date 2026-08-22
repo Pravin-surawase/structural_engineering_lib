@@ -52,7 +52,7 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [test_optimization_pareto.py](test_optimization_pareto.py) | Tests for Pareto multi-objective beam optimization endpoint. | 1 | 0 | 158 |
 | [test_plausibility_validators.py](test_plausibility_validators.py) | Tests for cross-field plausibility validators (TASK-729). | 14 | 0 | 767 |
 | [test_public_documentation_contract.py](test_public_documentation_contract.py) | Executable contracts for the public REST documentation. | 0 | 3 | 74 |
-| [test_security.py](test_security.py) | Security Tests for FastAPI Application. | 7 | 3 | 407 |
+| [test_security.py](test_security.py) | Security Tests for FastAPI Application. | 7 | 3 | 403 |
 | [test_staircase.py](test_staircase.py) | Contract tests for the straight-flight staircase FastAPI sli | 0 | 6 | 146 |
 | [test_strap_footing.py](test_strap_footing.py) | Contract tests for the bounded property-line strap-footing F | 0 | 6 | 276 |
 | [test_streaming.py](test_streaming.py) | Tests for SSE Streaming Endpoint. | 2 | 0 | 284 |

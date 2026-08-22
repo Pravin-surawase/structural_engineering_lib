@@ -30,7 +30,7 @@ This doc does not replace existing rules. It links to the canonical sources and 
 ```bash
 cd Python && python -m venv ../.venv && source ../.venv/bin/activate
 pip install -e ".[dev]"
-pre-commit install
+./scripts/python_runtime.sh -m pre_commit install
 ```
 
 After this, always use `.venv/bin/python` (not bare `python`).

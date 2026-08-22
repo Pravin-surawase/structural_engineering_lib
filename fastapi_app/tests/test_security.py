@@ -14,11 +14,13 @@ from __future__ import annotations
 import time
 from datetime import timedelta
 from unittest.mock import MagicMock
+from urllib.parse import quote
 
 import pytest
 from fastapi import HTTPException
 from fastapi.testclient import TestClient
 import jwt
+from starlette.websockets import WebSocketDisconnect
 
 from fastapi_app.auth import (
     ALGORITHM,
@@ -300,13 +302,9 @@ class TestInputValidation:
         ]
 
         for session_id in malicious_ids:
-            try:
-                # This should not cause server errors
-                response = client.get(f"/stream/job/{session_id}")
-                assert response.status_code in [200, 400, 404, 422]
-            except Exception:
-                # Connection errors are acceptable for invalid paths
-                pass
+            encoded_session_id = quote(session_id, safe="")
+            response = client.get(f"/stream/job/{encoded_session_id}")
+            assert response.status_code in [200, 400, 404, 422]
 
     def test_negative_values_handled(self, client: TestClient):
         """Negative values in beam dimensions should be caught."""
@@ -365,20 +363,18 @@ class TestWebSocketSecurity:
     """Tests for WebSocket security."""
 
     def test_websocket_without_token(self, client: TestClient):
-        """WebSocket connection without token should be handled."""
-        try:
-            with client.websocket_connect("/ws/design/test123"):
-                pass  # Connection accepted - document behavior
-        except Exception:
-            pass  # Connection rejected - also acceptable
+        """The documented public WebSocket mode accepts a missing token."""
+        with client.websocket_connect("/ws/design/test123") as websocket:
+            websocket.send_json({"type": "ping"})
+            assert websocket.receive_json()["type"] == "pong"
 
     def test_websocket_with_invalid_token(self, client: TestClient):
-        """WebSocket connection with invalid token should be rejected."""
-        try:
+        """An explicitly supplied invalid token closes with the auth code."""
+        with pytest.raises(WebSocketDisconnect) as exc_info:
             with client.websocket_connect("/ws/design/test123?token=invalid-token"):
-                pass
-        except Exception:
-            pass  # Expected - invalid token should close connection
+                pytest.fail("invalid token unexpectedly opened a WebSocket")
+
+        assert exc_info.value.code == 4001
 
 
 # =============================================================================

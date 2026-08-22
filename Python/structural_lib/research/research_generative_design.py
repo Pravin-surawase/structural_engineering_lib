@@ -33,6 +33,7 @@ Validation:
 
 from __future__ import annotations
 
+import logging
 import time
 from dataclasses import dataclass
 
@@ -43,6 +44,8 @@ from structural_lib.services.costing import (
     CostProfile,
     calculate_beam_cost,
 )
+
+logger = logging.getLogger(__name__)
 
 # Safety factors are HARDCODED constants — NEVER parameters
 # IS 456:2000 Table 18:  γc = 1.5 (concrete), γs = 1.15 (steel)
@@ -573,7 +576,15 @@ def explore_design_space(
                             mu_knm=mu_knm,
                             vu_kn=vu_kn,
                         )
-                    except Exception:
+                    except (ValueError, TypeError, ArithmeticError) as exc:
+                        logger.debug(
+                            "Candidate %sx%s M%s Fe%s rejected by beam design: %s",
+                            b,
+                            D,
+                            fck,
+                            fy,
+                            exc,
+                        )
                         continue
 
                     # Must pass both flexure and shear

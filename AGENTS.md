@@ -56,7 +56,7 @@ The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines
 - For a multi-packet milestone, run focused tests, independent benchmarks,
   architecture/import checks, `./run.sh check --quick`, normal commit hooks,
   and every required hosted PR check for each packet. Run the broad Python
-  suite and `./run.sh check` (currently 30 checks) once after all intended
+  suite and `./run.sh check` (currently 31 checks) once after all intended
   packets are integrated. Run either broad gate earlier only when an
   outcome-changing failure or repository-wide surface makes it necessary;
   never bypass required hosted checks.
@@ -179,7 +179,7 @@ grep -r "@router" fastapi_app/routers/ | head -30               # Existing API r
 ```bash
 ./run.sh session start              # Begin work (verify env, read priorities)
 ./run.sh check --quick              # Fast validation (<30s, 10 checks)
-./run.sh check                      # Full validation (30 checks, parallel)
+./run.sh check                      # Full validation (31 checks, parallel)
 ./run.sh test                       # Run Python package pytest suite
 ./run.sh test --fastapi             # Run complete FastAPI test suite
 ./run.sh test --react               # Run complete React test suite on pinned Node

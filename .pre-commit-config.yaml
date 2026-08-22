@@ -1,6 +1,6 @@
 # Pre-commit hooks for structural_engineering_lib
-# Install: pip install pre-commit && pre-commit install
-# Run manually: pre-commit run --all-files
+# Install hooks: ./scripts/python_runtime.sh -m pre_commit install
+# Run manually: ./scripts/python_runtime.sh -m pre_commit run --all-files
 
 repos:
   # General file hygiene
@@ -16,11 +16,15 @@ repos:
         files: \.toml$  # Only run on TOML files
       - id: check-json
         files: \.json$  # Only run on JSON files
+        # TypeScript consumes these two deliberate JSONC configuration files.
+        # Every other .json file remains under strict JSON validation.
+        exclude: ^react_app/tsconfig\.(app|node)\.json$
       - id: end-of-file-fixer
-        exclude: ^(VBA/|Excel/)
+        exclude: &preserved-text-artifacts ^(VBA/|Excel/|\.vite/|docs/_archive/|docs/reference/vendor/|Python/tests/data/|Python/tests/fixtures/|react_app/src/__fixtures__/|tests/fixtures/)
       - id: trailing-whitespace
-        exclude: ^(VBA/|Excel/)
+        exclude: *preserved-text-artifacts
       - id: mixed-line-ending
+        exclude: *preserved-text-artifacts
       - id: check-merge-conflict
       - id: check-added-large-files
         args: ['--maxkb=500']

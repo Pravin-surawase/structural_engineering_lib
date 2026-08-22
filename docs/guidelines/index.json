@@ -2,7 +2,7 @@
   "folder": "docs/guidelines",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-08-17",
+  "last_updated": "2026-08-22",
   "file_count": 16,
   "files": [
     {
@@ -18,9 +18,9 @@
       "name": "ai-token-efficiency.md",
       "type": "documentation",
       "size_lines": 265,
-      "last_updated": "2026-08-17",
+      "last_updated": "2026-08-22",
       "description": "This is the canonical low-token operating policy for AI-assisted work in this repository. It controls avoidable context and agent fan-out without weakening",
-      "content_hash": "c65df56ad83d"
+      "content_hash": "e1893835405b"
     },
     {
       "name": "api-design-guidelines.md",
@@ -49,10 +49,10 @@
     {
       "name": "doc-naming-conventions.md",
       "type": "documentation",
-      "size_lines": 92,
-      "last_updated": "2026-08-17",
+      "size_lines": 91,
+      "last_updated": "2026-08-22",
       "description": "Reduce duplication, improve findability, and ensure every topic has a clear canonical home. 1. **One topic = one canonical file.** Check docs/docs-canonical.json first.",
-      "content_hash": "e9614c2283ad"
+      "content_hash": "56abd9781fdc"
     },
     {
       "name": "documentation-standard.md",
@@ -82,9 +82,9 @@
       "name": "folder-cleanup-workflow.md",
       "type": "documentation",
       "size_lines": 294,
-      "last_updated": "2026-08-17",
+      "last_updated": "2026-08-22",
       "description": "This workflow provides a systematic approach to cleaning up folders: 1. **Audit** - Identify cleanup candidates",
-      "content_hash": "e5e2eca12a9f"
+      "content_hash": "9f54ffa831df"
     },
     {
       "name": "folder-structure-governance.md",
@@ -140,5 +140,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "61d0b04873ccc845"
+  "content_hash": "3fe3fb4fc5d8f9ba"
 }

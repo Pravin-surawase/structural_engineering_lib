@@ -432,6 +432,17 @@ _frontend_node() {
     "$VENV" "$SCRIPTS/node_runtime.py" -- "$@"
 }
 
+_frontend_require_dependencies() {
+    local tool
+    for tool in eslint tsc vite vitest; do
+        if [[ ! -e "$REPO_ROOT/react_app/node_modules/.bin/$tool" ]]; then
+            _error "React dependencies are not ready in this worktree (missing $tool)."
+            echo "  Run: ./scripts/python_runtime.sh scripts/node_runtime.py -- npm --prefix react_app ci"
+            return 1
+        fi
+    done
+}
+
 _cmd_frontend() {
     local subcmd="${1:-check}"
     shift 2>/dev/null || true
@@ -442,9 +453,11 @@ _cmd_frontend() {
             "$VENV" "$SCRIPTS/node_runtime.py" --print
             ;;
         lint)
+            _frontend_require_dependencies
             _frontend_node npm --prefix react_app run lint "$@"
             ;;
         test)
+            _frontend_require_dependencies
             if [[ "$#" -gt 0 ]]; then
                 _frontend_node npm --prefix react_app test -- "$@"
             else
@@ -452,14 +465,17 @@ _cmd_frontend() {
             fi
             ;;
         build)
+            _frontend_require_dependencies
             _frontend_node npm --prefix react_app run build "$@"
             ;;
         check)
+            _frontend_require_dependencies
             _frontend_node npm --prefix react_app run lint
             _frontend_node npm --prefix react_app test
             _frontend_node npm --prefix react_app run build
             ;;
         dev)
+            _frontend_require_dependencies
             _frontend_node npm --prefix react_app run dev "$@"
             ;;
         --help|-h|help)
@@ -480,6 +496,10 @@ Usage: ./run.sh frontend [runtime|lint|test|build|check|dev] [options]
 Run React commands with the healthy Node.js major pinned by .nvmrc. The
 selector supports Homebrew, an already-selected runtime, and nvm installs; it
 does not assume that nvm itself is installed.
+
+Each linked worktree needs its own lockfile-pinned dependencies. If readiness
+fails, run:
+  ./scripts/python_runtime.sh scripts/node_runtime.py -- npm --prefix react_app ci
 
 Commands:
   runtime            Print the selected Node/npm versions and binary directory

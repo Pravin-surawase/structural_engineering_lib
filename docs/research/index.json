@@ -2,7 +2,7 @@
   "folder": "docs/research",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-08-15",
+  "last_updated": "2026-08-22",
   "file_count": 6,
   "files": [
     {
@@ -16,10 +16,10 @@
     {
       "name": "2026-state-of-the-art-report.md",
       "type": "documentation",
-      "size_lines": 585,
-      "last_updated": "2026-08-15",
+      "size_lines": 586,
+      "last_updated": "2026-08-22",
       "description": "> **See also:** 2026 Python Toolchain Report for the definitive tools/versions guide. - **Learning mode**: Show formulas alongside results. \"Why is Ast = 1256 mm²?\" not just \"Ast = 1256 mm²\"",
-      "content_hash": "4b3c1240fe05"
+      "content_hash": "812306587a7e"
     },
     {
       "name": "claw-code-harness-ideas.md",
@@ -32,11 +32,11 @@
     {
       "name": "innovation-generative-design-intelligence.md",
       "type": "documentation",
-      "size_lines": 141,
-      "last_updated": "2026-08-15",
+      "size_lines": 142,
+      "last_updated": "2026-08-22",
       "title": "Innovation: Generative Design Intelligence — Pareto-Optimal Beam Explorer with Engineering Narratives",
       "description": "Every structural engineering tool in existence today — ETABS, SAP2000, STAAD Pro, SAFE — works the same way: the engineer inputs dimensions and loads, and the software returns **one answer**. If the e",
-      "content_hash": "1bb3a412bf8f"
+      "content_hash": "eead02d321a6"
     },
     {
       "name": "innovation-structural-design-companion.md",
@@ -60,8 +60,8 @@
     {
       "name": "git-governance",
       "path": "git-governance/",
-      "file_count": 20
+      "file_count": 28
     }
   ],
-  "content_hash": "f8f55a8bd6560eec"
+  "content_hash": "93254a7416ea171a"
 }

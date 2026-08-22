@@ -184,6 +184,12 @@ checks, merge commit, and merged tree. This separation is unavoidable for a
 squash merge because the unchanged pre-merge candidate cannot know its future
 merge identity.
 
+Run the final read-only session closeout while the transition receipt is fresh,
+before push. A later freshness failure means that the retained observation has
+aged; it does not corrupt the historical artifact or authorize a candidate
+rewrite. Final hosted and merge facts belong only to the successor external
+closeout observation.
+
 ## Verification before publication
 
 - Follow the compact audited-integration gates above when independent acceptance

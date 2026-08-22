@@ -21,9 +21,15 @@ import os
 import subprocess
 import sys
 import socket
+from pathlib import Path
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PYTHON_RUNTIME = os.path.join(REPO_ROOT, "scripts", "python_runtime.sh")
+REACT_INSTALL_COMMAND = (
+    "./scripts/python_runtime.sh scripts/node_runtime.py -- "
+    "npm --prefix react_app ci"
+)
+REACT_REQUIRED_TOOLS = ("eslint", "tsc", "vite", "vitest")
 
 GREEN = "\033[32m"
 RED = "\033[31m"
@@ -142,13 +148,23 @@ def check_port(port: int, service: str) -> None:
         sock.close()
 
 
+def missing_react_dependencies(repo_root: Path | None = None) -> list[str]:
+    """Return missing local React tools required by repository commands."""
+    root = repo_root or Path(REPO_ROOT)
+    bin_dir = root / "react_app" / "node_modules" / ".bin"
+    return [name for name in REACT_REQUIRED_TOOLS if not (bin_dir / name).exists()]
+
+
 def check_node_modules() -> None:
-    """Ensure react_app/node_modules exists."""
-    nm = os.path.join(REPO_ROOT, "react_app", "node_modules")
-    if os.path.isdir(nm):
-        _pass("react_app/node_modules installed")
+    """Report whether this worktree has its lockfile-pinned React tools."""
+    missing = missing_react_dependencies()
+    if not missing:
+        _pass("react_app lockfile dependencies ready")
     else:
-        _warn("react_app/node_modules missing", "cd react_app && npm install")
+        _warn(
+            f"react_app dependencies missing local tools: {', '.join(missing)}",
+            REACT_INSTALL_COMMAND,
+        )
 
 
 def check_stub_not_modified() -> None:

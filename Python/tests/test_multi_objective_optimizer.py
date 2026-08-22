@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import pytest
 
+from structural_lib.services import multi_objective_optimizer as optimizer_module
 from structural_lib.services.multi_objective_optimizer import (
     ParetoCandidate,
     ParetoOptimizationResult,
@@ -312,6 +313,25 @@ class TestEdgeCases:
         assert isinstance(result, ParetoOptimizationResult)
         # Should have best by utilization
         assert result.best_by_utilization is not None or len(result.pareto_front) > 0
+
+    def test_unexpected_flexure_failure_is_not_silenced(self, monkeypatch):
+        def fail_unexpectedly(**_kwargs):
+            raise RuntimeError("unexpected flexure failure")
+
+        monkeypatch.setattr(
+            optimizer_module.flexure,
+            "design_singly_reinforced",
+            fail_unexpectedly,
+        )
+
+        with pytest.raises(RuntimeError, match="unexpected flexure failure"):
+            optimize_pareto_front(
+                span_mm=5000,
+                mu_knm=120,
+                vu_kn=80,
+                objectives=["cost"],
+                max_candidates=5,
+            )
 
 
 if __name__ == "__main__":

@@ -216,7 +216,13 @@
     "sync doc numbers": {
       "group": "Session",
       "script": "./scripts/python_runtime.sh scripts/sync_numbers.py",
-      "description": "Scan codebase metrics and report stale documentation counts",
+      "description": "Scan codebase metrics and report stale documentation counts; no flag is the read-only default",
+      "aliases": [
+        "sync_numbers.py",
+        "sync numbers",
+        "documentation counts",
+        "check stale counts"
+      ],
       "permission": "ReadOnly",
       "permission_modes": {
         "--fix": "WorkspaceWrite"
@@ -420,7 +426,13 @@
     "check tasks format": {
       "group": "Quality",
       "script": "./scripts/python_runtime.sh scripts/check_tasks_format.py",
-      "description": "Validate TASKS.md structure and WIP rules"
+      "description": "Validate TASKS.md structure and WIP rules",
+      "aliases": [
+        "check_tasks.py",
+        "check_tasks_format.py",
+        "task board format",
+        "validate tasks"
+      ]
     },
     "check python version": {
       "group": "Quality",
@@ -611,7 +623,14 @@
     "generate folder index": {
       "group": "Generation",
       "script": "./scripts/python_runtime.sh scripts/generate_enhanced_index.py <folder>",
-      "description": "Update maintained index.json + index.md files; new index locations require explicit opt-in",
+      "description": "Update maintained index.json + index.md files from changed leaves through maintained parents; new index locations require explicit opt-in",
+      "aliases": [
+        "generate_folder_index.py",
+        "generate_enhanced_index.py",
+        "folder index",
+        "refresh index",
+        "leaf parent index"
+      ],
       "permission": "WorkspaceWrite",
       "permission_modes": {
         "--dry-run": "ReadOnly",
@@ -630,7 +649,17 @@
     "generate docs index": {
       "group": "Generation",
       "script": "./scripts/python_runtime.sh scripts/generate_docs_index.py",
-      "description": "Generate machine-readable JSON index of documentation"
+      "description": "Preview the global machine-readable documentation index; pass --write intentionally before refreshing parent folder indexes",
+      "aliases": [
+        "generate_docs_index.py",
+        "global docs index",
+        "documentation index",
+        "docs-index.json"
+      ],
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--write": "WorkspaceWrite"
+      }
     },
     "generate client sdks": {
       "group": "Generation",

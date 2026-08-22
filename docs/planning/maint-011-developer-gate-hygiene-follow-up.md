@@ -1,6 +1,6 @@
 ---
 owner: Main Agent
-status: draft
+status: active
 last_updated: 2026-08-22
 doc_type: spec
 complexity: advanced
@@ -56,3 +56,27 @@ candidate.
    machine-checked exclusions.
 4. `./run.sh check --quick`, the live full gate, and required hosted checks pass.
 5. The session log records each retained/changed disposition and exact evidence.
+
+## Implemented disposition
+
+The maintenance content is complete on the `codex/maint-011-developer-gate-hygiene`
+candidate. Acceptance remains bound to the consolidated post-freeze local and
+hosted sequence; those read-only results are not written back into the candidate.
+
+| ID | Implemented outcome |
+|---|---|
+| M11-01 | All three text-normalizing hooks share explicit preservation roots for VBA/Excel artifacts, generated Vite cache, archived documents, vendored ETABS help, frozen Python test data/fixtures, and React/migration fixtures. The final all-file replay exposed and performed one reviewed terminal-newline normalization of 34 active text/config/index assets. |
+| M11-02 | Only the two deliberate TypeScript JSONC configs are excluded from `check-json`; package, API, evidence, and other strict JSON remain checked. |
+| M11-03 | The three candidate-search loops now catch/log only expected domain/type/arithmetic rejections and propagate unexpected failures. HTTP examples have finite timeouts, and formerly vacuous security tests assert exact HTTP/WebSocket outcomes. Bandit retains both full source-tree scopes. |
+| M11-04 | Mypy remains in the staged hook, and the contributor guide prohibits differently typed loop-variable reuse. |
+| M11-05 | All three active count-bearing instructions now match the live 31-check registry, with a regression bound directly to `check_all.CATEGORIES`. |
+| M11-06 | Maintained task, number-sync, folder-index, and global-doc-index commands have legacy/intention aliases in the single automation map; the tool registry now indexes those aliases. The end-session guide records global/leaf/deepest-parent ordering and default dry-run semantics. |
+| M11-07 | Preflight and every React command check the worktree-local ESLint/TypeScript/Vite/Vitest tools first and provide one root-stable, pinned-Node `npm ci` remediation. |
+| M11-08 | Terminal guidance includes quoted zsh glob, literal-backtick, and package-extra examples and prefers exact discovered paths. |
+| M11-09 | Compact readiness diagnostics retain the first hard-error line plus final context, with a mixed hard-error/later-warning regression. |
+| M11-10 | The workflow and end-session guides distinguish the fresh pre-push transition check from the immutable historical receipt and successor external post-merge observation. |
+| M11-11 | Workflow guidance explains that a non-applicable Excel job must skip, the required PR Gate verifies that skip, and cross-product local Excel evidence remains separately owned. |
+| M11-12 | Readiness now names FastAPI load-test latency/degradation assertions as executable threshold authority while the standalone baseline/comment reporter remains parked. |
+| M11-13 | Handoff preservation and both session checks compare the generated brief path, embedded local-state hash, and status to the selected receipt object; artifact-hash substitution fails. |
+| M11-14 | Additional live finding: maintained pre-commit commands now invoke `./scripts/python_runtime.sh -m pre_commit`, because the package is repository-managed while a bare executable is not guaranteed on shell `PATH`. |
+| M11-15 | Additional live finding: session receipt discovery now accepts the maintained wrapped Markdown value as well as an inline value; the final session checker therefore resolves the exact generated receipt instead of reporting it missing. |

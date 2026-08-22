@@ -354,6 +354,12 @@ def ast_singly_is456(
     ...
 ```
 
+Mypy keeps a loop variable's inferred type within the surrounding function.
+Do not reuse one loop-variable name for differently typed iterables (for
+example, an integer grade key and later an `object` input). Use ownership-
+specific names such as `required_fck` and `raw_fck`, then narrow the latter
+before arithmetic.
+
 ### 4.3 Dataclasses for Result Types
 
 ```python
@@ -1010,7 +1016,7 @@ This project uses pre-commit hooks to enforce formatting and linting **before** 
 ```bash
 cd structural_engineering_lib
 pip install pre-commit   # or: pip install -e ".[dev]"
-pre-commit install
+./scripts/python_runtime.sh -m pre_commit install
 ```
 
 **What happens on `git commit`:**
@@ -1020,7 +1026,7 @@ pre-commit install
 
 **Run manually on all files:**
 ```bash
-pre-commit run --all-files
+./scripts/python_runtime.sh -m pre_commit run --all-files
 ```
 
 ### 11.3 Commit Messages
@@ -1272,8 +1278,8 @@ cd Python
 python -m pip install -e ".[dev]"
 
 cd ..
-pre-commit install
-pre-commit run --all-files
+./scripts/python_runtime.sh -m pre_commit install
+./scripts/python_runtime.sh -m pre_commit run --all-files
 ```
 
 **Optional extras:**

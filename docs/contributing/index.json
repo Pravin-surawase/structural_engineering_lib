@@ -2,7 +2,7 @@
   "folder": "docs/contributing",
   "type": "documentation",
   "description": "Guides for developers and maintainers of the structural engineering library.",
-  "last_updated": "2026-08-17",
+  "last_updated": "2026-08-22",
   "file_count": 21,
   "files": [
     {
@@ -65,10 +65,10 @@
     {
       "name": "development-guide.md",
       "type": "documentation",
-      "size_lines": 1523,
-      "last_updated": "2026-08-17",
+      "size_lines": 1529,
+      "last_updated": "2026-08-22",
       "description": "1. Overview 2. Project Structure",
-      "content_hash": "e9ed99ca0c67"
+      "content_hash": "de1ecbfe3ddf"
     },
     {
       "name": "doc-template.md",
@@ -89,10 +89,10 @@
     {
       "name": "end-of-session-workflow.md",
       "type": "documentation",
-      "size_lines": 514,
-      "last_updated": "2026-08-17",
+      "size_lines": 540,
+      "last_updated": "2026-08-22",
       "description": "> **Standard procedure for ALL agents when ending a session.** bash",
-      "content_hash": "1f91f157ef22"
+      "content_hash": "3a7f9b07290c"
     },
     {
       "name": "git-workflow-ai-agents.md",
@@ -146,9 +146,9 @@
       "name": "repo-professionalism.md",
       "type": "documentation",
       "size_lines": 220,
-      "last_updated": "2026-08-17",
+      "last_updated": "2026-08-22",
       "description": "This doc does not replace existing rules. It links to the canonical sources and adds a practical \"what to do next\" map. bash",
-      "content_hash": "16c733fa03a7"
+      "content_hash": "dacd9eefdcde"
     },
     {
       "name": "session-issues.md",
@@ -176,5 +176,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "ae2535813a92a61b"
+  "content_hash": "3189f303e22a2c60"
 }
