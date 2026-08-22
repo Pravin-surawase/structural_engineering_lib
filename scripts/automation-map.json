@@ -2,7 +2,7 @@
   "_comment": "GENERATED compatibility projection from scripts/control-plane.json; do not edit directly",
   "_usage": "Use ./run.sh find <query> or ./run.sh control find <query>",
   "_source": "scripts/control-plane.json",
-  "_coverage": "113/113 top-level scripts registered",
+  "_coverage": "114/114 top-level scripts registered",
   "tasks": {
     "resolve python runtime": {
       "script": "./scripts/python_runtime.sh --version",
@@ -552,11 +552,16 @@
       "description": "Ensure CLI reference doc includes all required commands",
       "permission": "ReadOnlyTerminal"
     },
-    "check scripts index": {
+    "check control coverage": {
       "script": "./scripts/python_runtime.sh scripts/check_scripts_index.py",
       "group": "Quality",
-      "description": "Ensure scripts/index.json and automation-map metadata match maintained scripts",
-      "permission": "ReadOnly"
+      "description": "Ensure the context manifest, control registry, compatibility projection, and maintained scripts agree",
+      "permission": "ReadOnly",
+      "aliases": [
+        "check scripts index",
+        "check_scripts_index.py",
+        "script registry"
+      ]
     },
     "check api compat": {
       "script": "./scripts/python_runtime.sh scripts/check_api_compat.py",
@@ -746,47 +751,65 @@
       "description": "Update test_stats.json with current test counts",
       "permission": "WorkspaceWrite"
     },
+    "repository context": {
+      "script": "./scripts/python_runtime.sh scripts/repo_context.py <subcommand>",
+      "group": "Agent Infrastructure",
+      "description": "Validate canonical context routing and summarize live worktree files on demand without committed folder indexes (also: ./run.sh context)",
+      "permission": "ReadOnly",
+      "options": {
+        "validate": "Validate manifest paths, operation bindings, and index retirement",
+        "list": "List canonical repository context areas",
+        "show": "Show roots, read-first paths, and operations for one area",
+        "summary": "Build a bounded summary from live files for one area or folder"
+      },
+      "aliases": [
+        "context manifest",
+        "docs-index.json",
+        "documentation index",
+        "folder index",
+        "generate_all_indexes.sh",
+        "generate_docs_index.py",
+        "generate_enhanced_index.py",
+        "generate_folder_index.py",
+        "global docs index",
+        "leaf parent index",
+        "live folder summary",
+        "on-demand summary",
+        "refresh index",
+        "repo context"
+      ],
+      "context_docs": [
+        "docs/getting-started/agent-bootstrap.md",
+        "docs/guidelines/ai-token-efficiency.md"
+      ]
+    },
     "generate folder index": {
       "script": "./scripts/python_runtime.sh scripts/generate_enhanced_index.py <folder>",
       "group": "Generation",
-      "description": "Update maintained index.json + index.md files from changed leaves through maintained parents; new index locations require explicit opt-in",
-      "permission": "WorkspaceWrite",
-      "permission_modes": {
-        "--dry-run": "ReadOnly",
-        "--check": "ReadOnly"
-      },
+      "description": "Deprecated read-only bridge from former folder-index generation to live context summaries",
+      "permission": "ReadOnly",
       "options": {
-        "--all": "Regenerate all key-folder indexes",
-        "--allow-new-index": "Permit intentional creation in a previously unmaintained folder"
+        "--all": "Summarize repository context without writing files",
+        "--check": "Validate the context manifest and index-retirement policy"
       },
-      "aliases": [
-        "generate_folder_index.py",
-        "generate_enhanced_index.py",
-        "folder index",
-        "refresh index",
-        "leaf parent index"
-      ]
+      "replacement": "repository context",
+      "deprecated": true
     },
     "generate all indexes": {
       "script": "./scripts/generate_all_indexes.sh",
       "group": "Generation",
-      "description": "Regenerate index.json + index.md for all research-relevant folders",
-      "permission": "WorkspaceWrite"
+      "description": "Deprecated read-only bridge that validates live repository context",
+      "permission": "ReadOnly",
+      "replacement": "repository context",
+      "deprecated": true
     },
     "generate docs index": {
       "script": "./scripts/python_runtime.sh scripts/generate_docs_index.py",
       "group": "Generation",
-      "description": "Preview the global machine-readable documentation index; pass --write intentionally before refreshing parent folder indexes",
+      "description": "Deprecated read-only bridge from the former global docs catalogue to live documentation summaries",
       "permission": "ReadOnly",
-      "permission_modes": {
-        "--write": "WorkspaceWrite"
-      },
-      "aliases": [
-        "generate_docs_index.py",
-        "global docs index",
-        "documentation index",
-        "docs-index.json"
-      ]
+      "replacement": "repository context",
+      "deprecated": true
     },
     "generate client sdks": {
       "script": "./scripts/python_runtime.sh scripts/generate_client_sdks.py",

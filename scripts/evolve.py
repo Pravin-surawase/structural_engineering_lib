@@ -151,24 +151,16 @@ def step_sync_numbers(fix: bool = False) -> dict:
 
 
 def step_regenerate_indexes(fix: bool = False) -> dict:
-    """Step 3: Check if indexes need regeneration."""
-    if not fix:
-        return {"step": "regenerate_indexes", "skipped": True, "reason": "dry-run mode"}
-
-    StatusLine.ok("Regenerating indexes...")
-    code, output = _run_script("check_scripts_index.py")
-    if code != 0:
-        # Regenerate
-        gen_script = SCRIPTS_DIR / "generate_all_indexes.sh"
-        if gen_script.exists():
-            subprocess.run(
-                ["bash", str(gen_script)],
-                capture_output=True,
-                timeout=120,
-                cwd=str(REPO_ROOT),
-            )
-            return {"step": "regenerate_indexes", "regenerated": True}
-    return {"step": "regenerate_indexes", "up_to_date": True}
+    """Compatibility step that validates read-only live-context routing."""
+    StatusLine.ok("Validating repository context...")
+    code, output = _run_script("repo_context.py", ["validate"])
+    return {
+        "step": "context_validation",
+        "status": "pass" if code == 0 else "fail",
+        "write_requested": fix,
+        "mutated": False,
+        "detail": output.strip(),
+    }
 
 
 def step_process_feedback() -> dict:
@@ -353,7 +345,7 @@ def run_evolution(fix: bool = False, write_report: bool = False) -> dict:
     # Step 2: Sync numbers
     evolution["steps"]["sync_numbers"] = step_sync_numbers(fix=fix)
 
-    # Step 3: Regenerate indexes
+    # Step 3: Validate canonical live-context routing
     evolution["steps"]["indexes"] = step_regenerate_indexes(fix=fix)
 
     # Step 4: Process feedback

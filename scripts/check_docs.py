@@ -2,7 +2,7 @@
 """
 Unified documentation checker — consolidates 4 doc validation scripts.
 
-When to use: After moving docs or modifying docs-index.json. Validates doc structure and links.
+When to use: After moving or editing docs. Validates doc structure and links.
 
 Subcommands:
     --metadata       Check doc metadata headers (Type, Audience, Status)

@@ -95,14 +95,15 @@ Key patterns: CSV → `useCSVFileImport` | 3D geometry → `useBeamGeometry` | a
 
 ```bash
 ./run.sh session start              # Begin work (verify env, read priorities)
-./run.sh check                      # Validate everything (29 checks, parallel)
+./run.sh check                      # Validate all registered checks in parallel
 ./run.sh check --quick              # Fast validation (<30s)
 ./run.sh session end                # Validate closeout (read-only by default)
 ./run.sh find "topic"               # Find the right script
 ./run.sh find --api func_name       # Get API signatures
 ./run.sh test                       # Run test suite
 ./run.sh audit                      # Full readiness audit
-./run.sh generate indexes           # Regenerate folder indexes
+./run.sh context validate           # Validate canonical context routing
+./run.sh context summary <area>     # Summarize live files on demand
 ./run.sh health                     # Project health scan (0-100 score)
 ./run.sh health --fix               # Auto-fix fixable issues
 ./run.sh feedback log --agent X     # Log concrete feedback when found
@@ -220,17 +221,17 @@ and the external handoff.
 .venv/bin/python scripts/migrate_react_component.py <src> <dst> --dry-run # Move React component + update imports
 .venv/bin/python scripts/validate_imports.py --scope structural_lib       # Check for broken imports
 .venv/bin/python scripts/check_governance.py --structure                  # Validate folder conventions
-.venv/bin/python scripts/generate_enhanced_index.py <folder>              # Generate index.json + index.md
-.venv/bin/python scripts/generate_enhanced_index.py --all                 # Regenerate all folder indexes
+./run.sh context show <area>                                             # Authoritative roots and read-first paths
+./run.sh context summary <area-or-folder>                                 # Bounded live inventory
 ```
 
-## Folder Indexes (AI Agent Context)
+## Live Repository Context
 
-Each key folder has `index.json` + `index.md` for fast context loading:
-- `index.json` — Machine-readable: file list, classes, functions, params, descriptions
-- `index.md` — Human-readable: tables with descriptions, exports, line counts
-- Read indexes FIRST before diving into individual files
-- After moving files, regenerate indexes: `.venv/bin/python scripts/generate_enhanced_index.py <folder>`
+`scripts/context-manifest.json` provides small authoritative area routing.
+Use `./run.sh context show <area>` before broad inspection, then targeted
+`rg`. Use `./run.sh context summary <area-or-folder>` only when a live file
+inventory is useful. These commands are read-only; generic folder indexes are
+retired and require no refresh after file changes.
 
 Always use `.venv/bin/python`, never bare `python`. Verify outdated info (AI models, versions) online with `fetch_webpage`.
 

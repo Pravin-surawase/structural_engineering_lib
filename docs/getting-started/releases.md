@@ -326,7 +326,7 @@ Packaging quality release addressing external audit findings. All design calcula
 **Added - Debug & Diagnostics Infrastructure:**
 - `scripts/collect_diagnostics.py` - Creates timestamped diagnostic bundles (5 min → 10 sec)
 - `scripts/generate_api_manifest.py` - Generates/validates API manifest with 38 public symbols
-- `scripts/check_scripts_index.py` - Validates scripts/index.json accuracy (128 scripts)
+- `scripts/check_scripts_index.py` - Validates canonical control/context coverage for every top-level script
 - `docs/reference/api-manifest.json` - Complete API surface documentation
 - Diagnostics reminders in `agent_start.sh` and `end_session.py`
 - Debug snapshot checklist in handoff documentation

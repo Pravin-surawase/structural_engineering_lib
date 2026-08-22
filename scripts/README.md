@@ -18,9 +18,10 @@
 ./run.sh find "topic"
 ./run.sh find --api function_name
 ./run.sh control validate
+./run.sh context validate
+./run.sh context summary automation
 ./run.sh audit
 ./run.sh health
-./run.sh generate indexes
 ./run.sh session usage --summary
 ./run.sh session end
 ```
@@ -55,7 +56,7 @@ hook enforcement and scripts that automate the Git lifecycle are prohibited.
 | API discovery | `discover_api_signatures.py` | Exact Python API signatures |
 | Files | `safe_file_move.py` | Move files after a dry run and link scan |
 | Files | `safe_file_delete.py` | Delete files after a dry run and reference scan |
-| Indexes | `generate_enhanced_index.py` | Update maintained folder indexes; new index locations require `--allow-new-index` |
+| Live context | `run.sh context` | Validate canonical routing and summarize current files without generated folder indexes |
 | IS 456 quality | `check_function_quality.py --module <name>` | Source-relative static function-contract scan; not a numerical benchmark |
 | Sessions | `session.py` | Bounded session lifecycle and usage checkpoints |
 | CI | `diagnose_ci.py` | Diagnose CI failures without managing Git |
@@ -67,19 +68,18 @@ hook enforcement and scripts that automate the Git lifecycle are prohibited.
 - Run from the repository root and use `./scripts/python_runtime.sh`, never bare `python`.
 - Inspect `--help` before invoking an unfamiliar tool.
 - Use `--dry-run` before supported destructive file operations.
-- Treat index generation as a write: preview new locations with `--dry-run` and
-  use `--allow-new-index` only when adding that folder to the maintained index
-  topology is intentional.
+- Use `./run.sh context show <area>` for routing and
+  `./run.sh context summary <area-or-folder>` for a bounded live inventory.
+  Both are read-only.
 - Prefer targeted checks while editing and one full gate at closeout.
 - Preserve unrelated changes in a dirty worktree.
 - Stop on unclear Git state; do not automate recovery or rewrite history.
 - Release, merge, issue closure, and branch deletion require explicit user
   confirmation.
 
-The generated inventories [index.json](index.json) and [index.md](index.md) are
-the exhaustive script catalog. Regenerate them after adding, removing, or
-renaming scripts.
-
 Operation metadata is canonical in [control-plane.json](control-plane.json).
 [automation-map.json](automation-map.json) is generated compatibility data;
 refresh it only with `./run.sh control export-legacy --write`.
+[context-manifest.json](context-manifest.json) owns repository-area routing;
+validate it with `./run.sh context validate`. Top-level script coverage is
+derived directly from the live scripts directory and the control registry.

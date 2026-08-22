@@ -32,7 +32,8 @@ tags: []
 # 2. If preparation automation is explicitly needed, run it before the freeze
 ./run.sh session end --agent <role> --fix
 # 3. Review every resulting write
-# 4. Refresh only affected indexes once (the final repository write)
+# 4. Validate live repository context read-only
+./run.sh context validate
 # 5. Commit the immutable local candidate
 # 6. Run final validation read-only on the clean commit
 ./run.sh session end --agent <role>
@@ -53,7 +54,7 @@ tags: []
 
 This is preparation mode, not a final closeout verdict. It may update handoff
 or task files, but it never generates indexes. Review its writes before the
-final index freeze.
+candidate freeze.
 
 **What it checks:**
 - ✅ Uncommitted changes (reminds you to commit)
@@ -64,7 +65,7 @@ final index freeze.
 - ✅ Active task status (checks TASKS.md Active section)
 
 **Options:**
-- `--fix` - Prepare supported handoff/task files before the final index refresh
+- `--fix` - Prepare supported handoff/task files before the candidate freeze
 - no `--fix` - Read-only final validation
 
 Preparation returns exit status `2` when its checks otherwise pass. That
@@ -96,7 +97,7 @@ Preparation mode completed; this is not a final closeout verdict.
 ```
 
 **❌ Session log entry missing:**
-- Add it to `docs/SESSION_LOG.md` before the index freeze:
+- Add it to `docs/SESSION_LOG.md` before the candidate freeze:
   ```markdown
   ## 2026-01-06 — Session (Brief Title)
 
@@ -225,9 +226,9 @@ Follow the repository's packet and cumulative verification cadence in
 ### Step 7: Confirm Handoff Readiness ✨
 
 Before this final read-only step, finish all session/task/handoff/evidence
-writes and the pre-commit Git handoff receipt. Refresh only the affected
-indexes once and commit the immutable local candidate. Nothing in the
-repository may be rewritten after that refresh.
+writes and the pre-commit Git handoff receipt. Validate live repository context
+and commit the immutable local candidate. Nothing in the repository may be
+rewritten after that freeze.
 
 **Final checklist:**
 
@@ -236,7 +237,7 @@ repository may be rewritten after that refresh.
 - [ ] Next session brief updated (if major work)
 - [ ] Issues documented (if encountered)
 - [ ] Pre-commit handoff receipt created
-- [ ] Affected indexes refreshed once as the final repository write
+- [ ] Live repository context validates without writes
 - [ ] Intended paths committed locally
 - [ ] Plain `./run.sh session end --agent <role>` passes read-only
 - [ ] Candidate pushed without rewriting history
@@ -248,25 +249,19 @@ git status -sb          # Should show "## main...origin/main"
 git log --oneline -3    # Verify your commits are there
 ```
 
-### Maintained index refresh order
+### Live context validation
 
-Index projections depend on their children, so refresh from the changed leaf
-toward the repository root. Do not infer generator names or combine unrelated
-folder arguments.
+Generic folder indexes are retired. After structural changes, validate the
+small routing manifest and request a bounded live summary only when it helps
+review:
 
-1. If documentation membership or indexed metadata changed, write the global
-   catalog first with
-   `./scripts/python_runtime.sh scripts/generate_docs_index.py --write`.
-2. Refresh each changed maintained leaf folder with
-   `./scripts/python_runtime.sh scripts/generate_enhanced_index.py <folder>`.
-3. Refresh maintained parent folders deepest-first, ending with `docs` when a
-   documentation child or `docs/docs-index.json` changed.
-4. Check the finished topology read-only with
-   `./scripts/python_runtime.sh scripts/generate_enhanced_index.py --all --check`.
+```bash
+./run.sh context validate
+./run.sh context summary <area-or-folder>
+```
 
-The no-flag `sync_numbers.py` command is a read-only report. Only `--fix`
-writes. A refused unmaintained index location is a topology decision, not a
-reason to add `--allow-new-index` automatically.
+Neither command writes repository files. The no-flag `sync_numbers.py`
+command is also a read-only report; only `--fix` writes.
 
 ---
 
@@ -344,20 +339,20 @@ rewrite the reviewed candidate merely to make its historical receipt current.
 
 ### Routine Bug Fix (1-2 hours)
 1. Finish the log/task/handoff/receipt writes.
-2. Refresh affected indexes once.
+2. Validate live repository context.
 3. Commit the candidate and run plain `session.py end` read-only.
 4. Push the unchanged candidate.
 
 ### Feature Implementation (2-4 hours)
 1. Update TASKS, next-session brief, session issues, and receipt.
 2. Use `session.py end --fix` only if preparation automation is needed.
-3. Review all writes and refresh affected indexes once.
+3. Review all writes and validate live repository context.
 4. Commit, run plain `session.py end` read-only, then push unchanged.
 
 ### Major Enhancement (4+ hours)
 1. Complete every task, brief, research, issue, session-log, and receipt write.
 2. Use `session.py end --fix` only before the freeze if needed.
-3. Review all writes and refresh affected indexes once.
+3. Review all writes and validate live repository context.
 4. Commit, run plain `session.py end` read-only, then push unchanged.
 
 ### Research Session (No Code Changes)
@@ -382,7 +377,7 @@ rewrite the reviewed candidate merely to make its historical receipt current.
 | Document issues | ❌ No | ✅ Yes (if encountered) |
 | Commit uncommitted work | ❌ No | ✅ Yes |
 | Create research doc | ❌ No | 🟡 Optional (major work) |
-| Generate maintained indexes | ❌ Never | ✅ Once, after all source docs freeze |
+| Validate live repository context | ✅ Yes | 🟡 Review if routing changed |
 
 **Legend:**
 - ✅ Fully automated
@@ -395,7 +390,7 @@ rewrite the reviewed candidate merely to make its historical receipt current.
 
 ### Failure #1: "I don't know what was done last"
 **Cause:** Session log not updated, no handoff brief
-**Prevention:** Add the required session entry before the final index refresh;
+**Prevention:** Add the required session entry before the candidate freeze;
 plain `session.py end` validates it.
 
 ### Failure #2: "The working tree is dirty"
@@ -423,7 +418,7 @@ plain `session.py end` validates it.
 ## 💡 Pro Tips
 
 **Tip 1: Separate preparation from the final verdict**
-- Use `session.py end --fix` only before the final index refresh.
+- Use `session.py end --fix` only before the candidate freeze.
 - Use plain `session.py end` once after the freeze for the read-only verdict.
 
 **Tip 2: Update docs as you work, not at the end**

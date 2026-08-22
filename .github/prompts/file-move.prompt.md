@@ -39,10 +39,11 @@ NEVER use `mv`, `rm`, `git mv`, or manual rename.
 .venv/bin/python scripts/migrate_react_component.py {{old_path}} {{new_path}}
 ```
 
-## Step 4: Regenerate Indexes
+## Step 4: Validate Live Context
 
 ```bash
-.venv/bin/python scripts/generate_enhanced_index.py {{affected_folder}}
+./run.sh context validate
+./run.sh context summary {{affected_folder}}
 ```
 
 ## Step 5: Validate

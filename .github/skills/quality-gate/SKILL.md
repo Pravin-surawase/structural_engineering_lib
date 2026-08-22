@@ -41,8 +41,8 @@ Choose commands from the affected component's skill or existing project automati
 
 After all intended versioned writes are complete, run the affected focused
 tests, benchmarks, and architecture/import checks as one consolidated
-selection. Refresh maintained indexes once before this selection when they are
-affected.
+selection. Validate live repository context before this selection when routing
+or repository structure is affected; this check is read-only.
 
 ### 4. Before commit: quick gate once
 

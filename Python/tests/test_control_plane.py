@@ -28,9 +28,9 @@ def test_current_registry_has_frozen_operation_and_script_parity():
     all_operations = control_plane.operation_map(registry)
     active_operations = control_plane.operation_map(registry, active_only=True)
 
-    assert len(all_operations) == 128
-    assert len(active_operations) == 125
-    assert len(control_plane.top_level_scripts()) == 113
+    assert len(all_operations) == 129
+    assert len(active_operations) == 123
+    assert len(control_plane.top_level_scripts()) == 114
     assert control_plane.referenced_top_level_scripts(registry) == (
         control_plane.top_level_scripts()
     )

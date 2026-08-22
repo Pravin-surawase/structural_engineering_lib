@@ -932,27 +932,14 @@ def check_doc_links() -> tuple[bool, str]:
         return True, f"Link check skipped: {e}"
 
 
-def get_changed_doc_folders(
-    evidence: tuple[str, list[str], str],
-) -> tuple[str, list[Path], str]:
-    """Derive current dirty doc folders only from canonical state evidence."""
-    status, paths, reason = evidence
-    if status == "UNKNOWN":
-        return "UNKNOWN", [], reason
-    if status == "CLEAN":
-        return (
-            "UNKNOWN",
-            [],
-            "canonical state has no committed-diff path evidence; skipped",
-        )
-    doc_folders = {
-        REPO_ROOT / Path(path).parent
-        for path in paths
-        if path.startswith("docs/")
-        and path.endswith(".md")
-        and len(Path(path).parts) >= 2
-    }
-    return "OBSERVED", sorted(doc_folders), "canonical dirty paths inspected"
+def check_context_manifest() -> tuple[bool, str]:
+    """Validate canonical context and the generic-index retirement boundary."""
+    try:
+        result = _run_script("repo_context.py", "validate", timeout=30)
+    except Exception as exc:
+        return False, f"Context validation failed to run: {exc}"
+    output = (result.stdout or result.stderr).strip()
+    return result.returncode == 0, output or "context validator produced no output"
 
 
 def get_today_prs() -> list[str]:
@@ -1067,22 +1054,14 @@ def cmd_end(args: argparse.Namespace) -> int:
         print(f"  ⚠️  {msg}")
     print()
 
-    # 7. Explicit generated-index freeze boundary
-    print("📚 Generated Documentation Index Freeze:")
-    folder_status, changed_folders, folder_reason = get_changed_doc_folders(
-        closeout_evidence
-    )
-    if folder_status == "UNKNOWN":
-        print(f"  ⏭️  Doc-folder set UNKNOWN: {folder_reason}")
-    elif changed_folders:
-        print(f"  📂 {len(changed_folders)} folder(s) with changes detected")
-        print(
-            "  ℹ️  Session end never generates indexes. Finish every log, "
-            "handoff, task, and receipt write first; then refresh the affected "
-            "indexes once as the final repository write."
-        )
+    # 7. Canonical read-only context
+    print("🧭 Repository Context:")
+    context_passed, context_message = check_context_manifest()
+    if context_passed:
+        print(f"  ✅ {context_message}")
     else:
-        print("  ✅ No doc folders in canonical current changed paths")
+        print(f"  ⚠️  {context_message}")
+        all_passed = False
     print()
 
     # 7. TASKS.md auto-archival
@@ -1158,9 +1137,8 @@ def cmd_end(args: argparse.Namespace) -> int:
     if args.fix:
         print("🟡 Preparation mode completed; this is not a final closeout verdict.")
         print(
-            "   Review all writes, refresh affected indexes once, commit the "
-            "candidate, then rerun session end without --fix for read-only "
-            "validation."
+            "   Review all writes, commit the candidate, then rerun session end "
+            "without --fix for read-only validation."
         )
         if all_passed:
             print("   Exit status 2: final read-only validation is still required.")
@@ -1170,8 +1148,7 @@ def cmd_end(args: argparse.Namespace) -> int:
         print("⚠️  Some issues found. Consider fixing before handoff.")
         if not args.fix:
             print(
-                "   Use --fix only before the final index freeze to prepare "
-                "handoff/task files."
+                "   Use --fix only before candidate freeze to prepare handoff/task files."
             )
         print()
         print("💡 Tip: Collect diagnostics for troubleshooting:")
@@ -2437,7 +2414,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--fix",
         action="store_true",
         help=(
-            "Prepare handoff/task files before the final explicit index refresh; "
+            "Prepare handoff/task files before the candidate freeze; "
             "never a final closeout verdict"
         ),
     )

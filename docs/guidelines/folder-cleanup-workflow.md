@@ -214,13 +214,12 @@ After each commit:
 ### Step 5.2: Update Documentation
 
 - [ ] Update affected README files
-- [ ] Regenerate docs-index.json if significant changes
+- [ ] Run `./run.sh context validate` after structural changes
 - [ ] Update TASKS.md if cleanup was a task
 
 ```bash
-.venv/bin/python scripts/generate_docs_index.py
-git add -- docs
-git commit -m "chore: regenerate docs index after cleanup"
+./run.sh context validate
+./run.sh context summary docs
 ```
 
 ### Step 5.3: Document Results
@@ -284,7 +283,7 @@ git commit -m "revert: restore file from backup branch"
 
 ### After Cleanup
 - [ ] All validators pass
-- [ ] Regenerate docs-index.json
+- [ ] Validate canonical context routing
 - [ ] Update affected READMEs
 - [ ] Document results
 

@@ -88,7 +88,7 @@ jobs:
           python scripts/check_api.py --sync
           python scripts/check_api.py --docs
           python scripts/generate_api_manifest.py --check
-          python scripts/generate_enhanced_index.py --all --check
+          python scripts/repo_context.py validate
           python scripts/check_architecture_boundaries.py
           python scripts/release.py check-docs
           python scripts/release.py checklist

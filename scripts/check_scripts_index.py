@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Ensure script indexes and the canonical control plane match scripts on disk.
+"""Ensure canonical control/context registries match the live repository.
 
 When to use: After adding or removing scripts from the scripts/ folder.
-Verifies every top-level script is indexed and registered, and that the legacy
-automation map is the exact deterministic compatibility projection.
+Verifies every top-level script is registered, the legacy automation map is the
+exact deterministic compatibility projection, and generic folder indexes stay
+retired.
 """
 
 from __future__ import annotations
@@ -24,33 +25,15 @@ from control_plane import (  # noqa: E402
     load_registry,
     referenced_top_level_scripts,
 )
+from repo_context import (  # noqa: E402
+    ContextManifestError,
+    load_manifest as load_context_manifest,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS_DIR = REPO_ROOT / "scripts"
-INDEX_PATH = SCRIPTS_DIR / "index.json"
 AUTOMATION_MAP_PATH = LEGACY_PATH
 SCRIPT_EXTENSIONS = {".py", ".sh"}
-
-
-def _load_indexed_scripts() -> set[str]:
-    data = json.loads(INDEX_PATH.read_text(encoding="utf-8"))
-    indexed: set[str] = set()
-
-    # Support old format: {categories: {cat: {scripts: {name: ...}}}}
-    for category in data.get("categories", {}).values():
-        for name in category.get("scripts", {}):
-            indexed.add(name)
-
-    for name in data.get("deprecated", {}).get("scripts", {}):
-        indexed.add(name)
-
-    # Support new format from generate_enhanced_index.py: {files: [{name: ...}]}
-    for entry in data.get("files", []):
-        name = entry.get("name", "")
-        if any(name.endswith(ext) for ext in SCRIPT_EXTENSIONS):
-            indexed.add(name)
-
-    return indexed
 
 
 def _scan_script_files() -> set[str]:
@@ -105,36 +88,27 @@ def main() -> int:
     actual = _scan_script_files()
     report: dict = {"total_scripts": len(actual), "checks": {}}
 
-    # Check index.json
-    if not INDEX_PATH.exists():
+    try:
+        context_manifest = load_context_manifest()
+    except ContextManifestError as exc:
+        report["checks"]["context_manifest"] = {
+            "status": "fail",
+            "reason": str(exc),
+        }
         if not args.json:
-            print("WARNING: scripts/index.json not found (skipping)")
-        report["checks"]["index_json"] = {
-            "status": "skipped",
-            "reason": "file not found",
-        }
+            print(f"ERROR: canonical context manifest is invalid: {exc}")
+        errors += 1
     else:
-        indexed = _load_indexed_scripts()
-        missing = sorted(actual - indexed)
-        extra = sorted(indexed - actual)
-        report["checks"]["index_json"] = {
-            "status": "fail" if (missing or extra) else "pass",
-            "indexed": len(indexed),
-            "missing": missing,
-            "extra": extra,
+        report["checks"]["context_manifest"] = {
+            "status": "pass",
+            "areas": len(context_manifest["areas"]),
+            "generated_folder_indexes": 0,
         }
-        if missing or extra:
-            if not args.json:
-                print("ERROR: scripts/index.json is out of sync.")
-                if missing:
-                    print("  Missing from index.json:")
-                    for name in missing:
-                        print(f"    - {name}")
-                if extra:
-                    print("  In index.json but not on disk:")
-                    for name in extra:
-                        print(f"    - {name}")
-            errors += 1
+        if not args.json:
+            print(
+                "✓ context manifest: "
+                f"{len(context_manifest['areas'])} areas, 0 generated folder indexes"
+            )
 
     # Check canonical control plane and exact compatibility projection.
     try:

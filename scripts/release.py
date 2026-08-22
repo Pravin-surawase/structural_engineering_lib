@@ -82,12 +82,7 @@ _REQUIRED_NORMALIZED_CONTENT = {
 
 _GIT_SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
-_POST_REVIEW_EVIDENCE_PATHS = {
-    "docs/index.json",
-    "docs/index.md",
-    "docs/verification/index.json",
-    "docs/verification/index.md",
-}
+_POST_REVIEW_EVIDENCE_PATHS: set[str] = set()
 
 
 def _public_distribution_permission_errors(path: Path | None = None) -> list[str]:

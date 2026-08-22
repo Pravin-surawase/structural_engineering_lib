@@ -430,8 +430,8 @@ def ctx_doc_master():
         "Safe delete preview: .venv/bin/python scripts/safe_file_delete.py f --dry-run"
     )
     bullet("Create doc: .venv/bin/python scripts/create_doc.py path")
-    bullet("Check indexes: ./run.sh generate indexes --all --check")
-    bullet("Refresh only an affected folder: ./run.sh generate indexes <folder>")
+    bullet("Validate context: ./run.sh context validate")
+    bullet("Summarize live files: ./run.sh context summary <area-or-folder>")
     bullet("Skill: /safe-file-ops, /session-management")
 
     section("DOC COUNTS")
@@ -512,8 +512,8 @@ def ctx_governance():
     bullet("Check governance: .venv/bin/python scripts/check_governance.py --structure")
     bullet("Sync numbers: .venv/bin/python scripts/sync_numbers.py --fix")
     bullet("Link health: .venv/bin/python scripts/check_links.py")
-    bullet("Check indexes: ./run.sh generate indexes --all --check")
-    bullet("Refresh only an affected folder: ./run.sh generate indexes <folder>")
+    bullet("Validate context: ./run.sh context validate")
+    bullet("Summarize live files: ./run.sh context summary <area-or-folder>")
     bullet("Archive old docs: ./scripts/archive_old_files.sh")
 
     section("SUSTAINABILITY CHECKS")

@@ -249,20 +249,6 @@ def test_session_closeout_holds_dirty_ready_contradiction(
     assert "contradicts" in reason
 
 
-def test_changed_doc_folders_uses_only_canonical_dirty_paths():
-    status, folders, reason = session.get_changed_doc_folders(
-        (
-            "DIRTY",
-            ["docs/SESSION_LOG.md", "docs/git-automation/index.json", "source.py"],
-            "canonical dirty paths",
-        )
-    )
-
-    assert status == "OBSERVED"
-    assert folders == [session.REPO_ROOT / "docs"]
-    assert reason == "canonical dirty paths inspected"
-
-
 def test_session_closeout_holds_nonzero_git_state_query(
     monkeypatch: pytest.MonkeyPatch,
 ):
@@ -379,7 +365,7 @@ def _patch_cmd_end_dependencies(
     return authority_calls, args
 
 
-def test_session_end_reuses_one_clean_authority_query_and_skips_unknown_doc_set(
+def test_session_end_reuses_one_clean_authority_query_and_validates_context(
     monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ):
     authority_calls, args = _patch_cmd_end_dependencies(
@@ -390,9 +376,8 @@ def test_session_end_reuses_one_clean_authority_query_and_skips_unknown_doc_set(
     output = capsys.readouterr().out
     assert authority_calls == [["collect_repository_state"]]
     assert "Working tree clean (scripts/git_state.py)" in output
-    assert "Doc-folder set UNKNOWN" in output
-    assert "no committed-diff path evidence" in output
-    assert "No doc folder changes detected" not in output
+    assert "Repository Context" in output
+    assert "context validator produced no output" in output
 
 
 def test_session_end_fix_never_writes_indexes_or_claims_final_closeout(
@@ -411,7 +396,7 @@ def test_session_end_fix_never_writes_indexes_or_claims_final_closeout(
     assert session.cmd_end(args) == 1
     output = capsys.readouterr().out
     assert authority_calls == [["collect_repository_state"]]
-    assert "Session end never generates indexes" in output
+    assert "Repository Context" in output
     assert "Preparation mode completed; this is not a final closeout verdict" in output
     assert "Safe to end session" not in output
     assert all(
@@ -451,7 +436,7 @@ def test_session_end_query_failure_cannot_pass_or_print_clean(
     output = capsys.readouterr().out
     assert authority_calls == [["collect_repository_state"]]
     assert "Git state UNKNOWN/hold" in output
-    assert "Doc-folder set UNKNOWN" in output
+    assert "Repository Context" in output
     assert "Working tree clean" not in output
 
 
@@ -657,9 +642,9 @@ def test_run_task_brief_and_index_help_are_read_only():
     assert "Route:" in brief.stdout
     assert "Safe start:" in brief.stdout
     assert help_result.returncode == 0, help_result.stderr
-    assert "./run.sh generate indexes <owned-folder> [options]" in help_result.stdout
+    assert "./run.sh generate indexes <folder> [--dry-run]" in help_result.stdout
     assert no_args_result.returncode == 0, no_args_result.stderr
-    assert "No arguments or --help shows this non-writing help" in no_args_result.stdout
+    assert "Generic committed folder indexes were retired" in no_args_result.stdout
     assert task_help.returncode == 0, task_help.stderr
     assert "Usage: ./run.sh task brief" in task_help.stdout
     assert before == after
@@ -670,10 +655,9 @@ def test_run_task_brief_and_index_help_are_read_only():
     [
         (
             ["docs/research/git-governance", "--dry-run"],
-            "Would generate: docs/research/git-governance/index.json + "
-            "docs/research/git-governance/index.md",
+            "docs/research/git-governance:",
         ),
-        (["--all", "--dry-run"], "Folders to process:"),
+        (["--all", "--dry-run"], "Context summary: repository"),
     ],
 )
 def test_run_index_generator_dry_run_routes_scope_without_writes(
@@ -703,10 +687,8 @@ def test_run_index_generator_dry_run_routes_scope_without_writes(
     ).stdout
 
     assert result.returncode == 0, result.stderr
-    assert "Mode: DRY RUN" in result.stdout
+    assert "No files will be written" in result.stdout
     assert expected in result.stdout
-    if arguments[0] != "--all":
-        assert "Folders to process: 1" in result.stdout
     assert before == after
 
 
@@ -715,7 +697,6 @@ def test_index_generator_uses_worktree_runtime_in_temp_project(tmp_path: Path):
     project = tmp_path / "linked-worktree"
     scripts = project / "scripts"
     scripts.mkdir(parents=True)
-    (project / "docs").mkdir()
     generator = REPO_ROOT / "scripts" / "generate_all_indexes.sh"
     launcher = scripts / "generate_all_indexes.sh"
     launcher.write_text(generator.read_text(encoding="utf-8"), encoding="utf-8")
@@ -739,8 +720,7 @@ def test_index_generator_uses_worktree_runtime_in_temp_project(tmp_path: Path):
 
     assert result.returncode == 0, result.stderr
     recorded = calls.read_text(encoding="utf-8")
-    assert "scripts/generate_enhanced_index.py --json-only docs" in recorded
-    assert "scripts/generate_enhanced_index.py scripts" in recorded
+    assert "scripts/repo_context.py validate" in recorded
 
 
 def test_latest_session_block_does_not_rewind_descriptive_heading():
@@ -1046,182 +1026,6 @@ def test_tool_registry_discovers_all_copilot_skills():
     assert "skill:release-preflight" in skill_names
     assert "skill:user-acceptance-test" in skill_names
     assert "check streamlit code" not in registry
-
-
-def test_generated_indexes_do_not_emit_trailing_space_hard_breaks():
-    generator = (REPO_ROOT / "scripts" / "generate_enhanced_index.py").read_text(
-        encoding="utf-8"
-    )
-
-    assert 'f"**Type:** {type_label}  "' not in generator
-    assert "f\"**Last Updated:** {index['last_updated']}  \"" not in generator
-
-
-def test_generated_json_indexes_end_with_newline(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-):
-    generator = importlib.import_module("scripts.generate_enhanced_index")
-    output = tmp_path / "scripts"
-    output.mkdir()
-    monkeypatch.setattr(generator, "PROJECT_ROOT", tmp_path)
-
-    generator.generate_json({"folder": "scripts"}, output)
-
-    assert (output / "index.json").read_bytes().endswith(b"\n")
-
-
-def test_generated_index_hash_tracks_subfolder_projection(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-):
-    generator = importlib.import_module("scripts.generate_enhanced_index")
-    parent = tmp_path / "parent"
-    child = parent / "child"
-    child.mkdir(parents=True)
-    (child / "first.py").write_text("VALUE = 1\n", encoding="utf-8")
-    monkeypatch.setattr(generator, "PROJECT_ROOT", tmp_path)
-
-    initial = generator.scan_folder_enhanced(parent)
-    (child / "second.py").write_text("VALUE = 2\n", encoding="utf-8")
-    updated = generator.scan_folder_enhanced(parent)
-
-    assert initial["subfolders"][0]["file_count"] == 1
-    assert updated["subfolders"][0]["file_count"] == 2
-    assert initial["content_hash"] != updated["content_hash"]
-
-
-def test_generated_index_projection_is_stable_across_checkout_mtime_and_date(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-):
-    generator = importlib.import_module("scripts.generate_enhanced_index")
-    folder = tmp_path / "package"
-    folder.mkdir()
-    source = folder / "sample.py"
-    source.write_text("VALUE = 1\n", encoding="utf-8")
-    monkeypatch.setattr(generator, "PROJECT_ROOT", tmp_path)
-    monkeypatch.setattr(generator, "_today_string", lambda: "2020-01-01")
-
-    os.utime(source, (1_577_836_800, 1_577_836_800))
-    initial = generator.scan_folder_enhanced(folder)
-    generator.generate_json(initial, folder)
-    generator.generate_markdown(initial, folder)
-    initial_json = (folder / "index.json").read_bytes()
-    initial_markdown = (folder / "index.md").read_bytes()
-
-    monkeypatch.setattr(generator, "_today_string", lambda: "2021-01-01")
-    os.utime(source, (1_609_459_200, 1_609_459_200))
-    updated = generator.scan_folder_enhanced(folder)
-    generator.generate_json(updated, folder)
-    generator.generate_markdown(updated, folder)
-
-    assert initial["content_hash"] == updated["content_hash"]
-    assert updated["last_updated"] == "2020-01-01"
-    assert updated["files"][0]["last_updated"] == "2020-01-01"
-    assert (folder / "index.json").read_bytes() == initial_json
-    assert (folder / "index.md").read_bytes() == initial_markdown
-
-
-def test_generated_index_dates_advance_only_when_content_changes(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-):
-    generator = importlib.import_module("scripts.generate_enhanced_index")
-    folder = tmp_path / "package"
-    folder.mkdir()
-    source = folder / "sample.py"
-    source.write_text("VALUE = 1\n", encoding="utf-8")
-    monkeypatch.setattr(generator, "PROJECT_ROOT", tmp_path)
-    monkeypatch.setattr(generator, "_today_string", lambda: "2020-01-01")
-
-    os.utime(source, (1_577_836_800, 1_577_836_800))
-    initial = generator.scan_folder_enhanced(folder)
-    generator.generate_json(initial, folder)
-    generator.generate_markdown(initial, folder)
-
-    source.write_text("VALUE = 2\n", encoding="utf-8")
-    os.utime(source, (1_577_836_800, 1_577_836_800))
-    monkeypatch.setattr(generator, "_today_string", lambda: "2021-01-01")
-    updated = generator.scan_folder_enhanced(folder)
-
-    assert initial["content_hash"] != updated["content_hash"]
-    assert updated["last_updated"] == "2021-01-01"
-    assert updated["files"][0]["last_updated"] == "2021-01-01"
-
-
-def test_generated_index_hash_ignores_hidden_subfolder_artifacts(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-):
-    generator = importlib.import_module("scripts.generate_enhanced_index")
-    parent = tmp_path / "parent"
-    child = parent / "child"
-    child.mkdir(parents=True)
-    (child / "visible.md").write_text("# Visible\n", encoding="utf-8")
-    monkeypatch.setattr(generator, "PROJECT_ROOT", tmp_path)
-
-    initial = generator.scan_folder_enhanced(parent)
-    (child / ".draft.md.swp").write_text("editor state\n", encoding="utf-8")
-    hidden_dir = child / ".editor"
-    hidden_dir.mkdir()
-    (hidden_dir / "state.json").write_text("{}\n", encoding="utf-8")
-    updated = generator.scan_folder_enhanced(parent)
-
-    assert initial["subfolders"][0]["file_count"] == 1
-    assert updated["subfolders"][0]["file_count"] == 1
-    assert initial["content_hash"] == updated["content_hash"]
-
-
-def test_index_generator_requires_opt_in_for_new_index_folder(
-    tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
-    capsys: pytest.CaptureFixture[str],
-):
-    generator = importlib.import_module("scripts.generate_enhanced_index")
-    unmaintained = tmp_path / "tests" / "new-area"
-    unmaintained.mkdir(parents=True)
-    (unmaintained / "sample.py").write_text("VALUE = 1\n", encoding="utf-8")
-    monkeypatch.setattr(generator, "PROJECT_ROOT", tmp_path)
-    monkeypatch.setattr(generator, "KEY_FOLDERS", [])
-    monkeypatch.setattr(sys, "argv", ["generate_enhanced_index.py", str(unmaintained)])
-
-    with pytest.raises(SystemExit, match="2"):
-        generator.main()
-
-    output = capsys.readouterr().out
-    assert "Refusing to create indexes in unmaintained folder" in output
-    assert not (unmaintained / "index.json").exists()
-    assert not (unmaintained / "index.md").exists()
-
-    monkeypatch.setattr(
-        sys,
-        "argv",
-        [
-            "generate_enhanced_index.py",
-            str(unmaintained),
-            "--allow-new-index",
-        ],
-    )
-    generator.main()
-
-    assert (unmaintained / "index.json").is_file()
-    assert (unmaintained / "index.md").is_file()
-
-
-def test_index_generator_owned_folder_write_changes_only_expected_indexes(
-    tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
-):
-    generator = importlib.import_module("scripts.generate_enhanced_index")
-    owned = tmp_path / "owned"
-    owned.mkdir()
-    (owned / "sample.py").write_text("VALUE = 1\n", encoding="utf-8")
-    monkeypatch.setattr(generator, "PROJECT_ROOT", tmp_path)
-    monkeypatch.setattr(generator, "KEY_FOLDERS", ["owned"])
-    monkeypatch.setattr(sys, "argv", ["generate_enhanced_index.py", "owned"])
-
-    generator.main()
-
-    generated = {
-        path.relative_to(tmp_path).as_posix() for path in tmp_path.rglob("index.*")
-    }
-    assert generated == {"owned/index.json", "owned/index.md"}
 
 
 def test_session_end_preserves_current_same_day_handoff(

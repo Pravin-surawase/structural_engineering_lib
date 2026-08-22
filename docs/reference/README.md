@@ -51,7 +51,6 @@ Comprehensive lookup documentation for APIs, formulas, contracts, and troublesho
 | Document | Description |
 |----------|-------------|
 | [is456-formulas.md](is456-formulas.md) | IS 456 formula quick reference |
-| [index.md](index.md) | Reference index and lookup |
 
 ## Troubleshooting & Pitfalls
 

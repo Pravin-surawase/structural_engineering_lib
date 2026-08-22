@@ -9,16 +9,16 @@ tags: [automation, scripts, codex]
 
 # Automation Catalog
 
-The exhaustive machine-generated script inventory is
-[scripts/index.json](../../scripts/index.json), with a readable companion at
-[scripts/index.md](../../scripts/index.md). Operation discovery, commands,
-aliases, and permissions live in the canonical
+Operation discovery, commands, aliases, permissions, and exhaustive top-level
+script coverage live in the canonical
 [control-plane.json](../../scripts/control-plane.json) and are queried with:
 
 ```bash
 ./run.sh find "task description"
 ./run.sh find --list
 ./run.sh control validate
+./run.sh context show automation
+./run.sh context summary scripts
 ```
 
 [automation-map.json](../../scripts/automation-map.json) is a deterministic
@@ -43,7 +43,8 @@ The detailed one-by-one maintenance assessment is
 | Control registry | `./run.sh control validate` |
 | Safe file move | `.venv/bin/python scripts/safe_file_move.py old new --dry-run` |
 | Safe file delete | `.venv/bin/python scripts/safe_file_delete.py file --dry-run` |
-| Regenerate indexes | `./run.sh generate indexes` |
+| Live repository context | `./run.sh context show automation` |
+| Bounded live file summary | `./run.sh context summary scripts` |
 
 ## Git/GitHub is not repository automation
 
@@ -63,6 +64,7 @@ custom `core.hooksPath` or reintroduce lifecycle wrappers. The read-only guard i
 
 Before updating or archiving a script, inspect its canonical operation entry,
 consult its ledger row in the audit, verify active callers with `rg`, run its
-focused tests, refresh the compatibility projection, and regenerate affected
-scripts indexes. Historical references may remain in archives, but active
-instructions and runtime callers must not invoke retired scripts.
+focused tests, refresh the compatibility projection when operation metadata
+changes, and run control/context validation. Historical references may remain
+in archives, but active instructions and runtime callers must not invoke
+retired scripts.

@@ -17,7 +17,8 @@
 #   audit     Run readiness/governance audit
 #   test      Run test suites
 #   frontend  Run React commands with the Node version pinned by .nvmrc
-#   generate  Generate indexes, SDKs, manifests
+#   generate  Generate SDKs, manifests, and scaffolds
+#   context   Validate and query live repository context
 #   route     Route tasks to the right agent
 #   tools     Tool & script discovery
 #   control   Canonical control-plane registry
@@ -561,18 +562,17 @@ _help_generate() {
     cat <<'EOF'
 Usage: ./run.sh generate <subcommand> [args]
 
-Generate indexes, SDKs, manifests, and scaffolds.
+Generate SDKs, manifests, and scaffolds. Legacy index routes are read-only.
 
 Subcommands:
-  indexes              Preview or regenerate owned folder indexes
+  indexes              Deprecated bridge to live context summaries
   sdk                  Generate TypeScript/Python client SDKs
   manifest             Generate/validate api-manifest.json
-  docs-index           Generate docs-index.json from markdown
+  docs-index           Deprecated bridge to live documentation context
   scaffold <module>    Generate pytest test template for a module
 
 Examples:
-  ./run.sh generate indexes docs/reference --dry-run
-  ./run.sh generate indexes --all --dry-run
+  ./run.sh context summary docs/reference
   ./run.sh generate sdk                         # Generate client SDKs
   ./run.sh generate scaffold structural_lib.core  # Test template
 EOF
@@ -581,29 +581,21 @@ EOF
 _help_generate_indexes() {
     cat <<'EOF'
 Usage:
-  ./run.sh generate indexes <owned-folder> [options]
-  ./run.sh generate indexes --all [options]
+  ./run.sh generate indexes <folder> [--dry-run]
+  ./run.sh generate indexes --all --check
 
-Preview or regenerate folder index.json and index.md files using the Python
-runtime bound to the invoking worktree.
-
-No arguments or --help shows this non-writing help. Target one owned folder by
-default; use --all explicitly for every canonical key folder.
+Compatibility only. Generic committed folder indexes were retired by
+MAINT-012B. These forms are read-only and delegate to ./run.sh context.
 
 Options:
-  --dry-run            Show exact targets without writing
-  --all                Select every canonical key folder
-  --check              Check existing index hashes without writing
-  --allow-new-index    Permit intentional new index topology
-  --json-only          Generate only index.json
-  --md-only            Generate only index.md
-  --recursive          Include subfolders up to --depth (default: 3)
+  --dry-run            Show the live folder summary
+  --all                Summarize repository context
+  --check              Validate the context manifest and retirement policy
 
 Examples:
-  ./run.sh generate indexes docs/research/git-governance --dry-run
-  ./run.sh generate indexes docs/research/git-governance
-  ./run.sh generate indexes --all --dry-run
-  ./run.sh generate indexes --all
+  ./run.sh context validate
+  ./run.sh context show automation
+  ./run.sh context summary docs/research/git-governance
 EOF
 }
 
@@ -811,6 +803,13 @@ _cmd_control() {
     "$VENV" "$SCRIPTS/control_plane/cli.py" "$@"
 }
 
+# ── Command: context ───────────────────────────────────────────────────────
+
+_cmd_context() {
+    _require_venv
+    "$VENV" "$SCRIPTS/repo_context.py" "$@"
+}
+
 # ── Command: pipeline ──────────────────────────────────────────────────────
 
 _cmd_pipeline() {
@@ -933,7 +932,8 @@ _print_usage() {
     echo -e "  ${GREEN}audit${NC}       Run readiness/governance audit"
     echo -e "  ${GREEN}test${NC}        Run test suites"
     echo -e "  ${GREEN}frontend${NC}    Run React checks with the pinned Node runtime"
-    echo -e "  ${GREEN}generate${NC}    Generate indexes, SDKs, manifests"
+    echo -e "  ${GREEN}generate${NC}    Generate SDKs, manifests, and scaffolds"
+    echo -e "  ${GREEN}context${NC}     Validate/query live context without generated indexes"
     echo -e "  ${GREEN}health${NC}      Project health scan (unified checker)"
     echo -e "  ${GREEN}feedback${NC}    Agent feedback collection & analysis"
     echo -e "  ${GREEN}dev${NC}         Launch full development stack (FastAPI + React)"
@@ -971,6 +971,7 @@ _dispatch_help() {
         test)     _help_test ;;
         frontend) _help_frontend ;;
         generate) _help_generate ;;
+        context)  _cmd_context --help ;;
         health)   _help_health ;;
         feedback) _help_feedback ;;
         evolve)   _help_evolve ;;
@@ -1004,7 +1005,8 @@ _run_sh() {
         'audit:Readiness audit'
         'test:Run test suites'
         'frontend:Run React commands with pinned Node'
-        'generate:Generate indexes and SDKs'
+        'generate:Generate SDKs and manifests'
+        'context:Query live repository context'
         'health:Project health scan'
         'feedback:Agent feedback collection'
         'evolve:Self-evolution engine'
@@ -1031,6 +1033,7 @@ _run_sh() {
     local -a release_subs=('preflight' 'run' 'verify' 'check-docs' 'checklist' 'permission-check' 'footing-inclusion-check')
     local -a efficiency_subs=('check' 'prompt')
     local -a control_subs=('validate' 'find' 'list' 'stats' 'export-legacy')
+    local -a context_subs=('validate' 'list' 'show' 'summary')
 
     if (( CURRENT == 2 )); then
         _describe 'command' commands
@@ -1049,6 +1052,7 @@ _run_sh() {
             release) _values 'subcommand' $release_subs ;;
             efficiency) _values 'subcommand' $efficiency_subs ;;
             control) _values 'subcommand' $control_subs ;;
+            context) _values 'subcommand' $context_subs ;;
         esac
     elif (( CURRENT == 4 )); then
         case "${words[2]}" in
@@ -1106,6 +1110,7 @@ main() {
         test)     _cmd_test "$@" ;;
         frontend) _cmd_frontend "$@" ;;
         generate) _cmd_generate "$@" ;;
+        context)  _cmd_context "$@" ;;
         health)   _cmd_health "$@" ;;
         feedback) _cmd_feedback "$@" ;;
         evolve)   _cmd_evolve "$@" ;;

@@ -43,7 +43,7 @@ The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines
 - Never pass full parent history to a subagent. Send a concise packet with the objective, exact files, constraints, question, commands, and expected output.
 - The orchestrator must add non-goals, likely pitfalls, measurable acceptance criteria, narrow tests, and a return format to each packet, then independently inspect and verify the result before acceptance.
 - Named handoff chains below are quality roles, not mandatory agent processes. The parent normally performs implementation, testing, documentation, and operations passes itself.
-- Start with `./run.sh session brief --agent <role>`, folder indexes, and targeted `rg`; do not load full agent files or large logs unless required.
+- Start with `./run.sh session brief --agent <role>`, `./run.sh context show <area>`, and targeted `rg`; do not load full agent files or large logs unless required.
 - Use implementation-first, batched verification for each agreed bounded packet.
   Complete the scoped code, tests, documentation, and other intended writes
   before the routine verification sequence. While implementing, run only a
@@ -192,7 +192,8 @@ grep -r "@router" fastapi_app/routers/ | head -30               # Existing API r
 ./run.sh find "topic"               # Find the right script
 ./run.sh find --api func_name       # Get exact API param names
 ./run.sh audit                      # Full readiness audit
-./run.sh generate indexes           # Regenerate folder indexes
+./run.sh context validate           # Validate canonical context and index retirement
+./run.sh context summary <area>     # Summarize live worktree files on demand
 ./run.sh health                     # Project health scan (0-100 score)
 ./run.sh health --fix               # Auto-fix fixable issues
 ./run.sh feedback log --agent X     # Log concrete feedback when found
@@ -277,21 +278,19 @@ This feeds the improvement loop — recurring issues get fixed in agent instruct
 ```
 
 **Closeout freeze:** Finish every owned session/task/handoff/evidence update and
-the pre-commit Git handoff receipt before refreshing affected indexes. That
-focused index refresh is the final repository write before the immutable
-candidate commit. Run the final read-only `session end` on that clean local
-commit, then push. After push or PR creation, keep hosted-check and merge facts
-in GitHub and the external handoff; never append them to the same candidate and
-restart CI. A material post-push defect requires an explicit repair candidate,
-not a routine status/documentation commit.
+the pre-commit Git handoff receipt before the immutable candidate commit. Folder
+indexes are retired; `./run.sh context validate` is read-only and requires no
+final generated write. Run the final read-only `session end` on that clean
+local commit, then push. After push or PR creation, keep hosted-check and merge
+facts in GitHub and the external handoff; never append them to the same
+candidate and restart CI. A material post-push defect requires an explicit
+repair candidate, not a routine status/documentation commit.
 
-`session end --fix` is preparation mode, not final validation. It never
-generates indexes and must run before the closeout freeze when explicitly
-needed. Review all resulting writes, refresh only affected indexes once, then
-create the candidate commit and rerun `session end` without `--fix`. Do not run
-any write-capable session command after the final index refresh. A preparation
-run that otherwise passes exits `2`, never `0`, so automation cannot mistake it
-for the final verdict.
+`session end --fix` is preparation mode, not final validation. It must run
+before candidate freeze when explicitly needed. Review all resulting writes,
+create the candidate commit, and rerun `session end` without `--fix`. A
+preparation run that otherwise passes exits `2`, never `0`, so automation
+cannot mistake it for the final verdict.
 
 Log feedback only when a concrete stale instruction or missing control was found. `session summary`, `session sync`, and `session end` are read-only by default; `--write` or `--fix` must be intentional. Agent evolution is scheduled governance work, not a mandatory session-end mutation.
 
@@ -307,7 +306,9 @@ Log feedback only when a concrete stale instruction or missing control was found
 
 ## Context Tips
 
-- Read `index.json` / `index.md` in folders FIRST — machine-readable summaries
+- Use `./run.sh context show <area>` for authoritative routing and
+  `./run.sh context summary <area-or-folder>` for a bounded live inventory.
+- Use targeted `rg` for exact symbols and callers; generic folder indexes are retired.
 - Large files (read selectively): SESSION_LOG.md (400KB), adapters.py (71KB), CHANGELOG.md (52KB)
 - Always use `./scripts/python_runtime.sh`, never bare `python`. In linked
   worktrees, verify the current source binding with

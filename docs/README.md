@@ -72,13 +72,13 @@ default path through this page.
 
 ## Documentation Maintenance
 
-Keep indexes and link checks current after doc updates:
+Validate live repository context and links after documentation changes:
 
 ```bash
-./scripts/generate_all_indexes.sh
-.venv/bin/python scripts/generate_docs_index.py --write
-.venv/bin/python scripts/check_docs.py --index
-.venv/bin/python scripts/check_governance.py --index-links
+./run.sh context validate
+./run.sh context summary docs
+./scripts/python_runtime.sh scripts/check_docs.py --all
+./scripts/python_runtime.sh scripts/check_links.py
 ```
 
 ## Canonical Sources Map
