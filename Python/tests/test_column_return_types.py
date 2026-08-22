@@ -19,6 +19,7 @@ import pytest
 
 from structural_lib import (
     design_column_axial_is456,
+    design_column_is456,
     design_short_column_uniaxial_is456,
 )
 from structural_lib.core.data_types import (
@@ -278,3 +279,33 @@ class TestFrozenDataclass:
         """ColumnUniaxialResult cannot be mutated."""
         with pytest.raises(dataclasses.FrozenInstanceError):
             uniaxial_result.is_safe = False  # type: ignore[misc]
+
+
+def test_unified_column_rejects_infinite_moment_before_minimum_amplification():
+    with pytest.raises(ValueError, match="Mux_kNm must be a finite real number"):
+        design_column_is456(
+            Pu_kN=100.0,
+            Mux_kNm=float("-inf"),
+            b_mm=300.0,
+            D_mm=450.0,
+            l_mm=3000.0,
+            fck_nmm2=25.0,
+            fy_nmm2=415.0,
+            Asc_mm2=2700.0,
+            d_prime_mm=50.0,
+        )
+
+
+def test_public_uniaxial_column_rejects_non_finite_action():
+    with pytest.raises(ValueError, match="Mu_kNm must be a finite real number"):
+        design_short_column_uniaxial_is456(
+            Pu_kN=1200.0,
+            Mu_kNm=float("nan"),
+            b_mm=300.0,
+            D_mm=450.0,
+            le_mm=3000.0,
+            fck_nmm2=25.0,
+            fy_nmm2=415.0,
+            Asc_mm2=2700.0,
+            d_prime_mm=50.0,
+        )

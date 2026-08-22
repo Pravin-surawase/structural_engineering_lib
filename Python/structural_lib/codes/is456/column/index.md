@@ -1,7 +1,7 @@
 # Column
 
 **Type:** Python Package
-**Last Updated:** 2026-08-12
+**Last Updated:** 2026-08-22
 **Files:** 10
 
 ## Public API
@@ -34,4 +34,4 @@
 | [long_column.py](long_column.py) | Module:       long_column | 0 | 1 | 416 |
 | [pmm.py](pmm.py) | Experimental strain-compatibility analysis for rectangular c | 0 | 3 | 514 |
 | [slenderness.py](slenderness.py) | Module:       slenderness | 0 | 1 | 225 |
-| [uniaxial.py](uniaxial.py) | Module:       uniaxial | 0 | 2 | 880 |
+| [uniaxial.py](uniaxial.py) | Module:       uniaxial | 0 | 2 | 918 |

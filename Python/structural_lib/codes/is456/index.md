@@ -1,7 +1,7 @@
 # Is456
 
 **Type:** Python Package
-**Last Updated:** 2026-08-17
+**Last Updated:** 2026-08-22
 **Files:** 14
 
 ## Public API
@@ -35,7 +35,7 @@
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
 | [__init__.py](__init__.py) | IS 456:2000 - Indian Standard for Plain and Reinforced Concr | 1 | 0 | 148 |
-| [compliance.py](compliance.py) | Module: compliance | 0 | 3 | 583 |
+| [compliance.py](compliance.py) | Module: compliance | 0 | 3 | 626 |
 | [detailing.py](detailing.py) | Backward compatibility shim — detailing module moved to beam | 0 | 0 | 28 |
 | [ductile.py](ductile.py) | Backward compatibility shim — ductile module moved to codes/ | 0 | 0 | 30 |
 | [flexure.py](flexure.py) | Backward compatibility shim — flexure module moved to beam/  | 0 | 0 | 28 |

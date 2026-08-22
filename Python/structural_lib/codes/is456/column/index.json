@@ -2,7 +2,7 @@
   "folder": "Python/structural_lib/codes/is456/column",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-12",
+  "last_updated": "2026-08-22",
   "file_count": 10,
   "files": [
     {
@@ -278,8 +278,8 @@
     {
       "name": "uniaxial.py",
       "type": "python",
-      "size_lines": 880,
-      "last_updated": "2026-08-12",
+      "size_lines": 918,
+      "last_updated": "2026-08-22",
       "description": "Module:       uniaxial",
       "functions": [
         {
@@ -310,7 +310,7 @@
           ]
         }
       ],
-      "content_hash": "9e2c590e0ba0"
+      "content_hash": "9b4f730d75ce"
     }
   ],
   "subfolders": [],
@@ -331,5 +331,5 @@
     "slenderness",
     "uniaxial"
   ],
-  "content_hash": "7b266170c127d4c7"
+  "content_hash": "2023f2a965c3a4a0"
 }

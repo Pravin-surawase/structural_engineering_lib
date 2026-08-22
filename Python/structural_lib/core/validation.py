@@ -12,7 +12,9 @@ See docs/research/cs-best-practices-audit.md for design rationale.
 
 from __future__ import annotations
 
+import math
 import warnings
+from numbers import Real
 
 from .errors import (
     E_INPUT_001,
@@ -27,6 +29,39 @@ from .errors import (
     E_INPUT_003a,
     Severity,
 )
+
+
+def validate_finite_real(value: object, field_name: str) -> list[DesignError]:
+    """Validate that a numeric input is a finite real value.
+
+    ``bool`` is rejected deliberately even though it is a numeric subtype in
+    Python.  A stable structured error lets result-returning calculation
+    functions fail closed without serializing NaN or infinity.
+    """
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, Real)
+        or not math.isfinite(value)
+    ):
+        return [
+            DesignError(
+                code="E_INPUT_017",
+                severity=Severity.ERROR,
+                message=f"{field_name} must be a finite real number",
+                field=field_name,
+                hint="Replace NaN, infinity, booleans, or non-numeric values.",
+                recovery=f"Provide a finite real value for {field_name}.",
+            )
+        ]
+    return []
+
+
+def validate_finite_reals(**kwargs: object) -> list[DesignError]:
+    """Validate multiple named numeric inputs with stable field attribution."""
+    errors: list[DesignError] = []
+    for field_name, value in kwargs.items():
+        errors.extend(validate_finite_real(value, field_name))
+    return errors
 
 
 def validate_dimensions(
@@ -52,7 +87,9 @@ def validate_dimensions(
         >>> if errors:
         ...     return FlexureResult(..., errors=errors)
     """
-    errors: list[DesignError] = []
+    errors = validate_finite_reals(b=b, d=d, d_total=D)
+    if errors:
+        return errors
 
     if b <= 0:
         errors.append(E_INPUT_001)
@@ -85,7 +122,9 @@ def validate_materials(fck: float, fy: float) -> list[DesignError]:
         >>> if errors:
         ...     return FlexureResult(..., errors=errors)
     """
-    errors: list[DesignError] = []
+    errors = validate_finite_reals(fck=fck, fy=fy)
+    if errors:
+        return errors
 
     if fck <= 0:
         errors.append(E_INPUT_004)
@@ -626,6 +665,8 @@ def validate_beam_inputs(
 
 
 __all__ = [
+    "validate_finite_real",
+    "validate_finite_reals",
     "validate_dimensions",
     "validate_materials",
     "validate_positive",

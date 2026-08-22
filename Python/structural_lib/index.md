@@ -3,7 +3,7 @@
 > **Purpose:** IS 456:2000 RC beam design calculations
 
 **Type:** Python Package
-**Last Updated:** 2026-08-21
+**Last Updated:** 2026-08-22
 **Files:** 52
 
 ## Public API
@@ -88,7 +88,7 @@
 | [traceability.py](traceability.py) | Backward compatibility stub. | 0 | 0 | 15 |
 | [types.py](types.py) | Backward compatibility stub. | 0 | 0 | 28 |
 | [utilities.py](utilities.py) | Backward compatibility stub. | 0 | 0 | 17 |
-| [validation.py](validation.py) | Backward compatibility stub. | 0 | 0 | 24 |
+| [validation.py](validation.py) | Backward compatibility stub. | 0 | 0 | 26 |
 
 ## Subfolders
 

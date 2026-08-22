@@ -3,16 +3,16 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-22",
-  "file_count": 20,
+  "file_count": 21,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 156,
-      "last_updated": "2026-08-17",
+      "size_lines": 158,
+      "last_updated": "2026-08-22",
       "title": "Planning",
       "description": "Internal planning documents and research notes. | Document | Purpose |",
-      "content_hash": "d73132ea428c"
+      "content_hash": "915446794030"
     },
     {
       "name": "compact-modernization-plan.md",
@@ -131,11 +131,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 82,
+      "size_lines": 83,
       "last_updated": "2026-08-22",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-22",
-      "content_hash": "3abab3f4828f"
+      "content_hash": "e5f565f6589d"
     },
     {
       "name": "pre-release-checklist.md",
@@ -165,6 +165,14 @@
       "content_hash": "31095ffcf998"
     },
     {
+      "name": "public-route-safety-closure-plan.md",
+      "type": "documentation",
+      "size_lines": 90,
+      "last_updated": "2026-08-22",
+      "description": "engineering-use approval until the bounded packets below close. The 2026-08-22 exact-tree replay confirmed that the bounded Gravity Workflow",
+      "content_hash": "d5ddf133d209"
+    },
+    {
       "name": "ui-experience-foundation-master-plan.md",
       "type": "documentation",
       "size_lines": 2408,
@@ -174,5 +182,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "5bd71db89b2e07e1"
+  "content_hash": "f4242bde2e948174"
 }

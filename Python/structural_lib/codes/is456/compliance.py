@@ -17,6 +17,7 @@ Design constraints:
 from __future__ import annotations
 
 import logging
+import math
 from collections.abc import Sequence
 from dataclasses import asdict
 from enum import Enum
@@ -38,6 +39,7 @@ from structural_lib.core.data_types import (
     TorsionResult,
 )
 from structural_lib.core.errors import Severity
+from structural_lib.core.validation import validate_finite_reals
 
 from .beam import flexure, serviceability, shear, torsion
 
@@ -50,11 +52,20 @@ __all__ = [
 ]
 
 
+def _require_finite_inputs(**kwargs: object) -> None:
+    """Reject non-finite calculation inputs before any design arithmetic."""
+    errors = validate_finite_reals(**kwargs)
+    if errors:
+        raise ValueError("; ".join(error.message for error in errors))
+
+
 def _utilization_safe(numer: float, denom: float) -> float:
     """Compute utilization ratio with safe division.
 
     Returns inf if denominator ≤ 0 and numerator > 0, else 0 for zero/zero.
     """
+    if not math.isfinite(numer) or not math.isfinite(denom):
+        return float("inf")
     if denom <= 0:
         return float("inf") if numer > 0 else 0.0
     return numer / denom
@@ -215,6 +226,30 @@ def check_compliance_case(
       else falls back to using flexure-required Ast (recorded as an assumption).
     """
 
+    finite_inputs: dict[str, object] = {
+        "mu_knm": mu_knm,
+        "vu_kn": vu_kn,
+        "b_mm": b_mm,
+        "D_mm": D_mm,
+        "d_mm": d_mm,
+        "fck_nmm2": fck_nmm2,
+        "fy_nmm2": fy_nmm2,
+        "d_dash_mm": d_dash_mm,
+        "asv_mm2": asv_mm2,
+        "tu_knm": tu_knm,
+        "stirrup_dia_mm": stirrup_dia_mm,
+    }
+    for name, value in (
+        ("pt_percent", pt_percent),
+        ("ast_mm2_for_shear", ast_mm2_for_shear),
+        ("cover_mm", cover_mm),
+        ("bf_mm", bf_mm),
+        ("Df_mm", Df_mm),
+    ):
+        if value is not None:
+            finite_inputs[name] = value
+    _require_finite_inputs(**finite_inputs)
+
     failed_checks: list[str] = []
     assumptions: list[str] = []
     torsion_result: TorsionResult | None = None
@@ -368,6 +403,11 @@ def check_compliance_case(
         utilizations["crack_width"] = _compute_crack_utilization(crack)
 
     governing_util = max(utilizations.values()) if utilizations else 0.0
+    for check_name, utilization in utilizations.items():
+        if not math.isfinite(utilization) and not any(
+            check_name in failed_check for failed_check in failed_checks
+        ):
+            failed_checks.append(f"{check_name} (non-finite utilization)")
     is_ok = len(failed_checks) == 0
 
     remarks = "OK" if is_ok else ("FAIL: " + ", ".join(failed_checks))
@@ -449,6 +489,9 @@ def check_compliance_report(
     """
 
     results: list[ComplianceCaseResult] = []
+
+    if not cases:
+        raise ValueError("cases must contain at least one compliance case.")
 
     if deflection_defaults is not None and not isinstance(deflection_defaults, dict):
         raise ValueError("deflection_defaults must be a dict when provided.")

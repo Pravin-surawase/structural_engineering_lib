@@ -20,6 +20,7 @@ Internal planning documents and research notes.
 | [Next Session Brief](next-session-brief.md) | What to work on next |
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
 | [Pre-Release Input Safety and Professional Readiness Plan](pre-release-input-safety-and-professional-readiness-plan.md) | Active contract-first remediation and release holds from the one-storey usability pilot |
+| [Public Route Safety Closure Plan](public-route-safety-closure-plan.md) | Current exact-tree remediation sequence for reproduced lower-level public-route safety defects |
 | [IS 456 Solid Slabs Master Plan](is456-solid-slabs-master-plan.md) | Source-gated, implementation-ready program for simply supported/continuous one-way and common two-way solid slabs; flat slabs held separately |
 | [MAINT-008 Compact Modernization Plan](compact-modernization-plan.md) | Dependency-ordered implementation packets for CI and maintenance modernization |
 | [IS 456 Library-First Master Plan](is456-library-first-master-plan.md) | Worker-ready plan for completing the supported Python library, evidence, packaging, and PyPI flow before broad API/UI work |
@@ -33,6 +34,7 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
+| `public-route-safety-closure-plan.md` | 2026-08-22 | 🚧 LIB-PRO-003-A active; new release and professional/stable claims held through A-D |
 | `next-session-brief.md` | 2026-08-17 | 📋 LIB-PRO-002-I CLI closure then J release-signal convergence are the exact next sequence |
 | `pre-release-input-safety-and-professional-readiness-plan.md` | 2026-08-17 | 🚧 A-G merged; CLI, hosted-interpreter, preflight-verdict, and authorization holds remain through I-J |
 | `is456-solid-slabs-master-plan.md` | 2026-08-10 | 📋 Master plan ready; implementation has not started |

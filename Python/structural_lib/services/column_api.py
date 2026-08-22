@@ -42,6 +42,7 @@ from structural_lib.core.result_contract import (
     IntakeStatus,
     StructuralResultEnvelopeV1,
 )
+from structural_lib.core.validation import validate_finite_reals
 
 # ============================================================================
 # Deprecated-parameter resolution helper
@@ -73,6 +74,13 @@ def _resolve_deprecated_param(
     if new_val is not None:
         return new_val
     raise TypeError(f"{func_name}() requires '{new_name}'")
+
+
+def _require_finite_column_inputs(**kwargs: object) -> None:
+    """Reject non-finite public column inputs before routing or amplification."""
+    errors = validate_finite_reals(**kwargs)
+    if errors:
+        raise ValueError("; ".join(error.message for error in errors))
 
 
 # ============================================================================
@@ -385,12 +393,6 @@ def design_short_column_uniaxial_is456(
         - codes.is456.column.uniaxial.design_short_column_uniaxial: Core implementation
     """
 
-    # Plausibility guards (aligned with existing api.py patterns)
-    if Pu_kN < 0:
-        raise ValueError(f"Axial load Pu_kN must be >= 0, got {Pu_kN}")
-    if Mu_kNm < 0:
-        raise ValueError(f"Moment Mu_kNm must be >= 0, got {Mu_kNm}")
-
     # Resolve deprecated parameter aliases
     fck_nmm2 = _resolve_deprecated_param(
         fck_nmm2, fck, "fck_nmm2", "fck", "design_short_column_uniaxial_is456"
@@ -398,6 +400,27 @@ def design_short_column_uniaxial_is456(
     fy_nmm2 = _resolve_deprecated_param(
         fy_nmm2, fy, "fy_nmm2", "fy", "design_short_column_uniaxial_is456"
     )
+
+    finite_inputs: dict[str, object] = {
+        "Pu_kN": Pu_kN,
+        "Mu_kNm": Mu_kNm,
+        "b_mm": b_mm,
+        "D_mm": D_mm,
+        "le_mm": le_mm,
+        "fck_nmm2": fck_nmm2,
+        "fy_nmm2": fy_nmm2,
+        "Asc_mm2": Asc_mm2,
+        "d_prime_mm": d_prime_mm,
+    }
+    if l_unsupported_mm is not None:
+        finite_inputs["l_unsupported_mm"] = l_unsupported_mm
+    _require_finite_column_inputs(**finite_inputs)
+
+    # Plausibility guards (aligned with existing api.py patterns)
+    if Pu_kN < 0:
+        raise ValueError(f"Axial load Pu_kN must be >= 0, got {Pu_kN}")
+    if Mu_kNm < 0:
+        raise ValueError(f"Moment Mu_kNm must be >= 0, got {Mu_kNm}")
 
     # Dimension checks
     if not (100 <= b_mm <= 2000):
@@ -1177,7 +1200,29 @@ def design_column_is456(
         - biaxial_bending_check_is456: Short column biaxial check
         - design_long_column_is456: Slender column design with Ma
     """
-    # Validate required inputs
+    # Validate required inputs.  Check finite values before ``max`` or range
+    # comparisons can turn infinity into an apparently valid design action.
+    finite_inputs = {
+        "Pu_kN": Pu_kN,
+        "Mux_kNm": Mux_kNm,
+        "Muy_kNm": Muy_kNm,
+        "b_mm": b_mm,
+        "D_mm": D_mm,
+        "l_mm": l_mm,
+        "Asc_mm2": Asc_mm2,
+        "d_prime_mm": d_prime_mm,
+    }
+    for name, value in (
+        ("l_unsupported_mm", l_unsupported_mm),
+        ("M1x_kNm", M1x_kNm),
+        ("M2x_kNm", M2x_kNm),
+        ("M1y_kNm", M1y_kNm),
+        ("M2y_kNm", M2y_kNm),
+    ):
+        if value is not None:
+            finite_inputs[name] = value
+    _require_finite_column_inputs(**finite_inputs)
+
     if b_mm <= 0 or D_mm <= 0:
         raise ValueError(f"Column dimensions must be > 0 (got b={b_mm}, D={D_mm})")
     if l_mm <= 0:
@@ -1192,6 +1237,7 @@ def design_column_is456(
     fy_nmm2 = _resolve_deprecated_param(
         fy_nmm2, fy, "fy_nmm2", "fy", "design_column_is456"
     )
+    _require_finite_column_inputs(fck_nmm2=fck_nmm2, fy_nmm2=fy_nmm2)
 
     # Step 1: Calculate effective lengths in both directions
     le_result = calculate_effective_length_is456(l_mm, end_condition)

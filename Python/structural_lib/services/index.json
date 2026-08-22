@@ -927,8 +927,8 @@
     {
       "name": "column_api.py",
       "type": "python",
-      "size_lines": 1546,
-      "last_updated": "2026-08-17",
+      "size_lines": 1592,
+      "last_updated": "2026-08-22",
       "description": "Module:       column_api",
       "functions": [
         {
@@ -1074,7 +1074,7 @@
       "constants": [
         "_T"
       ],
-      "content_hash": "23dc5143b8a0"
+      "content_hash": "64068f55a652"
     },
     {
       "name": "combined_footing_api.py",
@@ -1894,7 +1894,7 @@
     {
       "name": "excel_workbench.py",
       "type": "python",
-      "size_lines": 951,
+      "size_lines": 952,
       "last_updated": "2026-08-22",
       "description": "Strict selected-table orchestration for Excel Routine Workbench V1.",
       "classes": [
@@ -1960,7 +1960,7 @@
         "_WORKBOOK_ARTIFACT_NAME",
         "_WORKBOOK_RESOURCE_DIR"
       ],
-      "content_hash": "090d514bfa97"
+      "content_hash": "3e5405b70986"
     },
     {
       "name": "flat_slab_api.py",
@@ -3419,5 +3419,5 @@
     "PropertyLineStrapFootingDesignStatus",
     "design_property_line_strap_footing_is456"
   ],
-  "content_hash": "96688dfaf6b7e525"
+  "content_hash": "fff25116f32d6d15"
 }

@@ -2,6 +2,8 @@
 Tests for validation utilities module.
 """
 
+import pytest
+
 from structural_lib import validation
 from structural_lib.core.errors import (
     E_INPUT_001,
@@ -14,6 +16,21 @@ from structural_lib.core.errors import (
     E_INPUT_015,
     E_INPUT_003a,
 )
+
+
+@pytest.mark.parametrize(
+    "value", [float("nan"), float("inf"), float("-inf"), True, "25"]
+)
+def test_validate_finite_real_rejects_non_real_or_non_finite_values(value):
+    errors = validation.validate_finite_real(value, "load")
+
+    assert len(errors) == 1
+    assert errors[0].code == "E_INPUT_017"
+    assert errors[0].field == "load"
+
+
+def test_validate_finite_real_accepts_a_finite_boundary():
+    assert validation.validate_finite_real(0.0, "load") == []
 
 
 class TestValidateDimensions:

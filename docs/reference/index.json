@@ -2,7 +2,7 @@
   "folder": "docs/reference",
   "type": "mixed",
   "description": "",
-  "last_updated": "2026-08-17",
+  "last_updated": "2026-08-22",
   "file_count": 31,
   "files": [
     {
@@ -194,10 +194,10 @@
     {
       "name": "error-schema.md",
       "type": "documentation",
-      "size_lines": 317,
-      "last_updated": "2026-08-17",
+      "size_lines": 318,
+      "last_updated": "2026-08-22",
       "description": "*Structured error format for machine-readable and human-friendly errors* This document defines the standard error schema for all structural_lib errors. The goal is:",
-      "content_hash": "7c8c14e70ebf"
+      "content_hash": "337c94f04699"
     },
     {
       "name": "fastapi-rest-api.md",
@@ -279,5 +279,5 @@
       "file_count": 1760
     }
   ],
-  "content_hash": "ce6face1a63d9004"
+  "content_hash": "e1a93ead62b556c1"
 }

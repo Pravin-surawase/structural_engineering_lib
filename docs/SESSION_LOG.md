@@ -5,6 +5,82 @@
 
 ---
 
+## 2026-08-22 — Session: LIB-PRO-003-A public numeric boundaries
+
+**Agent:** Codex (`backend`, sole writer)
+
+**Branch:** `codex/public-route-numeric-boundaries`, from hosted `main` at
+`e40c0b564acae82f6696e204e8b382342fbf4321`.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-003-a-git-handoff-receipt.json`
+
+**Focus:** Close reproduced non-finite public calculation outcomes, empty
+compliance success, and the rounded uniaxial-column safety decision without
+changing engineering formulas or supported domains.
+
+### Summary
+
+- Introduced one shared finite-real structured validation boundary and applied
+  it before arithmetic in lower-level beam flexure, beam shear, compliance,
+  direct uniaxial-column, and unified column routes.
+- Changed an empty compliance report from vacuous success to explicit input
+  rejection.
+- Changed uniaxial-column safety to compare exact utilization while retaining
+  the rounded public display field.
+- Added direct regressions for all affected numeric arguments, the exact
+  `-infinity` column and `1.0000` display-boundary reproductions, empty public
+  compliance, numeric-text NaN, booleans, and compatibility exports.
+- Froze the remaining public-route safety work as `LIB-PRO-003` Packets B-D;
+  INDIA-3 and the next package remain held behind that sequence.
+- Verification: 260 unique implementation-focused tests and 138 independent
+  verification/API tests pass; focused Ruff and `git diff --check` pass; the
+  consolidated quick gate passes 10/10.
+
+### Issues encountered
+
+- The first focused run had six failures because the new canonical validation
+  helper was not exposed through the backward-compatible
+  `structural_lib.validation` module.
+- A focused Ruff check found one extra blank line in the compliance-validation
+  test import block.
+- ⚠️ TERMINAL ISSUE: unquoted forbidden-path globs expanded during the first
+  handoff-receipt command and were rejected as extra arguments; quoting the
+  literal patterns produced the receipt successfully and no failed-command
+  write occurred.
+- The first normal commit-hook pass stopped after Black reformatted the changed
+  uniaxial module and two focused test files.
+
+### Root causes and resolutions
+
+- Symptom: `AttributeError` occurred only through the compatibility facade.
+  Root cause: that facade uses an explicit import list, so adding the helper to
+  canonical `core.validation.__all__` did not update the old module. Resolution:
+  add both finite-real helpers to the explicit facade import list. Evidence:
+  the complete 86-test validation file passes.
+- Symptom: focused Ruff reported `I001`. Root cause: the patched import block
+  contained one surplus blank line. Resolution: remove that line. Evidence:
+  focused Ruff and `git diff --check` pass.
+- Symptom: the first receipt command rejected many expanded file arguments.
+  Root cause: zsh expanded unquoted `**` patterns before the script received
+  them. Resolution: quote each forbidden pattern. Evidence: receipt creation
+  and session handoff both completed successfully.
+- Symptom: the candidate commit was not created on the first hook pass. Root
+  cause: three changed Python files were Ruff-clean but not Black-normalized.
+  Resolution: retain Black's mechanical output, refresh only its affected
+  maintained indexes, and restage the candidate. Evidence: Black identified
+  and reformatted exactly those three files; all other normal hooks passed on
+  that pass, including repository-wide mypy over 243 source files.
+
+### Remaining holds
+
+- `LIB-PRO-003-B` through D remain open.
+- No package publication, version bump, stable/professional-use claim,
+  qualified-engineer approval, INDIA-3 work, ETABS, or desktop Excel work is
+  authorized by this packet.
+
+---
+
 ## 2026-08-22 — Session: E1 G3 integration and roadmap closeout
 
 **Agent:** Codex (`orchestrator`, sole writer)

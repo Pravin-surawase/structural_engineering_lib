@@ -301,6 +301,51 @@ class TestUniaxialErrors:
                 **STD,
             )
 
+    @pytest.mark.parametrize(
+        "field",
+        [
+            "Pu_kN",
+            "Mu_kNm",
+            "b_mm",
+            "D_mm",
+            "le_mm",
+            "fck",
+            "fy",
+            "Asc_mm2",
+            "d_prime_mm",
+            "l_unsupported_mm",
+        ],
+    )
+    @pytest.mark.parametrize("invalid", [float("nan"), float("inf"), float("-inf")])
+    def test_non_finite_inputs_raise_before_envelope_calculation(self, field, invalid):
+        kwargs = {
+            "Pu_kN": 500.0,
+            "Mu_kNm": 100.0,
+            **STD,
+            "l_unsupported_mm": 3000.0,
+        }
+        kwargs[field] = invalid
+
+        with pytest.raises((DimensionError, MaterialError), match=field):
+            design_short_column_uniaxial(**kwargs)
+
+    def test_unrounded_utilization_controls_safety_at_display_boundary(self):
+        result = design_short_column_uniaxial(
+            Pu_kN=500.0,
+            Mu_kNm=240.49446624425235,
+            b_mm=400.0,
+            D_mm=400.0,
+            le_mm=1950.0,
+            fck=25.0,
+            fy=415.0,
+            Asc_mm2=3200.0,
+            d_prime_mm=50.0,
+        )
+
+        assert result.utilization_ratio == 1.0
+        assert result.is_safe is False
+        assert "exceeded" in result.governing_check
+
     def test_b_mm_zero_raises(self):
         """b_mm = 0 -> DimensionError."""
         with pytest.raises(DimensionError, match="b_mm"):
