@@ -1,0 +1,89 @@
+{
+  "schema_version": "lib-pro-003-d-decisive-gates/v1",
+  "packet": "LIB-PRO-003-D",
+  "generated_at_utc": "2026-08-22T11:23:32Z",
+  "branch": "codex/public-route-decisive-gates",
+  "base_commit": "027554457c58303f435dc4a9940dc683def22895",
+  "software_disposition": "PASS_LOCAL",
+  "readiness_verdict": "PARTIAL",
+  "release_disposition": "HOLD",
+  "professional_use_disposition": "HOLD",
+  "changes": {
+    "excel_ci": "excel_addin/** routes to all 21 add-in tests and the required PR gate",
+    "public_route_gate": "16 Python target groups and 4 FastAPI target groups are required audit evidence",
+    "audit_exit_contract": {
+      "PASS": 0,
+      "FAIL": 1,
+      "PARTIAL": 2
+    },
+    "documentation_hard_cap": 500,
+    "release_truth": "v0.23.1a2 is public; later main work requires a new version",
+    "api_metrics": {
+      "openapi_http_operations": 89,
+      "react_contract_openapi_paths": 88,
+      "openapi_schemas": 435,
+      "websocket_in_openapi": false
+    }
+  },
+  "validation": {
+    "public_route_safety": {
+      "status": "PASS",
+      "python_cases": 73,
+      "fastapi_cases": 5
+    },
+    "excel_addin": {
+      "status": "PASS",
+      "tests": 21
+    },
+    "python_broad": {
+      "status": "PASS",
+      "passed": 6653,
+      "skipped": 3,
+      "deselected": 6
+    },
+    "fastapi_full": {
+      "status": "PASS",
+      "passed": 479
+    },
+    "react_full": {
+      "status": "PASS",
+      "test_files": 51,
+      "passed": 276
+    },
+    "quick_gate": {
+      "status": "PASS",
+      "passed": 10,
+      "total": 10
+    },
+    "repository_gate": {
+      "status": "PASS",
+      "passed": 31,
+      "total": 31
+    },
+    "documentation_contract": {
+      "status": "PASS",
+      "non_archived_markdown": 401,
+      "hard_cap": 500,
+      "invalid_frontmatter": 0,
+      "broken_internal_links": 0
+    },
+    "readiness_audit": {
+      "status": "PARTIAL",
+      "exit_code": 2,
+      "passed": 21,
+      "warnings": 2,
+      "failed": 0,
+      "total": 23,
+      "warnings_detail": [
+        "Function Quality Diagnostic: 26/88 pass and 62 fail",
+        "Input Validation Diagnostic: F (0.0% heuristic average coverage)"
+      ]
+    }
+  },
+  "holds": [
+    "No version bump, tag, package upload, or GitHub Release is authorized.",
+    "No stable, professional-use, project-fitness, or qualified-engineer approval claim is authorized.",
+    "The two readiness diagnostics require a separate bounded truth triage before any future release decision.",
+    "Hosted PR validation and exact candidate/merged tree equality remain required before Packet D merge closure."
+  ]
+}

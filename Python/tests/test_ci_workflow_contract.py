@@ -25,6 +25,8 @@ BASE_GATE_ENV = {
     "FASTAPI_RESULT": "skipped",
     "REACT_CHANGED": "false",
     "REACT_RESULT": "skipped",
+    "EXCEL_CHANGED": "false",
+    "EXCEL_RESULT": "skipped",
     "CONTROL_PLANE_CHANGED": "false",
     "CONTROL_PLANE_RESULT": "skipped",
     "DOCS_CHANGED": "false",
@@ -124,6 +126,7 @@ def test_changed_path_routes_cover_controls_docs_and_their_tests():
         "Python/pyproject.toml",
         "Python/structural_lib/**",
     } == docs_paths
+    assert filters["excel"] == ["excel_addin/**"]
 
     exact_tests = {
         "Python/tests/test_git_state.py",
@@ -131,6 +134,7 @@ def test_changed_path_routes_cover_controls_docs_and_their_tests():
         "Python/tests/test_session_store.py",
         "Python/tests/test_pipeline_state.py",
         "Python/tests/test_agent_governance_automation.py",
+        "Python/tests/test_audit_readiness_truth.py",
         "Python/tests/test_ci_workflow_contract.py",
     }
     assert exact_tests <= control_paths
@@ -147,9 +151,11 @@ def test_pr_gate_topology_and_cancellation_are_scoped_per_pr():
         "cancel-in-progress": "${{ github.event_name == 'pull_request' }}",
     }
     assert {
+        "excel-validation",
         "control-plane-validation",
         "documentation-validation",
     } <= set(pr_gate["needs"])
+    assert jobs["excel-validation"]["if"] == ("needs.changes.outputs.excel == 'true'")
     assert jobs["documentation-validation"]["if"] == (
         "needs.changes.outputs.docs == 'true'"
     )
@@ -166,6 +172,19 @@ def test_pr_gate_topology_and_cancellation_are_scoped_per_pr():
     )
     assert docs_run == "mkdocs build --strict"
 
+    excel_steps = jobs["excel-validation"]["steps"]
+    excel_node = next(
+        step["with"]["node-version"]
+        for step in excel_steps
+        if step["name"] == "Set up Node.js 24"
+    )
+    excel_test = next(
+        step for step in excel_steps if step["name"] == "Run all Excel add-in tests"
+    )
+    assert excel_node == "24"
+    assert excel_test["working-directory"] == "excel_addin"
+    assert excel_test["run"] == "npm test"
+
     deploy_docs = DEPLOY_DOCS.read_text(encoding="utf-8")
     trigger_block = deploy_docs.partition("\non:\n")[2].partition("\npermissions:")[0]
     assert "pull_request:" not in trigger_block
@@ -175,6 +194,8 @@ def test_pr_gate_topology_and_cancellation_are_scoped_per_pr():
 
 def test_pr_gate_accepts_successful_applicable_routes():
     result = _run_pr_gate(
+        EXCEL_CHANGED="true",
+        EXCEL_RESULT="success",
         CONTROL_PLANE_CHANGED="true",
         CONTROL_PLANE_RESULT="success",
         DOCS_CHANGED="true",
@@ -188,6 +209,7 @@ def test_pr_gate_accepts_successful_applicable_routes():
 @pytest.mark.parametrize(
     ("changed_key", "result_key"),
     [
+        ("EXCEL_CHANGED", "EXCEL_RESULT"),
         ("CONTROL_PLANE_CHANGED", "CONTROL_PLANE_RESULT"),
         ("DOCS_CHANGED", "DOCS_RESULT"),
     ],
@@ -205,6 +227,7 @@ def test_pr_gate_rejects_non_successful_applicable_route(
 @pytest.mark.parametrize(
     ("changed_key", "result_key"),
     [
+        ("EXCEL_CHANGED", "EXCEL_RESULT"),
         ("CONTROL_PLANE_CHANGED", "CONTROL_PLANE_RESULT"),
         ("DOCS_CHANGED", "DOCS_RESULT"),
     ],

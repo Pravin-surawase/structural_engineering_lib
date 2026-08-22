@@ -34,8 +34,8 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
-| `public-route-safety-closure-plan.md` | 2026-08-22 | 🚧 LIB-PRO-003-C active after A-B merged; new release and professional/stable claims held through C-D |
-| `next-session-brief.md` | 2026-08-22 | 🚧 LIB-PRO-003-C failure contracts active; D and one cumulative gate follow |
+| `public-route-safety-closure-plan.md` | 2026-08-22 | ✅ LIB-PRO-003-D local candidate accepted; hosted/exact-tree closure pending; release and professional claims held by PARTIAL readiness |
+| `next-session-brief.md` | 2026-08-22 | 🚧 Publish/validate the immutable Packet D candidate, then resume read-only INDIA-3-G0 |
 | `pre-release-input-safety-and-professional-readiness-plan.md` | 2026-08-17 | 🚧 A-G merged; CLI, hosted-interpreter, preflight-verdict, and authorization holds remain through I-J |
 | `is456-solid-slabs-master-plan.md` | 2026-08-10 | 📋 Master plan ready; implementation has not started |
 | `ui-experience-foundation-master-plan.md` | 2026-08-10 | ✅ Two-session P0-P15 workbench/capability program accepted |

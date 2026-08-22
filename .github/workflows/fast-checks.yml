@@ -21,6 +21,7 @@ jobs:
       python: ${{ steps.filter.outputs.python }}
       fastapi: ${{ steps.filter.outputs.fastapi }}
       react: ${{ steps.filter.outputs.react }}
+      excel: ${{ steps.filter.outputs.excel }}
       control_plane: ${{ steps.filter.outputs.control_plane }}
       docs: ${{ steps.filter.outputs.docs }}
     steps:
@@ -43,6 +44,8 @@ jobs:
             react:
               - 'react_app/**'
               - '**/package-lock.json'
+            excel:
+              - 'excel_addin/**'
             control_plane:
               - 'scripts/**'
               - 'run.sh'
@@ -61,6 +64,7 @@ jobs:
               - 'docs/guidelines/ai-token-efficiency.md'
               - 'docs/research/git-governance/**'
               - 'Python/tests/test_agent_governance_automation.py'
+              - 'Python/tests/test_audit_readiness_truth.py'
               - 'Python/tests/test_ci_workflow_contract.py'
               - 'Python/tests/test_git_state.py'
               - 'Python/tests/test_git_handoff_receipt.py'
@@ -188,6 +192,25 @@ jobs:
           npm run build
           npx vitest run
 
+  excel-validation:
+    name: Excel Add-in Validation
+    needs: changes
+    if: needs.changes.outputs.excel == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: Run all Excel add-in tests
+        working-directory: excel_addin
+        run: npm test
+
   control-plane-validation:
     name: Control Plane Validation
     needs: changes
@@ -220,6 +243,7 @@ jobs:
             Python/tests/test_session_store.py \
             Python/tests/test_pipeline_state.py \
             Python/tests/test_agent_governance_automation.py \
+            Python/tests/test_audit_readiness_truth.py \
             Python/tests/test_ci_workflow_contract.py \
             -q
 
@@ -314,6 +338,7 @@ jobs:
       - python-validation
       - fastapi-validation
       - react-validation
+      - excel-validation
       - control-plane-validation
       - documentation-validation
       - repository-validation
@@ -328,6 +353,8 @@ jobs:
           FASTAPI_RESULT: ${{ needs.fastapi-validation.result }}
           REACT_CHANGED: ${{ needs.changes.outputs.react }}
           REACT_RESULT: ${{ needs.react-validation.result }}
+          EXCEL_CHANGED: ${{ needs.changes.outputs.excel }}
+          EXCEL_RESULT: ${{ needs.excel-validation.result }}
           CONTROL_PLANE_CHANGED: ${{ needs.changes.outputs.control_plane }}
           CONTROL_PLANE_RESULT: ${{ needs.control-plane-validation.result }}
           DOCS_CHANGED: ${{ needs.changes.outputs.docs }}
@@ -362,6 +389,7 @@ jobs:
           require_component 'Python Validation' "$PYTHON_CHANGED" "$PYTHON_RESULT"
           require_component 'FastAPI Validation' "$FASTAPI_CHANGED" "$FASTAPI_RESULT"
           require_component 'React Validation' "$REACT_CHANGED" "$REACT_RESULT"
+          require_component 'Excel Add-in Validation' "$EXCEL_CHANGED" "$EXCEL_RESULT"
           require_component 'Control Plane Validation' "$CONTROL_PLANE_CHANGED" "$CONTROL_PLANE_RESULT"
           require_component 'Documentation Validation' "$DOCS_CHANGED" "$DOCS_RESULT"
 

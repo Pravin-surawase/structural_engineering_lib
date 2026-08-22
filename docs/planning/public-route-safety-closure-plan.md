@@ -2,7 +2,7 @@
 owner: Main Agent
 status: active
 last_updated: 2026-08-22
-doc_type: plan
+doc_type: spec
 complexity: advanced
 tags: [safety, validation, public-api, release-hold]
 ---
@@ -70,8 +70,8 @@ a declared footing provenance origin.
 
 ### Packet C — Structured failure and intake truth
 
-**Status:** active on `codex/public-route-failure-contracts` from
-`e19b757c`; adversarial, focused, independent, and API-contract checks pass.
+**Status:** integrated through PR #834 at `02755445` with reviewed and merged
+trees equal.
 
 Return a structured slab capacity `FAIL`, make the legacy CSV route block
 malformed numeric cells without zero coercion or row loss, and reject negative
@@ -79,14 +79,24 @@ BOQ rates at the request boundary.
 
 ### Packet D — Decisive gates and repository truth
 
-Run the Excel add-in tests for `excel_addin/**` changes, make the input audit
-surface and exit result decisive, reconcile release and endpoint-count wording
-with clearly named metrics, and make the inherited documentation audit state
-truthful without weakening its gate.
+**Status:** local candidate accepted on `codex/public-route-decisive-gates`
+from exact hosted Packet C merge `02755445`; hosted and exact-tree merge
+closure remain.
+
+Run the Excel add-in tests for `excel_addin/**` changes, require the frozen
+public-route adversarial regressions in readiness evidence, return nonzero for
+both `PARTIAL` and `FAIL`, reconcile release and endpoint-count wording with
+clearly named metrics, and make documentation front-matter/budget part of the
+required audit. The owner-selected active Markdown hard cap is 500.
 
 After A-D pass focused, quick, broad, and hosted acceptance, the owner may
 resume `INDIA-3-G0`. A future package remains a separate versioned artifact and
 owner-authorized release operation.
+
+The local A-D regression set is green, but readiness remains `PARTIAL`/exit 2
+because two heuristic diagnostics remain unresolved. This preserves a package
+and professional-use `HOLD`; it does not block a later read-only INDIA-3 truth
+audit after Packet D merges.
 
 ## Non-goals
 

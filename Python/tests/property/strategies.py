@@ -235,7 +235,10 @@ def shear_inputs(draw: st.DrawFn) -> dict[str, float]:
     Returns: {"b", "d", "fck", "fy", "vu_kn", "asv", "pt"}
     """
     section = draw(beam_section())
-    fck = float(draw(concrete_grade()))
+    # The maintained Table 19 design route supports M15-M40. Broader concrete
+    # grades remain useful to direct table/helper property tests, so constrain
+    # only this composed design-input strategy.
+    fck = float(draw(st.sampled_from([15, 20, 25, 30, 35, 40])))
     fy = float(draw(steel_grade()))
     # Shear force: 10-500 kN typical range
     vu_kn = draw(

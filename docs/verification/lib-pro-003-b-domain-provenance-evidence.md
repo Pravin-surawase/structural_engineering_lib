@@ -2,7 +2,7 @@
 owner: Main Agent
 status: active
 last_updated: 2026-08-22
-doc_type: verification
+doc_type: reference
 complexity: advanced
 tags: [safety, validation, beam, column, footing, provenance]
 ---

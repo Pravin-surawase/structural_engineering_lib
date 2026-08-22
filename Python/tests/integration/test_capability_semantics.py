@@ -111,10 +111,17 @@ def _published_field_names(workflow: Callable[..., Any]) -> set[str]:
             )
 
     result_type = type_hints.get("return")
-    if not result_type or not dataclasses.is_dataclass(result_type):
+    if not result_type:
         return names
-
-    names.update(_nested_dataclass_field_names("", result_type))
+    result_dataclasses = (
+        (result_type,)
+        if dataclasses.is_dataclass(result_type)
+        else tuple(
+            item for item in get_args(result_type) if dataclasses.is_dataclass(item)
+        )
+    )
+    for result_dataclass in result_dataclasses:
+        names.update(_nested_dataclass_field_names("", result_dataclass))
     return names
 
 

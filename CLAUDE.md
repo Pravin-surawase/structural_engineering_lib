@@ -260,4 +260,4 @@ Then continue from where I left off.
 
 React hooks: `useCSVFileImport`, `useCSVTextImport`, `useDualCSVImport`, `useBatchDesign` (useCSVImport.ts) | `useBeamGeometry` | `useLiveDesign`, `useAutoDesign` | `useBuildingGeometry`, `useCrossSectionGeometry` (useGeometryAdvanced.ts) | `useExport` (BBS/DXF/report) | `useInsights`, `useCodeChecks`, `useRebarSuggestions` | `useRebarValidation`, `useRebarApply` | `useDesignWebSocket`
 
-FastAPI routers (13 routers, 60 endpoints): `design`, `detailing`, `analysis`, `geometry`, `imports`, `insights`, `optimization`, `rebar`, `export`, `streaming`, `websocket`, `health`, `column`
+FastAPI surface: 89 OpenAPI HTTP operations across 26 router modules, plus the separately maintained WebSocket route. Discover exact routes from `fastapi_app/routers/` and the generated OpenAPI contract.

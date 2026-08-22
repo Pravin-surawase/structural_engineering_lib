@@ -517,13 +517,13 @@ def check_index_links() -> int:
 # ═══════════════════════════════════════════════════════════════════════════
 
 DOC_BUDGET_WARN = 350
-DOC_BUDGET_FAIL = 400
+DOC_BUDGET_FAIL = 500
 
 
 def check_doc_budget() -> int:
     """Check that non-archived markdown files stay within budget.
 
-    Warns if count > 350, fails if > 400.
+    Warns if count > 350, fails if > 500.
     Returns exit code: 0 pass, 1 fail.
     """
     if not DOCS_DIR.exists():

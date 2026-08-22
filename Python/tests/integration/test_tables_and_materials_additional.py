@@ -175,17 +175,16 @@ def test_flexure_calculate_ast_required_rejects_outside_stress_block_domain(
         flexure.calculate_ast_required(b=230, d=450, mu_knm=1e6, fck=20, fy=415)
 
 
-def test_flexure_singly_reinforced_hits_max_steel_exceeded():
+def test_flexure_singly_reinforced_rejects_unsupported_low_steel_grade():
     from structural_lib import flexure
 
-    # Keep geometry valid, but use an unrealistically low fy to push Ast_min
-    # above Ast_max and cover the max-steel branch deterministically.
+    # The maintained public route now rejects this artificial fy before using
+    # it to manufacture an otherwise unreachable maximum-steel branch.
     res = flexure.design_singly_reinforced(
         b=300, d=500, d_total=550, mu_knm=0.0, fck=25, fy=10
     )
     assert res.is_safe is False
-    # Check for max steel error in errors list
-    assert any("max" in err.message.lower() for err in res.errors)
+    assert any(err.code == "E_INPUT_019" for err in res.errors)
 
 
 def test_flexure_calculate_ast_required_over_reinforced_returns_minus_one():
