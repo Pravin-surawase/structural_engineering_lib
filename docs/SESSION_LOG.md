@@ -5,6 +5,163 @@
 
 ---
 
+## 2026-08-22 — Session: LIB-PRO-003-C public failure contracts
+
+**Agent:** Codex (`backend` + `api-developer`, sole writer)
+
+**Branch:** `codex/public-route-failure-contracts`, from hosted `main` at
+`e19b757ccb9922061369a236501f037ec20503ab` after exact-tree merge of
+`LIB-PRO-003-B` PR #833.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-003-c-git-handoff-receipt.json`
+
+**Focus:** Replace slab over-capacity exceptions, malformed legacy CSV zero
+coercion, and invalid BOQ pricing arithmetic with truthful public failure
+contracts, without changing supported engineering formulas.
+
+### Summary
+
+- Added one shared slab capacity-failure carrier with demand, capacity,
+  utilization, clause/source provenance, a stable issue, qualified-review
+  requirement, and the common `VALID/COMPLETED/FAIL` envelope.
+- Returned that carrier through one-way, two-way, complete-workflow, service,
+  FastAPI, and OpenAPI serialization paths while retaining exceptions for
+  invalid or unsupported intake.
+- Made `GenericCSVAdapter.load_forces` reject malformed and non-finite numeric
+  cells with field and source-row context; blank optional cells retain the
+  documented zero default.
+- Rejected bool, non-real, non-finite, and non-positive BOQ rates and
+  non-positive concrete grades at the Python and request-model boundaries.
+- Regenerated the canonical OpenAPI baseline after the response-model change.
+  Packet D, cumulative broad acceptance, release authority, INDIA-3, ETABS,
+  and professional approval remain held.
+
+### Issues encountered
+
+- The first 122-test focused run left five adapter-test failures: four new
+  parameter cases inherited assertions from the prior valid-fixture test, and
+  one historical test still expected malformed text to become zero.
+- A broad-context patch initially matched repeated force-row loops in the
+  2,100-line adapter module and changed two unrelated adapter classes.
+- Targeted mypy found that an untyped shared two-way argument dictionary widened
+  required floats and source references to `object`; Ruff found two import
+  blocks; Black identified three formatting-only files.
+- The read-only documentation audit found an inherited 401-file count against
+  its 400-file hard cap and three invalid front-matter values already present
+  at the exact source base; a new Markdown packet record would raise the count
+  to 402.
+- The first normal commit-hook run blocked on three repository-wide mypy
+  errors: Gravity Workflow read optional slab shear/serviceability results and
+  release UAT read optional detailing without narrowing the new failure union.
+- Hosted FastAPI validation on PR #834 left 471 tests green but failed two
+  unsafe-beam routes with HTTP 422 because strict evidence hashing received an
+  infinite derived utilization; `PR Gate` correctly failed with it.
+- ⚠️ TERMINAL ISSUE: the first slab lookup guessed a nonexistent
+  `one_way_flexure.py`; `rg --files` identified the maintained `one_way.py`.
+- ⚠️ TERMINAL ISSUE: a direct complete-workflow replay omitted six required
+  reviewed serviceability inputs; the already-covered one-way public endpoint
+  replay was used for the exact capacity evidence instead.
+- ⚠️ TERMINAL ISSUE: unquoted `index.*` probes triggered zsh `no matches
+  found`; a literal `find` expression then identified the maintained parent
+  indexes without changing files.
+- ⚠️ TERMINAL ISSUE: the first explicit staging parser called `trim()` on
+  porcelain output, removed the first line's leading status marker, and formed
+  the nonexistent path `ython/...`; Git rejected the command and staged no
+  files.
+
+### Root causes and resolutions
+
+- Symptom: supported slab overload raised `SlabContractError` and prevented a
+  disposition. Root cause: the flexure functions treated a completed capacity
+  miss as invalid intake. Resolution: introduce a shared typed failure carrier
+  and propagate it before detailing/serviceability access. Evidence: both slab
+  systems serialize demand, capacity, provenance, issue, and
+  `VALID/COMPLETED/FAIL`; supported valid workflows remain green.
+- Symptom: malformed CSV forces became zero or disappeared. Root cause: each
+  force conversion caught `ValueError`, kept its initialized zero, and the
+  outer row handler also swallowed `ValueError`. Resolution: one finite parser
+  now raises with field/row context and only a missing mapped key is wrapped as
+  malformed-row intake. Evidence: malformed/non-finite cells reject while
+  valid, blank, SAFE, STAAD, and end-to-end adapter tests pass.
+- Symptom: negative BOQ rates produced negative totals. Root cause: neither
+  Pydantic request models nor the reusable Python aggregator constrained rates
+  or concrete-grade keys. Resolution: finite positive request fields plus a
+  direct public aggregator guard. Evidence: API cases return 422 and direct
+  calls raise `ValueError`; all valid costing tests remain unchanged.
+- Symptom: unrelated adapter loops appeared in the patch. Root cause: repeated
+  method and loop text made a broad context patch non-unique. Resolution:
+  inspect the diff immediately and reverse only the unintended SAFE/STAAD
+  edits. Evidence: the final adapter diff contains only `GenericCSVAdapter`.
+- Symptom: the first focused suite had five test failures. Root cause: the new
+  parametrized test split the preceding fixture assertions, and one expected
+  contract was intentionally obsolete. Resolution: restore valid-fixture
+  assertions to their original test and change malformed-text expectations to
+  explicit rejection. Evidence: all affected nodes and the complete 122-test
+  selection pass.
+- Symptom: static checks failed after runtime tests were green. Root cause:
+  dictionary unpacking erased precise types and patched imports/lines were not
+  normalized. Resolution: pass the six two-way shared values explicitly and
+  apply deterministic Ruff/Black ordering. Evidence: targeted mypy, Ruff,
+  Black, and `git diff --check` pass.
+- Symptom: the standalone Markdown evidence worsened a pre-existing hard doc
+  budget failure. Root cause: the exact base already contained 401 counted
+  Markdown files and three older invalid `doc_type` values. Resolution: retain
+  the full narrative in this required session record and store standalone
+  machine evidence as JSON. Evidence: Packet C adds zero counted Markdown
+  files; the inherited 401-file/front-matter debt remains visible for Packet D
+  gate truth instead of being misreported as green.
+- Symptom: explicit staging failed on one malformed path. Root cause: trimming
+  the whole porcelain output altered only the first record before its fixed
+  three-character status prefix was removed. Resolution: preserve the raw
+  first-line whitespace and split before slicing each status prefix. Evidence:
+  the failed command left the index and worktree unchanged; the corrected
+  parser stages the complete 43-path candidate.
+- Symptom: normal hooks rejected otherwise-green Packet C source. Root cause:
+  two downstream public consumers encoded the old assumption that every valid
+  slab intake reaches detailing, shear, and serviceability, which is no longer
+  true for a completed flexural capacity failure. Resolution: Gravity Workflow
+  treats absent downstream checks as component `FAIL`, and release UAT asserts
+  its known-safe fixture reached detailing before checking review status.
+  Evidence: 13 affected Gravity/UAT tests pass, the overloaded workflow result
+  is `VALID/COMPLETED/FAIL`, and targeted mypy passes all three affected source
+  modules.
+- Symptom: valid but grossly unsafe beam designs could not return their
+  expected HTTP 200 engineering `FAIL`. Root cause: a zero/invalid calculated
+  capacity intentionally produced mathematical infinity, but beam evidence
+  schema 3.0 inserted that value into strict JSON identity. Resolution: schema
+  3.1 records `UNBOUNDED_FAILURE`, leaves `exact_utilization` and margin null,
+  and forces `SUPPORTED/FAIL` even if a contradictory caller supplies
+  `is_ok=True`. Evidence: the two hosted reproductions plus the evidence
+  fail-closed regression pass; 14 affected tests and 20 API-contract tests are
+  green with no OpenAPI breaking drift.
+
+### Verification through content freeze
+
+- 122 implementation-focused tests pass across slab, CSV, BOQ, and FastAPI.
+- 214 independent neighboring slab, adapter, and costing tests pass; 20
+  independent API surface/manifest tests pass.
+- 13 affected downstream Gravity Workflow and release-UAT tests pass after the
+  full-source typing repair.
+- The first hosted run passed Python, documentation, and repository validation
+  but failed FastAPI 2/473 and therefore failed `PR Gate`; the exact two failed
+  nodes, evidence regressions, and 20 API-contract tests pass after repair.
+- The schema snapshot authority reports five models and two enums unchanged;
+  the canonical OpenAPI baseline contains the reviewed response-model update.
+- Targeted mypy reports no issues in seven changed source modules; focused
+  Ruff, Black, and `git diff --check` pass. The consolidated quick gate passes
+  10/10; commit hooks, immutable commit, hosted checks, and exact-tree merge
+  remain in the candidate sequence.
+
+### Remaining holds
+
+- `LIB-PRO-003-D` and cumulative broad acceptance remain open.
+- No package publication, version bump, stable/professional-use claim,
+  qualified-engineer approval, INDIA-3 work, ETABS, or desktop Excel work is
+  authorized by this packet.
+
+---
+
 ## 2026-08-22 — Session: LIB-PRO-003-B domains and footing provenance
 
 **Agent:** Codex (`backend`, sole writer)

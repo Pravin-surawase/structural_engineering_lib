@@ -1813,6 +1813,31 @@ class GenericCSVAdapter(InputAdapter):
 
         return column_map
 
+    @staticmethod
+    def _parse_force_value(
+        raw_value: object,
+        *,
+        field_name: str,
+        row_number: int,
+    ) -> float:
+        """Parse one optional force cell without coercing malformed text to zero."""
+
+        text = "" if raw_value is None else str(raw_value).strip()
+        if not text:
+            return 0.0
+        try:
+            value = float(text)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(
+                f"Invalid {field_name} value at CSV row {row_number}: {text!r}"
+            ) from exc
+        if not math.isfinite(value):
+            raise ValueError(
+                f"Invalid {field_name} value at CSV row {row_number}: "
+                f"{text!r} is not finite"
+            )
+        return abs(value)
+
     def load_geometry(
         self,
         source: Path | str,
@@ -2008,7 +2033,7 @@ class GenericCSVAdapter(InputAdapter):
                     f"Available: {headers}"
                 )
 
-            for row in reader:
+            for row_number, row in enumerate(reader, start=2):
                 try:
                     beam_id = row[column_map["beam_id"]].strip()
                     if not beam_id:
@@ -2036,28 +2061,25 @@ class GenericCSVAdapter(InputAdapter):
                     pu = 0.0
 
                     if mu_col:
-                        mu_val = row.get(mu_col, "0")
-                        if mu_val and str(mu_val).strip():
-                            try:
-                                mu = abs(float(mu_val))
-                            except ValueError:
-                                pass
+                        mu = self._parse_force_value(
+                            row.get(mu_col, "0"),
+                            field_name="mu_knm",
+                            row_number=row_number,
+                        )
 
                     if vu_col:
-                        vu_val = row.get(vu_col, "0")
-                        if vu_val and str(vu_val).strip():
-                            try:
-                                vu = abs(float(vu_val))
-                            except ValueError:
-                                pass
+                        vu = self._parse_force_value(
+                            row.get(vu_col, "0"),
+                            field_name="vu_kn",
+                            row_number=row_number,
+                        )
 
                     if pu_col:
-                        pu_val = row.get(pu_col, "0")
-                        if pu_val and str(pu_val).strip():
-                            try:
-                                pu = abs(float(pu_val))
-                            except ValueError:
-                                pass
+                        pu = self._parse_force_value(
+                            row.get(pu_col, "0"),
+                            field_name="pu_kn",
+                            row_number=row_number,
+                        )
 
                     # Build unique ID
                     full_id = f"{beam_id}_{story}" if story else beam_id
@@ -2072,8 +2094,10 @@ class GenericCSVAdapter(InputAdapter):
                     )
                     forces.append(force)
 
-                except (KeyError, ValueError):
-                    continue
+                except KeyError as exc:
+                    raise ValueError(
+                        f"Malformed CSV row {row_number}: missing {exc.args[0]!r}"
+                    ) from exc
 
         return forces
 

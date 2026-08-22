@@ -70,7 +70,7 @@ def test_safe_torsion_is_integrated_into_primary_demands(
     assert data["torsion"]["al_torsion"] > 0
     assert data["torsion"]["clause_refs"]["Me"] == "IS 456 Cl 41.4.2"
     assert data["evidence"]["support_status"] == "SUPPORTED"
-    assert data["evidence"]["artifact_schema_version"] == "3.0"
+    assert data["evidence"]["artifact_schema_version"] == "3.1"
     assert (
         data["evidence"]["normalized_input_hash"]
         != zero["evidence"]["normalized_input_hash"]
@@ -100,6 +100,9 @@ def test_unsafe_torsion_fails_primary_result(client) -> None:
     assert data["success"] is False
     assert data["result_envelope"]["engineering_status"] == "FAIL"
     assert data["result_envelope"]["overall_status"] == "FAIL"
+    assert data["evidence"]["status"] == "FAIL"
+    assert data["evidence"]["exact_utilization"] is None
+    assert data["evidence"]["utilization_disposition"] == "UNBOUNDED_FAILURE"
     assert data["torsion"]["is_safe"] is False
     assert any(error["code"] == "E_TORSION_001" for error in data["torsion"]["errors"])
 

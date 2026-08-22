@@ -1,0 +1,208 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-22T10:57:58Z",
+      "query_status": "OK",
+      "reference": "task:LIB-PRO-003:user-request-continue-this-work",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-22T10:57:58Z",
+    "prohibited_actions": [
+      "PUBLISH_RELEASE",
+      "CLAIM_PROFESSIONAL_APPROVAL",
+      "START_INDIA_3",
+      "START_ETABS_OR_DESKTOP_EXCEL",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR"
+      ],
+      "branch": "codex/public-route-failure-contracts",
+      "head_sha": "60ceb7b9af7ec91fd09a637816bd68166ac4a05d",
+      "task_id": "LIB-PRO-003-C"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "f375155d18c79ba75c2ed9e89fbac24441c4d8da77e9c24275b273ac60c1c615",
+    "state": {
+      "branch": "codex/public-route-failure-contracts",
+      "default_base": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "e19b757ccb9922061369a236501f037ec20503ab",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 106.287,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-public-route-failure-contracts",
+      "head_sha": "60ceb7b9af7ec91fd09a637816bd68166ac4a05d",
+      "hold_reasons": [
+        "changed paths: 9"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-22T10:58:49.193413+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-failure-contracts",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 9,
+        "modified_paths": [
+          "Python/structural_lib/services/evidence.py",
+          "Python/tests/test_evidence.py",
+          "docs/SESSION_LOG.md",
+          "docs/verification/lib-pro-003-c-failure-contracts-evidence.json",
+          "docs/verification/lib-pro-003-c-git-handoff-source-evidence.json",
+          "fastapi_app/models/beam.py",
+          "fastapi_app/openapi_baseline.json",
+          "fastapi_app/tests/test_beam_primary_route.py",
+          "fastapi_app/tests/test_endpoints.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/codex/public-route-failure-contracts",
+        "sha": "60ceb7b9af7ec91fd09a637816bd68166ac4a05d",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-failure-contracts"
+    }
+  },
+  "local_state_receipt_hash": "sha256:f375155d18c79ba75c2ed9e89fbac24441c4d8da77e9c24275b273ac60c1c615",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-22T10:58:49.193598+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-22T10:57:58Z",
+    "owner": "Main Agent under repository retention policy; destructive cleanup remains separately owner-authorized",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/codes/is456/beam/**",
+      "Python/structural_lib/codes/is456/column/**",
+      "Python/structural_lib/services/beam_api.py",
+      "Python/structural_lib/services/column_api.py",
+      "Python/structural_lib/services/footing_api.py",
+      "react_app/**",
+      "excel_addin/**",
+      ".github/workflows/**"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "Python/structural_lib/codes/is456/slab/__init__.py",
+      "Python/structural_lib/codes/is456/slab/models.py",
+      "Python/structural_lib/codes/is456/slab/one_way.py",
+      "Python/structural_lib/codes/is456/slab/two_way.py",
+      "Python/structural_lib/codes/is456/slab/two_way_complete.py",
+      "Python/structural_lib/services/adapters.py",
+      "Python/structural_lib/services/boq.py",
+      "Python/structural_lib/services/evidence.py",
+      "Python/structural_lib/services/gravity_workflow.py",
+      "Python/structural_lib/services/release_uat.py",
+      "Python/structural_lib/services/slab_api.py",
+      "Python/tests/codes/is456/slab/test_extended_workflows.py",
+      "Python/tests/codes/is456/slab/test_one_way_flexure.py",
+      "Python/tests/codes/is456/slab/test_two_way_flexure.py",
+      "Python/tests/test_boq.py",
+      "Python/tests/test_evidence.py",
+      "Python/tests/unit/test_generic_csv_adapter.py",
+      "Python/tests/unit/test_gravity_workflow_v1.py",
+      "fastapi_app/models/beam.py",
+      "fastapi_app/models/boq.py",
+      "fastapi_app/models/library_core.py",
+      "fastapi_app/tests/test_beam_primary_route.py",
+      "fastapi_app/tests/test_endpoints.py",
+      "fastapi_app/tests/test_insights_dashboard.py",
+      "fastapi_app/tests/test_library_core.py",
+      "docs/verification/lib-pro-003-c-failure-contracts-evidence.json",
+      "docs/verification/lib-pro-003-c-git-handoff-source-evidence.json",
+      "docs/verification/lib-pro-003-c-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "fastapi_app/openapi_baseline.json",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/README.md",
+      "docs/planning/next-session-brief.md",
+      "docs/planning/public-route-safety-closure-plan.md",
+      "Python/structural_lib/services/index.json",
+      "Python/structural_lib/services/index.md",
+      "Python/tests/index.json",
+      "Python/tests/index.md",
+      "Python/tests/codes/is456/index.json",
+      "Python/tests/codes/is456/index.md",
+      "docs/index.json",
+      "docs/index.md",
+      "docs/planning/index.json",
+      "docs/planning/index.md",
+      "docs/verification/index.json",
+      "docs/verification/index.md",
+      "fastapi_app/index.json",
+      "fastapi_app/models/index.json",
+      "fastapi_app/models/index.md",
+      "fastapi_app/tests/index.json",
+      "fastapi_app/tests/index.md"
+    ],
+    "task_id": "LIB-PRO-003-C"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

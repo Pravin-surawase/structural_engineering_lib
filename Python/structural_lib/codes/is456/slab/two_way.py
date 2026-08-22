@@ -25,7 +25,12 @@ from structural_lib.codes.is456.slab.external_coefficients import (
     ExternalCoefficientReviewStatus,
     ExternalTwoWaySlabCoefficientRecord,
 )
-from structural_lib.codes.is456.slab.models import SlabClassification, SlabContractError
+from structural_lib.codes.is456.slab.models import (
+    SlabCapacityFailureResult,
+    SlabClassification,
+    SlabContractError,
+    slab_capacity_failure,
+)
 from structural_lib.codes.is456.traceability import clause
 
 __all__ = [
@@ -313,8 +318,9 @@ def _direction_result(
     fck_n_per_mm2: float,
     fy_n_per_mm2: float,
     xu_max_over_d: float,
-) -> TwoWaySlabFlexuralDirectionResult:
-    """Calculate one direction and reject a demand beyond its limiting capacity."""
+    source_refs: tuple[str, ...],
+) -> TwoWaySlabFlexuralDirectionResult | SlabCapacityFailureResult:
+    """Calculate one direction and structure a limiting-capacity failure."""
     factored_moment_knm = coefficient * line_load_kn_per_m * effective_short_span_m**2
     limiting_moment_knm = (
         0.36
@@ -326,8 +332,13 @@ def _direction_result(
         / 1_000_000.0
     )
     if factored_moment_knm > limiting_moment_knm:
-        raise SlabContractError(
-            f"P10 {direction}-direction factored moment exceeds the singly reinforced rectangular capacity"
+        return slab_capacity_failure(
+            component="two_way_slab_flexure",
+            governing_region=f"{direction}_direction",
+            factored_moment_knm=factored_moment_knm,
+            limiting_moment_knm=limiting_moment_knm,
+            clause_refs=("IS 456:2000 Cl. 24.4", "IS 456:2000 Cl. 38.1"),
+            source_refs=source_refs,
         )
     ast_required_mm2, neutral_axis_depth_mm = (
         calculate_ast_from_rectangular_stress_block(
@@ -340,8 +351,13 @@ def _direction_result(
     )
     limiting_neutral_axis_depth_mm = xu_max_over_d * d_mm
     if neutral_axis_depth_mm > limiting_neutral_axis_depth_mm:
-        raise SlabContractError(
-            f"P10 {direction}-direction stress-block root exceeds the limiting neutral-axis depth"
+        return slab_capacity_failure(
+            component="two_way_slab_flexure",
+            governing_region=f"{direction}_direction",
+            factored_moment_knm=factored_moment_knm,
+            limiting_moment_knm=limiting_moment_knm,
+            clause_refs=("IS 456:2000 Cl. 24.4", "IS 456:2000 Cl. 38.1"),
+            source_refs=source_refs,
         )
     return TwoWaySlabFlexuralDirectionResult(
         direction=direction,
@@ -357,7 +373,7 @@ def _direction_result(
 @clause("24.1", "24.4", "38.1")
 def design_supported_interior_two_way_slab_flexure(
     design_input: TwoWaySlabFlexureInput,
-) -> TwoWaySlabFlexureResult:
+) -> TwoWaySlabFlexureResult | SlabCapacityFailureResult:
     """Calculate P10 moments and raw steel for one declared interior panel.
 
     The area load is converted to a line load over the default 1 m or explicit
@@ -378,6 +394,7 @@ def design_supported_interior_two_way_slab_flexure(
     effective_short_span_mm = geometry.short_effective_span_mm
     effective_short_span_m = effective_short_span_mm / 1000.0
     xu_max_over_d = materials.get_xu_max_d(design_input.fy_n_per_mm2)
+    source_refs = _SOURCE_REFS + record.source_ids
     x_direction = _direction_result(
         direction="x",
         coefficient=record.alpha_x,
@@ -388,7 +405,10 @@ def design_supported_interior_two_way_slab_flexure(
         fck_n_per_mm2=design_input.fck_n_per_mm2,
         fy_n_per_mm2=design_input.fy_n_per_mm2,
         xu_max_over_d=xu_max_over_d,
+        source_refs=source_refs,
     )
+    if isinstance(x_direction, SlabCapacityFailureResult):
+        return x_direction
     y_direction = _direction_result(
         direction="y",
         coefficient=record.alpha_y,
@@ -399,7 +419,10 @@ def design_supported_interior_two_way_slab_flexure(
         fck_n_per_mm2=design_input.fck_n_per_mm2,
         fy_n_per_mm2=design_input.fy_n_per_mm2,
         xu_max_over_d=xu_max_over_d,
+        source_refs=source_refs,
     )
+    if isinstance(y_direction, SlabCapacityFailureResult):
+        return y_direction
     return TwoWaySlabFlexureResult(
         input=design_input,
         effective_short_span_mm=effective_short_span_mm,
@@ -424,7 +447,7 @@ def design_supported_interior_two_way_slab_flexure(
         status=(
             TwoWaySlabFlexureStatus.EXTERNALLY_ACCEPTED_COEFFICIENT_FLEXURE_ONLY_SUPPORTED_CASE
         ),
-        source_refs=_SOURCE_REFS + record.source_ids,
+        source_refs=source_refs,
         assumptions=(
             "The caller declares a solid rectangular interior panel with all four edges continuous.",
             "P9 retains review_required; qualified acceptance is caller-supplied provenance, not coefficient verification by P10.",

@@ -119,6 +119,36 @@ def test_one_way_slab_endpoint_rejects_two_way_geometry(client):
     assert response.json()["success"] is False
 
 
+def test_one_way_slab_capacity_miss_serializes_engineering_fail(client):
+    response = client.post(
+        "/api/v1/design/slab/one-way",
+        json={
+            "short_effective_span_mm": 3000,
+            "long_effective_span_mm": 7000,
+            "thickness_mm": 150,
+            "d_mm": 100,
+            "factored_area_load_kn_per_m2": 50,
+            "fck_n_per_mm2": 20,
+            "fy_n_per_mm2": 415,
+            "main_bar_diameter_mm": 10,
+            "main_bar_spacing_mm": 200,
+            "distribution_bar_diameter_mm": 8,
+            "distribution_bar_spacing_mm": 250,
+        },
+    )
+
+    assert response.status_code == 200, response.json()
+    data = _unwrap(response)
+    failure = data["flexure"]
+    assert failure["status"] == "FAIL"
+    assert failure["factored_moment_knm"] == pytest.approx(56.25)
+    assert failure["limiting_moment_knm"] == pytest.approx(27.5925, abs=0.001)
+    assert failure["result_envelope"]["intake_status"] == "VALID"
+    assert failure["result_envelope"]["calculation_status"] == "COMPLETED"
+    assert failure["result_envelope"]["engineering_status"] == "FAIL"
+    assert data["detailing"] is None
+
+
 def test_complete_one_way_slab_endpoint_serializes_composed_workflow_truth(client):
     response = client.post(
         "/api/v1/design/slab/one-way/complete",
@@ -283,6 +313,20 @@ def test_two_way_slab_panel_endpoint_returns_b04_topology_and_torsion(client):
     assert data["panel"]["corner_torsion"][0]["torsion_class"] == "full"
     assert data["panel"]["corner_torsion"][0]["zone_extent_from_each_edge_mm"] == 800
     assert data["panel"]["coefficient_correctness_verified_by_library"] is False
+
+
+def test_two_way_slab_capacity_miss_serializes_engineering_fail(client):
+    response = client.post(
+        "/api/v1/design/slab/two-way/panel",
+        json=_two_way_slab_payload(factored_area_load_kn_per_m2=100),
+    )
+
+    assert response.status_code == 200, response.json()
+    data = _unwrap(response)
+    assert data["panel"]["status"] == "FAIL"
+    assert data["panel"]["governing_region"] == "x_negative_continuous_edge"
+    assert data["panel"]["result_envelope"]["engineering_status"] == "FAIL"
+    assert data["serviceability"] is None
 
 
 def test_two_way_endpoint_rejects_topology_coefficient_mismatch(client):

@@ -2,7 +2,7 @@
   "folder": "fastapi_app/models",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-17",
+  "last_updated": "2026-08-22",
   "file_count": 22,
   "files": [
     {
@@ -79,8 +79,8 @@
     {
       "name": "beam.py",
       "type": "python",
-      "size_lines": 836,
-      "last_updated": "2026-08-17",
+      "size_lines": 837,
+      "last_updated": "2026-08-22",
       "description": "Beam Design and Detailing Pydantic Models.",
       "classes": [
         {
@@ -156,13 +156,13 @@
           "description": "Response model for beam design calculation."
         }
       ],
-      "content_hash": "bf3da07bf2f1"
+      "content_hash": "ced9425aba28"
     },
     {
       "name": "boq.py",
       "type": "python",
-      "size_lines": 107,
-      "last_updated": "2026-08-17",
+      "size_lines": 112,
+      "last_updated": "2026-08-22",
       "description": "Pydantic models for Project BOQ endpoint.",
       "classes": [
         {
@@ -198,7 +198,7 @@
           "description": "BOQ response with aggregated quantities and costs."
         }
       ],
-      "content_hash": "cb7a0115d118"
+      "content_hash": "40232601cc62"
     },
     {
       "name": "capabilities.py",
@@ -734,8 +734,8 @@
     {
       "name": "library_core.py",
       "type": "python",
-      "size_lines": 370,
-      "last_updated": "2026-08-17",
+      "size_lines": 385,
+      "last_updated": "2026-08-22",
       "description": "Requests for the bounded footing and slab public-library workflows.",
       "classes": [
         {
@@ -787,19 +787,19 @@
           "description": "One explicit flexure or detailing comparison."
         },
         {
+          "name": "SlabCapacityFailureResponse",
+          "description": "Supported slab demand that exceeds its bounded flexural capacity."
+        },
+        {
           "name": "OneWaySlabFlexureResponse",
           "description": "Bounded one-way slab flexure result."
         },
         {
           "name": "OneWaySlabDetailingInputResponse",
           "description": "Inputs retained with a one-way slab detailing result."
-        },
-        {
-          "name": "OneWaySlabDetailingResponse",
-          "description": "Provided-bar checks and the serviceability review boundary."
         }
       ],
-      "content_hash": "f898466d53f1"
+      "content_hash": "73ed9f4a8a1b"
     },
     {
       "name": "metadata.py",
@@ -1137,5 +1137,5 @@
     "DuctilityCheckRequest",
     "DuctilityCheckResponse"
   ],
-  "content_hash": "ab57c4e379fcf157"
+  "content_hash": "b51ba87ccb6818e6"
 }

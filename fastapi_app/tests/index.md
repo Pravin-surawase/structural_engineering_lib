@@ -19,7 +19,7 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [__init__.py](__init__.py) | FastAPI Tests Package. | 0 | 0 | 6 |
 | [conftest.py](conftest.py) | Test Fixtures for FastAPI Tests. | 0 | 8 | 160 |
 | [test_auth.py](test_auth.py) | Tests for Authentication and Rate Limiting. | 3 | 2 | 243 |
-| [test_beam_primary_route.py](test_beam_primary_route.py) | Focused FastAPI contract tests for the primary IS 456 beam r | 0 | 14 | 385 |
+| [test_beam_primary_route.py](test_beam_primary_route.py) | Focused FastAPI contract tests for the primary IS 456 beam r | 0 | 14 | 388 |
 | [test_building_gravity.py](test_building_gravity.py) | REST semantic vectors for Building Gravity Workflow V1. | 0 | 3 | 271 |
 | [test_bundled_sample_evidence.py](test_bundled_sample_evidence.py) | Reproducible software evidence for the bundled 153-beam acce | 0 | 1 | 111 |
 | [test_capabilities.py](test_capabilities.py) | Cross-surface tests for canonical capability discovery. | 0 | 2 | 65 |
@@ -36,7 +36,7 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [test_deep_beam.py](test_deep_beam.py) | Contract tests for the bounded simply supported deep-beam Fa | 0 | 6 | 162 |
 | [test_design_compliance.py](test_design_compliance.py) | Tests for design router compliance endpoints. | 5 | 1 | 381 |
 | [test_detailing_anchorage.py](test_detailing_anchorage.py) | Tests for detailing router anchorage endpoint. | 1 | 1 | 98 |
-| [test_endpoints.py](test_endpoints.py) | Integration Tests for FastAPI Endpoints. | 11 | 0 | 1242 |
+| [test_endpoints.py](test_endpoints.py) | Integration Tests for FastAPI Endpoints. | 11 | 0 | 1244 |
 | [test_error_sanitization.py](test_error_sanitization.py) | Tests for error sanitization utilities (TASK-796). | 2 | 0 | 118 |
 | [test_excel_workbench.py](test_excel_workbench.py) | REST semantic vectors for Excel Routine Workbench V1. | 0 | 6 | 242 |
 | [test_export_bbs_dxf.py](test_export_bbs_dxf.py) | Tests for export router endpoints. | 3 | 2 | 202 |
@@ -44,9 +44,9 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [test_footing.py](test_footing.py) | Contract tests for the isolated concentric-footing FastAPI s | 0 | 7 | 239 |
 | [test_geometry_full.py](test_geometry_full.py) | Tests for geometry router advanced endpoints. | 3 | 1 | 339 |
 | [test_imports_formats.py](test_imports_formats.py) | Tests for import router extended endpoints. | 2 | 1 | 98 |
-| [test_insights_dashboard.py](test_insights_dashboard.py) | Tests for insights router endpoints. | 4 | 1 | 388 |
+| [test_insights_dashboard.py](test_insights_dashboard.py) | Tests for insights router endpoints. | 4 | 1 | 436 |
 | [test_integration.py](test_integration.py) | Integration tests for FastAPI structural design endpoints. | 7 | 1 | 390 |
-| [test_library_core.py](test_library_core.py) | Request-to-public-library evidence for the new footing and s | 0 | 15 | 397 |
+| [test_library_core.py](test_library_core.py) | Request-to-public-library evidence for the new footing and s | 0 | 17 | 441 |
 | [test_load.py](test_load.py) | Load Tests for FastAPI Application. | 6 | 2 | 278 |
 | [test_maintenance_route_coverage.py](test_maintenance_route_coverage.py) | Direct contract coverage for routes identified by the MAINT- | 0 | 8 | 150 |
 | [test_optimization_pareto.py](test_optimization_pareto.py) | Tests for Pareto multi-objective beam optimization endpoint. | 1 | 0 | 158 |

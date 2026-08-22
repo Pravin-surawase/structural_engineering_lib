@@ -1,0 +1,77 @@
+{
+  "identity": {
+    "branch": "codex/public-route-failure-contracts",
+    "source_base": "e19b757ccb9922061369a236501f037ec20503ab",
+    "source_pr": 833,
+    "task_id": "LIB-PRO-003-C"
+  },
+  "outcomes": [
+    {
+      "corrected_outcome": "Public service and HTTP routes return a typed slab failure with demand, capacity, utilization, provenance, issue, qualified-review flag, and VALID/COMPLETED/FAIL envelope.",
+      "reproduction": "One-way 3.0 m span, 50 kN/m2 factored load, d=100 mm raised at 56.25 kNm demand versus 27.5925 kNm capacity.",
+      "root_cause": "A completed capacity miss was classified as invalid intake."
+    },
+    {
+      "corrected_outcome": "The first governing failed region returns the same structured engineering failure through direct, panel, service, and HTTP serialization.",
+      "reproduction": "A supported two-way panel overload raised SlabContractError.",
+      "root_cause": "Each moment-region helper used an exception-only capacity boundary."
+    },
+    {
+      "corrected_outcome": "Malformed and non-finite force cells reject with field and one-based source-row context; blank optional cells remain zero by contract.",
+      "reproduction": "Generic CSV not-a-number, NaN, or infinity became zero or lost its row.",
+      "root_cause": "Inner parsing and the outer row handler swallowed ValueError."
+    },
+    {
+      "corrected_outcome": "FastAPI returns 422 and direct aggregation rejects invalid grades/rates before arithmetic.",
+      "reproduction": "Negative concrete or steel rates produced negative totals.",
+      "root_cause": "Request schemas and the reusable aggregator accepted unconstrained rates and concrete-grade keys."
+    }
+  ],
+  "scope_exclusions": [
+    "engineering formulas",
+    "supported slab topologies",
+    "coefficient sources",
+    "package version or publication",
+    "ETABS or desktop Excel"
+  ],
+  "status": "READY_FOR_REPAIR_CANDIDATE",
+  "hosted_repair": {
+    "affected_tests_passed": 14,
+    "api_contract_tests_passed": 20,
+    "corrected_outcome": "Valid but unsafe beams with unbounded derived utilization return SUPPORTED/FAIL without non-finite JSON.",
+    "first_hosted_fastapi_result": "471 passed, 2 failed",
+    "first_pr_gate": "FAIL",
+    "openapi_breaking_drift": false,
+    "root_cause": "Beam evidence schema 3.0 attempted to hash mathematical infinity as strict JSON.",
+    "schema_version": "3.1",
+    "utilization_disposition": "UNBOUNDED_FAILURE"
+  },
+  "verification": {
+    "api_contract_tests_passed": 20,
+    "api_surface": {
+      "endpoints": 89,
+      "schemas": 435
+    },
+    "focused_tests_passed": 122,
+    "downstream_gravity_and_release_uat_tests_passed": 13,
+    "independent_tests_passed": 214,
+    "openapi_drift": false,
+    "quick_gate": "10/10 PASS",
+    "schema_snapshot": "5 models and 2 enums match",
+    "static_checks": [
+      "targeted mypy: PASS",
+      "focused Ruff: PASS",
+      "focused Black: PASS",
+      "git diff --check: PASS"
+    ]
+  },
+  "holds": [
+    "LIB-PRO-003-D",
+    "cumulative broad acceptance",
+    "new package release",
+    "stable or professional-use claims",
+    "qualified-engineer approval",
+    "INDIA-3",
+    "ETABS"
+  ]
+}

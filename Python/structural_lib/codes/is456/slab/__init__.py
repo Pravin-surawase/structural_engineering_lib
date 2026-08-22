@@ -37,11 +37,13 @@ from structural_lib.codes.is456.slab.external_coefficients import (
     record_external_two_way_slab_coefficients,
 )
 from structural_lib.codes.is456.slab.models import (
+    SlabCapacityFailureResult,
     SlabClassification,
     SlabClassificationResult,
     SlabContractError,
     SlabScopeStatus,
     SolidRectangularSlabGeometry,
+    slab_capacity_failure,
 )
 from structural_lib.codes.is456.slab.one_way import (
     OneWaySlabFlexureInput,
@@ -98,9 +100,11 @@ from structural_lib.codes.is456.slab.two_way_complete import (
 __all__ = [
     "SlabClassification",
     "SlabClassificationResult",
+    "SlabCapacityFailureResult",
     "SlabContractError",
     "SlabScopeStatus",
     "SolidRectangularSlabGeometry",
+    "slab_capacity_failure",
     "classify_solid_rectangular_slab",
     "built_in_coefficients",
     "coefficients",

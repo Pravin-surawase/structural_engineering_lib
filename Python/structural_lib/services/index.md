@@ -31,7 +31,7 @@
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
 | [__init__.py](__init__.py) | Application-layer public workflow exports. | 0 | 0 | 50 |
-| [adapters.py](adapters.py) | Adapters for converting various input formats to canonical m | 6 | 0 | 2100 |
+| [adapters.py](adapters.py) | Adapters for converting various input formats to canonical m | 6 | 0 | 2124 |
 | [api.py](api.py) | Module:       api | 0 | 0 | 454 |
 | [api_hub.py](api_hub.py) | Module:       api | 0 | 0 | 238 |
 | [api_results.py](api_results.py) | Module:       api_results | 8 | 0 | 507 |
@@ -40,7 +40,7 @@
 | [bbs.py](bbs.py) | Bar Bending Schedule (BBS) Module — IS 2502:1999 / SP 34:198 | 3 | 19 | 1134 |
 | [beam_api.py](beam_api.py) | Module:       beam_api | 0 | 20 | 2384 |
 | [beam_pipeline.py](beam_pipeline.py) | beam_pipeline — Unified application-layer pipeline for beam  | 10 | 3 | 660 |
-| [boq.py](boq.py) | Project Bill of Quantities (BOQ) — Aggregation Module | 4 | 1 | 209 |
+| [boq.py](boq.py) | Project Bill of Quantities (BOQ) — Aggregation Module | 4 | 1 | 238 |
 | [calculation_report.py](calculation_report.py) | Module:       calculation_report | 4 | 1 | 722 |
 | [capabilities.py](capabilities.py) | Discoverable supported-case registry for the IS 456 public l | 7 | 3 | 2057 |
 | [cli_design.py](cli_design.py) | Strict, lossless intake and compatibility output for the adv | 4 | 2 | 628 |
@@ -52,7 +52,7 @@
 | [deep_beam_api.py](deep_beam_api.py) | Stable orchestration for the bounded IS 456 simply supported | 3 | 1 | 247 |
 | [dxf_export.py](dxf_export.py) | DXF Export Module — Beam Detail Drawing Generation | 0 | 18 | 1833 |
 | [etabs_import.py](etabs_import.py) | ETABS CSV Import Module. | 3 | 12 | 1089 |
-| [evidence.py](evidence.py) | Canonical evidence identity for the supported IS 456 beam de | 0 | 4 | 386 |
+| [evidence.py](evidence.py) | Canonical evidence identity for the supported IS 456 beam de | 0 | 4 | 404 |
 | [excel_bridge.py](excel_bridge.py) | Excel UDF Bridge - Exposes structural_lib functions to Excel | 0 | 7 | 305 |
 | [excel_integration.py](excel_integration.py) | Excel Integration Module — Bridge between Excel data and Det | 2 | 9 | 489 |
 | [excel_workbench.py](excel_workbench.py) | Strict selected-table orchestration for Excel Routine Workbe | 1 | 8 | 952 |
@@ -60,7 +60,7 @@
 | [footing_api.py](footing_api.py) | Bounded orchestration for concentric isolated footings (IS 4 | 5 | 1 | 927 |
 | [gravity_calculation_book.py](gravity_calculation_book.py) | Deterministic review dossier for Building Gravity Workflow V | 3 | 4 | 254 |
 | [gravity_loads.py](gravity_loads.py) | Deterministic dead/live source, transfer, combination, and b | 8 | 1 | 631 |
-| [gravity_workflow.py](gravity_workflow.py) | Fail-closed component orchestration for Building Gravity Wor | 0 | 3 | 914 |
+| [gravity_workflow.py](gravity_workflow.py) | Fail-closed component orchestration for Building Gravity Wor | 0 | 3 | 916 |
 | [import_ledger.py](import_ledger.py) | Versioned, lossless import evidence models. | 11 | 0 | 187 |
 | [imports.py](imports.py) | Fail-closed multi-format CSV import boundary. | 2 | 6 | 1104 |
 | [intelligence.py](intelligence.py) | Compatibility shim for legacy imports. | 0 | 0 | 36 |
@@ -71,11 +71,11 @@
 | [project_beam.py](project_beam.py) | Versioned, fail-closed project beam input and result contrac | 8 | 2 | 716 |
 | [rebar.py](rebar.py) | Rebar configuration validation and application helpers. | 0 | 2 | 251 |
 | [rebar_optimizer.py](rebar_optimizer.py) | Rebar arrangement optimizer (deterministic). | 1 | 1 | 322 |
-| [release_uat.py](release_uat.py) | Source-free exact-wheel UAT for the pre-release input-safety | 0 | 2 | 591 |
+| [release_uat.py](release_uat.py) | Source-free exact-wheel UAT for the pre-release input-safety | 0 | 2 | 592 |
 | [report.py](report.py) | Report generation module for beam design results. | 5 | 14 | 1772 |
 | [report_svg.py](report_svg.py) | SVG helpers for report visuals (stdlib only). | 0 | 2 | 279 |
 | [serialization.py](serialization.py) | JSON serialization utilities for canonical data models. | 0 | 13 | 476 |
-| [slab_api.py](slab_api.py) | Stable orchestration entry points for the bounded IS 456 sla | 4 | 7 | 851 |
+| [slab_api.py](slab_api.py) | Stable orchestration entry points for the bounded IS 456 sla | 4 | 7 | 871 |
 | [source_identity.py](source_identity.py) | Controlled IS 456 source and route-specific amendment identi | 2 | 0 | 67 |
 | [staircase_api.py](staircase_api.py) | Stable orchestration for the bounded IS 456 straight-flight  | 3 | 1 | 209 |
 | [strap_footing_api.py](strap_footing_api.py) | Stable orchestration for the bounded property-line strap-foo | 4 | 2 | 280 |

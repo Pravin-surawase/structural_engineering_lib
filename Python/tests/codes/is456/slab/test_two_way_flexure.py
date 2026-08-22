@@ -12,6 +12,7 @@ from structural_lib.codes.is456.slab.external_coefficients import (
     record_external_two_way_slab_coefficients,
 )
 from structural_lib.codes.is456.slab.models import (
+    SlabCapacityFailureResult,
     SlabContractError,
     SolidRectangularSlabGeometry,
 )
@@ -21,6 +22,11 @@ from structural_lib.codes.is456.slab.two_way import (
     TwoWaySlabFlexureInput,
     TwoWaySlabFlexureStatus,
     design_supported_interior_two_way_slab_flexure,
+)
+from structural_lib.core.result_contract import (
+    CalculationStatus,
+    EngineeringStatus,
+    IntakeStatus,
 )
 
 
@@ -178,10 +184,17 @@ def test_one_way_record_is_rejected_before_p10_input_can_be_built() -> None:
 
 
 def test_over_capacity_demand_fails_closed() -> None:
-    with pytest.raises(SlabContractError, match="singly reinforced"):
-        design_supported_interior_two_way_slab_flexure(
-            _input(factored_area_load_kn_per_m2=100)
-        )
+    result = design_supported_interior_two_way_slab_flexure(
+        _input(factored_area_load_kn_per_m2=100)
+    )
+
+    assert isinstance(result, SlabCapacityFailureResult)
+    assert result.governing_region == "x_direction"
+    assert result.factored_moment_knm == pytest.approx(128.0)
+    assert result.utilization_ratio > 1.0
+    assert result.result_envelope.intake_status is IntakeStatus.VALID
+    assert result.result_envelope.calculation_status is CalculationStatus.COMPLETED
+    assert result.result_envelope.engineering_status is EngineeringStatus.FAIL
 
 
 def test_explicit_strip_width_scales_the_per_strip_moments() -> None:

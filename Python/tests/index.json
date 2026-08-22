@@ -534,8 +534,8 @@
     {
       "name": "test_boq.py",
       "type": "python",
-      "size_lines": 190,
-      "last_updated": "2026-08-17",
+      "size_lines": 213,
+      "last_updated": "2026-08-22",
       "description": "Tests for the BOQ (Bill of Quantities) aggregation module.",
       "classes": [
         {
@@ -549,13 +549,13 @@
             "test_story_grouping",
             "test_empty_input_returns_empty_schedule",
             "test_custom_concrete_costs",
+            "test_rejects_invalid_cost_domains",
             "test_multiple_steel_grades",
-            "test_default_concrete_costs_used",
-            "test_project_name_default"
+            "test_default_concrete_costs_used"
           ]
         }
       ],
-      "content_hash": "5b94d7b3d0bd"
+      "content_hash": "b0c041f2f234"
     },
     {
       "name": "test_branch_disposition.py",
@@ -1889,8 +1889,8 @@
     {
       "name": "test_evidence.py",
       "type": "python",
-      "size_lines": 237,
-      "last_updated": "2026-08-17",
+      "size_lines": 254,
+      "last_updated": "2026-08-22",
       "description": "Focused tests for the supported IS 456 beam evidence envelope.",
       "functions": [
         {
@@ -1921,10 +1921,13 @@
           "name": "test_held_beam_evidence_does_not_present_a_pass_or_fail"
         },
         {
+          "name": "test_unbounded_derived_utilization_is_a_structured_supported_failure"
+        },
+        {
           "name": "test_beam_report_exports_evidence_without_approval_claim"
         }
       ],
-      "content_hash": "c01bec0fd3de"
+      "content_hash": "0fa922fe89c8"
     },
     {
       "name": "test_exception_hierarchy.py",
@@ -4995,5 +4998,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "e32abdf31e8e6c0e"
+  "content_hash": "d4f3f1edbd1d6345"
 }

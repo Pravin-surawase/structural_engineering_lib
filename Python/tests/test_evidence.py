@@ -109,7 +109,7 @@ def test_beam_evidence_v2_binds_torsion_and_enabled_serviceability() -> None:
     service_evidence = _evidence(service)
 
     assert base_evidence["artifact_schema_version"] == BEAM_EVIDENCE_SCHEMA_VERSION
-    assert BEAM_EVIDENCE_SCHEMA_VERSION == "3.0"
+    assert BEAM_EVIDENCE_SCHEMA_VERSION == "3.1"
     assert (
         torsion_evidence["normalized_input_hash"]
         != base_evidence["normalized_input_hash"]
@@ -211,6 +211,23 @@ def test_held_beam_evidence_does_not_present_a_pass_or_fail() -> None:
     assert evidence["support_status"] == "HELD"
     assert evidence["status"] == "HOLD"
     assert evidence["exact_utilization"] is None
+    assert evidence["margin"] is None
+
+
+def test_unbounded_derived_utilization_is_a_structured_supported_failure() -> None:
+    evidence = build_beam_evidence_envelope(
+        inputs=_beam_inputs(),
+        is_ok=True,
+        governing_utilization=float("inf"),
+        utilizations={"flexure": float("inf")},
+        generated_at="2026-08-10T00:00:00+00:00",
+    )
+
+    assert evidence["support_status"] == "SUPPORTED"
+    assert evidence["status"] == "FAIL"
+    assert evidence["governing_check"] == "flexure"
+    assert evidence["exact_utilization"] is None
+    assert evidence["utilization_disposition"] == "UNBOUNDED_FAILURE"
     assert evidence["margin"] is None
 
 

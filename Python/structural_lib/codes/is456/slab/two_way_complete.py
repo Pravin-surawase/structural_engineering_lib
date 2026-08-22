@@ -17,7 +17,11 @@ from structural_lib.codes.is456.slab.detailing import (
     SlabReinforcementRegionResult,
     check_slab_reinforcement_region,
 )
-from structural_lib.codes.is456.slab.models import SlabContractError
+from structural_lib.codes.is456.slab.models import (
+    SlabCapacityFailureResult,
+    SlabContractError,
+    slab_capacity_failure,
+)
 from structural_lib.codes.is456.slab.shear import (
     SlabShearInput,
     SlabShearResult,
@@ -184,7 +188,8 @@ def _moment_region(
     fy: float,
     thickness: float,
     bars: ProvidedSlabBars,
-) -> TwoWayMomentRegionResult:
+    source_refs: tuple[str, ...],
+) -> TwoWayMomentRegionResult | SlabCapacityFailureResult:
     moment = coefficient * load * short_span_m**2
     xu_max_over_d = materials.get_xu_max_d(fy)
     limiting = (
@@ -197,7 +202,14 @@ def _moment_region(
         / 1_000_000.0
     )
     if moment > limiting:
-        raise SlabContractError(f"{region_id} exceeds singly reinforced capacity")
+        return slab_capacity_failure(
+            component="two_way_slab_panel_flexure",
+            governing_region=region_id,
+            factored_moment_knm=moment,
+            limiting_moment_knm=limiting,
+            clause_refs=("IS 456:2000 Cl. 24.4", "IS 456:2000 Cl. 38.1"),
+            source_refs=source_refs,
+        )
     if moment == 0.0:
         ast, xu = 0.0, 0.0
     else:
@@ -229,46 +241,78 @@ def _moment_region(
 @clause("24.4", "40.2")
 def design_two_way_slab_panel(
     design_input: TwoWayPanelDesignInput,
-) -> TwoWayPanelDesignResult:
+) -> TwoWayPanelDesignResult | SlabCapacityFailureResult:
     """Design common physical topologies without bundling coefficient tables."""
     if not isinstance(design_input, TwoWayPanelDesignInput):
         raise SlabContractError("design_input must be TwoWayPanelDesignInput")
     coefficients = design_input.coefficients
-    common = {
-        "load": design_input.factored_area_load_kn_per_m2,
-        "short_span_m": design_input.geometry.x_effective_span_mm / 1000.0,
-        "fck": design_input.fck_n_per_mm2,
-        "fy": design_input.fy_n_per_mm2,
-        "thickness": design_input.geometry.thickness_mm,
-    }
+    load = design_input.factored_area_load_kn_per_m2
+    short_span_m = design_input.geometry.x_effective_span_mm / 1000.0
+    fck = design_input.fck_n_per_mm2
+    fy = design_input.fy_n_per_mm2
+    thickness = design_input.geometry.thickness_mm
+    source_refs = (
+        "IS 456:2000 Cl. 24.4",
+        "IS 456:2000 Cl. 38.1",
+        design_input.coefficients.source_reference,
+        design_input.coefficients.qualified_acceptance_reference,
+    )
     x_negative = _moment_region(
         region_id="x_negative_continuous_edge",
         coefficient=coefficients.alpha_x_negative,
         d_mm=design_input.d_x_mm,
         bars=design_input.x_negative_bars,
-        **common,
+        load=load,
+        short_span_m=short_span_m,
+        fck=fck,
+        fy=fy,
+        thickness=thickness,
+        source_refs=source_refs,
     )
+    if isinstance(x_negative, SlabCapacityFailureResult):
+        return x_negative
     x_positive = _moment_region(
         region_id="x_positive_middle_strip",
         coefficient=coefficients.alpha_x_positive,
         d_mm=design_input.d_x_mm,
         bars=design_input.x_positive_bars,
-        **common,
+        load=load,
+        short_span_m=short_span_m,
+        fck=fck,
+        fy=fy,
+        thickness=thickness,
+        source_refs=source_refs,
     )
+    if isinstance(x_positive, SlabCapacityFailureResult):
+        return x_positive
     y_negative = _moment_region(
         region_id="y_negative_continuous_edge",
         coefficient=coefficients.alpha_y_negative,
         d_mm=design_input.d_y_mm,
         bars=design_input.y_negative_bars,
-        **common,
+        load=load,
+        short_span_m=short_span_m,
+        fck=fck,
+        fy=fy,
+        thickness=thickness,
+        source_refs=source_refs,
     )
+    if isinstance(y_negative, SlabCapacityFailureResult):
+        return y_negative
     y_positive = _moment_region(
         region_id="y_positive_middle_strip",
         coefficient=coefficients.alpha_y_positive,
         d_mm=design_input.d_y_mm,
         bars=design_input.y_positive_bars,
-        **common,
+        load=load,
+        short_span_m=short_span_m,
+        fck=fck,
+        fy=fy,
+        thickness=thickness,
+        source_refs=source_refs,
     )
+    if isinstance(y_positive, SlabCapacityFailureResult):
+        return y_positive
     edge_strip = check_slab_reinforcement_region(
         region_id="edge_strips_minimum_reinforcement",
         required_for_moment_mm2_per_m=0.0,

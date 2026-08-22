@@ -16,8 +16,8 @@
     {
       "name": "adapters.py",
       "type": "python",
-      "size_lines": 2100,
-      "last_updated": "2026-08-17",
+      "size_lines": 2124,
+      "last_updated": "2026-08-22",
       "description": "Adapters for converting various input formats to canonical models.",
       "classes": [
         {
@@ -78,7 +78,7 @@
           ]
         }
       ],
-      "content_hash": "605681463531"
+      "content_hash": "6875040171f2"
     },
     {
       "name": "api.py",
@@ -726,8 +726,8 @@
     {
       "name": "boq.py",
       "type": "python",
-      "size_lines": 209,
-      "last_updated": "2026-08-17",
+      "size_lines": 238,
+      "last_updated": "2026-08-22",
       "description": "Project Bill of Quantities (BOQ) — Aggregation Module",
       "classes": [
         {
@@ -760,7 +760,7 @@
           ]
         }
       ],
-      "content_hash": "58d94c335273"
+      "content_hash": "678c3e359d5a"
     },
     {
       "name": "calculation_report.py",
@@ -1692,8 +1692,8 @@
     {
       "name": "evidence.py",
       "type": "python",
-      "size_lines": 386,
-      "last_updated": "2026-08-17",
+      "size_lines": 404,
+      "last_updated": "2026-08-22",
       "description": "Canonical evidence identity for the supported IS 456 beam design route.",
       "functions": [
         {
@@ -1725,7 +1725,7 @@
         "_REQUIRED_CONSUMED_INPUTS",
         "_SUPPORT_ALIASES"
       ],
-      "content_hash": "3d703fe4959e"
+      "content_hash": "44e3c3ba064b"
     },
     {
       "name": "excel_bridge.py",
@@ -2162,8 +2162,8 @@
     {
       "name": "gravity_workflow.py",
       "type": "python",
-      "size_lines": 914,
-      "last_updated": "2026-08-18",
+      "size_lines": 916,
+      "last_updated": "2026-08-22",
       "description": "Fail-closed component orchestration for Building Gravity Workflow V1.",
       "functions": [
         {
@@ -2200,7 +2200,7 @@
         "_FOOTING_GENERATED",
         "_FOOTING_SUPPLIED"
       ],
-      "content_hash": "0e7951623e39"
+      "content_hash": "c4e16ce0f866"
     },
     {
       "name": "import_ledger.py",
@@ -2604,8 +2604,8 @@
     {
       "name": "release_uat.py",
       "type": "python",
-      "size_lines": 591,
-      "last_updated": "2026-08-17",
+      "size_lines": 592,
+      "last_updated": "2026-08-22",
       "description": "Source-free exact-wheel UAT for the pre-release input-safety contract.",
       "functions": [
         {
@@ -2624,7 +2624,7 @@
         "_CLI_HEADER",
         "_CLI_VALID_ROW"
       ],
-      "content_hash": "edd91f23d9b8"
+      "content_hash": "e4eb98fa0b40"
     },
     {
       "name": "report.py",
@@ -2892,8 +2892,8 @@
     {
       "name": "slab_api.py",
       "type": "python",
-      "size_lines": 851,
-      "last_updated": "2026-08-17",
+      "size_lines": 871,
+      "last_updated": "2026-08-22",
       "description": "Stable orchestration entry points for the bounded IS 456 slab workflows.",
       "classes": [
         {
@@ -2951,7 +2951,7 @@
         "_COMPLETE_ONE_WAY_DETAILING_LIMITATIONS",
         "_SINGLE_ACTION_LOAD_BOUNDARY"
       ],
-      "content_hash": "245ec7df5734"
+      "content_hash": "6443e3fbadd8"
     },
     {
       "name": "source_identity.py",
@@ -3420,5 +3420,5 @@
     "PropertyLineStrapFootingDesignStatus",
     "design_property_line_strap_footing_is456"
   ],
-  "content_hash": "7fb28e9f04f9288d"
+  "content_hash": "4f7274c8ab0e9a23"
 }

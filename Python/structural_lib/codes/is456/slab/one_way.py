@@ -23,9 +23,11 @@ from structural_lib.codes.is456.slab.classification import (
     classify_solid_rectangular_slab,
 )
 from structural_lib.codes.is456.slab.models import (
+    SlabCapacityFailureResult,
     SlabClassification,
     SlabContractError,
     SolidRectangularSlabGeometry,
+    slab_capacity_failure,
 )
 from structural_lib.codes.is456.traceability import clause
 
@@ -169,7 +171,7 @@ class OneWaySlabFlexureResult:
 @clause("24.1", "38.1")
 def design_simply_supported_one_way_slab_flexure(
     design_input: OneWaySlabFlexureInput,
-) -> OneWaySlabFlexureResult:
+) -> OneWaySlabFlexureResult | SlabCapacityFailureResult:
     """Calculate P7 flexure for one simply supported solid one-way slab strip.
 
     The caller supplies factored uniform area load and effective spans.  The
@@ -208,8 +210,13 @@ def design_simply_supported_one_way_slab_flexure(
         / 1_000_000.0
     )
     if factored_moment_knm > limiting_moment_knm:
-        raise SlabContractError(
-            "factored moment exceeds the P7 singly reinforced rectangular capacity"
+        return slab_capacity_failure(
+            component="one_way_slab_flexure",
+            governing_region="simply_supported_midspan",
+            factored_moment_knm=factored_moment_knm,
+            limiting_moment_knm=limiting_moment_knm,
+            clause_refs=("IS 456:2000 Cl. 24.1", "IS 456:2000 Cl. 38.1"),
+            source_refs=_SOURCE_REFS,
         )
 
     ast_required_mm2, neutral_axis_depth_mm = (
@@ -222,8 +229,13 @@ def design_simply_supported_one_way_slab_flexure(
         )
     )
     if neutral_axis_depth_mm > xu_max_over_d * design_input.d_mm:
-        raise SlabContractError(
-            "P7 stress-block root exceeds the supported limiting neutral-axis depth"
+        return slab_capacity_failure(
+            component="one_way_slab_flexure",
+            governing_region="simply_supported_midspan",
+            factored_moment_knm=factored_moment_knm,
+            limiting_moment_knm=limiting_moment_knm,
+            clause_refs=("IS 456:2000 Cl. 24.1", "IS 456:2000 Cl. 38.1"),
+            source_refs=_SOURCE_REFS,
         )
 
     return OneWaySlabFlexureResult(
