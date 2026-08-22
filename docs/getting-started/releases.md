@@ -1250,7 +1250,35 @@ professional validation, or engineering-use approval.
 
 ---
 
-## v0.23.1a2 — Prepared candidate (unreleased; on hold)
+## v0.23.1a2 — Public Alpha release
+
+**Published:** 2026-08-17 to PyPI and GitHub Releases.
+
+**Source/tag:** annotated tag `v0.23.1a2`; target
+`09861d3d5ef758abbe0f7c40b8b49b2f90510765`.
+
+| Artifact | Bytes | SHA-256 |
+|---|---:|---|
+| `structural_lib_is456-0.23.1a2-py3-none-any.whl` | 665,658 | `279b827052e453db5cedc2664d8d3036ffd4d315d4067c34628356c2671843a9` |
+| `structural_lib_is456-0.23.1a2.tar.gz` | 549,464 | `64eb3468e20b2dbaf576d0f3862bea6447c293aad330224efb166a6c02043422` |
+
+The artifact digests match the PyPI files and GitHub Release assets. Gravity
+Workflow V1 and E1 merged later and are not included in this immutable Alpha.
+Any future package publication requires a new version and new exact-artifact
+evidence; `0.23.1a2` must not be rebuilt or republished from current `main`.
+
+Install the exact Alpha with:
+
+```bash
+pip install structural-lib-is456===0.23.1a2
+```
+
+This is case-qualified software evidence, not complete IS 456 coverage,
+professional validation, or engineering-use approval.
+
+---
+
+## v0.23.1a2 — Prepared candidate (historical freeze record)
 
 **Status at candidate freeze (2026-08-17):** Prepared candidate; not tagged or
 published. A later append-only entry must record any exact authorization or
@@ -1274,4 +1302,4 @@ review, an exact candidate receipt, and separate owner authorization for each
 target are required before TestPyPI, PyPI, a tag, or a GitHub Release.
 
 **Full changelog:** See
-[CHANGELOG.md](../../CHANGELOG.md#0231a2--prepared-candidate-unreleased-on-hold)
+[CHANGELOG.md](../../CHANGELOG.md#0231a2--released-alpha-2026-08-17)

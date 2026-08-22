@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-22 — E1 export is locally complete; desktop Excel diagnosed a case-insensitive table-header collision, now isolated in one workbook-open repair
+**Updated:** 2026-08-22 — E1 merged with installed-desktop-Excel `G3_PASS`; public Alpha and next-wave records reconciled
 
 ---
 
@@ -127,41 +127,38 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| RELEASE-0231A2 | Review and publish the exact v0.23.1a2 Alpha candidate | Main Agent + ops | M | P0 | 🔄 LOCAL CANDIDATE READY — source-bound wheel `34892d86…14bb`; 5,553 installed tests and 29/29 UAT pass; target publication is authorized after refreshed PR checks, Weekly Verification, independent review, and exact receipt |
-| E1-EXCEL-ROUTINE-WORKBENCH | Complete the real Windows Excel gate for the frozen selected-table workbench | Main Agent | M | P1 | 🔄 G3 is blocked before workbook open; Excel identified case-colliding `D (mm)` / `d (mm)` table headers, and the [bounded workbook-open repair](verification/e1-workbook-open-repair-evidence.md) is in progress |
+| — | No implementation packet active | — | — | — | Awaiting owner activation of the next bounded program |
 
 INDIA-2 remains administratively complete within its recorded accepted/held
-boundary. INDIA-3, dependency work, tag/publication execution, further cleanup,
-and professional approval remain separately held.
+boundary. INDIA-3, dependency work, the next package version, further cleanup,
+and professional approval remain separately held until their own packet is
+activated.
 
 `LIB-PRO-002-G0` was independently accepted and merged through PR #812 at
 `55104e11257937b0a42fb06f931a70b8484cef39`. Packet A was independently
 accepted and merged through PR #814 at
 `3986935ecb473c1f9d56dec44aeb4218d9192f84`; Packets B-G merged through PR #815
 at `fe4ab025419b834c6d0f840e9492c0604ae74201`. Packets I-J are software-
-complete, and the exact v0.23.1a2 local artifact now passes installed-package
-and advertised-command UAT. Publication is owner-authorized after refreshed
-immutable review and hosted evidence pass.
+complete. Alpha `v0.23.1a2` was published from tag target `09861d3d` on
+2026-08-17; its public wheel is SHA-256 `279b8270…43a9`. Later Gravity/E1
+merges are not part of that immutable artifact and require a new version before
+any future package publication.
 
-The separately accepted integrated component/gravity program has completed A1,
+The separately accepted integrated component/gravity program completed A1,
 A2, B1, and B2 through PRs #822-#825. Building Gravity Workflow V1 is merged at
-`c127e4b2`. E1 software remains in the open draft PR stack. Windows W0 proved
-the host, catalog, and add-in discovery, and the stacked blank-workbook guard
-passed exact-head revalidation at `514155b2`. The deterministic review-bundle
-export is locally complete at `98c60bc1`. Its first frozen G3 run then stopped
-at desktop Excel's content-recovery prompt before any product-workbook work. A
-diagnostic-only recovered copy and Excel's repair log confirmed that the input
-table contained case-insensitive duplicate column names: `D (mm)` and
-`d (mm)`. The isolated `codex/e1-workbook-open-repair` successor regenerates
-the macro-free workbook with the unique label `Effective d (mm)` before one
-exact-candidate G3 retry.
-ETABS file/live work and all write-back/nightly work remain outside E1.
+`c127e4b2`. E1 then passed its real installed-desktop-Excel journey at exact
+candidate `ede01ef4`, including no-recovery open, lossless row reconciliation,
+deterministic pane export, stale gating, save/reopen freshness, and clean host
+closeout. Cumulative PR #830 merged as `b720119e`; its merged tree exactly
+matches the accepted candidate tree. ETABS file/live work and all
+write-back/nightly work remain outside E1.
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
+| INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ READY FOR OWNER ACTIVATION — truth/benchmark/contract audit first; no new formulas or support claims |
+| SPARK-001-G0 | Reassess the stale Spark work-program proposal before any implementation | repository owner | review gate | P2 | ⏸ OWNER REVIEW — the 2026-08-11 model/preview assumptions and bulk wave require refresh or rejection |
 
 ## Backlog
 
@@ -195,6 +192,8 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| E1-EXCEL-ROUTINE-WORKBENCH | Delivered the macro-free selected-table Excel workbench, deterministic review bundle, workbook-open repair, and installed Excel acceptance | Main Agent | ✅ COMPLETE — `G3_PASS`; cumulative PR #830 merged as `b720119e` with exact candidate/merged tree `bcc7fcf1`; no ETABS or professional-approval claim |
+| RELEASE-0231A2 | Published the exact v0.23.1a2 Alpha artifact | Main Agent + ops | ✅ RELEASED — tag target `09861d3d`; PyPI/GitHub wheel SHA-256 `279b8270…43a9`; later main changes require a new version |
 | B2-GRAVITY-WORKFLOW-V1 | Bound the B1 ledger to canonical components, calculation book, CLI, REST, and review UI | Main Agent | ✅ COMPLETE — PR #825 merged at `c127e4b2`; focused, broad, full, hosted, and exact-head gates pass |
 | B1-GRAVITY-MODEL-LOAD-LEDGER | Froze the deterministic building model, load actions, and reconciled ledger | Main Agent | ✅ COMPLETE — PR #824 merged at `cb49234f` |
 | A2-LOSSLESS-INTAKE-CALCULATION | Closed lossless intake, effective-depth, load, and ETABS file-adapter root causes | Main Agent | ✅ COMPLETE — PR #823 merged at `32daa013` |

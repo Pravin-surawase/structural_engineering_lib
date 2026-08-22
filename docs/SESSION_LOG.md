@@ -5,6 +5,87 @@
 
 ---
 
+## 2026-08-22 — Session: E1 G3 integration and roadmap closeout
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/e1-g3-closeout`, from integrated E1 `main` at
+`b720119ea6a22a2b1963be0a0b9b300fca333d4a`.
+
+**Git handoff receipt:**
+`docs/verification/e1-g3-closeout-git-handoff-receipt.json`
+
+**Focus:** Close accepted E1, reconcile release/task truth, and select the next bounded library decision packet without ETABS or new engineering implementation.
+
+### Summary
+
+- Consolidated the complete E1 stack into PR #830, proved the accepted
+  candidate and merged trees identical, passed cumulative local and hosted
+  validation, and merged the exact product tree as `b720119e`.
+- Preserved the superseded E1 branches, worktrees, artifacts, and evidence while
+  closing draft PRs #826-#829 with pointers to the cumulative integration.
+- Recorded the installed-desktop-Excel `G3_PASS`, deterministic export hashes,
+  freshness/reopen results, and `DAY_CLOSE_CLEAN` receipt in the canonical E1
+  evidence and handoff.
+- Reconciled live release truth: `v0.23.1a2` was already published on
+  2026-08-17 from tag target `09861d3d`; later Gravity and E1 merges require a
+  new version and must never be republished as the same Alpha.
+- Selected `INDIA-3-G0`, a read-only IS 13920 beam/column/joint truth,
+  benchmark, and contract audit, as the correct next bounded library packet.
+
+### Issues encountered
+
+- GitHub did not start PR Validation when cumulative PR #830 was retargeted to
+  `main` and marked ready, so the exact cumulative head initially had no hosted
+  rollup.
+- The task board and pre-release documents still described `v0.23.1a2` as an
+  unpublished local candidate although GitHub and PyPI already exposed it.
+- The retained Alpha release lane predates the current Git-state authority and
+  therefore could not run `scripts/git_state.py` for orientation.
+- The session handoff command reported success but did not replace the existing
+  block while its heading used lowercase `handoff`.
+- ⚠️ TERMINAL ISSUE: a guessed `scripts/check_tasks.py` command did not
+  exist → the maintained `scripts/check_tasks_format.py` entry from the script
+  registry was used and passed.
+
+### Root causes and resolutions
+
+- Confirmed hosted-trigger cause: the PR workflow listens to opened,
+  synchronize, and reopened events, not ready-for-review or base-edited events.
+  Resolution: close and reopen unchanged PR #830 once; run `32560422307` passed
+  every applicable job on the exact reviewed head before merge.
+- Confirmed release-record cause: the 2026-08-17 publication completed without
+  the planning/task documents being reconciled afterward. Resolution: verify
+  the live tag and exact PyPI artifacts, correct the append-only release receipt,
+  task board, checklist, and changelog, and explicitly prohibit same-version
+  republication.
+- Confirmed stale-lane cause: the historical release branch is an evidence lane
+  from before `git_state.py` existed and is far behind current `main`.
+  Resolution: use bounded read-only Git fallback for that lane, preserve it,
+  and take no reset, rebase, deletion, or release action.
+- Confirmed command-selection cause: task validation is exposed as
+  `check_tasks_format.py` and through the unified gate, not `check_tasks.py`.
+  Resolution: use the maintained script registry and record the terminal issue
+  so it is not repeated.
+- Confirmed handoff-update cause: the session updater's replacement expression
+  requires the exact `Latest Handoff` heading even though the marker block was
+  otherwise valid; its success path did not detect zero substitutions.
+  Resolution: restore the canonical heading, rerun the maintained updater, and
+  verify that the receipt hash appears in the generated block.
+
+### Validation through content freeze
+
+- E1 cumulative local acceptance: 6,508 Python tests passed, 3 skipped,
+  6 deselected; full repository gate passed 31/31.
+- Hosted PR Validation run `32560422307`: every applicable job passed; React was
+  correctly skipped by the path classifier.
+- Integration proof: PR #830 merged as `b720119e`; merged tree
+  `bcc7fcf1b22212950ae530ca87c8bab907b6391f` equals the accepted candidate
+  tree exactly.
+- Closeout documentation strict validation and 1,350-link check pass. The final
+  quick gate, normal commit hooks, immutable commit, hosted documentation PR,
+  and read-only session audit remain in the consolidated closeout sequence.
+
 ## 2026-08-22 — Session: E1 desktop-Excel workbook-open repair
 
 **Agent:** Codex (`orchestrator`, sole writer)

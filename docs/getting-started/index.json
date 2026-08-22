@@ -2,7 +2,7 @@
   "folder": "docs/getting-started",
   "type": "mixed",
   "description": "Quick onboarding guides for new users of the structural engineering library.",
-  "last_updated": "2026-08-21",
+  "last_updated": "2026-08-22",
   "file_count": 19,
   "files": [
     {
@@ -137,10 +137,10 @@
     {
       "name": "releases.md",
       "type": "documentation",
-      "size_lines": 1278,
-      "last_updated": "2026-08-17",
+      "size_lines": 1306,
+      "last_updated": "2026-08-22",
       "description": "This document serves as the **immutable source of truth** for project releases. Entries here represent \"locked\" versions that have been verified and approved.",
-      "content_hash": "f14bcf4f7b51"
+      "content_hash": "2db7796727de"
     },
     {
       "name": "user-guide.md",
@@ -152,5 +152,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "e9a28f9a233c9a3c"
+  "content_hash": "a750d3aedabfe869"
 }

@@ -131,20 +131,20 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 70,
+      "size_lines": 82,
       "last_updated": "2026-08-22",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-22",
-      "content_hash": "b280df1dabdb"
+      "content_hash": "3abab3f4828f"
     },
     {
       "name": "pre-release-checklist.md",
       "type": "documentation",
-      "size_lines": 111,
-      "last_updated": "2026-08-17",
+      "size_lines": 114,
+      "last_updated": "2026-08-22",
       "title": "Pre-Release Checklist",
-      "description": "Prepared candidate source metadata: 0.23.1a2 Current public release: v0.23.1a1 Alpha",
-      "content_hash": "580e1bdabf7d"
+      "description": "Current source metadata: 0.23.1a2 Current public Alpha: v0.23.1a2",
+      "content_hash": "251309227a42"
     },
     {
       "name": "pre-release-input-safety-and-professional-readiness-plan.md",
@@ -174,5 +174,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "466f4e1bdcca2c4d"
+  "content_hash": "5bd71db89b2e07e1"
 }

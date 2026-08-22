@@ -1,69 +1,81 @@
 # Next Session Briefing
 
-## Latest handoff
+## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-22
-- Focus: freeze and validate one generated workbook-open repair, then rerun the frozen Windows G3 journey once
-- Exact predecessor: `codex/e1-review-bundle-export` at `98c60bc1f7c3899c28f662e82399cb25d80bbf26`, tree `3ee6772114aaf7979473ebfb35b76c27cfbb80a0`
-- Repair lane: `codex/e1-workbook-open-repair`, stacked directly on that immutable predecessor
-- Evidence: `docs/verification/e1-workbook-open-repair-evidence.md`
-- Git handoff receipt: `docs/verification/e1-workbook-open-repair-git-handoff-receipt.json` (`HOLD`; file SHA-256 `c48e7e206e658e12611882de2c3810e8c4756b9842848dfd26fe37509cb94ff8`)
-- Current verdict: `D0 ROOT CAUSE CONFIRMED / REPAIR CONTENT READY / D2 PENDING / G3 HELD`
-- Held: Windows G3 until the repair is an immutable locally accepted candidate; all ETABS/VBA, write-back, optimization, nightly work, publication, release, merge, cleanup, and professional approval
+- Focus: Close accepted E1, reconcile release/task truth, and select the next bounded library decision packet without ETABS or new engineering implementation.
+- Git receipt: docs/verification/e1-g3-closeout-git-handoff-receipt.json | sha256:7237912b87c081142c2bda364d639fb96f4c9a1eca48a4c520586f048a34ef85 | HOLD
+- Git identity: codex/e1-g3-closeout@b720119ea6a22a2b1963be0a0b9b300fca333d4a | upstream=origin/main@b720119ea6a22a2b1963be0a0b9b300fca333d4a | base=origin/main@b720119ea6a22a2b1963be0a0b9b300fca333d4a | tree=dirty | operation=none
+- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
+- Next action: COMMIT_INTENDED_PATHS
 <!-- HANDOFF:END -->
 
 | State | Boundary |
 |---|---|
-| **Current** | The export successor is locally complete. Desktop Excel blocked G3 before workbook open; diagnostic recovery confirmed a case-insensitive collision between input-table headers `D (mm)` and `d (mm)` |
-| **Next** | Freeze and verify the maintained artifact-tool generator, unique `Effective d (mm)` header, manifest identity, and regression that rejects case-colliding table names |
-| **After local closeout** | Push one stacked draft PR, run hosted checks, then send the exact head/tree/wheel/workbook/manifest identities to Windows for the no-recovery open gate and the full frozen G3 journey |
-| **Held** | ETABS/VBA execution, real model access, analysis control, write-back, optimization, publication, release, and professional approval remain outside this packet |
+| **Current** | E1 passed the real installed Windows Excel journey and is integrated into `main` |
+| **Next** | Owner may activate `INDIA-3-G0`: audit existing IS 13920 beam/column/joint truth and freeze one bounded acceptance sequence |
+| **Why** | INDIA-0, INDIA-1, and bounded INDIA-2 are complete; INDIA-4 depends on a frozen INDIA-3 scope |
+| **Held** | No new formulas, support claims, IS 875/IS 1893 work, ETABS work, package publication, or professional approval in G0 |
 
-## Confirmed workbook-open blocker and repair
+## E1 final acceptance
 
-The exact export candidate's blank-workbook guard passed on Windows. Opening an
-unchanged disposable product workbook then produced Excel's content-recovery
-prompt before any mapping or calculation. Recovery was accepted only on a
-uniquely named diagnostic copy. Excel's saved repair log identifies
-`/xl/tables/table1.xml`, and the repaired evidence copy renamed the ninth table
-column from `d (mm)` to `d (mm)2`. The source table's seventh column was
-`D (mm)`, confirming a case-insensitive duplicate-name violation.
+- Desktop Excel opened the exact 15,101-byte workbook without recovery, silent
+  repair, or byte mutation.
+- Frozen row accounting passed: five source rows equal two accepted, two
+  blocked, and one excluded row, with zero residual.
+- Expected results were preserved: derived-depth `PASS`, explicit-depth
+  `FAIL`, numeric-text width `BLOCKED`, blank row `EXCLUDED`, and
+  populated Torsion `HOLD`.
+- Same-snapshot pane exports were byte-identical. Editing a calculation-bearing
+  input produced `STALE` and disabled Export; rerun restored `CURRENT`.
+- Save, close, reopen, explicit Freshness, and export reproduced the second
+  snapshot byte-for-byte.
+- Excel and ETABS were closed, services stopped, ports 3000/8000 freed, and
+  every retained Windows Git lane remained clean.
+- Cumulative local acceptance passed 6,508 Python tests and 31/31 repository
+  checks. Exact-head hosted PR Validation passed before merge.
 
-The repair never promotes Excel's recovered file. A maintained
-`@oai/artifact-tool` generator now rebuilds the six-sheet, five-table,
-macro-free, formula-free workbook with `Effective d (mm)`, deterministic
-relationship IDs, fixed ZIP timestamps, and a refreshed manifest. The service
-retains the old alias for compatibility while the packaged workbook and tests
-use the unique label.
+The workbook remains macro-free and formula-free. Python remains the calculation
+authority. Results remain `NOT_REVIEWED` with
+`qualified_review_required=true`.
 
-## Frozen Windows G3 journey after successor closeout
+## Correct next library packet
 
-1. Reuse the proven entitlement, certificate, restricted catalog, loopback,
-   pane, and blank-workbook evidence; install only the exact repair wheel.
-2. Verify the new workbook and manifest identities, then open one unchanged
-   disposable copy. Require no recovery prompt, silent repair, or byte change.
-3. Run the frozen PASS, FAIL, HOLD,
-   blocked, and blank-row vectors with full reconciliation.
-4. Export twice from one current snapshot and require identical bytes and
-   complete mapping/results/passports/issues.
-5. Edit one calculation-bearing input; require `STALE` and disabled export.
-6. Recalculate, export twice, close/reopen, pass freshness, and export again;
-   same-snapshot bytes and identities must match.
-7. Capture G3 receipt and stop. Do not start ETABS.
+`INDIA-3-G0` is a decision and truth-audit packet, not implementation.
+
+1. Inventory the currently implemented and advertised IS 13920 beam, column,
+   and joint checks.
+2. Bind every claimed case to exact source provenance, units, applicability,
+   result/status contracts, and independent benchmarks.
+3. Identify false registration, missing cross-layer exposure, or unsupported
+   claims that change user outcomes.
+4. Freeze one small acceptance sequence and explicit exclusions before any new
+   calculation, API, or UI work.
+5. Return `ACCEPT`, `REVISE`, or `HOLD` plus the exact first implementation
+   packet.
+
+Do not start IS 13920 wall/foundation expansion, IS 875, IS 1893, response
+spectrum, FEM, or ETABS during G0.
+
+## Other live work
+
+- `v0.23.1a2` is already public. Gravity and E1 were merged afterward, so any
+  next package must use a new version and fresh exact-artifact evidence; never
+  republish `0.23.1a2`.
+- `SPARK-001-G0` remains an owner-review proposal. Its model/preview assumptions
+  date from 2026-08-11 and must be refreshed or rejected before a wave starts.
+- Dependabot PRs are separate maintenance work and do not outrank the
+  capability-truth packet.
+- ETABS T1 remains a separate read-only file/snapshot program. E1 completion
+  makes it possible, but does not activate it.
+- INDIA-4 cumulative qualified review remains downstream of the frozen INDIA-3
+  scope and is not yet ready.
 
 ## Required Reading
 
-1. [Workbook-open repair evidence](../verification/e1-workbook-open-repair-evidence.md)
-2. [Review-bundle export evidence](../verification/e1-review-bundle-export-evidence.md)
-3. [Blank-workbook guard evidence](../verification/e1-blank-workbook-guard-evidence.md)
-4. [Windows W0 evidence](../verification/e1-windows-w0-setup-evidence.md)
-5. [E1 evidence](../verification/e1-excel-routine-workbench-v1-evidence.md)
-6. [E1 execution plan](e1-excel-routine-workbench-v1-plan.md)
-7. [Current task board](../TASKS.md)
-8. [Git workflow single source](../git-automation/git-workflow-single-source.md)
-
-Historical VBA/API reference files remain preserved at
-`C:\CodexWork\reference\etabs-vba-handoff`. They are not part of this repair.
-Keep macros disabled and do not run ETABS or legacy VBA until a separately
-approved, bounded packet begins.
+1. [Indian-code completion plan](indian-code-completion-plan.md)
+2. [IS 456 library-first master plan](is456-library-first-master-plan.md)
+3. [E1 workbook-open repair evidence](../verification/e1-workbook-open-repair-evidence.md)
+4. [Current task board](../TASKS.md)
+5. [Git workflow single source](../git-automation/git-workflow-single-source.md)

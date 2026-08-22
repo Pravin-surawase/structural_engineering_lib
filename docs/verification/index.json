@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-22",
-  "file_count": 197,
+  "file_count": 202,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -273,18 +273,48 @@
     {
       "name": "e1-excel-routine-workbench-v1-evidence.md",
       "type": "documentation",
-      "size_lines": 124,
+      "size_lines": 134,
       "last_updated": "2026-08-22",
       "description": "- branch: codex/e1-excel-routine-workbench; - merged base: c127e4b2325fceb9adebf3d29d59e549f7ae4aa6;",
-      "content_hash": "518566f75056"
+      "content_hash": "98823baad605"
+    },
+    {
+      "name": "e1-g3-closeout-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-22",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "445eeb075ecd"
+    },
+    {
+      "name": "e1-g3-closeout-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-22",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "a06bc024bde2"
     },
     {
       "name": "e1-review-bundle-export-evidence.md",
       "type": "documentation",
-      "size_lines": 126,
+      "size_lines": 141,
       "last_updated": "2026-08-22",
       "description": "- branch: codex/e1-review-bundle-export; - exact stacked base: codex/e1-blank-workbook-guard at",
-      "content_hash": "dc183c1f743d"
+      "content_hash": "9ebded25ab95"
     },
     {
       "name": "e1-review-bundle-export-git-handoff-receipt.json",
@@ -353,6 +383,44 @@
       "last_updated": "2026-08-22",
       "description": "SETUP_BLOCKED — the Windows host/catalog setup now passes, but the exact E1 candidate fails the required blank-workbook pane check and needs one software",
       "content_hash": "8768fb67c9b7"
+    },
+    {
+      "name": "e1-workbook-open-repair-evidence.md",
+      "type": "documentation",
+      "size_lines": 175,
+      "last_updated": "2026-08-22",
+      "description": "- repair branch: codex/e1-workbook-open-repair; - exact immutable base: codex/e1-review-bundle-export at",
+      "content_hash": "110bdb1edb85"
+    },
+    {
+      "name": "e1-workbook-open-repair-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-22",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "c48e7e206e65"
+    },
+    {
+      "name": "e1-workbook-open-repair-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-22",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "8f232f50c259"
     },
     {
       "name": "exact-candidate-review-receipt-template.json",
@@ -2517,5 +2585,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "681e884a260ca9ff"
+  "content_hash": "9201082f19508939"
 }
