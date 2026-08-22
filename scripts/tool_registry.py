@@ -4,7 +4,7 @@ Unified tool registry — connects agents, skills, scripts, and operations.
 
 Loads from:
 - agents/agent_registry.json (16 agents)
-- scripts/automation-map.json (task and script operation metadata)
+- scripts/control-plane.json (operation, command, alias, and permission metadata)
 
 Usage:
     python scripts/tool_registry.py --list
@@ -29,6 +29,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from _lib.output import StatusLine
 from _lib.utils import REPO_ROOT
+from control_plane import (
+    load_registry as load_control_registry,
+    operation_map,
+    operation_name_for_alias,
+)
 
 
 @dataclass
@@ -46,22 +51,6 @@ class ToolEntry:
     skill: str | None = None
     aliases: list[str] = field(default_factory=list)
 
-
-# Tool aliases — common shortcuts
-TOOL_ALIASES = {
-    "design": "design_beam_is456",
-    "detail": "detail_beam_is456",
-    "check": "run all checks",
-    "test": "run tests",
-    "commit": "commit code",
-    "move": "move file",
-    "delete": "delete file",
-    "find": "find automation",
-    "api": "discover api function",
-    "session": "start session",
-    "health": "project health",
-    "parity": "is456 parity dashboard",
-}
 
 # Stopwords for keyword extraction
 STOPWORDS = {
@@ -117,7 +106,7 @@ def extract_keywords(name: str, description: str) -> list[str]:
 
 
 def load_registry() -> dict[str, ToolEntry]:
-    """Load unified tool registry from agent_registry.json and automation-map.json."""
+    """Load unified tools from the agent and canonical control registries."""
     registry: dict[str, ToolEntry] = {}
 
     # Load agent registry
@@ -194,48 +183,38 @@ def load_registry() -> dict[str, ToolEntry]:
             aliases=[],
         )
 
-    # Load automation map
-    automation_map_path = REPO_ROOT / "scripts" / "automation-map.json"
-    if automation_map_path.exists():
-        with open(automation_map_path, "r", encoding="utf-8") as f:
-            automation_data = json.load(f)
+    # Add canonical script operations.
+    control_registry = load_control_registry()
+    for task_name, task_info in operation_map(
+        control_registry, active_only=True
+    ).items():
+        script = task_info.get("command", {}).get("display", "")
+        description = task_info.get("description", "")
+        group = task_info.get("group", "Uncategorized")
 
-        # Add script tasks
-        for task_name, task_info in automation_data.get("tasks", {}).items():
-            if task_info.get("deprecated", False):
-                continue
-            script = task_info.get("script", "")
-            description = task_info.get("description", "")
-            group = task_info.get("group", "Uncategorized")
+        permission = task_info.get("permission")
+        permission_modes = task_info.get("permission_modes", {})
 
-            permission = task_info.get("permission")
-            permission_modes = task_info.get("permission_modes", {})
+        # Extract keywords
+        keywords = extract_keywords(task_name, description)
 
-            # Extract keywords
-            keywords = extract_keywords(task_name, description)
+        # Determine primary agent based on task characteristics
+        agent = task_info.get("agent") or infer_agent_from_task(
+            task_name, description, group
+        )
 
-            # Determine primary agent based on task characteristics
-            agent = task_info.get("agent") or infer_agent_from_task(
-                task_name, description, group
-            )
-
-            registry[task_name] = ToolEntry(
-                name=task_name,
-                description=description,
-                agent=agent,
-                category=group,
-                script=script,
-                permission=permission,
-                permission_modes=permission_modes,
-                keywords=keywords,
-                skill=None,
-                aliases=[str(alias) for alias in task_info.get("aliases", [])],
-            )
-
-    # Add aliases to entries
-    for alias, target in TOOL_ALIASES.items():
-        if target in registry:
-            registry[target].aliases.append(alias)
+        registry[task_name] = ToolEntry(
+            name=task_name,
+            description=description,
+            agent=agent,
+            category=group,
+            script=script,
+            permission=permission,
+            permission_modes=permission_modes,
+            keywords=keywords,
+            skill=None,
+            aliases=[str(alias) for alias in task_info.get("aliases", [])],
+        )
 
     return registry
 
@@ -345,7 +324,7 @@ def get_tools_by_permission(
 
 def resolve_alias(alias: str) -> str | None:
     """Resolve an alias to the full tool name."""
-    return TOOL_ALIASES.get(alias.lower())
+    return operation_name_for_alias(alias)
 
 
 def print_tool(tool: ToolEntry, show_score: bool = False, score: float = 0.0):
@@ -355,6 +334,7 @@ def print_tool(tool: ToolEntry, show_score: bool = False, score: float = 0.0):
     permission_label = tool.permission or "Unspecified"
     permission_icon = {
         "ReadOnly": "🔍",
+        "ReadOnlyTerminal": "🖥️",
         "WorkspaceWrite": "✏️",
         "DangerFullAccess": "⚠️",
     }.get(permission_label, "❓")
@@ -433,7 +413,7 @@ def show_stats(registry: dict[str, ToolEntry]):
     print(f"   - Script-backed operations: {has_script}")
     print(f"   - Skills: {has_skill}")
     print(f"   - Agents: {is_agent}")
-    print(f"   - Aliases: {len(TOOL_ALIASES)}")
+    print(f"   - Aliases: {sum(len(tool.aliases) for tool in registry.values())}")
 
     print("\n📂 By Category:")
     for category in sorted(by_category.keys()):
@@ -447,6 +427,7 @@ def show_stats(registry: dict[str, ToolEntry]):
     for permission in sorted(by_permission.keys()):
         icon = {
             "ReadOnly": "🔍",
+            "ReadOnlyTerminal": "🖥️",
             "WorkspaceWrite": "✏️",
             "DangerFullAccess": "⚠️",
         }.get(permission, "")

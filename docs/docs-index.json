@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generated": "2026-08-22T23:12:29.619539",
-  "total_docs": 378,
+  "generated": "2026-08-23T01:28:48.246879",
+  "total_docs": 379,
   "docs": {
     "docs/SESSION_LOG.md": {
       "title": "Session Log",
@@ -10,6 +10,7 @@
       "folder": "root",
       "tags": [],
       "sections": [
+        "2026-08-23 \u2014 Session: MAINT-012A canonical control-registry foundation",
         "2026-08-22 \u2014 Session: MAINT-011 developer gate hygiene",
         "2026-08-22 \u2014 Session: LIB-PRO-005 confirmed release-safety closure",
         "2026-08-22 \u2014 Session: LIB-PRO-004 lower-level safety and diagnostic truth",
@@ -18,10 +19,9 @@
         "2026-08-22 \u2014 Session: LIB-PRO-003-B domains and footing provenance",
         "2026-08-22 \u2014 Session: LIB-PRO-003-A public numeric boundaries",
         "2026-08-22 \u2014 Session: E1 G3 integration and roadmap closeout",
-        "2026-08-22 \u2014 Session: E1 desktop-Excel workbook-open repair",
-        "2026-08-22 \u2014 Session: E1 complete review-bundle export"
+        "2026-08-22 \u2014 Session: E1 desktop-Excel workbook-open repair"
       ],
-      "size_bytes": 276890
+      "size_bytes": 281903
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",
@@ -61,7 +61,7 @@
         "Completed (Archived)",
         "External Audit Remediation \u2014 v0.21.6 \u2705 DONE"
       ],
-      "size_bytes": 60770
+      "size_bytes": 61173
     },
     "docs/WORKLOG.md": {
       "title": "Work Log",
@@ -670,7 +670,7 @@
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 1162
+      "size_bytes": 1002
     },
     "docs/blog-drafts/smart-design-analysis-deep-dive.md": {
       "title": "Smart Design Analysis Deep Dive: Unified Dashboard for Intelligent Structural Design",
@@ -751,7 +751,7 @@
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 956
+      "size_bytes": 846
     },
     "docs/adr/0003-contract-testing-for-v3.md": {
       "title": "ADR 0003: Contract Testing for V3 Migration",
@@ -2127,11 +2127,10 @@
       ],
       "sections": [
         "Latest Handoff (auto)",
-        "Correct next library packet",
-        "Other live work",
+        "Exact MAINT-012A state",
         "Required Reading"
       ],
-      "size_bytes": 2751
+      "size_bytes": 2425
     },
     "docs/planning/public-route-safety-closure-plan.md": {
       "title": "Public Route Safety Closure Plan",
@@ -2152,6 +2151,32 @@
         "Non-goals"
       ],
       "size_bytes": 4516
+    },
+    "docs/planning/maint-012-control-plane-modernization.md": {
+      "title": "MAINT-012 Control-Plane Modernization",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "planning",
+      "tags": [
+        "ci",
+        "control-plane",
+        "indexes",
+        "maintenance",
+        "roadmap",
+        "scanners",
+        "scripts",
+        "tasks"
+      ],
+      "sections": [
+        "Purpose",
+        "Frozen packet sequence",
+        "MAINT-012A frozen scope",
+        "Explicit MAINT-012A exclusions",
+        "Efficient operating contract",
+        "Future maintenance policy",
+        "MAINT-012A acceptance"
+      ],
+      "size_bytes": 6394
     },
     "docs/planning/is456-solid-slabs-master-plan.md": {
       "title": "IS 456 Solid Slabs Expansion Master Plan",
@@ -2428,7 +2453,7 @@
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 3960
+      "size_bytes": 4121
     },
     "docs/planning/india-2-next-session-publication-and-closeout-plan.md": {
       "title": "Next Session Git Reconciliation, Issue Repairs, and INDIA-2 Finish Plan",
@@ -3834,7 +3859,7 @@
         "Config Files",
         "Documentation Files"
       ],
-      "size_bytes": 28036
+      "size_bytes": 28113
     },
     "docs/verification/india-2-wall-d-publication-evidence.md": {
       "title": "INDIA-2-WALL-D Publication Evidence",
@@ -4953,7 +4978,7 @@
         "8. Key Scripts",
         "9. Golden Rules"
       ],
-      "size_bytes": 38353
+      "size_bytes": 38471
     },
     "docs/getting-started/python-quickstart.md": {
       "title": "Python Quickstart (Beginner-Friendly)",
@@ -5696,7 +5721,7 @@
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 816
+      "size_bytes": 720
     },
     "docs/legal/verification-checklist.md": {
       "title": "Independent Verification Checklist",
@@ -7165,7 +7190,7 @@
         "Git/GitHub is not repository automation",
         "Maintenance rule"
       ],
-      "size_bytes": 2137
+      "size_bytes": 2573
     },
     "docs/reference/insights-api.md": {
       "title": "Insights API Reference",
@@ -7263,7 +7288,7 @@
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 848
+      "size_bytes": 728
     },
     "docs/developers/integration-examples.md": {
       "title": "Integration Examples: Real-World Code Samples",
@@ -7289,6 +7314,7 @@
         "docs/contributing/solo-maintainer-operating-system.md",
         "docs/contributing/git-workflow-ai-agents.md",
         "docs/learning/glossary.md",
+        "docs/planning/maint-012-control-plane-modernization.md",
         "docs/planning/compact-modernization-plan.md",
         "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
         "docs/planning/india-2-remaining-is456-elements-plan.md",
@@ -7627,6 +7653,7 @@
       ],
       "scripts": [
         "docs/git-automation/git-recovery-case-study-column-pmm.md",
+        "docs/planning/maint-012-control-plane-modernization.md",
         "docs/audit/automation-scripts-audit-2026-08-09.md",
         "docs/reference/automation-catalog.md"
       ],
@@ -7634,6 +7661,7 @@
         "docs/planning/gpt-5-3-codex-spark-work-program.md",
         "docs/planning/next-session-brief.md",
         "docs/planning/public-route-safety-closure-plan.md",
+        "docs/planning/maint-012-control-plane-modernization.md",
         "docs/planning/is456-solid-slabs-master-plan.md",
         "docs/planning/compact-modernization-plan.md",
         "docs/planning/ui-experience-foundation-master-plan.md",
@@ -7661,6 +7689,7 @@
         "docs/planning/gpt-5-3-codex-spark-work-program.md",
         "docs/planning/next-session-brief.md",
         "docs/planning/public-route-safety-closure-plan.md",
+        "docs/planning/maint-012-control-plane-modernization.md",
         "docs/planning/is456-solid-slabs-master-plan.md",
         "docs/planning/compact-modernization-plan.md",
         "docs/planning/ui-experience-foundation-master-plan.md",
@@ -7783,6 +7812,25 @@
         "docs/verification/india-2-wall-family-acceptance-evidence.md",
         "docs/verification/india-1c-isolated-footing-workflow-evidence.md"
       ],
+      "ci": [
+        "docs/planning/maint-012-control-plane-modernization.md",
+        "docs/planning/maint-011-developer-gate-hygiene-follow-up.md"
+      ],
+      "control-plane": [
+        "docs/planning/maint-012-control-plane-modernization.md"
+      ],
+      "indexes": [
+        "docs/planning/maint-012-control-plane-modernization.md"
+      ],
+      "maintenance": [
+        "docs/planning/maint-012-control-plane-modernization.md",
+        "docs/planning/maint-011-developer-gate-hygiene-follow-up.md",
+        "docs/audit/automation-scripts-audit-2026-08-09.md",
+        "docs/audit/maintenance-recovery-audit-2026-08-07.md"
+      ],
+      "scanners": [
+        "docs/planning/maint-012-control-plane-modernization.md"
+      ],
       "boq": [
         "docs/planning/lib-pro-005-release-safety-closure-plan.md",
         "docs/verification/bundled-sample-boq-evidence.md",
@@ -7803,16 +7851,8 @@
         "docs/planning/lib-pro-005-release-safety-closure-plan.md",
         "docs/verification/lib-pro-005-release-safety-closure-evidence.md"
       ],
-      "ci": [
-        "docs/planning/maint-011-developer-gate-hygiene-follow-up.md"
-      ],
       "developer-experience": [
         "docs/planning/maint-011-developer-gate-hygiene-follow-up.md"
-      ],
-      "maintenance": [
-        "docs/planning/maint-011-developer-gate-hygiene-follow-up.md",
-        "docs/audit/automation-scripts-audit-2026-08-09.md",
-        "docs/audit/maintenance-recovery-audit-2026-08-07.md"
       ],
       "pre-commit": [
         "docs/planning/maint-011-developer-gate-hygiene-follow-up.md"

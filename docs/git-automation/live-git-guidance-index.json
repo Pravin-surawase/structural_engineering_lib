@@ -15,7 +15,7 @@
     "docs/learning-foundations/09-git.md",
     "agents/agent-9/KNOWLEDGE_BASE.md",
     "scripts/README.md",
-    "scripts/automation-map.json"
+    "scripts/control-plane.json"
   ],
   "live_globs": [
     ".github/agents/*.agent.md",

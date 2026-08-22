@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Find the right automation script for a task.
+Find the right registered operation for a task.
 
-When to use: When you need a script but do not know which one. Searches the
-current non-deprecated automation tasks and derives categories from their
-canonical `group` metadata.
+When to use: When you need a script but do not know which one. Searches current
+non-deprecated control-plane operations and derives categories from canonical
+`group` metadata.
 
 Usage:
     ./scripts/python_runtime.sh scripts/find_automation.py "move file"
@@ -20,18 +20,17 @@ import sys
 from difflib import get_close_matches
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).parent))
+from control_plane import ControlPlaneError, legacy_projection, load_registry
+
 
 def load_automation_map() -> dict:
-    """Load the automation map."""
-    script_dir = Path(__file__).parent
-    map_path = script_dir / "automation-map.json"
-
-    if not map_path.exists():
-        print("❌ automation-map.json not found")
+    """Return the legacy-shaped view generated from the canonical registry."""
+    try:
+        return legacy_projection(load_registry())
+    except ControlPlaneError as exc:
+        print(f"❌ control-plane registry is invalid: {exc}")
         sys.exit(1)
-
-    with open(map_path, "r", encoding="utf-8") as f:
-        return json.load(f)
 
 
 def active_tasks(automation_map: dict) -> dict[str, dict]:

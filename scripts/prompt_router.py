@@ -28,10 +28,9 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).parent))
 from _lib.output import StatusLine, print_json
 from _lib.utils import REPO_ROOT
+from control_plane import load_registry as load_control_registry, operation_map
 from git_state import collect_worktree_inventory
 from tool_registry import ToolEntry, find_tools, load_registry
-
-AUTOMATION_MAP_PATH = REPO_ROOT / "scripts" / "automation-map.json"
 
 
 @dataclass
@@ -535,9 +534,7 @@ def _initial_context(
         path = f".github/skills/{skill}/SKILL.md"
         if (REPO_ROOT / path).exists():
             context.append(path)
-    task_map = json.loads(AUTOMATION_MAP_PATH.read_text(encoding="utf-8")).get(
-        "tasks", {}
-    )
+    task_map = operation_map(load_control_registry())
     for tool, _score in tools:
         for path in task_map.get(tool.name, {}).get("context_docs", []):
             if path not in context and (REPO_ROOT / path).exists():

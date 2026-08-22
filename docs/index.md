@@ -3,7 +3,7 @@
 Guides, references, evidence, and contributor material for the
 
 **Type:** Documentation
-**Last Updated:** 2026-08-22
+**Last Updated:** 2026-08-23
 **Files:** 6
 
 ## Config Files
@@ -16,8 +16,8 @@ Guides, references, evidence, and contributor material for the
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
 | [README.md](README.md) | Docs Index (Start Here) | Guides, references, evidence, and contributor material for t | 253 |
-| [SESSION_LOG.md](SESSION_LOG.md) | Session Log | > Append-only decision log for AI agent sessions. > Earlier  | 4652 |
-| [TASKS.md](TASKS.md) | Task Board | > **Single source of truth for active work.** Keep it short  | 742 |
+| [SESSION_LOG.md](SESSION_LOG.md) | Session Log | > Append-only decision log for AI agent sessions. > Earlier  | 4747 |
+| [TASKS.md](TASKS.md) | Task Board | > **Single source of truth for active work.** Keep it short  | 743 |
 | [WORKLOG.md](WORKLOG.md) |  | > **One line per item. Compact. Append-only.** > Format: DAT | 355 |
 
 ## Subfolders
@@ -43,9 +43,9 @@ Guides, references, evidence, and contributor material for the
 | [learning-foundations/](learning-foundations/) | 13 | These are NOT specific to this repo. They are universal concepts every developer |
 | [legal/](legal/) | 6 | Engineering certification templates and usage guidelines. |
 | [migration/](migration/) | 45 |  |
-| [planning/](planning/) | 26 |  |
+| [planning/](planning/) | 27 |  |
 | [publications/](publications/) | 10 | This directory contains blog posts, technical articles, and academic papers docu |
 | [reference/](reference/) | 1793 |  |
 | [research/](research/) | 36 |  |
 | [specs/](specs/) | 8 | Technical specifications for data formats and schemas. |
-| [verification/](verification/) | 226 | Benchmark examples and verification packs for validating library calculations ag |
+| [verification/](verification/) | 227 | Benchmark examples and verification packs for validating library calculations ag |

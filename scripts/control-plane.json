@@ -1,0 +1,2722 @@
+{
+  "$schema": "./control-plane.schema.json",
+  "schema_version": 1,
+  "registry_kind": "structural-engineering-control-plane",
+  "metadata": {
+    "owner": "repository maintainers",
+    "purpose": "Canonical operation discovery, execution, and permission metadata",
+    "compatibility_projection": "scripts/automation-map.json",
+    "initial_import": "2026-08-23"
+  },
+  "operations": {
+    "resolve python runtime": {
+      "group": "Infrastructure",
+      "description": "Resolve the approved Python interpreter across primary and linked Git worktrees",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh --version",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "--version"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
+    "diagnose python runtime": {
+      "group": "Infrastructure",
+      "description": "Show the selected interpreter and prove structural_lib is bound to the invoking worktree",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh --diagnose",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "--diagnose"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "aliases": [
+        ".venv",
+        "worktree python",
+        "python source binding"
+      ]
+    },
+    "choose codex model": {
+      "group": "Agent Infrastructure",
+      "description": "Recommend a GPT-5.6 model and reasoning level using the checked-in token-efficiency policy (also: ./run.sh model)",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/model_picker.py \"task description\"",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/model_picker.py",
+              "task description"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "options": {
+        "--table": "Compare all supported profiles",
+        "--risk LEVEL": "Set auto, low, normal, high, or critical risk",
+        "--repeatable": "Mark a task as deterministic and repeatable",
+        "--ambiguous": "Mark a task as requiring ambiguity resolution",
+        "--important": "Recommend an efficient profile for important work and approval-gate Sol",
+        "--orchestrator": "Always select Sol High for the main orchestrator",
+        "--json": "Machine-readable recommendation"
+      }
+    },
+    "validate token efficiency": {
+      "group": "Agent Infrastructure",
+      "description": "Validate project Codex defaults, model policy, context controls, and the reusable low-token prompt",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_token_efficiency.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_token_efficiency.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "options": {
+        "--json": "Machine-readable policy report",
+        "--prompt": "Print the reusable low-token task preamble"
+      }
+    },
+    "run all checks": {
+      "group": "Quality",
+      "description": "Run all 30 validation checks across 8 categories in parallel (also: ./run.sh check)",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_all.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_all.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--fix": "WorkspaceWrite"
+      },
+      "options": {
+        "--quick": "Run 10 quick checks only (<30s)",
+        "--category X": "Run checks for specific category",
+        "--changed": "Auto-detect categories from git diff",
+        "--fix": "Auto-fix where possible",
+        "--json": "JSON output for CI",
+        "--serial": "Run sequentially (debugging)"
+      },
+      "aliases": [
+        "check"
+      ]
+    },
+    "validate script references": {
+      "group": "Quality",
+      "description": "Detect stale script references across docs and instruction files",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/validate_script_refs.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/validate_script_refs.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "diagnose ci failures": {
+      "group": "Quality",
+      "description": "Diagnose, reproduce, and auto-fix CI failures locally or for a specific PR",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/diagnose_ci.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/diagnose_ci.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--local --fix": "WorkspaceWrite"
+      },
+      "options": {
+        "--pr N": "Check specific PR CI status",
+        "--local": "Run checks locally",
+        "--local --fix": "Auto-fix formatting and lint issues",
+        "--last": "Last CI run on current branch"
+      }
+    },
+    "move file": {
+      "group": "Docs",
+      "description": "Move file and update all internal links automatically (870+ links preserved)",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/safe_file_move.py old.md new.md",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/safe_file_move.py",
+              "old.md",
+              "new.md"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite",
+      "never_use": [
+        "mv",
+        "git mv"
+      ],
+      "aliases": [
+        "move"
+      ]
+    },
+    "delete file": {
+      "group": "Docs",
+      "description": "Delete file after checking for references",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/safe_file_delete.py file.md",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/safe_file_delete.py",
+              "file.md"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "DangerFullAccess",
+      "never_use": [
+        "rm",
+        "git rm"
+      ],
+      "aliases": [
+        "delete"
+      ]
+    },
+    "create document": {
+      "group": "Docs",
+      "description": "Create document with proper metadata headers",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/create_doc.py path/file.md \"Title\"",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/create_doc.py",
+              "path/file.md",
+              "Title"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite"
+    },
+    "fix broken links": {
+      "group": "Docs",
+      "description": "Find and auto-fix broken internal links in markdown files",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_links.py --fix",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_links.py",
+              "--fix"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite"
+    },
+    "check markdown links": {
+      "group": "Docs",
+      "description": "Read-only validation of internal Markdown links",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_links.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_links.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "aliases": [
+        "check_markdown_links.py",
+        "markdown links"
+      ]
+    },
+    "fix deleted file links": {
+      "group": "Docs",
+      "description": "Remove or convert broken links to deleted streamlit/vba/excel/xlwings files",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/fix_broken_links.py --dry-run",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/fix_broken_links.py",
+              "--dry-run"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "run tests": {
+      "group": "Testing",
+      "description": "Run the Python suite by default; use --fastapi, --react, or --all for explicit product-suite scope",
+      "status": "active",
+      "command": {
+        "display": "./run.sh test",
+        "steps": [
+          {
+            "argv": [
+              "./run.sh",
+              "test"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "aliases": [
+        "test"
+      ]
+    },
+    "select frontend node runtime": {
+      "group": "Infrastructure",
+      "description": "Select the healthy Node/npm pair pinned by .nvmrc (also: ./run.sh frontend runtime)",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/node_runtime.py --print",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/node_runtime.py",
+              "--print"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "options": {
+        "--print": "Show selected Node and npm versions",
+        "--bin-dir": "Print only the selected binary directory",
+        "-- COMMAND": "Run a command in the selected Node environment"
+      }
+    },
+    "watch tests": {
+      "group": "Testing",
+      "description": "Run tests in watch mode — re-runs on file changes",
+      "status": "active",
+      "command": {
+        "display": "./scripts/watch_tests.sh",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/watch_tests.sh"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
+    "format code": {
+      "group": "Infrastructure",
+      "description": "Auto-format Python code with black + ruff",
+      "status": "active",
+      "command": {
+        "display": "cd Python && ../scripts/python_runtime.sh -m black . && ../scripts/python_runtime.sh -m ruff check --fix .",
+        "steps": [
+          {
+            "argv": [
+              "../scripts/python_runtime.sh",
+              "-m",
+              "black",
+              "."
+            ],
+            "cwd": "Python"
+          },
+          {
+            "argv": [
+              "../scripts/python_runtime.sh",
+              "-m",
+              "ruff",
+              "check",
+              "--fix",
+              "."
+            ],
+            "cwd": "Python"
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite"
+    },
+    "check folder structure": {
+      "group": "Quality",
+      "description": "Validate project folder organization against governance rules",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_governance.py --structure",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_governance.py",
+              "--structure"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "check governance": {
+      "group": "Quality",
+      "description": "Run full governance check (folder structure + compliance)",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_governance.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_governance.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "options": {
+        "--structure": "Folder structure only",
+        "--compliance": "Compliance only",
+        "--json": "JSON output",
+        "--strict": "Fail on warnings"
+      }
+    },
+    "governance health score": {
+      "group": "Quality",
+      "description": "Calculate overall governance health score with breakdown",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/governance_health_score.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/governance_health_score.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "permission_modes": {
+        "--output": "WorkspaceWrite"
+      }
+    },
+    "generate audit report": {
+      "group": "Generation",
+      "description": "Generate audit evidence bundle (NIST SSDF aligned)",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/audit_readiness_report.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/audit_readiness_report.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "permission_modes": {
+        "--output": "WorkspaceWrite"
+      },
+      "options": {
+        "--check-only": "Quick pass/fail for CI",
+        "--json": "Export as JSON",
+        "--export md": "Export as Markdown"
+      }
+    },
+    "audit error handling": {
+      "group": "Quality",
+      "description": "Audit error handling compliance across structural_lib modules",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/audit_error_handling.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/audit_error_handling.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "audit input validation": {
+      "group": "Quality",
+      "description": "Audit evidence-bearing input-validation ownership for maintained structural_lib routes",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/audit_input_validation.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/audit_input_validation.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "check public route safety": {
+      "group": "Quality",
+      "description": "Run the frozen adversarial Python and FastAPI public-route safety regressions",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_public_route_safety.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_public_route_safety.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
+    "start session": {
+      "group": "Session",
+      "description": "Resolve the approved runtime, run preflight, and start a session without Git/GitHub lifecycle actions",
+      "status": "active",
+      "command": {
+        "display": "./scripts/agent_start.sh --quick",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/agent_start.sh",
+              "--quick"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite",
+      "aliases": [
+        "session"
+      ]
+    },
+    "end session": {
+      "group": "Session",
+      "description": "Validate session closeout without hidden writes",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/session.py end",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/session.py",
+              "end"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--fix": "WorkspaceWrite"
+      }
+    },
+    "session summary": {
+      "group": "Session",
+      "description": "Preview a session summary from repository history",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/session.py summary",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/session.py",
+              "summary"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--write": "WorkspaceWrite"
+      }
+    },
+    "sync doc numbers": {
+      "group": "Session",
+      "description": "Scan codebase metrics and report stale documentation counts; no flag is the read-only default",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/sync_numbers.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/sync_numbers.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--fix": "WorkspaceWrite"
+      },
+      "options": {
+        "(no flag)": "Dry run — scan and report only",
+        "--fix": "Apply updates to files",
+        "--json": "Machine-readable output"
+      },
+      "aliases": [
+        "sync_numbers.py",
+        "sync numbers",
+        "documentation counts",
+        "check stale counts"
+      ]
+    },
+    "session handoff": {
+      "group": "Session",
+      "description": "Validate a durable task-to-Git receipt and write next-session-brief.md for the next agent",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/session.py handoff",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/session.py",
+              "handoff"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite",
+      "options": {
+        "--git-receipt PATH": "Validate and embed the versioned receipt identity"
+      },
+      "aliases": [
+        "session receipt handoff",
+        "durable handoff"
+      ]
+    },
+    "task git handoff receipt": {
+      "group": "Git",
+      "description": "Build or validate a fail-closed task-to-Git handoff receipt from git_state.py plus caller-supplied hosted evidence",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/git_handoff_receipt.py create",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/git_handoff_receipt.py",
+              "create"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--output": "WorkspaceWrite"
+      },
+      "options": {
+        "create": "Build receipt; missing hosted facts remain UNKNOWN or NOT_CHECKED holds",
+        "validate": "Validate schema, hashes, exact-head binding, and contradictions"
+      },
+      "aliases": [
+        "git receipt",
+        "handoff receipt",
+        "task to git"
+      ]
+    },
+    "session check": {
+      "group": "Session",
+      "description": "Verify session docs are consistent and complete",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/session.py check",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/session.py",
+              "check"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "check git state": {
+      "group": "Git",
+      "description": "Report typed local Git state, holds, base, upstream, operations, and locks without network or mutation",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/git_state.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/git_state.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "options": {
+        "--json": "Machine-readable typed state",
+        "--worktrees": "Bounded current and sibling worktree inventory",
+        "--strict": "Fail unless the current lane is READY_LOCAL"
+      }
+    },
+    "check api signatures": {
+      "group": "Discovery",
+      "description": "Verify API documentation matches code (signatures, docs, sync)",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_api.py --all",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_api.py",
+              "--all"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "discover api function": {
+      "group": "Discovery",
+      "description": "Get exact parameter names and types for any structural_lib function",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/discover_api_signatures.py <function_name>",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/discover_api_signatures.py",
+              "<function_name>"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "options": {
+        "--all": "Show all API signatures",
+        "--filter <category>": "Filter by category (design, detail, geometry, etc.)"
+      },
+      "never_use": [
+        "guess parameter names",
+        "assume return types"
+      ],
+      "aliases": [
+        "api"
+      ]
+    },
+    "generate api manifest": {
+      "group": "Discovery",
+      "description": "Regenerate API manifest (public function inventory)",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/generate_api_manifest.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/generate_api_manifest.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite"
+    },
+    "generate api classification": {
+      "group": "Discovery",
+      "description": "Generate or validate the Alpha preview/compatibility/internal API classification registry",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/generate_api_classification.py --check",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/generate_api_classification.py",
+              "--check"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "without --check": "WorkspaceWrite"
+      }
+    },
+    "generate beam tool manifest": {
+      "group": "Discovery",
+      "description": "Regenerate and byte-check the catalogue-derived beam tool descriptor without activating AI execution",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/generate_beam_tool_manifest.py --write --check",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/generate_beam_tool_manifest.py",
+              "--write",
+              "--check"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite"
+    },
+    "check architecture boundaries": {
+      "group": "Quality",
+      "description": "Enforce 4-layer architecture — core cannot import services/UI",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_architecture_boundaries.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_architecture_boundaries.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "check codex git workflow": {
+      "group": "Quality",
+      "description": "Ensure retired Git lifecycle wrappers and enforcement hooks stay removed",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_codex_git_workflow.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_codex_git_workflow.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "check element completeness": {
+      "group": "Quality",
+      "description": "Check completeness across 7 layers (types, math, tests, API, endpoint, UI, docs) for all structural elements",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_new_element_completeness.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_new_element_completeness.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "options": {
+        "--element <name>": "Detailed report for specific element (beam, column, slab, etc.)",
+        "--json": "Machine-readable JSON output",
+        "--verbose": "Show file paths for each check"
+      }
+    },
+    "check circular imports": {
+      "group": "Quality",
+      "description": "Detect circular imports in the Streamlit application",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_circular_imports.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_circular_imports.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "check fastapi issues": {
+      "group": "Quality",
+      "description": "AST-scan for common FastAPI issues (missing types, wrong patterns)",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_fastapi_issues.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_fastapi_issues.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "check type annotations": {
+      "group": "Quality",
+      "description": "Check type annotation coverage in Streamlit application",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_type_annotations.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_type_annotations.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "check docs": {
+      "group": "Docs",
+      "description": "Unified doc checker — index, links, metadata validation",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_docs.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_docs.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "check docs metadata": {
+      "group": "Docs",
+      "description": "Validate required documentation metadata with the consolidated checker",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_docs.py --metadata --strict",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_docs.py",
+              "--metadata",
+              "--strict"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "aliases": [
+        "check_doc_metadata.py",
+        "doc metadata"
+      ]
+    },
+    "validate imports": {
+      "group": "Quality",
+      "description": "Validate Python imports across the project (use after migrations)",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/validate_imports.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/validate_imports.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "validate api contracts": {
+      "group": "Quality",
+      "description": "API contract testing — request/response schemas, status codes",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/validate_api_contracts.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/validate_api_contracts.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "validate schema snapshots": {
+      "group": "Quality",
+      "description": "Validate OpenAPI schema snapshots haven't changed unexpectedly",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/validate_schema_snapshots.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/validate_schema_snapshots.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "check openapi drift": {
+      "group": "Quality",
+      "description": "Compare live OpenAPI spec against baseline — detect endpoint/schema drift",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_openapi_snapshot.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_openapi_snapshot.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "permission_modes": {
+        "--update": "WorkspaceWrite"
+      },
+      "options": {
+        "--update": "Update baseline with current spec",
+        "--json": "Machine-readable JSON output"
+      }
+    },
+    "check openapi baseline drift": {
+      "group": "CI",
+      "description": "CI guard — verify OpenAPI spec matches committed baseline (TASK-726)",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_openapi_drift.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_openapi_drift.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "permission_modes": {
+        "--update": "WorkspaceWrite"
+      },
+      "options": {
+        "--update": "Update the baseline file from live spec"
+      }
+    },
+    "check docker config": {
+      "group": "Infrastructure",
+      "description": "Validate Dockerfile and docker-compose configuration",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_docker_config.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_docker_config.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "launch dev stack": {
+      "group": "Infrastructure",
+      "description": "Launch full-stack dev environment (FastAPI + React) with auto-detection of free ports",
+      "status": "active",
+      "command": {
+        "display": "bash scripts/launch_stack.sh",
+        "steps": [
+          {
+            "argv": [
+              "bash",
+              "scripts/launch_stack.sh"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite",
+      "options": {
+        "--local": "Local mode (default): FastAPI + React processes",
+        "--docker": "Docker mode via Colima",
+        "--docker-dev": "Docker dev mode with hot reload",
+        "--kill-only": "Kill all dev services",
+        "--no-react": "FastAPI only",
+        "--no-fastapi": "React only",
+        "--open": "Open browser after launch"
+      }
+    },
+    "check doc versions": {
+      "group": "Quality",
+      "description": "Detect stale library version references in docs (pre-commit hook)",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_doc_versions.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_doc_versions.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "check bootstrap freshness": {
+      "group": "Quality",
+      "description": "Detect when bootstrap docs are stale — new hooks/routes/components not documented",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_bootstrap_freshness.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_bootstrap_freshness.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "check instruction drift": {
+      "group": "Quality",
+      "description": "Detect content drift between .github/instructions/ and .claude/rules/ — warns when platforms diverge",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_instruction_drift.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_instruction_drift.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "check tasks format": {
+      "group": "Quality",
+      "description": "Validate TASKS.md structure and WIP rules",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_tasks_format.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_tasks_format.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "aliases": [
+        "check_tasks.py",
+        "check_tasks_format.py",
+        "task board format",
+        "validate tasks"
+      ]
+    },
+    "check python version": {
+      "group": "Quality",
+      "description": "Enforce consistent Python version strings across configs",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_python_version.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_python_version.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "check version consistency": {
+      "group": "Quality",
+      "description": "Verify version strings match across maintained package metadata and docs",
+      "status": "active",
+      "command": {
+        "display": "./scripts/check_version_consistency.sh",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/check_version_consistency.sh"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
+    "check wip limits": {
+      "group": "Quality",
+      "description": "Enforce WIP limits — max items in In Progress",
+      "status": "active",
+      "command": {
+        "display": "./scripts/check_wip_limits.sh",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/check_wip_limits.sh"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "check repo hygiene": {
+      "group": "Quality",
+      "description": "Fail if tracked hygiene artifacts exist (pre-commit hook)",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_repo_hygiene.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_repo_hygiene.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "check cli reference": {
+      "group": "Quality",
+      "description": "Ensure CLI reference doc includes all required commands",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_cli_reference.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_cli_reference.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "check scripts index": {
+      "group": "Quality",
+      "description": "Ensure scripts/index.json and automation-map metadata match maintained scripts",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_scripts_index.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_scripts_index.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
+    "check api compat": {
+      "group": "Quality",
+      "description": "Check API backward compatibility against manifest",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_api_compat.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_api_compat.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
+    "generate error docs": {
+      "group": "Generation",
+      "description": "Generate error code documentation from source",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/generate_error_docs.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/generate_error_docs.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite"
+    },
+    "check next session brief": {
+      "group": "Quality",
+      "description": "Ensure next-session-brief.md stays concise",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_next_session_brief_length.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_next_session_brief_length.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "check root file count": {
+      "group": "Quality",
+      "description": "Warn if too many files in project root (sprawl detection)",
+      "status": "active",
+      "command": {
+        "display": "./scripts/check_root_file_count.sh",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/check_root_file_count.sh"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
+    "check merge state": {
+      "group": "Git",
+      "description": "Fail on an active or unknown Git operation, conflict, or lock",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/git_state.py --guard operation",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/git_state.py",
+              "--guard",
+              "operation"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
+    "check branch safety": {
+      "group": "Git",
+      "description": "Fail closed on main, detached HEAD, or unknown branch state",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/git_state.py --guard branch",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/git_state.py",
+              "--guard",
+              "branch"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
+    "compat validate git state": {
+      "group": "Git",
+      "description": "Deprecated compatibility entrypoint delegated to check git state",
+      "status": "deprecated",
+      "command": {
+        "display": "./scripts/validate_git_state.sh",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/validate_git_state.sh"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "replacement": "check git state"
+    },
+    "compat unfinished operation guard": {
+      "group": "Git",
+      "description": "Deprecated compatibility entrypoint delegated to check merge state",
+      "status": "deprecated",
+      "command": {
+        "display": "./scripts/check_unfinished_merge.sh",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/check_unfinished_merge.sh"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "replacement": "check merge state"
+    },
+    "compat branch guard": {
+      "group": "Git",
+      "description": "Deprecated compatibility entrypoint delegated to check branch safety",
+      "status": "deprecated",
+      "command": {
+        "display": "./scripts/check_not_main.sh",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/check_not_main.sh"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "replacement": "check branch safety"
+    },
+    "migrate python module": {
+      "group": "Migration",
+      "description": "Move Python module to new location + update all imports automatically",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/migrate_python_module.py <src> <dst> --dry-run",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/migrate_python_module.py",
+              "<src>",
+              "<dst>",
+              "--dry-run"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "permission_modes": {
+        "live": "WorkspaceWrite"
+      },
+      "never_use": [
+        "mv",
+        "manual find-and-replace imports"
+      ]
+    },
+    "migrate react component": {
+      "group": "Migration",
+      "description": "Move React component to new feature-grouped folder + update imports",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/migrate_react_component.py <src> <dst> --dry-run",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/migrate_react_component.py",
+              "<src>",
+              "<dst>",
+              "--dry-run"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "permission_modes": {
+        "live": "WorkspaceWrite"
+      },
+      "never_use": [
+        "mv",
+        "manual find-and-replace imports"
+      ]
+    },
+    "batch migration": {
+      "group": "Migration",
+      "description": "Run multiple migrations with per-operation rollback logs",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/batch_migrate_runner.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/batch_migrate_runner.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite",
+      "permission_modes": {
+        "--dry-run": "ReadOnly",
+        "--auto-rollback": "WorkspaceWrite"
+      }
+    },
+    "bump version": {
+      "group": "Release",
+      "description": "Bump version in pyproject.toml (single source of truth)",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/bump_version.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/bump_version.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "permission_modes": {
+        "--current": "ReadOnlyTerminal",
+        "VERSION": "WorkspaceWrite"
+      },
+      "options": {
+        "patch": "0.19.1 → 0.19.2",
+        "minor": "0.19.1 → 0.20.0",
+        "major": "0.19.1 → 1.0.0"
+      }
+    },
+    "release": {
+      "group": "Release",
+      "description": "Unified release management — preflight, artifact verification, and owner-gated publication",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/release.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/release.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "permission_modes": {
+        "run": "DangerFullAccess",
+        "preflight": "ReadOnlyTerminal"
+      }
+    },
+    "release preflight": {
+      "group": "Release",
+      "description": "Run clean-tree Python, FastAPI, React, version, permission, and exact-wheel release gates",
+      "status": "active",
+      "command": {
+        "display": "./run.sh release preflight --wheel <exact-wheel-path>",
+        "steps": [
+          {
+            "argv": [
+              "./run.sh",
+              "release",
+              "preflight",
+              "--wheel",
+              "<exact-wheel-path>"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "context_docs": [
+        ".github/skills/release-preflight/SKILL.md"
+      ],
+      "aliases": [
+        "candidate preflight",
+        "release ci parity"
+      ]
+    },
+    "benchmark api": {
+      "group": "Testing",
+      "description": "API performance benchmark with latency measurements",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/benchmark_api.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/benchmark_api.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite"
+    },
+    "test api parity": {
+      "group": "Testing",
+      "description": "Verify library and FastAPI return identical results",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/test_api_parity.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/test_api_parity.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "verify canonical transport artifact": {
+      "group": "Testing",
+      "description": "Verify A1 source-free Python and CLI plus exact-head FastAPI binding to one wheel",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/verify_canonical_transport_artifact.py --wheel <exact-wheel-path>",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/verify_canonical_transport_artifact.py",
+              "--wheel",
+              "<exact-wheel-path>"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
+    "verify excel workbench artifact": {
+      "group": "Testing",
+      "description": "Verify the E1 workbook, manifest, installed identity, and canonical sample row from one source-free wheel",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/verify_excel_workbench_artifact.py --wheel <exact-wheel-path>",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/verify_excel_workbench_artifact.py",
+              "--wheel",
+              "<exact-wheel-path>"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
+    "test import 3d pipeline": {
+      "group": "Testing",
+      "description": "Compatibility alias for the maintained import, batch-design, and 3D geometry E2E test",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/test_import_pipeline.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/test_import_pipeline.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "test import pipeline": {
+      "group": "Testing",
+      "description": "E2E test: all 4 import endpoints (sample, single CSV, dual CSV, batch design)",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/test_import_pipeline.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/test_import_pipeline.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "external cli test": {
+      "group": "Testing",
+      "description": "Exercise the installed package in a new isolated workspace",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/external_cli_test.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/external_cli_test.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite"
+    },
+    "create test scaffold": {
+      "group": "Testing",
+      "description": "Generate test file scaffold for a module",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/create_test_scaffold.py <module>",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/create_test_scaffold.py",
+              "<module>"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite"
+    },
+    "update test stats": {
+      "group": "Testing",
+      "description": "Update test_stats.json with current test counts",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/update_test_stats.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/update_test_stats.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite"
+    },
+    "generate folder index": {
+      "group": "Generation",
+      "description": "Update maintained index.json + index.md files from changed leaves through maintained parents; new index locations require explicit opt-in",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/generate_enhanced_index.py <folder>",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/generate_enhanced_index.py",
+              "<folder>"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite",
+      "permission_modes": {
+        "--dry-run": "ReadOnly",
+        "--check": "ReadOnly"
+      },
+      "options": {
+        "--all": "Regenerate all key-folder indexes",
+        "--allow-new-index": "Permit intentional creation in a previously unmaintained folder"
+      },
+      "aliases": [
+        "generate_folder_index.py",
+        "generate_enhanced_index.py",
+        "folder index",
+        "refresh index",
+        "leaf parent index"
+      ]
+    },
+    "generate all indexes": {
+      "group": "Generation",
+      "description": "Regenerate index.json + index.md for all research-relevant folders",
+      "status": "active",
+      "command": {
+        "display": "./scripts/generate_all_indexes.sh",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/generate_all_indexes.sh"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite"
+    },
+    "generate docs index": {
+      "group": "Generation",
+      "description": "Preview the global machine-readable documentation index; pass --write intentionally before refreshing parent folder indexes",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/generate_docs_index.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/generate_docs_index.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--write": "WorkspaceWrite"
+      },
+      "aliases": [
+        "generate_docs_index.py",
+        "global docs index",
+        "documentation index",
+        "docs-index.json"
+      ]
+    },
+    "generate client sdks": {
+      "group": "Generation",
+      "description": "Generate TypeScript/Python client SDKs from FastAPI OpenAPI spec",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/generate_client_sdks.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/generate_client_sdks.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite"
+    },
+    "preflight checks": {
+      "group": "Session",
+      "description": "Pre-flight checks before starting work (branch, runtime, ports, conflicts)",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/preflight.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/preflight.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
+    "test changed files": {
+      "group": "Testing",
+      "description": "Run tests only for changed files (auto-detect from git diff)",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/test_changed.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/test_changed.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
+    "render dxf": {
+      "group": "Infrastructure",
+      "description": "Render DXF drawings to PNG or PDF using ezdxf + matplotlib",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/dxf_render.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/dxf_render.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite"
+    },
+    "archive old files": {
+      "group": "Docs",
+      "description": "Move files older than 90 days from docs/_active/ to _archive/",
+      "status": "active",
+      "command": {
+        "display": "./scripts/archive_old_files.sh",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/archive_old_files.sh"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite",
+      "permission_modes": {
+        "--dry-run": "ReadOnly"
+      }
+    },
+    "classify branch disposition": {
+      "group": "Infrastructure",
+      "description": "Inspect branch/worktree disposition; remote and PR evidence are caller-supplied",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/classify_branch_disposition.py --all-local --json",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/classify_branch_disposition.py",
+              "--all-local",
+              "--json"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
+    "collect diagnostics": {
+      "group": "Infrastructure",
+      "description": "Collect compact diagnostics bundle for debugging and support",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/collect_diagnostics.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/collect_diagnostics.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "permission_modes": {
+        "--out": "WorkspaceWrite"
+      }
+    },
+    "collect metrics": {
+      "group": "Infrastructure",
+      "description": "Collect project metrics — test counts, coverage, complexity, sizes",
+      "status": "active",
+      "command": {
+        "display": "./scripts/collect_metrics.sh",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/collect_metrics.sh"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite"
+    },
+    "local ci": {
+      "group": "Git",
+      "description": "Run canonical local validation without managing Git or environments",
+      "status": "active",
+      "command": {
+        "display": "./scripts/ci_local.sh",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/ci_local.sh"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite"
+    },
+    "repo health check": {
+      "group": "Governance",
+      "description": "Quick overall repo health check",
+      "status": "active",
+      "command": {
+        "display": "./scripts/repo_health_check.sh",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/repo_health_check.sh"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "agent mistakes report": {
+      "group": "Governance",
+      "description": "Show common agent mistakes as a reminder at session start",
+      "status": "active",
+      "command": {
+        "display": "./scripts/agent_mistakes_report.sh",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/agent_mistakes_report.sh"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "find automation": {
+      "group": "Discovery",
+      "description": "Search this automation-map to find the right script for a task",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/find_automation.py \"task\"",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/find_automation.py",
+              "task"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "options": {
+        "--list": "List all task categories",
+        "--category <name>": "Show all tasks in a category",
+        "--json": "JSON output"
+      },
+      "aliases": [
+        "find"
+      ]
+    },
+    "agent brief": {
+      "group": "Session",
+      "description": "Fast 20-line actionable brief for AI agent session start",
+      "status": "active",
+      "command": {
+        "display": "./scripts/agent_brief.sh --agent <name>",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/agent_brief.sh",
+              "--agent",
+              "<name>"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "token efficiency": {
+      "group": "Session",
+      "description": "Validate low-token Codex defaults, subagent limits, and active instructions",
+      "status": "active",
+      "command": {
+        "display": "./run.sh efficiency check",
+        "steps": [
+          {
+            "argv": [
+              "./run.sh",
+              "efficiency",
+              "check"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "options": {
+        "prompt": "Print the reusable low-token task preamble",
+        "--json": "Machine-readable policy check output"
+      }
+    },
+    "model usage checkpoint": {
+      "group": "Session",
+      "description": "Record or summarize model, reasoning, elapsed time, agents, manual dashboard usage, verification, and Git state without estimating billing tokens",
+      "status": "active",
+      "command": {
+        "display": "./run.sh session usage",
+        "steps": [
+          {
+            "argv": [
+              "./run.sh",
+              "session",
+              "usage"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--checkpoint start|milestone|closeout": "WorkspaceWrite"
+      },
+      "options": {
+        "--checkpoint start|milestone|closeout": "Append a local checkpoint",
+        "--summary": "Aggregate checkpoints by model/reasoning profile",
+        "--hours N": "Limit display or summary to a recent time window",
+        "--json": "Machine-readable output"
+      },
+      "agent": "doc-master"
+    },
+    "agent context": {
+      "group": "Session",
+      "description": "Load tailored startup context for a specific agent",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/agent_context.py <agent_name>",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/agent_context.py",
+              "<agent_name>"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "options": {
+        "--list": "List available agents"
+      }
+    },
+    "agent feedback": {
+      "group": "Governance",
+      "description": "Log agent feedback (stale docs, issues) for systemic improvement",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/agent_feedback.py log --agent <name>",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/agent_feedback.py",
+              "log",
+              "--agent",
+              "<name>"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite",
+      "options": {
+        "log": "Log a feedback entry",
+        "summary": "Show feedback trends and recurring issues"
+      }
+    },
+    "self evolve": {
+      "group": "Evolution",
+      "description": "Preview the self-evolution health and feedback analysis cycle",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/evolve.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/evolve.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--fix": "WorkspaceWrite",
+        "--report": "WorkspaceWrite",
+        "--review weekly --report": "WorkspaceWrite",
+        "--review monthly --report": "WorkspaceWrite"
+      },
+      "options": {
+        "--fix": "Apply fixes and commit",
+        "--review weekly": "Weekly auto-maintenance review"
+      }
+    },
+    "project health": {
+      "group": "Governance",
+      "description": "Unified project health scanner across 5 categories (0-100 score)",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/project_health.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/project_health.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--fix": "WorkspaceWrite"
+      },
+      "options": {
+        "--fix": "Auto-fix fixable issues",
+        "--category <name>": "Scan specific category only"
+      },
+      "aliases": [
+        "health"
+      ]
+    },
+    "agent compliance check": {
+      "group": "Governance",
+      "description": "Verify agents followed their .agent.md rules",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/agent_compliance_checker.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/agent_compliance_checker.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
+    "agent drift detection": {
+      "group": "Governance",
+      "description": "Detect when agents deviate from prescribed behavior",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/agent_drift_detector.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/agent_drift_detector.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--write": "WorkspaceWrite",
+        "--output": "WorkspaceWrite"
+      }
+    },
+    "agent evolve instructions": {
+      "group": "Evolution",
+      "description": "Self-improving agent customization files",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/agent_evolve_instructions.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/agent_evolve_instructions.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite"
+    },
+    "agent scoring": {
+      "group": "Governance",
+      "description": "Score agents on 11 performance dimensions",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/agent_scorer.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/agent_scorer.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "permission_modes": {
+        "--session": "WorkspaceWrite",
+        "--view": "ReadOnlyTerminal"
+      }
+    },
+    "agent session collect": {
+      "group": "Governance",
+      "description": "Gather all session artifacts for scoring",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/agent_session_collector.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/agent_session_collector.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite"
+    },
+    "agent trends": {
+      "group": "Evolution",
+      "description": "Time series analysis and degradation detection for agent performance",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/agent_trends.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/agent_trends.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--write": "WorkspaceWrite",
+        "--output": "WorkspaceWrite"
+      }
+    },
+    "export paper data": {
+      "group": "Infrastructure",
+      "description": "Export agent performance data for academic paper",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/export_paper_data.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/export_paper_data.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "WorkspaceWrite"
+    },
+    "prompt routing": {
+      "group": "Infrastructure",
+      "description": "Route prompts to the best agent based on content analysis",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/prompt_router.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/prompt_router.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
+    "tool permissions": {
+      "group": "Infrastructure",
+      "description": "Resolve and validate explicit per-agent operation permissions",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/tool_permissions.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/tool_permissions.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
+    "audit permissions": {
+      "group": "Infrastructure",
+      "description": "Audit tool permission usage and violations across agents",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/audit_permissions.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/audit_permissions.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "pipeline state": {
+      "group": "Infrastructure",
+      "description": "Track multi-step pipeline state with checkpoints and parallelism",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/pipeline_state.py list",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/pipeline_state.py",
+              "list"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "new": "WorkspaceWrite",
+        "advance": "WorkspaceWrite",
+        "advance-parallel": "WorkspaceWrite",
+        "fail": "WorkspaceWrite",
+        "show": "ReadOnly",
+        "list": "ReadOnly",
+        "resume": "ReadOnly"
+      }
+    },
+    "config precedence": {
+      "group": "Infrastructure",
+      "description": "Resolve configuration precedence across instruction layers",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/config_precedence.py list",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/config_precedence.py",
+              "list"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "show": "ReadOnly",
+        "audit": "ReadOnly",
+        "list": "ReadOnly"
+      }
+    },
+    "skill tiers": {
+      "group": "Infrastructure",
+      "description": "Manage skill tier assignments and progression",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/skill_tiers.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/skill_tiers.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "parity dashboard": {
+      "group": "Quality",
+      "description": "Declared Indian-code capability-family and cross-stack parity dashboard",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/parity_dashboard.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/parity_dashboard.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "generate indian code manifest": {
+      "group": "Quality",
+      "description": "Verify the generated standard-namespaced Indian-code capability and registration manifest",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/generate_indian_code_manifest.py --check",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/generate_indian_code_manifest.py",
+              "--check"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    },
+    "check clause coverage": {
+      "group": "Quality",
+      "description": "Standard-namespaced decorator registration report; not implementation or engineering completeness",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_clause_coverage.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_clause_coverage.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "options": {
+        "--gaps-only": "Show metadata-only and registration-only discrepancies",
+        "--standard X": "Select a standard id or namespace",
+        "--category X": "Filter by category (e.g. flexure)",
+        "--json": "Machine-readable output",
+        "--summary": "Just totals",
+        "--registered": "Show only registered known references"
+      }
+    },
+    "check function quality": {
+      "group": "Quality",
+      "description": "Outcome-critical and advisory IS 456 function checks — AST-based static analysis",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/check_function_quality.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/check_function_quality.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal",
+      "options": {
+        "--strict": "Exit 1 on failures",
+        "--module X": "Check specific module",
+        "--json": "Machine-readable output",
+        "--summary": "Just totals"
+      }
+    },
+    "cli smoke tests": {
+      "group": "Testing",
+      "description": "Smoke test all CLI entry points for basic functionality",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/test_cli_smoke.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/test_cli_smoke.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
+    "session store": {
+      "group": "Infrastructure",
+      "description": "Persistent session state store for cross-command context",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/session_store.py list",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/session_store.py",
+              "list"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "new": "WorkspaceWrite",
+        "end": "WorkspaceWrite",
+        "list": "ReadOnly",
+        "show": "ReadOnly",
+        "resume": "ReadOnly",
+        "active": "ReadOnly"
+      }
+    },
+    "tool registry": {
+      "group": "Infrastructure",
+      "description": "Registry of available tools with metadata and permission mappings",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/tool_registry.py",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/tool_registry.py"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnlyTerminal"
+    }
+  }
+}

@@ -155,6 +155,7 @@ UI/IO        → react_app/, fastapi_app/
 ### Agent Infrastructure
 
 - **Agent Registry:** `agents/agent_registry.json` — 16 agents with permissions, skills, keywords
+- **Control Registry:** `scripts/control-plane.json` — canonical operations, commands, aliases, permissions, and compatibility projection
 - **Tool Registry:** `scripts/tool_registry.py` — unified search across agents, skills, scripts
 - **Prompt Router:** `scripts/prompt_router.py` — NLP-based task → agent routing
 - **Permission Enforcement:** `scripts/tool_permissions.py` — programmatic access control
@@ -171,7 +172,8 @@ ls react_app/src/hooks/                                         # Existing React
 grep -r "@router" fastapi_app/routers/ | head -30               # Existing API routes
 ./run.sh find --api <func>                                   # Public API exact signature (68 functions)
 ./scripts/python_runtime.sh scripts/discover_api_signatures.py <func>      # Exact param names (b_mm not width)
-./scripts/python_runtime.sh scripts/find_automation.py "task"              # Find existing automation (119 tasks)
+./scripts/python_runtime.sh scripts/find_automation.py "task"              # Find an active registered operation
+./run.sh control validate                                                   # Validate registry, permissions, targets, and projection
 ```
 
 ## Essential Commands (`./run.sh` — preferred entry point)

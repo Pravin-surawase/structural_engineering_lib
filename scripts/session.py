@@ -477,7 +477,7 @@ def cmd_start(args: argparse.Namespace) -> int:
     print(
         '🧭 Automation lookup: ./scripts/python_runtime.sh scripts/find_automation.py "your task"'
     )
-    print("📚 Context routing: scripts/automation-map.json (context_docs per task)")
+    print("📚 Context routing: scripts/control-plane.json (context_docs per operation)")
     print(
         "📖 Read first: docs/planning/next-session-brief.md → docs/getting-started/agent-bootstrap.md"
     )

@@ -3,7 +3,7 @@
 Quick onboarding guides for new users of the structural engineering library.
 
 **Type:** Mixed
-**Last Updated:** 2026-08-22
+**Last Updated:** 2026-08-23
 **Files:** 19
 
 ## Documentation Files
@@ -12,7 +12,7 @@ Quick onboarding guides for new users of the structural engineering library.
 |------|-------|-------------|-------|
 | [NEW-DEVELOPER-ONBOARDING.md](NEW-DEVELOPER-ONBOARDING.md) |  | This guide is for you if: - ✅ You're new to this project | 377 |
 | [README.md](README.md) | Getting Started | Quick onboarding guides for new users of the structural engi | 76 |
-| [agent-bootstrap.md](agent-bootstrap.md) |  | > **This is THE canonical bootstrap for all AI agents.** Ent | 755 |
+| [agent-bootstrap.md](agent-bootstrap.md) |  | > **This is THE canonical bootstrap for all AI agents.** Ent | 756 |
 | [agent-essentials.md](agent-essentials.md) |  | > **Merged.** This document's content has been consolidated  | 14 |
 | [ai-context-pack.md](ai-context-pack.md) |  | > **Merged.** This document's content has been consolidated  | 14 |
 | [beginners-guide.md](beginners-guide.md) |  | This guide is written for engineers and students who are new | 159 |

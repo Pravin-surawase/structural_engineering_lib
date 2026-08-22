@@ -1,7 +1,7 @@
 # Reference
 
 **Type:** Mixed
-**Last Updated:** 2026-08-22
+**Last Updated:** 2026-08-23
 **Files:** 31
 
 ## Config Files
@@ -22,7 +22,7 @@
 | [api-levels.md](api-levels.md) |  | structural_lib exposes three API levels. All are Alpha-previ | 134 |
 | [api-stability.md](api-stability.md) |  | StructLib is a pre-1.0 Alpha. No exported Python symbol curr | 81 |
 | [api.md](api.md) |  | The public result dataclasses api.ComplianceCaseResult, api. | 4513 |
-| [automation-catalog.md](automation-catalog.md) |  | The exhaustive machine-generated script inventory is scripts | 61 |
+| [automation-catalog.md](automation-catalog.md) |  | The exhaustive machine-generated script inventory is scripts | 69 |
 | [bbs-dxf-contract.md](bbs-dxf-contract.md) |  | This document defines the stable contracts for Bar Bending S | 116 |
 | [beam-tool-manifest.md](beam-tool-manifest.md) |  | The generated beam tool manifest describes the one approved  | 34 |
 | [canonical-result-contract.md](canonical-result-contract.md) |  | The reference beam journey uses three small, versioned contr | 74 |

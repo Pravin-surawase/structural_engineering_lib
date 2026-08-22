@@ -2,7 +2,7 @@
   "folder": "docs/reference",
   "type": "mixed",
   "description": "",
-  "last_updated": "2026-08-22",
+  "last_updated": "2026-08-23",
   "file_count": 31,
   "files": [
     {
@@ -96,10 +96,10 @@
     {
       "name": "automation-catalog.md",
       "type": "documentation",
-      "size_lines": 61,
-      "last_updated": "2026-08-17",
+      "size_lines": 69,
+      "last_updated": "2026-08-23",
       "description": "The exhaustive machine-generated script inventory is scripts/index.json, with a readable companion at",
-      "content_hash": "ac6d8967a1e8"
+      "content_hash": "2f0861ab3a5f"
     },
     {
       "name": "bbs-dxf-contract.md",
@@ -279,5 +279,5 @@
       "file_count": 1760
     }
   ],
-  "content_hash": "42d77b76c85f8a23"
+  "content_hash": "dfa89edc23b0a414"
 }
