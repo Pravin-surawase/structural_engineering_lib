@@ -57,7 +57,7 @@ def test_required_api_parity_failure_makes_readiness_fail(monkeypatch) -> None:
             "test_api_parity.py": (1, "3/3 parity vectors failed", ""),
             "check_public_route_safety.py": (0, "20 targets passed", ""),
             "check_function_quality.py": (0, "Summary: 88 functions", ""),
-            "audit_input_validation.py": (0, "Overall Grade: A", ""),
+            "audit_input_validation.py": (0, "UNPROVEN 0", ""),
         },
     )
 
@@ -78,7 +78,7 @@ def test_advisory_quality_debt_prevents_false_green(monkeypatch) -> None:
                 "Summary: 88 functions, 26 pass, 62 fail",
                 "",
             ),
-            "audit_input_validation.py": (1, "Overall Grade: F", ""),
+            "audit_input_validation.py": (1, "UNPROVEN 4", ""),
         },
     )
 
@@ -95,7 +95,7 @@ def test_all_contract_truth_controls_can_report_pass(monkeypatch) -> None:
             "test_api_parity.py": (0, "3/3 parity vectors passed", ""),
             "check_public_route_safety.py": (0, "20 targets passed", ""),
             "check_function_quality.py": (0, "Summary: all pass", ""),
-            "audit_input_validation.py": (0, "Overall Grade: A", ""),
+            "audit_input_validation.py": (0, "UNPROVEN 0", ""),
         },
     )
 
@@ -110,7 +110,7 @@ def test_public_route_regression_failure_makes_readiness_fail(monkeypatch) -> No
             "test_api_parity.py": (0, "3/3 parity vectors passed", ""),
             "check_public_route_safety.py": (1, "1 failed, 53 passed", ""),
             "check_function_quality.py": (0, "Summary: all pass", ""),
-            "audit_input_validation.py": (0, "Overall Grade: A", ""),
+            "audit_input_validation.py": (0, "UNPROVEN 0", ""),
         },
     )
 
@@ -134,17 +134,105 @@ def test_owner_selected_documentation_hard_cap_is_500() -> None:
     assert docs_check.DOC_BUDGET_FAIL == 500
 
 
-@pytest.mark.parametrize(
-    ("high_risk", "coverage", "expected"),
-    [(0, 90.0, 0), (1, 100.0, 1), (0, 89.9, 1)],
-)
+@pytest.mark.parametrize(("unproven", "expected"), [(0, 0), (1, 1), (12, 1)])
 def test_input_validation_diagnostic_exit_is_decisive(
-    high_risk: int, coverage: float, expected: int
+    unproven: int, expected: int
 ) -> None:
     report = {
         "summary": {
-            "high_risk_count": high_risk,
-            "average_coverage_percent": coverage,
+            "unproven_count": unproven,
         }
     }
     assert input_audit.diagnostic_exit_code(report) == expected
+
+
+def _analyze_source(source: str, function_name: str = "route"):
+    tree = input_audit.ast.parse(source)
+    function = next(
+        node
+        for node in tree.body
+        if isinstance(node, input_audit.ast.FunctionDef) and node.name == function_name
+    )
+    return input_audit._analyze_function(
+        function,
+        relative_module="synthetic.py",
+        filepath=Path("synthetic.py"),
+        inventory_basis="synthetic test",
+        routes=("synthetic.route",),
+    )
+
+
+def test_input_auditor_attributes_keyword_only_guards_per_parameter() -> None:
+    finding = _analyze_source("""
+def route(*, guarded: float, unresolved: float) -> float:
+    if guarded <= 0:
+        raise ValueError("guarded")
+    return guarded + unresolved
+""")
+    statuses = {item.name: item.status for item in finding.parameters}
+    assert statuses == {
+        "guarded": input_audit.ValidationStatus.PROVEN,
+        "unresolved": input_audit.ValidationStatus.UNPROVEN,
+    }
+
+
+def test_input_auditor_recognizes_delegated_validator_and_typed_model() -> None:
+    finding = _analyze_source("""
+def route(value: float, model: BeamInput, mode: str) -> float:
+    require_finite_real("value", value)
+    return value
+""")
+    statuses = {item.name: item.status for item in finding.parameters}
+    assert statuses == {
+        "value": input_audit.ValidationStatus.DELEGATED,
+        "model": input_audit.ValidationStatus.DELEGATED,
+        "mode": input_audit.ValidationStatus.NOT_APPLICABLE,
+    }
+
+
+def test_input_auditor_does_not_treat_raw_collection_hint_as_validation() -> None:
+    finding = _analyze_source("""
+def route(values: list[float]) -> float:
+    return sum(values)
+""")
+    assert finding.parameters[0].status is input_audit.ValidationStatus.UNPROVEN
+
+
+def test_input_auditor_does_not_treat_ordinary_object_hint_as_model_validation() -> (
+    None
+):
+    finding = _analyze_source("""
+def route(path: Path, callback: Callable) -> float:
+    return 1.0
+""")
+    assert all(
+        item.status is input_audit.ValidationStatus.UNPROVEN
+        for item in finding.parameters
+    )
+
+
+def test_input_auditor_nested_function_state_does_not_leak() -> None:
+    finding = _analyze_source("""
+def route(value: float) -> float:
+    def nested() -> None:
+        if value <= 0:
+            raise ValueError("nested")
+    return value
+""")
+    assert finding.parameters[0].status is input_audit.ValidationStatus.UNPROVEN
+
+
+def test_current_input_audit_uses_registry_and_reports_every_unproven() -> None:
+    root = Path(__file__).resolve().parents[2]
+    functions = input_audit.audit_directory(root)
+    report = input_audit.generate_report(functions)
+
+    assert report["schema_version"] == "input-validation-ownership/v1"
+    assert report["summary"]["total_functions"] == len(functions)
+    assert report["summary"]["unproven_count"] == len(report["unresolved_parameters"])
+    assert all(item["status"] == "UNPROVEN" for item in report["unresolved_parameters"])
+    assert any(item.inventory_basis == "classified public owner" for item in functions)
+    assert any(
+        item.inventory_basis == "explicit lower-level compatibility helper"
+        for item in functions
+    )

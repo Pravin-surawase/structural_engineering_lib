@@ -7,16 +7,19 @@ Description:  Material properties and derived constants (fck, fy related)
 
 import math
 
+from structural_lib.codes.is456._validation import (
+    require_finite_real,
+    require_range,
+)
+
 
 def get_xu_max_d(fy: float) -> float:
     """
     Get Xu,max/d ratio based on steel grade (IS 456 Cl. 38.1)
 
-    Raises:
-        ValueError: If fy <= 0
+    The maintained direct-helper steel domain is 250-550 N/mm2.
     """
-    if fy <= 0:
-        raise ValueError(f"fy must be positive, got {fy}")
+    require_range("fy", fy, minimum=250.0, maximum=550.0)
     if abs(fy - 250) < 0.5:
         return 0.53
     elif abs(fy - 415) < 0.5:
@@ -31,22 +34,18 @@ def get_xu_max_d(fy: float) -> float:
 def get_ec(fck: float) -> float:
     """Modulus of Elasticity of Concrete (IS 456 Cl. 6.2.3.1)
 
-    Raises:
-        ValueError: If fck <= 0
+    The maintained material-helper concrete domain is 15-80 N/mm2.
     """
-    if fck <= 0:
-        raise ValueError(f"fck must be positive (> 0), got {fck}")
+    require_range("fck", fck, minimum=15.0, maximum=80.0)
     return 5000 * math.sqrt(fck)
 
 
 def get_fcr(fck: float) -> float:
     """Flexural Strength of Concrete (IS 456 Cl. 6.2.2)
 
-    Raises:
-        ValueError: If fck <= 0
+    The maintained material-helper concrete domain is 15-80 N/mm2.
     """
-    if fck <= 0:
-        raise ValueError(f"fck must be positive (> 0), got {fck}")
+    require_range("fck", fck, minimum=15.0, maximum=80.0)
     return 0.7 * math.sqrt(fck)
 
 
@@ -57,14 +56,10 @@ def get_steel_stress(strain: float, fy: float) -> float:
     For Fe250, assumes elasto-plastic behavior.
 
     Raises:
-        ValueError: If fy is not positive or inputs are not finite.
+        ValueError: If inputs are not finite or fy is outside 250-550 N/mm2.
     """
-    if fy <= 0:
-        raise ValueError(f"fy must be positive, got {fy}")
-    if not math.isfinite(strain):
-        raise ValueError(f"strain must be finite, got {strain}")
-    if not math.isfinite(fy):
-        raise ValueError(f"fy must be finite, got {fy}")
+    require_finite_real("strain", strain)
+    require_range("fy", fy, minimum=250.0, maximum=550.0)
 
     es = 200000.0  # Modulus of Elasticity (N/mm^2)
 

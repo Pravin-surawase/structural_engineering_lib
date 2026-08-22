@@ -13,6 +13,7 @@ Uses Hypothesis for automated edge case discovery.
 """
 
 from hypothesis import assume, given
+from hypothesis import strategies as st
 
 from structural_lib import shear, tables
 from tests.property.strategies import (
@@ -59,13 +60,13 @@ class TestTvProperties:
 class TestTcProperties:
     """Property tests for tc (concrete shear strength from Table 19)."""
 
-    @given(fck=concrete_grade(), pt=steel_percentage_table())
+    @given(fck=st.sampled_from((15, 20, 25, 30, 35, 40)), pt=steel_percentage_table())
     def test_tc_always_positive(self, fck: int, pt: float) -> None:
         """Concrete shear strength tc should always be positive."""
         tc = tables.get_tc_value(fck, pt)
         assert tc > 0, f"tc should be positive, got {tc}"
 
-    @given(fck=concrete_grade())
+    @given(fck=st.sampled_from((15, 20, 25, 30, 35, 40)))
     def test_tc_increases_with_pt(self, fck: int) -> None:
         """tc should increase with reinforcement percentage."""
         tc_low = tables.get_tc_value(fck, 0.25)
@@ -93,7 +94,7 @@ class TestTcProperties:
 class TestTcMaxProperties:
     """Property tests for tc_max (maximum shear stress from Table 20)."""
 
-    @given(fck=concrete_grade())
+    @given(fck=st.sampled_from((15, 20, 25, 30, 35, 40)))
     def test_tc_max_always_positive(self, fck: int) -> None:
         """Maximum shear stress tc_max should always be positive."""
         tc_max = tables.get_tc_max_value(fck)
@@ -111,7 +112,7 @@ class TestTcMaxProperties:
             f"{tc_max_20} < {tc_max_25} < {tc_max_30} < {tc_max_40}"
         )
 
-    @given(fck=concrete_grade(), pt=steel_percentage_table())
+    @given(fck=st.sampled_from((15, 20, 25, 30, 35, 40)), pt=steel_percentage_table())
     def test_tc_never_exceeds_tc_max(self, fck: int, pt: float) -> None:
         """tc should never exceed tc_max for any pt value."""
         tc = tables.get_tc_value(fck, pt)

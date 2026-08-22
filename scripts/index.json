@@ -701,38 +701,43 @@
     {
       "name": "audit_input_validation.py",
       "type": "python",
-      "size_lines": 405,
+      "size_lines": 587,
       "last_updated": "2026-08-22",
-      "description": "Audit Input Validation Coverage for structural_lib.",
+      "description": "Audit validation ownership across maintained IS 456 calculation inputs.",
       "classes": [
         {
+          "name": "ValidationStatus",
+          "description": "Static ownership status for one maintained input parameter."
+        },
+        {
+          "name": "ParameterFinding",
+          "description": "Validation ownership evidence for one parameter."
+        },
+        {
           "name": "FunctionInfo",
-          "description": "Information about a function and its validation status.",
+          "description": "Discovered maintained calculation function and its input findings.",
           "public_methods": [
-            "coverage"
+            "qualified_name"
           ]
         },
         {
-          "name": "ValidationAuditor",
-          "description": "AST visitor to analyze validation patterns in Python code.",
+          "name": "FunctionBodyAnalyzer",
+          "description": "Analyze one function body without leaking state into nested functions.",
           "public_methods": [
+            "analyze",
             "visit_FunctionDef",
-            "visit_Call",
-            "visit_Raise"
+            "visit_AsyncFunctionDef",
+            "visit_Lambda",
+            "visit_If",
+            "visit_For",
+            "visit_Call"
           ]
         }
       ],
       "functions": [
         {
-          "name": "audit_file",
-          "description": "Audit a single Python file for validation coverage.",
-          "params": [
-            "filepath"
-          ]
-        },
-        {
           "name": "audit_directory",
-          "description": "Audit all Python files in a directory.",
+          "description": "Discover classified public owners plus explicit compatibility helpers.",
           "params": [
             "directory",
             "verbose"
@@ -740,7 +745,7 @@
         },
         {
           "name": "generate_report",
-          "description": "Generate audit report.",
+          "description": "Build a deterministic status report without a synthetic percentage.",
           "params": [
             "functions",
             "verbose"
@@ -748,7 +753,7 @@
         },
         {
           "name": "print_report",
-          "description": "Print human-readable report.",
+          "description": "Print the ownership summary and every unresolved parameter.",
           "params": [
             "report",
             "verbose"
@@ -756,17 +761,28 @@
         },
         {
           "name": "diagnostic_exit_code",
-          "description": "Return zero only when the heuristic has no high-risk or coverage debt.",
+          "description": "Return nonzero while any maintained parameter is unassigned.",
           "params": [
             "report"
           ]
         },
         {
-          "name": "main",
-          "description": "Main entry point."
+          "name": "main"
         }
       ],
-      "content_hash": "bb7b3e537d5f"
+      "constants": [
+        "REPO_ROOT",
+        "IS456_ROOT",
+        "LIB_ROOT",
+        "CLASSIFICATION_PATH",
+        "EXPLICIT_PUBLIC_FUNCTIONS",
+        "IS456_CODE_CLASS",
+        "PUBLIC_ROUTE_ALIASES",
+        "VALIDATOR_PREFIXES",
+        "CALCULATION_DELEGATES",
+        "NUMERIC_ANNOTATIONS"
+      ],
+      "content_hash": "07d2a3e18906"
     },
     {
       "name": "audit_permissions.py",
@@ -936,7 +952,7 @@
         "_coverage",
         "tasks"
       ],
-      "content_hash": "1bbc9d35df2d"
+      "content_hash": "0fd47f1687db"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -1696,9 +1712,9 @@
     {
       "name": "check_function_quality.py",
       "type": "python",
-      "size_lines": 678,
-      "last_updated": "2026-08-17",
-      "description": "12-point quality checklist for IS 456 functions.",
+      "size_lines": 810,
+      "last_updated": "2026-08-22",
+      "description": "Outcome-critical and advisory quality checks for IS 456 functions.",
       "classes": [
         {
           "name": "CheckResult",
@@ -1777,7 +1793,7 @@
         "UNIT_SUFFIXES",
         "ADVISORY_CHECKS"
       ],
-      "content_hash": "760a73846256"
+      "content_hash": "dda748c51f9c"
     },
     {
       "name": "check_governance.py",
@@ -2188,7 +2204,7 @@
     {
       "name": "check_public_route_safety.py",
       "type": "python",
-      "size_lines": 93,
+      "size_lines": 97,
       "last_updated": "2026-08-22",
       "description": "Run the frozen adversarial regressions for maintained public safety routes.",
       "functions": [
@@ -2202,7 +2218,7 @@
         "PYTHON_TARGETS",
         "FASTAPI_TARGETS"
       ],
-      "content_hash": "b0e5feb57bea"
+      "content_hash": "dde9382fcf44"
     },
     {
       "name": "check_python_version.py",
@@ -5646,5 +5662,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "b0f2d0224bfcac44"
+  "content_hash": "80cd9ef1429e321a"
 }

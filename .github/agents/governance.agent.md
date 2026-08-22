@@ -207,7 +207,7 @@ Track the quality of every new IS 456 function through the pipeline:
 
 | Metric | Target | How to Check |
 |--------|--------|-------------|
-| 12-point checklist pass rate | 100% | @reviewer applies checklist |
+| Outcome-critical diagnostic pass rate | 100% | Run `check_function_quality.py --strict` |
 | SP:16 benchmark coverage | ≥2 per function | Count golden tests |
 | Degenerate case coverage | ≥2 per function | Grep for "Degenerate" in tests |
 | Monotonicity test coverage | ≥2 per function | Grep for "Monotonicity" in tests |
@@ -221,7 +221,7 @@ Every new function should follow the 9-step pipeline from `/function-quality-pip
 ```
 Step 1: PLAN       → Clause documented?
 Step 2: MATH REVIEW → @structural-engineer verified?
-Step 3: IMPLEMENT   → 12-point checklist passed?
+Step 3: IMPLEMENT   → critical diagnostic passed and advisories reviewed?
 Step 4: TEST        → All test types written?
 Step 5: REVIEW      → Two-pass review (math + code)?
 Step 6: API WIRE    → Service layer updated?
@@ -238,7 +238,7 @@ These scripts are to be created as part of Phase 1 foundation:
 
 | Script | Purpose | Status |
 |--------|---------|--------|
-| `check_function_quality.py` | Automated 12-point checklist validation | 📋 TODO |
+| `check_function_quality.py` | Critical and advisory static contract checks | ✅ Active |
 | `check_clause_coverage.py` | IS 456 clause gap detection CI | 📋 TODO |
 | `check_new_element_completeness.py` | Verify types + math + tests + API + docs | 📋 TODO |
 

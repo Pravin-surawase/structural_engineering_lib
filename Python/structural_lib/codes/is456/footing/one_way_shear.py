@@ -14,7 +14,7 @@ from structural_lib.codes.is456.footing._common import (
     require_finite_real,
     validate_footing_inputs,
 )
-from structural_lib.codes.is456.tables import get_tc_value
+from structural_lib.codes.is456.tables import _get_tc_value_for_derived_reinforcement
 from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.data_types import FootingOneWayShearResult
 from structural_lib.core.errors import ValidationError
@@ -44,7 +44,7 @@ def _check_direction(
         (tau_v, tau_c, Vu_kN, utilization, is_safe, warnings)
     """
     warnings: list[str] = []
-    tau_c = get_tc_value(fck, pt)
+    tau_c = _get_tc_value_for_derived_reinforcement(fck, pt)
 
     # IS 456 Cl 34.2.4.1(a): critical length = cantilever - d
     Lv_mm = cant_mm - d_mm

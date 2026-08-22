@@ -302,8 +302,10 @@ def check_compliance_case(
     else:
         raise ValueError(f"Unsupported beam_type: {beam_type!r}.")
 
-    # Determine pt for shear table lookup.
-    if pt_percent is None:
+    # Determine pt for shear table lookup. Internally derived reinforcement can
+    # lie outside the tabulated rows, so only that path uses the nearest row.
+    pt_was_derived = pt_percent is None
+    if pt_was_derived:
         if ast_mm2_for_shear is not None and ast_mm2_for_shear > 0:
             pt_percent = (ast_mm2_for_shear * 100.0) / (b_mm * d_mm)
             assumptions.append("Computed pt_percent for shear using ast_mm2_for_shear.")
@@ -314,8 +316,18 @@ def check_compliance_case(
             )
         else:
             pt_percent = 0.0
+            assumptions.append("pt_percent not provided; derived as 0.0.")
+
+    if pt_percent is None:
+        raise RuntimeError("pt_percent resolution did not produce a numeric value")
+
+    torsion_lookup_pt_percent = pt_percent
+    if pt_was_derived:
+        torsion_lookup_pt_percent = min(max(pt_percent, 0.15), 3.0)
+        if torsion_lookup_pt_percent != pt_percent:
             assumptions.append(
-                "pt_percent not provided; using 0.0 (tables clamp internally)."
+                "Derived pt_percent was bounded only for the torsion Table 19 "
+                "lookup; the decisive shear check retains the exact value."
             )
 
     if tu_knm > 0:
@@ -332,7 +344,7 @@ def check_compliance_case(
             fy=fy_nmm2,
             cover=cover_mm,
             stirrup_dia=stirrup_dia_mm,
-            pt=pt_percent,
+            pt=torsion_lookup_pt_percent,
         )
         design_mu_knm = torsion_result.Me_knm
         design_vu_kn = torsion_result.Ve_kn

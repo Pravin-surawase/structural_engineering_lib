@@ -1,0 +1,205 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-22T12:49:36Z",
+      "query_status": "OK",
+      "reference": "task:LIB-PRO-004:user-request-check-git-start-and-finish-all-steps",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-22T12:49:36Z",
+    "prohibited_actions": [
+      "PUBLISH_RELEASE",
+      "CLAIM_PROFESSIONAL_APPROVAL",
+      "START_INDIA_3",
+      "START_ETABS_OR_DESKTOP_EXCEL",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR"
+      ],
+      "branch": "codex/lib-pro-004-safety-auditors",
+      "head_sha": "640c7839f043adb0e7db02d924a9e1a3a06e1131",
+      "task_id": "LIB-PRO-004"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "96be0d10596dff5061f2711609ead9e8e0200e8370f4373f3e9aa370e3660118",
+    "state": {
+      "branch": "codex/lib-pro-004-safety-auditors",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "640c7839f043adb0e7db02d924a9e1a3a06e1131",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 94.143,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-lib-pro-004-safety-auditors",
+      "head_sha": "640c7839f043adb0e7db02d924a9e1a3a06e1131",
+      "hold_reasons": [
+        "changed paths: 34"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-22T12:50:13.883541+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-004-safety-auditors",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 34,
+        "modified_paths": [
+          ".github/agents/governance.agent.md",
+          ".github/agents/library-expert.agent.md",
+          ".github/agents/orchestrator.agent.md",
+          ".github/agents/reviewer.agent.md",
+          ".github/agents/structural-math.agent.md",
+          ".github/prompts/function-quality-gate.prompt.md",
+          "Python/structural_lib/codes/is456/__init__.py",
+          "Python/structural_lib/codes/is456/compliance.py",
+          "Python/structural_lib/codes/is456/footing/one_way_shear.py",
+          "Python/structural_lib/codes/is456/materials.py",
+          "Python/structural_lib/codes/is456/slab/shear.py",
+          "Python/structural_lib/codes/is456/tables.py",
+          "Python/tests/integration/test_materials_tables_edges.py",
+          "Python/tests/integration/test_tables_and_materials_additional.py",
+          "Python/tests/property/test_shear_hypothesis.py",
+          "Python/tests/regression/test_critical_is456.py",
+          "Python/tests/test_audit_readiness_truth.py",
+          "Python/tests/test_function_quality_checker.py",
+          "Python/tests/unit/test_structural.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/architecture/unified-architecture-v1.md",
+          "docs/governance/maintenance-playbook.md",
+          "docs/planning/library-expansion-blueprint-v5.md",
+          "docs/planning/public-route-safety-closure-plan.md",
+          "scripts/audit_input_validation.py",
+          "scripts/automation-map.json",
+          "scripts/check_function_quality.py",
+          "scripts/check_public_route_safety.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "Python/structural_lib/codes/is456/_validation.py",
+          "Python/tests/unit/test_table_material_boundaries.py",
+          "docs/planning/lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md",
+          "docs/verification/lib-pro-004-git-handoff-source-evidence.json",
+          "docs/verification/lib-pro-004-lower-level-safety-and-diagnostic-evidence.md"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-004-safety-auditors"
+    }
+  },
+  "local_state_receipt_hash": "sha256:96be0d10596dff5061f2711609ead9e8e0200e8370f4373f3e9aa370e3660118",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-22T12:50:13.883735+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-22T12:49:36Z",
+    "owner": "Main Agent under repository retention policy; destructive cleanup remains separately owner-authorized",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "fastapi_app/**",
+      "react_app/**",
+      "excel_addin/**",
+      ".github/workflows/release.yml"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      ".github/agents/governance.agent.md",
+      ".github/agents/library-expert.agent.md",
+      ".github/agents/orchestrator.agent.md",
+      ".github/agents/reviewer.agent.md",
+      ".github/agents/structural-math.agent.md",
+      ".github/prompts/function-quality-gate.prompt.md",
+      "Python/structural_lib/codes/is456/**",
+      "Python/tests/**",
+      "docs/architecture/unified-architecture-v1.md",
+      "docs/governance/maintenance-playbook.md",
+      "docs/planning/library-expansion-blueprint-v5.md",
+      "docs/planning/lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md",
+      "docs/planning/public-route-safety-closure-plan.md",
+      "docs/verification/lib-pro-004-lower-level-safety-and-diagnostic-evidence.md",
+      "docs/verification/lib-pro-004-git-handoff-source-evidence.json",
+      "docs/verification/lib-pro-004-git-handoff-receipt.json",
+      "scripts/audit_input_validation.py",
+      "scripts/automation-map.json",
+      "scripts/check_function_quality.py",
+      "scripts/check_public_route_safety.py"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md",
+      "**/index.json",
+      "**/index.md",
+      "docs/docs-index.json"
+    ],
+    "task_id": "LIB-PRO-004"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

@@ -124,7 +124,8 @@ Every new IS 456 function must pass the 9-step pipeline
 
 1. **PLAN** → clause + formula + benchmark
 2. **MATH REVIEW** → formula verified by @structural-engineer
-3. **IMPLEMENT** → 12-point checklist (check with `check_function_quality.py`)
+3. **IMPLEMENT** → outcome-critical static contracts plus advisory review
+   (`check_function_quality.py`)
 4. **TEST** → 6 test types (unit, edge, degenerate, SP:16, textbook, hypothesis)
 5. **REVIEW** → dual pass: @structural-engineer (math) + @reviewer (code)
 6. **API WIRE** → services/api.py

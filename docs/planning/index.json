@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-22",
-  "file_count": 21,
+  "file_count": 22,
   "files": [
     {
       "name": "README.md",
@@ -104,13 +104,21 @@
       "content_hash": "bcd3ec19ce4d"
     },
     {
+      "name": "lib-pro-004-lower-level-safety-and-diagnostic-closure-plan.md",
+      "type": "documentation",
+      "size_lines": 108,
+      "last_updated": "2026-08-22",
+      "description": "640c7839f043adb0e7db02d924a9e1a3a06e1131. function-quality false positives are bounded and repairable here. The proposed",
+      "content_hash": "222997fc7278"
+    },
+    {
       "name": "library-expansion-blueprint-v5.md",
       "type": "documentation",
       "size_lines": 1121,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-22",
       "title": "Library Expansion Blueprint v5.0 — Multi-Code, Multi-Element",
       "description": "> Master plan for expanding structural_engineering_lib from single-code beam-only (IS 456) to multi-code (IS 456, ACI 318-19, EC2), multi-element (beam, column, slab, footing, wall, stair) with comple",
-      "content_hash": "c03aeee26b45"
+      "content_hash": "3bf2f8972659"
     },
     {
       "name": "memory.md",
@@ -131,11 +139,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 82,
+      "size_lines": 53,
       "last_updated": "2026-08-22",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-22",
-      "content_hash": "72b49b372f62"
+      "content_hash": "99c784290bfc"
     },
     {
       "name": "pre-release-checklist.md",
@@ -167,10 +175,10 @@
     {
       "name": "public-route-safety-closure-plan.md",
       "type": "documentation",
-      "size_lines": 108,
+      "size_lines": 107,
       "last_updated": "2026-08-22",
       "description": "engineering-use approval until the bounded packets below close. The 2026-08-22 exact-tree replay confirmed that the bounded Gravity Workflow",
-      "content_hash": "c0c38d53a623"
+      "content_hash": "96ce1f3d80c2"
     },
     {
       "name": "ui-experience-foundation-master-plan.md",
@@ -182,5 +190,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "daba22a754f6ebed"
+  "content_hash": "17e0118dc532b180"
 }

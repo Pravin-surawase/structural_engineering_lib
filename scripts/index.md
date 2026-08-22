@@ -29,7 +29,7 @@
 | [agent_session_collector.py](agent_session_collector.py) | Agent session collector — gather all session artifacts for s | 0 | 9 | 320 |
 | [agent_trends.py](agent_trends.py) | Agent trends — time series analysis and degradation detectio | 0 | 7 | 383 |
 | [audit_error_handling.py](audit_error_handling.py) | Audit error handling compliance across structural_lib module | 2 | 3 | 286 |
-| [audit_input_validation.py](audit_input_validation.py) | Audit Input Validation Coverage for structural_lib. | 2 | 6 | 405 |
+| [audit_input_validation.py](audit_input_validation.py) | Audit validation ownership across maintained IS 456 calculat | 4 | 5 | 587 |
 | [audit_permissions.py](audit_permissions.py) | Permission audit report for all agents. | 3 | 3 | 468 |
 | [audit_readiness_report.py](audit_readiness_report.py) | Audit Readiness Report Generator | 2 | 13 | 882 |
 | [batch_migrate_runner.py](batch_migrate_runner.py) | Batch migration runner with per-operation rollback logs. | 1 | 2 | 467 |
@@ -48,7 +48,7 @@
 | [check_docker_config.py](check_docker_config.py) | Docker Configuration Validator. | 0 | 6 | 295 |
 | [check_docs.py](check_docs.py) | Unified documentation checker — consolidates 4 doc validatio | 0 | 6 | 675 |
 | [check_fastapi_issues.py](check_fastapi_issues.py) | FastAPI Issues AST Scanner. | 3 | 4 | 468 |
-| [check_function_quality.py](check_function_quality.py) | 12-point quality checklist for IS 456 functions. | 3 | 6 | 678 |
+| [check_function_quality.py](check_function_quality.py) | Outcome-critical and advisory quality checks for IS 456 func | 3 | 6 | 810 |
 | [check_governance.py](check_governance.py) | Unified governance checker — folder structure + compliance v | 2 | 19 | 1042 |
 | [check_instruction_drift.py](check_instruction_drift.py) | Check for content drift between .github/instructions/ and .c | 0 | 2 | 219 |
 | [check_links.py](check_links.py) | Check and fix broken internal links in markdown files. | 0 | 2 | 351 |
@@ -56,7 +56,7 @@
 | [check_next_session_brief_length.py](check_next_session_brief_length.py) | Ensure next-session-brief.md stays concise. | 0 | 1 | 31 |
 | [check_openapi_drift.py](check_openapi_drift.py) | Check OpenAPI spec for drift against baseline. | 0 | 5 | 193 |
 | [check_openapi_snapshot.py](check_openapi_snapshot.py) | Check OpenAPI spec against baseline snapshot to detect API d | 0 | 1 | 231 |
-| [check_public_route_safety.py](check_public_route_safety.py) | Run the frozen adversarial regressions for maintained public | 0 | 1 | 93 |
+| [check_public_route_safety.py](check_public_route_safety.py) | Run the frozen adversarial regressions for maintained public | 0 | 1 | 97 |
 | [check_python_version.py](check_python_version.py) | Python Version Consistency Checker | 0 | 5 | 208 |
 | [check_repo_hygiene.py](check_repo_hygiene.py) | Fail if tracked hygiene artifacts exist in the repository. | 0 | 1 | 44 |
 | [check_scripts_index.py](check_scripts_index.py) | Ensure scripts/index.json and automation-map.json match the  | 0 | 1 | 223 |

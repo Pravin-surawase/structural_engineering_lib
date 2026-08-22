@@ -439,7 +439,7 @@ syntax error is reported at its source instead of appearing later in CI.
 ### Handoff Pipeline (FOLLOW THIS ORDER)
 
 After implementing a function:
-1. ✅ Self-check: 12-point quality checklist
+1. ✅ Self-check: outcome-critical diagnostic plus applicable advisory review
 2. → @tester: Write tests (unit + benchmark + degenerate + monotonicity)
 3. → @structural-engineer: Verify math against IS 456 + SP:16
 4. → @reviewer: Architecture + code quality review

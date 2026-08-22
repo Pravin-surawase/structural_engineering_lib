@@ -182,7 +182,7 @@
     "audit input validation": {
       "group": "Quality",
       "script": "./scripts/python_runtime.sh scripts/audit_input_validation.py",
-      "description": "Audit input validation coverage for structural_lib"
+      "description": "Audit evidence-bearing input-validation ownership for maintained structural_lib routes"
     },
     "check public route safety": {
       "group": "Quality",
@@ -903,7 +903,7 @@
     "check function quality": {
       "group": "Quality",
       "script": "./scripts/python_runtime.sh scripts/check_function_quality.py",
-      "description": "12-point quality checklist for IS 456 functions — AST-based static analysis",
+      "description": "Outcome-critical and advisory IS 456 function checks — AST-based static analysis",
       "options": {
         "--strict": "Exit 1 on failures",
         "--module X": "Check specific module",

@@ -117,7 +117,9 @@ def check_solid_slab_one_way_shear(design_input: SlabShearInput) -> SlabShearRes
         * design_input.tension_reinforcement_mm2
         / (design_input.strip_width_mm * design_input.effective_depth_mm)
     )
-    base_tau_c = tables.get_tc_value(design_input.fck_n_per_mm2, pt)
+    base_tau_c = tables._get_tc_value_for_derived_reinforcement(
+        design_input.fck_n_per_mm2, pt
+    )
     depth_factor = slab_depth_shear_factor(design_input.overall_depth_mm)
     design_tau_c = base_tau_c * depth_factor
     tau_c_max = tables.get_tc_max_value(design_input.fck_n_per_mm2)
