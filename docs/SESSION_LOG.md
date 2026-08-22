@@ -5,6 +5,115 @@
 
 ---
 
+## 2026-08-22 — Session: LIB-PRO-003-D decisive gates and cumulative safety closure
+
+**Agent:** Codex (`ops` + `governance`, sole writer)
+
+**Branch:** `codex/public-route-decisive-gates`, from exact hosted Packet C
+merge `027554457c58303f435dc4a9940dc683def22895`.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-003-d-git-handoff-receipt.json`
+
+**Focus:** Make Excel-only CI, public-route safety evidence, readiness exits,
+release/API wording, and documentation contracts decisive; then run one
+cumulative A-D product and repository acceptance sequence. No engineering
+formula, ETABS/desktop Excel, package publication, or professional approval was
+in scope.
+
+### Summary
+
+- Added an Excel add-in path classifier, Node 24 test job, and required PR-gate
+  result so an `excel_addin/**`-only change cannot bypass all 21 add-in tests.
+- Added a required public-route safety runner covering the reproduced Python
+  and FastAPI boundaries. The readiness report now returns 0 only for `PASS`,
+  1 for `FAIL`, and 2 for `PARTIAL`.
+- Made the legacy validation scanner non-green for high-risk findings or less
+  than 90% heuristic coverage; made front-matter and the active-file budget a
+  required readiness check. The owner changed the Markdown hard cap to 500.
+- Synchronized current `v0.23.1a2` publication truth, `CITATION.cff`, and the
+  distinct 89-operation/88-path API metrics without rewriting historical
+  release or E1 snapshots.
+- Reconciled four stale cumulative contracts exposed by A-C and regenerated
+  the public API manifest plus script discovery/index records.
+
+### Issues encountered
+
+- The first cumulative Python run had four failures: semantic introspection
+  ignored typed result unions; one flexure test intentionally used Fe10; the
+  shear property strategy generated M50 outside the maintained Table 19 route;
+  and release preflight still classified public `v0.23.1a2` as unpublished.
+- The first failed-only release repair validated the historical authorization
+  against the current dirty/post-release source tree, then exposed a stale
+  `CITATION.cff` publication message and date.
+- The second cumulative run found one older authorized-release fixture after
+  the release-ledger matcher had become too narrow.
+- The isolated worktree had no React `node_modules`; `./run.sh test --react`
+  stopped at `vitest: command not found`. Direct `npm ci` used the shell's Node
+  26 and emitted an engine warning before the maintained launcher selected
+  Node 24.19.0 for the actual test.
+- The first full repository gate passed 29/31 and correctly reported the API
+  manifest plus script index/automation map as stale.
+- A zsh result-capture probe used the reserved variable name `status` before
+  this packet's implementation began.
+
+### Root causes and resolutions
+
+- Root cause: the semantic test descended only when the entire return type was
+  a dataclass, while Packet C intentionally introduced a union of success and
+  typed capacity-failure dataclasses. Resolution: traverse every dataclass
+  member of the return union. Evidence: the semantic contract test and all
+  6,653 selected Python tests pass.
+- Root cause: two inherited tests generated domains that Packet B now rejects
+  before calculation. Resolution: assert the low-grade flexure domain error and
+  constrain only the composed shear-design strategy to M15-M40; direct helper
+  strategies remain broad. Evidence: both failed nodes and the full property
+  suite pass.
+- Root cause: source-surface release truth read a checklist phrase and
+  candidate-era `CITATION.cff`, despite the existing machine authorization and
+  public release ledger. Resolution: recognize the exact authorization record,
+  accept both published and historical authorized ledgers, and record the
+  actual release date/message. Evidence: current and temporary-fixture release
+  tests plus the full Python suite pass.
+- Root cause: linked worktrees do not share ignored npm dependencies.
+  Resolution: install the exact lockfile once and execute through the repository
+  Node 24 launcher. Evidence: 51 React files / 276 tests pass.
+  ⚠️ TERMINAL ISSUE: missing worktree-local `vitest` -> `npm ci`, then
+  `./run.sh frontend runtime` proved Node 24.19.0 before the green React run.
+- Root cause: Packet C's new typed slab union and Packet D's new safety script
+  had not yet been regenerated into their canonical inventories. Resolution:
+  regenerate the API manifest and scripts folder index after mapping the new
+  script. Evidence: the final repository gate passes 31/31.
+- Root cause: zsh reserves `status` as a shell parameter. Resolution: use the
+  task-specific `doc_exit` and `budget_exit` names; the documentation probe then
+  reported its exact exits.
+  ⚠️ TERMINAL ISSUE: zsh rejected assignment to `status` -> reran with
+  task-specific result variables.
+
+### Validation through content freeze
+
+- Public-route gate: 73 Python and 5 FastAPI adversarial cases pass; all 21
+  Excel add-in tests pass.
+- Cumulative product tests: 6,653 Python pass (3 skipped, 6 deselected), all
+  479 FastAPI tests pass, and all 276 React tests pass across 51 files.
+- Documentation: zero invalid front-matter values, 401/500 active Markdown
+  files, and zero broken links. Quick gate passes 10/10.
+- Full repository gate passes 31/31 after deterministic manifest/index refresh.
+- Readiness is truthfully `PARTIAL` with exit 2: 21/23 pass, zero fail, and two
+  warnings (62 function-quality diagnostic failures and F-rated heuristic input
+  validation). Therefore package release and professional/stable claims remain
+  `HOLD`; a green software regression set is not professional approval.
+
+### Remaining holds
+
+- Hosted PR checks, immutable candidate review, and exact candidate/merged tree
+  equality remain before Packet D merge closure.
+- The two advisory diagnostics require separate bounded truth triage before any
+  future release decision. INDIA-3-G0 may resume only after Packet D merge and
+  does not change the release/professional hold.
+
+---
+
 ## 2026-08-22 — Session: LIB-PRO-003-C public failure contracts
 
 **Agent:** Codex (`backend` + `api-developer`, sole writer)

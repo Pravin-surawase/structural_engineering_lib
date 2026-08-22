@@ -2,7 +2,7 @@
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
   "_updated": "2026-08-17",
   "_usage": "Run: ./scripts/python_runtime.sh scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "112/112 scripts mapped",
+  "_coverage": "113/113 scripts mapped",
   "tasks": {
     "resolve python runtime": {
       "group": "Infrastructure",
@@ -183,6 +183,12 @@
       "group": "Quality",
       "script": "./scripts/python_runtime.sh scripts/audit_input_validation.py",
       "description": "Audit input validation coverage for structural_lib"
+    },
+    "check public route safety": {
+      "group": "Quality",
+      "script": "./scripts/python_runtime.sh scripts/check_public_route_safety.py",
+      "description": "Run the frozen adversarial Python and FastAPI public-route safety regressions",
+      "permission": "ReadOnly"
     },
     "start session": {
       "group": "Session",

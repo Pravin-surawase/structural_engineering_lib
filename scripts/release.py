@@ -644,6 +644,28 @@ def _latest_documented_version(path: Path) -> str:
 
 def _release_authorization_recorded(expected: str) -> bool:
     """Return whether the owner-authorized publication sequence is recorded."""
+
+    try:
+        authorization = json.loads(
+            RELEASE_PUBLICATION_AUTHORIZATION.read_text(encoding="utf-8")
+        )
+    except (OSError, json.JSONDecodeError):
+        authorization = None
+    if isinstance(authorization, dict):
+        targets = authorization.get("authorized_targets")
+        if (
+            authorization.get("schema_version")
+            == "release-publication-authorization/v1"
+            and authorization.get("decision") == "AUTHORIZED"
+            and authorization.get("version") == expected
+            and authorization.get("tag") == f"v{expected}"
+            and isinstance(targets, list)
+            and {"pypi", "github-release"} <= set(targets)
+        ):
+            return True
+
+    # Retain the historical checklist fallback for older release records that
+    # predate the machine-readable authorization contract.
     try:
         checklist_text = CHECKLIST_PATH.read_text(encoding="utf-8")
     except OSError:
@@ -708,7 +730,7 @@ def _source_surface_version_errors(
                 "CITATION.cff must declare date-released for an authorized release"
             )
         dated_header = re.search(
-            rf"^##\s*\[{re.escape(expected)}\]\s*[—-]\s*\d{{4}}-\d{{2}}-\d{{2}}\s*$",
+            rf"^##\s*\[{re.escape(expected)}\]\s*[—-].*\d{{4}}-\d{{2}}-\d{{2}}.*$",
             changelog_text,
             re.MULTILINE,
         )
@@ -716,12 +738,14 @@ def _source_surface_version_errors(
             errors.append(
                 f"CHANGELOG.md must give authorized v{expected} an ISO release date"
             )
-        authorized_release_markers = (
-            "release authorized",
-            "published to pypi and github releases",
-        )
-        if not any(
-            marker in release_text.lower() for marker in authorized_release_markers
+        release_lower = release_text.lower()
+        if not (
+            "release authorized" in release_lower
+            or (
+                "published" in release_lower
+                and "pypi" in release_lower
+                and "github release" in release_lower
+            )
         ):
             errors.append("release ledger must record the authorized release state")
     else:

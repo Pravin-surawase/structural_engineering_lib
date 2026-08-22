@@ -298,7 +298,7 @@ Usage: ./run.sh audit [options]
 Run readiness and governance audits.
 
 Options:
-  (no args)          Full readiness audit (25 checks)
+  (no args)          Full readiness audit (current evidence set)
   --score            Governance health score (weighted)
   --errors           Error handling coverage audit
   --inputs           Input validation coverage audit

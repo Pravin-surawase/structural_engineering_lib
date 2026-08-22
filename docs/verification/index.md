@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-22
-**Files:** 211
+**Files:** 214
 
 ## Config Files
 
@@ -129,6 +129,9 @@ Benchmark examples and verification packs for validating library calculations ag
 - [lib-pro-003-c-failure-contracts-evidence.json](lib-pro-003-c-failure-contracts-evidence.json)
 - [lib-pro-003-c-git-handoff-receipt.json](lib-pro-003-c-git-handoff-receipt.json)
 - [lib-pro-003-c-git-handoff-source-evidence.json](lib-pro-003-c-git-handoff-source-evidence.json)
+- [lib-pro-003-d-decisive-gates-evidence.json](lib-pro-003-d-decisive-gates-evidence.json)
+- [lib-pro-003-d-git-handoff-receipt.json](lib-pro-003-d-git-handoff-receipt.json)
+- [lib-pro-003-d-git-handoff-source-evidence.json](lib-pro-003-d-git-handoff-source-evidence.json)
 - [next-session-git-issues-plan-git-handoff-receipt.json](next-session-git-issues-plan-git-handoff-receipt.json)
 - [next-session-git-issues-plan-git-handoff-source-evidence.json](next-session-git-issues-plan-git-handoff-source-evidence.json)
 - [post-india2-cleanup-disposition-evidence.json](post-india2-cleanup-disposition-evidence.json)

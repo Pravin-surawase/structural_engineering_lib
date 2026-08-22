@@ -8,7 +8,7 @@
 
 Open-source IS 456 RC beam design library. Full stack:
 - **Python core** (`Python/structural_lib/`) — Pure math, IS 456:2000 code
-- **FastAPI backend** (`fastapi_app/`) — REST + WebSocket API (60 endpoints, 13 routers)
+- **FastAPI backend** (`fastapi_app/`) — 89 OpenAPI HTTP operations across 26 router modules, plus a WebSocket route
 - **React 19 frontend** (`react_app/`) — R3F 3D visualization + Tailwind
 
 ## Owner Decision — Required IS Code Content and Distribution (2026-08-10/11)

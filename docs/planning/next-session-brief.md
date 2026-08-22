@@ -4,17 +4,17 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-22
-- Focus: Close reproduced non-finite public calculation outcomes, empty
-- Git receipt: docs/verification/lib-pro-003-a-git-handoff-receipt.json | sha256:5f9f0b31deb4a96d04f826319cd8594a7f23e7a30d7e9820e9b80a7a43cbb57d | HOLD
-- Git identity: codex/public-route-numeric-boundaries@e40c0b564acae82f6696e204e8b382342fbf4321 | upstream=origin/main@e40c0b564acae82f6696e204e8b382342fbf4321 | base=origin/main@e40c0b564acae82f6696e204e8b382342fbf4321 | tree=dirty | operation=none
+- Focus: Make Excel-only CI, public-route safety evidence, readiness exits,
+- Git receipt: docs/verification/lib-pro-003-d-git-handoff-receipt.json | sha256:7f46984750c4f5ade6e5d5c1b16d7d4b27599496885dc9b588615e393e9264d0 | HOLD
+- Git identity: codex/public-route-decisive-gates@027554457c58303f435dc4a9940dc683def22895 | upstream=origin/main@027554457c58303f435dc4a9940dc683def22895 | base=origin/main@027554457c58303f435dc4a9940dc683def22895 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: COMMIT_INTENDED_PATHS
 <!-- HANDOFF:END -->
 
 | State | Boundary |
 |---|---|
-| **Current** | `LIB-PRO-003-C` is active from exact hosted `main` at `e19b757c`: close slab-capacity, malformed CSV, and BOQ-rate failure contracts |
-| **Next** | Complete Packet D for decisive CI/audit/documentation truth, then run one cumulative broad acceptance sequence |
+| **Current** | `LIB-PRO-003-D` local candidate is accepted from exact Packet C merge `02755445`: 78 safety, 21 Excel, 6,653 Python, 479 FastAPI, 276 React, quick 10/10, and full 31/31 pass |
+| **Next** | Create the immutable candidate, pass hosted checks, verify exact candidate/merged tree equality, then resume read-only `INDIA-3-G0` |
 | **Why** | Direct replay reproduced 13 outcome-changing behaviours still exposed outside the newer bounded Gravity/E1 workflows |
 | **Held** | INDIA-3, new formulas/support claims, ETABS, package publication, stable/professional claims, and qualified approval remain separate and held |
 
@@ -42,18 +42,19 @@ authority. Results remain `NOT_REVIEWED` with
 
 ## Correct next library packet
 
-`LIB-PRO-003-C` is the active bounded implementation packet. Packets A-B were
-exact-tree merged through PRs #832-#833 at `e7698a63` and `e19b757c`.
+`LIB-PRO-003-D` is locally accepted and awaiting hosted/exact-tree closure.
+Packets A-C were
+exact-tree merged through PRs #832-#834 at `e7698a63`, `e19b757c`, and
+`02755445`.
 
-1. Return a typed `VALID/COMPLETED/FAIL` result when a supported one-way or
-   two-way slab demand exceeds capacity.
-2. Reject malformed or non-finite legacy CSV force cells instead of replacing
-   them with zero or dropping their rows.
-3. Reject non-positive concrete grades and non-finite/non-positive BOQ rates at
-   both the public Python and FastAPI boundaries.
+The implemented outcomes are: every `excel_addin/**` change reaches all add-in
+tests and the PR gate; frozen public-route regressions are required readiness
+evidence; `PARTIAL` is nonzero; release/API metrics are synchronized; and the
+owner-selected 500-file documentation cap is enforced. Readiness remains
+`PARTIAL` because two heuristic diagnostics are unresolved, so release and
+professional-use claims remain held.
 
-Packet D then closes decisive CI/audit/documentation truth before one
-cumulative broad acceptance run. Do not start
+Do not start
 new engineering formulas, IS 13920 expansion, IS 875, IS 1893, FEM, or ETABS.
 
 ## Other live work

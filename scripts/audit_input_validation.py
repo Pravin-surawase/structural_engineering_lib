@@ -340,6 +340,17 @@ def print_report(report: dict, verbose: bool = False) -> None:
     print()
 
 
+def diagnostic_exit_code(report: dict) -> int:
+    """Return zero only when the heuristic has no high-risk or coverage debt."""
+
+    summary = report["summary"]
+    return (
+        1
+        if summary["high_risk_count"] > 0 or summary["average_coverage_percent"] < 90.0
+        else 0
+    )
+
+
 def main():
     """Main entry point."""
     parser = argparse.ArgumentParser(
@@ -382,10 +393,11 @@ def main():
     else:
         print_report(report, verbose=args.verbose)
 
-    # Exit code based on high-risk count
-    if report["summary"]["high_risk_count"] > 10:
-        return 1  # Too many high-risk functions
-    return 0
+    # This is a heuristic inventory, not proof of runtime safety. Any public
+    # parameterized function classified as high risk, or aggregate coverage
+    # below the audit's A threshold, keeps the diagnostic non-green until it is
+    # reviewed or the scanner is refined.
+    return diagnostic_exit_code(report)
 
 
 if __name__ == "__main__":

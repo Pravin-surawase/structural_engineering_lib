@@ -94,10 +94,16 @@ class AuditReport:
 
         if required_failed > 0:
             self.verdict = "FAIL"
-        elif self.warnings > 0:
+        elif self.failed > 0 or self.warnings > 0:
             self.verdict = "PARTIAL"
         else:
             self.verdict = "PASS"
+
+
+def verdict_exit_code(verdict: str) -> int:
+    """Map report truth to a decisive process exit code."""
+
+    return {"PASS": 0, "FAIL": 1, "PARTIAL": 2}.get(verdict, 1)
 
 
 def run_script(script_path: str, args: List[str] = None) -> Tuple[int, str, str]:
@@ -358,6 +364,25 @@ def collect_contract_truth_evidence(report: AuditReport) -> None:
             )
         )
 
+    public_route_safety = Path("scripts/check_public_route_safety.py")
+    if (_REPO_ROOT / public_route_safety).exists():
+        code, stdout, stderr = run_script(str(public_route_safety))
+        passed = code == 0
+        report.add_evidence(
+            EvidenceItem(
+                category="ContractTruth",
+                name="Public Route Safety Regressions",
+                status="PASS" if passed else "FAIL",
+                required=True,
+                source=str(public_route_safety),
+                details=(
+                    "Frozen adversarial Python and FastAPI routes fail closed."
+                    if passed
+                    else _diagnostic_summary(stdout, stderr)
+                ),
+            )
+        )
+
     function_quality = Path("scripts/check_function_quality.py")
     if (_REPO_ROOT / function_quality).exists():
         code, stdout, stderr = run_script(
@@ -429,22 +454,24 @@ def collect_governance_evidence(report: AuditReport) -> None:
             )
         )
 
-    # Check doc metadata (consolidated into check_docs.py)
+    # Check active front-matter values and the enforced documentation budget.
     doc_checker = Path("scripts/check_docs.py")
     if doc_checker.exists():
-        code, stdout, stderr = run_script(str(doc_checker), ["--metadata"])
+        code, stdout, stderr = run_script(
+            str(doc_checker), ["--frontmatter", "--budget"]
+        )
         passed = code == 0
         report.add_evidence(
             EvidenceItem(
                 category="Governance",
-                name="Document Metadata",
-                status="PASS" if passed else "WARN",
+                name="Documentation Contract",
+                status="PASS" if passed else "FAIL",
                 required=True,
                 source=str(doc_checker),
                 details=(
-                    "All docs have required metadata"
+                    "Front-matter values and active-file budget are valid"
                     if passed
-                    else "Some docs missing metadata"
+                    else _diagnostic_summary(stdout, stderr)
                 ),
             )
         )
@@ -789,7 +816,7 @@ Examples:
     parser.add_argument(
         "--check-only",
         action="store_true",
-        help="Exit 0 if pass, 1 if fail (no output)",
+        help="Exit 0 only for PASS, 1 for FAIL, or 2 for PARTIAL (no output)",
     )
     parser.add_argument(
         "--json",
@@ -832,7 +859,7 @@ Examples:
 
     # Output
     if args.check_only:
-        return 0 if report.verdict != "FAIL" else 1
+        return verdict_exit_code(report.verdict)
 
     if args.json or args.export == "json":
         output = format_json(report)
@@ -847,7 +874,7 @@ Examples:
     else:
         print(output)
 
-    return 0 if report.verdict != "FAIL" else 1
+    return verdict_exit_code(report.verdict)
 
 
 if __name__ == "__main__":

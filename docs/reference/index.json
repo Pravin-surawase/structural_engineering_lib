@@ -67,7 +67,7 @@
     {
       "name": "api-manifest.json",
       "type": "config",
-      "last_updated": "2026-08-17",
+      "last_updated": "2026-08-22",
       "top_level_keys": [
         "generated",
         "module",
@@ -75,7 +75,7 @@
         "count",
         "symbols"
       ],
-      "content_hash": "13b0d9723820"
+      "content_hash": "a40c65a57135"
     },
     {
       "name": "api-stability.md",
@@ -279,5 +279,5 @@
       "file_count": 1760
     }
   ],
-  "content_hash": "abcdf9bf13e28992"
+  "content_hash": "3212e9b0731538fc"
 }

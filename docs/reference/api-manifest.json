@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-17",
+  "generated": "2026-08-22",
   "module": "structural_lib.api",
   "python": "3.11.15",
   "count": 170,
@@ -77,7 +77,7 @@
     {
       "name": "CompleteOneWaySlabDesignResult",
       "kind": "class",
-      "signature": "(reinforcement: 'OneWaySlabDesignResult', shear: 'SlabShearResult', serviceability: 'SlabServiceabilityResult', punching_shear_disposition: 'str', complete_engineering_design_approved: 'bool' = False, load_envelope_status: 'str' = 'not_generated_single_caller_supplied_factored_udl_or_coefficient_basis') -> None"
+      "signature": "(reinforcement: 'OneWaySlabDesignResult', shear: 'SlabShearResult | None', serviceability: 'SlabServiceabilityResult | None', punching_shear_disposition: 'str', complete_engineering_design_approved: 'bool' = False, load_envelope_status: 'str' = 'not_generated_single_caller_supplied_factored_udl_or_coefficient_basis') -> None"
     },
     {
       "name": "ComplianceCaseResult",
@@ -242,7 +242,7 @@
     {
       "name": "OneWaySlabDesignResult",
       "kind": "class",
-      "signature": "(flexure: 'OneWaySlabFlexureResult', detailing: 'OneWaySlabDetailingResult', load_envelope_status: 'str' = 'not_generated_single_caller_supplied_factored_udl_or_coefficient_basis') -> None"
+      "signature": "(flexure: 'OneWaySlabFlexureResult | SlabCapacityFailureResult', detailing: 'OneWaySlabDetailingResult | None', load_envelope_status: 'str' = 'not_generated_single_caller_supplied_factored_udl_or_coefficient_basis') -> None"
     },
     {
       "name": "ParetoCandidate",
@@ -382,7 +382,7 @@
     {
       "name": "TwoWaySlabPanelWorkflowResult",
       "kind": "class",
-      "signature": "(panel: 'TwoWayPanelDesignResult', serviceability: 'SlabServiceabilityResult', complete_engineering_design_approved: 'bool' = False, load_envelope_status: 'str' = 'not_generated_single_caller_supplied_factored_udl_or_coefficient_basis') -> None"
+      "signature": "(panel: 'TwoWayPanelDesignResult | SlabCapacityFailureResult', serviceability: 'SlabServiceabilityResult | None', complete_engineering_design_approved: 'bool' = False, load_envelope_status: 'str' = 'not_generated_single_caller_supplied_factored_udl_or_coefficient_basis') -> None"
     },
     {
       "name": "ValidationReport",
@@ -697,7 +697,7 @@
     {
       "name": "design_two_way_slab_is456",
       "kind": "function",
-      "signature": "(*, short_effective_span_mm: 'float', long_effective_span_mm: 'float', thickness_mm: 'float', alpha_x: 'float', alpha_y: 'float', coefficient_source_reference: 'str', coefficient_source_is_approved: 'bool', qualified_coefficient_acceptance_reference: 'str', qualified_coefficient_acceptance_acknowledged: 'bool', is_interior_solid_rectangular_panel: 'bool', all_four_edges_continuous: 'bool', factored_area_load_kn_per_m2: 'float', d_x_mm: 'float', d_y_mm: 'float', fck_n_per_mm2: 'float', fy_n_per_mm2: 'float', strip_width_mm: 'float' = 1000.0) -> 'TwoWaySlabFlexureResult'"
+      "signature": "(*, short_effective_span_mm: 'float', long_effective_span_mm: 'float', thickness_mm: 'float', alpha_x: 'float', alpha_y: 'float', coefficient_source_reference: 'str', coefficient_source_is_approved: 'bool', qualified_coefficient_acceptance_reference: 'str', qualified_coefficient_acceptance_acknowledged: 'bool', is_interior_solid_rectangular_panel: 'bool', all_four_edges_continuous: 'bool', factored_area_load_kn_per_m2: 'float', d_x_mm: 'float', d_y_mm: 'float', fck_n_per_mm2: 'float', fy_n_per_mm2: 'float', strip_width_mm: 'float' = 1000.0) -> 'TwoWaySlabFlexureResult | SlabCapacityFailureResult'"
     },
     {
       "name": "design_two_way_slab_panel_builtin_is456",

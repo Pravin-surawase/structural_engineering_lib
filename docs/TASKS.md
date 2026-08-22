@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-22 — LIB-PRO-003-B merged; Packet C failure-contract closure active
+**Updated:** 2026-08-22 — LIB-PRO-003-C merged; Packet D decisive-gate closure active
 
 ---
 
@@ -29,7 +29,7 @@
 | MAINT-006 | Enforce low-token Codex operation | P1 | ✅ DONE | User-selected parent model is preserved; Terra-first advisory routing, bounded worker packets, two-subagent cap, and quick-gate check pass |
 | MAINT-007 | Refresh onboarding, agents, tools, and usage telemetry | P1 | ✅ DONE | Terminal-only PR status, current bootstrap/counts, complete 14-skill discovery, honest usage checkpoints, and focused regressions pass |
 | MAINT-008 | Compact CI, maintenance controls, and agent entry paths | P0 | ✅ DONE | Four-lane workflow, truthful `PR Gate`, native Codex Git/GitHub lifecycle, and retired unsafe wrappers are merged |
-| LIB-PRO-001 | Remediate the professional library audit without repeating completed maintenance | P0 | ✅ SOFTWARE COMPLETE | T0 and R1-R8 are retained as evidence; bounded-product closeout continues under LIB-IS456-V1 |
+| LIB-PRO-001 | Remediate the historical professional library audit without repeating completed maintenance | P0 | ⏸ SUPERSEDED | T0 and R1-R8 remain historical evidence; later direct public-route replay reopened the release hold under LIB-PRO-003, so this row is not a current professional-readiness claim |
 
 ### Maintenance evidence captured 2026-08-07
 
@@ -69,8 +69,8 @@
 
 ## Current Release
 
-| **Current public release** | v0.23.1a1 | ✅ ALPHA RELEASED — exact CI/public artifact evidence recorded |
-- **Release evidence:** production run `31468341946`; tag `95bed562`; public installed-package UAT green
+| **Current public release** | v0.23.1a2 | ✅ ALPHA RELEASED — immutable tag/public artifacts recorded; later `main` work is not included |
+- **Release evidence:** tag target `09861d3d`; public wheel SHA-256 `279b8270…43a9`; public installed-package UAT green
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization
 - **Target:** keep later roadmap work inactive until separately activated
@@ -127,7 +127,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-003-C | Convert slab capacity, malformed legacy CSV, and negative BOQ inputs to structured fail-closed outcomes | backend + API developer + tester | M | P0 | 🚧 ACTIVE — 122 focused, 214 independent, and 20 API-contract tests pass; candidate gates pending |
+| LIB-PRO-003-D | Make Excel CI and readiness audits decisive and synchronize release/route-count/documentation truth | ops + governance | S | P0 | ✅ LOCAL CANDIDATE — 78 safety cases, 21 Excel, 6,653 Python, 479 FastAPI, 276 React, quick 10/10, and full 31/31 pass; hosted/exact-tree closure pending; readiness remains truthful PARTIAL/exit 2 and release HOLD |
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. The reproduced public-route safety defects take priority over new
@@ -138,7 +138,9 @@ closes and their own packet is activated.
 `LIB-PRO-003-A` was accepted and exact-tree merged through PR #832 at
 `e7698a63b86d2db6db2f3970871122af1ce562f6`; Packet B was accepted and
 exact-tree merged through PR #833 at
-`e19b757ccb9922061369a236501f037ec20503ab`. `LIB-PRO-002-G0` was
+`e19b757ccb9922061369a236501f037ec20503ab`; Packet C was accepted and
+exact-tree merged through PR #834 at
+`027554457c58303f435dc4a9940dc683def22895`. `LIB-PRO-002-G0` was
 independently accepted and merged through PR #812 at
 `55104e11257937b0a42fb06f931a70b8484cef39`. Packet A was independently
 accepted and merged through PR #814 at
@@ -162,7 +164,6 @@ write-back/nightly work remain outside E1.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-003-D | Make Excel CI and input audits decisive and synchronize release/route-count truth | ops + governance | S | P0 | ⏸ AFTER C |
 | INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ AFTER LIB-PRO-003 — truth/benchmark/contract audit only; no new formulas or support claims |
 | SPARK-001-G0 | Reassess the stale Spark work-program proposal before any implementation | repository owner | review gate | P2 | ⏸ OWNER REVIEW — the 2026-08-11 model/preview assumptions and bulk wave require refresh or rejection |
 

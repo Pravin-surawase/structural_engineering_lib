@@ -27,8 +27,8 @@ isolated-footing, and solid-slab workflows under IS 456:2000.
 > **v0.23.1a2 is an Alpha development preview.** Support is case-qualified,
 > not a claim of complete IS 456 coverage or professional design approval.
 > Outputs require independent review by a qualified structural engineer before
-> engineering or construction use. This source is a prepared release candidate;
-> it has not yet been tagged or published.
+> engineering or construction use. The exact `v0.23.1a2` artifact is public;
+> later Gravity, E1, and safety-closure changes on `main` are not included in it.
 
 ## One workflow, four useful surfaces
 
@@ -92,10 +92,10 @@ python3 -m pip install "structural-lib-is456===0.23.1a2"
 The package is installed as `structural-lib-is456` and imported as
 `structural_lib`.
 
-`0.23.1a2` is the prepared, unpublished candidate. The current public Alpha is
-`0.23.1a1`; the exact `0.23.1a2` pin above becomes available only if this
-candidate is later authorized and published. See the
-[release policy](docs/getting-started/releases.md) before selecting a candidate.
+`0.23.1a2` is the current public Alpha. Gravity Workflow V1, E1, and later
+public-route safety work merged after its immutable tag, so any future package
+must use a new version and fresh exact-artifact evidence. See the
+[release policy](docs/getting-started/releases.md) before selecting a release.
 
 ```python
 from structural_lib import api

@@ -134,7 +134,9 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 
 ### FastAPI Endpoints (`fastapi_app/routers/`)
 
-88 endpoints across 26 routers (59 REST + 1 WebSocket):
+89 OpenAPI HTTP operation endpoints across 26 router modules. The separate
+React-contract scanner currently matches 88 OpenAPI paths; that path metric is
+not the operation count. The WebSocket route is also outside OpenAPI:
 
 | Router | Endpoint | Purpose |
 |--------|----------|---------|
@@ -344,7 +346,7 @@ npm run dev
 # React is now at http://localhost:5173
 ```
 
-This builds and runs the FastAPI container with all Python dependencies + sample data (`Etabs_CSV/`). The `/docs` page auto-generates interactive Swagger UI for all 60 endpoints.
+This builds and runs the FastAPI container with all Python dependencies + sample data (`Etabs_CSV/`). The `/docs` page auto-generates interactive Swagger UI for all 89 current OpenAPI HTTP operations.
 
 For development with hot-reload (code changes reflect without rebuild):
 ```bash

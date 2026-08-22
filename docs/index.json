@@ -17,20 +17,20 @@
     {
       "name": "SESSION_LOG.md",
       "type": "documentation",
-      "size_lines": 4018,
+      "size_lines": 4127,
       "last_updated": "2026-08-22",
       "title": "Session Log",
       "description": "> Append-only decision log for AI agent sessions. > Earlier sessions (1-100): SESSION_LOG_through_session_100.md",
-      "content_hash": "0e04304abeae"
+      "content_hash": "dec7024fa54b"
     },
     {
       "name": "TASKS.md",
       "type": "documentation",
-      "size_lines": 737,
+      "size_lines": 738,
       "last_updated": "2026-08-22",
       "title": "Task Board",
       "description": "> **Single source of truth for active work.** Keep it short and current. - **WIP = 2** (max 2 active tasks at once)",
-      "content_hash": "b0beb2e8e4ed"
+      "content_hash": "be2ad1f8797c"
     },
     {
       "name": "WORKLOG.md",
@@ -57,7 +57,7 @@
     {
       "name": "docs-index.json",
       "type": "config",
-      "last_updated": "2026-08-17",
+      "last_updated": "2026-08-22",
       "top_level_keys": [
         "version",
         "generated",
@@ -65,7 +65,7 @@
         "docs",
         "navigation"
       ],
-      "content_hash": "2fe2985fdac0"
+      "content_hash": "c2b9207a18a6"
     }
   ],
   "subfolders": [
@@ -208,9 +208,9 @@
     {
       "name": "verification",
       "path": "verification/",
-      "file_count": 213,
+      "file_count": 216,
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
     }
   ],
-  "content_hash": "e856922f3497aceb"
+  "content_hash": "c9d5b97c7de91d42"
 }

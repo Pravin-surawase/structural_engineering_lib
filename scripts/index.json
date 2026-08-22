@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "> Development, validation, discovery, release-preparation, and maintenance tools.",
   "last_updated": "2026-08-22",
-  "file_count": 115,
+  "file_count": 116,
   "files": [
     {
       "name": "README.md",
@@ -701,8 +701,8 @@
     {
       "name": "audit_input_validation.py",
       "type": "python",
-      "size_lines": 393,
-      "last_updated": "2026-08-17",
+      "size_lines": 405,
+      "last_updated": "2026-08-22",
       "description": "Audit Input Validation Coverage for structural_lib.",
       "classes": [
         {
@@ -755,11 +755,18 @@
           ]
         },
         {
+          "name": "diagnostic_exit_code",
+          "description": "Return zero only when the heuristic has no high-risk or coverage debt.",
+          "params": [
+            "report"
+          ]
+        },
+        {
           "name": "main",
           "description": "Main entry point."
         }
       ],
-      "content_hash": "789de215d60d"
+      "content_hash": "bb7b3e537d5f"
     },
     {
       "name": "audit_permissions.py",
@@ -808,8 +815,8 @@
     {
       "name": "audit_readiness_report.py",
       "type": "python",
-      "size_lines": 855,
-      "last_updated": "2026-08-17",
+      "size_lines": 882,
+      "last_updated": "2026-08-22",
       "description": "Audit Readiness Report Generator",
       "classes": [
         {
@@ -826,6 +833,13 @@
         }
       ],
       "functions": [
+        {
+          "name": "verdict_exit_code",
+          "description": "Map report truth to a decisive process exit code.",
+          "params": [
+            "verdict"
+          ]
+        },
         {
           "name": "run_script",
           "description": "Run a Python script and capture output.",
@@ -909,12 +923,12 @@
       "constants": [
         "_REPO_ROOT"
       ],
-      "content_hash": "e925aec86e17"
+      "content_hash": "ac5688567634"
     },
     {
       "name": "automation-map.json",
       "type": "config",
-      "last_updated": "2026-08-18",
+      "last_updated": "2026-08-22",
       "top_level_keys": [
         "_comment",
         "_updated",
@@ -922,7 +936,7 @@
         "_coverage",
         "tasks"
       ],
-      "content_hash": "ba9371486507"
+      "content_hash": "1bbc9d35df2d"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -1571,7 +1585,7 @@
       "name": "check_docs.py",
       "type": "python",
       "size_lines": 675,
-      "last_updated": "2026-08-17",
+      "last_updated": "2026-08-22",
       "description": "Unified documentation checker — consolidates 4 doc validation scripts.",
       "functions": [
         {
@@ -1620,7 +1634,7 @@
         "META_REQUIRED_FIELDS",
         "META_VALID_VALUES"
       ],
-      "content_hash": "0e9f4fd9c930"
+      "content_hash": "6f66b7ee9f0d"
     },
     {
       "name": "check_fastapi_issues.py",
@@ -2170,6 +2184,25 @@
         "BASELINE_PATH"
       ],
       "content_hash": "ad352625ff27"
+    },
+    {
+      "name": "check_public_route_safety.py",
+      "type": "python",
+      "size_lines": 93,
+      "last_updated": "2026-08-22",
+      "description": "Run the frozen adversarial regressions for maintained public safety routes.",
+      "functions": [
+        {
+          "name": "main",
+          "description": "Return zero only when every frozen Python and FastAPI regression passes."
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "PYTHON_TARGETS",
+        "FASTAPI_TARGETS"
+      ],
+      "content_hash": "b0e5feb57bea"
     },
     {
       "name": "check_python_version.py",
@@ -4241,8 +4274,8 @@
     {
       "name": "release.py",
       "type": "python",
-      "size_lines": 2252,
-      "last_updated": "2026-08-17",
+      "size_lines": 2276,
+      "last_updated": "2026-08-22",
       "description": "Unified release management CLI.",
       "functions": [
         {
@@ -4323,7 +4356,7 @@
         "PYPROJECT",
         "FASTAPI_INIT"
       ],
-      "content_hash": "cabad3db6d34"
+      "content_hash": "bafebb000103"
     },
     {
       "name": "repo_health_check.sh",
@@ -5613,5 +5646,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "c0791c07d2b55c97"
+  "content_hash": "b0f2d0224bfcac44"
 }

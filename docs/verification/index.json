@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-22",
-  "file_count": 211,
+  "file_count": 214,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -2302,7 +2302,7 @@
       "size_lines": 68,
       "last_updated": "2026-08-22",
       "description": "- Source base: hosted main at e40c0b564acae82f6696e204e8b382342fbf4321.",
-      "content_hash": "770c3d6c52a5"
+      "content_hash": "0956f04c3422"
     },
     {
       "name": "lib-pro-003-b-domain-provenance-evidence.md",
@@ -2310,7 +2310,7 @@
       "size_lines": 69,
       "last_updated": "2026-08-22",
       "description": "- Source base: hosted main at e7698a63b86d2db6db2f3970871122af1ce562f6, the exact-tree merge of",
-      "content_hash": "cc28148ec13f"
+      "content_hash": "17d32e186747"
     },
     {
       "name": "lib-pro-003-b-git-handoff-receipt.json",
@@ -2386,6 +2386,54 @@
         "task_archive"
       ],
       "content_hash": "1c53deea3c97"
+    },
+    {
+      "name": "lib-pro-003-d-decisive-gates-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-22",
+      "top_level_keys": [
+        "schema_version",
+        "packet",
+        "generated_at_utc",
+        "branch",
+        "base_commit",
+        "software_disposition",
+        "readiness_verdict",
+        "release_disposition",
+        "professional_use_disposition",
+        "changes"
+      ],
+      "content_hash": "216de29f6b12"
+    },
+    {
+      "name": "lib-pro-003-d-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-22",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "d85f03f075fc"
+    },
+    {
+      "name": "lib-pro-003-d-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-22",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "06d1e6f4e0e6"
     },
     {
       "name": "next-session-git-issues-plan-git-handoff-receipt.json",
@@ -2706,5 +2754,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "93ad80366ea2d8c1"
+  "content_hash": "0c9e2949a3f9eb92"
 }

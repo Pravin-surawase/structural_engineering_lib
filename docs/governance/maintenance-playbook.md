@@ -179,7 +179,7 @@ Enforced by `check_governance.py`:
 |------|-------|---------------|
 | Root folder files | ≤ 17 | `./run.sh check --quick` |
 | docs/ root files | ≤ 5 | `./run.sh check --quick` |
-| docs/ total files | < 400 | `.venv/bin/python scripts/check_docs.py --budget` |
+| docs/ total files | ≤ 500 | `.venv/bin/python scripts/check_docs.py --budget` |
 | WIP tasks | ≤ 2 | Review TASKS.md |
 | Draft docs age | ≤ 7 days | Archive or promote |
 

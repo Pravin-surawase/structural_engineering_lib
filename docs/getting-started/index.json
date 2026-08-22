@@ -25,10 +25,10 @@
     {
       "name": "agent-bootstrap.md",
       "type": "documentation",
-      "size_lines": 753,
-      "last_updated": "2026-08-21",
+      "size_lines": 755,
+      "last_updated": "2026-08-22",
       "description": "> **This is THE canonical bootstrap for all AI agents.** Entry points (CLAUDE.md, .github/copilot-instructions.md) link here. | # | Critical Warning | Why it matters |",
-      "content_hash": "382b8bec2488"
+      "content_hash": "eda34736e0ad"
     },
     {
       "name": "agent-essentials.md",
@@ -114,9 +114,9 @@
       "name": "mac-mini-setup.md",
       "type": "documentation",
       "size_lines": 396,
-      "last_updated": "2026-08-17",
+      "last_updated": "2026-08-22",
       "description": "Complete instructions to clone and run the full stack on a fresh Mac Mini (Apple Silicon). This guide is designed so an AI agent or developer can follow it end-to-end without ambiguity.",
-      "content_hash": "8c4943b0ed59"
+      "content_hash": "66cc4e2fcac2"
     },
     {
       "name": "product-tour.md",
@@ -152,5 +152,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "a750d3aedabfe869"
+  "content_hash": "ea0e487bc2bd1f96"
 }
