@@ -34,7 +34,7 @@ Follow the global instructions and
 git status --short
 git branch --show-current
 git diff --check
-.venv/bin/python --version
+./scripts/python_runtime.sh --version
 node --version 2>/dev/null
 ```
 
@@ -46,7 +46,7 @@ integration when available. Do not infer a green result from local tests alone.
 ```bash
 ./run.sh check --quick
 ./run.sh check
-.venv/bin/python scripts/diagnose_ci.py --local
+./scripts/python_runtime.sh scripts/diagnose_ci.py --local
 ./run.sh release preflight <version>
 ./run.sh release preflight <version> --docker
 colima status

@@ -453,9 +453,6 @@ jobs:
       - name: Validate maintenance scripts
         if: steps.evidence.outputs.valid != 'true'
         run: |
-          bash -n scripts/validate_git_state.sh
-          bash -n scripts/check_unfinished_merge.sh
-          bash -n scripts/check_not_main.sh
           bash -n scripts/agent_start.sh
           python scripts/git_state.py --json > /dev/null
           python -m pytest tests/integration/test_migration_scripts.py -q

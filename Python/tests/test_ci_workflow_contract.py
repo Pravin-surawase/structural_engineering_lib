@@ -93,6 +93,13 @@ def test_weekly_repository_context_check_is_read_only():
     assert "generate_docs_index.py" not in drift_step
 
 
+def test_weekly_openapi_uses_the_canonical_snapshot_checker():
+    workflow = NIGHTLY.read_text(encoding="utf-8")
+
+    assert "python scripts/check_openapi_snapshot.py" in workflow
+    assert "python scripts/check_openapi_drift.py" not in workflow
+
+
 def _pr_gate_script() -> str:
     steps = _workflow()["jobs"]["pr-gate"]["steps"]
     return next(

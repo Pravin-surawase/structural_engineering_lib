@@ -12,6 +12,7 @@ Usage:
     python scripts/project_health.py --category docs    # Scan one category
     python scripts/project_health.py --quick            # Fast scan (numbers + links only)
     python scripts/project_health.py --json             # Machine-readable output
+    python scripts/project_health.py --write            # Persist report for trends
 
 Part of the Self-Evolving System (docs/architecture/self-evolving-system.md).
 """
@@ -879,6 +880,9 @@ def main() -> None:
     parser.add_argument("--quick", action="store_true", help="Quick scan (docs only)")
     parser.add_argument("--json", action="store_true", help="JSON output")
     parser.add_argument(
+        "--write", action="store_true", help="Persist the report for trend tracking"
+    )
+    parser.add_argument(
         "--category",
         choices=list(SCANNERS.keys()),
         help="Scan specific category",
@@ -893,7 +897,8 @@ def main() -> None:
     )
 
     print_report(report, json_output=args.json, score_only=args.score)
-    save_report(report)
+    if args.write or args.fix:
+        save_report(report)
 
     # Exit with error if critical issues
     has_errors = any(

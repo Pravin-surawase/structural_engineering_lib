@@ -282,28 +282,9 @@
       },
       "permission": "WorkspaceWrite"
     },
-    "fix broken links": {
-      "group": "Docs",
-      "description": "Find and auto-fix broken internal links in markdown files",
-      "status": "active",
-      "command": {
-        "display": "./scripts/python_runtime.sh scripts/check_links.py --fix",
-        "steps": [
-          {
-            "argv": [
-              "./scripts/python_runtime.sh",
-              "scripts/check_links.py",
-              "--fix"
-            ],
-            "cwd": "."
-          }
-        ]
-      },
-      "permission": "WorkspaceWrite"
-    },
     "check markdown links": {
       "group": "Docs",
-      "description": "Read-only validation of internal Markdown links",
+      "description": "Validate internal Markdown links and optionally repair mapped or unambiguous targets",
       "status": "active",
       "command": {
         "display": "./scripts/python_runtime.sh scripts/check_links.py",
@@ -318,29 +299,22 @@
         ]
       },
       "permission": "ReadOnly",
+      "permission_modes": {
+        "--fix": "WorkspaceWrite"
+      },
+      "options": {
+        "--fix": "Repair unambiguous broken links",
+        "--map <path>": "Use an explicit old-to-new link mapping",
+        "--verbose": "Show detailed link evidence",
+        "--exclude-archive": "Skip archived documentation"
+      },
       "aliases": [
         "check_markdown_links.py",
+        "fix broken links",
+        "fix deleted file links",
+        "fix_broken_links.py",
         "markdown links"
       ]
-    },
-    "fix deleted file links": {
-      "group": "Docs",
-      "description": "Remove or convert broken links to deleted streamlit/vba/excel/xlwings files",
-      "status": "active",
-      "command": {
-        "display": "./scripts/python_runtime.sh scripts/fix_broken_links.py --dry-run",
-        "steps": [
-          {
-            "argv": [
-              "./scripts/python_runtime.sh",
-              "scripts/fix_broken_links.py",
-              "--dry-run"
-            ],
-            "cwd": "."
-          }
-        ]
-      },
-      "permission": "ReadOnlyTerminal"
     },
     "run tests": {
       "group": "Testing",
@@ -476,27 +450,6 @@
         "--compliance": "Compliance only",
         "--json": "JSON output",
         "--strict": "Fail on warnings"
-      }
-    },
-    "governance health score": {
-      "group": "Quality",
-      "description": "Calculate overall governance health score with breakdown",
-      "status": "active",
-      "command": {
-        "display": "./scripts/python_runtime.sh scripts/governance_health_score.py",
-        "steps": [
-          {
-            "argv": [
-              "./scripts/python_runtime.sh",
-              "scripts/governance_health_score.py"
-            ],
-            "cwd": "."
-          }
-        ]
-      },
-      "permission": "ReadOnlyTerminal",
-      "permission_modes": {
-        "--output": "WorkspaceWrite"
       }
     },
     "generate audit report": {
@@ -773,7 +726,11 @@
         "--json": "Machine-readable typed state",
         "--worktrees": "Bounded current and sibling worktree inventory",
         "--strict": "Fail unless the current lane is READY_LOCAL"
-      }
+      },
+      "aliases": [
+        "compat validate git state",
+        "validate_git_state.sh"
+      ]
     },
     "check api signatures": {
       "group": "Discovery",
@@ -1095,7 +1052,7 @@
     },
     "check openapi drift": {
       "group": "Quality",
-      "description": "Compare live OpenAPI spec against baseline — detect endpoint/schema drift",
+      "description": "Compare the full live OpenAPI spec against baseline while ignoring only the declared version field",
       "status": "active",
       "command": {
         "display": "./scripts/python_runtime.sh scripts/check_openapi_snapshot.py",
@@ -1116,31 +1073,11 @@
       "options": {
         "--update": "Update baseline with current spec",
         "--json": "Machine-readable JSON output"
-      }
-    },
-    "check openapi baseline drift": {
-      "group": "CI",
-      "description": "CI guard — verify OpenAPI spec matches committed baseline (TASK-726)",
-      "status": "active",
-      "command": {
-        "display": "./scripts/python_runtime.sh scripts/check_openapi_drift.py",
-        "steps": [
-          {
-            "argv": [
-              "./scripts/python_runtime.sh",
-              "scripts/check_openapi_drift.py"
-            ],
-            "cwd": "."
-          }
-        ]
       },
-      "permission": "ReadOnlyTerminal",
-      "permission_modes": {
-        "--update": "WorkspaceWrite"
-      },
-      "options": {
-        "--update": "Update the baseline file from live spec"
-      }
+      "aliases": [
+        "check openapi baseline drift",
+        "check_openapi_drift.py"
+      ]
     },
     "check docker config": {
       "group": "Infrastructure",
@@ -1259,8 +1196,10 @@
       },
       "permission": "ReadOnlyTerminal",
       "aliases": [
+        "check wip limits",
         "check_tasks.py",
         "check_tasks_format.py",
+        "check_wip_limits.sh",
         "task board format",
         "validate tasks"
       ]
@@ -1299,23 +1238,6 @@
         ]
       },
       "permission": "ReadOnly"
-    },
-    "check wip limits": {
-      "group": "Quality",
-      "description": "Enforce WIP limits — max items in In Progress",
-      "status": "active",
-      "command": {
-        "display": "./scripts/check_wip_limits.sh",
-        "steps": [
-          {
-            "argv": [
-              "./scripts/check_wip_limits.sh"
-            ],
-            "cwd": "."
-          }
-        ]
-      },
-      "permission": "ReadOnlyTerminal"
     },
     "check repo hygiene": {
       "group": "Quality",
@@ -1465,7 +1387,11 @@
           }
         ]
       },
-      "permission": "ReadOnly"
+      "permission": "ReadOnly",
+      "aliases": [
+        "check_unfinished_merge.sh",
+        "compat unfinished operation guard"
+      ]
     },
     "check branch safety": {
       "group": "Git",
@@ -1485,61 +1411,11 @@
           }
         ]
       },
-      "permission": "ReadOnly"
-    },
-    "compat validate git state": {
-      "group": "Git",
-      "description": "Deprecated compatibility entrypoint delegated to check git state",
-      "status": "deprecated",
-      "command": {
-        "display": "./scripts/validate_git_state.sh",
-        "steps": [
-          {
-            "argv": [
-              "./scripts/validate_git_state.sh"
-            ],
-            "cwd": "."
-          }
-        ]
-      },
-      "permission": "ReadOnlyTerminal",
-      "replacement": "check git state"
-    },
-    "compat unfinished operation guard": {
-      "group": "Git",
-      "description": "Deprecated compatibility entrypoint delegated to check merge state",
-      "status": "deprecated",
-      "command": {
-        "display": "./scripts/check_unfinished_merge.sh",
-        "steps": [
-          {
-            "argv": [
-              "./scripts/check_unfinished_merge.sh"
-            ],
-            "cwd": "."
-          }
-        ]
-      },
-      "permission": "ReadOnlyTerminal",
-      "replacement": "check merge state"
-    },
-    "compat branch guard": {
-      "group": "Git",
-      "description": "Deprecated compatibility entrypoint delegated to check branch safety",
-      "status": "deprecated",
-      "command": {
-        "display": "./scripts/check_not_main.sh",
-        "steps": [
-          {
-            "argv": [
-              "./scripts/check_not_main.sh"
-            ],
-            "cwd": "."
-          }
-        ]
-      },
-      "permission": "ReadOnlyTerminal",
-      "replacement": "check branch safety"
+      "permission": "ReadOnly",
+      "aliases": [
+        "check_not_main.sh",
+        "compat branch guard"
+      ]
     },
     "migrate python module": {
       "group": "Migration",
@@ -1772,24 +1648,6 @@
       },
       "permission": "ReadOnly"
     },
-    "test import 3d pipeline": {
-      "group": "Testing",
-      "description": "Compatibility alias for the maintained import, batch-design, and 3D geometry E2E test",
-      "status": "active",
-      "command": {
-        "display": "./scripts/python_runtime.sh scripts/test_import_pipeline.py",
-        "steps": [
-          {
-            "argv": [
-              "./scripts/python_runtime.sh",
-              "scripts/test_import_pipeline.py"
-            ],
-            "cwd": "."
-          }
-        ]
-      },
-      "permission": "ReadOnlyTerminal"
-    },
     "test import pipeline": {
       "group": "Testing",
       "description": "E2E test: all 4 import endpoints (sample, single CSV, dual CSV, batch design)",
@@ -1806,7 +1664,10 @@
           }
         ]
       },
-      "permission": "ReadOnlyTerminal"
+      "permission": "ReadOnlyTerminal",
+      "aliases": [
+        "test import 3d pipeline"
+      ]
     },
     "external cli test": {
       "group": "Testing",
@@ -1907,67 +1768,6 @@
         "docs/getting-started/agent-bootstrap.md",
         "docs/guidelines/ai-token-efficiency.md"
       ]
-    },
-    "generate folder index": {
-      "group": "Generation",
-      "description": "Deprecated read-only bridge from former folder-index generation to live context summaries",
-      "status": "deprecated",
-      "command": {
-        "display": "./scripts/python_runtime.sh scripts/generate_enhanced_index.py <folder>",
-        "steps": [
-          {
-            "argv": [
-              "./scripts/python_runtime.sh",
-              "scripts/generate_enhanced_index.py",
-              "<folder>"
-            ],
-            "cwd": "."
-          }
-        ]
-      },
-      "permission": "ReadOnly",
-      "options": {
-        "--all": "Summarize repository context without writing files",
-        "--check": "Validate the context manifest and index-retirement policy"
-      },
-      "replacement": "repository context"
-    },
-    "generate all indexes": {
-      "group": "Generation",
-      "description": "Deprecated read-only bridge that validates live repository context",
-      "status": "deprecated",
-      "command": {
-        "display": "./scripts/generate_all_indexes.sh",
-        "steps": [
-          {
-            "argv": [
-              "./scripts/generate_all_indexes.sh"
-            ],
-            "cwd": "."
-          }
-        ]
-      },
-      "permission": "ReadOnly",
-      "replacement": "repository context"
-    },
-    "generate docs index": {
-      "group": "Generation",
-      "description": "Deprecated read-only bridge from the former global docs catalogue to live documentation summaries",
-      "status": "deprecated",
-      "command": {
-        "display": "./scripts/python_runtime.sh scripts/generate_docs_index.py",
-        "steps": [
-          {
-            "argv": [
-              "./scripts/python_runtime.sh",
-              "scripts/generate_docs_index.py"
-            ],
-            "cwd": "."
-          }
-        ]
-      },
-      "permission": "ReadOnly",
-      "replacement": "repository context"
     },
     "generate client sdks": {
       "group": "Generation",
@@ -2102,23 +1902,6 @@
         "--out": "WorkspaceWrite"
       }
     },
-    "collect metrics": {
-      "group": "Infrastructure",
-      "description": "Collect project metrics — test counts, coverage, complexity, sizes",
-      "status": "active",
-      "command": {
-        "display": "./scripts/collect_metrics.sh",
-        "steps": [
-          {
-            "argv": [
-              "./scripts/collect_metrics.sh"
-            ],
-            "cwd": "."
-          }
-        ]
-      },
-      "permission": "WorkspaceWrite"
-    },
     "local ci": {
       "group": "Git",
       "description": "Run canonical local validation without managing Git or environments",
@@ -2135,23 +1918,6 @@
         ]
       },
       "permission": "WorkspaceWrite"
-    },
-    "repo health check": {
-      "group": "Governance",
-      "description": "Quick overall repo health check",
-      "status": "active",
-      "command": {
-        "display": "./scripts/repo_health_check.sh",
-        "steps": [
-          {
-            "argv": [
-              "./scripts/repo_health_check.sh"
-            ],
-            "cwd": "."
-          }
-        ]
-      },
-      "permission": "ReadOnlyTerminal"
     },
     "agent mistakes report": {
       "group": "Governance",
@@ -2361,14 +2127,23 @@
       },
       "permission": "ReadOnly",
       "permission_modes": {
-        "--fix": "WorkspaceWrite"
+        "--fix": "WorkspaceWrite",
+        "--write": "WorkspaceWrite"
       },
       "options": {
         "--fix": "Auto-fix fixable issues",
+        "--score": "Print the overall score only",
+        "--quick": "Run the bounded documentation scan",
+        "--json": "Machine-readable output",
+        "--write": "Persist the report for trend tracking",
         "--category <name>": "Scan specific category only"
       },
       "aliases": [
-        "health"
+        "governance health score",
+        "governance_health_score.py",
+        "health",
+        "repo health check",
+        "repo_health_check.sh"
       ]
     },
     "agent compliance check": {
@@ -2490,24 +2265,6 @@
         "--write": "WorkspaceWrite",
         "--output": "WorkspaceWrite"
       }
-    },
-    "export paper data": {
-      "group": "Infrastructure",
-      "description": "Export agent performance data for academic paper",
-      "status": "active",
-      "command": {
-        "display": "./scripts/python_runtime.sh scripts/export_paper_data.py",
-        "steps": [
-          {
-            "argv": [
-              "./scripts/python_runtime.sh",
-              "scripts/export_paper_data.py"
-            ],
-            "cwd": "."
-          }
-        ]
-      },
-      "permission": "WorkspaceWrite"
     },
     "prompt routing": {
       "group": "Infrastructure",

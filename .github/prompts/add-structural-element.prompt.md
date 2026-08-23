@@ -117,7 +117,7 @@ Requirements:
 Add to `Python/structural_lib/services/api.py`:
 
 ```bash
-.venv/bin/python scripts/discover_api_signatures.py design_beam_is456
+./scripts/python_runtime.sh scripts/discover_api_signatures.py design_beam_is456
 # Follow the same pattern for the new element
 ```
 
@@ -135,8 +135,8 @@ Add router + Pydantic models + register in main.py.
 
 ```bash
 .venv/bin/pytest Python/tests/ -v -k "{{element}}"
-.venv/bin/python scripts/check_architecture_boundaries.py
-.venv/bin/python scripts/validate_imports.py --scope structural_lib
+./scripts/python_runtime.sh scripts/check_architecture_boundaries.py
+./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib
 ./run.sh check --quick
 ```
 

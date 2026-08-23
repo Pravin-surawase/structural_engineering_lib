@@ -5,7 +5,6 @@ from __future__ import annotations
 import copy
 import importlib
 import json
-import os
 import subprocess
 import sys
 from datetime import UTC, date, datetime, timedelta
@@ -592,7 +591,7 @@ def test_task_brief_reports_lane_route_and_safe_workflow(
     assert "inspection-only" in brief["workflow"]["git_rule"]
 
 
-def test_run_task_brief_and_index_help_are_read_only():
+def test_run_task_brief_and_context_help_are_read_only():
     before = subprocess.run(
         ["git", "status", "--porcelain=v1"],
         cwd=REPO_ROOT,
@@ -609,14 +608,7 @@ def test_run_task_brief_and_index_help_are_read_only():
         timeout=20,
     )
     help_result = subprocess.run(
-        [str(REPO_ROOT / "run.sh"), "generate", "indexes", "--help"],
-        cwd=REPO_ROOT,
-        capture_output=True,
-        text=True,
-        timeout=20,
-    )
-    no_args_result = subprocess.run(
-        [str(REPO_ROOT / "run.sh"), "generate", "indexes"],
+        [str(REPO_ROOT / "run.sh"), "context", "summary", "--help"],
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,
@@ -642,27 +634,13 @@ def test_run_task_brief_and_index_help_are_read_only():
     assert "Route:" in brief.stdout
     assert "Safe start:" in brief.stdout
     assert help_result.returncode == 0, help_result.stderr
-    assert "./run.sh generate indexes <folder> [--dry-run]" in help_result.stdout
-    assert no_args_result.returncode == 0, no_args_result.stderr
-    assert "Generic committed folder indexes were retired" in no_args_result.stdout
+    assert "usage: repo_context.py summary" in help_result.stdout
     assert task_help.returncode == 0, task_help.stderr
     assert "Usage: ./run.sh task brief" in task_help.stdout
     assert before == after
 
 
-@pytest.mark.parametrize(
-    ("arguments", "expected"),
-    [
-        (
-            ["docs/research/git-governance", "--dry-run"],
-            "docs/research/git-governance:",
-        ),
-        (["--all", "--dry-run"], "Context summary: repository"),
-    ],
-)
-def test_run_index_generator_dry_run_routes_scope_without_writes(
-    arguments: list[str], expected: str
-):
+def test_context_summary_replaces_index_routes_without_writes():
     before = subprocess.run(
         ["git", "status", "--porcelain=v1"],
         cwd=REPO_ROOT,
@@ -672,7 +650,12 @@ def test_run_index_generator_dry_run_routes_scope_without_writes(
     ).stdout
 
     result = subprocess.run(
-        [str(REPO_ROOT / "run.sh"), "generate", "indexes", *arguments],
+        [
+            str(REPO_ROOT / "run.sh"),
+            "context",
+            "summary",
+            "docs/research/git-governance",
+        ],
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,
@@ -687,40 +670,22 @@ def test_run_index_generator_dry_run_routes_scope_without_writes(
     ).stdout
 
     assert result.returncode == 0, result.stderr
-    assert "No files will be written" in result.stdout
-    assert expected in result.stdout
+    assert "docs/research/git-governance:" in result.stdout
     assert before == after
 
 
-def test_index_generator_uses_worktree_runtime_in_temp_project(tmp_path: Path):
-    """The index launcher must resolve its runtime from its own worktree."""
-    project = tmp_path / "linked-worktree"
-    scripts = project / "scripts"
-    scripts.mkdir(parents=True)
-    generator = REPO_ROOT / "scripts" / "generate_all_indexes.sh"
-    launcher = scripts / "generate_all_indexes.sh"
-    launcher.write_text(generator.read_text(encoding="utf-8"), encoding="utf-8")
-    launcher.chmod(0o755)
-    calls = tmp_path / "runtime-calls.txt"
-    runtime = scripts / "python_runtime.sh"
-    runtime.write_text(
-        '#!/usr/bin/env bash\nprintf \'%s\\n\' "$*" >> "${RUNTIME_ARGS:?}"\n',
-        encoding="utf-8",
-    )
-    runtime.chmod(0o755)
+def test_retired_index_generate_routes_are_rejected():
+    for subcommand in ("indexes", "docs-index"):
+        result = subprocess.run(
+            [str(REPO_ROOT / "run.sh"), "generate", subcommand],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            timeout=20,
+        )
 
-    result = subprocess.run(
-        [str(launcher)],
-        cwd=project,
-        capture_output=True,
-        text=True,
-        timeout=10,
-        env={**os.environ, "RUNTIME_ARGS": str(calls)},
-    )
-
-    assert result.returncode == 0, result.stderr
-    recorded = calls.read_text(encoding="utf-8")
-    assert "scripts/repo_context.py validate" in recorded
+        assert result.returncode == 1
+        assert f"Unknown generate subcommand: {subcommand}" in result.stderr
 
 
 def test_latest_session_block_does_not_rewind_descriptive_heading():

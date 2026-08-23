@@ -31,7 +31,7 @@ ls Python/structural_lib/codes/is456/
 ## 3. Get Existing API Signatures
 
 ```bash
-.venv/bin/python scripts/discover_api_signatures.py --filter {{keyword}}
+./scripts/python_runtime.sh scripts/discover_api_signatures.py --filter {{keyword}}
 ```
 
 ## 4. Implementation Rules
@@ -80,7 +80,7 @@ Add the function to `services/api.py` (NOT the stub `api.py`).
 .venv/bin/pytest Python/tests/unit/test_compliance.py -v
 
 # Architecture check
-.venv/bin/python scripts/check_architecture_boundaries.py
+./scripts/python_runtime.sh scripts/check_architecture_boundaries.py
 ```
 
 ## 8. Commit

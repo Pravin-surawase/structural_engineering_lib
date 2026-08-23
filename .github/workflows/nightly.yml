@@ -65,7 +65,7 @@ jobs:
         run: |
           python -m pytest fastapi_app/tests -q --tb=short
           python scripts/validate_api_contracts.py
-          python scripts/check_openapi_drift.py
+          python scripts/check_openapi_snapshot.py
 
       - name: FastAPI benchmark evidence (scheduled/manual lane)
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'

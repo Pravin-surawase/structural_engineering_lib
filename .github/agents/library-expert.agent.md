@@ -64,7 +64,7 @@ Python/structural_lib/
 
 ### Public API (23+ functions in services/api.py)
 ```bash
-.venv/bin/python scripts/discover_api_signatures.py <function_name>
+./scripts/python_runtime.sh scripts/discover_api_signatures.py <function_name>
 ```
 
 Key entry points:
@@ -140,8 +140,8 @@ Every design result MUST include:
 
 ```bash
 # Discover any API function signature
-.venv/bin/python scripts/discover_api_signatures.py design_beam_is456
-.venv/bin/python scripts/discover_api_signatures.py detail_beam_is456
+./scripts/python_runtime.sh scripts/discover_api_signatures.py design_beam_is456
+./scripts/python_runtime.sh scripts/discover_api_signatures.py detail_beam_is456
 
 # List all public functions
 grep "^def " Python/structural_lib/services/api.py | head -30
@@ -150,7 +150,7 @@ grep "^def " Python/structural_lib/services/api.py | head -30
 grep -r "@clause" Python/structural_lib/codes/is456/ --include="*.py" | head -30
 
 # Run a quick design to verify behavior
-.venv/bin/python -c "
+./scripts/python_runtime.sh -c "
 from structural_lib.services.api import design_beam_is456
 r = design_beam_is456(b_mm=300, d_mm=450, D_mm=500, fck=25, fy=415, Mu_kNm=150, Vu_kN=100)
 print(r)

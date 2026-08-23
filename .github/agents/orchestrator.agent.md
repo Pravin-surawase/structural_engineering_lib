@@ -57,7 +57,7 @@ git branch --show-current           # Current branch
 git status --short                  # Uncommitted changes
 
 # Delegation support
-.venv/bin/python scripts/discover_api_signatures.py <func>  # Check API before assigning
+./scripts/python_runtime.sh scripts/discover_api_signatures.py <func>  # Check API before assigning
 ls react_app/src/hooks/             # Check hooks before assigning frontend work
 grep -r "@router" fastapi_app/routers/ | head -20  # Check routes before assigning API work
 ```

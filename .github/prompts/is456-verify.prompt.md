@@ -44,7 +44,7 @@ Known benchmark problems (Pillai & Menon, Ramamrutham):
 - Shear design: τv > τc (stirrups required)
 
 ```bash
-.venv/bin/python scripts/discover_api_signatures.py design_beam_is456
+./scripts/python_runtime.sh scripts/discover_api_signatures.py design_beam_is456
 ```
 
 ## Step 5: Review Key Edge Cases

@@ -118,7 +118,7 @@ AI agents amplify existing disciplines - not substitute for them. Strong technic
    - Verify pyproject.toml matches docs
 
 # Phase 4: Link Validation (15 min)
-7. Run link checker: .venv/bin/python scripts/check_links.py
+7. Run link checker: ./scripts/python_runtime.sh scripts/check_links.py
    - Fix broken internal links
    - Update redirect stubs
 
@@ -284,10 +284,11 @@ Shopify uses 75/25 (25% for technical debt). We're more generous (80/20) but sti
 
 **Enforcement:**
 ```bash
-# Check WIP limits before starting new work
-./scripts/check_wip_limits.sh
+# Validate the task-board WIP contract
+./scripts/python_runtime.sh scripts/check_tasks_format.py
 
-# Automated checks in pre-commit hook
+# Inspect worktrees and open PRs at task intake
+./scripts/python_runtime.sh scripts/git_state.py --worktrees
 ```
 
 **Rationale:**
@@ -398,28 +399,22 @@ Prevents user confusion. Ensures accurate release notes. Maintains professional 
 
 ---
 
-### Script 2: check_wip_limits.sh
+### Script 2: check_tasks_format.py
 
-**Purpose:** Enforce WIP limits on worktrees, PRs, docs, research
+**Purpose:** Enforce the current task-board structure and declared Active WIP limit
 
-**Location:** `scripts/check_wip_limits.sh`
+**Location:** `scripts/check_tasks_format.py`
 
 **Usage:**
 ```bash
-# Check all WIP limits
-./scripts/check_wip_limits.sh
-
-# Check specific limit
-./scripts/check_wip_limits.sh --worktrees
-./scripts/check_wip_limits.sh --prs
-./scripts/check_wip_limits.sh --docs
+./scripts/python_runtime.sh scripts/check_tasks_format.py
 ```
 
 **Checks:**
-- Worktrees: `git worktree list | wc -l` (max 2)
-- Open PRs: `gh pr list --state open | wc -l` (max 5)
-- Active docs: `ls docs/planning/*.md | wc -l` (max 10)
-- Research tasks: Count RESEARCH-XXX in TASKS.md (max 3)
+- Required task-board headings and table shapes
+- Declared WIP rule (`WIP = 1` or `WIP = 2`)
+- Active rows do not exceed that declared limit
+- Task IDs and umbrella-task membership remain consistent
 
 **Output:**
 - Exit 0: All limits OK
@@ -792,7 +787,7 @@ Weekly governance sessions (small iterations) prevent large cleanup bursts. Mont
 - [ ] Clean worktrees: `git worktree list` (target: max 2)
 - [ ] Delete merged branches: `gh pr list --state merged`
 - [ ] Run version consistency: `./scripts/check_version_consistency.sh`
-- [ ] Validate links: `.venv/bin/python scripts/check_links.py`
+- [ ] Validate links: `./scripts/python_runtime.sh scripts/check_links.py`
 - [ ] Generate health report: `./scripts/generate_health_report.sh --weekly`
 - [ ] Update next-session-brief.md with metrics
 - [ ] Commit governance updates
@@ -808,7 +803,7 @@ Weekly governance sessions (small iterations) prevent large cleanup bursts. Mont
 - [ ] Check version bumped in 3 places
 - [ ] Archive pre-release session docs
 - [ ] Update version references: `./scripts/check_version_consistency.sh --fix`
-- [ ] Run link checker: `.venv/bin/python scripts/check_links.py`
+- [ ] Run link checker: `./scripts/python_runtime.sh scripts/check_links.py`
 - [ ] Generate release readiness report
 - [ ] Recommend go/no-go decision
 

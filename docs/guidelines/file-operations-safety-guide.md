@@ -38,13 +38,13 @@ File operations (delete, move, rename) can break:
 
 | Operation | Script | Example |
 |-----------|--------|---------|
-| **Move/Rename** | `safe_file_move.py` | `.venv/bin/python scripts/safe_file_move.py docs/old.md docs/new.md` |
-| **Delete** | `safe_file_delete.py` | `.venv/bin/python scripts/safe_file_delete.py docs/old.md` |
-| **Batch Archive** | `batch_archive.py` | `.venv/bin/python scripts/batch_archive.py --files f1.md f2.md` |
-| **Rename Folder** | `rename_folder_safe.py` | `.venv/bin/python scripts/rename_folder_safe.py "old folder" "new_folder"` |
-| **Find orphans** | `find_orphan_files.py` | `.venv/bin/python scripts/find_orphan_files.py --age` |
-| **Check links** | `check_links.py` | `.venv/bin/python scripts/check_links.py` |
-| **Fix links** | `check_links.py` | `.venv/bin/python scripts/check_links.py --fix` |
+| **Move/Rename** | `safe_file_move.py` | `./scripts/python_runtime.sh scripts/safe_file_move.py docs/old.md docs/new.md` |
+| **Delete** | `safe_file_delete.py` | `./scripts/python_runtime.sh scripts/safe_file_delete.py docs/old.md` |
+| **Batch Archive** | `batch_archive.py` | `./scripts/python_runtime.sh scripts/batch_archive.py --files f1.md f2.md` |
+| **Rename Folder** | `rename_folder_safe.py` | `./scripts/python_runtime.sh scripts/rename_folder_safe.py "old folder" "new_folder"` |
+| **Find orphans** | `find_orphan_files.py` | `./scripts/python_runtime.sh scripts/find_orphan_files.py --age` |
+| **Check links** | `check_links.py` | `./scripts/python_runtime.sh scripts/check_links.py` |
+| **Fix links** | `check_links.py` | `./scripts/python_runtime.sh scripts/check_links.py --fix` |
 
 ---
 
@@ -54,17 +54,17 @@ File operations (delete, move, rename) can break:
 
 ```bash
 # Step 1: Preview (ALWAYS do this first)
-.venv/bin/python scripts/safe_file_move.py docs/old-location/file.md docs/new-location/file.md --dry-run
+./scripts/python_runtime.sh scripts/safe_file_move.py docs/old-location/file.md docs/new-location/file.md --dry-run
 
 # Step 2: Review output
 # - Check references that will be updated
 # - Verify destination path is correct
 
 # Step 3: Execute move
-.venv/bin/python scripts/safe_file_move.py docs/old-location/file.md docs/new-location/file.md
+./scripts/python_runtime.sh scripts/safe_file_move.py docs/old-location/file.md docs/new-location/file.md
 
 # Step 4: Verify
-.venv/bin/python scripts/check_links.py
+./scripts/python_runtime.sh scripts/check_links.py
 
 # Step 5: Commit
 git add -- docs/old/file.md docs/new/file.md
@@ -75,22 +75,22 @@ git commit -m "refactor: move file.md to new location"
 
 ```bash
 # Step 1: Preview (ALWAYS do this first)
-.venv/bin/python scripts/safe_file_delete.py docs/obsolete-file.md --dry-run
+./scripts/python_runtime.sh scripts/safe_file_delete.py docs/obsolete-file.md --dry-run
 
 # Step 2: Review output
 # - Check if file has references (will be shown)
 # - Decide: fix references first, or use --force
 
 # Step 3a: If no references - delete
-.venv/bin/python scripts/safe_file_delete.py docs/obsolete-file.md
+./scripts/python_runtime.sh scripts/safe_file_delete.py docs/obsolete-file.md
 
 # Step 3b: If has references - fix first OR use force
 # Option A: Fix references manually
 # Option B: Force delete (creates backup)
-.venv/bin/python scripts/safe_file_delete.py docs/obsolete-file.md --force
+./scripts/python_runtime.sh scripts/safe_file_delete.py docs/obsolete-file.md --force
 
 # Step 4: Verify
-.venv/bin/python scripts/check_links.py
+./scripts/python_runtime.sh scripts/check_links.py
 
 # Step 5: Commit
 git add -- docs/file.md
@@ -101,13 +101,13 @@ git commit -m "chore: remove obsolete file.md"
 
 ```bash
 # Step 1: Find archive candidates
-.venv/bin/python scripts/find_orphan_files.py --age
+./scripts/python_runtime.sh scripts/find_orphan_files.py --age
 
 # Step 2: Move to archive (with redirect stub)
-.venv/bin/python scripts/safe_file_move.py docs/planning/old-plan.md docs/_archive/2026-01/old-plan.md --stub
+./scripts/python_runtime.sh scripts/safe_file_move.py docs/planning/old-plan.md docs/_archive/2026-01/old-plan.md --stub
 
 # Step 3: Verify
-.venv/bin/python scripts/check_links.py
+./scripts/python_runtime.sh scripts/check_links.py
 
 # Step 4: Commit
 git add -- docs/planning/old-plan.md docs/_archive/planning/old-plan.md
@@ -118,8 +118,8 @@ git commit -m "chore: archive old planning docs"
 
 ```bash
 # Renaming is just moving to same folder with new name
-.venv/bin/python scripts/safe_file_move.py docs/old-name.md docs/new-name.md --dry-run
-.venv/bin/python scripts/safe_file_move.py docs/old-name.md docs/new-name.md
+./scripts/python_runtime.sh scripts/safe_file_move.py docs/old-name.md docs/new-name.md --dry-run
+./scripts/python_runtime.sh scripts/safe_file_move.py docs/old-name.md docs/new-name.md
 git add -- docs/old-name.md docs/new-name.md
 git commit -m "refactor: rename old-name.md to new-name.md"
 ```
@@ -128,13 +128,13 @@ git commit -m "refactor: rename old-name.md to new-name.md"
 
 ```bash
 # Step 1: Archive specific files
-.venv/bin/python scripts/batch_archive.py --files file1.md file2.md file3.md --dry-run
+./scripts/python_runtime.sh scripts/batch_archive.py --files file1.md file2.md file3.md --dry-run
 
 # Step 2: Archive by pattern
-.venv/bin/python scripts/batch_archive.py --pattern "docs/_archive/AGENT*.md" --dry-run
+./scripts/python_runtime.sh scripts/batch_archive.py --pattern "docs/_archive/AGENT*.md" --dry-run
 
 # Step 3: Execute (after reviewing dry-run)
-.venv/bin/python scripts/batch_archive.py --files file1.md file2.md file3.md
+./scripts/python_runtime.sh scripts/batch_archive.py --files file1.md file2.md file3.md
 
 # Step 4: Commit
 git add -- docs/agents docs/_archive/agents
@@ -145,17 +145,17 @@ git commit -m "chore: archive agent completion docs"
 
 ```bash
 # Step 1: Preview (finds all references)
-.venv/bin/python scripts/rename_folder_safe.py "old folder name" "new_folder_name" --dry-run
+./scripts/python_runtime.sh scripts/rename_folder_safe.py "old folder name" "new_folder_name" --dry-run
 
 # Step 2: Review references that will be updated
 # - Check how many files link to this folder
 # - Verify .gitignore entries
 
 # Step 3: Execute rename
-.venv/bin/python scripts/rename_folder_safe.py "old folder name" "new_folder_name"
+./scripts/python_runtime.sh scripts/rename_folder_safe.py "old folder name" "new_folder_name"
 
 # Step 4: Verify links
-.venv/bin/python scripts/check_links.py
+./scripts/python_runtime.sh scripts/check_links.py
 
 # Step 5: Update .gitignore if folder was listed
 # (Script warns but doesn't auto-edit .gitignore)
@@ -221,10 +221,10 @@ git restore path/to/original/file.md
 
 ```bash
 # After any operation, run link check
-.venv/bin/python scripts/check_links.py
+./scripts/python_runtime.sh scripts/check_links.py
 
 # If broken links found, auto-fix
-.venv/bin/python scripts/check_links.py --fix
+./scripts/python_runtime.sh scripts/check_links.py --fix
 ```
 
 ---
@@ -272,20 +272,20 @@ git restore path/to/original/file.md
 
 ```
 Want to delete a file?
-├── Check references: .venv/bin/python scripts/safe_file_delete.py <file> --dry-run
+├── Check references: ./scripts/python_runtime.sh scripts/safe_file_delete.py <file> --dry-run
 │   ├── No references → Safe to delete
 │   └── Has references → Either:
 │       ├── Fix references first, then delete
 │       └── Move to archive instead (preserves content)
-└── Delete: .venv/bin/python scripts/safe_file_delete.py <file>
+└── Delete: ./scripts/python_runtime.sh scripts/safe_file_delete.py <file>
 
 Want to move a file?
-├── Preview: .venv/bin/python scripts/safe_file_move.py <old> <new> --dry-run
+├── Preview: ./scripts/python_runtime.sh scripts/safe_file_move.py <old> <new> --dry-run
 ├── Check for collisions at destination
-└── Execute: .venv/bin/python scripts/safe_file_move.py <old> <new>
+└── Execute: ./scripts/python_runtime.sh scripts/safe_file_move.py <old> <new>
 
 Not sure if file is needed?
-├── Check orphan status: .venv/bin/python scripts/find_orphan_files.py --age
+├── Check orphan status: ./scripts/python_runtime.sh scripts/find_orphan_files.py --age
 ├── Check git history: git log --oneline -5 -- <file>
 └── If orphan + old → Archive
     If linked → Keep
@@ -296,8 +296,8 @@ Not sure if file is needed?
 
 | Mistake | Correct Approach |
 |---------|------------------|
-| `rm docs/old.md` | `.venv/bin/python scripts/safe_file_delete.py docs/old.md` |
-| `mv docs/a.md docs/b.md` | `.venv/bin/python scripts/safe_file_move.py docs/a.md docs/b.md` |
+| `rm docs/old.md` | `./scripts/python_runtime.sh scripts/safe_file_delete.py docs/old.md` |
+| `mv docs/a.md docs/b.md` | `./scripts/python_runtime.sh scripts/safe_file_move.py docs/a.md docs/b.md` |
 | Delete without checking | Always `--dry-run` first |
 | Batch delete many files | Delete one at a time with commits |
 | Skip link check after | Always run `check_links.py` after |

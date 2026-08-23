@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-23 — MAINT-012B live-context and generic-index retirement active
+**Updated:** 2026-08-23 — MAINT-012D candidate frozen for required local and hosted closeout
 
 ---
 
@@ -127,7 +127,9 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| MAINT-012C | Add content-addressed impact/evidence reuse and migrate local/hosted validation scheduling to explicit change domains | Main Agent + governance | M | P0 | 🔄 ACTIVE — isolated candidate; unknown impact runs every domain |
+
+No implementation packet remains active. MAINT-012D is complete on merge after
+the frozen candidate passes its required local and hosted evidence.
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. The reproduced public-route safety packet is integrated. INDIA-3,
@@ -164,7 +166,6 @@ write-back/nightly work remain outside E1.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| MAINT-012D | Consolidate scanners and retire/move obsolete compatibility scripts using live callers, ownership, runtime, and replacement evidence | Main Agent + governance | M | P0 | ⏸ AFTER MAINT-012C — separate frozen candidate; preservation-aware proof required |
 | INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ AFTER LIB-PRO-003 — truth/benchmark/contract audit only; no new formulas or support claims |
 | SPARK-001-G0 | Reassess the stale Spark work-program proposal before any implementation | repository owner | review gate | P2 | ⏸ OWNER REVIEW — the 2026-08-11 model/preview assumptions and bulk wave require refresh or rejection |
 
@@ -201,6 +202,9 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| MAINT-012D | Consolidated true duplicate scanners, archived obsolete compatibility paths, migrated live callers, and preserved distinct safety evidence | Main Agent + governance | ✅ COMPLETE ON MERGE — frozen candidate requires broad Python, quick/full, normal hooks, and all applicable hosted checks; PR facts remain external |
+| MAINT-012C | Unified local/hosted impact scheduling and exact content-addressed PASS reuse under one strict seven-domain verification manifest | Main Agent + governance | ✅ DONE — PR #842 merged at `84f3cbe6`; unknown paths fail closed and ordinary hooks reuse only exact matching evidence |
+| MAINT-012B | Replaced 141 generated index artifacts with a strict context manifest and bounded live summaries | Main Agent + governance | ✅ DONE — PR #841 merged at `646660e3`; generic index topology and regeneration were retired |
 | MAINT-012A | Established the strict canonical operation registry, complete permissions, structured commands, CLI, and deterministic legacy projection | Main Agent + governance | ✅ DONE — PR #840 merged at `efd21917`; index architecture was explicitly deferred to MAINT-012B |
 | MAINT-011 | Repaired staged/all-file hook parity, JSONC/Bandit dispositions, developer readiness, and audit/session truth | Main Agent + ops + governance | ✅ COMPLETE ON MERGE — 15 root-cause dispositions implemented; all-file byte cleanliness, focused/quick/full/local hooks, and required hosted checks are merge prerequisites |
 | LIB-PRO-005 | Closed confirmed WebSocket, BOQ, lower-level scalar, PMM packaging, root-export, React-status, and evidence-truth defects without hiding the wider audit hold | backend + api + frontend + ops | ✅ DONE — PR #837 merged at `3f61bd93`; every required check passed and remaining 361 UNPROVEN parameters stay explicit |

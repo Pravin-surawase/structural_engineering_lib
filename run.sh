@@ -269,7 +269,7 @@ _cmd_audit() {
 
     case "$subcmd" in
         --score)
-            "$VENV" "$SCRIPTS/governance_health_score.py" "${@:2}"
+            "$VENV" "$SCRIPTS/project_health.py" --score "${@:2}"
             ;;
         --errors)
             "$VENV" "$SCRIPTS/audit_error_handling.py" "${@:2}"
@@ -302,14 +302,14 @@ Run readiness and governance audits.
 
 Options:
   (no args)          Full readiness audit (current evidence set)
-  --score            Governance health score (weighted)
+  --score            Project health score (alias for health --score)
   --errors           Error handling coverage audit
   --inputs           Input validation coverage audit
   --diagnostics      System diagnostics bundle
 
 Examples:
   ./run.sh audit                    # Full readiness report
-  ./run.sh audit --score            # Quick governance score
+  ./run.sh audit --score            # Quick project health score
   ./run.sh audit --diagnostics      # System info bundle
 EOF
 }
@@ -527,21 +527,11 @@ _cmd_generate() {
     shift 2>/dev/null || true
 
     case "$subcmd" in
-        indexes)
-            if [[ $# -eq 0 || "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
-                _help_generate_indexes
-            else
-                "$VENV" "$SCRIPTS/generate_enhanced_index.py" "$@"
-            fi
-            ;;
         sdk)
             "$VENV" "$SCRIPTS/generate_client_sdks.py" "$@"
             ;;
         manifest)
             "$VENV" "$SCRIPTS/generate_api_manifest.py" "$@"
-            ;;
-        docs-index)
-            "$VENV" "$SCRIPTS/generate_docs_index.py" "$@"
             ;;
         scaffold)
             if [[ $# -eq 0 ]]; then
@@ -563,40 +553,16 @@ _help_generate() {
     cat <<'EOF'
 Usage: ./run.sh generate <subcommand> [args]
 
-Generate SDKs, manifests, and scaffolds. Legacy index routes are read-only.
+Generate SDKs, manifests, and scaffolds.
 
 Subcommands:
-  indexes              Deprecated bridge to live context summaries
   sdk                  Generate TypeScript/Python client SDKs
   manifest             Generate/validate api-manifest.json
-  docs-index           Deprecated bridge to live documentation context
   scaffold <module>    Generate pytest test template for a module
 
 Examples:
-  ./run.sh context summary docs/reference
   ./run.sh generate sdk                         # Generate client SDKs
   ./run.sh generate scaffold structural_lib.core  # Test template
-EOF
-}
-
-_help_generate_indexes() {
-    cat <<'EOF'
-Usage:
-  ./run.sh generate indexes <folder> [--dry-run]
-  ./run.sh generate indexes --all --check
-
-Compatibility only. Generic committed folder indexes were retired by
-MAINT-012B. These forms are read-only and delegate to ./run.sh context.
-
-Options:
-  --dry-run            Show the live folder summary
-  --all                Summarize repository context
-  --check              Validate the context manifest and retirement policy
-
-Examples:
-  ./run.sh context validate
-  ./run.sh context show automation
-  ./run.sh context summary docs/research/git-governance
 EOF
 }
 

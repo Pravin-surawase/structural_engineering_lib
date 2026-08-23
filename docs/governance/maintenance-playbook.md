@@ -103,10 +103,10 @@ git branch --show-current
 ./run.sh coverage --summary
 
 # Element completeness check
-.venv/bin/python scripts/check_new_element_completeness.py
+./scripts/python_runtime.sh scripts/check_new_element_completeness.py
 
 # Function quality scan
-.venv/bin/python scripts/check_function_quality.py
+./scripts/python_runtime.sh scripts/check_function_quality.py
 
 # Feedback trends
 ./run.sh feedback summary
@@ -150,7 +150,7 @@ Every new IS 456 function must pass the 9-step pipeline
 | Run all SP:16 benchmarks | `.venv/bin/pytest Python/tests/ -v -k "sp16 or benchmark"` | Catch regression from refactoring |
 | Verify IS 456 table values | Manual check against standard | Tables are typed constants — typos propagate |
 | Check BIS website for amendments | `fetch_webpage` for BIS portal | IS 456:2000 periodically revised |
-| Clause coverage report | `.venv/bin/python scripts/check_clause_coverage.py` | Track implementation progress |
+| Clause coverage report | `./scripts/python_runtime.sh scripts/check_clause_coverage.py` | Track implementation progress |
 
 ---
 
@@ -180,7 +180,7 @@ Enforced by `check_governance.py`:
 |------|-------|---------------|
 | Root folder files | ≤ 17 | `./run.sh check --quick` |
 | docs/ root files | ≤ 5 | `./run.sh check --quick` |
-| docs/ total files | ≤ 500 | `.venv/bin/python scripts/check_docs.py --budget` |
+| docs/ total files | ≤ 500 | `./scripts/python_runtime.sh scripts/check_docs.py --budget` |
 | WIP tasks | ≤ 2 | Review TASKS.md |
 | Draft docs age | ≤ 7 days | Archive or promote |
 
@@ -196,14 +196,14 @@ After structural changes (file moves, renames, new modules):
 ./run.sh context summary docs
 
 # Sync numbers in docs
-.venv/bin/python scripts/sync_numbers.py --fix
+./scripts/python_runtime.sh scripts/sync_numbers.py --fix
 
 # Check internal links (870+)
-.venv/bin/python scripts/check_links.py
+./scripts/python_runtime.sh scripts/check_links.py
 
 # Safe file operations (NEVER use mv/rm directly)
-.venv/bin/python scripts/safe_file_move.py old.md new.md --dry-run
-.venv/bin/python scripts/safe_file_delete.py file.md
+./scripts/python_runtime.sh scripts/safe_file_move.py old.md new.md --dry-run
+./scripts/python_runtime.sh scripts/safe_file_delete.py file.md
 ```
 
 ---
@@ -228,9 +228,9 @@ After structural changes (file moves, renames, new modules):
 | Scenario | Diagnosis | Fix |
 |----------|-----------|-----|
 | Test failure | `.venv/bin/pytest Python/tests/ -v -k "test_name" --tb=short` | Use `/fix-test-failure` prompt |
-| Import error | `.venv/bin/python scripts/validate_imports.py --scope structural_lib` | Fix import chain |
-| Architecture breach | `.venv/bin/python scripts/check_architecture_boundaries.py` | Move code to correct layer |
-| Broken links | `.venv/bin/python scripts/check_links.py` | Update paths or use `safe_file_move` |
+| Import error | `./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib` | Fix import chain |
+| Architecture breach | `./scripts/python_runtime.sh scripts/check_architecture_boundaries.py` | Move code to correct layer |
+| Broken links | `./scripts/python_runtime.sh scripts/check_links.py` | Update paths or use `safe_file_move` |
 | Calculation error reported | 1. Identify IS 456 clause 2. Hand-verify vs SP:16 3. Add regression test | Fix formula, trace @clause |
 
 ---
@@ -239,13 +239,13 @@ After structural changes (file moves, renames, new modules):
 
 ```bash
 # Agent performance scoring
-.venv/bin/python scripts/agent_scorer.py --agent backend
+./scripts/python_runtime.sh scripts/agent_scorer.py --agent backend
 
 # Drift detection
-.venv/bin/python scripts/agent_drift_detector.py
+./scripts/python_runtime.sh scripts/agent_drift_detector.py
 
 # Compliance check
-.venv/bin/python scripts/agent_compliance_checker.py
+./scripts/python_runtime.sh scripts/agent_compliance_checker.py
 
 # Route a task to best agent
 ./run.sh route "task description"

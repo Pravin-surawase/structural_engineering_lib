@@ -21,7 +21,7 @@ description: "Bug fix workflow — reproduce, diagnose, fix, test, commit"
   - FastAPI route? → `fastapi_app/routers/`
 - Use exact parameter names:
   ```bash
-  .venv/bin/python scripts/discover_api_signatures.py {{function_name}}
+  ./scripts/python_runtime.sh scripts/discover_api_signatures.py {{function_name}}
   ```
 
 ## 3. Fix

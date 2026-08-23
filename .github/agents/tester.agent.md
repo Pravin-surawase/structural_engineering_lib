@@ -105,7 +105,7 @@ cd react_app && npx vitest run --reporter=verbose              # Verbose output
    ```
 2. **Understand the function signature**:
    ```bash
-   .venv/bin/python scripts/discover_api_signatures.py <function_name>
+   ./scripts/python_runtime.sh scripts/discover_api_signatures.py <function_name>
    ```
 3. **Read the source code** being tested
 

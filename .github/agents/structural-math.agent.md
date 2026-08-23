@@ -56,8 +56,8 @@ You are the **structural engineering math specialist** for **structural_engineer
 | ⚠️ Units always explicit | mm, N/mm², kN, kNm — no bare numbers, no hidden conversions |
 | ⚠️ Always cite clause | Every formula gets `@clause("XX.X")` decorator or `# IS 456 Cl XX.X` comment |
 | ⚠️ Use existing patterns | Study `flexure.py` and `shear.py` before writing — match their style exactly |
-| ⚠️ Always `.venv/bin/python` | Never bare `python` |
-| ⚠️ Large file editing | When editing `services/api.py` (3600+ lines), verify ALL docstring `"""` delimiters after changes. Watch for `²` and other Unicode in docstrings — these cause SyntaxError. Run `.venv/bin/python -c "import structural_lib"` after every edit. (Sprint 1 v0.21.5: 4 syntax errors from damaged docstrings.) |
+| ⚠️ Always `./scripts/python_runtime.sh` | Never bare `python` |
+| ⚠️ Large file editing | When editing `services/api.py` (3600+ lines), verify ALL docstring `"""` delimiters after changes. Watch for `²` and other Unicode in docstrings — these cause SyntaxError. Run `./scripts/python_runtime.sh -c "import structural_lib"` after every edit. (Sprint 1 v0.21.5: 4 syntax errors from damaged docstrings.) |
 
 ## Module Pattern (follow exactly)
 
@@ -264,18 +264,18 @@ grep -r "class.*Result" Python/structural_lib/core/data_types.py | head -20
 grep -r "class.*Input" Python/structural_lib/core/inputs.py | head -20
 
 # Get existing API signatures
-.venv/bin/python scripts/discover_api_signatures.py --filter <keyword>
+./scripts/python_runtime.sh scripts/discover_api_signatures.py --filter <keyword>
 
 # Validate architecture after changes
-.venv/bin/python scripts/check_architecture_boundaries.py
-.venv/bin/python scripts/validate_imports.py --scope structural_lib
+./scripts/python_runtime.sh scripts/check_architecture_boundaries.py
+./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib
 ```
 
 ## After Coding
 
 1. Run tests: `.venv/bin/pytest Python/tests/ -v -k "<module_name>"`
-2. Check imports: `.venv/bin/python scripts/validate_imports.py --scope structural_lib`
-3. Check boundaries: `.venv/bin/python scripts/check_architecture_boundaries.py`
+2. Check imports: `./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib`
+3. Check boundaries: `./scripts/python_runtime.sh scripts/check_architecture_boundaries.py`
 4. Hand off to `@structural-engineer` for IS 456 verification
 5. Hand off to `@backend` to add the module to `services/api.py`
 6. Hand off to `@reviewer` for final approval
@@ -297,7 +297,7 @@ These are the MOST CRITICAL rules from `/development-rules` for structural-math 
 |------|-------------|
 | U-1 | Leave scoped Git/GitHub closeout to Codex |
 | U-2 | ALWAYS search before creating — check hooks, routes, API functions |
-| U-7 | ALWAYS use `.venv/bin/python`, never bare `python` |
+| U-7 | ALWAYS use `./scripts/python_runtime.sh`, never bare `python` |
 | PY-1 | NEVER import upward across architecture layers |
 | PY-2 | NEVER guess parameter names — run `discover_api_signatures.py` first |
 | PY-3 | ALWAYS use explicit units in function signatures (mm, N/mm², kN, kNm) |
@@ -422,7 +422,7 @@ When implementing a new structural element, follow this order:
 ### Mechanical Edit Syntax Gate
 
 After a bulk or mechanical edit (decorators, return wrappers, signature
-renames, or repeated annotations), run `.venv/bin/python -m py_compile` on
+renames, or repeated annotations), run `./scripts/python_runtime.sh -m py_compile` on
 every modified Python file before handoff. Do this before the test suite so a
 syntax error is reported at its source instead of appearing later in CI.
 
@@ -454,7 +454,7 @@ After implementing a function:
 - DO NOT guess parameter names — use `discover_api_signatures.py`
 - DO NOT duplicate existing functions — search before coding
 - DO NOT skip the `@clause` decorator on IS 456 functions
-- DO NOT use bare `python` — always `.venv/bin/python`
+- DO NOT use bare `python` — always `./scripts/python_runtime.sh`
 - DO NOT hand off bulk-edited Python before the per-file `py_compile` gate
 - DO NOT modify `services/api.py` — hand off to `@backend`
 - DO NOT modify `fastapi_app/` — hand off to `@api-developer`

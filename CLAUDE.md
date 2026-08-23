@@ -71,7 +71,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI.
 - **Permission Enforcement:** `scripts/tool_permissions.py` — programmatic access control
 - **Session Persistence:** `scripts/session_store.py` — JSON session state in logs/sessions/
 - **Pipeline Resume:** `scripts/pipeline_state.py` — resumable 8-step task pipeline
-- **Hooks Framework:** `scripts/hooks/` — non-Git execution hooks such as `pre_route`
+- **Routing controls:** `scripts/prompt_router.py` and `scripts/tool_permissions.py` — canonical routing and permission enforcement
 - **Parity Dashboard:** `scripts/parity_dashboard.py` — declared Indian-code capability plus endpoint/test/hook coverage
 - **Skill Tiers:** Core (always), Specialist (role-based), Experimental (explicit)
 
@@ -83,7 +83,7 @@ Agents keep duplicating code. Check what exists BEFORE writing new code:
 ls react_app/src/hooks/                                         # React hooks (CSV, geometry, export, insights)
 grep -r "@router" fastapi_app/routers/ | head -30               # FastAPI endpoints (26 routers)
 ./run.sh find --api <func>                                   # Public API exact signature (68 functions)
-.venv/bin/python scripts/discover_api_signatures.py <func>      # Get exact param names (b_mm not width)
+./scripts/python_runtime.sh scripts/discover_api_signatures.py <func>      # Get exact param names (b_mm not width)
 ```
 
 Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeometry` | adapters → `GenericCSVAdapter` | export → `useExport`.
@@ -129,9 +129,9 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 ### Direct scripts (when run.sh doesn't cover it)
 
 ```bash
-.venv/bin/python scripts/safe_file_move.py a b  # Move files (preserves 870+ links)
-.venv/bin/python scripts/safe_file_delete.py f  # Delete files safely
-.venv/bin/python scripts/create_doc.py path     # Create doc with metadata
+./scripts/python_runtime.sh scripts/safe_file_move.py a b  # Move files (preserves 870+ links)
+./scripts/python_runtime.sh scripts/safe_file_delete.py f  # Delete files safely
+./scripts/python_runtime.sh scripts/create_doc.py path     # Create doc with metadata
 colima start --cpu 4 --memory 4                 # Start Docker runtime (Colima, not Docker Desktop)
 docker compose up --build                       # FastAPI at :8000/docs
 cd react_app && npm run dev                     # React at :5173
@@ -146,7 +146,7 @@ cd react_app && npm run dev                     # React at :5173
 ```
 WRONG: cd Python && .venv/bin/pytest tests/ -v     ← .venv is NOT inside Python/
 RIGHT: .venv/bin/pytest Python/tests/ -v           ← run from workspace root
-RIGHT: .venv/bin/python scripts/check_links.py     ← scripts are at workspace root
+RIGHT: ./scripts/python_runtime.sh scripts/check_links.py     ← scripts are at workspace root
 
 WRONG: npm run build                               ← only works if already in react_app/
 RIGHT: cd react_app && npm run build               ← explicit cd first
@@ -154,7 +154,7 @@ RIGHT: cd react_app && npm run build               ← explicit cd first
 
 **Key paths (all relative to workspace root):**
 - `.venv/bin/pytest` — pytest binary
-- `.venv/bin/python` — Python binary
+- `./scripts/python_runtime.sh` — Python binary
 - `Python/tests/` — Python test directory
 - `react_app/` — React app directory
 - `scripts/` — utility scripts
@@ -214,10 +214,10 @@ same candidate after push; report it through GitHub and the external handoff.
 ## Migration & Folder Structure Scripts
 
 ```bash
-.venv/bin/python scripts/migrate_python_module.py <src> <dst> --dry-run   # Move Python module + update imports
-.venv/bin/python scripts/migrate_react_component.py <src> <dst> --dry-run # Move React component + update imports
-.venv/bin/python scripts/validate_imports.py --scope structural_lib       # Check for broken imports
-.venv/bin/python scripts/check_governance.py --structure                  # Validate folder conventions
+./scripts/python_runtime.sh scripts/migrate_python_module.py <src> <dst> --dry-run   # Move Python module + update imports
+./scripts/python_runtime.sh scripts/migrate_react_component.py <src> <dst> --dry-run # Move React component + update imports
+./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib       # Check for broken imports
+./scripts/python_runtime.sh scripts/check_governance.py --structure                  # Validate folder conventions
 ./run.sh context show <area>                                             # Authoritative roots and read-first paths
 ./run.sh context summary <area-or-folder>                                 # Bounded live inventory
 ```
@@ -230,7 +230,7 @@ Use `./run.sh context show <area>` before broad inspection, then targeted
 inventory is useful. These commands are read-only; generic folder indexes are
 retired and require no refresh after file changes.
 
-Always use `.venv/bin/python`, never bare `python`.
+Always use `./scripts/python_runtime.sh`, never bare `python`.
 
 ## Key References
 

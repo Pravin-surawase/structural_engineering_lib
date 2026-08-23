@@ -259,15 +259,13 @@ You type: git commit -m "feat: ..."
 | `pre-commit` | Before commit is saved | Lint, format, quick checks |
 | `commit-msg` | After message is written | Validate conventional commit format |
 | `pre-push` | Before push to remote | Run tests |
-| `post-commit` | After commit succeeds | Update indexes, log |
+| `post-commit` | After commit succeeds | Optional follow-up automation |
 
-### This project's hooks:
-```
-scripts/hooks/
-├── pre_commit_hook.py    ← Format check, import validation, stub detection
-├── post_commit_hook.py   ← Auto-update indexes
-└── commit_msg_hook.py    ← Enforce conventional commit format
-```
+### This project's maintained controls
+
+The former repository hook framework is archived. Normal commit hooks come from
+the checked-in pre-commit configuration, while prompt routing and tool
+permissions are enforced by `prompt_router.py` and `tool_permissions.py`.
 
 ---
 

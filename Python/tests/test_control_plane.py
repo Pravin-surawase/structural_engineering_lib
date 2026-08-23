@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 import importlib
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -21,6 +22,26 @@ control_plane = importlib.import_module("control_plane")
 find_automation = importlib.import_module("find_automation")
 tool_permissions = importlib.import_module("tool_permissions")
 tool_registry = importlib.import_module("tool_registry")
+openapi_snapshot = importlib.import_module("check_openapi_snapshot")
+
+
+def test_openapi_snapshot_detects_full_spec_drift_but_ignores_version():
+    baseline = {
+        "info": {"title": "Structural API", "version": "1"},
+        "paths": {"/beam": {"get": {"summary": "Before"}}},
+        "components": {"schemas": {}},
+    }
+    version_only = json.loads(json.dumps(baseline))
+    version_only["info"]["version"] = "2"
+    changed_summary = json.loads(json.dumps(version_only))
+    changed_summary["paths"]["/beam"]["get"]["summary"] = "After"
+
+    assert not openapi_snapshot._has_changes(
+        openapi_snapshot._diff_specs(baseline, version_only)
+    )
+    diff = openapi_snapshot._diff_specs(baseline, changed_summary)
+    assert openapi_snapshot._has_changes(diff)
+    assert "CHANGED paths./beam.get.summary" in diff["details"]
 
 
 def test_current_registry_has_frozen_operation_and_script_parity():
@@ -28,9 +49,9 @@ def test_current_registry_has_frozen_operation_and_script_parity():
     all_operations = control_plane.operation_map(registry)
     active_operations = control_plane.operation_map(registry, active_only=True)
 
-    assert len(all_operations) == 130
-    assert len(active_operations) == 124
-    assert len(control_plane.top_level_scripts()) == 115
+    assert len(all_operations) == 115
+    assert len(active_operations) == 115
+    assert len(control_plane.top_level_scripts()) == 102
     assert control_plane.referenced_top_level_scripts(registry) == (
         control_plane.top_level_scripts()
     )
@@ -38,6 +59,41 @@ def test_current_registry_has_frozen_operation_and_script_parity():
     assert active_operations["verification impact"]["command"]["display"] == (
         "./scripts/python_runtime.sh scripts/verification.py validate"
     )
+
+
+def test_retired_executable_paths_are_absent_but_intent_has_one_alias_owner():
+    retired = (
+        "validate_git_state.sh",
+        "check_unfinished_merge.sh",
+        "check_not_main.sh",
+        "generate_all_indexes.sh",
+        "generate_docs_index.py",
+        "generate_enhanced_index.py",
+        "check_openapi_drift.py",
+        "governance_health_score.py",
+        "fix_broken_links.py",
+        "check_wip_limits.sh",
+        "repo_health_check.sh",
+        "collect_metrics.sh",
+        "export_paper_data.py",
+    )
+    for name in retired:
+        assert not (SCRIPTS_DIR / name).exists()
+
+    registry = control_plane.load_registry()
+    expected = {
+        "validate_git_state.sh": "check git state",
+        "check_unfinished_merge.sh": "check merge state",
+        "check_not_main.sh": "check branch safety",
+        "generate_all_indexes.sh": "repository context",
+        "check_openapi_drift.py": "check openapi drift",
+        "governance_health_score.py": "project health",
+        "fix_broken_links.py": "check markdown links",
+        "check_wip_limits.sh": "check tasks format",
+        "repo_health_check.sh": "project health",
+    }
+    for alias, owner in expected.items():
+        assert control_plane.operation_name_for_alias(alias, registry) == owner
 
 
 def test_control_validator_runs_without_site_packages():
@@ -87,12 +143,14 @@ def test_aliases_have_one_owner_and_drive_all_discovery_consumers():
 
 
 def test_permission_lookup_uses_explicit_canonical_defaults_and_modes():
-    assert tool_permissions.resolve_required_permission("governance health score") == (
-        "ReadOnlyTerminal"
+    assert tool_permissions.resolve_required_permission("project health") == "ReadOnly"
+    assert (
+        tool_permissions.resolve_required_permission("project health", mode="--fix")
+        == "WorkspaceWrite"
     )
     assert (
         tool_permissions.resolve_required_permission(
-            "governance health score", mode="--output"
+            "check markdown links", mode="--fix"
         )
         == "WorkspaceWrite"
     )
@@ -133,7 +191,7 @@ def test_schema_rejects_unknown_fields_wrong_types_and_missing_replacement():
     registry = copy.deepcopy(control_plane.load_registry())
     registry["unexpected"] = True
     registry["operations"]["project health"]["aliases"] = [42]
-    del registry["operations"]["compat branch guard"]["replacement"]
+    registry["operations"]["project health"]["status"] = "deprecated"
 
     errors = control_plane.validate_registry_data(registry)
 

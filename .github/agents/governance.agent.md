@@ -52,10 +52,10 @@ You are the governance and project health specialist for **structural_engineerin
 ls docs/planning/*.md 2>/dev/null | wc -l
 
 # Stale version references
-.venv/bin/python scripts/check_doc_versions.py
+./scripts/python_runtime.sh scripts/check_doc_versions.py
 
 # Broken links
-.venv/bin/python scripts/check_links.py 2>/dev/null | tail -5
+./scripts/python_runtime.sh scripts/check_links.py 2>/dev/null | tail -5
 
 # Open worktrees (target: ≤2)
 git worktree list | wc -l
@@ -81,7 +81,7 @@ ls docs/planning/*.md | wc -l               # Target: <10
 ./run.sh context summary <affected-area-or-folder>
 
 # Check links
-.venv/bin/python scripts/check_links.py
+./scripts/python_runtime.sh scripts/check_links.py
 ```
 
 ### Phase 2: Branch & Worktree Disposition Review (30 min)
@@ -102,29 +102,29 @@ or merge state; later exact-target actions require separate authorization.
 
 ```bash
 # Check version references
-.venv/bin/python scripts/check_doc_versions.py
+./scripts/python_runtime.sh scripts/check_doc_versions.py
 
 # Auto-fix stale versions
-.venv/bin/python scripts/check_doc_versions.py --fix
+./scripts/python_runtime.sh scripts/check_doc_versions.py --fix
 
 # Sync numbers
-.venv/bin/python scripts/sync_numbers.py --fix
+./scripts/python_runtime.sh scripts/sync_numbers.py --fix
 ```
 
 ### Phase 4: Standards Validation (30 min)
 
 ```bash
 # Architecture boundaries
-.venv/bin/python scripts/check_architecture_boundaries.py
+./scripts/python_runtime.sh scripts/check_architecture_boundaries.py
 
 # Import validation
-.venv/bin/python scripts/validate_imports.py --scope structural_lib
+./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib
 
 # Governance structure
-.venv/bin/python scripts/check_governance.py --structure
+./scripts/python_runtime.sh scripts/check_governance.py --structure
 
 # Instruction drift
-.venv/bin/python scripts/check_instruction_drift.py
+./scripts/python_runtime.sh scripts/check_instruction_drift.py
 ```
 
 ### Phase 5: Agent Performance Review (30 min)
@@ -162,8 +162,8 @@ Track these metrics weekly:
 | Active docs | <10 files | `ls docs/planning/*.md \| wc -l` |
 | Open worktrees | ≤2 | `git worktree list \| wc -l` |
 | Test coverage | ≥85% | `.venv/bin/pytest Python/tests/ --cov` |
-| Broken links | 0 | `.venv/bin/python scripts/check_links.py` |
-| Stale versions | 0 | `.venv/bin/python scripts/check_doc_versions.py` |
+| Broken links | 0 | `./scripts/python_runtime.sh scripts/check_links.py` |
+| Stale versions | 0 | `./scripts/python_runtime.sh scripts/check_doc_versions.py` |
 | Commits/week | 10-50 | `git log --oneline --since="7 days ago" \| wc -l` |
 | Stale tasks | 0 (>2wk) | Review TASKS.md |
 | Health score | ≥80 | `./run.sh health` |

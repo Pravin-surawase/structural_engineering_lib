@@ -21,7 +21,7 @@ ls docs/research/
 
 Check coverage gaps:
 ```bash
-.venv/bin/python scripts/parity_dashboard.py
+./scripts/python_runtime.sh scripts/parity_dashboard.py
 ```
 
 Review innovation domains in `.github/agents/innovator.agent.md`.

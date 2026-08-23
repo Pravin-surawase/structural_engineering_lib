@@ -11,14 +11,14 @@ description: "Performance optimization workflow — profile, identify, optimize,
 .venv/bin/pytest Python/tests/performance/ -v
 
 # Profile a specific function
-.venv/bin/python -c "
+./scripts/python_runtime.sh -c "
 import cProfile
 from structural_lib.services.api import {{function_name}}
 cProfile.run('{{function_name}}({{args}})', sort='cumulative')
 "
 
 # Check API response time
-.venv/bin/python scripts/benchmark_api.py
+./scripts/python_runtime.sh scripts/benchmark_api.py
 ```
 
 ## 2. Measure Current Baseline
@@ -27,7 +27,7 @@ Before optimizing, record current performance:
 
 ```bash
 # Python function timing
-.venv/bin/python -c "
+./scripts/python_runtime.sh -c "
 import time
 from structural_lib.services.api import {{function_name}}
 
