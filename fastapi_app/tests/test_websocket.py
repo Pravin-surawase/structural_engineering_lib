@@ -24,6 +24,19 @@ def _design_params(**overrides):
     return params
 
 
+def _check_params(**overrides):
+    params = {
+        "width": 300,
+        "depth": 500,
+        "fck": 25,
+        "fy": 500,
+        "cover": 40,
+        "cases": [{"case_id": "LC1", "mu_knm": 100, "vu_kn": 50}],
+    }
+    params.update(overrides)
+    return params
+
+
 class TestWebSocketDesign:
     """Test WebSocket design endpoint."""
 
@@ -150,16 +163,12 @@ class TestWebSocketDesign:
             websocket.send_json(
                 {
                     "type": "check_beam",
-                    "params": {
-                        "width": 300,
-                        "depth": 500,
-                        "fck": 25,
-                        "fy": 500,
-                        "cases": [
+                    "params": _check_params(
+                        cases=[
                             {"case_id": "DL", "mu_knm": 100, "vu_kn": 50},
                             {"case_id": "LL", "mu_knm": 150, "vu_kn": 75},
-                        ],
-                    },
+                        ]
+                    ),
                 }
             )
             response = websocket.receive_json()
@@ -176,13 +185,67 @@ class TestWebSocketDesign:
             websocket.send_json(
                 {
                     "type": "check_beam",
-                    "params": {"width": 300, "depth": 500, "cases": []},  # Empty cases
+                    "params": _check_params(cases=[]),
                 }
             )
             response = websocket.receive_json()
 
             assert response["type"] == "error"
             assert "no load cases" in response["message"].lower()
+
+    def test_websocket_check_beam_rejects_hidden_engineering_defaults(self):
+        """The exact load-case-only reproducer must not run a calculation."""
+        client = TestClient(app)
+        with client.websocket_connect("/ws/design/check-missing-inputs") as websocket:
+            websocket.send_json(
+                {
+                    "type": "check_beam",
+                    "params": {"cases": [{"case_id": "LC1", "mu_knm": 10, "vu_kn": 5}]},
+                }
+            )
+            response = websocket.receive_json()
+
+        assert response["type"] == "error"
+        assert "invalid input" in response["message"].lower()
+        assert "data" not in response
+
+    def test_websocket_check_beam_rejects_unknown_field(self):
+        client = TestClient(app)
+        with client.websocket_connect("/ws/design/check-unknown-input") as websocket:
+            websocket.send_json(
+                {
+                    "type": "check_beam",
+                    "params": _check_params(widht=300),
+                }
+            )
+            response = websocket.receive_json()
+
+        assert response["type"] == "error"
+        assert "invalid input" in response["message"].lower()
+        assert "data" not in response
+
+    def test_websocket_check_beam_rejects_non_finite_case_action(self):
+        client = TestClient(app)
+        with client.websocket_connect("/ws/design/check-nan-input") as websocket:
+            websocket.send_json(
+                {
+                    "type": "check_beam",
+                    "params": _check_params(
+                        cases=[
+                            {
+                                "case_id": "LC1",
+                                "mu_knm": float("nan"),
+                                "vu_kn": 5,
+                            }
+                        ]
+                    ),
+                }
+            )
+            response = websocket.receive_json()
+
+        assert response["type"] == "error"
+        assert "invalid input" in response["message"].lower()
+        assert "data" not in response
 
     def test_websocket_multiple_messages(self):
         """Test multiple design messages on same connection."""

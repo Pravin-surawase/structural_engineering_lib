@@ -76,12 +76,20 @@ __all__ = [
 ]
 
 
-def _require_positive_finite_dimension(name: str, value: object) -> float:
-    """Return one usable geometry dimension without accepting bool or NaN."""
+def _require_finite_real(name: str, value: object) -> float:
+    """Return one finite geometry scalar without accepting bool."""
     if isinstance(value, bool) or not isinstance(value, Real):
         raise ValueError(f"{name} must be a finite real number")
     normalized = float(value)
-    if not math.isfinite(normalized) or normalized <= 0.0:
+    if not math.isfinite(normalized):
+        raise ValueError(f"{name} must be a finite real number")
+    return normalized
+
+
+def _require_positive_finite_dimension(name: str, value: object) -> float:
+    """Return one usable geometry dimension without accepting bool or NaN."""
+    normalized = _require_finite_real(name, value)
+    if normalized <= 0.0:
         raise ValueError(f"{name} must be finite and greater than zero")
     return normalized
 
@@ -626,7 +634,7 @@ def compute_stirrup_path(
         cover: Clear cover (mm)
         stirrup_dia: Stirrup bar diameter (mm)
         position_x: X position along span (mm)
-        legs: Number of stirrup legs (2, 4, or 6)
+        legs: Number of stirrup legs. Only a two-leg closed loop is supported.
 
     Returns:
         List of Point3D forming closed stirrup loop
@@ -639,10 +647,24 @@ def compute_stirrup_path(
         >>> len(path)  # 4 corners for rectangular stirrup
         4
 
-    Note:
-        For legs > 2, additional vertical legs are computed
-        but returned as separate paths in compute_stirrup_positions.
+    Raises:
+        ValueError: If any geometry input is invalid or a multi-leg arrangement
+            is requested. This return type represents one closed loop and
+            cannot truthfully encode disconnected internal legs.
     """
+    beam_width = _require_positive_finite_dimension("beam_width", beam_width)
+    beam_depth = _require_positive_finite_dimension("beam_depth", beam_depth)
+    cover = _require_finite_real("cover", cover)
+    stirrup_dia = _require_positive_finite_dimension("stirrup_dia", stirrup_dia)
+    position_x = _require_finite_real("position_x", position_x)
+    if cover < 0:
+        raise ValueError("cover must be finite and non-negative")
+    if isinstance(legs, bool) or not isinstance(legs, int) or legs != 2:
+        raise ValueError(
+            "legs must be 2; multi-leg stirrup geometry is not represented "
+            "by one closed path"
+        )
+
     # Inner dimensions (inside stirrup)
     half_width = beam_width / 2
 
@@ -651,6 +673,10 @@ def compute_stirrup_path(
     y_outer = half_width - cover - stirrup_dia / 2
     z_bottom = cover + stirrup_dia / 2
     z_top = beam_depth - cover - stirrup_dia / 2
+    if y_outer <= 0 or z_top <= z_bottom:
+        raise ValueError(
+            "beam dimensions must contain the declared cover and stirrup diameter"
+        )
 
     # Corner points (counter-clockwise from bottom-left)
     corners = [

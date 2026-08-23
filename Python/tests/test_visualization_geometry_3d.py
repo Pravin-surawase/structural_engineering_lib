@@ -570,6 +570,43 @@ class TestComputeStirrupPath:
         # Top should be near D - cover - stirrup_dia/2
         assert z_max == 450 - 40 - 8 / 2  # 406mm
 
+    @pytest.mark.parametrize("position_x", [float("nan"), float("inf"), True])
+    def test_stirrup_path_rejects_invalid_position(self, position_x):
+        with pytest.raises(ValueError, match="position_x"):
+            compute_stirrup_path(300, 450, 40, 8, position_x)
+
+    @pytest.mark.parametrize("legs", [4, 6, 2.0, True])
+    def test_stirrup_path_rejects_unrepresented_leg_geometry(self, legs):
+        with pytest.raises(ValueError, match="legs must be 2"):
+            compute_stirrup_path(300, 450, 40, 8, 150, legs=legs)
+
+    @pytest.mark.parametrize(
+        ("field", "value"),
+        [
+            ("beam_width", float("nan")),
+            ("beam_depth", 0),
+            ("cover", float("inf")),
+            ("cover", -1),
+            ("stirrup_dia", True),
+        ],
+    )
+    def test_stirrup_path_rejects_invalid_section_geometry(self, field, value):
+        inputs = {
+            "beam_width": 300,
+            "beam_depth": 450,
+            "cover": 40,
+            "stirrup_dia": 8,
+            "position_x": 150,
+        }
+        inputs[field] = value
+
+        with pytest.raises(ValueError, match=field):
+            compute_stirrup_path(**inputs)
+
+    def test_stirrup_path_rejects_section_too_small_for_declared_cover(self):
+        with pytest.raises(ValueError, match="must contain"):
+            compute_stirrup_path(80, 100, 40, 8, 150)
+
 
 # =============================================================================
 # compute_stirrup_positions Tests

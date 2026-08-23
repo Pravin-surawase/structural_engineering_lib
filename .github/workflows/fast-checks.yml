@@ -385,6 +385,7 @@ jobs:
           python scripts/check_doc_versions.py --ci
           python scripts/check_tasks_format.py
           python scripts/check_links.py
+          python scripts/generate_api_classification.py --check
           mkdocs build --strict
 
       - name: Record exact documentation PASS evidence

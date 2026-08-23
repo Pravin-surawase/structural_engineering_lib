@@ -1,75 +1,72 @@
 # Next Session Briefing
 
-
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-24
-- Focus: Reconcile the completed M0 boundary, preserved source-library work,
-- Git receipt: docs/verification/india-3-g0-truth-audit-git-handoff-receipt.json | sha256:c611e86e5798cd5cb8b40efb009c7d6e7c98426f28ba9dfea350aa3a268960ec | HOLD
-- Git identity: codex/india-3-g0-truth-audit@3e9796872fbf79bf4d0a7c09c018e4978664f079 | upstream=NONE@UNKNOWN | base=origin/main@3e9796872fbf79bf4d0a7c09c018e4978664f079 | tree=dirty | operation=none
+- Focus: Repair only the confirmed software safety and verification defects
+- Git receipt: docs/verification/lib-pro-008-pre-india3-safety-git-handoff-receipt.json | sha256:f815ccfa02012fc3b5b3f2785e3e1db0c9a0d5cb99aca1f22498d10d743e10ae | HOLD
+- Git identity: codex/lib-pro-008-pre-india3-safety@e2fac7419551988def59101ac63a5f8e491bc7a2 | upstream=NONE@UNKNOWN | base=origin/main@e2fac7419551988def59101ac63a5f8e491bc7a2 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
-- Next action: RUN_FROZEN_FOCUSED_QUICK_AND_STAGED_HOOKS
+- Next action: RUN_FROZEN_QUICK_FULL_AND_STAGED_HOOKS
 <!-- HANDOFF:END -->
-
 
 ## Latest Handoff
 
 | State | Boundary |
 |---|---|
-| **Current** | M0 merged through PR #860 at hosted `3e979687`; the fresh `codex/india-3-g0-truth-audit` lane is source-bound to that exact commit/tree |
-| **Decision** | `READY_FOR_BOUNDED_G0_AUDIT`; not ready for formula implementation or support promotion |
-| **Next** | Resolve the accepted IS 13920 source/amendment chain for existing beam, column, and joint claims, then map every current calculation before changing code |
-| **Why** | All three private implementation records remain `UNREVIEWED_IMPLEMENTATION_CLAIM`, and accepted source-normalized engineering values remain zero |
-| **Held** | New IS 13920 formulas, wall/foundation detailing, complete joint design, IS 875/1893, new UI/API surface, ETABS/Excel, release, professional use, and branch/worktree deletion |
+| **Current** | `LIB-PRO-008` is frozen on `codex/lib-pro-008-pre-india3-safety` from exact hosted `e2fac741` |
+| **Decision** | Resume `INDIA-3-G0` only after this unchanged candidate passes local and hosted integration |
+| **Next** | Run immutable-candidate closeout, merge only unchanged green work, then resume the bounded INDIA-3-G0 audit |
+| **Repaired** | Torsion non-finite intake, WebSocket hidden defaults/loose cases, compatibility environment drift/stale ledger, documentation CI ownership, and unsupported stirrup geometry |
+| **Held** | Version bump/publication, IS 13920 formula change or acceptance, broader IS 875/1893 work, professional use, and any branch/worktree/archive deletion |
 
-## Exact starting state
+## Exact packet state
 
-- Hosted `main`: M0 merge commit `3e979687`, reviewed candidate `eb92db48`,
-  exact candidate/merged tree `f673e604`; all required PR #860 checks passed.
-- Fresh task branch: `codex/india-3-g0-truth-audit`, created from exact hosted
-  M0 and verified `source_bound=true` / `READY_LOCAL` before the session began.
-- Preserved older candidate: `9c976b1f` remains retained and is not
-  cherry-picked. Its durable private-source boundary already merged through PR
-  #849; its shared handoff documents are stale relative to M0.
-- The separately dirty detached worktree remains untouched.
+- The load-case-only WebSocket reproducer now returns a sanitized input error;
+  no `check_result` calculation data is emitted.
+- Every public torsion scalar rejects `NaN`, infinity, booleans, and non-real
+  values before arithmetic can create a false-safe result.
+- Compatibility scanning uses Git's tracked source allowlist in a checkout and
+  a generated-output-filtered fallback in a source archive. The regenerated
+  ledger contains 1,502 caller records and zero ambiguous callers.
+- Documentation validation now runs compatibility freshness, so a docs-only
+  public-API reference cannot bypass the check.
+- `compute_stirrup_path` validates its full geometry boundary and rejects 4/6
+  legs because one closed-loop path cannot represent disconnected inner legs.
+- The separately dirty detached worktree and the private source archive remain
+  untouched.
 
-## Private source status
+## Local evidence and next action
 
-- The ignored archive verifier passes for 25 documents, 27 aliases, 732 cached
-  pages, three normalized navigation records, and 142 visual-review pages.
-- Six byte-distinct IS 13920 document identities are retained: a 2016 base, a
-  consolidated Amendment 1-2 candidate reaffirmed in 2021, and separate
-  Amendment 1 and Amendment 2 copies.
-- All six documents remain `UNREVIEWED_SOURCE_CORPUS`; applicability beyond
-  the base remains `UNKNOWN_PENDING_ENGINEERING_REVIEW`.
-- Beam, column, and joint navigation records remain
-  `UNREVIEWED_IMPLEMENTATION_CLAIM`; accepted engineering values remain zero.
-- Protected PDFs, extracted text, private hashes, page images, database bytes,
-  and private helper code remain outside Git and packages.
+- Focused Python passed 187 tests; the affected geometry module passed 69 after
+  the one audit-driven repair. Focused FastAPI passed 12 tests.
+- Compatibility generation/check passes with no classification-registry drift.
+- Readiness remains truthfully `PARTIAL`: 23/24 checks pass, zero fail, and the
+  longstanding 359-parameter input-ownership diagnostic is the sole warning.
+- Run one frozen quick gate, one full 31-check gate, normal staged hooks, create
+  the immutable candidate, run read-only session end, and require all hosted
+  checks. Merge only if the reviewed head is unchanged and green.
+- After merge, resume the already-frozen G0 audit order below. Do not begin with
+  formula edits.
 
-## Bounded audit order
+## Bounded INDIA-3-G0 audit order
 
-1. Visually resolve exact edition/amendment applicability for every governing
+1. Resolve exact IS 13920 edition/amendment applicability for each governing
    beam, column, and joint page.
-2. Map each existing input, formula/limit, output, default, status, and failure
-   behavior to a confirmed reference or explicit hold.
-3. Freeze one independent replayable benchmark plus boundary, inadequate,
-   invalid, and out-of-domain cases for each proposed retained family.
-4. Reconcile core, service, package, FastAPI/OpenAPI, decorators, tests,
-   documentation, and generated capability truth.
+2. Map every current input, formula/limit, output, default, status, and failure
+   behavior to confirmed source or an explicit hold.
+3. Freeze independent replayable benchmarks and invalid/out-of-domain cases.
+4. Reconcile core, service, package, transport, tests, documentation, and
+   generated capability truth.
 5. Classify each family `ACCEPT_CURRENT_BOUNDED`,
-   `REPAIR_PACKET_REQUIRED`, or `HOLD`; only then freeze follow-on packets.
-
-Do not start with formula edits. Passing implementation tests and registered
-clause decorators are navigation evidence, not source or engineering
-acceptance.
+   `REPAIR_PACKET_REQUIRED`, or `HOLD` before implementation packets.
 
 ## Required Reading
 
-1. [G0 truth-audit plan](india-3-g0-is13920-truth-audit.md)
-2. [G0 readiness evidence](../verification/india-3-g0-truth-audit-readiness.json)
-3. [Private source-library boundary](../verification/india-3-g0-private-source-library-evidence.md)
-4. [Generated Indian-code capability truth](../verification/indian-code-capability-coverage.json)
-5. [Indian-code completion waves](indian-code-completion-plan.md)
+1. [LIB-PRO-008 evidence](../verification/lib-pro-008-pre-india3-safety-evidence.json)
+2. [G0 truth-audit plan](india-3-g0-is13920-truth-audit.md)
+3. [G0 readiness evidence](../verification/india-3-g0-truth-audit-readiness.json)
+4. [Private source-library boundary](../verification/india-3-g0-private-source-library-evidence.md)
+5. [Generated Indian-code capability truth](../verification/indian-code-capability-coverage.json)
 6. [Current task board](../TASKS.md)

@@ -1,0 +1,70 @@
+{
+  "authorization": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-23T21:54:31Z",
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "reference": "okay do it and so we can get ready for india 3 go",
+      "status": "OBSERVED",
+      "query_status": "OK",
+      "observed_at_utc": "2026-08-23T21:54:31Z"
+    },
+    "authorized_actions": [
+      "REPAIR_CONFIRMED_PRE_INDIA3_SOFTWARE_SAFETY_BLOCKERS",
+      "ADD_FOCUSED_TESTS_AND_SAFETY_GATE_OWNERSHIP",
+      "REGENERATE_ONLY_COMPATIBILITY_LEDGER",
+      "RUN_FOCUSED_AUDIT_QUICK_FULL_AND_STAGED_HOOKS",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_ONE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "prohibited_actions": [
+      "CHANGE_OR_ACCEPT_IS13920_FORMULAS",
+      "PROMOTE_IS13920_SUPPORT_CLAIMS",
+      "PUBLISH_RELEASE_VERSION_TAG_OR_PACKAGE",
+      "ACTIVATE_PROFESSIONAL_OR_ENGINEERING_USE_APPROVAL",
+      "DELETE_BRANCH_WORKTREE_ARCHIVE_OR_UNRELATED_FILE",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_OR_REWRITE",
+      "BYPASS_CHECKS_OR_FORCE_PUSH"
+    ],
+    "next_action": "RUN_FROZEN_QUICK_FULL_AND_STAGED_HOOKS",
+    "target_binding": {
+      "task_id": "LIB-PRO-008",
+      "branch": "codex/lib-pro-008-pre-india3-safety",
+      "head_sha": "e2fac7419551988def59101ac63a5f8e491bc7a2",
+      "actions": [
+        "REPAIR_CONFIRMED_PRE_INDIA3_SOFTWARE_SAFETY_BLOCKERS",
+        "ADD_FOCUSED_TESTS_AND_SAFETY_GATE_OWNERSHIP",
+        "REGENERATE_ONLY_COMPATIBILITY_LEDGER",
+        "RUN_FOCUSED_AUDIT_QUICK_FULL_AND_STAGED_HOOKS",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_ONE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ]
+    }
+  },
+  "integration": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-23T21:54:31Z",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR"
+  },
+  "retention": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-23T21:54:31Z",
+    "decision": "RETAIN_ALL_EXISTING_LANES_AND_PRIVATE_ARCHIVE",
+    "owner": "Main Agent under repository preservation policy",
+    "holds": [
+      "PRESERVE_UNRELATED_DIRTY_DETACHED_LANE",
+      "PRESERVE_PRIVATE_SOURCE_ARCHIVE",
+      "BRANCH_WORKTREE_ARCHIVE_AND_UNRELATED_FILE_DELETION_NOT_AUTHORIZED"
+    ]
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

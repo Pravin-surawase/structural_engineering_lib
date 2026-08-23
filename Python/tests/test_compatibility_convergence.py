@@ -209,6 +209,29 @@ def test_maintained_callers_have_no_ambiguous_legacy_route(
     )
 
 
+def test_caller_scan_uses_tracked_allowlist_and_excludes_generated_site(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    maintained = tmp_path / "docs" / "maintained.md"
+    generated = tmp_path / "site" / "search" / "search_index.json"
+    maintained.parent.mkdir(parents=True)
+    generated.parent.mkdir(parents=True)
+    maintained.write_text("structural_lib.design_beam_is456", encoding="utf-8")
+    generated.write_text("structural_lib.legacy_unknown", encoding="utf-8")
+
+    git_result = classification.subprocess.CompletedProcess(
+        args=["git", "ls-files", "--cached", "-z"],
+        returncode=0,
+        stdout=b"docs/maintained.md\0site/search/search_index.json\0",
+    )
+    monkeypatch.setattr(classification, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(
+        classification.subprocess, "run", lambda *args, **kwargs: git_result
+    )
+
+    assert classification._iter_text_files() == [maintained]
+
+
 def test_generated_ledger_matches_live_build(ledger: dict[str, Any]) -> None:
     checked_in = classification._unpack_compatibility_ledger(
         json.loads(_LEDGER_PATH.read_text(encoding="utf-8"))
