@@ -5,6 +5,104 @@
 
 ---
 
+## 2026-08-24 — Session: INDIA-3-G0 IS 13920 truth-audit readiness
+
+**Agent:** Codex (`library-expert`, sole writer; no subagents)
+
+**Branch:** `codex/india-3-g0-truth-audit`, from exact M0 hosted-main commit
+`3e9796872fbf79bf4d0a7c09c018e4978664f079`, tree
+`f673e604a3647973345d2cd07ef48f2cabc4b93f`.
+
+**Git handoff receipt:**
+`docs/verification/india-3-g0-truth-audit-git-handoff-receipt.json`
+
+**Focus:** Reconcile the completed M0 boundary, preserved source-library work,
+private archive readiness, and the exact existing IS 13920 beam/column/joint
+surface into one implementation-ready G0 audit packet. No structural formula,
+public signature, transport response, capability promotion, IS 875/1893 work,
+release, or professional-use approval is authorized.
+
+### Summary
+
+- Confirmed M0 merged through PR #860 at hosted `3e979687`, from reviewed
+  candidate `eb92db48`, with exact candidate/merged tree `f673e604` and all
+  required hosted checks green.
+- Created a fresh source-bound INDIA-3-G0 lane from exact hosted M0. Preserved
+  the older `9c976b1f` source-library candidate and the unrelated dirty detached
+  worktree without reset, stash, clean, rebase, deletion, or cherry-pick.
+- Reverified the ignored private archive: 25 documents, 27 aliases, 732 cached
+  pages, three project-authored navigation records, and 142 visual-review
+  pages. All six IS 13920 identities and all three implementation claims remain
+  unreviewed; accepted normalized engineering values remain zero.
+- Inventoried the exact current beam, column, and joint core/service/HTTP/test
+  surfaces and the generated three-supported/two-held claim. Identified the
+  source/amendment, clause-map, registration metadata, default/domain,
+  independent-benchmark, and cross-transport questions that G0 must decide.
+- Froze one audit order and explicit acceptance criteria. The readiness verdict
+  is `READY_FOR_BOUNDED_G0_AUDIT`, not ready for formula implementation,
+  support promotion, broader companion codes, or release.
+
+### Issues encountered
+
+- The remembered private-library readme path `README.md` did not exist.
+- The first two normalized-reference queries guessed a `standard_code` column
+  that is not present on either the normalized-reference or document table.
+- The preserved `9c976b1f` candidate differs widely from current M0 because it
+  was created before the intervening product packets; a direct candidate-to-M0
+  diff is therefore not a safe transplant list.
+- The first normal commit-hook attempt stopped because the new handoff brief
+  used `Required reading` instead of the checker's exact required
+  `Required Reading` heading. The narrow repair check then exposed that the
+  manually replaced brief also omitted its generated Date/receipt handoff
+  block.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the private boundary intentionally names its guide
+  `README_PRIVATE.md`. Resolution: locate the private files first and read the
+  existing guide; the archive verifier and database were intact. Evidence: the
+  private verifier reports `VERIFIED` for all 25 documents and 732 pages.
+  ⚠️ TERMINAL ISSUE: remembered `README.md` did not exist -> located and used
+  `README_PRIVATE.md`.
+- Confirmed root cause: the normalized-reference schema stores the joined
+  standard identity as `documents.standard_id`, not `standard_code`.
+  Resolution: inspect the SQLite schema and join on `documents.id` while
+  selecting `documents.standard_id`, without reading or emitting protected
+  normalized text. Evidence: the corrected query returns exactly three
+  `UNREVIEWED_IMPLEMENTATION_CLAIM` navigation records for beam, column, and
+  joint. ⚠️ TERMINAL ISSUE: guessed `standard_code` did not exist -> inspected
+  the schema and used `documents.standard_id`.
+- Confirmed root cause: PR #849 already merged the durable source boundary at
+  `40aa5864`, while the retained candidate also carries stale shared handoff
+  files and lacks the later product history. Resolution: retain it as evidence,
+  create the fresh task lane from exact M0, and author only the reconciled G0
+  readiness packet. Evidence: fresh lane is `READY_LOCAL`, equal to
+  `origin/main`, clean before edits, and `source_bound=true`.
+- Confirmed root cause: the session-document checker treats its maintained
+  section titles and generated handoff block as an exact contract; replacing
+  the brief manually removed that block. Resolution: correct the heading,
+  retain the six existing links and all G0 content, then use the maintained
+  handoff command to generate the Date and receipt identity. Evidence: the
+  narrow session-document check and the repeated normal commit hooks pass.
+  ⚠️ TERMINAL ISSUE: first commit stopped on the exact handoff contract ->
+  corrected `Required Reading`, generated the maintained Date/receipt block,
+  and committed through normal hooks.
+
+### Validation through content freeze
+
+- Private archive verification passes for 25 documents, 27 aliases, 732 cached
+  pages, three normalized navigation records, and 142 visual-review pages.
+- The private-boundary tests plus existing beam unit/property, column, and joint
+  baselines pass 63 tests. This is a software-baseline result only; it does not
+  accept the current formulas or claims as source-correct.
+- Documentation passes all five maintained checks with only existing soft
+  metadata/budget warnings; 998 maintained links resolve with zero broken;
+  context validation passes its 10 areas and six authorities.
+- The frozen quick gate passes 10/10 with zero reused results. The broad gate is
+  deferred because this packet changes no behavior, public contract, generated
+  truth, or runtime surface. Normal staged hooks, immutable commit, final
+  read-only session validation, and hosted checks follow.
+
 ## 2026-08-24 — Session: LIB-PRO-007-M0 cumulative acceptance
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents)

@@ -1,0 +1,186 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-23T21:04:08Z",
+      "query_status": "OK",
+      "reference": "Active Codex task: M0 is done; get ready for INDIA-3.",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "RECONCILE_M0_AND_PRESERVED_INDIA_3_STATE",
+      "VERIFY_PRIVATE_SOURCE_ARCHIVE_BOUNDARY",
+      "INVENTORY_EXISTING_IS13920_BEAM_COLUMN_AND_JOINT_SURFACES",
+      "FREEZE_BOUNDED_G0_AUDIT_SEQUENCE",
+      "ADD_READINESS_DOCUMENTATION_AND_MACHINE_EVIDENCE",
+      "RUN_FROZEN_FOCUSED_QUICK_AND_STAGED_HOOKS",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_ONE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "RUN_FROZEN_FOCUSED_QUICK_AND_STAGED_HOOKS",
+    "observed_at_utc": "2026-08-23T21:04:08Z",
+    "prohibited_actions": [
+      "TRACK_PACKAGE_OR_PUBLISH_PRIVATE_SOURCE_CONTENT",
+      "REPRODUCE_PROTECTED_PROSE_PAGE_IMAGES_OR_EXTRACTED_TEXT",
+      "IMPLEMENT_OR_CHANGE_IS13920_FORMULAS",
+      "PROMOTE_IS13920_SUPPORT_CLAIMS",
+      "IMPLEMENT_IS875_OR_IS1893",
+      "ADD_UNSELECTED_API_UI_ETABS_OR_EXCEL_SCOPE",
+      "PUBLISH_RELEASE_VERSION_TAG_OR_PACKAGE",
+      "ACTIVATE_PROFESSIONAL_OR_ENGINEERING_USE_APPROVAL",
+      "DELETE_BRANCH_WORKTREE_OR_PRIVATE_ARCHIVE",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_OR_REWRITE",
+      "BYPASS_CHECKS_OR_FORCE_PUSH"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "RECONCILE_M0_AND_PRESERVED_INDIA_3_STATE",
+        "VERIFY_PRIVATE_SOURCE_ARCHIVE_BOUNDARY",
+        "INVENTORY_EXISTING_IS13920_BEAM_COLUMN_AND_JOINT_SURFACES",
+        "FREEZE_BOUNDED_G0_AUDIT_SEQUENCE",
+        "ADD_READINESS_DOCUMENTATION_AND_MACHINE_EVIDENCE",
+        "RUN_FROZEN_FOCUSED_QUICK_AND_STAGED_HOOKS",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_ONE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/india-3-g0-truth-audit",
+      "head_sha": "3e9796872fbf79bf4d0a7c09c018e4978664f079",
+      "task_id": "INDIA-3-G0"
+    }
+  },
+  "holds": [
+    "BRANCH_WORKTREE_AND_ARCHIVE_DELETION_NOT_AUTHORIZED",
+    "LOCAL_HOLD_DIRTY",
+    "PRESERVE_PRIOR_INDIA_3_CANDIDATE_9C976B1F",
+    "PRESERVE_UNRELATED_DIRTY_DETACHED_LANE",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "observed_at_utc": "2026-08-23T21:04:08Z",
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "c611e86e5798cd5cb8b40efb009c7d6e7c98426f28ba9dfea350aa3a268960ec",
+    "state": {
+      "branch": "codex/india-3-g0-truth-audit",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "3e9796872fbf79bf4d0a7c09c018e4978664f079",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 86.225,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-india-3-g0-truth-audit",
+      "head_sha": "3e9796872fbf79bf4d0a7c09c018e4978664f079",
+      "hold_reasons": [
+        "changed paths: 7"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-23T21:05:46.809024+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-3-g0-truth-audit",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 7,
+        "modified_paths": [],
+        "staged_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/india-3-g0-is13920-truth-audit.md",
+          "docs/planning/indian-code-completion-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/india-3-g0-truth-audit-git-handoff-source-evidence.json",
+          "docs/verification/india-3-g0-truth-audit-readiness.json"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-3-g0-truth-audit"
+    }
+  },
+  "local_state_receipt_hash": "sha256:c611e86e5798cd5cb8b40efb009c7d6e7c98426f28ba9dfea350aa3a268960ec",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-23T21:05:46.809165+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_ALL_EXISTING_LANES_AND_PRIVATE_ARCHIVE",
+    "holds": [
+      "PRESERVE_PRIOR_INDIA_3_CANDIDATE_9C976B1F",
+      "PRESERVE_UNRELATED_DIRTY_DETACHED_LANE",
+      "BRANCH_WORKTREE_AND_ARCHIVE_DELETION_NOT_AUTHORIZED"
+    ],
+    "observed_at_utc": "2026-08-23T21:04:08Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources",
+      "Python/structural_lib/codes/is13920",
+      "fastapi_app",
+      "react_app",
+      "Python/structural_lib/data/excel"
+    ],
+    "integration_owner": "library-expert",
+    "owned_paths": [
+      "docs/planning/india-3-g0-is13920-truth-audit.md",
+      "docs/verification/india-3-g0-truth-audit-readiness.json",
+      "docs/verification/india-3-g0-truth-audit-git-handoff-source-evidence.json",
+      "docs/verification/india-3-g0-truth-audit-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/indian-code-completion-plan.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "INDIA-3-G0"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

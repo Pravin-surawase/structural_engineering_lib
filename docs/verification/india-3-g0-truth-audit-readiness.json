@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "task_id": "INDIA-3-G0",
+  "observed_at_utc": "2026-08-23T20:59:36Z",
+  "decision": {
+    "status": "READY_FOR_BOUNDED_G0_AUDIT",
+    "engineering_implementation_authorized": false,
+    "support_promotion_authorized": false,
+    "reason": "M0 is merged and green, a fresh exact-main source-bound lane exists, the private source archive verifies, and the current IS 13920 beam, column, and joint surfaces have been inventoried. Source identity, amendment applicability, normalized values, and independent benchmarks remain unaccepted."
+  },
+  "git_binding": {
+    "hosted_main_commit": "3e9796872fbf79bf4d0a7c09c018e4978664f079",
+    "hosted_main_tree": "f673e604a3647973345d2cd07ef48f2cabc4b93f",
+    "m0_pull_request": 860,
+    "m0_candidate_commit": "eb92db482734e531561f739cf6818104281ef451",
+    "m0_candidate_tree": "f673e604a3647973345d2cd07ef48f2cabc4b93f",
+    "m0_required_checks": "PASS",
+    "branch": "codex/india-3-g0-truth-audit",
+    "source_bound": true,
+    "preserved_prior_candidate": {
+      "branch": "codex/india-3-g0-source-library",
+      "commit": "9c976b1f4afd0540a5ec9eb3cab16861916ac89b",
+      "decision": "RETAIN_NO_CHERRY_PICK",
+      "reason": "The durable source boundary already merged through PR 849; the candidate's shared handoff documents predate M0 and its base omits later integrated product work."
+    }
+  },
+  "private_source_archive": {
+    "distribution": "GIT_IGNORED_LOCAL_ONLY",
+    "verify_status": "PASS",
+    "documents": 25,
+    "aliases": 27,
+    "cached_pages": 732,
+    "visual_review_pages": 142,
+    "normalized_references": 3,
+    "accepted_engineering_values": 0,
+    "is13920_document_identities": 6,
+    "is13920_document_review_status": "UNREVIEWED_SOURCE_CORPUS",
+    "non_base_applicability_status": "UNKNOWN_PENDING_ENGINEERING_REVIEW",
+    "implementation_navigation_status": "UNREVIEWED_IMPLEMENTATION_CLAIM",
+    "protected_content_tracked": false
+  },
+  "current_surface": [
+    {
+      "family": "beam_detailing_checks",
+      "core": "Python/structural_lib/codes/is13920/beam.py",
+      "service": "structural_lib.check_beam_ductility",
+      "http": "POST /api/v1/design/beam/ductility-check",
+      "direct_tests": {
+        "example_and_unit": 5,
+        "property": 17
+      },
+      "generated_claim": "IMPLEMENTED_BOUNDED",
+      "g0_disposition": "AUDIT_REQUIRED"
+    },
+    {
+      "family": "column_detailing_checks",
+      "core": "Python/structural_lib/codes/is13920/column.py",
+      "service": "structural_lib.check_column_ductility_is13920",
+      "http": "POST /api/v1/design/column/ductile-detailing",
+      "direct_tests": {
+        "core": 18,
+        "typed_http_contract": true
+      },
+      "generated_claim": "IMPLEMENTED_BOUNDED",
+      "g0_disposition": "AUDIT_REQUIRED"
+    },
+    {
+      "family": "beam_column_joint_scwb_check",
+      "core": "Python/structural_lib/codes/is13920/joint.py::check_scwb",
+      "service": null,
+      "http": null,
+      "direct_tests": {
+        "core": 21
+      },
+      "generated_claim": "IMPLEMENTED_BOUNDED",
+      "g0_disposition": "AUDIT_REQUIRED"
+    },
+    {
+      "family": "wall_detailing",
+      "generated_claim": "HELD",
+      "g0_disposition": "OUT_OF_SCOPE_RETAIN_HOLD"
+    },
+    {
+      "family": "foundation_detailing",
+      "generated_claim": "HELD",
+      "g0_disposition": "OUT_OF_SCOPE_RETAIN_HOLD"
+    }
+  ],
+  "truth_risks_to_resolve": [
+    "ACCEPTED_SOURCE_IDENTITY_AND_AMENDMENT_CHAIN",
+    "CLAUSE_TO_FORMULA_AND_LIMIT_MAPPING",
+    "REGISTRATION_ONLY_SUBCLAUSE_METADATA",
+    "CLAUSE_6_1_2_AND_6_2_1_DISPLAY_TITLE_ALIGNMENT",
+    "OUTCOME_CHANGING_DEFAULTS_AND_SUPPORTED_DOMAIN",
+    "INDEPENDENT_BEAM_COLUMN_AND_JOINT_BENCHMARKS",
+    "CORE_SERVICE_HTTP_AND_MANIFEST_IDENTITY"
+  ],
+  "sequence": [
+    "G0_1_SOURCE_AND_AMENDMENT_RESOLUTION",
+    "G0_2_CLAUSE_TO_CURRENT_CALCULATION_MAP",
+    "G0_3_INDEPENDENT_BENCHMARKS_AND_UNSAFE_CASES",
+    "G0_4_PUBLIC_CONTRACT_TRUTH",
+    "G0_5_ACCEPT_REPAIR_OR_HOLD_SEQUENCE"
+  ],
+  "allowed_outcomes": [
+    "ACCEPT_CURRENT_BOUNDED",
+    "REPAIR_PACKET_REQUIRED",
+    "HOLD"
+  ],
+  "held": [
+    "NEW_IS13920_FORMULAS",
+    "IS13920_WALL_OR_FOUNDATION_DETAILING",
+    "COMPLETE_JOINT_DESIGN",
+    "IS875_OR_IS1893_IMPLEMENTATION",
+    "NEW_API_OR_REACT_SURFACE",
+    "ETABS_OR_EXCEL_WORK",
+    "RELEASE_OR_PROFESSIONAL_USE_APPROVAL"
+  ],
+  "verification": {
+    "private_archive": "PASS_25_DOCUMENTS_27_ALIASES_732_PAGES_142_VISUAL_REVIEW_PAGES",
+    "focused_tests": "PASS_63",
+    "focused_test_scope": [
+      "PRIVATE_SOURCE_BOUNDARY",
+      "IS13920_BEAM_UNIT_AND_PROPERTY_BASELINE",
+      "IS13920_COLUMN_BASELINE",
+      "IS13920_JOINT_BASELINE"
+    ],
+    "documentation": "PASS_5_OF_5_WITH_EXISTING_SOFT_WARNINGS",
+    "maintained_links": "PASS_998_LINKS_0_BROKEN",
+    "context_manifest": "PASS",
+    "quick_gate": "PASS_10_OF_10_ZERO_REUSED",
+    "broad_gate": "DEFERRED_NO_BEHAVIOR_CHANGE"
+  },
+  "plan": "docs/planning/india-3-g0-is13920-truth-audit.md"
+}
