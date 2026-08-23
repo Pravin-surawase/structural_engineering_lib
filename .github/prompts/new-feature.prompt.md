@@ -12,7 +12,7 @@ ls react_app/src/hooks/                                         # React hooks
 ls react_app/src/components/                                    # React components
 grep -r "@router" fastapi_app/routers/ | head -30               # API routes
 grep "^def " Python/structural_lib/services/api.py | head -20   # Python API
-.venv/bin/python scripts/find_automation.py "{{feature_topic}}" # Existing scripts
+./scripts/python_runtime.sh scripts/find_automation.py "{{feature_topic}}" # Existing scripts
 ```
 
 ## 2. Identify the Right Layer

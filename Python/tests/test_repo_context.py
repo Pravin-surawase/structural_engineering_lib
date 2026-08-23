@@ -193,13 +193,22 @@ def test_live_summary_is_bounded_and_contains_no_timestamp(tmp_path: Path) -> No
     assert "generated" not in json.dumps(summaries)
 
 
-def test_retired_generator_bridges_never_restore_indexes(
-    capsys: pytest.CaptureFixture[str],
-) -> None:
-    folder_bridge = importlib.import_module("scripts.generate_enhanced_index")
-    docs_bridge = importlib.import_module("scripts.generate_docs_index")
+def test_retired_generator_bridges_are_absent_and_context_stays_canonical() -> None:
+    repository_root = Path(__file__).resolve().parents[2]
+    for name in (
+        "generate_all_indexes.sh",
+        "generate_docs_index.py",
+        "generate_enhanced_index.py",
+    ):
+        assert not (repository_root / "scripts" / name).exists()
+        assert (repository_root / "scripts" / "_archive" / name).exists()
 
-    assert folder_bridge.main(["--all", "--check"]) == 0
-    assert folder_bridge.main(["--allow-new-index", "docs"]) == 2
-    assert docs_bridge.main(["--write"]) == 2
-    assert "DEPRECATED" in capsys.readouterr().out
+    result = subprocess.run(
+        [str(repository_root / "run.sh"), "context", "validate"],
+        cwd=repository_root,
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    assert result.returncode == 0, result.stderr
+    assert "PASS context manifest" in result.stdout

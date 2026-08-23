@@ -5,6 +5,136 @@
 
 ---
 
+## 2026-08-23 — Session: MAINT-012D scanner and script consolidation
+
+**Agent:** Codex (`governance`, sole writer)
+
+**Branch:** `codex/maint-012d-scanner-consolidation`, from exact merged
+`origin/main` commit `84f3cbe6ce576a6c3a22882ddec2e1c08415c4e0`.
+
+**Git handoff receipt:**
+`docs/verification/maint-012d-git-handoff-receipt.json`
+
+**Focus:** Consolidate duplicate scanners and retire obsolete compatibility scripts.
+
+### Summary
+
+- Mapped active callers, runtime behavior, outcome ownership, aliases, and
+  historical references before selecting KEEP, CONSOLIDATE, or RETIRE.
+- Kept the distinct readiness, error, input, function-quality, public-route,
+  and agent-evolution scanners. Consolidated duplicate OpenAPI, health, link,
+  task/WIP, import-test, Git, and context surfaces under canonical owners.
+- Archived sixteen obsolete files without redirect stubs and reduced the
+  canonical surface from 130 operations (124 active) and 115 top-level scripts
+  to 115 active operations and 102/102 active top-level scripts.
+- Added evidence-preserving safe-move behavior so old logs, audits, research,
+  receipts, and explicit retirement sentinels keep the path truth recorded at
+  their original snapshot.
+
+### Issues encountered
+
+- Session intake and the task board still described MAINT-012C or MAINT-012B
+  after both were merged, so startup guidance selected a completed packet.
+- `./run.sh context show operations` failed because `operations` is not a
+  context area; the maintained areas are exposed by `./run.sh context list`.
+- A baseline probe invoked the shell script `check_wip_limits.sh` through the
+  Python runtime and produced a `SyntaxError`; no file was changed.
+- `governance_health_score.py --json` failed in the linked worktree because it
+  invoked `.venv/bin/python` relative to the worktree. `repo_health_check.sh`
+  failed because it assumed `.git/` was a directory rather than a linked-
+  worktree Git file.
+- Safe-move dry runs initially proposed rewriting historical sessions, audits,
+  research, and verification receipts to archived paths.
+- Deep agent context reran the entire project-health scan just to display a
+  score, and the nominally read-only score/JSON modes always wrote a trend file.
+- One broad JSON patch attached the merge-guard aliases to adjacent operations;
+  an immediate parsed-registry inspection caught the wrong owners.
+- Two optional shell inspections failed because zsh rejected an unmatched glob
+  and did not split a quoted pair variable like bash; neither command wrote.
+- Focused control/context tests initially retained exact-operation permission
+  and executable generator-bridge assumptions after those surfaces became
+  aliases and archived files.
+- The first generated handoff again truncated a wrapped session `Focus` value,
+  despite the same parser limitation having been recorded in MAINT-012C.
+- The first broad Python run reached 6,838 passes but failed one readiness-truth
+  test because the retained performance authority became WARN under suite-order
+  cwd state.
+- The first normal commit attempt was stopped by the session-doc hook because
+  the newest entry omitted its explicit Git handoff receipt line; no commit was
+  created.
+- The first direct retry guessed a nonexistent `check_session_docs.py` filename
+  from the hook label instead of reading its configured entry.
+
+### Root causes and resolutions
+
+- Confirmed root cause: task/handoff closeout state was not reconciled after the
+  prior merges. Resolution: activate MAINT-012D and record MAINT-012B/C as done
+  with exact merge commits; validate the task board at candidate freeze.
+- Confirmed root cause: the context CLI is area-manifest based rather than an
+  operation namespace. Resolution: list valid areas, then inspect `automation`
+  and `verification`. ⚠️ TERMINAL ISSUE: unknown context area `operations` ->
+  used `./run.sh context list` and the two maintained areas.
+- Confirmed root cause: the probe inferred an interpreter from the `.sh` path.
+  Resolution: inspect shell scripts with `bash`/read-only source commands and
+  use `python_runtime.sh` only for Python. ⚠️ TERMINAL ISSUE: shell source sent
+  to Python -> reran the intended read-only inspection with the correct runtime.
+- Confirmed root cause: both retired health scripts encoded primary-checkout
+  layout assumptions and duplicated maintained owners. Resolution: archive them,
+  route health to worktree-bound `project_health.py`, and repair the active agent
+  context caller to read the latest recorded receipt. Project health now writes
+  only for explicit `--write` or `--fix`; normal score/JSON scans remain read-only.
+- Confirmed root cause: automatic path replacement did not distinguish live
+  callers from immutable evidence or absence assertions. Resolution: teach
+  `safe_file_move.py` the preservation boundary, regression-test live versus
+  preserved references, and require all sixteen dry runs to show no historical
+  rewrite before moving.
+- Confirmed root cause: the patch context matched repeated JSON permission
+  blocks rather than named operations. Resolution: patch using operation-name
+  anchors and immediately parse/inspect alias ownership before projection.
+- Confirmed root cause: the inspection snippets used bash word-splitting/glob
+  assumptions under zsh. Resolution: use exact paths and direct per-target tool
+  calls. ⚠️ TERMINAL ISSUE: unmatched glob and quoted-pair splitting failed ->
+  replaced with exact `rg` paths and per-file safe-move invocations.
+- Confirmed root cause: the regressions were written for the temporary 12A/12B
+  compatibility stage rather than the 12D end state. Resolution: canonical
+  permission tests use canonical operation names, legacy intent is proved by
+  alias discovery, and context tests now require active bridge absence plus a
+  passing live context manifest. Exact failed-test reruns passed.
+- Confirmed root cause: handoff extraction reads only the physical `Focus` line,
+  not Markdown continuations. Resolution: keep the value on one line and rerun
+  the receipt-bound handoff writer. The regenerated block contains the complete
+  focus. This parser hardening remains a future control improvement because it
+  does not change MAINT-012D's scanner/script outcome.
+- Confirmed root cause: `audit_readiness_report.py` used process-relative `Path`
+  existence/reads even though its command runner was repository-bound. A prior
+  test cwd could therefore hide real evidence. Resolution: resolve every audit
+  evidence path from the script-derived repository root, pass concise relative
+  paths to the runner, and regression-test the performance authority from an
+  unrelated cwd. The failed test and the affected readiness suite pass; the
+  broad candidate is rerun because this changes readiness outcome.
+- Confirmed root cause: generating the receipt and next-session handoff does not
+  automatically add the receipt field to a manually authored session entry.
+  Resolution: bind the existing validated receipt explicitly in this entry,
+  rerun only the failed session-doc check, and let normal hooks revalidate the
+  staged candidate. The failed attempt left `HEAD` unchanged.
+- Confirmed root cause: the human hook name differs from its actual command,
+  `scripts/session.py check`. Resolution: inspect `.pre-commit-config.yaml` and
+  run `./run.sh session check`, which passed. ⚠️ TERMINAL ISSUE: guessed session
+  checker path did not exist -> used the configured session command.
+
+### Verification
+
+- Focused control, migration, Git, context, verification, CI, session, and
+  evolution regressions passed after exact reruns of the changed assumptions.
+- Direct control/context/verification manifests, script references, Git
+  workflow, CLI reference/smoke, links, task format, and full-spec OpenAPI
+  checks pass. Script references report zero runtime breaks and zero misleading
+  outputs.
+- The immutable candidate additionally requires one broad Python run, one fresh
+  quick gate, one cumulative full gate, ordinary commit hooks, and every
+  applicable hosted check. Those execution/PR facts remain in receipts, GitHub,
+  and the external handoff rather than causing a post-push documentation commit.
+
 ## 2026-08-23 — Session: MAINT-012C evidence scheduling and exact PASS reuse
 
 **Agent:** Codex (`governance`, sole writer)

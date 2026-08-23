@@ -57,8 +57,8 @@ cd react_app && npx vitest run                         # React tests
 cd react_app && npm run build                          # Build check
 
 # Architecture validation
-.venv/bin/python scripts/validate_imports.py --scope structural_lib
-.venv/bin/python scripts/check_architecture_boundaries.py
+./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib
+./scripts/python_runtime.sh scripts/check_architecture_boundaries.py
 
 # Quick validation
 ./run.sh check --quick                                 # Or: bash run.sh check --quick
@@ -76,17 +76,17 @@ Architecture validation scripts can produce output that exceeds agent context li
 3. If output > 100 lines, split into separate passes:
    ```bash
    # Step 1: Quick count
-   .venv/bin/python scripts/check_architecture_boundaries.py 2>&1 | wc -l
+   ./scripts/python_runtime.sh scripts/check_architecture_boundaries.py 2>&1 | wc -l
 
    # Step 2: If large, check one layer at a time
-   .venv/bin/python scripts/check_architecture_boundaries.py --scope core
-   .venv/bin/python scripts/check_architecture_boundaries.py --scope codes
-   .venv/bin/python scripts/check_architecture_boundaries.py --scope services
+   ./scripts/python_runtime.sh scripts/check_architecture_boundaries.py --scope core
+   ./scripts/python_runtime.sh scripts/check_architecture_boundaries.py --scope codes
+   ./scripts/python_runtime.sh scripts/check_architecture_boundaries.py --scope services
    ```
 4. For import validation, scope narrowly:
    ```bash
-   .venv/bin/python scripts/validate_imports.py --scope structural_lib.core
-   .venv/bin/python scripts/validate_imports.py --scope structural_lib.codes
+   ./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib.core
+   ./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib.codes
    ```
 
 ## Review Output Format (MANDATORY)
@@ -234,10 +234,10 @@ Run checks in priority order. Stop and report when issues emerge.
 .venv/bin/pytest Python/tests/ -v
 
 # Architecture check
-.venv/bin/python scripts/check_architecture_boundaries.py
+./scripts/python_runtime.sh scripts/check_architecture_boundaries.py
 
 # Import validation
-.venv/bin/python scripts/validate_imports.py --scope structural_lib
+./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib
 
 # React build
 cd react_app && npm run build

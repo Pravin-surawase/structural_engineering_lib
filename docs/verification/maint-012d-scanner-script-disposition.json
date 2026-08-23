@@ -1,0 +1,115 @@
+{
+  "task": "MAINT-012D",
+  "recorded_on": "2026-08-23",
+  "base_commit": "84f3cbe6ce576a6c3a22882ddec2e1c08415c4e0",
+  "scope": "scanner consolidation and obsolete compatibility-script retirement",
+  "baseline": {
+    "registered_operations_total": 130,
+    "registered_operations_active": 124,
+    "registered_operations_deprecated": 6,
+    "active_top_level_scripts": 115
+  },
+  "target": {
+    "registered_operations_total": 115,
+    "registered_operations_active": 115,
+    "registered_operations_deprecated": 0,
+    "active_top_level_scripts": 102
+  },
+  "retired_files": [
+    {
+      "path": "scripts/validate_git_state.sh",
+      "replacement": "scripts/git_state.py",
+      "reason": "delegating Git-state compatibility wrapper"
+    },
+    {
+      "path": "scripts/check_unfinished_merge.sh",
+      "replacement": "scripts/git_state.py --guard operation",
+      "reason": "delegating Git-operation compatibility wrapper"
+    },
+    {
+      "path": "scripts/check_not_main.sh",
+      "replacement": "scripts/git_state.py --guard branch",
+      "reason": "delegating branch compatibility wrapper"
+    },
+    {
+      "path": "scripts/generate_all_indexes.sh",
+      "replacement": "./run.sh context validate",
+      "reason": "MAINT-012B retired generated folder indexes"
+    },
+    {
+      "path": "scripts/generate_docs_index.py",
+      "replacement": "./run.sh context summary docs",
+      "reason": "MAINT-012B retired the generated documentation catalogue"
+    },
+    {
+      "path": "scripts/generate_enhanced_index.py",
+      "replacement": "./run.sh context summary <area-or-folder>",
+      "reason": "live bounded summaries replace committed index generation"
+    },
+    {
+      "path": "scripts/check_openapi_drift.py",
+      "replacement": "scripts/check_openapi_snapshot.py",
+      "reason": "duplicate checker with weaker endpoint/schema-name comparison"
+    },
+    {
+      "path": "scripts/governance_health_score.py",
+      "replacement": "scripts/project_health.py --score",
+      "reason": "duplicate health scanner with a linked-worktree-broken runtime path and hard-coded defaults"
+    },
+    {
+      "path": "scripts/fix_broken_links.py",
+      "archive_path": "scripts/_archive/fix_deleted_file_links_legacy.py",
+      "replacement": "scripts/check_links.py --fix",
+      "reason": "deleted-product-specific repair duplicated the maintained link owner"
+    },
+    {
+      "path": "scripts/check_wip_limits.sh",
+      "replacement": "scripts/check_tasks_format.py",
+      "reason": "uncalled mixed local/remote counter with obsolete fixed limits; current task WIP and intake evidence have separate owners"
+    },
+    {
+      "path": "scripts/repo_health_check.sh",
+      "replacement": "scripts/project_health.py",
+      "reason": "duplicate inventory report that treated a linked-worktree .git file as a directory"
+    },
+    {
+      "path": "scripts/collect_metrics.sh",
+      "replacement": "./run.sh session usage --summary and scripts/project_health.py",
+      "reason": "uncalled high-cost writer repeated pytest and coverage through a hard-coded runtime"
+    },
+    {
+      "path": "scripts/export_paper_data.py",
+      "replacement": null,
+      "reason": "no maintained agent-evolution route or supported output consumer"
+    },
+    {
+      "path": "scripts/hooks/__init__.py",
+      "replacement": "scripts/prompt_router.py and scripts/tool_permissions.py",
+      "reason": "dormant non-Git hook framework with no runtime caller"
+    },
+    {
+      "path": "scripts/hooks/__main__.py",
+      "replacement": "scripts/prompt_router.py and scripts/tool_permissions.py",
+      "reason": "CLI for the dormant hook framework"
+    },
+    {
+      "path": "scripts/hooks/pre_route.py",
+      "replacement": "scripts/prompt_router.py and scripts/tool_permissions.py",
+      "reason": "always-allow prototype duplicated direct canonical routing controls"
+    }
+  ],
+  "retained_safety_scanners": [
+    "scripts/audit_readiness_report.py",
+    "scripts/audit_error_handling.py",
+    "scripts/audit_input_validation.py",
+    "scripts/check_function_quality.py",
+    "scripts/check_public_route_safety.py"
+  ],
+  "preservation": {
+    "archive_instead_of_delete": true,
+    "redirect_stubs_created": false,
+    "historical_evidence_rewritten": false,
+    "retirement_sentinels_rewritten": false
+  },
+  "refresh_policy": "event-driven; reassess only on caller, ownership, runtime, false-result, or reactivation change"
+}

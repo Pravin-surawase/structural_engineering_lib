@@ -39,7 +39,7 @@ You are a Python backend specialist for **structural_engineering_lib** — an IS
 | ⚠️ `api.py` is a STUB | Real code is in `services/api.py` — editing the stub wastes time |
 | ⚠️ Params are `b_mm`, `fck` | NOT `width`, `grade` — run `./run.sh find --api <func>` to check |
 | ⚠️ Modules moved | `adapters.py` → `services/adapters.py`, `geometry_3d.py` → `visualization/geometry_3d.py` |
-| ⚠️ Always `.venv/bin/python` | Never bare `python` — wrong env, missing deps |
+| ⚠️ Always `./scripts/python_runtime.sh` | Never bare `python` — wrong env, missing deps |
 
 ## Units Rule (non-negotiable)
 
@@ -66,9 +66,9 @@ You are a Python backend specialist for **structural_engineering_lib** — an IS
 # Check what exists
 grep "^def " Python/structural_lib/services/api.py | head -20
 # Get exact param names
-.venv/bin/python scripts/discover_api_signatures.py <function_name>
+./scripts/python_runtime.sh scripts/discover_api_signatures.py <function_name>
 # Validate imports
-.venv/bin/python scripts/validate_imports.py --scope structural_lib
+./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib
 ```
 
 ## After Work: Hand off to @reviewer with files changed, layer modified, tests run, how to verify.

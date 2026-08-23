@@ -118,6 +118,19 @@ def test_python_runtime_diagnostic_proves_worktree_source_binding():
     assert Path(payload["module"]).is_relative_to(REPO_ROOT / "Python")
 
 
+def test_agent_context_reads_latest_health_receipt_without_running_scanner(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    evolution = tmp_path / "logs" / "evolution"
+    evolution.mkdir(parents=True)
+    (evolution / "health_2026-08-23.json").write_text(
+        json.dumps({"overall_score": 97}), encoding="utf-8"
+    )
+    monkeypatch.setattr(agent_context, "ROOT", tmp_path)
+
+    assert agent_context.latest_health_score() == "Latest recorded: 97/100"
+
+
 def test_control_paths_use_python_runtime_launcher():
     launcher = str(SCRIPTS_DIR / "python_runtime.sh")
     run_sh = (REPO_ROOT / "run.sh").read_text(encoding="utf-8")
@@ -395,6 +408,7 @@ def test_trends_missing_agent_fails_before_write(monkeypatch):
     [
         ("project health", None, "ReadOnly"),
         ("project health", "--fix", "WorkspaceWrite"),
+        ("project health", "--write", "WorkspaceWrite"),
         ("session summary", "--write", "WorkspaceWrite"),
         ("model usage checkpoint", None, "ReadOnly"),
         ("unknown task", None, "DangerFullAccess"),
@@ -405,6 +419,29 @@ def test_operation_permissions_are_explicit_and_fail_closed(operation, mode, exp
     assert (
         tool_permissions.resolve_required_permission(operation, mode=mode) == expected
     )
+
+
+def test_project_health_persists_only_when_explicitly_requested(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    report = project_health.HealthReport(timestamp="2026-08-23", overall_score=100)
+    monkeypatch.setattr(project_health, "EVOLUTION_DIR", tmp_path)
+    monkeypatch.setattr(project_health, "run_health_scan", lambda **_kwargs: report)
+    monkeypatch.setattr(project_health, "print_report", lambda *_args, **_kwargs: None)
+
+    monkeypatch.setattr(sys, "argv", ["project_health.py", "--score"])
+    with pytest.raises(SystemExit) as read_only_exit:
+        project_health.main()
+    assert read_only_exit.value.code == 0
+    assert list(tmp_path.iterdir()) == []
+
+    monkeypatch.setattr(sys, "argv", ["project_health.py", "--score", "--write"])
+    with pytest.raises(SystemExit) as write_exit:
+        project_health.main()
+    assert write_exit.value.code == 0
+    reports = list(tmp_path.glob("health_*.json"))
+    assert len(reports) == 1
+    assert json.loads(reports[0].read_text(encoding="utf-8"))["overall_score"] == 100
 
 
 def test_abstract_permission_operations_remain_compatible():
@@ -453,8 +490,11 @@ def test_tool_registry_does_not_infer_permission_from_git_text():
     registry = tool_registry.load_registry()
 
     assert registry["check git state"].permission == "ReadOnly"
-    assert registry["project health"].permission_modes == {"--fix": "WorkspaceWrite"}
-    assert registry["governance health score"].permission == "ReadOnlyTerminal"
+    assert registry["project health"].permission_modes == {
+        "--fix": "WorkspaceWrite",
+        "--write": "WorkspaceWrite",
+    }
+    assert tool_registry.resolve_alias("governance health score") == "project health"
 
 
 @pytest.mark.parametrize(
@@ -511,11 +551,19 @@ def test_automation_discovery_resolves_retired_checker_names():
 @pytest.mark.parametrize(
     ("query", "expected"),
     [
+        ("check_not_main.sh", "check branch safety"),
+        ("check_openapi_drift.py", "check openapi drift"),
+        ("check_unfinished_merge.sh", "check merge state"),
         ("check_tasks.py", "check tasks format"),
+        ("check_wip_limits.sh", "check tasks format"),
+        ("fix_broken_links.py", "check markdown links"),
         ("generate_all_indexes.sh", "repository context"),
         ("generate_folder_index.py", "repository context"),
+        ("governance_health_score.py", "project health"),
+        ("repo_health_check.sh", "project health"),
         ("sync_numbers.py", "sync doc numbers"),
         ("global docs index", "repository context"),
+        ("validate_git_state.sh", "check git state"),
     ],
 )
 def test_maintenance_commands_are_discoverable_by_legacy_and_intent_queries(

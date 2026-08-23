@@ -6,9 +6,9 @@ Compares current OpenAPI schema to fastapi_app/openapi_baseline.json and reports
 added/removed/changed endpoints and schemas.
 
 Usage:
-    .venv/bin/python scripts/check_openapi_snapshot.py              # Check for drift
-    .venv/bin/python scripts/check_openapi_snapshot.py --update     # Update baseline
-    .venv/bin/python scripts/check_openapi_snapshot.py --json       # Machine-readable output
+    ./scripts/python_runtime.sh scripts/check_openapi_snapshot.py          # Check
+    ./scripts/python_runtime.sh scripts/check_openapi_snapshot.py --update # Update
+    ./scripts/python_runtime.sh scripts/check_openapi_snapshot.py --json   # JSON
 """
 
 from __future__ import annotations
@@ -22,6 +22,54 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
 
 BASELINE_PATH = REPO_ROOT / "fastapi_app" / "openapi_baseline.json"
+IGNORED_PATHS = {("info", "version")}
+
+
+def _strip_ignored(value: object, path: tuple[str, ...] = ()) -> object:
+    """Copy an OpenAPI value while removing intentionally variable fields."""
+    if isinstance(value, dict):
+        return {
+            key: _strip_ignored(item, path + (key,))
+            for key, item in value.items()
+            if path + (key,) not in IGNORED_PATHS
+        }
+    if isinstance(value, list):
+        return [_strip_ignored(item, path) for item in value]
+    return value
+
+
+def _collect_deep_diffs(
+    baseline: object,
+    current: object,
+    path: str = "",
+    diffs: list[str] | None = None,
+) -> list[str]:
+    """Collect deterministic field-level differences across the full spec."""
+    if diffs is None:
+        diffs = []
+    if type(baseline) is not type(current):
+        diffs.append(
+            f"{path or '<root>'}: type {type(baseline).__name__} -> "
+            f"{type(current).__name__}"
+        )
+        return diffs
+    if isinstance(baseline, dict) and isinstance(current, dict):
+        for key in sorted(set(baseline) | set(current)):
+            child = f"{path}.{key}" if path else key
+            if key not in current:
+                diffs.append(f"REMOVED {child}")
+            elif key not in baseline:
+                diffs.append(f"ADDED {child}")
+            else:
+                _collect_deep_diffs(baseline[key], current[key], child, diffs)
+    elif isinstance(baseline, list) and isinstance(current, list):
+        if len(baseline) != len(current):
+            diffs.append(f"CHANGED {path}.length: {len(baseline)} -> {len(current)}")
+        for index, (before, after) in enumerate(zip(baseline, current)):
+            _collect_deep_diffs(before, after, f"{path}[{index}]", diffs)
+    elif baseline != current:
+        diffs.append(f"CHANGED {path}")
+    return diffs
 
 
 def _get_current_spec() -> dict:
@@ -52,6 +100,10 @@ def _extract_schemas(spec: dict) -> set[str]:
 
 def _diff_specs(baseline: dict, current: dict) -> dict:
     """Compare baseline and current specs, return structured diff."""
+    normalized_baseline = _strip_ignored(baseline)
+    normalized_current = _strip_ignored(current)
+    assert isinstance(normalized_baseline, dict)
+    assert isinstance(normalized_current, dict)
     b_endpoints = _extract_endpoints(baseline)
     c_endpoints = _extract_endpoints(current)
     b_schemas = _extract_schemas(baseline)
@@ -61,8 +113,6 @@ def _diff_specs(baseline: dict, current: dict) -> dict:
     all_paths = set(b_endpoints.keys()) | set(c_endpoints.keys())
     added_endpoints = []
     removed_endpoints = []
-    changed_endpoints = []
-
     for path in sorted(all_paths):
         b_methods = b_endpoints.get(path, set())
         c_methods = c_endpoints.get(path, set())
@@ -96,7 +146,6 @@ def _diff_specs(baseline: dict, current: dict) -> dict:
         "endpoints": {
             "added": added_endpoints,
             "removed": removed_endpoints,
-            "changed": changed_endpoints,
         },
         "schemas": {
             "added": added_schemas,
@@ -107,20 +156,13 @@ def _diff_specs(baseline: dict, current: dict) -> dict:
         "current_endpoints": sum(len(v) for v in c_endpoints.values()),
         "baseline_schemas": len(b_schemas),
         "current_schemas": len(c_schemas),
+        "details": _collect_deep_diffs(normalized_baseline, normalized_current),
     }
 
 
 def _has_changes(diff: dict) -> bool:
     """Check if any changes were detected."""
-    return any(
-        [
-            diff["endpoints"]["added"],
-            diff["endpoints"]["removed"],
-            diff["schemas"]["added"],
-            diff["schemas"]["removed"],
-            diff["schemas"]["changed"],
-        ]
-    )
+    return bool(diff["details"])
 
 
 def main() -> int:
@@ -212,6 +254,12 @@ def main() -> int:
     if diff["schemas"]["changed"]:
         print(f"  Changed schemas: {', '.join(diff['schemas']['changed'])}")
 
+    print(f"  Full-spec differences: {len(diff['details'])}")
+    for detail in diff["details"][:40]:
+        print(f"    {detail}")
+    if len(diff["details"]) > 40:
+        print(f"    ... and {len(diff['details']) - 40} more")
+
     print()
     print(
         f"  Baseline: {diff['baseline_endpoints']} endpoints, {diff['baseline_schemas']} schemas"
@@ -221,7 +269,8 @@ def main() -> int:
     )
     print()
     print(
-        "  To update baseline: .venv/bin/python scripts/check_openapi_snapshot.py --update"
+        "  To update baseline: ./scripts/python_runtime.sh "
+        "scripts/check_openapi_snapshot.py --update"
     )
     return 1
 

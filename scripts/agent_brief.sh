@@ -165,7 +165,7 @@ _agent_focus() {
             echo "Focus: Design review (read-only) | Check: react_app/src/components/"
             ;;
         *)
-            echo "Run: .venv/bin/python scripts/agent_context.py <agent> for deep context"
+            echo "Run: ./scripts/python_runtime.sh scripts/agent_context.py <agent> for deep context"
             ;;
     esac
 }
@@ -218,7 +218,7 @@ main() {
     echo ""
 
     echo -e "${D}Session end: ./run.sh feedback log --agent ${agent:-<name>} --stale-doc '...'${N}"
-    echo -e "${D}Deep context: .venv/bin/python scripts/agent_context.py ${agent:-<name>}${N}"
+    echo -e "${D}Deep context: ./scripts/python_runtime.sh scripts/agent_context.py ${agent:-<name>}${N}"
 }
 
 main "$@"

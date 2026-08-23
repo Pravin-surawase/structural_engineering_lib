@@ -160,34 +160,28 @@ removed. Remote refs were retained as audit and recovery evidence.
 | `git worktree add -b` | Git mutation | Create an isolated branch and checkout. | Run from an existing directory; verify collisions first. |
 | `python_runtime.sh --diagnose` | Read-only | Which source tree will Python import? | Interpreter location alone is insufficient. |
 | `check_function_quality.py --module` | Read-only | Do selected IS 456 functions meet the static contract? | Selection must use repository-relative paths. It is not a numerical proof. |
-| `generate_enhanced_index.py` | Workspace write | Refresh folder context projections. | New index locations require `--allow-new-index`; use `--dry-run` first. |
+| `./run.sh context` | Read-only | Validate routing and summarize live files on demand. | Generic committed folder indexes are retired. |
 | `safe_file_delete.py` | Destructive workspace write | Delete one validated file after reference checks. | Generic names such as `index.json` create noisy basename matches; verify the exact target and use `--force` only with known generated files. |
 | `./run.sh check --quick` | Read-only validation | Is the candidate safe for a reviewed commit? | Does not replace focused engineering tests. |
 | `./run.sh check` | Read-only validation | Does the complete repository contract pass? | Run once after the candidate is stable. |
 | GitHub required checks | Remote validation | Did CI pass at the published head? | Recheck if the head or base changes. |
 
-## Index-generator recurrence control
+## Context recurrence control
 
 The original generator would create `index.json` and `index.md` in any requested
 folder. During PMM work, targeting nested test directories created six new files
 where the repository had no maintained index convention.
 
-The maintained behavior is now fail-closed:
+The maintained behavior is now read-only and on demand:
 
 ```bash
-# Safe preview; writes nothing
-./scripts/python_runtime.sh scripts/generate_enhanced_index.py path/to/folder --dry-run
-
-# Normal update; allowed when indexes already exist or the folder is canonical
-./scripts/python_runtime.sh scripts/generate_enhanced_index.py scripts
-
-# Intentional new index topology; requires explicit opt-in
-./scripts/python_runtime.sh scripts/generate_enhanced_index.py path/to/new-folder --allow-new-index
+./run.sh context validate
+./run.sh context show automation
+./run.sh context summary path/to/folder
 ```
 
-Recursive generation may discover previously unmaintained subfolders and will
-refuse live creation unless the opt-in is supplied. This turns an accidental
-side effect into an explicit repository-design decision.
+These commands read the live worktree and create no index files, eliminating the
+accidental nested-index side effect that this case originally exposed.
 
 ## Issues, root causes, and reusable solutions
 
@@ -198,7 +192,7 @@ side effect into an explicit repository-design decision.
 | Oblique benchmark moment symmetry drifted | Rectangular fiber mesh broke square x/y numerical symmetry | Match mesh topology to benchmark symmetry, then tighten by convergence. |
 | Focused checker scanned 69 functions | Absolute path included `pmm` in worktree name | Filter on source-root-relative module paths and regression-test named parents. |
 | Test command stopped before collection | Paths were guessed from memory | Discover maintained paths with `rg --files` before invoking tests. |
-| Six unwanted index files appeared | Writer was targeted at folders without index ownership | Preview, update only maintained folders, and require explicit new-index opt-in. |
+| Six unwanted index files appeared | Writer was targeted at folders without index ownership | Use live `./run.sh context summary`; do not regenerate folder indexes. |
 | Safe deletion reported many references | Generic basename search matched unrelated `index.json` text | Inspect exact paths and Git status; never interpret basename count as proof. |
 | Squash-integrated branch looked unmerged | Squash created a new commit identity | Use PR receipt, patch/tree equivalence, tests, and remote preservation—not ancestry alone. |
 

@@ -33,6 +33,49 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
 
+# Historical evidence must continue to describe the paths that existed when it
+# was written, and retirement sentinels must keep naming the active paths that
+# are required to remain absent. A live move may update maintained instructions
+# and callers, but it must not rewrite either class into apparent current truth.
+PRESERVED_REFERENCE_DIRS = (
+    "docs/_archive",
+    "docs/agents/sessions",
+    "docs/audit",
+    "docs/migration/learning",
+    "docs/research",
+    "docs/verification",
+    "agents/agent-9",
+)
+PRESERVED_REFERENCE_FILES = {
+    ".github/DEVELOPMENT_TIMELINE.md",
+    "docs/SESSION_LOG.md",
+    "docs/WORKLOG.md",
+    "docs/agents/guides/agent-quick-reference.md",
+    "docs/agents/guides/agent-workflow-master-guide.md",
+    "docs/migration/12-innovation-ideas-new.md",
+    "docs/migration/12-innovation-ideas.md",
+    "docs/reference/repo-health-baseline-2026-01-07.md",
+    "docs/planning/maint-011-developer-gate-hygiene-follow-up.md",
+    "Python/tests/test_agent_governance_automation.py",
+    "Python/tests/test_ci_workflow_contract.py",
+    "Python/tests/test_session_automation.py",
+    "scripts/check_codex_git_workflow.py",
+    "scripts/check_links.py",
+    "scripts/control-plane.json",
+}
+
+
+def _preserves_reference_text(file: Path, project_root: Path) -> bool:
+    """Return whether automatic path rewriting must skip *file*."""
+    try:
+        relative = file.relative_to(project_root).as_posix()
+    except ValueError:
+        return True
+    return relative in PRESERVED_REFERENCE_FILES or any(
+        relative == prefix or relative.startswith(f"{prefix}/")
+        for prefix in PRESERVED_REFERENCE_DIRS
+    )
+
 
 def find_references(file_path: Path, project_root: Path) -> list[tuple[Path, str, int]]:
     """Find all references to a file in docs and code.
@@ -203,6 +246,8 @@ def update_links(
             if file.suffix not in text_extensions:
                 continue
             if file == old_path or file == new_path:
+                continue
+            if _preserves_reference_text(file, project_root):
                 continue
 
             try:

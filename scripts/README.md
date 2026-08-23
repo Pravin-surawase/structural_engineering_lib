@@ -49,7 +49,7 @@ hook enforcement and scripts that automate the Git lifecycle are prohibited.
 | API contract | `check_api.py` | Validate React call sites against FastAPI OpenAPI |
 | Docs | `check_docs.py` | Metadata and documentation checks |
 | Governance | `check_governance.py` | Folder and policy validation |
-| Git diagnosis | `validate_git_state.sh` | Read-only Git state report |
+| Git diagnosis | `git_state.py` | Sole typed, read-only local Git state authority |
 | Branch disposition | `classify_branch_disposition.py` | Inspection-only worktree/ref/patch facts plus supplied remote and PR evidence |
 | Task intake | `run.sh task brief` | Read-only lane, base, worktree, route, and safe-start summary |
 | Python runtime | `python_runtime.sh --diagnose` | Prove linked-worktree import identity with `source_bound=true` |
@@ -60,6 +60,8 @@ hook enforcement and scripts that automate the Git lifecycle are prohibited.
 | Files | `safe_file_delete.py` | Delete files after a dry run and reference scan |
 | Live context | `run.sh context` | Validate canonical routing and summarize current files without generated folder indexes |
 | Verification impact | `run.sh verification` | Plan explicit change domains and inspect command/runtime/input-bound PASS evidence |
+| Link integrity | `check_links.py` | Check links by default; repair only with explicit `--fix` |
+| Project health | `project_health.py` | Unified read-only scan; persist only with explicit `--write` or `--fix` |
 | IS 456 quality | `check_function_quality.py --module <name>` | Source-relative static function-contract scan; not a numerical benchmark |
 | Sessions | `session.py` | Bounded session lifecycle and usage checkpoints |
 | CI | `diagnose_ci.py` | Diagnose CI failures without managing Git |
@@ -90,6 +92,11 @@ refresh it only with `./run.sh control export-legacy --write`.
 [context-manifest.json](context-manifest.json) owns repository-area routing;
 validate it with `./run.sh context validate`. Top-level script coverage is
 derived directly from the live scripts directory and the control registry.
+
+The readiness, error-handling, input-validation, function-quality, and public-route
+safety scanners intentionally remain separate because they answer different
+outcome-changing questions. Archived scripts are inactive reference material and
+must not be called from CI, `run.sh`, agent routing, or the control registry.
 [verification-manifest.json](verification-manifest.json) is the single local and
 hosted path-to-domain contract. The same rules select work and define the input
 bytes in its PASS fingerprint; new or unclassified paths select every domain.

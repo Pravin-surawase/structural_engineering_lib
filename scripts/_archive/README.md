@@ -1,49 +1,45 @@
-# scripts/_archive/
+# Archived scripts
 
-Archived scripts — **no longer actively maintained**, kept for historical reference.
+Files here are inactive historical reference. They are excluded from the active
+control-plane inventory and must not be called by CI, `run.sh`, agents, hooks, or
+current documentation.
 
-**Total: ~99 scripts** across 8 categories. These were moved here as the project evolved from V2 → V3.
+Scripts are archived when their outcome is owned by a maintained replacement,
+their workflow has ended, or no supported caller remains. Archival preserves the
+old implementation for audit and recovery without leaving another executable
+path in the live scripts surface.
 
-## Why scripts are archived
+## MAINT-012D control-plane retirement
 
-- Superseded by a newer/better script (e.g., replaced by `run.sh` orchestration)
-- Specific to a completed migration or feature (V2→V3 helpers, Streamlit→React migration)
-- Experimental scripts never promoted to production
-- Functionality absorbed into another tool
+The following compatibility paths were archived after their callers and
+outcome-changing contracts were mapped to canonical owners:
 
-## Contents by category
+- Git state wrappers: `validate_git_state.sh`, `check_unfinished_merge.sh`, and
+  `check_not_main.sh` → `scripts/git_state.py`.
+- Generated-index bridges: `generate_all_indexes.sh`, `generate_docs_index.py`,
+  and `generate_enhanced_index.py` → `./run.sh context`.
+- Duplicate scanners: `check_openapi_drift.py` → `check_openapi_snapshot.py`;
+  `governance_health_score.py` and `repo_health_check.sh` → `project_health.py`;
+  `check_wip_limits.sh` → `check_tasks_format.py` plus task-intake Git/PR
+  inspection; `fix_deleted_file_links_legacy.py` → `check_links.py --fix`.
+- Unsupported writers: `collect_metrics.sh` and `export_paper_data.py` have no
+  maintained caller; current usage, health, and evolution evidence have explicit
+  canonical owners.
+- Dormant non-Git hook prototype: `hooks/` → `prompt_router.py` and
+  `tool_permissions.py`.
 
-### Documentation (24)
-`add_license_headers.py` · `analyze_doc_redundancy.py` · `archive_deprecated_docs.py` · `check_api_doc_signatures.py` · `check_api_docs_sync.py` · `check_doc_frontmatter.py` · `check_doc_metadata.py` · `check_doc_similarity.py` · `check_docs_index.py` · `check_docs_index_links.py` · `check_duplicate_docs.py` · `check_folder_readmes.py` · `check_readme_quality.py` · `check_redirect_stubs.py` · `check_release_docs.py` · `check_session_docs.py` · `consolidate_docs.py` · `enhance_readme.py` · `find_orphan_files.py` · `fix_broken_links.py` · `generate_folder_index.py` · `generate_dashboard.sh` · `lint_docs_git_examples.sh` · `update_redirect_refs.py`
+The readiness, error-handling, input-validation, function-quality, and
+public-route safety scanners were deliberately retained because they validate
+different safety contracts.
 
-### Git / CI (16)
-`cleanup_stale_branches.sh` · `ci_monitor_daemon.sh` · `git_automation_health.sh` · `git_ops.sh` · `install_enforcement_hook.sh` · `install_hooks.sh` · `pr_async_merge.sh` · `pre-push-hook.sh` · `quick_push.sh` · `risk_cache.sh` · `safe_push_v2.sh` · `should_use_pr_old.sh` · `test_branch_operations.sh` · `test_git_workflow.sh` · `verify_git_fix.sh` · `worktree_manager.sh`
+## Reactivation rule
 
-### Code quality (19)
-`auto_fix_page.py` · `autonomous_fixer.py` · `check_api_signatures.py` · `check_cost_optimizer_issues.py` · `check_folder_structure.py` · `check_fragment_violations.py` · `check_governance_compliance.py` · `check_links.py` · `check_performance_issues.py` · `check_ui_duplication.py` · `comprehensive_validator.py` · `create_reexport_stub.py` · `fix_services_relative_imports.py` · `pylint_streamlit.sh` · `validate_fastapi_schema.py` · `validate_folder_structure.py` · `validate_stub_exports.py` · `validate_trial_data.py` · `vba_validator.py`
+Do not run a file from this directory. If a future approved task needs an old
+capability, reassess it against the current architecture, then preview the move:
 
-### Session management (8)
-`check_handoff_ready.py` · `check_pre_release_checklist.py` · `end_session.py` · `governance_session.sh` · `start_session.py` · `update_handoff.py` · `validate_session_state.py` · `weekly_governance_check.sh`
+```bash
+./scripts/python_runtime.sh scripts/safe_file_move.py <archive-path> <active-path> --dry-run
+```
 
-### Streamlit (8)
-`check_streamlit_imports.py` · `check_streamlit_issues.py` · `generate_streamlit_page.py` · `launch_streamlit.sh` · `profile_streamlit_page.py` · `streamlit_preflight.sh` · `test_page.sh` · `validate_streamlit_page.py`
-
-### API / Migration (7)
-`batch_migrate_modules.py` · `benchmark_api_latency.py` · `generate_api_routes.py` · `migrate_module.py` · `pre_migration_check.py` · `update_is456_init.py` · `validate_migration.py`
-
-### Testing (4)
-`test_agent_automation.sh` · `test_merge_conflicts.sh` · `test_setup.py` · `test_should_use_pr.sh`
-
-### Other (13)
-`add_future_annotations.py` · `agent_preflight.sh` · `agent_setup.sh` · `analyze_navigation_data.py` · `analyze_release_cadence.py` · `archive_deprecated_scripts.py` · `archive_old_sessions.sh` · `batch_archive.py` · `copilot_setup.sh` · `measure_agent_navigation.sh` · `predict_velocity.py` · `quick_check.sh` · `rename_folder_safe.py` · `verify_release.py`
-
-## Reactivating a script
-
-1. Move it back: `.venv/bin/python scripts/safe_file_move.py scripts/_archive/<name>.py scripts/<name>.py`
-2. Test it: `.venv/bin/python scripts/<name>.py --help`
-3. Add to `scripts/index.json`
-4. Update `docs/reference/automation-catalog.md`
-
-## Do NOT run archived scripts in CI or agent workflows
-
-Archived scripts are reference only. They may have outdated imports or stale assumptions about project structure.
+After the reviewed live move, register one canonical operation and prove the
+focused contract before use.

@@ -37,6 +37,11 @@ from typing import Dict, List, Optional, Tuple
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
+def _repo_relative(path: Path) -> str:
+    """Return a stable repository-relative display/command path."""
+    return path.relative_to(_REPO_ROOT).as_posix()
+
+
 @dataclass
 class EvidenceItem:
     """A single evidence item for audit purposes."""
@@ -171,7 +176,7 @@ def collect_testing_evidence(report: AuditReport) -> None:
 
     if pytest_available:
         # Check for test directory
-        test_dir = Path("Python/tests")
+        test_dir = _REPO_ROOT / "Python/tests"
         if test_dir.exists():
             test_count = sum(1 for _ in test_dir.rglob("test_*.py"))
             report.add_evidence(
@@ -197,7 +202,7 @@ def collect_testing_evidence(report: AuditReport) -> None:
             )
 
         # Check contract tests
-        contract_tests = Path("Python/tests/integration/test_contracts.py")
+        contract_tests = _REPO_ROOT / "Python/tests/integration/test_contracts.py"
         report.add_evidence(
             EvidenceItem(
                 category="Testing",
@@ -210,7 +215,7 @@ def collect_testing_evidence(report: AuditReport) -> None:
         )
 
     # Check AppTest smoke tests
-    apptest_dir = Path("tests/apptest")
+    apptest_dir = _REPO_ROOT / "tests/apptest"
     if apptest_dir.exists():
         apptest_count = sum(1 for _ in apptest_dir.rglob("test_*.py"))
         report.add_evidence(
@@ -225,7 +230,7 @@ def collect_testing_evidence(report: AuditReport) -> None:
         )
 
     # Check critical journey tests (React-based now)
-    react_tests = Path("react_app/src")
+    react_tests = _REPO_ROOT / "react_app/src"
     report.add_evidence(
         EvidenceItem(
             category="Testing",
@@ -237,8 +242,8 @@ def collect_testing_evidence(report: AuditReport) -> None:
         )
     )
 
-    load_tests = Path("fastapi_app/tests/test_load.py")
-    workflow_contract = Path(".github/workflows/README.md")
+    load_tests = _REPO_ROOT / "fastapi_app/tests/test_load.py"
+    workflow_contract = _REPO_ROOT / ".github/workflows/README.md"
     load_text = load_tests.read_text(encoding="utf-8") if load_tests.exists() else ""
     workflow_text = (
         workflow_contract.read_text(encoding="utf-8")
@@ -271,9 +276,9 @@ def collect_testing_evidence(report: AuditReport) -> None:
     )
 
     # Check coverage configuration
-    pytest_ini = Path("Python/pytest.ini")
-    coverage_rc = Path("Python/.coveragerc")
-    pyproject = Path("Python/pyproject.toml")
+    pytest_ini = _REPO_ROOT / "Python/pytest.ini"
+    coverage_rc = _REPO_ROOT / "Python/.coveragerc"
+    pyproject = _REPO_ROOT / "Python/pyproject.toml"
     coverage_configured = False
     if pytest_ini.exists():
         content = pytest_ini.read_text()
@@ -307,9 +312,9 @@ def collect_static_analysis_evidence(report: AuditReport) -> None:
     # Streamlit scanner removed — app migrated to React
 
     # Check circular imports
-    circular_checker = Path("scripts/check_circular_imports.py")
+    circular_checker = _REPO_ROOT / "scripts/check_circular_imports.py"
     if circular_checker.exists():
-        code, stdout, stderr = run_script(str(circular_checker))
+        code, stdout, stderr = run_script(_repo_relative(circular_checker))
         passed = code == 0
         report.add_evidence(
             EvidenceItem(
@@ -325,9 +330,11 @@ def collect_static_analysis_evidence(report: AuditReport) -> None:
         )
 
     # Check type annotations
-    type_checker = Path("scripts/check_type_annotations.py")
+    type_checker = _REPO_ROOT / "scripts/check_type_annotations.py"
     if type_checker.exists():
-        code, stdout, stderr = run_script(str(type_checker), ["--fail-threshold", "50"])
+        code, stdout, stderr = run_script(
+            _repo_relative(type_checker), ["--fail-threshold", "50"]
+        )
         passed = code == 0
         report.add_evidence(
             EvidenceItem(
@@ -345,9 +352,9 @@ def collect_static_analysis_evidence(report: AuditReport) -> None:
         )
 
     # Check API signatures (consolidated into check_api.py)
-    api_checker = Path("scripts/check_api.py")
+    api_checker = _REPO_ROOT / "scripts/check_api.py"
     if api_checker.exists():
-        code, stdout, stderr = run_script(str(api_checker), ["--signatures"])
+        code, stdout, stderr = run_script(_repo_relative(api_checker), ["--signatures"])
         passed = code == 0
         report.add_evidence(
             EvidenceItem(
@@ -393,9 +400,9 @@ def _diagnostic_summary(stdout: str, stderr: str) -> str:
 def collect_contract_truth_evidence(report: AuditReport) -> None:
     """Include semantic controls that previously sat outside readiness truth."""
 
-    api_parity = Path("scripts/test_api_parity.py")
+    api_parity = _REPO_ROOT / "scripts/test_api_parity.py"
     if (_REPO_ROOT / api_parity).exists():
-        code, stdout, stderr = run_script(str(api_parity))
+        code, stdout, stderr = run_script(_repo_relative(api_parity))
         passed = code == 0
         report.add_evidence(
             EvidenceItem(
@@ -412,9 +419,9 @@ def collect_contract_truth_evidence(report: AuditReport) -> None:
             )
         )
 
-    public_route_safety = Path("scripts/check_public_route_safety.py")
+    public_route_safety = _REPO_ROOT / "scripts/check_public_route_safety.py"
     if (_REPO_ROOT / public_route_safety).exists():
-        code, stdout, stderr = run_script(str(public_route_safety))
+        code, stdout, stderr = run_script(_repo_relative(public_route_safety))
         passed = code == 0
         report.add_evidence(
             EvidenceItem(
@@ -431,10 +438,10 @@ def collect_contract_truth_evidence(report: AuditReport) -> None:
             )
         )
 
-    function_quality = Path("scripts/check_function_quality.py")
+    function_quality = _REPO_ROOT / "scripts/check_function_quality.py"
     if (_REPO_ROOT / function_quality).exists():
         code, stdout, stderr = run_script(
-            str(function_quality), ["--summary", "--strict"]
+            _repo_relative(function_quality), ["--summary", "--strict"]
         )
         passed = code == 0
         report.add_evidence(
@@ -448,9 +455,9 @@ def collect_contract_truth_evidence(report: AuditReport) -> None:
             )
         )
 
-    input_validation = Path("scripts/audit_input_validation.py")
+    input_validation = _REPO_ROOT / "scripts/audit_input_validation.py"
     if (_REPO_ROOT / input_validation).exists():
-        code, stdout, stderr = run_script(str(input_validation))
+        code, stdout, stderr = run_script(_repo_relative(input_validation))
         passed = code == 0
         report.add_evidence(
             EvidenceItem(
@@ -468,9 +475,9 @@ def collect_governance_evidence(report: AuditReport) -> None:
     """Collect governance and documentation evidence."""
 
     # Check folder structure (consolidated into check_governance.py)
-    gov_script = Path("scripts/check_governance.py")
+    gov_script = _REPO_ROOT / "scripts/check_governance.py"
     if gov_script.exists():
-        code, stdout, stderr = run_script(str(gov_script), ["--structure"])
+        code, stdout, stderr = run_script(_repo_relative(gov_script), ["--structure"])
         passed = code == 0
         report.add_evidence(
             EvidenceItem(
@@ -485,7 +492,7 @@ def collect_governance_evidence(report: AuditReport) -> None:
 
     # Check governance compliance (consolidated into check_governance.py)
     if gov_script.exists():
-        code, stdout, stderr = run_script(str(gov_script), ["--compliance"])
+        code, stdout, stderr = run_script(_repo_relative(gov_script), ["--compliance"])
         passed = code == 0
         report.add_evidence(
             EvidenceItem(
@@ -503,7 +510,7 @@ def collect_governance_evidence(report: AuditReport) -> None:
         )
 
     # Check active front-matter values and the enforced documentation budget.
-    doc_checker = Path("scripts/check_docs.py")
+    doc_checker = _REPO_ROOT / "scripts/check_docs.py"
     if doc_checker.exists():
         code, stdout, stderr = run_script(
             str(doc_checker), ["--frontmatter", "--budget"]
@@ -525,9 +532,9 @@ def collect_governance_evidence(report: AuditReport) -> None:
         )
 
     # Check links
-    link_checker = Path("scripts/check_links.py")
+    link_checker = _REPO_ROOT / "scripts/check_links.py"
     if link_checker.exists():
-        code, stdout, stderr = run_script(str(link_checker))
+        code, stdout, stderr = run_script(_repo_relative(link_checker))
         passed = code == 0
         report.add_evidence(
             EvidenceItem(
@@ -543,9 +550,9 @@ def collect_governance_evidence(report: AuditReport) -> None:
         )
 
     # Check API docs sync (consolidated into check_api.py)
-    api_sync = Path("scripts/check_api.py")
+    api_sync = _REPO_ROOT / "scripts/check_api.py"
     if api_sync.exists():
-        code, stdout, stderr = run_script(str(api_sync), ["--sync"])
+        code, stdout, stderr = run_script(_repo_relative(api_sync), ["--sync"])
         passed = code == 0
         report.add_evidence(
             EvidenceItem(
@@ -563,7 +570,7 @@ def collect_governance_evidence(report: AuditReport) -> None:
         )
 
     # Check CHANGELOG
-    changelog = Path("CHANGELOG.md")
+    changelog = _REPO_ROOT / "CHANGELOG.md"
     report.add_evidence(
         EvidenceItem(
             category="Governance",
@@ -576,7 +583,7 @@ def collect_governance_evidence(report: AuditReport) -> None:
     )
 
     # Check version in __init__.py
-    version_file = Path("Python/structural_lib/__init__.py")
+    version_file = _REPO_ROOT / "Python/structural_lib/__init__.py"
     version_present = False
     if version_file.exists():
         content = version_file.read_text()
@@ -601,7 +608,7 @@ def collect_governance_evidence(report: AuditReport) -> None:
 def collect_security_evidence(report: AuditReport) -> None:
     """Collect security-related evidence."""
 
-    weekly = Path(".github/workflows/nightly.yml")
+    weekly = _REPO_ROOT / ".github/workflows/nightly.yml"
     weekly_text = weekly.read_text(encoding="utf-8") if weekly.exists() else ""
     dependency_audits = "pip-audit" in weekly_text and "npm audit" in weekly_text
     report.add_evidence(
@@ -620,7 +627,7 @@ def collect_security_evidence(report: AuditReport) -> None:
     )
 
     # Check if dependencies are pinned
-    pyproject = Path("Python/pyproject.toml")
+    pyproject = _REPO_ROOT / "Python/pyproject.toml"
     deps_pinned = False
     if pyproject.exists():
         content = pyproject.read_text()
@@ -643,7 +650,7 @@ def collect_security_evidence(report: AuditReport) -> None:
     )
 
     # Check for SECURITY.md
-    security_md = Path(".github/SECURITY.md")
+    security_md = _REPO_ROOT / ".github/SECURITY.md"
     report.add_evidence(
         EvidenceItem(
             category="Security",
@@ -662,7 +669,7 @@ def collect_change_control_evidence(report: AuditReport) -> None:
     """Collect change control evidence."""
 
     # Check the Codex-native workflow contract.
-    workflow_doc = Path("docs/git-automation/git-workflow-single-source.md")
+    workflow_doc = _REPO_ROOT / "docs/git-automation/git-workflow-single-source.md"
     report.add_evidence(
         EvidenceItem(
             category="ChangeControl",
@@ -675,7 +682,7 @@ def collect_change_control_evidence(report: AuditReport) -> None:
     )
 
     # Check branch protection (via workflow)
-    fast_checks = Path(".github/workflows/fast-checks.yml")
+    fast_checks = _REPO_ROOT / ".github/workflows/fast-checks.yml"
     report.add_evidence(
         EvidenceItem(
             category="ChangeControl",

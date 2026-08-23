@@ -444,19 +444,21 @@ def test_index_lock_is_reported_without_deleting_or_retrying(tmp_path: Path):
     assert lock.read_text(encoding="utf-8") == "owned elsewhere\n"
 
 
-def test_compatibility_guards_delegate_without_blocking_operation_completion(
+def test_canonical_guards_allow_operation_completion_but_fail_closed_on_main(
     tmp_path: Path,
 ):
     repo = _repo(tmp_path)
     linked = tmp_path / "linked"
     _git(repo, "worktree", "add", "-b", "linked", str(linked))
     _create_operation_marker(linked, "MERGE_HEAD")
-    merge_guard = REPO_ROOT / "scripts" / "check_unfinished_merge.sh"
-    branch_guard = REPO_ROOT / "scripts" / "check_not_main.sh"
+    authority = REPO_ROOT / "scripts" / "git_state.py"
 
     standalone = subprocess.run(
         [
-            str(merge_guard),
+            sys.executable,
+            str(authority),
+            "--guard",
+            "operation",
             "--repo",
             str(linked),
             "--default-ref",
@@ -467,7 +469,10 @@ def test_compatibility_guards_delegate_without_blocking_operation_completion(
     )
     completion = subprocess.run(
         [
-            str(merge_guard),
+            sys.executable,
+            str(authority),
+            "--guard",
+            "operation",
             "--allow-operation-completion",
             "--repo",
             str(linked),
@@ -478,7 +483,16 @@ def test_compatibility_guards_delegate_without_blocking_operation_completion(
         text=True,
     )
     main_guard = subprocess.run(
-        [str(branch_guard), "--repo", str(repo), "--default-ref", "main"],
+        [
+            sys.executable,
+            str(authority),
+            "--guard",
+            "branch",
+            "--repo",
+            str(repo),
+            "--default-ref",
+            "main",
+        ],
         capture_output=True,
         text=True,
     )

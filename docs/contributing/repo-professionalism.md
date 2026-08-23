@@ -33,7 +33,7 @@ pip install -e ".[dev]"
 ./scripts/python_runtime.sh -m pre_commit install
 ```
 
-After this, always use `.venv/bin/python` (not bare `python`).
+After this, always use `./scripts/python_runtime.sh` (not bare `python`).
 
 ---
 
@@ -104,12 +104,12 @@ Recommended minimal labels:
 
 | Stage | Command | Why it matters |
 | --- | --- | --- |
-| Docs-only | `.venv/bin/python scripts/check_doc_versions.py` | Prevent version drift |
-| Links touched | `.venv/bin/python scripts/check_links.py` | Avoid broken docs |
+| Docs-only | `./scripts/python_runtime.sh scripts/check_doc_versions.py` | Prevent version drift |
+| Links touched | `./scripts/python_runtime.sh scripts/check_links.py` | Avoid broken docs |
 | Fast code check | `./scripts/quick_check.sh` | Catch basic issues early |
 | Full local CI | `./scripts/ci_local.sh` | CI parity before PR |
-| External CLI test | `.venv/bin/python scripts/external_cli_test.py` | S-007 cold-start validation |
-| Release verify | `.venv/bin/python scripts/release.py verify --version X.Y.Z --source pypi` | Confirm PyPI artifact |
+| External CLI test | `./scripts/python_runtime.sh scripts/external_cli_test.py` | S-007 cold-start validation |
+| Release verify | `./scripts/python_runtime.sh scripts/release.py verify --version X.Y.Z --source pypi` | Confirm PyPI artifact |
 
 If any check modifies files, re-stage and re-commit.
 

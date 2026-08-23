@@ -96,7 +96,7 @@
       "domains": ["control_plane"]
     },
     {
-      "paths": ["scripts/check_repo_hygiene.py", "scripts/validate_git_state.sh", "scripts/check_unfinished_merge.sh", "scripts/check_not_main.sh", "scripts/agent_start.sh", "scripts/git_state.py", "scripts/migrate_python_module.py", "scripts/migrate_react_component.py", "scripts/safe_file_move.py", "scripts/safe_file_delete.py", "scripts/batch_migrate_runner.py", ".github/**", ".pre-commit-config.yaml"],
+      "paths": ["scripts/check_repo_hygiene.py", "scripts/agent_start.sh", "scripts/git_state.py", "scripts/migrate_python_module.py", "scripts/migrate_react_component.py", "scripts/safe_file_move.py", "scripts/safe_file_delete.py", "scripts/batch_migrate_runner.py", ".github/**", ".pre-commit-config.yaml"],
       "domains": ["control_plane", "repository"]
     },
     {

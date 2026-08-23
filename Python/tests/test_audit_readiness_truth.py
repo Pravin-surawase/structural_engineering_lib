@@ -121,7 +121,10 @@ def test_diagnostic_summary_keeps_first_hard_error_and_final_context() -> None:
     assert "Final context: hard cap is 500" in summary
 
 
-def test_readiness_distinguishes_executable_performance_thresholds_from_reporting():
+def test_readiness_distinguishes_executable_performance_thresholds_from_reporting(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    monkeypatch.chdir(tmp_path)
     report = readiness.AuditReport()
 
     readiness.collect_testing_evidence(report)

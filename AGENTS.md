@@ -161,7 +161,7 @@ UI/IO        → react_app/, fastapi_app/
 - **Permission Enforcement:** `scripts/tool_permissions.py` — programmatic access control
 - **Session Persistence:** `scripts/session_store.py` — JSON session state in logs/sessions/
 - **Pipeline Resume:** `scripts/pipeline_state.py` — resumable 8-step task pipeline
-- **Hooks Framework:** `scripts/hooks/` — non-Git execution hooks such as `pre_route`
+- **Routing controls:** `scripts/prompt_router.py` and `scripts/tool_permissions.py` — canonical routing and permission enforcement
 - **Parity Dashboard:** `scripts/parity_dashboard.py` — declared Indian-code capability plus endpoint/test/hook coverage
 - **Skill Tiers:** Core (task-eligible), Specialist (role-based), Experimental (explicit)
 

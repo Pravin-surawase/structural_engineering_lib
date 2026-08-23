@@ -92,7 +92,7 @@ cd react_app && npx vitest run --reporter=verbose      # Verbose tests
 cd react_app && npx tsc --noEmit                       # Type check only
 
 # From project root (for Python-related checks)
-.venv/bin/python scripts/check_architecture_boundaries.py  # Verify no arch violations
+./scripts/python_runtime.sh scripts/check_architecture_boundaries.py  # Verify no arch violations
 ```
 
 > ⚠️ cwd persists between commands. After `cd react_app`, you are STILL in react_app/ for subsequent commands. Use full paths from project root or start each command with explicit cd.

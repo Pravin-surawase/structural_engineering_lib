@@ -241,6 +241,96 @@ normalization. Those are architecture costs, not isolated formatting defects.
    the quick and cumulative full gates, ordinary hooks, and every required
    hosted check without changing product behavior.
 
+## MAINT-012D frozen scope
+
+### Confirmed baseline
+
+- The active surface contained 130 registered operations (124 active and six
+  deprecated) and 115 top-level scripts. Fifteen registry entries represented
+  duplicate modes, duplicate commands, obsolete bridges, or unsupported
+  writers rather than independent outcomes.
+- The nightly OpenAPI drift script compared only endpoints and component-schema
+  names while the maintained snapshot checker also had only summary-level
+  reporting. Either route could miss a changed method body, parameter, response,
+  or schema field.
+- Three Git wrapper files delegated to `git_state.py`; three index generator
+  bridges delegated to the MAINT-012B context system. Their compatibility period
+  had ended, but their executable files, CI syntax checks, tests, and deprecated
+  operations kept the old paths looking current.
+- `governance_health_score.py` hard-coded `.venv/bin/python` and failed in a
+  source-bound linked worktree. `repo_health_check.sh` assumed `.git/` was a
+  directory and failed in a linked worktree where `.git` is a file. Both
+  overlapped the maintained `project_health.py` and repository diagnostics.
+- `collect_metrics.sh` reran pytest/coverage through a hard-coded environment and
+  wrote metrics without a maintained caller. `export_paper_data.py` was absent
+  from the current agent-evolution skill workflow and had no supported consumer.
+- Deep agent startup reran the full project-health scanner merely to display a
+  score, and ordinary `project_health.py --score/--json` calls persisted a report
+  despite being registered as read-only.
+- The non-Git `scripts/hooks/` prototype had no runtime caller; prompt routing
+  already performed registry lookup and permission enforcement directly.
+- The retained readiness aggregator resolved most evidence paths from process
+  cwd. Its performance authority passed in a focused root invocation but became
+  WARN when the broad Python suite exercised it after cwd had changed.
+- The safe move helper would automatically rewrite old session logs, audit
+  reports, research, and immutable verification receipts when archiving a
+  referenced path, changing historical evidence merely to follow a live move.
+
+### Disposition and canonical owners
+
+| Action | Former surface | Canonical outcome owner |
+|---|---|---|
+| Consolidate | `check_openapi_drift.py` | `check_openapi_snapshot.py`, now a full-spec deep comparison that ignores only `info.version` |
+| Consolidate | `governance_health_score.py`, `repo_health_check.sh` | `project_health.py`; diagnostics remain `collect_diagnostics.py` and hygiene remains `check_repo_hygiene.py` |
+| Consolidate | `fix_broken_links.py` and two registry operations | One `check markdown links` operation; `check_links.py` is read-only by default and writes only with `--fix` |
+| Consolidate | `check_wip_limits.sh` | `check_tasks_format.py` owns declared task-board WIP; task intake separately inspects typed worktree state and current PR evidence |
+| Retire bridge | Three Git wrapper scripts | `git_state.py` plus three searchable legacy aliases and retirement sentinels |
+| Retire bridge | Three generated-index scripts and `run.sh generate` routes | `./run.sh context`; old script names remain discovery aliases only |
+| Retire duplicate | `test import 3d pipeline` operation | Alias of the single `test import pipeline` operation |
+| Retire dormant/unsupported | `collect_metrics.sh`, `export_paper_data.py`, `scripts/hooks/` | Current session usage, project health, agent evolution, prompt routing, and permission controls |
+
+The archived files remain reference-only under `scripts/_archive/`; no redirect
+stub remains in the active tree. The canonical registry has 115 active
+operations, no deprecated executable bridge operations, and complete ownership
+of all 102 active top-level scripts. Agent startup reads the latest recorded
+health receipt instead of scanning, while project health is read-only unless
+`--write` or `--fix` is explicit.
+
+### Safety holds and exclusions
+
+- `audit_readiness_report.py`, `audit_error_handling.py`,
+  `audit_input_validation.py`, `check_function_quality.py`, and
+  `check_public_route_safety.py` remain separate. They aggregate different
+  evidence or validate different engineering/public-boundary contracts, so
+  merging them would weaken failure meaning rather than reduce repetition.
+- Agent scoring, drift, compliance, trends, instruction evolution, and session
+  collection remain the maintained agent-evolution workflow.
+- No structural calculation, public API behavior, FastAPI route, React UI,
+  Excel/ETABS workflow, dependency, package, release, branch deletion,
+  GitHub-setting, or professional-approval change is included.
+- Historical evidence and retirement sentinels keep their original path text.
+  The safe move helper may rewrite maintained live callers but skips immutable
+  evidence and explicit absence assertions.
+- The retained readiness aggregator resolves repository evidence from its own
+  source root while keeping concise repository-relative command paths, so its
+  verdict no longer depends on prior test/process cwd.
+
+### MAINT-012D acceptance
+
+1. Every archived path has a live-caller, runtime, ownership, and replacement
+   disposition; no active CI, `run.sh`, agent, registry command, or current guide
+   executes an archived file.
+2. OpenAPI method/body/schema drift is detected while a version-only change is
+   ignored; the nightly and local paths call the same checker.
+3. Legacy intent remains discoverable through one canonical alias owner, while
+   retired Git/index executable paths are absent and guarded against return.
+4. The control projection is regenerated once and validates exactly 115 active
+   operations and 102/102 active scripts; context and verification manifests
+   remain fail closed.
+5. Historical logs, audits, research, and receipts are not rewritten by the
+   moves. Focused contract tests, broad Python, quick/full gates, ordinary hooks,
+   and every required hosted check pass on one frozen candidate.
+
 ## Efficient operating contract
 
 For an operation-metadata change, edit only `control-plane.json`, run
@@ -281,6 +371,13 @@ fingerprint inputs. Receipts need no manual refresh because their content
 address invalidates automatically; cache eviction only causes fresh execution.
 A quarterly review may compare observed job/check time and unknown-path events,
 but unchanged contracts need no rewrite.
+
+MAINT-012D retirement is event-driven too. Reassess a scanner or script only
+when a new duplicate caller appears, a canonical owner changes, an archived
+capability is requested, a check repeatedly produces stale/false results, or
+measured runtime becomes material. A quarterly inventory may detect those
+events, but elapsed months alone do not justify regenerating aliases, moving
+files, or rerunning broad evidence.
 
 ## MAINT-012A acceptance
 

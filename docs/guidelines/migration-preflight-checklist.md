@@ -24,11 +24,11 @@ tags: []
 
 ```bash
 # Run all pre-migration checks automatically
-.venv/bin/python scripts/pre_migration_check.py
+./scripts/python_runtime.sh scripts/pre_migration_check.py
 
 # Or run individually
-.venv/bin/python -m pytest Python/tests/ -v --tb=short    # All tests pass
-.venv/bin/python scripts/check_links.py                    # Doc links valid
+./scripts/python_runtime.sh -m pytest Python/tests/ -v --tb=short    # All tests pass
+./scripts/python_runtime.sh scripts/check_links.py                    # Doc links valid
 gh run list -L 5                                           # CI is green
 ```
 
@@ -72,21 +72,21 @@ git checkout -b feat/migrate-is456-modules
 
 ### 2.1 All Tests Pass
 ```bash
-.venv/bin/python -m pytest Python/tests/ -v --tb=short 2>&1 | tail -20
+./scripts/python_runtime.sh -m pytest Python/tests/ -v --tb=short 2>&1 | tail -20
 ```
 - [ ] All tests pass (expected: 2300+)
 - [ ] No skipped tests unexpectedly
 
 ### 2.2 Core Module Tests
 ```bash
-.venv/bin/python -m pytest Python/tests/test_core.py -v
+./scripts/python_runtime.sh -m pytest Python/tests/test_core.py -v
 ```
 - [ ] 24 core tests pass (CodeRegistry, MaterialFactory, geometry)
 
 ### 2.3 IS 456 Module Tests
 ```bash
 # Run tests for modules being migrated
-.venv/bin/python -m pytest Python/tests/test_flexure*.py Python/tests/test_shear*.py Python/tests/test_detailing*.py -v
+./scripts/python_runtime.sh -m pytest Python/tests/test_flexure*.py Python/tests/test_shear*.py Python/tests/test_detailing*.py -v
 ```
 - [ ] Flexure tests pass
 - [ ] Shear tests pass
@@ -94,7 +94,7 @@ git checkout -b feat/migrate-is456-modules
 
 ### 2.4 Test Count Snapshot
 ```bash
-.venv/bin/python -m pytest Python/tests/ --collect-only -q | tail -5
+./scripts/python_runtime.sh -m pytest Python/tests/ --collect-only -q | tail -5
 ```
 - [ ] Record test count: _____ tests
 - [ ] This count should not change after migration
@@ -105,7 +105,7 @@ git checkout -b feat/migrate-is456-modules
 
 ### 3.1 Current Import Paths Work
 ```bash
-.venv/bin/python -c "
+./scripts/python_runtime.sh -c "
 from structural_lib import flexure, shear, detailing, tables
 from structural_lib.flexure import design_singly_reinforced
 from structural_lib.shear import design_shear
@@ -116,7 +116,7 @@ print('✅ All current imports work')
 
 ### 3.2 Codes Namespace Exists
 ```bash
-.venv/bin/python -c "
+./scripts/python_runtime.sh -c "
 from structural_lib.codes.is456 import IS456Code
 from structural_lib.core import CodeRegistry
 print(f'IS456 registered: {CodeRegistry.is_registered(\"IS456\")}')
@@ -127,7 +127,7 @@ print(f'IS456 registered: {CodeRegistry.is_registered(\"IS456\")}')
 
 ### 3.3 Core Module Ready
 ```bash
-.venv/bin/python -c "
+./scripts/python_runtime.sh -c "
 from structural_lib.core import (
     CodeRegistry,
     MaterialFactory,
@@ -145,13 +145,13 @@ print('✅ Core module ready')
 
 ### 4.1 Link Check
 ```bash
-.venv/bin/python scripts/check_links.py
+./scripts/python_runtime.sh scripts/check_links.py
 ```
 - [ ] 0 broken links (expected: 719+ links, 0 broken)
 
 ### 4.2 Docs Index Valid
 ```bash
-.venv/bin/python scripts/check_docs_index.py
+./scripts/python_runtime.sh scripts/check_docs_index.py
 ```
 - [ ] Docs index is valid
 
@@ -207,7 +207,7 @@ grep -r "from structural_lib.flexure import" Python/structural_lib/compliance.py
 
 ### 7.1 Public API Functions
 ```bash
-.venv/bin/python -c "
+./scripts/python_runtime.sh -c "
 from structural_lib import api
 funcs = [x for x in dir(api) if not x.startswith('_')]
 print(f'API functions: {len(funcs)}')
@@ -218,7 +218,7 @@ print(f'API functions: {len(funcs)}')
 
 ### 7.2 API Still Works
 ```bash
-.venv/bin/python -c "
+./scripts/python_runtime.sh -c "
 from structural_lib.api import design_beam_is456
 print(f'design_beam_is456: {design_beam_is456.__name__}')
 "

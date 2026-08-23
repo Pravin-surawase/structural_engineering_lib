@@ -45,9 +45,9 @@ for an otherwise complete task.
 | Task | Command | Frequency |
 |------|---------|-----------|
 | Validate live context | `./run.sh context validate` | After structural changes |
-| Check links | `.venv/bin/python scripts/check_links.py` | After structural changes |
+| Check links | `./scripts/python_runtime.sh scripts/check_links.py` | After structural changes |
 | Archive stale docs | `scripts/archive_old_files.sh` | Monthly |
-| Check duplicates | `.venv/bin/python scripts/find_automation.py "topic"` | Before creating docs |
+| Check duplicates | `./scripts/python_runtime.sh scripts/find_automation.py "topic"` | Before creating docs |
 | Sync numbers | `./run.sh session sync --fix` | Only after confirmed count drift |
 
 ## Skills: Use `/safe-file-ops` for file moves, `/session-management` for session workflow, `/development-rules` for domain-specific doc rules (DO-1 through DO-6), `/quality-gate` for pre-merge doc verification.
@@ -85,14 +85,14 @@ do not create a documentation-only closeout commit by default.
 
 ```bash
 # Preview first (dry run)
-.venv/bin/python scripts/safe_file_move.py old.md new.md --dry-run
+./scripts/python_runtime.sh scripts/safe_file_move.py old.md new.md --dry-run
 
 # Execute
-.venv/bin/python scripts/safe_file_move.py old.md new.md
+./scripts/python_runtime.sh scripts/safe_file_move.py old.md new.md
 
 # Preview, then delete safely
-.venv/bin/python scripts/safe_file_delete.py file.md --dry-run
-.venv/bin/python scripts/safe_file_delete.py file.md
+./scripts/python_runtime.sh scripts/safe_file_delete.py file.md --dry-run
+./scripts/python_runtime.sh scripts/safe_file_delete.py file.md
 ```
 
 ## Doc Structure

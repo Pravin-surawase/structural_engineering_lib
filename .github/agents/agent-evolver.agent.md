@@ -62,13 +62,13 @@ require the minimum collected-session threshold enforced by the evolution script
 SESSION_ID="<session-id>"
 
 # Step 1: Collect artifacts from this session
-.venv/bin/python scripts/agent_session_collector.py --session-id "$SESSION_ID"
+./scripts/python_runtime.sh scripts/agent_session_collector.py --session-id "$SESSION_ID"
 
 # Step 2: Quick score for agents active this session
-.venv/bin/python scripts/agent_scorer.py --session "$SESSION_ID"
+./scripts/python_runtime.sh scripts/agent_scorer.py --session "$SESSION_ID"
 
 # Step 3: Check for drift violations (read-only unless --write is explicit)
-.venv/bin/python scripts/agent_drift_detector.py --session "$SESSION_ID"
+./scripts/python_runtime.sh scripts/agent_drift_detector.py --session "$SESSION_ID"
 
 # Step 4: Log findings
 ./run.sh feedback log --agent agent-evolver
@@ -182,7 +182,6 @@ Key trigger rules:
 | `scripts/agent_compliance_checker.py` | Verify rule compliance |
 | `scripts/agent_trends.py` | Time series + degradation |
 | `scripts/agent_evolve_instructions.py` | Propose/apply .agent.md changes |
-| `scripts/export_paper_data.py` | Academic paper data export |
 
 ## Quick Commands
 

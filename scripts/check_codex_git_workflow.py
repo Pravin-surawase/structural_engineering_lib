@@ -27,16 +27,14 @@ GIT_STATE_CONSUMERS = (
     "scripts/session.py",
     "scripts/check_all.py",
 )
-GIT_STATE_COMPATIBILITY = (
-    "scripts/validate_git_state.sh",
-    "scripts/check_unfinished_merge.sh",
-    "scripts/check_not_main.sh",
-)
 FAST_CHECKS = REPO_ROOT / ".github/workflows/fast-checks.yml"
 DEPLOY_DOCS = REPO_ROOT / ".github/workflows/deploy-docs.yml"
 GUIDANCE_INDEX = REPO_ROOT / "docs/git-automation/live-git-guidance-index.json"
 
 RETIRED_PATHS = (
+    "scripts/validate_git_state.sh",
+    "scripts/check_unfinished_merge.sh",
+    "scripts/check_not_main.sh",
     "scripts/ai_commit.sh",
     "scripts/safe_push.sh",
     "scripts/recover_git_state.sh",
@@ -530,28 +528,6 @@ def main() -> int:
             errors.append(f"Git state consumer is missing: {relative}")
         elif "git_state" not in path.read_text(encoding="utf-8"):
             errors.append(f"Git state consumer does not use the authority: {relative}")
-
-    for relative in GIT_STATE_COMPATIBILITY:
-        path = REPO_ROOT / relative
-        if not path.exists():
-            errors.append(f"Git state compatibility entrypoint is missing: {relative}")
-            continue
-        content = path.read_text(encoding="utf-8")
-        if "git_state.py" not in content:
-            errors.append(
-                f"Git compatibility entrypoint bypasses the authority: {relative}"
-            )
-        for retired_semantic in (
-            ".git/MERGE_HEAD",
-            "git status",
-            "git rev-list",
-            "git ls-remote",
-        ):
-            if retired_semantic in content:
-                errors.append(
-                    f"Git compatibility entrypoint retains independent semantics: "
-                    f"{relative} ({retired_semantic})"
-                )
 
     pre_commit = REPO_ROOT / ".pre-commit-config.yaml"
     if pre_commit.exists():

@@ -15,7 +15,7 @@ Follow this workflow when adding a new API endpoint to `fastapi_app/`.
 
 2. **Check if the core function exists** in structural_lib:
    ```bash
-   .venv/bin/python scripts/discover_api_signatures.py {{function_name}}
+   ./scripts/python_runtime.sh scripts/discover_api_signatures.py {{function_name}}
    ```
 
 3. **Check existing Pydantic models:**

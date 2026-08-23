@@ -95,7 +95,7 @@ When reviewing formulas:
 .venv/bin/pytest Python/tests/ -v -k "test_flexure or test_shear"
 .venv/bin/pytest Python/tests/unit/test_compliance.py -v
 .venv/bin/pytest Python/tests/unit/test_detailing.py -v
-.venv/bin/python scripts/discover_api_signatures.py design_beam_is456
+./scripts/python_runtime.sh scripts/discover_api_signatures.py design_beam_is456
 ```
 
 ## ⚠ DO NOT Over-Explore

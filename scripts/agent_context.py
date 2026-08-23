@@ -2,8 +2,8 @@
 """Agent Context Loader — gives each agent its tailored startup context.
 
 Usage:
-    .venv/bin/python scripts/agent_context.py <agent_name>
-    .venv/bin/python scripts/agent_context.py --list
+    ./scripts/python_runtime.sh scripts/agent_context.py <agent_name>
+    ./scripts/python_runtime.sh scripts/agent_context.py --list
 """
 
 import json
@@ -86,6 +86,20 @@ def head(filepath: str, n: int = 15) -> str:
         return f"  (file not found: {filepath})"
     lines = p.read_text().splitlines()[:n]
     return "\n".join(f"  {line}" for line in lines)
+
+
+def latest_health_score() -> str:
+    """Return the latest recorded project-health score without running a scan."""
+    reports = list((ROOT / "logs" / "evolution").glob("health_*.json"))
+    if not reports:
+        return ""
+    latest = max(reports, key=lambda path: path.stat().st_mtime)
+    try:
+        payload = json.loads(latest.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return ""
+    score = payload.get("overall_score")
+    return f"Latest recorded: {score}/100" if isinstance(score, int) else ""
 
 
 def section(title: str):
@@ -511,7 +525,7 @@ def ctx_governance():
     section("MAINTENANCE TASKS")
     bullet("Check governance: .venv/bin/python scripts/check_governance.py --structure")
     bullet("Sync numbers: .venv/bin/python scripts/sync_numbers.py --fix")
-    bullet("Link health: .venv/bin/python scripts/check_links.py")
+    bullet("Link health: ./scripts/python_runtime.sh scripts/check_links.py")
     bullet("Validate context: ./run.sh context validate")
     bullet("Summarize live files: ./run.sh context summary <area-or-folder>")
     bullet("Archive old docs: ./scripts/archive_old_files.sh")
@@ -587,8 +601,10 @@ def main():
         sys.exit(2)
 
     if len(sys.argv) < 2 or sys.argv[1] in ("--help", "-h"):
-        print("Usage: .venv/bin/python scripts/agent_context.py <agent_name>")
-        print("       .venv/bin/python scripts/agent_context.py --list")
+        print(
+            "Usage: ./scripts/python_runtime.sh scripts/agent_context.py <agent_name>"
+        )
+        print("       ./scripts/python_runtime.sh scripts/agent_context.py --list")
         print(f"\nAvailable agents: {', '.join(sorted(registry))}")
         sys.exit(0)
 
@@ -621,16 +637,14 @@ def main():
 
     # Self-evolving system context
     section("PROJECT HEALTH")
-    health_score = run(
-        f"{ROOT / '.venv/bin/python'} {ROOT / 'scripts/project_health.py'} --score 2>/dev/null"
-    )
+    health_score = latest_health_score()
     if health_score:
         bullet(health_score.strip())
     else:
         bullet("Run: ./run.sh health --score")
 
     pending_fb = run(
-        f"{ROOT / '.venv/bin/python'} {ROOT / 'scripts/agent_feedback.py'} pending --brief 2>/dev/null"
+        f"{ROOT / 'scripts/python_runtime.sh'} {ROOT / 'scripts/agent_feedback.py'} pending --brief 2>/dev/null"
     )
     if pending_fb:
         bullet(pending_fb.strip())

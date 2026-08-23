@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib
 import json
 import shutil
 import subprocess
@@ -9,6 +10,10 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 FIXTURES = REPO_ROOT / "tests" / "fixtures" / "migration"
 GOLDEN = FIXTURES / "golden"
+SCRIPTS_DIR = REPO_ROOT / "scripts"
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
+safe_file_move = importlib.import_module("safe_file_move")
 
 
 def _load_golden(name: str) -> dict[str, object]:
@@ -133,6 +138,38 @@ def test_safe_file_move_dry_run_matches_golden() -> None:
         "changed_files": payload["changed_files"],
     }
     assert subset == _load_golden("safe_file_move_dry_run.json")
+
+
+def test_safe_file_move_updates_live_refs_without_rewriting_evidence(
+    tmp_path: Path,
+) -> None:
+    source = tmp_path / "scripts" / "old_tool.py"
+    destination = tmp_path / "scripts" / "_archive" / "old_tool.py"
+    source.parent.mkdir(parents=True)
+    source.write_text("print('legacy')\n", encoding="utf-8")
+
+    active = tmp_path / "docs" / "guides" / "current.md"
+    active.parent.mkdir(parents=True)
+    active.write_text("Run scripts/old_tool.py\n", encoding="utf-8")
+
+    preserved_paths = [
+        tmp_path / "docs" / "SESSION_LOG.md",
+        tmp_path / "docs" / "audit" / "prior-audit.md",
+        tmp_path / "docs" / "verification" / "receipt.json",
+        tmp_path / "docs" / "_archive" / "history.md",
+        tmp_path / "scripts" / "check_codex_git_workflow.py",
+    ]
+    for path in preserved_paths:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("Recorded scripts/old_tool.py\n", encoding="utf-8")
+
+    updated, updated_files = safe_file_move.update_links(source, destination, tmp_path)
+
+    assert updated == 1
+    assert updated_files == ["docs/guides/current.md"]
+    assert active.read_text(encoding="utf-8") == ("Run scripts/_archive/old_tool.py\n")
+    for path in preserved_paths:
+        assert path.read_text(encoding="utf-8") == ("Recorded scripts/old_tool.py\n")
 
 
 def test_batch_runner_dry_run_matches_golden(tmp_path: Path) -> None:

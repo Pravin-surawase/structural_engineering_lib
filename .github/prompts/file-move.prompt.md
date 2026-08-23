@@ -11,32 +11,32 @@ NEVER use `mv`, `rm`, `git mv`, or manual rename.
 
 ### Moving a file:
 ```bash
-.venv/bin/python scripts/safe_file_move.py {{old_path}} {{new_path}} --dry-run
+./scripts/python_runtime.sh scripts/safe_file_move.py {{old_path}} {{new_path}} --dry-run
 ```
 
 ### Deleting a file:
 ```bash
-.venv/bin/python scripts/safe_file_delete.py {{file_path}}
+./scripts/python_runtime.sh scripts/safe_file_delete.py {{file_path}}
 ```
 
 ## Step 2: Execute
 
 ```bash
-.venv/bin/python scripts/safe_file_move.py {{old_path}} {{new_path}}
+./scripts/python_runtime.sh scripts/safe_file_move.py {{old_path}} {{new_path}}
 ```
 
 ## Step 3: For Python/React modules, also update imports
 
 ### Python module:
 ```bash
-.venv/bin/python scripts/migrate_python_module.py {{old_path}} {{new_path}} --dry-run
-.venv/bin/python scripts/migrate_python_module.py {{old_path}} {{new_path}}
+./scripts/python_runtime.sh scripts/migrate_python_module.py {{old_path}} {{new_path}} --dry-run
+./scripts/python_runtime.sh scripts/migrate_python_module.py {{old_path}} {{new_path}}
 ```
 
 ### React component:
 ```bash
-.venv/bin/python scripts/migrate_react_component.py {{old_path}} {{new_path}} --dry-run
-.venv/bin/python scripts/migrate_react_component.py {{old_path}} {{new_path}}
+./scripts/python_runtime.sh scripts/migrate_react_component.py {{old_path}} {{new_path}} --dry-run
+./scripts/python_runtime.sh scripts/migrate_react_component.py {{old_path}} {{new_path}}
 ```
 
 ## Step 4: Validate Live Context
@@ -49,8 +49,8 @@ NEVER use `mv`, `rm`, `git mv`, or manual rename.
 ## Step 5: Validate
 
 ```bash
-.venv/bin/python scripts/validate_imports.py --scope structural_lib   # Python imports
-.venv/bin/python scripts/check_links.py                               # Doc links
+./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib   # Python imports
+./scripts/python_runtime.sh scripts/check_links.py                    # Doc links
 ```
 
 ## Step 6: Commit

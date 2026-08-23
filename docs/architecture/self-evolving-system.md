@@ -173,7 +173,7 @@ Monthly: evolve.py --review monthly  (full: all categories + archive)
 ### Post-Commit (existing)
 ```
 sync_numbers.py → warns of number drift (non-blocking)
-collect_metrics.sh → logs velocity metrics
+session usage + project_health.py → bounded usage and health evidence
 ```
 
 ## Review Schedule
