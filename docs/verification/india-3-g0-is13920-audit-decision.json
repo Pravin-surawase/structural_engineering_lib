@@ -1,0 +1,410 @@
+{
+  "schema_version": 1,
+  "task_id": "INDIA-3-G0",
+  "observed_at_utc": "2026-08-23T22:34:57Z",
+  "decision": {
+    "status": "G0_COMPLETE_REPAIR_SEQUENCE_REQUIRED",
+    "beam_detailing_checks": "REPAIR_PACKET_REQUIRED",
+    "column_detailing_checks": "REPAIR_PACKET_REQUIRED",
+    "beam_column_joint_scwb_check": "REPAIR_PACKET_REQUIRED",
+    "wall_detailing": "OUT_OF_SCOPE_RETAIN_HOLD",
+    "foundation_detailing": "OUT_OF_SCOPE_RETAIN_HOLD",
+    "engineering_implementation_authorized": false,
+    "support_promotion_authorized": false,
+    "release_authorized": false,
+    "reason": "The complete IS 13920:2016 base plus Amendment 1 and Amendment 2 chain was visually reviewed for the existing beam, column, and joint claims. Independent cases reproduce outcome-changing source/code or source/contract mismatches in all three advertised families."
+  },
+  "git_binding": {
+    "base_commit": "3bcc34223d8eaf236c62a5f54dfe4b7960876457",
+    "base_tree": "337c74aa7028ce95939043ccb2acf2e106ce82d0",
+    "branch": "codex/india-3-g0-acceptance",
+    "source_bound": true,
+    "predecessor_pull_request": 862,
+    "predecessor_required_checks": "PASS_9_OF_9",
+    "predecessor_candidate_merge_tree_equal": true
+  },
+  "source_identity": {
+    "accepted_page_bound_chain": [
+      {
+        "logical_id": "IS13920:2016:BASE",
+        "role": "BASE_EDITION",
+        "edition": "2016",
+        "revision": "First Revision"
+      },
+      {
+        "logical_id": "IS13920:2016:AMD1:2017",
+        "role": "AMENDMENT",
+        "amendment": 1,
+        "date": "2017-09"
+      },
+      {
+        "logical_id": "IS13920:2016:AMD2:2020",
+        "role": "AMENDMENT",
+        "amendment": 2,
+        "date": "2020-11"
+      }
+    ],
+    "reaffirmation": {
+      "year": 2021,
+      "treated_as_new_edition": false
+    },
+    "official_status_check": {
+      "status": "PUBLISHED_2016_WITH_SUCCESSOR_REVISION_UNDER_DEVELOPMENT",
+      "inference": "Official BIS 2025 and 2026 material still identifies IS 13920:2016 as the published standard, while the proposed split successor remains draft or under development and is not used as an Indian Standard.",
+      "sources": [
+        "https://www.services.bis.gov.in/php/BIS_2.0/bisconnect/pow_new/Pow/download_pow_pdf_dept_commtt/63/210/",
+        "https://www.services.bis.gov.in/tmp/WCCED21025407_04062024_1.pdf",
+        "https://www.services.bis.gov.in/tmp/WCCED21025408_04062024_1.pdf",
+        "https://www.services.bis.gov.in/tmp/WCCED21427021_27032025_2.pdf"
+      ]
+    },
+    "duplicate_copy_review": {
+      "amendment_1": "TWO_BYTE_DISTINCT_COPIES_NORMALIZED_TEXT_EQUAL_PAGE_BY_PAGE",
+      "amendment_2": "TWO_BYTE_DISTINCT_COPIES_NORMALIZED_TEXT_EQUAL_PAGE_BY_PAGE",
+      "retention": "RETAIN_ALL_COPIES_NO_DELETION"
+    },
+    "catalog_observation": {
+      "status": "SOURCE_METADATA_REPAIR_REQUIRED",
+      "finding": "One identity catalogued as the base includes appended amendment sheets, while one consolidated identity does not provide reliable visual rendering for all appended amendment pages. Family decisions therefore bind the visually reviewed base pages and standalone amendment copies rather than trusting a filename or document-kind label.",
+      "protected_content_tracked": false,
+      "private_archive_mutated": false
+    },
+    "visual_review": {
+      "base_printed_pages": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "amendment_1_pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "amendment_2_pages": [
+        1,
+        2,
+        3
+      ],
+      "method": "COMPLETE_PAGE_VISUAL_REVIEW_WITH_PRIVATE_TEXT_USED_ONLY_FOR_NAVIGATION"
+    }
+  },
+  "family_audits": [
+    {
+      "family": "beam_detailing_checks",
+      "disposition": "REPAIR_PACKET_REQUIRED",
+      "current_surfaces": {
+        "core": "Python/structural_lib/codes/is13920/beam.py",
+        "service": "structural_lib.check_beam_ductility",
+        "http": "POST /api/v1/design/beam/ductility-check",
+        "generated_claim": "IMPLEMENTED_BOUNDED"
+      },
+      "accepted_source_map": [
+        {
+          "behavior": "width_to_overall_depth_ratio",
+          "reference": "6.1.1",
+          "normalized_limit": {
+            "operator": ">",
+            "value": 0.3
+          },
+          "current_result": "MISMATCH_EXACT_0_3_IS_ACCEPTED"
+        },
+        {
+          "behavior": "minimum_width",
+          "reference": "6.1.2",
+          "normalized_limit": {
+            "operator": ">=",
+            "value": 200.0,
+            "unit": "mm"
+          },
+          "current_result": "NUMERIC_MATCH_CLAUSE_METADATA_MISMATCH"
+        },
+        {
+          "behavior": "minimum_longitudinal_ratio_on_each_face",
+          "reference": "6.2.1(b)",
+          "normalized_expression": "0.24*sqrt(fck)/fy",
+          "current_result": "NUMERIC_MATCH"
+        },
+        {
+          "behavior": "maximum_longitudinal_ratio_on_each_face",
+          "reference": "6.2.2",
+          "normalized_limit": 0.025,
+          "current_result": "NUMERIC_MATCH"
+        },
+        {
+          "behavior": "close_link_spacing_within_2d",
+          "reference": "6.3.5_WITH_AMENDMENT_1",
+          "normalized_expression": "min(d/4,6*db_min,100_mm)",
+          "current_result": "MISMATCH_USES_8_TIMES_BAR_DIAMETER"
+        }
+      ],
+      "independent_benchmark": {
+        "inputs": {
+          "b_mm": 250.0,
+          "D_mm": 500.0,
+          "d_mm": 450.0,
+          "fck_nmm2": 25.0,
+          "fy_nmm2": 500.0,
+          "minimum_longitudinal_bar_diameter_mm": 12.0
+        },
+        "expected": {
+          "width_depth_ratio": 0.5,
+          "minimum_longitudinal_steel_percent": 0.24,
+          "maximum_longitudinal_steel_percent": 2.5,
+          "maximum_close_link_spacing_mm": 72.0
+        },
+        "current": {
+          "maximum_close_link_spacing_mm": 96.0,
+          "remarks": "Compliant"
+        },
+        "tolerance": 1e-09,
+        "result": "FAIL_CURRENT"
+      },
+      "unsafe_cases": {
+        "boundary": "b_mm=300,D_mm=1000 is accepted by current code although the source ratio condition is strict",
+        "inadequate": "b_mm=199 is rejected",
+        "invalid": "NaN material strength returns a NaN requirement with zero errors and a compliant remark",
+        "out_of_domain": "No actual longitudinal steel or provided link spacing is accepted, yet the composed result reports compliance"
+      },
+      "outcome_changing_findings": [
+        "BEAM_SPACING_AMENDMENT_NOT_APPLIED",
+        "BEAM_RATIO_BOUNDARY_FAILS_OPEN",
+        "BEAM_NONFINITE_INPUT_FAILS_OPEN",
+        "BEAM_REQUIREMENT_CALCULATOR_MISLABELED_AS_COMPLIANCE_CHECK",
+        "BEAM_CLAUSE_TITLES_AND_DECORATORS_MISALIGNED"
+      ]
+    },
+    {
+      "family": "column_detailing_checks",
+      "disposition": "REPAIR_PACKET_REQUIRED",
+      "current_surfaces": {
+        "core": "Python/structural_lib/codes/is13920/column.py",
+        "service": "structural_lib.check_column_ductility_is13920",
+        "http": "POST /api/v1/design/column/ductile-detailing",
+        "generated_claim": "IMPLEMENTED_BOUNDED"
+      },
+      "accepted_source_map": [
+        {
+          "behavior": "minimum_dimension",
+          "reference": "7.1.1",
+          "normalized_limit": {
+            "operator": ">=",
+            "value": 300.0,
+            "unit": "mm"
+          },
+          "current_result": "NUMERIC_MATCH_CLAUSE_METADATA_MISMATCH"
+        },
+        {
+          "behavior": "short_to_long_dimension_ratio",
+          "reference": "7.1.2_WITH_AMENDMENT_1",
+          "normalized_limit": {
+            "operator": ">=",
+            "value": 0.4
+          },
+          "current_result": "NUMERIC_MATCH_CLAUSE_METADATA_MISMATCH"
+        },
+        {
+          "behavior": "longitudinal_steel_percentage_limits",
+          "reference": "UNMAPPED_IN_REVIEWED_IS13920_CHAIN",
+          "current_result": "UNSUPPORTED_0_8_AND_4_0_PERCENT_VALUES_RETURNED_UNDER_SCWB_CLAUSE_7_2_1"
+        },
+        {
+          "behavior": "special_confinement_length_and_spacing",
+          "reference": "7.6.1_WITH_AMENDMENTS_1_AND_2",
+          "normalized_length_expression": "max(larger_dimension,clear_height/6,450_mm)",
+          "normalized_spacing_expression": "min(minimum_dimension/4,6*db_min,100_mm)",
+          "current_result": "NUMERIC_MATCH_FOR_REVIEWED_RECTANGULAR_CASES_CLAUSE_METADATA_MISMATCH"
+        },
+        {
+          "behavior": "rectangular_special_confining_reinforcement_area",
+          "reference": "7.6.1(c)(2)_WITH_AMENDMENTS_1_AND_2",
+          "normalized_expression": "max(0.18*s*h*(fck/fy)*(Ag/Ak-1),0.05*s*h*(fck/fy))",
+          "current_result": "MISMATCH_SECOND_GOVERNING_EXPRESSION_OMITTED"
+        }
+      ],
+      "independent_benchmark": {
+        "inputs": {
+          "b_mm": 400.0,
+          "D_mm": 500.0,
+          "clear_height_mm": 3000.0,
+          "minimum_longitudinal_bar_diameter_mm": 20.0,
+          "fck_nmm2": 25.0,
+          "fy_nmm2": 415.0,
+          "Ag_mm2": 200000.0,
+          "Ak_mm2": 134400.0,
+          "h_mm": 420.0
+        },
+        "expected": {
+          "maximum_special_confining_spacing_mm": 100.0,
+          "minimum_special_confining_length_mm": 500.0,
+          "required_Ash_mm2": 222.28915662650604
+        },
+        "current": {
+          "maximum_special_confining_spacing_mm": 100.0,
+          "minimum_special_confining_length_mm": 500.0,
+          "required_Ash_mm2": 222.28915662650604
+        },
+        "tolerance": 1e-09,
+        "result": "PASS_NUMERIC_SUBSET_ONLY"
+      },
+      "second_expression_case": {
+        "inputs": {
+          "b_mm": 1000.0,
+          "D_mm": 1000.0,
+          "s_mm": 100.0,
+          "h_mm": 920.0,
+          "fck_nmm2": 25.0,
+          "fy_nmm2": 415.0,
+          "Ag_mm2": 1000000.0,
+          "Ak_mm2": 846400.0
+        },
+        "expected_required_Ash_mm2": 277.10843373493975,
+        "current_required_Ash_mm2": 181.03719224724983,
+        "result": "FAIL_CURRENT_UNDERESTIMATES_REQUIRED_AREA"
+      },
+      "unsafe_cases": {
+        "boundary": "300_by_750_mm satisfies the amended 0.4 aspect-ratio boundary",
+        "inadequate": "a minimum dimension below 300 mm is rejected",
+        "invalid": "NaN section geometry returns geometry-valid and compliant with zero errors in the core",
+        "out_of_domain": "Axial-stress applicability, actual provided confinement, link geometry, and actual cover are absent; the service invents a 40 mm cover/core and still returns compliant"
+      },
+      "outcome_changing_findings": [
+        "COLUMN_SPECIAL_CONFINEMENT_CLAUSES_MAPPED_TO_WRONG_SECTION",
+        "COLUMN_LONGITUDINAL_LIMITS_UNMAPPED_TO_REVIEWED_IS13920_SOURCE",
+        "COLUMN_ASH_SECOND_GOVERNING_EXPRESSION_OMITTED",
+        "COLUMN_HIDDEN_40_MM_COVER_AND_CORE_DEFAULT",
+        "COLUMN_NONFINITE_CORE_INPUT_FAILS_OPEN",
+        "COLUMN_REQUIREMENT_CALCULATOR_MISLABELED_AS_COMPLIANCE_CHECK",
+        "COLUMN_APPLICABILITY_NOT_ESTABLISHED"
+      ]
+    },
+    {
+      "family": "beam_column_joint_scwb_check",
+      "disposition": "REPAIR_PACKET_REQUIRED",
+      "current_surfaces": {
+        "core": "Python/structural_lib/codes/is13920/joint.py::check_scwb",
+        "service": null,
+        "http": null,
+        "generated_claim": "IMPLEMENTED_BOUNDED"
+      },
+      "accepted_source_map": [
+        {
+          "behavior": "strong_column_weak_beam_capacity_ratio",
+          "reference": "7.2.1_WITH_AMENDMENT_1_COLUMN_CAPACITY_BASIS",
+          "normalized_expression": "sum(Mc)>=1.4*sum(Mb)",
+          "current_result": "MISMATCH_DEFAULT_FACTOR_IS_1_1"
+        },
+        {
+          "behavior": "direction_and_capacity_basis",
+          "reference": "7.2.1.1_AND_7.2.1.2_WITH_AMENDMENT_1",
+          "normalized_condition": "check_each_principal_plane_and_both_shaking_directions_with_beam_actions_in_one_direction_column_actions_in_the_opposite_direction_and_column_capacity_at_factored_axial_load",
+          "current_result": "MISMATCH_INPUT_CONTRACT_CANNOT_ENCODE_REQUIRED_DIRECTIONS_OR_AXIAL_LOAD_BASIS"
+        },
+        {
+          "behavior": "applicability",
+          "reference": "7.2.1.3_AND_SECTION_7.2_LIMITATIONS",
+          "normalized_condition": "roof_waiver_and_flat_slab_exclusion_must_be_known",
+          "current_result": "MISMATCH_APPLICABILITY_CONTEXT_ABSENT"
+        }
+      ],
+      "independent_benchmark": {
+        "inputs": {
+          "column_top_capacity_knm": 125.0,
+          "column_bottom_capacity_knm": 125.0,
+          "beam_left_capacity_knm": 100.0,
+          "beam_right_capacity_knm": 100.0
+        },
+        "expected": {
+          "sum_column_capacity_knm": 250.0,
+          "sum_beam_capacity_knm": 200.0,
+          "required_column_capacity_knm": 280.0,
+          "ratio": 0.8928571428571429,
+          "is_satisfied": false
+        },
+        "current": {
+          "factor": 1.1,
+          "required_column_capacity_knm": 220.00000000000003,
+          "is_satisfied": true
+        },
+        "tolerance": 1e-09,
+        "result": "FAIL_CURRENT_FALSE_PASS"
+      },
+      "unsafe_cases": {
+        "boundary": "sum_column_capacity=280 and sum_beam_capacity=200 passes exactly at the 1.4 boundary",
+        "inadequate": "sum_column_capacity=250 and sum_beam_capacity=200 must fail but current default passes",
+        "invalid": "non-finite capacity input raises a numerical ValueError",
+        "out_of_domain": "The function cannot establish shaking sign, principal plane, axial-load capacity basis, roof waiver, flat-slab exclusion, or an exterior one-beam joint"
+      },
+      "outcome_changing_findings": [
+        "SCWB_DEFAULT_FACTOR_FALSE_PASS",
+        "SCWB_NONSTANDARD_CUSTOM_FACTOR_CAN_BE_REPORTED_AS_IS13920",
+        "SCWB_DIRECTIONAL_COMBINATION_NOT_ENCODED",
+        "SCWB_COLUMN_AXIAL_LOAD_CAPACITY_BASIS_NOT_ENCODED",
+        "SCWB_APPLICABILITY_NOT_ENCODED",
+        "SCWB_EXTERIOR_JOINT_NOT_REPRESENTABLE"
+      ]
+    }
+  ],
+  "cross_surface_reconciliation": {
+    "beam": "CORE_SERVICE_PACKAGE_AND_HTTP_DELEGATE_THE_SAME_REQUIREMENT_OUTPUT_BUT_HTTP_DESCRIBES_IT_AS_A_CHECK",
+    "column": "SERVICE_AND_HTTP_ADD_HIDDEN_GEOMETRY_DEFAULTS_AND_REPORT_COMPLIANCE_WITHOUT_PROVIDED_REINFORCEMENT",
+    "joint": "CORE_NAMESPACE_ONLY_AS_CLAIMED_BUT_GENERATED_SUPPORT_STATUS_OMITS_THE_FACTOR_AND_DOMAIN_FAILURES",
+    "clause_metadata": "CURRENT_DECORATORS_CLAUSE_MAP_TITLES_AND_GENERATED_REFERENCE_TITLES_DO_NOT_MATCH_THE_REVIEWED_AMENDED_STRUCTURE",
+    "current_capability_status": "MUST_NOT_BE_TREATED_AS_ENGINEERING_ACCEPTED_BEFORE_REPAIR_AND_CUMULATIVE_ACCEPTANCE"
+  },
+  "frozen_follow_on_packets": [
+    {
+      "packet_id": "INDIA-3-SOURCE-META-R1",
+      "scope": "Correct private document-kind and visual-renderability metadata without deleting or redistributing any source copy.",
+      "formula_change": false
+    },
+    {
+      "packet_id": "INDIA-3-BEAM-R1",
+      "scope": "Apply the accepted amendment chain, strict geometry boundary, finite intake, truthful requirement-versus-compliance semantics, and aligned core/service/HTTP/clause metadata.",
+      "formula_change": true
+    },
+    {
+      "packet_id": "INDIA-3-COLUMN-R1",
+      "scope": "Correct amended clause mapping, remove or separately source unmapped longitudinal limits, implement both rectangular Ash expressions, eliminate hidden core defaults, require applicability and provided-check inputs, and align all transports.",
+      "formula_change": true
+    },
+    {
+      "packet_id": "INDIA-3-JOINT-R1",
+      "scope": "Use the fixed 1.4 requirement, encode directional and axial-capacity provenance, enforce applicability, prevent non-standard overrides from being labeled IS 13920, and cover interior and exterior supported topologies explicitly.",
+      "formula_change": true
+    },
+    {
+      "packet_id": "INDIA-3-IS13920-M0",
+      "scope": "Run one cumulative source, benchmark, cross-surface, capability, package, and qualified-review acceptance after all accepted repairs.",
+      "formula_change": false
+    }
+  ],
+  "verification": {
+    "private_archive": "PASS_25_DOCUMENTS_27_ALIASES_732_PAGES_142_VISUAL_REVIEW_PAGES",
+    "private_boundary": "NO_PRIVATE_MATERIAL_TRACKED",
+    "runtime_reproducer": "PASS_REPRODUCED_ALL_THREE_OUTCOME_CHANGING_FAMILY_MISMATCHES",
+    "existing_test_baseline": "PASS_63_TESTS_SOFTWARE_REGRESSION_ONLY_NOT_SOURCE_ACCEPTANCE",
+    "documentation": "PASS_FRONTMATTER_LINK_AND_CONTEXT_VALIDATION",
+    "quick_gate": "PENDING_FINAL_FROZEN_GATE",
+    "broad_gate": "DEFERRED_NO_RUNTIME_CHANGE",
+    "hosted_checks": "PENDING_IMMUTABLE_CANDIDATE"
+  },
+  "holds": [
+    "NO_CURRENT_IS13920_FAMILY_IS_ENGINEERING_ACCEPTED",
+    "NO_NEW_IS13920_FORMULA_OR_SUPPORT_PROMOTION_IN_G0",
+    "WALL_AND_FOUNDATION_DETAILING_REMAIN_HELD",
+    "IS875_AND_IS1893_REMAIN_HELD",
+    "RELEASE_AND_PROFESSIONAL_USE_REMAIN_HELD",
+    "PRIVATE_SOURCE_BYTES_TEXT_IMAGES_HASHES_AND_PATHS_REMAIN_UNTRACKED",
+    "BRANCH_WORKTREE_AND_ARCHIVE_DELETION_NOT_AUTHORIZED"
+  ]
+}

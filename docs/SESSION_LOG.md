@@ -5,6 +5,156 @@
 
 ---
 
+## 2026-08-24 — Session: INDIA-3-G0 IS 13920 source-to-result decision
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents)
+
+**Branch:** `codex/india-3-g0-acceptance`, from exact post-LIB-PRO-008 hosted
+commit `3bcc34223d8eaf236c62a5f54dfe4b7960876457`, tree
+`337c74aa7028ce95939043ccb2acf2e106ce82d0`.
+
+**Git handoff receipt:**
+`docs/verification/india-3-g0-audit-decision-git-handoff-receipt.json`
+
+**Focus:** Complete the bounded existing-surface audit for IS 13920 beam,
+column, and strong-column/weak-beam joint claims. Resolve the exact
+edition/amendment chain, map every current calculation and outcome-changing
+default, freeze independent benchmarks and unsafe cases, reconcile public
+truth, and classify each family without changing formulas or support status.
+
+### Summary
+
+- Created one fresh source-bound lane at exact hosted `3bcc3422`; the older
+  INDIA-3 candidates and unrelated dirty detached worktree remain untouched.
+- Reverified the ignored private archive at 25 documents, 27 aliases, 732
+  cached pages, and 142 visual-review pages. Complete governing base and
+  amendment pages were visually reviewed; extracted text was navigation only.
+- Resolved the page-bound chain as IS 13920:2016 First Revision plus Amendment
+  1 (September 2017) and Amendment 2 (November 2020). Reaffirmation in 2021 is
+  separate from edition/amendment identity. Both byte-distinct copies of each
+  amendment are normalized-text equal page by page and remain preserved.
+- Official BIS material available in June 2026 still identifies IS 13920:2016
+  as published while the split successor remains under development. The draft
+  successor was not used as an Indian Standard.
+- Independently reproduced outcome-changing source/code or source/contract
+  mismatches for beam, column, and joint. All three families are
+  `REPAIR_PACKET_REQUIRED`; none is `ACCEPT_CURRENT_BOUNDED`.
+- Froze separate source-metadata, beam, column, and joint repair packets plus
+  one cumulative IS 13920 acceptance gate. No formula, runtime surface,
+  generated support status, package version, or release state changed.
+
+### Issues encountered
+
+- Primary `main` was clean but one commit behind exact hosted `origin/main`.
+- The private catalogue's file-level labels were insufficient: one identity
+  labelled as a base includes appended amendment sheets, and one consolidated
+  copy did not render every appended amendment page reliably.
+- The first FastAPI model search included two guessed paths that do not exist.
+- The system exposed `pdftoppm` but not `pdftotext`; the PDF runtime also did
+  not contain PyMuPDF under the `fitz` import name.
+- The first front-matter check rejected `status: complete` because the
+  maintained schema uses `archived` for a terminal plan.
+- The first hosted documentation job rejected the compatibility ledger after
+  the G0 decision added two maintained public-facade references.
+- Existing beam tests encode the pre-amendment eight-bar spacing rule; column
+  tests encode obsolete clause numbers and only one confinement-area
+  expression; joint tests encode a 1.1 factor.
+- Beam accepts the exact ratio boundary and non-finite material input, column
+  omits a governing confinement expression and reports compliance using hidden
+  geometry defaults, and joint returns a false pass under its default factor.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the primary anchor had not been fast-forwarded after
+  PR #862, although `origin/main` was current and clean. Resolution: create the
+  task branch/worktree directly from exact `origin/main` without mutating the
+  primary checkout. Evidence: `git_state.py --strict` reports `READY_LOCAL`,
+  equal to `origin/main`, and runtime diagnosis reports `source_bound=true`.
+- Confirmed root cause: document-kind metadata described acquisition intent,
+  not reliable page-level engineering identity, and one PDF has an incomplete
+  visual layer for appended amendment pages. Resolution: bind decisions to the
+  visually reviewed base pages plus standalone Amendment 1 and Amendment 2
+  copies; retain every source and freeze a separate private metadata repair.
+  Evidence: both amendment-copy pairs are normalized-text equal page by page,
+  and complete governing pages were visually reviewed. No private source was
+  changed or tracked.
+- Confirmed root cause: the Pydantic models live under
+  `fastapi_app/models/`, not the two guessed module paths. Resolution: use the
+  discovered `compliance.py` and `column.py` owners. Evidence: exact beam and
+  column request/response contracts were mapped. ⚠️ TERMINAL ISSUE: guessed
+  FastAPI paths made one read-only `rg` command exit 2 -> reran against files
+  discovered under `fastapi_app/models/`.
+- Confirmed root cause: this host's Poppler installation contains the renderer
+  but not the text CLI, and the bundled PDF environment supplies `pdfplumber`
+  rather than `fitz`. Resolution: keep Poppler for visual PNG review and use
+  bundled `pdfplumber` only to compare amendment-copy text without emitting
+  source expression. Evidence: both amendment pairs compare equal page by
+  page. ⚠️ TERMINAL ISSUE: `pdftotext` and then `fitz` were unavailable -> used
+  the installed `pdfplumber` fallback.
+- Confirmed root cause: the audit outcome and the document-state vocabulary are
+  separate contracts; `complete` is an outcome phrase but not an allowed
+  front-matter status. Resolution: retain the explicit G0-complete decision in
+  the body and set the terminal plan metadata to `archived`. Evidence: the
+  repeated 359-document front-matter check reports zero invalid files.
+- Confirmed root cause: the compatibility generator treats tracked
+  documentation references to public facades as caller records. The G0 machine
+  decision added `check_beam_ductility` and
+  `check_column_ductility_is13920`, while local docs-only commit hooks did not
+  select the generator that hosted documentation validation runs
+  unconditionally. Resolution: regenerate only the maintained compatibility
+  ledger and rerun only the failed documentation path; do not rerun unrelated
+  runtime domains. Evidence: caller records move exactly from 1,502 to 1,504,
+  both additions are `OUT_OF_SCOPE_PRESERVED` references from the G0 decision,
+  zero callers are ambiguous, and generator `--check` passes.
+- Confirmed root cause: current tests reproduce implementation constants and
+  were never bound to the complete amendment chain. Resolution: treat them as
+  software-regression baseline only and originate G0 benchmarks from the
+  reviewed source. Evidence: the beam benchmark requires 72 mm but current code
+  returns 96 mm; the joint benchmark requires 280 kNm but current code requires
+  220 kNm and returns a false pass.
+- Confirmed root cause: the beam module applies the pre-Amendment-1 link rule,
+  treats a strict source boundary as inclusive, validates inputs only with
+  comparison operators, and labels calculated requirements as compliance.
+  Resolution: classify beam as `REPAIR_PACKET_REQUIRED` and freeze the exact
+  source, finite-input, result-semantics, metadata, and transport repair scope.
+  Proof: the live benchmark, exact boundary, `NaN`, and missing-provided-steel
+  cases reproduce every outcome difference.
+- Confirmed root cause: the column module was written against a different
+  clause organization, maps unrelated longitudinal percentages to the SCWB
+  clause, implements only the first rectangular confinement-area expression,
+  invents a 40 mm cover/core, and has no provided-reinforcement or axial
+  applicability state. Resolution: classify column as
+  `REPAIR_PACKET_REQUIRED` and freeze a separate repair contract. Proof: the
+  second-expression case requires 277.108 mm2 while current code returns
+  181.037 mm2; the core accepts `NaN`, and the service reports compliant
+  without actual confining steel.
+- Confirmed root cause: the joint module uses a non-source 1.1 default and a
+  four-scalar contract that cannot encode the required shaking direction,
+  axial-load column-capacity basis, or applicability. Resolution: classify
+  joint as `REPAIR_PACKET_REQUIRED` and freeze a direction/provenance/domain
+  repair packet. Proof: column capacity 250 kNm versus beam capacity 200 kNm
+  is a source failure at factor 1.4 but a current-code pass at factor 1.1.
+
+### Validation through content freeze
+
+- Private archive verification passes with zero private material tracked or
+  packaged; all source copies remain retained.
+- Independent runtime reproducers bind exact beam, column, and joint expected
+  versus current results on source-bound `3bcc3422`.
+- The G0 machine decision contains source identity, normalized source maps,
+  benchmarks, boundary/inadequate/invalid/out-of-domain cases, cross-surface
+  reconciliation, and the frozen follow-on sequence without protected prose,
+  page images, extracted text, private hashes, or private paths.
+- The existing focused IS 13920 regression baseline passes 63 tests. This is
+  software continuity evidence only, not source acceptance. Front-matter,
+  maintained-link, and context validation pass with zero invalid or broken
+  records.
+- The final frozen quick gate, normal staged hooks, immutable candidate audit,
+  and hosted checks follow. The first hosted documentation job exposed the
+  two-record compatibility-ledger freshness repair above; its exact failed path
+  is impact-mapped for one repair-candidate rerun. The broad runtime gate
+  remains deferred because G0 changes no runtime behavior.
+
 ## 2026-08-24 — Session: LIB-PRO-008 pre-INDIA-3 safety closure
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents)

@@ -1,7 +1,7 @@
 ---
 task: INDIA-3-G0
 title: IS 13920 Existing-Surface Truth Audit
-status: active
+status: archived
 owner: Main Agent and qualified structural engineer
 created: 2026-08-24
 last_updated: 2026-08-24
@@ -14,12 +14,12 @@ tags: [india-3, is13920, source-truth, audit, beam, column, joint]
 
 ## Decision
 
-**READY FOR ONE BOUNDED G0 AUDIT; ENGINEERING IMPLEMENTATION IS NOT YET
-AUTHORIZED.** Start from exact hosted `main` commit `3e979687`, after M0 merged
-through PR #860 with all required checks green. Audit only the existing IS
-13920 beam, column, and strong-column/weak-beam joint checks. The G0 result may
-accept a current bounded claim, require a separately scoped repair packet, or
-return `HOLD`.
+**G0 COMPLETE; ALL THREE EXISTING FAMILIES REQUIRE SEPARATE REPAIR PACKETS.**
+The audit began from the frozen readiness state at hosted `3e979687`, then ran
+on exact post-safety hosted baseline `3bcc3422` after LIB-PRO-008 merged through
+PR #862 with all required checks green. Beam, column, and
+strong-column/weak-beam joint claims were audited separately. No existing
+family reached `ACCEPT_CURRENT_BOUNDED`.
 
 The preserved source-library candidate `9c976b1f` is not transplanted or
 cherry-picked. Its durable private-source boundary already merged through PR
@@ -30,6 +30,30 @@ subsequent product packets. The fresh branch
 This packet changes no structural formula, public signature, API response,
 React surface, Excel workbook, or capability status. It does not promote any
 private navigation record to accepted engineering truth.
+
+## G0 conclusion
+
+The visually reviewed source chain is IS 13920:2016 First Revision plus
+Amendment 1 (September 2017) and Amendment 2 (November 2020). Reaffirmation in
+2021 is retained as a separate status, not treated as a new edition. Two
+byte-distinct copies of each amendment have normalized text equality page by
+page and remain preserved. Official BIS material available in June 2026 still
+identifies IS 13920:2016 as the published standard while its proposed split
+successor remains under development.
+
+The family decisions are:
+
+| Family | G0 decision | Outcome-changing reason |
+|---|---|---|
+| Beam detailing checks | `REPAIR_PACKET_REQUIRED` | The amended close-link limit uses six bar diameters, not eight; the exact 0.3 geometry boundary fails open; non-finite material input can be reported compliant; and the output calculates requirements without provided reinforcement while labeling the result compliant. |
+| Column detailing checks | `REPAIR_PACKET_REQUIRED` | Current clause mapping predates the amended structure, the returned longitudinal limits are unmapped to the reviewed IS 13920 chain, one governing rectangular confinement-area expression is omitted, hidden 40 mm cover/core defaults alter the result, and compliance is reported without provided reinforcement or applicability. |
+| Beam-column joint SCWB check | `REPAIR_PACKET_REQUIRED` | The source factor is 1.4 but the default is 1.1, producing a reproduced false pass; required direction, axial-load capacity basis, and applicability cannot be represented by the current scalar contract. |
+
+The exact normalized source map, independent benchmarks, unsafe cases,
+cross-surface comparison, and repair sequence are frozen in
+[G0 decision evidence](../verification/india-3-g0-is13920-audit-decision.json).
+Wall and foundation detailing, IS 875/1893, release, and professional approval
+remain held.
 
 ## Source-readiness boundary
 
