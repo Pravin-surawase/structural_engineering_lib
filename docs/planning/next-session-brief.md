@@ -5,10 +5,10 @@
 <!-- HANDOFF:START -->
 - Date: 2026-08-24
 - Focus: Complete the bounded existing-surface audit for IS 13920 beam,
-- Git receipt: docs/verification/india-3-g0-audit-decision-git-handoff-receipt.json | sha256:16f23843d6ab4771c333fe45bfd1443383d7990ffb57290e42318bfdbcbf3705 | HOLD
-- Git identity: codex/india-3-g0-acceptance@3bcc34223d8eaf236c62a5f54dfe4b7960876457 | upstream=origin/main@3bcc34223d8eaf236c62a5f54dfe4b7960876457 | base=origin/main@3bcc34223d8eaf236c62a5f54dfe4b7960876457 | tree=dirty | operation=none
+- Git receipt: docs/verification/india-3-g0-audit-decision-git-handoff-receipt.json | sha256:56f0737301666a236d48819aacf4fcf45aaeb79b6b9e6c460945b43fb448bdd5 | HOLD
+- Git identity: codex/india-3-g0-acceptance@482de736b28059b8a87336dccfd6ef00bdcc57ba | upstream=origin/codex/india-3-g0-acceptance@482de736b28059b8a87336dccfd6ef00bdcc57ba | base=origin/main@3bcc34223d8eaf236c62a5f54dfe4b7960876457 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
-- Next action: RUN_FINAL_FROZEN_QUICK_GATE_AND_STAGED_HOOKS
+- Next action: REPAIR_GENERATED_COMPATIBILITY_LEDGER_AND_RERUN_FAILED_DOCUMENTATION_PATH
 <!-- HANDOFF:END -->
 
 ## Latest Handoff

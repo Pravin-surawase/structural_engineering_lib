@@ -54,6 +54,8 @@ truth, and classify each family without changing formulas or support status.
   not contain PyMuPDF under the `fitz` import name.
 - The first front-matter check rejected `status: complete` because the
   maintained schema uses `archived` for a terminal plan.
+- The first hosted documentation job rejected the compatibility ledger after
+  the G0 decision added two maintained public-facade references.
 - Existing beam tests encode the pre-amendment eight-bar spacing rule; column
   tests encode obsolete clause numbers and only one confinement-area
   expression; joint tests encode a 1.1 factor.
@@ -94,6 +96,16 @@ truth, and classify each family without changing formulas or support status.
   front-matter status. Resolution: retain the explicit G0-complete decision in
   the body and set the terminal plan metadata to `archived`. Evidence: the
   repeated 359-document front-matter check reports zero invalid files.
+- Confirmed root cause: the compatibility generator treats tracked
+  documentation references to public facades as caller records. The G0 machine
+  decision added `check_beam_ductility` and
+  `check_column_ductility_is13920`, while local docs-only commit hooks did not
+  select the generator that hosted documentation validation runs
+  unconditionally. Resolution: regenerate only the maintained compatibility
+  ledger and rerun only the failed documentation path; do not rerun unrelated
+  runtime domains. Evidence: caller records move exactly from 1,502 to 1,504,
+  both additions are `OUT_OF_SCOPE_PRESERVED` references from the G0 decision,
+  zero callers are ambiguous, and generator `--check` passes.
 - Confirmed root cause: current tests reproduce implementation constants and
   were never bound to the complete amendment chain. Resolution: treat them as
   software-regression baseline only and originate G0 benchmarks from the
@@ -138,8 +150,10 @@ truth, and classify each family without changing formulas or support status.
   maintained-link, and context validation pass with zero invalid or broken
   records.
 - The final frozen quick gate, normal staged hooks, immutable candidate audit,
-  and hosted checks follow. The broad runtime gate remains deferred because G0
-  changes no runtime behavior.
+  and hosted checks follow. The first hosted documentation job exposed the
+  two-record compatibility-ledger freshness repair above; its exact failed path
+  is impact-mapped for one repair-candidate rerun. The broad runtime gate
+  remains deferred because G0 changes no runtime behavior.
 
 ## 2026-08-24 — Session: LIB-PRO-008 pre-INDIA-3 safety closure
 
