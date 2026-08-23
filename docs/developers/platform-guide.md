@@ -652,7 +652,7 @@ print(f"ACI Design: {result.bars_bottom_start.count} bars")
 **Add regional pricing:**
 
 ```python
-from structural_lib.api import optimize_beam_cost
+from structural_lib import CostProfile, OptimizationConstraints, optimize_beam_cost
 
 def optimize_with_regional_pricing(span_mm, mu_knm, vu_kn, region="Mumbai"):
     """Optimize beam cost with regional material prices."""
@@ -676,22 +676,45 @@ def optimize_with_regional_pricing(span_mm, mu_knm, vu_kn, region="Mumbai"):
         },
     }
 
-    # Get optimization result
+    grade = 25
     result = optimize_beam_cost(
+        units="IS456",
         span_mm=span_mm,
         mu_knm=mu_knm,
         vu_kn=vu_kn,
-        # Use regional pricing
-        price_concrete_per_m3=prices[region]["concrete_m3"],
-        price_steel_per_kg=prices[region]["steel_kg"],
-        price_formwork_per_m2=prices[region]["formwork_m2"],
+        # 25 mm clear cover + 8 mm stirrup + half of a 16 mm main bar
+        effective_depth_deduction_mm=25.0 + 8.0 + 16.0 / 2.0,
+        fck_nmm2=grade,
+        fy_nmm2=500,
+        asv_mm2=100.53,
+        constraints=OptimizationConstraints(
+            min_width_mm=200,
+            max_width_mm=500,
+            min_depth_mm=300,
+            max_depth_mm=800,
+            width_step_mm=50,
+            depth_step_mm=50,
+            min_flexural_utilization=0.7,
+        ),
+        cost_profile=CostProfile(
+            currency="INR",
+            concrete_costs={grade: prices[region]["concrete_m3"]},
+            steel_cost_per_kg=prices[region]["steel_kg"],
+            formwork_cost_per_m2=prices[region]["formwork_m2"],
+            congestion_threshold_pt=2.5,
+            congestion_multiplier=1.2,
+            location_factor=1.0,
+        ),
     )
 
     return result
 
 # Usage
 result = optimize_with_regional_pricing(5000, 120, 80, region="Bangalore")
-print(f"Optimal design (Bangalore): ₹{result.optimal_cost:.0f}")
+print(
+    "Optimal design (Bangalore): "
+    f"₹{result.optimal_design.cost_breakdown.total_cost:.0f}"
+)
 ```
 
 ---

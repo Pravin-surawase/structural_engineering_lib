@@ -5,6 +5,140 @@
 
 ---
 
+## 2026-08-23 — Session: LIB-PRO-007-P1 optimization truth
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/lib-pro-007-p1-optimization-truth`, from exact merged G0
+hosted-main commit `a6d47a85b78e3dc8317f65bb33b2247b69aa9bf9`.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-007-p1-optimization-truth-git-handoff-receipt.json`
+
+**Focus:** Make every accepted beam cost-optimization input decisive and every
+published engineering field traceable to the canonical result.
+
+No release, professional-use approval, P2 work, live ETABS, write-back, or new
+INDIA-3 engineering claim is included.
+
+### Summary
+
+- Replaced the fixed internal search with an explicit transport-neutral section
+  grid, material basis, utilization threshold, stirrup area, and alternative
+  count while retaining legacy library-call defaults outside the held product
+  request.
+- Forwarded the stable facade's effective-depth deduction and every REST
+  project input instead of dropping cover, grade, bounds, steps, and objective.
+- Made maintained singly reinforced flexure, maximum shear, and required Vus at
+  the returned practical stirrup spacing decisive candidate checks.
+- Replaced zero Ast/Asc/steel quantity and assumed utilization with calculated
+  values, real material/depth identity, exact total/per-metre costs, code
+  edition, and flexure/shear clause references.
+- Restricted the cost endpoint to the cost objective and added a stable
+  infeasible-candidate error; no engineering result is returned for impossible
+  shear or insufficient supplied Asv.
+- Preserved the explicit cost boundary that longitudinal reinforcement is
+  included while stirrup mass is excluded until its perimeter/anchorage
+  geometry becomes an accepted input.
+
+### Issues encountered
+
+- P1 session start was initially blocked by an unmatched G0 usage-start event
+  even though the G0 candidate had completed session validation and merged.
+- Before repair, `vu_kn=0`, `80`, and `1000` returned the same core optimum;
+  stable `cover_mm=25` and `50` returned the same effective depth; and REST
+  material/grid/objective variants returned the same 230 x 450 mm section with
+  zero steel fields and assumed utilization.
+- The maintained shear function can return the 75 mm minimum practical spacing
+  with `is_safe=true` when the supplied Asv at 75 mm is still slightly below
+  the required Vus; maximum-shear stress alone was therefore insufficient as
+  the optimizer's supplied-reinforcement acceptance invariant.
+- A combined `apply_patch` delete/add operation for the same optimizer path was
+  rejected before writing the replacement file.
+- The first frozen React command found no worktree-local `node_modules`; because
+  that compound shell had changed into `react_app`, the remaining root-relative
+  checks in the same command were not executed.
+- The first post-repair pytest selector used a guessed optimization test-name
+  pattern and selected zero cases, so pytest exited 5 before the following
+  React command could run.
+- The first immutable-candidate commit was stopped by mypy because an internal
+  failure formatter annotated its iterable errors as plain `object`, and by
+  the API-documentation hook because the two new public optimizer types lacked
+  explicit `api.*` reference entries.
+- A read-only `rg` command embedded a Markdown backtick inside double-quoted
+  zsh text, causing an unmatched-quote error before the search ran.
+
+### Root causes and resolutions
+
+- Confirmed root cause: session validation and usage accounting are separate;
+  the unmatched G0 usage event required its explicit seven-phase closeout
+  checkpoint. Resolution: record the exact G0 candidate, PR #852, merge, tree,
+  phase timing, retry, and hosted counters; P1 session begin then passed.
+- Confirmed root cause: the optimizer owned fixed widths/grades, did not call
+  shear design, the insights adapter dropped cover, and the REST mapper ignored
+  request fields while fabricating response values. Resolution: define one
+  explicit candidate contract, forward it through the stable facade, and map
+  only calculated result fields. Direct sensitivity/rejection vectors now prove
+  each outcome-changing family.
+- Confirmed root cause: `design_shear` enforces the practical spacing list after
+  its section-level `tau_v <= tau_c,max` decision, so the lower 75 mm clamp can
+  exceed the calculated required spacing for the supplied Asv. Resolution:
+  retain the maintained shear result and add the optimizer's required-to-
+  provided stirrup-capacity invariant at the reported spacing. The 300 x 500
+  mm, 350 kN vector rejects 100.53 mm2 Asv and accepts 157 mm2 at 100 mm.
+- The patch utility does not accept delete and add operations targeting the same
+  path in one patch. Resolution: perform the two file operations separately and
+  immediately validate the imported optimizer. ⚠️ TERMINAL ISSUE: combined
+  delete/add patch was rejected -> separate patch operations completed the
+  intended replacement without touching another path.
+- Confirmed root cause: linked worktrees intentionally require their own
+  lockfile-pinned Node dependencies, and shell `cd` persists within one compound
+  command. Resolution: install the exact lockfile with the maintained Node 24
+  launcher, rerun only the unexecuted React/root checks from the workspace root,
+  and retain the existing one-high npm advisory as the already governed baseline
+  rather than mutating dependencies. The targeted React file then passed 51/51.
+  ⚠️ TERMINAL ISSUE: missing linked-worktree `node_modules` plus persistent
+  compound-shell cwd -> canonical `npm --prefix react_app ci` and root-bound
+  `./run.sh frontend test ...` completed the unexecuted checks.
+- Confirmed root cause: the optimization endpoint cases are grouped under the
+  exact `TestOptimizationEndpoints` class and do not share the guessed function
+  substring. Resolution: invoke that exact class, then run the React command
+  separately. Six endpoint cases and 51 React files/278 tests pass.
+  ⚠️ TERMINAL ISSUE: guessed pytest `-k` selected no tests -> exact class
+  selection completed the intended affected repair pass.
+- Confirmed root cause: the formatter accepts the maintained result error list,
+  but its annotation did not express iteration; the reference described the
+  optimizer signature without naming both public types as `api.*` symbols.
+  Resolution: type the formatter input as `Iterable[object]` and add exact
+  constraint/error reference entries while correcting the obsolete fixed-grade
+  optimizer description. The failed-only mypy and API-doc hooks are the repair
+  evidence before the normal commit path is retried.
+- Confirmed root cause: shell double quotes allowed the Markdown backtick to
+  begin command substitution. Resolution: rerun the exact search with a
+  single-quoted expression; it completed without mutation.
+  ⚠️ TERMINAL ISSUE: unmatched shell quote blocked one read-only search ->
+  single-quoted `rg` expression completed it.
+
+### Validation through content freeze
+
+- Source binding began clean at exact hosted `main` `a6d47a85`, with
+  `source_bound=true`, no Git operation/conflict, and all unrelated and INDIA-3
+  lanes preserved.
+- Machine-readable P1 evidence binds all pre-repair reproducers, the exact
+  Python/REST accepted vector, infeasible shear, objective rejection, supplied-
+  Asv sensitivity, clause provenance, and held cost boundary.
+- The frozen focused batch passes 42 Python/FastAPI optimizer tests and 51 React
+  API-contract tests. Evidence assertions, API manifest/classification,
+  89-endpoint/437-schema OpenAPI, 220-file architecture, 200-file circular-
+  import, 689-file/4,858-import resolution, and `git diff --check` all pass.
+- After the request cost contract was tightened, the bounded repair pass passes
+  the exact six-case FastAPI optimization class and 51 React files/278 tests;
+  regenerated API manifest/classification and OpenAPI evidence remain current
+  at 89 endpoints/437 schemas.
+- The required post-repair consolidated quick gate passes 10/10 (eight safe
+  cached results plus fresh Git-state and unfinished-operation checks). Normal
+  staged hooks and read-only session closeout remain before immutable commit.
+
 ## 2026-08-23 — Session: LIB-PRO-007-G0 product contract freeze
 
 **Agent:** Codex (`orchestrator`, sole writer)

@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "lib-pro-007-p1-optimization-truth",
+  "task_id": "LIB-PRO-007-P1",
+  "observed_at_utc": "2026-08-23T13:50:44Z",
+  "decision": "READY_FOR_PACKET_VERIFICATION",
+  "source": {
+    "branch": "codex/lib-pro-007-p1-optimization-truth",
+    "base_ref": "origin/main",
+    "base_sha": "a6d47a85b78e3dc8317f65bb33b2247b69aa9bf9",
+    "source_bound": true,
+    "linked_worktree": true,
+    "operation": "none",
+    "preserved_india_3_candidate_sha": "9c976b1f4afd0540a5ec9eb3cab16861916ac89b"
+  },
+  "pre_repair_reproducers": [
+    {
+      "id": "P1-PRE-SHEAR-IGNORED",
+      "surface": "services.optimization.optimize_beam_cost",
+      "inputs_varied": {
+        "vu_kn": [
+          0,
+          80,
+          1000
+        ]
+      },
+      "identical_result": {
+        "b_mm": 230,
+        "D_mm": 450,
+        "d_mm": 410,
+        "fck_nmm2": 25,
+        "total_cost": 8599.02
+      },
+      "outcome": "CONFIRMED_DEFECT"
+    },
+    {
+      "id": "P1-PRE-COVER-DROPPED",
+      "surface": "structural_lib.optimize_beam_cost",
+      "inputs_varied": {
+        "cover_mm": [
+          25,
+          50
+        ]
+      },
+      "identical_result": {
+        "b_mm": 230,
+        "D_mm": 450,
+        "d_mm": 410,
+        "total_cost": 8599.02
+      },
+      "outcome": "CONFIRMED_DEFECT"
+    },
+    {
+      "id": "P1-PRE-REST-FIELDS-IGNORED-OR-FABRICATED",
+      "surface": "POST /api/v1/optimization/beam/cost",
+      "variants": [
+        "base",
+        "M40_Fe415",
+        "500mm_minimum_width_and_750mm_minimum_depth",
+        "depth_objective"
+      ],
+      "identical_result": {
+        "width": 230,
+        "depth": 450,
+        "ast_required": 0,
+        "utilization": 0.9,
+        "steel_weight": 0
+      },
+      "outcome": "CONFIRMED_DEFECT"
+    }
+  ],
+  "accepted_contract": {
+    "objective": "cost_only",
+    "required_project_inputs": [
+      "factored moment",
+      "factored shear",
+      "span",
+      "concrete grade",
+      "steel grade",
+      "clear cover",
+      "longitudinal-bar diameter basis",
+      "stirrup diameter and legs",
+      "currency, concrete, longitudinal-steel, and formwork rates",
+      "congestion threshold and multiplier",
+      "location factor",
+      "width and depth bounds and steps",
+      "minimum flexural utilization"
+    ],
+    "calculation_authorities": {
+      "flexure": "structural_lib.codes.is456.beam.flexure.design_singly_reinforced",
+      "shear": "structural_lib.codes.is456.beam.shear.design_shear",
+      "cost": "structural_lib.services.costing.calculate_beam_cost",
+      "longitudinal_steel_weight": "structural_lib.services.costing.calculate_steel_weight"
+    },
+    "decisive_checks": [
+      "singly reinforced flexure result is safe",
+      "minimum requested flexural utilization is met",
+      "nominal shear stress does not exceed maximum shear stress",
+      "supplied Asv provides required Vus at the reported practical spacing"
+    ],
+    "quantity_boundary": "Required longitudinal tension and compression reinforcement over the supplied span; stirrup mass excluded.",
+    "held_boundaries": [
+      "stirrup mass and cost",
+      "bar-arrangement selection",
+      "deflection calculation",
+      "weight or depth objective on the cost endpoint",
+      "release and professional approval"
+    ]
+  },
+  "post_repair_vectors": [
+    {
+      "id": "P1-PY-ACCEPTED-001",
+      "surface": "structural_lib.optimize_beam_cost",
+      "inputs": {
+        "span_mm": 6000,
+        "mu_knm": 200,
+        "vu_kn": 100,
+        "effective_depth_deduction_mm": 41,
+        "fck_nmm2": 25,
+        "fy_nmm2": 500,
+        "asv_mm2": 100.53096491487338,
+        "cost_profile": {
+          "currency": "INR",
+          "concrete_cost_for_M25": 6000,
+          "steel_cost_per_kg": 60,
+          "formwork_cost_per_m2": 400,
+          "congestion_threshold_pt": 2.5,
+          "congestion_multiplier": 1.2,
+          "location_factor": 1
+        },
+        "width_grid_mm": [
+          200,
+          500,
+          50
+        ],
+        "depth_grid_mm": [
+          300,
+          800,
+          50
+        ],
+        "min_flexural_utilization": 0.7,
+        "max_alternatives": 3
+      },
+      "result": {
+        "b_mm": 200,
+        "D_mm": 600,
+        "d_mm": 559,
+        "fck_nmm2": 25,
+        "fy_nmm2": 500,
+        "ast_required_mm2": 1006.3883631395069,
+        "asc_required_mm2": 0,
+        "longitudinal_steel_weight_kg": 47.40089190387078,
+        "flexural_utilization": 0.9580984852874861,
+        "shear_utilization": 0.28853367187950835,
+        "stirrup_utilization": 0.3874698541916092,
+        "stirrup_spacing_mm": 300,
+        "total_cost": 10524.05,
+        "savings_percent": 12.1,
+        "candidates_evaluated": 77,
+        "candidates_valid": 12,
+        "alternatives": 3
+      },
+      "outcome": "PASS"
+    },
+    {
+      "id": "P1-REST-ACCEPTED-001",
+      "surface": "POST /api/v1/optimization/beam/cost",
+      "status_code": 200,
+      "identity_equal_to": "P1-PY-ACCEPTED-001",
+      "fields_proven_real": [
+        "effective_depth",
+        "material grades",
+        "Ast and Asc",
+        "flexural, maximum-shear, and stirrup utilization",
+        "stirrup spacing and Asv",
+        "longitudinal steel weight",
+        "total and per-metre cost",
+        "code edition and clause references"
+      ],
+      "outcome": "PASS"
+    },
+    {
+      "id": "P1-REST-INFEASIBLE-SHEAR-001",
+      "surface": "POST /api/v1/optimization/beam/cost",
+      "input_change": {
+        "vu_kn": 1000
+      },
+      "status_code": 422,
+      "error_code": "OPTIMIZATION_INFEASIBLE",
+      "engineering_result_returned": false,
+      "outcome": "PASS"
+    },
+    {
+      "id": "P1-REST-OBJECTIVE-REJECT-001",
+      "surface": "POST /api/v1/optimization/beam/cost",
+      "input_change": {
+        "optimize_for": "depth"
+      },
+      "status_code": 422,
+      "error_code": "REQUEST_VALIDATION_ERROR",
+      "engineering_result_returned": false,
+      "outcome": "PASS"
+    },
+    {
+      "id": "P1-PY-ASV-DECISIVE-001",
+      "surface": "structural_lib.optimize_beam_cost",
+      "fixed_section_mm": "300x500_with_deduction_41",
+      "actions": {
+        "mu_knm": 120,
+        "vu_kn": 350
+      },
+      "small_asv_mm2": 100.53,
+      "small_asv_outcome": "OPTIMIZATION_INFEASIBLE",
+      "accepted_asv_mm2": 157,
+      "accepted_spacing_mm": 100,
+      "accepted_stirrup_utilization_max": 1,
+      "outcome": "PASS"
+    }
+  ],
+  "claim_boundary": {
+    "software_contract": "P1 implementation candidate is ready for focused and repository gates.",
+    "release_authorized": false,
+    "professional_use_authorized": false,
+    "engineering_approval_claimed": false,
+    "india_3_scope_changed": false
+  }
+}

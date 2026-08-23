@@ -100,10 +100,18 @@ def sample_optimization_request():
         "span_length": 6000.0,
         "fck": 25.0,
         "fy": 500.0,
+        "clear_cover": 25.0,
+        "main_bar_diameter": 16.0,
+        "stirrup_diameter": 8.0,
+        "stirrup_legs": 2,
         "cost_params": {
+            "currency": "INR",
             "concrete_cost": 6000.0,
             "steel_cost": 60.0,
             "formwork_cost": 400.0,
+            "congestion_threshold_pt": 2.5,
+            "congestion_multiplier": 1.2,
+            "location_factor": 1.0,
         },
         "constraints": {
             "min_width": 200.0,

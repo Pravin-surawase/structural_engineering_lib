@@ -4,8 +4,10 @@ Integration Tests for FastAPI Endpoints.
 Tests all API endpoints using FastAPI TestClient.
 """
 
-from fastapi import status
+import math
+
 import pytest
+from fastapi import status
 
 from fastapi_app.tests.conftest import unwrap
 
@@ -761,17 +763,148 @@ class TestOptimizationEndpoints:
             "/api/v1/optimization/beam/cost",
             json=sample_optimization_request,
         )
-        assert response.status_code in (
-            status.HTTP_200_OK,
-            status.HTTP_503_SERVICE_UNAVAILABLE,
-        )  # 503 when optimizer not available
+        assert response.status_code == status.HTTP_200_OK
+        data = unwrap(response)
+        assert "optimal" in data
+        assert data["optimal"]["width"] > 0
+        assert data["optimal"]["depth"] > 0
+        assert data["optimal"]["effective_depth"] > 0
+        assert data["optimal"]["ast_required"] > 0
+        assert data["optimal"]["steel_weight"] > 0
+        assert data["optimal"]["fck"] == sample_optimization_request["fck"]
+        assert data["optimal"]["fy"] == sample_optimization_request["fy"]
+        assert 0 < data["optimal"]["utilization"] <= 1
+        assert 0 <= data["optimal"]["shear_utilization"] <= 1
+        assert 0 <= data["optimal"]["stirrup_utilization"] <= 1
+        assert data["optimal"]["is_safe"] is True
+        assert data["optimal"]["code_edition"] == "IS 456:2000"
+        assert data["optimal"]["clause_refs"]["flexure.Ast"].startswith("IS 456")
+        assert data["optimal"]["clause_refs"]["shear.tau_v"] == "IS 456 Cl 40.1"
+        assert "stirrup mass excluded" in data["optimal"]["quantity_basis"]
+        assert "cost_breakdown" in data["optimal"]
+        assert data["optimal"]["depth"] - data["optimal"]["effective_depth"] == 41
+        assert data["optimal"]["effective_depth_deduction"] == 41
+        assert data["optimal"]["clear_cover"] == 25
+        assert data["optimal"]["main_bar_diameter"] == 16
+        assert data["optimal"]["stirrup_diameter"] == 8
+        assert data["optimal"]["stirrup_legs"] == 2
+        assert data["optimal"]["shear_reinforcement_area"] == pytest.approx(
+            2 * math.pi * 8**2 / 4
+        )
+        assert (
+            len(data["alternatives"]) <= sample_optimization_request["max_alternatives"]
+        )
 
-        if response.status_code == status.HTTP_200_OK:
-            data = unwrap(response)
-            assert "optimal" in data
-            assert data["optimal"]["width"] > 0
-            assert data["optimal"]["depth"] > 0
-            assert "cost_breakdown" in data["optimal"]
+        span_m = sample_optimization_request["span_length"] / 1000
+        costs = data["optimal"]["cost_breakdown"]
+        assert (
+            costs["currency"] == sample_optimization_request["cost_params"]["currency"]
+        )
+        assert (
+            costs["location_factor"]
+            == sample_optimization_request["cost_params"]["location_factor"]
+        )
+        assert costs["labor_adjustment"] >= 0
+        assert costs["concrete_cost"] == pytest.approx(
+            data["optimal"]["concrete_volume"]
+            * span_m
+            * sample_optimization_request["cost_params"]["concrete_cost"],
+            abs=0.01,
+        )
+        assert costs["steel_cost"] == pytest.approx(
+            data["optimal"]["steel_weight_total"]
+            * sample_optimization_request["cost_params"]["steel_cost"],
+            abs=0.01,
+        )
+        assert costs["formwork_cost"] == pytest.approx(
+            data["optimal"]["formwork_area"]
+            * span_m
+            * sample_optimization_request["cost_params"]["formwork_cost"],
+            abs=0.01,
+        )
+        assert costs["cost_per_meter"] == pytest.approx(costs["total_cost"] / span_m)
+        assert costs["total_cost"] == pytest.approx(
+            (
+                costs["concrete_cost"]
+                + costs["steel_cost"]
+                + costs["formwork_cost"]
+                + costs["labor_adjustment"]
+            )
+            * costs["location_factor"],
+            abs=0.02,
+        )
+
+    def test_optimize_beam_cost_applies_materials_and_grid(
+        self, client, sample_optimization_request
+    ):
+        """Material identity and explicit bounds must reach the candidate search."""
+        request = {
+            **sample_optimization_request,
+            "fck": 40,
+            "fy": 415,
+            "max_alternatives": 6,
+            "cost_params": {
+                **sample_optimization_request["cost_params"],
+                "congestion_threshold_pt": 0.1,
+                "congestion_multiplier": 1.5,
+                "location_factor": 1.1,
+            },
+            "constraints": {
+                **sample_optimization_request["constraints"],
+                "min_width": 300,
+                "max_width": 300,
+                "min_depth": 500,
+                "max_depth": 800,
+                "min_utilization": 0.5,
+            },
+        }
+        response = client.post("/api/v1/optimization/beam/cost", json=request)
+        assert response.status_code == status.HTTP_200_OK
+        data = unwrap(response)
+        assert data["optimal"]["width"] == 300
+        assert 500 <= data["optimal"]["depth"] <= 800
+        assert data["optimal"]["fck"] == 40
+        assert data["optimal"]["fy"] == 415
+        assert data["optimal"]["ast_required"] > 0
+        assert data["optimal"]["steel_weight_total"] > 0
+        assert data["optimal"]["stirrup_spacing"] > 0
+        assert data["optimal"]["cost_breakdown"]["labor_adjustment"] > 0
+        assert data["optimal"]["cost_breakdown"]["location_factor"] == 1.1
+
+    def test_optimize_beam_cost_rejects_unsupported_objective(
+        self, client, sample_optimization_request
+    ):
+        request = {**sample_optimization_request, "optimize_for": "depth"}
+        response = client.post("/api/v1/optimization/beam/cost", json=request)
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+    def test_optimize_beam_cost_rejects_impossible_shear(
+        self, client, sample_optimization_request
+    ):
+        request = {**sample_optimization_request, "shear": 1000.0}
+        response = client.post("/api/v1/optimization/beam/cost", json=request)
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+        assert response.json()["error"]["code"] == "OPTIMIZATION_INFEASIBLE"
+
+    def test_optimize_beam_cost_requires_project_basis(
+        self, client, sample_optimization_request
+    ):
+        request = {
+            key: value
+            for key, value in sample_optimization_request.items()
+            if key != "clear_cover"
+        }
+        response = client.post("/api/v1/optimization/beam/cost", json=request)
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+        request_with_unknown = {
+            **sample_optimization_request,
+            "unsupported_project_input": 1.0,
+        }
+        response = client.post(
+            "/api/v1/optimization/beam/cost", json=request_with_unknown
+        )
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
     def test_get_cost_rates(self, client):
         """Test get cost rates endpoint."""

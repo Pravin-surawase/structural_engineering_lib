@@ -12148,27 +12148,42 @@
         "description": "Detailed cost breakdown.",
         "properties": {
           "concrete_cost": {
-            "description": "Cost of concrete (\u20b9)",
+            "description": "Cost of concrete",
             "title": "Concrete Cost",
             "type": "number"
           },
           "cost_per_meter": {
-            "description": "Cost per meter length (\u20b9/m)",
+            "description": "Cost per meter length",
             "title": "Cost Per Meter",
             "type": "number"
           },
+          "currency": {
+            "description": "Three-letter currency code",
+            "title": "Currency",
+            "type": "string"
+          },
           "formwork_cost": {
-            "description": "Cost of formwork (\u20b9)",
+            "description": "Cost of formwork",
             "title": "Formwork Cost",
             "type": "number"
           },
+          "labor_adjustment": {
+            "description": "Explicit congestion adjustment",
+            "title": "Labor Adjustment",
+            "type": "number"
+          },
+          "location_factor": {
+            "description": "Regional multiplier applied to total",
+            "title": "Location Factor",
+            "type": "number"
+          },
           "steel_cost": {
-            "description": "Cost of reinforcement (\u20b9)",
+            "description": "Cost of longitudinal reinforcement",
             "title": "Steel Cost",
             "type": "number"
           },
           "total_cost": {
-            "description": "Total cost (\u20b9)",
+            "description": "Total cost",
             "title": "Total Cost",
             "type": "number"
           }
@@ -12177,15 +12192,25 @@
           "concrete_cost",
           "steel_cost",
           "formwork_cost",
+          "labor_adjustment",
+          "location_factor",
           "total_cost",
-          "cost_per_meter"
+          "cost_per_meter",
+          "currency"
         ],
         "title": "CostBreakdown",
         "type": "object"
       },
       "CostOptimizationRequest": {
+        "additionalProperties": false,
         "description": "Request model for beam cost optimization.",
         "properties": {
+          "clear_cover": {
+            "description": "Clear cover to the outside of the stirrup (mm)",
+            "exclusiveMinimum": 0.0,
+            "title": "Clear Cover",
+            "type": "number"
+          },
           "constraints": {
             "$ref": "#/components/schemas/DesignConstraints",
             "description": "Design constraints for optimization"
@@ -12195,26 +12220,30 @@
             "description": "Unit cost parameters"
           },
           "fck": {
-            "default": 25.0,
-            "description": "fck (N/mm\u00b2)",
-            "maximum": 80.0,
+            "description": "Concrete grade used for every candidate (N/mm\u00b2)",
+            "maximum": 40.0,
             "minimum": 15.0,
             "title": "Fck",
-            "type": "number"
+            "type": "integer"
           },
           "fy": {
-            "default": 500.0,
-            "description": "fy (N/mm\u00b2)",
-            "maximum": 600.0,
+            "description": "Reinforcement grade used for every candidate (N/mm\u00b2)",
+            "maximum": 550.0,
             "minimum": 250.0,
             "title": "Fy",
-            "type": "number"
+            "type": "integer"
           },
           "include_alternatives": {
             "default": true,
             "description": "Whether to include alternative solutions",
             "title": "Include Alternatives",
             "type": "boolean"
+          },
+          "main_bar_diameter": {
+            "description": "Candidate longitudinal-bar diameter used to establish d (mm)",
+            "exclusiveMinimum": 0.0,
+            "title": "Main Bar Diameter",
+            "type": "number"
           },
           "max_alternatives": {
             "default": 5,
@@ -12226,34 +12255,54 @@
           },
           "moment": {
             "description": "Factored design moment Mu (kN\u00b7m)",
-            "minimum": 0.0,
+            "exclusiveMinimum": 0.0,
             "title": "Moment",
             "type": "number"
           },
           "optimize_for": {
+            "const": "cost",
             "default": "cost",
-            "description": "Optimization objective",
-            "pattern": "^(cost|weight|depth)$",
+            "description": "This endpoint supports the cost objective only",
             "title": "Optimize For",
             "type": "string"
           },
           "shear": {
-            "default": 0.0,
             "description": "Factored design shear force Vu (kN)",
             "minimum": 0.0,
             "title": "Shear",
             "type": "number"
           },
           "span_length": {
-            "description": "Beam span length (mm) for L/d ratio checks",
+            "description": "Beam span length (mm) for quantities and reported L/d ratio",
             "exclusiveMinimum": 0.0,
             "title": "Span Length",
             "type": "number"
+          },
+          "stirrup_diameter": {
+            "description": "Stirrup bar diameter used to establish d and Asv (mm)",
+            "exclusiveMinimum": 0.0,
+            "title": "Stirrup Diameter",
+            "type": "number"
+          },
+          "stirrup_legs": {
+            "description": "Number of effective vertical stirrup legs",
+            "minimum": 2.0,
+            "title": "Stirrup Legs",
+            "type": "integer"
           }
         },
         "required": [
           "moment",
-          "span_length"
+          "shear",
+          "span_length",
+          "fck",
+          "fy",
+          "clear_cover",
+          "main_bar_diameter",
+          "stirrup_diameter",
+          "stirrup_legs",
+          "cost_params",
+          "constraints"
         ],
         "title": "CostOptimizationRequest",
         "type": "object"
@@ -12278,10 +12327,10 @@
             "$ref": "#/components/schemas/OptimalDesign",
             "description": "Optimal design solution"
           },
-          "savings_vs_min_section": {
+          "savings_vs_baseline": {
             "default": 0.0,
-            "description": "Cost savings vs minimum section size (%)",
-            "title": "Savings Vs Min Section",
+            "description": "Cost savings vs the conventional valid baseline candidate (%)",
+            "title": "Savings Vs Baseline",
             "type": "number"
           },
           "success": {
@@ -12319,11 +12368,11 @@
         "type": "object"
       },
       "CostParameters": {
+        "additionalProperties": false,
         "description": "Cost parameters for optimization.",
         "properties": {
           "concrete_cost": {
-            "default": 6000.0,
-            "description": "Cost of concrete per m\u00b3 (\u20b9/m\u00b3)",
+            "description": "Cost of concrete per m\u00b3 in the supplied currency",
             "examples": [
               5000.0,
               6000.0,
@@ -12333,9 +12382,31 @@
             "title": "Concrete Cost",
             "type": "number"
           },
+          "congestion_multiplier": {
+            "description": "Steel-cost multiplier applied above the congestion threshold",
+            "minimum": 1.0,
+            "title": "Congestion Multiplier",
+            "type": "number"
+          },
+          "congestion_threshold_pt": {
+            "description": "Longitudinal steel percentage above which congestion applies",
+            "exclusiveMinimum": 0.0,
+            "title": "Congestion Threshold Pt",
+            "type": "number"
+          },
+          "currency": {
+            "description": "Three-letter currency code for every supplied rate",
+            "examples": [
+              "INR"
+            ],
+            "maxLength": 3,
+            "minLength": 3,
+            "pattern": "^[A-Za-z]{3}$",
+            "title": "Currency",
+            "type": "string"
+          },
           "formwork_cost": {
-            "default": 400.0,
-            "description": "Cost of formwork per m\u00b2 (\u20b9/m\u00b2)",
+            "description": "Cost of formwork per m\u00b2 in the supplied currency",
             "examples": [
               350.0,
               400.0,
@@ -12345,9 +12416,14 @@
             "title": "Formwork Cost",
             "type": "number"
           },
+          "location_factor": {
+            "description": "Explicit regional multiplier applied to the total cost",
+            "exclusiveMinimum": 0.0,
+            "title": "Location Factor",
+            "type": "number"
+          },
           "steel_cost": {
-            "default": 60.0,
-            "description": "Cost of reinforcement steel per kg (\u20b9/kg)",
+            "description": "Cost of reinforcement steel per kg in the supplied currency",
             "examples": [
               55.0,
               60.0,
@@ -12358,6 +12434,15 @@
             "type": "number"
           }
         },
+        "required": [
+          "currency",
+          "concrete_cost",
+          "steel_cost",
+          "formwork_cost",
+          "congestion_threshold_pt",
+          "congestion_multiplier",
+          "location_factor"
+        ],
         "title": "CostParameters",
         "type": "object"
       },
@@ -13469,38 +13554,34 @@
         "type": "object"
       },
       "DesignConstraints": {
+        "additionalProperties": false,
         "description": "Design constraints for optimization.",
         "properties": {
           "depth_step": {
-            "default": 50.0,
             "description": "Depth increment step (mm)",
             "exclusiveMinimum": 0.0,
             "title": "Depth Step",
-            "type": "number"
+            "type": "integer"
           },
           "max_depth": {
-            "default": 1200.0,
             "description": "Maximum beam depth (mm)",
             "exclusiveMinimum": 0.0,
             "title": "Max Depth",
-            "type": "number"
+            "type": "integer"
           },
           "max_width": {
-            "default": 600.0,
             "description": "Maximum beam width (mm)",
             "exclusiveMinimum": 0.0,
             "title": "Max Width",
-            "type": "number"
+            "type": "integer"
           },
           "min_depth": {
-            "default": 300.0,
             "description": "Minimum beam depth (mm)",
             "exclusiveMinimum": 0.0,
             "title": "Min Depth",
-            "type": "number"
+            "type": "integer"
           },
           "min_utilization": {
-            "default": 0.7,
             "description": "Minimum utilization ratio for efficient design",
             "maximum": 1.0,
             "minimum": 0.5,
@@ -13508,20 +13589,27 @@
             "type": "number"
           },
           "min_width": {
-            "default": 200.0,
             "description": "Minimum beam width (mm)",
             "exclusiveMinimum": 0.0,
             "title": "Min Width",
-            "type": "number"
+            "type": "integer"
           },
           "width_step": {
-            "default": 50.0,
             "description": "Width increment step (mm)",
             "exclusiveMinimum": 0.0,
             "title": "Width Step",
-            "type": "number"
+            "type": "integer"
           }
         },
+        "required": [
+          "min_width",
+          "max_width",
+          "min_depth",
+          "max_depth",
+          "width_step",
+          "depth_step",
+          "min_utilization"
+        ],
         "title": "DesignConstraints",
         "type": "object"
       },
@@ -21622,6 +21710,29 @@
             "title": "Ast Required",
             "type": "number"
           },
+          "clause_refs": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Maintained flexure and shear source references",
+            "title": "Clause Refs",
+            "type": "object"
+          },
+          "clear_cover": {
+            "description": "Clear cover basis (mm)",
+            "title": "Clear Cover",
+            "type": "number"
+          },
+          "code_edition": {
+            "description": "Structural design-code edition",
+            "title": "Code Edition",
+            "type": "string"
+          },
+          "concrete_shear_strength": {
+            "description": "Concrete design shear strength tau_c (N/mm\u00b2)",
+            "title": "Concrete Shear Strength",
+            "type": "number"
+          },
           "concrete_volume": {
             "description": "Concrete volume (m\u00b3/m)",
             "title": "Concrete Volume",
@@ -21635,15 +21746,55 @@
             "title": "Depth",
             "type": "number"
           },
+          "effective_depth": {
+            "description": "Effective depth d (mm)",
+            "title": "Effective Depth",
+            "type": "number"
+          },
+          "effective_depth_deduction": {
+            "description": "Total deduction D-d used by the calculation (mm)",
+            "title": "Effective Depth Deduction",
+            "type": "number"
+          },
+          "fck": {
+            "description": "Concrete grade (N/mm\u00b2)",
+            "title": "Fck",
+            "type": "number"
+          },
           "formwork_area": {
             "description": "Formwork area (m\u00b2/m)",
             "title": "Formwork Area",
             "type": "number"
           },
+          "fy": {
+            "description": "Reinforcement grade (N/mm\u00b2)",
+            "title": "Fy",
+            "type": "number"
+          },
+          "is_safe": {
+            "description": "Flexure and maintained shear checks pass",
+            "title": "Is Safe",
+            "type": "boolean"
+          },
           "ld_ratio": {
             "description": "Span/depth ratio",
             "title": "Ld Ratio",
             "type": "number"
+          },
+          "main_bar_diameter": {
+            "description": "Longitudinal-bar diameter basis (mm)",
+            "title": "Main Bar Diameter",
+            "type": "number"
+          },
+          "maximum_shear_stress": {
+            "description": "Maximum design shear stress tau_c,max (N/mm\u00b2)",
+            "title": "Maximum Shear Stress",
+            "type": "number"
+          },
+          "quantity_basis": {
+            "description": "Boundary of the reported steel quantity",
+            "title": "Quantity Basis",
+            "type": "string"
           },
           "rank": {
             "description": "Solution rank (1 = best)",
@@ -21655,9 +21806,49 @@
             "title": "Score",
             "type": "number"
           },
+          "shear_reinforcement_area": {
+            "description": "Area of effective stirrup legs Asv (mm\u00b2)",
+            "title": "Shear Reinforcement Area",
+            "type": "number"
+          },
+          "shear_stress": {
+            "description": "Nominal shear stress tau_v (N/mm\u00b2)",
+            "title": "Shear Stress",
+            "type": "number"
+          },
+          "shear_utilization": {
+            "description": "Nominal-to-maximum shear stress ratio",
+            "title": "Shear Utilization",
+            "type": "number"
+          },
           "steel_weight": {
-            "description": "Steel weight (kg/m)",
+            "description": "Required longitudinal steel weight (kg/m); stirrups excluded",
             "title": "Steel Weight",
+            "type": "number"
+          },
+          "steel_weight_total": {
+            "description": "Required longitudinal steel over the supplied span (kg)",
+            "title": "Steel Weight Total",
+            "type": "number"
+          },
+          "stirrup_diameter": {
+            "description": "Stirrup diameter basis (mm)",
+            "title": "Stirrup Diameter",
+            "type": "number"
+          },
+          "stirrup_legs": {
+            "description": "Effective vertical stirrup legs",
+            "title": "Stirrup Legs",
+            "type": "integer"
+          },
+          "stirrup_spacing": {
+            "description": "Designed stirrup spacing (mm)",
+            "title": "Stirrup Spacing",
+            "type": "number"
+          },
+          "stirrup_utilization": {
+            "description": "Required-to-provided stirrup shear capacity ratio",
+            "title": "Stirrup Utilization",
             "type": "number"
           },
           "utilization": {
@@ -21674,15 +21865,35 @@
         "required": [
           "width",
           "depth",
+          "effective_depth",
+          "effective_depth_deduction",
+          "clear_cover",
+          "main_bar_diameter",
+          "stirrup_diameter",
+          "stirrup_legs",
+          "fck",
+          "fy",
           "ast_required",
           "utilization",
+          "shear_utilization",
+          "stirrup_utilization",
+          "shear_stress",
+          "concrete_shear_strength",
+          "maximum_shear_stress",
+          "stirrup_spacing",
+          "shear_reinforcement_area",
           "ld_ratio",
           "concrete_volume",
           "steel_weight",
+          "steel_weight_total",
           "formwork_area",
           "cost_breakdown",
           "rank",
-          "score"
+          "score",
+          "is_safe",
+          "code_edition",
+          "clause_refs",
+          "quantity_basis"
         ],
         "title": "OptimalDesign",
         "type": "object"

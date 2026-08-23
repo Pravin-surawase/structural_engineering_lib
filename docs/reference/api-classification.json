@@ -143,8 +143,8 @@
     {
       "module": "structural_lib",
       "export_classification": "preview",
-      "declared_export_count": 205,
-      "classified_symbol_count": 205,
+      "declared_export_count": 207,
+      "classified_symbol_count": 207,
       "symbols": [
         {
           "name": "AuditLogEntry",
@@ -630,6 +630,24 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.slab_api",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "OptimizationConstraints",
+          "qualified_name": "structural_lib.OptimizationConstraints",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.optimization",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "OptimizationInfeasibleError",
+          "qualified_name": "structural_lib.OptimizationInfeasibleError",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.optimization",
           "claim_disposition": "compatibility"
         },
         {
@@ -1996,8 +2014,8 @@
     {
       "module": "structural_lib.services.api",
       "export_classification": "preview",
-      "declared_export_count": 182,
-      "classified_symbol_count": 182,
+      "declared_export_count": 184,
+      "classified_symbol_count": 184,
       "symbols": [
         {
           "name": "AuditLogEntry",
@@ -2474,6 +2492,24 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.slab_api",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "OptimizationConstraints",
+          "qualified_name": "structural_lib.services.api.OptimizationConstraints",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.optimization",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "OptimizationInfeasibleError",
+          "qualified_name": "structural_lib.services.api.OptimizationInfeasibleError",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.optimization",
           "claim_disposition": "compatibility"
         },
         {
@@ -3642,8 +3678,8 @@
     {
       "module": "structural_lib.api",
       "export_classification": "compatibility",
-      "declared_export_count": 182,
-      "classified_symbol_count": 182,
+      "declared_export_count": 184,
+      "classified_symbol_count": 184,
       "symbols": [
         {
           "name": "AuditLogEntry",
@@ -4120,6 +4156,24 @@
           "classification": "compatibility",
           "declared_export": true,
           "defined_in": "structural_lib.services.slab_api",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "OptimizationConstraints",
+          "qualified_name": "structural_lib.api.OptimizationConstraints",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.optimization",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "OptimizationInfeasibleError",
+          "qualified_name": "structural_lib.api.OptimizationInfeasibleError",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.optimization",
           "claim_disposition": "compatibility"
         },
         {

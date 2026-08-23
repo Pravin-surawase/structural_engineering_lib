@@ -508,6 +508,7 @@ current release and INDIA-2 accepted/HOLD truth remain in `docs/TASKS.md`.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| LIB-PRO-007-G0 | Froze canonical product contracts and the bounded P1-P7 foundation sequence before further INDIA-3 engineering | Main Agent | ✅ DONE — PR #852 merged at `a6d47a85` |
 | LIB-PRO-006 | Established maintained no-hidden-default gravity onboarding, discoverability, and governing-result foundations from the practical audit | Main Agent | ✅ DONE — PR #851 merged at `2d6df18e` |
 | MAINT-0134 | Consolidated Claude, Copilot, VS Code, and Codex agent instructions into one validated ownership contract | Main Agent | ✅ DONE — PR #850 merged at `69c09cc7` |
 | INDIA-2-FLAT | Implemented and accepted one bounded regular-interior direct-design flat-slab and concrete-only punching workflow with public provenance | Main Agent + structural engineer | ✅ DONE — G0 and A-E integrated; 214-test focused family selection and independent hand benchmark pass; qualified review and excluded flat-slab systems remain held |

@@ -1,54 +1,100 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2024-2026 Pravin Surawase
-"""Optimization algorithms for structural design."""
+"""Transport-neutral cost optimization for rectangular RC beams."""
 
 from __future__ import annotations
 
+import math
 import time
-from dataclasses import dataclass
+from collections.abc import Iterable
+from dataclasses import dataclass, field
 
-from structural_lib import flexure
-from structural_lib.core.data_types import FlexureResult
+from structural_lib.codes.is456.beam import flexure, shear
+from structural_lib.core.data_types import FlexureResult, ShearResult
 from structural_lib.services.costing import (
     CostBreakdown,
     CostProfile,
     calculate_beam_cost,
+    calculate_steel_weight,
 )
 
-_PT_MIN_COEFF = 0.85  # IS 456 Cl 26.5.1.1
+
+class OptimizationInfeasibleError(ValueError):
+    """Raised when no candidate satisfies the explicit engineering basis."""
+
+
+@dataclass(frozen=True)
+class OptimizationConstraints:
+    """Explicit rectangular-section search grid and efficiency threshold."""
+
+    min_width_mm: int
+    max_width_mm: int
+    min_depth_mm: int
+    max_depth_mm: int
+    width_step_mm: int
+    depth_step_mm: int
+    min_flexural_utilization: float
+
+    def validate(self) -> None:
+        """Raise ``ValueError`` when the candidate grid is not well formed."""
+        integer_values = {
+            "min_width_mm": self.min_width_mm,
+            "max_width_mm": self.max_width_mm,
+            "min_depth_mm": self.min_depth_mm,
+            "max_depth_mm": self.max_depth_mm,
+            "width_step_mm": self.width_step_mm,
+            "depth_step_mm": self.depth_step_mm,
+        }
+        for name, value in integer_values.items():
+            if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+                raise ValueError(f"{name} must be a positive integer")
+        if self.min_width_mm > self.max_width_mm:
+            raise ValueError("min_width_mm must not exceed max_width_mm")
+        if self.min_depth_mm > self.max_depth_mm:
+            raise ValueError("min_depth_mm must not exceed max_depth_mm")
+        if not math.isfinite(self.min_flexural_utilization) or not (
+            0.0 <= self.min_flexural_utilization <= 1.0
+        ):
+            raise ValueError("min_flexural_utilization must be between 0 and 1")
 
 
 @dataclass
 class OptimizationCandidate:
-    """A candidate beam design with cost."""
+    """A candidate beam design with real flexure, shear, quantity, and cost data."""
 
     b_mm: int
     D_mm: int
-    d_mm: int
+    d_mm: float
     fck_nmm2: int
     fy_nmm2: int
     design_result: FlexureResult | None
+    shear_result: ShearResult | None
     cost_breakdown: CostBreakdown | None
+    steel_weight_kg: float
+    flexural_utilization: float
+    shear_utilization: float
+    stirrup_utilization: float
     is_valid: bool
     failure_reason: str | None = None
+    effective_depth_deduction_mm: float = 0.0
+    shear_reinforcement_area_mm2: float = 0.0
+    code_edition: str = "IS 456:2000"
+    clause_refs: dict[str, str] = field(default_factory=dict)
+    quantity_basis: str = (
+        "Required longitudinal tension and compression reinforcement over the "
+        "supplied span; stirrup mass excluded."
+    )
 
 
 @dataclass
 class CostOptimizationResult:
     """Result of cost optimization."""
 
-    # Best design
     optimal_candidate: OptimizationCandidate
-
-    # Comparison with conservative baseline
     baseline_cost: float
     savings_amount: float
     savings_percent: float
-
-    # Alternatives (top 3 designs)
     alternatives: list[OptimizationCandidate]
-
-    # Metadata
     candidates_evaluated: int
     candidates_valid: int
     computation_time_sec: float
@@ -59,252 +105,380 @@ def optimize_beam_cost(
     mu_knm: float,
     vu_kn: float,
     cost_profile: CostProfile | None = None,
-    cover_mm: int = 40,
+    cover_mm: float = 40,
+    *,
+    fck_options: tuple[int, ...] = (25, 30),
+    fy_options: tuple[int, ...] = (500,),
+    constraints: OptimizationConstraints | None = None,
+    asv_mm2: float = 100.53,
+    max_alternatives: int = 3,
 ) -> CostOptimizationResult:
-    """Find cheapest beam design meeting IS 456:2000.
+    """Find the lowest-cost singly reinforced section meeting the supplied basis.
 
-    Uses brute force with intelligent pruning.
+    ``cover_mm`` is retained as the compatibility name for the total effective-
+    depth deduction ``D - d``. Product transports must calculate and pass that
+    deduction explicitly from their clear-cover and bar-size inputs.
 
-    Args:
-        span_mm: Beam span (mm)
-        mu_knm: Factored bending moment (kNm)
-        vu_kn: Factored shear force (kN)
-        cost_profile: Regional cost data (defaults to India CPWD 2023)
-        cover_mm: Concrete cover (default 40mm)
-
-    Returns:
-        CostOptimizationResult with optimal design and alternatives
-
-    Example:
-        >>> profile = CostProfile()  # India rates
-        >>> result = optimize_beam_cost(5000, 120, 80, profile)
-        >>> print(f"Optimal design costs ₹{result.optimal_candidate.cost_breakdown.total_cost}")
-        >>> print(f"Savings: {result.savings_percent:.1f}%")
+    The cost and steel quantity cover required longitudinal reinforcement only.
+    The supplied ``asv_mm2`` is used by the maintained IS 456 shear design to
+    establish safety and stirrup spacing, but stirrup mass is not included in
+    the cost because bar perimeter and anchorage geometry are not inputs here.
     """
     start_time = time.perf_counter()
+    profile = cost_profile or CostProfile()
+    _validate_optimizer_inputs(
+        span_mm=span_mm,
+        mu_knm=mu_knm,
+        vu_kn=vu_kn,
+        effective_depth_deduction_mm=cover_mm,
+        asv_mm2=asv_mm2,
+        fck_options=fck_options,
+        fy_options=fy_options,
+        max_alternatives=max_alternatives,
+        cost_profile=profile,
+    )
 
-    if cost_profile is None:
-        cost_profile = CostProfile()
+    if constraints is None:
+        width_options = [230, 300, 400]
+        depth_min = max(300, int(span_mm / 20))
+        depth_max = min(900, int(span_mm / 8))
+        depth_options = list(range(depth_min, depth_max + 1, 50))
+        minimum_utilization = 0.0
+    else:
+        constraints.validate()
+        width_options = _inclusive_grid(
+            constraints.min_width_mm,
+            constraints.max_width_mm,
+            constraints.width_step_mm,
+        )
+        depth_options = _inclusive_grid(
+            constraints.min_depth_mm,
+            constraints.max_depth_mm,
+            constraints.depth_step_mm,
+        )
+        minimum_utilization = constraints.min_flexural_utilization
 
     candidates: list[OptimizationCandidate] = []
-
-    # Smart search ranges
-    # NOTE: Limited search space for v1.0 (most common grades/steel)
-    # Future enhancement: Add M20, M35, Fe415 for comprehensive optimization
-    # Current: ~30-50 combinations, Full spec: ~300-500 combinations
-    width_options = [230, 300, 400]  # Standard widths (mm)
-    depth_min = max(300, int(span_mm / 20))  # span/20 minimum
-    depth_max = min(900, int(span_mm / 8))  # span/8 maximum
-    depth_options = range(depth_min, depth_max + 1, 50)
-    grade_options = [25, 30]  # Most common (M20, M35 reserved for v2.0)
-    steel_options = [500]  # Modern standard (Fe415 reserved for v2.0)
-
-    evaluated = 0
-    valid = 0
-
-    # Brute force search
-    for b in width_options:
-        for D in depth_options:
-            d = D - cover_mm
-
-            # Quick feasibility check
-            if not _quick_feasibility(b, d, mu_knm, span_mm):
-                continue
-
-            for fck in grade_options:
-                for fy in steel_options:
-                    evaluated += 1
-
-                    # Design beam
-                    try:
-                        design = flexure.design_singly_reinforced(
-                            b=b, d=d, d_total=D, mu_knm=mu_knm, fck=fck, fy=fy
-                        )
-                    except Exception as e:
-                        candidates.append(
-                            OptimizationCandidate(
-                                b_mm=b,
-                                D_mm=D,
-                                d_mm=d,
-                                fck_nmm2=fck,
-                                fy_nmm2=fy,
-                                design_result=None,
-                                cost_breakdown=None,
-                                is_valid=False,
-                                failure_reason=f"Design failed: {str(e)}",
-                            )
-                        )
-                        continue
-
-                    # Check compliance
-                    is_compliant, violations = _check_compliance(design, b, d, fck, fy)
-                    if not is_compliant:
-                        candidates.append(
-                            OptimizationCandidate(
-                                b_mm=b,
-                                D_mm=D,
-                                d_mm=d,
-                                fck_nmm2=fck,
-                                fy_nmm2=fy,
-                                design_result=design,
-                                cost_breakdown=None,
-                                is_valid=False,
-                                failure_reason=f"Compliance violations: {violations}",
-                            )
-                        )
-                        continue
-
-                    # Calculate cost
-                    steel_pct = 100 * design.Ast_required / (b * d)
-                    cost = calculate_beam_cost(
-                        b_mm=b,
-                        D_mm=D,
-                        span_mm=span_mm,
-                        ast_mm2=design.Ast_required,
-                        fck_nmm2=fck,
-                        steel_percentage=steel_pct,
-                        cost_profile=cost_profile,
-                    )
-
-                    valid += 1
+    for b_mm in width_options:
+        for D_mm in depth_options:
+            d_mm = D_mm - cover_mm
+            for fck_nmm2 in fck_options:
+                for fy_nmm2 in fy_options:
                     candidates.append(
-                        OptimizationCandidate(
-                            b_mm=b,
-                            D_mm=D,
-                            d_mm=d,
-                            fck_nmm2=fck,
-                            fy_nmm2=fy,
-                            design_result=design,
-                            cost_breakdown=cost,
-                            is_valid=True,
+                        _evaluate_candidate(
+                            b_mm=b_mm,
+                            D_mm=D_mm,
+                            d_mm=d_mm,
+                            span_mm=span_mm,
+                            mu_knm=mu_knm,
+                            vu_kn=vu_kn,
+                            fck_nmm2=fck_nmm2,
+                            fy_nmm2=fy_nmm2,
+                            asv_mm2=asv_mm2,
+                            minimum_utilization=minimum_utilization,
+                            cost_profile=profile,
                         )
                     )
 
-    # Sort by cost (ascending)
-    valid_candidates = [c for c in candidates if c.is_valid]
+    valid_candidates = [candidate for candidate in candidates if candidate.is_valid]
     if not valid_candidates:
-        raise ValueError("No valid designs found. Check inputs or loosen constraints.")
+        raise OptimizationInfeasibleError(
+            "No valid designs found for the supplied materials, shear demand, "
+            "effective-depth deduction, and search constraints."
+        )
 
-    valid_candidates.sort(
-        key=lambda c: c.cost_breakdown.total_cost if c.cost_breakdown else float("inf")
-    )
-
-    # Best design
+    valid_candidates.sort(key=_candidate_cost)
     optimal = valid_candidates[0]
-
-    # Calculate baseline (conservative design: span/12 depth)
-    # Try M25 first, upgrade to M30 if needed, increase depth if still failing
-    baseline_D = int(span_mm / 12)
-    baseline_d = baseline_D - cover_mm
-    baseline_fck = 25
-    baseline_design = flexure.design_singly_reinforced(
-        b=300, d=baseline_d, d_total=baseline_D, mu_knm=mu_knm, fck=baseline_fck, fy=500
-    )
-
-    # If baseline fails with M25, try M30
-    if not baseline_design.is_safe or baseline_design.Ast_required == 0:
-        baseline_fck = 30
-        baseline_design = flexure.design_singly_reinforced(
-            b=300,
-            d=baseline_d,
-            d_total=baseline_D,
-            mu_knm=mu_knm,
-            fck=baseline_fck,
-            fy=500,
-        )
-
-        # If still fails, increase depth until it works (span/10)
-        if not baseline_design.is_safe or baseline_design.Ast_required == 0:
-            baseline_D = int(span_mm / 10)  # More conservative
-            baseline_d = baseline_D - cover_mm
-            baseline_design = flexure.design_singly_reinforced(
-                b=300,
-                d=baseline_d,
-                d_total=baseline_D,
-                mu_knm=mu_knm,
-                fck=baseline_fck,
-                fy=500,
-            )
-
-    # Verify baseline is actually valid before using it
-    if not baseline_design.is_safe or baseline_design.Ast_required == 0:
-        # Baseline itself is infeasible - use optimal cost as baseline (no savings)
-        baseline_cost_breakdown = optimal.cost_breakdown
-    else:
-        baseline_pct = 100 * baseline_design.Ast_required / (300 * baseline_d)
-        baseline_cost_breakdown = calculate_beam_cost(
-            b_mm=300,
-            D_mm=baseline_D,
-            span_mm=span_mm,
-            ast_mm2=baseline_design.Ast_required,
-            fck_nmm2=baseline_fck,
-            steel_percentage=baseline_pct,
-            cost_profile=cost_profile,
-        )
-
-    # Calculate savings
-    if baseline_cost_breakdown and optimal.cost_breakdown:
-        savings = baseline_cost_breakdown.total_cost - optimal.cost_breakdown.total_cost
-        savings_pct = 100 * savings / baseline_cost_breakdown.total_cost
-        baseline_cost = baseline_cost_breakdown.total_cost
-    else:
-        savings = 0.0
-        savings_pct = 0.0
-        baseline_cost = 0.0
-
-    # Top 3 alternatives
-    alternatives = valid_candidates[1:4]  # Skip optimal (index 0), get next 3
-
-    computation_time = time.perf_counter() - start_time
+    baseline = _select_conventional_baseline(valid_candidates, span_mm)
+    optimal_cost = _candidate_cost(optimal)
+    baseline_cost = _candidate_cost(baseline)
+    savings = max(0.0, baseline_cost - optimal_cost)
+    savings_percent = 100.0 * savings / baseline_cost if baseline_cost > 0 else 0.0
 
     return CostOptimizationResult(
         optimal_candidate=optimal,
         baseline_cost=baseline_cost,
         savings_amount=round(savings, 2),
-        savings_percent=round(savings_pct, 2),
-        alternatives=alternatives,
-        candidates_evaluated=evaluated,
-        candidates_valid=valid,
-        computation_time_sec=round(computation_time, 3),
+        savings_percent=round(savings_percent, 2),
+        alternatives=valid_candidates[1 : max_alternatives + 1],
+        candidates_evaluated=len(candidates),
+        candidates_valid=len(valid_candidates),
+        computation_time_sec=round(time.perf_counter() - start_time, 3),
     )
 
 
-def _quick_feasibility(b: float, d: float, mu_knm: float, span_mm: float) -> bool:
-    """Quick check if dimensions are feasible before full design."""
-    # Check if Mu_lim > Mu for HIGHEST grade we're testing (M30)
-    # If it fails for M30, it will fail for all grades (IS 456:2000)
-    mu_lim = flexure.calculate_mu_lim(b, d, 30, 500)  # Use M30 (highest grade)
-    if mu_lim < mu_knm:
-        return False  # Would need doubly reinforced even with M30
+def _evaluate_candidate(
+    *,
+    b_mm: int,
+    D_mm: int,
+    d_mm: float,
+    span_mm: float,
+    mu_knm: float,
+    vu_kn: float,
+    fck_nmm2: int,
+    fy_nmm2: int,
+    asv_mm2: float,
+    minimum_utilization: float,
+    cost_profile: CostProfile,
+) -> OptimizationCandidate:
+    """Evaluate one exact candidate without transport-specific assumptions."""
+    if d_mm <= 0:
+        return _failed_candidate(
+            b_mm,
+            D_mm,
+            d_mm,
+            fck_nmm2,
+            fy_nmm2,
+            "Effective depth must be positive after the supplied deduction.",
+        )
 
-    # Check practical span/depth ratio (8 to 20)
-    span_d_ratio = span_mm / d
-    if span_d_ratio < 8 or span_d_ratio > 20:
-        return False
+    design = flexure.design_singly_reinforced(
+        b=b_mm,
+        d=d_mm,
+        d_total=D_mm,
+        mu_knm=mu_knm,
+        fck=fck_nmm2,
+        fy=fy_nmm2,
+    )
+    flexural_utilization = (
+        abs(mu_knm) / design.Mu_lim if design.Mu_lim > 0 else float("inf")
+    )
+    if not design.is_safe or design.Ast_required <= 0:
+        return _failed_candidate(
+            b_mm,
+            D_mm,
+            d_mm,
+            fck_nmm2,
+            fy_nmm2,
+            _result_failure("Flexure design failed", design.errors),
+            design_result=design,
+            flexural_utilization=flexural_utilization,
+        )
+    if flexural_utilization < minimum_utilization:
+        return _failed_candidate(
+            b_mm,
+            D_mm,
+            d_mm,
+            fck_nmm2,
+            fy_nmm2,
+            (
+                f"Flexural utilization {flexural_utilization:.4f} is below "
+                f"the requested minimum {minimum_utilization:.4f}."
+            ),
+            design_result=design,
+            flexural_utilization=flexural_utilization,
+        )
 
-    return True
+    shear_design = shear.design_shear(
+        vu_kn=vu_kn,
+        b=b_mm,
+        d=d_mm,
+        fck=fck_nmm2,
+        fy=fy_nmm2,
+        asv=asv_mm2,
+        pt=design.pt_provided,
+    )
+    shear_utilization = (
+        shear_design.tau_v / shear_design.tau_c_max
+        if shear_design.tau_c_max > 0
+        else float("inf")
+    )
+    if not shear_design.is_safe:
+        return _failed_candidate(
+            b_mm,
+            D_mm,
+            d_mm,
+            fck_nmm2,
+            fy_nmm2,
+            _result_failure("Shear design failed", shear_design.errors),
+            design_result=design,
+            shear_result=shear_design,
+            flexural_utilization=flexural_utilization,
+            shear_utilization=shear_utilization,
+        )
+
+    provided_stirrup_capacity_kn = (
+        0.87 * fy_nmm2 * asv_mm2 * d_mm / (shear_design.spacing * 1000.0)
+        if shear_design.spacing > 0
+        else 0.0
+    )
+    stirrup_utilization = (
+        shear_design.Vus / provided_stirrup_capacity_kn
+        if shear_design.Vus > 0 and provided_stirrup_capacity_kn > 0
+        else 0.0
+    )
+    if stirrup_utilization > 1.0 + 1e-9:
+        return _failed_candidate(
+            b_mm,
+            D_mm,
+            d_mm,
+            fck_nmm2,
+            fy_nmm2,
+            (
+                "The supplied shear-reinforcement area cannot provide the "
+                "required Vus at the maintained minimum practical spacing."
+            ),
+            design_result=design,
+            shear_result=shear_design,
+            flexural_utilization=flexural_utilization,
+            shear_utilization=shear_utilization,
+            stirrup_utilization=stirrup_utilization,
+        )
+
+    longitudinal_steel_area_mm2 = design.Ast_required + design.Asc_required
+    steel_weight_kg = calculate_steel_weight(longitudinal_steel_area_mm2, span_mm)
+    cost = calculate_beam_cost(
+        b_mm=b_mm,
+        D_mm=D_mm,
+        span_mm=span_mm,
+        ast_mm2=longitudinal_steel_area_mm2,
+        fck_nmm2=fck_nmm2,
+        steel_percentage=design.pt_provided,
+        cost_profile=cost_profile,
+    )
+    return OptimizationCandidate(
+        b_mm=b_mm,
+        D_mm=D_mm,
+        d_mm=d_mm,
+        fck_nmm2=fck_nmm2,
+        fy_nmm2=fy_nmm2,
+        design_result=design,
+        shear_result=shear_design,
+        cost_breakdown=cost,
+        steel_weight_kg=steel_weight_kg,
+        flexural_utilization=flexural_utilization,
+        shear_utilization=shear_utilization,
+        stirrup_utilization=stirrup_utilization,
+        is_valid=True,
+        effective_depth_deduction_mm=D_mm - d_mm,
+        shear_reinforcement_area_mm2=asv_mm2,
+        clause_refs={
+            **{
+                f"flexure.{name}": reference
+                for name, reference in design.clause_refs.items()
+            },
+            **{
+                f"shear.{name}": reference
+                for name, reference in shear_design.clause_refs.items()
+            },
+        },
+    )
 
 
-def _check_compliance(
-    design: FlexureResult, b: float, d: float, fck: int, fy: int
-) -> tuple[bool, list[str]]:
-    """Check if design meets IS 456 requirements."""
-    violations = []
+def _failed_candidate(
+    b_mm: int,
+    D_mm: int,
+    d_mm: float,
+    fck_nmm2: int,
+    fy_nmm2: int,
+    reason: str,
+    *,
+    design_result: FlexureResult | None = None,
+    shear_result: ShearResult | None = None,
+    flexural_utilization: float = 0.0,
+    shear_utilization: float = 0.0,
+    stirrup_utilization: float = 0.0,
+) -> OptimizationCandidate:
+    return OptimizationCandidate(
+        b_mm=b_mm,
+        D_mm=D_mm,
+        d_mm=d_mm,
+        fck_nmm2=fck_nmm2,
+        fy_nmm2=fy_nmm2,
+        design_result=design_result,
+        shear_result=shear_result,
+        cost_breakdown=None,
+        steel_weight_kg=0.0,
+        flexural_utilization=flexural_utilization,
+        shear_utilization=shear_utilization,
+        stirrup_utilization=stirrup_utilization,
+        is_valid=False,
+        failure_reason=reason,
+    )
 
-    # Check if design was successful
-    if design.Ast_required <= 0 and design.Mu_lim > 0:
-        violations.append("Design failed to provide steel area")
-        return False, violations
 
-    # Check minimum steel
-    pt = 100 * design.Ast_required / (b * d)
-    pt_min = 100 * _PT_MIN_COEFF / fy  # IS 456 Cl 26.5.1.1
-    if pt < pt_min:
-        violations.append(f"pt ({pt:.3f}%) < pt_min ({pt_min:.3f}%)")
+def _validate_optimizer_inputs(
+    *,
+    span_mm: float,
+    mu_knm: float,
+    vu_kn: float,
+    effective_depth_deduction_mm: float,
+    asv_mm2: float,
+    fck_options: tuple[int, ...],
+    fy_options: tuple[int, ...],
+    max_alternatives: int,
+    cost_profile: CostProfile,
+) -> None:
+    numeric_inputs = {
+        "span_mm": span_mm,
+        "mu_knm": mu_knm,
+        "vu_kn": vu_kn,
+        "effective_depth_deduction_mm": effective_depth_deduction_mm,
+        "asv_mm2": asv_mm2,
+    }
+    for name, value in numeric_inputs.items():
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            raise ValueError(f"{name} must be a finite real number")
+        if not math.isfinite(value):
+            raise ValueError(f"{name} must be a finite real number")
+    if span_mm <= 0:
+        raise ValueError("span_mm must be positive")
+    if mu_knm < 0 or vu_kn < 0:
+        raise ValueError("mu_knm and vu_kn must be non-negative factored actions")
+    if effective_depth_deduction_mm <= 0:
+        raise ValueError("effective_depth_deduction_mm must be positive")
+    if asv_mm2 <= 0:
+        raise ValueError("asv_mm2 must be positive")
+    if not fck_options or any(
+        isinstance(value, bool) or not isinstance(value, int) or not 15 <= value <= 40
+        for value in fck_options
+    ):
+        raise ValueError("fck_options must contain integer grades from 15 to 40")
+    if not fy_options or any(
+        isinstance(value, bool) or not isinstance(value, int) or not 250 <= value <= 550
+        for value in fy_options
+    ):
+        raise ValueError("fy_options must contain integer grades from 250 to 550")
+    missing_rates = sorted(set(fck_options) - set(cost_profile.concrete_costs))
+    if missing_rates:
+        raise ValueError(
+            "cost_profile is missing concrete rates for grades: "
+            + ", ".join(str(grade) for grade in missing_rates)
+        )
+    if (
+        isinstance(max_alternatives, bool)
+        or not isinstance(max_alternatives, int)
+        or max_alternatives < 0
+    ):
+        raise ValueError("max_alternatives must be a non-negative integer")
 
-    # Check maximum steel
-    pt_max = 4.0  # IS 456 Cl 26.5.1.1
-    if pt > pt_max:
-        violations.append(f"pt ({pt:.3f}%) > pt_max ({pt_max:.3f}%)")
 
-    return (len(violations) == 0, violations)
+def _inclusive_grid(minimum: int, maximum: int, step: int) -> list[int]:
+    """Return the explicit stepped grid; ``maximum`` remains an upper bound."""
+    return list(range(minimum, maximum + 1, step))
+
+
+def _candidate_cost(candidate: OptimizationCandidate) -> float:
+    if candidate.cost_breakdown is None:
+        return float("inf")
+    return candidate.cost_breakdown.total_cost
+
+
+def _select_conventional_baseline(
+    valid_candidates: list[OptimizationCandidate], span_mm: float
+) -> OptimizationCandidate:
+    """Pick the valid candidate nearest the conventional 300 mm, span/12 basis."""
+    target_depth_mm = span_mm / 12.0
+    return min(
+        valid_candidates,
+        key=lambda candidate: (
+            abs(candidate.b_mm - 300),
+            abs(candidate.D_mm - target_depth_mm),
+            _candidate_cost(candidate),
+        ),
+    )
+
+
+def _result_failure(prefix: str, errors: Iterable[object]) -> str:
+    messages = [getattr(error, "message", str(error)) for error in errors]
+    return f"{prefix}: {'; '.join(messages)}" if messages else prefix
