@@ -5,6 +5,111 @@
 
 ---
 
+## 2026-08-23 — Session: INDIA-3-G0 private multi-code source library
+
+**Agent:** Codex (`library-expert`, sole writer)
+
+**Branch:** `codex/india-3-g0-source-library`, from exact remote `main`
+commit `f24c3904b4af7d768f71342f11ac70f21e7b1dfa`.
+
+**Git handoff receipt:**
+`docs/verification/india-3-g0-private-source-library-git-handoff-receipt.json`
+
+**Focus:** Inspect additional IS-code PDFs in Downloads, preserve useful code
+sources in the existing Git-ignored private-source boundary, and create a
+searchable, hash-bound database that avoids repeated discovery/screenshots
+without reproducing protected source content in tracked or packaged outputs.
+
+### Summary
+
+- Created a private SQLite source library in the retained primary checkout,
+  referenced the two existing IS 456 PDFs, and copied 23 distinct IS 875,
+  IS 1893, IS 13920, and IS 2950 PDFs without moving or deleting Downloads.
+- Bound 25 distinct PDF identities to 27 original aliases and 732 cached pages;
+  exact duplicate downloads deduplicate by SHA-256.
+- Added separate identity, edition/amendment, review, applicability, and
+  distribution states; page FTS; visual/OCR-required flags; and normalized
+  reference contracts with no protected-excerpt field.
+- Added three `UNREVIEWED_IMPLEMENTATION_CLAIM` navigation records for the
+  current IS 13920 beam, column, and strong-column/weak-beam symbols. No
+  source-derived engineering value or accepted page pointer was recorded.
+- Reconciled the merged MAINT-0133B predecessor and activated INDIA-3-G0 as an
+  audit/decision packet only. No formula, support, release, or professional-use
+  claim changed.
+
+### Issues encountered
+
+- `session brief` emitted a macOS `awk` newline error while formatting the
+  multi-line closed-task ID list.
+- A SQLite CLI `-readonly` query returned `unable to open database file` once
+  immediately after parallel verification, although the database file and
+  integrity state were present.
+- The first page-cache classifier treated any non-empty extracted text as a
+  successful page. The consolidated IS 13920 PDF has scanned pages whose only
+  extractable content is a short watermark layer.
+- The available PDF runtime has no OCR engine. Several scanned/low-text pages
+  cannot truthfully become searchable source content in this packet.
+- The first Git handoff-receipt invocation passed a Markdown file to the
+  structured `--evidence` option, so receipt creation stopped without output.
+- The first normal hook run rejected the Latest Handoff receipt hash even
+  though the receipt itself validated.
+
+### Root causes and resolutions
+
+- Confirmed inherited root cause: `scripts/agent_brief.sh` passes multi-line
+  closed task IDs through one `awk -v` value, which macOS awk rejects.
+  Resolution: use `session start`'s independent Python task parser, which
+  returned `READY_LOCAL`; retain the formatter repair for automation scope.
+  ⚠️ TERMINAL ISSUE: the shell brief could not format closed tasks → the
+  maintained Python session parser completed startup and task state was read
+  directly from `docs/TASKS.md`.
+- SQLite CLI root cause remains **unconfirmed**; file presence, permissions,
+  page rows, and `PRAGMA integrity_check` were healthy immediately afterward.
+  Resolution: reopen the same database normally with `PRAGMA query_only=ON`;
+  the failed query and all later read-only SQL completed without recreation or
+  data loss. ⚠️ TERMINAL ISSUE: one `sqlite3 -readonly` open failed → a normal
+  connection with query-only enforcement worked and integrity stayed `ok`.
+- Confirmed root cause: a watermark text layer made scanned pages non-empty but
+  did not contain their engineering content. Resolution: classify empty pages
+  as `NO_EXTRACTABLE_TEXT`, normalized text below 250 characters as
+  `LOW_TEXT_VISUAL_OR_OCR_REQUIRED`, reclassify all 732 cached pages, and save
+  no incomplete clause pointer as accepted normalization.
+- Confirmed limitation: neither `tesseract` nor another OCR executable is
+  provisioned. Resolution: preserve the exact PDF/page identities and mark 142
+  pages for future visual/OCR review; do not infer missing content or block the
+  590 genuinely searchable pages.
+- Confirmed root cause: `git_handoff_receipt.py --evidence` parses a JSON
+  mapping, while the reviewed evidence artifact was Markdown. Resolution: keep
+  the Markdown as an owned path, add a minimal structured authorization and
+  retention evidence record, and regenerate the receipt from that JSON.
+  ⚠️ TERMINAL ISSUE: Markdown evidence failed JSON parsing → structured source
+  evidence plus the owned Markdown path produced the fail-closed receipt.
+- Confirmed root cause: the handoff contract requires the receipt's embedded
+  `local_state_receipt_hash`, while the briefing contained the SHA-256 of the
+  JSON file bytes. Resolution: replace that one field with the embedded
+  `sha256:c81907...84484cf` identity and rerun only `check-session-docs`.
+
+### Validation through content freeze
+
+- Git/source binding: clean linked worktree from exact `origin/main` at
+  `f24c3904`; `git_state.py` returned `READY_LOCAL` and runtime diagnosis
+  returned `source_bound=true` before edits.
+- Private verifier: `documents=25`, `aliases=27`, `pages=732`,
+  `normalized_references=3`, `visual_review_pages=142`; SQLite integrity,
+  every stored/reference PDF hash, page ownership, and Git-ignore guard pass.
+- Private seed idempotence: a second 27-entry run created aliases only; document
+  and page counts stayed unchanged.
+- Focused repository boundary: `2 passed` in
+  `Python/tests/test_private_source_boundary.py`; `git ls-files private_sources`
+  is empty and representative database/PDF paths are ignored.
+- Documentation: front matter reports zero invalid files; 478 maintained
+  Markdown files, 992 local links, and six local images have zero broken links.
+- Consolidated quick gate passed `10/10` with zero reused results. Every
+  ordinary staged hook also passes after the one targeted session-document
+  receipt-hash repair. The fail-closed Git handoff receipt validates as `HOLD`
+  only for the expected dirty/remote/PR/review facts. Final read-only session
+  closeout, commit, push, and hosted evidence remain.
+
 ## 2026-08-23 — Session: MAINT-0133B exact cleanup execution
 
 **Agent:** Codex (`governance`, sole writer)

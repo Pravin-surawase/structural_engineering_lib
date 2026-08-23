@@ -128,7 +128,7 @@ logs/*
 # -----------------------------------------------------------------------------
 docs/_references/downloads_snapshot/
 
-# Protected engineering sources and extracted standard data (local only)
+# Protected engineering PDFs, extracted page cache, and source database (local only)
 /private_sources/
 
 # -----------------------------------------------------------------------------

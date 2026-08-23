@@ -1,0 +1,65 @@
+{
+  "authorization": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-23T08:34:18Z",
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "reference": "Active Codex task: inspect Downloads for usable IS codes, preserve PDFs in a Git-ignored private database, and do not reproduce or reprint source content",
+      "status": "OBSERVED",
+      "query_status": "OK",
+      "observed_at_utc": "2026-08-23T08:34:18Z"
+    },
+    "authorized_actions": [
+      "INVENTORY_DOWNLOADS_IS_CODE_PDFS",
+      "COPY_PDFS_TO_PRIVATE_IGNORED_LIBRARY",
+      "CREATE_PRIVATE_SEARCH_DATABASE",
+      "RECORD_PUBLIC_BOUNDARY_EVIDENCE",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "prohibited_actions": [
+      "TRACK_PRIVATE_SOURCE_CONTENT",
+      "PACKAGE_PRIVATE_SOURCE_CONTENT",
+      "REPRODUCE_OR_REPRINT_SOURCE_PROSE_OR_PAGE_IMAGES",
+      "DELETE_DOWNLOADS_ORIGINALS",
+      "IMPLEMENT_NEW_ENGINEERING_FORMULAS",
+      "ACTIVATE_NEW_SUPPORT_CLAIMS",
+      "PUBLISH_RELEASE",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "target_binding": {
+      "task_id": "INDIA-3-G0-SOURCE-LIBRARY",
+      "branch": "codex/india-3-g0-source-library",
+      "head_sha": "f24c3904b4af7d768f71342f11ac70f21e7b1dfa",
+      "actions": [
+        "INVENTORY_DOWNLOADS_IS_CODE_PDFS",
+        "COPY_PDFS_TO_PRIVATE_IGNORED_LIBRARY",
+        "CREATE_PRIVATE_SEARCH_DATABASE",
+        "RECORD_PUBLIC_BOUNDARY_EVIDENCE",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ]
+    }
+  },
+  "integration": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-23T08:34:18Z",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR"
+  },
+  "retention": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-23T08:34:18Z",
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "owner": "Main Agent under repository preservation policy",
+    "holds": []
+  }
+}

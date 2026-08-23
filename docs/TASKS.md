@@ -127,18 +127,19 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| MAINT-0133B | Execute only the two owner-authorized moves frozen by MAINT-0133 and preserve every unresolved candidate | Main Agent + governance | S | P0 | 🟡 CANDIDATE — 2/2 transactional moves succeeded with zero unresolved or broken references; integration pending |
+| INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | 🟡 IN PROGRESS — private multi-code source library established; IS 13920 truth/benchmark/contract decision remains |
 
-The owner explicitly authorized completion of the frozen
-`MAINT-0133B-PACKET-A` batch. Exactly two completed INDIA-2 plans moved through
-the transactional safe-file tool; four unresolved candidates, every delete,
-automatic archival, branch cleanup, and worktree cleanup remain held.
+`MAINT-0133B-PACKET-A` merged through PR #848 at `f24c3904`. The owner then
+selected `INDIA-3-G0` and authorized use of additional local IS-code PDFs under
+the existing non-distribution boundary. The private library now binds exact
+PDF hashes, editions/amendments, page-search state, and normalized-reference
+records without tracking or packaging protected source content.
 
 INDIA-2 remains administratively complete within its recorded accepted/held
-boundary. The reproduced public-route safety packet is integrated. INDIA-3,
-dependency work, the next package version, further cleanup, and professional
-approval remain separately held until a successor is explicitly selected and
-scoped.
+boundary. The reproduced public-route safety packet is integrated. INDIA-3-G0
+remains an audit/decision packet only: no new formula, support claim, IS 875 or
+IS 1893 implementation, next package version, release, or professional
+approval is activated.
 
 `LIB-PRO-003-A` was accepted and exact-tree merged through PR #832 at
 `e7698a63b86d2db6db2f3970871122af1ce562f6`; Packet B was accepted and
@@ -169,7 +170,6 @@ write-back/nightly work remain outside E1.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ AFTER LIB-PRO-003 — truth/benchmark/contract audit only; no new formulas or support claims |
 | SPARK-001-G0 | Reassess the stale Spark work-program proposal before any implementation | repository owner | review gate | P2 | ⏸ OWNER REVIEW — the 2026-08-11 model/preview assumptions and bulk wave require refresh or rejection |
 
 ## Backlog

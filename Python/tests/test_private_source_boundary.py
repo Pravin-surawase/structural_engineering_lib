@@ -21,17 +21,18 @@ def test_private_sources_directory_is_ignored_and_untracked() -> None:
     )
     assert tracked.stdout == ""
 
-    ignored = subprocess.run(
-        [
-            "git",
-            "check-ignore",
-            "-q",
-            "private_sources/is456_library_first/manifest.json",
-        ],
-        cwd=ROOT,
-        check=False,
+    ignored_paths = (
+        "private_sources/is456_library_first/manifest.json",
+        "private_sources/is_code_library/library.sqlite3",
+        "private_sources/is_code_library/source_pdfs/is13920/example.pdf",
     )
-    assert ignored.returncode == 0
+    for ignored_path in ignored_paths:
+        ignored = subprocess.run(
+            ["git", "check-ignore", "-q", ignored_path],
+            cwd=ROOT,
+            check=False,
+        )
+        assert ignored.returncode == 0, ignored_path
 
 
 def test_package_configuration_has_no_private_source_data() -> None:

@@ -4,42 +4,50 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-23
-- Focus: Execute only the two owner-authorized planning moves frozen by
-- Git receipt: docs/verification/maint-0133b-git-handoff-receipt.json | sha256:886caa2e404083b871df33dd570a4d9ea60c2d8ab5e8437bc236ca5413bcc36f | HOLD
-- Git identity: codex/maint-0133b-packet-a@417a16590892d176ea288bbda93ad4d48b4603c4 | upstream=origin/main@417a16590892d176ea288bbda93ad4d48b4603c4 | base=origin/main@417a16590892d176ea288bbda93ad4d48b4603c4 | tree=dirty | operation=none
+- Focus: Establish the private multi-code source library for INDIA-3-G0
+- Git receipt: docs/verification/india-3-g0-private-source-library-git-handoff-receipt.json | sha256:c81907a196e335aa8fa815159906263f7c4d5abbc5905f07aaf57934f84484cf | HOLD
+- Git identity: codex/india-3-g0-source-library@f24c3904b4af7d768f71342f11ac70f21e7b1dfa | upstream=origin/main@f24c3904b4af7d768f71342f11ac70f21e7b1dfa | base=origin/main@f24c3904b4af7d768f71342f11ac70f21e7b1dfa | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
-- Next action: COMMIT_INTENDED_PATHS
+- Next action: FREEZE_IS13920_G0_TRUTH_BENCHMARK_CONTRACT_DECISION
 <!-- HANDOFF:END -->
 
 | State | Boundary |
 |---|---|
-| **Current** | `MAINT-0133B-PACKET-A` executed the two exact owner-authorized planning moves on merged MAINT-0133 controls |
-| **Next** | Integrate the unchanged candidate, then start the separately scoped actual product packet `INDIA-3-G0` when selected |
-| **Why** | Both frozen moves still had identical source blobs, absent destinations, zero unresolved references, and the exact predicted path set |
-| **Held** | Four unresolved cleanup candidates, every delete, automatic archival, branch/worktree deletion, release, and professional approval |
+| **Current** | `INDIA-3-G0` has one private hash-bound library covering the retained IS 456 sources plus discovered IS 875, IS 1893, IS 13920, and IS 2950 PDFs |
+| **Next** | Audit the complete relevant IS 13920 beam, column, and joint pages plus amendment chain; freeze one bounded acceptance sequence or `HOLD` |
+| **Why** | Exact PDFs, page search, duplicates, editions, amendments, and implementation navigation are now reusable without repeated discovery or uncontrolled screenshots |
+| **Held** | Source-page reproduction; unreviewed normalization; new formulas; IS 13920 wall/foundation work; IS 875/1893 implementation; ETABS; release; and professional approval |
 
-## Exact MAINT-0133 completion state
+## Exact private-library state
 
-- MAINT-0133 inventory PR #847 is merged at
-  `417a16590892d176ea288bbda93ad4d48b4603c4`.
-- Inventory: six exact inactive-location candidates; two
-  owner-authorized moves, four `HOLD_UNRESOLVED`, zero delete candidates.
-- MAINT-0133B executed only the two completed INDIA-2 planning moves through
-  `safe_file_move.py`; both live operations succeeded without rollback.
-- The destination blobs equal the original source blobs, the original sources
-  are absent, and maintained references now point to the archive destinations.
-- Exact duplicate blobs, archives, vendor references, and all observed
-  worktrees are explicitly kept or held rather than inferred obsolete.
+- The primary checkout's ignored `private_sources/is_code_library/` contains the
+  SQLite catalog and 23 archived Downloads PDFs. Two retained IS 456 PDFs are
+  referenced from the earlier private corpus without copying their bytes.
+- Verified inventory: 25 distinct documents, 27 source aliases, 732 pages, and
+  three unreviewed current-implementation navigation records.
+- Search state: 590 pages have usable extracted text; 113 low-text pages and 29
+  no-text pages are explicitly marked visual/OCR-required.
+- Every newly discovered non-IS-456 source remains
+  `UNKNOWN_PENDING_ENGINEERING_REVIEW`. Parallel IS 13920 amendment copies and
+  IS 2950 Part 1 copies are preserved without silently selecting one.
+- The private verifier passed SQLite integrity, all PDF hashes, page counts,
+  FTS ownership, and Git-ignore protection. Downloads originals were not moved
+  or deleted.
+- Focused boundary/document/context checks and the consolidated quick gate pass;
+  quick reports `10/10` with zero reused results.
 
 ## Preserved boundary
 
-- MAINT-0130/0131/0132/0133 remain unchanged. Packet A does not repair the four
-  unresolved candidates or mutate product, release, branch, worktree,
-  historical, or professional-approval state.
+- The private page cache is navigation evidence, not source interpretation or
+  benchmark truth. Tracked files contain no PDF, extracted prose, page image,
+  database bytes, or normalized engineering value.
+- INDIA-3-G0 remains a truth/benchmark/contract audit. This source foundation
+  does not activate the existing beam/column/joint claims or any later
+  companion-code packet.
 
 ## Required Reading
 
-1. [Safe file operations guide](../guidelines/file-operations-safety-guide.md)
-2. [Folder cleanup workflow](../guidelines/folder-cleanup-workflow.md)
-3. [MAINT-0133 plan](maint-0133-cleanup-inventory-and-authorization.md)
-4. [Current task board](../TASKS.md)
+1. [Private source-library evidence](../verification/india-3-g0-private-source-library-evidence.md)
+2. [Indian-code completion plan](indian-code-completion-plan.md)
+3. [Current task board](../TASKS.md)
+4. [Git workflow single source](../git-automation/git-workflow-single-source.md)
