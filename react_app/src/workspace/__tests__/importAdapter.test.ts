@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import type { BeamCSVRow } from '../../types/csv';
 import { useWorkspaceStore } from '../workspaceStore';
+import { projectExportReadiness } from '../resultRecords';
 import {
   beamRowsToWorkspaceMembers,
   synchronizeImportedBeams,
@@ -72,5 +73,49 @@ describe('import workspace adapter', () => {
       { id: 'B1', source_id: 'ETABS-101', b: 300, D: 500, Mu_mid: 120 },
       { id: 'B2', source_id: 'ETABS-102', b: 300, D: 450, Mu_mid: 100 },
     ]);
+  });
+
+  it('makes retained results stale when only the ETABS snapshot identity changes', () => {
+    const snapshotA = 'a'.repeat(64);
+    const sourceBeams = beams.map((beam) => ({
+      ...beam,
+      source_metadata: {
+        source_system: 'ETABS_EXPORTED_FILES',
+        snapshot_sha256: snapshotA,
+      },
+    }));
+    synchronizeImportedBeams(sourceBeams);
+    const pending = useWorkspaceStore.getState().beginMemberRequest(
+      'ETABS-101',
+      'result',
+      'P6-RESULT-001',
+    )!;
+    useWorkspaceStore.getState().applyMemberRecord('ETABS-101', 'result', {
+      ...pending,
+      lifecycle: 'current',
+      calculationIdentity: 'calculation-identity',
+      libraryVersion: '0.23.1a2',
+      decision: 'PASS',
+      supportStatus: 'SUPPORTED',
+      data: { result_identity: 'p6' },
+      settledAt: '2026-08-24T00:00:00.000Z',
+    });
+
+    synchronizeImportedBeams(sourceBeams.map((beam) => ({
+      ...beam,
+      source_metadata: {
+        ...beam.source_metadata,
+        snapshot_sha256: 'b'.repeat(64),
+      },
+    })));
+
+    const changed = useWorkspaceStore.getState().snapshot!;
+    expect(changed.members[0].inputs.sourceSnapshotSha256).toBe('b'.repeat(64));
+    expect(changed.members[0].result?.lifecycle).toBe('stale');
+    expect(projectExportReadiness(changed).eligible).toBe(false);
+    expect(workspaceSnapshotToBeamRows(changed)[0].source_metadata).toMatchObject({
+      source_system: 'ETABS_EXPORTED_FILES',
+      snapshot_sha256: 'b'.repeat(64),
+    });
   });
 });

@@ -276,6 +276,52 @@ def test_explicit_and_derived_effective_depth_produce_same_numeric_result() -> N
         assert explicit_calculation[key] == derived_calculation[key]
 
 
+def test_derived_depth_basis_reaches_the_canonical_calculation_unchanged() -> None:
+    payload = _canonical_beam(
+        member_id="etabs:P5-TRIAL-HALL:101",
+        mu_knm=150.0,
+        vu_kn=75.0,
+        source_metadata={"snapshot_sha256": "a" * 64},
+    )
+    payload.pop("d_mm")
+    payload["effective_depth_basis"] = {
+        "clear_cover_mm": 40.0,
+        "stirrup_diameter_mm": 8.0,
+        "tension_bar_diameter_mm": 20.0,
+    }
+
+    validation = validate_project_beam_design_input_v1(payload)
+    assert validation.value is not None
+    member = design_project_beams_v1([payload]).to_dict()["members"][0]
+    direct = batch.api.design_beam_is456(
+        units="IS456",
+        case_id=payload["member_id"],
+        b_mm=payload["b_mm"],
+        D_mm=payload["D_mm"],
+        d_mm=None,
+        mu_knm=payload["mu_knm"],
+        vu_kn=payload["vu_kn"],
+        fck_nmm2=payload["fck_nmm2"],
+        fy_nmm2=payload["fy_nmm2"],
+        effective_depth_basis=validation.value.effective_depth_basis,
+    )
+
+    assert direct.effective_depth_resolution == {
+        "contract_version": "effective-depth-basis/v1",
+        "source": "DERIVED",
+        "D_mm": 500.0,
+        "d_mm": 442.0,
+        "effective_depth_basis": payload["effective_depth_basis"],
+    }
+    assert member["calculation"]["flexure"]["ast_required"] == pytest.approx(
+        direct.flexure.Ast_required
+    )
+    assert (
+        member["result_envelope"]["result_identity"]
+        == direct.result_envelope["result_identity"]
+    )
+
+
 @pytest.mark.parametrize(
     ("basis", "expected_code", "expected_path"),
     [

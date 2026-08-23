@@ -5,7 +5,10 @@
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { useBatchDesign } from '../../hooks/useBatchDesign';
+import {
+  buildProjectBeamBatchRequest,
+  useBatchDesign,
+} from '../../hooks/useBatchDesign';
 import type { BeamCSVRow } from '../../types/csv';
 import { useImportedBeamsStore } from '../../store/importedBeamsStore';
 import { projectExportReadiness } from '../../workspace/resultRecords';
@@ -94,6 +97,26 @@ const evidence = {
   qualified_review_requirement: 'Qualified review required.',
 };
 
+const canonicalEnvelope = {
+  schema_version: 'structural-result-envelope/v2' as const,
+  intake_status: 'VALID' as const,
+  calculation_status: 'COMPLETED' as const,
+  engineering_status: 'PASS' as const,
+  review_status: 'QUALIFIED_REVIEW_REQUIRED' as const,
+  qualified_review_required: true,
+  freshness_status: 'CURRENT' as const,
+  serviceability_escalation: null,
+  overall_status: 'PASS' as const,
+  issues: [],
+  result_identity: {
+    contract_version: 'canonical-beam-result/v1',
+    library_version: evidence.library_version,
+    input_hash: evidence.normalized_input_hash,
+    calculation_identity: evidence.calculation_identity,
+    artifact_sha256: null,
+  },
+};
+
 describe('useBatchDesign', () => {
   beforeEach(() => {
     MockEventSource.instances = [];
@@ -156,6 +179,60 @@ describe('useBatchDesign', () => {
     expect(payload[0]).not.toHaveProperty('fck_nmm2');
     expect(payload[0]).not.toHaveProperty('d_mm');
     expect(payload[0]).not.toHaveProperty('effective_depth_basis');
+  });
+
+  it('maps the frozen P5 request without transport-side structural arithmetic', () => {
+    const snapshotSha256 = 'a82d927d347108f56aa3fcdd559c1aa45ba8d87673cb3feec61a03d5eadbf4f8';
+    const request = buildProjectBeamBatchRequest(
+      {
+        id: 'B1',
+        source_id: 'etabs:P5-TRIAL-HALL:101',
+        story: 'L1',
+        b: 300,
+        D: 500,
+        span: 5000,
+        fck: 25,
+        fy: 500,
+        cover: 40,
+        stirrup_diameter_mm: 8,
+        tension_bar_diameter_mm: 20,
+        mu_envelope: 150,
+        vu_envelope: 75,
+        source_metadata: {
+          source_system: 'ETABS_EXPORTED_FILES',
+          snapshot_sha256: snapshotSha256,
+          source_unique_name: '101',
+        },
+      },
+      {
+        requestId: 'P6-REQUEST-001',
+        projectId: 'P5-TRIAL-HALL',
+        projectRevision: 1,
+        inputRevision: 1,
+      },
+    );
+
+    expect(request).toMatchObject({
+      schema_version: 'project-beam-design/v1',
+      member_id: 'etabs:P5-TRIAL-HALL:101',
+      b_mm: 300,
+      D_mm: 500,
+      mu_knm: 150,
+      vu_kn: 75,
+      fck_nmm2: 25,
+      fy_nmm2: 500,
+      effective_depth_basis: {
+        clear_cover_mm: 40,
+        stirrup_diameter_mm: 8,
+        tension_bar_diameter_mm: 20,
+      },
+      source_metadata: {
+        snapshot_sha256: snapshotSha256,
+        source_unique_name: '101',
+        request_id: 'P6-REQUEST-001',
+      },
+    });
+    expect(request).not.toHaveProperty('d_mm');
   });
 
   it('posts a maintained-size batch instead of placing it in the request URL', () => {
@@ -407,6 +484,7 @@ describe('useBatchDesign', () => {
         shear: { tau_v: 0.65, tau_c: 0.48, tau_c_max: 3.1, vus: 42, stirrup_spacing: 150, is_safe: true },
         utilization_ratio: 0.78,
         evidence,
+        result_envelope: canonicalEnvelope,
       });
     });
 
@@ -425,6 +503,40 @@ describe('useBatchDesign', () => {
       ast_required: 850,
       status: 'pass',
     });
+  });
+
+  it('holds a result when its envelope and evidence identities disagree', () => {
+    const beam = { ...mockBeam('Label B1'), source_id: 'ETABS-101' };
+    useImportedBeamsStore.getState().setBeams([beam]);
+    const { result } = renderHook(() => useBatchDesign());
+
+    act(() => result.current.startBatchDesign([beam]));
+    act(() => {
+      MockEventSource.instances[0].emit('design_result', {
+        beam_id: 'ETABS-101',
+        design_succeeded: true,
+        is_safe: true,
+        status: 'PASS',
+        utilization_ratio: 0.78,
+        evidence,
+        result_envelope: {
+          ...canonicalEnvelope,
+          result_identity: {
+            ...canonicalEnvelope.result_identity,
+            input_hash: 'different-input-sha256',
+          },
+        },
+      });
+    });
+
+    const snapshot = useWorkspaceStore.getState().snapshot!;
+    expect(snapshot.members[0].result).toMatchObject({
+      lifecycle: 'unsupported',
+      decision: 'HOLD',
+      error: { code: 'RESULT_IDENTITY_MISMATCH' },
+    });
+    expect(projectExportReadiness(snapshot).eligible).toBe(false);
+    expect(result.current.results[0]).toMatchObject({ status: 'HOLD' });
   });
 
   it('rejects a late result after the member input revision changes', () => {
@@ -449,6 +561,7 @@ describe('useBatchDesign', () => {
         status: 'PASS',
         utilization_ratio: 0.78,
         evidence,
+        result_envelope: canonicalEnvelope,
       });
     });
 

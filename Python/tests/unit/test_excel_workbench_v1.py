@@ -14,6 +14,7 @@ from structural_lib.core.excel_workbook import (
     ExcelWorkbookRunRequestV1,
     ExcelWorkbookSelectionV1,
 )
+from structural_lib.services.batch import design_project_beams_v1
 from structural_lib.services.beam_api import design_beam_is456
 from structural_lib.services.excel_workbench import (
     ExcelReviewBundleConflictError,
@@ -26,7 +27,10 @@ from structural_lib.services.excel_workbench import (
     run_excel_workbook_v1,
     serialize_excel_review_bundle_v1,
 )
-from structural_lib.services.project_beam import EffectiveDepthBasisV1
+from structural_lib.services.project_beam import (
+    EffectiveDepthBasisV1,
+    ProjectBeamDesignInputV1,
+)
 from structural_lib.services.serialization import to_transport_value
 
 HEADERS = (
@@ -255,6 +259,143 @@ def test_excel_result_matches_direct_canonical_beam_pass_and_fail() -> None:
     assert result.row_ledger[1].result == direct_fail
     assert result.row_ledger[0].result_envelope["overall_status"] == "PASS"
     assert result.row_ledger[1].result_envelope["overall_status"] == "FAIL"
+
+
+def test_p5_snapshot_request_has_identical_excel_identity_and_snapshot_freshness() -> (
+    None
+):
+    snapshot_sha256 = "a82d927d347108f56aa3fcdd559c1aa45ba8d87673cb3feec61a03d5eadbf4f8"
+    member_id = "etabs:P5-TRIAL-HALL:101"
+    basis = EffectiveDepthBasisV1(
+        clear_cover_mm=40.0,
+        stirrup_diameter_mm=8.0,
+        tension_bar_diameter_mm=20.0,
+    )
+    requests = (
+        ProjectBeamDesignInputV1(
+            schema_version="project-beam-design/v1",
+            member_id=member_id,
+            b_mm=300.0,
+            D_mm=500.0,
+            mu_knm=150.0,
+            vu_kn=75.0,
+            fck_nmm2=25.0,
+            fy_nmm2=500.0,
+            effective_depth_basis=basis,
+            source_metadata={"snapshot_sha256": snapshot_sha256},
+        ),
+        ProjectBeamDesignInputV1(
+            schema_version="project-beam-design/v1",
+            member_id="etabs:P5-TRIAL-HALL:102",
+            b_mm=300.0,
+            D_mm=550.0,
+            mu_knm=130.0,
+            vu_kn=65.0,
+            fck_nmm2=25.0,
+            fy_nmm2=500.0,
+            effective_depth_basis=basis,
+            source_metadata={"snapshot_sha256": snapshot_sha256},
+        ),
+    )
+    project_members = tuple(
+        member.to_dict() for member in design_project_beams_v1(requests).members
+    )
+    parity_headers = HEADERS + ("Source Snapshot SHA-256",)
+    parity_rows = (
+        (
+            "P5-R1",
+            member_id,
+            member_id,
+            150.0,
+            75.0,
+            300.0,
+            500.0,
+            "DERIVED_FROM_BARS",
+            None,
+            40.0,
+            8.0,
+            20.0,
+            None,
+            100.0,
+            25.0,
+            500.0,
+            "AUTO_FROM_FLEXURE",
+            snapshot_sha256,
+        ),
+        (
+            "P5-R2",
+            "etabs:P5-TRIAL-HALL:102",
+            "etabs:P5-TRIAL-HALL:102",
+            130.0,
+            65.0,
+            300.0,
+            550.0,
+            "DERIVED_FROM_BARS",
+            None,
+            40.0,
+            8.0,
+            20.0,
+            None,
+            100.0,
+            25.0,
+            500.0,
+            "AUTO_FROM_FLEXURE",
+            snapshot_sha256,
+        ),
+    )
+    preview_request = _preview_request(parity_rows, parity_headers)
+    preview = build_excel_mapping_preview_v1(preview_request)
+    excel_result = run_excel_workbook_v1(
+        ExcelWorkbookRunRequestV1(
+            selection=preview_request.selection,
+            headers=parity_headers,
+            rows=parity_rows,
+            confirmed_mapping_hash=preview.mapping_hash,
+        )
+    )
+
+    assert preview.excluded_headers == ("Source Snapshot SHA-256",)
+    assert excel_result.counts.accepted_rows == 2
+    for project_member, excel_member in zip(
+        project_members, excel_result.row_ledger, strict=True
+    ):
+        assert excel_member.normalized_input is not None
+        assert excel_member.passport is not None
+        assert (
+            project_member["overall_status"]
+            == excel_member.result_envelope["overall_status"]
+        )
+        assert project_member["issues"] == [
+            item.model_dump() for item in excel_member.issues
+        ]
+        assert (
+            project_member["result_envelope"]["result_identity"]
+            == excel_member.result_envelope["result_identity"]
+        )
+        assert (
+            project_member["result_envelope"]["result_identity"]["input_hash"]
+            == excel_member.passport.normalized_input_hash
+        )
+
+    retained = retain_excel_workbook_evidence_v1(excel_result)
+    edited_rows = (parity_rows[0][:-1] + ("b" * 64,), parity_rows[1])
+    edited_preview = _preview_request(edited_rows, parity_headers)
+    stale = check_excel_workbook_freshness_v1(
+        ExcelFreshnessRequestV1(
+            previous_evidence=retained,
+            current_request=edited_preview,
+        )
+    )
+    assert stale.freshness_status == "STALE"
+    assert stale.reasons == ("SOURCE_TABLE_CHANGED",)
+    with pytest.raises(ExcelReviewBundleConflictError, match="stale"):
+        build_excel_review_bundle_v1(
+            ExcelReviewBundleExportRequestV1(
+                current_request=edited_preview,
+                previous_evidence=retained,
+                confirmed_mapping_hash=preview.mapping_hash,
+            )
+        )
 
 
 def test_mapping_must_be_reviewed_again_after_header_change() -> None:

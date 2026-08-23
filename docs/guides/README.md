@@ -7,6 +7,7 @@ End-user and developer guides for specific workflows.
 | Guide | Description |
 |-------|-------------|
 | `ai-agent-coding-guide.md` | AI agent coding practices |
+| `cross-surface-parity-v1.md` | Canonical Python, REST, React, and Excel identity/freshness contract |
 | `etabs-exported-snapshot-v1.md` | Read-only, trial-compatible ETABS exported-file snapshot workflow |
 | `code-reuse-and-library-structure.md` | Library structure and reuse patterns |
 

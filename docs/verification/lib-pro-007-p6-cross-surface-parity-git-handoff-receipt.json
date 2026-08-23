@@ -1,0 +1,198 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_INSTRUCTION",
+      "observed_at_utc": "2026-08-23T18:57:36Z",
+      "query_status": "OK",
+      "reference": "okay please plan well and start next work",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "IMPLEMENT_LIB_PRO_007_P6_BOUNDED_PACKET",
+      "ADD_FOCUSED_TESTS_DOCUMENTATION_AND_EVIDENCE",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-23T18:57:36Z",
+    "prohibited_actions": [
+      "DELETE_BRANCH_OR_WORKTREE",
+      "RESET_STASH_CLEAN_OR_REWRITE",
+      "BYPASS_CHECKS_OR_FORCE_PUSH",
+      "PUBLISH_RELEASE",
+      "ACTIVATE_PROFESSIONAL_APPROVAL",
+      "CHANGE_INDIA_3_ENGINEERING",
+      "DIRECT_EDB_BINARY_PARSING",
+      "LIVE_ETABS_AUTOMATION",
+      "UNLOCK_RUN_OR_CHANGE_ANALYSIS",
+      "MODIFY_SAVE_OR_WRITE_BACK_ETABS_MODEL",
+      "RERUN_INSTALLED_WINDOWS_EXCEL",
+      "START_LIB_PRO_007_P7_OR_M0"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "IMPLEMENT_LIB_PRO_007_P6_BOUNDED_PACKET",
+        "ADD_FOCUSED_TESTS_DOCUMENTATION_AND_EVIDENCE",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/lib-pro-007-p6-cross-surface-parity",
+      "head_sha": "6d533b6f3754e4fe41522e042f17192d550a1d1b",
+      "task_id": "LIB-PRO-007-P6"
+    }
+  },
+  "holds": [
+    "AUTHORIZATION_SOURCE_KIND_INVALID",
+    "LOCAL_HOLD_DIRTY",
+    "PRESERVE_EVERY_UNRELATED_DIRTY_DETACHED_BEHIND_OR_DIVERGED_LANE",
+    "PRESERVE_INDIA_3_SOURCE_LIBRARY_CANDIDATE_UNTIL_LIB_PRO_007_M0",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "cdc6c7220a1b705d2b38ae5d95e8c299570ff383c9dad98c65d5d7a000d71d18",
+    "state": {
+      "branch": "codex/lib-pro-007-p6-cross-surface-parity",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "6d533b6f3754e4fe41522e042f17192d550a1d1b",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 84.751,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib13",
+      "head_sha": "6d533b6f3754e4fe41522e042f17192d550a1d1b",
+      "hold_reasons": [
+        "changed paths: 19"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-23T18:58:08.036108+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/cace/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 19,
+        "modified_paths": [
+          "Python/structural_lib/services/batch.py",
+          "Python/tests/unit/test_batch.py",
+          "Python/tests/unit/test_excel_workbench_v1.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/guides/README.md",
+          "docs/planning/lib-pro-007-product-foundation-convergence.md",
+          "docs/planning/next-session-brief.md",
+          "react_app/src/features/building-gravity/client.ts",
+          "react_app/src/hooks/__tests__/useBatchDesign.test.ts",
+          "react_app/src/hooks/useBatchDesign.ts",
+          "react_app/src/workspace/__tests__/importAdapter.test.ts",
+          "react_app/src/workspace/importAdapter.ts",
+          "react_app/src/workspace/resultRecords.ts"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/guides/cross-surface-parity-v1.md",
+          "docs/verification/lib-pro-007-p6-cross-surface-parity-evidence.json",
+          "docs/verification/lib-pro-007-p6-cross-surface-parity-git-handoff-source-evidence.json",
+          "fastapi_app/tests/test_lib_pro_007_p6_parity.py",
+          "react_app/src/features/building-gravity/client.test.ts"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/cace/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:cdc6c7220a1b705d2b38ae5d95e8c299570ff383c9dad98c65d5d7a000d71d18",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-23T18:58:08.036250+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [
+      "PRESERVE_INDIA_3_SOURCE_LIBRARY_CANDIDATE_UNTIL_LIB_PRO_007_M0",
+      "PRESERVE_EVERY_UNRELATED_DIRTY_DETACHED_BEHIND_OR_DIVERGED_LANE"
+    ],
+    "observed_at_utc": "2026-08-23T18:57:36Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources"
+    ],
+    "integration_owner": "orchestrator",
+    "owned_paths": [
+      "Python/structural_lib/services/batch.py",
+      "Python/tests/unit/test_batch.py",
+      "Python/tests/unit/test_excel_workbench_v1.py",
+      "fastapi_app/tests/test_lib_pro_007_p6_parity.py",
+      "react_app/src/features/building-gravity/client.ts",
+      "react_app/src/features/building-gravity/client.test.ts",
+      "react_app/src/hooks/useBatchDesign.ts",
+      "react_app/src/hooks/__tests__/useBatchDesign.test.ts",
+      "react_app/src/workspace/importAdapter.ts",
+      "react_app/src/workspace/resultRecords.ts",
+      "react_app/src/workspace/__tests__/importAdapter.test.ts",
+      "docs/guides/README.md",
+      "docs/guides/cross-surface-parity-v1.md",
+      "docs/planning/lib-pro-007-product-foundation-convergence.md",
+      "docs/verification/lib-pro-007-p6-cross-surface-parity-evidence.json",
+      "docs/verification/lib-pro-007-p6-cross-surface-parity-git-handoff-source-evidence.json",
+      "docs/verification/lib-pro-007-p6-cross-surface-parity-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "LIB-PRO-007-P6"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
