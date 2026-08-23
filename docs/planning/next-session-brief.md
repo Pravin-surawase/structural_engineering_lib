@@ -4,50 +4,49 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-23
-- Focus: Freeze the bounded product-contract and implementation sequence
-- Git receipt: docs/verification/lib-pro-007-g0-product-contract-git-handoff-receipt.json | sha256:d5d2ceabb1a3da5613f10dbcf51ecde3af6673425b66fb1c09359d50735a32ac | HOLD
-- Git identity: codex/lib-pro-007-g0-contract-freeze@2d6df18efa9228afbf593f36fa95d2ce574977ac | upstream=origin/main@2d6df18efa9228afbf593f36fa95d2ce574977ac | base=origin/main@2d6df18efa9228afbf593f36fa95d2ce574977ac | tree=dirty | operation=none
-- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
+- Focus: Repair optional smart-cost failure without hiding canonical design truth
+- Git receipt: docs/verification/lib-pro-007-p1-optimization-truth-git-handoff-receipt.json | sha256:be25a0acf93ecbc95011d92aa9cbb9f9f5b4d6240367066b1677d640cc24669e | HOLD
+- Git identity: codex/lib-pro-007-p1-optimization-truth@1e2f4eb5bc2b82e0bae7a9371a1b4042b864c790 | upstream=origin/codex/lib-pro-007-p1-optimization-truth@1e2f4eb5bc2b82e0bae7a9371a1b4042b864c790 | base=origin/main@a6d47a85b78e3dc8317f65bb33b2247b69aa9bf9 | tree=dirty | operation=none
+- Hosted evidence: remote=OBSERVED | PR=OBSERVED#853 | review=NOT_CHECKED | retention=OBSERVED
 - Next action: COMMIT_INTENDED_PATHS
 <!-- HANDOFF:END -->
 
 | State | Boundary |
 |---|---|
-| **Current** | `LIB-PRO-007-G0` is freezing one bounded product-contract and packet matrix from fetched hosted `main` `2d6df18e` |
-| **Next** | Integrate G0, then start P1 optimization truth from exact new hosted `main` |
-| **Why** | The cost route currently ignores outcome-changing inputs and emits assumed fields; canonical product boundaries must precede more engineering scope |
+| **Current** | `LIB-PRO-007-P1` is on PR #853; its first hosted FastAPI failure has an exact local repair candidate |
+| **Next** | Freeze, push, and validate the P1 repair; merge only the unchanged green head, then start P2 from exact new hosted `main` |
+| **Why** | P1 now makes accepted project inputs decisive, applies maintained flexure/shear checks, and removes assumed/zero REST engineering fields |
 | **Held** | P2-P7 implementation, live ETABS, write-back, INDIA-3 engineering, release, branch/worktree deletion, and professional approval |
 
-## G0 outcome
+## P1 outcome
 
-- Fetched hosted `main` is `2d6df18e`; the isolated lane is `READY_LOCAL` and
-  `source_bound=true` with no open task-owned PR.
-- Live counts are 13/21 supported capability families, 52/97 direct router
-  wiring, 89/89 endpoint tests, 13/13 connected React hooks, 10 component
-  catalogue families, one automation capability, and one composed workflow.
-- Nine product contracts have explicit canonical authority, transport,
-  disposition, blocking gap, and owning packet.
-- The optimizer is `HOLD_OUTCOME_CHANGING`; G0 does not repeat its misleading
-  historical `Done` label.
-- The 447 compatibility classifications are recorded as repeated facade
-  projections pending caller/object-identity proof, not deletion candidates.
-- The preserved INDIA-3 source-library candidate and every unrelated worktree
-  remain unchanged.
+- G0 is merged through PR #852 at exact `a6d47a85`; the P1 lane is source-bound
+  to that hosted main and preserves the INDIA-3 candidate plus unrelated lanes.
+- Exact material, clear-cover/bar depth basis, dimension grid, utilization,
+  action, stirrup, and unit-cost inputs now reach the transport-neutral service.
+- Flexure, maximum shear, and supplied-stirrup capacity at practical spacing
+  are decisive; infeasible candidate sets return a non-success error.
+- REST fields for Ast, Asc, d, grades, utilizations, spacing, steel quantity,
+  cost, code edition, and clause references come from the stable result.
+- The cost endpoint rejects weight/depth objectives and states that current
+  steel quantity/cost excludes stirrup mass.
+- An infeasible optional smart-analysis cost search now preserves the canonical
+  beam `FAIL`, returns no cost result, and exposes an exact warning instead of
+  converting the completed analysis into HTTP 422.
 
-## G0 verification boundary
+## P1 verification boundary
 
-- Validate the evidence JSON, maintained links/frontmatter, task WIP, context,
-  API classification, parity, and `git diff --check`.
-- Run the consolidated quick gate once and normal staged hooks once after G0
-  content freezes; no calculation suite is required because executable
-  formulas and advertised supported cases do not change.
-- No protected source, formula, endpoint behavior, release, or INDIA-3
-  engineering path is owned by G0.
+- Run the focused optimizer Python/FastAPI/React contracts together, then the
+  consolidated quick gate once and normal staged hooks once.
+- Verify API manifest/classification, OpenAPI, architecture/imports, docs, and
+  the machine-readable P1 evidence from the frozen candidate.
+- No protected source, release, professional approval, live ETABS, write-back,
+  P2 work, or INDIA-3 engineering path is owned by P1.
 
 ## Required Reading
 
 1. [Product-foundation convergence plan](lib-pro-007-product-foundation-convergence.md)
-2. [G0 product-contract evidence](../verification/lib-pro-007-g0-product-contract-evidence.json)
+2. [P1 optimization-truth evidence](../verification/lib-pro-007-p1-optimization-truth-evidence.json)
 3. [Current task board](../TASKS.md)
 4. [API classification](../reference/api-classification.json)
 5. [Git workflow single source](../git-automation/git-workflow-single-source.md)

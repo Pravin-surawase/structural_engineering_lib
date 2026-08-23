@@ -23,6 +23,16 @@ source-bound linked worktree. The preserved INDIA-3 source-library candidate
 `9c976b1f` and every dirty, detached, foreign, or uncertain worktree remain
 unchanged.
 
+## Packet status
+
+- G0 merged through PR #852 at `a6d47a85` with exact product-contract and
+  packet boundaries.
+- P1 is on PR #853. Its first hosted run exposed an optional smart-cost
+  integration defect after the core optimizer became fail-closed; the bounded
+  repair preserves the canonical beam `FAIL`, omits infeasible cost advice, and
+  emits an explicit warning. Hosted repair acceptance remains pending.
+- P2-P7 and cumulative M0 remain held in the frozen sequence below.
+
 ## Why this precedes INDIA-3
 
 The calculation library already has broad bounded capability, tested transport

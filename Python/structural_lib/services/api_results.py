@@ -14,7 +14,7 @@ Related:
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from enum import Enum
 from typing import Any
 
@@ -272,6 +272,21 @@ class OptimalDesign:
     cost_breakdown: CostBreakdown
     is_valid: bool
     failure_reason: str | None = None
+    ast_required_mm2: float = 0.0
+    asc_required_mm2: float = 0.0
+    longitudinal_steel_weight_kg: float = 0.0
+    flexural_utilization: float = 0.0
+    shear_utilization: float = 0.0
+    stirrup_utilization: float = 0.0
+    shear_tau_v_nmm2: float = 0.0
+    shear_tau_c_nmm2: float = 0.0
+    shear_tau_c_max_nmm2: float = 0.0
+    stirrup_spacing_mm: float = 0.0
+    effective_depth_deduction_mm: float = 0.0
+    shear_reinforcement_area_mm2: float = 0.0
+    code_edition: str = "IS 456:2000"
+    clause_refs: dict[str, str] = field(default_factory=dict)
+    quantity_basis: str = ""
 
 
 @dataclass(frozen=True)

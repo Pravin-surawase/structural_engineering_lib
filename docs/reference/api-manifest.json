@@ -2,7 +2,7 @@
   "generated": "2026-08-23",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 182,
+  "count": 184,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -268,6 +268,16 @@
       "name": "OneWaySlabDesignResult",
       "kind": "class",
       "signature": "(flexure: 'OneWaySlabFlexureResult | SlabCapacityFailureResult', detailing: 'OneWaySlabDetailingResult | None', load_envelope_status: 'str' = 'not_generated_single_caller_supplied_factored_udl_or_coefficient_basis') -> None"
+    },
+    {
+      "name": "OptimizationConstraints",
+      "kind": "class",
+      "signature": "(min_width_mm: 'int', max_width_mm: 'int', min_depth_mm: 'int', max_depth_mm: 'int', width_step_mm: 'int', depth_step_mm: 'int', min_flexural_utilization: 'float') -> None"
+    },
+    {
+      "name": "OptimizationInfeasibleError",
+      "kind": "class",
+      "signature": "(*args, **kwargs)"
     },
     {
       "name": "ParetoCandidate",
@@ -847,7 +857,7 @@
     {
       "name": "optimize_beam_cost",
       "kind": "function",
-      "signature": "(*, units: 'str', span_mm: 'float', mu_knm: 'float', vu_kn: 'float', cost_profile: 'CostProfile | None' = None, cover_mm: 'int' = 40) -> 'CostOptimizationResult'"
+      "signature": "(*, units: 'str', span_mm: 'float', mu_knm: 'float', vu_kn: 'float', cost_profile: 'CostProfile | None' = None, cover_mm: 'int | None' = None, effective_depth_deduction_mm: 'float | None' = None, fck_nmm2: 'int | None' = None, fy_nmm2: 'int | None' = None, constraints: 'OptimizationConstraints | None' = None, asv_mm2: 'float' = 100.53, max_alternatives: 'int' = 3) -> 'CostOptimizationResult'"
     },
     {
       "name": "optimize_pareto_front",

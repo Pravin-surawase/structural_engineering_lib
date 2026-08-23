@@ -93,6 +93,8 @@ from .services.api import (  # Audit & Verification; Input dataclasses; Calculat
     LoadType,
     MaterialsInput,
     OneWaySlabDesignResult,
+    OptimizationConstraints,
+    OptimizationInfeasibleError,
     ParetoCandidate,
     ParetoOptimizationResult,
     ProjectInfo,
@@ -342,6 +344,8 @@ __all__ = [
     "enhanced_shear_strength_is456",
     # Smart features
     "CostProfile",
+    "OptimizationConstraints",
+    "OptimizationInfeasibleError",
     "optimize_beam_cost",
     "suggest_beam_design_improvements",
     "smart_analyze_design",

@@ -380,7 +380,36 @@ describe('Optimization Router', () => {
     const res = await fetch(`${API}/api/v1/optimization/beam/cost`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ moment: 200, shear: 100, fck: 25, fy: 500 }),
+      body: JSON.stringify({
+        moment: 200,
+        shear: 100,
+        span_length: 6000,
+        fck: 25,
+        fy: 500,
+        clear_cover: 25,
+        main_bar_diameter: 16,
+        stirrup_diameter: 8,
+        stirrup_legs: 2,
+        cost_params: {
+          currency: 'INR',
+          concrete_cost: 6000,
+          steel_cost: 60,
+          formwork_cost: 400,
+          congestion_threshold_pt: 2.5,
+          congestion_multiplier: 1.2,
+          location_factor: 1,
+        },
+        constraints: {
+          min_width: 200,
+          max_width: 500,
+          min_depth: 300,
+          max_depth: 800,
+          width_step: 50,
+          depth_step: 50,
+          min_utilization: 0.7,
+        },
+        optimize_for: 'cost',
+      }),
     });
     const data = await res.json();
 

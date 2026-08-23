@@ -1,0 +1,203 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-23T14:13:06Z",
+      "query_status": "OK",
+      "reference": "good please start the work",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "IMPLEMENT_LIB_PRO_007_IN_BOUNDED_PACKETS",
+      "ADD_FOCUSED_TESTS_AND_EVIDENCE",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-23T14:13:06Z",
+    "prohibited_actions": [
+      "DELETE_BRANCH_OR_WORKTREE",
+      "BYPASS_CHECKS",
+      "PUBLISH_RELEASE",
+      "ACTIVATE_PROFESSIONAL_APPROVAL",
+      "CHANGE_INDIA_3_ENGINEERING"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "IMPLEMENT_LIB_PRO_007_IN_BOUNDED_PACKETS",
+        "ADD_FOCUSED_TESTS_AND_EVIDENCE",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/lib-pro-007-p1-optimization-truth",
+      "head_sha": "1e2f4eb5bc2b82e0bae7a9371a1b4042b864c790",
+      "task_id": "LIB-PRO-007-P1"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PRESERVE_INDIA_3_SOURCE_LIBRARY_CANDIDATE_UNTIL_LIB_PRO_007_M0",
+    "REQUIRED_CHECK_NOT_SUCCESSFUL",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "PR_OPEN_REPAIR_NOT_INTEGRATED",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "be25a0acf93ecbc95011d92aa9cbb9f9f5b4d6240367066b1677d640cc24669e",
+    "state": {
+      "branch": "codex/lib-pro-007-p1-optimization-truth",
+      "default_base": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "a6d47a85b78e3dc8317f65bb33b2247b69aa9bf9",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 84.762,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-lib-pro-007-p1",
+      "head_sha": "1e2f4eb5bc2b82e0bae7a9371a1b4042b864c790",
+      "hold_reasons": [
+        "changed paths: 9"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-23T14:14:43.239851+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p1",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 9,
+        "modified_paths": [
+          "Python/structural_lib/insights/smart_designer.py",
+          "Python/tests/integration/test_smart_designer.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/lib-pro-007-product-foundation-convergence.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/lib-pro-007-p1-optimization-truth-evidence.json",
+          "fastapi_app/routers/analysis.py",
+          "fastapi_app/tests/test_endpoints.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/codex/lib-pro-007-p1-optimization-truth",
+        "sha": "1e2f4eb5bc2b82e0bae7a9371a1b4042b864c790",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p1"
+    }
+  },
+  "local_state_receipt_hash": "sha256:be25a0acf93ecbc95011d92aa9cbb9f9f5b4d6240367066b1677d640cc24669e",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-23T14:14:43.240014+00:00",
+  "pull_request": {
+    "base_ref": "main",
+    "base_sha": "a6d47a85b78e3dc8317f65bb33b2247b69aa9bf9",
+    "head_ref": "codex/lib-pro-007-p1-optimization-truth",
+    "head_sha": "1e2f4eb5bc2b82e0bae7a9371a1b4042b864c790",
+    "merge_state": "MERGEABLE",
+    "number": 853,
+    "observed_at_utc": "2026-08-23T14:13:06Z",
+    "query_status": "OK",
+    "required_checks": [
+      {
+        "conclusion": "FAILURE",
+        "head_sha": "1e2f4eb5bc2b82e0bae7a9371a1b4042b864c790",
+        "name": "PR Gate",
+        "status": "COMPLETED"
+      }
+    ],
+    "state": "OPEN",
+    "status": "OBSERVED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "branch_state": "PRESENT",
+    "head_sha": "1e2f4eb5bc2b82e0bae7a9371a1b4042b864c790",
+    "observed_at_utc": "2026-08-23T14:13:06Z",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [
+      "PRESERVE_INDIA_3_SOURCE_LIBRARY_CANDIDATE_UNTIL_LIB_PRO_007_M0"
+    ],
+    "observed_at_utc": "2026-08-23T14:13:06Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "Python/structural_lib/__init__.py",
+      "Python/structural_lib/insights/cost_optimization.py",
+      "Python/structural_lib/insights/smart_designer.py",
+      "Python/structural_lib/services/api.py",
+      "Python/structural_lib/services/api_results.py",
+      "Python/structural_lib/services/beam_api.py",
+      "Python/structural_lib/services/optimization.py",
+      "Python/tests/integration/test_api_cost_optimization.py",
+      "Python/tests/integration/test_smart_designer.py",
+      "docs/developers/platform-guide.md",
+      "docs/getting-started/cost-optimization-guide.md",
+      "docs/planning/lib-pro-007-product-foundation-convergence.md",
+      "docs/reference/api-classification.json",
+      "docs/reference/api-manifest.json",
+      "docs/reference/api.md",
+      "docs/verification/lib-pro-007-p1-optimization-truth-evidence.json",
+      "fastapi_app/models/optimization.py",
+      "fastapi_app/openapi_baseline.json",
+      "fastapi_app/routers/analysis.py",
+      "fastapi_app/routers/optimization.py",
+      "fastapi_app/tests/conftest.py",
+      "fastapi_app/tests/test_endpoints.py",
+      "react_app/src/api/__tests__/endpoints.test.ts",
+      "react_app/src/test/api-fixtures.ts"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/_archive/tasks-history.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "LIB-PRO-007-P1"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

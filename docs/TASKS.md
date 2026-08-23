@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-23 — LIB-PRO-007 product-foundation G0 contract freeze
+**Updated:** 2026-08-23 — LIB-PRO-007-P1 PR #853 hosted repair
 
 ---
 
@@ -107,7 +107,7 @@
 | Rebar suggestions | ✅ | ✅ | Done |
 | **Batch design UI** | ✅ | ✅ streaming.py | Done |
 | **Compliance checker** | ✅ DesignView panel | ✅ insights.py | Done |
-| **Cost optimizer** | ✅ DesignView rebar | ⚠️ optimization.py | HOLD — LIB-PRO-007-P1 must remove ignored inputs and assumed engineering outputs |
+| **Cost optimizer** | ✅ DesignView rebar | ✅ canonical flexure/shear/cost service | P1 PR #853 — real fields/decisive inputs implemented; hosted FastAPI repair rerun pending |
 | **AI Assistant** | -- | Partial | ⏸ Deferred |
 | Learning center | -- | -- | 🟢 Low |
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-007-G0 | Freeze the canonical product contracts and bounded packet sequence for optimization, practical gravity, ETABS-export, Excel, React, and compatibility convergence | Main Agent | S | P0 | 🟡 ACTIVE — exact hosted-main baseline and machine-readable G0 matrix frozen on isolated lane |
+| LIB-PRO-007-P1 | Repair the canonical beam cost optimizer so every accepted input is decisive and every engineering output is calculated | Main Agent | M | P0 | 🟡 ACTIVE — PR #853; optional smart-cost failure repair passes locally, hosted rerun pending |
 | INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ PAUSED — private source library preserved; resume after LIB-PRO-007 cumulative acceptance |
 
 `LIB-PRO-006` merged through PR #851 at `2d6df18e`. It confirms the practical
@@ -136,13 +136,24 @@ maintained runnable example and explicit builder, exports the workflow from the
 package root, promotes one deterministic governing reason, and separates
 component/composed-workflow discoverability from tool eligibility.
 
-`LIB-PRO-007-G0` freezes the successor product boundary before any additional
-engineering scope. P1 repairs the outcome-changing cost optimizer; P2-P4 close
+`LIB-PRO-007-G0` merged through PR #852 at `a6d47a85` and freezes the successor
+product boundary before any additional engineering scope. P1 repairs the
+outcome-changing cost optimizer; P2-P4 close
 the selected beam-bar, footing-anchorage, and explicit-action gravity gaps; P5
 freezes one hash-bound ETABS exported-data snapshot; P6 proves identical
 Python/REST/React/Excel results; P7 converges compatibility only after canonical
 destinations work. It does not require every library helper to become an HTTP
 route and does not authorize a broad legacy deletion.
+
+`LIB-PRO-007-P1` now applies exact material grades, effective-depth basis,
+section grid, utilization threshold, unit rates, factored shear, and supplied
+stirrup area. It rejects infeasible shear and unsupported objectives, derives
+all response engineering fields from the stable result, and preserves the
+explicit boundary that stirrup mass is not part of the current cost quantity.
+PR #853's first hosted run exposed and locally repaired one integration defect:
+an infeasible optional smart-cost search now preserves the canonical beam
+`FAIL`, returns no cost advice, and publishes an explicit warning. This remains
+a candidate claim until the repair commit passes hosted gates.
 
 `MAINT-0134` assigns cross-agent policy to `AGENTS.md`, composes Claude
 through `@AGENTS.md`, keeps a concise standalone Copilot baseline, retires

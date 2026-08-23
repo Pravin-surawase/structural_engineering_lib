@@ -342,14 +342,22 @@ def test_smart_designer_custom_weights():
 
 
 def test_smart_designer_invalid_design():
-    """Test error handling for invalid design."""
+    """A failed canonical design remains available when cost search is infeasible."""
     params = _base_params()
     params["mu_knm"] = 1000.0  # Too high - will fail
 
     design = _run_pipeline(params)
 
-    with pytest.raises(ValueError, match="No valid designs found"):
-        SmartDesigner.analyze(design=design, span_mm=5000.0, mu_knm=1000.0, vu_kn=85.0)
+    dashboard = SmartDesigner.analyze(
+        design=design, span_mm=5000.0, mu_knm=1000.0, vu_kn=85.0
+    )
+
+    assert dashboard.summary.design_status == "FAIL"
+    assert dashboard.cost is None
+    assert dashboard.metadata["warnings"] == [
+        "Cost optimization unavailable: no candidate satisfies the explicit "
+        "engineering basis."
+    ]
 
 
 # =============================================================================

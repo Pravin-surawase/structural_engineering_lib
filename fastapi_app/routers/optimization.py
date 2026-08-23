@@ -5,9 +5,12 @@ Endpoints for beam cost optimization calculations.
 """
 
 import logging
+import math
+from typing import Any
 
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
+from structural_lib.services.optimization import OptimizationInfeasibleError
 
 from fastapi_app.error_utils import sanitize_error, sanitize_float
 from fastapi_app.models.response import APIResponse, error_response, success_response
@@ -52,23 +55,40 @@ async def optimize_beam_cost(
     - Alternative solutions ranked by cost
     - Cost breakdown (concrete, steel, formwork)
 
-    Considers:
-    - Flexural capacity requirements
-    - Shear capacity requirements
-    - L/d ratio for deflection control
-    - Minimum/maximum reinforcement limits
+    The endpoint uses the request's exact material grade, effective-depth
+    basis, search grid, unit costs, and factored actions. It performs maintained
+    flexure and shear design; the reported L/d ratio is descriptive and is not
+    a deflection check.
     """
     try:
-        from structural_lib.services.api import optimize_beam_cost as optimize_func
         from structural_lib.services.api import CostProfile
+        from structural_lib.services.api import OptimizationConstraints
+        from structural_lib.services.api import optimize_beam_cost as optimize_func
 
-        # Create cost profile from request
-        # Map user's concrete_cost to the fck=25 grade (default)
         cost_profile = CostProfile(
-            concrete_costs={25: request.cost_params.concrete_cost},
+            currency=request.cost_params.currency.upper(),
+            concrete_costs={request.fck: request.cost_params.concrete_cost},
             steel_cost_per_kg=request.cost_params.steel_cost,
             formwork_cost_per_m2=request.cost_params.formwork_cost,
+            congestion_threshold_pt=request.cost_params.congestion_threshold_pt,
+            congestion_multiplier=request.cost_params.congestion_multiplier,
+            location_factor=request.cost_params.location_factor,
         )
+        constraints = OptimizationConstraints(
+            min_width_mm=request.constraints.min_width,
+            max_width_mm=request.constraints.max_width,
+            min_depth_mm=request.constraints.min_depth,
+            max_depth_mm=request.constraints.max_depth,
+            width_step_mm=request.constraints.width_step,
+            depth_step_mm=request.constraints.depth_step,
+            min_flexural_utilization=request.constraints.min_utilization,
+        )
+        effective_depth_deduction_mm = (
+            request.clear_cover
+            + request.stirrup_diameter
+            + 0.5 * request.main_bar_diameter
+        )
+        asv_mm2 = request.stirrup_legs * math.pi * request.stirrup_diameter**2 / 4.0
 
         result = optimize_func(
             units="IS456",
@@ -76,76 +96,61 @@ async def optimize_beam_cost(
             mu_knm=request.moment,
             vu_kn=request.shear,
             cost_profile=cost_profile,
-            cover_mm=40,
+            effective_depth_deduction_mm=effective_depth_deduction_mm,
+            fck_nmm2=request.fck,
+            fy_nmm2=request.fy,
+            constraints=constraints,
+            asv_mm2=asv_mm2,
+            max_alternatives=request.max_alternatives,
         )
 
-        # Extract optimal design from result
-        opt_design = result.optimal_design
-        cost_bkdn = opt_design.cost_breakdown
+        optimal = _to_response_design(
+            result.optimal_design,
+            rank=1,
+            span_mm=request.span_length,
+            clear_cover_mm=request.clear_cover,
+            main_bar_diameter_mm=request.main_bar_diameter,
+            stirrup_diameter_mm=request.stirrup_diameter,
+            stirrup_legs=request.stirrup_legs,
+            location_factor=request.cost_params.location_factor,
+        )
 
-        # Build optimal design from result
-        optimal_data = {
-            "width": opt_design.b_mm,
-            "depth": opt_design.D_mm,
-            "ast_required": 0.0,  # Not directly available
-            "asc_required": 0.0,
-            "utilization": 0.9,  # Assumed near-optimal
-            "ld_ratio": (
-                request.span_length / opt_design.D_mm if opt_design.D_mm > 0 else 0
-            ),
-            "concrete_volume": opt_design.b_mm * opt_design.D_mm / 1e6,  # m³/m
-            "steel_weight": 0.0,  # Would need detailed calc
-            "formwork_area": (opt_design.b_mm + 2 * opt_design.D_mm) / 1000,  # m²/m
-            "cost_breakdown": {
-                "concrete": cost_bkdn.concrete_cost,
-                "steel": cost_bkdn.steel_cost,
-                "formwork": cost_bkdn.formwork_cost,
-                "total": cost_bkdn.total_cost,
-                "per_meter": cost_bkdn.total_cost,
-            },
-            "score": cost_bkdn.total_cost,
-        }
-
-        optimal = _parse_optimal_design(optimal_data, rank=1)
-
-        # Parse alternatives if available
         alternatives = []
         if request.include_alternatives and result.alternatives:
             for i, alt in enumerate(
                 result.alternatives[: request.max_alternatives], start=2
             ):
-                alt_cost = alt.cost_breakdown
-                alt_data = {
-                    "width": alt.b_mm,
-                    "depth": alt.D_mm,
-                    "ast_required": 0.0,
-                    "asc_required": 0.0,
-                    "utilization": 0.85,
-                    "ld_ratio": request.span_length / alt.D_mm if alt.D_mm > 0 else 0,
-                    "concrete_volume": alt.b_mm * alt.D_mm / 1e6,
-                    "steel_weight": 0.0,
-                    "formwork_area": (alt.b_mm + 2 * alt.D_mm) / 1000,
-                    "cost_breakdown": {
-                        "concrete": alt_cost.concrete_cost,
-                        "steel": alt_cost.steel_cost,
-                        "formwork": alt_cost.formwork_cost,
-                        "total": alt_cost.total_cost,
-                        "per_meter": alt_cost.total_cost,
-                    },
-                    "score": alt_cost.total_cost,
-                }
-                alternatives.append(_parse_optimal_design(alt_data, rank=i))
+                alternatives.append(
+                    _to_response_design(
+                        alt,
+                        rank=i,
+                        span_mm=request.span_length,
+                        clear_cover_mm=request.clear_cover,
+                        main_bar_diameter_mm=request.main_bar_diameter,
+                        stirrup_diameter_mm=request.stirrup_diameter,
+                        stirrup_legs=request.stirrup_legs,
+                        location_factor=request.cost_params.location_factor,
+                    )
+                )
 
         return success_response(
             CostOptimizationResponse(
                 success=True,
-                message=f"Optimal: {optimal.width:.0f}×{optimal.depth:.0f} mm @ ₹{optimal.cost_breakdown.total_cost:.0f}/m",
+                message=(
+                    f"Optimal: {optimal.width:.0f}×{optimal.depth:.0f} mm; "
+                    f"total longitudinal-reinforcement basis cost "
+                    f"{optimal.cost_breakdown.currency} "
+                    f"{optimal.cost_breakdown.total_cost:.0f}"
+                ),
                 optimal=optimal,
                 alternatives=alternatives,
                 total_combinations_evaluated=result.candidates_evaluated,
                 valid_solutions_found=result.candidates_valid,
-                savings_vs_min_section=result.savings_percent,
-                warnings=[],
+                savings_vs_baseline=result.savings_percent,
+                warnings=[
+                    "Longitudinal reinforcement quantity and cost exclude stirrup "
+                    "mass; shear safety and spacing use the supplied stirrup basis."
+                ],
             )
         )
 
@@ -153,6 +158,19 @@ async def optimize_beam_cost(
         return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             content=error_response(sanitize_error(e, "cost optimization")),
+        )
+    except OptimizationInfeasibleError:
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            content=error_response(
+                {
+                    "code": "OPTIMIZATION_INFEASIBLE",
+                    "message": (
+                        "No beam candidate satisfies the supplied materials, "
+                        "actions, reinforcement basis, and search constraints."
+                    ),
+                }
+            ),
         )
     except (ValueError, TypeError):
         logger.exception("Invalid input for cost optimization")
@@ -168,31 +186,63 @@ async def optimize_beam_cost(
         )
 
 
-def _parse_optimal_design(data: dict, rank: int):
-    """Parse optimization result into OptimalDesign model."""
-    cost_data = data.get("cost_breakdown", {})
-
+def _to_response_design(
+    candidate: Any,
+    *,
+    rank: int,
+    span_mm: float,
+    clear_cover_mm: float,
+    main_bar_diameter_mm: float,
+    stirrup_diameter_mm: float,
+    stirrup_legs: int,
+    location_factor: float,
+) -> OptimalDesign:
+    """Map one stable optimizer candidate without engineering arithmetic."""
+    span_m = span_mm / 1000.0
+    cost = candidate.cost_breakdown
     cost_breakdown = CostBreakdown(
-        concrete_cost=cost_data.get("concrete", 0.0),
-        steel_cost=cost_data.get("steel", 0.0),
-        formwork_cost=cost_data.get("formwork", 0.0),
-        total_cost=cost_data.get("total", 0.0),
-        cost_per_meter=cost_data.get("per_meter", cost_data.get("total", 0.0)),
+        concrete_cost=cost.concrete_cost,
+        steel_cost=cost.steel_cost,
+        formwork_cost=cost.formwork_cost,
+        labor_adjustment=cost.labor_adjustment,
+        location_factor=location_factor,
+        total_cost=cost.total_cost,
+        cost_per_meter=cost.total_cost / span_m,
+        currency=cost.currency,
     )
-
     return OptimalDesign(
-        width=data.get("width", 0.0),
-        depth=data.get("depth", 0.0),
-        ast_required=data.get("ast_required", 0.0),
-        asc_required=data.get("asc_required", 0.0),
-        utilization=data.get("utilization", 0.0),
-        ld_ratio=data.get("ld_ratio", 0.0),
-        concrete_volume=data.get("concrete_volume", 0.0),
-        steel_weight=data.get("steel_weight", 0.0),
-        formwork_area=data.get("formwork_area", 0.0),
+        width=candidate.b_mm,
+        depth=candidate.D_mm,
+        effective_depth=candidate.d_mm,
+        effective_depth_deduction=candidate.effective_depth_deduction_mm,
+        clear_cover=clear_cover_mm,
+        main_bar_diameter=main_bar_diameter_mm,
+        stirrup_diameter=stirrup_diameter_mm,
+        stirrup_legs=stirrup_legs,
+        fck=candidate.fck_nmm2,
+        fy=candidate.fy_nmm2,
+        ast_required=candidate.ast_required_mm2,
+        asc_required=candidate.asc_required_mm2,
+        utilization=candidate.flexural_utilization,
+        shear_utilization=candidate.shear_utilization,
+        stirrup_utilization=candidate.stirrup_utilization,
+        shear_stress=candidate.shear_tau_v_nmm2,
+        concrete_shear_strength=candidate.shear_tau_c_nmm2,
+        maximum_shear_stress=candidate.shear_tau_c_max_nmm2,
+        stirrup_spacing=candidate.stirrup_spacing_mm,
+        shear_reinforcement_area=candidate.shear_reinforcement_area_mm2,
+        ld_ratio=span_mm / candidate.d_mm,
+        concrete_volume=candidate.b_mm * candidate.D_mm / 1_000_000.0,
+        steel_weight=candidate.longitudinal_steel_weight_kg / span_m,
+        steel_weight_total=candidate.longitudinal_steel_weight_kg,
+        formwork_area=(candidate.b_mm + 2.0 * candidate.D_mm) / 1000.0,
         cost_breakdown=cost_breakdown,
         rank=rank,
-        score=data.get("score", 0.0),
+        score=cost.total_cost,
+        is_safe=candidate.is_valid,
+        code_edition=candidate.code_edition,
+        clause_refs=dict(candidate.clause_refs),
+        quantity_basis=candidate.quantity_basis,
     )
 
 

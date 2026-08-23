@@ -49,6 +49,7 @@ from .api_results import (
     SmartAnalysisResult,
 )
 from .costing import CostProfile
+from .optimization import OptimizationConstraints
 
 # ============================================================================
 # Deprecated-parameter resolution helper
@@ -1911,7 +1912,13 @@ def optimize_beam_cost(
     mu_knm: float,
     vu_kn: float,
     cost_profile: CostProfile | None = None,
-    cover_mm: int = 40,
+    cover_mm: int | None = None,
+    effective_depth_deduction_mm: float | None = None,
+    fck_nmm2: int | None = None,
+    fy_nmm2: int | None = None,
+    constraints: OptimizationConstraints | None = None,
+    asv_mm2: float = 100.53,
+    max_alternatives: int = 3,
 ) -> CostOptimizationResult:
     """Find the most cost-effective beam design meeting IS 456:2000.
 
@@ -1924,7 +1931,11 @@ def optimize_beam_cost(
         mu_knm: Factored bending moment (kNm).
         vu_kn: Factored shear force (kN).
         cost_profile: Regional cost data (defaults to India CPWD 2023).
-        cover_mm: Concrete cover (default 40mm).
+        cover_mm: Compatibility name for ``D - d``. If both deduction inputs
+            are omitted, the legacy 40 mm value is retained.
+        effective_depth_deduction_mm: Explicit total deduction from overall to
+            effective depth, including clear cover, stirrup diameter, and half
+            the longitudinal-bar diameter. Do not pass with ``cover_mm``.
 
     Returns:
         CostOptimizationResult with:
@@ -1952,11 +1963,27 @@ def optimize_beam_cost(
 
     _require_is456_units(units)
 
+    if cover_mm is not None and effective_depth_deduction_mm is not None:
+        raise ValueError(
+            "Specify effective_depth_deduction_mm or compatibility cover_mm, not both."
+        )
+    depth_deduction_mm = (
+        effective_depth_deduction_mm
+        if effective_depth_deduction_mm is not None
+        else (cover_mm if cover_mm is not None else 40)
+    )
+
     result = cost_optimization.optimize_beam_design(
         span_mm=span_mm,
         mu_knm=mu_knm,
         vu_kn=vu_kn,
         cost_profile=cost_profile,
+        effective_depth_deduction_mm=depth_deduction_mm,
+        fck_options=(fck_nmm2,) if fck_nmm2 is not None else (25, 30),
+        fy_options=(fy_nmm2,) if fy_nmm2 is not None else (500,),
+        constraints=constraints,
+        asv_mm2=asv_mm2,
+        max_alternatives=max_alternatives,
     )
 
     # Convert internal result to CostOptimizationResult
@@ -1973,6 +2000,8 @@ def optimize_beam_cost(
 
     def _to_optimal_design(candidate: Any) -> OptimalDesign:
         """Convert internal candidate to OptimalDesign."""
+        design = candidate.design_result
+        shear_design = candidate.shear_result
         return OptimalDesign(
             b_mm=candidate.b_mm,
             D_mm=candidate.D_mm,
@@ -1982,6 +2011,21 @@ def optimize_beam_cost(
             cost_breakdown=_to_cost_breakdown(candidate.cost_breakdown),
             is_valid=candidate.is_valid,
             failure_reason=candidate.failure_reason,
+            ast_required_mm2=design.Ast_required,
+            asc_required_mm2=design.Asc_required,
+            longitudinal_steel_weight_kg=candidate.steel_weight_kg,
+            flexural_utilization=candidate.flexural_utilization,
+            shear_utilization=candidate.shear_utilization,
+            stirrup_utilization=candidate.stirrup_utilization,
+            shear_tau_v_nmm2=shear_design.tau_v,
+            shear_tau_c_nmm2=shear_design.tau_c,
+            shear_tau_c_max_nmm2=shear_design.tau_c_max,
+            stirrup_spacing_mm=shear_design.spacing,
+            effective_depth_deduction_mm=candidate.effective_depth_deduction_mm,
+            shear_reinforcement_area_mm2=candidate.shear_reinforcement_area_mm2,
+            code_edition=candidate.code_edition,
+            clause_refs=dict(candidate.clause_refs),
+            quantity_basis=candidate.quantity_basis,
         )
 
     # Convert optimal and alternatives

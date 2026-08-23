@@ -1032,8 +1032,15 @@ def optimize_beam_cost(
     span_mm: float,
     mu_knm: float,
     vu_kn: float,
-    cover_mm: float = 40,
-) -> dict
+    cost_profile: CostProfile | None = None,
+    cover_mm: int | None = None,
+    effective_depth_deduction_mm: float | None = None,
+    fck_nmm2: int | None = None,
+    fy_nmm2: int | None = None,
+    constraints: OptimizationConstraints | None = None,
+    asv_mm2: float = 100.53,
+    max_alternatives: int = 3,
+) -> CostOptimizationResult
 def suggest_beam_design_improvements(
     *,
     units: str,
@@ -1073,9 +1080,11 @@ Notes:
 - `check_compliance_report()` assumes IS456 units (mm, N/mm², kN, kN·m) and does
   not accept a `units` argument. Use `check_beam_is456()` when you want explicit
   unit validation at the API boundary.
-- `optimize_beam_cost()` (v0.14.0+) returns a dictionary with optimal design, alternatives,
-  baseline cost, savings, and metadata. Uses brute-force search over M25/M30 concrete grades
-  and Fe500 steel with standard dimensions.
+- `api.optimize_beam_cost()` returns the lowest-cost valid candidate plus
+  alternatives, baseline cost, savings, and metadata. Exact concrete/steel
+  grades, section grid, effective-depth deduction, supplied stirrup area, and
+  cost profile are decisive when supplied. An infeasible search raises
+  `api.OptimizationInfeasibleError`; it never returns an engineering result.
 - `suggest_beam_design_improvements()` (v0.14.0+) returns AI-driven design improvement
   suggestions covering geometry, steel, cost, constructability, serviceability, and materials.
   Each suggestion includes impact level, confidence score, IS 456 clause references, and
@@ -1096,6 +1105,17 @@ Notes:
 ### `api.CostProfile`
 
 Frozen dataclass for cost estimation: `currency`, `concrete_costs`, `steel_cost_per_kg`, `formwork_cost_per_m2`, `congestion_threshold_pt`, `congestion_multiplier`, `location_factor`, `wastage_factor`.
+
+### `api.OptimizationConstraints`
+
+Frozen dataclass defining the inclusive rectangular-section search grid:
+minimum/maximum width and depth, width/depth steps, and minimum flexural
+utilization.
+
+### `api.OptimizationInfeasibleError`
+
+Raised when no candidate satisfies the explicit flexure, maximum-shear,
+supplied-stirrup-capacity, geometry, and utilization basis.
 
 ### `optimize_pareto_front(span_mm, mu_knm, vu_kn, objectives=None, cost_profile=None, cover_mm=40, max_candidates=50, random_seed=None) → ParetoOptimizationResult`
 

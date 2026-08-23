@@ -189,6 +189,10 @@ from structural_lib.services.multi_objective_optimizer import (  # noqa: F401
     ParetoOptimizationResult,
     optimize_pareto_front,
 )
+from structural_lib.services.optimization import (  # noqa: F401
+    OptimizationConstraints,
+    OptimizationInfeasibleError,
+)
 from structural_lib.services.project_beam import (  # noqa: F401
     EffectiveDepthBasisV1,
     EffectiveDepthResolutionV1,
@@ -349,6 +353,8 @@ __all__ = [
     "enhanced_shear_strength_is456",
     # Costing
     "CostProfile",
+    "OptimizationConstraints",
+    "OptimizationInfeasibleError",
     # Smart features
     "optimize_beam_cost",
     "suggest_beam_design_improvements",

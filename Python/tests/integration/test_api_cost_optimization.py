@@ -8,6 +8,7 @@ import pytest
 
 from structural_lib import api
 from structural_lib.services.api_results import CostOptimizationResult
+from structural_lib.services.optimization import OptimizationConstraints
 
 
 def test_api_optimize_beam_cost_basic():
@@ -39,6 +40,12 @@ def test_api_optimize_beam_cost_basic():
     assert opt.fck_nmm2 > 0
     assert opt.fy_nmm2 > 0
     assert opt.cost_breakdown is not None
+    assert opt.code_edition == "IS 456:2000"
+    assert opt.clause_refs["flexure.Ast"].startswith("IS 456")
+    assert opt.clause_refs["shear.tau_v"] == "IS 456 Cl 40.1"
+    assert opt.ast_required_mm2 > 0
+    assert opt.longitudinal_steel_weight_kg > 0
+    assert opt.shear_reinforcement_area_mm2 > 0
 
     # Check cost breakdown
     cost = opt.cost_breakdown
@@ -160,6 +167,60 @@ def test_api_optimize_beam_cost_custom_cover():
     cost_25 = result_25.optimal_design.cost_breakdown.total_cost
     cost_50 = result_50.optimal_design.cost_breakdown.total_cost
     assert cost_50 >= cost_25
+    assert result_25.optimal_design.D_mm - result_25.optimal_design.d_mm == 25
+    assert result_50.optimal_design.D_mm - result_50.optimal_design.d_mm == 50
+    assert result_25.optimal_design.d_mm != result_50.optimal_design.d_mm
+
+
+def test_api_optimize_beam_cost_enforces_shear_demand():
+    """An impossible shear demand must not return the flexure-only optimum."""
+    with pytest.raises(ValueError, match="No valid designs found"):
+        api.optimize_beam_cost(
+            units="IS456",
+            span_mm=5000,
+            mu_knm=120,
+            vu_kn=1000,
+            cover_mm=40,
+        )
+
+
+def test_api_optimize_beam_cost_enforces_supplied_stirrup_area():
+    """A section is invalid when Asv needs a spacing below the maintained grid."""
+    constraints = OptimizationConstraints(
+        min_width_mm=300,
+        max_width_mm=300,
+        min_depth_mm=500,
+        max_depth_mm=500,
+        width_step_mm=50,
+        depth_step_mm=50,
+        min_flexural_utilization=0.5,
+    )
+    with pytest.raises(ValueError, match="No valid designs found"):
+        api.optimize_beam_cost(
+            units="IS456",
+            span_mm=5000,
+            mu_knm=120,
+            vu_kn=350,
+            effective_depth_deduction_mm=41,
+            fck_nmm2=25,
+            fy_nmm2=500,
+            constraints=constraints,
+            asv_mm2=100.53,
+        )
+
+    result = api.optimize_beam_cost(
+        units="IS456",
+        span_mm=5000,
+        mu_knm=120,
+        vu_kn=350,
+        effective_depth_deduction_mm=41,
+        fck_nmm2=25,
+        fy_nmm2=500,
+        constraints=constraints,
+        asv_mm2=157.0,
+    )
+    assert result.optimal_design.stirrup_utilization <= 1.0
+    assert result.optimal_design.stirrup_spacing_mm == 100.0
 
 
 def test_api_optimize_beam_cost_to_dict():

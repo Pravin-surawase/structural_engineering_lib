@@ -43,6 +43,7 @@ from typing import Any
 
 from ..beam_pipeline import BeamDesignOutput
 from ..costing import CostProfile
+from ..services.optimization import OptimizationInfeasibleError
 from . import cost_optimization, design_suggestions, sensitivity
 
 
@@ -329,44 +330,53 @@ class SmartDesigner:
             cost_profile = CostProfile()
 
         start_time = time.perf_counter()
+        analysis_warnings: list[str] = []
 
         # Cost optimization analysis
         cost_analysis = None
         if include_cost:
-            cost_result = cost_optimization.optimize_beam_cost(
-                span_mm=span_mm,
-                mu_knm=mu_knm,
-                vu_kn=vu_kn,
-                cost_profile=cost_profile,
-            )
+            try:
+                cost_result = cost_optimization.optimize_beam_cost(
+                    span_mm=span_mm,
+                    mu_knm=mu_knm,
+                    vu_kn=vu_kn,
+                    cost_profile=cost_profile,
+                )
+            except OptimizationInfeasibleError:
+                analysis_warnings.append(
+                    "Cost optimization unavailable: no candidate satisfies the "
+                    "explicit engineering basis."
+                )
+            else:
+                # Extract current design parameters
+                b_mm = design.geometry.b_mm
+                D_mm = design.geometry.D_mm
+                fck_nmm2 = design.materials.fck_nmm2
 
-            # Extract current design parameters
-            b_mm = design.geometry.b_mm
-            D_mm = design.geometry.D_mm
-            fck_nmm2 = design.materials.fck_nmm2
+                # Estimate current cost
+                from .comparison import _estimate_design_cost
 
-            # Estimate current cost
-            from .comparison import _estimate_design_cost
+                current_params = {
+                    "b_mm": b_mm,
+                    "D_mm": D_mm,
+                    "fck_nmm2": fck_nmm2,
+                }
+                current_cost = _estimate_design_cost(
+                    current_params, cost_profile, span_mm
+                )
 
-            current_params = {
-                "b_mm": b_mm,
-                "D_mm": D_mm,
-                "fck_nmm2": fck_nmm2,
-            }
-            current_cost = _estimate_design_cost(current_params, cost_profile, span_mm)
-
-            cost_analysis = CostAnalysis(
-                current_cost=current_cost,
-                optimal_cost=(
-                    cost_result.optimal_candidate.cost_breakdown.total_cost
-                    if cost_result.optimal_candidate.cost_breakdown
-                    else 0.0
-                ),
-                savings_percent=cost_result.savings_percent,
-                baseline_alternative=None,  # Not in CostOptimizationResult
-                optimal_alternative=None,  # Not in CostOptimizationResult
-                alternatives=[],  # Simplified for now
-            )
+                cost_analysis = CostAnalysis(
+                    current_cost=current_cost,
+                    optimal_cost=(
+                        cost_result.optimal_candidate.cost_breakdown.total_cost
+                        if cost_result.optimal_candidate.cost_breakdown
+                        else 0.0
+                    ),
+                    savings_percent=cost_result.savings_percent,
+                    baseline_alternative=None,  # Not in CostOptimizationResult
+                    optimal_alternative=None,  # Not in CostOptimizationResult
+                    alternatives=[],  # Simplified for now
+                )
 
         # Design suggestions
         suggestions_analysis = None
@@ -608,6 +618,7 @@ class SmartDesigner:
                 "constructability": include_constructability,
             },
             "weights": weights,
+            "warnings": analysis_warnings,
         }
 
         return DashboardReport(
