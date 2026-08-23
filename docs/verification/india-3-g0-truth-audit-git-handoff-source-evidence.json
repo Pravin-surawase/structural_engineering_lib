@@ -1,0 +1,78 @@
+{
+  "authorization": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-23T21:04:08Z",
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "reference": "Active Codex task: M0 is done; get ready for INDIA-3.",
+      "status": "OBSERVED",
+      "query_status": "OK",
+      "observed_at_utc": "2026-08-23T21:04:08Z"
+    },
+    "authorized_actions": [
+      "RECONCILE_M0_AND_PRESERVED_INDIA_3_STATE",
+      "VERIFY_PRIVATE_SOURCE_ARCHIVE_BOUNDARY",
+      "INVENTORY_EXISTING_IS13920_BEAM_COLUMN_AND_JOINT_SURFACES",
+      "FREEZE_BOUNDED_G0_AUDIT_SEQUENCE",
+      "ADD_READINESS_DOCUMENTATION_AND_MACHINE_EVIDENCE",
+      "RUN_FROZEN_FOCUSED_QUICK_AND_STAGED_HOOKS",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_ONE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "prohibited_actions": [
+      "TRACK_PACKAGE_OR_PUBLISH_PRIVATE_SOURCE_CONTENT",
+      "REPRODUCE_PROTECTED_PROSE_PAGE_IMAGES_OR_EXTRACTED_TEXT",
+      "IMPLEMENT_OR_CHANGE_IS13920_FORMULAS",
+      "PROMOTE_IS13920_SUPPORT_CLAIMS",
+      "IMPLEMENT_IS875_OR_IS1893",
+      "ADD_UNSELECTED_API_UI_ETABS_OR_EXCEL_SCOPE",
+      "PUBLISH_RELEASE_VERSION_TAG_OR_PACKAGE",
+      "ACTIVATE_PROFESSIONAL_OR_ENGINEERING_USE_APPROVAL",
+      "DELETE_BRANCH_WORKTREE_OR_PRIVATE_ARCHIVE",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_OR_REWRITE",
+      "BYPASS_CHECKS_OR_FORCE_PUSH"
+    ],
+    "next_action": "RUN_FROZEN_FOCUSED_QUICK_AND_STAGED_HOOKS",
+    "target_binding": {
+      "task_id": "INDIA-3-G0",
+      "branch": "codex/india-3-g0-truth-audit",
+      "head_sha": "3e9796872fbf79bf4d0a7c09c018e4978664f079",
+      "actions": [
+        "RECONCILE_M0_AND_PRESERVED_INDIA_3_STATE",
+        "VERIFY_PRIVATE_SOURCE_ARCHIVE_BOUNDARY",
+        "INVENTORY_EXISTING_IS13920_BEAM_COLUMN_AND_JOINT_SURFACES",
+        "FREEZE_BOUNDED_G0_AUDIT_SEQUENCE",
+        "ADD_READINESS_DOCUMENTATION_AND_MACHINE_EVIDENCE",
+        "RUN_FROZEN_FOCUSED_QUICK_AND_STAGED_HOOKS",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_ONE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ]
+    }
+  },
+  "integration": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-23T21:04:08Z",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR"
+  },
+  "retention": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-23T21:04:08Z",
+    "decision": "RETAIN_ALL_EXISTING_LANES_AND_PRIVATE_ARCHIVE",
+    "owner": "Main Agent under repository preservation policy",
+    "holds": [
+      "PRESERVE_PRIOR_INDIA_3_CANDIDATE_9C976B1F",
+      "PRESERVE_UNRELATED_DIRTY_DETACHED_LANE",
+      "BRANCH_WORKTREE_AND_ARCHIVE_DELETION_NOT_AUTHORIZED"
+    ]
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

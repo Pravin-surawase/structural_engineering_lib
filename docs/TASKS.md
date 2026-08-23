@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-24 — LIB-PRO-007-M0 cumulative acceptance candidate
+**Updated:** 2026-08-24 — INDIA-3-G0 IS 13920 truth-audit readiness
 
 ---
 
@@ -127,8 +127,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-007-M0 | Run cumulative P1-P7 software acceptance across source, exact wheel, and production website surfaces | Main Agent | M | P0 | 🟡 ACTIVE — cumulative suites, wheel, architecture/parity, and repaired website journey green; frozen quick/full/hooks and hosted closeout pending |
-| INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ PAUSED — preserved candidate `9c976b1f`; resume only from a fresh lane after unchanged green M0 merges |
+| INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + qualified structural engineer | S | P0 | 🟡 ACTIVE — fresh source-bound lane from M0 merge `3e979687`; source/amendment, clause, benchmark, and public-contract audit only; no formula change |
 
 `LIB-PRO-006` merged through PR #851 at `2d6df18e`. It confirms the practical
 10 m x 4 m audit arithmetic and fail-closed footing-detailing `HOLD`, adds a
@@ -211,18 +210,16 @@ deliberately supported package-root facade. The four older ETABS helpers remain
 public export/signature/file is removed, no retirement candidate is activated,
 and no second structural calculation path was found.
 
-`LIB-PRO-007-M0` starts from the exact P7 merge tree. The cumulative Python
-run exposed an impossible bar-spacing test fixture plus missing P3
-unit/registration metadata; the live production journey exposed a React
-catalogue caller still requesting 1.2.0 after the maintained catalogue advanced
-to 1.3.0. The repairs change no structural formula, public signature, API
-response shape, or Excel surface. The repaired Python suite passes 6,934 tests,
-FastAPI passes 491, React passes 283 plus lint/build, architecture/import/parity
-are green, and exact wheel `0a42d90e…347ca` passes source-free tests, transport
-identity, CLI flows, and all 29 negative-UAT cases. The production website now
-loads catalogue 1.3.0, recalculates quick beam with a changed calculation
-identity, and runs the maintained zero-residual gravity example with truthful
-`HOLD 6 / PASS 5`. Frozen quick/full/hooks and hosted closeout remain.
+`LIB-PRO-007-M0` merged through PR #860 at hosted `3e979687`, from reviewed
+candidate `eb92db48`, with exact candidate/merged tree `f673e604`. The
+cumulative Python suite passed 6,934 tests, FastAPI passed 491, React passed 283
+plus lint/build, architecture/import/parity were green, and exact wheel
+`0a42d90e…347ca` passed source-free tests, transport identity, CLI flows, and
+all 29 negative-UAT cases. The production website loaded catalogue 1.3.0,
+recalculated quick beam with a changed calculation identity, and ran the
+maintained zero-residual gravity example with truthful `HOLD 6 / PASS 5`.
+Frozen quick/full/hooks, session end, and all required hosted checks passed
+before the unchanged candidate tree merged.
 
 `MAINT-0134` assigns cross-agent policy to `AGENTS.md`, composes Claude
 through `@AGENTS.md`, keeps a concise standalone Copilot baseline, retires
@@ -232,18 +229,18 @@ validates session/runtime/governance semantics. PR #850 is merged at the exact
 
 `MAINT-0133B-PACKET-A` merged through PR #848 at `f24c3904`. The owner then
 selected `INDIA-3-G0` and authorized use of additional local IS-code PDFs under
-the existing non-distribution boundary. That ignored private library remains
-preserved. Its tracked source-boundary candidate `9c976b1f` is based on
-`f24c3904` and overlaps the shared session/task handoff documents, so it is not
-integrated out of order. After LIB-PRO-007 merges, create a fresh INDIA-3 lane
-from exact hosted `main`, compare and transplant only reviewed task-owned
-changes, reconcile the shared documents, and then resume the bounded audit.
+the existing non-distribution boundary. The durable tracked source boundary
+merged through PR #849 at `40aa5864`, and the ignored private library remains
+preserved. The older candidate `9c976b1f` is retained but not cherry-picked:
+its shared session/task handoff files predate M0 and its base omits the later
+product packets. INDIA-3-G0 now runs on fresh branch
+`codex/india-3-g0-truth-audit` from exact hosted `3e979687`.
 
 INDIA-2 remains administratively complete within its recorded accepted/held
-boundary. The reproduced public-route safety packet is integrated. INDIA-3-G0
-remains an audit/decision packet only: no new formula, support claim, IS 875 or
-IS 1893 implementation, next package version, release, or professional
-approval is activated.
+boundary. The reproduced public-route safety packet and M0 are integrated.
+INDIA-3-G0 remains an audit/decision packet only: no new formula, support
+claim, IS 875 or IS 1893 implementation, next package version, release, or
+professional approval is activated.
 
 `LIB-PRO-003-A` was accepted and exact-tree merged through PR #832 at
 `e7698a63b86d2db6db2f3970871122af1ce562f6`; Packet B was accepted and

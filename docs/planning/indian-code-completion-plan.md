@@ -4,7 +4,7 @@ title: Indian-Code Completion Waves
 status: active
 owner: Main Agent and repository owner
 created: 2026-08-15
-last_updated: 2026-08-16
+last_updated: 2026-08-24
 doc_type: spec
 ---
 
@@ -38,7 +38,7 @@ completed family inside the larger INDIA-2 wave.
 | INDIA-0 — Truth baseline | One generated, standard-namespaced capability/coverage manifest; repaired coverage consumers; reconciled status ledgers | **Complete** |
 | INDIA-1 — Existing-family closure | Close or explicitly hold limitations for beam, rectangular column, isolated footing, and solid slab | **Complete** |
 | INDIA-2 — Remaining practical IS 456 elements | Separately verify wall, stair, deep-beam, flat-slab/punching, and distinct foundation-system packets | **Complete within the recorded accepted/held scope** — six bounded families accepted; pile-cap and raft remain held after G0; final evidence and cumulative gates are closed |
-| INDIA-3 — Companion Indian codes | Complete the bounded IS 13920 surface, then add IS 875 inputs before IS 1893 equivalent-static actions and Indian combinations | **Planned** |
+| INDIA-3 — Companion Indian codes | Audit and truthfully close the existing bounded IS 13920 surface, then add IS 875 inputs before IS 1893 equivalent-static actions and Indian combinations | **G0 active** — existing beam/column/joint truth audit only; no formula or support promotion yet |
 | INDIA-4 — Final acceptance | Run cumulative engineering, cross-layer, repository, and artifact acceptance for the explicitly supported subset | **Planned** |
 
 “Complete” means the bounded accepted scope and its explicit exclusions are
@@ -84,10 +84,17 @@ INDIA-2 closeout.
 
 ## 4. INDIA-3 companion-code order
 
-INDIA-3 is not another IS 456 element. It is the companion Indian-code wave:
+INDIA-3 is not another IS 456 element. It is the companion Indian-code wave.
+Its active G0 is controlled by the
+[IS 13920 existing-surface truth-audit plan](india-3-g0-is13920-truth-audit.md).
+G0 resolves source/amendment identity, clause mapping, independent benchmarks,
+and public-contract truth before any engineering repair or expansion packet is
+authorized.
 
-1. Finish and advertise the already bounded IS 13920 beam, column, and joint
-   checks without inflating registration into implementation.
+The wave order is:
+
+1. Audit, then truthfully finish or hold the existing bounded IS 13920 beam,
+   column, and joint checks without inflating registration into implementation.
 2. Add separately sourced and benchmarked IS 13920 wall provisions.
 3. Add separately sourced and benchmarked IS 13920 foundation provisions.
 4. Implement bounded IS 875 gravity and wind input programs.
