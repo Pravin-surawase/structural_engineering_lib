@@ -971,6 +971,11 @@ class TestAnalysisEndpoints:
         assert data["design_summary"]["governing_utilization"] > 1.0
         assert data["design_summary"]["capacity_margin"] == 0.0
         assert data["all_checks_passed"] is False
+        assert data["cost_analysis"] is None
+        assert data["warnings"] == [
+            "Cost optimization unavailable: no candidate satisfies the explicit "
+            "engineering basis."
+        ]
 
     def test_smart_analysis_hides_checks_without_changing_disposition(
         self, client, sample_analysis_request
@@ -987,6 +992,11 @@ class TestAnalysisEndpoints:
         data = unwrap(response)
         assert data["code_checks"] == []
         assert data["all_checks_passed"] is False
+        assert data["cost_analysis"] is None
+        assert data["warnings"] == [
+            "Cost optimization unavailable: no candidate satisfies the explicit "
+            "engineering basis."
+        ]
 
     def test_get_code_clauses(self, client):
         """Test get code clauses endpoint."""

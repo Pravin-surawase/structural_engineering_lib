@@ -2,7 +2,7 @@
   "schema_version": 1,
   "evidence_kind": "lib-pro-007-p1-optimization-truth",
   "task_id": "LIB-PRO-007-P1",
-  "observed_at_utc": "2026-08-23T13:50:44Z",
+  "observed_at_utc": "2026-08-23T14:13:06Z",
   "decision": "READY_FOR_PACKET_VERIFICATION",
   "source": {
     "branch": "codex/lib-pro-007-p1-optimization-truth",
@@ -214,6 +214,19 @@
       "accepted_asv_mm2": 157,
       "accepted_spacing_mm": 100,
       "accepted_stirrup_utilization_max": 1,
+      "outcome": "PASS"
+    },
+    {
+      "id": "P1-SMART-FAIL-DISPOSITION-001",
+      "surface": "POST /api/v1/analysis/beam/smart",
+      "input_change": {
+        "shear_kn": 600
+      },
+      "status_code": 200,
+      "canonical_design_status": "FAIL",
+      "cost_analysis": null,
+      "warning": "Cost optimization unavailable: no candidate satisfies the explicit engineering basis.",
+      "boundary": "Optimizer infeasibility suppresses only the optional cost advice; it does not replace the canonical beam result.",
       "outcome": "PASS"
     }
   ],

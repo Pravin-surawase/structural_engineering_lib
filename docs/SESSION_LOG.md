@@ -67,6 +67,12 @@ INDIA-3 engineering claim is included.
   explicit `api.*` reference entries.
 - A read-only `rg` command embedded a Markdown backtick inside double-quoted
   zsh text, causing an unmatched-quote error before the search ran.
+- PR #853's first hosted FastAPI job passed 478 cases but failed two smart-
+  analysis cases: an infeasible optional cost search converted an already
+  calculated canonical beam `FAIL` result into HTTP 422.
+- The installed GitHub CLI accepted PR creation but does not support the newer
+  `--json` flag on `pr create` or `--head` on `pr view`; both inspection attempts
+  exited before their requested query step.
 
 ### Root causes and resolutions
 
@@ -118,6 +124,19 @@ INDIA-3 engineering claim is included.
   single-quoted expression; it completed without mutation.
   ⚠️ TERMINAL ISSUE: unmatched shell quote blocked one read-only search ->
   single-quoted `rg` expression completed it.
+- Confirmed root cause: `SmartDesigner.analyze` invoked cost optimization as if
+  it were mandatory and allowed the new exact `OptimizationInfeasibleError` to
+  escape, even though cost advice is optional and the canonical beam result is
+  the disposition authority. Resolution: catch only that exact optimizer
+  outcome, retain the canonical `FAIL`, return no cost analysis, and publish an
+  explicit warning through the REST response. Four focused core/REST pass and
+  fail vectors are the local repair evidence; unrelated input/type exceptions
+  remain unsuppressed.
+- Confirmed root cause: this host has an older `gh` flag surface. Resolution:
+  create PR #853 without `--json`, then query it by number with the supported
+  `pr view 853 --json ...` form. No duplicate PR or Git mutation resulted.
+  ⚠️ TERMINAL ISSUE: unsupported GitHub CLI query flags -> supported
+  create-then-query sequence confirmed PR #853 at exact head `1e2f4eb5`.
 
 ### Validation through content freeze
 
@@ -138,6 +157,15 @@ INDIA-3 engineering claim is included.
 - The required post-repair consolidated quick gate passes 10/10 (eight safe
   cached results plus fresh Git-state and unfinished-operation checks). Normal
   staged hooks and read-only session closeout remain before immutable commit.
+- The first immutable candidate `1e2f4eb5` passed local hooks and clean session
+  closeout. On PR #853, Python, React, and documentation passed; FastAPI exposed
+  the optional-cost integration defect above (2 failed, 478 passed), so merge
+  remained blocked and the candidate was not rewritten.
+- The explicit hosted repair passes four focused cases: normal smart cost
+  analysis remains available, infeasible core cost advice preserves a canonical
+  `FAIL`, and both REST visibility variants return HTTP 200 with no cost result
+  plus the exact warning. Repair quick gate, hooks, closeout, push, and hosted
+  rerun remain before merge.
 
 ## 2026-08-23 — Session: LIB-PRO-007-G0 product contract freeze
 

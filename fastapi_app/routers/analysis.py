@@ -262,7 +262,7 @@ async def smart_analyze_beam(
                 critical_suggestions=critical_count,
                 scores=scores,
                 cost_analysis=cost_analysis,
-                warnings=[],
+                warnings=list(result.metadata.get("warnings", [])),
             )
         )
 

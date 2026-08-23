@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-23 — LIB-PRO-007-P1 optimization truth candidate
+**Updated:** 2026-08-23 — LIB-PRO-007-P1 PR #853 hosted repair
 
 ---
 
@@ -107,7 +107,7 @@
 | Rebar suggestions | ✅ | ✅ | Done |
 | **Batch design UI** | ✅ | ✅ streaming.py | Done |
 | **Compliance checker** | ✅ DesignView panel | ✅ insights.py | Done |
-| **Cost optimizer** | ✅ DesignView rebar | ✅ canonical flexure/shear/cost service | P1 CANDIDATE — real fields and decisive inputs implemented; local/hosted acceptance pending |
+| **Cost optimizer** | ✅ DesignView rebar | ✅ canonical flexure/shear/cost service | P1 PR #853 — real fields/decisive inputs implemented; hosted FastAPI repair rerun pending |
 | **AI Assistant** | -- | Partial | ⏸ Deferred |
 | Learning center | -- | -- | 🟢 Low |
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-007-P1 | Repair the canonical beam cost optimizer so every accepted input is decisive and every engineering output is calculated | Main Agent | M | P0 | 🟡 ACTIVE — implementation/evidence frozen; consolidated local and hosted acceptance pending |
+| LIB-PRO-007-P1 | Repair the canonical beam cost optimizer so every accepted input is decisive and every engineering output is calculated | Main Agent | M | P0 | 🟡 ACTIVE — PR #853; optional smart-cost failure repair passes locally, hosted rerun pending |
 | INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ PAUSED — private source library preserved; resume after LIB-PRO-007 cumulative acceptance |
 
 `LIB-PRO-006` merged through PR #851 at `2d6df18e`. It confirms the practical
@@ -150,8 +150,10 @@ section grid, utilization threshold, unit rates, factored shear, and supplied
 stirrup area. It rejects infeasible shear and unsupported objectives, derives
 all response engineering fields from the stable result, and preserves the
 explicit boundary that stirrup mass is not part of the current cost quantity.
-This is a candidate claim only until the immutable packet passes local and
-hosted gates.
+PR #853's first hosted run exposed and locally repaired one integration defect:
+an infeasible optional smart-cost search now preserves the canonical beam
+`FAIL`, returns no cost advice, and publishes an explicit warning. This remains
+a candidate claim until the repair commit passes hosted gates.
 
 `MAINT-0134` assigns cross-agent policy to `AGENTS.md`, composes Claude
 through `@AGENTS.md`, keeps a concise standalone Copilot baseline, retires
