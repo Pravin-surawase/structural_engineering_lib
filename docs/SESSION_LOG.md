@@ -16,6 +16,15 @@ instruction surfaces into one owned, executable contract before INDIA-3-G0
 continues. No INDIA-3 source interpretation, formula, support, release, or
 professional-approval work is included.
 
+### Summary
+
+- Consolidated root, Claude, Copilot, VS Code agent, prompt, skill, and generated
+  agent-context guidance under one explicit ownership model.
+- Added exact scoped-rule projection and semantic contract enforcement plus the
+  multiline closed-task regression.
+- Froze the plan, task boundary, handoff, authorization receipt, and evidence;
+  the focused, quick, cumulative, formatting, and normal-hook gates pass.
+
 ### Issues encountered
 
 - The canonical `session begin` brief emitted two macOS `awk: newline in
@@ -35,6 +44,9 @@ professional-approval work is included.
   instead of the repository schema enums.
 - The targeted Black check found noncanonical wrapping in the two changed
   validators and their governance regression file before the commit hook.
+- The first final read-only `session end` rejected the clean candidate because
+  the newest log recorded outcomes only under `Validation through content
+  freeze`, not under a parser-recognized completion section.
 
 ### Root causes and resolutions
 
@@ -68,6 +80,11 @@ professional-approval work is included.
   not yet passed the repository formatter. Resolution: run Black only on the
   three reported files, then repeat their formatting check and affected
   instruction tests/validators. No behavior or scope changed.
+- Confirmed root cause: the session parser recognizes completed bullets only
+  below `### Summary` or `**Completed:**`; the validation heading is not an
+  outcome section. Resolution: add one concise summary of the already-proven
+  work and keep the detailed evidence below. The failed final closeout is the
+  exact repair reproducer.
 
 ### Validation through content freeze
 
