@@ -73,6 +73,19 @@ def test_manifest_rejects_duplicate_keys_and_unknown_fields(tmp_path):
             {"fastapi", "control_plane"},
         ),
         ("scripts/safe_file_move.py", {"control_plane", "repository"}),
+        (
+            "scripts/_lib/safe_file_ops.py",
+            {"control_plane", "docs", "repository"},
+        ),
+        (
+            "scripts/_lib/indian_code_manifest.py",
+            {"python", "control_plane", "docs"},
+        ),
+        (
+            "scripts/_lib/utils.py",
+            {"python", "fastapi", "control_plane", "docs", "repository"},
+        ),
+        ("scripts/_lib/agent_data.py", {"control_plane"}),
         ("scripts/check_links.py", {"control_plane", "docs"}),
         (
             ".github/actions/verification-evidence/action.yml",

@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import re
 import subprocess
 import sys
@@ -491,6 +492,23 @@ def cmd_start(args: argparse.Namespace) -> int:
 COST_LOG = REPO_ROOT / "logs" / "agent_costs.jsonl"
 MODEL_USAGE_LOG = REPO_ROOT / "logs" / "model_usage.jsonl"
 
+EFFICIENCY_PHASES = (
+    "contract/intake",
+    "writer implementation + focused verification",
+    "independent local audit",
+    "writer rework",
+    "final local closeout",
+    "hosted/network wait",
+    "merge + post-merge verification",
+)
+EFFICIENCY_COUNTER_ARGUMENTS = (
+    ("audit_rejections", "--audit-rejections"),
+    ("repair_batches", "--repair-batches"),
+    ("focused_gate_retries", "--focused-gate-retries"),
+    ("full_gate_runs", "--full-gate-runs"),
+    ("hosted_validation_runs", "--hosted-validation-runs"),
+)
+
 
 def _log_session_cost(agent: str = "unknown") -> None:
     """Append session cost entry to logs/agent_costs.jsonl."""
@@ -679,7 +697,101 @@ def _usage_profile(entry: dict) -> str:
     return f"{model}/{reasoning}"
 
 
-def _record_usage_checkpoint(args: argparse.Namespace) -> dict:
+def _efficiency_payload(args: argparse.Namespace) -> dict[str, object] | None:
+    """Validate and normalize optional non-overlapping wall-time evidence."""
+    raw_phases = getattr(args, "phase", None) or []
+    candidate_heads = getattr(args, "candidate_head", None) or []
+    counter_values = {
+        name: getattr(args, name, None)
+        for name, _option in EFFICIENCY_COUNTER_ARGUMENTS
+    }
+    supplied = bool(raw_phases or candidate_heads) or any(
+        value is not None for value in counter_values.values()
+    )
+    if args.checkpoint != "closeout" and supplied:
+        raise ValueError("phase and candidate/retry evidence is closeout-only")
+    if args.checkpoint != "closeout":
+        return None
+
+    phases: dict[str, float] = {}
+    for raw in raw_phases:
+        label, separator, value_text = raw.partition("=")
+        label = label.strip()
+        if not separator or label not in EFFICIENCY_PHASES:
+            raise ValueError(
+                "phase must use '<canonical label>=<minutes>'; canonical labels: "
+                + ", ".join(EFFICIENCY_PHASES)
+            )
+        if label in phases:
+            raise ValueError(f"duplicate phase timing: {label}")
+        try:
+            minutes = float(value_text)
+        except ValueError as exc:
+            raise ValueError(f"phase minutes must be numeric: {raw}") from exc
+        if not math.isfinite(minutes) or minutes < 0:
+            raise ValueError(f"phase minutes must be finite and non-negative: {raw}")
+        phases[label] = minutes
+
+    if args.checkpoint == "closeout":
+        missing_phases = [label for label in EFFICIENCY_PHASES if label not in phases]
+        missing_counters = [
+            option
+            for name, option in EFFICIENCY_COUNTER_ARGUMENTS
+            if counter_values[name] is None
+        ]
+        if missing_phases or not candidate_heads or missing_counters:
+            details: list[str] = []
+            if missing_phases:
+                details.append("missing phases: " + ", ".join(missing_phases))
+            if not candidate_heads:
+                details.append("at least one --candidate-head is required")
+            if missing_counters:
+                details.append("missing counters: " + ", ".join(missing_counters))
+            raise ValueError(
+                "closeout efficiency evidence incomplete; " + "; ".join(details)
+            )
+
+    for name, value in counter_values.items():
+        if value is not None and value < 0:
+            raise ValueError(f"{name} must be non-negative")
+    invalid_heads = [
+        head
+        for head in candidate_heads
+        if re.fullmatch(r"[0-9a-fA-F]{7,40}", head) is None
+    ]
+    if invalid_heads:
+        raise ValueError(
+            "candidate heads must be 7-40 hexadecimal characters: "
+            + ", ".join(invalid_heads)
+        )
+
+    total_wall_time = round(sum(phases.values()), 3)
+    if args.elapsed_min and not math.isclose(
+        args.elapsed_min, total_wall_time, rel_tol=0, abs_tol=0.05
+    ):
+        raise ValueError(
+            f"elapsed minutes {args.elapsed_min} do not equal phase total {total_wall_time}"
+        )
+
+    return {
+        "phase_timings_min": {
+            label: phases[label] for label in EFFICIENCY_PHASES if label in phases
+        },
+        "total_wall_time_min": total_wall_time,
+        "candidate_heads": list(dict.fromkeys(candidate_heads)),
+        "audit_rejections": counter_values["audit_rejections"],
+        "repair_batches": counter_values["repair_batches"],
+        "focused_gate_retries": counter_values["focused_gate_retries"],
+        "full_gate_runs": counter_values["full_gate_runs"],
+        "hosted_validation_runs": counter_values["hosted_validation_runs"],
+        "rework_minutes": phases.get("writer rework", 0.0),
+        "network_wait_minutes": phases.get("hosted/network wait", 0.0),
+    }
+
+
+def _record_usage_checkpoint(
+    args: argparse.Namespace, efficiency: dict[str, object] | None = None
+) -> dict:
     """Append an observable model/agent checkpoint without estimating billing."""
     entry = {
         "schema_version": 1,
@@ -692,7 +804,9 @@ def _record_usage_checkpoint(args: argparse.Namespace) -> dict:
         "parent_agents": args.parent_agents,
         "subagents": args.subagents,
         "worker_models": args.worker_model or [],
-        "elapsed_min": args.elapsed_min,
+        "elapsed_min": (
+            efficiency["total_wall_time_min"] if efficiency else args.elapsed_min
+        ),
         "dashboard": {
             "weekly_remaining_pct": args.weekly_remaining,
             "turns": args.turns,
@@ -707,6 +821,8 @@ def _record_usage_checkpoint(args: argparse.Namespace) -> dict:
             "No token or billing estimate is inferred."
         ),
     }
+    if efficiency is not None:
+        entry["efficiency"] = efficiency
     MODEL_USAGE_LOG.parent.mkdir(parents=True, exist_ok=True)
     with MODEL_USAGE_LOG.open("a", encoding="utf-8") as handle:
         handle.write(json.dumps(entry, sort_keys=True) + "\n")
@@ -716,7 +832,12 @@ def _record_usage_checkpoint(args: argparse.Namespace) -> dict:
 def cmd_usage(args: argparse.Namespace) -> int:
     """Record or summarize model, agent, elapsed-time, and usage checkpoints."""
     if args.checkpoint:
-        entry = _record_usage_checkpoint(args)
+        try:
+            efficiency = _efficiency_payload(args)
+        except ValueError as exc:
+            print(f"ERROR: {exc}", file=sys.stderr)
+            return 1
+        entry = _record_usage_checkpoint(args, efficiency)
         if args.json_output:
             print(json.dumps(entry, indent=2))
         else:
@@ -728,6 +849,13 @@ def cmd_usage(args: argparse.Namespace) -> int:
             print(
                 "Token/cost fields remain empty unless an authoritative source is added."
             )
+            if efficiency is not None:
+                print(
+                    "Efficiency closeout: "
+                    f"{efficiency['total_wall_time_min']}m | "
+                    f"candidate heads {len(efficiency['candidate_heads'])} | "
+                    f"hosted runs {efficiency['hosted_validation_runs']}"
+                )
         return 0
 
     entries = _read_jsonl(MODEL_USAGE_LOG)
@@ -761,6 +889,15 @@ def cmd_usage(args: argparse.Namespace) -> int:
             ),
             "billing_tokens": None,
             "billing_cost": None,
+            "latest_efficiency_closeout": next(
+                (
+                    entry.get("efficiency")
+                    for entry in reversed(entries)
+                    if entry.get("checkpoint") == "closeout"
+                    and entry.get("efficiency") is not None
+                ),
+                None,
+            ),
         }
         if args.json_output:
             print(json.dumps(summary, indent=2))
@@ -776,6 +913,12 @@ def cmd_usage(args: argparse.Namespace) -> int:
                     f"{summary['latest_weekly_remaining_pct']}%"
                 )
             print("  Billing tokens/cost: unavailable (not estimated)")
+            if summary["latest_efficiency_closeout"] is not None:
+                efficiency = summary["latest_efficiency_closeout"]
+                print(
+                    "  Latest closeout wall time: "
+                    f"{efficiency['total_wall_time_min']}m"
+                )
         return 0
 
     selected = entries[-args.last :]
@@ -847,19 +990,28 @@ def get_closeout_git_evidence() -> tuple[str, list[str], str]:
 
 def report_closeout_git_evidence(
     evidence: tuple[str, list[str], str] | None = None,
+    *,
+    allow_dirty_preparation: bool = False,
 ) -> bool:
-    """Print fail-closed closeout evidence; return true only for CLEAN."""
+    """Print fail-closed evidence; optionally accept DIRTY for preparation only."""
     print("📁 Uncommitted Changes:")
     status, paths, reason = evidence or get_closeout_git_evidence()
     if status == "UNKNOWN":
         print(f"  ⚠️  Git state UNKNOWN/hold: {reason}")
         return False
     if status == "DIRTY":
-        print(f"  ⚠️  {len(paths)} uncommitted file(s):")
+        marker = "ℹ️ " if allow_dirty_preparation else "⚠️ "
+        print(f"  {marker} {len(paths)} uncommitted file(s):")
         for path in paths[:5]:
             print(f"     {path}")
         if len(paths) > 5:
             print(f"     ... and {len(paths) - 5} more")
+        if allow_dirty_preparation:
+            print(
+                "  ℹ️  Dirty content is allowed only for preparation; "
+                "final closeout still requires CLEAN."
+            )
+            return True
         return False
     print("  ✅ Working tree clean (scripts/git_state.py)")
     return True
@@ -974,7 +1126,9 @@ def cmd_end(args: argparse.Namespace) -> int:
 
     # 1. Uncommitted changes
     closeout_evidence = get_closeout_git_evidence()
-    if not report_closeout_git_evidence(closeout_evidence):
+    if not report_closeout_git_evidence(
+        closeout_evidence, allow_dirty_preparation=args.fix
+    ):
         all_passed = False
     print()
 
@@ -2495,6 +2649,21 @@ def build_parser() -> argparse.ArgumentParser:
     p_usage.add_argument(
         "--verification", action="append", help="Check/test evidence; repeatable"
     )
+    p_usage.add_argument(
+        "--phase",
+        action="append",
+        help="Closeout phase as '<canonical label>=<minutes>'; repeat all seven",
+    )
+    p_usage.add_argument(
+        "--candidate-head",
+        action="append",
+        help="Exact candidate head identifier; repeat for every candidate",
+    )
+    p_usage.add_argument("--audit-rejections", type=int)
+    p_usage.add_argument("--repair-batches", type=int)
+    p_usage.add_argument("--focused-gate-retries", type=int)
+    p_usage.add_argument("--full-gate-runs", type=int)
+    p_usage.add_argument("--hosted-validation-runs", type=int)
     p_usage.add_argument("--notes", default="")
     p_usage.add_argument("--last", type=int, default=10)
     p_usage.add_argument("--hours", type=float, help="Limit display/summary window")

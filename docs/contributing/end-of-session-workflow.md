@@ -54,7 +54,9 @@ tags: []
 
 This is preparation mode, not a final closeout verdict. It may update handoff
 or task files, but it never generates indexes. Review its writes before the
-candidate freeze.
+candidate freeze. A dirty candidate is expected here and is reported as
+preparation evidence; unknown/contradictory Git state, an active operation,
+missing receipt, or another failed check remains a real failure.
 
 **What it checks:**
 - ✅ Uncommitted changes (reminds you to commit)
@@ -70,14 +72,15 @@ candidate freeze.
 
 Preparation returns exit status `2` when its checks otherwise pass. That
 non-zero status is intentional: callers must not treat a potentially mutating
-preparation run as the final closeout success.
+preparation run as the final closeout success. It exits `1` for a failed
+preparation check, and only a later clean read-only run can exit `0`.
 
 **Expected output:**
 ```
 ============================================================
 🏁 END OF SESSION CHECKS
 ============================================================
-[✓] Git working tree clean
+[i] Dirty candidate recorded for preparation; final closeout still requires clean
 [✓] Session log entry exists for 2026-01-06
 [✓] Next session brief is fresh (updated today)
 [✓] No active tasks need attention

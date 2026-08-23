@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-23 — MAINT-0130 safe-file prerequisite implemented for candidate closeout
+**Updated:** 2026-08-23 — MAINT-0131 efficiency controls active on merged MAINT-0130 baseline
 
 ---
 
@@ -127,11 +127,12 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| MAINT-0130 | Replace inconsistent move/delete/link/batch/migrator behavior with one fail-closed transactional safe-file system and retire age-only archival | Main Agent + governance | L | P0 | ✅ COMPLETE ON MERGE — source-bound candidate requires focused, quick/full, ordinary-hook, and hosted proof before bulk cleanup is unblocked |
+| MAINT-0131 | Repair closeout preparation semantics, helper-level verification routing, safe-file executable compatibility, and measurable efficiency closeout | Main Agent + governance | M | P0 | 🟡 CANDIDATE — focused 235-test/control proof and live preparation exit `2` pass; final local and hosted gates pending |
+| MAINT-0130 | Replace inconsistent move/delete/link/batch/migrator behavior with one fail-closed transactional safe-file system and retire age-only archival | Main Agent + governance | L | P0 | ✅ MERGED — PR #844 at `58ecc149`; bulk cleanup still needs a separately classified and authorized plan |
 
-No bulk cleanup or automatic archival is authorized by this packet. Content
-movement remains held until the exact MAINT-0130 candidate is merged and its
-required evidence is green.
+No bulk cleanup or automatic archival is authorized by this packet. MAINT-0130
+is merged and green, but content movement remains held until a separate exact
+cleanup plan is classified, reviewed, and authorized.
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. The reproduced public-route safety packet is integrated. INDIA-3,

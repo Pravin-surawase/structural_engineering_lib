@@ -184,6 +184,11 @@ malformed evidence is never stored or reused. Use `./run.sh check --no-reuse`
 when a genuinely fresh execution is required; changing the input invalidates the
 receipt automatically, so calendar-based cache resets are unnecessary.
 
+Changed-path routing follows maintained callers and outcome owners, not a
+headline folder category. Shared helper directories must be decomposed into
+explicit helper-level impact rules when their callers differ. A genuinely
+unknown or unclassified path remains fail-closed and selects every domain.
+
 For work requiring independent acceptance, use these stricter efficiency
 controls:
 
@@ -207,6 +212,9 @@ their sum as `total wall time`; do not count idle or network time in another
 interval. At closeout report `candidate_heads`, `audit_rejections`,
 `repair_batches`, `focused_gate_retries`, `full_gate_runs`,
 `hosted_validation_runs`, `rework_minutes`, and `network_wait_minutes`.
+The closeout `session usage` command validates all seven phase labels, computes
+their total, requires exact candidate heads and retry/run counters, and stores
+the result only in the ignored local runtime ledger.
 
 Safety-critical structural calculations still require independent reference
 validation. Token efficiency never replaces practicing-engineer review or the
@@ -233,8 +241,15 @@ IS 456 quality gate.
 ./run.sh session usage --checkpoint start --task-id TASK-XXX --task "bounded scope"
 ./run.sh session usage --checkpoint milestone --elapsed-min 120 \
   --verification "targeted tests pass" --notes "no subagents"
-./run.sh session usage --checkpoint closeout --elapsed-min 210 \
-  --verification "quick gate 9/9"
+./run.sh session usage --checkpoint closeout --task-id TASK-XXX \
+  --candidate-head abc1234 --audit-rejections 0 --repair-batches 0 \
+  --focused-gate-retries 0 --full-gate-runs 1 --hosted-validation-runs 1 \
+  --phase "contract/intake=15" \
+  --phase "writer implementation + focused verification=90" \
+  --phase "independent local audit=20" --phase "writer rework=0" \
+  --phase "final local closeout=35" --phase "hosted/network wait=40" \
+  --phase "merge + post-merge verification=10" \
+  --verification "quick and full gates pass"
 ./run.sh session usage --summary --hours 24
 ```
 

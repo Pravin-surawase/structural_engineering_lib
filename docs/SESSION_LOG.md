@@ -5,6 +5,104 @@
 
 ---
 
+## 2026-08-23 — Session: MAINT-0131 measurable efficiency controls
+
+**Agent:** Codex (`governance`, sole writer)
+
+**Branch:** `codex/maint-0131-efficiency-controls`, from exact fetched
+`origin/main` commit `58ecc149bd4525ae92c4affb369851919fe1c402`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0131-git-handoff-receipt.json`
+
+**Focus:** Turn the reproduced MAINT-0130 efficiency defects into narrow,
+executable controls without changing product or safe-file behavior.
+
+### Summary
+
+- Made dirty content an expected preparation-only state for `session end --fix`
+  while preserving fail-closed handling for unknown Git state, operations,
+  missing receipts, and every other failed preparation check.
+- Replaced the blanket `scripts/_lib/**` all-domain rule with explicit
+  maintained-caller mappings for shared utilities, AST helpers, Indian-code
+  manifests, and safe-file primitives; control-only agent helpers retain the
+  generic control owner, and unknown impact still selects all domains.
+- Added a direct executable-mode regression for the two public safe-file
+  compatibility entrypoints.
+- Made closeout timing evidence executable in the ignored local usage ledger:
+  all seven non-overlapping phases, exact candidate heads, and rejection,
+  repair, retry, full-gate, and hosted-run counters are required and validated.
+
+### Instruction decision record
+
+- Evidence session: Codex task `01a02ce0-3608-7a32-afae-e69019d14822`
+  and its merged MAINT-0130 record below.
+- Repeated behavior: broad domain scheduling, preparation exit contradiction,
+  late repair candidates, and omitted closeout timing metrics.
+- Confirmed root cause: deterministic source/contract mismatches, not a model
+  preference or a correlation inferred from one score.
+- Exact instructions changed: the mandatory efficiency summary, canonical
+  efficiency policy, end-of-session workflow, Git workflow, and the
+  agent-evolution deterministic-repair boundary.
+- Expected measurable effect: safe-file helper changes select only maintained
+  control/docs/repository owners; otherwise passing dirty preparation exits `2`;
+  incomplete timing closeout fails before writing; candidate and hosted reruns
+  are visible in one local report.
+- Approval: the user explicitly authorized the bounded implementation with
+  “okay do it” on 2026-08-23.
+- Evolution/rollback identity: no automatic evolution proposal or ID was
+  fabricated; this is normal regression-backed control work. Rollback remains
+  the exact MAINT-0131 candidate commit through an ordinary reviewed revert.
+
+### Issues encountered
+
+- The protected primary `main` was clean but one commit behind merged
+  `origin/main`; editing there would have omitted MAINT-0130.
+- The verification manifest assigned every product domain to every helper in
+  `scripts/_lib`, even though those helpers have different maintained callers.
+- `session end --fix` reused the final clean-tree verdict for a phase that is
+  required to run before the candidate is committed.
+- The canonical policy required closeout timing/candidate/retry fields, but the
+  usage command accepted and stored an incomplete closeout checkpoint.
+- The prior safe-file rewrite lost two executable bits without an invariant
+  that protected those public compatibility entrypoints.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the primary checkout had not been fast-forwarded after
+  PR #844. Resolution: create one clean source-bound worktree directly from
+  exact `origin/main` and preserve every existing lane.
+- Confirmed root cause: `classify_paths` unions every matching rule, so a later
+  specific rule could not override the blanket `scripts/_lib/**` all-domain
+  owner. Resolution: remove that blanket and explicitly map outcome-changing
+  helper families while retaining generic control-plane coverage and unknown
+  fail-closed behavior.
+- Confirmed root cause: `cmd_end` marked dirty evidence failed before applying
+  its preparation-only return contract. Resolution: allow only `DIRTY` in
+  preparation mode; `UNKNOWN`, operation/conflict, receipt, and other failures
+  remain status `1`, while plain final validation still requires `CLEAN`.
+- Confirmed root cause: timing labels lived only in prose and the ledger schema
+  had no completeness or sum checks. Resolution: validate canonical labels,
+  non-negative finite minutes, exact total, candidate heads, and every required
+  counter before appending a closeout checkpoint.
+- Confirmed root cause: executable compatibility was accidental file metadata.
+  Resolution: add one focused regression for the two public entrypoints rather
+  than create a second executable registry.
+
+### Verification
+
+- The complete affected selection passes: 235 tests across session automation,
+  verification routing/evidence, migration entrypoints, Git guidance,
+  token-efficiency semantics, and control-plane contracts.
+- Verification-manifest validation passes with seven domains, 28 rules, and
+  unknown impact selecting all domains. Instruction drift, task format, active
+  script references, token-efficiency controls, and canonical context pass.
+- Live preparation on the 15-path dirty candidate validates the exact HOLD
+  receipt and exits `2`; it updates only the maintained handoff block and never
+  prints the final safe-closeout verdict.
+- The immutable candidate still requires one quick gate, one cumulative full
+  gate, ordinary commit hooks, and all applicable hosted checks.
+
 ## 2026-08-23 — Session: MAINT-0130 transactional safe-file foundation
 
 **Agent:** Codex (`governance`, sole writer)
