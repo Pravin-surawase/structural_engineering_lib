@@ -172,6 +172,19 @@ python3 -m structural_lib dxf results.json -o drawings.dxf
 python3 -m structural_lib report results.json --format=html -o report/
 ```
 
+For the bounded one-storey gravity workflow, start from the maintained open-hall
+example and review its explicit assumptions before changing it. The generated
+request contains no hidden engineering defaults.
+
+```bash
+python3 -m structural_lib gravity-v1 example > gravity-request.json
+python3 -m structural_lib gravity-v1 gravity-request.json > gravity-result.json
+```
+
+The same request is available from Python with
+`structural_lib.get_gravity_workflow_example_request_v1()` and through the
+Building Gravity review page's **Load maintained example** action.
+
 ## Supported scope
 
 The project deliberately states its boundaries instead of hiding them behind a

@@ -490,34 +490,104 @@ def _result_status(result_envelope: dict[str, object]) -> str:
     return str(result_envelope["overall_status"])
 
 
+def _with_fallback_component_issue(
+    envelope: dict[str, object],
+    *,
+    component_id: str,
+    kind: GravityComponentKindV1,
+    message: str | None = None,
+) -> dict[str, object]:
+    """Ensure every non-pass component has one directly discoverable reason."""
+
+    status = _result_status(envelope)
+    issues = envelope.get("issues")
+    if status == "PASS" or (isinstance(issues, list) and issues):
+        return envelope
+    issue = StructuralIssueV1(
+        code=f"{kind.value}_GOVERNING_{status}",
+        path=f"$.components.{component_id}",
+        message=message
+        or (
+            f"{kind.value.title()} component {component_id} governs as {status}; "
+            "inspect its component result for the failed or held check."
+        ),
+    )
+    return {**envelope, "issues": [issue.to_dict()]}
+
+
+def _governing_component_issue(
+    components: tuple[GravityComponentResultV1, ...],
+    governing_statuses: frozenset[str],
+) -> StructuralIssueV1 | None:
+    """Select one deterministic component reason for the aggregate envelope."""
+
+    component = next(
+        (
+            item
+            for item in components
+            if _result_status(item.result_envelope) in governing_statuses
+        ),
+        None,
+    )
+    if component is None:
+        return None
+    issues = component.result_envelope.get("issues")
+    if isinstance(issues, list) and issues and isinstance(issues[0], dict):
+        issue = issues[0]
+        return StructuralIssueV1(
+            code=str(issue.get("code", "GOVERNING_COMPONENT_ISSUE")),
+            path=str(issue.get("path", f"$.components.{component.component_id}")),
+            message=str(issue.get("message", "Governing component issue.")),
+        )
+    status = _result_status(component.result_envelope)
+    return StructuralIssueV1(
+        code=f"GOVERNING_COMPONENT_{status}",
+        path=f"$.components.{component.component_id}",
+        message=(
+            f"{component.kind.value.title()} component {component.component_id} "
+            f"governs the workflow as {status}."
+        ),
+    )
+
+
 def _aggregate_envelope(
     components: tuple[GravityComponentResultV1, ...],
 ) -> dict[str, object]:
     statuses = [_result_status(item.result_envelope) for item in components]
     if "BLOCKED" in statuses:
+        issue = _governing_component_issue(components, frozenset({"BLOCKED"}))
         return _envelope(
             intake=IntakeStatus.BLOCKED,
             calculation=CalculationStatus.NOT_EVALUATED,
             engineering=EngineeringStatus.NOT_EVALUATED,
+            issues=() if issue is None else (issue,),
         )
     if "ERROR" in statuses:
+        issue = _governing_component_issue(components, frozenset({"ERROR"}))
         return _envelope(
             intake=IntakeStatus.VALID,
             calculation=CalculationStatus.ERROR,
             engineering=EngineeringStatus.HOLD,
+            issues=() if issue is None else (issue,),
         )
     if any(status in {"HOLD", "NOT_EVALUATED"} for status in statuses):
+        issue = _governing_component_issue(
+            components, frozenset({"HOLD", "NOT_EVALUATED"})
+        )
         return _envelope(
             intake=IntakeStatus.PARTIAL,
             calculation=CalculationStatus.NOT_EVALUATED,
             engineering=EngineeringStatus.HOLD,
+            issues=() if issue is None else (issue,),
         )
+    issue = _governing_component_issue(components, frozenset({"FAIL"}))
     return _envelope(
         intake=IntakeStatus.VALID,
         calculation=CalculationStatus.COMPLETED,
         engineering=(
             EngineeringStatus.FAIL if "FAIL" in statuses else EngineeringStatus.PASS
         ),
+        issues=() if issue is None else (issue,),
     )
 
 
@@ -668,19 +738,24 @@ def run_gravity_workflow_v1(
                 and slab_result.serviceability is not None
                 and slab_result.serviceability.is_satisfied
             )
+            slab_envelope = _with_fallback_component_issue(
+                _envelope(
+                    intake=IntakeStatus.VALID,
+                    calculation=CalculationStatus.COMPLETED,
+                    engineering=(
+                        EngineeringStatus.PASS if passed else EngineeringStatus.FAIL
+                    ),
+                ),
+                component_id=panel.id,
+                kind=GravityComponentKindV1.SLAB,
+            )
             components.append(
                 GravityComponentResultV1(
                     component_id=panel.id,
                     kind=GravityComponentKindV1.SLAB,
                     canonical_function=slab_applicability.canonical_function,
                     action_ids=(slab_action.action_id,),
-                    result_envelope=_envelope(
-                        intake=IntakeStatus.VALID,
-                        calculation=CalculationStatus.COMPLETED,
-                        engineering=(
-                            EngineeringStatus.PASS if passed else EngineeringStatus.FAIL
-                        ),
-                    ),
+                    result_envelope=slab_envelope,
                     result=to_transport_value(slab_result),
                 )
             )
@@ -773,6 +848,11 @@ def run_gravity_workflow_v1(
                 )
                 envelope = result_payload["result_envelope"]
                 result_payload = to_transport_value(result_payload)
+            envelope = _with_fallback_component_issue(
+                envelope,
+                component_id=member.id,
+                kind=kind,
+            )
             components.append(
                 GravityComponentResultV1(
                     component_id=member.id,
@@ -877,17 +957,23 @@ def run_gravity_workflow_v1(
                 if footing_result.status == "HOLD"
                 else IntakeStatus.VALID
             )
+            footing_envelope = _with_fallback_component_issue(
+                _envelope(
+                    intake=intake,
+                    calculation=calculation,
+                    engineering=engineering,
+                ),
+                component_id=footing.id,
+                kind=GravityComponentKindV1.FOOTING,
+                message=footing_result.detailing_hold_reason,
+            )
             components.append(
                 GravityComponentResultV1(
                     component_id=footing.id,
                     kind=GravityComponentKindV1.FOOTING,
                     canonical_function=applicable.canonical_function,
                     action_ids=action_ids,
-                    result_envelope=_envelope(
-                        intake=intake,
-                        calculation=calculation,
-                        engineering=engineering,
-                    ),
+                    result_envelope=footing_envelope,
                     result=to_transport_value(footing_result),
                 )
             )

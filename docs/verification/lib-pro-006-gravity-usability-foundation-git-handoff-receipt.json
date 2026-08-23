@@ -1,0 +1,212 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-23T11:45:38Z",
+      "query_status": "OK",
+      "reference": "Review the practical gravity audit and make the foundation much better before INDIA-3.",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "REVIEW_GRAVITY_AUDIT",
+      "IMPROVE_GRAVITY_FOUNDATION",
+      "ADD_FOCUSED_REGRESSION_TESTS",
+      "UPDATE_GENERATED_CONTRACTS",
+      "RECORD_TASK_EVIDENCE",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-23T11:45:38Z",
+    "prohibited_actions": [
+      "CHANGE_INDIA_3_ENGINEERING_BEHAVIOR",
+      "IMPLEMENT_HELD_FOLLOW_ON_SCOPE",
+      "TRACK_OR_REPRINT_PROTECTED_SOURCE_CONTENT",
+      "PUBLISH_RELEASE",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "BYPASS_REQUIRED_CHECKS"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "REVIEW_GRAVITY_AUDIT",
+        "IMPROVE_GRAVITY_FOUNDATION",
+        "ADD_FOCUSED_REGRESSION_TESTS",
+        "UPDATE_GENERATED_CONTRACTS",
+        "RECORD_TASK_EVIDENCE",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/lib-pro-006-gravity-foundation",
+      "head_sha": "69c09cc741e11ba50521cb2cadaf2ba560ba4c51",
+      "task_id": "LIB-PRO-006"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REBIND_INDIA_3_SOURCE_LIBRARY_CANDIDATE_AFTER_LIB_PRO_006_INTEGRATION",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "19261ba8b3f14a0fa64b6afc3a250006702243068c0dc34d96a572d3a30f116a",
+    "state": {
+      "branch": "codex/lib-pro-006-gravity-foundation",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "69c09cc741e11ba50521cb2cadaf2ba560ba4c51",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 93.017,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-lib-pro-006-gravity-foundation",
+      "head_sha": "69c09cc741e11ba50521cb2cadaf2ba560ba4c51",
+      "hold_reasons": [
+        "changed paths: 28"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-23T11:56:17.603419+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-006-gravity-foundation",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 28,
+        "modified_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/verification/lib-pro-006-gravity-usability-foundation-evidence.json"
+        ],
+        "staged_paths": [
+          "Python/structural_lib/__init__.py",
+          "Python/structural_lib/__main__.py",
+          "Python/structural_lib/services/api.py",
+          "Python/structural_lib/services/gravity_builder.py",
+          "Python/structural_lib/services/gravity_calculation_book.py",
+          "Python/structural_lib/services/gravity_workflow.py",
+          "Python/structural_lib/services/workflow_catalog.py",
+          "Python/tests/test_workflow_catalog.py",
+          "Python/tests/unit/test_gravity_builder_v1.py",
+          "Python/tests/unit/test_gravity_workflow_v1.py",
+          "README.md",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/_archive/tasks-history.md",
+          "docs/planning/next-session-brief.md",
+          "docs/reference/api-classification.json",
+          "docs/reference/api-manifest.json",
+          "docs/reference/api.md",
+          "docs/reference/beam-tool-manifest.json",
+          "docs/specs/building-gravity-v1.md",
+          "docs/verification/lib-pro-006-gravity-usability-foundation-evidence.json",
+          "docs/verification/lib-pro-006-gravity-usability-foundation-git-handoff-receipt.json",
+          "fastapi_app/models/catalog.py",
+          "fastapi_app/openapi_baseline.json",
+          "fastapi_app/tests/test_building_gravity.py",
+          "react_app/src/features/building-gravity/BuildingGravityReviewPage.test.tsx",
+          "react_app/src/features/building-gravity/BuildingGravityReviewPage.tsx",
+          "react_app/src/features/building-gravity/types.ts"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-006-gravity-foundation"
+    }
+  },
+  "local_state_receipt_hash": "sha256:19261ba8b3f14a0fa64b6afc3a250006702243068c0dc34d96a572d3a30f116a",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-23T11:56:17.603581+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [
+      "REBIND_INDIA_3_SOURCE_LIBRARY_CANDIDATE_AFTER_LIB_PRO_006_INTEGRATION"
+    ],
+    "observed_at_utc": "2026-08-23T11:45:38Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources"
+    ],
+    "integration_owner": "orchestrator",
+    "owned_paths": [
+      "Python/structural_lib/services/gravity_builder.py",
+      "Python/structural_lib/services/gravity_calculation_book.py",
+      "Python/structural_lib/services/gravity_workflow.py",
+      "Python/structural_lib/services/workflow_catalog.py",
+      "Python/tests/unit/test_gravity_builder_v1.py",
+      "Python/tests/unit/test_gravity_workflow_v1.py",
+      "Python/tests/test_workflow_catalog.py",
+      "fastapi_app/tests/test_building_gravity.py",
+      "react_app/src/features/building-gravity",
+      "README.md",
+      "docs/specs/building-gravity-v1.md",
+      "docs/reference/api.md",
+      "docs/verification/lib-pro-006-gravity-usability-foundation-evidence.json",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/_archive/tasks-history.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "shared_paths": [
+      "Python/structural_lib/__init__.py",
+      "Python/structural_lib/services/api.py",
+      "Python/structural_lib/__main__.py",
+      "fastapi_app/models/catalog.py",
+      "fastapi_app/openapi_baseline.json",
+      "docs/reference/api-manifest.json",
+      "docs/reference/api-classification.json",
+      "docs/reference/beam-tool-manifest.json"
+    ],
+    "task_id": "LIB-PRO-006"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

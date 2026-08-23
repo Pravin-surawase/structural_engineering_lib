@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-17
+last_updated: 2026-08-23
 doc_type: reference
 complexity: intermediate
 tags: []
@@ -113,11 +113,27 @@ Supported-case discovery is available through
 `api.get_supported_is456_capability_document` so the public supported/held
 boundary is serialized from the same registry.
 
-The application-facing beam slice is discoverable through the immutable
-`api.WorkflowCatalog` returned by `api.get_workflow_catalog()`. Transport and
-tooling surfaces consume `api.get_workflow_catalog_document()` or the stable
-`api.serialize_workflow_catalog()` representation; these expose approved schema
-and adapter IDs only and never serialize Python callables.
+The immutable `api.WorkflowCatalog` returned by
+`api.get_workflow_catalog()` projects all supported component-family records,
+registers composed application workflows such as Building Gravity V1, and
+retains approved automation adapters as a separate list. Transport and tooling
+surfaces consume `api.get_workflow_catalog_document()` or the stable
+`api.serialize_workflow_catalog()` representation. The composed gravity record
+is discoverable but remains explicitly ineligible for autonomous tool execution.
+
+### Building Gravity V1 onboarding surface
+
+The stable facades export the complete versioned request/result and onboarding
+surface: `api.GravityWorkflowRequestV1`, `api.GravityWorkflowResultV1`,
+`api.GravityWorkflowRunBundleV1`, `api.GravityWorkflowDefinitionV1`,
+`api.RectangularGravityWorkflowBuilderInputV1`,
+`api.build_rectangular_gravity_workflow_request_v1`,
+`api.get_gravity_workflow_example_document_v1`,
+`api.get_gravity_workflow_example_request_v1`,
+`api.get_gravity_workflow_definition_v1`, `api.run_gravity_workflow_v1`, and
+`api.run_gravity_workflow_with_book_v1`. Catalogue consumers can use the typed
+`api.ComposedWorkflowCapability` record without treating discoverability as
+tool approval.
 
 ## 0. Unified CLI (v0.9.4+)
 
@@ -135,6 +151,10 @@ python -m structural_lib bbs results.json -o schedule.csv
 
 # Generate DXF drawings (requires ezdxf)
 python -m structural_lib dxf results.json -o drawings.dxf
+
+# Generate and run the maintained Building Gravity V1 request
+python -m structural_lib gravity-v1 example -o gravity-request.json
+python -m structural_lib gravity-v1 gravity-request.json -o gravity-result.json
 
 # Check BBS vs DXF bar mark consistency
 python -m structural_lib mark-diff --bbs schedule.csv --dxf drawings.dxf

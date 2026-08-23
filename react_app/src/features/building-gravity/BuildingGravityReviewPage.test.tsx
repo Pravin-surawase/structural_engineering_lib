@@ -80,6 +80,10 @@ describe('BuildingGravityReviewPage', () => {
       accepted_topology: ['one slab', 'two beams'],
       component_adapters: {},
       product_surfaces: {},
+      example_request: {
+        schema_version: 'gravity-workflow-request/v1',
+        model_hash: '1'.repeat(64),
+      },
       exclusions: [],
       qualified_review_required: true,
     });
@@ -96,6 +100,17 @@ describe('BuildingGravityReviewPage', () => {
     expect(runMock).not.toHaveBeenCalled();
   });
 
+  it('loads the maintained runnable example without test-fixture discovery', async () => {
+    render(<BuildingGravityReviewPage />);
+
+    fireEvent.click(await screen.findByRole('button', { name: /load maintained example/i }));
+
+    expect(
+      (screen.getByLabelText(/GravityWorkflowRequestV1 JSON/i) as HTMLTextAreaElement).value,
+    ).toContain('gravity-workflow-request/v1');
+    expect(runMock).not.toHaveBeenCalled();
+  });
+
   it('shows aggregate and per-component truth with exact actions and review hold', async () => {
     runMock.mockResolvedValue(bundle());
     render(<BuildingGravityReviewPage />);
@@ -109,6 +124,8 @@ describe('BuildingGravityReviewPage', () => {
     expect(screen.getAllByText('PASS').length).toBeGreaterThan(0);
     expect(screen.getAllByText('FAIL').length).toBeGreaterThan(0);
     expect(screen.getByText('101.250 kN')).toBeInTheDocument();
+    expect(screen.getByText('BASIS_MISSING')).toBeInTheDocument();
+    expect(screen.getByText('External basis missing')).toBeInTheDocument();
     expect(screen.getAllByText(/QUALIFIED REVIEW REQUIRED/i).length).toBeGreaterThan(0);
     expect(screen.getByRole('button', { name: /download calculation book/i })).toBeEnabled();
     expect(runMock).toHaveBeenCalledWith(

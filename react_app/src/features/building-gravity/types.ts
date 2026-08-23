@@ -77,6 +77,7 @@ export interface GravityWorkflowDefinition {
   accepted_topology: string[];
   component_adapters: Record<string, string>;
   product_surfaces: Record<string, string>;
+  example_request: Record<string, unknown>;
   exclusions: string[];
   qualified_review_required: true;
 }

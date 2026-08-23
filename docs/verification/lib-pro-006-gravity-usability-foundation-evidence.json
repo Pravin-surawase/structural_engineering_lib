@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "lib-pro-006-gravity-usability-foundation",
+  "task_id": "LIB-PRO-006",
+  "observed_at_utc": "2026-08-23T11:45:38Z",
+  "baseline": {
+    "audited_commit": "3f61bd93d92b7092a55e25b8ca99eda4b3335ff1",
+    "candidate_base_commit": "69c09cc741e11ba50521cb2cadaf2ba560ba4c51",
+    "audited_gravity_product_paths_changed_before_candidate": false,
+    "request_schema_compact_characters": 23738,
+    "request_schema_pretty_characters": 39195,
+    "request_schema_definitions": 28,
+    "root_gravity_onboarding_exports": false,
+    "runnable_installed_example": false,
+    "aggregate_governing_issue_present_for_practical_hold": false
+  },
+  "audit_disposition": {
+    "arithmetic_and_reconciliation": "CONFIRMED_TO_DISPLAYED_PRECISION",
+    "fail_closed_footing_detailing_hold": "CONFIRMED",
+    "usability_findings": "CONFIRMED",
+    "catalogue_correction": "The automation-tool catalogue was beam-only, but the separate canonical component registry already represented 10 component families.",
+    "scope_selected": [
+      "maintained runnable open-hall example",
+      "explicit rectangular builder without engineering defaults",
+      "package-root, CLI, REST, and review-UI onboarding",
+      "deterministic governing reason promotion",
+      "component and composed-workflow catalogue discoverability"
+    ],
+    "held_follow_on_scope": [
+      "provided beam-bar arrangement checking",
+      "footing hooks and bends",
+      "wall and equipment actions",
+      "continuous beams, multiple bays, and external analysis adapters",
+      "release or professional approval",
+      "INDIA-3 source interpretation or engineering changes"
+    ]
+  },
+  "result": {
+    "maintained_example_id": "gravity-v1.open-hall-demonstration",
+    "example_overall_status": "HOLD",
+    "example_governing_issue_code": "FOOTING_GOVERNING_HOLD",
+    "example_boundary_count": 26,
+    "example_maximum_absolute_residual_kn": 0.0,
+    "component_families_discoverable": 10,
+    "composed_gravity_workflows_discoverable": 1,
+    "gravity_workflow_tool_eligible": false,
+    "beam_automation_capabilities_retained": 1,
+    "hidden_builder_engineering_defaults": 0,
+    "india_3_engineering_paths_changed": false
+  },
+  "prefreeze_verification": [
+    {
+      "command": "pytest gravity workflow, builder, catalogue, and REST focused set",
+      "status": "PASS_AFTER_FAILED_ONLY_REPAIR",
+      "unique_tests": 37
+    },
+    {
+      "command": "pytest builder and building-gravity REST impact subset after explicit-assumption repair",
+      "status": "PASS",
+      "tests": 8
+    },
+    {
+      "command": "pytest gravity workflow governing-reason assertions",
+      "status": "PASS_AFTER_FAILED_ONLY_EXPECTATION_REPAIR",
+      "tests": 12
+    },
+    {
+      "command": "./run.sh frontend test BuildingGravityReviewPage",
+      "status": "PASS",
+      "tests": 3
+    },
+    {
+      "command": "./run.sh frontend lint",
+      "status": "PASS"
+    },
+    {
+      "command": "./run.sh frontend build",
+      "status": "PASS"
+    },
+    {
+      "command": "API manifest, API compatibility, and OpenAPI snapshot read-only checks",
+      "status": "PASS",
+      "endpoints": 89,
+      "openapi_schemas": 437
+    },
+    {
+      "command": "beam-tool manifest, architecture boundaries, and import validation",
+      "status": "PASS",
+      "architecture_violations": 0,
+      "broken_internal_imports": 0
+    },
+    {
+      "command": "documentation, task format, and session contract checks",
+      "status": "PASS_AFTER_FAILED_ONLY_TASK_WIP_REPAIR"
+    },
+    {
+      "command": "./run.sh check --quick --no-reuse",
+      "status": "PASS",
+      "checks": "10/10",
+      "reused": 0
+    },
+    {
+      "command": "normal staged pre-commit hooks",
+      "status": "PASS_AFTER_FAILED_ONLY_STATIC_AND_API_CONTRACT_REPAIR"
+    },
+    {
+      "command": "git diff --check",
+      "status": "PASS"
+    }
+  ],
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-23T11:45:38Z",
+      "query_status": "OK",
+      "reference": "Review the practical gravity audit and make the foundation much better before INDIA-3.",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "REVIEW_GRAVITY_AUDIT",
+      "IMPROVE_GRAVITY_FOUNDATION",
+      "ADD_FOCUSED_REGRESSION_TESTS",
+      "UPDATE_GENERATED_CONTRACTS",
+      "RECORD_TASK_EVIDENCE",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-23T11:45:38Z",
+    "prohibited_actions": [
+      "CHANGE_INDIA_3_ENGINEERING_BEHAVIOR",
+      "IMPLEMENT_HELD_FOLLOW_ON_SCOPE",
+      "TRACK_OR_REPRINT_PROTECTED_SOURCE_CONTENT",
+      "PUBLISH_RELEASE",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "BYPASS_REQUIRED_CHECKS"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "REVIEW_GRAVITY_AUDIT",
+        "IMPROVE_GRAVITY_FOUNDATION",
+        "ADD_FOCUSED_REGRESSION_TESTS",
+        "UPDATE_GENERATED_CONTRACTS",
+        "RECORD_TASK_EVIDENCE",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/lib-pro-006-gravity-foundation",
+      "head_sha": "69c09cc741e11ba50521cb2cadaf2ba560ba4c51",
+      "task_id": "LIB-PRO-006"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [
+      "REBIND_INDIA_3_SOURCE_LIBRARY_CANDIDATE_AFTER_LIB_PRO_006_INTEGRATION"
+    ],
+    "observed_at_utc": "2026-08-23T11:45:38Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

@@ -219,12 +219,26 @@ def test_building_gravity_definition_declares_all_product_surfaces(client) -> No
     definition = response.json()["data"]
     assert definition["capability_id"] == "building.gravity.dead-live.v1"
     assert definition["product_surfaces"] == {
-        "python": "structural_lib.services.gravity_workflow.run_gravity_workflow_v1",
-        "cli": "python -m structural_lib gravity-v1 REQUEST.json",
+        "python": "structural_lib.run_gravity_workflow_with_book_v1",
+        "python_builder": "structural_lib.build_rectangular_gravity_workflow_request_v1",
+        "python_example": "structural_lib.get_gravity_workflow_example_request_v1",
+        "cli_example": "python -m structural_lib gravity-v1 example",
+        "cli_run": "python -m structural_lib gravity-v1 REQUEST.json",
         "rest": "POST /api/v1/building-gravity/v1/run",
         "review_ui": "/workbench/building-gravity/v1",
     }
+    assert GravityWorkflowRequestV1.model_validate(definition["example_request"])
+    assert "accepted_model_hash" not in definition["example_request"]["building"]
+    assert "load_model_hash" not in definition["example_request"]["loads"]
     assert definition["qualified_review_required"] is True
+
+    run = client.post(
+        "/api/v1/building-gravity/v1/run", json=definition["example_request"]
+    )
+    assert run.status_code == 200
+    envelope = run.json()["data"]["workflow_result"]["result_envelope"]
+    assert envelope["overall_status"] == "HOLD"
+    assert envelope["issues"][0]["code"] == "FOOTING_GOVERNING_HOLD"
 
 
 def test_building_gravity_route_preserves_actions_holds_and_calculation_book(

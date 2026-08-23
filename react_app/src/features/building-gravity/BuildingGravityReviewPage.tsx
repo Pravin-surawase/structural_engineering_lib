@@ -71,6 +71,15 @@ export function BuildingGravityReviewPage() {
     return counts;
   }, [bundle]);
 
+  const governingIssue = bundle?.workflow_result.result_envelope.issues[0] ?? null;
+
+  function loadExample() {
+    if (!definition) return;
+    setError(null);
+    setBundle(null);
+    setRequestText(JSON.stringify(definition.example_request, null, 2));
+  }
+
   async function handleRun() {
     setError(null);
     setBundle(null);
@@ -145,9 +154,19 @@ export function BuildingGravityReviewPage() {
         ) : null}
 
         <section className="rounded-xl border border-white/10 bg-zinc-900/60 p-4">
-          <label htmlFor="gravity-request" className="text-sm font-semibold">
-            GravityWorkflowRequestV1 JSON
-          </label>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <label htmlFor="gravity-request" className="text-sm font-semibold">
+              GravityWorkflowRequestV1 JSON
+            </label>
+            <button
+              type="button"
+              onClick={loadExample}
+              disabled={!definition}
+              className="rounded-lg border border-white/10 px-3 py-1.5 text-xs font-semibold enabled:hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Load maintained example
+            </button>
+          </div>
           <p className="mt-1 text-xs text-zinc-500">
             Paste the exported, hash-bound request. Unknown or incomplete fields are rejected before calculation.
           </p>
@@ -207,6 +226,12 @@ export function BuildingGravityReviewPage() {
                   </span>
                 ))}
               </div>
+              {governingIssue ? (
+                <div className="mt-4 rounded-lg border border-amber-400/20 bg-amber-400/[0.05] p-3 text-xs text-amber-100/85">
+                  <p className="font-mono font-semibold">{governingIssue.code}</p>
+                  <p className="mt-1">{governingIssue.message}</p>
+                </div>
+              ) : null}
             </section>
 
             <section className="overflow-hidden rounded-xl border border-white/10 bg-zinc-900/60">

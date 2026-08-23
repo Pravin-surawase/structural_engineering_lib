@@ -30,6 +30,30 @@ def test_catalog_is_deterministic_and_semantically_bound() -> None:
     assert capability.qualified_review_required is True
     assert "catalogue adapter exposes" in capability.summary.lower()
     assert any("held for Tu > 0" in item for item in capability.limitations)
+    assert [item.element for item in catalog.component_capabilities] == [
+        "beam",
+        "column",
+        "isolated_footing",
+        "solid_slab",
+        "stair",
+        "wall",
+        "deep_beam",
+        "flat_slab",
+        "combined_footing",
+        "strap_footing",
+    ]
+    gravity = catalog.composed_workflows[0]
+    assert gravity.capability_id == "building.gravity.dead-live.v1"
+    assert gravity.component_capability_ids == (
+        "beam",
+        "column",
+        "isolated_footing",
+        "solid_slab",
+    )
+    assert gravity.tool_eligible is False
+    assert gravity.python_entrypoint == (
+        "structural_lib.run_gravity_workflow_with_book_v1"
+    )
     assert serialize_workflow_catalog() == serialize_workflow_catalog("1.0")
 
 
@@ -41,6 +65,8 @@ def test_catalog_rejects_duplicate_and_unknown_registry_ids() -> None:
         code_edition=catalog.code_edition,
         compatible_versions=catalog.compatible_versions,
         capabilities=(catalog.capabilities[0], catalog.capabilities[0]),
+        component_capabilities=catalog.component_capabilities,
+        composed_workflows=catalog.composed_workflows,
     )
     with pytest.raises(CatalogValidationError, match="Duplicate capability_id"):
         validate_catalog(duplicate)
@@ -53,6 +79,17 @@ def test_catalog_rejects_duplicate_and_unknown_registry_ids() -> None:
     )
     with pytest.raises(CatalogValidationError, match="Unknown service adapter"):
         validate_catalog(invented)
+
+    stale_components = replace(catalog, component_capabilities=())
+    with pytest.raises(CatalogValidationError, match="projection is stale"):
+        validate_catalog(stale_components)
+
+    unknown_composition = replace(
+        catalog.composed_workflows[0],
+        component_capability_ids=("invented",),
+    )
+    with pytest.raises(CatalogValidationError, match="unknown component"):
+        validate_catalog(replace(catalog, composed_workflows=(unknown_composition,)))
 
 
 def test_catalog_rejects_unknown_semantics_and_example_fields() -> None:

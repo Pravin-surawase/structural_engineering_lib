@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-23 — MAINT-0134 instruction-consolidation candidate frozen
+**Updated:** 2026-08-23 — LIB-PRO-006 gravity usability foundation candidate
 
 ---
 
@@ -127,19 +127,30 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| MAINT-0134 | Consolidate Claude, Copilot, VS Code, and Codex agent instructions into one validated ownership contract | Main Agent | M | P0 | 🟡 SOFTWARE COMPLETE — frozen local candidate; hosted integration pending |
-| INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ PAUSED — private source library preserved; resume after MAINT-0134 integration |
+| LIB-PRO-006 | Review the practical gravity audit and establish maintained no-hidden-default onboarding, discoverability, and governing-result foundations | Main Agent | M | P0 | 🟡 SOFTWARE COMPLETE — frozen local candidate; hosted integration pending |
+| INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ PAUSED — private source library preserved; resume after LIB-PRO-006 integration |
 
-`MAINT-0134` now assigns cross-agent policy to `AGENTS.md`, composes Claude
+`LIB-PRO-006` confirms the practical 10 m x 4 m audit arithmetic and fail-closed
+footing-detailing `HOLD`, adds a maintained runnable example and explicit
+builder, exports the workflow from the package root, promotes one deterministic
+governing reason, and separates component/composed-workflow discoverability
+from tool eligibility. Provided beam-bar checking, hooks/bends, new load
+families, analysis adapters, release, and INDIA-3 engineering remain held.
+
+`MAINT-0134` assigns cross-agent policy to `AGENTS.md`, composes Claude
 through `@AGENTS.md`, keeps a concise standalone Copilot baseline, retires
 legacy executable routing, requires exact scoped-rule projection parity, and
-validates session/runtime/governance semantics. The candidate does not change
-INDIA-3 source or engineering behavior.
+validates session/runtime/governance semantics. PR #850 is merged at the exact
+`69c09cc7` base used for LIB-PRO-006.
 
 `MAINT-0133B-PACKET-A` merged through PR #848 at `f24c3904`. The owner then
 selected `INDIA-3-G0` and authorized use of additional local IS-code PDFs under
 the existing non-distribution boundary. That ignored private library remains
-preserved while the instruction packet integrates.
+preserved. Its tracked source-boundary candidate `9c976b1f` is based on
+`f24c3904` and overlaps the shared session/task handoff documents, so it is not
+integrated out of order. After LIB-PRO-006 merges, rebind that preserved packet
+onto exact new `main`, reconcile only those shared documents, and then resume
+the bounded INDIA-3-G0 audit.
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. The reproduced public-route safety packet is integrated. INDIA-3-G0

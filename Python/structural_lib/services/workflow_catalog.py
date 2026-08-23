@@ -10,6 +10,8 @@ from typing import Any, Literal, cast
 
 from structural_lib.services.capabilities import (
     IS456_CODE_EDITION,
+    IS456Capability,
+    get_supported_is456_capabilities,
     get_supported_is456_semantic_contract,
 )
 
@@ -18,6 +20,7 @@ __all__ = [
     "CATALOG_VERSION",
     "CatalogField",
     "CatalogValidationError",
+    "ComposedWorkflowCapability",
     "UnsupportedCatalogVersionError",
     "WorkflowCapability",
     "WorkflowCatalog",
@@ -31,11 +34,16 @@ __all__ = [
 ]
 
 CATALOG_SCHEMA_VERSION = "1.0"
-CATALOG_VERSION = "1.2.0"
-_COMPATIBLE_VERSIONS = ("1.0", "1.0.0", "1.1.0", CATALOG_VERSION)
+CATALOG_VERSION = "1.3.0"
+_COMPATIBLE_VERSIONS = ("1.0", "1.0.0", "1.1.0", "1.2.0", CATALOG_VERSION)
 _APPROVED_ADAPTERS = frozenset({"fastapi.design_beam.v1"})
 _APPROVED_REQUEST_SCHEMAS = frozenset({"fastapi.BeamDesignRequest.v1"})
 _APPROVED_RESULT_SCHEMAS = frozenset({"fastapi.BeamDesignResponse.v2"})
+_APPROVED_COMPOSED_ENTRYPOINTS = frozenset(
+    {"structural_lib.run_gravity_workflow_with_book_v1"}
+)
+_APPROVED_COMPOSED_REQUEST_SCHEMAS = frozenset({"GravityWorkflowRequestV1"})
+_APPROVED_COMPOSED_RESULT_SCHEMAS = frozenset({"GravityWorkflowRunBundleV1"})
 
 JsonScalar = str | int | float | bool | None
 
@@ -98,6 +106,25 @@ class WorkflowCapability:
 
 
 @dataclass(frozen=True)
+class ComposedWorkflowCapability:
+    """Discoverable multi-component workflow kept separate from AI tool approval."""
+
+    capability_id: str
+    capability_version: str
+    title: str
+    summary: str
+    component_capability_ids: tuple[str, ...]
+    python_entrypoint: str
+    request_schema_id: str
+    result_schema_id: str
+    example_id: str
+    product_surfaces: tuple[tuple[str, str], ...]
+    limitations: tuple[str, ...]
+    tool_eligible: bool
+    qualified_review_required: bool
+
+
+@dataclass(frozen=True)
 class WorkflowCatalog:
     """Immutable catalogue root."""
 
@@ -106,6 +133,8 @@ class WorkflowCatalog:
     code_edition: str
     compatible_versions: tuple[str, ...]
     capabilities: tuple[WorkflowCapability, ...]
+    component_capabilities: tuple[IS456Capability, ...]
+    composed_workflows: tuple[ComposedWorkflowCapability, ...]
 
 
 _BEAM_FIELDS = (
@@ -298,6 +327,43 @@ _CATALOG = WorkflowCatalog(
             qualified_review_required=True,
         ),
     ),
+    component_capabilities=get_supported_is456_capabilities(),
+    composed_workflows=(
+        ComposedWorkflowCapability(
+            capability_id="building.gravity.dead-live.v1",
+            capability_version="1.0.0",
+            title="Building Gravity Workflow V1",
+            summary=(
+                "One rectangular, one-storey dead/live gravity load path with "
+                "exact ledger reconciliation and conditional component design."
+            ),
+            component_capability_ids=(
+                "beam",
+                "column",
+                "isolated_footing",
+                "solid_slab",
+            ),
+            python_entrypoint=("structural_lib.run_gravity_workflow_with_book_v1"),
+            request_schema_id="GravityWorkflowRequestV1",
+            result_schema_id="GravityWorkflowRunBundleV1",
+            example_id="gravity-v1.open-hall-demonstration",
+            product_surfaces=(
+                ("cli_example", "python -m structural_lib gravity-v1 example"),
+                ("cli_run", "python -m structural_lib gravity-v1 REQUEST.json"),
+                ("rest_definition", "GET /api/v1/building-gravity/v1/definition"),
+                ("rest_run", "POST /api/v1/building-gravity/v1/run"),
+                ("review_ui", "/workbench/building-gravity/v1"),
+            ),
+            limitations=(
+                "One rectangular one-storey, one-panel topology only.",
+                "Dead and unreduced live gravity actions only.",
+                "No global stiffness, frame, finite-element, or lateral analysis.",
+                "Qualified structural-engineering review remains required.",
+            ),
+            tool_eligible=False,
+            qualified_review_required=True,
+        ),
+    ),
 )
 
 
@@ -352,6 +418,38 @@ def validate_catalog(catalog: WorkflowCatalog) -> WorkflowCatalog:
     capability_ids = [item.capability_id for item in catalog.capabilities]
     if len(capability_ids) != len(set(capability_ids)):
         raise CatalogValidationError("Duplicate capability_id")
+
+    canonical_component_capabilities = get_supported_is456_capabilities()
+    if catalog.component_capabilities != canonical_component_capabilities:
+        raise CatalogValidationError("Component capability projection is stale")
+    component_ids = [item.element for item in catalog.component_capabilities]
+    if len(component_ids) != len(set(component_ids)):
+        raise CatalogValidationError("Duplicate component capability ID")
+
+    composed_ids = [item.capability_id for item in catalog.composed_workflows]
+    if len(composed_ids) != len(set(composed_ids)):
+        raise CatalogValidationError("Duplicate composed workflow capability_id")
+    component_id_set = set(component_ids)
+    for workflow in catalog.composed_workflows:
+        if not workflow.component_capability_ids or not set(
+            workflow.component_capability_ids
+        ).issubset(component_id_set):
+            raise CatalogValidationError(
+                "Composed workflow references an unknown component capability"
+            )
+        if workflow.python_entrypoint not in _APPROVED_COMPOSED_ENTRYPOINTS:
+            raise CatalogValidationError("Unknown composed workflow entrypoint")
+        if workflow.request_schema_id not in _APPROVED_COMPOSED_REQUEST_SCHEMAS:
+            raise CatalogValidationError("Unknown composed request schema ID")
+        if workflow.result_schema_id not in _APPROVED_COMPOSED_RESULT_SCHEMAS:
+            raise CatalogValidationError("Unknown composed result schema ID")
+        surface_names = [name for name, _value in workflow.product_surfaces]
+        if len(surface_names) != len(set(surface_names)):
+            raise CatalogValidationError("Duplicate composed product surface")
+        if workflow.tool_eligible:
+            raise CatalogValidationError(
+                "Composed workflow requires a separate tool-eligibility approval"
+            )
 
     semantic_references = _semantic_reference_set()
     for capability in catalog.capabilities:
@@ -431,6 +529,9 @@ def migrate_workflow_catalog_document(document: dict[str, Any]) -> dict[str, Any
     migrated["catalog_version"] = CATALOG_VERSION
     migrated["schema_version"] = CATALOG_SCHEMA_VERSION
     migrated["compatible_versions"] = list(_COMPATIBLE_VERSIONS)
+    current = get_workflow_catalog_document()
+    migrated["component_capabilities"] = current["component_capabilities"]
+    migrated["composed_workflows"] = current["composed_workflows"]
     return migrated
 
 

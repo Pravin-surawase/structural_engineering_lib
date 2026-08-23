@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-17
+last_updated: 2026-08-23
 doc_type: spec
 complexity: advanced
 tags: [gravity, building-model, load-model, provenance, reconciliation]
@@ -128,6 +128,32 @@ supplied loads are 1.5 kN/m2 superimposed dead and 3.0 kN/m2 live.
 The executable B1 vector is
 `Python/tests/unit/test_building_gravity_v1.py`.
 
+## Maintained onboarding example and explicit builder
+
+Users do not need repository tests to construct their first request. The
+installed package emits a complete, runnable 10 m x 4 m open-hall example:
+
+```bash
+python -m structural_lib gravity-v1 example -o gravity-request.json
+python -m structural_lib gravity-v1 gravity-request.json -o gravity-result.json
+```
+
+The same request is available through
+`get_gravity_workflow_example_request_v1()` as a typed object and
+`get_gravity_workflow_example_document_v1()` as strict runnable JSON. The REST
+definition embeds the runnable document, and the review UI exposes it through
+`Load maintained example`.
+
+`build_rectangular_gravity_workflow_request_v1()` accepts a frozen
+`RectangularGravityWorkflowBuilderInputV1`. It generates only topology IDs,
+source-record accounting, and model/load hashes. Span, sections, material,
+loads, support idealizations, inclusion rules, both load combinations, source
+hashes and references, exclusions, balance tolerance, and every component
+design basis are required inputs. The builder validates that the explicitly
+supplied support idealizations match the bounded V1 topology; it has no
+engineering defaults. Empty design-basis tuples remain an explicit caller
+choice and lead to the existing fail-closed component `HOLD` outcomes.
+
 ## B2 request boundary
 
 `GravityWorkflowRequestV1` binds all downstream work to the accepted B1
@@ -206,23 +232,37 @@ At workflow level, any unresolved component `HOLD` keeps the aggregate on
 `HOLD`, even if another completed component has failed. The individual `FAIL`
 remains visible and is never converted to a pass. With no unresolved holds or
 errors, any component failure makes the aggregate `FAIL`; otherwise it is
-`PASS`. Every result still requires qualified structural-engineering review.
+`PASS`. Every non-pass component carries at least one direct issue, and the
+aggregate envelope deterministically promotes the first governing component
+issue so CLI, REST, and UI users can see the reason beside the overall status.
+Every result still requires qualified structural-engineering review.
 
 ## Product surfaces and calculation book
 
 The same versioned request and result contracts are exposed through:
 
-- Python: `structural_lib.services.gravity_workflow.run_gravity_workflow_v1`;
-- CLI: `python -m structural_lib gravity-v1 REQUEST.json` with JSON or Markdown
-  output;
+- Python package root: `structural_lib.run_gravity_workflow_v1`,
+  `structural_lib.run_gravity_workflow_with_book_v1`, the typed request/result
+  classes, the explicit builder, and the maintained example;
+- CLI example: `python -m structural_lib gravity-v1 example`;
+- CLI execution: `python -m structural_lib gravity-v1 REQUEST.json` with JSON
+  or Markdown output;
 - REST discovery: `GET /api/v1/building-gravity/v1/definition`;
 - REST execution: `POST /api/v1/building-gravity/v1/run`; and
 - review UI: `/workbench/building-gravity/v1`.
 
-The review UI accepts one JSON request and displays input blocking,
-calculation errors, component `PASS`/`FAIL`/`HOLD`, exact transferred actions,
-all four identity hashes, and the qualified-review warning. It can download the
-machine-readable calculation book.
+The review UI can load the maintained example or accept one JSON request. It
+displays input blocking, the governing failure/hold reason, calculation errors,
+component `PASS`/`FAIL`/`HOLD`, exact transferred actions, all four identity
+hashes, and the qualified-review warning. It can download the machine-readable
+calculation book.
+
+The application catalogue keeps three claims separate: all 10 supported IS 456
+component-family records are projected from the canonical capability registry;
+the composed gravity workflow is registered with its component IDs and product
+surfaces; and the existing beam-only automation adapter remains the only
+tool-eligible catalogue capability. Discoverability does not grant autonomous
+tool execution or expand engineering support.
 
 `GravityCalculationBookV1` binds the model and load snapshots, reconciled
 ledger, residual summary, applicability matrix, actions, component results,
@@ -230,6 +270,7 @@ issues, exclusions, limitations, and workflow hash. It is a review dossier,
 not a release authorization or professional approval.
 
 The executable B2 vectors are
+`Python/tests/unit/test_gravity_builder_v1.py`,
 `Python/tests/unit/test_gravity_workflow_v1.py`,
 `fastapi_app/tests/test_building_gravity.py`, and
 `react_app/src/features/building-gravity/BuildingGravityReviewPage.test.tsx`.
