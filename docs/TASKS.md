@@ -127,7 +127,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-007-P2 | Separate calculated, recommended, and source-referenced supplied beam reinforcement and make spacing/anchorage decisive | Main Agent | M | P0 | 🟡 ACTIVE — implementation and focused truth vectors pass; candidate verification pending |
+| LIB-PRO-007-P3 | Extend isolated-footing detailing with source-bound supported bends/hooks and decisive anchorage/bounded-envelope truth | Main Agent | M | P0 | 🟡 ACTIVE — implementation and focused package/REST truth vectors pass; candidate verification pending |
 | INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ PAUSED — private source library preserved; resume after LIB-PRO-007 cumulative acceptance |
 
 `LIB-PRO-006` merged through PR #851 at `2d6df18e`. It confirms the practical
@@ -155,14 +155,20 @@ an infeasible optional smart-cost search now preserves the canonical beam
 `FAIL`, returns no cost advice, and publishes an explicit warning. All required
 hosted checks passed on the repair head before the unchanged tree was merged.
 
-`LIB-PRO-007-P2` is implemented from exact merged P1 base `9119cadc`. It adds
-an additive gravity request basis for explicit bar-selection constraints and
-optional source-referenced layers, reuses the maintained optimizer and
-anchorage service, corrects centre-to-centre versus clear-spacing truth and
-rounding at the boundary, and proves calculated-demand `HOLD`, inadequate
-supply `FAIL`, and complete bounded `PASS`. The maintained open-hall example
-now recommends bars but remains `HOLD` because no project bar schedule is
-supplied. Candidate, hosted, and merge claims remain pending.
+`LIB-PRO-007-P2` merged through PR #854 at `e4d86d13` with exact
+candidate/merged tree `305d2165`. It adds an explicit bar-selection and
+source-referenced supplied-bar basis, corrects clear-spacing truth and boundary
+rounding, and proves calculated-demand `HOLD`, inadequate supply `FAIL`, and
+complete bounded `PASS`. The maintained open-hall example recommends bars but
+remains `HOLD` because no project bar schedule is supplied.
+
+`LIB-PRO-007-P3` is implemented from exact merged P2 base `e4d86d13`. It fixes
+the shared standard U-hook anchorage value, adds an exact unrounded
+straight-plus-bend/hook evaluator, and extends the isolated-footing package,
+gravity, and REST contracts with explicit approved geometry. Supported
+straight, 90-degree bend, and U-hook vectors reach decisive `PASS` or `FAIL`;
+missing or unsupported arrangements remain `HOLD`. Candidate, hosted, and
+merge claims remain pending.
 
 `MAINT-0134` assigns cross-agent policy to `AGENTS.md`, composes Claude
 through `@AGENTS.md`, keeps a concise standalone Copilot baseline, retires

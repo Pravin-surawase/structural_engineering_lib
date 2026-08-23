@@ -767,6 +767,11 @@ def _footing_request(
         upper_bottom_bar_direction=basis.upper_bottom_bar_direction,
         permitted_bottom_bar_diameters_mm=basis.permitted_bottom_bar_diameters_mm,
         footing_bottom_bar_type=basis.footing_bottom_bar_type,
+        bottom_bar_end_arrangement=basis.bottom_bar_end_arrangement,
+        bend_internal_radius_mm=basis.bend_internal_radius_mm,
+        extension_after_bend_mm=basis.extension_after_bend_mm,
+        bend_geometry_source_reference=basis.bend_geometry_source_reference,
+        bend_geometry_source_is_approved=(basis.bend_geometry_source_is_approved),
     )
 
 

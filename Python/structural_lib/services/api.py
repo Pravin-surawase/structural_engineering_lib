@@ -13,6 +13,11 @@ Domain logic split into (ARCH-NEW-12):
 from __future__ import annotations
 
 # ── Re-exported symbols (not defined in this package) ──────────────────
+from structural_lib.codes.is456.beam.detailing import (  # noqa: F401
+    TensionBarAnchorageResultV1,
+    calculate_development_length_unrounded,
+    evaluate_tension_bar_anchorage_v1,
+)
 from structural_lib.codes.is456.beam.torsion import (  # noqa: F401
     TorsionResult,
     calculate_equivalent_moment,
@@ -332,7 +337,10 @@ __all__ = [
     "compute_detailing",
     "build_detailing_input",
     "calculate_development_length",
+    "calculate_development_length_unrounded",
     "check_anchorage_at_simple_support",
+    "evaluate_tension_bar_anchorage_v1",
+    "TensionBarAnchorageResultV1",
     "compute_bbs",
     "export_bbs",
     "compute_dxf",

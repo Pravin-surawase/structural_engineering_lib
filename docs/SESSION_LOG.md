@@ -5,6 +5,138 @@
 
 ---
 
+## 2026-08-23 — Session: LIB-PRO-007-P3 footing anchorage truth
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents)
+
+**Branch:** `codex/lib-pro-007-p3-footing-anchorage`, from exact merged P2
+hosted-main commit `e4d86d13e671516ca65d27028defb791e7d277c0`.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-007-p3-footing-anchorage-git-handoff-receipt.json`
+
+**Focus:** Extend the bounded concentric isolated-footing detailing contract
+with source-bound supported bend/U-hook anchorage and decisive physical-fit
+evidence. P4, live ETABS, write-back, release, professional approval, and new
+INDIA-3 engineering remain excluded.
+
+### Summary
+
+- Added an exact shared tension-bar anchorage primitive. Development-length
+  compliance uses the unrounded Cl. 26.2.1 result; normalized bend anchorage is
+  `4φ` per 45 degrees up to `16φ`, and a standard U-hook is `16φ`.
+- Corrected the legacy shared 180-degree deformed-bar hook allowance from
+  `8φ` to `16φ`; its compatibility wrapper now decides adequacy from exact
+  values before rounding its display fields.
+- Extended isolated-footing detailing with straight, 90-degree bend, and
+  standard U-hook arrangements. Bent/hooked requests require an approved
+  project geometry reference, internal radius, and extension.
+- Added structured per-direction evidence for straight length to tangent,
+  exact required/available length, bend/hook value, shortfall, radius, arc,
+  extension, vertical envelope, U-hook return envelope, bounded member-envelope
+  constructability, and total bar length.
+- Preserved fail-closed status truth: an omitted arrangement needed to close
+  anchorage or a missing/unsupported basis is `HOLD`; complete inadequate
+  anchorage or physical fit is `FAIL`; only complete supported evidence can
+  `PASS`.
+- Projected the same calculation authority through the package root, isolated-
+  footing service, Gravity V1 request adapter, typed REST request/response, API
+  registries, OpenAPI baseline, product specification, and machine-readable P3
+  evidence. No endpoint or second calculation path was added.
+
+### Issues encountered
+
+- The first footing search guessed a nonexistent
+  `Python/structural_lib/codes/is456/foundation` path.
+- An unquoted dotted clause number was rejected by the private SQLite FTS5
+  query parser before source lookup.
+- Source review confirmed that the shared 180-degree hook helper credited only
+  `8φ` to deformed bars, changing anchorage outcomes from the bound IS 456
+  source value.
+- The first focused collection found invalid line-breaking around a union type
+  annotation in two new request fields.
+- Initial changed-source mypy found three Literal/optional narrowing errors,
+  and Ruff found one import-order error in the re-export hub.
+- Existing tests asserted the old `8φ` hook allowance and the B2 contract
+  identity, so five vectors failed after the source-bound outcome changed.
+- Essential diff review found that `constructability_is_adequate` overstated
+  the bounded envelope proof and that a global failure flag could disagree with
+  the exact failed diameter candidate retained in the response.
+- Final checker routing found that three guessed script names for API and
+  private-source verification did not exist in this worktree.
+- The first staged-hook invocation used the obsolete `--commit-hook` spelling,
+  which the current check runner rejected.
+- The staged session-doc hook rejected the handoff receipt after the session
+  log changed, adding stale authorization and retention holds.
+
+### Root causes and resolutions
+
+- The footing module is named `codes/is456/footing`, not `foundation`.
+  Resolution: discover exact paths with `rg --files` before the bounded search.
+  ⚠️ TERMINAL ISSUE: guessed footing directory did not exist -> used the
+  discovered maintained path.
+- FTS5 treats periods as query syntax unless the token is quoted. Resolution:
+  rerun the private navigation search with `"26.2.2"`; the bound consolidated
+  IS 456 source resolved to PDF page 44 without copying protected text into the
+  repository. ⚠️ TERMINAL ISSUE: unquoted dotted FTS term failed -> quoted
+  the exact clause token.
+- Confirmed root cause: `calculate_standard_hook` varied its anchorage value by
+  bar type and assigned only `8φ` to a deformed 180-degree hook. Resolution:
+  factor exact unrounded development length and normalized Cl. 26.2.2.1
+  anchorage into `evaluate_tension_bar_anchorage_v1`; the 16 mm reproducer now
+  credits `256 mm`, not `128 mm`.
+- Python does not permit the binary union operator to begin the following line
+  outside a parenthesized annotation. Resolution: parenthesize both annotations;
+  focused collection and the complete selected batch pass.
+- The type checker could not narrow a broad Literal through set membership or
+  carry optional narrowing across a separate condition. Resolution: branch on
+  exact values and keep positive-geometry validation inside the narrowed block;
+  configured mypy passes all six changed source modules. Ruff import ordering
+  was corrected directly.
+- The five failing assertions were source-truth regressions rather than new
+  defects. Resolution: update only the outcome-changing vectors and add exact
+  straight, bend, U-hook, geometry failure, unsupported hold, package, gravity,
+  and REST evidence.
+- The constructability field did not name its deliberate member-envelope limit,
+  and failure flags were accumulated across all diameter pairs instead of
+  travelling with each candidate. Resolution: rename the field to
+  `bounded_constructability_is_adequate`, keep bar-to-bar collision modelling
+  excluded, and store anchorage/geometry flags with each failed candidate. The
+  retained evidence and governing reason now describe the same candidate; 53
+  affected footing/package/REST tests, evidence replay, and the repaired quick
+  gate pass.
+- The maintained API checks are the generators' `--check` modes, while the
+  private verifier is intentionally gitignored under the primary checkout.
+  Resolution: route through `generate_api_manifest.py --check`,
+  `generate_api_classification.py --check`, and the absolute private
+  `library.py ... verify` command; all pass. ⚠️ TERMINAL ISSUE: guessed
+  checker filenames were absent -> used the maintained registered commands.
+- The current staged-hook selector is `./run.sh check --pre-commit`.
+  Resolution: use that maintained selector once on the frozen staged paths.
+  ⚠️ TERMINAL ISSUE: `--commit-hook` was rejected -> used
+  `--pre-commit`.
+- The receipt correctly binds mutable handoff evidence and must be regenerated
+  after the final session-log edit. Resolution: freeze the log, recreate the
+  receipt and handoff block, then rerun only `check-session-docs`; this removes
+  the stale-evidence holds without repeating unrelated passed hooks.
+
+### Validation through content freeze
+
+- Exact source binding is `e4d86d13`; the preserved INDIA-3 candidate
+  `9c976b1f` and every unrelated dirty, detached, behind, or diverged lane remain
+  unchanged.
+- The consolidated affected selection passes 158 Python/FastAPI tests covering
+  shared detailing, isolated-footing calculation/publication, package-root
+  entrypoints, gravity request/adapters, typed REST transport, and all P3
+  `PASS`/`FAIL`/`HOLD` vectors.
+- Changed-source Ruff and configured mypy pass. API documentation, manifest,
+  classification, React/FastAPI contract, and the updated OpenAPI snapshot are
+  current; the endpoint count remains 89 and schemas grow additively to 440.
+- The private-source navigation result is recorded only as hash-bound source
+  identity and page pointer. No protected source prose or page image is tracked.
+- Broad Python/FastAPI/React suites and the full repository gate remain reserved
+  for cumulative M0 under the frozen milestone cadence.
+
 ## 2026-08-23 — Session: LIB-PRO-007-P2 supplied beam reinforcement truth
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents)

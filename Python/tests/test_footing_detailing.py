@@ -160,8 +160,108 @@ def test_numeric_depth_cover_and_spacing_constraints_fail_closed():
 def test_required_hook_or_bend_is_hold_not_selected_failure():
     result = _case(L_mm=1200, B_mm=1200)
     assert result.status == "HOLD"
-    assert result.lower is None and result.upper is None
-    assert "hooks or bends" in result.reasons[0]
+    assert result.lower is not None and result.upper is not None
+    assert not result.lower.end_anchorage.arrangement_was_explicit
+    assert result.lower.end_anchorage.shortfall_mm > 0
+    assert "explicit supported end arrangement" in result.reasons[0]
+
+
+def test_explicit_90_degree_bend_closes_anchorage_and_geometry():
+    result = _case(
+        L_mm=1400,
+        B_mm=1400,
+        bottom_bar_end_arrangement="bend_90",
+        bend_internal_radius_mm=24,
+        extension_after_bend_mm=144,
+        bend_geometry_source_reference="APPROVED-FOOTING-BEND-SCHEDULE-90",
+        bend_geometry_source_is_approved=True,
+    )
+
+    assert result.status == "PASS"
+    assert result.lower is not None and result.upper is not None
+    for detail in (result.lower, result.upper):
+        anchorage = detail.end_anchorage
+        assert anchorage.arrangement == "bend_90"
+        assert anchorage.arrangement_was_explicit
+        assert anchorage.required_development_length_mm == pytest.approx(483.549107)
+        assert anchorage.available_straight_length_mm == pytest.approx(414)
+        assert anchorage.anchorage_value_mm == 96
+        assert anchorage.total_available_development_length_mm == pytest.approx(510)
+        assert anchorage.bend_angle_degrees == 90
+        assert anchorage.internal_bend_radius_mm == 24
+        assert anchorage.centreline_bend_radius_mm == 30
+        assert anchorage.extension_after_bend_mm == 144
+        assert anchorage.geometry_fits
+        assert anchorage.bounded_constructability_is_adequate
+        assert anchorage.geometry_source_is_approved
+        assert detail.total_bar_length_mm > detail.straight_bar_length_mm
+
+
+def test_standard_u_hook_closes_shorter_footing_anchorage():
+    result = _case(
+        L_mm=1200,
+        B_mm=1200,
+        bottom_bar_end_arrangement="u_hook_180",
+        bend_internal_radius_mm=24,
+        extension_after_bend_mm=65,
+        bend_geometry_source_reference="APPROVED-FOOTING-U-HOOK-SCHEDULE",
+        bend_geometry_source_is_approved=True,
+    )
+
+    assert result.status == "PASS"
+    assert result.lower is not None and result.upper is not None
+    anchorage = result.lower.end_anchorage
+    assert anchorage.arrangement == "u_hook_180"
+    assert anchorage.available_straight_length_mm == pytest.approx(314)
+    assert anchorage.anchorage_value_mm == 192
+    assert anchorage.total_available_development_length_mm == pytest.approx(506)
+    assert anchorage.return_extension_available_mm == pytest.approx(344)
+    assert anchorage.anchorage_is_adequate and anchorage.geometry_fits
+
+
+def test_complete_bend_basis_fails_inadequate_anchorage_or_physical_fit():
+    inadequate = _case(
+        L_mm=1200,
+        B_mm=1200,
+        bottom_bar_end_arrangement="bend_90",
+        bend_internal_radius_mm=24,
+        extension_after_bend_mm=144,
+        bend_geometry_source_reference="APPROVED-FOOTING-BEND-SCHEDULE-90",
+        bend_geometry_source_is_approved=True,
+    )
+    clashes = _case(
+        L_mm=1400,
+        B_mm=1400,
+        bottom_bar_end_arrangement="bend_90",
+        bend_internal_radius_mm=24,
+        extension_after_bend_mm=400,
+        bend_geometry_source_reference="APPROVED-FOOTING-BEND-SCHEDULE-90-TALL",
+        bend_geometry_source_is_approved=True,
+    )
+
+    assert inadequate.status == "FAIL"
+    assert inadequate.lower is not None
+    assert not inadequate.lower.end_anchorage.anchorage_is_adequate
+    assert "exact required development length" in inadequate.reasons[0]
+    assert clashes.status == "FAIL"
+    assert clashes.lower is not None
+    assert not clashes.lower.end_anchorage.geometry_fits
+    assert "available footing envelope" in clashes.reasons[0]
+
+
+@pytest.mark.parametrize("arrangement", ["bend_135", "mechanical"])
+def test_unsupported_end_arrangements_hold(arrangement):
+    result = _case(bottom_bar_end_arrangement=arrangement)
+
+    assert result.status == "HOLD"
+    assert "outside the supported" in result.reasons[0]
+
+
+def test_missing_bend_geometry_approval_holds():
+    result = _case(bottom_bar_end_arrangement="bend_90")
+
+    assert result.status == "HOLD"
+    assert "complete approved bend radius" in result.reasons[0]
 
 
 def test_anchorage_check_uses_unrounded_required_length():
@@ -207,7 +307,7 @@ def test_selection_and_provenance_are_deterministic_and_normalized():
         reversed_schedule.lower.diameter_mm,
         reversed_schedule.upper.diameter_mm,
     )
-    assert first.contract_version == "FOOT-ISO-DETAILING-B2-V1"
+    assert first.contract_version == "FOOT-ISO-DETAILING-P3-V1"
     assert first.source_ids == (IS456_CONSOLIDATED_SOURCE_ID, AMENDMENT_6_SOURCE_ID)
     assert first.units["length"] == "mm" and first.units["moment"] == "kNm"
     assert {"34.3.1", "26.2.1", "34.4"}.issubset(first.clause_refs)
@@ -230,6 +330,7 @@ def test_traceability_decorator_uses_known_ids_without_unknown_clause_warning(ca
         "26.3.2",
         "26.3.3",
         "26.2.1",
+        "26.2.2.1",
         "34.4",
     }
     assert not any(

@@ -147,6 +147,41 @@ def test_maintained_detailing_closes_square_benchmark_to_aggregate_pass():
     ) in result.provenance.core_function_ids
 
 
+def test_supported_bend_basis_is_retained_by_public_footing_result():
+    result = design_concentric_isolated_footing_is456(
+        _detailed_benchmark_input(
+            bottom_bar_end_arrangement="bend_90",
+            bend_internal_radius_mm=24.0,
+            extension_after_bend_mm=144.0,
+            bend_geometry_source_reference="APPROVED-FOOTING-BEND-SCHEDULE-90",
+            bend_geometry_source_is_approved=True,
+        )
+    )
+
+    assert result.status == "PASS"
+    assert result.detailing is not None
+    assert result.detailing.lower is not None and result.detailing.upper is not None
+    for detail in (result.detailing.lower, result.detailing.upper):
+        assert detail.end_anchorage.arrangement == "bend_90"
+        assert detail.end_anchorage.anchorage_is_adequate
+        assert detail.end_anchorage.bounded_constructability_is_adequate
+        assert detail.end_anchorage.geometry_source_reference == (
+            "APPROVED-FOOTING-BEND-SCHEDULE-90"
+        )
+    assert "26.2.1/26.2.2.1" in result.provenance.clause_bases["detailing"]
+
+
+def test_unsupported_footing_end_arrangement_holds_public_result():
+    result = design_concentric_isolated_footing_is456(
+        _detailed_benchmark_input(bottom_bar_end_arrangement="bend_135")
+    )
+
+    assert result.calculation_status == "PASS"
+    assert result.detailing_status == result.status == "HOLD"
+    assert result.detailing is not None
+    assert "outside the supported" in result.detailing.reasons[0]
+
+
 def test_actual_provided_pt_closes_the_detailing_to_shear_acceptance_loop():
     defective_area_mm2 = 11 * math.pi * 12**2 / 4
     defective_pt_percent = defective_area_mm2 / (2_000 * 400) * 100

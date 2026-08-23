@@ -112,6 +112,47 @@ def test_concentric_footing_without_detailing_is_calculation_pass_and_hold():
     assert data["detailing_hold_reason"]
 
 
+def test_concentric_footing_transports_supported_bend_evidence():
+    payload = _payload()
+    payload.update(
+        {
+            "bottom_bar_end_arrangement": "bend_90",
+            "bend_internal_radius_mm": 24.0,
+            "extension_after_bend_mm": 144.0,
+            "bend_geometry_source_reference": ("APPROVED-FOOTING-BEND-SCHEDULE-90"),
+            "bend_geometry_source_is_approved": True,
+        }
+    )
+
+    response = TestClient(_app()).post(
+        "/api/v1/design/footing/isolated/concentric", json=payload
+    )
+
+    assert response.status_code == 200
+    data = response.json()["data"]
+    assert data["status"] == "PASS"
+    lower = data["detailing"]["lower"]
+    assert lower["end_anchorage"]["arrangement"] == "bend_90"
+    assert lower["end_anchorage"]["anchorage_is_adequate"] is True
+    assert lower["end_anchorage"]["bounded_constructability_is_adequate"] is True
+    assert lower["total_bar_length_mm"] > lower["straight_bar_length_mm"]
+
+
+def test_concentric_footing_transports_unsupported_arrangement_hold():
+    payload = _payload()
+    payload["bottom_bar_end_arrangement"] = "bend_135"
+
+    response = TestClient(_app()).post(
+        "/api/v1/design/footing/isolated/concentric", json=payload
+    )
+
+    assert response.status_code == 200
+    data = response.json()["data"]
+    assert data["calculation_status"] == "PASS"
+    assert data["detailing_status"] == data["status"] == "HOLD"
+    assert "outside the supported" in data["detailing"]["reasons"][0]
+
+
 def test_concentric_rectangular_wire_type_reaches_the_same_service_authority():
     payload = _payload(detailing=False)
     payload.update(

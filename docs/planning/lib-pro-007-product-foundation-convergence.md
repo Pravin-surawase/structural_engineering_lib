@@ -30,10 +30,13 @@ unchanged.
 - P1 merged through PR #853 at `9119cadc`; its accepted repair preserves a
   canonical beam `FAIL`, omits infeasible optional cost advice, and emits an
   explicit warning.
-- P2 is implemented on a source-bound lane from exact `9119cadc`. The frozen
-  candidate separates calculated demand, preliminary recommendation, and
-  source-referenced supplied bars; verification and hosted acceptance remain.
-- P3-P7 and cumulative M0 remain held in the frozen sequence below.
+- P2 merged through PR #854 at `e4d86d13` with exact candidate/merged tree
+  `305d2165`; calculated demand, preliminary recommendations, and supplied bars
+  remain distinct.
+- P3 is implemented on a source-bound lane from exact `e4d86d13`. It makes
+  unrounded development length, normalized bend/U-hook anchorage, explicit
+  geometry, constructability, and `PASS`/`FAIL`/`HOLD` outcomes decisive.
+- P4-P7 and cumulative M0 remain held in the frozen sequence below.
 
 ## Why this precedes INDIA-3
 
@@ -134,6 +137,14 @@ hook/bend arrangements. Reuse or factor existing maintained anchorage
 primitives, retain exact source/clause provenance, and prove required length,
 available length, bend geometry, constructability, `PASS`, `FAIL`, and
 unsupported `HOLD` vectors.
+
+P3 implements straight, 90-degree bend, and standard U-hook outcomes using
+exact unrounded development length and normalized Cl. 26.2.2.1 anchorage
+values. Bent/hooked results require an approved project geometry reference and
+retain tangent length, bend radius/arc, extension, vertical/return envelopes,
+bounded member-envelope constructability, and total bar length. Other
+arrangements remain explicit
+`HOLD`; complete inadequacy is `FAIL`.
 
 ### P4 - Explicit practical actions
 

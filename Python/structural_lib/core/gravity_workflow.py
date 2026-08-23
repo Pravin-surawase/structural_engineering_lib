@@ -211,6 +211,15 @@ class GravityFootingDesignBasisV1(_FrozenModel):
     upper_bottom_bar_direction: Literal["L", "B"] | None = None
     permitted_bottom_bar_diameters_mm: tuple[int, ...] = ()
     footing_bottom_bar_type: Literal["deformed", "plain"] | None = None
+    bottom_bar_end_arrangement: (
+        Literal["straight", "bend_90", "u_hook_180", "bend_135", "mechanical"] | None
+    ) = None
+    bend_internal_radius_mm: float | None = Field(default=None, gt=0)
+    extension_after_bend_mm: float | None = Field(default=None, gt=0)
+    bend_geometry_source_reference: str | None = Field(
+        default=None, min_length=1, max_length=512
+    )
+    bend_geometry_source_is_approved: bool = False
 
     @model_validator(mode="after")
     def validate_external_basis(self) -> GravityFootingDesignBasisV1:
@@ -236,6 +245,25 @@ class GravityFootingDesignBasisV1(_FrozenModel):
         ):
             raise ValueError(
                 "footing detailing inputs must be supplied as one complete approved set"
+            )
+        geometry_values = (
+            self.bend_internal_radius_mm,
+            self.extension_after_bend_mm,
+            self.bend_geometry_source_reference,
+        )
+        if self.bottom_bar_end_arrangement in {None, "straight"} and (
+            any(value is not None for value in geometry_values)
+            or self.bend_geometry_source_is_approved
+        ):
+            raise ValueError(
+                "straight footing anchorage must not carry a bend geometry basis"
+            )
+        if self.bottom_bar_end_arrangement in {"bend_90", "u_hook_180"} and (
+            any(value is None for value in geometry_values)
+            or not self.bend_geometry_source_is_approved
+        ):
+            raise ValueError(
+                "supported bent footing anchorage requires a complete approved geometry basis"
             )
         return self
 

@@ -15,7 +15,7 @@ from typing import Literal
 
 from structural_lib.codes.is456.beam.detailing import (
     calculate_development_length,
-    get_bond_stress,
+    evaluate_tension_bar_anchorage_v1,
 )
 from structural_lib.codes.is456.footing.flexure import footing_flexure
 from structural_lib.codes.is456.footing.load_transfer import (
@@ -31,6 +31,7 @@ from structural_lib.core.errors import StructuralLibError
 __all__ = [
     "FootingDetailingResult",
     "FootingDirectionDetail",
+    "FootingEndAnchorageDetailV1",
     "FootingDowelScheduleLink",
     "FootingReinforcementZone",
     "detail_isolated_footing_bottom_steel",
@@ -38,7 +39,7 @@ __all__ = [
 
 _DIAMETERS = (10, 12, 16, 20, 25, 32)
 _FCK = (20, 25, 30, 35, 40, 45, 50)
-_CONTRACT_VERSION = "FOOT-ISO-DETAILING-B2-V1"
+_CONTRACT_VERSION = "FOOT-ISO-DETAILING-P3-V1"
 _SUPPORTED_CASE = "concentric_uniform_depth_isolated_square_or_rectangular_footing"
 _LOAD_TRANSFER_SUPPORTED_CASE = (
     "concentric_isolated_square_or_rectangular_footing_with_dowels"
@@ -55,6 +56,7 @@ _CLAUSE_REFS = (
     "26.3.3(b)",
     "26.4",
     "26.2.1",
+    "26.2.2.1",
     "34.4",
 )
 _EXCLUSIONS = (
@@ -63,7 +65,8 @@ _EXCLUSIONS = (
     "Settlement, soil-capacity derivation and soil-structure interaction are excluded.",
     "Sliding, lateral load, uplift, overturning and seismic approval are excluded.",
     "Edge/corner punching and stepped, sloped or arbitrary geometry are excluded.",
-    "Hooks, bends, curtailment, laps, coordinates and bar-bending schedules are excluded.",
+    "Only straight, 90-degree bend and standard U-hook bottom-bar end arrangements are evaluated.",
+    "Other bends, mechanical anchorage, curtailment, laps, bar-to-bar collision modelling, coordinates and bar-bending schedules are excluded.",
 )
 _UNITS = {
     "length": "mm",
@@ -85,6 +88,35 @@ class FootingReinforcementZone:
     bar_count: int
     spacing_mm: float
     clear_spacing_mm: float
+
+
+@dataclass(frozen=True)
+class FootingEndAnchorageDetailV1:
+    """Symmetric end-anchorage and physical-fit evidence for one bar direction."""
+
+    arrangement: Literal["straight", "bend_90", "u_hook_180"]
+    arrangement_was_explicit: bool
+    required_development_length_mm: float
+    available_straight_length_mm: float
+    anchorage_value_mm: float
+    total_available_development_length_mm: float
+    shortfall_mm: float
+    utilization_ratio: float
+    anchorage_is_adequate: bool
+    bend_angle_degrees: int | None
+    internal_bend_radius_mm: float | None
+    centreline_bend_radius_mm: float | None
+    extension_after_bend_mm: float | None
+    bend_arc_length_mm: float
+    vertical_envelope_required_mm: float
+    vertical_envelope_available_mm: float
+    return_extension_available_mm: float | None
+    geometry_fits: bool
+    bounded_constructability_is_adequate: bool
+    geometry_source_reference: str | None
+    geometry_source_is_approved: bool
+    clause_refs: tuple[str, ...]
+    source_ids: tuple[str, ...]
 
 
 @dataclass(frozen=True)
@@ -118,6 +150,8 @@ class FootingDirectionDetail:
     development_length_unrounded_mm: float
     straight_anchorage_available_each_end_mm: float
     straight_bar_length_mm: float
+    total_bar_length_mm: float
+    end_anchorage: FootingEndAnchorageDetailV1
     zones: tuple[FootingReinforcementZone, ...]
 
 
@@ -327,6 +361,145 @@ def _central_band_zones(
     )
 
 
+def _end_anchorage_detail(
+    *,
+    arrangement: Literal["straight", "bend_90", "u_hook_180"],
+    arrangement_was_explicit: bool,
+    run_mm: float,
+    column_parallel_mm: float,
+    d_mm: float,
+    nominal_cover_mm: float,
+    phi_mm: int,
+    fck: float,
+    fy: float,
+    bar_type: Literal["plain", "deformed"],
+    internal_bend_radius_mm: float | None,
+    extension_after_bend_mm: float | None,
+    geometry_source_reference: str | None,
+    geometry_source_is_approved: bool,
+) -> tuple[FootingEndAnchorageDetailV1, float]:
+    edge_axis_available_mm = (
+        (run_mm - column_parallel_mm) / 2.0 - nominal_cover_mm - phi_mm / 2.0
+    )
+    if arrangement == "straight":
+        straight_available_mm = max(0.0, edge_axis_available_mm)
+        evaluated = evaluate_tension_bar_anchorage_v1(
+            bar_dia=phi_mm,
+            fck=fck,
+            fy=fy,
+            available_straight_length_mm=straight_available_mm,
+            arrangement="straight",
+            bar_type=bar_type,
+        )
+        geometry_fits = edge_axis_available_mm >= 0.0
+        total_bar_length_mm = run_mm - 2.0 * nominal_cover_mm
+        return (
+            FootingEndAnchorageDetailV1(
+                arrangement="straight",
+                arrangement_was_explicit=arrangement_was_explicit,
+                required_development_length_mm=(
+                    evaluated.required_development_length_mm
+                ),
+                available_straight_length_mm=straight_available_mm,
+                anchorage_value_mm=evaluated.anchorage_value_mm,
+                total_available_development_length_mm=(
+                    evaluated.total_available_development_length_mm
+                ),
+                shortfall_mm=evaluated.shortfall_mm,
+                utilization_ratio=evaluated.utilization_ratio,
+                anchorage_is_adequate=evaluated.is_adequate,
+                bend_angle_degrees=None,
+                internal_bend_radius_mm=None,
+                centreline_bend_radius_mm=None,
+                extension_after_bend_mm=None,
+                bend_arc_length_mm=0.0,
+                vertical_envelope_required_mm=0.0,
+                vertical_envelope_available_mm=max(
+                    0.0, d_mm - nominal_cover_mm - phi_mm / 2.0
+                ),
+                return_extension_available_mm=None,
+                geometry_fits=geometry_fits,
+                bounded_constructability_is_adequate=geometry_fits,
+                geometry_source_reference=None,
+                geometry_source_is_approved=False,
+                clause_refs=evaluated.clause_refs,
+                source_ids=_SOURCE_IDS,
+            ),
+            total_bar_length_mm,
+        )
+
+    assert internal_bend_radius_mm is not None
+    assert extension_after_bend_mm is not None
+    centreline_radius_mm = internal_bend_radius_mm + phi_mm / 2.0
+    raw_straight_to_tangent_mm = edge_axis_available_mm - centreline_radius_mm
+    straight_to_tangent_mm = max(0.0, raw_straight_to_tangent_mm)
+    evaluated = evaluate_tension_bar_anchorage_v1(
+        bar_dia=phi_mm,
+        fck=fck,
+        fy=fy,
+        available_straight_length_mm=straight_to_tangent_mm,
+        arrangement=arrangement,
+        bar_type=bar_type,
+    )
+    vertical_available_mm = max(0.0, d_mm - nominal_cover_mm - phi_mm / 2.0)
+    if arrangement == "bend_90":
+        angle_degrees = 90
+        bend_arc_length_mm = math.pi * centreline_radius_mm / 2.0
+        vertical_required_mm = centreline_radius_mm + extension_after_bend_mm
+        return_available_mm = None
+        return_fits = True
+    else:
+        angle_degrees = 180
+        bend_arc_length_mm = math.pi * centreline_radius_mm
+        vertical_required_mm = 2.0 * centreline_radius_mm
+        return_available_mm = max(0.0, edge_axis_available_mm)
+        return_fits = extension_after_bend_mm <= return_available_mm + 1e-9
+    geometry_fits = (
+        raw_straight_to_tangent_mm >= -1e-9
+        and vertical_required_mm <= vertical_available_mm + 1e-9
+        and return_fits
+    )
+    straight_between_tangents_mm = max(
+        0.0,
+        run_mm - 2.0 * (nominal_cover_mm + phi_mm / 2.0 + centreline_radius_mm),
+    )
+    total_bar_length_mm = straight_between_tangents_mm + 2.0 * (
+        bend_arc_length_mm + extension_after_bend_mm
+    )
+    return (
+        FootingEndAnchorageDetailV1(
+            arrangement=arrangement,
+            arrangement_was_explicit=arrangement_was_explicit,
+            required_development_length_mm=evaluated.required_development_length_mm,
+            available_straight_length_mm=straight_to_tangent_mm,
+            anchorage_value_mm=evaluated.anchorage_value_mm,
+            total_available_development_length_mm=(
+                evaluated.total_available_development_length_mm
+            ),
+            shortfall_mm=evaluated.shortfall_mm,
+            utilization_ratio=evaluated.utilization_ratio,
+            anchorage_is_adequate=evaluated.is_adequate,
+            bend_angle_degrees=angle_degrees,
+            internal_bend_radius_mm=internal_bend_radius_mm,
+            centreline_bend_radius_mm=centreline_radius_mm,
+            extension_after_bend_mm=extension_after_bend_mm,
+            bend_arc_length_mm=bend_arc_length_mm,
+            vertical_envelope_required_mm=vertical_required_mm,
+            vertical_envelope_available_mm=vertical_available_mm,
+            return_extension_available_mm=return_available_mm,
+            geometry_fits=geometry_fits,
+            bounded_constructability_is_adequate=(
+                geometry_fits and geometry_source_is_approved
+            ),
+            geometry_source_reference=geometry_source_reference,
+            geometry_source_is_approved=geometry_source_is_approved,
+            clause_refs=evaluated.clause_refs,
+            source_ids=_SOURCE_IDS,
+        ),
+        total_bar_length_mm,
+    )
+
+
 @clause(
     "34.2.3.1",
     "34.2.4.1",
@@ -335,6 +508,7 @@ def _central_band_zones(
     "26.3.2",
     "26.3.3",
     "26.2.1",
+    "26.2.2.1",
     "34.4",
 )
 def detail_isolated_footing_bottom_steel(
@@ -358,13 +532,21 @@ def detail_isolated_footing_bottom_steel(
     permitted_diameters_mm: tuple[int, ...],
     bar_type: Literal["plain", "deformed"],
     load_transfer_result: LoadTransferResult,
+    bottom_bar_end_arrangement: (
+        Literal["straight", "bend_90", "u_hook_180", "bend_135", "mechanical"] | None
+    ) = None,
+    bend_internal_radius_mm: float | None = None,
+    extension_after_bend_mm: float | None = None,
+    bend_geometry_source_reference: str | None = None,
+    bend_geometry_source_is_approved: bool = False,
 ) -> FootingDetailingResult:
-    """Select two orthogonal, full-length, straight bottom-bar layers.
+    """Select two orthogonal full-length bottom-bar layers and end anchorage.
 
     Service pressure/SBC is not calculated here.  Missing engineering approval
-    and unsupported arrangements return ``HOLD``.  A maintained numerical or
-    codal detailing failure returns ``FAIL``.  Required hooks or bends return
-    ``HOLD`` because their anchorage is outside this straight-bar contract.
+    and unsupported arrangements return ``HOLD``. A complete but inadequate
+    anchorage or physical-fit basis returns ``FAIL``. Missing arrangement input
+    retains the legacy straight-bar behavior: adequate straight bars may pass,
+    while an arrangement choice needed to close anchorage remains ``HOLD``.
     """
     if (
         load_transfer_result.supported_case != _LOAD_TRANSFER_SUPPORTED_CASE
@@ -428,6 +610,76 @@ def detail_isolated_footing_bottom_steel(
             lower_direction,
             upper_direction,
         )
+    if bottom_bar_end_arrangement in {"bend_135", "mechanical"}:
+        return _result(
+            "HOLD",
+            "The requested bottom-bar end arrangement is outside the supported straight, 90-degree bend and standard U-hook contract.",
+            load_transfer_result,
+            lower_direction,
+            upper_direction,
+        )
+    arrangement: Literal["straight", "bend_90", "u_hook_180"]
+    if bottom_bar_end_arrangement is None:
+        arrangement = "straight"
+    elif bottom_bar_end_arrangement == "straight":
+        arrangement = "straight"
+    elif bottom_bar_end_arrangement == "bend_90":
+        arrangement = "bend_90"
+    elif bottom_bar_end_arrangement == "u_hook_180":
+        arrangement = "u_hook_180"
+    else:  # pragma: no cover - defensive runtime typing boundary
+        return _result(
+            "HOLD",
+            "The requested bottom-bar end arrangement is unsupported.",
+            load_transfer_result,
+            lower_direction,
+            upper_direction,
+        )
+    arrangement_was_explicit = bottom_bar_end_arrangement is not None
+    geometry_values = (
+        bend_internal_radius_mm,
+        extension_after_bend_mm,
+        bend_geometry_source_reference,
+    )
+    if arrangement == "straight" and (
+        any(value is not None for value in geometry_values)
+        or bend_geometry_source_is_approved
+    ):
+        return _result(
+            "HOLD",
+            "Straight end anchorage must not carry a bend geometry basis.",
+            load_transfer_result,
+            lower_direction,
+            upper_direction,
+        )
+    if arrangement != "straight" and (
+        bend_internal_radius_mm is None
+        or extension_after_bend_mm is None
+        or not isinstance(bend_geometry_source_reference, str)
+        or not bend_geometry_source_reference.strip()
+        or not bend_geometry_source_is_approved
+    ):
+        return _result(
+            "HOLD",
+            "A complete approved bend radius, extension and geometry source reference are required for a bent or hooked arrangement.",
+            load_transfer_result,
+            lower_direction,
+            upper_direction,
+        )
+    if arrangement != "straight":
+        assert bend_internal_radius_mm is not None
+        assert extension_after_bend_mm is not None
+        if not _valid_positive(
+            bend_internal_radius_mm=bend_internal_radius_mm,
+            extension_after_bend_mm=extension_after_bend_mm,
+        ):
+            return _result(
+                "FAIL",
+                "Bend internal radius and extension must be finite positive dimensions.",
+                load_transfer_result,
+                lower_direction,
+                upper_direction,
+            )
     if (
         not _valid_positive(
             Pu_kN=Pu_kN,
@@ -498,9 +750,18 @@ def detail_isolated_footing_bottom_steel(
             dict[str, float],
         ]
     ] = []
-    straight_layout_needing_hooks = False
+    implicit_arrangement_choice_required = False
     numeric_failure_found = False
     provided_pt_shear_failure_found = False
+    failed_end_candidates: list[
+        tuple[
+            tuple[float, int, int, tuple[int, int]],
+            FootingDirectionDetail,
+            FootingDirectionDetail,
+            bool,
+            bool,
+        ]
+    ] = []
 
     for lower_phi in sorted(set(permitted_diameters_mm)):
         for upper_phi in sorted(set(permitted_diameters_mm)):
@@ -547,7 +808,8 @@ def detail_isolated_footing_bottom_steel(
                 "B": (flex_b.Mu_B_kNm, flex_b.Ast_B_mm2),
             }
             details: dict[Literal["L", "B"], FootingDirectionDetail] = {}
-            pair_needs_hook = False
+            pair_anchorage_failure = False
+            pair_geometry_failure = False
             pair_numeric_failure = False
 
             for direction in ("L", "B"):
@@ -610,14 +872,27 @@ def detail_isolated_footing_bottom_steel(
                     pair_numeric_failure = True
                     break
 
-                anchorage_available_mm = (
-                    (run_mm - column_parallel_mm) / 2.0 - nominal_cover_mm - phi / 2.0
+                end_anchorage, total_bar_length_mm = _end_anchorage_detail(
+                    arrangement=arrangement,
+                    arrangement_was_explicit=arrangement_was_explicit,
+                    run_mm=run_mm,
+                    column_parallel_mm=column_parallel_mm,
+                    d_mm=d_mm,
+                    nominal_cover_mm=nominal_cover_mm,
+                    phi_mm=phi,
+                    fck=fck,
+                    fy=fy,
+                    bar_type=bar_type,
+                    internal_bend_radius_mm=bend_internal_radius_mm,
+                    extension_after_bend_mm=extension_after_bend_mm,
+                    geometry_source_reference=bend_geometry_source_reference,
+                    geometry_source_is_approved=bend_geometry_source_is_approved,
                 )
-                tau_bd = get_bond_stress(fck, bar_type)
-                ld_unrounded_mm = phi * 0.87 * fy / (4.0 * tau_bd)
                 ld_mm = calculate_development_length(phi, fck, fy, bar_type)
-                if anchorage_available_mm + 1e-9 < ld_unrounded_mm:
-                    pair_needs_hook = True
+                if not end_anchorage.anchorage_is_adequate:
+                    pair_anchorage_failure = True
+                if not end_anchorage.bounded_constructability_is_adequate:
+                    pair_geometry_failure = True
 
                 bar_count = sum(
                     zone.bar_count * (2 if zone.zone == "outer_band_each" else 1)
@@ -650,9 +925,22 @@ def detail_isolated_footing_bottom_steel(
                     minimum_clear_spacing_mm=minimum_clear_spacing_mm,
                     max_diameter_mm=D_mm / 8.0,
                     development_length_mm=ld_mm,
-                    development_length_unrounded_mm=ld_unrounded_mm,
-                    straight_anchorage_available_each_end_mm=anchorage_available_mm,
-                    straight_bar_length_mm=run_mm - 2.0 * nominal_cover_mm,
+                    development_length_unrounded_mm=(
+                        end_anchorage.required_development_length_mm
+                    ),
+                    straight_anchorage_available_each_end_mm=(
+                        end_anchorage.available_straight_length_mm
+                    ),
+                    straight_bar_length_mm=(
+                        total_bar_length_mm
+                        - 2.0
+                        * (
+                            end_anchorage.bend_arc_length_mm
+                            + (end_anchorage.extension_after_bend_mm or 0.0)
+                        )
+                    ),
+                    total_bar_length_mm=total_bar_length_mm,
+                    end_anchorage=end_anchorage,
                     zones=zones,
                 )
 
@@ -662,8 +950,26 @@ def detail_isolated_footing_bottom_steel(
             if len(details) != 2:
                 numeric_failure_found = True
                 continue
-            if pair_needs_hook:
-                straight_layout_needing_hooks = True
+            pair = (lower_phi, upper_phi)
+            sort_key = (
+                details["L"].provided_area_mm2 + details["B"].provided_area_mm2,
+                details["L"].bar_count + details["B"].bar_count,
+                max(pair),
+                pair,
+            )
+            if pair_anchorage_failure or pair_geometry_failure:
+                failed_end_candidates.append(
+                    (
+                        sort_key,
+                        details["L"],
+                        details["B"],
+                        pair_anchorage_failure,
+                        pair_geometry_failure,
+                    )
+                )
+                if pair_anchorage_failure:
+                    if not arrangement_was_explicit:
+                        implicit_arrangement_choice_required = True
                 continue
 
             l_detail = details["L"]
@@ -690,15 +996,9 @@ def detail_isolated_footing_bottom_steel(
             if not final_one_way_shear.is_safe:
                 provided_pt_shear_failure_found = True
                 continue
-            pair = (lower_phi, upper_phi)
             candidates.append(
                 (
-                    (
-                        l_detail.provided_area_mm2 + b_detail.provided_area_mm2,
-                        l_detail.bar_count + b_detail.bar_count,
-                        max(pair),
-                        pair,
-                    ),
+                    sort_key,
                     l_detail,
                     b_detail,
                     final_one_way_shear,
@@ -707,15 +1007,41 @@ def detail_isolated_footing_bottom_steel(
             )
 
     if not candidates:
-        if straight_layout_needing_hooks:
+        failed_l: FootingDirectionDetail | None = None
+        failed_b: FootingDirectionDetail | None = None
+        selected_anchorage_failure = False
+        selected_geometry_failure = False
+        if failed_end_candidates:
+            (
+                _,
+                failed_l,
+                failed_b,
+                selected_anchorage_failure,
+                selected_geometry_failure,
+            ) = min(failed_end_candidates, key=lambda candidate: candidate[0])
+        failed_lower = failed_l if lower_direction == "L" else failed_b
+        failed_upper = failed_b if upper_direction == "B" else failed_l
+        if implicit_arrangement_choice_required:
             return _result(
                 "HOLD",
-                "A numerically feasible bar grid requires hooks or bends for anchorage, which are outside this straight-bar contract.",
+                "A numerically feasible bar grid needs an explicit supported end arrangement to close anchorage.",
                 load_transfer_result,
                 lower_direction,
                 upper_direction,
+                lower=failed_lower,
+                upper=failed_upper,
             )
-        if provided_pt_shear_failure_found:
+        if selected_geometry_failure:
+            failure_reason = (
+                "No permitted schedule fits the approved bend/hook radius, "
+                "extension and available footing envelope."
+            )
+        elif selected_anchorage_failure:
+            failure_reason = (
+                "No permitted schedule provides the exact required development "
+                "length with the selected end arrangement."
+            )
+        elif provided_pt_shear_failure_found:
             failure_reason = (
                 "No permitted buildable schedule passes one-way shear using its "
                 "actual provided directional reinforcement percentages."
@@ -733,6 +1059,8 @@ def detail_isolated_footing_bottom_steel(
             load_transfer_result,
             lower_direction,
             upper_direction,
+            lower=failed_lower,
+            upper=failed_upper,
         )
 
     (
