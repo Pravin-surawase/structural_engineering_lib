@@ -115,7 +115,26 @@ def test_root_stub_modules_are_pure_identity_delegates(
         owner = _resolve(projection["canonical_owner"])
 
         assert exposed is owner, projection["qualified_path"]
-        assert classification._signature(exposed) == projection["signature"]
+        if projection["identity_behavior"] == "OPTIONAL_DEPENDENCY_SAME_OBJECT":
+            assert projection["kind"] == "optional_dependency_proxy"
+            assert projection["signature"] == ""
+            assert projection["runtime_availability"] == "OPTIONAL_EZDXF"
+        else:
+            assert classification._signature(exposed) == projection["signature"]
+
+
+def test_optional_dependency_stub_identity_is_environment_independent() -> None:
+    for qualified_path in classification._OPTIONAL_DEPENDENCY_STUB_SYMBOLS:
+        owner = qualified_path.replace(
+            "structural_lib.dxf_export", "structural_lib.services.dxf_export"
+        )
+        installed = classification._stub_projection_identity(
+            qualified_path, owner, object()
+        )
+        absent = classification._stub_projection_identity(qualified_path, owner, None)
+
+        assert installed == absent
+        assert installed["identity_behavior"] == "OPTIONAL_DEPENDENCY_SAME_OBJECT"
 
 
 def test_api_hub_is_an_identity_only_subset(ledger: dict[str, Any]) -> None:
@@ -207,6 +226,29 @@ def test_maintained_callers_have_no_ambiguous_legacy_route(
         }
         for caller in ledger["caller_records"]
     )
+
+
+def test_caller_scan_uses_tracked_allowlist_and_excludes_generated_site(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    maintained = tmp_path / "docs" / "maintained.md"
+    generated = tmp_path / "site" / "search" / "search_index.json"
+    maintained.parent.mkdir(parents=True)
+    generated.parent.mkdir(parents=True)
+    maintained.write_text("structural_lib.design_beam_is456", encoding="utf-8")
+    generated.write_text("structural_lib.legacy_unknown", encoding="utf-8")
+
+    git_result = classification.subprocess.CompletedProcess(
+        args=["git", "ls-files", "--cached", "-z"],
+        returncode=0,
+        stdout=b"docs/maintained.md\0site/search/search_index.json\0",
+    )
+    monkeypatch.setattr(classification, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(
+        classification.subprocess, "run", lambda *args, **kwargs: git_result
+    )
+
+    assert classification._iter_text_files() == [maintained]
 
 
 def test_generated_ledger_matches_live_build(ledger: dict[str, Any]) -> None:

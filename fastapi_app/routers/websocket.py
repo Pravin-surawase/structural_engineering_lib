@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 from fastapi import APIRouter, Query, WebSocket, WebSocketDisconnect
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 # Import the owning beam service with proper signature discovery
 # See: scripts/discover_api_signatures.py design_beam_is456
@@ -207,21 +207,31 @@ class WSDesignParams(BaseModel):
     )
 
 
+class WSCheckLoadCase(BaseModel):
+    """Validated factored actions for one WebSocket beam check case."""
+
+    model_config = ConfigDict(
+        extra="forbid", allow_inf_nan=False, str_strip_whitespace=True
+    )
+
+    case_id: str = Field(..., min_length=1, description="Unique load-case identifier")
+    mu_knm: float = Field(..., description="Factored bending moment in kN·m")
+    vu_kn: float = Field(..., description="Factored shear force in kN")
+
+
 class WSCheckParams(BaseModel):
     """Validated parameters for check_beam WebSocket messages."""
 
-    width: float = Field(default=300, ge=100, le=2000, description="Beam width in mm")
-    depth: float = Field(
-        default=500, ge=150, le=3000, description="Overall beam depth in mm"
-    )
-    fck: float = Field(
-        default=25, ge=15, le=80, description="Concrete strength fck in N/mm²"
-    )
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    width: float = Field(..., ge=100, le=2000, description="Beam width in mm")
+    depth: float = Field(..., ge=150, le=3000, description="Overall beam depth in mm")
+    fck: float = Field(..., ge=15, le=80, description="Concrete strength fck in N/mm²")
     fy: float = Field(
-        default=500, ge=250, le=600, description="Steel yield strength fy in N/mm²"
+        ..., ge=250, le=600, description="Steel yield strength fy in N/mm²"
     )
-    cover: float = Field(default=40, ge=20, le=75, description="Clear cover in mm")
-    cases: list[dict[str, Any]] = Field(default_factory=list, description="Load cases")
+    cover: float = Field(..., ge=20, le=75, description="Clear cover in mm")
+    cases: list[WSCheckLoadCase] = Field(..., description="Factored load cases")
 
 
 # =============================================================================
@@ -396,7 +406,7 @@ async def handle_check_beam(session_id: str, params: dict[str, Any]) -> None:
     result = await asyncio.to_thread(
         check_beam_is456,
         units="IS456",
-        cases=validated.cases,
+        cases=[case.model_dump() for case in validated.cases],
         b_mm=float(validated.width),
         D_mm=float(validated.depth),
         d_mm=float(d_mm),

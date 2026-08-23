@@ -5,6 +5,136 @@
 
 ---
 
+## 2026-08-24 — Session: LIB-PRO-008 pre-INDIA-3 safety closure
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents)
+
+**Branch:** `codex/lib-pro-008-pre-india3-safety`, from exact clean hosted-main
+commit `e2fac7419551988def59101ac63a5f8e491bc7a2`.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-008-pre-india3-safety-git-handoff-receipt.json`
+
+**Focus:** Repair only the confirmed software safety and verification defects
+that block a trustworthy INDIA-3-G0 start. No IS 13920 formula, support claim,
+version/release, professional-use decision, or destructive lane action is in
+scope.
+
+### Summary
+
+- Reproduced the newer review's WebSocket load-case-only false calculation and
+  compatibility drift on exact `e2fac741`, plus the older torsion `NaN`
+  false-safe path. Preserved the unrelated dirty detached worktree.
+- Made WebSocket check geometry/material/cover fields required, replaced loose
+  case dictionaries with a fail-closed typed model, and rejected unknown or
+  non-finite fields. Added the exact reproducer to the public-route safety gate.
+- Bound all public torsion helpers and the composed design to finite-real intake
+  before arithmetic, including every scalar that previously allowed `NaN` to
+  propagate into a safe result.
+- Replaced repository-wide compatibility walking with Git's tracked source
+  allowlist plus a safe source-archive fallback, regenerated only the stale
+  compatibility ledger, and made documentation CI run its freshness check.
+- Completed the stirrup-path geometry boundary and rejected multi-leg output
+  that the single closed-loop return type cannot represent.
+- Focused Python, FastAPI, compatibility, and repaired geometry evidence pass.
+  The readiness audit remains truthfully `PARTIAL` at 23/24 with zero failures:
+  its longstanding broad input-ownership diagnostic still reports 359
+  `UNPROVEN` parameters outside this bounded packet.
+
+### Issues encountered
+
+- The canonical session start was initially blocked by an unmatched
+  `INDIA-3-G0` usage timer even though its candidate had already merged through
+  PR #861.
+- The first readiness audit after fixing the two displayed stirrup parameters
+  moved its abbreviated warning to the remaining section-geometry inputs; after
+  the complete local boundary repair, the warning moved to unrelated existing
+  functions instead of clearing.
+- The compatibility generator produced different outcomes in the normal
+  checkout and a source archive because it walked ignored generated HTML in
+  `site/`; the checked-in ledger was also two tracked documentation callers
+  behind.
+- The maintained `session summary --write` command replaced the task-authored
+  summary with the four already-merged predecessor commit subjects because the
+  current packet had no commit yet.
+- The first normal hook run reformatted one FastAPI assertion and rejected the
+  replacement handoff table because its required exact `Next` row was absent.
+- Initial hosted documentation validation exposed a second compatibility
+  environment dependency: three DXF stub projections changed kind/signature
+  when the optional `ezdxf` package was absent.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the merged INDIA-3-G0 run had no usage closeout record,
+  so session enforcement correctly prevented a second active timer. Resolution:
+  reconcile the exact candidate `b39fcda5`, PR #861, merge `e2fac741`, hosted
+  run, phase allocation, and counters before starting LIB-PRO-008. Evidence:
+  the G0 closeout records 50.063 minutes and the LIB-PRO-008 session begins
+  normally. ⚠️ TERMINAL ISSUE: session start was blocked by the unmatched G0
+  timer -> recorded its already-merged closeout before opening this task.
+- Confirmed root cause: `compute_stirrup_path` had no complete intake boundary;
+  the readiness report displays only the tail of a much larger diagnostic, so
+  fixing the displayed names cannot make that repository-wide diagnostic pass.
+  Resolution: validate the entire function boundary because it is in scope,
+  reject geometrically impossible/multi-leg output, and retain the broader
+  diagnostic as a truthful warning rather than chasing unrelated functions.
+  Evidence: all 69 geometry tests pass; the audit reports zero failed checks and
+  its remaining sample no longer names `compute_stirrup_path`.
+- Confirmed root cause: the compatibility scan used `os.walk` over the live
+  filesystem, so ignored build output became false caller evidence, while docs
+  CI did not own the freshness command. Resolution: use `git ls-files` as the
+  maintained checkout allowlist, retain a filtered archive fallback, refresh
+  the 1,502-caller ledger, and run `--check` in documentation validation.
+  Evidence: the compatibility module and generator check pass with zero blocked
+  ambiguous callers; focused CI-contract tests pass.
+- Confirmed root cause: comparison-only validation lets IEEE `NaN` bypass
+  `<=` checks, and the WebSocket model encoded structural defaults plus an
+  untyped case list. Resolution: normalize every torsion scalar through the
+  shared finite validator and require typed WebSocket engineering input before
+  calling the service. Evidence: all exact `NaN` and missing-input reproducers
+  raise/return input errors; no safe calculation payload is produced.
+- Confirmed root cause: the summary writer derives its body from committed Git
+  history, so before candidate creation it selected the predecessor merge set
+  instead of current uncommitted work. Resolution: retain its correctly
+  generated handoff block but restore the task-owned summary and do not rerun
+  the writer before candidate freeze. Evidence: the newest session entry again
+  describes only LIB-PRO-008. ⚠️ TERMINAL ISSUE: pre-commit session summary
+  inserted predecessor commits -> restored the task-owned summary while
+  retaining the generated receipt handoff block.
+- Confirmed root cause: Ruff's formatter and the FastAPI Black hook use
+  different preferred layouts for the pre-existing assertion, while the
+  session-document contract requires literal `Current` and `Next` table keys.
+  Resolution: retain Black's staged format and restore the exact `Next` row.
+  Evidence: the focused session-document checker and repeated normal hooks
+  pass. ⚠️ TERMINAL ISSUE: first normal hooks stopped on one formatter write
+  and the missing exact row -> accepted the hook format and restored the
+  required handoff key.
+- Confirmed root cause: root-stub ledger identity used live Python object kind
+  and signature for `ezdxf`, `units`, and `TextEntityAlignment`; those aliases
+  are exact delegates but are intentionally `None` without the optional DXF
+  extra. Resolution: preserve the exact runtime object-identity assertion while
+  encoding those three records as stable optional-dependency proxies whose
+  ledger identity does not depend on the installed extra. Evidence: the focused
+  compatibility/CI selection passes 69 tests, and `--check` passes in both the
+  normal project environment and a clean documentation-only environment with
+  no `ezdxf`. ⚠️ TERMINAL ISSUE: initial hosted documentation validation found
+  the stale ledger -> reproduced it in a clean local docs profile and removed
+  the optional-dependency identity drift at its generator owner.
+
+### Validation through content freeze
+
+- Focused Python selection passes 187 tests; the audit-driven affected geometry
+  rerun passes 69 tests. Focused WebSocket passes 12 tests.
+- API classification and compatibility check is current; the packed ledger has
+  1,502 caller records and zero blocked ambiguous callers.
+- The repaired compatibility/CI selection passes 69 tests, and the exact
+  documentation-only dependency profile now passes ledger freshness without
+  installing the optional DXF extra.
+- Readiness audit passes 23/24 checks with zero failures and one expected broad
+  input-ownership warning. The warning is not release or engineering approval.
+- Frozen quick/full gates, normal staged hooks, immutable candidate review,
+  final read-only session validation, and applicable hosted checks follow.
+
 ## 2026-08-24 — Session: INDIA-3-G0 IS 13920 truth-audit readiness
 
 **Agent:** Codex (`library-expert`, sole writer; no subagents)

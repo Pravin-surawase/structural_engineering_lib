@@ -131,6 +131,11 @@ def calculate_equivalent_moment(
     Reference:
         IS 456:2000, Clause 41.4.2
     """
+    mu_knm = require_finite_real("mu_knm", mu_knm)
+    tu_knm = require_finite_real("tu_knm", tu_knm)
+    d = require_finite_real("d", d)
+    b = require_finite_real("b", b)
+
     if b <= 0:
         raise DimensionError(
             dimension_too_small("beam width b", b, 0, "Cl. 41.4.2"),
@@ -146,7 +151,13 @@ def calculate_equivalent_moment(
 
     # IS 456 Cl 41.4.2: D is the overall depth of the beam
     if D_mm is not None:
-        D = D_mm
+        D = require_finite_real("D_mm", D_mm)
+        if D <= 0:
+            raise DimensionError(
+                dimension_too_small("overall depth D_mm", D, 0, "Cl. 41.4.2"),
+                details={"D_mm": D, "minimum": 0},
+                clause_ref="Cl. 41.4.2",
+            )
     else:
         import warnings
 
@@ -189,6 +200,10 @@ def calculate_torsion_shear_stress(ve_kn: float, b: float, d: float) -> float:
     Reference:
         IS 456:2000, Clause 41.3
     """
+    ve_kn = require_finite_real("ve_kn", ve_kn)
+    b = require_finite_real("b", b)
+    d = require_finite_real("d", d)
+
     if b <= 0:
         raise DimensionError(
             dimension_too_small("beam width b", b, 0, "Cl. 41.3"),
@@ -244,6 +259,15 @@ def calculate_torsion_stirrup_area(
     Reference:
         IS 456:2000, Clause 41.4.3
     """
+    tu_knm = require_finite_real("tu_knm", tu_knm)
+    vu_kn = require_finite_real("vu_kn", vu_kn)
+    b = require_finite_real("b", b)
+    d = require_finite_real("d", d)
+    b1 = require_finite_real("b1", b1)
+    d1 = require_finite_real("d1", d1)
+    fy = require_finite_real("fy", fy)
+    tc = require_finite_real("tc", tc)
+
     if fy <= 0:
         raise MaterialError(
             material_property_out_of_range(
@@ -317,6 +341,13 @@ def calculate_longitudinal_torsion_steel(
     Reference:
         IS 456:2000, Clause 41.4.2.1
     """
+    tu_knm = require_finite_real("tu_knm", tu_knm)
+    vu_kn = require_finite_real("vu_kn", vu_kn)
+    b1 = require_finite_real("b1", b1)
+    d1 = require_finite_real("d1", d1)
+    fy = require_finite_real("fy", fy)
+    sv = require_finite_real("sv", sv)
+
     if fy <= 0:
         raise MaterialError(
             material_property_out_of_range(
@@ -415,6 +446,18 @@ def design_torsion(
         - Valid for fck = 15–40 N/mm² (Table 19/20 range) and
           fy ≤ 500 N/mm².
     """
+    tu_knm = require_finite_real("tu_knm", tu_knm)
+    vu_kn = require_finite_real("vu_kn", vu_kn)
+    mu_knm = require_finite_real("mu_knm", mu_knm)
+    b = require_finite_real("b", b)
+    D = require_finite_real("D", D)
+    d = require_finite_real("d", d)
+    fck = require_finite_real("fck", fck)
+    fy = require_finite_real("fy", fy)
+    cover = require_finite_real("cover", cover)
+    stirrup_dia = require_finite_real("stirrup_dia", stirrup_dia)
+    pt = require_finite_real("pt", pt)
+
     errors: list[DesignError] = []
     clause_refs = {
         "Ve": "IS 456 Cl 41.3.1",

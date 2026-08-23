@@ -193,6 +193,7 @@ def test_pr_gate_topology_and_cancellation_are_scoped_per_pr():
     assert "python scripts/check_doc_versions.py --ci" in docs_run
     assert "python scripts/check_tasks_format.py" in docs_run
     assert "python scripts/check_links.py" in docs_run
+    assert "python scripts/generate_api_classification.py --check" in docs_run
     assert docs_run.rstrip().endswith("mkdocs build --strict")
 
     excel_steps = jobs["excel-validation"]["steps"]
@@ -248,6 +249,7 @@ def test_hosted_validation_checks_are_split_by_natural_domain_without_loss():
         "check_doc_versions.py --ci",
         "check_tasks_format.py",
         "check_links.py",
+        "generate_api_classification.py --check",
         "mkdocs build --strict",
     ):
         assert command in docs_policy

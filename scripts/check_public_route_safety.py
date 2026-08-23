@@ -30,9 +30,11 @@ PYTHON_TARGETS = (
     "Python/tests/unit/test_table_material_boundaries.py::test_canonical_helpers_reject_unsupported_domains",
     "Python/tests/unit/test_table_material_boundaries.py::test_compatibility_exports_and_is456_delegates_share_boundaries",
     "Python/tests/unit/test_table_material_boundaries.py::test_is456_design_strength_methods_share_material_domains",
+    "Python/tests/unit/test_torsion.py::test_design_torsion_rejects_nan_in_every_public_scalar",
 )
 
 FASTAPI_TARGETS = (
+    "fastapi_app/tests/test_websocket.py::TestWebSocketDesign::test_websocket_check_beam_rejects_hidden_engineering_defaults",
     "fastapi_app/tests/test_insights_dashboard.py::TestProjectBOQ::test_project_boq_rejects_negative_rates",
     "fastapi_app/tests/test_insights_dashboard.py::TestProjectBOQ::test_project_boq_rejects_non_positive_concrete_grade",
     "fastapi_app/tests/test_library_core.py::test_one_way_slab_capacity_miss_serializes_engineering_fail",

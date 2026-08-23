@@ -523,3 +523,96 @@ class TestEdgeCases:
             cover=40,
         )
         assert result_m40.tau_c_max > result_m20.tau_c_max
+
+
+@pytest.mark.parametrize(
+    ("function", "kwargs", "field"),
+    [
+        (
+            calculate_equivalent_moment,
+            {"mu_knm": float("nan"), "tu_knm": 10, "d": 450, "b": 300},
+            "mu_knm",
+        ),
+        (
+            calculate_equivalent_moment,
+            {
+                "mu_knm": 150,
+                "tu_knm": 10,
+                "d": 450,
+                "b": 300,
+                "D_mm": float("nan"),
+            },
+            "D_mm",
+        ),
+        (
+            calculate_torsion_shear_stress,
+            {"ve_kn": float("nan"), "b": 300, "d": 450},
+            "ve_kn",
+        ),
+        (
+            calculate_torsion_stirrup_area,
+            {
+                "tu_knm": 10,
+                "vu_kn": 100,
+                "b": 300,
+                "d": 450,
+                "b1": 220,
+                "d1": 420,
+                "fy": 500,
+                "tc": float("nan"),
+            },
+            "tc",
+        ),
+        (
+            calculate_longitudinal_torsion_steel,
+            {
+                "tu_knm": 10,
+                "vu_kn": 100,
+                "b1": 220,
+                "d1": 420,
+                "fy": 500,
+                "sv": float("nan"),
+            },
+            "sv",
+        ),
+    ],
+)
+def test_public_torsion_helpers_reject_non_finite_scalars(function, kwargs, field):
+    with pytest.raises(ValueError, match=field):
+        function(**kwargs)
+
+
+@pytest.mark.parametrize(
+    "field",
+    [
+        "tu_knm",
+        "vu_kn",
+        "mu_knm",
+        "b",
+        "D",
+        "d",
+        "fck",
+        "fy",
+        "cover",
+        "stirrup_dia",
+        "pt",
+    ],
+)
+def test_design_torsion_rejects_nan_in_every_public_scalar(field):
+    values = {
+        "tu_knm": 10,
+        "vu_kn": 100,
+        "mu_knm": 150,
+        "b": 300,
+        "D": 500,
+        "d": 450,
+        "fck": 25,
+        "fy": 500,
+        "cover": 40,
+        "stirrup_dia": 8,
+        "pt": 1.0,
+    }
+    values[field] = float("nan")
+
+    with pytest.raises(ValueError, match=field):
+        design_torsion(**values)

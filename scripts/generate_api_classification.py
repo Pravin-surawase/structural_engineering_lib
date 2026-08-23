@@ -17,6 +17,7 @@ import inspect
 import json
 import os
 import re
+import subprocess
 import sys
 import warnings
 from datetime import datetime, timezone
@@ -101,7 +102,18 @@ _SKIP_PARTS = frozenset(
         ".venv",
         "build",
         "dist",
+        "htmlcov",
         "node_modules",
+        "sdist",
+        "site",
+    }
+)
+_EXCLUDED_SCAN_PATHS = frozenset(
+    {
+        "docs/SESSION_LOG.md",
+        "docs/reference/api-classification.json",
+        "docs/reference/api-compatibility-ledger.json",
+        "docs/reference/api-manifest.json",
     }
 )
 _INTENTIONAL_COMPATIBILITY_PATHS = frozenset(
@@ -143,6 +155,13 @@ _OUT_OF_SCOPE_PREFIXES = (
     "docs/verification/",
 )
 _OUT_OF_SCOPE_PARTS = frozenset({"fixtures", "vendor", "vendors"})
+_OPTIONAL_DEPENDENCY_STUB_SYMBOLS = frozenset(
+    {
+        "structural_lib.dxf_export.TextEntityAlignment",
+        "structural_lib.dxf_export.ezdxf",
+        "structural_lib.dxf_export.units",
+    }
+)
 
 
 def _kind(value: object) -> str:
@@ -185,6 +204,28 @@ def _identity_key(value: object, fallback: str) -> str:
     owner = _canonical_owner(value, fallback)
     payload = f"{owner}|{_kind(value)}|{_signature(value)}"
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def _stub_projection_identity(
+    qualified_path: str, owner: str, value: object
+) -> dict[str, str]:
+    """Return stable identity metadata for one compatibility-stub symbol."""
+
+    if qualified_path in _OPTIONAL_DEPENDENCY_STUB_SYMBOLS:
+        payload = f"{qualified_path}|{owner}|OPTIONAL_DEPENDENCY_PROXY"
+        return {
+            "kind": "optional_dependency_proxy",
+            "signature": "",
+            "identity_key": hashlib.sha256(payload.encode("utf-8")).hexdigest(),
+            "identity_behavior": "OPTIONAL_DEPENDENCY_SAME_OBJECT",
+            "runtime_availability": "OPTIONAL_EZDXF",
+        }
+    return {
+        "kind": _kind(value),
+        "signature": _signature(value),
+        "identity_key": _identity_key(value, qualified_path),
+        "identity_behavior": "SAME_OBJECT",
+    }
 
 
 def _migration_metadata(value: object, replacement: str) -> dict[str, Any]:
@@ -255,7 +296,51 @@ def _attribute_chain(node: ast.AST) -> tuple[str, ...]:
     return tuple(reversed(values))
 
 
+def _is_scannable_text_path(relative: Path) -> bool:
+    """Return whether one repository-relative source path belongs in the scan."""
+
+    return (
+        not relative.is_absolute()
+        and ".." not in relative.parts
+        and not any(part in _SKIP_PARTS for part in relative.parts)
+        and relative.suffix in _TEXT_SUFFIXES
+        and relative.as_posix() not in _EXCLUDED_SCAN_PATHS
+    )
+
+
+def _git_tracked_paths() -> list[Path] | None:
+    """Return Git's maintained source allowlist, or None outside a checkout."""
+
+    try:
+        result = subprocess.run(
+            ["git", "ls-files", "--cached", "-z"],
+            cwd=REPO_ROOT,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+    except OSError:
+        return None
+    if result.returncode != 0:
+        return None
+    return sorted(
+        Path(os.fsdecode(raw_path))
+        for raw_path in result.stdout.split(b"\0")
+        if raw_path
+    )
+
+
 def _iter_text_files() -> list[Path]:
+    tracked_paths = _git_tracked_paths()
+    if tracked_paths is not None:
+        return [
+            REPO_ROOT / relative
+            for relative in tracked_paths
+            if _is_scannable_text_path(relative) and (REPO_ROOT / relative).is_file()
+        ]
+
+    # Source archives have no Git metadata. They contain the maintained tree,
+    # so retain a deterministic fallback while excluding generated outputs.
     paths: list[Path] = []
     for current, directories, filenames in os.walk(REPO_ROOT):
         directories[:] = sorted(
@@ -264,15 +349,8 @@ def _iter_text_files() -> list[Path]:
         current_path = Path(current)
         for filename in sorted(filenames):
             path = current_path / filename
-            if path.suffix not in _TEXT_SUFFIXES:
-                continue
             relative = path.relative_to(REPO_ROOT)
-            if relative.as_posix() in {
-                "docs/SESSION_LOG.md",
-                "docs/reference/api-classification.json",
-                "docs/reference/api-compatibility-ledger.json",
-                "docs/reference/api-manifest.json",
-            }:
+            if not _is_scannable_text_path(relative):
                 continue
             paths.append(path)
     return sorted(paths)
@@ -1045,6 +1123,8 @@ def build_compatibility_ledger(
                 continue
             value = getattr(module, name)
             owner = _stub_symbol_owner(stub, name)
+            qualified_path = f"{module_name}.{name}"
+            identity = _stub_projection_identity(qualified_path, owner, value)
             active, preserved = _active_and_preserved_callers(
                 symbol_paths[(module_name, name)], compatibility_module=True
             )
@@ -1056,7 +1136,7 @@ def build_compatibility_ledger(
             stub_projections.append(
                 {
                     "public_name": name,
-                    "qualified_path": f"{module_name}.{name}",
+                    "qualified_path": qualified_path,
                     "facades_exposing_same_object": [module_name],
                     "canonical_owner": owner,
                     "replacement_path": (
@@ -1064,10 +1144,7 @@ def build_compatibility_ledger(
                         if name in _P5_HELD_COMPATIBILITY
                         else owner
                     ),
-                    "kind": _kind(value),
-                    "signature": _signature(value),
-                    "identity_key": _identity_key(value, f"{module_name}.{name}"),
-                    "identity_behavior": "SAME_OBJECT",
+                    **identity,
                     "active_caller_count": len(active),
                     "active_maintained_caller_paths": active,
                     "out_of_scope_reference_paths": preserved,

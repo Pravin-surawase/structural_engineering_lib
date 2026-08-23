@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "task_id": "LIB-PRO-008",
+  "title": "Pre-INDIA-3 public safety and compatibility closure",
+  "status": "SOFTWARE_COMPLETE_ON_UNCHANGED_GREEN_MERGE",
+  "source": {
+    "branch": "codex/lib-pro-008-pre-india3-safety",
+    "base_commit": "e2fac7419551988def59101ac63a5f8e491bc7a2",
+    "base_claim": "clean local main equal to origin/main before implementation"
+  },
+  "authorization": {
+    "source": "User instruction: okay do it and so we can get ready for india 3 go",
+    "allows": [
+      "repair confirmed pre-INDIA-3 software safety blockers",
+      "add focused tests and maintained safety-gate ownership",
+      "run local and hosted verification",
+      "merge an unchanged green pull request"
+    ],
+    "does_not_allow": [
+      "publish a package, tag, or GitHub release",
+      "change or accept IS 13920 formulas",
+      "claim qualified engineering or professional approval",
+      "delete branches, worktrees, archives, or unrelated files"
+    ]
+  },
+  "repairs": [
+    {
+      "id": "TORSION_FINITE_BOUNDARY",
+      "before": "design_torsion could return a safe result for NaN moment, depth, steel, cover, or stirrup inputs",
+      "after": "every public torsion scalar is normalized through finite-real validation before arithmetic",
+      "decisive_test": "Python/tests/unit/test_torsion.py::test_design_torsion_rejects_nan_in_every_public_scalar"
+    },
+    {
+      "id": "WEBSOCKET_CHECK_BEAM_REQUIRED_INPUTS",
+      "before": "a load-case-only check_beam WebSocket request silently used 300x500 mm, M25, Fe500, and 40 mm cover and returned is_ok",
+      "after": "geometry, material, cover, and typed load-case inputs are required; extra and non-finite values are rejected before calculation",
+      "decisive_test": "fastapi_app/tests/test_websocket.py::TestWebSocketDesign::test_websocket_check_beam_rejects_hidden_engineering_defaults"
+    },
+    {
+      "id": "COMPATIBILITY_SOURCE_ALLOWLIST",
+      "before": "the caller scanner walked ignored generated site output and the checked-in ledger omitted two tracked INDIA-3-G0 references",
+      "after": "Git-tracked paths own checkout scans, source archives retain a generated-output-filtered fallback, and the ledger records 1502 callers with zero ambiguous callers",
+      "decisive_test": "Python/tests/test_compatibility_convergence.py::test_caller_scan_uses_tracked_allowlist_and_excludes_generated_site"
+    },
+    {
+      "id": "DOCS_COMPATIBILITY_CI",
+      "before": "documentation-only changes could change the compatibility caller ledger while Python validation stayed skipped",
+      "after": "the always-selected documentation job runs the exact classification and compatibility freshness check",
+      "decisive_test": "Python/tests/test_ci_workflow_contract.py::test_hosted_validation_checks_are_split_by_natural_domain_without_loss"
+    },
+    {
+      "id": "STIRRUP_GEOMETRY_FAIL_CLOSED",
+      "before": "compute_stirrup_path accepted non-finite coordinates and claimed unused 4/6-leg support",
+      "after": "all section geometry is validated and the single-loop result rejects multi-leg requests it cannot represent",
+      "decisive_test": "Python/tests/test_visualization_geometry_3d.py::TestComputeStirrupPath"
+    },
+    {
+      "id": "OPTIONAL_DEPENDENCY_LEDGER_IDENTITY",
+      "before": "compatibility kind, signature, and identity hashes for three DXF aliases changed when optional ezdxf was absent from documentation CI",
+      "after": "the aliases retain exact runtime object delegation while the ledger records stable optional-dependency proxy identity independent of ezdxf installation",
+      "decisive_test": "Python/tests/test_compatibility_convergence.py::test_optional_dependency_stub_identity_is_environment_independent"
+    }
+  ],
+  "frozen_local_evidence": {
+    "focused_python": "187 passed before the geometry repair; the affected 69-test geometry module passed after repair",
+    "focused_fastapi": "12 passed",
+    "compatibility_check": "current; 1502 caller records; zero blocked ambiguous callers",
+    "clean_documentation_profile": "compatibility freshness passes with only documentation dependencies and no ezdxf extra",
+    "readiness_audit": "23 of 24 passed; zero failed; the longstanding input-ownership diagnostic remains the sole warning with 359 UNPROVEN parameters",
+    "public_route_safety_gate": "now owns the exact torsion NaN and WebSocket load-case-only reproducers"
+  },
+  "closeout_required": [
+    "one frozen quick gate",
+    "one full 31-check repository gate",
+    "normal staged hooks",
+    "immutable candidate review and read-only session end",
+    "all applicable hosted checks on the unchanged candidate"
+  ],
+  "next_boundary": "After unchanged green integration, resume only the bounded INDIA-3-G0 source, clause, benchmark, and public-contract audit."
+}
