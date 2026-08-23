@@ -33,7 +33,7 @@ import time
 from dataclasses import dataclass, field
 from typing import Any
 
-from structural_lib import flexure
+from structural_lib.codes.is456.beam import flexure
 from structural_lib.services.costing import CostProfile, calculate_beam_cost
 
 logger = logging.getLogger(__name__)

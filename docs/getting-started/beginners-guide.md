@@ -57,7 +57,7 @@ python3 -m pip install "structural-lib-is456[dxf]"
 ### Step 4: Run a first check (no files yet)
 Create a new file named `check.py` and paste this:
 ```python
-from structural_lib import flexure
+from structural_lib.codes.is456.beam import flexure
 
 res = flexure.design_singly_reinforced(
     b=300, d=450, d_total=500, mu_knm=150, fck=25, fy=500

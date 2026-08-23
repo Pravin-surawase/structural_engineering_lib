@@ -12,8 +12,8 @@ from pathlib import Path
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from structural_lib.api import design_beam_is456
-from structural_lib.errors import Severity
+from structural_lib import design_beam_is456
+from structural_lib.core.errors import Severity
 from structural_lib.insights import quick_precheck, sensitivity_analysis
 
 

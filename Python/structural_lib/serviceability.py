@@ -1,6 +1,6 @@
 """Backward compatibility stub.
 
-This module has been migrated to: structural_lib.codes.is456.serviceability
+This module has been migrated to: structural_lib.codes.is456.beam.serviceability
 
 All functionality is re-exported here for backward compatibility.
 Existing imports like `from structural_lib import serviceability` continue to work.

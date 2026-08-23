@@ -5,8 +5,8 @@ Module:       tables
 Description:  Data tables from IS 456:2000 (Table 19, Table 20, etc.)
 """
 
-from structural_lib import utilities
 from structural_lib.codes.is456._validation import require_finite_real, require_range
+from structural_lib.core import utilities
 
 __all__ = ["get_tc_value", "get_tc_max_value"]
 

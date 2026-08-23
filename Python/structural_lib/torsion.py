@@ -2,7 +2,7 @@
 # Copyright (c) 2024-2026 Pravin Surawase
 """Backward compatibility stub.
 
-This module has been migrated to: structural_lib.codes.is456.torsion
+This module has been migrated to: structural_lib.codes.is456.beam.torsion
 
 All functionality is re-exported here for backward compatibility.
 Existing imports like `from structural_lib import torsion` continue to work.

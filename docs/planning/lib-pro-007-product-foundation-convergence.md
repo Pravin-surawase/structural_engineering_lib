@@ -39,8 +39,10 @@ unchanged.
   outcomes decisive.
 - P4 merged through PR #856 at `426d401b` with exact merged tree `a5b01272`.
 - P5 merged through PR #857 at `6d533b6f` with exact merged tree `d3bbaeb2`.
-- P6 is active on a source-bound lane from exact `6d533b6f`; P7 and cumulative
-  M0 remain held in the frozen sequence below.
+- P6 merged through PR #858 at hosted commit `6cb47221`, with reviewed
+  candidate `9647fedd` and exact candidate/merged tree `d2b3efa3`.
+- P7 is active on a source-bound lane from exact `6cb47221` / tree `d2b3efa3`;
+  cumulative M0 remains held in the frozen sequence below.
 
 ## Why this precedes INDIA-3
 
@@ -228,6 +230,9 @@ canonical beam slice and does not become a second gravity implementation. The
 detailed acceptance matrix is maintained in
 [Cross-Surface Parity V1](../guides/cross-surface-parity-v1.md).
 
+P6 merged through PR #858 at hosted commit `6cb47221`; the reviewed candidate
+was `9647fedd` and candidate/merged tree identity is `d2b3efa3`.
+
 ### P7 - Compatibility convergence
 
 Use the G0 matrix after canonical destinations work:
@@ -241,6 +246,16 @@ Use the G0 matrix after canonical destinations work:
 
 Historical archives, Streamlit reference material, vendor sources, branches,
 and worktrees are outside this packet.
+
+P7 remeasures the G0 baseline at 222 package-root, 199 service-facade, and 199
+legacy-facade declared exports. The resulting 620 facade projections reconcile
+exactly with live classification; 498 compatibility classification entries are
+intentional facade views, not 498 engines. The deterministic
+[compatibility ledger](../reference/api-compatibility-ledger.json) records exact
+object/signature identity or per-symbol module-namespace delegation, maintained
+caller paths, warning metadata, held P5 contracts, and deletion authorization.
+It has no ambiguous maintained caller and no retirement candidate. No export,
+signature, file, branch, or worktree is removed by P7.
 
 ## Verification cadence
 

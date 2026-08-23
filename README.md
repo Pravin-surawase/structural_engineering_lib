@@ -98,9 +98,9 @@ must use a new version and fresh exact-artifact evidence. See the
 [release policy](docs/getting-started/releases.md) before selecting a release.
 
 ```python
-from structural_lib import api
+import structural_lib as sl
 
-result = api.design_and_detail_beam_is456(
+result = sl.design_and_detail_beam_is456(
     units="IS456",
     beam_id="B1",
     story="GF",

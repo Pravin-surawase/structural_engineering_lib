@@ -35,7 +35,7 @@ import re
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 from structural_lib.core.models import (
     BeamForces,
@@ -1086,3 +1086,53 @@ def envelopes_to_beam_forces(
         >>> print(f"Converted {len(forces)} force records")
     """
     return [to_beam_forces(env) for env in envelopes]
+
+
+# P7 migration metadata is intentionally non-deprecating. These historical
+# contracts remain import-compatible, but none is an accepted P5 snapshot.
+_P5_HELD_COMPATIBILITY_METADATA = {
+    "load_etabs_csv": {
+        "status": "HELD_COMPATIBILITY",
+        "since_task": "LIB-PRO-007-P5",
+        "removal_version": None,
+        "replacement_public": "structural_lib.imports.build_etabs_canonical_snapshot_v1",
+        "replacement_owner": "structural_lib.services.etabs_snapshot.build_etabs_canonical_snapshot_v1",
+        "limitation": "No project/export identity, exhaustive row dispositions, ambiguity ledger, or snapshot hash.",
+    },
+    "normalize_etabs_forces": {
+        "status": "HELD_COMPATIBILITY",
+        "since_task": "LIB-PRO-007-P5",
+        "removal_version": None,
+        "replacement_public": "structural_lib.imports.build_etabs_canonical_snapshot_v1",
+        "replacement_owner": "structural_lib.services.etabs_snapshot.build_etabs_canonical_snapshot_v1",
+        "limitation": "Historical force envelope only; not a project/export-bound accepted snapshot.",
+    },
+    "create_job_from_etabs": {
+        "status": "HELD_COMPATIBILITY",
+        "since_task": "LIB-PRO-007-P5",
+        "removal_version": None,
+        "replacement_public": "structural_lib.imports.build_etabs_canonical_snapshot_v1",
+        "replacement_owner": "structural_lib.services.etabs_snapshot.build_etabs_canonical_snapshot_v1",
+        "limitation": "Historical JobSpec shape permits legacy defaults and is not ProjectBeamDesignInputV1.",
+    },
+    "create_jobs_from_etabs_csv": {
+        "status": "HELD_COMPATIBILITY",
+        "since_task": "LIB-PRO-007-P5",
+        "removal_version": None,
+        "replacement_public": "structural_lib.imports.build_etabs_canonical_snapshot_v1",
+        "replacement_owner": "structural_lib.services.etabs_snapshot.build_etabs_canonical_snapshot_v1",
+        "limitation": "Historical batch JobSpec adapter lacks accepted snapshot identity and may apply legacy material defaults.",
+    },
+}
+cast(Any, load_etabs_csv).__compatibility__ = _P5_HELD_COMPATIBILITY_METADATA[
+    "load_etabs_csv"
+]
+cast(Any, normalize_etabs_forces).__compatibility__ = _P5_HELD_COMPATIBILITY_METADATA[
+    "normalize_etabs_forces"
+]
+cast(Any, create_job_from_etabs).__compatibility__ = _P5_HELD_COMPATIBILITY_METADATA[
+    "create_job_from_etabs"
+]
+cast(Any, create_jobs_from_etabs_csv).__compatibility__ = (
+    _P5_HELD_COMPATIBILITY_METADATA["create_jobs_from_etabs_csv"]
+)

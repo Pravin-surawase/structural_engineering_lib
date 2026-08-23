@@ -411,12 +411,16 @@ def validate_int(value, min_val=None, max_val=None):
 result = library_function(b, d)
 
 # ✅ DO (explicit units)
-from structural_lib.api import design_beam
-result = design_beam(
-    width_mm=b,
-    depth_mm=d,
-    concrete_grade="M25",
-    steel_grade="Fe500"
+from structural_lib import design_beam_is456
+result = design_beam_is456(
+    units="IS456_NMM",
+    mu_knm=150.0,
+    vu_kn=75.0,
+    b_mm=b,
+    D_mm=500.0,
+    d_mm=d,
+    fck_nmm2=25.0,
+    fy_nmm2=500.0,
 )
 ```
 

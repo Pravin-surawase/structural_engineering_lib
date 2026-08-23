@@ -141,10 +141,10 @@ Creates:
 For integration into your own scripts:
 
 ```python
-from structural_lib import api
+import structural_lib as sl
 
 # Single beam design
-result = api.design_beam_is456(
+result = sl.design_beam_is456(
     b=300, d=450, D=500,
     Mu_knm=150, Vu_kn=100,
     fck=25, fy=500,

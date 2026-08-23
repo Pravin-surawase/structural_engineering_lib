@@ -24,7 +24,7 @@ The design suggestions engine provides expert recommendations to improve your be
 ## Quick Start
 
 ```python
-from structural_lib.beam_pipeline import design_single_beam
+from structural_lib.services.beam_pipeline import design_single_beam
 from structural_lib.insights import suggest_improvements
 
 # Design your beam
@@ -350,7 +350,7 @@ if high_impact:
 ### Batch Design with Suggestions
 
 ```python
-from structural_lib.beam_pipeline import design_multiple_beams
+from structural_lib.services.beam_pipeline import design_multiple_beams
 from structural_lib.insights import suggest_improvements
 
 beams = [...]  # List of beam parameters

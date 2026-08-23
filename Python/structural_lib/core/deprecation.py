@@ -27,14 +27,14 @@ def deprecated(
     Mark a function or class as deprecated.
 
     Emits a DeprecationWarning when the decorated function is called.
-    Follows the project deprecation policy: minimum 1 minor version before removal.
+    Use only when the owner has approved a real replacement and removal version.
 
     Parameters
     ----------
     version : str
         Version when deprecation was introduced (e.g., "0.14.0")
     remove_version : str
-        Version when feature will be removed (e.g., "1.0.0")
+        Owner-approved version when the feature will be removed.
     alternative : str, optional
         Recommended replacement (e.g., "api.design_beam_is456")
     reason : str, optional
@@ -139,7 +139,7 @@ def deprecated_field(
     -----
     - stacklevel=3 accounts for: this function → __post_init__ → user code
     - Only warn if field is actually used (check before calling)
-    - Follows same policy as @deprecated decorator
+    - Requires the same owner-approved replacement/removal evidence as @deprecated
 
     See Also
     --------

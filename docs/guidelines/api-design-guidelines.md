@@ -970,7 +970,7 @@ Key Functions:
     - check_deflection: Span-to-depth ratio check (IS 456 Cl. 23.2)
 
 Typical Usage:
-    >>> from structural_lib.flexure import design_singly_reinforced
+    >>> from structural_lib.codes.is456.beam.flexure import design_singly_reinforced
     >>> result = design_singly_reinforced(b_mm=230, d_mm=450, mu_kn_m=150, ...)
 
 See Also:
@@ -1716,7 +1716,7 @@ result = design_beam_detailed(
 # ✅ GOOD: Hierarchical imports
 from structural_lib.design import beams, columns, slabs
 from structural_lib.analysis import moment, shear, deflection
-from structural_lib.detailing import bar_bending, anchorage
+from structural_lib.codes.is456.beam.detailing import bar_bending, anchorage
 
 # User types: structural_lib. [autocomplete shows: design, analysis, detailing]
 # User types: structural_lib.design. [shows: beams, columns, slabs]

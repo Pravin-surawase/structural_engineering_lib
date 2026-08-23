@@ -24,7 +24,7 @@ from dataclasses import asdict, dataclass, field
 from enum import Enum
 from typing import Any
 
-from structural_lib import detailing
+from structural_lib.codes.is456.beam import detailing
 from structural_lib.core.data_types import (
     BarDict,
     CrackWidthParams,

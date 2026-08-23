@@ -18,7 +18,7 @@ from __future__ import annotations
 from pathlib import Path
 
 # Import the new canonical data format modules
-from structural_lib.models import (
+from structural_lib.core.models import (
     BeamBatchInput,
     BeamBatchResult,
     BeamDesignResult,
@@ -29,7 +29,7 @@ from structural_lib.models import (
     Point3D,
     SectionProperties,
 )
-from structural_lib.serialization import (
+from structural_lib.services.serialization import (
     generate_all_schemas,
     get_cache_metadata,
     load_geometry,

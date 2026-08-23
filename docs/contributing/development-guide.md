@@ -917,18 +917,20 @@ End Sub
 
 ```python
 import pytest
-from structural_lib.flexure import ast_singly_is456
+from structural_lib.codes.is456.beam.flexure import design_singly_reinforced
 
 def test_ast_singly_nominal():
     """Verify Ast against SP:16 worked example."""
     # b=300, d=450, fck=20, fy=415, Mu=150 kN·m
-    ast = ast_singly_is456(150, 300, 450, 20, 415)
-    assert ast == pytest.approx(1050, abs=50)
+    result = design_singly_reinforced(300, 450, 500, 150, 20, 415)
+    assert result.is_safe is True
+    assert result.Ast_required == pytest.approx(1118.36, abs=0.01)
 
 def test_ast_singly_exceeds_limit():
     """Verify -1 returned when Mu > Mu_lim."""
-    ast = ast_singly_is456(300, 300, 450, 20, 415)  # Very high moment
-    assert ast == -1
+    result = design_singly_reinforced(300, 450, 500, 300, 20, 415)
+    assert result.is_safe is False
+    assert result.errors[0].code == "E_FLEXURE_001"
 ```
 
 ### 10.4 Test Data from Standards

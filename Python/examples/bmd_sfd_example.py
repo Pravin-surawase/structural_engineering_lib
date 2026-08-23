@@ -11,7 +11,7 @@ Author: Structural Engineering Library
 License: MIT
 """
 
-from structural_lib.api import (
+from structural_lib import (
     LoadDefinition,
     LoadType,
     compute_bmd_sfd,

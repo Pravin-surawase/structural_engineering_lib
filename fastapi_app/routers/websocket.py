@@ -23,9 +23,9 @@ from typing import Any
 from fastapi import APIRouter, Query, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel, Field, ValidationError
 
-# Import structural_lib API with proper signature discovery
+# Import the owning beam service with proper signature discovery
 # See: scripts/discover_api_signatures.py design_beam_is456
-from structural_lib import api
+from structural_lib.services.beam_api import check_beam_is456, design_beam_is456
 from fastapi_app.auth import verify_ws_token
 from fastapi_app.error_utils import sanitize_error
 
@@ -233,7 +233,7 @@ async def handle_design_beam(session_id: str, params: dict[str, Any]) -> None:
     """
     Handle design_beam message.
 
-    Uses structural_lib.api.design_beam_is456 with correct signature:
+    Uses structural_lib.services.beam_api.design_beam_is456 with correct signature:
     - units: "IS456"
     - b_mm, D_mm, d_mm: dimensions in mm
     - mu_knm, vu_kn: forces
@@ -261,7 +261,7 @@ async def handle_design_beam(session_id: str, params: dict[str, Any]) -> None:
 
     # Run design calculation in thread pool (non-blocking)
     result = await asyncio.to_thread(
-        api.design_beam_is456,
+        design_beam_is456,
         units="IS456",
         b_mm=float(validated.width),
         D_mm=float(validated.depth),
@@ -369,7 +369,7 @@ async def handle_check_beam(session_id: str, params: dict[str, Any]) -> None:
     """
     Handle check_beam message for compliance check.
 
-    Uses structural_lib.api.check_beam_is456 with correct signature.
+    Uses structural_lib.services.beam_api.check_beam_is456 with correct signature.
     Discovered via: scripts/discover_api_signatures.py check_beam_is456
     """
     start_time = datetime.now(timezone.utc)
@@ -394,7 +394,7 @@ async def handle_check_beam(session_id: str, params: dict[str, Any]) -> None:
 
     # Run check in thread pool
     result = await asyncio.to_thread(
-        api.check_beam_is456,
+        check_beam_is456,
         units="IS456",
         cases=validated.cases,
         b_mm=float(validated.width),

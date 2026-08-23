@@ -1,8 +1,11 @@
 """Backward compatibility stub.
 
 This module has been migrated to: structural_lib.services.imports
-All functionality is re-exported here for backward compatibility.
-Prefer importing directly from structural_lib.services.imports."""
+It is a compatibility namespace over structural_lib.services.imports,
+structural_lib.services.import_ledger, and structural_lib.services.etabs_snapshot.
+The maintained public P5 snapshot entrypoint remains
+structural_lib.imports.build_etabs_canonical_snapshot_v1; internal code should
+import each owning service module directly."""
 
 from __future__ import annotations
 

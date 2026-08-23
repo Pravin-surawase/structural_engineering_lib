@@ -526,7 +526,7 @@ def compute_dxf(
         >>> print(f"DXF generated: {dxf_path}")
         DXF generated: output/beams.dxf
     """
-    from structural_lib import dxf_export as _dxf_export
+    from structural_lib.services import dxf_export as _dxf_export
 
     if _dxf_export is None:
         raise RuntimeError(

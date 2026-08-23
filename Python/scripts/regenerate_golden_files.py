@@ -8,7 +8,7 @@ import shutil
 import tempfile
 from pathlib import Path
 
-from structural_lib import report
+from structural_lib.services import report
 
 
 def main() -> None:

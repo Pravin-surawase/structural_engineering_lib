@@ -83,8 +83,8 @@ In Colab: **Runtime → Restart runtime**, then run the cells below in order.
 
 Verify installation:
 ```python
-from structural_lib import api
-print("Version:", api.get_library_version())
+import structural_lib as sl
+print("Version:", sl.get_library_version())
 ```
 
 ---
@@ -92,7 +92,7 @@ print("Version:", api.get_library_version())
 ## Step 2: Quick Sanity Check (No Files)
 
 ```python
-from structural_lib import flexure
+from structural_lib.codes.is456.beam import flexure
 
 res = flexure.design_singly_reinforced(
     b=300, d=450, d_total=500, mu_knm=150, fck=25, fy=500
@@ -116,7 +116,8 @@ Status: OK
 ```python
 import csv
 import random
-from structural_lib import flexure, tables
+from structural_lib.codes.is456 import tables
+from structural_lib.codes.is456.beam import flexure
 
 random.seed(7)
 
@@ -212,7 +213,8 @@ with open("crack_width_params.json", "w") as f:
 ```python
 import csv
 import random
-from structural_lib import flexure, tables
+from structural_lib.codes.is456 import tables
+from structural_lib.codes.is456.beam import flexure
 
 random.seed(42)
 

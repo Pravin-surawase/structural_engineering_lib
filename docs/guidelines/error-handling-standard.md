@@ -710,7 +710,7 @@ Use warnings for non-critical issues:
 
 ```python
 import warnings
-from structural_lib.types import StructuralWarning
+from structural_lib.core.types import StructuralWarning
 
 
 def check_deflection(...) -> DeflectionResult:
