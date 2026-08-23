@@ -5,6 +5,116 @@
 
 ---
 
+## 2026-08-23 — Session: LIB-PRO-007-P4 explicit practical actions
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents)
+
+**Branch:** `codex/lib-pro-007-p4-practical-actions`, from exact merged P3
+hosted-main commit `0ea3e2d43343d70f007b0771896b41566e3b5064`.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-007-p4-practical-actions-git-handoff-receipt.json`
+
+**Focus:** Add only caller-assigned wall/beam line, beam point, and supported
+slab-area gravity actions with stable identity and exact reconciliation. P5,
+automatic load generation, lateral actions, live ETABS, write-back, release,
+professional approval, and new INDIA-3 engineering remain excluded.
+
+### Summary
+
+- Added a frozen `GravityPracticalActionV1` input with unique action/source
+  identity, source category and reference, DL/LL case, exact units, explicit
+  destination, magnitude, point station where applicable, and caller assignment
+  basis.
+- Limited the contract to DL wall lines, full-span beam lines, positioned beam
+  points, and area actions on the sole supported panel. Unsupported source
+  categories, wrong units, missing/out-of-span stations, unknown destinations,
+  and conflicting inclusion/exclusion evidence fail before calculation.
+- Added source and destination ledger entries plus one exact balance for every
+  practical action. The storey, beam, column, footing, and combination balances
+  include these sources without silent loss or double counting.
+- Reused the maintained simply supported load-analysis authority for combined
+  UDL and point-load moment/shear. Point reactions use the exact supplied
+  station and may be unequal; no stiffness or frame solver was added.
+- Exposed practical-action reconciliation through the workflow result,
+  calculation book, package-root types, existing REST route, and React review
+  surface. The component-action count remains 22 and no new endpoint or second
+  structural formula was added.
+
+### Issues encountered
+
+- The first context command guessed an unregistered `gravity` context area.
+- The pre-repair reproducer confirmed `LoadModelV1` rejected every
+  `practical_actions` field as extra input.
+- The first focused batch had two contract-test failures after the additive
+  field and exclusion rule changed.
+- Initial changed-source mypy rejected a dynamically expanded practical
+  metadata dictionary even though Pydantic runtime validation passed.
+- A direct `npm test` in the fresh worktree could not find Vitest because that
+  worktree had no local `node_modules` dependency runtime.
+- The first independent evidence-replay command passed a prebuilt load model to
+  a test helper that accepts practical actions instead.
+- The first final mypy command ran from the repository root and resolved the
+  package through both `Python.structural_lib` and `structural_lib` identities.
+
+### Root causes and resolutions
+
+- `gravity` is not a registered context-manifest area. Resolution: use the
+  bounded plan plus targeted `rg` over the core ledger/workflow, REST, and React
+  callers. ⚠️ TERMINAL ISSUE: `context show gravity` was rejected -> used exact
+  symbol and caller discovery.
+- The frozen B1 load model had no typed practical-action field, the ledger had
+  no point stage, and all beam reactions assumed uniform 50/50 transfer.
+  Resolution: add the bounded action contract, explicit point ledger stage,
+  exact source/destination balances, and closed-form positioned reactions.
+- The builder intentionally permits no hidden engineering defaults, so making
+  `practical_actions` optional violated its established contract; the updated
+  exclusion diagnostic also dropped a relied-on phrase. Resolution: require an
+  explicit builder tuple and retain the prior diagnostic wording while adding
+  the supplied-category rule. The affected 39 Python/FastAPI tests pass.
+- The untyped metadata dictionary collapsed StrEnum and string values into an
+  unusably broad constructor expansion for static checking. Resolution: factor
+  one typed `_practical_ledger_entry` helper; configured mypy passes all six
+  changed source modules.
+- Linked worktrees do not automatically share the primary React dependency
+  directory. Resolution: use the maintained pinned Node runtime to run
+  `npm --prefix react_app ci`, then route the focused test through
+  `./run.sh frontend test`; all three review-page tests pass.
+  ⚠️ TERMINAL ISSUE: direct `npm test` could not find Vitest -> initialized the
+  worktree-local pinned dependencies.
+- The evidence helper constructs its own `LoadModelV1` from a practical-action
+  tuple. Resolution: call the helper with the accepted action tuple and compare
+  its independent workflow result with the machine-readable hand vector. The
+  replay passes all exact counts, balances, footing actions, and B1 response.
+  ⚠️ TERMINAL ISSUE: the first replay used an unsupported `loads` keyword ->
+  used the helper's declared `practical_actions` contract.
+- Configured mypy uses `Python/` as the explicit package base. Resolution: run
+  the same six changed modules from that directory; mypy reports no issues.
+  ⚠️ TERMINAL ISSUE: root-level mypy found two module identities -> ran the
+  configured check from `Python/`.
+
+### Validation through content freeze
+
+- Exact source binding is `0ea3e2d4`; the preserved INDIA-3 candidate
+  `9c976b1f` and every unrelated dirty, detached, behind, or diverged lane remain
+  unchanged.
+- The frozen focused building-model/ledger/workflow/builder/FastAPI selection
+  passes 39 tests. The frozen focused React review-page selection passes 3
+  tests; React lint and the production build pass.
+- The four-action hand vector produces 13 source entries, 50 accepted ledger
+  entries, 30 balances, four exact action balances, and zero maximum residual.
+  Its service B1 action is `27.25 kN/m` plus `12 kN` at `2000 mm`, giving
+  `134.91857798165137 kNm` and `89.75 kN`.
+- Changed-source Ruff and configured mypy pass. Architecture boundaries report
+  221 files and zero violations; import validation reports 691 files and zero
+  broken imports; circular-import validation reports none across 201 files.
+  API classification/manifest checks pass, and OpenAPI remains exactly 89
+  operations and 444 schemas. The consolidated quick gate passes 10/10. Normal
+  staged hooks pass, including mypy across 246 source files, 18 contract tests,
+  API/docs/registry checks, and the routed quick validation.
+- Broad Python/FastAPI/React suites and the full repository gate remain reserved
+  for cumulative M0 under the frozen milestone cadence.
+
 ## 2026-08-23 — Session: LIB-PRO-007-P3 footing anchorage truth
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents)

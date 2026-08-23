@@ -44,6 +44,11 @@ from structural_lib.codes.is456.footing.punching_shear import (  # noqa: F401
     footing_punching_shear,
 )
 from structural_lib.codes.is456.load_analysis import compute_bmd_sfd  # noqa: F401
+from structural_lib.core.building_gravity import (  # noqa: F401
+    GravityPracticalActionKindV1,
+    GravityPracticalActionUnitsV1,
+    GravityPracticalActionV1,
+)
 from structural_lib.core.data_types import (  # noqa: F401  # noqa: F401
     BearingPressureCheckResult,
     BearingStressEnhancementResult,
@@ -65,6 +70,7 @@ from structural_lib.core.gravity_workflow import (  # noqa: F401
     GravityBeamDesignBasisV1,
     GravityBeamReinforcementBasisV1,
     GravityLongitudinalBarLayersV1,
+    GravityPracticalActionReconciliationV1,
 )
 from structural_lib.core.inputs import (  # noqa: F401
     BeamGeometryInput,
@@ -455,6 +461,10 @@ __all__ = [
     "GravityBeamDesignBasisV1",
     "GravityBeamReinforcementBasisV1",
     "GravityLongitudinalBarLayersV1",
+    "GravityPracticalActionKindV1",
+    "GravityPracticalActionUnitsV1",
+    "GravityPracticalActionV1",
+    "GravityPracticalActionReconciliationV1",
     "GravityWorkflowRequestV1",
     "GravityWorkflowResultV1",
     "GravityWorkflowRunBundleV1",

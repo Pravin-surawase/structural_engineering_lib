@@ -32,6 +32,7 @@ from structural_lib.core.building_gravity import (
     GravityMemberV1,
     GravityNodeV1,
     GravityPanelV1,
+    GravityPracticalActionV1,
     GravitySectionKindV1,
     GravitySectionV1,
     GravitySourceReferenceV1,
@@ -90,6 +91,7 @@ class RectangularGravityWorkflowBuilderInputV1(BaseModel):
     column_support_idealization: GravitySupportIdealizationV1
     inclusion_rules: tuple[GravityInclusionRuleV1, ...]
     combinations: tuple[GravityCombinationV1, GravityCombinationV1]
+    practical_actions: tuple[GravityPracticalActionV1, ...]
     approved_exclusions: tuple[GravityApprovedExclusionV1, ...]
     slab_design_bases: tuple[GravitySlabDesignBasisV1, ...]
     beam_design_bases: tuple[GravityBeamDesignBasisV1, ...]
@@ -294,6 +296,7 @@ def build_rectangular_gravity_workflow_request_v1(
         ),
         inclusion_rules=builder_input.inclusion_rules,
         combinations=builder_input.combinations,
+        practical_actions=builder_input.practical_actions,
         approved_exclusions=builder_input.approved_exclusions,
     )
     return GravityWorkflowRequestV1(
@@ -439,6 +442,7 @@ def get_gravity_workflow_example_request_v1() -> GravityWorkflowRequestV1:
                     source_ref_id=combination_reference.id,
                 ),
             ),
+            practical_actions=(),
             approved_exclusions=_example_exclusions(load_reference.id),
             slab_design_bases=(
                 GravitySlabDesignBasisV1(

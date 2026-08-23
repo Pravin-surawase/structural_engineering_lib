@@ -22,6 +22,7 @@ from structural_lib.core.gravity_workflow import (
     GravityComponentResultV1,
     GravityFootingDesignBasisV1,
     GravityMemberActionV1,
+    GravityPracticalActionReconciliationV1,
     GravityPrerequisiteDispositionV1,
     GravityWorkflowRequestV1,
     GravityWorkflowResultV1,
@@ -46,6 +47,7 @@ from structural_lib.services.footing_api import (
     design_concentric_isolated_footing_is456,
 )
 from structural_lib.services.gravity_loads import (
+    GravityBalanceBoundaryV1,
     GravityLedgerEntryV1,
     GravityLedgerStageV1,
     GravityLoadLedgerV1,
@@ -63,7 +65,9 @@ __all__ = [
 
 _LIMITATIONS = (
     "One rectangular one-storey, one-panel, two-beam, four-column topology only.",
-    "Dead and unreduced live gravity actions only; no walls or lateral loads.",
+    "Dead and unreduced live gravity actions only; no lateral loads.",
+    "Practical actions require explicit caller assignment; no load generation or destination inference.",
+    "Full-span line, beam point, and supported slab-area actions only.",
     "Closed-form simply supported actions only; no stiffness or frame solver.",
     "Footing design requires a complete external service/soil/detailing basis.",
     "Qualified structural-engineering review remains required.",
@@ -408,15 +412,29 @@ def build_gravity_member_actions_v1(
                 stage=GravityLedgerStageV1.BEAM_LINE,
                 destination_id=beam.id,
             )
+            point_entries = _entries_for(
+                ledger,
+                stage=GravityLedgerStageV1.BEAM_POINT,
+                destination_id=beam.id,
+            )
             line_load = math.fsum(
                 (item.line_load_kn_m or 0.0) * factors[item.case_id]
                 for item in line_entries
             )
             span_mm = _member_length_mm(beam, nodes)
+            applied_loads = [LoadDefinition(LoadType.UDL, magnitude=line_load)]
+            applied_loads.extend(
+                LoadDefinition(
+                    LoadType.POINT,
+                    magnitude=(item.point_load_kn or 0.0) * factors[item.case_id],
+                    position_mm=item.point_position_mm or 0.0,
+                )
+                for item in point_entries
+            )
             diagram = compute_bmd_sfd(
                 span_mm=span_mm,
                 support_condition="simply_supported",
-                loads=[LoadDefinition(LoadType.UDL, magnitude=line_load)],
+                loads=applied_loads,
                 num_points=2,
             )
             actions.append(
@@ -430,7 +448,9 @@ def build_gravity_member_actions_v1(
                     moment_knm=max(abs(diagram.max_bm_knm), abs(diagram.min_bm_knm)),
                     shear_kn=max(abs(diagram.max_sf_kn), abs(diagram.min_sf_kn)),
                     source_entry_ids=tuple(
-                        sorted(item.entry_id for item in line_entries)
+                        sorted(
+                            item.entry_id for item in (*line_entries, *point_entries)
+                        )
                     ),
                     sign_convention=(
                         "SAGGING_MOMENT_POSITIVE; SUPPORT_SHEAR_ABSOLUTE_DESIGN_MAGNITUDE"
@@ -486,6 +506,63 @@ def build_gravity_member_actions_v1(
     return tuple(sorted(actions, key=lambda item: item.action_id))
 
 
+def _practical_action_reconciliation(
+    request: GravityWorkflowRequestV1,
+    ledger: GravityLoadLedgerV1,
+) -> tuple[GravityPracticalActionReconciliationV1, ...]:
+    records: list[GravityPracticalActionReconciliationV1] = []
+    for action in request.loads.practical_actions:
+        matching = tuple(
+            item for item in ledger.entries if item.practical_action_id == action.id
+        )
+        sources = tuple(
+            item for item in matching if item.stage is GravityLedgerStageV1.SOURCE
+        )
+        destinations = tuple(
+            item
+            for item in matching
+            if item.stage
+            in {GravityLedgerStageV1.BEAM_LINE, GravityLedgerStageV1.BEAM_POINT}
+        )
+        balances = tuple(
+            item
+            for item in ledger.balances
+            if item.boundary is GravityBalanceBoundaryV1.PRACTICAL_ACTION_ASSIGNMENT
+            and item.source_id == action.id
+        )
+        if len(sources) != 1 or not destinations or len(balances) != 1:
+            raise ValueError(
+                f"practical action {action.id} lacks one exact ledger reconciliation"
+            )
+        source = sources[0]
+        balance = balances[0]
+        records.append(
+            GravityPracticalActionReconciliationV1(
+                action_id=action.id,
+                kind=action.kind,
+                source_category=action.source_category,
+                case_id=action.case_id,
+                source_identity=action.source_identity,
+                source_ref_id=action.source_ref_id,
+                destination_id=action.destination_id,
+                supplied_magnitude=action.magnitude,
+                units=action.units,
+                point_position_mm=action.point_position_mm,
+                assignment_basis=action.assignment_basis,
+                source_entry_id=source.entry_id,
+                destination_entry_ids=tuple(
+                    sorted(item.entry_id for item in destinations)
+                ),
+                source_total_kn=balance.source_total_kn,
+                destination_total_kn=balance.destination_total_kn,
+                residual_kn=balance.residual_kn,
+                tolerance_kn=balance.tolerance_kn,
+                reconciled=balance.passed,
+            )
+        )
+    return tuple(sorted(records, key=lambda item: item.action_id))
+
+
 def _basis_ids(values: Iterable[object], name: str) -> set[str]:
     return {str(getattr(item, name)) for item in values}
 
@@ -535,7 +612,7 @@ def build_component_applicability_matrix_v1(
             kind = GravityComponentKindV1.BEAM
             basis_ids = beam_basis_ids
             function = "design_beam_is456"
-            supported = "simply_supported_rectangular_beam_factored_udl"
+            supported = "simply_supported_rectangular_beam_factored_explicit_actions"
             generated, supplied = _BEAM_GENERATED, _BEAM_SUPPLIED
             reason = "BEAM_DESIGN_BASIS_NOT_SUPPLIED"
         else:
@@ -1213,6 +1290,9 @@ def run_gravity_workflow_v1(
         load_model_hash=request.load_model_hash,
         ledger_hash=ledger.ledger_hash,
         applicability=applicability,
+        practical_action_reconciliation=_practical_action_reconciliation(
+            request, ledger
+        ),
         actions=actions,
         components=component_tuple,
         result_envelope=_aggregate_envelope(component_tuple),

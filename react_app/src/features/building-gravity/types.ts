@@ -34,12 +34,34 @@ export interface GravityComponentResult {
   result: Record<string, unknown> | null;
 }
 
+export interface GravityPracticalActionReconciliation {
+  action_id: string;
+  kind: 'WALL_LINE' | 'BEAM_LINE' | 'BEAM_POINT' | 'SLAB_AREA';
+  source_category: 'WALL' | 'FACADE' | 'EQUIPMENT' | 'TANK' | 'STAIR' | 'ROOF_SPECIAL';
+  case_id: 'DL' | 'LL';
+  source_identity: string;
+  source_ref_id: string;
+  destination_id: string;
+  supplied_magnitude: number;
+  units: 'kN/m' | 'kN' | 'kN/m2';
+  point_position_mm: number | null;
+  assignment_basis: string;
+  source_entry_id: string;
+  destination_entry_ids: string[];
+  source_total_kn: number;
+  destination_total_kn: number;
+  residual_kn: number;
+  tolerance_kn: number;
+  reconciled: boolean;
+}
+
 export interface GravityWorkflowResult {
   schema_version: 'gravity-workflow-result/v1';
   model_hash: string;
   load_model_hash: string;
   ledger_hash: string;
   workflow_result_hash: string;
+  practical_action_reconciliation: GravityPracticalActionReconciliation[];
   actions: GravityAction[];
   components: GravityComponentResult[];
   result_envelope: GravityResultEnvelope;
@@ -49,6 +71,7 @@ export interface GravityWorkflowResult {
 export interface GravityCalculationBook {
   schema_version: 'gravity-calculation-book/v1';
   workflow_result_hash: string;
+  practical_action_reconciliation: GravityPracticalActionReconciliation[];
   reconciliation: {
     all_balanced: boolean;
     boundary_count: number;

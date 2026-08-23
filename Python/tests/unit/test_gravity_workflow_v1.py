@@ -8,7 +8,11 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from structural_lib.core.building_gravity import BuildingModelV1, GravityMemberKindV1
+from structural_lib.core.building_gravity import (
+    BuildingModelV1,
+    GravityMemberKindV1,
+    GravityPracticalActionV1,
+)
 from structural_lib.core.gravity_workflow import (
     GravityBeamDesignBasisV1,
     GravityBeamReinforcementBasisV1,
@@ -28,7 +32,7 @@ from structural_lib.services.gravity_workflow import (
     build_gravity_member_actions_v1,
     run_gravity_workflow_v1,
 )
-from tests.unit.test_building_gravity_v1 import _building, _loads
+from tests.unit.test_building_gravity_v1 import _building, _loads, _practical_actions
 
 
 def _request(
@@ -39,12 +43,14 @@ def _request(
     superimposed_dead_load_kn_m2: float = 1.5,
     live_load_kn_m2: float = 3.0,
     beam_reinforcement_basis: GravityBeamReinforcementBasisV1 | None = None,
+    practical_actions: tuple[GravityPracticalActionV1, ...] = (),
 ) -> GravityWorkflowRequestV1:
     building = building or _building()
     loads = _loads(
         building,
         superimposed_dead_load_kn_m2=superimposed_dead_load_kn_m2,
         live_load_kn_m2=live_load_kn_m2,
+        practical_actions=practical_actions,
     )
     slab_bases: tuple[GravitySlabDesignBasisV1, ...] = ()
     beam_bases: tuple[GravityBeamDesignBasisV1, ...] = ()
@@ -279,6 +285,67 @@ def test_hand_example_actions_match_exact_ledger_and_closed_form_values() -> Non
     assert slab.area_load_kn_m2 == pytest.approx(12.375)
     assert footing.axial_kn == pytest.approx(101.25)
     assert footing.source_entry_ids == ("footing:DL:F1", "footing:LL:F1")
+
+
+def test_practical_actions_flow_through_exact_member_actions_and_result() -> None:
+    request = _request(practical_actions=_practical_actions())
+    result = run_gravity_workflow_v1(request)
+    by_id = {item.action_id: item for item in result.actions}
+
+    service_beam = by_id["action:SERVICE_DL_LL:B1"]
+    factored_slab = by_id["action:ULS_1_5_DL_LL:P1"]
+    factored_footing = by_id["action:ULS_1_5_DL_LL:F1"]
+    assert service_beam.line_load_kn_m == pytest.approx(27.25)
+    assert service_beam.moment_knm == pytest.approx(134.91857798165137)
+    assert service_beam.shear_kn == pytest.approx(89.75)
+    assert "apply:DL:practical:EQUIPMENT_B1_DL" in (service_beam.source_entry_ids)
+    assert factored_slab.area_load_kn_m2 == pytest.approx(13.875)
+    assert factored_footing.axial_kn == pytest.approx(144.75)
+
+    reconciliation = {
+        item.action_id: item for item in result.practical_action_reconciliation
+    }
+    assert set(reconciliation) == {
+        "WALL_B1_DL",
+        "FACADE_B2_DL",
+        "EQUIPMENT_B1_DL",
+        "ROOF_SPECIAL_P1_LL",
+    }
+    assert all(
+        item.reconciled and item.residual_kn == 0 for item in reconciliation.values()
+    )
+    point = reconciliation["EQUIPMENT_B1_DL"]
+    assert point.source_identity == "equipment:item:01"
+    assert point.source_ref_id == "PROJECT_BASIS"
+    assert point.destination_id == "B1"
+    assert point.units.value == "kN"
+    assert point.point_position_mm == 2000
+    assert point.source_total_kn == 12
+    assert point.destination_total_kn == 12
+
+    bundle = run_gravity_workflow_with_book_v1(request)
+    assert bundle.calculation_book.reconciliation["boundary_count"] == 30
+    assert bundle.calculation_book.reconciliation["maximum_absolute_residual_kn"] == 0
+    assert (
+        bundle.calculation_book.practical_action_reconciliation
+        == result.practical_action_reconciliation
+    )
+
+
+def test_practical_action_destination_and_point_station_fail_closed() -> None:
+    building = _building()
+    point = _practical_actions()[2]
+    payload = point.model_dump(mode="python")
+    payload["destination_id"] = "P1"
+    wrong_destination = GravityPracticalActionV1.model_validate(payload)
+    with pytest.raises(ValidationError, match="known beam destination"):
+        _request(building, practical_actions=(wrong_destination,))
+
+    payload = point.model_dump(mode="python")
+    payload["point_position_mm"] = 7000
+    outside_span = GravityPracticalActionV1.model_validate(payload)
+    with pytest.raises(ValidationError, match="position must lie within"):
+        _request(building, practical_actions=(outside_span,))
 
 
 def test_missing_prerequisites_preserve_every_component_as_hold() -> None:

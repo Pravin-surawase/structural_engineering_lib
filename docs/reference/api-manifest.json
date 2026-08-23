@@ -2,7 +2,7 @@
   "generated": "2026-08-23",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 195,
+  "count": 199,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -221,6 +221,26 @@
     },
     {
       "name": "GravityLongitudinalBarLayersV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "GravityPracticalActionKindV1",
+      "kind": "class",
+      "signature": "(*args, **kwds)"
+    },
+    {
+      "name": "GravityPracticalActionReconciliationV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "GravityPracticalActionUnitsV1",
+      "kind": "class",
+      "signature": "(*args, **kwds)"
+    },
+    {
+      "name": "GravityPracticalActionV1",
       "kind": "class",
       "signature": "(**data: 'Any') -> 'None'"
     },

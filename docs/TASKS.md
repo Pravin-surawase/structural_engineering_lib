@@ -127,7 +127,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-007-P3 | Extend isolated-footing detailing with source-bound supported bends/hooks and decisive anchorage/bounded-envelope truth | Main Agent | M | P0 | 🟡 ACTIVE — implementation and focused package/REST truth vectors pass; candidate verification pending |
+| LIB-PRO-007-P4 | Add caller-assigned practical gravity actions with exact source/destination reconciliation | Main Agent | M | P0 | 🟡 ACTIVE — typed wall/beam/slab actions and focused Python/REST/React vectors pass; candidate verification pending |
 | INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ PAUSED — private source library preserved; resume after LIB-PRO-007 cumulative acceptance |
 
 `LIB-PRO-006` merged through PR #851 at `2d6df18e`. It confirms the practical
@@ -162,13 +162,20 @@ rounding, and proves calculated-demand `HOLD`, inadequate supply `FAIL`, and
 complete bounded `PASS`. The maintained open-hall example recommends bars but
 remains `HOLD` because no project bar schedule is supplied.
 
-`LIB-PRO-007-P3` is implemented from exact merged P2 base `e4d86d13`. It fixes
-the shared standard U-hook anchorage value, adds an exact unrounded
-straight-plus-bend/hook evaluator, and extends the isolated-footing package,
-gravity, and REST contracts with explicit approved geometry. Supported
-straight, 90-degree bend, and U-hook vectors reach decisive `PASS` or `FAIL`;
-missing or unsupported arrangements remain `HOLD`. Candidate, hosted, and
-merge claims remain pending.
+`LIB-PRO-007-P3` merged through PR #855 at `0ea3e2d4` with exact
+candidate/merged tree `d3e3e9a3`. It fixes the shared standard U-hook anchorage
+value, adds an exact unrounded straight-plus-bend/hook evaluator, and extends
+the isolated-footing package, gravity, and REST contracts with explicit
+approved geometry. Supported straight, 90-degree bend, and U-hook vectors
+reach decisive `PASS` or `FAIL`; missing or unsupported arrangements remain
+`HOLD`.
+
+`LIB-PRO-007-P4` starts from exact merged P3 base `0ea3e2d4`. It accepts only
+caller-assigned full-span wall/beam line, beam point, and supported slab-area
+actions with unique source identity, reference, case, units, destination, and
+basis. Each action receives source/destination ledger entries and exact
+reconciliation; no IS 875 generation, lateral action, or destination inference
+is added. Candidate, hosted, and merge claims remain pending.
 
 `MAINT-0134` assigns cross-agent policy to `AGENTS.md`, composes Claude
 through `@AGENTS.md`, keeps a concise standalone Copilot baseline, retires

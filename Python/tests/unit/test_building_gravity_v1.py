@@ -25,6 +25,9 @@ from structural_lib.core.building_gravity import (
     GravityMemberV1,
     GravityNodeV1,
     GravityPanelV1,
+    GravityPracticalActionKindV1,
+    GravityPracticalActionUnitsV1,
+    GravityPracticalActionV1,
     GravitySectionKindV1,
     GravitySectionV1,
     GravitySourceReferenceV1,
@@ -33,6 +36,7 @@ from structural_lib.core.building_gravity import (
     SourceDispositionV1,
 )
 from structural_lib.services.gravity_loads import (
+    GravityBalanceBoundaryV1,
     GravityLedgerStageV1,
     GravityLoadLedgerError,
     GravityLoadLedgerV1,
@@ -163,6 +167,7 @@ def _loads(
     *,
     superimposed_dead_load_kn_m2: float = 1.5,
     live_load_kn_m2: float = 3.0,
+    practical_actions: tuple[GravityPracticalActionV1, ...] = (),
 ) -> LoadModelV1:
     references = (
         GravitySourceReferenceV1(
@@ -230,6 +235,7 @@ def _loads(
             source_ref_id="PROJECT_BASIS",
         )
         for category in ExcludedGravityActionV1
+        if category not in {action.source_category for action in practical_actions}
     )
     return LoadModelV1(
         model_hash=building.accepted_model_hash,
@@ -240,7 +246,62 @@ def _loads(
         source_references=references,
         inclusion_rules=inclusion_rules,
         combinations=combinations,
+        practical_actions=practical_actions,
         approved_exclusions=exclusions,
+    )
+
+
+def _practical_actions() -> tuple[GravityPracticalActionV1, ...]:
+    return (
+        GravityPracticalActionV1(
+            id="WALL_B1_DL",
+            kind=GravityPracticalActionKindV1.WALL_LINE,
+            source_category=ExcludedGravityActionV1.WALL,
+            case_id=GravityLoadCaseV1.DEAD,
+            source_identity="wall:north:segment:01",
+            source_ref_id="PROJECT_BASIS",
+            destination_id="B1",
+            magnitude=5,
+            units=GravityPracticalActionUnitsV1.KILONEWTON_PER_METRE,
+            assignment_basis="Caller assigned full-span north wall line to B1.",
+        ),
+        GravityPracticalActionV1(
+            id="FACADE_B2_DL",
+            kind=GravityPracticalActionKindV1.BEAM_LINE,
+            source_category=ExcludedGravityActionV1.FACADE,
+            case_id=GravityLoadCaseV1.DEAD,
+            source_identity="facade:south:segment:01",
+            source_ref_id="PROJECT_BASIS",
+            destination_id="B2",
+            magnitude=2,
+            units=GravityPracticalActionUnitsV1.KILONEWTON_PER_METRE,
+            assignment_basis="Caller assigned full-span facade line to B2.",
+        ),
+        GravityPracticalActionV1(
+            id="EQUIPMENT_B1_DL",
+            kind=GravityPracticalActionKindV1.BEAM_POINT,
+            source_category=ExcludedGravityActionV1.EQUIPMENT,
+            case_id=GravityLoadCaseV1.DEAD,
+            source_identity="equipment:item:01",
+            source_ref_id="PROJECT_BASIS",
+            destination_id="B1",
+            magnitude=12,
+            units=GravityPracticalActionUnitsV1.KILONEWTON,
+            point_position_mm=2000,
+            assignment_basis="Caller assigned equipment item to B1 at 2000 mm.",
+        ),
+        GravityPracticalActionV1(
+            id="ROOF_SPECIAL_P1_LL",
+            kind=GravityPracticalActionKindV1.SLAB_AREA,
+            source_category=ExcludedGravityActionV1.ROOF_SPECIAL,
+            case_id=GravityLoadCaseV1.LIVE,
+            source_identity="roof:special:zone:01",
+            source_ref_id="PROJECT_BASIS",
+            destination_id="P1",
+            magnitude=1,
+            units=GravityPracticalActionUnitsV1.KILONEWTON_PER_SQUARE_METRE,
+            assignment_basis="Caller assigned supported roof area action to P1.",
+        ),
     )
 
 
@@ -321,6 +382,56 @@ def test_ledger_accounts_for_sources_and_exclusions_without_footing_inference() 
     }
 
 
+def test_explicit_practical_actions_reconcile_without_silent_loss() -> None:
+    building = _building()
+    loads = _loads(building, practical_actions=_practical_actions())
+
+    ledger = build_gravity_load_ledger_v1(building, loads)
+
+    footing_entries = {
+        (entry.case_id, entry.destination_id): entry.magnitude_kn
+        for entry in ledger.entries
+        if entry.stage is GravityLedgerStageV1.FOOTING_ACTION
+    }
+    assert [
+        footing_entries[(GravityLoadCaseV1.DEAD, f"F{index}")] for index in range(1, 5)
+    ] == pytest.approx([72.5, 68.5, 55.5, 55.5])
+    assert [
+        footing_entries[(GravityLoadCaseV1.LIVE, f"F{index}")] for index in range(1, 5)
+    ] == pytest.approx([24.0, 24.0, 24.0, 24.0])
+    assert _footing_actions(ledger, "SERVICE_DL_LL") == pytest.approx(
+        [79.5, 79.5, 92.5, 96.5]
+    )
+    assert _footing_actions(ledger, "ULS_1_5_DL_LL") == pytest.approx(
+        [119.25, 119.25, 138.75, 144.75]
+    )
+    practical_balances = [
+        item
+        for item in ledger.balances
+        if item.boundary is GravityBalanceBoundaryV1.PRACTICAL_ACTION_ASSIGNMENT
+    ]
+    assert len(practical_balances) == 4
+    assert all(item.passed and item.residual_kn == 0 for item in practical_balances)
+    assert ledger.all_balanced
+    assert len(ledger.balances) == 30
+    assert ledger.source_entry_count == 13
+    assert ledger.accepted_entry_count == 50
+    assert ledger.approved_exclusion_count == 7
+
+    point_entries = [
+        item for item in ledger.entries if item.practical_action_id == "EQUIPMENT_B1_DL"
+    ]
+    assert {item.stage for item in point_entries} == {
+        GravityLedgerStageV1.SOURCE,
+        GravityLedgerStageV1.BEAM_POINT,
+    }
+    assert {item.practical_source_identity for item in point_entries} == {
+        "equipment:item:01"
+    }
+    assert {item.practical_source_ref_id for item in point_entries} == {"PROJECT_BASIS"}
+    assert {item.practical_input_units.value for item in point_entries} == {"kN"}
+
+
 def test_hashes_ignore_harmless_order_and_raw_provenance_serialization() -> None:
     building = _building()
     building_payload = building.model_dump(
@@ -341,13 +452,14 @@ def test_hashes_ignore_harmless_order_and_raw_provenance_serialization() -> None
 
     assert reordered_building.accepted_model_hash == building.accepted_model_hash
 
-    loads = _loads(building)
+    loads = _loads(building, practical_actions=_practical_actions())
     load_payload = loads.model_dump(mode="python", exclude={"load_model_hash"})
     load_payload["raw_source_hash"] = "8" * 64
     for key in (
         "source_references",
         "inclusion_rules",
         "combinations",
+        "practical_actions",
         "approved_exclusions",
     ):
         load_payload[key] = tuple(reversed(load_payload[key]))
@@ -405,6 +517,31 @@ def test_load_contract_rejects_missing_exclusion_and_wrong_combination() -> None
         payload["combinations"][1],
     )
     with pytest.raises(ValidationError, match="DL/LL factor=1.0"):
+        LoadModelV1.model_validate(payload)
+
+
+def test_practical_action_contract_rejects_shape_source_and_exclusion_mismatch() -> (
+    None
+):
+    point = _practical_actions()[2].model_dump(mode="python")
+    point["units"] = "kN/m"
+    with pytest.raises(ValidationError, match="BEAM_POINT requires units=kN"):
+        GravityPracticalActionV1.model_validate(point)
+
+    point = _practical_actions()[2].model_dump(mode="python")
+    point["point_position_mm"] = None
+    with pytest.raises(ValidationError, match="requires point_position_mm"):
+        GravityPracticalActionV1.model_validate(point)
+
+    point = _practical_actions()[2].model_dump(mode="python")
+    point["source_category"] = "LATERAL"
+    with pytest.raises(ValidationError, match="not a supported practical"):
+        GravityPracticalActionV1.model_validate(point)
+
+    building = _building()
+    payload = _loads(building).model_dump(mode="python", exclude={"load_model_hash"})
+    payload["practical_actions"] = (_practical_actions()[0],)
+    with pytest.raises(ValidationError, match="omit explicitly supplied"):
         LoadModelV1.model_validate(payload)
 
 

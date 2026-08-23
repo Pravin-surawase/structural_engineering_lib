@@ -42,6 +42,9 @@ __all__ = [
     "GravityMemberV1",
     "GravityNodeV1",
     "GravityPanelV1",
+    "GravityPracticalActionKindV1",
+    "GravityPracticalActionUnitsV1",
+    "GravityPracticalActionV1",
     "GravitySectionKindV1",
     "GravitySectionV1",
     "GravitySourceReferenceV1",
@@ -109,6 +112,10 @@ class GravityActionCategoryV1(StrEnum):
     BEAM_SELF_WEIGHT = "BEAM_SELF_WEIGHT"
     COLUMN_SELF_WEIGHT = "COLUMN_SELF_WEIGHT"
     LIVE_OCCUPANCY = "LIVE_OCCUPANCY"
+    PRACTICAL_WALL_LINE = "PRACTICAL_WALL_LINE"
+    PRACTICAL_BEAM_LINE = "PRACTICAL_BEAM_LINE"
+    PRACTICAL_BEAM_POINT = "PRACTICAL_BEAM_POINT"
+    PRACTICAL_SLAB_AREA = "PRACTICAL_SLAB_AREA"
     COMBINED_DEAD = "COMBINED_DEAD"
 
 
@@ -129,6 +136,89 @@ class ExcludedGravityActionV1(StrEnum):
     FOOTING_SELF_WEIGHT = "FOOTING_SELF_WEIGHT"
     OVERBURDEN = "OVERBURDEN"
     LIVE_LOAD_REDUCTION = "LIVE_LOAD_REDUCTION"
+
+
+class GravityPracticalActionKindV1(StrEnum):
+    """Only caller-assigned practical gravity actions accepted by V1."""
+
+    WALL_LINE = "WALL_LINE"
+    BEAM_LINE = "BEAM_LINE"
+    BEAM_POINT = "BEAM_POINT"
+    SLAB_AREA = "SLAB_AREA"
+
+
+class GravityPracticalActionUnitsV1(StrEnum):
+    KILONEWTON_PER_METRE = "kN/m"
+    KILONEWTON = "kN"
+    KILONEWTON_PER_SQUARE_METRE = "kN/m2"
+
+
+_SUPPORTED_PRACTICAL_SOURCE_CATEGORIES = frozenset(
+    {
+        ExcludedGravityActionV1.WALL,
+        ExcludedGravityActionV1.FACADE,
+        ExcludedGravityActionV1.EQUIPMENT,
+        ExcludedGravityActionV1.TANK,
+        ExcludedGravityActionV1.STAIR,
+        ExcludedGravityActionV1.ROOF_SPECIAL,
+    }
+)
+
+
+class GravityPracticalActionV1(_FrozenModel):
+    """One explicit action assigned by the caller to a supported destination."""
+
+    id: str = Field(min_length=1, max_length=128, pattern=_ID_PATTERN)
+    kind: GravityPracticalActionKindV1
+    source_category: ExcludedGravityActionV1
+    case_id: GravityLoadCaseV1
+    source_identity: str = Field(min_length=1, max_length=256, pattern=_ID_PATTERN)
+    source_ref_id: str = Field(min_length=1, max_length=128, pattern=_ID_PATTERN)
+    destination_id: str = Field(min_length=1, max_length=128, pattern=_ID_PATTERN)
+    magnitude: float = Field(gt=0)
+    units: GravityPracticalActionUnitsV1
+    point_position_mm: float | None = Field(default=None, ge=0)
+    assignment_basis: str = Field(min_length=1, max_length=512)
+    assignment: Literal["CALLER_ASSIGNED_NO_DISTRIBUTION_INFERENCE"] = (
+        "CALLER_ASSIGNED_NO_DISTRIBUTION_INFERENCE"
+    )
+
+    @model_validator(mode="after")
+    def validate_action_shape(self) -> GravityPracticalActionV1:
+        if self.source_category not in _SUPPORTED_PRACTICAL_SOURCE_CATEGORIES:
+            raise ValueError(
+                f"{self.source_category.value} is not a supported practical "
+                "gravity-action source category"
+            )
+        expected_units = {
+            GravityPracticalActionKindV1.WALL_LINE: (
+                GravityPracticalActionUnitsV1.KILONEWTON_PER_METRE
+            ),
+            GravityPracticalActionKindV1.BEAM_LINE: (
+                GravityPracticalActionUnitsV1.KILONEWTON_PER_METRE
+            ),
+            GravityPracticalActionKindV1.BEAM_POINT: (
+                GravityPracticalActionUnitsV1.KILONEWTON
+            ),
+            GravityPracticalActionKindV1.SLAB_AREA: (
+                GravityPracticalActionUnitsV1.KILONEWTON_PER_SQUARE_METRE
+            ),
+        }[self.kind]
+        if self.units is not expected_units:
+            raise ValueError(f"{self.kind.value} requires units={expected_units.value}")
+        if self.kind is GravityPracticalActionKindV1.BEAM_POINT:
+            if self.point_position_mm is None:
+                raise ValueError("BEAM_POINT requires point_position_mm")
+        elif self.point_position_mm is not None:
+            raise ValueError(f"{self.kind.value} must not include point_position_mm")
+        if self.kind is GravityPracticalActionKindV1.WALL_LINE:
+            if self.source_category is not ExcludedGravityActionV1.WALL:
+                raise ValueError("WALL_LINE requires source_category=WALL")
+            if self.case_id is not GravityLoadCaseV1.DEAD:
+                raise ValueError("WALL_LINE is accepted only in the DL case")
+        elif self.source_category is ExcludedGravityActionV1.WALL:
+            raise ValueError("WALL sources require kind=WALL_LINE")
+        return self
 
 
 class GravityNodeV1(_FrozenModel):
@@ -575,7 +665,7 @@ _EXPECTED_INCLUSION: dict[GravityActionCategoryV1, GravityInclusionDispositionV1
 
 
 class LoadModelV1(_FrozenModel):
-    """Frozen dead/live basis; walls, lateral loads and footing weights are excluded."""
+    """Frozen dead/live basis plus explicitly assigned practical actions."""
 
     schema_version: Literal["load-model/v1"] = "load-model/v1"
     model_hash: str = Field(pattern=_SHA256_PATTERN)
@@ -587,12 +677,14 @@ class LoadModelV1(_FrozenModel):
     source_references: tuple[GravitySourceReferenceV1, ...]
     inclusion_rules: tuple[GravityInclusionRuleV1, ...]
     combinations: tuple[GravityCombinationV1, GravityCombinationV1]
+    practical_actions: tuple[GravityPracticalActionV1, ...] = ()
     approved_exclusions: tuple[GravityApprovedExclusionV1, ...]
 
     @field_validator(
         "source_references",
         "inclusion_rules",
         "combinations",
+        "practical_actions",
         "approved_exclusions",
         mode="after",
     )
@@ -637,12 +729,33 @@ class LoadModelV1(_FrozenModel):
         ):
             raise ValueError("combination references an unknown source")
 
+        action_ids = [action.id for action in self.practical_actions]
+        source_identities = [
+            action.source_identity for action in self.practical_actions
+        ]
+        if len(action_ids) != len(set(action_ids)):
+            raise ValueError("practical action IDs must be unique")
+        if len(source_identities) != len(set(source_identities)):
+            raise ValueError("practical action source identities must be unique")
+        if any(
+            action.source_ref_id not in reference_set
+            for action in self.practical_actions
+        ):
+            raise ValueError("practical action references an unknown source")
+
         exclusions = {item.category: item for item in self.approved_exclusions}
-        if len(exclusions) != len(self.approved_exclusions) or set(exclusions) != set(
-            ExcludedGravityActionV1
+        included_categories = {
+            action.source_category for action in self.practical_actions
+        }
+        expected_exclusions = set(ExcludedGravityActionV1) - included_categories
+        if (
+            len(exclusions) != len(self.approved_exclusions)
+            or set(exclusions) != expected_exclusions
         ):
             raise ValueError(
-                "approved_exclusions must list every action excluded from V1"
+                "approved_exclusions must list every action excluded from V1, "
+                "including every unsupported or unsupplied category, and must "
+                "omit explicitly supplied practical categories"
             )
         if any(
             item.source_ref_id not in reference_set for item in self.approved_exclusions

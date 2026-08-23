@@ -18469,6 +18469,10 @@
           "BEAM_SELF_WEIGHT",
           "COLUMN_SELF_WEIGHT",
           "LIVE_OCCUPANCY",
+          "PRACTICAL_WALL_LINE",
+          "PRACTICAL_BEAM_LINE",
+          "PRACTICAL_BEAM_POINT",
+          "PRACTICAL_SLAB_AREA",
           "COMBINED_DEAD"
         ],
         "title": "GravityActionCategoryV1",
@@ -18800,6 +18804,13 @@
             "title": "Model Snapshot",
             "type": "object"
           },
+          "practical_action_reconciliation": {
+            "items": {
+              "$ref": "#/components/schemas/GravityPracticalActionReconciliationV1"
+            },
+            "title": "Practical Action Reconciliation",
+            "type": "array"
+          },
           "reconciliation": {
             "additionalProperties": true,
             "title": "Reconciliation",
@@ -18843,6 +18854,7 @@
           "ledger_snapshot",
           "reconciliation",
           "applicability",
+          "practical_action_reconciliation",
           "actions",
           "components",
           "result_envelope",
@@ -19947,6 +19959,235 @@
         "title": "GravityPanelV1",
         "type": "object"
       },
+      "GravityPracticalActionKindV1": {
+        "description": "Only caller-assigned practical gravity actions accepted by V1.",
+        "enum": [
+          "WALL_LINE",
+          "BEAM_LINE",
+          "BEAM_POINT",
+          "SLAB_AREA"
+        ],
+        "title": "GravityPracticalActionKindV1",
+        "type": "string"
+      },
+      "GravityPracticalActionReconciliationV1": {
+        "additionalProperties": false,
+        "description": "Exact source-to-destination accounting for one supplied practical action.",
+        "properties": {
+          "action_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Action Id",
+            "type": "string"
+          },
+          "assignment_basis": {
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Assignment Basis",
+            "type": "string"
+          },
+          "case_id": {
+            "$ref": "#/components/schemas/GravityLoadCaseV1"
+          },
+          "destination_entry_ids": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Destination Entry Ids",
+            "type": "array"
+          },
+          "destination_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Destination Id",
+            "type": "string"
+          },
+          "destination_total_kn": {
+            "exclusiveMinimum": 0.0,
+            "title": "Destination Total Kn",
+            "type": "number"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/GravityPracticalActionKindV1"
+          },
+          "point_position_mm": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Point Position Mm"
+          },
+          "reconciled": {
+            "title": "Reconciled",
+            "type": "boolean"
+          },
+          "residual_kn": {
+            "title": "Residual Kn",
+            "type": "number"
+          },
+          "source_category": {
+            "$ref": "#/components/schemas/ExcludedGravityActionV1"
+          },
+          "source_entry_id": {
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Source Entry Id",
+            "type": "string"
+          },
+          "source_identity": {
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Source Identity",
+            "type": "string"
+          },
+          "source_ref_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Source Ref Id",
+            "type": "string"
+          },
+          "source_total_kn": {
+            "exclusiveMinimum": 0.0,
+            "title": "Source Total Kn",
+            "type": "number"
+          },
+          "supplied_magnitude": {
+            "exclusiveMinimum": 0.0,
+            "title": "Supplied Magnitude",
+            "type": "number"
+          },
+          "tolerance_kn": {
+            "exclusiveMinimum": 0.0,
+            "title": "Tolerance Kn",
+            "type": "number"
+          },
+          "units": {
+            "$ref": "#/components/schemas/GravityPracticalActionUnitsV1"
+          }
+        },
+        "required": [
+          "action_id",
+          "kind",
+          "source_category",
+          "case_id",
+          "source_identity",
+          "source_ref_id",
+          "destination_id",
+          "supplied_magnitude",
+          "units",
+          "assignment_basis",
+          "source_entry_id",
+          "destination_entry_ids",
+          "source_total_kn",
+          "destination_total_kn",
+          "residual_kn",
+          "tolerance_kn",
+          "reconciled"
+        ],
+        "title": "GravityPracticalActionReconciliationV1",
+        "type": "object"
+      },
+      "GravityPracticalActionUnitsV1": {
+        "enum": [
+          "kN/m",
+          "kN",
+          "kN/m2"
+        ],
+        "title": "GravityPracticalActionUnitsV1",
+        "type": "string"
+      },
+      "GravityPracticalActionV1": {
+        "additionalProperties": false,
+        "description": "One explicit action assigned by the caller to a supported destination.",
+        "properties": {
+          "assignment": {
+            "const": "CALLER_ASSIGNED_NO_DISTRIBUTION_INFERENCE",
+            "default": "CALLER_ASSIGNED_NO_DISTRIBUTION_INFERENCE",
+            "title": "Assignment",
+            "type": "string"
+          },
+          "assignment_basis": {
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Assignment Basis",
+            "type": "string"
+          },
+          "case_id": {
+            "$ref": "#/components/schemas/GravityLoadCaseV1"
+          },
+          "destination_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Destination Id",
+            "type": "string"
+          },
+          "id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/GravityPracticalActionKindV1"
+          },
+          "magnitude": {
+            "exclusiveMinimum": 0.0,
+            "title": "Magnitude",
+            "type": "number"
+          },
+          "point_position_mm": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Point Position Mm"
+          },
+          "source_category": {
+            "$ref": "#/components/schemas/ExcludedGravityActionV1"
+          },
+          "source_identity": {
+            "maxLength": 256,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Source Identity",
+            "type": "string"
+          },
+          "source_ref_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "title": "Source Ref Id",
+            "type": "string"
+          },
+          "units": {
+            "$ref": "#/components/schemas/GravityPracticalActionUnitsV1"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "source_category",
+          "case_id",
+          "source_identity",
+          "source_ref_id",
+          "destination_id",
+          "magnitude",
+          "units",
+          "assignment_basis"
+        ],
+        "title": "GravityPracticalActionV1",
+        "type": "object"
+      },
       "GravityPrerequisiteDispositionV1": {
         "enum": [
           "READY",
@@ -20384,6 +20625,14 @@
             "pattern": "^[0-9a-f]{64}$",
             "title": "Model Hash",
             "type": "string"
+          },
+          "practical_action_reconciliation": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/GravityPracticalActionReconciliationV1"
+            },
+            "title": "Practical Action Reconciliation",
+            "type": "array"
           },
           "result_envelope": {
             "additionalProperties": true,
@@ -21269,7 +21518,7 @@
       },
       "LoadModelV1": {
         "additionalProperties": false,
-        "description": "Frozen dead/live basis; walls, lateral loads and footing weights are excluded.",
+        "description": "Frozen dead/live basis plus explicitly assigned practical actions.",
         "properties": {
           "approved_exclusions": {
             "items": {
@@ -21321,6 +21570,14 @@
             "pattern": "^[0-9a-f]{64}$",
             "title": "Model Hash",
             "type": "string"
+          },
+          "practical_actions": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/GravityPracticalActionV1"
+            },
+            "title": "Practical Actions",
+            "type": "array"
           },
           "raw_source_hash": {
             "pattern": "^[0-9a-f]{64}$",

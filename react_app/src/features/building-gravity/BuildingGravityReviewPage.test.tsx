@@ -28,6 +28,28 @@ function bundle() {
       load_model_hash: '2'.repeat(64),
       ledger_hash: '3'.repeat(64),
       workflow_result_hash: '4'.repeat(64),
+      practical_action_reconciliation: [
+        {
+          action_id: 'EQUIPMENT_B1_DL',
+          kind: 'BEAM_POINT',
+          source_category: 'EQUIPMENT',
+          case_id: 'DL',
+          source_identity: 'equipment:item:01',
+          source_ref_id: 'PROJECT_BASIS',
+          destination_id: 'B1',
+          supplied_magnitude: 12,
+          units: 'kN',
+          point_position_mm: 2000,
+          assignment_basis: 'Caller assigned equipment item to B1.',
+          source_entry_id: 'source:DL:practical:EQUIPMENT_B1_DL',
+          destination_entry_ids: ['apply:DL:practical:EQUIPMENT_B1_DL'],
+          source_total_kn: 12,
+          destination_total_kn: 12,
+          residual_kn: 0,
+          tolerance_kn: 1e-9,
+          reconciled: true,
+        },
+      ],
       result_envelope: envelope('HOLD'),
       components: [
         { component_id: 'B1', kind: 'BEAM', canonical_function: 'design_beam_is456', result_envelope: envelope('PASS'), result: {} },
@@ -52,6 +74,7 @@ function bundle() {
     calculation_book: {
       schema_version: 'gravity-calculation-book/v1',
       workflow_result_hash: '4'.repeat(64),
+      practical_action_reconciliation: [],
       reconciliation: {
         all_balanced: true,
         boundary_count: 26,
@@ -124,6 +147,10 @@ describe('BuildingGravityReviewPage', () => {
     expect(screen.getAllByText('PASS').length).toBeGreaterThan(0);
     expect(screen.getAllByText('FAIL').length).toBeGreaterThan(0);
     expect(screen.getByText('101.250 kN')).toBeInTheDocument();
+    expect(screen.getByText('Caller-assigned practical actions')).toBeInTheDocument();
+    expect(screen.getByText('equipment:item:01')).toBeInTheDocument();
+    expect(screen.getByText('12.000 kN @ 2000 mm')).toBeInTheDocument();
+    expect(screen.getByText('BALANCED · residual 0 kN')).toBeInTheDocument();
     expect(screen.getByText('BASIS_MISSING')).toBeInTheDocument();
     expect(screen.getByText('External basis missing')).toBeInTheDocument();
     expect(screen.getAllByText(/QUALIFIED REVIEW REQUIRED/i).length).toBeGreaterThan(0);
