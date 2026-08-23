@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "task_id": "MAINT-0133B-PACKET-A",
+  "baseline_commit": "60e95bbe52575d3335e7195db944b2c82630ed2e",
+  "authorization_status": "NOT_AUTHORIZED_FOR_LIVE_EXECUTION",
+  "purpose": "Reviewed future batch containing only MAINT-0133 move-ready files",
+  "operations": [
+    {
+      "tool": "safe_move",
+      "source": "docs/planning/india-2-remaining-is456-elements-plan.md",
+      "destination": "docs/_archive/planning/india-2-remaining-is456-elements-plan.md"
+    },
+    {
+      "tool": "safe_move",
+      "source": "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
+      "destination": "docs/_archive/planning/india-2-next-session-publication-and-closeout-plan.md"
+    }
+  ]
+}

@@ -19,6 +19,7 @@ Internal planning documents and research notes.
 |----------|---------|
 | [Next Session Brief](next-session-brief.md) | What to work on next |
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
+| [MAINT-0133 Cleanup Inventory](maint-0133-cleanup-inventory-and-authorization.md) | Exact read-only cleanup classification, holds, and future transactional batch |
 | [Pre-Release Input Safety and Professional Readiness Plan](pre-release-input-safety-and-professional-readiness-plan.md) | Active contract-first remediation and release holds from the one-storey usability pilot |
 | [Public Route Safety Closure Plan](public-route-safety-closure-plan.md) | Current exact-tree remediation sequence for reproduced lower-level public-route safety defects |
 | [IS 456 Solid Slabs Master Plan](is456-solid-slabs-master-plan.md) | Source-gated, implementation-ready program for simply supported/continuous one-way and common two-way solid slabs; flat slabs held separately |
@@ -34,6 +35,7 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
+| `maint-0133-cleanup-inventory-and-authorization.md` | 2026-08-23 | 🚧 Immutable inventory candidate; two moves ready for later authorization, four held, zero deletes |
 | `public-route-safety-closure-plan.md` | 2026-08-22 | ✅ LIB-PRO-003-D local candidate accepted; hosted/exact-tree closure pending; release and professional claims held by PARTIAL readiness |
 | `next-session-brief.md` | 2026-08-22 | 🚧 Publish/validate the immutable Packet D candidate, then resume read-only INDIA-3-G0 |
 | `pre-release-input-safety-and-professional-readiness-plan.md` | 2026-08-17 | 🚧 A-G merged; CLI, hosted-interpreter, preflight-verdict, and authorization holds remain through I-J |

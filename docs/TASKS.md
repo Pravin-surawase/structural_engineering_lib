@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-23 — MAINT-0132 automatic efficiency observability active
+**Updated:** 2026-08-23 — MAINT-0133 cleanup inventory candidate active
 
 ---
 
@@ -127,11 +127,12 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| MAINT-0132 | Replace manually reconstructed per-worktree timing and stale task orientation with one task-bound shared observable session | Main Agent + governance | M | P0 | 🟡 CANDIDATE — focused session/control/instruction proof passes; quick/full/hooks/hosted closeout pending |
+| MAINT-0133 | Freeze an exact read-only cleanup inventory and future authorization batch without moving or deleting content | Main Agent + governance | M | P0 | 🟡 CANDIDATE — six exact candidates: two move-ready for later authorization, four held, zero deletes; local/hosted closeout pending |
 
-No bulk cleanup or automatic archival is authorized by this packet. MAINT-0130
-is merged and green, but content movement remains held until a separate exact
-cleanup plan is classified, reviewed, and authorized.
+No live move, delete, automatic archival, branch cleanup, or worktree cleanup is
+authorized by this packet. The two clean previews are frozen only as a future
+`MAINT-0133B-PACKET-A` batch and require separate explicit live-execution
+authorization.
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. The reproduced public-route safety packet is integrated. INDIA-3,
@@ -204,6 +205,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| MAINT-0132 | Added shared task-bound elapsed time, compact preflight-only orientation, automatic verification-step timing, and exact external integration closeout | Main Agent + governance | ✅ DONE — PR #846 merged at `60e95bbe`; candidate and merged trees equal `292c562d`; focused, quick 10/10, full 31/31, and hosted 9/9 pass |
 | MAINT-0131 | Repaired preparation exit semantics, helper impact routing, safe-file executable compatibility, and mandatory closeout fields | Main Agent + governance | ✅ DONE — PR #845 merged at `d4e5b122`; candidate and merged trees equal `94bd3164`; focused 235, quick 10/10, full 31/31, and hosted 9/9 pass |
 | MAINT-0130 | Replaced split move/delete/migration safety with one fail-closed transactional safe-file system and retired age-only archival | Main Agent + governance | ✅ DONE — PR #844 merged at `58ecc149`; bulk cleanup remains separately classified and authorized |
 | MAINT-012D | Consolidated true duplicate scanners, archived obsolete compatibility paths, migrated live callers, and preserved distinct safety evidence | Main Agent + governance | ✅ COMPLETE ON MERGE — frozen candidate requires broad Python, quick/full, normal hooks, and all applicable hosted checks; PR facts remain external |

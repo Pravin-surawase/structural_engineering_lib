@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "task_id": "MAINT-0133",
+  "baseline_commit": "60e95bbe52575d3335e7195db944b2c82630ed2e",
+  "observed_date": "2026-08-23",
+  "mode": "READ_ONLY_CLASSIFICATION",
+  "live_file_operations_authorized": false,
+  "discovery_contract": {
+    "included": [
+      "tracked hygiene artifacts",
+      "exact Git-blob duplicates",
+      "explicit deprecated or archived metadata outside archive roots",
+      "active top-level control scripts",
+      "maintained Markdown and local-image references"
+    ],
+    "excluded": [
+      "age-only candidates",
+      "unreferenced-name guesses",
+      "branches and worktrees",
+      "historical archive content",
+      "vendor/reference content",
+      "untracked content from foreign worktrees"
+    ]
+  },
+  "baseline": {
+    "tracked_files": 4106,
+    "maintained_markdown_files": 478,
+    "maintained_local_links": 1013,
+    "maintained_local_images": 6,
+    "broken_links": 0,
+    "active_control_operations": 115,
+    "registered_top_level_scripts": 101,
+    "top_level_scripts_total": 101,
+    "repository_hygiene": "PASS"
+  },
+  "summary": {
+    "explicit_inactive_candidates": 6,
+    "move_ready": 2,
+    "hold_unresolved": 4,
+    "delete_ready": 0,
+    "exact_duplicate_groups": 1,
+    "live_operations_performed": 0
+  },
+  "candidates": [
+    {
+      "source": "docs/agents/guides/README.md",
+      "source_blob": "fa1fb6ee28673a898e3ea93870117791b3d1f0e5",
+      "size_bytes": 2612,
+      "declared_status": "deprecated",
+      "owner": "agent documentation",
+      "disposition": "HOLD_UNRESOLVED",
+      "destination": "docs/_archive/agents/guides/README.md",
+      "reason": "Historical navigation is explicitly deprecated, but the generic basename produces ambiguous maintained matches.",
+      "preview": {
+        "success": false,
+        "updateable_references": 0,
+        "preserved_references": 828,
+        "unresolved_references": 279,
+        "baseline_broken_links": 0
+      },
+      "next_action": "Improve or explicitly map path-qualified README references in a separately reviewed repair; do not bypass the hold."
+    },
+    {
+      "source": "docs/agents/guides/agent-quick-reference.md",
+      "source_blob": "55f9c5d3533387c2d83497abc02bc64db5ded2cc",
+      "size_bytes": 10256,
+      "declared_status": "deprecated",
+      "owner": "agent documentation",
+      "disposition": "HOLD_UNRESOLVED",
+      "destination": "docs/_archive/agents/guides/agent-quick-reference.md",
+      "reason": "The historical guide is deprecated, but active and archived governance checks still contain unresolved filename contracts.",
+      "preview": {
+        "success": false,
+        "updateable_references": 7,
+        "preserved_references": 37,
+        "unresolved_references": 2,
+        "unresolved": [
+          "scripts/_archive/check_governance_compliance.py:194",
+          "scripts/check_governance.py:805"
+        ],
+        "baseline_broken_links": 0
+      },
+      "next_action": "Decide and update the maintained governance contract before repeating the move preview."
+    },
+    {
+      "source": "docs/agents/guides/agent-workflow-master-guide.md",
+      "source_blob": "63cd5c737c39b55465d56f7c241a295daf476023",
+      "size_bytes": 19829,
+      "declared_status": "deprecated",
+      "owner": "agent documentation",
+      "disposition": "HOLD_UNRESOLVED",
+      "destination": "docs/_archive/agents/guides/agent-workflow-master-guide.md",
+      "reason": "The historical guide is deprecated, but active and archived governance checks still contain unresolved filename contracts.",
+      "preview": {
+        "success": false,
+        "updateable_references": 5,
+        "preserved_references": 51,
+        "unresolved_references": 2,
+        "unresolved": [
+          "scripts/_archive/check_governance_compliance.py:195",
+          "scripts/check_governance.py:806"
+        ],
+        "baseline_broken_links": 0
+      },
+      "next_action": "Decide and update the maintained governance contract before repeating the move preview."
+    },
+    {
+      "source": "docs/planning/is456-library-first-master-plan.md",
+      "source_blob": "e33f1bd7fcad2e5ce8b548af1d2e83acf9db6c4e",
+      "size_bytes": 73605,
+      "declared_status": "archived",
+      "owner": "library planning",
+      "disposition": "HOLD_UNRESOLVED",
+      "destination": "docs/_archive/planning/is456-library-first-master-plan.md",
+      "reason": "The completed plan is marked archived, but three maintained planning references require an explicit successor-aware repair.",
+      "preview": {
+        "success": false,
+        "updateable_references": 3,
+        "preserved_references": 4,
+        "unresolved_references": 3,
+        "unresolved": [
+          "docs/planning/README.md:43",
+          "docs/planning/india-2-next-session-publication-and-closeout-plan.md:221",
+          "docs/planning/professional-library-remediation-plan.md:141"
+        ],
+        "baseline_broken_links": 0
+      },
+      "next_action": "Repair the three maintained planning references in one reviewed content packet before repeating the move preview."
+    },
+    {
+      "source": "docs/planning/india-2-remaining-is456-elements-plan.md",
+      "source_blob": "3c3d2a3e62bf6f22d4746da241ad0a6cd66e3a9c",
+      "size_bytes": 22535,
+      "declared_status": "archived",
+      "owner": "Indian-code planning",
+      "disposition": "MOVE_READY_NOT_AUTHORIZED",
+      "destination": "docs/_archive/planning/india-2-remaining-is456-elements-plan.md",
+      "reason": "INDIA-2 is administratively complete and the exact move preview updates both maintained references while preserving 43 historical references.",
+      "preview": {
+        "success": true,
+        "updateable_references": 3,
+        "preserved_references": 46,
+        "unresolved_references": 0,
+        "predicted_changed_files": [
+          "docs/TASKS.md",
+          "docs/_archive/planning/india-2-remaining-is456-elements-plan.md",
+          "docs/planning/india-2-remaining-is456-elements-plan.md",
+          "docs/planning/indian-code-completion-plan.md",
+          "docs/planning/maint-0133-cleanup-inventory-and-authorization.md"
+        ],
+        "baseline_broken_links": 0
+      },
+      "future_batch": "MAINT-0133B-PACKET-A"
+    },
+    {
+      "source": "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
+      "source_blob": "2e576e90256d72ca5cdd886ca67ee881d4227087",
+      "size_bytes": 29082,
+      "declared_status": "archived",
+      "owner": "Indian-code planning",
+      "disposition": "MOVE_READY_NOT_AUTHORIZED",
+      "destination": "docs/_archive/planning/india-2-next-session-publication-and-closeout-plan.md",
+      "reason": "The sequence is complete and the exact move preview updates its maintained parent reference while preserving 21 historical references.",
+      "preview": {
+        "success": true,
+        "updateable_references": 2,
+        "preserved_references": 25,
+        "unresolved_references": 0,
+        "predicted_changed_files": [
+          "docs/_archive/planning/india-2-next-session-publication-and-closeout-plan.md",
+          "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
+          "docs/planning/indian-code-completion-plan.md",
+          "docs/planning/maint-0133-cleanup-inventory-and-authorization.md"
+        ],
+        "baseline_broken_links": 0
+      },
+      "future_batch": "MAINT-0133B-PACKET-A"
+    }
+  ],
+  "kept_surfaces": [
+    {
+      "class": "exact-byte duplicate Python package markers",
+      "count": 4,
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "disposition": "KEEP",
+      "reason": "Empty __init__.py files establish distinct test-package boundaries; byte equality is not duplicate ownership."
+    },
+    {
+      "class": "docs archive",
+      "count": 507,
+      "disposition": "KEEP",
+      "reason": "Historical evidence and retained recovery records are preservation surfaces, not cleanup candidates."
+    },
+    {
+      "class": "scripts archive",
+      "count": 119,
+      "disposition": "KEEP",
+      "reason": "Inactive scripts are already outside the active 101-script control plane and retained for audit/recovery."
+    },
+    {
+      "class": "vendor reference",
+      "count": 1760,
+      "disposition": "KEEP",
+      "reason": "Protected reference content is outside cleanup authority."
+    }
+  ],
+  "held_out_of_scope": {
+    "worktrees_observed": 48,
+    "reason": "Branch/worktree cleanup has separate evidence and deletion authority; dirty, detached, foreign, and uncertain lanes remain untouched."
+  },
+  "future_batch_plan": "docs/verification/maint-0133-cleanup-batch.json",
+  "decision": "MAINT-0133 completes classification only. No move or delete is authorized or performed."
+}
