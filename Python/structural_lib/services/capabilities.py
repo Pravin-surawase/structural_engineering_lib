@@ -1963,6 +1963,20 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
                     True,
                     "independent extrema with signed station and concurrent companion values, or explicit source-precomputed hold basis",
                 ),
+                _field(
+                    "snapshot_sha256",
+                    "canonical ETABS exported-data snapshot identity",
+                    "sha256",
+                    True,
+                    "64 lowercase hexadecimal characters over the versioned snapshot identity payload",
+                ),
+                _field(
+                    "row_disposition",
+                    "physical calculation-source row disposition",
+                    "enumeration",
+                    True,
+                    "ACCEPTED, APPROVED_EXCLUSION, or BLOCKED",
+                ),
             ),
             statuses=(
                 IS456StatusContract(
@@ -1973,11 +1987,20 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
                         "Successful import is not proof that the ETABS model or load basis is complete or correct.",
                     ),
                 ),
+                IS456StatusContract(
+                    "snapshot_status",
+                    "ACCEPTED only when project/export identity, source hashes, units, local axes, result selection, stable member IDs, and every source-row disposition are complete.",
+                    (
+                        "A blocked snapshot exposes no canonical beam request.",
+                        "Snapshot acceptance is not analysis validation, code compliance, release approval, or qualified engineering review.",
+                    ),
+                ),
             ),
             limitations=(
                 "CSV file intake is read-only and beam-member scoped; live ETABS automation and write-back are excluded.",
-                "The adapter does not establish global-model completeness, local-axis correctness, analysis validity, gravity/load-generation basis, load-combination approval, or professional review.",
+                "The canonical snapshot binds supplied local-axis and result-selection evidence but does not establish global-model completeness, analysis validity, gravity/load-generation basis, load-combination approval, or professional review.",
                 "Header-only files, malformed or non-finite numbers, unknown sections, row loss, and unmatched records block.",
+                "Legacy normalize/load/create-job helpers remain compatibility paths and do not establish the canonical snapshot contract.",
             ),
         ),
         IS456AdapterContract(

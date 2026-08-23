@@ -1,0 +1,4 @@
+Story,Label,UniqueName,ObjType,AnalSect,JointI,JointJ,XI,YI,ZI,XJ,YJ,ZJ,Angle
+L1,B1,101,Beam,B300X500M25,J1,J2,0,0,3,5,0,3,0
+L1,B2,102,Beam,B300X550M25,J2,J3,5,0,3,9,0,3,0
+L1,C1,201,Column,C300X300,J1,J4,0,0,0,0,0,3,0

@@ -5,6 +5,101 @@
 
 ---
 
+## 2026-08-23 — Session: LIB-PRO-007-P5 ETABS exported snapshot
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents)
+
+**Branch:** `codex/lib-pro-007-p5-etabs-snapshot`, from exact merged P4
+hosted-main commit `426d401bb2afde417ff989bd7349c99b8f7cb438`, tree
+`a5b0127295eff69d70572c63a488ca29e0fa5839`.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-007-p5-etabs-snapshot-git-handoff-receipt.json`
+
+**Focus:** Converge existing ETABS exported-file paths into one deterministic,
+hash-bound snapshot that emits existing canonical beam requests. Direct EDB
+parsing, live ETABS automation, analysis control, model modification/save or
+write-back, P6/P7, INDIA-3 engineering, release, and professional approval
+remain excluded.
+
+### Summary
+
+- Added `build_etabs_canonical_snapshot_v1`, which delegates separate ETABS
+  geometry and force CSVs to the maintained lossless import service and emits
+  existing `ProjectBeamDesignInputV1` objects only after the complete snapshot
+  is accepted.
+- Bound project/export identity, Windows-recorded EDB name/hash, ETABS version,
+  byte-verified E2K and selected table exports, exact units, local-axis mapping,
+  one case/combination or source-envelope identity, normalization-ledger hash,
+  stable ETABS `UniqueName` member IDs, and a versioned snapshot SHA-256.
+- Added exhaustive P5 row dispositions. Every physical calculation-source row
+  is `ACCEPTED`, `APPROVED_EXCLUSION`, or `BLOCKED`; exclusions require an exact
+  row, reason, and approval reference. Any blocked row, unused approval, or
+  ambiguity exposes no snapshot or canonical request.
+- Added a synthetic trial-compatible E2K/CSV/XML fixture. Its seven source rows
+  resolve to six accepted rows, one approved non-beam exclusion, zero blocked
+  rows, two stable members, and two canonical beam requests.
+- Added a trial-compatible acquisition matrix. Read-only API table export is
+  preferred when available, while manual ETABS table export remains a fully
+  valid fallback. EDB opening stays inside ETABS on Windows; the Mac consumes
+  exported artifacts only.
+- Kept `ETABSAdapter` as the canonical parser delegate. The older
+  `normalize_etabs_forces`, `load_etabs_csv`, and `create_job_from_etabs`
+  helpers remain held compatibility paths because they do not establish the
+  P5 snapshot contract.
+
+### Issues encountered
+
+- The Codex worktree began clean but detached at the exact requested P4 merge.
+- The first metadata-block path returned before accounting readable CSV rows.
+- Initial targeted mypy found function-scope variable reuse widening an
+  exclusion lookup and force-member mapping to incompatible optional types.
+- One combined documentation patch did not match the current wrapped wording
+  in the CSV specification.
+
+### Root causes and resolutions
+
+- Codex-created linked worktrees can begin detached even when bound to hosted
+  `main`. Resolution: verify remote commit `426d401b`, tree `a5b01272`, clean
+  status, all sibling lanes, and predecessor order first; then create the
+  isolated `codex/lib-pro-007-p5-etabs-snapshot` branch. The held INDIA-3 lane
+  and unrelated dirty detached lane remain untouched.
+- Artifact and contract validation initially shared one early-return condition,
+  so a unit mismatch produced zero row dispositions despite readable source
+  CSVs. Resolution: return early only when E2K/geometry/force artifacts are
+  unavailable; otherwise run the maintained lossless parser, preserve all row
+  dispositions, and block globally. The unsupported-unit vector now reports
+  all seven source rows without exposing requests.
+- Reusing `approval`, `key`, and `canonical_member_id` names across branches
+  caused mypy to retain narrower earlier types. Resolution: assign distinct
+  approval-row, source-row, and force-mapping names. Targeted configured mypy
+  passes the implementation and tests.
+- The large patch used a line break that differed from the live specification.
+  Resolution: inspect the exact lines and apply bounded document patches; no
+  partial change was made by the failed patch.
+  ⚠️ TERMINAL ISSUE: combined `apply_patch` context verification failed ->
+  inspected the exact wrapped text and applied smaller bounded patches.
+
+### Validation through content freeze
+
+- Source binding is exact hosted `426d401b` / tree `a5b01272`; the retained
+  INDIA-3 candidate `9c976b1f` and every unrelated branch/worktree are
+  unchanged.
+- The deterministic fixture snapshot is
+  `a82d927d347108f56aa3fcdd559c1aa45ba8d87673cb3feec61a03d5eadbf4f8`;
+  its normalization ledger is
+  `a50c13df5d7f1efa5ab4ce2793ee5822727b59a3194e191ef65015f190c8412e`.
+- The frozen focused snapshot/import/adapter/project-beam/packaging/capability
+  batch collects 212 tests and passes 209, with three existing environment
+  skips. It includes JSON round-trip/hash replay, exhaustive row conservation,
+  exact exclusion approval, result-selection and unit failures, archive-order
+  determinism, ambiguity blocking, and direct EDB rejection. Targeted Ruff and
+  mypy pass.
+- Architecture boundaries report 221 files and zero violations. The one
+  consolidated quick gate passes 10/10 with two unchanged cached checks.
+  Normal staged hooks and hosted checks follow on the immutable candidate;
+  broad cumulative suites remain reserved for M0.
+
 ## 2026-08-23 — Session: LIB-PRO-007-P4 explicit practical actions
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents)

@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-17
+last_updated: 2026-08-23
 doc_type: spec
 complexity: intermediate
 tags: []
@@ -14,7 +14,7 @@ tags: []
 **Status:** Active
 **Importance:** High
 **Created:** 2026-01-20
-**Last Updated:** 2026-08-17
+**Last Updated:** 2026-08-23
 **Related Tasks:** TASK-CSV-01, TASK-CSV-02, TASK-3D-002
 
 ---
@@ -101,7 +101,7 @@ gravity-analysis model.
 
 | Column | Description | Units | Default |
 |--------|-------------|-------|---------|
-| `UniqueName` | Internal ETABS ID | Text | Empty |
+| `UniqueName` | Internal ETABS ID; required by the P5 canonical snapshot | Text | Empty for compatibility import only |
 | `FrameType` | Element type; non-beams are deliberately excluded | Text | Beam |
 | `Point1Name` | Node at start | Text | Empty |
 | `Point2Name` | Node at end | Text | Empty |
@@ -228,6 +228,18 @@ concurrent companion action at that station. The basis is recorded as
 envelope is labelled `source_precomputed_extrema_provenance_unavailable`; it is
 not represented as though station provenance existed. Raw row values remain in
 the lossless import ledger.
+
+## Canonical ETABS exported snapshot
+
+Bare CSV acceptance is not the P5 product boundary. The canonical exported-file
+path additionally binds the project/export/EDB identity, ETABS version, E2K and
+table hashes, exact units, local-axis mapping, selected case/combination or
+source-envelope identity, stable `UniqueName` member mapping, exhaustive P5 row
+dispositions, exclusions, ambiguities, and snapshot SHA-256. Only an accepted
+snapshot emits existing `ProjectBeamDesignInputV1` requests.
+
+See [ETABS Exported Snapshot V1](../guides/etabs-exported-snapshot-v1.md) for the
+trial-compatible acquisition matrix and the manual-export fallback.
 
 ---
 

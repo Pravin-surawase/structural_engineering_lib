@@ -6,6 +6,27 @@ Prefer importing directly from structural_lib.services.imports."""
 
 from __future__ import annotations
 
+from structural_lib.services.etabs_snapshot import (  # noqa: F401, E402
+    ETABSApprovedExclusionV1,
+    ETABSArchivedTableInputV1,
+    ETABSBeamRequestBasisV1,
+    ETABSCanonicalSnapshotV1,
+    ETABSExportUnitsV1,
+    ETABSLocalAxisMappingV1,
+    ETABSMemberIdentityV1,
+    ETABSProjectExportIdentityV1,
+    ETABSResultIdentityV1,
+    ETABSRowAccountingV1,
+    ETABSRowDisposition,
+    ETABSRowDispositionV1,
+    ETABSSnapshotAmbiguityV1,
+    ETABSSnapshotBuildResultV1,
+    ETABSSnapshotIssueV1,
+    ETABSSnapshotStatus,
+    ETABSSourceArtifactV1,
+    build_etabs_canonical_snapshot_v1,
+    verify_etabs_canonical_snapshot_hash_v1,
+)
 from structural_lib.services.import_ledger import (  # noqa: F401, E402
     AdapterSelectionV1,
     ImportArtifactV1,

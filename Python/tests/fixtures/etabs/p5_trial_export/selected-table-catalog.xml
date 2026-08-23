@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<selectedTables exportId="P5-EXPORT-001" etabsVersion="23.0.0">
+  <table name="Connectivity - Frame" file="connectivity-frame.csv" />
+  <table name="Element Forces - Frames" file="element-forces-frames.csv" />
+</selectedTables>

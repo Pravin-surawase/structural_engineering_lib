@@ -238,6 +238,14 @@ def test_read_only_etabs_and_geometry_adapters_publish_held_boundaries() -> None
     assert "gravity/load-generation basis" in etabs.limitations[1]
     assert etabs.statuses[0].canonical_name == "import_status"
     assert "no calculable batch" in etabs.statuses[0].limitations[0]
+    assert etabs.statuses[1].canonical_name == "snapshot_status"
+    assert "no canonical beam request" in etabs.statuses[1].limitations[0]
+    fields = {field.canonical_name: field for field in etabs.fields}
+    assert fields["snapshot_sha256"].unit == "sha256"
+    assert fields["row_disposition"].finite_physical_domain == (
+        "ACCEPTED, APPROVED_EXCLUSION, or BLOCKED"
+    )
+    assert "Legacy normalize/load/create-job helpers" in etabs.limitations[3]
     assert geometry.fields[1].finite_physical_domain == "visualization_only"
     assert geometry.fields[2].unit == "mm per source coordinate unit"
     assert "duplicate member identity" in geometry.limitations[1]

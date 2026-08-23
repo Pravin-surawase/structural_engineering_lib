@@ -1,0 +1,129 @@
+{
+  "schema_version": "lib-pro-007-p5-evidence/v1",
+  "task_id": "LIB-PRO-007-P5",
+  "status": "LOCAL_FOCUSED_AND_QUICK_PASS_STAGED_AND_HOSTED_PENDING",
+  "base": {
+    "hosted_main_commit": "426d401bb2afde417ff989bd7349c99b8f7cb438",
+    "exact_tree": "a5b0127295eff69d70572c63a488ca29e0fa5839",
+    "predecessor_pr": 856
+  },
+  "scope": {
+    "canonical_path": "ETABS exported files -> canonical snapshot -> canonical beam request",
+    "calculation_csv_authority": "structural_lib.services.imports.parse_dual_csv_lossless",
+    "snapshot_entrypoint": "structural_lib.imports.build_etabs_canonical_snapshot_v1",
+    "canonical_request_type": "structural_lib.services.project_beam.ProjectBeamDesignInputV1",
+    "row_dispositions": [
+      "ACCEPTED",
+      "APPROVED_EXCLUSION",
+      "BLOCKED"
+    ],
+    "out_of_scope": [
+      "direct EDB binary parsing",
+      "live ETABS automation",
+      "unlock or analysis control",
+      "model modification",
+      "model save or write-back",
+      "P6 cross-surface parity",
+      "P7 compatibility convergence",
+      "INDIA-3 formulas",
+      "release or professional approval"
+    ]
+  },
+  "acquisition_matrix": [
+    {
+      "checkpoint": "SOURCE_EDB_IDENTITY",
+      "environment": "WINDOWS_ETABS_ONLY",
+      "preferred": "read-only ETABS trial session plus Windows SHA-256 capture",
+      "fallback": "manual identity and hash capture",
+      "retained": ["EDB file name", "EDB SHA-256"],
+      "forbidden": ["direct EDB parser", "unlock", "save", "write-back"]
+    },
+    {
+      "checkpoint": "MODEL_DEFINITION",
+      "environment": "WINDOWS_ETABS_EXPORT",
+      "preferred": "read-only E2K export",
+      "fallback": "manual E2K export through ETABS UI",
+      "retained": ["E2K bytes", "E2K SHA-256"]
+    },
+    {
+      "checkpoint": "SELECTED_TABLES",
+      "environment": "WINDOWS_ETABS_EXPORT",
+      "preferred": "read-only trial API table export when available",
+      "fallback": "manual ETABS table export",
+      "retained": [
+        "geometry CSV",
+        "frame-force CSV",
+        "selected CSV/XML/Excel archives",
+        "SHA-256 hashes"
+      ]
+    },
+    {
+      "checkpoint": "CANONICALIZATION",
+      "environment": "MAC_REPOSITORY",
+      "preferred": "lossless exported-file snapshot builder",
+      "fallback": "none; unresolved inputs block",
+      "retained": [
+        "normalization ledger hash",
+        "row dispositions",
+        "snapshot hash",
+        "canonical beam requests"
+      ]
+    }
+  ],
+  "compatibility_dispositions": [
+    {
+      "surface": "ETABSAdapter",
+      "disposition": "INTERNAL_CANONICAL_DELEGATE"
+    },
+    {
+      "surface": "normalize_etabs_forces",
+      "disposition": "HELD_COMPATIBILITY_NO_SNAPSHOT_IDENTITY"
+    },
+    {
+      "surface": "load_etabs_csv",
+      "disposition": "HELD_COMPATIBILITY_NO_COMPLETE_ROW_DISPOSITIONS"
+    },
+    {
+      "surface": "create_job_from_etabs",
+      "disposition": "HELD_COMPATIBILITY_NOT_CANONICAL_PROJECT_BEAM_REQUEST"
+    }
+  ],
+  "deterministic_fixture": {
+    "project_id": "P5-TRIAL-HALL",
+    "export_id": "P5-EXPORT-001",
+    "etabs_version": "23.0.0 Trial",
+    "source_edb_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "artifacts": {
+      "connectivity-frame.csv": "93fb3481176dbaf73e9e1fb91a9889560c141c5af97202aca2e9eb8bba5f8fc1",
+      "element-forces-frames.csv": "45aa836c480b983dd137f5433f99cfd7c7f9fc59ffb5818a3a203437d7cb44d7",
+      "selected-table-catalog.xml": "9d7540e802245425f732af6cc5f7af21859793ccfbff56b2a6862ceaa4fa56fc",
+      "trial-hall-model.e2k": "ecca626b481fc210c9dad0cbd1f64fac607dcf65bc4c49d2101cb773fca2342b"
+    },
+    "normalization_ledger_sha256": "a50c13df5d7f1efa5ab4ce2793ee5822727b59a3194e191ef65015f190c8412e",
+    "snapshot_sha256": "a82d927d347108f56aa3fcdd559c1aa45ba8d87673cb3feec61a03d5eadbf4f8",
+    "row_accounting": {
+      "source_rows": 7,
+      "accepted_rows": 6,
+      "approved_exclusion_rows": 1,
+      "blocked_rows": 0
+    },
+    "canonical_member_ids": [
+      "etabs:P5-TRIAL-HALL:101",
+      "etabs:P5-TRIAL-HALL:102"
+    ],
+    "canonical_request_count": 2
+  },
+  "verification": {
+    "focused_tests": "PASS_209_WITH_3_ENVIRONMENT_SKIPS_FROM_212_COLLECTED",
+    "quick_gate": "PASS_10_OF_10_WITH_2_REUSED",
+    "normal_staged_hooks": "REQUIRED_ON_FINAL_STAGED_CANDIDATE",
+    "broad_cumulative_suites": "RESERVED_FOR_LIB-PRO-007-M0",
+    "hosted_checks": "PENDING_IMMUTABLE_CANDIDATE"
+  },
+  "claims": {
+    "software_scope": "BOUNDED_P5_EXPORTED_FILE_SNAPSHOT_ONLY",
+    "etabs_model_or_analysis_validated": false,
+    "engineering_approval": false,
+    "release_authorized": false
+  }
+}
