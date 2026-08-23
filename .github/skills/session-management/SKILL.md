@@ -15,14 +15,18 @@ Use the canonical `run.sh` entry points from the workspace root. Do not repeat t
 
 ## Session Start
 
-Run once, in this order:
+Run once for one exact task:
 
 ```bash
-./run.sh session brief --agent <role>
-./run.sh session start
+./run.sh session begin --task-id <task> --agent <role>
 ```
 
-The brief is the bounded orientation packet; session start verifies the environment and current project state. Use `./run.sh session context` only when the brief does not contain enough information for the task.
+`session begin` starts the shared task timer before printing the bounded brief,
+then verifies the environment and current project state. Use
+`./run.sh session context` only when the brief does not contain enough
+information for the task. `session brief` and `session start` remain read-only/
+compatibility entry points, but using them separately does not create complete
+end-to-end timing evidence.
 
 Before editing, confirm the branch and working tree shown by session start. Preserve unrelated user changes.
 

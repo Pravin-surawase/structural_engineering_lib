@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-23 — MAINT-0131 efficiency controls active on merged MAINT-0130 baseline
+**Updated:** 2026-08-23 — MAINT-0132 automatic efficiency observability active
 
 ---
 
@@ -127,8 +127,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| MAINT-0131 | Repair closeout preparation semantics, helper-level verification routing, safe-file executable compatibility, and measurable efficiency closeout | Main Agent + governance | M | P0 | 🟡 CANDIDATE — focused 235-test/control proof and live preparation exit `2` pass; final local and hosted gates pending |
-| MAINT-0130 | Replace inconsistent move/delete/link/batch/migrator behavior with one fail-closed transactional safe-file system and retire age-only archival | Main Agent + governance | L | P0 | ✅ MERGED — PR #844 at `58ecc149`; bulk cleanup still needs a separately classified and authorized plan |
+| MAINT-0132 | Replace manually reconstructed per-worktree timing and stale task orientation with one task-bound shared observable session | Main Agent + governance | M | P0 | 🟡 CANDIDATE — focused session/control/instruction proof passes; quick/full/hooks/hosted closeout pending |
 
 No bulk cleanup or automatic archival is authorized by this packet. MAINT-0130
 is merged and green, but content movement remains held until a separate exact
@@ -205,6 +204,8 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| MAINT-0131 | Repaired preparation exit semantics, helper impact routing, safe-file executable compatibility, and mandatory closeout fields | Main Agent + governance | ✅ DONE — PR #845 merged at `d4e5b122`; candidate and merged trees equal `94bd3164`; focused 235, quick 10/10, full 31/31, and hosted 9/9 pass |
+| MAINT-0130 | Replaced split move/delete/migration safety with one fail-closed transactional safe-file system and retired age-only archival | Main Agent + governance | ✅ DONE — PR #844 merged at `58ecc149`; bulk cleanup remains separately classified and authorized |
 | MAINT-012D | Consolidated true duplicate scanners, archived obsolete compatibility paths, migrated live callers, and preserved distinct safety evidence | Main Agent + governance | ✅ COMPLETE ON MERGE — frozen candidate requires broad Python, quick/full, normal hooks, and all applicable hosted checks; PR facts remain external |
 | MAINT-012C | Unified local/hosted impact scheduling and exact content-addressed PASS reuse under one strict seven-domain verification manifest | Main Agent + governance | ✅ DONE — PR #842 merged at `84f3cbe6`; unknown paths fail closed and ordinary hooks reuse only exact matching evidence |
 | MAINT-012B | Replaced 141 generated index artifacts with a strict context manifest and bounded live summaries | Main Agent + governance | ✅ DONE — PR #841 merged at `646660e3`; generic index topology and regeneration were retired |

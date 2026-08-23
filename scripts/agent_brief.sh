@@ -49,8 +49,14 @@ _priorities() {
 # ── Active tasks ───────────────────────────────────────────────────────
 _active_tasks() {
     if [[ -f "$TASKS" ]]; then
-        local active_items
-        active_items=$(awk '
+        local active_items closed_tasks
+        closed_tasks=$(cd "$REPO_ROOT" && ./scripts/python_runtime.sh \
+            scripts/session.py usage --closed-task-ids 2>/dev/null) || true
+        active_items=$(awk -v closed_source="$closed_tasks" '
+            BEGIN {
+                count=split(closed_source, closed_ids, "\n")
+                for (i=1; i<=count; i++) closed[closed_ids[i]]=1
+            }
             /^## Active$/ { in_active=1; next }
             /^## / && in_active { exit }
             in_active && /^\|/ && $0 !~ /^\|[- ]+\|/ && $0 !~ /\| ID \|/ {
@@ -59,7 +65,7 @@ _active_tasks() {
                 gsub(/^[[:space:]]+|[[:space:]]+$/, "", id)
                 gsub(/^[[:space:]]+|[[:space:]]+$/, "", task)
                 gsub(/^[[:space:]]+|[[:space:]]+$/, "", status)
-                if (id != "") print "  " id ": " task " [" status "]"
+                if (id != "" && !closed[id]) print "  " id ": " task " [" status "]"
             }
         ' "$TASKS" | head -3) || true
         [[ -n "$active_items" ]] && echo "$active_items"

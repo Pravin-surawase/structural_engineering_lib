@@ -9,9 +9,10 @@ tags: []
 
 # Handoff Quick Start
 
-> Current Git/session boundary: start with `./run.sh session brief --agent
-> <role>`, `./run.sh session start`, `scripts/python_runtime.sh --diagnose`, and
-> `scripts/git_state.py --json --worktrees`. The state authority is local-only;
+> Current Git/session boundary: start with `./run.sh session begin --task-id
+> <task> --agent <role>`, then use `scripts/python_runtime.sh --diagnose` or
+> `scripts/git_state.py --json --worktrees` only when the compact start reports
+> an unresolved lane question. The state authority is local-only;
 > remote freshness remains `NOT_CHECKED` unless separately established.
 
 Every durable task handoff uses a tracked machine-readable receipt built and

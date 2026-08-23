@@ -15,6 +15,7 @@ USAGE:
     ./scripts/python_runtime.sh scripts/session.py summary [--write]
     ./scripts/python_runtime.sh scripts/session.py sync [--fix] [--json]
     ./scripts/python_runtime.sh scripts/session.py usage [--checkpoint start|milestone|closeout] [...]
+    # Prefer ./run.sh session begin --task-id TASK --agent ROLE for a complete start.
     ./scripts/python_runtime.sh scripts/session.py compact [--keep-last N] [--dry-run]
 """
 
@@ -226,6 +227,7 @@ def add_session_log_entry() -> bool:
 def get_active_tasks() -> list[tuple[str, str, str]]:
     try:
         content = TASKS_MD.read_text()
+        externally_closed = _externally_closed_task_ids()
         active_match = re.search(
             r"^##\s+(?:🔴\s+)?Active\s*$\n(.*?)(?=^##\s|\Z)",
             content,
@@ -243,6 +245,8 @@ def get_active_tasks() -> list[tuple[str, str, str]]:
                 continue
             task_id = cells[0].strip("*").strip()
             if task_id.lower() == "id" or not task_id or set(task_id) <= {"-", ":"}:
+                continue
+            if task_id in externally_closed:
                 continue
             task_desc = cells[1].strip()
             status = cells[3].strip()
@@ -345,8 +349,10 @@ def archive_completed_tasks(fix: bool = False) -> tuple[int, int]:
     return len(rows), archived_count
 
 
-def get_key_blocker() -> Optional[str]:
-    for task_id, desc, hint in get_active_tasks():
+def get_key_blocker(
+    tasks: list[tuple[str, str, str]] | None = None,
+) -> Optional[str]:
+    for task_id, desc, hint in tasks if tasks is not None else get_active_tasks():
         if "BLOCKER" in hint:
             return f"{task_id}: {desc}"
     return None
@@ -452,7 +458,7 @@ def cmd_start(args: argparse.Namespace) -> int:
         else:
             print(f"  • {desc}")
 
-    blocker = get_key_blocker()
+    blocker = get_key_blocker(tasks)
     if blocker:
         print()
         print(f"  ⚠️  Key Blocker: {blocker}")
@@ -490,7 +496,29 @@ def cmd_start(args: argparse.Namespace) -> int:
 # ─── Cost / Token Logging ────────────────────────────────────────────────────
 
 COST_LOG = REPO_ROOT / "logs" / "agent_costs.jsonl"
-MODEL_USAGE_LOG = REPO_ROOT / "logs" / "model_usage.jsonl"
+LEGACY_MODEL_USAGE_LOG = REPO_ROOT / "logs" / "model_usage.jsonl"
+
+
+def _resolve_shared_usage_log(repo_root: Path = REPO_ROOT) -> Path:
+    """Resolve one ignored telemetry ledger shared by all linked worktrees."""
+    result = subprocess.run(
+        ["git", "rev-parse", "--git-common-dir"],
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    raw_path = result.stdout.strip()
+    if result.returncode != 0 or not raw_path:
+        return repo_root / "logs" / "model_usage.jsonl"
+    common_dir = Path(raw_path)
+    if not common_dir.is_absolute():
+        common_dir = (repo_root / common_dir).resolve()
+    return common_dir / "codex-runtime" / "model_usage.jsonl"
+
+
+MODEL_USAGE_LOG = _resolve_shared_usage_log()
+TIMING_TOLERANCE_MIN = 0.1
 
 EFFICIENCY_PHASES = (
     "contract/intake",
@@ -673,6 +701,108 @@ def _read_jsonl(path: Path) -> list[dict]:
     return entries
 
 
+def _legacy_usage_log_paths() -> list[Path]:
+    """Return retained per-worktree ledgers for read-only historical projection."""
+    result = subprocess.run(
+        ["git", "worktree", "list", "--porcelain"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        return [LEGACY_MODEL_USAGE_LOG]
+    paths = [
+        Path(line.removeprefix("worktree ")) / "logs" / "model_usage.jsonl"
+        for line in result.stdout.splitlines()
+        if line.startswith("worktree ")
+    ]
+    return list(dict.fromkeys([LEGACY_MODEL_USAGE_LOG, *paths]))
+
+
+def _all_usage_entries() -> list[dict]:
+    """Read the shared ledger plus retained legacy ledgers without duplicating rows."""
+    entries: list[dict] = []
+    seen: set[str] = set()
+    for path in [MODEL_USAGE_LOG, *_legacy_usage_log_paths()]:
+        for entry in _read_jsonl(path):
+            identity = json.dumps(entry, sort_keys=True, separators=(",", ":"))
+            if identity in seen:
+                continue
+            seen.add(identity)
+            entries.append(entry)
+    return sorted(entries, key=lambda item: str(item.get("timestamp", "")))
+
+
+def _usage_now() -> datetime:
+    return datetime.now().astimezone()
+
+
+def _latest_open_start(task_id: str, entries: list[dict]) -> dict | None:
+    for entry in reversed(entries):
+        if entry.get("task_id") != task_id:
+            continue
+        checkpoint = entry.get("checkpoint")
+        if checkpoint == "closeout":
+            return None
+        if checkpoint == "start":
+            return entry
+    return None
+
+
+def _active_usage_start(entries: list[dict]) -> dict | None:
+    open_starts: dict[str, dict] = {}
+    for entry in entries:
+        task_id = entry.get("task_id")
+        if not isinstance(task_id, str) or not task_id:
+            continue
+        if entry.get("checkpoint") == "start":
+            open_starts[task_id] = entry
+        elif entry.get("checkpoint") == "closeout":
+            open_starts.pop(task_id, None)
+    if not open_starts:
+        return None
+    return max(open_starts.values(), key=lambda item: str(item.get("timestamp", "")))
+
+
+def _resolve_commit_tree(value: str, *, label: str) -> tuple[str, str]:
+    if re.fullmatch(r"[0-9a-f]{40}", value) is None:
+        raise ValueError(f"{label} must be one exact 40-character lowercase commit SHA")
+    commit = subprocess.run(
+        ["git", "rev-parse", "--verify", f"{value}^{{commit}}"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if commit.returncode != 0 or commit.stdout.strip() != value:
+        raise ValueError(f"{label} is not a resolvable commit: {value}")
+    tree = subprocess.run(
+        ["git", "rev-parse", f"{value}^{{tree}}"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    tree_sha = tree.stdout.strip()
+    if tree.returncode != 0 or re.fullmatch(r"[0-9a-f]{40}", tree_sha) is None:
+        raise ValueError(f"{label} tree could not be resolved: {value}")
+    return value, tree_sha
+
+
+def _commit_reachable_from_origin_main(commit: str) -> bool:
+    return (
+        subprocess.run(
+            ["git", "merge-base", "--is-ancestor", commit, "origin/main"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        ).returncode
+        == 0
+    )
+
+
 def _git_checkpoint_state() -> dict[str, object]:
     """Return cheap, observable repository state for a usage checkpoint."""
     state = collect_repository_state(REPO_ROOT)
@@ -692,21 +822,30 @@ def _git_checkpoint_state() -> dict[str, object]:
 
 
 def _usage_profile(entry: dict) -> str:
+    if entry.get("schema_version", 0) < 2:
+        return "legacy-unverified"
     model = entry.get("model", "unknown")
     reasoning = entry.get("reasoning", "unknown")
     return f"{model}/{reasoning}"
 
 
-def _efficiency_payload(args: argparse.Namespace) -> dict[str, object] | None:
-    """Validate and normalize optional non-overlapping wall-time evidence."""
+def _efficiency_payload(
+    args: argparse.Namespace,
+    *,
+    entries: list[dict],
+    observed_at: datetime,
+) -> dict[str, object] | None:
+    """Validate closeout phases against a task-bound observed start timestamp."""
     raw_phases = getattr(args, "phase", None) or []
     candidate_heads = getattr(args, "candidate_head", None) or []
     counter_values = {
         name: getattr(args, name, None)
         for name, _option in EFFICIENCY_COUNTER_ARGUMENTS
     }
-    supplied = bool(raw_phases or candidate_heads) or any(
-        value is not None for value in counter_values.values()
+    supplied = (
+        bool(raw_phases or candidate_heads or args.merge_commit)
+        or args.pr_number is not None
+        or any(value is not None for value in counter_values.values())
     )
     if args.checkpoint != "closeout" and supplied:
         raise ValueError("phase and candidate/retry evidence is closeout-only")
@@ -754,31 +893,105 @@ def _efficiency_payload(args: argparse.Namespace) -> dict[str, object] | None:
     for name, value in counter_values.items():
         if value is not None and value < 0:
             raise ValueError(f"{name} must be non-negative")
-    invalid_heads = [
-        head
-        for head in candidate_heads
-        if re.fullmatch(r"[0-9a-fA-F]{7,40}", head) is None
-    ]
-    if invalid_heads:
+    if not args.task_id:
+        raise ValueError("closeout requires one non-empty --task-id")
+    started = _latest_open_start(args.task_id, entries)
+    if started is None:
         raise ValueError(
-            "candidate heads must be 7-40 hexadecimal characters: "
-            + ", ".join(invalid_heads)
+            f"closeout requires an unmatched start checkpoint for task {args.task_id}"
         )
+    try:
+        started_at = datetime.fromisoformat(str(started["timestamp"]))
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError("task start timestamp is missing or malformed") from exc
+    if started_at.tzinfo is None:
+        raise ValueError("task start timestamp must include a timezone")
+    actual_elapsed = round((observed_at - started_at).total_seconds() / 60, 3)
+    if actual_elapsed < 0:
+        raise ValueError("task start timestamp is later than closeout")
 
-    total_wall_time = round(sum(phases.values()), 3)
-    if args.elapsed_min and not math.isclose(
-        args.elapsed_min, total_wall_time, rel_tol=0, abs_tol=0.05
+    phase_total = round(sum(phases.values()), 3)
+    unallocated = round(actual_elapsed - phase_total, 3)
+    if not math.isclose(
+        actual_elapsed,
+        phase_total,
+        rel_tol=0,
+        abs_tol=TIMING_TOLERANCE_MIN,
     ):
         raise ValueError(
-            f"elapsed minutes {args.elapsed_min} do not equal phase total {total_wall_time}"
+            f"phase total {phase_total}m does not match derived elapsed "
+            f"{actual_elapsed}m; unallocated time {unallocated}m"
+        )
+    if args.elapsed_min is not None and not math.isclose(
+        args.elapsed_min,
+        actual_elapsed,
+        rel_tol=0,
+        abs_tol=TIMING_TOLERANCE_MIN,
+    ):
+        raise ValueError(
+            f"supplied elapsed minutes {args.elapsed_min} do not match derived "
+            f"elapsed {actual_elapsed}"
         )
 
-    return {
+    resolved_candidates = [
+        _resolve_commit_tree(head, label="candidate head") for head in candidate_heads
+    ]
+    canonical_heads = list(dict.fromkeys(head for head, _tree in resolved_candidates))
+    candidate_trees = dict(resolved_candidates)
+
+    integration: dict[str, object] | None = None
+    if args.pr_number is not None or args.merge_commit:
+        if args.pr_number is None or args.pr_number <= 0 or not args.merge_commit:
+            raise ValueError(
+                "integration evidence requires --pr-number and --merge-commit"
+            )
+        merge_commit, merged_tree = _resolve_commit_tree(
+            args.merge_commit, label="merge commit"
+        )
+        if not _commit_reachable_from_origin_main(merge_commit):
+            raise ValueError("merge commit is not reachable from observed origin/main")
+        final_candidate_tree = candidate_trees[canonical_heads[-1]]
+        if final_candidate_tree != merged_tree:
+            raise ValueError(
+                "final candidate tree does not equal the merged tree: "
+                f"{final_candidate_tree} != {merged_tree}"
+            )
+        integration = {
+            "pr_number": args.pr_number,
+            "merge_commit": merge_commit,
+            "merged_tree": merged_tree,
+            "final_candidate_tree": final_candidate_tree,
+            "reviewed_tree_matches_merged_tree": True,
+            "authority": "caller-supplied PR identity plus locally resolved Git objects",
+        }
+    elif counter_values["hosted_validation_runs"]:
+        raise ValueError(
+            "a hosted closeout requires --pr-number and exact --merge-commit evidence"
+        )
+
+    task_events = [
+        {
+            "event": entry.get("event"),
+            "duration_sec": entry.get("duration_sec"),
+            "result_code": entry.get("result_code"),
+        }
+        for entry in entries
+        if entry.get("checkpoint") == "event"
+        and entry.get("task_id") == args.task_id
+        and str(entry.get("timestamp", "")) >= str(started.get("timestamp", ""))
+    ]
+
+    payload: dict[str, object] = {
         "phase_timings_min": {
             label: phases[label] for label in EFFICIENCY_PHASES if label in phases
         },
-        "total_wall_time_min": total_wall_time,
-        "candidate_heads": list(dict.fromkeys(candidate_heads)),
+        "phase_total_min": phase_total,
+        "total_wall_time_min": actual_elapsed,
+        "unallocated_time_min": unallocated,
+        "measurement_source": "derived from unmatched task start and closeout timestamps",
+        "started_at": started_at.isoformat(timespec="seconds"),
+        "candidate_heads": canonical_heads,
+        "candidate_trees": candidate_trees,
         "audit_rejections": counter_values["audit_rejections"],
         "repair_batches": counter_values["repair_batches"],
         "focused_gate_retries": counter_values["focused_gate_retries"],
@@ -786,21 +999,33 @@ def _efficiency_payload(args: argparse.Namespace) -> dict[str, object] | None:
         "hosted_validation_runs": counter_values["hosted_validation_runs"],
         "rework_minutes": phases.get("writer rework", 0.0),
         "network_wait_minutes": phases.get("hosted/network wait", 0.0),
+        "recorded_steps": task_events,
     }
+    if integration is not None:
+        payload["integration"] = integration
+    return payload
 
 
 def _record_usage_checkpoint(
-    args: argparse.Namespace, efficiency: dict[str, object] | None = None
+    args: argparse.Namespace,
+    efficiency: dict[str, object] | None = None,
+    *,
+    observed_at: datetime | None = None,
 ) -> dict:
     """Append an observable model/agent checkpoint without estimating billing."""
     entry = {
-        "schema_version": 1,
-        "timestamp": datetime.now().astimezone().isoformat(timespec="seconds"),
+        "schema_version": 2,
+        "timestamp": (observed_at or _usage_now()).isoformat(timespec="seconds"),
         "checkpoint": args.checkpoint,
         "task_id": args.task_id or "",
         "task": args.task or "",
         "model": args.model,
         "reasoning": args.reasoning,
+        "profile_source": (
+            "caller-supplied"
+            if args.model != "unknown" or args.reasoning != "unknown"
+            else "not-observed"
+        ),
         "parent_agents": args.parent_agents,
         "subagents": args.subagents,
         "worker_models": args.worker_model or [],
@@ -829,15 +1054,134 @@ def _record_usage_checkpoint(
     return entry
 
 
+def _record_usage_event(args: argparse.Namespace, entries: list[dict]) -> dict | None:
+    if not args.event:
+        return None
+    if args.duration_sec is None or not math.isfinite(args.duration_sec):
+        raise ValueError("event duration must be a finite --duration-sec value")
+    if args.duration_sec < 0:
+        raise ValueError("event duration must be non-negative")
+    active = _active_usage_start(entries)
+    if active is None:
+        return None
+    entry = {
+        "schema_version": 2,
+        "timestamp": _usage_now().isoformat(timespec="seconds"),
+        "checkpoint": "event",
+        "task_id": active["task_id"],
+        "event": args.event,
+        "duration_sec": round(args.duration_sec, 3),
+        "result_code": args.result_code,
+        "billing_tokens": None,
+        "billing_cost": None,
+    }
+    MODEL_USAGE_LOG.parent.mkdir(parents=True, exist_ok=True)
+    with MODEL_USAGE_LOG.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(entry, sort_keys=True) + "\n")
+    return entry
+
+
+def _externally_closed_task_ids(entries: list[dict] | None = None) -> set[str]:
+    closed: set[str] = set()
+    for entry in entries if entries is not None else _all_usage_entries():
+        efficiency = entry.get("efficiency")
+        integration = (
+            efficiency.get("integration") if isinstance(efficiency, dict) else None
+        )
+        if (
+            entry.get("checkpoint") == "closeout"
+            and isinstance(integration, dict)
+            and integration.get("reviewed_tree_matches_merged_tree") is True
+            and isinstance(entry.get("task_id"), str)
+        ):
+            closed.add(entry["task_id"])
+    return closed
+
+
+def _active_usage_payload(entries: list[dict], observed_at: datetime) -> dict | None:
+    active = _active_usage_start(entries)
+    if active is None:
+        return None
+    started_at = datetime.fromisoformat(str(active["timestamp"]))
+    elapsed = round((observed_at - started_at).total_seconds() / 60, 3)
+    steps = [
+        {
+            "event": entry.get("event"),
+            "duration_sec": entry.get("duration_sec"),
+            "result_code": entry.get("result_code"),
+        }
+        for entry in entries
+        if entry.get("checkpoint") == "event"
+        and entry.get("task_id") == active.get("task_id")
+        and str(entry.get("timestamp", "")) >= str(active.get("timestamp", ""))
+    ]
+    return {
+        "task_id": active["task_id"],
+        "started_at": started_at.isoformat(timespec="seconds"),
+        "derived_elapsed_min": elapsed,
+        "recorded_steps": steps,
+    }
+
+
 def cmd_usage(args: argparse.Namespace) -> int:
     """Record or summarize model, agent, elapsed-time, and usage checkpoints."""
-    if args.checkpoint:
+    if args.closed_task_ids:
+        for task_id in sorted(_externally_closed_task_ids()):
+            print(task_id)
+        return 0
+
+    entries = _read_jsonl(MODEL_USAGE_LOG)
+    if args.active:
+        active = _active_usage_payload(entries, _usage_now())
+        if args.json_output:
+            print(json.dumps(active, indent=2))
+        elif active is None:
+            print("No unmatched shared task start checkpoint.")
+        else:
+            print(
+                f"Active task {active['task_id']}: "
+                f"{active['derived_elapsed_min']}m since {active['started_at']}"
+            )
+            for step in active["recorded_steps"]:
+                print(
+                    f"  {step['event']}: {step['duration_sec']}s "
+                    f"(exit {step['result_code']})"
+                )
+        return 0
+    if args.event:
         try:
-            efficiency = _efficiency_payload(args)
+            event = _record_usage_event(args, entries)
         except ValueError as exc:
             print(f"ERROR: {exc}", file=sys.stderr)
             return 1
-        entry = _record_usage_checkpoint(args, efficiency)
+        if event is not None and args.json_output:
+            print(json.dumps(event, indent=2))
+        return 0
+
+    if args.checkpoint:
+        if args.checkpoint in {"start", "closeout"} and not args.task_id:
+            print(
+                "ERROR: start and closeout checkpoints require --task-id",
+                file=sys.stderr,
+            )
+            return 1
+        active_start = _active_usage_start(entries)
+        if args.checkpoint == "start" and active_start is not None:
+            print(
+                "ERROR: an unmatched start checkpoint already exists for task "
+                f"{active_start['task_id']}",
+                file=sys.stderr,
+            )
+            return 1
+        observed_at = _usage_now()
+        try:
+            efficiency = _efficiency_payload(
+                args, entries=entries, observed_at=observed_at
+            )
+        except ValueError as exc:
+            print(f"ERROR: {exc}", file=sys.stderr)
+            return 1
+        entry = _record_usage_checkpoint(args, efficiency, observed_at=observed_at)
         if args.json_output:
             print(json.dumps(entry, indent=2))
         else:
@@ -858,7 +1202,7 @@ def cmd_usage(args: argparse.Namespace) -> int:
                 )
         return 0
 
-    entries = _read_jsonl(MODEL_USAGE_LOG)
+    entries = _all_usage_entries()
     if args.hours is not None:
         cutoff = datetime.now().astimezone() - timedelta(hours=args.hours)
         entries = [
@@ -2634,14 +2978,22 @@ def build_parser() -> argparse.ArgumentParser:
     p_usage.add_argument("--checkpoint", choices=("start", "milestone", "closeout"))
     p_usage.add_argument("--task-id", default="", help="Task identifier")
     p_usage.add_argument("--task", default="", help="Short task description")
-    p_usage.add_argument("--model", default="gpt-5.6-sol", help="Parent model")
-    p_usage.add_argument("--reasoning", default="high", help="Reasoning effort")
+    p_usage.add_argument(
+        "--model", default="unknown", help="Observed parent model; never inferred"
+    )
+    p_usage.add_argument(
+        "--reasoning", default="unknown", help="Observed reasoning; never inferred"
+    )
     p_usage.add_argument("--parent-agents", type=int, default=1)
     p_usage.add_argument("--subagents", type=int, default=0)
     p_usage.add_argument(
         "--worker-model", action="append", help="Worker model/profile; repeatable"
     )
-    p_usage.add_argument("--elapsed-min", type=float, default=0)
+    p_usage.add_argument(
+        "--elapsed-min",
+        type=float,
+        help="Optional cross-check; closeout elapsed is derived from its task start",
+    )
     p_usage.add_argument(
         "--weekly-remaining", type=float, help="Manual dashboard percentage"
     )
@@ -2664,10 +3016,23 @@ def build_parser() -> argparse.ArgumentParser:
     p_usage.add_argument("--focused-gate-retries", type=int)
     p_usage.add_argument("--full-gate-runs", type=int)
     p_usage.add_argument("--hosted-validation-runs", type=int)
+    p_usage.add_argument("--pr-number", type=int)
+    p_usage.add_argument("--merge-commit")
+    p_usage.add_argument("--event", help="Record one automatically timed run.sh step")
+    p_usage.add_argument("--duration-sec", type=float)
+    p_usage.add_argument("--result-code", type=int)
+    p_usage.add_argument(
+        "--closed-task-ids",
+        action="store_true",
+        help="Print task IDs with exact successor merge/tree closeout evidence",
+    )
     p_usage.add_argument("--notes", default="")
     p_usage.add_argument("--last", type=int, default=10)
     p_usage.add_argument("--hours", type=float, help="Limit display/summary window")
     p_usage.add_argument("--summary", action="store_true")
+    p_usage.add_argument(
+        "--active", action="store_true", help="Show the unmatched task timer and steps"
+    )
     p_usage.add_argument("--json", dest="json_output", action="store_true")
 
     # context

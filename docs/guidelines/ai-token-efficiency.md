@@ -121,17 +121,18 @@ for the bounded exceptions above.
 
 ## Context Budget
 
-Start with the smallest orientation pack:
+Start one exact task with the smallest timed orientation pack:
 
 ```bash
-./run.sh session brief --agent <role>
-sed -n '1,80p' docs/TASKS.md
-git status --short --branch
+./run.sh session begin --task-id <task> --agent <role>
 ```
 
 Then:
 
-- Use `./run.sh context show <area>` for authoritative routing, then targeted
+- Treat the compact brief and environment result as the default orientation;
+  do not reopen files or rerun Git queries that they already answered.
+- Use `./run.sh context show <area>` only for a concrete unresolved routing
+  question, then targeted
   `rg`; request a bounded live inventory with
   `./run.sh context summary <area-or-folder>` only when useful.
 - Search with `rg` and read only the matching sections.
@@ -212,9 +213,15 @@ their sum as `total wall time`; do not count idle or network time in another
 interval. At closeout report `candidate_heads`, `audit_rejections`,
 `repair_batches`, `focused_gate_retries`, `full_gate_runs`,
 `hosted_validation_runs`, `rework_minutes`, and `network_wait_minutes`.
-The closeout `session usage` command validates all seven phase labels, computes
-their total, requires exact candidate heads and retry/run counters, and stores
-the result only in the ignored local runtime ledger.
+`session begin` records the start before orientation in the Git-common ignored
+ledger. Quick/full checks and `session end` add automatic step durations while
+that task remains open. Closeout derives actual elapsed time from the unmatched
+task start, rejects a phase sum with more than 0.1 minute unallocated or
+over-counted, requires resolvable 40-character candidate commits and retry/run
+counters, and never infers a model or reasoning profile. Hosted closeout also
+binds the PR and merge commit and proves equality between the final candidate
+and merged trees. That successor external observation prevents a merged task's
+frozen pre-push row from appearing active in later compact briefs.
 
 Safety-critical structural calculations still require independent reference
 validation. Token efficiency never replaces practicing-engineer review or the
@@ -231,18 +238,23 @@ IS 456 quality gate.
 - Run `./run.sh efficiency prompt` to print a reusable task preamble.
 - Run `./run.sh model --table` to compare profiles, or pass a task description
   to receive a deterministic recommendation and explicit escalation trigger.
-- Record start, milestone (roughly every 2–3 hours), and closeout checkpoints
-  with `./run.sh session usage`. The local JSONL ledger records model,
-  reasoning, elapsed time, parent/subagent counts, optional manually copied
-  dashboard values, verification, and Git state. It deliberately leaves token
-  and billing fields empty because the repository cannot measure them.
+- Start through `session begin`, optionally record milestones roughly every
+  2–3 hours, and record closeout after exact post-merge verification. The shared
+  Git-common JSONL ledger projects retained legacy per-worktree records for
+  history and records model, reasoning, derived elapsed time, automatic step
+  durations, parent/subagent counts, optional manually copied dashboard values,
+  verification, and Git state. It deliberately leaves token and billing fields
+  empty because the repository cannot measure them.
 
 ```bash
-./run.sh session usage --checkpoint start --task-id TASK-XXX --task "bounded scope"
+./run.sh session begin --task-id TASK-XXX --agent governance --task "bounded scope"
 ./run.sh session usage --checkpoint milestone --elapsed-min 120 \
   --verification "targeted tests pass" --notes "no subagents"
+./run.sh session usage --active --json
 ./run.sh session usage --checkpoint closeout --task-id TASK-XXX \
-  --candidate-head abc1234 --audit-rejections 0 --repair-batches 0 \
+  --candidate-head <40-character-candidate-sha> \
+  --pr-number <number> --merge-commit <40-character-merge-sha> \
+  --audit-rejections 0 --repair-batches 0 \
   --focused-gate-retries 0 --full-gate-runs 1 --hosted-validation-runs 1 \
   --phase "contract/intake=15" \
   --phase "writer implementation + focused verification=90" \

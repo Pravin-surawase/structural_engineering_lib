@@ -7,7 +7,7 @@
 ## Preferred entry points
 
 ```bash
-./run.sh session start
+./run.sh session begin --task-id TASK-XXX --agent governance
 ./run.sh task brief "describe the task"
 ./run.sh check --quick
 ./run.sh check
@@ -28,9 +28,14 @@
 ./run.sh session end
 ```
 
-A `session usage --checkpoint closeout` record is fail-closed unless it includes
-all canonical phase timings, exact candidate heads, and the required retry/run
-counters documented in `docs/guidelines/ai-token-efficiency.md`.
+A `session usage --checkpoint closeout` record is fail-closed unless it matches
+an unmatched task start, all canonical phases equal derived elapsed time, each
+candidate is a resolvable 40-character commit, and the required retry/run
+counters are complete. Hosted closeout additionally binds the PR, merge commit,
+and equal reviewed/merged tree. New records live in the Git-common ignored
+ledger, so every linked worktree sees the same task history.
+Use `./run.sh session usage --active --json` to inspect derived elapsed time and
+automatically recorded steps before allocating the seven closeout phases.
 
 `run.sh` is a thin dispatcher for project validation and discovery. It does not
 stage, commit, push, create PRs, merge, or recover Git state.

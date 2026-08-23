@@ -260,13 +260,19 @@
       "permission": "ReadOnly"
     },
     "start session": {
-      "script": "./scripts/agent_start.sh --quick",
+      "script": "./run.sh session begin --task-id <task> --agent <role>",
       "group": "Session",
-      "description": "Resolve the approved runtime, run preflight, and start a session without Git/GitHub lifecycle actions",
+      "description": "Start one shared task timer before the compact brief and environment preflight without Git/GitHub lifecycle actions",
       "permission": "WorkspaceWrite",
       "aliases": [
         "session"
       ]
+    },
+    "session environment start compatibility": {
+      "script": "./scripts/agent_start.sh --quick",
+      "group": "Session",
+      "description": "Maintained environment-preflight helper composed by session begin in preflight-only mode and by the compatibility session start command",
+      "permission": "WorkspaceWrite"
     },
     "end session": {
       "script": "./scripts/python_runtime.sh scripts/session.py end",
@@ -873,13 +879,17 @@
     "model usage checkpoint": {
       "script": "./run.sh session usage",
       "group": "Session",
-      "description": "Record or summarize model, reasoning, elapsed time, agents, manual dashboard usage, verification, and Git state without estimating billing tokens",
+      "description": "Record or summarize shared task-bound model identity, derived elapsed time, step durations, verification, and Git state without estimating billing tokens",
       "permission": "ReadOnly",
       "permission_modes": {
-        "--checkpoint start|milestone|closeout": "WorkspaceWrite"
+        "--checkpoint start|milestone|closeout": "WorkspaceWrite",
+        "--event <label>": "WorkspaceWrite"
       },
       "options": {
         "--checkpoint start|milestone|closeout": "Append a local checkpoint",
+        "--event <label>": "Append one automatically timed task step",
+        "--active": "Show the unmatched task timer and recorded steps",
+        "--closed-task-ids": "Print exact externally closed task IDs",
         "--summary": "Aggregate checkpoints by model/reasoning profile",
         "--hours N": "Limit display or summary to a recent time window",
         "--json": "Machine-readable output"

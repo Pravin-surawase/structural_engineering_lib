@@ -5,6 +5,106 @@
 
 ---
 
+## 2026-08-23 — Session: MAINT-0132 automatic efficiency observability
+
+**Agent:** Codex (`governance`, sole writer)
+
+**Branch:** `codex/maint-0132-efficiency-observability`, from exact fetched
+`origin/main` commit `d4e5b122e903e3c0e1229d2255bcaf3e03ed9d94`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0132-git-handoff-receipt.json`
+
+**Focus:** Measure the whole task rather than a manually reconstructed subset,
+and prevent already-integrated work from consuming the next session's intake.
+
+### Summary
+
+- Added one `session begin` entry point that starts task-bound timing before the
+  compact brief and environment check; its composed compatibility helper stops
+  after preflight instead of printing a second copy of session context.
+- Moved new telemetry to the Git-common ignored ledger while retaining a
+  read-only projection of older worktree-local entries.
+- Made closeout derive elapsed time from its unmatched start and reject
+  unallocated/over-counted phase totals, invented short candidate IDs, inferred
+  model profiles, incomplete hosted integration, and unequal reviewed/merged
+  trees.
+- Added automatic quick/full/session-end step durations and an exact external
+  closeout projection so a frozen pre-push task row does not remain active after
+  proven integration.
+
+### Issues encountered
+
+- The MAINT-0131 app duration was 20m15s, while its manually entered phase sum
+  was 18m31s; 1m44s (8.6%) was absent from the ledger.
+- The compact start still reported merged MAINT-0130 and MAINT-0131 as active.
+- The prior ledger was rooted under each worktree, defaulted omitted identity to
+  `gpt-5.6-sol/high`, and accepted seven-character hexadecimal text as an exact
+  candidate without resolving a Git object.
+- The prior transcript contained 47 discovery markers before its first edit and
+  another seven edits after implementation was described as complete.
+- The first `session begin` composition still followed the compact brief with
+  the legacy helper's duplicate task, handoff, guidance, and Docker context.
+- Two diagnostic commands were started from the wrong directory: the first
+  memory lookup ran from the repository, and the first historical PR lookup ran
+  from the memory folder.
+- The first control-projection attempt used nonexistent `control project`, then
+  replacing the public start operation exposed `agent_start.sh` as unregistered.
+- The first consolidated focused batch found one Black delta and two stale
+  assertions: the old 114-operation count and one policy phrase spelling.
+- The first immutable-candidate commit attempt was stopped because the final
+  preflight-only assertion had not been included in the earlier Black target.
+
+### Root causes and resolutions
+
+- Confirmed root cause: closeout compared one manually supplied elapsed value
+  only with the manually supplied phase sum. Resolution: bind closeout to the
+  shared unmatched task-start timestamp and report the exact residual before
+  refusing a mismatched write.
+- Confirmed root cause: runtime telemetry used worktree-relative `logs/` paths.
+  Resolution: write through `git rev-parse --git-common-dir` and project retained
+  legacy worktree ledgers read-only for historical summaries.
+- Confirmed root cause: the immutable candidate cannot contain its future PR and
+  squash-merge identity, while the compact brief trusted only the frozen task
+  row. Resolution: require exact external PR/merge/tree closeout evidence and
+  use that successor observation only as a compact active-task overlay.
+- Confirmed root cause: model defaults and syntax-only short SHA validation
+  fabricated precision. Resolution: default model/reasoning to `unknown`,
+  require exact 40-character lowercase commits, resolve their trees, and prove
+  the final candidate tree equals the reachable merged tree.
+- Confirmed root cause: session orientation and routine gates had no automatic
+  step receipts. Resolution: make `session begin`, quick/full checks, and
+  `session end` append task-bound durations without changing command outcomes.
+- Confirmed root cause: `agent_start.sh --quick` combines environment preflight
+  with its own full onboarding output. Resolution: add a composable
+  `--preflight-only` mode and use it only after the canonical compact brief; the
+  compatibility start path remains unchanged.
+- Confirmed root cause: command working directories were not kept with their
+  evidence source. Resolution: rerun memory reads from the memory root and Git/
+  GitHub queries from the repository; neither failure changed repository state.
+- Confirmed root cause: the control CLI exposes `export-legacy`, not `project`,
+  and `session begin` composes rather than retires `agent_start.sh`. Resolution:
+  use the documented exporter and register the helper as an internal maintained
+  compatibility operation; control validation passes at 115 operations and
+  101/101 scripts.
+- Confirmed root cause: focused contracts still froze the pre-MAINT-0132 count
+  and an imprecise phrase. Resolution: update only those assertions and format
+  the affected test file; the failed/affected evidence then passes.
+- Confirmed root cause: the last focused edit occurred after the earlier
+  formatting check. Resolution: accept only Black's quote normalization, rerun
+  that focused module and the consolidated quick gate once, then retry normal
+  hooks without bypassing them.
+
+### Verification
+
+- Session automation, verification control, token efficiency, control plane,
+  Git guidance, and governance automation focused modules pass. Shell syntax,
+  Black, the live preflight-only path, instruction drift, task format, script
+  references, token policy, context, next-brief length, and the
+  115-operation/101-script registry pass.
+- The quick gate, commit hooks, full gate, clean session verdict, and hosted
+  evidence remain pending until immutable candidate freeze.
+
 ## 2026-08-23 — Session: MAINT-0131 measurable efficiency controls
 
 **Agent:** Codex (`governance`, sole writer)

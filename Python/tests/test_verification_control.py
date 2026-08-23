@@ -25,6 +25,48 @@ check_all = importlib.import_module("check_all")
 test_changed = importlib.import_module("test_changed")
 
 
+@pytest.mark.parametrize(
+    ("argv", "label"),
+    [
+        (
+            ["--quick", "--allow-operation-completion"],
+            "check commit hook",
+        ),
+        (["--quick"], "check quick"),
+        (["--pre-commit"], "check pre-commit"),
+        (["--changed"], "check changed"),
+        (["--category", "docs"], "check category"),
+        ([], "check full"),
+    ],
+)
+def test_check_orchestrator_timing_labels_are_stable(argv: list[str], label: str):
+    assert check_all._timing_label(argv) == label
+
+
+def test_check_timing_telemetry_never_changes_verdict(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    calls: list[list[str]] = []
+
+    def record(args, **_kwargs):
+        calls.append([str(item) for item in args])
+        return subprocess.CompletedProcess(args, 1, "", "telemetry unavailable")
+
+    monkeypatch.setattr(check_all.subprocess, "run", record)
+
+    check_all._record_task_timing("check quick", 1.25, 0)
+
+    assert calls[0][-7:] == [
+        "usage",
+        "--event",
+        "check quick",
+        "--duration-sec",
+        "1.250",
+        "--result-code",
+        "0",
+    ]
+
+
 def test_live_verification_manifest_is_strict_and_covers_every_path():
     manifest = verification.load_manifest()
 
