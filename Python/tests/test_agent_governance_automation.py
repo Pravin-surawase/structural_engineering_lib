@@ -29,8 +29,10 @@ agent_trends = importlib.import_module("agent_trends")
 audit_permissions = importlib.import_module("audit_permissions")
 check_all = importlib.import_module("check_all")
 check_docs = importlib.import_module("check_docs")
+check_instruction_drift = importlib.import_module("check_instruction_drift")
 check_scripts_index = importlib.import_module("check_scripts_index")
 cli_smoke = importlib.import_module("test_cli_smoke")
+config_precedence = importlib.import_module("config_precedence")
 evolve = importlib.import_module("evolve")
 external_cli = importlib.import_module("external_cli_test")
 find_automation = importlib.import_module("find_automation")
@@ -39,6 +41,43 @@ preflight = importlib.import_module("preflight")
 tool_permissions = importlib.import_module("tool_permissions")
 tool_registry = importlib.import_module("tool_registry")
 control_plane = importlib.import_module("control_plane")
+
+
+def test_instruction_projections_and_semantic_contract_are_exact():
+    pair_results = check_instruction_drift.check_all_pairs(REPO_ROOT)
+
+    assert all(result["status"] == "ok" for result in pair_results)
+    assert check_instruction_drift.instruction_contract_issues(REPO_ROOT) == []
+
+
+def test_instruction_pair_rejects_approximate_but_nonexact_content(tmp_path):
+    github_rule = tmp_path / "github.md"
+    claude_rule = tmp_path / "claude.md"
+    github_rule.write_text("---\napplyTo: x\n---\n# Rule\n\nExact\n", encoding="utf-8")
+    claude_rule.write_text(
+        "---\nglobs: x\n---\n# Rule\n\nAlmost exact\n", encoding="utf-8"
+    )
+
+    result = check_instruction_drift.check_pair("sample", github_rule, claude_rule)
+
+    assert result["similarity"] > 0.5
+    assert result["status"] == "content_drift"
+
+
+def test_instruction_composition_audit_accepts_current_ownership():
+    assert config_precedence.validate_precedence() == []
+
+    applicable = config_precedence.show_precedence(
+        "Python/structural_lib/services/api.py", agent="backend"
+    )
+    surfaces = [item.level for item in applicable]
+    paths = [item.path.name for item in applicable]
+
+    assert surfaces[0] == "contract"
+    assert "platform" in surfaces
+    assert "scoped-github" in surfaces
+    assert "scoped-claude" in surfaces
+    assert "backend.agent.md" in paths
 
 
 def test_python_runtime_launcher_uses_explicit_interpreter():

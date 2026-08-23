@@ -9,10 +9,15 @@ globs: docs/**,*.md
 
 Use safe scripts that preserve 870+ internal links:
 ```bash
-.venv/bin/python scripts/safe_file_move.py old.md new.md --dry-run  # Preview first
-.venv/bin/python scripts/safe_file_move.py old.md new.md            # Then execute
-.venv/bin/python scripts/safe_file_delete.py file.md
+./scripts/python_runtime.sh scripts/safe_file_move.py old.md new.md --dry-run  # Preview first
+./scripts/python_runtime.sh scripts/safe_file_move.py old.md new.md            # Then execute
+./scripts/python_runtime.sh scripts/safe_file_delete.py file.md --dry-run     # Preview first
+./scripts/python_runtime.sh scripts/safe_file_delete.py file.md               # Only when approved
 ```
+
+Age, count, deprecation, or a clean worktree never authorizes a move or delete.
+Inspect references and provenance, preserve unknown items, and obtain the exact
+authorization required by `AGENTS.md` before executing either operation.
 
 ## New docs require metadata
 
@@ -29,7 +34,7 @@ Use `create_doc.py` or add manually:
 ## Check for duplicates before creating
 
 ```bash
-.venv/bin/python scripts/find_automation.py "topic"
+./scripts/python_runtime.sh scripts/find_automation.py "topic"
 ```
 Check `docs/docs-canonical.json` for existing canonical docs on the topic.
 
@@ -44,7 +49,7 @@ ALWAYS try updating an existing doc before creating a new one:
 ## Doc lifecycle
 
 Every doc should have a clear status:
-- **Draft** — Work in progress (max 7 days, then promote or delete)
+- **Draft** — Work in progress; review after 7 days, but age alone is not a disposition
 - **Active** — Current and maintained
 - **Deprecated** — Superseded, will be archived
 - **Archived** — Historical record in `_archive/`
@@ -55,9 +60,10 @@ Multi-session WIP docs go to `docs/_active/` first, then move to permanent locat
 
 Non-archived docs must stay under 400 files. Check with:
 ```bash
-.venv/bin/python scripts/check_docs.py --budget
+./scripts/python_runtime.sh scripts/check_docs.py --budget
 ```
 
 ## After structural changes
 
-Update indexes: `./scripts/generate_all_indexes.sh`
+Update `scripts/context-manifest.json` only when routing changes, then run the
+read-only `./run.sh context validate`. Generic folder indexes are retired.

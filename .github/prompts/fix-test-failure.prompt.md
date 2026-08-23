@@ -8,10 +8,10 @@ description: "Fix test failure workflow — reproduce, diagnose, fix, verify"
 
 ```bash
 # Run the specific failing test with verbose output
-.venv/bin/pytest Python/tests/ -v -k "{{test_name}}" --tb=long
+./scripts/python_runtime.sh -m pytest Python/tests/ -v -k "{{test_name}}" --tb=long
 
 # Or run the full suite to see all failures
-.venv/bin/pytest Python/tests/ -v --tb=short
+./scripts/python_runtime.sh -m pytest Python/tests/ -v --tb=short
 ```
 
 ## 2. Understand What Changed
@@ -40,12 +40,12 @@ git --no-pager log --oneline -5 -- Python/structural_lib/
 
 ### If the test is correct and code is wrong:
 - Fix the source code to produce expected results
-- Verify with: `.venv/bin/pytest Python/tests/ -v -k "{{test_name}}"`
+- Verify with: `./scripts/python_runtime.sh -m pytest Python/tests/ -v -k "{{test_name}}"`
 
 ### If the code is correct and test is outdated:
 - Update the test expectations with justification comment
 - Cite IS 456 clause if structural calculation changed
-- Run full suite to ensure no regressions: `.venv/bin/pytest Python/tests/ -v`
+- Run full suite to ensure no regressions: `./scripts/python_runtime.sh -m pytest Python/tests/ -v`
 
 ### If it's a regression from a recent change:
 - Check the commit that introduced the change: `git --no-pager log --oneline -10`
@@ -55,10 +55,10 @@ git --no-pager log --oneline -5 -- Python/structural_lib/
 
 ```bash
 # Run the specific test
-.venv/bin/pytest Python/tests/ -v -k "{{test_name}}"
+./scripts/python_runtime.sh -m pytest Python/tests/ -v -k "{{test_name}}"
 
 # Run the full suite (check for regressions)
-.venv/bin/pytest Python/tests/ -v
+./scripts/python_runtime.sh -m pytest Python/tests/ -v
 
 # If frontend tests:
 cd react_app && npx vitest run

@@ -536,7 +536,7 @@
     "check instruction drift": {
       "script": "./scripts/python_runtime.sh scripts/check_instruction_drift.py",
       "group": "Quality",
-      "description": "Detect content drift between .github/instructions/ and .claude/rules/ — warns when platforms diverge",
+      "description": "Validate exact scoped-rule projections and the cross-platform semantic instruction contract",
       "permission": "ReadOnlyTerminal"
     },
     "check tasks format": {

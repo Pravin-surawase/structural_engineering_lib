@@ -25,7 +25,7 @@ handoffs:
 
 # Tester Agent
 
-> **Config precedence:** Agent-specific (.agent.md) > file-type (.instructions.md) > global (copilot-instructions.md). See [config-precedence.md](../../docs/architecture/config-precedence.md).
+> **Instruction composition:** `AGENTS.md` owns cross-agent safety; this file narrows role scope and may not weaken it. See [config-precedence.md](../../docs/architecture/config-precedence.md).
 
 You are a test specialist for **structural_engineering_lib**. You create, maintain, and run tests across all layers.
 
@@ -73,15 +73,15 @@ react_app/                             # Vitest for React (vitest.config.ts)
 
 ### Python tests (run from workspace root):
 ```bash
-.venv/bin/pytest Python/tests/ -v                        # Full suite
-.venv/bin/pytest Python/tests/ -v -k "test_flexure"      # By keyword
-.venv/bin/pytest Python/tests/ -v --tb=short             # Short tracebacks
-.venv/bin/pytest Python/tests/ --cov=structural_lib --cov-report=term-missing  # Coverage
+./scripts/python_runtime.sh -m pytest Python/tests/ -v                        # Full suite
+./scripts/python_runtime.sh -m pytest Python/tests/ -v -k "test_flexure"      # By keyword
+./scripts/python_runtime.sh -m pytest Python/tests/ -v --tb=short             # Short tracebacks
+./scripts/python_runtime.sh -m pytest Python/tests/ --cov=structural_lib --cov-report=term-missing  # Coverage
 ```
 
 ### FastAPI tests:
 ```bash
-.venv/bin/pytest fastapi_app/tests/ -v                   # API tests
+./scripts/python_runtime.sh -m pytest fastapi_app/tests/ -v                   # API tests
 ```
 
 ### React tests:
@@ -155,10 +155,10 @@ cd react_app && npx vitest run --reporter=verbose              # Verbose output
 Before any release, the tester agent must verify:
 ```bash
 # 1. Full Python suite
-.venv/bin/pytest Python/tests/ -v --tb=short
+./scripts/python_runtime.sh -m pytest Python/tests/ -v --tb=short
 
 # 2. API tests
-.venv/bin/pytest fastapi_app/tests/ -v --tb=short
+./scripts/python_runtime.sh -m pytest fastapi_app/tests/ -v --tb=short
 
 # 3. React tests
 cd react_app && npx vitest run
@@ -167,7 +167,7 @@ cd react_app && npx vitest run
 # Run all 6 scenarios from the skill
 
 # 5. Packaging verification
-.venv/bin/pytest Python/tests/test_packaging.py -v
+./scripts/python_runtime.sh -m pytest Python/tests/test_packaging.py -v
 ```
 
 ## Test Writing Standards

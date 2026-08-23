@@ -1,265 +1,38 @@
-# CLAUDE.md — structural_engineering_lib
+# CLAUDE.md — Claude Code Entry
 
-Open-source IS 456 RC beam design library. V3 stack: React 19 + R3F + Tailwind → FastAPI → Python structural_lib.
+@AGENTS.md
 
-## Surgical Work and Essential-Only Review (MANDATORY)
+`AGENTS.md` is the canonical cross-agent contract for this repository. Read and
+follow it before acting. Claude-specific files only describe how that contract
+is loaded; they do not restate or override it.
 
-- Keep work surgical, evidence-driven, and complete within the agreed scope. Inspect enough of the main process to find confirmed defects, then finish the scoped work to a good standard without adjacent improvements.
-- Always trace a confirmed defect to its root cause and fix that cause. Do not stop at a workaround, suppress the symptom, or apply a superficial patch; verify that the main-process outcome is corrected.
-- For every review finding, ask: **Would fixing this change the outcome of the main process?** If not, ignore it. If a non-essential concern needs preservation, file a follow-up bead/task only when necessary; do not expand the current scope.
-- Review only essential main-process behavior. Do not report issues about comments, edge cases, test-coverage or falsification gaps, generic hardening, or adjacent improvements. Do not add tests during review. Reject security or concurrency observations that are merely hardening and do not change the main-process outcome.
+## Claude Code Composition
 
-## Root-Cause and Session-Issue Record (MANDATORY)
+- Claude Code loads this file and the imported root `AGENTS.md`.
+- Path-scoped rules under `.claude/rules/` apply when their globs match.
+- The bodies of `.claude/rules/*.md` are exact projections of the corresponding
+  `.github/instructions/*.instructions.md` bodies. Change the maintained
+  `.github/instructions/` source and its Claude projection in the same patch.
+- Use `/context` when you need to confirm which Claude instruction files are
+  loaded. Do not infer effective instructions from filenames alone.
+- If two instructions appear inconsistent, preserve the stricter safety,
+  authorization, source, Git, and release boundary and stop before mutation if
+  the outcome would materially differ.
 
-- Record every material task issue in the newest task-owned
-  `docs/SESSION_LOG.md` entry under `### Issues encountered`, and pair it with a
-  `### Root causes and resolutions` record containing the confirmed cause,
-  implemented fix, and verification evidence. Use `- None encountered.` when
-  truthful; never invent a cause from an error message alone.
-- Material means the issue changed the main-process outcome, blocked a required
-  command, exposed a stale instruction/contract, or would cause repeated work.
-  Exclude secrets, transient noise, speculative hardening, and unrelated
-  non-impacting failures.
-- Subagents return symptom, impact, cause or `unconfirmed`, solution, and proof;
-  the parent maintains the single deduplicated versioned record. Session closeout
-  fails when the newest entry omits either required section.
+## Canonical Start and Validation
 
-## IMPORTANT: Git and GitHub
-
-Follow the Codex-native workflow in `AGENTS.md` and
-`docs/git-automation/git-workflow-single-source.md`. Codex stages only intended
-paths, creates conventional commits, pushes without rewriting history, and
-creates or updates PRs through connected GitHub. Repository shell wrappers do
-not own the Git/GitHub lifecycle.
-
-**FORBIDDEN commands (all agents):**
-```
-NEVER: gh pr merge --admin            ← bypasses required CI checks
-NEVER: gh pr merge <N> --squash (with failing CI) ← fix failures first, then merge
-NEVER: gh issue close (without user approval) ← destructive, ask first
-NEVER: git push origin --delete (without user approval) ← inspect with ./scripts/python_runtime.sh scripts/classify_branch_disposition.py; deletion remains separate
-NEVER: --no-verify / --force          ← breaks CI, causes rework
-NEVER: git rebase --skip              ← silently drops conflicting commits
-NEVER: git push --force-with-lease     ← rewrites shared history
-```
-
-Codex may mark an in-scope PR ready and merge it without additional user
-confirmation when the reviewed head commit is unchanged, required checks pass,
-and there are no conflicts or unresolved blockers. Closing issues or pull
-requests and deleting branches still require **explicit user confirmation**.
-
-**Permission enforcement:** Agent permissions are now programmatically enforced via `tool_permissions.py`. Each agent has a `permission_level` (ReadOnly, WorkspaceWrite, DangerFullAccess) defined in `agents/agent_registry.json`.
-
-## Architecture (4 layers — STRICT, never mix)
-
-- **Core types** (`Python/structural_lib/core/`) — Base classes, types, constants (no IS 456 math)
-- **IS 456 Code** (`Python/structural_lib/codes/is456/`) — Pure math, NO I/O, explicit units (mm, N/mm²,  kN, kNm)
-- **Services** (`Python/structural_lib/services/`) — Orchestration: `api.py`, `adapters.py`, `beam_pipeline.py` (no formatting)
-- **UI/IO** (`react_app/`, `fastapi_app/`) — External interfaces only
-
-> `Python/structural_lib/api.py` is a **backward-compat stub** — all real code is in `services/api.py`.
-> `adapters.py` → `services/adapters.py` | `geometry_3d.py` → `visualization/geometry_3d.py`
-
-Core CANNOT import from Services or UI. Services CANNOT import from UI.
-
-### Agent Infrastructure
-
-- **Agent Registry:** `agents/agent_registry.json` — 16 agents with permissions, skills, keywords
-- **Control Registry:** `scripts/control-plane.json` — canonical operations, commands, aliases, permissions, and compatibility projection
-- **Tool Registry:** `scripts/tool_registry.py` — unified search across agents, skills, scripts
-- **Prompt Router:** `scripts/prompt_router.py` — NLP-based task → agent routing
-- **Permission Enforcement:** `scripts/tool_permissions.py` — programmatic access control
-- **Session Persistence:** `scripts/session_store.py` — JSON session state in logs/sessions/
-- **Pipeline Resume:** `scripts/pipeline_state.py` — resumable 8-step task pipeline
-- **Routing controls:** `scripts/prompt_router.py` and `scripts/tool_permissions.py` — canonical routing and permission enforcement
-- **Parity Dashboard:** `scripts/parity_dashboard.py` — declared Indian-code capability plus endpoint/test/hook coverage
-- **Skill Tiers:** Core (always), Specialist (role-based), Experimental (explicit)
-
-## IMPORTANT: Search before coding
-
-Agents keep duplicating code. Check what exists BEFORE writing new code:
+Start one bounded task with:
 
 ```bash
-ls react_app/src/hooks/                                         # React hooks (CSV, geometry, export, insights)
-grep -r "@router" fastapi_app/routers/ | head -30               # FastAPI endpoints (26 routers)
-./run.sh find --api <func>                                   # Public API exact signature (68 functions)
-./scripts/python_runtime.sh scripts/discover_api_signatures.py <func>      # Get exact param names (b_mm not width)
+./run.sh session begin --task-id <task> --agent <role>
 ```
 
-Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeometry` | adapters → `GenericCSVAdapter` | export → `useExport`.
-
-## Commands (`./run.sh` — preferred entry point)
+After any instruction change, run:
 
 ```bash
-./run.sh session start              # Begin work (verify env, read priorities)
-./run.sh check                      # Validate all registered checks in parallel
-./run.sh check --quick              # Fast validation (<30s)
-# Codex handles branch, commit, push, and PR operations directly.
-./run.sh session end                # Validate closeout (read-only by default)
-./run.sh find "topic"               # Find the right script
-./run.sh find --api func_name       # Get API signatures
-./run.sh test                       # Run test suite
-./run.sh test --ci                  # Full local CI
-./run.sh audit                      # Full readiness audit
-./run.sh context validate           # Validate canonical context routing
-./run.sh context summary <area>     # Summarize live files on demand
-./run.sh health                     # Project health scan (0-100 score)
-./run.sh health --fix               # Auto-fix fixable issues
-./run.sh feedback log --agent X     # Log concrete feedback when found
-./run.sh feedback summary           # Feedback trends & recurring issues
-./run.sh evolve                     # Self-evolution cycle (dry-run)
-./run.sh evolve --fix               # Apply fixes for Codex review
-./run.sh evolve --review weekly     # Weekly report-only review
-./run.sh dev                        # Launch full dev stack (FastAPI + React)
-./run.sh dev --docker               # Launch with Docker (needs Colima)
-./run.sh dev --kill-only            # Kill all dev services
-./run.sh release preflight 0.X.Y   # Pre-release validation
-./run.sh release preflight --docker # Run preflight in Docker (2GB memory limit)
-./run.sh release run 0.X.Y         # Bump version + release flow
-./run.sh route "task description"   # Route task to best agent (NLP-based)
-./run.sh tools [--list|--find|--agent] # Unified tool/script registry
-./run.sh parity                     # Indian-code capability and cross-layer parity dashboard
-./run.sh pipeline status TASK-XXX   # Check pipeline step for a task
-./run.sh session compact            # Archive old SESSION_LOG entries (<50KB)
-./run.sh efficiency check           # Validate low-token project controls
-./run.sh session usage --summary    # Model/reasoning/agent checkpoints
-./run.sh session trust              # Check session trust state
+./scripts/python_runtime.sh scripts/check_instruction_drift.py
+./scripts/python_runtime.sh scripts/config_precedence.py audit
 ```
 
-### Direct scripts (when run.sh doesn't cover it)
-
-```bash
-./scripts/python_runtime.sh scripts/safe_file_move.py a b  # Move files (preserves 870+ links)
-./scripts/python_runtime.sh scripts/safe_file_delete.py f  # Delete files safely
-./scripts/python_runtime.sh scripts/create_doc.py path     # Create doc with metadata
-colima start --cpu 4 --memory 4                 # Start Docker runtime (Colima, not Docker Desktop)
-docker compose up --build                       # FastAPI at :8000/docs
-cd react_app && npm run dev                     # React at :5173
-```
-
-> **Docker note:** This project uses **Colima** (not Docker Desktop) as the Docker runtime on Mac. Start Colima before any `docker` command: `colima start`. If `docker ps` gives "permission denied", Colima isn't running.
-
-## IMPORTANT: Terminal Path Rules
-
-**All commands assume cwd = workspace root.** Terminal cwd persists between calls — if a previous command did `cd react_app`, the next command is STILL in `react_app/`.
-
-```
-WRONG: cd Python && .venv/bin/pytest tests/ -v     ← .venv is NOT inside Python/
-RIGHT: .venv/bin/pytest Python/tests/ -v           ← run from workspace root
-RIGHT: ./scripts/python_runtime.sh scripts/check_links.py     ← scripts are at workspace root
-
-WRONG: npm run build                               ← only works if already in react_app/
-RIGHT: cd react_app && npm run build               ← explicit cd first
-```
-
-**Key paths (all relative to workspace root):**
-- `.venv/bin/pytest` — pytest binary
-- `./scripts/python_runtime.sh` — Python binary
-- `Python/tests/` — Python test directory
-- `react_app/` — React app directory
-- `scripts/` — utility scripts
-
-### run.sh Fallback Chain
-If `./run.sh` produces no output or fails, try these in order:
-1. `bash run.sh <command>` — explicit bash invocation
-2. Direct validation or implementation script
-3. The underlying CLI command for non-GitHub project operations
-
-See `.github/instructions/terminal-rules.instructions.md` for the full fallback table.
-
-### MANDATORY: Document Terminal Issues
-When you encounter terminal problems (commands failing, wrong directory, scripts not found), include in your handoff:
-`⚠️ TERMINAL ISSUE: [what happened] → [what worked instead]`
-This feeds the improvement loop — recurring issues get fixed in agent instructions.
-
-## Session Closeout
-
-```bash
-./run.sh check --quick
-# Codex stages intended paths, commits, pushes, and creates/updates the PR.
-./run.sh session end --agent <role> # Validate; no hidden writes
-```
-
-`session summary`, `session sync`, and `session end` are read-only by default. Use `--write` or `--fix` only when that mutation is explicitly required.
-
-## IMPORTANT: Session Logging (MANDATORY)
-
-Every coding session uses the bounded workflow below.
-
-### Session Start
-1. Run `./run.sh session brief --agent <role>` for bounded priorities.
-2. Run `./run.sh session start` once to verify the environment.
-
-### During Session
-- Use targeted checks while editing; Codex owns the reviewed task commit and PR.
-- Track what you changed, what you decided, and what's unfinished
-
-### Session End (REQUIRED — do NOT skip)
-1. Update `docs/TASKS.md` and `docs/planning/next-session-brief.md` only when their state changed or a durable handoff is needed.
-2. Run `./run.sh check --quick` once before commit.
-3. Let Codex inspect Git/PR state, stage intended paths, commit, push, and update the PR.
-4. Run `./run.sh session end --agent <role>` to validate the clean handoff.
-5. Log feedback only when a concrete stale or missing control was found.
-
-Freeze all versioned logs, task/handoff state, evidence, and the pre-commit Git
-receipt before creating the candidate. Validate repository context read-only;
-generic folder indexes are retired. Do not write PR, hosted-check, or merge status back into the
-same candidate after push; report it through GitHub and the external handoff.
-
-### Why This Matters
-- **next-session-brief.md** carries task-specific continuation state.
-- **TASKS.md** tracks real project-state changes.
-- Global logs, metrics, indexes, and evolution reviews are updated only by tasks that own them.
-
-## Migration & Folder Structure Scripts
-
-```bash
-./scripts/python_runtime.sh scripts/migrate_python_module.py <src> <dst> --dry-run   # Move Python module + update imports
-./scripts/python_runtime.sh scripts/migrate_react_component.py <src> <dst> --dry-run # Move React component + update imports
-./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib       # Check for broken imports
-./scripts/python_runtime.sh scripts/check_governance.py --structure                  # Validate folder conventions
-./run.sh context show <area>                                             # Authoritative roots and read-first paths
-./run.sh context summary <area-or-folder>                                 # Bounded live inventory
-```
-
-## Live Repository Context
-
-`scripts/context-manifest.json` provides small authoritative area routing.
-Use `./run.sh context show <area>` before broad inspection, then targeted
-`rg`. Use `./run.sh context summary <area-or-folder>` only when a live file
-inventory is useful. These commands are read-only; generic folder indexes are
-retired and require no refresh after file changes.
-
-Always use `./scripts/python_runtime.sh`, never bare `python`.
-
-## Key References
-
-- **Full bootstrap:** docs/getting-started/agent-bootstrap.md
-- **Copilot agents guide:** docs/guides/copilot-agents-usage-guide.md
-- **Current tasks:** docs/TASKS.md
-- **Last session:** docs/planning/next-session-brief.md
-- **API reference:** docs/reference/api.md
-
-## Context Recovery (When LLM Loses Context)
-
-If context is lost mid-session, start fresh with:
-```
-Read these to recover context:
-1. docs/planning/next-session-brief.md
-2. docs/TASKS.md (first 60 lines)
-3. CLAUDE.md
-4. git log --oneline -20
-Then continue from where I left off.
-```
-
-## Context Management
-
-- Use `Grep`/`Glob` to find relevant code before reading full files
-- Read targeted sections (`offset`/`limit`) for large files
-- Large files to read selectively: SESSION_LOG.md (400KB+), CHANGELOG.md (52KB), services/adapters.py (71KB)
-
-## What Exists — Do NOT Reinvent
-
-React hooks: `useCSVFileImport`, `useCSVTextImport`, `useDualCSVImport`, `useBatchDesign` (useCSVImport.ts) | `useBeamGeometry` | `useLiveDesign`, `useAutoDesign` | `useBuildingGeometry`, `useCrossSectionGeometry` (useGeometryAdvanced.ts) | `useExport` (BBS/DXF/report) | `useInsights`, `useCodeChecks`, `useRebarSuggestions` | `useRebarValidation`, `useRebarApply` | `useDesignWebSocket`
-
-FastAPI surface: 89 OpenAPI HTTP operations across 26 router modules, plus the separately maintained WebSocket route. Discover exact routes from `fastapi_app/routers/` and the generated OpenAPI contract.
+Do not add project architecture, command catalogs, role lists, or duplicated
+Git/session rules here. Update their canonical owners named in `AGENTS.md`.

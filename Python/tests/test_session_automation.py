@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 import importlib
 import json
+import os
 import subprocess
 import sys
 from datetime import UTC, date, datetime, timedelta
@@ -23,6 +24,45 @@ session = importlib.import_module("scripts.session")
 check_api = importlib.import_module("scripts.check_api")
 validate_script_refs = importlib.import_module("scripts.validate_script_refs")
 prompt_router = importlib.import_module("scripts.prompt_router")
+
+
+def test_agent_brief_filters_multiline_closed_task_ids_without_awk_failure(tmp_path):
+    tasks = tmp_path / "TASKS.md"
+    tasks.write_text(
+        "# Tasks\n\n"
+        "## Active\n\n"
+        "| ID | Task | Owner | Status |\n"
+        "|---|---|---|---|\n"
+        "| CLOSED-1 | completed packet | Main | done |\n"
+        "| LIVE-1 | active packet | Main | ready |\n\n"
+        "## Next\n",
+        encoding="utf-8",
+    )
+    brief = tmp_path / "brief.md"
+    brief.write_text("# Brief\n", encoding="utf-8")
+    env = os.environ.copy()
+    env.update(
+        {
+            "AGENT_BRIEF_TASKS": str(tasks),
+            "AGENT_BRIEF_BRIEF": str(brief),
+            "AGENT_BRIEF_CLOSED_TASKS": "CLOSED-1\nCLOSED-2",
+        }
+    )
+
+    result = subprocess.run(
+        ["bash", str(REPO_ROOT / "scripts" / "agent_brief.sh")],
+        cwd=REPO_ROOT,
+        env=env,
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=15,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert "awk:" not in result.stderr
+    assert "LIVE-1: active packet [ready]" in result.stdout
+    assert "CLOSED-1: completed packet" not in result.stdout
 
 
 def test_run_sh_routes_receipt_bound_handoff_help():

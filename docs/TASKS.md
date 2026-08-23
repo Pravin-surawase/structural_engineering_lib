@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-23 — MAINT-0133B exact cleanup execution candidate active
+**Updated:** 2026-08-23 — MAINT-0134 instruction-consolidation candidate frozen
 
 ---
 
@@ -127,13 +127,19 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | 🟡 IN PROGRESS — private multi-code source library established; IS 13920 truth/benchmark/contract decision remains |
+| MAINT-0134 | Consolidate Claude, Copilot, VS Code, and Codex agent instructions into one validated ownership contract | Main Agent | M | P0 | 🟡 SOFTWARE COMPLETE — frozen local candidate; hosted integration pending |
+| INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ PAUSED — private source library preserved; resume after MAINT-0134 integration |
+
+`MAINT-0134` now assigns cross-agent policy to `AGENTS.md`, composes Claude
+through `@AGENTS.md`, keeps a concise standalone Copilot baseline, retires
+legacy executable routing, requires exact scoped-rule projection parity, and
+validates session/runtime/governance semantics. The candidate does not change
+INDIA-3 source or engineering behavior.
 
 `MAINT-0133B-PACKET-A` merged through PR #848 at `f24c3904`. The owner then
 selected `INDIA-3-G0` and authorized use of additional local IS-code PDFs under
-the existing non-distribution boundary. The private library now binds exact
-PDF hashes, editions/amendments, page-search state, and normalized-reference
-records without tracking or packaging protected source content.
+the existing non-distribution boundary. That ignored private library remains
+preserved while the instruction packet integrates.
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. The reproduced public-route safety packet is integrated. INDIA-3-G0

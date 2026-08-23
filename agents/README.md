@@ -1,149 +1,23 @@
-# Agent Prompt Cheat Sheet
+# Agent Infrastructure Compatibility Guide
 
-> **⚠️ NOTE:** The authoritative role system is in `.github/agents/` (16 Copilot agents with handoffs, skills, and pipeline enforcement). The role docs below are a **legacy reference** from an earlier framework. For new work, use the `.github/agents/` definitions.
+This file is a human-facing pointer, not an executable workflow or routing
+authority. Older links may still arrive here, so it remains intentionally
+small.
 
-Codex model routing is intentionally separate: use `model_policy.json` and
-`./run.sh model`. The `model:` fields in `.github/agents/*.agent.md` and
-`agent_registry.json` configure VS Code Copilot and must not be interpreted as
-Codex Luna/Terra/Sol selections.
+Use these maintained owners:
 
-Use these snippets to quickly engage the right agent with the right context.
+- `../AGENTS.md` — canonical cross-agent repository contract.
+- `agent_registry.json` — role, permission, skill, keyword, and routing truth.
+- `../.github/agents/*.agent.md` — platform role prompts.
+- `../.github/skills/skill_tiers.json` and `../.github/skills/*/SKILL.md` —
+  workflow catalog and procedures.
+- `../.github/prompts/*.prompt.md` — invocation templates.
+- `../scripts/control-plane.json` — operation, command, alias, and permission
+  truth.
 
----
+For bounded live context, run `./run.sh session brief --agent <role>` or
+`./run.sh context show agents`. Start actual work once with
+`./run.sh session begin --task-id <task> --agent <role>`.
 
-## Using with GitHub Copilot Coding Agent
-
-The role docs in this folder can guide **GitHub Copilot Coding Agent** when you create well-scoped GitHub Issues.
-
-**How it works:**
-1. Create a GitHub Issue using the `bug_report` or `feature_request` template
-2. Fill in the **Acceptance criteria** and **Files likely affected** sections
-3. Assign the issue to Copilot (or mention `@copilot` in a comment)
-4. Copilot creates a branch, implements the fix, and opens a PR
-
-**Tips for good results:**
-- Be specific about expected inputs/outputs
-- Reference IS 456 clauses when relevant
-- Mention if Python/VBA parity is required
-- Keep scope small (one function or one bug per issue)
-
-**Example issue title:** `Fix shear interpolation for pt < 0.25% in M04_Tables`
-
-**Known limitations:**
-- Coding agent may not run formatters (black, ruff) — you may need to fix formatting manually or approve auto-fix
-- First PR from coding agent requires workflow approval (GitHub security feature)
-- Agent works best with small, well-scoped tasks (one function or one bug)
-- Complex multi-file refactors may need human guidance
-
----
-
-## Decision Tree: Pick the Right Agent(s)
-
-Use the smallest set of agents that covers the work. Map task type to roles:
-
-- Bug fix: TESTER (reproduce) -> RESEARCHER (root cause) -> DEV (fix) -> TESTER (verify) -> DOCS (update)
-- New feature: CLIENT (requirements) -> RESEARCHER (constraints) -> PM (scope) -> DEV (implement) -> TESTER (verify) -> DOCS (document)
-- Docs-only: DOCS (draft) -> DEV (technical review, if needed)
-- Release or CI: DEVOPS (workflow) -> PM (approval) -> DOCS (notes)
-- Data/schema integration: INTEGRATION (schema) -> DEV (implement) -> TESTER (validate)
-- UX/Excel layout: UI (design) -> DEV (implement) -> TESTER (validate)
-- Research spike: RESEARCHER (findings) -> PM (plan) -> DEV (task breakdown)
-
-If unsure, start with PM for triage and assignment.
-
----
-
-## GOVERNANCE (Agent 9)
-- Role: organizational health, sustainability, governance, maintenance orchestration.
-- **Documentation:** See [agent-9/](agent-9/) folder for complete documentation suite (7 specialized documents)
-- Prompt:
-  ```
-  Act as GOVERNANCE. Run weekly maintenance session: archive docs older than 7 days, clean worktrees, check version consistency, validate links, generate health metrics. Use workflows from agents/agent-9/WORKFLOWS.md and checklists from agents/agent-9/CHECKLISTS.md.
-  ```
-
-## PM
-- Role: scope, governance, orchestration, release ledger.
-- Prompt:
-  ```
-  Act as PM. Use docs/architecture/project-overview.md. Scope and plan v0.5 Excel workbook integration; list agent handoffs and risks.
-  ```
-
-## CLIENT
-- Role: practicing engineer proxy; requirements, workflow sanity, terminology.
-- Prompt:
-  ```
-  Act as CLIENT. Review planned BEAM_INPUT columns for usability and missing fields; suggest acceptance criteria.
-  ```
-
-## UI
-- Role: Excel UX; sheet layout, validation, error surfacing.
-- Prompt:
-  ```
-  Act as UI. Design BEAM_INPUT and BEAM_DESIGN sheet layout, colors, validation, and buttons for v0.5.
-  ```
-
-## RESEARCHER
-- Role: clause/algorithm expert; platform constraints.
-- Prompt:
-  ```
-  Act as RESEARCHER. Cite IS 456/13920 for effective flange width and neutral axis checks; give boundary conditions.
-  ```
-
-## DEV
-- Role: implementation/refactor; layer-aware, units, Mac VBA safety.
-- Prompt:
-  ```
-  Act as DEV. Implement/update <function> in M06_Flexure with clause refs, units, and Mac-safe CDbl guards.
-  ```
-
-## TESTER
-- Role: test matrices, benchmarks, edge cases, regression capture.
-- Prompt:
-  ```
-  Act as TESTER. Propose regression cases for Design_Doubly_Reinforced covering Mu<=Mu_lim, Mu>Mu_lim, and Mac overflow edge.
-  ```
-
-## DEVOPS
-- Role: repo/layout, import/export, build/CI, release packaging.
-- Prompt:
-  ```
-  Act as DEVOPS. Draft the release checklist for v0.4: tests, xlam build/import order, tagging, ledger updates.
-  ```
-
-## DOCS
-- Role: API/README/CHANGELOG/RELEASES/TASKS alignment; release notes.
-- Prompt:
-  ```
-  Act as DOCS. Update API_REFERENCE and CHANGELOG for the new flanged beam API changes; note units/examples.
-  ```
-
-## INTEGRATION
-- Role: ETABS/CSV mapping, BEAM_INPUT schema, validation.
-- Prompt:
-  ```
-  Act as INTEGRATION. Define ETABS CSV -> BEAM_INPUT mapping, required headers, units, and validation rules.
-  ```
-
-## SUPPORT
-- Role: troubleshooting/known pitfalls/runbook.
-- Prompt:
-  ```
-  Act as SUPPORT. Add a TROUBLESHOOTING entry for Excel add-in load failures on macOS with probes and fixes.
-  ```
-
-## Spark Packet Contract
-
-Use the required return shape in `agents/spark-worker-packet-template.md` for
-Spark-bound bounded packets.
-
----
-
-## Related Docs
-
-| Location | Purpose |
-|----------|---------|
-| `agents/roles/` | Agent role definitions (12 roles) |
-| `docs/agents/guides/` | Detailed agent workflow guides |
-| `docs/agents/sessions/` | Session logs and history |
-| `.github/instructions/` | GitHub Copilot file-type rules |
-| `.claude/rules/` | Claude file-type rules |
+Do not add role-chain catalogs, copied agent inventories, cleanup instructions, or
+command catalogs here. Their maintained owners are listed above.

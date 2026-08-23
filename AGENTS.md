@@ -188,7 +188,7 @@ grep -r "@router" fastapi_app/routers/ | head -30               # Existing API r
 ## Essential Commands (`./run.sh` — preferred entry point)
 
 ```bash
-./run.sh session start              # Begin work (verify env, read priorities)
+./run.sh session begin --task-id <task> --agent <role> # Canonical task start
 ./run.sh check --quick              # Fast validation (<30s, 10 checks)
 ./run.sh check                      # Full validation (31 checks, parallel)
 ./run.sh test                       # Run Python package pytest suite
@@ -325,84 +325,27 @@ Log feedback only when a concrete stale instruction or missing control was found
   worktrees, verify the current source binding with
   `./scripts/python_runtime.sh --diagnose`.
 
-## VS Code Copilot Agents & Skills
+## Instruction Surface Ownership
 
-### 16 Custom Agents (`.github/agents/`)
+Avoid copying agent, skill, prompt, or handoff inventories into entry files.
+Those catalogs drift as roles evolve. Use these maintained owners instead:
 
-| Agent | Role | Tools |
-|-------|------|-------|
-| `orchestrator` | Planning, delegation | read-only + subagents |
-| `frontend` | React 19, R3F, Tailwind | full edit |
-| `backend` | Python structural_lib, IS 456 | full edit |
-| `structural-math` | IS 456 pure math modules, core types, new elements | full edit |
-| `api-developer` | FastAPI routers, endpoints | full edit |
-| `ui-designer` | Visual design (design-only) | read-only |
-| `agent-evolver` | Meta-agent: performance scoring, drift detection, instruction evolution | read + terminal |
-| `structural-engineer` | IS 456 compliance | read + terminal |
-| `reviewer` | Code review, testing | read + terminal |
-| `tester` | Test creation, coverage, benchmarks | full edit |
-| `doc-master` | Docs, archives, session logs | full edit |
-| `ops` | Git, CI/CD, Docker | full edit |
-| `governance` | Project health, maintenance, metrics | full edit |
-| `security` | Security auditing, OWASP, dependency scanning | read + terminal |
-| `library-expert` | Library domain expert, IS 456 knowledge, professional standards | read + terminal + web |
-| `innovator` | Research & innovation — discovers missing capabilities, proposes novel approaches | read + edit + web |
+- `AGENTS.md` — cross-agent safety, architecture, Git, session, and execution
+  contract.
+- `agents/agent_registry.json` — agent roles, permissions, skills, and routing.
+- `.github/skills/skill_tiers.json` and `.github/skills/*/SKILL.md` — available
+  workflows and their exact procedures.
+- `.github/prompts/*.prompt.md` — invocation templates, not independent policy.
+- `scripts/control-plane.json` — command, alias, permission, and operation truth.
+- `.github/instructions/*.instructions.md` — maintained path-scoped rules.
+- `.claude/rules/*.md` — exact Claude projections of the maintained scoped-rule
+  bodies.
 
-### 14 Agent Skills (`.github/skills/`)
+Platform entry files may add only platform-specific loading guidance. They may
+not weaken this contract, invent a different session or Git workflow, or carry
+their own executable role catalogs. Validate the composition with:
 
-| Skill | Slash Command | Purpose |
-|-------|--------------|--------|
-| `session-management` | `/session-management` | Session start/end automation |
-| `safe-file-ops` | `/safe-file-ops` | File move/delete preserving 870+ links |
-| `api-discovery` | `/api-discovery` | API function signature lookup |
-| `is456-verification` | `/is456-verification` | IS 456 test runner by category |
-| `new-structural-element` | `/new-structural-element` | New element workflow (column, slab, footing) |
-| `react-validation` | `/react-validation` | React build, lint, type-check, tests |
-| `architecture-check` | `/architecture-check` | 4-layer architecture & duplication validation |
-| `function-quality-pipeline` | `/function-quality-pipeline` | Mandatory 9-step quality pipeline for every new IS 456 function |
-| `innovation-research` | `/innovation-research` | Guided innovation research cycle |
-| `agent-evolution` | `/agent-evolution` | Evidence-gated scoring, drift detection, and scheduled instruction evolution |
-| `development-rules` | `/development-rules` | 46 hard-learned rules by domain (Python, FastAPI, React, testing, security) |
-| `quality-gate` | `/quality-gate` | 3-level pre-merge quality checks (commit, PR, release) |
-| `release-preflight` | `/release-preflight` | 5-phase pre-release validation (packaging, UAT, security, API/doc, CI) |
-| `user-acceptance-test` | `/user-acceptance-test` | End-user perspective testing (pip install + all workflows) |
-
-### 16 Prompt Files (`.github/prompts/`)
-
-| Prompt | Purpose |
-|--------|--------|
-| `new-feature` | New feature workflow |
-| `bug-fix` | Bug fix workflow |
-| `code-review` | Review checklist |
-| `add-api-endpoint` | FastAPI endpoint workflow |
-| `add-is456-clause` | IS 456 clause implementation workflow |
-| `add-structural-element` | New structural element (column, slab, footing) workflow |
-| `function-quality-gate` | IS 456 function quality gate (9-step pipeline) |
-| `fix-test-failure` | Test failure diagnosis & fix |
-| `performance-optimization` | Profile, optimize, benchmark |
-| `session-start` | Session start checklist |
-| `session-end` | Compact closeout validation |
-| `file-move` | Safe file migration |
-| `is456-verify` | IS 456 formula verification |
-| `context-recovery` | Resume after context overflow |
-| `master-workflow` | Master workflow orchestration |
-| `innovation-research` | Innovation research cycle workflow |
-
-### Handoff Chains
-
-These chains define required quality concerns and ownership. They do not require
-spawning every named role; the active parent performs them sequentially unless
-the token-efficiency policy justifies one or two bounded subagents.
-
-- **New feature:** orchestrator → backend → api-developer → frontend → reviewer → tester → doc-master → ops
-- **IS 456 change:** orchestrator → structural-engineer → backend → api-developer → reviewer → tester → doc-master → ops
-- **New structural element:** orchestrator → structural-engineer (research) → structural-math (types + math) → tester → backend → api-developer → frontend → reviewer → doc-master → ops
-- **Bug fix:** orchestrator → backend/frontend → tester → reviewer → doc-master → ops
-- **Test failure:** orchestrator → tester → backend/frontend → reviewer → doc-master → ops
-- **Session closeout:** active parent validates; use doc-master or ops only when the task owns that work
-- **Maintenance:** orchestrator → governance → doc-master → ops
-- **Security review:** orchestrator → security → backend/frontend/api-developer → reviewer → doc-master → ops
-- **Library guidance:** orchestrator → library-expert → structural-engineer → backend → tester → doc-master → ops
-- **Agent evolution:** orchestrator → agent-evolver → governance → doc-master → ops
-- **Innovation research:** orchestrator → innovator → structural-engineer (gate) → structural-math → tester → reviewer → doc-master → ops
-- **Release:** orchestrator → tester (UAT) → reviewer (quality gate) → ops (preflight + release) → tester (post-release verify) → doc-master (CHANGELOG + docs) → agent-evolver (metrics) → Codex Git/GitHub closeout
+```bash
+./scripts/python_runtime.sh scripts/check_instruction_drift.py
+./scripts/python_runtime.sh scripts/config_precedence.py audit
+```

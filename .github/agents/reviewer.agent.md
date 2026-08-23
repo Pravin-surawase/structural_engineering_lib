@@ -25,7 +25,7 @@ handoffs:
 
 # Reviewer Agent
 
-> **Config precedence:** Agent-specific (.agent.md) > file-type (.instructions.md) > global (copilot-instructions.md). See [config-precedence.md](../../docs/architecture/config-precedence.md).
+> **Instruction composition:** `AGENTS.md` owns cross-agent safety; this file narrows role scope and may not weaken it. See [config-precedence.md](../../docs/architecture/config-precedence.md).
 
 You are a code reviewer for **structural_engineering_lib**. You verify correctness, architecture compliance, and the outcome of the changed main process.
 
@@ -50,9 +50,9 @@ when bounded independent review materially improves the outcome.
 
 ```bash
 # Run tests before approving
-.venv/bin/pytest Python/tests/ -v                     # Python tests
-.venv/bin/pytest Python/tests/ -v -k "test_shear"     # Specific area
-.venv/bin/pytest fastapi_app/tests/ -v                # API tests
+./scripts/python_runtime.sh -m pytest Python/tests/ -v                     # Python tests
+./scripts/python_runtime.sh -m pytest Python/tests/ -v -k "test_shear"     # Specific area
+./scripts/python_runtime.sh -m pytest fastapi_app/tests/ -v                # API tests
 cd react_app && npx vitest run                         # React tests
 cd react_app && npm run build                          # Build check
 
@@ -168,7 +168,7 @@ These checks prevent the specific failures that shipped in v0.21.0-v0.21.3:
 - [ ] The intended scope and conventional commit match the reviewed diff
 
 ### Testing
-- [ ] `.venv/bin/pytest Python/tests/ -v` passes
+- [ ] `./scripts/python_runtime.sh -m pytest Python/tests/ -v` passes
 - [ ] `cd react_app && npm run build` passes (if frontend changed)
 
 ### IS 456 Function Quality (for structural math changes)
@@ -231,7 +231,7 @@ Run checks in priority order. Stop and report when issues emerge.
 
 ```bash
 # Python tests (run from workspace root — do NOT cd into Python/)
-.venv/bin/pytest Python/tests/ -v
+./scripts/python_runtime.sh -m pytest Python/tests/ -v
 
 # Architecture check
 ./scripts/python_runtime.sh scripts/check_architecture_boundaries.py

@@ -8,7 +8,7 @@ description: "Performance optimization workflow — profile, identify, optimize,
 
 ```bash
 # Run performance benchmarks
-.venv/bin/pytest Python/tests/performance/ -v
+./scripts/python_runtime.sh -m pytest Python/tests/performance/ -v
 
 # Profile a specific function
 ./scripts/python_runtime.sh -c "
@@ -72,10 +72,10 @@ cd react_app && npm run build 2>&1 | tail -20
 
 ```bash
 # Run tests (correctness not broken)
-.venv/bin/pytest Python/tests/ -v
+./scripts/python_runtime.sh -m pytest Python/tests/ -v
 
 # Re-run benchmark (improvement confirmed)
-.venv/bin/pytest Python/tests/performance/ -v
+./scripts/python_runtime.sh -m pytest Python/tests/performance/ -v
 
 # React build (if frontend changed)
 cd react_app && npm run build

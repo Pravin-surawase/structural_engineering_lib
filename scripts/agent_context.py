@@ -206,12 +206,12 @@ def ctx_backend():
     bullet("visualization/ — geometry_3d.py (beam_to_3d_geometry)")
 
     section("KEY COMMANDS")
-    bullet("API signatures: .venv/bin/python scripts/discover_api_signatures.py <func>")
-    bullet("Tests: .venv/bin/python -m pytest Python/tests/ -v")
+    bullet("API signatures: ./scripts/python_runtime.sh scripts/discover_api_signatures.py <func>")
+    bullet("Tests: ./scripts/python_runtime.sh -m pytest Python/tests/ -v")
     bullet(
-        "Import check: .venv/bin/python scripts/validate_imports.py --scope structural_lib"
+        "Import check: ./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib"
     )
-    bullet("Architecture: .venv/bin/python scripts/check_architecture_boundaries.py")
+    bullet("Architecture: ./scripts/python_runtime.sh scripts/check_architecture_boundaries.py")
     bullet("Skill: /api-discovery, /is456-verification, /architecture-check")
 
     section("WARNINGS")
@@ -342,8 +342,8 @@ def ctx_structural_engineer():
     bullet("beam_to_3d_geometry() — 3D visualization positions")
 
     section("VERIFICATION COMMANDS")
-    bullet(".venv/bin/python -m pytest Python/tests/ -v -k 'is456'")
-    bullet(".venv/bin/python scripts/discover_api_signatures.py <func>")
+    bullet("./scripts/python_runtime.sh -m pytest Python/tests/ -v -k 'is456'")
+    bullet("./scripts/python_runtime.sh scripts/discover_api_signatures.py <func>")
     bullet("Param names: b_mm (not width), fck (not concrete_grade), d_mm (not depth)")
 
     section("CLAUSE COVERAGE")
@@ -383,10 +383,10 @@ def ctx_reviewer():
     bullet("/is456-verification — IS 456 compliance tests")
 
     section("COMMANDS")
-    bullet(".venv/bin/python scripts/check_architecture_boundaries.py")
-    bullet(".venv/bin/python scripts/validate_imports.py --scope structural_lib")
+    bullet("./scripts/python_runtime.sh scripts/check_architecture_boundaries.py")
+    bullet("./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib")
     bullet("./run.sh frontend build")
-    bullet(".venv/bin/python -m pytest Python/tests/ -v")
+    bullet("./scripts/python_runtime.sh -m pytest Python/tests/ -v")
 
 
 @agent("tester", "Test creation, coverage, regression testing, benchmarks")
@@ -412,8 +412,8 @@ def ctx_tester():
     bullet("Never mock structural_lib internals — test real math")
 
     section("COMMANDS")
-    bullet(".venv/bin/python -m pytest Python/tests/ -v")
-    bullet(".venv/bin/python -m pytest tests/ --cov=structural_lib --cov-report=term")
+    bullet("./scripts/python_runtime.sh -m pytest Python/tests/ -v")
+    bullet("./scripts/python_runtime.sh -m pytest tests/ --cov=structural_lib --cov-report=term")
     bullet("Skill: /is456-verification — run IS 456 tests by category")
 
     section("REACT TESTS")
@@ -439,11 +439,11 @@ def ctx_doc_master():
   4. ./run.sh session end --agent doc-master""")
 
     section("COMMANDS")
-    bullet("Safe move: .venv/bin/python scripts/safe_file_move.py a b --dry-run")
+    bullet("Safe move: ./scripts/python_runtime.sh scripts/safe_file_move.py a b --dry-run")
     bullet(
-        "Safe delete preview: .venv/bin/python scripts/safe_file_delete.py f --dry-run"
+        "Safe delete preview: ./scripts/python_runtime.sh scripts/safe_file_delete.py f --dry-run"
     )
-    bullet("Create doc: .venv/bin/python scripts/create_doc.py path")
+    bullet("Create doc: ./scripts/python_runtime.sh scripts/create_doc.py path")
     bullet("Validate context: ./run.sh context validate")
     bullet("Summarize live files: ./run.sh context summary <area-or-folder>")
     bullet("Skill: /safe-file-ops, /session-management")
@@ -523,18 +523,18 @@ def ctx_governance():
     print(f"  Commits (7d): {commits_7d} | Commits (30d): {commits_30d}")
 
     section("MAINTENANCE TASKS")
-    bullet("Check governance: .venv/bin/python scripts/check_governance.py --structure")
-    bullet("Sync numbers: .venv/bin/python scripts/sync_numbers.py --fix")
+    bullet("Check governance: ./scripts/python_runtime.sh scripts/check_governance.py --structure")
+    bullet("Sync numbers: ./scripts/python_runtime.sh scripts/sync_numbers.py --fix")
     bullet("Link health: ./scripts/python_runtime.sh scripts/check_links.py")
     bullet("Validate context: ./run.sh context validate")
     bullet("Summarize live files: ./run.sh context summary <area-or-folder>")
     bullet("Classify archive candidates; preview accepted moves as a batch")
 
     section("SUSTAINABILITY CHECKS")
-    bullet("Version consistency: .venv/bin/python scripts/check_doc_versions.py")
-    bullet("Bootstrap freshness: .venv/bin/python scripts/check_bootstrap_freshness.py")
-    bullet("Instruction drift: .venv/bin/python scripts/check_instruction_drift.py")
-    bullet("Architecture: .venv/bin/python scripts/check_architecture_boundaries.py")
+    bullet("Version consistency: ./scripts/python_runtime.sh scripts/check_doc_versions.py")
+    bullet("Bootstrap freshness: ./scripts/python_runtime.sh scripts/check_bootstrap_freshness.py")
+    bullet("Instruction composition: ./scripts/python_runtime.sh scripts/check_instruction_drift.py")
+    bullet("Architecture: ./scripts/python_runtime.sh scripts/check_architecture_boundaries.py")
     bullet("Skill: /safe-file-ops, /session-management")
 
 

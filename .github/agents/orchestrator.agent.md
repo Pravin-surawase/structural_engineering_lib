@@ -41,7 +41,7 @@ handoffs:
 
 # Orchestrator Agent
 
-> **Config precedence:** Agent-specific (.agent.md) > file-type (.instructions.md) > global (copilot-instructions.md). See [config-precedence.md](../../docs/architecture/config-precedence.md).
+> **Instruction composition:** `AGENTS.md` owns cross-agent safety; this file narrows role scope and may not weaken it. See [config-precedence.md](../../docs/architecture/config-precedence.md).
 
 You are the project orchestrator for **structural_engineering_lib** — an IS 456 RC beam design library with React 19 + FastAPI + Python.
 
@@ -51,8 +51,8 @@ You are the project orchestrator for **structural_engineering_lib** — an IS 45
 ## Terminal Quick Reference
 
 ```bash
-# Verify environment
-./run.sh session start              # Or: bash run.sh session start
+# Start the bounded task and verify environment
+./run.sh session begin --task-id <task> --agent <role>
 git branch --show-current           # Current branch
 git status --short                  # Uncommitted changes
 
@@ -128,15 +128,11 @@ When delegating, tell the specialist which skills to use:
 
 ## Session Start
 
-1. **Verify clean git state first** — delegate to @ops for Session Start Checklist, or run:
-   ```bash
-   git status --short && git branch --show-current && git branch --no-merged main
-   ```
-   If dirty state, stale branches, or open PRs → resolve before starting work.
-
-2. Read `docs/planning/next-session-brief.md` and `docs/TASKS.md` for priorities.
-
-3. Run `./run.sh session start` to verify environment.
+1. Run `./run.sh session begin --task-id <task> --agent <role>` once.
+2. Preserve any dirty, detached, foreign, uncertain, or sibling lane reported
+   by the start evidence; do not resolve it through cleanup.
+3. Read only the exact task and implementation context the combined start does
+   not already provide.
 
 ## Context Recovery
 
@@ -261,7 +257,7 @@ Track each task through the pipeline:
 - [ ] EXECUTE — code written/modified
 - [ ] VERIFY — @reviewer approved (or sent back for changes)
 - [ ] DOCUMENT — @doc-master updated logs
-- [ ] COMMIT — @ops committed safely
+- [ ] CLOSEOUT — parent verified; Codex owns scoped Git/GitHub work
 
 ### Agent Stuck Detection
 

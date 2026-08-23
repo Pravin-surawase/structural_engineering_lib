@@ -1,32 +1,12 @@
-# GitHub Copilot Agent Instructions
+# GitHub Copilot Compatibility Pointer
 
-> **⚠️ REDIRECT:** This file has been consolidated.
->
-> **Canonical location:** [copilot-instructions.md](../copilot-instructions.md)
->
-> All agent instructions are now in the main file.
-> This stub exists only for backward compatibility with tools that look here.
+This retained path contains no executable workflow. Use:
 
----
+- [global Copilot instructions](../copilot-instructions.md) for Copilot-wide
+  behavior;
+- [root AGENTS.md](../../AGENTS.md) for the canonical cross-agent contract; and
+- [path-scoped instructions](../instructions/) for maintained file-specific
+  rules.
 
-**Full instructions:** See [.github/copilot-instructions.md](../copilot-instructions.md)
-
-## Critical Commands (Quick Reference Only)
-
-```bash
-# Session start
-./scripts/agent_start.sh --quick
-
-# Agent-specific context (16 agents)
-.venv/bin/python scripts/agent_context.py backend
-
-# Git/GitHub closeout is performed directly by Codex; see the canonical workflow.
-
-# Git pager prevention
-git --no-pager status
-git log --oneline -n 10
-```
-
----
-
-*Last updated: 2026-08-09 | See canonical file for all rules*
+Do not copy commands, role catalogs, or safety policy into this compatibility
+file.

@@ -1,91 +1,71 @@
-# Configuration Precedence
-
-**Type:** Architecture
-**Audience:** All Agents
-**Status:** Active
-**Importance:** High
-**Created:** 2026-04-02
-**Last Updated:** 2026-04-02
-
+---
+owner: Agent Governance
+status: active
+last_updated: 2026-08-23
+doc_type: reference
 ---
 
-## 3-Tier Precedence (Highest → Lowest)
+# Agent Instruction Composition
 
-| Tier | Location | Scope | Example |
-|------|----------|-------|---------|
-| **1 — Agent-specific** | `.github/agents/*.agent.md` | Per-agent rules | `backend.agent.md` |
-| **2 — File-type scoped** | `.github/instructions/*.instructions.md` | By glob pattern (`applyTo`) | `python-core.instructions.md` |
-| **3 — Global** | `.github/copilot-instructions.md` | All conversations | Git rules, architecture |
+Agent platforms load repository instructions differently. There is no single
+universal precedence ladder shared by Claude Code, GitHub Copilot, VS Code, and
+Codex. This repository therefore separates canonical policy from platform
+loading and validates the result semantically.
 
-**Rule:** Higher tiers override lower tiers on conflict.
+## Ownership Model
 
-## How Conflicts Resolve
+| Surface | Owner | Contract |
+|---|---|---|
+| `AGENTS.md` | Cross-agent repository policy | Canonical safety, architecture, Git, session, and execution rules |
+| `CLAUDE.md` | Claude Code entry | Imports `AGENTS.md`; adds loading guidance only |
+| `.github/copilot-instructions.md` | Copilot global entry | Concise standalone baseline compatible with `AGENTS.md` |
+| `.github/copilot/instructions.md` | Compatibility path | Pointer only; no executable workflow |
+| `.github/instructions/*.instructions.md` | Maintained path rules | Narrow file-specific additions |
+| `.claude/rules/*.md` | Claude path projections | Exact body match with the maintained GitHub path rule |
+| `.github/agents/*.agent.md` | Role prompts | Role-specific scope; may not weaken cross-agent safety |
+| `agents/agent_registry.json` | Role authority | Names, permissions, skills, and routing metadata |
+| `.github/skills/*/SKILL.md` | Workflow authority | Exact procedure for a named skill |
+| `.github/prompts/*.prompt.md` | Invocation templates | Task templates, not independent policy |
+| `scripts/control-plane.json` | Command authority | Operations, commands, aliases, and permissions |
 
-When two tiers specify contradictory rules, the higher tier wins:
+More specific or role-focused guidance may narrow the work. It may not weaken
+authorization, protected-source, Git-preservation, release, professional-
+approval, or destructive-action boundaries. If two loaded instructions would
+materially change the outcome, preserve the stricter safety boundary and stop
+before mutation until the conflict is resolved.
 
-- **Agent > File-type:** If `backend.agent.md` says "use 4 spaces" but `python-core.instructions.md` says "use 2 spaces", the agent file wins (4 spaces).
-- **File-type > Global:** If `react.instructions.md` says "Tailwind only" but `copilot-instructions.md` doesn't mention styling, the file-type rule applies in `react_app/` files.
-- **Non-conflicting rules merge:** Rules from all tiers apply together when they don't conflict. A global git rule and an agent-specific testing rule both apply simultaneously.
+## Platform Loading
 
-## Additional Context Layers
-
-These provide supplementary rules but do not override the 3-tier hierarchy:
-
-| Layer | Location | Loaded By |
-|-------|----------|-----------|
-| Claude rules | `.claude/rules/*.md` | Claude only (not Copilot) |
-| Cross-agent instructions | `AGENTS.md` | All AI assistants |
-| Claude-specific instructions | `CLAUDE.md` | Claude only |
-
-These layers add context (e.g., session workflow, terminal rules) but agent-specific `.agent.md` files always take precedence when there's a conflict.
-
-## File-Type Scoping (`applyTo`)
-
-File-type instructions use `applyTo` glob patterns in YAML frontmatter:
-
-```yaml
----
-applyTo: "**/structural_lib/**"
----
-```
-
-| Instructions File | Glob Pattern | Applies To |
-|-------------------|-------------|------------|
-| `python-core.instructions.md` | `**/structural_lib/**` | Python core library |
-| `fastapi.instructions.md` | `**/fastapi_app/**` | FastAPI backend |
-| `react.instructions.md` | `**/react_app/**` | React frontend |
-| `docs.instructions.md` | `**/docs/**`, `**/*.md` | Documentation |
-| `terminal-rules.instructions.md` | `**` | Everything (terminal rules) |
-
-## Agent-Specific Overrides
-
-Each of the 16 agents in `.github/agents/` has its own `.agent.md` that can:
-
-- Restrict available tools (e.g., `reviewer` is read-only)
-- Set permission levels (`ReadOnly`, `WorkspaceWrite`, `DangerFullAccess`)
-- Define handoff chains to other agents
-- Specify which skills are available
+- Codex discovers `AGENTS.md` from the repository hierarchy; a nearer nested
+  `AGENTS.md` or `AGENTS.override.md` can add narrower directory guidance.
+- Claude Code loads `CLAUDE.md`, its imports, and matching `.claude/rules/`.
+- Copilot support for `AGENTS.md` varies by surface, so the concise global
+  Copilot file must remain safe when loaded alone.
+- VS Code agent, skill, and prompt files add role or task context; their
+  executable commands still come from the repository control plane.
 
 ## Validation
 
-Run `scripts/config_precedence.py` to check for:
-
-- Conflicting rules across tiers
-- Missing `applyTo` patterns
-- Orphaned instruction files not referenced by any agent
+Run both checks after changing any instruction surface:
 
 ```bash
-.venv/bin/python scripts/config_precedence.py
+./scripts/python_runtime.sh scripts/check_instruction_drift.py
+./scripts/python_runtime.sh scripts/config_precedence.py audit
 ```
 
-## Quick Reference
+The first check requires exact scoped-rule body parity and audits the semantic
+contract. The second reports the composed files for a path and rejects known
+unsafe or contradictory ownership patterns. Approximate textual similarity is
+not sufficient evidence of consistent behavior.
 
-```
-Agent .agent.md          ← WINS on conflict (per-agent overrides)
-  ↓ falls through to
-File-type .instructions.md  ← Scoped by glob (applyTo)
-  ↓ falls through to
-Global copilot-instructions.md  ← Baseline for all conversations
-  +
-Context layers (AGENTS.md, .claude/rules/) ← Additive, never override
-```
+## Adding Guidance
+
+1. Update an existing canonical owner when possible.
+2. Put cross-agent policy in `AGENTS.md`.
+3. Put a path-specific rule in `.github/instructions/` and update its exact
+   `.claude/rules/` projection in the same patch.
+4. Put role metadata in the registry and role behavior in one agent file.
+5. Put repeatable procedures in a skill and task wording in a prompt.
+6. Add commands only through `scripts/control-plane.json` and refresh its
+   deterministic compatibility projection.
+7. Run the two validators above and the affected governance tests.

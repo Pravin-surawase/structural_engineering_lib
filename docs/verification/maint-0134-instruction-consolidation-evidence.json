@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "maint-0134-agent-instruction-consolidation",
+  "task_id": "MAINT-0134",
+  "baseline": {
+    "base_commit": "40aa5864194a7296caea13def1ccf82f44aca917",
+    "agents_md_bytes": 27058,
+    "claude_md_lines": 265,
+    "claude_md_bytes": 15281,
+    "copilot_global_bytes": 21205,
+    "direct_runtime_references": 63,
+    "direct_runtime_reference_files": 23,
+    "drift_control": "approximate similarity across four scoped-rule pairs",
+    "agent_context_route_first": "agents/README.md",
+    "task_intake_failure": "newline in string from multiline closed IDs passed to awk -v"
+  },
+  "result": {
+    "agents_md_bytes": 22705,
+    "claude_md_lines": 38,
+    "claude_md_bytes": 1449,
+    "copilot_global_bytes": 3583,
+    "orchestrator_bytes": 17943,
+    "direct_runtime_references": 0,
+    "exact_scoped_rule_pairs": "4/4",
+    "semantic_contract_issues": 0,
+    "composition_audit_issues": 0,
+    "active_control_operations": 115,
+    "registered_top_level_scripts": "101/101",
+    "deterministic_projection_current": true,
+    "agent_brief_multiline_closed_ids": "PASS",
+    "india_3_engineering_paths_changed": false
+  },
+  "prefreeze_verification": [
+    {
+      "command": "./scripts/python_runtime.sh scripts/check_instruction_drift.py --verbose",
+      "status": "PASS"
+    },
+    {
+      "command": "./scripts/python_runtime.sh scripts/config_precedence.py audit",
+      "status": "PASS"
+    },
+    {
+      "command": "./run.sh control validate",
+      "status": "PASS"
+    },
+    {
+      "command": "./scripts/python_runtime.sh scripts/check_scripts_index.py",
+      "status": "PASS"
+    },
+    {
+      "command": "pytest test_agent_governance_automation.py -k instruction",
+      "status": "PASS",
+      "tests": 5
+    },
+    {
+      "command": "pytest test_session_automation.py -k agent_brief",
+      "status": "PASS",
+      "tests": 1
+    },
+    {
+      "command": "git diff --check",
+      "status": "PASS"
+    }
+  ],
+  "source_basis": [
+    "https://developers.openai.com/codex/guides/agents-md",
+    "https://code.claude.com/docs/en/memory",
+    "https://docs.github.com/en/copilot/reference/custom-instructions-support"
+  ],
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-23T09:30:43Z",
+      "query_status": "OK",
+      "reference": "Active Codex task: plan MAINT-0134 and then implement it",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "PLAN_MAINT_0134",
+      "UPDATE_AGENT_INSTRUCTION_SURFACES",
+      "UPDATE_INSTRUCTION_VALIDATORS",
+      "ADD_FOCUSED_REGRESSION_TESTS",
+      "RECORD_TASK_EVIDENCE",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-23T09:30:43Z",
+    "prohibited_actions": [
+      "CHANGE_INDIA_3_ENGINEERING_BEHAVIOR",
+      "TRACK_OR_REPRINT_PROTECTED_SOURCE_CONTENT",
+      "PUBLISH_RELEASE",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_DOCUMENT_OR_AGENT",
+      "BYPASS_REQUIRED_CHECKS"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "PLAN_MAINT_0134",
+        "UPDATE_AGENT_INSTRUCTION_SURFACES",
+        "UPDATE_INSTRUCTION_VALIDATORS",
+        "ADD_FOCUSED_REGRESSION_TESTS",
+        "RECORD_TASK_EVIDENCE",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/maint-0134-agent-instructions",
+      "head_sha": "40aa5864194a7296caea13def1ccf82f44aca917",
+      "task_id": "MAINT-0134"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-23T09:30:43Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}
