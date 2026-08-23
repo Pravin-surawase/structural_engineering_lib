@@ -52,6 +52,8 @@
   changed Python files requiring canonical formatting.
 - Closeout preparation completed every preparation check but exited `1` instead
   of the documented preparation-only status `2` because the candidate was dirty.
+- The first candidate commit summary showed that the two rewritten safe-file
+  entrypoints had unintentionally lost their executable file modes.
 
 ### Root causes and resolutions
 
@@ -91,6 +93,12 @@
   adjacent session-lifecycle repair. ⚠️ TERMINAL ISSUE: preparation returned `1`
   after all generated handoff checks passed -> retained the reviewed writes and
   reserved final authority for the clean read-only closeout.
+- Confirmed root cause: replacing the script contents through the patch workflow
+  recreated `safe_file_move.py` and `safe_file_delete.py` as mode `100644` even
+  though both tracked entrypoints were previously `100755`. Resolution: restore
+  only those executable bits, directly invoke both entrypoints, rerun the
+  affected transaction tests and consolidated gate, and create an explicit
+  repair candidate before publication.
 
 ### Verification
 
