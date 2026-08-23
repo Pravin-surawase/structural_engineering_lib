@@ -270,6 +270,98 @@ def test_building_gravity_route_preserves_actions_holds_and_calculation_book(
     assert footing["axial_kn"] == 101.25
 
 
+def test_building_gravity_route_preserves_explicit_point_action_reconciliation(
+    client,
+) -> None:
+    building = _building_model()
+    load_payload = _load_model(building).model_dump(
+        mode="python", exclude={"load_model_hash"}
+    )
+    load_payload["practical_actions"] = (
+        {
+            "id": "EQUIPMENT_B1_DL",
+            "kind": "BEAM_POINT",
+            "source_category": "EQUIPMENT",
+            "case_id": "DL",
+            "source_identity": "equipment:item:01",
+            "source_ref_id": "PROJECT_BASIS",
+            "destination_id": "B1",
+            "magnitude": 12,
+            "units": "kN",
+            "point_position_mm": 2000,
+            "assignment_basis": (
+                "Caller assigned equipment item to B1 at measured station."
+            ),
+        },
+    )
+    load_payload["approved_exclusions"] = tuple(
+        item
+        for item in load_payload["approved_exclusions"]
+        if item["category"] != "EQUIPMENT"
+    )
+    loads = LoadModelV1.model_validate(load_payload)
+    request = GravityWorkflowRequestV1(
+        model_hash=building.accepted_model_hash,
+        load_model_hash=loads.load_model_hash,
+        building=building,
+        loads=loads,
+    )
+
+    response = client.post(
+        "/api/v1/building-gravity/v1/run",
+        json=request.model_dump(
+            mode="json",
+            exclude={
+                "building": {"accepted_model_hash": True},
+                "loads": {"load_model_hash": True},
+            },
+        ),
+    )
+
+    assert response.status_code == 200
+    data = response.json()["data"]
+    workflow = data["workflow_result"]
+    reconciliation = workflow["practical_action_reconciliation"]
+    assert reconciliation == [
+        {
+            "action_id": "EQUIPMENT_B1_DL",
+            "kind": "BEAM_POINT",
+            "source_category": "EQUIPMENT",
+            "case_id": "DL",
+            "source_identity": "equipment:item:01",
+            "source_ref_id": "PROJECT_BASIS",
+            "destination_id": "B1",
+            "supplied_magnitude": 12.0,
+            "units": "kN",
+            "point_position_mm": 2000.0,
+            "assignment_basis": (
+                "Caller assigned equipment item to B1 at measured station."
+            ),
+            "source_entry_id": "source:DL:practical:EQUIPMENT_B1_DL",
+            "destination_entry_ids": ["apply:DL:practical:EQUIPMENT_B1_DL"],
+            "source_total_kn": 12.0,
+            "destination_total_kn": 12.0,
+            "residual_kn": 0.0,
+            "tolerance_kn": 1e-9,
+            "reconciled": True,
+        }
+    ]
+    footing = next(
+        item
+        for item in workflow["actions"]
+        if item["action_id"] == "action:ULS_1_5_DL_LL:F1"
+    )
+    assert footing["axial_kn"] == 113.25
+    assert data["calculation_book"]["reconciliation"] == {
+        "all_balanced": True,
+        "boundary_count": 27,
+        "maximum_absolute_residual_kn": 0.0,
+        "balance_tolerance_kn": 1e-9,
+        "accepted_entry_count": 43,
+        "blocked_entry_count": 0,
+    }
+
+
 def test_building_gravity_route_rejects_unknown_input_without_calculation(
     client,
 ) -> None:

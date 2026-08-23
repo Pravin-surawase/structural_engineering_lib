@@ -101,6 +101,12 @@ def test_package_root_exports_the_complete_gravity_onboarding_surface() -> None:
     result = structural_lib.run_gravity_workflow_with_book_v1(request)
 
     assert isinstance(request, structural_lib.GravityWorkflowRequestV1)
+    assert structural_lib.GravityPracticalActionV1.__name__ == (
+        "GravityPracticalActionV1"
+    )
+    assert structural_lib.GravityPracticalActionReconciliationV1.__name__ == (
+        "GravityPracticalActionReconciliationV1"
+    )
     assert result.workflow_result.result_envelope["overall_status"] == "HOLD"
     assert structural_lib.get_gravity_workflow_example_document_v1() == (
         get_gravity_workflow_example_document_v1()

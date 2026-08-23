@@ -11,6 +11,7 @@ from structural_lib.core.gravity_workflow import (
     ComponentApplicabilityMatrixV1,
     GravityComponentResultV1,
     GravityMemberActionV1,
+    GravityPracticalActionReconciliationV1,
     GravityWorkflowRequestV1,
     GravityWorkflowResultV1,
 )
@@ -55,6 +56,7 @@ class GravityCalculationBookV1(_FrozenModel):
     ledger_snapshot: dict[str, Any]
     reconciliation: dict[str, Any]
     applicability: ComponentApplicabilityMatrixV1
+    practical_action_reconciliation: tuple[GravityPracticalActionReconciliationV1, ...]
     actions: tuple[GravityMemberActionV1, ...]
     components: tuple[GravityComponentResultV1, ...]
     result_envelope: dict[str, Any]
@@ -105,8 +107,9 @@ def get_gravity_workflow_definition_v1() -> GravityWorkflowDefinitionV1:
     return GravityWorkflowDefinitionV1(
         title="Building Gravity Workflow V1",
         summary=(
-            "One rectangular, one-storey dead/live gravity load path with exact "
-            "ledger reconciliation and conditional component design adapters."
+            "One rectangular, one-storey dead/live gravity load path with "
+            "caller-assigned practical actions, exact ledger reconciliation, "
+            "and conditional component design adapters."
         ),
         accepted_topology=(
             "one rectangular slab panel",
@@ -135,7 +138,8 @@ def get_gravity_workflow_definition_v1() -> GravityWorkflowDefinitionV1:
         },
         example_request=get_gravity_workflow_example_document_v1(),
         exclusions=(
-            "wind, seismic, wall, equipment, stair, tank, and special roof actions",
+            "wind, seismic, and every action not explicitly assigned by the caller",
+            "partial-span line actions and practical actions outside the supported kinds",
             "global frame, stiffness, finite-element, nonlinear, and spatial analysis",
             "live-load reduction and automatic engineering-assumption inference",
             "footing design without complete external service, soil, and detailing basis",
@@ -176,6 +180,7 @@ def build_gravity_calculation_book_v1(
             "blocked_entry_count": ledger.blocked_entry_count,
         },
         applicability=result.applicability,
+        practical_action_reconciliation=result.practical_action_reconciliation,
         actions=result.actions,
         components=result.components,
         result_envelope=result.result_envelope,

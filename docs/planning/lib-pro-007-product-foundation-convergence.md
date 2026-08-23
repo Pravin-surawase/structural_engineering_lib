@@ -33,10 +33,12 @@ unchanged.
 - P2 merged through PR #854 at `e4d86d13` with exact candidate/merged tree
   `305d2165`; calculated demand, preliminary recommendations, and supplied bars
   remain distinct.
-- P3 is implemented on a source-bound lane from exact `e4d86d13`. It makes
-  unrounded development length, normalized bend/U-hook anchorage, explicit
-  geometry, constructability, and `PASS`/`FAIL`/`HOLD` outcomes decisive.
-- P4-P7 and cumulative M0 remain held in the frozen sequence below.
+- P3 merged through PR #855 at `0ea3e2d4` with exact candidate/merged tree
+  `d3e3e9a3`. It makes unrounded development length, normalized bend/U-hook
+  anchorage, explicit geometry, constructability, and `PASS`/`FAIL`/`HOLD`
+  outcomes decisive.
+- P4 is in implementation on a source-bound lane from exact `0ea3e2d4`.
+- P5-P7 and cumulative M0 remain held in the frozen sequence below.
 
 ## Why this precedes INDIA-3
 
@@ -152,6 +154,15 @@ Remain one-storey, one-bay, and solver-free. Add only caller-assigned wall line,
 beam line/point, and supported slab-area actions with stable source identity,
 load case, units, destination, basis, ledger entry, and exact reconciliation.
 Do not infer distribution or generate IS 875 loads.
+
+P4 accepts full-span wall/beam line actions, caller-positioned beam point
+actions, and area actions assigned to the sole supported panel. Every action is
+hash-bound in `LoadModelV1`, appears in source and destination ledger entries,
+receives its own zero-loss balance, and is exposed through Python, the
+calculation book, REST, and React. Simply supported point reactions and combined
+member actions use the maintained closed-form load-analysis authority. Partial-
+span line loads, lateral actions, automatic project-load generation, and
+destination inference remain excluded.
 
 ### P5 - ETABS read-only snapshot
 

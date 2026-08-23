@@ -143,8 +143,8 @@
     {
       "module": "structural_lib",
       "export_classification": "preview",
-      "declared_export_count": 218,
-      "classified_symbol_count": 218,
+      "declared_export_count": 222,
+      "classified_symbol_count": 222,
       "symbols": [
         {
           "name": "AuditLogEntry",
@@ -549,6 +549,42 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.gravity_workflow",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "GravityPracticalActionKindV1",
+          "qualified_name": "structural_lib.GravityPracticalActionKindV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.building_gravity",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "GravityPracticalActionReconciliationV1",
+          "qualified_name": "structural_lib.GravityPracticalActionReconciliationV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.gravity_workflow",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "GravityPracticalActionUnitsV1",
+          "qualified_name": "structural_lib.GravityPracticalActionUnitsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.building_gravity",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "GravityPracticalActionV1",
+          "qualified_name": "structural_lib.GravityPracticalActionV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.building_gravity",
           "claim_disposition": "compatibility"
         },
         {
@@ -2113,8 +2149,8 @@
     {
       "module": "structural_lib.services.api",
       "export_classification": "preview",
-      "declared_export_count": 195,
-      "classified_symbol_count": 195,
+      "declared_export_count": 199,
+      "classified_symbol_count": 199,
       "symbols": [
         {
           "name": "AuditLogEntry",
@@ -2510,6 +2546,42 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.gravity_workflow",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "GravityPracticalActionKindV1",
+          "qualified_name": "structural_lib.services.api.GravityPracticalActionKindV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.building_gravity",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "GravityPracticalActionReconciliationV1",
+          "qualified_name": "structural_lib.services.api.GravityPracticalActionReconciliationV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.gravity_workflow",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "GravityPracticalActionUnitsV1",
+          "qualified_name": "structural_lib.services.api.GravityPracticalActionUnitsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.building_gravity",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "GravityPracticalActionV1",
+          "qualified_name": "structural_lib.services.api.GravityPracticalActionV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.building_gravity",
           "claim_disposition": "compatibility"
         },
         {
@@ -3876,8 +3948,8 @@
     {
       "module": "structural_lib.api",
       "export_classification": "compatibility",
-      "declared_export_count": 195,
-      "classified_symbol_count": 195,
+      "declared_export_count": 199,
+      "classified_symbol_count": 199,
       "symbols": [
         {
           "name": "AuditLogEntry",
@@ -4273,6 +4345,42 @@
           "classification": "compatibility",
           "declared_export": true,
           "defined_in": "structural_lib.core.gravity_workflow",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "GravityPracticalActionKindV1",
+          "qualified_name": "structural_lib.api.GravityPracticalActionKindV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.building_gravity",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "GravityPracticalActionReconciliationV1",
+          "qualified_name": "structural_lib.api.GravityPracticalActionReconciliationV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.gravity_workflow",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "GravityPracticalActionUnitsV1",
+          "qualified_name": "structural_lib.api.GravityPracticalActionUnitsV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.building_gravity",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "GravityPracticalActionV1",
+          "qualified_name": "structural_lib.api.GravityPracticalActionV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.building_gravity",
           "claim_disposition": "compatibility"
         },
         {

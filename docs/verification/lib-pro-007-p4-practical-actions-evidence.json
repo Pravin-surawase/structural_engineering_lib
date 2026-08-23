@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "lib-pro-007-p4-practical-actions",
+  "task_id": "LIB-PRO-007-P4",
+  "observed_at_utc": "2026-08-23T16:05:03Z",
+  "decision": "READY_FOR_PACKET_VERIFICATION",
+  "source": {
+    "branch": "codex/lib-pro-007-p4-practical-actions",
+    "base_ref": "origin/main",
+    "base_sha": "0ea3e2d43343d70f007b0771896b41566e3b5064",
+    "source_bound": true,
+    "linked_worktree": true,
+    "operation": "none",
+    "preserved_india_3_candidate_sha": "9c976b1f4afd0540a5ec9eb3cab16861916ac89b"
+  },
+  "pre_repair_reproducer": {
+    "id": "P4-PRE-PRACTICAL-ACTION-001",
+    "surface": "LoadModelV1.practical_actions",
+    "input_kind": "BEAM_POINT",
+    "input_units": "kN",
+    "input_destination": "B1",
+    "input_position_mm": 2000,
+    "pre_repair_outcome": "extra_forbidden",
+    "outcome": "CONFIRMED_CAPABILITY_GAP"
+  },
+  "accepted_contract": {
+    "supported_kinds": [
+      "WALL_LINE",
+      "BEAM_LINE",
+      "BEAM_POINT",
+      "SLAB_AREA"
+    ],
+    "required_identity": [
+      "unique action ID",
+      "unique source identity",
+      "source category and source reference",
+      "DL or LL case",
+      "exact units",
+      "explicit destination",
+      "magnitude and caller assignment basis"
+    ],
+    "wall_rule": "WALL_LINE is DL-only and requires source_category=WALL.",
+    "line_rule": "WALL_LINE and BEAM_LINE are full-span uniform actions on one caller-assigned beam.",
+    "point_rule": "BEAM_POINT requires a station within the caller-assigned beam span.",
+    "slab_rule": "SLAB_AREA is assigned to the sole supported panel and follows its already-declared two-beam support path.",
+    "reconciliation_rule": "Every practical source has explicit destination ledger entries and an action-specific zero-loss balance.",
+    "calculation_authority": "The maintained simply supported load-analysis function combines UDL and point actions; no stiffness or frame solver is added."
+  },
+  "hand_vector": {
+    "id": "P4-HAND-FOUR-ACTIONS-001",
+    "building_plan_mm": [6000, 4000],
+    "actions": [
+      {
+        "id": "WALL_B1_DL",
+        "kind": "WALL_LINE",
+        "case_id": "DL",
+        "destination_id": "B1",
+        "magnitude": 5,
+        "units": "kN/m"
+      },
+      {
+        "id": "FACADE_B2_DL",
+        "kind": "BEAM_LINE",
+        "case_id": "DL",
+        "destination_id": "B2",
+        "magnitude": 2,
+        "units": "kN/m"
+      },
+      {
+        "id": "EQUIPMENT_B1_DL",
+        "kind": "BEAM_POINT",
+        "case_id": "DL",
+        "destination_id": "B1",
+        "magnitude": 12,
+        "units": "kN",
+        "point_position_mm": 2000
+      },
+      {
+        "id": "ROOF_SPECIAL_P1_LL",
+        "kind": "SLAB_AREA",
+        "case_id": "LL",
+        "destination_id": "P1",
+        "magnitude": 1,
+        "units": "kN/m2"
+      }
+    ],
+    "dead_footing_actions_kn": [72.5, 68.5, 55.5, 55.5],
+    "live_footing_actions_kn": [24, 24, 24, 24],
+    "service_footing_actions_kn_sorted": [79.5, 79.5, 92.5, 96.5],
+    "factored_footing_actions_kn_sorted": [119.25, 119.25, 138.75, 144.75],
+    "service_b1": {
+      "line_load_kn_m": 27.25,
+      "point_load_kn": 12,
+      "point_position_mm": 2000,
+      "maximum_moment_knm": 134.91857798165137,
+      "maximum_shear_kn": 89.75
+    },
+    "factored_panel_area_load_kn_m2": 13.875,
+    "source_entry_count": 13,
+    "accepted_entry_count": 50,
+    "balance_count": 30,
+    "practical_action_balance_count": 4,
+    "maximum_absolute_residual_kn": 0,
+    "outcome": "PASS"
+  },
+  "transport_boundary": {
+    "python_package_root_types": true,
+    "gravity_workflow_result": true,
+    "calculation_book": true,
+    "rest_existing_route": true,
+    "react_review_surface": true,
+    "new_rest_endpoint": false,
+    "duplicate_structural_formula": false
+  },
+  "claim_boundary": {
+    "held": [
+      "partial-span line actions",
+      "lateral, soil, footing self-weight, overburden and live-load-reduction actions",
+      "automatic wall, equipment, occupancy or IS 875 load generation",
+      "destination or distribution inference beyond the declared supported panel path",
+      "stiffness, frame, finite-element, nonlinear or spatial analysis",
+      "multi-bay and multi-storey workflows",
+      "release and professional approval"
+    ],
+    "release_authorized": false,
+    "professional_use_authorized": false,
+    "engineering_approval_claimed": false,
+    "india_3_scope_changed": false
+  }
+}

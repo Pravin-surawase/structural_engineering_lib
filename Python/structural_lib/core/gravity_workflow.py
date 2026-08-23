@@ -5,12 +5,20 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from enum import StrEnum
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, computed_field, model_validator
 
-from structural_lib.core.building_gravity import BuildingModelV1, LoadModelV1
+from structural_lib.core.building_gravity import (
+    BuildingModelV1,
+    ExcludedGravityActionV1,
+    GravityLoadCaseV1,
+    GravityPracticalActionKindV1,
+    GravityPracticalActionUnitsV1,
+    LoadModelV1,
+)
 
 __all__ = [
     "ComponentApplicabilityMatrixV1",
@@ -24,6 +32,7 @@ __all__ = [
     "GravityMemberActionV1",
     "GravityLongitudinalBarLayersV1",
     "GravityPrerequisiteDispositionV1",
+    "GravityPracticalActionReconciliationV1",
     "GravitySlabDesignBasisV1",
     "GravityWorkflowRequestV1",
     "GravityWorkflowResultV1",
@@ -316,6 +325,39 @@ class GravityWorkflowRequestV1(_FrozenModel):
             unknown = set(ids) - expected[kind]
             if unknown:
                 raise ValueError(f"unknown {kind} design basis IDs: {sorted(unknown)}")
+
+        nodes = {item.id: item for item in self.building.nodes}
+        beams = {
+            item.id: item for item in self.building.members if item.kind.value == "BEAM"
+        }
+        panel_ids = {item.id for item in self.building.panels}
+        for action in self.loads.practical_actions:
+            if action.kind is GravityPracticalActionKindV1.SLAB_AREA:
+                if action.destination_id not in panel_ids:
+                    raise ValueError(
+                        f"SLAB_AREA action {action.id} requires a known panel destination"
+                    )
+                continue
+            beam = beams.get(action.destination_id)
+            if beam is None:
+                raise ValueError(
+                    f"{action.kind.value} action {action.id} requires a known beam destination"
+                )
+            if action.kind is GravityPracticalActionKindV1.BEAM_POINT:
+                start = nodes[beam.start_node_id]
+                end = nodes[beam.end_node_id]
+                span_mm = math.dist(
+                    (start.x_mm, start.y_mm, start.z_mm),
+                    (end.x_mm, end.y_mm, end.z_mm),
+                )
+                if (
+                    action.point_position_mm is None
+                    or action.point_position_mm > span_mm
+                ):
+                    raise ValueError(
+                        f"BEAM_POINT action {action.id} position must lie within "
+                        f"destination span [0, {span_mm}] mm"
+                    )
         return self
 
 
@@ -335,6 +377,29 @@ class ComponentApplicabilityMatrixV1(_FrozenModel):
         "component-applicability-matrix/v1"
     )
     entries: tuple[GravityComponentApplicabilityV1, ...]
+
+
+class GravityPracticalActionReconciliationV1(_FrozenModel):
+    """Exact source-to-destination accounting for one supplied practical action."""
+
+    action_id: str = Field(pattern=_ID_PATTERN)
+    kind: GravityPracticalActionKindV1
+    source_category: ExcludedGravityActionV1
+    case_id: GravityLoadCaseV1
+    source_identity: str = Field(min_length=1, max_length=256)
+    source_ref_id: str = Field(pattern=_ID_PATTERN)
+    destination_id: str = Field(pattern=_ID_PATTERN)
+    supplied_magnitude: float = Field(gt=0)
+    units: GravityPracticalActionUnitsV1
+    point_position_mm: float | None = Field(default=None, ge=0)
+    assignment_basis: str = Field(min_length=1, max_length=512)
+    source_entry_id: str = Field(min_length=1, max_length=256)
+    destination_entry_ids: tuple[str, ...] = Field(min_length=1)
+    source_total_kn: float = Field(gt=0)
+    destination_total_kn: float = Field(gt=0)
+    residual_kn: float
+    tolerance_kn: float = Field(gt=0)
+    reconciled: bool
 
 
 class GravityMemberActionV1(_FrozenModel):
@@ -390,6 +455,9 @@ class GravityWorkflowResultV1(_FrozenModel):
     load_model_hash: str = Field(pattern=_SHA256_PATTERN)
     ledger_hash: str = Field(pattern=_SHA256_PATTERN)
     applicability: ComponentApplicabilityMatrixV1
+    practical_action_reconciliation: tuple[
+        GravityPracticalActionReconciliationV1, ...
+    ] = ()
     actions: tuple[GravityMemberActionV1, ...]
     components: tuple[GravityComponentResultV1, ...]
     result_envelope: dict[str, Any]

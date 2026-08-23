@@ -16,16 +16,20 @@ from collections.abc import Mapping
 from enum import StrEnum
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, computed_field
+from pydantic import BaseModel, ConfigDict, Field, computed_field, model_validator
 
 from structural_lib.core.building_gravity import (
     BuildingModelV1,
+    ExcludedGravityActionV1,
     GravityActionCategoryV1,
     GravityLoadCaseV1,
     GravityLoadStateV1,
     GravityMemberKindV1,
     GravityMemberV1,
     GravityNodeV1,
+    GravityPracticalActionKindV1,
+    GravityPracticalActionUnitsV1,
+    GravityPracticalActionV1,
     GravitySectionKindV1,
     LoadModelV1,
 )
@@ -50,12 +54,14 @@ class GravityLoadLedgerError(ValueError):
 class GravityLedgerStageV1(StrEnum):
     SOURCE = "SOURCE"
     BEAM_LINE = "BEAM_LINE"
+    BEAM_POINT = "BEAM_POINT"
     BEAM_REACTION = "BEAM_REACTION"
     COLUMN_ACTION = "COLUMN_ACTION"
     FOOTING_ACTION = "FOOTING_ACTION"
 
 
 class GravityBalanceBoundaryV1(StrEnum):
+    PRACTICAL_ACTION_ASSIGNMENT = "PRACTICAL_ACTION_ASSIGNMENT"
     SLAB_TO_BEAM = "SLAB_TO_BEAM"
     BEAM_TO_COLUMN = "BEAM_TO_COLUMN"
     COLUMN_ACCUMULATION = "COLUMN_ACCUMULATION"
@@ -78,11 +84,48 @@ class GravityLedgerEntryV1(_FrozenModel):
     magnitude_kn: float = Field(ge=0)
     area_load_kn_m2: float | None = Field(default=None, ge=0)
     line_load_kn_m: float | None = Field(default=None, ge=0)
+    point_load_kn: float | None = Field(default=None, ge=0)
+    point_position_mm: float | None = Field(default=None, ge=0)
     origin_entry_ids: tuple[str, ...] = ()
     formula_basis: str = Field(min_length=1, max_length=512)
+    practical_action_id: str | None = Field(default=None, min_length=1, max_length=128)
+    practical_action_kind: GravityPracticalActionKindV1 | None = None
+    practical_source_category: ExcludedGravityActionV1 | None = None
+    practical_source_identity: str | None = Field(
+        default=None, min_length=1, max_length=256
+    )
+    practical_source_ref_id: str | None = Field(
+        default=None, min_length=1, max_length=128
+    )
+    practical_input_units: GravityPracticalActionUnitsV1 | None = None
+    practical_assignment_basis: str | None = Field(
+        default=None, min_length=1, max_length=512
+    )
     sign_convention: Literal["DOWNWARD_AND_COMPRESSION_POSITIVE"] = (
         "DOWNWARD_AND_COMPRESSION_POSITIVE"
     )
+
+    @model_validator(mode="after")
+    def validate_practical_metadata(self) -> GravityLedgerEntryV1:
+        practical_values = (
+            self.practical_action_id,
+            self.practical_action_kind,
+            self.practical_source_category,
+            self.practical_source_identity,
+            self.practical_source_ref_id,
+            self.practical_input_units,
+            self.practical_assignment_basis,
+        )
+        if any(value is not None for value in practical_values) and any(
+            value is None for value in practical_values
+        ):
+            raise ValueError("practical ledger metadata must be complete")
+        if self.practical_action_kind is GravityPracticalActionKindV1.BEAM_POINT:
+            if self.point_load_kn is None or self.point_position_mm is None:
+                raise ValueError("BEAM_POINT ledger entry requires load and position")
+        elif self.point_load_kn is not None or self.point_position_mm is not None:
+            raise ValueError("only BEAM_POINT ledger entries may carry point fields")
+        return self
 
 
 class GravityBalanceV1(_FrozenModel):
@@ -186,6 +229,45 @@ def _balance(
     )
 
 
+def _practical_ledger_entry(
+    *,
+    action: GravityPracticalActionV1,
+    entry_id: str,
+    stage: GravityLedgerStageV1,
+    action_category: GravityActionCategoryV1,
+    destination_id: str,
+    magnitude_kn: float,
+    formula_basis: str,
+    area_load_kn_m2: float | None = None,
+    line_load_kn_m: float | None = None,
+    point_load_kn: float | None = None,
+    point_position_mm: float | None = None,
+    origin_entry_ids: tuple[str, ...] = (),
+) -> GravityLedgerEntryV1:
+    return GravityLedgerEntryV1(
+        entry_id=entry_id,
+        case_id=action.case_id,
+        stage=stage,
+        action_category=action_category,
+        source_id=action.id,
+        destination_id=destination_id,
+        magnitude_kn=magnitude_kn,
+        area_load_kn_m2=area_load_kn_m2,
+        line_load_kn_m=line_load_kn_m,
+        point_load_kn=point_load_kn,
+        point_position_mm=point_position_mm,
+        origin_entry_ids=origin_entry_ids,
+        formula_basis=formula_basis,
+        practical_action_id=action.id,
+        practical_action_kind=action.kind,
+        practical_source_category=action.source_category,
+        practical_source_identity=action.source_identity,
+        practical_source_ref_id=action.source_ref_id,
+        practical_input_units=action.units,
+        practical_assignment_basis=action.assignment_basis,
+    )
+
+
 def build_gravity_load_ledger_v1(
     building: BuildingModelV1,
     loads: LoadModelV1,
@@ -230,10 +312,37 @@ def build_gravity_load_ledger_v1(
     panel_area_m2 = panel_length_m * panel_span_m
     if panel_length_m <= 0 or panel_span_m <= 0:
         raise GravityLoadLedgerError("accepted panel dimensions must be positive")
+    for practical_action in loads.practical_actions:
+        if practical_action.kind is GravityPracticalActionKindV1.SLAB_AREA:
+            if practical_action.destination_id != panel.id:
+                raise GravityLoadLedgerError(
+                    f"SLAB_AREA action {practical_action.id} requires "
+                    f"destination {panel.id}"
+                )
+            continue
+        beam = beam_by_id.get(practical_action.destination_id)
+        if beam is None:
+            raise GravityLoadLedgerError(
+                f"{practical_action.kind.value} action {practical_action.id} "
+                "requires a known beam destination"
+            )
+        if practical_action.kind is GravityPracticalActionKindV1.BEAM_POINT:
+            span_mm = _member_length_m(beam, nodes) * 1000.0
+            if (
+                practical_action.point_position_mm is None
+                or practical_action.point_position_mm > span_mm
+            ):
+                raise GravityLoadLedgerError(
+                    f"BEAM_POINT action {practical_action.id} position must lie within "
+                    f"destination span [0, {span_mm}] mm"
+                )
 
     entries: list[GravityLedgerEntryV1] = []
     source_entries: dict[tuple[GravityLoadCaseV1, str], GravityLedgerEntryV1] = {}
     beam_line_entries: dict[
+        tuple[GravityLoadCaseV1, str], list[GravityLedgerEntryV1]
+    ] = defaultdict(list)
+    beam_point_entries: dict[
         tuple[GravityLoadCaseV1, str], list[GravityLedgerEntryV1]
     ] = defaultdict(list)
     reaction_entries: dict[
@@ -245,6 +354,7 @@ def build_gravity_load_ledger_v1(
     footing_action_entries: dict[
         tuple[GravityLoadCaseV1, str], GravityLedgerEntryV1
     ] = {}
+    practical_balances: list[GravityBalanceV1] = []
 
     panel_area_loads = {
         GravityLoadCaseV1.DEAD: (
@@ -302,6 +412,132 @@ def build_gravity_load_ledger_v1(
                 )
                 entries.append(line)
                 beam_line_entries[(case_id, beam.id)].append(line)
+
+    practical_category = {
+        GravityPracticalActionKindV1.WALL_LINE: (
+            GravityActionCategoryV1.PRACTICAL_WALL_LINE
+        ),
+        GravityPracticalActionKindV1.BEAM_LINE: (
+            GravityActionCategoryV1.PRACTICAL_BEAM_LINE
+        ),
+        GravityPracticalActionKindV1.BEAM_POINT: (
+            GravityActionCategoryV1.PRACTICAL_BEAM_POINT
+        ),
+        GravityPracticalActionKindV1.SLAB_AREA: (
+            GravityActionCategoryV1.PRACTICAL_SLAB_AREA
+        ),
+    }
+    for practical_action in loads.practical_actions:
+        category = practical_category[practical_action.kind]
+        source_entry_id = (
+            f"source:{practical_action.case_id.value}:practical:{practical_action.id}"
+        )
+        destination_entries: list[GravityLedgerEntryV1] = []
+        if practical_action.kind is GravityPracticalActionKindV1.SLAB_AREA:
+            source = _practical_ledger_entry(
+                action=practical_action,
+                entry_id=source_entry_id,
+                stage=GravityLedgerStageV1.SOURCE,
+                action_category=category,
+                destination_id=practical_action.destination_id,
+                magnitude_kn=practical_action.magnitude * panel_area_m2,
+                area_load_kn_m2=practical_action.magnitude,
+                formula_basis=practical_action.assignment_basis,
+            )
+            for beam_id in panel.supporting_beam_ids:
+                beam = beam_by_id[beam_id]
+                transferred_total = source.magnitude_kn / 2.0
+                applied = _practical_ledger_entry(
+                    action=practical_action,
+                    entry_id=(
+                        f"transfer:{practical_action.case_id.value}:practical:"
+                        f"{practical_action.id}:{beam.id}"
+                    ),
+                    stage=GravityLedgerStageV1.BEAM_LINE,
+                    action_category=category,
+                    destination_id=beam.id,
+                    magnitude_kn=transferred_total,
+                    line_load_kn_m=(transferred_total / _member_length_m(beam, nodes)),
+                    origin_entry_ids=(source.entry_id,),
+                    formula_basis=(
+                        "caller-assigned supported slab-area action transferred "
+                        "equally to the two declared supporting beams"
+                    ),
+                )
+                destination_entries.append(applied)
+                beam_line_entries[(practical_action.case_id, beam.id)].append(applied)
+        else:
+            beam = beam_by_id[practical_action.destination_id]
+            beam_length_m = _member_length_m(beam, nodes)
+            is_point = practical_action.kind is GravityPracticalActionKindV1.BEAM_POINT
+            source = _practical_ledger_entry(
+                action=practical_action,
+                entry_id=source_entry_id,
+                stage=GravityLedgerStageV1.SOURCE,
+                action_category=category,
+                destination_id=beam.id,
+                magnitude_kn=(
+                    practical_action.magnitude
+                    if is_point
+                    else practical_action.magnitude * beam_length_m
+                ),
+                line_load_kn_m=None if is_point else practical_action.magnitude,
+                point_load_kn=practical_action.magnitude if is_point else None,
+                point_position_mm=(
+                    practical_action.point_position_mm if is_point else None
+                ),
+                formula_basis=practical_action.assignment_basis,
+            )
+            applied = _practical_ledger_entry(
+                action=practical_action,
+                entry_id=(
+                    f"apply:{practical_action.case_id.value}:practical:"
+                    f"{practical_action.id}"
+                ),
+                stage=(
+                    GravityLedgerStageV1.BEAM_POINT
+                    if is_point
+                    else GravityLedgerStageV1.BEAM_LINE
+                ),
+                action_category=category,
+                destination_id=beam.id,
+                magnitude_kn=source.magnitude_kn,
+                line_load_kn_m=None if is_point else practical_action.magnitude,
+                point_load_kn=practical_action.magnitude if is_point else None,
+                point_position_mm=(
+                    practical_action.point_position_mm if is_point else None
+                ),
+                origin_entry_ids=(source.entry_id,),
+                formula_basis=(
+                    "caller-assigned action applied once to the explicit beam "
+                    "destination without distribution inference"
+                ),
+            )
+            destination_entries.append(applied)
+            target = beam_point_entries if is_point else beam_line_entries
+            target[(practical_action.case_id, beam.id)].append(applied)
+
+        entries.append(source)
+        entries.extend(destination_entries)
+        source_entries[(practical_action.case_id, source.entry_id)] = source
+        destination_total = math.fsum(item.magnitude_kn for item in destination_entries)
+        practical_balances.append(
+            _balance(
+                balance_id=(
+                    f"balance:{practical_action.case_id.value}:practical:"
+                    f"{practical_action.id}"
+                ),
+                boundary=GravityBalanceBoundaryV1.PRACTICAL_ACTION_ASSIGNMENT,
+                case_or_combination_id=practical_action.case_id.value,
+                source_id=practical_action.id,
+                destination_ids=tuple(
+                    item.destination_id for item in destination_entries
+                ),
+                source_total_kn=source.magnitude_kn,
+                destination_total_kn=destination_total,
+                tolerance_kn=loads.balance_tolerance_kn,
+            )
+        )
 
     for beam in beams:
         section = sections[beam.section_id]
@@ -379,10 +615,24 @@ def build_gravity_load_ledger_v1(
 
     for case_id in GravityLoadCaseV1:
         for beam in beams:
-            applied_loads = beam_line_entries[(case_id, beam.id)]
-            applied_total = math.fsum(item.magnitude_kn for item in applied_loads)
-            for end_node_id in (beam.start_node_id, beam.end_node_id):
+            line_loads = beam_line_entries[(case_id, beam.id)]
+            point_loads = beam_point_entries[(case_id, beam.id)]
+            applied_loads = [*line_loads, *point_loads]
+            span_mm = _member_length_m(beam, nodes) * 1000.0
+            line_reaction = math.fsum(item.magnitude_kn / 2.0 for item in line_loads)
+            for end_index, end_node_id in enumerate(
+                (beam.start_node_id, beam.end_node_id)
+            ):
                 column = column_by_top_node[end_node_id]
+                point_reaction = math.fsum(
+                    item.magnitude_kn
+                    * (
+                        (span_mm - (item.point_position_mm or 0.0)) / span_mm
+                        if end_index == 0
+                        else (item.point_position_mm or 0.0) / span_mm
+                    )
+                    for item in point_loads
+                )
                 reaction = GravityLedgerEntryV1(
                     entry_id=f"reaction:{case_id.value}:{beam.id}:{column.id}",
                     case_id=case_id,
@@ -394,11 +644,14 @@ def build_gravity_load_ledger_v1(
                     ),
                     source_id=beam.id,
                     destination_id=column.id,
-                    magnitude_kn=applied_total / 2.0,
+                    magnitude_kn=line_reaction + point_reaction,
                     origin_entry_ids=tuple(
                         sorted(item.entry_id for item in applied_loads)
                     ),
-                    formula_basis="simply supported uniform beam load reaction = total / 2",
+                    formula_basis=(
+                        "simply supported full-span line reactions plus exact "
+                        "caller-positioned point-load reaction"
+                    ),
                 )
                 entries.append(reaction)
                 reaction_entries[(case_id, column.id)].append(reaction)
@@ -440,19 +693,22 @@ def build_gravity_load_ledger_v1(
             column_action_entries[(case_id, column.id)] = column_action
             footing_action_entries[(case_id, footing.id)] = footing_action
 
-    balances: list[GravityBalanceV1] = []
+    balances: list[GravityBalanceV1] = list(practical_balances)
     for case_id in GravityLoadCaseV1:
         panel_sources = [
             item
             for (entry_case, _), item in source_entries.items()
-            if entry_case is case_id and item.source_id == panel.id
+            if entry_case is case_id
+            and item.destination_id == panel.id
+            and item.area_load_kn_m2 is not None
         ]
+        panel_source_ids = {item.entry_id for item in panel_sources}
         slab_transfers = [
             item
             for (entry_case, _), items in beam_line_entries.items()
             if entry_case is case_id
             for item in items
-            if item.source_id == panel.id
+            if set(item.origin_entry_ids) & panel_source_ids
         ]
         balances.append(
             _balance(
@@ -469,7 +725,10 @@ def build_gravity_load_ledger_v1(
             )
         )
         for beam in beams:
-            applied_loads = beam_line_entries[(case_id, beam.id)]
+            applied_loads = [
+                *beam_line_entries[(case_id, beam.id)],
+                *beam_point_entries[(case_id, beam.id)],
+            ]
             reactions = [
                 item
                 for column in columns

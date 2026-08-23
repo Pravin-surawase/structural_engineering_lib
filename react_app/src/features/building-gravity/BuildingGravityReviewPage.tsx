@@ -43,6 +43,13 @@ function actionValue(action: GravityWorkflowRunBundle['workflow_result']['action
   return `${action.axial_kn?.toFixed(3)} kN`;
 }
 
+function practicalActionValue(
+  action: GravityWorkflowRunBundle['workflow_result']['practical_action_reconciliation'][number],
+) {
+  const position = action.point_position_mm === null ? '' : ` @ ${action.point_position_mm} mm`;
+  return `${action.supplied_magnitude.toFixed(3)} ${action.units}${position}`;
+}
+
 export function BuildingGravityReviewPage() {
   const [definition, setDefinition] = useState<GravityWorkflowDefinition | null>(null);
   const [requestText, setRequestText] = useState('');
@@ -127,7 +134,8 @@ export function BuildingGravityReviewPage() {
           <h1 className="mt-2 text-2xl font-semibold">Building Gravity Workflow V1</h1>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-400">
             Review one accepted physical model, its reconciled dead/live load path,
-            exact member actions, conditional component checks, and visible holds.
+            caller-assigned practical actions, exact member actions, conditional
+            component checks, and visible holds.
           </p>
         </header>
 
@@ -233,6 +241,35 @@ export function BuildingGravityReviewPage() {
                 </div>
               ) : null}
             </section>
+
+            {bundle.workflow_result.practical_action_reconciliation.length > 0 ? (
+              <section className="overflow-hidden rounded-xl border border-white/10 bg-zinc-900/60">
+                <h2 className="p-4 text-sm font-semibold">Caller-assigned practical actions</h2>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead className="border-y border-white/10 text-zinc-500">
+                      <tr><th className="p-3">Source</th><th>Case / kind</th><th>Destination</th><th>Supplied</th><th>Reconciliation</th></tr>
+                    </thead>
+                    <tbody>
+                      {bundle.workflow_result.practical_action_reconciliation.map((action) => (
+                        <tr key={action.action_id} className="border-b border-white/5">
+                          <td className="p-3 font-mono">
+                            {action.source_identity}
+                            <span className="mt-1 block text-zinc-500">{action.source_ref_id}</span>
+                          </td>
+                          <td>{action.case_id} · {action.kind}</td>
+                          <td className="font-mono">{action.destination_id}</td>
+                          <td>{practicalActionValue(action)}</td>
+                          <td className={action.reconciled ? 'text-emerald-300' : 'text-rose-300'}>
+                            {action.reconciled ? 'BALANCED' : 'UNBALANCED'} · residual {action.residual_kn} kN
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            ) : null}
 
             <section className="overflow-hidden rounded-xl border border-white/10 bg-zinc-900/60">
               <h2 className="p-4 text-sm font-semibold">Component review</h2>

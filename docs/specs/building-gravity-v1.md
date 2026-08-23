@@ -47,9 +47,9 @@ available as provenance. Harmless reordering cannot change the accepted model
 hash, while a physical change must change it.
 
 The load-model hash binds the accepted model hash, supplied load values,
-source references, inclusion/exclusion rules, combinations, and balance
-tolerance. Raw-source serialization is provenance and does not change the
-accepted load-model identity.
+caller-assigned practical actions, source references, inclusion/exclusion
+rules, combinations, and balance tolerance. Raw-source serialization is
+provenance and does not change the accepted load-model identity.
 
 ## Frozen load basis
 
@@ -60,6 +60,17 @@ accepted load-model identity.
 | Beam self-weight | DL | Gravity ledger | Generated once per beam |
 | Column self-weight | DL | Gravity ledger | Generated once per column |
 | Occupancy live load | LL | Gravity ledger | Supplied explicitly and unreduced |
+| Wall line | DL | Caller | Full-span line action assigned to one beam |
+| Other beam line | DL or LL | Caller | Full-span line action assigned to one beam |
+| Beam point | DL or LL | Caller | Point action and station assigned to one beam |
+| Supported slab area | DL or LL | Caller | Area action assigned to the sole declared panel |
+
+Every practical action carries a unique action ID and source identity, a source
+category and reference, load case, exact units, destination, magnitude, and
+assignment basis. `WALL_LINE` accepts only `WALL` in `DL`. Other practical
+sources are limited to facade, equipment, tank, stair, and special-roof gravity
+actions. Lateral, soil, footing self-weight, overburden, and live-load reduction
+cannot enter through this contract.
 
 The aggregate category `COMBINED_DEAD` is used only after separate dead-load
 sources are transferred and combined. It is not a new source and cannot appear
@@ -78,23 +89,31 @@ not infer a missing load, factor, or basis.
 The deterministic closed-form path is:
 
 1. slab area actions are split equally to the two supporting edge beams;
-2. beam self-weight is added once to its owning beam;
-3. each simply supported uniformly loaded beam transfers half of its total to
-   each end column;
-4. each column adds its own self-weight once; and
-5. the column action is handed to its concentric footing destination.
+2. an explicit supported slab-area action follows that same declared support
+   path; the caller does not assign it to an inferred panel;
+3. full-span wall/beam line and positioned point actions are applied once to
+   their caller-assigned beam destination;
+4. each simply supported line action transfers half to each end, while a point
+   action uses its exact caller-supplied station for unequal reactions;
+5. each column adds its own self-weight once; and
+6. the column action is handed to its concentric footing destination.
 
-The ledger stores source, destination, magnitude, intensity where applicable,
-origin entry identities, formula basis, and a fixed sign convention. It checks
-slab-to-beam, beam-to-column, column accumulation, column-to-footing,
-storey-to-foundation, and combination-to-foundation balances. Any residual
-outside the explicit tolerance blocks the result.
+The ledger stores source, destination, magnitude, intensity or point station
+where applicable, origin entry identities, caller basis, source reference,
+units, and a fixed sign convention. It checks each practical
+source-to-destination assignment, slab-to-beam, beam-to-column, column
+accumulation, column-to-footing, storey-to-foundation, and
+combination-to-foundation balances. The workflow result and calculation book
+expose one exact practical-action reconciliation record. Any residual outside
+the explicit tolerance blocks the result.
 
 ## Approved exclusions and holds
 
-The load model must explicitly list all V1 exclusions: walls, facade,
-equipment, tanks, stairs, special roof loads, lateral loads, soil, footing
-self-weight, overburden, and live-load reduction.
+The load model must explicitly list every unsupported or unsupplied V1
+category. A category is omitted from `approved_exclusions` only when at least
+one practical action of that category is supplied explicitly. This does not
+authorize the library to discover, generate, distribute, or complete missing
+project actions.
 
 The footing entries are action handoffs, not footing designs. They intentionally
 exclude footing self-weight and overburden. A future footing design must remain
@@ -102,9 +121,10 @@ on HOLD unless an externally approved soil basis and the complete required
 service action basis are supplied according to the footing component contract.
 
 B1 makes no claim for member design, reinforcement, serviceability, whole-frame
-analysis, continuity, stiffness distribution, walls, wind, seismic, dynamic
-loads, load reduction, multi-storey behavior, live ETABS, Excel, write-back,
-optimization, release readiness, or qualified engineering approval.
+analysis, continuity, stiffness distribution, partial-span line loads,
+automatic wall/equipment generation, wind, seismic, dynamic loads, load
+reduction, multi-storey behavior, live ETABS, Excel, write-back, optimization,
+release readiness, or qualified engineering approval.
 
 ## Hand example
 
@@ -147,12 +167,13 @@ definition embeds the runnable document, and the review UI exposes it through
 `build_rectangular_gravity_workflow_request_v1()` accepts a frozen
 `RectangularGravityWorkflowBuilderInputV1`. It generates only topology IDs,
 source-record accounting, and model/load hashes. Span, sections, material,
-loads, support idealizations, inclusion rules, both load combinations, source
-hashes and references, exclusions, balance tolerance, and every component
-design basis are required inputs. The builder validates that the explicitly
-supplied support idealizations match the bounded V1 topology; it has no
-engineering defaults. Empty design-basis tuples remain an explicit caller
-choice and lead to the existing fail-closed component `HOLD` outcomes.
+loads, practical-action tuple, support idealizations, inclusion rules, both
+load combinations, source hashes and references, exclusions, balance
+tolerance, and every component design basis are required inputs. The builder
+validates that the explicitly supplied support idealizations match the bounded
+V1 topology; it has no engineering defaults. Empty practical-action and
+design-basis tuples remain explicit caller choices; missing component bases
+lead to the existing fail-closed component `HOLD` outcomes.
 
 The maintained open-hall request supplies reviewed bar-selection constraints
 but deliberately does not invent a project bar schedule. Its beam demand is
@@ -194,10 +215,13 @@ orientation remains `HOLD` rather than selecting a hidden dimension.
 
 ## Exact member actions
 
-The workflow derives 22 actions from the reconciled ledger: one slab, two
+The workflow derives 22 combination actions from the reconciled ledger: one slab, two
 beams, four columns, and four footing destinations for each of the two frozen
 load combinations. It uses the canonical simply supported load-analysis
-function for beam moment and shear; it does not introduce a frame solver.
+function for combined full-span UDL and caller-positioned point-load moment and
+shear; it does not introduce a frame solver. Practical actions do not increase
+the component-action count. They change only their explicit destination load
+path and are separately listed with exact source/destination reconciliation.
 
 For the 6 m x 4 m hand example:
 
@@ -220,7 +244,7 @@ called. Its exact adapters are:
 | Kind | Supported V1 case | Canonical function |
 |---|---|---|
 | Slab | Simply supported one-way solid slab strip | `design_complete_one_way_slab_is456` |
-| Beam | Simply supported rectangular beam under factored UDL | `design_beam_is456` |
+| Beam | Simply supported rectangular beam under factored explicit actions | `design_beam_is456` |
 | Column | Braced rectangular axial-only column | `design_column_is456` |
 | Footing | Concentric isolated footing with complete external basis | `design_concentric_isolated_footing_is456` |
 

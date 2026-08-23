@@ -126,6 +126,9 @@ is discoverable but remains explicitly ineligible for autonomous tool execution.
 The stable facades export the complete versioned request/result and onboarding
 surface: `api.GravityWorkflowRequestV1`, `api.GravityWorkflowResultV1`,
 `api.GravityWorkflowRunBundleV1`, `api.GravityWorkflowDefinitionV1`,
+`api.GravityPracticalActionKindV1`, `api.GravityPracticalActionUnitsV1`,
+`api.GravityPracticalActionV1`,
+`api.GravityPracticalActionReconciliationV1`,
 `api.RectangularGravityWorkflowBuilderInputV1`,
 `api.build_rectangular_gravity_workflow_request_v1`,
 `api.get_gravity_workflow_example_document_v1`,
@@ -134,6 +137,15 @@ surface: `api.GravityWorkflowRequestV1`, `api.GravityWorkflowResultV1`,
 `api.run_gravity_workflow_with_book_v1`. Catalogue consumers can use the typed
 `api.ComposedWorkflowCapability` record without treating discoverability as
 tool approval.
+
+`api.GravityPracticalActionV1` accepts only caller-assigned full-span wall/beam
+line, beam point, and supported slab-area actions. Source identity/reference,
+DL/LL case, exact units, destination, magnitude, station where applicable, and
+assignment basis are mandatory. The workflow exposes one
+`api.GravityPracticalActionReconciliationV1` per accepted action with exact
+source/destination ledger identities, totals, residual, tolerance, and balance
+status. It does not infer destinations, generate IS 875 loads, or add a frame
+solver.
 
 Beam reinforcement truth is exposed separately through
 `api.evaluate_supplied_beam_reinforcement_v1` and its immutable selection,
