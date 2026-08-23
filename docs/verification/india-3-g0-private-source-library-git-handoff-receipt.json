@@ -1,0 +1,177 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-23T08:34:18Z",
+      "query_status": "OK",
+      "reference": "Active Codex task: inspect Downloads for usable IS codes, preserve PDFs in a Git-ignored private database, and do not reproduce or reprint source content",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "INVENTORY_DOWNLOADS_IS_CODE_PDFS",
+      "COPY_PDFS_TO_PRIVATE_IGNORED_LIBRARY",
+      "CREATE_PRIVATE_SEARCH_DATABASE",
+      "RECORD_PUBLIC_BOUNDARY_EVIDENCE",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-23T08:34:18Z",
+    "prohibited_actions": [
+      "TRACK_PRIVATE_SOURCE_CONTENT",
+      "PACKAGE_PRIVATE_SOURCE_CONTENT",
+      "REPRODUCE_OR_REPRINT_SOURCE_PROSE_OR_PAGE_IMAGES",
+      "DELETE_DOWNLOADS_ORIGINALS",
+      "IMPLEMENT_NEW_ENGINEERING_FORMULAS",
+      "ACTIVATE_NEW_SUPPORT_CLAIMS",
+      "PUBLISH_RELEASE",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "INVENTORY_DOWNLOADS_IS_CODE_PDFS",
+        "COPY_PDFS_TO_PRIVATE_IGNORED_LIBRARY",
+        "CREATE_PRIVATE_SEARCH_DATABASE",
+        "RECORD_PUBLIC_BOUNDARY_EVIDENCE",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/india-3-g0-source-library",
+      "head_sha": "f24c3904b4af7d768f71342f11ac70f21e7b1dfa",
+      "task_id": "INDIA-3-G0-SOURCE-LIBRARY"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "observed_at_utc": "2026-08-23T08:34:18Z",
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "c81907a196e335aa8fa815159906263f7c4d5abbc5905f07aaf57934f84484cf",
+    "state": {
+      "branch": "codex/india-3-g0-source-library",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "f24c3904b4af7d768f71342f11ac70f21e7b1dfa",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 95.423,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib12",
+      "head_sha": "f24c3904b4af7d768f71342f11ac70f21e7b1dfa",
+      "hold_reasons": [
+        "changed paths: 8"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-23T08:34:55.751941+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/india-3-g0-source-library/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 8,
+        "modified_paths": [
+          ".gitignore",
+          "Python/tests/test_private_source_boundary.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/next-session-brief.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/india-3-g0-private-source-library-evidence.md",
+          "docs/verification/india-3-g0-private-source-library-git-handoff-receipt.json",
+          "docs/verification/india-3-g0-private-source-library-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/india-3-g0-source-library/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:c81907a196e335aa8fa815159906263f7c4d5abbc5905f07aaf57934f84484cf",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-23T08:34:55.752106+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-23T08:34:18Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources/**",
+      "Python/structural_lib/**",
+      "fastapi_app/**",
+      "react_app/**"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      ".gitignore",
+      "Python/tests/test_private_source_boundary.py",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md",
+      "docs/verification/india-3-g0-private-source-library-evidence.md",
+      "docs/verification/india-3-g0-private-source-library-source-evidence.json"
+    ],
+    "shared_paths": [
+      ".gitignore",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "INDIA-3-G0-SOURCE-LIBRARY"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
