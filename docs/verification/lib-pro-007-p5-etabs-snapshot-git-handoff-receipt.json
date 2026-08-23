@@ -1,0 +1,195 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-23T18:19:42Z",
+      "query_status": "OK",
+      "reference": "Continue the structural_engineering_lib foundation plan with LIB-PRO-007-P5",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "IMPLEMENT_LIB_PRO_007_P5_BOUNDED_PACKET",
+      "ADD_FOCUSED_TESTS_DOCUMENTATION_AND_EVIDENCE",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-23T18:19:42Z",
+    "prohibited_actions": [
+      "DELETE_BRANCH_OR_WORKTREE",
+      "RESET_STASH_CLEAN_OR_REWRITE",
+      "BYPASS_CHECKS_OR_FORCE_PUSH",
+      "PUBLISH_RELEASE",
+      "ACTIVATE_PROFESSIONAL_APPROVAL",
+      "CHANGE_INDIA_3_ENGINEERING",
+      "DIRECT_EDB_BINARY_PARSING",
+      "LIVE_ETABS_AUTOMATION",
+      "UNLOCK_RUN_OR_CHANGE_ANALYSIS",
+      "MODIFY_SAVE_OR_WRITE_BACK_ETABS_MODEL",
+      "START_LIB_PRO_007_P6_OR_P7"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "IMPLEMENT_LIB_PRO_007_P5_BOUNDED_PACKET",
+        "ADD_FOCUSED_TESTS_DOCUMENTATION_AND_EVIDENCE",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/lib-pro-007-p5-etabs-snapshot",
+      "head_sha": "426d401bb2afde417ff989bd7349c99b8f7cb438",
+      "task_id": "LIB-PRO-007-P5"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PRESERVE_EVERY_UNRELATED_DIRTY_DETACHED_BEHIND_OR_DIVERGED_LANE",
+    "PRESERVE_INDIA_3_SOURCE_LIBRARY_CANDIDATE_UNTIL_LIB_PRO_007_M0",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "aae36c259380c3aa2ed3a94c4af038bfbd87bbf5634b89ee3476d6178f899457",
+    "state": {
+      "branch": "codex/lib-pro-007-p5-etabs-snapshot",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "426d401bb2afde417ff989bd7349c99b8f7cb438",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 108.992,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib13",
+      "head_sha": "426d401bb2afde417ff989bd7349c99b8f7cb438",
+      "hold_reasons": [
+        "changed paths: 19"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-23T18:21:24.650794+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/cace/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 19,
+        "modified_paths": [
+          "Python/structural_lib/imports.py",
+          "Python/structural_lib/services/capabilities.py",
+          "Python/tests/integration/test_capability_semantics.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/guides/README.md",
+          "docs/planning/lib-pro-007-product-foundation-convergence.md",
+          "docs/planning/next-session-brief.md",
+          "docs/specs/csv-import-schema.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "Python/structural_lib/services/etabs_snapshot.py",
+          "Python/tests/fixtures/etabs/p5_trial_export/connectivity-frame.csv",
+          "Python/tests/fixtures/etabs/p5_trial_export/element-forces-frames.csv",
+          "Python/tests/fixtures/etabs/p5_trial_export/selected-table-catalog.xml",
+          "Python/tests/fixtures/etabs/p5_trial_export/trial-hall-model.e2k",
+          "Python/tests/unit/test_etabs_snapshot.py",
+          "docs/guides/etabs-exported-snapshot-v1.md",
+          "docs/verification/lib-pro-007-p5-etabs-snapshot-evidence.json",
+          "docs/verification/lib-pro-007-p5-etabs-snapshot-git-handoff-receipt.json",
+          "docs/verification/lib-pro-007-p5-etabs-snapshot-git-handoff-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/cace/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:aae36c259380c3aa2ed3a94c4af038bfbd87bbf5634b89ee3476d6178f899457",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-23T18:21:24.650939+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [
+      "PRESERVE_INDIA_3_SOURCE_LIBRARY_CANDIDATE_UNTIL_LIB_PRO_007_M0",
+      "PRESERVE_EVERY_UNRELATED_DIRTY_DETACHED_BEHIND_OR_DIVERGED_LANE"
+    ],
+    "observed_at_utc": "2026-08-23T18:19:42Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources"
+    ],
+    "integration_owner": "orchestrator",
+    "owned_paths": [
+      "Python/structural_lib/imports.py",
+      "Python/structural_lib/services/capabilities.py",
+      "Python/structural_lib/services/etabs_snapshot.py",
+      "Python/tests/integration/test_capability_semantics.py",
+      "Python/tests/unit/test_etabs_snapshot.py",
+      "Python/tests/fixtures/etabs/p5_trial_export/connectivity-frame.csv",
+      "Python/tests/fixtures/etabs/p5_trial_export/element-forces-frames.csv",
+      "Python/tests/fixtures/etabs/p5_trial_export/selected-table-catalog.xml",
+      "Python/tests/fixtures/etabs/p5_trial_export/trial-hall-model.e2k",
+      "docs/guides/README.md",
+      "docs/guides/etabs-exported-snapshot-v1.md",
+      "docs/planning/lib-pro-007-product-foundation-convergence.md",
+      "docs/specs/csv-import-schema.md",
+      "docs/verification/lib-pro-007-p5-etabs-snapshot-evidence.json",
+      "docs/verification/lib-pro-007-p5-etabs-snapshot-git-handoff-source-evidence.json",
+      "docs/verification/lib-pro-007-p5-etabs-snapshot-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "LIB-PRO-007-P5"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

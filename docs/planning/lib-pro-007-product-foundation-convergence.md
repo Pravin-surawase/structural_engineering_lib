@@ -164,6 +164,9 @@ member actions use the maintained closed-form load-analysis authority. Partial-
 span line loads, lateral actions, automatic project-load generation, and
 destination inference remain excluded.
 
+P4 merged through PR #856 at hosted commit `426d401b` with exact merged tree
+`a5b01272`.
+
 ### P5 - ETABS read-only snapshot
 
 Converge existing exported-file paths on one deterministic snapshot containing
@@ -178,6 +181,22 @@ excluded. The existing lossless single/dual CSV import services are the
 canonical intake candidates. Package exports such as `normalize_etabs_forces`,
 `load_etabs_csv`, and `create_job_from_etabs` remain held or compatibility
 surfaces until P5 proves whether each delegates, migrates, or stays held.
+
+P5 converges on `build_etabs_canonical_snapshot_v1`, which delegates the two
+calculation CSVs to `parse_dual_csv_lossless` and emits existing
+`ProjectBeamDesignInputV1` requests. ETABS `UniqueName` supplies stable member
+identity. Every physical calculation-source row receives `ACCEPTED`,
+`APPROVED_EXCLUSION`, or `BLOCKED`; any blocked row or ambiguity exposes no
+snapshot or request. EDB identity is hash-recorded on Windows, while E2K and
+selected CSV/XML/Excel exports are archived and hash-verified from their bytes.
+The trial API is optional; manual ETABS table export remains a valid path.
+
+`ETABSAdapter` remains the maintained parser delegate. The older
+`normalize_etabs_forces`, `load_etabs_csv`, and `create_job_from_etabs` helpers
+remain held compatibility surfaces because they do not establish project/export
+identity, complete row dispositions, or the canonical snapshot hash. The
+trial-compatible acquisition matrix is maintained in
+[ETABS Exported Snapshot V1](../guides/etabs-exported-snapshot-v1.md).
 
 ### P6 - Cross-surface parity
 
