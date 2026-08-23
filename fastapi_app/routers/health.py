@@ -77,7 +77,7 @@ def _get_startup_time() -> datetime:
 def _check_structural_lib() -> bool:
     """Check if structural_lib is available and importable."""
     try:
-        from structural_lib import api  # noqa: F401
+        import structural_lib  # noqa: F401
 
         return True
     except ImportError:

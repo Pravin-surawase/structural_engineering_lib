@@ -60,7 +60,7 @@ Result: 10 minutes of work, zero manual errors, auditable outputs.
 
 **The simplest code:**
 ```python
-from structural_lib import flexure
+from structural_lib.codes.is456.beam import flexure
 
 # Inputs (all in mm and N/mm²)
 beam_width = 300          # b in mm
@@ -228,7 +228,7 @@ USER GETS (Results table, AutoCAD drawings, Bill of materials)
 
 ### 1. One Beam (Simple)
 ```python
-from structural_lib import flexure
+from structural_lib.codes.is456.beam import flexure
 
 result = flexure.design_singly_reinforced(b=300, d=450, mu_knm=150, fck=25, fy=500)
 print(result.ast_required)  # Done!
@@ -254,9 +254,9 @@ result = IS456_Design_Rectangular(300, 450, 50, 500, 150, 25, 415)
 
 ### 5. Insights & Optimization
 ```python
-from structural_lib import api
+import structural_lib as sl
 
-insights = api.smart_analyze_design(
+insights = sl.smart_analyze_design(
     b=300, d=450, fck=25, fy=500, mu_knm=150, vu_kn=80
 )
 # Get cost, suggestions, sensitivity analysis, etc.
@@ -292,7 +292,7 @@ cd Python
 
 # Run one example
 python3 -c "
-from structural_lib import flexure
+from structural_lib.codes.is456.beam import flexure
 r = flexure.design_singly_reinforced(b=300, d=450, mu_knm=150, fck=25, fy=500)
 print(f'Ast = {r.ast_required:.0f} mm²')
 "

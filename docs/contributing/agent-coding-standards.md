@@ -104,8 +104,8 @@ import streamlit as st  # WRONG!
 
 # ✅ CORRECT: Core is self-contained
 # In codes/is456/flexure.py
-from structural_lib.constants import STEEL_MODULUS
-from structural_lib.errors import DesignError
+from structural_lib.core.constants import MODULUS_ELASTICITY_STEEL
+from structural_lib.core.errors import DesignError
 ```
 
 ---
@@ -138,11 +138,11 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 # Local imports
-from structural_lib.errors import DesignError, ValidationError
-from structural_lib.validation import validate_positive
+from structural_lib.core.errors import DesignError, ValidationError
+from structural_lib.core.validation import validate_positive
 
 if TYPE_CHECKING:
-    from structural_lib.types import SomeType
+    from structural_lib.core.types import SomeType
 
 
 # Constants (module-level, UPPERCASE)
@@ -378,24 +378,23 @@ def calculate_mu_lim(
 ### Use Existing Error Types
 
 ```python
-from structural_lib.errors import (
+from structural_lib.core.errors import (
     DesignError,
-    ErrorCode,
-    ErrorSeverity,
+    Severity,
     ValidationError,
     StructuralLibError,
 )
-from structural_lib.error_messages import (
+from structural_lib.core.error_messages import (
     dimension_too_small,
     capacity_exceeded,
-    reinforcement_exceeds_limit,
+    maximum_reinforcement_exceeded,
 )
 ```
 
 ### Validation Pattern
 
 ```python
-from structural_lib.validation import (
+from structural_lib.core.validation import (
     validate_positive,
     validate_in_range,
     validate_material_grade,
@@ -412,21 +411,18 @@ def my_function(width: float, fck: float) -> float:
 ### Design Error Pattern
 
 ```python
-from structural_lib.errors import DesignError, ErrorCode, ErrorSeverity
+from structural_lib.core.errors import DesignError, Severity
 
-def check_reinforcement(ast: float, ast_max: float) -> None:
+def check_reinforcement(ast: float, ast_max: float) -> DesignError | None:
     if ast > ast_max:
-        raise DesignError(
-            code=ErrorCode.E_FLEXURE_003,
-            severity=ErrorSeverity.ERROR,
+        return DesignError(
+            code="E_FLEXURE_003",
+            severity=Severity.ERROR,
             message=f"Reinforcement {ast:.1f} mm² exceeds maximum {ast_max:.1f} mm²",
-            suggestions=[
-                "Increase beam depth",
-                "Use higher concrete grade",
-                "Consider doubly reinforced section",
-            ],
-            clause_ref="IS 456:2000, Cl. 26.5.1",
+            hint="Increase beam depth or use a supported doubly reinforced design.",
+            clause="IS 456:2000, Cl. 26.5.1",
         )
+    return None
 ```
 
 ### Never Create New Exception Types
@@ -437,7 +433,7 @@ class MyBeamError(Exception):
     pass
 
 # ✅ CORRECT: Use existing hierarchy
-from structural_lib.errors import DesignError
+from structural_lib.core.errors import DesignConstraintError
 ```
 
 ---
@@ -462,7 +458,7 @@ Python/
 
 import pytest
 from structural_lib.new_module import calculate_something, SomeResult
-from structural_lib.errors import ValidationError, DesignError
+from structural_lib.core.errors import DesignError, ValidationError
 
 
 class TestCalculateSomething:
@@ -547,13 +543,13 @@ import numpy as np
 from pydantic import BaseModel
 
 # 4. Local imports - absolute paths (alphabetical)
-from structural_lib.constants import STEEL_MODULUS
-from structural_lib.errors import DesignError
-from structural_lib.validation import validate_positive
+from structural_lib.core.constants import MODULUS_ELASTICITY_STEEL
+from structural_lib.core.errors import DesignError
+from structural_lib.core.validation import validate_positive
 
 # 5. Type checking only imports
 if TYPE_CHECKING:
-    from structural_lib.types import BeamGeometry
+    from structural_lib.core.types import BeamGeometry
 ```
 
 ---

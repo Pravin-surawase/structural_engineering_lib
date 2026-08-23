@@ -50,7 +50,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
 from reportlab.lib import colors
-from structural_lib.api import design_beam_is456
+from structural_lib import design_beam_is456
 from datetime import datetime
 
 def generate_beam_design_pdf(beam_params, output_path, company_name="Your Company"):
@@ -201,7 +201,7 @@ print(f"PDF generated: {pdf_path}")
 import csv
 import json
 from pathlib import Path
-from structural_lib.api import design_beam_is456
+from structural_lib import design_beam_is456
 
 def process_etabs_csv(input_csv, output_csv, output_json=None, fck=25.0, fy=500.0):
     """
@@ -326,8 +326,8 @@ results = process_etabs_csv(
 ```python
 # api_server_flask.py
 from flask import Flask, request, jsonify
-from structural_lib.api import design_beam_is456
-from structural_lib.dxf_export import quick_dxf_bytes
+from structural_lib import design_beam_is456
+from structural_lib.services.dxf_export import quick_dxf_bytes
 
 app = Flask(__name__)
 

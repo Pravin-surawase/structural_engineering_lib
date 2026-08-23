@@ -11,7 +11,7 @@ Usage:
 
 import math
 
-from structural_lib import detailing, flexure, shear
+from structural_lib.codes.is456.beam import detailing, flexure, shear
 
 
 def example_1_basic_flexure():

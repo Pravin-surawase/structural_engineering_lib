@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-24
 doc_type: reference
 complexity: intermediate
 tags: []
@@ -11,17 +11,20 @@ tags: []
 
 **Type:** Reference
 **Audience:** Developers
-**Status:** Production Ready
+**Status:** Alpha Policy
 **Importance:** Medium
-**Version:** 0.16.6
+**Version:** 0.23.1a2
 **Created:** 2025-12-01
-**Last Updated:** 2026-03-29
+**Last Updated:** 2026-08-24
 
 ---
 
 ## Overview
 
-This document defines the deprecation policy for the structural_engineering_lib project. It ensures users have advance notice before features are removed, maintaining backward compatibility while allowing the library to evolve.
+This document defines deprecation behavior for the Alpha package. Deprecation
+metadata is a real project commitment, not a label for every compatibility
+facade. No public file, export, or signature may be removed without the
+separate authorization and evidence required by repository Git governance.
 
 ---
 
@@ -29,8 +32,15 @@ This document defines the deprecation policy for the structural_engineering_lib 
 
 ### Timeline
 
-- **Minimum Notice:** 1 minor version before removal
-- **Example:** Feature deprecated in v0.14.0 cannot be removed before v1.0.0
+- A deprecation must name a real replacement and an owner-approved removal
+  version before `@deprecated` is added.
+- A stable identity-only re-export is not deprecated merely because another
+  module owns the object.
+- A contract that remains callable but cannot satisfy a newer safety contract
+  may be marked `HELD_COMPATIBILITY` with `removal_version: null`. Held metadata
+  emits no warning and makes no removal promise.
+- Removing an item remains a separate task requiring caller, test, documentation,
+  archive/fixture, rollback, and explicit deletion-authorization evidence.
 
 ### Versioning Strategy
 
@@ -44,7 +54,16 @@ Following [Semantic Versioning 2.0.0](https://semver.org/):
 
 ### Pre-1.0 Exception
 
-During 0.x releases, breaking changes MAY occur at minor version boundaries (e.g., 0.14 → 0.15) if absolutely necessary, but deprecation warnings should still be provided when feasible.
+During 0.x releases, semantic versioning does not itself authorize a breaking
+change. Repository approval and evidence gates still apply.
+
+### Compatibility is not deprecation
+
+`structural_lib.api` and the package's pure root re-export modules remain
+compatible when they resolve to the same object and signature. They must not
+emit warning floods during ordinary package import. The P5 ETABS historical
+helpers carry limitation metadata because they cannot represent the accepted
+snapshot contract; P7 does not give them a fabricated removal release.
 
 ---
 
@@ -55,7 +74,7 @@ During 0.x releases, breaking changes MAY occur at minor version boundaries (e.g
 Use the `@deprecated` decorator:
 
 ```python
-from structural_lib.utilities import deprecated
+from structural_lib.core.deprecation import deprecated
 
 @deprecated(
     version="0.14.0",
@@ -68,6 +87,10 @@ def design_beam_old(b, d, D, mu, fck, fy):
     # Redirect to new API
     return design_beam_is456(b=b, d=d, fck=fck, fy=fy, mu_knm=mu)
 ```
+
+Use this decorator only after the example versions have been replaced with an
+approved live schedule. The values below are illustrative, not current project
+removal claims.
 
 **Required Parameters:**
 - `version`: Version when deprecation was introduced
@@ -83,8 +106,8 @@ Use `deprecated_field()` in `__post_init__`:
 
 ```python
 from dataclasses import dataclass, field
-from structural_lib.utilities import deprecated_field
-from structural_lib.errors import DesignError
+from structural_lib.core.deprecation import deprecated_field
+from structural_lib.core.errors import DesignError
 
 @dataclass
 class FlexureResult:
@@ -209,7 +232,9 @@ These functions are deprecated and will be removed in future versions:
 
 ## Migration Guide Template
 
-When deprecating features, provide migration examples in release notes:
+When an approved deprecation exists, provide migration examples in release
+notes. Every name and version below is a template placeholder, not a current
+project schedule:
 
 ```markdown
 ## Migration Guide: v0.14.0 → v1.0.0
@@ -247,6 +272,9 @@ result = calculate_moment(
 
 ### When Removing Deprecated Features
 
+Removal is not authorized by elapsed time or metadata alone. Stop and obtain
+explicit owner authorization after producing the required retirement evidence.
+
 1. **Check Metadata:** Use `__deprecated__` attribute to find all deprecated items:
 
 ```python
@@ -275,7 +303,10 @@ for name, obj in inspect.getmembers(api):
 
 ---
 
-## Examples
+## Illustrative examples only
+
+The following names and versions are placeholders. They do not describe a
+current export or authorize its removal.
 
 ### Example 1: Deprecating a Function
 
@@ -361,7 +392,8 @@ for item in deprecated:
 
 ## See Also
 
-- [`structural_lib.utilities.deprecated`](../reference/api.md#deprecated) — Decorator API reference
-- [`structural_lib.utilities.deprecated_field`](../reference/api.md#deprecated_field) — Field deprecation API
+- [`structural_lib.core.deprecation.deprecated`](../reference/api.md#deprecated) — Decorator owner
+- [`structural_lib.core.deprecation.deprecated_field`](../reference/api.md#deprecated_field) — Field deprecation owner
+- [P7 compatibility migration](../migration/lib-pro-007-p7-compatibility-convergence.md) — Current facade and held-compatibility policy
 - [CHANGELOG.md](../../CHANGELOG.md) — Release history with deprecation notices
 - [docs/research/backward-compatibility-strategy.md](../_archive/research-completed/backward-compatibility-strategy.md) — Full research document

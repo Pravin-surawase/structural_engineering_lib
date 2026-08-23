@@ -22,7 +22,8 @@ from __future__ import annotations
 import math
 from pathlib import Path
 
-from structural_lib import detailing, flexure, job_runner, shear
+from structural_lib.codes.is456.beam import detailing, flexure, shear
+from structural_lib.services import job_runner
 
 
 def main() -> None:
@@ -167,8 +168,8 @@ def main() -> None:
     try:
         import ezdxf  # noqa: F401
 
-        from structural_lib.detailing import create_beam_detailing
-        from structural_lib.dxf_export import generate_beam_dxf
+        from structural_lib.codes.is456.beam.detailing import create_beam_detailing
+        from structural_lib.services.dxf_export import generate_beam_dxf
 
         det = create_beam_detailing(
             beam_id="B1",

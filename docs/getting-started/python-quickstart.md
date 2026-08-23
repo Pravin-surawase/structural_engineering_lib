@@ -76,7 +76,7 @@ If you are on Windows, replace `python3` with `py`.
 ## 2) Quick sanity check (no files)
 ```bash
 python3 - <<'PY'
-from structural_lib import flexure
+from structural_lib.codes.is456.beam import flexure
 res = flexure.design_singly_reinforced(
     b=300, d=450, d_total=500, mu_knm=150, fck=25, fy=500
 )
@@ -88,7 +88,7 @@ PY
 ## 3) Use the library in a script (optional)
 Create a file `example.py` with this content:
 ```python
-from structural_lib import flexure, detailing
+from structural_lib.codes.is456.beam import detailing, flexure
 
 # Design a singly reinforced beam (230x500, Mu = 150 kN·m, M25/Fe415)
 res = flexure.design_singly_reinforced(
@@ -157,7 +157,7 @@ python3 -m structural_lib job job.json -o ./output
 ## 6) Minimal “one-liner” example (no files)
 ```bash
 python3 - <<'PY'
-from structural_lib import shear
+from structural_lib.codes.is456.beam import shear
 res = shear.design_shear(vu_kn=100, b=300, d=500, fck=25, fy=415, asv=100, pt=0.75)
 print("Shear OK?", res.is_safe, "Spacing (mm):", res.spacing)
 PY
@@ -166,10 +166,10 @@ PY
 ## 7) Column Design (IS 456)
 
 ```python
-from structural_lib import api
+import structural_lib as sl
 
 # Short column — axial capacity (IS 456 Cl 39.3)
-result = api.design_column_axial_is456(
+result = sl.design_column_axial_is456(
     fck=25,        # Concrete grade (N/mm²)
     fy=415,        # Steel grade (N/mm²)
     Ag_mm2=90000,  # Gross area 300×300 mm

@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-24 — LIB-PRO-007-P6 cross-surface parity candidate
+**Updated:** 2026-08-24 — LIB-PRO-007-P7 compatibility-convergence candidate
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-007-P6 | Prove canonical beam and gravity identity/status/issues across maintained product surfaces | Main Agent | M | P0 | 🟡 ACTIVE — parity repair and focused Python/REST/React/Excel tests implemented; candidate verification pending |
+| LIB-PRO-007-P7 | Converge maintained compatibility callers and prove retained facade/shim ownership without deletion | Main Agent | M | P0 | 🟡 ACTIVE — deterministic ledger and caller migrations complete; repaired focused/static/API/quick verification green, final formatter-hook retry and hosted checks pending |
 | INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ PAUSED — private source library preserved; resume after LIB-PRO-007 cumulative acceptance |
 
 `LIB-PRO-006` merged through PR #851 at `2d6df18e`. It confirms the practical
@@ -185,11 +185,13 @@ selection, stable ETABS `UniqueName` member IDs, and exhaustive `ACCEPTED` /
 `APPROVED_EXCLUSION` / `BLOCKED` source-row dispositions into one deterministic
 snapshot. Only an accepted snapshot emits existing canonical beam requests.
 Manual table export remains valid when the trial API is unavailable. Live
-ETABS control, EDB parsing, analysis changes, save/write-back, P6/P7, INDIA-3
-engineering, release, and professional approval remain held.
+At P5 closeout, live ETABS control, EDB parsing, analysis changes,
+save/write-back, P6/P7, INDIA-3 engineering, release, and professional approval
+remained held.
 
-`LIB-PRO-007-P6` starts from exact merged P5 base `6d533b6f` / tree
-`d3bbaeb2`. It repairs the project-batch loss of a derived effective-depth
+`LIB-PRO-007-P6` merged through PR #858 at hosted commit `6cb47221` with
+reviewed candidate `9647fedd` and exact candidate/merged tree `d2b3efa3`. It
+repairs the project-batch loss of a derived effective-depth
 basis, then proves both P5 fixture beams preserve normalized input identity,
 canonical result identity, governing status, and issues across Python, REST,
 React, and Excel. React now rejects envelope/evidence identity disagreement and
@@ -197,6 +199,16 @@ stales retained results when imported source metadata changes. The maintained
 gravity example preserves its workflow-result hash, governing `HOLD`, and issue
 identity through Python, REST, and React. No transport receives a structural
 formula; Excel is not expanded into a gravity calculator.
+
+`LIB-PRO-007-P7` starts from exact hosted P6 base `6cb47221` / tree
+`d2b3efa3`. Its deterministic ledger reconciles all 620 live root/service/legacy
+facade projections, records exact canonical object or namespace-symbol owners,
+and accounts for maintained callers with no ambiguous route. Maintained source,
+scripts, examples, and current documentation use canonical owners or the
+deliberately supported package-root facade. The four older ETABS helpers remain
+`HELD_COMPATIBILITY` and cannot be described as accepted P5 snapshots. No
+public export/signature/file is removed, no retirement candidate is activated,
+and broad cumulative suites remain reserved for M0.
 
 `MAINT-0134` assigns cross-agent policy to `AGENTS.md`, composes Claude
 through `@AGENTS.md`, keeps a concise standalone Copilot baseline, retires

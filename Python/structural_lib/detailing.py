@@ -1,6 +1,6 @@
 """Backward compatibility stub.
 
-This module has been migrated to: structural_lib.codes.is456.detailing
+This module has been migrated to: structural_lib.codes.is456.beam.detailing
 
 All functionality is re-exported here for backward compatibility.
 Existing imports like `from structural_lib import detailing` continue to work.

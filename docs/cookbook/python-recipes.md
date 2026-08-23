@@ -20,7 +20,9 @@ pip install structural-lib-is456[dxf]
 ```
 
 ```python
-from structural_lib import api, flexure, shear, detailing, bbs
+import structural_lib as sl
+from structural_lib.codes.is456.beam import detailing, flexure, shear
+from structural_lib.services import bbs
 ```
 
 ---
@@ -28,13 +30,13 @@ from structural_lib import api, flexure, shear, detailing, bbs
 ## 1. Quick Beam Design (Single Case)
 
 ```python
-from structural_lib import api
+import structural_lib as sl
 
 b_mm = 300
 D_mm = 500
 d_mm = 450
 
-result = api.design_beam_is456(
+result = sl.design_beam_is456(
     units="IS456",
     case_id="DL+LL",
     b_mm=b_mm,
@@ -61,7 +63,7 @@ print(f"  Stirrup spacing: {result.shear.spacing:.0f} mm")
 ## 2. Multi-Case Compliance Check
 
 ```python
-from structural_lib import api
+import structural_lib as sl
 
 cases = [
     {"case_id": "DL+LL", "mu_knm": 80, "vu_kn": 60},
@@ -69,7 +71,7 @@ cases = [
     {"case_id": "EQ-X", "mu_knm": 160, "vu_kn": 120},
 ]
 
-report = api.check_beam_is456(
+report = sl.check_beam_is456(
     units="IS456",
     cases=cases,
     b_mm=300,
@@ -94,7 +96,7 @@ for result in report.cases:
 
 ### Singly Reinforced
 ```python
-from structural_lib import flexure
+from structural_lib.codes.is456.beam import flexure
 
 result = flexure.design_singly_reinforced(
     b=230,
@@ -113,7 +115,7 @@ print(f"Section type: {result.section_type}")
 
 ### Doubly Reinforced
 ```python
-from structural_lib import flexure
+from structural_lib.codes.is456.beam import flexure
 
 result = flexure.design_doubly_reinforced(
     b=300,
@@ -131,7 +133,7 @@ print(f"Asc: {result.asc_required:.1f} mm²")
 
 ### Flanged Beam (T-Beam)
 ```python
-from structural_lib import flexure
+from structural_lib.codes.is456.beam import flexure
 
 Df = 150
 result = flexure.design_flanged_beam(
@@ -154,7 +156,7 @@ print(f"NA location: {'in flange' if result.xu <= Df else 'in web'}")
 ## 4. Shear Design
 
 ```python
-from structural_lib import shear
+from structural_lib.codes.is456.beam import shear
 
 result = shear.design_shear(
     vu_kn=150,
@@ -179,7 +181,7 @@ print(f"Safe: {result.is_safe}")
 
 ### Development Length
 ```python
-from structural_lib import detailing
+from structural_lib.codes.is456.beam import detailing
 
 ld = detailing.calculate_development_length(
     bar_dia=16,
@@ -203,9 +205,9 @@ print(f"Lap: {lap:.0f} mm")
 
 ### Full Beam Detailing
 ```python
-from structural_lib import api
+import structural_lib as sl
 
-detail = api.detail_beam_is456(
+detail = sl.detail_beam_is456(
     units="IS456",
     beam_id="B1",
     story="GF",
@@ -232,9 +234,9 @@ print(f"Ld: {detail.ld_tension:.0f} mm")
 
 ### Deflection (Span/Depth)
 ```python
-from structural_lib import api
+import structural_lib as sl
 
-result = api.check_deflection_span_depth(
+result = sl.check_deflection_span_depth(
     span_mm=4000,
     d_mm=450,
     support_condition="simply_supported",
@@ -247,9 +249,9 @@ print(f"Status: {'OK' if result.is_ok else 'FAIL'}")
 
 ### Crack Width
 ```python
-from structural_lib import api
+import structural_lib as sl
 
-result = api.check_crack_width(
+result = sl.check_crack_width(
     exposure_class="moderate",
     acr_mm=50,
     cmin_mm=25,
@@ -270,7 +272,8 @@ Note: `acr_mm` is the distance from the point considered to the nearest bar surf
 ## 7. Bar Bending Schedule (BBS)
 
 ```python
-from structural_lib import bbs, detailing
+from structural_lib.codes.is456.beam import detailing
+from structural_lib.services import bbs
 
 # Create detailing for multiple beams
 details = [
@@ -307,11 +310,11 @@ bbs.export_bbs_to_json(doc, "bbs_schedule.json")
 ## 8. DXF Export
 
 ```python
-from structural_lib import detailing
+from structural_lib.codes.is456.beam import detailing
 
 # Check if ezdxf is available
 try:
-    from structural_lib import dxf_export
+    from structural_lib.services import dxf_export
     EZDXF_AVAILABLE = dxf_export.EZDXF_AVAILABLE
 except ImportError:
     EZDXF_AVAILABLE = False
@@ -339,7 +342,7 @@ else:
 ## 9. Load from CSV/JSON
 
 ```python
-from structural_lib import excel_integration
+from structural_lib.services import excel_integration
 
 # Load beams from CSV
 beams = excel_integration.load_beam_data_from_csv("beams.csv")
@@ -356,7 +359,7 @@ beams = excel_integration.load_beam_data_from_json("beams.json")
 ## 10. Job Runner (Batch Processing)
 
 ```python
-from structural_lib import job_runner
+from structural_lib.services import job_runner
 
 # Run job from JSON specification
 job_runner.run_job(
@@ -381,15 +384,15 @@ job_runner.run_job(
 ### Error Handling
 ```python
 try:
-    result = api.design_beam_is456(...)
+    result = sl.design_beam_is456(...)
 except ValueError as e:
     print(f"Invalid input: {e}")
 ```
 
 ### Check Library Version
 ```python
-from structural_lib import api
-print(api.get_library_version())
+import structural_lib as sl
+print(sl.get_library_version())
 ```
 
 ---

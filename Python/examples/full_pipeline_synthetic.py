@@ -20,7 +20,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-from structural_lib import flexure, shear, tables
+from structural_lib.codes.is456 import tables
+from structural_lib.codes.is456.beam import flexure, shear
 
 FIELDNAMES = [
     "BeamID",

@@ -1,0 +1,71 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-23T20:06:51Z",
+      "query_status": "OK",
+      "reference": "Continue structural_engineering_lib with LIB-PRO-007-P7 and execute the bounded packet autonomously",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "IMPLEMENT_LIB_PRO_007_P7_BOUNDED_PACKET",
+      "ADD_LEDGER_CALLER_MIGRATIONS_FOCUSED_TESTS_DOCUMENTATION_AND_EVIDENCE",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_ONE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-23T20:06:51Z",
+    "prohibited_actions": [
+      "DELETE_OR_MOVE_PUBLIC_FILE_OR_SYMBOL",
+      "BREAK_PUBLIC_SIGNATURE_OR_CONTRACT",
+      "DELETE_BRANCH_OR_WORKTREE",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_OR_REWRITE",
+      "BYPASS_CHECKS_OR_FORCE_PUSH",
+      "PUBLISH_RELEASE",
+      "ACTIVATE_PROFESSIONAL_OR_ENGINEERING_APPROVAL",
+      "CHANGE_INDIA_3_ENGINEERING",
+      "DIRECT_EDB_BINARY_PARSING",
+      "LIVE_ETABS_OR_WINDOWS_EXCEL_AUTOMATION",
+      "UNLOCK_RUN_OR_CHANGE_ANALYSIS",
+      "MODIFY_SAVE_OR_WRITE_BACK_ETABS_MODEL",
+      "START_LIB_PRO_007_M0_BROAD_SUITES"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "IMPLEMENT_LIB_PRO_007_P7_BOUNDED_PACKET",
+        "ADD_LEDGER_CALLER_MIGRATIONS_FOCUSED_TESTS_DOCUMENTATION_AND_EVIDENCE",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_ONE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/lib-pro-007-p7-compatibility-convergence",
+      "head_sha": "6cb4722103bfc018dc3889fcc1a5a437e3579897",
+      "task_id": "LIB-PRO-007-P7"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [
+      "PRESERVE_INDIA_3_SOURCE_LIBRARY_CANDIDATE_UNTIL_LIB_PRO_007_M0",
+      "PRESERVE_EVERY_UNRELATED_DIRTY_DETACHED_BEHIND_OR_DIVERGED_LANE",
+      "DELETION_AND_PUBLIC_CONTRACT_BREAK_NOT_AUTHORIZED"
+    ],
+    "observed_at_utc": "2026-08-23T20:06:51Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

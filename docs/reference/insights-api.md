@@ -157,7 +157,7 @@ Tuple of:
 **Example:**
 
 ```python
-from structural_lib.api import design_beam_is456
+from structural_lib import design_beam_is456
 
 params = {
     "units": "IS456",
@@ -331,8 +331,8 @@ def calculate_constructability_score(
 **Example:**
 
 ```python
-from structural_lib.api import design_beam_is456
-from structural_lib.detailing import create_beam_detailing
+from structural_lib import design_beam_is456
+from structural_lib.codes.is456.beam.detailing import create_beam_detailing
 from structural_lib.insights import calculate_constructability_score
 
 # Get design and detailing
@@ -637,7 +637,7 @@ def suggest_improvements(
 **Example:**
 
 ```python
-from structural_lib.beam_pipeline import design_single_beam
+from structural_lib.services.beam_pipeline import design_single_beam
 from structural_lib.insights import suggest_improvements
 
 design = design_single_beam(
@@ -878,7 +878,7 @@ for s in report.suggestions:
 The `suggest_beam_design_improvements()` function provides a high-level API wrapper:
 
 ```python
-from structural_lib.api import design_beam_is456, suggest_beam_design_improvements
+from structural_lib import design_beam_is456, suggest_beam_design_improvements
 
 # Design beam
 design = design_beam_is456(
@@ -949,7 +949,7 @@ python -m structural_lib.job_cli suggest \
 ### Batch Processing Example
 
 ```python
-from structural_lib.api import design_beam_is456, suggest_beam_design_improvements
+from structural_lib import design_beam_is456, suggest_beam_design_improvements
 
 # Design multiple beams
 beams = [

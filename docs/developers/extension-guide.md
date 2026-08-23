@@ -37,8 +37,8 @@ This guide shows you how to **extend the library** with custom features **withou
 
 ```python
 # custom_validators.py
-from structural_lib.api import design_beam_is456
-from structural_lib.data_types import DesignError
+from structural_lib import design_beam_is456
+from structural_lib.core.data_types import DesignError
 
 def design_beam_with_seismic_rules(span_mm, mu_knm, vu_kn, **kwargs):
     """
@@ -124,7 +124,7 @@ else:
 # aci318_module.py
 """ACI 318 (US code) beam design implementation."""
 
-from structural_lib.data_types import BeamDesignResult, BarArrangement, StirrupArrangement
+from structural_lib.core.data_types import BeamDesignResult, BarArrangement, StirrupArrangement
 
 def design_beam_aci318(width_in, depth_in, mu_kipft, vu_kip,
                        fc_psi=4000, fy_ksi=60, cover_in=1.5):
@@ -241,7 +241,7 @@ print(f"ACI Design: {result.bars_bottom_start.count} bars")
 
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment
-from structural_lib.api import design_beam_is456
+from structural_lib import design_beam_is456
 
 def export_to_excel(design_result, output_path, company_name=""):
     """
@@ -463,7 +463,7 @@ class PluginManager:
         return result
 
 # Usage
-from structural_lib.api import design_beam_is456
+from structural_lib import design_beam_is456
 
 # Create plugin manager
 manager = PluginManager()
@@ -500,7 +500,7 @@ def design_singly_reinforced(...):
 **✅ DO:**
 ```python
 # Create my_extensions/seismic.py
-from structural_lib.flexure import design_singly_reinforced
+from structural_lib.codes.is456.beam.flexure import design_singly_reinforced
 
 def design_with_seismic(...):
     result = design_singly_reinforced(...)
@@ -512,7 +512,7 @@ def design_with_seismic(...):
 
 **✅ DO:**
 ```python
-from structural_lib.data_types import BeamDesignResult, BarArrangement
+from structural_lib.core.data_types import BeamDesignResult, BarArrangement
 
 def my_custom_function(...):
     # Return same structures library uses
@@ -569,7 +569,7 @@ def test_seismic_check_fails():
 
 ```python
 # regional_pricing.py
-from structural_lib.api import optimize_beam_cost
+from structural_lib import optimize_beam_cost
 
 REGIONAL_PRICES = {
     "Mumbai": {
@@ -607,7 +607,7 @@ def optimize_regional(span_mm, mu_knm, vu_kn, region="Mumbai"):
 
 ```python
 # company_rules.py
-from structural_lib.api import design_beam_is456
+from structural_lib import design_beam_is456
 
 class CompanyDesignRules:
     """Company-specific design preferences."""

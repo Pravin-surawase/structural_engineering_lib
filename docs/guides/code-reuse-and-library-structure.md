@@ -60,10 +60,10 @@ Every calculation, validation, and data transformation MUST live in the library.
 
 | Module | Responsibility | Examples |
 | --- | --- | --- |
-| `api.py` | Public entry points | `design_beam_is456()`, `check_beam_is456()` |
-| `flexure.py` | Flexure calculations | `compute_xu()`, `compute_moment_capacity()` |
-| `shear.py` | Shear calculations | `compute_vu()`, `compute_shear_capacity()` |
-| `detailing.py` | Rebar placement | `detail_main_bars()`, `detail_stirrups()` |
+| package root / `services.api` | Public entry points | `design_beam_is456()`, `check_beam_is456()` |
+| `codes.is456.beam.flexure` | Flexure calculations | `calculate_mu_lim()`, `design_singly_reinforced()` |
+| `codes.is456.beam.shear` | Shear calculations | `get_tau_c()`, `design_shear()` |
+| `codes.is456.beam.detailing` | Rebar placement | `create_beam_detailing()`, `calculate_development_length()` |
 | `adapters.py` | Data import/export | `ETABSAdapter`, `SAFEAdapter` |
 | `insights/` | Smart analysis | `optimize_beam_cost()`, `suggest_improvements()` |
 | `codes/is456/` | Code compliance | `check_clause_26_5_1()` |
@@ -218,67 +218,29 @@ Before adding new code, verify:
 
 ### 5.1 Public API Design
 
-The `api.py` file is the public interface. It should:
-
-1. Import and compose lower-level functions
-2. Provide clear, documented entry points
-3. Handle all input validation
-4. Return structured results
+The package root is the recommended end-user interface. Internal code imports
+the owning module; `structural_lib.api` is retained compatibility, not the
+implementation location.
 
 ```python
-# structural_lib/api.py
+import structural_lib as sl
 
-# Re-export public types
-from structural_lib.types import (
-    BeamDesignOutput,
-    BeamDetailingResult,
-    OptimizationResult,
+result = sl.design_beam_is456(
+    units="IS456_NMM",
+    mu_knm=150.0,
+    vu_kn=75.0,
+    b_mm=300.0,
+    D_mm=500.0,
+    d_mm=450.0,
+    fck_nmm2=25.0,
+    fy_nmm2=500.0,
 )
-
-# Public API functions
-def design_beam_is456(
-    mu_knm: float,
-    vu_kn: float,
-    b_mm: float,
-    D_mm: float,
-    fck: float = 25.0,
-    fy: float = 500.0,
-) -> BeamDesignOutput:
-    """Design a beam per IS 456:2000.
-
-    This is the main entry point for beam design. It handles:
-    - Input validation
-    - Flexure design
-    - Shear design
-    - Code compliance checks
-
-    Args:
-        mu_knm: Ultimate moment in kN-m.
-        ...
-
-    Returns:
-        BeamDesignOutput with design results.
-    """
-    # Validate inputs
-    validate_beam_inputs(b_mm, D_mm, fck, fy)
-
-    # Compute
-    flexure = compute_flexure(...)
-    shear = compute_shear(...)
-
-    # Check compliance
-    compliance = check_is456_compliance(...)
-
-    return BeamDesignOutput(
-        flexure=flexure,
-        shear=shear,
-        compliance=compliance,
-    )
 ```
 
 ### 5.2 API Versioning
 
-For breaking changes, use versioned functions:
+The following is policy pseudocode only. A real breaking change still requires
+an approved replacement, removal schedule, and separate deletion authorization:
 
 ```python
 # Current API
@@ -286,7 +248,7 @@ def design_beam_is456(mu_knm: float, ...) -> BeamDesignOutput:
     """Current implementation."""
     pass
 
-# Deprecated (will be removed in v3.0)
+# Illustrative deprecated wrapper; no current removal version is implied.
 def design_beam(mu_knm: float, ...) -> dict:
     """DEPRECATED: Use design_beam_is456 instead."""
     import warnings
@@ -454,26 +416,25 @@ tests/
 ```python
 # tests/unit/structural_lib/test_flexure.py
 import pytest
-from structural_lib.flexure import compute_xu
+from structural_lib.codes.is456.beam.flexure import calculate_mu_lim
 
-class TestComputeXu:
+class TestCalculateMuLim:
     def test_positive_result(self):
-        xu = compute_xu(ast_mm2=1000, b_mm=300, fck=25, fy=500)
-        assert xu > 0
+        mu_lim = calculate_mu_lim(b=300, d=450, fck=25, fy=500)
+        assert mu_lim > 0
 
-    def test_increases_with_steel(self):
-        xu1 = compute_xu(ast_mm2=500, b_mm=300, fck=25, fy=500)
-        xu2 = compute_xu(ast_mm2=1000, b_mm=300, fck=25, fy=500)
-        assert xu2 > xu1
+    def test_increases_with_width(self):
+        narrow = calculate_mu_lim(b=230, d=450, fck=25, fy=500)
+        wide = calculate_mu_lim(b=300, d=450, fck=25, fy=500)
+        assert wide > narrow
 
-    @pytest.mark.parametrize("ast,expected", [
-        (500, 40.3),
-        (1000, 80.6),
-        (1500, 120.8),
+    @pytest.mark.parametrize("b,expected", [
+        (230, 155.5675794),
+        (300, 202.9142340),
     ])
-    def test_known_values(self, ast, expected):
-        xu = compute_xu(ast_mm2=ast, b_mm=300, fck=25, fy=500)
-        assert xu == pytest.approx(expected, rel=0.01)
+    def test_known_values(self, b, expected):
+        mu_lim = calculate_mu_lim(b=b, d=450, fck=25, fy=500)
+        assert mu_lim == pytest.approx(expected, rel=1e-9)
 ```
 
 ---
@@ -531,7 +492,7 @@ When migrating to React frontend:
 ```python
 # api_server/main.py
 from fastapi import FastAPI
-from structural_lib.api import design_beam_is456, detail_beam_is456
+from structural_lib import design_beam_is456, detail_beam_is456
 
 app = FastAPI()
 

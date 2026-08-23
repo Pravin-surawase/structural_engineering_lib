@@ -5,6 +5,175 @@
 
 ---
 
+## 2026-08-24 — Session: LIB-PRO-007-P7 compatibility convergence
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents)
+
+**Branch:** `codex/lib-pro-007-p7-compatibility-convergence`, from exact merged
+P6 hosted-main commit `6cb4722103bfc018dc3889fcc1a5a437e3579897`, tree
+`d2b3efa3243d06e2bfff8ff1990db19eac282eb5`.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-007-p7-compatibility-convergence-git-handoff-receipt.json`
+
+**Focus:** Converge maintained compatibility callers after P1-P6, prove every
+retained facade/module projection delegates to an exact canonical owner or a
+documented formula-free namespace adapter, and hold legacy P5 ETABS shapes
+truthfully. Public deletion, signature breaks, cumulative M0, live ETABS/EDB,
+installed Excel, INDIA-3 engineering, release, and professional approval remain
+excluded.
+
+### Summary
+
+- Extended the maintained API-classification generator with a deterministic
+  compatibility ledger. It remeasures 222 package-root, 199 service-facade, and
+  199 legacy-facade exports and reconciles all 620 facade projections exactly.
+- Proved function/class/value projections by exact object and signature. Module
+  compatibility namespaces carry per-symbol owner maps because Python can bind
+  an explicitly imported submodule over a package attribute; no module wrapper
+  contains a structural formula.
+- Accounted for 45 root compatibility modules, 520 exact symbol projections,
+  the 87-name `api_hub` identity subset, existing import-warning metadata, and
+  every detected maintained/intentional/preserved caller. Zero maintained
+  callers remain ambiguous.
+- Migrated maintained implementation code, active scripts, examples, and
+  current user/developer documentation to owning modules or the deliberate
+  package-root facade. Compatibility tests and policy/migration examples remain
+  preserved so old imports continue to be verified.
+- Marked `normalize_etabs_forces`, `load_etabs_csv`,
+  `create_job_from_etabs`, and `create_jobs_from_etabs_csv` as
+  `HELD_COMPATIBILITY` with no removal version. They cannot be described as P5
+  accepted snapshots. `ETABSAdapter` remains the canonical parser delegate used
+  through lossless intake.
+- Found no caller-free second calculation path or unsafe contract requiring a
+  retirement candidate. No export, signature, file, branch, worktree, archive,
+  fixture, or vendor/reference item was removed or rewritten.
+
+### Issues encountered
+
+- The app-created worktree started detached, although it was clean and already
+  at the exact hosted P6 base.
+- The frozen plan, task board, and next-session brief still described P6 as
+  active after PR #858 had merged.
+- The first caller-ledger implementation exceeded 60 seconds and had to be
+  interrupted.
+- The live export counts had grown from the G0 baseline of 205/182/182 and 447
+  compatibility entries to 222/199/199 and 498 compatibility entries.
+- Four root-stub docstrings named pre-restructure replacement modules.
+- The first focused ledger test found that module projection identity and a
+  `typing.Literal` alias were misrepresented by generic `__module__` /
+  `__qualname__` introspection. It also exposed ten import paths with real
+  `DeprecationWarning` behavior that the first ledger draft called
+  non-deprecated.
+- The first P5 held-metadata assertion assumed every limitation sentence used
+  the word `snapshot`, while the JobSpec record correctly names its incompatible
+  `ProjectBeamDesignInputV1` shape instead.
+- A focused test-name inventory used an unmatched zsh glob for an optional
+  ETABS integration-test path.
+- The first frozen changed-source static batch reported one dynamic-`setattr`
+  Ruff finding, two format-only files, scanner-local mypy inference conflicts,
+  and the existing missing `xlwings` stub at the optional Excel import.
+- The first normal commit-hook attempt created no commit: the complete generated
+  ledger exceeded the 500 KiB small-file limit, Black normalized one P5
+  metadata assignment, and full-project mypy rejected the targeted
+  environment's `xlwings` import ignore. The first repair static check then
+  exposed an inferred module-versus-fallback-stub assignment type.
+- The second commit-hook attempt created no commit because Black restored one
+  metadata assignment that the manual Ruff formatting pass had changed back to
+  Ruff's alternate valid layout. Every other hook passed.
+
+### Root causes and resolutions
+
+- A Codex app worktree may be detached by construction. Resolution: verify exact
+  hosted commit/tree, all worktrees, candidate ordering, and source binding,
+  then attach the new task branch at the same commit without reset, stash,
+  clean, rebase, discard, or deletion.
+- P6 froze its candidate documents before hosted merge facts existed, and the
+  immutable candidate was correctly not amended after merge. Resolution: P7
+  reconciles the reviewed P6 head `9647fedd`, PR #858 merge `6cb47221`, and
+  exact candidate/merged tree `d2b3efa3` in its own candidate documents.
+- Recursive `Path.rglob` plus repeated per-symbol regular-expression scans made
+  caller discovery multiply work across the repository. Resolution: prune
+  ignored directories with `os.walk`, parse Python once with AST, and scan other
+  text once with indexed expressions. Ledger generation now completes in about
+  2.5 seconds. ⚠️ TERMINAL ISSUE: initial caller scan exceeded 60 seconds ->
+  interrupted it and replaced recursive repeated scanning with pruned,
+  single-pass discovery.
+- P1-P6 deliberately added public objects across the same three facades.
+  Resolution: treat G0 counts as a baseline, group projections by exact owner,
+  and record 620/620 reconciliation rather than interpreting 498 compatibility
+  entries as engines.
+- The detailing, serviceability, shear, and torsion root stubs retained older
+  module paths in prose although their imports already delegated to the beam
+  owners. Resolution: update the docstrings and fail closed when documented and
+  imported owners disagree.
+- Importing `structural_lib.<module>` can replace a root package attribute with
+  the compatibility module object, and typing aliases do not have a unique
+  resolvable owner through generic introspection. Resolution: classify module
+  paths as formula-free namespace adapters and derive exact symbol owners from
+  import statements; record warning category, message, replacement, and
+  stacklevel from the ten warning stubs. The focused test now passes 18 tests.
+- Held P5 metadata is deliberately specific to each incompatible legacy shape.
+  Resolution: assert the shared status/removal boundary and accept either the
+  snapshot-identity or ProjectBeamDesignInputV1 limitation language. The
+  affected focused test passes.
+- zsh rejects unmatched globs before `rg` can inspect the remaining paths.
+  Resolution: enumerate the maintained ETABS test files with `rg --files` and
+  pass the exact results. ⚠️ TERMINAL ISSUE: unmatched
+  `Python/tests/integration/test_etabs_import*` glob -> used an `rg --files`
+  inventory and exact paths.
+- Dynamic assignment hid a constant compatibility attribute from Ruff/mypy;
+  reused local names made mypy join AST and text-scan types; and optional
+  `xlwings` intentionally has no importable stub on this Mac. Resolution: use
+  typed direct compatibility assignments, distinct scanner-local names, an
+  explicit optional-import ignore, and Ruff formatting. All 28 changed Python
+  files pass Ruff/format and all 17 changed runtime/scanner sources pass mypy.
+- The full record ledger repeated long signatures, paths, migration metadata,
+  and test evidence across 1,408 owner/projection/module records, producing a
+  2.9 MiB pretty-printed file. Resolution: retain the complete in-memory
+  contract while checking in a lossless global value dictionary, recursively
+  interned/front-coded string table, and indexed record rows. The generator and
+  test suite expand it before comparison; the exact 620 projections and 1,501
+  callers remain present while the deterministic file is 498,253 bytes. The
+  optional Excel bridge now imports `xlwings` dynamically into an `Any`-typed
+  binding so both installed and fallback environments type-check without an
+  environment-dependent suppression. Black's hook edit was retained. The
+  repaired 19-test compatibility selection, generator check, Ruff/format, and
+  full 247-source mypy run pass.
+- `etabs_import.py` is on the repository's Black hook surface; using Ruff to
+  format it after the first hook correction caused a deterministic formatter
+  oscillation even though Ruff lint stayed green. Resolution: retain Black's
+  hook output, verify it with Black and Ruff lint only, and exclude it from any
+  further Ruff formatting pass. The final hook retry is the acceptance
+  evidence. ⚠️ TERMINAL ISSUE: alternating Black and Ruff format layouts kept
+  rejecting the commit -> retained the configured Black output and used Ruff
+  only as a linter.
+
+### Validation through content freeze
+
+- Exact source binding remains hosted `6cb47221` / tree `d2b3efa3`; the
+  preserved INDIA-3 candidate `9c976b1f` and every unrelated clean, dirty,
+  detached, behind, or diverged lane remain unchanged.
+- The generated ledger reconciles 620/620 facade projections, records 222
+  canonical owners, 45 root modules, 520 root-symbol projections, 87 `api_hub`
+  exports, and zero blocked maintained callers or retirement candidates.
+- The P5 snapshot remains
+  `a82d927d347108f56aa3fcdd559c1aa45ba8d87673cb3feec61a03d5eadbf4f8`;
+  the P6 maintained gravity vector remains hash `95487e89`, governing `HOLD`,
+  with issue `BEAM_SUPPLIED_REINFORCEMENT_NOT_SUPPLIED`.
+- The frozen focused selection passes 224 package/facade, P5, websocket, and
+  representative P1-P6 tests. All 28 changed Python files pass Ruff/format and
+  all 17 changed runtime/scanner sources pass mypy. Architecture checks 221
+  files with zero violations, imports check 695 files with zero broken imports,
+  and circular validation checks 202 files with no cycle. Classification and
+  ledger reconcile 620/620, all 100 public functions pass schema/manifest
+  validation, and OpenAPI/API-doc contracts remain green. The single
+  pre-repair consolidated quick gate passed 10/10 with zero reused results. The
+  repaired-candidate quick gate also passes 10/10 with zero reused results;
+  normal hook retry and hosted-candidate evidence follow before integration.
+  Broad suites remain reserved for M0. React/Office.js were not changed, so
+  installed Windows Excel is `NOT_REQUIRED_UNCHANGED_SURFACE`.
+
 ## 2026-08-24 — Session: LIB-PRO-007-P6 cross-surface parity
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents)

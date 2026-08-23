@@ -1,0 +1,153 @@
+{
+  "schema_version": "lib-pro-007-p7-evidence/v1",
+  "task_id": "LIB-PRO-007-P7",
+  "status": "LOCAL_FOCUSED_STATIC_API_QUICK_PASS_HOOK_RETRY_HOSTED_PENDING",
+  "base": {
+    "hosted_main_commit": "6cb4722103bfc018dc3889fcc1a5a437e3579897",
+    "exact_tree": "d2b3efa3243d06e2bfff8ff1990db19eac282eb5",
+    "predecessor_pr": 858,
+    "reviewed_predecessor_candidate": "9647feddb672428e4f89348f5f82ad8c2cbe71cf"
+  },
+  "scope": {
+    "facades": [
+      "structural_lib",
+      "structural_lib.services.api",
+      "structural_lib.api"
+    ],
+    "additional_namespace": "structural_lib.services.api_hub",
+    "root_compatibility_module_count": 45,
+    "recommended_end_user_import": "structural_lib",
+    "recommended_internal_import": "owning module or service",
+    "retained_compatibility_import": "structural_lib.api",
+    "out_of_scope_preserved": [
+      "archives and historical migration material",
+      "vendor sources and Streamlit reference material",
+      "fixtures and golden evidence",
+      "unrelated branches and worktrees",
+      "live ETABS or EDB access",
+      "installed Windows Excel rerun",
+      "cumulative LIB-PRO-007-M0 broad suites",
+      "INDIA-3 engineering",
+      "release and professional approval"
+    ]
+  },
+  "g0_baseline_remeasurement": {
+    "g0_observed": {
+      "structural_lib_declared_exports": 205,
+      "structural_lib_services_api_declared_exports": 182,
+      "structural_lib_api_declared_exports": 182,
+      "compatibility_classification_entries": 447
+    },
+    "p7_live": {
+      "structural_lib_declared_exports": 222,
+      "structural_lib_services_api_declared_exports": 199,
+      "structural_lib_api_declared_exports": 199,
+      "facade_projection_count": 620,
+      "compatibility_classification_entries": 498,
+      "canonical_owner_count": 222
+    },
+    "interpretation": "Projection and classification totals include intentional views of the same objects across three facades; they are not counts of structural calculation engines."
+  },
+  "ledger": {
+    "path": "docs/reference/api-compatibility-ledger.json",
+    "sha256": "57a0977b1247e92c80bc8cba941ee9d9e9062fa20a727fa4782c9817cb58eab4",
+    "schema_version": "api-compatibility-ledger/v1",
+    "checked_in_encoding": "column-dictionary-v1",
+    "checked_in_bytes": 498253,
+    "classification_path": "docs/reference/api-classification.json",
+    "classification_sha256": "05ee001a9b52cf389c73bc41d38523667cd04ea6c549762c758cb29127379e71",
+    "classification_projection_count": 620,
+    "ledger_projection_count": 620,
+    "exactly_reconciled": true,
+    "caller_record_count": 1501,
+    "blocked_ambiguous_caller_count": 0,
+    "api_hub_export_count": 87,
+    "root_stub_projection_count": 520,
+    "disposition_record_counts": {
+      "CANONICAL_OWNER": 222,
+      "INTENTIONAL_PUBLIC_FACADE": 784,
+      "DELEGATING_COMPATIBILITY_SHIM": 1142,
+      "MAINTAINED_CALLER_MIGRATED": 338,
+      "HELD_COMPATIBILITY": 40,
+      "RETIREMENT_CANDIDATE_PENDING_APPROVAL": 0,
+      "OUT_OF_SCOPE_PRESERVED": 383,
+      "BLOCKED_AMBIGUOUS_OWNER": 0
+    },
+    "count_note": "Disposition totals span owner, projection, namespace, module, and caller records and therefore are not unique-engine counts."
+  },
+  "identity_and_adapter_truth": {
+    "functions_classes_and_values": "same canonical object and inspect.signature across retained facades",
+    "module_namespaces": "formula-free adapters with exact per-symbol canonical owner mapping",
+    "api_hub": "strict 87-name identity subset of structural_lib.services.api",
+    "deprecated_import_paths": {
+      "count": 10,
+      "policy": "existing DeprecationWarning category, message, replacement, and stacklevel recorded; removal_version remains null"
+    },
+    "ordinary_structural_lib_api_import_warning": false,
+    "second_structural_calculation_path_found": false
+  },
+  "p5_compatibility": {
+    "canonical_snapshot_entrypoint": "structural_lib.imports.build_etabs_canonical_snapshot_v1",
+    "canonical_snapshot_owner": "structural_lib.services.etabs_snapshot.build_etabs_canonical_snapshot_v1",
+    "parser_delegate": "structural_lib.services.adapters.ETABSAdapter",
+    "lossless_calculation_intake": [
+      "structural_lib.services.imports.parse_single_csv_lossless",
+      "structural_lib.services.imports.parse_dual_csv_lossless"
+    ],
+    "held_helpers": [
+      "normalize_etabs_forces",
+      "load_etabs_csv",
+      "create_job_from_etabs",
+      "create_jobs_from_etabs_csv"
+    ],
+    "held_reason": "Legacy shapes lack the complete project/export identity, exhaustive row dispositions, ambiguity ledger, source hashes, and accepted snapshot identity; JobSpec helpers may accept historical material defaults.",
+    "accepted_snapshot_claim_from_held_helpers": false
+  },
+  "representative_product_vectors": {
+    "p1": "Python/tests/integration/test_api_cost_optimization.py::test_api_optimize_beam_cost_enforces_shear_demand",
+    "p2": "Python/tests/unit/test_beam_reinforcement.py::test_complete_supplied_arrangement_can_reach_bounded_pass",
+    "p3": "Python/tests/test_footing_detailing.py::test_explicit_90_degree_bend_closes_anchorage_and_geometry",
+    "p4": "Python/tests/unit/test_gravity_workflow_v1.py::test_practical_actions_flow_through_exact_member_actions_and_result",
+    "p5": "Python/tests/unit/test_etabs_snapshot.py::test_snapshot_is_deterministic_and_emits_canonical_beam_requests",
+    "p6_beam": "Python/tests/integration/test_canonical_transport_contract_v1.py::test_python_facades_and_json_share_one_canonical_result",
+    "p6_rest": "fastapi_app/tests/test_lib_pro_007_p6_parity.py::test_p5_canonical_request_has_identical_python_and_rest_result_identity",
+    "p6_gravity": {
+      "workflow_result_hash": "95487e890c74a245360a1855e8cd07f323446da7ed4f2f2a56e4822cbb55751e",
+      "governing_status": "HOLD",
+      "issue_codes": [
+        "BEAM_SUPPLIED_REINFORCEMENT_NOT_SUPPLIED"
+      ]
+    },
+    "p5_snapshot_sha256": "a82d927d347108f56aa3fcdd559c1aa45ba8d87673cb3feec61a03d5eadbf4f8"
+  },
+  "retirement": {
+    "candidates": [],
+    "deletion_authorized": false,
+    "public_contract_break_authorized": false,
+    "approval_question_required": false
+  },
+  "verification": {
+    "implementation_reproducer": "PASS_18",
+    "repair_focused_tests": "PASS_19_LOSSLESS_SMALL_FILE_LEDGER_AND_RUNTIME_IDENTITY",
+    "frozen_focused_tests": "PASS_224",
+    "changed_source_ruff_and_mypy": "PASS_RUFF_AND_FORMAT_28_FILES_MYPY_17_SOURCE_FILES_REPAIR_MYPY_247_SOURCE_FILES",
+    "architecture_import_circular_checks": {
+      "architecture": "PASS_221_FILES_ZERO_VIOLATIONS",
+      "imports": "PASS_695_FILES_ZERO_BROKEN_IMPORTS",
+      "circular_imports": "PASS_202_FILES_ZERO_CYCLES"
+    },
+    "api_classification_and_manifest_checks": "PASS_620_OF_620_LEDGER_RECONCILIATION_100_OF_100_FASTAPI_COMPATIBLE_API_DOC_AND_OPENAPI_CONTRACTS_GREEN",
+    "quick_gate": "PASS_10_OF_10_ZERO_REUSED_REPAIRED_CANDIDATE",
+    "normal_staged_hooks": "TWO_ATTEMPTS_REJECTED_NO_COMMIT_FINAL_FORMATTER_RETRY_PENDING",
+    "hosted_checks": "PENDING_IMMUTABLE_CANDIDATE",
+    "broad_python_fastapi_react_and_full_gate": "RESERVED_FOR_LIB_PRO_007_M0",
+    "installed_windows_excel": "NOT_REQUIRED_UNCHANGED_SURFACE"
+  },
+  "claims": {
+    "software_scope": "BOUNDED_P7_COMPATIBILITY_CONVERGENCE_ONLY",
+    "whole_standard_completion": false,
+    "engineering_use_approval": false,
+    "professional_approval": false,
+    "release_authorized": false
+  }
+}

@@ -1334,7 +1334,7 @@ Warnings: {len(self.warnings)}
 
     def to_cad(self, format: str = 'dxf') -> bytes:
         """Export to CAD format using detailing result."""
-        from structural_lib.dxf_export import export_beam_to_dxf
+        from structural_lib.services.dxf_export import export_beam_to_dxf
         return export_beam_to_dxf(self.detailing, format=format)
 
     def compare(self, other: 'CompleteBeamDesignResult') -> ComparisonResult:

@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-17
+last_updated: 2026-08-24
 doc_type: reference
 complexity: intermediate
 tags: [api, reference]
@@ -10,7 +10,7 @@ tags: [api, reference]
 # Which API Should I Use?
 
 **Type:** Reference | **Audience:** Developers | **Status:** Active
-**Importance:** High | **Created:** 2026-04-05 | **Last Updated:** 2026-08-17
+**Importance:** High | **Created:** 2026-04-05 | **Last Updated:** 2026-08-24
 
 ---
 
@@ -19,7 +19,8 @@ machine-readable classification is in [api-classification.json](api-classificati
 
 ## Level 1: High-Level Service API (recommended)
 
-**Module:** `structural_lib` (top-level) or `structural_lib.services.api`
+**Module:** `structural_lib` (recommended end-user facade) or
+`structural_lib.services.api` (explicit service facade)
 **Best for:** Complete design workflows with all IS 456 compliance checks.
 
 ```python
@@ -125,6 +126,18 @@ contracts.
 | Run a full pipeline (design → detail → BBS → report) | Level 1: `design_and_detail_beam_is456()` + `compute_bbs()` |
 | Inspect the retained ETABS CSV preview | Explicit `HOLD`; do not treat `create_jobs_from_etabs_csv()` as a canonical task API |
 | Get xu_max/d for Fe500 | Level 2: `materials.get_xu_max_d(500)` |
+
+## Retained compatibility imports
+
+`structural_lib.api` remains import-compatible for existing callers and
+re-exports the same objects and signatures. It is not a second calculator and
+is not deprecated merely because it is a facade. New end-user code should use
+the package root; internal library code should import the owning module.
+
+The complete disposition and caller evidence is in the [compatibility
+ledger](api-compatibility-ledger.json). See the [P7 migration
+guide](../migration/lib-pro-007-p7-compatibility-convergence.md) for the P5
+ETABS held-compatibility boundary.
 
 ## See Also
 

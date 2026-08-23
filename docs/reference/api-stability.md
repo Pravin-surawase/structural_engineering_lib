@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-17
+last_updated: 2026-08-24
 doc_type: reference
 complexity: intermediate
 tags: [api, alpha, compatibility]
@@ -14,7 +14,7 @@ tags: [api, alpha, compatibility]
 **Status:** Alpha Preview
 **Importance:** High
 **Version:** 0.23.1a2
-**Last Updated:** 2026-08-17
+**Last Updated:** 2026-08-24
 
 StructLib is a pre-1.0 Alpha. No exported Python symbol currently carries a
 post-1.0 stable compatibility promise, and passing software tests do not imply
@@ -62,12 +62,24 @@ CI regenerates the registry from the installed candidate and fails when a
 declared export, public-looking callable, facade classification, or package
 version changes without an intentional registry update.
 
+The maintained [compatibility ledger](api-compatibility-ledger.json) separately
+records canonical object ownership, identity/signature proof, retained root
+stubs, `api_hub`, maintained callers, P5 held compatibility, and deletion
+authorization. Its projection total must reconcile exactly with this registry;
+an ambiguous maintained caller fails the generator check. The checked-in ledger
+uses a lossless column-dictionary JSON encoding to retain every record within
+the repository's small-file boundary.
+
 ## Compatibility policy
 
 Within the Alpha channel, changes remain surgical and documented. Confirmed
 unsafe behavior is corrected even if permissive callers used it: a
 compatibility route may map known aliases, but it may not fill missing
 structural inputs, hide import loss, or convert missing status to PASS.
+An identity-only public facade is not deprecated just because it re-exports an
+object. Deprecation requires a real replacement and an owner-approved removal
+schedule; held compatibility may instead carry explicit limitation metadata
+with no warning or removal version.
 
 Use exact Alpha pins for reproducibility:
 
@@ -76,5 +88,7 @@ python3 -m pip install "structural-lib-is456===0.23.1a2"
 python3 -c "import structural_lib; print(structural_lib.__version__, structural_lib.__file__)"
 ```
 
-See [Which API should I use?](api-levels.md), the [deprecation
-policy](deprecation-policy.md), and the [release policy](../getting-started/releases.md).
+See [Which API should I use?](api-levels.md), the [P7 migration
+guide](../migration/lib-pro-007-p7-compatibility-convergence.md), the
+[deprecation policy](deprecation-policy.md), and the [release
+policy](../getting-started/releases.md).

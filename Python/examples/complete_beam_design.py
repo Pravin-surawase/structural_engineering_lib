@@ -26,11 +26,11 @@ import os
 from dataclasses import dataclass
 
 # Import library modules
-from structural_lib import detailing, flexure, shear
+from structural_lib.codes.is456.beam import detailing, flexure, shear
 
 # Optional DXF support (requires ezdxf)
 try:
-    from structural_lib.dxf_export import EZDXF_AVAILABLE, generate_beam_dxf
+    from structural_lib.services.dxf_export import EZDXF_AVAILABLE, generate_beam_dxf
 
     DXF_AVAILABLE = EZDXF_AVAILABLE
 except Exception:

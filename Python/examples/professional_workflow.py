@@ -29,16 +29,17 @@ import tempfile
 from datetime import datetime
 from pathlib import Path
 
-from structural_lib import api
-from structural_lib.audit import AuditTrail, CalculationHash
-from structural_lib.calculation_report import generate_calculation_report
-from structural_lib.inputs import (
+from structural_lib import (
+    AuditTrail,
     BeamGeometryInput,
     BeamInput,
+    CalculationHash,
     LoadsInput,
     MaterialsInput,
+    design_beam_is456,
+    generate_calculation_report,
 )
-from structural_lib.testing_strategies import (
+from structural_lib.services.testing_strategies import (
     AREA_TOLERANCE,
     BeamDesignInvariants,
     PropertyBasedTester,
@@ -88,7 +89,7 @@ def main() -> None:
     print("-" * 40)
 
     # Run IS 456 design using the API
-    result = api.design_beam_is456(
+    result = design_beam_is456(
         units="IS456",
         case_id="CASE-1",
         b_mm=geometry.b_mm,

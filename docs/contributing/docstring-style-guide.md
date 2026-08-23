@@ -142,8 +142,8 @@ References:
 #### Examples Section (Optional but helpful for complex functions)
 ```python
 Examples:
-    >>> from structural_lib import api
-    >>> result = api.calculate_mu_lim(b=300, d=450, fck=25, fy=415)
+    >>> from structural_lib.codes.is456.beam.flexure import calculate_mu_lim
+    >>> result = calculate_mu_lim(b=300, d=450, fck=25, fy=415)
     >>> print(f"{result:.2f}")
     186.75
 ```

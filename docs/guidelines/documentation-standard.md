@@ -894,7 +894,7 @@ __all__ = [
 ]
 
 # IDE autocomplete shows only __all__ items when user types:
-# from structural_lib.flexure import <TAB>
+# from structural_lib.codes.is456.beam.flexure import <TAB>
 ```
 
 ---

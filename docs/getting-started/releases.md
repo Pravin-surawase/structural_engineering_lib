@@ -1088,7 +1088,7 @@ It exists because this ledger is **append-only**.
 
 **Deterministic job runner + CLI:**
 - Job spec: [docs/specs/v0.9-job-schema.md](../specs/v0.9-job-schema.md).
-- Runner: `structural_lib.job_runner.run_job(...)` writes stable outputs (JSON + CSV) in a fixed folder layout.
+- Runner: `structural_lib.services.job_runner.run_job(...)` writes stable outputs (JSON + CSV) in a fixed folder layout.
 - CLI: `python -m structural_lib.job_cli run --job job.json --out <dir>`.
 
 ### v0.9.1 — Expanded Notes

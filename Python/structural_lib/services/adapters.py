@@ -35,7 +35,7 @@ import math
 from abc import ABC, abstractmethod
 from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from structural_lib.core.models import (
     BeamForces,
@@ -2121,3 +2121,16 @@ class GenericCSVAdapter(InputAdapter):
         geometry = self.load_geometry(source, defaults)
         forces = self.load_forces(source)
         return geometry, forces
+
+
+cast(Any, ETABSAdapter).__compatibility__ = {
+    "status": "CANONICAL_OWNER",
+    "since_task": "LIB-PRO-007-P5",
+    "removal_version": None,
+    "replacement_public": "structural_lib.imports.build_etabs_canonical_snapshot_v1",
+    "replacement_owner": "structural_lib.services.adapters.ETABSAdapter",
+    "limitation": (
+        "Use through parse_single_csv_lossless or parse_dual_csv_lossless so "
+        "row accounting and explicit project inputs remain fail closed."
+    ),
+}

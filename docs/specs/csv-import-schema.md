@@ -124,7 +124,7 @@ C1,C1,Story1,Column,RC300x300,4,5,0.0,0.0,0.0,0.0,0.0,3.0,90.0,10
 #### Python API for Geometry
 
 ```python
-from structural_lib.etabs_import import (
+from structural_lib.services.etabs_import import (
     load_frames_geometry,
     merge_forces_and_geometry,
     FrameGeometry,

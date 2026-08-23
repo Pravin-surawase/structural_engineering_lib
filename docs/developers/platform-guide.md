@@ -92,7 +92,7 @@ pip install -e .
 
 ```python
 # quick_start_example.py
-from structural_lib.api import design_beam_is456
+from structural_lib import design_beam_is456
 
 # Design a residential beam
 result = design_beam_is456(
@@ -138,7 +138,7 @@ python quick_start_example.py
 #### Generate Bar Bending Schedule (BBS)
 
 ```python
-from structural_lib.api import generate_bbs_from_detailing
+from structural_lib import generate_bbs_from_detailing
 
 # Continue from previous example
 bbs_items = generate_bbs_from_detailing(result)
@@ -150,7 +150,7 @@ for item in bbs_items:
 #### Export to DXF Drawing
 
 ```python
-from structural_lib.dxf_export import quick_dxf
+from structural_lib.services.dxf_export import quick_dxf
 
 # Generate CAD drawing (requires ezdxf: pip install ezdxf)
 dxf_path = quick_dxf(
@@ -183,7 +183,7 @@ with open("beam_B1.html", "w") as f:
 ### Step 4: Validate & Check (5 minutes)
 
 ```python
-from structural_lib.api import check_beam_is456
+from structural_lib import check_beam_is456
 
 # Comprehensive compliance check
 compliance = check_beam_is456(
@@ -261,7 +261,7 @@ result = design_beam_is456(**params)
 **All functions use typed data structures:**
 
 ```python
-from structural_lib.data_types import (
+from structural_lib.core.data_types import (
     BeamDesignResult,     # Main result from design_beam_is456()
     BarArrangement,       # Rebar configuration (count, dia, spacing)
     StirrupArrangement,   # Stirrup details (dia, legs, spacing)
@@ -314,7 +314,7 @@ result_dict = result.as_dict()
 
 ```python
 # analyze_beam.py
-from structural_lib.api import design_beam_is456
+from structural_lib import design_beam_is456
 
 # Read inputs (CSV, JSON, user input)
 beams = [
@@ -350,7 +350,7 @@ for beam in beams:
 ```python
 # batch_processor.py
 import csv
-from structural_lib.api import design_beam_is456
+from structural_lib import design_beam_is456
 
 def process_etabs_export(csv_path, output_path):
     """Process ETABS beam forces CSV and generate design summary."""
@@ -439,7 +439,7 @@ const { result, isLoading } = useLiveDesign(beamParams);
 ```python
 # api_server.py
 from flask import Flask, request, jsonify
-from structural_lib.api import design_beam_is456
+from structural_lib import design_beam_is456
 
 app = Flask(__name__)
 
@@ -499,7 +499,7 @@ curl -X POST http://localhost:5000/api/v1/design/beam \
 ```python
 from reportlab.lib.pagesizes import A4
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table
-from structural_lib.api import design_beam_is456
+from structural_lib import design_beam_is456
 
 def generate_pdf_report(result, output_path):
     """Generate PDF report from design result."""
@@ -535,7 +535,7 @@ generate_pdf_report(result, "beam_report.pdf")
 **Add seismic checks:**
 
 ```python
-from structural_lib.api import design_beam_is456, check_beam_is456
+from structural_lib import design_beam_is456, check_beam_is456
 
 def design_with_seismic(span_mm, mu_knm, vu_kn, **kwargs):
     """Design beam with additional seismic requirements."""
@@ -581,7 +581,7 @@ def design_with_seismic(span_mm, mu_knm, vu_kn, **kwargs):
 
 ```python
 # aci318.py - Custom module
-from structural_lib.data_types import BeamDesignResult, BarArrangement
+from structural_lib.core.data_types import BeamDesignResult, BarArrangement
 
 def design_beam_aci318(width_in, depth_in, mu_kipft, fc_psi=4000, fy_ksi=60):
     """
@@ -888,7 +888,7 @@ assert result1 is result2  # Same object from cache
 
 ```python
 import logging
-from structural_lib.api import design_beam_is456
+from structural_lib import design_beam_is456
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

@@ -139,6 +139,21 @@
   },
   "stable_exports": [],
   "internal_policy": "Every public-looking callable outside __all__ is tracked as internal.",
+  "compatibility_ledger": {
+    "schema_version": "api-compatibility-ledger/v1",
+    "path": "docs/reference/api-compatibility-ledger.json",
+    "taxonomy": [
+      "CANONICAL_OWNER",
+      "INTENTIONAL_PUBLIC_FACADE",
+      "DELEGATING_COMPATIBILITY_SHIM",
+      "MAINTAINED_CALLER_MIGRATED",
+      "HELD_COMPATIBILITY",
+      "RETIREMENT_CANDIDATE_PENDING_APPROVAL",
+      "OUT_OF_SCOPE_PRESERVED",
+      "BLOCKED_AMBIGUOUS_OWNER"
+    ],
+    "projection_reconciliation": "Every classified facade symbol has exactly one projection record."
+  },
   "surfaces": [
     {
       "module": "structural_lib",

@@ -19,12 +19,14 @@ Setup:
 
 from __future__ import annotations
 
+from importlib import import_module
+from typing import Any
+
 try:
-    import xlwings as xw
+    xw: Any = import_module("xlwings")
 except ImportError:
     # Provide no-op stubs so the module can be imported without xlwings
     from collections.abc import Callable
-    from typing import Any
 
     class _Stub:
         @staticmethod
@@ -46,7 +48,7 @@ except ImportError:
     xw = _Stub()
 
 # Import existing Python modules (already tested!)
-from structural_lib import detailing, flexure, shear
+from structural_lib.codes.is456.beam import detailing, flexure, shear
 
 # ============================================================================
 # FLEXURE UDFs (IS 456:2000)

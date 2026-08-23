@@ -40,7 +40,7 @@ All insights are **advisory only** and do not replace code compliance checks.
 ### Python API
 
 ```python
-from structural_lib.api import design_beam_is456
+from structural_lib import design_beam_is456
 from structural_lib.insights import (
     quick_precheck,
     sensitivity_analysis,
@@ -178,7 +178,7 @@ Positive sensitivity = bad (parameter hurts when increased)
 ### Example
 
 ```python
-from structural_lib.api import design_beam_is456
+from structural_lib import design_beam_is456
 from structural_lib.insights import sensitivity_analysis
 
 params = {
@@ -294,8 +294,8 @@ Based on Singapore BDAS framework (Poh & Chen, 1998):
 ### Example
 
 ```python
-from structural_lib.api import design_beam_is456
-from structural_lib.detailing import create_beam_detailing
+from structural_lib import design_beam_is456
+from structural_lib.codes.is456.beam.detailing import create_beam_detailing
 from structural_lib.insights import calculate_constructability_score
 
 # Run design

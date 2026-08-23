@@ -190,14 +190,18 @@ def calculate_required_steel(mu_knm, b_mm, d_mm, fck, fy):
 
 **CORRECT:**
 ```python
-# In Python/structural_lib/api.py
-def calculate_required_steel(mu_knm, b_mm, d_mm, fck, fy) -> RequiredSteelResult:
-    """Calculate required steel area per IS 456."""
-    # ... calculation logic
-
-# In streamlit_app/components/beam_editor.py
-from structural_lib.api import calculate_required_steel
-result = calculate_required_steel(mu_knm, b_mm, d_mm, fck, fy)
+# In an application client; structural_lib owns the calculation.
+from structural_lib import design_beam_is456
+result = design_beam_is456(
+    units="IS456_NMM",
+    mu_knm=mu_knm,
+    vu_kn=vu_kn,
+    b_mm=b_mm,
+    D_mm=D_mm,
+    d_mm=d_mm,
+    fck_nmm2=fck,
+    fy_nmm2=fy,
+)
 ```
 
 ---
@@ -227,8 +231,8 @@ import numpy as np
 import pandas as pd
 
 # 3. Local imports (absolute)
-from structural_lib.flexure import compute_xu
-from structural_lib.types import BeamDesignOutput
+from structural_lib.codes.is456.beam.flexure import design_singly_reinforced
+from structural_lib.core.types import FlexureResult
 ```
 
 ### 3.3 Type Hints (REQUIRED)
@@ -568,10 +572,12 @@ This module provides functions for:
 - Checking flexure code compliance
 
 Usage:
-    from structural_lib.flexure import compute_xu, compute_moment_capacity
+    from structural_lib.codes.is456.beam.flexure import design_singly_reinforced
 
-    xu = compute_xu(ast_mm2=1000, b_mm=300, fck=25, fy=500)
-    mu = compute_moment_capacity(ast_mm2=1000, d_mm=450, fck=25, fy=500)
+    result = design_singly_reinforced(
+        b=300, d=450, d_total=500, mu_knm=150, fck=25, fy=500
+    )
+    assert result.is_safe
 
 Dependencies:
     - numpy for numerical calculations
@@ -866,8 +872,8 @@ def my_custom_xu_calc(ast, b, fck, fy):
     pass
 
 # CORRECT - Use existing library function
-from structural_lib.flexure import compute_xu
-xu = compute_xu(ast, b, fck, fy)
+from structural_lib.codes.is456.beam.flexure import design_singly_reinforced
+result = design_singly_reinforced(b, d, D, mu, fck, fy)
 ```
 
 ---
