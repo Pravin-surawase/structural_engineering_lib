@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-24 — LIB-PRO-008 pre-INDIA-3 software safety closure
+**Updated:** 2026-08-24 — INDIA-3-G0 IS 13920 truth-audit decision
 
 ---
 
@@ -125,9 +125,8 @@
 
 ## Active
 
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + qualified structural engineer | S | P0 | ⏸ PAUSED — resume the already-ready bounded audit after LIB-PRO-008 unchanged-green integration; no formula change |
+No task is active. The INDIA-3 source-metadata and beam/column/joint repair
+packets remain separately held until the G0 decision candidate integrates.
 
 `LIB-PRO-006` merged through PR #851 at `2d6df18e`. It confirms the practical
 10 m x 4 m audit arithmetic and fail-closed footing-detailing `HOLD`, adds a
@@ -238,16 +237,16 @@ product packets. INDIA-3-G0 now runs on fresh branch
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. The reproduced public-route safety packet and M0 are integrated.
-INDIA-3-G0 remains an audit/decision packet only: no new formula, support
-claim, IS 875 or IS 1893 implementation, next package version, release, or
-professional approval is activated.
+INDIA-3-G0 completed its audit/decision work only: beam, column, and joint each
+require a separate repair packet. No new formula, support claim, IS 875 or IS
+1893 implementation, next package version, release, or professional approval
+is activated.
 
-`LIB-PRO-008` closes the confirmed pre-INDIA-3 software blockers on exact base
-`e2fac741`: torsion and WebSocket checking now fail closed on invalid or missing
-engineering inputs; compatibility scanning uses the Git-maintained source set,
-the 1,502-caller ledger is current, and documentation CI owns its freshness;
-single-loop stirrup geometry rejects unsupported multi-leg output. INDIA-3-G0
-may resume only after the unchanged candidate passes local and hosted gates.
+`LIB-PRO-008` merged through PR #862 at `3bcc3422`: torsion and WebSocket
+checking fail closed on invalid or missing engineering inputs; compatibility
+scanning uses the Git-maintained source set, the 1,502-caller ledger is current,
+and documentation CI owns its freshness; single-loop stirrup geometry rejects
+unsupported multi-leg output. Its reviewed and merged trees are equal.
 
 `LIB-PRO-003-A` was accepted and exact-tree merged through PR #832 at
 `e7698a63b86d2db6db2f3970871122af1ce562f6`; Packet B was accepted and
@@ -313,6 +312,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent | ✅ COMPLETE ON MERGE — source chain resolved; all three current families are `REPAIR_PACKET_REQUIRED`; no formula or support promotion occurred |
 | LIB-PRO-008 | Close confirmed torsion, WebSocket, compatibility/CI, and stirrup-geometry safety gaps before resuming INDIA-3-G0 | Main Agent | ✅ COMPLETE ON MERGE — focused behavior and compatibility evidence pass; quick/full/hooks and hosted checks remain immutable-candidate prerequisites |
 | MAINT-0133 | Froze the exact read-only cleanup inventory, two-operation future batch, four unresolved holds, and zero deletion candidates | Main Agent + governance | ✅ DONE — PR #847 merged at `417a1659`; candidate and merged trees equal `0b3076d0`; quick 10/10, full 31/31, and hosted checks pass |
 | MAINT-0132 | Added shared task-bound elapsed time, compact preflight-only orientation, automatic verification-step timing, and exact external integration closeout | Main Agent + governance | ✅ DONE — PR #846 merged at `60e95bbe`; candidate and merged trees equal `292c562d`; focused, quick 10/10, full 31/31, and hosted 9/9 pass |

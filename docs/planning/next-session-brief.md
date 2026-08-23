@@ -4,69 +4,57 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-24
-- Focus: Repair only the confirmed software safety and verification defects
-- Git receipt: docs/verification/lib-pro-008-pre-india3-safety-git-handoff-receipt.json | sha256:01e9d4015048729b98d28f5035c496321a47dc79f7a7fb065e7709ea46ec52b2 | HOLD
-- Git identity: codex/lib-pro-008-pre-india3-safety@e2fac7419551988def59101ac63a5f8e491bc7a2 | upstream=NONE@UNKNOWN | base=origin/main@e2fac7419551988def59101ac63a5f8e491bc7a2 | tree=dirty | operation=none
+- Focus: Complete the bounded existing-surface audit for IS 13920 beam,
+- Git receipt: docs/verification/india-3-g0-audit-decision-git-handoff-receipt.json | sha256:16f23843d6ab4771c333fe45bfd1443383d7990ffb57290e42318bfdbcbf3705 | HOLD
+- Git identity: codex/india-3-g0-acceptance@3bcc34223d8eaf236c62a5f54dfe4b7960876457 | upstream=origin/main@3bcc34223d8eaf236c62a5f54dfe4b7960876457 | base=origin/main@3bcc34223d8eaf236c62a5f54dfe4b7960876457 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
-- Next action: RUN_FROZEN_QUICK_FULL_AND_STAGED_HOOKS
+- Next action: RUN_FINAL_FROZEN_QUICK_GATE_AND_STAGED_HOOKS
 <!-- HANDOFF:END -->
 
 ## Latest Handoff
 
 | State | Boundary |
 |---|---|
-| **Current** | `LIB-PRO-008` is frozen on `codex/lib-pro-008-pre-india3-safety` from exact hosted `e2fac741` |
-| **Decision** | Resume `INDIA-3-G0` only after this unchanged candidate passes local and hosted integration |
-| **Next** | Run immutable-candidate closeout, merge only unchanged green work, then resume the bounded INDIA-3-G0 audit |
-| **Repaired** | Torsion non-finite intake, WebSocket hidden defaults/loose cases, compatibility environment drift/stale ledger, documentation CI ownership, and unsupported stirrup geometry |
-| **Held** | Version bump/publication, IS 13920 formula change or acceptance, broader IS 875/1893 work, professional use, and any branch/worktree/archive deletion |
+| **Current** | `INDIA-3-G0` is complete on source-bound `codex/india-3-g0-acceptance` from exact post-LIB-PRO-008 hosted baseline `3bcc3422` |
+| **Decision** | Beam, column, and joint are each `REPAIR_PACKET_REQUIRED`; no current IS 13920 family is engineering-accepted |
+| **Next** | Integrate this unchanged decision candidate, then start only one separately authorized repair packet, beginning with source metadata or the selected beam/column/joint family |
+| **Source** | IS 13920:2016 First Revision plus Amendment 1 (2017) and Amendment 2 (2020); 2021 reaffirmation is not a new edition; the draft successor is not used |
+| **Held** | Formula implementation in G0, current support acceptance, walls/foundations, IS 875/1893, release, professional use, and branch/worktree/archive deletion |
 
-## Exact packet state
+## G0 result
 
-- The load-case-only WebSocket reproducer now returns a sanitized input error;
-  no `check_result` calculation data is emitted.
-- Every public torsion scalar rejects `NaN`, infinity, booleans, and non-real
-  values before arithmetic can create a false-safe result.
-- Compatibility scanning uses Git's tracked source allowlist in a checkout and
-  a generated-output-filtered fallback in a source archive. The regenerated
-  ledger contains 1,502 caller records and zero ambiguous callers.
-- Documentation validation now runs compatibility freshness, so a docs-only
-  public-API reference cannot bypass the check.
-- `compute_stirrup_path` validates its full geometry boundary and rejects 4/6
-  legs because one closed-loop path cannot represent disconnected inner legs.
-- The separately dirty detached worktree and the private source archive remain
-  untouched.
+- The private archive verifies 25 documents, 27 aliases, 732 cached pages, and
+  142 visual-review pages. Two byte-distinct copies of each amendment are
+  normalized-text equal page by page and remain preserved.
+- The beam family uses the pre-amendment eight-bar spacing limit instead of six,
+  accepts the exact 0.3 ratio boundary, and can report non-finite or incomplete
+  requirement output as compliant.
+- The column family uses incorrect post-amendment clause references, returns
+  longitudinal limits unmapped to the reviewed source, omits the second
+  governing rectangular confinement-area expression, and adds a hidden 40 mm
+  cover/core assumption while reporting compliance without provided steel.
+- The joint family uses a default factor of 1.1 instead of 1.4. A frozen case
+  with column capacity 250 kNm and beam capacity 200 kNm is a source failure but
+  a current-code pass. Direction, axial-load capacity basis, and applicability
+  are also absent from the contract.
+- Existing software tests remain baseline evidence only; they reproduce several
+  outdated constants and therefore do not establish source correctness.
 
-## Local evidence and next action
+## Frozen follow-on sequence
 
-- Focused Python passed 187 tests; the affected geometry module passed 69 after
-  the one audit-driven repair. Focused FastAPI passed 12 tests.
-- Compatibility generation/check passes with no classification-registry drift.
-- Readiness remains truthfully `PARTIAL`: 23/24 checks pass, zero fail, and the
-  longstanding 359-parameter input-ownership diagnostic is the sole warning.
-- Run one frozen quick gate, one full 31-check gate, normal staged hooks, create
-  the immutable candidate, run read-only session end, and require all hosted
-  checks. Merge only if the reviewed head is unchanged and green.
-- After merge, resume the already-frozen G0 audit order below. Do not begin with
-  formula edits.
-
-## Bounded INDIA-3-G0 audit order
-
-1. Resolve exact IS 13920 edition/amendment applicability for each governing
-   beam, column, and joint page.
-2. Map every current input, formula/limit, output, default, status, and failure
-   behavior to confirmed source or an explicit hold.
-3. Freeze independent replayable benchmarks and invalid/out-of-domain cases.
-4. Reconcile core, service, package, transport, tests, documentation, and
-   generated capability truth.
-5. Classify each family `ACCEPT_CURRENT_BOUNDED`,
-   `REPAIR_PACKET_REQUIRED`, or `HOLD` before implementation packets.
+1. `INDIA-3-SOURCE-META-R1` corrects private document-kind/renderability
+   metadata without deleting or distributing source material.
+2. `INDIA-3-BEAM-R1`, `INDIA-3-COLUMN-R1`, and `INDIA-3-JOINT-R1` remain
+   independent formula/contract repair packets. The owner selects their order.
+3. `INDIA-3-IS13920-M0` runs cumulative source, benchmark, transport,
+   capability, package, and qualified-review acceptance after the repairs.
+4. Wall/foundation detailing and the later IS 875/1893 sequence remain separate.
 
 ## Required Reading
 
-1. [LIB-PRO-008 evidence](../verification/lib-pro-008-pre-india3-safety-evidence.json)
+1. [G0 decision evidence](../verification/india-3-g0-is13920-audit-decision.json)
 2. [G0 truth-audit plan](india-3-g0-is13920-truth-audit.md)
-3. [G0 readiness evidence](../verification/india-3-g0-truth-audit-readiness.json)
+3. [G0 readiness snapshot](../verification/india-3-g0-truth-audit-readiness.json)
 4. [Private source-library boundary](../verification/india-3-g0-private-source-library-evidence.md)
 5. [Generated Indian-code capability truth](../verification/indian-code-capability-coverage.json)
 6. [Current task board](../TASKS.md)

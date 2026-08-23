@@ -1,0 +1,74 @@
+{
+  "authorization": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-23T22:42:21Z",
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "reference": "good lets start the india 3 go",
+      "status": "OBSERVED",
+      "query_status": "OK",
+      "observed_at_utc": "2026-08-23T22:42:21Z"
+    },
+    "authorized_actions": [
+      "COMPLETE_BOUNDED_INDIA3_G0_IS13920_EXISTING_SURFACE_AUDIT",
+      "VERIFY_PRIVATE_SOURCE_BOUNDARY_WITHOUT_MUTATING_PRIVATE_ARCHIVE",
+      "ADD_SOURCE_BOUND_DECISION_AND_BENCHMARK_EVIDENCE",
+      "UPDATE_G0_TASK_PLAN_AND_HANDOFF_DOCUMENTATION",
+      "RUN_FOCUSED_DOCUMENTATION_QUICK_AND_STAGED_CHECKS",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_ONE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "prohibited_actions": [
+      "CHANGE_IS13920_FORMULAS_OR_RUNTIME_CONTRACTS_IN_G0",
+      "PROMOTE_CURRENT_IS13920_SUPPORT_CLAIMS",
+      "DISTRIBUTE_PRIVATE_SOURCE_BYTES_TEXT_IMAGES_HASHES_OR_PATHS",
+      "PUBLISH_RELEASE_VERSION_TAG_OR_PACKAGE",
+      "ACTIVATE_PROFESSIONAL_OR_ENGINEERING_USE_APPROVAL",
+      "DELETE_BRANCH_WORKTREE_ARCHIVE_SOURCE_COPY_OR_UNRELATED_FILE",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_OR_REWRITE",
+      "BYPASS_CHECKS_OR_FORCE_PUSH"
+    ],
+    "next_action": "RUN_FINAL_FROZEN_QUICK_GATE_AND_STAGED_HOOKS",
+    "target_binding": {
+      "task_id": "INDIA-3-G0",
+      "branch": "codex/india-3-g0-acceptance",
+      "head_sha": "3bcc34223d8eaf236c62a5f54dfe4b7960876457",
+      "actions": [
+        "COMPLETE_BOUNDED_INDIA3_G0_IS13920_EXISTING_SURFACE_AUDIT",
+        "VERIFY_PRIVATE_SOURCE_BOUNDARY_WITHOUT_MUTATING_PRIVATE_ARCHIVE",
+        "ADD_SOURCE_BOUND_DECISION_AND_BENCHMARK_EVIDENCE",
+        "UPDATE_G0_TASK_PLAN_AND_HANDOFF_DOCUMENTATION",
+        "RUN_FOCUSED_DOCUMENTATION_QUICK_AND_STAGED_CHECKS",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_ONE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ]
+    }
+  },
+  "integration": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-23T22:42:21Z",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR"
+  },
+  "retention": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-23T22:42:21Z",
+    "decision": "RETAIN_ALL_EXISTING_LANES_AND_PRIVATE_SOURCE_COPIES",
+    "owner": "Main Agent under repository preservation policy",
+    "holds": [
+      "PRESERVE_UNRELATED_DIRTY_DETACHED_LANE",
+      "PRESERVE_ALL_EXISTING_INDIA3_CANDIDATE_LANES",
+      "PRESERVE_PRIVATE_SOURCE_ARCHIVE_AND_ALL_SOURCE_COPIES",
+      "BRANCH_WORKTREE_ARCHIVE_SOURCE_COPY_AND_UNRELATED_FILE_DELETION_NOT_AUTHORIZED"
+    ]
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}
