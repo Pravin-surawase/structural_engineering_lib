@@ -1,307 +1,151 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-23
 doc_type: guide
 complexity: intermediate
-tags: []
+tags: [file-operations, safety, migration]
 ---
 
 # File Operations Safety Guide
 
-**Type:** Guideline
-**Audience:** All Agents
-**Status:** Active
-**Importance:** Critical
-**Created:** 2026-01-10
-**Last Updated:** 2026-03-29
+Use these controls for tracked or maintained repository files. Manual `mv`,
+`git mv`, `rm`, destination overwrite, and reference bypass are not accepted
+file-maintenance paths.
 
----
+## Safety contract
 
-**Purpose:** Safe procedures for file deletion, moves, and renames
+The live tools accept only regular files inside the current repository. They
+reject directories, symlinks, outside paths, existing destinations, missing
+validators, and maintained references that cannot be updated deterministically.
 
-## ⚠️ CRITICAL: Read Before Any File Operation
+Reference results have three meanings:
 
-File operations (delete, move, rename) can break:
-- Internal markdown links
-- Python imports
-- Documentation references
-- CI/CD workflows
+- **updateable** — the preview identifies an exact target rewrite and the live
+  transaction must update that same file;
+- **preserved** — historical evidence retains the path text that was true when
+  recorded;
+- **unresolved** — the operation is blocked until an explicit repair is made.
 
-**ALWAYS use the safe automation scripts. NEVER do manual operations.**
+Every live operation starts from a structured link baseline. If the live
+changed paths differ from the preview, a validator fails, or new broken links
+appear, the original bytes and file modes are restored and the command exits
+nonzero.
 
----
-
-## 🛡️ Safe Scripts Reference
-
-### Quick Reference Table
-
-| Operation | Script | Example |
-|-----------|--------|---------|
-| **Move/Rename** | `safe_file_move.py` | `./scripts/python_runtime.sh scripts/safe_file_move.py docs/old.md docs/new.md` |
-| **Delete** | `safe_file_delete.py` | `./scripts/python_runtime.sh scripts/safe_file_delete.py docs/old.md` |
-| **Batch Archive** | `batch_archive.py` | `./scripts/python_runtime.sh scripts/batch_archive.py --files f1.md f2.md` |
-| **Rename Folder** | `rename_folder_safe.py` | `./scripts/python_runtime.sh scripts/rename_folder_safe.py "old folder" "new_folder"` |
-| **Find orphans** | `find_orphan_files.py` | `./scripts/python_runtime.sh scripts/find_orphan_files.py --age` |
-| **Check links** | `check_links.py` | `./scripts/python_runtime.sh scripts/check_links.py` |
-| **Fix links** | `check_links.py` | `./scripts/python_runtime.sh scripts/check_links.py --fix` |
-
----
-
-## 📋 Complete Workflows
-
-### Workflow 1: Moving a File
+## Move or rename one file
 
 ```bash
-# Step 1: Preview (ALWAYS do this first)
-./scripts/python_runtime.sh scripts/safe_file_move.py docs/old-location/file.md docs/new-location/file.md --dry-run
+./scripts/python_runtime.sh scripts/safe_file_move.py old/path/file.md new/path/file.md --dry-run --json
+./scripts/python_runtime.sh scripts/safe_file_move.py old/path/file.md new/path/file.md --json
+```
 
-# Step 2: Review output
-# - Check references that will be updated
-# - Verify destination path is correct
+Use `--stub` only when a maintained Markdown redirect is intentionally part of
+the reviewed preview. There is no force-overwrite option.
 
-# Step 3: Execute move
-./scripts/python_runtime.sh scripts/safe_file_move.py docs/old-location/file.md docs/new-location/file.md
+## Delete one file
 
-# Step 4: Verify
+```bash
+./scripts/python_runtime.sh scripts/safe_file_delete.py path/to/file.md --dry-run --json
+./scripts/python_runtime.sh scripts/safe_file_delete.py path/to/file.md --json
+```
+
+Any maintained reference blocks deletion. A successful live deletion always
+creates a content-addressed backup and JSON manifest under
+`tmp/deleted_backups/<sha256>/`. There is no force or no-backup mode.
+
+## Check and repair Markdown references
+
+```bash
 ./scripts/python_runtime.sh scripts/check_links.py
-
-# Step 5: Commit
-git add -- docs/old/file.md docs/new/file.md
-git commit -m "refactor: move file.md to new location"
+./scripts/python_runtime.sh scripts/check_links.py --json
+./scripts/python_runtime.sh scripts/check_links.py --fix --map explicit-links.json
 ```
 
-### Workflow 2: Deleting a File
+The default scan covers maintained Markdown throughout the repository,
+including `.github`, current research, and local image targets. Historical
+archives and declared historical evidence are excluded from the maintained
+baseline; add `--include-historical` for a supplemental audit.
+
+Automatic repair is allowed only when the indexed repository has exactly one
+candidate. Ambiguous cases require an explicit mapping. Mapping keys may be a
+target or `source/file.md::target`; every mapped destination must exist.
+
+## Python and React source migration
 
 ```bash
-# Step 1: Preview (ALWAYS do this first)
-./scripts/python_runtime.sh scripts/safe_file_delete.py docs/obsolete-file.md --dry-run
+./scripts/python_runtime.sh scripts/migrate_python_module.py Python/structural_lib/old.py Python/structural_lib/new.py --dry-run --json
+./scripts/python_runtime.sh scripts/migrate_python_module.py Python/structural_lib/old.py Python/structural_lib/new.py --json
 
-# Step 2: Review output
-# - Check if file has references (will be shown)
-# - Decide: fix references first, or use --force
+./scripts/python_runtime.sh scripts/migrate_react_component.py react_app/src/old.tsx react_app/src/new.tsx --dry-run --json
+./scripts/python_runtime.sh scripts/migrate_react_component.py react_app/src/old.tsx react_app/src/new.tsx --json
+```
 
-# Step 3a: If no references - delete
-./scripts/python_runtime.sh scripts/safe_file_delete.py docs/obsolete-file.md
+The Python preview includes a newly required `__init__.py`; the React preview
+includes a created or updated barrel `index.ts`. Live source migrations reject
+existing destinations and restore all predicted files if validation fails.
+Run the language-level focused suite once after the intended migration content
+is frozen.
 
-# Step 3b: If has references - fix first OR use force
-# Option A: Fix references manually
-# Option B: Force delete (creates backup)
-./scripts/python_runtime.sh scripts/safe_file_delete.py docs/obsolete-file.md --force
+## Transactional batch migration
 
-# Step 4: Verify
+Create a reviewed JSON plan:
+
+```json
+{
+  "operations": [
+    {
+      "tool": "safe_move",
+      "source": "docs/old.md",
+      "destination": "docs/new.md"
+    },
+    {
+      "tool": "python_module",
+      "source": "Python/structural_lib/old.py",
+      "destination": "Python/structural_lib/new.py",
+      "args": ["--no-stub"]
+    }
+  ]
+}
+```
+
+Then preflight the complete plan before any live operation:
+
+```bash
+./scripts/python_runtime.sh scripts/batch_migrate_runner.py plan.json --dry-run --json
+./scripts/python_runtime.sh scripts/batch_migrate_runner.py plan.json --json
+```
+
+The runner rejects bypass flags, collisions, cycles, chained sources, and any
+failed operation preview. It writes one batch manifest, compares actual changed
+paths and per-file hashes with the complete preview, and restores the entire
+batch after any failure. The generated rollback can also be executed and
+verified later:
+
+```bash
+logs/migration-rollbacks/<run-id>/rollback.sh
+```
+
+## Archival and cleanup
+
+Age is metadata, not an archival decision. Automatic age-based archival is
+retired. First classify exact files by current ownership,
+replacement, reference, retention, and historical-evidence requirements. Put
+the accepted moves in a transactional batch plan; do not scan and move a whole
+folder merely because modification timestamps are old.
+
+## Review and verification
+
+After content freezes, inspect the exact diff and run the affected checks
+together:
+
+```bash
+git diff --summary
+git diff
 ./scripts/python_runtime.sh scripts/check_links.py
-
-# Step 5: Commit
-git add -- docs/file.md
-git commit -m "chore: remove obsolete file.md"
+./scripts/python_runtime.sh -m pytest tests/integration/test_migration_scripts.py -q
+./run.sh context validate
+./run.sh check --quick
 ```
 
-### Workflow 3: Archiving Old Files
-
-```bash
-# Step 1: Find archive candidates
-./scripts/python_runtime.sh scripts/find_orphan_files.py --age
-
-# Step 2: Move to archive (with redirect stub)
-./scripts/python_runtime.sh scripts/safe_file_move.py docs/planning/old-plan.md docs/_archive/2026-01/old-plan.md --stub
-
-# Step 3: Verify
-./scripts/python_runtime.sh scripts/check_links.py
-
-# Step 4: Commit
-git add -- docs/planning/old-plan.md docs/_archive/planning/old-plan.md
-git commit -m "chore: archive old planning docs"
-```
-
-### Workflow 4: Renaming a File
-
-```bash
-# Renaming is just moving to same folder with new name
-./scripts/python_runtime.sh scripts/safe_file_move.py docs/old-name.md docs/new-name.md --dry-run
-./scripts/python_runtime.sh scripts/safe_file_move.py docs/old-name.md docs/new-name.md
-git add -- docs/old-name.md docs/new-name.md
-git commit -m "refactor: rename old-name.md to new-name.md"
-```
-
-### Workflow 5: Batch Archive Multiple Files
-
-```bash
-# Step 1: Archive specific files
-./scripts/python_runtime.sh scripts/batch_archive.py --files file1.md file2.md file3.md --dry-run
-
-# Step 2: Archive by pattern
-./scripts/python_runtime.sh scripts/batch_archive.py --pattern "docs/_archive/AGENT*.md" --dry-run
-
-# Step 3: Execute (after reviewing dry-run)
-./scripts/python_runtime.sh scripts/batch_archive.py --files file1.md file2.md file3.md
-
-# Step 4: Commit
-git add -- docs/agents docs/_archive/agents
-git commit -m "chore: archive agent completion docs"
-```
-
-### Workflow 6: Renaming a Folder
-
-```bash
-# Step 1: Preview (finds all references)
-./scripts/python_runtime.sh scripts/rename_folder_safe.py "old folder name" "new_folder_name" --dry-run
-
-# Step 2: Review references that will be updated
-# - Check how many files link to this folder
-# - Verify .gitignore entries
-
-# Step 3: Execute rename
-./scripts/python_runtime.sh scripts/rename_folder_safe.py "old folder name" "new_folder_name"
-
-# Step 4: Verify links
-./scripts/python_runtime.sh scripts/check_links.py
-
-# Step 5: Update .gitignore if folder was listed
-# (Script warns but doesn't auto-edit .gitignore)
-
-# Step 6: Commit
-git add -- docs
-git commit -m "refactor: rename folder to follow naming convention"
-```
-
----
-
-## 🔍 Pre-Operation Checklist
-
-Before ANY file operation, verify:
-
-- [ ] **Run dry-run first** - Preview what will happen
-- [ ] **Check references** - How many files link to this?
-- [ ] **Check git history** - Is this file actively maintained?
-- [ ] **Verify destination** - Does file already exist there?
-- [ ] **Check imports** - For Python files: grep for imports
-- [ ] **Backup exists** - Safe scripts auto-backup, but verify
-
-### Manual Reference Check
-
-```bash
-# Find all references to a file
-grep -r "filename.md" docs/ agents/ --include="*.md" | head -20
-
-# For Python files
-grep -r "from.*module_name" Python/ --include="*.py"
-grep -r "import module_name" Python/ --include="*.py"
-
-# Check git history
-git log --oneline -5 -- path/to/file.md
-```
-
----
-
-## 🚨 Emergency Recovery
-
-### Restore Deleted File
-
-```bash
-# Option 1: Check backup folder
-ls tmp/deleted_backups/
-
-# Option 2: Restore from git
-git log --all --full-history -- "**/filename*"
-git show <commit>:path/to/file.md > restored.md
-```
-
-### Undo Move
-
-```bash
-# If committed, revert the commit
-git revert HEAD
-
-# If not committed, restore from git
-git restore path/to/original/file.md
-```
-
-### Fix Broken Links
-
-```bash
-# After any operation, run link check
-./scripts/python_runtime.sh scripts/check_links.py
-
-# If broken links found, auto-fix
-./scripts/python_runtime.sh scripts/check_links.py --fix
-```
-
----
-
-## 📁 Special Folder Rules
-
-### Protected Folders (Never Archive)
-
-| Folder | Reason |
-|--------|--------|
-| `docs/reference/` | API docs - always needed |
-| `docs/getting-started/` | User onboarding |
-| `docs/architecture/` | System design |
-| `Python/structural_lib/` | Core code |
-
-### Archive-Safe Folders
-
-| Folder | Archive To | Retention |
-|--------|------------|-----------|
-| `docs/planning/` | `docs/_archive/planning/` | 90 days |
-| `docs/research/` | `docs/research/_archive/` | After completion |
-| Session docs | `docs/_archive/YYYY-MM/` | 30 days |
-
-### Never-Touch Folders
-
-| Folder | Reason |
-|--------|--------|
-| `.git/` | Git internals |
-| `.venv/` | Python environment |
-| `node_modules/` | Dependencies |
-| `__pycache__/` | Python cache |
-
----
-
-## 🤖 For AI Agents
-
-### Mandatory Rules
-
-1. **NEVER manually `rm` or `mv` files** - Use safe scripts
-2. **ALWAYS `--dry-run` first** - Preview before execute
-3. **ALWAYS verify links after** - Run check_links.py
-4. **ALWAYS commit atomically** - One operation per commit
-
-### Decision Tree
-
-```
-Want to delete a file?
-├── Check references: ./scripts/python_runtime.sh scripts/safe_file_delete.py <file> --dry-run
-│   ├── No references → Safe to delete
-│   └── Has references → Either:
-│       ├── Fix references first, then delete
-│       └── Move to archive instead (preserves content)
-└── Delete: ./scripts/python_runtime.sh scripts/safe_file_delete.py <file>
-
-Want to move a file?
-├── Preview: ./scripts/python_runtime.sh scripts/safe_file_move.py <old> <new> --dry-run
-├── Check for collisions at destination
-└── Execute: ./scripts/python_runtime.sh scripts/safe_file_move.py <old> <new>
-
-Not sure if file is needed?
-├── Check orphan status: ./scripts/python_runtime.sh scripts/find_orphan_files.py --age
-├── Check git history: git log --oneline -5 -- <file>
-└── If orphan + old → Archive
-    If linked → Keep
-    If recent → Keep
-```
-
-### Common Mistakes to Avoid
-
-| Mistake | Correct Approach |
-|---------|------------------|
-| `rm docs/old.md` | `./scripts/python_runtime.sh scripts/safe_file_delete.py docs/old.md` |
-| `mv docs/a.md docs/b.md` | `./scripts/python_runtime.sh scripts/safe_file_move.py docs/a.md docs/b.md` |
-| Delete without checking | Always `--dry-run` first |
-| Batch delete many files | Delete one at a time with commits |
-| Skip link check after | Always run `check_links.py` after |
-
----
-
-*Guide created: 2026-01-10 | Part of folder cleanup automation system*
+Stop if preview/live path sets differ, a rollback cannot be verified, the
+repository lane is unclear, or references remain unresolved.

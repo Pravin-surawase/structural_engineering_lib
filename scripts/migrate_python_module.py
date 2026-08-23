@@ -20,7 +20,6 @@ Usage:
 Options:
     --dry-run     Show what would change without making changes
     --no-stub     Don't create backward-compat stub
-    --force       Overwrite destination if exists
 """
 
 from __future__ import annotations
@@ -32,6 +31,15 @@ import json
 import re
 import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _lib.safe_file_ops import (
+    SafeFileError,
+    capture_snapshots,
+    resolve_new_destination,
+    resolve_regular_source,
+    restore_snapshots,
+)
 
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
 STRUCTURAL_LIB = PROJECT_ROOT / "Python" / "structural_lib"
@@ -73,24 +81,24 @@ def _resolve_source_path(path_str: str) -> Path:
 
     for candidate in candidates:
         if candidate.exists():
-            return candidate.resolve()
+            return candidate.absolute()
 
     # Fall back to canonical Python/ path for consistent error messaging.
     if raw.parts and raw.parts[0] == "Python":
-        return (PROJECT_ROOT / raw).resolve()
-    return (PROJECT_ROOT / "Python" / raw).resolve()
+        return (PROJECT_ROOT / raw).absolute()
+    return (PROJECT_ROOT / "Python" / raw).absolute()
 
 
 def _resolve_destination_path(path_str: str) -> Path:
     """Resolve destination path without duplicating Python/ prefix."""
     raw = Path(path_str)
     if raw.is_absolute():
-        return raw.resolve()
+        return raw.absolute()
     if raw.parts and raw.parts[0] == "Python":
-        return (PROJECT_ROOT / raw).resolve()
+        return (PROJECT_ROOT / raw).absolute()
     if raw.parts and raw.parts[0] == "structural_lib":
-        return (PROJECT_ROOT / "Python" / raw).resolve()
-    return (PROJECT_ROOT / "Python" / raw).resolve()
+        return (PROJECT_ROOT / "Python" / raw).absolute()
+    return (PROJECT_ROOT / "Python" / raw).absolute()
 
 
 def path_to_module(file_path: Path) -> str:
@@ -310,7 +318,7 @@ def validate_imports(files: list[Path]) -> list[str]:
 
 
 def run_migration(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
-    """Execute migration and return (exit_code, structured_result)."""
+    """Execute a previewable, byte-restorable Python module migration."""
     result: dict[str, object] = {
         "tool": "migrate_python_module",
         "dry_run": bool(args.dry_run),
@@ -318,25 +326,20 @@ def run_migration(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
         "success": False,
         "source": args.source,
         "destination": args.destination,
+        "moved": False,
+        "rolled_back": False,
     }
 
-    # Resolve paths
-    source = _resolve_source_path(args.source)
-    destination = _resolve_destination_path(args.destination)
-
-    # Validate
-    if not source.exists():
-        print(f"❌ Source not found: {source}")
-        result["error"] = f"Source not found: {source}"
+    try:
+        source = resolve_regular_source(_resolve_source_path(args.source), PROJECT_ROOT)
+        destination = resolve_new_destination(
+            _resolve_destination_path(args.destination), PROJECT_ROOT, source
+        )
+    except SafeFileError as exc:
+        result["error"] = str(exc)
+        print(f"❌ {exc}")
         return 1, result
 
-    if destination.exists() and not args.force:
-        print(f"❌ Destination exists: {destination}")
-        print("   Use --force to overwrite")
-        result["error"] = f"Destination exists: {destination}"
-        return 1, result
-
-    # Calculate module paths
     old_module = path_to_module(source)
     new_module = path_to_module(destination)
     result["source"] = str(source.relative_to(PROJECT_ROOT))
@@ -354,13 +357,11 @@ def run_migration(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
     print(f"Mode:        {'DRY RUN' if args.dry_run else 'LIVE'}")
     print()
 
-    # Step 1: Find all import references
     print("🔍 Step 1: Finding import references...")
     all_files = find_python_files()
     references = find_import_references(old_module, all_files)
-    print(
-        f"   Found {len(references)} reference(s) in {len(set(r[0] for r in references))} files"
-    )
+    reference_files = sorted({reference[0] for reference in references})
+    print(f"   Found {len(references)} reference(s) in {len(reference_files)} files")
     result["references_count"] = len(references)
     result["references"] = [
         {
@@ -379,91 +380,27 @@ def run_migration(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
             print(f"     ... and {len(references) - 10} more")
     print()
 
-    # Step 2: Move file
-    print("📦 Step 2: Moving module...")
-    created_init: str | None = None
-    if args.dry_run:
-        print(f"   Would move: {source.name} → {destination}")
-    else:
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        # Ensure __init__.py exists in new directory
-        init_file = destination.parent / "__init__.py"
-        if not init_file.exists():
-            init_file.write_text(
-                '"""Auto-generated __init__.py for package."""\n',
-                encoding="utf-8",
-            )
-            created_init = str(init_file.relative_to(PROJECT_ROOT))
-            print(f"   Created: {created_init}")
+    baseline_errors = validate_imports([source, *reference_files])
+    if baseline_errors:
+        result["error"] = "Affected Python files do not have a valid baseline"
+        result["validation"] = {
+            "checked": True,
+            "errors": baseline_errors,
+            "ok": False,
+        }
+        print("❌ Affected Python files do not compile before mutation.")
+        return 1, result
 
-        source.rename(destination)
-        print(f"   Moved: {source.name} → {destination.relative_to(PROJECT_ROOT)}")
-    result["moved"] = not args.dry_run
-    result["created_init"] = created_init
-    print()
-
-    # Step 3: Update imports
-    print("🔗 Step 3: Updating imports...")
-    updated, updated_files = update_imports(
-        old_module, new_module, all_files, args.dry_run
+    init_file = destination.parent / "__init__.py"
+    init_will_create = not init_file.exists()
+    created_init = (
+        str(init_file.relative_to(PROJECT_ROOT)) if init_will_create else None
     )
-    print(f"   Updated {updated} file(s)")
-    result["updated_count"] = updated
-    result["updated_files"] = updated_files
-    print()
-
-    # Step 4: Create backward-compat stub
-    stub_file: str | None = None
-    if not args.no_stub:
-        print("📝 Step 4: Creating backward-compat stub...")
-        if args.dry_run:
-            print(f"   Would create stub at: {source.relative_to(PROJECT_ROOT)}")
-            stub_file = str(source.relative_to(PROJECT_ROOT))
-        else:
-            stub_file = create_backward_compat_stub(source, old_module, new_module)
-    else:
-        print("📝 Step 4: Skipped (--no-stub)")
-    print()
-    result["stub_created"] = not args.no_stub
-    result["stub_file"] = stub_file
-
-    # Step 5: Validate
-    print("✅ Step 5: Validating...")
-    validation_errors: list[str] = []
-    if args.dry_run:
-        print("   Skipped (dry run)")
-    else:
-        validation_errors = validate_imports(all_files)
-        if validation_errors:
-            print("   ⚠️  Syntax errors found:")
-            for error in validation_errors:
-                print(f"     {error}")
-        else:
-            print("   All files compile successfully!")
-    result["validation"] = {
-        "checked": not args.dry_run,
-        "errors": validation_errors,
-        "ok": len(validation_errors) == 0,
-    }
-    print()
-
-    # Summary
-    print("=" * 60)
-    if args.dry_run:
-        print("✨ Dry run complete. No changes made.")
-        print()
-        print("To apply:")
-        cmd = f"  .venv/bin/python scripts/migrate_python_module.py {args.source} {args.destination}"
-        print(cmd)
-    else:
-        print("✨ Migration complete!")
-        print()
-        print("Next steps:")
-        print("  1. Run tests: .venv/bin/pytest Python/tests/ -v")
-        print("  2. Run FastAPI tests: .venv/bin/pytest fastapi_app/tests/ -v")
-        print("  3. Have Codex review and include the migration in the scoped commit")
-    print("=" * 60)
-    changed_files = set(updated_files)
+    stub_file = str(source.relative_to(PROJECT_ROOT)) if not args.no_stub else None
+    expected_updated_files = [
+        str(file.relative_to(PROJECT_ROOT)) for file in reference_files
+    ]
+    changed_files = set(expected_updated_files)
     changed_files.update(
         {
             str(source.relative_to(PROJECT_ROOT)),
@@ -475,9 +412,71 @@ def run_migration(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
     if stub_file:
         changed_files.add(stub_file)
     result["changed_files"] = sorted(changed_files)
-    success = args.dry_run or len(validation_errors) == 0
-    result["success"] = success
-    return (0 if success else 1), result
+    result["created_init"] = created_init
+    result["stub_created"] = not args.no_stub
+    result["stub_file"] = stub_file
+    result["updated_count"] = len(reference_files)
+    result["updated_files"] = expected_updated_files
+
+    if args.dry_run:
+        print(f"📦 Would move: {source.name} → {destination}")
+        if created_init:
+            print(f"   Would create: {created_init}")
+        if stub_file:
+            print(f"   Would create compatibility stub: {stub_file}")
+        result["validation"] = {"checked": True, "errors": [], "ok": True}
+        result["success"] = True
+        print("✨ Dry run complete. No changes made.")
+        return 0, result
+
+    snapshot_paths = {PROJECT_ROOT / path for path in result["changed_files"]}
+    snapshots = capture_snapshots(snapshot_paths, PROJECT_ROOT)
+    try:
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        if init_will_create:
+            init_file.write_text(
+                '"""Auto-generated __init__.py for package."""\n',
+                encoding="utf-8",
+            )
+        source.rename(destination)
+        result["moved"] = True
+        updated, updated_files = update_imports(
+            old_module, new_module, all_files, dry_run=False
+        )
+        if sorted(updated_files) != sorted(expected_updated_files):
+            raise SafeFileError("Live import updates differed from the preview")
+        if not args.no_stub:
+            create_backward_compat_stub(source, old_module, new_module)
+        validation_files = [
+            destination,
+            *reference_files,
+            *([init_file] if init_will_create else []),
+            *([source] if not args.no_stub else []),
+        ]
+        validation_errors = validate_imports(validation_files)
+        if validation_errors:
+            raise SafeFileError("; ".join(validation_errors))
+        result["updated_count"] = updated
+        result["validation"] = {"checked": True, "errors": [], "ok": True}
+    except Exception as exc:
+        try:
+            restore_snapshots(snapshots, PROJECT_ROOT)
+            result["rolled_back"] = True
+            result["moved"] = False
+        except Exception as rollback_exc:
+            result["rollback_error"] = str(rollback_exc)
+        result["error"] = str(exc)
+        result["validation"] = {
+            "checked": True,
+            "errors": [str(exc)],
+            "ok": False,
+        }
+        print(f"❌ Migration failed: {exc}")
+        return 1, result
+
+    result["success"] = True
+    print("✨ Migration complete and validated.")
+    return 0, result
 
 
 def main() -> int:
@@ -494,9 +493,6 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true", help="Show what would happen")
     parser.add_argument(
         "--no-stub", action="store_true", help="Don't create backward-compat stub"
-    )
-    parser.add_argument(
-        "--force", action="store_true", help="Overwrite destination if exists"
     )
     parser.add_argument("--json", action="store_true", help="Output structured JSON")
     args = parser.parse_args()

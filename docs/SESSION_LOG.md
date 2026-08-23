@@ -5,6 +5,124 @@
 
 ---
 
+## 2026-08-23 — Session: MAINT-0130 transactional safe-file foundation
+
+**Agent:** Codex (`governance`, sole writer)
+
+**Branch:** `codex/maint-0130-safe-file-foundation`, from exact fetched
+`origin/main` commit `242ba386925d29766b1467810044e276ebbceb64`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0130-git-handoff-receipt.json`
+
+**Focus:** Replace split file-operation safety with one fail-closed transactional system.
+
+### Summary
+
+- Added a shared safe-file library for repository/path validation, maintained
+  versus preserved reference classification, exact snapshots, structured link
+  validation, hashes, and collision-safe delete backups.
+- Made move, delete, Python/React migration, and batch execution transactional.
+  Missing validators, unresolved maintained references, path hazards, bypass
+  flags, preview/live disagreement, validation regressions, or corrupt rollback
+  evidence now fail without reporting success.
+- Expanded maintained Markdown/link/image coverage, made ambiguous repair
+  require an explicit mapping, and preserved immutable historical references.
+- Retired the live age-only archive command, changed evolution to report-only,
+  refreshed the control projection, and updated the operator guidance. Bulk
+  cleanup remains held until this foundation is merged and a separately
+  classified plan is approved.
+
+### Issues encountered
+
+- The pasted audit described the pre-MAINT-012D surface while `origin/main` had
+  already advanced through scanner/script consolidation.
+- `./run.sh context show scripts` failed because `scripts` is not a maintained
+  context-area name.
+- The first archive-script dry run blocked two maintained references rather
+  than moving with an incomplete update set.
+- A control-projection refresh failed during the intentional interval where the
+  old top-level archive script was no longer registered but had not yet moved.
+- A batch using a caller-selected rollback directory failed because child
+  safe-move discovery treated the batch's own manifest as maintained content
+  and rewrote it during execution.
+- The first affected-test run exposed five stale contract expectations after
+  the intentional operation-count, permission, preview, and batch changes.
+- Focused Ruff and Black checks initially found one unused test import and seven
+  changed Python files requiring canonical formatting.
+- Closeout preparation completed every preparation check but exited `1` instead
+  of the documented preparation-only status `2` because the candidate was dirty.
+- The first candidate commit summary showed that the two rewritten safe-file
+  entrypoints had unintentionally lost their executable file modes.
+- Hosted Repository Validation passed the migration but failed its generated
+  rollback entrypoint because that script required a project `.venv` absent
+  from the provisioned GitHub Actions Python environment.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the audit snapshot predated the merged MAINT-012D
+  control plane. Resolution: fetch and bind this work to exact current
+  `origin/main`, then recheck every finding against live source before editing.
+- Confirmed root cause: context routing is manifest-area based, not an arbitrary
+  folder lookup. Resolution: use the registered automation/verification areas
+  and targeted `rg`. ⚠️ TERMINAL ISSUE: unknown context area `scripts` -> used
+  the maintained context manifest and targeted source inspection.
+- Confirmed root cause: the existing guides/evolution caller still contained
+  active references to the legacy archive command. Resolution: update those
+  maintained callers first; the repeated safe-move preview then classified 36
+  historical references as preserved and zero as unresolved.
+- Confirmed root cause: top-level script coverage correctly rejects a half-
+  completed registry/file transaction. Resolution: finish the safe move before
+  regenerating the compatibility projection; control validation passes at 114
+  active operations and 101/101 active scripts.
+- Confirmed root cause: batch-owned rollback evidence was inside the repository
+  scanner's normal maintained surface. Resolution: pass the exact batch run
+  root to child operations as a scanner exclusion while independently hashing
+  and verifying that evidence. The exact rollback/corruption regression and
+  the complete affected suite pass.
+- Confirmed root cause: tests encoded the superseded counts, default live
+  permissions, incomplete preview path lists, and an old fixture literal.
+  Resolution: update only the outcome contracts and add direct transactional
+  regressions; exact failed-node reruns passed before the complete affected
+  suite was run once.
+- Confirmed root cause: new source had not yet received the repository formatter
+  and one imported helper was unused. Resolution: remove the import, format the
+  seven reported files, and rerun only Ruff and Black; both pass.
+- Confirmed root cause: `session end --fix` marks any uncommitted candidate as a
+  failed closeout before applying its documented preparation-mode exit rule,
+  even though preparation is required before candidate freeze. Resolution: keep
+  this as a recorded session-control follow-up and rely on the required clean,
+  read-only post-commit `session end` verdict; do not expand MAINT-0130 into an
+  adjacent session-lifecycle repair. ⚠️ TERMINAL ISSUE: preparation returned `1`
+  after all generated handoff checks passed -> retained the reviewed writes and
+  reserved final authority for the clean read-only closeout.
+- Confirmed root cause: replacing the script contents through the patch workflow
+  recreated `safe_file_move.py` and `safe_file_delete.py` as mode `100644` even
+  though both tracked entrypoints were previously `100755`. Resolution: restore
+  only those executable bits, directly invoke both entrypoints, rerun the
+  affected transaction tests and consolidated gate, and create an explicit
+  repair candidate before publication.
+- Confirmed root cause: `rollback.sh` delegated to `python_runtime.sh`, which is
+  intentionally worktree-bound and rejects environments without a discoverable
+  project interpreter even when the batch is already running under a valid
+  provisioned Python. Resolution: record the exact running `sys.executable` in
+  the generated rollback command, keep the same manifest-verified restore
+  primitive, and regression-test execution through that exact interpreter.
+
+### Verification
+
+- The complete affected migration/control/governance selection passes: 93
+  tests across transactional success, rejection, rollback, corruption, link,
+  registry, permission, and inactive-archive behavior.
+- Ruff and Black pass for all 13 changed Python source/test files.
+- Maintained-link validation passes for 478 Markdown files, 1,013 local links,
+  six local images, and zero broken targets.
+- Control validation passes with 114 active operations and 101/101 scripts;
+  context validation passes with zero generated folder indexes.
+- The immutable candidate additionally requires one fresh quick gate, one
+  cumulative full gate, ordinary commit hooks, and all applicable hosted PR
+  checks. Hosted and merge facts remain outside this candidate commit.
+
 ## 2026-08-23 — Session: MAINT-012D scanner and script consolidation
 
 **Agent:** Codex (`governance`, sole writer)

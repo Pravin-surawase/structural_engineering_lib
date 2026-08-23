@@ -1,44 +1,22 @@
 #!/usr/bin/env python3
-"""Check and fix broken internal links in markdown files.
-
-When to use: After moving/renaming/deleting files, or before committing doc changes.
-Use --fix to auto-repair broken links with fuzzy matching.
-
-Consolidates link checking and fixing into one script:
-  - Scan mode (default): find broken links
-  - Fix mode (--fix): auto-fix using fuzzy file matching
-  - Map mode (--map): use explicit migration mapping for fixes
-
-Replaces:
-  - check_links.py (old version)
-  - fix_broken_links.py
-
-Usage:
-    python scripts/check_links.py                         # Check all links
-    python scripts/check_links.py --fix                   # Auto-fix with fuzzy match
-    python scripts/check_links.py --fix --verbose         # Fix with details
-    python scripts/check_links.py --map links.json --fix  # Fix with migration map
-    python scripts/check_links.py --exclude-archive       # Skip _archive dirs
-
-Exit Codes:
-    0: No broken links
-    1: Broken links found (or fixed)
-"""
+"""Validate local Markdown links and images; repair only explicit or unique targets."""
 
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
+import os
 import re
 import sys
 from collections import defaultdict
 from pathlib import Path
-from typing import Optional
+from urllib.parse import unquote
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _lib.safe_file_ops import PRESERVED_REFERENCE_FILES, iter_repository_files
 from _lib.utils import REPO_ROOT
 
-# Skip these patterns — placeholders/examples in docs
 SKIP_LINK_PATTERNS = [
     r"^text$",
     r"^Link \d+$",
@@ -51,299 +29,374 @@ SKIP_LINK_PATTERNS = [
     r"^Old_File\.md",
     r"^file\.md",
 ]
-
-# Skip files in these directories
-SKIP_DIRECTORIES = [
-    "agents/agent-9",
-    "docs/_archive",
-    "docs/research",
-]
+HISTORICAL_DIRECTORIES = ("docs/_archive", "agents/agent-9")
+LINK_RE = re.compile(r"(!?)\[([^\]]*)\]\(([^)]+)\)")
 
 
 def _is_placeholder(text: str, target: str) -> bool:
-    """Check if a link is a placeholder/example."""
-    for pattern in SKIP_LINK_PATTERNS:
-        if re.search(pattern, text, re.IGNORECASE) or re.search(
-            pattern, target, re.IGNORECASE
-        ):
-            return True
-    return False
+    return any(
+        re.search(pattern, text, re.IGNORECASE)
+        or re.search(pattern, target, re.IGNORECASE)
+        for pattern in SKIP_LINK_PATTERNS
+    )
 
 
-def _should_skip_file(file_path: Path) -> bool:
-    """Check if file should be skipped based on directory."""
+def _is_historical(file: Path, root: Path) -> bool:
+    relative = file.relative_to(root).as_posix()
+    return relative in PRESERVED_REFERENCE_FILES or any(
+        relative == prefix or relative.startswith(f"{prefix}/")
+        for prefix in HISTORICAL_DIRECTORIES
+    )
+
+
+def _find_links(content: str) -> list[tuple[str, str, str, int]]:
+    """Return (kind, label, target, position) for links and images."""
+    content = re.sub(
+        r"```.*?```",
+        lambda match: "\n" * match.group(0).count("\n"),
+        content,
+        flags=re.DOTALL,
+    )
+    content = re.sub(r"`[^`\n]*`", "", content)
+    return [
+        (
+            "image" if match.group(1) else "link",
+            match.group(2),
+            match.group(3),
+            match.start(),
+        )
+        for match in LINK_RE.finditer(content)
+    ]
+
+
+def _target_path(target: str) -> str:
+    stripped = target.strip()
+    if stripped.startswith("<"):
+        close = stripped.find(">")
+        return stripped[1:close] if close > 0 else stripped
+    return stripped.split(maxsplit=1)[0]
+
+
+def _is_external(target: str) -> bool:
+    lowered = target.lower()
+    return lowered.startswith(
+        ("http://", "https://", "mailto:", "tel:", "data:", "javascript:", "#")
+    )
+
+
+def _resolve_local_target(source_file: Path, target_path: str, root: Path) -> Path:
+    decoded = unquote(target_path.split("#", 1)[0])
+    if decoded.startswith("/"):
+        return (root / decoded.lstrip("/")).resolve(strict=False)
+    return (source_file.parent / decoded).resolve(strict=False)
+
+
+def _inside(path: Path, root: Path) -> bool:
     try:
-        rel_path = str(file_path.relative_to(REPO_ROOT))
-        return any(rel_path.startswith(d) for d in SKIP_DIRECTORIES)
+        path.relative_to(root)
+        return True
     except ValueError:
         return False
 
 
-def _find_links(content: str) -> list[tuple[str, str, int]]:
-    """Find all markdown links [text](target) with positions."""
-    pattern = r"(?<!!)\[([^\]]+)\]\(([^)]+)\)"
-    return [(m.group(1), m.group(2), m.start()) for m in re.finditer(pattern, content)]
-
-
-# ═══════════════════════════════════════════════════════════════════════════
-# FUZZY FILE MATCHING (from fix_broken_links.py)
-# ═══════════════════════════════════════════════════════════════════════════
-
-
-def _build_file_index() -> dict[str, list[Path]]:
-    """Build index of all files by lowercase filename."""
+def _build_file_index(root: Path) -> dict[str, list[Path]]:
     index: dict[str, list[Path]] = defaultdict(list)
-    for md_file in REPO_ROOT.rglob("*.md"):
-        if any(p.startswith(".") or p == "node_modules" for p in md_file.parts):
-            continue
-        index[md_file.name.lower()].append(md_file)
-    for py_file in REPO_ROOT.rglob("*.py"):
-        if any(p.startswith(".") or p == "node_modules" for p in py_file.parts):
-            continue
-        index[py_file.name.lower()].append(py_file)
+    for file in iter_repository_files(root):
+        index[file.name.lower()].append(file)
     return index
 
 
 def _normalize(name: str) -> str:
-    """Normalize filename for fuzzy matching."""
     return name.lower().replace("_", "-")
 
 
-def _find_best_match(
-    target_path: str,
-    source_file: Path,
-    file_index: dict[str, list[Path]],
-) -> Optional[Path]:
-    """Find the best matching file for a broken link target using fuzzy matching."""
-    target = Path(target_path)
+def _find_unique_match(
+    target_path: str, file_index: dict[str, list[Path]]
+) -> Path | None:
+    """Return a suggestion only when all matching strategies identify one file."""
+    target = Path(unquote(target_path))
     filename = target.name.lower()
-
-    # Exact filename match
-    if filename in file_index:
-        candidates = file_index[filename]
-        if len(candidates) == 1:
-            return candidates[0]
-        # Multiple matches — prefer closest by directory overlap
-        source_parts = set(source_file.parent.relative_to(REPO_ROOT).parts)
-        best_score, best_match = -1, None
-        for c in candidates:
-            cparts = set(c.parent.relative_to(REPO_ROOT).parts)
-            score = len(source_parts & cparts)
-            if score > best_score:
-                best_score, best_match = score, c
-        return best_match
-
-    # Normalized match (handle UPPERCASE, snake_case → kebab)
-    normalized = _normalize(filename)
-    for indexed_name, candidates in file_index.items():
-        if _normalize(indexed_name) == normalized:
-            if len(candidates) == 1:
-                return candidates[0]
-            for c in candidates:
-                if "docs" in c.parts:
-                    return c
-            return candidates[0]
-
-    # Stem match (ignore extension differences)
-    stem = _normalize(target.stem)
-    for indexed_name, candidates in file_index.items():
-        if _normalize(Path(indexed_name).stem) == stem:
-            if len(candidates) == 1:
-                return candidates[0]
-            for c in candidates:
-                if "docs" in c.parts:
-                    return c
-            return candidates[0]
-
-    return None
+    candidates: set[Path] = set(file_index.get(filename, []))
+    if not candidates:
+        normalized = _normalize(filename)
+        for indexed_name, paths in file_index.items():
+            if _normalize(indexed_name) == normalized:
+                candidates.update(paths)
+    if not candidates:
+        stem = _normalize(target.stem)
+        for indexed_name, paths in file_index.items():
+            if _normalize(Path(indexed_name).stem) == stem:
+                candidates.update(paths)
+    return next(iter(candidates)) if len(candidates) == 1 else None
 
 
 def _relative_path(from_file: Path, to_file: Path) -> str:
-    """Compute relative path between two files."""
-    from_dir = from_file.parent
-    try:
-        return str(to_file.relative_to(from_dir))
-    except ValueError:
-        from_rel = from_dir.relative_to(REPO_ROOT)
-        to_rel = to_file.relative_to(REPO_ROOT)
-        from_parts = from_rel.parts
-        to_parts = to_rel.parts
-        common_length = 0
-        for i, (f, t) in enumerate(zip(from_parts, to_parts)):
-            if f == t:
-                common_length = i + 1
-            else:
-                break
-        ups = len(from_parts) - common_length
-        downs = to_parts[common_length:]
-        return "/".join([".."] * ups + list(downs))
+    return Path(os.path.relpath(to_file, start=from_file.parent)).as_posix()
 
 
-# ═══════════════════════════════════════════════════════════════════════════
-# MAIN CHECK/FIX LOGIC
-# ═══════════════════════════════════════════════════════════════════════════
+def _mapped_suggestion(
+    *,
+    link_map: dict[str, str],
+    source_file: Path,
+    target_path: str,
+    root: Path,
+) -> str | None:
+    file_key = f"{source_file.relative_to(root).as_posix()}::{target_path}"
+    mapped = link_map.get(file_key, link_map.get(target_path))
+    if mapped is None:
+        return None
+    literal = _resolve_local_target(source_file, mapped, root)
+    if _inside(literal, root) and literal.exists():
+        return mapped
+    repo_candidate = (root / mapped.lstrip("/")).resolve(strict=False)
+    if _inside(repo_candidate, root) and repo_candidate.exists():
+        return (
+            f"/{repo_candidate.relative_to(root).as_posix()}"
+            if mapped.startswith("/")
+            else _relative_path(source_file, repo_candidate)
+        )
+    raise ValueError(f"Mapping target does not exist for {file_key}: {mapped}")
 
 
-def check_and_fix(
-    fix: bool = False,
-    verbose: bool = False,
+def _markdown_files(
+    root: Path, *, include_historical: bool, exclude_archive: bool
+) -> list[Path]:
+    files = iter_repository_files(root, {".md"})
+    if not include_historical or exclude_archive:
+        files = [file for file in files if not _is_historical(file, root)]
+    return files
+
+
+def scan_links(
+    *,
+    root: Path = REPO_ROOT,
+    suggest: bool = False,
     link_map: dict[str, str] | None = None,
+    include_historical: bool = False,
     exclude_archive: bool = False,
-) -> int:
-    """Check all markdown files for broken links. Optionally fix them."""
-    # Collect markdown files
-    md_files = list((REPO_ROOT / "docs").rglob("*.md"))
-    agents_dir = REPO_ROOT / "agents"
-    if agents_dir.exists():
-        md_files.extend(agents_dir.rglob("*.md"))
-    for extra in ["Python/README.md", "README.md"]:
-        p = REPO_ROOT / extra
-        if p.exists():
-            md_files.append(p)
-
-    if exclude_archive:
-        md_files = [f for f in md_files if "_archive" not in str(f)]
-
-    # Build file index for fuzzy matching (only if fixing)
-    file_index = _build_file_index() if fix else {}
-
-    broken_links: list[dict] = []
+) -> dict[str, object]:
+    file_index = _build_file_index(root) if suggest else {}
+    broken_links: list[dict[str, object]] = []
     file_count = 0
     link_count = 0
+    image_count = 0
 
-    for md_file in md_files:
-        if not md_file.exists():
-            continue
-        if _should_skip_file(md_file):
-            continue
-
+    for markdown_file in _markdown_files(
+        root,
+        include_historical=include_historical,
+        exclude_archive=exclude_archive,
+    ):
         file_count += 1
-        content = md_file.read_text(encoding="utf-8")
-        links = _find_links(content)
-
-        for text, target, _pos in links:
-            if target.startswith(("http://", "https://", "mailto:", "#")):
+        content = markdown_file.read_text(encoding="utf-8")
+        for kind, label, raw_target, _position in _find_links(content):
+            target = _target_path(raw_target)
+            if _is_external(target) or _is_placeholder(label, target):
                 continue
-            if _is_placeholder(text, target):
+            if kind == "image":
+                image_count += 1
+            else:
+                link_count += 1
+            path_part, marker, fragment = target.partition("#")
+            if not path_part:
+                continue
+            resolved = _resolve_local_target(markdown_file, target, root)
+            reason = None
+            if not _inside(resolved, root):
+                reason = "outside_repository"
+            elif not resolved.exists():
+                reason = "missing"
+            if reason is None:
                 continue
 
-            link_count += 1
-            target_path = target.split("#")[0]
-            anchor = "#" + target.split("#")[1] if "#" in target else ""
-            if not target_path:
-                continue
-
-            full_path = (md_file.parent / target_path).resolve()
-            if full_path.exists():
-                continue
-
-            # Try to find suggestion
             suggestion = None
             if link_map:
-                suggestion = link_map.get(target_path)
-            if not suggestion and fix and file_index:
-                match = _find_best_match(target_path, md_file, file_index)
-                if match:
-                    suggestion = _relative_path(md_file, match)
-
+                suggestion = _mapped_suggestion(
+                    link_map=link_map,
+                    source_file=markdown_file,
+                    target_path=path_part,
+                    root=root,
+                )
+            if suggestion is None and suggest:
+                match = _find_unique_match(path_part, file_index)
+                if match is not None:
+                    suggestion = _relative_path(markdown_file, match)
+            if suggestion and marker:
+                suggestion = f"{suggestion}#{fragment}"
             broken_links.append(
                 {
-                    "file": str(md_file.relative_to(REPO_ROOT)),
-                    "file_path": md_file,
-                    "link_text": text,
-                    "target": target,
-                    "target_path": target_path,
-                    "anchor": anchor,
+                    "file": markdown_file.relative_to(root).as_posix(),
+                    "kind": kind,
+                    "label": label,
+                    "target": raw_target,
+                    "target_path": path_part,
+                    "reason": reason,
                     "suggestion": suggestion,
                 }
             )
 
-    # Report
-    print(f"\n🔍 Checked {file_count} markdown files")
-    print(f"   Found {link_count} internal links")
-    print(f"   Broken links: {len(broken_links)}\n")
+    return {
+        "tool": "check_links",
+        "schema_version": 1,
+        "files_checked": file_count,
+        "links_checked": link_count,
+        "images_checked": image_count,
+        "broken_count": len(broken_links),
+        "broken_links": broken_links,
+        "success": not broken_links,
+    }
 
-    if not broken_links:
-        print("✅ All internal links are valid!")
-        return 0
 
-    # Show broken links
-    for bl in broken_links:
-        print(f"❌ {bl['file']}")
-        print(f"   [{bl['link_text']}]({bl['target']})")
-        if bl["suggestion"]:
-            print(f"   💡 Suggestion: {bl['suggestion']}")
-        print()
+def _apply_fixes(payload: dict[str, object], root: Path) -> int:
+    broken_links = payload["broken_links"]
+    assert isinstance(broken_links, list)
+    by_file: dict[Path, list[dict[str, object]]] = defaultdict(list)
+    for item in broken_links:
+        if isinstance(item, dict) and item.get("suggestion"):
+            by_file[root / str(item["file"])].append(item)
+    for file, items in by_file.items():
+        content = file.read_text(encoding="utf-8")
+        for item in items:
+            old = str(item["target"])
+            new = str(item["suggestion"])
+            content = content.replace(f"]({old})", f"]({new})")
+        file.write_text(content, encoding="utf-8")
+    return sum(len(items) for items in by_file.values())
 
-    # Apply fixes
-    if fix:
-        fixable = [bl for bl in broken_links if bl["suggestion"]]
-        if fixable:
-            files_to_update: dict[Path, str] = {}
-            for bl in fixable:
-                fp = bl["file_path"]
-                if fp not in files_to_update:
-                    files_to_update[fp] = fp.read_text(encoding="utf-8")
-                old_link = f"]({bl['target']})"
-                new_link = f"]({bl['suggestion']}{bl['anchor']})"
-                files_to_update[fp] = files_to_update[fp].replace(old_link, new_link)
 
-            for fp, content in files_to_update.items():
-                fp.write_text(content, encoding="utf-8")
-
-            print(f"✅ Fixed {len(fixable)} links in {len(files_to_update)} files")
-            unfixed = len(broken_links) - len(fixable)
-            if unfixed:
-                print(f"⚠️  {unfixed} links could not be auto-fixed")
-        else:
-            print("⚠️  No links could be auto-fixed (no matches found)")
-    else:
-        fixable = sum(1 for bl in broken_links if bl.get("suggestion"))
-        print(
-            f"💡 Run with --fix to auto-fix {fixable if fixable else 'fixable'} links:"
+def check_and_fix(
+    *,
+    fix: bool = False,
+    verbose: bool = False,
+    link_map: dict[str, str] | None = None,
+    exclude_archive: bool = False,
+    include_historical: bool = False,
+    root: Path = REPO_ROOT,
+) -> tuple[int, dict[str, object]]:
+    payload = scan_links(
+        root=root,
+        suggest=fix,
+        link_map=link_map,
+        include_historical=include_historical,
+        exclude_archive=exclude_archive,
+    )
+    if fix and payload["broken_count"]:
+        payload["fixed_count"] = _apply_fixes(payload, root)
+        verified = scan_links(
+            root=root,
+            suggest=False,
+            link_map=None,
+            include_historical=include_historical,
+            exclude_archive=exclude_archive,
         )
-        print("   python scripts/check_links.py --fix")
+        payload["remaining_broken_count"] = verified["broken_count"]
+        payload["broken_links"] = verified["broken_links"]
+        payload["broken_count"] = verified["broken_count"]
+        payload["success"] = verified["success"]
+    else:
+        payload["fixed_count"] = 0
 
-    return 1
+    print(f"\n🔍 Checked {payload['files_checked']} Markdown files")
+    print(f"   Local links: {payload['links_checked']}")
+    print(f"   Local images: {payload['images_checked']}")
+    print(f"   Broken links: {payload['broken_count']}\n")
+    broken = payload["broken_links"]
+    assert isinstance(broken, list)
+    for item in broken:
+        if not isinstance(item, dict):
+            continue
+        print(f"❌ {item['file']} [{item['kind']}]")
+        print(f"   {item['target']} ({item['reason']})")
+        if item.get("suggestion"):
+            print(f"   💡 {item['suggestion']}")
+        if not verbose and len(broken) > 20 and broken.index(item) >= 19:
+            print(f"   ... and {len(broken) - 20} more")
+            break
+    if payload["success"]:
+        print("✅ All maintained local links and images are valid.")
+        return 0, payload
+    if fix:
+        print(f"⚠️  {payload['broken_count']} broken references remain unresolved.")
+    return 1, payload
+
+
+def _load_map(path_text: str | None) -> dict[str, str] | None:
+    if path_text is None:
+        return None
+    path = Path(path_text)
+    if not path.is_file():
+        raise ValueError(f"Mapping file not found: {path}")
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict) or not all(
+        isinstance(key, str) and isinstance(value, str) for key, value in data.items()
+    ):
+        raise ValueError("Mapping JSON must be an object of string paths")
+    return data
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Check and fix broken markdown links",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog=(
-            "Examples:\n"
-            "  python scripts/check_links.py                         # Scan only\n"
-            "  python scripts/check_links.py --fix                   # Auto-fix\n"
-            "  python scripts/check_links.py --fix --verbose         # Fix + details\n"
-            "  python scripts/check_links.py --map links.json --fix  # Use migration map\n"
-        ),
+        description="Check local Markdown links and images"
     )
     parser.add_argument(
-        "--fix", action="store_true", help="Auto-fix broken links using fuzzy matching"
+        "--fix",
+        action="store_true",
+        help="Repair explicit mappings or uniquely matched targets",
     )
-    parser.add_argument("--map", help="Path to link mapping JSON (old → new paths)")
+    parser.add_argument("--map", help="Explicit old-to-new target mapping JSON")
+    parser.add_argument("--verbose", "-v", action="store_true")
     parser.add_argument(
-        "--verbose", "-v", action="store_true", help="Show detailed output"
+        "--include-historical",
+        action="store_true",
+        help="Also scan archived and legacy-agent evidence",
     )
     parser.add_argument(
-        "--exclude-archive", action="store_true", help="Skip _archive directories"
+        "--exclude-archive",
+        action="store_true",
+        help="Compatibility option: exclude historical archive surfaces",
     )
-
+    parser.add_argument("--json", action="store_true", help="Output structured JSON")
     args = parser.parse_args()
 
-    link_map: dict[str, str] | None = None
-    if args.map and Path(args.map).exists():
-        with open(args.map) as f:
-            link_map = json.load(f)
-        print(f"📋 Loaded {len(link_map)} mappings from {args.map}")
-
-    return check_and_fix(
-        fix=args.fix,
-        verbose=args.verbose,
-        link_map=link_map,
-        exclude_archive=args.exclude_archive,
-    )
+    try:
+        link_map = _load_map(args.map)
+        if link_map is not None and not args.fix:
+            raise ValueError("--map requires --fix")
+        if args.json:
+            with contextlib.redirect_stdout(sys.stderr):
+                exit_code, payload = check_and_fix(
+                    fix=args.fix,
+                    verbose=args.verbose,
+                    link_map=link_map,
+                    exclude_archive=args.exclude_archive,
+                    include_historical=args.include_historical,
+                )
+            print(json.dumps(payload, indent=2))
+            return exit_code
+        exit_code, _payload = check_and_fix(
+            fix=args.fix,
+            verbose=args.verbose,
+            link_map=link_map,
+            exclude_archive=args.exclude_archive,
+            include_historical=args.include_historical,
+        )
+        return exit_code
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        if args.json:
+            print(
+                json.dumps(
+                    {
+                        "tool": "check_links",
+                        "schema_version": 1,
+                        "success": False,
+                        "broken_links": [],
+                        "error": str(exc),
+                    },
+                    indent=2,
+                )
+            )
+        else:
+            print(f"❌ {exc}")
+        return 2
 
 
 if __name__ == "__main__":

@@ -211,23 +211,33 @@
     },
     "move file": {
       "group": "Docs",
-      "description": "Move file and update all internal links automatically (870+ links preserved)",
+      "description": "Preview or transactionally move one regular in-repository file with classified reference updates and exact rollback",
       "status": "active",
       "command": {
-        "display": "./scripts/python_runtime.sh scripts/safe_file_move.py old.md new.md",
+        "display": "./scripts/python_runtime.sh scripts/safe_file_move.py old.md new.md --dry-run",
         "steps": [
           {
             "argv": [
               "./scripts/python_runtime.sh",
               "scripts/safe_file_move.py",
               "old.md",
-              "new.md"
+              "new.md",
+              "--dry-run"
             ],
             "cwd": "."
           }
         ]
       },
-      "permission": "WorkspaceWrite",
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--dry-run": "ReadOnly",
+        "live": "WorkspaceWrite"
+      },
+      "options": {
+        "--dry-run": "Preview classified references and exact changed paths",
+        "--stub": "Create a Markdown redirect only after a safe move",
+        "--json": "Emit structured result evidence"
+      },
       "never_use": [
         "mv",
         "git mv"
@@ -238,22 +248,31 @@
     },
     "delete file": {
       "group": "Docs",
-      "description": "Delete file after checking for references",
+      "description": "Preview or transactionally delete one unreferenced regular file with a content-hashed backup",
       "status": "active",
       "command": {
-        "display": "./scripts/python_runtime.sh scripts/safe_file_delete.py file.md",
+        "display": "./scripts/python_runtime.sh scripts/safe_file_delete.py file.md --dry-run",
         "steps": [
           {
             "argv": [
               "./scripts/python_runtime.sh",
               "scripts/safe_file_delete.py",
-              "file.md"
+              "file.md",
+              "--dry-run"
             ],
             "cwd": "."
           }
         ]
       },
-      "permission": "DangerFullAccess",
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--dry-run": "ReadOnly",
+        "live": "DangerFullAccess"
+      },
+      "options": {
+        "--dry-run": "Preview references without deleting",
+        "--json": "Emit structured backup and transaction evidence"
+      },
       "never_use": [
         "rm",
         "git rm"
@@ -1419,7 +1438,7 @@
     },
     "migrate python module": {
       "group": "Migration",
-      "description": "Move Python module to new location + update all imports automatically",
+      "description": "Transactionally move one Python module, preview complete paths, update imports, validate, and roll back on failure",
       "status": "active",
       "command": {
         "display": "./scripts/python_runtime.sh scripts/migrate_python_module.py <src> <dst> --dry-run",
@@ -1447,7 +1466,7 @@
     },
     "migrate react component": {
       "group": "Migration",
-      "description": "Move React component to new feature-grouped folder + update imports",
+      "description": "Transactionally move one React component, CSS and barrel export with preview agreement and import-path validation",
       "status": "active",
       "command": {
         "display": "./scripts/python_runtime.sh scripts/migrate_react_component.py <src> <dst> --dry-run",
@@ -1475,24 +1494,32 @@
     },
     "batch migration": {
       "group": "Migration",
-      "description": "Run multiple migrations with per-operation rollback logs",
+      "description": "Preflight the complete migration plan, execute with exact changed-path comparison, and roll back the whole batch on failure",
       "status": "active",
       "command": {
-        "display": "./scripts/python_runtime.sh scripts/batch_migrate_runner.py",
+        "display": "./scripts/python_runtime.sh scripts/batch_migrate_runner.py <plan> --dry-run",
         "steps": [
           {
             "argv": [
               "./scripts/python_runtime.sh",
-              "scripts/batch_migrate_runner.py"
+              "scripts/batch_migrate_runner.py",
+              "<plan>",
+              "--dry-run"
             ],
             "cwd": "."
           }
         ]
       },
-      "permission": "WorkspaceWrite",
+      "permission": "ReadOnly",
       "permission_modes": {
         "--dry-run": "ReadOnly",
-        "--auto-rollback": "WorkspaceWrite"
+        "live": "WorkspaceWrite",
+        "--restore <manifest>": "WorkspaceWrite"
+      },
+      "options": {
+        "--dry-run": "Preflight every operation before any mutation",
+        "--restore <manifest>": "Restore exact bytes from a generated batch manifest",
+        "--json": "Emit structured batch and rollback evidence"
       }
     },
     "bump version": {
@@ -1840,26 +1867,6 @@
         ]
       },
       "permission": "WorkspaceWrite"
-    },
-    "archive old files": {
-      "group": "Docs",
-      "description": "Move files older than 90 days from docs/_active/ to _archive/",
-      "status": "active",
-      "command": {
-        "display": "./scripts/archive_old_files.sh",
-        "steps": [
-          {
-            "argv": [
-              "./scripts/archive_old_files.sh"
-            ],
-            "cwd": "."
-          }
-        ]
-      },
-      "permission": "WorkspaceWrite",
-      "permission_modes": {
-        "--dry-run": "ReadOnly"
-      }
     },
     "classify branch disposition": {
       "group": "Infrastructure",

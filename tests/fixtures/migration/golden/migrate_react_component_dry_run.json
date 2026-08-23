@@ -12,7 +12,7 @@
     "react_app/src/__fixtures__/migration/SampleWidget.css",
     "react_app/src/__fixtures__/migration/SampleWidget.tsx",
     "react_app/src/__fixtures__/migration/moved/SampleWidget.css",
-    "react_app/src/__fixtures__/migration/moved/SampleWidget.tsx"
+    "react_app/src/__fixtures__/migration/moved/SampleWidget.tsx",
+    "react_app/src/__fixtures__/migration/moved/index.ts"
   ]
 }
-

@@ -32,6 +32,14 @@ The readiness, error-handling, input-validation, function-quality, and
 public-route safety scanners were deliberately retained because they validate
 different safety contracts.
 
+## MAINT-0130 safe-file retirement
+
+`archive_old_files.sh` was archived after its root check and age-only
+classification were shown to be unsuitable for repository cleanup. Current
+cleanup requires explicit ownership/retention classification followed by a
+complete dry-run batch plan; `evolve.py` reports age candidates but never moves
+them automatically.
+
 ## Reactivation rule
 
 Do not run a file from this directory. If a future approved task needs an old

@@ -56,11 +56,12 @@ hook enforcement and scripts that automate the Git lifecycle are prohibited.
 | Discovery | `find_automation.py` | Find an existing project automation |
 | Control registry | `run.sh control` | Validate/query canonical operations, permissions, targets, and compatibility projection |
 | API discovery | `discover_api_signatures.py` | Exact Python API signatures |
-| Files | `safe_file_move.py` | Move files after a dry run and link scan |
-| Files | `safe_file_delete.py` | Delete files after a dry run and reference scan |
+| Files | `safe_file_move.py` | Transactionally move one regular file after classified-reference preview |
+| Files | `safe_file_delete.py` | Delete one unreferenced regular file with a content-hashed backup |
+| Files | `batch_migrate_runner.py` | Preflight a complete plan, compare exact live paths, and roll back the whole batch |
 | Live context | `run.sh context` | Validate canonical routing and summarize current files without generated folder indexes |
 | Verification impact | `run.sh verification` | Plan explicit change domains and inspect command/runtime/input-bound PASS evidence |
-| Link integrity | `check_links.py` | Check links by default; repair only with explicit `--fix` |
+| Link integrity | `check_links.py` | Check maintained links and images; repair only explicit or unique targets |
 | Project health | `project_health.py` | Unified read-only scan; persist only with explicit `--write` or `--fix` |
 | IS 456 quality | `check_function_quality.py --module <name>` | Source-relative static function-contract scan; not a numerical benchmark |
 | Sessions | `session.py` | Bounded session lifecycle and usage checkpoints |

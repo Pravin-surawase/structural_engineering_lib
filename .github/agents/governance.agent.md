@@ -69,9 +69,10 @@ git --no-pager log --oneline --since="7 days ago" | wc -l
 ### Phase 1: Documentation Cleanup (45 min)
 
 ```bash
-# Archive stale docs
-./scripts/archive_old_files.sh --dry-run    # Preview
-./scripts/archive_old_files.sh               # Execute
+# Classify possible archive candidates; age alone is not a disposition
+./scripts/python_runtime.sh scripts/evolve.py --review monthly
+# Put only accepted independent moves in a reviewed batch plan
+./scripts/python_runtime.sh scripts/batch_migrate_runner.py <plan> --dry-run --json
 
 # Verify active docs count
 ls docs/planning/*.md | wc -l               # Target: <10

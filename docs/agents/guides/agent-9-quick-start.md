@@ -151,16 +151,18 @@ open docs/guidelines/migration-workflow-guide.md
 .venv/bin/python scripts/check_links.py
 ```
 
-### Task 4: Archive Old Docs (Safe)
+### Task 4: Classify and Move Accepted Archive Candidates
 ```bash
-# 1. Preview archive candidates
-.venv/bin/python scripts/batch_archive.py --files file1.md file2.md --dry-run
+# 1. Classify exact files by owner, references, replacement, and retention
 
-# 2. Execute with stub redirect
-.venv/bin/python scripts/batch_archive.py --files file1.md file2.md --stub
+# 2. Preflight every accepted independent move before mutation
+./scripts/python_runtime.sh scripts/batch_migrate_runner.py archive-plan.json --dry-run --json
 
-# 3. Validate links
-.venv/bin/python scripts/check_links.py
+# 3. Execute the frozen plan; the whole batch rolls back on failure
+./scripts/python_runtime.sh scripts/batch_migrate_runner.py archive-plan.json --json
+
+# 4. Validate maintained links and images
+./scripts/python_runtime.sh scripts/check_links.py
 ```
 
 ---

@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-23 — MAINT-012D candidate frozen for required local and hosted closeout
+**Updated:** 2026-08-23 — MAINT-0130 safe-file prerequisite implemented for candidate closeout
 
 ---
 
@@ -127,9 +127,11 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
+| MAINT-0130 | Replace inconsistent move/delete/link/batch/migrator behavior with one fail-closed transactional safe-file system and retire age-only archival | Main Agent + governance | L | P0 | ✅ COMPLETE ON MERGE — source-bound candidate requires focused, quick/full, ordinary-hook, and hosted proof before bulk cleanup is unblocked |
 
-No implementation packet remains active. MAINT-012D is complete on merge after
-the frozen candidate passes its required local and hosted evidence.
+No bulk cleanup or automatic archival is authorized by this packet. Content
+movement remains held until the exact MAINT-0130 candidate is merged and its
+required evidence is green.
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. The reproduced public-route safety packet is integrated. INDIA-3,

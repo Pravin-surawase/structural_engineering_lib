@@ -1,34 +1,5 @@
 #!/usr/bin/env python3
-"""Batch migration runner with per-operation rollback logs.
-
-When to use: When moving multiple files/modules at once. Orchestrates migrations with rollback logging.
-
-Reads a migration plan and executes operations via the canonical scripts:
-- migrate_python_module.py
-- safe_file_move.py
-- migrate_react_component.py
-
-Each operation can be dry-run planned, backed up, executed, and logged with a
-generated rollback script.
-
-Plan format (JSON):
-{
-  "operations": [
-    {
-      "tool": "python_module",
-      "source": "structural_lib/api.py",
-      "destination": "structural_lib/services/api.py",
-      "args": ["--no-stub"]
-    },
-    {
-      "tool": "safe_move",
-      "source": "docs/old.md",
-      "destination": "docs/new.md",
-      "args": ["--stub"]
-    }
-  ]
-}
-"""
+"""Preflight and execute a complete migration batch with exact full rollback."""
 
 from __future__ import annotations
 
@@ -36,52 +7,45 @@ import argparse
 import contextlib
 import hashlib
 import json
+import os
 import shlex
-import shutil
 import stat
 import subprocess
 import sys
-from dataclasses import dataclass
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _lib.safe_file_ops import (
+    FileSnapshot,
+    SafeFileError,
+    capture_snapshots,
+    iter_repository_files,
+    restore_snapshots,
+    sha256_file,
+)
+from _lib.utils import REPO_ROOT
 
 TOOL_SCRIPTS = {
     "python_module": REPO_ROOT / "scripts" / "migrate_python_module.py",
     "safe_move": REPO_ROOT / "scripts" / "safe_file_move.py",
     "react_component": REPO_ROOT / "scripts" / "migrate_react_component.py",
 }
+DISALLOWED_OPERATION_ARGS = {"--force", "--no-backup", "--dry-run", "--json"}
 
 
-@dataclass
-class CommandResult:
-    exit_code: int
-    payload: dict[str, Any]
-    stdout: str
-    stderr: str
+def _load_plan(path: Path) -> list[dict[str, Any]]:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    operations = data.get("operations")
+    if not isinstance(operations, list) or not operations:
+        raise ValueError("Plan must contain a non-empty 'operations' list")
+    if not all(isinstance(operation, dict) for operation in operations):
+        raise ValueError("Every operation must be an object")
+    return operations
 
 
-def _load_plan(plan_path: Path) -> list[dict[str, Any]]:
-    data = json.loads(plan_path.read_text(encoding="utf-8"))
-    ops = data.get("operations")
-    if not isinstance(ops, list):
-        raise ValueError("Plan JSON must contain an 'operations' list")
-    return ops
-
-
-def _normalize_args(raw_args: Any) -> list[str]:
-    if raw_args is None:
-        return []
-    if isinstance(raw_args, list):
-        return [str(a) for a in raw_args]
-    if isinstance(raw_args, str):
-        return shlex.split(raw_args)
-    raise ValueError(f"Unsupported args type: {type(raw_args).__name__}")
-
-
-def _normalize_tool(tool: str) -> str:
+def _normalize_tool(value: str) -> str:
     aliases = {
         "python": "python_module",
         "migrate_python_module": "python_module",
@@ -90,375 +54,522 @@ def _normalize_tool(tool: str) -> str:
         "react": "react_component",
         "migrate_react_component": "react_component",
     }
-    key = tool.strip()
-    return aliases.get(key, key)
+    return aliases.get(value.strip(), value.strip())
 
 
-def _build_command(
-    *,
-    tool: str,
-    source: str,
-    destination: str,
-    extra_args: list[str],
-    force_dry_run: bool,
+def _normalize_args(value: Any) -> list[str]:
+    if value is None:
+        return []
+    if isinstance(value, str):
+        return shlex.split(value)
+    if isinstance(value, list):
+        return [str(item) for item in value]
+    raise ValueError(f"Unsupported args type: {type(value).__name__}")
+
+
+def _command(
+    tool: str, source: str, destination: str, extra_args: list[str], *, dry_run: bool
 ) -> list[str]:
-    script = TOOL_SCRIPTS[tool]
-    cmd = [sys.executable, str(script), source, destination]
-    cmd.extend(extra_args)
-    if "--json" not in cmd:
-        cmd.append("--json")
-    if force_dry_run and "--dry-run" not in cmd:
-        cmd.append("--dry-run")
-    return cmd
+    command = [
+        sys.executable,
+        str(TOOL_SCRIPTS[tool]),
+        source,
+        destination,
+        *extra_args,
+        "--json",
+    ]
+    if dry_run:
+        command.append("--dry-run")
+    return command
 
 
-def _run_json_command(cmd: list[str]) -> CommandResult:
-    proc = subprocess.run(
-        cmd,
+def _run_json(
+    command: list[str], *, exclude_roots: list[Path] | None = None
+) -> tuple[int, dict[str, Any], str]:
+    environment = os.environ.copy()
+    if exclude_roots:
+        environment["SAFE_FILE_EXCLUDE_ROOTS"] = os.pathsep.join(
+            str(path.resolve()) for path in exclude_roots
+        )
+    process = subprocess.run(
+        command,
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,
+        check=False,
+        env=environment,
     )
-    stdout = proc.stdout.strip()
-    payload: dict[str, Any] = {}
-    if stdout:
-        try:
-            payload = json.loads(stdout)
-        except json.JSONDecodeError as exc:
-            payload = {
-                "success": False,
-                "error": f"Invalid JSON output: {exc}",
-                "raw_stdout": stdout,
-            }
-            return CommandResult(1, payload, proc.stdout, proc.stderr)
-    return CommandResult(proc.returncode, payload, proc.stdout, proc.stderr)
+    try:
+        payload = json.loads(process.stdout)
+    except json.JSONDecodeError as exc:
+        return (
+            1,
+            {"success": False, "error": f"Invalid JSON output: {exc}"},
+            process.stderr,
+        )
+    return process.returncode, payload, process.stderr
 
 
-def _safe_slug(value: str) -> str:
-    out = []
-    for ch in value:
-        if ch.isalnum() or ch in {"-", "_", "."}:
-            out.append(ch)
-        else:
-            out.append("-")
-    slug = "".join(out).strip("-")
-    return slug[:80] or "op"
+def _normalize_operation(operation: dict[str, Any], index: int) -> dict[str, Any]:
+    tool = _normalize_tool(str(operation.get("tool", "")))
+    source = str(operation.get("source", "")).strip()
+    destination = str(operation.get("destination", "")).strip()
+    extra_args = _normalize_args(operation.get("args"))
+    if tool not in TOOL_SCRIPTS:
+        raise ValueError(f"Operation {index}: unsupported tool {tool!r}")
+    if not source or not destination:
+        raise ValueError(f"Operation {index}: source and destination are required")
+    forbidden = sorted(set(extra_args) & DISALLOWED_OPERATION_ARGS)
+    if forbidden:
+        raise ValueError(
+            f"Operation {index}: forbidden safety-bypass args: {', '.join(forbidden)}"
+        )
+    return {
+        "index": index,
+        "tool": tool,
+        "source": source,
+        "destination": destination,
+        "args": extra_args,
+    }
 
 
-def _normalize_relpath(path_str: str) -> str:
-    p = Path(path_str)
-    if p.is_absolute():
-        try:
-            p = p.resolve().relative_to(REPO_ROOT)
-        except ValueError:
-            return p.as_posix()
-    return p.as_posix()
+def _preflight(
+    operations: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], set[str]]:
+    planned: list[dict[str, Any]] = []
+    all_changed: set[str] = set()
+    sources: set[str] = set()
+    destinations: set[str] = set()
+    for index, raw in enumerate(operations, 1):
+        operation = _normalize_operation(raw, index)
+        exit_code, payload, stderr = _run_json(
+            _command(
+                operation["tool"],
+                operation["source"],
+                operation["destination"],
+                operation["args"],
+                dry_run=True,
+            )
+        )
+        operation["plan_exit_code"] = exit_code
+        operation["plan_payload"] = payload
+        operation["plan_stderr"] = stderr
+        operation["status"] = "dry-run"
+        if exit_code != 0 or not payload.get("success"):
+            raise SafeFileError(
+                f"Operation {index} dry-run failed: {payload.get('error', stderr)}"
+            )
+        source = str(payload["source"])
+        destination = str(payload["destination"])
+        if source in sources:
+            raise SafeFileError(f"Duplicate batch source: {source}")
+        if destination in destinations:
+            raise SafeFileError(f"Destination collision: {destination}")
+        sources.add(source)
+        destinations.add(destination)
+        changed = payload.get("changed_files")
+        if not isinstance(changed, list) or not all(
+            isinstance(path, str) for path in changed
+        ):
+            raise SafeFileError(f"Operation {index} omitted changed_files preview")
+        operation["predicted_changed_files"] = sorted(changed)
+        all_changed.update(changed)
+        planned.append(operation)
+    chained = sorted(sources & destinations)
+    if chained:
+        raise SafeFileError(
+            "Chained or cyclic paths require separate reviewed batches: "
+            + ", ".join(chained)
+        )
+    return planned, all_changed
 
 
-def _backup_files(
-    files: list[str],
-    op_dir: Path,
-) -> list[dict[str, Any]]:
-    backups: list[dict[str, Any]] = []
-    files_dir = op_dir / "files"
-    files_dir.mkdir(parents=True, exist_ok=True)
-
-    for rel in sorted(set(files)):
-        rel_norm = _normalize_relpath(rel)
-        src = REPO_ROOT / rel_norm
-        dst = files_dir / rel_norm
+def _write_manifest(
+    run_root: Path, snapshots: list[FileSnapshot], predicted: set[str]
+) -> Path:
+    files_root = run_root / "files"
+    entries: list[dict[str, Any]] = []
+    for snapshot in snapshots:
+        relative = snapshot.path.relative_to(REPO_ROOT).as_posix()
+        backup = files_root / relative
         entry: dict[str, Any] = {
-            "path": rel_norm,
-            "existed": src.exists(),
-            "backup": str(dst.relative_to(op_dir)),
+            "path": relative,
+            "existed": snapshot.existed,
+            "mode": snapshot.mode,
+            "size_bytes": len(snapshot.data or b""),
+            "sha256": (
+                hashlib.sha256(snapshot.data or b"").hexdigest()
+                if snapshot.existed
+                else None
+            ),
+            "backup": None,
         }
-        if src.exists():
-            dst.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(src, dst)
-            entry["size_bytes"] = src.stat().st_size
-            with src.open("rb") as fh:
-                entry["sha256"] = hashlib.sha256(fh.read()).hexdigest()
-        else:
-            entry["size_bytes"] = 0
-            entry["sha256"] = None
-        backups.append(entry)
+        if snapshot.existed:
+            backup.parent.mkdir(parents=True, exist_ok=True)
+            backup.write_bytes(snapshot.data or b"")
+            entry["backup"] = backup.relative_to(run_root).as_posix()
+        entries.append(entry)
+    manifest = {
+        "schema_version": 1,
+        "repository": str(REPO_ROOT),
+        "created_at_utc": datetime.now(UTC).isoformat(),
+        "predicted_changed_files": sorted(predicted),
+        "files": entries,
+    }
+    path = run_root / "rollback-manifest.json"
+    path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    return path
 
-    return backups
 
-
-def _write_file_rollback_manifest(op_dir: Path, backups: list[dict[str, Any]]) -> Path:
-    """Write per-file rollback metadata for automation/audit tooling."""
-    manifest_path = op_dir / "rollback-files.json"
-    manifest_path.write_text(
-        json.dumps({"files": backups}, indent=2),
+def _write_rollback_script(run_root: Path, manifest: Path) -> Path:
+    script = run_root / "rollback.sh"
+    command = " ".join(
+        shlex.quote(part)
+        for part in (
+            sys.executable,
+            str(REPO_ROOT / "scripts" / "batch_migrate_runner.py"),
+            "--restore",
+            str(manifest),
+        )
+    )
+    script.write_text(
+        "#!/usr/bin/env bash\n"
+        "set -euo pipefail\n"
+        f"cd {shlex.quote(str(REPO_ROOT))}\n"
+        f"{command}\n",
         encoding="utf-8",
     )
-    return manifest_path
+    script.chmod(stat.S_IMODE(script.stat().st_mode) | stat.S_IXUSR)
+    return script
 
 
-def _write_rollback_script(op_dir: Path, backups: list[dict[str, Any]]) -> Path:
-    script_path = op_dir / "rollback.sh"
-    runtime = REPO_ROOT / "scripts" / "python_runtime.sh"
-    safe_move = REPO_ROOT / "scripts" / "safe_file_move.py"
-    safe_delete = REPO_ROOT / "scripts" / "safe_file_delete.py"
-    lines = [
-        "#!/usr/bin/env bash",
-        "set -euo pipefail",
-        f"cd {shlex.quote(str(REPO_ROOT))}",
-        "",
-        "echo 'Restoring files through validated file-operation tools...'",
+def _restore_manifest(path: Path) -> dict[str, Any]:
+    manifest = json.loads(path.read_text(encoding="utf-8"))
+    if manifest.get("repository") != str(REPO_ROOT):
+        raise SafeFileError("Rollback manifest belongs to a different repository")
+    entries = manifest.get("files")
+    if not isinstance(entries, list):
+        raise SafeFileError("Rollback manifest omitted files")
+    snapshots: list[FileSnapshot] = []
+    for entry in entries:
+        if not isinstance(entry, dict):
+            raise SafeFileError("Invalid rollback file entry")
+        target = REPO_ROOT / str(entry["path"])
+        existed = bool(entry["existed"])
+        data: bytes | None = None
+        if existed:
+            backup = path.parent / str(entry["backup"])
+            if not backup.is_file():
+                raise SafeFileError(f"Rollback backup missing: {backup}")
+            data = backup.read_bytes()
+            if hashlib.sha256(data).hexdigest() != entry["sha256"]:
+                raise SafeFileError(f"Rollback backup hash mismatch: {backup}")
+        snapshots.append(
+            FileSnapshot(
+                target,
+                existed,
+                data,
+                int(entry["mode"]) if entry.get("mode") is not None else None,
+            )
+        )
+    restore_snapshots(snapshots, REPO_ROOT)
+    for snapshot in snapshots:
+        if snapshot.existed:
+            if (
+                not snapshot.path.is_file()
+                or sha256_file(snapshot.path)
+                != hashlib.sha256(snapshot.data or b"").hexdigest()
+            ):
+                raise SafeFileError(f"Rollback verification failed: {snapshot.path}")
+        elif snapshot.path.exists() or snapshot.path.is_symlink():
+            raise SafeFileError(f"Rollback failed to remove: {snapshot.path}")
+    return {
+        "tool": "batch_migrate_runner",
+        "mode": "restore",
+        "success": True,
+        "manifest": str(path),
+        "files_restored": len(snapshots),
+    }
+
+
+def _workspace_hashes(
+    extra_paths: set[str], *, exclude_root: Path | None = None
+) -> dict[str, str | None]:
+    paths = {
+        path.relative_to(REPO_ROOT).as_posix()
+        for path in iter_repository_files(REPO_ROOT)
+    } | set(extra_paths)
+    hashes: dict[str, str | None] = {}
+    for relative in paths:
+        path = REPO_ROOT / relative
+        if exclude_root is not None:
+            try:
+                path.relative_to(exclude_root)
+                continue
+            except ValueError:
+                pass
+        hashes[relative] = sha256_file(path) if path.is_file() else None
+    return hashes
+
+
+def _changed_paths(
+    before: dict[str, str | None], after: dict[str, str | None]
+) -> set[str]:
+    return {
+        path
+        for path in before.keys() | after.keys()
+        if before.get(path) != after.get(path)
+    }
+
+
+def _git_paths(*args: str) -> set[str]:
+    process = subprocess.run(
+        ["git", *args, "-z"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        check=False,
+    )
+    if process.returncode != 0:
+        raise SafeFileError(f"Git workspace query failed: git {' '.join(args)}")
+    return {
+        part.decode("utf-8", errors="surrogateescape")
+        for part in process.stdout.split(b"\0")
+        if part
+    }
+
+
+def _capture_workspace_guard() -> tuple[set[str], list[FileSnapshot]]:
+    tracked = _git_paths("ls-files")
+    dirty = (
+        _git_paths("diff", "--name-only")
+        | _git_paths("diff", "--cached", "--name-only")
+        | _git_paths("ls-files", "--others", "--exclude-standard")
+    )
+    snapshots = capture_snapshots(
+        [REPO_ROOT / relative for relative in dirty], REPO_ROOT
+    )
+    return tracked, snapshots
+
+
+def _restore_unexpected(
+    paths: set[str],
+    *,
+    before: dict[str, str | None],
+    tracked: set[str],
+    guard_snapshots: list[FileSnapshot],
+) -> None:
+    guarded = {
+        snapshot.path.relative_to(REPO_ROOT).as_posix(): snapshot
+        for snapshot in guard_snapshots
+    }
+    guarded_to_restore = [
+        guarded[relative] for relative in paths if relative in guarded
     ]
-    for entry in backups:
-        rel = str(entry["path"])
-        backup_rel = str(entry["backup"])
-        backup_abs = op_dir / backup_rel
-        if entry["existed"]:
-            lines.append(
-                " ".join(
-                    shlex.quote(str(part))
-                    for part in (
-                        runtime,
-                        safe_move,
-                        backup_abs,
-                        rel,
-                        "--force",
-                    )
+    if guarded_to_restore:
+        restore_snapshots(guarded_to_restore, REPO_ROOT)
+    for relative in sorted(paths - set(guarded)):
+        path = REPO_ROOT / relative
+        if relative in tracked:
+            process = subprocess.run(
+                ["git", "show", f":{relative}"],
+                cwd=REPO_ROOT,
+                capture_output=True,
+                check=False,
+            )
+            if process.returncode != 0:
+                raise SafeFileError(
+                    f"Cannot restore unexpected tracked path: {relative}"
                 )
-            )
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(process.stdout)
+            mode = subprocess.run(
+                ["git", "ls-files", "-s", "--", relative],
+                cwd=REPO_ROOT,
+                capture_output=True,
+                text=True,
+                check=False,
+            ).stdout.split(maxsplit=1)[0]
+            if mode:
+                path.chmod(int(mode, 8) & 0o777)
+        elif before.get(relative) is None:
+            if path.is_file() or path.is_symlink():
+                path.unlink()
+            elif path.exists():
+                raise SafeFileError(
+                    f"Rollback refuses unexpected directory: {relative}"
+                )
         else:
-            lines.extend(
-                [
-                    f"if [[ -f {shlex.quote(rel)} ]]; then",
-                    "  "
-                    + " ".join(
-                        shlex.quote(str(part))
-                        for part in (
-                            runtime,
-                            safe_delete,
-                            rel,
-                            "--force",
-                            "--no-backup",
-                        )
-                    ),
-                    "fi",
-                ]
-            )
-    lines.append("echo 'Rollback complete.'")
-    script_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
-    current_mode = script_path.stat().st_mode
-    script_path.chmod(current_mode | stat.S_IXUSR)
-    return script_path
+            raise SafeFileError(f"No rollback source for unexpected path: {relative}")
 
 
 def run_batch(args: argparse.Namespace) -> tuple[int, dict[str, Any]]:
-    operations = _load_plan(Path(args.plan))
-    run_id = datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
-    run_root = Path(args.rollback_dir) / run_id
-    if not args.dry_run:
-        run_root.mkdir(parents=True, exist_ok=True)
-
     summary: dict[str, Any] = {
         "tool": "batch_migrate_runner",
-        "run_id": run_id,
         "dry_run": bool(args.dry_run),
-        "rollback_root": str(run_root),
-        "operations_total": len(operations),
+        "success": False,
         "operations": [],
-        "success": True,
     }
+    try:
+        operations = _load_plan(Path(args.plan))
+        planned, predicted = _preflight(operations)
+    except (OSError, ValueError, json.JSONDecodeError, SafeFileError) as exc:
+        summary["error"] = str(exc)
+        summary["operations_total"] = 0
+        summary["operations_completed"] = 0
+        summary["operations_failed"] = 1
+        print(f"❌ Batch preflight failed: {exc}")
+        return 1, summary
 
-    print(f"Batch migration run: {run_id}")
-    print(f"Plan: {args.plan}")
-    print(f"Operations: {len(operations)}")
-    print(f"Rollback logs: {run_root if not args.dry_run else 'not written (dry-run)'}")
+    summary["operations"] = planned
+    summary["operations_total"] = len(planned)
+    summary["predicted_changed_files"] = sorted(predicted)
+    if args.dry_run:
+        summary["operations_completed"] = len(planned)
+        summary["operations_failed"] = 0
+        summary["success"] = True
+        summary["rollback_root"] = None
+        print(f"✅ Full batch preflight passed for {len(planned)} operations.")
+        return 0, summary
 
-    for idx, op in enumerate(operations, start=1):
-        tool_raw = str(op.get("tool", "python_module"))
-        tool = _normalize_tool(tool_raw)
-        source = str(op.get("source", "")).strip()
-        destination = str(op.get("destination", "")).strip()
-        extra_args = _normalize_args(op.get("args"))
-        op_name = _safe_slug(f"{idx:03d}-{tool}-{Path(source).name}")
-        op_dir = run_root / op_name
-        if not args.dry_run:
-            op_dir.mkdir(parents=True, exist_ok=True)
-
-        op_log: dict[str, Any] = {
-            "index": idx,
-            "tool": tool,
-            "tool_input": tool_raw,
-            "source": source,
-            "destination": destination,
-            "args": extra_args,
-            "status": "pending",
-            "op_dir": str(op_dir),
-        }
-        print()
-        print(f"[{idx}/{len(operations)}] {tool}: {source} -> {destination}")
-
-        if tool not in TOOL_SCRIPTS:
-            op_log["status"] = "failed"
-            op_log["error"] = f"Unsupported tool: {tool_raw}"
-            summary["operations"].append(op_log)
-            summary["success"] = False
-            if not args.continue_on_error:
-                break
-            continue
-        if not source or not destination:
-            op_log["status"] = "failed"
-            op_log["error"] = "Operation requires 'source' and 'destination'"
-            summary["operations"].append(op_log)
-            summary["success"] = False
-            if not args.continue_on_error:
-                break
-            continue
-
-        plan_cmd = _build_command(
-            tool=tool,
-            source=source,
-            destination=destination,
-            extra_args=extra_args,
-            force_dry_run=True,
-        )
-        op_log["plan_cmd"] = plan_cmd
-        plan_res = _run_json_command(plan_cmd)
-        op_log["plan_exit_code"] = plan_res.exit_code
-        op_log["plan_payload"] = plan_res.payload
-        op_log["plan_stderr"] = plan_res.stderr
-
-        if plan_res.exit_code != 0:
-            op_log["status"] = "failed"
-            op_log["error"] = "Planning dry-run failed"
-            summary["operations"].append(op_log)
-            summary["success"] = False
-            if not args.dry_run:
-                (op_dir / "operation-log.json").write_text(
-                    json.dumps(op_log, indent=2), encoding="utf-8"
-                )
-            if not args.continue_on_error:
-                break
-            continue
-
-        predicted_files = list(plan_res.payload.get("changed_files", []))
-        op_log["predicted_changed_files"] = predicted_files
-
-        backups: list[dict[str, Any]] = []
-        rollback_script: Path | None = None
-        rollback_manifest: Path | None = None
-        if not args.dry_run:
-            backups = _backup_files(predicted_files, op_dir)
-            rollback_manifest = _write_file_rollback_manifest(op_dir, backups)
-            rollback_script = _write_rollback_script(op_dir, backups)
-        op_log["backups"] = backups
-        op_log["rollback_script"] = str(rollback_script) if rollback_script else None
-        op_log["rollback_manifest"] = (
-            str(rollback_manifest) if rollback_manifest else None
-        )
-
-        if args.dry_run:
-            op_log["status"] = "dry-run"
-            summary["operations"].append(op_log)
-            continue
-
-        live_cmd = _build_command(
-            tool=tool,
-            source=source,
-            destination=destination,
-            extra_args=[a for a in extra_args if a != "--dry-run"],
-            force_dry_run=False,
-        )
-        op_log["live_cmd"] = live_cmd
-        live_res = _run_json_command(live_cmd)
-        op_log["live_exit_code"] = live_res.exit_code
-        op_log["live_payload"] = live_res.payload
-        op_log["live_stderr"] = live_res.stderr
-
-        if live_res.exit_code != 0:
-            op_log["status"] = "failed"
-            op_log["error"] = "Live execution failed"
-            summary["success"] = False
-            if args.auto_rollback and rollback_script:
-                rb = subprocess.run(
-                    [str(rollback_script)],
-                    cwd=REPO_ROOT,
-                    capture_output=True,
-                    text=True,
-                )
-                op_log["rollback_attempted"] = True
-                op_log["rollback_exit_code"] = rb.returncode
-                op_log["rollback_stdout"] = rb.stdout
-                op_log["rollback_stderr"] = rb.stderr
-            else:
-                op_log["rollback_attempted"] = False
-        else:
-            op_log["status"] = "ok"
-
-        summary["operations"].append(op_log)
-        (op_dir / "operation-log.json").write_text(
-            json.dumps(op_log, indent=2), encoding="utf-8"
-        )
-
-        if op_log["status"] != "ok" and not args.continue_on_error:
-            break
-
-    summary["operations_completed"] = len(summary["operations"])
-    summary["operations_failed"] = sum(
-        1 for op in summary["operations"] if op.get("status") == "failed"
+    run_id = datetime.now(UTC).strftime("%Y%m%dT%H%M%S%fZ")
+    run_root = Path(args.rollback_dir)
+    if not run_root.is_absolute():
+        run_root = REPO_ROOT / run_root
+    run_root = run_root / run_id
+    run_root.mkdir(parents=True, exist_ok=False)
+    snapshots = capture_snapshots(
+        [REPO_ROOT / relative for relative in predicted], REPO_ROOT
     )
+    manifest = _write_manifest(run_root, snapshots, predicted)
+    rollback_script = _write_rollback_script(run_root, manifest)
+    summary["run_id"] = run_id
+    summary["rollback_root"] = str(run_root)
+    summary["rollback_manifest"] = str(manifest)
+    summary["rollback_script"] = str(rollback_script)
+    tracked, guard_snapshots = _capture_workspace_guard()
+    before = _workspace_hashes(predicted, exclude_root=run_root)
+
+    failure: str | None = None
+    completed = 0
+    for operation in planned:
+        exit_code, payload, stderr = _run_json(
+            _command(
+                operation["tool"],
+                operation["source"],
+                operation["destination"],
+                operation["args"],
+                dry_run=False,
+            ),
+            exclude_roots=[run_root],
+        )
+        operation["live_exit_code"] = exit_code
+        operation["live_payload"] = payload
+        operation["live_stderr"] = stderr
+        if exit_code != 0 or not payload.get("success"):
+            operation["status"] = "failed"
+            failure = (
+                f"Operation {operation['index']} failed: "
+                f"{payload.get('error', stderr)}"
+            )
+            break
+        actual_preview = payload.get("changed_files")
+        if sorted(actual_preview or []) != operation["predicted_changed_files"]:
+            operation["status"] = "failed"
+            failure = f"Operation {operation['index']} changed-file report drifted"
+            break
+        operation["status"] = "ok"
+        completed += 1
+
+    after = _workspace_hashes(predicted, exclude_root=run_root)
+    actual = _changed_paths(before, after)
+    summary["actual_changed_files"] = sorted(actual)
+    if failure is None and actual != predicted:
+        missing = sorted(predicted - actual)
+        unexpected = sorted(actual - predicted)
+        failure = (
+            f"Batch changed-path mismatch; missing={missing}, unexpected={unexpected}"
+        )
+
+    if failure is not None:
+        summary["error"] = failure
+        try:
+            _restore_unexpected(
+                actual - predicted,
+                before=before,
+                tracked=tracked,
+                guard_snapshots=guard_snapshots,
+            )
+            rollback = _restore_manifest(manifest)
+            summary["rollback"] = rollback
+            summary["rolled_back"] = True
+        except Exception as exc:
+            summary["rolled_back"] = False
+            summary["rollback_error"] = str(exc)
+        summary["operations_completed"] = completed
+        summary["operations_failed"] = 1
+        summary_path = run_root / "run-summary.json"
+        summary["summary_file"] = str(summary_path)
+        summary_path.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+        print(f"❌ {failure}")
+        return 1, summary
+
+    summary["operations_completed"] = completed
+    summary["operations_failed"] = 0
+    summary["success"] = True
+    summary["rolled_back"] = False
     summary_path = run_root / "run-summary.json"
-    summary["summary_file"] = None if args.dry_run else str(summary_path)
-    if not args.dry_run:
-        summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
-    return (0 if summary["success"] else 1), summary
+    summary["summary_file"] = str(summary_path)
+    summary_path.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+    print(f"✅ Batch completed with exact preview agreement: {len(actual)} paths.")
+    return 0, summary
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Batch migration runner with rollback logging"
+        description="Preflight and execute a transactional migration batch"
     )
-    parser.add_argument("plan", help="Path to migration plan JSON file")
+    parser.add_argument("plan", nargs="?", help="Migration plan JSON")
     parser.add_argument(
         "--rollback-dir",
         default="logs/migration-rollbacks",
-        help="Directory to store rollback logs and backups",
+        help="Directory for exact rollback evidence",
     )
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Plan only; do not execute live operations",
-    )
-    parser.add_argument(
-        "--continue-on-error",
-        action="store_true",
-        help="Continue remaining operations after a failure",
-    )
-    parser.add_argument(
-        "--auto-rollback",
-        action="store_true",
-        help="Attempt automatic rollback when an operation fails",
-    )
-    parser.add_argument(
-        "--json",
-        action="store_true",
-        help="Output run summary as JSON",
-    )
+    parser.add_argument("--dry-run", action="store_true", help="Preflight only")
+    parser.add_argument("--restore", help="Restore an exact rollback manifest")
+    parser.add_argument("--json", action="store_true", help="Output structured JSON")
     args = parser.parse_args()
 
-    if args.json:
-        with contextlib.redirect_stdout(sys.stderr):
+    if args.restore:
+        if args.plan or args.dry_run:
+            parser.error("--restore cannot be combined with a plan or --dry-run")
+        try:
+            payload = _restore_manifest(Path(args.restore))
+            exit_code = 0
+        except Exception as exc:
+            payload = {
+                "tool": "batch_migrate_runner",
+                "mode": "restore",
+                "success": False,
+                "error": str(exc),
+            }
+            exit_code = 1
+    else:
+        if not args.plan:
+            parser.error("plan is required unless --restore is used")
+        if args.json:
+            with contextlib.redirect_stdout(sys.stderr):
+                exit_code, payload = run_batch(args)
+        else:
             exit_code, payload = run_batch(args)
-        print(json.dumps(payload, indent=2))
-        return exit_code
 
-    exit_code, payload = run_batch(args)
-    print()
-    print("Batch migration summary:")
-    print(f"  Success: {payload['success']}")
-    print(
-        f"  Completed: {payload['operations_completed']}/{payload['operations_total']}"
-    )
-    print(f"  Failed: {payload['operations_failed']}")
-    print(f"  Summary: {payload['summary_file'] or 'not written (dry-run)'}")
+    if args.json:
+        print(json.dumps(payload, indent=2))
+    elif args.restore:
+        print(
+            "✅ Rollback restored exact original bytes."
+            if exit_code == 0
+            else f"❌ {payload['error']}"
+        )
     return exit_code
 
 

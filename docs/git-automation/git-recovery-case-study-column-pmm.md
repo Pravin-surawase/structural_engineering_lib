@@ -161,7 +161,7 @@ removed. Remote refs were retained as audit and recovery evidence.
 | `python_runtime.sh --diagnose` | Read-only | Which source tree will Python import? | Interpreter location alone is insufficient. |
 | `check_function_quality.py --module` | Read-only | Do selected IS 456 functions meet the static contract? | Selection must use repository-relative paths. It is not a numerical proof. |
 | `./run.sh context` | Read-only | Validate routing and summarize live files on demand. | Generic committed folder indexes are retired. |
-| `safe_file_delete.py` | Destructive workspace write | Delete one validated file after reference checks. | Generic names such as `index.json` create noisy basename matches; verify the exact target and use `--force` only with known generated files. |
+| `safe_file_delete.py` | Destructive workspace write | Delete one validated unreferenced file with a content-hashed backup. | Generic names such as `index.json` can produce broad matches; every maintained match must be resolved because no force bypass exists. |
 | `./run.sh check --quick` | Read-only validation | Is the candidate safe for a reviewed commit? | Does not replace focused engineering tests. |
 | `./run.sh check` | Read-only validation | Does the complete repository contract pass? | Run once after the candidate is stable. |
 | GitHub required checks | Remote validation | Did CI pass at the published head? | Recheck if the head or base changes. |

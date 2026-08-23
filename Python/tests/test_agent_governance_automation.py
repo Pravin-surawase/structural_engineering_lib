@@ -501,8 +501,9 @@ def test_tool_registry_does_not_infer_permission_from_git_text():
     ("operation", "mode", "expected"),
     [
         ("repository context", None, "ReadOnly"),
-        ("batch migration", None, "WorkspaceWrite"),
+        ("batch migration", None, "ReadOnly"),
         ("batch migration", "--dry-run", "ReadOnly"),
+        ("batch migration", "live", "WorkspaceWrite"),
         ("pipeline state", "new", "WorkspaceWrite"),
         ("pipeline state", "list", "ReadOnly"),
         ("session store", "end", "WorkspaceWrite"),
@@ -660,14 +661,13 @@ def test_external_cli_refuses_existing_workdir(tmp_path):
     assert sentinel.read_text(encoding="utf-8") == "preserve"
 
 
-def test_shell_maintenance_uses_safe_file_operations():
-    archive_source = (SCRIPTS_DIR / "archive_old_files.sh").read_text(encoding="utf-8")
+def test_age_based_archiver_is_retired_from_active_scripts():
     root_count_source = (SCRIPTS_DIR / "check_root_file_count.sh").read_text(
         encoding="utf-8"
     )
 
-    assert "safe_file_move.py" in archive_source
-    assert "done < <(" in archive_source
+    assert not (SCRIPTS_DIR / "archive_old_files.sh").exists()
+    assert (SCRIPTS_DIR / "_archive" / "archive_old_files.sh").exists()
     assert "git mv" not in root_count_source
     assert "scripts/safe_file_move.py <file>" in root_count_source
     assert "--dry-run" in root_count_source

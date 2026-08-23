@@ -117,27 +117,39 @@ def test_migrate_react_component_accepts_react_app_prefixed_paths() -> None:
     assert "react_app/react_app/" not in destination
 
 
-def test_safe_file_move_dry_run_matches_golden() -> None:
-    payload = _run_script_json(
-        "safe_file_move.py",
-        [
-            "tests/fixtures/migration/docs/__4layer_fixture_source_qzv9.md",
-            "tests/fixtures/migration/docs/moved/__4layer_fixture_source_qzv9.md",
-            "--dry-run",
-        ],
-    )
-    subset = {
-        "tool": payload["tool"],
-        "dry_run": payload["dry_run"],
-        "success": payload["success"],
-        "source": payload["source"],
-        "destination": payload["destination"],
-        "moved": payload["moved"],
-        "updated_count": payload["updated_count"],
-        "stub_created": payload["stub_created"],
-        "changed_files": payload["changed_files"],
-    }
-    assert subset == _load_golden("safe_file_move_dry_run.json")
+def test_safe_file_move_dry_run_reports_complete_changed_paths() -> None:
+    runtime = FIXTURES / "_runtime_safe_move"
+    source = runtime / ("runtime-safe-" + "source.md")
+    destination = runtime / "moved" / source.name
+    reference = runtime / "reference.md"
+    shutil.rmtree(runtime, ignore_errors=True)
+    runtime.mkdir(parents=True)
+    source.write_text("source\n", encoding="utf-8")
+    reference.write_text(f"[source]({source.name})\n", encoding="utf-8")
+
+    try:
+        payload = _run_script_json(
+            "safe_file_move.py",
+            [
+                str(source.relative_to(REPO_ROOT)),
+                str(destination.relative_to(REPO_ROOT)),
+                "--dry-run",
+            ],
+        )
+        assert payload["success"] is True
+        assert payload["moved"] is False
+        assert payload["updated_count"] == 1
+        assert payload["changed_files"] == sorted(
+            [
+                str(source.relative_to(REPO_ROOT)),
+                str(destination.relative_to(REPO_ROOT)),
+                str(reference.relative_to(REPO_ROOT)),
+            ]
+        )
+        assert source.exists()
+        assert not destination.exists()
+    finally:
+        shutil.rmtree(runtime, ignore_errors=True)
 
 
 def test_safe_file_move_updates_live_refs_without_rewriting_evidence(
@@ -214,11 +226,11 @@ def test_batch_runner_dry_run_matches_golden(tmp_path: Path) -> None:
     assert not rollback_root.exists()
 
 
-def test_batch_runner_live_writes_per_file_rollback_manifest() -> None:
+def test_batch_runner_executes_exact_full_rollback_and_rejects_corruption() -> None:
     runtime_dir = FIXTURES / "_runtime_batch"
     rollback_root = runtime_dir / "rollback-logs"
-    source = runtime_dir / "live_source.md"
-    destination = runtime_dir / "moved" / "live_source.md"
+    source = runtime_dir / ("live_" + "source.md")
+    destination = runtime_dir / "moved" / source.name
 
     if runtime_dir.exists():
         shutil.rmtree(runtime_dir)
@@ -261,12 +273,10 @@ def test_batch_runner_live_writes_per_file_rollback_manifest() -> None:
             text=True,
             check=False,
         )
-        assert result.returncode == 0, result.stderr
+        assert result.returncode == 0, result.stderr + result.stdout
         payload = json.loads(result.stdout)
-        operation = payload["operations"][0]
-        assert operation["status"] == "ok"
-
-        manifest_path = Path(operation["rollback_manifest"])
+        assert payload["operations"][0]["status"] == "ok"
+        manifest_path = Path(payload["rollback_manifest"])
         if not manifest_path.is_absolute():
             manifest_path = REPO_ROOT / manifest_path
         assert manifest_path.exists()
@@ -286,14 +296,88 @@ def test_batch_runner_live_writes_per_file_rollback_manifest() -> None:
         assert destination_entry["sha256"] is None
         assert destination_entry["size_bytes"] == 0
 
-        rollback_script = Path(operation["rollback_script"])
+        rollback_script = Path(payload["rollback_script"])
         if not rollback_script.is_absolute():
             rollback_script = REPO_ROOT / rollback_script
         rollback_source = rollback_script.read_text(encoding="utf-8")
-        assert "python_runtime.sh" in rollback_source
-        assert "safe_file_move.py" in rollback_source
-        assert "safe_file_delete.py" in rollback_source
-        assert "rm -f" not in rollback_source
-        assert " cp " not in rollback_source
+        assert sys.executable in rollback_source
+        assert "batch_migrate_runner.py" in rollback_source
+        assert "--restore" in rollback_source
+        assert "--force" not in rollback_source
+        assert "--no-backup" not in rollback_source
+
+        rollback = subprocess.run(
+            [str(rollback_script)],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert rollback.returncode == 0, rollback.stderr
+        assert source.read_text(encoding="utf-8") == "runtime migration fixture\n"
+        assert not destination.exists()
+
+        backup = manifest_path.parent / str(source_entry["backup"])
+        backup.write_bytes(b"corrupt")
+        failed_rollback = subprocess.run(
+            [str(rollback_script)],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert failed_rollback.returncode == 1
+        assert source.read_text(encoding="utf-8") == "runtime migration fixture\n"
+    finally:
+        shutil.rmtree(runtime_dir, ignore_errors=True)
+
+
+def test_batch_runner_rejects_safety_bypass_args_before_writes() -> None:
+    runtime_dir = FIXTURES / "_runtime_batch_reject"
+    rollback_root = runtime_dir / "rollback-logs"
+    source = runtime_dir / "source.md"
+    destination = runtime_dir / "destination.md"
+    shutil.rmtree(runtime_dir, ignore_errors=True)
+    runtime_dir.mkdir(parents=True)
+    source.write_text("source\n", encoding="utf-8")
+    plan = runtime_dir / "plan.json"
+    plan.write_text(
+        json.dumps(
+            {
+                "operations": [
+                    {
+                        "tool": "safe_move",
+                        "source": str(source.relative_to(REPO_ROOT)),
+                        "destination": str(destination.relative_to(REPO_ROOT)),
+                        "args": ["--force"],
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    try:
+        command = [
+            sys.executable,
+            str(REPO_ROOT / "scripts" / "batch_migrate_runner.py"),
+            str(plan.relative_to(REPO_ROOT)),
+            "--dry-run",
+            "--rollback-dir",
+            str(rollback_root.relative_to(REPO_ROOT)),
+            "--json",
+        ]
+        result = subprocess.run(
+            command,
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        payload = json.loads(result.stdout)
+        assert result.returncode == 1
+        assert "forbidden safety-bypass args" in payload["error"]
+        assert source.exists()
+        assert not destination.exists()
+        assert not rollback_root.exists()
     finally:
         shutil.rmtree(runtime_dir, ignore_errors=True)
