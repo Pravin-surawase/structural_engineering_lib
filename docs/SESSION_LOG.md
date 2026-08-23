@@ -5,6 +5,133 @@
 
 ---
 
+## 2026-08-24 — Session: INDIA-3-SOURCE-META-R1 private catalogue repair
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents)
+
+**Branch:** `codex/india-3-source-meta-r1`, from exact hosted INDIA-3-G0 merge
+`c0e34235b485799d26fcb55df45f74ed9104e003`, tree
+`62b22ce2a6930fc77954b8e0cd93c4d6b987bbf1`.
+
+**Git handoff receipt:**
+`docs/verification/india-3-source-meta-r1-git-handoff-receipt.json`
+
+**Focus:** Repair only ignored private IS 13920 catalogue document-kind,
+page-content, and actual visual-renderability metadata. Preserve every source
+byte and alias; do not change formulas, runtime/API behavior, tests to bless a
+formula, support status, version/release state, or professional-use approval.
+
+### Summary
+
+- Verified PR #863 merged as exact hosted `c0e34235`, then created one fresh
+  source-bound Codex lane at that commit. All unrelated lanes remain untouched.
+- Corrected the base acquisition identity from base-only `STANDARD` to
+  `STANDARD_WITH_APPENDED_AMENDMENTS`, classified the consolidated source as a
+  candidate with appended amendments, and classified all four byte-distinct
+  amendment sources as standalone copies. Exact source IDs, logical IDs,
+  source bytes, cached text, hashes, paths, and aliases were not changed.
+- Added a private schema-v2 content-range map, a repeatable metadata-application
+  command, and separate page/document renderability states. The private tool,
+  seed, database, and source material remain under the existing Git-ignore
+  boundary and are not part of the tracked candidate.
+- Rendered all 84 retained IS 13920 pages one by one: all 84 produced page
+  images, 42 also emitted parser warnings, and zero failed. The warning-bearing
+  pages remain truthfully distinct from clean renders; neither state is an
+  engineering/source acceptance claim.
+- Private verification passes at 25 documents, 27 aliases, 732 cached pages,
+  142 text-layer visual-review pages, 84 render-checked IS 13920 pages, and zero
+  render failures. The six IS 13920 identities, eight aliases, four standalone
+  amendment copies, and two exact duplicate aliases all remain retained.
+- Added aggregate tracked evidence only. It contains no protected bytes, prose,
+  extracted text, page image, private hash value, or private absolute path.
+  `INDIA-3-JOINT-R1` is next in the owner-authorized sequence and was not
+  started here.
+
+### Issues encountered
+
+- The delegated worktree was clean and exact-main but detached, so governed
+  session start could not produce `READY_LOCAL` until the task branch existed.
+- Existing metadata could not distinguish acquisition intent from actual page
+  composition, and the existing visual flag described text extraction rather
+  than whether a renderer produced a page.
+- Poppler produced parser warnings for 42 pages across three retained source
+  identities even though all 84 pages rendered successfully.
+- A diagnostic page-by-page shell probe yielded after 30 seconds while its
+  process continued, so only the first document summary was returned in that
+  call.
+- One diagnostic SQL aggregation joined aliases and pages directly, doubling
+  displayed page counts for the two identities with two aliases.
+- Preparation-mode session synchronization detected pre-existing global API
+  count drift and rewrote one out-of-scope onboarding line.
+- The repository safety deleter rejected two generic scratch filenames because
+  basename search found unrelated maintained references elsewhere.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the delegated lane intentionally began detached at the
+  exact requested commit. Resolution: after live remote, worktree, and PR
+  inspection, create `codex/india-3-source-meta-r1` at unchanged `origin/main`.
+  Proof: `git_state.py --strict` reports `READY_LOCAL` and runtime diagnosis
+  reports `source_bound=true` at exact `c0e34235`.
+- Confirmed root cause: seed document kinds represented filenames/acquisition
+  intent, while the deduplication path preserved aliases without a mechanism to
+  update canonical metadata already stored in SQLite. Resolution: add explicit
+  page-range content identity plus a hash-bound metadata application command;
+  update only six IS 13920 document rows. Proof: schema v2 reports the corrected
+  kinds and complete page maps while document, alias, page, source-ID, logical-
+  ID, and byte-verification counts remain unchanged.
+- Confirmed root cause: `visual_review_required` is calculated only from
+  extracted-text length and never invokes a PDF renderer. Resolution: keep that
+  flag intact, add independent page/document renderability states, and run
+  `pdftoppm` page by page with output and warning classification. Proof: 84/84
+  pages render; 42 record parser warnings; zero record render failure.
+- The exact internal cause of the warning-bearing PDF operators was not needed
+  for this bounded metadata packet and remains `unconfirmed`; suppressing the
+  warnings would make the catalogue less truthful. Resolution: retain the
+  warnings as metadata and expose both warning-bearing and clean-rendering
+  retained copies without silently preferring either. Proof: all four standalone
+  amendment copies and both 33-page base/consolidated identities remain
+  hash-verified and available.
+- Confirmed root cause: the long shell diagnostic used a 30-second yield while
+  rendering many pages serially. Resolution: use the maintained private command
+  as a resumable terminal process and poll its session to completion. Proof: the
+  governed command exited zero with all 84 pages classified. ⚠️ TERMINAL ISSUE:
+  the first serial page probe outlived its 30-second yield -> the maintained
+  render-audit command completed through the returned terminal session.
+- Confirmed root cause: the first aggregate query formed a many-to-many result
+  by joining page and alias rows before counting. Resolution: use correlated
+  per-document counts for evidence. Proof: the corrected results report six and
+  three pages for each amendment copy and eight IS 13920 aliases in total.
+- Confirmed root cause: `session sync --fix` refreshes repository-wide metrics,
+  including owners outside this documentation-only packet. Resolution: restore
+  the unrelated onboarding line exactly and retain only task-owned paths. Proof:
+  the final changed-path set excludes that file. ⚠️ TERMINAL ISSUE: preparation
+  sync touched an unrelated metric owner -> reversed only its exact generated
+  line with no change to the user's surrounding content.
+- Confirmed root cause: the safe deleter conservatively searches basenames, so
+  generic render scratch names collided with unrelated words in maintained
+  files even though the files lived under the task's ignored temporary root.
+  Resolution: validate the exact absolute task temp directory, delete only its
+  remaining regular files with `unlink`, and remove only now-empty directories.
+  Proof: the exact temp root no longer exists while private archive verification
+  still passes. ⚠️ TERMINAL ISSUE: `safe_file_delete.py` held generic scratch
+  names on false reference matches -> used exact-root `unlink` only for ignored,
+  regenerable render intermediates; no archive/source/alias was targeted.
+
+### Validation through content freeze
+
+- Private syntax/seed validation, schema migration, metadata application,
+  page-by-page render audit, SQLite/source/cache/FTS verification, Git-ignore
+  checks, and the focused private-boundary regression pass.
+- Tracked scope is limited to this session/task/handoff and aggregate evidence.
+  Private archive files and render intermediates remain ignored; runtime,
+  formula, generated capability, API, test, package, and release paths are
+  unchanged.
+- The frozen focused documentation/boundary checks, sole quick gate, normal
+  staged hooks, immutable local candidate, clean-commit session end, and hosted
+  checks follow. A broad runtime gate is not selected by this metadata-only
+  packet.
+
 ## 2026-08-24 — Session: INDIA-3-G0 IS 13920 source-to-result decision
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents)

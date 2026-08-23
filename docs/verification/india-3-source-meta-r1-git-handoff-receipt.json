@@ -1,0 +1,182 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-23T23:11:31Z",
+      "query_status": "OK",
+      "reference": "Complete INDIA-3-SOURCE-META-R1 autonomously, publish and merge one unchanged green candidate, then stop; no subagents.",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "REPAIR_PRIVATE_IS13920_DOCUMENT_KIND_PAGE_CONTENT_AND_RENDERABILITY_METADATA",
+      "MIGRATE_THE_IGNORED_PRIVATE_CATALOGUE_AND_VERIFY_ALL_RETAINED_SOURCES_AND_ALIASES",
+      "ADD_BOUNDED_TRACKED_AGGREGATE_EVIDENCE_WITHOUT_PRIVATE_MATERIAL",
+      "UPDATE_TASK_SESSION_AND_HANDOFF_DOCUMENTATION",
+      "RUN_IMPACT_MAPPED_FOCUSED_DOCUMENTATION_BOUNDARY_AND_QUICK_CHECKS",
+      "CREATE_IMMUTABLE_CANDIDATE_AFTER_FOCUSED_QUICK_AND_HOOKS",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_ONE_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_ONE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "CREATE_IMMUTABLE_CANDIDATE_AFTER_FOCUSED_QUICK_AND_HOOKS",
+    "observed_at_utc": "2026-08-23T23:11:31Z",
+    "prohibited_actions": [
+      "CHANGE_IS13920_FORMULAS_RUNTIME_API_OR_SUPPORT_STATUS",
+      "ADD_TESTS_THAT_BLESS_CURRENT_IS13920_FORMULAS",
+      "DISTRIBUTE_OR_TRACK_PRIVATE_SOURCE_BYTES_TEXT_IMAGES_HASH_VALUES_OR_PATHS",
+      "DELETE_DEDUPLICATE_RENAME_OR_MOVE_ANY_SOURCE_OR_ALIAS",
+      "PUBLISH_RELEASE_VERSION_TAG_OR_PACKAGE",
+      "ACTIVATE_PROFESSIONAL_OR_ENGINEERING_USE_APPROVAL",
+      "DELETE_BRANCH_WORKTREE_ARCHIVE_OR_UNRELATED_FILE",
+      "START_INDIA3_JOINT_R1",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_REWRITE_FORCE_PUSH_OR_BYPASS_CHECKS"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "REPAIR_PRIVATE_IS13920_DOCUMENT_KIND_PAGE_CONTENT_AND_RENDERABILITY_METADATA",
+        "MIGRATE_THE_IGNORED_PRIVATE_CATALOGUE_AND_VERIFY_ALL_RETAINED_SOURCES_AND_ALIASES",
+        "ADD_BOUNDED_TRACKED_AGGREGATE_EVIDENCE_WITHOUT_PRIVATE_MATERIAL",
+        "UPDATE_TASK_SESSION_AND_HANDOFF_DOCUMENTATION",
+        "RUN_IMPACT_MAPPED_FOCUSED_DOCUMENTATION_BOUNDARY_AND_QUICK_CHECKS",
+        "CREATE_IMMUTABLE_CANDIDATE_AFTER_FOCUSED_QUICK_AND_HOOKS",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_ONE_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_ONE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/india-3-source-meta-r1",
+      "head_sha": "c0e34235b485799d26fcb55df45f74ed9104e003",
+      "task_id": "INDIA-3-SOURCE-META-R1"
+    }
+  },
+  "holds": [
+    "BRANCH_WORKTREE_ARCHIVE_SOURCE_COPY_ALIAS_AND_UNRELATED_FILE_DELETION_NOT_AUTHORIZED",
+    "LOCAL_HOLD_DIRTY",
+    "PRESERVE_ALL_EXISTING_INDIA3_CANDIDATE_LANES",
+    "PRESERVE_PRIVATE_SOURCE_ARCHIVE_ALL_SOURCE_COPIES_AND_ALIASES",
+    "PRESERVE_UNRELATED_DIRTY_AND_UNKNOWN_LANES",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "observed_at_utc": "2026-08-23T23:11:31Z",
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "2f4a94cb6be0ce08927fb59c3b7f8daa6e9b888b730e7c97998f42ced4fb4e5c",
+    "state": {
+      "branch": "codex/india-3-source-meta-r1",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "c0e34235b485799d26fcb55df45f74ed9104e003",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 89.141,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib15",
+      "head_sha": "c0e34235b485799d26fcb55df45f74ed9104e003",
+      "hold_reasons": [
+        "changed paths: 5"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-23T23:14:57.432375+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/7c3898d2-40f8-4e2b-bee5-fb7e8ebb0250/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 5,
+        "modified_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/next-session-brief.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/india-3-source-meta-r1-evidence.json",
+          "docs/verification/india-3-source-meta-r1-git-handoff-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "c0e34235b485799d26fcb55df45f74ed9104e003",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/7c3898d2-40f8-4e2b-bee5-fb7e8ebb0250/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:2f4a94cb6be0ce08927fb59c3b7f8daa6e9b888b730e7c97998f42ced4fb4e5c",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-23T23:14:57.432509+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_ALL_EXISTING_LANES_PRIVATE_SOURCE_COPIES_AND_ALIASES",
+    "holds": [
+      "PRESERVE_UNRELATED_DIRTY_AND_UNKNOWN_LANES",
+      "PRESERVE_ALL_EXISTING_INDIA3_CANDIDATE_LANES",
+      "PRESERVE_PRIVATE_SOURCE_ARCHIVE_ALL_SOURCE_COPIES_AND_ALIASES",
+      "BRANCH_WORKTREE_ARCHIVE_SOURCE_COPY_ALIAS_AND_UNRELATED_FILE_DELETION_NOT_AUTHORIZED"
+    ],
+    "observed_at_utc": "2026-08-23T23:11:31Z",
+    "owner": "Main Agent under explicit user and repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources",
+      "Python/structural_lib/codes/is13920",
+      "Python/tests/codes/is13920",
+      "fastapi_app"
+    ],
+    "integration_owner": "orchestrator",
+    "owned_paths": [
+      "docs/verification/india-3-source-meta-r1-evidence.json",
+      "docs/verification/india-3-source-meta-r1-git-handoff-source-evidence.json",
+      "docs/verification/india-3-source-meta-r1-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "INDIA-3-SOURCE-META-R1"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

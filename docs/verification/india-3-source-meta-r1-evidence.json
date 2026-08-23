@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "task_id": "INDIA-3-SOURCE-META-R1",
+  "observed_at_utc": "2026-08-23T23:11:31Z",
+  "status": "PASS_PRIVATE_METADATA_REPAIRED",
+  "git_binding": {
+    "base_commit": "c0e34235b485799d26fcb55df45f74ed9104e003",
+    "base_tree": "62b22ce2a6930fc77954b8e0cd93c4d6b987bbf1",
+    "branch": "codex/india-3-source-meta-r1",
+    "source_bound": true,
+    "predecessor_pull_request": 863,
+    "predecessor_merge_verified_live": true
+  },
+  "root_cause": {
+    "document_identity": "Catalogue kinds described acquisition intent rather than the page composition of each retained PDF.",
+    "metadata_maintenance": "Exact-file deduplication preserved aliases but did not provide a path for corrected seed metadata to update an existing hash-bound document row.",
+    "renderability": "The only page flag was derived from extracted-text volume, so visual-review need and actual PDF renderability were conflated."
+  },
+  "private_catalogue_repair": {
+    "schema_version_before": 1,
+    "schema_version_after": 2,
+    "catalogue_documents_before": 25,
+    "catalogue_documents_after": 25,
+    "catalogue_aliases_before": 27,
+    "catalogue_aliases_after": 27,
+    "cached_pages_before": 732,
+    "cached_pages_after": 732,
+    "is13920_distinct_documents": 6,
+    "is13920_aliases": 8,
+    "retained_standalone_amendment_copies": 4,
+    "retained_exact_duplicate_aliases": 2,
+    "source_byte_mutations": 0,
+    "source_deletions": 0,
+    "alias_deletions": 0,
+    "identity_updates": [
+      {
+        "catalogue_role": "BASE_ACQUISITION_IDENTITY",
+        "document_kind_before": "STANDARD",
+        "document_kind_after": "STANDARD_WITH_APPENDED_AMENDMENTS",
+        "page_count": 33,
+        "content_ranges": [
+          "BASE_EDITION_24_PAGES",
+          "AMENDMENT_1_APPENDIX_6_PAGES",
+          "AMENDMENT_2_APPENDIX_3_PAGES"
+        ]
+      },
+      {
+        "catalogue_role": "CONSOLIDATED_CANDIDATE",
+        "document_kind_before": "CONSOLIDATED_STANDARD",
+        "document_kind_after": "CONSOLIDATED_CANDIDATE_WITH_APPENDED_AMENDMENTS",
+        "page_count": 33,
+        "content_ranges": [
+          "BASE_EDITION_24_PAGES",
+          "AMENDMENT_1_APPENDIX_6_PAGES",
+          "AMENDMENT_2_APPENDIX_3_PAGES"
+        ]
+      },
+      {
+        "catalogue_role": "RETAINED_STANDALONE_AMENDMENT_COPIES",
+        "document_kind_before": "AMENDMENT_COPY",
+        "document_kind_after": "STANDALONE_AMENDMENT_COPY",
+        "amendment_1_copy_count": 2,
+        "amendment_1_pages_per_copy": 6,
+        "amendment_2_copy_count": 2,
+        "amendment_2_pages_per_copy": 3
+      }
+    ]
+  },
+  "visual_renderability": {
+    "renderer": "pdftoppm",
+    "method": "PAGE_BY_PAGE_RENDER_WITH_OUTPUT_AND_PARSER_WARNING_CLASSIFICATION",
+    "documents_checked": 6,
+    "pages_checked": 84,
+    "pages_rendered": 84,
+    "pages_rendered_without_parser_warnings": 42,
+    "pages_rendered_with_parser_warnings": 42,
+    "pages_failed_to_render": 0,
+    "document_results": {
+      "base_acquisition_identity": "ALL_PAGES_RENDERED_WITH_PARSER_WARNINGS",
+      "consolidated_candidate": "ALL_PAGES_RENDERED",
+      "amendment_1_copy_a": "ALL_PAGES_RENDERED",
+      "amendment_1_copy_b": "ALL_PAGES_RENDERED_WITH_PARSER_WARNINGS",
+      "amendment_2_copy_a": "ALL_PAGES_RENDERED",
+      "amendment_2_copy_b": "ALL_PAGES_RENDERED_WITH_PARSER_WARNINGS"
+    },
+    "appended_page_equivalence": "PASS_18_RENDERED_PAGE_COMPARISONS_TO_RETAINED_STANDALONE_COPIES",
+    "boundary": "Parser warnings are retained as renderability metadata and are not promoted to source or engineering acceptance."
+  },
+  "verification": {
+    "private_archive": "PASS_SQLITE_INTEGRITY_FOREIGN_KEYS_ALL_25_SOURCE_HASHES_732_PAGE_ROWS_AND_FTS_OWNERSHIP",
+    "private_boundary": "PASS_PRIVATE_ROOT_IGNORED_AND_ZERO_PRIVATE_PATHS_TRACKED",
+    "repository_boundary_test": "PASS_2_TESTS",
+    "protected_content_in_tracked_evidence": false,
+    "private_absolute_paths_in_tracked_evidence": false,
+    "private_hash_values_in_tracked_evidence": false,
+    "extracted_text_or_page_images_in_tracked_evidence": false
+  },
+  "scope_guard": {
+    "is13920_formula_change": false,
+    "runtime_or_api_change": false,
+    "test_change_to_bless_formula": false,
+    "support_status_change": false,
+    "package_version_change": false,
+    "release_change": false,
+    "professional_use_approval_change": false
+  },
+  "holds": [
+    "NO_CURRENT_IS13920_FAMILY_IS_ENGINEERING_ACCEPTED",
+    "NO_FORMULA_RUNTIME_API_OR_SUPPORT_PROMOTION_IN_SOURCE_METADATA_PACKET",
+    "RELEASE_AND_PROFESSIONAL_USE_REMAIN_HELD",
+    "PRIVATE_SOURCE_BYTES_TEXT_IMAGES_HASH_VALUES_AND_PATHS_REMAIN_UNTRACKED",
+    "BRANCH_WORKTREE_ARCHIVE_SOURCE_COPY_AND_ALIAS_DELETION_NOT_AUTHORIZED"
+  ],
+  "next_packet": {
+    "packet_id": "INDIA-3-JOINT-R1",
+    "status": "NOT_STARTED",
+    "start_condition": "CREATE_ONLY_AFTER_THIS_PACKET_MERGES_UNCHANGED_WITH_REQUIRED_HOSTED_CHECKS_GREEN"
+  }
+}
