@@ -52,7 +52,7 @@ source, independent benchmark, assumptions, and exclusions before calculation
 code is authorized.
 
 The complete packet sequence, family boundaries, and exit criteria are in the
-dedicated [INDIA-2 execution plan](india-2-remaining-is456-elements-plan.md).
+dedicated [INDIA-2 execution plan](../_archive/planning/india-2-remaining-is456-elements-plan.md).
 That document controls INDIA-2 execution within this parent wave.
 
 | Packet | Bounded objective | State and boundary |
@@ -78,7 +78,7 @@ strap footing remain accepted only within their separate bounded topologies.
 The [final INDIA-2 closeout evidence](../verification/india-2-final-closeout-evidence.md)
 binds the six accepted families, both foundation holds, cumulative gates, and
 the no-new-behavior boundary. The dedicated
-[next-session and finish plan](india-2-next-session-publication-and-closeout-plan.md)
+[next-session and finish plan](../_archive/planning/india-2-next-session-publication-and-closeout-plan.md)
 is retained as the completed execution record. INDIA-3 is not activated by
 INDIA-2 closeout.
 

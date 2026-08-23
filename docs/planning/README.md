@@ -19,7 +19,7 @@ Internal planning documents and research notes.
 |----------|---------|
 | [Next Session Brief](next-session-brief.md) | What to work on next |
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
-| [MAINT-0133 Cleanup Inventory](maint-0133-cleanup-inventory-and-authorization.md) | Exact read-only cleanup classification, holds, and future transactional batch |
+| [MAINT-0133 Cleanup Completion](maint-0133-cleanup-inventory-and-authorization.md) | Exact inventory, four retained holds, and the owner-authorized two-move Packet A result |
 | [Pre-Release Input Safety and Professional Readiness Plan](pre-release-input-safety-and-professional-readiness-plan.md) | Active contract-first remediation and release holds from the one-storey usability pilot |
 | [Public Route Safety Closure Plan](public-route-safety-closure-plan.md) | Current exact-tree remediation sequence for reproduced lower-level public-route safety defects |
 | [IS 456 Solid Slabs Master Plan](is456-solid-slabs-master-plan.md) | Source-gated, implementation-ready program for simply supported/continuous one-way and common two-way solid slabs; flat slabs held separately |

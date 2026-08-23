@@ -5,6 +5,74 @@
 
 ---
 
+## 2026-08-23 — Session: MAINT-0133B exact cleanup execution
+
+**Agent:** Codex (`governance`, sole writer)
+
+**Branch:** `codex/maint-0133b-packet-a`, from exact fetched `origin/main`
+commit `417a16590892d176ea288bbda93ad4d48b4603c4`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0133b-git-handoff-receipt.json`
+
+**Focus:** Execute only the two owner-authorized planning moves frozen by
+MAINT-0133, preserve every held candidate, and clear the maintenance boundary
+before actual product work.
+
+### Summary
+
+- Reverified both frozen source blobs and absent destinations on current
+  `origin/main`, then repeated each exact transactional preview.
+- Executed 2/2 moves through `safe_file_move.py`: five maintained references
+  were updated, 71 historical references were preserved, zero references were
+  unresolved, and neither operation rolled back.
+- Preserved the four unresolved candidates, all deletion cases, all branches,
+  and all worktrees. No cleanup discovery or adjacent repair was added.
+
+### Issues encountered
+
+- `session brief` printed an awk newline error after the shared efficiency
+  ledger began returning both `MAINT-0132` and `MAINT-0133` as closed IDs.
+- Two initial context calls used unregistered area names (`planning` and
+  `governance`) and stopped their chained read-only commands.
+- The transactional reference updater rewrote the plan's historical source-path
+  literals to the destinations, making the source/destination columns
+  misleadingly identical.
+- `session summary --write` refreshed the receipt-backed handoff but replaced
+  this task's summary with eight unrelated repository commits.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `scripts/agent_brief.sh` passes the multi-line
+  `--closed-task-ids` output through a single `awk -v` assignment, which macOS
+  awk rejects when the value contains newlines. Resolution in this bounded
+  packet: rely on `session start`'s independent Python task parser, which
+  completed and reported `READY_LOCAL`; preserve the shell formatter repair for
+  separate automation maintenance rather than mixing it into file cleanup.
+- Confirmed root cause: context areas are registry keys, not free-form folder or
+  role names. Resolution: `./run.sh context list` exposed the valid keys and
+  `context show docs` plus `context show automation` completed successfully.
+  ⚠️ TERMINAL ISSUE: unregistered context names stopped chained reads → listing
+  the registry first and using `docs`/`automation` worked.
+- Confirmed root cause: the mover classifies maintained literal occurrences as
+  updateable references without understanding historical table semantics.
+  Resolution: retain the link rewrites, relabel the table as original source
+  versus current destination, and restore the two original source literals;
+  execution evidence independently binds old and new blob identities.
+- Confirmed root cause: the summary writer selects the first prior-day session
+  date, gathers every later commit, and overwrites the first current-day
+  `### Summary`; it is not task-start-bound. Resolution: retain its correct
+  receipt-backed handoff block, restore this task-owned summary, and do not run
+  the mutating summary command again in this packet.
+
+### Verification
+
+- Both exact previews and live moves pass with zero unresolved references and
+  zero broken links; destination Git blobs equal their original source blobs.
+- Focused migration tests, maintained links, context, quick/full gates, normal
+  hooks, clean session closeout, and hosted evidence remain pending until the
+  candidate is frozen.
+
 ## 2026-08-23 — Session: MAINT-0133 cleanup inventory and authorization
 
 **Agent:** Codex (`governance`, sole writer)

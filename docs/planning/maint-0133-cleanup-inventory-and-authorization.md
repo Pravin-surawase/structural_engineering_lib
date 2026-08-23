@@ -15,11 +15,16 @@ MAINT-0133 completes the read-only classification prerequisite for repository
 file cleanup. It does not move, delete, archive, clean, reset, or retire any
 file, branch, or worktree.
 
-The exact baseline is merged `origin/main` commit
+The inventory baseline is merged `origin/main` commit
 `60e95bbe52575d3335e7195db944b2c82630ed2e`. The machine-readable inventory is
 [`maint-0133-cleanup-inventory.json`](../verification/maint-0133-cleanup-inventory.json),
 and the two-operation future batch is
 [`maint-0133-cleanup-batch.json`](../verification/maint-0133-cleanup-batch.json).
+
+MAINT-0133 was integrated through PR #847 at
+`417a16590892d176ea288bbda93ad4d48b4603c4`. The owner then explicitly
+authorized completion of the exact two-move packet. MAINT-0133B rebound that
+packet to this merged commit and executed no other cleanup operation.
 
 ## Discovery contract
 
@@ -50,20 +55,22 @@ files, 1,013 local links, six local images, zero broken links, 115 active
 operations, and 101/101 active top-level scripts covered. Repository hygiene
 passes.
 
-### Future Packet A — two clean planning moves
+### Packet A execution — two completed planning moves
 
-These exact sources are eligible for later live authorization:
+The exact authorized moves completed as follows:
 
-| Source | Destination | Updateable | Preserved | Unresolved |
+| Original source | Current destination | Updateable | Preserved | Unresolved |
 |---|---|---:|---:|---:|
 | `docs/planning/india-2-remaining-is456-elements-plan.md` | `docs/_archive/planning/india-2-remaining-is456-elements-plan.md` | 3 | 46 | 0 |
 | `docs/planning/india-2-next-session-publication-and-closeout-plan.md` | `docs/_archive/planning/india-2-next-session-publication-and-closeout-plan.md` | 2 | 25 | 0 |
 
-The reviewed batch file is executable by the transactional runner, but its
-embedded status is `NOT_AUTHORIZED_FOR_LIVE_EXECUTION`. MAINT-0133B must first
-receive explicit live-execution authorization, rebind to then-current
-`origin/main`, repeat the complete batch dry-run, compare the path set with this
-record, and execute exactly once only if it remains equal.
+The reviewed batch retains its publication-time
+`NOT_AUTHORIZED_FOR_LIVE_EXECUTION` status as immutable historical evidence.
+The later owner authorization and live result are recorded separately in
+[`maint-0133b-execution-evidence.json`](../verification/maint-0133b-execution-evidence.json).
+Both exact source blobs matched, both destinations were absent, both repeated
+previews had zero unresolved references, the two transactional moves succeeded
+without rollback, and the seven-path live result matched the frozen prediction.
 
 ### Held candidates
 
@@ -102,3 +109,9 @@ MAINT-0133 is complete when:
 
 Stop MAINT-0133B if a destination appears, a source blob changes, the predicted
 path set changes, any unresolved reference appears, or any validator fails.
+
+MAINT-0133B satisfies those conditions on its frozen candidate when the two
+destination blobs equal the original source blobs, both sources are absent,
+maintained links and focused migration tests pass, and local plus hosted gates
+accept the unchanged candidate. The four unresolved candidates, all deletes,
+and all branch/worktree cleanup remain outside this completion packet.
