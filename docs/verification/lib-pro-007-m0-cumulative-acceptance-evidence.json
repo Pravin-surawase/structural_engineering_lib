@@ -1,0 +1,160 @@
+{
+  "schema_version": "lib-pro-007-m0-evidence/v1",
+  "task_id": "LIB-PRO-007-M0",
+  "status": "LOCAL_CUMULATIVE_ACCEPTANCE_COMPLETE_FINAL_GATES_PENDING",
+  "base": {
+    "hosted_main_commit": "823b39896a53fde7e4c5e0805faa8ec02e075ee5",
+    "exact_tree": "e5b1e9eecf590f996028058edee2b03d09095e6a",
+    "predecessor_pr": 859,
+    "reviewed_predecessor_candidate": "c9589815f2d8053b1d99f61bf38623cd2aebba2f"
+  },
+  "scope": {
+    "milestone": "CUMULATIVE_P1_THROUGH_P7_SOFTWARE_ACCEPTANCE",
+    "broad_surfaces": [
+      "Python",
+      "FastAPI",
+      "React production build",
+      "architecture and import boundaries",
+      "cross-layer parity",
+      "exact installed wheel",
+      "production website journey"
+    ],
+    "installed_windows_excel": "NOT_REQUIRED_UNCHANGED_SURFACE",
+    "out_of_scope_held": [
+      "release, version, tag, and package publication",
+      "professional or engineering-use approval",
+      "live ETABS, EDB parsing, model control, save, or write-back",
+      "INDIA-3 formula, source-promotion, or support claims",
+      "branch or worktree deletion"
+    ]
+  },
+  "integration_repairs": [
+    {
+      "id": "M0-PYTHON-INVALID-BAR-FIXTURE",
+      "symptom": "The one-layer auto-selection test expected 25 mm bars in a 230 mm beam even though six bars could not satisfy the maintained clear-spacing rule.",
+      "root_cause": "The fixture geometry contradicted the intended 25 mm branch; the production selector correctly advanced to 32 mm.",
+      "resolution": "Use a 350 mm test width that physically accommodates the intended six 25 mm bars.",
+      "production_behavior_changed": false
+    },
+    {
+      "id": "M0-PYTHON-ANCHORAGE-METADATA",
+      "symptom": "The function-quality inventory rejected two retained bar_dia signatures and the Indian-code manifest was one registration behind.",
+      "root_cause": "The P3 anchorage packet added two clause-decorated functions without adding their exact retained parameter-unit records or regenerating the clause manifest.",
+      "resolution": "Record the two exact millimetre parameter contracts and regenerate the maintained manifest.",
+      "formula_changed": false,
+      "public_signature_changed": false
+    },
+    {
+      "id": "M0-REACT-CATALOG-CALLER",
+      "symptom": "The production quick-beam page visibly rejected catalogue 1.3.0 and fell back to the manual form.",
+      "root_cause": "The gravity-composition catalogue advanced to 1.3.0 while the maintained React catalogue caller and fixtures remained pinned to 1.2.0; the beam capability itself correctly remains 1.2.0.",
+      "resolution": "Advance only the React catalogue transport expectation/request to 1.3.0 and retain capability version 1.2.0.",
+      "structural_calculation_changed": false,
+      "api_shape_changed": false
+    },
+    {
+      "id": "M0-FULL-GATE-GENERATED-OWNERS",
+      "symptom": "The first full gate passed 29 of 31 checks but rejected the compatibility ledger and one P7 migration-guide front-matter value.",
+      "root_cause": "The deterministic ledger includes maintained caller records and therefore changed with the React catalog migration; the P7 guide used the uncontrolled doc_type value migration.",
+      "resolution": "Regenerate classification and compatibility through their maintained generator and use the controlled guide doc_type.",
+      "ledger_projection_reconciliation": "620_OF_620",
+      "blocked_ambiguous_callers": 0
+    }
+  ],
+  "verification": {
+    "python_broad": {
+      "initial_attempt": "FAIL_3_OF_6937_COLLECTED_AFTER_P1_P7_INTEGRATION",
+      "repair_reproducers": "PASS_3",
+      "frozen_attempt": "PASS_6934_SKIPPED_3_DESELECTED_6"
+    },
+    "fastapi_broad": "PASS_491",
+    "react_broad_initial": "PASS_52_FILES_283_TESTS_LINT_AND_PRODUCTION_BUILD",
+    "react_catalog_repair": "PASS_2_FILES_4_TESTS_AND_PRODUCTION_REBUILD",
+    "architecture_import_and_parity": {
+      "architecture": "PASS_222_FILES_ZERO_VIOLATIONS",
+      "imports": "PASS_695_FILES_ZERO_BROKEN_IMPORTS",
+      "circular_imports": "PASS_202_FILES_ZERO_CYCLES",
+      "transport_parity": "PASS_3_OF_3",
+      "actionable_cross_layer_score_percent": 100,
+      "endpoint_test_coverage": "89_OF_89",
+      "react_hook_api_coverage": "13_OF_13"
+    },
+    "exact_wheel": {
+      "filename": "structural_lib_is456-0.23.1a2-py3-none-any.whl",
+      "sha256": "0a42d90e432b5b9d86d12b3fec4373ac1b95a253646e0a18fdcf135f143347ca",
+      "installed_origin_required": true,
+      "installed_tests": "PASS_5920_SKIPPED_51_DESELECTED_2",
+      "cli_job_critical_report": "PASS",
+      "canonical_transport": {
+        "source_free_python_effective_depth_mm": 443.0,
+        "source_free_cli_effective_depth_mm": 443.0,
+        "exact_head_fastapi_effective_depth_mm": 443.0,
+        "engineering_status": "FAIL",
+        "metadata_matches_runtime": true
+      },
+      "negative_uat": {
+        "status": "PASS",
+        "case_count": 29,
+        "advertised_entry_point_count": 14,
+        "professional_approval": false,
+        "qualified_review_required": true
+      }
+    },
+    "production_website": {
+      "home": "PASS_HTTP_200_PRIMARY_ACTIONS_VISIBLE",
+      "quick_beam": {
+        "catalog": "1.3.0",
+        "request_schema": "fastapi.BeamDesignRequest.v1",
+        "initial_calculation_id_prefix": "30dcb4c33243",
+        "edited_width_mm": 350,
+        "edited_calculation_id_prefix": "1fecbc7b5e46",
+        "calculation_identity_changed": true,
+        "engineering_status": "PASS",
+        "code_checks": "5_OF_5"
+      },
+      "gravity": {
+        "request_characters": 26901,
+        "load_boundary_count": 26,
+        "residual_kn": 0,
+        "component_summary": "HOLD_6_PASS_5",
+        "governing_issue": "BEAM_SUPPLIED_REINFORCEMENT_NOT_SUPPLIED",
+        "model_hash": "db1065c3edfcc22d3db5ca2490c2324cee5b7eb454e8f25aff67c8cda3dd8b30",
+        "loads_hash": "a37fd05dc9fa29a872df29c8f98c3cdad92f81d0262b1fdad9704ef4cfce8076",
+        "ledger_hash": "e0433bba5323ea8389428663d887b9a0d39b3166cff59738d8a48cd29a08d000",
+        "result_hash": "9dc4d8731993214253685292fcec7ed46bad5889bc60e9ad7848e7f2857022d5"
+      },
+      "console_errors": 0,
+      "page_errors": 0,
+      "failed_requests": 0
+    },
+    "compatibility_ledger_after_caller_migration": {
+      "sha256": "16aec7111c5f4530c280a31d2c6638b07a10bf40004acde3b4d624feb3146cac",
+      "classification_sha256": "05ee001a9b52cf389c73bc41d38523667cd04ea6c549762c758cb29127379e71",
+      "facade_projections": 620,
+      "caller_records": 1500,
+      "blocked_ambiguous_callers": 0
+    },
+    "quick_gate": "PASS_10_OF_10_ZERO_REUSED_PRE_FULL_GATE_REPAIR",
+    "full_repository_gate": "INITIAL_FAIL_29_OF_31_REPAIRED_CANDIDATE_RETRY_PENDING",
+    "normal_staged_hooks": "TO_RUN_ON_IMMUTABLE_CANDIDATE",
+    "hosted_checks": "PENDING_IMMUTABLE_CANDIDATE"
+  },
+  "compatibility_and_retirement": {
+    "p7_ledger_preserved": true,
+    "public_exports_removed": 0,
+    "public_signatures_broken": 0,
+    "files_deleted_or_moved": 0,
+    "retirement_candidates": [],
+    "deletion_authorized": false,
+    "public_contract_break_authorized": false
+  },
+  "claims": {
+    "software_scope": "LIB_PRO_007_CUMULATIVE_COMPATIBILITY_AND_PRODUCT_ACCEPTANCE_ONLY",
+    "whole_standard_completion": false,
+    "engineering_use_approval": false,
+    "professional_approval": false,
+    "release_authorized": false,
+    "live_etabs_or_write_back_authorized": false,
+    "india_3_formula_claim_authorized": false
+  }
+}

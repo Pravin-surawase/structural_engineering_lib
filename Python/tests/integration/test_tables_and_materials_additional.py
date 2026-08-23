@@ -147,7 +147,7 @@ def test_detailing_select_bar_arrangement_auto_selects_25mm_dia():
     from structural_lib import detailing
 
     arr = detailing.select_bar_arrangement(
-        ast_required=2500.0, b=230, cover=25, max_layers=1
+        ast_required=2500.0, b=350, cover=25, max_layers=1
     )
     assert arr.diameter == 25
 

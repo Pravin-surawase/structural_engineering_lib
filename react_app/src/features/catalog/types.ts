@@ -54,7 +54,7 @@ export interface WorkflowCapability {
 
 export interface WorkflowCatalog {
   schema_version: '1.0';
-  catalog_version: '1.2.0';
+  catalog_version: '1.3.0';
   code_edition: 'IS 456:2000';
   compatible_versions: string[];
   capabilities: WorkflowCapability[];

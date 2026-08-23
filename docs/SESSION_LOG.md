@@ -5,6 +5,135 @@
 
 ---
 
+## 2026-08-24 — Session: LIB-PRO-007-M0 cumulative acceptance
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents)
+
+**Branch:** `codex/lib-pro-007-m0-cumulative-acceptance`, from exact merged P7
+hosted-main commit `823b39896a53fde7e4c5e0805faa8ec02e075ee5`, tree
+`e5b1e9eecf590f996028058edee2b03d09095e6a`.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-007-m0-cumulative-acceptance-git-handoff-receipt.json`
+
+**Focus:** Run the single cumulative P1-P7 software acceptance across broad
+Python, FastAPI, React, architecture/import/parity, exact installed-wheel, and
+production website surfaces; repair only confirmed integration defects. Excel
+remains conditional on an Excel-surface change. Release, professional or
+engineering-use approval, live ETABS/EDB/model control/save/write-back,
+INDIA-3 formulas/source promotion, and branch/worktree deletion remain held.
+
+### Summary
+
+- Preserved every unrelated lane and created a fresh source-bound M0 worktree
+  from the exact P7 hosted commit/tree. The held INDIA-3 candidate remains
+  `9c976b1f` and the separately dirty detached lane remains untouched.
+- Repaired one impossible historical bar-selection test fixture and reconciled
+  the retained unit/registration metadata for two P3 anchorage functions. No
+  calculation formula or public signature changed.
+- Migrated the maintained React catalogue caller from catalogue 1.2.0 to 1.3.0
+  after the live production journey proved the old request forced a visible
+  manual-form fallback. The beam capability remains 1.2.0 and the FastAPI
+  response contract is unchanged.
+- Passed the repaired broad suites, architecture/import/circular validation,
+  cross-layer parity, one exact-wheel installation, CLI/product vectors, and a
+  production home/quick-beam/gravity browser journey with zero console, page,
+  or request failures.
+- Changed no Excel workbook or Office.js file, so installed Windows Excel is
+  `NOT_REQUIRED_UNCHANGED_SURFACE`. Removed no export, signature, file, branch,
+  worktree, archive, fixture, or vendor/reference item and activated no
+  retirement candidate.
+
+### Issues encountered
+
+- The first cumulative Python run failed three tests: an auto-selected 25 mm
+  bar fixture returned 32 mm, the clause-quality inventory found two missing
+  unit contracts, and the committed Indian-code manifest was one registration
+  behind.
+- The first production quick-beam journey visibly reported `Unsupported
+  catalogue version '1.3.0'` and forced the reviewed manual-form fallback even
+  though calculation and HTTP routes remained available.
+- The browser-verification skill's preferred `agent-browser` executable was not
+  installed, and the Node runtime's ESM loader could not import the temporary
+  Playwright entry point directly.
+- Sending Ctrl-C to the production preview through `node_runtime.py` stopped
+  the listener but the wrapper surfaced `KeyboardInterrupt` with exit code 1.
+- The first full repository gate passed 29 of 31 checks but rejected the stale
+  compatibility ledger and the P7 migration guide's uncontrolled `doc_type`.
+
+### Root causes and resolutions
+
+- Confirmed root cause: six 25 mm bars required for 2,500 mm2 cannot satisfy
+  the maintained clear-spacing rule in a 230 mm beam with one layer, so the
+  production selector correctly advances to 32 mm. The P3 anchorage packet also
+  introduced two clause-decorated functions without registering their exact
+  retained `bar_dia` millimetre signatures or regenerating the clause manifest.
+  Resolution: use a 350 mm fixture that actually exercises the 25 mm branch,
+  add only the two function-level legacy-unit records, and regenerate the
+  maintained manifest. Evidence: the three exact reproducers pass and the
+  repaired broad Python suite passes 6,934 tests.
+- Confirmed root cause: the earlier gravity-composition work advanced the
+  catalogue document to 1.3.0 while the React request, parser type, and fixtures
+  remained pinned to 1.2.0. The contained beam capability deliberately remains
+  1.2.0. Resolution: advance only the maintained React catalogue transport to
+  1.3.0. Two focused files pass four tests, the production rebuild passes, and
+  the repeated live route displays catalogue 1.3.0 without fallback.
+- Confirmed root cause: the installed browser skill did not provide its CLI in
+  this environment, while Node's ESM loader treated Playwright's CommonJS
+  bridge incompatibly. Resolution: install `playwright-core` in a temporary
+  directory, load it through `createRequire`, and launch the installed system
+  Chrome headlessly through the persistent Node browser runtime. The complete
+  production journey passes. ⚠️ TERMINAL ISSUE: `agent-browser` was absent and
+  direct Playwright ESM import failed -> used the temporary CommonJS runtime
+  with system Chrome.
+- Confirmed root cause: `node_runtime.py` waits in `subprocess.run`, so the
+  interactive Ctrl-C reaches the Python wrapper as `KeyboardInterrupt` after
+  terminating Vite. Resolution: verify both ports with `lsof`; neither 4173 nor
+  8000 retained a listener. No production process remained. ⚠️ TERMINAL ISSUE:
+  preview Ctrl-C returned exit 1 -> verified graceful listener shutdown
+  directly.
+- Confirmed root cause: the compatibility ledger records maintained caller
+  paths and content, so migrating the React catalog request changed its
+  deterministic input; P7 also used `doc_type: migration`, outside the
+  repository's closed front-matter vocabulary. Resolution: regenerate the API
+  classification/ledger through its maintained generator and classify the
+  migration document as a guide. The ledger reconciles 620/620 projections,
+  records 1,500 callers with zero ambiguity, and both failed checks pass
+  narrowly. The full repaired-candidate gate is the required retry evidence.
+
+### Validation through content freeze
+
+- Source binding: hosted P7 base `823b3989`, tree `e5b1e9ee`,
+  `source_bound=true`; all sibling worktrees remain preserved.
+- Broad Python: first attempt 3 failures, three exact repair reproducers pass,
+  repaired attempt 6,934 passed / 3 skipped / 6 deselected. FastAPI passes
+  491. React initially passes 52 files / 283 tests plus lint/build; the affected
+  catalogue selection passes 2 files / 4 tests plus a production rebuild.
+- Architecture checks 222 files with zero violations; imports check 695 files
+  with zero broken imports; circular validation checks 202 files with no cycle;
+  three canonical parity vectors pass and the actionable cross-layer score is
+  100%.
+- Exact wheel SHA-256 is
+  `0a42d90e432b5b9d86d12b3fec4373ac1b95a253646e0a18fdcf135f143347ca`.
+  Its isolated installation passes 5,920 tests / 51 skips / 2 deselections,
+  job/critical/report CLI flow, Python/CLI/FastAPI `d_mm=443` identity with
+  truthful `FAIL`, and all 29 negative-UAT cases. Professional approval remains
+  false and qualified review remains required.
+- The production website loads home and catalogue 1.3.0, changes calculation
+  identity after editing beam width from 300 to 350 mm, and returns current
+  `PASS` with 5/5 checks. The maintained gravity request has 26 zero-residual
+  boundaries, immutable model/load/ledger/result hashes, and truthful
+  `HOLD 6 / PASS 5` with
+  `BEAM_SUPPLIED_REINFORCEMENT_NOT_SUPPLIED`. Console errors, page errors, and
+  failed requests are all zero.
+- The frozen quick gate passed 10/10 with zero reused results. The first full
+  gate passed 29/31; its two generated/governance owners now pass narrowly and
+  the repaired full-gate retry remains. Normal staged hooks, immutable
+  candidate, push, and required hosted checks follow. The machine evidence
+  states cumulative software compatibility only; it does not authorize
+  release, professional use, live ETABS/write-back, or INDIA-3 engineering
+  claims.
+
 ## 2026-08-24 — Session: LIB-PRO-007-P7 compatibility convergence
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents)

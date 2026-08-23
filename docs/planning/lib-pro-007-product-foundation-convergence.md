@@ -257,6 +257,32 @@ caller paths, warning metadata, held P5 contracts, and deletion authorization.
 It has no ambiguous maintained caller and no retirement candidate. No export,
 signature, file, branch, or worktree is removed by P7.
 
+### M0 - Cumulative software acceptance
+
+P7 merged through PR #859 at hosted commit `823b3989`; reviewed candidate
+`c9589815` and the merged commit share exact tree `e5b1e9ee`. M0 starts from
+that exact tree and is the single cumulative acceptance packet for P1-P7.
+
+The cumulative run found and repaired three integration defects without adding
+engineering scope: an impossible one-layer bar-selection test fixture, missing
+unit/registration metadata for the P3 anchorage functions, and a maintained
+React catalogue caller still pinned to 1.2.0 after the gravity composition
+advanced the catalogue to 1.3.0. The beam capability remains 1.2.0; no formula,
+public signature, API response shape, or Excel surface changes.
+
+M0 evidence includes the broad Python, FastAPI, and React suites; production
+React build; architecture/import/circular checks; parity; one SHA-256-bound
+wheel installed and exercised outside the source tree; and a live production
+website journey through quick-beam recalculation and the maintained gravity
+review. The exact machine record is
+[M0 cumulative acceptance evidence](../verification/lib-pro-007-m0-cumulative-acceptance-evidence.json).
+
+M0 is software acceptance only. It does not authorize a release, stable or
+engineering-use promotion, professional approval, live ETABS/EDB access,
+model control/save/write-back, or any INDIA-3 formula or source-promotion claim.
+Installed Windows Excel is `NOT_REQUIRED_UNCHANGED_SURFACE` because neither the
+workbook nor Office.js surface changes in this packet.
+
 ## Verification cadence
 
 For each packet, finish intended code, tests, documentation, and evidence
