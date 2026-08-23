@@ -11329,6 +11329,53 @@
             "title": "Available Dowel Development Length Into Footing Mm",
             "type": "number"
           },
+          "bend_geometry_source_is_approved": {
+            "default": false,
+            "title": "Bend Geometry Source Is Approved",
+            "type": "boolean"
+          },
+          "bend_geometry_source_reference": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bend Geometry Source Reference"
+          },
+          "bend_internal_radius_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bend Internal Radius Mm"
+          },
+          "bottom_bar_end_arrangement": {
+            "anyOf": [
+              {
+                "enum": [
+                  "straight",
+                  "bend_90",
+                  "u_hook_180",
+                  "bend_135",
+                  "mechanical"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bottom Bar End Arrangement"
+          },
           "case_id": {
             "minLength": 1,
             "title": "Case Id",
@@ -11423,6 +11470,18 @@
             ],
             "title": "Effective Supporting Area Origin",
             "type": "string"
+          },
+          "extension_after_bend_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extension After Bend Mm"
           },
           "factored_axial_load_kN": {
             "exclusiveMinimum": 0.0,
@@ -16916,6 +16975,9 @@
             "title": "Direction",
             "type": "string"
           },
+          "end_anchorage": {
+            "$ref": "#/components/schemas/FootingEndAnchorageDetailResponse"
+          },
           "flexure_result_area_mm2": {
             "title": "Flexure Result Area Mm2",
             "type": "number"
@@ -16976,6 +17038,10 @@
             "title": "Straight Bar Length Mm",
             "type": "number"
           },
+          "total_bar_length_mm": {
+            "title": "Total Bar Length Mm",
+            "type": "number"
+          },
           "zones": {
             "items": {
               "$ref": "#/components/schemas/FootingReinforcementZoneResponse"
@@ -17007,6 +17073,8 @@
           "development_length_unrounded_mm",
           "straight_anchorage_available_each_end_mm",
           "straight_bar_length_mm",
+          "total_bar_length_mm",
+          "end_anchorage",
           "zones"
         ],
         "title": "FootingDirectionDetailResponse",
@@ -17071,6 +17139,182 @@
           "source_ids"
         ],
         "title": "FootingDowelScheduleLinkResponse",
+        "type": "object"
+      },
+      "FootingEndAnchorageDetailResponse": {
+        "properties": {
+          "anchorage_is_adequate": {
+            "title": "Anchorage Is Adequate",
+            "type": "boolean"
+          },
+          "anchorage_value_mm": {
+            "title": "Anchorage Value Mm",
+            "type": "number"
+          },
+          "arrangement": {
+            "enum": [
+              "straight",
+              "bend_90",
+              "u_hook_180"
+            ],
+            "title": "Arrangement",
+            "type": "string"
+          },
+          "arrangement_was_explicit": {
+            "title": "Arrangement Was Explicit",
+            "type": "boolean"
+          },
+          "available_straight_length_mm": {
+            "title": "Available Straight Length Mm",
+            "type": "number"
+          },
+          "bend_angle_degrees": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bend Angle Degrees"
+          },
+          "bend_arc_length_mm": {
+            "title": "Bend Arc Length Mm",
+            "type": "number"
+          },
+          "bounded_constructability_is_adequate": {
+            "title": "Bounded Constructability Is Adequate",
+            "type": "boolean"
+          },
+          "centreline_bend_radius_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Centreline Bend Radius Mm"
+          },
+          "clause_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Clause Refs",
+            "type": "array"
+          },
+          "extension_after_bend_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extension After Bend Mm"
+          },
+          "geometry_fits": {
+            "title": "Geometry Fits",
+            "type": "boolean"
+          },
+          "geometry_source_is_approved": {
+            "title": "Geometry Source Is Approved",
+            "type": "boolean"
+          },
+          "geometry_source_reference": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Geometry Source Reference"
+          },
+          "internal_bend_radius_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Internal Bend Radius Mm"
+          },
+          "required_development_length_mm": {
+            "title": "Required Development Length Mm",
+            "type": "number"
+          },
+          "return_extension_available_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Return Extension Available Mm"
+          },
+          "shortfall_mm": {
+            "title": "Shortfall Mm",
+            "type": "number"
+          },
+          "source_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Ids",
+            "type": "array"
+          },
+          "total_available_development_length_mm": {
+            "title": "Total Available Development Length Mm",
+            "type": "number"
+          },
+          "utilization_ratio": {
+            "title": "Utilization Ratio",
+            "type": "number"
+          },
+          "vertical_envelope_available_mm": {
+            "title": "Vertical Envelope Available Mm",
+            "type": "number"
+          },
+          "vertical_envelope_required_mm": {
+            "title": "Vertical Envelope Required Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "arrangement",
+          "arrangement_was_explicit",
+          "required_development_length_mm",
+          "available_straight_length_mm",
+          "anchorage_value_mm",
+          "total_available_development_length_mm",
+          "shortfall_mm",
+          "utilization_ratio",
+          "anchorage_is_adequate",
+          "bend_angle_degrees",
+          "internal_bend_radius_mm",
+          "centreline_bend_radius_mm",
+          "extension_after_bend_mm",
+          "bend_arc_length_mm",
+          "vertical_envelope_required_mm",
+          "vertical_envelope_available_mm",
+          "return_extension_available_mm",
+          "geometry_fits",
+          "bounded_constructability_is_adequate",
+          "geometry_source_reference",
+          "geometry_source_is_approved",
+          "clause_refs",
+          "source_ids"
+        ],
+        "title": "FootingEndAnchorageDetailResponse",
         "type": "object"
       },
       "FootingFlexureResponse": {
@@ -18907,6 +19151,54 @@
             "title": "Available Dowel Development Length Into Footing Mm",
             "type": "number"
           },
+          "bend_geometry_source_is_approved": {
+            "default": false,
+            "title": "Bend Geometry Source Is Approved",
+            "type": "boolean"
+          },
+          "bend_geometry_source_reference": {
+            "anyOf": [
+              {
+                "maxLength": 512,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bend Geometry Source Reference"
+          },
+          "bend_internal_radius_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bend Internal Radius Mm"
+          },
+          "bottom_bar_end_arrangement": {
+            "anyOf": [
+              {
+                "enum": [
+                  "straight",
+                  "bend_90",
+                  "u_hook_180",
+                  "bend_135",
+                  "mechanical"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bottom Bar End Arrangement"
+          },
           "column_longitudinal_bar_diameter_mm": {
             "exclusiveMinimum": 0.0,
             "title": "Column Longitudinal Bar Diameter Mm",
@@ -18991,6 +19283,18 @@
             ],
             "title": "Effective Supporting Area Origin",
             "type": "string"
+          },
+          "extension_after_bend_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extension After Bend Mm"
           },
           "factored_load_combination_id": {
             "maxLength": 128,

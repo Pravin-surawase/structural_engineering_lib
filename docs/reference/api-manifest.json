@@ -2,7 +2,7 @@
   "generated": "2026-08-23",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 192,
+  "count": 195,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -107,7 +107,7 @@
     {
       "name": "ConcentricIsolatedFootingInput",
       "kind": "class",
-      "signature": "(case_id: 'str', service_axial_load_kN: 'float', service_load_combination_id: 'str', service_load_basis: \"Literal['includes_footing_self_weight_and_overburden']\", service_load_origin: \"Literal['provided', 'assumed', 'verified']\", factored_axial_load_kN: 'float', factored_load_combination_id: 'str', allowable_soil_pressure_kPa: 'float', allowable_soil_pressure_source_reference: 'str', allowable_soil_pressure_origin: \"Literal['provided', 'assumed', 'verified']\", allowable_soil_pressure_is_externally_approved: 'bool', footing_type: 'FootingType', column_L_mm: 'float', column_B_mm: 'float', minimum_overall_thickness_mm: 'float', maximum_overall_thickness_mm: 'float', thickness_increment_mm: 'float', effective_depth_offset_L_mm: 'float', effective_depth_offset_B_mm: 'float', footing_concrete_fck_nmm2: 'float', column_concrete_fck_nmm2: 'float', steel_fy_nmm2: 'float', effective_supporting_area_A1_mm2: 'float', effective_supporting_area_basis: \"Literal['largest_frustum_1v_2h']\", effective_supporting_area_origin: \"Literal['provided', 'assumed', 'verified']\", effective_supporting_area_is_approved: 'bool', dowel_count: 'int', dowel_diameter_mm: 'float', column_longitudinal_bar_diameter_mm: 'float', available_dowel_development_length_into_footing_mm: 'float', available_dowel_development_length_into_column_mm: 'float', dowel_bar_type: \"Literal['deformed', 'plain']\" = 'deformed', nominal_cover_mm: 'float | None' = None, cover_exposure_basis: 'str | None' = None, cover_exposure_basis_is_approved: 'bool' = False, nominal_max_aggregate_size_mm: 'float | None' = None, lower_bottom_bar_direction: \"Literal['L', 'B'] | None\" = None, upper_bottom_bar_direction: \"Literal['L', 'B'] | None\" = None, permitted_bottom_bar_diameters_mm: 'tuple[int, ...]' = (), footing_bottom_bar_type: \"Literal['deformed', 'plain'] | None\" = None) -> None"
+      "signature": "(case_id: 'str', service_axial_load_kN: 'float', service_load_combination_id: 'str', service_load_basis: \"Literal['includes_footing_self_weight_and_overburden']\", service_load_origin: \"Literal['provided', 'assumed', 'verified']\", factored_axial_load_kN: 'float', factored_load_combination_id: 'str', allowable_soil_pressure_kPa: 'float', allowable_soil_pressure_source_reference: 'str', allowable_soil_pressure_origin: \"Literal['provided', 'assumed', 'verified']\", allowable_soil_pressure_is_externally_approved: 'bool', footing_type: 'FootingType', column_L_mm: 'float', column_B_mm: 'float', minimum_overall_thickness_mm: 'float', maximum_overall_thickness_mm: 'float', thickness_increment_mm: 'float', effective_depth_offset_L_mm: 'float', effective_depth_offset_B_mm: 'float', footing_concrete_fck_nmm2: 'float', column_concrete_fck_nmm2: 'float', steel_fy_nmm2: 'float', effective_supporting_area_A1_mm2: 'float', effective_supporting_area_basis: \"Literal['largest_frustum_1v_2h']\", effective_supporting_area_origin: \"Literal['provided', 'assumed', 'verified']\", effective_supporting_area_is_approved: 'bool', dowel_count: 'int', dowel_diameter_mm: 'float', column_longitudinal_bar_diameter_mm: 'float', available_dowel_development_length_into_footing_mm: 'float', available_dowel_development_length_into_column_mm: 'float', dowel_bar_type: \"Literal['deformed', 'plain']\" = 'deformed', nominal_cover_mm: 'float | None' = None, cover_exposure_basis: 'str | None' = None, cover_exposure_basis_is_approved: 'bool' = False, nominal_max_aggregate_size_mm: 'float | None' = None, lower_bottom_bar_direction: \"Literal['L', 'B'] | None\" = None, upper_bottom_bar_direction: \"Literal['L', 'B'] | None\" = None, permitted_bottom_bar_diameters_mm: 'tuple[int, ...]' = (), footing_bottom_bar_type: \"Literal['deformed', 'plain'] | None\" = None, bottom_bar_end_arrangement: \"Literal['straight', 'bend_90', 'u_hook_180', 'bend_135', 'mechanical'] | None\" = None, bend_internal_radius_mm: 'float | None' = None, extension_after_bend_mm: 'float | None' = None, bend_geometry_source_reference: 'str | None' = None, bend_geometry_source_is_approved: 'bool' = False) -> None"
     },
     {
       "name": "ConcentricIsolatedFootingResult",
@@ -450,6 +450,11 @@
       "signature": "(*args, **kwds)"
     },
     {
+      "name": "TensionBarAnchorageResultV1",
+      "kind": "class",
+      "signature": "(arrangement: \"Literal['straight', 'bend_45', 'bend_90', 'bend_135', 'bend_180', 'u_hook_180']\", required_development_length_mm: 'float', available_straight_length_mm: 'float', anchorage_value_mm: 'float', total_available_development_length_mm: 'float', shortfall_mm: 'float', utilization_ratio: 'float', is_adequate: 'bool', clause_refs: 'tuple[str, ...]') -> None"
+    },
+    {
       "name": "TorsionResult",
       "kind": "class",
       "signature": "(Tu_knm: 'float', Vu_kn: 'float', Mu_knm: 'float', Ve_kn: 'float', Me_knm: 'float', tau_ve: 'float', tau_c: 'float', tau_c_max: 'float', Asv_torsion: 'float', Asv_shear: 'float', Asv_total: 'float', stirrup_spacing: 'float', Al_torsion: 'float', is_safe: 'bool', requires_closed_stirrups: 'bool' = True, errors: 'list[DesignError]' = <factory>, clause_refs: 'dict[str, str]' = <factory>) -> None"
@@ -508,6 +513,11 @@
       "name": "calculate_development_length",
       "kind": "function",
       "signature": "(*, bar_diameter: 'float', fck: 'float', fy: 'float', bar_type: 'str' = 'deformed', stress_ratio: 'float' = 0.87) -> 'dict[str, float]'"
+    },
+    {
+      "name": "calculate_development_length_unrounded",
+      "kind": "function",
+      "signature": "(bar_dia: 'float', fck: 'float', fy: 'float', bar_type: 'str' = 'deformed', stress_ratio: 'float' = 0.87) -> 'float'"
     },
     {
       "name": "calculate_effective_length_is456",
@@ -808,6 +818,11 @@
       "name": "evaluate_supplied_beam_reinforcement_v1",
       "kind": "function",
       "signature": "(*, ast_required_mm2: 'float', asc_required_mm2: 'float', b_mm: 'float', D_mm: 'float', d_design_mm: 'float', d_dash_design_mm: 'float | None', cover_mm: 'float', stirrup_dia_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', vu_kn: 'float', support_width_start_mm: 'float | None', support_width_end_mm: 'float | None', support_width_source_reference: 'str | None', selection: 'BeamReinforcementSelectionConstraintsV1', supplied: 'SuppliedBeamReinforcementV1 | None') -> 'BeamReinforcementEvaluationV1'"
+    },
+    {
+      "name": "evaluate_tension_bar_anchorage_v1",
+      "kind": "function",
+      "signature": "(*, bar_dia: 'float', fck: 'float', fy: 'float', available_straight_length_mm: 'float', arrangement: \"Literal['straight', 'bend_45', 'bend_90', 'bend_135', 'bend_180', 'u_hook_180']\", bar_type: 'str' = 'deformed', stress_ratio: 'float' = 0.87) -> 'TensionBarAnchorageResultV1'"
     },
     {
       "name": "export_bbs",

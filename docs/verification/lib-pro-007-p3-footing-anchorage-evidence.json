@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "lib-pro-007-p3-footing-anchorage",
+  "task_id": "LIB-PRO-007-P3",
+  "observed_at_utc": "2026-08-23T15:20:00Z",
+  "decision": "READY_FOR_PACKET_VERIFICATION",
+  "source": {
+    "branch": "codex/lib-pro-007-p3-footing-anchorage",
+    "base_ref": "origin/main",
+    "base_sha": "e4d86d13e671516ca65d27028defb791e7d277c0",
+    "source_bound": true,
+    "linked_worktree": true,
+    "operation": "none",
+    "is456_source_id": "IS456-2000-A5:sha256:964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264",
+    "amendment_source_id": "IS456-AMD6-2024:sha256:4fc24999d133d6197088d6998da4ac4020f08bfd24c7bbcf9c24e8aa1a388881",
+    "private_navigation_page": 44,
+    "protected_source_text_included": false,
+    "preserved_india_3_candidate_sha": "9c976b1f4afd0540a5ec9eb3cab16861916ac89b"
+  },
+  "pre_repair_reproducer": {
+    "id": "P3-PRE-U-HOOK-ALLOWANCE-001",
+    "surface": "codes.is456.beam.detailing.calculate_anchorage_length",
+    "input": {
+      "bar_diameter_mm": 16,
+      "available_straight_length_mm": 400,
+      "arrangement": "180-degree standard U-hook",
+      "bar_type": "deformed"
+    },
+    "pre_repair_anchorage_value_mm": 128,
+    "source_bound_anchorage_value_mm": 256,
+    "outcome": "CONFIRMED_DEFECT"
+  },
+  "accepted_contract": {
+    "development_length": "Compliance uses the unrounded Cl. 26.2.1 result; whole-millimetre rounding is display evidence only.",
+    "normalized_anchorage_values": {
+      "straight": "0 times bar diameter",
+      "90_degree_bend": "8 times bar diameter",
+      "standard_u_hook": "16 times bar diameter"
+    },
+    "supported_footing_arrangements": [
+      "straight",
+      "bend_90",
+      "u_hook_180"
+    ],
+    "geometry_basis": "Bent or hooked arrangements require an explicit approved internal radius, extension and source reference. The library checks tangent length, vertical envelope, return-leg envelope where applicable, bar length, anchorage and bounded member-envelope constructability.",
+    "status_rule": {
+      "missing_arrangement_or_geometry_basis": "HOLD",
+      "unsupported_arrangement": "HOLD",
+      "complete_but_inadequate_anchorage_or_geometry": "FAIL",
+      "complete_supported_arrangement_all_checks_adequate": "PASS"
+    }
+  },
+  "post_repair_vectors": [
+    {
+      "id": "P3-IMPLICIT-STRAIGHT-HOLD-001",
+      "footing_plan_mm": [1200, 1200],
+      "bar_diameter_mm": 12,
+      "required_development_length_mm": 483.5491071428571,
+      "available_straight_length_mm": 344,
+      "shortfall_mm": 139.5491071428571,
+      "status": "HOLD",
+      "outcome": "PASS"
+    },
+    {
+      "id": "P3-BEND-90-PASS-001",
+      "footing_plan_mm": [1400, 1400],
+      "bar_diameter_mm": 12,
+      "internal_bend_radius_mm": 24,
+      "extension_after_bend_mm": 144,
+      "available_straight_to_tangent_mm": 414,
+      "anchorage_value_mm": 96,
+      "total_available_development_length_mm": 510,
+      "vertical_envelope_required_mm": 174,
+      "vertical_envelope_available_mm": 388,
+      "status": "PASS",
+      "outcome": "PASS"
+    },
+    {
+      "id": "P3-U-HOOK-PASS-001",
+      "footing_plan_mm": [1200, 1200],
+      "bar_diameter_mm": 12,
+      "internal_bend_radius_mm": 24,
+      "extension_after_bend_mm": 65,
+      "available_straight_to_tangent_mm": 314,
+      "anchorage_value_mm": 192,
+      "total_available_development_length_mm": 506,
+      "vertical_envelope_required_mm": 60,
+      "vertical_envelope_available_mm": 388,
+      "return_extension_available_mm": 344,
+      "status": "PASS",
+      "outcome": "PASS"
+    },
+    {
+      "id": "P3-BEND-90-ANCHORAGE-FAIL-001",
+      "footing_plan_mm": [1200, 1200],
+      "bar_diameter_mm": 12,
+      "available_straight_to_tangent_mm": 314,
+      "anchorage_value_mm": 96,
+      "total_available_development_length_mm": 410,
+      "shortfall_mm": 73.54910714285711,
+      "status": "FAIL",
+      "outcome": "PASS"
+    },
+    {
+      "id": "P3-BEND-90-GEOMETRY-FAIL-001",
+      "footing_plan_mm": [1400, 1400],
+      "extension_after_bend_mm": 400,
+      "vertical_envelope_required_mm": 430,
+      "vertical_envelope_available_mm": 388,
+      "status": "FAIL",
+      "outcome": "PASS"
+    },
+    {
+      "id": "P3-UNSUPPORTED-HOLD-001",
+      "arrangement": "bend_135",
+      "status": "HOLD",
+      "outcome": "PASS"
+    }
+  ],
+  "transport_boundary": {
+    "python_package_root_exact_anchorage_primitive": true,
+    "isolated_footing_service": true,
+    "gravity_request_and_adapter": true,
+    "rest_request_and_typed_response": true,
+    "new_rest_endpoint": false
+  },
+  "claim_boundary": {
+    "supported_case": "Concentric uniform-depth isolated square or rectangular footing with symmetric full-length bottom bars and one common end arrangement for both orthogonal directions.",
+    "held": [
+      "135-degree and other bend arrangements",
+      "mechanical anchorage",
+      "project fabrication geometry without an approved source reference",
+      "curtailment, laps, coordinates and complete bar-bending schedules",
+      "release and professional approval"
+    ],
+    "release_authorized": false,
+    "professional_use_authorized": false,
+    "engineering_approval_claimed": false,
+    "india_3_scope_changed": false
+  }
+}

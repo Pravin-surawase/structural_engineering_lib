@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass, field
+from typing import Literal
 
 from structural_lib.core.error_messages import material_property_out_of_range
 from structural_lib.core.errors import (
@@ -35,14 +36,17 @@ __all__ = [
     "StirrupArrangement",
     "BeamDetailingResult",
     "HookDimensions",
+    "TensionBarAnchorageResultV1",
     "AnchorageCheckResult",
     # Functions
     "get_bond_stress",
     "calculate_development_length",
+    "calculate_development_length_unrounded",
     "calculate_lap_length",
     "get_min_bend_radius",
     "calculate_standard_hook",
     "calculate_anchorage_length",
+    "evaluate_tension_bar_anchorage_v1",
     "calculate_stirrup_anchorage",
     "check_anchorage_at_simple_support",
     "calculate_bar_spacing",
@@ -221,15 +225,14 @@ def get_bond_stress(fck: float, bar_type: str = "deformed") -> float:
 
 
 @clause("26.2.1")
-def calculate_development_length(
+def calculate_development_length_unrounded(
     bar_dia: float,
     fck: float,
     fy: float,
     bar_type: str = "deformed",
     stress_ratio: float = 0.87,
 ) -> float:
-    """
-    Calculate development length (Ld) per IS 456 Cl 26.2.1.
+    """Calculate the exact development length used for compliance decisions.
 
     Ld = (φ × σs) / (4 × τbd)
 
@@ -241,7 +244,7 @@ def calculate_development_length(
         stress_ratio: σs/fy ratio (default 0.87 for limit state)
 
     Returns:
-        Development length Ld (mm)
+        Unrounded development length Ld (mm)
 
     Raises:
         MaterialError: If inputs are invalid (bar_dia, fck, fy <= 0)
@@ -299,7 +302,29 @@ def calculate_development_length(
             clause_ref="Cl. 26.2.1.1",
         )
 
-    ld = (bar_dia * sigma_s) / (4 * tau_bd)
+    return (bar_dia * sigma_s) / (4 * tau_bd)
+
+
+@clause("26.2.1")
+def calculate_development_length(
+    bar_dia: float,
+    fck: float,
+    fy: float,
+    bar_type: str = "deformed",
+    stress_ratio: float = 0.87,
+) -> float:
+    """Return whole-millimetre development length for display/scheduling.
+
+    Compliance code must use :func:`calculate_development_length_unrounded`
+    so rounding cannot turn a short anchorage into a passing one.
+    """
+    ld = calculate_development_length_unrounded(
+        bar_dia=bar_dia,
+        fck=fck,
+        fy=fy,
+        bar_type=bar_type,
+        stress_ratio=stress_ratio,
+    )
 
     return round(ld, 0)
 
@@ -377,6 +402,23 @@ class HookDimensions:
     total_length: float
 
 
+@dataclass(frozen=True)
+class TensionBarAnchorageResultV1:
+    """Exact straight-plus-bend/hook anchorage evidence for a tension bar."""
+
+    arrangement: Literal[
+        "straight", "bend_45", "bend_90", "bend_135", "bend_180", "u_hook_180"
+    ]
+    required_development_length_mm: float
+    available_straight_length_mm: float
+    anchorage_value_mm: float
+    total_available_development_length_mm: float
+    shortfall_mm: float
+    utilization_ratio: float
+    is_adequate: bool
+    clause_refs: tuple[str, ...]
+
+
 @clause("26.2.2.1")
 def get_min_bend_radius(bar_dia: float, bar_type: str = "deformed") -> float:
     """
@@ -443,10 +485,9 @@ def calculate_standard_hook(
         SP 34:1987, Section 3.2 (Hook details)
 
     Notes:
-        - 180° hook: 4φ extension minimum
-        - 135° hook: 6φ extension minimum (seismic/stirrups)
-        - 90° hook: 12φ extension minimum
-        - Equivalent length = 8φ for deformed, 16φ for plain
+        The geometry fields retain the existing detailing convention. The
+        equivalent anchorage value follows IS 456 Cl. 26.2.2.1: 4φ for each
+        45-degree bend, capped at 16φ; the 180-degree U-hook value is 16φ.
     """
     if bar_dia <= 0:
         raise MaterialError(
@@ -474,12 +515,8 @@ def calculate_standard_hook(
     else:  # 90°
         extension = 12 * bar_dia  # Min 12φ
 
-    # Equivalent development length contribution
-    # IS 456 Cl 26.2.2.4: Standard hook = 8φ for deformed, 16φ for plain
-    if bar_type == "deformed":
-        equivalent_length = 8 * bar_dia
-    else:
-        equivalent_length = 16 * bar_dia
+    # IS 456 Cl. 26.2.2.1 anchorage value: 4φ per 45 degrees, max 16φ.
+    equivalent_length = min(int(hook_type) / 45.0 * 4.0, 16.0) * bar_dia
 
     # Total length of bar consumed by hook
     # Arc length + extension
@@ -497,7 +534,73 @@ def calculate_standard_hook(
     )
 
 
-@clause("26.2.3")
+@clause("26.2.1", "26.2.2.1")
+def evaluate_tension_bar_anchorage_v1(
+    *,
+    bar_dia: float,
+    fck: float,
+    fy: float,
+    available_straight_length_mm: float,
+    arrangement: Literal[
+        "straight", "bend_45", "bend_90", "bend_135", "bend_180", "u_hook_180"
+    ],
+    bar_type: str = "deformed",
+    stress_ratio: float = 0.87,
+) -> TensionBarAnchorageResultV1:
+    """Evaluate exact development length with a normalized bend/hook value.
+
+    Geometry and fit are deliberately outside this shared primitive. Callers
+    must establish that the bend or U-hook physically fits its member and its
+    approved fabrication basis before accepting the anchorage outcome.
+    """
+    available_straight_length_mm = require_finite_real(
+        "available_straight_length_mm", available_straight_length_mm
+    )
+    if available_straight_length_mm < 0:
+        raise ConfigurationError("available_straight_length_mm must be non-negative")
+
+    required_mm = calculate_development_length_unrounded(
+        bar_dia=bar_dia,
+        fck=fck,
+        fy=fy,
+        bar_type=bar_type,
+        stress_ratio=stress_ratio,
+    )
+    bend_angles = {
+        "straight": 0,
+        "bend_45": 45,
+        "bend_90": 90,
+        "bend_135": 135,
+        "bend_180": 180,
+        "u_hook_180": 180,
+    }
+    if arrangement not in bend_angles:
+        raise ValueError(
+            f"Unsupported tension-bar anchorage arrangement: {arrangement}"
+        )
+    anchorage_value_mm = min(
+        bend_angles[arrangement] / 45.0 * 4.0 * bar_dia,
+        16.0 * bar_dia,
+    )
+    total_available_mm = available_straight_length_mm + anchorage_value_mm
+    shortfall_mm = max(0.0, required_mm - total_available_mm)
+    utilization_ratio = (
+        required_mm / total_available_mm if total_available_mm > 0 else math.inf
+    )
+    return TensionBarAnchorageResultV1(
+        arrangement=arrangement,
+        required_development_length_mm=required_mm,
+        available_straight_length_mm=available_straight_length_mm,
+        anchorage_value_mm=anchorage_value_mm,
+        total_available_development_length_mm=total_available_mm,
+        shortfall_mm=shortfall_mm,
+        utilization_ratio=utilization_ratio,
+        is_adequate=total_available_mm + 1e-9 >= required_mm,
+        clause_refs=("26.2.1", "26.2.2.1"),
+    )
+
+
+@clause("26.2.1", "26.2.2.1")
 def calculate_anchorage_length(
     bar_dia: float,
     fck: float,
@@ -535,29 +638,52 @@ def calculate_anchorage_length(
             - utilization: total_provided / required_ld ratio
 
     Reference:
-        IS 456:2000, Clause 26.2.3
+        IS 456:2000, Clauses 26.2.1 and 26.2.2.1
     """
-    ld = calculate_development_length(bar_dia, fck, fy, bar_type, stress_ratio)
+    straight = evaluate_tension_bar_anchorage_v1(
+        bar_dia=bar_dia,
+        fck=fck,
+        fy=fy,
+        available_straight_length_mm=available_length,
+        arrangement="straight",
+        bar_type=bar_type,
+        stress_ratio=stress_ratio,
+    )
+    shortfall = max(0.0, straight.required_development_length_mm - available_length)
 
-    shortfall = max(0, ld - available_length)
-
-    if use_hook and shortfall > 0:
+    if use_hook and not straight.is_adequate:
         hook = calculate_standard_hook(bar_dia, hook_type, bar_type)
-        total_provided = available_length + hook.equivalent_length
+        arrangement: Literal["bend_90", "bend_135", "u_hook_180"]
+        if hook_type == "90":
+            arrangement = "bend_90"
+        elif hook_type == "135":
+            arrangement = "bend_135"
+        else:
+            arrangement = "u_hook_180"
+        evaluated = evaluate_tension_bar_anchorage_v1(
+            bar_dia=bar_dia,
+            fck=fck,
+            fy=fy,
+            available_straight_length_mm=available_length,
+            arrangement=arrangement,
+            bar_type=bar_type,
+            stress_ratio=stress_ratio,
+        )
     else:
         hook = None
-        total_provided = available_length
-
-    is_adequate = total_provided >= ld
-    utilization = total_provided / ld if ld > 0 else 0
+        evaluated = straight
+    utilization = (
+        evaluated.total_available_development_length_mm
+        / evaluated.required_development_length_mm
+    )
 
     return {
-        "required_ld": round(ld, 0),
+        "required_ld": round(evaluated.required_development_length_mm, 0),
         "available_straight": round(available_length, 0),
         "shortfall": round(shortfall, 0),
         "hook": hook,
-        "total_provided": round(total_provided, 0),
-        "is_adequate": is_adequate,
+        "total_provided": round(evaluated.total_available_development_length_mm, 0),
+        "is_adequate": evaluated.is_adequate,
         "utilization": round(utilization, 3),
     }
 

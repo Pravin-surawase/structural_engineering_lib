@@ -143,8 +143,8 @@
     {
       "module": "structural_lib",
       "export_classification": "preview",
-      "declared_export_count": 215,
-      "classified_symbol_count": 215,
+      "declared_export_count": 218,
+      "classified_symbol_count": 218,
       "symbols": [
         {
           "name": "AuditLogEntry",
@@ -957,6 +957,15 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "TensionBarAnchorageResultV1",
+          "qualified_name": "structural_lib.TensionBarAnchorageResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.detailing",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "TorsionResult",
           "qualified_name": "structural_lib.TorsionResult",
           "kind": "class",
@@ -1107,6 +1116,15 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.beam_api",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "calculate_development_length_unrounded",
+          "qualified_name": "structural_lib.calculate_development_length_unrounded",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.detailing",
           "claim_disposition": "compatibility"
         },
         {
@@ -1695,6 +1713,15 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "evaluate_tension_bar_anchorage_v1",
+          "qualified_name": "structural_lib.evaluate_tension_bar_anchorage_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.detailing",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "export_bbs",
           "qualified_name": "structural_lib.export_bbs",
           "kind": "function",
@@ -2086,8 +2113,8 @@
     {
       "module": "structural_lib.services.api",
       "export_classification": "preview",
-      "declared_export_count": 192,
-      "classified_symbol_count": 192,
+      "declared_export_count": 195,
+      "classified_symbol_count": 195,
       "symbols": [
         {
           "name": "AuditLogEntry",
@@ -2891,6 +2918,15 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "TensionBarAnchorageResultV1",
+          "qualified_name": "structural_lib.services.api.TensionBarAnchorageResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.detailing",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "TorsionResult",
           "qualified_name": "structural_lib.services.api.TorsionResult",
           "kind": "class",
@@ -2996,6 +3032,15 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.beam_api",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "calculate_development_length_unrounded",
+          "qualified_name": "structural_lib.services.api.calculate_development_length_unrounded",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.detailing",
           "claim_disposition": "compatibility"
         },
         {
@@ -3539,6 +3584,15 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "evaluate_tension_bar_anchorage_v1",
+          "qualified_name": "structural_lib.services.api.evaluate_tension_bar_anchorage_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.detailing",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "export_bbs",
           "qualified_name": "structural_lib.services.api.export_bbs",
           "kind": "function",
@@ -3822,8 +3876,8 @@
     {
       "module": "structural_lib.api",
       "export_classification": "compatibility",
-      "declared_export_count": 192,
-      "classified_symbol_count": 192,
+      "declared_export_count": 195,
+      "classified_symbol_count": 195,
       "symbols": [
         {
           "name": "AuditLogEntry",
@@ -4627,6 +4681,15 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "TensionBarAnchorageResultV1",
+          "qualified_name": "structural_lib.api.TensionBarAnchorageResultV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.detailing",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "TorsionResult",
           "qualified_name": "structural_lib.api.TorsionResult",
           "kind": "class",
@@ -4732,6 +4795,15 @@
           "classification": "compatibility",
           "declared_export": true,
           "defined_in": "structural_lib.services.beam_api",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "calculate_development_length_unrounded",
+          "qualified_name": "structural_lib.api.calculate_development_length_unrounded",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.detailing",
           "claim_disposition": "compatibility"
         },
         {
@@ -5272,6 +5344,15 @@
           "classification": "compatibility",
           "declared_export": true,
           "defined_in": "structural_lib.services.beam_reinforcement",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "evaluate_tension_bar_anchorage_v1",
+          "qualified_name": "structural_lib.api.evaluate_tension_bar_anchorage_v1",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.detailing",
           "claim_disposition": "compatibility"
         },
         {

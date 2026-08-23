@@ -66,6 +66,13 @@ class ConcentricIsolatedFootingRequest(BaseModel):
     upper_bottom_bar_direction: Literal["L", "B"] | None = None
     permitted_bottom_bar_diameters_mm: tuple[StrictInt, ...] = ()
     footing_bottom_bar_type: Literal["deformed", "plain"] | None = None
+    bottom_bar_end_arrangement: (
+        Literal["straight", "bend_90", "u_hook_180", "bend_135", "mechanical"] | None
+    ) = None
+    bend_internal_radius_mm: float | None = Field(default=None, gt=0)
+    extension_after_bend_mm: float | None = Field(default=None, gt=0)
+    bend_geometry_source_reference: str | None = Field(default=None, min_length=1)
+    bend_geometry_source_is_approved: bool = False
 
 
 class FootingBearingResponse(BaseModel):
@@ -157,6 +164,32 @@ class FootingReinforcementZoneResponse(BaseModel):
     clear_spacing_mm: float
 
 
+class FootingEndAnchorageDetailResponse(BaseModel):
+    arrangement: Literal["straight", "bend_90", "u_hook_180"]
+    arrangement_was_explicit: bool
+    required_development_length_mm: float
+    available_straight_length_mm: float
+    anchorage_value_mm: float
+    total_available_development_length_mm: float
+    shortfall_mm: float
+    utilization_ratio: float
+    anchorage_is_adequate: bool
+    bend_angle_degrees: int | None
+    internal_bend_radius_mm: float | None
+    centreline_bend_radius_mm: float | None
+    extension_after_bend_mm: float | None
+    bend_arc_length_mm: float
+    vertical_envelope_required_mm: float
+    vertical_envelope_available_mm: float
+    return_extension_available_mm: float | None
+    geometry_fits: bool
+    bounded_constructability_is_adequate: bool
+    geometry_source_reference: str | None
+    geometry_source_is_approved: bool
+    clause_refs: tuple[str, ...]
+    source_ids: tuple[str, ...]
+
+
 class FootingDirectionDetailResponse(BaseModel):
     direction: Literal["L", "B"]
     layer: Literal["lower", "upper"]
@@ -180,6 +213,8 @@ class FootingDirectionDetailResponse(BaseModel):
     development_length_unrounded_mm: float
     straight_anchorage_available_each_end_mm: float
     straight_bar_length_mm: float
+    total_bar_length_mm: float
+    end_anchorage: FootingEndAnchorageDetailResponse
     zones: tuple[FootingReinforcementZoneResponse, ...]
 
 

@@ -524,7 +524,7 @@ class TestStandardHook:
         assert hook.bar_dia == 16
         assert hook.internal_radius == 32  # 2 × 16
         assert hook.extension == 65  # max(4×16=64, 65) = 65
-        assert hook.equivalent_length == 128  # 8 × 16
+        assert hook.equivalent_length == 256  # Standard U-hook = 16φ
 
     def test_90_hook_extension(self):
         """90° hook has 12φ extension."""
@@ -596,7 +596,7 @@ class TestAnchorageLength:
         )
         assert result["shortfall"] > 0
         assert result["hook"] is not None
-        assert result["total_provided"] == 400 + 128  # 400 + 8×16
+        assert result["total_provided"] == 400 + 256  # 400 + 16φ U-hook
 
     def test_utilization_ratio(self):
         """Utilization ratio should be total/required."""
@@ -611,6 +611,51 @@ class TestAnchorageLength:
         )
         expected_util = result["total_provided"] / result["required_ld"]
         assert result["utilization"] == pytest.approx(expected_util, rel=0.01)
+
+
+class TestExactTensionBarAnchorageV1:
+    def test_exact_length_and_normalized_bend_values_are_decisive(self):
+        from structural_lib import (
+            calculate_development_length_unrounded,
+            evaluate_tension_bar_anchorage_v1,
+        )
+
+        straight = evaluate_tension_bar_anchorage_v1(
+            bar_dia=12,
+            fck=25,
+            fy=415,
+            available_straight_length_mm=483.5,
+            arrangement="straight",
+        )
+        bend = evaluate_tension_bar_anchorage_v1(
+            bar_dia=12,
+            fck=25,
+            fy=415,
+            available_straight_length_mm=390,
+            arrangement="bend_90",
+        )
+        hook = evaluate_tension_bar_anchorage_v1(
+            bar_dia=12,
+            fck=25,
+            fy=415,
+            available_straight_length_mm=300,
+            arrangement="u_hook_180",
+        )
+
+        assert straight.required_development_length_mm == pytest.approx(
+            483.5491071428571
+        )
+        assert calculate_development_length_unrounded(12, 25, 415) == pytest.approx(
+            straight.required_development_length_mm
+        )
+        assert not straight.is_adequate
+        assert bend.anchorage_value_mm == 96
+        assert bend.total_available_development_length_mm == 486
+        assert bend.is_adequate
+        assert hook.anchorage_value_mm == 192
+        assert hook.total_available_development_length_mm == 492
+        assert hook.is_adequate
+        assert bend.clause_refs == ("26.2.1", "26.2.2.1")
 
 
 class TestStirrupAnchorage:

@@ -116,6 +116,13 @@ class ConcentricIsolatedFootingInput:
     upper_bottom_bar_direction: Literal["L", "B"] | None = None
     permitted_bottom_bar_diameters_mm: tuple[int, ...] = ()
     footing_bottom_bar_type: Literal["deformed", "plain"] | None = None
+    bottom_bar_end_arrangement: (
+        Literal["straight", "bend_90", "u_hook_180", "bend_135", "mechanical"] | None
+    ) = None
+    bend_internal_radius_mm: float | None = None
+    extension_after_bend_mm: float | None = None
+    bend_geometry_source_reference: str | None = None
+    bend_geometry_source_is_approved: bool = False
 
 
 @dataclass(frozen=True)
@@ -402,6 +409,8 @@ def _provenance(
         "effective_supporting_area_is_approved",
         "cover_exposure_basis",
         "cover_exposure_basis_is_approved",
+        "bend_geometry_source_reference",
+        "bend_geometry_source_is_approved",
     }
     arithmetic_input_hash = _identity_hash(
         {
@@ -487,7 +496,8 @@ def _provenance(
             "detailing": (
                 "Cl. 34.3/34.3.1 and Cl. 34.5.1 through Cl. 26.5.2.1, "
                 "Cl. 26.5.2.2, Cl. 26.3.2, Cl. 26.3.3(b), Cl. 26.4 and "
-                "Cl. 26.2.1; physical directional bar-layer depths"
+                "Cl. 26.2.1/26.2.2.1; physical directional bar-layer depths "
+                "and explicit supported end anchorage"
             ),
         },
         source_ids=load_transfer.source_ids,
@@ -616,6 +626,11 @@ def _run_detailing(
         permitted_diameters_mm=request.permitted_bottom_bar_diameters_mm,
         bar_type=request.footing_bottom_bar_type,
         load_transfer_result=load_transfer,
+        bottom_bar_end_arrangement=request.bottom_bar_end_arrangement,
+        bend_internal_radius_mm=request.bend_internal_radius_mm,
+        extension_after_bend_mm=request.extension_after_bend_mm,
+        bend_geometry_source_reference=request.bend_geometry_source_reference,
+        bend_geometry_source_is_approved=(request.bend_geometry_source_is_approved),
     )
 
 

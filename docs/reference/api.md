@@ -2539,12 +2539,43 @@ def calculate_standard_hook(
 ) -> HookDimensions
 ```
 
-**Hook Extensions per IS 456 Cl 26.2.2:**
+**Existing geometry convention:**
 - 180° hook: 4φ (min 65mm)
 - 135° hook: 6φ (seismic requirement)
 - 90° hook: 12φ
 
-**Equivalent Length:** 8φ for deformed bars, 16φ for plain bars.
+**Normalized anchorage value per Cl. 26.2.2.1:** 4φ per 45-degree bend,
+capped at 16φ. A standard 180-degree U-hook receives 16φ. This anchorage
+value is independent of the design-bond-stress bar type.
+
+**Exact Compliance Primitive:**
+```python
+def calculate_development_length_unrounded(
+    bar_dia: float,
+    fck: float,
+    fy: float,
+    bar_type: str = "deformed",
+    stress_ratio: float = 0.87,
+) -> float
+
+def evaluate_tension_bar_anchorage_v1(
+    *,
+    bar_dia: float,
+    fck: float,
+    fy: float,
+    available_straight_length_mm: float,
+    arrangement: Literal[
+        "straight", "bend_45", "bend_90", "bend_135", "bend_180", "u_hook_180"
+    ],
+    bar_type: str = "deformed",
+    stress_ratio: float = 0.87,
+) -> TensionBarAnchorageResultV1
+```
+
+`api.TensionBarAnchorageResultV1` retains the exact required length, straight
+length, bend/hook anchorage value, total available length, shortfall,
+utilization, outcome, and clause references. It does not claim that a bend
+physically fits; member-specific callers must evaluate geometry separately.
 
 **Anchorage Calculation:**
 ```python

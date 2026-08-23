@@ -236,6 +236,20 @@ external footing self-weight/overburden and must provide the approved soil and
 detailing inputs required by the component API. If the supplied complete
 actions do not exceed the handoff within tolerance, the footing remains `HOLD`.
 
+For completed isolated-footing detailing, development-length compliance uses
+the exact unrounded Cl. 26.2.1 value. Straight ends, 90-degree bends, and
+standard U-hooks are the only supported bottom-bar end arrangements. A bent or
+hooked request must include an approved project geometry reference plus its
+internal radius and extension. The component reports straight length to the
+bend tangent, normalized anchorage value, total available development length,
+bend arc, vertical envelope, return-leg envelope for a U-hook, bounded member-
+envelope constructability, and total bar length. Missing geometry or an omitted
+arrangement needed to close anchorage is
+`HOLD`; complete but inadequate anchorage or physical fit is `FAIL`; only a
+complete supported arrangement can `PASS`. Other bends, mechanical anchorage,
+curtailment, laps, bar-to-bar collision modelling, coordinates, and complete
+bar-bending schedules remain held.
+
 The beam adapter additionally calls
 `evaluate_supplied_beam_reinforcement_v1` after the canonical flexure/shear
 calculation. A canonical design failure always remains `FAIL`; the supplied-bar
