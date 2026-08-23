@@ -85,6 +85,11 @@ The stage gates are:
    integrated checks, and task/handoff/receipt truth. Retain branches and
    worktrees unless deletion is separately authorized.
 
+At closeout, record the seven non-overlapping wall-time phases, exact candidate
+heads, rejection/repair/retry counters, full-gate count, and hosted-run count in
+the ignored `session usage` ledger. This external measurement never changes the
+frozen candidate.
+
 The mutation cutoff is strict: finish versioned session/task/handoff records,
 local evidence, and the pre-commit receipt first; refresh only affected
 maintained indexes once as the final repository write; then commit the immutable

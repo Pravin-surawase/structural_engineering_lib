@@ -48,6 +48,12 @@ managed trend artifact.
 
 Review each proposal against the underlying sessions. Correlation or a single bad run is not a root cause.
 
+This threshold governs behavior- or performance-based instruction evolution.
+It does not delay a deterministic executable contract repair when source and a
+focused regression prove the contradiction and the user explicitly authorizes
+the bounded repair. Record that path as a normal control-plane task rather than
+fabricating an evolution proposal or ID.
+
 ## Apply or Roll Back
 
 Preview one exact proposal ID:

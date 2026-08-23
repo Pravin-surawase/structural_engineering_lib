@@ -76,8 +76,24 @@
       "domains": ["excel"]
     },
     {
-      "paths": ["scripts/verification.py", "scripts/verification-manifest.json", "scripts/verification-manifest.schema.json", "scripts/check_all.py", "scripts/control_plane/**", "scripts/_lib/**", ".github/workflows/fast-checks.yml", ".github/actions/verification-evidence/**"],
+      "paths": ["scripts/verification.py", "scripts/verification-manifest.json", "scripts/verification-manifest.schema.json", "scripts/check_all.py", "scripts/control_plane/**", ".github/workflows/fast-checks.yml", ".github/actions/verification-evidence/**"],
       "domains": ["python", "fastapi", "react", "excel", "control_plane", "docs", "repository"]
+    },
+    {
+      "paths": ["scripts/_lib/utils.py"],
+      "domains": ["python", "fastapi", "control_plane", "docs", "repository"]
+    },
+    {
+      "paths": ["scripts/_lib/ast_helpers.py"],
+      "domains": ["python", "fastapi", "control_plane"]
+    },
+    {
+      "paths": ["scripts/_lib/indian_code_manifest.py"],
+      "domains": ["python", "control_plane", "docs"]
+    },
+    {
+      "paths": ["scripts/_lib/safe_file_ops.py"],
+      "domains": ["control_plane", "docs", "repository"]
     },
     {
       "paths": ["scripts/python_runtime.sh", "scripts/check_api.py", "scripts/validate_api_contracts.py", "scripts/generate_api_manifest.py", "scripts/generate_api_classification.py", "scripts/check_architecture_boundaries.py", "scripts/check_circular_imports.py", "scripts/validate_imports.py", "scripts/check_type_annotations.py", "scripts/check_governance.py"],

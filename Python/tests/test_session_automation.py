@@ -392,11 +392,13 @@ def test_session_end_fix_never_writes_indexes_or_claims_final_closeout(
     args.fix = True
     monkeypatch.setattr(session, "_do_handoff", lambda **_kwargs: (True, "prepared"))
 
-    assert session.cmd_end(args) == 1
+    assert session.cmd_end(args) == 2
     output = capsys.readouterr().out
     assert authority_calls == [["collect_repository_state"]]
     assert "Repository Context" in output
     assert "Preparation mode completed; this is not a final closeout verdict" in output
+    assert "Dirty content is allowed only for preparation" in output
+    assert "Exit status 2: final read-only validation is still required" in output
     assert "Safe to end session" not in output
     assert all(
         "generate_enhanced_index.py" not in command
@@ -420,6 +422,26 @@ def test_session_end_fix_clean_preparation_cannot_exit_as_final_success(
     assert "Preparation mode completed; this is not a final closeout verdict" in output
     assert "Exit status 2: final read-only validation is still required" in output
     assert "Safe to end session" not in output
+
+
+def test_session_end_fix_missing_receipt_remains_a_failure(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    _authority_calls, args = _patch_cmd_end_dependencies(
+        monkeypatch, _closeout_state(clean=False, paths=["docs/SESSION_LOG.md"])
+    )
+    args.fix = True
+    monkeypatch.setattr(session, "_do_handoff", lambda **_kwargs: (True, "prepared"))
+    monkeypatch.setattr(
+        session,
+        "_resolve_git_receipt",
+        lambda _block, _path: (None, None, ["missing task-to-Git receipt"]),
+    )
+
+    assert session.cmd_end(args) == 1
+    output = capsys.readouterr().out
+    assert "missing task-to-Git receipt" in output
+    assert "Exit status 2" not in output
 
 
 def test_session_end_query_failure_cannot_pass_or_print_clean(
@@ -979,6 +1001,85 @@ def test_usage_checkpoint_records_observable_fields_only(
     assert entry["billing_tokens"] is None
     assert entry["billing_cost"] is None
     assert entry["verification"] == ["targeted tests pass"]
+
+
+def _complete_efficiency_closeout_args() -> list[str]:
+    arguments = [
+        "usage",
+        "--checkpoint",
+        "closeout",
+        "--task-id",
+        "MAINT-0131",
+        "--candidate-head",
+        "abc1234",
+        "--audit-rejections",
+        "1",
+        "--repair-batches",
+        "1",
+        "--focused-gate-retries",
+        "2",
+        "--full-gate-runs",
+        "1",
+        "--hosted-validation-runs",
+        "1",
+    ]
+    minutes = (2, 10, 3, 4, 5, 6, 1)
+    for label, value in zip(session.EFFICIENCY_PHASES, minutes, strict=True):
+        arguments.extend(["--phase", f"{label}={value}"])
+    return arguments
+
+
+def test_closeout_usage_requires_complete_efficiency_evidence(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    usage_log = tmp_path / "model_usage.jsonl"
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", usage_log)
+    args = session.build_parser().parse_args(
+        ["usage", "--checkpoint", "closeout", "--candidate-head", "abc1234"]
+    )
+
+    assert session.cmd_usage(args) == 1
+    assert not usage_log.exists()
+    assert "closeout efficiency evidence incomplete" in capsys.readouterr().err
+
+
+def test_closeout_usage_records_non_overlapping_timing_and_retry_metrics(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    usage_log = tmp_path / "model_usage.jsonl"
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", usage_log)
+    monkeypatch.setattr(
+        session,
+        "_git_checkpoint_state",
+        lambda: {"branch": "task/TEST", "head": "abc1234", "working_tree_files": 0},
+    )
+    args = session.build_parser().parse_args(_complete_efficiency_closeout_args())
+
+    assert session.cmd_usage(args) == 0
+    entry = json.loads(usage_log.read_text(encoding="utf-8"))
+    efficiency = entry["efficiency"]
+    assert entry["elapsed_min"] == 31
+    assert efficiency["total_wall_time_min"] == 31
+    assert efficiency["candidate_heads"] == ["abc1234"]
+    assert efficiency["audit_rejections"] == 1
+    assert efficiency["repair_batches"] == 1
+    assert efficiency["focused_gate_retries"] == 2
+    assert efficiency["full_gate_runs"] == 1
+    assert efficiency["hosted_validation_runs"] == 1
+    assert efficiency["rework_minutes"] == 4
+    assert efficiency["network_wait_minutes"] == 6
+
+
+def test_closeout_usage_rejects_elapsed_total_mismatch(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    usage_log = tmp_path / "model_usage.jsonl"
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", usage_log)
+    arguments = _complete_efficiency_closeout_args() + ["--elapsed-min", "99"]
+
+    assert session.cmd_usage(session.build_parser().parse_args(arguments)) == 1
+    assert not usage_log.exists()
+    assert "do not equal phase total" in capsys.readouterr().err
 
 
 def test_tool_registry_discovers_all_copilot_skills():

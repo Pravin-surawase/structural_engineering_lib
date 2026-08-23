@@ -28,6 +28,10 @@
 ./run.sh session end
 ```
 
+A `session usage --checkpoint closeout` record is fail-closed unless it includes
+all canonical phase timings, exact candidate heads, and the required retry/run
+counters documented in `docs/guidelines/ai-token-efficiency.md`.
+
 `run.sh` is a thin dispatcher for project validation and discovery. It does not
 stage, commit, push, create PRs, merge, or recover Git state.
 

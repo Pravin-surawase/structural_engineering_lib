@@ -1,0 +1,138 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "034994ac2f36c9af805e711e421da103c38159524c4a12baa5192141dd537333",
+    "state": {
+      "branch": "codex/maint-0131-efficiency-controls",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "58ecc149bd4525ae92c4affb369851919fe1c402",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 112.885,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-maint-0131-efficiency-controls",
+      "head_sha": "58ecc149bd4525ae92c4affb369851919fe1c402",
+      "hold_reasons": [
+        "changed paths: 14"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-23T05:48:25.858454+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0131-efficiency-controls",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 14,
+        "modified_paths": [
+          ".github/skills/agent-evolution/SKILL.md",
+          "AGENTS.md",
+          "Python/tests/test_session_automation.py",
+          "Python/tests/test_verification_control.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/contributing/end-of-session-workflow.md",
+          "docs/git-automation/git-workflow-single-source.md",
+          "docs/guidelines/ai-token-efficiency.md",
+          "docs/planning/next-session-brief.md",
+          "scripts/README.md",
+          "scripts/session.py",
+          "scripts/verification-manifest.json",
+          "tests/integration/test_migration_scripts.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "58ecc149bd4525ae92c4affb369851919fe1c402",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0131-efficiency-controls"
+    }
+  },
+  "local_state_receipt_hash": "sha256:034994ac2f36c9af805e711e421da103c38159524c4a12baa5192141dd537333",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-23T05:48:25.858642+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/**/*.py",
+      "fastapi_app/**/*.py",
+      "react_app/**/*.{ts,tsx}",
+      "excel_addin/**",
+      "Etabs_CSV/**",
+      "requirements*.txt"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "AGENTS.md",
+      ".github/skills/agent-evolution/SKILL.md",
+      "scripts/**",
+      "Python/tests/**",
+      "tests/**",
+      "docs/**"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "MAINT-0131"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

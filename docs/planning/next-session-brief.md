@@ -4,19 +4,35 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-23
-- Focus: Replace split file-operation safety with one fail-closed transactional system.
-- Git receipt: docs/verification/maint-0130-git-handoff-receipt.json | sha256:4ba9dd73d694e8b3606336222de5eb06116b73051873180da23627161dc5fa47 | HOLD
-- Git identity: codex/maint-0130-safe-file-foundation@242ba386925d29766b1467810044e276ebbceb64 | upstream=origin/main@242ba386925d29766b1467810044e276ebbceb64 | base=origin/main@242ba386925d29766b1467810044e276ebbceb64 | tree=dirty | operation=none
+- Focus: Turn the reproduced MAINT-0130 efficiency defects into narrow,
+- Git receipt: docs/verification/maint-0131-git-handoff-receipt.json | sha256:034994ac2f36c9af805e711e421da103c38159524c4a12baa5192141dd537333 | HOLD
+- Git identity: codex/maint-0131-efficiency-controls@58ecc149bd4525ae92c4affb369851919fe1c402 | upstream=origin/main@58ecc149bd4525ae92c4affb369851919fe1c402 | base=origin/main@58ecc149bd4525ae92c4affb369851919fe1c402 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
 
 | State | Boundary |
 |---|---|
-| **Current** | `MAINT-0130` replaces the unsafe file-operation split with one classified, fail-closed, transactional system |
-| **Next** | Freeze and prove the exact candidate locally and in hosted checks; only after merge may the separately classified cleanup plan begin |
-| **Why** | Move/delete discovery, mutation, validation, backup, and batch rollback previously disagreed, allowing false success and incomplete recovery |
+| **Current** | `MAINT-0131` repairs deterministic efficiency-control defects observed during the merged MAINT-0130 workflow |
+| **Next** | Prove closeout status, helper-level impact routing, executable compatibility, and complete timing evidence on one frozen candidate |
+| **Why** | Broad helper routing selected unrelated product jobs, dirty preparation contradicted its documented exit, and timing requirements were not executable |
 | **Held** | Bulk cleanup, automatic archival, unclassified file movement, branch/worktree deletion, product behavior, release, and professional approval |
+
+## Exact MAINT-0131 state
+
+- Branch: `codex/maint-0131-efficiency-controls`, created from merged MAINT-0130
+  baseline `58ecc149bd4525ae92c4affb369851919fe1c402`.
+- Dirty preparation is status `2` only when every non-cleanliness check passes;
+  unknown Git state, operations/conflicts, missing receipts, and final dirty
+  validation remain status `1`.
+- `scripts/_lib/safe_file_ops.py` selects control-plane, docs, and repository
+  validation rather than unrelated Python/FastAPI/React/Excel product jobs.
+  Unknown paths still select all domains.
+- Closeout usage evidence requires all seven phase timings, exact candidate
+  heads, and rejection/repair/retry/full/hosted counters before it writes the
+  ignored local ledger.
+- Focused control, instruction, and migration evidence is green; candidate
+  closeout still requires the quick/full gates, hooks, and hosted checks.
 
 ## Exact MAINT-0130 state
 

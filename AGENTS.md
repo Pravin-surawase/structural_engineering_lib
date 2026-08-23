@@ -60,7 +60,13 @@ The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines
   packets are integrated. Run either broad gate earlier only when an
   outcome-changing failure or repository-wide surface makes it necessary;
   never bypass required hosted checks.
-- Use `/status` and Settings → Usage for Codex usage. Run `./run.sh efficiency check` for repository-side policy validation.
+- Route changed paths by their maintained callers and outcome owners. A shared
+  folder name alone must not select unrelated product domains; unknown or
+  unclassified impact still fails closed to every domain.
+- Use `/status` and Settings → Usage for Codex usage. Run `./run.sh efficiency
+  check` for repository-side policy validation, and record the required
+  non-overlapping timing/candidate/retry counters with a closeout
+  `./run.sh session usage` checkpoint.
 - Run `./run.sh model "task"` only when the user asks for a recommendation,
   has not selected a model, or has delegated model choice. The picker is
   advisory: Luna-first for clear repeatable work, Terra for normal or high-risk
@@ -291,7 +297,9 @@ repair candidate, not a routine status/documentation commit.
 before candidate freeze when explicitly needed. Review all resulting writes,
 create the candidate commit, and rerun `session end` without `--fix`. A
 preparation run that otherwise passes exits `2`, never `0`, so automation
-cannot mistake it for the final verdict.
+cannot mistake it for the final verdict. Expected dirty preparation content
+does not by itself change that `2`; unknown Git state, an operation/conflict,
+missing receipt, or another failed preparation check still exits `1`.
 
 Log feedback only when a concrete stale instruction or missing control was found. `session summary`, `session sync`, and `session end` are read-only by default; `--write` or `--fix` must be intentional. Agent evolution is scheduled governance work, not a mandatory session-end mutation.
 

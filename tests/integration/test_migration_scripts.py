@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib
 import json
 import shutil
+import stat
 import subprocess
 import sys
 from pathlib import Path
@@ -14,6 +15,12 @@ SCRIPTS_DIR = REPO_ROOT / "scripts"
 if str(SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_DIR))
 safe_file_move = importlib.import_module("safe_file_move")
+
+
+def test_public_safe_file_entrypoints_keep_executable_compatibility() -> None:
+    for name in ("safe_file_move.py", "safe_file_delete.py"):
+        mode = (SCRIPTS_DIR / name).stat().st_mode
+        assert mode & stat.S_IXUSR, f"scripts/{name} lost its executable file mode"
 
 
 def _load_golden(name: str) -> dict[str, object]:
