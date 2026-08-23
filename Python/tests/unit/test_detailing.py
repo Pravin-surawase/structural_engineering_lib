@@ -169,6 +169,25 @@ class TestBarSpacing:
         assert is_valid is False
         assert "FAIL" in msg
 
+    def test_min_spacing_uses_clear_distance_not_center_distance(self):
+        """The clause minimum applies after subtracting the bar diameter."""
+        is_valid, msg = check_min_spacing(40, 16, 20)
+        assert is_valid is False
+        assert "Clear spacing 24 mm" in msg
+
+        is_valid, msg = check_min_spacing(41, 16, 20)
+        assert is_valid is True
+        assert "clear 25 mm" in msg
+
+    def test_spacing_is_not_rounded_across_clear_distance_boundary(self):
+        """A 24.6 mm clear gap must not become 25 mm through rounding."""
+        center_spacing = calculate_bar_spacing(163.2, 25, 8, 16, 3)
+
+        assert center_spacing == pytest.approx(40.6)
+        is_valid, msg = check_min_spacing(center_spacing, 16, 20)
+        assert is_valid is False
+        assert "Clear spacing 24.6 mm" in msg
+
 
 class TestBarArrangement:
     """Tests for bar arrangement selection."""
@@ -203,7 +222,7 @@ class TestBarArrangement:
         """If one-layer spacing fails, selection should re-check and improve."""
         arr = select_bar_arrangement(
             ast_required=2000,
-            b=150,
+            b=250,
             cover=25,
             stirrup_dia=8,
             preferred_dia=12,

@@ -2,7 +2,7 @@
 owner: Main Agent
 status: active
 last_updated: 2026-08-23
-doc_type: plan
+doc_type: spec
 complexity: advanced
 tags: [product-foundation, optimization, detailing, etabs, excel, react, compatibility]
 ---
@@ -27,11 +27,13 @@ unchanged.
 
 - G0 merged through PR #852 at `a6d47a85` with exact product-contract and
   packet boundaries.
-- P1 is on PR #853. Its first hosted run exposed an optional smart-cost
-  integration defect after the core optimizer became fail-closed; the bounded
-  repair preserves the canonical beam `FAIL`, omits infeasible cost advice, and
-  emits an explicit warning. Hosted repair acceptance remains pending.
-- P2-P7 and cumulative M0 remain held in the frozen sequence below.
+- P1 merged through PR #853 at `9119cadc`; its accepted repair preserves a
+  canonical beam `FAIL`, omits infeasible optional cost advice, and emits an
+  explicit warning.
+- P2 is implemented on a source-bound lane from exact `9119cadc`. The frozen
+  candidate separates calculated demand, preliminary recommendation, and
+  source-referenced supplied bars; verification and hosted acceptance remain.
+- P3-P7 and cumulative M0 remain held in the frozen sequence below.
 
 ## Why this precedes INDIA-3
 

@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "lib-pro-007-p2-supplied-beam-reinforcement",
+  "task_id": "LIB-PRO-007-P2",
+  "observed_at_utc": "2026-08-23T14:43:20Z",
+  "decision": "READY_FOR_PACKET_VERIFICATION",
+  "source": {
+    "branch": "codex/lib-pro-007-p2-supplied-beam-reinforcement",
+    "base_ref": "origin/main",
+    "base_sha": "9119cadc1322a718a00dd4e00f5650a21f100af4",
+    "source_bound": true,
+    "linked_worktree": true,
+    "operation": "none",
+    "preserved_india_3_candidate_sha": "9c976b1f4afd0540a5ec9eb3cab16861916ac89b"
+  },
+  "pre_repair_reproducers": [
+    {
+      "id": "P2-PRE-GRAVITY-BEAM-FALSE-COMPLETION",
+      "surface": "maintained Building Gravity V1 open-hall example",
+      "beam_id": "B1",
+      "result": {
+        "overall_status": "PASS",
+        "ast_required_mm2": 2129.575184323628,
+        "reinforcement_basis_present": false,
+        "supplied_reinforcement_result_present": false
+      },
+      "outcome": "CONFIRMED_DEFECT"
+    },
+    {
+      "id": "P2-PRE-CLEAR-SPACING-CHECKED-AS-CENTER-SPACING",
+      "surface": "codes.is456.beam.detailing.check_min_spacing",
+      "input": {
+        "center_spacing_mm": 40,
+        "bar_diameter_mm": 16,
+        "aggregate_size_mm": 20
+      },
+      "actual_clear_spacing_mm": 24,
+      "required_clear_spacing_mm": 25,
+      "pre_repair_outcome": "PASS",
+      "outcome": "CONFIRMED_DEFECT"
+    },
+    {
+      "id": "P2-PRE-SPACING-ROUNDING-CHANGED-BOUNDARY",
+      "surface": "codes.is456.beam.detailing.calculate_bar_spacing",
+      "exact_center_spacing_mm": 40.6,
+      "pre_repair_returned_center_spacing_mm": 41,
+      "exact_clear_spacing_mm": 24.6,
+      "required_clear_spacing_mm": 25,
+      "pre_repair_outcome": "PASS",
+      "outcome": "CONFIRMED_DEFECT"
+    }
+  ],
+  "accepted_contract": {
+    "calculated_demand": "Flexure calculates required Ast and Asc independently of the supplied bar schedule.",
+    "recommendation": "The maintained optimizer may return a preliminary tension-bar recommendation under explicit constraints; it is never supplied detailing.",
+    "supplied_evaluation": [
+      "tension and compression or hanger area",
+      "horizontal and vertical clear spacing",
+      "effective-depth and compression-depth identity",
+      "clear separation between top and bottom groups",
+      "start and end simple-support anchorage"
+    ],
+    "status_rule": {
+      "missing_supply_or_required_basis": "HOLD",
+      "inadequate_complete_supply": "FAIL",
+      "complete_supply_all_checks_adequate": "PASS"
+    },
+    "preservation_rule": "A canonical flexure or shear failure remains FAIL and cannot be converted by reinforcement evaluation."
+  },
+  "post_repair_vectors": [
+    {
+      "id": "P2-GRAVITY-EXAMPLE-HOLD-001",
+      "surface": "maintained Building Gravity V1 open-hall example",
+      "beam_id": "B1",
+      "result": {
+        "workflow_status": "HOLD",
+        "beam_status": "HOLD",
+        "ast_required_mm2": 2129.575184323628,
+        "issue_code": "BEAM_SUPPLIED_REINFORCEMENT_NOT_SUPPLIED",
+        "recommended_tension": {
+          "status": "PRELIMINARY_RECOMMENDATION_NOT_SUPPLIED_DETAILING",
+          "count": 7,
+          "diameter_mm": 20,
+          "layers": 2,
+          "area_provided_mm2": 2199.114857512855,
+          "horizontal_center_spacing_mm": 71.33333333333333
+        },
+        "supplied_tension": null
+      },
+      "outcome": "PASS"
+    },
+    {
+      "id": "P2-SUPPLIED-PASS-001",
+      "surface": "structural_lib.evaluate_supplied_beam_reinforcement_v1",
+      "required_ast_mm2": 700,
+      "supplied": "4-16 tension and 2-12 hanger bars",
+      "supplied_tension_area_mm2": 804.247719318987,
+      "design_and_supplied_effective_depth_mm": 459,
+      "support_widths_mm": [1600, 1600],
+      "development_length_required_mm": 645,
+      "development_length_available_mm": 800,
+      "status": "PASS",
+      "outcome": "PASS"
+    },
+    {
+      "id": "P2-SUPPLIED-AREA-FAIL-001",
+      "surface": "structural_lib.evaluate_supplied_beam_reinforcement_v1",
+      "required_ast_mm2": 900,
+      "supplied_tension_area_mm2": 804.247719318987,
+      "issue_code": "BEAM_TENSION_REINFORCEMENT_AREA_INSUFFICIENT",
+      "status": "FAIL",
+      "outcome": "PASS"
+    },
+    {
+      "id": "P2-SUPPLIED-SUPPORT-HOLD-001",
+      "surface": "structural_lib.evaluate_supplied_beam_reinforcement_v1",
+      "support_width_basis": null,
+      "issue_code": "BEAM_SUPPORT_WIDTH_BASIS_NOT_SUPPLIED",
+      "status": "HOLD",
+      "outcome": "PASS"
+    },
+    {
+      "id": "P2-CLEAR-SPACING-BOUNDARY-001",
+      "surface": "codes.is456.beam.detailing spacing authority",
+      "center_spacing_mm": 40.6,
+      "clear_spacing_mm": 24.6,
+      "required_clear_spacing_mm": 25,
+      "status": "FAIL",
+      "outcome": "PASS"
+    }
+  ],
+  "transport_boundary": {
+    "python_package_root": true,
+    "gravity_cli": true,
+    "gravity_rest": true,
+    "gravity_react_review": true,
+    "fastapi_endpoint_count": 89,
+    "openapi_schema_count_after_additive_request_contract": 439,
+    "new_beam_specific_rest_endpoint": false
+  },
+  "claim_boundary": {
+    "software_contract": "P2 implementation candidate is ready for focused and repository gates.",
+    "supported_case": "Rectangular beam, non-bundled bars, one diameter per tension or top group, conservative simple-support anchorage.",
+    "held": [
+      "curtailment and laps",
+      "joint congestion and construction sequence",
+      "seismic capacity design",
+      "ambiguous non-square support orientation",
+      "release and professional approval"
+    ],
+    "release_authorized": false,
+    "professional_use_authorized": false,
+    "engineering_approval_claimed": false,
+    "india_3_scope_changed": false
+  }
+}
