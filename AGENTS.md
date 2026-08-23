@@ -43,7 +43,10 @@ The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines
 - Never pass full parent history to a subagent. Send a concise packet with the objective, exact files, constraints, question, commands, and expected output.
 - The orchestrator must add non-goals, likely pitfalls, measurable acceptance criteria, narrow tests, and a return format to each packet, then independently inspect and verify the result before acceptance.
 - Named handoff chains below are quality roles, not mandatory agent processes. The parent normally performs implementation, testing, documentation, and operations passes itself.
-- Start with `./run.sh session brief --agent <role>`, `./run.sh context show <area>`, and targeted `rg`; do not load full agent files or large logs unless required.
+- Start one exact task with `./run.sh session begin --task-id <task> --agent <role>`;
+  it records timing before the compact brief and environment check. Then use
+  targeted `rg` and `./run.sh context show <area>` only when the brief cannot
+  answer a concrete question; do not load full agent files or large logs by default.
 - Use implementation-first, batched verification for each agreed bounded packet.
   Complete the scoped code, tests, documentation, and other intended writes
   before the routine verification sequence. While implementing, run only a
@@ -273,9 +276,8 @@ This feeds the improvement loop — recurring issues get fixed in agent instruct
 ## Session Workflow (MANDATORY)
 
 ```bash
-# START: bounded orientation + environment check
-./run.sh session brief --agent <role>
-./run.sh session start
+# START: task-bound timer + bounded orientation + environment check
+./run.sh session begin --task-id <task> --agent <role>
 
 # END: update task/handoff only when state changed, then use Codex Git/GitHub
 ./run.sh check --quick

@@ -64,6 +64,23 @@ _require_venv() {
     fi
 }
 
+_run_with_usage_event() {
+    local label="$1"
+    shift
+    local started_epoch finished_epoch duration_sec status
+    started_epoch=$(date +%s)
+    set +e
+    "$@"
+    status=$?
+    set -e
+    finished_epoch=$(date +%s)
+    duration_sec=$((finished_epoch - started_epoch))
+    "$VENV" "$SCRIPTS/session.py" usage \
+        --event "$label" --duration-sec "$duration_sec" --result-code "$status" \
+        >/dev/null 2>&1 || true
+    return "$status"
+}
+
 # ── Command: check ─────────────────────────────────────────────────────────
 
 _cmd_check() {
@@ -109,17 +126,67 @@ EOF
 
 # ── Command: session ───────────────────────────────────────────────────────
 
+_cmd_session_begin() {
+    _require_venv
+    local agent="" task_id="" task="" model="unknown" reasoning="unknown"
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --agent) agent="${2:-}"; shift 2 ;;
+            --task-id) task_id="${2:-}"; shift 2 ;;
+            --task) task="${2:-}"; shift 2 ;;
+            --model) model="${2:-}"; shift 2 ;;
+            --reasoning) reasoning="${2:-}"; shift 2 ;;
+            --help|-h)
+                echo "Usage: ./run.sh session begin --task-id TASK --agent ROLE [--task TEXT] [--model NAME] [--reasoning LEVEL]"
+                return 0
+                ;;
+            *) _error "Unknown session begin option: $1"; return 1 ;;
+        esac
+    done
+    if [[ -z "$task_id" ]]; then
+        _error "session begin requires --task-id"
+        return 1
+    fi
+
+    local -a usage_args=(usage --checkpoint start --task-id "$task_id")
+    [[ -n "$task" ]] && usage_args+=(--task "$task")
+    usage_args+=(--model "$model" --reasoning "$reasoning")
+    "$VENV" "$SCRIPTS/session.py" "${usage_args[@]}"
+
+    local -a brief_args=()
+    [[ -n "$agent" ]] && brief_args+=(--agent "$agent")
+    local started_epoch finished_epoch duration_sec status
+    started_epoch=$(date +%s)
+    set +e
+    bash "$SCRIPTS/agent_brief.sh" "${brief_args[@]}"
+    status=$?
+    if [[ "$status" -eq 0 ]]; then
+        "$SCRIPTS/agent_start.sh" --quick --preflight-only
+        status=$?
+    fi
+    set -e
+    finished_epoch=$(date +%s)
+    duration_sec=$((finished_epoch - started_epoch))
+    "$VENV" "$SCRIPTS/session.py" usage \
+        --event "orientation/session start" \
+        --duration-sec "$duration_sec" --result-code "$status" >/dev/null
+    return "$status"
+}
+
 _cmd_session() {
     local subcmd="${1:-}"
     shift 2>/dev/null || true
 
     case "$subcmd" in
+        begin)
+            _cmd_session_begin "$@"
+            ;;
         start)
             "$SCRIPTS/agent_start.sh" --quick "$@"
             ;;
         end)
             _require_venv
-            "$VENV" "$SCRIPTS/session.py" end "$@"
+            _run_with_usage_event "session end" "$VENV" "$SCRIPTS/session.py" end "$@"
             ;;
         handoff)
             _require_venv
@@ -163,6 +230,7 @@ Usage: ./run.sh session <subcommand>
 Manage agent work sessions.
 
 Subcommands:
+  begin      Timed compact brief + environment start for one exact task
   start      Begin session (verify env, read priorities)
   end        Validate closeout; --fix updates handoff, --log-cost records a proxy
   handoff    Write a receipt-bound durable task handoff
@@ -177,7 +245,8 @@ Subcommands:
   trust      Show or reset session trust state
 
 Examples:
-  ./run.sh session start      # First thing every session
+  ./run.sh session begin --task-id TASK-XXX --agent governance
+  ./run.sh session start      # Compatibility entry without automatic timing
   ./run.sh session context    # Quick orientation mid-session
   ./run.sh session usage --help
   ./run.sh session end        # Validate closeout without hidden writes

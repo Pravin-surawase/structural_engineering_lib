@@ -87,8 +87,12 @@ The stage gates are:
 
 At closeout, record the seven non-overlapping wall-time phases, exact candidate
 heads, rejection/repair/retry counters, full-gate count, and hosted-run count in
-the ignored `session usage` ledger. This external measurement never changes the
-frozen candidate.
+the Git-common ignored `session usage` ledger. The total is derived from the
+task's unmatched `session begin` timestamp, not entered independently. Hosted
+closeout binds the PR and reachable merge commit and requires final
+candidate/merged-tree equality; this successor external observation can mask a
+frozen pre-push task row from later compact briefs without changing the
+candidate.
 
 The mutation cutoff is strict: finish versioned session/task/handoff records,
 local evidence, and the pre-commit receipt first; refresh only affected

@@ -613,7 +613,7 @@ def _print_list() -> None:
 # ── Main ───────────────────────────────────────────────────────────────────
 
 
-def main() -> int:
+def _main() -> int:
     parser = argparse.ArgumentParser(
         prog="check_all.py",
         description="Run all validation checks in parallel, grouped by category.",
@@ -873,6 +873,57 @@ def main() -> int:
     # Exit code
     failed = sum(1 for r in results if not r.passed)
     return 1 if failed > 0 else 0
+
+
+def _timing_label(argv: list[str]) -> str:
+    if "--allow-operation-completion" in argv:
+        return "check commit hook"
+    if "--pre-commit" in argv:
+        return "check pre-commit"
+    if "--quick" in argv:
+        return "check quick"
+    if "--changed" in argv:
+        return "check changed"
+    if "--category" in argv or "-c" in argv:
+        return "check category"
+    return "check full"
+
+
+def _record_task_timing(label: str, duration_sec: float, result_code: int) -> None:
+    """Best-effort external telemetry; never changes a validation verdict."""
+    try:
+        subprocess.run(
+            [
+                VENV_PYTHON,
+                str(SCRIPTS_DIR / "session.py"),
+                "usage",
+                "--event",
+                label,
+                "--duration-sec",
+                f"{duration_sec:.3f}",
+                "--result-code",
+                str(result_code),
+            ],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=10,
+        )
+    except (OSError, subprocess.SubprocessError):
+        pass
+
+
+def main() -> int:
+    started = time.monotonic()
+    result_code = 1
+    try:
+        result_code = _main()
+        return result_code
+    finally:
+        _record_task_timing(
+            _timing_label(sys.argv[1:]), time.monotonic() - started, result_code
+        )
 
 
 if __name__ == "__main__":

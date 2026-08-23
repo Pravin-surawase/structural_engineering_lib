@@ -565,8 +565,8 @@ def build_task_brief(query: str) -> dict[str, Any]:
         "initial_context": _initial_context(routing.skills, tools),
         "workflow": {
             "start": [
-                f"./run.sh session brief --agent {routing.agent}",
-                "./run.sh session start",
+                "./run.sh session begin --task-id <TASK-ID> "
+                f"--agent {routing.agent}",
             ],
             "close": [
                 "./run.sh check --quick",

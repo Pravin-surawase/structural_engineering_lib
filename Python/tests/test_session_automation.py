@@ -609,7 +609,9 @@ def test_task_brief_reports_lane_route_and_safe_workflow(
 
     assert brief["lane"] is lane
     assert brief["route"]["agent"]
-    assert brief["workflow"]["start"][0].startswith("./run.sh session brief")
+    assert brief["workflow"]["start"] == [
+        "./run.sh session begin --task-id <TASK-ID> --agent " + brief["route"]["agent"]
+    ]
     assert "inspection-only" in brief["workflow"]["git_rule"]
 
 
@@ -774,6 +776,30 @@ def test_active_task_reader_accepts_current_and_legacy_headings(
     monkeypatch.setattr(session, "TASKS_MD", tasks)
 
     assert session.get_active_tasks() == [("MAINT-005", "Finish maintenance", "")]
+
+
+def test_active_tasks_hide_exact_external_closeout(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    tasks = tmp_path / "TASKS.md"
+    tasks.write_text(
+        """# Tasks
+
+## Active
+
+| ID | Task | Owner | Status |
+|----|------|-------|--------|
+| MAINT-0131 | Already merged | Main Agent | CANDIDATE |
+| MAINT-0132 | Current work | Main Agent | ACTIVE |
+
+## Up Next
+""",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(session, "TASKS_MD", tasks)
+    monkeypatch.setattr(session, "_externally_closed_task_ids", lambda: {"MAINT-0131"})
+
+    assert session.get_active_tasks() == [("MAINT-0132", "Current work", "")]
 
 
 def test_commit_summary_uses_exclusive_previous_day_boundary(
@@ -1003,15 +1029,38 @@ def test_usage_checkpoint_records_observable_fields_only(
     assert entry["verification"] == ["targeted tests pass"]
 
 
+USAGE_NOW = datetime(2026, 8, 23, 12, 0, tzinfo=UTC)
+
+
+def _write_usage_start(
+    path: Path, *, task_id: str = "MAINT-0132", minutes_ago: float = 31
+) -> None:
+    started = USAGE_NOW - timedelta(minutes=minutes_ago)
+    path.write_text(
+        json.dumps(
+            {
+                "schema_version": 2,
+                "timestamp": started.isoformat(timespec="seconds"),
+                "checkpoint": "start",
+                "task_id": task_id,
+                "model": "unknown",
+                "reasoning": "unknown",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+
 def _complete_efficiency_closeout_args() -> list[str]:
     arguments = [
         "usage",
         "--checkpoint",
         "closeout",
         "--task-id",
-        "MAINT-0131",
+        "MAINT-0132",
         "--candidate-head",
-        "abc1234",
+        "a" * 40,
         "--audit-rejections",
         "1",
         "--repair-batches",
@@ -1021,7 +1070,7 @@ def _complete_efficiency_closeout_args() -> list[str]:
         "--full-gate-runs",
         "1",
         "--hosted-validation-runs",
-        "1",
+        "0",
     ]
     minutes = (2, 10, 3, 4, 5, 6, 1)
     for label, value in zip(session.EFFICIENCY_PHASES, minutes, strict=True):
@@ -1034,12 +1083,22 @@ def test_closeout_usage_requires_complete_efficiency_evidence(
 ):
     usage_log = tmp_path / "model_usage.jsonl"
     monkeypatch.setattr(session, "MODEL_USAGE_LOG", usage_log)
+    _write_usage_start(usage_log)
+    monkeypatch.setattr(session, "_usage_now", lambda: USAGE_NOW)
     args = session.build_parser().parse_args(
-        ["usage", "--checkpoint", "closeout", "--candidate-head", "abc1234"]
+        [
+            "usage",
+            "--checkpoint",
+            "closeout",
+            "--task-id",
+            "MAINT-0132",
+            "--candidate-head",
+            "a" * 40,
+        ]
     )
 
     assert session.cmd_usage(args) == 1
-    assert not usage_log.exists()
+    assert len(usage_log.read_text(encoding="utf-8").splitlines()) == 1
     assert "closeout efficiency evidence incomplete" in capsys.readouterr().err
 
 
@@ -1048,6 +1107,11 @@ def test_closeout_usage_records_non_overlapping_timing_and_retry_metrics(
 ):
     usage_log = tmp_path / "model_usage.jsonl"
     monkeypatch.setattr(session, "MODEL_USAGE_LOG", usage_log)
+    _write_usage_start(usage_log)
+    monkeypatch.setattr(session, "_usage_now", lambda: USAGE_NOW)
+    monkeypatch.setattr(
+        session, "_resolve_commit_tree", lambda value, **_kwargs: (value, "b" * 40)
+    )
     monkeypatch.setattr(
         session,
         "_git_checkpoint_state",
@@ -1056,16 +1120,16 @@ def test_closeout_usage_records_non_overlapping_timing_and_retry_metrics(
     args = session.build_parser().parse_args(_complete_efficiency_closeout_args())
 
     assert session.cmd_usage(args) == 0
-    entry = json.loads(usage_log.read_text(encoding="utf-8"))
+    entry = json.loads(usage_log.read_text(encoding="utf-8").splitlines()[-1])
     efficiency = entry["efficiency"]
     assert entry["elapsed_min"] == 31
     assert efficiency["total_wall_time_min"] == 31
-    assert efficiency["candidate_heads"] == ["abc1234"]
+    assert efficiency["candidate_heads"] == ["a" * 40]
     assert efficiency["audit_rejections"] == 1
     assert efficiency["repair_batches"] == 1
     assert efficiency["focused_gate_retries"] == 2
     assert efficiency["full_gate_runs"] == 1
-    assert efficiency["hosted_validation_runs"] == 1
+    assert efficiency["hosted_validation_runs"] == 0
     assert efficiency["rework_minutes"] == 4
     assert efficiency["network_wait_minutes"] == 6
 
@@ -1075,11 +1139,185 @@ def test_closeout_usage_rejects_elapsed_total_mismatch(
 ):
     usage_log = tmp_path / "model_usage.jsonl"
     monkeypatch.setattr(session, "MODEL_USAGE_LOG", usage_log)
+    _write_usage_start(usage_log)
+    monkeypatch.setattr(session, "_usage_now", lambda: USAGE_NOW)
     arguments = _complete_efficiency_closeout_args() + ["--elapsed-min", "99"]
 
     assert session.cmd_usage(session.build_parser().parse_args(arguments)) == 1
-    assert not usage_log.exists()
-    assert "do not equal phase total" in capsys.readouterr().err
+    assert len(usage_log.read_text(encoding="utf-8").splitlines()) == 1
+    assert "do not match derived elapsed" in capsys.readouterr().err
+
+
+def test_closeout_usage_rejects_unallocated_app_time(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    usage_log = tmp_path / "model_usage.jsonl"
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", usage_log)
+    _write_usage_start(usage_log, minutes_ago=20.25)
+    monkeypatch.setattr(session, "_usage_now", lambda: USAGE_NOW)
+    arguments = _complete_efficiency_closeout_args()
+    values = (2, 7.5, 1.5, 0.5, 4, 1.3, 1.717)
+    arguments = [
+        item
+        for item in arguments
+        if not item.startswith(tuple(session.EFFICIENCY_PHASES))
+    ]
+    # Remove the value tokens paired with the original seven --phase flags.
+    rebuilt = arguments[: arguments.index("--phase")]
+    for label, value in zip(session.EFFICIENCY_PHASES, values, strict=True):
+        rebuilt.extend(["--phase", f"{label}={value}"])
+
+    assert session.cmd_usage(session.build_parser().parse_args(rebuilt)) == 1
+    assert "unallocated time 1.733m" in capsys.readouterr().err
+
+
+def test_usage_defaults_never_infer_model_or_reasoning() -> None:
+    args = session.build_parser().parse_args(
+        ["usage", "--checkpoint", "milestone", "--task-id", "MAINT-0132"]
+    )
+
+    assert args.model == "unknown"
+    assert args.reasoning == "unknown"
+    assert (
+        session._usage_profile(
+            {"schema_version": 1, "model": "gpt-5.6-sol", "reasoning": "high"}
+        )
+        == "legacy-unverified"
+    )
+
+
+def test_closeout_rejects_short_unresolved_candidate_head(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    usage_log = tmp_path / "model_usage.jsonl"
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", usage_log)
+    _write_usage_start(usage_log)
+    monkeypatch.setattr(session, "_usage_now", lambda: USAGE_NOW)
+    arguments = _complete_efficiency_closeout_args()
+    arguments[arguments.index("a" * 40)] = "deadbee"
+
+    assert session.cmd_usage(session.build_parser().parse_args(arguments)) == 1
+    assert "exact 40-character lowercase commit SHA" in capsys.readouterr().err
+
+
+def test_usage_event_binds_to_latest_open_task(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    usage_log = tmp_path / "model_usage.jsonl"
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", usage_log)
+    _write_usage_start(usage_log)
+    monkeypatch.setattr(session, "_usage_now", lambda: USAGE_NOW)
+    args = session.build_parser().parse_args(
+        [
+            "usage",
+            "--event",
+            "check quick",
+            "--duration-sec",
+            "12",
+            "--result-code",
+            "0",
+        ]
+    )
+
+    assert session.cmd_usage(args) == 0
+    event = json.loads(usage_log.read_text(encoding="utf-8").splitlines()[-1])
+    assert event["task_id"] == "MAINT-0132"
+    assert event["event"] == "check quick"
+    assert event["duration_sec"] == 12
+
+
+def test_active_usage_reports_derived_elapsed_and_recorded_steps(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    usage_log = tmp_path / "model_usage.jsonl"
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", usage_log)
+    _write_usage_start(usage_log, minutes_ago=20.25)
+    monkeypatch.setattr(session, "_usage_now", lambda: USAGE_NOW)
+    with usage_log.open("a", encoding="utf-8") as handle:
+        handle.write(
+            json.dumps(
+                {
+                    "schema_version": 2,
+                    "timestamp": USAGE_NOW.isoformat(timespec="seconds"),
+                    "checkpoint": "event",
+                    "task_id": "MAINT-0132",
+                    "event": "check quick",
+                    "duration_sec": 12,
+                    "result_code": 0,
+                }
+            )
+            + "\n"
+        )
+    args = session.build_parser().parse_args(["usage", "--active", "--json"])
+
+    assert session.cmd_usage(args) == 0
+    active = session._active_usage_payload(session._read_jsonl(usage_log), USAGE_NOW)
+    assert active is not None
+    assert active["derived_elapsed_min"] == 20.25
+    assert active["recorded_steps"][0]["event"] == "check quick"
+
+
+def test_closeout_integration_projects_externally_closed_task(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    usage_log = tmp_path / "model_usage.jsonl"
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", usage_log)
+    _write_usage_start(usage_log)
+    monkeypatch.setattr(session, "_usage_now", lambda: USAGE_NOW)
+
+    def resolve(value: str, *, label: str) -> tuple[str, str]:
+        assert label in {"candidate head", "merge commit"}
+        return value, "c" * 40
+
+    monkeypatch.setattr(session, "_resolve_commit_tree", resolve)
+    monkeypatch.setattr(
+        session, "_commit_reachable_from_origin_main", lambda _commit: True
+    )
+    arguments = _complete_efficiency_closeout_args()
+    arguments[arguments.index("0", arguments.index("--hosted-validation-runs"))] = "1"
+    arguments.extend(["--pr-number", "845", "--merge-commit", "d" * 40])
+
+    assert session.cmd_usage(session.build_parser().parse_args(arguments)) == 0
+    entries = session._read_jsonl(usage_log)
+    assert session._externally_closed_task_ids(entries) == {"MAINT-0132"}
+    integration = entries[-1]["efficiency"]["integration"]
+    assert integration["reviewed_tree_matches_merged_tree"] is True
+    assert integration["pr_number"] == 845
+
+
+def test_shared_usage_log_resolves_from_git_common_dir(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    monkeypatch.setattr(
+        session.subprocess,
+        "run",
+        lambda *_args, **_kwargs: subprocess.CompletedProcess(
+            ["git", "rev-parse"], 0, ".git\n", ""
+        ),
+    )
+
+    assert (
+        session._resolve_shared_usage_log(tmp_path)
+        == (tmp_path / ".git" / "codex-runtime" / "model_usage.jsonl").resolve()
+    )
+
+
+def test_session_entry_and_check_orchestrator_record_timed_events() -> None:
+    run_sh = (REPO_ROOT / "run.sh").read_text(encoding="utf-8")
+    check_all = (REPO_ROOT / "scripts/check_all.py").read_text(encoding="utf-8")
+    brief = (REPO_ROOT / "scripts/agent_brief.sh").read_text(encoding="utf-8")
+
+    assert "_cmd_session_begin" in run_sh
+    assert 'usage --checkpoint start --task-id "$task_id"' in run_sh
+    assert '"$SCRIPTS/agent_start.sh" --quick --preflight-only' in run_sh
+    assert '_run_with_usage_event "session end"' in run_sh
+    assert "--preflight-only)" in (REPO_ROOT / "scripts/agent_start.sh").read_text(
+        encoding="utf-8"
+    )
+    assert "_record_task_timing(" in check_all
+    assert 'return "check quick"' in check_all
+    assert "usage --closed-task-ids" in brief
+    assert "!closed[id]" in brief
 
 
 def test_tool_registry_discovers_all_copilot_skills():

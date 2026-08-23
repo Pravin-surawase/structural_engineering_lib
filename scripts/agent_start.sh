@@ -9,6 +9,7 @@
 #   ./scripts/agent_start.sh --agent frontend        # Agent-specific context
 #   ./scripts/agent_start.sh --worktree AGENT_5      # Worktree-specific guidance
 #   ./scripts/agent_start.sh --skip-preflight        # Skip preflight (for recovery)
+#   ./scripts/agent_start.sh --preflight-only        # Environment proof without context
 #
 # Available agents come from agents/agent_registry.json.
 #
@@ -42,6 +43,7 @@ AGENT=""
 QUICK=""
 WORKTREE=""
 SKIP_PREFLIGHT=""
+PREFLIGHT_ONLY=""
 while [[ $# -gt 0 ]]; do
     case $1 in
         --agent)
@@ -60,6 +62,10 @@ while [[ $# -gt 0 ]]; do
             SKIP_PREFLIGHT="true"
             shift
             ;;
+        --preflight-only)
+            PREFLIGHT_ONLY="true"
+            shift
+            ;;
         --help|-h)
             echo "Usage: ./scripts/agent_start.sh [OPTIONS]"
             echo ""
@@ -68,6 +74,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --quick           Skip detailed checks, faster startup"
             echo "  --worktree NAME   Display worktree-specific guidance"
             echo "  --skip-preflight  Skip pre-flight checks (for recovery)"
+            echo "  --preflight-only  Stop after environment preflight; no session/context output"
             echo ""
             echo "Agents: ./scripts/python_runtime.sh scripts/agent_context.py --list"
             echo ""
@@ -189,6 +196,11 @@ else
     else
         echo -e "  ${GREEN}✓${NC} Pre-flight checks passed"
     fi
+fi
+
+if [ -n "$PREFLIGHT_ONLY" ]; then
+    echo -e "  ${GREEN}✓${NC} Environment preflight complete"
+    exit 0
 fi
 
 # Step 4: Start Session

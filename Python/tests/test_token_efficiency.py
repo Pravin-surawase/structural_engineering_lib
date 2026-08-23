@@ -70,6 +70,18 @@ def test_quick_gate_enforces_token_policy() -> None:
     assert '"governance": ["Repo hygiene", "Token efficiency"]' in check_all
 
 
+def test_session_efficiency_guidance_uses_task_bound_observed_timing() -> None:
+    policy = (REPO_ROOT / "docs/guidelines/ai-token-efficiency.md").read_text(
+        encoding="utf-8"
+    )
+    agents = (REPO_ROOT / "AGENTS.md").read_text(encoding="utf-8")
+
+    assert "session begin --task-id <task> --agent <role>" in policy
+    assert "derives actual elapsed time from the unmatched" in policy
+    assert "Git-common" in policy
+    assert "session begin --task-id <task> --agent <role>" in agents
+
+
 def test_verified_model_rates_are_checked_in() -> None:
     policy = json.loads(
         (REPO_ROOT / "agents" / "model_policy.json").read_text(encoding="utf-8")
