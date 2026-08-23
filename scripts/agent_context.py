@@ -528,7 +528,7 @@ def ctx_governance():
     bullet("Link health: ./scripts/python_runtime.sh scripts/check_links.py")
     bullet("Validate context: ./run.sh context validate")
     bullet("Summarize live files: ./run.sh context summary <area-or-folder>")
-    bullet("Archive old docs: ./scripts/archive_old_files.sh")
+    bullet("Classify archive candidates; preview accepted moves as a batch")
 
     section("SUSTAINABILITY CHECKS")
     bullet("Version consistency: .venv/bin/python scripts/check_doc_versions.py")

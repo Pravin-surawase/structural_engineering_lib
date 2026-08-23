@@ -198,12 +198,15 @@ After structural changes (file moves, renames, new modules):
 # Sync numbers in docs
 ./scripts/python_runtime.sh scripts/sync_numbers.py --fix
 
-# Check internal links (870+)
+# Check maintained local links and images
 ./scripts/python_runtime.sh scripts/check_links.py
 
-# Safe file operations (NEVER use mv/rm directly)
-./scripts/python_runtime.sh scripts/safe_file_move.py old.md new.md --dry-run
-./scripts/python_runtime.sh scripts/safe_file_delete.py file.md
+# Preview exact safe-file operations before any live command
+./scripts/python_runtime.sh scripts/safe_file_move.py old.md new.md --dry-run --json
+./scripts/python_runtime.sh scripts/safe_file_delete.py file.md --dry-run --json
+
+# Preflight every operation in a cleanup batch before the first mutation
+./scripts/python_runtime.sh scripts/batch_migrate_runner.py plan.json --dry-run --json
 ```
 
 ---

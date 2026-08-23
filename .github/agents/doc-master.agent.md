@@ -46,7 +46,7 @@ for an otherwise complete task.
 |------|---------|-----------|
 | Validate live context | `./run.sh context validate` | After structural changes |
 | Check links | `./scripts/python_runtime.sh scripts/check_links.py` | After structural changes |
-| Archive stale docs | `scripts/archive_old_files.sh` | Monthly |
+| Classify archive candidates | Review ownership, references, and retention; then use a dry-run batch plan | Monthly |
 | Check duplicates | `./scripts/python_runtime.sh scripts/find_automation.py "topic"` | Before creating docs |
 | Sync numbers | `./run.sh session sync --fix` | Only after confirmed count drift |
 

@@ -50,7 +50,10 @@ Only after a clean preview, execute the exact same target without `--dry-run`:
 ./scripts/python_runtime.sh scripts/safe_file_delete.py path/to/file.ext
 ```
 
-The script creates a backup under `tmp/deleted_backups/` by default. Never use `--force` or `--no-backup` in the normal agent workflow. If a referenced file genuinely must be removed, stop for owner direction instead of weakening the guardrail.
+The script creates a content-addressed backup and manifest under
+`tmp/deleted_backups/`. Force and no-backup modes do not exist. If a referenced
+file genuinely must be removed, update or remove the maintained references in a
+separately reviewed change and repeat the preview.
 
 ## Python Module Migration (with import updates)
 
@@ -87,6 +90,17 @@ Validate live context after the batch; no generated folder refresh is needed:
 ```
 
 For source migrations, also run the narrow import/build check for that language.
+
+For more than one independent move, put the operations in a reviewed JSON plan,
+preflight the complete plan, and only then run it live:
+
+```bash
+./scripts/python_runtime.sh scripts/batch_migrate_runner.py plan.json --dry-run --json
+./scripts/python_runtime.sh scripts/batch_migrate_runner.py plan.json --json
+```
+
+The batch runner rejects collisions, cycles, chained paths, bypass flags, and
+preview/live path drift. Any failure restores the complete batch.
 
 ## Stop Conditions
 

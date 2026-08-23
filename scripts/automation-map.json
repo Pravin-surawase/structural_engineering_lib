@@ -2,7 +2,7 @@
   "_comment": "GENERATED compatibility projection from scripts/control-plane.json; do not edit directly",
   "_usage": "Use ./run.sh find <query> or ./run.sh control find <query>",
   "_source": "scripts/control-plane.json",
-  "_coverage": "102/102 top-level scripts registered",
+  "_coverage": "101/101 top-level scripts registered",
   "tasks": {
     "resolve python runtime": {
       "script": "./scripts/python_runtime.sh --version",
@@ -107,10 +107,19 @@
       }
     },
     "move file": {
-      "script": "./scripts/python_runtime.sh scripts/safe_file_move.py old.md new.md",
+      "script": "./scripts/python_runtime.sh scripts/safe_file_move.py old.md new.md --dry-run",
       "group": "Docs",
-      "description": "Move file and update all internal links automatically (870+ links preserved)",
-      "permission": "WorkspaceWrite",
+      "description": "Preview or transactionally move one regular in-repository file with classified reference updates and exact rollback",
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--dry-run": "ReadOnly",
+        "live": "WorkspaceWrite"
+      },
+      "options": {
+        "--dry-run": "Preview classified references and exact changed paths",
+        "--stub": "Create a Markdown redirect only after a safe move",
+        "--json": "Emit structured result evidence"
+      },
       "aliases": [
         "move"
       ],
@@ -120,10 +129,18 @@
       ]
     },
     "delete file": {
-      "script": "./scripts/python_runtime.sh scripts/safe_file_delete.py file.md",
+      "script": "./scripts/python_runtime.sh scripts/safe_file_delete.py file.md --dry-run",
       "group": "Docs",
-      "description": "Delete file after checking for references",
-      "permission": "DangerFullAccess",
+      "description": "Preview or transactionally delete one unreferenced regular file with a content-hashed backup",
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--dry-run": "ReadOnly",
+        "live": "DangerFullAccess"
+      },
+      "options": {
+        "--dry-run": "Preview references without deleting",
+        "--json": "Emit structured backup and transaction evidence"
+      },
       "aliases": [
         "delete"
       ],
@@ -612,7 +629,7 @@
     "migrate python module": {
       "script": "./scripts/python_runtime.sh scripts/migrate_python_module.py <src> <dst> --dry-run",
       "group": "Migration",
-      "description": "Move Python module to new location + update all imports automatically",
+      "description": "Transactionally move one Python module, preview complete paths, update imports, validate, and roll back on failure",
       "permission": "ReadOnlyTerminal",
       "permission_modes": {
         "live": "WorkspaceWrite"
@@ -625,7 +642,7 @@
     "migrate react component": {
       "script": "./scripts/python_runtime.sh scripts/migrate_react_component.py <src> <dst> --dry-run",
       "group": "Migration",
-      "description": "Move React component to new feature-grouped folder + update imports",
+      "description": "Transactionally move one React component, CSS and barrel export with preview agreement and import-path validation",
       "permission": "ReadOnlyTerminal",
       "permission_modes": {
         "live": "WorkspaceWrite"
@@ -636,13 +653,19 @@
       ]
     },
     "batch migration": {
-      "script": "./scripts/python_runtime.sh scripts/batch_migrate_runner.py",
+      "script": "./scripts/python_runtime.sh scripts/batch_migrate_runner.py <plan> --dry-run",
       "group": "Migration",
-      "description": "Run multiple migrations with per-operation rollback logs",
-      "permission": "WorkspaceWrite",
+      "description": "Preflight the complete migration plan, execute with exact changed-path comparison, and roll back the whole batch on failure",
+      "permission": "ReadOnly",
       "permission_modes": {
         "--dry-run": "ReadOnly",
-        "--auto-rollback": "WorkspaceWrite"
+        "live": "WorkspaceWrite",
+        "--restore <manifest>": "WorkspaceWrite"
+      },
+      "options": {
+        "--dry-run": "Preflight every operation before any mutation",
+        "--restore <manifest>": "Restore exact bytes from a generated batch manifest",
+        "--json": "Emit structured batch and rollback evidence"
       }
     },
     "bump version": {
@@ -789,15 +812,6 @@
       "group": "Infrastructure",
       "description": "Render DXF drawings to PNG or PDF using ezdxf + matplotlib",
       "permission": "WorkspaceWrite"
-    },
-    "archive old files": {
-      "script": "./scripts/archive_old_files.sh",
-      "group": "Docs",
-      "description": "Move files older than 90 days from docs/_active/ to _archive/",
-      "permission": "WorkspaceWrite",
-      "permission_modes": {
-        "--dry-run": "ReadOnly"
-      }
     },
     "classify branch disposition": {
       "script": "./scripts/python_runtime.sh scripts/classify_branch_disposition.py --all-local --json",

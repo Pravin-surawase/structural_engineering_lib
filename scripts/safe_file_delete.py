@@ -1,354 +1,162 @@
 #!/usr/bin/env python3
-"""Safe file delete script with reference checking.
-
-When to use: When deleting a file that might be referenced by other docs or code.
-Never use manual `rm` — this script checks all references first and warns about breakage.
-
-This script safely deletes files by:
-1. Checking for all references in docs and code
-2. Showing what would break
-3. Optionally creating backup
-4. Running link validation after delete
-
-Reference discovery is deliberately conservative and searches by basename.
-Generic generated names such as ``index.json`` and ``index.md`` can therefore
-produce broad matches. Treat those matches as prompts to inspect the exact path,
-Git status, and ownership; ``--force`` is not proof that deletion is safe.
-
-Usage:
-    python scripts/safe_file_delete.py <file> [--force] [--dry-run]
-
-Examples:
-    python scripts/safe_file_delete.py docs/old.md --dry-run
-    python scripts/safe_file_delete.py docs/old.md --force
-"""
+"""Delete one unreferenced repository file with backup and rollback."""
 
 from __future__ import annotations
 
 import argparse
-import shutil
+import contextlib
+import json
 import subprocess
 import sys
-from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _lib.safe_file_ops import (
+    SafeFileError,
+    capture_snapshots,
+    classify_references,
+    create_content_hashed_backup,
+    require_no_link_regression,
+    resolve_regular_source,
+    restore_snapshots,
+    run_link_checker,
+)
 from _lib.utils import REPO_ROOT
 
 
-def find_references(file_path: Path, project_root: Path) -> list[tuple[Path, str, int]]:
-    """Find all references to a file in docs and code.
-
-    Returns list of (file, line_content, line_number) tuples.
-
-    Uses git grep for fast searching (works in git repos), falls back to Python if not.
-    """
-    filename = file_path.name
-
-    # Try using git grep for fast search (uses git's index, much faster)
-    references = _find_references_git_grep(filename, project_root)
-    if references is not None:
-        # Filter out self-references
-        return [(f, line, num) for f, line, num in references if f != file_path]
-
-    # Fallback to Python-based search (slower but always works)
-    return _find_references_python(file_path, project_root)
-
-
-def _find_references_git_grep(
-    pattern: str, project_root: Path
-) -> list[tuple[Path, str, int]] | None:
-    """Fast reference search using git grep.
-
-    Git grep uses the git index which is much faster than filesystem search.
-    Returns None if not in a git repo or git grep fails.
-    """
-    references = []
-
-    try:
-        # Use git grep - it's fast because it uses git's index
-        result = subprocess.run(
-            [
-                "git",
-                "grep",
-                "-n",  # Show line numbers
-                "-I",  # Skip binary files
-                "--no-color",
-                "-F",  # Fixed string (literal)
-                pattern,
-            ],
-            cwd=project_root,
-            capture_output=True,
-            text=True,
-            timeout=10,  # 10 second timeout
-        )
-
-        if result.returncode not in (0, 1):  # 0=found, 1=not found
-            return None
-
-        # Parse output: filename:lineno:content
-        for line in result.stdout.strip().split("\n"):
-            if not line:
-                continue
-            parts = line.split(":", 2)
-            if len(parts) >= 3:
-                file_match = project_root / parts[0]
-                try:
-                    line_num = int(parts[1])
-                    content = parts[2].strip()[:100]
-                    references.append((file_match, content, line_num))
-                except (ValueError, IndexError):
-                    continue
-
-        return references
-
-    except (subprocess.TimeoutExpired, OSError, FileNotFoundError):
-        return None
-
-
-def _find_references_python(
-    file_path: Path, project_root: Path
-) -> list[tuple[Path, str, int]]:
-    """Python-based reference search (slower fallback).
-
-    Note: This can be slow for large projects.
-    """
-    references = []
-    filename = file_path.name
-    stem = file_path.stem
-
-    try:
-        relative_path = str(file_path.relative_to(project_root))
-    except ValueError:
-        relative_path = str(file_path)
-
-    patterns = [
-        filename,
-        stem,
-        relative_path,
-        relative_path.replace("/", "\\"),
-    ]
-
-    # Search directories
-    search_dirs = ["docs", "agents", "Python", "VBA", ".github"]
-    extensions = [".md", ".py", ".bas", ".txt", ".json", ".yml", ".yaml"]
-
-    for search_dir in search_dirs:
-        search_path = project_root / search_dir
-        if not search_path.exists():
-            continue
-
-        for ext in extensions:
-            for file in search_path.rglob(f"*{ext}"):
-                if file == file_path:
-                    continue
-                try:
-                    content = file.read_text(encoding="utf-8", errors="ignore")
-                    for i, line in enumerate(content.split("\n"), 1):
-                        for pattern in patterns:
-                            if pattern in line:
-                                references.append((file, line.strip()[:100], i))
-                                break
-                except (OSError, UnicodeDecodeError):
-                    continue
-
-    return references
-
-
-def check_git_history(file_path: Path, project_root: Path) -> dict:
-    """Get git history info for the file."""
-    try:
-        result = subprocess.run(
-            ["git", "log", "--oneline", "-5", "--", str(file_path)],
-            cwd=project_root,
-            capture_output=True,
-            text=True,
-        )
-
-        commits = result.stdout.strip().split("\n") if result.stdout.strip() else []
-
-        # Get last modified date
-        result2 = subprocess.run(
-            ["git", "log", "-1", "--format=%ci", "--", str(file_path)],
-            cwd=project_root,
-            capture_output=True,
-            text=True,
-        )
-        last_modified = result2.stdout.strip() if result2.stdout.strip() else "Unknown"
-
-        return {
-            "recent_commits": len(commits),
-            "last_modified": last_modified,
-            "commits": commits[:3],
-        }
-    except (OSError, subprocess.CalledProcessError):
-        return {"recent_commits": 0, "last_modified": "Unknown", "commits": []}
-
-
-def create_backup(file_path: Path, project_root: Path) -> Path:
-    """Create a backup of the file before deletion."""
-    backup_dir = project_root / "tmp" / "deleted_backups"
-    backup_dir.mkdir(parents=True, exist_ok=True)
-
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    backup_name = f"{file_path.stem}_{timestamp}{file_path.suffix}"
-    backup_path = backup_dir / backup_name
-
-    shutil.copy2(file_path, backup_path)
-    return backup_path
-
-
-def run_link_check(project_root: Path) -> tuple[bool, str]:
-    """Run the link checker and return (success, output)."""
-    check_script = project_root / "scripts" / "check_links.py"
-    if not check_script.exists():
-        return True, "check_links.py not found, skipped"
-
-    result = subprocess.run(
-        [sys.executable, str(check_script)],
+def check_git_history(file_path: Path, project_root: Path) -> dict[str, object]:
+    """Return bounded Git history metadata for operator review."""
+    relative = file_path.relative_to(project_root).as_posix()
+    commits = subprocess.run(
+        ["git", "log", "--oneline", "-5", "--", relative],
         cwd=project_root,
         capture_output=True,
         text=True,
+        check=False,
     )
+    modified = subprocess.run(
+        ["git", "log", "-1", "--format=%ci", "--", relative],
+        cwd=project_root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    commit_lines = [line for line in commits.stdout.splitlines() if line]
+    return {
+        "recent_commits": len(commit_lines),
+        "last_modified": modified.stdout.strip() or "Unknown",
+        "commits": commit_lines[:3],
+    }
 
-    success = "Broken links: 0" in result.stdout or result.returncode == 0
-    return success, result.stdout
+
+def run_delete(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
+    result: dict[str, object] = {
+        "tool": "safe_file_delete",
+        "dry_run": bool(args.dry_run),
+        "mode": "dry-run" if args.dry_run else "live",
+        "success": False,
+        "source": args.file,
+        "deleted": False,
+        "rolled_back": False,
+    }
+    try:
+        file_path = resolve_regular_source(args.file, REPO_ROOT)
+    except SafeFileError as exc:
+        result["error"] = str(exc)
+        print(f"❌ {exc}")
+        return 1, result
+
+    relative = file_path.relative_to(REPO_ROOT).as_posix()
+    result["source"] = relative
+    result["size_bytes"] = file_path.stat().st_size
+    result["history"] = check_git_history(file_path, REPO_ROOT)
+
+    print("=" * 60)
+    print("🗑️  Transactional File Delete")
+    print("=" * 60)
+    print(f"File: {relative}")
+    print(f"Mode: {'DRY RUN' if args.dry_run else 'LIVE'}")
+
+    baseline = run_link_checker(REPO_ROOT)
+    if not baseline.operational:
+        result["error"] = f"Link baseline unavailable: {baseline.error}"
+        print(f"❌ {result['error']}")
+        return 1, result
+    result["baseline_broken_links"] = len(baseline.broken)
+
+    references = classify_references(file_path, None, REPO_ROOT)
+    preserved = [ref for ref in references if ref.classification == "preserved"]
+    blocking = [ref for ref in references if ref.classification != "preserved"]
+    result["references_count"] = len(references)
+    result["reference_summary"] = {
+        "preserved": len(preserved),
+        "unresolved": len(blocking),
+    }
+    result["references"] = [ref.as_dict(REPO_ROOT) for ref in references]
+
+    print("\n📍 References")
+    print(f"  preserved historical evidence: {len(preserved)}")
+    print(f"  unresolved maintained references: {len(blocking)}")
+    if blocking:
+        result["error"] = "Maintained references block deletion"
+        for ref in blocking[:10]:
+            print(f"  ❌ {ref.file.relative_to(REPO_ROOT)}:{ref.line_number}")
+        return 1, result
+
+    result["changed_files"] = [relative]
+    if args.dry_run:
+        result["success"] = True
+        print("\n✨ Dry run complete. No changes made.")
+        return 0, result
+
+    snapshots = capture_snapshots([file_path], REPO_ROOT)
+    try:
+        backup_path, manifest_path = create_content_hashed_backup(file_path, REPO_ROOT)
+        result["backup"] = backup_path.relative_to(REPO_ROOT).as_posix()
+        result["backup_manifest"] = manifest_path.relative_to(REPO_ROOT).as_posix()
+        file_path.unlink()
+        result["deleted"] = True
+        after = run_link_checker(REPO_ROOT)
+        require_no_link_regression(baseline, after)
+        result["broken_links_after"] = len(after.broken)
+    except Exception as exc:
+        try:
+            restore_snapshots(snapshots, REPO_ROOT)
+            result["rolled_back"] = True
+            result["deleted"] = False
+        except Exception as rollback_exc:
+            result["rollback_error"] = str(rollback_exc)
+        result["error"] = str(exc)
+        print(f"❌ Delete failed: {exc}")
+        print(
+            "↩️  Original bytes restored."
+            if result["rolled_back"]
+            else "❌ Rollback failed."
+        )
+        return 1, result
+
+    result["success"] = True
+    print("\n✨ Delete complete, backed up, and validated.")
+    return 0, result
 
 
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Safely delete files with reference checking"
+        description="Delete one unreferenced regular repository file transactionally"
     )
-    parser.add_argument("file", help="File to delete")
-    parser.add_argument(
-        "--force", action="store_true", help="Delete even if references exist"
-    )
-    parser.add_argument(
-        "--dry-run", action="store_true", help="Show what would happen without deleting"
-    )
-    parser.add_argument("--no-backup", action="store_true", help="Skip creating backup")
-
+    parser.add_argument("file", help="Existing regular file inside the repository")
+    parser.add_argument("--dry-run", action="store_true", help="Preview without writes")
+    parser.add_argument("--json", action="store_true", help="Output structured JSON")
     args = parser.parse_args()
 
-    project_root = REPO_ROOT
-
-    file_path = Path(args.file)
-    if not file_path.is_absolute():
-        file_path = project_root / file_path
-    file_path = file_path.resolve()
-
-    # Validate
-    if not file_path.exists():
-        print(f"❌ Error: File not found: {file_path}")
-        sys.exit(1)
-
-    if not file_path.is_file():
-        print(f"❌ Error: Not a file: {file_path}")
-        sys.exit(1)
-
-    try:
-        relative_path = file_path.relative_to(project_root)
-    except ValueError:
-        print(f"❌ Error: File must be within project: {project_root}")
-        sys.exit(1)
-
-    print("=" * 60)
-    print("🗑️  Safe File Delete")
-    print("=" * 60)
-    print(f"File: {relative_path}")
-    print(f"Size: {file_path.stat().st_size:,} bytes")
-    print(f"Mode: {'DRY RUN' if args.dry_run else 'LIVE'}")
-    print()
-
-    # Step 1: Check git history
-    print("📜 Step 1: Checking git history...")
-    history = check_git_history(file_path, project_root)
-    print(f"   Last modified: {history['last_modified']}")
-    print(f"   Recent commits: {history['recent_commits']}")
-    if history["commits"]:
-        for commit in history["commits"]:
-            print(f"     - {commit}")
-    print()
-
-    # Step 2: Find references
-    print("🔍 Step 2: Finding references...")
-    references = find_references(file_path, project_root)
-
-    if references:
-        print(f"   ⚠️  Found {len(references)} reference(s):")
-        for ref_file, ref_line, ref_lineno in references[:15]:
-            try:
-                rel_file = ref_file.relative_to(project_root)
-            except ValueError:
-                rel_file = ref_file
-            print(f"     {rel_file}:{ref_lineno}")
-            print(f"       {ref_line[:80]}...")
-        if len(references) > 15:
-            print(f"     ... and {len(references) - 15} more")
-        print()
-
-        if not args.force and not args.dry_run:
-            print("❌ Cannot delete: References exist!")
-            print("   Use --force to delete anyway")
-            print("   Or fix references first")
-            sys.exit(1)
-    else:
-        print("   ✅ No references found - safe to delete")
-    print()
-
-    # Step 3: Create backup
-    if not args.no_backup:
-        print("💾 Step 3: Creating backup...")
-        if args.dry_run:
-            print("   Would backup to: tmp/deleted_backups/")
-        else:
-            backup_path = create_backup(file_path, project_root)
-            print(f"   Backed up to: {backup_path.relative_to(project_root)}")
-    else:
-        print("💾 Step 3: Backup skipped (--no-backup)")
-    print()
-
-    # Step 4: Delete file
-    print("🗑️  Step 4: Deleting file...")
-    if args.dry_run:
-        print(f"   Would delete: {relative_path}")
-    else:
-        file_path.unlink()
-        print(f"   Deleted: {relative_path}")
-    print()
-
-    # Step 5: Validate links
-    print("✅ Step 5: Validating links...")
-    if args.dry_run:
-        print("   Skipped (dry run)")
-    else:
-        success, output = run_link_check(project_root)
-        if success:
-            print("   All links still valid!")
-        else:
-            print("   ⚠️  Some links may be broken:")
-            # Extract broken links from output
-            for line in output.split("\n"):
-                if "broken" in line.lower() or "error" in line.lower():
-                    print(f"     {line}")
-
-    print()
-    print("=" * 60)
-    if args.dry_run:
-        print("✨ Dry run complete. No changes made.")
-        if references:
-            print()
-            print("⚠️  Warning: This file has references that would break!")
-    else:
-        print("✨ Delete complete!")
-        print()
-        print("Next steps:")
-        print("  1. Review: git status")
-        print("  2. Have Codex review and include the deletion in the scoped commit")
-        if references:
-            print("  3. Fix broken references!")
-    print("=" * 60)
+    if args.json:
+        with contextlib.redirect_stdout(sys.stderr):
+            exit_code, payload = run_delete(args)
+        print(json.dumps(payload, indent=2))
+        return exit_code
+    exit_code, _payload = run_delete(args)
+    return exit_code
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

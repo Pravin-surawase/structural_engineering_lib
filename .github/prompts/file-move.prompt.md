@@ -16,7 +16,7 @@ NEVER use `mv`, `rm`, `git mv`, or manual rename.
 
 ### Deleting a file:
 ```bash
-./scripts/python_runtime.sh scripts/safe_file_delete.py {{file_path}}
+./scripts/python_runtime.sh scripts/safe_file_delete.py {{file_path}} --dry-run --json
 ```
 
 ## Step 2: Execute
@@ -24,6 +24,10 @@ NEVER use `mv`, `rm`, `git mv`, or manual rename.
 ```bash
 ./scripts/python_runtime.sh scripts/safe_file_move.py {{old_path}} {{new_path}}
 ```
+
+For multiple independent moves, create one reviewed JSON plan, run
+`batch_migrate_runner.py <plan> --dry-run --json`, then execute that exact plan.
+The runner restores the full batch if any operation or changed-path check fails.
 
 ## Step 3: For Python/React modules, also update imports
 

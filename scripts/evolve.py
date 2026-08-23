@@ -215,7 +215,7 @@ def step_check_instruction_drift() -> dict:
 
 
 def step_archive_stale_docs(fix: bool = False) -> dict:
-    """Step 6: Archive old docs from _active/."""
+    """Report age candidates without treating age as archival authority."""
     active_dir = REPO_ROOT / "docs" / "_active"
     if not active_dir.exists():
         return {"step": "archive_stale", "stale_count": 0}
@@ -228,22 +228,13 @@ def step_archive_stale_docs(fix: bool = False) -> dict:
         if age > 90:
             stale.append(f"{md.relative_to(REPO_ROOT)} ({age}d)")
 
-    if stale and fix:
-        StatusLine.ok(f"Archiving {len(stale)} stale doc(s)...")
-        archive_script = SCRIPTS_DIR / "archive_old_files.sh"
-        if archive_script.exists():
-            subprocess.run(
-                ["bash", str(archive_script)],
-                capture_output=True,
-                timeout=60,
-                cwd=str(REPO_ROOT),
-            )
-
     return {
         "step": "archive_stale",
         "stale_count": len(stale),
         "stale_files": stale[:10],  # Show first 10
-        "archived": fix and bool(stale),
+        "archived": False,
+        "manual_classification_required": bool(stale),
+        "fix_requested": fix,
     }
 
 
@@ -294,7 +285,7 @@ def review_weekly(fix: bool = False) -> dict:
 
 
 def review_monthly(fix: bool = False) -> dict:
-    """Comprehensive monthly review: all categories + archive."""
+    """Comprehensive monthly review with read-only age-candidate reporting."""
     print("\n\033[1m\033[36m━━━ Monthly Review ━━━\033[0m\n")
 
     results = {
@@ -354,7 +345,7 @@ def run_evolution(fix: bool = False, write_report: bool = False) -> dict:
     # Step 5: Instruction drift
     evolution["steps"]["instruction_drift"] = step_check_instruction_drift()
 
-    # Step 6: Archive stale docs
+    # Step 6: Report stale candidates for explicit classification
     evolution["steps"]["archive_stale"] = step_archive_stale_docs(fix=fix)
 
     # Step 7: Generate TODOs
@@ -403,7 +394,7 @@ def _print_evolution_summary(evolution: dict, report_path: Path | None) -> None:
     print(f"  Pending Feedback: {feedback.get('pending', 0)}")
     print(f"  Recurring Issues: {len(feedback.get('recurring_issues', []))}")
     print(f"  Instruction Drift:{' YES ⚠️' if drift.get('drifted') else ' No ✅'}")
-    print(f"  Stale Docs:       {archive.get('stale_count', 0)}")
+    print(f"  Age Candidates:   {archive.get('stale_count', 0)}")
     print(f"  TODOs Generated:  {len(todos)}")
     print(f"  Duration:         {evolution.get('duration_seconds', '?')}s")
     if report_path is None:

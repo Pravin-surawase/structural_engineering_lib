@@ -167,7 +167,7 @@ session.py end → normal session logging
 ### Periodic (CI/Cron)
 ```
 Weekly:  evolve.py --review weekly   (quick: numbers, links, feedback)
-Monthly: evolve.py --review monthly  (full: all categories + archive)
+Monthly: evolve.py --review monthly  (full review + archive-candidate report)
 ```
 
 ### Post-Commit (existing)
@@ -183,7 +183,7 @@ session usage + project_health.py → bounded usage and health evidence
 | Every commit | Number drift | `sync_numbers.py` (post-commit hook) | Warns only |
 | Every session end | Agent feedback | `agent_feedback.py log` | N/A |
 | Weekly | Links, numbers, feedback trends | `evolve.py --review weekly` | Yes |
-| Monthly | Full health, archive old docs, instruction drift | `evolve.py --review monthly` | Partial |
+| Monthly | Full health, classify archive candidates, instruction drift | `evolve.py --review monthly` | Candidate report only |
 | Quarterly | Deep review, agent effectiveness, context optimization | Manual review triggered by report | No |
 
 ## Measuring Success

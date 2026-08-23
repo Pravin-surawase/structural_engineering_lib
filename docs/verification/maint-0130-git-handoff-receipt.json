@@ -1,0 +1,162 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "4ba9dd73d694e8b3606336222de5eb06116b73051873180da23627161dc5fa47",
+    "state": {
+      "branch": "codex/maint-0130-safe-file-foundation",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "242ba386925d29766b1467810044e276ebbceb64",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 83.371,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-maint-0130-safe-file",
+      "head_sha": "242ba386925d29766b1467810044e276ebbceb64",
+      "hold_reasons": [
+        "changed paths: 36"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-23T05:02:03.173344+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0130-safe-file",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 36,
+        "modified_paths": [
+          ".github/agents/doc-master.agent.md",
+          ".github/agents/governance.agent.md",
+          ".github/prompts/file-move.prompt.md",
+          ".github/skills/safe-file-ops/SKILL.md",
+          "Python/tests/test_agent_governance_automation.py",
+          "Python/tests/test_control_plane.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/agents/guides/agent-9-quick-start.md",
+          "docs/architecture/self-evolving-system.md",
+          "docs/git-automation/git-recovery-case-study-column-pmm.md",
+          "docs/governance/maintenance-playbook.md",
+          "docs/guidelines/file-operations-safety-guide.md",
+          "docs/guidelines/folder-cleanup-workflow.md",
+          "docs/planning/next-session-brief.md",
+          "scripts/README.md",
+          "scripts/_archive/README.md",
+          "scripts/agent_context.py",
+          "scripts/archive_old_files.sh",
+          "scripts/automation-map.json",
+          "scripts/batch_migrate_runner.py",
+          "scripts/check_links.py",
+          "scripts/control-plane.json",
+          "scripts/evolve.py",
+          "scripts/migrate_python_module.py",
+          "scripts/migrate_react_component.py",
+          "scripts/safe_file_delete.py",
+          "scripts/safe_file_move.py",
+          "tests/fixtures/migration/golden/batch_runner_dry_run.json",
+          "tests/fixtures/migration/golden/migrate_python_module_dry_run.json",
+          "tests/fixtures/migration/golden/migrate_react_component_dry_run.json",
+          "tests/fixtures/migration/golden/safe_file_move_dry_run.json",
+          "tests/integration/test_migration_scripts.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "scripts/_archive/archive_old_files.sh",
+          "scripts/_lib/safe_file_ops.py",
+          "tests/integration/test_safe_file_transactions.py"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "242ba386925d29766b1467810044e276ebbceb64",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0130-safe-file"
+    }
+  },
+  "local_state_receipt_hash": "sha256:4ba9dd73d694e8b3606336222de5eb06116b73051873180da23627161dc5fa47",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-23T05:02:03.173515+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/**/*.py",
+      "fastapi_app/**/*.py",
+      "react_app/**/*.{ts,tsx}",
+      "excel_addin/**",
+      "Etabs_CSV/**",
+      "requirements*.txt"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "scripts/**",
+      ".github/**",
+      "Python/tests/**",
+      "tests/**",
+      "docs/**"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md",
+      "scripts/control-plane.json",
+      "scripts/automation-map.json"
+    ],
+    "task_id": "MAINT-0130"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
