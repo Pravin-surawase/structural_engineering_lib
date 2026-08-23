@@ -31,7 +31,7 @@ react_app/src/
 - Dockview theme vars are in `index.css` (the only non-Tailwind CSS)
 - Never create `.css` files for components — use Tailwind classes inline
 
-## NEVER duplicate hooks or components
+## NEVER Duplicate Hooks or Components
 
 Check what exists BEFORE creating anything new:
 ```bash
@@ -51,7 +51,7 @@ Key components:
 - Beam editor: `BuildingEditorPage` (pages/BuildingEditorPage.tsx)
 - File upload: `FileDropZone` (ui/FileDropZone.tsx)
 
-## All data flows through FastAPI
+## All Data Flows Through FastAPI
 
 ```
 WRONG: Parse CSV in React, calculate geometry in JS
@@ -59,14 +59,14 @@ RIGHT: useCSVFileImport → POST /api/v1/import/csv → GenericCSVAdapter
 RIGHT: useBeamGeometry → POST /api/v1/geometry/beam/full → geometry_3d
 ```
 
-## State stores (Zustand)
+## State Stores (Zustand)
 
 - `useDesignStore` — Single beam design inputs/results
 - `useImportedBeamsStore` — Imported CSV beams + selection
 
 ## Migration Scripts
 
-- **Move a component:** `.venv/bin/python scripts/migrate_react_component.py <src> <dst> --dry-run`
+- **Move a component:** `./scripts/python_runtime.sh scripts/migrate_react_component.py <src> <dst> --dry-run`
 - Co-located CSS files are moved automatically
 
 ## Build & Test

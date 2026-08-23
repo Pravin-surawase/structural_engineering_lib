@@ -126,7 +126,11 @@
     "agents": {
       "description": "Agent roles, repository skills, prompts, and permission boundaries",
       "roots": ["agents", ".github/agents", ".github/skills"],
-      "read_first": ["agents/README.md", "agents/agent_registry.json"],
+      "read_first": [
+        "AGENTS.md",
+        "agents/agent_registry.json",
+        ".github/skills/skill_tiers.json"
+      ],
       "operations": ["agent brief", "check governance"]
     },
     "verification": {

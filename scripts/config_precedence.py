@@ -1,24 +1,26 @@
 #!/usr/bin/env python3
 """
-Configuration precedence auditing for instruction files.
+Cross-platform instruction composition auditing.
 
-Documents and validates the instruction precedence chain across all
-configuration files to prevent conflicts and ensure consistent behavior.
+Lists repository contracts, platform entries, scoped rules, and role prompts in
+their composition order. Agent platforms load these surfaces differently, so
+the script does not claim a universal precedence ladder.
 
 When to use: after changing agent or instruction files, or while diagnosing rule conflicts.
 
-PRECEDENCE (highest to lowest):
-  1. Agent-specific rules:  .github/agents/*.agent.md       (per-agent)
-  2. File-type rules:       .github/instructions/*.md       (per file pattern)
-  3. Claude-specific:       .claude/rules/*.md               (Claude-only)
-  4. Global instructions:   .github/copilot-instructions.md  (all agents)
-  5. Root entry points:     AGENTS.md, CLAUDE.md             (bootstrapping)
+COMPOSITION:
+  1. Repository contract:   AGENTS.md
+  2. Platform entries:      CLAUDE.md, .github/copilot-instructions.md
+  3. Path-scoped rules:     .github/instructions/, .claude/rules/
+  4. Role scope:            .github/agents/*.agent.md
+
+Narrower guidance may add constraints but may not weaken cross-agent safety.
 
 USAGE:
     ./scripts/python_runtime.sh scripts/config_precedence.py show <file_path>
     ./scripts/python_runtime.sh scripts/config_precedence.py audit
     ./scripts/python_runtime.sh scripts/config_precedence.py list
-    ./scripts/python_runtime.sh scripts/config_precedence.py --json
+    ./scripts/python_runtime.sh scripts/config_precedence.py --json audit
 """
 
 from __future__ import annotations
@@ -33,6 +35,7 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.output import StatusLine, print_json
 from _lib.utils import REPO_ROOT
+from check_instruction_drift import instruction_contract_issues
 
 
 @dataclass
@@ -40,8 +43,8 @@ class InstructionFile:
     """Metadata for an instruction file."""
 
     path: Path
-    level: str  # agent, file-type, claude, global, root
-    priority: int  # 1=highest, 5=lowest
+    level: str  # contract, platform, scoped-github, scoped-claude, role
+    priority: int  # composition display order; not universal platform precedence
     applies_to: list[str] = field(default_factory=list)  # Patterns or globs
     description: str = ""
 
@@ -53,7 +56,7 @@ class InstructionFile:
 
 @dataclass
 class Issue:
-    """Configuration precedence issue."""
+    """Instruction composition issue."""
 
     level: str  # error, warning, info
     category: str  # conflict, redundancy, gap, mismatch
@@ -74,10 +77,10 @@ class Issue:
 
 
 def discover_instruction_files() -> list[InstructionFile]:
-    """Discover all instruction files and classify by precedence level."""
+    """Discover instruction files and classify by composition surface."""
     files = []
 
-    # Level 1: Agent-specific rules (.github/agents/*.agent.md)
+    # Role-specific prompts load after the repository/platform contract.
     agent_files = list((REPO_ROOT / ".github" / "agents").glob("*.agent.md"))
     for path in agent_files:
         # Extract applies_to from YAML frontmatter if present
@@ -91,14 +94,14 @@ def discover_instruction_files() -> list[InstructionFile]:
         files.append(
             InstructionFile(
                 path=path,
-                level="agent",
-                priority=1,
+                level="role",
+                priority=4,
                 applies_to=applies_to,
                 description=f"Agent {path.stem} rules",
             )
         )
 
-    # Level 2: File-type rules (.github/instructions/*.instructions.md)
+    # Maintained GitHub path-scoped rules.
     instruction_files = list(
         (REPO_ROOT / ".github" / "instructions").glob("*.instructions.md")
     )
@@ -113,14 +116,14 @@ def discover_instruction_files() -> list[InstructionFile]:
         files.append(
             InstructionFile(
                 path=path,
-                level="file-type",
-                priority=2,
+                level="scoped-github",
+                priority=3,
                 applies_to=applies_to,
                 description=f"File-type rules: {path.stem}",
             )
         )
 
-    # Level 3: Claude-specific rules (.claude/rules/*.md)
+    # Exact Claude projections of maintained path-scoped rule bodies.
     claude_dir = REPO_ROOT / ".claude" / "rules"
     if claude_dir.exists():
         claude_files = list(claude_dir.glob("*.md"))
@@ -135,41 +138,53 @@ def discover_instruction_files() -> list[InstructionFile]:
             files.append(
                 InstructionFile(
                     path=path,
-                    level="claude",
+                    level="scoped-claude",
                     priority=3,
                     applies_to=applies_to,
                     description=f"Claude-only: {path.stem}",
                 )
             )
 
-    # Level 4: Global instructions (.github/copilot-instructions.md)
+    # Copilot platform entry. It is standalone on surfaces without AGENTS.md.
     copilot_inst = REPO_ROOT / ".github" / "copilot-instructions.md"
     if copilot_inst.exists():
         files.append(
             InstructionFile(
                 path=copilot_inst,
-                level="global",
-                priority=4,
+                level="platform",
+                priority=2,
                 applies_to=["**"],  # Applies to everything
                 description="Global Copilot instructions",
             )
         )
 
-    # Level 5: Root entry points (AGENTS.md, CLAUDE.md)
-    for root_file in ["AGENTS.md", "CLAUDE.md"]:
-        root_path = REPO_ROOT / root_file
-        if root_path.exists():
-            files.append(
-                InstructionFile(
-                    path=root_path,
-                    level="root",
-                    priority=5,
-                    applies_to=["**"],
-                    description=f"Root entry: {root_file}",
-                )
+    # Canonical repository contract.
+    agents_path = REPO_ROOT / "AGENTS.md"
+    if agents_path.exists():
+        files.append(
+            InstructionFile(
+                path=agents_path,
+                level="contract",
+                priority=1,
+                applies_to=["**"],
+                description="Canonical cross-agent repository contract",
             )
+        )
 
-    # Sort by priority (highest first)
+    # Claude platform entry imports the repository contract.
+    claude_path = REPO_ROOT / "CLAUDE.md"
+    if claude_path.exists():
+        files.append(
+            InstructionFile(
+                path=claude_path,
+                level="platform",
+                priority=2,
+                applies_to=["**"],
+                description="Claude Code entry and loading guidance",
+            )
+        )
+
+    # Sort only for readable composition output.
     files.sort(key=lambda f: f.priority)
     return files
 
@@ -201,27 +216,28 @@ def file_matches_pattern(file_path: str, pattern: str) -> bool:
 
 
 def show_precedence(file_path: str, agent: str | None = None) -> list[InstructionFile]:
-    """Show which instruction files apply to a given file path.
+    """Show instruction surfaces relevant to a file path.
 
     Args:
         file_path: Relative file path from repo root
-        agent: Optional agent name to show agent-specific rules
+        agent: Optional agent name to show its role-specific scope
 
     Returns:
-        List of InstructionFile objects that apply, ordered by precedence
+        Relevant surfaces in readable composition order
     """
     all_files = discover_instruction_files()
     applicable = []
 
     for inst_file in all_files:
-        # Root and global always apply
-        if inst_file.level in ("root", "global"):
+        # Repository and platform entry surfaces are shown for orientation.
+        if inst_file.level in ("contract", "platform"):
             applicable.append(inst_file)
             continue
 
-        # Agent-specific rules only apply if agent matches
-        if inst_file.level == "agent":
-            if agent and inst_file.path.stem == agent:
+        # Role-specific scope only applies if the requested role matches.
+        if inst_file.level == "role":
+            role_name = inst_file.path.name.removesuffix(".agent.md")
+            if agent and role_name == agent:
                 applicable.append(inst_file)
             continue
 
@@ -235,7 +251,7 @@ def show_precedence(file_path: str, agent: str | None = None) -> list[Instructio
 
 
 def validate_precedence() -> list[Issue]:
-    """Validate instruction precedence for conflicts and issues.
+    """Validate the instruction composition contract.
 
     Returns:
         List of Issue objects found
@@ -243,11 +259,8 @@ def validate_precedence() -> list[Issue]:
     issues = []
     all_files = discover_instruction_files()
 
-    # Check 1: Redundancy - same rule in multiple levels
-    # (This is complex - would require content analysis, so we skip for now)
-
-    # Check 2: Ambiguous patterns - multiple file-type rules for same pattern
-    file_type_rules = [f for f in all_files if f.level == "file-type"]
+    # Ambiguous patterns can cause overlapping GitHub scoped rules.
+    file_type_rules = [f for f in all_files if f.level == "scoped-github"]
     patterns_seen = {}
 
     for inst_file in file_type_rules:
@@ -257,7 +270,7 @@ def validate_precedence() -> list[Issue]:
                     Issue(
                         level="warning",
                         category="ambiguity",
-                        description=f"Multiple file-type rules for pattern: {pattern}",
+                        description=f"Multiple GitHub scoped rules for pattern: {pattern}",
                         files=[patterns_seen[pattern], inst_file.path],
                         details="Check if these rules conflict or can be merged",
                     )
@@ -265,28 +278,23 @@ def validate_precedence() -> list[Issue]:
             else:
                 patterns_seen[pattern] = inst_file.path
 
-    # Check 3: Agent files missing file_scope
-    agent_files = [f for f in all_files if f.level == "agent"]
-    for agent_file in agent_files:
-        if not agent_file.applies_to:
-            issues.append(
-                Issue(
-                    level="info",
-                    category="gap",
-                    description=f"Agent file has no file_scope: {agent_file.path.name}",
-                    files=[agent_file.path],
-                    details="Consider adding file_scope in YAML frontmatter",
-                )
+    # Semantic ownership and safety rules are shared with the drift validator.
+    for contract_issue in instruction_contract_issues(REPO_ROOT):
+        issue_path = REPO_ROOT / contract_issue["path"]
+        issues.append(
+            Issue(
+                level="error",
+                category=contract_issue["category"],
+                description=contract_issue["message"],
+                files=[issue_path] if issue_path.exists() else [],
             )
-
-    # Check 4: Check for orphaned patterns (patterns with no coverage)
-    # This would require scanning the workspace - skip for now
+        )
 
     return issues
 
 
 def audit() -> dict[str, Any]:
-    """Full audit of configuration precedence.
+    """Full audit of instruction composition.
 
     Returns:
         Dictionary with audit results
@@ -300,8 +308,8 @@ def audit() -> dict[str, Any]:
         level_counts[inst_file.level] = level_counts.get(inst_file.level, 0) + 1
 
     # Find files with no pattern coverage
-    file_type_rules = [f for f in all_files if f.level == "file-type"]
-    claude_rules = [f for f in all_files if f.level == "claude"]
+    file_type_rules = [f for f in all_files if f.level == "scoped-github"]
+    claude_rules = [f for f in all_files if f.level == "scoped-claude"]
 
     all_patterns = []
     for inst_file in file_type_rules + claude_rules:
@@ -326,7 +334,7 @@ def audit() -> dict[str, Any]:
 
 
 def list_files_by_level() -> dict[str, list[InstructionFile]]:
-    """List all instruction files grouped by precedence level.
+    """List all instruction files grouped by composition surface.
 
     Returns:
         Dictionary mapping level name to list of files
@@ -343,7 +351,7 @@ def list_files_by_level() -> dict[str, list[InstructionFile]]:
 
 
 def cmd_show(args: argparse.Namespace) -> int:
-    """Show config precedence for a file."""
+    """Show instruction composition for a file."""
     file_path = args.file_path
     agent = args.agent
 
@@ -376,7 +384,7 @@ def cmd_show(args: argparse.Namespace) -> int:
         return 0
 
     print()
-    print("📋 Config Precedence for:", file_path)
+    print("📋 Instruction composition for:", file_path)
     if agent:
         print(f"   (agent: {agent})")
     print("━" * 70)
@@ -399,21 +407,29 @@ def cmd_show(args: argparse.Namespace) -> int:
 
 
 def cmd_audit(args: argparse.Namespace) -> int:
-    """Run full precedence audit."""
+    """Run full composition audit."""
     audit_result = audit()
 
     if args.json:
         print_json(audit_result)
-        return 0
+        return (
+            1 if any(issue.level == "error" for issue in audit_result["issues"]) else 0
+        )
 
     print()
-    print("🔍 Configuration Precedence Audit")
+    print("🔍 Instruction Composition Audit")
     print("━" * 70)
     print()
     print(f"Total instruction files: {audit_result['total_files']}")
     print()
     print("By level:")
-    for level in ["agent", "file-type", "claude", "global", "root"]:
+    for level in [
+        "contract",
+        "platform",
+        "scoped-github",
+        "scoped-claude",
+        "role",
+    ]:
         count = audit_result["by_level"].get(level, 0)
         print(f"  {level:12s}: {count:2d}")
     print()
@@ -460,7 +476,7 @@ def cmd_audit(args: argparse.Namespace) -> int:
 
 
 def cmd_list(args: argparse.Namespace) -> int:
-    """List all instruction files by level."""
+    """List all instruction files by composition surface."""
     by_level = list_files_by_level()
 
     if args.json:
@@ -480,19 +496,25 @@ def cmd_list(args: argparse.Namespace) -> int:
         return 0
 
     print()
-    print("📚 Instruction Files by Precedence Level")
+    print("📚 Instruction Files by Composition Surface")
     print("━" * 70)
     print()
 
     level_names = {
-        "agent": "Level 1: Agent-Specific Rules",
-        "file-type": "Level 2: File-Type Rules",
-        "claude": "Level 3: Claude-Specific Rules",
-        "global": "Level 4: Global Instructions",
-        "root": "Level 5: Root Entry Points",
+        "contract": "1. Canonical Repository Contract",
+        "platform": "2. Platform Entry Files",
+        "scoped-github": "3. Maintained GitHub Path Rules",
+        "scoped-claude": "3. Claude Path Projections",
+        "role": "4. Role-Specific Scope",
     }
 
-    for level in ["agent", "file-type", "claude", "global", "root"]:
+    for level in [
+        "contract",
+        "platform",
+        "scoped-github",
+        "scoped-claude",
+        "role",
+    ]:
         files = by_level.get(level, [])
         if not files:
             continue
@@ -513,7 +535,7 @@ def cmd_list(args: argparse.Namespace) -> int:
 def main() -> int:
     """CLI entry point."""
     parser = argparse.ArgumentParser(
-        description="Configuration precedence auditing",
+        description="Cross-platform instruction composition auditing",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("--json", action="store_true", help="Output as JSON")
@@ -522,16 +544,18 @@ def main() -> int:
 
     # show command
     show_parser = subparsers.add_parser(
-        "show", help="Show config precedence for a file"
+        "show", help="Show instruction composition for a file"
     )
     show_parser.add_argument("file_path", help="File path to check")
-    show_parser.add_argument("--agent", help="Agent name to check agent-specific rules")
+    show_parser.add_argument(
+        "--agent", help="Agent name to include role-specific scope"
+    )
 
     # audit command
-    subparsers.add_parser("audit", help="Run full precedence audit")
+    subparsers.add_parser("audit", help="Run full composition audit")
 
     # list command
-    subparsers.add_parser("list", help="List all instruction files by level")
+    subparsers.add_parser("list", help="List instruction files by surface")
 
     args = parser.parse_args()
 

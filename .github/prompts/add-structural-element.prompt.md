@@ -134,7 +134,7 @@ Add router + Pydantic models + register in main.py.
 ## Step 7: Verify
 
 ```bash
-.venv/bin/pytest Python/tests/ -v -k "{{element}}"
+./scripts/python_runtime.sh -m pytest Python/tests/ -v -k "{{element}}"
 ./scripts/python_runtime.sh scripts/check_architecture_boundaries.py
 ./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib
 ./run.sh check --quick

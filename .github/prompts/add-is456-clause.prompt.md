@@ -74,10 +74,10 @@ Add the function to `services/api.py` (NOT the stub `api.py`).
 
 ```bash
 # Run IS 456 tests
-.venv/bin/pytest Python/tests/ -v -k "{{keyword}}"
+./scripts/python_runtime.sh -m pytest Python/tests/ -v -k "{{keyword}}"
 
 # Full compliance suite
-.venv/bin/pytest Python/tests/unit/test_compliance.py -v
+./scripts/python_runtime.sh -m pytest Python/tests/unit/test_compliance.py -v
 
 # Architecture check
 ./scripts/python_runtime.sh scripts/check_architecture_boundaries.py

@@ -20,7 +20,7 @@ Step 6: CLOSEOUT   → quick gate once, then Codex-managed Git/GitHub work
 
 ## Step 1: Scope
 
-- Start from `./run.sh session brief --agent <role>`
+- Start once with `./run.sh session begin --task-id <task> --agent <role>`
 - Identify which files will be changed
 - Delegate only independent bounded work that materially benefits from it
 - For any delegation, provide objective, non-goals, exact files, pitfalls,

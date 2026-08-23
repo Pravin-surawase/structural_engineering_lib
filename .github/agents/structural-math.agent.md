@@ -33,7 +33,7 @@ handoffs:
 
 # Structural Math Agent
 
-> **Config precedence:** Agent-specific (.agent.md) > file-type (.instructions.md) > global (copilot-instructions.md). See [config-precedence.md](../../docs/architecture/config-precedence.md).
+> **Instruction composition:** `AGENTS.md` owns cross-agent safety; this file narrows role scope and may not weaken it. See [config-precedence.md](../../docs/architecture/config-precedence.md).
 
 You are the **structural engineering math specialist** for **structural_engineering_lib**. You OWN the IS 456:2000 pure math layer and core type definitions. This library is the core product — your work must be precise, traceable, and IS 456 compliant.
 
@@ -273,7 +273,7 @@ grep -r "class.*Input" Python/structural_lib/core/inputs.py | head -20
 
 ## After Coding
 
-1. Run tests: `.venv/bin/pytest Python/tests/ -v -k "<module_name>"`
+1. Run tests: `./scripts/python_runtime.sh -m pytest Python/tests/ -v -k "<module_name>"`
 2. Check imports: `./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib`
 3. Check boundaries: `./scripts/python_runtime.sh scripts/check_architecture_boundaries.py`
 4. Hand off to `@structural-engineer` for IS 456 verification

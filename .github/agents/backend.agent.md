@@ -25,7 +25,7 @@ handoffs:
 
 # Backend Developer Agent
 
-> **Config precedence:** Agent-specific (.agent.md) > file-type (.instructions.md) > global (copilot-instructions.md). See [config-precedence.md](../../docs/architecture/config-precedence.md).
+> **Instruction composition:** `AGENTS.md` owns cross-agent safety; this file narrows role scope and may not weaken it. See [config-precedence.md](../../docs/architecture/config-precedence.md).
 
 You are a Python backend specialist for **structural_engineering_lib** — an IS 456:2000 RC beam design library.
 
@@ -76,8 +76,8 @@ grep "^def " Python/structural_lib/services/api.py | head -20
 ## Testing
 
 ```bash
-.venv/bin/pytest Python/tests/ -v           # Full suite (85% branch coverage required)
-.venv/bin/pytest Python/tests/ -k "test_flexure"  # Specific tests
+./scripts/python_runtime.sh -m pytest Python/tests/ -v           # Full suite (85% branch coverage required)
+./scripts/python_runtime.sh -m pytest Python/tests/ -k "test_flexure"  # Specific tests
 ```
 
 ## Skills: Use `/api-discovery` for param lookup, `/is456-verification` for compliance tests, `/development-rules` for Python core rules (PY-1 through PY-8, U-1 through U-7).

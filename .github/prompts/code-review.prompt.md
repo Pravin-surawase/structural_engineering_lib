@@ -35,7 +35,7 @@ Before applying the checklist, define the main process changed by the work. For 
 - [ ] No duplicate API routes (check `grep -r "@router" fastapi_app/routers/`)
 - [ ] Tests added/updated for behavior changes
 - [ ] Test coverage maintained (85% branch coverage target for Python)
-- [ ] `.venv/bin/pytest Python/tests/ -v` passes
+- [ ] `./scripts/python_runtime.sh -m pytest Python/tests/ -v` passes
 
 ## Documentation
 

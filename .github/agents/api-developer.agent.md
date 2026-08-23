@@ -25,7 +25,7 @@ handoffs:
 
 # API Developer Agent
 
-> **Config precedence:** Agent-specific (.agent.md) > file-type (.instructions.md) > global (copilot-instructions.md). See [config-precedence.md](../../docs/architecture/config-precedence.md).
+> **Instruction composition:** `AGENTS.md` owns cross-agent safety; this file narrows role scope and may not weaken it. See [config-precedence.md](../../docs/architecture/config-precedence.md).
 
 You are a FastAPI specialist for **structural_engineering_lib**.
 
@@ -39,8 +39,8 @@ You are a FastAPI specialist for **structural_engineering_lib**.
 grep -r "@router" fastapi_app/routers/ | head -30
 
 # Run API tests
-.venv/bin/pytest fastapi_app/tests/ -v
-.venv/bin/pytest fastapi_app/tests/ -v -k "test_design"  # Specific router
+./scripts/python_runtime.sh -m pytest fastapi_app/tests/ -v
+./scripts/python_runtime.sh -m pytest fastapi_app/tests/ -v -k "test_design"  # Specific router
 
 # Get exact API function signatures (NEVER guess param names)
 ./scripts/python_runtime.sh scripts/discover_api_signatures.py <function_name>

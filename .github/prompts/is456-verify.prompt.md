@@ -25,15 +25,15 @@ For each modified formula, verify:
 
 ```bash
 # By module
-.venv/bin/pytest Python/tests/unit/test_compliance.py -v
-.venv/bin/pytest Python/tests/unit/test_detailing.py -v
-.venv/bin/pytest Python/tests/unit/test_rebar.py -v
+./scripts/python_runtime.sh -m pytest Python/tests/unit/test_compliance.py -v
+./scripts/python_runtime.sh -m pytest Python/tests/unit/test_detailing.py -v
+./scripts/python_runtime.sh -m pytest Python/tests/unit/test_rebar.py -v
 
 # By keyword
-.venv/bin/pytest Python/tests/ -v -k "{{keyword}}"
+./scripts/python_runtime.sh -m pytest Python/tests/ -v -k "{{keyword}}"
 
 # Full regression
-.venv/bin/pytest Python/tests/regression/ -v
+./scripts/python_runtime.sh -m pytest Python/tests/regression/ -v
 ```
 
 ## Step 4: Check Against Benchmarks

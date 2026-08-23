@@ -17,9 +17,8 @@
 set -uo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-VENV="$REPO_ROOT/.venv/bin/python"
-BRIEF="$REPO_ROOT/docs/planning/next-session-brief.md"
-TASKS="$REPO_ROOT/docs/TASKS.md"
+BRIEF="${AGENT_BRIEF_BRIEF:-$REPO_ROOT/docs/planning/next-session-brief.md}"
+TASKS="${AGENT_BRIEF_TASKS:-$REPO_ROOT/docs/TASKS.md}"
 FEEDBACK_DIR="$REPO_ROOT/logs/feedback"
 
 # ── Colors ─────────────────────────────────────────────────────────────
@@ -49,12 +48,16 @@ _priorities() {
 # ── Active tasks ───────────────────────────────────────────────────────
 _active_tasks() {
     if [[ -f "$TASKS" ]]; then
-        local active_items closed_tasks
-        closed_tasks=$(cd "$REPO_ROOT" && ./scripts/python_runtime.sh \
-            scripts/session.py usage --closed-task-ids 2>/dev/null) || true
-        active_items=$(awk -v closed_source="$closed_tasks" '
+        local active_items closed_tasks_csv
+        if [[ -n "${AGENT_BRIEF_CLOSED_TASKS+x}" ]]; then
+            closed_tasks_csv=$(printf '%s\n' "$AGENT_BRIEF_CLOSED_TASKS" | paste -sd, -)
+        else
+            closed_tasks_csv=$(cd "$REPO_ROOT" && ./scripts/python_runtime.sh \
+                scripts/session.py usage --closed-task-ids 2>/dev/null | paste -sd, -) || true
+        fi
+        active_items=$(awk -v closed_source="$closed_tasks_csv" '
             BEGIN {
-                count=split(closed_source, closed_ids, "\n")
+                count=split(closed_source, closed_ids, ",")
                 for (i=1; i<=count; i++) closed[closed_ids[i]]=1
             }
             /^## Active$/ { in_active=1; next }
@@ -138,7 +141,7 @@ _agent_focus() {
     local agent="${1:-}"
     case "$agent" in
         backend)
-            echo "Focus: Python/structural_lib/ | Run: .venv/bin/python scripts/discover_api_signatures.py <func>"
+            echo "Focus: Python/structural_lib/ | Run: ./scripts/python_runtime.sh scripts/discover_api_signatures.py <func>"
             ;;
         frontend)
             echo "Focus: react_app/src/ | Run: cd react_app && npm run build"
@@ -147,16 +150,16 @@ _agent_focus() {
             echo "Focus: fastapi_app/routers/ | Check: grep -r '@router' fastapi_app/routers/"
             ;;
         structural-engineer)
-            echo "Focus: Python/structural_lib/codes/is456/ | Run: .venv/bin/pytest Python/tests/ -k is456"
+            echo "Focus: Python/structural_lib/codes/is456/ | Run: ./scripts/python_runtime.sh -m pytest Python/tests/ -k is456"
             ;;
         reviewer)
             echo "Focus: Review changes | Run: git diff --stat HEAD~3"
             ;;
         tester)
-            echo "Focus: Python/tests/ | Run: .venv/bin/pytest Python/tests/ -v"
+            echo "Focus: Python/tests/ | Run: ./scripts/python_runtime.sh -m pytest Python/tests/ -v"
             ;;
         doc-master)
-            echo "Focus: docs/ | Run: .venv/bin/python scripts/check_docs.py"
+            echo "Focus: docs/ | Run: ./scripts/python_runtime.sh scripts/check_docs.py"
             ;;
         ops)
             echo "Focus: CI/CD, Docker | Run: colima status && docker compose config --quiet"

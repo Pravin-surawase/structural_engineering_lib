@@ -25,7 +25,7 @@ handoffs:
 
 # Structural Engineer Agent
 
-> **Config precedence:** Agent-specific (.agent.md) > file-type (.instructions.md) > global (copilot-instructions.md). See [config-precedence.md](../../docs/architecture/config-precedence.md).
+> **Instruction composition:** `AGENTS.md` owns cross-agent safety; this file narrows role scope and may not weaken it. See [config-precedence.md](../../docs/architecture/config-precedence.md).
 
 You are an IS 456:2000 structural engineering specialist for **structural_engineering_lib**.
 
@@ -92,9 +92,9 @@ When reviewing formulas:
 ## Running Verification
 
 ```bash
-.venv/bin/pytest Python/tests/ -v -k "test_flexure or test_shear"
-.venv/bin/pytest Python/tests/unit/test_compliance.py -v
-.venv/bin/pytest Python/tests/unit/test_detailing.py -v
+./scripts/python_runtime.sh -m pytest Python/tests/ -v -k "test_flexure or test_shear"
+./scripts/python_runtime.sh -m pytest Python/tests/unit/test_compliance.py -v
+./scripts/python_runtime.sh -m pytest Python/tests/unit/test_detailing.py -v
 ./scripts/python_runtime.sh scripts/discover_api_signatures.py design_beam_is456
 ```
 

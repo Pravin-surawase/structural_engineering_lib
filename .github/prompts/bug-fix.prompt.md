@@ -33,8 +33,8 @@ description: "Bug fix workflow — reproduce, diagnose, fix, test, commit"
 ## 4. Test
 
 ```bash
-.venv/bin/pytest Python/tests/ -v -k "{{test_name}}"
-.venv/bin/pytest Python/tests/ -v        # Full suite
+./scripts/python_runtime.sh -m pytest Python/tests/ -v -k "{{test_name}}"
+./scripts/python_runtime.sh -m pytest Python/tests/ -v        # Full suite
 ```
 
 ## 5. Commit
