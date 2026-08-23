@@ -14,6 +14,9 @@ from structural_lib.core.gravity_workflow import (
     GravityWorkflowRequestV1,
     GravityWorkflowResultV1,
 )
+from structural_lib.services.gravity_builder import (
+    get_gravity_workflow_example_document_v1,
+)
 from structural_lib.services.gravity_loads import build_gravity_load_ledger_v1
 from structural_lib.services.gravity_workflow import run_gravity_workflow_v1
 from structural_lib.services.serialization import to_transport_value
@@ -88,6 +91,7 @@ class GravityWorkflowDefinitionV1(_FrozenModel):
     accepted_topology: tuple[str, ...]
     component_adapters: dict[str, str]
     product_surfaces: dict[str, str]
+    example_request: dict[str, Any]
     exclusions: tuple[str, ...]
     status_contract: Literal["structural-result-envelope/v2"] = (
         "structural-result-envelope/v2"
@@ -117,13 +121,19 @@ def get_gravity_workflow_definition_v1() -> GravityWorkflowDefinitionV1:
             "FOOTING": "design_concentric_isolated_footing_is456",
         },
         product_surfaces={
-            "python": (
-                "structural_lib.services.gravity_workflow.run_gravity_workflow_v1"
+            "python": "structural_lib.run_gravity_workflow_with_book_v1",
+            "python_builder": (
+                "structural_lib.build_rectangular_gravity_workflow_request_v1"
             ),
-            "cli": "python -m structural_lib gravity-v1 REQUEST.json",
+            "python_example": (
+                "structural_lib.get_gravity_workflow_example_request_v1"
+            ),
+            "cli_example": "python -m structural_lib gravity-v1 example",
+            "cli_run": "python -m structural_lib gravity-v1 REQUEST.json",
             "rest": "POST /api/v1/building-gravity/v1/run",
             "review_ui": "/workbench/building-gravity/v1",
         },
+        example_request=get_gravity_workflow_example_document_v1(),
         exclusions=(
             "wind, seismic, wall, equipment, stair, tank, and special roof actions",
             "global frame, stiffness, finite-element, nonlinear, and spatial analysis",
@@ -194,10 +204,27 @@ def render_gravity_calculation_book_markdown_v1(
 ) -> str:
     """Render a compact human review view without changing calculation truth."""
 
+    envelope_issues = book.result_envelope.get("issues", [])
+    governing_issue = (
+        envelope_issues[0]
+        if isinstance(envelope_issues, list)
+        and envelope_issues
+        and isinstance(envelope_issues[0], dict)
+        else None
+    )
     lines = [
         "# Building Gravity Workflow V1 Calculation Book",
         "",
         f"- Overall status: `{book.result_envelope['overall_status']}`",
+        *(
+            [
+                "- Governing reason: "
+                f"`{governing_issue.get('code', 'UNSPECIFIED')}` — "
+                f"{governing_issue.get('message', '')}"
+            ]
+            if governing_issue is not None
+            else []
+        ),
         f"- Model hash: `{book.model_hash}`",
         f"- Load-model hash: `{book.load_model_hash}`",
         f"- Ledger hash: `{book.ledger_hash}`",

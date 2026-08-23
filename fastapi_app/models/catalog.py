@@ -47,9 +47,35 @@ class WorkflowCapabilityModel(BaseModel):
     qualified_review_required: bool
 
 
+class ComponentCapabilityModel(BaseModel):
+    element: str
+    public_workflows: list[str]
+    supported_case: str
+    held_cases: list[str]
+    qualified_review_required: bool
+
+
+class ComposedWorkflowCapabilityModel(BaseModel):
+    capability_id: str
+    capability_version: str
+    title: str
+    summary: str
+    component_capability_ids: list[str]
+    python_entrypoint: str
+    request_schema_id: str
+    result_schema_id: str
+    example_id: str
+    product_surfaces: list[tuple[str, str]]
+    limitations: list[str]
+    tool_eligible: bool
+    qualified_review_required: bool
+
+
 class WorkflowCatalogDocumentModel(BaseModel):
     schema_version: str
     catalog_version: str
     code_edition: str
     compatible_versions: list[str]
     capabilities: list[WorkflowCapabilityModel]
+    component_capabilities: list[ComponentCapabilityModel]
+    composed_workflows: list[ComposedWorkflowCapabilityModel]

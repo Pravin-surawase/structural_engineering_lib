@@ -209,6 +209,7 @@ def test_missing_prerequisites_preserve_every_component_as_hold() -> None:
     assert {item.result_envelope["overall_status"] for item in result.components} == {
         "HOLD"
     }
+    assert result.result_envelope["issues"]
     panel = next(
         item for item in result.applicability.entries if item.component_id == "P1"
     )
@@ -263,8 +264,12 @@ def test_component_failure_remains_fail_while_other_missing_basis_holds_aggregat
 
     assert by_id["B1"].result_envelope["overall_status"] == "FAIL"
     assert by_id["B2"].result_envelope["overall_status"] == "FAIL"
+    assert by_id["B1"].result_envelope["issues"][0]["code"] == (
+        "BEAM_DESIGN_CHECK_FAILED"
+    )
     assert by_id["F1"].result_envelope["overall_status"] == "HOLD"
     assert result.result_envelope["overall_status"] == "HOLD"
+    assert result.result_envelope["issues"]
 
 
 def test_slab_capacity_failure_remains_structured_component_fail() -> None:
@@ -281,6 +286,7 @@ def test_slab_capacity_failure_remains_structured_component_fail() -> None:
     assert slab.result_envelope["intake_status"] == "VALID"
     assert slab.result_envelope["calculation_status"] == "COMPLETED"
     assert slab.result_envelope["engineering_status"] == "FAIL"
+    assert slab.result_envelope["issues"][0]["code"] == "SLAB_GOVERNING_FAIL"
     assert slab.result is not None
     assert slab.result["reinforcement"]["flexure"]["status"] == "FAIL"
     assert slab.result["shear"] is None
@@ -327,6 +333,7 @@ def test_complete_external_footing_basis_calls_canonical_footing_component() -> 
     assert footing.canonical_function == "design_concentric_isolated_footing_is456"
     assert footing.result is not None
     assert footing.result_envelope["overall_status"] == "FAIL"
+    assert footing.result_envelope["issues"][0]["code"] == ("FOOTING_GOVERNING_FAIL")
     assert footing.result["status"] == "FAIL"
 
 

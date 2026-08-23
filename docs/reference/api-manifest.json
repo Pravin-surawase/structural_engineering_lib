@@ -1,8 +1,8 @@
 {
-  "generated": "2026-08-22",
+  "generated": "2026-08-23",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 170,
+  "count": 182,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -88,6 +88,11 @@
       "name": "ComplianceReport",
       "kind": "class",
       "signature": "(is_ok: 'bool', governing_case_id: 'str', governing_utilization: 'float', cases: 'list[ComplianceCaseResult]', summary: 'dict[str, Any]' = <factory>) -> None"
+    },
+    {
+      "name": "ComposedWorkflowCapability",
+      "kind": "class",
+      "signature": "(capability_id: 'str', capability_version: 'str', title: 'str', summary: 'str', component_capability_ids: 'tuple[str, ...]', python_entrypoint: 'str', request_schema_id: 'str', result_schema_id: 'str', example_id: 'str', product_surfaces: 'tuple[tuple[str, str], ...]', limitations: 'tuple[str, ...]', tool_eligible: 'bool', qualified_review_required: 'bool') -> None"
     },
     {
       "name": "ConcentricIsolatedFootingInput",
@@ -195,6 +200,26 @@
       "signature": "(*args, **kwds)"
     },
     {
+      "name": "GravityWorkflowDefinitionV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "GravityWorkflowRequestV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "GravityWorkflowResultV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "GravityWorkflowRunBundleV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
       "name": "IS456Capability",
       "kind": "class",
       "signature": "(element: 'str', public_workflows: 'tuple[str, ...]', supported_case: 'str', held_cases: 'tuple[str, ...]', qualified_review_required: 'bool') -> None"
@@ -293,6 +318,11 @@
       "name": "RebarSegment",
       "kind": "class",
       "signature": "(start: 'Point3D', end: 'Point3D', diameter: 'float', segment_type: 'str' = 'straight') -> None"
+    },
+    {
+      "name": "RectangularGravityWorkflowBuilderInputV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
     },
     {
       "name": "RegularInteriorFlatSlabDesignInput",
@@ -397,7 +427,7 @@
     {
       "name": "WorkflowCatalog",
       "kind": "class",
-      "signature": "(schema_version: 'str', catalog_version: 'str', code_edition: 'str', compatible_versions: 'tuple[str, ...]', capabilities: 'tuple[WorkflowCapability, ...]') -> None"
+      "signature": "(schema_version: 'str', catalog_version: 'str', code_edition: 'str', compatible_versions: 'tuple[str, ...]', capabilities: 'tuple[WorkflowCapability, ...]', component_capabilities: 'tuple[IS456Capability, ...]', composed_workflows: 'tuple[ComposedWorkflowCapability, ...]') -> None"
     },
     {
       "name": "beam_to_3d_geometry",
@@ -418,6 +448,11 @@
       "name": "build_detailing_input",
       "kind": "function",
       "signature": "(result: 'ComplianceCaseResult', *, beam_id: 'str' = 'B1', b_mm: 'float' = 300.0, D_mm: 'float' = 500.0, d_mm: 'float' = 450.0, span_mm: 'float' = 4000.0, cover_mm: 'float' = 40.0, fck_nmm2: 'float' = 25.0, fy_nmm2: 'float' = 500.0) -> 'dict[str, Any]'"
+    },
+    {
+      "name": "build_rectangular_gravity_workflow_request_v1",
+      "kind": "function",
+      "signature": "(builder_input: 'RectangularGravityWorkflowBuilderInputV1') -> 'GravityWorkflowRequestV1'"
     },
     {
       "name": "calculate_additional_moment_is456",
@@ -750,6 +785,21 @@
       "signature": "(result: 'Any', beam_id: 'str' = 'B1', story: 'str' = 'GF', project_info: 'dict[str, Any] | None' = None, output_path: 'str | Path | None' = None, output_format: 'str' = 'html') -> 'CalculationReport'"
     },
     {
+      "name": "get_gravity_workflow_definition_v1",
+      "kind": "function",
+      "signature": "() -> 'GravityWorkflowDefinitionV1'"
+    },
+    {
+      "name": "get_gravity_workflow_example_document_v1",
+      "kind": "function",
+      "signature": "() -> 'dict[str, Any]'"
+    },
+    {
+      "name": "get_gravity_workflow_example_request_v1",
+      "kind": "function",
+      "signature": "() -> 'GravityWorkflowRequestV1'"
+    },
+    {
       "name": "get_library_version",
       "kind": "function",
       "signature": "() -> 'str'"
@@ -808,6 +858,16 @@
       "name": "pm_interaction_curve_is456",
       "kind": "function",
       "signature": "(b_mm: 'float', D_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 0.0, n_points: 'int' = 50, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'PMInteractionResult'"
+    },
+    {
+      "name": "run_gravity_workflow_v1",
+      "kind": "function",
+      "signature": "(request: 'GravityWorkflowRequestV1') -> 'GravityWorkflowResultV1'"
+    },
+    {
+      "name": "run_gravity_workflow_with_book_v1",
+      "kind": "function",
+      "signature": "(request: 'GravityWorkflowRequestV1') -> 'GravityWorkflowRunBundleV1'"
     },
     {
       "name": "serialize_workflow_catalog",

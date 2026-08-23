@@ -5,6 +5,147 @@
 
 ---
 
+## 2026-08-23 — Session: LIB-PRO-006 gravity usability foundation
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/lib-pro-006-gravity-foundation`, from exact `main` commit
+`69c09cc741e11ba50521cb2cadaf2ba560ba4c51`.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-006-gravity-usability-foundation-git-handoff-receipt.json`
+
+**Focus:** Close gravity usability foundation gaps before INDIA-3-G0.
+
+No new structural formula, supported engineering case, release, or
+professional-approval claim is included.
+
+### Summary
+
+- Confirmed that the audited gravity product paths were unchanged between exact
+  audited commit `3f61bd93` and the task base, then reproduced the practical
+  10 m x 4 m open-hall values, 26 balanced boundaries, and correct overall
+  footing-detailing `HOLD` to displayed precision.
+- Added an installed-package runnable example and an explicit rectangular
+  builder whose engineering values, support idealizations, load inclusion
+  rules, combinations, source identities, exclusions, and component bases are
+  all caller supplied.
+- Added package-root, CLI, REST-definition, and review-UI onboarding; promoted
+  the deterministic governing component reason into every non-pass aggregate;
+  and exposed the same reason in the calculation book and UI.
+- Projected all 10 canonical component capability families plus the composed
+  gravity workflow into the application catalogue. The separately approved
+  beam automation capability remains the only tool-eligible surface; the
+  gravity workflow explicitly remains ineligible without separate approval.
+- Updated generated API, OpenAPI, and beam-tool manifests plus focused Python,
+  FastAPI, React, documentation, and contract evidence. Provided beam-bar
+  checking, footing hooks/bends, new action families, analysis adapters,
+  INDIA-3 engineering, release, and qualified approval remain held.
+
+### Issues encountered
+
+- The first session start was blocked by an unmatched MAINT-0134 checkpoint
+  even though its exact candidate had already merged through PR #850.
+- The audit's approximate schema-size and "catalogue is beam-only" statements
+  needed current-snapshot qualification before they could become foundation
+  requirements.
+- The first maintained-example serializer included nested Pydantic computed
+  hash fields, so its own strict request model rejected the emitted JSON.
+- Independent review found that the first builder revision hard-coded load
+  combinations and support idealizations while documentation claimed it had no
+  hidden engineering defaults.
+- The first focused catalogue test still instantiated the expanded dataclass
+  without the two additive catalogue fields.
+- The isolated worktree had no local React dependencies. Direct Vitest fallback
+  attempts first could not resolve Vite and then created a small ignored cache
+  before failing package resolution.
+- One new governing-reason assertion expected a synthesized beam issue code,
+  while the canonical beam result already supplied a more specific issue.
+- The final task-format check counted the completed MAINT-0134 row left in the
+  Active table and rejected three rows against the WIP=2 contract.
+- The pre-publication worktree comparison found the preserved INDIA-3 source-
+  library candidate `9c976b1f` on older base `f24c3904`, with overlap in three
+  shared session/task handoff documents.
+- The first normal staged-hook pass found two builder typing errors, missing
+  `api.`-qualified documentation for the new exports, and a stale generated API
+  classification registry.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the prior immutable candidate could not record its
+  later hosted merge in the same commit and its usage closeout checkpoint was
+  absent. Resolution: bind the old candidate, merged tree, PR #850, and current
+  base before recording the missing closeout; the new exact session then began
+  normally. The task board now records MAINT-0134 as integrated.
+- Confirmed snapshot facts: the current compact schema is 23,738 characters
+  with 28 definitions, while the pretty form is 39,195 characters. The
+  automation adapter catalogue was beam-only, but the separate canonical
+  registry already had 10 component families. Resolution: preserve beam tool
+  eligibility and add component/composed-workflow discoverability as separate
+  catalogue claims.
+- Confirmed root cause: `model_dump()` included nested computed fields that are
+  output-only under the strict models. Resolution: the JSON-document helper
+  explicitly excludes those two computed hashes; CLI output round-trips through
+  `GravityWorkflowRequestV1` and runs without repository fixtures.
+- Confirmed root cause: combination factors and member support assumptions are
+  engineering inputs even when fixed by the bounded V1 contract. Resolution:
+  make support idealizations, inclusion rules, and complete combinations
+  required builder inputs; validate supported V1 idealizations and keep only
+  topology IDs, source accounting, and hashes generated.
+- Confirmed root cause: the legacy duplicate-ID test used the old positional
+  contract. Resolution: preserve both canonical additive catalogue projections
+  in that deliberately invalid fixture; the failed-only test passes.
+- Confirmed root cause: linked worktrees intentionally do not inherit
+  `react_app/node_modules`. Resolution: use the repository's pinned Node runtime
+  with an ignored temporary symlink to the primary checkout's existing
+  dependencies; targeted Vitest, ESLint, and production build pass. Remove the
+  exact temporary link before candidate freeze. ⚠️ TERMINAL ISSUE: direct
+  Vitest could not resolve worktree dependencies → pinned shared dependencies
+  plus the canonical frontend commands proved the worktree source.
+- Confirmed root cause: beam design already emits
+  `BEAM_DESIGN_CHECK_FAILED`, so the fallback correctly preserves that more
+  specific reason. Resolution: assert the canonical code and rerun only the
+  failed test; component and aggregate reasons remain non-empty.
+- Confirmed root cause: task-table WIP counts rows, not status labels.
+  Resolution: move the already merged MAINT-0134 row to task history and retain
+  only LIB-PRO-006 plus paused INDIA-3-G0 in Active; rerun only task formatting.
+- Confirmed ordering fact: the source-library packet predates MAINT-0134 and
+  this gravity foundation; its unique paths are `.gitignore`, the private-source
+  boundary test, and its evidence, while `SESSION_LOG`, `TASKS`, and the next
+  brief overlap. Resolution: retain the worktree/branch unchanged, integrate
+  LIB-PRO-006 first as the owner-requested prerequisite, then rebind the source-
+  library packet onto exact new `main` and reconcile only the shared documents
+  before INDIA-3 engineering resumes.
+- Confirmed root causes: the heterogeneous generated entity tuple needed an
+  explicit union annotation; `LoadModelV1` requires exactly two combinations,
+  while the builder field used a variadic tuple; the API documentation checker
+  recognizes `api.<symbol>` references; and new root exports require a generated
+  classification refresh. Resolution: bind both tuple types exactly, qualify
+  every new API symbol in the reference, regenerate the canonical registry, and
+  rerun only the failed mypy/API-documentation/classification hooks. All three
+  failed checks now pass.
+
+### Validation through content freeze
+
+- Git/source binding: source-bound linked lane from exact base `69c09cc7`, no
+  operation/conflict, with `source_bound=true` before edits.
+- Audit reproduction: every displayed slab, beam, column, and footing value
+  matches; example result is `HOLD`, top issue is
+  `FOOTING_GOVERNING_HOLD`, and all 26 boundaries reconcile at `0.0 kN`.
+- Focused Python/FastAPI evidence covers 37 unique gravity/catalogue/REST tests;
+  the explicit-assumption repair subset passes 8/8 and the focused governing
+  reason suite passes 12/12 through failed-only repair.
+- React evidence: Building Gravity review page 3/3, ESLint, TypeScript, and
+  Vite production build pass on pinned Node 24.
+- Generated API manifest, OpenAPI baseline, and beam-tool manifest were
+  regenerated from the reviewed contracts; `git diff --check` passes.
+- API compatibility and OpenAPI checks pass at 89 endpoints/437 schemas;
+  architecture has zero violations and all 2,253 internal imports resolve.
+- The consolidated quick gate passes 10/10 with zero reused results. Normal
+  staged-hook failed checks pass after their exact repairs, and the consolidated
+  normal staged-hook rerun is green. Immutable commit, final session closeout,
+  and hosted checks remain the candidate integration sequence.
+
 ## 2026-08-23 — Session: MAINT-0134 agent instruction consolidation
 
 **Agent:** Codex (`governance`, sole writer)

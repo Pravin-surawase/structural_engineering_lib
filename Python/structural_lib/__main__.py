@@ -13,6 +13,7 @@ Usage:
     python -m structural_lib report ./output/ --format=html
     python -m structural_lib critical ./output/ --top=10 --format=csv
     python -m structural_lib capabilities --json
+    python -m structural_lib gravity-v1 example -o gravity-request.json
     python -m structural_lib gravity-v1 request.json -o calculation-book.json
     python -m structural_lib excel-v1 definition
     python -m structural_lib excel-v1 preview workbook-table.json
@@ -90,35 +91,52 @@ def _format_validation_text(report: ValidationReport) -> str:
 
 
 def cmd_gravity_v1(args: argparse.Namespace) -> int:
-    """Run the bounded Building Gravity Workflow V1 from one JSON request."""
+    """Emit the maintained example or run one Gravity Workflow V1 request."""
 
-    input_path = Path(args.input)
-    if not input_path.is_file():
-        _print_error(f"Input file not found: {input_path}")
-        return 1
     try:
-        from structural_lib.core.gravity_workflow import GravityWorkflowRequestV1
-        from structural_lib.services.gravity_calculation_book import (
-            render_gravity_calculation_book_markdown_v1,
-            run_gravity_workflow_with_book_v1,
-        )
-
-        request = GravityWorkflowRequestV1.model_validate_json(
-            input_path.read_text(encoding="utf-8")
-        )
-        bundle = run_gravity_workflow_with_book_v1(request)
-        output = (
-            render_gravity_calculation_book_markdown_v1(bundle.calculation_book)
-            if args.format == "markdown"
-            else json.dumps(
-                bundle.model_dump(mode="json"),
-                allow_nan=False,
-                ensure_ascii=True,
-                indent=2,
-                sort_keys=True,
+        if args.input == "example":
+            if args.format != "json":
+                raise ValueError("The gravity example supports JSON output only.")
+            from structural_lib.services.gravity_builder import (
+                get_gravity_workflow_example_document_v1,
             )
-            + "\n"
-        )
+
+            output = (
+                json.dumps(
+                    get_gravity_workflow_example_document_v1(),
+                    allow_nan=False,
+                    ensure_ascii=True,
+                    indent=2,
+                    sort_keys=True,
+                )
+                + "\n"
+            )
+        else:
+            input_path = Path(args.input)
+            if not input_path.is_file():
+                raise ValueError(f"Input file not found: {input_path}")
+            from structural_lib.core.gravity_workflow import GravityWorkflowRequestV1
+            from structural_lib.services.gravity_calculation_book import (
+                render_gravity_calculation_book_markdown_v1,
+                run_gravity_workflow_with_book_v1,
+            )
+
+            request = GravityWorkflowRequestV1.model_validate_json(
+                input_path.read_text(encoding="utf-8")
+            )
+            bundle = run_gravity_workflow_with_book_v1(request)
+            output = (
+                render_gravity_calculation_book_markdown_v1(bundle.calculation_book)
+                if args.format == "markdown"
+                else json.dumps(
+                    bundle.model_dump(mode="json"),
+                    allow_nan=False,
+                    ensure_ascii=True,
+                    indent=2,
+                    sort_keys=True,
+                )
+                + "\n"
+            )
     except (OSError, RuntimeError, TypeError, ValueError) as exc:
         _print_error(f"Gravity V1 request was not accepted: {exc}")
         return 1
@@ -1339,13 +1357,16 @@ def _build_parser() -> argparse.ArgumentParser:
 
     gravity_parser = subparsers.add_parser(
         "gravity-v1",
-        help="Run the bounded Building Gravity Workflow V1",
+        help="Create an example or run Building Gravity Workflow V1",
         description=(
-            "Validate one versioned JSON request, reconcile its dead/live load "
-            "path, run only ready component adapters, and emit a calculation book."
+            "Use 'example' to emit a complete maintained request, or supply a JSON "
+            "file to reconcile its dead/live load path, run only ready component "
+            "adapters, and emit a calculation book."
         ),
     )
-    gravity_parser.add_argument("input", help="GravityWorkflowRequestV1 JSON file")
+    gravity_parser.add_argument(
+        "input", help="GravityWorkflowRequestV1 JSON file, or 'example'"
+    )
     gravity_parser.add_argument(
         "--format",
         choices=["json", "markdown"],

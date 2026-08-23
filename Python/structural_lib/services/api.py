@@ -165,6 +165,23 @@ from structural_lib.services.footing_api import (  # noqa: F401
     FootingProvenance,
     design_concentric_isolated_footing_is456,
 )
+from structural_lib.services.gravity_builder import (  # noqa: F401
+    RectangularGravityWorkflowBuilderInputV1,
+    build_rectangular_gravity_workflow_request_v1,
+    get_gravity_workflow_example_document_v1,
+    get_gravity_workflow_example_request_v1,
+)
+from structural_lib.services.gravity_calculation_book import (  # noqa: F401
+    GravityWorkflowDefinitionV1,
+    GravityWorkflowRunBundleV1,
+    get_gravity_workflow_definition_v1,
+    run_gravity_workflow_with_book_v1,
+)
+from structural_lib.services.gravity_workflow import (  # noqa: F401
+    GravityWorkflowRequestV1,
+    GravityWorkflowResultV1,
+    run_gravity_workflow_v1,
+)
 
 # ── Multi-objective optimization ────────────────────────────────────────
 from structural_lib.services.multi_objective_optimizer import (  # noqa: F401
@@ -209,6 +226,7 @@ from structural_lib.services.wall_api import (  # noqa: F401
     design_braced_wall_is456,
 )
 from structural_lib.services.workflow_catalog import (  # noqa: F401
+    ComposedWorkflowCapability,
     WorkflowCatalog,
     get_workflow_catalog,
     get_workflow_catalog_document,
@@ -402,6 +420,18 @@ __all__ = [
     "SymmetricCombinedFootingDesignProvenance",
     "SymmetricCombinedFootingDesignResult",
     "SymmetricCombinedFootingDesignStatus",
+    # Building Gravity Workflow V1
+    "GravityWorkflowRequestV1",
+    "GravityWorkflowResultV1",
+    "GravityWorkflowRunBundleV1",
+    "GravityWorkflowDefinitionV1",
+    "RectangularGravityWorkflowBuilderInputV1",
+    "build_rectangular_gravity_workflow_request_v1",
+    "get_gravity_workflow_example_document_v1",
+    "get_gravity_workflow_example_request_v1",
+    "get_gravity_workflow_definition_v1",
+    "run_gravity_workflow_v1",
+    "run_gravity_workflow_with_book_v1",
     # Property-line strap footing (bounded supported case)
     "design_property_line_strap_footing_is456",
     "PropertyLineStrapFootingDesignInput",
@@ -445,6 +475,7 @@ __all__ = [
     "get_supported_is456_capability_document",
     "get_supported_is456_capabilities",
     "get_supported_is456_semantic_contract",
+    "ComposedWorkflowCapability",
     "WorkflowCatalog",
     "get_workflow_catalog",
     "get_workflow_catalog_document",

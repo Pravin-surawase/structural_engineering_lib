@@ -9,8 +9,8 @@
   "schema_version": "1.0",
   "source": {
     "catalog_schema_version": "1.0",
-    "catalog_sha256": "c59574067a1ffccfe3de4dcf23f1ed552f7756cb95862c69a1cb630939cb3cd8",
-    "catalog_version": "1.2.0"
+    "catalog_sha256": "70235ca5135dfd5fa942ba77f62c6c7ec4ab475cfe6110ae01a5410f2d150e06",
+    "catalog_version": "1.3.0"
   },
   "tools": [
     {
