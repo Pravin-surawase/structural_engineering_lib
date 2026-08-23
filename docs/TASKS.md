@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-23 — LIB-PRO-006 gravity usability foundation candidate
+**Updated:** 2026-08-23 — LIB-PRO-007 product-foundation G0 contract freeze
 
 ---
 
@@ -107,7 +107,7 @@
 | Rebar suggestions | ✅ | ✅ | Done |
 | **Batch design UI** | ✅ | ✅ streaming.py | Done |
 | **Compliance checker** | ✅ DesignView panel | ✅ insights.py | Done |
-| **Cost optimizer** | ✅ DesignView rebar | ✅ optimization.py | Done |
+| **Cost optimizer** | ✅ DesignView rebar | ⚠️ optimization.py | HOLD — LIB-PRO-007-P1 must remove ignored inputs and assumed engineering outputs |
 | **AI Assistant** | -- | Partial | ⏸ Deferred |
 | Learning center | -- | -- | 🟢 Low |
 
@@ -127,15 +127,22 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-006 | Review the practical gravity audit and establish maintained no-hidden-default onboarding, discoverability, and governing-result foundations | Main Agent | M | P0 | 🟡 SOFTWARE COMPLETE — frozen local candidate; hosted integration pending |
-| INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ PAUSED — private source library preserved; resume after LIB-PRO-006 integration |
+| LIB-PRO-007-G0 | Freeze the canonical product contracts and bounded packet sequence for optimization, practical gravity, ETABS-export, Excel, React, and compatibility convergence | Main Agent | S | P0 | 🟡 ACTIVE — exact hosted-main baseline and machine-readable G0 matrix frozen on isolated lane |
+| INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ PAUSED — private source library preserved; resume after LIB-PRO-007 cumulative acceptance |
 
-`LIB-PRO-006` confirms the practical 10 m x 4 m audit arithmetic and fail-closed
-footing-detailing `HOLD`, adds a maintained runnable example and explicit
-builder, exports the workflow from the package root, promotes one deterministic
-governing reason, and separates component/composed-workflow discoverability
-from tool eligibility. Provided beam-bar checking, hooks/bends, new load
-families, analysis adapters, release, and INDIA-3 engineering remain held.
+`LIB-PRO-006` merged through PR #851 at `2d6df18e`. It confirms the practical
+10 m x 4 m audit arithmetic and fail-closed footing-detailing `HOLD`, adds a
+maintained runnable example and explicit builder, exports the workflow from the
+package root, promotes one deterministic governing reason, and separates
+component/composed-workflow discoverability from tool eligibility.
+
+`LIB-PRO-007-G0` freezes the successor product boundary before any additional
+engineering scope. P1 repairs the outcome-changing cost optimizer; P2-P4 close
+the selected beam-bar, footing-anchorage, and explicit-action gravity gaps; P5
+freezes one hash-bound ETABS exported-data snapshot; P6 proves identical
+Python/REST/React/Excel results; P7 converges compatibility only after canonical
+destinations work. It does not require every library helper to become an HTTP
+route and does not authorize a broad legacy deletion.
 
 `MAINT-0134` assigns cross-agent policy to `AGENTS.md`, composes Claude
 through `@AGENTS.md`, keeps a concise standalone Copilot baseline, retires
@@ -148,9 +155,9 @@ selected `INDIA-3-G0` and authorized use of additional local IS-code PDFs under
 the existing non-distribution boundary. That ignored private library remains
 preserved. Its tracked source-boundary candidate `9c976b1f` is based on
 `f24c3904` and overlaps the shared session/task handoff documents, so it is not
-integrated out of order. After LIB-PRO-006 merges, rebind that preserved packet
-onto exact new `main`, reconcile only those shared documents, and then resume
-the bounded INDIA-3-G0 audit.
+integrated out of order. After LIB-PRO-007 merges, create a fresh INDIA-3 lane
+from exact hosted `main`, compare and transplant only reviewed task-owned
+changes, reconcile the shared documents, and then resume the bounded audit.
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. The reproduced public-route safety packet is integrated. INDIA-3-G0

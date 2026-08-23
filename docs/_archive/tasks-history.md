@@ -508,6 +508,7 @@ current release and INDIA-2 accepted/HOLD truth remain in `docs/TASKS.md`.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| LIB-PRO-006 | Established maintained no-hidden-default gravity onboarding, discoverability, and governing-result foundations from the practical audit | Main Agent | ✅ DONE — PR #851 merged at `2d6df18e` |
 | MAINT-0134 | Consolidated Claude, Copilot, VS Code, and Codex agent instructions into one validated ownership contract | Main Agent | ✅ DONE — PR #850 merged at `69c09cc7` |
 | INDIA-2-FLAT | Implemented and accepted one bounded regular-interior direct-design flat-slab and concrete-only punching workflow with public provenance | Main Agent + structural engineer | ✅ DONE — G0 and A-E integrated; 214-test focused family selection and independent hand benchmark pass; qualified review and excluded flat-slab systems remain held |
 | INDIA-2-FLAT-E | Published the typed Python composition, thin REST route, capability/semantic truth, deterministic manifest promotion, and publication evidence | Main Agent + API developer | ✅ INTEGRATED — PR #785 merged as `b04d8065`; supported case is 11/21 manifest truth and all 79 routes have direct tests |
