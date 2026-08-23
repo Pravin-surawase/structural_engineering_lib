@@ -1,0 +1,74 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-23T20:33:09Z",
+      "query_status": "OK",
+      "reference": "Next is cumulative LIB-PRO-007-M0: run the broad Python/FastAPI/React suites and full repository gate once, plus architecture/import/parity, exact-wheel vectors, and the website production journey.",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "RUN_LIB_PRO_007_M0_CUMULATIVE_SOFTWARE_ACCEPTANCE",
+      "REPAIR_CONFIRMED_BOUNDED_INTEGRATION_DEFECTS",
+      "ADD_TESTS_DOCUMENTATION_AND_MACHINE_EVIDENCE",
+      "RUN_FROZEN_QUICK_FULL_AND_STAGED_HOOKS",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_ONE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "RUN_FROZEN_QUICK_FULL_AND_STAGED_HOOKS",
+    "observed_at_utc": "2026-08-23T20:33:09Z",
+    "prohibited_actions": [
+      "DELETE_OR_MOVE_PUBLIC_FILE_OR_SYMBOL",
+      "BREAK_PUBLIC_SIGNATURE_OR_CONTRACT",
+      "DELETE_BRANCH_OR_WORKTREE",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_OR_REWRITE",
+      "BYPASS_CHECKS_OR_FORCE_PUSH",
+      "PUBLISH_RELEASE_VERSION_TAG_OR_PACKAGE",
+      "ACTIVATE_PROFESSIONAL_OR_ENGINEERING_USE_APPROVAL",
+      "CHANGE_OR_PROMOTE_INDIA_3_FORMULAS_OR_SOURCE_CLAIMS",
+      "DIRECT_EDB_BINARY_PARSING",
+      "LIVE_ETABS_OR_WINDOWS_EXCEL_AUTOMATION",
+      "UNLOCK_RUN_OR_CHANGE_ANALYSIS",
+      "MODIFY_SAVE_OR_WRITE_BACK_ETABS_MODEL"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "RUN_LIB_PRO_007_M0_CUMULATIVE_SOFTWARE_ACCEPTANCE",
+        "REPAIR_CONFIRMED_BOUNDED_INTEGRATION_DEFECTS",
+        "ADD_TESTS_DOCUMENTATION_AND_MACHINE_EVIDENCE",
+        "RUN_FROZEN_QUICK_FULL_AND_STAGED_HOOKS",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_ONE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/lib-pro-007-m0-cumulative-acceptance",
+      "head_sha": "823b39896a53fde7e4c5e0805faa8ec02e075ee5",
+      "task_id": "LIB-PRO-007-M0"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [
+      "PRESERVE_INDIA_3_CANDIDATE_9C976B1F_UNTIL_M0_MERGES",
+      "PRESERVE_EVERY_UNRELATED_DIRTY_DETACHED_BEHIND_OR_DIVERGED_LANE",
+      "DELETION_AND_PUBLIC_CONTRACT_BREAK_NOT_AUTHORIZED"
+    ],
+    "observed_at_utc": "2026-08-23T20:33:09Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

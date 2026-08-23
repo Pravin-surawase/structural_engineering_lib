@@ -2,7 +2,7 @@
 owner: Main Agent
 status: active
 last_updated: 2026-08-24
-doc_type: migration
+doc_type: guide
 complexity: intermediate
 tags: [api, compatibility, migration, lib-pro-007]
 ---

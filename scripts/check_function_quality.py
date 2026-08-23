@@ -96,6 +96,7 @@ UNIT_SUFFIXES = {
 # exact function-level declarations make the retained dimensional contract
 # reviewable without turning every short scalar name into a global exemption.
 LEGACY_PARAMETER_UNITS: dict[str, dict[str, str]] = {
+    "beam/detailing.py:calculate_development_length_unrounded": {"bar_dia": "mm"},
     "beam/detailing.py:calculate_development_length": {"bar_dia": "mm"},
     "beam/detailing.py:calculate_lap_length": {"bar_dia": "mm"},
     "beam/detailing.py:get_min_bend_radius": {"bar_dia": "mm"},
@@ -104,6 +105,7 @@ LEGACY_PARAMETER_UNITS: dict[str, dict[str, str]] = {
         "bar_dia": "mm",
         "available_length": "mm",
     },
+    "beam/detailing.py:evaluate_tension_bar_anchorage_v1": {"bar_dia": "mm"},
     "beam/detailing.py:calculate_stirrup_anchorage": {"stirrup_dia": "mm"},
     "beam/detailing.py:check_anchorage_at_simple_support": {
         "bar_dia": "mm",

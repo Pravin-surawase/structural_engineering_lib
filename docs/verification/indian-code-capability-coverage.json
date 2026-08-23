@@ -331,10 +331,10 @@
       ],
       "registration_summary": {
         "known_references": 173,
-        "registered_known_references": 98,
-        "metadata_only_references": 75,
+        "registered_known_references": 97,
+        "metadata_only_references": 76,
         "registration_only_references": 0,
-        "registration_pct": 56.6
+        "registration_pct": 56.1
       },
       "references": [
         {
@@ -537,7 +537,10 @@
           "category": "detailing",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.beam.detailing.calculate_anchorage_length",
             "structural_lib.codes.is456.beam.detailing.calculate_development_length",
+            "structural_lib.codes.is456.beam.detailing.calculate_development_length_unrounded",
+            "structural_lib.codes.is456.beam.detailing.evaluate_tension_bar_anchorage_v1",
             "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.deep_beam.reinforcement.check_simply_supported_deep_beam_reinforcement",
             "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
@@ -578,7 +581,10 @@
           "category": "detailing",
           "registration_status": "REGISTERED",
           "functions": [
-            "structural_lib.codes.is456.beam.detailing.get_min_bend_radius"
+            "structural_lib.codes.is456.beam.detailing.calculate_anchorage_length",
+            "structural_lib.codes.is456.beam.detailing.evaluate_tension_bar_anchorage_v1",
+            "structural_lib.codes.is456.beam.detailing.get_min_bend_radius",
+            "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel"
           ]
         },
         {
@@ -598,10 +604,8 @@
           "reference_type": "clause",
           "title": "Standard Hooks and Bends",
           "category": "detailing",
-          "registration_status": "REGISTERED",
-          "functions": [
-            "structural_lib.codes.is456.beam.detailing.calculate_anchorage_length"
-          ]
+          "registration_status": "METADATA_ONLY",
+          "functions": []
         },
         {
           "reference_id": "IS456:2000:26.2.3.3",

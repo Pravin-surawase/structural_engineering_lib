@@ -4,9 +4,9 @@ import { CatalogBeamInputPanel } from '../CatalogBeamInputPanel';
 
 const CATALOG = {
   schema_version: '1.0',
-  catalog_version: '1.2.0',
+  catalog_version: '1.3.0',
   code_edition: 'IS 456:2000',
-  compatible_versions: ['1.0', '1.0.0', '1.1.0', '1.2.0'],
+  compatible_versions: ['1.0', '1.0.0', '1.1.0', '1.2.0', '1.3.0'],
   capabilities: [{
     capability_id: 'is456.beam.design',
     capability_version: '1.2.0',
@@ -69,7 +69,7 @@ describe('CatalogBeamInputPanel', () => {
     expect(effectiveDepth).toHaveValue(null);
     fireEvent.change(effectiveDepth, { target: { value: '443' } });
     expect(onChange).toHaveBeenCalledWith('effective_depth', 443);
-    expect(screen.getByText(/Catalogue 1.2.0/)).toBeInTheDocument();
+    expect(screen.getByText(/Catalogue 1.3.0/)).toBeInTheDocument();
   });
 
   it('shows the reviewed manual escape hatch on contract failure', async () => {

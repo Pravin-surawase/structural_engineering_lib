@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-24 — LIB-PRO-007-P7 compatibility-convergence candidate
+**Updated:** 2026-08-24 — LIB-PRO-007-M0 cumulative acceptance candidate
 
 ---
 
@@ -127,8 +127,8 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-007-P7 | Converge maintained compatibility callers and prove retained facade/shim ownership without deletion | Main Agent | M | P0 | 🟡 ACTIVE — deterministic ledger and caller migrations complete; repaired focused/static/API/quick verification green, final formatter-hook retry and hosted checks pending |
-| INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ PAUSED — private source library preserved; resume after LIB-PRO-007 cumulative acceptance |
+| LIB-PRO-007-M0 | Run cumulative P1-P7 software acceptance across source, exact wheel, and production website surfaces | Main Agent | M | P0 | 🟡 ACTIVE — cumulative suites, wheel, architecture/parity, and repaired website journey green; frozen quick/full/hooks and hosted closeout pending |
+| INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ PAUSED — preserved candidate `9c976b1f`; resume only from a fresh lane after unchanged green M0 merges |
 
 `LIB-PRO-006` merged through PR #851 at `2d6df18e`. It confirms the practical
 10 m x 4 m audit arithmetic and fail-closed footing-detailing `HOLD`, adds a
@@ -200,15 +200,29 @@ gravity example preserves its workflow-result hash, governing `HOLD`, and issue
 identity through Python, REST, and React. No transport receives a structural
 formula; Excel is not expanded into a gravity calculator.
 
-`LIB-PRO-007-P7` starts from exact hosted P6 base `6cb47221` / tree
-`d2b3efa3`. Its deterministic ledger reconciles all 620 live root/service/legacy
+`LIB-PRO-007-P7` merged through PR #859 at hosted commit `823b3989`, with
+reviewed candidate `c9589815` and exact candidate/merged tree `e5b1e9ee`. Its
+deterministic ledger reconciles all 620 live root/service/legacy
 facade projections, records exact canonical object or namespace-symbol owners,
 and accounts for maintained callers with no ambiguous route. Maintained source,
 scripts, examples, and current documentation use canonical owners or the
 deliberately supported package-root facade. The four older ETABS helpers remain
 `HELD_COMPATIBILITY` and cannot be described as accepted P5 snapshots. No
 public export/signature/file is removed, no retirement candidate is activated,
-and broad cumulative suites remain reserved for M0.
+and no second structural calculation path was found.
+
+`LIB-PRO-007-M0` starts from the exact P7 merge tree. The cumulative Python
+run exposed an impossible bar-spacing test fixture plus missing P3
+unit/registration metadata; the live production journey exposed a React
+catalogue caller still requesting 1.2.0 after the maintained catalogue advanced
+to 1.3.0. The repairs change no structural formula, public signature, API
+response shape, or Excel surface. The repaired Python suite passes 6,934 tests,
+FastAPI passes 491, React passes 283 plus lint/build, architecture/import/parity
+are green, and exact wheel `0a42d90e…347ca` passes source-free tests, transport
+identity, CLI flows, and all 29 negative-UAT cases. The production website now
+loads catalogue 1.3.0, recalculates quick beam with a changed calculation
+identity, and runs the maintained zero-residual gravity example with truthful
+`HOLD 6 / PASS 5`. Frozen quick/full/hooks and hosted closeout remain.
 
 `MAINT-0134` assigns cross-agent policy to `AGENTS.md`, composes Claude
 through `@AGENTS.md`, keeps a concise standalone Copilot baseline, retires

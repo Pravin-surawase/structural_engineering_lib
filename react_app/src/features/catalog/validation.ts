@@ -167,7 +167,7 @@ export function parseWorkflowCatalog(value: unknown): WorkflowCatalog {
   if (value.schema_version !== '1.0') {
     throw new Error(`Unsupported catalogue schema '${String(value.schema_version)}'`);
   }
-  if (value.catalog_version !== '1.2.0') {
+  if (value.catalog_version !== '1.3.0') {
     throw new Error(`Unsupported catalogue version '${String(value.catalog_version)}'`);
   }
   if (value.code_edition !== 'IS 456:2000') {
