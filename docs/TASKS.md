@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-23 — MAINT-0133 cleanup inventory candidate active
+**Updated:** 2026-08-23 — MAINT-0133B exact cleanup execution candidate active
 
 ---
 
@@ -127,12 +127,12 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| MAINT-0133 | Freeze an exact read-only cleanup inventory and future authorization batch without moving or deleting content | Main Agent + governance | M | P0 | 🟡 CANDIDATE — six exact candidates: two move-ready for later authorization, four held, zero deletes; local/hosted closeout pending |
+| MAINT-0133B | Execute only the two owner-authorized moves frozen by MAINT-0133 and preserve every unresolved candidate | Main Agent + governance | S | P0 | 🟡 CANDIDATE — 2/2 transactional moves succeeded with zero unresolved or broken references; integration pending |
 
-No live move, delete, automatic archival, branch cleanup, or worktree cleanup is
-authorized by this packet. The two clean previews are frozen only as a future
-`MAINT-0133B-PACKET-A` batch and require separate explicit live-execution
-authorization.
+The owner explicitly authorized completion of the frozen
+`MAINT-0133B-PACKET-A` batch. Exactly two completed INDIA-2 plans moved through
+the transactional safe-file tool; four unresolved candidates, every delete,
+automatic archival, branch cleanup, and worktree cleanup remain held.
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. The reproduced public-route safety packet is integrated. INDIA-3,
@@ -177,7 +177,7 @@ write-back/nightly work remain outside E1.
 The version roadmap and historical backlog remain below. The canonical
 [Indian-code completion plan](planning/indian-code-completion-plan.md) defines
 INDIA-0 through INDIA-4, and the dedicated
-[INDIA-2 execution plan](planning/india-2-remaining-is456-elements-plan.md)
+[INDIA-2 execution plan](_archive/planning/india-2-remaining-is456-elements-plan.md)
 defines the remaining family packets. INDIA-0 and INDIA-1 are complete. The
 historical INDIA-2A-D packets form the completed `INDIA-2-STAIR` family. Bounded
 wall, deep-beam, flat-slab/punching, combined-footing, and strap-footing
@@ -205,6 +205,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| MAINT-0133 | Froze the exact read-only cleanup inventory, two-operation future batch, four unresolved holds, and zero deletion candidates | Main Agent + governance | ✅ DONE — PR #847 merged at `417a1659`; candidate and merged trees equal `0b3076d0`; quick 10/10, full 31/31, and hosted checks pass |
 | MAINT-0132 | Added shared task-bound elapsed time, compact preflight-only orientation, automatic verification-step timing, and exact external integration closeout | Main Agent + governance | ✅ DONE — PR #846 merged at `60e95bbe`; candidate and merged trees equal `292c562d`; focused, quick 10/10, full 31/31, and hosted 9/9 pass |
 | MAINT-0131 | Repaired preparation exit semantics, helper impact routing, safe-file executable compatibility, and mandatory closeout fields | Main Agent + governance | ✅ DONE — PR #845 merged at `d4e5b122`; candidate and merged trees equal `94bd3164`; focused 235, quick 10/10, full 31/31, and hosted 9/9 pass |
 | MAINT-0130 | Replaced split move/delete/migration safety with one fail-closed transactional safe-file system and retired age-only archival | Main Agent + governance | ✅ DONE — PR #844 merged at `58ecc149`; bulk cleanup remains separately classified and authorized |

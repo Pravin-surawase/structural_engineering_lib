@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "task_id": "MAINT-0133B-PACKET-A",
+  "status": "EXECUTED_CANDIDATE_AWAITING_INTEGRATION",
+  "baseline_commit": "417a16590892d176ea288bbda93ad4d48b4603c4",
+  "frozen_batch": {
+    "path": "docs/verification/maint-0133-cleanup-batch.json",
+    "git_blob": "544c3fb525f103b447288f861337ba0b0543179f",
+    "operation_count": 2
+  },
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-23T07:48:15Z",
+      "query_status": "OK",
+      "reference": "active Codex task: please finish the main 0133 so we can start our actual work",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "EXECUTE_FROZEN_SAFE_MOVE_BATCH",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-23T07:48:15Z",
+    "prohibited_actions": [
+      "EXECUTE_HELD_CLEANUP_CANDIDATES",
+      "DELETE_FILES",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "PUBLISH_RELEASE",
+      "MERGE_BEFORE_REQUIRED_CHECKS"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "EXECUTE_FROZEN_SAFE_MOVE_BATCH",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/maint-0133b-packet-a",
+      "head_sha": "417a16590892d176ea288bbda93ad4d48b4603c4",
+      "task_id": "MAINT-0133B-PACKET-A"
+    }
+  },
+  "execution": {
+    "tool": "scripts/safe_file_move.py",
+    "live_operation_count": 2,
+    "delete_operation_count": 0,
+    "rollback_count": 0,
+    "operations": [
+      {
+        "source": "docs/planning/india-2-remaining-is456-elements-plan.md",
+        "source_blob": "3c3d2a3e62bf6f22d4746da241ad0a6cd66e3a9c",
+        "destination": "docs/_archive/planning/india-2-remaining-is456-elements-plan.md",
+        "destination_blob": "3c3d2a3e62bf6f22d4746da241ad0a6cd66e3a9c",
+        "preview": {
+          "success": true,
+          "updateable_references": 3,
+          "preserved_references": 46,
+          "unresolved_references": 0
+        },
+        "live": {
+          "success": true,
+          "rolled_back": false,
+          "broken_links_after": 0
+        }
+      },
+      {
+        "source": "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
+        "source_blob": "2e576e90256d72ca5cdd886ca67ee881d4227087",
+        "destination": "docs/_archive/planning/india-2-next-session-publication-and-closeout-plan.md",
+        "destination_blob": "2e576e90256d72ca5cdd886ca67ee881d4227087",
+        "preview": {
+          "success": true,
+          "updateable_references": 2,
+          "preserved_references": 25,
+          "unresolved_references": 0
+        },
+        "live": {
+          "success": true,
+          "rolled_back": false,
+          "broken_links_after": 0
+        }
+      }
+    ],
+    "predicted_and_actual_safe_move_paths": [
+      "docs/TASKS.md",
+      "docs/_archive/planning/india-2-next-session-publication-and-closeout-plan.md",
+      "docs/_archive/planning/india-2-remaining-is456-elements-plan.md",
+      "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
+      "docs/planning/india-2-remaining-is456-elements-plan.md",
+      "docs/planning/indian-code-completion-plan.md",
+      "docs/planning/maint-0133-cleanup-inventory-and-authorization.md"
+    ]
+  },
+  "preserved_boundary": {
+    "held_candidate_count": 4,
+    "delete_candidate_count": 0,
+    "additional_live_operations": 0,
+    "branch_or_worktree_operations": 0
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-23T07:48:15Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

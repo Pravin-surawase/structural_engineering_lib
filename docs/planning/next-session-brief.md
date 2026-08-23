@@ -4,37 +4,38 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-23
-- Focus: Freeze an exact read-only repository file-cleanup inventory and
-- Git receipt: docs/verification/maint-0133-git-handoff-receipt.json | sha256:c93a2c5b4e0cbd0189bc088f64e0bbdf9f2842011bdca924cc805db1dcf93cf8 | HOLD
-- Git identity: codex/maint-0133-cleanup-inventory@60e95bbe52575d3335e7195db944b2c82630ed2e | upstream=origin/main@60e95bbe52575d3335e7195db944b2c82630ed2e | base=origin/main@60e95bbe52575d3335e7195db944b2c82630ed2e | tree=dirty | operation=none
-- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
-- Next action: HOLD_FOR_EXACT_EVIDENCE
+- Focus: Execute only the two owner-authorized planning moves frozen by
+- Git receipt: docs/verification/maint-0133b-git-handoff-receipt.json | sha256:886caa2e404083b871df33dd570a4d9ea60c2d8ab5e8437bc236ca5413bcc36f | HOLD
+- Git identity: codex/maint-0133b-packet-a@417a16590892d176ea288bbda93ad4d48b4603c4 | upstream=origin/main@417a16590892d176ea288bbda93ad4d48b4603c4 | base=origin/main@417a16590892d176ea288bbda93ad4d48b4603c4 | tree=dirty | operation=none
+- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
+- Next action: COMMIT_INTENDED_PATHS
 <!-- HANDOFF:END -->
 
 | State | Boundary |
 |---|---|
-| **Current** | `MAINT-0133` freezes the first exact read-only file-cleanup inventory on merged MAINT-0130/0131/0132 controls |
-| **Next** | Validate and integrate the inventory; live execution remains a separately authorized `MAINT-0133B` packet |
-| **Why** | Six files are explicitly inactive outside archive roots, but only two pass the transactional move preview and none pass a deletion case |
-| **Held** | Every live move/delete, four unresolved candidates, automatic archival, branch/worktree deletion, product behavior, release, and professional approval |
+| **Current** | `MAINT-0133B-PACKET-A` executed the two exact owner-authorized planning moves on merged MAINT-0133 controls |
+| **Next** | Integrate the unchanged candidate, then start the separately scoped actual product packet `INDIA-3-G0` when selected |
+| **Why** | Both frozen moves still had identical source blobs, absent destinations, zero unresolved references, and the exact predicted path set |
+| **Held** | Four unresolved cleanup candidates, every delete, automatic archival, branch/worktree deletion, release, and professional approval |
 
-## Exact MAINT-0133 state
+## Exact MAINT-0133 completion state
 
-- Branch: `codex/maint-0133-cleanup-inventory`, created from exact merged
-  MAINT-0132 baseline `60e95bbe52575d3335e7195db944b2c82630ed2e`.
+- MAINT-0133 inventory PR #847 is merged at
+  `417a16590892d176ea288bbda93ad4d48b4603c4`.
 - Inventory: six exact inactive-location candidates; two
-  `MOVE_READY_NOT_AUTHORIZED`, four `HOLD_UNRESOLVED`, zero delete candidates.
-- The future batch contains only the two completed INDIA-2 planning moves and
-  passes a complete transactional dry run with zero unresolved references.
+  owner-authorized moves, four `HOLD_UNRESOLVED`, zero delete candidates.
+- MAINT-0133B executed only the two completed INDIA-2 planning moves through
+  `safe_file_move.py`; both live operations succeeded without rollback.
+- The destination blobs equal the original source blobs, the original sources
+  are absent, and maintained references now point to the archive destinations.
 - Exact duplicate blobs, archives, vendor references, and all observed
   worktrees are explicitly kept or held rather than inferred obsolete.
-- No live safe-file operation has run in MAINT-0133.
 
 ## Preserved boundary
 
-- MAINT-0130/0131/0132 are merged and remain unchanged. MAINT-0133 does not
-  authorize its future batch, repair unresolved references, or mutate product,
-  release, branch, worktree, historical, or professional-approval state.
+- MAINT-0130/0131/0132/0133 remain unchanged. Packet A does not repair the four
+  unresolved candidates or mutate product, release, branch, worktree,
+  historical, or professional-approval state.
 
 ## Required Reading
 
