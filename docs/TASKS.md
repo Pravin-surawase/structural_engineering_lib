@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-23 — LIB-PRO-007-P5 ETABS exported-snapshot candidate
+**Updated:** 2026-08-24 — LIB-PRO-007-P6 cross-surface parity candidate
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-007-P5 | Converge ETABS exported files into one hash-bound snapshot and canonical beam requests | Main Agent | M | P0 | 🟡 ACTIVE — canonical service, deterministic fixture, row dispositions, acquisition matrix, and focused tests implemented; candidate verification pending |
+| LIB-PRO-007-P6 | Prove canonical beam and gravity identity/status/issues across maintained product surfaces | Main Agent | M | P0 | 🟡 ACTIVE — parity repair and focused Python/REST/React/Excel tests implemented; candidate verification pending |
 | INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ PAUSED — private source library preserved; resume after LIB-PRO-007 cumulative acceptance |
 
 `LIB-PRO-006` merged through PR #851 at `2d6df18e`. It confirms the practical
@@ -178,8 +178,8 @@ basis. Each action receives source/destination ledger entries and exact
 reconciliation; no IS 875 generation, lateral action, or destination inference
 is added.
 
-`LIB-PRO-007-P5` starts from exact merged P4 base `426d401b` / tree
-`a5b01272`. It converges separate lossless ETABS geometry/force CSVs, EDB/E2K
+`LIB-PRO-007-P5` merged through PR #857 at hosted commit `6d533b6f` with exact
+merged tree `d3bbaeb2`. It converges separate lossless ETABS geometry/force CSVs, EDB/E2K
 identity, selected-table archive hashes, units, local axes, one exact result
 selection, stable ETABS `UniqueName` member IDs, and exhaustive `ACCEPTED` /
 `APPROVED_EXCLUSION` / `BLOCKED` source-row dispositions into one deterministic
@@ -187,6 +187,16 @@ snapshot. Only an accepted snapshot emits existing canonical beam requests.
 Manual table export remains valid when the trial API is unavailable. Live
 ETABS control, EDB parsing, analysis changes, save/write-back, P6/P7, INDIA-3
 engineering, release, and professional approval remain held.
+
+`LIB-PRO-007-P6` starts from exact merged P5 base `6d533b6f` / tree
+`d3bbaeb2`. It repairs the project-batch loss of a derived effective-depth
+basis, then proves both P5 fixture beams preserve normalized input identity,
+canonical result identity, governing status, and issues across Python, REST,
+React, and Excel. React now rejects envelope/evidence identity disagreement and
+stales retained results when imported source metadata changes. The maintained
+gravity example preserves its workflow-result hash, governing `HOLD`, and issue
+identity through Python, REST, and React. No transport receives a structural
+formula; Excel is not expanded into a gravity calculator.
 
 `MAINT-0134` assigns cross-agent policy to `AGENTS.md`, composes Claude
 through `@AGENTS.md`, keeps a concise standalone Copilot baseline, retires

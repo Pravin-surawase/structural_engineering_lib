@@ -5,6 +5,126 @@
 
 ---
 
+## 2026-08-24 — Session: LIB-PRO-007-P6 cross-surface parity
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents)
+
+**Branch:** `codex/lib-pro-007-p6-cross-surface-parity`, from exact merged P5
+hosted-main commit `6d533b6f3754e4fe41522e042f17192d550a1d1b`, tree
+`d3bbaeb239726733412af7072a651a718d893d18`.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-007-p6-cross-surface-parity-git-handoff-receipt.json`
+
+**Focus:** Prove one canonical calculation identity, governing status, issues,
+and source freshness through maintained Python, REST, React, and Excel product
+surfaces. P7, broad cumulative M0 suites, live ETABS, EDB parsing, analysis
+control, model modification/save/write-back, installed Excel rerun, INDIA-3
+engineering, release, and professional approval remain excluded.
+
+### Summary
+
+- Preserved the original effective-depth basis through strict project-batch
+  design instead of converting it to an explicit numeric depth before the
+  canonical calculation.
+- Proved both accepted P5 synthetic snapshot members carry the same normalized
+  input hash, canonical result identity, governing status, and issues through
+  Python, REST, and Routine Workbench V1.
+- Factored the React request transport into a pure formula-free mapper and made
+  retained batch results fail closed unless the canonical result envelope and
+  evidence agree on contract, input, calculation, library, and status identity.
+- Included complete imported source metadata in React member revisions. A
+  snapshot-only source change now stales retained results and blocks export.
+  Excel applies the equivalent block through its selected-table hash while the
+  evidence-only snapshot column remains outside calculation mapping.
+- Added a gravity-client contract check that preserves the maintained example's
+  workflow-result hash, calculation-book binding, governing `HOLD`, and issues
+  from Python through REST and React. Excel remains a canonical beam review
+  surface; no second gravity calculator or transport-side formula was added.
+- Kept the open Windows ETABS trial model untouched. The public P6 vector is the
+  deterministic synthetic P5 export; optional real-model evidence remains a
+  private, read-only exported-file supplement under the P5 acquisition matrix.
+
+### Issues encountered
+
+- The first P6 session start found an unmatched P5 usage checkpoint even though
+  the P5 read-only session end had passed.
+- The pre-repair parity reproducer found different Python and Excel normalized
+  input/result identities for P5 member `101`.
+- The first gravity REST parity test returned HTTP 422 while direct Python
+  execution passed.
+- A broad shell path probe used an unmatched `Excel*` zsh glob.
+- The first React focused command could not find Vitest in this linked worktree.
+- The first frozen React production build rejected an under-typed test fetch
+  mock, and the first changed-file Ruff check required canonical import order.
+- The first test-inclusive targeted mypy command selected existing test-module
+  annotations outside P6's source-check contract.
+- Two manual P5 usage phase-closeout attempts drifted while elapsed time
+  advanced before the dynamic closeout succeeded.
+
+### Root causes and resolutions
+
+- P5 had passed its repository session closeout, but the separate shared usage
+  ledger lacked an exact merge closeout. Resolution: bind the retained P5
+  candidate `783cc15e`, PR #857, hosted merge `6d533b6f`, and exact merged tree,
+  then record a dynamically measured phase total. P6 session begin passed.
+- The project batch resolved a complete cover/stirrup/bar basis to `d=442 mm`
+  and then called `design_beam_is456` as though that depth had been supplied
+  explicitly. That selected the historical `d'=50 mm` default instead of the
+  basis-derived `D-d=58 mm`; Excel preserved the basis. Resolution: pass the
+  original `EffectiveDepthBasisV1` to the canonical service and use the same
+  resolved compression depth in evidence. Both P5 members now have identical
+  Python/Excel input and result identities, and REST delegates the same result.
+- Serializing the internal gravity request model included computed
+  `accepted_model_hash` and `load_model_hash` fields that the public request
+  contract rejects. Resolution: send
+  `get_gravity_workflow_example_document_v1()`, the maintained public REST
+  example document. The affected parity test passes.
+- zsh rejects an unmatched glob before the command can inspect paths.
+  Resolution: rerun the read-only inventory with explicit maintained paths.
+  ⚠️ TERMINAL ISSUE: unmatched `Excel*` glob -> used exact repository paths.
+- Linked worktrees do not share `react_app/node_modules`. Resolution: install
+  the exact lockfile with the maintained pinned Node launcher, then run focused
+  tests through `./run.sh frontend test`; 25 React tests pass.
+  ⚠️ TERMINAL ISSUE: Vitest missing in linked worktree -> initialized exact
+  worktree-local dependencies with the supported launcher.
+- Vitest inferred the zero-argument mock implementation rather than the fetch
+  call signature used by the assertion; the Python import additions were not in
+  Ruff order. Resolution: type the fetch mock as `(RequestInfo | URL,
+  RequestInit?) -> Promise<Response>` and order the two service imports. The
+  affected two React and 15 Excel tests pass, Ruff passes, and the production
+  TypeScript/Vite build passes.
+- The chosen mypy command included entire established test modules, exposing 11
+  existing optional-typing findings rather than source defects. Resolution:
+  run configured mypy on the changed calculation source, matching the normal
+  source-hook boundary; `batch.py` passes. No unrelated test annotations were
+  changed. ⚠️ TERMINAL ISSUE: test-inclusive mypy exceeded the maintained
+  source boundary -> used the changed-source configured check.
+- Manually copied elapsed totals were stale by command completion. Resolution:
+  read the live checkpoint and close the predecessor with a command-derived
+  current phase total; no verification or task claim was changed.
+
+### Validation through content freeze
+
+- Exact source binding is hosted `6d533b6f` / tree `d3bbaeb2`; preserved
+  INDIA-3 candidate `9c976b1f` and every unrelated dirty, detached, behind, or
+  diverged lane remain unchanged.
+- The P5 snapshot remains
+  `a82d927d347108f56aa3fcdd559c1aa45ba8d87673cb3feec61a03d5eadbf4f8`.
+  Member `101` resolves input hash `b7f22f6e`, calculation identity
+  `2c15be7a`, `PASS`, and no issues; member `102` resolves input hash
+  `e7a4d93d`, calculation identity `0d9677e6`, `PASS`, and no issues.
+- The maintained gravity example resolves workflow-result and calculation-book
+  hash `95487e89`, governing `HOLD`, and sole issue
+  `BEAM_SUPPLIED_REINFORCEMENT_NOT_SUPPLIED`.
+- The frozen affected selection passes 147 Python/FastAPI/Excel tests and 35
+  React tests. React lint and production build pass; changed-source Ruff/mypy
+  pass. Architecture checks 222 files with zero violations, imports check 694
+  files with zero broken imports, and circular-import validation checks 202
+  files with no cycle. The one consolidated quick gate passes 10/10 with two
+  unchanged reused checks. Normal staged hooks and hosted checks follow on the
+  immutable candidate; broad cumulative suites remain reserved for M0.
+
 ## 2026-08-23 — Session: LIB-PRO-007-P5 ETABS exported snapshot
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents)

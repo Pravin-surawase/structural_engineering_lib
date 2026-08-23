@@ -1,0 +1,138 @@
+{
+  "schema_version": "lib-pro-007-p6-evidence/v1",
+  "task_id": "LIB-PRO-007-P6",
+  "status": "LOCAL_FOCUSED_STATIC_FRONTEND_PASS_QUICK_HOOKS_HOSTED_PENDING",
+  "base": {
+    "hosted_main_commit": "6d533b6f3754e4fe41522e042f17192d550a1d1b",
+    "exact_tree": "d3bbaeb239726733412af7072a651a718d893d18",
+    "predecessor_pr": 857
+  },
+  "scope": {
+    "canonical_calculation_authority": "structural_lib",
+    "beam_entrypoint": "structural_lib.services.batch.design_project_beams_v1",
+    "gravity_entrypoint": "structural_lib.run_gravity_workflow_with_book_v1",
+    "frozen_datasets": [
+      "P5 synthetic ETABS exported-file snapshot",
+      "maintained open-hall gravity example"
+    ],
+    "out_of_scope": [
+      "live ETABS API or UI automation",
+      "direct EDB binary parsing",
+      "unlock or analysis control",
+      "model modification",
+      "model save or write-back",
+      "structural formulas in FastAPI, React, or Office.js",
+      "Excel gravity-workflow implementation",
+      "installed Windows Excel rerun",
+      "P7 compatibility convergence",
+      "INDIA-3 formulas",
+      "release or professional approval"
+    ]
+  },
+  "confirmed_root_repair": {
+    "surface": "strict project-beam batch",
+    "before": "a derived effective depth was resolved to d_mm before the canonical call, which selected the explicit-depth d_dash default",
+    "p5_member_101_before_d_dash_mm": 50.0,
+    "canonical_basis_d_dash_mm": 58.0,
+    "resolution": "preserve EffectiveDepthBasisV1 through design_beam_is456 and use the same resolved d_dash_mm in evidence",
+    "outcome_significance": "compression reinforcement depth participates in doubly reinforced beam calculation and result identity"
+  },
+  "beam_fixture": {
+    "project_id": "P5-TRIAL-HALL",
+    "export_id": "P5-EXPORT-001",
+    "snapshot_sha256": "a82d927d347108f56aa3fcdd559c1aa45ba8d87673cb3feec61a03d5eadbf4f8",
+    "members": [
+      {
+        "member_id": "etabs:P5-TRIAL-HALL:101",
+        "normalized_input_hash": "b7f22f6effcf20fd508bdec0c4cf1f260318be0798a39d336eb76acebbd13783",
+        "calculation_identity": "2c15be7ad0ad410f6af92a9c64e884e5d299ac69ffcd06d03e4a57260edc166b",
+        "provenance_hash": "5b80acfa17c6eff7d894b14c74e78fc054839f32cfc03c9c8bc45e4bfb749656",
+        "governing_status": "PASS",
+        "issue_codes": []
+      },
+      {
+        "member_id": "etabs:P5-TRIAL-HALL:102",
+        "normalized_input_hash": "e7a4d93dc74e068bdaccd4ed6cffc9573c342a9316c803a42e494236ee5306be",
+        "calculation_identity": "0d9677e6c2db06b412284dfd5281929c94421d40c2bf9624e12dce65c6566d09",
+        "provenance_hash": "2d2bdc3c1a822737ecda4ed459e3f2f041ec2d477730f37c3b358ae887b12c25",
+        "governing_status": "PASS",
+        "issue_codes": []
+      }
+    ]
+  },
+  "gravity_fixture": {
+    "builder": "get_gravity_workflow_example_request_v1",
+    "workflow_result_hash": "95487e890c74a245360a1855e8cd07f323446da7ed4f2f2a56e4822cbb55751e",
+    "calculation_book_workflow_result_hash": "95487e890c74a245360a1855e8cd07f323446da7ed4f2f2a56e4822cbb55751e",
+    "governing_status": "HOLD",
+    "issue_codes": [
+      "BEAM_SUPPLIED_REINFORCEMENT_NOT_SUPPLIED"
+    ]
+  },
+  "parity_matrix": [
+    {
+      "surface": "PYTHON_BEAM",
+      "entrypoint": "design_project_beams_v1",
+      "asserted_identity": "normalized input hash plus canonical result identity",
+      "status": "FOCUSED_PASS"
+    },
+    {
+      "surface": "REST_BEAM",
+      "entrypoint": "POST /api/v1/import/project-beams",
+      "asserted_identity": "exact Python input, result identity, governing status, issues, and snapshot metadata",
+      "status": "FOCUSED_PASS"
+    },
+    {
+      "surface": "REACT_BEAM",
+      "entrypoint": "buildProjectBeamBatchRequest plus WorkspaceSnapshotV1",
+      "asserted_identity": "formula-free request mapping and envelope/evidence identity agreement",
+      "status": "FOCUSED_PASS"
+    },
+    {
+      "surface": "EXCEL_BEAM",
+      "entrypoint": "Routine Workbench V1 selected table",
+      "asserted_identity": "same normalized input hash, result identity, governing status, and issues",
+      "status": "FOCUSED_PASS"
+    },
+    {
+      "surface": "PYTHON_REST_REACT_GRAVITY",
+      "entrypoint": "maintained example run bundle",
+      "asserted_identity": "workflow-result hash, governing status, issues, and calculation-book hash",
+      "status": "FOCUSED_PASS"
+    }
+  ],
+  "freshness": {
+    "react": "complete imported source metadata participates in member input identity; snapshot-only changes stale retained results and block export",
+    "excel": "evidence-only Source Snapshot SHA-256 is excluded from calculation mapping but covered by source-table hash; changes stale evidence and block review export",
+    "rest": "stateless transport preserves source metadata; retained-result freshness remains a client responsibility"
+  },
+  "verification": {
+    "implementation_debug_checks": {
+      "python_excel_fastapi": "PASS_61",
+      "react": "PASS_25"
+    },
+    "frozen_focused_tests": {
+      "python_fastapi_excel": "PASS_147",
+      "react": "PASS_35",
+      "affected_repair_reruns": "PASS_EXCEL_15_AND_REACT_2"
+    },
+    "react_lint_and_build": "PASS",
+    "changed_source_ruff_and_mypy": "PASS",
+    "architecture_and_import_checks": {
+      "architecture": "PASS_222_FILES_ZERO_VIOLATIONS",
+      "imports": "PASS_694_FILES_ZERO_BROKEN_IMPORTS",
+      "circular_imports": "PASS_202_FILES_ZERO_CYCLES"
+    },
+    "quick_gate": "PASS_10_OF_10_WITH_2_REUSED",
+    "normal_staged_hooks": "PENDING_SINGLE_RUN",
+    "broad_cumulative_suites": "RESERVED_FOR_LIB_PRO_007_M0",
+    "hosted_checks": "PENDING_IMMUTABLE_CANDIDATE"
+  },
+  "claims": {
+    "software_scope": "BOUNDED_P6_CROSS_SURFACE_PARITY_ONLY",
+    "real_etabs_model_or_analysis_validated": false,
+    "installed_excel_revalidated": false,
+    "engineering_approval": false,
+    "release_authorized": false
+  }
+}

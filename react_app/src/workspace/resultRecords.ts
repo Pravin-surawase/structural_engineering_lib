@@ -29,6 +29,29 @@ function settledRecord(
   return { ...pending, ...values, settledAt };
 }
 
+function unsupportedIdentityRecord(
+  pending: EvidenceRecord,
+  runId: string,
+  code: string,
+  message: string,
+  settledAt?: string,
+): EvidenceRecord {
+  return settledRecord(
+    pending,
+    {
+      lifecycle: 'unsupported',
+      runId,
+      calculationIdentity: null,
+      libraryVersion: null,
+      decision: 'HOLD',
+      supportStatus: 'HELD',
+      data: null,
+      error: { code, message },
+    },
+    settledAt,
+  );
+}
+
 export function completedBatchRecord(
   pending: EvidenceRecord,
   result: BatchResult,
@@ -37,21 +60,48 @@ export function completedBatchRecord(
 ): EvidenceRecord {
   const evidence = result.evidence;
   if (!evidence) {
-    return settledRecord(
+    return unsupportedIdentityRecord(
       pending,
-      {
-        lifecycle: 'unsupported',
-        runId,
-        calculationIdentity: null,
-        libraryVersion: null,
-        decision: 'HOLD',
-        supportStatus: 'HELD',
-        data: null,
-        error: {
-          code: 'EVIDENCE_MISSING',
-          message: 'The batch result did not include a traceable evidence identity.',
-        },
-      },
+      runId,
+      'EVIDENCE_MISSING',
+      'The batch result did not include a traceable evidence identity.',
+      settledAt,
+    );
+  }
+  const envelope = result.result_envelope;
+  const identity = envelope?.result_identity;
+  if (!envelope || !identity) {
+    return unsupportedIdentityRecord(
+      pending,
+      runId,
+      'RESULT_ENVELOPE_MISSING',
+      'The batch result did not include its canonical result identity.',
+      settledAt,
+    );
+  }
+  if (
+    envelope.overall_status !== result.status
+    || envelope.overall_status !== evidence.status
+  ) {
+    return unsupportedIdentityRecord(
+      pending,
+      runId,
+      'RESULT_STATUS_MISMATCH',
+      'The batch status and canonical result envelope do not agree.',
+      settledAt,
+    );
+  }
+  if (
+    identity.contract_version !== 'canonical-beam-result/v1'
+    || identity.input_hash !== evidence.normalized_input_hash
+    || identity.calculation_identity !== evidence.calculation_identity
+    || identity.library_version !== evidence.library_version
+  ) {
+    return unsupportedIdentityRecord(
+      pending,
+      runId,
+      'RESULT_IDENTITY_MISMATCH',
+      'The result envelope and evidence identity do not agree.',
       settledAt,
     );
   }
@@ -61,8 +111,8 @@ export function completedBatchRecord(
     {
       lifecycle: evidence.support_status === 'SUPPORTED' ? 'current' : 'unsupported',
       runId,
-      calculationIdentity: evidence.calculation_identity,
-      libraryVersion: evidence.library_version,
+      calculationIdentity: identity.calculation_identity,
+      libraryVersion: identity.library_version,
       decision: evidence.status,
       supportStatus: evidence.support_status,
       data: jsonClone(result),

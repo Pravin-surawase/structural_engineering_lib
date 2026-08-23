@@ -1,6 +1,10 @@
 /** Revision-bound SSE batch design with explicit evidence lifecycles. */
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { EvidenceEnvelope } from '../api/client';
+import {
+  parseStructuralResultEnvelope,
+  type EvidenceEnvelope,
+  type StructuralResultEnvelope,
+} from '../api/client';
 import { toast } from '../components/ui/Toast';
 import { API_BASE_URL } from '../config';
 import { useImportedBeamsStore } from '../store/importedBeamsStore';
@@ -25,6 +29,7 @@ export interface BatchResult {
   design_succeeded: boolean;
   is_safe: boolean;
   status: BatchOverallStatus;
+  result_envelope?: StructuralResultEnvelope;
   flexure?: {
     ast_required: number;
     asc_required: number;
@@ -193,6 +198,52 @@ function uniqueId(prefix: string): string {
   return `${prefix}-${crypto.randomUUID()}`;
 }
 
+export interface ProjectBeamRequestContext {
+  requestId: string;
+  projectId?: string;
+  projectRevision?: number;
+  inputRevision?: number;
+}
+
+/** Map one imported beam to the strict project-beam transport without calculations. */
+export function buildProjectBeamBatchRequest(
+  beam: BeamCSVRow,
+  context: ProjectBeamRequestContext,
+): Record<string, unknown> {
+  const depth = beam.d_mm !== undefined
+    ? { d_mm: beam.d_mm }
+    : beam.cover !== undefined
+      && beam.stirrup_diameter_mm !== undefined
+      && beam.tension_bar_diameter_mm !== undefined
+      ? {
+          effective_depth_basis: {
+            clear_cover_mm: beam.cover,
+            stirrup_diameter_mm: beam.stirrup_diameter_mm,
+            tension_bar_diameter_mm: beam.tension_bar_diameter_mm,
+          },
+        }
+      : {};
+  return {
+    schema_version: 'project-beam-design/v1',
+    member_id: beam.source_id ?? beam.id,
+    b_mm: beam.b,
+    D_mm: beam.D,
+    mu_knm: beam.mu_envelope ?? beam.Mu_mid,
+    vu_kn: beam.vu_envelope ?? beam.Vu_start,
+    fck_nmm2: beam.fck,
+    fy_nmm2: beam.fy,
+    ...depth,
+    source_metadata: {
+      ...beam.source_metadata,
+      request_id: context.requestId,
+      project_id: context.projectId,
+      project_revision: context.projectRevision,
+      input_revision: context.inputRevision,
+      span_mm: beam.span,
+    },
+  };
+}
+
 function runId(run: ActiveBatchRun): string {
   return run.serverJobId ?? run.localRunId;
 }
@@ -241,6 +292,14 @@ function settleUnreceived(
 function normalizedResult(data: ServerBatchResult): BatchResult | null {
   const beamId = data.beam_id ?? data.input?.member_id;
   if (!beamId) return null;
+  let resultEnvelope: StructuralResultEnvelope | undefined;
+  if (data.result_envelope !== undefined) {
+    try {
+      resultEnvelope = parseStructuralResultEnvelope(data.result_envelope);
+    } catch {
+      resultEnvelope = undefined;
+    }
+  }
   const status = BATCH_OVERALL_STATUSES.has(data.status as BatchOverallStatus)
     ? data.status as BatchOverallStatus
     : 'HOLD';
@@ -249,6 +308,7 @@ function normalizedResult(data: ServerBatchResult): BatchResult | null {
     design_succeeded: data.design_succeeded === true,
     is_safe: data.is_safe === true,
     status,
+    result_envelope: resultEnvelope,
     flexure: data.flexure,
     shear: data.shear,
     utilization_ratio: data.utilization_ratio,
@@ -326,38 +386,12 @@ export function useBatchDesign() {
           is_valid: false,
         }));
       }
-      const depth = beam.d_mm !== undefined
-        ? { d_mm: beam.d_mm }
-        : beam.cover !== undefined
-          && beam.stirrup_diameter_mm !== undefined
-          && beam.tension_bar_diameter_mm !== undefined
-          ? {
-              effective_depth_basis: {
-                clear_cover_mm: beam.cover,
-                stirrup_diameter_mm: beam.stirrup_diameter_mm,
-                tension_bar_diameter_mm: beam.tension_bar_diameter_mm,
-              },
-            }
-          : {};
-      return {
-        schema_version: 'project-beam-design/v1',
-        member_id: responseId,
-        b_mm: beam.b,
-        D_mm: beam.D,
-        mu_knm: beam.mu_envelope ?? beam.Mu_mid,
-        vu_kn: beam.vu_envelope ?? beam.Vu_start,
-        fck_nmm2: beam.fck,
-        fy_nmm2: beam.fy,
-        ...depth,
-        source_metadata: {
-          ...beam.source_metadata,
-          request_id: requestId,
-          project_id: snapshot?.projectId,
-          project_revision: snapshot?.projectRevision,
-          input_revision: member?.inputRevision,
-          span_mm: beam.span,
-        },
-      };
+      return buildProjectBeamBatchRequest(beam, {
+        requestId,
+        projectId: snapshot?.projectId,
+        projectRevision: snapshot?.projectRevision,
+        inputRevision: member?.inputRevision,
+      });
     });
 
     const run: ActiveBatchRun = {

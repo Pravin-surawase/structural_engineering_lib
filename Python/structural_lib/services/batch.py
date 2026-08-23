@@ -237,16 +237,18 @@ def _calculation_payload(
     units: str,
 ) -> dict[str, Any]:
     d_mm = beam.resolved_d_mm
+    d_dash_mm = beam.D_mm - d_mm if beam.effective_depth_basis is not None else 50.0
     result = api.design_beam_is456(
         units=units,
         case_id=beam.member_id,
         b_mm=beam.b_mm,
         D_mm=beam.D_mm,
-        d_mm=d_mm,
+        d_mm=beam.d_mm,
         mu_knm=beam.mu_knm,
         vu_kn=beam.vu_kn,
         fck_nmm2=beam.fck_nmm2,
         fy_nmm2=beam.fy_nmm2,
+        effective_depth_basis=beam.effective_depth_basis,
     )
     evidence = build_beam_evidence_envelope(
         inputs={
@@ -259,7 +261,7 @@ def _calculation_payload(
             "d_mm": d_mm,
             "fck_nmm2": beam.fck_nmm2,
             "fy_nmm2": beam.fy_nmm2,
-            "d_dash_mm": 50.0,
+            "d_dash_mm": d_dash_mm,
             "asv_mm2": 100.0,
         },
         is_ok=result.is_ok,

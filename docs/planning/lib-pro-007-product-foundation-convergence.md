@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-23
+last_updated: 2026-08-24
 doc_type: spec
 complexity: advanced
 tags: [product-foundation, optimization, detailing, etabs, excel, react, compatibility]
@@ -37,8 +37,10 @@ unchanged.
   `d3e3e9a3`. It makes unrounded development length, normalized bend/U-hook
   anchorage, explicit geometry, constructability, and `PASS`/`FAIL`/`HOLD`
   outcomes decisive.
-- P4 is in implementation on a source-bound lane from exact `0ea3e2d4`.
-- P5-P7 and cumulative M0 remain held in the frozen sequence below.
+- P4 merged through PR #856 at `426d401b` with exact merged tree `a5b01272`.
+- P5 merged through PR #857 at `6d533b6f` with exact merged tree `d3bbaeb2`.
+- P6 is active on a source-bound lane from exact `6d533b6f`; P7 and cumulative
+  M0 remain held in the frozen sequence below.
 
 ## Why this precedes INDIA-3
 
@@ -198,6 +200,10 @@ identity, complete row dispositions, or the canonical snapshot hash. The
 trial-compatible acquisition matrix is maintained in
 [ETABS Exported Snapshot V1](../guides/etabs-exported-snapshot-v1.md).
 
+P5 merged through PR #857 at hosted commit `6d533b6f` with exact merged tree
+`d3bbaeb2`. The public acceptance fixture is synthetic; it does not claim that
+a real ETABS model or analysis was validated.
+
 ### P6 - Cross-surface parity
 
 For one frozen ETABS-exported beam dataset and the maintained gravity example,
@@ -205,6 +211,22 @@ prove identical normalized request identity, result identity, governing status,
 and issues through Python, REST, React, and Excel. Source changes must mark
 retained results stale and block current export until recalculation. Excel and
 React contain no structural formulas.
+
+P6 uses both members from the accepted P5 synthetic snapshot. Python is the
+canonical calculator; REST delegates the same strict project-batch request;
+React maps without depth arithmetic and accepts a retained result only when its
+canonical envelope and evidence identities agree; Excel transports the same
+beam inputs through Routine Workbench V1. Complete imported source metadata,
+including the P5 snapshot SHA-256, participates in React freshness. An
+evidence-only Excel snapshot column participates in the selected-table hash but
+not calculation inputs, so changing only the source identity blocks export on
+both client surfaces.
+
+The maintained gravity example proves workflow-result hash, governing `HOLD`,
+and canonical issue parity through Python, REST, and React. Excel remains the
+canonical beam slice and does not become a second gravity implementation. The
+detailed acceptance matrix is maintained in
+[Cross-Surface Parity V1](../guides/cross-surface-parity-v1.md).
 
 ### P7 - Compatibility convergence
 

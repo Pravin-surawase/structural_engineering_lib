@@ -16,6 +16,29 @@ function stableJsonValue(value: JsonValue): JsonValue {
   return value;
 }
 
+function importedJsonValue(value: unknown, path = 'source_metadata'): JsonValue {
+  if (
+    value === null
+    || typeof value === 'string'
+    || typeof value === 'boolean'
+    || (typeof value === 'number' && Number.isFinite(value))
+  ) {
+    return value;
+  }
+  if (Array.isArray(value)) {
+    return value.map((item, index) => importedJsonValue(item, `${path}[${index}]`));
+  }
+  if (typeof value === 'object' && value !== null) {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, item]) => [
+        key,
+        importedJsonValue(item, `${path}.${key}`),
+      ]),
+    );
+  }
+  throw new Error(`${path} must contain only finite JSON values.`);
+}
+
 export function hashWorkspaceInputs(inputs: { [key: string]: JsonValue }): string {
   const canonical = JSON.stringify(stableJsonValue(inputs));
   let hash = 2166136261;
@@ -28,6 +51,11 @@ export function hashWorkspaceInputs(inputs: { [key: string]: JsonValue }): strin
 
 function pointInput(point: Point3D | undefined): JsonValue {
   return point ? { x: point.x, y: point.y, z: point.z } : null;
+}
+
+function sourceSnapshotSha256(beam: BeamCSVRow): JsonValue {
+  const value = beam.source_metadata?.snapshot_sha256;
+  return typeof value === 'string' ? value : null;
 }
 
 export function beamRowInputs(beam: BeamCSVRow): { [key: string]: JsonValue } {
@@ -50,6 +78,8 @@ export function beamRowInputs(beam: BeamCSVRow): { [key: string]: JsonValue } {
     datasetId: beam.dataset_id ?? null,
     datasetVersion: beam.dataset_version ?? null,
     datasetSha256: beam.dataset_sha256 ?? null,
+    sourceSnapshotSha256: sourceSnapshotSha256(beam),
+    sourceMetadata: importedJsonValue(beam.source_metadata ?? null),
   };
 }
 
@@ -142,6 +172,13 @@ function pointFromInput(value: JsonValue | undefined): Point3D | undefined {
     : undefined;
 }
 
+function sourceMetadataFromInput(
+  value: JsonValue | undefined,
+): Record<string, unknown> | undefined {
+  if (value === null || typeof value !== 'object' || Array.isArray(value)) return undefined;
+  return value;
+}
+
 /** Restore the imported-beam compatibility view from durable canonical inputs. */
 export function workspaceSnapshotToBeamRows(snapshot: WorkspaceSnapshotV1): BeamCSVRow[] {
   return snapshot.members.map((member) => {
@@ -167,6 +204,7 @@ export function workspaceSnapshotToBeamRows(snapshot: WorkspaceSnapshotV1): Beam
       dataset_id: typeof member.inputs.datasetId === 'string' ? member.inputs.datasetId : undefined,
       dataset_version: typeof member.inputs.datasetVersion === 'string' ? member.inputs.datasetVersion : undefined,
       dataset_sha256: typeof member.inputs.datasetSha256 === 'string' ? member.inputs.datasetSha256 : undefined,
+      source_metadata: sourceMetadataFromInput(member.inputs.sourceMetadata),
       status: member.result?.lifecycle === 'current'
         ? member.result.decision === 'PASS' ? 'pass' : 'fail'
         : 'pending',

@@ -13,6 +13,64 @@ async function readResponse<T>(response: Response, fallback: string): Promise<T>
   return unwrapResponse<T>(body);
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
+const GRAVITY_STATUSES = new Set([
+  'BLOCKED',
+  'ERROR',
+  'NOT_EVALUATED',
+  'STALE',
+  'PASS',
+  'FAIL',
+  'HOLD',
+]);
+
+function hasCanonicalIssues(value: unknown): boolean {
+  return Array.isArray(value) && value.every((issue) => (
+    isRecord(issue)
+    && typeof issue.code === 'string'
+    && typeof issue.path === 'string'
+    && typeof issue.message === 'string'
+  ));
+}
+
+function hasGravityEnvelope(value: unknown): boolean {
+  return isRecord(value)
+    && GRAVITY_STATUSES.has(String(value.overall_status))
+    && typeof value.qualified_review_required === 'boolean'
+    && typeof value.review_status === 'string'
+    && hasCanonicalIssues(value.issues);
+}
+
+/** Fail closed before React accepts a gravity result identity or issue list. */
+export function parseGravityWorkflowRunBundle(value: unknown): GravityWorkflowRunBundle {
+  if (!isRecord(value) || value.schema_version !== 'gravity-workflow-run-bundle/v1') {
+    throw new Error('Gravity workflow bundle is missing or unsupported.');
+  }
+  const workflow = value.workflow_result;
+  const book = value.calculation_book;
+  if (
+    !isRecord(workflow)
+    || workflow.schema_version !== 'gravity-workflow-result/v1'
+    || typeof workflow.workflow_result_hash !== 'string'
+    || !/^[0-9a-f]{64}$/.test(workflow.workflow_result_hash)
+    || !hasGravityEnvelope(workflow.result_envelope)
+    || !Array.isArray(workflow.components)
+    || workflow.components.some(
+      (component) => !isRecord(component) || !hasGravityEnvelope(component.result_envelope),
+    )
+    || !isRecord(book)
+    || book.schema_version !== 'gravity-calculation-book/v1'
+    || book.workflow_result_hash !== workflow.workflow_result_hash
+    || !hasCanonicalIssues(book.issues)
+  ) {
+    throw new Error('Gravity workflow bundle has inconsistent identity, status, or issues.');
+  }
+  return value as unknown as GravityWorkflowRunBundle;
+}
+
 export async function getGravityWorkflowDefinition(
   signal?: AbortSignal,
 ): Promise<GravityWorkflowDefinition> {
@@ -32,5 +90,7 @@ export async function runGravityWorkflow(
     body: JSON.stringify(request),
     ...(signal ? { signal } : {}),
   });
-  return readResponse(response, 'Gravity workflow failed');
+  return parseGravityWorkflowRunBundle(
+    await readResponse<unknown>(response, 'Gravity workflow failed'),
+  );
 }
