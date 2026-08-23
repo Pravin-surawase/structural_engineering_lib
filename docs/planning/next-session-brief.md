@@ -5,7 +5,7 @@
 <!-- HANDOFF:START -->
 - Date: 2026-08-24
 - Focus: Repair only the confirmed software safety and verification defects
-- Git receipt: docs/verification/lib-pro-008-pre-india3-safety-git-handoff-receipt.json | sha256:f815ccfa02012fc3b5b3f2785e3e1db0c9a0d5cb99aca1f22498d10d743e10ae | HOLD
+- Git receipt: docs/verification/lib-pro-008-pre-india3-safety-git-handoff-receipt.json | sha256:01e9d4015048729b98d28f5035c496321a47dc79f7a7fb065e7709ea46ec52b2 | HOLD
 - Git identity: codex/lib-pro-008-pre-india3-safety@e2fac7419551988def59101ac63a5f8e491bc7a2 | upstream=NONE@UNKNOWN | base=origin/main@e2fac7419551988def59101ac63a5f8e491bc7a2 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: RUN_FROZEN_QUICK_FULL_AND_STAGED_HOOKS

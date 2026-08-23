@@ -53,12 +53,19 @@
       "before": "compute_stirrup_path accepted non-finite coordinates and claimed unused 4/6-leg support",
       "after": "all section geometry is validated and the single-loop result rejects multi-leg requests it cannot represent",
       "decisive_test": "Python/tests/test_visualization_geometry_3d.py::TestComputeStirrupPath"
+    },
+    {
+      "id": "OPTIONAL_DEPENDENCY_LEDGER_IDENTITY",
+      "before": "compatibility kind, signature, and identity hashes for three DXF aliases changed when optional ezdxf was absent from documentation CI",
+      "after": "the aliases retain exact runtime object delegation while the ledger records stable optional-dependency proxy identity independent of ezdxf installation",
+      "decisive_test": "Python/tests/test_compatibility_convergence.py::test_optional_dependency_stub_identity_is_environment_independent"
     }
   ],
   "frozen_local_evidence": {
     "focused_python": "187 passed before the geometry repair; the affected 69-test geometry module passed after repair",
     "focused_fastapi": "12 passed",
     "compatibility_check": "current; 1502 caller records; zero blocked ambiguous callers",
+    "clean_documentation_profile": "compatibility freshness passes with only documentation dependencies and no ezdxf extra",
     "readiness_audit": "23 of 24 passed; zero failed; the longstanding input-ownership diagnostic remains the sole warning with 359 UNPROVEN parameters",
     "public_route_safety_gate": "now owns the exact torsion NaN and WebSocket load-case-only reproducers"
   },

@@ -59,6 +59,9 @@ scope.
   current packet had no commit yet.
 - The first normal hook run reformatted one FastAPI assertion and rejected the
   replacement handoff table because its required exact `Next` row was absent.
+- Initial hosted documentation validation exposed a second compatibility
+  environment dependency: three DXF stub projections changed kind/signature
+  when the optional `ezdxf` package was absent.
 
 ### Root causes and resolutions
 
@@ -106,6 +109,17 @@ scope.
   pass. ⚠️ TERMINAL ISSUE: first normal hooks stopped on one formatter write
   and the missing exact row -> accepted the hook format and restored the
   required handoff key.
+- Confirmed root cause: root-stub ledger identity used live Python object kind
+  and signature for `ezdxf`, `units`, and `TextEntityAlignment`; those aliases
+  are exact delegates but are intentionally `None` without the optional DXF
+  extra. Resolution: preserve the exact runtime object-identity assertion while
+  encoding those three records as stable optional-dependency proxies whose
+  ledger identity does not depend on the installed extra. Evidence: the focused
+  compatibility/CI selection passes 69 tests, and `--check` passes in both the
+  normal project environment and a clean documentation-only environment with
+  no `ezdxf`. ⚠️ TERMINAL ISSUE: initial hosted documentation validation found
+  the stale ledger -> reproduced it in a clean local docs profile and removed
+  the optional-dependency identity drift at its generator owner.
 
 ### Validation through content freeze
 
@@ -113,6 +127,9 @@ scope.
   rerun passes 69 tests. Focused WebSocket passes 12 tests.
 - API classification and compatibility check is current; the packed ledger has
   1,502 caller records and zero blocked ambiguous callers.
+- The repaired compatibility/CI selection passes 69 tests, and the exact
+  documentation-only dependency profile now passes ledger freshness without
+  installing the optional DXF extra.
 - Readiness audit passes 23/24 checks with zero failures and one expected broad
   input-ownership warning. The warning is not release or engineering approval.
 - Frozen quick/full gates, normal staged hooks, immutable candidate review,

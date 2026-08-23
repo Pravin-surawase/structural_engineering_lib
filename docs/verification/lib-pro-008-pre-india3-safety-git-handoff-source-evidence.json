@@ -33,7 +33,7 @@
     "target_binding": {
       "task_id": "LIB-PRO-008",
       "branch": "codex/lib-pro-008-pre-india3-safety",
-      "head_sha": "e2fac7419551988def59101ac63a5f8e491bc7a2",
+      "head_sha": "afb239910431fcebeae878a1e09381fe0c29c583",
       "actions": [
         "REPAIR_CONFIRMED_PRE_INDIA3_SOFTWARE_SAFETY_BLOCKERS",
         "ADD_FOCUSED_TESTS_AND_SAFETY_GATE_OWNERSHIP",

@@ -115,7 +115,26 @@ def test_root_stub_modules_are_pure_identity_delegates(
         owner = _resolve(projection["canonical_owner"])
 
         assert exposed is owner, projection["qualified_path"]
-        assert classification._signature(exposed) == projection["signature"]
+        if projection["identity_behavior"] == "OPTIONAL_DEPENDENCY_SAME_OBJECT":
+            assert projection["kind"] == "optional_dependency_proxy"
+            assert projection["signature"] == ""
+            assert projection["runtime_availability"] == "OPTIONAL_EZDXF"
+        else:
+            assert classification._signature(exposed) == projection["signature"]
+
+
+def test_optional_dependency_stub_identity_is_environment_independent() -> None:
+    for qualified_path in classification._OPTIONAL_DEPENDENCY_STUB_SYMBOLS:
+        owner = qualified_path.replace(
+            "structural_lib.dxf_export", "structural_lib.services.dxf_export"
+        )
+        installed = classification._stub_projection_identity(
+            qualified_path, owner, object()
+        )
+        absent = classification._stub_projection_identity(qualified_path, owner, None)
+
+        assert installed == absent
+        assert installed["identity_behavior"] == "OPTIONAL_DEPENDENCY_SAME_OBJECT"
 
 
 def test_api_hub_is_an_identity_only_subset(ledger: dict[str, Any]) -> None:

@@ -42,11 +42,13 @@
         "MERGE_UNCHANGED_GREEN_PR"
       ],
       "branch": "codex/lib-pro-008-pre-india3-safety",
-      "head_sha": "e2fac7419551988def59101ac63a5f8e491bc7a2",
+      "head_sha": "afb239910431fcebeae878a1e09381fe0c29c583",
       "task_id": "LIB-PRO-008"
     }
   },
   "holds": [
+    "AUTHORIZATION_SOURCE_STALE_EVIDENCE",
+    "AUTHORIZATION_STALE_EVIDENCE",
     "BRANCH_WORKTREE_ARCHIVE_AND_UNRELATED_FILE_DELETION_NOT_AUTHORIZED",
     "LOCAL_HOLD_DIRTY",
     "NEXT_ACTION_NOT_AUTHORIZED",
@@ -54,6 +56,7 @@
     "PRESERVE_UNRELATED_DIRTY_DETACHED_LANE",
     "PULL_REQUEST_NOT_CHECKED",
     "REMOTE_NOT_CHECKED",
+    "RETENTION_STALE_EVIDENCE",
     "REVIEW_NOT_CHECKED"
   ],
   "integration": {
@@ -64,27 +67,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "f815ccfa02012fc3b5b3f2785e3e1db0c9a0d5cb99aca1f22498d10d743e10ae",
+    "receipt_sha256": "01e9d4015048729b98d28f5035c496321a47dc79f7a7fb065e7709ea46ec52b2",
     "state": {
       "branch": "codex/lib-pro-008-pre-india3-safety",
       "default_base": {
-        "ahead": 0,
+        "ahead": 1,
         "behind": 0,
         "ref": "origin/main",
         "sha": "e2fac7419551988def59101ac63a5f8e491bc7a2",
-        "status": "equal"
+        "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 91.537,
+      "duration_ms": 112.823,
       "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
       "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-maint-0135-cleanup-refresh",
-      "head_sha": "e2fac7419551988def59101ac63a5f8e491bc7a2",
+      "head_sha": "afb239910431fcebeae878a1e09381fe0c29c583",
       "hold_reasons": [
-        "changed paths: 18"
+        "changed paths: 6"
       ],
       "linked_worktree": true,
       "locks": [],
-      "observed_at_utc": "2026-08-23T21:59:04.703014+00:00",
+      "observed_at_utc": "2026-08-23T22:10:23.007688+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -95,43 +98,31 @@
       "tree": {
         "clean": false,
         "conflicted_paths": [],
-        "dirty_count": 18,
+        "dirty_count": 6,
         "modified_paths": [],
         "staged_paths": [
-          ".github/workflows/fast-checks.yml",
-          "Python/structural_lib/codes/is456/beam/torsion.py",
-          "Python/structural_lib/visualization/geometry_3d.py",
-          "Python/tests/test_ci_workflow_contract.py",
           "Python/tests/test_compatibility_convergence.py",
-          "Python/tests/test_visualization_geometry_3d.py",
-          "Python/tests/unit/test_torsion.py",
           "docs/SESSION_LOG.md",
-          "docs/TASKS.md",
-          "docs/planning/next-session-brief.md",
           "docs/reference/api-compatibility-ledger.json",
           "docs/verification/lib-pro-008-pre-india3-safety-evidence.json",
-          "docs/verification/lib-pro-008-pre-india3-safety-git-handoff-receipt.json",
           "docs/verification/lib-pro-008-pre-india3-safety-git-handoff-source-evidence.json",
-          "fastapi_app/routers/websocket.py",
-          "fastapi_app/tests/test_websocket.py",
-          "scripts/check_public_route_safety.py",
           "scripts/generate_api_classification.py"
         ],
         "untracked_paths": []
       },
       "upstream": {
-        "ahead": null,
-        "behind": null,
-        "ref": "NONE",
-        "sha": null,
-        "status": "none"
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/codex/lib-pro-008-pre-india3-safety",
+        "sha": "afb239910431fcebeae878a1e09381fe0c29c583",
+        "status": "equal"
       },
       "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0135-cleanup-refresh"
     }
   },
-  "local_state_receipt_hash": "sha256:f815ccfa02012fc3b5b3f2785e3e1db0c9a0d5cb99aca1f22498d10d743e10ae",
+  "local_state_receipt_hash": "sha256:01e9d4015048729b98d28f5035c496321a47dc79f7a7fb065e7709ea46ec52b2",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-08-23T21:59:04.703170+00:00",
+  "observed_at_utc": "2026-08-23T22:10:23.007846+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"
@@ -145,6 +136,7 @@
   },
   "retention": {
     "decision": "RETAIN_ALL_EXISTING_LANES_AND_PRIVATE_ARCHIVE",
+    "evidence_error": "STALE_EVIDENCE",
     "holds": [
       "PRESERVE_UNRELATED_DIRTY_DETACHED_LANE",
       "PRESERVE_PRIVATE_SOURCE_ARCHIVE",
@@ -152,8 +144,8 @@
     ],
     "observed_at_utc": "2026-08-23T21:54:31Z",
     "owner": "Main Agent under repository preservation policy",
-    "query_status": "OK",
-    "status": "OBSERVED"
+    "query_status": "UNKNOWN",
+    "status": "UNKNOWN"
   },
   "review": {
     "query_status": "UNKNOWN",

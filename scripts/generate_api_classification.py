@@ -155,6 +155,13 @@ _OUT_OF_SCOPE_PREFIXES = (
     "docs/verification/",
 )
 _OUT_OF_SCOPE_PARTS = frozenset({"fixtures", "vendor", "vendors"})
+_OPTIONAL_DEPENDENCY_STUB_SYMBOLS = frozenset(
+    {
+        "structural_lib.dxf_export.TextEntityAlignment",
+        "structural_lib.dxf_export.ezdxf",
+        "structural_lib.dxf_export.units",
+    }
+)
 
 
 def _kind(value: object) -> str:
@@ -197,6 +204,28 @@ def _identity_key(value: object, fallback: str) -> str:
     owner = _canonical_owner(value, fallback)
     payload = f"{owner}|{_kind(value)}|{_signature(value)}"
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def _stub_projection_identity(
+    qualified_path: str, owner: str, value: object
+) -> dict[str, str]:
+    """Return stable identity metadata for one compatibility-stub symbol."""
+
+    if qualified_path in _OPTIONAL_DEPENDENCY_STUB_SYMBOLS:
+        payload = f"{qualified_path}|{owner}|OPTIONAL_DEPENDENCY_PROXY"
+        return {
+            "kind": "optional_dependency_proxy",
+            "signature": "",
+            "identity_key": hashlib.sha256(payload.encode("utf-8")).hexdigest(),
+            "identity_behavior": "OPTIONAL_DEPENDENCY_SAME_OBJECT",
+            "runtime_availability": "OPTIONAL_EZDXF",
+        }
+    return {
+        "kind": _kind(value),
+        "signature": _signature(value),
+        "identity_key": _identity_key(value, qualified_path),
+        "identity_behavior": "SAME_OBJECT",
+    }
 
 
 def _migration_metadata(value: object, replacement: str) -> dict[str, Any]:
@@ -1094,6 +1123,8 @@ def build_compatibility_ledger(
                 continue
             value = getattr(module, name)
             owner = _stub_symbol_owner(stub, name)
+            qualified_path = f"{module_name}.{name}"
+            identity = _stub_projection_identity(qualified_path, owner, value)
             active, preserved = _active_and_preserved_callers(
                 symbol_paths[(module_name, name)], compatibility_module=True
             )
@@ -1105,7 +1136,7 @@ def build_compatibility_ledger(
             stub_projections.append(
                 {
                     "public_name": name,
-                    "qualified_path": f"{module_name}.{name}",
+                    "qualified_path": qualified_path,
                     "facades_exposing_same_object": [module_name],
                     "canonical_owner": owner,
                     "replacement_path": (
@@ -1113,10 +1144,7 @@ def build_compatibility_ledger(
                         if name in _P5_HELD_COMPATIBILITY
                         else owner
                     ),
-                    "kind": _kind(value),
-                    "signature": _signature(value),
-                    "identity_key": _identity_key(value, f"{module_name}.{name}"),
-                    "identity_behavior": "SAME_OBJECT",
+                    **identity,
                     "active_caller_count": len(active),
                     "active_maintained_caller_paths": active,
                     "out_of_scope_reference_paths": preserved,
