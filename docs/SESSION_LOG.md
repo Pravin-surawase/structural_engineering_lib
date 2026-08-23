@@ -5,6 +5,96 @@
 
 ---
 
+## 2026-08-23 — Session: LIB-PRO-007-G0 product contract freeze
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/lib-pro-007-g0-contract-freeze`, from fetched hosted `main`
+commit `2d6df18efa9228afbf593f36fa95d2ce574977ac`.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-007-g0-product-contract-git-handoff-receipt.json`
+
+**Focus:** Freeze the bounded product-contract and implementation sequence
+before optimization repair and INDIA-3-G0.
+
+No formula, runtime result, supported engineering case, live ETABS operation,
+release, or professional-approval claim is included.
+
+### Summary
+
+- Verified a clean, source-bound linked worktree at exact fetched hosted
+  `main`; no open task-owned PR exists, and the preserved INDIA-3 plus dirty or
+  uncertain sibling lanes remain untouched.
+- Froze live capability, router, endpoint-test, React-hook, workflow-catalogue,
+  and API-classification counts with their claim boundaries.
+- Assigned nine product contracts one canonical calculation authority,
+  transport set, current disposition, blocking gap, and owning successor
+  packet.
+- Marked beam cost optimization `HOLD_OUTCOME_CHANGING` because the current
+  service ignores shear and fixed candidate dimensions/materials while its REST
+  mapper publishes assumed or zero engineering fields.
+- Sequenced P1 optimization truth, P2 supplied beam reinforcement, P3 footing
+  hooks/bends, P4 explicit actions, P5 exported ETABS snapshot, P6 cross-surface
+  parity, P7 compatibility convergence, and one cumulative acceptance gate.
+- Corrected the stale active-task and handoff orientation after merged
+  LIB-PRO-006/PR #851 without rewriting its immutable candidate evidence.
+
+### Issues encountered
+
+- The task board and next-session brief still described LIB-PRO-006 as a local
+  candidate awaiting integration even though fetched hosted `main` contains its
+  PR #851 merge at `2d6df18e`.
+- Two bounded introspection commands initially assumed every route had HTTP
+  `methods` and that catalogue/capability document helpers returned Pydantic
+  models.
+- The first staged-hook run rejected the handoff because its prose named the
+  receipt path but did not contain the generated receipt identity/hash block.
+  An initial attempt to repair it with `session sync --fix` instead performed
+  the command's maintained metric synchronization and exposed one stale public
+  API count in the bootstrap guide.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the immutable LIB-PRO-006 candidate correctly froze
+  before hosted integration, but its later merge fact was not written back into
+  that candidate. Resolution: verify hosted `main` by fetch, archive the
+  completed row, activate LIB-PRO-007-G0, and retain hosted facts in the new
+  task-owned documents.
+- Confirmed root cause: FastAPI includes an `APIWebSocketRoute` without an HTTP
+  `methods` attribute, while both document helpers intentionally return plain
+  dictionaries. Resolution: use `getattr(route, "methods", ())` and
+  `json.dumps(...)`; the exact route and catalogue inventories then render.
+  ⚠️ TERMINAL ISSUE: bounded introspection used incompatible object assumptions
+  -> object-safe access and dictionary serialization produced the required
+  live evidence.
+- Confirmed root cause: the handoff block is generated from the selected Git
+  receipt by preparation-mode `session end --fix`; `session sync --fix` owns
+  repository metric synchronization instead. Resolution: retain its truthful
+  91-to-97 public-API count repair in the bootstrap guide, then run
+  preparation-mode session end with the exact receipt. The generated handoff
+  identity passes the session checks. ⚠️ TERMINAL ISSUE: `session sync --fix`
+  was the wrong receipt-projection command -> `session end --fix
+  --git-receipt ...` produced the maintained handoff block.
+
+### Validation through content freeze
+
+- Git/source binding: linked lane from exact fetched hosted `main` `2d6df18e`,
+  `READY_LOCAL`, `source_bound=true`, no operation/conflict, and no open
+  task-owned PR before edits.
+- Evidence JSON parses and its focused contract asserts nine product rows,
+  optimization `HOLD_OUTCOME_CHANGING`, and P1 as the next packet.
+- Maintained links report zero broken links; metadata, task WIP/format, context,
+  and `git diff --check` pass.
+- The generated API classification is current; API documentation, stability,
+  signatures, and the 31 React/FastAPI call sites pass against 88 OpenAPI paths.
+- The consolidated quick gate passes 10/10 with zero reused results before the
+  staged-hook run.
+- The first staged-hook run passed every applicable check except the exact
+  session-handoff projection. Preparation-mode session end repaired that one
+  root cause; the failed session-doc check and final staged candidate remain
+  the bounded rerun before immutable commit.
+
 ## 2026-08-23 — Session: LIB-PRO-006 gravity usability foundation
 
 **Agent:** Codex (`orchestrator`, sole writer)

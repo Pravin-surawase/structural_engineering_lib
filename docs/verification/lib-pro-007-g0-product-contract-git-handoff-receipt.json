@@ -1,0 +1,170 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-23T13:20:30Z",
+      "query_status": "OK",
+      "reference": "good please start the work",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "IMPLEMENT_LIB_PRO_007_IN_BOUNDED_PACKETS",
+      "ADD_FOCUSED_TESTS_AND_EVIDENCE",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-23T13:20:30Z",
+    "prohibited_actions": [
+      "DELETE_BRANCH_OR_WORKTREE",
+      "BYPASS_CHECKS",
+      "PUBLISH_RELEASE",
+      "ACTIVATE_PROFESSIONAL_APPROVAL",
+      "CHANGE_INDIA_3_ENGINEERING"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "IMPLEMENT_LIB_PRO_007_IN_BOUNDED_PACKETS",
+        "ADD_FOCUSED_TESTS_AND_EVIDENCE",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/lib-pro-007-g0-contract-freeze",
+      "head_sha": "2d6df18efa9228afbf593f36fa95d2ce574977ac",
+      "task_id": "LIB-PRO-007-G0"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PRESERVE_INDIA_3_SOURCE_LIBRARY_CANDIDATE_UNTIL_LIB_PRO_007_M0",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "d5d2ceabb1a3da5613f10dbcf51ecde3af6673425b66fb1c09359d50735a32ac",
+    "state": {
+      "branch": "codex/lib-pro-007-g0-contract-freeze",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "2d6df18efa9228afbf593f36fa95d2ce574977ac",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 95.94,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-lib-pro-007-g0",
+      "head_sha": "2d6df18efa9228afbf593f36fa95d2ce574977ac",
+      "hold_reasons": [
+        "changed paths: 8"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-23T13:23:21.959474+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-g0",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 8,
+        "modified_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/getting-started/agent-bootstrap.md",
+          "docs/planning/next-session-brief.md"
+        ],
+        "staged_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/_archive/tasks-history.md",
+          "docs/planning/lib-pro-007-product-foundation-convergence.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/lib-pro-007-g0-product-contract-evidence.json",
+          "docs/verification/lib-pro-007-g0-product-contract-git-handoff-receipt.json"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "2d6df18efa9228afbf593f36fa95d2ce574977ac",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-g0"
+    }
+  },
+  "local_state_receipt_hash": "sha256:d5d2ceabb1a3da5613f10dbcf51ecde3af6673425b66fb1c09359d50735a32ac",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-23T13:23:21.959630+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [
+      "PRESERVE_INDIA_3_SOURCE_LIBRARY_CANDIDATE_UNTIL_LIB_PRO_007_M0"
+    ],
+    "observed_at_utc": "2026-08-23T13:20:30Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib",
+      "fastapi_app",
+      "react_app",
+      "private_sources"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "docs/planning/lib-pro-007-product-foundation-convergence.md",
+      "docs/verification/lib-pro-007-g0-product-contract-evidence.json",
+      "docs/verification/lib-pro-007-g0-product-contract-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/_archive/tasks-history.md",
+      "docs/getting-started/agent-bootstrap.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "LIB-PRO-007-G0"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
