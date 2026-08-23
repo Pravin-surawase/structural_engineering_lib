@@ -226,7 +226,7 @@ def _write_rollback_script(run_root: Path, manifest: Path) -> Path:
     command = " ".join(
         shlex.quote(part)
         for part in (
-            str(REPO_ROOT / "scripts" / "python_runtime.sh"),
+            sys.executable,
             str(REPO_ROOT / "scripts" / "batch_migrate_runner.py"),
             "--restore",
             str(manifest),

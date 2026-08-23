@@ -300,7 +300,7 @@ def test_batch_runner_executes_exact_full_rollback_and_rejects_corruption() -> N
         if not rollback_script.is_absolute():
             rollback_script = REPO_ROOT / rollback_script
         rollback_source = rollback_script.read_text(encoding="utf-8")
-        assert "python_runtime.sh" in rollback_source
+        assert sys.executable in rollback_source
         assert "batch_migrate_runner.py" in rollback_source
         assert "--restore" in rollback_source
         assert "--force" not in rollback_source

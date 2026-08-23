@@ -54,6 +54,9 @@
   of the documented preparation-only status `2` because the candidate was dirty.
 - The first candidate commit summary showed that the two rewritten safe-file
   entrypoints had unintentionally lost their executable file modes.
+- Hosted Repository Validation passed the migration but failed its generated
+  rollback entrypoint because that script required a project `.venv` absent
+  from the provisioned GitHub Actions Python environment.
 
 ### Root causes and resolutions
 
@@ -99,6 +102,12 @@
   only those executable bits, directly invoke both entrypoints, rerun the
   affected transaction tests and consolidated gate, and create an explicit
   repair candidate before publication.
+- Confirmed root cause: `rollback.sh` delegated to `python_runtime.sh`, which is
+  intentionally worktree-bound and rejects environments without a discoverable
+  project interpreter even when the batch is already running under a valid
+  provisioned Python. Resolution: record the exact running `sys.executable` in
+  the generated rollback command, keep the same manifest-verified restore
+  primitive, and regression-test execution through that exact interpreter.
 
 ### Verification
 
