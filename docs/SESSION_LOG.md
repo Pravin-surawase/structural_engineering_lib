@@ -5,6 +5,78 @@
 
 ---
 
+## 2026-08-23 — Session: MAINT-0133 cleanup inventory and authorization
+
+**Agent:** Codex (`governance`, sole writer)
+
+**Branch:** `codex/maint-0133-cleanup-inventory`, from exact fetched
+`origin/main` commit `60e95bbe52575d3335e7195db944b2c82630ed2e`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0133-git-handoff-receipt.json`
+
+**Focus:** Freeze an exact read-only repository file-cleanup inventory and
+future transactional batch without moving or deleting content.
+
+### Summary
+
+- Bound the discovery contract to tracked hygiene artifacts, exact Git blobs,
+  explicit inactive metadata outside archive roots, active control coverage,
+  and exact safe-file previews; age-only and unreferenced-name guesses are
+  excluded.
+- Classified six explicit inactive-location files: two are
+  `MOVE_READY_NOT_AUTHORIZED`, four are `HOLD_UNRESOLVED`, and none has enough
+  evidence for deletion.
+- Froze exact source blobs, destinations, reference counts, retained surfaces,
+  and the two-operation future `MAINT-0133B-PACKET-A` batch.
+- Preserved 507 archived documents, 119 archived scripts, 1,760 vendor
+  references, four distinct empty Python test-package markers, and all 48
+  observed worktrees. No live move, delete, branch, or worktree action ran.
+
+### Issues encountered
+
+- The first worktree-creation call used the not-yet-created worktree as its
+  process directory, so the process could not start.
+- The exact-byte duplicate probe assumed `shasum` existed and repeated the
+  command-not-found error for each tracked file.
+- A zsh loop variable named `path` overwrote zsh's tied command-search path, so
+  subsequent `sed` calls in that shell were not found.
+- The deprecated agent-guide `README.md` preview matched 1,107 basename
+  occurrences and blocked on 279 unresolved maintained references.
+- Three other inactive documents remain blocked by two, two, and three
+  unresolved references respectively.
+
+### Root causes and resolutions
+
+- Confirmed root cause: a command cannot start in a directory that will only be
+  created by that same command. Resolution: create the worktree from the
+  existing repository, then run `session begin` inside the new lane; exact Git
+  state reports `READY_LOCAL` and the runtime reports `source_bound=true`.
+- Confirmed root cause: `shasum` is unavailable in this environment.
+  Resolution: use tracked Git blob identities, which directly prove exact byte
+  equality without an external hash executable; the only duplicate group is
+  four empty `__init__.py` package markers and is kept.
+- Confirmed root cause: `path` is a special zsh array tied to `PATH`.
+  Resolution: use task-specific variable names such as `candidate_file`; the
+  corrected header/reference inspection completed without state changes.
+- Confirmed root cause: the transactional scanner conservatively treats the
+  generic `README.md` basename as ambiguous across maintained surfaces.
+  Resolution: record the 279-reference hold and require a separately reviewed
+  path-qualified mapping or scanner repair; no force or manual move was used.
+- Confirmed root cause: active governance/planning content still owns the other
+  unresolved names. Resolution: keep those four sources in place and reserve
+  their exact repairs for separate packets. The two completed INDIA-2 plans
+  independently pass single and complete-batch previews with zero unresolved
+  references.
+
+### Verification
+
+- Repository hygiene, maintained links/images, the 115-operation/101-script
+  control registry, JSON syntax, source-blob identity, and the complete
+  two-operation batch dry run pass. The batch preview performs zero writes.
+- Focused migration tests, context, quick/full gates, normal hooks, clean
+  session closeout, and hosted evidence remain pending until candidate freeze.
+
 ## 2026-08-23 — Session: MAINT-0132 automatic efficiency observability
 
 **Agent:** Codex (`governance`, sole writer)
