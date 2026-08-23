@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import math
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 from typing import Literal
 
 from structural_lib.codes.is456.load_analysis import compute_bmd_sfd
@@ -34,6 +34,12 @@ from structural_lib.core.result_contract import (
     StructuralResultEnvelopeV2,
 )
 from structural_lib.services.beam_api import design_beam_is456
+from structural_lib.services.beam_reinforcement import (
+    BeamReinforcementSelectionConstraintsV1,
+    LongitudinalBarLayersV1,
+    SuppliedBeamReinforcementV1,
+    evaluate_supplied_beam_reinforcement_v1,
+)
 from structural_lib.services.column_api import design_column_is456
 from structural_lib.services.footing_api import (
     ConcentricIsolatedFootingInput,
@@ -81,6 +87,8 @@ _BEAM_SUPPLIED = (
     "d_mm and source reference",
     "fy_nmm2",
     "shear reinforcement basis",
+    "bar-selection constraints",
+    "source-referenced supplied longitudinal reinforcement",
 )
 _COLUMN_GENERATED = (
     "Pu_kN",
@@ -204,6 +212,111 @@ def _required_dimension(value: float | None, name: str) -> float:
     if value is None:
         raise ValueError(f"validated component section is missing {name}")
     return value
+
+
+def _beam_support_widths(
+    member: GravityMemberV1,
+    *,
+    members: tuple[GravityMemberV1, ...],
+    sections: Mapping[str, object],
+) -> tuple[float | None, float | None, str | None]:
+    """Resolve unambiguous square-column support widths from the physical model."""
+
+    widths: list[float] = []
+    column_ids: list[str] = []
+    for node_id in (member.start_node_id, member.end_node_id):
+        supporting_columns = tuple(
+            item
+            for item in members
+            if item.kind is GravityMemberKindV1.COLUMN and item.end_node_id == node_id
+        )
+        if len(supporting_columns) != 1:
+            return None, None, None
+        column = supporting_columns[0]
+        section = sections[column.section_id]
+        width_mm = getattr(section, "width_mm", None)
+        depth_mm = getattr(section, "depth_mm", None)
+        if (
+            width_mm is None
+            or depth_mm is None
+            or not math.isclose(width_mm, depth_mm, rel_tol=0.0, abs_tol=1e-9)
+        ):
+            return None, None, None
+        widths.append(float(width_mm))
+        column_ids.append(column.id)
+    return (
+        widths[0],
+        widths[1],
+        "BuildingModelV1 square column sections at beam ends: " + ", ".join(column_ids),
+    )
+
+
+def _beam_reinforcement_hold_payload(code: str, message: str) -> dict[str, object]:
+    return {
+        "schema_version": "beam-reinforcement-evaluation/v1",
+        "status": "HOLD",
+        "recommended_tension": None,
+        "supplied_tension": None,
+        "supplied_compression_or_hanger": None,
+        "checks": {"supply_complete": False},
+        "issues": [{"code": code, "message": message}],
+        "limitations": [
+            "Required steel remains a design demand, not supplied detailing.",
+            "Qualified structural-engineering review remains required.",
+        ],
+        "qualified_review_required": True,
+    }
+
+
+def _beam_envelope_with_reinforcement(
+    *,
+    component_id: str,
+    original: dict[str, object],
+    reinforcement: dict[str, object],
+) -> dict[str, object]:
+    """Preserve canonical design failures, otherwise govern by supplied bars."""
+
+    if _result_status(original) != "PASS":
+        return original
+    status = str(reinforcement["status"])
+    if status == "PASS":
+        return original
+    issue_values = reinforcement.get("issues")
+    issues: list[StructuralIssueV1] = []
+    if isinstance(issue_values, list):
+        for value in issue_values:
+            if isinstance(value, dict):
+                issues.append(
+                    StructuralIssueV1(
+                        code=str(value.get("code", "BEAM_REINFORCEMENT_HOLD")),
+                        path=(
+                            f"$.components.{component_id}.result."
+                            "reinforcement_evaluation"
+                        ),
+                        message=str(
+                            value.get(
+                                "message",
+                                "Beam reinforcement evaluation is incomplete.",
+                            )
+                        ),
+                    )
+                )
+    if not issues:
+        issues.append(
+            StructuralIssueV1(
+                code=f"BEAM_REINFORCEMENT_{status}",
+                path=f"$.components.{component_id}.result.reinforcement_evaluation",
+                message=f"Supplied beam reinforcement governs as {status}.",
+            )
+        )
+    return _envelope(
+        intake=(IntakeStatus.PARTIAL if status == "HOLD" else IntakeStatus.VALID),
+        calculation=CalculationStatus.COMPLETED,
+        engineering=(
+            EngineeringStatus.HOLD if status == "HOLD" else EngineeringStatus.FAIL
+        ),
+        issues=issues,
+    )
 
 
 def _factor_map(
@@ -825,6 +938,107 @@ def run_gravity_workflow_v1(
                         if beam_result.is_ok
                         else EngineeringStatus.FAIL
                     ),
+                )
+                reinforcement_basis = beam_basis.reinforcement_basis
+                if reinforcement_basis is None:
+                    reinforcement_payload = _beam_reinforcement_hold_payload(
+                        "BEAM_REINFORCEMENT_BASIS_NOT_SUPPLIED",
+                        "Required steel was calculated, but bar-selection constraints "
+                        "and supplied longitudinal reinforcement were not provided.",
+                    )
+                else:
+                    selection = BeamReinforcementSelectionConstraintsV1(
+                        permitted_diameters_mm=(
+                            reinforcement_basis.permitted_diameters_mm
+                        ),
+                        maximum_layers=reinforcement_basis.maximum_layers,
+                        maximum_bars_per_layer=(
+                            reinforcement_basis.maximum_bars_per_layer
+                        ),
+                        nominal_max_aggregate_size_mm=(
+                            reinforcement_basis.nominal_max_aggregate_size_mm
+                        ),
+                        effective_depth_tolerance_mm=(
+                            reinforcement_basis.effective_depth_tolerance_mm
+                        ),
+                        objective=reinforcement_basis.objective,
+                        source_reference=(
+                            reinforcement_basis.selection_source_reference
+                        ),
+                    )
+                    supplied = None
+                    if (
+                        reinforcement_basis.supplied_tension is not None
+                        and reinforcement_basis.supplied_compression_or_hanger
+                        is not None
+                        and reinforcement_basis.supplied_reinforcement_source_reference
+                        is not None
+                    ):
+                        tension = reinforcement_basis.supplied_tension
+                        compression = reinforcement_basis.supplied_compression_or_hanger
+                        supplied = SuppliedBeamReinforcementV1(
+                            tension=LongitudinalBarLayersV1(
+                                diameter_mm=tension.diameter_mm,
+                                bars_per_layer=tension.bars_per_layer,
+                                vertical_center_spacings_mm=(
+                                    tension.vertical_center_spacings_mm
+                                ),
+                            ),
+                            compression_or_hanger=LongitudinalBarLayersV1(
+                                diameter_mm=compression.diameter_mm,
+                                bars_per_layer=compression.bars_per_layer,
+                                vertical_center_spacings_mm=(
+                                    compression.vertical_center_spacings_mm
+                                ),
+                            ),
+                            bar_type=reinforcement_basis.bar_type,
+                            has_standard_bend_at_start=(
+                                reinforcement_basis.has_standard_bend_at_start
+                            ),
+                            has_standard_bend_at_end=(
+                                reinforcement_basis.has_standard_bend_at_end
+                            ),
+                            source_reference=(
+                                reinforcement_basis.supplied_reinforcement_source_reference
+                            ),
+                        )
+                    support_start_mm, support_end_mm, support_source = (
+                        _beam_support_widths(
+                            member,
+                            members=request.building.members,
+                            sections=sections,
+                        )
+                    )
+                    reinforcement_payload = evaluate_supplied_beam_reinforcement_v1(
+                        ast_required_mm2=beam_result.flexure.Ast_required,
+                        asc_required_mm2=beam_result.flexure.Asc_required,
+                        b_mm=_required_dimension(section.width_mm, "beam width_mm"),
+                        D_mm=_required_dimension(section.depth_mm, "beam depth_mm"),
+                        d_design_mm=beam_basis.d_mm,
+                        d_dash_design_mm=beam_basis.d_dash_mm,
+                        cover_mm=_required_dimension(
+                            beam_basis.cover_mm, "beam cover_mm"
+                        ),
+                        stirrup_dia_mm=beam_basis.stirrup_dia_mm,
+                        fck_nmm2=material.fck_nmm2,
+                        fy_nmm2=beam_basis.fy_nmm2,
+                        vu_kn=_required_dimension(
+                            component_action.shear_kn,
+                            "beam factored shear action",
+                        ),
+                        support_width_start_mm=support_start_mm,
+                        support_width_end_mm=support_end_mm,
+                        support_width_source_reference=support_source,
+                        selection=selection,
+                        supplied=supplied,
+                    ).to_dict()
+                if not isinstance(result_payload, dict):
+                    raise TypeError("beam result must serialize to an object")
+                result_payload["reinforcement_evaluation"] = reinforcement_payload
+                envelope = _beam_envelope_with_reinforcement(
+                    component_id=member.id,
+                    original=envelope,
+                    reinforcement=reinforcement_payload,
                 )
             else:
                 column_basis = column_bases[member.id]

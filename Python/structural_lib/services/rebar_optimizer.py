@@ -213,7 +213,7 @@ def optimize_bar_arrangement(
                 count=count_needed,
                 diameter=float(dia_mm),
                 area_provided=round(area_provided, 0),
-                spacing=round(spacing_mm, 0),
+                spacing=spacing_mm,
                 layers=layers,
             )
 

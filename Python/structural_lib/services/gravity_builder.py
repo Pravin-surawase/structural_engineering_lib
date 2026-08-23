@@ -41,6 +41,7 @@ from structural_lib.core.building_gravity import (
 )
 from structural_lib.core.gravity_workflow import (
     GravityBeamDesignBasisV1,
+    GravityBeamReinforcementBasisV1,
     GravityColumnDesignBasisV1,
     GravityFootingDesignBasisV1,
     GravitySlabDesignBasisV1,
@@ -474,6 +475,18 @@ def get_gravity_workflow_example_request_v1() -> GravityWorkflowRequestV1:
                     stirrup_dia_mm=8,
                     effective_depth_source_reference=(
                         "Demonstration 650 mm effective depth"
+                    ),
+                    reinforcement_basis=GravityBeamReinforcementBasisV1(
+                        permitted_diameters_mm=(12, 16, 20, 25, 32),
+                        maximum_layers=2,
+                        maximum_bars_per_layer=8,
+                        nominal_max_aggregate_size_mm=20,
+                        effective_depth_tolerance_mm=5,
+                        objective="min_area",
+                        selection_source_reference=(
+                            "Demonstration bar-selection constraints; not a "
+                            "supplied reinforcement schedule"
+                        ),
                     ),
                 )
                 for beam_id in ("B1", "B2")

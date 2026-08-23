@@ -143,8 +143,8 @@
     {
       "module": "structural_lib",
       "export_classification": "preview",
-      "declared_export_count": 207,
-      "classified_symbol_count": 207,
+      "declared_export_count": 215,
+      "classified_symbol_count": 215,
       "symbols": [
         {
           "name": "AuditLogEntry",
@@ -198,6 +198,24 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.inputs",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamReinforcementEvaluationV1",
+          "qualified_name": "structural_lib.BeamReinforcementEvaluationV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_reinforcement",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamReinforcementSelectionConstraintsV1",
+          "qualified_name": "structural_lib.BeamReinforcementSelectionConstraintsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_reinforcement",
           "claim_disposition": "compatibility"
         },
         {
@@ -507,6 +525,33 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "GravityBeamDesignBasisV1",
+          "qualified_name": "structural_lib.GravityBeamDesignBasisV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.gravity_workflow",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "GravityBeamReinforcementBasisV1",
+          "qualified_name": "structural_lib.GravityBeamReinforcementBasisV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.gravity_workflow",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "GravityLongitudinalBarLayersV1",
+          "qualified_name": "structural_lib.GravityLongitudinalBarLayersV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.gravity_workflow",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "GravityWorkflowDefinitionV1",
           "qualified_name": "structural_lib.GravityWorkflowDefinitionV1",
           "kind": "class",
@@ -612,6 +657,15 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.inputs",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "LongitudinalBarLayersV1",
+          "qualified_name": "structural_lib.LongitudinalBarLayersV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_reinforcement",
           "claim_disposition": "compatibility"
         },
         {
@@ -855,6 +909,15 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.staircase_api",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "SuppliedBeamReinforcementV1",
+          "qualified_name": "structural_lib.SuppliedBeamReinforcementV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_reinforcement",
           "claim_disposition": "compatibility"
         },
         {
@@ -1623,6 +1686,15 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "evaluate_supplied_beam_reinforcement_v1",
+          "qualified_name": "structural_lib.evaluate_supplied_beam_reinforcement_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_reinforcement",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "export_bbs",
           "qualified_name": "structural_lib.export_bbs",
           "kind": "function",
@@ -2014,8 +2086,8 @@
     {
       "module": "structural_lib.services.api",
       "export_classification": "preview",
-      "declared_export_count": 184,
-      "classified_symbol_count": 184,
+      "declared_export_count": 192,
+      "classified_symbol_count": 192,
       "symbols": [
         {
           "name": "AuditLogEntry",
@@ -2069,6 +2141,24 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.inputs",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamReinforcementEvaluationV1",
+          "qualified_name": "structural_lib.services.api.BeamReinforcementEvaluationV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_reinforcement",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamReinforcementSelectionConstraintsV1",
+          "qualified_name": "structural_lib.services.api.BeamReinforcementSelectionConstraintsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_reinforcement",
           "claim_disposition": "compatibility"
         },
         {
@@ -2369,6 +2459,33 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "GravityBeamDesignBasisV1",
+          "qualified_name": "structural_lib.services.api.GravityBeamDesignBasisV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.gravity_workflow",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "GravityBeamReinforcementBasisV1",
+          "qualified_name": "structural_lib.services.api.GravityBeamReinforcementBasisV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.gravity_workflow",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "GravityLongitudinalBarLayersV1",
+          "qualified_name": "structural_lib.services.api.GravityLongitudinalBarLayersV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.gravity_workflow",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "GravityWorkflowDefinitionV1",
           "qualified_name": "structural_lib.services.api.GravityWorkflowDefinitionV1",
           "kind": "class",
@@ -2474,6 +2591,15 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.inputs",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "LongitudinalBarLayersV1",
+          "qualified_name": "structural_lib.services.api.LongitudinalBarLayersV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_reinforcement",
           "claim_disposition": "compatibility"
         },
         {
@@ -2717,6 +2843,15 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.staircase_api",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "SuppliedBeamReinforcementV1",
+          "qualified_name": "structural_lib.services.api.SuppliedBeamReinforcementV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_reinforcement",
           "claim_disposition": "compatibility"
         },
         {
@@ -3395,6 +3530,15 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "evaluate_supplied_beam_reinforcement_v1",
+          "qualified_name": "structural_lib.services.api.evaluate_supplied_beam_reinforcement_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_reinforcement",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "export_bbs",
           "qualified_name": "structural_lib.services.api.export_bbs",
           "kind": "function",
@@ -3678,8 +3822,8 @@
     {
       "module": "structural_lib.api",
       "export_classification": "compatibility",
-      "declared_export_count": 184,
-      "classified_symbol_count": 184,
+      "declared_export_count": 192,
+      "classified_symbol_count": 192,
       "symbols": [
         {
           "name": "AuditLogEntry",
@@ -3733,6 +3877,24 @@
           "classification": "compatibility",
           "declared_export": true,
           "defined_in": "structural_lib.core.inputs",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamReinforcementEvaluationV1",
+          "qualified_name": "structural_lib.api.BeamReinforcementEvaluationV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_reinforcement",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamReinforcementSelectionConstraintsV1",
+          "qualified_name": "structural_lib.api.BeamReinforcementSelectionConstraintsV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_reinforcement",
           "claim_disposition": "compatibility"
         },
         {
@@ -4033,6 +4195,33 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "GravityBeamDesignBasisV1",
+          "qualified_name": "structural_lib.api.GravityBeamDesignBasisV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.gravity_workflow",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "GravityBeamReinforcementBasisV1",
+          "qualified_name": "structural_lib.api.GravityBeamReinforcementBasisV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.gravity_workflow",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "GravityLongitudinalBarLayersV1",
+          "qualified_name": "structural_lib.api.GravityLongitudinalBarLayersV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.gravity_workflow",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "GravityWorkflowDefinitionV1",
           "qualified_name": "structural_lib.api.GravityWorkflowDefinitionV1",
           "kind": "class",
@@ -4138,6 +4327,15 @@
           "classification": "compatibility",
           "declared_export": true,
           "defined_in": "structural_lib.core.inputs",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "LongitudinalBarLayersV1",
+          "qualified_name": "structural_lib.api.LongitudinalBarLayersV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_reinforcement",
           "claim_disposition": "compatibility"
         },
         {
@@ -4381,6 +4579,15 @@
           "classification": "compatibility",
           "declared_export": true,
           "defined_in": "structural_lib.services.staircase_api",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "SuppliedBeamReinforcementV1",
+          "qualified_name": "structural_lib.api.SuppliedBeamReinforcementV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_reinforcement",
           "claim_disposition": "compatibility"
         },
         {
@@ -5056,6 +5263,15 @@
           "classification": "compatibility",
           "declared_export": true,
           "defined_in": "structural_lib.services.beam_api",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "evaluate_supplied_beam_reinforcement_v1",
+          "qualified_name": "structural_lib.api.evaluate_supplied_beam_reinforcement_v1",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_reinforcement",
           "claim_disposition": "compatibility"
         },
         {

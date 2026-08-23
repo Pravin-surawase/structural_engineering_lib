@@ -1,0 +1,204 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-23T14:49:25Z",
+      "query_status": "OK",
+      "reference": "good please start the work",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "IMPLEMENT_LIB_PRO_007_IN_BOUNDED_PACKETS",
+      "ADD_FOCUSED_TESTS_AND_EVIDENCE",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-23T14:49:25Z",
+    "prohibited_actions": [
+      "DELETE_BRANCH_OR_WORKTREE",
+      "BYPASS_CHECKS",
+      "PUBLISH_RELEASE",
+      "ACTIVATE_PROFESSIONAL_APPROVAL",
+      "CHANGE_INDIA_3_ENGINEERING",
+      "START_LIB_PRO_007_P3"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "IMPLEMENT_LIB_PRO_007_IN_BOUNDED_PACKETS",
+        "ADD_FOCUSED_TESTS_AND_EVIDENCE",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/lib-pro-007-p2-supplied-beam-reinforcement",
+      "head_sha": "9119cadc1322a718a00dd4e00f5650a21f100af4",
+      "task_id": "LIB-PRO-007-P2"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PRESERVE_INDIA_3_SOURCE_LIBRARY_CANDIDATE_UNTIL_LIB_PRO_007_M0",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "550e650d38e224d038ffcdc38bb2c8642dfbff16b6715a0ed7ecdb7a22523226",
+    "state": {
+      "branch": "codex/lib-pro-007-p2-supplied-beam-reinforcement",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "9119cadc1322a718a00dd4e00f5650a21f100af4",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 88.554,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-lib-pro-007-p2",
+      "head_sha": "9119cadc1322a718a00dd4e00f5650a21f100af4",
+      "hold_reasons": [
+        "changed paths: 27"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-23T14:55:19.701458+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p2",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 27,
+        "modified_paths": [
+          "Python/structural_lib/__init__.py",
+          "Python/structural_lib/codes/is456/beam/detailing.py",
+          "Python/structural_lib/core/__init__.py",
+          "Python/structural_lib/core/gravity_workflow.py",
+          "Python/structural_lib/services/api.py",
+          "Python/structural_lib/services/gravity_builder.py",
+          "Python/structural_lib/services/gravity_workflow.py",
+          "Python/structural_lib/services/rebar_optimizer.py",
+          "Python/tests/integration/test_rebar_optimizer.py",
+          "Python/tests/unit/test_detailing.py",
+          "Python/tests/unit/test_gravity_builder_v1.py",
+          "Python/tests/unit/test_gravity_workflow_v1.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/lib-pro-007-product-foundation-convergence.md",
+          "docs/planning/next-session-brief.md",
+          "docs/reference/api-classification.json",
+          "docs/reference/api-manifest.json",
+          "docs/reference/api.md",
+          "docs/specs/building-gravity-v1.md",
+          "fastapi_app/openapi_baseline.json",
+          "fastapi_app/tests/test_building_gravity.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "Python/structural_lib/services/beam_reinforcement.py",
+          "Python/tests/unit/test_beam_reinforcement.py",
+          "docs/verification/lib-pro-007-p2-supplied-beam-reinforcement-evidence.json",
+          "docs/verification/lib-pro-007-p2-supplied-beam-reinforcement-git-handoff-receipt.json",
+          "docs/verification/lib-pro-007-p2-supplied-beam-reinforcement-git-handoff-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "9119cadc1322a718a00dd4e00f5650a21f100af4",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p2"
+    }
+  },
+  "local_state_receipt_hash": "sha256:550e650d38e224d038ffcdc38bb2c8642dfbff16b6715a0ed7ecdb7a22523226",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-23T14:55:19.701631+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [
+      "PRESERVE_INDIA_3_SOURCE_LIBRARY_CANDIDATE_UNTIL_LIB_PRO_007_M0"
+    ],
+    "observed_at_utc": "2026-08-23T14:49:25Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources"
+    ],
+    "integration_owner": "orchestrator",
+    "owned_paths": [
+      "Python/structural_lib/__init__.py",
+      "Python/structural_lib/codes/is456/beam/detailing.py",
+      "Python/structural_lib/core/__init__.py",
+      "Python/structural_lib/core/gravity_workflow.py",
+      "Python/structural_lib/services/api.py",
+      "Python/structural_lib/services/beam_reinforcement.py",
+      "Python/structural_lib/services/gravity_builder.py",
+      "Python/structural_lib/services/gravity_workflow.py",
+      "Python/structural_lib/services/rebar_optimizer.py",
+      "Python/tests/integration/test_rebar_optimizer.py",
+      "Python/tests/unit/test_beam_reinforcement.py",
+      "Python/tests/unit/test_detailing.py",
+      "Python/tests/unit/test_gravity_builder_v1.py",
+      "Python/tests/unit/test_gravity_workflow_v1.py",
+      "docs/planning/lib-pro-007-product-foundation-convergence.md",
+      "docs/reference/api-classification.json",
+      "docs/reference/api-manifest.json",
+      "docs/reference/api.md",
+      "docs/specs/building-gravity-v1.md",
+      "docs/verification/lib-pro-007-p2-supplied-beam-reinforcement-evidence.json",
+      "docs/verification/lib-pro-007-p2-supplied-beam-reinforcement-git-handoff-source-evidence.json",
+      "docs/verification/lib-pro-007-p2-supplied-beam-reinforcement-git-handoff-receipt.json",
+      "fastapi_app/openapi_baseline.json",
+      "fastapi_app/tests/test_building_gravity.py"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "LIB-PRO-007-P2"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

@@ -18335,6 +18335,16 @@
             ],
             "title": "Pt Percent"
           },
+          "reinforcement_basis": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GravityBeamReinforcementBasisV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "stirrup_dia_mm": {
             "default": 8.0,
             "exclusiveMinimum": 0.0,
@@ -18350,6 +18360,123 @@
           "effective_depth_source_reference"
         ],
         "title": "GravityBeamDesignBasisV1",
+        "type": "object"
+      },
+      "GravityBeamReinforcementBasisV1": {
+        "additionalProperties": false,
+        "description": "Selection limits plus optional source-referenced supplied beam bars.",
+        "properties": {
+          "bar_type": {
+            "default": "deformed",
+            "enum": [
+              "deformed",
+              "plain"
+            ],
+            "title": "Bar Type",
+            "type": "string"
+          },
+          "effective_depth_tolerance_mm": {
+            "default": 5.0,
+            "minimum": 0.0,
+            "title": "Effective Depth Tolerance Mm",
+            "type": "number"
+          },
+          "has_standard_bend_at_end": {
+            "default": false,
+            "title": "Has Standard Bend At End",
+            "type": "boolean"
+          },
+          "has_standard_bend_at_start": {
+            "default": false,
+            "title": "Has Standard Bend At Start",
+            "type": "boolean"
+          },
+          "maximum_bars_per_layer": {
+            "default": 8,
+            "exclusiveMinimum": 0.0,
+            "title": "Maximum Bars Per Layer",
+            "type": "integer"
+          },
+          "maximum_layers": {
+            "default": 2,
+            "exclusiveMinimum": 0.0,
+            "title": "Maximum Layers",
+            "type": "integer"
+          },
+          "nominal_max_aggregate_size_mm": {
+            "default": 20.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Nominal Max Aggregate Size Mm",
+            "type": "number"
+          },
+          "objective": {
+            "default": "min_area",
+            "enum": [
+              "min_area",
+              "min_bar_count",
+              "max_spacing"
+            ],
+            "title": "Objective",
+            "type": "string"
+          },
+          "permitted_diameters_mm": {
+            "default": [
+              12.0,
+              16.0,
+              20.0,
+              25.0,
+              32.0
+            ],
+            "items": {
+              "type": "number"
+            },
+            "title": "Permitted Diameters Mm",
+            "type": "array"
+          },
+          "selection_source_reference": {
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Selection Source Reference",
+            "type": "string"
+          },
+          "supplied_compression_or_hanger": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GravityLongitudinalBarLayersV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "supplied_reinforcement_source_reference": {
+            "anyOf": [
+              {
+                "maxLength": 512,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supplied Reinforcement Source Reference"
+          },
+          "supplied_tension": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GravityLongitudinalBarLayersV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "selection_source_reference"
+        ],
+        "title": "GravityBeamReinforcementBasisV1",
         "type": "object"
       },
       "GravityCalculationBookV1": {
@@ -19140,6 +19267,39 @@
         ],
         "title": "GravityLoadStateV1",
         "type": "string"
+      },
+      "GravityLongitudinalBarLayersV1": {
+        "additionalProperties": false,
+        "description": "Exact one-diameter bar layers, ordered from the relevant face inward.",
+        "properties": {
+          "bars_per_layer": {
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 1,
+            "title": "Bars Per Layer",
+            "type": "array"
+          },
+          "diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Diameter Mm",
+            "type": "number"
+          },
+          "vertical_center_spacings_mm": {
+            "default": [],
+            "items": {
+              "type": "number"
+            },
+            "title": "Vertical Center Spacings Mm",
+            "type": "array"
+          }
+        },
+        "required": [
+          "diameter_mm",
+          "bars_per_layer"
+        ],
+        "title": "GravityLongitudinalBarLayersV1",
+        "type": "object"
       },
       "GravityMaterialV1": {
         "additionalProperties": false,

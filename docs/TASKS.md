@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-23 — LIB-PRO-007-P1 PR #853 hosted repair
+**Updated:** 2026-08-23 — LIB-PRO-007-P2 supplied beam reinforcement candidate
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-007-P1 | Repair the canonical beam cost optimizer so every accepted input is decisive and every engineering output is calculated | Main Agent | M | P0 | 🟡 ACTIVE — PR #853; optional smart-cost failure repair passes locally, hosted rerun pending |
+| LIB-PRO-007-P2 | Separate calculated, recommended, and source-referenced supplied beam reinforcement and make spacing/anchorage decisive | Main Agent | M | P0 | 🟡 ACTIVE — implementation and focused truth vectors pass; candidate verification pending |
 | INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent + structural engineer | S | P0 | ⏸ PAUSED — private source library preserved; resume after LIB-PRO-007 cumulative acceptance |
 
 `LIB-PRO-006` merged through PR #851 at `2d6df18e`. It confirms the practical
@@ -145,15 +145,24 @@ Python/REST/React/Excel results; P7 converges compatibility only after canonical
 destinations work. It does not require every library helper to become an HTTP
 route and does not authorize a broad legacy deletion.
 
-`LIB-PRO-007-P1` now applies exact material grades, effective-depth basis,
+`LIB-PRO-007-P1` merged through PR #853 at `9119cadc`. It applies exact material grades, effective-depth basis,
 section grid, utilization threshold, unit rates, factored shear, and supplied
 stirrup area. It rejects infeasible shear and unsupported objectives, derives
 all response engineering fields from the stable result, and preserves the
 explicit boundary that stirrup mass is not part of the current cost quantity.
-PR #853's first hosted run exposed and locally repaired one integration defect:
+PR #853's first hosted run exposed and repaired one integration defect:
 an infeasible optional smart-cost search now preserves the canonical beam
-`FAIL`, returns no cost advice, and publishes an explicit warning. This remains
-a candidate claim until the repair commit passes hosted gates.
+`FAIL`, returns no cost advice, and publishes an explicit warning. All required
+hosted checks passed on the repair head before the unchanged tree was merged.
+
+`LIB-PRO-007-P2` is implemented from exact merged P1 base `9119cadc`. It adds
+an additive gravity request basis for explicit bar-selection constraints and
+optional source-referenced layers, reuses the maintained optimizer and
+anchorage service, corrects centre-to-centre versus clear-spacing truth and
+rounding at the boundary, and proves calculated-demand `HOLD`, inadequate
+supply `FAIL`, and complete bounded `PASS`. The maintained open-hall example
+now recommends bars but remains `HOLD` because no project bar schedule is
+supplied. Candidate, hosted, and merge claims remain pending.
 
 `MAINT-0134` assigns cross-agent policy to `AGENTS.md`, composes Claude
 through `@AGENTS.md`, keeps a concise standalone Copilot baseline, retires

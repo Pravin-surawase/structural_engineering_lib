@@ -50,8 +50,14 @@ def test_maintained_example_reproduces_the_practical_open_hall() -> None:
 
     assert {
         components[item].result_envelope["overall_status"]
-        for item in ("P1", "B1", "B2", "C1", "C2", "C3", "C4")
+        for item in ("P1", "C1", "C2", "C3", "C4")
     } == {"PASS"}
+    assert {
+        components[item].result_envelope["overall_status"] for item in ("B1", "B2")
+    } == {"HOLD"}
+    beam_reinforcement = components["B1"].result["reinforcement_evaluation"]
+    assert beam_reinforcement["recommended_tension"] is not None
+    assert beam_reinforcement["supplied_tension"] is None
     assert {
         components[item].result_envelope["overall_status"]
         for item in ("F1", "F2", "F3", "F4")
@@ -65,9 +71,9 @@ def test_maintained_example_reproduces_the_practical_open_hall() -> None:
 
     governing = result.result_envelope["issues"][0]
     assert result.result_envelope["overall_status"] == "HOLD"
-    assert governing["code"] == "FOOTING_GOVERNING_HOLD"
-    assert governing["path"] == "$.components.F1"
-    assert "hooks or bends" in governing["message"]
+    assert governing["code"] == "BEAM_SUPPLIED_REINFORCEMENT_NOT_SUPPLIED"
+    assert governing["path"] == "$.components.B1.result.reinforcement_evaluation"
+    assert "no source-referenced" in governing["message"]
     assert bundle.calculation_book.reconciliation == {
         "all_balanced": True,
         "boundary_count": 26,
@@ -77,7 +83,7 @@ def test_maintained_example_reproduces_the_practical_open_hall() -> None:
         "blocked_entry_count": 0,
     }
     markdown = render_gravity_calculation_book_markdown_v1(bundle.calculation_book)
-    assert "Governing reason: `FOOTING_GOVERNING_HOLD`" in markdown
+    assert "Governing reason: `BEAM_SUPPLIED_REINFORCEMENT_NOT_SUPPLIED`" in markdown
 
 
 def test_example_document_round_trips_as_strict_request() -> None:
@@ -112,5 +118,5 @@ def test_cli_example_is_runnable_without_repository_fixtures(tmp_path: Path) -> 
 
     result = json.loads(result_path.read_text(encoding="utf-8"))
     assert result["workflow_result"]["result_envelope"]["issues"][0]["code"] == (
-        "FOOTING_GOVERNING_HOLD"
+        "BEAM_SUPPLIED_REINFORCEMENT_NOT_SUPPLIED"
     )

@@ -11,8 +11,10 @@ from pydantic import ValidationError
 from structural_lib.core.building_gravity import BuildingModelV1, GravityMemberKindV1
 from structural_lib.core.gravity_workflow import (
     GravityBeamDesignBasisV1,
+    GravityBeamReinforcementBasisV1,
     GravityColumnDesignBasisV1,
     GravityFootingDesignBasisV1,
+    GravityLongitudinalBarLayersV1,
     GravitySlabDesignBasisV1,
     GravityWorkflowRequestV1,
 )
@@ -36,6 +38,7 @@ def _request(
     beam_effective_depth_mm: float = 450,
     superimposed_dead_load_kn_m2: float = 1.5,
     live_load_kn_m2: float = 3.0,
+    beam_reinforcement_basis: GravityBeamReinforcementBasisV1 | None = None,
 ) -> GravityWorkflowRequestV1:
     building = building or _building()
     loads = _loads(
@@ -47,6 +50,13 @@ def _request(
     beam_bases: tuple[GravityBeamDesignBasisV1, ...] = ()
     column_bases: tuple[GravityColumnDesignBasisV1, ...] = ()
     if with_supported_component_bases:
+        column_section = next(
+            item for item in building.sections if item.id == "S_COLUMN"
+        )
+        column_steel_area_mm2 = max(
+            1800.0,
+            0.01 * float(column_section.width_mm) * float(column_section.depth_mm),
+        )
         slab_bases = (
             GravitySlabDesignBasisV1(
                 panel_id="P1",
@@ -74,7 +84,9 @@ def _request(
                 fy_nmm2=415,
                 asv_mm2=100,
                 ast_mm2_for_shear=1500,
+                cover_mm=25 if beam_reinforcement_basis is not None else None,
                 effective_depth_source_reference="450 mm reviewed effective depth",
+                reinforcement_basis=beam_reinforcement_basis,
             )
             for member in building.members
             if member.kind is GravityMemberKindV1.BEAM
@@ -83,7 +95,7 @@ def _request(
             GravityColumnDesignBasisV1(
                 column_id=member.id,
                 fy_nmm2=415,
-                Asc_mm2=1800,
+                Asc_mm2=column_steel_area_mm2,
                 d_prime_mm=50,
                 end_condition="FIXED_FIXED",
                 end_condition_source_reference="Reviewed braced fixed-fixed basis",
@@ -103,6 +115,53 @@ def _request(
         beam_design_bases=beam_bases,
         column_design_bases=column_bases,
     )
+
+
+def _beam_reinforcement_basis(
+    *, supplied: bool, tension_count: int = 5
+) -> GravityBeamReinforcementBasisV1:
+    supply = (
+        {
+            "supplied_tension": GravityLongitudinalBarLayersV1(
+                diameter_mm=16,
+                bars_per_layer=(tension_count,),
+            ),
+            "supplied_compression_or_hanger": GravityLongitudinalBarLayersV1(
+                diameter_mm=12,
+                bars_per_layer=(2,),
+            ),
+            "supplied_reinforcement_source_reference": (
+                "Reviewed B1/B2 test bar schedule"
+            ),
+            "has_standard_bend_at_start": True,
+            "has_standard_bend_at_end": True,
+        }
+        if supplied
+        else {}
+    )
+    return GravityBeamReinforcementBasisV1(
+        permitted_diameters_mm=(12, 16, 20),
+        maximum_layers=2,
+        maximum_bars_per_layer=8,
+        nominal_max_aggregate_size_mm=20,
+        effective_depth_tolerance_mm=5,
+        objective="min_area",
+        selection_source_reference="Reviewed test selection constraints",
+        **supply,
+    )
+
+
+def _building_with_square_column_width(width_mm: float) -> BuildingModelV1:
+    payload = _building().model_dump(mode="python", exclude={"accepted_model_hash"})
+    payload["sections"] = tuple(
+        (
+            {**section, "width_mm": width_mm, "depth_mm": width_mm}
+            if section["id"] == "S_COLUMN"
+            else section
+        )
+        for section in payload["sections"]
+    )
+    return BuildingModelV1.model_validate(payload)
 
 
 def _building_with_x_span(x_span_mm: float) -> BuildingModelV1:
@@ -177,6 +236,27 @@ def test_request_binds_exact_model_load_hashes_and_known_component_ids() -> None
         )
 
 
+def test_beam_reinforcement_basis_rejects_partial_supply_and_missing_cover() -> None:
+    with pytest.raises(ValidationError, match="must be supplied together"):
+        GravityBeamReinforcementBasisV1(
+            selection_source_reference="Reviewed test selection constraints",
+            supplied_tension=GravityLongitudinalBarLayersV1(
+                diameter_mm=16,
+                bars_per_layer=(4,),
+            ),
+        )
+
+    with pytest.raises(ValidationError, match="cover_mm is required"):
+        GravityBeamDesignBasisV1(
+            beam_id="B1",
+            d_mm=450,
+            fy_nmm2=415,
+            asv_mm2=100,
+            effective_depth_source_reference="Reviewed test depth",
+            reinforcement_basis=_beam_reinforcement_basis(supplied=False),
+        )
+
+
 def test_hand_example_actions_match_exact_ledger_and_closed_form_values() -> None:
     request = _request()
     actions = build_gravity_member_actions_v1(
@@ -239,16 +319,78 @@ def test_supported_slab_beam_and_column_bases_call_canonical_components() -> Non
     result = run_gravity_workflow_v1(request)
     by_id = {item.component_id: item for item in result.components}
 
-    for component_id in ("P1", "B1", "B2", "C1", "C2", "C3", "C4"):
+    for component_id in ("P1", "C1", "C2", "C3", "C4"):
         assert by_id[component_id].result is not None
         assert by_id[component_id].result_envelope["overall_status"] in {
             "PASS",
             "FAIL",
         }
+    for component_id in ("B1", "B2"):
+        assert by_id[component_id].result is not None
+        assert by_id[component_id].result_envelope["overall_status"] == "HOLD"
+        assert by_id[component_id].result["reinforcement_evaluation"]["status"] == (
+            "HOLD"
+        )
+        assert by_id[component_id].result_envelope["issues"][0]["code"] == (
+            "BEAM_REINFORCEMENT_BASIS_NOT_SUPPLIED"
+        )
     for component_id in ("F1", "F2", "F3", "F4"):
         assert by_id[component_id].result is None
         assert by_id[component_id].result_envelope["overall_status"] == "HOLD"
     assert result.result_envelope["overall_status"] == "HOLD"
+
+
+def test_beam_selection_basis_recommends_bars_but_missing_supply_holds() -> None:
+    request = _request(
+        with_supported_component_bases=True,
+        beam_reinforcement_basis=_beam_reinforcement_basis(supplied=False),
+    )
+    result = run_gravity_workflow_v1(request)
+    beam = next(item for item in result.components if item.component_id == "B1")
+
+    evaluation = beam.result["reinforcement_evaluation"]
+    assert beam.result_envelope["overall_status"] == "HOLD"
+    assert evaluation["recommended_tension"] is not None
+    assert evaluation["supplied_tension"] is None
+    assert beam.result_envelope["calculation_status"] == "COMPLETED"
+    assert beam.result_envelope["issues"][0]["code"] == (
+        "BEAM_SUPPLIED_REINFORCEMENT_NOT_SUPPLIED"
+    )
+
+
+def test_source_referenced_supplied_beam_bars_can_reach_bounded_pass() -> None:
+    request = _request(
+        _building_with_square_column_width(1600),
+        with_supported_component_bases=True,
+        beam_effective_depth_mm=459,
+        beam_reinforcement_basis=_beam_reinforcement_basis(supplied=True),
+    )
+    result = run_gravity_workflow_v1(request)
+    beams = [item for item in result.components if item.kind.value == "BEAM"]
+
+    assert {item.result_envelope["overall_status"] for item in beams} == {"PASS"}
+    assert {item.result["reinforcement_evaluation"]["status"] for item in beams} == {
+        "PASS"
+    }
+
+
+def test_inadequate_source_referenced_beam_bars_fail() -> None:
+    request = _request(
+        _building_with_square_column_width(1600),
+        with_supported_component_bases=True,
+        beam_effective_depth_mm=459,
+        beam_reinforcement_basis=_beam_reinforcement_basis(
+            supplied=True, tension_count=2
+        ),
+    )
+    result = run_gravity_workflow_v1(request)
+    beam = next(item for item in result.components if item.component_id == "B1")
+
+    assert beam.result_envelope["overall_status"] == "FAIL"
+    assert beam.result["reinforcement_evaluation"]["status"] == "FAIL"
+    assert beam.result_envelope["issues"][0]["code"] == (
+        "BEAM_TENSION_REINFORCEMENT_AREA_INSUFFICIENT"
+    )
 
 
 def test_component_failure_remains_fail_while_other_missing_basis_holds_aggregate() -> (
@@ -258,6 +400,7 @@ def test_component_failure_remains_fail_while_other_missing_basis_holds_aggregat
         _building_with_x_span(10_000),
         with_supported_component_bases=True,
         beam_effective_depth_mm=200,
+        beam_reinforcement_basis=_beam_reinforcement_basis(supplied=True),
     )
     result = run_gravity_workflow_v1(request)
     by_id = {item.component_id: item for item in result.components}
@@ -267,6 +410,7 @@ def test_component_failure_remains_fail_while_other_missing_basis_holds_aggregat
     assert by_id["B1"].result_envelope["issues"][0]["code"] == (
         "BEAM_DESIGN_CHECK_FAILED"
     )
+    assert by_id["B1"].result["reinforcement_evaluation"]["status"] == "HOLD"
     assert by_id["F1"].result_envelope["overall_status"] == "HOLD"
     assert result.result_envelope["overall_status"] == "HOLD"
     assert result.result_envelope["issues"]

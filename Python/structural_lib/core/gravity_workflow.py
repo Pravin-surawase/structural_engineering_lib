@@ -15,12 +15,14 @@ from structural_lib.core.building_gravity import BuildingModelV1, LoadModelV1
 __all__ = [
     "ComponentApplicabilityMatrixV1",
     "GravityBeamDesignBasisV1",
+    "GravityBeamReinforcementBasisV1",
     "GravityColumnDesignBasisV1",
     "GravityComponentApplicabilityV1",
     "GravityComponentKindV1",
     "GravityComponentResultV1",
     "GravityFootingDesignBasisV1",
     "GravityMemberActionV1",
+    "GravityLongitudinalBarLayersV1",
     "GravityPrerequisiteDispositionV1",
     "GravitySlabDesignBasisV1",
     "GravityWorkflowRequestV1",
@@ -66,6 +68,67 @@ class GravitySlabDesignBasisV1(_FrozenModel):
     effective_depth_source_reference: str = Field(min_length=1, max_length=512)
 
 
+class GravityLongitudinalBarLayersV1(_FrozenModel):
+    """Exact one-diameter bar layers, ordered from the relevant face inward."""
+
+    diameter_mm: float = Field(gt=0)
+    bars_per_layer: tuple[int, ...] = Field(min_length=1)
+    vertical_center_spacings_mm: tuple[float, ...] = ()
+
+    @model_validator(mode="after")
+    def validate_layers(self) -> GravityLongitudinalBarLayersV1:
+        if any(count < 2 for count in self.bars_per_layer):
+            raise ValueError("bars_per_layer requires at least two bars per layer")
+        if len(self.vertical_center_spacings_mm) != len(self.bars_per_layer) - 1:
+            raise ValueError(
+                "vertical_center_spacings_mm requires one value between layers"
+            )
+        if any(value <= 0 for value in self.vertical_center_spacings_mm):
+            raise ValueError("vertical center spacings must be positive")
+        return self
+
+
+class GravityBeamReinforcementBasisV1(_FrozenModel):
+    """Selection limits plus optional source-referenced supplied beam bars."""
+
+    permitted_diameters_mm: tuple[float, ...] = (12.0, 16.0, 20.0, 25.0, 32.0)
+    maximum_layers: int = Field(default=2, gt=0)
+    maximum_bars_per_layer: int = Field(default=8, gt=0)
+    nominal_max_aggregate_size_mm: float = Field(default=20.0, gt=0)
+    effective_depth_tolerance_mm: float = Field(default=5.0, ge=0)
+    objective: Literal["min_area", "min_bar_count", "max_spacing"] = "min_area"
+    selection_source_reference: str = Field(min_length=1, max_length=512)
+    supplied_tension: GravityLongitudinalBarLayersV1 | None = None
+    supplied_compression_or_hanger: GravityLongitudinalBarLayersV1 | None = None
+    bar_type: Literal["deformed", "plain"] = "deformed"
+    has_standard_bend_at_start: bool = False
+    has_standard_bend_at_end: bool = False
+    supplied_reinforcement_source_reference: str | None = Field(
+        default=None, min_length=1, max_length=512
+    )
+
+    @model_validator(mode="after")
+    def validate_selection_and_supply(self) -> GravityBeamReinforcementBasisV1:
+        normalized = tuple(float(value) for value in self.permitted_diameters_mm)
+        if not normalized or normalized != tuple(sorted(set(normalized))):
+            raise ValueError(
+                "permitted_diameters_mm must be unique and strictly increasing"
+            )
+        supplied_values = (
+            self.supplied_tension,
+            self.supplied_compression_or_hanger,
+            self.supplied_reinforcement_source_reference,
+        )
+        if any(value is not None for value in supplied_values) and any(
+            value is None for value in supplied_values
+        ):
+            raise ValueError(
+                "tension bars, compression or hanger bars, and their source "
+                "reference must be supplied together"
+            )
+        return self
+
+
 class GravityBeamDesignBasisV1(_FrozenModel):
     beam_id: str = Field(pattern=_ID_PATTERN)
     d_mm: float = Field(gt=0)
@@ -77,6 +140,15 @@ class GravityBeamDesignBasisV1(_FrozenModel):
     cover_mm: float | None = Field(default=None, gt=0)
     stirrup_dia_mm: float = Field(default=8.0, gt=0)
     effective_depth_source_reference: str = Field(min_length=1, max_length=512)
+    reinforcement_basis: GravityBeamReinforcementBasisV1 | None = None
+
+    @model_validator(mode="after")
+    def validate_reinforcement_geometry(self) -> GravityBeamDesignBasisV1:
+        if self.reinforcement_basis is not None and self.cover_mm is None:
+            raise ValueError(
+                "cover_mm is required when a reinforcement basis is supplied"
+            )
+        return self
 
 
 class GravityColumnDesignBasisV1(_FrozenModel):

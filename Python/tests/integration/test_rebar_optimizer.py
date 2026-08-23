@@ -26,7 +26,7 @@ from structural_lib.services.rebar_optimizer import Objective, optimize_bar_arra
             "name": "two_layers_when_one_layer_spacing_fails",
             "inputs": {
                 "ast_required_mm2": 1000.0,
-                "b_mm": 200.0,
+                "b_mm": 226.0,
                 "cover_mm": 25.0,
                 "stirrup_dia_mm": 8.0,
                 "allowed_dia_mm": [12.0],
@@ -34,7 +34,7 @@ from structural_lib.services.rebar_optimizer import Objective, optimize_bar_arra
                 "objective": "min_area",
                 "agg_size_mm": 20.0,
             },
-            "expected": {"count": 9, "dia": 12.0, "layers": 2, "spacing": 30.0},
+            "expected": {"count": 9, "dia": 12.0, "layers": 2, "spacing": 37.0},
         },
         {
             "name": "max_bars_per_layer_can_force_dia_change",
@@ -63,7 +63,7 @@ from structural_lib.services.rebar_optimizer import Objective, optimize_bar_arra
                 "objective": "min_area",
                 "agg_size_mm": 20.0,
             },
-            "expected": {"count": 5, "dia": 16.0, "layers": 1, "spacing": 54.0},
+            "expected": {"count": 5, "dia": 16.0, "layers": 1, "spacing": 54.5},
         },
         {
             "name": "zero_ast_returns_minimum_arrangement",
@@ -112,7 +112,7 @@ def test_optimizer_prefers_two_layers_when_one_layer_spacing_fails():
     # by restricting to a single diameter.
     res = optimize_bar_arrangement(
         ast_required_mm2=1600,
-        b_mm=200,
+        b_mm=225,
         cover_mm=25,
         stirrup_dia_mm=8,
         allowed_dia_mm=[16],
@@ -497,7 +497,7 @@ def test_optimizer_two_layer_arrangement_spacing():
     """Two-layer arrangement should distribute bars correctly."""
     res = optimize_bar_arrangement(
         ast_required_mm2=1600,
-        b_mm=250,
+        b_mm=350,
         cover_mm=25,
         allowed_dia_mm=[12],
         max_layers=2,
@@ -505,8 +505,8 @@ def test_optimizer_two_layer_arrangement_spacing():
     assert res.is_feasible is True
     assert res.arrangement is not None
     if res.arrangement.layers == 2:
-        # Both layers should have reasonable spacing
-        assert res.arrangement.spacing >= 25  # Minimum practical spacing
+        # The clause threshold applies to the clear distance.
+        assert res.arrangement.spacing - res.arrangement.diameter >= 25
 
 
 def test_optimizer_three_layer_arrangement():

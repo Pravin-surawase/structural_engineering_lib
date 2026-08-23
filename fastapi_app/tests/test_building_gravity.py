@@ -238,7 +238,7 @@ def test_building_gravity_definition_declares_all_product_surfaces(client) -> No
     assert run.status_code == 200
     envelope = run.json()["data"]["workflow_result"]["result_envelope"]
     assert envelope["overall_status"] == "HOLD"
-    assert envelope["issues"][0]["code"] == "FOOTING_GOVERNING_HOLD"
+    assert envelope["issues"][0]["code"] == ("BEAM_SUPPLIED_REINFORCEMENT_NOT_SUPPLIED")
 
 
 def test_building_gravity_route_preserves_actions_holds_and_calculation_book(

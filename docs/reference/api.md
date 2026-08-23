@@ -135,6 +135,18 @@ surface: `api.GravityWorkflowRequestV1`, `api.GravityWorkflowResultV1`,
 `api.ComposedWorkflowCapability` record without treating discoverability as
 tool approval.
 
+Beam reinforcement truth is exposed separately through
+`api.evaluate_supplied_beam_reinforcement_v1` and its immutable selection,
+layer, supply, and result types. Required steel, a preliminary bar
+recommendation, and source-referenced supplied bars are distinct fields and
+must not be relabelled as one another.
+
+The exact public types are `api.BeamReinforcementEvaluationV1`,
+`api.BeamReinforcementSelectionConstraintsV1`,
+`api.LongitudinalBarLayersV1`, `api.SuppliedBeamReinforcementV1`,
+`api.GravityBeamDesignBasisV1`, `api.GravityBeamReinforcementBasisV1`, and
+`api.GravityLongitudinalBarLayersV1`.
+
 ## 0. Unified CLI (v0.9.4+)
 
 The library provides a unified command-line interface:
@@ -444,6 +456,34 @@ result = api.design_and_detail_beam_is456(
 print(result.summary())  # 'B1@GF: 300×500mm, Ast=856mm², OK'
 print(result.design.flexure.ast_required)  # 856.26
 ```
+
+### 1A.4A Supplied Reinforcement Evaluation
+
+`evaluate_supplied_beam_reinforcement_v1()` consumes the exact required
+`Ast`/`Asc` from a design result, explicit bar-selection constraints, and an
+optional source-referenced layer-by-layer arrangement. It reuses the maintained
+bar optimizer, clear-spacing rule, effective-depth geometry, and conservative
+simple-support anchorage check.
+
+The result keeps three claims separate:
+
+- `ast_required_mm2` and `asc_required_mm2` are calculated demand;
+- `recommended_tension` is explicitly preliminary and is never supplied
+  detailing; and
+- `supplied_tension` and `supplied_compression_or_hanger` are evaluated only
+  when the caller provides exact layers and a source reference.
+
+Missing supplied bars return `HOLD` while retaining the calculated demand and,
+when feasible, a recommendation. Inadequate area, clear spacing, effective
+depth, group separation, or anchorage returns `FAIL`. `PASS` is bounded to the
+documented rectangular, non-bundled, one-diameter-per-group case and still
+requires qualified review. Curtailment, laps, joint congestion, construction
+sequence, and seismic capacity design remain outside this result.
+
+`check_min_spacing()` accepts centre-to-centre spacing because it normally
+receives `calculate_bar_spacing()` output. It subtracts the bar diameter and
+checks the resulting clear distance. Neither function rounds the engineering
+spacing before the compliance decision.
 
 ### 1A.4.1 Structured Input Classes (v0.17.0+)
 
@@ -2545,7 +2585,7 @@ def calculate_bar_spacing(
 ) -> float  # Returns c/c spacing (mm)
 
 def check_min_spacing(
-    spacing: float,
+    spacing: float,             # Centre-to-centre spacing (mm)
     bar_dia: float,
     agg_size: float = 20.0
 ) -> Tuple[bool, str]  # (is_valid, message)
@@ -2557,7 +2597,9 @@ def check_side_face_reinforcement(
 ) -> Tuple[bool, float, float]  # (is_required, area_per_face_mm2, max_spacing_mm)
 ```
 
-**Minimum Spacing:** max(bar_dia, agg_size + 5mm, 25mm) per IS 456 Cl 26.3.2.
+**Minimum Clear Spacing:** `check_min_spacing` subtracts the bar diameter from
+the supplied centre-to-centre spacing, then checks
+max(bar_dia, agg_size + 5mm, 25mm) per IS 456 Cl 26.3.2.
 
 **Side-Face Reinforcement (IS 456 Cl 26.5.1.3):**
 - Required when D > 750 mm

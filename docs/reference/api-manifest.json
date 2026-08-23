@@ -2,7 +2,7 @@
   "generated": "2026-08-23",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 184,
+  "count": 192,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -33,6 +33,16 @@
       "name": "BeamInput",
       "kind": "class",
       "signature": "(beam_id: 'str', story: 'str', geometry: 'BeamGeometryInput', materials: 'MaterialsInput', loads: 'LoadsInput | None' = None, load_cases: 'list[LoadCaseInput]' = <factory>, detailing_config: 'DetailingConfigInput' = <factory>, units: 'str' = 'IS456') -> None"
+    },
+    {
+      "name": "BeamReinforcementEvaluationV1",
+      "kind": "class",
+      "signature": "(status: 'ReinforcementStatus', ast_required_mm2: 'float', asc_required_mm2: 'float', recommended_tension: 'dict[str, object] | None', supplied_tension: 'dict[str, object] | None', supplied_compression_or_hanger: 'dict[str, object] | None', checks: 'dict[str, object]', issues: 'tuple[dict[str, str], ...]', clause_refs: 'dict[str, str]', provenance: 'dict[str, str | None]', limitations: 'tuple[str, ...]') -> None"
+    },
+    {
+      "name": "BeamReinforcementSelectionConstraintsV1",
+      "kind": "class",
+      "signature": "(permitted_diameters_mm: 'tuple[float, ...]', maximum_layers: 'int', maximum_bars_per_layer: 'int', nominal_max_aggregate_size_mm: 'float', effective_depth_tolerance_mm: 'float', objective: 'Objective', source_reference: 'str') -> None"
     },
     {
       "name": "BearingPressureCheckResult",
@@ -200,6 +210,21 @@
       "signature": "(*args, **kwds)"
     },
     {
+      "name": "GravityBeamDesignBasisV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "GravityBeamReinforcementBasisV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "GravityLongitudinalBarLayersV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
       "name": "GravityWorkflowDefinitionV1",
       "kind": "class",
       "signature": "(**data: 'Any') -> 'None'"
@@ -258,6 +283,11 @@
       "name": "LoadsInput",
       "kind": "class",
       "signature": "(mu_knm: 'float', vu_kn: 'float', case_id: 'str' = 'CASE-1') -> None"
+    },
+    {
+      "name": "LongitudinalBarLayersV1",
+      "kind": "class",
+      "signature": "(diameter_mm: 'float', bars_per_layer: 'tuple[int, ...]', vertical_center_spacings_mm: 'tuple[float, ...]' = ()) -> None"
     },
     {
       "name": "MaterialsInput",
@@ -393,6 +423,11 @@
       "name": "StraightFlightStaircaseResult",
       "kind": "class",
       "signature": "(case_id: 'str', status: 'StaircaseDesignStatus', geometry: 'StraightFlightGeometryResult', actions: 'StraightFlightActionResult', design: 'StraightFlightDesignResult', supported_case: 'str', held_cases: 'tuple[str, ...]', provenance: 'StraightFlightStaircaseProvenance', qualified_review_required: 'bool' = True, complete_engineering_design_approved: 'bool' = False) -> None"
+    },
+    {
+      "name": "SuppliedBeamReinforcementV1",
+      "kind": "class",
+      "signature": "(tension: 'LongitudinalBarLayersV1', compression_or_hanger: 'LongitudinalBarLayersV1', bar_type: \"Literal['deformed', 'plain']\", has_standard_bend_at_start: 'bool', has_standard_bend_at_end: 'bool', source_reference: 'str') -> None"
     },
     {
       "name": "SymmetricCombinedFootingDesignInput",
@@ -768,6 +803,11 @@
       "name": "enhanced_shear_strength_is456",
       "kind": "function",
       "signature": "(fck_nmm2: 'float', pt_percent: 'float', d_mm: 'float', av_mm: 'float') -> 'float'"
+    },
+    {
+      "name": "evaluate_supplied_beam_reinforcement_v1",
+      "kind": "function",
+      "signature": "(*, ast_required_mm2: 'float', asc_required_mm2: 'float', b_mm: 'float', D_mm: 'float', d_design_mm: 'float', d_dash_design_mm: 'float | None', cover_mm: 'float', stirrup_dia_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', vu_kn: 'float', support_width_start_mm: 'float | None', support_width_end_mm: 'float | None', support_width_source_reference: 'str | None', selection: 'BeamReinforcementSelectionConstraintsV1', supplied: 'SuppliedBeamReinforcementV1 | None') -> 'BeamReinforcementEvaluationV1'"
     },
     {
       "name": "export_bbs",

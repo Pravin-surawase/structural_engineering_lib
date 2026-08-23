@@ -5,6 +5,161 @@
 
 ---
 
+## 2026-08-23 — Session: LIB-PRO-007-P2 supplied beam reinforcement truth
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents)
+
+**Branch:** `codex/lib-pro-007-p2-supplied-beam-reinforcement`, from exact
+merged P1 hosted-main commit `9119cadc1322a718a00dd4e00f5650a21f100af4`.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-007-p2-supplied-beam-reinforcement-git-handoff-receipt.json`
+
+**Focus:** Separate calculated beam-steel demand, preliminary bar selection,
+and source-referenced supplied reinforcement; make clear spacing, layer
+geometry, effective depth, and support anchorage decisive in Building Gravity
+V1. P3 work, live ETABS, write-back, release, professional approval, and new
+INDIA-3 engineering remain excluded.
+
+### Summary
+
+- Added an immutable public supplied-reinforcement evaluator for the bounded
+  rectangular, non-bundled, one-diameter-per-group case. It reports required
+  `Ast`/`Asc`, a distinctly preliminary recommendation, exact supplied layers,
+  area/spacing/depth/group-clearance/anchorage checks, provenance, clauses,
+  limitations, and `PASS`/`FAIL`/`HOLD`.
+- Added an additive versioned Gravity V1 reinforcement basis. Old requests
+  still calculate beam demand but now remain `HOLD`; selection-only requests
+  also return a recommendation; only complete source-referenced bars can reach
+  bounded `PASS`.
+- Resolved square-column widths at both accepted beam-end nodes for the
+  conservative simple-support anchorage check. Ambiguous or non-square support
+  orientation remains `HOLD`.
+- Corrected the shared beam-spacing authority to derive clear distance from
+  centre-to-centre spacing and removed decision-changing whole-millimetre
+  rounding. All maintained optimizer/detailing callers now use that result.
+- Updated the maintained open-hall example, Python/CLI/REST workflow evidence,
+  public facades, API documentation, request schema, and packet evidence. Its
+  exact `2129.575184323628 mm2` demand now returns a 7-20 mm preliminary
+  recommendation and `HOLD`, not completed beam detailing.
+
+### Issues encountered
+
+- A first read-only search used an unmatched
+  `Python/structural_lib/gravity*` glob, so zsh stopped before searching.
+- A first inspection assumed serialized flexure key `ast_required`; the exact
+  transport key is `Ast_required`, causing a read-only `KeyError`.
+- A focused pytest command guessed
+  `Python/tests/unit/test_rebar_optimizer.py`; the maintained test is under
+  `Python/tests/integration/`, so pytest stopped before running the selection.
+- Correcting centre versus clear spacing invalidated three optimizer vectors
+  and one selection vector that had depended on the old false-feasible rule.
+  Removing rounding then exposed a 36.75 mm centre / 24.75 mm clear vector that
+  also had been promoted to 37/25 mm.
+- The first gravity `PASS` fixture widened square supports to 1600 mm but kept
+  the original 1800 mm2 column steel, so the independent column adapter rejected
+  the unrealistic 0.07% steel ratio before the workflow completed.
+- Initial targeted mypy found optional-spacing narrowing, one reused local
+  variable name, and invariant `dict` typing on the support-section helper.
+- Read-only inspection tried the nonexistent `session status` subcommand while
+  locating the closeout interface.
+- One combined task/plan documentation patch used stale exact prose and was
+  rejected without writing.
+- The first dependency install invoked ambient `npm` directly and selected
+  Node 26 instead of the repository's pinned Node 24, producing an engine
+  warning before the exact packages were installed.
+- The strict documentation batch rejected the touched foundation plan's
+  inherited `doc_type: plan`; the maintained checker accepts only its current
+  typed metadata vocabulary.
+- The subsequent API documentation check found that the new public function
+  was described but its seven public input/result type names were not all bound
+  with exact `api.*` symbols.
+- The first exact evidence replay used a manually copied preliminary bar area
+  with one incorrect final floating-point digit, so the strict identity
+  assertion failed after all affected tests had passed.
+
+### Root causes and resolutions
+
+- zsh's default unmatched-glob behavior rejected the search before `rg` ran.
+  Resolution: discover exact files with `rg --files` and search explicit paths.
+  ⚠️ TERMINAL ISSUE: unmatched gravity glob stopped a read-only search -> used
+  exact discovered paths.
+- The design object exposes canonical `Ast_required`/`Asc_required` attributes,
+  while deprecated lowercase compatibility properties and serialized naming
+  made guessing unsafe. Resolution: inspect the exact object/schema and use the
+  canonical attributes; focused workflow tests emit no deprecation warning.
+  ⚠️ TERMINAL ISSUE: guessed flexure key raised `KeyError` -> re-read exact keys.
+- The optimizer test's location was guessed instead of discovered. Resolution:
+  locate it with `rg --files` and rerun the exact maintained file.
+  ⚠️ TERMINAL ISSUE: guessed unit-test path did not exist -> used the integration
+  test path.
+- Confirmed root cause: `check_min_spacing` documented centre spacing but
+  compared it directly with the Clause 26.3.2 clear-distance minimum, and
+  `calculate_bar_spacing` rounded before that decision. Resolution: subtract
+  bar diameter, retain exact spacing, return explicit centre/clear evidence,
+  and rebind only mathematically valid benchmark vectors. The exact 40.6 mm
+  centre / 24.6 mm clear case now fails against the 25 mm minimum.
+- The widened-support fixture changed column gross area without preserving a
+  valid column steel ratio. Resolution: derive the test column steel at 1% of
+  its accepted square section while retaining the existing 1800 mm2 minimum;
+  the column route then completes and the intended beam `PASS`/`FAIL` vectors
+  are isolated.
+- The type errors came from an unnecessary optional annotation, a function-
+  scope name collision, and mutable-dictionary invariance. Resolution: narrow
+  before assignment, use separate issue names, and accept a covariant
+  `Mapping`; configured mypy passes all four changed source modules.
+- `session` exposes `begin`, `handoff`, `usage`, and `end`, but no `status`.
+  Resolution: use `usage --active` for timer state and the documented closeout
+  commands. ⚠️ TERMINAL ISSUE: nonexistent session subcommand -> used supported
+  session interfaces.
+- `apply_patch` requires exact current context. Resolution: re-read the bounded
+  task/plan blocks and apply two smaller patches; no partial write occurred.
+- The ambient shell runtime is not the repository runtime selector. Resolution:
+  rerun the lockfile-exact install through `scripts/node_runtime.py`; Node
+  24.19.0/npm 11.17.0 then installed the same 395 packages and all React tests
+  and the build passed. ⚠️ TERMINAL ISSUE: direct `npm ci` selected Node 26 ->
+  reran through the maintained pinned-runtime wrapper.
+- Confirmed root cause: the plan retained an older free-form documentation
+  type after the front-matter checker moved to an enumerated schema. Resolution:
+  classify the frozen product contract as `spec`; the failed-only strict docs
+  batch passes without changing plan content.
+- The API checker binds exports by exact facade symbol rather than inferred
+  prose. Resolution: list all seven new public `api.*` types beside the
+  evaluator contract; the failed-only API documentation check passes.
+- The evidence value had been copied from a separately rounded display rather
+  than the live Python `repr`. Resolution: bind the JSON to the exact live
+  `2199.114857512855 mm2` value and repeat only the evidence replay.
+
+### Validation through content freeze
+
+- Source binding diagnosed the current linked worktree against exact base
+  `9119cadc`; every dirty, detached, diverged, foreign, P1, and INDIA-3 lane was
+  preserved without reset, stash, clean, deletion, or rewrite.
+- Direct service truth table: missing supplied bars `HOLD` with recommendation;
+  exact 4-16 plus 2-12 supplied bars `PASS`; insufficient area, clear spacing,
+  or depth identity `FAIL`; missing support or required compression-depth basis
+  `HOLD`.
+- Gravity truth table: old request basis `HOLD`, selection-only request `HOLD`
+  with recommendation, complete reviewed supply `PASS`, and inadequate supply
+  `FAIL`; a canonical shallow-beam design failure remains `FAIL`.
+- Changed source Ruff/Black and configured mypy pass. Generated public API
+  manifest/classification are current; the new surface is preview on stable
+  facades and compatibility-only on the legacy facade. OpenAPI retains 89
+  operations and grows additively from 437 to 439 schemas.
+- The frozen consolidated selection passes 95 Python/FastAPI tests, 3 React
+  review-page tests, and the production React build. Architecture checks 221
+  files with zero violations; 691-file import validation finds zero broken
+  imports; 201-file circular analysis finds no cycle. Strict docs and all API
+  documentation/React-contract checks pass.
+- The first quick gate passed `10/10`. Publishing exact preliminary steel area
+  and strengthening the direct-service input contract changed the frozen
+  candidate, so only the affected 31 Python vectors and evidence replay were
+  repeated, followed by one repaired-candidate quick gate; both pass (`10/10`).
+  Normal staged hooks pass, including 246-file mypy, Ruff/Black, Bandit,
+  generated registries, API/docs/session contracts, and the reused exact quick
+  evidence. Immutable audit, hosted checks, and merge remain. Broad repository
+  suites remain reserved for cumulative M0 by packet policy.
+
 ## 2026-08-23 — Session: LIB-PRO-007-P1 optimization truth
 
 **Agent:** Codex (`orchestrator`, sole writer)

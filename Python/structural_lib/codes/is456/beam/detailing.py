@@ -817,19 +817,23 @@ def calculate_bar_spacing(
     available = b - 2 * (cover + stirrup_dia) - bar_dia
     spacing = available / (bar_count - 1)
 
-    return round(spacing, 0)
+    return spacing
 
 
 def check_min_spacing(
     spacing: float, bar_dia: float, agg_size: float = 20.0
 ) -> tuple[bool, str]:
     """
-    Check if bar spacing meets IS 456 Cl 26.3.2 requirements.
+    Check if bar clear spacing meets IS 456 Cl 26.3.2 requirements.
 
-    Minimum = max(bar_dia, agg_size + 5mm, 25mm)
+    The public ``spacing`` input is centre-to-centre because it is normally the
+    result of :func:`calculate_bar_spacing`.  Clause 26.3.2 applies the minimum
+    to the clear distance, so this function first subtracts the bar diameter.
+
+    Minimum clear spacing = max(bar_dia, agg_size + 5mm, 25mm)
 
     Args:
-        spacing: Actual center-to-center spacing (mm)
+        spacing: Actual centre-to-centre spacing (mm)
         bar_dia: Bar diameter (mm)
         agg_size: Maximum aggregate size (mm)
 
@@ -839,12 +843,20 @@ def check_min_spacing(
     Reference:
         IS 456:2000, Clause 26.3.2
     """
-    min_spacing = max(bar_dia, agg_size + 5, 25)
+    min_clear_spacing = max(bar_dia, agg_size + 5, 25)
+    clear_spacing = spacing - bar_dia
 
-    if spacing >= min_spacing:
-        return True, f"OK (min {min_spacing} mm)"
-    else:
-        return False, f"FAIL: Spacing {spacing} mm < min {min_spacing} mm"
+    if clear_spacing >= min_clear_spacing:
+        return (
+            True,
+            f"OK (clear {clear_spacing:g} mm, min {min_clear_spacing:g} mm)",
+        )
+    return (
+        False,
+        "FAIL: Clear spacing "
+        f"{clear_spacing:g} mm from {spacing:g} mm c/c < min "
+        f"{min_clear_spacing:g} mm",
+    )
 
 
 @clause("26.5.1.3")
@@ -988,7 +1000,7 @@ def select_bar_arrangement(
                     count=count,
                     diameter=dia,
                     area_provided=round(area_provided, 0),
-                    spacing=round(spacing, 0),
+                    spacing=spacing,
                     layers=layers,
                 )
 
@@ -998,7 +1010,7 @@ def select_bar_arrangement(
         count=last_count,
         diameter=last_dia,
         area_provided=round(area_provided, 0),
-        spacing=round(last_spacing, 0),
+        spacing=last_spacing,
         layers=last_layers,
     )
 

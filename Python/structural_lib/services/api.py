@@ -56,6 +56,11 @@ from structural_lib.core.data_types import (  # noqa: F401  # noqa: F401
     ValidationReport,
     VersionInfo,
 )
+from structural_lib.core.gravity_workflow import (  # noqa: F401
+    GravityBeamDesignBasisV1,
+    GravityBeamReinforcementBasisV1,
+    GravityLongitudinalBarLayersV1,
+)
 from structural_lib.core.inputs import (  # noqa: F401
     BeamGeometryInput,
     BeamInput,
@@ -96,6 +101,13 @@ from structural_lib.services.beam_api import (  # noqa: F401
     optimize_beam_cost,
     smart_analyze_design,
     suggest_beam_design_improvements,
+)
+from structural_lib.services.beam_reinforcement import (  # noqa: F401
+    BeamReinforcementEvaluationV1,
+    BeamReinforcementSelectionConstraintsV1,
+    LongitudinalBarLayersV1,
+    SuppliedBeamReinforcementV1,
+    evaluate_supplied_beam_reinforcement_v1,
 )
 from structural_lib.services.calculation_report import (  # noqa: F401
     CalculationReport,
@@ -427,6 +439,14 @@ __all__ = [
     "SymmetricCombinedFootingDesignResult",
     "SymmetricCombinedFootingDesignStatus",
     # Building Gravity Workflow V1
+    "BeamReinforcementEvaluationV1",
+    "BeamReinforcementSelectionConstraintsV1",
+    "LongitudinalBarLayersV1",
+    "SuppliedBeamReinforcementV1",
+    "evaluate_supplied_beam_reinforcement_v1",
+    "GravityBeamDesignBasisV1",
+    "GravityBeamReinforcementBasisV1",
+    "GravityLongitudinalBarLayersV1",
     "GravityWorkflowRequestV1",
     "GravityWorkflowResultV1",
     "GravityWorkflowRunBundleV1",
