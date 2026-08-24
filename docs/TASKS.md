@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-24 — RELEASE-0240A1 protected Alpha publication
+**Updated:** 2026-08-24 — RELEASE-SMOOTH-001 next-publication controls
 
 ---
 
@@ -69,9 +69,9 @@
 
 ## Current Release
 
-| **Current public release** | v0.23.1a2 | ✅ ALPHA RELEASED — immutable tag/public artifacts recorded; later `main` work is not included |
-| **Release candidate** | v0.24.0a1 | 🧪 RELEASE-0240A1 — owner-waiver candidate `993212fb` passed exact PR/Weekly checks and authorization descendant `b50cc348` passed all target gates; the first TestPyPI rehearsal stopped before build/upload on missing authorized-date metadata, so one release-surface repair candidate, exact hosted checks, authorization rebind, publication, and public UAT remain |
-- **Release evidence:** tag target `09861d3d`; public wheel SHA-256 `279b8270…43a9`; public installed-package UAT green
+| **Current public release** | v0.24.0a1 | ✅ ALPHA RELEASED — immutable tag and GitHub/PyPI artifacts recorded; later `main` work is not included |
+| **Release candidate** | None | Next candidate is not yet selected or authorized |
+- **Release evidence:** tag target `71b70652`; public wheel SHA-256 `b5e0df7b…6201a`; public sdist SHA-256 `8c1d6b76…0a53b`; exact workflow UAT and public identity are green
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization
 - **Target:** keep later roadmap work inactive until separately activated
@@ -126,15 +126,14 @@
 
 ## Active
 
-`RELEASE-0240A1` is the active protected Alpha publication task. It preserves
-the frozen `v0.24.0a1` engineering scope while repairing one clean-runner
-classification defect in source-free wheel verification, cross-Python API
-identity drift, and the hosted revalidation of an intentionally historical Git
-handoff receipt. It then requires one successor candidate, PR Gate, exact-head
-Weekly Verification and either independent software acceptance or the owner's
-explicit truthful waiver, followed by exact authorization, protected tag
-publication, and public artifact verification. The owner selected the waiver
-path for this Alpha. Stable/engineering-use wording, INDIA-4 qualified review,
+`RELEASE-SMOOTH-001` is the active release-control task. It converts the
+`v0.24.0a1` delays into a single-candidate next-release flow: fail-fast final
+metadata validation, one bounded post-review packet, clean candidate citation
+state, no broad pre-mutation suite, and public identity-only verification with a
+bounded propagation retry. It does not select, authorize, tag, or publish a new
+version. The focused local release-control batch is green after one exact stale-
+expectation repair, and the one quick gate passed 10/10. Only impact-mapped PR
+checks remain. Stable/engineering-use wording, INDIA-4 qualified review,
 professional approval, later scope, and cleanup remain separate held decisions.
 
 `INDIA-3-IS13920-M0` merged through PR #869 at `b85d514e` with exact

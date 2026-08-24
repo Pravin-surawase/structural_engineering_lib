@@ -27,6 +27,7 @@ import signal
 import subprocess
 import sys
 import tempfile
+import time
 import tomllib
 import zipfile
 from pathlib import Path
@@ -82,7 +83,11 @@ _REQUIRED_NORMALIZED_CONTENT = {
 
 _GIT_SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
-_POST_REVIEW_EVIDENCE_PATHS: set[str] = set()
+_POST_REVIEW_EVIDENCE_PATHS = {
+    "CHANGELOG.md",
+    "CITATION.cff",
+    "docs/getting-started/releases.md",
+}
 
 
 def _public_distribution_permission_errors(path: Path | None = None) -> list[str]:
@@ -689,6 +694,7 @@ def cmd_authorization_check(args: argparse.Namespace) -> int:
 
     version = args.version or _version_from_pyproject()
     errors = _release_publication_authorization_errors(version, args.target)
+    errors.extend(_publication_surface_errors(version))
     if errors:
         _print_version_errors(errors)
         return 1
@@ -698,6 +704,19 @@ def cmd_authorization_check(args: argparse.Namespace) -> int:
         "Python tree verified"
     )
     print("  ✓ Authorization does not imply professional approval")
+    return 0
+
+
+def cmd_publication_surface_check(args: argparse.Namespace) -> int:
+    """Validate final publication metadata without requiring a clean commit."""
+
+    version = args.version or _version_from_pyproject()
+    errors = _publication_surface_errors(version)
+    if errors:
+        _print_version_errors(errors)
+        return 1
+    print(f"  ✓ v{version} publication metadata is complete and internally consistent")
+    print("  ✓ This check does not grant publication authorization")
     return 0
 
 
@@ -878,7 +897,10 @@ def _release_authorization_recorded(expected: str) -> bool:
 
 
 def _source_surface_version_errors(
-    expected: str, *, allow_authorized_release: bool = False
+    expected: str,
+    *,
+    allow_authorized_release: bool = False,
+    authorized_release: bool | None = None,
 ) -> list[str]:
     """Return exact source/doc version contradictions for a release candidate."""
     try:
@@ -921,9 +943,10 @@ def _source_surface_version_errors(
     changelog_text = CHANGELOG.read_text(encoding="utf-8")
     release_text = RELEASES.read_text(encoding="utf-8")
     has_release_date = bool(re.search(r"^date-released:", citation_text, re.MULTILINE))
-    authorization_recorded = _release_authorization_recorded(expected)
+    if authorized_release is None:
+        authorized_release = _release_authorization_recorded(expected)
 
-    if allow_authorized_release and authorization_recorded:
+    if allow_authorized_release and authorized_release:
         if not has_release_date:
             errors.append(
                 "CITATION.cff must declare date-released for an authorized release"
@@ -966,6 +989,16 @@ def _source_surface_version_errors(
             errors.append(f"CITATION.cff must not imply v{expected} is published")
 
     return errors
+
+
+def _publication_surface_errors(expected: str) -> list[str]:
+    """Return final metadata errors as if owner authorization were recorded."""
+
+    return _source_surface_version_errors(
+        expected,
+        allow_authorized_release=True,
+        authorized_release=True,
+    )
 
 
 def _wheel_metadata_version(wheel: Path) -> str:
@@ -1333,15 +1366,25 @@ def _print_checklist(version: str) -> None:
     print("  ✓ Doc version references synced")
     print("  ✓ Doc dates updated to today")
     print()
-    print("Manual steps (you must do these):")
+    print("Ordered release steps (one verification cycle per state):")
     print(
-        f"  [ ] 1. Edit CHANGELOG.md — Add release notes under [Unreleased] → [{version}]"
+        f"  [ ] 1. Complete the prepared [{version}] CHANGELOG and release-ledger entry"
     )
-    print("  [ ] 2. Edit docs/getting-started/releases.md — Add release entry")
-    print("  [ ] 3. Review changes: git diff")
-    print(f"  [ ] 4. Codex commit and PR update: 'chore: release v{version}'")
-    print(f"  [ ] 5. Tag and push: git tag v{version} && git push origin v{version}")
-    print("  [ ] 6. Monitor GitHub Actions → Publish to PyPI workflow")
+    print("  [ ] 2. Freeze content, build one exact wheel, and run preflight once")
+    print(
+        "  [ ] 3. Push once; pass required PR and Weekly checks on that exact candidate"
+    )
+    print("  [ ] 4. Record the independent review decision or explicit owner waiver")
+    print(
+        "  [ ] 5. In one publication packet, date CITATION/CHANGELOG, append the "
+        "authorized ledger entry, and record owner authorization"
+    )
+    print(
+        f"  [ ] 6. Run: ./run.sh release publication-surface-check --version {version}"
+    )
+    print("  [ ] 7. Commit the packet; run authorization-check for each target")
+    print("  [ ] 8. Rehearse TestPyPI, merge with candidate ancestry, then tag once")
+    print("  [ ] 9. Monitor the tag-triggered PyPI and GitHub prerelease workflow")
     print()
     print("Verification:")
     print(f"  [ ] Check PyPI: pip install structural-lib-is456=={version}")
@@ -1452,89 +1495,10 @@ def cmd_run(args: argparse.Namespace) -> int:
     except (ValueError, IndexError):
         print(f"  WARNING: Could not compare versions ({current_version} → {version})")
 
-    # Run tests
-    print("\n  Running Python tests...")
-    try:
-        test_result = _run_with_timeout(
-            [
-                sys.executable,
-                "-m",
-                "pytest",
-                "Python/tests/",
-                "-v",
-                "--tb=short",
-                "-q",
-                "-m",
-                "not slow",
-            ],
-            timeout=600,
-        )
-    except subprocess.TimeoutExpired:
-        print("  ERROR: Tests TIMED OUT (>600s)")
-        if not dry_run:
-            return 1
-        print("  (continuing in dry-run mode)")
-        test_result = None
-
-    if test_result is None:
-        pass
-    elif test_result.returncode != 0:
-        print("  ERROR: Tests failed! Fix failures before releasing.")
-        print(
-            test_result.stdout[-500:]
-            if len(test_result.stdout) > 500
-            else test_result.stdout
-        )
-        if not dry_run:
-            return 1
-        print("  (continuing in dry-run mode)")
-    else:
-        # Extract test count from output
-        lines = test_result.stdout.strip().split("\n")
-        summary = lines[-1] if lines else "tests passed"
-        print(f"  ✓ Tests: {summary}")
-
-    # Check React build
-    react_dir = REPO_ROOT / "react_app"
-    if react_dir.exists():
-        print("  Checking React build...")
-        node_env, node_version = _node_runtime_env()
-        if node_env is None:
-            print(f"  ERROR: {node_version}")
-            return 1
-        node_env["NODE_OPTIONS"] = "--max-old-space-size=1536"
-        print(f"  → Selected {node_version}")
-        if not _ensure_react_dependencies(react_dir, node_env):
-            print("  ERROR: React dependencies are unavailable")
-            return 1
-        try:
-            react_result = _run_with_timeout(
-                ["npm", "run", "build"],
-                timeout=300,
-                cwd=react_dir,
-                env=node_env,
-            )
-        except subprocess.TimeoutExpired:
-            print("  ERROR: React build TIMED OUT (>300s)")
-            if not dry_run:
-                return 1
-            print("  (continuing in dry-run mode)")
-            react_result = None
-
-        if react_result is None:
-            pass
-        elif react_result.returncode != 0:
-            print("  ERROR: React build failed!")
-            print(
-                react_result.stderr[-500:]
-                if len(react_result.stderr) > 500
-                else react_result.stderr
-            )
-            if not dry_run:
-                return 1
-            print("  (continuing in dry-run mode)")
-        else:
-            print("  ✓ React build succeeds")
+    print(
+        "  ✓ No unchanged broad suites rerun before the version mutation; "
+        "the frozen candidate preflight owns Python, FastAPI, React, and wheel evidence"
+    )
 
     print()
 
@@ -1588,6 +1552,7 @@ def _assert_package_import_from_venv(
     venv_dir: Path,
     clean_env: dict[str, str],
     cwd: Path,
+    expected_version: str | None = None,
 ) -> None:
     """Fail if the verification interpreter imports the checkout instead of its venv."""
     _run_check(
@@ -1609,8 +1574,14 @@ def _assert_package_import_from_venv(
                 "    raise RuntimeError(\n"
                 "        f'structural_lib imported from {package_file}, not {site_packages}'\n"
                 "    )\n"
+                "installed_version = api.get_library_version()\n"
+                f"expected_version = {expected_version!r}\n"
+                "if expected_version is not None and installed_version != expected_version:\n"
+                "    raise RuntimeError(\n"
+                "        f'installed package version {installed_version}, expected {expected_version}'\n"
+                "    )\n"
                 "print(package_file)\n"
-                "print(api.get_library_version())"
+                "print(installed_version)"
             ),
         ],
         cwd=cwd,
@@ -1667,9 +1638,61 @@ def _find_wheel(wheel_dir: Path, version: str | None) -> Path:
     return wheels[0]
 
 
+_PYPI_PROPAGATION_RETRY_MARKERS = (
+    "No matching distribution found",
+    "Could not find a version that satisfies the requirement",
+)
+
+
+def _run_pypi_install_with_retry(
+    cmd: list[str],
+    *,
+    env: dict[str, str],
+    wait_seconds: int,
+) -> None:
+    """Retry only the exact-version install while PyPI propagates its index."""
+    if wait_seconds < 0:
+        raise ValueError("PyPI index wait must be non-negative")
+
+    deadline = time.monotonic() + wait_seconds
+    while True:
+        print(f"+ {' '.join(str(part) for part in cmd)}")
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            env=env,
+            timeout=600,
+        )
+        if result.returncode == 0:
+            return
+
+        detail = f"{result.stdout}\n{result.stderr}"
+        remaining = deadline - time.monotonic()
+        propagation_pending = any(
+            marker in detail for marker in _PYPI_PROPAGATION_RETRY_MARKERS
+        )
+        if not propagation_pending or remaining <= 0:
+            raise subprocess.CalledProcessError(
+                result.returncode,
+                cmd,
+                output=result.stdout,
+                stderr=result.stderr,
+            )
+
+        delay = min(10.0, remaining)
+        print(
+            "  PyPI has not indexed the exact version yet; "
+            f"waiting {delay:g}s before retrying the install only."
+        )
+        time.sleep(delay)
+
+
 def cmd_verify(args: argparse.Namespace) -> int:
     wheel_dir = REPO_ROOT / args.wheel_dir
     job_path = REPO_ROOT / args.job
+    identity_only = getattr(args, "identity_only", False)
+    index_wait_seconds = getattr(args, "index_wait_seconds", 90)
 
     with tempfile.TemporaryDirectory(prefix="verify_release_") as tmp:
         venv_dir = Path(tmp) / "venv"
@@ -1687,12 +1710,17 @@ def cmd_verify(args: argparse.Namespace) -> int:
 
         if args.source == "wheel":
             wheel = _find_wheel(wheel_dir, args.version)
+            wheel_target = str(wheel)
+            install_dependencies: list[str] = []
+            if not identity_only:
+                wheel_target = f"{wheel}[dev,validation]"
+                install_dependencies = ["httpx>=0.27"]
             _run_check(
                 [
                     str(pip),
                     "install",
-                    f"{wheel}[dev,validation]",
-                    "httpx>=0.27",
+                    wheel_target,
+                    *install_dependencies,
                 ],
                 env=clean_env,
             )
@@ -1700,21 +1728,42 @@ def cmd_verify(args: argparse.Namespace) -> int:
             if not args.version:
                 print("error: --version is required when using --source pypi")
                 return 2
-            _run_check(
+            package_target = f"structural-lib-is456==={args.version}"
+            install_dependencies = []
+            if not identity_only:
+                package_target = (
+                    f"structural-lib-is456[dev,validation]==={args.version}"
+                )
+                install_dependencies = ["httpx>=0.27"]
+            _run_pypi_install_with_retry(
                 [
                     str(pip),
                     "install",
                     "--no-cache-dir",
                     "--index-url",
                     "https://pypi.org/simple/",
-                    f"structural-lib-is456[dev,validation]==={args.version}",
-                    "httpx>=0.27",
+                    package_target,
+                    *install_dependencies,
                 ],
                 env=clean_env,
+                wait_seconds=index_wait_seconds,
             )
 
         temp_root = venv_dir.parent
-        _assert_package_import_from_venv(python, venv_dir, clean_env, temp_root)
+        _assert_package_import_from_venv(
+            python,
+            venv_dir,
+            clean_env,
+            temp_root,
+            expected_version=args.version,
+        )
+
+        if identity_only:
+            print(
+                "Release artifact identity verification OK "
+                "(installed-package UAT was not rerun)."
+            )
+            return 0
 
         # Run core tests
         print("\nRunning core tests in clean venv...")
@@ -1739,7 +1788,13 @@ def cmd_verify(args: argparse.Namespace) -> int:
             cwd=temp_root,
             env=clean_env,
         )
-        _assert_package_import_from_venv(python, venv_dir, clean_env, temp_root)
+        _assert_package_import_from_venv(
+            python,
+            venv_dir,
+            clean_env,
+            temp_root,
+            expected_version=args.version,
+        )
 
         if not args.skip_cli:
             if not job_path.exists():
@@ -2382,6 +2437,20 @@ def build_parser() -> argparse.ArgumentParser:
     p_verify.add_argument(
         "--skip-cli", action="store_true", help="Skip CLI smoke checks"
     )
+    p_verify.add_argument(
+        "--identity-only",
+        action="store_true",
+        help=(
+            "Verify exact installed package identity without repeating the "
+            "already-passed installed-package UAT"
+        ),
+    )
+    p_verify.add_argument(
+        "--index-wait-seconds",
+        type=int,
+        default=90,
+        help="Maximum bounded wait for exact-version PyPI index propagation",
+    )
 
     # check-docs
     sub.add_parser("check-docs", help="Validate CHANGELOG ↔ releases.md versions")
@@ -2410,6 +2479,12 @@ def build_parser() -> argparse.ArgumentParser:
         required=True,
         choices=["testpypi", "pypi", "github-release"],
     )
+
+    p_publication_surfaces = sub.add_parser(
+        "publication-surface-check",
+        help="Validate final dated release metadata before authorization commit",
+    )
+    p_publication_surfaces.add_argument("--version", help="Exact package version")
 
     # preflight
     p_preflight = sub.add_parser("preflight", help="Run pre-release validation checks")
@@ -2463,6 +2538,7 @@ def main() -> int:
         "permission-check": cmd_permission_check,
         "footing-inclusion-check": cmd_footing_inclusion_check,
         "authorization-check": cmd_authorization_check,
+        "publication-surface-check": cmd_publication_surface_check,
         "preflight": cmd_preflight,
         "candidate-check": cmd_candidate_check,
     }

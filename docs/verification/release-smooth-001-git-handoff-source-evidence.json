@@ -1,0 +1,55 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-24T14:00:00Z",
+      "query_status": "OK",
+      "reference": "now based on this experience please make sure next publish will be really smooth.",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "IMPLEMENT_RELEASE_PROCESS_CONTROLS",
+      "RUN_ONE_FOCUSED_TEST_BATCH_AND_ONE_QUICK_GATE",
+      "CREATE_COMMIT_PUSH_PULL_REQUEST_AND_MERGE_WHEN_REQUIRED_CHECKS_PASS"
+    ],
+    "next_action": "FREEZE_RELEASE_CONTROL_CANDIDATE",
+    "observed_at_utc": "2026-08-24T14:00:00Z",
+    "prohibited_actions": [
+      "SELECT_BUMP_TAG_OR_PUBLISH_A_NEW_VERSION",
+      "RERUN_UNCHANGED_BROAD_OR_WEEKLY_SUITES",
+      "DELETE_RESET_STASH_CLEAN_REBASE_REWRITE_FORCE_PUSH_OR_BYPASS_CHECKS",
+      "CHANGE_STRUCTURAL_FORMULAS_OR_DECLARED_ENGINEERING_SCOPE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "IMPLEMENT_RELEASE_PROCESS_CONTROLS",
+        "RUN_ONE_FOCUSED_TEST_BATCH_AND_ONE_QUICK_GATE",
+        "CREATE_COMMIT_PUSH_PULL_REQUEST_AND_MERGE_WHEN_REQUIRED_CHECKS_PASS"
+      ],
+      "branch": "codex/release-smoothness",
+      "head_sha": "71b7065216d4266d63ad6b31bd39bba81fa16efc",
+      "task_id": "RELEASE-SMOOTH-001"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_FINAL_CANDIDATE",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [
+      "PRESERVE_ALL_PRE_EXISTING_DIRTY_DETACHED_DIVERGENT_AND_UNKNOWN_LANES",
+      "PRESERVE_ALL_HISTORICAL_RELEASE_AND_ENGINEERING_LANES"
+    ],
+    "observed_at_utc": "2026-08-24T14:00:00Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

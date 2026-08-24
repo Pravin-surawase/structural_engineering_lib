@@ -236,6 +236,59 @@ def test_release_publication_authorization_holds_by_default(tmp_path: Path) -> N
     assert "release publication decision is HOLD, not AUTHORIZED" in errors
 
 
+def test_publication_surface_check_forces_the_final_authorized_contract(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    current = release._version_from_pyproject()
+    monkeypatch.setattr(
+        release, "_release_authorization_recorded", lambda _version: False
+    )
+
+    candidate_errors = release._source_surface_version_errors(
+        current, allow_authorized_release=True
+    )
+
+    assert "CITATION.cff declares date-released for an unpublished candidate" in (
+        candidate_errors
+    )
+    assert release._publication_surface_errors(current) == []
+
+
+def test_authorization_check_rejects_incomplete_publication_metadata(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    monkeypatch.setattr(
+        release, "_release_publication_authorization_errors", lambda *_args: []
+    )
+    monkeypatch.setattr(
+        release,
+        "_publication_surface_errors",
+        lambda _version: ["CITATION.cff must declare date-released"],
+    )
+
+    result = release.cmd_authorization_check(
+        argparse.Namespace(version="0.24.0a1", target="testpypi")
+    )
+
+    assert result == 1
+    assert "CITATION.cff must declare date-released" in capsys.readouterr().out
+
+
+def test_publication_surface_check_is_narrow_and_does_not_authorize(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    monkeypatch.setattr(release, "_publication_surface_errors", lambda _version: [])
+
+    result = release.cmd_publication_surface_check(
+        argparse.Namespace(version="0.24.0a1")
+    )
+
+    assert result == 0
+    output = capsys.readouterr().out
+    assert "publication metadata is complete" in output
+    assert "does not grant publication authorization" in output
+
+
 @pytest.mark.parametrize(
     ("errors", "wheel_supplied", "authorization_errors", "verdict", "exit_code"),
     [
@@ -486,6 +539,47 @@ def _authorized_owner_waiver_fixture(tmp_path: Path) -> Path:
     return authorization_path
 
 
+def _commit_publication_metadata(repo: Path) -> None:
+    surfaces = {
+        "CITATION.cff": "version: 0.24.0a1\ndate-released: 2026-08-24\n",
+        "CHANGELOG.md": "## [0.24.0a1] — 2026-08-24\n",
+        "docs/getting-started/releases.md": (
+            "## v0.24.0a1 — Authorized Alpha Release (2026-08-24)\n"
+        ),
+    }
+    for relative_path, content in surfaces.items():
+        path = repo / relative_path
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+    _git(repo, "add", *surfaces)
+    _git(repo, "commit", "-q", "-m", "record final publication metadata")
+
+
+def test_post_review_publication_metadata_does_not_invalidate_exact_candidate(
+    tmp_path: Path,
+) -> None:
+    reviewed_record, _receipt = _authorized_release_fixture(tmp_path / "reviewed")
+    reviewed_repo = reviewed_record.parents[2]
+    _commit_publication_metadata(reviewed_repo)
+
+    waived_record = _authorized_owner_waiver_fixture(tmp_path / "waived")
+    waived_repo = waived_record.parents[2]
+    _commit_publication_metadata(waived_repo)
+
+    assert (
+        release._release_publication_authorization_errors(
+            "0.24.0a1", "pypi", reviewed_record, repo_root=reviewed_repo
+        )
+        == []
+    )
+    assert (
+        release._release_publication_authorization_errors(
+            "0.24.0a1", "pypi", waived_record, repo_root=waived_repo
+        )
+        == []
+    )
+
+
 def test_release_publication_accepts_explicit_owner_review_waiver(
     tmp_path: Path,
 ) -> None:
@@ -701,6 +795,8 @@ class TestReleaseHelp:
         output = result.stdout
         assert "--version" in output
         assert "--source" in output
+        assert "--identity-only" in output
+        assert "--index-wait-seconds" in output
 
 
 class TestReleaseVerifyDependencies:
@@ -735,6 +831,7 @@ class TestReleaseVerifyDependencies:
         )[0]
 
         assert "_assert_package_import_from_venv" in verify_block
+        assert "expected_version=args.version" in verify_block
         assert "_isolated_pytest_config" in verify_block
         assert '"--import-mode=importlib"' in verify_block
         assert '"not slow and not repo_only"' in verify_block
@@ -811,6 +908,7 @@ class TestReleaseVerifyDependencies:
 
     def test_pypi_verify_forces_fresh_official_index(self, tmp_path, monkeypatch):
         calls: list[list[str]] = []
+        pypi_calls: list[tuple[list[str], int]] = []
 
         class TemporaryDirectory:
             def __enter__(self):
@@ -822,7 +920,13 @@ class TestReleaseVerifyDependencies:
         def record_run_check(cmd, *, cwd=None, timeout=600, env=None):
             calls.append(cmd)
 
+        def record_pypi_install(cmd, *, env, wait_seconds):
+            pypi_calls.append((cmd, wait_seconds))
+
         monkeypatch.setattr(release, "_run_check", record_run_check)
+        monkeypatch.setattr(
+            release, "_run_pypi_install_with_retry", record_pypi_install
+        )
         monkeypatch.setattr(
             release.tempfile, "TemporaryDirectory", lambda **_: TemporaryDirectory()
         )
@@ -834,19 +938,112 @@ class TestReleaseVerifyDependencies:
                 source="pypi",
                 version="0.23.1a1",
                 skip_cli=True,
+                identity_only=False,
+                index_wait_seconds=90,
             )
         )
 
         assert result == 0
-        assert [
-            str(tmp_path / "venv" / "bin" / "pip"),
-            "install",
-            "--no-cache-dir",
-            "--index-url",
-            "https://pypi.org/simple/",
-            "structural-lib-is456[dev,validation]===0.23.1a1",
-            "httpx>=0.27",
-        ] in calls
+        assert pypi_calls == [
+            (
+                [
+                    str(tmp_path / "venv" / "bin" / "pip"),
+                    "install",
+                    "--no-cache-dir",
+                    "--index-url",
+                    "https://pypi.org/simple/",
+                    "structural-lib-is456[dev,validation]===0.23.1a1",
+                    "httpx>=0.27",
+                ],
+                90,
+            )
+        ]
+
+    def test_identity_only_verifies_public_package_without_repeating_uat(
+        self, tmp_path, monkeypatch
+    ):
+        calls: list[list[str]] = []
+        pypi_calls: list[list[str]] = []
+
+        class TemporaryDirectory:
+            def __enter__(self):
+                return str(tmp_path)
+
+            def __exit__(self, *_):
+                return False
+
+        def record_run_check(cmd, *, cwd=None, timeout=600, env=None):
+            calls.append(cmd)
+
+        def record_pypi_install(cmd, *, env, wait_seconds):
+            pypi_calls.append(cmd)
+
+        monkeypatch.setattr(release, "_run_check", record_run_check)
+        monkeypatch.setattr(
+            release, "_run_pypi_install_with_retry", record_pypi_install
+        )
+        monkeypatch.setattr(
+            release.tempfile, "TemporaryDirectory", lambda **_: TemporaryDirectory()
+        )
+
+        result = release.cmd_verify(
+            argparse.Namespace(
+                wheel_dir="Python/dist",
+                job="Python/examples/sample_job_is456.json",
+                source="pypi",
+                version="0.24.0a1",
+                skip_cli=False,
+                identity_only=True,
+                index_wait_seconds=90,
+            )
+        )
+
+        assert result == 0
+        assert pypi_calls[0][-1] == "structural-lib-is456===0.24.0a1"
+        assert not any("pytest" in cmd for cmd in calls)
+        assert not any("structural_lib" in cmd and "job" in cmd for cmd in calls)
+
+    def test_pypi_propagation_retry_is_bounded_to_the_install(self, monkeypatch):
+        command = ["pip", "install", "structural-lib-is456===0.24.0a1"]
+        results = iter(
+            [
+                subprocess.CompletedProcess(
+                    command,
+                    1,
+                    "",
+                    "No matching distribution found for structural-lib-is456===0.24.0a1",
+                ),
+                subprocess.CompletedProcess(command, 0, "installed", ""),
+            ]
+        )
+        monotonic = iter([100.0, 101.0])
+        sleeps: list[float] = []
+
+        monkeypatch.setattr(release.subprocess, "run", lambda *_, **__: next(results))
+        monkeypatch.setattr(release.time, "monotonic", lambda: next(monotonic))
+        monkeypatch.setattr(release.time, "sleep", sleeps.append)
+
+        release._run_pypi_install_with_retry(
+            command, env={"PATH": "test"}, wait_seconds=90
+        )
+
+        assert sleeps == [10.0]
+
+    def test_pypi_install_does_not_retry_a_real_install_failure(self, monkeypatch):
+        command = ["pip", "install", "structural-lib-is456===0.24.0a1"]
+        result = subprocess.CompletedProcess(command, 1, "", "hash mismatch")
+        sleeps: list[float] = []
+
+        monkeypatch.setattr(release.subprocess, "run", lambda *_, **__: result)
+        monkeypatch.setattr(release.time, "monotonic", lambda: 100.0)
+        monkeypatch.setattr(release.time, "sleep", sleeps.append)
+
+        with pytest.raises(subprocess.CalledProcessError):
+            release._run_pypi_install_with_retry(
+                command, env={"PATH": "test"}, wait_seconds=90
+            )
+
+        assert sleeps == []
 
 
 class TestReleaseReactDependencies:
@@ -892,9 +1089,9 @@ class TestReleaseReactDependencies:
         assert not release._ensure_react_dependencies(react_dir, {"PATH": "test"})
         assert not called
 
-    def test_release_run_and_preflight_share_dependency_provisioner(self):
+    def test_frozen_preflight_alone_owns_react_dependency_provisioning(self):
         source = RELEASE_SCRIPT.read_text(encoding="utf-8")
-        assert source.count("_ensure_react_dependencies(react_dir, node_env)") == 2
+        assert source.count("_ensure_react_dependencies(react_dir, node_env)") == 1
 
 
 class TestPublishWorkflow:
@@ -1014,6 +1211,16 @@ class TestReleasePreflight:
             in preflight
         )
         assert '"test-fastapi"' in preflight
+
+    def test_version_mutation_does_not_repeat_unchanged_broad_suites(self):
+        source = RELEASE_SCRIPT.read_text(encoding="utf-8")
+        release_run = source.split("def cmd_run", 1)[1].split("# ─── Verify", 1)[0]
+
+        assert '"pytest"' not in release_run
+        assert '"npm", "run", "build"' not in release_run
+        assert "No unchanged broad suites rerun before the version mutation" in (
+            release_run
+        )
 
     def test_fastapi_image_retries_slow_dependency_downloads(self):
         dockerfile = (REPO_ROOT / "Dockerfile.fastapi").read_text(encoding="utf-8")

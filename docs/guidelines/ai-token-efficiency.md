@@ -206,6 +206,14 @@ controls:
 - if the audited head changes, invalidate the PASS rather than spending another
   hosted run on unaudited work.
 
+For a release, freeze the prepared code candidate before its one exact-head
+Weekly run. After review, one bounded publication packet may change only
+`CITATION.cff`, `CHANGELOG.md`, the append-only release ledger, and the
+authorization evidence while retaining the reviewed Python tree. Run the narrow
+publication-surface and target-authorization checks on that packet; do not rerun
+Weekly verification for those metadata-only changes. The TestPyPI rehearsal and
+tag-triggered production workflow remain distinct publication gates.
+
 Use non-overlapping timing labels: `contract/intake`, `writer implementation +
 focused verification`, `independent local audit`, `writer rework`, `final local
 closeout`, `hosted/network wait`, and `merge + post-merge verification`. Report
