@@ -4,12 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.24.0a1] — Prepared candidate (unreleased; on hold)
+## [0.24.0a1] — 2026-08-24
 
 Prepared Alpha candidate for the bounded post-`v0.23.1a2` subset. At candidate
-freeze it is not tagged or published. Publication, stable or engineering-use
-wording, and professional approval remain separate owner decisions after exact
-artifact evidence and qualified review.
+freeze it was not tagged or published. The repository owner subsequently
+authorized Alpha publication and explicitly waived independent software review
+for this release. Stable or engineering-use wording, qualified structural-
+engineering review, and professional approval remain separate and unclaimed.
 
 ### Added
 

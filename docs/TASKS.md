@@ -70,7 +70,7 @@
 ## Current Release
 
 | **Current public release** | v0.23.1a2 | ✅ ALPHA RELEASED — immutable tag/public artifacts recorded; later `main` work is not included |
-| **Release candidate** | v0.24.0a1 | 🧪 RELEASE-0240A1 — candidate `b6203953` passes exact PR and Weekly verification; owner explicitly waived independent software review, so a truthful waiver-control candidate, evidence-only authorization, ancestry-preserving merge, publication, and public UAT remain; no tag or upload yet |
+| **Release candidate** | v0.24.0a1 | 🧪 RELEASE-0240A1 — owner-waiver candidate `993212fb` passed exact PR/Weekly checks and authorization descendant `b50cc348` passed all target gates; the first TestPyPI rehearsal stopped before build/upload on missing authorized-date metadata, so one release-surface repair candidate, exact hosted checks, authorization rebind, publication, and public UAT remain |
 - **Release evidence:** tag target `09861d3d`; public wheel SHA-256 `279b8270…43a9`; public installed-package UAT green
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization

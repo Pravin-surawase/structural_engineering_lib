@@ -5,9 +5,9 @@
 <!-- HANDOFF:START -->
 - Date: 2026-08-24
 - Focus: Release the bounded `v0.24.0a1` Alpha with exact-candidate hosted
-- Git receipt: docs/verification/release-0240a1-git-handoff-receipt-3.json | sha256:23f3bfb3e9849ff57ca65acd89de34c2c92c753f721638970b5980639b4d1c50 | HOLD
-- Git identity: codex/release-0240a1-publication@b6203953f852e8066943abc0e4e670308c44b799 | upstream=origin/codex/release-0240a1-publication@b6203953f852e8066943abc0e4e670308c44b799 | base=origin/main@510163041fec4329b5b47ea749a5f8d74bab12b3 | tree=dirty | operation=none
-- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
+- Git receipt: docs/verification/release-0240a1-git-handoff-receipt-4.json | sha256:c9b09ca99c04eafc354c2b30c753692d74201193856b9f62ee74794521c862a7 | HOLD
+- Git identity: codex/release-0240a1-publication@b50cc3480efb56dccb53d4648b1c3aced16dca05 | upstream=origin/codex/release-0240a1-publication@b50cc3480efb56dccb53d4648b1c3aced16dca05 | base=origin/main@510163041fec4329b5b47ea749a5f8d74bab12b3 | tree=dirty | operation=none
+- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=UNKNOWN
 - Next action: IMPLEMENT_TRUTHFUL_OWNER_INDEPENDENT_REVIEW_WAIVER_GATE
 <!-- HANDOFF:END -->
 
@@ -15,9 +15,9 @@
 
 | State | Boundary |
 |---|---|
-| **Current** | `LIB-PRO-010-RC` merged through PR #871 at `51016304`; `RELEASE-0240A1` has repaired clean-wheel repository-test classification, Python 3.11/3.12 compatibility identity, and historical transition-receipt validation without changing the packaged library |
+| **Current** | Owner-waiver candidate `993212fb` passed exact PR run 32732480794 and Weekly run 32732644271; authorization descendant `b50cc348` passed all three target checks, then TestPyPI run 32733403735 stopped before build/upload because authorized release dates were absent from `CITATION.cff` and `CHANGELOG.md` |
 | **Decision** | The user authorized bounded `v0.24.0a1` Alpha publication and explicitly waived independent exact-candidate software review. The evidence must state that no independent review occurred; stable/engineering-use wording, INDIA-4 qualified review, and professional approval remain false |
-| **Next** | Freeze the owner-waiver control candidate, pass exact PR/Weekly checks, add only the exact authorization evidence, merge without losing candidate ancestry, then publish and verify the protected tag artifacts |
+| **Next** | Freeze the two-surface release-metadata repair plus task handoff, run only its affected/consolidated local gate and required exact PR/Weekly checks, rebind the authorization-only descendant, then resume TestPyPI, merge, tag, publish, and verify public artifacts |
 | **Source** | IS 13920:2016 First Revision plus Amendment 1 (2017) and Amendment 2 (2020); reaffirmation is not a new edition and the draft successor is unused |
 | **Held** | Beam provided-reinforcement compliance, column derived applicability/non-rectangular/provided-longitudinal checks, whole-joint assessment, walls/foundations, IS 875/1893, INDIA-4 qualified review, source/distribution/support/version/release/professional-use changes, and branch/worktree/archive/source/alias deletion |
 

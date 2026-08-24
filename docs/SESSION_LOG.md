@@ -13,7 +13,7 @@
 `510163041fec4329b5b47ea749a5f8d74bab12b3`.
 
 **Git handoff receipt:**
-`docs/verification/release-0240a1-git-handoff-receipt-3.json`
+`docs/verification/release-0240a1-git-handoff-receipt-4.json`
 
 **Focus:** Release the bounded `v0.24.0a1` Alpha with exact-candidate hosted
 verification, a truthful independent-review decision or explicit owner waiver,
@@ -46,6 +46,10 @@ later-scope, and cleanup holds.
   publication to finish. Added a truthful owner-waiver alternative that retains
   exact candidate/hosted/Python-tree binding and records that no independent
   review occurred.
+- The first authorized TestPyPI rehearsal stopped before build or upload because
+  the authorized release state required a release date in `CITATION.cff` and
+  `CHANGELOG.md`. The repair updates only those release surfaces and the
+  task-owned handoff records before one replacement exact candidate is frozen.
 
 ### Issues encountered
 
@@ -75,6 +79,9 @@ later-scope, and cleanup holds.
   explicit repository-owner waiver of independent software review.
 - The first focused workflow check guessed a nonexistent
   `scripts/check_workflows.py` entry point.
+- The first authorized TestPyPI rehearsal passed permission, footing-inclusion,
+  and owner-waiver authorization checks but failed the release-test job because
+  the candidate-labelled citation and changelog had no authorized release date.
 
 ### Root causes and resolutions
 
@@ -147,6 +154,14 @@ later-scope, and cleanup holds.
   the `check-yaml` hook; all 59 workflow tests and YAML validation pass.
   ⚠️ TERMINAL ISSUE: guessed workflow script was absent -> used the discovered
   maintained workflow tests and hook.
+- Confirmed root cause: owner authorization changes the maintained release-state
+  contract from prepared/unpublished metadata to dated release metadata. The
+  authorization record was activated after the prior candidate gates, so that
+  exact state-dependent source-surface test had not been exercised locally.
+  Resolution: date the two required release surfaces, freeze a replacement
+  exact candidate, rebind the authorization-only descendant, and resume at the
+  failed TestPyPI workflow. Run 32733403735 proves that no distribution was
+  built or uploaded before the stop.
 
 ### Validation through current content
 
@@ -171,6 +186,10 @@ later-scope, and cleanup holds.
   on `b6203953f852e8066943abc0e4e670308c44b799`. The subsequent owner-waiver
   control candidate must receive its own exact hosted evidence before the
   authorization-only descendant and publication.
+- Owner-waiver candidate `993212fb` passed exact PR run 32732480794 and Weekly
+  run 32732644271; authorization-only descendant `b50cc348` passed all three
+  target authorization checks. TestPyPI run 32733403735 then stopped in release
+  tests before build/upload on the two missing authorized-date surfaces.
 
 ### Preserved holds
 
