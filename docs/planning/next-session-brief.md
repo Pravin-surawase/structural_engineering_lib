@@ -5,9 +5,9 @@
 <!-- HANDOFF:START -->
 - Date: 2026-08-24
 - Focus: Release the bounded `v0.24.0a1` Alpha with one exact-candidate hosted
-- Git receipt: docs/verification/release-0240a1-git-handoff-receipt.json | sha256:80a3027140c6ce7f100d022e88051366de2730d2972de79e04f5750117617f6d | HOLD
-- Git identity: codex/release-0240a1-publication@510163041fec4329b5b47ea749a5f8d74bab12b3 | upstream=origin/main@510163041fec4329b5b47ea749a5f8d74bab12b3 | base=origin/main@510163041fec4329b5b47ea749a5f8d74bab12b3 | tree=dirty | operation=none
-- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
+- Git receipt: docs/verification/release-0240a1-git-handoff-receipt-2.json | sha256:3c7e16d159094bd6a26de1a0bd036375573161ff6c258b30b229048b4157fd4e | HOLD
+- Git identity: codex/release-0240a1-publication@eecaa8bd4f9dc813e3de5791808679704f65419f | upstream=origin/codex/release-0240a1-publication@eecaa8bd4f9dc813e3de5791808679704f65419f | base=origin/main@510163041fec4329b5b47ea749a5f8d74bab12b3 | tree=dirty | operation=none
+- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=UNKNOWN
 - Next action: FREEZE_REPAIRED_EXACT_CANDIDATE
 <!-- HANDOFF:END -->
 
@@ -15,7 +15,7 @@
 
 | State | Boundary |
 |---|---|
-| **Current** | `LIB-PRO-010-RC` merged through PR #871 at `51016304`; `RELEASE-0240A1` has repaired the clean-wheel repository-test classification and Python 3.11/3.12 compatibility-ledger identity boundary without changing the packaged library |
+| **Current** | `LIB-PRO-010-RC` merged through PR #871 at `51016304`; `RELEASE-0240A1` has repaired clean-wheel repository-test classification, Python 3.11/3.12 compatibility identity, and historical transition-receipt validation without changing the packaged library |
 | **Decision** | The user authorized bounded `v0.24.0a1` Alpha publication. Stable/engineering-use wording, INDIA-4 qualified review, and professional approval remain false and are not prerequisites for this Alpha-only publication |
 | **Next** | Freeze and integrate the repair candidate, pass exact-head Weekly Verification, obtain independent exact-candidate software acceptance, bind the existing owner authorization, then publish and verify the protected tag artifacts |
 | **Source** | IS 13920:2016 First Revision plus Amendment 1 (2017) and Amendment 2 (2020); reaffirmation is not a new edition and the draft successor is unused |
@@ -42,9 +42,9 @@
 
 ## Ordered follow-on gates
 
-1. Freeze and integrate the `RELEASE-0240A1` repair candidate, then run Weekly
-   Verification once on that exact head. Do not delete any branch, worktree,
-   archive, source copy, alias, or unrelated lane.
+1. Freeze one successor `RELEASE-0240A1` repair candidate, pass its consolidated
+   local/PR gates, then run Weekly Verification once on that exact head. Do not
+   delete any branch, worktree, archive, source copy, alias, or unrelated lane.
 2. Obtain the repository-required independent exact-candidate software receipt,
    then bind the user's existing Alpha publication authorization in an
    evidence-only descendant.

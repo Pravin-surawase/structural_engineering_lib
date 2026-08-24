@@ -1734,7 +1734,10 @@ def _parse_git_receipt_path(block: list[str]) -> str | None:
 
 
 def _resolve_git_receipt(
-    block: list[str], explicit_path: Path | None = None
+    block: list[str],
+    explicit_path: Path | None = None,
+    *,
+    validate_at_recorded_time: bool = False,
 ) -> tuple[dict | None, str | None, list[str]]:
     raw_path = str(explicit_path) if explicit_path else _parse_git_receipt_path(block)
     if not raw_path:
@@ -1751,10 +1754,43 @@ def _resolve_git_receipt(
         receipt = load_receipt(resolved)
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         return None, raw_path, [f"Git handoff receipt is malformed: {exc}"]
-    errors = validate_receipt(receipt)
+    validation_time = None
+    if validate_at_recorded_time:
+        receipt_time = _parse_aware_datetime(receipt.get("observed_at_utc"))
+        local = receipt.get("local")
+        state = local.get("state") if isinstance(local, dict) else None
+        local_time = _parse_aware_datetime(
+            state.get("observed_at_utc") if isinstance(state, dict) else None
+        )
+        if receipt_time is None or local_time is None:
+            return (
+                receipt,
+                raw_path,
+                ["Git handoff receipt observation time is invalid"],
+            )
+        if abs((receipt_time - local_time).total_seconds()) > 5:
+            return (
+                receipt,
+                raw_path,
+                ["Git handoff receipt observation time does not match local evidence"],
+            )
+        validation_time = receipt_time
+    errors = validate_receipt(receipt, now=validation_time)
     if errors:
         return receipt, raw_path, errors
     return receipt, resolved.relative_to(REPO_ROOT).as_posix(), []
+
+
+def _parse_aware_datetime(value: object) -> datetime | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        return None
+    return parsed
 
 
 def _git_handoff_lines(receipt: dict, relative_path: str) -> list[str]:
@@ -2079,7 +2115,9 @@ def cmd_check(args: argparse.Namespace) -> int:
         )
         return 1
 
-    receipt, receipt_path, receipt_errors = _resolve_git_receipt(session_block)
+    receipt, receipt_path, receipt_errors = _resolve_git_receipt(
+        session_block, validate_at_recorded_time=True
+    )
     if receipt_errors:
         print("ERROR: Latest session Git handoff receipt is not valid:")
         for issue in receipt_errors:

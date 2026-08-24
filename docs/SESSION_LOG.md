@@ -13,7 +13,7 @@
 `510163041fec4329b5b47ea749a5f8d74bab12b3`.
 
 **Git handoff receipt:**
-`docs/verification/release-0240a1-git-handoff-receipt.json`
+`docs/verification/release-0240a1-git-handoff-receipt-2.json`
 
 **Focus:** Release the bounded `v0.24.0a1` Alpha with one exact-candidate hosted
 verification, independent acceptance, owner authorization, protected tag
@@ -36,6 +36,10 @@ qualified-review, professional-approval, later-scope, and cleanup holds.
 - Canonicalized only the Python-version-dependent `Annotated` and Enum signature
   representations used by the API compatibility identity ledger. The same
   rebuilt ledger now passes on Python 3.11 and 3.12.
+- Kept the versioned pre-push Git handoff receipt immutable and repaired the
+  session-document validator so historical consistency checks use that
+  receipt's recorded, local-evidence-bound observation time. Live handoff and
+  final session-end validation continue to enforce current freshness.
 
 ### Issues encountered
 
@@ -53,6 +57,14 @@ qualified-review, professional-approval, later-scope, and cleanup holds.
   assertion block.
 - The first final session-document check could not resolve the otherwise valid
   task receipt because the new session entry omitted its canonical locator.
+- Exact-head Weekly Verification run 32724874049 passed the wheel, dependency,
+  Docker, Python, FastAPI, and benchmark work but failed repository drift when
+  `session.py check` revalidated the frozen pre-push receipt after its 15-minute
+  live-evidence window had elapsed.
+- A local reproduction of the hosted documentation command initially used bare
+  `python3`, whose environment lacked the repository's Pydantic dependency.
+- The first normal-hook invocation assumed `pre-commit` was exported on the
+  shell `PATH`; the executable was available only in the repository runtime.
 
 ### Root causes and resolutions
 
@@ -90,6 +102,27 @@ qualified-review, professional-approval, later-scope, and cleanup holds.
   exact `Git handoff receipt` field in the newest session entry. Resolution: add
   the versioned receipt locator and refresh its dirty-state binding. Proof: the
   receipt validator and final session-document check pass.
+- Confirmed root cause: the general document-consistency path called the same
+  wall-clock receipt validator as live handoff/session-end, even though the Git
+  workflow contract says a frozen transition receipt must not be rewritten
+  when its external observations later age. Resolution: make only
+  `session.py check` validate at the receipt observation time, require that time
+  to match the hash-bound local Git observation within five seconds, and retain
+  wall-clock validation as the default everywhere else. Proof: 157 session and
+  receipt regressions pass, including stale historical acceptance, unbound-time
+  rejection, and unchanged live-freshness failure; the complete hosted
+  documentation/repository-drift command sequence passes locally.
+- Confirmed root cause: the local shell reproduction bypassed the mandated
+  worktree-bound Python launcher, so it selected a dependency-incomplete system
+  interpreter. Resolution: resume at the failed command with
+  `./scripts/python_runtime.sh`; all remaining hosted documentation commands
+  pass. ⚠️ TERMINAL ISSUE: bare `python3` could not import Pydantic -> used the
+  repository's worktree-bound Python launcher.
+- Confirmed root cause: the shell did not expose the virtual-environment script
+  entry point globally. Resolution: invoke the same installed hook module with
+  `./scripts/python_runtime.sh -m pre_commit run --all-files`; every configured
+  hook passes. ⚠️ TERMINAL ISSUE: `pre-commit` was not on `PATH` -> used the
+  worktree-bound module invocation.
 
 ### Validation through current content
 
@@ -106,6 +139,10 @@ qualified-review, professional-approval, later-scope, and cleanup holds.
 - Exact hosted failure evidence: Weekly Verification run 32722779797, job
   97417548973; 4,120 passed before the repository-context test failed on the
   clean runner's absent checkout-bound interpreter.
+- Successor hosted evidence before the document repair: run 32724874049 passes
+  clean-wheel/CLI verification, locked dependency audits, Docker build/health,
+  Python formatting/lint/types and full coverage, FastAPI contracts, and API
+  benchmarks; only the stale historical-receipt document check fails.
 
 ### Preserved holds
 

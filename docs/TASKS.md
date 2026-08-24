@@ -70,7 +70,7 @@
 ## Current Release
 
 | **Current public release** | v0.23.1a2 | ✅ ALPHA RELEASED — immutable tag/public artifacts recorded; later `main` work is not included |
-| **Release candidate** | v0.24.0a1 | 🧪 RELEASE-0240A1 — clean-wheel selection and Python 3.11/3.12 ledger identity repairs pass focused, source-free, quick, and full local gates; immutable commit, PR Gate, exact-head Weekly, independent acceptance, and publication remain; no tag or upload yet |
+| **Release candidate** | v0.24.0a1 | 🧪 RELEASE-0240A1 — clean-wheel, cross-Python ledger, and frozen-receipt validation repairs pass focused evidence; run 32724874049 passed every hosted domain except the now-repaired historical-receipt document check; successor candidate, consolidated gates, exact-head Weekly, independent acceptance, and publication remain; no tag or upload yet |
 - **Release evidence:** tag target `09861d3d`; public wheel SHA-256 `279b8270…43a9`; public installed-package UAT green
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization
@@ -128,11 +128,13 @@
 
 `RELEASE-0240A1` is the active protected Alpha publication task. It preserves
 the frozen `v0.24.0a1` engineering scope while repairing one clean-runner
-classification defect in source-free wheel verification, then requires a new
-exact candidate, PR Gate, exact-head Weekly Verification, independent software
-acceptance, owner authorization, protected tag publication, and public artifact
-verification. Stable/engineering-use wording, INDIA-4 qualified review,
-professional approval, later scope, and cleanup remain separate held decisions.
+classification defect in source-free wheel verification, cross-Python API
+identity drift, and the hosted revalidation of an intentionally historical Git
+handoff receipt. It then requires one successor candidate, PR Gate, exact-head
+Weekly Verification, independent software acceptance, owner authorization,
+protected tag publication, and public artifact verification. Stable/engineering-
+use wording, INDIA-4 qualified review, professional approval, later scope, and
+cleanup remain separate held decisions.
 
 `INDIA-3-IS13920-M0` merged through PR #869 at `b85d514e` with exact
 candidate/merged tree `8a45afa4`. Beam, rectangular-column, and directional

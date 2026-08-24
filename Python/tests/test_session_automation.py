@@ -1453,6 +1453,90 @@ def test_session_receipt_path_accepts_wrapped_markdown_value():
     )
 
 
+def test_historical_session_check_uses_hash_bound_receipt_observation_time(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    recorded_at = datetime.now(UTC) - timedelta(hours=1)
+    state = _closeout_state(clean=True)
+    state.observed_at_utc = recorded_at.isoformat()
+    receipt = git_handoff_receipt.build_receipt(
+        task_id="GIT-7E",
+        integration_owner="Main Agent",
+        local_state=state,
+        evidence={
+            "remote": {"status": "NOT_APPLICABLE", "reason_code": "LOCAL_ONLY"},
+            "pull_request": {
+                "status": "NOT_APPLICABLE",
+                "reason_code": "LOCAL_ONLY",
+            },
+            "review": {"status": "NOT_APPLICABLE", "reason_code": "LOCAL_ONLY"},
+            "integration": {
+                "status": "NOT_APPLICABLE",
+                "reason_code": "LOCAL_ONLY",
+            },
+            "retention": {
+                "status": "OBSERVED",
+                "query_status": "OK",
+                "observed_at_utc": recorded_at.isoformat(),
+                "owner": "Main Agent",
+                "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+                "holds": [],
+            },
+            "authorization": {
+                "status": "UNKNOWN",
+                "authorized_actions": [],
+                "prohibited_actions": [],
+                "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+            },
+        },
+        now=recorded_at,
+    )
+    repo = tmp_path / "repo"
+    docs = repo / "docs"
+    docs.mkdir(parents=True)
+    receipt_path = docs / "receipt.json"
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    monkeypatch.setattr(session, "REPO_ROOT", repo)
+    block = ["**Git handoff receipt:**", "`docs/receipt.json`"]
+
+    _, _, live_errors = session._resolve_git_receipt(block)
+    _, _, historical_errors = session._resolve_git_receipt(
+        block, validate_at_recorded_time=True
+    )
+
+    assert "HOLD_SET_MISMATCH" in live_errors
+    assert historical_errors == []
+
+
+def test_historical_session_check_rejects_unbound_receipt_observation_time(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    receipt = git_handoff_receipt.build_receipt(
+        task_id="GIT-7E",
+        integration_owner="Main Agent",
+        local_state=_closeout_state(clean=True),
+        evidence={},
+        now=datetime.fromisoformat(_closeout_state(clean=True).observed_at_utc),
+    )
+    receipt["observed_at_utc"] = (
+        datetime.fromisoformat(receipt["observed_at_utc"]) + timedelta(minutes=1)
+    ).isoformat()
+    repo = tmp_path / "repo"
+    docs = repo / "docs"
+    docs.mkdir(parents=True)
+    (docs / "receipt.json").write_text(json.dumps(receipt), encoding="utf-8")
+    monkeypatch.setattr(session, "REPO_ROOT", repo)
+
+    _, _, errors = session._resolve_git_receipt(
+        ["**Git handoff receipt:** `docs/receipt.json`"],
+        validate_at_recorded_time=True,
+    )
+
+    assert errors == [
+        "Git handoff receipt observation time does not match local evidence"
+    ]
+
+
 def test_handoff_round_trip_embeds_valid_receipt_identity(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):

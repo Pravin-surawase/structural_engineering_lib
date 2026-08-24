@@ -1,0 +1,182 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-24T11:43:47Z",
+      "query_status": "OK",
+      "reference": "please release next version. and unlike last time please do it in less rework and good planning",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "FREEZE_REPAIRED_EXACT_CANDIDATE",
+      "REPAIR_EXACT_WHEEL_HOSTED_VERIFICATION",
+      "RUN_FOCUSED_QUICK_FULL_AND_REQUIRED_HOSTED_CHECKS",
+      "COMMIT_PUSH_CREATE_OR_UPDATE_PR_AND_MERGE_UNCHANGED_GREEN_CANDIDATE",
+      "OBTAIN_INDEPENDENT_EXACT_CANDIDATE_ACCEPTANCE",
+      "RECORD_EXACT_REVIEW_RECEIPT_AND_OWNER_PUBLICATION_AUTHORIZATION",
+      "CREATE_AND_PUSH_V0240A1_TAG",
+      "PUBLISH_V0240A1_TO_PYPI_AND_GITHUB_RELEASES",
+      "VERIFY_PUBLIC_ARTIFACT_INSTALL_AND_UAT"
+    ],
+    "next_action": "FREEZE_REPAIRED_EXACT_CANDIDATE",
+    "observed_at_utc": "2026-08-24T11:43:47Z",
+    "prohibited_actions": [
+      "PUBLISH_IF_EXACT_HOSTED_REVIEW_OR_AUTHORIZATION_GATES_FAIL",
+      "CLAIM_STABLE_ENGINEERING_USE_INDIA4_QUALIFIED_OR_PROFESSIONAL_APPROVAL",
+      "CHANGE_STRUCTURAL_FORMULAS_PACKAGED_RUNTIME_OR_DECLARED_SCOPE",
+      "START_IS13920_WALL_FOUNDATION_IS875_IS1893_OR_LATER_SCOPE",
+      "TRACK_OR_MUTATE_PRIVATE_SOURCE_MATERIAL",
+      "DELETE_BRANCH_WORKTREE_ARCHIVE_SOURCE_ALIAS_OR_UNRELATED_FILE",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_REWRITE_FORCE_PUSH_OR_BYPASS_CHECKS"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "FREEZE_REPAIRED_EXACT_CANDIDATE",
+        "REPAIR_EXACT_WHEEL_HOSTED_VERIFICATION",
+        "RUN_FOCUSED_QUICK_FULL_AND_REQUIRED_HOSTED_CHECKS",
+        "COMMIT_PUSH_CREATE_OR_UPDATE_PR_AND_MERGE_UNCHANGED_GREEN_CANDIDATE",
+        "OBTAIN_INDEPENDENT_EXACT_CANDIDATE_ACCEPTANCE",
+        "RECORD_EXACT_REVIEW_RECEIPT_AND_OWNER_PUBLICATION_AUTHORIZATION",
+        "CREATE_AND_PUSH_V0240A1_TAG",
+        "PUBLISH_V0240A1_TO_PYPI_AND_GITHUB_RELEASES",
+        "VERIFY_PUBLIC_ARTIFACT_INSTALL_AND_UAT"
+      ],
+      "branch": "codex/release-0240a1-publication",
+      "head_sha": "510163041fec4329b5b47ea749a5f8d74bab12b3",
+      "task_id": "RELEASE-0240A1"
+    }
+  },
+  "holds": [
+    "AUTHORIZATION_SOURCE_STALE_EVIDENCE",
+    "AUTHORIZATION_STALE_EVIDENCE",
+    "AUTHORIZATION_TARGET_MISMATCH",
+    "LOCAL_HOLD_DIRTY",
+    "PRESERVE_ALL_HISTORICAL_RELEASE_AND_INDIA3_LANES",
+    "PRESERVE_ALL_PRE_EXISTING_DIRTY_DETACHED_DIVERGENT_AND_UNKNOWN_LANES",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_STALE_EVIDENCE",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "3c7e16d159094bd6a26de1a0bd036375573161ff6c258b30b229048b4157fd4e",
+    "state": {
+      "branch": "codex/release-0240a1-publication",
+      "default_base": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "510163041fec4329b5b47ea749a5f8d74bab12b3",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 89.774,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/release-0240a1-publication",
+      "head_sha": "eecaa8bd4f9dc813e3de5791808679704f65419f",
+      "hold_reasons": [
+        "changed paths: 6"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-24T12:13:38.498509+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/release-0240a1-publication",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 6,
+        "modified_paths": [
+          "Python/tests/test_session_automation.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/next-session-brief.md",
+          "scripts/session.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/release-0240a1-git-handoff-receipt-2.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/codex/release-0240a1-publication",
+        "sha": "eecaa8bd4f9dc813e3de5791808679704f65419f",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/release-0240a1-publication"
+    }
+  },
+  "local_state_receipt_hash": "sha256:3c7e16d159094bd6a26de1a0bd036375573161ff6c258b30b229048b4157fd4e",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-24T12:13:38.498684+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "evidence_error": "STALE_EVIDENCE",
+    "holds": [
+      "PRESERVE_ALL_PRE_EXISTING_DIRTY_DETACHED_DIVERGENT_AND_UNKNOWN_LANES",
+      "PRESERVE_ALL_HISTORICAL_RELEASE_AND_INDIA3_LANES"
+    ],
+    "observed_at_utc": "2026-08-24T11:43:47Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "UNKNOWN",
+    "status": "UNKNOWN"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources"
+    ],
+    "integration_owner": "orchestrator",
+    "owned_paths": [
+      "Python/tests/test_compatibility_convergence.py",
+      "Python/tests/test_repo_context.py",
+      "Python/tests/test_release_scripts.py",
+      "Python/tests/test_session_automation.py",
+      "docs/reference/api-compatibility-ledger.json",
+      "scripts/generate_api_classification.py",
+      "scripts/session.py",
+      "docs/verification/release-0240a1-git-handoff-source-evidence.json",
+      "docs/verification/release-0240a1-git-handoff-receipt-2.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "RELEASE-0240A1"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
