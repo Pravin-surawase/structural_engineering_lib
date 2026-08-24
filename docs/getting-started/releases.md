@@ -1313,6 +1313,14 @@ target are required before TestPyPI, PyPI, a tag, or a GitHub Release.
 **Status at candidate preparation (2026-08-24):** Local candidate only; not
 tagged, uploaded, or published.
 
+**Review decision (2026-08-24):** The repository owner explicitly waived the
+independent exact-candidate software-review step for this Alpha publication and
+directed the release to finish. The publication record must state that no
+independent software review occurred and must still bind the exact candidate,
+required PR checks, exact-head Weekly Verification, and unchanged Python tree.
+This one-release waiver does not waive qualified structural-engineering review,
+professional approval, or any stable/engineering-use boundary.
+
 **Preparation base:** `3495a37e95794295488502dbdb3987e9c56425fd`, after
 the refreshed footing inclusion gate and inclusive column-ratio boundary repair.
 The immutable candidate commit is assigned after content freeze. The locally

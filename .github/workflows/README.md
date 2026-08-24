@@ -53,7 +53,7 @@ updating and verifying the ruleset in the same approved operation.
 |---|---|---|
 | `fast-checks.yml` | Pull requests and short main-branch verification | Manifest-planned Python, FastAPI, React, Excel, control, docs, and repository validation with required `PR Gate` |
 | `nightly.yml` | Weekly schedule and manual dispatch | Full Ubuntu verification, clean-wheel/CLI checks, dependency audits, Docker health, and optional manual cross-platform smoke |
-| `publish.yml` | Version tag or manual dispatch | Build/install/SBOM verification; manual TestPyPI publication; tag-only production PyPI and GitHub Release |
+| `publish.yml` | Version tag or manual dispatch | Build/install/SBOM verification; exact independent-review receipt or explicit repository-owner review waiver; manual TestPyPI publication; tag-only production PyPI and GitHub Release |
 | `deploy-docs.yml` | Relevant main-branch documentation changes or manual dispatch | Strict MkDocs build validation; no public deployment until the owner enables and verifies GitHub Pages |
 
 All workflows default to read-only repository contents. Only publication jobs

@@ -13,12 +13,13 @@
 `510163041fec4329b5b47ea749a5f8d74bab12b3`.
 
 **Git handoff receipt:**
-`docs/verification/release-0240a1-git-handoff-receipt-2.json`
+`docs/verification/release-0240a1-git-handoff-receipt-3.json`
 
-**Focus:** Release the bounded `v0.24.0a1` Alpha with one exact-candidate hosted
-verification, independent acceptance, owner authorization, protected tag
-publication, and public artifact verification. Preserve stable/engineering-use,
-qualified-review, professional-approval, later-scope, and cleanup holds.
+**Focus:** Release the bounded `v0.24.0a1` Alpha with exact-candidate hosted
+verification, a truthful independent-review decision or explicit owner waiver,
+owner authorization, protected tag publication, and public artifact verification.
+Preserve stable/engineering-use, qualified-review, professional-approval,
+later-scope, and cleanup holds.
 
 ### Summary
 
@@ -40,6 +41,11 @@ qualified-review, professional-approval, later-scope, and cleanup holds.
   session-document validator so historical consistency checks use that
   receipt's recorded, local-evidence-bound observation time. Live handoff and
   final session-end validation continue to enforce current freshness.
+- After the exact successor passed PR and Weekly gates, the repository owner
+  explicitly waived independent exact-candidate software review and directed
+  publication to finish. Added a truthful owner-waiver alternative that retains
+  exact candidate/hosted/Python-tree binding and records that no independent
+  review occurred.
 
 ### Issues encountered
 
@@ -65,6 +71,10 @@ qualified-review, professional-approval, later-scope, and cleanup holds.
   `python3`, whose environment lacked the repository's Pydantic dependency.
 - The first normal-hook invocation assumed `pre-commit` was exported on the
   shell `PATH`; the executable was available only in the repository runtime.
+- The existing Alpha publication schema had no truthful representation for an
+  explicit repository-owner waiver of independent software review.
+- The first focused workflow check guessed a nonexistent
+  `scripts/check_workflows.py` entry point.
 
 ### Root causes and resolutions
 
@@ -123,6 +133,20 @@ qualified-review, professional-approval, later-scope, and cleanup holds.
   `./scripts/python_runtime.sh -m pre_commit run --all-files`; every configured
   hook passes. ⚠️ TERMINAL ISSUE: `pre-commit` was not on `PATH` -> used the
   worktree-bound module invocation.
+- Confirmed root cause: release authorization previously required an independent
+  receipt unconditionally, so following the owner's waiver would otherwise
+  require either a false receipt or bypassing publication validation. Resolution:
+  add a mutually exclusive `owner-independent-review-waiver/v1` path that binds
+  the owner identity/instruction, exact candidate and hosted runs, unchanged
+  Python tree, evidence-only descendants, and explicit false review/qualified/
+  professional claims. Proof: focused authorization tests accept the exact
+  waiver form and reject false independence plus post-waiver code drift.
+- Confirmed root cause: workflow validation is owned by the maintained pytest
+  contracts and pre-commit YAML hook, not a standalone `check_workflows.py`.
+  Resolution: run `test_ci_workflow_contract.py`, `test_workflow_runner.py`, and
+  the `check-yaml` hook; all 59 workflow tests and YAML validation pass.
+  ⚠️ TERMINAL ISSUE: guessed workflow script was absent -> used the discovered
+  maintained workflow tests and hook.
 
 ### Validation through current content
 
@@ -143,11 +167,16 @@ qualified-review, professional-approval, later-scope, and cleanup holds.
   clean-wheel/CLI verification, locked dependency audits, Docker build/health,
   Python formatting/lint/types and full coverage, FastAPI contracts, and API
   benchmarks; only the stale historical-receipt document check fails.
+- Exact successor evidence: PR run 32726109825 and Weekly run 32726256660 pass
+  on `b6203953f852e8066943abc0e4e670308c44b799`. The subsequent owner-waiver
+  control candidate must receive its own exact hosted evidence before the
+  authorization-only descendant and publication.
 
 ### Preserved holds
 
 - No tag, PyPI upload, GitHub Release, stable/engineering-use wording,
-  INDIA-4 acceptance, qualified-engineer receipt, or professional approval.
+  independent-review claim, INDIA-4 acceptance, qualified-engineer receipt, or
+  professional approval.
 - No structural formula, packaged runtime, version, declared scope, private
   source, branch/worktree/archive/source/alias, or unrelated-file mutation.
 

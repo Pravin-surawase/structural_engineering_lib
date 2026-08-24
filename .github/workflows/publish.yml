@@ -296,19 +296,44 @@ jobs:
           authorization = json.loads(authorization_path.read_text(encoding="utf-8"))
           assert authorization["decision"] == "AUTHORIZED"
           assert authorization["version"] == manifest["package_version"]
-          review_receipt_path = Path("..") / authorization[
-              "exact_candidate_review_receipt"
-          ]
-          review_receipt = json.loads(
-              review_receipt_path.read_text(encoding="utf-8")
-          )
-          review_receipt_sha256 = hashlib.sha256(
-              review_receipt_path.read_bytes()
-          ).hexdigest()
-          assert review_receipt_sha256 == authorization[
-              "exact_candidate_review_receipt_sha256"
-          ]
-          assert review_receipt["decision"] == "ACCEPT"
+          owner_waiver = authorization.get("independent_review_waiver")
+          if owner_waiver is not None:
+              assert authorization.get("exact_candidate_review_receipt") is None
+              assert owner_waiver["decision"] == "WAIVED_BY_OWNER"
+              assert owner_waiver["acknowledgements"] == {
+                  "independent_software_review_performed": False,
+                  "professional_approval": False,
+                  "qualified_structural_engineering_review": False,
+              }
+              review_binding = {
+                  "mode": "OWNER_WAIVER",
+                  "owner_review_waiver": owner_waiver,
+                  "candidate": owner_waiver["waived_candidate"],
+              }
+          else:
+              review_receipt_path = Path("..") / authorization[
+                  "exact_candidate_review_receipt"
+              ]
+              review_receipt = json.loads(
+                  review_receipt_path.read_text(encoding="utf-8")
+              )
+              review_receipt_sha256 = hashlib.sha256(
+                  review_receipt_path.read_bytes()
+              ).hexdigest()
+              assert review_receipt_sha256 == authorization[
+                  "exact_candidate_review_receipt_sha256"
+              ]
+              assert review_receipt["decision"] == "ACCEPT"
+              review_binding = {
+                  "mode": "INDEPENDENT_REVIEW",
+                  "exact_candidate_review_receipt": authorization[
+                      "exact_candidate_review_receipt"
+                  ],
+                  "exact_candidate_review_receipt_sha256": (
+                      review_receipt_sha256
+                  ),
+                  "candidate": review_receipt["reviewed_candidate"],
+              }
 
           manifest.update(
               {
@@ -341,15 +366,7 @@ jobs:
                       "version": authorization["version"],
                       "tag": authorization["tag"],
                       "authorized_targets": authorization["authorized_targets"],
-                      "exact_candidate_review_receipt": authorization[
-                          "exact_candidate_review_receipt"
-                      ],
-                      "exact_candidate_review_receipt_sha256": (
-                          review_receipt_sha256
-                      ),
-                      "reviewed_candidate": review_receipt[
-                          "reviewed_candidate"
-                      ],
+                      "review_gate": review_binding,
                       "record_sha256": hashlib.sha256(
                           authorization_path.read_bytes()
                       ).hexdigest(),
