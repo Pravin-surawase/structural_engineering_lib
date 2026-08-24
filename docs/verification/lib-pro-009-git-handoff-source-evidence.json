@@ -1,0 +1,69 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-24T08:38:04Z",
+      "query_status": "OK",
+      "reference": "okay plan this work please. and implement it",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "IMPLEMENT_STRICT_BAR_COUNT_VALIDATION",
+      "ADD_FOCUSED_TESTS_AND_STATUS_EVIDENCE",
+      "RECONCILE_LIVING_TASK_PLAN_AND_HANDOFF_DOCUMENTS",
+      "RUN_FOCUSED_QUICK_FULL_HOOK_AND_HOSTED_CHECKS",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-24T08:38:04Z",
+    "prohibited_actions": [
+      "CHANGE_STRUCTURAL_FORMULAS_OR_SUPPORTED_ENGINEERING_SCOPE",
+      "REWRITE_HISTORICAL_M0_EVIDENCE_OR_HANDOFF_RECEIPTS",
+      "CLAIM_QUALIFIED_ENGINEERING_PROFESSIONAL_OR_INDIA4_APPROVAL",
+      "CHANGE_VERSION_TAG_RELEASE_OR_PACKAGE_PUBLICATION_STATUS",
+      "START_IS13920_WALL_FOUNDATION_IS875_IS1893_OR_LATER_SCOPE",
+      "TRACK_OR_MUTATE_PRIVATE_SOURCE_MATERIAL",
+      "DELETE_BRANCH_WORKTREE_ARCHIVE_SOURCE_ALIAS_OR_UNRELATED_FILE",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_REWRITE_FORCE_PUSH_OR_BYPASS_CHECKS"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "IMPLEMENT_STRICT_BAR_COUNT_VALIDATION",
+        "ADD_FOCUSED_TESTS_AND_STATUS_EVIDENCE",
+        "RECONCILE_LIVING_TASK_PLAN_AND_HANDOFF_DOCUMENTS",
+        "RUN_FOCUSED_QUICK_FULL_HOOK_AND_HOSTED_CHECKS",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/lib-pro-009-rc-trust",
+      "head_sha": "b85d514ed93e22a154badde990ef1c3fb02ae0d9",
+      "task_id": "LIB-PRO-009"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [
+      "PRESERVE_ALL_PRE_EXISTING_DIRTY_DETACHED_DIVERGENT_AND_UNKNOWN_LANES",
+      "PRESERVE_INDIA3_BRANCHES_WORKTREES_ARCHIVES_SOURCE_COPIES_AND_ALIASES"
+    ],
+    "observed_at_utc": "2026-08-24T08:38:04Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

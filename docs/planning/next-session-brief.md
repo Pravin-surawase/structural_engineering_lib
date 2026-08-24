@@ -4,20 +4,20 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-24
-- Focus: Run the single G0-frozen cumulative source, benchmark, unsafe-case,
-- Git receipt: docs/verification/india-3-is13920-m0-git-handoff-receipt.json | sha256:bd72f4392775461491d5e16a37c9e89245490a8bef289e0fea4d668dbcdab29b | HOLD
-- Git identity: codex/india-3-is13920-m0@306e2a46328ce2b519d1352131b64ef310271b5e | upstream=origin/main@306e2a46328ce2b519d1352131b64ef310271b5e | base=origin/main@306e2a46328ce2b519d1352131b64ef310271b5e | tree=dirty | operation=none
+- Focus: Close strict rebar input, evidence-status, and living-state defects.
+- Git receipt: docs/verification/lib-pro-009-git-handoff-receipt.json | sha256:d48c0eed78c3187f7369e45ce0e6386a80f34d502a98f1a14f3aac2316e60bae | HOLD
+- Git identity: codex/lib-pro-009-rc-trust@b85d514ed93e22a154badde990ef1c3fb02ae0d9 | upstream=origin/main@b85d514ed93e22a154badde990ef1c3fb02ae0d9 | base=origin/main@b85d514ed93e22a154badde990ef1c3fb02ae0d9 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
-- Next action: CREATE_IMMUTABLE_CANDIDATE_AFTER_FROZEN_GATES
+- Next action: COMMIT_INTENDED_PATHS
 <!-- HANDOFF:END -->
 
 ## Latest Handoff
 
 | State | Boundary |
 |---|---|
-| **Current** | `INDIA-3-IS13920-M0` has completed bounded local cumulative software acceptance on source-bound `codex/india-3-is13920-m0` from exact hosted column merge `306e2a46`, tree `cbe0f8d9` |
-| **Decision** | Beam, rectangular-column, and one-plane/one-direction SCWB joint contracts are source-aligned and accepted only as bounded software; every family retains `qualified_review_required=true` |
-| **Next** | Integrate this unchanged candidate with required hosted checks green. The next sequence item is a separately sourced and benchmarked IS 13920 wall decision, but no exact successor packet ID is frozen or started |
+| **Current** | `INDIA-3-IS13920-M0` merged through PR #869 at `b85d514e`, exact candidate/merged tree `8a45afa4`; `LIB-PRO-009` is the bounded input/status/document closeout |
+| **Decision** | Replay success is separate from engineering disposition: beam `NOT_EVALUATED`, bounded column benchmark `PASS`, represented joint check `FAIL`; every family retains `QUALIFIED_REVIEW_REQUIRED` |
+| **Next** | Integrate LIB-PRO-009, then freeze an exact bounded release-candidate scope and artifact before installed UAT and qualified review of that unchanged candidate |
 | **Source** | IS 13920:2016 First Revision plus Amendment 1 (2017) and Amendment 2 (2020); reaffirmation is not a new edition and the draft successor is unused |
 | **Held** | Beam provided-reinforcement compliance, column derived applicability/non-rectangular/provided-longitudinal checks, whole-joint assessment, walls/foundations, IS 875/1893, INDIA-4 qualified review, source/distribution/support/version/release/professional-use changes, and branch/worktree/archive/source/alias deletion |
 
@@ -40,14 +40,17 @@
 - The cumulative Python gate passes 7,024 cases with 3 skipped and 6 deselected;
   FastAPI passes 498. No structural formula or runtime behavior changed in M0.
 
-## Frozen follow-on sequence
+## Ordered follow-on gates
 
-1. Merge the unchanged green `INDIA-3-IS13920-M0` candidate. Do not delete its
-   branch, worktree, archive, source copy, alias, or any unrelated lane.
-2. Freeze a separate source/benchmark decision packet for IS 13920 wall
-   provisions before implementation. No exact packet ID is authorized here.
-3. Foundation detailing, IS 875/1893, INDIA-4 qualified review, release, and
-   professional-use decisions remain separate.
+1. Integrate the unchanged green `LIB-PRO-009` candidate. Do not delete any
+   branch, worktree, archive, source copy, alias, or unrelated lane.
+2. Freeze the exact supported subset, version, commit, limitations, and artifact
+   identities for one bounded release candidate.
+3. Run source-free installed-artifact UAT and hand comparisons, then obtain
+   qualified review of that exact unchanged candidate.
+4. Keep stable release, engineering-use wording, package/tag publication, and
+   professional approval as separate owner decisions.
+5. Expand afterward in order: IS 13920 walls, foundations, IS 875, then IS 1893.
 
 ## Required Reading
 
@@ -60,3 +63,5 @@
 7. [Indian-code completion order](indian-code-completion-plan.md)
 8. [Generated Indian-code capability truth](../verification/indian-code-capability-coverage.json)
 9. [Current task board](../TASKS.md)
+10. [Bounded release candidate plan](bounded-release-candidate-plan.md)
+11. [Replay and engineering-status clarification](../verification/lib-pro-009-is13920-status-semantics.json)

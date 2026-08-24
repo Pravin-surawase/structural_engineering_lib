@@ -199,6 +199,7 @@ _IS13920_SUPPORTED: tuple[dict[str, Any], ...] = (
             "Python/tests/codes/is13920/test_beam.py",
             "Python/tests/property/test_ductile_hypothesis.py",
             "docs/verification/india-3-is13920-m0-evidence.json",
+            "docs/verification/lib-pro-009-is13920-status-semantics.json",
         ],
     },
     {
@@ -216,6 +217,7 @@ _IS13920_SUPPORTED: tuple[dict[str, Any], ...] = (
             "Python/structural_lib/codes/is13920/column.py",
             "Python/tests/codes/is13920/test_column.py",
             "docs/verification/india-3-is13920-m0-evidence.json",
+            "docs/verification/lib-pro-009-is13920-status-semantics.json",
         ],
     },
     {
@@ -236,6 +238,7 @@ _IS13920_SUPPORTED: tuple[dict[str, Any], ...] = (
             "Python/structural_lib/codes/is13920/joint.py",
             "Python/tests/codes/is13920/test_joint.py",
             "docs/verification/india-3-is13920-m0-evidence.json",
+            "docs/verification/lib-pro-009-is13920-status-semantics.json",
         ],
     },
 )

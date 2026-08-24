@@ -5,6 +5,138 @@
 
 ---
 
+## 2026-08-24 — Session: LIB-PRO-009 bounded release-trust closeout
+
+**Agent:** Codex (`backend`, sole writer; no subagents)
+
+**Branch:** `codex/lib-pro-009-rc-trust`, from exact hosted INDIA-3 M0 merge
+`b85d514ed93e22a154badde990ef1c3fb02ae0d9`, tree
+`8a45afa44a5fb3d227aab666d17aadf29fe1c26e`.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-009-git-handoff-receipt.json`
+
+**Focus:** Close strict rebar input, evidence-status, and living-state defects.
+Require positive-integer `bar_count` values, separate benchmark replay from
+engineering disposition, and reconcile task/roadmap/handoff state. Preserve all
+formulas, supported scope, historical receipts, release authority, qualified
+review, professional approval, and cleanup holds.
+
+### Summary
+
+- Created one clean source-bound worktree from live GitHub `main` after verifying
+  that the only open PRs were unrelated dependency updates. No existing branch,
+  worktree, source, archive, alias, or unrelated file was modified or removed.
+- Made `validate_rebar_config` accept only an actual positive Python/JSON
+  integer for `bar_count`. Booleans, strings, fractional values, zero, negatives,
+  and missing values now return the same structured validation failure and no
+  geometry. `apply_rebar_config` consumes the validated value instead of
+  reparsing raw input.
+- Preserved the immutable INDIA-3 M0 evidence and added one current status
+  clarification with independent benchmark-replay, calculation, engineering,
+  and review axes. The represented cases are beam `NOT_EVALUATED`, bounded
+  column `PASS`, and joint `FAIL` while all three replays are `PASS` and qualified
+  review remains required.
+- Added the clarification to every supported IS 13920 family in the generated
+  capability manifest and added a recurrence test for the four-axis contract.
+- Reconciled the current task board, Indian-code completion plan, and next-
+  session prose to the merged M0 state. Added one ordered bounded-release plan:
+  internal closeout, exact candidate/artifact freeze, installed UAT, qualified
+  review of the unchanged candidate, separate owner release decision, then
+  later scope expansion.
+
+### Issues encountered
+
+- The first `LIB-PRO-009` session start was blocked because the already-merged
+  `INDIA-3-IS13920-M0` task retained an unmatched start checkpoint in the shared
+  Git-common usage ledger.
+- Public rebar validation coerced `bar_count` through `int(...)` before checking
+  it, so booleans were accepted, fractional values were silently truncated, and
+  invalid text could raise instead of returning the advertised validation
+  result. The apply path independently repeated the coercion.
+- The immutable M0 evidence used one nested benchmark `result: PASS` field even
+  for the unsafe joint vector whose actual engineering check was `FAIL`.
+- Living control documents still instructed the next task to merge the M0
+  candidate after PR #869 had already merged it.
+- The first focused Black check rejected one newly added test layout.
+- The first consolidated full gate passed 30 of 31 checks and rejected the new
+  bounded-release plan's unsupported `doc_type: plan` front-matter value.
+- The first normal commit-hook run passed every other hook but mypy rejected the
+  strict helper's `Any` return even after its runtime integer guard.
+
+### Root causes and resolutions
+
+- Confirmed root cause: M0 recorded its clean local session end but no successor
+  usage closeout after the hosted merge, leaving the shared timer unmatched.
+  Resolution: verify PR #869, exact candidate `0a20774e`, merge `b85d514e`,
+  required hosted checks, reachability, and exact tree equality; then append the
+  supported late successor closeout without rewriting M0 evidence. Proof: the
+  shared ledger accepted the closeout and the canonical `LIB-PRO-009` session
+  start then passed. ⚠️ TERMINAL ISSUE: session start was blocked by a stale
+  predecessor checkpoint -> used exact hosted and Git tree evidence to close it.
+- Confirmed root cause: type conversion occurred before semantic validation and
+  the application path did not reuse the validated canonical value. Resolution:
+  add one strict positive-integer normalizer, return zero only as the internal
+  invalid sentinel, issue a structured error, and consume `report.details` in
+  the apply path. Proof: 11 rebar tests cover valid use plus booleans, strings,
+  fractional values, missing/zero/negative values, structured failure, and no
+  geometry.
+- Confirmed root cause: the historical `benchmark.result` represented replay-
+  harness success rather than case engineering truth, but its generic name did
+  not express that boundary. Resolution: preserve the historical receipt and
+  add a machine-readable four-axis clarification consumed by the capability
+  manifest. Proof: 12 manifest/status tests require replay `PASS`, beam
+  `NOT_EVALUATED`, bounded column `PASS`, joint `FAIL`, and qualified review.
+- Confirmed root cause: candidate-frozen task/handoff prose had no later living-
+  status reconciliation after the hosted merge. Resolution: record the exact
+  M0 merge/tree in current control documents while leaving historical session
+  and handoff receipts unchanged. Proof: the updated documents contain no
+  instruction to merge M0 and link the ordered successor plan.
+- Confirmed root cause: the new multi-line assertion was not in Black's
+  canonical layout. Resolution: format the affected test only and recheck all
+  four changed Python files. Proof: Black reports all four unchanged and Ruff
+  reports no findings. ⚠️ TERMINAL ISSUE: focused Black check failed one file ->
+  formatted that file and reran only the failed formatting evidence.
+- Confirmed root cause: repository front-matter uses the closed `doc_type`
+  vocabulary and `plan` is not an allowed value; maintained planning documents
+  use `spec`. Resolution: change only the new document's type to `spec` and
+  preserve its task status and content. Proof: strict documentation validation
+  and the content-addressed corrective full gate pass. ⚠️ TERMINAL ISSUE: the
+  first full gate rejected one front-matter value -> used the maintained closed
+  vocabulary and reran the failed domain through the cached consolidated gate.
+- Confirmed root cause: `_pick` intentionally returns `Any`, and mypy does not
+  promote that value to the helper's declared `int` return solely from the
+  runtime `isinstance` branch. Resolution: return `int(value)` only after the
+  bool/type/range guard, preserving the strict behavior while making the type
+  contract explicit. Proof: focused mypy and the normal commit hooks pass all
+  247 checked source files. ⚠️ TERMINAL ISSUE: the first commit hook stopped on
+  one `no-any-return` error -> made the validated return explicitly typed and
+  reran the failed type evidence before the normal hooks.
+
+### Validation through content freeze
+
+- Focused Python: 23 tests pass across rebar validation, status semantics,
+  generated capability truth, and existing Indian-code manifest behavior.
+- Ruff passes the four changed Python files. Black passes after one formatting-
+  only repair. The maintained Indian-code manifest currentness check passes.
+- Both changed JSON documents parse successfully. No formula, code-source
+  provenance, supported-family status, route, version, or public artifact was
+  changed.
+- The first full gate passed 30/31 and exposed only the new plan front-matter
+  value. The corrective run reuses unchanged domains and passes all 31 checks.
+
+### Preserved holds
+
+- Qualified structural-engineering review, INDIA-4 acceptance, stable release,
+  engineering-use wording, professional approval, versioning, tagging, package
+  publication, and GitHub Release creation remain separate and unperformed.
+- IS 13920 walls/foundations, IS 875, IS 1893, dynamic/response-spectrum/FEM
+  analysis, ETABS write-back, and broader building design remain held.
+- No historical evidence or handoff receipt was rewritten. No protected source,
+  branch, worktree, archive, source-copy, alias, or unrelated file was deleted.
+
+---
+
 ## 2026-08-24 — Session: INDIA-3-IS13920-M0 cumulative bounded acceptance
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents)
