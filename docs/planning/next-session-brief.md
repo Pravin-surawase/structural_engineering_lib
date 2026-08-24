@@ -4,20 +4,20 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-24
-- Focus: Prepare one bounded `v0.24.0a1` Alpha candidate from the integrated
-- Git receipt: docs/verification/lib-pro-010-rc-git-handoff-receipt.json | sha256:603650dc764dd5448fef1c34299a7e823d299fc629bdb7ff1306c961971a5141 | HOLD
-- Git identity: codex/lib-pro-010-rc-artifact@3495a37e95794295488502dbdb3987e9c56425fd | upstream=origin/main@b3309260686a05b4cbb9c9358c89d6218a700357 | base=origin/main@b3309260686a05b4cbb9c9358c89d6218a700357 | tree=dirty | operation=none
+- Focus: Release the bounded `v0.24.0a1` Alpha with one exact-candidate hosted
+- Git receipt: docs/verification/release-0240a1-git-handoff-receipt.json | sha256:80a3027140c6ce7f100d022e88051366de2730d2972de79e04f5750117617f6d | HOLD
+- Git identity: codex/release-0240a1-publication@510163041fec4329b5b47ea749a5f8d74bab12b3 | upstream=origin/main@510163041fec4329b5b47ea749a5f8d74bab12b3 | base=origin/main@510163041fec4329b5b47ea749a5f8d74bab12b3 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
-- Next action: COMMIT_INTENDED_PATHS
+- Next action: FREEZE_REPAIRED_EXACT_CANDIDATE
 <!-- HANDOFF:END -->
 
 ## Latest Handoff
 
 | State | Boundary |
 |---|---|
-| **Current** | `LIB-PRO-009` merged through PR #870 at `b3309260`; local `v0.24.0a1` wheel/sdist identity, source-free UAT, and bounded benchmark replay are frozen by `LIB-PRO-010-RC` |
-| **Decision** | The local artifact is a technical Alpha candidate only. Benchmark replay passed; engineering check, INDIA-4 qualified review, professional approval, and release authority remain false |
-| **Next** | Complete the immutable candidate commit, required hosted checks, and unchanged-head integration; then conduct the separate INDIA-4 qualified review packet before any publication decision |
+| **Current** | `LIB-PRO-010-RC` merged through PR #871 at `51016304`; `RELEASE-0240A1` has repaired the clean-wheel repository-test classification and Python 3.11/3.12 compatibility-ledger identity boundary without changing the packaged library |
+| **Decision** | The user authorized bounded `v0.24.0a1` Alpha publication. Stable/engineering-use wording, INDIA-4 qualified review, and professional approval remain false and are not prerequisites for this Alpha-only publication |
+| **Next** | Freeze and integrate the repair candidate, pass exact-head Weekly Verification, obtain independent exact-candidate software acceptance, bind the existing owner authorization, then publish and verify the protected tag artifacts |
 | **Source** | IS 13920:2016 First Revision plus Amendment 1 (2017) and Amendment 2 (2020); reaffirmation is not a new edition and the draft successor is unused |
 | **Held** | Beam provided-reinforcement compliance, column derived applicability/non-rectangular/provided-longitudinal checks, whole-joint assessment, walls/foundations, IS 875/1893, INDIA-4 qualified review, source/distribution/support/version/release/professional-use changes, and branch/worktree/archive/source/alias deletion |
 
@@ -42,15 +42,18 @@
 
 ## Ordered follow-on gates
 
-1. Complete immutable-head local and hosted checks for `LIB-PRO-010-RC`. Do not
-   delete any branch, worktree, archive, source copy, alias, or unrelated lane.
-2. Give the exact unchanged `v0.24.0a1` scope, artifact hashes, clause/source
-   map, benchmark replays, unsafe cases, and limitations to INDIA-4 qualified
-   review.
-3. Keep benchmark replay separate from engineering check and qualified review.
-4. Keep stable release, engineering-use wording, package/tag publication, and
-   professional approval as separate owner decisions.
-5. Expand afterward in order: IS 13920 walls, foundations, IS 875, then IS 1893.
+1. Freeze and integrate the `RELEASE-0240A1` repair candidate, then run Weekly
+   Verification once on that exact head. Do not delete any branch, worktree,
+   archive, source copy, alias, or unrelated lane.
+2. Obtain the repository-required independent exact-candidate software receipt,
+   then bind the user's existing Alpha publication authorization in an
+   evidence-only descendant.
+3. Publish `v0.24.0a1` only after those gates pass and verify PyPI, GitHub
+   Release assets, clean installation, and installed-package UAT.
+4. Keep benchmark replay separate from engineering check and qualified review;
+   keep stable/engineering-use wording and professional approval held.
+5. Conduct INDIA-4 qualified review before any stable or engineering-use claim,
+   then expand in order: IS 13920 walls, foundations, IS 875, then IS 1893.
 
 ## Required Reading
 

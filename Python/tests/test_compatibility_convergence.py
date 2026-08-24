@@ -137,6 +137,14 @@ def test_optional_dependency_stub_identity_is_environment_independent() -> None:
         assert installed["identity_behavior"] == "OPTIONAL_DEPENDENCY_SAME_OBJECT"
 
 
+def test_signature_identity_is_python_version_independent() -> None:
+    assert classification._signature(structural_lib.LoadType) == "(value)"
+
+    model_signature = classification._signature(structural_lib.BeamGeometry)
+    assert "Annotated[" in model_signature
+    assert "typing.Annotated[" not in model_signature
+
+
 def test_api_hub_is_an_identity_only_subset(ledger: dict[str, Any]) -> None:
     record = ledger["additional_module_records"][0]
     hub = importlib.import_module("structural_lib.services.api_hub")

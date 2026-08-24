@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-24 — LIB-PRO-010-RC bounded v0.24.0a1 candidate preparation
+**Updated:** 2026-08-24 — RELEASE-0240A1 protected Alpha publication
 
 ---
 
@@ -70,7 +70,7 @@
 ## Current Release
 
 | **Current public release** | v0.23.1a2 | ✅ ALPHA RELEASED — immutable tag/public artifacts recorded; later `main` work is not included |
-| **Local technical candidate** | v0.24.0a1 | 🧪 LIB-PRO-010-RC — exact wheel/sdist, source-free UAT, and bounded benchmark replay pass; immutable hosted checks and qualified review remain; no tag/publication authority |
+| **Release candidate** | v0.24.0a1 | 🧪 RELEASE-0240A1 — clean-wheel selection and Python 3.11/3.12 ledger identity repairs pass focused, source-free, quick, and full local gates; immutable commit, PR Gate, exact-head Weekly, independent acceptance, and publication remain; no tag or upload yet |
 - **Release evidence:** tag target `09861d3d`; public wheel SHA-256 `279b8270…43a9`; public installed-package UAT green
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization
@@ -126,13 +126,13 @@
 
 ## Active
 
-`LIB-PRO-009` is the active bounded release-trust closeout. It makes the public
-rebar helper reject non-integer `bar_count` values without raising or producing
-geometry, adds a current machine-readable separation between benchmark replay
-and case engineering disposition, and reconciles the living INDIA-3 status.
-The [ordered candidate plan](planning/bounded-release-candidate-plan.md) keeps
-exact-artifact UAT, qualified review, stable release, engineering-use approval,
-and later scope expansion as separate gates.
+`RELEASE-0240A1` is the active protected Alpha publication task. It preserves
+the frozen `v0.24.0a1` engineering scope while repairing one clean-runner
+classification defect in source-free wheel verification, then requires a new
+exact candidate, PR Gate, exact-head Weekly Verification, independent software
+acceptance, owner authorization, protected tag publication, and public artifact
+verification. Stable/engineering-use wording, INDIA-4 qualified review,
+professional approval, later scope, and cleanup remain separate held decisions.
 
 `INDIA-3-IS13920-M0` merged through PR #869 at `b85d514e` with exact
 candidate/merged tree `8a45afa4`. Beam, rectangular-column, and directional

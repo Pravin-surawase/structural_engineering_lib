@@ -657,6 +657,11 @@ class TestReleaseVerifyDependencies:
         )
         assert research_test in pytest_calls[0]
         assert pytest_calls[0][pytest_calls[0].index(research_test) - 1] == "--ignore"
+        repo_context_test = str(REPO_ROOT / "Python" / "tests" / "test_repo_context.py")
+        assert repo_context_test in pytest_calls[0]
+        assert (
+            pytest_calls[0][pytest_calls[0].index(repo_context_test) - 1] == "--ignore"
+        )
         assert any(cwd == tmp_path for _, cwd, _ in calls)
         pytest_config = tmp_path / "pytest.ini"
         assert pytest_config.read_text(encoding="utf-8").startswith("[pytest]\n")
