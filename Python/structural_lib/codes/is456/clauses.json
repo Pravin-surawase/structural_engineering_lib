@@ -1676,35 +1676,63 @@
       ]
     },
     "IS13920_6.1.1": {
-      "title": "Flexural Members — Dimensional Limits",
+      "title": "Beam Width-to-Depth Condition",
       "section": "IS 13920:2016 - Beams",
       "category": "seismic",
       "keywords": [
         "seismic beam",
-        "dimensional limits",
-        "beam width"
+        "width-to-depth ratio",
+        "strict boundary"
       ]
     },
     "IS13920_6.1.2": {
-      "title": "Flexural Members — Longitudinal Reinforcement",
+      "title": "Beam Minimum Width",
       "section": "IS 13920:2016 - Beams",
       "category": "seismic",
       "keywords": [
         "seismic beam",
-        "longitudinal steel",
-        "ductility",
-        "compression steel"
+        "minimum width",
+        "dimensional limit"
       ]
     },
     "IS13920_6.2.1": {
-      "title": "Flexural Members — Shear Reinforcement",
+      "title": "Beam Longitudinal Reinforcement",
       "section": "IS 13920:2016 - Beams",
       "category": "seismic",
       "keywords": [
         "seismic beam",
-        "shear reinforcement",
-        "hoop spacing",
-        "confinement"
+        "longitudinal reinforcement"
+      ]
+    },
+    "IS13920_6.2.1(b)": {
+      "title": "Beam Minimum Longitudinal Reinforcement",
+      "section": "IS 13920:2016 - Beams",
+      "category": "seismic",
+      "keywords": [
+        "seismic beam",
+        "minimum longitudinal reinforcement",
+        "each face"
+      ]
+    },
+    "IS13920_6.2.2": {
+      "title": "Beam Maximum Longitudinal Reinforcement",
+      "section": "IS 13920:2016 - Beams",
+      "category": "seismic",
+      "keywords": [
+        "seismic beam",
+        "maximum longitudinal reinforcement",
+        "each face"
+      ]
+    },
+    "IS13920_6.3.5": {
+      "title": "Beam Close-Link Spacing Near Joint Face",
+      "section": "IS 13920:2016 - Beams",
+      "category": "seismic",
+      "keywords": [
+        "seismic beam",
+        "close links",
+        "Amendment 1",
+        "spacing"
       ]
     },
     "IS13920_6.3": {

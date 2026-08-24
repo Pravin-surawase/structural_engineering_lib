@@ -188,13 +188,15 @@ _HELD_FAMILIES: dict[str, tuple[dict[str, Any], ...]] = {
 _IS13920_SUPPORTED: tuple[dict[str, Any], ...] = (
     {
         "family": "beam_detailing_checks",
-        "claim": "Bounded beam geometry, longitudinal-steel, and confinement-spacing checks exist.",
+        "claim": "A bounded beam geometry check plus longitudinal-steel and close-link requirement calculations exist.",
         "workflows": ["check_beam_ductility"],
         "limitations": [
-            "This is a bounded detailing check, not a complete seismic design workflow."
+            "Provided longitudinal reinforcement and link spacing are not inputs, so reinforcement compliance is not evaluated.",
+            "This is a bounded requirement-calculation contract, not a complete seismic design workflow.",
         ],
         "evidence": [
             "Python/structural_lib/codes/is13920/beam.py",
+            "Python/tests/codes/is13920/test_beam.py",
             "Python/tests/property/test_ductile_hypothesis.py",
         ],
     },

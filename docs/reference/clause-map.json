@@ -474,35 +474,43 @@
     },
     {
       "clause": "IS13920_6.1.1",
-      "title": "Flexural Members — Dimensional Limits",
-      "function": "check_beam_ductility",
+      "title": "Beam Width-to-Depth Condition",
+      "function": "check_geometry",
       "module": "codes/is13920/beam.py",
-      "decorator": "implicit",
-      "notes": "Geometry checks"
+      "decorator": "@clause",
+      "notes": "Strict b/D > 0.3 geometry boundary"
     },
     {
       "clause": "IS13920_6.1.2",
-      "title": "Flexural Members — Longitudinal Steel",
-      "function": "check_beam_ductility",
+      "title": "Beam Minimum Width",
+      "function": "check_geometry",
       "module": "codes/is13920/beam.py",
-      "decorator": "implicit",
-      "notes": "Steel limits"
+      "decorator": "@clause",
+      "notes": "Minimum width 200 mm"
     },
     {
-      "clause": "IS13920_6.2.1",
-      "title": "Flexural Members — Shear Reinforcement",
-      "function": "check_beam_ductility",
+      "clause": "IS13920_6.2.1(b)",
+      "title": "Beam Minimum Longitudinal Reinforcement",
+      "function": "get_min_tension_steel_percentage",
       "module": "codes/is13920/beam.py",
-      "decorator": "implicit",
-      "notes": "Confinement spacing"
+      "decorator": "@clause",
+      "notes": "Minimum ratio on each face"
     },
     {
-      "clause": "IS13920_6.3",
-      "title": "Lap Splices in Flexural Members",
-      "function": "check_beam_ductility",
+      "clause": "IS13920_6.2.2",
+      "title": "Beam Maximum Longitudinal Reinforcement",
+      "function": "get_max_tension_steel_percentage",
       "module": "codes/is13920/beam.py",
-      "decorator": "implicit",
-      "notes": ""
+      "decorator": "@clause",
+      "notes": "Maximum ratio on each face"
+    },
+    {
+      "clause": "IS13920_6.3.5",
+      "title": "Beam Close-Link Spacing Near Joint Face",
+      "function": "calculate_confinement_spacing",
+      "module": "codes/is13920/beam.py",
+      "decorator": "@clause",
+      "notes": "Amendment 1 spacing limit within 2d"
     }
   ],
   "not_implemented": [

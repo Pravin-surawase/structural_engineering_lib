@@ -88,7 +88,7 @@ def beam_width() -> st.SearchStrategy[float]:
 def beam_width_narrow() -> st.SearchStrategy[float]:
     """
     Strategy for narrow beam width (b < 200mm) for testing ductile failures.
-    IS 13920 Cl 6.1.1 requires b >= 200mm, so this generates invalid widths.
+    IS 13920 Cl 6.1.2 requires b >= 200mm, so this generates invalid widths.
     """
     return st.floats(
         min_value=100.0, max_value=199.9, allow_nan=False, allow_infinity=False
@@ -98,7 +98,7 @@ def beam_width_narrow() -> st.SearchStrategy[float]:
 def beam_width_ductile() -> st.SearchStrategy[float]:
     """
     Strategy for ductile beam width (b) in mm.
-    IS 13920 Cl 6.1.1: b >= 200mm
+    IS 13920 Cl 6.1.2: b >= 200mm
     """
     return st.floats(
         min_value=200.0, max_value=1000.0, allow_nan=False, allow_infinity=False
@@ -173,13 +173,13 @@ def ductile_beam_section(draw: st.DrawFn) -> dict[str, float]:
     Generate a beam section valid for IS 13920 ductile detailing.
 
     Ensures:
-    - b >= 200mm (Cl 6.1.1)
-    - b/D >= 0.3 (Cl 6.1.2)
+    - b >= 200mm (Cl 6.1.2)
+    - b/D > 0.3 (Cl 6.1.1)
     - d < D
     """
     b = draw(beam_width_ductile())
-    # D must satisfy b/D >= 0.3, so D <= b/0.3
-    depth_max = min(b / 0.3, 1800.0)
+    # D must satisfy b/D > 0.3, so stay strictly below b/0.3.
+    depth_max = min((b / 0.3) * (1.0 - 1e-12), 1800.0)
     depth_min = max(300.0, b * 0.3)  # Ensure reasonable minimum
     if depth_max < depth_min:
         depth_max = depth_min + 100  # Fallback for edge cases

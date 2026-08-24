@@ -45,7 +45,7 @@ class DuctilityCheckRequest(BaseModel):
 
 
 class DuctilityCheckResponse(BaseModel):
-    """Response for IS 13920 beam ductility check."""
+    """Beam geometry status plus IS 13920 reinforcement requirements."""
 
     is_geometry_valid: bool = Field(description="Geometry satisfies IS 13920 Cl 6.1")
     min_pt: float = Field(description="Minimum tension steel percentage (%)")
@@ -57,6 +57,15 @@ class DuctilityCheckResponse(BaseModel):
     errors: list[dict[str, Any]] = Field(
         default_factory=list, description="Structured design errors"
     )
+    result_kind: str = Field(
+        description="Bounded result meaning; this route calculates requirements"
+    )
+    compliance_status: str = Field(
+        description="Reinforcement compliance is not evaluated without provided steel"
+    )
+    standard: str = Field(description="Standard identity for the requirements")
+    source_reference: str = Field(description="Edition and amendment basis")
+    clause_refs: list[str] = Field(description="Normalized governing clause references")
 
 
 # =============================================================================

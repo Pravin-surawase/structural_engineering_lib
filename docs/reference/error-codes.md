@@ -35,8 +35,8 @@ tags: []
 
 | Code | Severity | Message | Field | Hint | IS 456 Clause |
 |------|----------|---------|-------|------|---------------|
-| `E_DUCTILE_001` | error | Width < 200 mm | b | Increase beam width to ≥ 200 mm. | IS 13920 Cl. 6.1.1 |
-| `E_DUCTILE_002` | error | Width/Depth ratio < 0.3 | b/D | Increase width or reduce depth. | IS 13920 Cl. 6.1.2 |
+| `E_DUCTILE_001` | error | Width < 200 mm | b | Increase beam width to ≥ 200 mm. | IS 13920 Cl. 6.1.2 |
+| `E_DUCTILE_002` | error | Width/Depth ratio must be > 0.3 | b/D | Increase width or reduce depth. | IS 13920 Cl. 6.1.1 |
 | `E_DUCTILE_003` | error | Invalid depth | D | Depth must be > 0. | — |
 
 ## FLEXURE

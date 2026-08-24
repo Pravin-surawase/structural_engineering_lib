@@ -13892,8 +13892,21 @@
         "type": "object"
       },
       "DuctilityCheckResponse": {
-        "description": "Response for IS 13920 beam ductility check.",
+        "description": "Beam geometry status plus IS 13920 reinforcement requirements.",
         "properties": {
+          "clause_refs": {
+            "description": "Normalized governing clause references",
+            "items": {
+              "type": "string"
+            },
+            "title": "Clause Refs",
+            "type": "array"
+          },
+          "compliance_status": {
+            "description": "Reinforcement compliance is not evaluated without provided steel",
+            "title": "Compliance Status",
+            "type": "string"
+          },
           "confinement_spacing": {
             "description": "Hoop spacing in confinement zone (mm)",
             "title": "Confinement Spacing",
@@ -13928,13 +13941,33 @@
             "description": "Summary remarks",
             "title": "Remarks",
             "type": "string"
+          },
+          "result_kind": {
+            "description": "Bounded result meaning; this route calculates requirements",
+            "title": "Result Kind",
+            "type": "string"
+          },
+          "source_reference": {
+            "description": "Edition and amendment basis",
+            "title": "Source Reference",
+            "type": "string"
+          },
+          "standard": {
+            "description": "Standard identity for the requirements",
+            "title": "Standard",
+            "type": "string"
           }
         },
         "required": [
           "is_geometry_valid",
           "min_pt",
           "max_pt",
-          "confinement_spacing"
+          "confinement_spacing",
+          "result_kind",
+          "compliance_status",
+          "standard",
+          "source_reference",
+          "clause_refs"
         ],
         "title": "DuctilityCheckResponse",
         "type": "object"
@@ -31177,7 +31210,7 @@
     },
     "/api/v1/design/beam/ductility-check": {
       "post": {
-        "description": "Run IS 13920 beam ductility checks for a single section. Checks geometry (Cl 6.1), min/max steel (Cl 6.2), and confinement spacing (Cl 6.3.5).",
+        "description": "Check beam geometry and calculate IS 13920 minimum/maximum longitudinal-steel ratios and the amended close-link spacing limit. Provided reinforcement is not accepted, so reinforcement compliance is not evaluated.",
         "operationId": "check_ductility_api_v1_design_beam_ductility_check_post",
         "requestBody": {
           "content": {
@@ -31291,7 +31324,7 @@
             "description": "Capability unavailable"
           }
         },
-        "summary": "Beam Ductility Check (IS 13920)",
+        "summary": "Beam Ductility Requirements (IS 13920)",
         "tags": [
           "design"
         ]

@@ -546,18 +546,18 @@ E_DUCTILE_001 = DesignError(
     message="Width < 200 mm",
     field="b",
     hint="Increase beam width to ≥ 200 mm.",
-    clause="IS 13920 Cl. 6.1.1",
-    recovery="Increase beam width to \u2265 200 mm per IS 13920 Cl 6.1.1 for seismic resistance.",
+    clause="IS 13920 Cl. 6.1.2",
+    recovery="Increase beam width to \u2265 200 mm per IS 13920 Cl 6.1.2.",
 )
 
 E_DUCTILE_002 = DesignError(
     code="E_DUCTILE_002",
     severity=Severity.ERROR,
-    message="Width/Depth ratio < 0.3",
+    message="Width/Depth ratio must be > 0.3",
     field="b/D",
     hint="Increase width or reduce depth.",
-    clause="IS 13920 Cl. 6.1.2",
-    recovery="Increase width or reduce depth so that b/D \u2265 0.3 per IS 13920 Cl 6.1.2.",
+    clause="IS 13920 Cl. 6.1.1",
+    recovery="Increase width or reduce depth so that b/D > 0.3 per IS 13920 Cl 6.1.1.",
 )
 
 E_DUCTILE_003 = DesignError(
