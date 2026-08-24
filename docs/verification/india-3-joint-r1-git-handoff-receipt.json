@@ -1,0 +1,190 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-24T04:44:08Z",
+      "query_status": "OK",
+      "reference": "Complete INDIA-3-JOINT-R1 autonomously as the next sequential packet, create and merge one unchanged green PR, preserve all adjacent holds, stop before the next packet, and use no subagents.",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "REPAIR_G0_BOUNDED_IS13920_JOINT_SCWB_CONTRACT",
+      "FIX_FACTOR_AT_1_4_AND_REMOVE_NONSTANDARD_IS13920_OVERRIDE",
+      "ENCODE_DIRECTION_AXIAL_CAPACITY_BASIS_APPLICABILITY_AND_SUPPORTED_TOPOLOGIES",
+      "ADD_BOUNDED_TEST_AND_TRACKED_EVIDENCE",
+      "UPDATE_TASK_SESSION_AND_HANDOFF_DOCUMENTATION",
+      "RUN_IMPACT_MAPPED_FOCUSED_AND_QUICK_CHECKS",
+      "CREATE_IMMUTABLE_CANDIDATE_AFTER_FOCUSED_QUICK_AND_HOOKS",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_ONE_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_ONE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "CREATE_IMMUTABLE_CANDIDATE_AFTER_FOCUSED_QUICK_AND_HOOKS",
+    "observed_at_utc": "2026-08-24T04:44:08Z",
+    "prohibited_actions": [
+      "ADD_UNRELATED_API_PRODUCT_OR_PACKAGE_ROOT_SURFACE",
+      "CHANGE_BEAM_COLUMN_WALL_FOUNDATION_IS875_OR_IS1893_FORMULAS",
+      "CHANGE_SOURCE_DISTRIBUTION_SUPPORT_VERSION_RELEASE_OR_PROFESSIONAL_USE_STATUS",
+      "DISTRIBUTE_OR_TRACK_PRIVATE_SOURCE_BYTES_TEXT_IMAGES_HASH_VALUES_OR_PATHS",
+      "DELETE_DEDUPLICATE_RENAME_OR_MOVE_ANY_SOURCE_ALIAS_BRANCH_WORKTREE_ARCHIVE_OR_UNRELATED_FILE",
+      "START_INDIA3_BEAM_R1_OR_ANY_LATER_PACKET",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_REWRITE_FORCE_PUSH_OR_BYPASS_CHECKS"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "REPAIR_G0_BOUNDED_IS13920_JOINT_SCWB_CONTRACT",
+        "FIX_FACTOR_AT_1_4_AND_REMOVE_NONSTANDARD_IS13920_OVERRIDE",
+        "ENCODE_DIRECTION_AXIAL_CAPACITY_BASIS_APPLICABILITY_AND_SUPPORTED_TOPOLOGIES",
+        "ADD_BOUNDED_TEST_AND_TRACKED_EVIDENCE",
+        "UPDATE_TASK_SESSION_AND_HANDOFF_DOCUMENTATION",
+        "RUN_IMPACT_MAPPED_FOCUSED_AND_QUICK_CHECKS",
+        "CREATE_IMMUTABLE_CANDIDATE_AFTER_FOCUSED_QUICK_AND_HOOKS",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_ONE_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_ONE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/india-3-joint-r1",
+      "head_sha": "20b60a047e5c6d88b800f7094dd64fcf4bebad28",
+      "task_id": "INDIA-3-JOINT-R1"
+    }
+  },
+  "holds": [
+    "BRANCH_WORKTREE_ARCHIVE_SOURCE_COPY_ALIAS_AND_UNRELATED_FILE_DELETION_NOT_AUTHORIZED",
+    "LOCAL_HOLD_DIRTY",
+    "PRESERVE_ALL_EXISTING_INDIA3_CANDIDATE_LANES",
+    "PRESERVE_PRIVATE_SOURCE_ARCHIVE_ALL_SOURCE_COPIES_AND_ALIASES",
+    "PRESERVE_UNRELATED_DIRTY_AND_UNKNOWN_LANES",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "observed_at_utc": "2026-08-24T04:44:08Z",
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "11f497065d6553de74732bd19dd159eb33e4f91d10e701cb69fbb95c8ffd79e1",
+    "state": {
+      "branch": "codex/india-3-joint-r1",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "20b60a047e5c6d88b800f7094dd64fcf4bebad28",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 101.502,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib16",
+      "head_sha": "20b60a047e5c6d88b800f7094dd64fcf4bebad28",
+      "hold_reasons": [
+        "changed paths: 8"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-24T04:47:06.173128+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/ef1b/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 8,
+        "modified_paths": [
+          "Python/structural_lib/codes/is13920/joint.py",
+          "Python/structural_lib/core/errors.py",
+          "Python/tests/codes/is13920/test_joint.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/next-session-brief.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/india-3-joint-r1-evidence.json",
+          "docs/verification/india-3-joint-r1-git-handoff-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "20b60a047e5c6d88b800f7094dd64fcf4bebad28",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/ef1b/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:11f497065d6553de74732bd19dd159eb33e4f91d10e701cb69fbb95c8ffd79e1",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-24T04:47:06.173272+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_ALL_EXISTING_LANES_AND_PRIVATE_SOURCE_MATERIAL",
+    "holds": [
+      "PRESERVE_UNRELATED_DIRTY_AND_UNKNOWN_LANES",
+      "PRESERVE_ALL_EXISTING_INDIA3_CANDIDATE_LANES",
+      "PRESERVE_PRIVATE_SOURCE_ARCHIVE_ALL_SOURCE_COPIES_AND_ALIASES",
+      "BRANCH_WORKTREE_ARCHIVE_SOURCE_COPY_ALIAS_AND_UNRELATED_FILE_DELETION_NOT_AUTHORIZED"
+    ],
+    "observed_at_utc": "2026-08-24T04:44:08Z",
+    "owner": "Main Agent under explicit user and repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources",
+      "Python/structural_lib/codes/is13920/beam.py",
+      "Python/structural_lib/codes/is13920/column.py",
+      "fastapi_app",
+      "react_app",
+      "excel"
+    ],
+    "integration_owner": "orchestrator",
+    "owned_paths": [
+      "Python/structural_lib/codes/is13920/joint.py",
+      "Python/tests/codes/is13920/test_joint.py",
+      "docs/verification/india-3-joint-r1-evidence.json",
+      "docs/verification/india-3-joint-r1-git-handoff-source-evidence.json",
+      "docs/verification/india-3-joint-r1-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "Python/structural_lib/core/errors.py",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "INDIA-3-JOINT-R1"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

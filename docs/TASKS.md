@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-24 — INDIA-3-SOURCE-META-R1 private catalogue repair
+**Updated:** 2026-08-24 — INDIA-3-JOINT-R1 bounded SCWB contract repair
 
 ---
 
@@ -125,10 +125,12 @@
 
 ## Active
 
-No implementation task is active. `INDIA-3-SOURCE-META-R1` has completed its
-bounded private catalogue repair and becomes complete only when its unchanged
-green candidate merges. `INDIA-3-JOINT-R1` is the next sequential packet and
-has not started.
+`INDIA-3-JOINT-R1` has completed its bounded local implementation and becomes
+complete only when its unchanged green candidate merges. It fixes the SCWB
+factor at 1.4, makes each principal-plane/shaking-direction case and factored
+axial-load capacity basis explicit, enforces roof/flat-slab applicability, and
+supports interior plus left/right exterior beam topologies. `INDIA-3-BEAM-R1`
+is the next sequential packet and has not started.
 
 `LIB-PRO-006` merged through PR #851 at `2d6df18e`. It confirms the practical
 10 m x 4 m audit arithmetic and fail-closed footing-detailing `HOLD`, adds a
@@ -240,12 +242,13 @@ product packets. INDIA-3-G0 now runs on fresh branch
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. The reproduced public-route safety packet and M0 are integrated.
 INDIA-3-G0 merged through PR #863 at `c0e34235`: beam, column, and joint each
-require a separate repair packet. `INDIA-3-SOURCE-META-R1` corrected only the
-ignored private catalogue's document-kind, page-content, and renderability
-truth. All 25 catalogue documents, 27 aliases, 732 cached pages, six IS 13920
-documents, and four standalone amendment copies remain intact. No new formula,
-support claim, IS 875 or IS 1893 implementation, next package version, release,
-or professional approval is activated.
+require a separate repair packet. `INDIA-3-SOURCE-META-R1` merged through PR
+#864 at `20b60a04` and corrected only ignored private catalogue metadata while
+retaining all 25 documents, 27 aliases, 732 cached pages, six IS 13920
+documents, and four standalone amendment copies. `INDIA-3-JOINT-R1` corrects
+only the code-namespace SCWB contract and direct tests; it adds no service,
+route, React/Excel surface, support promotion, package version, release, or
+professional approval.
 
 `LIB-PRO-008` merged through PR #862 at `3bcc3422`: torsion and WebSocket
 checking fail closed on invalid or missing engineering inputs; compatibility
@@ -317,6 +320,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-3-JOINT-R1 | Repair the G0-bounded IS 13920 joint SCWB factor, directional/axial basis, applicability, and supported topology contract | Main Agent | ✅ COMPLETE ON UNCHANGED GREEN MERGE — focused 29-case contract evidence passes; no API/product surface or support/release/approval promotion; `INDIA-3-BEAM-R1` not started |
 | INDIA-3-SOURCE-META-R1 | Correct private IS 13920 document-kind and page-renderability metadata while preserving every source and alias | Main Agent | ✅ COMPLETE ON UNCHANGED GREEN MERGE — private archive verifies; no formula, runtime, support, release, or approval scope changed; `INDIA-3-JOINT-R1` not started |
 | INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent | ✅ COMPLETE ON MERGE — source chain resolved; all three current families are `REPAIR_PACKET_REQUIRED`; no formula or support promotion occurred |
 | LIB-PRO-008 | Close confirmed torsion, WebSocket, compatibility/CI, and stirrup-geometry safety gaps before resuming INDIA-3-G0 | Main Agent | ✅ COMPLETE ON MERGE — focused behavior and compatibility evidence pass; quick/full/hooks and hosted checks remain immutable-candidate prerequisites |

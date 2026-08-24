@@ -1,266 +1,245 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2024-2026 Pravin Surawase
-"""
-Tests for IS 13920:2016 Cl 7.2.1 — Strong Column Weak Beam (SCWB) check.
-
-Functions under test:
-    - check_scwb (Cl 7.2.1)
-
-Test types:
-    1. Unit tests — passing case (columns stronger)
-    2. Unit tests — failing case (beams stronger)
-    3. Boundary test — exactly at 1.1 ratio
-    4. Input validation — zero/negative inputs
-    5. Custom factor test
-    6. Result methods — is_safe(), to_dict(), summary()
-"""
+"""Tests for the bounded IS 13920 SCWB directional-case contract."""
 
 from __future__ import annotations
 
+from typing import Any
+
 import pytest
 
-from structural_lib.codes.is13920.joint import check_scwb
+from structural_lib.codes.is13920.joint import (
+    ColumnCapacityBasis,
+    JointTopology,
+    PrincipalPlane,
+    ShakingDirection,
+    check_scwb,
+)
 
-# =============================================================================
-# 1. Passing Case — Columns stronger than beams
-# =============================================================================
+
+def _check(**overrides: Any):
+    inputs: dict[str, Any] = {
+        "column_top_capacity_knm": 200.0,
+        "column_bottom_capacity_knm": 200.0,
+        "beam_left_capacity_knm": 100.0,
+        "beam_right_capacity_knm": 100.0,
+        "topology": JointTopology.INTERIOR,
+        "principal_plane": PrincipalPlane.X,
+        "shaking_direction": ShakingDirection.POSITIVE,
+        "column_capacity_direction": ShakingDirection.NEGATIVE,
+        "column_top_factored_axial_load_kn": 850.0,
+        "column_bottom_factored_axial_load_kn": 900.0,
+        "column_capacity_basis": ColumnCapacityBasis.FACTORED_AXIAL_LOAD,
+        "is_roof_joint": False,
+        "is_flat_slab_system": False,
+    }
+    inputs.update(overrides)
+    return check_scwb(**inputs)
 
 
-class TestSCWBPass:
-    """ΣMc ≥ 1.1 × ΣMb — check should pass."""
-
-    def test_columns_clearly_stronger(self) -> None:
-        """Columns well above the 1.1× threshold."""
-        result = check_scwb(
-            column_moments_top_knm=200.0,
-            column_moments_bottom_knm=200.0,
-            beam_moments_left_knm=150.0,
-            beam_moments_right_knm=150.0,
+class TestFixedIS13920Requirement:
+    def test_g0_false_pass_benchmark_now_fails_at_1_4(self) -> None:
+        result = _check(
+            column_top_capacity_knm=125.0,
+            column_bottom_capacity_knm=125.0,
         )
-        # ΣMc = 400, ΣMb = 300, required = 330, ratio = 400/330 ≈ 1.212
-        assert result.is_satisfied is True
-        assert result.is_safe() is True
-        assert result.sum_column_capacity_knm == pytest.approx(400.0)
-        assert result.sum_beam_capacity_knm == pytest.approx(300.0)
-        assert result.required_column_capacity_knm == pytest.approx(330.0)
-        assert result.ratio == pytest.approx(400.0 / 330.0, rel=1e-6)
-        assert len(result.errors) == 0
 
-    def test_asymmetric_beams(self) -> None:
-        """Different beam capacities on left and right."""
-        result = check_scwb(
-            column_moments_top_knm=250.0,
-            column_moments_bottom_knm=250.0,
-            beam_moments_left_knm=100.0,
-            beam_moments_right_knm=200.0,
-        )
-        # ΣMc = 500, ΣMb = 300, required = 330
-        assert result.is_satisfied is True
-        assert result.ratio == pytest.approx(500.0 / 330.0, rel=1e-6)
-
-    def test_asymmetric_columns(self) -> None:
-        """Different column capacities top and bottom."""
-        result = check_scwb(
-            column_moments_top_knm=300.0,
-            column_moments_bottom_knm=100.0,
-            beam_moments_left_knm=150.0,
-            beam_moments_right_knm=150.0,
-        )
-        # ΣMc = 400, ΣMb = 300, required = 330
-        assert result.is_satisfied is True
-
-
-# =============================================================================
-# 2. Failing Case — Beams stronger than columns
-# =============================================================================
-
-
-class TestSCWBFail:
-    """ΣMc < 1.1 × ΣMb — check should fail."""
-
-    def test_beams_clearly_stronger(self) -> None:
-        """Beams much stronger — obvious SCWB violation."""
-        result = check_scwb(
-            column_moments_top_knm=100.0,
-            column_moments_bottom_knm=100.0,
-            beam_moments_left_knm=200.0,
-            beam_moments_right_knm=200.0,
-        )
-        # ΣMc = 200, ΣMb = 400, required = 440, ratio = 200/440 ≈ 0.455
+        assert result.factor == 1.4
+        assert result.sum_column_capacity_knm == 250.0
+        assert result.sum_beam_capacity_knm == 200.0
+        assert result.required_column_capacity_knm == pytest.approx(280.0)
+        assert result.ratio == pytest.approx(0.8928571428571429)
         assert result.is_satisfied is False
-        assert result.is_safe() is False
-        assert result.ratio == pytest.approx(200.0 / 440.0, rel=1e-6)
-        assert len(result.errors) == 1
         assert result.errors[0].code == "E_SCWB_002"
+        assert "1.4" in result.errors[0].message
 
-    def test_marginally_below_threshold(self) -> None:
-        """Just barely below the 1.1× threshold."""
-        # ΣMb = 200, required = 220, ΣMc = 219 < 220
-        result = check_scwb(
-            column_moments_top_knm=109.0,
-            column_moments_bottom_knm=110.0,
-            beam_moments_left_knm=100.0,
-            beam_moments_right_knm=100.0,
+    def test_exact_1_4_boundary_passes(self) -> None:
+        result = _check(
+            column_top_capacity_knm=140.0,
+            column_bottom_capacity_knm=140.0,
         )
-        # ΣMc = 219, required = 220
-        assert result.is_satisfied is False
 
-
-# =============================================================================
-# 3. Boundary Case — Exactly at 1.1 ratio
-# =============================================================================
-
-
-class TestSCWBBoundary:
-    """ΣMc = 1.1 × ΣMb exactly — should pass (≥ not >)."""
-
-    def test_exactly_at_threshold(self) -> None:
-        """Exactly at the 1.1 boundary — should satisfy the check."""
-        # ΣMb = 200, required = 220, ΣMc = 220
-        result = check_scwb(
-            column_moments_top_knm=110.0,
-            column_moments_bottom_knm=110.0,
-            beam_moments_left_knm=100.0,
-            beam_moments_right_knm=100.0,
-        )
         assert result.is_satisfied is True
-        assert result.ratio == pytest.approx(1.0, rel=1e-6)
-        assert len(result.errors) == 0
+        assert result.ratio == pytest.approx(1.0)
+        assert result.errors == ()
 
-    def test_marginally_above_threshold(self) -> None:
-        """Just barely above the 1.1× threshold."""
-        result = check_scwb(
-            column_moments_top_knm=110.5,
-            column_moments_bottom_knm=110.0,
-            beam_moments_left_knm=100.0,
-            beam_moments_right_knm=100.0,
+    def test_nonstandard_factor_override_is_not_part_of_contract(self) -> None:
+        with pytest.raises(TypeError, match="unexpected keyword argument 'factor'"):
+            _check(factor=1.0)
+
+    def test_result_is_labeled_only_with_fixed_is13920_basis(self) -> None:
+        result = _check()
+
+        assert result.standard == "IS 13920:2016"
+        assert "7.2.1-7.2.1.3" in result.source_reference
+        assert result.factor == 1.4
+
+
+class TestDirectionalAndAxialCapacityProvenance:
+    @pytest.mark.parametrize(
+        ("plane", "shaking", "column_direction"),
+        [
+            (PrincipalPlane.X, ShakingDirection.POSITIVE, ShakingDirection.NEGATIVE),
+            (PrincipalPlane.X, ShakingDirection.NEGATIVE, ShakingDirection.POSITIVE),
+            (PrincipalPlane.Y, ShakingDirection.POSITIVE, ShakingDirection.NEGATIVE),
+            (PrincipalPlane.Y, ShakingDirection.NEGATIVE, ShakingDirection.POSITIVE),
+        ],
+    )
+    def test_every_plane_direction_case_is_explicit(
+        self,
+        plane: PrincipalPlane,
+        shaking: ShakingDirection,
+        column_direction: ShakingDirection,
+    ) -> None:
+        result = _check(
+            principal_plane=plane,
+            shaking_direction=shaking,
+            column_capacity_direction=column_direction,
         )
-        # ΣMc = 220.5, required = 220
-        assert result.is_satisfied is True
 
+        assert result.principal_plane is plane
+        assert result.shaking_direction is shaking
+        assert result.beam_capacity_direction is shaking
+        assert result.column_capacity_direction is column_direction
+        assert result.assessment_scope == "ONE_PRINCIPAL_PLANE_ONE_SHAKING_DIRECTION"
 
-# =============================================================================
-# 4. Input Validation — Zero/negative inputs
-# =============================================================================
+    def test_column_capacity_direction_must_oppose_shaking(self) -> None:
+        with pytest.raises(ValueError, match="must oppose"):
+            _check(column_capacity_direction=ShakingDirection.POSITIVE)
 
-
-class TestSCWBValidation:
-    """Zero and negative inputs should raise ValueError."""
-
-    def test_zero_column_top(self) -> None:
-        with pytest.raises(ValueError, match="column_moments_top_knm"):
-            check_scwb(0.0, 100.0, 100.0, 100.0)
-
-    def test_negative_column_bottom(self) -> None:
-        with pytest.raises(ValueError, match="column_moments_bottom_knm"):
-            check_scwb(100.0, -50.0, 100.0, 100.0)
-
-    def test_zero_beam_left(self) -> None:
-        with pytest.raises(ValueError, match="beam_moments_left_knm"):
-            check_scwb(100.0, 100.0, 0.0, 100.0)
-
-    def test_negative_beam_right(self) -> None:
-        with pytest.raises(ValueError, match="beam_moments_right_knm"):
-            check_scwb(100.0, 100.0, 100.0, -10.0)
-
-    def test_zero_factor(self) -> None:
-        with pytest.raises(ValueError, match="factor"):
-            check_scwb(100.0, 100.0, 100.0, 100.0, factor=0.0)
-
-    def test_negative_factor(self) -> None:
-        with pytest.raises(ValueError, match="factor"):
-            check_scwb(100.0, 100.0, 100.0, 100.0, factor=-1.0)
-
-
-# =============================================================================
-# 5. Custom Factor
-# =============================================================================
-
-
-class TestSCWBCustomFactor:
-    """Use a non-default SCWB factor."""
-
-    def test_factor_1_2(self) -> None:
-        """Use factor=1.2 — stricter requirement."""
-        # ΣMb = 200, required = 240, ΣMc = 250
-        result = check_scwb(
-            column_moments_top_knm=125.0,
-            column_moments_bottom_knm=125.0,
-            beam_moments_left_knm=100.0,
-            beam_moments_right_knm=100.0,
-            factor=1.2,
+    def test_factored_axial_load_basis_and_values_are_retained(self) -> None:
+        result = _check(
+            column_top_factored_axial_load_kn=812.5,
+            column_bottom_factored_axial_load_kn=-125.0,
         )
-        assert result.is_satisfied is True
-        assert result.factor == 1.2
-        assert result.required_column_capacity_knm == pytest.approx(240.0)
 
-    def test_factor_1_0(self) -> None:
-        """Use factor=1.0 — equal capacity check (non-standard)."""
-        # ΣMb = 200, required = 200, ΣMc = 200
-        result = check_scwb(
-            column_moments_top_knm=100.0,
-            column_moments_bottom_knm=100.0,
-            beam_moments_left_knm=100.0,
-            beam_moments_right_knm=100.0,
-            factor=1.0,
+        assert result.column_capacity_basis is ColumnCapacityBasis.FACTORED_AXIAL_LOAD
+        assert result.column_top_factored_axial_load_kn == 812.5
+        assert result.column_bottom_factored_axial_load_kn == -125.0
+
+    @pytest.mark.parametrize(
+        "field",
+        [
+            "column_top_factored_axial_load_kn",
+            "column_bottom_factored_axial_load_kn",
+        ],
+    )
+    def test_axial_load_basis_rejects_nonfinite_values(self, field: str) -> None:
+        with pytest.raises(ValueError, match=field):
+            _check(**{field: float("nan")})
+
+
+class TestApplicability:
+    def test_non_roof_beam_column_joint_is_explicitly_applicable(self) -> None:
+        result = _check()
+        assert result.applicability == "APPLICABLE_NON_ROOF_BEAM_COLUMN_JOINT"
+
+    def test_roof_joint_waiver_cannot_be_reported_as_pass(self) -> None:
+        with pytest.raises(ValueError, match="waived at roof joints"):
+            _check(is_roof_joint=True)
+
+    def test_flat_slab_exclusion_cannot_be_reported_as_pass(self) -> None:
+        with pytest.raises(ValueError, match="not supported for flat-slab"):
+            _check(is_flat_slab_system=True)
+
+    @pytest.mark.parametrize("field", ["is_roof_joint", "is_flat_slab_system"])
+    def test_applicability_flags_must_be_known_booleans(self, field: str) -> None:
+        with pytest.raises(TypeError, match=field):
+            _check(**{field: None})
+
+
+class TestSupportedTopologies:
+    def test_interior_joint_uses_both_beams(self) -> None:
+        result = _check(
+            beam_left_capacity_knm=90.0,
+            beam_right_capacity_knm=110.0,
         )
-        assert result.is_satisfied is True
-        assert result.ratio == pytest.approx(1.0, rel=1e-6)
+        assert result.topology is JointTopology.INTERIOR
+        assert result.sum_beam_capacity_knm == 200.0
 
-    def test_factor_1_2_fail(self) -> None:
-        """factor=1.2 causes failure that would pass with default 1.1."""
-        # ΣMb = 200, required@1.1 = 220, required@1.2 = 240, ΣMc = 230
-        result = check_scwb(
-            column_moments_top_knm=115.0,
-            column_moments_bottom_knm=115.0,
-            beam_moments_left_knm=100.0,
-            beam_moments_right_knm=100.0,
-            factor=1.2,
+    def test_left_exterior_joint_uses_only_left_beam(self) -> None:
+        result = _check(
+            topology=JointTopology.EXTERIOR_LEFT,
+            beam_left_capacity_knm=120.0,
+            beam_right_capacity_knm=None,
         )
-        assert result.is_satisfied is False
-        # Same inputs with default factor should pass
-        result_default = check_scwb(115.0, 115.0, 100.0, 100.0)
-        assert result_default.is_satisfied is True
+        assert result.sum_beam_capacity_knm == 120.0
+
+    def test_right_exterior_joint_uses_only_right_beam(self) -> None:
+        result = _check(
+            topology=JointTopology.EXTERIOR_RIGHT,
+            beam_left_capacity_knm=None,
+            beam_right_capacity_knm=130.0,
+        )
+        assert result.sum_beam_capacity_knm == 130.0
+
+    @pytest.mark.parametrize(
+        "overrides",
+        [
+            {"beam_right_capacity_knm": None},
+            {
+                "topology": JointTopology.EXTERIOR_LEFT,
+                "beam_right_capacity_knm": 100.0,
+            },
+            {
+                "topology": JointTopology.EXTERIOR_RIGHT,
+                "beam_left_capacity_knm": 100.0,
+                "beam_right_capacity_knm": None,
+            },
+        ],
+    )
+    def test_topology_and_present_beam_sides_must_agree(
+        self,
+        overrides: dict[str, Any],
+    ) -> None:
+        with pytest.raises(ValueError, match="topology"):
+            _check(**overrides)
 
 
-# =============================================================================
-# 6. Result Methods
-# =============================================================================
+class TestValidationAndResultMethods:
+    @pytest.mark.parametrize(
+        ("field", "value"),
+        [
+            ("column_top_capacity_knm", 0.0),
+            ("column_bottom_capacity_knm", -1.0),
+            ("beam_left_capacity_knm", float("inf")),
+        ],
+    )
+    def test_capacities_must_be_positive_and_finite(
+        self,
+        field: str,
+        value: float,
+    ) -> None:
+        with pytest.raises(ValueError):
+            _check(**{field: value})
 
+    def test_to_dict_preserves_contract_fields(self) -> None:
+        result_dict = _check().to_dict()
 
-class TestSCWBResultMethods:
-    """Test is_safe(), to_dict(), summary() methods."""
+        assert result_dict["topology"] == "INTERIOR"
+        assert result_dict["principal_plane"] == "X"
+        assert result_dict["shaking_direction"] == "POSITIVE"
+        assert result_dict["beam_capacity_direction"] == "POSITIVE"
+        assert result_dict["column_capacity_direction"] == "NEGATIVE"
+        assert result_dict["column_capacity_basis"] == "FACTORED_AXIAL_LOAD"
+        assert result_dict["factor"] == 1.4
+        assert result_dict["standard"] == "IS 13920:2016"
+        assert result_dict["clause"] == result_dict["source_reference"]
 
-    def test_to_dict_keys(self) -> None:
-        result = check_scwb(200.0, 200.0, 150.0, 150.0)
-        d = result.to_dict()
-        expected_keys = {
-            "sum_column_capacity_knm",
-            "sum_beam_capacity_knm",
-            "required_column_capacity_knm",
-            "ratio",
-            "factor",
-            "is_satisfied",
-            "clause",
-            "errors",
-            "warnings",
-        }
-        assert set(d.keys()) == expected_keys
+    def test_summary_and_case_safety_are_directional(self) -> None:
+        passing = _check()
+        failing = _check(
+            column_top_capacity_knm=100.0,
+            column_bottom_capacity_knm=100.0,
+        )
 
-    def test_summary_contains_pass(self) -> None:
-        result = check_scwb(200.0, 200.0, 150.0, 150.0)
-        assert "PASS" in result.summary()
+        assert passing.is_safe() is True
+        assert "directional case" in passing.summary()
+        assert "PASS" in passing.summary()
+        assert failing.is_safe() is False
+        assert "FAIL" in failing.summary()
 
-    def test_summary_contains_fail(self) -> None:
-        result = check_scwb(100.0, 100.0, 200.0, 200.0)
-        assert "FAIL" in result.summary()
-
-    def test_clause_in_result(self) -> None:
-        result = check_scwb(200.0, 200.0, 150.0, 150.0)
-        assert "7.2.1" in result.clause
-
-    def test_frozen_result(self) -> None:
-        """SCWBResult is frozen — attributes cannot be changed."""
-        result = check_scwb(200.0, 200.0, 150.0, 150.0)
+    def test_result_is_frozen(self) -> None:
+        result = _check()
         with pytest.raises(AttributeError):
-            result.is_satisfied = False  # type: ignore[misc]
+            result.factor = 1.0  # type: ignore[misc]
