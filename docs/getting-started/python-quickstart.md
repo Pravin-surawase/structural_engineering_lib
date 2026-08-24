@@ -30,8 +30,8 @@ This is the easiest path for beginners.
 ```bash
 python3 -m pip install --upgrade pip
 
-# Exact current Alpha install
-python3 -m pip install "structural-lib-is456===0.23.1a2"
+# Exact prepared-candidate install
+python3 -m pip install "structural-lib-is456===0.24.0a1"
 
 # Optional DXF support
 python3 -m pip install "structural-lib-is456[dxf]"
@@ -39,6 +39,10 @@ python3 -m pip install "structural-lib-is456[dxf]"
 # Verify the interpreter, package origin/version, and installed extras
 python3 -m structural_lib install-preflight
 ```
+
+The `0.24.0a1` pin is for the exact locally built candidate wheel. It is not
+available from PyPI unless separately authorized and published; `0.23.1a2`
+remains the current public Alpha.
 
 Engineering note: this library is a calculation aid; final responsibility for code-compliant design and detailing remains with the qualified engineer.
 
@@ -65,7 +69,7 @@ If you are on Windows, replace `python3` with `py`.
 3. Install the library:
    ```bash
    python3 -m pip install --upgrade pip
-   python3 -m pip install "structural-lib-is456===0.23.1a2"
+   python3 -m pip install "structural-lib-is456===0.24.0a1"
    python3 -m structural_lib install-preflight
    ```
 4. Optional DXF support:

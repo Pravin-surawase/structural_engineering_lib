@@ -1,0 +1,129 @@
+{
+  "schema_version": "lib-pro-010-rc-local-artifact/v1",
+  "task_id": "LIB-PRO-010-RC",
+  "recorded_at_utc": "2026-08-24T10:43:52Z",
+  "candidate_version": "0.24.0a1",
+  "candidate_status": "LOCAL_TECHNICAL_CANDIDATE_PUBLICATION_HOLD",
+  "source_identity": {
+    "preparation_base_commit": "b3309260686a05b4cbb9c9358c89d6218a700357",
+    "preparation_repair_head": "3495a37e95794295488502dbdb3987e9c56425fd",
+    "package_source_aggregate_sha256": "ae6b8a4e1186ff182e09de5c38b5b810bbac838b954166d6905c3987f5dc6ffd",
+    "scope_freeze": "docs/verification/lib-pro-010-rc-scope-freeze.json",
+    "library_content_identity": "ab0fe46c505f1200423b670e5cb38034423dcdca331f722f67075984971ce7c4"
+  },
+  "artifacts": {
+    "wheel": {
+      "filename": "structural_lib_is456-0.24.0a1-py3-none-any.whl",
+      "bytes": 774739,
+      "sha256": "62118dd3ae3a84da2910ec3f97a8e3b6a197ec6c7a2284b1e180deb78773035b",
+      "archive_entry_count": 253,
+      "tracked_in_git": false
+    },
+    "sdist": {
+      "filename": "structural_lib_is456-0.24.0a1.tar.gz",
+      "bytes": 654245,
+      "sha256": "b939d0926aa4e9bb176dd5f3ef2226e88ef17429f36fc8cc190566de8b3641e3",
+      "archive_entry_count": 288,
+      "tracked_in_git": false
+    },
+    "build_command": "./scripts/python_runtime.sh -m build Python",
+    "build_result": "PASS"
+  },
+  "installed_wheel_verification": {
+    "command": "./scripts/python_runtime.sh scripts/release.py verify --version 0.24.0a1 --source wheel --wheel-dir Python/dist",
+    "result": "PASS",
+    "source_free_origin_confirmed": true,
+    "installed_version": "0.24.0a1",
+    "python_tests": {
+      "passed": 6020,
+      "skipped": 51,
+      "deselected": 2
+    },
+    "cli_flows": [
+      "sample job",
+      "critical CSV",
+      "HTML report"
+    ]
+  },
+  "candidate_identity_check": {
+    "command": "./scripts/python_runtime.sh scripts/release.py candidate-check --version 0.24.0a1 --wheel Python/dist/structural_lib_is456-0.24.0a1-py3-none-any.whl",
+    "result": "PASS",
+    "filename_metadata_source_version_match": true,
+    "clean_import_and_cli_help": true
+  },
+  "release_uat": {
+    "result": "PASS",
+    "schema_version": "exact-wheel-uat-receipt/v1",
+    "matrix_schema_version": "release-negative-uat/v1",
+    "matrix_sha256": "dd52015061a443e16f93bb5828016b5e96a580e3e0ebe4516e31a29db88c7757",
+    "case_count": 29,
+    "case_pass_count": 29,
+    "advertised_entry_point_count": 14,
+    "advertised_entry_point_inventory_sha256": "e7a32f19533876f132ccbaaafa660ed9eabec384708243d206f29c94572c399f",
+    "blocked_hold_fail_visibility_exercised": true,
+    "public_examples_exercised": true,
+    "exact_installed_wheel_execution_confirmed_by_candidate_check_and_preflight": true
+  },
+  "benchmark_replay": {
+    "result": "PASS",
+    "classification": "SOFTWARE_AND_BENCHMARK_REPLAY_ONLY",
+    "focused_test_count": 242,
+    "focused_families": [
+      "one-storey gravity model and load ledger",
+      "Building Gravity Workflow V1 and CLI",
+      "Routine Excel Workbench V1",
+      "beam design/detailing pipeline",
+      "one-way slab flexure",
+      "short-column axial capacity including inclusive 0.8% and 4.0% limits",
+      "beam shear",
+      "isolated footing public API",
+      "release negative UAT"
+    ],
+    "independent_gravity_hand_vector": {
+      "source": "docs/verification/b1-gravity-model-load-ledger-evidence.md and docs/verification/b2-gravity-workflow-v1-evidence.md",
+      "service_total_all_footings_kn": 270.0,
+      "factored_total_all_footings_kn": 405.0,
+      "service_axial_each_footing_kn": 67.5,
+      "factored_axial_each_footing_kn": 101.25,
+      "uls_beam_moment_knm": 136.6875,
+      "uls_beam_shear_kn": 91.125
+    },
+    "synthetic_component_side_calculation": {
+      "source": "docs/planning/pre-release-input-safety-and-professional-readiness-plan.md section 2.4",
+      "classification": "UNCHANGED_PROJECT_AUTHORED_REPLAY",
+      "qualified_engineering_review": false
+    }
+  },
+  "preflight_through_content_freeze": {
+    "command": "./run.sh release preflight --wheel Python/dist/structural_lib_is456-0.24.0a1-py3-none-any.whl",
+    "technical_phases": "PASS",
+    "python_tests_passed": 7036,
+    "python_tests_skipped": 3,
+    "python_tests_deselected": 6,
+    "fastapi_tests_passed": 492,
+    "fastapi_tests_deselected": 6,
+    "react_production_build": "PASS",
+    "overall_result": "EXPECTED_HOLD_DIRTY_BEFORE_CANDIDATE_COMMIT",
+    "remaining_local_gate": "Rerun unchanged exact-wheel preflight after the immutable candidate commit proves a clean worktree."
+  },
+  "claim_separation": {
+    "exact_artifact_built": true,
+    "source_free_artifact_uat_passed": true,
+    "benchmark_replay_passed": true,
+    "engineering_check_passed": false,
+    "qualified_review_required": true,
+    "qualified_review_completed": false,
+    "professional_approval": false,
+    "release_authorized": false,
+    "tag_created": false,
+    "package_published": false,
+    "github_release_created": false
+  },
+  "holds": [
+    "The immutable candidate commit and clean-worktree preflight are not yet assigned in this content-freeze record.",
+    "Required hosted checks must pass against the exact unchanged candidate head.",
+    "INDIA-4 qualified structural-engineering review remains a separate next packet.",
+    "Owner authorization is required before tag creation, package publication, or GitHub Release creation.",
+    "No complete-building-design, engineering-use, or professional-approval claim is permitted."
+  ]
+}

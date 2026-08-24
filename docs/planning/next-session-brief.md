@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-24
-- Focus: Close strict rebar input, evidence-status, and living-state defects.
-- Git receipt: docs/verification/lib-pro-009-git-handoff-receipt.json | sha256:d48c0eed78c3187f7369e45ce0e6386a80f34d502a98f1a14f3aac2316e60bae | HOLD
-- Git identity: codex/lib-pro-009-rc-trust@b85d514ed93e22a154badde990ef1c3fb02ae0d9 | upstream=origin/main@b85d514ed93e22a154badde990ef1c3fb02ae0d9 | base=origin/main@b85d514ed93e22a154badde990ef1c3fb02ae0d9 | tree=dirty | operation=none
+- Focus: Prepare one bounded `v0.24.0a1` Alpha candidate from the integrated
+- Git receipt: docs/verification/lib-pro-010-rc-git-handoff-receipt.json | sha256:603650dc764dd5448fef1c34299a7e823d299fc629bdb7ff1306c961971a5141 | HOLD
+- Git identity: codex/lib-pro-010-rc-artifact@3495a37e95794295488502dbdb3987e9c56425fd | upstream=origin/main@b3309260686a05b4cbb9c9358c89d6218a700357 | base=origin/main@b3309260686a05b4cbb9c9358c89d6218a700357 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: COMMIT_INTENDED_PATHS
 <!-- HANDOFF:END -->
@@ -15,9 +15,9 @@
 
 | State | Boundary |
 |---|---|
-| **Current** | `INDIA-3-IS13920-M0` merged through PR #869 at `b85d514e`, exact candidate/merged tree `8a45afa4`; `LIB-PRO-009` is the bounded input/status/document closeout |
-| **Decision** | Replay success is separate from engineering disposition: beam `NOT_EVALUATED`, bounded column benchmark `PASS`, represented joint check `FAIL`; every family retains `QUALIFIED_REVIEW_REQUIRED` |
-| **Next** | Integrate LIB-PRO-009, then freeze an exact bounded release-candidate scope and artifact before installed UAT and qualified review of that unchanged candidate |
+| **Current** | `LIB-PRO-009` merged through PR #870 at `b3309260`; local `v0.24.0a1` wheel/sdist identity, source-free UAT, and bounded benchmark replay are frozen by `LIB-PRO-010-RC` |
+| **Decision** | The local artifact is a technical Alpha candidate only. Benchmark replay passed; engineering check, INDIA-4 qualified review, professional approval, and release authority remain false |
+| **Next** | Complete the immutable candidate commit, required hosted checks, and unchanged-head integration; then conduct the separate INDIA-4 qualified review packet before any publication decision |
 | **Source** | IS 13920:2016 First Revision plus Amendment 1 (2017) and Amendment 2 (2020); reaffirmation is not a new edition and the draft successor is unused |
 | **Held** | Beam provided-reinforcement compliance, column derived applicability/non-rectangular/provided-longitudinal checks, whole-joint assessment, walls/foundations, IS 875/1893, INDIA-4 qualified review, source/distribution/support/version/release/professional-use changes, and branch/worktree/archive/source/alias deletion |
 
@@ -42,12 +42,12 @@
 
 ## Ordered follow-on gates
 
-1. Integrate the unchanged green `LIB-PRO-009` candidate. Do not delete any
-   branch, worktree, archive, source copy, alias, or unrelated lane.
-2. Freeze the exact supported subset, version, commit, limitations, and artifact
-   identities for one bounded release candidate.
-3. Run source-free installed-artifact UAT and hand comparisons, then obtain
-   qualified review of that exact unchanged candidate.
+1. Complete immutable-head local and hosted checks for `LIB-PRO-010-RC`. Do not
+   delete any branch, worktree, archive, source copy, alias, or unrelated lane.
+2. Give the exact unchanged `v0.24.0a1` scope, artifact hashes, clause/source
+   map, benchmark replays, unsafe cases, and limitations to INDIA-4 qualified
+   review.
+3. Keep benchmark replay separate from engineering check and qualified review.
 4. Keep stable release, engineering-use wording, package/tag publication, and
    professional approval as separate owner decisions.
 5. Expand afterward in order: IS 13920 walls, foundations, IS 875, then IS 1893.
@@ -65,3 +65,5 @@
 9. [Current task board](../TASKS.md)
 10. [Bounded release candidate plan](bounded-release-candidate-plan.md)
 11. [Replay and engineering-status clarification](../verification/lib-pro-009-is13920-status-semantics.json)
+12. [v0.24.0a1 scope freeze](../verification/lib-pro-010-rc-scope-freeze.json)
+13. [v0.24.0a1 local artifact evidence](../verification/lib-pro-010-rc-local-artifact.json)

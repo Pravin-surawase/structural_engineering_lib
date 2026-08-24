@@ -4,6 +4,45 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.24.0a1] — Prepared candidate (unreleased; on hold)
+
+Prepared Alpha candidate for the bounded post-`v0.23.1a2` subset. At candidate
+freeze it is not tagged or published. Publication, stable or engineering-use
+wording, and professional approval remain separate owner decisions after exact
+artifact evidence and qualified review.
+
+### Added
+
+- Building Gravity Workflow V1 with a versioned one-storey model, explicit load
+  ledger, deterministic component orchestration, calculation book, CLI/REST
+  surfaces, and visible holds for excluded actions and incomplete building scope.
+- Routine Excel Workbench V1 and a read-only ETABS snapshot path that preserve
+  source identities, row accounting, preview hashes, and review boundaries.
+- Bounded IS 13920 beam, rectangular-column, and one-plane directional joint
+  checks with controlled source identities, benchmark replays, unsafe cases,
+  explicit applicability, and qualified-review-required status.
+- Supplied beam reinforcement and supported isolated-footing end-anchorage
+  evaluation with explicit geometry, source, constructability, and HOLD/FAIL
+  semantics.
+
+### Changed
+
+- Public compatibility surfaces are reconciled to one canonical owner ledger;
+  retained legacy helpers remain explicit compatibility holds rather than silent
+  duplicates.
+- Benchmark replay, calculation completion, engineering disposition, qualified
+  review, release authority, and professional approval are represented as
+  separate claims.
+
+### Fixed
+
+- Public numeric, route-domain, transport, WebSocket, BOQ, torsion, and rebar
+  input boundaries now fail closed instead of coercing or overstating results.
+- Exact 0.8% and 4.0% column reinforcement limits remain inclusive after normal
+  floating-point area multiplication and division.
+- The release footing-inclusion gate now binds all reviewed transport,
+  provenance, and bounded end-anchorage changes instead of stale file hashes.
+
 ## [0.23.1a2] — Released Alpha (2026-08-17)
 
 Published the reviewed Alpha for strict project input safety, traceable result
@@ -1488,6 +1527,7 @@ V3 Foundation release — everything built since v0.19.1. Full-stack maturity mi
 Format: Keep a section per release with Added/Changed/Fixed as needed. Tag releases as `vX.Y.Z`.
 
 [Unreleased]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.23.1a2...HEAD
+[0.24.0a1]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.23.1a2...HEAD
 [0.23.1a2]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.23.1a1...v0.23.1a2
 [0.23.1a1]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.23.0...v0.23.1a1
 [0.21.6]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.21.5...v0.21.6

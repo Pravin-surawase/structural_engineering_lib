@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-24 — LIB-PRO-009 bounded release-trust closeout
+**Updated:** 2026-08-24 — LIB-PRO-010-RC bounded v0.24.0a1 candidate preparation
 
 ---
 
@@ -70,6 +70,7 @@
 ## Current Release
 
 | **Current public release** | v0.23.1a2 | ✅ ALPHA RELEASED — immutable tag/public artifacts recorded; later `main` work is not included |
+| **Local technical candidate** | v0.24.0a1 | 🧪 LIB-PRO-010-RC — exact wheel/sdist, source-free UAT, and bounded benchmark replay pass; immutable hosted checks and qualified review remain; no tag/publication authority |
 - **Release evidence:** tag target `09861d3d`; public wheel SHA-256 `279b8270…43a9`; public installed-package UAT green
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization

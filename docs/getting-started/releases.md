@@ -29,7 +29,7 @@ Entries here represent "locked" versions that have been verified and approved.
 
 ### Publication policy
 
-`v0.23.0` is the currently published Alpha development preview. It is a
+`v0.23.1a2` is the currently published Alpha development preview. It is a
 historical release identifier and remains case-qualified; it does not imply
 complete IS 456 coverage or professional design approval.
 
@@ -55,9 +55,11 @@ public metadata.
 ### Owner authorization holds
 
 Only the owner may authorize Pages settings, a tag, TestPyPI or PyPI
-publication, GitHub Release creation, or PR merge. Alpha publication evidence
-does not grant qualified structural-engineering approval; that review remains a
-separate owner and qualified-engineer decision.
+publication, or GitHub Release creation. PR integration follows the repository
+Git workflow and still requires the exact reviewed head, required green checks,
+and no unresolved blocker. Alpha publication evidence does not grant qualified
+structural-engineering approval; that review remains a separate owner and
+qualified-engineer decision.
 
 ### For maintainers: How to publish a new release
 
@@ -85,8 +87,8 @@ separate owner and qualified-engineer decision.
 6. **Have Codex review and commit the scoped release changes** with
    `chore: release v0.X.YaN`.
 
-7. **Have Codex push and update the connected PR.** Merge still requires explicit
-   user confirmation and passing required checks.
+7. **Have Codex push and update the connected PR.** Merge is permitted only for
+   the unchanged reviewed head after required checks pass and no blocker remains.
 
 8. **After explicit user approval, have Codex tag and push** (triggers
    `publish.yml` → validate → build → publish to PyPI):
@@ -1303,3 +1305,48 @@ target are required before TestPyPI, PyPI, a tag, or a GitHub Release.
 
 **Full changelog:** See
 [CHANGELOG.md](../../CHANGELOG.md#0231a2--released-alpha-2026-08-17)
+
+---
+
+## v0.24.0a1 — Prepared candidate (unreleased; on hold)
+
+**Status at candidate preparation (2026-08-24):** Local candidate only; not
+tagged, uploaded, or published.
+
+**Preparation base:** `3495a37e95794295488502dbdb3987e9c56425fd`, after
+the refreshed footing inclusion gate and inclusive column-ratio boundary repair.
+The immutable candidate commit is assigned after content freeze. The locally
+built artifacts are:
+
+- wheel: `structural_lib_is456-0.24.0a1-py3-none-any.whl`, 774,739 bytes,
+  SHA-256 `62118dd3ae3a84da2910ec3f97a8e3b6a197ec6c7a2284b1e180deb78773035b`;
+- sdist: `structural_lib_is456-0.24.0a1.tar.gz`, 654,245 bytes, SHA-256
+  `b939d0926aa4e9bb176dd5f3ef2226e88ef17429f36fc8cc190566de8b3641e3`.
+
+The artifacts are generated local evidence and are not committed, uploaded, or
+published.
+
+**Scope:** The declared post-`v0.23.1a2` subset: bounded IS 456 component
+workflows, Building Gravity Workflow V1, Routine Excel Workbench V1, read-only
+ETABS snapshot intake, supplied beam reinforcement, supported footing end
+anchorage, and bounded IS 13920 beam/rectangular-column/directional-joint checks.
+The machine-readable candidate scope binds the maintained API, capability, UAT,
+and limitation manifests.
+
+**Release boundary:** This is Alpha candidate preparation, not a stable release,
+engineering-use approval, complete code-compliant building design, INDIA-4
+acceptance, qualified-engineer approval, or professional approval. IS 13920
+walls/foundations, IS 875, IS 1893, dynamic/response-spectrum/FEM analysis,
+geotechnical verification, and ETABS write-back remain excluded.
+
+**Local artifact result:** Source-free installation passed 6,020 package tests
+plus the sample-job/critical/report CLI flow. All 29 negative UAT cases and all
+14 advertised entries are accounted for, and the 242-test bounded benchmark
+replay passed. This is software/benchmark evidence, not an engineering check.
+
+**Publication gate:** Immutable review, required hosted checks, qualified review
+of the unchanged bounded candidate, and a separate exact owner decision remain
+required before any tag, TestPyPI/PyPI upload, or GitHub Release.
+
+**Full changelog:** See
+[CHANGELOG.md](../../CHANGELOG.md#0240a1--prepared-candidate-unreleased-on-hold)

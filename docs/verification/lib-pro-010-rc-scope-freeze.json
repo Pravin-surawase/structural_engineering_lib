@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "task_id": "LIB-PRO-010-RC",
+  "candidate": {
+    "version": "0.24.0a1",
+    "status": "PREPARED_LOCAL_CANDIDATE",
+    "public_release": false,
+    "tag_created": false,
+    "package_published": false,
+    "preparation_base_commit": "b3309260686a05b4cbb9c9358c89d6218a700357",
+    "preparation_repair_head": "3495a37e95794295488502dbdb3987e9c56425fd",
+    "immutable_candidate_commit": "RECORDED_EXTERNALLY_AFTER_COMMIT"
+  },
+  "source_identity": {
+    "package_source_set": [
+      "Python/README.md",
+      "Python/pyproject.toml",
+      "Python/structural_lib/**"
+    ],
+    "package_source_aggregate_sha256": "ae6b8a4e1186ff182e09de5c38b5b810bbac838b954166d6905c3987f5dc6ffd",
+    "aggregate_algorithm": "Sort git ls-files for the package source set; calculate SHA-256 for each file; calculate SHA-256 over the resulting lines.",
+    "maintained_manifest_sha256": {
+      "docs/reference/api-classification.json": "765f5be3f8f1cf7248c55cf73caf0c33f18d38cb01ccd10212c31415039b4dd0",
+      "docs/reference/api-manifest.json": "8916cad787010a9790a81528751ad15311dd93e3b68e72afb0b77c55d34177fc",
+      "docs/reference/api-compatibility-ledger.json": "a10055f4a49ce44a0610d78d7639b290111dca0099eca68093af1ad5f7f8f690",
+      "docs/verification/indian-code-capability-coverage.json": "3f972cf9b80f74194a5a8e63a8f487487d1663ba24cb5fd11fc79cdab0ec3577",
+      "docs/verification/lib-pro-009-is13920-status-semantics.json": "fe666acc5be1abc7f9604379e4973484b5d1c15f65880d98c989ad2c39de4455",
+      "docs/verification/release-negative-uat-matrix.json": "dd52015061a443e16f93bb5828016b5e96a580e3e0ebe4516e31a29db88c7757",
+      "docs/verification/advertised-entry-points.json": "e7a32f19533876f132ccbaaafa660ed9eabec384708243d206f29c94572c399f"
+    },
+    "negative_uat_case_count": 29,
+    "advertised_entry_point_count": 14
+  },
+  "declared_supported_subset": [
+    "The bounded IS 456 component capabilities declared in docs/verification/indian-code-capability-coverage.json and the maintained public API manifests.",
+    "Building Gravity Workflow V1 for its declared one-storey gravity-only workflow and explicit load ledger; it is not a complete building workflow.",
+    "Routine Excel Workbench V1 and read-only ETABS snapshot intake within their declared contracts; no ETABS model write-back.",
+    "Supplied beam-reinforcement detailing and supported footing end-anchorage cases within their declared applicability checks.",
+    "The bounded IS 13920 beam, rectangular-column, and one-plane directional beam-column-joint families declared by the maintained status-semantics evidence."
+  ],
+  "explicit_exclusions": [
+    "Automatic code-compliant design of a complete building.",
+    "Global structural analysis, lateral-load analysis, dynamic analysis, FEM, stability analysis, and soil-structure interaction.",
+    "IS 13920 wall design and seismic foundation design outside the declared supported packets.",
+    "IS 875 load generation and IS 1893 seismic-action generation as complete code workflows.",
+    "Geotechnical design or verification of soil parameters.",
+    "ETABS model mutation, write-back, or automatic acceptance of ETABS results.",
+    "Engineering judgment, independent checking, qualified engineering review, or professional approval."
+  ],
+  "claim_separation": {
+    "candidate_prepared": true,
+    "exact_artifact_built": true,
+    "source_free_artifact_uat_passed": true,
+    "benchmark_replay_passed": true,
+    "engineering_check_passed": false,
+    "qualified_review_required": true,
+    "professional_approval": false,
+    "release_authorized": false
+  },
+  "next_required_gates": [
+    "Create the immutable candidate commit and complete required hosted checks against that exact head.",
+    "Complete a separately recorded INDIA-4 qualified engineering review of the supported subset.",
+    "Obtain explicit owner authorization before tag creation, package publication, or GitHub Release creation."
+  ]
+}

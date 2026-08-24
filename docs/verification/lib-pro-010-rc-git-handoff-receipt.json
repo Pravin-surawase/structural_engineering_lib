@@ -1,0 +1,227 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-24T10:49:03Z",
+      "query_status": "OK",
+      "reference": "okay continue please",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "PREPARE_BOUNDED_0240A1_CANDIDATE",
+      "REFRESH_STALE_RELEASE_INCLUSION_EVIDENCE",
+      "UPDATE_CANDIDATE_VERSION_SCOPE_RELEASE_NOTES_AND_HANDOFF",
+      "BUILD_WHEEL_SDIST_AND_RUN_SOURCE_FREE_UAT",
+      "RUN_FOCUSED_QUICK_FULL_HOOK_AND_HOSTED_CHECKS",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-24T10:49:03Z",
+    "prohibited_actions": [
+      "CREATE_OR_PUSH_TAG",
+      "UPLOAD_TO_TESTPYPI_OR_PYPI",
+      "CREATE_GITHUB_RELEASE",
+      "CLAIM_STABLE_ENGINEERING_USE_QUALIFIED_INDIA4_OR_PROFESSIONAL_APPROVAL",
+      "START_IS13920_WALL_FOUNDATION_IS875_IS1893_OR_LATER_SCOPE",
+      "TRACK_OR_MUTATE_PRIVATE_SOURCE_MATERIAL",
+      "DELETE_BRANCH_WORKTREE_ARCHIVE_SOURCE_ALIAS_OR_UNRELATED_FILE",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_REWRITE_FORCE_PUSH_OR_BYPASS_CHECKS"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "PREPARE_BOUNDED_0240A1_CANDIDATE",
+        "REFRESH_STALE_RELEASE_INCLUSION_EVIDENCE",
+        "UPDATE_CANDIDATE_VERSION_SCOPE_RELEASE_NOTES_AND_HANDOFF",
+        "BUILD_WHEEL_SDIST_AND_RUN_SOURCE_FREE_UAT",
+        "RUN_FOCUSED_QUICK_FULL_HOOK_AND_HOSTED_CHECKS",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/lib-pro-010-rc-artifact",
+      "head_sha": "3495a37e95794295488502dbdb3987e9c56425fd",
+      "task_id": "LIB-PRO-010-RC"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PRESERVE_ALL_HISTORICAL_RELEASE_AND_INDIA3_LANES",
+    "PRESERVE_ALL_PRE_EXISTING_DIRTY_DETACHED_DIVERGENT_AND_UNKNOWN_LANES",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "603650dc764dd5448fef1c34299a7e823d299fc629bdb7ff1306c961971a5141",
+    "state": {
+      "branch": "codex/lib-pro-010-rc-artifact",
+      "default_base": {
+        "ahead": 2,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "b3309260686a05b4cbb9c9358c89d6218a700357",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 97.761,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/lib-pro-010-rc-artifact",
+      "head_sha": "3495a37e95794295488502dbdb3987e9c56425fd",
+      "hold_reasons": [
+        "changed paths: 31"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-24T10:49:22.501366+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/lib-pro-010-rc-artifact",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 31,
+        "modified_paths": [
+          "CHANGELOG.md",
+          "CITATION.cff",
+          "Python/README.md",
+          "Python/pyproject.toml",
+          "Python/tests/test_bump_version_semantics.py",
+          "README.md",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/contributing/development-guide.md",
+          "docs/getting-started/beginners-guide.md",
+          "docs/getting-started/python-quickstart.md",
+          "docs/getting-started/releases.md",
+          "docs/getting-started/user-guide.md",
+          "docs/planning/next-session-brief.md",
+          "docs/planning/pre-release-checklist.md",
+          "docs/reference/api-classification.json",
+          "docs/reference/api-compatibility-ledger.json",
+          "docs/reference/api-stability.md",
+          "docs/reference/api.md",
+          "docs/verification/examples.md",
+          "docs/verification/lib-pro-010-rc-git-handoff-receipt.json",
+          "docs/verification/lib-pro-010-rc-git-handoff-source-evidence.json",
+          "docs/verification/validation-pack.md",
+          "fastapi_app/__init__.py",
+          "fastapi_app/config.py",
+          "fastapi_app/openapi_baseline.json",
+          "react_app/package.json",
+          "react_app/src/components/layout/SettingsPanel.tsx",
+          "scripts/bump_version.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/lib-pro-010-rc-local-artifact.json",
+          "docs/verification/lib-pro-010-rc-scope-freeze.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 2,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "b3309260686a05b4cbb9c9358c89d6218a700357",
+        "status": "ahead"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/lib-pro-010-rc-artifact"
+    }
+  },
+  "local_state_receipt_hash": "sha256:603650dc764dd5448fef1c34299a7e823d299fc629bdb7ff1306c961971a5141",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-24T10:49:22.501509+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [
+      "PRESERVE_ALL_PRE_EXISTING_DIRTY_DETACHED_DIVERGENT_AND_UNKNOWN_LANES",
+      "PRESERVE_ALL_HISTORICAL_RELEASE_AND_INDIA3_LANES"
+    ],
+    "observed_at_utc": "2026-08-24T10:49:03Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources"
+    ],
+    "integration_owner": "orchestrator",
+    "owned_paths": [
+      "docs/verification/footing-release-inclusion.json",
+      "scripts/release.py",
+      "Python/structural_lib/codes/is456/column/_common.py",
+      "Python/tests/codes/is456/column/test_axial.py",
+      "scripts/bump_version.py",
+      "Python/tests/test_bump_version_semantics.py",
+      "docs/planning/bounded-release-candidate-plan.md",
+      "docs/verification/lib-pro-010-rc-git-handoff-source-evidence.json",
+      "docs/verification/lib-pro-010-rc-git-handoff-receipt.json",
+      "docs/verification/lib-pro-010-rc-scope-freeze.json",
+      "docs/verification/lib-pro-010-rc-local-artifact.json",
+      "Python/pyproject.toml",
+      "react_app/package.json",
+      "CITATION.cff",
+      "fastapi_app/__init__.py",
+      "fastapi_app/config.py",
+      "fastapi_app/openapi_baseline.json",
+      "react_app/src/components/layout/SettingsPanel.tsx",
+      "README.md",
+      "Python/README.md",
+      "docs/getting-started/python-quickstart.md",
+      "docs/reference/api.md",
+      "docs/getting-started/user-guide.md",
+      "docs/planning/pre-release-checklist.md",
+      "docs/reference/api-stability.md",
+      "docs/verification/validation-pack.md",
+      "docs/verification/examples.md",
+      "docs/getting-started/beginners-guide.md",
+      "docs/contributing/development-guide.md",
+      "docs/reference/api-classification.json",
+      "docs/reference/api-compatibility-ledger.json",
+      "CHANGELOG.md",
+      "docs/getting-started/releases.md"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "LIB-PRO-010-RC"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

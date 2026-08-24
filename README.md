@@ -24,11 +24,12 @@ isolated-footing, and solid-slab workflows under IS 456:2000.
 ![StructLib beam inspector showing a 3D building model, reinforcement view, utilization, and IS 456 checks](docs/images/product/beam-inspector.jpg)
 
 > [!IMPORTANT]
-> **v0.23.1a2 is an Alpha development preview.** Support is case-qualified,
+> **v0.24.0a1 is an Alpha development preview.** Support is case-qualified,
 > not a claim of complete IS 456 coverage or professional design approval.
 > Outputs require independent review by a qualified structural engineer before
-> engineering or construction use. The exact `v0.23.1a2` artifact is public;
-> later Gravity, E1, and safety-closure changes on `main` are not included in it.
+> engineering or construction use. This source is a prepared `v0.24.0a1`
+> candidate; it has not been tagged or published. The exact `v0.23.1a2`
+> artifact remains the current public Alpha.
 
 ## One workflow, four useful surfaces
 
@@ -86,16 +87,17 @@ reconciliation, or professional approval.
 ### Install the Python package
 
 ```bash
-python3 -m pip install "structural-lib-is456===0.23.1a2"
+python3 -m pip install "structural-lib-is456===0.24.0a1"
 ```
 
 The package is installed as `structural-lib-is456` and imported as
 `structural_lib`.
 
-`0.23.1a2` is the current public Alpha. Gravity Workflow V1, E1, and later
-public-route safety work merged after its immutable tag, so any future package
-must use a new version and fresh exact-artifact evidence. See the
-[release policy](docs/getting-started/releases.md) before selecting a release.
+`0.24.0a1` is the prepared, unpublished candidate. The exact pin above is for
+the locally built candidate wheel and will not resolve from PyPI unless a later
+owner-authorized publication occurs. `0.23.1a2` remains the current public
+Alpha. See the [release policy](docs/getting-started/releases.md) before
+selecting a candidate.
 
 ```python
 import structural_lib as sl

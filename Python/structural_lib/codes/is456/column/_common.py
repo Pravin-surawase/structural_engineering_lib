@@ -10,6 +10,8 @@ slenderness, long_column) to avoid code duplication.
 
 from __future__ import annotations
 
+import math
+
 from structural_lib.codes.is456.common.constants import (
     COLUMN_MAX_STEEL_RATIO,
     COLUMN_MIN_STEEL_RATIO,
@@ -25,6 +27,7 @@ from structural_lib.core.errors import DimensionError
 # ---------------------------------------------------------------------------
 _PUZ_CONCRETE_COEFF: float = 0.45
 _PUZ_STEEL_COEFF: float = 0.75
+_STEEL_RATIO_BOUNDARY_ABS_TOL = 1e-12
 
 
 def _require_column_steel_ratio(
@@ -35,6 +38,20 @@ def _require_column_steel_ratio(
 ) -> float:
     """Require the maintained 0.8-4.0% longitudinal-steel domain."""
     ratio = steel_area_mm2 / gross_area_mm2
+    if math.isclose(
+        ratio,
+        COLUMN_MIN_STEEL_RATIO,
+        rel_tol=0.0,
+        abs_tol=_STEEL_RATIO_BOUNDARY_ABS_TOL,
+    ):
+        ratio = COLUMN_MIN_STEEL_RATIO
+    elif math.isclose(
+        ratio,
+        COLUMN_MAX_STEEL_RATIO,
+        rel_tol=0.0,
+        abs_tol=_STEEL_RATIO_BOUNDARY_ABS_TOL,
+    ):
+        ratio = COLUMN_MAX_STEEL_RATIO
     if not COLUMN_MIN_STEEL_RATIO <= ratio <= COLUMN_MAX_STEEL_RATIO:
         raise DimensionError(
             "Column longitudinal steel ratio must be within 0.8-4.0%",
