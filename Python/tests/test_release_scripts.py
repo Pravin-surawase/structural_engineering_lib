@@ -401,6 +401,148 @@ def _authorized_release_fixture(tmp_path: Path) -> tuple[Path, Path]:
     return authorization_path, receipt_path
 
 
+def _authorized_owner_waiver_fixture(tmp_path: Path) -> Path:
+    """Create an exact candidate followed by one owner-waiver evidence commit."""
+
+    repo = tmp_path / "repo"
+    python_root = repo / "Python"
+    verification_root = repo / "docs" / "verification"
+    python_root.mkdir(parents=True)
+    verification_root.mkdir(parents=True)
+    (python_root / "package.txt").write_text("waived package\n", encoding="utf-8")
+
+    _git(repo, "init", "-q")
+    _git(repo, "config", "user.name", "Release Test")
+    _git(repo, "config", "user.email", "release-test@example.invalid")
+    _git(repo, "add", "Python/package.txt")
+    _git(repo, "commit", "-q", "-m", "exact candidate")
+
+    candidate_head = _git(repo, "rev-parse", "HEAD")
+    candidate_tree = _git(repo, "rev-parse", "HEAD^{tree}")
+    candidate_python_tree = _git(repo, "rev-parse", "HEAD:Python")
+    authorization_path = verification_root / "release-publication-authorization.json"
+    authorization_path.write_text(
+        json.dumps(
+            {
+                "schema_version": "release-publication-authorization/v1",
+                "decision": "AUTHORIZED",
+                "version": "0.24.0a1",
+                "tag": "v0.24.0a1",
+                "authorized_targets": ["testpypi", "pypi", "github-release"],
+                "authorized_by": "repository-owner",
+                "authorized_at_utc": "2026-08-24T00:10:00Z",
+                "exact_candidate_review_receipt": None,
+                "exact_candidate_review_receipt_sha256": None,
+                "independent_review_waiver": {
+                    "schema_version": "owner-independent-review-waiver/v1",
+                    "decision": "WAIVED_BY_OWNER",
+                    "owner": {
+                        "identity": "repository-owner",
+                        "role": "repository_owner",
+                        "instruction": "Finish this Alpha without independent review.",
+                        "waived_at_utc": "2026-08-24T00:05:00Z",
+                    },
+                    "waived_candidate": {
+                        "head_sha": candidate_head,
+                        "tree_sha": candidate_tree,
+                        "python_tree_sha": candidate_python_tree,
+                        "version": "0.24.0a1",
+                        "tag": "v0.24.0a1",
+                        "authorized_targets": [
+                            "testpypi",
+                            "pypi",
+                            "github-release",
+                        ],
+                    },
+                    "hosted_checks": {
+                        "required_pr_checks": {
+                            "status": "PASS",
+                            "head_sha": candidate_head,
+                            "url": "https://github.com/example/project/actions/runs/200",
+                        },
+                        "weekly_verification": {
+                            "status": "PASS",
+                            "head_sha": candidate_head,
+                            "url": "https://github.com/example/project/actions/runs/201",
+                        },
+                    },
+                    "acknowledgements": {
+                        "independent_software_review_performed": False,
+                        "qualified_structural_engineering_review": False,
+                        "professional_approval": False,
+                    },
+                },
+                "qualified_structural_engineering_review": False,
+                "professional_approval": False,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    _git(repo, "add", "docs/verification/release-publication-authorization.json")
+    _git(repo, "commit", "-q", "-m", "authorize owner-waived candidate")
+    return authorization_path
+
+
+def test_release_publication_accepts_explicit_owner_review_waiver(
+    tmp_path: Path,
+) -> None:
+    record = _authorized_owner_waiver_fixture(tmp_path)
+
+    for target in ("testpypi", "pypi", "github-release"):
+        assert (
+            release._release_publication_authorization_errors(
+                "0.24.0a1", target, record, repo_root=record.parents[2]
+            )
+            == []
+        )
+
+
+def test_release_publication_owner_waiver_cannot_claim_independent_review(
+    tmp_path: Path,
+) -> None:
+    record = _authorized_owner_waiver_fixture(tmp_path)
+    repo = record.parents[2]
+    authorization = json.loads(record.read_text(encoding="utf-8"))
+    authorization["independent_review_waiver"]["acknowledgements"][
+        "independent_software_review_performed"
+    ] = True
+    record.write_text(json.dumps(authorization), encoding="utf-8")
+    _git(repo, "add", "docs/verification/release-publication-authorization.json")
+    _git(repo, "commit", "-q", "-m", "record false review claim")
+
+    errors = release._release_publication_authorization_errors(
+        "0.24.0a1", "pypi", record, repo_root=repo
+    )
+
+    assert errors == [
+        "independent review waiver acknowledgement "
+        "independent_software_review_performed must be False"
+    ]
+
+
+def test_release_publication_owner_waiver_rejects_post_waiver_code_drift(
+    tmp_path: Path,
+) -> None:
+    record = _authorized_owner_waiver_fixture(tmp_path)
+    repo = record.parents[2]
+    (repo / "scripts").mkdir()
+    (repo / "scripts" / "changed.py").write_text("changed = True\n", encoding="utf-8")
+    _git(repo, "add", "scripts/changed.py")
+    _git(repo, "commit", "-q", "-m", "change code after waiver")
+
+    errors = release._release_publication_authorization_errors(
+        "0.24.0a1", "pypi", record, repo_root=repo
+    )
+
+    assert errors == [
+        "publication head changed non-evidence paths after owner review waiver: "
+        "scripts/changed.py"
+    ]
+
+
 def test_release_publication_authorization_binds_version_tag_and_target(
     tmp_path: Path,
 ) -> None:
@@ -657,6 +799,11 @@ class TestReleaseVerifyDependencies:
         )
         assert research_test in pytest_calls[0]
         assert pytest_calls[0][pytest_calls[0].index(research_test) - 1] == "--ignore"
+        repo_context_test = str(REPO_ROOT / "Python" / "tests" / "test_repo_context.py")
+        assert repo_context_test in pytest_calls[0]
+        assert (
+            pytest_calls[0][pytest_calls[0].index(repo_context_test) - 1] == "--ignore"
+        )
         assert any(cwd == tmp_path for _, cwd, _ in calls)
         pytest_config = tmp_path / "pytest.ini"
         assert pytest_config.read_text(encoding="utf-8").startswith("[pytest]\n")
@@ -795,7 +942,9 @@ class TestPublishWorkflow:
         assert "fetch-depth: 0" in workflow
         assert "exact_candidate_review_receipt_sha256" in workflow
         assert "review_receipt" in workflow
-        assert '"reviewed_candidate"' in workflow
+        assert "independent_review_waiver" in workflow
+        assert '"mode": "OWNER_WAIVER"' in workflow
+        assert '"candidate"' in workflow
         assert '"professional_approval": False' in workflow
 
     def test_alpha_ordering_preserves_legacy_release_history(self):

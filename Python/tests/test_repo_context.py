@@ -10,6 +10,8 @@ from pathlib import Path
 
 import pytest
 
+pytestmark = pytest.mark.repo_only
+
 repo_context = importlib.import_module("scripts.repo_context")
 
 

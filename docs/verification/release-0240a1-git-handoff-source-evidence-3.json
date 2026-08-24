@@ -1,0 +1,67 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-24T13:15:22Z",
+      "query_status": "OK",
+      "reference": "dont worry about that review. just finish the work please.",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "IMPLEMENT_TRUTHFUL_OWNER_INDEPENDENT_REVIEW_WAIVER_GATE",
+      "FREEZE_OWNER_WAIVER_CONTROL_CANDIDATE",
+      "RUN_FOCUSED_QUICK_FULL_AND_REQUIRED_HOSTED_CHECKS",
+      "RECORD_EVIDENCE_ONLY_EXACT_OWNER_PUBLICATION_AUTHORIZATION",
+      "MERGE_WITHOUT_LOSING_CANDIDATE_ANCESTRY",
+      "CREATE_AND_PUSH_V0240A1_TAG",
+      "PUBLISH_V0240A1_TO_TESTPYPI_PYPI_AND_GITHUB_RELEASES",
+      "VERIFY_PUBLIC_ARTIFACT_INSTALL_AND_UAT"
+    ],
+    "next_action": "IMPLEMENT_TRUTHFUL_OWNER_INDEPENDENT_REVIEW_WAIVER_GATE",
+    "observed_at_utc": "2026-08-24T13:15:22Z",
+    "prohibited_actions": [
+      "FABRICATE_OR_CLAIM_AN_INDEPENDENT_REVIEW",
+      "PUBLISH_IF_EXACT_HOSTED_WAIVER_OR_AUTHORIZATION_GATES_FAIL",
+      "CLAIM_STABLE_ENGINEERING_USE_INDIA4_QUALIFIED_OR_PROFESSIONAL_APPROVAL",
+      "CHANGE_STRUCTURAL_FORMULAS_PACKAGED_RUNTIME_OR_DECLARED_SCOPE",
+      "DELETE_BRANCH_WORKTREE_ARCHIVE_SOURCE_ALIAS_OR_UNRELATED_FILE",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_REWRITE_FORCE_PUSH_OR_BYPASS_HOSTED_CHECKS"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "IMPLEMENT_TRUTHFUL_OWNER_INDEPENDENT_REVIEW_WAIVER_GATE",
+        "FREEZE_OWNER_WAIVER_CONTROL_CANDIDATE",
+        "RUN_FOCUSED_QUICK_FULL_AND_REQUIRED_HOSTED_CHECKS",
+        "RECORD_EVIDENCE_ONLY_EXACT_OWNER_PUBLICATION_AUTHORIZATION",
+        "MERGE_WITHOUT_LOSING_CANDIDATE_ANCESTRY",
+        "CREATE_AND_PUSH_V0240A1_TAG",
+        "PUBLISH_V0240A1_TO_TESTPYPI_PYPI_AND_GITHUB_RELEASES",
+        "VERIFY_PUBLIC_ARTIFACT_INSTALL_AND_UAT"
+      ],
+      "branch": "codex/release-0240a1-publication",
+      "head_sha": "b6203953f852e8066943abc0e4e670308c44b799",
+      "task_id": "RELEASE-0240A1"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_FINAL_CANDIDATE",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [
+      "PRESERVE_ALL_PRE_EXISTING_DIRTY_DETACHED_DIVERGENT_AND_UNKNOWN_LANES",
+      "PRESERVE_ALL_HISTORICAL_RELEASE_AND_INDIA3_LANES"
+    ],
+    "observed_at_utc": "2026-08-24T13:15:22Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

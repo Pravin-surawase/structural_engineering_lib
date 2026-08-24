@@ -218,15 +218,32 @@ def _release_publication_authorization_errors(
     authorized_at = data.get("authorized_at_utc")
     if not isinstance(authorized_at, str) or not _is_utc_timestamp(authorized_at):
         errors.append("release authorization must record authorized_at_utc")
-    errors.extend(
-        _exact_candidate_review_receipt_errors(
-            data,
-            version=version,
-            target=target,
-            authorization_path=path,
-            repo_root=repo_root,
+    owner_waiver = data.get("independent_review_waiver")
+    review_receipt = data.get("exact_candidate_review_receipt")
+    if owner_waiver is not None and review_receipt is not None:
+        errors.append(
+            "release authorization cannot combine independent review and owner waiver"
         )
-    )
+    elif owner_waiver is not None:
+        errors.extend(
+            _owner_independent_review_waiver_errors(
+                data,
+                version=version,
+                target=target,
+                authorization_path=path,
+                repo_root=repo_root,
+            )
+        )
+    else:
+        errors.extend(
+            _exact_candidate_review_receipt_errors(
+                data,
+                version=version,
+                target=target,
+                authorization_path=path,
+                repo_root=repo_root,
+            )
+        )
     if data.get("professional_approval") is not False:
         errors.append(
             "Alpha publication authorization must not imply professional approval"
@@ -483,6 +500,190 @@ def _exact_candidate_review_receipt_errors(
     return errors
 
 
+def _owner_independent_review_waiver_errors(
+    authorization: dict[str, object],
+    *,
+    version: str,
+    target: str,
+    authorization_path: Path,
+    repo_root: Path,
+) -> list[str]:
+    """Validate an explicit repository-owner waiver without inventing a review."""
+
+    waiver = authorization.get("independent_review_waiver")
+    if not isinstance(waiver, dict):
+        return ["independent review waiver must be an object"]
+
+    errors: list[str] = []
+    if waiver.get("schema_version") != "owner-independent-review-waiver/v1":
+        errors.append("independent review waiver schema_version is invalid")
+    if waiver.get("decision") != "WAIVED_BY_OWNER":
+        errors.append("independent review waiver decision is invalid")
+
+    owner = waiver.get("owner")
+    if not isinstance(owner, dict):
+        errors.append("independent review waiver owner is invalid")
+    else:
+        identity = owner.get("identity")
+        if not isinstance(identity, str) or not identity.strip():
+            errors.append("independent review waiver owner identity is missing")
+        elif identity != authorization.get("authorized_by"):
+            errors.append("independent review waiver owner must match authorizer")
+        if owner.get("role") != "repository_owner":
+            errors.append("independent review waiver requires repository_owner role")
+        instruction = owner.get("instruction")
+        if not isinstance(instruction, str) or not instruction.strip():
+            errors.append("independent review waiver instruction is missing")
+        waived_at = owner.get("waived_at_utc")
+        if not isinstance(waived_at, str) or not _is_utc_timestamp(waived_at):
+            errors.append("independent review waiver must record waived_at_utc")
+        else:
+            authorized_at = authorization.get("authorized_at_utc")
+            if isinstance(authorized_at, str):
+                parsed_authorized_at = _parse_utc_timestamp(authorized_at)
+                parsed_waived_at = _parse_utc_timestamp(waived_at)
+                if (
+                    parsed_authorized_at is not None
+                    and parsed_waived_at is not None
+                    and parsed_authorized_at < parsed_waived_at
+                ):
+                    errors.append(
+                        "release authorization must occur after owner review waiver"
+                    )
+
+    acknowledgements = waiver.get("acknowledgements")
+    required_acknowledgements = {
+        "independent_software_review_performed": False,
+        "qualified_structural_engineering_review": False,
+        "professional_approval": False,
+    }
+    if not isinstance(acknowledgements, dict):
+        errors.append("independent review waiver acknowledgements are invalid")
+    else:
+        errors.extend(
+            f"independent review waiver acknowledgement {key} must be {expected}"
+            for key, expected in required_acknowledgements.items()
+            if acknowledgements.get(key) is not expected
+        )
+
+    candidate = waiver.get("waived_candidate")
+    if not isinstance(candidate, dict):
+        errors.append("independent review waiver candidate is invalid")
+        return errors
+    candidate_head = candidate.get("head_sha")
+    candidate_tree = candidate.get("tree_sha")
+    candidate_python_tree = candidate.get("python_tree_sha")
+    if not isinstance(candidate_head, str) or not _GIT_SHA_RE.fullmatch(candidate_head):
+        errors.append("independent review waiver head_sha is invalid")
+    if not isinstance(candidate_tree, str) or not _GIT_SHA_RE.fullmatch(candidate_tree):
+        errors.append("independent review waiver tree_sha is invalid")
+    if not isinstance(candidate_python_tree, str) or not _GIT_SHA_RE.fullmatch(
+        candidate_python_tree
+    ):
+        errors.append("independent review waiver python_tree_sha is invalid")
+    if candidate.get("version") != version:
+        errors.append("independent review waiver version does not match")
+    if candidate.get("tag") != f"v{version}":
+        errors.append("independent review waiver tag does not match")
+    targets = candidate.get("authorized_targets")
+    if not isinstance(targets, list) or target not in targets:
+        errors.append(f"independent review waiver does not include target {target!r}")
+
+    hosted_checks = waiver.get("hosted_checks")
+    if not isinstance(hosted_checks, dict):
+        errors.append("independent review waiver hosted_checks is invalid")
+    else:
+        for check_name in ("required_pr_checks", "weekly_verification"):
+            hosted_check = hosted_checks.get(check_name)
+            if not isinstance(hosted_check, dict):
+                errors.append(f"independent review waiver {check_name} is invalid")
+                continue
+            if hosted_check.get("status") != "PASS":
+                errors.append(f"independent review waiver {check_name} did not pass")
+            if hosted_check.get("head_sha") != candidate_head:
+                errors.append(
+                    f"independent review waiver {check_name} head does not match"
+                )
+            hosted_url = hosted_check.get("url")
+            if (
+                not isinstance(hosted_url, str)
+                or not hosted_url.startswith("https://github.com/")
+                or "/actions/runs/" not in hosted_url
+            ):
+                errors.append(f"independent review waiver {check_name} URL is invalid")
+
+    if errors or not all(
+        isinstance(value, str)
+        for value in (candidate_head, candidate_tree, candidate_python_tree)
+    ):
+        return errors
+
+    resolved_tree, git_error = _git_text(
+        repo_root, "rev-parse", f"{candidate_head}^{{tree}}"
+    )
+    if git_error:
+        errors.append(f"waived candidate commit is unavailable: {git_error}")
+        return errors
+    if resolved_tree != candidate_tree:
+        errors.append("waived candidate tree does not match waived head")
+
+    resolved_python_tree, git_error = _git_text(
+        repo_root, "rev-parse", f"{candidate_head}:Python"
+    )
+    if git_error:
+        errors.append(f"waived Python package tree is unavailable: {git_error}")
+        return errors
+    if resolved_python_tree != candidate_python_tree:
+        errors.append("waived Python package tree does not match waiver")
+
+    current_head, git_error = _git_text(repo_root, "rev-parse", "HEAD")
+    if git_error:
+        errors.append(f"current publication head is unavailable: {git_error}")
+        return errors
+    worktree_state, git_error = _git_text(
+        repo_root, "status", "--porcelain", "--untracked-files=all"
+    )
+    if git_error:
+        errors.append(f"publication checkout state is unavailable: {git_error}")
+    elif worktree_state:
+        errors.append("publication checkout must be clean")
+    _, ancestry_error = _git_text(
+        repo_root, "merge-base", "--is-ancestor", candidate_head, current_head
+    )
+    if ancestry_error:
+        errors.append("waived candidate is not an ancestor of publication head")
+
+    current_python_tree, git_error = _git_text(repo_root, "rev-parse", "HEAD:Python")
+    if git_error:
+        errors.append(f"current Python package tree is unavailable: {git_error}")
+    elif current_python_tree != candidate_python_tree:
+        errors.append("Python package content changed after owner review waiver")
+
+    changed_text, git_error = _git_text(
+        repo_root, "diff", "--name-only", f"{candidate_head}..{current_head}"
+    )
+    if git_error:
+        errors.append(f"post-waiver path comparison failed: {git_error}")
+        return errors
+    try:
+        authorization_rel = (
+            authorization_path.resolve().relative_to(repo_root).as_posix()
+        )
+    except ValueError:
+        errors.append("release authorization must be stored inside the repository")
+        return errors
+    changed_paths = {line for line in changed_text.splitlines() if line}
+    unexpected_paths = sorted(
+        changed_paths - (_POST_REVIEW_EVIDENCE_PATHS | {authorization_rel})
+    )
+    if unexpected_paths:
+        errors.append(
+            "publication head changed non-evidence paths after owner review waiver: "
+            + ", ".join(unexpected_paths)
+        )
+    return errors
+
+
 def cmd_authorization_check(args: argparse.Namespace) -> int:
     """Enforce the separate owner authorization stop for publication."""
 
@@ -492,7 +693,10 @@ def cmd_authorization_check(args: argparse.Namespace) -> int:
         _print_version_errors(errors)
         return 1
     print(f"  ✓ Owner authorized v{version} publication target {args.target}")
-    print("  ✓ Exact candidate review receipt and unchanged Python tree verified")
+    print(
+        "  ✓ Exact independent review or explicit owner waiver and unchanged "
+        "Python tree verified"
+    )
     print("  ✓ Authorization does not imply professional approval")
     return 0
 

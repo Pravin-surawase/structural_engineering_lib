@@ -5,6 +5,202 @@
 
 ---
 
+## 2026-08-24 — Session: RELEASE-0240A1 publication
+
+**Agent:** Codex (`ops`, sole writer; no subagents)
+
+**Branch:** `codex/release-0240a1-publication`, from merged candidate commit
+`510163041fec4329b5b47ea749a5f8d74bab12b3`.
+
+**Git handoff receipt:**
+`docs/verification/release-0240a1-git-handoff-receipt-4.json`
+
+**Focus:** Release the bounded `v0.24.0a1` Alpha with exact-candidate hosted
+verification, a truthful independent-review decision or explicit owner waiver,
+owner authorization, protected tag publication, and public artifact verification.
+Preserve stable/engineering-use, qualified-review, professional-approval,
+later-scope, and cleanup holds.
+
+### Summary
+
+- Verified live `origin/main`, PR #871, its exact candidate head and green PR
+  Gate, the current public `v0.23.1a2`, absence of `v0.24.0a1`, and the retained
+  exact local artifact before any release mutation.
+- Created one fresh clean source-bound publication worktree. All existing dirty,
+  detached, divergent, historical, and unrelated lanes remain untouched.
+- Dispatched Weekly Verification once on exact PR candidate `595b3bcb`. Its
+  source-free wheel job exposed one repository-only test classification defect;
+  the other hosted jobs were left running to retain their already-paid evidence.
+- Marked the repository context test module `repo_only` and locked its exclusion
+  into the source-free verifier command. The packaged library content and
+  declared engineering scope are unchanged.
+- Canonicalized only the Python-version-dependent `Annotated` and Enum signature
+  representations used by the API compatibility identity ledger. The same
+  rebuilt ledger now passes on Python 3.11 and 3.12.
+- Kept the versioned pre-push Git handoff receipt immutable and repaired the
+  session-document validator so historical consistency checks use that
+  receipt's recorded, local-evidence-bound observation time. Live handoff and
+  final session-end validation continue to enforce current freshness.
+- After the exact successor passed PR and Weekly gates, the repository owner
+  explicitly waived independent exact-candidate software review and directed
+  publication to finish. Added a truthful owner-waiver alternative that retains
+  exact candidate/hosted/Python-tree binding and records that no independent
+  review occurred.
+- The first authorized TestPyPI rehearsal stopped before build or upload because
+  the authorized release state required a release date in `CITATION.cff` and
+  `CHANGELOG.md`. The repair updates only those release surfaces and the
+  task-owned handoff records before one replacement exact candidate is frozen.
+
+### Issues encountered
+
+- The completed `LIB-PRO-010-RC` session retained an unmatched usage timer,
+  blocking the new canonical session start.
+- The first closeout repair used an inferred `--closeout` flag and noncanonical
+  phase labels before the live CLI help was followed.
+- Exact-head Weekly Verification run 32722779797 failed its clean-wheel job
+  after 4,120 tests because `test_repo_context.py` invoked checkout tooling that
+  requires a repository-bound Python interpreter.
+- The same Weekly run's full Python 3.12 job failed two compatibility-ledger
+  equality tests even though the checked-in ledger rebuilt successfully under
+  the local Python 3.11 runtime.
+- The first focused Black check rejected the layout of the new wheel-verifier
+  assertion block.
+- The first final session-document check could not resolve the otherwise valid
+  task receipt because the new session entry omitted its canonical locator.
+- Exact-head Weekly Verification run 32724874049 passed the wheel, dependency,
+  Docker, Python, FastAPI, and benchmark work but failed repository drift when
+  `session.py check` revalidated the frozen pre-push receipt after its 15-minute
+  live-evidence window had elapsed.
+- A local reproduction of the hosted documentation command initially used bare
+  `python3`, whose environment lacked the repository's Pydantic dependency.
+- The first normal-hook invocation assumed `pre-commit` was exported on the
+  shell `PATH`; the executable was available only in the repository runtime.
+- The existing Alpha publication schema had no truthful representation for an
+  explicit repository-owner waiver of independent software review.
+- The first focused workflow check guessed a nonexistent
+  `scripts/check_workflows.py` entry point.
+- The first authorized TestPyPI rehearsal passed permission, footing-inclusion,
+  and owner-waiver authorization checks but failed the release-test job because
+  the candidate-labelled citation and changelog had no authorized release date.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the predecessor recorded `session end` but not the
+  required successor usage closeout. Resolution: bind its exact candidate,
+  merged commit, tree-equivalent PR result, retry counters, and all seven timing
+  phases, then start `RELEASE-0240A1`. Proof: `session usage --checkpoint
+  closeout` and the new `session begin` both pass.
+- Confirmed root cause: the repair command was inferred instead of read from
+  `session usage --help`, and its phase names are schema-controlled. Resolution:
+  use `--checkpoint closeout` plus all seven exact canonical labels. Proof: the
+  closeout records 78.205 minutes. ⚠️ TERMINAL ISSUE: inferred closeout syntax
+  was rejected -> used the live parser contract returned by `--help`.
+- Confirmed root cause: all repository-context tests exercise checkout scripts,
+  but the module lacked the file-level `repo_only` marker used by
+  `_repo_only_test_ignore_args()`. The local source-free run had masked this
+  because the primary checkout supplied a `.venv`; a clean runner had no such
+  fallback. Resolution: classify the whole module as repository-only and assert
+  that the wheel verifier passes it through `--ignore` before collection. Proof:
+  the focused verifier/context regression passes 9/9; exact-head hosted repair
+  verification follows the frozen candidate.
+- Confirmed root cause: the compatibility identity hash used raw
+  `inspect.signature()` text. Python 3.11 renders Pydantic annotations as
+  `typing.Annotated[...]` and Enum constructors with the metaclass signature,
+  while Python 3.12 renders `Annotated[...]` and `(*values)`. Resolution:
+  canonicalize the `Annotated` spelling and represent the public Enum call
+  contract as `(value)`, then regenerate the compact ledger and add a direct
+  cross-runtime regression. Proof: the ledger equality tests pass under both
+  local Python 3.11 and a clean Python 3.12 Docker environment.
+- Confirmed root cause: the added assertion block had not yet been passed
+  through the repository's pinned formatter. Resolution: format that one file,
+  then rerun Black, Ruff, generator drift, and whitespace checks. Proof: all
+  four affected Python files and both generated registries are clean.
+- Confirmed root cause: `session.py check` discovers task receipts from the
+  exact `Git handoff receipt` field in the newest session entry. Resolution: add
+  the versioned receipt locator and refresh its dirty-state binding. Proof: the
+  receipt validator and final session-document check pass.
+- Confirmed root cause: the general document-consistency path called the same
+  wall-clock receipt validator as live handoff/session-end, even though the Git
+  workflow contract says a frozen transition receipt must not be rewritten
+  when its external observations later age. Resolution: make only
+  `session.py check` validate at the receipt observation time, require that time
+  to match the hash-bound local Git observation within five seconds, and retain
+  wall-clock validation as the default everywhere else. Proof: 157 session and
+  receipt regressions pass, including stale historical acceptance, unbound-time
+  rejection, and unchanged live-freshness failure; the complete hosted
+  documentation/repository-drift command sequence passes locally.
+- Confirmed root cause: the local shell reproduction bypassed the mandated
+  worktree-bound Python launcher, so it selected a dependency-incomplete system
+  interpreter. Resolution: resume at the failed command with
+  `./scripts/python_runtime.sh`; all remaining hosted documentation commands
+  pass. ⚠️ TERMINAL ISSUE: bare `python3` could not import Pydantic -> used the
+  repository's worktree-bound Python launcher.
+- Confirmed root cause: the shell did not expose the virtual-environment script
+  entry point globally. Resolution: invoke the same installed hook module with
+  `./scripts/python_runtime.sh -m pre_commit run --all-files`; every configured
+  hook passes. ⚠️ TERMINAL ISSUE: `pre-commit` was not on `PATH` -> used the
+  worktree-bound module invocation.
+- Confirmed root cause: release authorization previously required an independent
+  receipt unconditionally, so following the owner's waiver would otherwise
+  require either a false receipt or bypassing publication validation. Resolution:
+  add a mutually exclusive `owner-independent-review-waiver/v1` path that binds
+  the owner identity/instruction, exact candidate and hosted runs, unchanged
+  Python tree, evidence-only descendants, and explicit false review/qualified/
+  professional claims. Proof: focused authorization tests accept the exact
+  waiver form and reject false independence plus post-waiver code drift.
+- Confirmed root cause: workflow validation is owned by the maintained pytest
+  contracts and pre-commit YAML hook, not a standalone `check_workflows.py`.
+  Resolution: run `test_ci_workflow_contract.py`, `test_workflow_runner.py`, and
+  the `check-yaml` hook; all 59 workflow tests and YAML validation pass.
+  ⚠️ TERMINAL ISSUE: guessed workflow script was absent -> used the discovered
+  maintained workflow tests and hook.
+- Confirmed root cause: owner authorization changes the maintained release-state
+  contract from prepared/unpublished metadata to dated release metadata. The
+  authorization record was activated after the prior candidate gates, so that
+  exact state-dependent source-surface test had not been exercised locally.
+  Resolution: date the two required release surfaces, freeze a replacement
+  exact candidate, rebind the authorization-only descendant, and resume at the
+  failed TestPyPI workflow. Run 32733403735 proves that no distribution was
+  built or uploaded before the stop.
+
+### Validation through current content
+
+- Focused verifier/context and compatibility regressions: 12/12 tests pass.
+- Clean Python 3.12 compatibility reproduction: 3/3 tests pass after the
+  canonical signature repair.
+- Repaired source-free exact-wheel verification: 6,012 package tests pass, 51
+  skip, and 2 deselect; installed origin/version plus job, critical, and report
+  CLI flows pass using the unchanged wheel SHA-256 `62118dd3...73035b`.
+- Frozen-candidate local gates: Black and Ruff pass all four changed Python
+  files; API classification/ledger drift and `git diff --check` pass; quick gate
+  passes 10/10; full repository gate passes 31/31 with eight unchanged quick
+  results reused.
+- Exact hosted failure evidence: Weekly Verification run 32722779797, job
+  97417548973; 4,120 passed before the repository-context test failed on the
+  clean runner's absent checkout-bound interpreter.
+- Successor hosted evidence before the document repair: run 32724874049 passes
+  clean-wheel/CLI verification, locked dependency audits, Docker build/health,
+  Python formatting/lint/types and full coverage, FastAPI contracts, and API
+  benchmarks; only the stale historical-receipt document check fails.
+- Exact successor evidence: PR run 32726109825 and Weekly run 32726256660 pass
+  on `b6203953f852e8066943abc0e4e670308c44b799`. The subsequent owner-waiver
+  control candidate must receive its own exact hosted evidence before the
+  authorization-only descendant and publication.
+- Owner-waiver candidate `993212fb` passed exact PR run 32732480794 and Weekly
+  run 32732644271; authorization-only descendant `b50cc348` passed all three
+  target authorization checks. TestPyPI run 32733403735 then stopped in release
+  tests before build/upload on the two missing authorized-date surfaces.
+
+### Preserved holds
+
+- No tag, PyPI upload, GitHub Release, stable/engineering-use wording,
+  independent-review claim, INDIA-4 acceptance, qualified-engineer receipt, or
+  professional approval.
+- No structural formula, packaged runtime, version, declared scope, private
+  source, branch/worktree/archive/source/alias, or unrelated-file mutation.
+
+---
+
 ## 2026-08-24 — Session: LIB-PRO-010-RC bounded v0.24.0a1 candidate
 
 **Agent:** Codex (`ops`, sole writer; no subagents)

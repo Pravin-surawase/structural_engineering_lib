@@ -4,20 +4,20 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-24
-- Focus: Prepare one bounded `v0.24.0a1` Alpha candidate from the integrated
-- Git receipt: docs/verification/lib-pro-010-rc-git-handoff-receipt.json | sha256:603650dc764dd5448fef1c34299a7e823d299fc629bdb7ff1306c961971a5141 | HOLD
-- Git identity: codex/lib-pro-010-rc-artifact@3495a37e95794295488502dbdb3987e9c56425fd | upstream=origin/main@b3309260686a05b4cbb9c9358c89d6218a700357 | base=origin/main@b3309260686a05b4cbb9c9358c89d6218a700357 | tree=dirty | operation=none
-- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
-- Next action: COMMIT_INTENDED_PATHS
+- Focus: Release the bounded `v0.24.0a1` Alpha with exact-candidate hosted
+- Git receipt: docs/verification/release-0240a1-git-handoff-receipt-4.json | sha256:c9b09ca99c04eafc354c2b30c753692d74201193856b9f62ee74794521c862a7 | HOLD
+- Git identity: codex/release-0240a1-publication@b50cc3480efb56dccb53d4648b1c3aced16dca05 | upstream=origin/codex/release-0240a1-publication@b50cc3480efb56dccb53d4648b1c3aced16dca05 | base=origin/main@510163041fec4329b5b47ea749a5f8d74bab12b3 | tree=dirty | operation=none
+- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=UNKNOWN
+- Next action: IMPLEMENT_TRUTHFUL_OWNER_INDEPENDENT_REVIEW_WAIVER_GATE
 <!-- HANDOFF:END -->
 
 ## Latest Handoff
 
 | State | Boundary |
 |---|---|
-| **Current** | `LIB-PRO-009` merged through PR #870 at `b3309260`; local `v0.24.0a1` wheel/sdist identity, source-free UAT, and bounded benchmark replay are frozen by `LIB-PRO-010-RC` |
-| **Decision** | The local artifact is a technical Alpha candidate only. Benchmark replay passed; engineering check, INDIA-4 qualified review, professional approval, and release authority remain false |
-| **Next** | Complete the immutable candidate commit, required hosted checks, and unchanged-head integration; then conduct the separate INDIA-4 qualified review packet before any publication decision |
+| **Current** | Owner-waiver candidate `993212fb` passed exact PR run 32732480794 and Weekly run 32732644271; authorization descendant `b50cc348` passed all three target checks, then TestPyPI run 32733403735 stopped before build/upload because authorized release dates were absent from `CITATION.cff` and `CHANGELOG.md` |
+| **Decision** | The user authorized bounded `v0.24.0a1` Alpha publication and explicitly waived independent exact-candidate software review. The evidence must state that no independent review occurred; stable/engineering-use wording, INDIA-4 qualified review, and professional approval remain false |
+| **Next** | Freeze the two-surface release-metadata repair plus task handoff, run only its affected/consolidated local gate and required exact PR/Weekly checks, rebind the authorization-only descendant, then resume TestPyPI, merge, tag, publish, and verify public artifacts |
 | **Source** | IS 13920:2016 First Revision plus Amendment 1 (2017) and Amendment 2 (2020); reaffirmation is not a new edition and the draft successor is unused |
 | **Held** | Beam provided-reinforcement compliance, column derived applicability/non-rectangular/provided-longitudinal checks, whole-joint assessment, walls/foundations, IS 875/1893, INDIA-4 qualified review, source/distribution/support/version/release/professional-use changes, and branch/worktree/archive/source/alias deletion |
 
@@ -42,15 +42,18 @@
 
 ## Ordered follow-on gates
 
-1. Complete immutable-head local and hosted checks for `LIB-PRO-010-RC`. Do not
+1. Freeze one successor `RELEASE-0240A1` repair candidate, pass its consolidated
+   local/PR gates, then run Weekly Verification once on that exact head. Do not
    delete any branch, worktree, archive, source copy, alias, or unrelated lane.
-2. Give the exact unchanged `v0.24.0a1` scope, artifact hashes, clause/source
-   map, benchmark replays, unsafe cases, and limitations to INDIA-4 qualified
-   review.
-3. Keep benchmark replay separate from engineering check and qualified review.
-4. Keep stable release, engineering-use wording, package/tag publication, and
-   professional approval as separate owner decisions.
-5. Expand afterward in order: IS 13920 walls, foundations, IS 875, then IS 1893.
+2. Bind the owner's explicit independent-review waiver, the exact candidate, and
+   both hosted PASS runs in an authorization-only descendant; do not claim that
+   an independent review occurred.
+3. Publish `v0.24.0a1` only after those gates pass and verify PyPI, GitHub
+   Release assets, clean installation, and installed-package UAT.
+4. Keep benchmark replay separate from engineering check and qualified review;
+   keep stable/engineering-use wording and professional approval held.
+5. Conduct INDIA-4 qualified review before any stable or engineering-use claim,
+   then expand in order: IS 13920 walls, foundations, IS 875, then IS 1893.
 
 ## Required Reading
 

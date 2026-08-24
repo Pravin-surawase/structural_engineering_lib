@@ -21,6 +21,7 @@ import subprocess
 import sys
 import warnings
 from datetime import datetime, timezone
+from enum import Enum
 from pathlib import Path
 from types import ModuleType
 from typing import Any
@@ -179,6 +180,8 @@ def _signature(value: object) -> str:
         inspect.isclass(value) or inspect.isfunction(value) or inspect.isbuiltin(value)
     ):
         return ""
+    if inspect.isclass(value) and issubclass(value, Enum):
+        return "(value)"
     try:
         signature = inspect.signature(value)
     except (TypeError, ValueError):
@@ -187,7 +190,7 @@ def _signature(value: object) -> str:
         parameters = list(signature.parameters.values())
         if parameters and parameters[0].name in {"self", "cls"}:
             signature = signature.replace(parameters=parameters[1:])
-    return str(signature)
+    return str(signature).replace("typing.Annotated[", "Annotated[")
 
 
 def _canonical_owner(value: object, fallback: str) -> str:
