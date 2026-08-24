@@ -830,8 +830,8 @@ E_DUCTILE_COL_001 = DesignError(
     message="Column width < 300 mm",
     field="b_mm",
     hint="Increase column width to \u2265 300 mm for seismic resistance.",
-    clause="IS 13920 Cl. 7.1.2",
-    recovery="Increase column minimum dimension to \u2265 300 mm per IS 13920 Cl 7.1.2.",
+    clause="IS 13920 Cl. 7.1.1",
+    recovery="Increase column minimum dimension to \u2265 300 mm per IS 13920 Cl 7.1.1.",
 )
 
 E_DUCTILE_COL_002 = DesignError(
@@ -840,38 +840,58 @@ E_DUCTILE_COL_002 = DesignError(
     message="Column aspect ratio b/D < 0.4",
     field="b_mm",
     hint="Adjust column dimensions so that shorter/longer \u2265 0.4.",
-    clause="IS 13920 Cl. 7.1.3",
-    recovery="Adjust column dimensions so shorter/longer dimension ratio \u2265 0.4 per IS 13920 Cl 7.1.3.",
+    clause="IS 13920 Cl. 7.1.2 with Amendment 1",
+    recovery="Adjust column dimensions so shorter/longer dimension ratio \u2265 0.4 per amended IS 13920 Cl 7.1.2.",
 )
 
 E_DUCTILE_COL_003 = DesignError(
     code="E_DUCTILE_COL_003",
     severity=Severity.ERROR,
-    message="Longitudinal steel below seismic minimum 0.8%",
+    message="Longitudinal steel below IS 456 minimum 0.8%",
     field="pt",
     hint="Increase longitudinal reinforcement to \u2265 0.8% of Ag.",
-    clause="IS 13920 Cl. 7.2.1",
-    recovery="Increase longitudinal steel to \u2265 0.8% of gross area per IS 13920 Cl 7.2.1.",
+    clause="IS 456 Cl. 26.5.3.1(a)",
+    recovery="Increase longitudinal steel to \u2265 0.8% of gross area per IS 456 Cl 26.5.3.1(a).",
 )
 
 E_DUCTILE_COL_004 = DesignError(
     code="E_DUCTILE_COL_004",
     severity=Severity.ERROR,
-    message="Longitudinal steel exceeds seismic maximum 4%",
+    message="Longitudinal steel exceeds IS 456 maximum 4%",
     field="pt",
     hint="Reduce longitudinal reinforcement to \u2264 4% of Ag.",
-    clause="IS 13920 Cl. 7.2.1",
-    recovery="Reduce longitudinal steel to \u2264 4% of gross area per IS 13920 Cl 7.2.1.",
+    clause="IS 456 Cl. 26.5.3.1(a)",
+    recovery="Reduce longitudinal steel to \u2264 4% of gross area per IS 456 Cl 26.5.3.1(a).",
 )
 
 E_DUCTILE_COL_005 = DesignError(
     code="E_DUCTILE_COL_005",
     severity=Severity.ERROR,
     message="Confining reinforcement area insufficient",
-    field="Ash",
+    field="provided_ash_mm2",
     hint="Increase confining hoop bar diameter or reduce spacing.",
-    clause="IS 13920 Cl. 7.4.7",
-    recovery="Increase confining hoop area Ash to meet IS 13920 Cl 7.4.7/7.4.8 requirements.",
+    clause="IS 13920 Cl. 7.6.1(c)(2)",
+    recovery="Increase provided confining hoop area Ash to the governing amended requirement.",
+)
+
+E_DUCTILE_COL_006 = DesignError(
+    code="E_DUCTILE_COL_006",
+    severity=Severity.ERROR,
+    message="Provided special-confinement spacing exceeds the maximum",
+    field="provided_confining_spacing_mm",
+    hint="Reduce the provided spacing to the calculated maximum or less.",
+    clause="IS 13920 Cl. 7.6.1 with Amendments 1 and 2",
+    recovery="Reduce the provided special-confinement spacing to the amended limit.",
+)
+
+E_DUCTILE_COL_007 = DesignError(
+    code="E_DUCTILE_COL_007",
+    severity=Severity.ERROR,
+    message="Provided special-confinement length is below the minimum",
+    field="provided_confining_length_mm",
+    hint="Extend the special-confinement zone to the calculated minimum or more.",
+    clause="IS 13920 Cl. 7.6.1 with Amendments 1 and 2",
+    recovery="Increase the provided special-confinement length to the amended limit.",
 )
 
 # Strong Column Weak Beam (SCWB) Errors --- IS 13920:2016 Cl. 7.2.1

@@ -59,9 +59,18 @@ _DUCTILITY_COL_KWARGS = {
     "b_mm": 400.0,
     "D_mm": 500.0,
     "clear_height_mm": 3000.0,
-    "bar_dia_mm": 16.0,
+    "bar_dia_mm": 20.0,
     "fck_nmm2": 25.0,
     "fy_nmm2": 415.0,
+    "Ag_mm2": 200_000.0,
+    "Ak_mm2": 134_400.0,
+    "h_mm": 420.0,
+    "provided_confining_spacing_mm": 100.0,
+    "provided_confining_length_mm": 500.0,
+    "provided_ash_mm2": 223.0,
+    "is_is13920_applicable": True,
+    "applicability_basis": "Project seismic design basis",
+    "is_rectangular_section": True,
 }
 
 _BEAM_DUCTILITY_KWARGS = {

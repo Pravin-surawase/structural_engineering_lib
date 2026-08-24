@@ -685,15 +685,16 @@ async def design_column(request: ColumnDesignRequest):
 @router.post(
     "/ductile-detailing",
     response_model=APIResponse[ColumnDuctileDetailingResponse],
-    summary="IS 13920 Column Ductile Detailing Check",
+    summary="IS 13920 Rectangular Column Special-Confinement Check",
     description=(
-        "Check column ductile detailing per IS 13920:2016 Cl 7. "
-        "Validates geometry, longitudinal steel limits, special confining "
-        "reinforcement spacing, confinement zone length, and confining bar area."
+        "Check geometry and explicitly provided special-confinement spacing, "
+        "length, and hoop area for a rectangular column whose IS 13920 "
+        "applicability has already been established by the caller. No cover or "
+        "core geometry is inferred; longitudinal reinforcement is not evaluated."
     ),
 )
 async def column_ductile_detailing(request: ColumnDuctileDetailingRequest):
-    """Check column ductile detailing per IS 13920:2016 Cl 7."""
+    """Run the bounded rectangular-column special-confinement check."""
     try:
         from structural_lib import check_column_ductility_is13920
 

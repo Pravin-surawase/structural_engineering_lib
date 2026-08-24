@@ -17,14 +17,20 @@ References:
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 
+from structural_lib.codes.is456.common.constants import (
+    COLUMN_MAX_STEEL_RATIO,
+    COLUMN_MIN_STEEL_RATIO,
+)
 from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.errors import (
     E_DUCTILE_COL_001,
     E_DUCTILE_COL_002,
-    E_INPUT_004,
-    E_INPUT_005,
+    E_DUCTILE_COL_005,
+    E_DUCTILE_COL_006,
+    E_DUCTILE_COL_007,
     DesignError,
 )
 
@@ -40,30 +46,77 @@ __all__ = [
 ]
 
 
+_STANDARD = "IS 13920:2016"
+_SOURCE_REFERENCE = (
+    "IS 13920:2016 First Revision with Amendment 1 (2017) " "and Amendment 2 (2020)"
+)
+_CLAUSE_REFS = ("7.1.1", "7.1.2", "7.6.1", "7.6.1(c)(2)")
+_COMPANION_STANDARD = "IS 456:2000"
+_COMPANION_CLAUSE_REFS = ("26.5.3.1(a)",)
+_RESULT_KIND = "BOUNDED_RECTANGULAR_SPECIAL_CONFINEMENT_CHECK"
+_COMPLIANCE_SCOPE = "GEOMETRY_AND_PROVIDED_SPECIAL_CONFINEMENT"
+_LONGITUDINAL_STATUS = "NOT_EVALUATED_NO_PROVIDED_LONGITUDINAL_STEEL"
+_APPLICABILITY_STATUS = "CONFIRMED_BY_CALLER"
+
+
 @dataclass
 class DuctileColumnResult:
-    """Result of IS 13920:2016 Cl 7 ductile column detailing check."""
+    """Bounded rectangular-column special-confinement result.
+
+    ``is_compliant`` covers geometry and the explicitly provided confinement
+    spacing, length, and area only. Longitudinal reinforcement is not provided
+    to this contract and is therefore reported separately as not evaluated.
+    """
 
     is_geometry_valid: bool
-    min_pt: float  # min longitudinal steel %
-    max_pt: float  # max longitudinal steel %
+    min_pt: float  # IS 456 companion minimum longitudinal steel %
+    max_pt: float  # IS 456 companion maximum longitudinal steel %
     confining_spacing_mm: float
     confining_length_mm: float
     ash_required_mm2: float
+    ash_expression_1_mm2: float
+    ash_expression_2_mm2: float
+    governing_ash_expression: str
+    provided_confining_spacing_mm: float
+    provided_confining_length_mm: float
+    provided_ash_mm2: float
+    spacing_passed: bool
+    length_passed: bool
+    ash_passed: bool
     is_compliant: bool
+    applicability_basis: str
     errors: list[DesignError] = field(default_factory=list)
+    result_kind: str = _RESULT_KIND
+    compliance_scope: str = _COMPLIANCE_SCOPE
+    longitudinal_reinforcement_status: str = _LONGITUDINAL_STATUS
+    applicability_status: str = _APPLICABILITY_STATUS
+    standard: str = _STANDARD
+    source_reference: str = _SOURCE_REFERENCE
+    clause_refs: tuple[str, ...] = _CLAUSE_REFS
+    companion_standard: str = _COMPANION_STANDARD
+    companion_clause_refs: tuple[str, ...] = _COMPANION_CLAUSE_REFS
 
 
-@clause("7.1.2", "7.1.3", standard="IS 13920")
+def _require_positive_finite(value: float, field: str) -> None:
+    if isinstance(value, bool) or not math.isfinite(value) or value <= 0:
+        raise ValueError(f"{field} must be a finite value > 0, got {value}")
+
+
+def _require_bool(value: object, field: str) -> None:
+    if not isinstance(value, bool):
+        raise TypeError(f"{field} must be a bool")
+
+
+@clause("7.1.1", "7.1.2", standard="IS 13920")
 def check_column_geometry(
     b_mm: float, D_mm: float
 ) -> tuple[bool, str, list[DesignError]]:
     """
-    IS 13920:2016 Cl 7.1: Column geometry requirements for seismic zones.
+    Check the accepted IS 13920 rectangular-column geometry boundaries.
 
     Checks:
-    1. Cl 7.1.2: Minimum dimension >= 300 mm
-    2. Cl 7.1.3: Ratio of shortest to longest dimension >= 0.4
+    1. Cl 7.1.1: Minimum dimension >= 300 mm
+    2. Cl 7.1.2 with Amendment 1: shortest/longest dimension >= 0.4
 
     Args:
         b_mm: Column width — shorter dimension (mm).
@@ -74,6 +127,10 @@ def check_column_geometry(
     """
     errors: list[DesignError] = []
 
+    for field_name, value in (("b_mm", b_mm), ("D_mm", D_mm)):
+        if isinstance(value, bool) or not math.isfinite(value):
+            raise ValueError(f"{field_name} must be a finite real number")
+
     if b_mm <= 0 or D_mm <= 0:
         errors.append(E_DUCTILE_COL_001)
         return False, "Column dimensions must be positive", errors
@@ -82,54 +139,44 @@ def check_column_geometry(
     short = min(b_mm, D_mm)
     long = max(b_mm, D_mm)
 
-    # IS 13920 Cl 7.1.2: Minimum dimension >= 300 mm
+    # IS 13920 Cl 7.1.1: Minimum dimension >= 300 mm
     if short < 300.0:
         errors.append(E_DUCTILE_COL_001)
         return (
             False,
-            f"Minimum dimension {short:.0f} mm < 300 mm (IS 13920 Cl 7.1.2)",
+            f"Minimum dimension {short:.0f} mm < 300 mm (IS 13920 Cl 7.1.1)",
             errors,
         )
 
-    # IS 13920 Cl 7.1.3: Aspect ratio (shorter/longer) >= 0.4
+    # IS 13920 Cl 7.1.2 with Amendment 1: shorter/longer >= 0.4
     ratio = short / long
-    if ratio < 0.4 - 1e-9:
+    if ratio < 0.4:
         errors.append(E_DUCTILE_COL_002)
         return (
             False,
-            f"Aspect ratio {ratio:.2f} < 0.4 (IS 13920 Cl 7.1.3)",
+            f"Aspect ratio {ratio:.2f} < 0.4 (IS 13920 Cl 7.1.2)",
             errors,
         )
 
     return True, "OK", errors
 
 
-@clause("7.2.1", standard="IS 13920")
+@clause("26.5.3.1(a)", standard="IS 456")
 def get_min_longitudinal_steel() -> float:
-    """
-    IS 13920:2016 Cl 7.2.1: Minimum longitudinal steel for seismic columns.
-
-    Returns:
-        Minimum longitudinal steel percentage (0.8%).
-    """
-    return 0.8
+    """Return the IS 456 companion minimum longitudinal-steel percentage."""
+    return COLUMN_MIN_STEEL_RATIO * 100.0
 
 
-@clause("7.2.1", standard="IS 13920")
+@clause("26.5.3.1(a)", standard="IS 456")
 def get_max_longitudinal_steel() -> float:
-    """
-    IS 13920:2016 Cl 7.2.1: Maximum longitudinal steel for seismic columns.
-
-    Returns:
-        Maximum longitudinal steel percentage (4.0%).
-    """
-    return 4.0
+    """Return the IS 456 companion maximum longitudinal-steel percentage."""
+    return COLUMN_MAX_STEEL_RATIO * 100.0
 
 
-@clause("7.4.6", standard="IS 13920")
+@clause("7.6.1", standard="IS 13920")
 def calculate_special_confining_spacing(b_mm: float, bar_dia_mm: float) -> float:
     """
-    IS 13920:2016 Cl 7.4.6: Spacing of special confining reinforcement.
+    Calculate the amended maximum special-confinement spacing.
 
     Spacing shall not exceed:
     1. b/4 (short dimension of column)
@@ -146,12 +193,10 @@ def calculate_special_confining_spacing(b_mm: float, bar_dia_mm: float) -> float
     Raises:
         ValueError: If b_mm or bar_dia_mm are not positive.
     """
-    if b_mm <= 0:
-        raise ValueError(f"Column dimension b_mm must be positive, got {b_mm}")
-    if bar_dia_mm <= 0:
-        raise ValueError(f"Bar diameter bar_dia_mm must be positive, got {bar_dia_mm}")
+    _require_positive_finite(b_mm, "b_mm")
+    _require_positive_finite(bar_dia_mm, "bar_dia_mm")
 
-    # IS 13920 Cl 7.4.6: s <= min(b/4, 6*db, 100 mm)
+    # IS 13920 Cl 7.6.1 with Amendments 1 and 2.
     s1 = b_mm / 4.0
     s2 = 6.0 * bar_dia_mm
     s3 = 100.0
@@ -159,10 +204,10 @@ def calculate_special_confining_spacing(b_mm: float, bar_dia_mm: float) -> float
     return min(s1, s2, s3)
 
 
-@clause("7.4.1", standard="IS 13920")
+@clause("7.6.1", standard="IS 13920")
 def calculate_confining_length(D_mm: float, clear_height_mm: float) -> float:
     """
-    IS 13920:2016 Cl 7.4.1: Length of special confinement zone (lo).
+    Calculate the amended minimum special-confinement length.
 
     The special confinement zone extends from each joint face for a length lo:
     1. lo >= D (larger lateral dimension of member)
@@ -179,12 +224,10 @@ def calculate_confining_length(D_mm: float, clear_height_mm: float) -> float:
     Raises:
         ValueError: If D_mm or clear_height_mm are not positive.
     """
-    if D_mm <= 0:
-        raise ValueError(f"Column dimension D_mm must be positive, got {D_mm}")
-    if clear_height_mm <= 0:
-        raise ValueError(f"Clear height must be positive, got {clear_height_mm}")
+    _require_positive_finite(D_mm, "D_mm")
+    _require_positive_finite(clear_height_mm, "clear_height_mm")
 
-    # IS 13920 Cl 7.4.1: lo >= max(D, clear_height/6, 450 mm)
+    # IS 13920 Cl 7.6.1 with Amendments 1 and 2.
     lo1 = D_mm
     lo2 = clear_height_mm / 6.0
     lo3 = 450.0
@@ -192,7 +235,7 @@ def calculate_confining_length(D_mm: float, clear_height_mm: float) -> float:
     return max(lo1, lo2, lo3)
 
 
-@clause("7.4.7", "7.4.8", standard="IS 13920")
+@clause("7.6.1(c)(2)", standard="IS 13920")
 def calculate_ash_required(
     s_mm: float,
     h_mm: float,
@@ -202,9 +245,7 @@ def calculate_ash_required(
     Ak_mm2: float,  # noqa: N803
 ) -> float:
     """
-    IS 13920:2016 Cl 7.4.7/7.4.8: Area of special confining reinforcement.
-
-    IS 13920 Cl 7.4.8: Ash = 0.18 * s * h * (fck / fy) * (Ag / Ak - 1.0)
+    Return the governing area from both accepted rectangular expressions.
 
     Args:
         s_mm: Spacing of confining reinforcement (mm).
@@ -223,33 +264,29 @@ def calculate_ash_required(
     Raises:
         ValueError: If any input is not positive or Ak >= Ag.
     """
-    if s_mm <= 0:
-        raise ValueError(f"Spacing s_mm must be positive, got {s_mm}")
-    if h_mm <= 0:
-        raise ValueError(f"Hoop dimension h_mm must be positive, got {h_mm}")
-    if fck <= 0:
-        raise ValueError(f"Concrete strength fck must be positive, got {fck}")
-    if fy <= 0:
-        raise ValueError(f"Steel strength fy must be positive, got {fy}")
-    if Ag_mm2 <= 0:
-        raise ValueError(f"Gross area Ag_mm2 must be positive, got {Ag_mm2}")
-    if Ak_mm2 <= 0:
-        raise ValueError(f"Confined core area Ak_mm2 must be positive, got {Ak_mm2}")
+    for field_name, value in (
+        ("s_mm", s_mm),
+        ("h_mm", h_mm),
+        ("fck", fck),
+        ("fy", fy),
+        ("Ag_mm2", Ag_mm2),
+        ("Ak_mm2", Ak_mm2),
+    ):
+        _require_positive_finite(value, field_name)
     if Ak_mm2 >= Ag_mm2:
         raise ValueError(
             f"Confined core area Ak_mm2 ({Ak_mm2}) must be < Ag_mm2 ({Ag_mm2})"
         )
 
-    # IS 13920 Cl 7.4.8: fy capped at 500 N/mm²
+    # The accepted expression limits the reinforcement yield strength to 500.
     fy_eff = min(fy, 500.0)
 
-    # IS 13920 Cl 7.4.8: Ash = 0.18 × s × h × (fck/fy) × (Ag/Ak - 1.0)
-    Ash = 0.18 * s_mm * h_mm * (fck / fy_eff) * (Ag_mm2 / Ak_mm2 - 1.0)  # noqa: N806
+    ash_expression_1 = 0.18 * s_mm * h_mm * (fck / fy_eff) * (Ag_mm2 / Ak_mm2 - 1.0)
+    ash_expression_2 = 0.05 * s_mm * h_mm * (fck / fy_eff)
+    return max(ash_expression_1, ash_expression_2)
 
-    return Ash
 
-
-@clause("7.1", "7.2.1", "7.4.1", "7.4.6", "7.4.7", "7.4.8", standard="IS 13920")
+@clause("7.1.1", "7.1.2", "7.6.1", "7.6.1(c)(2)", standard="IS 13920")
 def check_column_ductility(
     b_mm: float,
     D_mm: float,
@@ -257,116 +294,137 @@ def check_column_ductility(
     bar_dia_mm: float,
     fck: float,
     fy: float,
-    Ag_mm2: float | None = None,
-    Ak_mm2: float | None = None,  # noqa: N803
+    *,
+    Ag_mm2: float,
+    Ak_mm2: float,  # noqa: N803
+    h_mm: float,
+    provided_confining_spacing_mm: float,
+    provided_confining_length_mm: float,
+    provided_ash_mm2: float,
+    is_is13920_applicable: bool,
+    applicability_basis: str,
+    is_rectangular_section: bool,
 ) -> DuctileColumnResult:
+    """Check one explicitly applicable rectangular special-confinement detail.
+
+    The caller must establish IS 13920 applicability and provide the actual
+    confined-core/hoop geometry plus provided spacing, length, and hoop area.
+    No cover, core dimension, gross area, or reinforcement is inferred.
     """
-    IS 13920:2016 Cl 7: Comprehensive ductile detailing check for columns.
+    _require_bool(is_is13920_applicable, "is_is13920_applicable")
+    _require_bool(is_rectangular_section, "is_rectangular_section")
+    if not is_is13920_applicable:
+        raise ValueError(
+            "IS 13920 column applicability must be established before this check"
+        )
+    if not is_rectangular_section:
+        raise ValueError("only rectangular column sections are supported")
+    if not isinstance(applicability_basis, str) or not applicability_basis.strip():
+        raise ValueError("applicability_basis must be a non-empty string")
 
-    Performs all seismic detailing checks for column:
-    - Geometry (Cl 7.1)
-    - Longitudinal steel limits (Cl 7.2.1)
-    - Special confining spacing (Cl 7.4.6)
-    - Confinement zone length (Cl 7.4.1)
-    - Confining reinforcement area (Cl 7.4.7/7.4.8) — only if Ag and Ak provided
+    for field_name, value in (
+        ("b_mm", b_mm),
+        ("D_mm", D_mm),
+        ("clear_height_mm", clear_height_mm),
+        ("bar_dia_mm", bar_dia_mm),
+        ("fck", fck),
+        ("fy", fy),
+        ("Ag_mm2", Ag_mm2),
+        ("Ak_mm2", Ak_mm2),
+        ("h_mm", h_mm),
+        ("provided_confining_spacing_mm", provided_confining_spacing_mm),
+        ("provided_confining_length_mm", provided_confining_length_mm),
+        ("provided_ash_mm2", provided_ash_mm2),
+    ):
+        _require_positive_finite(value, field_name)
 
-    Args:
-        b_mm: Column width — shorter dimension (mm).
-        D_mm: Column depth — longer dimension (mm).
-        clear_height_mm: Clear height of column (mm).
-        bar_dia_mm: Smallest longitudinal bar diameter (mm).
-        fck: Concrete compressive strength (N/mm²).
-        fy: Steel yield strength (N/mm²).
-        Ag_mm2: Gross area of column (mm²). If None, computed as b_mm × D_mm.
-        Ak_mm2: Area of confined core to centerline of hoop (mm²). Optional.
+    rectangular_area = b_mm * D_mm
+    if not math.isclose(Ag_mm2, rectangular_area, rel_tol=1e-9, abs_tol=1e-6):
+        raise ValueError("Ag_mm2 must equal b_mm * D_mm for the rectangular section")
+    if Ak_mm2 >= Ag_mm2:
+        raise ValueError("Ak_mm2 must be less than Ag_mm2")
+    long_dim = max(b_mm, D_mm)
+    if h_mm > long_dim:
+        raise ValueError("h_mm cannot exceed the larger column dimension")
 
-    Returns:
-        DuctileColumnResult with all check outcomes.
-    """
-    # --- Geometry check (Cl 7.1) ---
-    is_geo_valid, geo_msg, geo_errors = check_column_geometry(b_mm, D_mm)
+    min_pt = get_min_longitudinal_steel()
+    max_pt = get_max_longitudinal_steel()
+    is_geo_valid, _geo_msg, geo_errors = check_column_geometry(b_mm, D_mm)
     if not is_geo_valid:
         return DuctileColumnResult(
             is_geometry_valid=False,
-            min_pt=0.0,
-            max_pt=0.0,
+            min_pt=min_pt,
+            max_pt=max_pt,
             confining_spacing_mm=0.0,
             confining_length_mm=0.0,
             ash_required_mm2=0.0,
+            ash_expression_1_mm2=0.0,
+            ash_expression_2_mm2=0.0,
+            governing_ash_expression="NOT_EVALUATED_INVALID_GEOMETRY",
+            provided_confining_spacing_mm=provided_confining_spacing_mm,
+            provided_confining_length_mm=provided_confining_length_mm,
+            provided_ash_mm2=provided_ash_mm2,
+            spacing_passed=False,
+            length_passed=False,
+            ash_passed=False,
             is_compliant=False,
+            applicability_basis=applicability_basis.strip(),
             errors=geo_errors,
         )
 
-    # --- Input validation ---
-    input_errors: list[DesignError] = []
-    if clear_height_mm <= 0:
-        input_errors.append(
-            DesignError(
-                code="E_DUCTILE_COL_INPUT",
-                severity=E_INPUT_004.severity,
-                message="clear_height_mm must be > 0",
-                field="clear_height_mm",
-            )
-        )
-    if bar_dia_mm <= 0:
-        input_errors.append(
-            DesignError(
-                code="E_DUCTILE_COL_INPUT",
-                severity=E_INPUT_004.severity,
-                message="bar_dia_mm must be > 0",
-                field="bar_dia_mm",
-            )
-        )
-    if fck <= 0:
-        input_errors.append(E_INPUT_004)
-    if fy <= 0:
-        input_errors.append(E_INPUT_005)
-
-    if input_errors:
-        return DuctileColumnResult(
-            is_geometry_valid=True,
-            min_pt=0.0,
-            max_pt=0.0,
-            confining_spacing_mm=0.0,
-            confining_length_mm=0.0,
-            ash_required_mm2=0.0,
-            is_compliant=False,
-            errors=input_errors,
-        )
-
-    # --- Longitudinal steel limits (Cl 7.2.1) ---
-    min_pt = get_min_longitudinal_steel()
-    max_pt = get_max_longitudinal_steel()
-
-    # --- Special confining spacing (Cl 7.4.6) ---
     short_dim = min(b_mm, D_mm)
-    spacing = calculate_special_confining_spacing(short_dim, bar_dia_mm)
+    maximum_spacing = calculate_special_confining_spacing(short_dim, bar_dia_mm)
+    minimum_length = calculate_confining_length(long_dim, clear_height_mm)
 
-    # --- Confinement zone length (Cl 7.4.1) ---
-    long_dim = max(b_mm, D_mm)
-    lo = calculate_confining_length(long_dim, clear_height_mm)
+    fy_eff = min(fy, 500.0)
+    ash_expression_1 = (
+        0.18
+        * provided_confining_spacing_mm
+        * h_mm
+        * (fck / fy_eff)
+        * (Ag_mm2 / Ak_mm2 - 1.0)
+    )
+    ash_expression_2 = 0.05 * provided_confining_spacing_mm * h_mm * (fck / fy_eff)
+    ash_required = calculate_ash_required(
+        provided_confining_spacing_mm,
+        h_mm,
+        fck,
+        fy,
+        Ag_mm2,
+        Ak_mm2,
+    )
+    governing_expression = (
+        "0.18_CORE_RATIO" if ash_expression_1 >= ash_expression_2 else "0.05_MINIMUM"
+    )
 
-    # --- Confining reinforcement area (Cl 7.4.7/7.4.8) ---
-    ash = 0.0
-    if Ag_mm2 is None:
-        Ag_mm2 = b_mm * D_mm
-    if Ak_mm2 is not None and Ak_mm2 > 0 and Ak_mm2 < Ag_mm2:
-        # h = longer dimension of rectangular confining hoop
-        # Approximation: h ≈ D_mm - 2 * cover, but since Ak is provided,
-        # use the longer core dimension. For the formula, h is the longer
-        # dimension of the hoop measured to outer face.
-        # We use D_mm side as the longer hoop dimension approximation.
-        h_mm = long_dim - 2 * 40.0  # assuming 40 mm cover
-        if h_mm > 0:
-            ash = calculate_ash_required(spacing, h_mm, fck, fy, Ag_mm2, Ak_mm2)
+    spacing_passed = provided_confining_spacing_mm <= maximum_spacing + 1e-9
+    length_passed = provided_confining_length_mm >= minimum_length - 1e-9
+    ash_passed = provided_ash_mm2 >= ash_required - 1e-9
+    errors: list[DesignError] = []
+    if not spacing_passed:
+        errors.append(E_DUCTILE_COL_006)
+    if not length_passed:
+        errors.append(E_DUCTILE_COL_007)
+    if not ash_passed:
+        errors.append(E_DUCTILE_COL_005)
 
     return DuctileColumnResult(
         is_geometry_valid=True,
         min_pt=min_pt,
         max_pt=max_pt,
-        confining_spacing_mm=spacing,
-        confining_length_mm=lo,
-        ash_required_mm2=ash,
-        is_compliant=True,
-        errors=[],
+        confining_spacing_mm=maximum_spacing,
+        confining_length_mm=minimum_length,
+        ash_required_mm2=ash_required,
+        ash_expression_1_mm2=ash_expression_1,
+        ash_expression_2_mm2=ash_expression_2,
+        governing_ash_expression=governing_expression,
+        provided_confining_spacing_mm=provided_confining_spacing_mm,
+        provided_confining_length_mm=provided_confining_length_mm,
+        provided_ash_mm2=provided_ash_mm2,
+        spacing_passed=spacing_passed,
+        length_passed=length_passed,
+        ash_passed=ash_passed,
+        is_compliant=(spacing_passed and length_passed and ash_passed),
+        applicability_basis=applicability_basis.strip(),
+        errors=errors,
     )

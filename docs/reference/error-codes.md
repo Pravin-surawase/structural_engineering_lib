@@ -19,11 +19,12 @@ tags: []
 
 ---
 
-**Total error codes:** 29
+**Total error codes:** 36
 
 ## Categories
 
 - [DUCTILE](#ductile) (3 codes)
+- [DUCTILE_COLUMN](#ductile_column) (7 codes)
 - [FLEXURE](#flexure) (4 codes)
 - [INPUT](#input) (17 codes)
 - [SHEAR](#shear) (4 codes)
@@ -38,6 +39,18 @@ tags: []
 | `E_DUCTILE_001` | error | Width < 200 mm | b | Increase beam width to ≥ 200 mm. | IS 13920 Cl. 6.1.2 |
 | `E_DUCTILE_002` | error | Width/Depth ratio must be > 0.3 | b/D | Increase width or reduce depth. | IS 13920 Cl. 6.1.1 |
 | `E_DUCTILE_003` | error | Invalid depth | D | Depth must be > 0. | — |
+
+## DUCTILE_COLUMN
+
+| Code | Severity | Message | Field | Hint | Clause |
+|------|----------|---------|-------|------|--------|
+| `E_DUCTILE_COL_001` | error | Column width < 300 mm | b_mm | Increase column width to ≥ 300 mm for seismic resistance. | IS 13920 Cl. 7.1.1 |
+| `E_DUCTILE_COL_002` | error | Column aspect ratio b/D < 0.4 | b_mm | Adjust column dimensions so that shorter/longer ≥ 0.4. | IS 13920 Cl. 7.1.2 with Amendment 1 |
+| `E_DUCTILE_COL_003` | error | Longitudinal steel below IS 456 minimum 0.8% | pt | Increase longitudinal reinforcement to ≥ 0.8% of Ag. | IS 456 Cl. 26.5.3.1(a) |
+| `E_DUCTILE_COL_004` | error | Longitudinal steel exceeds IS 456 maximum 4% | pt | Reduce longitudinal reinforcement to ≤ 4% of Ag. | IS 456 Cl. 26.5.3.1(a) |
+| `E_DUCTILE_COL_005` | error | Confining reinforcement area insufficient | provided_ash_mm2 | Increase confining hoop bar area or reduce spacing. | IS 13920 Cl. 7.6.1(c)(2) |
+| `E_DUCTILE_COL_006` | error | Provided special-confinement spacing exceeds the maximum | provided_confining_spacing_mm | Reduce the provided spacing to the calculated maximum or less. | IS 13920 Cl. 7.6.1 with Amendments 1 and 2 |
+| `E_DUCTILE_COL_007` | error | Provided special-confinement length is below the minimum | provided_confining_length_mm | Extend the special-confinement zone to the calculated minimum or more. | IS 13920 Cl. 7.6.1 with Amendments 1 and 2 |
 
 ## FLEXURE
 

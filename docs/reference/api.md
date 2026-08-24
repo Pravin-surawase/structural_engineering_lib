@@ -3865,24 +3865,31 @@ print(f"Valid: {result['is_valid']}, Tie spacing: {result['tie_spacing_mm']} mm"
 
 ---
 
-### `check_column_ductility_is13920(*, b_mm, D_mm, clear_height_mm, bar_dia_mm, fck, fy, Ag_mm2=None, Ak_mm2=None) → dict`
+### `check_column_ductility_is13920(*, b_mm, D_mm, clear_height_mm, bar_dia_mm, Ag_mm2, Ak_mm2, h_mm, provided_confining_spacing_mm, provided_confining_length_mm, provided_ash_mm2, is_is13920_applicable, applicability_basis, is_rectangular_section, fck_nmm2=None, fy_nmm2=None, fck=None, fy=None) → dict`
 
-Check column ductile detailing per IS 13920:2016 Cl 7. Validates geometry constraints, longitudinal steel limits, special confining reinforcement spacing, confinement zone length, and confining bar area.
+Check one rectangular-column geometry and explicitly provided special-confinement detail after the caller has established IS 13920 applicability. No cover, gross area, or confined-core geometry is inferred. Provided longitudinal reinforcement is not an input and is explicitly reported as not evaluated.
 
 | Param | Type | Description |
 |-------|------|-------------|
-| `b_mm` | `float` | Column width — shorter dimension (mm). Range: 200–5000 |
-| `D_mm` | `float` | Column depth — longer dimension (mm). Range: 200–5000 |
+| `b_mm` | `float` | One rectangular column dimension (mm). Range: 200–5000 |
+| `D_mm` | `float` | Other rectangular column dimension (mm). Range: 200–5000 |
 | `clear_height_mm` | `float` | Clear height between floors (mm) |
 | `bar_dia_mm` | `float` | Smallest longitudinal bar diameter (mm). Range: 8–50 |
-| `fck` | `float` | Concrete strength (N/mm²). Range: 15–80 |
-| `fy` | `float` | Steel yield strength (N/mm²). Range: 250–600 |
-| `Ag_mm2` | `float \| None` | Gross area (mm²). If None, computed as b×D |
-| `Ak_mm2` | `float \| None` | Confined core area to hoop centerline (mm²). If None, estimated with 40mm cover |
+| `Ag_mm2` | `float` | Actual gross rectangular area (mm²); must equal b×D |
+| `Ak_mm2` | `float` | Actual confined-core area to hoop centerline (mm²) |
+| `h_mm` | `float` | Longer hoop dimension measured to its outer face (mm) |
+| `provided_confining_spacing_mm` | `float` | Provided special-confinement hoop spacing (mm) |
+| `provided_confining_length_mm` | `float` | Provided special-confinement zone length (mm) |
+| `provided_ash_mm2` | `float` | Provided hoop area within the spacing (mm²) |
+| `is_is13920_applicable` | `bool` | Caller-confirmed applicability decision; must be a real boolean |
+| `applicability_basis` | `str` | Non-empty basis for the applicability decision |
+| `is_rectangular_section` | `bool` | Must be true; other section topologies are unsupported |
+| `fck_nmm2` / `fck` | `float` | Concrete strength (N/mm²). Range: 15–80; `fck` is deprecated |
+| `fy_nmm2` / `fy` | `float` | Hoop steel yield strength (N/mm²). Range: 250–600; `fy` is deprecated |
 
-**Returns:** `dict` with keys: `is_compliant`, `min_dimension_ok`, `aspect_ratio_ok`, `bar_spacing_max_mm`, `confinement_zone_mm`, `hoop_spacing_mm`, `Ash_required_mm2`, `warnings`, `errors`
+**Returns:** `dict` with the geometry verdict; maximum spacing; minimum confinement length; both rectangular `Ash` expression results and the governing requirement; provided-value verdicts; bounded `is_compliant`; applicability, standard, amendment-chain, clause, companion-standard, and not-evaluated-longitudinal provenance; and structured errors.
 
-**Reference:** IS 13920:2016 Cl 7
+**Reference:** IS 13920:2016 with Amendments 1 and 2, Cl 7.1.1, 7.1.2, 7.6.1, and 7.6.1(c)(2). The separately reported 0.8% and 4.0% longitudinal limits reference IS 456:2000 Cl 26.5.3.1(a) and do not constitute a provided-steel check.
 
 **Usage:**
 ```python
@@ -3890,7 +3897,14 @@ from structural_lib import api
 
 result = api.check_column_ductility_is13920(
     b_mm=400, D_mm=500, clear_height_mm=3000,
-    bar_dia_mm=16, fck=25, fy=415,
+    bar_dia_mm=20, fck=25, fy=415,
+    Ag_mm2=200000, Ak_mm2=134400, h_mm=420,
+    provided_confining_spacing_mm=100,
+    provided_confining_length_mm=500,
+    provided_ash_mm2=223,
+    is_is13920_applicable=True,
+    applicability_basis="Project seismic design basis",
+    is_rectangular_section=True,
 )
 print(f"Compliant: {result['is_compliant']}")
 ```

@@ -4,7 +4,7 @@
     "additional_standards": ["IS 13920:2016"],
     "generated": "2026-08-16",
     "total_clauses_in_registry": 119,
-    "total_mapped": 63,
+    "total_mapped": 65,
     "not_implemented": 65
   },
   "mappings": [
@@ -377,6 +377,22 @@
       "notes": "Ties, spacing, cover"
     },
     {
+      "clause": "26.5.3.1(a)",
+      "title": "Column Minimum Longitudinal Reinforcement Percentage",
+      "function": "get_min_longitudinal_steel",
+      "module": "codes/is13920/column.py",
+      "decorator": "@clause",
+      "notes": "IS 456 companion value; not an IS 13920 compliance result"
+    },
+    {
+      "clause": "26.5.3.1(a)",
+      "title": "Column Maximum Longitudinal Reinforcement Percentage",
+      "function": "get_max_longitudinal_steel",
+      "module": "codes/is13920/column.py",
+      "decorator": "@clause",
+      "notes": "IS 456 companion value; not an IS 13920 compliance result"
+    },
+    {
       "clause": "34.1",
       "title": "General Requirements for Footings",
       "function": "size_footing",
@@ -433,44 +449,44 @@
       "notes": "Min reinforcement"
     },
     {
-      "clause": "IS13920_7.1",
-      "title": "Columns — General Requirements",
-      "function": "check_column_ductility",
+      "clause": "IS13920_7.1.1",
+      "title": "Column Minimum Dimension",
+      "function": "check_column_geometry",
       "module": "codes/is13920/column.py",
-      "decorator": "implicit",
-      "notes": "Geometry constraints"
+      "decorator": "@clause",
+      "notes": "Minimum dimension boundary"
     },
     {
-      "clause": "IS13920_7.2",
-      "title": "Columns — Longitudinal Steel",
-      "function": "check_column_ductility",
+      "clause": "IS13920_7.1.2",
+      "title": "Column Shorter-to-Longer Dimension Ratio",
+      "function": "check_column_geometry",
       "module": "codes/is13920/column.py",
-      "decorator": "implicit",
-      "notes": "Steel limits"
+      "decorator": "@clause",
+      "notes": "Amendment 1 boundary"
     },
     {
-      "clause": "IS13920_7.3",
-      "title": "Columns — Transverse Reinforcement",
-      "function": "check_column_ductility",
+      "clause": "IS13920_7.6.1",
+      "title": "Column Special-Confinement Spacing",
+      "function": "calculate_special_confining_spacing",
       "module": "codes/is13920/column.py",
-      "decorator": "implicit",
-      "notes": "Spacing"
+      "decorator": "@clause",
+      "notes": "Amendments 1 and 2"
     },
     {
-      "clause": "IS13920_7.4",
-      "title": "Special Confining Reinforcement",
-      "function": "check_column_ductility",
+      "clause": "IS13920_7.6.1",
+      "title": "Column Special-Confinement Length",
+      "function": "calculate_confining_length",
       "module": "codes/is13920/column.py",
-      "decorator": "implicit",
-      "notes": ""
+      "decorator": "@clause",
+      "notes": "Amendments 1 and 2"
     },
     {
-      "clause": "IS13920_7.4.1",
-      "title": "Area of Special Confining Reinforcement",
+      "clause": "IS13920_7.6.1(c)(2)",
+      "title": "Rectangular Column Special-Confinement Area",
       "function": "calculate_ash_required",
       "module": "codes/is13920/column.py",
-      "decorator": "implicit",
-      "notes": "Ash formula"
+      "decorator": "@clause",
+      "notes": "Governing of both amended expressions"
     },
     {
       "clause": "IS13920_6.1.1",

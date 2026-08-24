@@ -123,6 +123,8 @@ Maps IS 456:2000 (and IS 13920:2016) clauses to their implementing functions in 
 |--------|-------|----------|--------|-----------|-------|
 | 39.4 | Helical Reinforcement | `check_helical_reinforcement()` | `column/helical.py` | `@clause` | 5% strength increase |
 | 26.5.3 | Column Detailing | `create_column_detailing()` | `column/detailing.py` | `@clause` | Ties, spacing, cover |
+| 26.5.3.1(a) | Column Minimum Longitudinal Reinforcement Percentage | `get_min_longitudinal_steel()` | `is13920/column.py` | `@clause` | IS 456 companion value; not an IS 13920 compliance result |
+| 26.5.3.1(a) | Column Maximum Longitudinal Reinforcement Percentage | `get_max_longitudinal_steel()` | `is13920/column.py` | `@clause` | IS 456 companion value; not an IS 13920 compliance result |
 
 ## Footing (`codes/is456/footing/`)
 
@@ -146,11 +148,11 @@ Maps IS 456:2000 (and IS 13920:2016) clauses to their implementing functions in 
 | IS13920 6.2.1(b) | Beam Minimum Longitudinal Reinforcement | `get_min_tension_steel_percentage()` | `is13920/beam.py` | Minimum ratio on each face |
 | IS13920 6.2.2 | Beam Maximum Longitudinal Reinforcement | `get_max_tension_steel_percentage()` | `is13920/beam.py` | Maximum ratio on each face |
 | IS13920 6.3.5 | Beam Close-Link Spacing Near Joint Face | `calculate_confinement_spacing()` | `is13920/beam.py` | Amendment 1 spacing limit within 2d |
-| IS13920 7.1 | Columns — General Requirements | `check_column_ductility()` | `is13920/column.py` | Geometry constraints |
-| IS13920 7.2 | Columns — Longitudinal Steel | `check_column_ductility()` | `is13920/column.py` | Steel limits |
-| IS13920 7.3 | Columns — Transverse Reinforcement | `check_column_ductility()` | `is13920/column.py` | Spacing |
-| IS13920 7.4 | Special Confining Reinforcement | `check_column_ductility()` | `is13920/column.py` | |
-| IS13920 7.4.1 | Area of Special Confining Reinforcement | `calculate_ash_required()` | `is13920/column.py` | Ash formula |
+| IS13920 7.1.1 | Column Minimum Dimension | `check_column_geometry()` | `is13920/column.py` | Minimum dimension boundary |
+| IS13920 7.1.2 | Column Shorter-to-Longer Dimension Ratio | `check_column_geometry()` | `is13920/column.py` | Amendment 1 boundary |
+| IS13920 7.6.1 | Column Special-Confinement Spacing | `calculate_special_confining_spacing()` | `is13920/column.py` | Amendments 1 and 2 |
+| IS13920 7.6.1 | Column Special-Confinement Length | `calculate_confining_length()` | `is13920/column.py` | Amendments 1 and 2 |
+| IS13920 7.6.1(c)(2) | Rectangular Column Special-Confinement Area | `calculate_ash_required()` | `is13920/column.py` | Governing of both amended expressions |
 
 ---
 

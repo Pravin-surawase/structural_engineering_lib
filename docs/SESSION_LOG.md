@@ -5,6 +5,150 @@
 
 ---
 
+## 2026-08-24 — Session: INDIA-3-COLUMN-R1 bounded column contract repair
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents)
+
+**Branch:** `codex/india-3-column-r1`, from exact hosted INDIA-3-BEAM-R1
+merge `cfe29f890e62c40546f3a91c8810e1daf7c0d722`, tree
+`a0a095e00f3555fe5bdd8ccf5704ba4b71b69289`.
+
+**Git handoff receipt:**
+`docs/verification/india-3-column-r1-git-handoff-receipt.json`
+
+**Focus:** Repair only the G0-bounded IS 13920 rectangular-column geometry,
+applicability, actual-core, amended confinement, provided-detail, result
+meaning, and affected existing transport/metadata contract. Preserve every
+adjacent formula, source, distribution, support, version, release, and
+professional-use hold.
+
+### Summary
+
+- Verified live `origin/main` and merged PR #867 at exact predecessor
+  `cfe29f89`, tree `a0a095e0`, before creating one fresh source-bound task
+  worktree. Every unrelated dirty, detached, divergent, or unknown lane remains
+  retained.
+- Reproduced the outcome-changing G0 defects: the second rectangular
+  confinement-area expression returned 181.0372 mm2 instead of the governing
+  277.1084 mm2; NaN geometry returned valid/compliant; obsolete or wrong clause
+  identities were attached; and the service invented gross/core geometry from
+  a hidden 40 mm cover assumption before returning a success-like result.
+- The repaired contract requires caller-confirmed applicability with a non-empty
+  basis, rectangular topology, actual `Ag`, `Ak`, and hoop `h`, and provided
+  spacing, confinement length, and hoop area. No cover, gross area, core
+  dimension, or provided reinforcement is inferred.
+- Both accepted rectangular confinement-area expressions are evaluated and the
+  maximum governs. The amended spacing/length boundaries, exact geometry
+  clauses, finite intake, actual/provided checks, structured findings, and
+  source/amendment provenance agree across core, package/service, the existing
+  FastAPI route, OpenAPI, clause maps, and generated capability truth.
+- The separately retained 0.8% and 4.0% values are sourced to IS 456:2000 Cl
+  26.5.3.1(a) and explicitly marked `NOT_EVALUATED` because this contract has
+  no provided longitudinal steel. No new endpoint or product workflow was
+  added.
+- No beam, joint, wall, foundation, IS 875, or IS 1893 formula; React/Excel
+  surface; package version; release; source/distribution decision; support
+  promotion; or professional-use approval changed. `INDIA-3-IS13920-M0` is
+  next and was not started.
+
+### Issues encountered
+
+- The first worktree-creation tool call selected the not-yet-created target as
+  its process directory, so the tool could not start and no Git command ran.
+- The first historical reproducer tried to reach the wrapped geometry helper
+  through decorator globals and raised `KeyError` after printing the numeric
+  defect evidence.
+- The first structured-error patch expected rendered comparison symbols while
+  the file stored escaped Unicode literals, so its context did not match.
+- The first test-file replacement patch combined delete and add operations for
+  the same path, which the patch tool rejects.
+- The consolidated focused run found one manifest regression that still
+  required obsolete IS 13920 reference `7.4.8` to remain registration-only
+  after this packet corrected that identity.
+- The first targeted mypy command ran from the repository root even though the
+  configured explicit package base is `Python/`, causing one source file to be
+  discovered under two module names.
+
+### Root causes and resolutions
+
+- Confirmed root cause: a process working directory must exist before command
+  execution. Resolution: create the isolated worktree from the existing beam
+  checkout. Proof: the new lane starts at exact `cfe29f89`, reports
+  `source_bound=true`, and began `READY_LOCAL`. ⚠️ TERMINAL ISSUE: target cwd did
+  not yet exist -> created the worktree from an existing checkout.
+- Confirmed root cause: the clause decorator returns a wrapper whose globals
+  are the traceability module, not the wrapped column module. Resolution: import
+  the geometry helper directly for the clause replay. Proof: the exact obsolete
+  geometry and orchestrator reference lists were recorded. ⚠️ TERMINAL ISSUE:
+  decorator globals produced `KeyError` -> reran with the direct import.
+- Confirmed root cause: source text uses literal escaped Unicode sequences in
+  the error records. Resolution: match the actual stored representation and
+  apply only the bounded column error changes. Proof: E001-E007 now carry the
+  exact IS 13920 or IS 456 identity and provided-detail fields. ⚠️ TERMINAL
+  ISSUE: rendered-symbol patch context failed -> matched the literal file text.
+- Confirmed root cause: one patch transaction cannot delete and re-add the same
+  file. Resolution: perform the deletion and bounded replacement as two patch
+  operations, then format the result. Proof: the focused column contract file
+  collects 30 passing cases. ⚠️ TERMINAL ISSUE: combined delete/add was rejected
+  -> used two non-overlapping patch operations.
+- Confirmed root cause: `test_is456_and_is13920_registration_cannot_cross_match`
+  encoded the obsolete column reference as its namespace sentinel. Resolution:
+  retain the namespace invariant but bind the sentinel to the remaining
+  registration-only joint reference `7.2.1`. Proof: the exact failed node then
+  passes; the other 228 Python nodes were already green and were not rerun.
+- Confirmed root cause: configured mypy uses `explicit_package_bases=true` with
+  `Python/` as the package base. Resolution: run from `Python/` and pass the
+  bounded core, service, and FastAPI model paths. Proof: all three source files
+  report no issues. ⚠️ TERMINAL ISSUE: root-level mypy found a duplicate module
+  -> reran from the configured package base.
+- Confirmed root cause: original core commit `6b412719` implemented only the
+  first area expression and a success-like all-in-one result; service commit
+  `61e6020f` added the hidden 40 mm core default; later rename and decorator
+  commits preserved or mislabeled that behavior. Resolution: require the
+  applicability, actual geometry, topology, and provided check inputs; compute
+  both accepted expressions; and align the existing transports and exact
+  metadata owners. Proof: both independent benchmarks, unsafe provided-detail
+  cases, missing-input route case, and provenance assertions pass.
+
+### Validation through content freeze
+
+- Aggregate impact-mapped Python evidence passes 229 cases: 228 passed in the
+  consolidated run and the single stale manifest expectation passed on its
+  exact failed-only repair rerun. The FastAPI transport/response selection
+  passes 15 cases.
+- Targeted Black and Ruff pass. Configured mypy reports no issues in the column
+  core, service, and request/response model. Architecture boundaries report
+  zero violations across 221 files, and all 2,290 internal imports across 696
+  Python files resolve.
+- The OpenAPI baseline matches 89 endpoints and 444 schemas. API classification
+  and its 620-projection compatibility ledger are current. The Indian-code
+  manifest registers the exact amended column clauses and IS 456 companion
+  reference without capability-status, release, or authorization promotion.
+- Changed-path routing selects Python, FastAPI, control-plane, and docs. The
+  broad repository gate remains deferred to cumulative
+  `INDIA-3-IS13920-M0` because the bounded checks have no material failure or
+  unknown impact.
+- The immutable candidate still requires the sole post-freeze quick gate,
+  normal commit hooks, clean-commit `session end`, all required hosted checks,
+  unchanged-head merge, and candidate/merge tree equality. Those later facts
+  remain external and are not pre-claimed here.
+
+### Preserved holds
+
+- Applicability is caller-confirmed rather than inferred from an unproven axial
+  threshold. Non-rectangular columns and provided longitudinal-reinforcement
+  compliance remain outside the supported result.
+- `INDIA-3-IS13920-M0` remains a separate sequential cumulative packet.
+  Wall/foundation detailing and IS 875/1893 remain held.
+- No protected/private source byte, text, image, hash, path, or database
+  content changed or entered the tracked candidate. Source/distribution,
+  support, version, release, package publication, and professional-use
+  approval remain separate claims.
+- Branch, worktree, archive, source-copy, alias, and unrelated-file deletion
+  remain unauthorized.
+
+---
+
 ## 2026-08-24 — Session: INDIA-3-BEAM-R1 bounded beam contract repair
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents)

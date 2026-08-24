@@ -197,7 +197,7 @@ def test_is456_and_is13920_registration_cannot_cross_match() -> None:
     assert is456["registration_summary"]["registration_only_references"] == 0
     assert is13920["registration_summary"]["registration_only_references"] > 0
     assert any(
-        item["reference"] == "7.4.8"
+        item["reference"] == "7.2.1"
         and item["registration_status"] == "REGISTRATION_ONLY"
         for item in is13920["references"]
     )
