@@ -2253,7 +2253,8 @@
           "evidence": [
             "Python/structural_lib/codes/is13920/beam.py",
             "Python/tests/codes/is13920/test_beam.py",
-            "Python/tests/property/test_ductile_hypothesis.py"
+            "Python/tests/property/test_ductile_hypothesis.py",
+            "docs/verification/india-3-is13920-m0-evidence.json"
           ],
           "qualified_review_required": true
         },
@@ -2275,7 +2276,8 @@
           ],
           "evidence": [
             "Python/structural_lib/codes/is13920/column.py",
-            "Python/tests/codes/is13920/test_column.py"
+            "Python/tests/codes/is13920/test_column.py",
+            "docs/verification/india-3-is13920-m0-evidence.json"
           ],
           "qualified_review_required": true
         },
@@ -2284,16 +2286,20 @@
           "family": "beam_column_joint_scwb_check",
           "scope_status": "SUPPORTED",
           "implementation_status": "IMPLEMENTED_BOUNDED",
-          "claim": "A pure-math strong-column weak-beam joint check exists.",
+          "claim": "A pure-math strong-column weak-beam capacity check exists for one principal plane and one shaking direction of an applicable non-roof interior or one-sided exterior beam-column joint.",
           "workflows": [
             "structural_lib.codes.is13920.joint.check_scwb"
           ],
           "limitations": [
+            "The fixed requirement is 1.4 times the beam-capacity sum; beam capacities act in the declared shaking direction and column capacities act oppositely at explicit factored axial loads.",
+            "One result is not a whole-joint assessment; both shaking directions in every applicable principal plane remain caller-owned.",
+            "Only INTERIOR, EXTERIOR_LEFT, and EXTERIOR_RIGHT beam framing is supported; roof joints are waived and flat-slab systems are excluded.",
             "No complete joint design or public service workflow is claimed."
           ],
           "evidence": [
             "Python/structural_lib/codes/is13920/joint.py",
-            "Python/tests/codes/is13920/test_joint.py"
+            "Python/tests/codes/is13920/test_joint.py",
+            "docs/verification/india-3-is13920-m0-evidence.json"
           ],
           "qualified_review_required": true
         },
@@ -2325,11 +2331,11 @@
         }
       ],
       "registration_summary": {
-        "known_references": 18,
-        "registered_known_references": 9,
-        "metadata_only_references": 9,
-        "registration_only_references": 1,
-        "registration_pct": 50.0
+        "known_references": 22,
+        "registered_known_references": 10,
+        "metadata_only_references": 12,
+        "registration_only_references": 0,
+        "registration_pct": 45.5
       },
       "references": [
         {
@@ -2456,12 +2462,39 @@
           "reference_id": "IS13920:2016:7.2.1",
           "reference": "7.2.1",
           "reference_type": "clause",
-          "title": "",
-          "category": "unregistered_metadata",
-          "registration_status": "REGISTRATION_ONLY",
+          "title": "Strong-Column Weak-Beam Capacity Requirement",
+          "category": "seismic",
+          "registration_status": "REGISTERED",
           "functions": [
             "structural_lib.codes.is13920.joint.check_scwb"
           ]
+        },
+        {
+          "reference_id": "IS13920:2016:7.2.1.1",
+          "reference": "7.2.1.1",
+          "reference_type": "clause",
+          "title": "Interior Joint Beam-Capacity Sum",
+          "category": "seismic",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS13920:2016:7.2.1.2",
+          "reference": "7.2.1.2",
+          "reference_type": "clause",
+          "title": "Exterior Joint Beam-Capacity Sum",
+          "category": "seismic",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS13920:2016:7.2.1.3",
+          "reference": "7.2.1.3",
+          "reference_type": "clause",
+          "title": "SCWB Applicability and Directional Assessment",
+          "category": "seismic",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
         },
         {
           "reference_id": "IS13920:2016:7.6.1",

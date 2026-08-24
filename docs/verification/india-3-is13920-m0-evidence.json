@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "task_id": "INDIA-3-IS13920-M0",
+  "observed_at_utc": "2026-08-24T06:45:58Z",
+  "status": "BOUNDED_SOFTWARE_ACCEPTANCE_COMPLETE_QUALIFIED_REVIEW_REQUIRED_PENDING_IMMUTABLE_CANDIDATE_AND_HOSTED_CLOSEOUT",
+  "predecessor_binding": {
+    "hosted_main_commit": "306e2a46328ce2b519d1352131b64ef310271b5e",
+    "hosted_main_tree": "cbe0f8d934d99a090597958749e224b6e37b21b4",
+    "predecessor_pull_request": 868,
+    "predecessor_task": "INDIA-3-COLUMN-R1",
+    "branch": "codex/india-3-is13920-m0",
+    "source_bound": true,
+    "live_state_before_mutation": "READY_LOCAL"
+  },
+  "accepted_integration_chain": [
+    {
+      "task": "INDIA-3-G0",
+      "pull_request": 863,
+      "merge_commit": "c0e34235b485799d26fcb55df45f74ed9104e003",
+      "merge_tree": "62b22ce2a6930fc77954b8e0cd93c4d6b987bbf1"
+    },
+    {
+      "task": "INDIA-3-SOURCE-META-R1",
+      "pull_request": 864,
+      "merge_commit": "20b60a047e5c6d88b800f7094dd64fcf4bebad28",
+      "merge_tree": "ff65c71e1b875acdf5c53ee1b9723b4637639717"
+    },
+    {
+      "task": "INDIA-3-JOINT-R1",
+      "pull_request": 866,
+      "merge_commit": "b59e6ea02e52056d1024bb4dc90204f149f112eb",
+      "merge_tree": "acc167e2caaa311a8f4fe2861e6a5aa4afd7d75c"
+    },
+    {
+      "task": "INDIA-3-BEAM-R1",
+      "pull_request": 867,
+      "merge_commit": "cfe29f890e62c40546f3a91c8810e1daf7c0d722",
+      "merge_tree": "a0a095e00f3555fe5bdd8ccf5704ba4b71b69289"
+    },
+    {
+      "task": "INDIA-3-COLUMN-R1",
+      "pull_request": 868,
+      "merge_commit": "306e2a46328ce2b519d1352131b64ef310271b5e",
+      "merge_tree": "cbe0f8d934d99a090597958749e224b6e37b21b4"
+    }
+  ],
+  "accepted_source_boundary": {
+    "standard": "IS 13920:2016 First Revision",
+    "amendment_chain": [
+      "Amendment 1 (2017)",
+      "Amendment 2 (2020)"
+    ],
+    "reaffirmation_2021_is_new_edition": false,
+    "draft_successor_used": false,
+    "decision_evidence": "docs/verification/india-3-g0-is13920-audit-decision.json",
+    "source_metadata_evidence": "docs/verification/india-3-source-meta-r1-evidence.json",
+    "private_archive_reinspection_in_this_worktree": "NOT_AVAILABLE_NOT_CLAIMED",
+    "tracked_private_boundary": "PASS_2_TESTS",
+    "protected_content_added": false,
+    "private_source_mutated": false
+  },
+  "root_causes_and_integration_repairs": [
+    {
+      "id": "M0-CAPABILITY-JOINT-DOMAIN",
+      "symptom": "The generated joint capability described only a pure-math SCWB check and omitted the repaired directional, axial-load, applicability, and topology limits.",
+      "root_cause": "The INDIA-0 hand-maintained capability record predated JOINT-R1, and that repair intentionally deferred status and cumulative claim reconciliation to M0.",
+      "resolution": "Describe the one-plane/one-direction contract, fixed 1.4 basis, explicit factored axial loads, interior/exterior topologies, roof waiver, flat-slab exclusion, and no-public-service boundary without changing support status.",
+      "formula_changed": false,
+      "runtime_changed": false
+    },
+    {
+      "id": "M0-CLAUSE-REGISTRY-CUMULATIVE-DRIFT",
+      "symptom": "The first broad Python gate failed six source-metadata tests: the registry declared 172 clauses while containing 175, legacy tests required removed generic column identifiers, and the accepted joint subclauses remained registration-only or absent.",
+      "root_cause": "BEAM-R1 and COLUMN-R1 replaced obsolete generic identifiers with exact amended subclauses but did not update the aggregate registry count or legacy coverage list; JOINT-R1 corrected runtime provenance without adding its four normalized identifier records.",
+      "resolution": "Register the four normalized joint identifiers as project metadata, set the exact 179-record count, replace obsolete coverage sentinels with accepted beam/column/joint identifiers, and regenerate the capability manifest.",
+      "protected_clause_prose_added": false,
+      "formula_changed": false,
+      "runtime_changed": false
+    },
+    {
+      "id": "M0-BROAD-VISUALIZATION-STALE-EXPECTATION",
+      "symptom": "The first broad Python gate expected a 600 mm beam with automatically selected four-leg stirrups to produce one closed-loop 3D geometry.",
+      "root_cause": "LIB-PRO-008 correctly made the one-loop geometry type reject unrepresentable multi-leg stirrups, while the old large-beam test still expected the former false representation.",
+      "resolution": "Keep runtime unchanged and make the stale test assert the maintained fail-closed result.",
+      "structural_calculation_changed": false,
+      "visualization_runtime_changed": false
+    },
+    {
+      "id": "M0-API-MANIFEST-COLUMN-SIGNATURE",
+      "symptom": "The first full repository gate passed 30 of 31 checks but the public API manifest still declared the pre-COLUMN-R1 optional-core signature.",
+      "root_cause": "COLUMN-R1 updated the maintained service signature and human API reference but did not regenerate the machine API manifest; the broad projection check was intentionally deferred to M0.",
+      "resolution": "Regenerate only the canonical API manifest so it records the explicit applicability, topology, actual geometry, and provided-confinement inputs already required by the integrated runtime.",
+      "public_signature_changed_in_m0": false,
+      "runtime_changed": false
+    }
+  ],
+  "family_acceptance": {
+    "beam_detailing_checks": {
+      "disposition": "ACCEPT_BOUNDED_SOFTWARE_CONTRACT",
+      "result_kind": "REQUIREMENTS_WITH_GEOMETRY_CHECK",
+      "compliance_status": "NOT_EVALUATED_NO_PROVIDED_REINFORCEMENT",
+      "benchmark": {
+        "maximum_close_link_spacing_mm": 72.0,
+        "strict_width_depth_boundary": "GREATER_THAN_0.3",
+        "result": "PASS"
+      },
+      "surfaces": "CORE_SERVICE_PACKAGE_AND_EXISTING_HTTP_ROUTE_ALIGNED",
+      "evidence": "docs/verification/india-3-beam-r1-evidence.json"
+    },
+    "column_detailing_checks": {
+      "disposition": "ACCEPT_BOUNDED_SOFTWARE_CONTRACT",
+      "result_kind": "RECTANGULAR_GEOMETRY_AND_PROVIDED_SPECIAL_CONFINEMENT_CHECK",
+      "applicability": "CALLER_CONFIRMED_TRUE_WITH_NON_EMPTY_BASIS",
+      "provided_longitudinal_reinforcement": "NOT_EVALUATED",
+      "benchmark": {
+        "governing_ash_required_mm2": 222.28915662650604,
+        "second_expression_case_mm2": 277.10843373493975,
+        "result": "PASS"
+      },
+      "surfaces": "CORE_SERVICE_PACKAGE_AND_EXISTING_HTTP_ROUTE_ALIGNED",
+      "evidence": "docs/verification/india-3-column-r1-evidence.json"
+    },
+    "beam_column_joint_scwb_check": {
+      "disposition": "ACCEPT_BOUNDED_SOFTWARE_CONTRACT",
+      "assessment_scope": "ONE_PRINCIPAL_PLANE_ONE_SHAKING_DIRECTION",
+      "factor": 1.4,
+      "column_capacity_basis": "FACTORED_AXIAL_LOAD",
+      "supported_topologies": [
+        "INTERIOR",
+        "EXTERIOR_LEFT",
+        "EXTERIOR_RIGHT"
+      ],
+      "applicability": "NON_ROOF_BEAM_COLUMN_JOINT_AND_NOT_FLAT_SLAB",
+      "benchmark": {
+        "sum_column_capacity_knm": 250.0,
+        "sum_beam_capacity_knm": 200.0,
+        "required_column_capacity_knm": 280.0,
+        "ratio": 0.8928571428571429,
+        "is_satisfied": false,
+        "result": "PASS"
+      },
+      "surfaces": "CORE_NAMESPACE_ONLY_AS_CLAIMED_NO_NEW_SERVICE_OR_HTTP_ROUTE",
+      "whole_joint_assessment": false,
+      "evidence": "docs/verification/india-3-joint-r1-evidence.json"
+    }
+  },
+  "capability_acceptance": {
+    "standard_status": "SUPPORTED_SUBSET",
+    "supported_families": 3,
+    "held_families": 2,
+    "total_declared_families": 5,
+    "known_references": 22,
+    "registered_known_references": 10,
+    "metadata_only_references": 12,
+    "registration_only_references": 0,
+    "qualified_review_required_for_every_family": true,
+    "support_status_promoted": false
+  },
+  "package_acceptance": {
+    "filename": "structural_lib_is456-0.23.1a2-py3-none-any.whl",
+    "sha256": "03c646a258304fcc431df142a26ee77d3aced8466603a06737a1648b60470b9a",
+    "source_free_installed_origin": true,
+    "package_version": "0.23.1a2",
+    "beam_benchmark": "PASS_72_MM_AND_NOT_EVALUATED",
+    "column_benchmark": "PASS_222.28915662650604_MM2_AND_PROVIDED_CHECK_TRUE",
+    "joint_benchmark": "PASS_280_KNM_RATIO_0.8928571428571429_FALSE",
+    "negative_uat": "PASS_29_CASES_14_ADVERTISED_ENTRY_POINTS",
+    "qualified_review_required": true,
+    "professional_approval": false,
+    "version_changed": false,
+    "publication_authorized": false
+  },
+  "qualified_review_acceptance": {
+    "m0_decision": "PASS_REVIEW_BOUNDARY_RETAINED",
+    "qualified_review_required": true,
+    "identified_qualified_engineer_receipt_in_this_packet": false,
+    "engineering_or_professional_approval_claim": false,
+    "cumulative_engineering_review_owner": "INDIA-4_WITH_QUALIFIED_STRUCTURAL_ENGINEER",
+    "note": "M0 accepts source-bound software contracts and proves that every advertised family retains the qualified-review requirement. It does not manufacture or claim the later qualified-engineer approval."
+  },
+  "verification": {
+    "focused_python": "PASS_284",
+    "focused_fastapi": "PASS_6",
+    "private_boundary": "PASS_2",
+    "architecture": "PASS_221_FILES_ZERO_VIOLATIONS",
+    "imports": "PASS_696_FILES_2290_INTERNAL_IMPORTS_ZERO_BROKEN",
+    "circular_imports": "PASS_202_FILES_ZERO_CYCLES",
+    "broad_python_initial": "FAIL_7_OF_7024_PASSED_3_SKIPPED_6_DESELECTED",
+    "broad_failure_reproducers_after_repair": "PASS_29",
+    "broad_python_frozen": "PASS_7024_SKIPPED_3_DESELECTED_6",
+    "fastapi_broad": "PASS_498",
+    "indian_code_manifest": "PASS_CURRENT_22_REFERENCES_ZERO_REGISTRATION_ONLY",
+    "exact_wheel_and_uat": "PASS",
+    "quick_gate": "PASS_10_OF_10_3_EXACT_CONTENT_REUSED",
+    "full_repository_gate_initial": "FAIL_30_OF_31_STALE_COLUMN_API_MANIFEST",
+    "full_repository_gate": "PASS_31_OF_31_15_EXACT_CONTENT_REUSED",
+    "normal_commit_hooks": "PENDING_IMMUTABLE_CANDIDATE",
+    "clean_commit_session_end": "PENDING_IMMUTABLE_CANDIDATE",
+    "hosted_checks": "PENDING_IMMUTABLE_CANDIDATE"
+  },
+  "scope_guard": {
+    "is13920_formula_changed_in_m0": false,
+    "runtime_changed_in_m0": false,
+    "new_package_service_http_react_or_excel_surface": false,
+    "wall_or_foundation_formula_changed": false,
+    "is875_or_is1893_changed": false,
+    "package_version_changed": false,
+    "release_or_publication_changed": false,
+    "professional_use_approval_changed": false,
+    "private_material_tracked": false
+  },
+  "holds": [
+    "BEAM_PROVIDED_REINFORCEMENT_COMPLIANCE_NOT_EVALUATED",
+    "COLUMN_APPLICABILITY_CALLER_CONFIRMED_AND_PROVIDED_LONGITUDINAL_STEEL_NOT_EVALUATED",
+    "JOINT_ONE_DIRECTIONAL_CASE_IS_NOT_A_COMPLETE_WHOLE_JOINT_ASSESSMENT",
+    "IS13920_WALL_AND_FOUNDATION_DETAILING_REMAIN_HELD",
+    "IS875_AND_IS1893_REMAIN_HELD",
+    "QUALIFIED_CUMULATIVE_ENGINEERING_REVIEW_REMAINS_INDIA4",
+    "SOURCE_DISTRIBUTION_SUPPORT_VERSION_RELEASE_PACKAGE_PUBLICATION_ENGINEERING_USE_AND_PROFESSIONAL_USE_REMAIN_SEPARATE",
+    "PRIVATE_SOURCE_BYTES_TEXT_IMAGES_HASHES_AND_PATHS_REMAIN_UNTRACKED",
+    "BRANCH_WORKTREE_ARCHIVE_SOURCE_COPY_ALIAS_AND_UNRELATED_FILE_DELETION_NOT_AUTHORIZED"
+  ],
+  "next_frozen_india3_scope": {
+    "packet_id": "NOT_YET_FROZEN",
+    "scope": "Separately source and benchmark the held IS 13920 wall provisions before any implementation packet.",
+    "status": "NOT_STARTED",
+    "foundation_is875_is1893": "REMAIN_LATER_SEQUENTIAL_WORK"
+  }
+}

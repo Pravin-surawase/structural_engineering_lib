@@ -195,12 +195,63 @@ def test_is456_and_is13920_registration_cannot_cross_match() -> None:
         for item in is13920["references"]
     )
     assert is456["registration_summary"]["registration_only_references"] == 0
-    assert is13920["registration_summary"]["registration_only_references"] > 0
+    assert is13920["registration_summary"]["registration_only_references"] == 0
     assert any(
-        item["reference"] == "7.2.1"
-        and item["registration_status"] == "REGISTRATION_ONLY"
+        item["reference"] == "7.2.1" and item["registration_status"] == "REGISTERED"
         for item in is13920["references"]
     )
+    assert all(
+        item["registration_status"] == "METADATA_ONLY"
+        for item in is13920["references"]
+        if item["reference"] in {"7.2.1.1", "7.2.1.2", "7.2.1.3"}
+    )
+
+
+def test_is13920_supported_truth_tracks_repaired_bounded_contracts() -> None:
+    manifest = build_manifest()
+    is13920 = _standard(manifest, "IS13920:2016")
+    families = {item["family"]: item for item in is13920["capability_families"]}
+
+    assert is13920["status"] == "SUPPORTED_SUBSET"
+    assert is13920["capability_summary"] == {
+        "supported_families": 3,
+        "held_families": 2,
+        "total_declared_families": 5,
+        "supported_pct": 60.0,
+    }
+
+    beam = families["beam_detailing_checks"]
+    assert beam["implementation_status"] == "IMPLEMENTED_BOUNDED"
+    assert "not evaluated" in " ".join(beam["limitations"]).lower()
+
+    column = families["column_detailing_checks"]
+    assert column["implementation_status"] == "IMPLEMENTED_BOUNDED"
+    column_limitations = " ".join(column["limitations"])
+    assert "caller" in column_limitations
+    assert "no cover or core geometry is inferred" in column_limitations
+    assert "not evaluated" in column_limitations.lower()
+
+    joint = families["beam_column_joint_scwb_check"]
+    assert joint["implementation_status"] == "IMPLEMENTED_BOUNDED"
+    joint_truth = " ".join([joint["claim"], *joint["limitations"]])
+    assert "one principal plane and one shaking direction" in joint_truth
+    assert "1.4 times" in joint_truth
+    assert "factored axial loads" in joint_truth
+    assert "INTERIOR, EXTERIOR_LEFT, and EXTERIOR_RIGHT" in joint_truth
+    assert "roof joints are waived" in joint_truth
+    assert "flat-slab systems are excluded" in joint_truth
+
+    for family in (beam, column, joint):
+        assert family["qualified_review_required"] is True
+        assert (
+            "docs/verification/india-3-is13920-m0-evidence.json" in family["evidence"]
+        )
+
+    for held_family in ("wall_detailing", "foundation_detailing"):
+        held = families[held_family]
+        assert held["scope_status"] == "HELD"
+        assert held["implementation_status"] == "NOT_IMPLEMENTED"
+        assert held["workflows"] == []
 
 
 def test_clause_checker_reports_registration_not_implementation() -> None:

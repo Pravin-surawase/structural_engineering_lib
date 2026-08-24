@@ -5,6 +5,170 @@
 
 ---
 
+## 2026-08-24 — Session: INDIA-3-IS13920-M0 cumulative bounded acceptance
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents)
+
+**Branch:** `codex/india-3-is13920-m0`, from exact hosted
+INDIA-3-COLUMN-R1 merge `306e2a46328ce2b519d1352131b64ef310271b5e`,
+tree `cbe0f8d934d99a090597958749e224b6e37b21b4`.
+
+**Git handoff receipt:**
+`docs/verification/india-3-is13920-m0-git-handoff-receipt.json`
+
+**Focus:** Run the single G0-frozen cumulative source, benchmark, unsafe-case,
+cross-surface, capability, package, and qualified-review-boundary acceptance for
+the repaired IS 13920 beam, rectangular-column, and directional joint subset.
+Preserve every wall, foundation, IS 875/1893, source/distribution, support,
+version, release, professional-use, and qualified INDIA-4 review hold.
+
+### Summary
+
+- Verified live `origin/main`, merged PR #868, and the exact column predecessor
+  commit/tree before creating one fresh source-bound task lane. All unrelated
+  lanes remain retained; none was reset, cleaned, rebased, deleted, or reused.
+- Bound the cumulative result to the visually reviewed IS 13920:2016 First
+  Revision plus Amendments 1 (2017) and 2 (2020), with 2021 reaffirmation kept
+  separate and the draft successor unused. The private archive is not mounted
+  in this worktree, so M0 relies on the integrated G0/source-metadata receipts
+  and claims only the current tracked no-private-material boundary.
+- Accepted beam requirements-with-geometry, rectangular-column provided
+  special confinement, and one-principal-plane/one-shaking-direction SCWB as
+  bounded software contracts. The benchmark outputs are respectively 72 mm;
+  222.28915662650604 mm2 plus 277.10843373493975 mm2; and required 280 kNm,
+  ratio 0.8928571428571429, `FAIL` at 250/200 kNm.
+- Reconciled the generated joint capability to its fixed 1.4 factor,
+  directional/opposing-capacity rule, factored axial-load basis, non-roof and
+  non-flat-slab applicability, supported interior/left-exterior/right-exterior
+  topologies, one-case-not-whole-joint limit, and core-only publication truth.
+  No route, service, root export, formula, or support-status promotion was
+  added.
+- The first cumulative broad Python run exposed six IS 13920 metadata/test
+  integration failures and one unrelated stale visualization expectation. One
+  bounded repair registered four accepted joint identifiers, corrected the
+  179-record count and exact source tests, and made the old multi-leg 3D test
+  assert the already-maintained fail-closed runtime behavior.
+- The repaired broad Python gate passes 7,024 cases, FastAPI passes 498, and a
+  source-free 0.23.1a2 wheel replays all three benchmarks. The 29-case/14-entry
+  package UAT passes with `qualified_review_required=true` and
+  `professional_approval=false`.
+- M0 accepts the qualified-review boundary; it does not claim an identified
+  qualified-engineer approval. Cumulative qualified structural-engineering
+  review remains INDIA-4. No successor packet ID was frozen or started.
+
+### Issues encountered
+
+- The maintained Indian-code generator was first invoked without `--write`, so
+  it printed the new manifest to stdout and the deterministic-current test
+  correctly failed.
+- One guessed verification subcommand (`affected`) and three guessed helper
+  paths for private-source, import, and frontmatter checks were not registered
+  current commands.
+- The first source-free wheel probe used core result field/method names against
+  the package wrapper and raised two attribute errors before the actual
+  dataclass contract was inspected. A later command changed into the temporary
+  source-free directory before running a repository-relative `rg`, so that
+  diagnostic path was unavailable.
+- `test_import_pipeline.py` was run without its required separately started
+  FastAPI server and produced only connection-refused failures; that live-server
+  diagnostic is not part of the M0 changed-path route.
+- The first cumulative broad Python run failed seven tests: six clause-registry
+  and exact-reference assertions plus one large-beam visualization expectation.
+- The first full repository gate passed 30 of 31 checks and rejected the stale
+  public API manifest signature for `check_column_ductility_is13920`.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `generate_indian_code_manifest.py` defaults to stdout.
+  Resolution: rerun the maintained command with `--write`, then verify with
+  `--check`. Proof: the deterministic manifest tests and currentness check pass.
+  ⚠️ TERMINAL ISSUE: generator output was not written -> used the documented
+  `--write` mode.
+- Confirmed root cause: the guessed automation names are not owners in the
+  current control registry. Resolution: use `verification.py plan`,
+  `validate_imports.py`, `check_circular_imports.py`, the two private-boundary
+  pytest cases, link validation, context validation, and the consolidated
+  repository gates. Proof: maintained import, boundary, link, context, and
+  routing controls pass. ⚠️ TERMINAL ISSUE: guessed commands were absent ->
+  discovered and used their maintained owners.
+- Confirmed root cause: the beam package wrapper returns the legacy
+  `DuctileBeamResult` fields `confinement_spacing` and `compliance_status`, not
+  the core field name or a `to_dict()` method. Resolution: inspect the installed
+  dataclass and replay against its real contract from a subshell that preserves
+  repository cwd. Proof: all three source-free installed-wheel benchmarks pass.
+  ⚠️ TERMINAL ISSUE: wrapper-field probes raised `AttributeError` and a
+  temporary-directory `cd` hid repository paths -> used the actual dataclass
+  fields inside a bounded subshell.
+- Confirmed root cause: `test_import_pipeline.py` is a live-server end-to-end
+  diagnostic, not a static import verifier. Resolution: exclude it from this
+  offline changed-path route and use the maintained static import/circular
+  checks plus complete FastAPI pytest. Proof: 2,290 internal imports resolve,
+  zero cycles exist, and all 498 FastAPI tests pass. ⚠️ TERMINAL ISSUE:
+  live import pipeline had no server -> used the offline controls required by
+  this packet.
+- Confirmed root cause: BEAM-R1 and COLUMN-R1 replaced obsolete generic clause
+  identifiers without updating the aggregate count or legacy coverage list;
+  JOINT-R1 corrected runtime provenance but intentionally left its cumulative
+  capability/identifier reconciliation to M0. Resolution: register only four
+  project-authored joint identifiers, set the exact 179 count, update tests to
+  the accepted exact references, and regenerate the capability manifest.
+  Proof: the 29-case failure reproducer passes, the manifest has 22 known
+  references and zero registration-only references, and broad Python is green.
+- Confirmed root cause: LIB-PRO-008 made one-loop 3D geometry truthfully reject
+  disconnected internal legs, but a 2026-01 large-beam test still expected the
+  former false representation. Resolution: preserve runtime and assert the
+  fail-closed result for the automatically selected four-leg case. Proof: the
+  focused reproducer and all 7,024 broad Python tests pass.
+- Confirmed root cause: COLUMN-R1 changed the existing service signature to
+  require applicability, topology, actual geometry, and provided confinement,
+  but its broad generated API-manifest projection remained on the old optional-
+  core signature because that full check was deferred to M0. Resolution:
+  regenerate only the canonical API manifest; no signature or runtime changed
+  in M0. Proof: the exact diff updates one signature plus its generation date,
+  and focused API-manifest/stability tests pass.
+
+### Validation through content freeze
+
+- Focused cumulative evidence passes 284 Python cases, 6 routed FastAPI cases,
+  2 private-boundary cases, 221-file architecture validation, 696-file import
+  validation, 202-file cycle validation, deterministic manifest generation,
+  and repository link/context/efficiency controls.
+- Initial broad Python: 7 failed, 7,008 passed, 3 skipped, 6 deselected. The one
+  bounded repair's 29 targeted cases pass. The required corrective broad rerun
+  passes 7,024, with 3 skipped and 6 deselected. Complete FastAPI passes 498.
+- The exact source-free wheel SHA-256 is
+  `03c646a258304fcc431df142a26ee77d3aced8466603a06737a1648b60470b9a`.
+  Installed origin, all three IS 13920 benchmarks, 29 negative-UAT cases, and
+  14 advertised entry points pass; package version remains 0.23.1a2.
+- The first full repository gate passed 30/31 and exposed only the stale
+  COLUMN-R1 API-manifest projection. After the bounded regeneration, the
+  corrective full gate passes 31/31 with 15 exact content-addressed reused
+  results for unchanged domains.
+- The sole final quick gate passes 10/10 with three exact content-addressed
+  reused results for unchanged domains. The immutable candidate still requires
+  normal commit hooks, clean-commit `session end`, hosted checks, unchanged-head
+  merge, and candidate/merge tree equality. Later hosted facts remain external
+  and are not pre-claimed here.
+
+### Preserved holds
+
+- Beam provided reinforcement remains not evaluated. Column applicability is
+  caller-confirmed, non-rectangular columns remain unsupported, and provided
+  longitudinal steel remains not evaluated. One joint result is not a whole-
+  joint assessment; both directions in all applicable planes remain caller-
+  owned.
+- IS 13920 wall and foundation provisions remain held. The next sequence item
+  is a separate source/benchmark wall decision, but M0 does not freeze or start
+  an exact packet ID. IS 875 and IS 1893 remain later sequential work.
+- Passing software/source/package gates does not constitute qualified
+  structural-engineering review, engineering-use approval, professional-use
+  approval, a version change, package publication, tag, or release.
+- No protected/private source byte, prose, image, hash, path, or database
+  content changed or entered the tracked candidate. Branch, worktree, archive,
+  source-copy, alias, and unrelated-file deletion remain unauthorized.
+
+---
+
 ## 2026-08-24 — Session: INDIA-3-COLUMN-R1 bounded column contract repair
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents)

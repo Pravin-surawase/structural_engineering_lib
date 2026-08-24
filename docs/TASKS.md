@@ -125,13 +125,15 @@
 
 ## Active
 
-`INDIA-3-COLUMN-R1` has completed its bounded local implementation and becomes
-complete only when its unchanged green candidate merges. It requires explicit
-applicability, rectangular topology, actual core/hoop geometry, and provided
-spacing, length, and hoop area; evaluates both accepted rectangular area
-expressions; and reports provided-confinement compliance without claiming a
-provided longitudinal-steel check. `INDIA-3-IS13920-M0` is the next sequential
-packet and has not started.
+`INDIA-3-IS13920-M0` has completed bounded local cumulative software acceptance
+and becomes complete only when its unchanged green candidate merges. Beam,
+rectangular-column, and directional joint contracts now agree with the accepted
+source/amendment chain, benchmarks, unsafe cases, transports, package artifact,
+and exact capability limitations. Every family retains
+`qualified_review_required=true`; cumulative qualified engineering review
+remains INDIA-4 rather than being inferred from software gates. IS 13920 wall
+and foundation provisions, IS 875, and IS 1893 remain held. No exact successor
+packet ID has been frozen or started.
 
 `LIB-PRO-006` merged through PR #851 at `2d6df18e`. It confirms the practical
 10 m x 4 m audit arithmetic and fail-closed footing-detailing `HOLD`, adds a
@@ -321,7 +323,8 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| INDIA-3-COLUMN-R1 | Repair the G0-bounded IS 13920 column applicability, actual/provided confinement, amended formulas, result meaning, and cross-surface clause contract | Main Agent | ✅ LOCAL COMPLETE — aggregate focused 229 Python plus 15 FastAPI cases pass; quick, hooks, immutable candidate, hosted checks, unchanged merge, and tree equality remain required; `INDIA-3-IS13920-M0` not started |
+| INDIA-3-IS13920-M0 | Cumulatively accept the repaired bounded IS 13920 source, benchmark, unsafe-case, cross-surface, capability, package, and qualified-review boundary | Main Agent | ✅ LOCAL COMPLETE — 7,024 broad Python and 498 FastAPI cases pass after one cumulative metadata/test repair; exact source-free wheel and 29-case UAT pass; quick/full/hooks/immutable candidate/hosted checks/unchanged merge/tree equality remain required; no successor packet started |
+| INDIA-3-COLUMN-R1 | Repair the G0-bounded IS 13920 column applicability, actual/provided confinement, amended formulas, result meaning, and cross-surface clause contract | Main Agent | ✅ COMPLETE ON UNCHANGED GREEN MERGE — PR #868 merged at `306e2a46`, tree `cbe0f8d9`; `INDIA-3-IS13920-M0` started only afterward |
 | INDIA-3-BEAM-R1 | Repair the G0-bounded IS 13920 beam amendment, geometry, finite-intake, result-meaning, and cross-surface clause contract | Main Agent | ✅ COMPLETE ON UNCHANGED GREEN MERGE — PR #867 merged at `cfe29f89`, tree `a0a095e0`; `INDIA-3-COLUMN-R1` started only afterward |
 | INDIA-3-JOINT-R1 | Repair the G0-bounded IS 13920 joint SCWB factor, directional/axial basis, applicability, and supported topology contract | Main Agent | ✅ COMPLETE ON UNCHANGED GREEN MERGE — focused 29-case contract evidence passes; no API/product surface or support/release/approval promotion; `INDIA-3-BEAM-R1` not started |
 | INDIA-3-SOURCE-META-R1 | Correct private IS 13920 document-kind and page-renderability metadata while preserving every source and alias | Main Agent | ✅ COMPLETE ON UNCHANGED GREEN MERGE — private archive verifies; no formula, runtime, support, release, or approval scope changed; `INDIA-3-JOINT-R1` not started |
