@@ -66,6 +66,16 @@ def test_hosted_full_suites_bind_the_setup_python_interpreter():
     assert expected in publication
 
 
+def test_publication_metadata_and_authorization_fail_before_release_tests():
+    workflow = yaml.safe_load(PUBLISH.read_text(encoding="utf-8"))
+    steps = workflow["jobs"]["validate"]["steps"]
+    names = [step.get("name") for step in steps]
+
+    assert names.index(
+        "Enforce separate owner publication authorization"
+    ) < names.index("Run release tests")
+
+
 def test_weekly_benchmark_evidence_does_not_mutate_indexed_docs():
     workflow = yaml.safe_load(NIGHTLY.read_text(encoding="utf-8"))
     steps = workflow["jobs"]["full-verification"]["steps"]

@@ -5,6 +5,118 @@
 
 ---
 
+## 2026-08-24 — Session: RELEASE-SMOOTH-001 next-publication controls
+
+**Agent:** Codex (`ops`, sole writer; no subagents)
+
+**Branch:** `codex/release-smoothness`, from released `origin/main` commit
+`71b7065216d4266d63ad6b31bd39bba81fa16efc`.
+
+**Git handoff receipt:**
+`docs/verification/release-smooth-001-git-handoff-receipt.json`
+
+**Focus:** Convert the concrete `v0.24.0a1` release delays into fail-early,
+single-candidate controls so the next publish does not repeat unchanged local or
+hosted suites.
+
+### Summary
+
+- Bound the release order to one prepared candidate, one exact PR/Weekly run,
+  and one post-review publication packet limited to release metadata and
+  authorization; the Python tree must remain identical.
+- Made publication authorization validate final dated `CITATION.cff`,
+  `CHANGELOG.md`, and release-ledger state before expensive release tests begin.
+- Reset citation date and authorization wording on every new candidate bump so
+  a prior published version cannot leak into the next candidate.
+- Removed pre-mutation broad Python and React runs from `release run`; the
+  frozen-candidate preflight remains their single local owner.
+- Added public-package identity-only verification after an exact workflow UAT,
+  with a bounded 90-second PyPI-index wait that retries only a missing-version
+  install and never retries a real failure or the test suite.
+- Updated the release workflow skill and token-efficiency contract to state the
+  exact sequence and the narrow exception paths.
+
+### Issues encountered
+
+- The combined worktree-create/session-start terminal command continued in the
+  primary checkout because a command's working directory does not follow a
+  preceding `git worktree add`.
+- `./run.sh context show release` rejected the guessed context area, and the
+  guessed `.github/workflows/weekly-verification.yml` path did not exist.
+- The first two attempts to compact the PyPI JSON response used the same
+  malformed Python one-liner.
+- The previous release's authorization passed before final release metadata was
+  complete; its first TestPyPI run therefore spent setup time and failed only
+  when release tests evaluated the dated metadata contract.
+- Post-review metadata changes were not recognized as an exact-candidate-safe
+  packet, so they forced another candidate/hosted verification cycle.
+- Candidate bumps retained the prior version's published citation date and
+  authorized message, and `release run` repeated broad suites before mutating
+  the versioned files.
+- Public verification repeated the full installed-package UAT already proven
+  by the publication workflow and failed once while the PyPI simple index was
+  still propagating the exact version.
+- The focused release batch found one stale regression that still required
+  both `release run` and frozen preflight to provision React dependencies.
+
+### Root causes and resolutions
+
+- Confirmed root cause: shell process working directories are fixed when each
+  command starts. Resolution: run every subsequent command with the fresh
+  worktree as its explicit working directory. Proof: `git_state.py --json
+  --worktrees` reports `codex/release-smoothness` at exact `origin/main` with no
+  operation. ⚠️ TERMINAL ISSUE: session start initially ran in the primary
+  checkout -> all task writes and validation use the explicit fresh worktree.
+- Confirmed root cause: context areas and workflow names are registry-owned, not
+  inferable. Resolution: read the release-preflight skill and locate the actual
+  `.github/workflows/nightly.yml` and `publish.yml` consumers with targeted
+  `rg`. ⚠️ TERMINAL ISSUE: guessed release context/workflow names were invalid ->
+  used the maintained skill and exact discovered paths.
+- Confirmed root cause: the inline JSON list comprehension closed with a brace,
+  and the same unchecked command was repeated. Resolution: replace that
+  ad-hoc parser with one reviewed `jq` projection. Proof: PyPI reports the exact
+  `0.24.0a1` wheel and sdist hashes. ⚠️ TERMINAL ISSUE: malformed inline Python
+  failed twice -> the bounded `jq` command succeeded once.
+- Confirmed root cause: `authorization-check` evaluated the authorization record
+  but not the final publication surfaces. Resolution: reuse the final
+  authorized publication-surface contract inside that check and lock workflow
+  ordering before release tests. Proof: focused surface and workflow-ordering
+  regressions pass, and the live final-metadata check is green.
+- Confirmed root cause: the post-review exact-candidate allowlist was empty.
+  Resolution: accept only `CITATION.cff`, `CHANGELOG.md`, and
+  `docs/getting-started/releases.md` in addition to the separately governed
+  review/waiver and authorization records; reject every other path. Proof:
+  focused exact-review and owner-waiver candidate regressions pass.
+- Confirmed root cause: the bump script replaced the version but preserved
+  release-final citation state, while `release run` placed broad validation
+  before its mutation. Resolution: strip the release date, restore explicit
+  unpublished-candidate wording, and leave broad validation to one frozen
+  preflight. Proof: focused bump and single-preflight-owner regressions pass.
+- Confirmed root cause: public verification had no identity-only mode or
+  propagation-specific retry boundary. Resolution: install the exact base
+  package, prove its environment/version identity, return before UAT, and retry
+  only recognized missing-version index responses for at most 90 seconds.
+  Proof: focused retry, real-failure, exact-version, and no-UAT regressions pass.
+- Confirmed root cause: the old React-provisioning regression encoded the
+  superseded duplicate owner instead of the intended single frozen-preflight
+  owner. Resolution: change only that expectation to require one call site.
+  Proof: every other focused case passed on the frozen batch, and the one failed
+  regression passes on its exact narrow repair rerun.
+
+### Validation
+
+- The one focused batch covered `test_release_scripts.py`,
+  `test_bump_version_semantics.py`, and `test_ci_workflow_contract.py`. All
+  unaffected cases passed; its one stale React-provisioning ownership assertion
+  was repaired and its exact single-test rerun passed.
+- `./run.sh release publication-surface-check --version 0.24.0a1` passes against
+  the final published metadata without granting authorization.
+- `./run.sh check --quick` passed 10/10 on its first and only run with zero
+  reused checks.
+- The full local suite and Weekly verification were not run because this packet
+  changes release controls, tests, and guidance—not engineering runtime—and the
+  required focused plus quick evidence is green.
+
 ## 2026-08-24 — Session: RELEASE-0240A1 publication
 
 **Agent:** Codex (`ops`, sole writer; no subagents)

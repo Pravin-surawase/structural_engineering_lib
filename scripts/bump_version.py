@@ -41,7 +41,13 @@ VERSION_FILES = {
     # Academic citation
     "CITATION.cff": [
         (r"^version: [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?", "version: {version}"),
-        (r"^date-released: .+", "date-released: {date}"),
+        (r"^date-released: .+\n?", ""),
+        (
+            r"^message: .+",
+            'message: "Prepared Alpha candidate v{version}; not tagged or published. '
+            "Case-qualified workflows still require independent verification and "
+            'qualified professional review for engineering use."',
+        ),
     ],
     # FastAPI backend version
     "fastapi_app/__init__.py": [

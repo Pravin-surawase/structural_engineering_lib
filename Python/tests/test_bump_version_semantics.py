@@ -88,6 +88,32 @@ def test_candidate_bump_preserves_published_release_evidence(
     assert bump_version.main() == 0
 
 
+def test_candidate_bump_resets_published_citation_state(
+    tmp_path: Path, monkeypatch
+) -> None:
+    pyproject = tmp_path / "Python" / "pyproject.toml"
+    pyproject.parent.mkdir()
+    pyproject.write_text('[project]\nversion = "0.24.0a1"\n', encoding="utf-8")
+    citation = tmp_path / "CITATION.cff"
+    citation.write_text(
+        "cff-version: 1.2.0\n"
+        "version: 0.24.0a1\n"
+        "date-released: 2026-08-24\n"
+        'message: "Alpha v0.24.0a1 is owner-authorized for publication."\n',
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(bump_version, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(sys, "argv", ["bump_version.py", "0.24.0a2"])
+
+    assert bump_version.main() == 0
+
+    content = citation.read_text(encoding="utf-8")
+    assert "version: 0.24.0a2" in content
+    assert "date-released:" not in content
+    assert "Prepared Alpha candidate v0.24.0a2; not tagged or published" in content
+    assert "owner-authorized" not in content
+
+
 def test_doc_sync_preserves_public_release_identity(tmp_path: Path, monkeypatch):
     """A prepared source version must not relabel the last public release."""
     readme, checklist = _write_public_candidate_fixture(tmp_path)

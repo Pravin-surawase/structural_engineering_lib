@@ -1,0 +1,176 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-24T14:00:00Z",
+      "query_status": "OK",
+      "reference": "now based on this experience please make sure next publish will be really smooth.",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "IMPLEMENT_RELEASE_PROCESS_CONTROLS",
+      "RUN_ONE_FOCUSED_TEST_BATCH_AND_ONE_QUICK_GATE",
+      "CREATE_COMMIT_PUSH_PULL_REQUEST_AND_MERGE_WHEN_REQUIRED_CHECKS_PASS"
+    ],
+    "next_action": "FREEZE_RELEASE_CONTROL_CANDIDATE",
+    "observed_at_utc": "2026-08-24T14:00:00Z",
+    "prohibited_actions": [
+      "SELECT_BUMP_TAG_OR_PUBLISH_A_NEW_VERSION",
+      "RERUN_UNCHANGED_BROAD_OR_WEEKLY_SUITES",
+      "DELETE_RESET_STASH_CLEAN_REBASE_REWRITE_FORCE_PUSH_OR_BYPASS_CHECKS",
+      "CHANGE_STRUCTURAL_FORMULAS_OR_DECLARED_ENGINEERING_SCOPE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "IMPLEMENT_RELEASE_PROCESS_CONTROLS",
+        "RUN_ONE_FOCUSED_TEST_BATCH_AND_ONE_QUICK_GATE",
+        "CREATE_COMMIT_PUSH_PULL_REQUEST_AND_MERGE_WHEN_REQUIRED_CHECKS_PASS"
+      ],
+      "branch": "codex/release-smoothness",
+      "head_sha": "71b7065216d4266d63ad6b31bd39bba81fa16efc",
+      "task_id": "RELEASE-SMOOTH-001"
+    }
+  },
+  "holds": [
+    "AUTHORIZATION_SOURCE_STALE_EVIDENCE",
+    "AUTHORIZATION_STALE_EVIDENCE",
+    "LOCAL_HOLD_DIRTY",
+    "NEXT_ACTION_NOT_AUTHORIZED",
+    "PRESERVE_ALL_HISTORICAL_RELEASE_AND_ENGINEERING_LANES",
+    "PRESERVE_ALL_PRE_EXISTING_DIRTY_DETACHED_DIVERGENT_AND_UNKNOWN_LANES",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_STALE_EVIDENCE",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_FINAL_CANDIDATE",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "cff5d30385815d5a9f2b293743b2aa67ac2bd1d366fcae81a59bc98545c81fd5",
+    "state": {
+      "branch": "codex/release-smoothness",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "71b7065216d4266d63ad6b31bd39bba81fa16efc",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 112.781,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/release-smoothness",
+      "head_sha": "71b7065216d4266d63ad6b31bd39bba81fa16efc",
+      "hold_reasons": [
+        "changed paths: 13"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-24T14:20:06.310077+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/release-smoothness",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 13,
+        "modified_paths": [
+          ".github/skills/release-preflight/SKILL.md",
+          ".github/workflows/README.md",
+          "Python/tests/test_bump_version_semantics.py",
+          "Python/tests/test_ci_workflow_contract.py",
+          "Python/tests/test_release_scripts.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/guidelines/ai-token-efficiency.md",
+          "docs/planning/next-session-brief.md",
+          "run.sh",
+          "scripts/bump_version.py",
+          "scripts/release.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/release-smooth-001-git-handoff-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "71b7065216d4266d63ad6b31bd39bba81fa16efc",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/release-smoothness"
+    }
+  },
+  "local_state_receipt_hash": "sha256:cff5d30385815d5a9f2b293743b2aa67ac2bd1d366fcae81a59bc98545c81fd5",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-24T14:20:06.310227+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "evidence_error": "STALE_EVIDENCE",
+    "holds": [
+      "PRESERVE_ALL_PRE_EXISTING_DIRTY_DETACHED_DIVERGENT_AND_UNKNOWN_LANES",
+      "PRESERVE_ALL_HISTORICAL_RELEASE_AND_ENGINEERING_LANES"
+    ],
+    "observed_at_utc": "2026-08-24T14:00:00Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "UNKNOWN",
+    "status": "UNKNOWN"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources"
+    ],
+    "integration_owner": "orchestrator",
+    "owned_paths": [
+      "scripts/release.py",
+      "scripts/bump_version.py",
+      "run.sh",
+      "Python/tests/test_release_scripts.py",
+      "Python/tests/test_bump_version_semantics.py",
+      "Python/tests/test_ci_workflow_contract.py",
+      ".github/workflows/README.md",
+      ".github/skills/release-preflight/SKILL.md",
+      "docs/guidelines/ai-token-efficiency.md",
+      "docs/verification/release-smooth-001-git-handoff-source-evidence.json",
+      "docs/verification/release-smooth-001-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "RELEASE-SMOOTH-001"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

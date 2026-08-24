@@ -41,14 +41,27 @@ step 3, then establish the final green current-candidate preflight with:
 ./run.sh release preflight --wheel <exact-wheel-path>
 ```
 
-A preparation-authorized candidate must retain explicit unpublished/on-hold
-CHANGELOG, release-ledger, and CITATION wording. Do not pre-check tag or
-publication authorization in `docs/planning/pre-release-checklist.md` before
-the immutable review. After that review, record exact target authorization only
-through the maintained authorization JSON and exact-candidate receipt flow;
-post-review changes remain limited to paths accepted by the release validator.
-The exact-wheel form accepts the historical candidate-freeze wording and fails
-closed unless those later evidence records authorize the selected target.
+A prepared candidate must retain explicit unpublished/on-hold CHANGELOG,
+release-ledger, and CITATION wording. Do not pre-check tag or publication
+authorization in `docs/planning/pre-release-checklist.md` before the immutable
+review. Run the exact PR and Weekly checks once on that frozen candidate.
+
+After review, make one bounded publication packet containing all final release
+state together: the dated `CITATION.cff`, dated `CHANGELOG.md`, one appended
+authorized entry in `docs/getting-started/releases.md`, and the maintained
+authorization JSON. These are the only publication-metadata paths accepted after
+the reviewed candidate; the Python tree must remain identical. Before committing
+the packet, run:
+
+```bash
+./run.sh release publication-surface-check --version <target-version>
+```
+
+After the clean commit, run `authorization-check` for each requested target.
+That command revalidates the same final metadata before any publication workflow
+can spend time on release tests. Do not rerun Weekly verification for this
+bounded metadata packet. Any other post-review path change invalidates the exact
+candidate and requires a new review/hosted decision.
 
 This is read-only. Run it once. If local resource checks fail and Docker is the intended fallback, start Colima and run the Docker variant instead of running both full paths:
 
@@ -101,11 +114,20 @@ environment before and after tests. It installs only the wheel's declared test
 extras plus explicitly documented generated-client requirements; broad root
 requirements are not acceptable artifact evidence.
 
-After publication, verify the exact public version separately:
+After publication, first compare the public artifact hashes with the exact
+publication manifest. When the publication workflow already recorded the full
+installed-package UAT for those bytes, verify only the public package identity;
+do not repeat the same UAT:
 
 ```bash
-./run.sh release verify --version <target-version> --source pypi
+./run.sh release verify --version <target-version> --source pypi --identity-only
 ```
+
+The verifier waits up to 90 seconds for the exact version to appear on the PyPI
+simple index and retries only that install. It does not retry a real install
+failure or rerun tests. Run the full public-source verifier only when the
+publication workflow lacks exact installed-package UAT evidence or the public
+artifact identity differs from the recorded manifest.
 
 ### 5. Owner-only actions
 
