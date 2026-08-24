@@ -1508,28 +1508,43 @@ def check_column_ductility_is13920(
     D_mm: float,
     clear_height_mm: float,
     bar_dia_mm: float,
+    Ag_mm2: float,
+    Ak_mm2: float,
+    h_mm: float,
+    provided_confining_spacing_mm: float,
+    provided_confining_length_mm: float,
+    provided_ash_mm2: float,
+    is_is13920_applicable: bool,
+    applicability_basis: str,
+    is_rectangular_section: bool,
     fck_nmm2: float | None = None,
     fy_nmm2: float | None = None,
-    Ag_mm2: float | None = None,
-    Ak_mm2: float | None = None,
     fck: float | None = None,  # Deprecated alias
     fy: float | None = None,  # Deprecated alias
 ) -> dict:
-    """Check column ductile detailing per IS 13920:2016 Cl 7.
+    """Check a bounded rectangular-column special-confinement detail.
 
-    Validates geometry, longitudinal steel limits, special confining
-    reinforcement spacing, confinement zone length, and confining bar area.
+    IS 13920 applicability must already be established by the caller. The
+    contract checks geometry and the explicitly provided special-confinement
+    spacing, length, and area. It does not infer cover or core geometry and
+    does not evaluate provided longitudinal reinforcement.
 
     Args:
-        b_mm: Column width — shorter dimension (mm). Range: 200–5000.
-        D_mm: Column depth — longer dimension (mm). Range: 200–5000.
+        b_mm: One rectangular column dimension (mm). Range: 200–5000.
+        D_mm: Other rectangular column dimension (mm). Range: 200–5000.
         clear_height_mm: Clear height of column between floors (mm).
         bar_dia_mm: Smallest longitudinal bar diameter (mm). Range: 8–50.
+        Ag_mm2: Actual gross rectangular area; must equal b_mm × D_mm.
+        Ak_mm2: Actual confined-core area to the hoop centerline (mm²).
+        h_mm: Longer hoop dimension measured to its outer face (mm).
+        provided_confining_spacing_mm: Provided hoop spacing (mm).
+        provided_confining_length_mm: Provided confinement-zone length (mm).
+        provided_ash_mm2: Provided hoop area within spacing (mm²).
+        is_is13920_applicable: Caller-confirmed applicability decision.
+        applicability_basis: Non-empty basis for that decision.
+        is_rectangular_section: Must be true; other topologies are unsupported.
         fck_nmm2: Concrete compressive strength (N/mm²). Range: 15–80.
         fy_nmm2: Steel yield strength (N/mm²). Range: 250–600.
-        Ag_mm2: Gross area of column (mm²). If None, computed as b_mm × D_mm.
-        Ak_mm2: Confined core area to hoop centerline (mm²). If None,
-            estimated as (b_mm - 80) × (D_mm - 80) assuming 40 mm cover.
 
     Returns:
         Dictionary with ductile detailing check results.
@@ -1543,7 +1558,14 @@ def check_column_ductility_is13920(
     Examples:
         >>> result = check_column_ductility_is13920(
         ...     b_mm=400, D_mm=500, clear_height_mm=3000,
-        ...     bar_dia_mm=16, fck=25, fy=415,
+        ...     bar_dia_mm=20, fck=25, fy=415,
+        ...     Ag_mm2=200000, Ak_mm2=134400, h_mm=420,
+        ...     provided_confining_spacing_mm=100,
+        ...     provided_confining_length_mm=500,
+        ...     provided_ash_mm2=225,
+        ...     is_is13920_applicable=True,
+        ...     applicability_basis="Project seismic design basis",
+        ...     is_rectangular_section=True,
         ... )
         >>> result['is_compliant']
         True
@@ -1553,6 +1575,21 @@ def check_column_ductility_is13920(
     )
     fy_nmm2 = _resolve_deprecated_param(
         fy_nmm2, fy, "fy_nmm2", "fy", "check_column_ductility_is13920"
+    )
+
+    _require_finite_column_inputs(
+        b_mm=b_mm,
+        D_mm=D_mm,
+        clear_height_mm=clear_height_mm,
+        bar_dia_mm=bar_dia_mm,
+        fck_nmm2=fck_nmm2,
+        fy_nmm2=fy_nmm2,
+        Ag_mm2=Ag_mm2,
+        Ak_mm2=Ak_mm2,
+        h_mm=h_mm,
+        provided_confining_spacing_mm=provided_confining_spacing_mm,
+        provided_confining_length_mm=provided_confining_length_mm,
+        provided_ash_mm2=provided_ash_mm2,
     )
 
     # Boundary validation
@@ -1569,12 +1606,6 @@ def check_column_ductility_is13920(
     if not (250 <= fy_nmm2 <= 600):
         raise ValueError(f"fy_nmm2 should be 250–600 N/mm² (got {fy_nmm2}).")
 
-    # Default areas for rectangular section
-    if Ag_mm2 is None:
-        Ag_mm2 = b_mm * D_mm
-    if Ak_mm2 is None:
-        Ak_mm2 = (b_mm - 2 * 40) * (D_mm - 2 * 40)
-
     result = check_column_ductility(
         b_mm=b_mm,
         D_mm=D_mm,
@@ -1584,6 +1615,13 @@ def check_column_ductility_is13920(
         fy=fy_nmm2,
         Ag_mm2=Ag_mm2,
         Ak_mm2=Ak_mm2,
+        h_mm=h_mm,
+        provided_confining_spacing_mm=provided_confining_spacing_mm,
+        provided_confining_length_mm=provided_confining_length_mm,
+        provided_ash_mm2=provided_ash_mm2,
+        is_is13920_applicable=is_is13920_applicable,
+        applicability_basis=applicability_basis,
+        is_rectangular_section=is_rectangular_section,
     )
 
     from dataclasses import asdict

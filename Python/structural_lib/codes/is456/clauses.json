@@ -522,6 +522,17 @@
         "percentage"
       ]
     },
+    "26.5.3.1(a)": {
+      "title": "Column Longitudinal Reinforcement Percentage Limits",
+      "section": "26 - Detailing",
+      "category": "columns",
+      "keywords": [
+        "longitudinal reinforcement",
+        "column steel percentage",
+        "minimum steel",
+        "maximum steel"
+      ]
+    },
     "26.5.3.2": {
       "title": "Transverse Reinforcement in Columns",
       "section": "26 - Detailing",
@@ -1747,8 +1758,8 @@
         "confinement"
       ]
     },
-    "IS13920_7.1": {
-      "title": "Columns — General Requirements",
+    "IS13920_7.1.1": {
+      "title": "Column Minimum Dimension",
       "section": "IS 13920:2016 - Columns",
       "category": "seismic",
       "keywords": [
@@ -1757,49 +1768,37 @@
         "ductility"
       ]
     },
-    "IS13920_7.2": {
-      "title": "Columns — Longitudinal Reinforcement",
+    "IS13920_7.1.2": {
+      "title": "Column Shorter-to-Longer Dimension Ratio",
       "section": "IS 13920:2016 - Columns",
       "category": "seismic",
       "keywords": [
         "seismic column",
-        "longitudinal steel",
-        "lap splice",
-        "steel ratio"
+        "aspect ratio",
+        "Amendment 1"
       ]
     },
-    "IS13920_7.3": {
-      "title": "Columns — Transverse Reinforcement",
+    "IS13920_7.6.1": {
+      "title": "Column Special-Confinement Extent and Spacing",
       "section": "IS 13920:2016 - Columns",
       "category": "seismic",
       "keywords": [
         "seismic column",
-        "confinement",
         "special confining",
         "hoop spacing",
-        "lo"
+        "confinement length",
+        "Amendments 1 and 2"
       ]
     },
-    "IS13920_7.4": {
-      "title": "Columns — Special Confining Reinforcement Area",
+    "IS13920_7.6.1(c)(2)": {
+      "title": "Rectangular Column Special-Confinement Area",
       "section": "IS 13920:2016 - Columns",
       "category": "seismic",
       "keywords": [
         "confining reinforcement",
         "Ash",
-        "hoop area",
-        "seismic column"
-      ]
-    },
-    "IS13920_7.4.1": {
-      "title": "Area of Special Confining Reinforcement",
-      "section": "IS 13920:2016 - Columns",
-      "category": "seismic",
-      "keywords": [
-        "confining reinforcement",
-        "Ash",
-        "special confinement",
-        "hoop area"
+        "rectangular column",
+        "Amendments 1 and 2"
       ]
     },
     "IS13920_8.1": {

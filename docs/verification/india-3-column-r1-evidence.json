@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "task_id": "INDIA-3-COLUMN-R1",
+  "observed_at_utc": "2026-08-24T06:12:04Z",
+  "status": "BOUNDED_IMPLEMENTATION_COMPLETE_PENDING_IMMUTABLE_CANDIDATE_AND_HOSTED_CLOSEOUT",
+  "predecessor_binding": {
+    "hosted_main_commit": "cfe29f890e62c40546f3a91c8810e1daf7c0d722",
+    "hosted_main_tree": "a0a095e00f3555fe5bdd8ccf5704ba4b71b69289",
+    "predecessor_pull_request": 867,
+    "predecessor_task": "INDIA-3-BEAM-R1",
+    "branch": "codex/india-3-column-r1",
+    "source_bound": true
+  },
+  "accepted_source_boundary": {
+    "standard": "IS 13920:2016 First Revision",
+    "amendment_chain": [
+      "Amendment 1 (2017)",
+      "Amendment 2 (2020)"
+    ],
+    "reaffirmation_2021_is_new_edition": false,
+    "draft_successor_used": false,
+    "normalized_references": [
+      "7.1.1_MINIMUM_DIMENSION_300_MM",
+      "7.1.2_WITH_AMENDMENT_1_SHORTER_TO_LONGER_RATIO_0.4",
+      "7.6.1_WITH_AMENDMENTS_1_AND_2_SPECIAL_CONFINEMENT_LENGTH_AND_SPACING",
+      "7.6.1(c)(2)_WITH_AMENDMENTS_1_AND_2_RECTANGULAR_ASH_GOVERNING_TWO_EXPRESSIONS"
+    ],
+    "companion_reference": "IS 456:2000_26.5.3.1(a)_LONGITUDINAL_PERCENTAGE_LIMITS_NOT_A_PROVIDED_STEEL_CHECK",
+    "source_decision_evidence": "docs/verification/india-3-g0-is13920-audit-decision.json",
+    "protected_content_added": false,
+    "private_source_mutated": false
+  },
+  "root_cause": {
+    "introduction_commits": [
+      "6b412719a9695014c2c776d081bf7357fcfe821c",
+      "61e6020f4fde67f7ae3d91679ca0befdb58ce287",
+      "cc458a8bdb236ba5dce80fec9856779a33128b9a",
+      "54b7e2d81c237b274780aa8e1ec3eac68b70b69b"
+    ],
+    "finding": "The original all-in-one column check implemented only one rectangular confinement-area expression, attached obsolete or wrong clause identities, accepted non-finite geometry, and reported compliance without accepting provided confinement. A later service wrapper silently invented gross/core geometry from section dimensions and a 40 mm cover assumption. Those hidden defaults and the success-like label propagated through the existing HTTP route.",
+    "reproduced_pre_repair_cases": {
+      "second_expression_expected_mm2": 277.10843373493975,
+      "second_expression_previous_mm2": 181.03719224724983,
+      "nan_geometry_was_reported_valid": true,
+      "nan_geometry_was_reported_compliant": true,
+      "service_invented_core_from_40_mm_cover": true,
+      "previous_geometry_clause_refs": [
+        "7.1.2",
+        "7.1.3"
+      ]
+    }
+  },
+  "corrected_contract": {
+    "owner": "Python/structural_lib/codes/is13920/column.py::check_column_ductility",
+    "result_kind": "BOUNDED_RECTANGULAR_SPECIAL_CONFINEMENT_CHECK",
+    "compliance_scope": "GEOMETRY_AND_PROVIDED_SPECIAL_CONFINEMENT",
+    "applicability": {
+      "decision": "CALLER_CONFIRMED_TRUE_REQUIRED",
+      "basis": "NON_EMPTY_CALLER_PROVENANCE_REQUIRED",
+      "unsupported_false_or_NON_BOOLEAN": "REJECTED"
+    },
+    "topology": "RECTANGULAR_ONLY_EXPLICIT_TRUE_REQUIRED",
+    "actual_geometry_required": [
+      "Ag_mm2_EQUALS_b_mm_TIMES_D_mm",
+      "Ak_mm2_LESS_THAN_Ag_mm2",
+      "h_mm_NOT_GREATER_THAN_LARGER_COLUMN_DIMENSION"
+    ],
+    "provided_detail_required": [
+      "provided_confining_spacing_mm",
+      "provided_confining_length_mm",
+      "provided_ash_mm2"
+    ],
+    "confinement_area": {
+      "expression_1": "0.18*s*h*(fck/min(fy,500))*(Ag/Ak-1)",
+      "expression_2": "0.05*s*h*(fck/min(fy,500))",
+      "governing": "max(expression_1,expression_2)",
+      "s_basis": "EXPLICIT_PROVIDED_SPACING"
+    },
+    "longitudinal_reinforcement": {
+      "status": "NOT_EVALUATED_NO_PROVIDED_LONGITUDINAL_STEEL",
+      "reported_companion_limits_percent": [
+        0.8,
+        4.0
+      ],
+      "standard": "IS 456:2000",
+      "clause": "26.5.3.1(a)"
+    },
+    "surface_reconciliation": {
+      "core": "BOUNDED_PROVIDED_DETAIL_CHECK",
+      "service_and_package": "EXPLICIT_REQUIRED_INPUTS_NO_HIDDEN_COVER_OR_CORE_DEFAULT",
+      "http": "EXISTING_ROUTE_REQUIRES_THE_SAME_APPLICABILITY_GEOMETRY_AND_PROVIDED_DETAIL",
+      "new_route_or_product_workflow": false
+    }
+  },
+  "independent_benchmark_replay": {
+    "inputs": {
+      "b_mm": 400.0,
+      "D_mm": 500.0,
+      "clear_height_mm": 3000.0,
+      "bar_dia_mm": 20.0,
+      "fck_nmm2": 25.0,
+      "fy_nmm2": 415.0,
+      "Ag_mm2": 200000.0,
+      "Ak_mm2": 134400.0,
+      "h_mm": 420.0,
+      "provided_confining_spacing_mm": 100.0,
+      "provided_confining_length_mm": 500.0,
+      "provided_ash_mm2": 223.0
+    },
+    "expected_and_observed": {
+      "maximum_spacing_mm": 100.0,
+      "minimum_confinement_length_mm": 500.0,
+      "ash_expression_1_mm2": 222.28915662650604,
+      "ash_expression_2_mm2": 126.50602409638554,
+      "ash_required_mm2": 222.28915662650604,
+      "governing_expression": "0.18_CORE_RATIO",
+      "is_compliant": true
+    },
+    "second_expression_case": {
+      "expected_and_observed_ash_required_mm2": 277.10843373493975,
+      "governing_expression": "0.05_MINIMUM"
+    },
+    "result": "PASS"
+  },
+  "focused_verification": {
+    "python_contract_and_metadata": "PASS_229_AGGREGATE_AFTER_ONE_STALE_EXPECTATION_REPAIR",
+    "fastapi_transport_and_response_contracts": "PASS_15",
+    "black_and_ruff": "PASS",
+    "configured_mypy": "PASS_3_SOURCE_FILES",
+    "architecture": "PASS_221_FILES_ZERO_VIOLATIONS",
+    "imports": "PASS_696_FILES_2290_INTERNAL_IMPORTS_ZERO_BROKEN",
+    "openapi": "PASS_89_ENDPOINTS_444_SCHEMAS",
+    "api_classification_and_compatibility": "CURRENT_620_PROJECTIONS_NO_CLASSIFICATION_OR_AUTHORIZATION_PROMOTION",
+    "indian_code_manifest": "CURRENT_WITH_EXACT_COLUMN_AND_IS456_COMPANION_REFERENCES_NO_CAPABILITY_STATUS_PROMOTION",
+    "impact_domains": [
+      "python",
+      "fastapi",
+      "control_plane",
+      "docs"
+    ],
+    "broad_gate": "DEFERRED_TO_CUMULATIVE_INDIA_3_IS13920_M0_UNLESS_MATERIAL_FAILURE_OR_UNKNOWN_ROUTING_REQUIRES_IT"
+  },
+  "scope_guard": {
+    "existing_package_service_and_http_request_contract_changed": true,
+    "change_reason": "REQUIRED_FAIL_CLOSED_G0_CORRECTION_REMOVES_HIDDEN_DEFAULTS_AND_REQUIRES_APPLICABILITY_AND_PROVIDED_CHECK_INPUTS",
+    "new_fastapi_route_added": false,
+    "react_or_excel_surface_added": false,
+    "beam_joint_wall_or_foundation_formula_changed": false,
+    "is875_or_is1893_changed": false,
+    "generated_capability_status_changed": false,
+    "package_version_changed": false,
+    "release_or_publication_changed": false,
+    "professional_use_approval_changed": false
+  },
+  "holds": [
+    "PROVIDED_LONGITUDINAL_REINFORCEMENT_COMPLIANCE_IS_NOT_EVALUATED",
+    "APPLICABILITY_IS_CALLER_CONFIRMED_NOT_DERIVED_FROM_AN_UNPROVEN_AXIAL_THRESHOLD",
+    "NON_RECTANGULAR_COLUMNS_REMAIN_UNSUPPORTED",
+    "NO_CURRENT_IS13920_CUMULATIVE_ENGINEERING_ACCEPTANCE",
+    "WALL_AND_FOUNDATION_DETAILING_REMAIN_HELD",
+    "IS875_AND_IS1893_REMAIN_HELD",
+    "SOURCE_DISTRIBUTION_RELEASE_PACKAGE_VERSION_SUPPORT_STATUS_AND_PROFESSIONAL_USE_REMAIN_SEPARATE",
+    "PRIVATE_SOURCE_BYTES_TEXT_IMAGES_HASHES_AND_PATHS_REMAIN_UNTRACKED",
+    "BRANCH_WORKTREE_ARCHIVE_SOURCE_COPY_ALIAS_AND_UNRELATED_FILE_DELETION_NOT_AUTHORIZED"
+  ],
+  "next_packet": {
+    "packet_id": "INDIA-3-IS13920-M0",
+    "status": "NOT_STARTED",
+    "start_condition": "CREATE_ONLY_AFTER_THIS_PACKET_MERGES_UNCHANGED_WITH_REQUIRED_HOSTED_CHECKS_GREEN"
+  }
+}

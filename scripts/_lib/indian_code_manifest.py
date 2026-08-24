@@ -202,10 +202,14 @@ _IS13920_SUPPORTED: tuple[dict[str, Any], ...] = (
     },
     {
         "family": "column_detailing_checks",
-        "claim": "Bounded column geometry and special-confinement checks exist.",
+        "claim": "A bounded rectangular-column geometry and provided special-confinement check exists.",
         "workflows": ["check_column_ductility_is13920"],
         "limitations": [
-            "This is a bounded detailing check, not a complete seismic design workflow."
+            "IS 13920 applicability and its basis must be established by the caller.",
+            "Actual gross/core/hoop geometry and provided spacing, confinement length, and hoop area are required; no cover or core geometry is inferred.",
+            "Provided longitudinal reinforcement is not an input and is explicitly not evaluated; reported 0.8% and 4.0% limits are IS 456 companion values.",
+            "Only rectangular sections are supported.",
+            "This is a bounded special-confinement check, not a complete seismic design workflow.",
         ],
         "evidence": [
             "Python/structural_lib/codes/is13920/column.py",

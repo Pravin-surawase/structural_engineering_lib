@@ -193,7 +193,7 @@ not the operation count. The WebSocket route is also outside OpenAPI:
 | | `POST /api/v1/design/column/helical-check` | Helical reinforcement check |
 | | `POST /api/v1/design/column` | Unified column design |
 | | `POST /api/v1/design/column/detailing` | Column detailing |
-| | `POST /api/v1/design/column/ductile-detailing` | IS 13920 column ductile detailing |
+| | `POST /api/v1/design/column/ductile-detailing` | IS 13920 rectangular-column special confinement |
 | **health** | `GET  /health` | Basic health check |
 | | `GET  /health/ready` | Readiness check |
 | | `GET  /health/info` | Version & dependency info |

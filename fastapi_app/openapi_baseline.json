@@ -8859,42 +8859,28 @@
         "type": "object"
       },
       "ColumnDuctileDetailingRequest": {
-        "description": "Request for column ductile detailing check per IS 13920:2016 Cl 7.",
+        "description": "Explicit rectangular-column special-confinement check request.",
         "properties": {
           "Ag_mm2": {
-            "anyOf": [
-              {
-                "exclusiveMinimum": 0.0,
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Gross area of column (mm\u00b2). Defaults to b\u00d7D if omitted.",
+            "description": "Actual gross area (mm\u00b2); must equal b_mm \u00d7 D_mm",
             "examples": [
               200000.0
             ],
-            "title": "Ag Mm2"
+            "exclusiveMinimum": 0.0,
+            "title": "Ag Mm2",
+            "type": "number"
           },
           "Ak_mm2": {
-            "anyOf": [
-              {
-                "exclusiveMinimum": 0.0,
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Confined core area to hoop centerline (mm\u00b2). Estimated if omitted.",
+            "description": "Actual confined-core area to hoop centerline (mm\u00b2)",
             "examples": [
-              102400.0
+              134400.0
             ],
-            "title": "Ak Mm2"
+            "exclusiveMinimum": 0.0,
+            "title": "Ak Mm2",
+            "type": "number"
           },
           "D_mm": {
-            "description": "Column depth \u2014 longer dimension (mm)",
+            "description": "Other rectangular column dimension (mm)",
             "examples": [
               400.0,
               500.0,
@@ -8905,8 +8891,18 @@
             "title": "D Mm",
             "type": "number"
           },
+          "applicability_basis": {
+            "description": "Basis used by the caller to establish IS 13920 applicability",
+            "examples": [
+              "Project seismic design basis"
+            ],
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Applicability Basis",
+            "type": "string"
+          },
           "b_mm": {
-            "description": "Column width \u2014 shorter dimension (mm)",
+            "description": "One rectangular column dimension (mm)",
             "examples": [
               300.0,
               400.0,
@@ -8962,6 +8958,58 @@
             "minimum": 250.0,
             "title": "Fy",
             "type": "number"
+          },
+          "h_mm": {
+            "description": "Longer hoop dimension measured to its outer face (mm)",
+            "examples": [
+              420.0
+            ],
+            "exclusiveMinimum": 0.0,
+            "title": "H Mm",
+            "type": "number"
+          },
+          "is_is13920_applicable": {
+            "description": "Caller-confirmed IS 13920 applicability decision",
+            "examples": [
+              true
+            ],
+            "title": "Is Is13920 Applicable",
+            "type": "boolean"
+          },
+          "is_rectangular_section": {
+            "description": "Must be true; non-rectangular sections are unsupported",
+            "examples": [
+              true
+            ],
+            "title": "Is Rectangular Section",
+            "type": "boolean"
+          },
+          "provided_ash_mm2": {
+            "description": "Provided confining-hoop area within the spacing (mm\u00b2)",
+            "examples": [
+              225.0
+            ],
+            "exclusiveMinimum": 0.0,
+            "title": "Provided Ash Mm2",
+            "type": "number"
+          },
+          "provided_confining_length_mm": {
+            "description": "Provided special-confinement zone length (mm)",
+            "examples": [
+              500.0
+            ],
+            "exclusiveMinimum": 0.0,
+            "title": "Provided Confining Length Mm",
+            "type": "number"
+          },
+          "provided_confining_spacing_mm": {
+            "description": "Provided special-confinement hoop spacing (mm)",
+            "examples": [
+              100.0
+            ],
+            "exclusiveMinimum": 0.0,
+            "title": "Provided Confining Spacing Mm",
+            "type": "number"
           }
         },
         "required": [
@@ -8970,17 +9018,68 @@
           "clear_height_mm",
           "bar_dia_mm",
           "fck",
-          "fy"
+          "fy",
+          "Ag_mm2",
+          "Ak_mm2",
+          "h_mm",
+          "provided_confining_spacing_mm",
+          "provided_confining_length_mm",
+          "provided_ash_mm2",
+          "is_is13920_applicable",
+          "applicability_basis",
+          "is_rectangular_section"
         ],
         "title": "ColumnDuctileDetailingRequest",
         "type": "object"
       },
       "ColumnDuctileDetailingResponse": {
-        "description": "IS 13920:2016 Cl. 7 column ductile-detailing result.",
+        "description": "Bounded rectangular-column special-confinement result.",
         "properties": {
+          "applicability_basis": {
+            "title": "Applicability Basis",
+            "type": "string"
+          },
+          "applicability_status": {
+            "title": "Applicability Status",
+            "type": "string"
+          },
+          "ash_expression_1_mm2": {
+            "title": "Ash Expression 1 Mm2",
+            "type": "number"
+          },
+          "ash_expression_2_mm2": {
+            "title": "Ash Expression 2 Mm2",
+            "type": "number"
+          },
+          "ash_passed": {
+            "title": "Ash Passed",
+            "type": "boolean"
+          },
           "ash_required_mm2": {
             "title": "Ash Required Mm2",
             "type": "number"
+          },
+          "clause_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Clause Refs",
+            "type": "array"
+          },
+          "companion_clause_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Companion Clause Refs",
+            "type": "array"
+          },
+          "companion_standard": {
+            "title": "Companion Standard",
+            "type": "string"
+          },
+          "compliance_scope": {
+            "title": "Compliance Scope",
+            "type": "string"
           },
           "confining_length_mm": {
             "title": "Confining Length Mm",
@@ -8997,6 +9096,10 @@
             "title": "Errors",
             "type": "array"
           },
+          "governing_ash_expression": {
+            "title": "Governing Ash Expression",
+            "type": "string"
+          },
           "is_compliant": {
             "title": "Is Compliant",
             "type": "boolean"
@@ -9005,13 +9108,51 @@
             "title": "Is Geometry Valid",
             "type": "boolean"
           },
+          "length_passed": {
+            "title": "Length Passed",
+            "type": "boolean"
+          },
+          "longitudinal_reinforcement_status": {
+            "title": "Longitudinal Reinforcement Status",
+            "type": "string"
+          },
           "max_pt": {
+            "description": "IS 456 companion maximum steel percentage",
             "title": "Max Pt",
             "type": "number"
           },
           "min_pt": {
+            "description": "IS 456 companion minimum steel percentage",
             "title": "Min Pt",
             "type": "number"
+          },
+          "provided_ash_mm2": {
+            "title": "Provided Ash Mm2",
+            "type": "number"
+          },
+          "provided_confining_length_mm": {
+            "title": "Provided Confining Length Mm",
+            "type": "number"
+          },
+          "provided_confining_spacing_mm": {
+            "title": "Provided Confining Spacing Mm",
+            "type": "number"
+          },
+          "result_kind": {
+            "title": "Result Kind",
+            "type": "string"
+          },
+          "source_reference": {
+            "title": "Source Reference",
+            "type": "string"
+          },
+          "spacing_passed": {
+            "title": "Spacing Passed",
+            "type": "boolean"
+          },
+          "standard": {
+            "title": "Standard",
+            "type": "string"
           }
         },
         "required": [
@@ -9021,8 +9162,27 @@
           "confining_spacing_mm",
           "confining_length_mm",
           "ash_required_mm2",
+          "ash_expression_1_mm2",
+          "ash_expression_2_mm2",
+          "governing_ash_expression",
+          "provided_confining_spacing_mm",
+          "provided_confining_length_mm",
+          "provided_ash_mm2",
+          "spacing_passed",
+          "length_passed",
+          "ash_passed",
           "is_compliant",
-          "errors"
+          "applicability_basis",
+          "errors",
+          "result_kind",
+          "compliance_scope",
+          "longitudinal_reinforcement_status",
+          "applicability_status",
+          "standard",
+          "source_reference",
+          "clause_refs",
+          "companion_standard",
+          "companion_clause_refs"
         ],
         "title": "ColumnDuctileDetailingResponse",
         "type": "object"
@@ -32430,7 +32590,7 @@
     },
     "/api/v1/design/column/ductile-detailing": {
       "post": {
-        "description": "Check column ductile detailing per IS 13920:2016 Cl 7. Validates geometry, longitudinal steel limits, special confining reinforcement spacing, confinement zone length, and confining bar area.",
+        "description": "Check geometry and explicitly provided special-confinement spacing, length, and hoop area for a rectangular column whose IS 13920 applicability has already been established by the caller. No cover or core geometry is inferred; longitudinal reinforcement is not evaluated.",
         "operationId": "column_ductile_detailing_api_v1_design_column_ductile_detailing_post",
         "requestBody": {
           "content": {
@@ -32544,7 +32704,7 @@
             "description": "Capability unavailable"
           }
         },
-        "summary": "IS 13920 Column Ductile Detailing Check",
+        "summary": "IS 13920 Rectangular Column Special-Confinement Check",
         "tags": [
           "column"
         ]

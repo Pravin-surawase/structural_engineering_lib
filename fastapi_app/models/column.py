@@ -7,7 +7,7 @@ All dimensions in mm, forces in kN, stresses in N/mm².
 
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, model_validator
 
 # =============================================================================
 # Request Models
@@ -1107,7 +1107,7 @@ class ColumnDetailingResponse(BaseModel):
 
 
 class ColumnDuctileDetailingRequest(BaseModel):
-    """Request for column ductile detailing check per IS 13920:2016 Cl 7."""
+    """Explicit rectangular-column special-confinement check request."""
 
     model_config = ConfigDict(populate_by_name=True)
 
@@ -1115,14 +1115,14 @@ class ColumnDuctileDetailingRequest(BaseModel):
         ...,
         ge=200,
         le=5000,
-        description="Column width — shorter dimension (mm)",
+        description="One rectangular column dimension (mm)",
         examples=[300.0, 400.0, 500.0],
     )
     D_mm: float = Field(
         ...,
         ge=200,
         le=5000,
-        description="Column depth — longer dimension (mm)",
+        description="Other rectangular column dimension (mm)",
         examples=[400.0, 500.0, 600.0],
     )
     clear_height_mm: float = Field(
@@ -1155,18 +1155,68 @@ class ColumnDuctileDetailingRequest(BaseModel):
         description="Yield strength of steel (N/mm²)",
         examples=[415.0, 500.0],
     )
-    Ag_mm2: float | None = Field(
-        None,
+    Ag_mm2: float = Field(
+        ...,
         gt=0,
-        description="Gross area of column (mm²). Defaults to b×D if omitted.",
+        description="Actual gross area (mm²); must equal b_mm × D_mm",
         examples=[200000.0],
     )
-    Ak_mm2: float | None = Field(
-        None,
+    Ak_mm2: float = Field(
+        ...,
         gt=0,
-        description="Confined core area to hoop centerline (mm²). Estimated if omitted.",
-        examples=[102400.0],
+        description="Actual confined-core area to hoop centerline (mm²)",
+        examples=[134400.0],
     )
+    h_mm: float = Field(
+        ...,
+        gt=0,
+        description="Longer hoop dimension measured to its outer face (mm)",
+        examples=[420.0],
+    )
+    provided_confining_spacing_mm: float = Field(
+        ...,
+        gt=0,
+        description="Provided special-confinement hoop spacing (mm)",
+        examples=[100.0],
+    )
+    provided_confining_length_mm: float = Field(
+        ...,
+        gt=0,
+        description="Provided special-confinement zone length (mm)",
+        examples=[500.0],
+    )
+    provided_ash_mm2: float = Field(
+        ...,
+        gt=0,
+        description="Provided confining-hoop area within the spacing (mm²)",
+        examples=[225.0],
+    )
+    is_is13920_applicable: StrictBool = Field(
+        ...,
+        description="Caller-confirmed IS 13920 applicability decision",
+        examples=[True],
+    )
+    applicability_basis: str = Field(
+        ...,
+        min_length=1,
+        max_length=500,
+        description="Basis used by the caller to establish IS 13920 applicability",
+        examples=["Project seismic design basis"],
+    )
+    is_rectangular_section: StrictBool = Field(
+        ...,
+        description="Must be true; non-rectangular sections are unsupported",
+        examples=[True],
+    )
+
+    @model_validator(mode="after")
+    def validate_bounded_section(self) -> "ColumnDuctileDetailingRequest":
+        """Reject implicit or unsupported geometry before calculation."""
+        if self.Ak_mm2 >= self.Ag_mm2:
+            raise ValueError("Ak_mm2 must be less than Ag_mm2")
+        if self.h_mm > max(self.b_mm, self.D_mm):
+            raise ValueError("h_mm cannot exceed the larger column dimension")
+        return self
 
 
 class ColumnDuctileDetailingError(BaseModel):
@@ -1182,13 +1232,32 @@ class ColumnDuctileDetailingError(BaseModel):
 
 
 class ColumnDuctileDetailingResponse(BaseModel):
-    """IS 13920:2016 Cl. 7 column ductile-detailing result."""
+    """Bounded rectangular-column special-confinement result."""
 
     is_geometry_valid: bool
-    min_pt: float
-    max_pt: float
+    min_pt: float = Field(description="IS 456 companion minimum steel percentage")
+    max_pt: float = Field(description="IS 456 companion maximum steel percentage")
     confining_spacing_mm: float
     confining_length_mm: float
     ash_required_mm2: float
+    ash_expression_1_mm2: float
+    ash_expression_2_mm2: float
+    governing_ash_expression: str
+    provided_confining_spacing_mm: float
+    provided_confining_length_mm: float
+    provided_ash_mm2: float
+    spacing_passed: bool
+    length_passed: bool
+    ash_passed: bool
     is_compliant: bool
+    applicability_basis: str
     errors: list[ColumnDuctileDetailingError]
+    result_kind: str
+    compliance_scope: str
+    longitudinal_reinforcement_status: str
+    applicability_status: str
+    standard: str
+    source_reference: str
+    clause_refs: list[str]
+    companion_standard: str
+    companion_clause_refs: list[str]

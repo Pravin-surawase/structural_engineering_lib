@@ -106,6 +106,15 @@ def test_column_ductile_detailing_route(client: TestClient):
             "bar_dia_mm": 20.0,
             "fck": 25.0,
             "fy": 415.0,
+            "Ag_mm2": 200000.0,
+            "Ak_mm2": 134400.0,
+            "h_mm": 420.0,
+            "provided_confining_spacing_mm": 100.0,
+            "provided_confining_length_mm": 500.0,
+            "provided_ash_mm2": 223.0,
+            "is_is13920_applicable": True,
+            "applicability_basis": "Project seismic design basis",
+            "is_rectangular_section": True,
         },
     )
 
@@ -113,7 +122,52 @@ def test_column_ductile_detailing_route(client: TestClient):
     data = unwrap(response)
     assert data["is_geometry_valid"] is True
     assert data["is_compliant"] is True
+    assert data["longitudinal_reinforcement_status"].startswith("NOT_EVALUATED")
+    assert data["governing_ash_expression"] == "0.18_CORE_RATIO"
     assert data["errors"] == []
+
+
+def test_column_ductile_detailing_route_requires_explicit_confinement(
+    client: TestClient,
+):
+    response = client.post(
+        "/api/v1/design/column/ductile-detailing",
+        json={
+            "b_mm": 400.0,
+            "D_mm": 500.0,
+            "clear_height_mm": 3000.0,
+            "bar_dia_mm": 20.0,
+            "fck": 25.0,
+            "fy": 415.0,
+        },
+    )
+    assert response.status_code == 422
+
+
+def test_column_ductile_detailing_route_rejects_unproven_applicability(
+    client: TestClient,
+):
+    response = client.post(
+        "/api/v1/design/column/ductile-detailing",
+        json={
+            "b_mm": 400.0,
+            "D_mm": 500.0,
+            "clear_height_mm": 3000.0,
+            "bar_dia_mm": 20.0,
+            "fck": 25.0,
+            "fy": 415.0,
+            "Ag_mm2": 200000.0,
+            "Ak_mm2": 134400.0,
+            "h_mm": 420.0,
+            "provided_confining_spacing_mm": 100.0,
+            "provided_confining_length_mm": 500.0,
+            "provided_ash_mm2": 223.0,
+            "is_is13920_applicable": False,
+            "applicability_basis": "Not established",
+            "is_rectangular_section": True,
+        },
+    )
+    assert response.status_code == 422
 
 
 def _valid_rebar_payload() -> dict:
