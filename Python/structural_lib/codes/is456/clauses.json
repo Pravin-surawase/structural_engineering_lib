@@ -5,8 +5,8 @@
     "title": "Plain and Reinforced Concrete - Code of Practice",
     "version": "2000 (Reaffirmed 2021)",
     "source": "Bureau of Indian Standards",
-    "last_updated": "2026-08-16",
-    "total_clauses": 172,
+    "last_updated": "2026-08-24",
+    "total_clauses": 179,
     "includes_references": [
       "IS 13920:2016"
     ],
@@ -1776,6 +1776,48 @@
         "seismic column",
         "aspect ratio",
         "Amendment 1"
+      ]
+    },
+    "IS13920_7.2.1": {
+      "title": "Strong-Column Weak-Beam Capacity Requirement",
+      "section": "IS 13920:2016 - Columns",
+      "category": "seismic",
+      "keywords": [
+        "beam-column joint",
+        "strong-column weak-beam",
+        "capacity ratio",
+        "directional assessment"
+      ]
+    },
+    "IS13920_7.2.1.1": {
+      "title": "Interior Joint Beam-Capacity Sum",
+      "section": "IS 13920:2016 - Columns",
+      "category": "seismic",
+      "keywords": [
+        "interior joint",
+        "beam capacity",
+        "strong-column weak-beam"
+      ]
+    },
+    "IS13920_7.2.1.2": {
+      "title": "Exterior Joint Beam-Capacity Sum",
+      "section": "IS 13920:2016 - Columns",
+      "category": "seismic",
+      "keywords": [
+        "exterior joint",
+        "beam capacity",
+        "strong-column weak-beam"
+      ]
+    },
+    "IS13920_7.2.1.3": {
+      "title": "SCWB Applicability and Directional Assessment",
+      "section": "IS 13920:2016 - Columns",
+      "category": "seismic",
+      "keywords": [
+        "applicability",
+        "roof joint",
+        "shaking direction",
+        "principal plane"
       ]
     },
     "IS13920_7.6.1": {

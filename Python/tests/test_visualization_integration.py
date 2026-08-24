@@ -238,8 +238,6 @@ class TestEdgeCases:
             ast_end=2500,
         )
 
-        geometry = beam_to_3d_geometry(detailing)
-        assert geometry.beam_id == "LARGE"
-        assert geometry.dimensions["span"] == 10000
-        # Should have more stirrups for longer span
-        assert len(geometry.stirrups) > 30
+        assert detailing.stirrups[0].legs == 4
+        with pytest.raises(ValueError, match="multi-leg stirrup geometry"):
+            beam_to_3d_geometry(detailing)

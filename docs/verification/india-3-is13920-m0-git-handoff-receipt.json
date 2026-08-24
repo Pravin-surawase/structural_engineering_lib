@@ -1,0 +1,207 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-24T06:52:28Z",
+      "query_status": "OK",
+      "reference": "Continue the next owner-authorized INDIA-3 sequential packet and complete INDIA-3-IS13920-M0 autonomously through unchanged green merge.",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "RUN_CUMULATIVE_IS13920_SOURCE_BENCHMARK_CROSS_SURFACE_CAPABILITY_PACKAGE_AND_REVIEW_BOUNDARY_ACCEPTANCE",
+      "RECONCILE_EXACT_CLAUSE_AND_CAPABILITY_METADATA",
+      "REPAIR_CUMULATIVE_GATE_INTEGRATION_DEFECTS_WITHOUT_RUNTIME_OR_FORMULA_DRIFT",
+      "BUILD_AND_TEST_ONE_SOURCE_FREE_WHEEL_WITHOUT_VERSION_OR_PUBLICATION_CHANGE",
+      "ADD_BOUNDED_TEST_AND_TRACKED_EVIDENCE",
+      "UPDATE_TASK_SESSION_PLAN_AND_HANDOFF_DOCUMENTATION",
+      "RUN_FOCUSED_BROAD_QUICK_FULL_HOOK_AND_HOSTED_CHECKS",
+      "CREATE_IMMUTABLE_CANDIDATE_AFTER_FROZEN_GATES",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_ONE_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_ONE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "CREATE_IMMUTABLE_CANDIDATE_AFTER_FROZEN_GATES",
+    "observed_at_utc": "2026-08-24T06:52:28Z",
+    "prohibited_actions": [
+      "CHANGE_IS13920_BEAM_COLUMN_JOINT_WALL_OR_FOUNDATION_FORMULAS",
+      "ADD_UNRELATED_API_PRODUCT_PACKAGE_REACT_OR_EXCEL_SURFACE",
+      "CHANGE_IS875_OR_IS1893_SCOPE",
+      "CLAIM_WHOLE_STANDARD_WHOLE_JOINT_QUALIFIED_ENGINEERING_OR_PROFESSIONAL_APPROVAL",
+      "CHANGE_SOURCE_DISTRIBUTION_SUPPORT_VERSION_RELEASE_OR_PACKAGE_PUBLICATION_STATUS",
+      "DISTRIBUTE_OR_TRACK_PRIVATE_SOURCE_BYTES_TEXT_IMAGES_HASH_VALUES_OR_PATHS",
+      "DELETE_DEDUPLICATE_RENAME_OR_MOVE_ANY_SOURCE_ALIAS_BRANCH_WORKTREE_ARCHIVE_OR_UNRELATED_FILE",
+      "START_IS13920_WALL_FOUNDATION_IS875_IS1893_INDIA4_OR_ANY_LATER_PACKET",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_REWRITE_FORCE_PUSH_OR_BYPASS_CHECKS"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "RUN_CUMULATIVE_IS13920_SOURCE_BENCHMARK_CROSS_SURFACE_CAPABILITY_PACKAGE_AND_REVIEW_BOUNDARY_ACCEPTANCE",
+        "RECONCILE_EXACT_CLAUSE_AND_CAPABILITY_METADATA",
+        "REPAIR_CUMULATIVE_GATE_INTEGRATION_DEFECTS_WITHOUT_RUNTIME_OR_FORMULA_DRIFT",
+        "BUILD_AND_TEST_ONE_SOURCE_FREE_WHEEL_WITHOUT_VERSION_OR_PUBLICATION_CHANGE",
+        "ADD_BOUNDED_TEST_AND_TRACKED_EVIDENCE",
+        "UPDATE_TASK_SESSION_PLAN_AND_HANDOFF_DOCUMENTATION",
+        "RUN_FOCUSED_BROAD_QUICK_FULL_HOOK_AND_HOSTED_CHECKS",
+        "CREATE_IMMUTABLE_CANDIDATE_AFTER_FROZEN_GATES",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_ONE_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_ONE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/india-3-is13920-m0",
+      "head_sha": "306e2a46328ce2b519d1352131b64ef310271b5e",
+      "task_id": "INDIA-3-IS13920-M0"
+    }
+  },
+  "holds": [
+    "BRANCH_WORKTREE_ARCHIVE_SOURCE_COPY_ALIAS_AND_UNRELATED_FILE_DELETION_NOT_AUTHORIZED",
+    "LOCAL_HOLD_DIRTY",
+    "PRESERVE_ALL_EXISTING_INDIA3_CANDIDATE_LANES",
+    "PRESERVE_PRIVATE_SOURCE_ARCHIVE_ALL_SOURCE_COPIES_AND_ALIASES",
+    "PRESERVE_UNRELATED_DIRTY_DETACHED_DIVERGENT_AND_UNKNOWN_LANES",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "observed_at_utc": "2026-08-24T06:52:28Z",
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "bd72f4392775461491d5e16a37c9e89245490a8bef289e0fea4d668dbcdab29b",
+    "state": {
+      "branch": "codex/india-3-is13920-m0",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "306e2a46328ce2b519d1352131b64ef310271b5e",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 95.384,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib19",
+      "head_sha": "306e2a46328ce2b519d1352131b64ef310271b5e",
+      "hold_reasons": [
+        "changed paths: 13"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-24T06:53:11.728777+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/india-3-is13920-m0/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 13,
+        "modified_paths": [
+          "Python/structural_lib/codes/is456/clauses.json",
+          "Python/tests/test_indian_code_manifest.py",
+          "Python/tests/test_visualization_integration.py",
+          "Python/tests/unit/test_clauses_json.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/indian-code-completion-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/reference/api-manifest.json",
+          "docs/verification/indian-code-capability-coverage.json",
+          "scripts/_lib/indian_code_manifest.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/india-3-is13920-m0-evidence.json",
+          "docs/verification/india-3-is13920-m0-git-handoff-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "306e2a46328ce2b519d1352131b64ef310271b5e",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/india-3-is13920-m0/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:bd72f4392775461491d5e16a37c9e89245490a8bef289e0fea4d668dbcdab29b",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-24T06:53:11.728917+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_ALL_EXISTING_LANES_AND_PRIVATE_SOURCE_MATERIAL",
+    "holds": [
+      "PRESERVE_UNRELATED_DIRTY_DETACHED_DIVERGENT_AND_UNKNOWN_LANES",
+      "PRESERVE_ALL_EXISTING_INDIA3_CANDIDATE_LANES",
+      "PRESERVE_PRIVATE_SOURCE_ARCHIVE_ALL_SOURCE_COPIES_AND_ALIASES",
+      "BRANCH_WORKTREE_ARCHIVE_SOURCE_COPY_ALIAS_AND_UNRELATED_FILE_DELETION_NOT_AUTHORIZED"
+    ],
+    "observed_at_utc": "2026-08-24T06:52:28Z",
+    "owner": "Main Agent under explicit user and repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources",
+      "Python/structural_lib/codes/is13920",
+      "Python/structural_lib/services/beam_api.py",
+      "Python/structural_lib/services/column_api.py",
+      "fastapi_app",
+      "react_app",
+      "excel_addin",
+      "Python/pyproject.toml",
+      "CHANGELOG.md"
+    ],
+    "integration_owner": "orchestrator",
+    "owned_paths": [
+      "docs/verification/india-3-is13920-m0-evidence.json",
+      "docs/verification/india-3-is13920-m0-git-handoff-source-evidence.json",
+      "docs/verification/india-3-is13920-m0-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "Python/structural_lib/codes/is456/clauses.json",
+      "Python/tests/test_indian_code_manifest.py",
+      "Python/tests/test_visualization_integration.py",
+      "Python/tests/unit/test_clauses_json.py",
+      "scripts/_lib/indian_code_manifest.py",
+      "docs/reference/api-manifest.json",
+      "docs/verification/indian-code-capability-coverage.json",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/indian-code-completion-plan.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "INDIA-3-IS13920-M0"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-23",
+  "generated": "2026-08-24",
   "module": "structural_lib.api",
   "python": "3.11.15",
   "count": 199,
@@ -602,7 +602,7 @@
     {
       "name": "check_column_ductility_is13920",
       "kind": "function",
-      "signature": "(*, b_mm: 'float', D_mm: 'float', clear_height_mm: 'float', bar_dia_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Ag_mm2: 'float | None' = None, Ak_mm2: 'float | None' = None, fck: 'float | None' = None, fy: 'float | None' = None) -> 'dict'"
+      "signature": "(*, b_mm: 'float', D_mm: 'float', clear_height_mm: 'float', bar_dia_mm: 'float', Ag_mm2: 'float', Ak_mm2: 'float', h_mm: 'float', provided_confining_spacing_mm: 'float', provided_confining_length_mm: 'float', provided_ash_mm2: 'float', is_is13920_applicable: 'bool', applicability_basis: 'str', is_rectangular_section: 'bool', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, fck: 'float | None' = None, fy: 'float | None' = None) -> 'dict'"
     },
     {
       "name": "check_compliance_report",

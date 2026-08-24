@@ -198,6 +198,7 @@ _IS13920_SUPPORTED: tuple[dict[str, Any], ...] = (
             "Python/structural_lib/codes/is13920/beam.py",
             "Python/tests/codes/is13920/test_beam.py",
             "Python/tests/property/test_ductile_hypothesis.py",
+            "docs/verification/india-3-is13920-m0-evidence.json",
         ],
     },
     {
@@ -214,18 +215,27 @@ _IS13920_SUPPORTED: tuple[dict[str, Any], ...] = (
         "evidence": [
             "Python/structural_lib/codes/is13920/column.py",
             "Python/tests/codes/is13920/test_column.py",
+            "docs/verification/india-3-is13920-m0-evidence.json",
         ],
     },
     {
         "family": "beam_column_joint_scwb_check",
-        "claim": "A pure-math strong-column weak-beam joint check exists.",
+        "claim": (
+            "A pure-math strong-column weak-beam capacity check exists for one "
+            "principal plane and one shaking direction of an applicable non-roof "
+            "interior or one-sided exterior beam-column joint."
+        ),
         "workflows": ["structural_lib.codes.is13920.joint.check_scwb"],
         "limitations": [
-            "No complete joint design or public service workflow is claimed."
+            "The fixed requirement is 1.4 times the beam-capacity sum; beam capacities act in the declared shaking direction and column capacities act oppositely at explicit factored axial loads.",
+            "One result is not a whole-joint assessment; both shaking directions in every applicable principal plane remain caller-owned.",
+            "Only INTERIOR, EXTERIOR_LEFT, and EXTERIOR_RIGHT beam framing is supported; roof joints are waived and flat-slab systems are excluded.",
+            "No complete joint design or public service workflow is claimed.",
         ],
         "evidence": [
             "Python/structural_lib/codes/is13920/joint.py",
             "Python/tests/codes/is13920/test_joint.py",
+            "docs/verification/india-3-is13920-m0-evidence.json",
         ],
     },
 )
