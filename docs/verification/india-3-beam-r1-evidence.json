@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "task_id": "INDIA-3-BEAM-R1",
+  "observed_at_utc": "2026-08-24T05:07:19Z",
+  "status": "BOUNDED_IMPLEMENTATION_COMPLETE_PENDING_IMMUTABLE_CANDIDATE_AND_HOSTED_CLOSEOUT",
+  "predecessor_binding": {
+    "hosted_main_commit": "b59e6ea02e52056d1024bb4dc90204f149f112eb",
+    "hosted_main_tree": "acc167e2caaa311a8f4fe2861e6a5aa4afd7d75c",
+    "predecessor_pull_request": 866,
+    "predecessor_task": "INDIA-3-JOINT-R1",
+    "branch": "codex/india-3-beam-r1",
+    "source_bound": true
+  },
+  "accepted_source_boundary": {
+    "standard": "IS 13920:2016 First Revision",
+    "amendment_chain": [
+      "Amendment 1 (2017)",
+      "Amendment 2 (2020)"
+    ],
+    "reaffirmation_2021_is_new_edition": false,
+    "draft_successor_used": false,
+    "normalized_references": [
+      "6.1.1_WIDTH_TO_OVERALL_DEPTH_RATIO_STRICTLY_GREATER_THAN_0.3",
+      "6.1.2_MINIMUM_WIDTH_200_MM",
+      "6.2.1(b)_MINIMUM_LONGITUDINAL_RATIO_EACH_FACE",
+      "6.2.2_MAXIMUM_LONGITUDINAL_RATIO_EACH_FACE",
+      "6.3.5_WITH_AMENDMENT_1_CLOSE_LINK_SPACING"
+    ],
+    "source_decision_evidence": "docs/verification/india-3-g0-is13920-audit-decision.json",
+    "protected_content_added": false,
+    "private_source_mutated": false
+  },
+  "root_cause": {
+    "introduction_commits": [
+      "7f12fd9057e887b84c8caf86d95da591a28b96ca",
+      "32f49571867131651eb581f2a48072754f9070c5",
+      "54b7e2d81c237b274780aa8e1ec3eac68b70b69b",
+      "55a5096d",
+      "410fb881"
+    ],
+    "finding": "The original beam implementation hard-coded the unamended eight-bar-diameter spacing limit and labeled geometry plus requirement calculations as Compliant without accepting provided reinforcement. The later namespace migration added a tolerance that accepted the strict 0.3 boundary and positivity guards that do not reject NaN. Decorators, error records, and hand-maintained clause maps then attached swapped or generalized clause identities to that unchanged behavior.",
+    "reproduced_pre_repair_case": {
+      "width_depth_ratio_at_boundary": 0.3,
+      "boundary_was_accepted": true,
+      "benchmark_spacing_mm": 96.0,
+      "benchmark_remarks": "Compliant",
+      "nan_material_returned_nan_requirement": true,
+      "nan_material_error_count": 0
+    }
+  },
+  "corrected_contract": {
+    "owner": "Python/structural_lib/codes/is13920/beam.py::check_beam_ductility",
+    "result_kind": "REQUIREMENTS_WITH_GEOMETRY_CHECK",
+    "compliance_status": "NOT_EVALUATED_NO_PROVIDED_REINFORCEMENT",
+    "geometry": {
+      "width_depth_ratio": "STRICTLY_GREATER_THAN_0.3",
+      "minimum_width_mm": 200.0
+    },
+    "longitudinal_reinforcement_requirements": {
+      "minimum_ratio_each_face": "0.24*sqrt(fck)/fy",
+      "maximum_ratio_each_face": 0.025
+    },
+    "close_link_spacing_within_2d": {
+      "expression": "min(d/4,6*db_min,100_mm)",
+      "amendment_basis": "AMENDMENT_1_2017"
+    },
+    "finite_intake": [
+      "b",
+      "D",
+      "d",
+      "fck",
+      "fy",
+      "min_long_bar_dia"
+    ],
+    "surface_reconciliation": {
+      "core": "GEOMETRY_CHECK_PLUS_REQUIREMENT_CALCULATION",
+      "service_and_package": "UNCHANGED_SIGNATURE_DELEGATES_TO_CORE_RESULT",
+      "http": "EXISTING_ROUTE_RETURNS_REQUIREMENT_AND_NOT_EVALUATED_STATUS",
+      "new_route_or_product_workflow": false
+    }
+  },
+  "independent_benchmark_replay": {
+    "inputs": {
+      "b_mm": 250.0,
+      "D_mm": 500.0,
+      "d_mm": 450.0,
+      "fck_nmm2": 25.0,
+      "fy_nmm2": 500.0,
+      "minimum_longitudinal_bar_diameter_mm": 12.0
+    },
+    "expected": {
+      "width_depth_ratio": 0.5,
+      "minimum_longitudinal_steel_percent": 0.24,
+      "maximum_longitudinal_steel_percent": 2.5,
+      "maximum_close_link_spacing_mm": 72.0,
+      "compliance_status": "NOT_EVALUATED_NO_PROVIDED_REINFORCEMENT"
+    },
+    "observed": {
+      "width_depth_ratio": 0.5,
+      "minimum_longitudinal_steel_percent": 0.24,
+      "maximum_longitudinal_steel_percent": 2.5,
+      "maximum_close_link_spacing_mm": 72.0,
+      "compliance_status": "NOT_EVALUATED_NO_PROVIDED_REINFORCEMENT"
+    },
+    "result": "PASS"
+  },
+  "focused_verification": {
+    "core_unit_and_property_tests": "PASS_51",
+    "fastapi_compliance_transport_tests": "PASS_23",
+    "clause_and_capability_metadata": "RECONCILED_TO_EXACT_BEAM_REFERENCES_WITHOUT_STATUS_PROMOTION",
+    "impact_domains": [
+      "python",
+      "fastapi",
+      "control_plane",
+      "docs"
+    ],
+    "broad_gate": "DEFERRED_TO_CUMULATIVE_INDIA_3_MILESTONE_UNLESS_MATERIAL_FAILURE_REQUIRES_IT"
+  },
+  "scope_guard": {
+    "existing_package_or_service_signature_changed": false,
+    "new_fastapi_route_added": false,
+    "react_or_excel_surface_added": false,
+    "column_joint_wall_or_foundation_formula_changed": false,
+    "is875_or_is1893_changed": false,
+    "generated_capability_status_changed": false,
+    "package_version_changed": false,
+    "release_or_publication_changed": false,
+    "professional_use_approval_changed": false
+  },
+  "holds": [
+    "PROVIDED_LONGITUDINAL_REINFORCEMENT_AND_LINK_SPACING_COMPLIANCE_IS_NOT_EVALUATED",
+    "INDIA_3_COLUMN_R1_NOT_STARTED",
+    "NO_CURRENT_IS13920_CUMULATIVE_ENGINEERING_ACCEPTANCE",
+    "WALL_AND_FOUNDATION_DETAILING_REMAIN_HELD",
+    "IS875_AND_IS1893_REMAIN_HELD",
+    "SOURCE_DISTRIBUTION_RELEASE_PACKAGE_VERSION_SUPPORT_STATUS_AND_PROFESSIONAL_USE_REMAIN_SEPARATE",
+    "PRIVATE_SOURCE_BYTES_TEXT_IMAGES_HASHES_AND_PATHS_REMAIN_UNTRACKED",
+    "BRANCH_WORKTREE_ARCHIVE_SOURCE_COPY_ALIAS_AND_UNRELATED_FILE_DELETION_NOT_AUTHORIZED"
+  ],
+  "next_packet": {
+    "packet_id": "INDIA-3-COLUMN-R1",
+    "status": "NOT_STARTED",
+    "start_condition": "CREATE_ONLY_AFTER_THIS_PACKET_MERGES_UNCHANGED_WITH_REQUIRED_HOSTED_CHECKS_GREEN"
+  }
+}

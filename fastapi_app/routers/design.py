@@ -724,11 +724,12 @@ async def enhanced_shear(
 @router.post(
     "/beam/ductility-check",
     response_model=APIResponse[DuctilityCheckResponse],
-    summary="Beam Ductility Check (IS 13920)",
+    summary="Beam Ductility Requirements (IS 13920)",
     description=(
-        "Run IS 13920 beam ductility checks for a single section. "
-        "Checks geometry (Cl 6.1), min/max steel (Cl 6.2), "
-        "and confinement spacing (Cl 6.3.5)."
+        "Check beam geometry and calculate IS 13920 minimum/maximum "
+        "longitudinal-steel ratios and the amended close-link spacing limit. "
+        "Provided reinforcement is not accepted, so reinforcement compliance "
+        "is not evaluated."
     ),
 )
 async def check_ductility(
@@ -739,11 +740,11 @@ async def check_ductility(
         from structural_lib.services.api import check_beam_ductility
 
         result = check_beam_ductility(
-            b=request.b,
-            D=request.D,
-            d=request.d,
-            fck=request.fck,
-            fy=request.fy,
+            b_mm=request.b,
+            D_mm=request.D,
+            d_mm=request.d,
+            fck_nmm2=request.fck,
+            fy_nmm2=request.fy,
             min_long_bar_dia=request.min_long_bar_dia,
         )
 
@@ -762,6 +763,11 @@ async def check_ductility(
                     )
                     for e in result.errors
                 ],
+                result_kind=result.result_kind,
+                compliance_status=result.compliance_status,
+                standard=result.standard,
+                source_reference=result.source_reference,
+                clause_refs=list(result.clause_refs),
             )
         )
 

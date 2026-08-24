@@ -2230,15 +2230,17 @@
           "family": "beam_detailing_checks",
           "scope_status": "SUPPORTED",
           "implementation_status": "IMPLEMENTED_BOUNDED",
-          "claim": "Bounded beam geometry, longitudinal-steel, and confinement-spacing checks exist.",
+          "claim": "A bounded beam geometry check plus longitudinal-steel and close-link requirement calculations exist.",
           "workflows": [
             "check_beam_ductility"
           ],
           "limitations": [
-            "This is a bounded detailing check, not a complete seismic design workflow."
+            "Provided longitudinal reinforcement and link spacing are not inputs, so reinforcement compliance is not evaluated.",
+            "This is a bounded requirement-calculation contract, not a complete seismic design workflow."
           ],
           "evidence": [
             "Python/structural_lib/codes/is13920/beam.py",
+            "Python/tests/codes/is13920/test_beam.py",
             "Python/tests/property/test_ductile_hypothesis.py"
           ],
           "qualified_review_required": true
@@ -2307,11 +2309,11 @@
         }
       ],
       "registration_summary": {
-        "known_references": 16,
-        "registered_known_references": 5,
-        "metadata_only_references": 11,
-        "registration_only_references": 9,
-        "registration_pct": 31.2
+        "known_references": 19,
+        "registered_known_references": 7,
+        "metadata_only_references": 12,
+        "registration_only_references": 6,
+        "registration_pct": 36.8
       },
       "references": [
         {
@@ -2333,24 +2335,14 @@
           "functions": []
         },
         {
-          "reference_id": "IS13920:2016:6.1",
-          "reference": "6.1",
-          "reference_type": "clause",
-          "title": "",
-          "category": "unregistered_metadata",
-          "registration_status": "REGISTRATION_ONLY",
-          "functions": [
-            "structural_lib.codes.is13920.beam.check_beam_ductility"
-          ]
-        },
-        {
           "reference_id": "IS13920:2016:6.1.1",
           "reference": "6.1.1",
           "reference_type": "clause",
-          "title": "Flexural Members — Dimensional Limits",
+          "title": "Beam Width-to-Depth Condition",
           "category": "seismic",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is13920.beam.check_beam_ductility",
             "structural_lib.codes.is13920.beam.check_geometry"
           ]
         },
@@ -2358,10 +2350,11 @@
           "reference_id": "IS13920:2016:6.1.2",
           "reference": "6.1.2",
           "reference_type": "clause",
-          "title": "Flexural Members — Longitudinal Reinforcement",
+          "title": "Beam Minimum Width",
           "category": "seismic",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is13920.beam.check_beam_ductility",
             "structural_lib.codes.is13920.beam.check_geometry"
           ]
         },
@@ -2369,7 +2362,16 @@
           "reference_id": "IS13920:2016:6.2.1",
           "reference": "6.2.1",
           "reference_type": "clause",
-          "title": "Flexural Members — Shear Reinforcement",
+          "title": "Beam Longitudinal Reinforcement",
+          "category": "seismic",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS13920:2016:6.2.1(b)",
+          "reference": "6.2.1(b)",
+          "reference_type": "clause",
+          "title": "Beam Minimum Longitudinal Reinforcement",
           "category": "seismic",
           "registration_status": "REGISTERED",
           "functions": [
@@ -2381,9 +2383,9 @@
           "reference_id": "IS13920:2016:6.2.2",
           "reference": "6.2.2",
           "reference_type": "clause",
-          "title": "",
-          "category": "unregistered_metadata",
-          "registration_status": "REGISTRATION_ONLY",
+          "title": "Beam Maximum Longitudinal Reinforcement",
+          "category": "seismic",
+          "registration_status": "REGISTERED",
           "functions": [
             "structural_lib.codes.is13920.beam.check_beam_ductility",
             "structural_lib.codes.is13920.beam.get_max_tension_steel_percentage"
@@ -2402,9 +2404,9 @@
           "reference_id": "IS13920:2016:6.3.5",
           "reference": "6.3.5",
           "reference_type": "clause",
-          "title": "",
-          "category": "unregistered_metadata",
-          "registration_status": "REGISTRATION_ONLY",
+          "title": "Beam Close-Link Spacing Near Joint Face",
+          "category": "seismic",
+          "registration_status": "REGISTERED",
           "functions": [
             "structural_lib.codes.is13920.beam.calculate_confinement_spacing",
             "structural_lib.codes.is13920.beam.check_beam_ductility"

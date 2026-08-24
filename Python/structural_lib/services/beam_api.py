@@ -762,7 +762,7 @@ def check_beam_ductility(
     fy: float | None = None,  # Deprecated
 ) -> ductile.DuctileBeamResult:
     """
-    Run IS 13920 beam ductility checks for a single section.
+    Check beam geometry and calculate bounded IS 13920 detailing requirements.
 
     Args:
         b_mm: Beam width (mm).
@@ -773,7 +773,9 @@ def check_beam_ductility(
         min_long_bar_dia: Minimum longitudinal bar diameter (mm).
 
     Returns:
-        DuctileBeamResult with pass/fail flags and limiting values.
+        DuctileBeamResult with geometry status and required limiting values.
+        Reinforcement compliance is not evaluated because provided
+        longitudinal steel and link spacing are not inputs.
 
     .. deprecated:: 0.22
         Parameters ``b``, ``D``, ``d``, ``fck``, ``fy`` are renamed to

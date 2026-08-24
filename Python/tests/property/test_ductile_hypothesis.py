@@ -4,7 +4,7 @@
 Property-based tests for the ductile detailing module using Hypothesis.
 
 These tests verify IS 13920:2016 ductile detailing requirements:
-1. Geometry checks: b >= 200mm, b/D >= 0.3
+1. Geometry checks: b >= 200mm, b/D > 0.3
 2. Steel limits: min_pt and max_pt in valid ranges
 3. Confinement spacing: proper calculation based on d and bar diameter
 4. Consistency: Valid geometry should pass all checks
@@ -34,11 +34,11 @@ class TestGeometryCheck:
 
     @given(b=beam_width_ductile(), D=total_depth())
     def test_valid_geometry_passes(self, b: float, D: float) -> None:
-        """Valid geometry (b >= 200, b/D >= 0.3) should pass."""
+        """Valid geometry (b >= 200, b/D > 0.3) should pass."""
         # Only test when geometry is actually valid
         assume(b >= 200)
         assume(D > 0)
-        assume(b / D >= 0.3)
+        assume(b / D > 0.3)
 
         is_valid, msg, errors = ductile.check_geometry(b, D)
         assert is_valid, f"Valid geometry should pass: b={b}, D={D}, msg={msg}"
@@ -46,7 +46,7 @@ class TestGeometryCheck:
 
     @given(b=beam_width_narrow(), D=total_depth())
     def test_narrow_beam_fails(self, b: float, D: float) -> None:
-        """Beam with b < 200mm should fail (IS 13920 Cl 6.1.1)."""
+        """Beam with b < 200mm should fail (IS 13920 Cl 6.1.2)."""
         # beam_width_narrow generates 100-199.9mm (always < 200)
 
         is_valid, msg, errors = ductile.check_geometry(b, D)
@@ -55,7 +55,7 @@ class TestGeometryCheck:
 
     @given(b=beam_width_ductile())
     def test_wrong_aspect_ratio_fails(self, b: float) -> None:
-        """Beam with b/D < 0.3 should fail (IS 13920 Cl 6.1.2)."""
+        """Beam with b/D <= 0.3 should fail (IS 13920 Cl 6.1.1)."""
         # Create D that violates b/D >= 0.3 (i.e., D > b/0.3)
         D = b / 0.2  # This ensures b/D = 0.2 < 0.3
 
@@ -145,21 +145,21 @@ class TestConfinementSpacing:
         assert spacing <= d / 4 + 0.01, f"Spacing {spacing} should be <= d/4 = {d / 4}"
 
     @given(d=effective_depth(), dia=bar_diameter())
-    def test_spacing_never_exceeds_8_times_dia(self, d: float, dia: int) -> None:
-        """Confinement spacing should never exceed 8 * bar diameter."""
+    def test_spacing_never_exceeds_6_times_dia(self, d: float, dia: int) -> None:
+        """Close-link spacing should never exceed 6 * bar diameter."""
         spacing = ductile.calculate_confinement_spacing(d, float(dia))
         assert (
-            spacing <= 8 * dia + 0.01
-        ), f"Spacing {spacing} should be <= 8*{dia} = {8 * dia}"
+            spacing <= 6 * dia + 0.01
+        ), f"Spacing {spacing} should be <= 6*{dia} = {6 * dia}"
 
     @given(d=effective_depth(), dia=bar_diameter())
     def test_spacing_is_minimum_of_three_criteria(self, d: float, dia: int) -> None:
-        """Spacing should be exactly min(d/4, 8*dia, 100)."""
+        """Spacing should be exactly min(d/4, 6*dia, 100)."""
         spacing = ductile.calculate_confinement_spacing(d, float(dia))
-        expected = min(d / 4, 8 * float(dia), 100.0)
+        expected = min(d / 4, 6 * float(dia), 100.0)
         assert (
             abs(spacing - expected) < 0.01
-        ), f"Spacing {spacing} != min({d / 4}, {8 * dia}, 100) = {expected}"
+        ), f"Spacing {spacing} != min({d / 4}, {6 * dia}, 100) = {expected}"
 
 
 class TestBeamDuctility:

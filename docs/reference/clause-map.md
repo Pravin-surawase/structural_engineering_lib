@@ -141,10 +141,11 @@ Maps IS 456:2000 (and IS 13920:2016) clauses to their implementing functions in 
 
 | Clause | Title | Function | Module | Notes |
 |--------|-------|----------|--------|-------|
-| IS13920 6.1.1 | Flexural Members — Dimensional Limits | `check_beam_ductility()` | `is13920/beam.py` | Geometry checks |
-| IS13920 6.1.2 | Flexural Members — Longitudinal Steel | `check_beam_ductility()` | `is13920/beam.py` | Steel limits |
-| IS13920 6.2.1 | Flexural Members — Shear Reinforcement | `check_beam_ductility()` | `is13920/beam.py` | Confinement spacing |
-| IS13920 6.3 | Lap Splices in Flexural Members | `check_beam_ductility()` | `is13920/beam.py` | |
+| IS13920 6.1.1 | Beam Width-to-Depth Condition | `check_geometry()` | `is13920/beam.py` | Strict b/D > 0.3 boundary |
+| IS13920 6.1.2 | Beam Minimum Width | `check_geometry()` | `is13920/beam.py` | Minimum width 200 mm |
+| IS13920 6.2.1(b) | Beam Minimum Longitudinal Reinforcement | `get_min_tension_steel_percentage()` | `is13920/beam.py` | Minimum ratio on each face |
+| IS13920 6.2.2 | Beam Maximum Longitudinal Reinforcement | `get_max_tension_steel_percentage()` | `is13920/beam.py` | Maximum ratio on each face |
+| IS13920 6.3.5 | Beam Close-Link Spacing Near Joint Face | `calculate_confinement_spacing()` | `is13920/beam.py` | Amendment 1 spacing limit within 2d |
 | IS13920 7.1 | Columns — General Requirements | `check_column_ductility()` | `is13920/column.py` | Geometry constraints |
 | IS13920 7.2 | Columns — Longitudinal Steel | `check_column_ductility()` | `is13920/column.py` | Steel limits |
 | IS13920 7.3 | Columns — Transverse Reinforcement | `check_column_ductility()` | `is13920/column.py` | Spacing |

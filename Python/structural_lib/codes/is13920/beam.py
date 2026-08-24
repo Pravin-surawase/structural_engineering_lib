@@ -26,6 +26,7 @@ from structural_lib.core.errors import (
     E_INPUT_011,
     DesignError,
 )
+from structural_lib.core.validation import validate_finite_reals
 
 __all__ = [
     "DuctileBeamResult",
@@ -36,48 +37,73 @@ __all__ = [
     "check_beam_ductility",
 ]
 
+_STANDARD = "IS 13920:2016"
+_SOURCE_REFERENCE = (
+    "IS 13920:2016 First Revision with Amendment 1 (2017) " "and Amendment 2 (2020)"
+)
+_CLAUSE_REFS = ("6.1.1", "6.1.2", "6.2.1(b)", "6.2.2", "6.3.5")
+_RESULT_KIND = "REQUIREMENTS_WITH_GEOMETRY_CHECK"
+_COMPLIANCE_STATUS = "NOT_EVALUATED_NO_PROVIDED_REINFORCEMENT"
+
 
 @dataclass
 class DuctileBeamResult:
+    """Geometry result plus required beam reinforcement limits.
+
+    This contract does not accept provided longitudinal reinforcement or link
+    spacing, so it cannot report reinforcement compliance.
+    """
+
     is_geometry_valid: bool
     min_pt: float
     max_pt: float
     confinement_spacing: float
     remarks: str = ""  # Deprecated: Use errors list instead
     errors: list[DesignError] = field(default_factory=list)  # Structured errors
+    result_kind: str = _RESULT_KIND
+    compliance_status: str = _COMPLIANCE_STATUS
+    standard: str = _STANDARD
+    source_reference: str = _SOURCE_REFERENCE
+    clause_refs: tuple[str, ...] = _CLAUSE_REFS
 
 
 @clause("6.1.1", "6.1.2", standard="IS 13920")
 def check_geometry(b: float, D: float) -> tuple[bool, str, list[DesignError]]:
     """
     Clause 6.1: Geometry requirements
-    1. b >= 200 mm
-    2. b/D >= 0.3
+    1. b/D > 0.3 (6.1.1)
+    2. b >= 200 mm (6.1.2)
 
     .. deprecated:: 0.10.5
         Return signature changed from (bool, str) to (bool, str, List[DesignError]).
         This is a breaking change for direct callers. Use check_beam_ductility()
         for the stable public API.
     """
-    errors = []
+    errors = validate_finite_reals(b=b, D=D)
+    if errors:
+        return False, "Invalid input: b and D must be finite real numbers.", errors
 
     if b < 200:
         errors.append(E_DUCTILE_001)
-        return False, f"Width {b} mm < 200 mm (IS 13920 Cl 6.1.1)", errors
+        return False, f"Width {b} mm < 200 mm (IS 13920 Cl 6.1.2)", errors
 
     if D <= 0:
         errors.append(E_DUCTILE_003)
         return False, "Invalid depth", errors
 
     ratio = b / D
-    if ratio < 0.3 - 1e-9:
+    if ratio <= 0.3:
         errors.append(E_DUCTILE_002)
-        return False, f"Width/Depth ratio {ratio:.2f} < 0.3 (IS 13920 Cl 6.1.2)", errors
+        return (
+            False,
+            f"Width/Depth ratio {ratio:.3f} must be > 0.3 (IS 13920 Cl 6.1.1)",
+            errors,
+        )
 
     return True, "OK", errors
 
 
-@clause("6.2.1", standard="IS 13920")
+@clause("6.2.1(b)", standard="IS 13920")
 def get_min_tension_steel_percentage(fck: float, fy: float) -> float:
     """
     Clause 6.2.1 (b): Min tension steel ratio
@@ -87,9 +113,9 @@ def get_min_tension_steel_percentage(fck: float, fy: float) -> float:
     Raises:
         ValueError: If fck or fy are non-positive.
     """
-    if fck <= 0:
+    if not math.isfinite(fck) or fck <= 0:
         raise ValueError(f"Concrete strength fck must be positive, got {fck}")
-    if fy <= 0:
+    if not math.isfinite(fy) or fy <= 0:
         raise ValueError(f"Steel yield strength fy must be positive, got {fy}")
     rho = 0.24 * math.sqrt(fck) / fy
     return rho * 100.0
@@ -106,26 +132,55 @@ def get_max_tension_steel_percentage() -> float:
 @clause("6.3.5", standard="IS 13920")
 def calculate_confinement_spacing(d: float, min_long_bar_dia: float) -> float:
     """
-    Clause 6.3.5: Hoop spacing in confinement zone (2d from face)
+    Clause 6.3.5 with Amendment 1: close-link spacing within 2d of joint face.
     Spacing shall not exceed:
     1. d/4
-    2. 8 * db_min (smallest longitudinal bar diameter)
+    2. 6 * db_min (smallest longitudinal bar diameter)
     3. 100 mm
     """
+    if not math.isfinite(d) or d <= 0:
+        raise ValueError(f"Effective depth d must be positive and finite, got {d}")
+    if not math.isfinite(min_long_bar_dia) or min_long_bar_dia <= 0:
+        raise ValueError(
+            "Minimum longitudinal bar diameter must be positive and finite, "
+            f"got {min_long_bar_dia}"
+        )
+
     s1 = d / 4.0
-    s2 = 8.0 * min_long_bar_dia
+    s2 = 6.0 * min_long_bar_dia
     s3 = 100.0
 
     return min(s1, s2, s3)
 
 
-@clause("6.1", "6.2.1", "6.2.2", "6.3.5", standard="IS 13920")
+@clause("6.1.1", "6.1.2", "6.2.1(b)", "6.2.2", "6.3.5", standard="IS 13920")
 def check_beam_ductility(
     b: float, D: float, d: float, fck: float, fy: float, min_long_bar_dia: float
 ) -> DuctileBeamResult:
     """
-    Perform comprehensive ductility checks for a beam section.
+    Check beam geometry and calculate bounded IS 13920 requirements.
+
+    Provided longitudinal reinforcement and link spacing are not inputs. The
+    returned result therefore never labels the reinforcement as compliant.
     """
+    finite_errors = validate_finite_reals(
+        b=b,
+        D=D,
+        d=d,
+        fck=fck,
+        fy=fy,
+        min_long_bar_dia=min_long_bar_dia,
+    )
+    if finite_errors:
+        return DuctileBeamResult(
+            is_geometry_valid=False,
+            min_pt=0.0,
+            max_pt=0.0,
+            confinement_spacing=0.0,
+            remarks="Invalid input: all values must be finite real numbers.",
+            errors=finite_errors,
+        )
+
     is_geo_valid, geo_msg, geo_errors = check_geometry(b, D)
     if not is_geo_valid:
         return DuctileBeamResult(
@@ -178,6 +233,9 @@ def check_beam_ductility(
         min_pt=min_pt,
         max_pt=max_pt,
         confinement_spacing=spacing,
-        remarks="Compliant",
+        remarks=(
+            "Requirements calculated; provided reinforcement compliance "
+            "was not evaluated."
+        ),
         errors=[],
     )

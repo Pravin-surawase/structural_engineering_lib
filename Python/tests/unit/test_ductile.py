@@ -64,15 +64,15 @@ def test_min_steel_invalid_inputs():
 def test_confinement_spacing():
     # d=450, min_bar=12
     # 1. d/4 = 112.5
-    # 2. 8*12 = 96
+    # 2. 6*12 = 72
     # 3. 100
-    # Min should be 96
+    # Min should be 72
     s = calculate_confinement_spacing(450, 12)
-    assert s == 96
+    assert s == 72
 
     # d=600, min_bar=20
     # 1. 150
-    # 2. 160
+    # 2. 120
     # 3. 100
     # Min should be 100
     s = calculate_confinement_spacing(600, 20)
@@ -83,4 +83,5 @@ def test_full_check():
     res = check_beam_ductility(230, 450, 410, 25, 500, 12)
     assert res.is_geometry_valid is True
     assert res.confinement_spacing <= 100
-    assert res.remarks == "Compliant"
+    assert res.compliance_status == "NOT_EVALUATED_NO_PROVIDED_REINFORCEMENT"
+    assert "not evaluated" in res.remarks

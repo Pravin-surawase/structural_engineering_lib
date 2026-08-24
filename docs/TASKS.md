@@ -125,12 +125,13 @@
 
 ## Active
 
-`INDIA-3-JOINT-R1` has completed its bounded local implementation and becomes
-complete only when its unchanged green candidate merges. It fixes the SCWB
-factor at 1.4, makes each principal-plane/shaking-direction case and factored
-axial-load capacity basis explicit, enforces roof/flat-slab applicability, and
-supports interior plus left/right exterior beam topologies. `INDIA-3-BEAM-R1`
-is the next sequential packet and has not started.
+`INDIA-3-BEAM-R1` has completed its bounded local implementation and becomes
+complete only when its unchanged green candidate merges. It applies the
+accepted amended six-bar-diameter close-link limit, enforces the strict
+width/depth boundary and finite intake, and reports geometry plus requirements
+without claiming reinforcement compliance when no provided reinforcement is
+accepted. `INDIA-3-COLUMN-R1` is the next sequential packet and has not
+started.
 
 `LIB-PRO-006` merged through PR #851 at `2d6df18e`. It confirms the practical
 10 m x 4 m audit arithmetic and fail-closed footing-detailing `HOLD`, adds a
@@ -320,6 +321,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-3-BEAM-R1 | Repair the G0-bounded IS 13920 beam amendment, geometry, finite-intake, result-meaning, and cross-surface clause contract | Main Agent | ✅ LOCAL COMPLETE — focused 231 Python plus 24 FastAPI cases pass; quick, hooks, immutable candidate, hosted checks, unchanged merge, and tree equality remain required; `INDIA-3-COLUMN-R1` not started |
 | INDIA-3-JOINT-R1 | Repair the G0-bounded IS 13920 joint SCWB factor, directional/axial basis, applicability, and supported topology contract | Main Agent | ✅ COMPLETE ON UNCHANGED GREEN MERGE — focused 29-case contract evidence passes; no API/product surface or support/release/approval promotion; `INDIA-3-BEAM-R1` not started |
 | INDIA-3-SOURCE-META-R1 | Correct private IS 13920 document-kind and page-renderability metadata while preserving every source and alias | Main Agent | ✅ COMPLETE ON UNCHANGED GREEN MERGE — private archive verifies; no formula, runtime, support, release, or approval scope changed; `INDIA-3-JOINT-R1` not started |
 | INDIA-3-G0 | Audit the current IS 13920 beam/column/joint surface and freeze one bounded companion-code acceptance sequence | Main Agent | ✅ COMPLETE ON MERGE — source chain resolved; all three current families are `REPAIR_PACKET_REQUIRED`; no formula or support promotion occurred |

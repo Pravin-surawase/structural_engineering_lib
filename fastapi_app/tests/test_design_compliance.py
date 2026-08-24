@@ -23,6 +23,64 @@ def client():
 
 
 # =============================================================================
+# Ductility Requirements (IS 13920)
+# =============================================================================
+
+
+class TestDuctilityRequirements:
+    """Tests for the bounded IS 13920 beam requirements transport."""
+
+    def test_route_preserves_amended_requirement_and_contract_truth(self, client):
+        response = client.post(
+            "/api/v1/design/beam/ductility-check",
+            json={
+                "b": 250.0,
+                "D": 500.0,
+                "d": 450.0,
+                "fck": 25.0,
+                "fy": 500.0,
+                "min_long_bar_dia": 12.0,
+            },
+        )
+
+        assert response.status_code == 200
+        data = unwrap(response)
+        assert data["is_geometry_valid"] is True
+        assert data["min_pt"] == pytest.approx(0.24)
+        assert data["max_pt"] == pytest.approx(2.5)
+        assert data["confinement_spacing"] == pytest.approx(72.0)
+        assert data["result_kind"] == "REQUIREMENTS_WITH_GEOMETRY_CHECK"
+        assert data["compliance_status"] == ("NOT_EVALUATED_NO_PROVIDED_REINFORCEMENT")
+        assert data["standard"] == "IS 13920:2016"
+        assert data["clause_refs"] == [
+            "6.1.1",
+            "6.1.2",
+            "6.2.1(b)",
+            "6.2.2",
+            "6.3.5",
+        ]
+
+    def test_route_rejects_exact_0_3_geometry_boundary(self, client):
+        response = client.post(
+            "/api/v1/design/beam/ductility-check",
+            json={
+                "b": 300.0,
+                "D": 1000.0,
+                "d": 900.0,
+                "fck": 25.0,
+                "fy": 500.0,
+                "min_long_bar_dia": 12.0,
+            },
+        )
+
+        assert response.status_code == 200
+        data = unwrap(response)
+        assert data["is_geometry_valid"] is False
+        assert data["errors"][0]["code"] == "E_DUCTILE_002"
+        assert data["compliance_status"] == ("NOT_EVALUATED_NO_PROVIDED_REINFORCEMENT")
+
+
+# =============================================================================
 # Enhanced Shear Strength (IS 456 Cl 40.3)
 # =============================================================================
 

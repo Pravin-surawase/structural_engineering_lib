@@ -5,6 +5,134 @@
 
 ---
 
+## 2026-08-24 — Session: INDIA-3-BEAM-R1 bounded beam contract repair
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents)
+
+**Branch:** `codex/india-3-beam-r1`, from exact hosted INDIA-3-JOINT-R1
+merge `b59e6ea02e52056d1024bb4dc90204f149f112eb`, tree
+`acc167e2caaa311a8f4fe2861e6a5aa4afd7d75c`.
+
+**Git handoff receipt:**
+`docs/verification/india-3-beam-r1-git-handoff-receipt.json`
+
+**Focus:** Repair only the G0-bounded IS 13920 beam amendment, strict
+geometry, finite-intake, requirement-versus-compliance, and affected
+core/service/HTTP/clause-metadata contract. Preserve every adjacent formula,
+source, distribution, support, version, release, and professional-use hold.
+
+### Summary
+
+- Verified live `origin/main` and merged PR #866 at exact predecessor
+  `b59e6ea0`, tree `acc167e2`, before creating one fresh source-bound task
+  worktree. Every unrelated dirty, detached, divergent, or unknown lane remains
+  retained.
+- Reproduced all four outcome-changing G0 defects: the benchmark returned 96
+  mm instead of 72 mm, exact `b/D = 0.3` passed, NaN concrete strength produced
+  a NaN requirement with no error, and a requirement calculator reported
+  `Compliant` despite accepting no provided reinforcement.
+- Applied the accepted Amendment 1 spacing expression
+  `min(d/4, 6*db_min, 100 mm)`, enforced `b/D > 0.3`, and fail-closed finite
+  intake for all six calculation inputs. The 200 mm minimum width remains
+  inclusive.
+- Made result meaning machine-readable as
+  `REQUIREMENTS_WITH_GEOMETRY_CHECK` and
+  `NOT_EVALUATED_NO_PROVIDED_REINFORCEMENT`. Source/amendment identity and exact
+  clause references travel through the existing core, service/package, and
+  FastAPI route without adding a new endpoint or changing the service
+  signature.
+- Corrected swapped/generalized decorators, structured error clauses, clause
+  maps, OpenAPI truth, and generated Indian-code registration metadata. The
+  declared capability status is unchanged and its limitation now states that
+  provided reinforcement compliance is not evaluated.
+- No column, joint, wall, foundation, IS 875, or IS 1893 formula; React/Excel
+  surface; package version; release; source/distribution decision; support
+  promotion; or professional-use approval changed. `INDIA-3-COLUMN-R1` is next
+  and was not started.
+
+### Issues encountered
+
+- The retired `./run.sh context show task-brief` alias returned `unknown context
+  area` during orientation.
+- The existing beam path reproduced the amended-spacing, strict-boundary,
+  non-finite-input, compliance-label, and clause-identity defects frozen by G0.
+- Running the maintained error-document generator exposed that the committed
+  reference predates many unrelated error families and would have widened this
+  packet from two affected beam rows to a repository-wide 29-to-64-code
+  refresh.
+- The first consolidated focused command used the wrong containing class name
+  for one FastAPI endpoint test, and targeted Ruff requested canonical import
+  ordering in the new direct test.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `task-brief` is not a registered context-manifest area;
+  the governed `session begin` command itself provides the maintained compact
+  agent brief. Resolution: use that session brief plus targeted source/G0
+  reads. Proof: session start completed with source-bound runtime and
+  `READY_LOCAL`. ⚠️ TERMINAL ISSUE: `context show task-brief` is not a valid
+  area -> the canonical `session begin` brief supplied the bounded orientation.
+- Confirmed root cause: original commit `7f12fd90` introduced the eight-bar
+  spacing rule and success-like `Compliant` label without provided
+  reinforcement. Namespace-migration commit `32f49571` added the equality
+  tolerance and positivity guards that do not reject NaN. Later decorator and
+  reference-map commits `54b7e2d8`, `55a5096d`, and `410fb881` attached
+  generalized or swapped clause identities without an amended independent
+  benchmark. Resolution: implement the accepted G0 source map directly and
+  align every existing transport and affected metadata owner. Proof: the
+  benchmark is 72 mm, the 0.3 boundary fails, all non-finite inputs return
+  `E_INPUT_017`, and no success-like reinforcement claim is emitted.
+- Confirmed root cause: `generate_error_docs.py` reflects all 64 live error
+  definitions while the tracked reference intentionally remains an older
+  29-code snapshot. Resolution: preserve that separate repository-wide drift
+  and update only the two task-owned beam rows through the required surgical
+  file patch. Proof: the final diff contains only the corrected
+  `E_DUCTILE_001` and `E_DUCTILE_002` rows.
+- Confirmed root cause: the endpoint regression belongs to
+  `TestDepthValidationUX01`, not the guessed class selector; Ruff's isort rule
+  also owns the import grouping. Resolution: use the discovered exact node and
+  apply the formatter-owned import fix. Proof: the interrupted FastAPI set
+  passes all 24 cases and targeted Black/Ruff are green; the already-passing
+  231 Python cases were not rerun.
+
+### Validation through content freeze
+
+- Consolidated impact-mapped Python checks pass 231 cases across direct beam,
+  unit, property, service facade, deprecation, error-schema, API-stability,
+  generated-manifest, and private-source-boundary coverage.
+- The corrected FastAPI selection passes 24 cases, including the accepted 72
+  mm benchmark, explicit result meaning/provenance, strict 0.3 failure, and
+  existing effective-depth validation.
+- Targeted Black and Ruff pass. Focused mypy reports no issues in the beam core
+  and response model. Architecture boundaries report zero violations across
+  221 files, and all 2,288 internal imports across 696 Python files resolve.
+- The OpenAPI baseline matches 89 endpoints and 444 schemas. The Indian-code
+  manifest is current with no capability-status promotion; affected IS 13920
+  beam references are registered under their corrected identities.
+- Changed-path routing selects Python, FastAPI, control-plane, and docs. The
+  broad repository gate remains deferred to cumulative `INDIA-3-IS13920-M0`
+  because the bounded checks have no material failure or unknown impact.
+- The immutable candidate still requires the sole post-freeze quick gate,
+  normal commit hooks, clean-commit `session end`, all required hosted checks,
+  unchanged-head merge, and candidate/merge tree equality. Those later facts
+  remain external and are not pre-claimed here.
+
+### Preserved holds
+
+- This contract checks beam geometry and calculates requirements; it does not
+  accept provided longitudinal steel or link spacing and does not establish
+  reinforcement compliance or cumulative IS 13920 engineering acceptance.
+- `INDIA-3-COLUMN-R1` and `INDIA-3-IS13920-M0` remain separate sequential
+  packets. Wall/foundation detailing and IS 875/1893 remain held.
+- No protected/private source byte, text, image, hash, path, or database
+  content changed or entered the tracked candidate. Source/distribution,
+  support, version, release, package publication, and professional-use
+  approval remain separate claims.
+- Branch, worktree, archive, source-copy, alias, and unrelated-file deletion
+  remain unauthorized.
+
+---
+
 ## 2026-08-24 — Session: INDIA-3-JOINT-R1 bounded SCWB contract repair
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents)
