@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-24
-- Focus: Close strict rebar input, evidence-status, and living-state defects.
-- Git receipt: docs/verification/lib-pro-009-git-handoff-receipt.json | sha256:d48c0eed78c3187f7369e45ce0e6386a80f34d502a98f1a14f3aac2316e60bae | HOLD
-- Git identity: codex/lib-pro-009-rc-trust@b85d514ed93e22a154badde990ef1c3fb02ae0d9 | upstream=origin/main@b85d514ed93e22a154badde990ef1c3fb02ae0d9 | base=origin/main@b85d514ed93e22a154badde990ef1c3fb02ae0d9 | tree=dirty | operation=none
+- Focus: Prepare one bounded `v0.24.0a1` Alpha candidate from the integrated
+- Git receipt: docs/verification/lib-pro-010-rc-git-handoff-receipt.json | sha256:463221c1d41ada8659316fb267dc7dd1f9947f211b948efed1c5f48f4a3fb5e2 | HOLD
+- Git identity: codex/lib-pro-010-rc-artifact@b3309260686a05b4cbb9c9358c89d6218a700357 | upstream=origin/main@b3309260686a05b4cbb9c9358c89d6218a700357 | base=origin/main@b3309260686a05b4cbb9c9358c89d6218a700357 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: COMMIT_INTENDED_PATHS
 <!-- HANDOFF:END -->

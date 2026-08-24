@@ -1,0 +1,71 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-24T10:23:59Z",
+      "query_status": "OK",
+      "reference": "okay continue please",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "PREPARE_BOUNDED_0240A1_CANDIDATE",
+      "REFRESH_STALE_RELEASE_INCLUSION_EVIDENCE",
+      "UPDATE_CANDIDATE_VERSION_SCOPE_RELEASE_NOTES_AND_HANDOFF",
+      "BUILD_WHEEL_SDIST_AND_RUN_SOURCE_FREE_UAT",
+      "RUN_FOCUSED_QUICK_FULL_HOOK_AND_HOSTED_CHECKS",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-24T10:23:59Z",
+    "prohibited_actions": [
+      "CREATE_OR_PUSH_TAG",
+      "UPLOAD_TO_TESTPYPI_OR_PYPI",
+      "CREATE_GITHUB_RELEASE",
+      "CLAIM_STABLE_ENGINEERING_USE_QUALIFIED_INDIA4_OR_PROFESSIONAL_APPROVAL",
+      "START_IS13920_WALL_FOUNDATION_IS875_IS1893_OR_LATER_SCOPE",
+      "TRACK_OR_MUTATE_PRIVATE_SOURCE_MATERIAL",
+      "DELETE_BRANCH_WORKTREE_ARCHIVE_SOURCE_ALIAS_OR_UNRELATED_FILE",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_REWRITE_FORCE_PUSH_OR_BYPASS_CHECKS"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "PREPARE_BOUNDED_0240A1_CANDIDATE",
+        "REFRESH_STALE_RELEASE_INCLUSION_EVIDENCE",
+        "UPDATE_CANDIDATE_VERSION_SCOPE_RELEASE_NOTES_AND_HANDOFF",
+        "BUILD_WHEEL_SDIST_AND_RUN_SOURCE_FREE_UAT",
+        "RUN_FOCUSED_QUICK_FULL_HOOK_AND_HOSTED_CHECKS",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/lib-pro-010-rc-artifact",
+      "head_sha": "b3309260686a05b4cbb9c9358c89d6218a700357",
+      "task_id": "LIB-PRO-010-RC"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [
+      "PRESERVE_ALL_PRE_EXISTING_DIRTY_DETACHED_DIVERGENT_AND_UNKNOWN_LANES",
+      "PRESERVE_ALL_HISTORICAL_RELEASE_AND_INDIA3_LANES"
+    ],
+    "observed_at_utc": "2026-08-24T10:23:59Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

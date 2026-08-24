@@ -10,8 +10,10 @@
     "b4b64d56",
     "886871ae"
   ],
-  "scope": "FOOT-ISO-RC-V1 phases A-D1 plus reviewed exact-arithmetic and LIB-PRO-002-E assumption/provenance contract changes: concentric isolated-footing service, detailing, FastAPI route, and React workbench.",
-  "scope_boundary": "Report/export and catalogue closeout were not implemented in D1 and are not claimed by this receipt.",
+  "scope": "FOOT-ISO-RC-V1 phases A-D1 plus reviewed exact-arithmetic, canonical transport, public-domain validation, LIB-PRO-002-E assumption/provenance, and LIB-PRO-007-P3 supported end-anchorage changes: concentric isolated-footing service, detailing, FastAPI route, and React workbench.",
+  "scope_boundary": "Report/export and catalogue closeout were not implemented in D1 and are not claimed by this receipt. The end-anchorage refresh is limited to straight bars, 90-degree bends, and standard 180-degree U-hooks with explicit approved geometry; other arrangements, mechanical anchorage, curtailment, laps, coordinates, and complete bar-bending schedules remain held.",
+  "latest_reviewed_head": "b3309260686a05b4cbb9c9358c89d6218a700357",
+  "latest_reviewed_tree": "90894f2f39b4356b4aa30b6c3661ac9c718b3073",
   "reviewed_refreshes": [
     {
       "task": "INDIA-2-CLOSEOUT",
@@ -22,16 +24,31 @@
       "task": "LIB-PRO-002-E",
       "candidate": "cumulative-a-g",
       "basis": "Separate assumption origin from approval and bind arithmetic, assumption, library, and replay identities; assumed basis now holds an otherwise passing result."
+    },
+    {
+      "task": "A1-CANONICAL-TRUTH-TRANSPORT",
+      "commit": "a0458e1935e9f14bcba47a838d5fe61b46174b05",
+      "basis": "Transport the canonical result and review state without changing the supported footing calculation boundary."
+    },
+    {
+      "task": "LIB-PRO-003-B",
+      "commit": "e19b757ccb9922061369a236501f037ec20503ab",
+      "basis": "Reject unknown footing provenance-origin values at the public service boundary instead of accepting an unclassified engineering basis."
+    },
+    {
+      "task": "LIB-PRO-007-P3",
+      "commit": "0ea3e2d43343d70f007b0771896b41566e3b5064",
+      "basis": "Add source-bound, fail-closed evaluation of straight, 90-degree bend, and standard U-hook end anchorage while holding unsupported arrangements and incomplete geometry."
     }
   ],
   "required_owned_file_sha256": {
-    "Python/structural_lib/codes/is456/footing/detailing.py": "b85742a74f64d004a1f96c0a77f4213504045f3448f8b24c2d7aca0ee7580cc4",
-    "Python/structural_lib/services/footing_api.py": "89b3bce33bdc0352c2fe05fb9073d0e69489a38daf7c8f49f24a70623e51d178",
-    "Python/tests/test_footing_api.py": "b54f14c74ac5b285276a42fd1057cce8ca7a18af16953f351b007a529ce9e2aa",
-    "Python/tests/test_footing_detailing.py": "29837bfd8f894cf9c548ba94331ec49b164f04da9f0e1a3200a2e7f7e1a1ebce",
-    "fastapi_app/models/footing.py": "a6d99798b4fec7cf767aa11f66986d96d85df71701a010be0d75a1122d7e2c45",
+    "Python/structural_lib/codes/is456/footing/detailing.py": "a85e4fd602918adee4fbef9a573cd8b814cf0e0999f185140a11c77e42cb9551",
+    "Python/structural_lib/services/footing_api.py": "c6904b54aa094c1f988dd808f84fc88f1ed6166d29ba0598913630b5761f20c7",
+    "Python/tests/test_footing_api.py": "778df01cfcb7539a101e90753b5d9b3088cdf7b2f260452daf59657962f73dab",
+    "Python/tests/test_footing_detailing.py": "d0975e751bf176122e83b91e8469439f269aab1785e3b2950d151cc75418f851",
+    "fastapi_app/models/footing.py": "738e47d5baf6f59304ecad7ed37609fac73e8a32dfc501d15fe6c9fc6c05dfe6",
     "fastapi_app/routers/footing.py": "b141176f189ceccc9591a37b2743042e2a4be65c25ccff6dd88e3b58f1d4320f",
-    "fastapi_app/tests/test_footing.py": "714d0846257729fe60000d12611987be336c6732f5e1d8d43aca66d48c70c287",
+    "fastapi_app/tests/test_footing.py": "eb135608a354a95ee5f251260c62a521ea03cdcf463725a5cc75e1ea8852fe44",
     "react_app/src/features/footing/ConcentricIsolatedFootingPage.tsx": "7065be7cb39be4dd0008cadbcb05ba708d31ba13a65b530608f0f527f042d1a6",
     "react_app/src/features/footing/FootingInputForm.tsx": "d6144c17ad02c1d2d7c23bb6c5fc7299f529dd0fd4c1f1cd6ebf92497ce6270a",
     "react_app/src/features/footing/FootingResults.tsx": "0bf9314eed7d2533e109c25dae63961d45ea433e35486348b770730fa89699f8",

@@ -5,6 +5,92 @@
 
 ---
 
+## 2026-08-24 — Session: LIB-PRO-010-RC bounded v0.24.0a1 candidate
+
+**Agent:** Codex (`ops`, sole writer; no subagents)
+
+**Branch:** `codex/lib-pro-010-rc-artifact`, from exact hosted LIB-PRO-009 merge
+`b3309260686a05b4cbb9c9358c89d6218a700357`, tree
+`90894f2f39b4356b4aa30b6c3661ac9c718b3073`.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-010-rc-git-handoff-receipt.json`
+
+**Focus:** Prepare one bounded `v0.24.0a1` Alpha candidate from the integrated
+post-`v0.23.1a2` subset, freeze its supported scope and exclusions, build exact
+wheel/sdist artifacts, and run source-free installed-package UAT. Preserve the
+separate qualified-engineer, owner release, tag, upload, GitHub Release,
+professional-approval, later-scope, and cleanup gates.
+
+### Summary
+
+- Verified live GitHub `main` and `origin/main` at `b3309260`, then created one
+  fresh clean source-bound worktree. All retained dirty, detached, divergent,
+  historical, and unrelated lanes remain untouched.
+- Selected `0.24.0a1` from the maintained Alpha-only release policy and the
+  repository's next-version examples. Public `v0.23.1a2` remains immutable and
+  is not rebuilt from current `main`.
+- The first pre-bump preflight passed 7,033 Python tests, 492 FastAPI tests, and
+  the React production build, but correctly returned `NOT_READY` because the
+  footing release-inclusion receipt predated six reviewed footing-path changes.
+- Traced every changed footing path to merged canonical-transport, public-domain
+  validation, or bounded end-anchorage packets; refreshed exact owned-file
+  hashes and limitations; and passed the inclusion gate plus 128 focused
+  release/footing tests.
+
+### Issues encountered
+
+- An initial GitHub commit query used the wrong account spelling and returned
+  HTTP 404 before the configured remote owner was inspected.
+- The first pre-bump release preflight found six stale footing inclusion hashes
+  and returned `NOT_READY` despite otherwise green Python, FastAPI, and React
+  results.
+- The first preliminary commit hook rejected the inherited LIB-PRO-009 handoff
+  receipt after its 15-minute authorization and retention observations became
+  stale.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the GitHub query guessed `pravinsurawase` instead of
+  reading the configured `Pravin-surawase` remote identity. Resolution: resolve
+  `nameWithOwner` through `gh repo view` before querying; live GitHub and local
+  remote `main` both equal `b3309260`. ⚠️ TERMINAL ISSUE: guessed GitHub owner
+  returned 404 -> resolved the configured remote identity first.
+- Confirmed root cause: the footing receipt still bound hashes from the A-G
+  release slice even though PRs #822, #833, and #855 had deliberately changed
+  six owned paths. Resolution: review those exact merged diffs and evidence,
+  name the refresh chain, preserve the narrowed anchorage holds, and bind the
+  current hashes. Proof: `footing-inclusion-check` and 128 release/footing tests
+  pass. ⚠️ TERMINAL ISSUE: preflight stopped on stale inclusion evidence ->
+  refreshed only the reviewed receipt and its truthful gate message.
+- Confirmed root cause: handoff observations are intentionally valid for at
+  most 900 seconds, so a later task cannot reuse the predecessor's authorization
+  or retention evidence. Resolution: create a fresh LIB-PRO-010-RC source
+  evidence and fail-closed task receipt, then embed it through the maintained
+  session handoff. Proof: the session-document hook accepts the current receipt.
+  ⚠️ TERMINAL ISSUE: the first commit hook stopped on stale predecessor
+  evidence -> generated the current task-owned receipt instead of rewriting the
+  historical one.
+
+### Validation through current checkpoint
+
+- Pre-bump candidate preflight: 7,033 Python passed, 3 skipped, 6 deselected;
+  492 FastAPI passed, 6 deselected; React Node 24 install/build passed. Verdict:
+  `NOT_READY` only for the six stale inclusion hashes.
+- Focused release and footing verification: 128 tests pass; the refreshed
+  inclusion gate passes and JSON/diff checks are clean.
+
+### Preserved holds
+
+- No tag, TestPyPI/PyPI upload, GitHub Release, stable/engineering-use wording,
+  qualified-engineer receipt, INDIA-4 acceptance, or professional approval.
+- No IS 13920 wall/foundation, IS 875, IS 1893, dynamic, response-spectrum, FEM,
+  ETABS write-back, or complete building-design scope.
+- No branch, worktree, archive, source-copy, alias, private source, or unrelated
+  file deletion or mutation.
+
+---
+
 ## 2026-08-24 — Session: LIB-PRO-009 bounded release-trust closeout
 
 **Agent:** Codex (`backend`, sole writer; no subagents)

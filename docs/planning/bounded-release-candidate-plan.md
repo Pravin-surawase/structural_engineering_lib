@@ -1,5 +1,5 @@
 ---
-task: LIB-PRO-009
+task: LIB-PRO-010-RC
 title: Bounded Release Candidate and Qualified Review Plan
 status: active
 owner: Main Agent and repository owner
@@ -36,8 +36,8 @@ or professional claim changes in LIB-PRO-009.
 
 ## 3. Ordered candidate gates
 
-1. Integrate the unchanged LIB-PRO-009 candidate after focused, quick, full,
-   commit-hook, and hosted checks pass.
+1. LIB-PRO-009 integrated through PR #870 at merge `b3309260`; its candidate
+   and merged trees both equal `90894f2f`.
 2. Freeze the exact supported subset, exclusions, candidate version, commit,
    and artifact identities. Later IS 13920 wall/foundation and IS 875/1893 work
    remains outside that candidate.
@@ -74,7 +74,9 @@ repeat only when an outcome-changing repair invalidates their evidence.
 
 - No claim of complete code-compliant building design.
 - No qualified-engineer receipt or professional approval in this packet.
-- No release, version, package, tag, or public-distribution action.
+- Candidate version preparation and local wheel/sdist verification are in scope
+  only for `0.24.0a1`; no tag, package upload, GitHub Release, stable claim, or
+  public-distribution action is authorized.
 - No IS 13920 wall/foundation, IS 875, IS 1893, dynamic, response-spectrum,
   FEM, ETABS write-back, or additional building-workflow scope.
 - No branch, worktree, archive, source-copy, alias, or unrelated-file cleanup.

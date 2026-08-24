@@ -570,7 +570,7 @@ def cmd_footing_inclusion_check(args: argparse.Namespace) -> int:
     if errors:
         _print_version_errors(errors)
         return 1
-    print("  ✓ FOOT-ISO-RC-V1 owned files match reviewed source head 886871ae")
+    print("  ✓ FOOT-ISO-RC-V1 owned files match the reviewed inclusion hashes")
     print("  ✓ Footing Python, FastAPI, and React integration markers are present")
     return 0
 
