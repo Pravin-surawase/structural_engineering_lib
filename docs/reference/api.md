@@ -18,9 +18,9 @@ approval.
 **Audience:** Developers
 **Status:** Development Preview — Supported Cases Only
 **Importance:** Critical
-**Document Version:** 0.23.1a2
+**Document Version:** 0.24.0a1
 **Created:** 2025-01-01
-**Last Updated:** 2026-08-17<br>
+**Last Updated:** 2026-08-24<br>
 
 ---
 

@@ -1,8 +1,7 @@
 cff-version: 1.2.0
 title: "Structural Engineering Library (IS 456)"
-version: 0.23.1a2
-date-released: 2026-08-17
-message: "Public Alpha v0.23.1a2. This immutable artifact is case-qualified and still requires independent verification and qualified professional review for engineering use; later main changes are not included."
+version: 0.24.0a1
+message: "Prepared Alpha candidate v0.24.0a1; not tagged or published. Case-qualified workflows still require independent verification and qualified professional review for engineering use."
 repository-code: "https://github.com/Pravin-surawase/structural_engineering_lib"
 url: "https://pypi.org/project/structural-lib-is456/"
 authors:

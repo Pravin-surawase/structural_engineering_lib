@@ -70,7 +70,7 @@
 ## Current Release
 
 | **Current public release** | v0.23.1a2 | ✅ ALPHA RELEASED — immutable tag/public artifacts recorded; later `main` work is not included |
-| **Candidate in preparation** | v0.24.0a1 | 🛠 LIB-PRO-010-RC — local bounded artifact/UAT only; no tag, publication, stable, engineering-use, or professional-approval authority |
+| **Local technical candidate** | v0.24.0a1 | 🧪 LIB-PRO-010-RC — exact wheel/sdist, source-free UAT, and bounded benchmark replay pass; immutable hosted checks and qualified review remain; no tag/publication authority |
 - **Release evidence:** tag target `09861d3d`; public wheel SHA-256 `279b8270…43a9`; public installed-package UAT green
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization

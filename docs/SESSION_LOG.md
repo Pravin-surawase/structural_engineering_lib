@@ -37,6 +37,18 @@ professional-approval, later-scope, and cleanup gates.
   validation, or bounded end-anchorage packets; refreshed exact owned-file
   hashes and limitations; and passed the inclusion gate plus 128 focused
   release/footing tests.
+- The final pre-bump gate then passed 7,035 Python tests, 492 FastAPI tests, and
+  the React build after repairing the exact inclusive 4.0% column steel-ratio
+  boundary exposed by Hypothesis. The maintained release command prepared
+  source metadata and documentation for `0.24.0a1` without a tag or upload.
+- Froze the declared subset and exclusions, built one wheel/sdist pair, and
+  recorded exact artifact hashes. Clean installed-wheel verification passed
+  6,020 package tests plus the sample-job/critical/report CLI flow; all 29 UAT
+  cases and all 14 advertised commands are accounted for.
+- A 242-test bounded replay passed across gravity, Excel, beam pipeline, slab,
+  column, shear, footing, and release UAT. This is explicitly recorded as
+  software/benchmark evidence while engineering check, qualified review,
+  professional approval, and release authority remain false.
 
 ### Issues encountered
 
@@ -48,6 +60,18 @@ professional-approval, later-scope, and cleanup gates.
 - The first preliminary commit hook rejected the inherited LIB-PRO-009 handoff
   receipt after its 15-minute authorization and retention observations became
   stale.
+- The final pre-bump Hypothesis run generated a mathematically exact 4.0%
+  column steel ratio as `0.04000000000000001`; the strict shared range check
+  rejected the declared inclusive upper boundary.
+- The documentation drift checker tried to relabel the public `v0.23.1a2` badge
+  and wording as the unpublished `v0.24.0a1` source candidate.
+- Three exploratory shell checks used zsh-sensitive names or unmatched globs:
+  `Python/structural_lib/release_uat*.json`, `Python/*.egg-info`, and the shell
+  variable name `path`. They stopped before mutation.
+- The first direct handoff validation inferred a nonexistent `--receipt` option;
+  the maintained command accepts the receipt as a positional argument.
+- The first exact-wheel preflight passed every technical phase but returned
+  `NOT_READY` because release evidence was intentionally still uncommitted.
 
 ### Root causes and resolutions
 
@@ -71,14 +95,63 @@ professional-approval, later-scope, and cleanup gates.
   ⚠️ TERMINAL ISSUE: the first commit hook stopped on stale predecessor
   evidence -> generated the current task-owned receipt instead of rewriting the
   historical one.
+- Confirmed root cause: binary floating-point multiplication/division can move
+  a value representing the exact declared 4.0% ratio one ulp above `0.04`.
+  Resolution: canonicalize only values within `1e-12` of the two inclusive code
+  boundaries before the range check and add deterministic regressions for both
+  0.8% and 4.0%. Proof: 77 axial tests and the final 7,035-test pre-bump gate
+  pass.
+- Confirmed root cause: `bump_version.py` treated publication badges, public
+  pins, and source metadata as one version axis. Resolution: version sync now
+  owns prepared-source references only; public tags and release identity remain
+  unchanged until separately authorized publication. Proof: focused release
+  tests pass and `check_doc_versions.py --ci` accepts the truthful split.
+- Confirmed root cause: zsh expands unmatched globs as errors and reserves
+  `path` as the command-search array. Resolution: use explicit paths, `find`,
+  and the task-specific variable name `candidate_file`. Proof: generated-output
+  inspection and the package aggregate SHA-256 completed without mutation.
+  ⚠️ TERMINAL ISSUE: unmatched release-UAT/egg-info globs and reserved `path`
+  stopped read-only checks -> reran with explicit targets and a task-specific
+  variable.
+- Confirmed root cause: the validation option was inferred instead of read from
+  the subcommand help. Resolution: use the documented positional receipt path.
+  Proof: validation reports `LIB-PRO-010-RC | HOLD`, with only the expected
+  pre-commit/pre-PR holds. ⚠️ TERMINAL ISSUE: guessed `--receipt` was rejected ->
+  used the exact positional interface returned by `validate --help`.
+- Confirmed root cause: candidate preflight deliberately requires a clean Git
+  tree, while this run occurred before the evidence and version files were
+  frozen in a commit. Resolution: accept the run only as technical-phase proof,
+  finish all candidate-owned records, create the immutable commit, and rerun the
+  unchanged exact-wheel preflight from the clean tree.
 
-### Validation through current checkpoint
+### Validation through content freeze
 
 - Pre-bump candidate preflight: 7,033 Python passed, 3 skipped, 6 deselected;
   492 FastAPI passed, 6 deselected; React Node 24 install/build passed. Verdict:
   `NOT_READY` only for the six stale inclusion hashes.
 - Focused release and footing verification: 128 tests pass; the refreshed
   inclusion gate passes and JSON/diff checks are clean.
+- Final pre-bump candidate preparation: 7,035 Python tests pass, 3 skip, and 6
+  deselect; 492 FastAPI tests pass with 6 deselected; React Node 24 production
+  build passes. Verdict: `READY_TO_PREPARE_CANDIDATE` with publication hold.
+- Exact wheel SHA-256:
+  `62118dd3ae3a84da2910ec3f97a8e3b6a197ec6c7a2284b1e180deb78773035b`;
+  exact sdist SHA-256:
+  `b939d0926aa4e9bb176dd5f3ef2226e88ef17429f36fc8cc190566de8b3641e3`.
+- Source-free wheel verification: 6,020 package tests pass, 51 skip, and 2
+  deselect; installed origin/version and sample-job/critical/report flows pass.
+  Candidate filename, METADATA, source version, clean import, and CLI agree.
+- Exact-wheel UAT: 29/29 cases pass; all 14 advertised commands are inventoried;
+  `BLOCKED`, `NOT_EVALUATED`, `HOLD`, `FAIL`, review-required, and public-example
+  paths are exercised. Focused benchmark/software replay: 242/242 pass.
+- The first exact-wheel preflight passes 7,036 Python tests, 492 FastAPI tests,
+  React build, doc sync, version surfaces, installed-wheel UAT, and examples; its
+  sole expected pre-commit hold is the dirty tree. The clean immutable-head
+  rerun and hosted checks follow the candidate commit.
+- Final frozen-content checks: 155/155 affected release/version/column/UAT tests
+  pass; Ruff and Black pass all affected Python paths; the quick gate passes
+  10/10; and the repository-wide gate passes 31/31 with eight unchanged quick
+  results reused by the content-addressed runner.
 
 ### Preserved holds
 

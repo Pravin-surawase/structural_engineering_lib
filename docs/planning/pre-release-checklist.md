@@ -5,11 +5,11 @@
 **Status:** Review
 **Importance:** High
 **Created:** 2026-03-31
-**Last Updated:** 2026-08-22
+**Last Updated:** 2026-08-24
 
 ## Current State
 
-Current source metadata: 0.23.1a2
+Current source metadata: 0.24.0a1 (prepared candidate; unpublished)
 Current public Alpha: v0.23.1a2
 
 - **Published source:** tag `v0.23.1a2` at `09861d3d5ef758abbe0f7c40b8b49b2f90510765`
@@ -19,7 +19,21 @@ Current public Alpha: v0.23.1a2
 - **Current main boundary:** Gravity Workflow V1 and E1 merged after the tag and are not part of the published artifact
 - **Review policy:** qualified structural-engineering review is required before stable/engineering-use approval, not before this Alpha release
 
-## Next Alpha Readiness Checklist
+## v0.24.0a1 Candidate Readiness
+
+- [x] Owner authorizes preparation of v0.24.0a1 without tag or publication
+- [x] Base the release lane on synchronized `main` at `b3309260686a05b4cbb9c9358c89d6218a700357`
+- [x] Repair the stale footing inclusion receipt and inclusive 4.0% column-ratio boundary
+- [x] Pass the pre-bump gate: 7,035 Python tests, 492 FastAPI tests, and React build
+- [x] Freeze and build one exact v0.24.0a1 wheel/sdist pair
+- [x] Pass source-free installed-package UAT and bounded benchmark/hand-calculation replays; this is not an engineering check
+- [ ] Pass immutable review, required hosted checks, and exact-candidate qualified review
+- [ ] Obtain a separate owner decision for any tag, upload, GitHub Release, stable claim, or engineering-use wording
+
+Preparation does not authorize publication. The current public Alpha remains
+the immutable `v0.23.1a2` artifact recorded below.
+
+## v0.23.1a2 Historical Release State
 
 - [x] Owner authorizes preparation of v0.23.1a2 without tag or publication
 - [x] Base the release lane on synchronized `main` at `970a78c1931a3aa0439f487e6892a888bb113962`

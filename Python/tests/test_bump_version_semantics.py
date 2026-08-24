@@ -39,6 +39,29 @@ def _write_candidate_bump_fixture(root: Path) -> tuple[Path, Path, Path]:
     return tasks, brief, readme
 
 
+def _write_public_candidate_fixture(root: Path) -> tuple[Path, Path]:
+    pyproject = root / "Python" / "pyproject.toml"
+    pyproject.parent.mkdir()
+    pyproject.write_text('[project]\nversion = "0.24.0a1"\n', encoding="utf-8")
+
+    readme = root / "README.md"
+    readme.write_text(
+        "[Alpha](https://example.invalid/releases/tag/v0.23.1a2)\n"
+        "> **v0.24.0a1 is an Alpha development preview.\n"
+        'pip install "structural-lib-is456===0.24.0a1"\n'
+        "`0.23.1a2` remains the current public Alpha.\n",
+        encoding="utf-8",
+    )
+    checklist = root / "docs" / "planning" / "pre-release-checklist.md"
+    checklist.parent.mkdir(parents=True)
+    checklist.write_text(
+        "Current source metadata: 0.24.0a1 (prepared candidate; unpublished)\n"
+        "Current public Alpha: v0.23.1a2\n",
+        encoding="utf-8",
+    )
+    return readme, checklist
+
+
 def test_candidate_bump_preserves_published_release_evidence(
     tmp_path: Path, monkeypatch
 ):
@@ -60,6 +83,24 @@ def test_candidate_bump_preserves_published_release_evidence(
     assert "## New in v0.23.1a1" in readme_content
     assert "structural-lib-is456===0.23.1a1" in readme_content
     assert "structural-lib-is456[dxf]===0.23.1a1" in readme_content
+
+    monkeypatch.setattr(sys, "argv", ["bump_version.py", "--check-docs"])
+    assert bump_version.main() == 0
+
+
+def test_doc_sync_preserves_public_release_identity(tmp_path: Path, monkeypatch):
+    """A prepared source version must not relabel the last public release."""
+    readme, checklist = _write_public_candidate_fixture(tmp_path)
+    monkeypatch.setattr(bump_version, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(sys, "argv", ["bump_version.py", "--sync-docs"])
+
+    assert bump_version.main() == 0
+    readme_content = readme.read_text(encoding="utf-8")
+    assert "releases/tag/v0.23.1a2" in readme_content
+    assert "v0.24.0a1 is an Alpha development preview" in readme_content
+    assert "current public Alpha" in readme_content
+    assert "0.23.1a2" in readme_content
+    assert "Current source metadata: 0.24.0a1" in checklist.read_text(encoding="utf-8")
 
     monkeypatch.setattr(sys, "argv", ["bump_version.py", "--check-docs"])
     assert bump_version.main() == 0

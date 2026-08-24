@@ -64,15 +64,12 @@ VERSION_FILES = {
     ],
 }
 
-# Documentation references that should track the library version. Release-history
-# surfaces (TASKS.md and next-session-brief.md) are intentionally excluded: their
-# version/status rows describe published evidence, not the prepared candidate.
+# Documentation references that should track the prepared source version.
+# Published tags, badges, install pins, and release-history surfaces are
+# intentionally excluded: advancing source metadata prepares a candidate but
+# does not authorize or prove publication.
 DOC_VERSION_FILES = {
     "README.md": [
-        (
-            r"(releases/tag/v)[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
-            r"\g<1>{version}",
-        ),
         (
             r"^(> \*\*v)[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?( is an Alpha development preview\.)",
             r"\g<1>{version}\g<2>",
@@ -81,17 +78,12 @@ DOC_VERSION_FILES = {
             r"structural-lib-is456={2,3}[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
             "structural-lib-is456==={version}",
         ),
-        (
-            r"^`[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?` is the current published Alpha preview\.",
-            "`{version}` is the current published Alpha preview.",
-        ),
     ],
     "Python/README.md": [
         (
             r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
             "**Version:** {version}",
         ),
-        (r"@v[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?", "@v{version}"),
         (r"^## New in v[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?", "## New in v{version}"),
         (
             r"(structural-lib-is456(?:\[[^\]]+\])?)={2,3}"
@@ -100,7 +92,6 @@ DOC_VERSION_FILES = {
         ),
     ],
     "docs/getting-started/python-quickstart.md": [
-        (r"@v[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?", "@v{version}"),
         (
             r"structural-lib-is456={2,3}[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
             "structural-lib-is456==={version}",
@@ -120,7 +111,7 @@ DOC_VERSION_FILES = {
     ],
     "docs/planning/pre-release-checklist.md": [
         (
-            r"^(Installed metadata version: )[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?(.*)$",
+            r"^(Current source metadata: )[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?(.*)$",
             r"\g<1>{version}\g<2>",
         ),
     ],
