@@ -402,6 +402,16 @@ class TestShortAxialCapacity:
         result = short_axial_capacity(fck=25, fy=415, Ag_mm2=Ag, Asc_mm2=Asc)
         assert result.steel_ratio == pytest.approx(0.04, rel=1e-9)
 
+    @pytest.mark.parametrize("ratio", [0.008, 0.04])
+    def test_decimal_ratio_boundaries_survive_float_round_trip(self, ratio):
+        """Exact code limits remain inclusive after area multiplication/division."""
+        Ag = 57275.151400288785
+        Asc = ratio * Ag
+
+        result = short_axial_capacity(fck=20, fy=415, Ag_mm2=Ag, Asc_mm2=Asc)
+
+        assert result.steel_ratio == ratio
+
     def test_steel_above_maximum_ratio_is_rejected(self):
         """Asc/Ag = 5% is outside the maintained design domain."""
         Ag = 90000
