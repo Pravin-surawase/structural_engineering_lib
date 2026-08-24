@@ -2,7 +2,7 @@
   "authorization": {
     "authority_source": {
       "kind": "USER_DELEGATION",
-      "observed_at_utc": "2026-08-24T05:07:19Z",
+      "observed_at_utc": "2026-08-24T05:23:41Z",
       "query_status": "OK",
       "reference": "Continue the next work in the owner-authorized sequential INDIA-3 chain after unchanged green merge of INDIA-3-JOINT-R1.",
       "status": "OBSERVED"
@@ -23,7 +23,7 @@
       "MERGE_UNCHANGED_GREEN_PR"
     ],
     "next_action": "CREATE_IMMUTABLE_CANDIDATE_AFTER_FOCUSED_QUICK_AND_HOOKS",
-    "observed_at_utc": "2026-08-24T05:07:19Z",
+    "observed_at_utc": "2026-08-24T05:23:41Z",
     "prohibited_actions": [
       "ADD_UNRELATED_API_PRODUCT_OR_PACKAGE_SURFACE",
       "CHANGE_COLUMN_JOINT_WALL_FOUNDATION_IS875_OR_IS1893_FORMULAS",
@@ -52,7 +52,7 @@
         "MERGE_UNCHANGED_GREEN_PR"
       ],
       "branch": "codex/india-3-beam-r1",
-      "head_sha": "b59e6ea02e52056d1024bb4dc90204f149f112eb",
+      "head_sha": "dcec854c21136b72783e5e1116ba280b0adf451a",
       "task_id": "INDIA-3-BEAM-R1"
     }
   },
@@ -67,34 +67,34 @@
     "REVIEW_NOT_CHECKED"
   ],
   "integration": {
-    "observed_at_utc": "2026-08-24T05:07:19Z",
+    "observed_at_utc": "2026-08-24T05:23:41Z",
     "query_status": "UNKNOWN",
     "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
     "status": "NOT_APPLICABLE"
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "9a7dfa07f521ede3e5a588df12b4fbf4c1a5eca90d483feca4a342dde139b0ba",
+    "receipt_sha256": "9328700740d73b0316c62e7517d3ee8a50b496b167b6feec2815cc1e682073de",
     "state": {
       "branch": "codex/india-3-beam-r1",
       "default_base": {
-        "ahead": 0,
+        "ahead": 1,
         "behind": 0,
         "ref": "origin/main",
         "sha": "b59e6ea02e52056d1024bb4dc90204f149f112eb",
-        "status": "equal"
+        "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 93.259,
+      "duration_ms": 98.613,
       "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
       "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib17",
-      "head_sha": "b59e6ea02e52056d1024bb4dc90204f149f112eb",
+      "head_sha": "dcec854c21136b72783e5e1116ba280b0adf451a",
       "hold_reasons": [
-        "changed paths: 22"
+        "changed paths: 6"
       ],
       "linked_worktree": true,
       "locks": [],
-      "observed_at_utc": "2026-08-24T05:12:03.814640+00:00",
+      "observed_at_utc": "2026-08-24T05:24:08.342775+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -105,48 +105,31 @@
       "tree": {
         "clean": false,
         "conflicted_paths": [],
-        "dirty_count": 22,
+        "dirty_count": 6,
         "modified_paths": [
-          "Python/structural_lib/codes/is13920/beam.py",
-          "Python/structural_lib/codes/is456/clauses.json",
-          "Python/structural_lib/core/errors.py",
-          "Python/structural_lib/services/beam_api.py",
-          "Python/tests/property/strategies.py",
-          "Python/tests/property/test_ductile_hypothesis.py",
-          "Python/tests/unit/test_ductile.py",
           "docs/SESSION_LOG.md",
-          "docs/TASKS.md",
           "docs/planning/next-session-brief.md",
-          "docs/reference/clause-map.json",
-          "docs/reference/clause-map.md",
-          "docs/reference/error-codes.md",
-          "docs/verification/indian-code-capability-coverage.json",
-          "fastapi_app/models/compliance.py",
-          "fastapi_app/openapi_baseline.json",
-          "fastapi_app/routers/design.py",
-          "fastapi_app/tests/test_design_compliance.py",
-          "scripts/_lib/indian_code_manifest.py"
+          "docs/reference/api-classification.json",
+          "docs/reference/api-compatibility-ledger.json",
+          "docs/verification/india-3-beam-r1-git-handoff-receipt.json",
+          "docs/verification/india-3-beam-r1-git-handoff-source-evidence.json"
         ],
         "staged_paths": [],
-        "untracked_paths": [
-          "Python/tests/codes/is13920/test_beam.py",
-          "docs/verification/india-3-beam-r1-evidence.json",
-          "docs/verification/india-3-beam-r1-git-handoff-source-evidence.json"
-        ]
+        "untracked_paths": []
       },
       "upstream": {
         "ahead": 0,
         "behind": 0,
-        "ref": "origin/main",
-        "sha": "b59e6ea02e52056d1024bb4dc90204f149f112eb",
+        "ref": "origin/codex/india-3-beam-r1",
+        "sha": "dcec854c21136b72783e5e1116ba280b0adf451a",
         "status": "equal"
       },
       "worktree_root": "/Users/pravinsurawase/.codex/worktrees/india-3-beam-r1/structural_engineering_lib"
     }
   },
-  "local_state_receipt_hash": "sha256:9a7dfa07f521ede3e5a588df12b4fbf4c1a5eca90d483feca4a342dde139b0ba",
+  "local_state_receipt_hash": "sha256:9328700740d73b0316c62e7517d3ee8a50b496b167b6feec2815cc1e682073de",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-08-24T05:12:03.814784+00:00",
+  "observed_at_utc": "2026-08-24T05:24:08.342911+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"
@@ -166,7 +149,7 @@
       "PRESERVE_PRIVATE_SOURCE_ARCHIVE_ALL_SOURCE_COPIES_AND_ALIASES",
       "BRANCH_WORKTREE_ARCHIVE_SOURCE_COPY_ALIAS_AND_UNRELATED_FILE_DELETION_NOT_AUTHORIZED"
     ],
-    "observed_at_utc": "2026-08-24T05:07:19Z",
+    "observed_at_utc": "2026-08-24T05:23:41Z",
     "owner": "Main Agent under explicit user and repository preservation policy",
     "query_status": "OK",
     "status": "OBSERVED"
@@ -205,6 +188,8 @@
       "docs/reference/clause-map.json",
       "docs/reference/clause-map.md",
       "docs/reference/error-codes.md",
+      "docs/reference/api-classification.json",
+      "docs/reference/api-compatibility-ledger.json",
       "docs/verification/indian-code-capability-coverage.json",
       "fastapi_app/models/compliance.py",
       "fastapi_app/openapi_baseline.json",

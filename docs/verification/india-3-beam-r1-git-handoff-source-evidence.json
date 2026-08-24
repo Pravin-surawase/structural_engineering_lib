@@ -2,13 +2,13 @@
   "authorization": {
     "status": "OBSERVED",
     "query_status": "OK",
-    "observed_at_utc": "2026-08-24T05:07:19Z",
+    "observed_at_utc": "2026-08-24T05:23:41Z",
     "authority_source": {
       "kind": "USER_DELEGATION",
       "reference": "Continue the next work in the owner-authorized sequential INDIA-3 chain after unchanged green merge of INDIA-3-JOINT-R1.",
       "status": "OBSERVED",
       "query_status": "OK",
-      "observed_at_utc": "2026-08-24T05:07:19Z"
+      "observed_at_utc": "2026-08-24T05:23:41Z"
     },
     "authorized_actions": [
       "REPAIR_G0_BOUNDED_IS13920_BEAM_CONTRACT",
@@ -38,7 +38,7 @@
     "target_binding": {
       "task_id": "INDIA-3-BEAM-R1",
       "branch": "codex/india-3-beam-r1",
-      "head_sha": "b59e6ea02e52056d1024bb4dc90204f149f112eb",
+      "head_sha": "dcec854c21136b72783e5e1116ba280b0adf451a",
       "actions": [
         "REPAIR_G0_BOUNDED_IS13920_BEAM_CONTRACT",
         "APPLY_ACCEPTED_AMENDMENT_CHAIN_AND_STRICT_GEOMETRY_BOUNDARY",
@@ -59,13 +59,13 @@
   "integration": {
     "status": "NOT_APPLICABLE",
     "query_status": "OK",
-    "observed_at_utc": "2026-08-24T05:07:19Z",
+    "observed_at_utc": "2026-08-24T05:23:41Z",
     "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR"
   },
   "retention": {
     "status": "OBSERVED",
     "query_status": "OK",
-    "observed_at_utc": "2026-08-24T05:07:19Z",
+    "observed_at_utc": "2026-08-24T05:23:41Z",
     "decision": "RETAIN_ALL_EXISTING_LANES_AND_PRIVATE_SOURCE_MATERIAL",
     "owner": "Main Agent under explicit user and repository preservation policy",
     "holds": [

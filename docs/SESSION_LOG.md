@@ -63,6 +63,18 @@ source, distribution, support, version, release, and professional-use hold.
 - The first consolidated focused command used the wrong containing class name
   for one FastAPI endpoint test, and targeted Ruff requested canonical import
   ordering in the new direct test.
+- The first hosted documentation job stopped at the API-classification
+  freshness check before MkDocs ran.
+- A direct attempt to run `scripts/check_session_docs.py` failed because that
+  path is not a maintained top-level script.
+- The first handoff-receipt validation call guessed an unsupported `--receipt`
+  option instead of the required positional receipt path.
+- Receipt validation then failed closed because the task authorization and
+  retention observations had aged beyond the bounded freshness window during
+  implementation and hosted repair preparation.
+- The first repair commit attempt was stopped by the session-document hook
+  because the handoff line carried the receipt file checksum instead of its
+  canonical local-state receipt hash.
 
 ### Root causes and resolutions
 
@@ -94,6 +106,39 @@ source, distribution, support, version, release, and professional-use hold.
   apply the formatter-owned import fix. Proof: the interrupted FastAPI set
   passes all 24 cases and targeted Black/Ruff are green; the already-passing
   231 Python cases were not rerun.
+- Confirmed root cause: the candidate added explicit result-semantics and
+  provenance fields to `DuctileBeamResult`, but the maintained API registries
+  were not regenerated before the first immutable candidate. The date-bound
+  classification registry therefore still carried 2026-08-23, and the compact
+  compatibility ledger still carried the preceding result signature. An
+  unpacked semantic comparison found exactly one compatibility change: the
+  `DuctileBeamResult` root-stub projection signature and its derived identity
+  key. Resolution: regenerate both maintained registries as an explicit repair
+  candidate. Proof: `generate_api_classification.py --check` and the exact
+  hosted documentation command set are the affected rerun; counts, callers,
+  classifications, authorization, package version, support, and release truth
+  remain unchanged.
+- Confirmed root cause: session-document validation is owned by the governed
+  session-end workflow rather than a maintained top-level
+  `scripts/check_session_docs.py`. Resolution: use the required clean-commit
+  `./run.sh session end --agent structural-math` validation after the repair
+  candidate is committed. ⚠️ TERMINAL ISSUE: the guessed direct session-doc
+  script path did not exist -> use the governed session-end workflow.
+- Confirmed root cause: `git_handoff_receipt.py validate` defines its receipt
+  as a positional argument. Resolution: rerun it with the exact tracked path as
+  the positional value. ⚠️ TERMINAL ISSUE: unsupported `--receipt` option ->
+  use the documented positional validation argument.
+- Confirmed root cause: the receipt deliberately treats caller-supplied
+  authorization and retention evidence older than its freshness limit as
+  unknown. Resolution: re-observe the unchanged owner delegation, task/head
+  binding, integration non-claim, and retain-all decision, then regenerate the
+  receipt. Proof: positional receipt validation passes with the refreshed
+  bounded evidence; no authority or deletion scope was added.
+- Confirmed root cause: the handoff contract binds `sha256:` to
+  `local_state_receipt_hash`, while the preparatory command had used a generic
+  file checksum. Resolution: copy the receipt's exact canonical local-state
+  hash into the handoff line and rerun the normal commit hooks. The failed
+  `check-session-docs` hook is the repair evidence; no commit was created.
 
 ### Validation through content freeze
 

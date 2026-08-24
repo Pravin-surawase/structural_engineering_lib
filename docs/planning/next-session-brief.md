@@ -5,8 +5,8 @@
 <!-- HANDOFF:START -->
 - Date: 2026-08-24
 - Focus: Repair only the G0-bounded IS 13920 beam amendment, strict
-- Git receipt: docs/verification/india-3-beam-r1-git-handoff-receipt.json | sha256:9a7dfa07f521ede3e5a588df12b4fbf4c1a5eca90d483feca4a342dde139b0ba | HOLD
-- Git identity: codex/india-3-beam-r1@b59e6ea02e52056d1024bb4dc90204f149f112eb | upstream=origin/main@b59e6ea02e52056d1024bb4dc90204f149f112eb | base=origin/main@b59e6ea02e52056d1024bb4dc90204f149f112eb | tree=dirty | operation=none
+- Git receipt: docs/verification/india-3-beam-r1-git-handoff-receipt.json | sha256:9328700740d73b0316c62e7517d3ee8a50b496b167b6feec2815cc1e682073de | HOLD
+- Git identity: codex/india-3-beam-r1@dcec854c21136b72783e5e1116ba280b0adf451a | upstream=origin/codex/india-3-beam-r1@dcec854c21136b72783e5e1116ba280b0adf451a | base=origin/main@b59e6ea02e52056d1024bb4dc90204f149f112eb | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: CREATE_IMMUTABLE_CANDIDATE_AFTER_FOCUSED_QUICK_AND_HOOKS
 <!-- HANDOFF:END -->
