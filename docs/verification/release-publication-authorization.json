@@ -9,7 +9,7 @@
     "github-release"
   ],
   "authorized_by": "Pravin Surawase (repository owner)",
-  "authorized_at_utc": "2026-08-24T13:32:02Z",
+  "authorized_at_utc": "2026-08-24T13:46:37Z",
   "exact_candidate_review_receipt": null,
   "exact_candidate_review_receipt_sha256": null,
   "independent_review_waiver": {
@@ -22,8 +22,8 @@
       "waived_at_utc": "2026-08-24T13:15:22Z"
     },
     "waived_candidate": {
-      "head_sha": "993212fb3747b818c1b5973adc620b54dec33220",
-      "tree_sha": "ae760ac2375d8077fe0c069a969c33210ad143ac",
+      "head_sha": "9668f7ce2c7867ec5a1d6f6cf831e1d96c73224e",
+      "tree_sha": "2704cd5dd9662a50c7edd7d4acfc8a4966c3e800",
       "python_tree_sha": "fdc756cd06a671a68800b59a09a50784fd6ac9e6",
       "version": "0.24.0a1",
       "tag": "v0.24.0a1",
@@ -36,13 +36,13 @@
     "hosted_checks": {
       "required_pr_checks": {
         "status": "PASS",
-        "head_sha": "993212fb3747b818c1b5973adc620b54dec33220",
-        "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/32732480794"
+        "head_sha": "9668f7ce2c7867ec5a1d6f6cf831e1d96c73224e",
+        "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/32734110650"
       },
       "weekly_verification": {
         "status": "PASS",
-        "head_sha": "993212fb3747b818c1b5973adc620b54dec33220",
-        "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/32732644271"
+        "head_sha": "9668f7ce2c7867ec5a1d6f6cf831e1d96c73224e",
+        "url": "https://github.com/Pravin-surawase/structural_engineering_lib/actions/runs/32734126925"
       }
     },
     "acknowledgements": {
@@ -53,5 +53,5 @@
   },
   "qualified_structural_engineering_review": false,
   "professional_approval": false,
-  "note": "The repository owner explicitly waived independent exact-candidate software review for this Alpha and directed publication to finish. Exact PR and Weekly checks passed on the waived candidate before this authorization-only descendant. This waiver does not imply qualified structural-engineering review, professional approval, stable status, or suitability for engineering use."
+  "note": "The repository owner explicitly waived independent exact-candidate software review for this Alpha and directed publication to finish. Exact PR and Weekly checks passed on the replacement release-metadata candidate before this authorization-only descendant. This waiver does not imply qualified structural-engineering review, professional approval, stable status, or suitability for engineering use."
 }
