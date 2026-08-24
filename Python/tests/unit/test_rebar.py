@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+import pytest
+
 from structural_lib.services.rebar import apply_rebar_config, validate_rebar_config
 
 
@@ -36,3 +38,18 @@ def test_validate_rebar_config_error() -> None:
 
     assert report.ok is False
     assert report.errors
+
+
+@pytest.mark.parametrize("bar_count", [True, False, 2.5, "3", "bad", None, 0, -1])
+def test_bar_count_requires_an_actual_positive_integer(bar_count: object) -> None:
+    beam = {"b_mm": 300, "D_mm": 500, "cover_mm": 40, "span_mm": 5000}
+    config = {"bar_count": bar_count, "bar_dia_mm": 16}
+
+    report = validate_rebar_config(beam, config)
+    result = apply_rebar_config(beam, config)
+
+    assert report.ok is False
+    assert report.details["bar_count"] == 0
+    assert "bar_count must be a positive integer" in report.errors
+    assert result["success"] is False
+    assert result["geometry"] is None

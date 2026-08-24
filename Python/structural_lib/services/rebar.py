@@ -47,6 +47,13 @@ def _to_float(value: Any, default: float) -> float:
         return float(default)
 
 
+def _positive_int_or_zero(value: Any) -> int:
+    """Return a validated positive integer, or zero for invalid input."""
+    if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+        return 0
+    return int(value)
+
+
 def validate_rebar_config(
     beam: Any,
     config: Mapping[str, Any],
@@ -69,15 +76,16 @@ def validate_rebar_config(
         8.0,
     )
 
-    bar_count = int(_pick(cfg, ["bar_count", "bars", "count"], 0) or 0)
+    raw_bar_count = _pick(cfg, ["bar_count", "bars", "count"], 0)
+    bar_count = _positive_int_or_zero(raw_bar_count)
     bar_dia_mm = _to_float(_pick(cfg, ["bar_dia_mm", "bar_dia", "diameter"], 0.0), 0.0)
     layers = int(_pick(cfg, ["layers", "layer_count"], 1) or 1)
     agg_size_mm = _to_float(_pick(cfg, ["agg_size_mm", "agg_size"], 20.0), 20.0)
 
     if b_mm <= 0 or d_mm <= 0:
         errors.append("Beam width/depth must be positive")
-    if bar_count <= 0:
-        errors.append("bar_count must be positive")
+    if bar_count == 0:
+        errors.append("bar_count must be a positive integer")
     if bar_dia_mm <= 0:
         errors.append("bar_dia_mm must be positive")
     if layers <= 0:
@@ -154,7 +162,7 @@ def apply_rebar_config(
         _pick(beam_params, ["span_mm", "span", "length_mm"], 5000.0), 5000.0
     )
 
-    bar_count = int(_pick(cfg, ["bar_count", "bars", "count"], 2) or 2)
+    bar_count = report.details["bar_count"]
     bar_dia_mm = _to_float(
         _pick(cfg, ["bar_dia_mm", "bar_dia", "diameter"], 16.0), 16.0
     )

@@ -38,7 +38,7 @@ completed family inside the larger INDIA-2 wave.
 | INDIA-0 — Truth baseline | One generated, standard-namespaced capability/coverage manifest; repaired coverage consumers; reconciled status ledgers | **Complete** |
 | INDIA-1 — Existing-family closure | Close or explicitly hold limitations for beam, rectangular column, isolated footing, and solid slab | **Complete** |
 | INDIA-2 — Remaining practical IS 456 elements | Separately verify wall, stair, deep-beam, flat-slab/punching, and distinct foundation-system packets | **Complete within the recorded accepted/held scope** — six bounded families accepted; pile-cap and raft remain held after G0; final evidence and cumulative gates are closed |
-| INDIA-3 — Companion Indian codes | Audit and truthfully close the existing bounded IS 13920 surface, then add IS 875 inputs before IS 1893 equivalent-static actions and Indian combinations | **Bounded IS 13920 M0 local acceptance complete; integration pending** — beam, rectangular-column, and directional joint software contracts pass cumulative source, benchmark, transport, capability, package, and review-boundary checks; wall/foundation, IS 875/1893, and qualified INDIA-4 review remain held |
+| INDIA-3 — Companion Indian codes | Audit and truthfully close the existing bounded IS 13920 surface, then add IS 875 inputs before IS 1893 equivalent-static actions and Indian combinations | **Bounded IS 13920 M0 integrated through PR #869** — beam, rectangular-column, and directional joint software contracts pass cumulative source, benchmark, transport, capability, package, and review-boundary checks; wall/foundation, IS 875/1893, and qualified INDIA-4 review remain held |
 | INDIA-4 — Final acceptance | Run cumulative engineering, cross-layer, repository, and artifact acceptance for the explicitly supported subset | **Planned** |
 
 “Complete” means the bounded accepted scope and its explicit exclusions are
@@ -99,6 +99,9 @@ cumulative IS 13920 acceptance gate. Those repairs are integrated and the
 three families only as bounded source-aligned software contracts. Every family
 still requires qualified review, and the cumulative qualified structural-
 engineering review remains INDIA-4 rather than being promoted from M0 tests.
+The [current status clarification](../verification/lib-pro-009-is13920-status-semantics.json)
+preserves that immutable M0 receipt while separating successful benchmark
+replay from each represented case's engineering disposition.
 
 The wave order is:
 
@@ -125,6 +128,12 @@ After the accepted INDIA-2 and INDIA-3 scope is frozen, INDIA-4 performs:
 INDIA-4 does not authorize professional use or release. Stable-release,
 engineering-use, package publication, tag, GitHub Release, and professional
 approval remain separate owner-controlled decisions.
+
+A qualified review of an earlier, smaller bounded candidate may support a
+release decision for that candidate, but it is not labelled INDIA-4 final
+acceptance unless the repository owner explicitly freezes that supported subset
+as the INDIA-4 scope. The ordered release-candidate gates are maintained in the
+[bounded release plan](bounded-release-candidate-plan.md).
 
 ## 6. Required contract for every calculation packet
 

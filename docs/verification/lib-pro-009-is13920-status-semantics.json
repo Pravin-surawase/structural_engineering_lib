@@ -1,0 +1,68 @@
+{
+  "schema_version": "engineering-evidence-status/v1",
+  "task_id": "LIB-PRO-009",
+  "historical_m0_evidence": {
+    "path": "docs/verification/india-3-is13920-m0-evidence.json",
+    "task_id": "INDIA-3-IS13920-M0",
+    "candidate_commit": "0a20774ec8978b7dcea6d7cd7db6966068b70703",
+    "merge_commit": "b85d514ed93e22a154badde990ef1c3fb02ae0d9",
+    "candidate_and_merge_tree": "8a45afa44a5fb3d227aab666d17aadf29fe1c26e",
+    "mutated": false,
+    "legacy_benchmark_result_interpretation": "BENCHMARK_REPLAY_STATUS_ONLY"
+  },
+  "status_axes": {
+    "benchmark_replay_status": [
+      "PASS",
+      "FAIL"
+    ],
+    "calculation_status": [
+      "NOT_EVALUATED",
+      "COMPLETED",
+      "ERROR"
+    ],
+    "engineering_status": [
+      "NOT_EVALUATED",
+      "PASS",
+      "FAIL",
+      "HOLD"
+    ],
+    "review_status": [
+      "QUALIFIED_REVIEW_REQUIRED"
+    ]
+  },
+  "cases": [
+    {
+      "family": "beam_detailing_checks",
+      "benchmark_replay_status": "PASS",
+      "calculation_status": "COMPLETED",
+      "engineering_status": "NOT_EVALUATED",
+      "review_status": "QUALIFIED_REVIEW_REQUIRED",
+      "engineering_basis": "The replay proves the 72 mm requirement calculation and geometry boundary. Provided longitudinal reinforcement and link spacing are not inputs, so reinforcement compliance is not evaluated."
+    },
+    {
+      "family": "column_detailing_checks",
+      "benchmark_replay_status": "PASS",
+      "calculation_status": "COMPLETED",
+      "engineering_status": "PASS",
+      "review_status": "QUALIFIED_REVIEW_REQUIRED",
+      "engineering_basis": "The represented rectangular-column benchmark passes the bounded provided special-confinement check. Applicability remains caller-confirmed and provided longitudinal reinforcement is not evaluated."
+    },
+    {
+      "family": "beam_column_joint_scwb_check",
+      "benchmark_replay_status": "PASS",
+      "calculation_status": "COMPLETED",
+      "engineering_status": "FAIL",
+      "review_status": "QUALIFIED_REVIEW_REQUIRED",
+      "sum_column_capacity_knm": 250.0,
+      "sum_beam_capacity_knm": 200.0,
+      "required_column_capacity_knm": 280.0,
+      "ratio": 0.8928571428571429,
+      "is_satisfied": false,
+      "engineering_basis": "The replay succeeds because the software reproduces the expected unsafe result. The represented one-plane, one-direction SCWB engineering check fails because 250 kNm is less than the required 280 kNm."
+    }
+  ],
+  "qualified_engineer_receipt_present": false,
+  "professional_approval": false,
+  "engineering_use_approval": false,
+  "release_authorized": false
+}

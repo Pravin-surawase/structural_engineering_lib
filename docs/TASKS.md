@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-24 — INDIA-3-COLUMN-R1 bounded column contract repair
+**Updated:** 2026-08-24 — LIB-PRO-009 bounded release-trust closeout
 
 ---
 
@@ -125,15 +125,22 @@
 
 ## Active
 
-`INDIA-3-IS13920-M0` has completed bounded local cumulative software acceptance
-and becomes complete only when its unchanged green candidate merges. Beam,
-rectangular-column, and directional joint contracts now agree with the accepted
-source/amendment chain, benchmarks, unsafe cases, transports, package artifact,
-and exact capability limitations. Every family retains
-`qualified_review_required=true`; cumulative qualified engineering review
-remains INDIA-4 rather than being inferred from software gates. IS 13920 wall
-and foundation provisions, IS 875, and IS 1893 remain held. No exact successor
-packet ID has been frozen or started.
+`LIB-PRO-009` is the active bounded release-trust closeout. It makes the public
+rebar helper reject non-integer `bar_count` values without raising or producing
+geometry, adds a current machine-readable separation between benchmark replay
+and case engineering disposition, and reconciles the living INDIA-3 status.
+The [ordered candidate plan](planning/bounded-release-candidate-plan.md) keeps
+exact-artifact UAT, qualified review, stable release, engineering-use approval,
+and later scope expansion as separate gates.
+
+`INDIA-3-IS13920-M0` merged through PR #869 at `b85d514e` with exact
+candidate/merged tree `8a45afa4`. Beam, rectangular-column, and directional
+joint contracts are accepted only as bounded source-aligned software. The
+[status clarification](verification/lib-pro-009-is13920-status-semantics.json)
+records replay `PASS` separately from beam `NOT_EVALUATED`, the bounded column
+benchmark `PASS`, and the represented joint check `FAIL`. Every family retains
+`qualified_review_required=true`; IS 13920 wall/foundation, IS 875/1893,
+INDIA-4 review, release, and professional use remain held.
 
 `LIB-PRO-006` merged through PR #851 at `2d6df18e`. It confirms the practical
 10 m x 4 m audit arithmetic and fail-closed footing-detailing `HOLD`, adds a

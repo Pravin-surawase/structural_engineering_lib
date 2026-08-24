@@ -20,6 +20,10 @@ from _lib.indian_code_manifest import (  # noqa: E402
     render_manifest,
 )
 
+STATUS_SEMANTICS_EVIDENCE = (
+    REPO_ROOT / "docs/verification/lib-pro-009-is13920-status-semantics.json"
+)
+
 
 def _standard(manifest: dict, namespace: str) -> dict:
     return next(
@@ -246,12 +250,40 @@ def test_is13920_supported_truth_tracks_repaired_bounded_contracts() -> None:
         assert (
             "docs/verification/india-3-is13920-m0-evidence.json" in family["evidence"]
         )
+        assert (
+            "docs/verification/lib-pro-009-is13920-status-semantics.json"
+            in family["evidence"]
+        )
 
     for held_family in ("wall_detailing", "foundation_detailing"):
         held = families[held_family]
         assert held["scope_status"] == "HELD"
         assert held["implementation_status"] == "NOT_IMPLEMENTED"
         assert held["workflows"] == []
+
+
+def test_is13920_evidence_separates_replay_from_engineering_disposition() -> None:
+    evidence = json.loads(STATUS_SEMANTICS_EVIDENCE.read_text(encoding="utf-8"))
+    cases = {item["family"]: item for item in evidence["cases"]}
+
+    assert evidence["schema_version"] == "engineering-evidence-status/v1"
+    assert evidence["historical_m0_evidence"]["mutated"] is False
+    assert set(cases) == {
+        "beam_detailing_checks",
+        "column_detailing_checks",
+        "beam_column_joint_scwb_check",
+    }
+    assert all(item["benchmark_replay_status"] == "PASS" for item in cases.values())
+    assert all(item["calculation_status"] == "COMPLETED" for item in cases.values())
+    assert all(
+        item["review_status"] == "QUALIFIED_REVIEW_REQUIRED" for item in cases.values()
+    )
+    assert cases["beam_detailing_checks"]["engineering_status"] == "NOT_EVALUATED"
+    assert cases["column_detailing_checks"]["engineering_status"] == "PASS"
+    assert cases["beam_column_joint_scwb_check"]["engineering_status"] == "FAIL"
+    assert cases["beam_column_joint_scwb_check"]["is_satisfied"] is False
+    assert evidence["professional_approval"] is False
+    assert evidence["release_authorized"] is False
 
 
 def test_clause_checker_reports_registration_not_implementation() -> None:
