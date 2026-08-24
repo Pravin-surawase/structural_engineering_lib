@@ -5,6 +5,125 @@
 
 ---
 
+## 2026-08-24 — Session: INDIA-3-JOINT-R1 bounded SCWB contract repair
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents)
+
+**Branch:** `codex/india-3-joint-r1`, from exact hosted
+INDIA-3-SOURCE-META-R1 merge
+`20b60a047e5c6d88b800f7094dd64fcf4bebad28`, tree
+`ff65c71e1b875acdf5c53ee1b9723b4637639717`.
+
+**Git handoff receipt:**
+`docs/verification/india-3-joint-r1-git-handoff-receipt.json`
+
+**Focus:** Repair only the G0-bounded IS 13920 beam-column-joint SCWB
+contract. Keep the factor fixed at 1.4, encode direction and factored-axial-load
+capacity provenance, enforce applicability, represent supported interior and
+exterior topologies, and preserve every adjacent formula, source,
+distribution, support, version, release, and professional-use hold.
+
+### Summary
+
+- Verified live `origin/main` and merged PR #864 at exact predecessor
+  `20b60a04`, tree `ff65c71e`, before creating one source-bound task branch.
+  Every unrelated dirty, detached, divergent, or unknown lane remains retained.
+- Reproduced the G0 false pass: 250 kNm column capacity against 200 kNm beam
+  capacity passed because the implementation used 1.1 and required only 220
+  kNm. The corrected fixed 1.4 requirement needs 280 kNm and fails that case;
+  equality at 280 kNm passes.
+- Removed the caller-controlled factor from the IS 13920 function. A result is
+  always labeled with fixed factor 1.4 plus its IS 13920 source/amendment basis,
+  so a custom scalar cannot be presented as a standard check.
+- Made every result one explicitly bounded principal-plane and shaking-direction
+  case. Beam capacities act with the declared shaking direction; column
+  capacities must oppose it and retain the exact top/bottom factored axial
+  loads plus the required capacity basis. A directional pass is explicitly not
+  a whole-joint assessment.
+- Enforced known applicability. Roof joints and flat-slab systems receive no
+  PASS/FAIL result. Interior topology requires both beam sides; left and right
+  exterior topologies require exactly their one present side.
+- Kept the repair code-namespace-only. No package-root facade, service,
+  FastAPI, React, Excel, generated capability promotion, package version,
+  release, source/distribution, support, or professional-use state changed.
+  `INDIA-3-BEAM-R1` is next and was not started.
+
+### Issues encountered
+
+- The delegated worktree was clean and at the exact predecessor but detached,
+  so it was not `READY_LOCAL` for implementation.
+- The existing joint check produced the source-audited false pass and could not
+  represent direction, factored-axial-load capacity basis, applicability, or an
+  exterior one-beam topology.
+- The first focused Ruff sequence stopped before its chained tests because the
+  new string enums used the older `str, Enum` inheritance form.
+- Focused mypy then rejected branch-inferred fixed-length tuple types in the
+  topology helper even though the runtime tests were green.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the delegated lane intentionally began detached at the
+  exact requested hosted commit. Resolution: after live fetch, PR, worktree,
+  branch, and tree inspection, bind this worktree to
+  `codex/india-3-joint-r1` at unchanged `origin/main`. Proof:
+  `git_state.py --strict` reports `READY_LOCAL` and runtime diagnosis reports
+  `source_bound=true` at exact `20b60a04`.
+- Confirmed root cause: commit `c974f362` introduced the entire joint module,
+  the 1.1 constant, custom-factor escape hatch, four-scalar input, and tests in
+  one change without an independent source-bound benchmark or applicability
+  model. The tests therefore repeated the implementation assumption instead of
+  falsifying it. Resolution: implement the accepted G0 source map directly as
+  a fixed 1.4, keyword-only directional-case contract with explicit capacity
+  basis, applicability, and topology. Proof: the independent 250/200 benchmark
+  now fails at required 280, the exact boundary passes, and all 29 focused
+  cases pass.
+- Confirmed root cause: Python 3.11 Ruff rule UP042 requires `StrEnum` rather
+  than combined `str, Enum` bases. Resolution: use `StrEnum` for the four
+  contract enums. Proof: targeted Ruff and Black checks pass.
+- Confirmed root cause: mypy inferred the first interior assignment as a
+  two-element tuple and rejected later one-element exterior assignments.
+  Resolution: annotate the local collection as `tuple[float, ...]`. Proof:
+  focused mypy reports success with no issues.
+
+### Validation through content freeze
+
+- Targeted Black and Ruff pass on the joint owner, shared SCWB error, and direct
+  test module. Focused mypy passes on the joint owner.
+- Architecture boundaries report zero violations; all 1,513 scanned
+  structural-library imports resolve. Documentation frontmatter, links, budget,
+  and context validation pass, as do both private-source boundary regressions.
+- `Python/tests/codes/is13920/test_joint.py` passes all 29 cases, including the
+  independent false-pass benchmark, fixed boundary, rejected override, all
+  X/Y positive/negative direction combinations, opposing column direction,
+  axial-load basis, roof/flat-slab applicability, and interior/left-exterior/
+  right-exterior topology.
+- Caller inventory finds only the core definition and its direct test helper;
+  no service or transport migration is required. Changed-path routing selects
+  Python, FastAPI, and documentation; the broad repository gate remains
+  deferred to the cumulative INDIA-3 milestone unless a material failure
+  requires it.
+- The immutable candidate still requires the sole post-freeze quick gate,
+  normal commit hooks, clean-commit `session end`, all required hosted checks,
+  unchanged-head merge, and candidate/merge tree equality. Those later facts
+  remain external and are not pre-claimed here.
+
+### Preserved holds
+
+- One directional case is not a whole-joint or cumulative IS 13920 engineering
+  acceptance claim. Both shaking directions in every applicable principal
+  plane remain caller-owned inputs to later cumulative acceptance.
+- `INDIA-3-BEAM-R1`, `INDIA-3-COLUMN-R1`, and `INDIA-3-IS13920-M0` remain
+  separate sequential packets. Wall/foundation detailing and IS 875/1893
+  remain held.
+- No protected/private source byte, text, image, hash, path, or database content
+  changed or entered the tracked candidate. Source/distribution, support,
+  version, release, package publication, and professional-use approval remain
+  separate claims.
+- Branch, worktree, archive, source-copy, alias, and unrelated-file deletion
+  remain unauthorized.
+
+---
+
 ## 2026-08-24 — Session: INDIA-3-SOURCE-META-R1 private catalogue repair
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents)

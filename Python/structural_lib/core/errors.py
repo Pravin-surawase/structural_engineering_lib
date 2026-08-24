@@ -888,11 +888,11 @@ E_SCWB_001 = DesignError(
 E_SCWB_002 = DesignError(
     code="E_SCWB_002",
     severity=Severity.ERROR,
-    message="Strong Column Weak Beam check failed: ΣMc < 1.1 × ΣMb",
+    message="Strong Column Weak Beam check failed: ΣMc < 1.4 × ΣMb",
     field="sum_column_capacity_knm",
     hint="Increase column moment capacity or reduce beam moment capacity at joint.",
     clause="IS 13920 Cl. 7.2.1",
-    recovery="Increase column sections or reinforcement so that ΣMc ≥ 1.1 × ΣMb at every joint.",
+    recovery="Increase column sections or reinforcement so that ΣMc ≥ 1.4 × ΣMb at every applicable joint case.",
 )
 
 

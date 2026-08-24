@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "task_id": "INDIA-3-JOINT-R1",
+  "observed_at_utc": "2026-08-24T04:44:08Z",
+  "status": "BOUNDED_IMPLEMENTATION_COMPLETE_PENDING_IMMUTABLE_CANDIDATE_AND_HOSTED_CLOSEOUT",
+  "predecessor_binding": {
+    "hosted_main_commit": "20b60a047e5c6d88b800f7094dd64fcf4bebad28",
+    "hosted_main_tree": "ff65c71e1b875acdf5c53ee1b9723b4637639717",
+    "predecessor_pull_request": 864,
+    "predecessor_task": "INDIA-3-SOURCE-META-R1",
+    "branch": "codex/india-3-joint-r1",
+    "source_bound": true
+  },
+  "accepted_source_boundary": {
+    "standard": "IS 13920:2016 First Revision",
+    "amendment_chain": [
+      "Amendment 1 (2017)",
+      "Amendment 2 (2020)"
+    ],
+    "reaffirmation_2021_is_new_edition": false,
+    "draft_successor_used": false,
+    "normalized_references": [
+      "7.2.1_WITH_AMENDMENT_1_COLUMN_CAPACITY_BASIS",
+      "7.2.1.1_AND_7.2.1.2_WITH_AMENDMENT_1",
+      "7.2.1.3_AND_SECTION_7.2_LIMITATIONS"
+    ],
+    "source_decision_evidence": "docs/verification/india-3-g0-is13920-audit-decision.json",
+    "protected_content_added": false,
+    "private_source_mutated": false
+  },
+  "root_cause": {
+    "introduction_commit": "c974f362ddfab7061dc9dbccf0b7a77b3682ef20",
+    "finding": "The joint implementation, 1.1 factor, caller-controlled override, four-scalar contract, and tests were introduced together without an independent source-bound benchmark or applicability model. The tests mirrored that implementation and therefore certified its false-pass behavior instead of falsifying it.",
+    "reproduced_pre_repair_case": {
+      "sum_column_capacity_knm": 250.0,
+      "sum_beam_capacity_knm": 200.0,
+      "old_factor": 1.1,
+      "old_required_column_capacity_knm": 220.00000000000003,
+      "old_is_satisfied": true
+    }
+  },
+  "corrected_contract": {
+    "owner": "Python/structural_lib/codes/is13920/joint.py::check_scwb",
+    "assessment_scope": "ONE_PRINCIPAL_PLANE_ONE_SHAKING_DIRECTION",
+    "fixed_factor": 1.4,
+    "custom_factor_override": "REMOVED_FROM_IS13920_CONTRACT",
+    "required_directional_provenance": {
+      "principal_planes": [
+        "X",
+        "Y"
+      ],
+      "shaking_directions": [
+        "POSITIVE",
+        "NEGATIVE"
+      ],
+      "beam_capacity_direction": "DECLARED_SHAKING_DIRECTION",
+      "column_capacity_direction": "OPPOSITE_DECLARED_SHAKING_DIRECTION",
+      "whole_joint_claim": "NOT_EMITTED_BY_ONE_DIRECTIONAL_CASE"
+    },
+    "required_column_capacity_provenance": {
+      "basis": "FACTORED_AXIAL_LOAD",
+      "top_factored_axial_load_kn": "REQUIRED_FINITE_INPUT_AND_RESULT_FIELD",
+      "bottom_factored_axial_load_kn": "REQUIRED_FINITE_INPUT_AND_RESULT_FIELD"
+    },
+    "applicability": {
+      "supported": "NON_ROOF_BEAM_COLUMN_JOINT",
+      "roof_joint": "WAIVED_NO_PASS_OR_FAIL_RESULT",
+      "flat_slab_system": "EXCLUDED_NO_PASS_OR_FAIL_RESULT",
+      "unknown_flags": "REJECTED"
+    },
+    "supported_topologies": {
+      "INTERIOR": "LEFT_AND_RIGHT_BEAM_CAPACITIES_REQUIRED",
+      "EXTERIOR_LEFT": "ONLY_LEFT_BEAM_CAPACITY_REQUIRED",
+      "EXTERIOR_RIGHT": "ONLY_RIGHT_BEAM_CAPACITY_REQUIRED"
+    }
+  },
+  "independent_benchmark_replay": {
+    "inputs": {
+      "sum_column_capacity_knm": 250.0,
+      "sum_beam_capacity_knm": 200.0
+    },
+    "expected": {
+      "required_column_capacity_knm": 280.0,
+      "ratio": 0.8928571428571429,
+      "is_satisfied": false
+    },
+    "observed": {
+      "required_column_capacity_knm": 280.0,
+      "ratio": 0.8928571428571429,
+      "is_satisfied": false
+    },
+    "boundary": "sum_column_capacity_knm=280.0 passes exactly for sum_beam_capacity_knm=200.0",
+    "result": "PASS"
+  },
+  "focused_verification": {
+    "joint_contract_tests": "PASS_29",
+    "black_targeted": "PASS",
+    "ruff_targeted": "PASS",
+    "mypy_joint_module": "PASS",
+    "private_source_boundary_tests": "PASS_2",
+    "architecture_boundaries": "PASS_0_VIOLATIONS",
+    "structural_lib_imports": "PASS_1513_IMPORTS_0_BROKEN",
+    "documentation_frontmatter_links_budget_and_context": "PASS",
+    "caller_inventory": "ONLY_CORE_OWNER_AND_DIRECT_TEST_CALLER",
+    "impact_domains": [
+      "python",
+      "fastapi",
+      "docs"
+    ],
+    "broad_gate": "DEFERRED_TO_CUMULATIVE_INDIA_3_MILESTONE_UNLESS_MATERIAL_FAILURE_REQUIRES_IT"
+  },
+  "scope_guard": {
+    "package_root_export_added": false,
+    "service_added": false,
+    "fastapi_route_added": false,
+    "react_or_excel_surface_added": false,
+    "beam_or_column_formula_changed": false,
+    "generated_capability_status_changed": false,
+    "package_version_changed": false,
+    "release_or_publication_changed": false,
+    "professional_use_approval_changed": false
+  },
+  "holds": [
+    "ONE_DIRECTIONAL_CASE_IS_NOT_A_COMPLETE_WHOLE_JOINT_ASSESSMENT",
+    "INDIA_3_BEAM_R1_NOT_STARTED",
+    "INDIA_3_COLUMN_R1_NOT_STARTED",
+    "NO_CURRENT_IS13920_CUMULATIVE_ENGINEERING_ACCEPTANCE",
+    "WALL_AND_FOUNDATION_DETAILING_REMAIN_HELD",
+    "IS875_AND_IS1893_REMAIN_HELD",
+    "SOURCE_DISTRIBUTION_RELEASE_PACKAGE_VERSION_SUPPORT_STATUS_AND_PROFESSIONAL_USE_REMAIN_SEPARATE",
+    "PRIVATE_SOURCE_BYTES_TEXT_IMAGES_HASHES_AND_PATHS_REMAIN_UNTRACKED",
+    "BRANCH_WORKTREE_ARCHIVE_SOURCE_COPY_ALIAS_AND_UNRELATED_FILE_DELETION_NOT_AUTHORIZED"
+  ],
+  "next_packet": {
+    "packet_id": "INDIA-3-BEAM-R1",
+    "status": "NOT_STARTED",
+    "start_condition": "CREATE_ONLY_AFTER_THIS_PACKET_MERGES_UNCHANGED_WITH_REQUIRED_HOSTED_CHECKS_GREEN"
+  }
+}
