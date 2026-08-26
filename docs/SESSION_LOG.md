@@ -5,6 +5,95 @@
 
 ---
 
+## 2026-08-27 — Session: MAINT-0136 Phase 2B-W worktree execution
+
+**Agent:** Codex (`maintainer`, sole Phase 2B-W execution writer/operator; no
+subagents)
+
+**Branch:** `codex/maint-0136-phase-2b-w-preparation`, executing from the exact
+preparation commit `e1f5ea184638133e7911e8ad0203194104c27276`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0136-phase-2b-w-execution-git-handoff-receipt.json`
+
+**Focus:** Execute the exact 63-worktree manifest; preserve all excluded state.
+
+### Summary
+
+- Recorded exact owner authority bound to 63 worktrees and target-set SHA-256
+  `543a5f1b...129da`, then revalidated the complete target set against live Git
+  topology, cleanliness, inactivity, operations, open pull requests, remote or
+  integrated heads, ignored-state aggregates, exact path sizes, and verified
+  backup mappings.
+- Reconfirmed the local 92,256,339-byte archive at SHA-256 `bf18a66b...67ac`
+  and the owner-only Google Drive archive/readback/7,602-file restore authority.
+  A no-mutation preview passed before execution.
+- Added a fail-closed executor and five focused regressions. Execution used
+  only non-force `git worktree remove`, wrote an atomic per-target ledger after
+  every success, and stopped on any identity or preservation drift.
+- Removed 63/63 exact worktrees totaling 7,686,279,168 gross bytes. Topology
+  fell from 78 to 15, and filesystem available space increased from
+  36,361,379,840 to 44,282,273,792 bytes.
+- Proved all target paths absent and all target branches preserved. The 236-ref
+  digest, 42-file/72,025,193-byte protected-source aggregate, recovery archive,
+  pull requests, shared `.venv`, dirty detached `e54a`, recovery hold, and all
+  other excluded lanes remain unchanged. No branch/ref/PR/archive/protected-
+  source/cache deletion was performed separately.
+
+### Issues encountered
+
+- The first disposable Git-behavior diagnostic was rejected before execution
+  because its cleanup command contained a recursive filesystem deletion.
+- The first focused style run required Black normalization of the new executor
+  and regression file.
+- The first consolidated regression command used the wrong historical Phase 2B
+  test filename and stopped before collecting tests.
+- Post-execution `git fsck --full` emitted many dangling object notices even
+  though it exited successfully.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the terminal safety layer rejected the diagnostic's
+  broad deletion syntax before the shell ran it. Resolution: rerun the exact
+  non-force worktree behavior check without recursive deletion and move the
+  disposable temporary root to macOS Trash; the check proved ignored files do
+  not require `--force`. The diagnostic is recoverable from Trash. ⚠️ TERMINAL
+  ISSUE: recursive temporary-directory cleanup was rejected -> use a
+  recoverable exact Trash move.
+- Confirmed root cause: the two new Python files had not yet received their
+  final formatter pass. Resolution: format both together once; the focused
+  Ruff and Black checks pass.
+- Confirmed root cause: the Phase 2B preparation regression is named
+  `test_phase2b_cleanup_preparation.py`, not the guessed
+  `test_phase2b_preparation.py`. Resolution: select the exact path from
+  `rg --files` and rerun the batch; all 30 tests pass. ⚠️ TERMINAL ISSUE: one
+  guessed regression path did not exist -> use the exact discovered filename.
+- Confirmed evidence: the Git object store contains unreachable historical
+  objects, but `git fsck --full` exits zero and reports no missing or corrupt
+  object. Resolution: preserve the objects and perform no prune or garbage
+  collection; the exact 236-ref count/digest remains unchanged before and
+  after execution, and the all-ref recovery bundle remains available. The
+  historical origin of individual dangling objects was not inferred.
+
+### Validation
+
+- Five executor regressions pass, including exact-target-only behavior,
+  missing-authorization rejection, partial-failure ledger retention, digest
+  mismatch rejection, and proof that the remove command never uses `--force`.
+- Live preview and execution evidence pass with 63/63 removals, zero target
+  survivors, zero target-branch mismatches, zero remaining small-cache target
+  paths, exact before/after ref and protected-source identities, and unchanged
+  local/Drive recovery artifacts.
+- `git fsck --full` exits successfully. Documentation frontmatter passes for
+  366 maintained documents with zero invalid records; 491 Markdown files,
+  1,036 local links, and six local images have zero broken links. Context,
+  control, task-format, and efficiency validation pass.
+- The consolidated quick gate passes 10/10 with zero reused checks. The full
+  repository gate passes 31/31 with 11 unchanged quick results reused. Normal
+  staged hooks pass through the worktree-bound Python runtime, including the
+  required quick-check hook. Immutable commit and final read-only session
+  validation remain the closeout sequence.
+
 ## 2026-08-27 — Session: MAINT-0136 Phase 2B-W worktree preparation
 
 **Agent:** Codex (`maintainer`, sole Phase 2B-W preparation writer; no subagents)

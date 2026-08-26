@@ -1,6 +1,6 @@
 ---
 owner: Main Agent
-status: active
+status: archived
 last_updated: 2026-08-27
 doc_type: spec
 complexity: intermediate
@@ -21,7 +21,9 @@ The machine-readable authority is the
 Its status is
 `PHASE_2B_W_TARGETS_FROZEN_AWAITING_DIGEST_BOUND_AUTHORIZATION`. No worktree,
 cache, branch, ref, pull request, archive, protected source, or shared `.venv`
-was removed during preparation.
+was removed during preparation. The owner subsequently authorized this exact
+count and digest, and the [execution closeout](maint-0136-phase-2b-w-execution-closeout.md)
+records a complete 63/63 non-force removal with every branch and ref preserved.
 
 ## Live decision
 
@@ -29,7 +31,7 @@ was removed during preparation.
 |---|---:|---|
 | Live worktrees | 78 | Fully inventoried |
 | Verified backup mappings | 64 | Exact package mapping retained |
-| Frozen targets | 63 / 7,686,279,168 bytes | Await digest-bound authorization |
+| Frozen targets | 63 / 7,686,279,168 bytes | Executed 63/63 without force |
 | Backed recovery hold | 1 | Retain `codex/git-governance-research` |
 | Live lanes outside backup mapping | 14 | Retain |
 | Open pull requests | 10 | No target overlap |
@@ -59,13 +61,11 @@ The target selector has no removal code path. Six focused regressions prove
 remote/integrated selection, dirty-lane hold, open-PR hold, ignored-state drift
 hold, local-only recovery hold, and backup-identity rejection.
 
-## Authorization boundary
+## Authorization boundary — satisfied
 
 The owner gave general cleanup and deletion approval before the exact target
-set existed. That authorizes this preparation and records the intended owner
-retention disposition, but it cannot prove that the owner reviewed this exact
-63-path digest. Execution therefore remains held until the following exact
-authority is confirmed:
+set existed, then explicitly authorized Phase 2B-W execution for this exact
+63-worktree digest. That later authority satisfied the execution gate:
 
 > I authorize Phase 2B-W execution for exactly 63 worktrees totaling
 > 7,686,279,168 gross bytes under target-set SHA-256
@@ -74,9 +74,9 @@ authority is confirmed:
 > requests, backups, protected sources, the shared `.venv`, the one backed
 > hold, and all 14 unbacked live lanes. Stop on any drift.
 
-This confirmation authorizes worktree removal only. Branch/ref/archive cleanup
-remains Phase 2C, and the standalone 119-directory small-cache sweep remains
-skipped as low value.
+That confirmation authorized worktree removal only. Branch/ref/archive cleanup
+remains Phase 2C. The 119 small-cache paths disappeared incidentally with their
+authorized parent worktrees; no standalone cache deletion was performed.
 
 ## Execution and stop contract
 
@@ -94,6 +94,7 @@ branch or ref.
 
 ## Current next action
 
-Obtain the digest-bound authorization above. Then execute only the 63 frozen
-targets with per-target prechecks and before/after evidence. Do not start Phase
-2C or the small-cache-only sweep.
+Phase 2B-W execution is complete and archived under the exact digest above.
+Retain the remaining 15 worktrees and all branches, refs, pull requests,
+backups, protected sources, and the shared `.venv`. Do not start Phase 2C
+without a separate exact review and authorization.

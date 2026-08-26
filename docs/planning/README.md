@@ -24,6 +24,7 @@ Internal planning documents and research notes.
 | [MAINT-0136 Phase 2B-R Recovery](maint-0136-phase-2b-r-recovery-plan.md) | Exact ignored-state preservation boundary, destination requirement, and backup-only authorization gate |
 | [MAINT-0136 Phase 2B-R Google Drive Closeout](maint-0136-phase-2b-r-google-drive-backup-closeout.md) | Owner-only upload, authenticated byte match, full restore, and Phase 2B-W hold |
 | [MAINT-0136 Phase 2B-W Preparation](maint-0136-phase-2b-w-preparation-plan.md) | Exact 63-worktree target set, 7.16 GiB opportunity, recovery holds, and digest-bound execution gate |
+| [MAINT-0136 Phase 2B-W Execution Closeout](maint-0136-phase-2b-w-execution-closeout.md) | Exact 63/63 non-force removal, preserved branches/refs/recovery, and retained 15-worktree topology |
 | [MAINT-0133 Cleanup Completion](maint-0133-cleanup-inventory-and-authorization.md) | Exact inventory, four retained holds, and the owner-authorized two-move Packet A result |
 | [Pre-Release Input Safety and Professional Readiness Plan](pre-release-input-safety-and-professional-readiness-plan.md) | Active contract-first remediation and release holds from the one-storey usability pilot |
 | [Public Route Safety Closure Plan](public-route-safety-closure-plan.md) | Current exact-tree remediation sequence for reproduced lower-level public-route safety defects |
@@ -40,11 +41,12 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
-| `maint-0136-phase-2b-w-preparation-plan.md` | 2026-08-27 | 🚧 63 exact worktree targets frozen at `543a5f1b...129da`; execution awaits digest-bound authorization |
-| `maint-0136-phase-2b-r-google-drive-backup-closeout.md` | 2026-08-27 | ✅ Owner-only Google Drive archive uploaded, downloaded, SHA-matched, and fully restored; cleanup remains held |
+| `maint-0136-phase-2b-w-execution-closeout.md` | 2026-08-27 | ✅ Exact 63/63 worktree removal complete; 15 retained and all branches, refs, backups, and protected sources preserved |
+| `maint-0136-phase-2b-w-preparation-plan.md` | 2026-08-27 | ✅ Exact digest authorized and executed without force |
+| `maint-0136-phase-2b-r-google-drive-backup-closeout.md` | 2026-08-27 | ✅ Owner-only archive and full restore preserved through Phase 2B-W execution |
 | `maint-0136-phase-2b-r-recovery-plan.md` | 2026-08-27 | ✅ Exact 123,164,574-byte source packet completed through verified Google Drive recovery |
 | `maint-0136-phase-2b-preparation-plan.md` | 2026-08-27 | ✅ Split completed through verified recovery and exact Phase 2B-W target freeze |
-| `maint-0136-cleanup-preservation-plan.md` | 2026-08-27 | 🚧 Recovery passes; exact worktree execution remains digest-bound and held |
+| `maint-0136-cleanup-preservation-plan.md` | 2026-08-27 | ✅ Phase 0 through exact Phase 2B-W complete; Phase 2C separately held |
 | `maint-0133-cleanup-inventory-and-authorization.md` | 2026-08-23 | 🚧 Immutable inventory candidate; two moves ready for later authorization, four held, zero deletes |
 | `public-route-safety-closure-plan.md` | 2026-08-22 | ✅ LIB-PRO-003-D local candidate accepted; hosted/exact-tree closure pending; release and professional claims held by PARTIAL readiness |
 | `next-session-brief.md` | 2026-08-22 | 🚧 Publish/validate the immutable Packet D candidate, then resume read-only INDIA-3-G0 |

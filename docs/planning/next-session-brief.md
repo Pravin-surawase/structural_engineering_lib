@@ -4,11 +4,11 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-27
-- Focus: Freeze exact Phase 2B-W worktree targets without performing cleanup.
-- Git receipt: docs/verification/maint-0136-phase-2b-w-preparation-git-handoff-receipt.json | sha256:b9f096a0b54a3eb75f47ca8471634d98717ef5a78d673119d12efc963ab1ab23 | HOLD
-- Git identity: codex/maint-0136-phase-2b-w-preparation@d44ec71df99baccd599cde50a6075a4a22d330c1 | upstream=NONE@UNKNOWN | base=origin/main@ee04bfbf76b1a3a022d07c8203b5274a0f71998f | tree=dirty | operation=none
+- Focus: Execute the exact 63-worktree manifest; preserve all excluded state.
+- Git receipt: docs/verification/maint-0136-phase-2b-w-execution-git-handoff-receipt.json | sha256:3613d416769cd7fe940f426eb667e4c7740a63cc230bb2cad18c243dc68c4c2f | HOLD
+- Git identity: codex/maint-0136-phase-2b-w-preparation@e1f5ea184638133e7911e8ad0203194104c27276 | upstream=NONE@UNKNOWN | base=origin/main@ee04bfbf76b1a3a022d07c8203b5274a0f71998f | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
-- Next action: WAIT_FOR_OWNER_DECISION on the exact 63-target digest `543a5f1b...129da`; do not remove a worktree before confirmation
+- Next action: COMMIT_EXECUTION_EVIDENCE
 <!-- HANDOFF:END -->
 
 ## Latest Handoff

@@ -132,7 +132,9 @@ Phase 2B-R Google Drive backup and authenticated restore pass under the
 [backup closeout](maint-0136-phase-2b-r-google-drive-backup-closeout.md).
 Phase 2B-W preparation subsequently froze 63 exact targets / 7,686,279,168
 gross bytes under target-set SHA-256 `543a5f1b...129da`; see the
-[Phase 2B-W plan](maint-0136-phase-2b-w-preparation-plan.md). Worktree removal
-now awaits authorization bound to that exact digest. Do not run the 119-target
-low-value cache sweep. Branch/ref/archive cleanup remains separately held. The
-paused 20-minute GitHub heartbeat is not needed for this local work.
+[Phase 2B-W plan](maint-0136-phase-2b-w-preparation-plan.md). The owner authorized
+that exact digest and the [execution closeout](maint-0136-phase-2b-w-execution-closeout.md)
+records a 63/63 non-force removal with 15 retained worktrees and every branch
+and ref preserved. Branch/ref/archive cleanup remains separately held as Phase
+2C. The paused 20-minute GitHub heartbeat is not needed for this completed
+local packet.

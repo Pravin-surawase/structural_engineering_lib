@@ -1,6 +1,6 @@
 ---
 owner: Main Agent
-status: active
+status: archived
 last_updated: 2026-08-27
 doc_type: spec
 complexity: intermediate
@@ -12,13 +12,15 @@ tags: [maintenance, cleanup, git, preservation, recovery]
 ## Decision
 
 The owner first authorized Phase 0 and Phase 1, then separately authorized the
-narrow Phase 2A regenerable-cache packet. Phase 0 and Phase 1 reconcile the
+narrow Phase 2A regenerable-cache packet and the exact Phase 2B-W worktree
+manifest. Phase 0 and Phase 1 reconcile the
 existing session ledger, inspect current topology, preserve unique work, prove
 local recovery, and freeze an exact manifest without deletion. Phase 2A removes
 only frozen clean-inactive `react_app/node_modules` and `.mypy_cache`
 identities. Worktrees, branches, refs, pull requests, protected sources, the
 primary checkout, the active lanes, the dirty lane, and the shared `.venv`
-remain outside authorization.
+remained outside Phase 2A. Phase 2B-W later removed only the 63 digest-bound
+clean worktrees while preserving every branch and ref.
 
 The machine-readable authorities are:
 
@@ -128,28 +130,24 @@ exact temporary copy and proves the canonical aggregate is unchanged, rather
 than running that command against the canonical database during evidence
 freeze.
 
-## Phase 2B-W preparation result — exact execution held
+## Phase 2B-W result — exact execution complete
 
-The remaining 119 exact small-cache identities total only 47,378,432 bytes, so
-the standalone cache sweep remains skipped. Phase 2B-R established owner-only
+The remaining 119 exact small-cache identities totaled only 47,378,432 bytes,
+so the standalone cache sweep was skipped. Phase 2B-R established owner-only
 Google Drive recovery and passed authenticated full restore. The later
 [Phase 2B-W preparation](maint-0136-phase-2b-w-preparation-plan.md) froze 63
 exact clean, inactive, backed, remotely recoverable or integrated worktrees
 totaling 7,686,279,168 gross bytes under target digest `543a5f1b...129da`.
 
-Any later executable Phase 2B requires:
+After exact owner authorization, the
+[Phase 2B-W execution](maint-0136-phase-2b-w-execution-closeout.md) revalidated
+the full manifest and removed all 63 worktrees through non-force Git removal.
+Live topology fell from 78 to 15 worktrees; the 236-ref snapshot, 42-file
+protected-source aggregate, local archive digest, and Drive recovery remained
+unchanged. Filesystem available space increased by 7,920,893,952 bytes.
 
-1. a usable encrypted external or off-device recovery destination, or another
-   explicit owner decision accepting a narrower recovery tier for exact new
-   targets;
-2. a fresh topology and current-PR reinspection;
-3. separate owner authorization bound to exact cache/worktree/branch targets;
-4. exclusion of the primary checkout, active task, dirty `e54a` lane, open PRs,
-   unknown owners, protected sources, and shared `.venv`; and
-5. recoverable execution with before/after evidence and no broad `git clean`,
-   reset, force push, ref deletion, or prune.
-
-The recovery and inspection gates now pass for only those 63 exact targets.
-Their removal remains held pending digest-bound authorization. The one backed
-recovery hold, 14 unbacked live lanes, all caches outside a removed target,
-branches, refs, archives, protected sources, and pull requests remain retained.
+The one backed recovery hold, 14 other retained live lanes, all branches, refs,
+archives, protected sources, pull requests, and the shared `.venv` remain. A
+later Phase 2C requires fresh inspection, an immutable exact manifest, and
+separate owner authorization; no broad `git clean`, reset, force push, ref
+deletion, prune, or archive deletion is authorized by this closeout.

@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-27 — MAINT-0136 Phase 2B-W exact worktree preparation
+**Updated:** 2026-08-27 — MAINT-0136 Phase 2B-W exact worktree execution
 
 ---
 
@@ -126,16 +126,15 @@
 
 ## Active
 
-`MAINT-0136` Phase 2B-W preparation froze 63 exact clean, inactive, backed,
-remotely recoverable or integrated worktrees totaling 7,686,279,168 gross bytes
-under target-set SHA-256 `543a5f1b...129da`. The verified Google Drive archive
-and full remote restore remain unchanged. One backed local-only lane and 14
-unbacked/current/detached/predecessor lanes are retained; none of the 10 open
-pull requests overlaps a target. No cleanup occurred. Next obtain authorization
-bound to the exact digest, then remove only those worktrees without force while
-preserving every branch, ref, pull request, backup, protected source, and shared
-`.venv`. The 119-directory low-value cache sweep and Phase 2C branch/ref/archive
-cleanup remain held. Phase 1 PR #874 remains open/blocked.
+`MAINT-0136` Phase 2B-W is complete. Exact owner authority bound to 63
+worktrees / 7,686,279,168 gross bytes / target digest `543a5f1b...129da` was
+revalidated and executed through non-force `git worktree remove`. Topology fell
+from 78 to 15 worktrees; all 63 paths are absent, every target branch remains,
+and the exact 236-ref snapshot, owner-only Drive archive, local archive,
+protected-source aggregate, pull requests, and shared `.venv` are unchanged.
+Available filesystem space increased by 7,920,893,952 bytes. The one backed
+recovery hold, 14 other live lanes, and Phase 2C branch/ref/archive cleanup
+remain held. Phase 1 PR #874 remains open/blocked.
 
 `RELEASE-SMOOTH-001` is the active release-control task. It converts the
 `v0.24.0a1` delays into a single-candidate next-release flow: fail-fast final

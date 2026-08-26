@@ -54,14 +54,15 @@ returned the same remote size, streamed it back through the authenticated
 account, and the downloaded bytes restored exactly. Local restore workspace had
 more than the preparation packet's required reserve.
 
-## What remains held
+## Downstream execution result
 
 The later [Phase 2B-W preparation](maint-0136-phase-2b-w-preparation-plan.md)
 requeried 78 worktrees and froze 63 exact clean, backed, remotely recoverable or
-integrated targets totaling 7,686,279,168 gross bytes. One backed lane lacks an
-exact remote/integrated recovery path, and 14 live lanes are outside the backup
-mapping; all 15 remain retained.
+integrated targets totaling 7,686,279,168 gross bytes. The owner authorized
+that exact target digest, and the
+[execution closeout](maint-0136-phase-2b-w-execution-closeout.md) records a
+complete 63/63 non-force worktree removal. One backed recovery hold and 14
+other live lanes remain retained.
 
-Worktree execution still requires confirmation bound to the exact target-set
-SHA-256 `543a5f1b...129da`. Branch/ref/archive cleanup remains Phase 2C and is
-not part of Phase 2B-W.
+The archive remains owner-only, downloadable, and exact after execution.
+Branch/ref/archive cleanup remains Phase 2C and was not part of Phase 2B-W.
