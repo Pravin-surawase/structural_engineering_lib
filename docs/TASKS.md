@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-26 — MAINT-0136 cleanup preservation
+**Updated:** 2026-08-26 — MAINT-0136 Phase 2A exact cache cleanup
 
 ---
 
@@ -126,15 +126,16 @@
 
 ## Active
 
-`MAINT-0136` executes only the owner-authorized cleanup Phase 0 and Phase 1.
-The unmatched historical session is reconciled; the fresh live manifest holds
-70 of 73 worktrees and 81 of 83 current local/remote branch or PR heads while
-retaining the primary checkout, current task, dirty detached lane, and default
-branch. A 303-ref Git bundle and the dirty patch pass a sampled restore, and an
-exact temporary protected-source copy verifies without changing the canonical
-aggregate. Same-disk recovery is not disaster recovery: no external
-destination is available, and the 7.183 GiB clean-inactive cache ceiling plus
-all worktree/branch/ref cleanup remain Phase 2 candidates without authority.
+`MAINT-0136` Phase 2A is locally complete on a successor bound to frozen Phase 1
+commit `37b36785`. The exact Phase 1 candidate intersection removed 30/30
+regenerable clean-inactive cache directories: 16 `react_app/node_modules` and
+14 `.mypy_cache`, totaling 7,665,283,072 measured bytes. Target absence,
+74-worktree topology, 232 refs, the canonical protected-source aggregate, and
+the excluded primary/Phase 1/dirty lanes all verify after execution; filesystem
+capacity fell from 87% to 83%. Phase 1 PR #874 remains the publication
+predecessor. Worktree/branch/ref/PR/protected-source/shared-`.venv` operations
+and every remaining cleanup target stay held pending separate Phase 2B review
+and authorization.
 
 `RELEASE-SMOOTH-001` is the active release-control task. It converts the
 `v0.24.0a1` delays into a single-candidate next-release flow: fail-fast final

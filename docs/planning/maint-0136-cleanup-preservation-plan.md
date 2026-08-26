@@ -11,17 +11,23 @@ tags: [maintenance, cleanup, git, preservation, recovery]
 
 ## Decision
 
-The owner authorized Phase 0 and Phase 1 only. Those phases reconcile the
+The owner first authorized Phase 0 and Phase 1, then separately authorized the
+narrow Phase 2A regenerable-cache packet. Phase 0 and Phase 1 reconcile the
 existing session ledger, inspect current topology, preserve unique work, prove
-local recovery, and freeze an exact manifest. They do not delete a file, cache,
-worktree, branch, remote ref, or pull request.
+local recovery, and freeze an exact manifest without deletion. Phase 2A removes
+only frozen clean-inactive `react_app/node_modules` and `.mypy_cache`
+identities. Worktrees, branches, refs, pull requests, protected sources, the
+primary checkout, the active lanes, the dirty lane, and the shared `.venv`
+remain outside authorization.
 
 The machine-readable authorities are:
 
 - [cleanup preservation manifest](../verification/maint-0136-cleanup-preservation-manifest.json);
-- [cleanup recovery evidence](../verification/maint-0136-cleanup-recovery-evidence.json); and
+- [cleanup recovery evidence](../verification/maint-0136-cleanup-recovery-evidence.json);
+- [Phase 2A cache targets](../verification/maint-0136-phase-2a-cache-targets.json);
+- [Phase 2A execution evidence](../verification/maint-0136-phase-2a-cache-cleanup-evidence.json); and
 - the later immutable-candidate
-  `maint-0136-cleanup-preservation-git-handoff-receipt.json`.
+  `maint-0136-phase-2a-cache-cleanup-git-handoff-receipt.json`.
 
 Historical cleanup evidence is comparison material only. Its old retirement
 decisions are not promoted to current authority.
@@ -56,6 +62,31 @@ The 7.183 GiB Phase 2 ceiling is dominated by 16 inactive
 `.mypy_cache` directories (0.608 GiB). The remaining candidate caches are
 small pytest, Ruff, and React build outputs. The primary runtime, current task
 runtime, and every dirty-lane runtime remain excluded.
+
+## Phase 2A result — exact regenerable-cache cleanup
+
+The Phase 2A successor lane starts from frozen Phase 1 commit `37b3678504b9`.
+Its target manifest admits only cache identities already classified as
+clean-inactive candidates by Phase 1 and then rechecks live topology, lane
+cleanliness, target shape, target size, and per-HEAD recreation evidence.
+Newly appeared caches cannot enter the packet.
+
+The frozen target-set SHA-256 is
+`bd1f0985bda82707a85e6ce12bb2d3889d85a0dffb35b8e822a411a0841d3b05`.
+It contains exactly 30 directories and 7,665,283,072 measured bytes:
+
+| Cache class | Count | Measured bytes | Recreation basis |
+|---|---:|---:|---|
+| `react_app/node_modules` | 16 | 7,012,880,384 | Each lane's tracked `package-lock.json` at its frozen HEAD plus `npm ci` |
+| `.mypy_cache` | 14 | 652,402,688 | Tool-generated cache recreated by the repository mypy invocation |
+
+All 30 targets were removed with no partial failure. Exact target-absence
+recheck passes. During execution, the 74-worktree topology, 232-ref snapshot,
+and canonical 42-file/72,025,193-byte protected-source aggregate remained
+unchanged. Filesystem accounting reported available space increasing by
+7,903,207,424 bytes and capacity falling from 87% to 83%; APFS accounting may
+include concurrent or deferred changes, so the authoritative removed-cache
+quantity remains the frozen 7,665,283,072-byte target sum.
 
 ## Recovery proof
 
@@ -97,12 +128,13 @@ exact temporary copy and proves the canonical aggregate is unchanged, rather
 than running that command against the canonical database during evidence
 freeze.
 
-## Phase 2 gate — not authorized
+## Phase 2B gate — not authorized
 
-No cleanup execution may begin from this plan alone. A later Phase 2 requires:
+Phase 2A does not authorize broader cleanup. Any later Phase 2B requires:
 
-1. a usable encrypted external or off-device recovery destination, or an
-   explicit owner decision accepting the narrower recovery tier;
+1. a usable encrypted external or off-device recovery destination, or another
+   explicit owner decision accepting a narrower recovery tier for exact new
+   targets;
 2. a fresh topology and current-PR reinspection;
 3. separate owner authorization bound to exact cache/worktree/branch targets;
 4. exclusion of the primary checkout, active task, dirty `e54a` lane, open PRs,
@@ -110,4 +142,5 @@ No cleanup execution may begin from this plan alone. A later Phase 2 requires:
 5. recoverable execution with before/after evidence and no broad `git clean`,
    reset, force push, ref deletion, or prune.
 
-Until those gates pass, the correct outcome is preservation, not deletion.
+Until those gates pass, all remaining cache, worktree, branch, ref, archive,
+source, and pull-request cleanup stays held.

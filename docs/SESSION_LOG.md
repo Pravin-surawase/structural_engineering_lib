@@ -5,6 +5,122 @@
 
 ---
 
+## 2026-08-26 — Session: MAINT-0136 Phase 2A exact cache cleanup
+
+**Agent:** Codex (`orchestrator`, sole Phase 2A writer; no Phase 2A subagents)
+
+**Branch:** `codex/maint-0136-phase-2a-cache-cleanup`, created from exact frozen
+Phase 1 candidate `37b3678504b9e9a3d663f442ecab62f19a3f0b75`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0136-phase-2a-cache-cleanup-git-handoff-receipt.json`
+
+**Focus:** Execute only the owner-authorized Phase 2A regenerable-cache packet:
+clean inactive `react_app/node_modules` and `.mypy_cache` identities frozen by
+Phase 1. Preserve every worktree, branch, ref, pull request, protected source,
+shared `.venv`, primary checkout, active lane, and dirty lane.
+
+### Summary
+
+- Created a dependent successor from the immutable Phase 1 candidate; Phase 1
+  remains clean and unchanged while PR #874 waits for hosted runner capacity.
+- Added one fail-closed cache-packet implementation. It can select only exact
+  Phase 1 candidate identities, requires fresh clean/inactive topology, rejects
+  symlinks and path escape, verifies size and per-HEAD recreation basis twice,
+  and has no Git/worktree/ref/PR/protected-source or `.venv` deletion path.
+- Froze target-set SHA-256
+  `bd1f0985bda82707a85e6ce12bb2d3889d85a0dffb35b8e822a411a0841d3b05`:
+  16 `react_app/node_modules` plus 14 `.mypy_cache` directories, zero held
+  candidates, and 7,665,283,072 measured bytes.
+- Removed all 30 exact targets with no partial failure. Independent target
+  absence passes. Filesystem availability increased by 7,903,207,424 bytes and
+  reported capacity fell from 87% to 83%; the frozen target sum remains the
+  authoritative cache quantity because APFS accounting may vary.
+- Proved the 74-worktree topology, 232-ref snapshot, and canonical
+  42-file/72,025,193-byte protected-source aggregate are unchanged. The primary
+  and Phase 1 lanes remain clean at their original heads; detached `e54a`
+  retains its one pre-existing dirty file.
+- Kept the Phase 2A candidate local and publication-held behind Phase 1 PR #874;
+  no push, PR, merge, release, or broader cleanup is part of this packet.
+
+### Issues encountered
+
+- The repository's maintained safe-file delete command accepts one regular
+  file and cannot remove a cache directory; no registered exact cache-packet
+  operation existed.
+- The first focused style batch found one unsorted test import and one unused
+  module import; Black also reported both new files needed formatting.
+- Initial handoff/task inspection used three guessed paths that do not exist in
+  this repository layout.
+- The first documentation-frontmatter command used a guessed retired script
+  name and exited before checking documents.
+- The first receipt-creation command left glob-valued forbidden paths unquoted,
+  so zsh rejected it before the receipt script ran.
+- Phase 1 PR #874 remains blocked by hosted runner capacity: the same-head rerun
+  is queued without jobs, so successor publication ordering cannot advance.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `safe_file_delete.py` deliberately supports only an
+  unreferenced regular file and the control plane had no directory-cache
+  transaction. Resolution: add the bounded `phase2a_cache_cleanup` module with
+  Phase 1 identity binding, fresh topology and size checks, exact path and
+  symlink guards, recreation proof, pre-mutation validation, and before/after
+  topology/ref/protected-source evidence. Seven focused regressions pass,
+  including topology drift without deletion and exact successful removal that
+  preserves a sibling sentinel and protected source.
+- Confirmed root cause: the initial files had not yet received repository
+  formatter/import normalization. Resolution: apply Ruff's two mechanical
+  import fixes and Black once, then rerun the frozen focused batch; Ruff, Black,
+  and all seven tests pass.
+- Confirmed root cause: maintained task and briefing files live at
+  `docs/TASKS.md` and `docs/planning/next-session-brief.md`; there is no root
+  `TASKS.md`, `docs/HANDOFF.md`, or `docs/next-session-brief.md`. Resolution:
+  discover the exact paths with `rg --files` and use only those maintained
+  owners. ⚠️ TERMINAL ISSUE: guessed handoff/task paths did not exist -> exact
+  maintained paths were discovered before any edit.
+- Confirmed root cause: frontmatter validation is a selector owned by the
+  unified `scripts/check_docs.py`, not a standalone maintained
+  `scripts/check_docs_frontmatter.py`. Resolution: inspect the unified help and
+  run `check_docs.py --frontmatter --check-all-files`; 361 maintained documents
+  have zero invalid frontmatter records. ⚠️ TERMINAL ISSUE: guessed standalone
+  frontmatter checker was absent -> the maintained unified selector passed.
+- Confirmed root cause: zsh expands unmatched `**` arguments before launching
+  the receipt builder. Resolution: quote each literal forbidden-path value and
+  rerun the unchanged receipt command; it completed successfully. The rejected
+  command created no receipt. ⚠️ TERMINAL ISSUE: unquoted receipt globs were
+  rejected -> literal quoted path contracts were accepted.
+- Confirmed root cause: the GitHub-hosted workflow has not been assigned a
+  runner; it has not produced a code or test failure. Resolution: retain the
+  unchanged Phase 1 head, bind Phase 2A to its exact commit, and hold Phase 2A
+  publication until the predecessor integrates rather than changing either
+  candidate to provoke another run.
+
+### Validation
+
+- The three Phase 2A contract regressions plus the three inherited preservation
+  regressions pass before execution. After execution, the expanded four-case
+  Phase 2A suite plus the inherited three-case suite passes as one frozen
+  seven-test batch; changed Python files pass Ruff and Black.
+- The target executor returns `PASS`, removes 30/30 exact directories and
+  7,665,283,072 measured bytes, reports no failure, and proves unchanged
+  topology, refs, and protected-source aggregate. An independent shell absence
+  scan reports zero surviving target paths.
+- The excluded primary, frozen Phase 1, and detached dirty lanes retain their
+  exact heads, clean/dirty counts, and no-operation state under a fresh
+  `git_state.py --json --worktrees` query with zero query failures.
+- Documentation frontmatter passes for 361 maintained documents with zero
+  invalid records; 486 Markdown files, 1,017 local links, and six local images
+  have zero broken links. Context, control-plane, token-efficiency, and exact
+  target/execution evidence invariants pass.
+- The one consolidated quick gate passes 10/10 with zero reused checks. Broad
+  structural-engineering suites are not independently selected because this
+  packet changes only the maintenance cache transaction, its focused tests,
+  and evidence. The one consolidated repository gate passes 31/31 with three
+  unchanged quick-check results reused; normal commit hooks, immutable
+  candidate audit, read-only session closeout, and the local publication hold
+  remain.
+
 ## 2026-08-26 — Session: MAINT-0136 cleanup preservation
 
 **Agent:** Codex (`orchestrator`, sole writer; two prior read-only plan reviews)

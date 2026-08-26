@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-26
-- Focus: Execute only the owner-authorized cleanup Phase 0 and Phase 1:
-- Git receipt: docs/verification/maint-0136-cleanup-preservation-git-handoff-receipt.json | sha256:f86af26a6db44d06ca21b6473184bc1c47b9be33cc448dc89812cde8c6a7bf45 | HOLD
-- Git identity: codex/maint-0136-cleanup-preservation@ee04bfbf76b1a3a022d07c8203b5274a0f71998f | upstream=origin/main@ee04bfbf76b1a3a022d07c8203b5274a0f71998f | base=origin/main@ee04bfbf76b1a3a022d07c8203b5274a0f71998f | tree=dirty | operation=none
+- Focus: Execute only the owner-authorized Phase 2A regenerable-cache packet:
+- Git receipt: docs/verification/maint-0136-phase-2a-cache-cleanup-git-handoff-receipt.json | sha256:b879f4a75c11c11ac4002a0528183e4f155507f84d70e383c0c68c471879e294 | HOLD
+- Git identity: codex/maint-0136-phase-2a-cache-cleanup@37b3678504b9e9a3d663f442ecab62f19a3f0b75 | upstream=NONE@UNKNOWN | base=origin/main@ee04bfbf76b1a3a022d07c8203b5274a0f71998f | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: COMMIT_INTENDED_PATHS
 <!-- HANDOFF:END -->
