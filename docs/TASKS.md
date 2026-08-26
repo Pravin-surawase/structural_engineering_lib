@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-27 — MAINT-0136 Phase 2B-W exact worktree execution
+**Updated:** 2026-08-27 — MAINT-0136 Phase 2C exact branch/ref preparation
 
 ---
 
@@ -135,6 +135,15 @@ protected-source aggregate, pull requests, and shared `.venv` are unchanged.
 Available filesystem space increased by 7,920,893,952 bytes. The one backed
 recovery hold, 14 other live lanes, and Phase 2C branch/ref/archive cleanup
 remain held. Phase 1 PR #874 remains open/blocked.
+
+`MAINT-0136` Phase 2C preparation classified 77 local branches / 237 refs and
+froze only four merged local branches plus two matching remote branches under
+target digest `08a68419...b23c7`. Exactly six local refs would be affected.
+Seventy-three local branches, 79 other live remote branches, 45 tags, 33
+Codex-managed refs, all worktrees/PRs/protected sources, and both local/Drive
+recovery archives remain held. The owner's full Phase 2C approval authorized
+preparation but preceded this immutable target set; exact digest-bound deletion
+approval is the next gate. No Phase 2C deletion has occurred.
 
 `RELEASE-SMOOTH-001` is the active release-control task. It converts the
 `v0.24.0a1` delays into a single-candidate next-release flow: fail-fast final

@@ -65,11 +65,14 @@ The 15 remaining worktrees are intentionally retained:
 The removed checkouts remain recoverable through their preserved exact local
 branches, exact remote or integrated tracked heads, and the owner-only Drive
 archive containing their ignored state. Phase 2C branch/ref/archive review is a
-separate, low-disk-value decision and remains held pending a new exact manifest
-and authorization.
+separate, low-disk-value decision. Its
+[preparation plan](maint-0136-phase-2c-preparation-plan.md) now freezes four
+local and two matching remote branch targets while retaining all archives,
+tags, Codex-managed refs, worktrees, and other branches.
 
 ## Current next action
 
-Freeze and validate this execution evidence as the immutable local candidate.
-Do not start Phase 2C, delete branches or refs, close pull requests, delete the
-Drive/local recovery archive, or remove any of the 15 retained worktrees.
+Phase 2C preparation is complete. Wait for exact digest-bound authorization;
+do not delete any Phase 2C branch or ref before that confirmation, and do not
+close pull requests, delete the Drive/local recovery archive, or remove any
+retained worktree.

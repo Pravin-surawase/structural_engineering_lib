@@ -5,6 +5,102 @@
 
 ---
 
+## 2026-08-27 — Session: MAINT-0136 Phase 2C branch/ref/archive preparation
+
+**Agent:** Codex (`maintainer`, sole Phase 2C preparation writer; no subagents)
+
+**Branch:** `codex/maint-0136-phase-2c-preparation`, created from exact Phase
+2B-W execution commit `18ed2f1f65a24b54029875fd1cad640dc2f0fae0`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0136-phase-2c-preparation-git-handoff-receipt.json`
+
+**Focus:** Freeze exact Phase 2C branch/ref targets without deleting them.
+
+### Summary
+
+- Recorded the owner's full Phase 2C approval and opened a clean successor
+  lane from the exact completed Phase 2B-W commit. Requeried 16 worktrees, 77
+  local heads, 81 live remote heads, 237 local refs, 500 historical PR rows,
+  and ten open pull requests without prune.
+- Used the Google Drive file-lifecycle workflow to re-confirm the exact
+  92,256,339-byte archive is owner-only, unshared, and downloadable. The prior
+  authenticated SHA-matched readback and 7,602-file full restore remain the
+  byte/recovery authority.
+- Added one fail-closed Phase 2C preparation/execution module and five focused
+  regressions. The only implemented mutations are exact remote branch deletion
+  and normal local `git branch -d`; force deletion, prune, garbage collection,
+  archive/tag/Codex-ref/worktree deletion, and PR closure have no code path.
+- Ran the canonical branch-disposition classifier on all five Phase 2B-W heads
+  currently integrated into live `origin/main`. It froze four local branches;
+  two also have exact matching live remote branches. It retained
+  `codex/release-preflight-alpha-policy` because its local and remote heads
+  differ.
+- Froze four local and two remote targets, affecting six local refs, under
+  target-set SHA-256 `08a68419...b23c7`. Held 73 local branches, 79 other live
+  remote branches, 45 tags, 33 Codex-managed refs, every worktree and PR, both
+  local recovery artifacts, the Drive archive, and all protected sources.
+- Per the classifier contract, the owner's phase-level approval authorizes this
+  exact preparation but preceded the immutable target set. No Phase 2C deletion
+  occurred; execution awaits authorization bound to the frozen digest.
+
+### Issues encountered
+
+- Exact-title Drive search returned no archive result even though the archive
+  was present and accessible.
+- The first post-authorization formatter/test batch exposed a `NameError` in
+  the new script and prevented manifest regeneration.
+- The raw branch inventory looked broadly removable, but the canonical
+  classifier admitted only four local and two remote actions.
+- Full Phase 2C approval preceded the exact immutable target digest required by
+  the branch-deletion classifier.
+
+### Root causes and resolutions
+
+- Root cause unconfirmed: Drive's keyword search did not return the exact
+  stored archive title in this query. Resolution: ground the known project
+  backup folder, list its exact child folder, then list/read the archive
+  metadata directly; owner-only visibility, downloadability, MIME type, and
+  exact 92,256,339-byte size pass.
+- Confirmed root cause: a narrow patch that introduced `target_digest` matched
+  an earlier helper return instead of the manifest return, leaving the helper
+  with an undefined name and the manifest without its digest variable.
+  Resolution: move the assignment beside `target_identity` and rerun the five
+  regressions, Ruff, Black, and live manifest generation; all pass. ⚠️ TERMINAL
+  ISSUE: the first live regeneration failed with `NameError` -> correct the
+  insertion site and rerun the focused batch once.
+- Confirmed root cause: 58 former worktree heads are not integrated into live
+  `origin/main`; 13 other branches are attached to retained lanes or outside
+  the backed Phase 2B set; `main` is protected; and one integrated local head
+  differs from its live remote. Resolution: retain all 73 and select only the
+  four classifier-approved merged local branches, with remote deletion limited
+  to two exact matching heads.
+- Confirmed root cause: exact target names and their digest did not exist when
+  the owner granted full Phase 2C approval, while the canonical classifier
+  requires a separate exact-target approval before branch deletion. Resolution:
+  freeze the reproducible manifest, perform zero deletions, and request one
+  digest-bound confirmation.
+
+### Validation
+
+- Five focused Phase 2C regressions pass, covering integrated/classifier-only
+  selection, open-PR and attached-worktree holds, remote-before-local execution,
+  digest-drift rejection, and the absence of force/prune commands. Changed
+  Python files pass Ruff and Black.
+- Live Google Drive metadata, both exact local recovery artifacts, protected
+  sources, worktree topology, open PRs, local/remote heads, and ref namespaces
+  are bound into the manifest. The standalone canonical classifier returns four
+  `RETIREMENT_READY_PENDING_APPROVAL` results and one exact head-mismatch hold.
+- Thirty-five consolidated maintenance regressions pass. Documentation
+  frontmatter passes for 367 maintained documents with zero invalid records;
+  492 Markdown files, 1,039 local links, and six local images have zero broken
+  links. Task format, context, control, and efficiency validation pass.
+- The consolidated quick gate passes 10/10 with zero reused checks. The full
+  repository gate passes 31/31 with 11 unchanged quick results reused. Normal
+  staged hooks pass through the worktree-bound Python runtime, including the
+  required quick-check hook. Immutable commit and final read-only session
+  validation remain the closeout sequence.
+
 ## 2026-08-27 — Session: MAINT-0136 Phase 2B-W worktree execution
 
 **Agent:** Codex (`maintainer`, sole Phase 2B-W execution writer/operator; no
