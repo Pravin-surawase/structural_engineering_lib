@@ -5,6 +5,110 @@
 
 ---
 
+## 2026-08-27 — Session: MAINT-0136 Phase 2B-R Google Drive backup
+
+**Agent:** Codex (`governance`, sole backup writer/operator; no subagents)
+
+**Branch:** `codex/maint-0136-phase-2b-r-google-drive-backup`, created from the
+exact recovery-preparation commit
+`2e3558a7fda4f8ff778c6ecd5f0435d0415ca229`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0136-phase-2b-r-google-drive-backup-git-handoff-receipt.json`
+
+**Focus:** Back up Phase 2B-R to Google Drive and retain every cleanup hold.
+
+### Summary
+
+- Used the connected Google Drive file-lifecycle workflow. Created a separate
+  `structural_engineering_lib Backups` root rather than mixing this repository
+  with the existing Sourcebook backup folder; metadata shows owner-only access,
+  zero broad permissions, and no sharing.
+- Added a fail-closed local package builder and four focused regressions. It
+  revalidates all 64 source worktrees, exact heads and ignored-state aggregates,
+  the Git bundle, dirty patch, and protected-source aggregate before archiving.
+- Created one 92,256,339-byte archive containing 7,602 files / 123,164,574
+  source bytes. Local full restore passes with package-manifest SHA-256
+  `b3bca03f...1d214`.
+- Uploaded the archive and private recovery receipt to Google Drive. Remote
+  metadata reports the exact archive size and owner-only visibility. Google
+  documents AES-256 encryption in transit and at rest; client-side encryption
+  is not claimed.
+- Downloaded the stored archive through the authenticated Drive account. Its
+  SHA-256 exactly matches local `bf18a66b...167ac`, and the downloaded archive
+  restores all 7,602 files / 123,164,574 bytes successfully.
+- Performed no source/cache/worktree/branch/ref/PR/protected-source/archive or
+  shared-`.venv` removal. Phase 2B-W still requires a new exact target manifest
+  and explicit authorization.
+
+### Issues encountered
+
+- The first worktree-creation command selected the not-yet-created target as its
+  process working directory, so the process could not start.
+- The Drive connector streamed the large remote file to an internal file
+  reference but did not expose a local materialized path for hash/restore use;
+  Google Drive Desktop was configured for the same account but not running.
+- The automatically selected in-app browser was not signed in to Google Drive;
+  the existing Chrome session was authenticated.
+- Two browser download-event waits timed out even though direct Drive menu
+  activation subsequently completed the downloads. The retries produced three
+  identical completed local readbacks.
+- The first focused style batch found one unused import and Black formatting in
+  both new Python files.
+- The first documentation metadata check rejected the intuitive `complete`
+  status and `verification` document type used by the completed recovery plans.
+
+### Root causes and resolutions
+
+- Confirmed root cause: process creation resolves its working directory before
+  executing `git worktree add`. Resolution: create the exact dependent worktree
+  from the clean predecessor first, then start its governed session. No partial
+  Git mutation occurred. ⚠️ TERMINAL ISSUE: nonexistent target cwd prevented
+  process start -> create from the predecessor cwd before entering the target.
+- Confirmed root cause: the connector intentionally returns a streamed reference
+  for large raw files, while the stopped Drive Desktop provider had not refreshed
+  the new folder. Resolution: start the already configured Drive application,
+  then use the authenticated browser download path for local hash and restore.
+- Confirmed root cause: browser selection preferred the in-app surface, whose
+  session lacked Drive authentication. Resolution: follow the browser workflow's
+  fallback rule and use the connected Chrome session under the same owner
+  account; no credentials were inspected or entered.
+- Confirmed root cause: Drive's application-style viewer did not emit the
+  expected automation download event for its header/body controls, while the
+  file-menu action still initiated normal Chrome downloads. Resolution: verify
+  the first completed exact-size archive, move only the two agent-created
+  duplicates to Trash, retain one readback, and leave unrelated Downloads state
+  untouched. Both trashed duplicates are recoverable.
+- Confirmed root cause: the initial source/test files had not received final
+  import and formatter normalization. Resolution: remove the unused import and
+  format both once; final Ruff, Black, and focused tests pass.
+- Confirmed root cause: the maintained documentation vocabulary represents
+  completed plans with `archived` status and limits document types to its
+  controlled set. Resolution: mark both completed plans `archived` and classify
+  the closeout as a `log`; the repeated metadata and link checks pass.
+
+### Validation
+
+- Four new package regressions pass: symlink rejection, exact full restore,
+  tamper rejection, and frozen-head drift rejection. They pass with the 15
+  inherited Phase 2B-R, Phase 2B, Phase 2A, and preservation regressions as one
+  19-test batch; changed Python files pass Ruff and Black.
+- Local package creation revalidates 64 source worktrees and restores 7,602
+  files / 123,164,574 bytes. The local archive is 92,256,339 bytes with SHA-256
+  `bf18a66b339b2ad02f071346aed75cb27d3fceeae0e45464eb50dd11334167ac`.
+- Drive metadata, connector readback, browser download, SHA comparison, and full
+  downloaded restore pass. The folder, archive, and receipt remain owner-only;
+  tracked evidence contains no Drive URLs/IDs or protected filenames.
+- Documentation frontmatter passes for 364 maintained documents with zero
+  invalid records; 489 Markdown files, 1,026 local links, and six local images
+  have zero broken links. Context validates 10 areas and six authorities;
+  control validates 115 active operations and 101/101 scripts; token-efficiency
+  policy and exact backup-evidence invariants pass.
+- The one consolidated quick gate passes 10/10 with zero reused checks. The one
+  consolidated repository gate passes 31/31 with 11 unchanged quick-check
+  results reused. Normal hooks, immutable local commit, final read-only session
+  validation, and publication hold remain the closeout sequence.
+
 ## 2026-08-26 — Session: MAINT-0136 Phase 2B-R recovery preparation
 
 **Agent:** Codex (`governance`, sole Phase 2B-R preparation writer; no subagents)

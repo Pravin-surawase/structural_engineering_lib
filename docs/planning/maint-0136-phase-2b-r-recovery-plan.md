@@ -1,6 +1,6 @@
 ---
 owner: Main Agent
-status: active
+status: archived
 last_updated: 2026-08-26
 doc_type: spec
 complexity: intermediate
@@ -11,14 +11,17 @@ tags: [maintenance, cleanup, recovery, worktrees, backup]
 
 ## Outcome
 
-Phase 2B-R preparation is complete and correctly held before backup execution.
-The exact machine-readable authority is the
+Phase 2B-R preparation completed under the
 [recovery preparation manifest](../verification/maint-0136-phase-2b-r-recovery-preparation-manifest.json),
-whose status is `PHASE_2B_R_PREPARED_DESTINATION_HOLD`.
+whose status is `PHASE_2B_R_PREPARED_DESTINATION_HOLD`. Google Drive backup and
+authenticated restore subsequently passed under the
+[backup closeout](maint-0136-phase-2b-r-google-drive-backup-closeout.md).
 
-No backup copy, live archive, restore directory, deletion, cache cleanup,
-worktree removal, branch/ref operation, pull-request action, protected-source
-change, or shared-`.venv` change occurred.
+The preparation packet itself performed no backup or cleanup mutation. The
+later backup packet created the exact archive, uploaded it and its private
+receipt, and restore-tested the downloaded remote bytes. It still performed no
+source deletion, cache cleanup, worktree removal, branch/ref operation,
+pull-request action, protected-source change, or shared-`.venv` change.
 
 ## Exact recovery boundary
 

@@ -3,12 +3,12 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-08-26
-- Focus: Freeze the exact recovery source boundary and destination contract
-- Git receipt: docs/verification/maint-0136-phase-2b-r-recovery-preparation-git-handoff-receipt.json | sha256:2603725be66acf376f6526f47993cdc5989fb94a2ba1a0a8a5a70c15fe2590d5 | HOLD
-- Git identity: codex/maint-0136-phase-2b-r-recovery-preparation@90f5d7921f82a903de4291719589c7da13e979cf | upstream=NONE@UNKNOWN | base=origin/main@ee04bfbf76b1a3a022d07c8203b5274a0f71998f | tree=dirty | operation=none
+- Date: 2026-08-27
+- Focus: Back up Phase 2B-R to Google Drive and retain every cleanup hold.
+- Git receipt: docs/verification/maint-0136-phase-2b-r-google-drive-backup-git-handoff-receipt.json | sha256:0b5270ce431ba3eef56d020ef7635f8895ee4c7e575e405ad299498c7d3358e7 | HOLD
+- Git identity: codex/maint-0136-phase-2b-r-google-drive-backup@2e3558a7fda4f8ff778c6ecd5f0435d0415ca229 | upstream=NONE@UNKNOWN | base=origin/main@ee04bfbf76b1a3a022d07c8203b5274a0f71998f | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
-- Next action: COMMIT_PREPARATION_EVIDENCE
+- Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
 
 ## Latest Handoff

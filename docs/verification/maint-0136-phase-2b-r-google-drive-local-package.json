@@ -1,0 +1,28 @@
+{
+  "archive_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/private_sources/worktree_cleanup_archives/maint-0136-phase-2b-r-google-drive-20260827/structural_engineering_lib-maint-0136-phase-2b-r-backup-2e3558a7.tar.gz",
+  "archive_sha256": "bf18a66b339b2ad02f071346aed75cb27d3fceeae0e45464eb50dd11334167ac",
+  "archive_size_bytes": 92256339,
+  "mutations_performed": {
+    "branch_deletions": 0,
+    "cache_deletions": 0,
+    "pull_request_closures": 0,
+    "ref_deletions": 0,
+    "source_deletions": 0,
+    "worktree_removals": 0
+  },
+  "observed_at_utc": "2026-08-26T18:40:24.475624+00:00",
+  "package_manifest_sha256": "b3bca03f9bae78469ac2bcc24d41dde466a62fce5eac8673ea2c896ac3e1d214",
+  "packet_id": "MAINT-0136-PHASE-2B-R-GOOGLE-DRIVE-BACKUP",
+  "restore_verification": {
+    "package_manifest_sha256": "b3bca03f9bae78469ac2bcc24d41dde466a62fce5eac8673ea2c896ac3e1d214",
+    "source_byte_count": 123164574,
+    "source_file_count": 7602,
+    "status": "PASS",
+    "temporary_restore_removed": true
+  },
+  "schema_version": 1,
+  "source_byte_count": 123164574,
+  "source_file_count": 7602,
+  "status": "LOCAL_PACKAGE_CREATED_AND_RESTORE_VERIFIED",
+  "task_id": "MAINT-0136"
+}

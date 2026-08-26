@@ -1,0 +1,165 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-26T18:33:00Z",
+      "query_status": "OK",
+      "reference": "active Codex task: you can use our google drive for back up",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "CREATE_PRIVATE_GOOGLE_DRIVE_BACKUP_FOLDER",
+      "CREATE_EXACT_RECOVERY_ARCHIVE",
+      "UPLOAD_RECOVERY_ARCHIVE_AND_PRIVATE_RECEIPT",
+      "DOWNLOAD_AND_RESTORE_VERIFY_REMOTE_ARCHIVE",
+      "COMMIT_BACKUP_EVIDENCE"
+    ],
+    "backup_execution_authorized": true,
+    "cleanup_execution_authorized": false,
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [
+      "DELETE_SOURCE",
+      "DELETE_CACHE",
+      "REMOVE_WORKTREE",
+      "DELETE_BRANCH_OR_REF",
+      "CLOSE_PULL_REQUEST",
+      "DELETE_ARCHIVE",
+      "DELETE_PROTECTED_SOURCE",
+      "DELETE_SHARED_VENV",
+      "GIT_CLEAN",
+      "PRUNE",
+      "RESET",
+      "FORCE_PUSH"
+    ]
+  },
+  "holds": [
+    "AUTHORIZATION_SOURCE_STALE_EVIDENCE",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "0b5270ce431ba3eef56d020ef7635f8895ee4c7e575e405ad299498c7d3358e7",
+    "state": {
+      "branch": "codex/maint-0136-phase-2b-r-google-drive-backup",
+      "default_base": {
+        "ahead": 4,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "ee04bfbf76b1a3a022d07c8203b5274a0f71998f",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 99.878,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-maint-0136-phase-2b-r-google-drive-backup",
+      "head_sha": "2e3558a7fda4f8ff778c6ecd5f0435d0415ca229",
+      "hold_reasons": [
+        "changed paths: 12"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-26T18:56:32.857932+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2b-r-google-drive-backup",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 12,
+        "modified_paths": [],
+        "staged_paths": [
+          "Python/tests/test_phase2b_google_drive_backup.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/README.md",
+          "docs/planning/maint-0136-phase-2b-preparation-plan.md",
+          "docs/planning/maint-0136-phase-2b-r-google-drive-backup-closeout.md",
+          "docs/planning/maint-0136-phase-2b-r-recovery-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/maint-0136-phase-2b-r-google-drive-backup-evidence.json",
+          "docs/verification/maint-0136-phase-2b-r-google-drive-backup-git-handoff-receipt.json",
+          "docs/verification/maint-0136-phase-2b-r-google-drive-local-package.json",
+          "scripts/_lib/phase2b_google_drive_backup.py"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2b-r-google-drive-backup"
+    }
+  },
+  "local_state_receipt_hash": "sha256:0b5270ce431ba3eef56d020ef7635f8895ee4c7e575e405ad299498c7d3358e7",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-26T18:56:32.858105+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources/**",
+      "Python/structural_lib/**",
+      "fastapi_app/**",
+      "react_app/**",
+      ".venv/**"
+    ],
+    "integration_owner": "Codex local backup closeout; publication held behind predecessor chain",
+    "owned_paths": [
+      "scripts/_lib/phase2b_google_drive_backup.py",
+      "Python/tests/test_phase2b_google_drive_backup.py",
+      "docs/planning/maint-0136-phase-2b-r-google-drive-backup-closeout.md",
+      "docs/verification/maint-0136-phase-2b-r-google-drive-local-package.json",
+      "docs/verification/maint-0136-phase-2b-r-google-drive-backup-evidence.json",
+      "docs/verification/maint-0136-phase-2b-r-google-drive-backup-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/README.md",
+      "docs/planning/maint-0136-phase-2b-preparation-plan.md",
+      "docs/planning/maint-0136-phase-2b-r-recovery-plan.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "MAINT-0136-PHASE-2B-R-GDRIVE-BACKUP"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
