@@ -56,19 +56,12 @@ more than the preparation packet's required reserve.
 
 ## What remains held
 
-This backup does not authorize cleanup. Phase 2B-W must still requery current
-topology and ownership, reconcile predecessor publication ordering, freeze an
-exact worktree-only target set, and obtain a new explicit authorization. Until
-then, preserve every worktree, branch, ref, pull request, archive, protected
-source, shared `.venv`, and the verified local/readback copies.
+The later [Phase 2B-W preparation](maint-0136-phase-2b-w-preparation-plan.md)
+requeried 78 worktrees and froze 63 exact clean, backed, remotely recoverable or
+integrated targets totaling 7,686,279,168 gross bytes. One backed lane lacks an
+exact remote/integrated recovery path, and 14 live lanes are outside the backup
+mapping; all 15 remain retained.
 
-The next efficient packet is preparation-only:
-
-1. verify the 64 candidate worktrees are still clean, inactive, and free of
-   open pull requests;
-2. obtain an owner-retention disposition for each exact lane;
-3. prove each retained branch is integrated or remotely recoverable;
-4. freeze exact worktree paths, heads, gross bytes, and target-set SHA-256; and
-5. present that immutable Phase 2B-W manifest for separate authorization.
-
-Branch/ref/archive cleanup remains Phase 2C and is not part of Phase 2B-W.
+Worktree execution still requires confirmation bound to the exact target-set
+SHA-256 `543a5f1b...129da`. Branch/ref/archive cleanup remains Phase 2C and is
+not part of Phase 2B-W.

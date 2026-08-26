@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
-status: active
-last_updated: 2026-08-26
+status: archived
+last_updated: 2026-08-27
 doc_type: spec
 complexity: intermediate
 tags: [maintenance, cleanup, worktrees, recovery, git]
@@ -128,11 +128,11 @@ is a symlink or escapes its worktree, or predecessor publication order changes.
 
 ## Current next action
 
-Phase 2B-R Google Drive backup and authenticated restore now pass under the
-[backup closeout](maint-0136-phase-2b-r-google-drive-backup-closeout.md). Do not
-run the 119-target low-value cache sweep. Next prepare Phase 2B-W by rechecking
-the 64 exact lanes, resolving owner retention and remote/integration state, and
-freezing a worktree-only manifest. Worktree removal and every branch/ref/archive
-cleanup remain separately held until a new explicit authorization. The paused
-20-minute GitHub heartbeat is not needed for this local work and should remain
-paused until a deliberate PR #874 status recheck is requested.
+Phase 2B-R Google Drive backup and authenticated restore pass under the
+[backup closeout](maint-0136-phase-2b-r-google-drive-backup-closeout.md).
+Phase 2B-W preparation subsequently froze 63 exact targets / 7,686,279,168
+gross bytes under target-set SHA-256 `543a5f1b...129da`; see the
+[Phase 2B-W plan](maint-0136-phase-2b-w-preparation-plan.md). Worktree removal
+now awaits authorization bound to that exact digest. Do not run the 119-target
+low-value cache sweep. Branch/ref/archive cleanup remains separately held. The
+paused 20-minute GitHub heartbeat is not needed for this local work.

@@ -4,11 +4,11 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-27
-- Focus: Back up Phase 2B-R to Google Drive and retain every cleanup hold.
-- Git receipt: docs/verification/maint-0136-phase-2b-r-google-drive-backup-git-handoff-receipt.json | sha256:0b5270ce431ba3eef56d020ef7635f8895ee4c7e575e405ad299498c7d3358e7 | HOLD
-- Git identity: codex/maint-0136-phase-2b-r-google-drive-backup@2e3558a7fda4f8ff778c6ecd5f0435d0415ca229 | upstream=NONE@UNKNOWN | base=origin/main@ee04bfbf76b1a3a022d07c8203b5274a0f71998f | tree=dirty | operation=none
+- Focus: Freeze exact Phase 2B-W worktree targets without performing cleanup.
+- Git receipt: docs/verification/maint-0136-phase-2b-w-preparation-git-handoff-receipt.json | sha256:b9f096a0b54a3eb75f47ca8471634d98717ef5a78d673119d12efc963ab1ab23 | HOLD
+- Git identity: codex/maint-0136-phase-2b-w-preparation@d44ec71df99baccd599cde50a6075a4a22d330c1 | upstream=NONE@UNKNOWN | base=origin/main@ee04bfbf76b1a3a022d07c8203b5274a0f71998f | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
-- Next action: HOLD_FOR_EXACT_EVIDENCE
+- Next action: WAIT_FOR_OWNER_DECISION on the exact 63-target digest `543a5f1b...129da`; do not remove a worktree before confirmation
 <!-- HANDOFF:END -->
 
 ## Latest Handoff

@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-27 — MAINT-0136 Phase 2B-R Google Drive backup
+**Updated:** 2026-08-27 — MAINT-0136 Phase 2B-W exact worktree preparation
 
 ---
 
@@ -126,16 +126,16 @@
 
 ## Active
 
-`MAINT-0136` Phase 2B-R off-device recovery now passes. Google Drive holds one
-owner-only 92,256,339-byte archive plus its private receipt. The authenticated
-download matches local SHA-256 `bf18a66b...167ac`, and its full managed restore
-passes for 7,602 files / 123,164,574 source bytes. No source, cache, worktree,
-branch, ref, pull request, protected file, archive, or shared `.venv` was
-removed. Next prepare Phase 2B-W: requery the 64 lanes, resolve exact owner
-retention and remote/integration state, and freeze a worktree-only target
-manifest for separate authorization. The 119-directory low-value cache sweep
-and all actual worktree/branch/ref/archive cleanup remain held. Phase 1 PR #874
-remains open/blocked.
+`MAINT-0136` Phase 2B-W preparation froze 63 exact clean, inactive, backed,
+remotely recoverable or integrated worktrees totaling 7,686,279,168 gross bytes
+under target-set SHA-256 `543a5f1b...129da`. The verified Google Drive archive
+and full remote restore remain unchanged. One backed local-only lane and 14
+unbacked/current/detached/predecessor lanes are retained; none of the 10 open
+pull requests overlaps a target. No cleanup occurred. Next obtain authorization
+bound to the exact digest, then remove only those worktrees without force while
+preserving every branch, ref, pull request, backup, protected source, and shared
+`.venv`. The 119-directory low-value cache sweep and Phase 2C branch/ref/archive
+cleanup remain held. Phase 1 PR #874 remains open/blocked.
 
 `RELEASE-SMOOTH-001` is the active release-control task. It converts the
 `v0.24.0a1` delays into a single-candidate next-release flow: fail-fast final

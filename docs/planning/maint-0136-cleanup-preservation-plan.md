@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-26
+last_updated: 2026-08-27
 doc_type: spec
 complexity: intermediate
 tags: [maintenance, cleanup, git, preservation, recovery]
@@ -128,15 +128,14 @@ exact temporary copy and proves the canonical aggregate is unchanged, rather
 than running that command against the canonical database during evidence
 freeze.
 
-## Phase 2B preparation result — not authorized
+## Phase 2B-W preparation result — exact execution held
 
-Phase 2A does not authorize broader cleanup. The later read-only
-[Phase 2B preparation](maint-0136-phase-2b-preparation-plan.md) found that the
-remaining 119 exact small-cache identities total only 47,378,432 bytes, while
-64 worktrees with 7,753,789,440 gross path bytes remain review-only and contain
-ignored local state. The recommendation is therefore to skip the standalone
-small-cache sweep, establish off-device recovery, and prepare worktree
-retirement separately from branch/ref/archive cleanup.
+The remaining 119 exact small-cache identities total only 47,378,432 bytes, so
+the standalone cache sweep remains skipped. Phase 2B-R established owner-only
+Google Drive recovery and passed authenticated full restore. The later
+[Phase 2B-W preparation](maint-0136-phase-2b-w-preparation-plan.md) froze 63
+exact clean, inactive, backed, remotely recoverable or integrated worktrees
+totaling 7,686,279,168 gross bytes under target digest `543a5f1b...129da`.
 
 Any later executable Phase 2B requires:
 
@@ -150,5 +149,7 @@ Any later executable Phase 2B requires:
 5. recoverable execution with before/after evidence and no broad `git clean`,
    reset, force push, ref deletion, or prune.
 
-Until those gates pass, all remaining cache, worktree, branch, ref, archive,
-source, and pull-request cleanup stays held.
+The recovery and inspection gates now pass for only those 63 exact targets.
+Their removal remains held pending digest-bound authorization. The one backed
+recovery hold, 14 unbacked live lanes, all caches outside a removed target,
+branches, refs, archives, protected sources, and pull requests remain retained.

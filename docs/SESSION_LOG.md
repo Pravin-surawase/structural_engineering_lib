@@ -5,6 +5,103 @@
 
 ---
 
+## 2026-08-27 — Session: MAINT-0136 Phase 2B-W worktree preparation
+
+**Agent:** Codex (`maintainer`, sole Phase 2B-W preparation writer; no subagents)
+
+**Branch:** `codex/maint-0136-phase-2b-w-preparation`, created from the exact
+Google Drive backup commit
+`d44ec71df99baccd599cde50a6075a4a22d330c1`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0136-phase-2b-w-preparation-git-handoff-receipt.json`
+
+**Focus:** Freeze only exact, recoverable worktree-retirement targets without
+performing cleanup.
+
+### Summary
+
+- Reconfirmed the private Google Drive folder contains the exact
+  92,256,339-byte archive and its receipt, both unshared and downloadable. The
+  prior authenticated download and 7,602-file full restore remain the recovery
+  authority.
+- Added a preparation-only worktree selector and six focused regressions. It
+  rejects dirty, active, detached, open-PR, unbacked, ignored-state-drifted, and
+  local-only unintegrated lanes and has no removal code path.
+- Requeried 78 live worktrees, ten open pull requests, 81 live remote heads,
+  live `origin/main`, and all 64 verified backup mappings. The Codex task
+  inventory had zero active target-path overlaps.
+- Froze 63 exact worktrees / 7,686,279,168 gross bytes under target-set SHA-256
+  `543a5f1b...129da`. Sixty targets have an exact remote head and five are
+  integrated into live `origin/main`; two satisfy both recovery paths.
+- Held `codex/git-governance-research` because its head is neither the exact
+  remote branch head nor integrated. Retained 14 unbacked live lanes, including
+  the primary checkout, seven detached lanes, and the MAINT-0136
+  predecessor/current lanes.
+- Recorded the owner's general cleanup/deletion approval, but kept execution
+  false because that approval preceded the immutable target digest. No
+  worktree, cache, branch, ref, pull request, archive, protected source, or
+  shared `.venv` was removed.
+
+### Issues encountered
+
+- The first Codex task-inventory query requested 100 rows and was rejected by
+  the app's 50-row maximum.
+- The first focused style batch found one unused import and Black formatting in
+  both new Python files.
+- The first handoff-receipt command stopped before execution because zsh
+  expanded the unquoted forbidden-path glob.
+- The first normal-hook command could not find a global `pre-commit`
+  executable.
+- The initial 63-target result was much larger than the one recovery hold and
+  required reconciliation against the complete live topology before acceptance.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the task-list API enforces a 50-row maximum even though
+  the caller had not applied that bound. Resolution: rerun once with 50 rows;
+  the current project task is active only in the protected primary checkout,
+  and no frozen target path is active.
+- Confirmed root cause: the new source and test had not received their final
+  import and formatter normalization. Resolution: remove the unused import and
+  format both files once; final focused Ruff and Black checks pass.
+- Confirmed root cause: zsh performs unmatched-glob validation before starting
+  the receipt script. Resolution: quote each literal forbidden-path pattern;
+  the canonical receipt then generated with authorization observed and only
+  the expected local/hosted publication holds. ⚠️ TERMINAL ISSUE: unquoted
+  `private_sources/**` stopped receipt generation -> quote literal glob
+  arguments.
+- Confirmed root cause: `pre-commit` is installed in the repository-selected
+  Python environment, not globally on this shell path. Resolution: invoke it
+  through `./scripts/python_runtime.sh -m pre_commit run`; all normal staged
+  hooks pass. ⚠️ TERMINAL ISSUE: global `pre-commit` was unavailable -> use the
+  worktree-bound Python runtime module.
+- Confirmed root cause: the 64-worktree backup mapping intentionally excluded
+  all primary, detached, dirty, open-PR, and MAINT-0136 predecessor lanes, so 63
+  of those historical clean lanes remain eligible while one lacks remote or
+  integrated recovery. Resolution: reconcile the mapping against all 78 live
+  rows, retain the 14 unbacked rows and one recovery hold, and freeze only the
+  63 exact backed targets. The target count, recovery counts, and digest are
+  reproducible from the manifest.
+
+### Validation
+
+- Six new Phase 2B-W regressions pass with the inherited backup, recovery,
+  Phase 2B, Phase 2A, and preservation regressions as one 25-test focused
+  batch. Changed Python files pass Ruff and Black.
+- Live preparation verifies the exact local/remote archive identity, package
+  manifest, all current ignored-state aggregates, open pull requests, remote
+  heads, live integration state, paths, heads, cleanliness, and topology.
+- Documentation frontmatter passes for 365 maintained documents with zero
+  invalid records; 490 Markdown files, 1,030 local links, and six local images
+  have zero broken links. Context validates ten areas and six authorities;
+  control validates 115 active operations and 101/101 scripts; efficiency
+  policy passes.
+- The consolidated quick gate passes 10/10 with zero reused checks. The full
+  repository gate passes 31/31 with 11 unchanged quick results reused. Normal
+  staged hooks pass through the worktree-bound Python runtime. Immutable commit
+  and final read-only session validation remain the closeout sequence.
+
 ## 2026-08-27 — Session: MAINT-0136 Phase 2B-R Google Drive backup
 
 **Agent:** Codex (`governance`, sole backup writer/operator; no subagents)
