@@ -1,0 +1,170 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-26T18:24:34.599691+00:00",
+      "query_status": "OK",
+      "reference": "active Codex task: okay let continue",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "INSPECT_RECOVERY_INPUTS",
+      "FREEZE_RECOVERY_SOURCE_MANIFEST",
+      "COMMIT_PREPARATION_EVIDENCE"
+    ],
+    "backup_execution_authorized": false,
+    "cleanup_execution_authorized": false,
+    "next_action": "COMMIT_PREPARATION_EVIDENCE",
+    "observed_at_utc": "2026-08-26T18:24:34.599691+00:00",
+    "prohibited_actions": [
+      "COPY_TO_UNVERIFIED_DESTINATION",
+      "DELETE_CACHE",
+      "REMOVE_WORKTREE",
+      "DELETE_BRANCH_OR_REF",
+      "CLOSE_PULL_REQUEST",
+      "DELETE_ARCHIVE",
+      "DELETE_PROTECTED_SOURCE",
+      "DELETE_SHARED_VENV",
+      "GIT_CLEAN",
+      "PRUNE",
+      "RESET",
+      "FORCE_PUSH"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "INSPECT_RECOVERY_INPUTS",
+        "FREEZE_RECOVERY_SOURCE_MANIFEST",
+        "COMMIT_PREPARATION_EVIDENCE"
+      ],
+      "branch": "codex/maint-0136-phase-2b-r-recovery-preparation",
+      "head_sha": "90f5d7921f82a903de4291719589c7da13e979cf",
+      "task_id": "MAINT-0136"
+    }
+  },
+  "holds": [
+    "AUTHORIZATION_TARGET_MISMATCH",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "2603725be66acf376f6526f47993cdc5989fb94a2ba1a0a8a5a70c15fe2590d5",
+    "state": {
+      "branch": "codex/maint-0136-phase-2b-r-recovery-preparation",
+      "default_base": {
+        "ahead": 3,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "ee04bfbf76b1a3a022d07c8203b5274a0f71998f",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 98.15,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-maint-0136-phase-2b-r-recovery-preparation",
+      "head_sha": "90f5d7921f82a903de4291719589c7da13e979cf",
+      "hold_reasons": [
+        "changed paths: 10"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-26T18:29:14.932843+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2b-r-recovery-preparation",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 10,
+        "modified_paths": [],
+        "staged_paths": [
+          "Python/tests/test_phase2b_recovery_preparation.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/README.md",
+          "docs/planning/maint-0136-phase-2b-preparation-plan.md",
+          "docs/planning/maint-0136-phase-2b-r-recovery-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/maint-0136-phase-2b-r-recovery-preparation-git-handoff-receipt.json",
+          "docs/verification/maint-0136-phase-2b-r-recovery-preparation-manifest.json",
+          "scripts/_lib/phase2b_recovery_preparation.py"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2b-r-recovery-preparation"
+    }
+  },
+  "local_state_receipt_hash": "sha256:2603725be66acf376f6526f47993cdc5989fb94a2ba1a0a8a5a70c15fe2590d5",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-26T18:29:14.932972+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources/**",
+      "Python/structural_lib/**",
+      "fastapi_app/**",
+      "react_app/**",
+      ".venv/**"
+    ],
+    "integration_owner": "Codex local preparation; publication held behind predecessor chain",
+    "owned_paths": [
+      "scripts/_lib/phase2b_recovery_preparation.py",
+      "Python/tests/test_phase2b_recovery_preparation.py",
+      "docs/planning/maint-0136-phase-2b-r-recovery-plan.md",
+      "docs/verification/maint-0136-phase-2b-r-recovery-preparation-manifest.json",
+      "docs/verification/maint-0136-phase-2b-r-recovery-preparation-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/README.md",
+      "docs/planning/maint-0136-phase-2b-preparation-plan.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "MAINT-0136-PHASE-2B-R-PREP"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

@@ -128,8 +128,11 @@ is a symlink or escapes its worktree, or predecessor publication order changes.
 
 ## Current next action
 
-Do not run the 119-target low-value cache sweep. First provide or select an
-encrypted external/off-device recovery destination; then prepare Phase 2B-R as
-a preservation-only packet. The paused 20-minute GitHub heartbeat is not needed
-for this local preparation and should remain paused until a deliberate PR #874
-status recheck is requested.
+Phase 2B-R preparation is now complete under the
+[exact recovery plan](maint-0136-phase-2b-r-recovery-plan.md). Do not run the
+119-target low-value cache sweep. Mount or identify one exact encrypted
+external/off-device destination with at least 313,438,012 bytes free, then seek
+separate authorization for backup and managed restore testing only. Phase 2B-W
+worktree retirement and every branch/ref/archive cleanup remain separately
+held. The paused 20-minute GitHub heartbeat is not needed for this local work
+and should remain paused until a deliberate PR #874 status recheck is requested.

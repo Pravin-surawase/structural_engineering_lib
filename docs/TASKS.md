@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-26 — MAINT-0136 Phase 2B preparation
+**Updated:** 2026-08-26 — MAINT-0136 Phase 2B-R recovery preparation
 
 ---
 
@@ -126,16 +126,17 @@
 
 ## Active
 
-`MAINT-0136` Phase 2B is prepared but not authorized. Phase 2A remains complete
-at `2d898e9b`; all 30 targets and 7,665,283,072 bytes remain absent. The exact
-remaining small-cache ceiling is 119 directories and only 47,378,432 bytes, so
-a standalone sweep is not recommended. The higher-value surface is 64
-retirement-review-only worktrees with 7,753,789,440 gross path bytes, but all
-contain ignored local state and off-device recovery is unavailable. First
-preserve and restore-test ignored session/pipeline state on encrypted external
-or off-device storage, then freeze a worktree-only target set. Phase 1 PR #874
-remains open/blocked; branch/ref/PR/archive/protected-source/shared-`.venv`
-operations and all actual Phase 2B removal remain held.
+`MAINT-0136` Phase 2B-R recovery preparation is exact and held before execution.
+Across the 64 retirement-review worktrees, 7,558 ignored files / 8,209,256 bytes
+must be preserved and 96,392 files / 2,962,551,202 bytes are proven regenerable.
+Together with the verified Git bundle, dirty patch, and 42 protected sources,
+the backup source is 123,164,574 bytes; its encrypted off-device destination
+must have at least 313,438,012 bytes free. No usable destination is mounted, so
+no backup, archive, restore, or cleanup occurred. Next mount/select one exact
+encrypted off-device destination and separately authorize copy plus managed
+restore testing only. Phase 2B-W worktree retirement, the 119-directory
+low-value cache sweep, and all branch/ref/PR/archive/protected-source/shared-
+`.venv` operations remain held. Phase 1 PR #874 remains open/blocked.
 
 `RELEASE-SMOOTH-001` is the active release-control task. It converts the
 `v0.24.0a1` delays into a single-candidate next-release flow: fail-fast final

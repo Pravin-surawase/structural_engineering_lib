@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-26
-- Focus: Prepare the next cleanup decision without performing cache, worktree, branch, ref, pull-request, archive, protected-source, or shared-`.venv` cleanup.
-- Git receipt: docs/verification/maint-0136-phase-2b-preparation-git-handoff-receipt.json | sha256:4ab764d9f97f26834389d8ca6f18c317c8c457a59876a2c750daac431450f171 | HOLD
-- Git identity: codex/maint-0136-phase-2b-preparation@2d898e9b32d1ad92be4176c1e2aa406b1ec33f81 | upstream=NONE@UNKNOWN | base=origin/main@ee04bfbf76b1a3a022d07c8203b5274a0f71998f | tree=dirty | operation=none
+- Focus: Freeze the exact recovery source boundary and destination contract
+- Git receipt: docs/verification/maint-0136-phase-2b-r-recovery-preparation-git-handoff-receipt.json | sha256:2603725be66acf376f6526f47993cdc5989fb94a2ba1a0a8a5a70c15fe2590d5 | HOLD
+- Git identity: codex/maint-0136-phase-2b-r-recovery-preparation@90f5d7921f82a903de4291719589c7da13e979cf | upstream=NONE@UNKNOWN | base=origin/main@ee04bfbf76b1a3a022d07c8203b5274a0f71998f | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: COMMIT_PREPARATION_EVIDENCE
 <!-- HANDOFF:END -->

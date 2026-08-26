@@ -5,6 +5,102 @@
 
 ---
 
+## 2026-08-26 — Session: MAINT-0136 Phase 2B-R recovery preparation
+
+**Agent:** Codex (`governance`, sole Phase 2B-R preparation writer; no subagents)
+
+**Branch:** `codex/maint-0136-phase-2b-r-recovery-preparation`, created from
+exact immutable Phase 2B preparation candidate
+`90f5d7921f82a903de4291719589c7da13e979cf`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0136-phase-2b-r-recovery-preparation-git-handoff-receipt.json`
+
+**Focus:** Freeze the exact recovery source boundary and destination contract
+without copying, archiving, restoring, deleting, or changing Git/GitHub state.
+
+### Summary
+
+- Added a preparation-only collector and four focused regressions. The CLI can
+  inspect and write its manifest but cannot invoke its separately tested
+  archive/restore primitives or any cleanup operation.
+- Froze 64 exact retirement-review sources. The fail-closed classification
+  preserves 7,558 ignored files / 8,209,256 bytes and excludes 96,392 proven
+  regenerable files / 2,962,551,202 bytes.
+- Reverified the existing 42,922,979-byte all-ref Git bundle, 7,146-byte dirty
+  patch, and 42 protected files / 72,025,193 bytes without recording protected
+  or ignored filenames or contents in tracked evidence.
+- Calculated an exact 123,164,574-byte recovery source and a minimum
+  313,438,012-byte destination requirement using twice the source plus a 64 MiB
+  restore reserve.
+- Confirmed no usable Time Machine or external-volume destination. Status is
+  `PHASE_2B_R_PREPARED_DESTINATION_HOLD`; all live mutations remain zero.
+
+### Issues encountered
+
+- The first session start was blocked by the prior Phase 2B preparation task's
+  unmatched usage-start checkpoint even though its final session validation had
+  passed.
+- The first attempted prior-task usage closeout was 0.176 minutes below the
+  newly derived elapsed time and failed its consistency tolerance.
+- The initial ignored-state prototype conservatively counted MkDocs `site/`
+  output as preservation material.
+- Initial inspection found that Git bundle verification was configured to run
+  from the bundle's ignored archive directory, not from a Git repository.
+- The first focused style batch passed tests and Ruff, while Black required
+  normalization of both new Python files.
+- No encrypted external/off-device destination is currently available.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `session end` validates the frozen task but does not
+  record the separate usage closeout checkpoint. Resolution: record the prior
+  task's exact closeout, verify no active timer remained, then start this task.
+  The new `session begin` returned ready. ⚠️ TERMINAL ISSUE: unmatched prior
+  usage start blocked the new session -> recorded the missing prior closeout.
+- Confirmed root cause: elapsed time advanced between inspection and the first
+  closeout command while its phase total remained stale. Resolution: refresh
+  the total to 58.35 minutes; the checkpoint recorded with a derived 58.44
+  minutes. ⚠️ TERMINAL ISSUE: stale phase total failed the usage checkpoint ->
+  reran once with the refreshed measured total.
+- Confirmed root cause: unknown ignored state deliberately defaults to
+  preservation until its owner is proven; `.gitignore` identifies `site/` as
+  generated MkDocs output. Resolution: classify that exact prefix as
+  regenerable before freezing the manifest. The final category totals contain
+  no unknown ignored state.
+- Confirmed root cause: `git bundle verify` requires repository context even
+  when the bundle has an absolute path. Resolution: bind verification to the
+  current inspected repository. Focused tests and the live 42,922,979-byte
+  bundle verification pass.
+- Confirmed root cause: the new files had not received repository Black
+  normalization. Resolution: format both once; final Ruff and Black checks pass.
+- Confirmed root cause: no Time Machine destination or external candidate is
+  mounted. Resolution: emit a destination hold with an exact encryption,
+  failure-domain, write-access, free-space, digest, and restore contract. No
+  copy or cleanup path executed.
+
+### Validation
+
+- The four new recovery-preparation regressions cover narrow classification,
+  ignored-state preservation, archive/restore aggregate equivalence, and the
+  destination hold. They pass with the four Phase 2B, four Phase 2A, and three
+  cleanup-preservation regressions as one 15-test batch; the changed Python
+  files pass Ruff and Black.
+- Manifest invariants prove 64 source worktrees, the exact preserved and
+  regenerable totals, unchanged Phase 1 recovery identities and protected
+  aggregate, 123,164,574 source bytes, 313,438,012 required destination bytes,
+  unavailable destination, false backup/cleanup authorization, and zero live
+  mutations.
+- Documentation frontmatter passes for 363 maintained documents with zero
+  invalid records; 488 Markdown files, 1,023 local links, and six local images
+  have zero broken links. Context validates 10 areas and six authorities;
+  control validates 115 active operations and 101/101 scripts; token-efficiency
+  policy passes.
+- The one consolidated quick gate passes 10/10 with zero reused checks. The one
+  consolidated repository gate passes 31/31 with 11 unchanged quick-check
+  results reused. Normal hooks, the immutable local commit, final read-only
+  session validation, and publication hold remain the closeout sequence.
+
 ## 2026-08-26 — Session: MAINT-0136 Phase 2B preparation
 
 **Agent:** Codex (`governance`, sole Phase 2B preparation writer; no subagents)

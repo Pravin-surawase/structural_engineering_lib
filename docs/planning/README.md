@@ -21,6 +21,7 @@ Internal planning documents and research notes.
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
 | [MAINT-0136 Cleanup Preservation](maint-0136-cleanup-preservation-plan.md) | Current topology, verified local recovery, and fail-closed Phase 2 gate |
 | [MAINT-0136 Phase 2B Preparation](maint-0136-phase-2b-preparation-plan.md) | Exact low-value cache ceiling, worktree-retirement opportunity, and recovery-first execution gate |
+| [MAINT-0136 Phase 2B-R Recovery](maint-0136-phase-2b-r-recovery-plan.md) | Exact ignored-state preservation boundary, destination requirement, and backup-only authorization gate |
 | [MAINT-0133 Cleanup Completion](maint-0133-cleanup-inventory-and-authorization.md) | Exact inventory, four retained holds, and the owner-authorized two-move Packet A result |
 | [Pre-Release Input Safety and Professional Readiness Plan](pre-release-input-safety-and-professional-readiness-plan.md) | Active contract-first remediation and release holds from the one-storey usability pilot |
 | [Public Route Safety Closure Plan](public-route-safety-closure-plan.md) | Current exact-tree remediation sequence for reproduced lower-level public-route safety defects |
@@ -37,6 +38,7 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
+| `maint-0136-phase-2b-r-recovery-plan.md` | 2026-08-26 | 🚧 Exact 123,164,574-byte source packet prepared; encrypted off-device destination and backup-only authorization required |
 | `maint-0136-phase-2b-preparation-plan.md` | 2026-08-26 | 🚧 Prepared, not authorized; skip 45.18 MiB cache-only sweep and establish off-device recovery before worktree retirement |
 | `maint-0136-cleanup-preservation-plan.md` | 2026-08-26 | 🚧 Phase 0 reconciled and Phase 1 locally preserved; off-device recovery and all cleanup execution held |
 | `maint-0133-cleanup-inventory-and-authorization.md` | 2026-08-23 | 🚧 Immutable inventory candidate; two moves ready for later authorization, four held, zero deletes |
