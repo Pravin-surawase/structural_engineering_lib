@@ -5,6 +5,106 @@
 
 ---
 
+## 2026-08-26 — Session: MAINT-0136 Phase 2B preparation
+
+**Agent:** Codex (`governance`, sole Phase 2B preparation writer; no subagents)
+
+**Branch:** `codex/maint-0136-phase-2b-preparation`, created from exact immutable
+Phase 2A candidate `2d898e9b32d1ad92be4176c1e2aa406b1ec33f81`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0136-phase-2b-preparation-git-handoff-receipt.json`
+
+**Focus:** Prepare the next cleanup decision without performing cache, worktree, branch, ref, pull-request, archive, protected-source, or shared-`.venv` cleanup.
+
+### Summary
+
+- Added a read-only fail-closed preparation collector and four focused
+  regressions. It binds to Phase 2A `PASS`, proves all 30 earlier targets remain
+  absent, selects only Phase 1 small-cache identities, excludes open PRs and
+  unsafe lanes, inventories ignored state without recording its paths, and has
+  no cleanup execution function.
+- Froze a 119-directory small-cache ceiling of 47,378,432 bytes with target-set
+  SHA-256 `dabd217a82bcd90ca3192aa62bfbf780eda6dd1625d758e6315fc3ba1ba88503`.
+  This is only 0.4165% of the 75-worktree footprint, so standalone execution is
+  not recommended and remains unauthorized.
+- Identified 64 clean non-special worktrees as retirement review only. Their
+  gross path footprint is 7,753,789,440 bytes, but all contain ignored local
+  state. The topology has 3,190 ignored entries; 67 worktrees contain ignored
+  session state and 67 contain ignored pipeline state.
+- Confirmed no off-device destination, 10 open PRs, six clean detached rows,
+  dirty detached `e54a`, unchanged 42-file/72,025,193-byte protected-source
+  aggregate, and 84% reported filesystem capacity at manifest freeze.
+- Recommended Phase 2B-R recovery/retention preparation first, then a separately
+  authorized worktree-only Phase 2B-W packet. Branch/ref/archive cleanup is
+  deferred because it adds risk and little immediate disk value.
+
+### Issues encountered
+
+- The first bounded discovery command referenced a nonexistent `scripts/tests`
+  directory and a guessed Phase 2A manifest filename.
+- A later briefing lookup guessed `docs/NEXT_SESSION_BRIEF.md`, which is not the
+  maintained path.
+- The first recent-task inspection requested 200 rows, above the app's 50-row
+  maximum; the bounded retry succeeded but absence from that page was not
+  treated as owner-retention proof.
+- The first focused style batch passed tests and Ruff but Black reported both
+  new Python files required formatting.
+- The live evidence disproved the assumed value of a second cache sweep: 119
+  targets total only 47,378,432 bytes, whereas material savings require
+  worktree retirement that would also remove ignored local evidence.
+- Phase 1 PR #874 remains open and blocked with its same-head validation run
+  queued without jobs.
+
+### Root causes and resolutions
+
+- Confirmed root cause: tests live under `Python/tests`, and Phase 2A separates
+  `cache-targets` from `cache-cleanup-evidence`; there is no generic manifest
+  file. Resolution: use `rg --files` to discover the exact maintained paths and
+  rerun only those bounded reads. ⚠️ TERMINAL ISSUE: guessed test/artifact paths
+  did not exist -> exact repository paths were discovered before edits.
+- Confirmed root cause: the maintained briefing owner is
+  `docs/planning/next-session-brief.md`. Resolution: discover it with
+  `rg --files docs` and use that path. ⚠️ TERMINAL ISSUE: guessed uppercase
+  briefing path did not exist -> the maintained planning path was used.
+- Confirmed root cause: the task-list API enforces a 50-row maximum. Resolution:
+  retry at 50 and keep all unproven worktree ownership on hold; the incomplete
+  page is supporting context, not retirement authority.
+- Confirmed root cause: the new files had not received repository Black
+  normalization. Resolution: format both once; the final frozen focused batch
+  reruns after content freeze.
+- Confirmed root cause: Phase 2A already removed the two dominant cache classes.
+  The remaining pytest/Ruff/build outputs are only 0.4165% of current worktree
+  bytes, while 64 review-only worktrees contain ignored state that Git refs do
+  not preserve. Resolution: recommend no Phase 2B execution now; establish and
+  restore-test off-device ignored-state recovery before freezing exact
+  worktree-only targets.
+- Confirmed root cause: GitHub has not assigned PR #874's workflow to a runner;
+  no code/test failure is present. Resolution: preserve Phase 1 and Phase 2A
+  immutable candidates, keep this preparation local, and do not create a third
+  publication dependency while predecessor checks remain unresolved.
+
+### Validation
+
+- The four new Phase 2B preparation regressions plus the four inherited Phase
+  2A and three preservation regressions pass as one 11-test batch. The two
+  changed Python files pass Ruff and Black.
+- Machine-readable invariants prove 119 proposed-but-unauthorized cache rows,
+  47,378,432 bytes, exact target-set digest, 64 retirement-review-only rows,
+  7,753,789,440 gross review bytes, 3,190 ignored entries, unchanged Phase 2A
+  completion, zero recorded cleanup mutations, no external mounted volume, and
+  unchanged protected-source aggregate.
+- Documentation frontmatter passes for 362 maintained documents with zero
+  invalid records; 487 Markdown files, 1,020 local links, and six local images
+  have zero broken links. Context validates 10 areas and six authorities;
+  control validates 115 active operations and 101/101 scripts; token-efficiency
+  policy passes.
+- The one consolidated quick gate passes 10/10 with zero reused checks. The one
+  consolidated repository gate passes 31/31 with 11 unchanged quick-check
+  results reused. The tracked Git handoff receipt validates as the expected
+  local `HOLD` because publication, integration, review, and retention evidence
+  remain intentionally unresolved.
+
 ## 2026-08-26 — Session: MAINT-0136 Phase 2A exact cache cleanup
 
 **Agent:** Codex (`orchestrator`, sole Phase 2A writer; no Phase 2A subagents)

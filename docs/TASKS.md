@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-26 — MAINT-0136 Phase 2A exact cache cleanup
+**Updated:** 2026-08-26 — MAINT-0136 Phase 2B preparation
 
 ---
 
@@ -126,16 +126,16 @@
 
 ## Active
 
-`MAINT-0136` Phase 2A is locally complete on a successor bound to frozen Phase 1
-commit `37b36785`. The exact Phase 1 candidate intersection removed 30/30
-regenerable clean-inactive cache directories: 16 `react_app/node_modules` and
-14 `.mypy_cache`, totaling 7,665,283,072 measured bytes. Target absence,
-74-worktree topology, 232 refs, the canonical protected-source aggregate, and
-the excluded primary/Phase 1/dirty lanes all verify after execution; filesystem
-capacity fell from 87% to 83%. Phase 1 PR #874 remains the publication
-predecessor. Worktree/branch/ref/PR/protected-source/shared-`.venv` operations
-and every remaining cleanup target stay held pending separate Phase 2B review
-and authorization.
+`MAINT-0136` Phase 2B is prepared but not authorized. Phase 2A remains complete
+at `2d898e9b`; all 30 targets and 7,665,283,072 bytes remain absent. The exact
+remaining small-cache ceiling is 119 directories and only 47,378,432 bytes, so
+a standalone sweep is not recommended. The higher-value surface is 64
+retirement-review-only worktrees with 7,753,789,440 gross path bytes, but all
+contain ignored local state and off-device recovery is unavailable. First
+preserve and restore-test ignored session/pipeline state on encrypted external
+or off-device storage, then freeze a worktree-only target set. Phase 1 PR #874
+remains open/blocked; branch/ref/PR/archive/protected-source/shared-`.venv`
+operations and all actual Phase 2B removal remain held.
 
 `RELEASE-SMOOTH-001` is the active release-control task. It converts the
 `v0.24.0a1` delays into a single-candidate next-release flow: fail-fast final

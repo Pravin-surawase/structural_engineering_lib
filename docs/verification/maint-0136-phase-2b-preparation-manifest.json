@@ -1,0 +1,3943 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-26T17:30:50.124097+00:00",
+      "query_status": "OK",
+      "reference": "active Codex task: so lets prepare for 2b",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "INSPECT_LIVE_STATE",
+      "PREPARE_EXACT_DECISION_PACKET",
+      "COMMIT_PREPARATION_EVIDENCE"
+    ],
+    "next_action": "COMMIT_PREPARATION_EVIDENCE",
+    "observed_at_utc": "2026-08-26T17:30:50.124097+00:00",
+    "phase_2b_execution_authorized": false,
+    "prohibited_actions": [
+      "DELETE_CACHE",
+      "REMOVE_WORKTREE",
+      "DELETE_BRANCH_OR_REF",
+      "CLOSE_PULL_REQUEST",
+      "DELETE_ARCHIVE",
+      "DELETE_PROTECTED_SOURCE",
+      "DELETE_SHARED_VENV",
+      "GIT_CLEAN",
+      "PRUNE",
+      "RESET",
+      "FORCE_PUSH"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "INSPECT_LIVE_STATE",
+        "PREPARE_EXACT_DECISION_PACKET",
+        "COMMIT_PREPARATION_EVIDENCE"
+      ],
+      "branch": "codex/maint-0136-phase-2b-preparation",
+      "head_sha": "2d898e9b32d1ad92be4176c1e2aa406b1ec33f81",
+      "task_id": "MAINT-0136"
+    }
+  },
+  "binding": {
+    "branch": "codex/maint-0136-phase-2b-preparation",
+    "head_sha_at_freeze": "2d898e9b32d1ad92be4176c1e2aa406b1ec33f81",
+    "phase1_manifest_sha256": "cada468da13e78a22813fb6d0ee0e82601a92032df6338d2b550d8adeec0d3d2",
+    "phase2a_completion": {
+      "all_targets_still_absent": true,
+      "branch": "codex/maint-0136-phase-2a-cache-cleanup",
+      "execution_evidence_sha256": "bc78a2e8cac1546247422e614fa3495a9cc82a40a6f20f3f92c711c3937c181f",
+      "head_sha": "2d898e9b32d1ad92be4176c1e2aa406b1ec33f81",
+      "removed_bytes": 7665283072,
+      "removed_target_count": 30,
+      "target_manifest_sha256": "14353077e040470a954837e592f3ffa16c8511bede45ea7c6988a4b9f54f4ca3",
+      "target_set_sha256": "bd1f0985bda82707a85e6ce12bb2d3889d85a0dffb35b8e822a411a0841d3b05",
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2a-cache-cleanup"
+    },
+    "refs": {
+      "count": 233,
+      "sha256": "bbf9e1ecf4c1af42fff25f09b8bb18b3631717518a4e3eaa3ad8e652aba793d2"
+    },
+    "repo": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2b-preparation",
+    "topology_sha256": "3cf237d4064986cf61102994592f24c75c0a4991ee28c2a4e18bc7f5271e6294"
+  },
+  "branch_ref_archive_cleanup": {
+    "reason_codes": [
+      "NO_MEANINGFUL_IMMEDIATE_DISK_RELIEF",
+      "OWNER_RETENTION_NOT_CONFIRMED",
+      "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+      "PREDECESSOR_PUBLICATION_ORDER_UNRESOLVED"
+    ],
+    "status": "HELD_NOT_PROPOSED"
+  },
+  "disk": {
+    "available_bytes": 37715472384,
+    "capacity_percent": 84,
+    "total_bytes": 245107195904,
+    "used_bytes": 184243585024
+  },
+  "mutations_performed": {
+    "archive_deletions": 0,
+    "branch_deletions": 0,
+    "cache_deletions": 0,
+    "file_deletions": 0,
+    "pr_closures": 0,
+    "ref_deletions": 0,
+    "worktree_removals": 0
+  },
+  "observed_at_utc": "2026-08-26T17:30:50.124097+00:00",
+  "open_pull_requests": [
+    {
+      "head_branch": "dependabot/npm_and_yarn/react_app/eslint/js-10.0.1",
+      "head_sha": "31f92162c1ca5dc06beca270821f7ebc8582a0ff",
+      "number": 683,
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/683"
+    },
+    {
+      "head_branch": "dependabot/npm_and_yarn/react_app/vitejs/plugin-react-6.0.5",
+      "head_sha": "1f710133fc76b32d6e4cbf47dae610023bc65633",
+      "number": 684,
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/684"
+    },
+    {
+      "head_branch": "dependabot/npm_and_yarn/react_app/eslint-10.8.0",
+      "head_sha": "fbb0d7f781795bc05d50c1a93709d688ab455893",
+      "number": 713,
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/713"
+    },
+    {
+      "head_branch": "dependabot/npm_and_yarn/react_app/types/node-26.1.2",
+      "head_sha": "c4d813f2bf9361c4db9863315a6294709c0261ed",
+      "number": 714,
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/714"
+    },
+    {
+      "head_branch": "dependabot/pip/Python/mypy-gte-1.19-and-lt-3",
+      "head_sha": "2f8de4a079c4e7a1329048796816dedd026f5f3f",
+      "number": 715,
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/715"
+    },
+    {
+      "head_branch": "dependabot/npm_and_yarn/react_app/framer-motion-13.0.0",
+      "head_sha": "f889f6de4ed8a2323544a34b77b09f6c88b9e375",
+      "number": 716,
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/716"
+    },
+    {
+      "head_branch": "dependabot/pip/mypy-2.3.0",
+      "head_sha": "ff9dfb21ea8745bdb48e4742dc3f73b0c0fff8fd",
+      "number": 717,
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/717"
+    },
+    {
+      "head_branch": "dependabot/pip/Python/dev-dependencies-e904d59df0",
+      "head_sha": "6fc9356afd44fa3476f56f1f222868c7c349c35f",
+      "number": 816,
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/816"
+    },
+    {
+      "head_branch": "dependabot/pip/root-python-dependencies-fb8581aa0a",
+      "head_sha": "b67577133be1c80f3958ba82097abc731045af75",
+      "number": 865,
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/865"
+    },
+    {
+      "head_branch": "codex/maint-0136-cleanup-preservation",
+      "head_sha": "37b3678504b9e9a3d663f442ecab62f19a3f0b75",
+      "number": 874,
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/874"
+    }
+  ],
+  "packet_id": "MAINT-0136-PHASE-2B-PREPARATION",
+  "protected_sources": {
+    "aggregate_sha256": "a65d2fbcf5172544164d5ed61535f18fb40ed2d04446a48185811838493abee4",
+    "byte_count": 72025193,
+    "content_recorded": false,
+    "excluded_from_digest": [
+      "worktree_cleanup_archives/**",
+      "**/__pycache__/**"
+    ],
+    "file_count": 42,
+    "filenames_recorded": false,
+    "root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/private_sources"
+  },
+  "recommendation": {
+    "branch_ref_archive_cleanup": "DEFER",
+    "decision": "DO_NOT_EXECUTE_PHASE_2B_YET",
+    "reason": "The remaining exact cache ceiling is small relative to the live worktree surface, while worktree retirement would touch ignored local session and pipeline state without off-device recovery.",
+    "small_cache_packet": "SKIP_AS_LOW_VALUE_UNLESS_OWNER_EXPLICITLY_REQUESTS",
+    "worktree_retirement": "PREPARE_RECOVERY_AND_OWNER_RETENTION_NEXT"
+  },
+  "recovery": {
+    "live_external_volumes": {
+      "candidate_count": 0,
+      "names_recorded": false,
+      "status": "HOLD_NO_EXTERNAL_VOLUME_MOUNTED",
+      "usable_destination_proven": false
+    },
+    "live_off_device_destination": {
+      "same_disk_artifacts_are_disaster_recovery": false,
+      "status": "HOLD_DESTINATION_UNAVAILABLE",
+      "tmutil_exit_code": 0
+    },
+    "prior_evidence_sha256": "e561dea14a1ecde2e3d507cbe11c16e5774e14cb9ef539b4128d9b14f51e5bf8",
+    "same_disk_status": "LOCAL_RECOVERY_VERIFIED_OFF_DEVICE_HOLD",
+    "worktree_retirement_recovery_gate": "HOLD"
+  },
+  "schema_version": 1,
+  "small_cache_packet": {
+    "held_candidates": [],
+    "phase1_identity_count": 119,
+    "status": "PROPOSED_NOT_AUTHORIZED",
+    "summary": {
+      "by_relative_path": {
+        ".pytest_cache": {
+          "bytes": 69632,
+          "count": 4
+        },
+        ".ruff_cache": {
+          "bytes": 532480,
+          "count": 48
+        },
+        "Python/.pytest_cache": {
+          "bytes": 11952128,
+          "count": 55
+        },
+        "react_app/.vite": {
+          "bytes": 0,
+          "count": 0
+        },
+        "react_app/dist": {
+          "bytes": 34824192,
+          "count": 12
+        }
+      },
+      "held_candidate_count": 0,
+      "target_bytes": 47378432,
+      "target_count": 119,
+      "worktree_total_fraction": 0.004164899335963745
+    },
+    "target_set_sha256": "dabd217a82bcd90ca3192aa62bfbf780eda6dd1625d758e6315fc3ba1ba88503",
+    "targets": [
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/3c84/structural_engineering_lib/.ruff_cache",
+        "branch": "codex/lib-pro-007-p7-compatibility-convergence",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "c9589815f2d8053b1d99f61bf38623cd2aebba2f",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "c9589815f2d8053b1d99f61bf38623cd2aebba2f",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/3c84/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/3c84/structural_engineering_lib/Python/.pytest_cache",
+        "branch": "codex/lib-pro-007-p7-compatibility-convergence",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "c9589815f2d8053b1d99f61bf38623cd2aebba2f",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "c9589815f2d8053b1d99f61bf38623cd2aebba2f",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 40960,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/3c84/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/7c3898d2-40f8-4e2b-bee5-fb7e8ebb0250/structural_engineering_lib/Python/.pytest_cache",
+        "branch": "codex/india-3-source-meta-r1",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "13f0ff916a0d7c167e34b46ab9ae6cb2c50c9efd",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "13f0ff916a0d7c167e34b46ab9ae6cb2c50c9efd",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 16384,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/7c3898d2-40f8-4e2b-bee5-fb7e8ebb0250/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/alpha-release/structural_engineering_lib/Python/.pytest_cache",
+        "branch": "codex/release-preflight-alpha-policy",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "5da9c66a0f962fc08a6431fe95e39ec664a353f6",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "5da9c66a0f962fc08a6431fe95e39ec664a353f6",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 573440,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/alpha-release/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/alpha-release/structural_engineering_lib/react_app/dist",
+        "branch": "codex/release-preflight-alpha-policy",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "5da9c66a0f962fc08a6431fe95e39ec664a353f6",
+        "recreation_basis": {
+          "head_sha": "5da9c66a0f962fc08a6431fe95e39ec664a353f6",
+          "kind": "REACT_BUILD_OUTPUT",
+          "path": "react_app/package-lock.json",
+          "recreate_command": "./run.sh frontend build",
+          "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+        },
+        "relative_path": "react_app/dist",
+        "size_bytes": 2887680,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/alpha-release/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/cace/structural_engineering_lib/.ruff_cache",
+        "branch": "codex/lib-pro-007-p6-cross-surface-parity",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "9647feddb672428e4f89348f5f82ad8c2cbe71cf",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "9647feddb672428e4f89348f5f82ad8c2cbe71cf",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/cace/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/cace/structural_engineering_lib/Python/.pytest_cache",
+        "branch": "codex/lib-pro-007-p6-cross-surface-parity",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "9647feddb672428e4f89348f5f82ad8c2cbe71cf",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "9647feddb672428e4f89348f5f82ad8c2cbe71cf",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 45056,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/cace/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/cace/structural_engineering_lib/react_app/dist",
+        "branch": "codex/lib-pro-007-p6-cross-surface-parity",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "9647feddb672428e4f89348f5f82ad8c2cbe71cf",
+        "recreation_basis": {
+          "head_sha": "9647feddb672428e4f89348f5f82ad8c2cbe71cf",
+          "kind": "REACT_BUILD_OUTPUT",
+          "path": "react_app/package-lock.json",
+          "recreate_command": "./run.sh frontend build",
+          "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+        },
+        "relative_path": "react_app/dist",
+        "size_bytes": 2912256,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/cace/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/ef1b/structural_engineering_lib/.ruff_cache",
+        "branch": "codex/india-3-joint-r1",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "a5657e1bbcea16079af527005c47b296cf95f742",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "a5657e1bbcea16079af527005c47b296cf95f742",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/ef1b/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/ef1b/structural_engineering_lib/Python/.pytest_cache",
+        "branch": "codex/india-3-joint-r1",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "a5657e1bbcea16079af527005c47b296cf95f742",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "a5657e1bbcea16079af527005c47b296cf95f742",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 16384,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/ef1b/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/india-3-beam-r1/structural_engineering_lib/.ruff_cache",
+        "branch": "codex/india-3-beam-r1",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "099937dc3da7c0083de793ed3b2972690a44d423",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "099937dc3da7c0083de793ed3b2972690a44d423",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/india-3-beam-r1/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/india-3-beam-r1/structural_engineering_lib/Python/.pytest_cache",
+        "branch": "codex/india-3-beam-r1",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "099937dc3da7c0083de793ed3b2972690a44d423",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "099937dc3da7c0083de793ed3b2972690a44d423",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 36864,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/india-3-beam-r1/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/india-3-column-r1/structural_engineering_lib/.ruff_cache",
+        "branch": "codex/india-3-column-r1",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "4df72ea258610179a1496a255c1d6d320e3416bf",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "4df72ea258610179a1496a255c1d6d320e3416bf",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/india-3-column-r1/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/india-3-column-r1/structural_engineering_lib/Python/.pytest_cache",
+        "branch": "codex/india-3-column-r1",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "4df72ea258610179a1496a255c1d6d320e3416bf",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "4df72ea258610179a1496a255c1d6d320e3416bf",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 40960,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/india-3-column-r1/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/india-3-g0-source-library/structural_engineering_lib/.ruff_cache",
+        "branch": "codex/india-3-g0-source-library",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "9c976b1f4afd0540a5ec9eb3cab16861916ac89b",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "9c976b1f4afd0540a5ec9eb3cab16861916ac89b",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/india-3-g0-source-library/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/india-3-g0-source-library/structural_engineering_lib/Python/.pytest_cache",
+        "branch": "codex/india-3-g0-source-library",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "9c976b1f4afd0540a5ec9eb3cab16861916ac89b",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "9c976b1f4afd0540a5ec9eb3cab16861916ac89b",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 16384,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/india-3-g0-source-library/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/india-3-is13920-m0/structural_engineering_lib/.ruff_cache",
+        "branch": "codex/india-3-is13920-m0",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "0a20774ec8978b7dcea6d7cd7db6966068b70703",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "0a20774ec8978b7dcea6d7cd7db6966068b70703",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/india-3-is13920-m0/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/india-3-is13920-m0/structural_engineering_lib/Python/.pytest_cache",
+        "branch": "codex/india-3-is13920-m0",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "0a20774ec8978b7dcea6d7cd7db6966068b70703",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "0a20774ec8978b7dcea6d7cd7db6966068b70703",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 749568,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/india-3-is13920-m0/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-009-rc-trust/.ruff_cache",
+        "branch": "codex/lib-pro-009-rc-trust",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "b4428e23adc8374d1acc6e7f2a2125d5aebff453",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "b4428e23adc8374d1acc6e7f2a2125d5aebff453",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-009-rc-trust"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-009-rc-trust/Python/.pytest_cache",
+        "branch": "codex/lib-pro-009-rc-trust",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "b4428e23adc8374d1acc6e7f2a2125d5aebff453",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "b4428e23adc8374d1acc6e7f2a2125d5aebff453",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 16384,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-009-rc-trust"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-010-rc-artifact/.ruff_cache",
+        "branch": "codex/lib-pro-010-rc-artifact",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "595b3bcb1bb55bae0261016a3dddd87da4aca8e9",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "595b3bcb1bb55bae0261016a3dddd87da4aca8e9",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-010-rc-artifact"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-010-rc-artifact/Python/.pytest_cache",
+        "branch": "codex/lib-pro-010-rc-artifact",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "595b3bcb1bb55bae0261016a3dddd87da4aca8e9",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "595b3bcb1bb55bae0261016a3dddd87da4aca8e9",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 749568,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-010-rc-artifact"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-010-rc-artifact/react_app/dist",
+        "branch": "codex/lib-pro-010-rc-artifact",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "595b3bcb1bb55bae0261016a3dddd87da4aca8e9",
+        "recreation_basis": {
+          "head_sha": "595b3bcb1bb55bae0261016a3dddd87da4aca8e9",
+          "kind": "REACT_BUILD_OUTPUT",
+          "path": "react_app/package-lock.json",
+          "recreate_command": "./run.sh frontend build",
+          "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+        },
+        "relative_path": "react_app/dist",
+        "size_bytes": 2912256,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-010-rc-artifact"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/maint-012a/structural_engineering_lib/.ruff_cache",
+        "branch": "codex/maint-012a-control-registry",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "f0cdf631d6c7d698c0a7b47b04030b4e23fb32a2",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "f0cdf631d6c7d698c0a7b47b04030b4e23fb32a2",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 16384,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/maint-012a/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/maint-012a/structural_engineering_lib/Python/.pytest_cache",
+        "branch": "codex/maint-012a-control-registry",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "f0cdf631d6c7d698c0a7b47b04030b4e23fb32a2",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "f0cdf631d6c7d698c0a7b47b04030b4e23fb32a2",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 45056,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/maint-012a/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/maint-012b/structural_engineering_lib/.ruff_cache",
+        "branch": "codex/maint-012b-index-architecture",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "74bfd69ebf610b6cb324b7298b95ac840652ed4c",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "74bfd69ebf610b6cb324b7298b95ac840652ed4c",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/maint-012b/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/maint-012b/structural_engineering_lib/Python/.pytest_cache",
+        "branch": "codex/maint-012b-index-architecture",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "74bfd69ebf610b6cb324b7298b95ac840652ed4c",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "74bfd69ebf610b6cb324b7298b95ac840652ed4c",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 61440,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/maint-012b/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/maint-012c/structural_engineering_lib/.ruff_cache",
+        "branch": "codex/maint-012c-evidence-scheduling",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "56eff4d357ca62332fb0e50c6a55c2336af57c65",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "56eff4d357ca62332fb0e50c6a55c2336af57c65",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 16384,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/maint-012c/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/maint-012c/structural_engineering_lib/Python/.pytest_cache",
+        "branch": "codex/maint-012c-evidence-scheduling",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "56eff4d357ca62332fb0e50c6a55c2336af57c65",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "56eff4d357ca62332fb0e50c6a55c2336af57c65",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 65536,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/maint-012c/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/maint-012d/structural_engineering_lib/.pytest_cache",
+        "branch": "codex/maint-012d-scanner-consolidation",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "66cd2bb51b9f4f1fd7f6c1f8ab57e5a4f188e20d",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "66cd2bb51b9f4f1fd7f6c1f8ab57e5a4f188e20d",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": ".pytest_cache",
+        "size_bytes": 16384,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/maint-012d/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/maint-012d/structural_engineering_lib/.ruff_cache",
+        "branch": "codex/maint-012d-scanner-consolidation",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "66cd2bb51b9f4f1fd7f6c1f8ab57e5a4f188e20d",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "66cd2bb51b9f4f1fd7f6c1f8ab57e5a4f188e20d",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 16384,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/maint-012d/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/maint-012d/structural_engineering_lib/Python/.pytest_cache",
+        "branch": "codex/maint-012d-scanner-consolidation",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "66cd2bb51b9f4f1fd7f6c1f8ab57e5a4f188e20d",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "66cd2bb51b9f4f1fd7f6c1f8ab57e5a4f188e20d",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 729088,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/maint-012d/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/release-0240a1-publication/.ruff_cache",
+        "branch": "codex/release-0240a1-publication",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "d3a4d2235d1811ab4bc2c860640f5660c6eed057",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "d3a4d2235d1811ab4bc2c860640f5660c6eed057",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/release-0240a1-publication"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/release-0240a1-publication/Python/.pytest_cache",
+        "branch": "codex/release-0240a1-publication",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "d3a4d2235d1811ab4bc2c860640f5660c6eed057",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "d3a4d2235d1811ab4bc2c860640f5660c6eed057",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 53248,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/release-0240a1-publication"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/release-smoothness/.ruff_cache",
+        "branch": "codex/release-smoothness",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/release-smoothness"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/release-smoothness/Python/.pytest_cache",
+        "branch": "codex/release-smoothness",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 32768,
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/release-smoothness"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a1-canonical-transport/.ruff_cache",
+        "branch": "codex/a1-canonical-transport-contract",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "85872c846020ee9fb7cf654e8b5b3943f44fa531",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "85872c846020ee9fb7cf654e8b5b3943f44fa531",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 16384,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a1-canonical-transport"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a1-canonical-transport/Python/.pytest_cache",
+        "branch": "codex/a1-canonical-transport-contract",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "85872c846020ee9fb7cf654e8b5b3943f44fa531",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "85872c846020ee9fb7cf654e8b5b3943f44fa531",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 53248,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a1-canonical-transport"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a1-canonical-transport/react_app/dist",
+        "branch": "codex/a1-canonical-transport-contract",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "85872c846020ee9fb7cf654e8b5b3943f44fa531",
+        "recreation_basis": {
+          "head_sha": "85872c846020ee9fb7cf654e8b5b3943f44fa531",
+          "kind": "REACT_BUILD_OUTPUT",
+          "path": "react_app/package-lock.json",
+          "recreate_command": "./run.sh frontend build",
+          "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+        },
+        "relative_path": "react_app/dist",
+        "size_bytes": 2895872,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a1-canonical-transport"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a2-lossless-intake/.ruff_cache",
+        "branch": "codex/a2-lossless-intake-calculation",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "2a6889b363aad85f5b45f5ba23b344efd08084d6",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "2a6889b363aad85f5b45f5ba23b344efd08084d6",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a2-lossless-intake"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a2-lossless-intake/Python/.pytest_cache",
+        "branch": "codex/a2-lossless-intake-calculation",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "2a6889b363aad85f5b45f5ba23b344efd08084d6",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "2a6889b363aad85f5b45f5ba23b344efd08084d6",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 684032,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a2-lossless-intake"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a2-lossless-intake/react_app/dist",
+        "branch": "codex/a2-lossless-intake-calculation",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "2a6889b363aad85f5b45f5ba23b344efd08084d6",
+        "recreation_basis": {
+          "head_sha": "2a6889b363aad85f5b45f5ba23b344efd08084d6",
+          "kind": "REACT_BUILD_OUTPUT",
+          "path": "react_app/package-lock.json",
+          "recreate_command": "./run.sh frontend build",
+          "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+        },
+        "relative_path": "react_app/dist",
+        "size_bytes": 2895872,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a2-lossless-intake"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b1-gravity-model-ledger/.ruff_cache",
+        "branch": "codex/b1-gravity-model-load-ledger",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "4a7f13bca2fadfdb45017a296e6235c3b95dd401",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "4a7f13bca2fadfdb45017a296e6235c3b95dd401",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b1-gravity-model-ledger"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b1-gravity-model-ledger/Python/.pytest_cache",
+        "branch": "codex/b1-gravity-model-load-ledger",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "4a7f13bca2fadfdb45017a296e6235c3b95dd401",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "4a7f13bca2fadfdb45017a296e6235c3b95dd401",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 24576,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b1-gravity-model-ledger"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b2-gravity-workflow-v1/.ruff_cache",
+        "branch": "codex/b2-gravity-workflow-v1",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "b337efc73d0af9ff7bef623916cfe808dd79bed6",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "b337efc73d0af9ff7bef623916cfe808dd79bed6",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b2-gravity-workflow-v1"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b2-gravity-workflow-v1/Python/.pytest_cache",
+        "branch": "codex/b2-gravity-workflow-v1",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "b337efc73d0af9ff7bef623916cfe808dd79bed6",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "b337efc73d0af9ff7bef623916cfe808dd79bed6",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 684032,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b2-gravity-workflow-v1"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b2-gravity-workflow-v1/react_app/dist",
+        "branch": "codex/b2-gravity-workflow-v1",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "b337efc73d0af9ff7bef623916cfe808dd79bed6",
+        "recreation_basis": {
+          "head_sha": "b337efc73d0af9ff7bef623916cfe808dd79bed6",
+          "kind": "REACT_BUILD_OUTPUT",
+          "path": "react_app/package-lock.json",
+          "recreate_command": "./run.sh frontend build",
+          "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+        },
+        "relative_path": "react_app/dist",
+        "size_bytes": 2908160,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b2-gravity-workflow-v1"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-excel-workbench/.ruff_cache",
+        "branch": "codex/e1-excel-routine-workbench",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "ef5ee05c785904e1a01c2d09cc65649edc8745ab",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "ef5ee05c785904e1a01c2d09cc65649edc8745ab",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-excel-workbench"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-excel-workbench/Python/.pytest_cache",
+        "branch": "codex/e1-excel-routine-workbench",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "ef5ee05c785904e1a01c2d09cc65649edc8745ab",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "ef5ee05c785904e1a01c2d09cc65649edc8745ab",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 20480,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-excel-workbench"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-g3-closeout/Python/.pytest_cache",
+        "branch": "codex/e1-g3-closeout",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "53b9f56e5af0bae064ba3a545dbb9b86b4b336d7",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "53b9f56e5af0bae064ba3a545dbb9b86b4b336d7",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 24576,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-g3-closeout"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-review-bundle-export/.ruff_cache",
+        "branch": "codex/e1-review-bundle-export",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "98c60bc1f7c3899c28f662e82399cb25d80bbf26",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "98c60bc1f7c3899c28f662e82399cb25d80bbf26",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-review-bundle-export"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-review-bundle-export/Python/.pytest_cache",
+        "branch": "codex/e1-review-bundle-export",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "98c60bc1f7c3899c28f662e82399cb25d80bbf26",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "98c60bc1f7c3899c28f662e82399cb25d80bbf26",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 20480,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-review-bundle-export"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-workbook-open-repair/.ruff_cache",
+        "branch": "codex/e1-workbook-open-repair",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "ede01ef4fb6182a27e3f176e872478304fb5f256",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "ede01ef4fb6182a27e3f176e872478304fb5f256",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-workbook-open-repair"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-workbook-open-repair/Python/.pytest_cache",
+        "branch": "codex/e1-workbook-open-repair",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "ede01ef4fb6182a27e3f176e872478304fb5f256",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "ede01ef4fb6182a27e3f176e872478304fb5f256",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 679936,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-workbook-open-repair"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-index-local-artifact-determinism/.ruff_cache",
+        "branch": "codex/index-local-artifact-determinism",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "65c37ad0836bd59ebef56b6d01faa144b791d020",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "65c37ad0836bd59ebef56b6d01faa144b791d020",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-index-local-artifact-determinism"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-index-local-artifact-determinism/Python/.pytest_cache",
+        "branch": "codex/index-local-artifact-determinism",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "65c37ad0836bd59ebef56b6d01faa144b791d020",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "65c37ad0836bd59ebef56b6d01faa144b791d020",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 32768,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-index-local-artifact-determinism"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-index-mtime-determinism/.ruff_cache",
+        "branch": "codex/index-mtime-determinism",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "cfb98da58af391bdefb23f8cfc83295876b44876",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "cfb98da58af391bdefb23f8cfc83295876b44876",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-index-mtime-determinism"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-index-mtime-determinism/Python/.pytest_cache",
+        "branch": "codex/index-mtime-determinism",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "cfb98da58af391bdefb23f8cfc83295876b44876",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "cfb98da58af391bdefb23f8cfc83295876b44876",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 32768,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-index-mtime-determinism"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-3-g0-acceptance/Python/.pytest_cache",
+        "branch": "codex/india-3-g0-acceptance",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "8466fb1458f41cb767117f5a49b4495b23d794eb",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "8466fb1458f41cb767117f5a49b4495b23d794eb",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 20480,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-3-g0-acceptance"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-3-g0-truth-audit/Python/.pytest_cache",
+        "branch": "codex/india-3-g0-truth-audit",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "b39fcda534ec757744a2d6f203f42e4350871cd1",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "b39fcda534ec757744a2d6f203f42e4350871cd1",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 20480,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-3-g0-truth-audit"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-a-strict-input/.ruff_cache",
+        "branch": "codex/lib-pro-002-a-strict-input",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "18d043ef9ac6221936335e1b20676863b3c5bc9b",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "18d043ef9ac6221936335e1b20676863b3c5bc9b",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-a-strict-input"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-a-strict-input/Python/.pytest_cache",
+        "branch": "codex/lib-pro-002-a-strict-input",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "18d043ef9ac6221936335e1b20676863b3c5bc9b",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "18d043ef9ac6221936335e1b20676863b3c5bc9b",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 24576,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-a-strict-input"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-b-lossless-import/.ruff_cache",
+        "branch": "codex/lib-pro-002-b-lossless-import",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "22c65d17874ec877a7f90f56ae6950131eddd462",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "22c65d17874ec877a7f90f56ae6950131eddd462",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-b-lossless-import"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-b-lossless-import/Python/.pytest_cache",
+        "branch": "codex/lib-pro-002-b-lossless-import",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "22c65d17874ec877a7f90f56ae6950131eddd462",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "22c65d17874ec877a7f90f56ae6950131eddd462",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 675840,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-b-lossless-import"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-b-lossless-import/react_app/dist",
+        "branch": "codex/lib-pro-002-b-lossless-import",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "22c65d17874ec877a7f90f56ae6950131eddd462",
+        "recreation_basis": {
+          "head_sha": "22c65d17874ec877a7f90f56ae6950131eddd462",
+          "kind": "REACT_BUILD_OUTPUT",
+          "path": "react_app/package-lock.json",
+          "recreate_command": "./run.sh frontend build",
+          "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+        },
+        "relative_path": "react_app/dist",
+        "size_bytes": 2887680,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-b-lossless-import"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-i-cli/.ruff_cache",
+        "branch": "codex/lib-pro-002-i-cli",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "911b6e3d288db85bc3f2770a061598689a4e8ec3",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "911b6e3d288db85bc3f2770a061598689a4e8ec3",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-i-cli"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-i-cli/Python/.pytest_cache",
+        "branch": "codex/lib-pro-002-i-cli",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "911b6e3d288db85bc3f2770a061598689a4e8ec3",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "911b6e3d288db85bc3f2770a061598689a4e8ec3",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 28672,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-i-cli"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-j-release-signal/.ruff_cache",
+        "branch": "codex/lib-pro-002-j-release-signal",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "280dd9a9a31e8f318d385cb2ec43418d195ca4b3",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "280dd9a9a31e8f318d385cb2ec43418d195ca4b3",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-j-release-signal"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-j-release-signal/Python/.pytest_cache",
+        "branch": "codex/lib-pro-002-j-release-signal",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "280dd9a9a31e8f318d385cb2ec43418d195ca4b3",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "280dd9a9a31e8f318d385cb2ec43418d195ca4b3",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 671744,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-j-release-signal"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-004-safety-auditors/.ruff_cache",
+        "branch": "codex/lib-pro-004-safety-auditors",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "ff55471c9b75a7c70369f857c387fdffad05899d",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "ff55471c9b75a7c70369f857c387fdffad05899d",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-004-safety-auditors"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-004-safety-auditors/Python/.pytest_cache",
+        "branch": "codex/lib-pro-004-safety-auditors",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "ff55471c9b75a7c70369f857c387fdffad05899d",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "ff55471c9b75a7c70369f857c387fdffad05899d",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 712704,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-004-safety-auditors"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-005-release-safety-closure/.ruff_cache",
+        "branch": "codex/lib-pro-005-release-safety-closure",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "0979200d00ea32bd7464232f20558f353509be8a",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "0979200d00ea32bd7464232f20558f353509be8a",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-005-release-safety-closure"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-005-release-safety-closure/Python/.pytest_cache",
+        "branch": "codex/lib-pro-005-release-safety-closure",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "0979200d00ea32bd7464232f20558f353509be8a",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "0979200d00ea32bd7464232f20558f353509be8a",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 716800,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-005-release-safety-closure"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-006-gravity-foundation/.ruff_cache",
+        "branch": "codex/lib-pro-006-gravity-foundation",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "6db242171427b93a2586de9c2c772ccba03243de",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "6db242171427b93a2586de9c2c772ccba03243de",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-006-gravity-foundation"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-006-gravity-foundation/Python/.pytest_cache",
+        "branch": "codex/lib-pro-006-gravity-foundation",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "6db242171427b93a2586de9c2c772ccba03243de",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "6db242171427b93a2586de9c2c772ccba03243de",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 20480,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-006-gravity-foundation"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-006-gravity-foundation/react_app/dist",
+        "branch": "codex/lib-pro-006-gravity-foundation",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "6db242171427b93a2586de9c2c772ccba03243de",
+        "recreation_basis": {
+          "head_sha": "6db242171427b93a2586de9c2c772ccba03243de",
+          "kind": "REACT_BUILD_OUTPUT",
+          "path": "react_app/package-lock.json",
+          "recreate_command": "./run.sh frontend build",
+          "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+        },
+        "relative_path": "react_app/dist",
+        "size_bytes": 2908160,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-006-gravity-foundation"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-m0/.ruff_cache",
+        "branch": "codex/lib-pro-007-m0-cumulative-acceptance",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "eb92db482734e531561f739cf6818104281ef451",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "eb92db482734e531561f739cf6818104281ef451",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-m0"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-m0/Python/.pytest_cache",
+        "branch": "codex/lib-pro-007-m0-cumulative-acceptance",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "eb92db482734e531561f739cf6818104281ef451",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "eb92db482734e531561f739cf6818104281ef451",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 733184,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-m0"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-m0/react_app/dist",
+        "branch": "codex/lib-pro-007-m0-cumulative-acceptance",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "eb92db482734e531561f739cf6818104281ef451",
+        "recreation_basis": {
+          "head_sha": "eb92db482734e531561f739cf6818104281ef451",
+          "kind": "REACT_BUILD_OUTPUT",
+          "path": "react_app/package-lock.json",
+          "recreate_command": "./run.sh frontend build",
+          "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+        },
+        "relative_path": "react_app/dist",
+        "size_bytes": 2912256,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-m0"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p1/.ruff_cache",
+        "branch": "codex/lib-pro-007-p1-optimization-truth",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "6dd3fd4e17354f27846869ee48d10277c4703d0f",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "6dd3fd4e17354f27846869ee48d10277c4703d0f",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p1"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p1/Python/.pytest_cache",
+        "branch": "codex/lib-pro-007-p1-optimization-truth",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "6dd3fd4e17354f27846869ee48d10277c4703d0f",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "6dd3fd4e17354f27846869ee48d10277c4703d0f",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 16384,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p1"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p2/.ruff_cache",
+        "branch": "codex/lib-pro-007-p2-supplied-beam-reinforcement",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "fa81954852285d59fe7c1e58de7c2b6cb3fa7971",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "fa81954852285d59fe7c1e58de7c2b6cb3fa7971",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p2"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p2/Python/.pytest_cache",
+        "branch": "codex/lib-pro-007-p2-supplied-beam-reinforcement",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "fa81954852285d59fe7c1e58de7c2b6cb3fa7971",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "fa81954852285d59fe7c1e58de7c2b6cb3fa7971",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 28672,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p2"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p2/react_app/dist",
+        "branch": "codex/lib-pro-007-p2-supplied-beam-reinforcement",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "fa81954852285d59fe7c1e58de7c2b6cb3fa7971",
+        "recreation_basis": {
+          "head_sha": "fa81954852285d59fe7c1e58de7c2b6cb3fa7971",
+          "kind": "REACT_BUILD_OUTPUT",
+          "path": "react_app/package-lock.json",
+          "recreate_command": "./run.sh frontend build",
+          "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+        },
+        "relative_path": "react_app/dist",
+        "size_bytes": 2908160,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p2"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p3/.ruff_cache",
+        "branch": "codex/lib-pro-007-p3-footing-anchorage",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "bfec16d13409519979135abc99b7b31ebc600688",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "bfec16d13409519979135abc99b7b31ebc600688",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p3"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p3/Python/.pytest_cache",
+        "branch": "codex/lib-pro-007-p3-footing-anchorage",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "bfec16d13409519979135abc99b7b31ebc600688",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "bfec16d13409519979135abc99b7b31ebc600688",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 32768,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p3"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p4/.ruff_cache",
+        "branch": "codex/lib-pro-007-p4-practical-actions",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "a2b813dbc2c5a873edabab30c36087ff7fea7eda",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "a2b813dbc2c5a873edabab30c36087ff7fea7eda",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p4"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p4/Python/.pytest_cache",
+        "branch": "codex/lib-pro-007-p4-practical-actions",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "a2b813dbc2c5a873edabab30c36087ff7fea7eda",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "a2b813dbc2c5a873edabab30c36087ff7fea7eda",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 24576,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p4"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p4/react_app/dist",
+        "branch": "codex/lib-pro-007-p4-practical-actions",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "a2b813dbc2c5a873edabab30c36087ff7fea7eda",
+        "recreation_basis": {
+          "head_sha": "a2b813dbc2c5a873edabab30c36087ff7fea7eda",
+          "kind": "REACT_BUILD_OUTPUT",
+          "path": "react_app/package-lock.json",
+          "recreate_command": "./run.sh frontend build",
+          "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+        },
+        "relative_path": "react_app/dist",
+        "size_bytes": 2908160,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p4"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-011/.ruff_cache",
+        "branch": "codex/maint-011-developer-gate-hygiene",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "1f203f40ec162a5caf141b1c44444ec4f6d3470c",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "1f203f40ec162a5caf141b1c44444ec4f6d3470c",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-011"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-011/Python/.pytest_cache",
+        "branch": "codex/maint-011-developer-gate-hygiene",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "1f203f40ec162a5caf141b1c44444ec4f6d3470c",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "1f203f40ec162a5caf141b1c44444ec4f6d3470c",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 73728,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-011"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0130-safe-file/.pytest_cache",
+        "branch": "codex/maint-0130-safe-file-foundation",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "b7b9623966c3131b8d5628496ea06328ce7210a6",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "b7b9623966c3131b8d5628496ea06328ce7210a6",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": ".pytest_cache",
+        "size_bytes": 20480,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0130-safe-file"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0130-safe-file/.ruff_cache",
+        "branch": "codex/maint-0130-safe-file-foundation",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "b7b9623966c3131b8d5628496ea06328ce7210a6",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "b7b9623966c3131b8d5628496ea06328ce7210a6",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 20480,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0130-safe-file"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0130-safe-file/Python/.pytest_cache",
+        "branch": "codex/maint-0130-safe-file-foundation",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "b7b9623966c3131b8d5628496ea06328ce7210a6",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "b7b9623966c3131b8d5628496ea06328ce7210a6",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 724992,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0130-safe-file"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0131-efficiency-controls/.ruff_cache",
+        "branch": "codex/maint-0131-efficiency-controls",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "a4dbb38e113fb2383997e1b294ab53f64325716a",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "a4dbb38e113fb2383997e1b294ab53f64325716a",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0131-efficiency-controls"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0131-efficiency-controls/Python/.pytest_cache",
+        "branch": "codex/maint-0131-efficiency-controls",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "a4dbb38e113fb2383997e1b294ab53f64325716a",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "a4dbb38e113fb2383997e1b294ab53f64325716a",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 40960,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0131-efficiency-controls"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0132-efficiency-observability/.ruff_cache",
+        "branch": "codex/maint-0132-efficiency-observability",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "2573b0d7959913b550eea6d6f15f34fd4e6edff5",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "2573b0d7959913b550eea6d6f15f34fd4e6edff5",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0132-efficiency-observability"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0132-efficiency-observability/Python/.pytest_cache",
+        "branch": "codex/maint-0132-efficiency-observability",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "2573b0d7959913b550eea6d6f15f34fd4e6edff5",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "2573b0d7959913b550eea6d6f15f34fd4e6edff5",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 57344,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0132-efficiency-observability"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0133-cleanup-inventory/.pytest_cache",
+        "branch": "codex/maint-0133-cleanup-inventory",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "f8c8d2642fa1f61f78366b3a05ff8dded692b75d",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "f8c8d2642fa1f61f78366b3a05ff8dded692b75d",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": ".pytest_cache",
+        "size_bytes": 16384,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0133-cleanup-inventory"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0133b-packet-a/.pytest_cache",
+        "branch": "codex/maint-0133b-packet-a",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "203b33e9611dd27d5aecc0d47b7f49f607dc3dde",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "203b33e9611dd27d5aecc0d47b7f49f607dc3dde",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": ".pytest_cache",
+        "size_bytes": 16384,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0133b-packet-a"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0134-agent-instructions/.ruff_cache",
+        "branch": "codex/maint-0134-agent-instructions",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "3e753959a006b640357c46a711689be46f076102",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "3e753959a006b640357c46a711689be46f076102",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0134-agent-instructions"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0134-agent-instructions/Python/.pytest_cache",
+        "branch": "codex/maint-0134-agent-instructions",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "3e753959a006b640357c46a711689be46f076102",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "3e753959a006b640357c46a711689be46f076102",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 36864,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0134-agent-instructions"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0135-cleanup-refresh/.ruff_cache",
+        "branch": "codex/lib-pro-008-pre-india3-safety",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "f035abfa70037afab5e159f8395db1343ee346af",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "f035abfa70037afab5e159f8395db1343ee346af",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0135-cleanup-refresh"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0135-cleanup-refresh/Python/.pytest_cache",
+        "branch": "codex/lib-pro-008-pre-india3-safety",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "f035abfa70037afab5e159f8395db1343ee346af",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "f035abfa70037afab5e159f8395db1343ee346af",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 53248,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0135-cleanup-refresh"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-post-india2-cleanup-audit/Python/.pytest_cache",
+        "branch": "codex/post-india2-cleanup-audit",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "db07cdf843eccd2fea4fd7977c28a2d6ea60b24e",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "db07cdf843eccd2fea4fd7977c28a2d6ea60b24e",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 24576,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-post-india2-cleanup-audit"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-post-india2-cleanup-execution/Python/.pytest_cache",
+        "branch": "codex/post-india2-cleanup-execution",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "a4e7ab4a148bd1fc2869bac566660e9881e507dd",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "a4e7ab4a148bd1fc2869bac566660e9881e507dd",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 24576,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-post-india2-cleanup-execution"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-post-india2-maintenance/.ruff_cache",
+        "branch": "codex/post-india2-maintenance",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "9e681a2ec41944d4964733c0bf337bfe9018ea45",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "9e681a2ec41944d4964733c0bf337bfe9018ea45",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-post-india2-maintenance"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-post-india2-maintenance/Python/.pytest_cache",
+        "branch": "codex/post-india2-maintenance",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "9e681a2ec41944d4964733c0bf337bfe9018ea45",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "9e681a2ec41944d4964733c0bf337bfe9018ea45",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 36864,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-post-india2-maintenance"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-decisive-gates/.ruff_cache",
+        "branch": "codex/public-route-decisive-gates",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "4d7e7e14faf4947d54364de73439927e69c26fc7",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "4d7e7e14faf4947d54364de73439927e69c26fc7",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 12288,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-decisive-gates"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-decisive-gates/Python/.pytest_cache",
+        "branch": "codex/public-route-decisive-gates",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "4d7e7e14faf4947d54364de73439927e69c26fc7",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "4d7e7e14faf4947d54364de73439927e69c26fc7",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 700416,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-decisive-gates"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-domain-provenance/.ruff_cache",
+        "branch": "codex/public-route-domain-provenance",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "d3f77cedbd5db856893193ec79d97529bf831ede",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "d3f77cedbd5db856893193ec79d97529bf831ede",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-domain-provenance"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-domain-provenance/Python/.pytest_cache",
+        "branch": "codex/public-route-domain-provenance",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "d3f77cedbd5db856893193ec79d97529bf831ede",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "d3f77cedbd5db856893193ec79d97529bf831ede",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 114688,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-domain-provenance"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-failure-contracts/.ruff_cache",
+        "branch": "codex/public-route-failure-contracts",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "fde41089a2314b749af1b4f48c80d21f3cfa0b44",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "fde41089a2314b749af1b4f48c80d21f3cfa0b44",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-failure-contracts"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-failure-contracts/Python/.pytest_cache",
+        "branch": "codex/public-route-failure-contracts",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "fde41089a2314b749af1b4f48c80d21f3cfa0b44",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "fde41089a2314b749af1b4f48c80d21f3cfa0b44",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 57344,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-failure-contracts"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-numeric-boundaries/.ruff_cache",
+        "branch": "codex/public-route-numeric-boundaries",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "dca370088cd458d014fda9829b9f0e6cf003e158",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "dca370088cd458d014fda9829b9f0e6cf003e158",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-numeric-boundaries"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-numeric-boundaries/Python/.pytest_cache",
+        "branch": "codex/public-route-numeric-boundaries",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "dca370088cd458d014fda9829b9f0e6cf003e158",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "dca370088cd458d014fda9829b9f0e6cf003e158",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 57344,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-numeric-boundaries"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-release-0231a2/.ruff_cache",
+        "branch": "codex/release-0231-stable",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+        "recreation_basis": {
+          "command_basis": "repository Ruff invocation",
+          "head_sha": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+          "kind": "TOOL_GENERATED_RUFF_CACHE"
+        },
+        "relative_path": ".ruff_cache",
+        "size_bytes": 8192,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-release-0231a2"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-release-0231a2/Python/.pytest_cache",
+        "branch": "codex/release-0231-stable",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+        "recreation_basis": {
+          "command_basis": "repository pytest invocation",
+          "head_sha": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+          "kind": "TOOL_GENERATED_PYTEST_CACHE"
+        },
+        "relative_path": "Python/.pytest_cache",
+        "size_bytes": 675840,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-release-0231a2"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-release-0231a2/react_app/dist",
+        "branch": "codex/release-0231-stable",
+        "disposition": "PROPOSED_PENDING_EXACT_OWNER_AUTHORIZATION",
+        "head_sha": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+        "recreation_basis": {
+          "head_sha": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+          "kind": "REACT_BUILD_OUTPUT",
+          "path": "react_app/package-lock.json",
+          "recreate_command": "./run.sh frontend build",
+          "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+        },
+        "relative_path": "react_app/dist",
+        "size_bytes": 2887680,
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-release-0231a2"
+      }
+    ]
+  },
+  "status": "PHASE_2B_PREPARED_NOT_AUTHORIZED",
+  "task_id": "MAINT-0136",
+  "worktree_retirement": {
+    "rows": [
+      {
+        "branch": "DETACHED",
+        "dirty_count": 0,
+        "disposition": "HOLD_DETACHED_OWNER_REVIEW",
+        "head_sha": "98c60bc1f7c3899c28f662e82399cb25d80bbf26",
+        "ignored_local_state": {
+          "entry_count": 0,
+          "path_set_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "paths_recorded": false,
+          "pipeline_state_present": false,
+          "protected_source_indicator_present": false,
+          "session_state_present": false
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/1ee2/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "DETACHED_HEAD",
+          "OWNER_RETENTION_NOT_CONFIRMED"
+        ],
+        "remote_exact_head": false,
+        "size_bytes": 71479296
+      },
+      {
+        "branch": "codex/lib-pro-007-p7-compatibility-convergence",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "c9589815f2d8053b1d99f61bf38623cd2aebba2f",
+        "ignored_local_state": {
+          "entry_count": 39,
+          "path_set_sha256": "1a4c897bcc09fc510928a434f837d685fcf766eee8642c04fefa4a6e16c3cebe",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/3c84/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 155992064
+      },
+      {
+        "branch": "DETACHED",
+        "dirty_count": 0,
+        "disposition": "HOLD_DETACHED_OWNER_REVIEW",
+        "head_sha": "b91838f594a04aff1d21c43bf6f87a64710b0748",
+        "ignored_local_state": {
+          "entry_count": 15,
+          "path_set_sha256": "eb86cdd453e9b98bec478755b462e96f539ad057cb75bb056344f1efc8b7eb15",
+          "paths_recorded": false,
+          "pipeline_state_present": false,
+          "protected_source_indicator_present": false,
+          "session_state_present": false
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/5986/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": true,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "DETACHED_HEAD",
+          "OWNER_RETENTION_NOT_CONFIRMED"
+        ],
+        "remote_exact_head": false,
+        "size_bytes": 67637248
+      },
+      {
+        "branch": "DETACHED",
+        "dirty_count": 0,
+        "disposition": "HOLD_DETACHED_OWNER_REVIEW",
+        "head_sha": "514155b266af6dff3e30bf39ee28671c17345454",
+        "ignored_local_state": {
+          "entry_count": 20,
+          "path_set_sha256": "284bdbe49d07174b3f0728acb6526eb1ed4ce1acb64b3ff45e410d1348ec6c1a",
+          "paths_recorded": false,
+          "pipeline_state_present": false,
+          "protected_source_indicator_present": false,
+          "session_state_present": false
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/5da5/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "DETACHED_HEAD",
+          "OWNER_RETENTION_NOT_CONFIRMED"
+        ],
+        "remote_exact_head": false,
+        "size_bytes": 74215424
+      },
+      {
+        "branch": "codex/india-3-source-meta-r1",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "13f0ff916a0d7c167e34b46ab9ae6cb2c50c9efd",
+        "ignored_local_state": {
+          "entry_count": 52,
+          "path_set_sha256": "7e7d96b75beaaa5edc67913a9b63df4e58990e6f94568600b814ace137026e56",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/7c3898d2-40f8-4e2b-bee5-fb7e8ebb0250/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 90976256
+      },
+      {
+        "branch": "codex/release-preflight-alpha-policy",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "5da9c66a0f962fc08a6431fe95e39ec664a353f6",
+        "ignored_local_state": {
+          "entry_count": 39,
+          "path_set_sha256": "da787aabd3a049c263592fbdd8ded5ddc97dc6b3c5b63e32563e4d2fb6a46fda",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/alpha-release/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": true,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": false,
+        "size_bytes": 81518592
+      },
+      {
+        "branch": "DETACHED",
+        "dirty_count": 0,
+        "disposition": "HOLD_DETACHED_OWNER_REVIEW",
+        "head_sha": "670ea4beeb2a8765fff59e05bb130ff54752369e",
+        "ignored_local_state": {
+          "entry_count": 16,
+          "path_set_sha256": "e6cea7239407e6e0eaccb58d77fa4d7550f13432aa060db096a19549807cbd41",
+          "paths_recorded": false,
+          "pipeline_state_present": false,
+          "protected_source_indicator_present": false,
+          "session_state_present": false
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/b026/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": true,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "DETACHED_HEAD",
+          "OWNER_RETENTION_NOT_CONFIRMED"
+        ],
+        "remote_exact_head": false,
+        "size_bytes": 67637248
+      },
+      {
+        "branch": "DETACHED",
+        "dirty_count": 0,
+        "disposition": "HOLD_DETACHED_OWNER_REVIEW",
+        "head_sha": "bf4065f071f1245461df6d3c42f1cc070efbae70",
+        "ignored_local_state": {
+          "entry_count": 17,
+          "path_set_sha256": "32f6a415ac06f4b7e606843a8d9fb28232eb082ac965a42b8f49a229d3933d50",
+          "paths_recorded": false,
+          "pipeline_state_present": false,
+          "protected_source_indicator_present": false,
+          "session_state_present": false
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/b94c/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": true,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "DETACHED_HEAD",
+          "OWNER_RETENTION_NOT_CONFIRMED"
+        ],
+        "remote_exact_head": false,
+        "size_bytes": 67653632
+      },
+      {
+        "branch": "codex/lib-pro-007-p6-cross-surface-parity",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "9647feddb672428e4f89348f5f82ad8c2cbe71cf",
+        "ignored_local_state": {
+          "entry_count": 41,
+          "path_set_sha256": "492b85c925550ce78c867f2e11b37a9dc47605f5b8797db38e36b9bdb4b9ed9e",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/cace/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 164184064
+      },
+      {
+        "branch": "DETACHED",
+        "dirty_count": 1,
+        "disposition": "RETAIN_DIRTY_OR_UNIQUE_LANE",
+        "head_sha": "0fdb48edbb73114288feb8a246d6f30b80ac4d95",
+        "ignored_local_state": {
+          "entry_count": 19,
+          "path_set_sha256": "42c5e128d5aacaba5d7998f479fa7492678b89634843ac3e37c23d50cc2c3d44",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/e54a/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": true,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "UNCOMMITTED_WORK"
+        ],
+        "remote_exact_head": false,
+        "size_bytes": 67584000
+      },
+      {
+        "branch": "codex/india-3-joint-r1",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "a5657e1bbcea16079af527005c47b296cf95f742",
+        "ignored_local_state": {
+          "entry_count": 34,
+          "path_set_sha256": "3c4d97275d11bb8981b9391b3bfdb9135b11cc9f4339dd078fe26dada97faed6",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/ef1b/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 154193920
+      },
+      {
+        "branch": "DETACHED",
+        "dirty_count": 0,
+        "disposition": "HOLD_DETACHED_OWNER_REVIEW",
+        "head_sha": "b91838f594a04aff1d21c43bf6f87a64710b0748",
+        "ignored_local_state": {
+          "entry_count": 14,
+          "path_set_sha256": "daaebf8818522ad2aab2d500253cfe415ef69504d9bf110e87611800a614dc3b",
+          "paths_recorded": false,
+          "pipeline_state_present": false,
+          "protected_source_indicator_present": false,
+          "session_state_present": false
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/fa98/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": true,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "DETACHED_HEAD",
+          "OWNER_RETENTION_NOT_CONFIRMED"
+        ],
+        "remote_exact_head": false,
+        "size_bytes": 67637248
+      },
+      {
+        "branch": "codex/india-3-beam-r1",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "099937dc3da7c0083de793ed3b2972690a44d423",
+        "ignored_local_state": {
+          "entry_count": 60,
+          "path_set_sha256": "886c38bf5e47b27c72305bf7c2d5e23140d127698161d5043ca8f67ca33ec8f7",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/india-3-beam-r1/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 250859520
+      },
+      {
+        "branch": "codex/india-3-column-r1",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "4df72ea258610179a1496a255c1d6d320e3416bf",
+        "ignored_local_state": {
+          "entry_count": 41,
+          "path_set_sha256": "20de2d31e3a0988f77f0044e89b50b515bf57298c063d44756cc7755fc503ec8",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/india-3-column-r1/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 157700096
+      },
+      {
+        "branch": "codex/india-3-g0-source-library",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "9c976b1f4afd0540a5ec9eb3cab16861916ac89b",
+        "ignored_local_state": {
+          "entry_count": 31,
+          "path_set_sha256": "6b6ae0e8077dc6bb7ed762e1748f180598c82fc3060e7f9263e4ad218247827f",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/india-3-g0-source-library/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 73965568
+      },
+      {
+        "branch": "codex/india-3-is13920-m0",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "0a20774ec8978b7dcea6d7cd7db6966068b70703",
+        "ignored_local_state": {
+          "entry_count": 59,
+          "path_set_sha256": "8a5710c762735785a52cd52ab96601137487781fa00313bb3c5863149cc84ff5",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/india-3-is13920-m0/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 98684928
+      },
+      {
+        "branch": "codex/lib-pro-009-rc-trust",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "b4428e23adc8374d1acc6e7f2a2125d5aebff453",
+        "ignored_local_state": {
+          "entry_count": 33,
+          "path_set_sha256": "047e383007f2e7a36fdfcd50bbe050c415c427aae584dd767d676cc3c7c4feb8",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-009-rc-trust",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 154456064
+      },
+      {
+        "branch": "codex/lib-pro-010-rc-artifact",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "595b3bcb1bb55bae0261016a3dddd87da4aca8e9",
+        "ignored_local_state": {
+          "entry_count": 62,
+          "path_set_sha256": "3c624b8922194757b5cf3d68c193973af449cf35eddd93a3e5d43e3be012faff",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-010-rc-artifact",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 194232320
+      },
+      {
+        "branch": "codex/maint-012a-control-registry",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "f0cdf631d6c7d698c0a7b47b04030b4e23fb32a2",
+        "ignored_local_state": {
+          "entry_count": 31,
+          "path_set_sha256": "6b6ae0e8077dc6bb7ed762e1748f180598c82fc3060e7f9263e4ad218247827f",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/maint-012a/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 76390400
+      },
+      {
+        "branch": "codex/maint-012b-index-architecture",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "74bfd69ebf610b6cb324b7298b95ac840652ed4c",
+        "ignored_local_state": {
+          "entry_count": 31,
+          "path_set_sha256": "6b6ae0e8077dc6bb7ed762e1748f180598c82fc3060e7f9263e4ad218247827f",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/maint-012b/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 74887168
+      },
+      {
+        "branch": "codex/maint-012c-evidence-scheduling",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "56eff4d357ca62332fb0e50c6a55c2336af57c65",
+        "ignored_local_state": {
+          "entry_count": 32,
+          "path_set_sha256": "bfc87173bb7d215f3e31d7c7175ea8439e93b0a37752f6bbe12d233115df9e0b",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/maint-012c/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 74997760
+      },
+      {
+        "branch": "codex/maint-012d-scanner-consolidation",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "66cd2bb51b9f4f1fd7f6c1f8ab57e5a4f188e20d",
+        "ignored_local_state": {
+          "entry_count": 59,
+          "path_set_sha256": "8515536a57f5e0277c843c949a25181a89b146b25740c7875c242ca12b4aee57",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/maint-012d/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 89899008
+      },
+      {
+        "branch": "codex/release-0240a1-publication",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "d3a4d2235d1811ab4bc2c860640f5660c6eed057",
+        "ignored_local_state": {
+          "entry_count": 55,
+          "path_set_sha256": "1b2d7beaef58f46a676883b268a975346b0a611fe2d09e1378110be0e35a6171",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/release-0240a1-publication",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": true,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 174702592
+      },
+      {
+        "branch": "codex/release-smoothness",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d",
+        "ignored_local_state": {
+          "entry_count": 31,
+          "path_set_sha256": "6b6ae0e8077dc6bb7ed762e1748f180598c82fc3060e7f9263e4ad218247827f",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/release-smoothness",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": true,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 76537856
+      },
+      {
+        "branch": "main",
+        "dirty_count": 0,
+        "disposition": "RETAIN_PRIMARY_CHECKOUT",
+        "head_sha": "e2fac7419551988def59101ac63a5f8e491bc7a2",
+        "ignored_local_state": {
+          "entry_count": 311,
+          "path_set_sha256": "fb0d2d4f8eab48ad60bd0b12d92c8aac70eebe5b9dd0f33f7a4b4b31c89290ff",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": true,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": true,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "INTEGRATION_ANCHOR",
+          "PROTECTED_SOURCES_OWNER"
+        ],
+        "remote_exact_head": false,
+        "size_bytes": 2908143616
+      },
+      {
+        "branch": "codex/a1-canonical-transport-contract",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "85872c846020ee9fb7cf654e8b5b3943f44fa531",
+        "ignored_local_state": {
+          "entry_count": 46,
+          "path_set_sha256": "f2b54ed4e25f83645b1a3f2ab842fd7566b4cdf86919d91cc277f5f3cecdcdf4",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a1-canonical-transport",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 158740480
+      },
+      {
+        "branch": "codex/a2-lossless-intake-calculation",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "2a6889b363aad85f5b45f5ba23b344efd08084d6",
+        "ignored_local_state": {
+          "entry_count": 58,
+          "path_set_sha256": "6bbfcb98b629cbaf0049f6b7c877b3a23ccd11bb91e16929487e11688d63fa2c",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a2-lossless-intake",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 168493056
+      },
+      {
+        "branch": "codex/b1-gravity-model-load-ledger",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "4a7f13bca2fadfdb45017a296e6235c3b95dd401",
+        "ignored_local_state": {
+          "entry_count": 32,
+          "path_set_sha256": "8f11d09699ca1ef46f6737f3433d165257276ecc1f1cf581d584e4bccf537a70",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b1-gravity-model-ledger",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 150929408
+      },
+      {
+        "branch": "codex/b2-gravity-workflow-v1",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "b337efc73d0af9ff7bef623916cfe808dd79bed6",
+        "ignored_local_state": {
+          "entry_count": 58,
+          "path_set_sha256": "6bbfcb98b629cbaf0049f6b7c877b3a23ccd11bb91e16929487e11688d63fa2c",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b2-gravity-workflow-v1",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 170971136
+      },
+      {
+        "branch": "codex/e1-blank-workbook-guard",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "514155b266af6dff3e30bf39ee28671c17345454",
+        "ignored_local_state": {
+          "entry_count": 25,
+          "path_set_sha256": "cf7b1cc38071e741aa1a0077d48d2beafde3074835c68989abb536d833484731",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-blank-workbook-guard",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 74420224
+      },
+      {
+        "branch": "codex/e1-excel-routine-workbench",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "ef5ee05c785904e1a01c2d09cc65649edc8745ab",
+        "ignored_local_state": {
+          "entry_count": 40,
+          "path_set_sha256": "10754600235f248dd5f4026cbccd766fc414ae7c4c2b255c10dba86401a1c2fb",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-excel-workbench",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 156639232
+      },
+      {
+        "branch": "codex/e1-g3-closeout",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "53b9f56e5af0bae064ba3a545dbb9b86b4b336d7",
+        "ignored_local_state": {
+          "entry_count": 53,
+          "path_set_sha256": "ceb01ab884c0f01b44183f3dea77d63863978f7275da91250d7786ce767e5f1d",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-g3-closeout",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 89382912
+      },
+      {
+        "branch": "codex/e1-review-bundle-export",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "98c60bc1f7c3899c28f662e82399cb25d80bbf26",
+        "ignored_local_state": {
+          "entry_count": 40,
+          "path_set_sha256": "10754600235f248dd5f4026cbccd766fc414ae7c4c2b255c10dba86401a1c2fb",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-review-bundle-export",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 156803072
+      },
+      {
+        "branch": "codex/e1-w0-maintenance-plan",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "654e40b1370d098fca4d001146a030b9937536a8",
+        "ignored_local_state": {
+          "entry_count": 50,
+          "path_set_sha256": "b2804237528b110fed1f7e88262263f5670f766ce954673908f39f980c8e80fe",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-w0-maintenance",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 88981504
+      },
+      {
+        "branch": "codex/e1-workbook-open-repair",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "ede01ef4fb6182a27e3f176e872478304fb5f256",
+        "ignored_local_state": {
+          "entry_count": 58,
+          "path_set_sha256": "d21fad29c92fb931f0dd5716145e8cdd17f772b43d7fc4600cf21a71a9392fa0",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-e1-workbook-open-repair",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 171053056
+      },
+      {
+        "branch": "codex/excel-product-planning",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "a0e115e17009cc14b3d883e3c291d47c32f7ca4e",
+        "ignored_local_state": {
+          "entry_count": 2,
+          "path_set_sha256": "6a3d5d9910e9ff6d9c3f5ba08eaef34aba37b152676535fe21643a7836cfebed",
+          "paths_recorded": false,
+          "pipeline_state_present": false,
+          "protected_source_indicator_present": false,
+          "session_state_present": false
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-excel-product-planning",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": true,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": false,
+        "size_bytes": 64163840
+      },
+      {
+        "branch": "codex/git-governance-research",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "657037364bbb49f2ef834c70f3a3c704bac83c7b",
+        "ignored_local_state": {
+          "entry_count": 19,
+          "path_set_sha256": "42c5e128d5aacaba5d7998f479fa7492678b89634843ac3e37c23d50cc2c3d44",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-git-governance-research",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": false,
+        "size_bytes": 67510272
+      },
+      {
+        "branch": "codex/implementation-first-verification-policy",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "fffbfaaa0d928768efe7b703a0d8091555ad9a8e",
+        "ignored_local_state": {
+          "entry_count": 25,
+          "path_set_sha256": "cf7b1cc38071e741aa1a0077d48d2beafde3074835c68989abb536d833484731",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-implementation-first-verification-policy",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 72237056
+      },
+      {
+        "branch": "codex/index-local-artifact-determinism",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "65c37ad0836bd59ebef56b6d01faa144b791d020",
+        "ignored_local_state": {
+          "entry_count": 56,
+          "path_set_sha256": "522ca983e8d2d159e8f935eee9167d05a326a8134474b98284da74b860fd2aa8",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-index-local-artifact-determinism",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 85946368
+      },
+      {
+        "branch": "codex/index-mtime-determinism",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "cfb98da58af391bdefb23f8cfc83295876b44876",
+        "ignored_local_state": {
+          "entry_count": 55,
+          "path_set_sha256": "8e785cd668b778ad0a986f8997227c56632196ccc45eac5170473305ec3601a3",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-index-mtime-determinism",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 85909504
+      },
+      {
+        "branch": "codex/india-3-g0-acceptance",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "8466fb1458f41cb767117f5a49b4495b23d794eb",
+        "ignored_local_state": {
+          "entry_count": 35,
+          "path_set_sha256": "9dd6a912d18a3f80a0bb88d35603b665786b7722f2ed3a004e536c17bef35768",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-3-g0-acceptance",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 156626944
+      },
+      {
+        "branch": "codex/india-3-g0-truth-audit",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "b39fcda534ec757744a2d6f203f42e4350871cd1",
+        "ignored_local_state": {
+          "entry_count": 34,
+          "path_set_sha256": "0d7999925f4880f277b4955e032b64f291cb78b323323bbe88ca79418a505530",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-3-g0-truth-audit",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 76476416
+      },
+      {
+        "branch": "codex/lib-pro-002-a-strict-input",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "18d043ef9ac6221936335e1b20676863b3c5bc9b",
+        "ignored_local_state": {
+          "entry_count": 32,
+          "path_set_sha256": "8f11d09699ca1ef46f6737f3433d165257276ecc1f1cf581d584e4bccf537a70",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-a-strict-input",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 148496384
+      },
+      {
+        "branch": "codex/lib-pro-002-b-lossless-import",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "22c65d17874ec877a7f90f56ae6950131eddd462",
+        "ignored_local_state": {
+          "entry_count": 60,
+          "path_set_sha256": "d5a34f5caaec53c91ea6bdbfb304fd3b67d8437a4c84f2cfc1c4ad3e893e7818",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-b-lossless-import",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 171339776
+      },
+      {
+        "branch": "codex/lib-pro-002-i-cli",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "911b6e3d288db85bc3f2770a061598689a4e8ec3",
+        "ignored_local_state": {
+          "entry_count": 30,
+          "path_set_sha256": "edb714ada134ded11d9ba398ffdccae8cfd78442832277cf8d4ab444d62aa755",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-i-cli",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 149364736
+      },
+      {
+        "branch": "codex/lib-pro-002-j-release-signal",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "280dd9a9a31e8f318d385cb2ec43418d195ca4b3",
+        "ignored_local_state": {
+          "entry_count": 57,
+          "path_set_sha256": "849e012d5048cddcc3701959d6fac9f20669db2ed5a4f5c3c60ebaba32053c7d",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-j-release-signal",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 89223168
+      },
+      {
+        "branch": "codex/lib-pro-004-safety-auditors",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "ff55471c9b75a7c70369f857c387fdffad05899d",
+        "ignored_local_state": {
+          "entry_count": 57,
+          "path_set_sha256": "8c149b1029e097880d7314e3b4d440cf0c06a2888708692bc4462f471f0561a2",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-004-safety-auditors",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 170536960
+      },
+      {
+        "branch": "codex/lib-pro-005-release-safety-closure",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "0979200d00ea32bd7464232f20558f353509be8a",
+        "ignored_local_state": {
+          "entry_count": 57,
+          "path_set_sha256": "1f8bed2d3775b33800fae770e8b26fbd53a457b4bb4e69314cfa211569c544c6",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-005-release-safety-closure",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 169799680
+      },
+      {
+        "branch": "codex/lib-pro-006-gravity-foundation",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "6db242171427b93a2586de9c2c772ccba03243de",
+        "ignored_local_state": {
+          "entry_count": 39,
+          "path_set_sha256": "7a190f99b449e002c362ca63a6df2be5aa1e022dda12a394a25109911a163286",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-006-gravity-foundation",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 156139520
+      },
+      {
+        "branch": "codex/lib-pro-007-g0-contract-freeze",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "3b0c0c2551d5f1d31b1dd8251489e6ec632f57a4",
+        "ignored_local_state": {
+          "entry_count": 50,
+          "path_set_sha256": "ea365fcf9b24f570bf38858f377519314cc33f0680e3a93a43e1eb2c40da00e0",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-g0",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 89395200
+      },
+      {
+        "branch": "codex/lib-pro-007-m0-cumulative-acceptance",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "eb92db482734e531561f739cf6818104281ef451",
+        "ignored_local_state": {
+          "entry_count": 59,
+          "path_set_sha256": "4354e5ec0f14250d52422869373b2f767aeafdc4867630145e6973864f9a051f",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-m0",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 110354432
+      },
+      {
+        "branch": "codex/lib-pro-007-p1-optimization-truth",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "6dd3fd4e17354f27846869ee48d10277c4703d0f",
+        "ignored_local_state": {
+          "entry_count": 39,
+          "path_set_sha256": "e76fa5202cfc5b64a819a32ade41019d719ba42cc5c72e0a6cb91e9eb94b61d6",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p1",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 153563136
+      },
+      {
+        "branch": "codex/lib-pro-007-p2-supplied-beam-reinforcement",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "fa81954852285d59fe7c1e58de7c2b6cb3fa7971",
+        "ignored_local_state": {
+          "entry_count": 41,
+          "path_set_sha256": "492b85c925550ce78c867f2e11b37a9dc47605f5b8797db38e36b9bdb4b9ed9e",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p2",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 156921856
+      },
+      {
+        "branch": "codex/lib-pro-007-p3-footing-anchorage",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "bfec16d13409519979135abc99b7b31ebc600688",
+        "ignored_local_state": {
+          "entry_count": 39,
+          "path_set_sha256": "1a4c897bcc09fc510928a434f837d685fcf766eee8642c04fefa4a6e16c3cebe",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p3",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 154513408
+      },
+      {
+        "branch": "codex/lib-pro-007-p4-practical-actions",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "a2b813dbc2c5a873edabab30c36087ff7fea7eda",
+        "ignored_local_state": {
+          "entry_count": 40,
+          "path_set_sha256": "21453f26a178d57d6aba1825b1e2244cd3f22a12bedb8c14adc178429b59e27c",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p4",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 157167616
+      },
+      {
+        "branch": "codex/maint-011-developer-gate-hygiene",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "1f203f40ec162a5caf141b1c44444ec4f6d3470c",
+        "ignored_local_state": {
+          "entry_count": 44,
+          "path_set_sha256": "ae545c160a090e1616bb5cadfcc8c8ed93e3a4b80298ac0514309f543f1d119c",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-011",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 156246016
+      },
+      {
+        "branch": "codex/maint-0130-safe-file-foundation",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "b7b9623966c3131b8d5628496ea06328ce7210a6",
+        "ignored_local_state": {
+          "entry_count": 57,
+          "path_set_sha256": "95a4806a2e0f7fbf6fa121e57bb98e5243b0a2879f93e9918be2edbffab57887",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0130-safe-file",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 89407488
+      },
+      {
+        "branch": "codex/maint-0131-efficiency-controls",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "a4dbb38e113fb2383997e1b294ab53f64325716a",
+        "ignored_local_state": {
+          "entry_count": 33,
+          "path_set_sha256": "7eae86605946b2b4fa0f6907e66cf53981b8fdb1d4d87c8d6660c2f8d60c525d",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0131-efficiency-controls",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 74625024
+      },
+      {
+        "branch": "codex/maint-0132-efficiency-observability",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "2573b0d7959913b550eea6d6f15f34fd4e6edff5",
+        "ignored_local_state": {
+          "entry_count": 31,
+          "path_set_sha256": "6b6ae0e8077dc6bb7ed762e1748f180598c82fc3060e7f9263e4ad218247827f",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0132-efficiency-observability",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 75075584
+      },
+      {
+        "branch": "codex/maint-0133-cleanup-inventory",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "f8c8d2642fa1f61f78366b3a05ff8dded692b75d",
+        "ignored_local_state": {
+          "entry_count": 29,
+          "path_set_sha256": "049ab397b7b8ce9a8a4c599112c1fd1bf51d9921b77be4a523f2589dc481a4ec",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0133-cleanup-inventory",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 73945088
+      },
+      {
+        "branch": "codex/maint-0133b-packet-a",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "203b33e9611dd27d5aecc0d47b7f49f607dc3dde",
+        "ignored_local_state": {
+          "entry_count": 31,
+          "path_set_sha256": "26f2b0a537810cba5bb39d13fd94f5db9dcef7a0182ab85477530a67d83974f5",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0133b-packet-a",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 73981952
+      },
+      {
+        "branch": "codex/maint-0134-agent-instructions",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "3e753959a006b640357c46a711689be46f076102",
+        "ignored_local_state": {
+          "entry_count": 31,
+          "path_set_sha256": "6b6ae0e8077dc6bb7ed762e1748f180598c82fc3060e7f9263e4ad218247827f",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0134-agent-instructions",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 74985472
+      },
+      {
+        "branch": "codex/lib-pro-008-pre-india3-safety",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "f035abfa70037afab5e159f8395db1343ee346af",
+        "ignored_local_state": {
+          "entry_count": 44,
+          "path_set_sha256": "40400950f172ddb89f9aaa8f4c25ca58d912865455e862425b6a7c9c798b88bf",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0135-cleanup-refresh",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 156549120
+      },
+      {
+        "branch": "codex/maint-0136-cleanup-preservation",
+        "dirty_count": 0,
+        "disposition": "RETAIN_PHASE_1_PREDECESSOR",
+        "head_sha": "37b3678504b9e9a3d663f442ecab62f19a3f0b75",
+        "ignored_local_state": {
+          "entry_count": 31,
+          "path_set_sha256": "6b6ae0e8077dc6bb7ed762e1748f180598c82fc3060e7f9263e4ad218247827f",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": true,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-cleanup-preservation",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OPEN_PULL_REQUEST",
+          "PUBLICATION_PREDECESSOR"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 76607488
+      },
+      {
+        "branch": "codex/maint-0136-phase-2a-cache-cleanup",
+        "dirty_count": 0,
+        "disposition": "RETAIN_PHASE_2A_PREDECESSOR",
+        "head_sha": "2d898e9b32d1ad92be4176c1e2aa406b1ec33f81",
+        "ignored_local_state": {
+          "entry_count": 31,
+          "path_set_sha256": "6b6ae0e8077dc6bb7ed762e1748f180598c82fc3060e7f9263e4ad218247827f",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2a-cache-cleanup",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "IMMUTABLE_LOCAL_CANDIDATE"
+        ],
+        "remote_exact_head": false,
+        "size_bytes": 76566528
+      },
+      {
+        "branch": "codex/maint-0136-phase-2b-preparation",
+        "dirty_count": 8,
+        "disposition": "RETAIN_CURRENT_PREPARATION_LANE",
+        "head_sha": "2d898e9b32d1ad92be4176c1e2aa406b1ec33f81",
+        "ignored_local_state": {
+          "entry_count": 28,
+          "path_set_sha256": "7cd2bc4c645637713c0886c1df801234340f217b90ecffb4fcb4612b22ecd483",
+          "paths_recorded": false,
+          "pipeline_state_present": false,
+          "protected_source_indicator_present": false,
+          "session_state_present": false
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2b-preparation",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "ACTIVE_TASK"
+        ],
+        "remote_exact_head": false,
+        "size_bytes": 76697600
+      },
+      {
+        "branch": "codex/post-india2-cleanup-audit",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "db07cdf843eccd2fea4fd7977c28a2d6ea60b24e",
+        "ignored_local_state": {
+          "entry_count": 28,
+          "path_set_sha256": "795aea6959981e4fa37833c1d17ed1a598ecdfdc42c6925212888098a7e00d07",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-post-india2-cleanup-audit",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 71983104
+      },
+      {
+        "branch": "codex/post-india2-cleanup-execution",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "a4e7ab4a148bd1fc2869bac566660e9881e507dd",
+        "ignored_local_state": {
+          "entry_count": 29,
+          "path_set_sha256": "fd898ccea64f291e7564bf94b0d7e5eb040eeff052a5939682de1ea38736c832",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-post-india2-cleanup-execution",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 72298496
+      },
+      {
+        "branch": "codex/post-india2-maintenance",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "9e681a2ec41944d4964733c0bf337bfe9018ea45",
+        "ignored_local_state": {
+          "entry_count": 56,
+          "path_set_sha256": "522ca983e8d2d159e8f935eee9167d05a326a8134474b98284da74b860fd2aa8",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-post-india2-maintenance",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 85913600
+      },
+      {
+        "branch": "codex/pre-release-input-safety-plan",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "40cfc02e5b8d6752f5805eef9e437b3b1a01de8d",
+        "ignored_local_state": {
+          "entry_count": 25,
+          "path_set_sha256": "cf7b1cc38071e741aa1a0077d48d2beafde3074835c68989abb536d833484731",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-pre-release-input-safety-plan",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 72224768
+      },
+      {
+        "branch": "codex/public-route-decisive-gates",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "4d7e7e14faf4947d54364de73439927e69c26fc7",
+        "ignored_local_state": {
+          "entry_count": 56,
+          "path_set_sha256": "ce3f4bb22394a89a8243038e2978ffcf5d25924f6ce0157e6baf6fdb11c14cfc",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-decisive-gates",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 92647424
+      },
+      {
+        "branch": "codex/public-route-domain-provenance",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "d3f77cedbd5db856893193ec79d97529bf831ede",
+        "ignored_local_state": {
+          "entry_count": 38,
+          "path_set_sha256": "741ec22ffd932529df97305e576460cea2c5f33eb899e74b7935033ed2c8198c",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-domain-provenance",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 154611712
+      },
+      {
+        "branch": "codex/public-route-failure-contracts",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "fde41089a2314b749af1b4f48c80d21f3cfa0b44",
+        "ignored_local_state": {
+          "entry_count": 42,
+          "path_set_sha256": "bcbd7910ff75339be59f194abfb231e78a80523d5c484010db53e50c77f7e261",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-failure-contracts",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 156442624
+      },
+      {
+        "branch": "codex/public-route-numeric-boundaries",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "dca370088cd458d014fda9829b9f0e6cf003e158",
+        "ignored_local_state": {
+          "entry_count": 37,
+          "path_set_sha256": "1f7ec80e8b23ad147c2ee9f114e12febce80d4f30acbbf2ce97063c50dee66d7",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-numeric-boundaries",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": false,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": true,
+        "size_bytes": 153550848
+      },
+      {
+        "branch": "codex/release-0231-stable",
+        "dirty_count": 0,
+        "disposition": "RETIREMENT_REVIEW_ONLY",
+        "head_sha": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+        "ignored_local_state": {
+          "entry_count": 61,
+          "path_set_sha256": "21a7ae20bbedb7bbd45f61b2364dc98ea0bf6f83941685985828a132233f52f9",
+          "paths_recorded": false,
+          "pipeline_state_present": true,
+          "protected_source_indicator_present": false,
+          "session_state_present": true
+        },
+        "open_pull_request": false,
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-release-0231a2",
+        "query_status": "OK",
+        "reachable_from_observed_origin_main": true,
+        "reason_codes": [
+          "PHASE_2B_EXECUTION_NOT_AUTHORIZED",
+          "OWNER_RETENTION_NOT_CONFIRMED",
+          "OFF_DEVICE_RECOVERY_UNAVAILABLE",
+          "IGNORED_LOCAL_STATE_PRESENT"
+        ],
+        "remote_exact_head": false,
+        "size_bytes": 103022592
+      }
+    ],
+    "status": "REVIEW_ONLY_NOT_AUTHORIZED",
+    "summary": {
+      "ignored_entry_count": 3190,
+      "ignored_pipeline_state_worktree_count": 67,
+      "ignored_session_state_worktree_count": 67,
+      "review_only_count": 64,
+      "review_only_gross_bytes": 7753789440,
+      "worktree_count": 75,
+      "worktree_total_bytes": 11375648768
+    }
+  }
+}

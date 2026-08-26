@@ -128,9 +128,17 @@ exact temporary copy and proves the canonical aggregate is unchanged, rather
 than running that command against the canonical database during evidence
 freeze.
 
-## Phase 2B gate — not authorized
+## Phase 2B preparation result — not authorized
 
-Phase 2A does not authorize broader cleanup. Any later Phase 2B requires:
+Phase 2A does not authorize broader cleanup. The later read-only
+[Phase 2B preparation](maint-0136-phase-2b-preparation-plan.md) found that the
+remaining 119 exact small-cache identities total only 47,378,432 bytes, while
+64 worktrees with 7,753,789,440 gross path bytes remain review-only and contain
+ignored local state. The recommendation is therefore to skip the standalone
+small-cache sweep, establish off-device recovery, and prepare worktree
+retirement separately from branch/ref/archive cleanup.
+
+Any later executable Phase 2B requires:
 
 1. a usable encrypted external or off-device recovery destination, or another
    explicit owner decision accepting a narrower recovery tier for exact new
