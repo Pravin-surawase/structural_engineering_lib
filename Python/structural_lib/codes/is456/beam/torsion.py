@@ -21,10 +21,7 @@ from __future__ import annotations
 import math
 
 from structural_lib.core.data_types import TorsionResult
-from structural_lib.core.error_messages import (
-    dimension_too_small,
-    material_property_out_of_range,
-)
+from structural_lib.core.error_messages import material_property_out_of_range
 from structural_lib.core.errors import (
     E_TORSION_001,
     DesignError,
@@ -45,6 +42,45 @@ __all__ = [
     "calculate_longitudinal_torsion_steel",
     "design_torsion",
 ]
+
+
+def _require_nonnegative_action(name: str, value: object) -> float:
+    """Require the documented non-negative magnitude convention."""
+    numeric = require_finite_real(name, value)
+    if numeric < 0:
+        raise ValueError(f"{name} must be >= 0 as a design-action magnitude")
+    return numeric
+
+
+def _require_positive_dimension(name: str, value: object, clause_ref: str) -> float:
+    """Require a strictly positive dimension with an exclusive-bound message."""
+    numeric = require_finite_real(name, value)
+    if numeric <= 0:
+        raise DimensionError(
+            f"{name} must be > 0 mm (got {numeric:g} mm).",
+            details={name: numeric, "minimum_exclusive": 0},
+            clause_ref=clause_ref,
+        )
+    return numeric
+
+
+def _require_supported_material(
+    name: str,
+    value: object,
+    *,
+    minimum: float,
+    maximum: float,
+    clause_ref: str,
+) -> float:
+    """Require a material value inside the maintained torsion domain."""
+    numeric = require_finite_real(name, value)
+    if not minimum <= numeric <= maximum:
+        raise MaterialError(
+            material_property_out_of_range(name, numeric, minimum, maximum, " N/mm²"),
+            details={name: numeric, "minimum": minimum, "maximum": maximum},
+            clause_ref=clause_ref,
+        )
+    return numeric
 
 
 # =============================================================================
@@ -77,21 +113,14 @@ def calculate_equivalent_shear(vu_kn: float, tu_knm: float, b: float) -> float:
     Reference:
         IS 456:2000, Clause 41.3.1
     """
-    vu_kn = require_finite_real("vu_kn", vu_kn)
-    tu_knm = require_finite_real("tu_knm", tu_knm)
-    b = require_finite_real("b", b)
-
-    if b <= 0:
-        raise DimensionError(
-            dimension_too_small("beam width b", b, 0, "Cl. 41.3.1"),
-            details={"b": b, "minimum": 0},
-            clause_ref="Cl. 41.3.1",
-        )
+    vu_kn = _require_nonnegative_action("vu_kn", vu_kn)
+    tu_knm = _require_nonnegative_action("tu_knm", tu_knm)
+    b = _require_positive_dimension("b", b, "Cl. 41.3.1")
 
     # Tu is in kN·m, b is in mm
     # Convert Tu to kN·mm for dimensional consistency
     tu_kn_mm = tu_knm * 1000  # kN·mm
-    ve = abs(vu_kn) + 1.6 * tu_kn_mm / b
+    ve = vu_kn + 1.6 * tu_kn_mm / b
 
     return ve
 
@@ -131,31 +160,18 @@ def calculate_equivalent_moment(
     Reference:
         IS 456:2000, Clause 41.4.2
     """
-    mu_knm = require_finite_real("mu_knm", mu_knm)
-    tu_knm = require_finite_real("tu_knm", tu_knm)
-    d = require_finite_real("d", d)
-    b = require_finite_real("b", b)
-
-    if b <= 0:
-        raise DimensionError(
-            dimension_too_small("beam width b", b, 0, "Cl. 41.4.2"),
-            details={"b": b, "minimum": 0},
-            clause_ref="Cl. 41.4.2",
-        )
-    if d <= 0:
-        raise DimensionError(
-            dimension_too_small("effective depth d", d, 0, "Cl. 41.4.2"),
-            details={"d": d, "minimum": 0},
-            clause_ref="Cl. 41.4.2",
-        )
+    mu_knm = _require_nonnegative_action("mu_knm", mu_knm)
+    tu_knm = _require_nonnegative_action("tu_knm", tu_knm)
+    d = _require_positive_dimension("d", d, "Cl. 41.4.2")
+    b = _require_positive_dimension("b", b, "Cl. 41.4.2")
 
     # IS 456 Cl 41.4.2: D is the overall depth of the beam
     if D_mm is not None:
-        D = require_finite_real("D_mm", D_mm)
-        if D <= 0:
+        D = _require_positive_dimension("D_mm", D_mm, "Cl. 41.4.2")
+        if d >= D:
             raise DimensionError(
-                dimension_too_small("overall depth D_mm", D, 0, "Cl. 41.4.2"),
-                details={"D_mm": D, "minimum": 0},
+                f"d must be less than D_mm (got d={d:g} mm, D_mm={D:g} mm).",
+                details={"d": d, "D_mm": D},
                 clause_ref="Cl. 41.4.2",
             )
     else:
@@ -170,10 +186,10 @@ def calculate_equivalent_moment(
         D = d + 50
 
     # IS 456 Cl 41.4.2: Mt = Tu × (1 + D/b) / 1.7
-    mt = abs(tu_knm) * (1 + D / b) / 1.7
+    mt = tu_knm * (1 + D / b) / 1.7
 
     # IS 456 Cl 41.4.2: Me = Mu + Mt
-    me = abs(mu_knm) + mt
+    me = mu_knm + mt
 
     return me
 
@@ -200,22 +216,9 @@ def calculate_torsion_shear_stress(ve_kn: float, b: float, d: float) -> float:
     Reference:
         IS 456:2000, Clause 41.3
     """
-    ve_kn = require_finite_real("ve_kn", ve_kn)
-    b = require_finite_real("b", b)
-    d = require_finite_real("d", d)
-
-    if b <= 0:
-        raise DimensionError(
-            dimension_too_small("beam width b", b, 0, "Cl. 41.3"),
-            details={"b": b, "minimum": 0},
-            clause_ref="Cl. 41.3",
-        )
-    if d <= 0:
-        raise DimensionError(
-            dimension_too_small("effective depth d", d, 0, "Cl. 41.3"),
-            details={"d": d, "minimum": 0},
-            clause_ref="Cl. 41.3",
-        )
+    ve_kn = _require_nonnegative_action("ve_kn", ve_kn)
+    b = _require_positive_dimension("b", b, "Cl. 41.3")
+    d = _require_positive_dimension("d", d, "Cl. 41.3")
 
     # Ve in kN, convert to N
     ve_n = ve_kn * 1000
@@ -259,44 +262,27 @@ def calculate_torsion_stirrup_area(
     Reference:
         IS 456:2000, Clause 41.4.3
     """
-    tu_knm = require_finite_real("tu_knm", tu_knm)
-    vu_kn = require_finite_real("vu_kn", vu_kn)
-    b = require_finite_real("b", b)
-    d = require_finite_real("d", d)
-    b1 = require_finite_real("b1", b1)
-    d1 = require_finite_real("d1", d1)
-    fy = require_finite_real("fy", fy)
+    tu_knm = _require_nonnegative_action("tu_knm", tu_knm)
+    vu_kn = _require_nonnegative_action("vu_kn", vu_kn)
+    b = _require_positive_dimension("b", b, "Cl. 41.4.3")
+    d = _require_positive_dimension("d", d, "Cl. 41.4.3")
+    b1 = _require_positive_dimension("b1", b1, "Cl. 41.4.3")
+    d1 = _require_positive_dimension("d1", d1, "Cl. 41.4.3")
+    fy = _require_supported_material(
+        "fy", fy, minimum=250, maximum=500, clause_ref="Cl. 41.4.3"
+    )
     tc = require_finite_real("tc", tc)
-
-    if fy <= 0:
-        raise MaterialError(
-            material_property_out_of_range(
-                "steel yield strength fy", fy, 0, 600, "Cl. 41.4.3"
-            ),
-            details={"fy": fy, "minimum": 0, "maximum": 600},
-            clause_ref="Cl. 41.4.3",
-        )
-    if b1 <= 0:
-        raise DimensionError(
-            dimension_too_small("core width b1", b1, 0, "Cl. 41.4.3"),
-            details={"b1": b1, "minimum": 0},
-            clause_ref="Cl. 41.4.3",
-        )
-    if d1 <= 0:
-        raise DimensionError(
-            dimension_too_small("core depth d1", d1, 0, "Cl. 41.4.3"),
-            details={"d1": d1, "minimum": 0},
-            clause_ref="Cl. 41.4.3",
-        )
+    if tc < 0:
+        raise ValueError("tc must be >= 0")
 
     # Torsion component: Asv/sv = Tu / (b1 × d1 × 0.87 × fy)
     # Tu in kN·m, convert to N·mm
-    tu_nmm = abs(tu_knm) * 1e6
+    tu_nmm = tu_knm * 1e6
     asv_torsion = tu_nmm / (b1 * d1 * 0.87 * fy)
 
     # Shear component: Asv/sv = Vus / (0.87 × fy × d)
     # First calculate Vus = Vu - Vc
-    vu_n = abs(vu_kn) * 1000
+    vu_n = vu_kn * 1000
     vc_n = tc * b * d
     vus_n = max(0, vu_n - vc_n)
 
@@ -341,36 +327,17 @@ def calculate_longitudinal_torsion_steel(
     Reference:
         IS 456:2000, Clause 41.4.2.1
     """
-    tu_knm = require_finite_real("tu_knm", tu_knm)
-    vu_kn = require_finite_real("vu_kn", vu_kn)
-    b1 = require_finite_real("b1", b1)
-    d1 = require_finite_real("d1", d1)
-    fy = require_finite_real("fy", fy)
-    sv = require_finite_real("sv", sv)
-
-    if fy <= 0:
-        raise MaterialError(
-            material_property_out_of_range(
-                "steel yield strength fy", fy, 0, 600, "Cl. 41.4.2"
-            ),
-            details={"fy": fy, "minimum": 0, "maximum": 600},
-            clause_ref="Cl. 41.4.2",
-        )
-    if b1 <= 0:
-        raise DimensionError(
-            dimension_too_small("core width b1", b1, 0, "Cl. 41.4.2"),
-            details={"b1": b1, "minimum": 0},
-            clause_ref="Cl. 41.4.2",
-        )
-    if d1 <= 0:
-        raise DimensionError(
-            dimension_too_small("core depth d1", d1, 0, "Cl. 41.4.2"),
-            details={"d1": d1, "minimum": 0},
-            clause_ref="Cl. 41.4.2",
-        )
+    tu_knm = _require_nonnegative_action("tu_knm", tu_knm)
+    _require_nonnegative_action("vu_kn", vu_kn)
+    b1 = _require_positive_dimension("b1", b1, "Cl. 41.4.2")
+    d1 = _require_positive_dimension("d1", d1, "Cl. 41.4.2")
+    fy = _require_supported_material(
+        "fy", fy, minimum=250, maximum=500, clause_ref="Cl. 41.4.2"
+    )
+    _require_positive_dimension("sv", sv, "Cl. 41.4.2")
 
     # Tu in kN·m → N·mm
-    tu_nmm = abs(tu_knm) * 1e6
+    tu_nmm = tu_knm * 1e6
 
     # Al = Tu × (b1 + d1) / (b1 × d1 × 0.87 × fy)
     al = tu_nmm * (b1 + d1) / (b1 * d1 * 0.87 * fy)
@@ -446,16 +413,20 @@ def design_torsion(
         - Valid for fck = 15–40 N/mm² (Table 19/20 range) and
           fy ≤ 500 N/mm².
     """
-    tu_knm = require_finite_real("tu_knm", tu_knm)
-    vu_kn = require_finite_real("vu_kn", vu_kn)
-    mu_knm = require_finite_real("mu_knm", mu_knm)
-    b = require_finite_real("b", b)
-    D = require_finite_real("D", D)
-    d = require_finite_real("d", d)
-    fck = require_finite_real("fck", fck)
-    fy = require_finite_real("fy", fy)
-    cover = require_finite_real("cover", cover)
-    stirrup_dia = require_finite_real("stirrup_dia", stirrup_dia)
+    tu_knm = _require_nonnegative_action("tu_knm", tu_knm)
+    vu_kn = _require_nonnegative_action("vu_kn", vu_kn)
+    mu_knm = _require_nonnegative_action("mu_knm", mu_knm)
+    b = _require_positive_dimension("b", b, "Cl. 41")
+    D = _require_positive_dimension("D", D, "Cl. 41")
+    d = _require_positive_dimension("d", d, "Cl. 41")
+    fck = _require_supported_material(
+        "fck", fck, minimum=15, maximum=40, clause_ref="Cl. 41"
+    )
+    fy = _require_supported_material(
+        "fy", fy, minimum=250, maximum=500, clause_ref="Cl. 41"
+    )
+    cover = _require_positive_dimension("cover", cover, "Cl. 41")
+    stirrup_dia = _require_positive_dimension("stirrup_dia", stirrup_dia, "Cl. 41")
     pt = require_finite_real("pt", pt)
 
     errors: list[DesignError] = []
@@ -468,37 +439,14 @@ def design_torsion(
         "sv_max": "IS 456 Cl 41.4.3, Cl 26.5.1.5",
     }
 
-    # Validate inputs
-    if b <= 0:
+    if d >= D:
         raise DimensionError(
-            dimension_too_small("beam width b", b, 0, "Cl. 41"),
-            details={"b": b, "minimum": 0},
+            f"d must be less than D (got d={d:g} mm, D={D:g} mm).",
+            details={"d": d, "D": D},
             clause_ref="Cl. 41",
         )
-    if D <= 0:
-        raise DimensionError(
-            dimension_too_small("overall depth D", D, 0, "Cl. 41"),
-            details={"D": D, "minimum": 0},
-            clause_ref="Cl. 41",
-        )
-    if d <= 0:
-        raise DimensionError(
-            dimension_too_small("effective depth d", d, 0, "Cl. 41"),
-            details={"d": d, "minimum": 0},
-            clause_ref="Cl. 41",
-        )
-    if fck <= 0:
-        raise MaterialError(
-            material_property_out_of_range("fck", fck, 0, 100, "Cl. 41"),
-            details={"fck": fck, "minimum": 0, "maximum": 100},
-            clause_ref="Cl. 41",
-        )
-    if fy <= 0:
-        raise MaterialError(
-            material_property_out_of_range("fy", fy, 0, 600, "Cl. 41"),
-            details={"fy": fy, "minimum": 0, "maximum": 600},
-            clause_ref="Cl. 41",
-        )
+    if not 0.15 <= pt <= 3.0:
+        raise ValueError("pt must be between 0.15 and 3.0 percent")
 
     # Calculate core dimensions for stirrup (center-to-center of corners)
     # b1 = b - 2*(cover + stirrup_dia/2)
@@ -506,9 +454,12 @@ def design_torsion(
     b1 = b - 2 * (cover + stirrup_dia / 2)
     d1 = D - 2 * (cover + stirrup_dia / 2)
 
-    # Ensure positive core dimensions
-    b1 = max(b1, 50)
-    d1 = max(d1, 100)
+    if b1 <= 0 or d1 <= 0:
+        raise DimensionError(
+            "cover and stirrup_dia must leave a positive closed-stirrup core.",
+            details={"b1": b1, "d1": d1, "cover": cover},
+            clause_ref="Cl. 41.4.3",
+        )
 
     # Step 1: Calculate equivalent shear (Cl 41.3.1)
     ve_kn = calculate_equivalent_shear(vu_kn, tu_knm, b)
@@ -573,7 +524,13 @@ def design_torsion(
     sv = min(sv_calc, sv_max_1, sv_max_2, sv_max_torsion)
 
     # Round down to practical spacing
-    sv = max(75, min(300, 25 * math.floor(sv / 25)))
+    sv = min(300, 25 * math.floor(sv / 25))
+    if sv <= 0:
+        raise DimensionError(
+            "Required closed-stirrup spacing is below the supported 25 mm increment.",
+            details={"calculated_spacing": sv_calc},
+            clause_ref="Cl. 41.4.3",
+        )
 
     # Step 8: Calculate longitudinal reinforcement
     al = calculate_longitudinal_torsion_steel(tu_knm, vu_kn, b1, d1, fy, sv)

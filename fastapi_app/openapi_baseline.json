@@ -4625,6 +4625,7 @@
         "type": "object"
       },
       "BeamCrackWidthParams": {
+        "additionalProperties": false,
         "description": "Explicit maintained inputs for the primary-route crack-width check.",
         "properties": {
           "acr_mm": {
@@ -4711,6 +4712,7 @@
         "type": "object"
       },
       "BeamDesignRequest": {
+        "additionalProperties": false,
         "description": "Request model for beam design calculation.",
         "examples": [
           {
@@ -4728,7 +4730,6 @@
         ],
         "properties": {
           "clear_cover": {
-            "default": 25.0,
             "description": "Clear cover to reinforcement (mm)",
             "examples": [
               25.0,
@@ -4777,7 +4778,6 @@
             "title": "Effective Depth"
           },
           "fck": {
-            "default": 25.0,
             "description": "Characteristic compressive strength of concrete (N/mm\u00b2)",
             "examples": [
               20.0,
@@ -4791,14 +4791,13 @@
             "type": "number"
           },
           "fy": {
-            "default": 500.0,
             "description": "Yield strength of reinforcement steel (N/mm\u00b2)",
             "examples": [
               415.0,
               500.0,
               550.0
             ],
-            "maximum": 600.0,
+            "maximum": 550.0,
             "minimum": 250.0,
             "title": "Fy",
             "type": "number"
@@ -4810,7 +4809,6 @@
             "type": "boolean"
           },
           "main_bar_dia_mm": {
-            "default": 20.0,
             "description": "Main bar diameter (mm)",
             "maximum": 36.0,
             "minimum": 8.0,
@@ -4844,7 +4842,6 @@
             "title": "Rebar Layers"
           },
           "shear": {
-            "default": 0.0,
             "description": "Factored design shear force Vu (kN)",
             "examples": [
               50.0,
@@ -4869,7 +4866,6 @@
             "title": "Span Mm"
           },
           "stirrup_dia_mm": {
-            "default": 8.0,
             "description": "Stirrup diameter (mm)",
             "maximum": 16.0,
             "minimum": 6.0,
@@ -4910,7 +4906,13 @@
         "required": [
           "width",
           "depth",
-          "moment"
+          "moment",
+          "shear",
+          "fck",
+          "fy",
+          "clear_cover",
+          "stirrup_dia_mm",
+          "main_bar_dia_mm"
         ],
         "title": "BeamDesignRequest",
         "type": "object"
@@ -23924,6 +23926,7 @@
         "type": "object"
       },
       "RebarLayerConfig": {
+        "additionalProperties": false,
         "description": "Configuration for a single rebar layer in multi-layer reinforcement.",
         "properties": {
           "bar_count": {

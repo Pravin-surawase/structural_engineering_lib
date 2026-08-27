@@ -4,74 +4,59 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-27
-- Focus: Correct the immediate REST P0 omission and reduce avoidable Git,
-- Completed: Reclassified the existing REST v1 fail-open behavior into LIB-PRO-012 Packet; Clarified that LIB-PRO-012 is an implementation specification/scope; Preserved A–I as logical owner/acceptance work packages while grouping them
-- Git receipt: docs/verification/lib-pro-012-efficient-execution-plan-git-handoff-receipt.json | sha256:778a2e68608d10c62ca5865ba2f682041112bfaa0fc07c88fae4cccc22c4a370 | HOLD
-- Git identity: codex/lib-pro-012-external-api-remediation-plan@17e62cc7f864c25e279d6921d9c59d26afca3950 | upstream=NONE@UNKNOWN | base=origin/main@6a4683eb8b21bff77f2991230b4458463e61f419 | tree=dirty | operation=none
-- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
-- Next action: HOLD_FOR_EXACT_EVIDENCE
+- Focus: Implement the combined LIB-PRO-012 A/B safety cycle from merged
+- Completed: Froze the G0 Git, worktree, artifact, owner, required-field, and stable; Added shared finite, strict-type, sign, identity, domain, geometry, and; Protected design-only, combined, compliance, smart-analysis,
+- Git receipt: docs/verification/lib-pro-012-s0-p0-safety-closure-git-handoff-receipt.json | sha256:e5b07c162c09ba9dadafe12d9111e2ed4be9be2ac45a260af91efda14428e847 | HOLD
+- Git identity: codex/lib-pro-012-s0-p0-safety-closure@d3242731e94dacd74e804a1f4a25c4c0da11790f | upstream=NONE@UNKNOWN | base=origin/main@d3242731e94dacd74e804a1f4a25c4c0da11790f | tree=dirty | operation=none
+- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=UNKNOWN
+- Next action: FREEZE_ONE_CANDIDATE_AND_RUN_ONE_HOSTED_CYCLE
 <!-- HANDOFF:END -->
 
 ## Latest Handoff
 
 | State | Boundary |
 |---|---|
-| **Current** | `v0.24.0a1` is released from tag `71b70652`; GitHub and PyPI expose the same exact wheel and sdist hashes. `RELEASE-SMOOTH-001` focused release-control evidence is green after one exact stale-expectation repair, and its one quick gate passed 10/10 |
-| **Decision** | The next publish uses one prepared candidate and one exact PR/Weekly run. After review, only one bounded metadata/authorization packet is allowed; authorization must validate final metadata before release tests, and public verification reuses exact workflow UAT instead of repeating it |
-| **Next** | Freeze the candidate commit and publish one normal control PR with impact-mapped hosted checks only; do not run Weekly or a broad local suite |
-| **Source** | IS 13920:2016 First Revision plus Amendment 1 (2017) and Amendment 2 (2020); reaffirmation is not a new edition and the draft successor is unused |
-| **Held** | Beam provided-reinforcement compliance, column derived applicability/non-rectangular/provided-longitudinal checks, whole-joint assessment, walls/foundations, IS 875/1893, INDIA-4 qualified review, source/distribution/support/version/release/professional-use changes, and branch/worktree/archive/source/alias deletion |
+| **Current** | LIB-PRO-012 S0 combined A/B is locally accepted on `codex/lib-pro-012-s0-p0-safety-closure` from exact source `d3242731e94dacd74e804a1f4a25c4c0da11790f`; immutable commit, PR, and hosted checks remain |
+| **Decision** | Existing `/api/v1` field names remain, but width, depth, moment, shear, fck, fy, clear cover, stirrup diameter, and main-bar diameter are strict required inputs; effective depth may be explicit or derived only from that complete explicit basis |
+| **Next** | Freeze one immutable candidate, run normal hooks and clean session closeout, push one PR, and merge only if the exact reviewed head remains unchanged and every required check passes |
+| **After S0** | Start LIB-PRO-013 A0 architecture/truth freeze only after the unchanged green S0 merge; do not automatically begin later LIB-PRO-012 runtime packets |
+| **Held** | `/api/v2`, canonical facade, Packets C–I, final parity, cumulative broad gate, release/publication, qualified review, professional/engineering-use claims, protected-source changes, and branch/worktree deletion |
 
-## Cumulative M0 result
+## S0 local acceptance
 
-- The beam benchmark returns 72 mm close-link spacing and explicitly reports
-  provided reinforcement as not evaluated. The column benchmarks return
-  governing hoop areas 222.28915662650604 mm2 and 277.10843373493975 mm2 with
-  caller-confirmed applicability and explicit provided confinement.
-- The joint benchmark requires 280 kNm for 200 kNm beam capacity at the fixed
-  1.4 factor; 250 kNm returns ratio 0.8928571428571429 and fails. Direction,
-  opposing column-capacity direction, factored axial-load basis, applicability,
-  and interior/left-exterior/right-exterior topology are explicit.
-- Capability truth now states the joint's one-plane/one-direction boundary and
-  has 22 known IS 13920 references with zero registration-only references.
-  Three families remain `IMPLEMENTED_BOUNDED`; wall and foundation remain held.
-- A source-free 0.23.1a2 wheel replays all three benchmarks. The existing
-  29-case package UAT passes and retains qualified review required with
-  professional approval false. No version or publication action occurred.
-- The cumulative Python gate passes 7,024 cases with 3 skipped and 6 deselected;
-  FastAPI passes 498. No structural formula or runtime behavior changed in M0.
+- The 51 dedicated regressions close the mapped beam, detailing, BBS,
+  torsion, column, typed-input, and identity findings. Valid beam and torsion
+  numerical controls remain exact; valid BBS remains exactly nine items.
+- The focused cross-layer selection passes 607 Python/FastAPI cases. The React
+  client passes 51 focused cases, lint, TypeScript compilation, and production
+  build.
+- Architecture, circular-import, library-import, OpenAPI, generated API
+  manifest/classification/compatibility, and generated-client replay checks
+  pass. The repaired candidate also passes the consolidated quick gate 10/10.
+- The exact candidate wheel at local SHA-256
+  `f81f6274a24b9aaaeef904ceb2f5317b00ac880c967815b0f1b50d192e83089d`
+  rejects 15 source-free Python invalid-route vectors. Exact-head FastAPI bound
+  to that installed wheel rejects all nine required-field omissions, numeric
+  strings, booleans used as numbers, unknown fields, and invalid domains.
+- A valid ordinary integer REST payload returns HTTP 200 with derived effective
+  depth 457 mm. A valid but inadequate engineering case remains HTTP 200 with
+  engineering status `FAIL`, distinct from invalid intake and internal failure.
 
 ## Ordered follow-on gates
 
-1. Merge `RELEASE-SMOOTH-001` only after its one focused local batch, one quick
-   gate, and impact-mapped PR checks pass. Do not run Weekly for this
-   release-control-only packet.
-2. For the next selected release, freeze one prepared candidate and run its PR
-   and Weekly verification once on the exact head.
-3. After exact review or truthful waiver, create one bounded final metadata and
-   authorization packet; do not rerun Weekly unless a non-allowlisted path or
-   Python content changes.
-4. Let TestPyPI and production publication workflows retain their distinct
-   protected checks. After matching public hashes to the workflow manifest, run
-   public identity-only verification; run full public UAT only if exact workflow
-   evidence is missing or identity differs.
-5. Keep benchmark replay separate from engineering check and qualified review;
-   keep stable/engineering-use wording and professional approval held.
-6. Conduct INDIA-4 qualified review before any stable or engineering-use claim,
-   then expand in order: IS 13920 walls, foundations, IS 875, then IS 1893.
+1. Stage only task-owned paths, inspect the staged diff, and create one
+   conventional candidate commit through normal hooks.
+2. Run the read-only usage closeout and `session end` on the clean exact commit.
+3. Push normally, create/update one PR, and wait for every required hosted check
+   on the unchanged head. Do not bypass checks or rewrite history.
+4. Merge only when the exact reviewed head is unchanged, green, conflict-free,
+   and repository policy permits it. Do not delete the branch or worktree.
+5. After the exact S0 merge, begin the read-only LIB-PRO-013 A0 truth freeze.
 
 ## Required Reading
 
-1. [M0 cumulative evidence](../verification/india-3-is13920-m0-evidence.json)
-2. [G0 decision evidence](../verification/india-3-g0-is13920-audit-decision.json)
-3. [Column repair evidence](../verification/india-3-column-r1-evidence.json)
-4. [Beam repair evidence](../verification/india-3-beam-r1-evidence.json)
-5. [Joint repair evidence](../verification/india-3-joint-r1-evidence.json)
-6. [Source metadata repair evidence](../verification/india-3-source-meta-r1-evidence.json)
-7. [Indian-code completion order](indian-code-completion-plan.md)
-8. [Generated Indian-code capability truth](../verification/indian-code-capability-coverage.json)
-9. [Current task board](../TASKS.md)
-10. [Bounded release candidate plan](bounded-release-candidate-plan.md)
-11. [Replay and engineering-status clarification](../verification/lib-pro-009-is13920-status-semantics.json)
-12. [v0.24.0a1 scope freeze](../verification/lib-pro-010-rc-scope-freeze.json)
-13. [v0.24.0a1 local artifact evidence](../verification/lib-pro-010-rc-local-artifact.json)
+1. [S0 exact-cycle evidence](../verification/lib-pro-012-s0-p0-safety-closure-evidence.json)
+2. [LIB-PRO-012 remediation authority](lib-pro-012-external-api-remediation-plan.md)
+3. [LIB-PRO-013 later audit authority](lib-pro-013-whole-library-renewal-audit-plan.md)
+4. [LIB-PRO-011 finding authority](../verification/lib-pro-011-external-api-readiness-audit.md)
+5. [Current task board](../TASKS.md)

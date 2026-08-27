@@ -97,7 +97,7 @@ def test_python_client_unwraps_success_envelopes_and_uses_maintained_routes():
     client = StructuralDesignClient.__new__(StructuralDesignClient)
     client._client = _Transport()
 
-    design = client.design_beam(300, 500, 100, 25, 500)
+    design = client.design_beam(300, 500, 100, 25, 500, 75, 25, 8, 20)
     geometry = client.calculate_geometry(300, 500, 5000)
 
     assert design.flexure.ast_required == 600.0
@@ -119,4 +119,4 @@ def test_python_client_preserves_canonical_problem_code_and_message():
         RuntimeError,
         match="BEAM_DESIGN_INPUT_INVALID: Width must be positive",
     ):
-        client.design_beam(0, 500, 100, 25, 500)
+        client.design_beam(0, 500, 100, 25, 500, 75, 25, 8, 20)

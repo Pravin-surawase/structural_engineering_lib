@@ -26,6 +26,12 @@ from structural_lib.core.errors import (
     ConfigurationError,
     MaterialError,
 )
+from structural_lib.core.validation import (
+    require_nonblank_string,
+    require_nonnegative_real,
+    require_positive_real,
+    require_strict_bool,
+)
 
 from .._validation import require_finite_real
 from ..traceability import clause
@@ -1289,6 +1295,41 @@ def create_beam_detailing(
           schedules, congestion at beam-column joints, or rebar
           placement sequence.
     """
+    beam_id = require_nonblank_string(beam_id, "beam_id")
+    story = require_nonblank_string(story, "story")
+    b = require_positive_real(b, "b")
+    D = require_positive_real(D, "D")
+    span = require_positive_real(span, "span")
+    cover = require_positive_real(cover, "cover")
+    fck = require_positive_real(fck, "fck")
+    fy = require_positive_real(fy, "fy")
+    ast_start = require_nonnegative_real(ast_start, "ast_start")
+    ast_mid = require_nonnegative_real(ast_mid, "ast_mid")
+    ast_end = require_nonnegative_real(ast_end, "ast_end")
+    asc_start = require_nonnegative_real(asc_start, "asc_start")
+    asc_mid = require_nonnegative_real(asc_mid, "asc_mid")
+    asc_end = require_nonnegative_real(asc_end, "asc_end")
+    stirrup_dia = require_positive_real(stirrup_dia, "stirrup_dia")
+    stirrup_spacing_start = require_positive_real(
+        stirrup_spacing_start, "stirrup_spacing_start"
+    )
+    stirrup_spacing_mid = require_positive_real(
+        stirrup_spacing_mid, "stirrup_spacing_mid"
+    )
+    stirrup_spacing_end = require_positive_real(
+        stirrup_spacing_end, "stirrup_spacing_end"
+    )
+    is_seismic = require_strict_bool(is_seismic, "is_seismic")
+
+    if not 15 <= fck <= 80:
+        raise ValueError("fck must be between 15 and 80 N/mm².")
+    if not 250 <= fy <= 550:
+        raise ValueError("fy must be between 250 and 550 N/mm².")
+    if b <= 2 * (cover + stirrup_dia):
+        raise ValueError("b must leave positive clear width inside cover and stirrups.")
+    if D <= 2 * (cover + stirrup_dia):
+        raise ValueError("D must leave positive clear depth inside cover and stirrups.")
+
     assumption_notes: list[str] = []
 
     # Select bar arrangements

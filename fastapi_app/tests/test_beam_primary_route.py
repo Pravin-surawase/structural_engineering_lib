@@ -18,7 +18,92 @@ def ordinary_payload() -> dict[str, float]:
         "fck": 25.0,
         "fy": 500.0,
         "clear_cover": 25.0,
+        "stirrup_dia_mm": 8.0,
+        "main_bar_dia_mm": 20.0,
     }
+
+
+@pytest.mark.parametrize(
+    "field",
+    [
+        "width",
+        "depth",
+        "moment",
+        "shear",
+        "fck",
+        "fy",
+        "clear_cover",
+        "stirrup_dia_mm",
+        "main_bar_dia_mm",
+    ],
+)
+def test_v1_beam_requires_every_calculation_bearing_field(
+    client, ordinary_payload, field
+) -> None:
+    payload = dict(ordinary_payload)
+    del payload[field]
+
+    response = client.post("/api/v1/design/beam", json=payload)
+
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+    assert response.json()["error"]["code"] == "REQUEST_VALIDATION_ERROR"
+    assert field in str(response.json()["error"]["details"])
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("width", "300"),
+        ("moment", True),
+        ("include_serviceability", "false"),
+    ],
+)
+def test_v1_beam_rejects_coerced_numeric_and_boolean_values(
+    client, ordinary_payload, field, value
+) -> None:
+    response = client.post(
+        "/api/v1/design/beam", json={**ordinary_payload, field: value}
+    )
+
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+    details = response.json()["error"]["details"]
+    assert any(item["loc"][-1] == field for item in details)
+
+
+def test_v1_beam_rejects_unknown_engineering_fields(client, ordinary_payload) -> None:
+    response = client.post(
+        "/api/v1/design/beam",
+        json={**ordinary_payload, "unexpected_engineering_field": 999},
+    )
+
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+    details = response.json()["error"]["details"]
+    assert details[0]["type"] == "extra_forbidden"
+    assert details[0]["loc"][-1] == "unexpected_engineering_field"
+
+
+def test_v1_beam_accepts_ordinary_integers_and_complete_derivation_basis(
+    client,
+) -> None:
+    response = client.post(
+        "/api/v1/design/beam",
+        json={
+            "width": 300,
+            "depth": 500,
+            "moment": 150,
+            "shear": 75,
+            "fck": 25,
+            "fy": 500,
+            "clear_cover": 25,
+            "stirrup_dia_mm": 8,
+            "main_bar_dia_mm": 20,
+        },
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    data = unwrap(response)
+    assert data["effective_depth_used"] == pytest.approx(457.0)
+    assert data["effective_depth_basis"]["source"] == "DERIVED"
 
 
 def test_zero_torsion_preserves_primary_route_contract(
@@ -91,6 +176,8 @@ def test_unsafe_torsion_fails_primary_result(client) -> None:
             "fck": 20.0,
             "fy": 500.0,
             "clear_cover": 40.0,
+            "stirrup_dia_mm": 8.0,
+            "main_bar_dia_mm": 20.0,
         },
     )
 

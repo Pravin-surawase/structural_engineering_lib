@@ -9,13 +9,13 @@ export interface BeamDesignRequest {
   width: number;
   depth: number;
   moment: number;
-  shear?: number;
+  shear: number;
   torsion?: number;
   fck: number;
   fy: number;
-  clear_cover?: number;
-  stirrup_dia_mm?: number;
-  main_bar_dia_mm?: number;
+  clear_cover: number;
+  stirrup_dia_mm: number;
+  main_bar_dia_mm: number;
   effective_depth?: number;
   include_serviceability?: boolean;
   span_mm?: number;

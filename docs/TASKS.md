@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-27 — LIB-PRO-012/013 efficient combined execution plan
+**Updated:** 2026-08-27 — LIB-PRO-012 S0 P0 safety closure candidate
 
 ---
 
@@ -126,12 +126,16 @@
 
 ## Active
 
-`LIB-PRO-012-EFFICIENT-EXECUTION-PLAN` is the active planning-integration task.
-The corrected [external API remediation plan](planning/lib-pro-012-external-api-remediation-plan.md)
-and [whole-library renewal plan](planning/lib-pro-013-whole-library-renewal-audit-plan.md)
-use six coherent Git/hosted cycles instead of treating every logical work
-package or audit lane as a separate branch, session, commit, PR, and CI run.
-The current cycle is planning-only; runtime remediation remains unstarted.
+`LIB-PRO-012-S0-P0-SAFETY-CLOSURE` is the active implementation cycle. G0
+started from merged planning baseline
+`d3242731e94dacd74e804a1f4a25c4c0da11790f`; the combined A/B safety work is
+locally complete on `codex/lib-pro-012-s0-p0-safety-closure`. The exact-cycle
+[evidence matrix](verification/lib-pro-012-s0-p0-safety-closure-evidence.json)
+records 51 dedicated regressions, a 607-case focused Python/FastAPI pass,
+focused React/lint/build, architecture/import/OpenAPI/generated-contract
+checks, source-free exact-wheel replay, and a repaired-candidate 10/10 quick
+gate. One immutable candidate, normal PR, and required hosted checks remain
+before S0 integration can be claimed.
 
 `LIB-PRO-013` owns the whole-library renewal audit. Its
 [master plan](planning/lib-pro-013-whole-library-renewal-audit-plan.md) defines
@@ -141,14 +145,15 @@ efficiency, retention, and peer-comparison lanes. The audit itself is unstarted;
 the plan authorizes no runtime change, deletion, dependency addition, signature
 break, release, or professional claim.
 
-`LIB-PRO-012` remains the immediate remediation specification and scope
-authority for the reproduced external Python and REST safety defects. After
-the current planning candidate integrates and the owner starts S0, one parent
-task/session will freeze the exact G0 baseline and implement the combined A/B
-P0 safety cycle on one task branch and one frozen candidate/PR. The later A0
-renewal audit freezes architecture before C–I implementation. Shared
-validation, facade, result, manifest, generated API, documentation, task, and
-session owners remain single-writer surfaces.
+`LIB-PRO-012` remains the remediation specification and scope authority. S0
+closes the mapped beam/detailing/BBS, torsion, column, typed-input, identity,
+and existing REST v1 safety findings locally; `/api/v2`, the canonical facade,
+final transport parity, generated signature prose, cumulative broad gates, and
+Packets C–I remain later work. After an unchanged green S0 merge, the next
+authorized programme step is the LIB-PRO-013 A0 architecture/truth freeze, not
+automatic implementation of later LIB-PRO-012 packets. Shared validation,
+facade, result, manifest, generated API, documentation, task, and session
+owners remain single-writer surfaces.
 
 `MAINT-0136` is locally complete through its exact authorized cleanup boundary.
 Phase 1 PR #874 merged at reviewed head `37b36785`; Phase 2A removed the exact

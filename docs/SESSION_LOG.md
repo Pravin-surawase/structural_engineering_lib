@@ -5,6 +5,141 @@
 
 ---
 
+## 2026-08-27 — Session: LIB-PRO-012 S0 P0 safety closure
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents).
+
+**Branch:** `codex/lib-pro-012-s0-p0-safety-closure`.
+
+**Focus:** Implement the combined LIB-PRO-012 A/B safety cycle from merged
+planning baseline `d3242731e94dacd74e804a1f4a25c4c0da11790f`: fail-closed
+beam/detailing/BBS, torsion, column, structured inputs, identity, and strict
+existing REST v1 intake without starting the later facade, v2, or renewal work.
+
+**Completed:**
+
+- Froze the G0 Git, worktree, artifact, owner, required-field, and stable
+  pre-change reproduction receipt before runtime edits. The detached dirty
+  sibling at `0fdb48edbb73114288feb8a246d6f30b80ac4d95` remains untouched.
+- Added shared finite, strict-type, sign, identity, domain, geometry, and
+  detailing validation at the core/service boundaries and direct pure
+  calculation defenses for detailing and torsion.
+- Protected design-only, combined, compliance, smart-analysis,
+  direct-detailing, BBS, torsion, column, and structured-input routes. Valid BBS
+  now accepts the combined result explicitly and retains exactly nine items;
+  invalid detailing stops before BBS creation.
+- Made the existing `/api/v1/design/beam` model strict with preserved field
+  names. Its nine calculation-bearing fields are required; numeric strings,
+  booleans used as numbers, unknown fields, nonfinite values, invalid domains,
+  and ambiguous omissions return a stable 4xx intake response.
+- Kept effective depth explicit or derived only from an explicit cover,
+  stirrup-diameter, and main-bar-diameter basis. The ordinary non-torsion route
+  retains optional zero torsion; no hidden material, shear, cover, or
+  reinforcement-diameter default remains at REST intake.
+- Updated maintained FastAPI, React, workflow-catalog, benchmark, example, and
+  generated-client callers; refreshed OpenAPI, API manifest, classification,
+  and compatibility-ledger owners; added exact regressions and a source-free
+  S0 wheel verifier.
+
+### Issues encountered
+
+- The maintained `/api/v1/design/beam/check` adapter supplied `label` while the
+  corrected shared compliance boundary requires `case_id`, so the stricter
+  validation exposed a real valid-route regression.
+- The linked S0 worktree did not contain ignored React `node_modules`; the first
+  focused Vitest command could not find `vitest`.
+- The first exact-wheel verifier accepted only built-in `ValueError` and
+  `TypeError`, while invalid torsion material input correctly raises the
+  library's `MaterialError` hierarchy; the required artifact command stopped.
+- The first consolidated quick gate passed 9/10 but its CLI smoke stopped
+  because the new top-level S0 artifact verifier was not registered in the
+  canonical control plane.
+- An initial OpenAPI inventory used an unquoted `openapi*.json` glob, a focused
+  npm-exec lint attempt used root-relative patterns, one Ruff invocation used a
+  bare executable, and one read-only session inspection guessed the unsupported
+  `session status` subcommand.
+- The first normal hook run stopped before commit: FastAPI Black rewrote the
+  load fixture, mypy could not narrow the validated `object` to a floatable
+  protocol, and the API compatibility ledger plus catalogue-derived beam tool
+  manifest were stale after final caller/catalogue changes.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the check adapter retained the pre-contract `label`
+  key rather than the compliance service's maintained `case_id` identity.
+  Resolution: emit `case_id` at the adapter. Evidence: the affected endpoint,
+  integration, and 607-case focused Python/FastAPI batch pass.
+- Confirmed root cause: linked worktrees share Git objects but not ignored
+  frontend dependencies. Resolution: run one lockfile-pinned maintained
+  `npm ci`, then use `./run.sh frontend` for tests, lint, and build. Evidence:
+  51 focused Vitest cases, full lint, TypeScript compilation, and production
+  build pass. ⚠️ TERMINAL ISSUE: missing worktree Vitest -> installed exact
+  lockfile dependencies once through the repository Node runtime.
+- Confirmed root cause: `DimensionError` and `MaterialError` derive from
+  `structural_lib.core.errors.ValidationError`, not built-in `ValueError`.
+  Resolution: the verifier accepts those exact intake exception categories
+  without accepting arbitrary internal exceptions. Evidence: the unchanged
+  wheel replay rejects 15 Python routes and the FastAPI-to-wheel lane passes.
+- Confirmed root cause: top-level repository scripts are fail-closed unless
+  their command, permission, and projection are registered. Resolution: add
+  the S0 verifier as a read-only Testing operation and regenerate the exact
+  compatibility projection. Evidence: control validation passes at 116 active
+  operations and 102/102 registered scripts, and all 16 CLI smoke nodes pass.
+- Confirmed root cause: the remaining command failures were invocation errors,
+  not repository/product defects. Resolution: use explicit discovered OpenAPI
+  paths, the maintained frontend lint wrapper, the worktree-bound Python Ruff
+  module, and documented session subcommands. No partial data mutation
+  occurred. ⚠️ TERMINAL ISSUE: unmatched glob, wrong npm-exec path, bare Ruff,
+  and guessed session status -> reran through exact maintained interfaces.
+- Confirmed root cause: the validator's runtime predicate proved a finite
+  `Real`, but static typing does not infer that fact through the error-list
+  helper; the two generated artifacts encode caller positions and required
+  workflow fields and therefore changed after final formatting/catalogue
+  edits. Resolution: cast only after successful runtime validation, retain the
+  hook's Black output, regenerate both exact maintained artifacts, and rerun
+  only the affected checks. Evidence: package-context mypy passes, Black and
+  Ruff pass, the beam manifest byte-check and API classification check pass,
+  and the 81-case affected regression/REST/load selection passes.
+- The first targeted mypy retry ran from the repository root and reproduced
+  the configured `explicit_package_bases` duplicate-module error. Resolution:
+  run the exact module from `Python/` with the package-local configuration;
+  mypy then reports no issues. ⚠️ TERMINAL ISSUE: root-level targeted mypy saw
+  `Python.structural_lib.core` and `structural_lib.core` -> reran from the
+  configured package directory.
+
+### Validation through content freeze
+
+- Pre-change focused control: 193 passed. Dedicated S0 regression file: 51
+  cases. Consolidated focused Python/FastAPI selection: 607 passed.
+- React client: 51 focused cases, lint, TypeScript compilation, and production
+  Vite build pass.
+- Architecture: 222 files and zero violations; circular imports: 202 files and
+  zero cycles; structural-library imports: 247 files and zero broken imports.
+- OpenAPI matches at 89 endpoints and 444 schemas. Generated API manifest,
+  classification/compatibility ledger, and exact client regeneration compare
+  cleanly after refresh.
+- The first quick gate passed 9/10 and exposed the missing verifier
+  registration; the directly affected control-plane and 16-node CLI checks
+  pass after repair. The consolidated repaired-candidate quick gate passes
+  10/10 with one unchanged import receipt reused.
+- The failed first hook run created no commit. Its affected repair evidence is
+  package-context mypy, FastAPI Black/Ruff, exact beam-manifest and API-ledger
+  generation checks, and 81 passing S0/primary-route/load cases; the next
+  normal hook run owns the immutable candidate verdict.
+- Final pre-commit source-free wheel SHA-256
+  `f81f6274a24b9aaaeef904ceb2f5317b00ac880c967815b0f1b50d192e83089d`
+  rejects 15 invalid Python route vectors and preserves beam Ast
+  `883.7158126109596 mm2`, torsion Ve `153.33333333333334 kN`, and the exact
+  nine-item BBS reference. Exact-head FastAPI bound to that wheel rejects all
+  nine omissions and four strict/domain vectors; valid inadequate design
+  remains HTTP 200 with engineering status `FAIL`.
+- Normal commit hooks, immutable candidate identity, clean read-only session
+  closeout, push, PR, and hosted checks remain the final publish sequence.
+  Broad/full suites remain reserved for the planned cumulative LIB-PRO-012
+  gate.
+
+**Git handoff receipt:** `docs/verification/lib-pro-012-s0-p0-safety-closure-git-handoff-receipt.json`
+
 ## 2026-08-27 — Session: LIB-PRO-012/013 efficient combined execution plan
 
 **Agent:** Codex (`governance`, parent writer) with one bounded read-only plan

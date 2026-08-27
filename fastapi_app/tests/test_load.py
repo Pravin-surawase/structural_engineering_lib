@@ -48,11 +48,13 @@ def valid_beam_data() -> dict[str, Any]:
     return {
         "width": 300,
         "depth": 450,
-        "length": 5000,
         "moment": 120,
         "shear": 80,
         "fck": 25,
         "fy": 500,
+        "clear_cover": 25,
+        "stirrup_dia_mm": 8,
+        "main_bar_dia_mm": 20,
     }
 
 

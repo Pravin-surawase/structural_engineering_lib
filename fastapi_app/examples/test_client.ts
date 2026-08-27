@@ -314,8 +314,12 @@ async function main() {
       width: 300,
       depth: 500,
       moment: 150,
+      shear: 75,
       fck: 25,
       fy: 500,
+      clear_cover: 25,
+      stirrup_dia_mm: 8,
+      main_bar_dia_mm: 20,
     });
     console.log(`📥 Success: ${result.success}`);
     console.log(`   Message: ${result.message}`);

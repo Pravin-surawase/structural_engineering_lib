@@ -24,6 +24,10 @@ from pathlib import Path
 
 from structural_lib.codes.is456.beam.detailing import BeamDetailingResult
 from structural_lib.core.data_types import CuttingAssignment, CuttingPlan
+from structural_lib.core.validation import (
+    require_nonblank_string,
+    require_positive_real,
+)
 
 # =============================================================================
 # Constants
@@ -362,6 +366,58 @@ def _bar_mark_sort_key(item: BBSLineItem) -> tuple:
     )
 
 
+def _validate_detailing_for_bbs(detailing: object) -> BeamDetailingResult:
+    """Reject invalid or incomplete producer output before BBS generation."""
+    if not isinstance(detailing, BeamDetailingResult):
+        raise TypeError("BBS input must contain BeamDetailingResult values.")
+    if not detailing.is_valid:
+        raise ValueError("BBS input detailing must be valid.")
+    require_nonblank_string(detailing.beam_id, "beam_id")
+    require_nonblank_string(detailing.story, "story")
+    b = require_positive_real(detailing.b, "b")
+    D = require_positive_real(detailing.D, "D")
+    require_positive_real(detailing.span, "span")
+    cover = require_positive_real(detailing.cover, "cover")
+    require_positive_real(detailing.ld_tension, "ld_tension")
+    require_positive_real(detailing.ld_compression, "ld_compression")
+    require_positive_real(detailing.lap_length, "lap_length")
+    if cover >= D:
+        raise ValueError("cover must be less than D.")
+    if len(detailing.top_bars) != 3 or len(detailing.bottom_bars) != 3:
+        raise ValueError("BBS input must contain three top and three bottom zones.")
+    if len(detailing.stirrups) != 3:
+        raise ValueError("BBS input must contain three stirrup zones.")
+    for location, bars in (
+        ("top_bars", detailing.top_bars),
+        ("bottom_bars", detailing.bottom_bars),
+    ):
+        for index, bar in enumerate(bars):
+            if isinstance(bar.count, bool) or not isinstance(bar.count, int):
+                raise ValueError(f"{location}[{index}].count must be an integer.")
+            if bar.count <= 0:
+                raise ValueError(f"{location}[{index}].count must be > 0.")
+            require_positive_real(bar.diameter, f"{location}[{index}].diameter")
+            require_positive_real(
+                bar.area_provided, f"{location}[{index}].area_provided"
+            )
+            require_positive_real(bar.spacing, f"{location}[{index}].spacing")
+            if isinstance(bar.layers, bool) or not isinstance(bar.layers, int):
+                raise ValueError(f"{location}[{index}].layers must be an integer.")
+            if bar.layers <= 0:
+                raise ValueError(f"{location}[{index}].layers must be > 0.")
+    for index, stirrup in enumerate(detailing.stirrups):
+        require_positive_real(stirrup.diameter, f"stirrups[{index}].diameter")
+        require_positive_real(stirrup.spacing, f"stirrups[{index}].spacing")
+        require_positive_real(stirrup.zone_length, f"stirrups[{index}].zone_length")
+        if isinstance(stirrup.legs, bool) or not isinstance(stirrup.legs, int):
+            raise ValueError(f"stirrups[{index}].legs must be an integer.")
+        if stirrup.legs <= 0:
+            raise ValueError(f"stirrups[{index}].legs must be > 0.")
+    if b - 2 * cover <= 0 or D - 2 * cover <= 0:
+        raise ValueError("cover leaves no positive BBS stirrup dimensions.")
+    return detailing
+
+
 BAR_MARK_PATTERN = re.compile(
     r"(?P<beam_id>[A-Z0-9]+(?:-[A-Z0-9]+)*)-"
     r"(?P<loc>[BTS])-(?P<zone>[SMEF])-D(?P<dia>\d+)-(?P<seq>\d{2})",
@@ -467,6 +523,7 @@ def generate_bbs_from_detailing(
     Returns:
         List of BBS line items
     """
+    detailing = _validate_detailing_for_bbs(detailing)
     items = []
 
     # Process bottom bars
@@ -647,10 +704,13 @@ def generate_bbs_document(
     Returns:
         Complete BBS document
     """
+    if not isinstance(detailing_list, list) or not detailing_list:
+        raise ValueError("detailing_list must be a non-empty list.")
+    validated = [_validate_detailing_for_bbs(item) for item in detailing_list]
     all_items = []
     member_ids = []
 
-    for detailing in detailing_list:
+    for detailing in validated:
         items = generate_bbs_from_detailing(detailing)
         all_items.extend(items)
         member_ids.append(detailing.beam_id)

@@ -221,6 +221,8 @@ response = httpx.post(
         "fck": 25,
         "fy": 500,
         "clear_cover": 25,
+        "stirrup_dia_mm": 8,
+        "main_bar_dia_mm": 20,
     },
     timeout=30.0,
 )
@@ -230,6 +232,15 @@ design = payload["data"]
 assert design["result_envelope"]["engineering_status"] in {"PASS", "FAIL", "HOLD"}
 print(f"Ast required: {design['flexure']['ast_required']:.1f} mm²")
 ```
+
+The v1 beam transport keeps these field names for compatibility but validates
+them strictly. `width`, `depth`, `moment`, `shear`, `fck`, `fy`,
+`clear_cover`, `stirrup_dia_mm`, and `main_bar_dia_mm` are required; numeric
+strings, booleans used as numbers, unknown fields, and invalid domains return a
+4xx intake error. `torsion` remains optional for the ordinary non-torsion route.
+`effective_depth` may be supplied explicitly; when it is omitted, the service
+derives it only from the complete explicit cover, stirrup-diameter, and
+main-bar-diameter basis above.
 
 These examples are exercised by
 `fastapi_app/tests/test_public_documentation_contract.py`.

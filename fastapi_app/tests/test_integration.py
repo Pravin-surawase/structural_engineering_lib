@@ -25,6 +25,23 @@ def client() -> TestClient:
     return TestClient(app)
 
 
+def _beam_request(**overrides):
+    """Return one explicit valid v1 beam request with requested overrides."""
+    payload = {
+        "width": 300,
+        "depth": 500,
+        "moment": 150,
+        "shear": 75,
+        "fck": 25,
+        "fy": 500,
+        "clear_cover": 25,
+        "stirrup_dia_mm": 8,
+        "main_bar_dia_mm": 20,
+    }
+    payload.update(overrides)
+    return payload
+
+
 # =============================================================================
 # Design Workflow Integration Tests
 # =============================================================================
@@ -38,14 +55,7 @@ class TestDesignWorkflow:
         # Step 1: Design beam
         design_response = client.post(
             "/api/v1/design/beam",
-            json={
-                "width": 300,
-                "depth": 500,
-                "moment": 150,
-                "shear": 75,
-                "fck": 25,
-                "fy": 500,
-            },
+            json=_beam_request(),
         )
 
         assert design_response.status_code == 200
@@ -70,7 +80,7 @@ class TestDesignWorkflow:
         # Design beam
         response = client.post(
             "/api/v1/design/beam",
-            json={"width": width, "depth": depth, "moment": 150, "fck": 25, "fy": 500},
+            json=_beam_request(width=width, depth=depth),
         )
 
         assert response.status_code == 200
@@ -91,13 +101,7 @@ class TestDesignWorkflow:
         # Invalid dimensions should fail validation
         response = client.post(
             "/api/v1/design/beam",
-            json={
-                "width": -100,  # Invalid negative
-                "depth": 500,
-                "moment": 150,
-                "fck": 25,
-                "fy": 500,
-            },
+            json=_beam_request(width=-100),
         )
 
         # Should get validation error
@@ -105,13 +109,7 @@ class TestDesignWorkflow:
 
     def test_design_calculation_consistency(self, client: TestClient):
         """Test that same input always produces same output."""
-        payload = {
-            "width": 300,
-            "depth": 500,
-            "moment": 150,
-            "fck": 25,
-            "fy": 500,
-        }
+        payload = _beam_request()
 
         # Make multiple requests
         results = []
@@ -139,9 +137,9 @@ class TestBatchProcessing:
     def test_multiple_beam_designs_sequential(self, client: TestClient):
         """Test sequential design of multiple beams."""
         beams = [
-            {"width": 300, "depth": 500, "moment": 100, "fck": 25, "fy": 500},
-            {"width": 350, "depth": 550, "moment": 150, "fck": 25, "fy": 500},
-            {"width": 400, "depth": 600, "moment": 200, "fck": 30, "fy": 500},
+            _beam_request(width=300, depth=500, moment=100),
+            _beam_request(width=350, depth=550, moment=150),
+            _beam_request(width=400, depth=600, moment=200, fck=30),
         ]
 
         results = []
@@ -163,21 +161,21 @@ class TestBatchProcessing:
         # Valid request
         valid_response = client.post(
             "/api/v1/design/beam",
-            json={"width": 300, "depth": 500, "moment": 100, "fck": 25, "fy": 500},
+            json=_beam_request(moment=100),
         )
         assert valid_response.status_code == 200
 
         # Invalid request
         invalid_response = client.post(
             "/api/v1/design/beam",
-            json={"width": -100, "depth": 500, "moment": 100, "fck": 25, "fy": 500},
+            json=_beam_request(width=-100, moment=100),
         )
         assert invalid_response.status_code == 422
 
         # Another valid request (system should still work)
         valid_response2 = client.post(
             "/api/v1/design/beam",
-            json={"width": 400, "depth": 600, "moment": 200, "fck": 30, "fy": 500},
+            json=_beam_request(width=400, depth=600, moment=200, fck=30),
         )
         assert valid_response2.status_code == 200
 
@@ -194,13 +192,7 @@ class TestErrorHandling:
         """Test validation errors have consistent format."""
         response = client.post(
             "/api/v1/design/beam",
-            json={
-                "width": "not a number",  # Invalid type
-                "depth": 500,
-                "moment": 150,
-                "fck": 25,
-                "fy": 500,
-            },
+            json=_beam_request(width="not a number"),
         )
 
         assert response.status_code == 422
@@ -230,13 +222,7 @@ class TestErrorHandling:
         # Very small moment (edge case)
         response = client.post(
             "/api/v1/design/beam",
-            json={
-                "width": 300,
-                "depth": 500,
-                "moment": 0.001,  # Very small but valid
-                "fck": 25,
-                "fy": 500,
-            },
+            json=_beam_request(moment=0.001),
         )
 
         # Should either succeed or fail gracefully
@@ -280,7 +266,7 @@ class TestHealthStatus:
         # Do some design work
         client.post(
             "/api/v1/design/beam",
-            json={"width": 300, "depth": 500, "moment": 150, "fck": 25, "fy": 500},
+            json=_beam_request(),
         )
 
         # Check health again
@@ -299,9 +285,9 @@ class TestCrossEndpointConsistency:
     def test_design_result_format_consistency(self, client: TestClient):
         """Test that design results have consistent format."""
         payloads = [
-            {"width": 300, "depth": 500, "moment": 100, "fck": 25, "fy": 500},
-            {"width": 400, "depth": 600, "moment": 200, "fck": 30, "fy": 500},
-            {"width": 250, "depth": 450, "moment": 80, "fck": 20, "fy": 415},
+            _beam_request(width=300, depth=500, moment=100),
+            _beam_request(width=400, depth=600, moment=200, fck=30),
+            _beam_request(width=250, depth=450, moment=80, fck=20, fy=415),
         ]
 
         for payload in payloads:
@@ -339,7 +325,7 @@ class TestContentFormats:
         """Test that responses are proper JSON."""
         response = client.post(
             "/api/v1/design/beam",
-            json={"width": 300, "depth": 500, "moment": 150, "fck": 25, "fy": 500},
+            json=_beam_request(),
         )
 
         assert response.status_code == 200
@@ -360,7 +346,7 @@ class TestRatesAndLimits:
 
     def test_rapid_sequential_requests(self, client: TestClient):
         """Test API handles rapid sequential requests."""
-        payload = {"width": 300, "depth": 500, "moment": 150, "fck": 25, "fy": 500}
+        payload = _beam_request()
 
         success_count = 0
         for _ in range(20):
@@ -376,13 +362,7 @@ class TestRatesAndLimits:
         # Large but valid dimensions
         response = client.post(
             "/api/v1/design/beam",
-            json={
-                "width": 1000,
-                "depth": 2000,
-                "moment": 5000,
-                "fck": 40,
-                "fy": 500,
-            },
+            json=_beam_request(width=1000, depth=2000, moment=5000, shear=75, fck=40),
         )
 
         # Should handle large values

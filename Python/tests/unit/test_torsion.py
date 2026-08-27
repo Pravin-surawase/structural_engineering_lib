@@ -39,11 +39,10 @@ class TestEquivalentShear:
         ve = calculate_equivalent_shear(vu_kn=100, tu_knm=0, b=300)
         assert ve == pytest.approx(100, rel=0.01)
 
-    def test_negative_shear_uses_absolute(self):
-        """Negative shear should use absolute value."""
-        ve = calculate_equivalent_shear(vu_kn=-100, tu_knm=10, b=300)
-        expected = 100 + 1.6 * 10000 / 300
-        assert ve == pytest.approx(expected, rel=0.01)
+    def test_negative_shear_is_rejected(self):
+        """The public action contract uses non-negative magnitudes."""
+        with pytest.raises(ValueError, match="vu_kn must be >= 0"):
+            calculate_equivalent_shear(vu_kn=-100, tu_knm=10, b=300)
 
     def test_zero_width_raises(self):
         """Zero beam width should raise DimensionError."""

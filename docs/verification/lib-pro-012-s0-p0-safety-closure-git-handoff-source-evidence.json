@@ -1,0 +1,72 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-27T13:23:44Z",
+      "query_status": "OK",
+      "reference": "Implement the complete LIB-PRO-012 S0 P0 Safety Closure in one efficient, evidence-backed repository cycle.",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "IMPLEMENT_LIB_PRO_012_S0_COMBINED_A_B_SAFETY_CYCLE",
+      "ADD_FOCUSED_TESTS_GENERATED_CONTRACTS_DOCUMENTATION_AND_EVIDENCE",
+      "BUILD_AND_REPLAY_EXACT_WHEEL",
+      "RUN_ONE_FROZEN_QUICK_GATE_AND_NORMAL_HOOKS",
+      "FREEZE_ONE_CANDIDATE_AND_RUN_ONE_HOSTED_CYCLE",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_ONE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "FREEZE_ONE_CANDIDATE_AND_RUN_ONE_HOSTED_CYCLE",
+    "observed_at_utc": "2026-08-27T13:23:44Z",
+    "prohibited_actions": [
+      "START_LIB_PRO_012_PACKETS_C_THROUGH_I",
+      "CREATE_API_V2_OR_NEW_FACADE",
+      "DELETE_BRANCH_OR_WORKTREE",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_OR_REWRITE",
+      "BYPASS_CHECKS_OR_FORCE_PUSH",
+      "PUBLISH_RELEASE_VERSION_TAG_OR_PACKAGE",
+      "TRACK_OR_MODIFY_PROTECTED_STANDARD_CONTENT",
+      "ACTIVATE_PROFESSIONAL_OR_ENGINEERING_USE_APPROVAL"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "IMPLEMENT_LIB_PRO_012_S0_COMBINED_A_B_SAFETY_CYCLE",
+        "ADD_FOCUSED_TESTS_GENERATED_CONTRACTS_DOCUMENTATION_AND_EVIDENCE",
+        "BUILD_AND_REPLAY_EXACT_WHEEL",
+        "RUN_ONE_FROZEN_QUICK_GATE_AND_NORMAL_HOOKS",
+        "FREEZE_ONE_CANDIDATE_AND_RUN_ONE_HOSTED_CYCLE",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_ONE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/lib-pro-012-s0-p0-safety-closure",
+      "head_sha": "d3242731e94dacd74e804a1f4a25c4c0da11790f",
+      "task_id": "LIB-PRO-012-S0-P0-SAFETY-CLOSURE"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_ALL_UNRELATED_WORKTREES",
+    "holds": [
+      "PRESERVE_DIRTY_DETACHED_E54A_LANE",
+      "PRESERVE_EVERY_UNRELATED_DIRTY_STAGED_UNTRACKED_STASHED_DETACHED_OR_IGNORED_ITEM",
+      "BRANCH_AND_WORKTREE_DELETION_NOT_AUTHORIZED"
+    ],
+    "observed_at_utc": "2026-08-27T13:23:44Z",
+    "owner": "Main agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

@@ -28,6 +28,8 @@ def test_documented_beam_request_and_response_path(client: TestClient):
             "fck": 25,
             "fy": 500,
             "clear_cover": 25,
+            "stirrup_dia_mm": 8,
+            "main_bar_dia_mm": 20,
         },
     )
 
