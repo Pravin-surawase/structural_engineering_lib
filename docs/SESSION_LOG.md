@@ -5,6 +5,109 @@
 
 ---
 
+## 2026-08-27 — Session: LIB-PRO-012/013 efficient combined execution plan
+
+**Agent:** Codex (`governance`, parent writer) with one bounded read-only plan
+consistency reviewer.
+
+**Branch:** `codex/lib-pro-012-external-api-remediation-plan`.
+
+**Focus:** Correct the immediate REST P0 omission and reduce avoidable Git,
+session, PR, and unchanged-check repetition across LIB-PRO-012/013 without
+weakening safety, hosted, artifact, release, or professional-review evidence.
+
+**Completed:**
+
+- Reclassified the existing REST v1 fail-open behavior into LIB-PRO-012 Packet
+  A so the A/B safety milestone now owns every frozen LIB-PRO-011 P0 path.
+- Clarified that LIB-PRO-012 is an implementation specification/scope
+  authority and that runtime work begins only when an identified execution
+  cycle is explicitly started.
+- Preserved A–I as logical owner/acceptance work packages while grouping them
+  with LIB-PRO-013 into six coherent Git/hosted cycles: P0, S0, A0, B0, F0,
+  and R0.
+- Defined one parent session, branch, frozen candidate, normal PR, and hosted
+  cycle per execution cycle, with recovery checkpoints and splits only when a
+  real preservation, ownership, evidence, or reviewability condition requires
+  them.
+- Added a cycle-level evidence matrix requirement so one exact hosted run must
+  prove the changed-path obligations of every included internal work package.
+- Aligned the task board, planning index, LIB-PRO-013 dependency order, agent
+  use, and immediate next action to the combined low-churn programme.
+
+### Issues encountered
+
+- `EXT-REST-001/003` were P0 in LIB-PRO-011 but remained assigned to the later
+  canonical beam Packet D while the earlier A–B milestone claimed every frozen
+  P0 was closed.
+- The plan described every A–I subdivision as a packet while repository policy
+  attaches session, candidate, hosted-check, and closeout obligations to each
+  bounded packet; executing the text literally would create avoidable Git and
+  CI repetition.
+- LIB-PRO-012 called itself implementation authority while also saying it did
+  not authorize runtime changes, leaving the actual start condition ambiguous.
+- The read-only review agent could not start its own repository session because
+  the parent task already owned the one active usage checkpoint.
+- The first broad patch for LIB-PRO-013 did not apply because its context
+  included wording not present in the live file.
+- The first usage-closeout command stopped because the repository requires an
+  exact committed candidate head rather than an uncommitted worktree identity.
+
+### Root causes and resolutions
+
+- Confirmed root cause: REST safety was coupled to future `/api/v2` convergence
+  rather than separated into immediate `/api/v1` containment and later
+  canonical parity. Resolution: Packet A now owns strict v1 intake and
+  fail-closed mapping; Packet D retains v2 plus final v1/v2 parity.
+- Confirmed root cause: logical engineering decomposition had been treated as
+  mandatory Git decomposition. Resolution: Section 10 retains logical work
+  packages, while Section 15 execution cycles are the repository's bounded
+  delivery packets. One exact candidate can cover several internal packages
+  only with an explicit changed-path/hosted-check coverage matrix.
+- Confirmed root cause: plan approval and runtime-start authorization were not
+  distinguished. Resolution: plan integration approves the specification;
+  runtime changes begin only when the owner starts S0 on exact integrated
+  `main` after G0 and owner-path preflight.
+- Confirmed root cause: repository session accounting intentionally permits one
+  active task checkpoint. Resolution: the reviewer remained read-only and
+  returned evidence to the parent; the parent owns the sole versioned session
+  record. ⚠️ TERMINAL ISSUE: unmatched reviewer session checkpoint -> reused
+  the active parent session instead of creating another session.
+- Confirmed root cause: the failed patch used an excerpt with mismatched
+  context. Resolution: re-read the exact live sections and apply a narrower
+  `apply_patch`; no partial change occurred. ⚠️ TERMINAL ISSUE: patch context
+  mismatch -> used exact live context in a bounded follow-up patch.
+- Confirmed root cause: usage closeout resolves every candidate identifier to a
+  commit tree and therefore cannot accept the intended future head before the
+  immutable candidate exists. Resolution: finish and verify all tracked
+  session/handoff/receipt writes, create the one candidate commit through
+  normal hooks, record usage against that exact `HEAD`, and run final read-only
+  `session end`. ⚠️ TERMINAL ISSUE: pre-candidate usage closeout rejected ->
+  use the committed candidate head without adding another tracked write.
+
+### Validation through content freeze
+
+- Live pre-edit Git authority reported `READY_LOCAL`, a clean current tree, no
+  operation/locks, exact remote `main`, and no remote planning branch or PR.
+- Direct reproductions confirmed the invalid combined beam still returned
+  `is_ok=True`, invalid detailing still produced an incomplete BBS, and the
+  REST request still coerced numeric strings, ignored an unknown engineering
+  field, and supplied hidden design defaults.
+- The focused beam, full-pipeline, and FastAPI primary-route baseline tests pass
+  before implementation; no runtime file was changed by this planning task.
+- The bounded reviewer found the REST sequencing issue already corrected and
+  one hosted-evidence ambiguity; the final plan now maps every internal work
+  package to the one exact cycle head and its required hosted checks.
+- Targeted plan metadata/front-matter and planning-index link checks pass;
+  `./run.sh control validate` reports 115 active operations and 101/101
+  registered scripts, `./run.sh context validate` reports 10 areas and six
+  authorities, and `./run.sh efficiency check` passes.
+- `git diff --check` passes for the frozen planning content. The consolidated
+  quick gate and final read-only session closeout remain candidate-level
+  commands after the handoff receipt and generated next-session block freeze.
+
+**Git handoff receipt:** `docs/verification/lib-pro-012-efficient-execution-plan-git-handoff-receipt.json`
+
 ## 2026-08-27 — Session: LIB-PRO-013 whole-library renewal audit plan
 
 **Agent:** Codex (`governance`, parent writer) with two bounded read-only

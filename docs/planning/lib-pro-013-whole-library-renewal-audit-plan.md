@@ -15,7 +15,7 @@ LIB-PRO-013 is the master plan for a fresh, evidence-bound review of the whole
 library and its development system. It broadens the external-user work in
 [LIB-PRO-011](../verification/lib-pro-011-external-api-readiness-audit.md) and
 [LIB-PRO-012](lib-pro-012-external-api-remediation-plan.md) without replacing
-their finding and implementation authority.
+their finding and implementation-specification authority.
 
 The outcome is not another general score or a promise that the library is
 "perfect." The outcome is a complete, prioritized renewal portfolio in which:
@@ -43,18 +43,20 @@ behavior in place.
 
 - LIB-PRO-011 remains the evidence authority for reproduced invalid-input,
   downstream-propagation, API-consistency, discovery, and release-truth gaps.
-- LIB-PRO-012 remains the implementation authority for immediate fail-closed
-  safety, a curated family facade, compatibility, input/result/error contracts,
-  examples, and advertised-surface gates.
+- LIB-PRO-012 remains the implementation specification and scope authority for
+  immediate fail-closed safety, a curated family facade, compatibility,
+  input/result/error contracts, examples, and advertised-surface gates.
 - LIB-PRO-013 adds the audit lanes that LIB-PRO-012 intentionally does not own:
   engineering-evidence quality, all product transports, package and dependency
   policy, test architecture, performance, security, Git/CI/release operations,
   agents and skills, automation efficiency, historical material, and
   professional support.
 
-After separate implementation authorization, LIB-PRO-012 Packets A and B may
-proceed before the broader audit finishes because they close already-reproduced
-P0 outcomes. Shared validation, facade, result, manifest, generated API, and
+After the planning integration is complete and the owner starts the named S0
+execution cycle, LIB-PRO-013 G0 and LIB-PRO-012 Packets A and B proceed in one
+parent task and one candidate cycle. G0 freezes the exact pre-change baseline;
+A and B then close already-reproduced P0 outcomes without waiting for the wider
+audit. Shared validation, facade, result, manifest, generated API, and
 documentation owners remain single-writer surfaces.
 
 ## 3. Bound current baseline
@@ -598,23 +600,29 @@ and obtain an independent read-only audit before hosted publication gates.
 non-success for professional/stable claims. Publication authorization and
 qualified engineering review remain separate.
 
-## 10. Dependency order and parallelism
+## 10. Combined dependency order and execution cycles
 
 ```text
-G0 exact truth freeze
-  -> G1 audit-of-audits
-  -> U1/U2 + E1 + R1/R2 + A1/A2/A4 + C1 (read-only lanes)
-  -> U3/U4 + E2/E3 + P1/P2/P3/P4 + R3/R4/R5 + A3
-  -> C2 integrated remediation portfolio
-  -> separately authorized implementation packets
-  -> C3 exact-artifact independent audit
+P0 planning integration
+  -> S0: G0 exact pre-change freeze + LIB-PRO-012 A/B P0 safety closure
+  -> A0: G1 + all remaining initial audit lanes through C2
+  -> B0: LIB-PRO-012 C/D/E canonical beam contract
+  -> F0: LIB-PRO-012 F1/F2/F3 family convergence
+  -> R0: LIB-PRO-012 G/H/I + C3 exact-artifact independent audit
   -> separately authorized release / qualified-review decisions
 ```
 
+Section 9 retains the detailed audit lanes and acceptance criteria. The cycle
+names above are the delivery and Git/session units. This keeps the audit
+independent enough to freeze later architectural decisions while avoiding a
+separate branch, session, PR, and hosted run for every internal lane.
+
 Rules:
 
-- use at most two concurrent bounded research/review agents plus the parent,
-  following the repository limit;
+- use one parent task/session by default; use at most two concurrent bounded
+  read-only research/review agents only when they materially reduce calendar
+  time, and do not create agent-owned branches, commits, PRs, task/status
+  writes, or separate hosted cycles;
 - pass compact task packets, never full conversation history;
 - keep read-only inventories disjoint and return file/source evidence rather
   than raw logs;
@@ -627,7 +635,8 @@ Rules:
 
 ## 11. Efficiency controls
 
-1. Start each packet from the G0 evidence bundle; refresh only drift-prone facts.
+1. Start each audit lane from the cycle's G0 evidence bundle; refresh only
+   drift-prone facts.
 2. Use `git_state.py`, the control registry, context manifest, API
    classification, compatibility ledger, workflow catalog, verification plan,
    and package metadata as maintained owners.
@@ -640,13 +649,23 @@ Rules:
 6. Deduplicate issues by root cause while preserving every affected journey.
 7. Ignore cosmetic or speculative concerns that do not change a user or main
    development/release outcome.
-8. Run focused checks together after a packet freezes, the quick gate once for
-   its immutable candidate, and the broad/full matrix once at cumulative
-   integration unless an outcome-changing repair invalidates it.
+8. Run focused checks together after an execution cycle freezes, the quick gate
+   once for its immutable candidate, and the broad/full matrix once at
+   cumulative integration unless an outcome-changing repair invalidates it.
 9. Record non-overlapping time for intake, research, implementation, audit,
    rework, local closeout, hosted wait, and merge verification.
 10. Measure efficiency by avoided rework and correct outcomes, not by deleting
     controls or estimating provider tokens locally.
+11. Treat each Section 10 cycle as one bounded repository packet: one parent
+    session, one task branch, one frozen candidate commit, one normal PR, and
+    one required hosted-check cycle after intended writes freeze.
+12. Do not create routine WIP commits, status-only commits, handoff-only PRs, or
+    broad reruns merely to show progress. Use a local recovery checkpoint only
+    when a real interruption/data-loss risk requires it.
+13. Fold a new finding into the nearest compatible later cycle when ownership,
+    dependency order, and reviewability permit. Split a cycle only for an
+    overlapping active candidate, unexplained engineering-result change, new
+    source/dependency decision, or an incoherent review surface.
 
 ## 12. Durable audit outputs
 
@@ -678,7 +697,8 @@ The programme produces the following without creating competing authorities:
 The initial audit is estimated at 15-24 engineer-days because it spans source,
 installed artifacts, browser/application transports, Windows evidence,
 governance, and external comparison. Known LIB-PRO-012 implementation remains
-its separately estimated 44-73 engineer-days. Additional remediation is not
+its separately estimated 45-74 engineer-days after adding immediate REST v1
+containment. Additional remediation is not
 estimated until C2 has evidence; assigning a fixed whole-program duration now
 would hide uncertainty rather than improve planning.
 
@@ -747,9 +767,16 @@ Explicit non-goals for the audit phase:
 
 ## 16. Immediate next action after plan approval
 
-Start LIB-PRO-013-G0 as a read-only exact-baseline packet and produce the
-audit register skeleton plus prior-audit matrix. In parallel, prepare the
-separately authorized LIB-PRO-012 Packet A implementation boundary so the
-known beam/detailing/BBS P0 corrections are not delayed. Do not edit runtime
-code until that implementation packet is explicitly started and its shared
-owners are confirmed free.
+Finish the current P0 planning-integration candidate and integrate it on exact
+current `main`. Then start S0 as one parent task/session and one Git candidate:
+
+1. freeze G0 against the exact pre-change source/artifact/worktree state;
+2. implement LIB-PRO-012 Packet A Python/consumer containment;
+3. implement Packet A existing REST v1 containment;
+4. implement Packet B torsion/column/structured-input containment; and
+5. freeze one S0 candidate, run its batched focused evidence, one quick gate,
+   normal staged hooks, required hosted checks, and exact-wheel P0 replay.
+
+Do not create separate G0, Python-A, REST-A, or B branches/PRs merely to mark
+progress. Do not edit runtime code until S0 is explicitly started and its
+shared owners are confirmed free.

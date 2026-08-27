@@ -11,11 +11,14 @@ tags: [external-user, public-api, validation, usability, migration, examples]
 
 ## 1. Decision and outcome
 
-This is the implementation authority for correcting the external-user findings
-recorded in [LIB-PRO-011](../verification/lib-pro-011-external-api-readiness-audit.md).
+This is the implementation specification and scope authority for correcting the
+external-user findings recorded in
+[LIB-PRO-011](../verification/lib-pro-011-external-api-readiness-audit.md).
 The audit remains the evidence and reproduction authority; this document owns
 the target solution, dependency order, migration policy, acceptance evidence,
-and release boundary.
+and release boundary. Runtime work begins only when the owner starts an
+identified execution cycle from this plan; approval of the plan does not by
+itself start code changes.
 
 The required work is not one patch. It has four linked outcomes:
 
@@ -209,6 +212,38 @@ Every promoted example has a workflow identifier, minimum package version,
 supported case, expected result state, limitations, and an executable Python
 file or extractable fenced block. The exact built wheel must run the example
 without importing repository source.
+
+### D11 — Minimize Git and session churn without weakening evidence
+
+The packets in Section 10 are logical ownership and acceptance work packages;
+they are not automatically separate branches, sessions, commits, pushes, pull
+requests, or hosted-check runs. For the repository verification contract, each
+Section 15 execution cycle is the agreed bounded delivery packet; Section 15
+groups the logical work packages into the smallest safe set of those cycles.
+
+For each execution cycle:
+
+- keep one parent task and one session active through implementation, internal
+  review, repair, documentation, and candidate preparation;
+- use one task branch, one frozen candidate commit, one normal push/PR, and one
+  required hosted-check cycle after all intended writes are complete;
+- use internal subphases and focused reproducers for guidance without creating
+  routine WIP commits, status-only commits, or PRs merely to mark progress;
+- create a local recovery checkpoint only when a real data-loss or long-running
+  interruption risk justifies it, and never present that checkpoint as the
+  reviewed candidate;
+- batch affected focused tests after content freeze, run the quick gate once,
+  use normal staged hooks, and run the broad/full matrix only at the cumulative
+  boundary required by Section 12;
+- after an outcome-changing repair, rerun only invalidated focused evidence and
+  the consolidated candidate gate once; and
+- retain every required hosted, exact-wheel, release, and professional-review
+  control. Efficiency never means bypassing a decisive gate.
+
+Split an execution cycle only when an active candidate overlaps its owners, a
+valid engineering result changes without explained evidence, a new source or
+dependency decision is required, or the combined change cannot be reviewed as
+one coherent user outcome.
 
 ## 5. Target external-user experience
 
@@ -494,18 +529,20 @@ engineering assumptions, and limitations remain authored prose.
 
 ## 10. Dependency-ordered implementation packets
 
-Only one implementation packet is active at a time where shared validation,
-facade, generated API, documentation, or result files overlap. Effort ranges
-are planning estimates for one focused engineer and exclude external qualified
-review or hosted-runner delay.
+These are logical design packets used to preserve dependency order, owner
+boundaries, and acceptance evidence. Only one logical packet is being changed
+at a time where shared validation, facade, generated API, documentation, or
+result files overlap, but adjacent packets may be delivered in one execution
+cycle under Section 15. Effort ranges are planning estimates for one focused
+engineer and exclude external qualified review or hosted-runner delay.
 
-### Packet A — beam, detailing, and BBS fail-closed chain
+### Packet A — beam, detailing, BBS, and existing REST v1 fail-closed chain
 
-**Estimate:** 2–4 engineer-days.
+**Estimate:** 3–5 engineer-days after adding existing REST v1 containment.
 
 **Objective:** close `EXT-BEAM-001` through `008`, `EXT-DETAIL-001/002`,
-`EXT-BBS-001`, and the safe-result portion of `EXT-TYPED-001/003` without
-changing valid numerical results.
+`EXT-BBS-001`, `EXT-REST-001/003`, and the safe-result portion of
+`EXT-TYPED-001/003` without changing valid numerical results.
 
 **Likely owners:**
 
@@ -513,6 +550,9 @@ changing valid numerical results.
 - `Python/structural_lib/services/beam_api.py`;
 - `Python/structural_lib/codes/is456/beam/detailing.py`;
 - `Python/structural_lib/services/bbs.py` or its canonical owner;
+- `fastapi_app/models/beam.py` and `fastapi_app/routers/design.py`;
+- affected FastAPI tests and the generated OpenAPI baseline when its schema
+  changes;
 - focused unit/integration tests.
 
 **Required behavior:**
@@ -522,11 +562,18 @@ changing valid numerical results.
 - design-only, compliance, combined, smart, and direct-detailing routes call it;
 - BBS validates every direct detailing input and accepts a valid combined
   result explicitly;
+- the existing `/api/v1/design/beam` compatibility request rejects numeric
+  string coercion, booleans-as-numbers, unknown fields, and missing
+  calculation-bearing inputs instead of supplying hidden structural choices;
+- the v1 route maps accepted compatibility fields into the same validated
+  service boundary and returns a fail-closed 4xx response for invalid intake;
+  exact v2 field-path/issue-code parity remains Packet D work;
 - invalid input produces no design/detailing/BBS object;
 - existing valid golden results and nine-line BBS reference remain exact.
 
-**Acceptance:** all fixed LIB-PRO-011 beam/detail/BBS reproducers reject; focused
-tests, producer-consumer accounting, quick gate, and staged hooks pass.
+**Acceptance:** all fixed LIB-PRO-011 beam/detail/BBS and REST P0 reproducers
+reject; focused tests, producer-consumer accounting, FastAPI request/route
+tests, quick gate, and staged hooks pass.
 
 ### Packet B — torsion, column, and structured beam truth
 
@@ -560,8 +607,8 @@ valid existing torsion/column/structured-input cases remain unchanged.
 
 **Estimate:** 4–6 engineer-days.
 
-**Prerequisite:** Packets A and B, so the new facade cannot hide unsafe legacy
-owners.
+**Prerequisite:** the combined P0 Safety Cycle containing Packets A and B, so
+the new facade cannot hide unsafe legacy owners.
 
 **Objective:** implement the common strict model base, `InputIssueV1`,
 `InputContractError`, field-contract vocabulary, and the empty
@@ -592,8 +639,9 @@ all later member families.
   `beam.design_and_detail`, and `beam.bbs`;
 - typed canonical result/envelope;
 - compatibility delegation from existing root/service functions;
-- `/api/v1` compatibility mapping plus a versioned `/api/v2` beam request only
-  after the Python contract freezes;
+- completion of `/api/v1` canonical mapping/error parity after Packet A's
+  immediate containment, plus a versioned `/api/v2` beam request only after the
+  Python contract freezes;
 - Python/FastAPI request, issue, result, and generated-client parity for the
   supported beam subset;
 - first executable cookbook and migration page.
@@ -715,7 +763,8 @@ claims still require their separate authorities.
 | `EXT-TYPED-*`, `EXT-ID-001` | B, then C/D for strict public models |
 | `EXT-ENUM-001` | C common error model, F1–F3 family adoption |
 | `EXT-API-001/002` | C/D facade, G discovery, H advertised gate |
-| `EXT-REST-001/002/003` | D versioned transport, G migration docs, H/I parity and artifact gates |
+| `EXT-REST-001/003` | A immediate v1 containment, then D/H/I for canonical parity and artifact gates |
+| `EXT-REST-002` | D versioned transport, G migration docs, H/I parity and artifact gates |
 | `EXT-BUILDER-001` | F2/F3 plus G recipes |
 | `EXT-DOC-001` | G and H |
 | `EXT-RELEASE-001`, `EXT-INSTALL-001` | G and I |
@@ -805,28 +854,61 @@ valid golden vector changes without explained root cause and independent
 evidence, or if another active candidate owns overlapping shared/generated
 paths.
 
-## 15. Recommended execution order and immediate next work
+## 15. Efficient execution cycles and immediate next work
 
-The packet estimates total approximately **44–73 engineer-days** for one
-focused implementation lane (roughly 9–15 working weeks), excluding qualified
-review, owner decisions, hosted queue time, and publication. The range reflects
-the 100-function mixed surface and multiple member families; presenting this as
-a two-day patch would hide the API, documentation, migration, and gate work the
-user will actually experience.
+The logical packet estimates still total approximately **45–74 engineer-days**
+for one focused implementation lane (roughly 9–15 working weeks), excluding
+qualified review, owner decisions, hosted queue time, and publication. The work
+is not reduced by hiding it; Git, session, and unchanged-suite repetition are
+reduced by grouping the work into coherent candidate cycles.
 
-The first executable packet is **Packet A: beam, detailing, and BBS fail-closed
-chain**. It should be implemented and independently audited before facade or
-signature work begins because:
+| Cycle | Included logical work | Default Git/session shape | Completion boundary |
+|---|---|---|---|
+| **P0 Planning integration** | LIB-PRO-011 audit plus the corrected LIB-PRO-012/013 plans | Current planning branch, one session, one candidate, one PR/check cycle | Plans and exact next-work authority are integrated on current `main` |
+| **S0 P0 Safety Closure** | LIB-PRO-013 G0 exact pre-change baseline, then LIB-PRO-012 A and B | One parent session, one task branch, one frozen implementation candidate, one PR/check cycle | Every frozen Python, consumer, structured-input, column, torsion, and existing REST P0 rejects before calculation/artifact creation; valid goldens remain exact |
+| **A0 Consolidated Renewal Audit** | The initial LIB-PRO-013 audit through its C2 remediation portfolio | One read-only audit session and one evidence candidate/PR; no runtime edits | Architecture, scope, transport, dependency, evidence, and usability decisions needed by later 012 work are frozen |
+| **B0 Canonical Beam Contract** | LIB-PRO-012 C, D, and E | One implementation session/branch/candidate/PR after A0 | Common contract plus complete beam vertical slice and downstream convergence pass direct, FastAPI, consumer, and exact-wheel evidence |
+| **F0 Family Convergence** | LIB-PRO-012 F1, F2, and F3, executed internally family by family | One implementation session/branch/candidate/PR by default; split only under D11 stop conditions | Every supported family follows the frozen request/result/error style with executable wheel recipes |
+| **R0 External-Preview Candidate** | LIB-PRO-012 G, H, and I plus applicable LIB-PRO-013 closure evidence | One final implementation/evidence session and one frozen candidate/PR/check cycle | Documentation, generated gates, cumulative full checks, exact-wheel UAT, independent audit, and owner decision package are complete |
+
+This is six planned Git/hosted cycles including the current planning integration,
+instead of treating A–I and each audit lane as separate PRs. Unknown findings
+from A0 join the nearest compatible later cycle when ownership and dependency
+order permit; they create a separate cycle only when D11 requires isolation.
+
+One PR/head per execution cycle does not erase the acceptance obligation of its
+internal work packages. Before merge, the cycle evidence must contain a compact
+coverage matrix that maps each included Section 10 work package to:
+
+- its changed paths and outcome owner;
+- its focused tests and independent reproducers;
+- every required changed-path hosted check; and
+- the passing status of those checks on the one exact candidate head.
+
+The hosted workflow runs once on that shared frozen head when its changed-path
+map covers the whole cycle; the evidence records that result against every
+included work package. If the required hosted domains cannot be proven on one
+coherent head, D11 requires the cycle to split.
+
+The first executable cycle after planning integration is **S0 P0 Safety
+Closure**. Within that one cycle, work proceeds internally as G0 baseline ->
+Packet A Python/consumer containment -> Packet A REST v1 containment -> Packet B
+torsion/column/structured-input containment. It is frozen and reviewed only
+after all four internal phases are complete.
+
+S0 comes before facade or signature work because:
 
 - it closes the largest safe-looking invalid-result path;
 - every future beam facade delegates to these owners;
 - it creates the reference producer-to-consumer test;
 - it can ship as a bounded Alpha safety correction without waiting for the
-  multi-family usability programme.
+  multi-family usability programme; and
+- it closes the existing REST P0 path that the earlier A–B milestone omitted.
 
-After Packet A, execute B -> C -> D -> E -> F1 -> F2 -> F3 -> G -> H -> I.
-Do not parallelize packets sharing validation, facade, result, generated API,
-documentation, or session/handoff files.
+After S0, execute A0 -> B0 -> F0 -> R0. Do not parallel-write validation,
+facade, result, generated API, documentation, task, or session owners. Do not
+create status-only sessions, WIP PRs, or unchanged broad reruns merely to show
+progress.
 
 Current plan verdict: **solution architecture and packet order are ready for
-implementation review; runtime remediation remains unstarted.**
+planning integration; S0 runtime remediation remains unstarted.**

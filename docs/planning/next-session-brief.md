@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-27
-- Focus: Define a complete, preservation-safe whole-library audit and renewal programme before starting implementation.
-- Completed: Published the 40-plus-domain audit universe, evidence states, finding schema, and G0/G1/U/E/P/R/A/C packet sequence.; Kept LIB-PRO-011 as evidence authority and LIB-PRO-012 as immediate fail-closed implementation authority so the wider audit does not delay known P0 fixes.; Added source-backed peer comparisons and explicit adopt/adapt/reject boundaries.
-- Git receipt: docs/verification/lib-pro-013-whole-library-renewal-audit-plan-git-handoff-receipt.json | sha256:4635b47db228d7fadc095cf09f14ed938771bc41b3894b09a060cb472f9188c2 | HOLD
-- Git identity: codex/lib-pro-012-external-api-remediation-plan@0dd9d27b5048e4c1f78592a010fce4eba7128cd2 | upstream=NONE@UNKNOWN | base=origin/main@6a4683eb8b21bff77f2991230b4458463e61f419 | tree=dirty | operation=none
+- Focus: Correct the immediate REST P0 omission and reduce avoidable Git,
+- Completed: Reclassified the existing REST v1 fail-open behavior into LIB-PRO-012 Packet; Clarified that LIB-PRO-012 is an implementation specification/scope; Preserved A–I as logical owner/acceptance work packages while grouping them
+- Git receipt: docs/verification/lib-pro-012-efficient-execution-plan-git-handoff-receipt.json | sha256:778a2e68608d10c62ca5865ba2f682041112bfaa0fc07c88fae4cccc22c4a370 | HOLD
+- Git identity: codex/lib-pro-012-external-api-remediation-plan@17e62cc7f864c25e279d6921d9c59d26afca3950 | upstream=NONE@UNKNOWN | base=origin/main@6a4683eb8b21bff77f2991230b4458463e61f419 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
