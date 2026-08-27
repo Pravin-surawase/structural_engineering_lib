@@ -5,8 +5,9 @@
 <!-- HANDOFF:START -->
 - Date: 2026-08-27
 - Focus: Freeze external API findings, audit-gap root causes, peer comparison, and ordered repair packets; runtime fixes and release action remain excluded.
-- Git receipt: docs/verification/lib-pro-011-external-api-readiness-audit-git-handoff-receipt.json | sha256:c1cee03a9902a7854ef720cd0f769f3c243a909aecf2061bc0221d7513568415 | HOLD
-- Git identity: codex/lib-pro-011-external-api-audit@4549ec7bed7144292e24d2d868e520a81a521d29 | upstream=NONE@UNKNOWN | base=origin/main@6a4683eb8b21bff77f2991230b4458463e61f419 | tree=dirty | operation=none
+- Completed: Published the evidence-bound LIB-PRO-011 external API readiness audit.; Froze prioritized repair packets and a regression matrix for the next work.; Bound the current session, receipt, and next-session handoff to this task.
+- Git receipt: docs/verification/lib-pro-011-external-api-readiness-audit-git-handoff-receipt.json | sha256:d93c07e4680994a2617853f526f912ba91710a1a7f670a1368832bff7f3c5ed7 | HOLD
+- Git identity: codex/lib-pro-011-external-api-audit@24221e3bf07ba0267f39ba36b6b87665c5a80d6b | upstream=NONE@UNKNOWN | base=origin/main@6a4683eb8b21bff77f2991230b4458463e61f419 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->

@@ -22,27 +22,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "c1cee03a9902a7854ef720cd0f769f3c243a909aecf2061bc0221d7513568415",
+    "receipt_sha256": "d93c07e4680994a2617853f526f912ba91710a1a7f670a1368832bff7f3c5ed7",
     "state": {
       "branch": "codex/lib-pro-011-external-api-audit",
       "default_base": {
-        "ahead": 2,
+        "ahead": 3,
         "behind": 0,
         "ref": "origin/main",
         "sha": "6a4683eb8b21bff77f2991230b4458463e61f419",
         "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 96.947,
+      "duration_ms": 104.535,
       "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
       "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
-      "head_sha": "4549ec7bed7144292e24d2d868e520a81a521d29",
+      "head_sha": "24221e3bf07ba0267f39ba36b6b87665c5a80d6b",
       "hold_reasons": [
-        "changed paths: 3"
+        "changed paths: 1"
       ],
       "linked_worktree": false,
       "locks": [],
-      "observed_at_utc": "2026-08-27T10:46:36.890251+00:00",
+      "observed_at_utc": "2026-08-27T10:47:11.777672+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -53,11 +53,9 @@
       "tree": {
         "clean": false,
         "conflicted_paths": [],
-        "dirty_count": 3,
+        "dirty_count": 1,
         "modified_paths": [
-          "docs/SESSION_LOG.md",
-          "docs/planning/next-session-brief.md",
-          "docs/verification/lib-pro-011-external-api-readiness-audit-git-handoff-receipt.json"
+          "docs/SESSION_LOG.md"
         ],
         "staged_paths": [],
         "untracked_paths": []
@@ -72,9 +70,9 @@
       "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib"
     }
   },
-  "local_state_receipt_hash": "sha256:c1cee03a9902a7854ef720cd0f769f3c243a909aecf2061bc0221d7513568415",
+  "local_state_receipt_hash": "sha256:d93c07e4680994a2617853f526f912ba91710a1a7f670a1368832bff7f3c5ed7",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-08-27T10:46:36.890447+00:00",
+  "observed_at_utc": "2026-08-27T10:47:11.777828+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"

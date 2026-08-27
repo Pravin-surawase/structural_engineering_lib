@@ -13,6 +13,12 @@
 
 **Focus:** Freeze external API findings, audit-gap root causes, peer comparison, and ordered repair packets; runtime fixes and release action remain excluded.
 
+**Completed:**
+
+- Published the evidence-bound LIB-PRO-011 external API readiness audit.
+- Froze prioritized repair packets and a regression matrix for the next work.
+- Bound the current session, receipt, and next-session handoff to this task.
+
 ### Issues encountered
 
 - Exact-wheel and source-bound probes reproduced safe-looking or materially
@@ -41,6 +47,8 @@
 - The audit session entry was initially added at the file end, but the session
   parser defines the first dated block as current; the generated handoff
   therefore inherited the preceding MAINT-0136 focus.
+- The next read-only closeout found no explicit `Completed` list because the
+  entry expressed completion only in its validation and document verdict.
 
 ### Root causes and resolutions
 
@@ -95,6 +103,10 @@
   task-owned LIB-PRO-011 block below the log preamble and regenerate the
   receipt-bound next-session handoff from that exact focus. No prior session
   content was changed.
+- Confirmed root cause: closeout completion is parsed only from the literal
+  `Completed` field. Resolution: add the three exact completed outcomes above
+  and regenerate the receipt-bound handoff; no audit scope or runtime behavior
+  changed.
 
 ### Validation through content freeze
 
