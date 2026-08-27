@@ -273,7 +273,9 @@ def test_checked_in_ledger_uses_lossless_small_file_encoding(
     checked_in = json.loads(_LEDGER_PATH.read_text(encoding="utf-8"))
 
     assert checked_in["encoding"] == "column-dictionary-v1"
-    assert _LEDGER_PATH.stat().st_size < 500 * 1024
+    # The canonical beam facade adds a fourth reconciled surface while the
+    # column-dictionary encoding remains below a compact 512 KiB ceiling.
+    assert _LEDGER_PATH.stat().st_size < 512 * 1024
     assert classification._unpack_compatibility_ledger(checked_in) == ledger
 
 

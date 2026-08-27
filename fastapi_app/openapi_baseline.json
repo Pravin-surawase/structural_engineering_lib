@@ -4438,6 +4438,80 @@
         "title": "Beam3DGeometryModel",
         "type": "object"
       },
+      "BeamActionsV1": {
+        "additionalProperties": false,
+        "description": "Finite non-negative factored action magnitudes.",
+        "properties": {
+          "mu_knm": {
+            "minimum": 0.0,
+            "title": "Mu Knm",
+            "type": "number"
+          },
+          "tu_knm": {
+            "default": 0.0,
+            "minimum": 0.0,
+            "title": "Tu Knm",
+            "type": "number"
+          },
+          "vu_kn": {
+            "minimum": 0.0,
+            "title": "Vu Kn",
+            "type": "number"
+          }
+        },
+        "required": [
+          "mu_knm",
+          "vu_kn"
+        ],
+        "title": "BeamActionsV1",
+        "type": "object"
+      },
+      "BeamCalculationBasisV1": {
+        "additionalProperties": false,
+        "description": "Explicit section/reinforcement values consumed by strength calculation.",
+        "properties": {
+          "ast_mm2_for_shear": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ast Mm2 For Shear"
+          },
+          "asv_mm2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Asv Mm2",
+            "type": "number"
+          },
+          "d_dash_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "D Dash Mm",
+            "type": "number"
+          },
+          "pt_percent": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pt Percent"
+          }
+        },
+        "required": [
+          "d_dash_mm",
+          "asv_mm2"
+        ],
+        "title": "BeamCalculationBasisV1",
+        "type": "object"
+      },
       "BeamCheckRequest": {
         "description": "Request model for checking existing beam with provided reinforcement.",
         "properties": {
@@ -4709,6 +4783,73 @@
           "x_mm"
         ],
         "title": "BeamCrackWidthParams",
+        "type": "object"
+      },
+      "BeamDesignInputV1": {
+        "additionalProperties": false,
+        "description": "Canonical nested request shared by Python and REST v2.",
+        "properties": {
+          "actions": {
+            "$ref": "#/components/schemas/BeamActionsV1"
+          },
+          "calculation_basis": {
+            "$ref": "#/components/schemas/BeamCalculationBasisV1"
+          },
+          "detailing": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BeamDetailingOptionsV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "identity": {
+            "$ref": "#/components/schemas/MemberIdentityV1"
+          },
+          "materials": {
+            "$ref": "#/components/schemas/IS456MaterialsV1"
+          },
+          "schema_version": {
+            "default": "beam-design-input/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "section": {
+            "$ref": "#/components/schemas/RectangularBeamSectionV1"
+          },
+          "serviceability": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BeamServiceabilityV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "source_provenance": {
+            "anyOf": [
+              {
+                "maxLength": 240,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Provenance"
+          }
+        },
+        "required": [
+          "identity",
+          "section",
+          "materials",
+          "actions",
+          "calculation_basis"
+        ],
+        "title": "BeamDesignInputV1",
         "type": "object"
       },
       "BeamDesignRequest": {
@@ -5056,6 +5197,73 @@
           "result_envelope"
         ],
         "title": "BeamDesignResponse",
+        "type": "object"
+      },
+      "BeamDetailingOptionsV1": {
+        "additionalProperties": false,
+        "description": "All caller-owned choices required for detailing and BBS composition.",
+        "properties": {
+          "clear_cover_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Clear Cover Mm",
+            "type": "number"
+          },
+          "compression_bar_diameter_mm": {
+            "maximum": 36.0,
+            "minimum": 8.0,
+            "title": "Compression Bar Diameter Mm",
+            "type": "number"
+          },
+          "nominal_top_steel_ratio": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 1.0,
+            "title": "Nominal Top Steel Ratio",
+            "type": "number"
+          },
+          "standard": {
+            "$ref": "#/components/schemas/DetailingStandard"
+          },
+          "stirrup_diameter_mm": {
+            "maximum": 16.0,
+            "minimum": 6.0,
+            "title": "Stirrup Diameter Mm",
+            "type": "number"
+          },
+          "stirrup_legs": {
+            "maximum": 6.0,
+            "minimum": 2.0,
+            "title": "Stirrup Legs",
+            "type": "integer"
+          },
+          "stirrup_spacing_mid_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Stirrup Spacing Mid Mm",
+            "type": "number"
+          },
+          "stirrup_spacing_support_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Stirrup Spacing Support Mm",
+            "type": "number"
+          },
+          "tension_bar_diameter_mm": {
+            "maximum": 36.0,
+            "minimum": 8.0,
+            "title": "Tension Bar Diameter Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "standard",
+          "clear_cover_mm",
+          "tension_bar_diameter_mm",
+          "compression_bar_diameter_mm",
+          "nominal_top_steel_ratio",
+          "stirrup_diameter_mm",
+          "stirrup_legs",
+          "stirrup_spacing_support_mm",
+          "stirrup_spacing_mid_mm"
+        ],
+        "title": "BeamDetailingOptionsV1",
         "type": "object"
       },
       "BeamDetailingRequest": {
@@ -5693,6 +5901,38 @@
           "cover_mm"
         ],
         "title": "BeamRow",
+        "type": "object"
+      },
+      "BeamServiceabilityV1": {
+        "additionalProperties": false,
+        "description": "Explicit opt-in serviceability parameters consumed by the beam service.",
+        "properties": {
+          "crack_width_params": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crack Width Params"
+          },
+          "deflection_params": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deflection Params"
+          }
+        },
+        "title": "BeamServiceabilityV1",
         "type": "object"
       },
       "BeamWith3D": {
@@ -7545,6 +7785,64 @@
           "normalization_ledger"
         ],
         "title": "CSVImportResponse",
+        "type": "object"
+      },
+      "CanonicalBeamDesignResponseV1": {
+        "additionalProperties": false,
+        "description": "Typed REST v2 projection of ``BeamDesignResultV1``.",
+        "properties": {
+          "assumptions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Assumptions",
+            "type": "array"
+          },
+          "calculation": {
+            "additionalProperties": true,
+            "title": "Calculation",
+            "type": "object"
+          },
+          "envelope": {
+            "$ref": "#/components/schemas/StructuralResultEnvelopeResponse"
+          },
+          "identity": {
+            "$ref": "#/components/schemas/MemberIdentityV1"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "provenance": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Provenance",
+            "type": "array"
+          },
+          "request": {
+            "$ref": "#/components/schemas/BeamDesignInputV1"
+          },
+          "schema_version": {
+            "const": "beam-design-result/v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "identity",
+          "request",
+          "envelope",
+          "calculation",
+          "limitations",
+          "assumptions",
+          "provenance"
+        ],
+        "title": "CanonicalBeamDesignResponseV1",
         "type": "object"
       },
       "CatalogExampleModel": {
@@ -13873,6 +14171,15 @@
         "title": "DesignLimitsResponse",
         "type": "object"
       },
+      "DetailingStandard": {
+        "description": "Explicit detailing ruleset selected by the caller.",
+        "enum": [
+          "IS456",
+          "IS13920"
+        ],
+        "title": "DetailingStandard",
+        "type": "string"
+      },
       "DevelopmentLengthResponse": {
         "description": "One development-length calculation with explicit inputs and clause.",
         "properties": {
@@ -14132,6 +14439,34 @@
           "clause_refs"
         ],
         "title": "DuctilityCheckResponse",
+        "type": "object"
+      },
+      "EffectiveDepthBasisRequestV1": {
+        "additionalProperties": false,
+        "description": "Complete basis for deriving effective depth without hidden arithmetic.",
+        "properties": {
+          "clear_cover_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Clear Cover Mm",
+            "type": "number"
+          },
+          "stirrup_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Stirrup Diameter Mm",
+            "type": "number"
+          },
+          "tension_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Tension Bar Diameter Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "clear_cover_mm",
+          "stirrup_diameter_mm",
+          "tension_bar_diameter_mm"
+        ],
+        "title": "EffectiveDepthBasisRequestV1",
         "type": "object"
       },
       "EffectiveDepthBasisResponse": {
@@ -21275,6 +21610,30 @@
         "title": "IS456FieldContractModel",
         "type": "object"
       },
+      "IS456MaterialsV1": {
+        "additionalProperties": false,
+        "description": "Explicit supported material strengths in N/mm2.",
+        "properties": {
+          "fck_nmm2": {
+            "maximum": 40.0,
+            "minimum": 15.0,
+            "title": "Fck Nmm2",
+            "type": "number"
+          },
+          "fy_nmm2": {
+            "maximum": 500.0,
+            "minimum": 250.0,
+            "title": "Fy Nmm2",
+            "type": "number"
+          }
+        },
+        "required": [
+          "fck_nmm2",
+          "fy_nmm2"
+        ],
+        "title": "IS456MaterialsV1",
+        "type": "object"
+      },
       "IS456SemanticContractModel": {
         "description": "Units, aliases, statuses, and limitations for supported routes.",
         "properties": {
@@ -22168,6 +22527,37 @@
           "highlight"
         ],
         "title": "MaterialAppearancesResponse",
+        "type": "object"
+      },
+      "MemberIdentityV1": {
+        "additionalProperties": false,
+        "description": "Distinct, stable identities for the member, storey, and load case.",
+        "properties": {
+          "case_id": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Case Id",
+            "type": "string"
+          },
+          "member_id": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Member Id",
+            "type": "string"
+          },
+          "story": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Story",
+            "type": "string"
+          }
+        },
+        "required": [
+          "member_id",
+          "story",
+          "case_id"
+        ],
+        "title": "MemberIdentityV1",
         "type": "object"
       },
       "MeshData": {
@@ -24226,6 +24616,64 @@
           "validation"
         ],
         "title": "RebarValidateResponse",
+        "type": "object"
+      },
+      "RectangularBeamSectionV1": {
+        "additionalProperties": false,
+        "description": "Rectangular section with one explicit effective-depth basis.",
+        "properties": {
+          "D_mm": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 3000.0,
+            "title": "D Mm",
+            "type": "number"
+          },
+          "b_mm": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 2000.0,
+            "title": "B Mm",
+            "type": "number"
+          },
+          "d_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "D Mm"
+          },
+          "effective_depth_basis": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EffectiveDepthBasisRequestV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "span_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Span Mm"
+          }
+        },
+        "required": [
+          "b_mm",
+          "D_mm"
+        ],
+        "title": "RectangularBeamSectionV1",
         "type": "object"
       },
       "RegularInteriorFlatSlabProvenanceResponse": {
@@ -29921,7 +30369,7 @@
       "name": "Structural Engineering Library",
       "url": "https://github.com/yourusername/structural_engineering_lib"
     },
-    "description": "\n## IS 456:2000 Compliant Structural Engineering Library\n\nThis API exposes the library's route-specific supported IS 456:2000 reinforced\nconcrete calculations. Each result remains subject to the documented case\nboundary and qualified engineering review.\n\n### Features\n\n- **Beam Design**: Flexure, shear, and combined design calculations\n- **Column Design**: Bounded rectangular short/long-column workflows\n- **Footing Design**: Isolated-footing checks and concentric load transfer\n- **Slab Design**: Bounded simply supported one-way slab strip\n- **Staircase Design**: Bounded longitudinal straight waist-slab flight\n- **Wall Design**: Bounded Clause 32 braced-wall axial and reinforcement checks\n- **Deep-Beam Design**: Bounded Clause 29 simply supported positive-reinforcement checks\n- **Flat-Slab Design**: Bounded regular interior direct-design and punching checks\n- **Combined-Footing Design**: Bounded symmetric two-column rigid-footing checks\n- **Strap-Footing Design**: Bounded property-line no-soil-contact strap checks\n- **Detailing**: Reinforcement layout, spacing, and development lengths\n- **Optimization**: Cost-optimized beam cross-section selection\n- **Smart Analysis**: AI-assisted design suggestions and insights\n- **3D Geometry**: Visualization-ready mesh generation\n\n### Design Codes\n\n- IS 456:2000 - Plain and Reinforced Concrete\n- IS 13920 - Ductile Detailing for Seismic Resistance\n\n### Units\n\nAll inputs and outputs use consistent units:\n- **Length**: millimeters (mm)\n- **Force**: kilonewtons (kN)\n- **Moment**: kilonewton-meters (kN\u00b7m)\n- **Stress**: N/mm\u00b2 (MPa)\n- **Area**: mm\u00b2\n",
+    "description": "\n## IS 456:2000 Compliant Structural Engineering Library\n\nThis API exposes the library's route-specific supported IS 456:2000 reinforced\nconcrete calculations. Each result remains inside its documented case\nboundary. Engineer review is one final-stage activity after the integrated\nlibrary is complete, not an intermediate API-development gate.\n\n### Features\n\n- **Beam Design**: Flexure, shear, and combined design calculations\n- **Column Design**: Bounded rectangular short/long-column workflows\n- **Footing Design**: Isolated-footing checks and concentric load transfer\n- **Slab Design**: Bounded simply supported one-way slab strip\n- **Staircase Design**: Bounded longitudinal straight waist-slab flight\n- **Wall Design**: Bounded Clause 32 braced-wall axial and reinforcement checks\n- **Deep-Beam Design**: Bounded Clause 29 simply supported positive-reinforcement checks\n- **Flat-Slab Design**: Bounded regular interior direct-design and punching checks\n- **Combined-Footing Design**: Bounded symmetric two-column rigid-footing checks\n- **Strap-Footing Design**: Bounded property-line no-soil-contact strap checks\n- **Detailing**: Reinforcement layout, spacing, and development lengths\n- **Optimization**: Cost-optimized beam cross-section selection\n- **Smart Analysis**: AI-assisted design suggestions and insights\n- **3D Geometry**: Visualization-ready mesh generation\n\n### Design Codes\n\n- IS 456:2000 - Plain and Reinforced Concrete\n- IS 13920 - Ductile Detailing for Seismic Resistance\n\n### Units\n\nAll inputs and outputs use consistent units:\n- **Length**: millimeters (mm)\n- **Force**: kilonewtons (kN)\n- **Moment**: kilonewton-meters (kN\u00b7m)\n- **Stress**: N/mm\u00b2 (MPa)\n- **Area**: mm\u00b2\n",
     "license": {
       "name": "MIT License",
       "url": "https://opensource.org/licenses/MIT"
@@ -40067,6 +40515,128 @@
         "summary": "Validate the bounded beam workflow",
         "tags": [
           "workflows"
+        ]
+      }
+    },
+    "/api/v2/design/beam": {
+      "post": {
+        "description": "Return the same nested request, issues, and result contract as Python.",
+        "operationId": "design_beam_v2_api_v2_design_beam_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BeamDesignInputV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CanonicalBeamDesignResponseV1"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Authentication required"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "State conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Concurrency or rate limit"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Internal application error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Capability unavailable"
+          }
+        },
+        "summary": "Run the canonical IS 456 rectangular-beam design journey",
+        "tags": [
+          "design-v2"
         ]
       }
     },

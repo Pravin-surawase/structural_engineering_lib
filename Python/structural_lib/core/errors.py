@@ -17,6 +17,7 @@ Related: TASK-212 (Create exception hierarchy)
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from enum import StrEnum
 from typing import Any
@@ -93,6 +94,67 @@ class ValidationError(StructuralLibError):
         ...     clause_ref="Cl. 26.5.1.1"
         ... )
     """
+
+
+@dataclass(frozen=True)
+class InputIssueV1:
+    """One stable, serialization-safe public-input issue."""
+
+    code: str
+    path: str
+    message: str
+    received: Any | None = None
+    constraint: str | None = None
+    allowed_values: tuple[str, ...] | None = None
+    suggestion: str | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        """Return the maintained ``input-issue/v1`` representation."""
+
+        return {
+            "schema_version": "input-issue/v1",
+            "code": self.code,
+            "path": self.path,
+            "message": self.message,
+            "received": self.received,
+            "constraint": self.constraint,
+            "allowed_values": (
+                list(self.allowed_values) if self.allowed_values is not None else None
+            ),
+            "suggestion": self.suggestion,
+        }
+
+
+class InputContractError(ValidationError):
+    """Public boundary error containing one or more structured input issues."""
+
+    def __init__(self, issues: Sequence[InputIssueV1]):
+        normalized = tuple(issues)
+        if not normalized:
+            raise ValueError("InputContractError requires at least one issue.")
+        if not all(isinstance(issue, InputIssueV1) for issue in normalized):
+            raise TypeError("issues must contain only InputIssueV1 records.")
+        self.issues = normalized
+        summary = "; ".join(
+            f"{issue.path}: {issue.message}" for issue in normalized[:3]
+        )
+        if len(normalized) > 3:
+            summary += f"; and {len(normalized) - 3} more issue(s)"
+        super().__init__(
+            f"Input contract rejected {len(normalized)} issue(s): {summary}",
+            details={"issues": [issue.to_dict() for issue in normalized]},
+            suggestion="Correct the listed fields and submit the complete request again.",
+        )
+
+    def to_problem(self) -> dict[str, Any]:
+        """Return the transport-neutral ``structural-problem/v1`` payload."""
+
+        return {
+            "schema_version": "structural-problem/v1",
+            "code": "INPUT_CONTRACT_INVALID",
+            "message": self.message,
+            "details": {"issues": [issue.to_dict() for issue in self.issues]},
+        }
 
 
 class DesignConstraintError(StructuralLibError):

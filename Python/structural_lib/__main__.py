@@ -19,6 +19,7 @@ Usage:
     python -m structural_lib excel-v1 preview workbook-table.json
     python -m structural_lib excel-v1 run workbook-table.json --mapping-hash HASH
     python -m structural_lib mark-diff --bbs schedule.csv --dxf drawings.dxf
+    python -m structural_lib beam-v1 request.json --mode design
 
 This module provides a unified command-line interface with subcommands
 for beam design, bar bending schedules, DXF generation, job processing,
@@ -147,6 +148,83 @@ def cmd_gravity_v1(args: argparse.Namespace) -> int:
         output_path.write_text(output, encoding="utf-8")
     else:
         print(output, end="" if output.endswith("\n") else "\n")
+    return 0
+
+
+def cmd_beam_v1(args: argparse.Namespace) -> int:
+    """Run the canonical nested beam request without dictionary guessing."""
+
+    from structural_lib.core.errors import InputContractError
+    from structural_lib.design.is456 import beam
+
+    try:
+        input_path = Path(args.input)
+        if not input_path.is_file():
+            raise InputContractError(
+                (
+                    beam.InputIssueV1(
+                        code="INPUT_FILE_NOT_FOUND",
+                        path="input",
+                        message="canonical beam request file was not found",
+                        received=str(input_path),
+                    ),
+                )
+            )
+        request = beam.load(json.loads(input_path.read_text(encoding="utf-8")))
+        if args.mode == "design":
+            payload = beam.design(request).to_dict()
+        else:
+            if request.detailing is None:
+                raise InputContractError(
+                    (
+                        beam.InputIssueV1(
+                            code="DOWNSTREAM_INPUT_MISSING",
+                            path="detailing",
+                            message=f"detailing is required for {args.mode}",
+                        ),
+                    )
+                )
+            combined = beam.design_and_detail(
+                request, detailing_standard=request.detailing.standard
+            )
+            payload = (
+                combined.to_dict()
+                if args.mode == "design-and-detail"
+                else beam.bbs(combined).to_dict()
+            )
+        output = (
+            json.dumps(
+                payload,
+                allow_nan=False,
+                ensure_ascii=True,
+                indent=2,
+                sort_keys=True,
+            )
+            + "\n"
+        )
+    except (InputContractError, json.JSONDecodeError) as exc:
+        problem = (
+            exc.to_problem()
+            if isinstance(exc, InputContractError)
+            else {
+                "schema_version": "structural-problem/v1",
+                "code": "INPUT_JSON_INVALID",
+                "message": str(exc),
+                "details": None,
+            }
+        )
+        print(json.dumps(problem, allow_nan=False, sort_keys=True), file=sys.stderr)
+        return 2
+    except OSError as exc:
+        _print_error(f"Canonical beam request could not be read: {exc}")
+        return 1
+
+    if args.output:
+        output_path = Path(args.output)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(output, encoding="utf-8")
+    else:
+        print(output, end="")
     return 0
 
 
@@ -1254,9 +1332,9 @@ def cmd_capabilities(args: argparse.Namespace) -> int:
     print(f"Capability schema: {document['schema_version']}")
     for capability in document["capabilities"]:
         review = (
-            "qualified review required"
+            "final engineer review remains deferred until the integrated library"
             if capability["qualified_review_required"]
-            else "no qualified review flag"
+            else "no final review flag"
         )
         print(f"- {capability['capability_id']}: {capability['supported_case']}")
         for held_case in capability["held_cases"]:
@@ -1293,6 +1371,8 @@ def cmd_install_preflight(args: argparse.Namespace) -> int:
         "runtime_identity": runtime_identity.to_dict(),
         "optional_extras": optional_extras,
         "qualified_review_required": True,
+        "professional_review_is_intermediate_programme_gate": False,
+        "final_engineer_review_stage": "DEFERRED_UNTIL_INTEGRATED_LIBRARY",
         "repair_command": (
             f"{sys.executable} -m pip install --upgrade "
             f'"structural-lib-is456==={version}"'
@@ -1344,7 +1424,7 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Show the supported and held IS 456 capability contract",
         description=(
             "Show the canonical supported/held workflow, unit, limitation, and "
-            "qualified-review contract for this library version."
+            "final-review claim boundary for this library version."
         ),
     )
     capabilities_parser.add_argument(
@@ -1354,6 +1434,25 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Emit the canonical machine-readable JSON contract",
     )
     capabilities_parser.set_defaults(func=cmd_capabilities)
+
+    beam_v1_parser = subparsers.add_parser(
+        "beam-v1",
+        help="Run the canonical beam-design-input/v1 JSON contract",
+        description=(
+            "Validate one nested canonical beam request, then emit a design, "
+            "combined detailing, or BBS result without partial artifacts."
+        ),
+    )
+    beam_v1_parser.add_argument("input", help="BeamDesignInputV1 JSON file")
+    beam_v1_parser.add_argument(
+        "--mode",
+        choices=["design", "design-and-detail", "bbs"],
+        default="design",
+    )
+    beam_v1_parser.add_argument(
+        "-o", "--output", help="Output JSON file (if omitted, prints to stdout)"
+    )
+    beam_v1_parser.set_defaults(func=cmd_beam_v1)
 
     gravity_parser = subparsers.add_parser(
         "gravity-v1",

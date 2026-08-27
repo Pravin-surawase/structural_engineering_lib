@@ -44,6 +44,7 @@ from fastapi_app.routers import (
     combined_footing,
     deep_beam,
     design,
+    design_v2,
     detailing,
     excel_workbench,
     export,
@@ -75,8 +76,9 @@ API_DESCRIPTION = """
 ## IS 456:2000 Compliant Structural Engineering Library
 
 This API exposes the library's route-specific supported IS 456:2000 reinforced
-concrete calculations. Each result remains subject to the documented case
-boundary and qualified engineering review.
+concrete calculations. Each result remains inside its documented case
+boundary. Engineer review is one final-stage activity after the integrated
+library is complete, not an intermediate API-development gate.
 
 ### Features
 
@@ -243,14 +245,27 @@ async def request_validation_error_handler(
     request: Request, exc: RequestValidationError
 ) -> JSONResponse:
     """Map every Pydantic request failure to the maintained API envelope."""
+    if request.url.path.startswith("/api/v2/"):
+        from structural_lib.services.contracts.common import (
+            input_issues_from_details,
+        )
+
+        issues = input_issues_from_details(exc.errors(), drop_location_prefix="body")
+        error = {
+            "code": "INPUT_CONTRACT_INVALID",
+            "message": f"Input contract rejected {len(issues)} issue(s).",
+            "details": {"issues": [issue.to_dict() for issue in issues]},
+        }
+    else:
+        error = {
+            "code": "REQUEST_VALIDATION_ERROR",
+            "message": "Request validation failed",
+            "details": jsonable_encoder(exc.errors()),
+        }
     return JSONResponse(
         status_code=422,
         content=error_response(
-            {
-                "code": "REQUEST_VALIDATION_ERROR",
-                "message": "Request validation failed",
-                "details": jsonable_encoder(exc.errors()),
-            },
+            error,
             request_id=getattr(request.state, "request_id", None),
         ),
     )
@@ -433,9 +448,24 @@ try:
         ComplianceError,
         ConfigurationError,
         DesignConstraintError,
+        InputContractError,
         StructuralLibError,
         ValidationError,
     )
+
+    @app.exception_handler(InputContractError)
+    async def input_contract_error_handler(
+        request: Request, exc: InputContractError
+    ) -> JSONResponse:
+        """Preserve canonical issue codes and paths at transport boundaries."""
+
+        return JSONResponse(
+            status_code=422,
+            content=error_response(
+                exc.to_problem(),
+                request_id=getattr(request.state, "request_id", None),
+            ),
+        )
 
     @app.exception_handler(ValidationError)
     async def validation_error_handler(request: Request, exc: ValidationError):
@@ -594,6 +624,7 @@ app.include_router(
     design.router,
     prefix=API_V1_PREFIX,
 )
+app.include_router(design_v2.router)
 app.include_router(
     capabilities.router,
     prefix=API_V1_PREFIX,

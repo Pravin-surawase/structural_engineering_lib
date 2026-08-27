@@ -1246,6 +1246,10 @@ def create_beam_detailing(
     stirrup_spacing_mid: float = 200,
     stirrup_spacing_end: float = 150,
     is_seismic: bool = False,
+    preferred_tension_bar_dia: float | None = None,
+    preferred_compression_bar_dia: float | None = None,
+    nominal_top_steel_ratio: float = 0.25,
+    stirrup_legs: int | None = None,
 ) -> BeamDetailingResult:
     """
     Create complete beam detailing from design output.
@@ -1270,6 +1274,10 @@ def create_beam_detailing(
         stirrup_spacing_mid: Stirrup spacing at mid (mm)
         stirrup_spacing_end: Stirrup spacing at end (mm)
         is_seismic: Apply IS 13920 requirements
+        preferred_tension_bar_dia: First tension-bar diameter to try.
+        preferred_compression_bar_dia: First top/compression diameter to try.
+        nominal_top_steel_ratio: Explicit drafting ratio used only when Asc is zero.
+        stirrup_legs: Explicit number of legs, or compatibility auto-selection.
 
     Returns:
         BeamDetailingResult with complete detailing information
@@ -1320,6 +1328,24 @@ def create_beam_detailing(
         stirrup_spacing_end, "stirrup_spacing_end"
     )
     is_seismic = require_strict_bool(is_seismic, "is_seismic")
+    nominal_top_steel_ratio = require_positive_real(
+        nominal_top_steel_ratio, "nominal_top_steel_ratio"
+    )
+    if nominal_top_steel_ratio > 1:
+        raise ValueError("nominal_top_steel_ratio must be <= 1.")
+    for name, value in (
+        ("preferred_tension_bar_dia", preferred_tension_bar_dia),
+        ("preferred_compression_bar_dia", preferred_compression_bar_dia),
+    ):
+        if value is not None:
+            require_positive_real(value, name)
+            if value not in STANDARD_BAR_DIAMETERS:
+                raise ValueError(f"{name} must be one of {STANDARD_BAR_DIAMETERS}.")
+    if stirrup_legs is not None:
+        if isinstance(stirrup_legs, bool) or not isinstance(stirrup_legs, int):
+            raise ValueError("stirrup_legs must be an integer.")
+        if stirrup_legs < 2:
+            raise ValueError("stirrup_legs must be >= 2.")
 
     if not 15 <= fck <= 80:
         raise ValueError("fck must be between 15 and 80 N/mm².")
@@ -1340,30 +1366,51 @@ def create_beam_detailing(
     # This is a drafting aid only; callers should provide explicit Asc when known.
     if asc_start <= 0 and ast_start > 0:
         assumption_notes.append(
-            "Top steel at start defaulted to 0.25×Ast (Asc not provided)."
+            f"Top steel at start used caller-selected {nominal_top_steel_ratio:g}×Ast "
+            "(Asc was zero)."
         )
     if asc_mid <= 0 and ast_mid > 0:
         assumption_notes.append(
-            "Top steel at mid defaulted to 0.25×Ast (Asc not provided)."
+            f"Top steel at mid used caller-selected {nominal_top_steel_ratio:g}×Ast "
+            "(Asc was zero)."
         )
     if asc_end <= 0 and ast_end > 0:
         assumption_notes.append(
-            "Top steel at end defaulted to 0.25×Ast (Asc not provided)."
+            f"Top steel at end used caller-selected {nominal_top_steel_ratio:g}×Ast "
+            "(Asc was zero)."
         )
 
     top_start = select_bar_arrangement(
-        asc_start if asc_start > 0 else ast_start * 0.25, b, cover, stirrup_dia
+        asc_start if asc_start > 0 else ast_start * nominal_top_steel_ratio,
+        b,
+        cover,
+        stirrup_dia,
+        preferred_dia=preferred_compression_bar_dia,
     )
     top_mid = select_bar_arrangement(
-        asc_mid if asc_mid > 0 else ast_mid * 0.25, b, cover, stirrup_dia
+        asc_mid if asc_mid > 0 else ast_mid * nominal_top_steel_ratio,
+        b,
+        cover,
+        stirrup_dia,
+        preferred_dia=preferred_compression_bar_dia,
     )
     top_end = select_bar_arrangement(
-        asc_end if asc_end > 0 else ast_end * 0.25, b, cover, stirrup_dia
+        asc_end if asc_end > 0 else ast_end * nominal_top_steel_ratio,
+        b,
+        cover,
+        stirrup_dia,
+        preferred_dia=preferred_compression_bar_dia,
     )
 
-    bot_start = select_bar_arrangement(ast_start, b, cover, stirrup_dia)
-    bot_mid = select_bar_arrangement(ast_mid, b, cover, stirrup_dia)
-    bot_end = select_bar_arrangement(ast_end, b, cover, stirrup_dia)
+    bot_start = select_bar_arrangement(
+        ast_start, b, cover, stirrup_dia, preferred_dia=preferred_tension_bar_dia
+    )
+    bot_mid = select_bar_arrangement(
+        ast_mid, b, cover, stirrup_dia, preferred_dia=preferred_tension_bar_dia
+    )
+    bot_end = select_bar_arrangement(
+        ast_end, b, cover, stirrup_dia, preferred_dia=preferred_tension_bar_dia
+    )
 
     # Use max diameter for Ld
     max_dia = max(
@@ -1381,7 +1428,7 @@ def create_beam_detailing(
     lap_length = calculate_lap_length(max_dia, fck, fy, is_seismic=is_seismic)
 
     # Stirrup arrangements
-    legs = get_stirrup_legs(b)
+    legs = stirrup_legs if stirrup_legs is not None else get_stirrup_legs(b)
     zone_length = span / 4  # Approximate zone lengths
 
     stirrups = [

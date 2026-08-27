@@ -1,0 +1,228 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-27T17:42:46Z",
+      "query_status": "OK",
+      "reference": "Owner approved all internal decisions needed to continue and removed professional approval as an intermediate stage, deferring engineer review until the complete library is ready.",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "IMPLEMENT_LIB_PRO_012_PACKETS_C_D_E_AS_B0",
+      "EDIT_B0_RUNTIME_TEST_DOCUMENTATION_GENERATED_AND_COMPATIBILITY_OWNERS",
+      "FREEZE_EXACT_SOURCE_WHEEL_AND_TRANSPORT_EVIDENCE",
+      "COMMIT_PUSH_CREATE_PR_AND_MERGE_UNCHANGED_GREEN_HEAD",
+      "PROCEED_TO_F0_AFTER_ACCEPTED_B0_WITHOUT_INTERMEDIATE_PROFESSIONAL_REVIEW",
+      "CREATE_IMMUTABLE_B0_CANDIDATE_THEN_PUSH_PR_CHECK_AND_MERGE_UNCHANGED_GREEN_HEAD"
+    ],
+    "next_action": "CREATE_IMMUTABLE_B0_CANDIDATE_THEN_PUSH_PR_CHECK_AND_MERGE_UNCHANGED_GREEN_HEAD",
+    "observed_at_utc": "2026-08-27T17:42:46Z",
+    "prohibited_actions": [
+      "CLAIM_PROFESSIONAL_APPROVAL_ENGINEERING_USE_OR_WHOLE_LIBRARY_READINESS",
+      "START_F0_BEFORE_ACCEPTED_B0_OR_START_R0_BEFORE_ACCEPTED_F0",
+      "PUBLISH_VERSION_TAG_RELEASE_OR_PACKAGE_WITHOUT_EXACT_RELEASE_AUTHORITY",
+      "TRACK_PROTECTED_STANDARD_PROSE_IMAGES_OR_PRIVATE_SOURCE_CONTENT",
+      "DELETE_BRANCH_WORKTREE_REF_ARCHIVE_OR_RETAINED_DATA",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_REWRITE_FORCE_PUSH_OR_BYPASS_CHECKS"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "IMPLEMENT_LIB_PRO_012_PACKETS_C_D_E_AS_B0",
+        "EDIT_B0_RUNTIME_TEST_DOCUMENTATION_GENERATED_AND_COMPATIBILITY_OWNERS",
+        "FREEZE_EXACT_SOURCE_WHEEL_AND_TRANSPORT_EVIDENCE",
+        "COMMIT_PUSH_CREATE_PR_AND_MERGE_UNCHANGED_GREEN_HEAD",
+        "PROCEED_TO_F0_AFTER_ACCEPTED_B0_WITHOUT_INTERMEDIATE_PROFESSIONAL_REVIEW",
+        "CREATE_IMMUTABLE_B0_CANDIDATE_THEN_PUSH_PR_CHECK_AND_MERGE_UNCHANGED_GREEN_HEAD"
+      ],
+      "branch": "codex/lib-pro-013-b0-common-contract-convergence",
+      "head_sha": "db6905c3c6b84e43b4a8ecfa2f55da260fbec3bd",
+      "task_id": "LIB-PRO-013-B0-COMMON-CONTRACT-CONVERGENCE"
+    }
+  },
+  "holds": [
+    "BRANCH_WORKTREE_REF_ARCHIVE_AND_PROTECTED_SOURCE_DELETION_NOT_AUTHORIZED",
+    "LOCAL_HOLD_DIRTY",
+    "PRESERVE_DIRTY_DETACHED_E54A_LANE",
+    "PRESERVE_EVERY_UNRELATED_DIRTY_STAGED_UNTRACKED_STASHED_DETACHED_OR_IGNORED_ITEM",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "observed_at_utc": "2026-08-27T17:42:46Z",
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_B0_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "d446cb2e07a42aea7afc90f7f89c92b8891f76845683c2cb8049cd35515252b9",
+    "state": {
+      "branch": "codex/lib-pro-013-b0-common-contract-convergence",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "db6905c3c6b84e43b4a8ecfa2f55da260fbec3bd",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 111.8,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib6",
+      "head_sha": "db6905c3c6b84e43b4a8ecfa2f55da260fbec3bd",
+      "hold_reasons": [
+        "changed paths: 44"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-27T17:43:53.997797+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/58cc/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 44,
+        "modified_paths": [],
+        "staged_paths": [
+          "Python/structural_lib/__main__.py",
+          "Python/structural_lib/codes/is456/beam/detailing.py",
+          "Python/structural_lib/core/errors.py",
+          "Python/structural_lib/data/advertised_entry_points_v1.json",
+          "Python/structural_lib/design/__init__.py",
+          "Python/structural_lib/design/is456/__init__.py",
+          "Python/structural_lib/design/is456/beam.py",
+          "Python/structural_lib/services/beam_api.py",
+          "Python/structural_lib/services/canonical_beam.py",
+          "Python/structural_lib/services/contracts/__init__.py",
+          "Python/structural_lib/services/contracts/beam.py",
+          "Python/structural_lib/services/contracts/common.py",
+          "Python/tests/integration/test_canonical_beam_facade.py",
+          "Python/tests/test_api_classification.py",
+          "Python/tests/test_compatibility_convergence.py",
+          "Python/tests/test_generated_clients.py",
+          "Python/tests/test_packaging.py",
+          "Python/tests/test_release_uat.py",
+          "clients/python/structural_client/client.py",
+          "clients/typescript/src/index.ts",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/cookbook/python-recipes.md",
+          "docs/cookbook/python/beam.md",
+          "docs/getting-started/python-quickstart.md",
+          "docs/guides/external-contracts.md",
+          "docs/migration/external-python-api-v1.md",
+          "docs/planning/lib-pro-012-external-api-remediation-plan.md",
+          "docs/planning/lib-pro-013-whole-library-renewal-audit-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/reference/api-classification.json",
+          "docs/reference/api-compatibility-ledger.json",
+          "docs/verification/lib-pro-013-b0-common-contract-evidence.json",
+          "docs/verification/lib-pro-013-b0-common-contract-git-handoff-receipt.json",
+          "docs/verification/lib-pro-013-b0-common-contract-git-handoff-source-evidence.json",
+          "docs/verification/lib-pro-013-owner-sequencing-decision.json",
+          "fastapi_app/main.py",
+          "fastapi_app/models/canonical_beam.py",
+          "fastapi_app/openapi_baseline.json",
+          "fastapi_app/routers/__init__.py",
+          "fastapi_app/routers/design_v2.py",
+          "fastapi_app/tests/test_canonical_beam_v2.py",
+          "scripts/generate_api_classification.py",
+          "scripts/generate_client_sdks.py"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "db6905c3c6b84e43b4a8ecfa2f55da260fbec3bd",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/58cc/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:d446cb2e07a42aea7afc90f7f89c92b8891f76845683c2cb8049cd35515252b9",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-27T17:43:53.997956+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_ALL_UNRELATED_WORKTREES_REFS_ARCHIVES_IGNORED_DATA_AND_PROTECTED_SOURCES",
+    "holds": [
+      "PRESERVE_DIRTY_DETACHED_E54A_LANE",
+      "PRESERVE_EVERY_UNRELATED_DIRTY_STAGED_UNTRACKED_STASHED_DETACHED_OR_IGNORED_ITEM",
+      "BRANCH_WORKTREE_REF_ARCHIVE_AND_PROTECTED_SOURCE_DELETION_NOT_AUTHORIZED"
+    ],
+    "observed_at_utc": "2026-08-27T17:42:46Z",
+    "owner": "Main agent under owner and repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources",
+      "react_app",
+      "pyproject.toml",
+      "CHANGELOG.md"
+    ],
+    "integration_owner": "structural-math",
+    "owned_paths": [
+      "Python/structural_lib/design",
+      "Python/structural_lib/services/contracts",
+      "Python/structural_lib/services/canonical_beam.py",
+      "docs/verification/lib-pro-013-b0-common-contract-evidence.json",
+      "docs/verification/lib-pro-013-owner-sequencing-decision.json",
+      "docs/verification/lib-pro-013-b0-common-contract-git-handoff-source-evidence.json",
+      "docs/verification/lib-pro-013-b0-common-contract-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "Python/structural_lib/core/errors.py",
+      "Python/structural_lib/services/beam_api.py",
+      "Python/structural_lib/codes/is456/beam/detailing.py",
+      "Python/structural_lib/__main__.py",
+      "Python/structural_lib/data/advertised_entry_points_v1.json",
+      "Python/tests",
+      "fastapi_app",
+      "clients",
+      "scripts/generate_api_classification.py",
+      "scripts/generate_client_sdks.py",
+      "docs/reference/api-classification.json",
+      "docs/reference/api-compatibility-ledger.json",
+      "docs/cookbook",
+      "docs/guides",
+      "docs/migration",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/lib-pro-012-external-api-remediation-plan.md",
+      "docs/planning/lib-pro-013-whole-library-renewal-audit-plan.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "LIB-PRO-013-B0-COMMON-CONTRACT-CONVERGENCE"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

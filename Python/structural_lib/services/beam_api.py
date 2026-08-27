@@ -517,42 +517,179 @@ def compute_bbs(
         >>> print(f"Total steel: {bbs_doc.summary.total_weight_kg:.1f} kg")
         Total steel: 1234.5 kg
     """
-    if isinstance(detailing_list, DesignAndDetailResult):
+    from structural_lib.core.errors import InputContractError, InputIssueV1
+    from structural_lib.services.canonical_beam import (
+        BeamDesignAndDetailResultV1,
+        BeamDetailingResultV1,
+    )
+
+    if isinstance(detailing_list, BeamDesignAndDetailResultV1):
+        if not detailing_list.is_ok:
+            raise InputContractError(
+                (
+                    InputIssueV1(
+                        code="CONSUMER_RESULT_NOT_ACCEPTED",
+                        path="detailing_list.engineering_status",
+                        message="BBS requires an accepted canonical combined result",
+                        received=detailing_list.engineering_status.value,
+                    ),
+                )
+            )
+        normalized = [detailing_list.detailing.detailing]
+    elif isinstance(detailing_list, BeamDetailingResultV1):
+        if not detailing_list.is_ok:
+            raise InputContractError(
+                (
+                    InputIssueV1(
+                        code="CONSUMER_RESULT_NOT_ACCEPTED",
+                        path="detailing_list.engineering_status",
+                        message="BBS requires accepted canonical detailing",
+                        received=detailing_list.engineering_status.value,
+                    ),
+                )
+            )
+        normalized = [detailing_list.detailing]
+    elif isinstance(detailing_list, DesignAndDetailResult):
         normalized = [detailing_list.detailing]
     elif isinstance(detailing_list, detailing.BeamDetailingResult):
         normalized = [detailing_list]
     elif isinstance(detailing_list, Sequence) and not isinstance(
         detailing_list, (str, bytes)
     ):
-        normalized = list(detailing_list)
+        values = list(detailing_list)
+        rejected = [
+            value
+            for value in values
+            if isinstance(value, BeamDetailingResultV1) and not value.is_ok
+        ]
+        if rejected:
+            raise InputContractError(
+                (
+                    InputIssueV1(
+                        code="CONSUMER_RESULT_NOT_ACCEPTED",
+                        path="detailing_list",
+                        message="BBS sequence contains an unaccepted canonical result",
+                    ),
+                )
+            )
+        normalized = [
+            value.detailing if isinstance(value, BeamDetailingResultV1) else value
+            for value in values
+        ]
     else:
-        raise TypeError(
-            "compute_bbs() requires DesignAndDetailResult, BeamDetailingResult, "
-            "or a sequence of BeamDetailingResult values."
+        raise InputContractError(
+            (
+                InputIssueV1(
+                    code="CONSUMER_TYPE_INVALID",
+                    path="detailing_list",
+                    message=(
+                        "compute_bbs requires a combined result, detailing result, "
+                        "or a sequence of detailing results"
+                    ),
+                    received=f"<{type(detailing_list).__name__}>",
+                ),
+            )
+        )
+    if not normalized:
+        raise InputContractError(
+            (
+                InputIssueV1(
+                    code="COLLECTION_EMPTY",
+                    path="detailing_list",
+                    message="at least one detailing result is required",
+                ),
+            )
+        )
+    if not all(
+        isinstance(value, detailing.BeamDetailingResult) for value in normalized
+    ):
+        raise InputContractError(
+            (
+                InputIssueV1(
+                    code="CONSUMER_TYPE_INVALID",
+                    path="detailing_list",
+                    message="every sequence member must be a detailing result",
+                ),
+            )
+        )
+    if not all(value.is_valid for value in normalized):
+        raise InputContractError(
+            (
+                InputIssueV1(
+                    code="CONSUMER_RESULT_NOT_ACCEPTED",
+                    path="detailing_list",
+                    message="BBS requires valid complete detailing results",
+                ),
+            )
         )
     return bbs.generate_bbs_document(normalized, project_name=project_name)
 
 
 def export_bbs(
-    bbs_doc: bbs.BBSDocument,
+    bbs_doc: object,
     path: str | Path,
     *,
     fmt: str = "csv",
 ) -> Path:
-    """Export a BBS document to CSV or JSON."""
+    """Export a named compatibility or canonical BBS result to CSV/JSON."""
+    from structural_lib.core.errors import InputContractError, InputIssueV1
+    from structural_lib.services.canonical_beam import BeamBBSResultV1
+
     output_path = Path(path)
     fmt_lower = fmt.lower()
+    if fmt_lower not in {"csv", "json"}:
+        raise InputContractError(
+            (
+                InputIssueV1(
+                    code="CONSUMER_FORMAT_NOT_SUPPORTED",
+                    path="fmt",
+                    message="BBS export format must be csv or json",
+                    received=fmt,
+                    allowed_values=("csv", "json"),
+                ),
+            )
+        )
 
-    if output_path.suffix.lower() == ".json" or fmt_lower == "json":
-        bbs.export_bbs_to_json(bbs_doc, str(output_path))
+    if isinstance(bbs_doc, BeamBBSResultV1):
+        if output_path.suffix.lower() == ".json" or fmt_lower == "json":
+            import json
+
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            output_path.write_text(
+                json.dumps(
+                    bbs_doc.to_dict(),
+                    allow_nan=False,
+                    ensure_ascii=True,
+                    indent=2,
+                    sort_keys=True,
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+        else:
+            bbs.export_bbs_to_csv(list(bbs_doc.items), str(output_path))
+    elif isinstance(bbs_doc, bbs.BBSDocument):
+        if output_path.suffix.lower() == ".json" or fmt_lower == "json":
+            bbs.export_bbs_to_json(bbs_doc, str(output_path))
+        else:
+            bbs.export_bbs_to_csv(bbs_doc.items, str(output_path))
     else:
-        bbs.export_bbs_to_csv(bbs_doc.items, str(output_path))
+        raise InputContractError(
+            (
+                InputIssueV1(
+                    code="CONSUMER_TYPE_INVALID",
+                    path="bbs_doc",
+                    message="export_bbs requires BBSDocument or BeamBBSResultV1",
+                    received=f"<{type(bbs_doc).__name__}>",
+                ),
+            )
+        )
 
     return output_path
 
 
 def compute_dxf(
-    detailing_list: list[detailing.BeamDetailingResult],
+    detailing_list: object,
     output: str | Path,
     *,
     multi: bool = False,
@@ -600,6 +737,88 @@ def compute_dxf(
         >>> print(f"DXF generated: {dxf_path}")
         DXF generated: output/beams.dxf
     """
+    from structural_lib.core.errors import InputContractError, InputIssueV1
+    from structural_lib.services.canonical_beam import (
+        BeamDesignAndDetailResultV1,
+        BeamDetailingResultV1,
+    )
+
+    if isinstance(detailing_list, BeamDesignAndDetailResultV1):
+        if not detailing_list.is_ok:
+            raise InputContractError(
+                (
+                    InputIssueV1(
+                        code="CONSUMER_RESULT_NOT_ACCEPTED",
+                        path="detailing_list.engineering_status",
+                        message="DXF requires an accepted canonical combined result",
+                        received=detailing_list.engineering_status.value,
+                    ),
+                )
+            )
+        normalized = [detailing_list.detailing.detailing]
+    elif isinstance(detailing_list, BeamDetailingResultV1):
+        if not detailing_list.is_ok:
+            raise InputContractError(
+                (
+                    InputIssueV1(
+                        code="CONSUMER_RESULT_NOT_ACCEPTED",
+                        path="detailing_list.engineering_status",
+                        message="DXF requires accepted canonical detailing",
+                        received=detailing_list.engineering_status.value,
+                    ),
+                )
+            )
+        normalized = [detailing_list.detailing]
+    elif isinstance(detailing_list, Sequence) and not isinstance(
+        detailing_list, (str, bytes)
+    ):
+        rejected = [
+            item
+            for item in detailing_list
+            if isinstance(item, BeamDetailingResultV1) and not item.is_ok
+        ]
+        if rejected:
+            raise InputContractError(
+                (
+                    InputIssueV1(
+                        code="CONSUMER_RESULT_NOT_ACCEPTED",
+                        path="detailing_list",
+                        message="DXF sequence contains an unaccepted canonical result",
+                    ),
+                )
+            )
+        normalized = [
+            item.detailing if isinstance(item, BeamDetailingResultV1) else item
+            for item in detailing_list
+        ]
+    else:
+        raise InputContractError(
+            (
+                InputIssueV1(
+                    code="CONSUMER_TYPE_INVALID",
+                    path="detailing_list",
+                    message=(
+                        "compute_dxf requires canonical detailing/combined result "
+                        "or a sequence of BeamDetailingResult values"
+                    ),
+                    received=f"<{type(detailing_list).__name__}>",
+                ),
+            )
+        )
+    if not normalized or not all(
+        isinstance(item, detailing.BeamDetailingResult) and item.is_valid
+        for item in normalized
+    ):
+        raise InputContractError(
+            (
+                InputIssueV1(
+                    code="CONSUMER_RESULT_NOT_ACCEPTED",
+                    path="detailing_list",
+                    message="DXF requires one or more valid complete detailing results",
+                ),
+            )
+        )
+
     from structural_lib.services import dxf_export as _dxf_export
 
     if _dxf_export is None:
@@ -612,16 +831,14 @@ def compute_dxf(
             "ezdxf library not installed. Install with: "
             'pip install "structural-lib-is456[dxf]"'
         )
-    if not detailing_list:
-        raise ValueError("Detailing list is empty.")
 
     output_path = Path(output)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    use_multi = multi or len(detailing_list) > 1
+    use_multi = multi or len(normalized) > 1
     if use_multi:
         _dxf_export.generate_multi_beam_dxf(
-            detailing_list,
+            normalized,
             str(output_path),
             include_title_block=include_title_block,
             title_block=title_block,
@@ -631,7 +848,7 @@ def compute_dxf(
         )
     else:
         _dxf_export.generate_beam_dxf(
-            detailing_list[0],
+            normalized[0],
             str(output_path),
             include_title_block=include_title_block,
             title_block=title_block,
@@ -644,7 +861,7 @@ def compute_dxf(
 
 
 def compute_report(
-    source: str | Path | dict[str, Any],
+    source: object,
     *,
     format: str = "html",
     job_path: str | Path | None = None,
@@ -700,6 +917,49 @@ def compute_report(
         Report saved to: reports/batch_001/index.html
     """
     fmt = format.lower()
+
+    from structural_lib.core.errors import InputContractError, InputIssueV1
+    from structural_lib.services.canonical_beam import (
+        BeamDesignAndDetailResultV1,
+        BeamDesignResultV1,
+        BeamDetailingResultV1,
+    )
+
+    if isinstance(
+        source,
+        (BeamDesignResultV1, BeamDetailingResultV1, BeamDesignAndDetailResultV1),
+    ):
+        if fmt != "json":
+            raise InputContractError(
+                (
+                    InputIssueV1(
+                        code="CONSUMER_FORMAT_NOT_SUPPORTED",
+                        path="format",
+                        message="canonical beam results currently support JSON report export",
+                        received=fmt,
+                        allowed_values=("json",),
+                    ),
+                )
+            )
+        import json
+
+        output = (
+            json.dumps(
+                source.to_dict(),
+                allow_nan=False,
+                ensure_ascii=True,
+                indent=2,
+                sort_keys=True,
+            )
+            + "\n"
+        )
+        if output_path:
+            path = Path(output_path)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(output, encoding="utf-8")
+            return path
+        return output
+
     if fmt not in {"html", "json"}:
         raise ValueError("Unknown format. Use format='html' or format='json'.")
 
@@ -734,6 +994,17 @@ def compute_report(
             batch_threshold=batch_threshold,
         )
 
+    if not isinstance(source, (str, Path)):
+        raise InputContractError(
+            (
+                InputIssueV1(
+                    code="CONSUMER_TYPE_INVALID",
+                    path="source",
+                    message="report source must be a canonical result, mapping, or path",
+                    received=f"<{type(source).__name__}>",
+                ),
+            )
+        )
     source_path = Path(source)
     if source_path.is_file():
         design_results = report.load_design_results(source_path)
@@ -1174,7 +1445,7 @@ def enhanced_shear_strength_is456(
 # ============================================================================
 
 
-def design_beam_is456(
+def _design_beam_is456_calculation(
     *,
     units: str,
     case_id: str = "CASE-1",
@@ -1396,6 +1667,55 @@ def design_beam_is456(
         evidence=evidence,
     ).to_dict()
     return result
+
+
+def design_beam_is456(
+    *,
+    units: str,
+    case_id: str = "CASE-1",
+    mu_knm: float,
+    vu_kn: float,
+    b_mm: float,
+    D_mm: float,
+    d_mm: float | None,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    d_dash_mm: float | None = None,
+    asv_mm2: float = 100.0,
+    pt_percent: float | None = None,
+    ast_mm2_for_shear: float | None = None,
+    deflection_params: DeflectionParams | None = None,
+    crack_width_params: CrackWidthParams | None = None,
+    tu_knm: float = 0.0,
+    cover_mm: float | None = None,
+    stirrup_dia_mm: float = 8.0,
+    effective_depth_basis: EffectiveDepthBasisV1 | None = None,
+) -> ComplianceCaseResult:
+    """Compatibility signature delegating to the canonical beam service owner."""
+
+    from structural_lib.services.canonical_beam import design_compatibility
+
+    return design_compatibility(
+        units=units,
+        case_id=case_id,
+        mu_knm=mu_knm,
+        vu_kn=vu_kn,
+        b_mm=b_mm,
+        D_mm=D_mm,
+        d_mm=d_mm,
+        fck_nmm2=fck_nmm2,
+        fy_nmm2=fy_nmm2,
+        d_dash_mm=d_dash_mm,
+        asv_mm2=asv_mm2,
+        pt_percent=pt_percent,
+        ast_mm2_for_shear=ast_mm2_for_shear,
+        deflection_params=deflection_params,
+        crack_width_params=crack_width_params,
+        tu_knm=tu_knm,
+        cover_mm=cover_mm,
+        stirrup_dia_mm=stirrup_dia_mm,
+        effective_depth_basis=effective_depth_basis,
+    )
 
 
 def design_flanged_beam_is456(
@@ -1762,6 +2082,10 @@ def detail_beam_is456(
     stirrup_spacing_mid_mm: float = 200.0,
     stirrup_spacing_end_mm: float = 150.0,
     is_seismic: bool = False,
+    preferred_tension_bar_dia_mm: float | None = None,
+    preferred_compression_bar_dia_mm: float | None = None,
+    nominal_top_steel_ratio: float = 0.25,
+    stirrup_legs: int | None = None,
 ) -> detailing.BeamDetailingResult:
     """Create IS456/SP34 detailing outputs from design Ast/Asc and stirrups.
 
@@ -1786,6 +2110,10 @@ def detail_beam_is456(
         stirrup_spacing_mid_mm: Stirrup spacing at midspan (mm).
         stirrup_spacing_end_mm: Stirrup spacing at end (mm).
         is_seismic: Apply IS 13920 detailing rules if True.
+        preferred_tension_bar_dia_mm: First explicit tension diameter to try.
+        preferred_compression_bar_dia_mm: First explicit top diameter to try.
+        nominal_top_steel_ratio: Drafting ratio used when calculated Asc is zero.
+        stirrup_legs: Explicit legs, or compatibility auto-selection when omitted.
 
     Returns:
         BeamDetailingResult with bars, stirrups, and development lengths.
@@ -1845,10 +2173,14 @@ def detail_beam_is456(
         stirrup_spacing_mid=stirrup_spacing_mid_mm,
         stirrup_spacing_end=stirrup_spacing_end_mm,
         is_seismic=is_seismic,
+        preferred_tension_bar_dia=preferred_tension_bar_dia_mm,
+        preferred_compression_bar_dia=preferred_compression_bar_dia_mm,
+        nominal_top_steel_ratio=nominal_top_steel_ratio,
+        stirrup_legs=stirrup_legs,
     )
 
 
-def design_and_detail_beam_is456(
+def _design_and_detail_beam_is456_calculation(
     *,
     units: str,
     beam_id: str,
@@ -2027,6 +2359,67 @@ def design_and_detail_beam_is456(
         is_ok=is_ok,
         remarks="; ".join(remarks_parts) if remarks_parts else "",
     )
+
+
+def design_and_detail_beam_is456(
+    *,
+    units: str,
+    beam_id: str,
+    story: str,
+    span_mm: float,
+    mu_knm: float,
+    vu_kn: float,
+    b_mm: float,
+    D_mm: float,
+    d_mm: float | None = None,
+    cover_mm: float = 40.0,
+    fck_nmm2: float = 25.0,
+    fy_nmm2: float = 500.0,
+    d_dash_mm: float = 50.0,
+    asv_mm2: float = 100.0,
+    stirrup_dia_mm: float = 8.0,
+    stirrup_spacing_support_mm: float = 150.0,
+    stirrup_spacing_mid_mm: float = 200.0,
+    is_seismic: bool = False,
+) -> DesignAndDetailResult:
+    """Compatibility signature delegating to the canonical beam service owner."""
+
+    from structural_lib.services.canonical_beam import (
+        design_and_detail_compatibility,
+    )
+
+    return design_and_detail_compatibility(
+        units=units,
+        beam_id=beam_id,
+        story=story,
+        span_mm=span_mm,
+        mu_knm=mu_knm,
+        vu_kn=vu_kn,
+        b_mm=b_mm,
+        D_mm=D_mm,
+        d_mm=d_mm,
+        cover_mm=cover_mm,
+        fck_nmm2=fck_nmm2,
+        fy_nmm2=fy_nmm2,
+        d_dash_mm=d_dash_mm,
+        asv_mm2=asv_mm2,
+        stirrup_dia_mm=stirrup_dia_mm,
+        stirrup_spacing_support_mm=stirrup_spacing_support_mm,
+        stirrup_spacing_mid_mm=stirrup_spacing_mid_mm,
+        is_seismic=is_seismic,
+    )
+
+
+design_beam_is456.__dict__["__compatibility__"] = {
+    "status": "DELEGATING_COMPATIBILITY_SHIM",
+    "canonical_target": "structural_lib.design.is456.beam.design",
+    "removal_schedule": None,
+}
+design_and_detail_beam_is456.__dict__["__compatibility__"] = {
+    "status": "DELEGATING_COMPATIBILITY_SHIM",
+    "canonical_target": "structural_lib.design.is456.beam.design_and_detail",
+    "removal_schedule": None,
+}
 
 
 # ============================================================================

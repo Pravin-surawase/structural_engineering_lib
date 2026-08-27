@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-27
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -10,6 +10,11 @@ tags: []
 # Python Recipes
 
 Copy-paste snippets for common structural engineering tasks.
+
+The maintained beginner journey is now the
+[canonical beam recipe](python/beam.md). The examples below retain advanced
+and compatibility surfaces during the Alpha migration; they are not a second
+canonical contract. See the [migration guide](../migration/external-python-api-v1.md).
 
 ## Setup
 

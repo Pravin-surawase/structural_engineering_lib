@@ -36,6 +36,33 @@ class _Response:
 
 class _Transport:
     def post(self, path: str, **kwargs) -> _Response:
+        if path == "/api/v2/design/beam":
+            request = kwargs["json"]
+            if request["section"]["b_mm"] <= 0:
+                return _Response(
+                    {
+                        "success": False,
+                        "data": None,
+                        "error": {
+                            "schema_version": "structural-problem/v1",
+                            "code": "INPUT_CONTRACT_INVALID",
+                            "message": "Input contract rejected 1 issue(s).",
+                        },
+                    },
+                    status_code=422,
+                )
+            return _Response(
+                {
+                    "schema_version": "beam-design-result/v1",
+                    "identity": request["identity"],
+                    "request": request,
+                    "envelope": {"overall_status": "PASS"},
+                    "calculation": {},
+                    "limitations": [],
+                    "assumptions": [],
+                    "provenance": [],
+                }
+            )
         if path.endswith("/design/beam"):
             if kwargs["json"]["width"] <= 0:
                 return _Response(
@@ -120,3 +147,20 @@ def test_python_client_preserves_canonical_problem_code_and_message():
         match="BEAM_DESIGN_INPUT_INVALID: Width must be positive",
     ):
         client.design_beam(0, 500, 100, 25, 500, 75, 25, 8, 20)
+
+
+def test_python_client_exposes_versioned_canonical_beam_route():
+    client = StructuralDesignClient.__new__(StructuralDesignClient)
+    client._client = _Transport()
+    request = {
+        "identity": {"member_id": "B1", "story": "GF", "case_id": "ULS"},
+        "section": {"span_mm": 5000, "b_mm": 300, "D_mm": 550, "d_mm": 500},
+        "materials": {"fck_nmm2": 25, "fy_nmm2": 500},
+        "actions": {"mu_knm": 150, "vu_kn": 80, "tu_knm": 0},
+        "calculation_basis": {"d_dash_mm": 50, "asv_mm2": 100},
+    }
+
+    result = client.design_beam_v2(request)
+
+    assert result["schema_version"] == "beam-design-result/v1"
+    assert result["envelope"]["overall_status"] == "PASS"

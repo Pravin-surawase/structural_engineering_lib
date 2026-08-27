@@ -146,24 +146,32 @@ efficiency, retention, and peer-comparison lanes. The consolidated
 read-only universe through C2 at exact source `49c2fe45...` / tree
 `704190f...`: all 42 Section 7 domains are owned and disposed, 16 deduplicated
 findings are routed, and no new current-source P0 was reproduced. The plan and
-audit authorize no runtime change, deletion, dependency addition, signature
-break, release, or professional claim. The derivative
+audit were read-only at that snapshot. A0 PR #879 subsequently merged as
+`db6905c3` with exact final-candidate/merge tree `ee28473e`. The
+[owner sequencing decision](verification/lib-pro-013-owner-sequencing-decision.json)
+now authorizes B0, then F0 and R0 after their dependency gates. The derivative
 [A0 execution plan](planning/lib-pro-013-a0-execution-plan.md) groups the
 15–24 engineer-day audit into four evidence passes inside one read-only
-session, branch, candidate, PR, and hosted cycle. The immutable A0 evidence
-candidate and exact changed-path hosted cycle remain the integration gate.
+session, branch, candidate, PR, and hosted cycle. Professional review is not an
+intermediate programme gate; one engineer review is deferred until the final
+integrated library and R0 dossier exist.
 
 `LIB-PRO-012` remains the remediation specification and scope authority. S0
 closes the mapped beam/detailing/BBS, torsion, column, typed-input, identity,
 and existing REST v1 safety boundary. A0 routes common/canonical/downstream
 contract convergence to B0, family construction/facade convergence to F0, and
 documentation/generated/package/cumulative artifact/evidence closure to R0.
-`/api/v2`, Packets C-I, release, qualified review, professional approval, and
-Windows evidence remain separately held. The next programme state after a
-green unchanged A0 merge is **wait for an explicit owner decision on B0**, not
-automatic runtime implementation. Shared validation, facade, result,
-manifest, generated API, documentation, task, and session owners remain
-single-writer surfaces.
+Packets C-E are locally implemented in B0: the strict canonical Python beam
+contract is frozen, exact v1/v2 parity passes, and named downstream consumers
+fail closed without partial artifacts. The final focused selection passes 451
+cases, its post-hook 416-case invalidated-path replay passes, and the
+source-free B0 wheel `25eacdd7...a803942f` passes the 29-case UAT
+with 15 registered CLI commands. One immutable candidate and hosted PR cycle
+remain before B0 integration. F0 and R0 are pre-authorized successors. Release
+remains exact-candidate work rather than a B0 gate, and the single engineer
+review occurs only after final R0 integration. Shared
+validation, facade, result, manifest, generated API, documentation, task, and
+session owners remain single-writer surfaces.
 
 `MAINT-0136` is locally complete through its exact authorized cleanup boundary.
 Phase 1 PR #874 merged at reviewed head `37b36785`; Phase 2A removed the exact
@@ -348,6 +356,7 @@ write-back/nightly work remain outside E1.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
+| LIB-PRO-013-B0 | Implement the common input/error/facade foundation, canonical beam vertical slice, and typed downstream convergence from A0 C2 | @structural-math | 12–19 engineer-days | P1 | 🟡 LOCAL COMPLETE — consolidated gates/candidate/hosted cycle pending; professional review deferred to final integrated-library stage |
 | SPARK-001-G0 | Reassess the stale Spark work-program proposal before any implementation | repository owner | review gate | P2 | ⏸ OWNER REVIEW — the 2026-08-11 model/preview assumptions and bulk wave require refresh or rejection |
 
 ## Backlog

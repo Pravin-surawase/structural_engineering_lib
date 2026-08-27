@@ -20,6 +20,9 @@
   "canonical_task_exports": [
     "design_beam_is456"
   ],
+  "canonical_journey_ids": [
+    "is456.beam.design/v1"
+  ],
   "canonical_support_exports": [
     "EffectiveDepthBasisV1",
     "EffectiveDepthResolutionV1"
@@ -71,40 +74,80 @@
     ]
   },
   "canonical_reference_journey": {
-    "task_id": "design_beam_is456",
-    "input_contract": "project-beam-design/v1",
+    "task_id": "is456.beam.design/v1",
+    "input_contract": "beam-design-input/v1",
     "effective_depth_contract": "effective-depth-basis/v1",
-    "result_contract": "structural-result-envelope/v2",
+    "result_contract": "beam-design-result/v1 + structural-result-envelope/v2",
     "problem_contract": "structural-problem/v1",
+    "field_contract_dimensions": [
+      "TYPE_AND_FINITE_VALUE",
+      "RANGE_AND_ZERO_POLICY",
+      "UNIT_AND_QUANTITY",
+      "CODE_AND_MATERIAL_DOMAIN",
+      "CROSS_FIELD_RELATION",
+      "IDENTITY_AND_PROVENANCE",
+      "ENUM_AND_TOPOLOGY",
+      "COLLECTION_CARDINALITY_AND_UNIQUENESS",
+      "DOWNSTREAM_CONSUMABILITY",
+      "COMPATIBILITY_ALIAS_AND_MIGRATION_TARGET"
+    ],
     "surfaces": [
       {
-        "surface": "python_root",
-        "locator": "structural_lib.design_beam_is456",
+        "surface": "python_facade",
+        "locator": "structural_lib.design.is456.beam",
         "artifact": "wheel",
         "disposition": "canonical"
       },
       {
-        "surface": "python_service",
+        "surface": "python_root_compatibility",
+        "locator": "structural_lib.design_beam_is456",
+        "artifact": "wheel",
+        "disposition": "compatibility",
+        "canonical_target": "structural_lib.design.is456.beam.design"
+      },
+      {
+        "surface": "python_service_compatibility",
         "locator": "structural_lib.services.api.design_beam_is456",
         "artifact": "wheel",
-        "disposition": "canonical"
+        "disposition": "compatibility",
+        "canonical_target": "structural_lib.design.is456.beam.design"
       },
       {
         "surface": "python_compatibility",
         "locator": "structural_lib.api.design_beam_is456",
         "artifact": "wheel",
-        "disposition": "compatibility"
+        "disposition": "compatibility",
+        "canonical_target": "structural_lib.design.is456.beam.design"
       },
       {
         "surface": "cli",
-        "locator": "python -m structural_lib design",
+        "locator": "python -m structural_lib beam-v1",
         "artifact": "wheel",
         "disposition": "canonical"
       },
       {
-        "surface": "rest",
+        "surface": "rest_v2",
+        "locator": "POST /api/v2/design/beam",
+        "artifact": "exact_head_application",
+        "disposition": "canonical"
+      },
+      {
+        "surface": "rest_v1_compatibility",
         "locator": "POST /api/v1/design/beam",
         "artifact": "exact_head_application",
+        "disposition": "compatibility",
+        "canonical_target": "POST /api/v2/design/beam"
+      },
+      {
+        "surface": "generated_python_client",
+        "locator": "StructuralDesignClient.design_beam_v2",
+        "artifact": "repository_clients",
+        "disposition": "canonical"
+      },
+      {
+        "surface": "generated_typescript_client",
+        "locator": "StructuralDesignClient.designBeamV2",
+        "artifact": "repository_clients",
         "disposition": "canonical"
       },
       {
@@ -155,6 +198,257 @@
     "projection_reconciliation": "Every classified facade symbol has exactly one projection record."
   },
   "surfaces": [
+    {
+      "module": "structural_lib.design.is456.beam",
+      "export_classification": "preview",
+      "declared_export_count": 24,
+      "classified_symbol_count": 27,
+      "symbols": [
+        {
+          "name": "Any",
+          "qualified_name": "structural_lib.design.is456.beam.Any",
+          "kind": "class",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "typing",
+          "claim_disposition": "internal"
+        },
+        {
+          "name": "BEAM_FIELD_CONTRACTS",
+          "qualified_name": "structural_lib.design.is456.beam.BEAM_FIELD_CONTRACTS",
+          "kind": "value",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "BeamActionsV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamActionsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "BeamBBSResultV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamBBSResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.canonical_beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "BeamCalculationBasisV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamCalculationBasisV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "BeamDesignAndDetailResultV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamDesignAndDetailResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.canonical_beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "BeamDesignInputV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamDesignInputV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "BeamDesignResultV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamDesignResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.canonical_beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "BeamDetailingOptionsV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamDetailingOptionsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "BeamDetailingResultV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamDetailingResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.canonical_beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "BeamServiceabilityV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamServiceabilityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "DetailingStandard",
+          "qualified_name": "structural_lib.design.is456.beam.DetailingStandard",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "EffectiveDepthBasisRequestV1",
+          "qualified_name": "structural_lib.design.is456.beam.EffectiveDepthBasisRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "IS456MaterialsV1",
+          "qualified_name": "structural_lib.design.is456.beam.IS456MaterialsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "InputContractError",
+          "qualified_name": "structural_lib.design.is456.beam.InputContractError",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.errors",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "InputIssueV1",
+          "qualified_name": "structural_lib.design.is456.beam.InputIssueV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.errors",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "MemberIdentityV1",
+          "qualified_name": "structural_lib.design.is456.beam.MemberIdentityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "RectangularBeamSectionV1",
+          "qualified_name": "structural_lib.design.is456.beam.RectangularBeamSectionV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "bbs",
+          "qualified_name": "structural_lib.design.is456.beam.bbs",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "check",
+          "qualified_name": "structural_lib.design.is456.beam.check",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.canonical_beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "design",
+          "qualified_name": "structural_lib.design.is456.beam.design",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.canonical_beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "design_and_detail",
+          "qualified_name": "structural_lib.design.is456.beam.design_and_detail",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.canonical_beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "detail",
+          "qualified_name": "structural_lib.design.is456.beam.detail",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.canonical_beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "generate_bbs",
+          "qualified_name": "structural_lib.design.is456.beam.generate_bbs",
+          "kind": "function",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "structural_lib.services.canonical_beam",
+          "claim_disposition": "internal"
+        },
+        {
+          "name": "input",
+          "qualified_name": "structural_lib.design.is456.beam.input",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "load",
+          "qualified_name": "structural_lib.design.is456.beam.load",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.design.is456.beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "model_validate_or_error",
+          "qualified_name": "structural_lib.design.is456.beam.model_validate_or_error",
+          "kind": "function",
+          "classification": "internal",
+          "declared_export": false,
+          "defined_in": "structural_lib.services.contracts.common",
+          "claim_disposition": "internal"
+        }
+      ]
+    },
     {
       "module": "structural_lib",
       "export_classification": "preview",
@@ -1509,7 +1803,7 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.beam_api",
-          "claim_disposition": "canonical"
+          "claim_disposition": "compatibility"
         },
         {
           "name": "design_braced_wall_is456",
@@ -3443,7 +3737,7 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.beam_api",
-          "claim_disposition": "canonical"
+          "claim_disposition": "compatibility"
         },
         {
           "name": "design_braced_wall_is456",

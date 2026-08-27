@@ -17,6 +17,56 @@ export interface BeamDesignRequest {
   effective_depth?: number;
 }
 
+export interface CanonicalBeamDesignRequestV1 {
+  schema_version?: 'beam-design-input/v1';
+  identity: { member_id: string; story: string; case_id: string };
+  section: {
+    span_mm?: number;
+    b_mm: number;
+    D_mm: number;
+    d_mm?: number;
+    effective_depth_basis?: {
+      clear_cover_mm: number;
+      stirrup_diameter_mm: number;
+      tension_bar_diameter_mm: number;
+    };
+  };
+  materials: { fck_nmm2: number; fy_nmm2: number };
+  actions: { mu_knm: number; vu_kn: number; tu_knm?: number };
+  calculation_basis: {
+    d_dash_mm: number;
+    asv_mm2: number;
+    pt_percent?: number;
+    ast_mm2_for_shear?: number;
+  };
+  detailing?: CanonicalBeamDetailingOptionsV1;
+  serviceability?: Record<string, unknown>;
+  source_provenance?: string;
+}
+
+export interface CanonicalBeamDetailingOptionsV1 {
+  standard: 'IS456' | 'IS13920';
+  clear_cover_mm: number;
+  tension_bar_diameter_mm: 8 | 10 | 12 | 16 | 20 | 25 | 32;
+  compression_bar_diameter_mm: 8 | 10 | 12 | 16 | 20 | 25 | 32;
+  nominal_top_steel_ratio: number;
+  stirrup_diameter_mm: number;
+  stirrup_legs: number;
+  stirrup_spacing_support_mm: number;
+  stirrup_spacing_mid_mm: number;
+}
+
+export interface CanonicalBeamDesignResponseV1 {
+  schema_version: 'beam-design-result/v1';
+  identity: CanonicalBeamDesignRequestV1['identity'];
+  request: CanonicalBeamDesignRequestV1;
+  envelope: BeamDesignResponse['result_envelope'];
+  calculation: Record<string, unknown>;
+  limitations: string[];
+  assumptions: string[];
+  provenance: string[];
+}
+
 export interface APIResponse<T> {
   success: true;
   data: T;
@@ -145,6 +195,24 @@ export class StructuralDesignClient {
 
     const envelope = await response.json() as APIResponse<BeamDesignResponse>;
     return envelope.data;
+  }
+
+  /** Run the canonical v2 nested beam contract. */
+  async designBeamV2(
+    request: CanonicalBeamDesignRequestV1,
+  ): Promise<CanonicalBeamDesignResponseV1> {
+    const response = await fetch(`${this.baseUrl}/api/v2/design/beam`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(request),
+    });
+    if (!response.ok) {
+      const problem = await response.json() as ProblemResponse;
+      throw new Error(
+        `Canonical design failed: ${problem.error?.code ?? response.status}: ${problem.error?.message ?? 'Request failed'}`,
+      );
+    }
+    return response.json() as Promise<CanonicalBeamDesignResponseV1>;
   }
 
   /**

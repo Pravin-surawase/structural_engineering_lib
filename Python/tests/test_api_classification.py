@@ -68,6 +68,7 @@ def test_canonical_task_api_is_capability_bound_and_artifact_scoped() -> None:
         "claim-surface-matrix/v1"
     )
     assert "design_beam_is456" in registry["canonical_task_exports"]
+    assert registry["canonical_journey_ids"] == ["is456.beam.design/v1"]
     assert registry["canonical_support_exports"] == [
         "EffectiveDepthBasisV1",
         "EffectiveDepthResolutionV1",
@@ -78,11 +79,15 @@ def test_canonical_task_api_is_capability_bound_and_artifact_scoped() -> None:
         "clients",
     ]
     journey = registry["canonical_reference_journey"]
-    assert journey["task_id"] == "design_beam_is456"
-    assert journey["result_contract"] == "structural-result-envelope/v2"
+    assert journey["task_id"] == "is456.beam.design/v1"
+    assert journey["input_contract"] == "beam-design-input/v1"
+    assert journey["result_contract"] == (
+        "beam-design-result/v1 + structural-result-envelope/v2"
+    )
     assert {surface["artifact"] for surface in journey["surfaces"]} == {
         "wheel",
         "exact_head_application",
+        "repository_clients",
     }
     assert journey["compatibility_holds"] == [
         {
@@ -100,5 +105,15 @@ def test_canonical_task_api_is_capability_bound_and_artifact_scoped() -> None:
     dispositions = {
         record["name"]: record["claim_disposition"] for record in service["symbols"]
     }
-    assert dispositions["design_beam_is456"] == "canonical"
+    assert dispositions["design_beam_is456"] == "compatibility"
     assert dispositions["create_jobs_from_etabs_csv"] == "hold"
+    facade = next(
+        surface
+        for surface in registry["surfaces"]
+        if surface["module"] == "structural_lib.design.is456.beam"
+    )
+    facade_dispositions = {
+        record["name"]: record["claim_disposition"] for record in facade["symbols"]
+    }
+    assert facade_dispositions["design"] == "canonical"
+    assert facade_dispositions["design_and_detail"] == "canonical"
