@@ -1,0 +1,196 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-27T19:47:19Z",
+      "query_status": "OK",
+      "reference": "Owner asked to preserve the Windows laptop state and operating rules as durable repository truth, approved the internal preparation needed for the next library phase, and explicitly removed the fixed documentation-count limit. Professional review remains a final integrated-library activity rather than an intermediate gate.",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "FREEZE_WINDOWS_EVIDENCE_LANE_READINESS",
+      "REMOVE_FIXED_DOCUMENTATION_COUNT_LIMIT",
+      "PRESERVE_DOCUMENTATION_OWNERSHIP_METADATA_LIFECYCLE_AND_LINK_CONTROLS",
+      "UPDATE_CANONICAL_TASK_SESSION_AND_NEXT_SESSION_AUTHORITIES",
+      "CREATE_IMMUTABLE_DOCUMENTATION_CANDIDATE_PUSH_PR_AND_MERGE_UNCHANGED_GREEN_HEAD",
+      "PROCEED_TO_F0_FROM_ACCEPTED_B0_WITHOUT_INTERMEDIATE_PROFESSIONAL_REVIEW"
+    ],
+    "next_action": "CREATE_IMMUTABLE_DOCUMENTATION_CANDIDATE_PUSH_PR_AND_MERGE_UNCHANGED_GREEN_HEAD",
+    "observed_at_utc": "2026-08-27T19:47:19Z",
+    "prohibited_actions": [
+      "CLAIM_WINDOWS_EXCEL_ETABS_ACCEPTANCE_PROFESSIONAL_APPROVAL_ENGINEERING_USE_OR_WHOLE_LIBRARY_READINESS",
+      "IMPLEMENT_F0_RUNTIME_SCOPE_IN_THIS_PREPARATION_TASK",
+      "USE_ETABS_TRIAL_AS_COM_API_ANALYSIS_WRITEBACK_OR_COMMERCIAL_LICENSE_EVIDENCE",
+      "PUBLISH_VERSION_TAG_RELEASE_OR_PACKAGE_WITHOUT_EXACT_RELEASE_AUTHORITY",
+      "TRACK_PROTECTED_STANDARD_PROSE_IMAGES_OR_PRIVATE_SOURCE_CONTENT",
+      "DELETE_BRANCH_WORKTREE_REF_ARCHIVE_RETAINED_DATA_OR_WINDOWS_CLONES",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_REWRITE_FORCE_PUSH_OR_BYPASS_CHECKS"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "FREEZE_WINDOWS_EVIDENCE_LANE_READINESS",
+        "REMOVE_FIXED_DOCUMENTATION_COUNT_LIMIT",
+        "PRESERVE_DOCUMENTATION_OWNERSHIP_METADATA_LIFECYCLE_AND_LINK_CONTROLS",
+        "UPDATE_CANONICAL_TASK_SESSION_AND_NEXT_SESSION_AUTHORITIES",
+        "CREATE_IMMUTABLE_DOCUMENTATION_CANDIDATE_PUSH_PR_AND_MERGE_UNCHANGED_GREEN_HEAD",
+        "PROCEED_TO_F0_FROM_ACCEPTED_B0_WITHOUT_INTERMEDIATE_PROFESSIONAL_REVIEW"
+      ],
+      "branch": "codex/lib-pro-013-windows-evidence-lane-readiness",
+      "head_sha": "44ef7bc4e8c98d01f32291730ab77ed16d077823",
+      "task_id": "LIB-PRO-013-WINDOWS-EVIDENCE-LANE-READINESS"
+    }
+  },
+  "holds": [
+    "BRANCH_WORKTREE_REF_ARCHIVE_WINDOWS_CLONE_AND_PROTECTED_SOURCE_DELETION_NOT_AUTHORIZED",
+    "LOCAL_HOLD_DIRTY",
+    "PRESERVE_DIRTY_DETACHED_E54A_LANE",
+    "PRESERVE_EVERY_UNRELATED_DIRTY_STAGED_UNTRACKED_STASHED_DETACHED_OR_IGNORED_ITEM",
+    "PRESERVE_WINDOWS_BASE_CLONE_AND_ALL_PREEXISTING_WINDOWS_CLONES",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "observed_at_utc": "2026-08-27T19:47:19Z",
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_WINDOWS_READINESS_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "e16128ca2f9e3b915fe3e0523686055cb595e4f1c9a2c22e430de5dc5e893d0d",
+    "state": {
+      "branch": "codex/lib-pro-013-windows-evidence-lane-readiness",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "44ef7bc4e8c98d01f32291730ab77ed16d077823",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 108.401,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib6",
+      "head_sha": "44ef7bc4e8c98d01f32291730ab77ed16d077823",
+      "hold_reasons": [
+        "changed paths: 17"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-27T19:50:54.089743+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/58cc/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 17,
+        "modified_paths": [],
+        "staged_paths": [
+          ".claude/rules/docs.md",
+          ".github/instructions/docs.instructions.md",
+          "Python/tests/test_audit_readiness_truth.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/governance/maintenance-playbook.md",
+          "docs/guides/copilot-agents-usage-guide.md",
+          "docs/migration/learning/day-25-code-quality.md",
+          "docs/planning/README.md",
+          "docs/planning/lib-pro-012-external-api-remediation-plan.md",
+          "docs/planning/lib-pro-013-a0-execution-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/lib-pro-013-windows-evidence-lane-git-handoff-receipt.json",
+          "docs/verification/lib-pro-013-windows-evidence-lane-git-handoff-source-evidence.json",
+          "docs/verification/lib-pro-013-windows-evidence-lane-readiness.json",
+          "scripts/audit_readiness_report.py",
+          "scripts/check_docs.py"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "44ef7bc4e8c98d01f32291730ab77ed16d077823",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/58cc/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:e16128ca2f9e3b915fe3e0523686055cb595e4f1c9a2c22e430de5dc5e893d0d",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-27T19:50:54.089904+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_ALL_UNRELATED_WORKTREES_REFS_ARCHIVES_IGNORED_DATA_PROTECTED_SOURCES_AND_WINDOWS_CLONES",
+    "holds": [
+      "PRESERVE_DIRTY_DETACHED_E54A_LANE",
+      "PRESERVE_EVERY_UNRELATED_DIRTY_STAGED_UNTRACKED_STASHED_DETACHED_OR_IGNORED_ITEM",
+      "PRESERVE_WINDOWS_BASE_CLONE_AND_ALL_PREEXISTING_WINDOWS_CLONES",
+      "BRANCH_WORKTREE_REF_ARCHIVE_WINDOWS_CLONE_AND_PROTECTED_SOURCE_DELETION_NOT_AUTHORIZED"
+    ],
+    "observed_at_utc": "2026-08-27T19:47:19Z",
+    "owner": "Main agent under owner and repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources",
+      "Python/structural_lib",
+      "fastapi_app",
+      "react_app",
+      "pyproject.toml",
+      "CHANGELOG.md"
+    ],
+    "integration_owner": "doc-master",
+    "owned_paths": [
+      "docs/verification/lib-pro-013-windows-evidence-lane-readiness.json",
+      "docs/verification/lib-pro-013-windows-evidence-lane-git-handoff-source-evidence.json",
+      "docs/verification/lib-pro-013-windows-evidence-lane-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md",
+      "docs/planning/lib-pro-012-external-api-remediation-plan.md",
+      "docs/planning/README.md",
+      "docs/planning/lib-pro-013-a0-execution-plan.md",
+      "scripts/check_docs.py",
+      "scripts/audit_readiness_report.py",
+      "Python/tests/test_audit_readiness_truth.py",
+      ".github/instructions/docs.instructions.md",
+      ".claude/rules/docs.md",
+      "docs/governance/maintenance-playbook.md",
+      "docs/migration/learning/day-25-code-quality.md",
+      "docs/guides/copilot-agents-usage-guide.md"
+    ],
+    "task_id": "LIB-PRO-013-WINDOWS-EVIDENCE-LANE-READINESS"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

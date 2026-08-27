@@ -9,6 +9,7 @@ Subcommands:
     --frontmatter    Check YAML front-matter validation
     --index          Check docs/README.md heading structure
     --index-links    Check docs/README.md link resolution
+    --inventory      Report the active markdown count (informational only)
     --all            Run all checks (default)
 
 Replaces:
@@ -513,19 +514,11 @@ def check_index_links() -> int:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# CHECK 5: DOC BUDGET — Prevent documentation sprawl
+# CHECK 5: DOC INVENTORY — Informational count, no numeric limit
 # ═══════════════════════════════════════════════════════════════════════════
 
-DOC_BUDGET_WARN = 350
-DOC_BUDGET_FAIL = 500
-
-
-def check_doc_budget() -> int:
-    """Check that non-archived markdown files stay within budget.
-
-    Warns if count > 350, fails if > 500.
-    Returns exit code: 0 pass, 1 fail.
-    """
+def check_doc_inventory() -> int:
+    """Report the non-archived markdown count without enforcing a limit."""
     if not DOCS_DIR.exists():
         print(f"❌ docs directory not found: {DOCS_DIR}")
         return 1
@@ -538,15 +531,8 @@ def check_doc_budget() -> int:
     )
 
     print(f"   Non-archived markdown files: {count}")
-    if count > DOC_BUDGET_FAIL:
-        print(f"❌ Doc budget EXCEEDED: {count} > {DOC_BUDGET_FAIL} (hard limit)")
-        return 1
-    elif count > DOC_BUDGET_WARN:
-        print(f"⚠️  Doc budget WARNING: {count} > {DOC_BUDGET_WARN} (soft limit)")
-        return 0
-    else:
-        print(f"✅ Doc budget OK ({count} ≤ {DOC_BUDGET_WARN})")
-        return 0
+    print("ℹ️  Documentation count is informational; no numeric cap is enforced")
+    return 0
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -565,6 +551,7 @@ def main() -> int:
             "  python scripts/check_docs.py --frontmatter    # Front-matter only\n"
             "  python scripts/check_docs.py --index          # Index heading structure\n"
             "  python scripts/check_docs.py --index-links    # Index link resolution\n"
+            "  python scripts/check_docs.py --inventory      # Informational active count\n"
             "  python scripts/check_docs.py --all --strict   # All checks, strict mode\n"
         ),
     )
@@ -584,9 +571,14 @@ def main() -> int:
         "--index-links", action="store_true", help="Check docs/README.md links"
     )
     group.add_argument(
+        "--inventory",
+        action="store_true",
+        help="Report active markdown count (informational; no limit)",
+    )
+    group.add_argument(
         "--budget",
         action="store_true",
-        help="Check doc budget (non-archived file count)",
+        help=argparse.SUPPRESS,
     )
     group.add_argument("--all", action="store_true", help="Run all checks (default)")
 
@@ -622,7 +614,14 @@ def main() -> int:
 
     # Default to --all when no selector given
     run_all = args.all or not any(
-        [args.metadata, args.frontmatter, args.index, args.index_links, args.budget]
+        [
+            args.metadata,
+            args.frontmatter,
+            args.index,
+            args.index_links,
+            args.inventory,
+            args.budget,
+        ]
     )
 
     results: list[int] = []
@@ -652,9 +651,9 @@ def main() -> int:
         rc = check_index_links()
         results.append(rc)
 
-    if run_all or args.budget:
-        print("📊 Checking documentation budget...")
-        rc = check_doc_budget()
+    if run_all or args.inventory or args.budget:
+        print("📊 Reporting documentation inventory...")
+        rc = check_doc_inventory()
         results.append(rc)
 
     # Overall exit code: 0 if all pass, 1 if any fail

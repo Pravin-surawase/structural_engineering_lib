@@ -1,0 +1,67 @@
+{
+  "authorization": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-27T19:47:19Z",
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "reference": "Owner asked to preserve the Windows laptop state and operating rules as durable repository truth, approved the internal preparation needed for the next library phase, and explicitly removed the fixed documentation-count limit. Professional review remains a final integrated-library activity rather than an intermediate gate.",
+      "status": "OBSERVED",
+      "query_status": "OK",
+      "observed_at_utc": "2026-08-27T19:47:19Z"
+    },
+    "authorized_actions": [
+      "FREEZE_WINDOWS_EVIDENCE_LANE_READINESS",
+      "REMOVE_FIXED_DOCUMENTATION_COUNT_LIMIT",
+      "PRESERVE_DOCUMENTATION_OWNERSHIP_METADATA_LIFECYCLE_AND_LINK_CONTROLS",
+      "UPDATE_CANONICAL_TASK_SESSION_AND_NEXT_SESSION_AUTHORITIES",
+      "CREATE_IMMUTABLE_DOCUMENTATION_CANDIDATE_PUSH_PR_AND_MERGE_UNCHANGED_GREEN_HEAD",
+      "PROCEED_TO_F0_FROM_ACCEPTED_B0_WITHOUT_INTERMEDIATE_PROFESSIONAL_REVIEW"
+    ],
+    "prohibited_actions": [
+      "CLAIM_WINDOWS_EXCEL_ETABS_ACCEPTANCE_PROFESSIONAL_APPROVAL_ENGINEERING_USE_OR_WHOLE_LIBRARY_READINESS",
+      "IMPLEMENT_F0_RUNTIME_SCOPE_IN_THIS_PREPARATION_TASK",
+      "USE_ETABS_TRIAL_AS_COM_API_ANALYSIS_WRITEBACK_OR_COMMERCIAL_LICENSE_EVIDENCE",
+      "PUBLISH_VERSION_TAG_RELEASE_OR_PACKAGE_WITHOUT_EXACT_RELEASE_AUTHORITY",
+      "TRACK_PROTECTED_STANDARD_PROSE_IMAGES_OR_PRIVATE_SOURCE_CONTENT",
+      "DELETE_BRANCH_WORKTREE_REF_ARCHIVE_RETAINED_DATA_OR_WINDOWS_CLONES",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_REWRITE_FORCE_PUSH_OR_BYPASS_CHECKS"
+    ],
+    "next_action": "CREATE_IMMUTABLE_DOCUMENTATION_CANDIDATE_PUSH_PR_AND_MERGE_UNCHANGED_GREEN_HEAD",
+    "target_binding": {
+      "task_id": "LIB-PRO-013-WINDOWS-EVIDENCE-LANE-READINESS",
+      "branch": "codex/lib-pro-013-windows-evidence-lane-readiness",
+      "head_sha": "44ef7bc4e8c98d01f32291730ab77ed16d077823",
+      "actions": [
+        "FREEZE_WINDOWS_EVIDENCE_LANE_READINESS",
+        "REMOVE_FIXED_DOCUMENTATION_COUNT_LIMIT",
+        "PRESERVE_DOCUMENTATION_OWNERSHIP_METADATA_LIFECYCLE_AND_LINK_CONTROLS",
+        "UPDATE_CANONICAL_TASK_SESSION_AND_NEXT_SESSION_AUTHORITIES",
+        "CREATE_IMMUTABLE_DOCUMENTATION_CANDIDATE_PUSH_PR_AND_MERGE_UNCHANGED_GREEN_HEAD",
+        "PROCEED_TO_F0_FROM_ACCEPTED_B0_WITHOUT_INTERMEDIATE_PROFESSIONAL_REVIEW"
+      ]
+    }
+  },
+  "integration": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-27T19:47:19Z",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_WINDOWS_READINESS_PR"
+  },
+  "retention": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-27T19:47:19Z",
+    "decision": "RETAIN_ALL_UNRELATED_WORKTREES_REFS_ARCHIVES_IGNORED_DATA_PROTECTED_SOURCES_AND_WINDOWS_CLONES",
+    "owner": "Main agent under owner and repository preservation policy",
+    "holds": [
+      "PRESERVE_DIRTY_DETACHED_E54A_LANE",
+      "PRESERVE_EVERY_UNRELATED_DIRTY_STAGED_UNTRACKED_STASHED_DETACHED_OR_IGNORED_ITEM",
+      "PRESERVE_WINDOWS_BASE_CLONE_AND_ALL_PREEXISTING_WINDOWS_CLONES",
+      "BRANCH_WORKTREE_REF_ARCHIVE_WINDOWS_CLONE_AND_PROTECTED_SOURCE_DELETION_NOT_AUTHORIZED"
+    ]
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

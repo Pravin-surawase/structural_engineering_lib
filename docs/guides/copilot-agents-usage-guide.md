@@ -157,10 +157,10 @@ The orchestrator will:
 ```
 @governance run a project health check
 @governance validate folder conventions
-@governance check doc budget
+@governance check documentation ownership and metadata
 ```
 
-**It knows about:** Doc budget, folder structure conventions, project health scoring, maintenance tasks.
+**It knows about:** Canonical documentation ownership, metadata and lifecycle rules, folder structure conventions, project health scoring, maintenance tasks.
 
 ---
 

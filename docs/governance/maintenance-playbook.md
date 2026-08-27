@@ -180,7 +180,7 @@ Enforced by `check_governance.py`:
 |------|-------|---------------|
 | Root folder files | ≤ 17 | `./run.sh check --quick` |
 | docs/ root files | ≤ 5 | `./run.sh check --quick` |
-| docs/ total files | ≤ 500 | `./scripts/python_runtime.sh scripts/check_docs.py --budget` |
+| Documentation scale | No numeric cap; canonical ownership, metadata, lifecycle, and links remain enforced | `./scripts/python_runtime.sh scripts/check_docs.py --all` |
 | WIP tasks | ≤ 2 | Review TASKS.md |
 | Draft docs age | ≤ 7 days | Archive or promote |
 

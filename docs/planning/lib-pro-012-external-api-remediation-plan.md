@@ -927,6 +927,8 @@ facade, result, generated API, documentation, task, or session owners. Do not
 create status-only sessions, WIP PRs, or unchanged broad reruns merely to show
 progress.
 
-Current plan verdict: **S0 and A0 are integrated; B0 Packets C, D, and E are
-owner-authorized and active. F0 and R0 follow their accepted dependency gates;
-professional review occurs once after the final integrated-library candidate.**
+Current plan verdict: **S0, A0, and B0 are integrated. F0 Packets F1, F2, and
+F3 are the next authorized cycle; R0 follows accepted F0. The prepared Windows
+lane is setup-ready at the B0 identity and must be rebound to the exact accepted
+F0 merge before R0 uses it. Professional review occurs once after the final
+integrated-library candidate.**

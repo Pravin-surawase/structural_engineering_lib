@@ -45,8 +45,8 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
-| `lib-pro-013-whole-library-renewal-audit-plan.md` | 2026-08-27 | 📋 Master audit aligned to S0/A0/B0/F0/R0; audit execution unstarted |
-| `lib-pro-012-external-api-remediation-plan.md` | 2026-08-27 | 📋 REST-complete P0 safety and later facade work grouped into four implementation cycles; runtime remediation unstarted |
+| `lib-pro-013-whole-library-renewal-audit-plan.md` | 2026-08-28 | 🔄 A0 and B0 integrated; F0 next, then R0 and one final engineer review |
+| `lib-pro-012-external-api-remediation-plan.md` | 2026-08-28 | 🔄 S0/A0/B0 integrated; F0 family convergence active next; Windows lane prepared for later exact R0 evidence |
 | `maint-0136-phase-2b-w-execution-closeout.md` | 2026-08-27 | ✅ Exact 63/63 worktree removal complete; 15 retained and all branches, refs, backups, and protected sources preserved |
 | `maint-0136-phase-2c-execution-closeout.md` | 2026-08-27 | ✅ Exact four-local/two-remote cleanup passed at `08a68419...b23c7`; all held surfaces preserved |
 | `maint-0136-phase-2c-preparation-plan.md` | 2026-08-27 | ✅ Exact digest authorized and executed through the Phase 2C closeout |

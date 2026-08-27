@@ -55,11 +55,13 @@ Every doc should have a clear status:
 
 Multi-session WIP docs go to `docs/_active/` first, then move to permanent location when complete.
 
-## Doc budget
+## Documentation scale
 
-Non-archived docs must stay under 400 files. Check with:
+There is no fixed numeric document-count limit. Prevent sprawl through
+canonical topic ownership, duplicate search, append-first updates, metadata,
+lifecycle status, and link validation. The active count is informational:
 ```bash
-./scripts/python_runtime.sh scripts/check_docs.py --budget
+./scripts/python_runtime.sh scripts/check_docs.py --inventory
 ```
 
 ## After structural changes

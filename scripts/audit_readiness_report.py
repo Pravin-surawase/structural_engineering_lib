@@ -509,12 +509,11 @@ def collect_governance_evidence(report: AuditReport) -> None:
             )
         )
 
-    # Check active front-matter values and the enforced documentation budget.
+    # Check active front-matter values. Documentation has no numeric file cap;
+    # canonical ownership, metadata, lifecycle, and links remain the controls.
     doc_checker = _REPO_ROOT / "scripts/check_docs.py"
     if doc_checker.exists():
-        code, stdout, stderr = run_script(
-            str(doc_checker), ["--frontmatter", "--budget"]
-        )
+        code, stdout, stderr = run_script(str(doc_checker), ["--frontmatter"])
         passed = code == 0
         report.add_evidence(
             EvidenceItem(
@@ -524,7 +523,7 @@ def collect_governance_evidence(report: AuditReport) -> None:
                 required=True,
                 source=str(doc_checker),
                 details=(
-                    "Front-matter values and active-file budget are valid"
+                    "Active front-matter values are valid"
                     if passed
                     else _diagnostic_summary(stdout, stderr)
                 ),
