@@ -103,4 +103,7 @@ def design(request: ColumnDesignInputV1) -> CanonicalFamilyResultV1:
     )
 
 
-check = design
+def check(request: ColumnDesignInputV1) -> CanonicalFamilyResultV1:
+    """Delegate the explicit supplied-steel check to the canonical operation."""
+
+    return design(request)

@@ -173,7 +173,7 @@ candidate lane: 13 frozen facade route/contract classes have strict grouped
 construction, common typed result/error semantics, generated schemas and
 compatibility ownership, and valid/invalid exact-wheel recipes. The 143-case
 focused owner/golden/publication selection and the exact wheel
-`6b94112c...e93ec6b` pass without changing the accepted B0 owners. F0 is not
+`797dfd9a...d73f78f` pass without changing the accepted B0 owners. F0 is not
 accepted until the immutable candidate passes its one hosted cycle and merges
 unchanged. R0 follows accepted F0. Release remains exact-candidate work rather
 than an F0/R0 gate,

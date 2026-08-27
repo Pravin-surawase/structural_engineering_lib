@@ -60,7 +60,7 @@
     ],
     "generated_discovery": {
       "classification_sha256": "58a58b65aee601135d7f8b31ce506dbdbc431d4d41e54aa30bec79bfb4387b5b",
-      "compatibility_ledger_sha256": "24ed3111d041179aff188c2e2e9cb4e30c743550e08cd48244ad667906ad3c9d",
+      "compatibility_ledger_sha256": "268857675e773495443c690dc6cde5d963ab260b03831ff11ec20b00bc86613f",
       "request_schemas": 13,
       "compatibility_owner_per_workflow": true,
       "evidence_class_per_workflow": true
@@ -77,6 +77,7 @@
   "focused_verification": {
     "status": "PASS",
     "pytest_cases": 143,
+    "hosted_repair_replay_cases": 32,
     "coverage": [
       "13 valid and 13 invalid facade workflow recipes",
       "B0 canonical beam and torsion owner parity",
@@ -92,9 +93,9 @@
     "distribution": "structural-lib-is456",
     "version": "0.24.0a1",
     "filename": "structural_lib_is456-0.24.0a1-py3-none-any.whl",
-    "sha256": "6b94112ce42819aea67442545b88dcac64a02e27d86684bd44201e698e93ec6b",
-    "size_bytes": 819081,
-    "temporary_path": "/tmp/lib-pro-013-f0-final-wheel.TwYZiR/dist/structural_lib_is456-0.24.0a1-py3-none-any.whl",
+    "sha256": "797dfd9a6f983280e955a25057e3aa5de99e75e7a60d0ebd0ae3273d2d73f78f",
+    "size_bytes": 819118,
+    "temporary_path": "/tmp/lib-pro-013-f0-repair-wheel.JXIVzB/dist/structural_lib_is456-0.24.0a1-py3-none-any.whl",
     "runtime": "macOS arm64 / Python 3.11",
     "source_free_structural_lib": true,
     "recipe_count": 13,
@@ -139,11 +140,11 @@
     "focused_reproducers": "PASS_143",
     "architecture_import_generated_and_control": "PASS",
     "documentation_context_instruction_and_config": "PASS: 5 documentation checks, 0 broken links, context/instruction/config current",
-    "quick_gate": "PASS_10_OF_10_ONE_CONSOLIDATED_RUN",
+    "quick_gate": "PASS_10_OF_10_INITIAL_AND_PASS_10_OF_10_POST_HOSTED_REPAIR",
     "efficiency": "PASS: one-parent/no-subagent milestone at 43.451 minutes; provider billing tokens and cost unavailable",
-    "normal_hooks": "PENDING_CANDIDATE",
+    "normal_hooks": "FIRST_CANDIDATE_PASS; REPAIR_CANDIDATE_PENDING",
     "session_end": "PENDING_CANDIDATE",
-    "hosted_checks": "PENDING_PR"
+    "hosted_checks": "RUN_1: PYTHON_DOCUMENTATION_FASTAPI_PASS, CONTROL_FAIL_ON_CLASSIFIED_ALIAS_AST_OWNER, PR_GATE_FAIL; BOUNDED_REPAIR_PENDING"
   },
   "efficiency_counters_at_freeze": {
     "candidate_heads": 0,

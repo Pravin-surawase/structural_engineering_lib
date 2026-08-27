@@ -34,7 +34,7 @@ and all professional/release claim boundaries.
   journey IDs, and evidence-class labels; registered the exact-wheel verifier;
   and documented a runnable family-facade recipe and all promoted routes.
 - Froze one valid and one invalid exact-wheel recipe per route class. The final
-  wheel `6b94112c...e93ec6b` passes 13/13 valid and 13/13 structured-negative
+  wheel `797dfd9a...d73f78f` passes 13/13 valid and 13/13 structured-negative
   recipes, preserving 11 `PASS`, one engineering `FAIL`, and one review `HOLD`.
 - Preserved the separate cross-standard capability truth at 13 supported and 8
   held families. Existing IS 13920 owners, calculation formulas, normalized
@@ -60,6 +60,13 @@ and all professional/release claim boundaries.
   512-KiB packed-ledger ceiling and failed after F0 added 13 generated schemas.
 - The first usage milestone command supplied candidate/retry counters that the
   maintained session tool reserves for final closeout checkpoints.
+- Hosted Control Plane Validation on the first immutable candidate found that
+  the classified public column `check` name was an assignment alias rather than
+  a top-level function definition, so the input-audit census could not locate
+  its declared owner in the source AST.
+- The first bounded repair command used repository-root paths while its working
+  directory was already `Python/`, so staging stopped before any repair check
+  ran.
 
 ### Root causes and resolutions
 
@@ -98,6 +105,20 @@ and all professional/release claim boundaries.
   with task, verification, and exact 1+0 agent usage only; defer candidate and
   retry counters to closeout. ⚠️ TERMINAL ISSUE: milestone rejected closeout-
   only counters -> reran with milestone-eligible fields.
+- Confirmed root cause: `check = design` preserved runtime identity, but the
+  generated public classification correctly listed `check` as a callable while
+  the maintained input audit requires each classified public callable name to
+  resolve to a concrete top-level function for parameter evidence. Resolution:
+  replace the alias assignment with a typed, formula-free `check` facade that
+  delegates to `design`. The failed audit node, affected F0/classification
+  tests, generated owners, exact wheel, repair quick gate, and normal hooks are
+  the bounded repair evidence.
+- Confirmed root cause: the repair command mixed root-relative paths with a
+  package-directory working context. Resolution: rerun staging, generation,
+  pytest, Ruff, Black, and control checks from the repository root, then run
+  configured mypy separately from `Python/`. ⚠️ TERMINAL ISSUE: root-relative
+  repair paths were unresolved from `Python/` -> split root and package-context
+  commands.
 
 ### Validation through content freeze
 
@@ -115,7 +136,8 @@ and all professional/release claim boundaries.
   and zero broken links; context, instruction composition, config precedence,
   session handoff, and the task-to-Git receipt are current. One quick gate,
   efficiency policy, and the 1+0-agent milestone pass; the single quick gate is
-  10/10 green. Normal hooks, immutable candidate, read-only session end, and
+  10/10 green, and its required post-hosted-repair replay is also 10/10 green.
+  Normal hooks, the repaired immutable candidate, read-only session end, and
   hosted acceptance remain the closeout sequence.
 
 ---

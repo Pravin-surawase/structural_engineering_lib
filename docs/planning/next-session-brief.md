@@ -36,7 +36,7 @@
   transfer bases, applicability, review evidence, normalized data, formulas,
   held-family support, or release metadata.
 - The exact source-built wheel
-  `6b94112ce42819aea67442545b88dcac64a02e27d86684bd44201e698e93ec6b`
+  `797dfd9a6f983280e955a25057e3aa5de99e75e7a60d0ebd0ae3273d2d73f78f`
   passes all 13 valid and 13 invalid recipes. Valid results intentionally
   include 11 `PASS`, one engineering `FAIL`, and one review `HOLD`.
 - The cross-standard capability authority remains a separate inventory of 13
