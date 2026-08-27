@@ -76,7 +76,7 @@ class TestBBSExport:
         assert resp.status_code == 200
 
     def test_bbs_export_zero_steel(self, client):
-        """BBS export with zero steel area."""
+        """BBS export rejects zero steel before detailing or schedule creation."""
         payload = {
             "width": 300.0,
             "depth": 500.0,
@@ -85,7 +85,11 @@ class TestBBSExport:
             "ast_required": 0.0,
         }
         resp = client.post("/api/v1/export/bbs", json=payload)
-        assert resp.status_code == 200
+        assert resp.status_code == 422
+        assert resp.json()["error"]["details"][0]["loc"] == [
+            "body",
+            "ast_required",
+        ]
 
 
 # =============================================================================

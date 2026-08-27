@@ -27,6 +27,12 @@ from structural_lib.core.data_types import (
     DeflectionParams,
 )
 from structural_lib.core.inputs import BeamInput
+from structural_lib.core.validation import (
+    require_nonblank_string,
+    require_nonnegative_real,
+    require_positive_real,
+    require_strict_bool,
+)
 from structural_lib.insights import cost_optimization, design_suggestions
 from structural_lib.services import bbs, beam_pipeline, report
 from structural_lib.services.common_api import (
@@ -171,6 +177,56 @@ def _require_table_19_concrete_domain(fck_nmm2: float) -> None:
             "fck_nmm2 must be within 15-40 N/mm² for the maintained "
             "IS 456 Table 19 shear lookup."
         )
+
+
+def _validate_detailing_boundary(
+    *,
+    beam_id: object,
+    story: object,
+    b_mm: object,
+    D_mm: object,
+    span_mm: object,
+    cover_mm: object,
+    fck_nmm2: object,
+    fy_nmm2: object,
+    stirrup_dia_mm: object,
+    stirrup_spacing_start_mm: object,
+    stirrup_spacing_mid_mm: object,
+    stirrup_spacing_end_mm: object,
+    is_seismic: object,
+    reinforcement: dict[str, object] | None = None,
+) -> None:
+    """Reject unusable detailing intake before design or object creation."""
+    require_nonblank_string(beam_id, "beam_id")
+    require_nonblank_string(story, "story")
+    b = require_positive_real(b_mm, "b_mm")
+    D = require_positive_real(D_mm, "D_mm")
+    require_positive_real(span_mm, "span_mm")
+    cover = require_positive_real(cover_mm, "cover_mm")
+    fck = require_positive_real(fck_nmm2, "fck_nmm2")
+    fy = require_positive_real(fy_nmm2, "fy_nmm2")
+    stirrup_dia = require_positive_real(stirrup_dia_mm, "stirrup_dia_mm")
+    require_positive_real(stirrup_spacing_start_mm, "stirrup_spacing_start_mm")
+    require_positive_real(stirrup_spacing_mid_mm, "stirrup_spacing_mid_mm")
+    require_positive_real(stirrup_spacing_end_mm, "stirrup_spacing_end_mm")
+    require_strict_bool(is_seismic, "is_seismic")
+    if not 15 <= fck <= 80:
+        raise ValueError("fck_nmm2 must be within 15-80 N/mm².")
+    if not 250 <= fy <= 550:
+        raise ValueError("fy_nmm2 must be within 250-550 N/mm².")
+    if cover >= D:
+        raise ValueError("cover_mm must be less than D_mm.")
+    if b - 2 * (cover + stirrup_dia / 2) <= 0:
+        raise ValueError(
+            "cover_mm and stirrup_dia_mm leave no positive stirrup core width."
+        )
+    if D - 2 * (cover + stirrup_dia / 2) <= 0:
+        raise ValueError(
+            "cover_mm and stirrup_dia_mm leave no positive stirrup core depth."
+        )
+    if reinforcement is not None:
+        for field_name, value in reinforcement.items():
+            require_nonnegative_real(value, field_name)
 
 
 def _detailing_result_to_dict(
@@ -428,7 +484,11 @@ def compute_detailing(
 
 
 def compute_bbs(
-    detailing_list: list[detailing.BeamDetailingResult],
+    detailing_list: (
+        DesignAndDetailResult
+        | detailing.BeamDetailingResult
+        | Sequence[detailing.BeamDetailingResult]
+    ),
     *,
     project_name: str = "Beam BBS",
 ) -> bbs.BBSDocument:
@@ -438,7 +498,8 @@ def compute_bbs(
     with bar marks, shapes, dimensions, and quantities for steel fabrication.
 
     Args:
-        detailing_list: List of BeamDetailingResult objects from compute_detailing()
+        detailing_list: A combined result, one BeamDetailingResult, or a sequence
+            of BeamDetailingResult objects from compute_detailing().
         project_name: Project name for BBS document header (default: "Beam BBS")
 
     Returns:
@@ -456,7 +517,20 @@ def compute_bbs(
         >>> print(f"Total steel: {bbs_doc.summary.total_weight_kg:.1f} kg")
         Total steel: 1234.5 kg
     """
-    return bbs.generate_bbs_document(detailing_list, project_name=project_name)
+    if isinstance(detailing_list, DesignAndDetailResult):
+        normalized = [detailing_list.detailing]
+    elif isinstance(detailing_list, detailing.BeamDetailingResult):
+        normalized = [detailing_list]
+    elif isinstance(detailing_list, Sequence) and not isinstance(
+        detailing_list, (str, bytes)
+    ):
+        normalized = list(detailing_list)
+    else:
+        raise TypeError(
+            "compute_bbs() requires DesignAndDetailResult, BeamDetailingResult, "
+            "or a sequence of BeamDetailingResult values."
+        )
+    return bbs.generate_bbs_document(normalized, project_name=project_name)
 
 
 def export_bbs(
@@ -1180,6 +1254,7 @@ def design_beam_is456(
     """
 
     _require_is456_units(units)
+    require_nonblank_string(case_id, "case_id")
     depth_resolution = resolve_effective_depth_v1(
         D_mm=D_mm,
         d_mm=d_mm,
@@ -1606,6 +1681,11 @@ def check_beam_is456(
 
     _require_is456_units(units)
 
+    if isinstance(cases, (str, bytes)) or not isinstance(cases, Sequence):
+        raise ValueError("cases must be a non-empty sequence of mappings.")
+    if not cases:
+        raise ValueError("cases must contain at least one load case.")
+
     for name, value in (
         ("b_mm", b_mm),
         ("D_mm", D_mm),
@@ -1630,15 +1710,20 @@ def check_beam_is456(
     )
     _require_table_19_concrete_domain(fck_nmm2)
 
+    case_ids: list[str] = []
     for case in cases:
-        if isinstance(case, dict):
-            _require_finite_real("mu_knm", case.get("mu_knm"))
-            _require_finite_real("vu_kn", case.get("vu_kn"))
-            _validate_plausibility(
-                mu_knm=case.get("mu_knm"),
-                vu_kn=case.get("vu_kn"),
-                ast_mm2_for_shear=case.get("ast_mm2_for_shear"),
-            )
+        if not isinstance(case, dict):
+            raise ValueError("each case must be a mapping.")
+        case_ids.append(require_nonblank_string(case.get("case_id"), "case_id"))
+        _require_finite_real("mu_knm", case.get("mu_knm"))
+        _require_finite_real("vu_kn", case.get("vu_kn"))
+        _validate_plausibility(
+            mu_knm=case.get("mu_knm"),
+            vu_kn=case.get("vu_kn"),
+            ast_mm2_for_shear=case.get("ast_mm2_for_shear"),
+        )
+    if len(set(case_ids)) != len(case_ids):
+        raise ValueError("cases must have unique case_id values.")
 
     return compliance.check_compliance_report(
         cases=cases,
@@ -1707,6 +1792,30 @@ def detail_beam_is456(
     """
 
     _require_is456_units(units)
+
+    _validate_detailing_boundary(
+        beam_id=beam_id,
+        story=story,
+        b_mm=b_mm,
+        D_mm=D_mm,
+        span_mm=span_mm,
+        cover_mm=cover_mm,
+        fck_nmm2=fck_nmm2,
+        fy_nmm2=fy_nmm2,
+        stirrup_dia_mm=stirrup_dia_mm,
+        stirrup_spacing_start_mm=stirrup_spacing_start_mm,
+        stirrup_spacing_mid_mm=stirrup_spacing_mid_mm,
+        stirrup_spacing_end_mm=stirrup_spacing_end_mm,
+        is_seismic=is_seismic,
+        reinforcement={
+            "ast_start_mm2": ast_start_mm2,
+            "ast_mid_mm2": ast_mid_mm2,
+            "ast_end_mm2": ast_end_mm2,
+            "asc_start_mm2": asc_start_mm2,
+            "asc_mid_mm2": asc_mid_mm2,
+            "asc_end_mm2": asc_end_mm2,
+        },
+    )
 
     # Unit plausibility guards (catch common mistakes)
     _validate_plausibility(
@@ -1824,6 +1933,24 @@ def design_and_detail_beam_is456(
         - detail_beam_is456(): Detailing-only (requires Ast as input)
     """
     _require_is456_units(units)
+
+    _validate_detailing_boundary(
+        beam_id=beam_id,
+        story=story,
+        b_mm=b_mm,
+        D_mm=D_mm,
+        span_mm=span_mm,
+        cover_mm=cover_mm,
+        fck_nmm2=fck_nmm2,
+        fy_nmm2=fy_nmm2,
+        stirrup_dia_mm=stirrup_dia_mm,
+        stirrup_spacing_start_mm=stirrup_spacing_support_mm,
+        stirrup_spacing_mid_mm=stirrup_spacing_mid_mm,
+        stirrup_spacing_end_mm=stirrup_spacing_support_mm,
+        is_seismic=is_seismic,
+    )
+    require_positive_real(d_dash_mm, "d_dash_mm")
+    require_positive_real(asv_mm2, "asv_mm2")
 
     # Calculate effective depth if not provided
     if d_mm is None:
@@ -2224,7 +2351,12 @@ def smart_analyze_design(
         b_mm=b_mm,
         d_mm=d_mm,
         D_mm=D_mm,
+        mu_knm=mu_knm,
+        vu_kn=vu_kn,
+        d_dash_mm=d_dash_mm,
+        asv_mm2=asv_mm2,
     )
+    require_positive_real(span_mm, "span_mm")
 
     # Run full pipeline to get BeamDesignOutput
     pipeline_result = beam_pipeline.design_single_beam(
@@ -2346,7 +2478,7 @@ def design_from_input(
     # Get effective depth
     d_mm = geom.effective_depth
 
-    if beam.has_multiple_cases:
+    if beam.load_cases:
         # Multi-case analysis
         cases = [
             {

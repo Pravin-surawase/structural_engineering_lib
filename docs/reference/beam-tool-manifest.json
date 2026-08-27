@@ -9,7 +9,7 @@
   "schema_version": "1.0",
   "source": {
     "catalog_schema_version": "1.0",
-    "catalog_sha256": "70235ca5135dfd5fa942ba77f62c6c7ec4ab475cfe6110ae01a5410f2d150e06",
+    "catalog_sha256": "68903f089736ea9c7821eab7f21dee9b04a2510b2a3d36919d6ff9c40a430a5b",
     "catalog_version": "1.3.0"
   },
   "tools": [
@@ -140,7 +140,13 @@
         "required": [
           "width",
           "depth",
-          "moment"
+          "clear_cover",
+          "stirrup_dia_mm",
+          "main_bar_dia_mm",
+          "moment",
+          "shear",
+          "fck",
+          "fy"
         ],
         "type": "object",
         "x-schema-id": "fastapi.BeamDesignRequest.v1"

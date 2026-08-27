@@ -15,6 +15,7 @@ from __future__ import annotations
 import math
 import warnings
 from numbers import Real
+from typing import SupportsFloat, cast
 
 from .errors import (
     E_INPUT_001,
@@ -64,6 +65,50 @@ def validate_finite_reals(**kwargs: object) -> list[DesignError]:
     for field_name, value in kwargs.items():
         errors.extend(validate_finite_real(value, field_name))
     return errors
+
+
+def require_finite_real(value: object, field_name: str) -> float:
+    """Return a finite real value or raise a stable boundary ``ValueError``.
+
+    This raising form is intended for public/service/dataclass boundaries that
+    must stop before a result object is created.  Ordinary ``int`` and
+    ``float`` values are accepted; booleans, numeric strings, NaN, and
+    infinities are rejected.
+    """
+    errors = validate_finite_real(value, field_name)
+    if errors:
+        raise ValueError(errors[0].message)
+    return float(cast(SupportsFloat, value))
+
+
+def require_positive_real(value: object, field_name: str) -> float:
+    """Return a finite real value greater than zero."""
+    numeric = require_finite_real(value, field_name)
+    if numeric <= 0:
+        raise ValueError(f"{field_name} must be > 0.")
+    return numeric
+
+
+def require_nonnegative_real(value: object, field_name: str) -> float:
+    """Return a finite real magnitude greater than or equal to zero."""
+    numeric = require_finite_real(value, field_name)
+    if numeric < 0:
+        raise ValueError(f"{field_name} must be >= 0.")
+    return numeric
+
+
+def require_nonblank_string(value: object, field_name: str) -> str:
+    """Return a trimmed non-blank string without inventing identity."""
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"{field_name} must be a non-blank string.")
+    return value.strip()
+
+
+def require_strict_bool(value: object, field_name: str) -> bool:
+    """Return a real boolean and reject truthiness coercion."""
+    if type(value) is not bool:
+        raise ValueError(f"{field_name} must be a boolean.")
+    return value
 
 
 def validate_dimensions(

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-24",
+  "generated": "2026-08-27",
   "module": "structural_lib.api",
   "python": "3.11.15",
   "count": 199,
@@ -637,7 +637,7 @@
     {
       "name": "compute_bbs",
       "kind": "function",
-      "signature": "(detailing_list: 'list[detailing.BeamDetailingResult]', *, project_name: 'str' = 'Beam BBS') -> 'bbs.BBSDocument'"
+      "signature": "(detailing_list: 'DesignAndDetailResult | detailing.BeamDetailingResult | Sequence[detailing.BeamDetailingResult]', *, project_name: 'str' = 'Beam BBS') -> 'bbs.BBSDocument'"
     },
     {
       "name": "compute_beam_outline",
@@ -727,7 +727,7 @@
     {
       "name": "design_column_is456",
       "kind": "function",
-      "signature": "(Pu_kN: 'float', Mux_kNm: 'float' = 0.0, Muy_kNm: 'float' = 0.0, b_mm: 'float' = 0.0, D_mm: 'float' = 0.0, l_mm: 'float' = 0.0, end_condition: 'str' = 'FIXED_FIXED', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 50.0, l_unsupported_mm: 'float | None' = None, braced: 'bool' = True, M1x_kNm: 'float | None' = None, M2x_kNm: 'float | None' = None, M1y_kNm: 'float | None' = None, M2y_kNm: 'float | None' = None, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'dict[str, Any]'"
+      "signature": "(Pu_kN: 'float', Mux_kNm: 'float' = 0.0, Muy_kNm: 'float' = 0.0, b_mm: 'float' = 0.0, D_mm: 'float' = 0.0, l_mm: 'float' = 0.0, end_condition: 'str' = 'FIXED_FIXED', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float | None' = None, d_prime_mm: 'float' = 50.0, l_unsupported_mm: 'float | None' = None, braced: 'bool' = True, M1x_kNm: 'float | None' = None, M2x_kNm: 'float | None' = None, M1y_kNm: 'float | None' = None, M2y_kNm: 'float | None' = None, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'dict[str, Any]'"
     },
     {
       "name": "design_complete_one_way_slab_is456",

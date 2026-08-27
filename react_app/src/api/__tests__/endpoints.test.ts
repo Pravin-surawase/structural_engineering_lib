@@ -694,7 +694,10 @@ describe('API Response Contract — unwrap enforcement', () => {
     // Mock returns WRAPPED response (as FastAPI actually sends)
     mockFetch({ success: true, data: innerData });
 
-    const result = await designBeam({ width: 300, depth: 500, moment: 150, fck: 25, fy: 500 });
+    const result = await designBeam({
+      width: 300, depth: 500, moment: 150, shear: 75, fck: 25, fy: 500,
+      clear_cover: 25, stirrup_dia_mm: 8, main_bar_dia_mm: 20,
+    });
 
     // Should get unwrapped data — flexure should be directly accessible
     expect(result.flexure).toBeDefined();
@@ -719,7 +722,10 @@ describe('API Response Contract — unwrap enforcement', () => {
     const controller = new AbortController();
 
     await designBeam(
-      { width: 300, depth: 500, moment: 150, fck: 25, fy: 500 },
+      {
+        width: 300, depth: 500, moment: 150, shear: 75, fck: 25, fy: 500,
+        clear_cover: 25, stirrup_dia_mm: 8, main_bar_dia_mm: 20,
+      },
       { signal: controller.signal },
     );
 
@@ -742,8 +748,12 @@ describe('API Response Contract — unwrap enforcement', () => {
       width: 300,
       depth: 500,
       moment: 150,
+      shear: 75,
       fck: 25,
       fy: 500,
+      clear_cover: 25,
+      stirrup_dia_mm: 8,
+      main_bar_dia_mm: 20,
     })).rejects.toThrow('result envelope is missing or unsupported');
   });
 
@@ -761,8 +771,12 @@ describe('API Response Contract — unwrap enforcement', () => {
       width: 300,
       depth: 500,
       moment: 150,
+      shear: 75,
       fck: 25,
       fy: 500,
+      clear_cover: 25,
+      stirrup_dia_mm: 8,
+      main_bar_dia_mm: 20,
     })).rejects.toThrow('contradictory canonical status fields');
   });
 
@@ -781,8 +795,12 @@ describe('API Response Contract — unwrap enforcement', () => {
       width: 300,
       depth: 500,
       moment: 150,
+      shear: 75,
       fck: 25,
       fy: 500,
+      clear_cover: 25,
+      stirrup_dia_mm: 8,
+      main_bar_dia_mm: 20,
     })).rejects.toThrow(
       'BEAM_DESIGN_INPUT_INVALID: Effective depth is invalid',
     );

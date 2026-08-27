@@ -19,6 +19,8 @@ from fastapi_app.models.response import StructuralResultEnvelopeResponse
 class RebarLayerConfig(BaseModel):
     """Configuration for a single rebar layer in multi-layer reinforcement."""
 
+    model_config = ConfigDict(strict=True, extra="forbid", allow_inf_nan=False)
+
     layer: int = Field(ge=1, le=5, description="Layer number (1 = bottom)")
     bar_count: int = Field(ge=1, le=12, description="Number of bars")
     bar_dia_mm: float = Field(ge=8, le=36, description="Bar diameter (mm)")
@@ -26,6 +28,8 @@ class RebarLayerConfig(BaseModel):
 
 class BeamCrackWidthParams(BaseModel):
     """Explicit maintained inputs for the primary-route crack-width check."""
+
+    model_config = ConfigDict(strict=True, extra="forbid", allow_inf_nan=False)
 
     exposure_class: Literal["mild", "moderate", "severe", "very_severe"] = Field(
         default="moderate"
@@ -53,6 +57,9 @@ class BeamDesignRequest(BaseModel):
     """Request model for beam design calculation."""
 
     model_config = ConfigDict(
+        strict=True,
+        extra="forbid",
+        allow_inf_nan=False,
         json_schema_extra={
             "examples": [
                 {
@@ -68,7 +75,7 @@ class BeamDesignRequest(BaseModel):
                     "main_bar_dia_mm": 20.0,
                 }
             ]
-        }
+        },
     )
 
     # Section dimensions
@@ -92,7 +99,6 @@ class BeamDesignRequest(BaseModel):
         examples=[100.0, 250.0, 500.0],
     )
     shear: float = Field(
-        default=0.0,
         ge=0,
         description="Factored design shear force Vu (kN)",
         examples=[50.0, 150.0, 300.0],
@@ -106,23 +112,20 @@ class BeamDesignRequest(BaseModel):
 
     # Material properties
     fck: float = Field(
-        default=25.0,
         ge=15.0,
         le=80.0,
         description="Characteristic compressive strength of concrete (N/mm²)",
         examples=[20.0, 25.0, 30.0, 40.0],
     )
     fy: float = Field(
-        default=500.0,
         ge=250.0,
-        le=600.0,
+        le=550.0,
         description="Yield strength of reinforcement steel (N/mm²)",
         examples=[415.0, 500.0, 550.0],
     )
 
     # Optional parameters
     clear_cover: float = Field(
-        default=25.0,
         ge=20.0,
         le=75.0,
         description="Clear cover to reinforcement (mm)",
@@ -137,13 +140,11 @@ class BeamDesignRequest(BaseModel):
         ),
     )
     stirrup_dia_mm: float = Field(
-        default=8.0,
         ge=6,
         le=16,
         description="Stirrup diameter (mm)",
     )
     main_bar_dia_mm: float = Field(
-        default=20.0,
         ge=8,
         le=36,
         description="Main bar diameter (mm)",

@@ -44,6 +44,8 @@ class TestBeamDesignRequestValidator:
             fck=25,
             fy=415,
             clear_cover=25,
+            stirrup_dia_mm=8,
+            main_bar_dia_mm=20,
             effective_depth=450,
         )
         assert req.depth == 500
@@ -58,6 +60,9 @@ class TestBeamDesignRequestValidator:
                 shear=50,
                 fck=25,
                 fy=415,
+                clear_cover=25,
+                stirrup_dia_mm=8,
+                main_bar_dia_mm=20,
                 effective_depth=400,
             )
 
@@ -70,6 +75,9 @@ class TestBeamDesignRequestValidator:
                 shear=50,
                 fck=25,
                 fy=415,
+                clear_cover=25,
+                stirrup_dia_mm=8,
+                main_bar_dia_mm=20,
                 effective_depth=500,
             )
 
@@ -84,6 +92,8 @@ class TestBeamDesignRequestValidator:
                 fck=25,
                 fy=415,
                 clear_cover=25,
+                stirrup_dia_mm=8,
+                main_bar_dia_mm=20,
             )
 
     def test_rejects_depth_width_ratio_gt_6(self):
@@ -95,6 +105,9 @@ class TestBeamDesignRequestValidator:
                 shear=50,
                 fck=25,
                 fy=415,
+                clear_cover=25,
+                stirrup_dia_mm=8,
+                main_bar_dia_mm=20,
             )
 
     def test_none_effective_depth_is_valid(self):
@@ -106,6 +119,9 @@ class TestBeamDesignRequestValidator:
             shear=75,
             fck=25,
             fy=415,
+            clear_cover=25,
+            stirrup_dia_mm=8,
+            main_bar_dia_mm=20,
             effective_depth=None,
         )
         assert req.effective_depth is None

@@ -58,7 +58,7 @@ class ExportBeamRequest(BaseModel):
     )
     fck: float = Field(..., gt=0, description="Concrete grade N/mm²")
     fy: float = Field(..., gt=0, description="Steel grade N/mm²")
-    ast_required: float = Field(..., ge=0, description="Required tension steel mm²")
+    ast_required: float = Field(..., gt=0, description="Required tension steel mm²")
     asc_required: float = Field(
         default=0, ge=0, description="Required compression steel mm²"
     )

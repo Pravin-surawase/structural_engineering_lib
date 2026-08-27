@@ -109,6 +109,8 @@ class TestDesignEndpoints:
                 "fck": 25,
                 "fy": 500,
                 "clear_cover": 40,
+                "stirrup_dia_mm": 8,
+                "main_bar_dia_mm": 20,
             },
         )
         assert response.status_code == status.HTTP_200_OK
@@ -128,6 +130,8 @@ class TestDesignEndpoints:
             "fck": 25,
             "fy": 500,
             "clear_cover": 25,
+            "stirrup_dia_mm": 8,
+            "main_bar_dia_mm": 20,
         }
         design_response = client.post("/api/v1/design/beam", json=design_payload)
         assert design_response.status_code == status.HTTP_200_OK
@@ -179,6 +183,8 @@ class TestDesignEndpoints:
             "fck": 25,
             "fy": 500,
             "clear_cover": 40,
+            "stirrup_dia_mm": 8,
+            "main_bar_dia_mm": 20,
         }
         response = client.post(
             "/api/v1/design/beam",
@@ -228,6 +234,8 @@ class TestDesignEndpoints:
             "fck": 25,
             "fy": 500,
             "clear_cover": 25,
+            "stirrup_dia_mm": 8,
+            "main_bar_dia_mm": 20,
         }
         design = unwrap(client.post("/api/v1/design/beam", json=payload))
         report = client.post(
@@ -1153,7 +1161,22 @@ class TestExportEndpoints:
             "is_safe": True,
             "format": fmt,
         }
-        design = unwrap(client.post("/api/v1/design/beam", json=payload))
+        design = unwrap(
+            client.post(
+                "/api/v1/design/beam",
+                json={
+                    "width": payload["width"],
+                    "depth": payload["depth"],
+                    "moment": payload["moment"],
+                    "shear": payload["shear"],
+                    "fck": payload["fck"],
+                    "fy": payload["fy"],
+                    "clear_cover": 25,
+                    "stirrup_dia_mm": 8,
+                    "main_bar_dia_mm": 20,
+                },
+            )
+        )
         return {
             **payload,
             "calculation_identity": design["evidence"]["calculation_identity"],
@@ -1317,6 +1340,9 @@ class TestDepthValidationUX01:
                 "shear": 50,
                 "fck": 25,
                 "fy": 500,
+                "clear_cover": 25,
+                "stirrup_dia_mm": 8,
+                "main_bar_dia_mm": 20,
             },
         )
         assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
@@ -1333,6 +1359,9 @@ class TestDepthValidationUX01:
                 "shear": 50,
                 "fck": 25,
                 "fy": 500,
+                "clear_cover": 25,
+                "stirrup_dia_mm": 8,
+                "main_bar_dia_mm": 20,
             },
         )
         assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
@@ -1349,6 +1378,9 @@ class TestDepthValidationUX01:
                 "shear": 50,
                 "fck": 25,
                 "fy": 500,
+                "clear_cover": 25,
+                "stirrup_dia_mm": 8,
+                "main_bar_dia_mm": 20,
             },
         )
         assert response.status_code == status.HTTP_200_OK

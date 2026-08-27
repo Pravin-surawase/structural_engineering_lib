@@ -131,6 +131,7 @@ import httpx
 @dataclass
 class FlexureResult:
     """Flexure design calculation results."""
+
     ast_required: float
     ast_min: float
     ast_max: float
@@ -144,6 +145,7 @@ class FlexureResult:
 @dataclass
 class ShearResult:
     """Shear design calculation results."""
+
     tau_v: float
     tau_c: float
     tau_c_max: float
@@ -156,6 +158,7 @@ class ShearResult:
 @dataclass
 class BeamDesignResponse:
     """Complete beam design results."""
+
     success: bool
     message: str
     flexure: FlexureResult
@@ -174,7 +177,17 @@ class StructuralDesignClient:
 
     Usage:
         client = StructuralDesignClient("http://localhost:8000")
-        result = client.design_beam(width=300, depth=500, moment=150, fck=25, fy=500)
+        result = client.design_beam(
+            width=300,
+            depth=500,
+            moment=150,
+            fck=25,
+            fy=500,
+            shear=75,
+            clear_cover=25,
+            stirrup_dia_mm=8,
+            main_bar_dia_mm=20,
+        )
         print(f"Ast required: {result.flexure.ast_required}")
     """
 
@@ -201,10 +214,10 @@ class StructuralDesignClient:
         moment: float,
         fck: float,
         fy: float,
-        shear: Optional[float] = None,
-        clear_cover: float = 25.0,
-        stirrup_dia_mm: float = 8.0,
-        main_bar_dia_mm: float = 20.0,
+        shear: float,
+        clear_cover: float,
+        stirrup_dia_mm: float,
+        main_bar_dia_mm: float,
         effective_depth: float | None = None,
     ) -> BeamDesignResponse:
         """
@@ -216,7 +229,7 @@ class StructuralDesignClient:
             moment: Design moment in kN·m
             fck: Concrete strength in MPa
             fy: Steel yield strength in MPa
-            shear: Design shear in kN (optional)
+            shear: Design shear in kN
             clear_cover: Clear cover in mm for derived effective depth
             stirrup_dia_mm: Stirrup diameter in mm for derived effective depth
             main_bar_dia_mm: Tension bar diameter in mm for derived effective depth
@@ -235,8 +248,7 @@ class StructuralDesignClient:
             "stirrup_dia_mm": stirrup_dia_mm,
             "main_bar_dia_mm": main_bar_dia_mm,
         }
-        if shear is not None:
-            payload["shear"] = shear
+        payload["shear"] = shear
         if effective_depth is not None:
             payload["effective_depth"] = effective_depth
 
@@ -250,7 +262,9 @@ class StructuralDesignClient:
             raise RuntimeError(f"Design failed: {code}: {message}") from exc
         envelope = response.json()
         if envelope.get("success") is not True:
-            raise RuntimeError(f"Design failed: {envelope.get('error', 'unknown error')}")
+            raise RuntimeError(
+                f"Design failed: {envelope.get('error', 'unknown error')}"
+            )
         data = envelope["data"]
 
         shear_data = data.get("shear")
@@ -317,7 +331,9 @@ class StructuralDesignClient:
             problem = response.json().get("error", {})
             code = problem.get("code", response.status_code)
             message = problem.get("message", "Request failed")
-            raise RuntimeError(f"Geometry generation failed: {code}: {message}") from exc
+            raise RuntimeError(
+                f"Geometry generation failed: {code}: {message}"
+            ) from exc
         envelope = response.json()
         if envelope.get("success") is not True:
             raise RuntimeError(
@@ -361,6 +377,7 @@ def generate_basic_typescript_client(output_dir: Path) -> bool:
             },
             indent=2,
         )
+        + "\n"
     )
 
     # tsconfig.json
@@ -379,6 +396,7 @@ def generate_basic_typescript_client(output_dir: Path) -> bool:
             },
             indent=2,
         )
+        + "\n"
     )
 
     # src/index.ts
@@ -395,12 +413,12 @@ export interface BeamDesignRequest {
   width: number;
   depth: number;
   moment: number;
-  shear?: number;
+  shear: number;
   fck: number;
   fy: number;
-  clear_cover?: number;
-  stirrup_dia_mm?: number;
-  main_bar_dia_mm?: number;
+  clear_cover: number;
+  stirrup_dia_mm: number;
+  main_bar_dia_mm: number;
   effective_depth?: number;
 }
 

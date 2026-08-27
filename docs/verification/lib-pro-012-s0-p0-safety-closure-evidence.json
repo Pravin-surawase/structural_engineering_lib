@@ -1,0 +1,285 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "LIB-PRO-012-S0-P0-SAFETY-CLOSURE",
+  "status": "LOCAL_ACCEPTANCE_PASS_PENDING_IMMUTABLE_COMMIT_AND_HOSTED_CHECKS",
+  "observed_at_utc": "2026-08-27T13:17:13Z",
+  "candidate_identity_policy": {
+    "source_head_sha": "d3242731e94dacd74e804a1f4a25c4c0da11790f",
+    "source_tree_sha": "dfdcca5f69c78f67c7ccde8cbc21bdccef14ba10",
+    "branch": "codex/lib-pro-012-s0-p0-safety-closure",
+    "candidate_commit": "RECORDED_EXTERNALLY_AFTER_IMMUTABLE_COMMIT",
+    "reason": "Repository closeout freezes all versioned evidence before the candidate commit; the exact commit, PR head, hosted checks, and merge identity are recorded in GitHub and the external completion report without mutating the reviewed candidate."
+  },
+  "source": {
+    "default_branch_ref": "origin/main",
+    "default_branch_sha_at_g0": "d3242731e94dacd74e804a1f4a25c4c0da11790f",
+    "planning_baseline_ancestor": "d3242731e94dacd74e804a1f4a25c4c0da11790f",
+    "planning_pr": {
+      "number": 876,
+      "state": "MERGED",
+      "merge_sha": "d3242731e94dacd74e804a1f4a25c4c0da11790f",
+      "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/876"
+    },
+    "remote_freshness_at_g0": "HEAD_EQUALS_FETCHED_ORIGIN_MAIN",
+    "python_source_binding": "/Users/pravinsurawase/.codex/worktrees/04f5/structural_engineering_lib/Python/structural_lib/__init__.py"
+  },
+  "authorities": [
+    {
+      "path": "docs/planning/lib-pro-012-external-api-remediation-plan.md",
+      "sha256": "4e77edcf813797b7b09a95ec3cd532d1f6631e8a4daea1caab5df620ae2539e5",
+      "role": "remediation scope and solution authority"
+    },
+    {
+      "path": "docs/planning/lib-pro-013-whole-library-renewal-audit-plan.md",
+      "sha256": "f63add72483dfcb0c06bf0f7a134600265ed11b00b52dbd0ad8892332e4f1755",
+      "role": "later whole-library audit and convergence authority"
+    },
+    {
+      "path": "docs/verification/lib-pro-011-external-api-readiness-audit.md",
+      "sha256": "b80a9d46e9674de38b6e0821f421c4a01f5c790c86e7cac27068ee87c47a37b3",
+      "role": "finding and reproduction authority"
+    }
+  ],
+  "g0_worktree_safety": {
+    "current_lane_before_writes": "READY_LOCAL",
+    "current_operation": "none",
+    "current_locks": [],
+    "open_runtime_pr_overlap": false,
+    "task_owned_unmerged_candidate_overlap": false,
+    "retained_worktrees": 15,
+    "preserved_dirty_sibling": {
+      "path": "/Users/pravinsurawase/.codex/worktrees/e54a/structural_engineering_lib",
+      "head_sha": "0fdb48edbb73114288feb8a246d6f30b80ac4d95",
+      "branch": "DETACHED",
+      "changed_paths": [
+        "docs/SESSION_LOG.md"
+      ],
+      "disposition": "PRESERVE_UNTOUCHED_NO_RUNTIME_OVERLAP"
+    },
+    "destructive_actions": []
+  },
+  "public_artifact_baseline": {
+    "distribution": "structural-lib-is456",
+    "version": "0.24.0a1",
+    "tag": "v0.24.0a1",
+    "tag_sha": "71b7065216d4266d63ad6b31bd39bba81fa16efc",
+    "wheel_sha256": "b5e0df7b561e8c715f37c602200eaae2c369ec5dc992eec87110a77c1026201a",
+    "sdist_sha256": "8c1d6b762a779686be5d17ed0dd9719f7155a5863a764e943a0e1ba9aeb0a53b",
+    "verification": "GitHub release asset digests and live PyPI JSON agreed at G0"
+  },
+  "rest_v1_compatibility_decision": {
+    "transport_and_field_names": "PRESERVE_API_V1",
+    "required_fields": [
+      "width",
+      "depth",
+      "moment",
+      "shear",
+      "fck",
+      "fy",
+      "clear_cover",
+      "stirrup_dia_mm",
+      "main_bar_dia_mm"
+    ],
+    "optional_fields": [
+      "torsion",
+      "effective_depth",
+      "include_serviceability",
+      "span_mm",
+      "support_condition",
+      "crack_width_params",
+      "rebar_layers"
+    ],
+    "effective_depth_rule": "effective_depth may be explicit; otherwise derive it only from the complete explicit clear_cover, stirrup_dia_mm, and main_bar_dia_mm basis",
+    "torsion_rule": "absence retains the documented non-torsion route; supplied torsion is strict and non-negative",
+    "intake_result_separation": {
+      "invalid_intake": "HTTP 422 with REQUEST_VALIDATION_ERROR or BEAM_DESIGN_INPUT_INVALID",
+      "valid_inadequate_engineering_result": "HTTP 200 with result_envelope.engineering_status FAIL or HOLD",
+      "internal_failure": "HTTP 500 BEAM_DESIGN_CALCULATION_FAILED"
+    },
+    "basis": [
+      "LIB-PRO-012 sections 5.2, 5.4, D5, D6, D9, and Packet A",
+      "LIB-PRO-011 EXT-REST-001 and EXT-REST-003",
+      "maintained FastAPI, React, workflow-catalog, benchmark, example, and generated-client callers",
+      "the calculation consumes shear, material grades, cover, stirrup diameter, and main-bar diameter",
+      "the optional ordinary non-torsion convention does not invent a torsional action"
+    ]
+  },
+  "prechange_reproductions": {
+    "focused_control": {
+      "command": "./scripts/python_runtime.sh -m pytest Python/tests/test_is456_common.py Python/tests/integration/test_full_pipeline_e2e.py fastapi_app/tests/test_beam_primary_route.py -q",
+      "result": "193 passed"
+    },
+    "beam_and_consumers": {
+      "EXT-BEAM-001_002": "span_mm=-1 returned is_ok=true and six BBS items; NaN reached late integer conversion",
+      "EXT-BEAM-003_004_005": "negative moment or shear returned is_ok=true on combined and design-only routes",
+      "EXT-BEAM-007": "negative-action compliance case returned is_ok=true",
+      "EXT-BEAM-008": "negative-action smart analysis returned PASS",
+      "EXT-DETAIL-001_002": "invalid supplied spacing or direct negative span created detailing",
+      "EXT-BBS-001": "invalid detailing produced six or seven rather than nine items",
+      "EXT-ID-001": "blank member and story identities returned is_ok=true"
+    },
+    "torsion_column_typed_rest": {
+      "EXT-TORSION-001_005": "negative actions, unsupported fy, nonphysical cover, zero stirrup diameter, and d>D returned safe results",
+      "EXT-TORSION-006": "b=0 error advertised a zero inclusive lower bound",
+      "EXT-COLUMN-001_002": "omitted steel failed late and negative unified moments became positive minimum moments",
+      "EXT-TYPED-001_007": "constructors admitted nonfinite or ambiguous values, fabricated identity, rejected one case, and lost explicit zero",
+      "EXT-REST-001_003": "three-field requests and coercive or unknown-field requests returned successful ordinary designs"
+    }
+  },
+  "finding_closure": {
+    "EXT-BEAM-001": "CLOSED_LOCAL",
+    "EXT-BEAM-002": "CLOSED_LOCAL",
+    "EXT-BEAM-003": "CLOSED_LOCAL",
+    "EXT-BEAM-004": "CLOSED_LOCAL",
+    "EXT-BEAM-005": "CLOSED_LOCAL",
+    "EXT-BEAM-006": "CLOSED_LOCAL_COUPLED_ROOT",
+    "EXT-BEAM-007": "CLOSED_LOCAL",
+    "EXT-BEAM-008": "CLOSED_LOCAL",
+    "EXT-DETAIL-001": "CLOSED_LOCAL",
+    "EXT-DETAIL-002": "CLOSED_LOCAL",
+    "EXT-BBS-001": "CLOSED_LOCAL",
+    "EXT-BBS-002": "CLOSED_LOCAL_COUPLED_ADAPTER",
+    "EXT-REST-001": "CLOSED_LOCAL_V1_CONTAINMENT",
+    "EXT-REST-003": "CLOSED_LOCAL_V1_CONTAINMENT",
+    "EXT-TORSION-001": "CLOSED_LOCAL",
+    "EXT-TORSION-002": "CLOSED_LOCAL",
+    "EXT-TORSION-003": "CLOSED_LOCAL",
+    "EXT-TORSION-004": "CLOSED_LOCAL",
+    "EXT-TORSION-005": "CLOSED_LOCAL",
+    "EXT-TORSION-006": "CLOSED_LOCAL_COUPLED_MESSAGE",
+    "EXT-COLUMN-001": "CLOSED_LOCAL",
+    "EXT-COLUMN-002": "CLOSED_LOCAL",
+    "EXT-TYPED-001": "CLOSED_LOCAL",
+    "EXT-TYPED-002": "CLOSED_LOCAL",
+    "EXT-TYPED-003": "CLOSED_LOCAL",
+    "EXT-TYPED-004": "CLOSED_LOCAL",
+    "EXT-TYPED-005": "CLOSED_LOCAL",
+    "EXT-TYPED-006": "CLOSED_LOCAL",
+    "EXT-TYPED-007": "CLOSED_LOCAL",
+    "EXT-ID-001": "CLOSED_LOCAL"
+  },
+  "exact_cycle_matrix": {
+    "work_package_a": {
+      "root_owners": [
+        "Python/structural_lib/core/validation.py",
+        "Python/structural_lib/services/common_api.py",
+        "Python/structural_lib/services/beam_api.py",
+        "Python/structural_lib/codes/is456/beam/detailing.py",
+        "Python/structural_lib/services/bbs.py",
+        "fastapi_app/models/beam.py",
+        "fastapi_app/routers/design.py"
+      ],
+      "caller_and_contract_owners": [
+        "Python/structural_lib/services/workflow_catalog.py",
+        "clients/python/structural_client/client.py",
+        "clients/typescript/src/index.ts",
+        "react_app/src/api/client.ts",
+        "react_app/src/components/design/BeamDetailPanel.tsx",
+        "scripts/generate_client_sdks.py",
+        "scripts/benchmark_api.py",
+        "fastapi_app/routers/export.py",
+        "fastapi_app/tests/test_export_bbs_dxf.py",
+        "fastapi_app/tests/test_workflows.py",
+        "fastapi_app/openapi_baseline.json",
+        "docs/reference/beam-tool-manifest.json",
+        "docs/reference/fastapi-rest-api.md"
+      ],
+      "focused_tests": "PASS in the 607-case consolidated Python/FastAPI selection, 13-case hosted-repair selection, required 506-case FastAPI hosted-command replay, and 51 focused React tests",
+      "artifact_replay": "PASS: source-free wheel rejected beam/detailing/BBS routes; exact-head FastAPI bound to that wheel rejected all nine omissions, four strict/domain vectors, and zero-steel BBS intake",
+      "hosted_checks": "FIRST_HEAD_A9613331_FAILED_FASTAPI_VALIDATION; REPAIR_HEAD_PENDING"
+    },
+    "work_package_b": {
+      "root_owners": [
+        "Python/structural_lib/core/inputs.py",
+        "Python/structural_lib/codes/is456/beam/torsion.py",
+        "Python/structural_lib/services/column_api.py"
+      ],
+      "generated_contract_owners": [
+        "docs/reference/api-manifest.json",
+        "docs/reference/api-classification.json",
+        "docs/reference/api-compatibility-ledger.json"
+      ],
+      "focused_tests": "PASS in 51 dedicated S0 regressions and the 607-case consolidated selection",
+      "artifact_replay": "PASS: source-free wheel rejected torsion, column, typed, identity, and boolean/finite vectors",
+      "hosted_checks": "FIRST_HEAD_A9613331_PASSED_PYTHON_REACT_CONTROL_AND_DOCS; AGGREGATE_REPAIR_HEAD_PENDING"
+    },
+    "cycle_verification_owners": {
+      "paths": [
+        "scripts/verify_lib_pro_012_s0_artifact.py",
+        "scripts/control-plane.json",
+        "scripts/automation-map.json"
+      ],
+      "result": "PASS: verifier registered as a read-only Testing operation; exact compatibility projection current; 16/16 CLI smoke nodes pass"
+    }
+  },
+  "validation": {
+    "dedicated_regressions": "51 passed",
+    "consolidated_python_fastapi": "607 passed",
+    "react_focused": "51 passed",
+    "react_lint": "PASS",
+    "react_production_build": "PASS",
+    "architecture": "222 files, zero violations",
+    "circular_imports": "202 files, zero cycles",
+    "library_imports": "247 files, zero broken imports",
+    "openapi": "89 endpoints and 444 schemas match baseline",
+    "api_manifest": "PASS",
+    "beam_tool_manifest": "PASS after exact catalogue-derived refresh",
+    "api_classification_and_compatibility_ledger": "PASS after generated refresh",
+    "client_generation_replay": "PASS after exact generator-output comparison",
+    "fastapi_hosted_command_replay": "PASS: 506 passed and 6 deselected after the exact hosted failure repair",
+    "control_plane": "PASS: 116 active operations and 102/102 scripts",
+    "cli_smoke": "PASS: 16/16 after registering the S0 verifier",
+    "valid_controls": {
+      "beam_ast_required_mm2": 883.7158126109596,
+      "beam_shear_tau_v_nmm2": 0.5925925925925926,
+      "beam_stirrup_spacing_mm": 300.0,
+      "beam_development_length_mm": 777.0,
+      "torsion_equivalent_shear_kn": 153.33333333333334,
+      "torsion_equivalent_moment_knm": 165.68627450980392,
+      "torsion_asv_total_mm2_per_mm": 0.3327,
+      "torsion_stirrup_spacing_mm": 150.0,
+      "bbs_reference_items": 9
+    },
+    "quick_gate": "PASS 10/10 after verifier-registration repair; post-hosted-repair rerun PASS 10/10 with zero reuse",
+    "normal_commit_hooks": "PASS_ON_A9613331; REPAIR_CANDIDATE_NORMAL_HOOKS_PENDING",
+    "hosted_checks": "PR_877_FIRST_HEAD_A9613331_FAILED_FASTAPI_5_AND_PR_GATE; REPAIR_HEAD_PENDING"
+  },
+  "exact_wheel_replay": {
+    "wheel_path": "/tmp/lib-pro-012-s0-04f5-final-20260827/structural_lib_is456-0.24.0a1-py3-none-any.whl",
+    "wheel_sha256": "f81f6274a24b9aaaeef904ceb2f5317b00ac880c967815b0f1b50d192e83089d",
+    "verifier": "scripts/verify_lib_pro_012_s0_artifact.py",
+    "source_free_python_origin": "isolated installed target outside repository source",
+    "invalid_python_routes_rejected": 15,
+    "valid_bbs_items": 9,
+    "exact_head_fastapi_required_field_rejections": 9,
+    "exact_head_fastapi_strict_vectors": 4,
+    "exact_head_fastapi_invalid_bbs": "HTTP 422 before detailing or BBS creation",
+    "ordinary_integer_payload": "HTTP 200 with derived effective depth 457.0 mm",
+    "valid_engineering_failure": "HTTP 200 with engineering_status FAIL"
+  },
+  "issues": [
+    "The maintained /beam/check adapter used label instead of the now-required case_id.",
+    "This linked worktree had no React node_modules, so the first focused Vitest invocation could not resolve vitest.",
+    "The first artifact verifier expected only built-in validation exceptions and did not include the library ValidationError hierarchy.",
+    "The first quick gate rejected the unregistered new top-level S0 artifact verifier.",
+    "Several read-only commands initially used an unmatched zsh glob, a root-relative npm exec path, bare ruff, or a guessed session status subcommand.",
+    "The first normal commit hook run stopped before commit because FastAPI Black changed one load fixture, mypy could not infer floatability across the runtime validation helper, and the generated API compatibility ledger plus beam tool manifest were stale.",
+    "PR 877 first-head FastAPI validation failed five cases: zero-steel BBS export escaped as a ValueError, and four workflow transport cases received 422 responses."
+  ],
+  "root_causes_and_resolutions": [
+    "The check adapter retained an obsolete case label key; it now emits case_id and the maintained endpoint tests pass.",
+    "Linked worktrees do not share ignored frontend dependencies; one lockfile-pinned npm ci restored the maintained runtime, after which focused Vitest, lint, and build passed.",
+    "DimensionError and MaterialError derive from the library ValidationError rather than ValueError; the verifier now accepts exactly those intake categories and the unchanged wheel replay passes.",
+    "Top-level scripts require canonical control-plane registration; the verifier is now a read-only Testing operation, the compatibility projection is regenerated, control validation passes, and all 16 CLI smoke nodes pass.",
+    "The shell failures were invocation mistakes rather than product defects; exact discovered paths and maintained wrappers were used on retry, with no partial data mutation.",
+    "The hook failures were deterministic ownership checks: retain Black's formatting, cast to SupportsFloat only after runtime validation, and regenerate both maintained compatibility projections. Package-context mypy, Black, Ruff, exact generated checks, and the 81-case affected regression/REST/load selection pass before the final normal hook retry.",
+    "The BBS export request still admitted zero required tension steel, so it created invalid detailing before the service correctly rejected consumption; its boundary now requires positive steel and returns the maintained 422 envelope before calculation. The workflow test fixture omitted the newly required explicit cover and reinforcement-diameter derivation basis, so one initial 422 caused four downstream assertions; the valid fixture now supplies all three values. The 13-case repair selection, exact 506-case hosted FastAPI command, OpenAPI snapshot, Black/Ruff, and exact-wheel-to-head replay pass."
+  ],
+  "holds": [
+    "No facade or API v2 work was started; EXT-REST-002 and final parity remain later LIB-PRO-012 work.",
+    "Generated signature prose in docs/reference/api.md remains owned by later EXT-DOC-001/Packet G; the generated manifest is current and no signature block was hand-edited.",
+    "The broad Python/React and full 31-check cumulative gate remain reserved for the later LIB-PRO-012 cumulative cycle. The exact 506-case FastAPI hosted command was run because the first hosted cycle exposed an outcome-changing failure.",
+    "LIB-PRO-013 A0 and later LIB-PRO-012 cycles remain unstarted.",
+    "No release, publication, benchmark, qualified-review, professional, engineering-use, or public-readiness claim is made."
+  ]
+}

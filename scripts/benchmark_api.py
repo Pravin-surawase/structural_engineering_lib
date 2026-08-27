@@ -37,7 +37,10 @@ import time
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Callable
+from typing import TYPE_CHECKING, Any, Callable
+
+if TYPE_CHECKING:
+    from fastapi.testclient import TestClient
 
 # Add project root for imports
 project_root = Path(__file__).parent.parent
@@ -186,11 +189,13 @@ def get_test_cases() -> list[dict[str, Any]]:
     beam_design_payload = {
         "width": 300,
         "depth": 450,
-        "length": 5000,
         "moment": 120,
         "shear": 80,
         "fck": 25,
         "fy": 500,
+        "clear_cover": 25,
+        "stirrup_dia_mm": 8,
+        "main_bar_dia_mm": 20,
     }
 
     # Beam check payload
@@ -317,11 +322,13 @@ def get_quick_test_cases() -> list[dict[str, Any]]:
     beam_design_payload = {
         "width": 300,
         "depth": 450,
-        "length": 5000,
         "moment": 120,
         "shear": 80,
         "fck": 25,
         "fy": 500,
+        "clear_cover": 25,
+        "stirrup_dia_mm": 8,
+        "main_bar_dia_mm": 20,
     }
 
     return [

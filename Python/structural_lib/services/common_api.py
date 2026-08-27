@@ -13,10 +13,8 @@ import ast
 import importlib
 import inspect
 import json
-import math
 import platform as _platform
 from importlib.metadata import PackageNotFoundError, version
-from numbers import Real
 from pathlib import Path
 from typing import Any
 
@@ -25,6 +23,7 @@ from structural_lib.core.data_types import (
     ValidationReport,
     VersionInfo,
 )
+from structural_lib.core.validation import require_finite_real
 from structural_lib.core.version import get_runtime_version
 from structural_lib.services import beam_pipeline, job_runner
 
@@ -37,12 +36,7 @@ def _require_finite_real(name: str, value: object, *, optional: bool = False) ->
     """Require a public numeric input to be a finite real value."""
     if value is None and optional:
         return
-    if (
-        isinstance(value, bool)
-        or not isinstance(value, Real)
-        or not math.isfinite(value)
-    ):
-        raise ValueError(f"{name} must be a finite real number.")
+    require_finite_real(value, name)
 
 
 def _require_is456_units(units: str) -> None:
@@ -81,14 +75,24 @@ def _validate_plausibility(
 
     if fck_nmm2 is not None and not 15 <= fck_nmm2 <= 80:
         raise ValueError(
-            f"fck_nmm2={fck_nmm2} is outside the supported IS 456 "
-            "range of 15-80 N/mm²."
+            f"fck_nmm2={fck_nmm2} is outside the supported IS 456 range of 15-80 N/mm²."
         )
     if fy_nmm2 is not None and not 250 <= fy_nmm2 <= 550:
         raise ValueError(
-            f"fy_nmm2={fy_nmm2} is outside the supported IS 456 "
-            "range of 250-550 N/mm²."
+            f"fy_nmm2={fy_nmm2} is outside the supported IS 456 range of 250-550 N/mm²."
         )
+    if b_mm is not None and b_mm <= 0:
+        raise ValueError("b_mm must be > 0.")
+    if d_mm is not None and d_mm <= 0:
+        raise ValueError("d_mm must be > 0.")
+    if D_mm is not None and D_mm <= 0:
+        raise ValueError("D_mm must be > 0.")
+    if mu_knm is not None and mu_knm < 0:
+        raise ValueError("mu_knm must be >= 0.")
+    if vu_kn is not None and vu_kn < 0:
+        raise ValueError("vu_kn must be >= 0.")
+    if d_dash_mm is not None and d_dash_mm <= 0:
+        raise ValueError("d_dash_mm must be > 0.")
     if b_mm is not None and b_mm > 5000:
         raise ValueError(
             f"b_mm={b_mm} seems too large. Expected mm (e.g., 300), not μm or m."

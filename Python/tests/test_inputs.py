@@ -87,12 +87,12 @@ class TestBeamGeometryInput:
 
     def test_validation_negative_width(self) -> None:
         """Test that negative width raises ValueError."""
-        with pytest.raises(ValueError, match="width must be positive"):
+        with pytest.raises(ValueError, match="b_mm must be > 0"):
             BeamGeometryInput(b_mm=-300, D_mm=500, span_mm=5000)
 
     def test_validation_zero_depth(self) -> None:
         """Test that zero depth raises ValueError."""
-        with pytest.raises(ValueError, match="depth must be positive"):
+        with pytest.raises(ValueError, match="D_mm must be > 0"):
             BeamGeometryInput(b_mm=300, D_mm=0, span_mm=5000)
 
     def test_validation_effective_depth_exceeds_overall(self) -> None:
@@ -179,7 +179,7 @@ class TestMaterialsInput:
 
     def test_validation_negative_fck(self) -> None:
         """Test that negative fck raises ValueError."""
-        with pytest.raises(ValueError, match="fck must be positive"):
+        with pytest.raises(ValueError, match="fck_nmm2 must be > 0"):
             MaterialsInput(fck_nmm2=-25, fy_nmm2=500)
 
     def test_from_dict_legacy_keys(self) -> None:
@@ -210,7 +210,7 @@ class TestLoadsInput:
 
     def test_validation_negative_moment(self) -> None:
         """Test that negative moment raises ValueError."""
-        with pytest.raises(ValueError, match="Moment cannot be negative"):
+        with pytest.raises(ValueError, match="mu_knm must be >= 0"):
             LoadsInput(mu_knm=-150, vu_kn=80)
 
     def test_from_dict_legacy_keys(self) -> None:
@@ -235,7 +235,7 @@ class TestLoadCaseInput:
 
     def test_validation_empty_case_id(self) -> None:
         """Test that empty case_id raises ValueError."""
-        with pytest.raises(ValueError, match="case_id cannot be empty"):
+        with pytest.raises(ValueError, match="case_id must be a non-blank string"):
             LoadCaseInput("", mu_knm=120, vu_kn=85)
 
 

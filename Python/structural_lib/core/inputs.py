@@ -27,6 +27,13 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
 
+from structural_lib.core.validation import (
+    require_nonblank_string,
+    require_nonnegative_real,
+    require_positive_real,
+    require_strict_bool,
+)
+
 __all__ = [
     "BeamGeometryInput",
     "MaterialsInput",
@@ -38,6 +45,22 @@ __all__ = [
     "from_json",
     "from_json_file",
 ]
+
+
+_MISSING = object()
+
+
+def _first_present(
+    data: dict[str, Any], *keys: str, default: object = _MISSING
+) -> object:
+    """Return the first present alias without treating explicit zero as absent."""
+    for key in keys:
+        if key in data:
+            return data[key]
+    if default is not _MISSING:
+        return default
+    aliases = " or ".join(keys)
+    raise ValueError(f"Missing required field: {aliases}")
 
 
 @dataclass(frozen=True)
@@ -77,18 +100,22 @@ class BeamGeometryInput:
 
     def __post_init__(self) -> None:
         """Validate geometry parameters."""
-        if self.b_mm <= 0:
-            raise ValueError(f"Beam width must be positive, got {self.b_mm}")
-        if self.D_mm <= 0:
-            raise ValueError(f"Overall depth must be positive, got {self.D_mm}")
-        if self.span_mm <= 0:
-            raise ValueError(f"Span must be positive, got {self.span_mm}")
-        if self.cover_mm < 0:
-            raise ValueError(f"Cover cannot be negative, got {self.cover_mm}")
+        require_positive_real(self.b_mm, "b_mm")
+        require_positive_real(self.D_mm, "D_mm")
+        require_positive_real(self.span_mm, "span_mm")
+        require_positive_real(self.cover_mm, "cover_mm")
+        require_positive_real(self.stirrup_dia_mm, "stirrup_dia_mm")
+        require_positive_real(self.bar_dia_mm, "bar_dia_mm")
+        if self.cover_mm >= self.D_mm:
+            raise ValueError("cover_mm must be less than D_mm.")
+        if self.b_mm <= 2 * (self.cover_mm + self.stirrup_dia_mm):
+            raise ValueError(
+                "b_mm must leave positive clear width inside cover and stirrups."
+            )
 
         # Effective depth validation
         if self.d_mm is not None:
-            d_eff = self.d_mm
+            d_eff = require_positive_real(self.d_mm, "d_mm")
         else:
             d_eff = (
                 self.D_mm - self.cover_mm - self.stirrup_dia_mm - self.bar_dia_mm / 2
@@ -133,30 +160,22 @@ class BeamGeometryInput:
         Handles both canonical (b_mm, D_mm) and legacy (b, D) key formats.
         """
         # Normalize keys
-        b = data.get("b_mm") or data.get("b")
-        D = data.get("D_mm") or data.get("D")
-        span = data.get("span_mm") or data.get("span")
-        d = data.get("d_mm") or data.get("d")
-        cover = data.get("cover_mm") or data.get("cover", 40.0)
-
-        if b is None:
-            raise ValueError("Missing required field: b_mm (or b)")
-        if D is None:
-            raise ValueError("Missing required field: D_mm (or D)")
-        if span is None:
-            raise ValueError("Missing required field: span_mm (or span)")
-
-        stirrup = data.get("stirrup_dia_mm", 8.0)
-        bar = data.get("bar_dia_mm", 20.0)
+        b = _first_present(data, "b_mm", "b")
+        D = _first_present(data, "D_mm", "D")
+        span = _first_present(data, "span_mm", "span")
+        d = _first_present(data, "d_mm", "d", default=None)
+        cover = _first_present(data, "cover_mm", "cover", default=40.0)
+        stirrup = _first_present(data, "stirrup_dia_mm", default=8.0)
+        bar = _first_present(data, "bar_dia_mm", default=20.0)
 
         return cls(
-            b_mm=float(b),
-            D_mm=float(D),
-            span_mm=float(span),
-            d_mm=float(d) if d is not None else None,
-            cover_mm=float(cover),
-            stirrup_dia_mm=float(stirrup),
-            bar_dia_mm=float(bar),
+            b_mm=b,  # type: ignore[arg-type]
+            D_mm=D,  # type: ignore[arg-type]
+            span_mm=span,  # type: ignore[arg-type]
+            d_mm=d,  # type: ignore[arg-type]
+            cover_mm=cover,  # type: ignore[arg-type]
+            stirrup_dia_mm=stirrup,  # type: ignore[arg-type]
+            bar_dia_mm=bar,  # type: ignore[arg-type]
         )
 
 
@@ -188,22 +207,20 @@ class MaterialsInput:
 
     # Valid ranges per IS 456
     VALID_FCK_RANGE = (15.0, 80.0)  # M15 to M80
-    VALID_FY_RANGE = (250.0, 600.0)  # Fe 250 to Fe 600
+    VALID_FY_RANGE = (250.0, 550.0)  # Maintained IS 456 service domain
 
     def __post_init__(self) -> None:
         """Validate material properties."""
-        if self.fck_nmm2 <= 0:
-            raise ValueError(f"fck must be positive, got {self.fck_nmm2}")
-        if self.fy_nmm2 <= 0:
-            raise ValueError(f"fy must be positive, got {self.fy_nmm2}")
-        if self.es_nmm2 <= 0:
-            raise ValueError(f"Es must be positive, got {self.es_nmm2}")
+        require_positive_real(self.fck_nmm2, "fck_nmm2")
+        require_positive_real(self.fy_nmm2, "fy_nmm2")
+        require_positive_real(self.es_nmm2, "es_nmm2")
 
-        # Range validation (could be warnings in production)
         if not (self.VALID_FCK_RANGE[0] <= self.fck_nmm2 <= self.VALID_FCK_RANGE[1]):
-            pass  # Could warn: out of typical range
+            raise ValueError("fck_nmm2 must be within the supported range 15-80 N/mm².")
         if not (self.VALID_FY_RANGE[0] <= self.fy_nmm2 <= self.VALID_FY_RANGE[1]):
-            pass  # Could warn: out of typical range
+            raise ValueError(
+                "fy_nmm2 must be within the supported range 250-550 N/mm²."
+            )
 
     @property
     def concrete_grade(self) -> str:
@@ -245,16 +262,15 @@ class MaterialsInput:
 
         Handles both canonical (fck_nmm2) and legacy (fck) key formats.
         """
-        fck = data.get("fck_nmm2") or data.get("fck")
-        fy = data.get("fy_nmm2") or data.get("fy")
-        es = data.get("es_nmm2") or data.get("Es", 200000.0)
+        fck = _first_present(data, "fck_nmm2", "fck")
+        fy = _first_present(data, "fy_nmm2", "fy")
+        es = _first_present(data, "es_nmm2", "Es", default=200000.0)
 
-        if fck is None:
-            raise ValueError("Missing required field: fck_nmm2 (or fck)")
-        if fy is None:
-            raise ValueError("Missing required field: fy_nmm2 (or fy)")
-
-        return cls(fck_nmm2=float(fck), fy_nmm2=float(fy), es_nmm2=float(es))
+        return cls(
+            fck_nmm2=fck,  # type: ignore[arg-type]
+            fy_nmm2=fy,  # type: ignore[arg-type]
+            es_nmm2=es,  # type: ignore[arg-type]
+        )
 
 
 @dataclass(frozen=True)
@@ -284,10 +300,9 @@ class LoadsInput:
 
     def __post_init__(self) -> None:
         """Validate load values."""
-        if self.mu_knm < 0:
-            raise ValueError(f"Moment cannot be negative, got {self.mu_knm}")
-        if self.vu_kn < 0:
-            raise ValueError(f"Shear cannot be negative, got {self.vu_kn}")
+        require_nonnegative_real(self.mu_knm, "mu_knm")
+        require_nonnegative_real(self.vu_kn, "vu_kn")
+        require_nonblank_string(self.case_id, "case_id")
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary."""
@@ -299,16 +314,15 @@ class LoadsInput:
 
         Handles both canonical (mu_knm) and legacy (Mu, mu) key formats.
         """
-        mu = data.get("mu_knm") or data.get("Mu") or data.get("mu")
-        vu = data.get("vu_kn") or data.get("Vu") or data.get("vu")
-        case_id = data.get("case_id", "CASE-1")
+        mu = _first_present(data, "mu_knm", "Mu", "mu")
+        vu = _first_present(data, "vu_kn", "Vu", "vu")
+        case_id = _first_present(data, "case_id", default="CASE-1")
 
-        if mu is None:
-            raise ValueError("Missing required field: mu_knm (or Mu)")
-        if vu is None:
-            raise ValueError("Missing required field: vu_kn (or Vu)")
-
-        return cls(mu_knm=float(mu), vu_kn=float(vu), case_id=str(case_id))
+        return cls(
+            mu_knm=mu,  # type: ignore[arg-type]
+            vu_kn=vu,  # type: ignore[arg-type]
+            case_id=case_id,  # type: ignore[arg-type]
+        )
 
 
 @dataclass(frozen=True)
@@ -333,12 +347,9 @@ class LoadCaseInput:
 
     def __post_init__(self) -> None:
         """Validate load case."""
-        if not self.case_id:
-            raise ValueError("case_id cannot be empty")
-        if self.mu_knm < 0:
-            raise ValueError(f"Moment cannot be negative, got {self.mu_knm}")
-        if self.vu_kn < 0:
-            raise ValueError(f"Shear cannot be negative, got {self.vu_kn}")
+        require_nonblank_string(self.case_id, "case_id")
+        require_nonnegative_real(self.mu_knm, "mu_knm")
+        require_nonnegative_real(self.vu_kn, "vu_kn")
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary."""
@@ -347,16 +358,16 @@ class LoadCaseInput:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> LoadCaseInput:
         """Create from dictionary."""
-        case_id = data.get("case_id", "CASE")
-        mu = data.get("mu_knm") or data.get("Mu") or data.get("mu", 0)
-        vu = data.get("vu_kn") or data.get("Vu") or data.get("vu", 0)
-        description = data.get("description", "")
+        case_id = _first_present(data, "case_id")
+        mu = _first_present(data, "mu_knm", "Mu", "mu")
+        vu = _first_present(data, "vu_kn", "Vu", "vu")
+        description = _first_present(data, "description", default="")
 
         return cls(
-            case_id=str(case_id),
-            mu_knm=float(mu),
-            vu_kn=float(vu),
-            description=str(description),
+            case_id=case_id,  # type: ignore[arg-type]
+            mu_knm=mu,  # type: ignore[arg-type]
+            vu_kn=vu,  # type: ignore[arg-type]
+            description=description,  # type: ignore[arg-type]
         )
 
 
@@ -389,6 +400,34 @@ class DetailingConfigInput:
     max_bar_layers: int = 2
     d_dash_mm: float = 50.0  # Cover to compression steel
     asv_mm2: float = 100.0  # Area of stirrup legs (for 2-legged 8mm: ~100mm²)
+
+    def __post_init__(self) -> None:
+        """Reject unusable detailing configuration at construction."""
+        require_positive_real(self.stirrup_dia_mm, "stirrup_dia_mm")
+        require_positive_real(self.stirrup_spacing_start_mm, "stirrup_spacing_start_mm")
+        require_positive_real(self.stirrup_spacing_mid_mm, "stirrup_spacing_mid_mm")
+        if self.stirrup_spacing_end_mm is not None:
+            require_positive_real(self.stirrup_spacing_end_mm, "stirrup_spacing_end_mm")
+        require_strict_bool(self.is_seismic, "is_seismic")
+        require_positive_real(self.d_dash_mm, "d_dash_mm")
+        require_positive_real(self.asv_mm2, "asv_mm2")
+        if isinstance(self.max_bar_layers, bool) or not isinstance(
+            self.max_bar_layers, int
+        ):
+            raise ValueError("max_bar_layers must be an integer.")
+        if self.max_bar_layers <= 0:
+            raise ValueError("max_bar_layers must be > 0.")
+        if (
+            not isinstance(self.preferred_bar_dias, (tuple, list))
+            or not self.preferred_bar_dias
+        ):
+            raise ValueError("preferred_bar_dias must contain at least one diameter.")
+        normalized = tuple(
+            require_positive_real(value, "preferred_bar_dias")
+            for value in self.preferred_bar_dias
+        )
+        if len(set(normalized)) != len(normalized):
+            raise ValueError("preferred_bar_dias must not contain duplicates.")
 
     @property
     def stirrup_spacing_end(self) -> float:
@@ -433,19 +472,26 @@ class DetailingConfigInput:
     def from_dict(cls, data: dict[str, Any]) -> DetailingConfigInput:
         """Create from dictionary."""
         return cls(
-            stirrup_dia_mm=float(data.get("stirrup_dia_mm", 8.0)),
-            stirrup_spacing_start_mm=float(data.get("stirrup_spacing_start_mm", 150.0)),
-            stirrup_spacing_mid_mm=float(data.get("stirrup_spacing_mid_mm", 200.0)),
+            stirrup_dia_mm=_first_present(data, "stirrup_dia_mm", default=8.0),  # type: ignore[arg-type]
+            stirrup_spacing_start_mm=_first_present(
+                data, "stirrup_spacing_start_mm", default=150.0
+            ),  # type: ignore[arg-type]
+            stirrup_spacing_mid_mm=_first_present(
+                data, "stirrup_spacing_mid_mm", default=200.0
+            ),  # type: ignore[arg-type]
             stirrup_spacing_end_mm=(
-                float(data["stirrup_spacing_end_mm"])
-                if data.get("stirrup_spacing_end_mm") is not None
+                data["stirrup_spacing_end_mm"]
+                if "stirrup_spacing_end_mm" in data
+                and data["stirrup_spacing_end_mm"] is not None
                 else None
             ),
-            is_seismic=bool(data.get("is_seismic", False)),
-            preferred_bar_dias=tuple(data.get("preferred_bar_dias", (12, 16, 20, 25))),
-            max_bar_layers=int(data.get("max_bar_layers", 2)),
-            d_dash_mm=float(data.get("d_dash_mm", 50.0)),
-            asv_mm2=float(data.get("asv_mm2", 100.0)),
+            is_seismic=_first_present(data, "is_seismic", default=False),  # type: ignore[arg-type]
+            preferred_bar_dias=tuple(
+                _first_present(data, "preferred_bar_dias", default=(12, 16, 20, 25))  # type: ignore[arg-type]
+            ),
+            max_bar_layers=_first_present(data, "max_bar_layers", default=2),  # type: ignore[arg-type]
+            d_dash_mm=_first_present(data, "d_dash_mm", default=50.0),  # type: ignore[arg-type]
+            asv_mm2=_first_present(data, "asv_mm2", default=100.0),  # type: ignore[arg-type]
         )
 
 
@@ -505,14 +551,28 @@ class BeamInput:
 
     def __post_init__(self) -> None:
         """Validate beam input."""
-        if not self.beam_id:
-            raise ValueError("beam_id cannot be empty")
-        if not self.story:
-            raise ValueError("story cannot be empty")
-
-        # Must have either loads or load_cases
+        self.beam_id = require_nonblank_string(self.beam_id, "beam_id")
+        self.story = require_nonblank_string(self.story, "story")
+        require_nonblank_string(self.units, "units")
+        if not isinstance(self.geometry, BeamGeometryInput):
+            raise ValueError("geometry must be a BeamGeometryInput.")
+        if not isinstance(self.materials, MaterialsInput):
+            raise ValueError("materials must be a MaterialsInput.")
+        if not isinstance(self.detailing_config, DetailingConfigInput):
+            raise ValueError("detailing_config must be a DetailingConfigInput.")
+        if self.loads is not None and not isinstance(self.loads, LoadsInput):
+            raise ValueError("loads must be a LoadsInput.")
+        if not isinstance(self.load_cases, list) or any(
+            not isinstance(case, LoadCaseInput) for case in self.load_cases
+        ):
+            raise ValueError("load_cases must be a list of LoadCaseInput values.")
+        if self.loads is not None and self.load_cases:
+            raise ValueError("Specify 'loads' or 'load_cases', not both.")
         if self.loads is None and not self.load_cases:
             raise ValueError("Either 'loads' or 'load_cases' must be provided")
+        case_ids = [case.case_id.strip() for case in self.load_cases]
+        if len(set(case_ids)) != len(case_ids):
+            raise ValueError("load_cases must have unique case_id values.")
 
     @property
     def has_multiple_cases(self) -> bool:
@@ -592,14 +652,14 @@ class BeamInput:
             detailing_config = DetailingConfigInput.from_dict(data["detailing"])
 
         return cls(
-            beam_id=str(data.get("beam_id", "BEAM")),
-            story=str(data.get("story", "STORY")),
+            beam_id=_first_present(data, "beam_id"),  # type: ignore[arg-type]
+            story=_first_present(data, "story"),  # type: ignore[arg-type]
             geometry=geometry,
             materials=materials,
             loads=loads,
             load_cases=load_cases,
             detailing_config=detailing_config,
-            units=str(data.get("units", "IS456")),
+            units=_first_present(data, "units", default="IS456"),  # type: ignore[arg-type]
         )
 
     @classmethod

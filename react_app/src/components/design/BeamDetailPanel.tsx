@@ -50,6 +50,8 @@ async function designSingleBeam(beam: BeamCSVRow): Promise<BeamDesignResponse> {
     fck: beam.fck ?? 25,
     fy: beam.fy ?? 500,
     clear_cover: beam.cover ?? 40,
+    stirrup_dia_mm: 8,
+    main_bar_dia_mm: 20,
   });
 }
 

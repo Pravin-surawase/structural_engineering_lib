@@ -1068,7 +1068,7 @@ def design_column_is456(
     end_condition: str = "FIXED_FIXED",
     fck_nmm2: float | None = None,
     fy_nmm2: float | None = None,
-    Asc_mm2: float = 0.0,
+    Asc_mm2: float | None = None,
     d_prime_mm: float = 50.0,
     l_unsupported_mm: float | None = None,
     braced: bool = True,
@@ -1115,7 +1115,8 @@ def design_column_is456(
         fy_nmm2: Steel yield strength (N/mm²). Required unless the deprecated
             ``fy`` alias is supplied.
             IS 456 range: 250-550.
-        Asc_mm2: Total longitudinal steel area (mm²). Default: 0.0.
+        Asc_mm2: Total longitudinal steel area (mm²). Required for this
+            supplied-steel check workflow.
             Supported analysis range is 0.8–4.0% of gross area.
         d_prime_mm: Cover to centroid of reinforcement (mm). Default: 50.0.
         l_unsupported_mm: Unsupported length for min eccentricity (mm).
@@ -1200,6 +1201,11 @@ def design_column_is456(
         - biaxial_bending_check_is456: Short column biaxial check
         - design_long_column_is456: Slender column design with Ma
     """
+    if Asc_mm2 is None:
+        raise TypeError(
+            "design_column_is456() requires 'Asc_mm2' for supplied-steel checking"
+        )
+
     # Validate required inputs.  Check finite values before ``max`` or range
     # comparisons can turn infinity into an apparently valid design action.
     finite_inputs = {
@@ -1229,6 +1235,11 @@ def design_column_is456(
         raise ValueError(f"Column length l_mm must be > 0 (got {l_mm})")
     if Pu_kN < 0:
         raise ValueError(f"Axial load Pu_kN must be >= 0 (got {Pu_kN})")
+    if Mux_kNm < 0 or Muy_kNm < 0:
+        raise ValueError(
+            "Mux_kNm and Muy_kNm must be >= 0 as applied-moment magnitudes "
+            f"(got Mux_kNm={Mux_kNm}, Muy_kNm={Muy_kNm})"
+        )
 
     # Compatibility aliases remain, but project materials are never invented.
     fck_nmm2 = _resolve_deprecated_param(

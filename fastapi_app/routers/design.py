@@ -392,7 +392,7 @@ async def check_beam(request: BeamCheckRequest):
         # API expects: label, mu_knm, vu_kn, ast_provided
         cases = [
             {
-                "label": "CHECK-1",
+                "case_id": "CHECK-1",
                 "mu_knm": request.moment,
                 "vu_kn": request.shear,
                 "ast_provided": request.ast_provided,

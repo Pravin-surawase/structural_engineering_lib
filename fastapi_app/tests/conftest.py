@@ -53,6 +53,8 @@ def sample_beam_design_request():
         "fck": 25.0,
         "fy": 500.0,
         "clear_cover": 25.0,
+        "stirrup_dia_mm": 8.0,
+        "main_bar_dia_mm": 20.0,
     }
 
 

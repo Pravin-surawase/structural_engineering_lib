@@ -210,10 +210,20 @@ async def test_rest_endpoints():
             print("\n📤 POST /api/v1/design/beam")
             response = await client.post(
                 f"{BASE_URL}/api/v1/design/beam",
-                json={"width": 300, "depth": 500, "moment": 150, "fck": 25, "fy": 500},
+                json={
+                    "width": 300,
+                    "depth": 500,
+                    "moment": 150,
+                    "shear": 75,
+                    "fck": 25,
+                    "fy": 500,
+                    "clear_cover": 25,
+                    "stirrup_dia_mm": 8,
+                    "main_bar_dia_mm": 20,
+                },
             )
             if response.status_code == 200:
-                data = response.json()
+                data = response.json()["data"]
                 print(
                     f"📥 {response.status_code}: Ast={data['flexure']['ast_required']:.1f} mm²"
                 )
