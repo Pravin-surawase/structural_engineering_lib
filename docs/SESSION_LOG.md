@@ -5,6 +5,124 @@
 
 ---
 
+## 2026-08-26 — Session: MAINT-0136 cleanup preservation
+
+**Agent:** Codex (`orchestrator`, sole writer; two prior read-only plan reviews)
+
+**Branch:** `codex/maint-0136-cleanup-preservation`, from exact fetched and
+hosted `origin/main` commit
+`ee04bfbf76b1a3a022d07c8203b5274a0f71998f`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0136-cleanup-preservation-git-handoff-receipt.json`
+
+**Focus:** Execute only the owner-authorized cleanup Phase 0 and Phase 1:
+reconcile the session ledger, inspect current topology, preserve unique work,
+prove local recovery, and freeze a fail-closed manifest without deleting any
+file, cache, worktree, branch, ref, or pull request.
+
+### Summary
+
+- Closed the unmatched `ARCH-FOCUS-REVIEW-001` session against its inspected
+  head with zero mutations, zero verification reruns, zero hosted runs, and no
+  remaining active ledger entry.
+- Created one isolated MAINT-0136 lane from fresh hosted/local `main` identity
+  and froze 73 worktrees: 72 pre-existing, seven detached, and one pre-existing
+  dirty lane. The primary, current task, and dirty lane are retained; all other
+  70 worktrees remain held for owner/retention proof.
+- Froze 83 current local/remote branch or PR heads. `main` and the current task
+  are retained; 81 remain held. Nine current branch rows have open PRs. No old
+  retirement decision was reused as present authority.
+- Measured 17.587 GiB across worktrees and 7.183 GiB of clean-inactive cache
+  candidates. The primary, active, and dirty lanes are excluded, and Phase 2
+  is explicitly not authorized.
+- Preserved a 303-ref complete-history Git bundle and the detached `e54a`
+  session-log patch. A managed temporary clone reproduced the exact dirty file
+  SHA and passed patch preflight, application, and Git integrity checks.
+- Verified an exact temporary copy of the protected-source library while
+  proving the canonical 42-file/72,025,193-byte aggregate remained unchanged.
+  The local recovery directory is ignored and same-disk only; no external
+  destination is available, so disaster-recovery and all cleanup execution
+  remain held.
+
+### Issues encountered
+
+- The inherited ledger contained one unmatched historical session, preventing
+  a trustworthy new-session baseline.
+- The primary `main` checkout was clean but behind the freshly observed hosted
+  `main`, and it owns ignored protected sources that must not be moved or lost.
+- The first combined recovery-proof command was rejected before execution
+  because its temporary-directory trap contained an `rm -rf` cleanup.
+- Repeated runs of the private library's nominal `verify` command changed the
+  canonical SQLite database hash even though the logical verification passed.
+- Time Machine reports no configured destination and no external/off-device
+  recovery volume is available.
+- The first staged diff check rejected the new planning document because it
+  contained one extra blank line at end of file.
+- The first normal commit hook rejected the new top session entry because the
+  inherited next-session briefing still identified 2026-08-24 as its latest
+  handoff date.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `ARCH-FOCUS-REVIEW-001` had a recorded start but no
+  closeout. Resolution: close it truthfully with the inspected head and zero
+  candidate/retry/hosted counters; `session usage --active --json` then returned
+  `null`.
+- Confirmed root cause: the primary checkout intentionally remained on older
+  commit `e2fac741` while hosted `main` advanced to `ee04bfbf`; updating it
+  would mix cleanup work with the protected-source owner lane. Resolution:
+  fetch without prune and create the isolated MAINT-0136 worktree directly
+  from exact `origin/main`; `git_state.py` reported `READY_LOCAL` and the
+  runtime reported `source_bound=true`.
+- Confirmed root cause: destructive-looking shell cleanup is rejected even
+  when aimed at a temporary directory. Resolution: split bundle creation from
+  restore proof and use Python-managed temporary directories that remove
+  themselves. The rejected command created no files. ⚠️ TERMINAL ISSUE:
+  recovery proof rejected due to an `rm`-style temp trap -> reran through a
+  managed temporary directory.
+- Confirmed root cause: the private verifier opens the canonical database in
+  writable WAL mode, executes schema initialization, writes `PRAGMA
+  user_version`, and commits on every verification. Repeated inspection proved
+  the database byte hash changed on each run. Resolution: copy the exact
+  private library into a temporary ignored sibling, run the maintained verifier
+  there, remove the copy automatically, and compare canonical aggregate
+  digests before/after. Verification passes and the canonical digest remains
+  unchanged during the final proof.
+- Confirmed root cause: no Time Machine target or external volume is
+  configured. Resolution: label the verified bundle/patch as same-disk local
+  recovery only and retain `HOLD_DESTINATION_UNAVAILABLE`; never promote it to
+  disaster-recovery evidence or authorize Phase 2 from it.
+- Confirmed root cause: the plan's initial patch left two newline records after
+  its final sentence. Resolution: remove only the extra blank line, restage the
+  plan and session record, and rerun the affected diff/document checks. This
+  formatting-only repair does not change evidence or outcomes.
+- Confirmed root cause: the session consistency check derives the expected top
+  log date from `next-session-brief.md`; MAINT-0136 had changed task state but
+  had not yet refreshed that maintained handoff. Resolution: add the briefing
+  to the receipt's owned/shared paths and run the canonical `session handoff`
+  update. The current 2026-08-26 handoff now embeds the exact receipt identity.
+
+### Validation through content freeze
+
+- The three cleanup-preservation regressions plus the complete existing Git
+  state and branch-disposition focused suites pass. Changed Python files also
+  pass Ruff and Black.
+- Documentation front matter passes for 361 maintained documents with zero
+  invalid records; 486 maintained Markdown files, 1,015 local links, and six
+  local images pass with zero broken links.
+- Context validation passes with ten areas and zero generated folder indexes;
+  the control plane passes 115 operations and 101/101 scripts; token-efficiency
+  policy and the exact MAINT-0136 evidence invariants pass.
+- Bundle verification, temporary clone, exact-base checkout, patch preflight,
+  patch application, restored-file SHA equality, and `git fsck --full
+  --no-dangling` pass. The protected-source temporary snapshot verifier passes
+  while the canonical aggregate remains unchanged.
+- The one consolidated quick gate, normal commit hooks, immutable candidate
+  audit, push, and required hosted checks remain the closeout sequence. Broad
+  engineering suites are not independently selected by this preservation-only
+  packet unless impact routing requires them.
+
 ## 2026-08-24 — Session: RELEASE-SMOOTH-001 next-publication controls
 
 **Agent:** Codex (`ops`, sole writer; no subagents)

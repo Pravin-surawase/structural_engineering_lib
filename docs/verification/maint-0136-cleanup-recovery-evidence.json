@@ -1,0 +1,68 @@
+{
+  "archive_directory": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/private_sources/worktree_cleanup_archives/maint-0136-20260826T144500Z",
+  "decision": "The same-disk bundle and patch are verified recovery aids. They do not qualify as external disaster recovery, so Phase 2 remains held.",
+  "dirty_worktree": {
+    "base_sha": "0fdb48edbb73114288feb8a246d6f30b80ac4d95",
+    "patch_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/private_sources/worktree_cleanup_archives/maint-0136-20260826T144500Z/e54a-session-log.patch",
+    "patch_sha256": "cf70f18f57ea3c7e14c85fe06cdd00d0171ac65da42dce08eef6a286b4930394",
+    "patch_size_bytes": 7146,
+    "path": "/Users/pravinsurawase/.codex/worktrees/e54a/structural_engineering_lib",
+    "restore_sample": {
+      "checked_out_base": "0fdb48edbb73114288feb8a246d6f30b80ac4d95",
+      "content_match": true,
+      "git_fsck": "PASS",
+      "patch_apply": "PASS",
+      "patch_apply_check": "PASS",
+      "restored_session_log_sha256": "35903e436ce2bf90752c62ef8e4ae3e162e23f7a4b6ebc97e1ddfbc0a6af3cb9",
+      "source_session_log_sha256": "35903e436ce2bf90752c62ef8e4ae3e162e23f7a4b6ebc97e1ddfbc0a6af3cb9",
+      "temporary_restore_removed": true
+    }
+  },
+  "git_bundle": {
+    "contains_complete_history": true,
+    "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/private_sources/worktree_cleanup_archives/maint-0136-20260826T144500Z/structural-engineering-lib-all-refs.bundle",
+    "ref_count": 303,
+    "sha256": "c57240f207b5730de92b9d27d5d64a819a89e0b0496d92351f4eec580c637dac",
+    "size_bytes": 42922979,
+    "verification": "PASS"
+  },
+  "mutations_performed": {
+    "branch_deletions": 0,
+    "cache_deletions": 0,
+    "file_deletions": 0,
+    "pr_closures": 0,
+    "ref_deletions": 0,
+    "worktree_removals": 0
+  },
+  "observed_at_utc": "2026-08-26T15:03:08.193998+00:00",
+  "off_device_recovery": {
+    "same_disk_artifacts_are_disaster_recovery": false,
+    "status": "HOLD_DESTINATION_UNAVAILABLE",
+    "tmutil_exit_code": 0
+  },
+  "protected_sources": {
+    "aggregate_sha256": "a65d2fbcf5172544164d5ed61535f18fb40ed2d04446a48185811838493abee4",
+    "byte_count": 72025193,
+    "content_recorded": false,
+    "excluded_from_digest": [
+      "worktree_cleanup_archives/**",
+      "**/__pycache__/**"
+    ],
+    "file_count": 42,
+    "filenames_recorded": false,
+    "git_ignore_check": "PASS",
+    "git_tracked_path_count": 0,
+    "library_verifier": {
+      "canonical_aggregate_unchanged": true,
+      "status": "PASS",
+      "summary": "VERIFIED documents=25 aliases=27 pages=732 normalized_references=3 visual_review_pages=142 visual_render_checked_pages=84 visual_render_warning_pages=42 visual_render_failed_pages=0",
+      "target": "EXACT_TEMPORARY_SNAPSHOT",
+      "temporary_snapshot_removed": true
+    },
+    "root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/private_sources"
+  },
+  "recovery_tier": "SAME_DISK_ONLY",
+  "schema_version": 1,
+  "status": "LOCAL_RECOVERY_VERIFIED_OFF_DEVICE_HOLD",
+  "task_id": "MAINT-0136"
+}

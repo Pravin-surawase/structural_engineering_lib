@@ -3,12 +3,12 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-08-24
-- Focus: Make the next publication single-candidate, fail-early, and free of duplicate broad validation
-- Git receipt: docs/verification/release-smooth-001-git-handoff-receipt.json | sha256:cff5d30385815d5a9f2b293743b2aa67ac2bd1d366fcae81a59bc98545c81fd5 | HOLD
-- Git identity: codex/release-smoothness@71b7065216d4266d63ad6b31bd39bba81fa16efc | upstream=origin/main@71b7065216d4266d63ad6b31bd39bba81fa16efc | tree=dirty | operation=none
-- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=UNKNOWN
-- Next action: FREEZE_COMMIT_AND_PUBLISH_ONE_CONTROL_PR
+- Date: 2026-08-26
+- Focus: Execute only the owner-authorized cleanup Phase 0 and Phase 1:
+- Git receipt: docs/verification/maint-0136-cleanup-preservation-git-handoff-receipt.json | sha256:f86af26a6db44d06ca21b6473184bc1c47b9be33cc448dc89812cde8c6a7bf45 | HOLD
+- Git identity: codex/maint-0136-cleanup-preservation@ee04bfbf76b1a3a022d07c8203b5274a0f71998f | upstream=origin/main@ee04bfbf76b1a3a022d07c8203b5274a0f71998f | base=origin/main@ee04bfbf76b1a3a022d07c8203b5274a0f71998f | tree=dirty | operation=none
+- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
+- Next action: COMMIT_INTENDED_PATHS
 <!-- HANDOFF:END -->
 
 ## Latest Handoff

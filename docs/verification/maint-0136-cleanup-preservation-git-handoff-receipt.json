@@ -1,0 +1,179 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-26T15:03:08.193998+00:00",
+      "query_status": "OK",
+      "reference": "active Codex task: okay I authorize Phase 0 and Phase 1",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "INSPECT_LIVE_GIT_AND_DISK_STATE",
+      "CREATE_ISOLATED_PHASE_1_WORKTREE",
+      "CREATE_AND_VERIFY_RECOVERY_ARTIFACTS",
+      "FREEZE_PRESERVATION_MANIFEST",
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "authorized_phases": [
+      0,
+      1
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-26T15:03:08.193998+00:00",
+    "prohibited_actions": [
+      "DELETE_FILE",
+      "DELETE_CACHE",
+      "REMOVE_WORKTREE",
+      "DELETE_LOCAL_BRANCH",
+      "DELETE_REMOTE_BRANCH",
+      "DELETE_REF",
+      "PRUNE",
+      "GIT_CLEAN",
+      "PUBLISH_RELEASE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "INSPECT_LIVE_GIT_AND_DISK_STATE",
+        "CREATE_ISOLATED_PHASE_1_WORKTREE",
+        "CREATE_AND_VERIFY_RECOVERY_ARTIFACTS",
+        "FREEZE_PRESERVATION_MANIFEST",
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/maint-0136-cleanup-preservation",
+      "head_sha": "ee04bfbf76b1a3a022d07c8203b5274a0f71998f",
+      "task_id": "MAINT-0136"
+    }
+  },
+  "holds": [
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "f86af26a6db44d06ca21b6473184bc1c47b9be33cc448dc89812cde8c6a7bf45",
+    "state": {
+      "branch": "codex/maint-0136-cleanup-preservation",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "ee04bfbf76b1a3a022d07c8203b5274a0f71998f",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 94.536,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-maint-0136-cleanup-preservation",
+      "head_sha": "ee04bfbf76b1a3a022d07c8203b5274a0f71998f",
+      "hold_reasons": [
+        "changed paths: 9"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-26T15:06:51.482693+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-cleanup-preservation",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 9,
+        "modified_paths": [],
+        "staged_paths": [
+          "Python/tests/test_cleanup_preservation.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/README.md",
+          "docs/planning/maint-0136-cleanup-preservation-plan.md",
+          "docs/verification/maint-0136-cleanup-preservation-git-handoff-receipt.json",
+          "docs/verification/maint-0136-cleanup-preservation-manifest.json",
+          "docs/verification/maint-0136-cleanup-recovery-evidence.json",
+          "scripts/_lib/cleanup_preservation.py"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "ee04bfbf76b1a3a022d07c8203b5274a0f71998f",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-cleanup-preservation"
+    }
+  },
+  "local_state_receipt_hash": "sha256:f86af26a6db44d06ca21b6473184bc1c47b9be33cc448dc89812cde8c6a7bf45",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-26T15:06:51.482835+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources/**",
+      "Python/structural_lib/**",
+      "fastapi_app/**",
+      "react_app/**"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "scripts/_lib/cleanup_preservation.py",
+      "Python/tests/test_cleanup_preservation.py",
+      "docs/planning/maint-0136-cleanup-preservation-plan.md",
+      "docs/verification/maint-0136-cleanup-preservation-manifest.json",
+      "docs/verification/maint-0136-cleanup-recovery-evidence.json",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/README.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/README.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "MAINT-0136"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
