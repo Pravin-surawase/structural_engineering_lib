@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-27 — MAINT-0136 consolidated integration closeout
+**Updated:** 2026-08-27 — LIB-PRO-013 whole-library renewal audit plan
 
 ---
 
@@ -125,6 +125,20 @@
 ---
 
 ## Active
+
+`LIB-PRO-013` is the active whole-library renewal planning task. Its
+[master plan](planning/lib-pro-013-whole-library-renewal-audit-plan.md) defines
+the truth freeze, audit-of-audits, external-user/API, engineering-evidence,
+application, package/dependency, test, Git/CI/release, agent/skill/automation,
+efficiency, retention, and peer-comparison lanes. The audit itself is unstarted;
+the plan authorizes no runtime change, deletion, dependency addition, signature
+break, release, or professional claim.
+
+`LIB-PRO-012` remains the immediate remediation authority for the reproduced
+external Python and REST safety defects. Its known P0 fail-closed packets need
+not wait for the wider read-only audit after separate implementation
+authorization, but shared validation, facade, result, manifest, generated API,
+and documentation owners remain single-writer surfaces.
 
 `MAINT-0136` is locally complete through its exact authorized cleanup boundary.
 Phase 1 PR #874 merged at reviewed head `37b36785`; Phase 2A removed the exact

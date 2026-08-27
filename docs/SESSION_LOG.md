@@ -5,6 +5,99 @@
 
 ---
 
+## 2026-08-27 — Session: LIB-PRO-013 whole-library renewal audit plan
+
+**Agent:** Codex (`governance`, parent writer) with two bounded read-only
+research agents for peer-library practice and repository archaeology.
+
+**Branch:** `codex/lib-pro-012-external-api-remediation-plan`.
+
+**Focus:** Define a complete, preservation-safe whole-library audit and renewal programme before starting implementation.
+
+**Completed:**
+
+- Published the 40-plus-domain audit universe, evidence states, finding schema, and G0/G1/U/E/P/R/A/C packet sequence.
+- Kept LIB-PRO-011 as evidence authority and LIB-PRO-012 as immediate fail-closed implementation authority so the wider audit does not delay known P0 fixes.
+- Added source-backed peer comparisons and explicit adopt/adapt/reject boundaries.
+- Added an audit-of-audits lane explaining how installed-artifact, advertised-
+  surface, recursive-input, downstream-consumer, and evidence-independence gaps
+  can survive green repository controls.
+- Covered package/import/repository naming, signatures, inputs, results,
+  transports, examples, dependencies, tests, security, performance, Git/CI,
+  agents, skills, automations, efficiency, worktrees, archives, generated data,
+  protected sources, early decisions, support, and professional review.
+- Cross-linked the new plan from the planning index and current task board.
+
+### Issues encountered
+
+- The active Python and FastAPI test READMEs contain stale suite counts and
+  direct/old test invocation guidance even though the live suite and runtime
+  authority have moved substantially.
+- The current control plane reports 115 active operations and 101/101 scripts,
+  while retained historical planning text records earlier 128/125/113 counts.
+- A broad first inventory was truncated because it encountered large, dense
+  generated compatibility/evidence files.
+- One workflow inventory command used a shell glob for both `.yml` and `.yaml`;
+  zsh stopped on the unmatched `.yaml` pattern.
+- The first handoff-receipt validation call guessed an unsupported `--receipt`
+  option.
+- The first staged diff check stopped on one extra blank line at the end of the
+  new plan.
+- The first commit hook run rejected the latest session entry because it did
+  not contain the required task-owned Git handoff receipt label.
+- The current checkout retains multiple detached/behind/diverged worktrees,
+  including one dirty detached lane, so audit planning cannot imply cleanup or
+  safe publication from the clean primary tree alone.
+
+### Root causes and resolutions
+
+- Confirmed root cause: test guidance is manually maintained prose and did not
+  move with the live taxonomy/runtime. Resolution: Packet R3 binds test
+  inventory and commands to maintained callers; Packet R4 makes active
+  documentation drift decisive. No test files were changed in this plan.
+- Confirmed root cause: historical plans are retained evidence, not live count
+  authorities. Resolution: use `./run.sh control validate` and the canonical
+  registry for current facts, label old counts historical, and add this rule to
+  G0/G1/A2.
+- Confirmed root cause: broad text search is unsuitable for compressed generated
+  ledgers. Resolution: use bounded headings, targeted `jq`, maintained loaders,
+  and current registry commands. This preserved the full compatibility data
+  without loading it as raw context.
+- Confirmed root cause: zsh `nomatch` rejects an unmatched alternate glob.
+  Resolution: discover workflow files with `rg --files` and iterate only over
+  returned paths. ⚠️ TERMINAL ISSUE: unmatched `.yaml` workflow glob -> used
+  the maintained file inventory instead.
+- Confirmed root cause: receipt creation names the output option, but receipt
+  validation accepts the file as a positional argument. Resolution: read the
+  maintained subcommand help and rerun successfully. ⚠️ TERMINAL ISSUE:
+  guessed receipt validation flag -> used the documented positional interface.
+- Confirmed root cause: the initial add-file patch retained a blank line after
+  the final newline. Resolution: remove that blank line with `apply_patch` and
+  rerun the staged diff check before commit.
+- Confirmed root cause: creating and validating the receipt does not
+  automatically add its canonical label to `docs/SESSION_LOG.md`. Resolution:
+  add the task-owned receipt path below and rerun normal hooks without bypass.
+- Confirmed root cause: a clean current tree does not prove that retained
+  candidates are merged, disposable, or non-overlapping. Resolution: G0 and R5
+  require exact worktree/candidate/recovery evidence and preserve all unknown
+  state; no Git cleanup, push, or publication was performed.
+
+### Validation through content freeze
+
+- Both bounded research lanes returned complete read-only findings with no
+  repository mutation; the peer lane supplied more than eight official sources
+  and the archaeology lane supplied exact current-path evidence.
+- `./run.sh control validate` passes with 115 active operations and 101/101
+  scripts; `./run.sh context validate` passes with 10 areas and six authorities.
+- `./run.sh efficiency check` passes, and the task used the configured maximum
+  of two concurrent read-only subagents with compact no-history packets.
+- Targeted documentation metadata and planning-index link checks pass; the new
+  plan has 756 lines, and `git diff --check` passes.
+- The consolidated quick gate passes 10/10 after content freeze, with three
+  exact matching receipts reused under the maintained evidence policy.
+
+**Git handoff receipt:** `docs/verification/lib-pro-013-whole-library-renewal-audit-plan-git-handoff-receipt.json`
+
 ## 2026-08-27 — Session: LIB-PRO-012 external API remediation plan
 
 **Agent:** Codex (`governance`, sole writer)

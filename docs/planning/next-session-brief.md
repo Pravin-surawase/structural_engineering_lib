@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-27
-- Focus: Convert LIB-PRO-011 into a complete safety, public API, input UX, examples, migration, and advertised-surface remediation programme without runtime changes.
-- Completed: Published the solution architecture and dependency-ordered A–I packets.; Added Python facade, strict input/error/result, REST versioning, compatibility, cookbook, and generated-audit decisions.; Extended LIB-PRO-011 with exact-head REST findings and cross-linked the audit, plan, and planning index.
-- Git receipt: docs/verification/lib-pro-012-external-api-remediation-plan-git-handoff-receipt.json | sha256:7defb0d9e1af3bb57f9f30446f30b3bf9cf254972bed06988636e2f27e44182b | HOLD
-- Git identity: codex/lib-pro-012-external-api-remediation-plan@f2c35622001ae3fc1f308d829007cd03f250bbbf | upstream=NONE@UNKNOWN | base=origin/main@6a4683eb8b21bff77f2991230b4458463e61f419 | tree=dirty | operation=none
+- Focus: Define a complete, preservation-safe whole-library audit and renewal programme before starting implementation.
+- Completed: Published the 40-plus-domain audit universe, evidence states, finding schema, and G0/G1/U/E/P/R/A/C packet sequence.; Kept LIB-PRO-011 as evidence authority and LIB-PRO-012 as immediate fail-closed implementation authority so the wider audit does not delay known P0 fixes.; Added source-backed peer comparisons and explicit adopt/adapt/reject boundaries.
+- Git receipt: docs/verification/lib-pro-013-whole-library-renewal-audit-plan-git-handoff-receipt.json | sha256:4635b47db228d7fadc095cf09f14ed938771bc41b3894b09a060cb472f9188c2 | HOLD
+- Git identity: codex/lib-pro-012-external-api-remediation-plan@0dd9d27b5048e4c1f78592a010fce4eba7128cd2 | upstream=NONE@UNKNOWN | base=origin/main@6a4683eb8b21bff77f2991230b4458463e61f419 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->

@@ -19,6 +19,7 @@ Internal planning documents and research notes.
 |----------|---------|
 | [Next Session Brief](next-session-brief.md) | What to work on next |
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
+| [LIB-PRO-013 Whole-Library Renewal Audit](lib-pro-013-whole-library-renewal-audit-plan.md) | Whole-product, engineering-evidence, API, package, test, governance, efficiency, history, and peer-comparison audit programme |
 | [LIB-PRO-012 External API Remediation](lib-pro-012-external-api-remediation-plan.md) | Fail-closed safety, canonical signatures/inputs, compatibility, examples, and advertised-surface gates |
 | [MAINT-0136 Cleanup Preservation](maint-0136-cleanup-preservation-plan.md) | Current topology, verified local recovery, and fail-closed Phase 2 gate |
 | [MAINT-0136 Phase 2B Preparation](maint-0136-phase-2b-preparation-plan.md) | Exact low-value cache ceiling, worktree-retirement opportunity, and recovery-first execution gate |
@@ -44,6 +45,7 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
+| `lib-pro-013-whole-library-renewal-audit-plan.md` | 2026-08-27 | 📋 Master audit universe and staged research/remediation gates ready; audit execution unstarted |
 | `lib-pro-012-external-api-remediation-plan.md` | 2026-08-27 | 📋 Solution architecture and ordered packets ready; runtime remediation unstarted |
 | `maint-0136-phase-2b-w-execution-closeout.md` | 2026-08-27 | ✅ Exact 63/63 worktree removal complete; 15 retained and all branches, refs, backups, and protected sources preserved |
 | `maint-0136-phase-2c-execution-closeout.md` | 2026-08-27 | ✅ Exact four-local/two-remote cleanup passed at `08a68419...b23c7`; all held surfaces preserved |
