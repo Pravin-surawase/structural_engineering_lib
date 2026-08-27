@@ -5,6 +5,148 @@
 
 ---
 
+## 2026-08-27 — Session: LIB-PRO-013 A0 consolidated renewal audit
+
+**Agent:** Codex (`governance`, sole writer; no subagents).
+
+**Branch:** `codex/lib-pro-013-a0-consolidated-renewal-audit`.
+
+**Focus:** Execute the complete LIB-PRO-013 A0 audit through C2 as one
+evidence-only source/artifact/repository cycle without runtime, test, formula,
+dependency, signature, generated-owner, release, protected-source, or
+professional-claim changes.
+
+**Completed:**
+
+- Freshly fetched `origin/main`, proved accepted S0 candidate/merge/tree and
+  planning ancestry, re-queried 18 worktrees plus open PR overlap, and started
+  one routed `governance` session from exact merge
+  `49c2fe4553e923a7433ca0a5fa28ea364956ae30` / tree
+  `704190f7322b8c29bc4a85036d7ade54d355f306`.
+- Froze the entry receipt across public/current artifact identities, authority
+  hashes, control/context/API/capability owners, worktree preservation,
+  advertised-journey source, and nine explicit engineering evidence classes.
+- Completed A0.1-A0.4 in one cycle: audit-of-audits and recurrence analysis;
+  installed-user/contract census; all-family engineering and transport
+  sampling; package/platform/docs/Git/CI/agent/skill/tool/retention truth;
+  current official-source peer decisions; and the 42-domain C2 portfolio.
+- Built and installed an exact current-head wheel and sdist. The wheel passes
+  29 source-free UAT cases, candidate/import/CLI checks, S0 route safety,
+  canonical Python/CLI/FastAPI artifact binding, and the embedded Excel
+  definition. The sdist and the sampled `dxf`, `report`, and `validation`
+  extras install source-free on macOS/Python 3.11.
+- Ran one class-bounded 460-case family/kernel/publication/REST selection for
+  the remaining IS 456 and repaired IS 13920 families. Accepted independent
+  arithmetic was reused only where family owner bytes and contracts remained
+  unchanged; generated/internal parity was kept distinct.
+- Produced the sole canonical
+  [A0 report](verification/lib-pro-013-a0-renewal-audit.md): 42/42 Section 7
+  rows complete; 16 stable findings; no new current-source P0; B0/F0/R0,
+  release, Windows, professional, retention, and P3 dispositions explicit.
+  The older public `0.24.0a1` artifact remains known P0-affected and held; its
+  current-source root cause is repaired, so no A0 runtime repair was started.
+- Preserved every unrelated item. The detached dirty `e54a` lane remains
+  untouched; the independent Sourcebook and protected standards were neither
+  read nor changed.
+
+### Issues encountered
+
+- The first GitHub release query requested unsupported JSON field `isLatest`.
+- `./run.sh context show governance` used a routed role where a maintained
+  context area was required.
+- One search used an unmatched shell quote and another an unmatched no-result
+  glob; a root `pyproject.toml` and `pipeline status` subcommand were also
+  guessed although the maintained owners are `Python/pyproject.toml` and
+  `pipeline show` for an existing pipeline.
+- The first source-free wheel environment suppressed dependency installation
+  and failed because its base interpreter did not provide Pydantic.
+- The first report-completeness parser counted numeric rows outside the
+  Section 7 table and reported 49 instead of 42.
+- The first consolidated docs check rejected the new report's unrecognized
+  `doc_type: verification`; it also reproduced the pre-existing
+  `status: ready` on the merged A0 execution plan. The first official-source
+  URL loop passed all newline-separated URLs as one malformed scalar.
+- Hosted run `33092433946` rejected immutable candidate
+  `a1faff2e4b03b8846875fd296dd4b004529d801b`: the documentation lane found the
+  compatibility ledger stale, and the dependent PR Gate failed closed.
+- The audit reproduced active release/documentation/retired-Streamlit drift,
+  three non-executable cookbook journeys, 326 unproven parameter decisions,
+  incomplete all-family/transport/browser/platform evidence, missing exact
+  Windows and professional evidence, absent public PEP 740 provenance, a
+  mutable GitHub release, no root `SECURITY.md`, and disabled Dependabot
+  security updates.
+
+### Root causes and resolutions
+
+- Confirmed root cause for terminal/query issues: invocation assumptions did
+  not match the maintained interface, not a repository/product defect.
+  Resolution: rerun with supported GitHub fields, exact maintained context and
+  package paths, safe quoting/globs, and a Section 7-bounded parser. Evidence:
+  all intended read-only queries and the 42-row/16-unique-finding completeness
+  validator pass; no partial mutation occurred. ⚠️ TERMINAL ISSUE: unsupported
+  field/area/subcommand/path and unsafe shell patterns -> reran through exact
+  discovered interfaces.
+- Confirmed root cause for the task-owned front-matter failure: the new report
+  used a semantic type not present in the maintained metadata vocabulary.
+  Resolution: use `doc_type: reference`; the already-merged execution plan's
+  separate `status: ready` remains a pre-existing R0 finding outside A0 repair.
+  Confirmed URL-loop cause: zsh did not split the newline scalar. Resolution:
+  verify one extracted official URL per line through `while read`.
+- Confirmed hosted root cause: the compatibility ledger scans tracked
+  verification prose for syntactic package caller paths, and the new report
+  named compatibility modules and legacy root imports in executable form.
+  Resolution: retain the exact evidence using file-owner and root-package
+  wording that cannot be mistaken for a caller; do not change the generated
+  ledger owner. The focused generator check, strict docs build, report
+  completeness/hash proof, and consolidated quick gate pass on the explicit
+  repair candidate. ⚠️ TERMINAL ISSUE: local pre-report generated checks were
+  reused after adding scanner-visible prose -> replaying the exact hosted
+  documentation command exposed and proved the report-owned drift.
+- Confirmed root cause for the first source-free failure: `--no-deps` omitted
+  the wheel's declared sole runtime dependency. Resolution: install the same
+  wheel with declared `pydantic>=2.0`; Pydantic 2.13.4 and all 29 UAT cases,
+  package candidate checks, and CLI help pass. The wheel was unchanged.
+- Confirmed artifact root cause: public `0.24.0a1` was published before S0.
+  Resolution: retain immutable public/current identities separately; the
+  current wheel proves the repair, while a future owner-selected version and
+  per-release authorization are required to replace public behavior.
+- Confirmed documentation root cause: hand-maintained prose snapshots do not
+  follow release, control, and advertised-journey owners. Resolution is routed
+  to R0, with exact source-free CLI/import failures as acceptance reproducers;
+  A0 made no runtime/doc repair outside its evidence/status scope.
+- Confirmed systemic recurrence cause: advertising, classification, workflow,
+  capability, OpenAPI, and artifact UAT are internally maintained but not one
+  journey-to-owner completeness graph. B0/F0/R0 must connect existing owners,
+  not invent a third API manifest; individual runtime defects require exact
+  reproduction before repair.
+- Exact Windows/browser/qualified-review evidence is unavailable, not failed.
+  Resolution remains a hold for the named environment/operator/reviewer and
+  exact installed artifact. Mac/source/CI evidence cannot satisfy it.
+- Public provenance and support-policy gaps are confirmed live controls.
+  R0 plus release/repository owner authority must close them on a future exact
+  artifact/policy cycle; hashes or attestations alone never prove safety.
+
+### Validation through content freeze
+
+- Source-free current wheel: 29/29 advertised UAT cases; 14/14 CLI entries;
+  S0 15 invalid Python classes and selected exact-head FastAPI negatives pass;
+  canonical Python/CLI/FastAPI and embedded Excel artifact-binding probes pass.
+- Class-bounded current source: 460 selected family/kernel/publication/REST
+  cases pass. Control validation passes at 116 operations and 102/102 scripts;
+  context validation passes with current maintained owners.
+- Current wheel SHA-256:
+  `ab2ed108eaefc8763fd04cd7bdac9b60f1875930cf54ef7a1806b73f4432fcfd`.
+  Current sdist SHA-256:
+  `8e8824d63cd0f47a49527c700d3c7f4d913f2515d3650010a685f2b4150103ae`.
+- Report completeness passes with 16 unique finding IDs, every required finding
+  field, nine evidence classes, official peer decisions, and exactly 42
+  Section 7 rows. Focused architecture/import/package/docs/generated/control/
+  evidence checks, one quick gate, efficiency closeout, normal hooks, exact
+  clean candidate closeout, and hosted checks remain owned by the frozen
+  evidence candidate.
+
+**Git handoff receipt:** `docs/verification/lib-pro-013-a0-consolidated-renewal-audit-git-handoff-receipt.json`
+
 ## 2026-08-27 — Session: LIB-PRO-012 S0 post-merge audit and A0 planning
 
 **Agent:** Codex (`reviewer`, sole writer; no subagents).

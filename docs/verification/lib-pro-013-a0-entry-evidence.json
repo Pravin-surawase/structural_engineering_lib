@@ -1,0 +1,287 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "LIB-PRO-013-A0-ENTRY-EVIDENCE",
+  "status": "A0_EVIDENCE_COMPLETE_CANDIDATE_PENDING",
+  "observed_at_utc": "2026-08-27T15:48:01Z",
+  "task": {
+    "task_id": "LIB-PRO-013-A0-CONSOLIDATED-RENEWAL-AUDIT",
+    "branch": "codex/lib-pro-013-a0-consolidated-renewal-audit",
+    "routed_role": "governance",
+    "delivery_model": "one parent, one session, one branch, one evidence candidate, one PR, and one hosted cycle",
+    "runtime_change_authorized": false,
+    "estimated_engineer_days": "15-24"
+  },
+  "source_identity": {
+    "default_branch": "main",
+    "fresh_fetch_command": "git fetch origin main",
+    "source_ref": "origin/main",
+    "source_commit": "49c2fe4553e923a7433ca0a5fa28ea364956ae30",
+    "source_tree": "704190f7322b8c29bc4a85036d7ade54d355f306",
+    "accepted_repair_candidate": "1485da58297379a65882be7e4be8a23d6d86117d",
+    "accepted_repair_candidate_tree": "704190f7322b8c29bc4a85036d7ade54d355f306",
+    "repair_pull_request": 878,
+    "repair_hosted_run": 33088194292,
+    "repair_hosted_outcome": "SUCCESS: 6 successful, 3 skipped, required PR Gate successful",
+    "s0_merge_ancestor": "4cebcccb3a07b8046e31b23332236321ebee1d25",
+    "planning_baseline_ancestor": "d3242731e94dacd74e804a1f4a25c4c0da11790f",
+    "ancestry": "PASS",
+    "candidate_merge_tree_equivalence": "PASS"
+  },
+  "artifact_identities": {
+    "public_release": {
+      "distribution": "structural-lib-is456",
+      "version": "0.24.0a1",
+      "release_channel": "alpha prerelease",
+      "tag": "v0.24.0a1",
+      "tag_commit": "71b7065216d4266d63ad6b31bd39bba81fa16efc",
+      "tag_tree": "221de5561bf6419396a2c20697c574124d721694",
+      "wheel_sha256": "b5e0df7b561e8c715f37c602200eaae2c369ec5dc992eec87110a77c1026201a",
+      "wheel_size_bytes": 774739,
+      "sdist_sha256": "8c1d6b762a779686be5d17ed0dd9719f7155a5863a764e943a0e1ba9aeb0a53b",
+      "sdist_size_bytes": 652423,
+      "identity_sources": [
+        "live PyPI project JSON",
+        "live GitHub release assets",
+        "docs/verification/lib-pro-012-s0-p0-safety-closure-evidence.json"
+      ]
+    },
+    "current_head_wheel": {
+      "source_commit": "49c2fe4553e923a7433ca0a5fa28ea364956ae30",
+      "source_tree": "704190f7322b8c29bc4a85036d7ade54d355f306",
+      "filename": "structural_lib_is456-0.24.0a1-py3-none-any.whl",
+      "sha256": "ab2ed108eaefc8763fd04cd7bdac9b60f1875930cf54ef7a1806b73f4432fcfd",
+      "build_environment": "isolated python-build environment on macOS arm64",
+      "temporary_path": "/tmp/lib-pro-013-a0-58cc.L0ACd8/dist/structural_lib_is456-0.24.0a1-py3-none-any.whl",
+      "source_free_replay_status": "PASS: 29 advertised UAT cases, 14 CLI entries, S0 safety and exact Python/CLI/FastAPI artifact binding"
+    },
+    "current_head_sdist": {
+      "source_commit": "49c2fe4553e923a7433ca0a5fa28ea364956ae30",
+      "source_tree": "704190f7322b8c29bc4a85036d7ade54d355f306",
+      "filename": "structural_lib_is456-0.24.0a1.tar.gz",
+      "sha256": "8e8824d63cd0f47a49527c700d3c7f4d913f2515d3650010a685f2b4150103ae",
+      "members": 288,
+      "source_free_install_status": "PASS on macOS arm64 / Python 3.11"
+    },
+    "public_supply_chain_observation": {
+      "pypi_wheel_provenance": null,
+      "pypi_sdist_provenance": null,
+      "github_release_immutable": false,
+      "github_wheel_attestation_count": 0,
+      "decision": "HASH_IDENTITY_PROVEN; PEP_740_PROVENANCE_AND_IMMUTABLE_RELEASE_NOT_PROVEN"
+    },
+    "separation_decision": "The public wheel, public sdist, current source, current-head wheel, exact-head applications, generated projections, UI projection, and external Windows evidence are separate evidence objects. Matching version text does not establish matching bytes or behavior."
+  },
+  "authority_hashes": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "9a9250c74ff33b04aa72419352e4abaf2810250f867b9615eab130048cc3d5d6"
+    },
+    {
+      "path": "docs/planning/lib-pro-013-whole-library-renewal-audit-plan.md",
+      "sha256": "f63add72483dfcb0c06bf0f7a134600265ed11b00b52dbd0ad8892332e4f1755"
+    },
+    {
+      "path": "docs/planning/lib-pro-013-a0-execution-plan.md",
+      "sha256": "95fb1d8a059083ecd9b020e7f6bf27a2a1b5911778046a82c7f73909264131b1"
+    },
+    {
+      "path": "docs/verification/lib-pro-012-s0-post-merge-acceptance.json",
+      "sha256": "9a32692ae778b4648c2653fabe3834d1e8ebf976226936e63e1e66867009eb7a"
+    },
+    {
+      "path": "docs/planning/lib-pro-012-external-api-remediation-plan.md",
+      "sha256": "4e77edcf813797b7b09a95ec3cd532d1f6631e8a4daea1caab5df620ae2539e5"
+    },
+    {
+      "path": "docs/verification/lib-pro-011-external-api-readiness-audit.md",
+      "sha256": "b80a9d46e9674de38b6e0821f421c4a01f5c790c86e7cac27068ee87c47a37b3"
+    },
+    {
+      "path": "docs/verification/lib-pro-012-s0-p0-safety-closure-evidence.json",
+      "sha256": "f3a7064ea1ae191ec509d97da064e2a7b5d09e639f883dacf63b9a9d3bc1a4f5",
+      "role": "immutable historical S0 evidence"
+    }
+  ],
+  "maintained_owner_identities": {
+    "control_registry": {
+      "path": "scripts/control-plane.json",
+      "sha256": "efdffec23b9f86f256b49fd8b39fc4058e998ac2a1ab1f3758763ecd4b44bc9f",
+      "active_operations": 116
+    },
+    "control_projection": {
+      "path": "scripts/automation-map.json",
+      "sha256": "e264515ede6f40b502b22a2623a09e9a2e03c0f246cde71cb9811ff1f6ad238b",
+      "tasks": 116
+    },
+    "verification_manifest": {
+      "path": "scripts/verification-manifest.json",
+      "sha256": "5f6b8512951921c93001fa05e7d64d846fca0aee15c0da25ac2f655071caa93e",
+      "domains": 7,
+      "rules": 28
+    },
+    "agent_registry": {
+      "path": "agents/agent_registry.json",
+      "sha256": "0e16c8747904667a4d78393c76dbaf3b5131eb69a471c58ec9e895467940612e",
+      "agents": 16
+    },
+    "skill_tiers": {
+      "path": ".github/skills/skill_tiers.json",
+      "sha256": "447b92446eb26a2c7c39088c6566a4f1feb9c7e44fa912369d54a4292eecea2d",
+      "skills": 14
+    },
+    "api_manifest": {
+      "path": "docs/reference/api-manifest.json",
+      "sha256": "85d13b92ac1621032cc1e7113c710e3b6394bdc7066b50b608471cf10466b501",
+      "symbols": 199
+    },
+    "api_classification": {
+      "path": "docs/reference/api-classification.json",
+      "sha256": "ad04e53b9002f2e5efde29c366edc7721dcdc986add3b3b358c7f84e3d5cb0b9",
+      "root_exports": 222,
+      "canonical_task_exports": 1
+    },
+    "compatibility_ledger": {
+      "path": "docs/reference/api-compatibility-ledger.json",
+      "sha256": "c17956735924c83575d93e41ecda4e362c36db1edd6bdb2e1b84ea51eb6edb83",
+      "facade_projections": 620,
+      "caller_records": 1514,
+      "blocked_ambiguous_callers": 0
+    },
+    "capability_authority": {
+      "path": "docs/verification/indian-code-capability-coverage.json",
+      "sha256": "3f972cf9b80f74194a5a8e63a8f487487d1663ba24cb5fd11fc79cdab0ec3577",
+      "supported_families": 13,
+      "held_families": 8,
+      "declared_families": 21
+    },
+    "openapi_projection": {
+      "path": "fastapi_app/openapi_baseline.json",
+      "sha256": "a45383c59aebaf385b8bd5b1adb8874e323e87f28b10231b4327ce73e303fb59",
+      "path_objects": 88,
+      "operations": 89
+    }
+  },
+  "advertised_journey_seed": {
+    "primary_source": "Python/structural_lib/data/advertised_entry_points_v1.json",
+    "primary_source_sha256": "e7a32f19533876f132ccbaaafa660ed9eabec384708243d206f29c94572c399f",
+    "registered_cli_entry_points": 14,
+    "workflow_owner": "Python/structural_lib/services/workflow_catalog.py",
+    "workflow_owner_sha256": "8e36891e0bef28b5d044199969e2012d619c5731cdca05f8a13cdd9d0a6618f9",
+    "canonical_cross_surface_seed": "docs/reference/api-classification.json canonical_reference_journey",
+    "scope_rule": "A0 reconciles these maintained seeds with every workflow advertised in active public documentation; it does not create a competing manifest."
+  },
+  "evidence_classes": [
+    "independent arithmetic",
+    "controlled source example",
+    "external-software comparison",
+    "blind internal recomputation",
+    "wrapper/transport parity",
+    "generated regression",
+    "UI projection",
+    "qualified review",
+    "NOT_TESTED"
+  ],
+  "worktree_safety": {
+    "worktree_count": 18,
+    "current_tree_clean_at_entry": true,
+    "current_operation": "none",
+    "current_conflicts": [],
+    "current_locks": [],
+    "stashes": [],
+    "overlapping_open_pr_on_a0_owned_paths": false,
+    "open_prs": "Nine dependency-only Dependabot PRs; none touches the A0 report, task board, session log, next-session brief, or A0 evidence receipts.",
+    "merged_repair_lane": {
+      "path": "/Users/pravinsurawase/.codex/worktrees/04f5/structural_engineering_lib",
+      "head": "1485da58297379a65882be7e4be8a23d6d86117d",
+      "state": "clean, merged by PR 878, exact-tree equivalent to origin/main"
+    },
+    "preserved_dirty_lane": {
+      "path": "/Users/pravinsurawase/.codex/worktrees/e54a/structural_engineering_lib",
+      "head": "0fdb48edbb73114288feb8a246d6f30b80ac4d95",
+      "tracked_changes": [
+        "docs/SESSION_LOG.md"
+      ],
+      "ignored_state": "Python bytecode caches plus retained logs/pipelines, logs/sessions, and logs/session_trust.json",
+      "disposition": "PRESERVE_UNTOUCHED"
+    },
+    "retained_historical_git_lane": {
+      "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-git-governance-research",
+      "head": "657037364bbb49f2ef834c70f3a3c704bac83c7b",
+      "state": "clean retained historical lane; related PRs merged and no active writer"
+    },
+    "task_created_ignored_build_state": [
+      "Python/build/",
+      "Python/structural_lib_is456.egg-info/",
+      "Python and scripts bytecode caches"
+    ],
+    "destructive_actions": []
+  },
+  "stop_gate": {
+    "entry_status": "PASS",
+    "unresolved_identity_ambiguity": false,
+    "unresolved_writer_overlap": false,
+    "new_p0_reproduced": false,
+    "completion_authorized": "Proceed with A0 read-only audit passes only; stop on a newly reproduced P0 or any later identity, owner, preservation, or professional-authority ambiguity."
+  },
+  "closeout": {
+    "observed_at_utc": "2026-08-27T16:08:49Z",
+    "canonical_report": {
+      "path": "docs/verification/lib-pro-013-a0-renewal-audit.md",
+      "sha256": "5226899c3c36dc575d25c1931760ae74ddffee620241622aa1259bf8dfee5678",
+      "section_7_domains": 42,
+      "section_7_complete": 42,
+      "stable_findings": 16,
+      "new_current_source_p0": 0
+    },
+    "finding_priorities": {
+      "p0_public_artifact_root_cause_closed_in_current_source": 1,
+      "p1": 9,
+      "p2": 5,
+      "p3": 1
+    },
+    "focused_evidence": {
+      "selected_family_kernel_publication_rest_tests": 460,
+      "selected_family_kernel_publication_rest_result": "PASS",
+      "advertised_source_free_uat_cases": 29,
+      "advertised_source_free_uat_result": "PASS",
+      "registered_cli_entries": 14,
+      "registered_cli_result": "PASS",
+      "current_wheel_candidate_check": "PASS",
+      "current_sdist_install": "PASS",
+      "sampled_optional_extras": [
+        "dxf",
+        "report",
+        "validation"
+      ],
+      "sampled_optional_extras_result": "PASS"
+    },
+    "c2_routing": {
+      "b0": [
+        "common contract",
+        "canonical beam",
+        "result/status/composition",
+        "transport convergence"
+      ],
+      "f0": [
+        "family facade",
+        "family construction and exact-wheel recipes"
+      ],
+      "r0": [
+        "advertised journey ownership",
+        "documentation and release truth",
+        "generated clients and browser evidence",
+        "package/platform/supply-chain matrix",
+        "engineering evidence ledger and cumulative audit"
+      ],
+      "separate_p0_repair": [],
+      "holds": [
+        "public replacement release authorization",
+        "exact installed Windows Excel and ETABS evidence",
+        "exact browser and accessibility evidence",
+        "qualified engineering review and professional approval",
+        "protected-source and retained-data mutation"
+      ]
+    },
+    "completion_decision": "A0 truth freeze complete for one evidence candidate; no B0, F0, R0, release, professional claim, or deletion is automatically authorized."
+  }
+}
