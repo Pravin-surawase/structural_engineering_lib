@@ -52,6 +52,7 @@
   "holds": [
     "AUTHORIZATION_SOURCE_STALE_EVIDENCE",
     "AUTHORIZATION_STALE_EVIDENCE",
+    "AUTHORIZATION_TARGET_MISMATCH",
     "BRANCH_AND_WORKTREE_DELETION_NOT_AUTHORIZED",
     "LOCAL_HOLD_DIRTY",
     "PRESERVE_DIRTY_DETACHED_E54A_LANE",
@@ -68,27 +69,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "e5b07c162c09ba9dadafe12d9111e2ed4be9be2ac45a260af91efda14428e847",
+    "receipt_sha256": "8a255baf2909935aa35b1d98ac18bbcef7168bdad6143d797476b5e2a6ecab5c",
     "state": {
       "branch": "codex/lib-pro-012-s0-p0-safety-closure",
       "default_base": {
-        "ahead": 0,
+        "ahead": 1,
         "behind": 0,
         "ref": "origin/main",
         "sha": "d3242731e94dacd74e804a1f4a25c4c0da11790f",
-        "status": "equal"
+        "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 101.155,
+      "duration_ms": 109.21,
       "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
       "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib5",
-      "head_sha": "d3242731e94dacd74e804a1f4a25c4c0da11790f",
+      "head_sha": "a9613331d83da0915b054e5d9a4595e6db53f33d",
       "hold_reasons": [
-        "changed paths: 46"
+        "changed paths: 9"
       ],
       "linked_worktree": true,
       "locks": [],
-      "observed_at_utc": "2026-08-27T13:46:08.034557+00:00",
+      "observed_at_utc": "2026-08-27T14:05:13.304351+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -99,78 +100,34 @@
       "tree": {
         "clean": false,
         "conflicted_paths": [],
-        "dirty_count": 46,
+        "dirty_count": 9,
         "modified_paths": [
-          "Python/structural_lib/core/validation.py",
-          "docs/SESSION_LOG.md",
-          "docs/planning/next-session-brief.md",
-          "docs/reference/api-compatibility-ledger.json",
-          "docs/reference/beam-tool-manifest.json",
-          "docs/verification/lib-pro-012-s0-p0-safety-closure-evidence.json",
-          "fastapi_app/tests/test_load.py"
-        ],
-        "staged_paths": [
-          "Python/structural_lib/codes/is456/beam/detailing.py",
-          "Python/structural_lib/codes/is456/beam/torsion.py",
-          "Python/structural_lib/core/inputs.py",
-          "Python/structural_lib/core/validation.py",
-          "Python/structural_lib/services/bbs.py",
-          "Python/structural_lib/services/beam_api.py",
-          "Python/structural_lib/services/column_api.py",
-          "Python/structural_lib/services/common_api.py",
-          "Python/structural_lib/services/workflow_catalog.py",
-          "Python/tests/regression/test_lib_pro_012_s0_safety_closure.py",
-          "Python/tests/test_generated_clients.py",
-          "Python/tests/test_inputs.py",
-          "Python/tests/unit/test_torsion.py",
-          "clients/python/structural_client/client.py",
-          "clients/typescript/src/index.ts",
           "docs/SESSION_LOG.md",
           "docs/TASKS.md",
           "docs/planning/next-session-brief.md",
-          "docs/reference/api-classification.json",
-          "docs/reference/api-compatibility-ledger.json",
-          "docs/reference/api-manifest.json",
-          "docs/reference/fastapi-rest-api.md",
           "docs/verification/lib-pro-012-s0-p0-safety-closure-evidence.json",
-          "docs/verification/lib-pro-012-s0-p0-safety-closure-git-handoff-receipt.json",
-          "docs/verification/lib-pro-012-s0-p0-safety-closure-git-handoff-source-evidence.json",
-          "fastapi_app/examples/test_client.py",
-          "fastapi_app/examples/test_client.ts",
-          "fastapi_app/models/beam.py",
           "fastapi_app/openapi_baseline.json",
-          "fastapi_app/routers/design.py",
-          "fastapi_app/tests/conftest.py",
-          "fastapi_app/tests/test_beam_primary_route.py",
-          "fastapi_app/tests/test_endpoints.py",
-          "fastapi_app/tests/test_integration.py",
-          "fastapi_app/tests/test_load.py",
-          "fastapi_app/tests/test_plausibility_validators.py",
-          "fastapi_app/tests/test_public_documentation_contract.py",
-          "react_app/src/api/__tests__/endpoints.test.ts",
-          "react_app/src/api/client.ts",
-          "react_app/src/components/design/BeamDetailPanel.tsx",
-          "scripts/automation-map.json",
-          "scripts/benchmark_api.py",
-          "scripts/control-plane.json",
-          "scripts/generate_client_sdks.py",
+          "fastapi_app/routers/export.py",
+          "fastapi_app/tests/test_export_bbs_dxf.py",
+          "fastapi_app/tests/test_workflows.py",
           "scripts/verify_lib_pro_012_s0_artifact.py"
         ],
+        "staged_paths": [],
         "untracked_paths": []
       },
       "upstream": {
-        "ahead": null,
-        "behind": null,
-        "ref": "NONE",
-        "sha": null,
-        "status": "none"
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/codex/lib-pro-012-s0-p0-safety-closure",
+        "sha": "a9613331d83da0915b054e5d9a4595e6db53f33d",
+        "status": "equal"
       },
       "worktree_root": "/Users/pravinsurawase/.codex/worktrees/04f5/structural_engineering_lib"
     }
   },
-  "local_state_receipt_hash": "sha256:e5b07c162c09ba9dadafe12d9111e2ed4be9be2ac45a260af91efda14428e847",
+  "local_state_receipt_hash": "sha256:8a255baf2909935aa35b1d98ac18bbcef7168bdad6143d797476b5e2a6ecab5c",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-08-27T13:46:08.034699+00:00",
+  "observed_at_utc": "2026-08-27T14:05:13.304498+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"
@@ -248,7 +205,10 @@
       "scripts/verify_lib_pro_012_s0_artifact.py",
       "scripts/control-plane.json",
       "scripts/automation-map.json",
-      "docs/reference/beam-tool-manifest.json"
+      "docs/reference/beam-tool-manifest.json",
+      "fastapi_app/routers/export.py",
+      "fastapi_app/tests/test_export_bbs_dxf.py",
+      "fastapi_app/tests/test_workflows.py"
     ],
     "shared_paths": [
       "docs/SESSION_LOG.md",

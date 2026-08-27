@@ -214,6 +214,22 @@ for invalid in strict_vectors:
     if response.status_code != 422:
         raise AssertionError((invalid, response.status_code, response.text))
 
+invalid_bbs_response = client.post(
+    "/api/v1/export/bbs",
+    json={
+        "width": 300,
+        "depth": 500,
+        "fck": 25,
+        "fy": 500,
+        "ast_required": 0,
+    },
+)
+if invalid_bbs_response.status_code != 422:
+    raise AssertionError(invalid_bbs_response.text)
+invalid_bbs_details = invalid_bbs_response.json()["error"]["details"]
+if invalid_bbs_details[0]["loc"] != ["body", "ast_required"]:
+    raise AssertionError(invalid_bbs_details)
+
 valid_response = client.post("/api/v1/design/beam", json=payload)
 if valid_response.status_code != 200:
     raise AssertionError(valid_response.text)
@@ -237,6 +253,7 @@ print(json.dumps({
     "fastapi_origin": str(Path(__import__("fastapi_app").__file__).resolve()),
     "required_field_rejections": required,
     "strict_vector_count": len(strict_vectors),
+    "invalid_bbs_http_status": invalid_bbs_response.status_code,
     "valid_http_status": valid_response.status_code,
     "valid_effective_depth_mm": valid_data["effective_depth_used"],
     "engineering_fail_http_status": fail_response.status_code,

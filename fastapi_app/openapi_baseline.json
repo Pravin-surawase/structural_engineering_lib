@@ -15697,7 +15697,7 @@
           },
           "ast_required": {
             "description": "Required tension steel mm\u00b2",
-            "minimum": 0.0,
+            "exclusiveMinimum": 0.0,
             "title": "Ast Required",
             "type": "number"
           },

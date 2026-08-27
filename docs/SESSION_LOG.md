@@ -62,6 +62,11 @@ existing REST v1 intake without starting the later facade, v2, or renewal work.
   load fixture, mypy could not narrow the validated `object` to a floatable
   protocol, and the API compatibility ledger plus catalogue-derived beam tool
   manifest were stale after final caller/catalogue changes.
+- PR #877's first exact-head FastAPI job passed 501 cases but failed five. A
+  zero-steel BBS export let the service's correct rejection escape as an
+  internal `ValueError`; four workflow tests received 422 because their shared
+  valid fixture omitted the new explicit cover and reinforcement-diameter
+  basis.
 
 ### Root causes and resolutions
 
@@ -106,6 +111,18 @@ existing REST v1 intake without starting the later facade, v2, or renewal work.
   mypy then reports no issues. ⚠️ TERMINAL ISSUE: root-level targeted mypy saw
   `Python.structural_lib.core` and `structural_lib.core` -> reran from the
   configured package directory.
+- Confirmed root cause: `ExportBeamRequest.ast_required` still allowed zero,
+  so transport validation permitted creation of an invalid detailing result
+  before the BBS consumer rejected it. Resolution: require positive tension
+  steel at request intake and assert the maintained 422 field-path envelope.
+  Confirmed workflow root cause: the shared valid fixture was not migrated to
+  the strict catalogue's three explicit effective-depth derivation fields;
+  completing that fixture removes all four cascading failures. Evidence: 13
+  focused export/workflow cases and the exact hosted FastAPI command pass 506
+  with 6 deselected; OpenAPI matches 89 endpoints/444 schemas, and the
+  exact-wheel verifier now also proves zero-steel BBS intake returns 422 before
+  calculation or artifact creation. The required post-repair consolidated quick
+  gate passes 10/10 with zero reuse.
 
 ### Validation through content freeze
 
@@ -133,10 +150,13 @@ existing REST v1 intake without starting the later facade, v2, or renewal work.
   nine-item BBS reference. Exact-head FastAPI bound to that wheel rejects all
   nine omissions and four strict/domain vectors; valid inadequate design
   remains HTTP 200 with engineering status `FAIL`.
-- Normal commit hooks, immutable candidate identity, clean read-only session
-  closeout, push, PR, and hosted checks remain the final publish sequence.
-  Broad/full suites remain reserved for the planned cumulative LIB-PRO-012
-  gate.
+- Normal commit hooks and clean read-only session closeout passed on first
+  candidate `a9613331`; after push, PR #877's hosted cycle produced the
+  five-case FastAPI failure above while its other required domains passed. The
+  explicit repair candidate now owns normal hooks, clean closeout, push, and a
+  new exact-head hosted cycle. Broad Python/React and full checks remain
+  reserved for the planned cumulative LIB-PRO-012 gate; the exact 506-case
+  FastAPI command was required by this outcome-changing hosted failure.
 
 **Git handoff receipt:** `docs/verification/lib-pro-012-s0-p0-safety-closure-git-handoff-receipt.json`
 

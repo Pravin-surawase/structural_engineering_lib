@@ -21,6 +21,9 @@ SAFE_INPUTS = {
     "shear": 75.0,
     "fck": 25.0,
     "fy": 500.0,
+    "clear_cover": 40.0,
+    "stirrup_dia_mm": 8.0,
+    "main_bar_dia_mm": 16.0,
 }
 
 

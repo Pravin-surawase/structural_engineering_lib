@@ -6,8 +6,8 @@
 - Date: 2026-08-27
 - Focus: Implement the combined LIB-PRO-012 A/B safety cycle from merged
 - Completed: Froze the G0 Git, worktree, artifact, owner, required-field, and stable; Added shared finite, strict-type, sign, identity, domain, geometry, and; Protected design-only, combined, compliance, smart-analysis,
-- Git receipt: docs/verification/lib-pro-012-s0-p0-safety-closure-git-handoff-receipt.json | sha256:e5b07c162c09ba9dadafe12d9111e2ed4be9be2ac45a260af91efda14428e847 | HOLD
-- Git identity: codex/lib-pro-012-s0-p0-safety-closure@d3242731e94dacd74e804a1f4a25c4c0da11790f | upstream=NONE@UNKNOWN | base=origin/main@d3242731e94dacd74e804a1f4a25c4c0da11790f | tree=dirty | operation=none
+- Git receipt: docs/verification/lib-pro-012-s0-p0-safety-closure-git-handoff-receipt.json | sha256:8a255baf2909935aa35b1d98ac18bbcef7168bdad6143d797476b5e2a6ecab5c | HOLD
+- Git identity: codex/lib-pro-012-s0-p0-safety-closure@a9613331d83da0915b054e5d9a4595e6db53f33d | upstream=origin/codex/lib-pro-012-s0-p0-safety-closure@a9613331d83da0915b054e5d9a4595e6db53f33d | base=origin/main@d3242731e94dacd74e804a1f4a25c4c0da11790f | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=UNKNOWN
 - Next action: FREEZE_ONE_CANDIDATE_AND_RUN_ONE_HOSTED_CYCLE
 <!-- HANDOFF:END -->
@@ -16,9 +16,9 @@
 
 | State | Boundary |
 |---|---|
-| **Current** | LIB-PRO-012 S0 combined A/B is locally accepted on `codex/lib-pro-012-s0-p0-safety-closure` from exact source `d3242731e94dacd74e804a1f4a25c4c0da11790f`; immutable commit, PR, and hosted checks remain |
+| **Current** | PR #877 first head `a9613331` passed Python, React, control, and docs but failed FastAPI on zero-steel BBS export plus a stale workflow fixture; the surgical repair is locally accepted and awaits its immutable repair commit and exact-head hosted checks |
 | **Decision** | Existing `/api/v1` field names remain, but width, depth, moment, shear, fck, fy, clear cover, stirrup diameter, and main-bar diameter are strict required inputs; effective depth may be explicit or derived only from that complete explicit basis |
-| **Next** | Freeze one immutable candidate, run normal hooks and clean session closeout, push one PR, and merge only if the exact reviewed head remains unchanged and every required check passes |
+| **Next** | Commit the explicit hosted-failure repair through normal hooks, rerun clean session closeout, push the unchanged PR, and merge only if the repair head remains unchanged and every required check passes |
 | **After S0** | Start LIB-PRO-013 A0 architecture/truth freeze only after the unchanged green S0 merge; do not automatically begin later LIB-PRO-012 runtime packets |
 | **Held** | `/api/v2`, canonical facade, Packets C–I, final parity, cumulative broad gate, release/publication, qualified review, professional/engineering-use claims, protected-source changes, and branch/worktree deletion |
 
@@ -41,14 +41,19 @@
 - A valid ordinary integer REST payload returns HTTP 200 with derived effective
   depth 457 mm. A valid but inadequate engineering case remains HTTP 200 with
   engineering status `FAIL`, distinct from invalid intake and internal failure.
+- The first PR head exposed five FastAPI failures. Zero-steel BBS export now
+  returns the maintained 422 field-path envelope before detailing/BBS, and the
+  workflow transport's valid fixture now supplies the complete explicit depth
+  derivation basis. The 13 affected cases and exact 506-case hosted command
+  pass; the exact-wheel replay includes the repaired BBS transport vector.
 
 ## Ordered follow-on gates
 
-1. Stage only task-owned paths, inspect the staged diff, and create one
-   conventional candidate commit through normal hooks.
-2. Run the read-only usage closeout and `session end` on the clean exact commit.
-3. Push normally, create/update one PR, and wait for every required hosted check
-   on the unchanged head. Do not bypass checks or rewrite history.
+1. Stage only repair-owned paths, inspect the staged diff, and create one
+   explicit repair commit through normal hooks.
+2. Rerun read-only `session end` on the clean exact repair commit.
+3. Push normally to PR #877 and wait for every required hosted check on the
+   unchanged repair head. Do not bypass checks or rewrite history.
 4. Merge only when the exact reviewed head is unchanged, green, conflict-free,
    and repository policy permits it. Do not delete the branch or worktree.
 5. After the exact S0 merge, begin the read-only LIB-PRO-013 A0 truth freeze.

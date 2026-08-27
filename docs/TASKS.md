@@ -134,8 +134,12 @@ locally complete on `codex/lib-pro-012-s0-p0-safety-closure`. The exact-cycle
 records 51 dedicated regressions, a 607-case focused Python/FastAPI pass,
 focused React/lint/build, architecture/import/OpenAPI/generated-contract
 checks, source-free exact-wheel replay, and a repaired-candidate 10/10 quick
-gate. One immutable candidate, normal PR, and required hosted checks remain
-before S0 integration can be claimed.
+gate. PR #877 first head `a9613331` passed Python, React, control-plane, and
+documentation checks but exposed one BBS-export intake defect and one stale
+workflow test fixture in FastAPI validation. The surgical repair passes 13
+focused cases, the exact 506-case hosted FastAPI command, OpenAPI, and
+exact-wheel-to-head replay; a repair commit and its required exact-head hosted
+checks remain before S0 integration can be claimed.
 
 `LIB-PRO-013` owns the whole-library renewal audit. Its
 [master plan](planning/lib-pro-013-whole-library-renewal-audit-plan.md) defines
