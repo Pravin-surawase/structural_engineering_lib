@@ -4,10 +4,10 @@ status: active
 last_updated: 2026-08-27
 doc_type: spec
 complexity: advanced
-tags: [professional-readiness, whole-library, audit, usability, governance, efficiency]
+tags: [whole-library, audit, usability, governance, efficiency]
 ---
 
-# LIB-PRO-013 Whole-Library Professional Renewal Audit Plan
+# LIB-PRO-013 Whole-Library Renewal and Delivery Plan
 
 ## 1. Decision and intended outcome
 
@@ -32,9 +32,11 @@ The outcome is not another general score or a promise that the library is
 7. the final decision is `READY`, `PARTIAL`, or `HOLD` on an exact artifact,
    with unresolved findings visible and decisive.
 
-This document is a planning authority only. It does not authorize formula
-changes, public signature breaks, deletion, branch or worktree cleanup,
-dependency additions, release, publication, or professional approval.
+The original A0 audit boundary was planning-only. The later
+[owner sequencing decision](../verification/lib-pro-013-owner-sequencing-decision.json)
+authorizes the internal B0 -> F0 -> R0 delivery sequence. Professional review
+is not an intermediate implementation gate; it is scheduled once, after the
+accepted integrated R0 artifact and cumulative dossier exist.
 
 ## 2. Relationship to immediate safety work
 
@@ -70,7 +72,7 @@ commit, tree, artifact, dependency environment, and observation time.
 | Git lane | `codex/lib-pro-012-external-api-remediation-plan` at `0dd9d27b`; clean, five commits ahead of local `origin/main`, no upstream, remote freshness `NOT_CHECKED` |
 | Worktrees | 15 retained worktrees including the current checkout; one detached lane is dirty and must be preserved |
 | Public artifact | `structural-lib-is456==0.24.0a1`; LIB-PRO-011 binds the public wheel hash and tag |
-| Product status | Alpha and qualified-review-required; stable, engineering-use, and professional-approval claims remain held |
+| Product status | Alpha internal development; one engineer review is deferred until the final integrated-library artifact, while professional/engineering-use claims remain unavailable before that review |
 | Product planes | Python package, CLI/batch/import/export, FastAPI REST/WebSocket/streaming, React workbench, Excel/ETABS integration |
 | Python public root | 222 exports, including 100 functions in the LIB-PRO-011 inventory |
 | Compatibility | 45 classified root stub modules, 620 facade projections, and 1,506 caller records in the current compatibility ledger |
@@ -423,14 +425,16 @@ rounding, and finite serialization.
 required for its claim; no generated parity is represented as independent
 validation; boundary behavior has explicit semantics.
 
-#### Packet E3 — qualified review and professional-use boundary
+#### Packet E3 — final engineer-review boundary
 
-Define what must be reviewed by a practicing structural engineer, what can be
-released as Alpha, what remains diagnostic, and what evidence a stable or
-engineering-use claim would require.
+Define the single final dossier and exact integrated artifact that will be
+assigned to a practicing structural engineer after B0, F0, and R0 complete.
+Do not request or wait for professional approval during those implementation
+cycles.
 
-**Acceptance:** software acceptance, benchmark replay, qualified review,
-publication, and professional approval remain separate decisions.
+**Acceptance:** intermediate software/evidence gates remain complete and
+truthful; the external engineer-review task is activated only for the final
+integrated library, and no professional claim is made before its result.
 
 ### Track 3 — application and transport parity
 
@@ -609,7 +613,8 @@ P0 planning integration
   -> B0: LIB-PRO-012 C/D/E canonical beam contract
   -> F0: LIB-PRO-012 F1/F2/F3 family convergence
   -> R0: LIB-PRO-012 G/H/I + C3 exact-artifact independent audit
-  -> separately authorized release / qualified-review decisions
+  -> one final engineer review of the integrated library and dossier
+  -> exact-version release decision and artifact gates
 ```
 
 Section 9 retains the detailed audit lanes and acceptance criteria. The cycle
@@ -732,12 +737,13 @@ would hide uncertainty rather than improve planning.
   gates pass for the exact candidate as applicable; and
 - compatibility wrappers delegate to the same canonical implementation.
 
-### Professional/release gate
+### Final integrated-library review and release gate
 
+- activate only after B0, F0, and R0 are accepted and integrated;
 - no unresolved P0/P1 finding;
 - `PARTIAL` is a non-success verdict for stable/professional claims;
-- qualified review, release authorization, public artifact identity, support,
-  and incident-response policy are independently satisfied; and
+- final engineer review, exact release artifact identity, support, and
+  incident-response policy are independently satisfied; and
 - no Alpha disclaimer is removed merely because software CI is green.
 
 ## 15. Stop conditions and non-goals
@@ -752,7 +758,7 @@ Stop and replan when:
 - a dependency proposal lacks an owner and supported-version policy;
 - a generated artifact lacks a discoverable source or rebuild path;
 - a result would require protected source content to be copied; or
-- professional/publication wording requires authority not yet granted.
+- a professional claim is proposed before the deferred final engineer review.
 
 Explicit non-goals for the audit phase:
 
@@ -762,21 +768,19 @@ Explicit non-goals for the audit phase:
 - no dependency upgrade/addition;
 - no branch, worktree, archive, source, cache, or data deletion;
 - no release/tag/PyPI/GitHub publication;
-- no replacement of qualified engineering review with automated evidence; and
+- no replacement of the deferred final engineer review with automated
+  evidence; and
 - no rewrite of historical records merely because current counts differ.
 
-## 16. Immediate next action after plan approval
+## 16. Immediate next action after owner sequencing decision
 
-Finish the current P0 planning-integration candidate and integrate it on exact
-current `main`. Then start S0 as one parent task/session and one Git candidate:
+A0 and S0 are integrated. Execute B0 as one parent task/session and one Git
+candidate covering LIB-PRO-012 Packets C, D, and E. F0 and R0 are already
+authorized successors after their dependency gates pass. Do not request
+professional approval during these cycles; prepare the final review dossier in
+R0 and assign it to the engineer only after the exact integrated library is
+complete.
 
-1. freeze G0 against the exact pre-change source/artifact/worktree state;
-2. implement LIB-PRO-012 Packet A Python/consumer containment;
-3. implement Packet A existing REST v1 containment;
-4. implement Packet B torsion/column/structured-input containment; and
-5. freeze one S0 candidate, run its batched focused evidence, one quick gate,
-   normal staged hooks, required hosted checks, and exact-wheel P0 replay.
-
-Do not create separate G0, Python-A, REST-A, or B branches/PRs merely to mark
+Do not create separate C, D, or E branches/PRs merely to mark
 progress. Do not edit runtime code until S0 is explicitly started and its
 shared owners are confirmed free.

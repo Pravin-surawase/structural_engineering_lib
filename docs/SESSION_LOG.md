@@ -5,6 +5,159 @@
 
 ---
 
+## 2026-08-27 — Session: LIB-PRO-013 B0 common contract convergence
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents).
+
+**Branch:** `codex/lib-pro-013-b0-common-contract-convergence`.
+
+**Focus:** Record the owner's programme sequencing decision, remove
+professional review as an intermediate B0/F0/R0 gate, and execute the bounded
+B0 common input/error/facade, canonical beam, and downstream convergence cycle.
+
+**Completed:**
+
+- Freshly fetched merged A0 main at
+  `db6905c3c6b84e43b4a8ecfa2f55da260fbec3bd`, confirmed no overlapping B0
+  writer, created one clean B0 branch, and started one routed
+  `structural-math` session.
+- Recorded the owner's standing internal authorization for B0 -> F0 -> R0 and
+  deferred external engineer review until one exact final integrated-library
+  artifact and cumulative R0 dossier exist. Existing review-state metadata
+  remains truthful but is not an intermediate implementation gate.
+- Delivered the strict `beam-design-input/v1` request family,
+  `InputIssueV1`/`InputContractError`, ten validation dimensions, the
+  `structural_lib.design.is456.beam` facade, and typed design/detail/BBS result
+  contracts. The retained root/service signatures delegate through the shared
+  calculation owner and have explicit migration targets with no removal
+  schedule.
+- Added the canonical `beam-v1` CLI, `POST /api/v2/design/beam`, exact Python
+  and FastAPI request/result/problem parity, generated Python/TypeScript client
+  projections, and a generated classification/compatibility reconciliation
+  that names `is456.beam.design/v1` as the sole canonical beam journey.
+- Converged explicit detailing choices, BBS, JSON report/export, DXF adapter,
+  status, and finite serialization. Blocked intake, engineering `FAIL`, empty
+  collections, mixed types, and conflicting design/detailing choices cannot
+  produce an accepted downstream artifact.
+- Passed the final 451-case focused direct/compatibility/FastAPI/consumer/
+  package/generated/golden/S0 selection and the 416-case invalidated-path
+  replay after hook repair. A source-free macOS/Python 3.11 wheel
+  `25eacdd7...a803942f` contains the facade, passes all 29 release-UAT cases,
+  reconciles 15 CLI entries, produces the maintained nine-line BBS at 145.98
+  kg, and rejects the reproduced stirrup-area conflict with exact code/path.
+- Preserved the public `0.24.0a1` wheel/sdist as separate older held artifacts,
+  preserved the detached dirty `e54a` lane and every unrelated worktree/ref,
+  and did not read, change, or track protected source content.
+- Consolidated local checks pass: 0 architecture violations, 0 circular
+  imports, 5,198 imports with 0 broken, package/evidence/control focused tests,
+  0 broken maintained
+  links, current generated/OpenAPI/schema/control/context/evidence owners, and
+  the consolidated post-repair quick gate 10/10. The preliminary freeze run
+  and mandatory first hook run also passed before that hook rejected the
+  candidate on formatting/type annotations. Efficiency passes; the task milestone records
+  47.019 elapsed minutes, agents `1+0`, three focused invalidation retries, zero
+  candidate repair batches/full-gate/hosted runs, and unavailable provider
+  token/cost fields.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-013-b0-common-contract-git-handoff-receipt.json`
+
+### Issues encountered
+
+- The maintained API-classification assertion and ownership projection still
+  named the retained flat `design_beam_is456` wrapper as canonical after the
+  new family facade froze.
+- The first strict request draft allowed `calculation_basis.asv_mm2` to differ
+  from the area implied by the caller-selected stirrup diameter and leg count;
+  this could make design and detailing consume different engineering inputs.
+- Registering the new `beam-v1` parser exposed that the maintained advertised
+  CLI inventory still contained only the previous 14 commands.
+- A deliberately broadened exploratory DXF edge selection outside the frozen
+  B0 class reached four retained fixtures whose inputs now reject under prior
+  fail-closed safety rules, plus one old layout assertion. No B0 main-process
+  regression or new P0 was reproduced, and no edits to that test were kept.
+- `./run.sh context show architecture` rejected an invalid context area; the
+  maintained command listed the valid areas. A separate shell inventory used
+  an unmatched `scripts/run*` zsh glob. The OpenAPI checker also rejected an
+  assumed `--check` option.
+- A generic live import-pipeline diagnostic expected a running FastAPI server
+  and therefore reported connection refusal; B0 uses the maintained in-process
+  FastAPI parity tests and does not start the broad development stack. The
+  strict repository-wide doc checker also reported one B0 front-matter value
+  and a pre-existing `status: ready` in the completed A0 execution plan.
+- The first normal commit attempt created no commit: Black reformatted nine
+  affected Python/FastAPI files and configured Mypy rejected 22 new-boundary
+  annotations. A root-level Mypy diagnostic then also reported ten pre-existing
+  errors because it did not load the package-local configuration.
+- The first source-free UAT attempt used a target directory rather than an
+  installed distribution path, and the next clean temporary environment lacked
+  the wheel dependency set.
+- The first pre-commit handoff refresh retained two avoidable authorization
+  holds because its source kind and action binding did not use the receipt
+  schema's exact controlled values.
+
+### Root causes and resolutions
+
+- The previous active brief still reflected the pre-merge A0 hold because
+  hosted merge facts deliberately remained outside the frozen A0 candidate.
+  Resolution: bind the new owner decision and active B0 state in current
+  planning/status authorities without rewriting the immutable A0 report.
+- The classification generator inventoried only the root/service/legacy
+  facades, so its historic canonical-name rule could not see the new family
+  owner. Resolution: include the new facade as the fourth reconciled surface,
+  mark retained projections as compatibility, preserve their exact objects and
+  signatures, and regenerate the compact ledger under a 512 KiB ceiling;
+  focused classification/compatibility tests pass.
+- The strength and detailing contracts carried two representations of stirrup
+  area without a cross-field equality rule. Resolution: validate exact
+  diameter/leg area equality and match effective-depth cover/bar choices before
+  calculation; the source and exact-wheel reproducer now returns
+  `CROSS_FIELD_CONTRACT_INVALID` at `detailing`.
+- The CLI inventory is an explicit maintained allowlist rather than parser-
+  derived write output. Resolution: add `beam-v1` with its acceptance owner and
+  rerun release UAT; 15/15 live commands reconcile and all 29 cases pass.
+- The exploratory DXF failures belong to retained cumulative/R0 evidence and
+  were not needed to diagnose B0; their full legacy-layout root cause remains
+  unconfirmed in this cycle. Resolution: preserve the first observation,
+  revert the exploratory test edits, leave the file byte-unchanged, and keep
+  the B0 gate class-bounded as authorized.
+- The terminal failures were command-shape mistakes, not repository defects.
+  Resolution: use `./run.sh context show python`, explicit `rg` paths, and the
+  OpenAPI checker with no option; each maintained alternative succeeded.
+- The live import diagnostic has an unstated running-server prerequisite and
+  was not a valid read-only import-boundary check for this cycle. Resolution:
+  rely on the passing 725-file static import check, 207-module circular-import
+  check, 227-file architecture check, and in-process FastAPI parity tests. The
+  B0 migration front matter now uses the maintained `guide` type; the older A0
+  `ready` metadata is preserved as pre-existing historical state rather than
+  rewritten during B0.
+- The new annotations used invariant concrete error-detail lists, nullable
+  depth bases without local narrowing, untyped identity/compatibility returns,
+  and generic serialization results. Resolution: accept read-only error-detail
+  sequences, narrow the validated depth alternative explicitly, type the exact
+  member and compatibility results, require dictionary serialization, and
+  attach compatibility metadata through function dictionaries. The hook's
+  formatting is retained. Configured package-context Mypy now reports no
+  issues in 254 source files; affected Ruff passes; the 416-case replay passes.
+  ⚠️ TERMINAL ISSUE: repository-root Mypy loaded the wrong configuration ->
+  reran the exact maintained command from `Python/`.
+- The release UAT deliberately proves a real installed wheel by comparing its
+  origin with the interpreter's pure-library path. Resolution: install the
+  wheel and its declared dependencies into one clean temporary venv, then run
+  the UAT and canonical design/detail/BBS/adverse-input probe from `/tmp`.
+  All 29 UAT cases pass; the facade import resolves inside that venv, the BBS
+  has nine items/145.98 kg, and the cross-field conflict fails at `detailing`.
+  ⚠️ TERMINAL ISSUE: target-directory import was not an installed-wheel
+  proof -> used a clean temporary venv and the exact built wheel.
+- The handoff schema accepts owner authority as `USER_DELEGATION` and requires
+  the target action list to exactly equal the full authorized-action list.
+  Resolution: normalize those two evidence fields without expanding authority
+  and regenerate the receipt. Only the expected dirty/local, unqueried-hosted,
+  preservation, and deletion-prohibition holds remain; no authorization-shape
+  hold remains.
+
+---
+
 ## 2026-08-27 — Session: LIB-PRO-013 A0 consolidated renewal audit
 
 **Agent:** Codex (`governance`, sole writer; no subagents).

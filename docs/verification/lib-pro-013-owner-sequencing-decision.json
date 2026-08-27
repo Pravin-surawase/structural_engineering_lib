@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "decision_id": "LIB-PRO-013-OWNER-SEQUENCING-DECISION-2026-08-27",
+  "status": "ACTIVE",
+  "observed_at": "2026-08-27",
+  "authority": {
+    "kind": "OWNER_DECISION",
+    "source": "Direct owner instruction in the active Codex task",
+    "decision": "Proceed with the remaining internal library programme without intermediate professional approval; assign the completed integrated library to an engineer for one final review."
+  },
+  "programme_sequence": {
+    "b0_common_contract": "AUTHORIZED_NOW",
+    "f0_family_convergence": "AUTHORIZED_AFTER_ACCEPTED_B0",
+    "r0_external_preview_closure": "AUTHORIZED_AFTER_ACCEPTED_F0",
+    "final_engineer_review": "DEFERRED_UNTIL_ACCEPTED_R0_INTEGRATED_LIBRARY"
+  },
+  "professional_review_boundary": {
+    "intermediate_gate": false,
+    "applies_during": [
+      "B0",
+      "F0",
+      "R0 implementation and evidence preparation"
+    ],
+    "activation_condition": "B0, F0, and R0 are integrated and one exact final library artifact plus its cumulative evidence dossier exists",
+    "required_final_action": "Assign the exact completed library artifact and bounded evidence dossier to a practicing structural engineer for review",
+    "claim_boundary": "Until that final review is completed, do not claim professional approval, engineering-use approval, or stable professional readiness."
+  },
+  "standing_internal_authority": [
+    "Implement the frozen B0, F0, and R0 scope in dependency order",
+    "Edit runtime, tests, documentation, generated owners, and compatibility adapters required by those approved cycles",
+    "Make bounded signature and dependency decisions when the approved cycle proves they are necessary and repository compatibility gates pass",
+    "Commit, push, create pull requests, wait for required checks, and merge unchanged green heads under repository policy"
+  ],
+  "safety_boundaries_not_replaced_by_approval": [
+    "No early professional or engineering-use claim",
+    "No protected standard prose, image, or private-source content in Git",
+    "No release publication without an exact versioned candidate and the maintained per-release artifact gates",
+    "No destructive branch, worktree, archive, or retained-data mutation without an exact target manifest and recovery proof",
+    "No feature-scope expansion outside the approved B0, F0, and R0 programme without recording the new scope"
+  ]
+}

@@ -178,6 +178,19 @@ class TestWheelContents:
             len(lib_files) > 10
         ), f"Only {len(lib_files)} structural_lib files in wheel — expected 50+"
 
+    def test_canonical_beam_facade_and_contracts_in_wheel(self, wheel_filelist):
+        """B0 beginner facade and strict contract owners must ship together."""
+
+        required = {
+            "structural_lib/design/__init__.py",
+            "structural_lib/design/is456/__init__.py",
+            "structural_lib/design/is456/beam.py",
+            "structural_lib/services/canonical_beam.py",
+            "structural_lib/services/contracts/common.py",
+            "structural_lib/services/contracts/beam.py",
+        }
+        assert required <= set(wheel_filelist)
+
 
 class TestImportSilence:
     """EA-6: Importing structural_lib must produce zero user-facing warnings.

@@ -16,9 +16,9 @@ external-user findings recorded in
 [LIB-PRO-011](../verification/lib-pro-011-external-api-readiness-audit.md).
 The audit remains the evidence and reproduction authority; this document owns
 the target solution, dependency order, migration policy, acceptance evidence,
-and release boundary. Runtime work begins only when the owner starts an
-identified execution cycle from this plan; approval of the plan does not by
-itself start code changes.
+and release boundary. The
+[LIB-PRO-013 owner sequencing decision](../verification/lib-pro-013-owner-sequencing-decision.json)
+starts B0 and pre-authorizes F0 and R0 after their dependency gates pass.
 
 The required work is not one patch. It has four linked outcomes:
 
@@ -34,9 +34,11 @@ The required work is not one patch. It has four linked outcomes:
    README, quickstart, cookbook, API guide, or CLI chain must be registered,
    negatively tested, and replayed from the exact wheel.
 
-The current library remains `PARTIAL / ALPHA ONLY`. This plan authorizes no
-runtime change, signature break, package publication, professional approval,
-or release claim by itself.
+The current library remains `PARTIAL / ALPHA ONLY`. B0/F0/R0 internal runtime,
+contract, compatibility, generated-owner, test, and documentation work is now
+authorized. Professional review is deferred to one final integrated-library
+step and is not an intermediate gate. No professional or engineering-use claim
+exists before that final review.
 
 ## 2. Live basis and reconciliation with completed work
 
@@ -50,7 +52,7 @@ or release claim by itself.
 | Root public surface | 222 exports, including 100 functions |
 | Static validation state | 148 `PROVEN`, 122 `DELEGATED`, 357 `UNPROVEN`, 136 `NOT_APPLICABLE` |
 | API status | Alpha/preview; no stable-export promise |
-| Release/professional authority | Not granted |
+| Programme authority | B0 authorized now; F0 and R0 authorized after their dependency gates; final engineer review deferred until the integrated library is complete |
 
 This programme must reuse, not repeat, the following completed foundations:
 
@@ -266,6 +268,19 @@ request = beam.input(
     fy_nmm2=500,
     mu_knm=150,
     vu_kn=80,
+    d_dash_mm=50,
+    asv_mm2=100.53,
+    detailing=beam.BeamDetailingOptionsV1(
+        standard=beam.DetailingStandard.IS456,
+        clear_cover_mm=40,
+        tension_bar_diameter_mm=20,
+        compression_bar_diameter_mm=16,
+        nominal_top_steel_ratio=0.25,
+        stirrup_diameter_mm=8,
+        stirrup_legs=2,
+        stirrup_spacing_support_mm=150,
+        stirrup_spacing_mid_mm=200,
+    ),
 )
 
 result = beam.design_and_detail(
@@ -284,6 +299,8 @@ Properties of this journey:
 - `member_id`, `story`, and `case_id` have distinct meanings;
 - effective depth is supplied or represented by a complete derivation basis;
 - detailing standard is explicit instead of a silently defaulted seismic flag;
+- cover, bar, stirrup-leg, and spacing choices are explicit rather than inferred
+  from the detailing-standard name;
 - BBS accepts the valid combined result naturally;
 - invalid input raises before any result or schedule exists.
 
@@ -858,7 +875,7 @@ paths.
 
 The logical packet estimates still total approximately **45–74 engineer-days**
 for one focused implementation lane (roughly 9–15 working weeks), excluding
-qualified review, owner decisions, hosted queue time, and publication. The work
+the single final engineer review, hosted queue time, and publication. The work
 is not reduced by hiding it; Git, session, and unchanged-suite repetition are
 reduced by grouping the work into coherent candidate cycles.
 
@@ -910,5 +927,6 @@ facade, result, generated API, documentation, task, or session owners. Do not
 create status-only sessions, WIP PRs, or unchanged broad reruns merely to show
 progress.
 
-Current plan verdict: **solution architecture and packet order are ready for
-planning integration; S0 runtime remediation remains unstarted.**
+Current plan verdict: **S0 and A0 are integrated; B0 Packets C, D, and E are
+owner-authorized and active. F0 and R0 follow their accepted dependency gates;
+professional review occurs once after the final integrated-library candidate.**

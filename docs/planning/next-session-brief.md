@@ -4,22 +4,22 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-27
-- Focus: Execute the complete LIB-PRO-013 A0 audit through C2 as one
-- Completed: Freshly fetched `origin/main`, proved accepted S0 candidate/merge/tree and; Froze the entry receipt across public/current artifact identities, authority; Completed A0.1-A0.4 in one cycle: audit-of-audits and recurrence analysis;
-- Git receipt: docs/verification/lib-pro-013-a0-consolidated-renewal-audit-git-handoff-receipt.json | sha256:b7116af0239d214673f35cc89912b1cf0eec07f8abfcd8e8c3c44c5a502fd462 | HOLD
-- Git identity: codex/lib-pro-013-a0-consolidated-renewal-audit@49c2fe4553e923a7433ca0a5fa28ea364956ae30 | upstream=origin/main@49c2fe4553e923a7433ca0a5fa28ea364956ae30 | base=origin/main@49c2fe4553e923a7433ca0a5fa28ea364956ae30 | tree=dirty | operation=none
+- Focus: Complete LIB-PRO-013 B0 common contract, canonical beam, and typed downstream convergence
+- Completed: Froze the strict Python facade and result/error contracts; proved Python/FastAPI/generated-client parity; passed the 451-case focused selection, 416-case invalidated-path replay, and source-free exact-wheel UAT
+- Git receipt: docs/verification/lib-pro-013-b0-common-contract-git-handoff-receipt.json | sha256:d446cb2e07a42aea7afc90f7f89c92b8891f76845683c2cb8049cd35515252b9 | HOLD
+- Git identity: codex/lib-pro-013-b0-common-contract-convergence@db6905c3c6b84e43b4a8ecfa2f55da260fbec3bd | upstream=origin/main@db6905c3c6b84e43b4a8ecfa2f55da260fbec3bd | base=origin/main@db6905c3c6b84e43b4a8ecfa2f55da260fbec3bd | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
-- Next action: COMMIT_PUSH_CREATE_PR_AND_MERGE_UNCHANGED_GREEN_HEAD
+- Next action: CREATE_IMMUTABLE_B0_CANDIDATE_THEN_PUSH_PR_CHECK_AND_MERGE_UNCHANGED_GREEN_HEAD
 <!-- HANDOFF:END -->
 
 ## Latest Handoff
 
 | State | Boundary |
 |---|---|
-| **Current** | S0 post-merge repair PR #878 is accepted at candidate `1485da58297379a65882be7e4be8a23d6d86117d`, merge `49c2fe4553e923a7433ca0a5fa28ea364956ae30`, and exact shared tree `704190f7322b8c29bc4a85036d7ade54d355f306`. LIB-PRO-013 A0 has completed its four read-only passes and 42-domain C2 truth freeze from that exact source. |
-| **Decision** | No new current-source P0 was reproduced. The canonical A0 report records 16 deduplicated findings: the public `0.24.0a1` artifact remains an older, known P0-affected identity while the current wheel passes S0; common contract work routes to B0, family construction to F0, and cumulative documentation/generated/package/evidence closure to R0. |
-| **Next** | Publish and host-check one unchanged A0 evidence candidate. After a green merge, wait for explicit owner authorization before B0; do not start implementation automatically. |
-| **Held** | B0/F0/R0 implementation until explicitly activated; `/api/v2`; Packets C-I; release/publication; exact Windows Excel/ETABS and browser evidence; qualified review; professional/engineering-use claims; protected-source changes; branch/worktree deletion. |
+| **Current** | B0 Packets C-E are locally complete from integrated A0 main `db6905c3c6b84e43b4a8ecfa2f55da260fbec3bd`. The strict canonical beam facade, v2 transport, generated clients, compatibility projections, and named downstream consumers pass the 451-case focused selection and 416-case invalidated-path replay. |
+| **Decision** | The [owner sequencing decision](../verification/lib-pro-013-owner-sequencing-decision.json) authorizes B0 now and F0/R0 after their dependency gates. Professional review is removed as an intermediate gate and deferred to one engineer review of the final integrated library after R0. |
+| **Next** | Freeze the single B0 candidate, pass consolidated local/hosted gates, and merge the unchanged head; then begin already-authorized F0 family convergence. |
+| **Held** | Professional/engineering-use claims until the final engineer review; exact release publication until a versioned candidate passes maintained gates; protected-source tracking; destructive retained-data/worktree operations without an exact manifest and recovery proof. |
 
 ## A0 audit outcome
 
@@ -34,10 +34,11 @@
   the remaining IS 456 and repaired IS 13920 families. Accepted independent
   arithmetic was reused only after owner-byte comparison; generated parity was
   not promoted into independent validation.
-- Capability truth remains 13 bounded supported and 8 held families; all 13
-  require qualified review. Exact-current Windows Excel/ETABS, browser/
-  accessibility, qualified-review, professional-approval, and future-release
-  evidence remains `NOT_TESTED / HELD`.
+- Capability truth remains 13 bounded supported and 8 held families. Existing
+  review-state flags remain honest metadata, but they do not block B0/F0/R0;
+  one engineer review is scheduled after the final integrated library. Exact-
+  current Windows Excel/ETABS and browser/accessibility evidence remains
+  `NOT_TESTED` and is routed to the applicable later evidence lane.
 - The public wheel `b5e0df7b...6201a` and sdist `8c1d6b76...0a53b` belong to
   tag commit `71b70652...16efc` and predate S0. They expose no PyPI provenance;
   the GitHub release is mutable. No release/readiness claim follows.
@@ -46,25 +47,24 @@
   data. The independent Sourcebook and protected standards were not read,
   changed, or tracked.
 
-## Ordered follow-on gates
+## B0 outcome and ordered follow-on gates
 
-1. Stage only the A0 report, entry/handoff evidence, task, session, and this
-   brief; inspect the staged diff and create one immutable candidate normally.
-2. Run clean read-only session closeout on that exact candidate, push normally,
-   and create one PR.
-3. Wait for every required changed-path hosted check on the unchanged head;
-   merge only if green, conflict-free, and policy permits it.
-4. Preserve every branch/worktree/source. No cleanup or issue closure is
-   authorized.
-5. After an unchanged green A0 merge, wait for explicit owner authorization to
-   begin B0. F0 depends on B0; R0 closes the integrated artifact afterward.
+1. The exact-head wheel `25eacdd74d8d12b258e6c4a0b73d84c8e99f1eb6bbb4d684af3710b2a803942f`
+   imports source-free on macOS/Python 3.11, passes the 29-case UAT, reconciles
+   15 CLI commands, produces nine BBS items at 145.98 kg, and rejects the
+   reproduced design/detailing stirrup-area conflict with exact code/path.
+2. Freeze one B0 candidate; run consolidated local gates, normal hooks, and
+   one hosted PR cycle on the unchanged head.
+3. Preserve every unrelated branch/worktree/source. After accepted B0, proceed
+   to the already-authorized F0 dependency cycle without requesting engineer
+   review; the engineer is assigned only after final R0 integration.
 
 ## Required Reading
 
-1. [Canonical A0 audit](../verification/lib-pro-013-a0-renewal-audit.md)
-2. [A0 entry evidence](../verification/lib-pro-013-a0-entry-evidence.json)
-3. [LIB-PRO-013 master audit authority](lib-pro-013-whole-library-renewal-audit-plan.md)
-4. [A0 derivative execution plan](lib-pro-013-a0-execution-plan.md)
-5. [LIB-PRO-012 remediation authority](lib-pro-012-external-api-remediation-plan.md)
-6. [Post-merge S0 acceptance](../verification/lib-pro-012-s0-post-merge-acceptance.json)
+1. [B0 evidence](../verification/lib-pro-013-b0-common-contract-evidence.json)
+2. [Owner sequencing decision](../verification/lib-pro-013-owner-sequencing-decision.json)
+3. [Canonical beam cookbook](../cookbook/python/beam.md)
+4. [LIB-PRO-012 remediation authority](lib-pro-012-external-api-remediation-plan.md)
+5. [Canonical A0 audit](../verification/lib-pro-013-a0-renewal-audit.md)
+6. [LIB-PRO-013 master audit authority](lib-pro-013-whole-library-renewal-audit-plan.md)
 7. [Current task board](../TASKS.md)

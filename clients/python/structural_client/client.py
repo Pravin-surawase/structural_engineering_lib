@@ -188,6 +188,23 @@ class StructuralDesignClient:
             warnings=data.get("warnings"),
         )
 
+    def design_beam_v2(self, request: dict[str, Any]) -> dict[str, Any]:
+        """Run the canonical nested ``beam-design-input/v1`` request.
+
+        This method deliberately returns the versioned canonical dictionary;
+        field names and status axes therefore match the Python facade exactly.
+        """
+
+        response = self._client.post("/api/v2/design/beam", json=request)
+        try:
+            response.raise_for_status()
+        except httpx.HTTPStatusError as exc:
+            problem = response.json().get("error", {})
+            code = problem.get("code", response.status_code)
+            message = problem.get("message", "Request failed")
+            raise RuntimeError(f"Canonical design failed: {code}: {message}") from exc
+        return response.json()
+
     def calculate_geometry(
         self,
         width: float,

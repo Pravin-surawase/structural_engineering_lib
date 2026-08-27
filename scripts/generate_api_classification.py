@@ -4,7 +4,8 @@
 The registry covers all declared exports and every public-looking callable on
 the supported root and service facades plus the retained compatibility module.
 Names outside ``__all__`` are classified as internal so they cannot silently
-become an undocumented public surface.
+become an undocumented public surface. The canonical family facade is also
+inventoried so compatibility projections cannot be mistaken for the owner.
 """
 
 from __future__ import annotations
@@ -32,6 +33,7 @@ from _lib.utils import REPO_ROOT
 DEFAULT_OUT = REPO_ROOT / "docs/reference/api-classification.json"
 DEFAULT_COMPATIBILITY_OUT = REPO_ROOT / "docs/reference/api-compatibility-ledger.json"
 SURFACE_POLICY = (
+    ("structural_lib.design.is456.beam", "preview"),
     ("structural_lib", "preview"),
     ("structural_lib.services.api", "preview"),
     ("structural_lib.api", "compatibility"),
@@ -48,6 +50,7 @@ _HOLD_MODULE_PREFIXES = (
     "structural_lib.codes.is456.load_analysis",
 )
 _CANONICAL_TASK_EXPORTS = frozenset({"design_beam_is456"})
+_CANONICAL_FACADE_MODULE = "structural_lib.design.is456.beam"
 _CANONICAL_SUPPORT_EXPORTS = frozenset(
     {"EffectiveDepthBasisV1", "EffectiveDepthResolutionV1"}
 )
@@ -638,10 +641,12 @@ def _claim_disposition(
 ) -> str:
     if not declared_export:
         return "internal"
+    if module_name == _CANONICAL_FACADE_MODULE:
+        return "canonical"
     if module_name == "structural_lib.api":
         return "compatibility"
     if name in canonical_task_exports:
-        return "canonical"
+        return "compatibility"
     if name in _CANONICAL_SUPPORT_EXPORTS:
         return "canonical"
     if defined_in.startswith(_HOLD_MODULE_PREFIXES):
@@ -768,6 +773,7 @@ def build_registry() -> dict[str, Any]:
             "internal": "Undeclared implementation detail.",
         },
         "canonical_task_exports": sorted(canonical_task_exports),
+        "canonical_journey_ids": ["is456.beam.design/v1"],
         "canonical_support_exports": sorted(_CANONICAL_SUPPORT_EXPORTS),
         "advanced_capability_exports": sorted(
             capability_bound_exports - canonical_task_exports
@@ -779,40 +785,80 @@ def build_registry() -> dict[str, Any]:
             "not_in_wheel": ["fastapi_app", "react_app", "clients"],
         },
         "canonical_reference_journey": {
-            "task_id": "design_beam_is456",
-            "input_contract": "project-beam-design/v1",
+            "task_id": "is456.beam.design/v1",
+            "input_contract": "beam-design-input/v1",
             "effective_depth_contract": "effective-depth-basis/v1",
-            "result_contract": "structural-result-envelope/v2",
+            "result_contract": "beam-design-result/v1 + structural-result-envelope/v2",
             "problem_contract": "structural-problem/v1",
+            "field_contract_dimensions": [
+                "TYPE_AND_FINITE_VALUE",
+                "RANGE_AND_ZERO_POLICY",
+                "UNIT_AND_QUANTITY",
+                "CODE_AND_MATERIAL_DOMAIN",
+                "CROSS_FIELD_RELATION",
+                "IDENTITY_AND_PROVENANCE",
+                "ENUM_AND_TOPOLOGY",
+                "COLLECTION_CARDINALITY_AND_UNIQUENESS",
+                "DOWNSTREAM_CONSUMABILITY",
+                "COMPATIBILITY_ALIAS_AND_MIGRATION_TARGET",
+            ],
             "surfaces": [
                 {
-                    "surface": "python_root",
-                    "locator": "structural_lib.design_beam_is456",
+                    "surface": "python_facade",
+                    "locator": "structural_lib.design.is456.beam",
                     "artifact": "wheel",
                     "disposition": "canonical",
                 },
                 {
-                    "surface": "python_service",
+                    "surface": "python_root_compatibility",
+                    "locator": "structural_lib.design_beam_is456",
+                    "artifact": "wheel",
+                    "disposition": "compatibility",
+                    "canonical_target": "structural_lib.design.is456.beam.design",
+                },
+                {
+                    "surface": "python_service_compatibility",
                     "locator": "structural_lib.services.api.design_beam_is456",
                     "artifact": "wheel",
-                    "disposition": "canonical",
+                    "disposition": "compatibility",
+                    "canonical_target": "structural_lib.design.is456.beam.design",
                 },
                 {
                     "surface": "python_compatibility",
                     "locator": "structural_lib.api.design_beam_is456",
                     "artifact": "wheel",
                     "disposition": "compatibility",
+                    "canonical_target": "structural_lib.design.is456.beam.design",
                 },
                 {
                     "surface": "cli",
-                    "locator": "python -m structural_lib design",
+                    "locator": "python -m structural_lib beam-v1",
                     "artifact": "wheel",
                     "disposition": "canonical",
                 },
                 {
-                    "surface": "rest",
+                    "surface": "rest_v2",
+                    "locator": "POST /api/v2/design/beam",
+                    "artifact": "exact_head_application",
+                    "disposition": "canonical",
+                },
+                {
+                    "surface": "rest_v1_compatibility",
                     "locator": "POST /api/v1/design/beam",
                     "artifact": "exact_head_application",
+                    "disposition": "compatibility",
+                    "canonical_target": "POST /api/v2/design/beam",
+                },
+                {
+                    "surface": "generated_python_client",
+                    "locator": "StructuralDesignClient.design_beam_v2",
+                    "artifact": "repository_clients",
+                    "disposition": "canonical",
+                },
+                {
+                    "surface": "generated_typescript_client",
+                    "locator": "StructuralDesignClient.designBeamV2",
+                    "artifact": "repository_clients",
                     "disposition": "canonical",
                 },
                 {
@@ -860,6 +906,9 @@ def build_registry() -> dict[str, Any]:
 def _replacement_for_projection(
     module_name: str, name: str, value: object, claim_disposition: str
 ) -> str:
+    compatibility = getattr(value, "__compatibility__", None)
+    if isinstance(compatibility, dict) and compatibility.get("canonical_target"):
+        return str(compatibility["canonical_target"])
     if name in _P5_HELD_COMPATIBILITY:
         return "structural_lib.imports.build_etabs_canonical_snapshot_v1"
     if module_name == "structural_lib.api":
@@ -882,6 +931,11 @@ def _projection_disposition(module_name: str, claim_disposition: str) -> str:
 
 
 def _projection_reason(module_name: str, name: str, claim_disposition: str) -> str:
+    if module_name == _CANONICAL_FACADE_MODULE:
+        return (
+            "The family facade owns the strict request, typed result, and named "
+            "composition journey while delegating calculations to maintained owners."
+        )
     if name in _P5_HELD_COMPATIBILITY:
         return (
             "Historical ETABS return shape lacks complete project/export identity, "

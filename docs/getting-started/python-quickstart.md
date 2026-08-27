@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-17
+last_updated: 2026-08-27
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -15,7 +15,7 @@ tags: []
 **Importance:** High
 **Version:** 1.0.0
 **Created:** 2025-12-15
-**Last Updated:** 2026-04-04
+**Last Updated:** 2026-08-27
 
 ---
 
@@ -30,8 +30,8 @@ This is the easiest path for beginners.
 ```bash
 python3 -m pip install --upgrade pip
 
-# Exact prepared-candidate install
-python3 -m pip install "structural-lib-is456===0.24.0a1"
+# Install an exact accepted wheel supplied by the current development cycle
+python3 -m pip install "/absolute/path/to/structural_lib_is456-0.24.0a1-py3-none-any.whl"
 
 # Optional DXF support
 python3 -m pip install "structural-lib-is456[dxf]"
@@ -40,11 +40,14 @@ python3 -m pip install "structural-lib-is456[dxf]"
 python3 -m structural_lib install-preflight
 ```
 
-The `0.24.0a1` pin is for the exact locally built candidate wheel. It is not
-available from PyPI unless separately authorized and published; `0.23.1a2`
-remains the current public Alpha.
+The older public `0.24.0a1` artifact does not contain the accepted S0 safety
+repair and remains held. Do not use a version string alone as proof that you
+have the repaired artifact. Use the exact current-cycle wheel and its recorded
+SHA-256 identity until a later release cycle publishes a replacement.
 
-Engineering note: this library is a calculation aid; final responsibility for code-compliant design and detailing remains with the qualified engineer.
+Engineer review is a single final-stage activity after B0, F0, and R0 complete
+the integrated library. It is not an intermediate approval gate for this B0
+contract cycle, and no current software result claims that review has occurred.
 
 ## Google Colab quick install
 
@@ -69,7 +72,7 @@ If you are on Windows, replace `python3` with `py`.
 3. Install the library:
    ```bash
    python3 -m pip install --upgrade pip
-   python3 -m pip install "structural-lib-is456===0.24.0a1"
+   python3 -m pip install "/absolute/path/to/structural_lib_is456-0.24.0a1-py3-none-any.whl"
    python3 -m structural_lib install-preflight
    ```
 4. Optional DXF support:
@@ -77,17 +80,40 @@ If you are on Windows, replace `python3` with `py`.
    python3 -m pip install "structural-lib-is456[dxf]"
    ```
 
-## 2) Quick sanity check (no files)
+## 2) Canonical beam design (no files)
+
+Workflow ID: `is456.beam.design/v1`. Supported case: rectangular IS 456 beam
+with caller-supplied factored action magnitudes. The result may be engineering
+`PASS` or `FAIL`; invalid intake raises `InputContractError` before a result is
+created.
+
 ```bash
 python3 - <<'PY'
-from structural_lib.codes.is456.beam import flexure
-res = flexure.design_singly_reinforced(
-    b=300, d=450, d_total=500, mu_knm=150, fck=25, fy=500
+from structural_lib.design.is456 import beam
+
+request = beam.input(
+    member_id="B1",
+    story="GF",
+    case_id="ULS-1",
+    span_mm=5000,
+    b_mm=300,
+    D_mm=550,
+    d_mm=500,
+    fck_nmm2=25,
+    fy_nmm2=500,
+    mu_knm=150,
+    vu_kn=80,
+    d_dash_mm=50,
+    asv_mm2=100,
 )
-print("Ast required (mm^2):", round(res.ast_required))
-print("Status:", "OK" if res.is_safe else res.error_message)
+result = beam.design(request)
+print("Engineering status:", result.engineering_status)
+print("Ast required (mm²):", round(result.calculation.flexure.Ast_required))
 PY
 ```
+
+For explicit detailing and BBS composition, see the
+[canonical beam recipe](../cookbook/python/beam.md).
 
 ## 3) Use the library in a script (optional)
 Create a file `example.py` with this content:
