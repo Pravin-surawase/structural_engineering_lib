@@ -5,6 +5,117 @@
 
 ---
 
+## 2026-08-28 — Session: LIB-PRO-013 Windows F0 source-lane rebind
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents).
+
+**Branch:** `codex/lib-pro-013-windows-rebind`.
+
+**Focus:** Rebind and prove the protected Windows evidence lane against the
+accepted F0 merge without running R0, engineering calculations, Excel, ETABS,
+workbook/model activity, application inspection, professional review, release,
+or publication work.
+
+**Completed:**
+
+- Read the live repository authorities, queried the HTTPS remote, fetched
+  normally, and proved exact `origin/main`
+  `59ef74c0ad44da6c313a2ca943c7362158230f38`, tree
+  `295c7a61d6781a749796e015e58a1fc38b4fc20f`, with required F0 candidate
+  parent `37a332a86e766c2403475b07dadab6793809a50e` and accepted B0
+  `44ef7bc4e8c98d01f32291730ab77ed16d077823` in ancestry.
+- Preserved the immutable base checkout clean on `main` at B0, inspected the
+  bounded sibling/worktree/stash/operation state, found no overlapping active
+  task candidate, and created exactly one non-OneDrive linked worktree at
+  `C:\CodexWork\structural_engineering_lib-lib-pro-013-windows-rebind` on
+  `codex/lib-pro-013-windows-rebind` from the exact F0 merge.
+- Proved the task worktree `READY_LOCAL` at entry with ahead/behind `0/0`, no
+  conflict, operation, lock, stash, dirty path, or query failure. The existing
+  Python 3.11 environment imports `structural_lib` from this exact worktree and
+  reports `source_bound=true`.
+- Froze the minimal
+  `docs/verification/lib-pro-013-windows-f0-rebind-evidence.json` source-binding
+  receipt and reconciled only the current task, session, and next-session
+  authorities. Every unrun application and engineering evidence class remains
+  explicitly `NOT_TESTED` or `NOT_INSPECTED`.
+- R0 may use this exact lane only after the receipt is integrated. No runtime,
+  toolchain, application, workbook, model, protected source, engineering
+  calculation, professional-review, release, or publication work was done.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-013-windows-f0-rebind-git-handoff-receipt.json`
+
+### Issues encountered
+
+- The first maintained sibling Git-state query returned `HOLD_UNKNOWN` because
+  its required `git status` subprocess timed out in the newly created Windows
+  worktree.
+- The one required canonical session-begin invocation reached onboarding and
+  then reported `Python source shadowing detected`, despite the approved
+  launcher importing `structural_lib` from the exact task worktree.
+- The first canonical summary-writer invocation stopped before writing because
+  the Windows `cp1252` console could not encode its Unicode heading. Its
+  maintained one-line extractor then shortened the wrapped focus/completed
+  prose in the generated handoff block.
+- The single canonical quick-gate attempt could not launch any component, and
+  its nested CLI-smoke harness had the same outcome: Windows returned
+  `[WinError 193]` before any check or CLI logic executed. The direct fallback
+  also found the updated next-session brief at 165 lines against its 150-line
+  control limit.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the maintained Git-state command defaults to a
+  1.0-second subprocess timeout, while the first cold Windows `git status`
+  completed cleanly in 1.616 seconds. Resolution: use the script's supported
+  bounded `--timeout 10` option; the maintained authority then reports both the
+  base and task worktrees definitively, with the task lane `READY_LOCAL` and no
+  query failure. No Git repair or configuration change occurred.
+- Confirmed root cause: Git Bash represents the task root as `C:/CodexWork/...`
+  while Python `pathlib` returns the same source path with Windows backslashes.
+  `agent_start.sh` compares those strings without normalization and falsely
+  rejected the correct source. Resolution: do not repeat `session begin` or
+  change software/PATH; retain its exact terminal failure and use the authorized
+  narrow read-only fallback: `python_runtime.sh --diagnose`, maintained
+  Git-state JSON with `--timeout 10`, and `git rev-parse --show-toplevel`.
+  Those commands prove the exact same worktree and `source_bound=true`.
+  ⚠️ TERMINAL ISSUE: Windows path separators caused canonical onboarding to
+  fail -> recorded the single invocation and used the approved read-only
+  source/Git binding evidence.
+- Confirmed root cause: the summary writer inherits the host console encoding,
+  and its handoff extractor captures only the first physical line of wrapped
+  fields. Resolution: rerun once with process-local `PYTHONUTF8=1`, then repair
+  only the generated handoff prose while retaining the canonical receipt hash
+  and Git identity. No machine, shell, PATH, or repository runtime setting was
+  changed. ⚠️ TERMINAL ISSUE: `cp1252` rejected the summary heading -> reran
+  with process-local UTF-8 and corrected only the truncated generated prose.
+- Confirmed root cause: `check_all.py` and `test_cli_smoke.py` pass the POSIX
+  `scripts/python_runtime.sh` path directly to Windows CPython `subprocess`,
+  which cannot execute a `.sh` file through `CreateProcess`. Resolution: do not
+  modify the frozen runtime or launchers; run the same bounded component
+  scripts through the already-proved parent Git Bash launcher. Eight components
+  passed directly, the task-owned brief was compacted to exactly 150 lines and
+  revalidated, and CLI smoke remains unrun because its harness has the same
+  pre-dispatch boundary. ⚠️ TERMINAL ISSUE: Windows rejected the nested POSIX
+  launcher -> retained the infrastructure hold and used direct control checks.
+
+### Validation through content freeze
+
+- Live remote, fetched `origin/main`, worktree HEAD, required F0 tree, merge
+  parents, candidate ancestry, and B0 ancestry all match the frozen identities.
+- The maintained Git-state authority reports `READY_LOCAL` at exact F0 with a
+  clean linked worktree and no conflict, operation, lock, or query failure when
+  run with its supported bounded timeout.
+- Python diagnose reports the approved base-clone virtual environment, the
+  task-worktree repository and module paths, and `source_bound=true`.
+- Documentation/context checks and the directly runnable quick components pass;
+  the aggregate quick gate and CLI-smoke harness remain unavailable before
+  dispatch on native Windows and are not represented as logic failures.
+- Only the task-owned receipt plus canonical task/session/brief/handoff records
+  are changed. R0 and every calculation, Excel, ETABS, workbook, model, UI,
+  COM, export, formula, generated-regression, professional-review, release, and
+  publication evidence class remains unrun.
+
 ## 2026-08-28 — Session: LIB-PRO-013 F0 Family Convergence
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents).

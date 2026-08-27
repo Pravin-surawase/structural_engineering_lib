@@ -1,0 +1,141 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "LIB-PRO-013-WINDOWS-F0-REBIND-EVIDENCE",
+  "task_id": "LIB-PRO-013-WINDOWS-REBIND",
+  "observed_at_utc": "2026-08-27T21:24:04Z",
+  "status": "F0_SOURCE_BINDING_PROVED_R0_NOT_TESTED",
+  "claim_boundary": {
+    "protected_windows_lane_rebound_to_accepted_f0": true,
+    "r0_started": false,
+    "windows_acceptance_complete": false,
+    "excel_acceptance_complete": false,
+    "etabs_acceptance_complete": false,
+    "engineering_calculation_or_review_complete": false,
+    "release_or_publication_authorized": false,
+    "statement": "This receipt proves only exact Git and repository-local Python source binding for the protected Windows lane at the accepted F0 merge. It is not R0, Windows application acceptance, engineering evidence, professional approval, release, or publication evidence."
+  },
+  "accepted_f0": {
+    "repository": "https://github.com/Pravin-surawase/structural_engineering_lib.git",
+    "remote_query": "HTTPS ls-remote refs/heads/main followed by a normal fetch without history rewriting",
+    "merge_commit": "59ef74c0ad44da6c313a2ca943c7362158230f38",
+    "merge_tree": "295c7a61d6781a749796e015e58a1fc38b4fc20f",
+    "merge_parents": [
+      "75f951e3d9d8e75ab842fc3f69273b71ca7886a6",
+      "37a332a86e766c2403475b07dadab6793809a50e"
+    ],
+    "required_f0_candidate_parent": "37a332a86e766c2403475b07dadab6793809a50e",
+    "preserved_b0_ancestor": "44ef7bc4e8c98d01f32291730ab77ed16d077823",
+    "pull_request": 882,
+    "merged_at_utc": "2026-08-27T21:01:11Z",
+    "identity_checks": {
+      "live_remote_main_matches_merge": true,
+      "origin_main_matches_merge": true,
+      "merge_tree_matches_required_tree": true,
+      "candidate_parent_is_merge_parent_and_ancestor": true,
+      "b0_is_ancestor": true
+    }
+  },
+  "protected_base_clone": {
+    "path": "C:\\CodexWork\\structural_engineering_lib-main-evidence",
+    "policy": "IMMUTABLE_BASE_CLONE_NOT_AN_EVIDENCE_WRITING_LANE",
+    "checked_out_branch": "main",
+    "checked_out_head": "44ef7bc4e8c98d01f32291730ab77ed16d077823",
+    "checked_out_tree": "12a6f683a32df07664e22b4b3dc53edee7f9704b",
+    "origin_main": "59ef74c0ad44da6c313a2ca943c7362158230f38",
+    "ahead": 0,
+    "behind": 5,
+    "worktree_clean": true,
+    "operation": "none",
+    "locks": [],
+    "modified_or_switched_by_task": false
+  },
+  "task_worktree": {
+    "path": "C:\\CodexWork\\structural_engineering_lib-lib-pro-013-windows-rebind",
+    "branch": "codex/lib-pro-013-windows-rebind",
+    "created_from": "59ef74c0ad44da6c313a2ca943c7362158230f38",
+    "entry_head": "59ef74c0ad44da6c313a2ca943c7362158230f38",
+    "entry_tree": "295c7a61d6781a749796e015e58a1fc38b4fc20f",
+    "default_base": "origin/main",
+    "default_base_sha": "59ef74c0ad44da6c313a2ca943c7362158230f38",
+    "ahead": 0,
+    "behind": 0,
+    "upstream_before_publication": "NONE",
+    "linked_worktree": true,
+    "entry_worktree_clean": true,
+    "operation": "none",
+    "conflicts": [],
+    "locks": [],
+    "stashes": [],
+    "destination_preexisted": false
+  },
+  "bounded_sibling_and_candidate_inspection": {
+    "maintained_authority": "scripts/git_state.py --json --worktrees --timeout 10",
+    "bounded_sibling_worktrees": 2,
+    "base_lane_state": "HOLD_MAIN_EXPECTED_IMMUTABLE_BASE",
+    "task_lane_state": "READY_LOCAL_AT_ENTRY",
+    "unrelated_dirty_or_stashed_sibling_items": 0,
+    "exact_task_branch_or_worktree_preexisted": false,
+    "open_remote_candidates": "Nine Dependabot PRs only; their changed paths are dependency manifests and do not overlap the task-owned receipt/session/task/brief paths.",
+    "overlapping_active_candidate": false
+  },
+  "python_source_binding": {
+    "command": "./scripts/python_runtime.sh --diagnose",
+    "interpreter": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.venv\\bin\\python.exe",
+    "repository": "C:\\CodexWork\\structural_engineering_lib-lib-pro-013-windows-rebind",
+    "module": "C:\\CodexWork\\structural_engineering_lib-lib-pro-013-windows-rebind\\Python\\structural_lib\\__init__.py",
+    "source_bound": true
+  },
+  "canonical_session": {
+    "command": "./run.sh session begin --task-id LIB-PRO-013-WINDOWS-REBIND --agent orchestrator",
+    "invocation_count": 1,
+    "result": "FAILED_DURING_WINDOWS_PATH_REPRESENTATION_CHECK_BEFORE_TASK_OWNED_REPOSITORY_WRITE",
+    "exit_code": 1,
+    "symptom": "agent_start.sh selected the approved base-clone virtual environment, then printed Python source shadowing detected for the task-worktree structural_lib module.",
+    "confirmed_root_cause": "Git Bash represented PROJECT_ROOT as C:/CodexWork/... while pathlib returned the same task-worktree source with Windows backslashes. agent_start.sh compared the two strings without path normalization and falsely rejected the correct binding.",
+    "narrow_fallback": [
+      "./scripts/python_runtime.sh --diagnose",
+      "./scripts/python_runtime.sh scripts/git_state.py --json --worktrees --timeout 10",
+      "git rev-parse --show-toplevel"
+    ],
+    "fallback_outcome": "PASS_EXACT_GIT_AND_SOURCE_BINDING",
+    "software_or_path_remediation_performed": false
+  },
+  "readiness_diagnostics": {
+    "remote_and_fetch_identity": "PASS",
+    "f0_tree_parent_and_b0_ancestry": "PASS",
+    "maintained_git_state": "PASS_WITH_SUPPORTED_TIMEOUT_10",
+    "repository_local_python_source_binding": "PASS",
+    "affected_documentation_and_context": "PASS",
+    "quick_control_gate": {
+      "canonical_command": "./run.sh check --quick",
+      "invocation_count": 1,
+      "result": "UNAVAILABLE_ON_NATIVE_WINDOWS_BEFORE_CHECK_LOGIC",
+      "root_cause": "check_all.py passes scripts/python_runtime.sh directly to Windows CPython subprocess, which cannot execute the POSIX shell file through CreateProcess and returns WinError 193.",
+      "direct_component_fallback": "Eight directly runnable components passed; the brief-length component passed after task-owned compaction to 150 lines.",
+      "cli_smoke": "NOT_RUN_HARNESS_UNAVAILABLE_AT_THE_SAME_NESTED_POSIX_LAUNCHER_BOUNDARY",
+      "runtime_or_launcher_changed": false
+    },
+    "r0": "NOT_TESTED_NOT_RUN",
+    "engineering_calculations": "NOT_TESTED_NOT_RUN",
+    "excel": "NOT_INSPECTED_NOT_OPENED_NOT_RUN",
+    "etabs": "NOT_INSPECTED_NOT_OPENED_NOT_RUN",
+    "workbooks_and_models": "NOT_INSPECTED_NOT_OPENED_NOT_MUTATED",
+    "broad_repository_suite": "NOT_RUN_NOT_REQUIRED_FOR_REBIND"
+  },
+  "programme_routing": {
+    "current_task": "INTEGRATE_THIS_SOURCE_BINDING_RECEIPT_ONLY",
+    "r0_authority": "R0 is already authorized after accepted F0, but it may use this exact Windows lane only after this receipt is integrated.",
+    "next_after_integration": "A separately scoped R0 task may create its own exact candidate and decide which Windows evidence is applicable.",
+    "professional_review": "Deferred until accepted R0 integrated library and cumulative dossier exist."
+  },
+  "retention": {
+    "existing_clone_or_worktree_deleted_reset_cleaned_stashed_rebased_or_repaired": false,
+    "base_checkout_edited_or_switched": false,
+    "unrelated_branch_ref_archive_issue_or_retained_data_deleted": false,
+    "system_or_user_path_changed": false,
+    "software_toolchain_or_windows_setting_changed": false,
+    "excel_etabs_process_license_model_or_workbook_inspected": false,
+    "excel_etabs_model_or_workbook_mutated": false,
+    "protected_source_content_read_or_tracked": false
+  }
+}

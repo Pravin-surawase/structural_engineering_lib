@@ -1,0 +1,172 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-27T21:55:18Z",
+      "query_status": "OK",
+      "reference": "Owner explicitly authorized LIB-PRO-013-WINDOWS-REBIND from accepted F0 merge 59ef74c0ad44da6c313a2ca943c7362158230f38, including one exact task worktree, the minimal source-binding receipt, one immutable candidate, one PR, required hosted checks, and unchanged policy-compliant merge. R0, applications, engineering acceptance, release, publication, cleanup, and destructive operations remain excluded.",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "BIND_PROTECTED_WINDOWS_SOURCE_LANE_TO_ACCEPTED_F0",
+      "WRITE_MINIMAL_F0_REBIND_RECEIPT_AND_CANONICAL_TASK_SESSION_BRIEF_HANDOFF_RECORDS",
+      "RUN_AFFECTED_DOCUMENTATION_CONTROL_QUICK_HOOK_AND_HOSTED_CHECKS",
+      "CREATE_IMMUTABLE_WINDOWS_F0_REBIND_CANDIDATE_PUSH_PR_AND_MERGE_UNCHANGED_GREEN_HEAD",
+      "ALLOW_R0_TO_USE_THIS_EXACT_LANE_ONLY_AFTER_RECEIPT_INTEGRATION"
+    ],
+    "next_action": "CREATE_IMMUTABLE_WINDOWS_F0_REBIND_CANDIDATE_PUSH_PR_AND_MERGE_UNCHANGED_GREEN_HEAD",
+    "observed_at_utc": "2026-08-27T21:55:18Z",
+    "prohibited_actions": [
+      "START_R0_OR_RUN_ENGINEERING_CALCULATION_ACCEPTANCE_OR_PROFESSIONAL_REVIEW",
+      "INSPECT_OPEN_CLOSE_AUTOMATE_OR_MUTATE_EXCEL_ETABS_MODELS_WORKBOOKS_PROCESSES_LICENSES_OR_APPLICATION_SETTINGS",
+      "CHANGE_SOFTWARE_PATH_SHELL_PYTHON_NODE_NPM_GIT_WINDOWS_FIREWALL_SSH_CODEX_OFFICE_OR_ETABS_CONFIGURATION",
+      "EDIT_OR_SWITCH_THE_IMMUTABLE_BASE_CHECKOUT",
+      "TRACK_PROTECTED_STANDARD_PROSE_IMAGES_OR_PRIVATE_SOURCE_CONTENT",
+      "DELETE_BRANCH_WORKTREE_REF_ARCHIVE_ISSUE_RETAINED_DATA_OR_PROTECTED_SOURCE",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_REWRITE_FORCE_PUSH_OR_BYPASS_CHECKS",
+      "CLAIM_WINDOWS_ACCEPTANCE_ENGINEERING_USE_PROFESSIONAL_APPROVAL_RELEASE_PUBLICATION_OR_WHOLE_LIBRARY_READINESS"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "BIND_PROTECTED_WINDOWS_SOURCE_LANE_TO_ACCEPTED_F0",
+        "WRITE_MINIMAL_F0_REBIND_RECEIPT_AND_CANONICAL_TASK_SESSION_BRIEF_HANDOFF_RECORDS",
+        "RUN_AFFECTED_DOCUMENTATION_CONTROL_QUICK_HOOK_AND_HOSTED_CHECKS",
+        "CREATE_IMMUTABLE_WINDOWS_F0_REBIND_CANDIDATE_PUSH_PR_AND_MERGE_UNCHANGED_GREEN_HEAD",
+        "ALLOW_R0_TO_USE_THIS_EXACT_LANE_ONLY_AFTER_RECEIPT_INTEGRATION"
+      ],
+      "branch": "codex/lib-pro-013-windows-rebind",
+      "head_sha": "59ef74c0ad44da6c313a2ca943c7362158230f38",
+      "task_id": "LIB-PRO-013-WINDOWS-REBIND"
+    }
+  },
+  "holds": [
+    "BRANCH_WORKTREE_REF_ARCHIVE_ISSUE_RETAINED_DATA_AND_PROTECTED_SOURCE_DELETION_NOT_AUTHORIZED",
+    "LOCAL_HOLD_DIRTY",
+    "PRESERVE_EVERY_UNRELATED_DIRTY_STAGED_UNTRACKED_STASHED_DETACHED_OR_IGNORED_ITEM",
+    "PRESERVE_EXCEL_ETABS_MODELS_WORKBOOKS_APPLICATION_STATE_TOOLCHAINS_AND_DATASETS_UNINSPECTED",
+    "PRESERVE_IMMUTABLE_WINDOWS_BASE_CLONE_AT_B0",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "observed_at_utc": "2026-08-27T21:55:18Z",
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_WINDOWS_F0_REBIND_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "38c84b2b2ac89194441b156b2d4306511c32150d84490d521ab0bee7008de281",
+    "state": {
+      "branch": "codex/lib-pro-013-windows-rebind",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "59ef74c0ad44da6c313a2ca943c7362158230f38",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 630.998,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git\\worktrees\\structural_engineering_lib-lib-pro-013-windows-rebind",
+      "head_sha": "59ef74c0ad44da6c313a2ca943c7362158230f38",
+      "hold_reasons": [
+        "changed paths: 6"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-27T21:59:15.483466+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\structural_engineering_lib-lib-pro-013-windows-rebind",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 6,
+        "modified_paths": [],
+        "staged_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/lib-pro-013-windows-f0-rebind-evidence.json",
+          "docs/verification/lib-pro-013-windows-f0-rebind-git-handoff-receipt.json",
+          "docs/verification/lib-pro-013-windows-f0-rebind-git-handoff-source-evidence.json"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "C:\\CodexWork\\structural_engineering_lib-lib-pro-013-windows-rebind"
+    }
+  },
+  "local_state_receipt_hash": "sha256:38c84b2b2ac89194441b156b2d4306511c32150d84490d521ab0bee7008de281",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-27T21:59:15.484466+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_IMMUTABLE_BASE_AND_ALL_UNRELATED_WORKTREES_REFS_ARCHIVES_IGNORED_DATA_PROTECTED_SOURCES_APPLICATIONS_MODELS_WORKBOOKS_TOOLCHAINS_AND_DATASETS",
+    "holds": [
+      "PRESERVE_IMMUTABLE_WINDOWS_BASE_CLONE_AT_B0",
+      "PRESERVE_EVERY_UNRELATED_DIRTY_STAGED_UNTRACKED_STASHED_DETACHED_OR_IGNORED_ITEM",
+      "PRESERVE_EXCEL_ETABS_MODELS_WORKBOOKS_APPLICATION_STATE_TOOLCHAINS_AND_DATASETS_UNINSPECTED",
+      "BRANCH_WORKTREE_REF_ARCHIVE_ISSUE_RETAINED_DATA_AND_PROTECTED_SOURCE_DELETION_NOT_AUTHORIZED"
+    ],
+    "observed_at_utc": "2026-08-27T21:55:18Z",
+    "owner": "Main agent under owner and repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib",
+      "fastapi_app",
+      "react_app",
+      "excel_addin",
+      "private_sources"
+    ],
+    "integration_owner": "orchestrator",
+    "owned_paths": [
+      "docs/verification/lib-pro-013-windows-f0-rebind-evidence.json",
+      "docs/verification/lib-pro-013-windows-f0-rebind-git-handoff-source-evidence.json",
+      "docs/verification/lib-pro-013-windows-f0-rebind-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "LIB-PRO-013-WINDOWS-REBIND"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
