@@ -66,6 +66,9 @@ professional-claim changes.
   `doc_type: verification`; it also reproduced the pre-existing
   `status: ready` on the merged A0 execution plan. The first official-source
   URL loop passed all newline-separated URLs as one malformed scalar.
+- Hosted run `33092433946` rejected immutable candidate
+  `a1faff2e4b03b8846875fd296dd4b004529d801b`: the documentation lane found the
+  compatibility ledger stale, and the dependent PR Gate failed closed.
 - The audit reproduced active release/documentation/retired-Streamlit drift,
   three non-executable cookbook journeys, 326 unproven parameter decisions,
   incomplete all-family/transport/browser/platform evidence, missing exact
@@ -89,6 +92,16 @@ professional-claim changes.
   separate `status: ready` remains a pre-existing R0 finding outside A0 repair.
   Confirmed URL-loop cause: zsh did not split the newline scalar. Resolution:
   verify one extracted official URL per line through `while read`.
+- Confirmed hosted root cause: the compatibility ledger scans tracked
+  verification prose for syntactic package caller paths, and the new report
+  named compatibility modules and legacy root imports in executable form.
+  Resolution: retain the exact evidence using file-owner and root-package
+  wording that cannot be mistaken for a caller; do not change the generated
+  ledger owner. The focused generator check, strict docs build, report
+  completeness/hash proof, and consolidated quick gate pass on the explicit
+  repair candidate. ⚠️ TERMINAL ISSUE: local pre-report generated checks were
+  reused after adding scanner-visible prose -> replaying the exact hosted
+  documentation command exposed and proved the report-owned drift.
 - Confirmed root cause for the first source-free failure: `--no-deps` omitted
   the wheel's declared sole runtime dependency. Resolution: install the same
   wheel with declared `pydantic>=2.0`; Pydantic 2.13.4 and all 29 UAT cases,

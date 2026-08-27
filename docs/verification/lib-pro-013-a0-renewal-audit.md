@@ -226,8 +226,8 @@ fail-closed invalid intake.
 - The four-layer `Core <- IS 456 <- Services <- UI` rule remains the
   architecture authority. Later family owner bytes were unchanged from their
   accepted receipts; only retired folder indexes changed in their code trees.
-- `structural_lib.api` is a formula-free compatibility re-export to
-  `structural_lib.services.api`; the compatibility ledger reports no ambiguous
+- The root package's `api.py` compatibility module is a formula-free re-export
+  to `services/api.py`; the compatibility ledger reports no ambiguous
   projection.
 - Current inventory: 247 Python package modules, 100 FastAPI Python modules,
   187 React source files, 227 Python test files, 43 FastAPI test files, and 52
@@ -256,9 +256,9 @@ fail-closed invalid intake.
   `0.24.0a1` is prepared or unpublished and point to `0.23.1a2` as current,
   although `0.24.0a1` is public.
 - `docs/cookbook/README.md` advertises nonexistent current-wheel journeys:
-  `python -m structural_lib check`, `from structural_lib import design_beam`,
-  and `from structural_lib import JobRunner`. Exact source-free replay returns
-  an invalid CLI choice or `ImportError`.
+  `python -m structural_lib check` plus root-package imports of `design_beam`
+  and `JobRunner`. Exact source-free replay returns an invalid CLI choice or
+  `ImportError`.
 - Active troubleshooting and 3D-contract pages retain retired Streamlit paths
   even though the task authority declares React the only active UI.
 - `CONTRIBUTING.md` advertises `./run.sh session start`, while the maintained
@@ -442,6 +442,10 @@ receipt and named maintained owners; it is not a new generated authority.
   already-merged A0 execution plan, outside this evidence-only repair scope.
 - The first official-source URL loop used shell scalar expansion and passed
   all newline-separated URLs as one malformed URL.
+- Hosted run `33092433946` rejected candidate
+  `a1faff2e4b03b8846875fd296dd4b004529d801b` because the compatibility-ledger
+  check detected new caller references in this report. The dependent PR Gate
+  failed closed as designed.
 - The public/current artifact split, active documentation drift, unproven
   validation census, missing exact Windows/browser/professional evidence, and
   missing public provenance are material audit findings captured in §9.
@@ -459,6 +463,14 @@ receipt and named maintained owners; it is not a new generated authority.
 - The official-source loop cause was zsh scalar semantics, not an unreachable
   source. Resolution: feed one extracted URL per line to a `while read` loop
   and require an accepted HTTP response for all 14 sources.
+- Confirmed hosted root cause: the generated compatibility owner intentionally
+  scans tracked verification prose for syntactic package call paths, and the
+  new report named compatibility modules and legacy imports in that form.
+  Resolution: retain the exact owner and journey evidence using owned file and
+  root-package descriptions that are not executable caller syntax. No
+  generated owner was edited. The compatibility-ledger check, strict docs
+  build, report completeness/hash proof, and consolidated quick gate pass on
+  the repair candidate.
 - The source-free import failure was caused by intentionally suppressing
   declared dependency installation, not by the wheel. The exact same wheel was
   installed with its declared `pydantic>=2.0` dependency and all 29 UAT cases,

@@ -227,7 +227,7 @@
     "observed_at_utc": "2026-08-27T16:08:49Z",
     "canonical_report": {
       "path": "docs/verification/lib-pro-013-a0-renewal-audit.md",
-      "sha256": "b6020575cc870ed08ddd632253638d1227373b6cc34db80c040db3d9a832b323",
+      "sha256": "5226899c3c36dc575d25c1931760ae74ddffee620241622aa1259bf8dfee5678",
       "section_7_domains": 42,
       "section_7_complete": 42,
       "stable_findings": 16,
