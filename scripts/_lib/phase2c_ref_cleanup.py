@@ -26,13 +26,20 @@ from scripts._lib import phase2b_worktree_preparation as worktree_preparation
 SCHEMA_VERSION = 1
 TASK_ID = "MAINT-0136"
 PACKET_ID = "MAINT-0136-PHASE-2C"
+EXECUTION_PACKET_ID = "MAINT-0136-PHASE-2C-EXECUTION"
 PHASE2B_PACKET_ID = "MAINT-0136-PHASE-2B-W-EXECUTION"
 PHASE2B_STATUS = "PASS"
 MANIFEST_STATUS = "PHASE_2C_TARGETS_FROZEN_AWAITING_DIGEST_BOUND_AUTHORIZATION"
 PREPARATION_BRANCH = "codex/maint-0136-phase-2c-preparation"
 PREDECESSOR_COMMIT = "18ed2f1f65a24b54029875fd1cad640dc2f0fae0"
+PREPARATION_COMMIT = "d207d58e21c59fe485c50f292de7d84f5c8b6e56"
 OWNER_AUTHORITY_REFERENCE = (
     "active Codex task: please continue with 2c, you have full approval"
+)
+EXACT_EXECUTION_AUTHORITY_REFERENCE = (
+    "active Codex task: I authorize Phase 2C execution for four local branches "
+    "and two matching remote branches under target digest "
+    "08a68419515cf9f469e8a7bb3d0a1f4e92218c7e086de5bb89c71368093b23c7"
 )
 
 
@@ -608,6 +615,65 @@ def _assert_fresh_target(
         raise RefCleanupError(f"remote target identity changed: {branch}")
 
 
+def _execution_authorization(
+    *,
+    observed_at_utc: str,
+    target_set_sha256: str,
+    local_branch_target_count: int,
+    remote_branch_target_count: int,
+) -> dict[str, Any]:
+    actions = [
+        "DELETE_EXACT_INTEGRATED_LOCAL_BRANCHES_NORMAL",
+        "DELETE_EXACT_MATCHING_REMOTE_BRANCHES",
+        "COMMIT_PHASE_2C_EXECUTION_EVIDENCE",
+    ]
+    return {
+        "status": "OBSERVED",
+        "query_status": "OK",
+        "observed_at_utc": observed_at_utc,
+        "authority_source": {
+            "kind": "USER_DELEGATION",
+            "scope": "DIGEST_BOUND_EXACT_TARGET_SET",
+            "status": "OBSERVED",
+            "query_status": "OK",
+            "observed_at_utc": observed_at_utc,
+            "reference": EXACT_EXECUTION_AUTHORITY_REFERENCE,
+        },
+        "authorized_actions": actions,
+        "next_action": "COMMIT_PHASE_2C_EXECUTION_EVIDENCE",
+        "target_binding": {
+            "task_id": EXECUTION_PACKET_ID,
+            "branch": PREPARATION_BRANCH,
+            "head_sha": PREPARATION_COMMIT,
+            "actions": actions,
+            "target_set_sha256": target_set_sha256,
+            "local_branch_target_count": local_branch_target_count,
+            "remote_branch_target_count": remote_branch_target_count,
+            "total_ref_deletion_count": (
+                local_branch_target_count + remote_branch_target_count
+            ),
+        },
+        "phase_scope": "EXACT_FROZEN_PHASE_2C_BRANCH_REF_TARGETS",
+        "phase_preparation_authorized": True,
+        "exact_target_execution_authorized": True,
+        "reason": "The owner explicitly authorized the frozen target counts and digest.",
+        "prohibited_actions": [
+            "FORCE_DELETE_LOCAL_BRANCH",
+            "DELETE_NONINTEGRATED_BRANCH",
+            "DELETE_BRANCH_WITH_WORKTREE_OR_OPEN_PR",
+            "DELETE_TAG",
+            "DELETE_CODEX_MANAGED_REF",
+            "DELETE_RECOVERY_ARCHIVE",
+            "DELETE_PROTECTED_SOURCE",
+            "REMOVE_WORKTREE",
+            "PRUNE",
+            "GARBAGE_COLLECT",
+            "FORCE_PUSH",
+            "CLOSE_PULL_REQUEST",
+        ],
+    }
+
+
 def execute(
     *,
     repo: Path,
@@ -646,15 +712,22 @@ def execute(
     before_protected = manifest["protected_sources"]
     archive_before = manifest["recovery"]["local_archives"]
     open_prs = _open_pull_requests(repo)
+    observed_at_utc = datetime.now(UTC).isoformat()
     evidence: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
         "task_id": TASK_ID,
-        "packet_id": PACKET_ID,
+        "packet_id": EXECUTION_PACKET_ID,
         "status": "EXECUTION_STARTED",
-        "observed_at_utc": datetime.now(UTC).isoformat(),
-        "authorization": manifest["authorization"],
+        "observed_at_utc": observed_at_utc,
+        "authorization": _execution_authorization(
+            observed_at_utc=observed_at_utc,
+            target_set_sha256=expected_digest,
+            local_branch_target_count=expected_local_count,
+            remote_branch_target_count=expected_remote_count,
+        ),
         "binding": {
             **manifest["binding"],
+            "preparation_commit": PREPARATION_COMMIT,
             "target_set_sha256": expected_digest,
             "local_branch_target_count": expected_local_count,
             "remote_branch_target_count": expected_remote_count,

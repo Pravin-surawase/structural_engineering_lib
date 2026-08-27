@@ -4,11 +4,11 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-27
-- Focus: Freeze exact Phase 2C branch/ref targets without deleting them.
-- Git receipt: docs/verification/maint-0136-phase-2c-preparation-git-handoff-receipt.json | sha256:b8255f5ecc394cc3cc2ab86fcdfe0773c97f3c4b39950e78e3f27e420110ddd0 | HOLD
-- Git identity: codex/maint-0136-phase-2c-preparation@18ed2f1f65a24b54029875fd1cad640dc2f0fae0 | upstream=NONE@UNKNOWN | base=origin/main@ee04bfbf76b1a3a022d07c8203b5274a0f71998f | tree=dirty | operation=none
+- Focus: Close exact Phase 2C ref cleanup and return to the held Phase 1 PR.
+- Git receipt: docs/verification/maint-0136-phase-2c-execution-git-handoff-receipt.json | sha256:7d02274fcf06d397310dffd95bfd4bafe5750ed12316b2d24e1cfb9b282138ba | HOLD
+- Git identity: codex/maint-0136-phase-2c-preparation@d207d58e21c59fe485c50f292de7d84f5c8b6e56 | upstream=NONE@UNKNOWN | base=origin/main@ee04bfbf76b1a3a022d07c8203b5274a0f71998f | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
-- Next action: WAIT_FOR_OWNER_DECISION
+- Next action: REFRESH_PHASE_1_PR_874_HOSTED_CHECKS
 <!-- HANDOFF:END -->
 
 ## Latest Handoff

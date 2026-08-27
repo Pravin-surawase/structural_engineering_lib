@@ -72,7 +72,7 @@ tags, Codex-managed refs, worktrees, and other branches.
 
 ## Current next action
 
-Phase 2C preparation is complete. Wait for exact digest-bound authorization;
-do not delete any Phase 2C branch or ref before that confirmation, and do not
-close pull requests, delete the Drive/local recovery archive, or remove any
-retained worktree.
+Phase 2C later completed under its exact digest-bound authorization. See the
+[Phase 2C execution closeout](maint-0136-phase-2c-execution-closeout.md). Do not
+perform any additional branch, ref, archive, worktree, pull-request, tag, or
+Codex-ref cleanup without a new exact manifest and authorization.

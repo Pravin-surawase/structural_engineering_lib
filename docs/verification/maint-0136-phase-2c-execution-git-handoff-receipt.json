@@ -1,0 +1,180 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-27T09:16:30.810302+00:00",
+      "query_status": "OK",
+      "reference": "active Codex task: I authorize Phase 2C execution for four local branches and two matching remote branches under target digest 08a68419515cf9f469e8a7bb3d0a1f4e92218c7e086de5bb89c71368093b23c7",
+      "scope": "DIGEST_BOUND_EXACT_TARGET_SET",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "DELETE_EXACT_INTEGRATED_LOCAL_BRANCHES_NORMAL",
+      "DELETE_EXACT_MATCHING_REMOTE_BRANCHES",
+      "COMMIT_PHASE_2C_EXECUTION_EVIDENCE"
+    ],
+    "exact_target_execution_authorized": true,
+    "next_action": "COMMIT_PHASE_2C_EXECUTION_EVIDENCE",
+    "observed_at_utc": "2026-08-27T09:16:30.810302+00:00",
+    "phase_preparation_authorized": true,
+    "phase_scope": "EXACT_FROZEN_PHASE_2C_BRANCH_REF_TARGETS",
+    "prohibited_actions": [
+      "FORCE_DELETE_LOCAL_BRANCH",
+      "DELETE_NONINTEGRATED_BRANCH",
+      "DELETE_BRANCH_WITH_WORKTREE_OR_OPEN_PR",
+      "DELETE_TAG",
+      "DELETE_CODEX_MANAGED_REF",
+      "DELETE_RECOVERY_ARCHIVE",
+      "DELETE_PROTECTED_SOURCE",
+      "REMOVE_WORKTREE",
+      "PRUNE",
+      "GARBAGE_COLLECT",
+      "FORCE_PUSH",
+      "CLOSE_PULL_REQUEST"
+    ],
+    "query_status": "OK",
+    "reason": "The owner explicitly authorized the frozen target counts and digest.",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "DELETE_EXACT_INTEGRATED_LOCAL_BRANCHES_NORMAL",
+        "DELETE_EXACT_MATCHING_REMOTE_BRANCHES",
+        "COMMIT_PHASE_2C_EXECUTION_EVIDENCE"
+      ],
+      "branch": "codex/maint-0136-phase-2c-preparation",
+      "head_sha": "d207d58e21c59fe485c50f292de7d84f5c8b6e56",
+      "local_branch_target_count": 4,
+      "remote_branch_target_count": 2,
+      "target_set_sha256": "08a68419515cf9f469e8a7bb3d0a1f4e92218c7e086de5bb89c71368093b23c7",
+      "task_id": "MAINT-0136-PHASE-2C-EXECUTION",
+      "total_ref_deletion_count": 6
+    }
+  },
+  "holds": [
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "7d02274fcf06d397310dffd95bfd4bafe5750ed12316b2d24e1cfb9b282138ba",
+    "state": {
+      "branch": "codex/maint-0136-phase-2c-preparation",
+      "default_base": {
+        "ahead": 8,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "ee04bfbf76b1a3a022d07c8203b5274a0f71998f",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 89.315,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-maint-0136-phase-2c-preparation",
+      "head_sha": "d207d58e21c59fe485c50f292de7d84f5c8b6e56",
+      "hold_reasons": [
+        "changed paths: 11"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-27T09:24:32.372968+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2c-preparation",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 11,
+        "modified_paths": [],
+        "staged_paths": [
+          "Python/tests/test_phase2c_ref_cleanup.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/README.md",
+          "docs/planning/maint-0136-phase-2b-w-execution-closeout.md",
+          "docs/planning/maint-0136-phase-2c-execution-closeout.md",
+          "docs/planning/maint-0136-phase-2c-preparation-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/maint-0136-phase-2c-execution-evidence.json",
+          "docs/verification/maint-0136-phase-2c-execution-git-handoff-receipt.json",
+          "scripts/_lib/phase2c_ref_cleanup.py"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2c-preparation"
+    }
+  },
+  "local_state_receipt_hash": "sha256:7d02274fcf06d397310dffd95bfd4bafe5750ed12316b2d24e1cfb9b282138ba",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-27T09:24:32.373099+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources/**",
+      ".venv/**",
+      ".git/**"
+    ],
+    "integration_owner": "maintainer",
+    "owned_paths": [
+      "Python/tests/test_phase2c_ref_cleanup.py",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/README.md",
+      "docs/planning/maint-0136-phase-2b-w-execution-closeout.md",
+      "docs/planning/maint-0136-phase-2c-preparation-plan.md",
+      "docs/planning/maint-0136-phase-2c-execution-closeout.md",
+      "docs/planning/next-session-brief.md",
+      "docs/verification/maint-0136-phase-2c-execution-evidence.json",
+      "docs/verification/maint-0136-phase-2c-execution-git-handoff-receipt.json",
+      "scripts/_lib/phase2c_ref_cleanup.py"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/README.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "MAINT-0136-PHASE-2C-EXECUTION"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

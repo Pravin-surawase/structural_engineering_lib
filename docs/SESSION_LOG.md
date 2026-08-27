@@ -5,6 +5,116 @@
 
 ---
 
+## 2026-08-27 — Session: MAINT-0136 Phase 2C exact ref execution
+
+**Agent:** Codex (`maintainer`, sole Phase 2C execution writer/operator; no
+subagents)
+
+**Branch:** `codex/maint-0136-phase-2c-preparation`, executing from immutable
+preparation commit `d207d58e21c59fe485c50f292de7d84f5c8b6e56`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0136-phase-2c-execution-git-handoff-receipt.json`
+
+**Focus:** Execute only the four local and two matching remote targets bound to
+digest `08a68419...b23c7`.
+
+### Summary
+
+- Reconfirmed the clean execution lane, 16 retained worktrees, ten open pull
+  requests with zero target overlap, exact local/remote target heads, and the
+  owner-only downloadable 92,256,339-byte Google Drive archive.
+- Refreshed `origin` without prune and reran the canonical classifier. It
+  returned the same four retirement-ready targets and retained
+  `codex/release-preflight-alpha-policy` because its local and remote heads
+  differ. The target digest recomputed exactly.
+- Corrected the executor so its evidence records the owner's digest-bound
+  execution authority rather than copying the earlier preparation-only
+  authority. Five focused regressions pass before mutation.
+- Removed exactly four local branches with normal `git branch -d` and two
+  matching remote branches with exact `git push origin --delete`. Local
+  branches fell 77 -> 73, live remote branches 81 -> 79, and local refs
+  237 -> 231.
+- Preserved all 16 worktrees, 45 tags, 33 Codex-managed refs, ten open pull
+  requests, both local recovery artifacts, the Drive archive, and the exact
+  42-file/72,025,193-byte protected-source aggregate. No force, prune, garbage
+  collection, reset, PR closure, or archive/source/worktree deletion occurred.
+
+### Issues encountered
+
+- Before mutation, the execution evidence path would have copied the frozen
+  manifest's preparation-only authorization and falsely reported that exact
+  target execution was not authorized.
+- The executor exceeded the initial 30-second command-yield window. A first
+  read observed a valid atomic intermediate ledger at three local and one
+  remote deletion while the process was still completing.
+- `git fsck --full` again reported retained dangling objects while exiting
+  successfully.
+- The first Drive metadata call and two bounded inspection expressions used
+  obsolete or invalid argument shapes and were rejected before changing state.
+- The first normal hook run stopped at session-doc consistency because the
+  briefing recorded the receipt file's byte hash instead of its embedded local-
+  state receipt hash.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `execute()` copied `manifest["authorization"]`, whose
+  immutable truth is preparation authorized / execution not yet authorized;
+  its first replacement also used an authority-kind label outside the handoff
+  receipt's canonical vocabulary. Resolution: construct an execution-specific
+  `USER_DELEGATION` record with explicit digest-bound scope, task
+  `MAINT-0136-PHASE-2C-EXECUTION`, preparation commit `d207d58e`, exact counts,
+  and target digest; focused tests and the handoff validator assert the truthful
+  compatible record.
+- Confirmed root cause: exact remote checks and archive/protected-source
+  hashing made the executor run longer than the terminal's initial yield.
+  Resolution: do not rerun against already-mutated refs; inspect the live
+  process and atomic ledger, wait for completion, and accept only the final
+  `PASS` record showing 4/4 local and 2/2 remote deletions. ⚠️ TERMINAL ISSUE:
+  the first command yielded before final output -> poll the existing process
+  and evidence instead of repeating a destructive command.
+- Confirmed evidence: unreachable historical objects remain after prior
+  worktree retirement, but `git fsck --full` exits zero with no missing or
+  corrupt object. Resolution: preserve them and perform no prune or garbage
+  collection; the all-ref bundle verifies as a complete history.
+- Confirmed root cause: current connector/CLI schemas require `fileId`, a task
+  list limit no greater than 50, and a correctly parenthesized `jq` count
+  expression. Resolution: use the advertised shapes and rerun read-only
+  inspection. ⚠️ TERMINAL ISSUE: rejected read-only invocations -> correct the
+  exact parameters; no mutation occurred.
+- Confirmed root cause: the task-format checker is named
+  `check_tasks_format.py`, not the guessed singular filename. Resolution: use
+  `./run.sh find "task format"` and run the registered command successfully.
+  ⚠️ TERMINAL ISSUE: guessed script path was absent -> route through the
+  control registry and rerun the exact maintained checker.
+- Confirmed root cause: unquoted `**` forbidden-path arguments were expanded by
+  `zsh` before the handoff builder could receive them. Resolution: quote each
+  exact pattern and regenerate the valid staged receipt. ⚠️ TERMINAL ISSUE:
+  shell glob rejection -> quote literal handoff patterns; no file or ref state
+  changed.
+- Confirmed root cause: `Latest Handoff` labels the receipt's
+  `local_state_receipt_hash`, not the SHA-256 of the receipt JSON bytes.
+  Resolution: copy the exact embedded `sha256:7d02274f...138ba` value into the
+  briefing and rerun normal hooks; no execution or ref evidence changed.
+
+### Validation
+
+- The execution evidence is `PASS`, names exactly six removed refs, and proves
+  `only_exact_target_refs_removed=true`, identical worktree identity,
+  protected-source identity, and archive identity.
+- The all-ref recovery bundle verifies as complete history. Fresh Drive
+  metadata shows the exact owner-only archive remains private, downloadable,
+  and 92,256,339 bytes; prior authenticated byte-match and 7,602-file restore
+  evidence remain bound through the frozen manifest.
+- Five focused Phase 2C tests and the 35-test consolidated maintenance batch
+  pass. Changed Python files pass Ruff and Black. Documentation metadata/front
+  matter and 1,043 local links pass with zero invalid or broken records; task,
+  context, control, and efficiency validation pass.
+- The exact staged candidate passes the quick gate 10/10 with zero reused
+  checks and the full gate 31/31 with 11 unchanged quick results reused. Normal
+  staged hooks, immutable commit, and final read-only session closeout complete
+  the remaining candidate sequence.
+
 ## 2026-08-27 — Session: MAINT-0136 Phase 2C branch/ref/archive preparation
 
 **Agent:** Codex (`maintainer`, sole Phase 2C preparation writer; no subagents)

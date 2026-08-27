@@ -1,6 +1,6 @@
 ---
 owner: Main Agent
-status: active
+status: archived
 last_updated: 2026-08-27
 doc_type: spec
 complexity: intermediate
@@ -11,17 +11,18 @@ tags: [maintenance, cleanup, branches, refs, archives, recovery, git]
 
 ## Outcome
 
-Phase 2C preparation is complete and no deletion has occurred. The canonical
-branch-disposition classifier reduced 77 local branches and 237 local refs to
-an exact cleanup set of **four merged local branches** and **two matching remote
-branches**. The six local refs affected by those actions are frozen under
-target-set SHA-256:
+Phase 2C preparation froze an exact cleanup set of **four merged local
+branches** and **two matching remote branches** from 77 local branches and 237
+local refs. The six affected local refs were frozen under target-set SHA-256:
 
 `08a68419515cf9f469e8a7bb3d0a1f4e92218c7e086de5bb89c71368093b23c7`
 
-The machine-readable authority is the
+The machine-readable preparation authority is the
 [Phase 2C manifest](../verification/maint-0136-phase-2c-manifest.json). Its
 status is `PHASE_2C_TARGETS_FROZEN_AWAITING_DIGEST_BOUND_AUTHORIZATION`.
+The owner later supplied exact digest-bound authorization, and the
+[Phase 2C execution closeout](maint-0136-phase-2c-execution-closeout.md)
+records successful execution.
 
 ## Exact targets
 
@@ -68,10 +69,10 @@ are release/application evidence, not Phase 2C clutter.
 
 ## Authorization boundary
 
-The owner gave full Phase 2C approval before the immutable target set existed.
-That authorizes live inspection, exact manifest preparation, and committing the
-preparation evidence. The canonical classifier still requires a separate
-exact-target approval before branch deletion.
+The owner first gave full Phase 2C approval before the immutable target set
+existed, authorizing inspection and preparation only. The owner later supplied
+the required separate authorization bound to the four-local/two-remote counts
+and exact target digest. Execution is complete.
 
 The required confirmation is:
 
@@ -99,6 +100,5 @@ archive deletion, PR closure, or broad filesystem deletion.
 
 ## Current next action
 
-Wait for authorization bound to the exact digest above. Then execute only the
-four local and two remote targets and prove that exactly six named local refs
-were removed while every retained surface remains unchanged.
+Preparation is archived. Use the execution evidence and closeout as the current
+authority; do not reuse this manifest for any additional deletion.

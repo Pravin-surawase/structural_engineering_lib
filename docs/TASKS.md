@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-27 — MAINT-0136 Phase 2C exact branch/ref preparation
+**Updated:** 2026-08-27 — MAINT-0136 Phase 2C exact branch/ref execution
 
 ---
 
@@ -136,14 +136,13 @@ Available filesystem space increased by 7,920,893,952 bytes. The one backed
 recovery hold, 14 other live lanes, and Phase 2C branch/ref/archive cleanup
 remain held. Phase 1 PR #874 remains open/blocked.
 
-`MAINT-0136` Phase 2C preparation classified 77 local branches / 237 refs and
-froze only four merged local branches plus two matching remote branches under
-target digest `08a68419...b23c7`. Exactly six local refs would be affected.
-Seventy-three local branches, 79 other live remote branches, 45 tags, 33
-Codex-managed refs, all worktrees/PRs/protected sources, and both local/Drive
-recovery archives remain held. The owner's full Phase 2C approval authorized
-preparation but preceded this immutable target set; exact digest-bound deletion
-approval is the next gate. No Phase 2C deletion has occurred.
+`MAINT-0136` Phase 2C is complete under exact digest-bound owner authorization.
+The executor removed four merged local branches and two matching remote
+branches under target digest `08a68419...b23c7`, reducing local branches
+77 -> 73, live remote branches 81 -> 79, and local refs 237 -> 231. All 45
+tags, 33 Codex-managed refs, 16 worktrees, ten open PRs, protected sources,
+and local/Drive recovery artifacts remain preserved. No Phase 2D was defined;
+the remaining MAINT-0136 gate is the held Phase 1 PR #874 hosted-check state.
 
 `RELEASE-SMOOTH-001` is the active release-control task. It converts the
 `v0.24.0a1` delays into a single-candidate next-release flow: fail-fast final

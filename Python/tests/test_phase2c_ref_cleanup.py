@@ -194,6 +194,21 @@ def test_execute_uses_remote_delete_then_normal_local_delete(
 
     assert calls == [("remote", "codex/merged"), ("local", "codex/merged")]
     assert evidence["status"] == "PASS"
+    assert evidence["packet_id"] == cleanup.EXECUTION_PACKET_ID
+    assert evidence["authorization"]["exact_target_execution_authorized"] is True
+    assert evidence["authorization"]["authority_source"]["kind"] == "USER_DELEGATION"
+    assert (
+        evidence["authorization"]["authority_source"]["scope"]
+        == "DIGEST_BOUND_EXACT_TARGET_SET"
+    )
+    assert (
+        evidence["authorization"]["target_binding"]["target_set_sha256"]
+        == manifest["target_set_sha256"]
+    )
+    assert evidence["authorization"]["target_binding"]["local_branch_target_count"] == 1
+    assert (
+        evidence["authorization"]["target_binding"]["remote_branch_target_count"] == 1
+    )
     assert evidence["mutations_performed"]["archive_deletions"] == 0
 
 
