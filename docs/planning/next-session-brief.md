@@ -4,22 +4,46 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-28
-- Focus: Freeze Windows evidence-lane readiness, remove the fixed documentation-count limit, and prepare the accepted B0 -> F0 handoff
-- Completed: Recorded the exact Windows host/tool/application state and operating rules; preserved setup-only claim boundaries; replaced numeric documentation caps with a non-blocking inventory while retaining ownership, metadata, lifecycle, projection, and link controls
-- Git receipt: docs/verification/lib-pro-013-windows-evidence-lane-git-handoff-receipt.json | sha256:e16128ca2f9e3b915fe3e0523686055cb595e4f1c9a2c22e430de5dc5e893d0d | HOLD
-- Git identity: codex/lib-pro-013-windows-evidence-lane-readiness@44ef7bc4e8c98d01f32291730ab77ed16d077823 | upstream=origin/main@44ef7bc4e8c98d01f32291730ab77ed16d077823 | base=origin/main@44ef7bc4e8c98d01f32291730ab77ed16d077823 | tree=dirty | operation=none
+- Focus: Execute authorized LIB-PRO-012 Packets F1-F3 as one F0 family
+- Completed: Freshly fetched and proved exact `origin/main`; Added strict grouped F1, F2, and F3 request contracts; one shared finite; Generated per-route validation schemas, compatibility-owner mappings,
+- Git receipt: docs/verification/lib-pro-013-f0-family-convergence-git-handoff-receipt.json | sha256:f2b7eb3bc07bdd8a7fe2ec319e8aea3f7f8878391485318f09cfa52981f57526 | HOLD
+- Git identity: codex/lib-pro-013-f0-family-convergence@75f951e3d9d8e75ab842fc3f69273b71ca7886a6 | upstream=origin/main@75f951e3d9d8e75ab842fc3f69273b71ca7886a6 | base=origin/main@75f951e3d9d8e75ab842fc3f69273b71ca7886a6 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
-- Next action: CREATE_IMMUTABLE_DOCUMENTATION_CANDIDATE_PUSH_PR_AND_MERGE_UNCHANGED_GREEN_HEAD
+- Next action: CREATE_IMMUTABLE_F0_CANDIDATE_PUSH_PR_AND_MERGE_UNCHANGED_GREEN_HEAD
 <!-- HANDOFF:END -->
 
 ## Latest Handoff
 
 | State | Boundary |
 |---|---|
-| **Current** | A0 and B0 are integrated. B0 candidate `96d7cc930b4bd809e5ec816a4fa6f052fd317fb3` merged through PR #880 as `44ef7bc4e8c98d01f32291730ab77ed16d077823`; candidate and merge share tree `12a6f683a32df07664e22b4b3dc53edee7f9704b`. Hosted run `33100194911` passed every required changed-path check. |
+| **Current** | F0 Packets F1-F3 are locally complete on `codex/lib-pro-013-f0-family-convergence`, based on accepted preparation merge `75f951e3d9d8e75ab842fc3f69273b71ca7886a6` / tree `9df2321f463e378a5f6a9bb9ea2ce92b6ba050ce`, with accepted B0 merge `44ef7bc4e8c98d01f32291730ab77ed16d077823` preserved as an ancestor. The immutable candidate and hosted acceptance remain pending. |
 | **Decision** | The [owner sequencing decision](../verification/lib-pro-013-owner-sequencing-decision.json) authorizes B0 now and F0/R0 after their dependency gates. Professional review is removed as an intermediate gate and deferred to one engineer review of the final integrated library after R0. |
-| **Next** | Begin `LIB-PRO-013-F0-FAMILY-CONVERGENCE` from freshly fetched exact B0 main. Execute Packets F1-F3 internally in one session/branch/candidate/PR unless a maintained stop condition requires a split. |
+| **Next** | Freeze one immutable F0 candidate, push one PR, wait for every required changed-path check, and merge only the unchanged reviewed head. After accepted F0, run a separate bounded Windows-lane rebind to the exact merge before R0 uses that lane. |
 | **Held** | Professional/engineering-use claims until the final engineer review; exact release publication until a versioned candidate passes maintained gates; protected-source tracking; destructive retained-data/worktree operations without an exact manifest and recovery proof. |
+
+## F0 local outcome
+
+- The F0 registry freezes 13 distinct facade route/contract classes: accepted
+  B0 beam; torsion; supplied-steel column; one-way, continuous one-way, and
+  two-way slabs; wall; staircase; deep beam; flat slab; and isolated,
+  combined, and strap footings.
+- Each route has a maintained constructor, request/result/error contract,
+  compatibility owner, generated validation schema, advertised journey ID,
+  evidence-class label, and exact-wheel valid/invalid recipe. Evidence-heavy
+  F2/F3 contracts require exactly five grouped truth carriers.
+- Facades contain construction/delegation only. They preserve the typed owner
+  calculation and do not generate loads, topology, reinforcement, soil or
+  transfer bases, applicability, review evidence, normalized data, formulas,
+  held-family support, or release metadata.
+- The exact source-built wheel
+  `797dfd9a6f983280e955a25057e3aa5de99e75e7a60d0ebd0ae3273d2d73f78f`
+  passes all 13 valid and 13 invalid recipes. Valid results intentionally
+  include 11 `PASS`, one engineering `FAIL`, and one review `HOLD`.
+- The cross-standard capability authority remains a separate inventory of 13
+  supported and 8 held families. Existing IS 13920 owners and claims are
+  unchanged; generated parity is not presented as independent validation.
+- Task-owned detail is in the
+  [F0 evidence receipt](../verification/lib-pro-013-f0-family-convergence-evidence.json).
 
 ## A0 audit outcome
 
@@ -94,38 +118,28 @@ Windows acceptance result.
   After accepted F0, freshly fetch and rebind the Windows lane to the exact F0
   merge before R0 uses it.
 
-## F0 entry preparation
+## F0 closeout and successor boundary
 
-1. Freshly fetch `origin/main` and prove exact B0 merge/tree plus worktree,
-   upstream, PR, operation, and sibling-candidate safety before writes.
-2. Start one `LIB-PRO-013-F0-FAMILY-CONVERGENCE` session and branch. Keep one
-   candidate/PR by default; split only when the plan's stop conditions require
-   isolation.
-3. Freeze the 13 supported-family inventory once and map every family to its
-   maintained constructor, request/result/error owner, compatibility route,
-   advertised journey, exact-wheel recipe, and evidence class.
-4. Execute F1 (torsion/column/slabs), F2 (wall/staircase/deep beam/flat slab),
-   and F3 (isolated/combined/strap footings) internally. Do not add held
-   families or guess topology, applicability, action, geotechnical, evidence,
-   or review inputs.
-5. Preserve B0 common contracts and calculation owners. Family facades contain
-   delegation/construction only; valid golden outcomes cannot change without a
-   confirmed root cause and independent evidence.
-6. Freeze one exact-wheel valid/invalid recipe per supported family, generated
-   schema/classification/compatibility reconciliation, focused evidence,
-   architecture/import checks, one quick gate, normal hooks, and one required
-   hosted cycle.
-7. Windows execution is not an F0 prerequisite. Keep its base lane untouched
-   until accepted F0 is merged, then rebind it for the applicable R0 Windows
-   evidence packet.
+1. Do not alter the frozen F0 candidate after review begins. A material defect
+   requires an explicit repaired candidate and replay of affected evidence.
+2. Merge only after every required changed-path check passes and the reviewed
+   head remains unchanged, conflict-free, and policy-compliant.
+3. Do not record post-push/merge facts by rewriting the immutable candidate;
+   keep them in GitHub and the external closeout observation.
+4. After accepted F0, create a separate bounded Windows rebind/evidence task.
+   Freshly bind its protected base lane to the exact F0 merge before any R0
+   Excel or ETABS use. ETABS remains trial/export-first unless separately
+   proven.
+5. R0 remains the authorized successor after accepted F0. It owns the wider
+   documentation/generated/package/cumulative evidence closure, not F0.
 
 ## Required Reading
 
-1. [B0 evidence](../verification/lib-pro-013-b0-common-contract-evidence.json)
-2. [Owner sequencing decision](../verification/lib-pro-013-owner-sequencing-decision.json)
-3. [Windows evidence lane readiness](../verification/lib-pro-013-windows-evidence-lane-readiness.json)
-4. [Canonical beam cookbook](../cookbook/python/beam.md)
-5. [LIB-PRO-012 remediation authority](lib-pro-012-external-api-remediation-plan.md)
-6. [Canonical A0 audit](../verification/lib-pro-013-a0-renewal-audit.md)
-7. [LIB-PRO-013 master audit authority](lib-pro-013-whole-library-renewal-audit-plan.md)
+1. [F0 evidence](../verification/lib-pro-013-f0-family-convergence-evidence.json)
+2. [LIB-PRO-012 remediation authority](lib-pro-012-external-api-remediation-plan.md)
+3. [LIB-PRO-013 master audit authority](lib-pro-013-whole-library-renewal-audit-plan.md)
+4. [Owner sequencing decision](../verification/lib-pro-013-owner-sequencing-decision.json)
+5. [B0 evidence](../verification/lib-pro-013-b0-common-contract-evidence.json)
+6. [Windows evidence lane readiness](../verification/lib-pro-013-windows-evidence-lane-readiness.json)
+7. [Family facade cookbook](../cookbook/python/family-facades.md)
 8. [Current task board](../TASKS.md)

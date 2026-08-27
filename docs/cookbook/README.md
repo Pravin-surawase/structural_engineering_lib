@@ -12,6 +12,8 @@ Task-focused recipes and code snippets for common structural engineering workflo
 |--------|-------------|--------|
 | [cli-reference.md](cli-reference.md) | Complete CLI command reference with examples | ✅ |
 | [python-recipes.md](python-recipes.md) | Copy-paste Python snippets for common tasks | ✅ |
+| [python/beam.md](python/beam.md) | Canonical B0 beam journey | Alpha |
+| [python/family-facades.md](python/family-facades.md) | Canonical F0 family construction journeys | Alpha |
 
 ---
 

@@ -2,7 +2,7 @@
   "_comment": "GENERATED compatibility projection from scripts/control-plane.json; do not edit directly",
   "_usage": "Use ./run.sh find <query> or ./run.sh control find <query>",
   "_source": "scripts/control-plane.json",
-  "_coverage": "102/102 top-level scripts registered",
+  "_coverage": "103/103 top-level scripts registered",
   "tasks": {
     "resolve python runtime": {
       "script": "./scripts/python_runtime.sh --version",
@@ -728,6 +728,12 @@
       "script": "./scripts/python_runtime.sh scripts/verify_canonical_transport_artifact.py --wheel <exact-wheel-path>",
       "group": "Testing",
       "description": "Verify A1 source-free Python and CLI plus exact-head FastAPI binding to one wheel",
+      "permission": "ReadOnly"
+    },
+    "verify lib pro 013 f0 family artifact": {
+      "script": "./scripts/python_runtime.sh scripts/verify_lib_pro_013_f0_family_artifact.py --wheel <exact-wheel-path>",
+      "group": "Testing",
+      "description": "Replay all 13 F0 facade workflow classes and invalid contracts from one exact wheel",
       "permission": "ReadOnly"
     },
     "verify lib pro 012 s0 artifact": {

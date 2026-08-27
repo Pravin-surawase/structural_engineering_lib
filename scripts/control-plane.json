@@ -1678,6 +1678,26 @@
       },
       "permission": "ReadOnly"
     },
+    "verify lib pro 013 f0 family artifact": {
+      "group": "Testing",
+      "description": "Replay all 13 F0 facade workflow classes and invalid contracts from one exact wheel",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/verify_lib_pro_013_f0_family_artifact.py --wheel <exact-wheel-path>",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/verify_lib_pro_013_f0_family_artifact.py",
+              "--wheel",
+              "<exact-wheel-path>"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
     "verify lib pro 012 s0 artifact": {
       "group": "Testing",
       "description": "Verify LIB-PRO-012 S0 source-free Python safety and exact-head FastAPI binding to one wheel",

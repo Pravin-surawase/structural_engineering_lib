@@ -1,0 +1,160 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "LIB-PRO-013-F0-FAMILY-CONVERGENCE-EVIDENCE",
+  "task_id": "LIB-PRO-013-F0-FAMILY-CONVERGENCE",
+  "observed_at_utc": "2026-08-27T20:44:52Z",
+  "status": "F0_LOCAL_IMPLEMENTATION_AND_EVIDENCE_COMPLETE_PENDING_IMMUTABLE_CANDIDATE_AND_HOSTED_CLOSEOUT",
+  "source_identity": {
+    "branch": "codex/lib-pro-013-f0-family-convergence",
+    "source_commit": "75f951e3d9d8e75ab842fc3f69273b71ca7886a6",
+    "source_tree": "9df2321f463e378a5f6a9bb9ea2ce92b6ba050ce",
+    "source_is_accepted_preparation_main": true,
+    "accepted_b0_merge_is_ancestor": "44ef7bc4e8c98d01f32291730ab77ed16d077823",
+    "candidate_commit": "RECORDED_EXTERNALLY_AFTER_COMMIT",
+    "candidate_tree": "RECORDED_EXTERNALLY_AFTER_COMMIT"
+  },
+  "programme_authority": {
+    "master": "docs/planning/lib-pro-013-whole-library-renewal-audit-plan.md",
+    "remediation": "docs/planning/lib-pro-012-external-api-remediation-plan.md",
+    "decision": "docs/verification/lib-pro-013-owner-sequencing-decision.json",
+    "f0_status": "AUTHORIZED_AFTER_ACCEPTED_B0",
+    "r0_status": "AUTHORIZED_AFTER_ACCEPTED_F0",
+    "professional_review_is_intermediate_gate": false,
+    "final_engineer_review": "DEFERRED_UNTIL_ACCEPTED_R0_INTEGRATED_LIBRARY",
+    "release_authorized": false
+  },
+  "inventory_boundary": {
+    "cross_standard_capability_authority": {
+      "supported_families": 13,
+      "held_families": 8,
+      "composition": "10 bounded IS 456 families plus 3 retained bounded IS 13920 families",
+      "change": "UNCHANGED"
+    },
+    "f0_facade_workflow_classes": {
+      "count": 13,
+      "composition": "accepted B0 beam plus F1 torsion, column, and three slab route classes; F2 wall, staircase, deep-beam, and flat-slab; F3 isolated, combined, and strap footings",
+      "authority": "Python/structural_lib/services/family_facade_registry.py"
+    },
+    "distinction": "The 13 cross-standard capability families and the 13 F0 facade route/contract classes are different inventories and are not substituted for each other. Existing IS 13920 calculation owners and claims are retained unchanged."
+  },
+  "delivered_contract": {
+    "common_result": "family-design-result/v1 + structural-result-envelope/v2",
+    "strict_error": "InputContractError + InputIssueV1",
+    "facade_root": "structural_lib.design.is456",
+    "request_groups": "Identity/source, geometry/topology, actions, materials/reinforcement, and evidence/review are explicit; evidence-heavy F2/F3 contracts expose exactly those five required groups.",
+    "construction_rule": "Facades validate, flatten, delegate to the maintained owner, and wrap the typed result. They do not calculate, select, infer, or normalize engineering inputs.",
+    "workflow_ids": [
+      "is456.beam.design/v1",
+      "is456.torsion.design/v1",
+      "is456.column.supplied-steel-check/v1",
+      "is456.slab.one-way/v1",
+      "is456.slab.continuous-one-way/v1",
+      "is456.slab.two-way/v1",
+      "is456.wall.braced-axial/v1",
+      "is456.staircase.straight-flight/v1",
+      "is456.deep-beam.simply-supported/v1",
+      "is456.flat-slab.regular-interior/v1",
+      "is456.isolated-footing.concentric/v1",
+      "is456.combined-footing.symmetric/v1",
+      "is456.strap-footing.property-line/v1"
+    ],
+    "generated_discovery": {
+      "classification_sha256": "58a58b65aee601135d7f8b31ce506dbdbc431d4d41e54aa30bec79bfb4387b5b",
+      "compatibility_ledger_sha256": "268857675e773495443c690dc6cde5d963ab260b03831ff11ec20b00bc86613f",
+      "request_schemas": 13,
+      "compatibility_owner_per_workflow": true,
+      "evidence_class_per_workflow": true
+    }
+  },
+  "outcomes": {
+    "strict_intake": "PASS: one invalid vector for every distinct F0 route/contract class rejects as structured InputContractError before the owner calculation",
+    "engineering_status": "PASS: valid recipes preserve PASS, FAIL, and HOLD as typed engineering outcomes distinct from valid intake and completed calculation",
+    "compatibility": "PASS: facades delegate to the maintained service/code owner and preserve the returned typed calculation; retained compatibility routes and golden outcomes remain unchanged",
+    "serialization": "PASS: all canonical family results serialize without non-finite values and retain identity, limitations, assumptions, provenance, and orthogonal envelope status",
+    "construction": "PASS: topology, action basis, supplied reinforcement, serviceability, soil, transfer, applicability, and review evidence are caller-provided where required",
+    "professional_gate": "NOT_APPLICABLE_DURING_F0: no professional approval, engineering-use approval, or whole-library readiness was requested or claimed"
+  },
+  "focused_verification": {
+    "status": "PASS",
+    "pytest_cases": 143,
+    "hosted_repair_replay_cases": 32,
+    "coverage": [
+      "13 valid and 13 invalid facade workflow recipes",
+      "B0 canonical beam and torsion owner parity",
+      "column and footing golden vectors",
+      "slab coefficient and boundary closure",
+      "wall, staircase, deep-beam, flat-slab, isolated-footing, combined-footing, and strap-footing publication owners",
+      "generated API classification and compatibility convergence"
+    ],
+    "ruff_black": "PASS: 21 changed Python files",
+    "mypy": "PASS: 17 affected source files"
+  },
+  "exact_head_wheel": {
+    "distribution": "structural-lib-is456",
+    "version": "0.24.0a1",
+    "filename": "structural_lib_is456-0.24.0a1-py3-none-any.whl",
+    "sha256": "797dfd9a6f983280e955a25057e3aa5de99e75e7a60d0ebd0ae3273d2d73f78f",
+    "size_bytes": 819118,
+    "temporary_path": "/tmp/lib-pro-013-f0-repair-wheel.JXIVzB/dist/structural_lib_is456-0.24.0a1-py3-none-any.whl",
+    "runtime": "macOS arm64 / Python 3.11",
+    "source_free_structural_lib": true,
+    "recipe_count": 13,
+    "valid_engineering_statuses": {
+      "PASS": 11,
+      "FAIL": 1,
+      "HOLD": 1
+    },
+    "invalid_vectors": 13,
+    "invalid_vectors_rejected": 13
+  },
+  "frozen_b0_owner_hashes": {
+    "services_contract_common": "09e452df9a56d8ab4cd9858353453ef131e041670fd8aa758dddc5d09d11cfcd",
+    "services_contract_beam": "09bb765a746fc3c37a9c598421e53128aefab9a2a73ed493900a66b5eab81a6e",
+    "canonical_beam_service": "9feb0efe2f3ef1eb0d8e81bf03a2f0f4fcf0ef62b84c592d037950ae83459e78",
+    "beam_facade": "a71571c426a63216594b84d7cef659dd2d4143592d96999ecf8652da6d9032f9",
+    "outcome": "MATCH_ACCEPTED_B0_EVIDENCE"
+  },
+  "architecture_and_control": {
+    "architecture": "PASS: 232 files, 0 violations",
+    "imports": "PASS: 742 files, 5,339 imports, 0 broken",
+    "circular_imports": "PASS: 212 files, 0 cycles",
+    "control_plane": "PASS: 117 active operations and 103/103 scripts after registering the exact-wheel F0 verifier",
+    "generated_classification": "PASS: current",
+    "context_instruction_and_config": "PASS: documentation 5/5 with 0 broken links; context, instruction composition, and config precedence current"
+  },
+  "platform_evidence": {
+    "macos_source_and_wheel": "PASS",
+    "windows_excel_etabs": "NOT_TESTED_NOT_REQUIRED_FOR_F0",
+    "browser_accessibility": "NOT_TESTED_NOT_REQUIRED_FOR_F0",
+    "windows_next_rule": "After accepted F0, a separate bounded task must freshly rebind the protected Windows lane to the exact F0 merge before R0 uses it."
+  },
+  "retention": {
+    "protected_source_content_tracked": false,
+    "unrelated_worktree_or_ref_mutated": false,
+    "detached_dirty_e54a_lane": "PRESERVED_UNTOUCHED",
+    "windows_base_clone": "NOT_OPENED_OR_MUTATED",
+    "temporary_exact_wheel": "RETAINED_AT_RECORDED_TMP_PATH_FOR_CURRENT_SESSION_EVIDENCE",
+    "destructive_action_performed": false
+  },
+  "consolidated_gates": {
+    "focused_reproducers": "PASS_143",
+    "architecture_import_generated_and_control": "PASS",
+    "documentation_context_instruction_and_config": "PASS: 5 documentation checks, 0 broken links, context/instruction/config current",
+    "quick_gate": "PASS_10_OF_10_INITIAL_AND_PASS_10_OF_10_POST_HOSTED_REPAIR",
+    "efficiency": "PASS: one-parent/no-subagent milestone at 43.451 minutes; provider billing tokens and cost unavailable",
+    "normal_hooks": "FIRST_CANDIDATE_PASS; REPAIR_CANDIDATE_PENDING",
+    "session_end": "PENDING_CANDIDATE",
+    "hosted_checks": "RUN_1: PYTHON_DOCUMENTATION_FASTAPI_PASS, CONTROL_FAIL_ON_CLASSIFIED_ALIAS_AST_OWNER, PR_GATE_FAIL; BOUNDED_REPAIR_PENDING"
+  },
+  "efficiency_counters_at_freeze": {
+    "candidate_heads": 0,
+    "audit_rejections": 0,
+    "repair_batches_after_candidate": 0,
+    "focused_gate_retries": 1,
+    "full_gate_runs": 0,
+    "hosted_validation_runs": 0,
+    "parent_agents": 1,
+    "subagents": 0
+  },
+  "completion_boundary": "A green unchanged F0 candidate authorizes the already-approved R0 dependency cycle only after integration. It does not claim Windows acceptance, professional approval, engineering-use approval, public release, publication, or whole-library completion."
+}
