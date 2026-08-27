@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-27 — MAINT-0136 consolidated integration closeout
+**Updated:** 2026-08-27 — LIB-PRO-012/013 efficient combined execution plan
 
 ---
 
@@ -125,6 +125,30 @@
 ---
 
 ## Active
+
+`LIB-PRO-012-EFFICIENT-EXECUTION-PLAN` is the active planning-integration task.
+The corrected [external API remediation plan](planning/lib-pro-012-external-api-remediation-plan.md)
+and [whole-library renewal plan](planning/lib-pro-013-whole-library-renewal-audit-plan.md)
+use six coherent Git/hosted cycles instead of treating every logical work
+package or audit lane as a separate branch, session, commit, PR, and CI run.
+The current cycle is planning-only; runtime remediation remains unstarted.
+
+`LIB-PRO-013` owns the whole-library renewal audit. Its
+[master plan](planning/lib-pro-013-whole-library-renewal-audit-plan.md) defines
+the truth freeze, audit-of-audits, external-user/API, engineering-evidence,
+application, package/dependency, test, Git/CI/release, agent/skill/automation,
+efficiency, retention, and peer-comparison lanes. The audit itself is unstarted;
+the plan authorizes no runtime change, deletion, dependency addition, signature
+break, release, or professional claim.
+
+`LIB-PRO-012` remains the immediate remediation specification and scope
+authority for the reproduced external Python and REST safety defects. After
+the current planning candidate integrates and the owner starts S0, one parent
+task/session will freeze the exact G0 baseline and implement the combined A/B
+P0 safety cycle on one task branch and one frozen candidate/PR. The later A0
+renewal audit freezes architecture before C–I implementation. Shared
+validation, facade, result, manifest, generated API, documentation, task, and
+session owners remain single-writer surfaces.
 
 `MAINT-0136` is locally complete through its exact authorized cleanup boundary.
 Phase 1 PR #874 merged at reviewed head `37b36785`; Phase 2A removed the exact

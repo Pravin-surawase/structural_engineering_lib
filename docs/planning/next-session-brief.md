@@ -4,11 +4,12 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-27
-- Focus: Publish and merge the consolidated MAINT-0136 Phase 2A-2C integration candidate without further cleanup.
-- Git receipt: docs/verification/maint-0136-integration-git-handoff-receipt.json | sha256:1b1bd409ba0227e921d9e5dc6ad507f351c65aaf4128355ae4ece818cee09488 | HOLD
-- Git identity: codex/maint-0136-phase-2c-preparation@59fdca08c9889112a787fe7ab87558c97724c9d3 | upstream=NONE@UNKNOWN | base=origin/main@11dd8db43908caf3b81fb9e94b893f335afb9782 | tree=dirty | operation=none
-- Hosted evidence: remote=NOT_APPLICABLE | PR=NOT_APPLICABLE#UNKNOWN | review=NOT_APPLICABLE | retention=OBSERVED
-- Next action: CREATE_COMMIT_PUSH_PULL_REQUEST_AND_MERGE_WHEN_REQUIRED_CHECKS_PASS
+- Focus: Correct the immediate REST P0 omission and reduce avoidable Git,
+- Completed: Reclassified the existing REST v1 fail-open behavior into LIB-PRO-012 Packet; Clarified that LIB-PRO-012 is an implementation specification/scope; Preserved A–I as logical owner/acceptance work packages while grouping them
+- Git receipt: docs/verification/lib-pro-012-efficient-execution-plan-git-handoff-receipt.json | sha256:778a2e68608d10c62ca5865ba2f682041112bfaa0fc07c88fae4cccc22c4a370 | HOLD
+- Git identity: codex/lib-pro-012-external-api-remediation-plan@17e62cc7f864c25e279d6921d9c59d26afca3950 | upstream=NONE@UNKNOWN | base=origin/main@6a4683eb8b21bff77f2991230b4458463e61f419 | tree=dirty | operation=none
+- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
+- Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
 
 ## Latest Handoff
