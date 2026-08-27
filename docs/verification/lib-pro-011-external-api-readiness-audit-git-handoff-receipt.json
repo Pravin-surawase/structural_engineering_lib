@@ -1,0 +1,109 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "d92461aaa3d176ccead2dde9775115a7c62c04ca59d78805ae1d9dba123b80b7",
+    "state": {
+      "branch": "codex/lib-pro-011-external-api-audit",
+      "default_base": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "6a4683eb8b21bff77f2991230b4458463e61f419",
+        "status": "ahead"
+      },
+      "derived_action": "READY_LOCAL",
+      "duration_ms": 84.516,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "head_sha": "21e28c17bf1aecd23d8b133caa3ebd3998db123b",
+      "hold_reasons": [],
+      "linked_worktree": false,
+      "locks": [],
+      "observed_at_utc": "2026-08-27T10:43:21.824831+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": true,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": true,
+        "conflicted_paths": [],
+        "dirty_count": 0,
+        "modified_paths": [],
+        "staged_paths": [],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:d92461aaa3d176ccead2dde9775115a7c62c04ca59d78805ae1d9dba123b80b7",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-27T10:43:21.824976+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources"
+    ],
+    "integration_owner": "governance",
+    "owned_paths": [
+      "docs/verification/lib-pro-011-external-api-readiness-audit.md",
+      "docs/verification/lib-pro-011-external-api-readiness-audit-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md"
+    ],
+    "task_id": "LIB-PRO-011"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

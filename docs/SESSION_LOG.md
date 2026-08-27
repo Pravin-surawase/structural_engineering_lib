@@ -9811,6 +9811,9 @@ formula changes, package publication, and release approval remain excluded.
   session interface does not provide.
 - A read-only session-log location check embedded Markdown backticks inside a
   double-quoted zsh pattern and failed before running.
+- The first final session check selected an older E1 receipt because the new
+  LIB-PRO-011 entry did not yet bind a task-owned handoff receipt; its stale
+  evidence produced a hold-set mismatch.
 
 ### Root causes and resolutions
 
@@ -9853,6 +9856,13 @@ formula changes, package publication, and release approval remain excluded.
   Resolution: rerun `rg` with a single-quoted pattern that omits Markdown
   delimiters; the audit entry is now verified at the end of the log.
   ⚠️ TERMINAL ISSUE: unmatched shell quote -> used one literal regex quote.
+- Confirmed root cause: the final validator resolves the newest receipt named
+  by the session log, so the missing LIB-PRO-011 binding fell back to an older
+  task receipt whose evidence had expired. Resolution: generate and validate a
+  fresh task-owned HOLD receipt with explicit unknown remote, PR, review,
+  integration, retention, and authorization states, then bind its exact path
+  below. `git_handoff_receipt.py validate` reports the LIB-PRO-011 receipt as
+  valid.
 
 ### Validation through content freeze
 
@@ -9871,3 +9881,5 @@ formula changes, package publication, and release approval remain excluded.
 - Documentation front matter, exact-file metadata, all 1,043 maintained local
   links, and `docs/README.md` index links pass after content freeze.
 - `./run.sh check --quick` passed all 10 checks with no reused result.
+
+**Git handoff receipt:** `docs/verification/lib-pro-011-external-api-readiness-audit-git-handoff-receipt.json`
