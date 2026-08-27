@@ -1,0 +1,68 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-27T09:57:48Z",
+      "query_status": "OK",
+      "reference": "active Codex task: okay do it please. in this session so we can close this",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "ALIGN_PHASE_2C_WITH_MERGED_MAIN_WITHOUT_HISTORY_REWRITE",
+      "REFRESH_LOCAL_CLOSEOUT_EVIDENCE",
+      "RUN_FOCUSED_QUICK_FULL_AND_HOSTED_VALIDATION",
+      "CREATE_COMMIT_PUSH_PULL_REQUEST_AND_MERGE_WHEN_REQUIRED_CHECKS_PASS"
+    ],
+    "next_action": "CREATE_COMMIT_PUSH_PULL_REQUEST_AND_MERGE_WHEN_REQUIRED_CHECKS_PASS",
+    "observed_at_utc": "2026-08-27T09:57:48Z",
+    "prohibited_actions": [
+      "DELETE_BRANCH_WORKTREE_ARCHIVE_TAG_CODEX_REF_PROTECTED_SOURCE_OR_ALIAS",
+      "RESET_REBASE_REWRITE_FORCE_PUSH_OR_BYPASS_CHECKS",
+      "CHANGE_STRUCTURAL_FORMULAS_FEATURE_SCOPE_RELEASE_OR_PROFESSIONAL_CLAIMS"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "ALIGN_PHASE_2C_WITH_MERGED_MAIN_WITHOUT_HISTORY_REWRITE",
+        "REFRESH_LOCAL_CLOSEOUT_EVIDENCE",
+        "RUN_FOCUSED_QUICK_FULL_AND_HOSTED_VALIDATION",
+        "CREATE_COMMIT_PUSH_PULL_REQUEST_AND_MERGE_WHEN_REQUIRED_CHECKS_PASS"
+      ],
+      "branch": "codex/maint-0136-phase-2c-preparation",
+      "head_sha": "59fdca08c9889112a787fe7ab87558c97724c9d3",
+      "task_id": "MAINT-0136-INTEGRATION"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_FINAL_CANDIDATE",
+    "status": "NOT_APPLICABLE"
+  },
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_PULL_REQUEST_BEFORE_CANDIDATE_FREEZE",
+    "status": "NOT_APPLICABLE"
+  },
+  "remote": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_REMOTE_BRANCH_BEFORE_CANDIDATE_FREEZE",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_ALL_MAINTENANCE_BRANCHES_WORKTREES_AND_RECOVERY_ARTIFACTS",
+    "holds": [],
+    "observed_at_utc": "2026-08-27T09:57:48Z",
+    "owner": "Main Agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_HOSTED_REVIEW_BEFORE_CANDIDATE_FREEZE",
+    "status": "NOT_APPLICABLE"
+  },
+  "task_archive": {
+    "status": "LOCAL_COMPLETE_HOSTED_CLOSEOUT_PENDING"
+  }
+}

@@ -147,7 +147,24 @@ protected-source aggregate, local archive digest, and Drive recovery remained
 unchanged. Filesystem available space increased by 7,920,893,952 bytes.
 
 The one backed recovery hold, 14 other retained live lanes, all branches, refs,
-archives, protected sources, pull requests, and the shared `.venv` remain. A
-later Phase 2C requires fresh inspection, an immutable exact manifest, and
-separate owner authorization; no broad `git clean`, reset, force push, ref
-deletion, prune, or archive deletion is authorized by this closeout.
+archives, protected sources, pull requests, and the shared `.venv` remained at
+the Phase 2B-W boundary.
+
+## Phase 2C and integration result — cleanup sequence complete
+
+Phase 2C later froze and executed its separately authorized four-local/two-
+remote branch target set under digest `08a68419...b23c7`. The exact six-ref
+reduction passed while all worktrees, tags, Codex-managed refs, protected
+sources, recovery artifacts, and non-target branches remained preserved.
+
+Phase 1 PR #874 subsequently passed its required hosted `PR Gate` at unchanged
+head `37b36785` and merged normally. The eight Phase 2A–2C successor commits
+were then joined to the merged base with a normal merge commit. That operation
+preserved every frozen commit hash and produced zero tree changes relative to
+the completed Phase 2C head. The consolidated candidate is therefore the final
+MAINT-0136 publication packet.
+
+No Phase 2D was defined. Any later branch, worktree, archive, tag, Codex-ref,
+protected-source, or alias deletion requires a new exact manifest and separate
+authorization. No broad `git clean`, reset, rebase, force push, prune, or
+garbage collection is authorized by this closeout.

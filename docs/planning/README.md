@@ -50,7 +50,7 @@ Internal planning documents and research notes.
 | `maint-0136-phase-2b-r-google-drive-backup-closeout.md` | 2026-08-27 | ✅ Owner-only archive and full restore preserved through Phase 2B-W execution |
 | `maint-0136-phase-2b-r-recovery-plan.md` | 2026-08-27 | ✅ Exact 123,164,574-byte source packet completed through verified Google Drive recovery |
 | `maint-0136-phase-2b-preparation-plan.md` | 2026-08-27 | ✅ Split completed through verified recovery and exact Phase 2B-W target freeze |
-| `maint-0136-cleanup-preservation-plan.md` | 2026-08-27 | ✅ Phase 0 through exact Phase 2B-W complete; Phase 2C separately held |
+| `maint-0136-cleanup-preservation-plan.md` | 2026-08-27 | ✅ Phase 0 through exact Phase 2C complete; consolidated integration candidate prepared after PR #874 |
 | `maint-0133-cleanup-inventory-and-authorization.md` | 2026-08-23 | 🚧 Immutable inventory candidate; two moves ready for later authorization, four held, zero deletes |
 | `public-route-safety-closure-plan.md` | 2026-08-22 | ✅ LIB-PRO-003-D local candidate accepted; hosted/exact-tree closure pending; release and professional claims held by PARTIAL readiness |
 | `next-session-brief.md` | 2026-08-22 | 🚧 Publish/validate the immutable Packet D candidate, then resume read-only INDIA-3-G0 |

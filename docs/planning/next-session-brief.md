@@ -4,11 +4,11 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-27
-- Focus: Close exact Phase 2C ref cleanup and return to the held Phase 1 PR.
-- Git receipt: docs/verification/maint-0136-phase-2c-execution-git-handoff-receipt.json | sha256:7d02274fcf06d397310dffd95bfd4bafe5750ed12316b2d24e1cfb9b282138ba | HOLD
-- Git identity: codex/maint-0136-phase-2c-preparation@d207d58e21c59fe485c50f292de7d84f5c8b6e56 | upstream=NONE@UNKNOWN | base=origin/main@ee04bfbf76b1a3a022d07c8203b5274a0f71998f | tree=dirty | operation=none
-- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
-- Next action: REFRESH_PHASE_1_PR_874_HOSTED_CHECKS
+- Focus: Publish and merge the consolidated MAINT-0136 Phase 2A-2C integration candidate without further cleanup.
+- Git receipt: docs/verification/maint-0136-integration-git-handoff-receipt.json | sha256:1b1bd409ba0227e921d9e5dc6ad507f351c65aaf4128355ae4ece818cee09488 | HOLD
+- Git identity: codex/maint-0136-phase-2c-preparation@59fdca08c9889112a787fe7ab87558c97724c9d3 | upstream=NONE@UNKNOWN | base=origin/main@11dd8db43908caf3b81fb9e94b893f335afb9782 | tree=dirty | operation=none
+- Hosted evidence: remote=NOT_APPLICABLE | PR=NOT_APPLICABLE#UNKNOWN | review=NOT_APPLICABLE | retention=OBSERVED
+- Next action: CREATE_COMMIT_PUSH_PULL_REQUEST_AND_MERGE_WHEN_REQUIRED_CHECKS_PASS
 <!-- HANDOFF:END -->
 
 ## Latest Handoff

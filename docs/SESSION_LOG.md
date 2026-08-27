@@ -5,6 +5,54 @@
 
 ---
 
+## 2026-08-27 — Session: MAINT-0136 consolidated Git integration
+
+**Agent:** Codex (`orchestrator`, sole integration writer/operator; no
+subagents)
+
+**Branch:** `codex/maint-0136-phase-2c-preparation`, reconciled from completed
+Phase 2C head `21ab46bb0cf13895e1eaccae777006df97e49238` and merged Phase 1 base
+`11dd8db43908caf3b81fb9e94b893f335afb9782`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0136-integration-git-handoff-receipt.json`
+
+**Focus:** Publish one history-preserving successor candidate containing the
+already authorized and completed Phase 2A–2C cleanup sequence, then close
+MAINT-0136 without any additional deletion.
+
+### Summary
+
+- Refreshed hosted state and reconfirmed PR #874 merged normally at unchanged
+  reviewed head `37b36785` as merge commit `11dd8db4`.
+- Fast-forwarded the clean local `main` checkout to exact `origin/main`.
+- Merged `origin/main` normally into the clean Phase 2C branch. The merge
+  preserved every Phase 2A–2C commit hash, changed no tree content relative to
+  `21ab46bb`, and changed the branch relation from 8-ahead/1-behind to
+  9-ahead/0-behind.
+- Reconciled the task board and cleanup plan to the completed Phase 2C boundary.
+  No Phase 2D or further destructive cleanup action is included.
+
+### Issues encountered
+
+- The completed Phase 2C branch became 8 commits ahead and 1 merge commit
+  behind `origin/main` immediately after the predecessor PR #874 merged.
+
+### Root causes and resolutions
+
+- Confirmed root cause: a normal GitHub merge adds a new merge commit to
+  `main`, while the already frozen successor chain continues from the reviewed
+  PR head. Resolution: fast-forward local `main` and merge `origin/main`
+  normally into the Phase 2C branch. Exact before/after tree comparison proves
+  the topology-only reconciliation introduced no content change, and no
+  rebase, reset, force push, or commit rewriting occurred.
+
+### Validation through content freeze
+
+- The focused Phase 2A–2C maintenance batch, quick gate, consolidated full
+  gate, normal hooks, immutable-candidate closeout, hosted PR checks, and
+  post-merge ancestry verification form the remaining ordered evidence.
+
 ## 2026-08-27 — Session: MAINT-0136 Phase 2C exact ref execution
 
 **Agent:** Codex (`maintainer`, sole Phase 2C execution writer/operator; no

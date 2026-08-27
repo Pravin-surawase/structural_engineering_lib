@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-27 — MAINT-0136 Phase 2C exact branch/ref execution
+**Updated:** 2026-08-27 — MAINT-0136 consolidated integration closeout
 
 ---
 
@@ -126,23 +126,16 @@
 
 ## Active
 
-`MAINT-0136` Phase 2B-W is complete. Exact owner authority bound to 63
-worktrees / 7,686,279,168 gross bytes / target digest `543a5f1b...129da` was
-revalidated and executed through non-force `git worktree remove`. Topology fell
-from 78 to 15 worktrees; all 63 paths are absent, every target branch remains,
-and the exact 236-ref snapshot, owner-only Drive archive, local archive,
-protected-source aggregate, pull requests, and shared `.venv` are unchanged.
-Available filesystem space increased by 7,920,893,952 bytes. The one backed
-recovery hold, 14 other live lanes, and Phase 2C branch/ref/archive cleanup
-remain held. Phase 1 PR #874 remains open/blocked.
-
-`MAINT-0136` Phase 2C is complete under exact digest-bound owner authorization.
-The executor removed four merged local branches and two matching remote
-branches under target digest `08a68419...b23c7`, reducing local branches
-77 -> 73, live remote branches 81 -> 79, and local refs 237 -> 231. All 45
-tags, 33 Codex-managed refs, 16 worktrees, ten open PRs, protected sources,
-and local/Drive recovery artifacts remain preserved. No Phase 2D was defined;
-the remaining MAINT-0136 gate is the held Phase 1 PR #874 hosted-check state.
+`MAINT-0136` is locally complete through its exact authorized cleanup boundary.
+Phase 1 PR #874 merged at reviewed head `37b36785`; Phase 2A removed the exact
+30-cache manifest, Phase 2B-R proved the owner-only Google Drive recovery
+package, Phase 2B-W retired exactly 63 worktrees without force, and Phase 2C
+removed exactly four local and two matching remote branches. The consolidated
+successor preserves every frozen commit and is reconciled with merged
+`origin/main` without rewriting history. No Phase 2D was defined and no further
+branch, worktree, archive, tag, Codex-ref, protected-source, or alias deletion
+is authorized by this closeout. Hosted publication and merge of the immutable
+consolidated candidate are the external completion gate.
 
 `RELEASE-SMOOTH-001` is the active release-control task. It converts the
 `v0.24.0a1` delays into a single-candidate next-release flow: fail-fast final
