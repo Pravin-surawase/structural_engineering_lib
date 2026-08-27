@@ -4,11 +4,11 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-27
-- Focus: Publish and merge the consolidated MAINT-0136 Phase 2A-2C integration candidate without further cleanup.
-- Git receipt: docs/verification/maint-0136-integration-git-handoff-receipt.json | sha256:1b1bd409ba0227e921d9e5dc6ad507f351c65aaf4128355ae4ece818cee09488 | HOLD
-- Git identity: codex/maint-0136-phase-2c-preparation@59fdca08c9889112a787fe7ab87558c97724c9d3 | upstream=NONE@UNKNOWN | base=origin/main@11dd8db43908caf3b81fb9e94b893f335afb9782 | tree=dirty | operation=none
-- Hosted evidence: remote=NOT_APPLICABLE | PR=NOT_APPLICABLE#UNKNOWN | review=NOT_APPLICABLE | retention=OBSERVED
-- Next action: CREATE_COMMIT_PUSH_PULL_REQUEST_AND_MERGE_WHEN_REQUIRED_CHECKS_PASS
+- Focus: Freeze external API findings, audit-gap root causes, peer comparison, and ordered repair packets; runtime fixes and release action remain excluded.
+- Git receipt: docs/verification/lib-pro-011-external-api-readiness-audit-git-handoff-receipt.json | sha256:c1cee03a9902a7854ef720cd0f769f3c243a909aecf2061bc0221d7513568415 | HOLD
+- Git identity: codex/lib-pro-011-external-api-audit@4549ec7bed7144292e24d2d868e520a81a521d29 | upstream=NONE@UNKNOWN | base=origin/main@6a4683eb8b21bff77f2991230b4458463e61f419 | tree=dirty | operation=none
+- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
+- Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
 
 ## Latest Handoff

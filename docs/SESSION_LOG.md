@@ -5,6 +5,117 @@
 
 ---
 
+## 2026-08-27 — Session: LIB-PRO-011 external API readiness audit
+
+**Agent:** Codex (`governance`, sole writer)
+
+**Branch:** `codex/lib-pro-011-external-api-audit`.
+
+**Focus:** Freeze external API findings, audit-gap root causes, peer comparison, and ordered repair packets; runtime fixes and release action remain excluded.
+
+### Issues encountered
+
+- Exact-wheel and source-bound probes reproduced safe-looking or materially
+  incomplete outcomes from invalid combined-beam, direct-detailing, BBS,
+  standalone torsion, structured beam, smart-analysis, compliance, and unified
+  column inputs.
+- The maintained validation audit reported 357 `UNPROVEN` parameters while the
+  frozen public-route safety gate still passed its 21 Python and five FastAPI
+  targets; the discrepancy required tracing rather than treating either output
+  as complete readiness evidence.
+- Public metadata and repository installation guidance still described
+  `0.24.0a1` as unpublished even though the exact PyPI wheel exists, and the
+  generated API classification did not match which compatibility workflows the
+  READMEs promote to external users.
+- The first documentation front-matter check rejected `status: complete`, which
+  is not an allowed active-document lifecycle value.
+- A read-only source search guessed single-file wall, staircase, and deep-beam
+  module paths although those implementations use package directories.
+- A closeout check guessed a `session status` subcommand that the maintained
+  session interface does not provide.
+- A read-only session-log location check embedded Markdown backticks inside a
+  double-quoted zsh pattern and failed before running.
+- The first final session check selected an older E1 receipt because the new
+  LIB-PRO-011 entry did not yet bind a task-owned handoff receipt; its stale
+  evidence produced a hold-set mismatch.
+- The audit session entry was initially added at the file end, but the session
+  parser defines the first dated block as current; the generated handoff
+  therefore inherited the preceding MAINT-0136 focus.
+
+### Root causes and resolutions
+
+- Confirmed root cause: older parameter-based routes own partial plausibility
+  checks locally, while strict project intake, slabs, footings, and newer
+  INDIA-family routes use stronger boundaries. Resolution in this audit packet:
+  record stable `P0`/`P1`/`P2` reproductions and freeze a shared-boundary repair
+  sequence covering producers and BBS/report/export consumers. No runtime
+  behavior was changed.
+- Confirmed root cause: static validation ownership records the presence of a
+  guard, not its complete finite/sign/domain/relation/identity/collection
+  contract, and it does not recursively inspect structured request fields.
+  Release UAT concentrates adversarial cases in project/CLI intake, while the
+  required route-safety gate is a hand-maintained target list. Resolution:
+  document the exact 148 `PROVEN`, 122 `DELEGATED`, 357 `UNPROVEN`, and 136
+  `NOT_APPLICABLE` counts and define a contract-driven advertised-surface gate
+  as Packet E.
+- Confirmed root cause: user-facing promotion, internal API claim disposition,
+  and post-publication documentation are maintained by separate controls.
+  Resolution: bind the audit to wheel hash
+  `b5e0df7b561e8c715f37c602200eaae2c369ec5dc992eec87110a77c1026201a`,
+  distinguish stable versus prerelease pip selection, and freeze metadata,
+  executable-cookbook, and signature-drift work as Packet D.
+- Confirmed root cause: the front-matter schema permits `active`, `draft`,
+  `deprecated`, or `archived`, while completion is expressed in the document
+  decision rather than its lifecycle field. Resolution: retain `status: active`
+  and state the audit packet's completion in the final verdict. Front-matter and
+  exact-file metadata checks pass.
+- Confirmed root cause: wall, staircase, and deep-beam code is split into
+  subpackages. Resolution: rerun the targeted `rg` search against the exact
+  directories; enum and contract-error evidence was found without mutation.
+  ⚠️ TERMINAL ISSUE: guessed module files did not exist -> searched the
+  discovered package directories.
+- Confirmed root cause: session state is exposed through `session context`,
+  `session check`, and the Git-state authority rather than a `status` alias.
+  Resolution: use `./run.sh session check` and
+  `scripts/git_state.py --json`; both completed normally. ⚠️ TERMINAL ISSUE:
+  unsupported `session status` -> used the documented checks.
+- Confirmed root cause: the shell pattern mixed two quoting syntaxes.
+  Resolution: rerun `rg` with a single-quoted pattern that omits Markdown
+  delimiters; the audit entry position was then verified without mutation.
+  ⚠️ TERMINAL ISSUE: unmatched shell quote -> used one literal regex quote.
+- Confirmed root cause: the final validator resolves the newest receipt named
+  by the session log, so the missing LIB-PRO-011 binding fell back to an older
+  task receipt whose evidence had expired. Resolution: generate and validate a
+  fresh task-owned HOLD receipt with explicit unknown remote, PR, review,
+  integration, retention, and authorization states, then bind its exact path
+  below. `git_handoff_receipt.py validate` reports the LIB-PRO-011 receipt as
+  valid.
+- Confirmed root cause: visual placement at EOF did not satisfy the maintained
+  parser's first-block current-session contract. Resolution: move only the
+  task-owned LIB-PRO-011 block below the log preamble and regenerate the
+  receipt-bound next-session handoff from that exact focus. No prior session
+  content was changed.
+
+### Validation through content freeze
+
+- Session start bound the lane to clean base
+  `6a4683eb8b21bff77f2991230b4458463e61f419` and the current worktree Python
+  source.
+- The exact wheel and tag have no runtime-path drift under
+  `Python/structural_lib/`; the audit document records wheel origin, SHA-256,
+  and source commit.
+- Direct source-bound reproductions confirmed all added findings and also
+  retained control groups: sampled flanged beam, optimizer, slab, footing,
+  wall, staircase, and deep-beam invalid inputs fail closed.
+- `scripts/audit_input_validation.py` produced the frozen 763-parameter
+  ownership totals; `scripts/check_public_route_safety.py` passed 21 Python and
+  five FastAPI targets, establishing the documented gate mismatch.
+- Documentation front matter, exact-file metadata, all 1,043 maintained local
+  links, and `docs/README.md` index links pass after content freeze.
+- `./run.sh check --quick` passed all 10 checks with no reused result.
+
+**Git handoff receipt:** `docs/verification/lib-pro-011-external-api-readiness-audit-git-handoff-receipt.json`
+
 ## 2026-08-27 — Session: MAINT-0136 consolidated Git integration
 
 **Agent:** Codex (`orchestrator`, sole integration writer/operator; no
@@ -9776,110 +9887,3 @@ write-back, optimization, release, and professional approval remain excluded.
   broad repository suites are therefore unchanged and not rerun.
 
 **Git handoff receipt:** `docs/verification/e1-excel-routine-workbench-git-handoff-receipt.json`
-
-## 2026-08-27 — Session: LIB-PRO-011 external API readiness audit
-
-**Agent:** Codex (`governance`, sole writer)
-
-**Branch:** `codex/lib-pro-011-external-api-audit`.
-
-**Focus:** Preserve the exact published-wheel external-use findings, broaden
-the audit across advertised Python signatures and downstream consumers, explain
-why maintained audits did not close the defects, compare official peer-library
-patterns, and freeze implementation-ready repair packets. Runtime fixes,
-formula changes, package publication, and release approval remain excluded.
-
-### Issues encountered
-
-- Exact-wheel and source-bound probes reproduced safe-looking or materially
-  incomplete outcomes from invalid combined-beam, direct-detailing, BBS,
-  standalone torsion, structured beam, smart-analysis, compliance, and unified
-  column inputs.
-- The maintained validation audit reported 357 `UNPROVEN` parameters while the
-  frozen public-route safety gate still passed its 21 Python and five FastAPI
-  targets; the discrepancy required tracing rather than treating either output
-  as complete readiness evidence.
-- Public metadata and repository installation guidance still described
-  `0.24.0a1` as unpublished even though the exact PyPI wheel exists, and the
-  generated API classification did not match which compatibility workflows the
-  READMEs promote to external users.
-- The first documentation front-matter check rejected `status: complete`, which
-  is not an allowed active-document lifecycle value.
-- A read-only source search guessed single-file wall, staircase, and deep-beam
-  module paths although those implementations use package directories.
-- A closeout check guessed a `session status` subcommand that the maintained
-  session interface does not provide.
-- A read-only session-log location check embedded Markdown backticks inside a
-  double-quoted zsh pattern and failed before running.
-- The first final session check selected an older E1 receipt because the new
-  LIB-PRO-011 entry did not yet bind a task-owned handoff receipt; its stale
-  evidence produced a hold-set mismatch.
-
-### Root causes and resolutions
-
-- Confirmed root cause: older parameter-based routes own partial plausibility
-  checks locally, while strict project intake, slabs, footings, and newer
-  INDIA-family routes use stronger boundaries. Resolution in this audit packet:
-  record stable `P0`/`P1`/`P2` reproductions and freeze a shared-boundary repair
-  sequence covering producers and BBS/report/export consumers. No runtime
-  behavior was changed.
-- Confirmed root cause: static validation ownership records the presence of a
-  guard, not its complete finite/sign/domain/relation/identity/collection
-  contract, and it does not recursively inspect structured request fields.
-  Release UAT concentrates adversarial cases in project/CLI intake, while the
-  required route-safety gate is a hand-maintained target list. Resolution:
-  document the exact 148 `PROVEN`, 122 `DELEGATED`, 357 `UNPROVEN`, and 136
-  `NOT_APPLICABLE` counts and define a contract-driven advertised-surface gate
-  as Packet E.
-- Confirmed root cause: user-facing promotion, internal API claim disposition,
-  and post-publication documentation are maintained by separate controls.
-  Resolution: bind the audit to wheel hash
-  `b5e0df7b561e8c715f37c602200eaae2c369ec5dc992eec87110a77c1026201a`,
-  distinguish stable versus prerelease pip selection, and freeze metadata,
-  executable-cookbook, and signature-drift work as Packet D.
-- Confirmed root cause: the front-matter schema permits `active`, `draft`,
-  `deprecated`, or `archived`, while completion is expressed in the document
-  decision rather than its lifecycle field. Resolution: retain `status: active`
-  and state the audit packet's completion in the final verdict. Front-matter and
-  exact-file metadata checks pass.
-- Confirmed root cause: wall, staircase, and deep-beam code is split into
-  subpackages. Resolution: rerun the targeted `rg` search against the exact
-  directories; enum and contract-error evidence was found without mutation.
-  ⚠️ TERMINAL ISSUE: guessed module files did not exist -> searched the
-  discovered package directories.
-- Confirmed root cause: session state is exposed through `session context`,
-  `session check`, and the Git-state authority rather than a `status` alias.
-  Resolution: use `./run.sh session check` and
-  `scripts/git_state.py --json`; both completed normally. ⚠️ TERMINAL ISSUE:
-  unsupported `session status` -> used the documented checks.
-- Confirmed root cause: the shell pattern mixed two quoting syntaxes.
-  Resolution: rerun `rg` with a single-quoted pattern that omits Markdown
-  delimiters; the audit entry is now verified at the end of the log.
-  ⚠️ TERMINAL ISSUE: unmatched shell quote -> used one literal regex quote.
-- Confirmed root cause: the final validator resolves the newest receipt named
-  by the session log, so the missing LIB-PRO-011 binding fell back to an older
-  task receipt whose evidence had expired. Resolution: generate and validate a
-  fresh task-owned HOLD receipt with explicit unknown remote, PR, review,
-  integration, retention, and authorization states, then bind its exact path
-  below. `git_handoff_receipt.py validate` reports the LIB-PRO-011 receipt as
-  valid.
-
-### Validation through content freeze
-
-- Session start bound the lane to clean base
-  `6a4683eb8b21bff77f2991230b4458463e61f419` and the current worktree Python
-  source.
-- The exact wheel and tag have no runtime-path drift under
-  `Python/structural_lib/`; the audit document records wheel origin, SHA-256,
-  and source commit.
-- Direct source-bound reproductions confirmed all added findings and also
-  retained control groups: sampled flanged beam, optimizer, slab, footing,
-  wall, staircase, and deep-beam invalid inputs fail closed.
-- `scripts/audit_input_validation.py` produced the frozen 763-parameter
-  ownership totals; `scripts/check_public_route_safety.py` passed 21 Python and
-  five FastAPI targets, establishing the documented gate mismatch.
-- Documentation front matter, exact-file metadata, all 1,043 maintained local
-  links, and `docs/README.md` index links pass after content freeze.
-- `./run.sh check --quick` passed all 10 checks with no reused result.
-
-**Git handoff receipt:** `docs/verification/lib-pro-011-external-api-readiness-audit-git-handoff-receipt.json`
