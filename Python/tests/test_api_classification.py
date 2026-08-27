@@ -68,7 +68,16 @@ def test_canonical_task_api_is_capability_bound_and_artifact_scoped() -> None:
         "claim-surface-matrix/v1"
     )
     assert "design_beam_is456" in registry["canonical_task_exports"]
-    assert registry["canonical_journey_ids"] == ["is456.beam.design/v1"]
+    assert registry["canonical_journey_ids"][0] == "is456.beam.design/v1"
+    assert len(registry["canonical_journey_ids"]) == 13
+    assert {item["journey_id"] for item in registry["family_facade_workflows"]} == set(
+        registry["canonical_journey_ids"]
+    )
+    assert all(
+        item["request_schema"]["type"] == "object"
+        and item["request_schema"]["additionalProperties"] is False
+        for item in registry["family_facade_workflows"]
+    )
     assert registry["canonical_support_exports"] == [
         "EffectiveDepthBasisV1",
         "EffectiveDepthResolutionV1",
@@ -117,3 +126,8 @@ def test_canonical_task_api_is_capability_bound_and_artifact_scoped() -> None:
     }
     assert facade_dispositions["design"] == "canonical"
     assert facade_dispositions["design_and_detail"] == "canonical"
+    family_facade_modules = {
+        item["module"] for item in registry["family_facade_workflows"]
+    }
+    classified_modules = {surface["module"] for surface in registry["surfaces"]}
+    assert family_facade_modules <= classified_modules

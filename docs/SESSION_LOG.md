@@ -5,6 +5,121 @@
 
 ---
 
+## 2026-08-28 — Session: LIB-PRO-013 F0 Family Convergence
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents).
+
+**Branch:** `codex/lib-pro-013-f0-family-convergence`.
+
+**Focus:** Execute authorized LIB-PRO-012 Packets F1-F3 as one F0 family
+construction/facade convergence cycle while preserving B0 common contracts,
+calculation owners, unrelated lanes, protected sources, Windows evidence state,
+and all professional/release claim boundaries.
+
+**Completed:**
+
+- Freshly fetched and proved exact `origin/main`
+  `75f951e3d9d8e75ab842fc3f69273b71ca7886a6`, tree
+  `9df2321f463e378a5f6a9bb9ea2ce92b6ba050ce`, with accepted B0 merge
+  `44ef7bc4e8c98d01f32291730ab77ed16d077823` in its ancestry. The maintained
+  Git-state authority found no operation, conflict, stash, active overlapping
+  candidate, or non-Dependabot PR overlap; the detached dirty `e54a` lane was
+  preserved untouched.
+- Added strict grouped F1, F2, and F3 request contracts; one shared finite
+  result/error boundary; ten new thin IS 456 facade modules beside the accepted
+  B0 beam facade; and one frozen registry for 13 distinct route/contract
+  classes. Every facade only validates, flattens, delegates, and wraps the
+  maintained typed calculation.
+- Generated per-route validation schemas, compatibility-owner mappings,
+  journey IDs, and evidence-class labels; registered the exact-wheel verifier;
+  and documented a runnable family-facade recipe and all promoted routes.
+- Froze one valid and one invalid exact-wheel recipe per route class. The final
+  wheel `6b94112c...e93ec6b` passes 13/13 valid and 13/13 structured-negative
+  recipes, preserving 11 `PASS`, one engineering `FAIL`, and one review `HOLD`.
+- Preserved the separate cross-standard capability truth at 13 supported and 8
+  held families. Existing IS 13920 owners, calculation formulas, normalized
+  data, B0 owners, Windows state, release metadata, and professional claims are
+  unchanged.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-013-f0-family-convergence-git-handoff-receipt.json`
+
+### Issues encountered
+
+- Session start initially found an already-finished Windows-readiness telemetry
+  session still marked active in ignored shared operational state.
+- A zsh ancestry inspection loop used the read-only special variable `status`.
+- `./run.sh context show api` named a context area that does not exist.
+- The first generated-registry invocation assumed an unsupported `--write`
+  option.
+- The first static/control pass found untyped Pydantic validators, float-valued
+  `Literal` annotations unsupported by mypy, dynamically typed slab wrapper
+  returns, one Black formatting difference, and an unregistered new top-level
+  exact-wheel verifier.
+- The compatibility compactness test still enforced the earlier beam-only
+  512-KiB packed-ledger ceiling and failed after F0 added 13 generated schemas.
+- The first usage milestone command supplied candidate/retry counters that the
+  maintained session tool reserves for final closeout checkpoints.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the previous task had completed and merged, but its
+  ignored usage/session telemetry had not received its closeout transition.
+  Resolution: prove the immutable Windows PR/merge state, reconcile only that
+  operational telemetry, then start exactly one F0 session. No tracked or
+  Windows evidence content was changed.
+- Confirmed root cause: zsh reserves `status` for the last command result.
+  Resolution: rerun the read-only ancestry loop with `lane_state`; all sibling
+  candidates remained non-overlapping. ⚠️ TERMINAL ISSUE: zsh rejected a
+  write to read-only `status` -> reran with `lane_state`.
+- Confirmed root cause: maintained context areas are registry names rather than
+  guessed product labels. Resolution: list the areas and read `services`, the
+  owner for the facade/service work. ⚠️ TERMINAL ISSUE: unknown `api` context
+  area -> used the maintained `services` area.
+- Confirmed root cause: the API-classification generator writes by default and
+  exposes only `--check` for read-only validation. Resolution: run its default
+  mode, then `--check`; both generated owners are current. ⚠️ TERMINAL ISSUE:
+  unsupported generator `--write` -> used the documented default write mode.
+- Confirmed root cause: the new code had not yet passed the repository's exact
+  static contracts, and the control registry correctly requires every
+  top-level script to have one operation owner. Resolution: add exact return
+  types and a `NoReturn` error translator, use integer-valued steel-grade
+  literals, type the slab wrapper helper, format the affected file, register
+  the verifier in the canonical control plane, and regenerate its legacy
+  projection. Affected Ruff/Black, configured mypy, current-recipe, focused,
+  control, and generated checks all pass.
+- Confirmed root cause: the old byte ceiling measured the preceding API surface
+  size, not the compactness outcome. Resolution: compare the packed ledger to
+  its own expanded compact representation; the 576,505-byte packed ledger is
+  about 18.8% of the 3,064,649-byte expanded representation. The focused
+  compatibility test passes without weakening projection reconciliation.
+- Confirmed root cause: candidate/retry evidence is meaningful only after an
+  immutable candidate exists. Resolution: record the content-freeze milestone
+  with task, verification, and exact 1+0 agent usage only; defer candidate and
+  retry counters to closeout. ⚠️ TERMINAL ISSUE: milestone rejected closeout-
+  only counters -> reran with milestone-eligible fields.
+
+### Validation through content freeze
+
+- One exact source-built wheel imports the task-owned `structural_lib` package
+  from its isolated installation and passes all 26 F0 valid/invalid recipes.
+- The focused owner/golden/publication/classification selection passes 143
+  cases. Changed-file Ruff and Black pass; configured mypy reports no issues in
+  17 affected source files.
+- Architecture checks 232 files with zero violations; import validation checks
+  742 files and 5,339 imports with zero broken imports; circular analysis checks
+  212 files with no cycle. The control plane passes with 117 operations and
+  103/103 scripts; generated classification and compatibility owners are
+  current.
+- Documentation passes all five maintained checks at 412 active Markdown files
+  and zero broken links; context, instruction composition, config precedence,
+  session handoff, and the task-to-Git receipt are current. One quick gate,
+  efficiency policy, and the 1+0-agent milestone pass; the single quick gate is
+  10/10 green. Normal hooks, immutable candidate, read-only session end, and
+  hosted acceptance remain the closeout sequence.
+
+---
+
 ## 2026-08-28 — Session: LIB-PRO-013 Windows evidence lane readiness
 
 **Agent:** Codex (`doc-master`, sole writer; no subagents).

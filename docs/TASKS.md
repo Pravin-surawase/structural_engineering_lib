@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-28 — LIB-PRO-013 B0 integrated; Windows evidence lane ready; F0 next
+**Updated:** 2026-08-28 — LIB-PRO-013 F0 locally complete; immutable candidate and hosted acceptance pending
 
 ---
 
@@ -168,8 +168,15 @@ Python beam contract is frozen, exact v1/v2 parity passes, named downstream
 consumers fail closed without partial artifacts, the final focused selection
 passes 451 cases, the post-hook invalidated-path replay passes 416 cases, and
 the source-free B0 wheel `25eacdd7...a803942f` passes the 29-case UAT with 15
-registered CLI commands. F0 is now the active authorized successor; R0 follows
-accepted F0. Release remains exact-candidate work rather than an F0/R0 gate,
+registered CLI commands. F0 Packets F1-F3 are now locally complete on one
+candidate lane: 13 frozen facade route/contract classes have strict grouped
+construction, common typed result/error semantics, generated schemas and
+compatibility ownership, and valid/invalid exact-wheel recipes. The 143-case
+focused owner/golden/publication selection and the exact wheel
+`6b94112c...e93ec6b` pass without changing the accepted B0 owners. F0 is not
+accepted until the immutable candidate passes its one hosted cycle and merges
+unchanged. R0 follows accepted F0. Release remains exact-candidate work rather
+than an F0/R0 gate,
 and the single engineer review occurs only after final R0 integration. Shared
 validation, facade, result, manifest, generated API, documentation, task, and
 session owners remain single-writer surfaces.
@@ -371,7 +378,8 @@ write-back/nightly work remain outside E1.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-013-B0 | Implement the common input/error/facade foundation, canonical beam vertical slice, and typed downstream convergence from A0 C2 | @structural-math | 12–19 engineer-days | P1 | 🟡 LOCAL COMPLETE — consolidated gates/candidate/hosted cycle pending; professional review deferred to final integrated-library stage |
+| LIB-PRO-013-F0 | Converge F1-F3 family construction/facades and exact-wheel recipes on the accepted B0 foundation | @structural-math | 16–26 engineer-days | P1 | 🟡 LOCAL COMPLETE — immutable candidate, hosted checks, and unchanged merge pending; Windows/professional/release claims remain held |
+| LIB-PRO-013-WINDOWS-REBIND | After accepted F0, freshly bind the protected Windows evidence lane to the exact F0 merge before R0 uses it | bounded Windows evidence owner | evidence gate | P1 | ⏸ BLOCKED ON ACCEPTED F0 — do not open or mutate the Windows base clone during F0 |
 | SPARK-001-G0 | Reassess the stale Spark work-program proposal before any implementation | repository owner | review gate | P2 | ⏸ OWNER REVIEW — the 2026-08-11 model/preview assumptions and bulk wave require refresh or rejection |
 
 ## Backlog

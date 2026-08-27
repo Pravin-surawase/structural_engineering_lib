@@ -1,0 +1,64 @@
+{
+  "authorization": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-27T20:44:52Z",
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "reference": "Owner explicitly authorized LIB-PRO-013-F0-FAMILY-CONVERGENCE from exact accepted preparation main, including one immutable candidate, one PR, required hosted checks, and unchanged policy-compliant merge. Windows, release, publication, professional approval, cleanup, and destructive operations remain excluded.",
+      "status": "OBSERVED",
+      "query_status": "OK",
+      "observed_at_utc": "2026-08-27T20:44:52Z"
+    },
+    "authorized_actions": [
+      "IMPLEMENT_LIB_PRO_012_PACKETS_F1_F2_F3_AS_F0",
+      "EDIT_F0_FACADE_CONTRACT_RECIPE_TEST_GENERATED_DOCUMENTATION_AND_CONTROL_OWNERS",
+      "FREEZE_EXACT_SOURCE_WHEEL_AND_FAMILY_EVIDENCE",
+      "CREATE_IMMUTABLE_F0_CANDIDATE_PUSH_PR_AND_MERGE_UNCHANGED_GREEN_HEAD",
+      "PROCEED_TO_SEPARATE_WINDOWS_REBIND_AND_R0_ONLY_AFTER_ACCEPTED_F0"
+    ],
+    "prohibited_actions": [
+      "CLAIM_WINDOWS_ACCEPTANCE_PROFESSIONAL_APPROVAL_ENGINEERING_USE_RELEASE_PUBLICATION_OR_WHOLE_LIBRARY_READINESS",
+      "OPEN_OR_MUTATE_WINDOWS_BASE_CLONE_EXCEL_ETABS_WORKBOOKS_MODELS_OLDER_CLONES_TOOLCHAINS_OR_EVIDENCE_DATASETS",
+      "INVENT_TOPOLOGY_ACTIONS_APPLICABILITY_GEOTECHNICAL_EVIDENCE_REVIEW_NORMALIZED_DATA_FORMULAS_OR_HELD_FAMILY_SUPPORT",
+      "TRACK_PROTECTED_STANDARD_PROSE_IMAGES_OR_PRIVATE_SOURCE_CONTENT",
+      "DELETE_BRANCH_WORKTREE_REF_ARCHIVE_ISSUE_RETAINED_DATA_OR_PROTECTED_SOURCE",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_REWRITE_FORCE_PUSH_OR_BYPASS_CHECKS"
+    ],
+    "next_action": "CREATE_IMMUTABLE_F0_CANDIDATE_PUSH_PR_AND_MERGE_UNCHANGED_GREEN_HEAD",
+    "target_binding": {
+      "task_id": "LIB-PRO-013-F0-FAMILY-CONVERGENCE",
+      "branch": "codex/lib-pro-013-f0-family-convergence",
+      "head_sha": "75f951e3d9d8e75ab842fc3f69273b71ca7886a6",
+      "actions": [
+        "IMPLEMENT_LIB_PRO_012_PACKETS_F1_F2_F3_AS_F0",
+        "EDIT_F0_FACADE_CONTRACT_RECIPE_TEST_GENERATED_DOCUMENTATION_AND_CONTROL_OWNERS",
+        "FREEZE_EXACT_SOURCE_WHEEL_AND_FAMILY_EVIDENCE",
+        "CREATE_IMMUTABLE_F0_CANDIDATE_PUSH_PR_AND_MERGE_UNCHANGED_GREEN_HEAD",
+        "PROCEED_TO_SEPARATE_WINDOWS_REBIND_AND_R0_ONLY_AFTER_ACCEPTED_F0"
+      ]
+    }
+  },
+  "integration": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-27T20:44:52Z",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_F0_PR"
+  },
+  "retention": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-27T20:44:52Z",
+    "decision": "RETAIN_ALL_UNRELATED_WORKTREES_REFS_ARCHIVES_IGNORED_DATA_PROTECTED_SOURCES_AND_WINDOWS_EVIDENCE_LANES",
+    "owner": "Main agent under owner and repository preservation policy",
+    "holds": [
+      "PRESERVE_DIRTY_DETACHED_E54A_LANE",
+      "PRESERVE_EVERY_UNRELATED_DIRTY_STAGED_UNTRACKED_STASHED_DETACHED_OR_IGNORED_ITEM",
+      "PRESERVE_WINDOWS_BASE_CLONE_EXCEL_ETABS_WORKBOOKS_MODELS_TOOLCHAINS_AND_DATASETS",
+      "BRANCH_WORKTREE_REF_ARCHIVE_ISSUE_RETAINED_DATA_AND_PROTECTED_SOURCE_DELETION_NOT_AUTHORIZED"
+    ]
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

@@ -34,6 +34,16 @@ DEFAULT_OUT = REPO_ROOT / "docs/reference/api-classification.json"
 DEFAULT_COMPATIBILITY_OUT = REPO_ROOT / "docs/reference/api-compatibility-ledger.json"
 SURFACE_POLICY = (
     ("structural_lib.design.is456.beam", "preview"),
+    ("structural_lib.design.is456.torsion", "preview"),
+    ("structural_lib.design.is456.column", "preview"),
+    ("structural_lib.design.is456.slab", "preview"),
+    ("structural_lib.design.is456.wall", "preview"),
+    ("structural_lib.design.is456.staircase", "preview"),
+    ("structural_lib.design.is456.deep_beam", "preview"),
+    ("structural_lib.design.is456.flat_slab", "preview"),
+    ("structural_lib.design.is456.isolated_footing", "preview"),
+    ("structural_lib.design.is456.combined_footing", "preview"),
+    ("structural_lib.design.is456.strap_footing", "preview"),
     ("structural_lib", "preview"),
     ("structural_lib.services.api", "preview"),
     ("structural_lib.api", "compatibility"),
@@ -50,7 +60,9 @@ _HOLD_MODULE_PREFIXES = (
     "structural_lib.codes.is456.load_analysis",
 )
 _CANONICAL_TASK_EXPORTS = frozenset({"design_beam_is456"})
-_CANONICAL_FACADE_MODULE = "structural_lib.design.is456.beam"
+_CANONICAL_FACADE_MODULES = frozenset(
+    module for module, _classification in SURFACE_POLICY if ".design.is456." in module
+)
 _CANONICAL_SUPPORT_EXPORTS = frozenset(
     {"EffectiveDepthBasisV1", "EffectiveDepthResolutionV1"}
 )
@@ -204,6 +216,14 @@ def _canonical_owner(value: object, fallback: str) -> str:
     if module and name:
         return f"{module}.{name}"
     return fallback
+
+
+def _import_qualified_type(path: str) -> type[Any]:
+    module_name, _, name = path.rpartition(".")
+    value = getattr(importlib.import_module(module_name), name)
+    if not inspect.isclass(value):
+        raise RuntimeError(f"Family request type is not a class: {path}")
+    return value
 
 
 def _identity_key(value: object, fallback: str) -> str:
@@ -641,7 +661,7 @@ def _claim_disposition(
 ) -> str:
     if not declared_export:
         return "internal"
-    if module_name == _CANONICAL_FACADE_MODULE:
+    if module_name in _CANONICAL_FACADE_MODULES:
         return "canonical"
     if module_name == "structural_lib.api":
         return "compatibility"
@@ -730,6 +750,7 @@ def build_registry() -> dict[str, Any]:
     sys.path.insert(0, str(REPO_ROOT / "Python"))
     from structural_lib import __version__
     from structural_lib.services.capabilities import get_supported_is456_capabilities
+    from structural_lib.services.family_facade_registry import FAMILY_FACADE_WORKFLOWS
 
     capability_bound_exports = {
         workflow
@@ -773,7 +794,26 @@ def build_registry() -> dict[str, Any]:
             "internal": "Undeclared implementation detail.",
         },
         "canonical_task_exports": sorted(canonical_task_exports),
-        "canonical_journey_ids": ["is456.beam.design/v1"],
+        "canonical_journey_ids": [
+            workflow.journey_id for workflow in FAMILY_FACADE_WORKFLOWS
+        ],
+        "family_facade_workflows": [
+            {
+                "journey_id": workflow.journey_id,
+                "module": workflow.module,
+                "request_contract": workflow.request_contract,
+                "request_type": workflow.request_type,
+                "request_schema": _import_qualified_type(
+                    workflow.request_type
+                ).model_json_schema(mode="validation"),
+                "result_contract": workflow.result_contract,
+                "constructor": workflow.constructor,
+                "operation": workflow.operation,
+                "compatibility_owner": workflow.compatibility_owner,
+                "evidence_class": workflow.evidence_class,
+            }
+            for workflow in FAMILY_FACADE_WORKFLOWS
+        ],
         "canonical_support_exports": sorted(_CANONICAL_SUPPORT_EXPORTS),
         "advanced_capability_exports": sorted(
             capability_bound_exports - canonical_task_exports
@@ -931,7 +971,7 @@ def _projection_disposition(module_name: str, claim_disposition: str) -> str:
 
 
 def _projection_reason(module_name: str, name: str, claim_disposition: str) -> str:
-    if module_name == _CANONICAL_FACADE_MODULE:
+    if module_name in _CANONICAL_FACADE_MODULES:
         return (
             "The family facade owns the strict request, typed result, and named "
             "composition journey while delegating calculations to maintained owners."
