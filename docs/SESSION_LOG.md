@@ -53,6 +53,9 @@ efficient read-only LIB-PRO-013 A0 execution plan without starting A0.
 - One existing combined BBS/DXF scope-hold test reused primary beam fields
   that are not part of the exact export model; strict extra-field rejection
   correctly stopped it before the intended assertion.
+- The first clean read-only session closeout occurred after the original
+  handoff receipt's short evidence-freshness window and failed only with
+  `HOLD_SET_MISMATCH` / `RETENTION_STALE_EVIDENCE`.
 
 ### Root causes and resolutions
 
@@ -83,6 +86,12 @@ efficient read-only LIB-PRO-013 A0 execution plan without starting A0.
   rather than an exact valid export request. Resolution: use only maintained
   export fields plus explicit span before applying the scope hold. Proof: the
   47-case focused FastAPI repair set and 788-case cross-layer selection pass.
+- Confirmed root cause: task-to-Git handoff receipts are deliberately
+  time-bound transition observations, and the verification/build/commit cycle
+  exceeded the first receipt's freshness window. Resolution: preserve that
+  historical candidate receipt and add a fresh successor closeout observation
+  in an explicit repair candidate; no runtime or test result changed. Proof:
+  the successor receipt validates and clean read-only session closeout passes.
 
 ### Validation through content freeze
 
@@ -102,7 +111,7 @@ efficient read-only LIB-PRO-013 A0 execution plan without starting A0.
   checks are owned by the immutable candidate after all versioned content
   freezes.
 
-**Git handoff receipt:** `docs/verification/lib-pro-012-s0-post-merge-audit-a0-plan-git-handoff-receipt.json`
+**Git handoff receipt:** `docs/verification/lib-pro-012-s0-post-merge-audit-a0-plan-closeout-repair-git-handoff-receipt.json`
 
 ## 2026-08-27 — Session: LIB-PRO-012 S0 P0 safety closure
 

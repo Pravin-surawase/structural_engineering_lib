@@ -6,10 +6,10 @@
 - Date: 2026-08-27
 - Focus: Independently inspect merged LIB-PRO-012 S0, repair only confirmed
 - Completed: Re-established exact fetched-main, PR, hosted-check, tree-equivalence,; Replayed every mapped S0 route class against direct expert, composed service,; Closed the three confirmed transport manifestations left outside the merged
-- Git receipt: docs/verification/lib-pro-012-s0-post-merge-audit-a0-plan-git-handoff-receipt.json | sha256:2e5fd5bb22f423218627242cd168d96cff2136fed0b25c5a7532ecb614172164 | HOLD
-- Git identity: codex/lib-pro-012-s0-post-merge-audit-a0-plan@4cebcccb3a07b8046e31b23332236321ebee1d25 | upstream=origin/main@4cebcccb3a07b8046e31b23332236321ebee1d25 | base=origin/main@4cebcccb3a07b8046e31b23332236321ebee1d25 | tree=dirty | operation=none
+- Git receipt: docs/verification/lib-pro-012-s0-post-merge-audit-a0-plan-closeout-repair-git-handoff-receipt.json | sha256:4e1abf3c439a9e0a80503b0f3c0a73c729ef3e7e52f83c61dc0d3e921743dc80 | HOLD
+- Git identity: codex/lib-pro-012-s0-post-merge-audit-a0-plan@8916c2c5effae006c0701a4e3f5b04b315eb722a | upstream=origin/main@4cebcccb3a07b8046e31b23332236321ebee1d25 | base=origin/main@4cebcccb3a07b8046e31b23332236321ebee1d25 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
-- Next action: FREEZE_ONE_POST_MERGE_REPAIR_CANDIDATE_AND_RUN_ONE_HOSTED_CYCLE
+- Next action: PUBLISH_ONE_EXACT_POST_MERGE_REPAIR_HEAD
 <!-- HANDOFF:END -->
 
 ## Latest Handoff
