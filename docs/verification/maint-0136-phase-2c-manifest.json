@@ -1,0 +1,1862 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+      "query_status": "OK",
+      "reference": "active Codex task: please continue with 2c, you have full approval",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "INSPECT_LIVE_STATE",
+      "FREEZE_EXACT_PHASE_2C_TARGETS",
+      "COMMIT_PREPARATION_EVIDENCE"
+    ],
+    "exact_target_execution_authorized": false,
+    "next_action": "WAIT_FOR_OWNER_DECISION",
+    "next_required_authority": {
+      "action": "DELETE_ONLY_EXACT_FROZEN_PHASE_2C_TARGETS",
+      "local_branch_target_count": 4,
+      "remote_branch_target_count": 2,
+      "target_set_sha256": "08a68419515cf9f469e8a7bb3d0a1f4e92218c7e086de5bb89c71368093b23c7",
+      "total_ref_deletion_count": 6
+    },
+    "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+    "phase_preparation_authorized": true,
+    "phase_scope": "PHASE_2C_BRANCH_REF_ARCHIVE_CLEANUP_FULL_APPROVAL",
+    "prohibited_actions": [
+      "FORCE_DELETE_LOCAL_BRANCH",
+      "DELETE_NONINTEGRATED_BRANCH",
+      "DELETE_BRANCH_WITH_WORKTREE_OR_OPEN_PR",
+      "DELETE_TAG",
+      "DELETE_CODEX_MANAGED_REF",
+      "DELETE_RECOVERY_ARCHIVE",
+      "DELETE_PROTECTED_SOURCE",
+      "REMOVE_WORKTREE",
+      "PRUNE",
+      "GARBAGE_COLLECT",
+      "FORCE_PUSH",
+      "CLOSE_PULL_REQUEST"
+    ],
+    "query_status": "OK",
+    "reason": "The full Phase 2C approval preceded the immutable exact target digest required by the canonical branch classifier.",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "INSPECT_LIVE_STATE",
+        "FREEZE_EXACT_PHASE_2C_TARGETS",
+        "COMMIT_PREPARATION_EVIDENCE"
+      ],
+      "branch": "codex/maint-0136-phase-2c-preparation",
+      "head_sha": "18ed2f1f65a24b54029875fd1cad640dc2f0fae0",
+      "task_id": "MAINT-0136-PHASE-2C"
+    }
+  },
+  "before": {
+    "live_remote_heads": {
+      "codex/a1-canonical-transport-contract": "85872c846020ee9fb7cf654e8b5b3943f44fa531",
+      "codex/a2-lossless-intake-calculation": "2a6889b363aad85f5b45f5ba23b344efd08084d6",
+      "codex/b1-gravity-model-load-ledger": "4a7f13bca2fadfdb45017a296e6235c3b95dd401",
+      "codex/b2-gravity-workflow-v1": "b337efc73d0af9ff7bef623916cfe808dd79bed6",
+      "codex/column-pmm-experimental": "8a52ed0ff3d98113b47cf0c6791468684cac6c27",
+      "codex/e1-blank-workbook-guard": "514155b266af6dff3e30bf39ee28671c17345454",
+      "codex/e1-excel-routine-workbench": "ef5ee05c785904e1a01c2d09cc65649edc8745ab",
+      "codex/e1-g3-closeout": "53b9f56e5af0bae064ba3a545dbb9b86b4b336d7",
+      "codex/e1-review-bundle-export": "98c60bc1f7c3899c28f662e82399cb25d80bbf26",
+      "codex/e1-w0-maintenance-plan": "654e40b1370d098fca4d001146a030b9937536a8",
+      "codex/e1-workbook-open-repair": "ede01ef4fb6182a27e3f176e872478304fb5f256",
+      "codex/footing-isolated-v1": "886871aef93d9a955a3cc2fa613fe49bad589ce7",
+      "codex/git-governance-research": "51a8a57a7e4eaba5841f2fee86c83ae6287182bf",
+      "codex/implementation-first-verification-policy": "fffbfaaa0d928768efe7b703a0d8091555ad9a8e",
+      "codex/index-local-artifact-determinism": "65c37ad0836bd59ebef56b6d01faa144b791d020",
+      "codex/index-mtime-determinism": "cfb98da58af391bdefb23f8cfc83295876b44876",
+      "codex/india-3-beam-r1": "099937dc3da7c0083de793ed3b2972690a44d423",
+      "codex/india-3-column-r1": "4df72ea258610179a1496a255c1d6d320e3416bf",
+      "codex/india-3-g0-acceptance": "8466fb1458f41cb767117f5a49b4495b23d794eb",
+      "codex/india-3-g0-source-library": "9c976b1f4afd0540a5ec9eb3cab16861916ac89b",
+      "codex/india-3-g0-truth-audit": "b39fcda534ec757744a2d6f203f42e4350871cd1",
+      "codex/india-3-is13920-m0": "0a20774ec8978b7dcea6d7cd7db6966068b70703",
+      "codex/india-3-joint-r1": "a5657e1bbcea16079af527005c47b296cf95f742",
+      "codex/india-3-source-meta-r1": "13f0ff916a0d7c167e34b46ab9ae6cb2c50c9efd",
+      "codex/is456-slabs-plan": "7e623984e027141fff62e5129c23fdc16264f8e0",
+      "codex/lib-pro-002-a-strict-input": "18d043ef9ac6221936335e1b20676863b3c5bc9b",
+      "codex/lib-pro-002-b-lossless-import": "22c65d17874ec877a7f90f56ae6950131eddd462",
+      "codex/lib-pro-002-i-cli": "911b6e3d288db85bc3f2770a061598689a4e8ec3",
+      "codex/lib-pro-002-j-release-signal": "280dd9a9a31e8f318d385cb2ec43418d195ca4b3",
+      "codex/lib-pro-002-usability-refresh": "e17d57f8a6ae4f050892d07adf26856f45ffcec0",
+      "codex/lib-pro-004-safety-auditors": "ff55471c9b75a7c70369f857c387fdffad05899d",
+      "codex/lib-pro-005-release-safety-closure": "0979200d00ea32bd7464232f20558f353509be8a",
+      "codex/lib-pro-006-gravity-foundation": "6db242171427b93a2586de9c2c772ccba03243de",
+      "codex/lib-pro-007-g0-contract-freeze": "3b0c0c2551d5f1d31b1dd8251489e6ec632f57a4",
+      "codex/lib-pro-007-m0-cumulative-acceptance": "eb92db482734e531561f739cf6818104281ef451",
+      "codex/lib-pro-007-p1-optimization-truth": "6dd3fd4e17354f27846869ee48d10277c4703d0f",
+      "codex/lib-pro-007-p2-supplied-beam-reinforcement": "fa81954852285d59fe7c1e58de7c2b6cb3fa7971",
+      "codex/lib-pro-007-p3-footing-anchorage": "bfec16d13409519979135abc99b7b31ebc600688",
+      "codex/lib-pro-007-p4-practical-actions": "a2b813dbc2c5a873edabab30c36087ff7fea7eda",
+      "codex/lib-pro-007-p5-etabs-snapshot": "783cc15e37385d616044d00478f282d8bb6716f0",
+      "codex/lib-pro-007-p6-cross-surface-parity": "9647feddb672428e4f89348f5f82ad8c2cbe71cf",
+      "codex/lib-pro-007-p7-compatibility-convergence": "c9589815f2d8053b1d99f61bf38623cd2aebba2f",
+      "codex/lib-pro-008-pre-india3-safety": "f035abfa70037afab5e159f8395db1343ee346af",
+      "codex/lib-pro-009-rc-trust": "b4428e23adc8374d1acc6e7f2a2125d5aebff453",
+      "codex/lib-pro-010-rc-artifact": "595b3bcb1bb55bae0261016a3dddd87da4aca8e9",
+      "codex/maint-011-developer-gate-hygiene": "1f203f40ec162a5caf141b1c44444ec4f6d3470c",
+      "codex/maint-012a-control-registry": "f0cdf631d6c7d698c0a7b47b04030b4e23fb32a2",
+      "codex/maint-012b-index-architecture": "74bfd69ebf610b6cb324b7298b95ac840652ed4c",
+      "codex/maint-012c-evidence-scheduling": "56eff4d357ca62332fb0e50c6a55c2336af57c65",
+      "codex/maint-012d-scanner-consolidation": "66cd2bb51b9f4f1fd7f6c1f8ab57e5a4f188e20d",
+      "codex/maint-0130-safe-file-foundation": "b7b9623966c3131b8d5628496ea06328ce7210a6",
+      "codex/maint-0131-efficiency-controls": "a4dbb38e113fb2383997e1b294ab53f64325716a",
+      "codex/maint-0132-efficiency-observability": "2573b0d7959913b550eea6d6f15f34fd4e6edff5",
+      "codex/maint-0133-cleanup-inventory": "f8c8d2642fa1f61f78366b3a05ff8dded692b75d",
+      "codex/maint-0133b-packet-a": "203b33e9611dd27d5aecc0d47b7f49f607dc3dde",
+      "codex/maint-0134-agent-instructions": "3e753959a006b640357c46a711689be46f076102",
+      "codex/maint-0136-cleanup-preservation": "37b3678504b9e9a3d663f442ecab62f19a3f0b75",
+      "codex/parallel-task-policy": "75d666813b116b65f1620d9237a7bce972d5d3c6",
+      "codex/post-india2-cleanup-audit": "db07cdf843eccd2fea4fd7977c28a2d6ea60b24e",
+      "codex/post-india2-cleanup-execution": "a4e7ab4a148bd1fc2869bac566660e9881e507dd",
+      "codex/post-india2-maintenance": "9e681a2ec41944d4964733c0bf337bfe9018ea45",
+      "codex/pre-release-input-safety-plan": "40cfc02e5b8d6752f5805eef9e437b3b1a01de8d",
+      "codex/public-route-decisive-gates": "4d7e7e14faf4947d54364de73439927e69c26fc7",
+      "codex/public-route-domain-provenance": "d3f77cedbd5db856893193ec79d97529bf831ede",
+      "codex/public-route-failure-contracts": "fde41089a2314b749af1b4f48c80d21f3cfa0b44",
+      "codex/public-route-numeric-boundaries": "dca370088cd458d014fda9829b9f0e6cf003e158",
+      "codex/release-0231a2": "6f2f449a3fda1fe927d47c8d7d070a39a9e8c5b7",
+      "codex/release-0240a1-publication": "d3a4d2235d1811ab4bc2c860640f5660c6eed057",
+      "codex/release-preflight-alpha-policy": "20180a40137cb43f8a4d8f51093c6337ac94ced1",
+      "codex/release-smoothness": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d",
+      "dependabot/npm_and_yarn/react_app/eslint-10.8.0": "fbb0d7f781795bc05d50c1a93709d688ab455893",
+      "dependabot/npm_and_yarn/react_app/eslint/js-10.0.1": "31f92162c1ca5dc06beca270821f7ebc8582a0ff",
+      "dependabot/npm_and_yarn/react_app/framer-motion-13.0.0": "f889f6de4ed8a2323544a34b77b09f6c88b9e375",
+      "dependabot/npm_and_yarn/react_app/types/node-26.1.2": "c4d813f2bf9361c4db9863315a6294709c0261ed",
+      "dependabot/npm_and_yarn/react_app/vitejs/plugin-react-6.0.5": "1f710133fc76b32d6e4cbf47dae610023bc65633",
+      "dependabot/pip/Python/dev-dependencies-e904d59df0": "6fc9356afd44fa3476f56f1f222868c7c349c35f",
+      "dependabot/pip/Python/mypy-gte-1.19-and-lt-3": "2f8de4a079c4e7a1329048796816dedd026f5f3f",
+      "dependabot/pip/mypy-2.3.0": "ff9dfb21ea8745bdb48e4742dc3f73b0c0fff8fd",
+      "dependabot/pip/root-python-dependencies-fb8581aa0a": "b67577133be1c80f3958ba82097abc731045af75",
+      "gh-pages": "79b200337c074e0d288ed49dfd4348602ba35952",
+      "main": "ee04bfbf76b1a3a022d07c8203b5274a0f71998f"
+    },
+    "local_heads": {
+      "codex/a1-canonical-transport-contract": "85872c846020ee9fb7cf654e8b5b3943f44fa531",
+      "codex/a2-lossless-intake-calculation": "2a6889b363aad85f5b45f5ba23b344efd08084d6",
+      "codex/b1-gravity-model-load-ledger": "4a7f13bca2fadfdb45017a296e6235c3b95dd401",
+      "codex/b2-gravity-workflow-v1": "b337efc73d0af9ff7bef623916cfe808dd79bed6",
+      "codex/e1-blank-workbook-guard": "514155b266af6dff3e30bf39ee28671c17345454",
+      "codex/e1-excel-routine-workbench": "ef5ee05c785904e1a01c2d09cc65649edc8745ab",
+      "codex/e1-g3-closeout": "53b9f56e5af0bae064ba3a545dbb9b86b4b336d7",
+      "codex/e1-review-bundle-export": "98c60bc1f7c3899c28f662e82399cb25d80bbf26",
+      "codex/e1-w0-maintenance-plan": "654e40b1370d098fca4d001146a030b9937536a8",
+      "codex/e1-workbook-open-repair": "ede01ef4fb6182a27e3f176e872478304fb5f256",
+      "codex/excel-product-planning": "a0e115e17009cc14b3d883e3c291d47c32f7ca4e",
+      "codex/footing-isolated-v1": "886871aef93d9a955a3cc2fa613fe49bad589ce7",
+      "codex/git-governance-research": "657037364bbb49f2ef834c70f3a3c704bac83c7b",
+      "codex/implementation-first-verification-policy": "fffbfaaa0d928768efe7b703a0d8091555ad9a8e",
+      "codex/index-local-artifact-determinism": "65c37ad0836bd59ebef56b6d01faa144b791d020",
+      "codex/index-mtime-determinism": "cfb98da58af391bdefb23f8cfc83295876b44876",
+      "codex/india-3-beam-r1": "099937dc3da7c0083de793ed3b2972690a44d423",
+      "codex/india-3-column-r1": "4df72ea258610179a1496a255c1d6d320e3416bf",
+      "codex/india-3-g0-acceptance": "8466fb1458f41cb767117f5a49b4495b23d794eb",
+      "codex/india-3-g0-source-library": "9c976b1f4afd0540a5ec9eb3cab16861916ac89b",
+      "codex/india-3-g0-truth-audit": "b39fcda534ec757744a2d6f203f42e4350871cd1",
+      "codex/india-3-is13920-m0": "0a20774ec8978b7dcea6d7cd7db6966068b70703",
+      "codex/india-3-joint-r1": "a5657e1bbcea16079af527005c47b296cf95f742",
+      "codex/india-3-source-meta-r1": "13f0ff916a0d7c167e34b46ab9ae6cb2c50c9efd",
+      "codex/is456-slabs-plan": "7e623984e027141fff62e5129c23fdc16264f8e0",
+      "codex/lib-pro-002-a-strict-input": "18d043ef9ac6221936335e1b20676863b3c5bc9b",
+      "codex/lib-pro-002-b-lossless-import": "22c65d17874ec877a7f90f56ae6950131eddd462",
+      "codex/lib-pro-002-i-cli": "911b6e3d288db85bc3f2770a061598689a4e8ec3",
+      "codex/lib-pro-002-j-release-signal": "280dd9a9a31e8f318d385cb2ec43418d195ca4b3",
+      "codex/lib-pro-002-usability-refresh": "e17d57f8a6ae4f050892d07adf26856f45ffcec0",
+      "codex/lib-pro-004-safety-auditors": "ff55471c9b75a7c70369f857c387fdffad05899d",
+      "codex/lib-pro-005-release-safety-closure": "0979200d00ea32bd7464232f20558f353509be8a",
+      "codex/lib-pro-006-gravity-foundation": "6db242171427b93a2586de9c2c772ccba03243de",
+      "codex/lib-pro-007-g0-contract-freeze": "3b0c0c2551d5f1d31b1dd8251489e6ec632f57a4",
+      "codex/lib-pro-007-m0-cumulative-acceptance": "eb92db482734e531561f739cf6818104281ef451",
+      "codex/lib-pro-007-p1-optimization-truth": "6dd3fd4e17354f27846869ee48d10277c4703d0f",
+      "codex/lib-pro-007-p2-supplied-beam-reinforcement": "fa81954852285d59fe7c1e58de7c2b6cb3fa7971",
+      "codex/lib-pro-007-p3-footing-anchorage": "bfec16d13409519979135abc99b7b31ebc600688",
+      "codex/lib-pro-007-p4-practical-actions": "a2b813dbc2c5a873edabab30c36087ff7fea7eda",
+      "codex/lib-pro-007-p5-etabs-snapshot": "783cc15e37385d616044d00478f282d8bb6716f0",
+      "codex/lib-pro-007-p6-cross-surface-parity": "9647feddb672428e4f89348f5f82ad8c2cbe71cf",
+      "codex/lib-pro-007-p7-compatibility-convergence": "c9589815f2d8053b1d99f61bf38623cd2aebba2f",
+      "codex/lib-pro-008-pre-india3-safety": "f035abfa70037afab5e159f8395db1343ee346af",
+      "codex/lib-pro-009-rc-trust": "b4428e23adc8374d1acc6e7f2a2125d5aebff453",
+      "codex/lib-pro-010-rc-artifact": "595b3bcb1bb55bae0261016a3dddd87da4aca8e9",
+      "codex/maint-011-developer-gate-hygiene": "1f203f40ec162a5caf141b1c44444ec4f6d3470c",
+      "codex/maint-012a-control-registry": "f0cdf631d6c7d698c0a7b47b04030b4e23fb32a2",
+      "codex/maint-012b-index-architecture": "74bfd69ebf610b6cb324b7298b95ac840652ed4c",
+      "codex/maint-012c-evidence-scheduling": "56eff4d357ca62332fb0e50c6a55c2336af57c65",
+      "codex/maint-012d-scanner-consolidation": "66cd2bb51b9f4f1fd7f6c1f8ab57e5a4f188e20d",
+      "codex/maint-0130-safe-file-foundation": "b7b9623966c3131b8d5628496ea06328ce7210a6",
+      "codex/maint-0131-efficiency-controls": "a4dbb38e113fb2383997e1b294ab53f64325716a",
+      "codex/maint-0132-efficiency-observability": "2573b0d7959913b550eea6d6f15f34fd4e6edff5",
+      "codex/maint-0133-cleanup-inventory": "f8c8d2642fa1f61f78366b3a05ff8dded692b75d",
+      "codex/maint-0133b-packet-a": "203b33e9611dd27d5aecc0d47b7f49f607dc3dde",
+      "codex/maint-0134-agent-instructions": "3e753959a006b640357c46a711689be46f076102",
+      "codex/maint-0136-cleanup-preservation": "37b3678504b9e9a3d663f442ecab62f19a3f0b75",
+      "codex/maint-0136-phase-2a-cache-cleanup": "2d898e9b32d1ad92be4176c1e2aa406b1ec33f81",
+      "codex/maint-0136-phase-2b-preparation": "90f5d7921f82a903de4291719589c7da13e979cf",
+      "codex/maint-0136-phase-2b-r-google-drive-backup": "d44ec71df99baccd599cde50a6075a4a22d330c1",
+      "codex/maint-0136-phase-2b-r-recovery-preparation": "2e3558a7fda4f8ff778c6ecd5f0435d0415ca229",
+      "codex/maint-0136-phase-2b-w-preparation": "18ed2f1f65a24b54029875fd1cad640dc2f0fae0",
+      "codex/maint-0136-phase-2c-preparation": "18ed2f1f65a24b54029875fd1cad640dc2f0fae0",
+      "codex/post-india2-cleanup-audit": "db07cdf843eccd2fea4fd7977c28a2d6ea60b24e",
+      "codex/post-india2-cleanup-execution": "a4e7ab4a148bd1fc2869bac566660e9881e507dd",
+      "codex/post-india2-maintenance": "9e681a2ec41944d4964733c0bf337bfe9018ea45",
+      "codex/pre-release-input-safety-plan": "40cfc02e5b8d6752f5805eef9e437b3b1a01de8d",
+      "codex/public-route-decisive-gates": "4d7e7e14faf4947d54364de73439927e69c26fc7",
+      "codex/public-route-domain-provenance": "d3f77cedbd5db856893193ec79d97529bf831ede",
+      "codex/public-route-failure-contracts": "fde41089a2314b749af1b4f48c80d21f3cfa0b44",
+      "codex/public-route-numeric-boundaries": "dca370088cd458d014fda9829b9f0e6cf003e158",
+      "codex/release-0231-stable": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+      "codex/release-0231a2": "6f2f449a3fda1fe927d47c8d7d070a39a9e8c5b7",
+      "codex/release-0240a1-publication": "d3a4d2235d1811ab4bc2c860640f5660c6eed057",
+      "codex/release-preflight-alpha-policy": "5da9c66a0f962fc08a6431fe95e39ec664a353f6",
+      "codex/release-smoothness": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d",
+      "main": "e2fac7419551988def59101ac63a5f8e491bc7a2"
+    },
+    "open_pull_requests": [
+      {
+        "head_branch": "dependabot/npm_and_yarn/react_app/eslint/js-10.0.1",
+        "head_sha": "31f92162c1ca5dc06beca270821f7ebc8582a0ff",
+        "number": 683,
+        "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/683"
+      },
+      {
+        "head_branch": "dependabot/npm_and_yarn/react_app/vitejs/plugin-react-6.0.5",
+        "head_sha": "1f710133fc76b32d6e4cbf47dae610023bc65633",
+        "number": 684,
+        "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/684"
+      },
+      {
+        "head_branch": "dependabot/npm_and_yarn/react_app/eslint-10.8.0",
+        "head_sha": "fbb0d7f781795bc05d50c1a93709d688ab455893",
+        "number": 713,
+        "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/713"
+      },
+      {
+        "head_branch": "dependabot/npm_and_yarn/react_app/types/node-26.1.2",
+        "head_sha": "c4d813f2bf9361c4db9863315a6294709c0261ed",
+        "number": 714,
+        "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/714"
+      },
+      {
+        "head_branch": "dependabot/pip/Python/mypy-gte-1.19-and-lt-3",
+        "head_sha": "2f8de4a079c4e7a1329048796816dedd026f5f3f",
+        "number": 715,
+        "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/715"
+      },
+      {
+        "head_branch": "dependabot/npm_and_yarn/react_app/framer-motion-13.0.0",
+        "head_sha": "f889f6de4ed8a2323544a34b77b09f6c88b9e375",
+        "number": 716,
+        "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/716"
+      },
+      {
+        "head_branch": "dependabot/pip/mypy-2.3.0",
+        "head_sha": "ff9dfb21ea8745bdb48e4742dc3f73b0c0fff8fd",
+        "number": 717,
+        "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/717"
+      },
+      {
+        "head_branch": "dependabot/pip/Python/dev-dependencies-e904d59df0",
+        "head_sha": "6fc9356afd44fa3476f56f1f222868c7c349c35f",
+        "number": 816,
+        "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/816"
+      },
+      {
+        "head_branch": "dependabot/pip/root-python-dependencies-fb8581aa0a",
+        "head_sha": "b67577133be1c80f3958ba82097abc731045af75",
+        "number": 865,
+        "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/865"
+      },
+      {
+        "head_branch": "codex/maint-0136-cleanup-preservation",
+        "head_sha": "37b3678504b9e9a3d663f442ecab62f19a3f0b75",
+        "number": 874,
+        "url": "https://github.com/Pravin-surawase/structural_engineering_lib/pull/874"
+      }
+    ],
+    "ref_namespaces": {
+      "codex_managed": 33,
+      "local_heads": 77,
+      "other": 0,
+      "remote_tracking": 82,
+      "tags": 45
+    },
+    "refs": {
+      "refs/codex/snapshots/37f027f9729c4f671a04ef6a665111bb4bbda6c2": "6bcbd9d3e082ea41bcba1d3858fcfa7deb77fa75",
+      "refs/codex/snapshots/5ced7d4ce85eb8914f1e193bbf95c170f003b680": "d79a1558a0cfa5078f6ddea91c4166100bdc4d04",
+      "refs/codex/snapshots/7dee0fb42726bb85105070ecef491fd42a1069d0": "670ea4beeb2a8765fff59e05bb130ff54752369e",
+      "refs/codex/snapshots/8c4b09b738f7cd83bc44f946c717b2338b4c35d6": "aa4fe606ee685240648c88db75e0d1052350fcb4",
+      "refs/codex/snapshots/b9682623cae3e2c1ba0c974acf4a91ed3cd18d71": "007dfa0c012404515907779f396ed94cf7a6694d",
+      "refs/codex/snapshots/dde341ddadd976e933b43d79f372c0653301408c": "21b9df1fd0d655d5976f73b8672502da4a6fbc60",
+      "refs/codex/snapshots/edc5e7c6fb6a878390e082f45ff7c379e6230cd6": "886871aef93d9a955a3cc2fa613fe49bad589ce7",
+      "refs/codex/turn-diffs/captures/1787773627824/1d7a320d-1f49-4e23-b15b-b1d3ebd2d21f/base": "abb50bf7311cbdfa4a388a59dae6a53ae96bb97a",
+      "refs/codex/turn-diffs/checkpoints/094f23a2fbb9e6e57f1d4b6118a225aee110ba07cece8d1b4cbb147004603583/1b2bdbe46601936d5dba6912f81f427030a83e7ee5084f2f24537cb6ddd4972a/1787341227628/28de56d2-f010-4181-8697-f47f15de3a0a": "57e563909f84736a0d3b1a161d2e4d02ee4a4fe3",
+      "refs/codex/turn-diffs/checkpoints/125a167e75355ce38e47fcb8c649d81ae88e7220d42c74fc066f111ecaf72902/fb2b79b384e354da40ed82d48869ceee5306fa4b13b369ca6ab2cc4252a18de6/1787385756414/491c4fa0-ff8c-4797-9f77-7bc0cf8fc46d": "3ee6772114aaf7979473ebfb35b76c27cfbb80a0",
+      "refs/codex/turn-diffs/checkpoints/126d3877bdfe30b698a6c0683588d76f3bcc5d2b00d8ca59715dc234d404830a/493faa55f8aa13faeb073b6edb1d5f26ecda7fd576d7ea1d3d18468ea59f5f8f/1787456507534/d091e81f-5a8a-4e13-942c-477641d38d95": "6d5754a30173fcad10d0c581103000e7d39ce887",
+      "refs/codex/turn-diffs/checkpoints/19d9dc856eab7c16fb9c0826cc4b62db8adbb63a6257175c8a23f490089fe28d/40dd8c0c45da414eb66e74c95265bc65e9b072161ecda097a121a03c03060aa7/1787528912196/6852a151-74c5-4092-85b1-a1731e0ae165": "abb50bf7311cbdfa4a388a59dae6a53ae96bb97a",
+      "refs/codex/turn-diffs/checkpoints/1d8969554d615e38c83f8b91ac1caa6d1137dd43a7ac419e982a1ca3c5a59939/5fde4084364427bde83fa264c17ebcaa62906c7a4af3582658f4dc9d67b8accb/1787386215893/c4c3354d-ad00-43d3-a67c-825b07c196a4": "f5132577eed67a0b15c0afad78f3dc41553b5574",
+      "refs/codex/turn-diffs/checkpoints/1f7ae9a22395be165cc925aa5420ca5dbaee5d092b60f370583ea5afef708090/308de2d8837ee767c98334f21e19db9f1c74a0c06372bfabfab8399a490ee304/1787377734708/a1681f6f-70e3-437e-a16a-26061be4d457": "f5132577eed67a0b15c0afad78f3dc41553b5574",
+      "refs/codex/turn-diffs/checkpoints/2dd5f48cb059e4ce1da09143fced823bd7014e427f91aef20178a1a67a3df79d/89ce13021a7ff58ac59cfe757e287e95f584cd8bb9e2f420df7e3fe7a2d675f2/1787471750672/e0d62bc2-9d30-4b3c-bf91-1844e5aa1428": "6d5754a30173fcad10d0c581103000e7d39ce887",
+      "refs/codex/turn-diffs/checkpoints/34597bcda8ae7665a3103f15b6df88176b514b06cfb1d01ce78afa280f822f5b/f560317998ecf56810161109957c26941ed72cd614ff668e83dc0ec2573f13d6/1787424072110/c21388fe-2752-4938-8d9d-f1aa3b7266b3": "3e020193872f1be84ea61e08a13e22db33e41b1c",
+      "refs/codex/turn-diffs/checkpoints/365dd070bf2936e4d583c44662f4d4433e4b2f3fca75820eeb76816f7103747b/048ab0a8dd9c65244c340060e8cd39895c5f5f8ddf6e3e2c6b82d198322783b0/1787475064441/24651e7d-c3b9-4cfb-9138-adc51fb789aa": "6d5754a30173fcad10d0c581103000e7d39ce887",
+      "refs/codex/turn-diffs/checkpoints/4009214aed50efe7525abbd060d682312ae607bc664ddd6524467d805df0d1d1/063b9e0c8f2eb7c85b1453ec9bbe699c912ac4045c8c1989bd729f6830738607/1787518207501/c7326c32-1192-4fe8-b4e4-3e4210db960e": "3c67e14ac3262968a405b59f9330abccc8316d42",
+      "refs/codex/turn-diffs/checkpoints/4339aca9741886758a05dbd7f41fc2e004b1057f35945be6e20da43565f9e746/aac4bcffd9398e9faa4e5e136c7f4295bb130d7e22276b70fbff7a0cd0a682b4/1787581726651/2909a0fc-7b27-4593-aa07-459dfa0bec81": "abb50bf7311cbdfa4a388a59dae6a53ae96bb97a",
+      "refs/codex/turn-diffs/checkpoints/43d2ddbde059a39f82b9f0c2431af65957eee07422a9f086eb76ad902abfdf9e/217313bfd8cd7b25094aa93bad32d59b896838169cbf58ca780e8e422894c6ef/1787400465960/1bc25e5e-df72-4b62-9df0-fc71506bd807": "f5132577eed67a0b15c0afad78f3dc41553b5574",
+      "refs/codex/turn-diffs/checkpoints/4fdc82ce19720ec3bc233ca7fe175205313ba11bedd1239da36b6a21bbe198ef/c0e284ddd315b715befdbd994c479d70c7b14d902eb62be72b06a3de04f00d81/1787478182391/de468023-1a11-46a7-934b-5b92648414e9": "632de66a29840d896754c2b0ddb186e4efbdaa3a",
+      "refs/codex/turn-diffs/checkpoints/51431dc71c1d0d2c51e2d5097ea1ea1e88a24b778e082440f6e22ae68d8856d5/4404c2c3f5dc0d53a1c6b2428def9fffb610ee2b6e6306086911913fd04d8e19/1787460087541/2e986289-ad70-4d4b-a7bc-b7d791d9c8ee": "6d5754a30173fcad10d0c581103000e7d39ce887",
+      "refs/codex/turn-diffs/checkpoints/6922808b8dec10e2204e33cfd86c6802524c90d1cc295fd7b0b7526692c66665/0e4dc099c778823eebf1d5ac996867f61fd22cc7ef989899fb930db2cd5139c0/1787519466416/999fad66-48ec-4515-8dec-b12114532f42": "3c67e14ac3262968a405b59f9330abccc8316d42",
+      "refs/codex/turn-diffs/checkpoints/69cfca4b062cfd3126c397954771bfc958859a146f8409970fe58f0a0f3eed0a/7257a4caf86e743f38072db023f784a80d86c8b3a548c0f89599853672e6728b/1787773253369/25a5a7bd-691f-40d5-a41b-4e6996fef75e": "abb50bf7311cbdfa4a388a59dae6a53ae96bb97a",
+      "refs/codex/turn-diffs/checkpoints/8378bdbf6b9c2027ce99fa1941ab21f5cf6e70075c8199cb8f3175ee009bc801/0693c4388d338259e15599909fd81c983a30d9a4ea04346d3f3a715ecd64d571/1787546022985/b03bd29e-597c-4d5a-bdb5-eaaa61d61016": "ff65c71e1b875acdf5c53ee1b9723b4637639717",
+      "refs/codex/turn-diffs/checkpoints/8abe6a84b6d41bbf31130c0a49fd5c01177e8e03ac841495ac7ff8724cb28cf1/75c68c5a66ef819992fd9798d6b15b73dea1713101c29cba24ccfb32e4c72d85/1787512282688/255e5590-bae3-470a-9d99-f81144a49a48": "d2b3efa3243d06e2bfff8ff1990db19eac282eb5",
+      "refs/codex/turn-diffs/checkpoints/8b8c41df25f48e9e75992bd7b80f189819d2528a56d2d7991ff3daf4393f6f5a/fb99f974c4e887f80d40c05c48ea718c3c2fc332f74ddf359699231d980432ee/1787413687897/65736f4f-661f-4ddc-8abc-7b08d6805d29": "c47ac98f037c37f05fd5b9d74a4fc7b98f9da231",
+      "refs/codex/turn-diffs/checkpoints/9507ec55cb96b949da52df219df67ae6c1baa42f61686fbe332709a2d5c54a9e/e1b7647d099d346834eafba9a1a1bdb929416db998e974087e264f7402318858/1787724900413/2cff2542-704e-4988-8efa-948100b86acb": "abb50bf7311cbdfa4a388a59dae6a53ae96bb97a",
+      "refs/codex/turn-diffs/checkpoints/96b49297f915d4820dfe229cc46b845e7457326e1374a4b8104596c9f76ac4bd/6683179d87650f6069866f228b439242ec0c09965cd678e35054f4a8e1fad9c2/1787555332261/fb662a58-824b-4ee3-93c0-b6d1a9278fb9": "acc167e2caaa311a8f4fe2861e6a5aa4afd7d75c",
+      "refs/codex/turn-diffs/checkpoints/98c5ba25adea9a6e5c99c1640bef85b74a72760b32bb686e321b6f02a5b6f18e/f0bf41a6b307ae17d8d17cfed3e53e2255549340efc03816e28178f6ff81be26/1787508060115/d8ab4d6f-53a5-4282-930d-99249621dcd5": "3c67e14ac3262968a405b59f9330abccc8316d42",
+      "refs/codex/turn-diffs/checkpoints/bc111c93e9cd7ac4a5e82a177e3aa6ff021af131e82f57922cdefd8314186792/f2f880caf917df53d8f80b3c269d26db20034695fa95cb585a2fd8418fd908c9/1787517739355/287d4fd3-5477-43ec-b3f9-2ab02937dd94": "e5b1e9eecf590f996028058edee2b03d09095e6a",
+      "refs/codex/turn-diffs/checkpoints/eabdffa2309b5a59c59fd0030c1672fc9738504f9c169a8a59679a657daa50a9/b0d07d776442b2346c91d214dc10e6a4daff44bbb427b154f9000237be4c46fc/1787482882761/88635079-7344-44f3-990e-ab1cb99a7f8b": "632de66a29840d896754c2b0ddb186e4efbdaa3a",
+      "refs/codex/turn-diffs/checkpoints/ee859ec4a0147728f436bf4ee0be15e37eed23f8426e934f01a5d0b4c39cf8ef/8f6ee0126f5019de6c67b9aa65ecd3f7d9db58c5ee88cbd78d42bfe123bc6b72/1787403949063/e447b0ea-00da-4b17-a925-5a39d8c4a936": "7e456b02cf0be6df08569890833d9824a7ba692f",
+      "refs/heads/codex/a1-canonical-transport-contract": "85872c846020ee9fb7cf654e8b5b3943f44fa531",
+      "refs/heads/codex/a2-lossless-intake-calculation": "2a6889b363aad85f5b45f5ba23b344efd08084d6",
+      "refs/heads/codex/b1-gravity-model-load-ledger": "4a7f13bca2fadfdb45017a296e6235c3b95dd401",
+      "refs/heads/codex/b2-gravity-workflow-v1": "b337efc73d0af9ff7bef623916cfe808dd79bed6",
+      "refs/heads/codex/e1-blank-workbook-guard": "514155b266af6dff3e30bf39ee28671c17345454",
+      "refs/heads/codex/e1-excel-routine-workbench": "ef5ee05c785904e1a01c2d09cc65649edc8745ab",
+      "refs/heads/codex/e1-g3-closeout": "53b9f56e5af0bae064ba3a545dbb9b86b4b336d7",
+      "refs/heads/codex/e1-review-bundle-export": "98c60bc1f7c3899c28f662e82399cb25d80bbf26",
+      "refs/heads/codex/e1-w0-maintenance-plan": "654e40b1370d098fca4d001146a030b9937536a8",
+      "refs/heads/codex/e1-workbook-open-repair": "ede01ef4fb6182a27e3f176e872478304fb5f256",
+      "refs/heads/codex/excel-product-planning": "a0e115e17009cc14b3d883e3c291d47c32f7ca4e",
+      "refs/heads/codex/footing-isolated-v1": "886871aef93d9a955a3cc2fa613fe49bad589ce7",
+      "refs/heads/codex/git-governance-research": "657037364bbb49f2ef834c70f3a3c704bac83c7b",
+      "refs/heads/codex/implementation-first-verification-policy": "fffbfaaa0d928768efe7b703a0d8091555ad9a8e",
+      "refs/heads/codex/index-local-artifact-determinism": "65c37ad0836bd59ebef56b6d01faa144b791d020",
+      "refs/heads/codex/index-mtime-determinism": "cfb98da58af391bdefb23f8cfc83295876b44876",
+      "refs/heads/codex/india-3-beam-r1": "099937dc3da7c0083de793ed3b2972690a44d423",
+      "refs/heads/codex/india-3-column-r1": "4df72ea258610179a1496a255c1d6d320e3416bf",
+      "refs/heads/codex/india-3-g0-acceptance": "8466fb1458f41cb767117f5a49b4495b23d794eb",
+      "refs/heads/codex/india-3-g0-source-library": "9c976b1f4afd0540a5ec9eb3cab16861916ac89b",
+      "refs/heads/codex/india-3-g0-truth-audit": "b39fcda534ec757744a2d6f203f42e4350871cd1",
+      "refs/heads/codex/india-3-is13920-m0": "0a20774ec8978b7dcea6d7cd7db6966068b70703",
+      "refs/heads/codex/india-3-joint-r1": "a5657e1bbcea16079af527005c47b296cf95f742",
+      "refs/heads/codex/india-3-source-meta-r1": "13f0ff916a0d7c167e34b46ab9ae6cb2c50c9efd",
+      "refs/heads/codex/is456-slabs-plan": "7e623984e027141fff62e5129c23fdc16264f8e0",
+      "refs/heads/codex/lib-pro-002-a-strict-input": "18d043ef9ac6221936335e1b20676863b3c5bc9b",
+      "refs/heads/codex/lib-pro-002-b-lossless-import": "22c65d17874ec877a7f90f56ae6950131eddd462",
+      "refs/heads/codex/lib-pro-002-i-cli": "911b6e3d288db85bc3f2770a061598689a4e8ec3",
+      "refs/heads/codex/lib-pro-002-j-release-signal": "280dd9a9a31e8f318d385cb2ec43418d195ca4b3",
+      "refs/heads/codex/lib-pro-002-usability-refresh": "e17d57f8a6ae4f050892d07adf26856f45ffcec0",
+      "refs/heads/codex/lib-pro-004-safety-auditors": "ff55471c9b75a7c70369f857c387fdffad05899d",
+      "refs/heads/codex/lib-pro-005-release-safety-closure": "0979200d00ea32bd7464232f20558f353509be8a",
+      "refs/heads/codex/lib-pro-006-gravity-foundation": "6db242171427b93a2586de9c2c772ccba03243de",
+      "refs/heads/codex/lib-pro-007-g0-contract-freeze": "3b0c0c2551d5f1d31b1dd8251489e6ec632f57a4",
+      "refs/heads/codex/lib-pro-007-m0-cumulative-acceptance": "eb92db482734e531561f739cf6818104281ef451",
+      "refs/heads/codex/lib-pro-007-p1-optimization-truth": "6dd3fd4e17354f27846869ee48d10277c4703d0f",
+      "refs/heads/codex/lib-pro-007-p2-supplied-beam-reinforcement": "fa81954852285d59fe7c1e58de7c2b6cb3fa7971",
+      "refs/heads/codex/lib-pro-007-p3-footing-anchorage": "bfec16d13409519979135abc99b7b31ebc600688",
+      "refs/heads/codex/lib-pro-007-p4-practical-actions": "a2b813dbc2c5a873edabab30c36087ff7fea7eda",
+      "refs/heads/codex/lib-pro-007-p5-etabs-snapshot": "783cc15e37385d616044d00478f282d8bb6716f0",
+      "refs/heads/codex/lib-pro-007-p6-cross-surface-parity": "9647feddb672428e4f89348f5f82ad8c2cbe71cf",
+      "refs/heads/codex/lib-pro-007-p7-compatibility-convergence": "c9589815f2d8053b1d99f61bf38623cd2aebba2f",
+      "refs/heads/codex/lib-pro-008-pre-india3-safety": "f035abfa70037afab5e159f8395db1343ee346af",
+      "refs/heads/codex/lib-pro-009-rc-trust": "b4428e23adc8374d1acc6e7f2a2125d5aebff453",
+      "refs/heads/codex/lib-pro-010-rc-artifact": "595b3bcb1bb55bae0261016a3dddd87da4aca8e9",
+      "refs/heads/codex/maint-011-developer-gate-hygiene": "1f203f40ec162a5caf141b1c44444ec4f6d3470c",
+      "refs/heads/codex/maint-012a-control-registry": "f0cdf631d6c7d698c0a7b47b04030b4e23fb32a2",
+      "refs/heads/codex/maint-012b-index-architecture": "74bfd69ebf610b6cb324b7298b95ac840652ed4c",
+      "refs/heads/codex/maint-012c-evidence-scheduling": "56eff4d357ca62332fb0e50c6a55c2336af57c65",
+      "refs/heads/codex/maint-012d-scanner-consolidation": "66cd2bb51b9f4f1fd7f6c1f8ab57e5a4f188e20d",
+      "refs/heads/codex/maint-0130-safe-file-foundation": "b7b9623966c3131b8d5628496ea06328ce7210a6",
+      "refs/heads/codex/maint-0131-efficiency-controls": "a4dbb38e113fb2383997e1b294ab53f64325716a",
+      "refs/heads/codex/maint-0132-efficiency-observability": "2573b0d7959913b550eea6d6f15f34fd4e6edff5",
+      "refs/heads/codex/maint-0133-cleanup-inventory": "f8c8d2642fa1f61f78366b3a05ff8dded692b75d",
+      "refs/heads/codex/maint-0133b-packet-a": "203b33e9611dd27d5aecc0d47b7f49f607dc3dde",
+      "refs/heads/codex/maint-0134-agent-instructions": "3e753959a006b640357c46a711689be46f076102",
+      "refs/heads/codex/maint-0136-cleanup-preservation": "37b3678504b9e9a3d663f442ecab62f19a3f0b75",
+      "refs/heads/codex/maint-0136-phase-2a-cache-cleanup": "2d898e9b32d1ad92be4176c1e2aa406b1ec33f81",
+      "refs/heads/codex/maint-0136-phase-2b-preparation": "90f5d7921f82a903de4291719589c7da13e979cf",
+      "refs/heads/codex/maint-0136-phase-2b-r-google-drive-backup": "d44ec71df99baccd599cde50a6075a4a22d330c1",
+      "refs/heads/codex/maint-0136-phase-2b-r-recovery-preparation": "2e3558a7fda4f8ff778c6ecd5f0435d0415ca229",
+      "refs/heads/codex/maint-0136-phase-2b-w-preparation": "18ed2f1f65a24b54029875fd1cad640dc2f0fae0",
+      "refs/heads/codex/maint-0136-phase-2c-preparation": "18ed2f1f65a24b54029875fd1cad640dc2f0fae0",
+      "refs/heads/codex/post-india2-cleanup-audit": "db07cdf843eccd2fea4fd7977c28a2d6ea60b24e",
+      "refs/heads/codex/post-india2-cleanup-execution": "a4e7ab4a148bd1fc2869bac566660e9881e507dd",
+      "refs/heads/codex/post-india2-maintenance": "9e681a2ec41944d4964733c0bf337bfe9018ea45",
+      "refs/heads/codex/pre-release-input-safety-plan": "40cfc02e5b8d6752f5805eef9e437b3b1a01de8d",
+      "refs/heads/codex/public-route-decisive-gates": "4d7e7e14faf4947d54364de73439927e69c26fc7",
+      "refs/heads/codex/public-route-domain-provenance": "d3f77cedbd5db856893193ec79d97529bf831ede",
+      "refs/heads/codex/public-route-failure-contracts": "fde41089a2314b749af1b4f48c80d21f3cfa0b44",
+      "refs/heads/codex/public-route-numeric-boundaries": "dca370088cd458d014fda9829b9f0e6cf003e158",
+      "refs/heads/codex/release-0231-stable": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+      "refs/heads/codex/release-0231a2": "6f2f449a3fda1fe927d47c8d7d070a39a9e8c5b7",
+      "refs/heads/codex/release-0240a1-publication": "d3a4d2235d1811ab4bc2c860640f5660c6eed057",
+      "refs/heads/codex/release-preflight-alpha-policy": "5da9c66a0f962fc08a6431fe95e39ec664a353f6",
+      "refs/heads/codex/release-smoothness": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d",
+      "refs/heads/main": "e2fac7419551988def59101ac63a5f8e491bc7a2",
+      "refs/remotes/origin/HEAD": "ee04bfbf76b1a3a022d07c8203b5274a0f71998f",
+      "refs/remotes/origin/codex/a1-canonical-transport-contract": "85872c846020ee9fb7cf654e8b5b3943f44fa531",
+      "refs/remotes/origin/codex/a2-lossless-intake-calculation": "2a6889b363aad85f5b45f5ba23b344efd08084d6",
+      "refs/remotes/origin/codex/b1-gravity-model-load-ledger": "4a7f13bca2fadfdb45017a296e6235c3b95dd401",
+      "refs/remotes/origin/codex/b2-gravity-workflow-v1": "b337efc73d0af9ff7bef623916cfe808dd79bed6",
+      "refs/remotes/origin/codex/column-pmm-experimental": "8a52ed0ff3d98113b47cf0c6791468684cac6c27",
+      "refs/remotes/origin/codex/e1-blank-workbook-guard": "514155b266af6dff3e30bf39ee28671c17345454",
+      "refs/remotes/origin/codex/e1-excel-routine-workbench": "ef5ee05c785904e1a01c2d09cc65649edc8745ab",
+      "refs/remotes/origin/codex/e1-g3-closeout": "53b9f56e5af0bae064ba3a545dbb9b86b4b336d7",
+      "refs/remotes/origin/codex/e1-review-bundle-export": "98c60bc1f7c3899c28f662e82399cb25d80bbf26",
+      "refs/remotes/origin/codex/e1-w0-maintenance-plan": "654e40b1370d098fca4d001146a030b9937536a8",
+      "refs/remotes/origin/codex/e1-workbook-open-repair": "ede01ef4fb6182a27e3f176e872478304fb5f256",
+      "refs/remotes/origin/codex/footing-isolated-v1": "886871aef93d9a955a3cc2fa613fe49bad589ce7",
+      "refs/remotes/origin/codex/git-governance-research": "51a8a57a7e4eaba5841f2fee86c83ae6287182bf",
+      "refs/remotes/origin/codex/implementation-first-verification-policy": "fffbfaaa0d928768efe7b703a0d8091555ad9a8e",
+      "refs/remotes/origin/codex/index-local-artifact-determinism": "65c37ad0836bd59ebef56b6d01faa144b791d020",
+      "refs/remotes/origin/codex/index-mtime-determinism": "cfb98da58af391bdefb23f8cfc83295876b44876",
+      "refs/remotes/origin/codex/india-3-beam-r1": "099937dc3da7c0083de793ed3b2972690a44d423",
+      "refs/remotes/origin/codex/india-3-column-r1": "4df72ea258610179a1496a255c1d6d320e3416bf",
+      "refs/remotes/origin/codex/india-3-g0-acceptance": "8466fb1458f41cb767117f5a49b4495b23d794eb",
+      "refs/remotes/origin/codex/india-3-g0-source-library": "9c976b1f4afd0540a5ec9eb3cab16861916ac89b",
+      "refs/remotes/origin/codex/india-3-g0-truth-audit": "b39fcda534ec757744a2d6f203f42e4350871cd1",
+      "refs/remotes/origin/codex/india-3-is13920-m0": "0a20774ec8978b7dcea6d7cd7db6966068b70703",
+      "refs/remotes/origin/codex/india-3-joint-r1": "a5657e1bbcea16079af527005c47b296cf95f742",
+      "refs/remotes/origin/codex/india-3-source-meta-r1": "13f0ff916a0d7c167e34b46ab9ae6cb2c50c9efd",
+      "refs/remotes/origin/codex/is456-slabs-plan": "7e623984e027141fff62e5129c23fdc16264f8e0",
+      "refs/remotes/origin/codex/lib-pro-002-a-strict-input": "18d043ef9ac6221936335e1b20676863b3c5bc9b",
+      "refs/remotes/origin/codex/lib-pro-002-b-lossless-import": "22c65d17874ec877a7f90f56ae6950131eddd462",
+      "refs/remotes/origin/codex/lib-pro-002-i-cli": "911b6e3d288db85bc3f2770a061598689a4e8ec3",
+      "refs/remotes/origin/codex/lib-pro-002-j-release-signal": "280dd9a9a31e8f318d385cb2ec43418d195ca4b3",
+      "refs/remotes/origin/codex/lib-pro-002-usability-refresh": "e17d57f8a6ae4f050892d07adf26856f45ffcec0",
+      "refs/remotes/origin/codex/lib-pro-004-safety-auditors": "ff55471c9b75a7c70369f857c387fdffad05899d",
+      "refs/remotes/origin/codex/lib-pro-005-release-safety-closure": "0979200d00ea32bd7464232f20558f353509be8a",
+      "refs/remotes/origin/codex/lib-pro-006-gravity-foundation": "6db242171427b93a2586de9c2c772ccba03243de",
+      "refs/remotes/origin/codex/lib-pro-007-g0-contract-freeze": "3b0c0c2551d5f1d31b1dd8251489e6ec632f57a4",
+      "refs/remotes/origin/codex/lib-pro-007-m0-cumulative-acceptance": "eb92db482734e531561f739cf6818104281ef451",
+      "refs/remotes/origin/codex/lib-pro-007-p1-optimization-truth": "6dd3fd4e17354f27846869ee48d10277c4703d0f",
+      "refs/remotes/origin/codex/lib-pro-007-p2-supplied-beam-reinforcement": "fa81954852285d59fe7c1e58de7c2b6cb3fa7971",
+      "refs/remotes/origin/codex/lib-pro-007-p3-footing-anchorage": "bfec16d13409519979135abc99b7b31ebc600688",
+      "refs/remotes/origin/codex/lib-pro-007-p4-practical-actions": "a2b813dbc2c5a873edabab30c36087ff7fea7eda",
+      "refs/remotes/origin/codex/lib-pro-007-p5-etabs-snapshot": "783cc15e37385d616044d00478f282d8bb6716f0",
+      "refs/remotes/origin/codex/lib-pro-007-p6-cross-surface-parity": "9647feddb672428e4f89348f5f82ad8c2cbe71cf",
+      "refs/remotes/origin/codex/lib-pro-007-p7-compatibility-convergence": "c9589815f2d8053b1d99f61bf38623cd2aebba2f",
+      "refs/remotes/origin/codex/lib-pro-008-pre-india3-safety": "f035abfa70037afab5e159f8395db1343ee346af",
+      "refs/remotes/origin/codex/lib-pro-009-rc-trust": "b4428e23adc8374d1acc6e7f2a2125d5aebff453",
+      "refs/remotes/origin/codex/lib-pro-010-rc-artifact": "595b3bcb1bb55bae0261016a3dddd87da4aca8e9",
+      "refs/remotes/origin/codex/maint-011-developer-gate-hygiene": "1f203f40ec162a5caf141b1c44444ec4f6d3470c",
+      "refs/remotes/origin/codex/maint-012a-control-registry": "f0cdf631d6c7d698c0a7b47b04030b4e23fb32a2",
+      "refs/remotes/origin/codex/maint-012b-index-architecture": "74bfd69ebf610b6cb324b7298b95ac840652ed4c",
+      "refs/remotes/origin/codex/maint-012c-evidence-scheduling": "56eff4d357ca62332fb0e50c6a55c2336af57c65",
+      "refs/remotes/origin/codex/maint-012d-scanner-consolidation": "66cd2bb51b9f4f1fd7f6c1f8ab57e5a4f188e20d",
+      "refs/remotes/origin/codex/maint-0130-safe-file-foundation": "b7b9623966c3131b8d5628496ea06328ce7210a6",
+      "refs/remotes/origin/codex/maint-0131-efficiency-controls": "a4dbb38e113fb2383997e1b294ab53f64325716a",
+      "refs/remotes/origin/codex/maint-0132-efficiency-observability": "2573b0d7959913b550eea6d6f15f34fd4e6edff5",
+      "refs/remotes/origin/codex/maint-0133-cleanup-inventory": "f8c8d2642fa1f61f78366b3a05ff8dded692b75d",
+      "refs/remotes/origin/codex/maint-0133b-packet-a": "203b33e9611dd27d5aecc0d47b7f49f607dc3dde",
+      "refs/remotes/origin/codex/maint-0134-agent-instructions": "3e753959a006b640357c46a711689be46f076102",
+      "refs/remotes/origin/codex/maint-0136-cleanup-preservation": "37b3678504b9e9a3d663f442ecab62f19a3f0b75",
+      "refs/remotes/origin/codex/parallel-task-policy": "75d666813b116b65f1620d9237a7bce972d5d3c6",
+      "refs/remotes/origin/codex/post-india2-cleanup-audit": "db07cdf843eccd2fea4fd7977c28a2d6ea60b24e",
+      "refs/remotes/origin/codex/post-india2-cleanup-execution": "a4e7ab4a148bd1fc2869bac566660e9881e507dd",
+      "refs/remotes/origin/codex/post-india2-maintenance": "9e681a2ec41944d4964733c0bf337bfe9018ea45",
+      "refs/remotes/origin/codex/pre-release-input-safety-plan": "40cfc02e5b8d6752f5805eef9e437b3b1a01de8d",
+      "refs/remotes/origin/codex/public-route-decisive-gates": "4d7e7e14faf4947d54364de73439927e69c26fc7",
+      "refs/remotes/origin/codex/public-route-domain-provenance": "d3f77cedbd5db856893193ec79d97529bf831ede",
+      "refs/remotes/origin/codex/public-route-failure-contracts": "fde41089a2314b749af1b4f48c80d21f3cfa0b44",
+      "refs/remotes/origin/codex/public-route-numeric-boundaries": "dca370088cd458d014fda9829b9f0e6cf003e158",
+      "refs/remotes/origin/codex/release-0231a2": "6f2f449a3fda1fe927d47c8d7d070a39a9e8c5b7",
+      "refs/remotes/origin/codex/release-0240a1-publication": "d3a4d2235d1811ab4bc2c860640f5660c6eed057",
+      "refs/remotes/origin/codex/release-preflight-alpha-policy": "20180a40137cb43f8a4d8f51093c6337ac94ced1",
+      "refs/remotes/origin/codex/release-smoothness": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d",
+      "refs/remotes/origin/dependabot/npm_and_yarn/react_app/eslint-10.8.0": "fbb0d7f781795bc05d50c1a93709d688ab455893",
+      "refs/remotes/origin/dependabot/npm_and_yarn/react_app/eslint/js-10.0.1": "31f92162c1ca5dc06beca270821f7ebc8582a0ff",
+      "refs/remotes/origin/dependabot/npm_and_yarn/react_app/framer-motion-13.0.0": "f889f6de4ed8a2323544a34b77b09f6c88b9e375",
+      "refs/remotes/origin/dependabot/npm_and_yarn/react_app/types/node-26.1.2": "c4d813f2bf9361c4db9863315a6294709c0261ed",
+      "refs/remotes/origin/dependabot/npm_and_yarn/react_app/vitejs/plugin-react-6.0.5": "1f710133fc76b32d6e4cbf47dae610023bc65633",
+      "refs/remotes/origin/dependabot/pip/Python/dev-dependencies-e904d59df0": "6fc9356afd44fa3476f56f1f222868c7c349c35f",
+      "refs/remotes/origin/dependabot/pip/Python/mypy-gte-1.19-and-lt-3": "2f8de4a079c4e7a1329048796816dedd026f5f3f",
+      "refs/remotes/origin/dependabot/pip/mypy-2.3.0": "ff9dfb21ea8745bdb48e4742dc3f73b0c0fff8fd",
+      "refs/remotes/origin/dependabot/pip/root-python-dependencies-fb8581aa0a": "b67577133be1c80f3958ba82097abc731045af75",
+      "refs/remotes/origin/gh-pages": "79b200337c074e0d288ed49dfd4348602ba35952",
+      "refs/remotes/origin/main": "ee04bfbf76b1a3a022d07c8203b5274a0f71998f",
+      "refs/tags/backup-pre-full-migration-2026-01-10": "ae7119a53e0ce7339b616757f7982b0b5779c740",
+      "refs/tags/backup-pre-migration-2026-01-10": "5782c816682d3cf58fd0c3914b990b5c36ae94e6",
+      "refs/tags/v0.10.0": "d699a6e012b611edd48b6fd389b98d81706ab3b3",
+      "refs/tags/v0.10.2": "90cc5c5bc066428dac45466302c0c0332adf7be1",
+      "refs/tags/v0.10.3": "6e33759ed2b63481f3134f5ed1deaf86861b113f",
+      "refs/tags/v0.10.4": "eab542c3b8cec871670942133d7ca270fb3c2d09",
+      "refs/tags/v0.10.6": "b352a315f41318eee1f325b5a644e75b10a3ab3a",
+      "refs/tags/v0.10.7": "b7e6899232b4e3eda5ac12c3456c0f6873d25a98",
+      "refs/tags/v0.11.0": "4c85837ec78cbcdf91cee5805d71e34f920e994c",
+      "refs/tags/v0.12.0": "49055229c82b3457fd03187d2a60a246131892e7",
+      "refs/tags/v0.13.0": "f49f6167de66e86441e51906dea80e3539f4d3af",
+      "refs/tags/v0.14.0": "7f14b6f1b123d623b54f7618bf9bcb0f64a195e1",
+      "refs/tags/v0.15.0": "80f8152cf18986be1fdab01f7700f4c4ed383111",
+      "refs/tags/v0.16.0": "650e2b2810180ff5687c990eec8fd4eba319ca39",
+      "refs/tags/v0.16.5": "643c6c85d04178072649cfb02c2c1b7c15e84de5",
+      "refs/tags/v0.16.6": "239bbbf4813436b2e124c031b753c6c1b82281e3",
+      "refs/tags/v0.17.0": "234ac4b1261dc30a2bc1bb96787fb92fdd723b93",
+      "refs/tags/v0.17.5": "843e7b9b1603ff84466c44702bc1cd36fa4fc70e",
+      "refs/tags/v0.18.0": "5fd2d921e933c331839f6c7d8247e0da3b3040b2",
+      "refs/tags/v0.19.0": "953a56fd6d5530ad4d192ef5af3ccfebfd05d8fe",
+      "refs/tags/v0.19.1": "385bb7c897f2425c2227cc6d12738394d478c598",
+      "refs/tags/v0.20.0": "f466c4a845e659579f85db7d8742c510ac30a222",
+      "refs/tags/v0.21.0": "58fa56d48efb6d2967ee34b777bd8bc30bfd5e73",
+      "refs/tags/v0.21.1": "b06be1cd87cbfbd60afa0724b7346cd5854e8bba",
+      "refs/tags/v0.21.2": "cddbe2125e0439bfb9fec761112c554897d8dbd2",
+      "refs/tags/v0.21.3": "75407e2f620d9d539de0095106ebd4d7ca09286e",
+      "refs/tags/v0.21.4": "3839a969e53f5061df1451860b4f26e4c88685fd",
+      "refs/tags/v0.21.5": "9029c18a6e31f140b0a009b4e470f2bbb415f26f",
+      "refs/tags/v0.21.6": "0d6a015258db875aa8ab0c04fdf31d9c4a5c51de",
+      "refs/tags/v0.23.0": "9a70de17ffb011e56610bc65df536d13d709f75c",
+      "refs/tags/v0.23.1a1": "6860488212e61d6bebc2d3584a8dab85f1b77bc0",
+      "refs/tags/v0.23.1a2": "aec620bc297a4b313f27624ea9227aba007a846f",
+      "refs/tags/v0.24.0a1": "7d289ce49c95c894ac45abac85971e44ba5263d1",
+      "refs/tags/v0.3.0": "1d86d40a58b196ebeaa05cda5715c7195ffe1cf9",
+      "refs/tags/v0.6.0": "13a1fefca6b450b16a49b9ba1dedaecd4e8baf9b",
+      "refs/tags/v0.7.0": "3c121de403fed2975655f536198c258f75c5c365",
+      "refs/tags/v0.7.1": "f943d84c2c0b9283ef9796d12c81ae2c7b889f40",
+      "refs/tags/v0.8.0": "0a7044dba3f41ae50b5d40af70688666453d06c7",
+      "refs/tags/v0.8.1": "6a7888d1a91c0aae5979a7b26faa8ef2345464e8",
+      "refs/tags/v0.8.2": "eb9c710e476166bda2db1e45f762a15dfcf8083d",
+      "refs/tags/v0.9.0": "d22801d0c8a10cae8025a2a51767fdf690e87e03",
+      "refs/tags/v0.9.1": "86baefda74612c059959a646c5ab0019b01bf3b7",
+      "refs/tags/v0.9.4": "b781e914450bd3b2a627336ec5e6ecfd4cd379a6",
+      "refs/tags/v0.9.5": "59819c00ffa73fb87cc763a0c2009979313732f7",
+      "refs/tags/v0.9.6": "a156b485c06601170a026a4dbb422ab7352a4746"
+    },
+    "refs_snapshot": {
+      "count": 237,
+      "sha256": "7ede75de95a5903bb3f27528c217b1350eb120a718b89805ff0b8c90fe01011e"
+    },
+    "worktrees": [
+      {
+        "branch": "DETACHED",
+        "dirty_count": 0,
+        "head_sha": "98c60bc1f7c3899c28f662e82399cb25d80bbf26",
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/1ee2/structural_engineering_lib",
+        "query_status": "OK"
+      },
+      {
+        "branch": "DETACHED",
+        "dirty_count": 0,
+        "head_sha": "b91838f594a04aff1d21c43bf6f87a64710b0748",
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/5986/structural_engineering_lib",
+        "query_status": "OK"
+      },
+      {
+        "branch": "DETACHED",
+        "dirty_count": 0,
+        "head_sha": "514155b266af6dff3e30bf39ee28671c17345454",
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/5da5/structural_engineering_lib",
+        "query_status": "OK"
+      },
+      {
+        "branch": "DETACHED",
+        "dirty_count": 0,
+        "head_sha": "670ea4beeb2a8765fff59e05bb130ff54752369e",
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/b026/structural_engineering_lib",
+        "query_status": "OK"
+      },
+      {
+        "branch": "DETACHED",
+        "dirty_count": 0,
+        "head_sha": "bf4065f071f1245461df6d3c42f1cc070efbae70",
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/b94c/structural_engineering_lib",
+        "query_status": "OK"
+      },
+      {
+        "branch": "DETACHED",
+        "dirty_count": 1,
+        "head_sha": "0fdb48edbb73114288feb8a246d6f30b80ac4d95",
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/e54a/structural_engineering_lib",
+        "query_status": "OK"
+      },
+      {
+        "branch": "DETACHED",
+        "dirty_count": 0,
+        "head_sha": "b91838f594a04aff1d21c43bf6f87a64710b0748",
+        "operation": "none",
+        "path": "/Users/pravinsurawase/.codex/worktrees/fa98/structural_engineering_lib",
+        "query_status": "OK"
+      },
+      {
+        "branch": "main",
+        "dirty_count": 0,
+        "head_sha": "e2fac7419551988def59101ac63a5f8e491bc7a2",
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib",
+        "query_status": "OK"
+      },
+      {
+        "branch": "codex/git-governance-research",
+        "dirty_count": 0,
+        "head_sha": "657037364bbb49f2ef834c70f3a3c704bac83c7b",
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-git-governance-research",
+        "query_status": "OK"
+      },
+      {
+        "branch": "codex/maint-0136-cleanup-preservation",
+        "dirty_count": 0,
+        "head_sha": "37b3678504b9e9a3d663f442ecab62f19a3f0b75",
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-cleanup-preservation",
+        "query_status": "OK"
+      },
+      {
+        "branch": "codex/maint-0136-phase-2a-cache-cleanup",
+        "dirty_count": 0,
+        "head_sha": "2d898e9b32d1ad92be4176c1e2aa406b1ec33f81",
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2a-cache-cleanup",
+        "query_status": "OK"
+      },
+      {
+        "branch": "codex/maint-0136-phase-2b-preparation",
+        "dirty_count": 0,
+        "head_sha": "90f5d7921f82a903de4291719589c7da13e979cf",
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2b-preparation",
+        "query_status": "OK"
+      },
+      {
+        "branch": "codex/maint-0136-phase-2b-r-google-drive-backup",
+        "dirty_count": 0,
+        "head_sha": "d44ec71df99baccd599cde50a6075a4a22d330c1",
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2b-r-google-drive-backup",
+        "query_status": "OK"
+      },
+      {
+        "branch": "codex/maint-0136-phase-2b-r-recovery-preparation",
+        "dirty_count": 0,
+        "head_sha": "2e3558a7fda4f8ff778c6ecd5f0435d0415ca229",
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2b-r-recovery-preparation",
+        "query_status": "OK"
+      },
+      {
+        "branch": "codex/maint-0136-phase-2b-w-preparation",
+        "dirty_count": 0,
+        "head_sha": "18ed2f1f65a24b54029875fd1cad640dc2f0fae0",
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2b-w-preparation",
+        "query_status": "OK"
+      },
+      {
+        "branch": "codex/maint-0136-phase-2c-preparation",
+        "dirty_count": "CURRENT_TASK_WRITES_IGNORED",
+        "head_sha": "18ed2f1f65a24b54029875fd1cad640dc2f0fae0",
+        "operation": "none",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2c-preparation",
+        "query_status": "OK"
+      }
+    ]
+  },
+  "binding": {
+    "live_origin_main_sha": "ee04bfbf76b1a3a022d07c8203b5274a0f71998f",
+    "phase2b_target_set_sha256": "543a5f1b9298bd47e2f0b743f046fdd2c76dfd8c0f358ed0c604b57ffb6129da",
+    "predecessor_commit": "18ed2f1f65a24b54029875fd1cad640dc2f0fae0"
+  },
+  "canonical_classifier": {
+    "authorization": "SEPARATE_EXACT_TARGET_APPROVAL_REQUIRED",
+    "default_ref": "origin/main",
+    "duration_ms": 1661.184,
+    "mutation_policy": "INSPECTION_ONLY",
+    "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+    "query_failures": [],
+    "remote": "origin",
+    "remote_freshness": {
+      "default_ref": "origin/main",
+      "default_sha": "ee04bfbf76b1a3a022d07c8203b5274a0f71998f",
+      "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+      "status": "OBSERVED_AT"
+    },
+    "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2c-preparation",
+    "schema_version": 1,
+    "status": "INSPECTED",
+    "targets": [
+      {
+        "branch": "codex/release-preflight-alpha-policy",
+        "disposition": "HOLD_UNIQUE_OR_UNPUBLISHED_WORK",
+        "duration_ms": 86.418,
+        "facts": {
+          "age_days": 15,
+          "age_is_authority": false,
+          "ahead_commit_count": 0,
+          "behind_commit_count": 166,
+          "cherry": {
+            "entries": [],
+            "equivalent_patch_count": 0,
+            "unique_patch_count": 0
+          },
+          "reachable_from_default": true,
+          "tree": {
+            "branch_tree_sha": "ee37d540be2b8a2783d65b4299a902c843f33c40",
+            "default_tree_sha": "89faa8ddfcdc3fa039f71e333f8403bea297ed22",
+            "equal": false
+          }
+        },
+        "identity": {
+          "head_sha": "5da9c66a0f962fc08a6431fe95e39ec664a353f6",
+          "inspected_ref": "refs/heads/codex/release-preflight-alpha-policy",
+          "is_default_branch": false,
+          "local_ref": "refs/heads/codex/release-preflight-alpha-policy",
+          "local_sha": "5da9c66a0f962fc08a6431fe95e39ec664a353f6",
+          "remote_tracking_ref": "refs/remotes/origin/codex/release-preflight-alpha-policy",
+          "remote_tracking_sha": "20180a40137cb43f8a4d8f51093c6337ac94ced1"
+        },
+        "next_action": "Hold. Local and observed remote heads differ.",
+        "owner": "MAINT-0136-PHASE-2C",
+        "pull_requests": {
+          "head_sha": "5da9c66a0f962fc08a6431fe95e39ec664a353f6",
+          "items": [],
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "status": "NONE_OPEN"
+        },
+        "query_failures": [],
+        "reason_codes": [
+          "LOCAL_REMOTE_HEAD_MISMATCH"
+        ],
+        "remote_ref_evidence": {
+          "ref": "refs/heads/codex/release-preflight-alpha-policy",
+          "sha": "20180a40137cb43f8a4d8f51093c6337ac94ced1",
+          "status": "PRESENT"
+        },
+        "retention": {
+          "head_sha": "5da9c66a0f962fc08a6431fe95e39ec664a353f6",
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "reason": null,
+          "status": "NO_RETENTION"
+        },
+        "status": "HOLD",
+        "worktrees": []
+      },
+      {
+        "branch": "codex/release-0240a1-publication",
+        "disposition": "RETIREMENT_READY_PENDING_APPROVAL",
+        "duration_ms": 48.194,
+        "facts": {
+          "age_days": 2,
+          "age_is_authority": false,
+          "ahead_commit_count": 0,
+          "behind_commit_count": 3,
+          "cherry": {
+            "entries": [],
+            "equivalent_patch_count": 0,
+            "unique_patch_count": 0
+          },
+          "reachable_from_default": true,
+          "tree": {
+            "branch_tree_sha": "221de5561bf6419396a2c20697c574124d721694",
+            "default_tree_sha": "89faa8ddfcdc3fa039f71e333f8403bea297ed22",
+            "equal": false
+          }
+        },
+        "identity": {
+          "head_sha": "d3a4d2235d1811ab4bc2c860640f5660c6eed057",
+          "inspected_ref": "refs/heads/codex/release-0240a1-publication",
+          "is_default_branch": false,
+          "local_ref": "refs/heads/codex/release-0240a1-publication",
+          "local_sha": "d3a4d2235d1811ab4bc2c860640f5660c6eed057",
+          "remote_tracking_ref": "refs/remotes/origin/codex/release-0240a1-publication",
+          "remote_tracking_sha": "d3a4d2235d1811ab4bc2c860640f5660c6eed057"
+        },
+        "next_action": "Obtain separate exact-target authorization, then re-inspect before any local, remote, or worktree action.",
+        "owner": "MAINT-0136-PHASE-2C",
+        "pull_requests": {
+          "head_sha": "d3a4d2235d1811ab4bc2c860640f5660c6eed057",
+          "items": [],
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "status": "NONE_OPEN"
+        },
+        "query_failures": [],
+        "reason_codes": [
+          "FULL_EVIDENCE_REVIEW_COMPLETE"
+        ],
+        "remote_ref_evidence": {
+          "ref": "refs/heads/codex/release-0240a1-publication",
+          "sha": "d3a4d2235d1811ab4bc2c860640f5660c6eed057",
+          "status": "PRESENT"
+        },
+        "retention": {
+          "head_sha": "d3a4d2235d1811ab4bc2c860640f5660c6eed057",
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "reason": null,
+          "status": "NO_RETENTION"
+        },
+        "status": "CANDIDATE",
+        "worktrees": []
+      },
+      {
+        "branch": "codex/release-smoothness",
+        "disposition": "RETIREMENT_READY_PENDING_APPROVAL",
+        "duration_ms": 47.371,
+        "facts": {
+          "age_days": 2,
+          "age_is_authority": false,
+          "ahead_commit_count": 0,
+          "behind_commit_count": 1,
+          "cherry": {
+            "entries": [],
+            "equivalent_patch_count": 0,
+            "unique_patch_count": 0
+          },
+          "reachable_from_default": true,
+          "tree": {
+            "branch_tree_sha": "89faa8ddfcdc3fa039f71e333f8403bea297ed22",
+            "default_tree_sha": "89faa8ddfcdc3fa039f71e333f8403bea297ed22",
+            "equal": true
+          }
+        },
+        "identity": {
+          "head_sha": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d",
+          "inspected_ref": "refs/heads/codex/release-smoothness",
+          "is_default_branch": false,
+          "local_ref": "refs/heads/codex/release-smoothness",
+          "local_sha": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d",
+          "remote_tracking_ref": "refs/remotes/origin/codex/release-smoothness",
+          "remote_tracking_sha": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d"
+        },
+        "next_action": "Obtain separate exact-target authorization, then re-inspect before any local, remote, or worktree action.",
+        "owner": "MAINT-0136-PHASE-2C",
+        "pull_requests": {
+          "head_sha": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d",
+          "items": [],
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "status": "NONE_OPEN"
+        },
+        "query_failures": [],
+        "reason_codes": [
+          "FULL_EVIDENCE_REVIEW_COMPLETE"
+        ],
+        "remote_ref_evidence": {
+          "ref": "refs/heads/codex/release-smoothness",
+          "sha": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d",
+          "status": "PRESENT"
+        },
+        "retention": {
+          "head_sha": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d",
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "reason": null,
+          "status": "NO_RETENTION"
+        },
+        "status": "CANDIDATE",
+        "worktrees": []
+      },
+      {
+        "branch": "codex/excel-product-planning",
+        "disposition": "RETIREMENT_READY_PENDING_APPROVAL",
+        "duration_ms": 84.822,
+        "facts": {
+          "age_days": 16,
+          "age_is_authority": false,
+          "ahead_commit_count": 0,
+          "behind_commit_count": 198,
+          "cherry": {
+            "entries": [],
+            "equivalent_patch_count": 0,
+            "unique_patch_count": 0
+          },
+          "reachable_from_default": true,
+          "tree": {
+            "branch_tree_sha": "2b5c70bff3edb74a4959caeeee845c6bb29b68c7",
+            "default_tree_sha": "89faa8ddfcdc3fa039f71e333f8403bea297ed22",
+            "equal": false
+          }
+        },
+        "identity": {
+          "head_sha": "a0e115e17009cc14b3d883e3c291d47c32f7ca4e",
+          "inspected_ref": "refs/heads/codex/excel-product-planning",
+          "is_default_branch": false,
+          "local_ref": "refs/heads/codex/excel-product-planning",
+          "local_sha": "a0e115e17009cc14b3d883e3c291d47c32f7ca4e",
+          "remote_tracking_ref": "refs/remotes/origin/codex/excel-product-planning",
+          "remote_tracking_sha": null
+        },
+        "next_action": "Obtain separate exact-target authorization, then re-inspect before any local, remote, or worktree action.",
+        "owner": "MAINT-0136-PHASE-2C",
+        "pull_requests": {
+          "head_sha": "a0e115e17009cc14b3d883e3c291d47c32f7ca4e",
+          "items": [],
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "status": "NONE_OPEN"
+        },
+        "query_failures": [],
+        "reason_codes": [
+          "FULL_EVIDENCE_REVIEW_COMPLETE"
+        ],
+        "remote_ref_evidence": {
+          "ref": "refs/heads/codex/excel-product-planning",
+          "sha": null,
+          "status": "ABSENT"
+        },
+        "retention": {
+          "head_sha": "a0e115e17009cc14b3d883e3c291d47c32f7ca4e",
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "reason": null,
+          "status": "NO_RETENTION"
+        },
+        "status": "CANDIDATE",
+        "worktrees": []
+      },
+      {
+        "branch": "codex/release-0231-stable",
+        "disposition": "RETIREMENT_READY_PENDING_APPROVAL",
+        "duration_ms": 76.791,
+        "facts": {
+          "age_days": 9,
+          "age_is_authority": false,
+          "ahead_commit_count": 0,
+          "behind_commit_count": 53,
+          "cherry": {
+            "entries": [],
+            "equivalent_patch_count": 0,
+            "unique_patch_count": 0
+          },
+          "reachable_from_default": true,
+          "tree": {
+            "branch_tree_sha": "f5132577eed67a0b15c0afad78f3dc41553b5574",
+            "default_tree_sha": "89faa8ddfcdc3fa039f71e333f8403bea297ed22",
+            "equal": false
+          }
+        },
+        "identity": {
+          "head_sha": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+          "inspected_ref": "refs/heads/codex/release-0231-stable",
+          "is_default_branch": false,
+          "local_ref": "refs/heads/codex/release-0231-stable",
+          "local_sha": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+          "remote_tracking_ref": "refs/remotes/origin/codex/release-0231-stable",
+          "remote_tracking_sha": null
+        },
+        "next_action": "Obtain separate exact-target authorization, then re-inspect before any local, remote, or worktree action.",
+        "owner": "MAINT-0136-PHASE-2C",
+        "pull_requests": {
+          "head_sha": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+          "items": [],
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "status": "NONE_OPEN"
+        },
+        "query_failures": [],
+        "reason_codes": [
+          "FULL_EVIDENCE_REVIEW_COMPLETE"
+        ],
+        "remote_ref_evidence": {
+          "ref": "refs/heads/codex/release-0231-stable",
+          "sha": null,
+          "status": "ABSENT"
+        },
+        "retention": {
+          "head_sha": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "reason": null,
+          "status": "NO_RETENTION"
+        },
+        "status": "CANDIDATE",
+        "worktrees": []
+      }
+    ]
+  },
+  "canonical_classifier_input": {
+    "branches": {
+      "codex/excel-product-planning": {
+        "owner": "MAINT-0136-PHASE-2C",
+        "pull_requests": {
+          "head_sha": "a0e115e17009cc14b3d883e3c291d47c32f7ca4e",
+          "items": [],
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "status": "NONE_OPEN"
+        },
+        "remote_ref": {
+          "ref": "refs/heads/codex/excel-product-planning",
+          "sha": null,
+          "status": "ABSENT"
+        },
+        "retention": {
+          "head_sha": "a0e115e17009cc14b3d883e3c291d47c32f7ca4e",
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "reason": null,
+          "status": "NO_RETENTION"
+        }
+      },
+      "codex/release-0231-stable": {
+        "owner": "MAINT-0136-PHASE-2C",
+        "pull_requests": {
+          "head_sha": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+          "items": [],
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "status": "NONE_OPEN"
+        },
+        "remote_ref": {
+          "ref": "refs/heads/codex/release-0231-stable",
+          "sha": null,
+          "status": "ABSENT"
+        },
+        "retention": {
+          "head_sha": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "reason": null,
+          "status": "NO_RETENTION"
+        }
+      },
+      "codex/release-0240a1-publication": {
+        "owner": "MAINT-0136-PHASE-2C",
+        "pull_requests": {
+          "head_sha": "d3a4d2235d1811ab4bc2c860640f5660c6eed057",
+          "items": [],
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "status": "NONE_OPEN"
+        },
+        "remote_ref": {
+          "ref": "refs/heads/codex/release-0240a1-publication",
+          "sha": "d3a4d2235d1811ab4bc2c860640f5660c6eed057",
+          "status": "PRESENT"
+        },
+        "retention": {
+          "head_sha": "d3a4d2235d1811ab4bc2c860640f5660c6eed057",
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "reason": null,
+          "status": "NO_RETENTION"
+        }
+      },
+      "codex/release-preflight-alpha-policy": {
+        "owner": "MAINT-0136-PHASE-2C",
+        "pull_requests": {
+          "head_sha": "5da9c66a0f962fc08a6431fe95e39ec664a353f6",
+          "items": [],
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "status": "NONE_OPEN"
+        },
+        "remote_ref": {
+          "ref": "refs/heads/codex/release-preflight-alpha-policy",
+          "sha": "20180a40137cb43f8a4d8f51093c6337ac94ced1",
+          "status": "PRESENT"
+        },
+        "retention": {
+          "head_sha": "5da9c66a0f962fc08a6431fe95e39ec664a353f6",
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "reason": null,
+          "status": "NO_RETENTION"
+        }
+      },
+      "codex/release-smoothness": {
+        "owner": "MAINT-0136-PHASE-2C",
+        "pull_requests": {
+          "head_sha": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d",
+          "items": [],
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "status": "NONE_OPEN"
+        },
+        "remote_ref": {
+          "ref": "refs/heads/codex/release-smoothness",
+          "sha": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d",
+          "status": "PRESENT"
+        },
+        "retention": {
+          "head_sha": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d",
+          "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+          "reason": null,
+          "status": "NO_RETENTION"
+        }
+      }
+    },
+    "remote_freshness": {
+      "default_ref": "origin/main",
+      "default_sha": "ee04bfbf76b1a3a022d07c8203b5274a0f71998f",
+      "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+      "status": "OBSERVED_AT"
+    },
+    "schema_version": 1
+  },
+  "holds": [
+    {
+      "branch": "codex/a1-canonical-transport-contract",
+      "disposition": "RETAIN",
+      "head_sha": "85872c846020ee9fb7cf654e8b5b3943f44fa531",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/a2-lossless-intake-calculation",
+      "disposition": "RETAIN",
+      "head_sha": "2a6889b363aad85f5b45f5ba23b344efd08084d6",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/b1-gravity-model-load-ledger",
+      "disposition": "RETAIN",
+      "head_sha": "4a7f13bca2fadfdb45017a296e6235c3b95dd401",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/b2-gravity-workflow-v1",
+      "disposition": "RETAIN",
+      "head_sha": "b337efc73d0af9ff7bef623916cfe808dd79bed6",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/e1-blank-workbook-guard",
+      "disposition": "RETAIN",
+      "head_sha": "514155b266af6dff3e30bf39ee28671c17345454",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/e1-excel-routine-workbench",
+      "disposition": "RETAIN",
+      "head_sha": "ef5ee05c785904e1a01c2d09cc65649edc8745ab",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/e1-g3-closeout",
+      "disposition": "RETAIN",
+      "head_sha": "53b9f56e5af0bae064ba3a545dbb9b86b4b336d7",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/e1-review-bundle-export",
+      "disposition": "RETAIN",
+      "head_sha": "98c60bc1f7c3899c28f662e82399cb25d80bbf26",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/e1-w0-maintenance-plan",
+      "disposition": "RETAIN",
+      "head_sha": "654e40b1370d098fca4d001146a030b9937536a8",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/e1-workbook-open-repair",
+      "disposition": "RETAIN",
+      "head_sha": "ede01ef4fb6182a27e3f176e872478304fb5f256",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/footing-isolated-v1",
+      "disposition": "RETAIN",
+      "head_sha": "886871aef93d9a955a3cc2fa613fe49bad589ce7",
+      "reason_codes": [
+        "ATTACHED_OR_OUTSIDE_PHASE_2B_BACKED_TARGET_SET"
+      ]
+    },
+    {
+      "branch": "codex/git-governance-research",
+      "disposition": "RETAIN",
+      "head_sha": "657037364bbb49f2ef834c70f3a3c704bac83c7b",
+      "reason_codes": [
+        "ATTACHED_OR_OUTSIDE_PHASE_2B_BACKED_TARGET_SET"
+      ]
+    },
+    {
+      "branch": "codex/implementation-first-verification-policy",
+      "disposition": "RETAIN",
+      "head_sha": "fffbfaaa0d928768efe7b703a0d8091555ad9a8e",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/index-local-artifact-determinism",
+      "disposition": "RETAIN",
+      "head_sha": "65c37ad0836bd59ebef56b6d01faa144b791d020",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/index-mtime-determinism",
+      "disposition": "RETAIN",
+      "head_sha": "cfb98da58af391bdefb23f8cfc83295876b44876",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/india-3-beam-r1",
+      "disposition": "RETAIN",
+      "head_sha": "099937dc3da7c0083de793ed3b2972690a44d423",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/india-3-column-r1",
+      "disposition": "RETAIN",
+      "head_sha": "4df72ea258610179a1496a255c1d6d320e3416bf",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/india-3-g0-acceptance",
+      "disposition": "RETAIN",
+      "head_sha": "8466fb1458f41cb767117f5a49b4495b23d794eb",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/india-3-g0-source-library",
+      "disposition": "RETAIN",
+      "head_sha": "9c976b1f4afd0540a5ec9eb3cab16861916ac89b",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/india-3-g0-truth-audit",
+      "disposition": "RETAIN",
+      "head_sha": "b39fcda534ec757744a2d6f203f42e4350871cd1",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/india-3-is13920-m0",
+      "disposition": "RETAIN",
+      "head_sha": "0a20774ec8978b7dcea6d7cd7db6966068b70703",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/india-3-joint-r1",
+      "disposition": "RETAIN",
+      "head_sha": "a5657e1bbcea16079af527005c47b296cf95f742",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/india-3-source-meta-r1",
+      "disposition": "RETAIN",
+      "head_sha": "13f0ff916a0d7c167e34b46ab9ae6cb2c50c9efd",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/is456-slabs-plan",
+      "disposition": "RETAIN",
+      "head_sha": "7e623984e027141fff62e5129c23fdc16264f8e0",
+      "reason_codes": [
+        "ATTACHED_OR_OUTSIDE_PHASE_2B_BACKED_TARGET_SET"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-002-a-strict-input",
+      "disposition": "RETAIN",
+      "head_sha": "18d043ef9ac6221936335e1b20676863b3c5bc9b",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-002-b-lossless-import",
+      "disposition": "RETAIN",
+      "head_sha": "22c65d17874ec877a7f90f56ae6950131eddd462",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-002-i-cli",
+      "disposition": "RETAIN",
+      "head_sha": "911b6e3d288db85bc3f2770a061598689a4e8ec3",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-002-j-release-signal",
+      "disposition": "RETAIN",
+      "head_sha": "280dd9a9a31e8f318d385cb2ec43418d195ca4b3",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-002-usability-refresh",
+      "disposition": "RETAIN",
+      "head_sha": "e17d57f8a6ae4f050892d07adf26856f45ffcec0",
+      "reason_codes": [
+        "ATTACHED_OR_OUTSIDE_PHASE_2B_BACKED_TARGET_SET"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-004-safety-auditors",
+      "disposition": "RETAIN",
+      "head_sha": "ff55471c9b75a7c70369f857c387fdffad05899d",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-005-release-safety-closure",
+      "disposition": "RETAIN",
+      "head_sha": "0979200d00ea32bd7464232f20558f353509be8a",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-006-gravity-foundation",
+      "disposition": "RETAIN",
+      "head_sha": "6db242171427b93a2586de9c2c772ccba03243de",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-007-g0-contract-freeze",
+      "disposition": "RETAIN",
+      "head_sha": "3b0c0c2551d5f1d31b1dd8251489e6ec632f57a4",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-007-m0-cumulative-acceptance",
+      "disposition": "RETAIN",
+      "head_sha": "eb92db482734e531561f739cf6818104281ef451",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-007-p1-optimization-truth",
+      "disposition": "RETAIN",
+      "head_sha": "6dd3fd4e17354f27846869ee48d10277c4703d0f",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-007-p2-supplied-beam-reinforcement",
+      "disposition": "RETAIN",
+      "head_sha": "fa81954852285d59fe7c1e58de7c2b6cb3fa7971",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-007-p3-footing-anchorage",
+      "disposition": "RETAIN",
+      "head_sha": "bfec16d13409519979135abc99b7b31ebc600688",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-007-p4-practical-actions",
+      "disposition": "RETAIN",
+      "head_sha": "a2b813dbc2c5a873edabab30c36087ff7fea7eda",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-007-p5-etabs-snapshot",
+      "disposition": "RETAIN",
+      "head_sha": "783cc15e37385d616044d00478f282d8bb6716f0",
+      "reason_codes": [
+        "ATTACHED_OR_OUTSIDE_PHASE_2B_BACKED_TARGET_SET"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-007-p6-cross-surface-parity",
+      "disposition": "RETAIN",
+      "head_sha": "9647feddb672428e4f89348f5f82ad8c2cbe71cf",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-007-p7-compatibility-convergence",
+      "disposition": "RETAIN",
+      "head_sha": "c9589815f2d8053b1d99f61bf38623cd2aebba2f",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-008-pre-india3-safety",
+      "disposition": "RETAIN",
+      "head_sha": "f035abfa70037afab5e159f8395db1343ee346af",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-009-rc-trust",
+      "disposition": "RETAIN",
+      "head_sha": "b4428e23adc8374d1acc6e7f2a2125d5aebff453",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/lib-pro-010-rc-artifact",
+      "disposition": "RETAIN",
+      "head_sha": "595b3bcb1bb55bae0261016a3dddd87da4aca8e9",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/maint-011-developer-gate-hygiene",
+      "disposition": "RETAIN",
+      "head_sha": "1f203f40ec162a5caf141b1c44444ec4f6d3470c",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/maint-012a-control-registry",
+      "disposition": "RETAIN",
+      "head_sha": "f0cdf631d6c7d698c0a7b47b04030b4e23fb32a2",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/maint-012b-index-architecture",
+      "disposition": "RETAIN",
+      "head_sha": "74bfd69ebf610b6cb324b7298b95ac840652ed4c",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/maint-012c-evidence-scheduling",
+      "disposition": "RETAIN",
+      "head_sha": "56eff4d357ca62332fb0e50c6a55c2336af57c65",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/maint-012d-scanner-consolidation",
+      "disposition": "RETAIN",
+      "head_sha": "66cd2bb51b9f4f1fd7f6c1f8ab57e5a4f188e20d",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/maint-0130-safe-file-foundation",
+      "disposition": "RETAIN",
+      "head_sha": "b7b9623966c3131b8d5628496ea06328ce7210a6",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/maint-0131-efficiency-controls",
+      "disposition": "RETAIN",
+      "head_sha": "a4dbb38e113fb2383997e1b294ab53f64325716a",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/maint-0132-efficiency-observability",
+      "disposition": "RETAIN",
+      "head_sha": "2573b0d7959913b550eea6d6f15f34fd4e6edff5",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/maint-0133-cleanup-inventory",
+      "disposition": "RETAIN",
+      "head_sha": "f8c8d2642fa1f61f78366b3a05ff8dded692b75d",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/maint-0133b-packet-a",
+      "disposition": "RETAIN",
+      "head_sha": "203b33e9611dd27d5aecc0d47b7f49f607dc3dde",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/maint-0134-agent-instructions",
+      "disposition": "RETAIN",
+      "head_sha": "3e753959a006b640357c46a711689be46f076102",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/maint-0136-cleanup-preservation",
+      "disposition": "RETAIN",
+      "head_sha": "37b3678504b9e9a3d663f442ecab62f19a3f0b75",
+      "reason_codes": [
+        "ATTACHED_OR_OUTSIDE_PHASE_2B_BACKED_TARGET_SET"
+      ]
+    },
+    {
+      "branch": "codex/maint-0136-phase-2a-cache-cleanup",
+      "disposition": "RETAIN",
+      "head_sha": "2d898e9b32d1ad92be4176c1e2aa406b1ec33f81",
+      "reason_codes": [
+        "ATTACHED_OR_OUTSIDE_PHASE_2B_BACKED_TARGET_SET"
+      ]
+    },
+    {
+      "branch": "codex/maint-0136-phase-2b-preparation",
+      "disposition": "RETAIN",
+      "head_sha": "90f5d7921f82a903de4291719589c7da13e979cf",
+      "reason_codes": [
+        "ATTACHED_OR_OUTSIDE_PHASE_2B_BACKED_TARGET_SET"
+      ]
+    },
+    {
+      "branch": "codex/maint-0136-phase-2b-r-google-drive-backup",
+      "disposition": "RETAIN",
+      "head_sha": "d44ec71df99baccd599cde50a6075a4a22d330c1",
+      "reason_codes": [
+        "ATTACHED_OR_OUTSIDE_PHASE_2B_BACKED_TARGET_SET"
+      ]
+    },
+    {
+      "branch": "codex/maint-0136-phase-2b-r-recovery-preparation",
+      "disposition": "RETAIN",
+      "head_sha": "2e3558a7fda4f8ff778c6ecd5f0435d0415ca229",
+      "reason_codes": [
+        "ATTACHED_OR_OUTSIDE_PHASE_2B_BACKED_TARGET_SET"
+      ]
+    },
+    {
+      "branch": "codex/maint-0136-phase-2b-w-preparation",
+      "disposition": "RETAIN",
+      "head_sha": "18ed2f1f65a24b54029875fd1cad640dc2f0fae0",
+      "reason_codes": [
+        "ATTACHED_OR_OUTSIDE_PHASE_2B_BACKED_TARGET_SET"
+      ]
+    },
+    {
+      "branch": "codex/maint-0136-phase-2c-preparation",
+      "disposition": "RETAIN",
+      "head_sha": "18ed2f1f65a24b54029875fd1cad640dc2f0fae0",
+      "reason_codes": [
+        "ATTACHED_OR_OUTSIDE_PHASE_2B_BACKED_TARGET_SET"
+      ]
+    },
+    {
+      "branch": "codex/post-india2-cleanup-audit",
+      "disposition": "RETAIN",
+      "head_sha": "db07cdf843eccd2fea4fd7977c28a2d6ea60b24e",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/post-india2-cleanup-execution",
+      "disposition": "RETAIN",
+      "head_sha": "a4e7ab4a148bd1fc2869bac566660e9881e507dd",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/post-india2-maintenance",
+      "disposition": "RETAIN",
+      "head_sha": "9e681a2ec41944d4964733c0bf337bfe9018ea45",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/pre-release-input-safety-plan",
+      "disposition": "RETAIN",
+      "head_sha": "40cfc02e5b8d6752f5805eef9e437b3b1a01de8d",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/public-route-decisive-gates",
+      "disposition": "RETAIN",
+      "head_sha": "4d7e7e14faf4947d54364de73439927e69c26fc7",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/public-route-domain-provenance",
+      "disposition": "RETAIN",
+      "head_sha": "d3f77cedbd5db856893193ec79d97529bf831ede",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/public-route-failure-contracts",
+      "disposition": "RETAIN",
+      "head_sha": "fde41089a2314b749af1b4f48c80d21f3cfa0b44",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/public-route-numeric-boundaries",
+      "disposition": "RETAIN",
+      "head_sha": "dca370088cd458d014fda9829b9f0e6cf003e158",
+      "reason_codes": [
+        "CANONICAL_CLASSIFIER_NOT_RUN",
+        "HEAD_NOT_INTEGRATED_INTO_LIVE_ORIGIN_MAIN"
+      ]
+    },
+    {
+      "branch": "codex/release-0231a2",
+      "disposition": "RETAIN",
+      "head_sha": "6f2f449a3fda1fe927d47c8d7d070a39a9e8c5b7",
+      "reason_codes": [
+        "ATTACHED_OR_OUTSIDE_PHASE_2B_BACKED_TARGET_SET"
+      ]
+    },
+    {
+      "branch": "codex/release-preflight-alpha-policy",
+      "disposition": "RETAIN",
+      "head_sha": "5da9c66a0f962fc08a6431fe95e39ec664a353f6",
+      "reason_codes": [
+        "LOCAL_REMOTE_HEAD_MISMATCH"
+      ]
+    },
+    {
+      "branch": "main",
+      "disposition": "RETAIN",
+      "head_sha": "e2fac7419551988def59101ac63a5f8e491bc7a2",
+      "reason_codes": [
+        "DEFAULT_BRANCH"
+      ]
+    }
+  ],
+  "mutation_policy": "EXACT_TARGETS_ONLY_NO_FORCE_NO_PRUNE_ARCHIVES_RETAINED",
+  "observed_at_utc": "2026-08-26T19:59:57.620103+00:00",
+  "packet_id": "MAINT-0136-PHASE-2C",
+  "protected_sources": {
+    "aggregate_sha256": "a65d2fbcf5172544164d5ed61535f18fb40ed2d04446a48185811838493abee4",
+    "byte_count": 72025193,
+    "content_recorded": false,
+    "excluded_from_digest": [
+      "worktree_cleanup_archives/**",
+      "**/__pycache__/**"
+    ],
+    "file_count": 42,
+    "filenames_recorded": false,
+    "root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/private_sources"
+  },
+  "recovery": {
+    "archive_deletion_targets": [],
+    "archive_disposition": "RETAIN_BOTH_LOCAL_AND_OFF_DEVICE_RECOVERY",
+    "drive": {
+      "authenticated_full_restore": "PASS",
+      "authenticated_readback_sha256": "bf18a66b339b2ad02f071346aed75cb27d3fceeae0e45464eb50dd11334167ac",
+      "downloadable": true,
+      "file_id_recorded": false,
+      "observed_at_utc": "2026-08-26T19:59:57Z",
+      "owner_identity_recorded": false,
+      "remote_size_bytes": 92256339,
+      "shared": false,
+      "status": "LIVE_METADATA_RECONFIRMED"
+    },
+    "local_archives": [
+      {
+        "disposition": "RETAIN_RECOVERY_AUTHORITY",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/private_sources/worktree_cleanup_archives/maint-0136-20260826T144500Z/structural-engineering-lib-all-refs.bundle",
+        "sha256": "c57240f207b5730de92b9d27d5d64a819a89e0b0496d92351f4eec580c637dac",
+        "size_bytes": 42922979
+      },
+      {
+        "disposition": "RETAIN_RECOVERY_AUTHORITY",
+        "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/private_sources/worktree_cleanup_archives/maint-0136-phase-2b-r-google-drive-20260827/structural_engineering_lib-maint-0136-phase-2b-r-backup-2e3558a7.tar.gz",
+        "sha256": "bf18a66b339b2ad02f071346aed75cb27d3fceeae0e45464eb50dd11334167ac",
+        "size_bytes": 92256339
+      }
+    ]
+  },
+  "schema_version": 1,
+  "status": "PHASE_2C_TARGETS_FROZEN_AWAITING_DIGEST_BOUND_AUTHORIZATION",
+  "summary": {
+    "archive_target_count": 0,
+    "codex_managed_ref_target_count": 0,
+    "expected_live_remote_head_count_after": 79,
+    "expected_local_head_count_after": 73,
+    "expected_local_ref_count_after": 231,
+    "held_local_branch_count": 73,
+    "local_branch_target_count": 4,
+    "remote_branch_target_count": 2,
+    "tag_target_count": 0,
+    "total_ref_deletion_count": 6,
+    "worktree_target_count": 0
+  },
+  "target_identity": [
+    {
+      "branch": "codex/excel-product-planning",
+      "delete_local_branch": true,
+      "delete_remote_branch": false,
+      "head_sha": "a0e115e17009cc14b3d883e3c291d47c32f7ca4e",
+      "local_operation": "GIT_BRANCH_DELETE_NORMAL",
+      "remote_operation": "NONE_REMOTE_ALREADY_ABSENT"
+    },
+    {
+      "branch": "codex/release-0231-stable",
+      "delete_local_branch": true,
+      "delete_remote_branch": false,
+      "head_sha": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+      "local_operation": "GIT_BRANCH_DELETE_NORMAL",
+      "remote_operation": "NONE_REMOTE_ALREADY_ABSENT"
+    },
+    {
+      "branch": "codex/release-0240a1-publication",
+      "delete_local_branch": true,
+      "delete_remote_branch": true,
+      "head_sha": "d3a4d2235d1811ab4bc2c860640f5660c6eed057",
+      "local_operation": "GIT_BRANCH_DELETE_NORMAL",
+      "remote_operation": "GIT_PUSH_ORIGIN_DELETE_EXACT_BRANCH"
+    },
+    {
+      "branch": "codex/release-smoothness",
+      "delete_local_branch": true,
+      "delete_remote_branch": true,
+      "head_sha": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d",
+      "local_operation": "GIT_BRANCH_DELETE_NORMAL",
+      "remote_operation": "GIT_PUSH_ORIGIN_DELETE_EXACT_BRANCH"
+    }
+  ],
+  "target_set_sha256": "08a68419515cf9f469e8a7bb3d0a1f4e92218c7e086de5bb89c71368093b23c7",
+  "targets": [
+    {
+      "branch": "codex/excel-product-planning",
+      "delete_local_branch": true,
+      "delete_remote_branch": false,
+      "head_sha": "a0e115e17009cc14b3d883e3c291d47c32f7ca4e",
+      "integrated_into_live_origin_main": true,
+      "local_operation": "GIT_BRANCH_DELETE_NORMAL",
+      "off_device_recovery_status": "AUTHENTICATED_READBACK_AND_RESTORE_PASS",
+      "remote_operation": "NONE_REMOTE_ALREADY_ABSENT",
+      "remote_status": "ABSENT"
+    },
+    {
+      "branch": "codex/release-0231-stable",
+      "delete_local_branch": true,
+      "delete_remote_branch": false,
+      "head_sha": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+      "integrated_into_live_origin_main": true,
+      "local_operation": "GIT_BRANCH_DELETE_NORMAL",
+      "off_device_recovery_status": "AUTHENTICATED_READBACK_AND_RESTORE_PASS",
+      "remote_operation": "NONE_REMOTE_ALREADY_ABSENT",
+      "remote_status": "ABSENT"
+    },
+    {
+      "branch": "codex/release-0240a1-publication",
+      "delete_local_branch": true,
+      "delete_remote_branch": true,
+      "head_sha": "d3a4d2235d1811ab4bc2c860640f5660c6eed057",
+      "integrated_into_live_origin_main": true,
+      "local_operation": "GIT_BRANCH_DELETE_NORMAL",
+      "off_device_recovery_status": "AUTHENTICATED_READBACK_AND_RESTORE_PASS",
+      "remote_operation": "GIT_PUSH_ORIGIN_DELETE_EXACT_BRANCH",
+      "remote_status": "EXACT_HEAD"
+    },
+    {
+      "branch": "codex/release-smoothness",
+      "delete_local_branch": true,
+      "delete_remote_branch": true,
+      "head_sha": "3cec0bd40eee30a6757cb1af87c5d63d307dce4d",
+      "integrated_into_live_origin_main": true,
+      "local_operation": "GIT_BRANCH_DELETE_NORMAL",
+      "off_device_recovery_status": "AUTHENTICATED_READBACK_AND_RESTORE_PASS",
+      "remote_operation": "GIT_PUSH_ORIGIN_DELETE_EXACT_BRANCH",
+      "remote_status": "EXACT_HEAD"
+    }
+  ],
+  "task_id": "MAINT-0136"
+}

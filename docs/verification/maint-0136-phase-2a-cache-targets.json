@@ -1,0 +1,486 @@
+{
+  "authorization": {
+    "authorized_relative_paths": [
+      ".mypy_cache",
+      "react_app/node_modules"
+    ],
+    "prohibited_operations": [
+      "DELETE_FILE_OUTSIDE_EXACT_CACHE_TARGETS",
+      "REMOVE_WORKTREE",
+      "DELETE_BRANCH_OR_REF",
+      "CLOSE_PULL_REQUEST",
+      "GIT_CLEAN",
+      "PRUNE",
+      "DELETE_PROTECTED_SOURCE",
+      "DELETE_SHARED_VENV"
+    ],
+    "recovery_tier": "REGENERABLE_CACHE_SAME_DISK_ACCEPTED",
+    "source": "active Codex task: okay start phase 2A"
+  },
+  "binding": {
+    "branch": "codex/maint-0136-phase-2a-cache-cleanup",
+    "head_sha": "37b3678504b9e9a3d663f442ecab62f19a3f0b75",
+    "phase1_branch": "codex/maint-0136-cleanup-preservation",
+    "phase1_candidate_identity_count": 30,
+    "phase1_manifest_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2a-cache-cleanup/docs/verification/maint-0136-cleanup-preservation-manifest.json",
+    "phase1_manifest_sha256": "cada468da13e78a22813fb6d0ee0e82601a92032df6338d2b550d8adeec0d3d2",
+    "repo": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2a-cache-cleanup",
+    "topology_sha256": "43087497592d99ff8076cf2a85d3fc059e6bb7dbb16a792321067deb9b13d0e8"
+  },
+  "excluded_worktrees": [
+    {
+      "path": "/Users/pravinsurawase/.codex/worktrees/e54a/structural_engineering_lib",
+      "reason": "DIRTY_UNIQUE_LANE"
+    },
+    {
+      "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib",
+      "reason": "PRIMARY_CHECKOUT"
+    },
+    {
+      "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-cleanup-preservation",
+      "reason": "FROZEN_PHASE_1_PREDECESSOR"
+    },
+    {
+      "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2a-cache-cleanup",
+      "reason": "CURRENT_PHASE_2A_TASK"
+    }
+  ],
+  "held_candidates": [],
+  "observed_at_utc": "2026-08-26T16:40:55.795982+00:00",
+  "packet_id": "MAINT-0136-PHASE-2A-CACHE",
+  "schema_version": 1,
+  "status": "PHASE_2A_TARGETS_FROZEN",
+  "summary": {
+    "held_candidate_count": 0,
+    "mypy_cache_count": 14,
+    "node_modules_count": 16,
+    "target_bytes": 7665283072,
+    "target_count": 30
+  },
+  "target_set_sha256": "bd1f0985bda82707a85e6ce12bb2d3889d85a0dffb35b8e822a411a0841d3b05",
+  "targets": [
+    {
+      "absolute_path": "/Users/pravinsurawase/.codex/worktrees/3c84/structural_engineering_lib/.mypy_cache",
+      "branch": "codex/lib-pro-007-p7-compatibility-convergence",
+      "head_sha": "c9589815f2d8053b1d99f61bf38623cd2aebba2f",
+      "recreation_basis": {
+        "command_basis": "repository mypy invocation",
+        "head_sha": "c9589815f2d8053b1d99f61bf38623cd2aebba2f",
+        "kind": "TOOL_GENERATED_MYPY_CACHE"
+      },
+      "relative_path": ".mypy_cache",
+      "size_bytes": 94539776,
+      "worktree_path": "/Users/pravinsurawase/.codex/worktrees/3c84/structural_engineering_lib"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/.codex/worktrees/cace/structural_engineering_lib/.mypy_cache",
+      "branch": "codex/lib-pro-007-p6-cross-surface-parity",
+      "head_sha": "9647feddb672428e4f89348f5f82ad8c2cbe71cf",
+      "recreation_basis": {
+        "command_basis": "repository mypy invocation",
+        "head_sha": "9647feddb672428e4f89348f5f82ad8c2cbe71cf",
+        "kind": "TOOL_GENERATED_MYPY_CACHE"
+      },
+      "relative_path": ".mypy_cache",
+      "size_bytes": 33124352,
+      "worktree_path": "/Users/pravinsurawase/.codex/worktrees/cace/structural_engineering_lib"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/.codex/worktrees/cace/structural_engineering_lib/react_app/node_modules",
+      "branch": "codex/lib-pro-007-p6-cross-surface-parity",
+      "head_sha": "9647feddb672428e4f89348f5f82ad8c2cbe71cf",
+      "recreation_basis": {
+        "head_sha": "9647feddb672428e4f89348f5f82ad8c2cbe71cf",
+        "kind": "NPM_LOCKFILE",
+        "path": "react_app/package-lock.json",
+        "recreate_command": "npm ci",
+        "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+      },
+      "relative_path": "react_app/node_modules",
+      "size_bytes": 438308864,
+      "worktree_path": "/Users/pravinsurawase/.codex/worktrees/cace/structural_engineering_lib"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/.codex/worktrees/ef1b/structural_engineering_lib/.mypy_cache",
+      "branch": "codex/india-3-joint-r1",
+      "head_sha": "a5657e1bbcea16079af527005c47b296cf95f742",
+      "recreation_basis": {
+        "command_basis": "repository mypy invocation",
+        "head_sha": "a5657e1bbcea16079af527005c47b296cf95f742",
+        "kind": "TOOL_GENERATED_MYPY_CACHE"
+      },
+      "relative_path": ".mypy_cache",
+      "size_bytes": 33112064,
+      "worktree_path": "/Users/pravinsurawase/.codex/worktrees/ef1b/structural_engineering_lib"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/.codex/worktrees/india-3-beam-r1/structural_engineering_lib/.mypy_cache",
+      "branch": "codex/india-3-beam-r1",
+      "head_sha": "099937dc3da7c0083de793ed3b2972690a44d423",
+      "recreation_basis": {
+        "command_basis": "repository mypy invocation",
+        "head_sha": "099937dc3da7c0083de793ed3b2972690a44d423",
+        "kind": "TOOL_GENERATED_MYPY_CACHE"
+      },
+      "relative_path": ".mypy_cache",
+      "size_bytes": 34496512,
+      "worktree_path": "/Users/pravinsurawase/.codex/worktrees/india-3-beam-r1/structural_engineering_lib"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-009-rc-trust/.mypy_cache",
+      "branch": "codex/lib-pro-009-rc-trust",
+      "head_sha": "b4428e23adc8374d1acc6e7f2a2125d5aebff453",
+      "recreation_basis": {
+        "command_basis": "repository mypy invocation",
+        "head_sha": "b4428e23adc8374d1acc6e7f2a2125d5aebff453",
+        "kind": "TOOL_GENERATED_MYPY_CACHE"
+      },
+      "relative_path": ".mypy_cache",
+      "size_bytes": 33144832,
+      "worktree_path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-009-rc-trust"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-010-rc-artifact/react_app/node_modules",
+      "branch": "codex/lib-pro-010-rc-artifact",
+      "head_sha": "595b3bcb1bb55bae0261016a3dddd87da4aca8e9",
+      "recreation_basis": {
+        "head_sha": "595b3bcb1bb55bae0261016a3dddd87da4aca8e9",
+        "kind": "NPM_LOCKFILE",
+        "path": "react_app/package-lock.json",
+        "recreate_command": "npm ci",
+        "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+      },
+      "relative_path": "react_app/node_modules",
+      "size_bytes": 438304768,
+      "worktree_path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-010-rc-artifact"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a1-canonical-transport/react_app/node_modules",
+      "branch": "codex/a1-canonical-transport-contract",
+      "head_sha": "85872c846020ee9fb7cf654e8b5b3943f44fa531",
+      "recreation_basis": {
+        "head_sha": "85872c846020ee9fb7cf654e8b5b3943f44fa531",
+        "kind": "NPM_LOCKFILE",
+        "path": "react_app/package-lock.json",
+        "recreate_command": "npm ci",
+        "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+      },
+      "relative_path": "react_app/node_modules",
+      "size_bytes": 438317056,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a1-canonical-transport"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a2-lossless-intake/.mypy_cache",
+      "branch": "codex/a2-lossless-intake-calculation",
+      "head_sha": "2a6889b363aad85f5b45f5ba23b344efd08084d6",
+      "recreation_basis": {
+        "command_basis": "repository mypy invocation",
+        "head_sha": "2a6889b363aad85f5b45f5ba23b344efd08084d6",
+        "kind": "TOOL_GENERATED_MYPY_CACHE"
+      },
+      "relative_path": ".mypy_cache",
+      "size_bytes": 76513280,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a2-lossless-intake"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a2-lossless-intake/react_app/node_modules",
+      "branch": "codex/a2-lossless-intake-calculation",
+      "head_sha": "2a6889b363aad85f5b45f5ba23b344efd08084d6",
+      "recreation_basis": {
+        "head_sha": "2a6889b363aad85f5b45f5ba23b344efd08084d6",
+        "kind": "NPM_LOCKFILE",
+        "path": "react_app/package-lock.json",
+        "recreate_command": "npm ci",
+        "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+      },
+      "relative_path": "react_app/node_modules",
+      "size_bytes": 438304768,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a2-lossless-intake"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b1-gravity-model-ledger/.mypy_cache",
+      "branch": "codex/b1-gravity-model-load-ledger",
+      "head_sha": "4a7f13bca2fadfdb45017a296e6235c3b95dd401",
+      "recreation_basis": {
+        "command_basis": "repository mypy invocation",
+        "head_sha": "4a7f13bca2fadfdb45017a296e6235c3b95dd401",
+        "kind": "TOOL_GENERATED_MYPY_CACHE"
+      },
+      "relative_path": ".mypy_cache",
+      "size_bytes": 31907840,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b1-gravity-model-ledger"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b2-gravity-workflow-v1/react_app/node_modules",
+      "branch": "codex/b2-gravity-workflow-v1",
+      "head_sha": "b337efc73d0af9ff7bef623916cfe808dd79bed6",
+      "recreation_basis": {
+        "head_sha": "b337efc73d0af9ff7bef623916cfe808dd79bed6",
+        "kind": "NPM_LOCKFILE",
+        "path": "react_app/package-lock.json",
+        "recreate_command": "npm ci",
+        "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+      },
+      "relative_path": "react_app/node_modules",
+      "size_bytes": 438308864,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b2-gravity-workflow-v1"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-a-strict-input/.mypy_cache",
+      "branch": "codex/lib-pro-002-a-strict-input",
+      "head_sha": "18d043ef9ac6221936335e1b20676863b3c5bc9b",
+      "recreation_basis": {
+        "command_basis": "repository mypy invocation",
+        "head_sha": "18d043ef9ac6221936335e1b20676863b3c5bc9b",
+        "kind": "TOOL_GENERATED_MYPY_CACHE"
+      },
+      "relative_path": ".mypy_cache",
+      "size_bytes": 31158272,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-a-strict-input"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-b-lossless-import/.mypy_cache",
+      "branch": "codex/lib-pro-002-b-lossless-import",
+      "head_sha": "22c65d17874ec877a7f90f56ae6950131eddd462",
+      "recreation_basis": {
+        "command_basis": "repository mypy invocation",
+        "head_sha": "22c65d17874ec877a7f90f56ae6950131eddd462",
+        "kind": "TOOL_GENERATED_MYPY_CACHE"
+      },
+      "relative_path": ".mypy_cache",
+      "size_bytes": 76324864,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-b-lossless-import"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-b-lossless-import/react_app/node_modules",
+      "branch": "codex/lib-pro-002-b-lossless-import",
+      "head_sha": "22c65d17874ec877a7f90f56ae6950131eddd462",
+      "recreation_basis": {
+        "head_sha": "22c65d17874ec877a7f90f56ae6950131eddd462",
+        "kind": "NPM_LOCKFILE",
+        "path": "react_app/package-lock.json",
+        "recreate_command": "npm ci",
+        "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+      },
+      "relative_path": "react_app/node_modules",
+      "size_bytes": 438308864,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-b-lossless-import"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-j-release-signal/react_app/node_modules",
+      "branch": "codex/lib-pro-002-j-release-signal",
+      "head_sha": "280dd9a9a31e8f318d385cb2ec43418d195ca4b3",
+      "recreation_basis": {
+        "head_sha": "280dd9a9a31e8f318d385cb2ec43418d195ca4b3",
+        "kind": "NPM_LOCKFILE",
+        "path": "react_app/package-lock.json",
+        "recreate_command": "npm ci",
+        "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+      },
+      "relative_path": "react_app/node_modules",
+      "size_bytes": 438308864,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-j-release-signal"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-004-safety-auditors/react_app/node_modules",
+      "branch": "codex/lib-pro-004-safety-auditors",
+      "head_sha": "ff55471c9b75a7c70369f857c387fdffad05899d",
+      "recreation_basis": {
+        "head_sha": "ff55471c9b75a7c70369f857c387fdffad05899d",
+        "kind": "NPM_LOCKFILE",
+        "path": "react_app/package-lock.json",
+        "recreate_command": "npm ci",
+        "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+      },
+      "relative_path": "react_app/node_modules",
+      "size_bytes": 438296576,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-004-safety-auditors"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-005-release-safety-closure/react_app/node_modules",
+      "branch": "codex/lib-pro-005-release-safety-closure",
+      "head_sha": "0979200d00ea32bd7464232f20558f353509be8a",
+      "recreation_basis": {
+        "head_sha": "0979200d00ea32bd7464232f20558f353509be8a",
+        "kind": "NPM_LOCKFILE",
+        "path": "react_app/package-lock.json",
+        "recreate_command": "npm ci",
+        "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+      },
+      "relative_path": "react_app/node_modules",
+      "size_bytes": 438296576,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-005-release-safety-closure"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-m0/react_app/node_modules",
+      "branch": "codex/lib-pro-007-m0-cumulative-acceptance",
+      "head_sha": "eb92db482734e531561f739cf6818104281ef451",
+      "recreation_basis": {
+        "head_sha": "eb92db482734e531561f739cf6818104281ef451",
+        "kind": "NPM_LOCKFILE",
+        "path": "react_app/package-lock.json",
+        "recreate_command": "npm ci",
+        "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+      },
+      "relative_path": "react_app/node_modules",
+      "size_bytes": 438312960,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-m0"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p1/react_app/node_modules",
+      "branch": "codex/lib-pro-007-p1-optimization-truth",
+      "head_sha": "6dd3fd4e17354f27846869ee48d10277c4703d0f",
+      "recreation_basis": {
+        "head_sha": "6dd3fd4e17354f27846869ee48d10277c4703d0f",
+        "kind": "NPM_LOCKFILE",
+        "path": "react_app/package-lock.json",
+        "recreate_command": "npm ci",
+        "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+      },
+      "relative_path": "react_app/node_modules",
+      "size_bytes": 438296576,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p1"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p2/.mypy_cache",
+      "branch": "codex/lib-pro-007-p2-supplied-beam-reinforcement",
+      "head_sha": "fa81954852285d59fe7c1e58de7c2b6cb3fa7971",
+      "recreation_basis": {
+        "command_basis": "repository mypy invocation",
+        "head_sha": "fa81954852285d59fe7c1e58de7c2b6cb3fa7971",
+        "kind": "TOOL_GENERATED_MYPY_CACHE"
+      },
+      "relative_path": ".mypy_cache",
+      "size_bytes": 32612352,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p2"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p2/react_app/node_modules",
+      "branch": "codex/lib-pro-007-p2-supplied-beam-reinforcement",
+      "head_sha": "fa81954852285d59fe7c1e58de7c2b6cb3fa7971",
+      "recreation_basis": {
+        "head_sha": "fa81954852285d59fe7c1e58de7c2b6cb3fa7971",
+        "kind": "NPM_LOCKFILE",
+        "path": "react_app/package-lock.json",
+        "recreate_command": "npm ci",
+        "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+      },
+      "relative_path": "react_app/node_modules",
+      "size_bytes": 438308864,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p2"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p3/.mypy_cache",
+      "branch": "codex/lib-pro-007-p3-footing-anchorage",
+      "head_sha": "bfec16d13409519979135abc99b7b31ebc600688",
+      "recreation_basis": {
+        "command_basis": "repository mypy invocation",
+        "head_sha": "bfec16d13409519979135abc99b7b31ebc600688",
+        "kind": "TOOL_GENERATED_MYPY_CACHE"
+      },
+      "relative_path": ".mypy_cache",
+      "size_bytes": 34787328,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p3"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p4/.mypy_cache",
+      "branch": "codex/lib-pro-007-p4-practical-actions",
+      "head_sha": "a2b813dbc2c5a873edabab30c36087ff7fea7eda",
+      "recreation_basis": {
+        "command_basis": "repository mypy invocation",
+        "head_sha": "a2b813dbc2c5a873edabab30c36087ff7fea7eda",
+        "kind": "TOOL_GENERATED_MYPY_CACHE"
+      },
+      "relative_path": ".mypy_cache",
+      "size_bytes": 32747520,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p4"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p4/react_app/node_modules",
+      "branch": "codex/lib-pro-007-p4-practical-actions",
+      "head_sha": "a2b813dbc2c5a873edabab30c36087ff7fea7eda",
+      "recreation_basis": {
+        "head_sha": "a2b813dbc2c5a873edabab30c36087ff7fea7eda",
+        "kind": "NPM_LOCKFILE",
+        "path": "react_app/package-lock.json",
+        "recreate_command": "npm ci",
+        "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+      },
+      "relative_path": "react_app/node_modules",
+      "size_bytes": 438308864,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p4"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-011/react_app/node_modules",
+      "branch": "codex/maint-011-developer-gate-hygiene",
+      "head_sha": "1f203f40ec162a5caf141b1c44444ec4f6d3470c",
+      "recreation_basis": {
+        "head_sha": "1f203f40ec162a5caf141b1c44444ec4f6d3470c",
+        "kind": "NPM_LOCKFILE",
+        "path": "react_app/package-lock.json",
+        "recreate_command": "npm ci",
+        "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+      },
+      "relative_path": "react_app/node_modules",
+      "size_bytes": 438288384,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-011"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-decisive-gates/react_app/node_modules",
+      "branch": "codex/public-route-decisive-gates",
+      "head_sha": "4d7e7e14faf4947d54364de73439927e69c26fc7",
+      "recreation_basis": {
+        "head_sha": "4d7e7e14faf4947d54364de73439927e69c26fc7",
+        "kind": "NPM_LOCKFILE",
+        "path": "react_app/package-lock.json",
+        "recreate_command": "npm ci",
+        "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+      },
+      "relative_path": "react_app/node_modules",
+      "size_bytes": 438296576,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-decisive-gates"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-domain-provenance/.mypy_cache",
+      "branch": "codex/public-route-domain-provenance",
+      "head_sha": "d3f77cedbd5db856893193ec79d97529bf831ede",
+      "recreation_basis": {
+        "command_basis": "repository mypy invocation",
+        "head_sha": "d3f77cedbd5db856893193ec79d97529bf831ede",
+        "kind": "TOOL_GENERATED_MYPY_CACHE"
+      },
+      "relative_path": ".mypy_cache",
+      "size_bytes": 75792384,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-domain-provenance"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-numeric-boundaries/.mypy_cache",
+      "branch": "codex/public-route-numeric-boundaries",
+      "head_sha": "dca370088cd458d014fda9829b9f0e6cf003e158",
+      "recreation_basis": {
+        "command_basis": "repository mypy invocation",
+        "head_sha": "dca370088cd458d014fda9829b9f0e6cf003e158",
+        "kind": "TOOL_GENERATED_MYPY_CACHE"
+      },
+      "relative_path": ".mypy_cache",
+      "size_bytes": 32141312,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-numeric-boundaries"
+    },
+    {
+      "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-release-0231a2/react_app/node_modules",
+      "branch": "codex/release-0231-stable",
+      "head_sha": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+      "recreation_basis": {
+        "head_sha": "09861d3d5ef758abbe0f7c40b8b49b2f90510765",
+        "kind": "NPM_LOCKFILE",
+        "path": "react_app/package-lock.json",
+        "recreate_command": "npm ci",
+        "sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67"
+      },
+      "relative_path": "react_app/node_modules",
+      "size_bytes": 438312960,
+      "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-release-0231a2"
+    }
+  ],
+  "task_id": "MAINT-0136"
+}

@@ -1,0 +1,294 @@
+{
+  "disk": {
+    "after": {
+      "available_bytes": 37806931968,
+      "capacity_percent": 83,
+      "total_bytes": 245107195904,
+      "used_bytes": 184152125440
+    },
+    "available_bytes_delta": 7903207424,
+    "before": {
+      "available_bytes": 29903724544,
+      "capacity_percent": 87,
+      "total_bytes": 245107195904,
+      "used_bytes": 192055332864
+    },
+    "filesystem_accounting_may_be_deferred": true
+  },
+  "executed_at_utc": "2026-08-26T16:42:53.447148+00:00",
+  "execution": {
+    "failure": null,
+    "removed": [
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/3c84/structural_engineering_lib/.mypy_cache",
+        "relative_path": ".mypy_cache",
+        "size_bytes": 94539776,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/3c84/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/cace/structural_engineering_lib/.mypy_cache",
+        "relative_path": ".mypy_cache",
+        "size_bytes": 33124352,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/cace/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/cace/structural_engineering_lib/react_app/node_modules",
+        "relative_path": "react_app/node_modules",
+        "size_bytes": 438308864,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/cace/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/ef1b/structural_engineering_lib/.mypy_cache",
+        "relative_path": ".mypy_cache",
+        "size_bytes": 33112064,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/ef1b/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/india-3-beam-r1/structural_engineering_lib/.mypy_cache",
+        "relative_path": ".mypy_cache",
+        "size_bytes": 34496512,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/india-3-beam-r1/structural_engineering_lib"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-009-rc-trust/.mypy_cache",
+        "relative_path": ".mypy_cache",
+        "size_bytes": 33144832,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-009-rc-trust"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-010-rc-artifact/react_app/node_modules",
+        "relative_path": "react_app/node_modules",
+        "size_bytes": 438304768,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/.codex/worktrees/lib-pro-010-rc-artifact"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a1-canonical-transport/react_app/node_modules",
+        "relative_path": "react_app/node_modules",
+        "size_bytes": 438317056,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a1-canonical-transport"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a2-lossless-intake/.mypy_cache",
+        "relative_path": ".mypy_cache",
+        "size_bytes": 76513280,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a2-lossless-intake"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a2-lossless-intake/react_app/node_modules",
+        "relative_path": "react_app/node_modules",
+        "size_bytes": 438304768,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-a2-lossless-intake"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b1-gravity-model-ledger/.mypy_cache",
+        "relative_path": ".mypy_cache",
+        "size_bytes": 31907840,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b1-gravity-model-ledger"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b2-gravity-workflow-v1/react_app/node_modules",
+        "relative_path": "react_app/node_modules",
+        "size_bytes": 438308864,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-b2-gravity-workflow-v1"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-a-strict-input/.mypy_cache",
+        "relative_path": ".mypy_cache",
+        "size_bytes": 31158272,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-a-strict-input"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-b-lossless-import/.mypy_cache",
+        "relative_path": ".mypy_cache",
+        "size_bytes": 76324864,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-b-lossless-import"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-b-lossless-import/react_app/node_modules",
+        "relative_path": "react_app/node_modules",
+        "size_bytes": 438308864,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-b-lossless-import"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-j-release-signal/react_app/node_modules",
+        "relative_path": "react_app/node_modules",
+        "size_bytes": 438308864,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-j-release-signal"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-004-safety-auditors/react_app/node_modules",
+        "relative_path": "react_app/node_modules",
+        "size_bytes": 438296576,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-004-safety-auditors"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-005-release-safety-closure/react_app/node_modules",
+        "relative_path": "react_app/node_modules",
+        "size_bytes": 438296576,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-005-release-safety-closure"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-m0/react_app/node_modules",
+        "relative_path": "react_app/node_modules",
+        "size_bytes": 438312960,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-m0"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p1/react_app/node_modules",
+        "relative_path": "react_app/node_modules",
+        "size_bytes": 438296576,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p1"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p2/.mypy_cache",
+        "relative_path": ".mypy_cache",
+        "size_bytes": 32612352,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p2"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p2/react_app/node_modules",
+        "relative_path": "react_app/node_modules",
+        "size_bytes": 438308864,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p2"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p3/.mypy_cache",
+        "relative_path": ".mypy_cache",
+        "size_bytes": 34787328,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p3"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p4/.mypy_cache",
+        "relative_path": ".mypy_cache",
+        "size_bytes": 32747520,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p4"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p4/react_app/node_modules",
+        "relative_path": "react_app/node_modules",
+        "size_bytes": 438308864,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-007-p4"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-011/react_app/node_modules",
+        "relative_path": "react_app/node_modules",
+        "size_bytes": 438288384,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-011"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-decisive-gates/react_app/node_modules",
+        "relative_path": "react_app/node_modules",
+        "size_bytes": 438296576,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-decisive-gates"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-domain-provenance/.mypy_cache",
+        "relative_path": ".mypy_cache",
+        "size_bytes": 75792384,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-domain-provenance"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-numeric-boundaries/.mypy_cache",
+        "relative_path": ".mypy_cache",
+        "size_bytes": 32141312,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-public-route-numeric-boundaries"
+      },
+      {
+        "absolute_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-release-0231a2/react_app/node_modules",
+        "relative_path": "react_app/node_modules",
+        "size_bytes": 438312960,
+        "status": "REMOVED",
+        "worktree_path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-release-0231a2"
+      }
+    ],
+    "removed_bytes": 7665283072,
+    "removed_target_count": 30,
+    "requested_target_count": 30
+  },
+  "packet_id": "MAINT-0136-PHASE-2A-CACHE",
+  "preservation": {
+    "branch_or_ref_deletions": 0,
+    "protected_sources_after": {
+      "aggregate_sha256": "a65d2fbcf5172544164d5ed61535f18fb40ed2d04446a48185811838493abee4",
+      "byte_count": 72025193,
+      "content_recorded": false,
+      "excluded_from_digest": [
+        "worktree_cleanup_archives/**",
+        "**/__pycache__/**"
+      ],
+      "file_count": 42,
+      "filenames_recorded": false,
+      "root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/private_sources"
+    },
+    "protected_sources_before": {
+      "aggregate_sha256": "a65d2fbcf5172544164d5ed61535f18fb40ed2d04446a48185811838493abee4",
+      "byte_count": 72025193,
+      "content_recorded": false,
+      "excluded_from_digest": [
+        "worktree_cleanup_archives/**",
+        "**/__pycache__/**"
+      ],
+      "file_count": 42,
+      "filenames_recorded": false,
+      "root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/private_sources"
+    },
+    "protected_sources_unchanged": true,
+    "pull_request_closures": 0,
+    "refs_after": {
+      "count": 232,
+      "sha256": "0979d55fa584ea586ddc72c1cbfd187f730a5936bdf3e323af3df47665ecf54d"
+    },
+    "refs_before": {
+      "count": 232,
+      "sha256": "0979d55fa584ea586ddc72c1cbfd187f730a5936bdf3e323af3df47665ecf54d"
+    },
+    "refs_unchanged": true,
+    "topology_sha256_after": "43087497592d99ff8076cf2a85d3fc059e6bb7dbb16a792321067deb9b13d0e8",
+    "topology_sha256_before": "43087497592d99ff8076cf2a85d3fc059e6bb7dbb16a792321067deb9b13d0e8",
+    "topology_unchanged": true,
+    "worktree_removals": 0
+  },
+  "recovery": {
+    "cache_bytes_are_not_independently_backed_up": true,
+    "mypy_basis": "tool-generated cache",
+    "node_modules_basis": "frozen per-HEAD package-lock.json plus npm ci",
+    "tier": "REGENERABLE_CACHE_SAME_DISK_ACCEPTED"
+  },
+  "schema_version": 1,
+  "status": "PASS",
+  "target_manifest": {
+    "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2a-cache-cleanup/docs/verification/maint-0136-phase-2a-cache-targets.json",
+    "sha256": "14353077e040470a954837e592f3ffa16c8511bede45ea7c6988a4b9f54f4ca3",
+    "target_set_sha256": "bd1f0985bda82707a85e6ce12bb2d3889d85a0dffb35b8e822a411a0841d3b05"
+  },
+  "task_id": "MAINT-0136"
+}

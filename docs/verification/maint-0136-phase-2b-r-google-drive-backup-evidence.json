@@ -1,0 +1,128 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-26T18:33:00Z",
+      "query_status": "OK",
+      "reference": "active Codex task: you can use our google drive for back up",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "CREATE_PRIVATE_GOOGLE_DRIVE_BACKUP_FOLDER",
+      "CREATE_EXACT_RECOVERY_ARCHIVE",
+      "UPLOAD_RECOVERY_ARCHIVE_AND_PRIVATE_RECEIPT",
+      "DOWNLOAD_AND_RESTORE_VERIFY_REMOTE_ARCHIVE",
+      "COMMIT_BACKUP_EVIDENCE"
+    ],
+    "backup_execution_authorized": true,
+    "cleanup_execution_authorized": false,
+    "prohibited_actions": [
+      "DELETE_SOURCE",
+      "DELETE_CACHE",
+      "REMOVE_WORKTREE",
+      "DELETE_BRANCH_OR_REF",
+      "CLOSE_PULL_REQUEST",
+      "DELETE_ARCHIVE",
+      "DELETE_PROTECTED_SOURCE",
+      "DELETE_SHARED_VENV",
+      "GIT_CLEAN",
+      "PRUNE",
+      "RESET",
+      "FORCE_PUSH"
+    ]
+  },
+  "destination": {
+    "account_connection": "VERIFIED",
+    "backup_folder_id_sha256": "8ea93e00f9b30ac510672174c9b694257575cf05c414ed44bf3d24a0b18188cd",
+    "backup_folder_name": "MAINT-0136 Phase 2B-R Google Drive Backup 2026-08-27 2e3558a7",
+    "broad_permission_count": 0,
+    "drive_ids_recorded": false,
+    "drive_urls_recorded": false,
+    "failure_domain": "GOOGLE_MANAGED_REMOTE_STORAGE",
+    "owner_permission_count": 1,
+    "provider": "GOOGLE_DRIVE",
+    "root_folder_id_sha256": "2dee0ee691a7d61f7c3efff2087c1babf7671666fcc2145060c6cfc0f7abdbfb",
+    "root_folder_name": "structural_engineering_lib Backups",
+    "shared": false,
+    "sourcebook_folder_reused": false,
+    "visibility": "OWNER_ONLY"
+  },
+  "encryption": {
+    "basis": "Google Drive encrypts uploaded files in transit and at rest with AES-256.",
+    "client_side_encryption_claimed": false,
+    "managed_encryption": "AES-256_IN_TRANSIT_AND_AT_REST",
+    "official_source": "https://support.google.com/drive/answer/10375054?hl=en",
+    "status": "PASS_PROVIDER_MANAGED"
+  },
+  "local_package": {
+    "archive_sha256": "bf18a66b339b2ad02f071346aed75cb27d3fceeae0e45464eb50dd11334167ac",
+    "archive_size_bytes": 92256339,
+    "evidence_sha256": "556a14922adc67012def020819b05420434168e0ec676844f9c93bcd17b511f0",
+    "package_manifest_sha256": "b3bca03f9bae78469ac2bcc24d41dde466a62fce5eac8673ea2c896ac3e1d214",
+    "restore_status": "PASS",
+    "source_byte_count": 123164574,
+    "source_file_count": 7602
+  },
+  "mutations_performed": {
+    "agent_created_duplicate_downloads_moved_to_trash": 2,
+    "backup_archive_uploads": 1,
+    "branch_deletions": 0,
+    "cache_deletions": 0,
+    "drive_folder_creations": 2,
+    "private_receipt_uploads": 1,
+    "pull_request_closures": 0,
+    "ref_deletions": 0,
+    "source_deletions": 0,
+    "worktree_removals": 0
+  },
+  "next_gate": {
+    "decision": "PREPARE_PHASE_2B_W_RETENTION_AND_EXACT_TARGET_FREEZE",
+    "new_authorization_required_before_cleanup": true,
+    "worktree_retirement_authorized": false
+  },
+  "observed_at_utc": "2026-08-26T18:52:30Z",
+  "packet_id": "MAINT-0136-PHASE-2B-R-GOOGLE-DRIVE-BACKUP",
+  "preparation": {
+    "branch": "codex/maint-0136-phase-2b-r-google-drive-backup",
+    "head_sha_at_execution": "2e3558a7fda4f8ff778c6ecd5f0435d0415ca229",
+    "manifest_sha256": "90984c95375d6ceaacd116ba4a70e77049e173dabefb1ea51fe28f1557415981",
+    "preparation_commit": "2e3558a7fda4f8ff778c6ecd5f0435d0415ca229"
+  },
+  "private_recovery_receipt": {
+    "drive_file_id_sha256": "82b290b1c7712246c093cfcaf4d9298ba8eff6a771fd4bf14a4c7afcfce9d6c4",
+    "local_receipt_sha256": "32b4605cda0ef6357ef86a82aa3f61a9f52c0d7e3cb7507694ccc154d0420a3a",
+    "remote_size_bytes": 2423,
+    "remote_title": "google-drive-backup-private-receipt.json",
+    "shared": false,
+    "status": "UPLOADED_OWNER_ONLY"
+  },
+  "remote_archive": {
+    "connector_fetch_size_bytes": 92256339,
+    "downloaded_readback_sha256": "bf18a66b339b2ad02f071346aed75cb27d3fceeae0e45464eb50dd11334167ac",
+    "downloaded_readback_size_bytes": 92256339,
+    "drive_file_id_sha256": "11f66b58d83db1b2bc552b0995ed395b8202de3e949d054b86a0fe2e740fb471",
+    "local_and_downloaded_sha256_match": true,
+    "mime_type": "application/gzip",
+    "parent_folder_match": true,
+    "remote_created_time": "2026-08-26T18:41:17.094Z",
+    "remote_size_bytes": 92256339,
+    "remote_title": "structural_engineering_lib-maint-0136-phase-2b-r-backup-2e3558a7.tar.gz",
+    "shared": false,
+    "status": "UPLOAD_AND_AUTHENTICATED_READBACK_PASS"
+  },
+  "remote_restore": {
+    "package_manifest_sha256": "b3bca03f9bae78469ac2bcc24d41dde466a62fce5eac8673ea2c896ac3e1d214",
+    "restored_source_byte_count": 123164574,
+    "restored_source_file_count": 7602,
+    "status": "PASS",
+    "temporary_restore_removed": true
+  },
+  "residual_limitations": [
+    "Google Drive quota remaining is not exposed by the connector; the exact archive upload, metadata size, authenticated download, and restore all passed.",
+    "Provider-managed encryption is proven; Workspace client-side encryption is not claimed.",
+    "The local verified readback and same-disk package remain retained data until separately authorized otherwise."
+  ],
+  "schema_version": 1,
+  "status": "OFF_DEVICE_BACKUP_VERIFIED_RESTORE_PASS_CLEANUP_HELD",
+  "task_id": "MAINT-0136"
+}

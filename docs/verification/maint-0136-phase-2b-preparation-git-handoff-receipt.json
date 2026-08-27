@@ -1,0 +1,171 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-26T17:30:50.124097+00:00",
+      "query_status": "OK",
+      "reference": "active Codex task: so lets prepare for 2b",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "INSPECT_LIVE_STATE",
+      "PREPARE_EXACT_DECISION_PACKET",
+      "COMMIT_PREPARATION_EVIDENCE"
+    ],
+    "next_action": "COMMIT_PREPARATION_EVIDENCE",
+    "observed_at_utc": "2026-08-26T17:30:50.124097+00:00",
+    "phase_2b_execution_authorized": false,
+    "prohibited_actions": [
+      "DELETE_CACHE",
+      "REMOVE_WORKTREE",
+      "DELETE_BRANCH_OR_REF",
+      "CLOSE_PULL_REQUEST",
+      "DELETE_ARCHIVE",
+      "DELETE_PROTECTED_SOURCE",
+      "DELETE_SHARED_VENV",
+      "GIT_CLEAN",
+      "PRUNE",
+      "RESET",
+      "FORCE_PUSH"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "INSPECT_LIVE_STATE",
+        "PREPARE_EXACT_DECISION_PACKET",
+        "COMMIT_PREPARATION_EVIDENCE"
+      ],
+      "branch": "codex/maint-0136-phase-2b-preparation",
+      "head_sha": "2d898e9b32d1ad92be4176c1e2aa406b1ec33f81",
+      "task_id": "MAINT-0136"
+    }
+  },
+  "holds": [
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "4ab764d9f97f26834389d8ca6f18c317c8c457a59876a2c750daac431450f171",
+    "state": {
+      "branch": "codex/maint-0136-phase-2b-preparation",
+      "default_base": {
+        "ahead": 2,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "ee04bfbf76b1a3a022d07c8203b5274a0f71998f",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 99.099,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-maint-0136-phase-2b-preparation",
+      "head_sha": "2d898e9b32d1ad92be4176c1e2aa406b1ec33f81",
+      "hold_reasons": [
+        "changed paths: 10"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-26T17:34:04.603902+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2b-preparation",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 10,
+        "modified_paths": [],
+        "staged_paths": [
+          "Python/tests/test_phase2b_cleanup_preparation.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/README.md",
+          "docs/planning/maint-0136-cleanup-preservation-plan.md",
+          "docs/planning/maint-0136-phase-2b-preparation-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/maint-0136-phase-2b-preparation-git-handoff-receipt.json",
+          "docs/verification/maint-0136-phase-2b-preparation-manifest.json",
+          "scripts/_lib/phase2b_cleanup_preparation.py"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2b-preparation"
+    }
+  },
+  "local_state_receipt_hash": "sha256:4ab764d9f97f26834389d8ca6f18c317c8c457a59876a2c750daac431450f171",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-26T17:34:04.604113+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources/**",
+      "Python/structural_lib/**",
+      "fastapi_app/**",
+      "react_app/**",
+      ".venv/**"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "scripts/_lib/phase2b_cleanup_preparation.py",
+      "Python/tests/test_phase2b_cleanup_preparation.py",
+      "docs/planning/maint-0136-phase-2b-preparation-plan.md",
+      "docs/planning/maint-0136-cleanup-preservation-plan.md",
+      "docs/planning/README.md",
+      "docs/verification/maint-0136-phase-2b-preparation-manifest.json",
+      "docs/verification/maint-0136-phase-2b-preparation-git-handoff-receipt.json",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/README.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "MAINT-0136"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-26T19:14:00.152420+00:00",
+      "query_status": "OK",
+      "reference": "active Codex task: approval for anything needed like cleaning, delete and more",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "INSPECT_LIVE_STATE",
+      "FREEZE_EXACT_WORKTREE_TARGETS",
+      "COMMIT_PREPARATION_EVIDENCE"
+    ],
+    "general_cleanup_authority_observed": true,
+    "next_action": "WAIT_FOR_OWNER_DECISION",
+    "next_required_authority": {
+      "action": "REMOVE_ONLY_EXACT_FROZEN_WORKTREES",
+      "target_count": 63,
+      "target_gross_bytes": 7686279168,
+      "target_set_sha256": "543a5f1b9298bd47e2f0b743f046fdd2c76dfd8c0f358ed0c604b57ffb6129da"
+    },
+    "observed_at_utc": "2026-08-26T19:14:00.152420+00:00",
+    "preparation_authorized": true,
+    "prohibited_actions": [
+      "DELETE_BRANCH_OR_REF",
+      "CLOSE_PULL_REQUEST",
+      "DELETE_BACKUP_OR_ARCHIVE",
+      "DELETE_PROTECTED_SOURCE",
+      "DELETE_SHARED_VENV",
+      "REMOVE_HELD_OR_UNBACKED_WORKTREE",
+      "GIT_CLEAN",
+      "PRUNE",
+      "RESET",
+      "FORCE_PUSH"
+    ],
+    "query_status": "OK",
+    "reason": "The general approval preceded the immutable target digest.",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "INSPECT_LIVE_STATE",
+        "FREEZE_EXACT_WORKTREE_TARGETS",
+        "COMMIT_PREPARATION_EVIDENCE"
+      ],
+      "branch": "codex/maint-0136-phase-2b-w-preparation",
+      "head_sha": "d44ec71df99baccd599cde50a6075a4a22d330c1",
+      "task_id": "MAINT-0136-PHASE-2B-W"
+    },
+    "worktree_removal_authorized": false
+  },
+  "holds": [
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "b9f096a0b54a3eb75f47ca8471634d98717ef5a78d673119d12efc963ab1ab23",
+    "state": {
+      "branch": "codex/maint-0136-phase-2b-w-preparation",
+      "default_base": {
+        "ahead": 5,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "ee04bfbf76b1a3a022d07c8203b5274a0f71998f",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 100.417,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-maint-0136-phase-2b-w-preparation",
+      "head_sha": "d44ec71df99baccd599cde50a6075a4a22d330c1",
+      "hold_reasons": [
+        "changed paths: 12"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-26T19:15:06.287710+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2b-w-preparation",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 12,
+        "modified_paths": [],
+        "staged_paths": [
+          "Python/tests/test_phase2b_worktree_preparation.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/README.md",
+          "docs/planning/maint-0136-cleanup-preservation-plan.md",
+          "docs/planning/maint-0136-phase-2b-preparation-plan.md",
+          "docs/planning/maint-0136-phase-2b-r-google-drive-backup-closeout.md",
+          "docs/planning/maint-0136-phase-2b-w-preparation-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/maint-0136-phase-2b-w-preparation-git-handoff-receipt.json",
+          "docs/verification/maint-0136-phase-2b-w-preparation-manifest.json",
+          "scripts/_lib/phase2b_worktree_preparation.py"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2b-w-preparation"
+    }
+  },
+  "local_state_receipt_hash": "sha256:b9f096a0b54a3eb75f47ca8471634d98717ef5a78d673119d12efc963ab1ab23",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-26T19:15:06.287868+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources/**",
+      "Python/structural_lib/**",
+      "fastapi_app/**",
+      "react_app/**",
+      ".venv/**"
+    ],
+    "integration_owner": "Codex local Phase 2B-W preparation; execution held for digest-bound owner decision",
+    "owned_paths": [
+      "scripts/_lib/phase2b_worktree_preparation.py",
+      "Python/tests/test_phase2b_worktree_preparation.py",
+      "docs/planning/maint-0136-phase-2b-w-preparation-plan.md",
+      "docs/verification/maint-0136-phase-2b-w-preparation-manifest.json",
+      "docs/verification/maint-0136-phase-2b-w-preparation-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/README.md",
+      "docs/planning/maint-0136-cleanup-preservation-plan.md",
+      "docs/planning/maint-0136-phase-2b-preparation-plan.md",
+      "docs/planning/maint-0136-phase-2b-r-google-drive-backup-closeout.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "MAINT-0136-PHASE-2B-W"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

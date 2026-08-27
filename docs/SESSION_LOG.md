@@ -5,6 +5,862 @@
 
 ---
 
+## 2026-08-27 — Session: MAINT-0136 consolidated Git integration
+
+**Agent:** Codex (`orchestrator`, sole integration writer/operator; no
+subagents)
+
+**Branch:** `codex/maint-0136-phase-2c-preparation`, reconciled from completed
+Phase 2C head `21ab46bb0cf13895e1eaccae777006df97e49238` and merged Phase 1 base
+`11dd8db43908caf3b81fb9e94b893f335afb9782`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0136-integration-git-handoff-receipt.json`
+
+**Focus:** Publish one history-preserving successor candidate containing the
+already authorized and completed Phase 2A–2C cleanup sequence, then close
+MAINT-0136 without any additional deletion.
+
+### Summary
+
+- Refreshed hosted state and reconfirmed PR #874 merged normally at unchanged
+  reviewed head `37b36785` as merge commit `11dd8db4`.
+- Fast-forwarded the clean local `main` checkout to exact `origin/main`.
+- Merged `origin/main` normally into the clean Phase 2C branch. The merge
+  preserved every Phase 2A–2C commit hash, changed no tree content relative to
+  `21ab46bb`, and changed the branch relation from 8-ahead/1-behind to
+  9-ahead/0-behind.
+- Reconciled the task board and cleanup plan to the completed Phase 2C boundary.
+  No Phase 2D or further destructive cleanup action is included.
+
+### Issues encountered
+
+- The completed Phase 2C branch became 8 commits ahead and 1 merge commit
+  behind `origin/main` immediately after the predecessor PR #874 merged.
+
+### Root causes and resolutions
+
+- Confirmed root cause: a normal GitHub merge adds a new merge commit to
+  `main`, while the already frozen successor chain continues from the reviewed
+  PR head. Resolution: fast-forward local `main` and merge `origin/main`
+  normally into the Phase 2C branch. Exact before/after tree comparison proves
+  the topology-only reconciliation introduced no content change, and no
+  rebase, reset, force push, or commit rewriting occurred.
+
+### Validation through content freeze
+
+- The focused Phase 2A–2C maintenance batch, quick gate, consolidated full
+  gate, normal hooks, immutable-candidate closeout, hosted PR checks, and
+  post-merge ancestry verification form the remaining ordered evidence.
+
+## 2026-08-27 — Session: MAINT-0136 Phase 2C exact ref execution
+
+**Agent:** Codex (`maintainer`, sole Phase 2C execution writer/operator; no
+subagents)
+
+**Branch:** `codex/maint-0136-phase-2c-preparation`, executing from immutable
+preparation commit `d207d58e21c59fe485c50f292de7d84f5c8b6e56`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0136-phase-2c-execution-git-handoff-receipt.json`
+
+**Focus:** Execute only the four local and two matching remote targets bound to
+digest `08a68419...b23c7`.
+
+### Summary
+
+- Reconfirmed the clean execution lane, 16 retained worktrees, ten open pull
+  requests with zero target overlap, exact local/remote target heads, and the
+  owner-only downloadable 92,256,339-byte Google Drive archive.
+- Refreshed `origin` without prune and reran the canonical classifier. It
+  returned the same four retirement-ready targets and retained
+  `codex/release-preflight-alpha-policy` because its local and remote heads
+  differ. The target digest recomputed exactly.
+- Corrected the executor so its evidence records the owner's digest-bound
+  execution authority rather than copying the earlier preparation-only
+  authority. Five focused regressions pass before mutation.
+- Removed exactly four local branches with normal `git branch -d` and two
+  matching remote branches with exact `git push origin --delete`. Local
+  branches fell 77 -> 73, live remote branches 81 -> 79, and local refs
+  237 -> 231.
+- Preserved all 16 worktrees, 45 tags, 33 Codex-managed refs, ten open pull
+  requests, both local recovery artifacts, the Drive archive, and the exact
+  42-file/72,025,193-byte protected-source aggregate. No force, prune, garbage
+  collection, reset, PR closure, or archive/source/worktree deletion occurred.
+
+### Issues encountered
+
+- Before mutation, the execution evidence path would have copied the frozen
+  manifest's preparation-only authorization and falsely reported that exact
+  target execution was not authorized.
+- The executor exceeded the initial 30-second command-yield window. A first
+  read observed a valid atomic intermediate ledger at three local and one
+  remote deletion while the process was still completing.
+- `git fsck --full` again reported retained dangling objects while exiting
+  successfully.
+- The first Drive metadata call and two bounded inspection expressions used
+  obsolete or invalid argument shapes and were rejected before changing state.
+- The first normal hook run stopped at session-doc consistency because the
+  briefing recorded the receipt file's byte hash instead of its embedded local-
+  state receipt hash.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `execute()` copied `manifest["authorization"]`, whose
+  immutable truth is preparation authorized / execution not yet authorized;
+  its first replacement also used an authority-kind label outside the handoff
+  receipt's canonical vocabulary. Resolution: construct an execution-specific
+  `USER_DELEGATION` record with explicit digest-bound scope, task
+  `MAINT-0136-PHASE-2C-EXECUTION`, preparation commit `d207d58e`, exact counts,
+  and target digest; focused tests and the handoff validator assert the truthful
+  compatible record.
+- Confirmed root cause: exact remote checks and archive/protected-source
+  hashing made the executor run longer than the terminal's initial yield.
+  Resolution: do not rerun against already-mutated refs; inspect the live
+  process and atomic ledger, wait for completion, and accept only the final
+  `PASS` record showing 4/4 local and 2/2 remote deletions. ⚠️ TERMINAL ISSUE:
+  the first command yielded before final output -> poll the existing process
+  and evidence instead of repeating a destructive command.
+- Confirmed evidence: unreachable historical objects remain after prior
+  worktree retirement, but `git fsck --full` exits zero with no missing or
+  corrupt object. Resolution: preserve them and perform no prune or garbage
+  collection; the all-ref bundle verifies as a complete history.
+- Confirmed root cause: current connector/CLI schemas require `fileId`, a task
+  list limit no greater than 50, and a correctly parenthesized `jq` count
+  expression. Resolution: use the advertised shapes and rerun read-only
+  inspection. ⚠️ TERMINAL ISSUE: rejected read-only invocations -> correct the
+  exact parameters; no mutation occurred.
+- Confirmed root cause: the task-format checker is named
+  `check_tasks_format.py`, not the guessed singular filename. Resolution: use
+  `./run.sh find "task format"` and run the registered command successfully.
+  ⚠️ TERMINAL ISSUE: guessed script path was absent -> route through the
+  control registry and rerun the exact maintained checker.
+- Confirmed root cause: unquoted `**` forbidden-path arguments were expanded by
+  `zsh` before the handoff builder could receive them. Resolution: quote each
+  exact pattern and regenerate the valid staged receipt. ⚠️ TERMINAL ISSUE:
+  shell glob rejection -> quote literal handoff patterns; no file or ref state
+  changed.
+- Confirmed root cause: `Latest Handoff` labels the receipt's
+  `local_state_receipt_hash`, not the SHA-256 of the receipt JSON bytes.
+  Resolution: copy the exact embedded `sha256:7d02274f...138ba` value into the
+  briefing and rerun normal hooks; no execution or ref evidence changed.
+
+### Validation
+
+- The execution evidence is `PASS`, names exactly six removed refs, and proves
+  `only_exact_target_refs_removed=true`, identical worktree identity,
+  protected-source identity, and archive identity.
+- The all-ref recovery bundle verifies as complete history. Fresh Drive
+  metadata shows the exact owner-only archive remains private, downloadable,
+  and 92,256,339 bytes; prior authenticated byte-match and 7,602-file restore
+  evidence remain bound through the frozen manifest.
+- Five focused Phase 2C tests and the 35-test consolidated maintenance batch
+  pass. Changed Python files pass Ruff and Black. Documentation metadata/front
+  matter and 1,043 local links pass with zero invalid or broken records; task,
+  context, control, and efficiency validation pass.
+- The exact staged candidate passes the quick gate 10/10 with zero reused
+  checks and the full gate 31/31 with 11 unchanged quick results reused. Normal
+  staged hooks, immutable commit, and final read-only session closeout complete
+  the remaining candidate sequence.
+
+## 2026-08-27 — Session: MAINT-0136 Phase 2C branch/ref/archive preparation
+
+**Agent:** Codex (`maintainer`, sole Phase 2C preparation writer; no subagents)
+
+**Branch:** `codex/maint-0136-phase-2c-preparation`, created from exact Phase
+2B-W execution commit `18ed2f1f65a24b54029875fd1cad640dc2f0fae0`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0136-phase-2c-preparation-git-handoff-receipt.json`
+
+**Focus:** Freeze exact Phase 2C branch/ref targets without deleting them.
+
+### Summary
+
+- Recorded the owner's full Phase 2C approval and opened a clean successor
+  lane from the exact completed Phase 2B-W commit. Requeried 16 worktrees, 77
+  local heads, 81 live remote heads, 237 local refs, 500 historical PR rows,
+  and ten open pull requests without prune.
+- Used the Google Drive file-lifecycle workflow to re-confirm the exact
+  92,256,339-byte archive is owner-only, unshared, and downloadable. The prior
+  authenticated SHA-matched readback and 7,602-file full restore remain the
+  byte/recovery authority.
+- Added one fail-closed Phase 2C preparation/execution module and five focused
+  regressions. The only implemented mutations are exact remote branch deletion
+  and normal local `git branch -d`; force deletion, prune, garbage collection,
+  archive/tag/Codex-ref/worktree deletion, and PR closure have no code path.
+- Ran the canonical branch-disposition classifier on all five Phase 2B-W heads
+  currently integrated into live `origin/main`. It froze four local branches;
+  two also have exact matching live remote branches. It retained
+  `codex/release-preflight-alpha-policy` because its local and remote heads
+  differ.
+- Froze four local and two remote targets, affecting six local refs, under
+  target-set SHA-256 `08a68419...b23c7`. Held 73 local branches, 79 other live
+  remote branches, 45 tags, 33 Codex-managed refs, every worktree and PR, both
+  local recovery artifacts, the Drive archive, and all protected sources.
+- Per the classifier contract, the owner's phase-level approval authorizes this
+  exact preparation but preceded the immutable target set. No Phase 2C deletion
+  occurred; execution awaits authorization bound to the frozen digest.
+
+### Issues encountered
+
+- Exact-title Drive search returned no archive result even though the archive
+  was present and accessible.
+- The first post-authorization formatter/test batch exposed a `NameError` in
+  the new script and prevented manifest regeneration.
+- The raw branch inventory looked broadly removable, but the canonical
+  classifier admitted only four local and two remote actions.
+- Full Phase 2C approval preceded the exact immutable target digest required by
+  the branch-deletion classifier.
+
+### Root causes and resolutions
+
+- Root cause unconfirmed: Drive's keyword search did not return the exact
+  stored archive title in this query. Resolution: ground the known project
+  backup folder, list its exact child folder, then list/read the archive
+  metadata directly; owner-only visibility, downloadability, MIME type, and
+  exact 92,256,339-byte size pass.
+- Confirmed root cause: a narrow patch that introduced `target_digest` matched
+  an earlier helper return instead of the manifest return, leaving the helper
+  with an undefined name and the manifest without its digest variable.
+  Resolution: move the assignment beside `target_identity` and rerun the five
+  regressions, Ruff, Black, and live manifest generation; all pass. ⚠️ TERMINAL
+  ISSUE: the first live regeneration failed with `NameError` -> correct the
+  insertion site and rerun the focused batch once.
+- Confirmed root cause: 58 former worktree heads are not integrated into live
+  `origin/main`; 13 other branches are attached to retained lanes or outside
+  the backed Phase 2B set; `main` is protected; and one integrated local head
+  differs from its live remote. Resolution: retain all 73 and select only the
+  four classifier-approved merged local branches, with remote deletion limited
+  to two exact matching heads.
+- Confirmed root cause: exact target names and their digest did not exist when
+  the owner granted full Phase 2C approval, while the canonical classifier
+  requires a separate exact-target approval before branch deletion. Resolution:
+  freeze the reproducible manifest, perform zero deletions, and request one
+  digest-bound confirmation.
+
+### Validation
+
+- Five focused Phase 2C regressions pass, covering integrated/classifier-only
+  selection, open-PR and attached-worktree holds, remote-before-local execution,
+  digest-drift rejection, and the absence of force/prune commands. Changed
+  Python files pass Ruff and Black.
+- Live Google Drive metadata, both exact local recovery artifacts, protected
+  sources, worktree topology, open PRs, local/remote heads, and ref namespaces
+  are bound into the manifest. The standalone canonical classifier returns four
+  `RETIREMENT_READY_PENDING_APPROVAL` results and one exact head-mismatch hold.
+- Thirty-five consolidated maintenance regressions pass. Documentation
+  frontmatter passes for 367 maintained documents with zero invalid records;
+  492 Markdown files, 1,039 local links, and six local images have zero broken
+  links. Task format, context, control, and efficiency validation pass.
+- The consolidated quick gate passes 10/10 with zero reused checks. The full
+  repository gate passes 31/31 with 11 unchanged quick results reused. Normal
+  staged hooks pass through the worktree-bound Python runtime, including the
+  required quick-check hook. Immutable commit and final read-only session
+  validation remain the closeout sequence.
+
+## 2026-08-27 — Session: MAINT-0136 Phase 2B-W worktree execution
+
+**Agent:** Codex (`maintainer`, sole Phase 2B-W execution writer/operator; no
+subagents)
+
+**Branch:** `codex/maint-0136-phase-2b-w-preparation`, executing from the exact
+preparation commit `e1f5ea184638133e7911e8ad0203194104c27276`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0136-phase-2b-w-execution-git-handoff-receipt.json`
+
+**Focus:** Execute the exact 63-worktree manifest; preserve all excluded state.
+
+### Summary
+
+- Recorded exact owner authority bound to 63 worktrees and target-set SHA-256
+  `543a5f1b...129da`, then revalidated the complete target set against live Git
+  topology, cleanliness, inactivity, operations, open pull requests, remote or
+  integrated heads, ignored-state aggregates, exact path sizes, and verified
+  backup mappings.
+- Reconfirmed the local 92,256,339-byte archive at SHA-256 `bf18a66b...67ac`
+  and the owner-only Google Drive archive/readback/7,602-file restore authority.
+  A no-mutation preview passed before execution.
+- Added a fail-closed executor and five focused regressions. Execution used
+  only non-force `git worktree remove`, wrote an atomic per-target ledger after
+  every success, and stopped on any identity or preservation drift.
+- Removed 63/63 exact worktrees totaling 7,686,279,168 gross bytes. Topology
+  fell from 78 to 15, and filesystem available space increased from
+  36,361,379,840 to 44,282,273,792 bytes.
+- Proved all target paths absent and all target branches preserved. The 236-ref
+  digest, 42-file/72,025,193-byte protected-source aggregate, recovery archive,
+  pull requests, shared `.venv`, dirty detached `e54a`, recovery hold, and all
+  other excluded lanes remain unchanged. No branch/ref/PR/archive/protected-
+  source/cache deletion was performed separately.
+
+### Issues encountered
+
+- The first disposable Git-behavior diagnostic was rejected before execution
+  because its cleanup command contained a recursive filesystem deletion.
+- The first focused style run required Black normalization of the new executor
+  and regression file.
+- The first consolidated regression command used the wrong historical Phase 2B
+  test filename and stopped before collecting tests.
+- Post-execution `git fsck --full` emitted many dangling object notices even
+  though it exited successfully.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the terminal safety layer rejected the diagnostic's
+  broad deletion syntax before the shell ran it. Resolution: rerun the exact
+  non-force worktree behavior check without recursive deletion and move the
+  disposable temporary root to macOS Trash; the check proved ignored files do
+  not require `--force`. The diagnostic is recoverable from Trash. ⚠️ TERMINAL
+  ISSUE: recursive temporary-directory cleanup was rejected -> use a
+  recoverable exact Trash move.
+- Confirmed root cause: the two new Python files had not yet received their
+  final formatter pass. Resolution: format both together once; the focused
+  Ruff and Black checks pass.
+- Confirmed root cause: the Phase 2B preparation regression is named
+  `test_phase2b_cleanup_preparation.py`, not the guessed
+  `test_phase2b_preparation.py`. Resolution: select the exact path from
+  `rg --files` and rerun the batch; all 30 tests pass. ⚠️ TERMINAL ISSUE: one
+  guessed regression path did not exist -> use the exact discovered filename.
+- Confirmed evidence: the Git object store contains unreachable historical
+  objects, but `git fsck --full` exits zero and reports no missing or corrupt
+  object. Resolution: preserve the objects and perform no prune or garbage
+  collection; the exact 236-ref count/digest remains unchanged before and
+  after execution, and the all-ref recovery bundle remains available. The
+  historical origin of individual dangling objects was not inferred.
+
+### Validation
+
+- Five executor regressions pass, including exact-target-only behavior,
+  missing-authorization rejection, partial-failure ledger retention, digest
+  mismatch rejection, and proof that the remove command never uses `--force`.
+- Live preview and execution evidence pass with 63/63 removals, zero target
+  survivors, zero target-branch mismatches, zero remaining small-cache target
+  paths, exact before/after ref and protected-source identities, and unchanged
+  local/Drive recovery artifacts.
+- `git fsck --full` exits successfully. Documentation frontmatter passes for
+  366 maintained documents with zero invalid records; 491 Markdown files,
+  1,036 local links, and six local images have zero broken links. Context,
+  control, task-format, and efficiency validation pass.
+- The consolidated quick gate passes 10/10 with zero reused checks. The full
+  repository gate passes 31/31 with 11 unchanged quick results reused. Normal
+  staged hooks pass through the worktree-bound Python runtime, including the
+  required quick-check hook. Immutable commit and final read-only session
+  validation remain the closeout sequence.
+
+## 2026-08-27 — Session: MAINT-0136 Phase 2B-W worktree preparation
+
+**Agent:** Codex (`maintainer`, sole Phase 2B-W preparation writer; no subagents)
+
+**Branch:** `codex/maint-0136-phase-2b-w-preparation`, created from the exact
+Google Drive backup commit
+`d44ec71df99baccd599cde50a6075a4a22d330c1`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0136-phase-2b-w-preparation-git-handoff-receipt.json`
+
+**Focus:** Freeze only exact, recoverable worktree-retirement targets without
+performing cleanup.
+
+### Summary
+
+- Reconfirmed the private Google Drive folder contains the exact
+  92,256,339-byte archive and its receipt, both unshared and downloadable. The
+  prior authenticated download and 7,602-file full restore remain the recovery
+  authority.
+- Added a preparation-only worktree selector and six focused regressions. It
+  rejects dirty, active, detached, open-PR, unbacked, ignored-state-drifted, and
+  local-only unintegrated lanes and has no removal code path.
+- Requeried 78 live worktrees, ten open pull requests, 81 live remote heads,
+  live `origin/main`, and all 64 verified backup mappings. The Codex task
+  inventory had zero active target-path overlaps.
+- Froze 63 exact worktrees / 7,686,279,168 gross bytes under target-set SHA-256
+  `543a5f1b...129da`. Sixty targets have an exact remote head and five are
+  integrated into live `origin/main`; two satisfy both recovery paths.
+- Held `codex/git-governance-research` because its head is neither the exact
+  remote branch head nor integrated. Retained 14 unbacked live lanes, including
+  the primary checkout, seven detached lanes, and the MAINT-0136
+  predecessor/current lanes.
+- Recorded the owner's general cleanup/deletion approval, but kept execution
+  false because that approval preceded the immutable target digest. No
+  worktree, cache, branch, ref, pull request, archive, protected source, or
+  shared `.venv` was removed.
+
+### Issues encountered
+
+- The first Codex task-inventory query requested 100 rows and was rejected by
+  the app's 50-row maximum.
+- The first focused style batch found one unused import and Black formatting in
+  both new Python files.
+- The first handoff-receipt command stopped before execution because zsh
+  expanded the unquoted forbidden-path glob.
+- The first normal-hook command could not find a global `pre-commit`
+  executable.
+- The initial 63-target result was much larger than the one recovery hold and
+  required reconciliation against the complete live topology before acceptance.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the task-list API enforces a 50-row maximum even though
+  the caller had not applied that bound. Resolution: rerun once with 50 rows;
+  the current project task is active only in the protected primary checkout,
+  and no frozen target path is active.
+- Confirmed root cause: the new source and test had not received their final
+  import and formatter normalization. Resolution: remove the unused import and
+  format both files once; final focused Ruff and Black checks pass.
+- Confirmed root cause: zsh performs unmatched-glob validation before starting
+  the receipt script. Resolution: quote each literal forbidden-path pattern;
+  the canonical receipt then generated with authorization observed and only
+  the expected local/hosted publication holds. ⚠️ TERMINAL ISSUE: unquoted
+  `private_sources/**` stopped receipt generation -> quote literal glob
+  arguments.
+- Confirmed root cause: `pre-commit` is installed in the repository-selected
+  Python environment, not globally on this shell path. Resolution: invoke it
+  through `./scripts/python_runtime.sh -m pre_commit run`; all normal staged
+  hooks pass. ⚠️ TERMINAL ISSUE: global `pre-commit` was unavailable -> use the
+  worktree-bound Python runtime module.
+- Confirmed root cause: the 64-worktree backup mapping intentionally excluded
+  all primary, detached, dirty, open-PR, and MAINT-0136 predecessor lanes, so 63
+  of those historical clean lanes remain eligible while one lacks remote or
+  integrated recovery. Resolution: reconcile the mapping against all 78 live
+  rows, retain the 14 unbacked rows and one recovery hold, and freeze only the
+  63 exact backed targets. The target count, recovery counts, and digest are
+  reproducible from the manifest.
+
+### Validation
+
+- Six new Phase 2B-W regressions pass with the inherited backup, recovery,
+  Phase 2B, Phase 2A, and preservation regressions as one 25-test focused
+  batch. Changed Python files pass Ruff and Black.
+- Live preparation verifies the exact local/remote archive identity, package
+  manifest, all current ignored-state aggregates, open pull requests, remote
+  heads, live integration state, paths, heads, cleanliness, and topology.
+- Documentation frontmatter passes for 365 maintained documents with zero
+  invalid records; 490 Markdown files, 1,030 local links, and six local images
+  have zero broken links. Context validates ten areas and six authorities;
+  control validates 115 active operations and 101/101 scripts; efficiency
+  policy passes.
+- The consolidated quick gate passes 10/10 with zero reused checks. The full
+  repository gate passes 31/31 with 11 unchanged quick results reused. Normal
+  staged hooks pass through the worktree-bound Python runtime. Immutable commit
+  and final read-only session validation remain the closeout sequence.
+
+## 2026-08-27 — Session: MAINT-0136 Phase 2B-R Google Drive backup
+
+**Agent:** Codex (`governance`, sole backup writer/operator; no subagents)
+
+**Branch:** `codex/maint-0136-phase-2b-r-google-drive-backup`, created from the
+exact recovery-preparation commit
+`2e3558a7fda4f8ff778c6ecd5f0435d0415ca229`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0136-phase-2b-r-google-drive-backup-git-handoff-receipt.json`
+
+**Focus:** Back up Phase 2B-R to Google Drive and retain every cleanup hold.
+
+### Summary
+
+- Used the connected Google Drive file-lifecycle workflow. Created a separate
+  `structural_engineering_lib Backups` root rather than mixing this repository
+  with the existing Sourcebook backup folder; metadata shows owner-only access,
+  zero broad permissions, and no sharing.
+- Added a fail-closed local package builder and four focused regressions. It
+  revalidates all 64 source worktrees, exact heads and ignored-state aggregates,
+  the Git bundle, dirty patch, and protected-source aggregate before archiving.
+- Created one 92,256,339-byte archive containing 7,602 files / 123,164,574
+  source bytes. Local full restore passes with package-manifest SHA-256
+  `b3bca03f...1d214`.
+- Uploaded the archive and private recovery receipt to Google Drive. Remote
+  metadata reports the exact archive size and owner-only visibility. Google
+  documents AES-256 encryption in transit and at rest; client-side encryption
+  is not claimed.
+- Downloaded the stored archive through the authenticated Drive account. Its
+  SHA-256 exactly matches local `bf18a66b...167ac`, and the downloaded archive
+  restores all 7,602 files / 123,164,574 bytes successfully.
+- Performed no source/cache/worktree/branch/ref/PR/protected-source/archive or
+  shared-`.venv` removal. Phase 2B-W still requires a new exact target manifest
+  and explicit authorization.
+
+### Issues encountered
+
+- The first worktree-creation command selected the not-yet-created target as its
+  process working directory, so the process could not start.
+- The Drive connector streamed the large remote file to an internal file
+  reference but did not expose a local materialized path for hash/restore use;
+  Google Drive Desktop was configured for the same account but not running.
+- The automatically selected in-app browser was not signed in to Google Drive;
+  the existing Chrome session was authenticated.
+- Two browser download-event waits timed out even though direct Drive menu
+  activation subsequently completed the downloads. The retries produced three
+  identical completed local readbacks.
+- The first focused style batch found one unused import and Black formatting in
+  both new Python files.
+- The first documentation metadata check rejected the intuitive `complete`
+  status and `verification` document type used by the completed recovery plans.
+
+### Root causes and resolutions
+
+- Confirmed root cause: process creation resolves its working directory before
+  executing `git worktree add`. Resolution: create the exact dependent worktree
+  from the clean predecessor first, then start its governed session. No partial
+  Git mutation occurred. ⚠️ TERMINAL ISSUE: nonexistent target cwd prevented
+  process start -> create from the predecessor cwd before entering the target.
+- Confirmed root cause: the connector intentionally returns a streamed reference
+  for large raw files, while the stopped Drive Desktop provider had not refreshed
+  the new folder. Resolution: start the already configured Drive application,
+  then use the authenticated browser download path for local hash and restore.
+- Confirmed root cause: browser selection preferred the in-app surface, whose
+  session lacked Drive authentication. Resolution: follow the browser workflow's
+  fallback rule and use the connected Chrome session under the same owner
+  account; no credentials were inspected or entered.
+- Confirmed root cause: Drive's application-style viewer did not emit the
+  expected automation download event for its header/body controls, while the
+  file-menu action still initiated normal Chrome downloads. Resolution: verify
+  the first completed exact-size archive, move only the two agent-created
+  duplicates to Trash, retain one readback, and leave unrelated Downloads state
+  untouched. Both trashed duplicates are recoverable.
+- Confirmed root cause: the initial source/test files had not received final
+  import and formatter normalization. Resolution: remove the unused import and
+  format both once; final Ruff, Black, and focused tests pass.
+- Confirmed root cause: the maintained documentation vocabulary represents
+  completed plans with `archived` status and limits document types to its
+  controlled set. Resolution: mark both completed plans `archived` and classify
+  the closeout as a `log`; the repeated metadata and link checks pass.
+
+### Validation
+
+- Four new package regressions pass: symlink rejection, exact full restore,
+  tamper rejection, and frozen-head drift rejection. They pass with the 15
+  inherited Phase 2B-R, Phase 2B, Phase 2A, and preservation regressions as one
+  19-test batch; changed Python files pass Ruff and Black.
+- Local package creation revalidates 64 source worktrees and restores 7,602
+  files / 123,164,574 bytes. The local archive is 92,256,339 bytes with SHA-256
+  `bf18a66b339b2ad02f071346aed75cb27d3fceeae0e45464eb50dd11334167ac`.
+- Drive metadata, connector readback, browser download, SHA comparison, and full
+  downloaded restore pass. The folder, archive, and receipt remain owner-only;
+  tracked evidence contains no Drive URLs/IDs or protected filenames.
+- Documentation frontmatter passes for 364 maintained documents with zero
+  invalid records; 489 Markdown files, 1,026 local links, and six local images
+  have zero broken links. Context validates 10 areas and six authorities;
+  control validates 115 active operations and 101/101 scripts; token-efficiency
+  policy and exact backup-evidence invariants pass.
+- The one consolidated quick gate passes 10/10 with zero reused checks. The one
+  consolidated repository gate passes 31/31 with 11 unchanged quick-check
+  results reused. Normal hooks, immutable local commit, final read-only session
+  validation, and publication hold remain the closeout sequence.
+
+## 2026-08-26 — Session: MAINT-0136 Phase 2B-R recovery preparation
+
+**Agent:** Codex (`governance`, sole Phase 2B-R preparation writer; no subagents)
+
+**Branch:** `codex/maint-0136-phase-2b-r-recovery-preparation`, created from
+exact immutable Phase 2B preparation candidate
+`90f5d7921f82a903de4291719589c7da13e979cf`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0136-phase-2b-r-recovery-preparation-git-handoff-receipt.json`
+
+**Focus:** Freeze the exact recovery source boundary and destination contract
+without copying, archiving, restoring, deleting, or changing Git/GitHub state.
+
+### Summary
+
+- Added a preparation-only collector and four focused regressions. The CLI can
+  inspect and write its manifest but cannot invoke its separately tested
+  archive/restore primitives or any cleanup operation.
+- Froze 64 exact retirement-review sources. The fail-closed classification
+  preserves 7,558 ignored files / 8,209,256 bytes and excludes 96,392 proven
+  regenerable files / 2,962,551,202 bytes.
+- Reverified the existing 42,922,979-byte all-ref Git bundle, 7,146-byte dirty
+  patch, and 42 protected files / 72,025,193 bytes without recording protected
+  or ignored filenames or contents in tracked evidence.
+- Calculated an exact 123,164,574-byte recovery source and a minimum
+  313,438,012-byte destination requirement using twice the source plus a 64 MiB
+  restore reserve.
+- Confirmed no usable Time Machine or external-volume destination. Status is
+  `PHASE_2B_R_PREPARED_DESTINATION_HOLD`; all live mutations remain zero.
+
+### Issues encountered
+
+- The first session start was blocked by the prior Phase 2B preparation task's
+  unmatched usage-start checkpoint even though its final session validation had
+  passed.
+- The first attempted prior-task usage closeout was 0.176 minutes below the
+  newly derived elapsed time and failed its consistency tolerance.
+- The initial ignored-state prototype conservatively counted MkDocs `site/`
+  output as preservation material.
+- Initial inspection found that Git bundle verification was configured to run
+  from the bundle's ignored archive directory, not from a Git repository.
+- The first focused style batch passed tests and Ruff, while Black required
+  normalization of both new Python files.
+- No encrypted external/off-device destination is currently available.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `session end` validates the frozen task but does not
+  record the separate usage closeout checkpoint. Resolution: record the prior
+  task's exact closeout, verify no active timer remained, then start this task.
+  The new `session begin` returned ready. ⚠️ TERMINAL ISSUE: unmatched prior
+  usage start blocked the new session -> recorded the missing prior closeout.
+- Confirmed root cause: elapsed time advanced between inspection and the first
+  closeout command while its phase total remained stale. Resolution: refresh
+  the total to 58.35 minutes; the checkpoint recorded with a derived 58.44
+  minutes. ⚠️ TERMINAL ISSUE: stale phase total failed the usage checkpoint ->
+  reran once with the refreshed measured total.
+- Confirmed root cause: unknown ignored state deliberately defaults to
+  preservation until its owner is proven; `.gitignore` identifies `site/` as
+  generated MkDocs output. Resolution: classify that exact prefix as
+  regenerable before freezing the manifest. The final category totals contain
+  no unknown ignored state.
+- Confirmed root cause: `git bundle verify` requires repository context even
+  when the bundle has an absolute path. Resolution: bind verification to the
+  current inspected repository. Focused tests and the live 42,922,979-byte
+  bundle verification pass.
+- Confirmed root cause: the new files had not received repository Black
+  normalization. Resolution: format both once; final Ruff and Black checks pass.
+- Confirmed root cause: no Time Machine destination or external candidate is
+  mounted. Resolution: emit a destination hold with an exact encryption,
+  failure-domain, write-access, free-space, digest, and restore contract. No
+  copy or cleanup path executed.
+
+### Validation
+
+- The four new recovery-preparation regressions cover narrow classification,
+  ignored-state preservation, archive/restore aggregate equivalence, and the
+  destination hold. They pass with the four Phase 2B, four Phase 2A, and three
+  cleanup-preservation regressions as one 15-test batch; the changed Python
+  files pass Ruff and Black.
+- Manifest invariants prove 64 source worktrees, the exact preserved and
+  regenerable totals, unchanged Phase 1 recovery identities and protected
+  aggregate, 123,164,574 source bytes, 313,438,012 required destination bytes,
+  unavailable destination, false backup/cleanup authorization, and zero live
+  mutations.
+- Documentation frontmatter passes for 363 maintained documents with zero
+  invalid records; 488 Markdown files, 1,023 local links, and six local images
+  have zero broken links. Context validates 10 areas and six authorities;
+  control validates 115 active operations and 101/101 scripts; token-efficiency
+  policy passes.
+- The one consolidated quick gate passes 10/10 with zero reused checks. The one
+  consolidated repository gate passes 31/31 with 11 unchanged quick-check
+  results reused. Normal hooks, the immutable local commit, final read-only
+  session validation, and publication hold remain the closeout sequence.
+
+## 2026-08-26 — Session: MAINT-0136 Phase 2B preparation
+
+**Agent:** Codex (`governance`, sole Phase 2B preparation writer; no subagents)
+
+**Branch:** `codex/maint-0136-phase-2b-preparation`, created from exact immutable
+Phase 2A candidate `2d898e9b32d1ad92be4176c1e2aa406b1ec33f81`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0136-phase-2b-preparation-git-handoff-receipt.json`
+
+**Focus:** Prepare the next cleanup decision without performing cache, worktree, branch, ref, pull-request, archive, protected-source, or shared-`.venv` cleanup.
+
+### Summary
+
+- Added a read-only fail-closed preparation collector and four focused
+  regressions. It binds to Phase 2A `PASS`, proves all 30 earlier targets remain
+  absent, selects only Phase 1 small-cache identities, excludes open PRs and
+  unsafe lanes, inventories ignored state without recording its paths, and has
+  no cleanup execution function.
+- Froze a 119-directory small-cache ceiling of 47,378,432 bytes with target-set
+  SHA-256 `dabd217a82bcd90ca3192aa62bfbf780eda6dd1625d758e6315fc3ba1ba88503`.
+  This is only 0.4165% of the 75-worktree footprint, so standalone execution is
+  not recommended and remains unauthorized.
+- Identified 64 clean non-special worktrees as retirement review only. Their
+  gross path footprint is 7,753,789,440 bytes, but all contain ignored local
+  state. The topology has 3,190 ignored entries; 67 worktrees contain ignored
+  session state and 67 contain ignored pipeline state.
+- Confirmed no off-device destination, 10 open PRs, six clean detached rows,
+  dirty detached `e54a`, unchanged 42-file/72,025,193-byte protected-source
+  aggregate, and 84% reported filesystem capacity at manifest freeze.
+- Recommended Phase 2B-R recovery/retention preparation first, then a separately
+  authorized worktree-only Phase 2B-W packet. Branch/ref/archive cleanup is
+  deferred because it adds risk and little immediate disk value.
+
+### Issues encountered
+
+- The first bounded discovery command referenced a nonexistent `scripts/tests`
+  directory and a guessed Phase 2A manifest filename.
+- A later briefing lookup guessed `docs/NEXT_SESSION_BRIEF.md`, which is not the
+  maintained path.
+- The first recent-task inspection requested 200 rows, above the app's 50-row
+  maximum; the bounded retry succeeded but absence from that page was not
+  treated as owner-retention proof.
+- The first focused style batch passed tests and Ruff but Black reported both
+  new Python files required formatting.
+- The live evidence disproved the assumed value of a second cache sweep: 119
+  targets total only 47,378,432 bytes, whereas material savings require
+  worktree retirement that would also remove ignored local evidence.
+- Phase 1 PR #874 remains open and blocked with its same-head validation run
+  queued without jobs.
+
+### Root causes and resolutions
+
+- Confirmed root cause: tests live under `Python/tests`, and Phase 2A separates
+  `cache-targets` from `cache-cleanup-evidence`; there is no generic manifest
+  file. Resolution: use `rg --files` to discover the exact maintained paths and
+  rerun only those bounded reads. ⚠️ TERMINAL ISSUE: guessed test/artifact paths
+  did not exist -> exact repository paths were discovered before edits.
+- Confirmed root cause: the maintained briefing owner is
+  `docs/planning/next-session-brief.md`. Resolution: discover it with
+  `rg --files docs` and use that path. ⚠️ TERMINAL ISSUE: guessed uppercase
+  briefing path did not exist -> the maintained planning path was used.
+- Confirmed root cause: the task-list API enforces a 50-row maximum. Resolution:
+  retry at 50 and keep all unproven worktree ownership on hold; the incomplete
+  page is supporting context, not retirement authority.
+- Confirmed root cause: the new files had not received repository Black
+  normalization. Resolution: format both once; the final frozen focused batch
+  reruns after content freeze.
+- Confirmed root cause: Phase 2A already removed the two dominant cache classes.
+  The remaining pytest/Ruff/build outputs are only 0.4165% of current worktree
+  bytes, while 64 review-only worktrees contain ignored state that Git refs do
+  not preserve. Resolution: recommend no Phase 2B execution now; establish and
+  restore-test off-device ignored-state recovery before freezing exact
+  worktree-only targets.
+- Confirmed root cause: GitHub has not assigned PR #874's workflow to a runner;
+  no code/test failure is present. Resolution: preserve Phase 1 and Phase 2A
+  immutable candidates, keep this preparation local, and do not create a third
+  publication dependency while predecessor checks remain unresolved.
+
+### Validation
+
+- The four new Phase 2B preparation regressions plus the four inherited Phase
+  2A and three preservation regressions pass as one 11-test batch. The two
+  changed Python files pass Ruff and Black.
+- Machine-readable invariants prove 119 proposed-but-unauthorized cache rows,
+  47,378,432 bytes, exact target-set digest, 64 retirement-review-only rows,
+  7,753,789,440 gross review bytes, 3,190 ignored entries, unchanged Phase 2A
+  completion, zero recorded cleanup mutations, no external mounted volume, and
+  unchanged protected-source aggregate.
+- Documentation frontmatter passes for 362 maintained documents with zero
+  invalid records; 487 Markdown files, 1,020 local links, and six local images
+  have zero broken links. Context validates 10 areas and six authorities;
+  control validates 115 active operations and 101/101 scripts; token-efficiency
+  policy passes.
+- The one consolidated quick gate passes 10/10 with zero reused checks. The one
+  consolidated repository gate passes 31/31 with 11 unchanged quick-check
+  results reused. The tracked Git handoff receipt validates as the expected
+  local `HOLD` because publication, integration, review, and retention evidence
+  remain intentionally unresolved.
+
+## 2026-08-26 — Session: MAINT-0136 Phase 2A exact cache cleanup
+
+**Agent:** Codex (`orchestrator`, sole Phase 2A writer; no Phase 2A subagents)
+
+**Branch:** `codex/maint-0136-phase-2a-cache-cleanup`, created from exact frozen
+Phase 1 candidate `37b3678504b9e9a3d663f442ecab62f19a3f0b75`.
+
+**Git handoff receipt:**
+`docs/verification/maint-0136-phase-2a-cache-cleanup-git-handoff-receipt.json`
+
+**Focus:** Execute only the owner-authorized Phase 2A regenerable-cache packet:
+clean inactive `react_app/node_modules` and `.mypy_cache` identities frozen by
+Phase 1. Preserve every worktree, branch, ref, pull request, protected source,
+shared `.venv`, primary checkout, active lane, and dirty lane.
+
+### Summary
+
+- Created a dependent successor from the immutable Phase 1 candidate; Phase 1
+  remains clean and unchanged while PR #874 waits for hosted runner capacity.
+- Added one fail-closed cache-packet implementation. It can select only exact
+  Phase 1 candidate identities, requires fresh clean/inactive topology, rejects
+  symlinks and path escape, verifies size and per-HEAD recreation basis twice,
+  and has no Git/worktree/ref/PR/protected-source or `.venv` deletion path.
+- Froze target-set SHA-256
+  `bd1f0985bda82707a85e6ce12bb2d3889d85a0dffb35b8e822a411a0841d3b05`:
+  16 `react_app/node_modules` plus 14 `.mypy_cache` directories, zero held
+  candidates, and 7,665,283,072 measured bytes.
+- Removed all 30 exact targets with no partial failure. Independent target
+  absence passes. Filesystem availability increased by 7,903,207,424 bytes and
+  reported capacity fell from 87% to 83%; the frozen target sum remains the
+  authoritative cache quantity because APFS accounting may vary.
+- Proved the 74-worktree topology, 232-ref snapshot, and canonical
+  42-file/72,025,193-byte protected-source aggregate are unchanged. The primary
+  and Phase 1 lanes remain clean at their original heads; detached `e54a`
+  retains its one pre-existing dirty file.
+- Kept the Phase 2A candidate local and publication-held behind Phase 1 PR #874;
+  no push, PR, merge, release, or broader cleanup is part of this packet.
+
+### Issues encountered
+
+- The repository's maintained safe-file delete command accepts one regular
+  file and cannot remove a cache directory; no registered exact cache-packet
+  operation existed.
+- The first focused style batch found one unsorted test import and one unused
+  module import; Black also reported both new files needed formatting.
+- Initial handoff/task inspection used three guessed paths that do not exist in
+  this repository layout.
+- The first documentation-frontmatter command used a guessed retired script
+  name and exited before checking documents.
+- The first receipt-creation command left glob-valued forbidden paths unquoted,
+  so zsh rejected it before the receipt script ran.
+- Phase 1 PR #874 remains blocked by hosted runner capacity: the same-head rerun
+  is queued without jobs, so successor publication ordering cannot advance.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `safe_file_delete.py` deliberately supports only an
+  unreferenced regular file and the control plane had no directory-cache
+  transaction. Resolution: add the bounded `phase2a_cache_cleanup` module with
+  Phase 1 identity binding, fresh topology and size checks, exact path and
+  symlink guards, recreation proof, pre-mutation validation, and before/after
+  topology/ref/protected-source evidence. Seven focused regressions pass,
+  including topology drift without deletion and exact successful removal that
+  preserves a sibling sentinel and protected source.
+- Confirmed root cause: the initial files had not yet received repository
+  formatter/import normalization. Resolution: apply Ruff's two mechanical
+  import fixes and Black once, then rerun the frozen focused batch; Ruff, Black,
+  and all seven tests pass.
+- Confirmed root cause: maintained task and briefing files live at
+  `docs/TASKS.md` and `docs/planning/next-session-brief.md`; there is no root
+  `TASKS.md`, `docs/HANDOFF.md`, or `docs/next-session-brief.md`. Resolution:
+  discover the exact paths with `rg --files` and use only those maintained
+  owners. ⚠️ TERMINAL ISSUE: guessed handoff/task paths did not exist -> exact
+  maintained paths were discovered before any edit.
+- Confirmed root cause: frontmatter validation is a selector owned by the
+  unified `scripts/check_docs.py`, not a standalone maintained
+  `scripts/check_docs_frontmatter.py`. Resolution: inspect the unified help and
+  run `check_docs.py --frontmatter --check-all-files`; 361 maintained documents
+  have zero invalid frontmatter records. ⚠️ TERMINAL ISSUE: guessed standalone
+  frontmatter checker was absent -> the maintained unified selector passed.
+- Confirmed root cause: zsh expands unmatched `**` arguments before launching
+  the receipt builder. Resolution: quote each literal forbidden-path value and
+  rerun the unchanged receipt command; it completed successfully. The rejected
+  command created no receipt. ⚠️ TERMINAL ISSUE: unquoted receipt globs were
+  rejected -> literal quoted path contracts were accepted.
+- Confirmed root cause: the GitHub-hosted workflow has not been assigned a
+  runner; it has not produced a code or test failure. Resolution: retain the
+  unchanged Phase 1 head, bind Phase 2A to its exact commit, and hold Phase 2A
+  publication until the predecessor integrates rather than changing either
+  candidate to provoke another run.
+
+### Validation
+
+- The three Phase 2A contract regressions plus the three inherited preservation
+  regressions pass before execution. After execution, the expanded four-case
+  Phase 2A suite plus the inherited three-case suite passes as one frozen
+  seven-test batch; changed Python files pass Ruff and Black.
+- The target executor returns `PASS`, removes 30/30 exact directories and
+  7,665,283,072 measured bytes, reports no failure, and proves unchanged
+  topology, refs, and protected-source aggregate. An independent shell absence
+  scan reports zero surviving target paths.
+- The excluded primary, frozen Phase 1, and detached dirty lanes retain their
+  exact heads, clean/dirty counts, and no-operation state under a fresh
+  `git_state.py --json --worktrees` query with zero query failures.
+- Documentation frontmatter passes for 361 maintained documents with zero
+  invalid records; 486 Markdown files, 1,017 local links, and six local images
+  have zero broken links. Context, control-plane, token-efficiency, and exact
+  target/execution evidence invariants pass.
+- The one consolidated quick gate passes 10/10 with zero reused checks. Broad
+  structural-engineering suites are not independently selected because this
+  packet changes only the maintenance cache transaction, its focused tests,
+  and evidence. The one consolidated repository gate passes 31/31 with three
+  unchanged quick-check results reused; normal commit hooks, immutable
+  candidate audit, read-only session closeout, and the local publication hold
+  remain.
+
 ## 2026-08-26 — Session: MAINT-0136 cleanup preservation
 
 **Agent:** Codex (`orchestrator`, sole writer; two prior read-only plan reviews)

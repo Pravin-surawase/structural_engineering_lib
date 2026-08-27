@@ -1,0 +1,167 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-26T16:48:53+00:00",
+      "query_status": "OK",
+      "reference": "active Codex task: okay start phase 2A",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS"
+    ],
+    "authorized_phases": [
+      "2A"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-26T16:48:53+00:00",
+    "prohibited_actions": [
+      "DELETE_FILE_OUTSIDE_EXACT_CACHE_TARGETS",
+      "REMOVE_WORKTREE",
+      "DELETE_LOCAL_BRANCH",
+      "DELETE_REMOTE_BRANCH",
+      "DELETE_REF",
+      "CLOSE_PULL_REQUEST",
+      "PRUNE",
+      "GIT_CLEAN",
+      "DELETE_PROTECTED_SOURCE",
+      "DELETE_SHARED_VENV",
+      "PUSH_BEFORE_PHASE_1_INTEGRATION",
+      "PUBLISH_RELEASE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS"
+      ],
+      "branch": "codex/maint-0136-phase-2a-cache-cleanup",
+      "head_sha": "37b3678504b9e9a3d663f442ecab62f19a3f0b75",
+      "task_id": "MAINT-0136"
+    }
+  },
+  "holds": [
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "b879f4a75c11c11ac4002a0528183e4f155507f84d70e383c0c68c471879e294",
+    "state": {
+      "branch": "codex/maint-0136-phase-2a-cache-cleanup",
+      "default_base": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "ee04bfbf76b1a3a022d07c8203b5274a0f71998f",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 97.248,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-maint-0136-phase-2a-cache-cleanup",
+      "head_sha": "37b3678504b9e9a3d663f442ecab62f19a3f0b75",
+      "hold_reasons": [
+        "changed paths: 9"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-26T16:50:47.246542+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2a-cache-cleanup",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 9,
+        "modified_paths": [],
+        "staged_paths": [
+          "Python/tests/test_phase2a_cache_cleanup.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/maint-0136-cleanup-preservation-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/maint-0136-phase-2a-cache-cleanup-evidence.json",
+          "docs/verification/maint-0136-phase-2a-cache-cleanup-git-handoff-receipt.json",
+          "docs/verification/maint-0136-phase-2a-cache-targets.json",
+          "scripts/_lib/phase2a_cache_cleanup.py"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-maint-0136-phase-2a-cache-cleanup"
+    }
+  },
+  "local_state_receipt_hash": "sha256:b879f4a75c11c11ac4002a0528183e4f155507f84d70e383c0c68c471879e294",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-26T16:50:47.246711+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources/**",
+      "Python/structural_lib/**",
+      "fastapi_app/**",
+      "react_app/**",
+      ".venv/**"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "scripts/_lib/phase2a_cache_cleanup.py",
+      "Python/tests/test_phase2a_cache_cleanup.py",
+      "docs/planning/maint-0136-cleanup-preservation-plan.md",
+      "docs/verification/maint-0136-phase-2a-cache-targets.json",
+      "docs/verification/maint-0136-phase-2a-cache-cleanup-evidence.json",
+      "docs/verification/maint-0136-phase-2a-cache-cleanup-git-handoff-receipt.json",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "MAINT-0136"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

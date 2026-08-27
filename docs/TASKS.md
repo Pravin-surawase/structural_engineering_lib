@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-26 — MAINT-0136 cleanup preservation
+**Updated:** 2026-08-27 — MAINT-0136 consolidated integration closeout
 
 ---
 
@@ -126,15 +126,16 @@
 
 ## Active
 
-`MAINT-0136` executes only the owner-authorized cleanup Phase 0 and Phase 1.
-The unmatched historical session is reconciled; the fresh live manifest holds
-70 of 73 worktrees and 81 of 83 current local/remote branch or PR heads while
-retaining the primary checkout, current task, dirty detached lane, and default
-branch. A 303-ref Git bundle and the dirty patch pass a sampled restore, and an
-exact temporary protected-source copy verifies without changing the canonical
-aggregate. Same-disk recovery is not disaster recovery: no external
-destination is available, and the 7.183 GiB clean-inactive cache ceiling plus
-all worktree/branch/ref cleanup remain Phase 2 candidates without authority.
+`MAINT-0136` is locally complete through its exact authorized cleanup boundary.
+Phase 1 PR #874 merged at reviewed head `37b36785`; Phase 2A removed the exact
+30-cache manifest, Phase 2B-R proved the owner-only Google Drive recovery
+package, Phase 2B-W retired exactly 63 worktrees without force, and Phase 2C
+removed exactly four local and two matching remote branches. The consolidated
+successor preserves every frozen commit and is reconciled with merged
+`origin/main` without rewriting history. No Phase 2D was defined and no further
+branch, worktree, archive, tag, Codex-ref, protected-source, or alias deletion
+is authorized by this closeout. Hosted publication and merge of the immutable
+consolidated candidate are the external completion gate.
 
 `RELEASE-SMOOTH-001` is the active release-control task. It converts the
 `v0.24.0a1` delays into a single-candidate next-release flow: fail-fast final
