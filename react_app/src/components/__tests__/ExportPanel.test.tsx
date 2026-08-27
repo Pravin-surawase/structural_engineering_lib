@@ -18,6 +18,7 @@ describe('ExportPanel', () => {
   const defaultParams = {
     width: 300,
     depth: 500,
+    span_length: 5000,
     fck: 25,
     fy: 500,
     ast_required: 850,

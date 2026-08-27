@@ -180,6 +180,12 @@ class BeamDesignRequest(BaseModel):
     @model_validator(mode="after")
     def validate_depth_relationships(self) -> "BeamDesignRequest":
         """Validate practical depth-to-width ratio and cross-field depth constraints."""
+        if self.rebar_layers is not None:
+            raise ValueError(
+                "REBAR_LAYERS_SCOPE_HOLD: /api/v1/design/beam does not consume "
+                "supplied reinforcement layers; omit rebar_layers and use the "
+                "maintained detailing/check workflow."
+            )
         if self.depth / self.width > 6:
             raise ValueError(
                 f"Depth/width ratio {self.depth / self.width:.1f} exceeds practical limit of 6"

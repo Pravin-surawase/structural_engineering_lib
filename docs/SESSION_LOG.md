@@ -5,6 +5,114 @@
 
 ---
 
+## 2026-08-27 — Session: LIB-PRO-012 S0 post-merge audit and A0 planning
+
+**Agent:** Codex (`reviewer`, sole writer; no subagents).
+
+**Branch:** `codex/lib-pro-012-s0-post-merge-audit-a0-plan`.
+
+**Focus:** Independently inspect merged LIB-PRO-012 S0, repair only confirmed
+outcome-changing omissions, reconcile final acceptance truth, and prepare one
+efficient read-only LIB-PRO-013 A0 execution plan without starting A0.
+
+**Completed:**
+
+- Re-established exact fetched-main, PR, hosted-check, tree-equivalence,
+  worktree-preservation, authority, prior-evidence, and installed-artifact
+  identity. The detached dirty `e54a` lane remains untouched.
+- Replayed every mapped S0 route class against direct expert, composed service,
+  typed, primary REST, BBS/DXF, and exact-wheel boundaries. The original beam,
+  detailing, BBS, torsion, column, typed-input, identity, and primary REST
+  controls remain numerically stable.
+- Closed the three confirmed transport manifestations left outside the merged
+  repair: unused `rebar_layers`, invented BBS/DXF span, and coercive/extra-
+  ignoring export intake. Invalid requests now stop at HTTP 422 before
+  calculation, detailing, BBS, DXF, or artifact creation.
+- Updated the maintained React export contract, exact OpenAPI baseline, REST
+  reference, focused regressions, and source-free artifact verifier. Added a
+  successor post-merge acceptance receipt without rewriting historical S0
+  evidence or append-only usage telemetry.
+- Prepared the derivative LIB-PRO-013 A0 plan as one 15–24 engineer-day,
+  read-only audit cycle with four evidence passes, one report, one candidate,
+  one PR, evidence reuse by unchanged owner, and explicit B0/F0/R0 routing.
+
+### Issues encountered
+
+- `/api/v1/design/beam` accepted a populated `rebar_layers` field and returned
+  HTTP 200 although the maintained route never read or applied that engineering
+  input.
+- `/api/v1/export/bbs` and `/api/v1/export/dxf` accepted omitted or zero span
+  and substituted `depth * 12`; their request model also coerced numeric/string
+  booleans and ignored unknown engineering fields.
+- The merged task board, handoff, immutable evidence, and append-only usage
+  records ended at the first candidate or pending hosted-repair state rather
+  than recording a successor post-merge acceptance observation.
+- Tightening the React export contract exposed a stale `ExportPanel` test
+  fixture that omitted the now-required span. The first production TypeScript
+  build therefore stopped before bundle creation.
+- One existing combined BBS/DXF scope-hold test reused primary beam fields
+  that are not part of the exact export model; strict extra-field rejection
+  correctly stopped it before the intended assertion.
+- The first clean read-only session closeout occurred after the original
+  handoff receipt's short evidence-freshness window and failed only with
+  `HOLD_SET_MISMATCH` / `RETENTION_STALE_EVIDENCE`.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the dormant `rebar_layers` property remained on the
+  strict primary request after S0, but no calculation or detailing owner
+  consumed it. Resolution: reject any supplied value with stable
+  `REBAR_LAYERS_SCOPE_HOLD` intake evidence while preserving omission
+  compatibility. Proof: focused primary-route tests and exact-artifact REST
+  replay return 422.
+- Confirmed root cause: S0 hardened the primary request but only made export
+  steel positive after the hosted failure; `ExportBeamRequest` retained its
+  coercive defaults and `_run_detailing` retained a structural span fallback.
+  Resolution: require an explicit positive span, remove the fallback, enable
+  strict/finite/extra-forbid intake, and update the maintained React caller.
+  Proof: missing/zero span, numeric string, string boolean, unknown field, and
+  zero steel all return 422; valid BBS remains HTTP 200 with exactly nine items.
+- Confirmed root cause: repository evidence correctly froze before the final
+  hosted repair, but no successor acceptance receipt reconciled final head,
+  merge tree, hosted run, and post-merge review. Resolution: preserve the
+  historical artifact and add a successor receipt plus current task/session/
+  handoff truth; do not mutate append-only telemetry retroactively. Proof: PR
+  #877 head/tree/merge equivalence and hosted run 33080623445 were re-queried.
+- Confirmed root cause: caller and test fixtures still modeled `span_length` as
+  optional after the fail-closed export decision. Resolution: make the TypeScript
+  field required and supply explicit valid spans in maintained fixtures. Proof:
+  66 focused React cases, lint, TypeScript compilation, and production build pass.
+- Confirmed root cause: the scope-hold test passed the wrong transport schema
+  rather than an exact valid export request. Resolution: use only maintained
+  export fields plus explicit span before applying the scope hold. Proof: the
+  47-case focused FastAPI repair set and 788-case cross-layer selection pass.
+- Confirmed root cause: task-to-Git handoff receipts are deliberately
+  time-bound transition observations, and the verification/build/commit cycle
+  exceeded the first receipt's freshness window. Resolution: preserve that
+  historical candidate receipt and add a fresh successor closeout observation
+  in an explicit repair candidate; no runtime or test result changed. Proof:
+  the successor receipt validates and clean read-only session closeout passes.
+
+### Validation through content freeze
+
+- Focused Python/FastAPI selection: 788 collected and passed; focused repair
+  tests: 47 passed. Focused React: 66 passed; lint and production build pass.
+- Architecture: 222 files, zero violations; circular imports: 202 files, zero
+  cycles; library imports: 247 files, zero broken imports.
+- OpenAPI matches its refreshed baseline at 89 endpoints and 444 schemas. API
+  manifest and API classification/compatibility checks pass.
+- Rebuilt isolated wheel SHA-256
+  `4f8e89f7b0280a998b426e56042685db2884c59f549d79839dfecba1e7445adb`
+  rejects 15 invalid source-free Python routes. Exact-head FastAPI bound to the
+  installed wheel rejects nine primary omissions, five primary strict/domain
+  vectors, and six invalid BBS transport vectors; valid BBS and engineering
+  `FAIL` retain HTTP 200 with distinct result semantics.
+- Consolidated quick gate, normal hooks, exact candidate closeout, and hosted
+  checks are owned by the immutable candidate after all versioned content
+  freezes.
+
+**Git handoff receipt:** `docs/verification/lib-pro-012-s0-post-merge-audit-a0-plan-closeout-repair-git-handoff-receipt.json`
+
 ## 2026-08-27 — Session: LIB-PRO-012 S0 P0 safety closure
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents).

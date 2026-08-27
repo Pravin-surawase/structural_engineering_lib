@@ -13,7 +13,7 @@ from typing import Optional
 
 from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from fastapi_app.models.beam import BeamCrackWidthParams
 
@@ -47,12 +47,14 @@ router = APIRouter(
 class ExportBeamRequest(BaseModel):
     """Beam parameters for generating export artifacts."""
 
+    model_config = ConfigDict(strict=True, extra="forbid", allow_inf_nan=False)
+
     beam_id: str = Field(
         default="BEAM-1", max_length=50, pattern=r"^[A-Za-z0-9_\-\.]{1,50}$"
     )
     width: float = Field(..., gt=0, description="Beam width in mm")
     depth: float = Field(..., gt=0, description="Beam depth in mm")
-    span_length: float = Field(default=0, ge=0, description="Span in mm")
+    span_length: float = Field(..., gt=0, description="Explicit beam span in mm")
     clear_cover: float = Field(
         default=40, ge=20, le=75, description="Clear cover in mm"
     )
@@ -175,14 +177,13 @@ def _run_detailing(req: ExportBeamRequest):
             detail="structural_lib not available",
         )
 
-    span = req.span_length if req.span_length > 0 else req.depth * 12
     return detail_beam_is456(
         units="IS456",
         beam_id=req.beam_id,
         story="1F",
         b_mm=req.width,
         D_mm=req.depth,
-        span_mm=span,
+        span_mm=req.span_length,
         cover_mm=req.clear_cover,
         fck_nmm2=req.fck,
         fy_nmm2=req.fy,

@@ -15686,6 +15686,7 @@
         "type": "string"
       },
       "ExportBeamRequest": {
+        "additionalProperties": false,
         "description": "Beam parameters for generating export artifacts.",
         "properties": {
           "asc_required": {
@@ -15754,9 +15755,8 @@
             "type": "number"
           },
           "span_length": {
-            "default": 0,
-            "description": "Span in mm",
-            "minimum": 0.0,
+            "description": "Explicit beam span in mm",
+            "exclusiveMinimum": 0.0,
             "title": "Span Length",
             "type": "number"
           },
@@ -15777,6 +15777,7 @@
         "required": [
           "width",
           "depth",
+          "span_length",
           "fck",
           "fy",
           "ast_required"

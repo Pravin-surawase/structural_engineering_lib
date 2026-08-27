@@ -17,7 +17,7 @@ export interface ExportBeamParams {
   beam_id?: string;
   width: number;
   depth: number;
-  span_length?: number;
+  span_length: number;
   clear_cover?: number;
   fck: number;
   fy: number;
@@ -100,7 +100,7 @@ async function fetchExport(
  *
  * @example
  * const { mutate, isPending } = useExportBBS();
- * mutate({ width: 300, depth: 450, fck: 25, fy: 500, ast_required: 500 });
+ * mutate({ width: 300, depth: 450, span_length: 5000, fck: 25, fy: 500, ast_required: 500 });
  */
 export function useExportBBS() {
   return useMutation({
@@ -121,7 +121,7 @@ export function useExportBBS() {
  *
  * @example
  * const { mutate, isPending } = useExportDXF();
- * mutate({ width: 300, depth: 450, fck: 25, fy: 500, ast_required: 500 });
+ * mutate({ width: 300, depth: 450, span_length: 5000, fck: 25, fy: 500, ast_required: 500 });
  */
 export function useExportDXF() {
   return useMutation({

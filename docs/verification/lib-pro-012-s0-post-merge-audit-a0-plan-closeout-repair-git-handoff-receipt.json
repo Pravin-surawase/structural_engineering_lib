@@ -1,0 +1,174 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-27T15:24:03Z",
+      "query_status": "OK",
+      "reference": "Before going to A0, check the last completed work, find and fix mistakes or missed issues, then plan A0 efficiently.",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "AUDIT_AND_REPAIR_MERGED_LIB_PRO_012_S0",
+      "PLAN_LIB_PRO_013_A0_WITHOUT_STARTING_IT",
+      "PRESERVE_A_TIME_BOUND_SUCCESSOR_HANDOFF_OBSERVATION",
+      "COMMIT_PUSH_CREATE_PR_AND_MERGE_UNCHANGED_GREEN_HEAD"
+    ],
+    "next_action": "PUBLISH_ONE_EXACT_POST_MERGE_REPAIR_HEAD",
+    "observed_at_utc": "2026-08-27T15:24:03Z",
+    "prohibited_actions": [
+      "START_LIB_PRO_013_A0_BEFORE_REPAIR_INTEGRATION",
+      "START_LIB_PRO_012_PACKETS_C_THROUGH_I",
+      "CREATE_API_V2_OR_NEW_FACADE",
+      "DELETE_BRANCH_OR_WORKTREE",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_OR_REWRITE",
+      "BYPASS_CHECKS_OR_FORCE_PUSH",
+      "PUBLISH_RELEASE_VERSION_TAG_OR_PACKAGE",
+      "TRACK_OR_MODIFY_PROTECTED_STANDARD_CONTENT",
+      "ACTIVATE_PROFESSIONAL_OR_ENGINEERING_USE_APPROVAL"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "AUDIT_AND_REPAIR_MERGED_LIB_PRO_012_S0",
+        "PLAN_LIB_PRO_013_A0_WITHOUT_STARTING_IT",
+        "PRESERVE_A_TIME_BOUND_SUCCESSOR_HANDOFF_OBSERVATION",
+        "COMMIT_PUSH_CREATE_PR_AND_MERGE_UNCHANGED_GREEN_HEAD"
+      ],
+      "branch": "codex/lib-pro-012-s0-post-merge-audit-a0-plan",
+      "head_sha": "8916c2c5effae006c0701a4e3f5b04b315eb722a",
+      "task_id": "LIB-PRO-012-S0-POST-MERGE-AUDIT-A0-PLAN"
+    }
+  },
+  "holds": [
+    "BRANCH_AND_WORKTREE_DELETION_NOT_AUTHORIZED",
+    "LOCAL_HOLD_DIRTY",
+    "NEXT_ACTION_NOT_AUTHORIZED",
+    "PRESERVE_DIRTY_DETACHED_E54A_LANE",
+    "PRESERVE_EVERY_UNRELATED_DIRTY_STAGED_UNTRACKED_STASHED_DETACHED_OR_IGNORED_ITEM",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "4e1abf3c439a9e0a80503b0f3c0a73c729ef3e7e52f83c61dc0d3e921743dc80",
+    "state": {
+      "branch": "codex/lib-pro-012-s0-post-merge-audit-a0-plan",
+      "default_base": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "4cebcccb3a07b8046e31b23332236321ebee1d25",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 105.327,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib5",
+      "head_sha": "8916c2c5effae006c0701a4e3f5b04b315eb722a",
+      "hold_reasons": [
+        "changed paths: 2"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-27T15:28:57.438514+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/04f5/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 2,
+        "modified_paths": [
+          "docs/SESSION_LOG.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/lib-pro-012-s0-post-merge-audit-a0-plan-closeout-repair-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "4cebcccb3a07b8046e31b23332236321ebee1d25",
+        "status": "ahead"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/04f5/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:4e1abf3c439a9e0a80503b0f3c0a73c729ef3e7e52f83c61dc0d3e921743dc80",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-27T15:28:57.438656+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_TASK_BRANCH_AND_ALL_UNRELATED_WORKTREES",
+    "holds": [
+      "PRESERVE_DIRTY_DETACHED_E54A_LANE",
+      "PRESERVE_EVERY_UNRELATED_DIRTY_STAGED_UNTRACKED_STASHED_DETACHED_OR_IGNORED_ITEM",
+      "BRANCH_AND_WORKTREE_DELETION_NOT_AUTHORIZED"
+    ],
+    "observed_at_utc": "2026-08-27T15:24:03Z",
+    "owner": "Main agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources",
+      "Python/structural_lib/data/excel"
+    ],
+    "integration_owner": "reviewer",
+    "owned_paths": [
+      "fastapi_app/models/beam.py",
+      "fastapi_app/routers/export.py",
+      "fastapi_app/openapi_baseline.json",
+      "fastapi_app/tests/test_beam_primary_route.py",
+      "fastapi_app/tests/test_export_bbs_dxf.py",
+      "react_app/src/hooks/useExport.ts",
+      "react_app/src/components/__tests__/ExportPanel.test.tsx",
+      "scripts/verify_lib_pro_012_s0_artifact.py",
+      "docs/reference/fastapi-rest-api.md",
+      "docs/planning/lib-pro-013-a0-execution-plan.md",
+      "docs/verification/lib-pro-012-s0-post-merge-acceptance.json",
+      "docs/verification/lib-pro-012-s0-post-merge-audit-a0-plan-git-handoff-source-evidence.json",
+      "docs/verification/lib-pro-012-s0-post-merge-audit-a0-plan-git-handoff-receipt.json",
+      "docs/verification/lib-pro-012-s0-post-merge-audit-a0-plan-closeout-repair-source-evidence.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "LIB-PRO-012-S0-POST-MERGE-AUDIT-A0-PLAN"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

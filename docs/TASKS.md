@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-27 — LIB-PRO-012 S0 P0 safety closure candidate
+**Updated:** 2026-08-27 — LIB-PRO-012 S0 post-merge acceptance and A0 plan
 
 ---
 
@@ -126,20 +126,19 @@
 
 ## Active
 
-`LIB-PRO-012-S0-P0-SAFETY-CLOSURE` is the active implementation cycle. G0
-started from merged planning baseline
-`d3242731e94dacd74e804a1f4a25c4c0da11790f`; the combined A/B safety work is
-locally complete on `codex/lib-pro-012-s0-p0-safety-closure`. The exact-cycle
-[evidence matrix](verification/lib-pro-012-s0-p0-safety-closure-evidence.json)
-records 51 dedicated regressions, a 607-case focused Python/FastAPI pass,
-focused React/lint/build, architecture/import/OpenAPI/generated-contract
-checks, source-free exact-wheel replay, and a repaired-candidate 10/10 quick
-gate. PR #877 first head `a9613331` passed Python, React, control-plane, and
-documentation checks but exposed one BBS-export intake defect and one stale
-workflow test fixture in FastAPI validation. The surgical repair passes 13
-focused cases, the exact 506-case hosted FastAPI command, OpenAPI, and
-exact-wheel-to-head replay; a repair commit and its required exact-head hosted
-checks remain before S0 integration can be claimed.
+`LIB-PRO-012-S0-P0-SAFETY-CLOSURE` merged through PR #877. Final reviewed head
+`efcd4126e120fe3b19723d349681475a1625c30c` and squash merge
+`4cebcccb3a07b8046e31b23332236321ebee1d25` share tree
+`e989ccba44ab89774db17bdf3d0d18ba435fa109`; hosted run 33080623445 passed all
+required checks. The required post-merge review then reproduced three unsafe
+transport manifestations left outside the original root-owner repair: the
+primary beam route accepted unused `rebar_layers`, while BBS/DXF accepted an
+omitted or zero span by inventing `depth * 12` and retained coercive/extra-
+ignoring intake. `LIB-PRO-012-S0-POST-MERGE-AUDIT-A0-PLAN` closes those gaps
+locally with focused regressions, a rebuilt source-free wheel replay, and
+reconciled successor [acceptance evidence](verification/lib-pro-012-s0-post-merge-acceptance.json).
+Its immutable candidate and exact-head hosted checks remain before the merged
+S0 boundary can be treated as fully accepted.
 
 `LIB-PRO-013` owns the whole-library renewal audit. Its
 [master plan](planning/lib-pro-013-whole-library-renewal-audit-plan.md) defines
@@ -147,15 +146,20 @@ the truth freeze, audit-of-audits, external-user/API, engineering-evidence,
 application, package/dependency, test, Git/CI/release, agent/skill/automation,
 efficiency, retention, and peer-comparison lanes. The audit itself is unstarted;
 the plan authorizes no runtime change, deletion, dependency addition, signature
-break, release, or professional claim.
+break, release, or professional claim. The derivative
+[A0 execution plan](planning/lib-pro-013-a0-execution-plan.md) groups the
+15–24 engineer-day audit into four evidence passes inside one read-only
+session, branch, candidate, PR, and hosted cycle. A0 remains unstarted until
+the post-merge S0 repair is integrated.
 
-`LIB-PRO-012` remains the remediation specification and scope authority. S0
-closes the mapped beam/detailing/BBS, torsion, column, typed-input, identity,
-and existing REST v1 safety findings locally; `/api/v2`, the canonical facade,
-final transport parity, generated signature prose, cumulative broad gates, and
-Packets C–I remain later work. After an unchanged green S0 merge, the next
-authorized programme step is the LIB-PRO-013 A0 architecture/truth freeze, not
-automatic implementation of later LIB-PRO-012 packets. Shared validation,
+`LIB-PRO-012` remains the remediation specification and scope authority. Once
+the unchanged green post-merge repair is integrated, S0 closes the mapped
+beam/detailing/BBS, torsion, column, typed-input, identity, and existing REST
+v1 safety boundary. `/api/v2`, EXT-REST-002, the canonical facade, final
+transport parity, generated signature prose, cumulative broad gates, and
+Packets C–I remain later work. The next authorized programme step is then the
+read-only LIB-PRO-013 A0 architecture/truth freeze, not automatic runtime
+implementation of later LIB-PRO-012 packets. Shared validation,
 facade, result, manifest, generated API, documentation, task, and session
 owners remain single-writer surfaces.
 
