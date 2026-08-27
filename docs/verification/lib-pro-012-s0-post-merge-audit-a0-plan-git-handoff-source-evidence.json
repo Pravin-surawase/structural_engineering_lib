@@ -1,0 +1,74 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-27T14:25:00Z",
+      "query_status": "OK",
+      "reference": "Before going to A0, check the last completed work, find and fix mistakes or missed issues, then plan A0 efficiently.",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "AUDIT_MERGED_LIB_PRO_012_S0",
+      "FIX_CONFIRMED_S0_OUTCOME_DEFECTS",
+      "ADD_FOCUSED_REGRESSIONS_AND_ACCEPTANCE_EVIDENCE",
+      "PLAN_LIB_PRO_013_A0_EFFICIENTLY",
+      "RUN_FOCUSED_EXACT_ARTIFACT_QUICK_AND_HOSTED_CHECKS",
+      "COMMIT_OWNED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_ONE_PR",
+      "MERGE_UNCHANGED_GREEN_PR"
+    ],
+    "next_action": "FREEZE_ONE_POST_MERGE_REPAIR_CANDIDATE_AND_RUN_ONE_HOSTED_CYCLE",
+    "observed_at_utc": "2026-08-27T14:25:00Z",
+    "prohibited_actions": [
+      "START_LIB_PRO_013_A0_BEFORE_REPAIR_INTEGRATION",
+      "EDIT_RUNTIME_DURING_LIB_PRO_013_A0",
+      "START_LIB_PRO_012_PACKETS_C_THROUGH_I",
+      "CREATE_API_V2_OR_NEW_FACADE",
+      "DELETE_BRANCH_OR_WORKTREE",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_OR_REWRITE",
+      "BYPASS_CHECKS_OR_FORCE_PUSH",
+      "PUBLISH_RELEASE_VERSION_TAG_OR_PACKAGE",
+      "TRACK_OR_MODIFY_PROTECTED_STANDARD_CONTENT",
+      "ACTIVATE_PROFESSIONAL_OR_ENGINEERING_USE_APPROVAL"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "AUDIT_MERGED_LIB_PRO_012_S0",
+        "FIX_CONFIRMED_S0_OUTCOME_DEFECTS",
+        "ADD_FOCUSED_REGRESSIONS_AND_ACCEPTANCE_EVIDENCE",
+        "PLAN_LIB_PRO_013_A0_EFFICIENTLY",
+        "RUN_FOCUSED_EXACT_ARTIFACT_QUICK_AND_HOSTED_CHECKS",
+        "COMMIT_OWNED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_ONE_PR",
+        "MERGE_UNCHANGED_GREEN_PR"
+      ],
+      "branch": "codex/lib-pro-012-s0-post-merge-audit-a0-plan",
+      "head_sha": "4cebcccb3a07b8046e31b23332236321ebee1d25",
+      "task_id": "LIB-PRO-012-S0-POST-MERGE-AUDIT-A0-PLAN"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_TASK_BRANCH_AND_ALL_UNRELATED_WORKTREES",
+    "holds": [
+      "PRESERVE_DIRTY_DETACHED_E54A_LANE",
+      "PRESERVE_EVERY_UNRELATED_DIRTY_STAGED_UNTRACKED_STASHED_DETACHED_OR_IGNORED_ITEM",
+      "BRANCH_AND_WORKTREE_DELETION_NOT_AUTHORIZED"
+    ],
+    "observed_at_utc": "2026-08-27T15:05:01Z",
+    "owner": "Main agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

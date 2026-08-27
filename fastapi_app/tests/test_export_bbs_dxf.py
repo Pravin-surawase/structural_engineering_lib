@@ -60,6 +60,7 @@ class TestBBSExport:
         assert "bar_mark" in content
         assert "diameter_mm" in content
         assert "total_weight_kg" in content
+        assert "9 line items" in content
 
     def test_bbs_export_with_compression(self, client):
         """BBS export with compression steel."""
@@ -67,6 +68,7 @@ class TestBBSExport:
             "beam_id": "B-DBL",
             "width": 300.0,
             "depth": 600.0,
+            "span_length": 6000.0,
             "fck": 25.0,
             "fy": 500.0,
             "ast_required": 1200.0,
@@ -80,6 +82,7 @@ class TestBBSExport:
         payload = {
             "width": 300.0,
             "depth": 500.0,
+            "span_length": 6000.0,
             "fck": 25.0,
             "fy": 500.0,
             "ast_required": 0.0,
@@ -90,6 +93,44 @@ class TestBBSExport:
             "body",
             "ast_required",
         ]
+
+    @pytest.mark.parametrize("endpoint", ["bbs", "dxf"])
+    @pytest.mark.parametrize("span", [None, 0.0])
+    def test_beam_artifact_export_requires_explicit_positive_span(
+        self, client, sample_beam_export, endpoint, span
+    ):
+        """Invalid or missing span stops before detailing and BBS creation."""
+        payload = dict(sample_beam_export)
+        if span is None:
+            del payload["span_length"]
+        else:
+            payload["span_length"] = span
+
+        resp = client.post(f"/api/v1/export/{endpoint}", json=payload)
+
+        assert resp.status_code == 422
+        assert resp.json()["error"]["details"][0]["loc"] == [
+            "body",
+            "span_length",
+        ]
+
+    @pytest.mark.parametrize("endpoint", ["bbs", "dxf"])
+    @pytest.mark.parametrize(
+        "change",
+        [
+            {"width": "300"},
+            {"include_serviceability": "false"},
+            {"unexpected_engineering_field": 999},
+        ],
+    )
+    def test_beam_artifact_export_rejects_coercion_and_unknown_fields(
+        self, client, sample_beam_export, endpoint, change
+    ):
+        resp = client.post(
+            f"/api/v1/export/{endpoint}", json={**sample_beam_export, **change}
+        )
+
+        assert resp.status_code == 422
 
 
 # =============================================================================
@@ -115,6 +156,7 @@ class TestDXFExport:
             "beam_id": "MYBEAM-001",
             "width": 250.0,
             "depth": 450.0,
+            "span_length": 5000.0,
             "fck": 30.0,
             "fy": 500.0,
             "ast_required": 600.0,

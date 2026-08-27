@@ -4,64 +4,65 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-27
-- Focus: Implement the combined LIB-PRO-012 A/B safety cycle from merged
-- Completed: Froze the G0 Git, worktree, artifact, owner, required-field, and stable; Added shared finite, strict-type, sign, identity, domain, geometry, and; Protected design-only, combined, compliance, smart-analysis,
-- Git receipt: docs/verification/lib-pro-012-s0-p0-safety-closure-git-handoff-receipt.json | sha256:8a255baf2909935aa35b1d98ac18bbcef7168bdad6143d797476b5e2a6ecab5c | HOLD
-- Git identity: codex/lib-pro-012-s0-p0-safety-closure@a9613331d83da0915b054e5d9a4595e6db53f33d | upstream=origin/codex/lib-pro-012-s0-p0-safety-closure@a9613331d83da0915b054e5d9a4595e6db53f33d | base=origin/main@d3242731e94dacd74e804a1f4a25c4c0da11790f | tree=dirty | operation=none
-- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=UNKNOWN
-- Next action: FREEZE_ONE_CANDIDATE_AND_RUN_ONE_HOSTED_CYCLE
+- Focus: Independently inspect merged LIB-PRO-012 S0, repair only confirmed
+- Completed: Re-established exact fetched-main, PR, hosted-check, tree-equivalence,; Replayed every mapped S0 route class against direct expert, composed service,; Closed the three confirmed transport manifestations left outside the merged
+- Git receipt: docs/verification/lib-pro-012-s0-post-merge-audit-a0-plan-git-handoff-receipt.json | sha256:2e5fd5bb22f423218627242cd168d96cff2136fed0b25c5a7532ecb614172164 | HOLD
+- Git identity: codex/lib-pro-012-s0-post-merge-audit-a0-plan@4cebcccb3a07b8046e31b23332236321ebee1d25 | upstream=origin/main@4cebcccb3a07b8046e31b23332236321ebee1d25 | base=origin/main@4cebcccb3a07b8046e31b23332236321ebee1d25 | tree=dirty | operation=none
+- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
+- Next action: FREEZE_ONE_POST_MERGE_REPAIR_CANDIDATE_AND_RUN_ONE_HOSTED_CYCLE
 <!-- HANDOFF:END -->
 
 ## Latest Handoff
 
 | State | Boundary |
 |---|---|
-| **Current** | PR #877 first head `a9613331` passed Python, React, control, and docs but failed FastAPI on zero-steel BBS export plus a stale workflow fixture; the surgical repair is locally accepted and awaits its immutable repair commit and exact-head hosted checks |
-| **Decision** | Existing `/api/v1` field names remain, but width, depth, moment, shear, fck, fy, clear cover, stirrup diameter, and main-bar diameter are strict required inputs; effective depth may be explicit or derived only from that complete explicit basis |
-| **Next** | Commit the explicit hosted-failure repair through normal hooks, rerun clean session closeout, push the unchanged PR, and merge only if the repair head remains unchanged and every required check passes |
-| **After S0** | Start LIB-PRO-013 A0 architecture/truth freeze only after the unchanged green S0 merge; do not automatically begin later LIB-PRO-012 runtime packets |
+| **Current** | PR #877 merged at final reviewed head `efcd4126e120fe3b19723d349681475a1625c30c`; merge `4cebcccb3a07b8046e31b23332236321ebee1d25` has the identical reviewed tree. A post-merge review found and locally repaired unused `rebar_layers` intake plus unsafe BBS/DXF span fallback and coercion. |
+| **Decision** | `/api/v1/design/beam` rejects supplied dormant `rebar_layers`. BBS/DXF require an explicit positive `span_length`, use strict types, and forbid unknown fields; no structural span is invented from depth. |
+| **Next** | Freeze, commit, push, and host-check the single post-merge repair candidate. Merge only when its exact head is unchanged, green, and conflict-free. |
+| **After repair** | Start the read-only LIB-PRO-013 A0 audit using the derivative four-pass execution plan; do not automatically begin later LIB-PRO-012 runtime packets. |
 | **Held** | `/api/v2`, canonical facade, Packets C–I, final parity, cumulative broad gate, release/publication, qualified review, professional/engineering-use claims, protected-source changes, and branch/worktree deletion |
 
-## S0 local acceptance
+## Post-merge S0 acceptance
 
-- The 51 dedicated regressions close the mapped beam, detailing, BBS,
-  torsion, column, typed-input, and identity findings. Valid beam and torsion
-  numerical controls remain exact; valid BBS remains exactly nine items.
-- The focused cross-layer selection passes 607 Python/FastAPI cases. The React
-  client passes 51 focused cases, lint, TypeScript compilation, and production
-  build.
+- The original S0 mapped routes were independently replayed against merged
+  source and artifact boundaries. Valid beam and torsion controls remain exact;
+  valid BBS remains exactly nine items.
+- The repaired cross-layer selection passes 788 Python/FastAPI cases. The
+  maintained React caller passes 66 focused cases, lint, TypeScript
+  compilation, and production build.
 - Architecture, circular-import, library-import, OpenAPI, generated API
   manifest/classification/compatibility, and generated-client replay checks
-  pass. The repaired candidate also passes the consolidated quick gate 10/10.
-- The exact candidate wheel at local SHA-256
-  `f81f6274a24b9aaaeef904ceb2f5317b00ac880c967815b0f1b50d192e83089d`
+  pass. The current frozen candidate owns one consolidated quick gate.
+- The rebuilt isolated wheel at local SHA-256
+  `4f8e89f7b0280a998b426e56042685db2884c59f549d79839dfecba1e7445adb`
   rejects 15 source-free Python invalid-route vectors. Exact-head FastAPI bound
-  to that installed wheel rejects all nine required-field omissions, numeric
-  strings, booleans used as numbers, unknown fields, and invalid domains.
+  to that installed wheel rejects all nine primary required-field omissions,
+  five primary strict/domain vectors, and six invalid BBS transport vectors.
 - A valid ordinary integer REST payload returns HTTP 200 with derived effective
   depth 457 mm. A valid but inadequate engineering case remains HTTP 200 with
   engineering status `FAIL`, distinct from invalid intake and internal failure.
-- The first PR head exposed five FastAPI failures. Zero-steel BBS export now
-  returns the maintained 422 field-path envelope before detailing/BBS, and the
-  workflow transport's valid fixture now supplies the complete explicit depth
-  derivation basis. The 13 affected cases and exact 506-case hosted command
-  pass; the exact-wheel replay includes the repaired BBS transport vector.
+- The post-merge review additionally proved that dormant reinforcement-layer
+  input and export span/coercion were outside the earlier primary-model repair.
+  All now return 422 before calculation or artifact creation. The historical
+  pre-commit evidence remains immutable; the successor post-merge acceptance
+  receipt records the final merge and corrected boundary.
 
 ## Ordered follow-on gates
 
-1. Stage only repair-owned paths, inspect the staged diff, and create one
-   explicit repair commit through normal hooks.
+1. Stage only post-merge repair and planning paths, inspect the staged diff,
+   and create one immutable candidate through normal hooks.
 2. Rerun read-only `session end` on the clean exact repair commit.
-3. Push normally to PR #877 and wait for every required hosted check on the
-   unchanged repair head. Do not bypass checks or rewrite history.
+3. Push normally to one successor PR and wait for every required hosted check
+   on the unchanged repair head. Do not bypass checks or rewrite history.
 4. Merge only when the exact reviewed head is unchanged, green, conflict-free,
    and repository policy permits it. Do not delete the branch or worktree.
-5. After the exact S0 merge, begin the read-only LIB-PRO-013 A0 truth freeze.
+5. After the exact repair merge, begin the read-only LIB-PRO-013 A0 truth freeze.
 
 ## Required Reading
 
-1. [S0 exact-cycle evidence](../verification/lib-pro-012-s0-p0-safety-closure-evidence.json)
-2. [LIB-PRO-012 remediation authority](lib-pro-012-external-api-remediation-plan.md)
-3. [LIB-PRO-013 later audit authority](lib-pro-013-whole-library-renewal-audit-plan.md)
-4. [LIB-PRO-011 finding authority](../verification/lib-pro-011-external-api-readiness-audit.md)
-5. [Current task board](../TASKS.md)
+1. [Post-merge S0 acceptance](../verification/lib-pro-012-s0-post-merge-acceptance.json)
+2. [A0 derivative execution plan](lib-pro-013-a0-execution-plan.md)
+3. [LIB-PRO-013 master audit authority](lib-pro-013-whole-library-renewal-audit-plan.md)
+4. [LIB-PRO-012 remediation authority](lib-pro-012-external-api-remediation-plan.md)
+5. [LIB-PRO-011 finding authority](../verification/lib-pro-011-external-api-readiness-audit.md)
+6. [Current task board](../TASKS.md)

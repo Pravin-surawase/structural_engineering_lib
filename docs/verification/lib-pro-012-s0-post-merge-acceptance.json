@@ -1,0 +1,172 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "LIB-PRO-012-S0-POST-MERGE-ACCEPTANCE",
+  "status": "LOCAL_ACCEPTANCE_PASS_PENDING_IMMUTABLE_COMMIT_AND_HOSTED_CHECKS",
+  "observed_at_utc": "2026-08-27T15:05:01Z",
+  "candidate_identity_policy": {
+    "branch": "codex/lib-pro-012-s0-post-merge-audit-a0-plan",
+    "source_merge_commit": "4cebcccb3a07b8046e31b23332236321ebee1d25",
+    "source_merge_tree": "e989ccba44ab89774db17bdf3d0d18ba435fa109",
+    "candidate_commit": "RECORDED_EXTERNALLY_AFTER_IMMUTABLE_COMMIT",
+    "reason": "All versioned acceptance evidence is frozen before the immutable candidate commit. The exact candidate, PR head, hosted checks, and successor merge identity are recorded externally without changing the reviewed tree."
+  },
+  "merged_s0_identity": {
+    "planning_baseline": "d3242731e94dacd74e804a1f4a25c4c0da11790f",
+    "final_pr_head": "efcd4126e120fe3b19723d349681475a1625c30c",
+    "squash_merge_commit": "4cebcccb3a07b8046e31b23332236321ebee1d25",
+    "reviewed_and_merged_tree": "e989ccba44ab89774db17bdf3d0d18ba435fa109",
+    "pull_request": 877,
+    "hosted_run": 33080623445,
+    "hosted_outcome": "7 SUCCESS, 2 SKIPPED, REQUIRED PR GATE SUCCESS",
+    "tree_equivalence": "PASS"
+  },
+  "authorities": [
+    {
+      "path": "docs/planning/lib-pro-012-external-api-remediation-plan.md",
+      "sha256": "4e77edcf813797b7b09a95ec3cd532d1f6631e8a4daea1caab5df620ae2539e5"
+    },
+    {
+      "path": "docs/planning/lib-pro-013-whole-library-renewal-audit-plan.md",
+      "sha256": "f63add72483dfcb0c06bf0f7a134600265ed11b00b52dbd0ad8892332e4f1755"
+    },
+    {
+      "path": "docs/verification/lib-pro-011-external-api-readiness-audit.md",
+      "sha256": "b80a9d46e9674de38b6e0821f421c4a01f5c790c86e7cac27068ee87c47a37b3"
+    },
+    {
+      "path": "docs/verification/lib-pro-012-s0-p0-safety-closure-evidence.json",
+      "sha256": "f3a7064ea1ae191ec509d97da064e2a7b5d09e639f883dacf63b9a9d3bc1a4f5",
+      "role": "immutable pre-commit S0 cycle evidence; superseded only for final hosted and post-merge acceptance facts"
+    },
+    {
+      "path": "docs/planning/lib-pro-013-a0-execution-plan.md",
+      "sha256": "95fb1d8a059083ecd9b020e7f6bf27a2a1b5911778046a82c7f73909264131b1",
+      "role": "derivative A0 execution plan; the LIB-PRO-013 master remains authoritative"
+    }
+  ],
+  "worktree_safety": {
+    "source_branch_started_at_fetched_origin_main": true,
+    "operation_or_conflict": false,
+    "overlapping_active_runtime_or_generated_candidate": false,
+    "preserved_dirty_sibling": {
+      "path": "/Users/pravinsurawase/.codex/worktrees/e54a/structural_engineering_lib",
+      "head_sha": "0fdb48edbb73114288feb8a246d6f30b80ac4d95",
+      "disposition": "PRESERVED_UNTOUCHED"
+    },
+    "destructive_actions": []
+  },
+  "review_scope": {
+    "mapped_s0_findings_replayed": [
+      "EXT-BEAM-001..008",
+      "EXT-DETAIL-001..002",
+      "EXT-BBS-001",
+      "EXT-REST-001",
+      "EXT-REST-003",
+      "EXT-TORSION-001..006",
+      "EXT-COLUMN-001..002",
+      "EXT-TYPED-001..007",
+      "EXT-ID-001"
+    ],
+    "routes_reviewed": [
+      "design-only",
+      "combined",
+      "compliance",
+      "smart-analysis",
+      "direct-detailing",
+      "BBS",
+      "torsion",
+      "column",
+      "structured-input",
+      "/api/v1/design/beam",
+      "/api/v1/export/bbs",
+      "/api/v1/export/dxf"
+    ],
+    "unchanged_valid_controls": {
+      "beam_ast_required_mm2": 883.7158126109596,
+      "torsion_equivalent_shear_kn": 153.33333333333334,
+      "bbs_items": 9,
+      "derived_effective_depth_mm": 457.0
+    }
+  },
+  "post_merge_findings": {
+    "S0-POST-REST-001": {
+      "priority": "P0",
+      "prechange": "POST /api/v1/design/beam accepted rebar_layers and returned HTTP 200 although the route never consumed the field.",
+      "root_cause": "The field remained in BeamDesignRequest after the primary route was hardened, but no maintained route owner consumed it.",
+      "resolution": "Reject any supplied rebar_layers with HTTP 422 and stable REBAR_LAYERS_SCOPE_HOLD text; omission remains compatible.",
+      "status": "CLOSED_LOCAL_PENDING_HOSTED"
+    },
+    "S0-POST-BBS-001": {
+      "priority": "P0",
+      "prechange": "POST /api/v1/export/bbs returned HTTP 200 and created an artifact when span_length was omitted or zero by substituting depth * 12.",
+      "root_cause": "ExportBeamRequest retained an optional zero span and _run_detailing invented a structural span downstream.",
+      "resolution": "Require explicit positive span_length and remove the depth-based fallback before detailing, BBS, or DXF creation.",
+      "status": "CLOSED_LOCAL_PENDING_HOSTED"
+    },
+    "S0-POST-BBS-002": {
+      "priority": "P0",
+      "prechange": "The BBS/DXF request boundary coerced numeric strings and string booleans and ignored unknown engineering fields.",
+      "root_cause": "Strict Pydantic configuration was applied to the primary beam model but not to the shared export request model.",
+      "resolution": "Use strict types, forbid extras, reject nonfinite values, and update the maintained React caller contract.",
+      "status": "CLOSED_LOCAL_PENDING_HOSTED"
+    },
+    "S0-POST-EVIDENCE-001": {
+      "priority": "P1_TRUTH",
+      "prechange": "The task board, handoff, and immutable pre-commit evidence stopped at the first PR head or pending repair state; append-only usage telemetry also recorded only that first candidate.",
+      "root_cause": "Repository closeout correctly froze versioned evidence before the final hosted repair and had no successor post-merge acceptance receipt.",
+      "resolution": "Retain the historical evidence unchanged and add this successor receipt plus reconciled task, session, and handoff state. Do not retroactively alter append-only telemetry.",
+      "status": "CLOSED_BY_SUCCESSOR_RECEIPT_PENDING_THIS_TASK_INTEGRATION"
+    }
+  },
+  "compatibility_decisions": {
+    "primary_v1": "Existing field names remain. Supplying dormant rebar_layers now fails closed because accepting unused engineering input is unsafe; callers may omit it.",
+    "export_v1": "BBS and DXF now require explicit positive span_length. No derivation basis existed for the historical depth * 12 substitution, so omission is ambiguous and fails closed.",
+    "result_separation": "Invalid intake remains HTTP 422; a valid engineering FAIL remains HTTP 200; internal failure remains HTTP 500."
+  },
+  "validation": {
+    "independent_adversarial_matrix": "PASS: no misses across mapped direct, composed, typed, primary REST, and export routes after repair",
+    "focused_python_fastapi": "788 collected and 788 passed",
+    "focused_repair_fastapi": "47 passed",
+    "focused_react": "66 passed across 3 files",
+    "react_lint": "PASS",
+    "react_production_build": "PASS",
+    "architecture": "222 files, zero violations",
+    "circular_imports": "202 files, zero cycles",
+    "library_imports": "247 files, zero broken imports",
+    "openapi": "PASS: 89 endpoints and 444 schemas match refreshed baseline",
+    "api_manifest": "PASS",
+    "api_classification_and_compatibility": "PASS",
+    "quick_gate": "PENDING_CONTENT_FREEZE",
+    "normal_commit_hooks": "PENDING_IMMUTABLE_COMMIT",
+    "hosted_checks": "PENDING_PR"
+  },
+  "exact_candidate_artifact": {
+    "wheel": "/tmp/lib-pro-012-s0-post-audit.PIJ833/structural_lib_is456-0.24.0a1-py3-none-any.whl",
+    "sha256": "4f8e89f7b0280a998b426e56042685db2884c59f549d79839dfecba1e7445adb",
+    "build_environment": "isolated python-build environment",
+    "install_environment": "temporary source-free pip --target installation with no dependencies",
+    "source_free_invalid_python_routes_rejected": 15,
+    "strict_primary_rest_vectors_rejected": 5,
+    "required_primary_fields_rejected_when_omitted": 9,
+    "invalid_bbs_transport_vectors_rejected": 6,
+    "valid_bbs_http_status": 200,
+    "valid_engineering_fail_http_status": 200,
+    "valid_engineering_fail_status": "FAIL"
+  },
+  "a0_readiness": {
+    "status": "PLAN_READY_START_HELD_UNTIL_THIS_REPAIR_MERGES",
+    "plan": "docs/planning/lib-pro-013-a0-execution-plan.md",
+    "delivery_model": "one read-only audit session, branch, evidence candidate, PR, and hosted cycle",
+    "batched_passes": 4,
+    "master_estimate_engineer_days": "15-24"
+  },
+  "remaining_holds": [
+    "/api/v2 and EXT-REST-002",
+    "canonical facade and LIB-PRO-012 Packets C-I",
+    "generated signature prose",
+    "cumulative broad Python/React/full gate",
+    "LIB-PRO-013 A0 execution until this repair is merged",
+    "release, publication, qualified review, professional approval, and public engineering-use claims",
+    "branch or worktree deletion"
+  ]
+}

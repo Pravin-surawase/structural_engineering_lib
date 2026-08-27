@@ -274,6 +274,14 @@ Three preview contracts have additional fail-closed boundaries:
   `span_length`. It exposes canonical flexure/shear checks, utilization,
   remaining-capacity margin, core advisory scores, and core cost analysis; the
   transport does not invent a depth, span, clause check, score meaning, or cost.
+- `POST /api/v1/export/bbs` and `/api/v1/export/dxf` require a finite positive
+  `span_length` and strict request types. They reject unknown fields before
+  detailing or artifact creation instead of substituting a span from section
+  depth. The valid BBS reference remains exactly nine line items.
+- `POST /api/v1/design/beam` rejects `rebar_layers` with an explicit scope hold
+  because the v1 calculation does not consume supplied layer layouts. Use the
+  maintained detailing/check workflow rather than assuming those values affect
+  the primary design response.
 - `POST /api/v1/geometry/building` is visualization-only. Every member and its
   section are typed and validated together, duplicate identities block, and
   `unit_scale` is receipted as millimetres per source coordinate unit. This

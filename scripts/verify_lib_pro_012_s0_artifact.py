@@ -208,27 +208,55 @@ strict_vectors = [
     {**payload, "moment": True},
     {**payload, "unexpected_engineering_field": 999},
     {**payload, "width": -1},
+    {
+        **payload,
+        "rebar_layers": [{"layer": 1, "bar_count": 3, "bar_dia_mm": 20.0}],
+    },
 ]
 for invalid in strict_vectors:
     response = client.post("/api/v1/design/beam", json=invalid)
     if response.status_code != 422:
         raise AssertionError((invalid, response.status_code, response.text))
 
+export_payload = {
+    "beam_id": "B-S0-EXPORT",
+    "width": 300,
+    "depth": 500,
+    "span_length": 5000,
+    "clear_cover": 40,
+    "fck": 25,
+    "fy": 500,
+    "ast_required": 900,
+}
 invalid_bbs_response = client.post(
-    "/api/v1/export/bbs",
-    json={
-        "width": 300,
-        "depth": 500,
-        "fck": 25,
-        "fy": 500,
-        "ast_required": 0,
-    },
+    "/api/v1/export/bbs", json={**export_payload, "ast_required": 0}
 )
 if invalid_bbs_response.status_code != 422:
     raise AssertionError(invalid_bbs_response.text)
 invalid_bbs_details = invalid_bbs_response.json()["error"]["details"]
 if invalid_bbs_details[0]["loc"] != ["body", "ast_required"]:
     raise AssertionError(invalid_bbs_details)
+
+invalid_bbs_vectors = []
+missing_span = dict(export_payload)
+del missing_span["span_length"]
+invalid_bbs_vectors.append(missing_span)
+invalid_bbs_vectors.extend(
+    [
+        {**export_payload, "span_length": 0},
+        {**export_payload, "width": "300"},
+        {**export_payload, "include_serviceability": "false"},
+        {**export_payload, "unexpected_engineering_field": 999},
+    ]
+)
+for invalid in invalid_bbs_vectors:
+    response = client.post("/api/v1/export/bbs", json=invalid)
+    if response.status_code != 422:
+        raise AssertionError((invalid, response.status_code, response.text))
+
+valid_bbs_response = client.post("/api/v1/export/bbs", json=export_payload)
+if valid_bbs_response.status_code != 200:
+    raise AssertionError(valid_bbs_response.text)
 
 valid_response = client.post("/api/v1/design/beam", json=payload)
 if valid_response.status_code != 200:
@@ -254,6 +282,8 @@ print(json.dumps({
     "required_field_rejections": required,
     "strict_vector_count": len(strict_vectors),
     "invalid_bbs_http_status": invalid_bbs_response.status_code,
+    "invalid_bbs_transport_vector_count": len(invalid_bbs_vectors) + 1,
+    "valid_bbs_http_status": valid_bbs_response.status_code,
     "valid_http_status": valid_response.status_code,
     "valid_effective_depth_mm": valid_data["effective_depth_used"],
     "engineering_fail_http_status": fail_response.status_code,

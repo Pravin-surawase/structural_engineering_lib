@@ -82,6 +82,22 @@ def test_v1_beam_rejects_unknown_engineering_fields(client, ordinary_payload) ->
     assert details[0]["loc"][-1] == "unexpected_engineering_field"
 
 
+def test_v1_beam_rejects_unconsumed_reinforcement_layers(
+    client, ordinary_payload
+) -> None:
+    response = client.post(
+        "/api/v1/design/beam",
+        json={
+            **ordinary_payload,
+            "rebar_layers": [{"layer": 1, "bar_count": 3, "bar_dia_mm": 20.0}],
+        },
+    )
+
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+    assert response.json()["error"]["code"] == "REQUEST_VALIDATION_ERROR"
+    assert "REBAR_LAYERS_SCOPE_HOLD" in str(response.json()["error"]["details"])
+
+
 def test_v1_beam_accepts_ordinary_integers_and_complete_derivation_basis(
     client,
 ) -> None:
@@ -323,8 +339,16 @@ def test_stale_report_and_combined_bbs_dxf_fail_closed(
     assert "STALE_CALCULATION_IDENTITY" in str(stale.json()["error"])
 
     export_payload = {
-        **ordinary_payload,
+        "beam_id": "B-COMBINED",
+        "width": ordinary_payload["width"],
+        "depth": ordinary_payload["depth"],
+        "span_length": 5000.0,
+        "clear_cover": ordinary_payload["clear_cover"],
+        "fck": ordinary_payload["fck"],
+        "fy": ordinary_payload["fy"],
         "ast_required": 900.0,
+        "moment": ordinary_payload["moment"],
+        "shear": ordinary_payload["shear"],
         "torsion": 10.0,
     }
     for endpoint in ("bbs", "dxf"):
