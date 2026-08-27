@@ -110,15 +110,15 @@ def test_diagnostic_summary_keeps_first_hard_error_and_final_context() -> None:
                 "Documentation validation",
                 "ERROR: invalid doc_type 'plan' in docs/planning/new.md",
                 "Checked 405 active files",
-                "WARNING: soft documentation budget exceeded",
+                "WARNING: canonical owner description missing",
             ]
         ),
-        "Final context: hard cap is 500",
+        "Final context: metadata validation completed",
     )
 
     assert "ERROR: invalid doc_type 'plan'" in summary
-    assert "WARNING: soft documentation budget exceeded" in summary
-    assert "Final context: hard cap is 500" in summary
+    assert "WARNING: canonical owner description missing" in summary
+    assert "Final context: metadata validation completed" in summary
 
 
 def test_readiness_distinguishes_executable_performance_thresholds_from_reporting(
@@ -165,9 +165,12 @@ def test_readiness_exit_code_is_decisive(verdict: str, expected: int) -> None:
     assert readiness.verdict_exit_code(verdict) == expected
 
 
-def test_owner_selected_documentation_hard_cap_is_500() -> None:
-    assert docs_check.DOC_BUDGET_WARN == 350
-    assert docs_check.DOC_BUDGET_FAIL == 500
+def test_documentation_inventory_has_no_numeric_limit(tmp_path, monkeypatch) -> None:
+    monkeypatch.setattr(docs_check, "DOCS_DIR", tmp_path)
+    for index in range(501):
+        (tmp_path / f"doc-{index}.md").write_text("# Doc\n", encoding="utf-8")
+
+    assert docs_check.check_doc_inventory() == 0
 
 
 @pytest.mark.parametrize(("unproven", "expected"), [(0, 0), (1, 1), (12, 1)])

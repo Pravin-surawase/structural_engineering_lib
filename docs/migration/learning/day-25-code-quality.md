@@ -253,11 +253,11 @@ With 870+ internal links across hundreds of markdown files, link rot is a real p
 # Scans all .md files for [text](path) links and verifies targets exist
 ```
 
-**Doc budget:**
+**Documentation contract:**
 ```bash
-.venv/bin/python scripts/check_docs.py --budget
-# Non-archived docs must stay under 400 files
-# Prevents "doc sprawl" — creating docs faster than maintaining them
+.venv/bin/python scripts/check_docs.py --all
+# Enforces metadata, front matter, index structure, and links.
+# The active document count is informational and has no numeric cap.
 ```
 
 **Number sync:**
@@ -299,7 +299,7 @@ $ ./run.sh check --quick
 ✅ import validation ....... OK (1.2s)
 ✅ architecture boundaries . OK (0.8s)
 ✅ broken links ............ OK (2.1s)
-✅ doc budget .............. OK (0.1s)
+✅ documentation contract . OK (0.1s)
 ✅ version consistency ..... OK (0.2s)
 ✅ test suite .............. OK (8.4s)
 ✅ type check .............. OK (3.1s)

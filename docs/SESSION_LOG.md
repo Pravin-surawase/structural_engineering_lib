@@ -5,6 +5,97 @@
 
 ---
 
+## 2026-08-28 — Session: LIB-PRO-013 Windows evidence lane readiness
+
+**Agent:** Codex (`doc-master`, sole writer; no subagents).
+
+**Branch:** `codex/lib-pro-013-windows-evidence-lane-readiness`.
+
+**Focus:** Preserve the completed Windows laptop setup as a durable,
+non-destructive LIB-PRO-013 evidence-lane receipt; update the canonical next
+session and task authorities to accepted B0 -> F0 -> R0 sequencing; and remove
+the owner's fixed documentation-count limit without weakening documentation
+ownership, metadata, lifecycle, or link controls.
+
+**Completed:**
+
+- Freshly fetched exact `origin/main` at accepted B0 merge
+  `44ef7bc4e8c98d01f32291730ab77ed16d077823`, tree
+  `12a6f683a32df07664e22b4b3dc53edee7f9704b`; confirmed PR #880 merged and
+  no open non-Dependabot writer overlapped the task-owned documentation paths.
+- Re-read the completed remote Windows task and froze
+  `docs/verification/lib-pro-013-windows-evidence-lane-readiness.json` with the
+  exact host, B0 clone, isolated toolchain, Excel/ETABS versions, trial-license
+  boundary, passing setup checks, retained-data state, operating rules, refresh
+  triggers, and F0/R0 routing.
+- Recorded `READY_FOR_FUTURE_WINDOWS_EVIDENCE_SETUP_ONLY`: the host is ready,
+  but no post-F0 installed Excel or ETABS acceptance has run. The B0 base clone
+  is immutable; future evidence creates a task-specific worktree, operates
+  outside OneDrive, freezes source/tree/artifact/dataset/application/operator
+  identities, and runs Excel and ETABS separately.
+- Updated the canonical next-session brief, task board, remediation-plan
+  verdict, and planning status. F0 Packets F1-F3 are the next authorized cycle;
+  Windows is not an F0 prerequisite and must be rebound to exact accepted F0
+  before applicable R0 evidence.
+- Removed the 350-warning/500-failure checker thresholds and conflicting
+  400/500 documentation rules. `--inventory` now reports the active count
+  without a cap; hidden `--budget` compatibility also reports only. Canonical
+  ownership, append-first reuse, duplicate search, front matter, metadata,
+  lifecycle, index, and link validation remain active.
+- Focused readiness tests, exact GitHub/Claude instruction projection, config
+  precedence, JSON parsing, documentation metadata/front matter/index/links,
+  context validation, and the informational 411-file inventory pass.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-013-windows-evidence-lane-git-handoff-receipt.json`
+
+### Issues encountered
+
+- The current local lane was the clean merged B0 candidate but was one commit
+  behind `origin/main`, so writing there would have bound the new receipt to
+  the reviewed candidate rather than the accepted merge.
+- The remote-host list was intermittently unavailable while the laptop task
+  continued. An earlier intermediate `PARTIAL` report also predated the
+  user's authorized isolated-runtime remediation and could have been mistaken
+  for the final state.
+- Documentation-count policy had three incompatible thresholds: checker warning
+  at 350, agent instructions at 400, and hard failure/governance text at 500.
+- The first full documentation-contract run failed on the pre-existing
+  `status: ready` front matter in the A0 execution plan.
+- The first normal commit hook rejected the frozen handoff block because its
+  refreshed Git-receipt binding used the checksum of the complete receipt file
+  instead of the receipt's embedded local-state hash.
+
+### Root causes and resolutions
+
+- Confirmed root cause: B0 candidate and merge have the same tree but different
+  commit identities, and the old worktree remained on the candidate branch.
+  Resolution: freshly fetch, verify PR #880/`origin/main`, and create this new
+  branch directly from the exact accepted merge. Evidence: Git state is clean
+  at `44ef7bc4...` before task writes.
+- Remote-listing root cause remains `unconfirmed`; direct task reads stayed
+  available and the final completed Windows turn supplied exact checks.
+  Resolution: use the latest completed remote receipt, require future entry
+  revalidation, and record remote disconnect as a refresh trigger rather than
+  inferring host failure.
+- Confirmed root cause: numeric documentation limits were duplicated across
+  checker constants, two instruction projections, governance/learning guides,
+  readiness aggregation, and tests. Resolution: remove numeric thresholds,
+  retain one informational inventory function plus a compatibility alias, and
+  update every active owner/projection. Evidence: 501-document regression
+  returns success, instruction composition is exact, and no active budget text
+  remains outside historical session records.
+- Confirmed root cause: `ready` was never a valid maintained lowercase
+  front-matter status. Resolution: use `active` because the completed derivative
+  plan remains a referenced programme authority. Evidence: the full
+  documentation front-matter/index/link contract passes.
+- Confirmed root cause: the handoff checker deliberately binds the generated
+  block to `local_state_receipt_hash`, while the manual post-refresh update had
+  substituted the whole-file SHA-256. Resolution: bind the handoff block to
+  `sha256:e16128ca2f9e3b915fe3e0523686055cb595e4f1c9a2c22e430de5dc5e893d0d`.
+  Evidence: the focused session consistency check and the replayed normal hooks
+  pass with the same staged receipt and handoff block.
+
 ## 2026-08-27 — Session: LIB-PRO-013 B0 common contract convergence
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents).

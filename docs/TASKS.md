@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-27 — LIB-PRO-013 A0 consolidated renewal audit truth freeze
+**Updated:** 2026-08-28 — LIB-PRO-013 B0 integrated; Windows evidence lane ready; F0 next
 
 ---
 
@@ -161,17 +161,32 @@ closes the mapped beam/detailing/BBS, torsion, column, typed-input, identity,
 and existing REST v1 safety boundary. A0 routes common/canonical/downstream
 contract convergence to B0, family construction/facade convergence to F0, and
 documentation/generated/package/cumulative artifact/evidence closure to R0.
-Packets C-E are locally implemented in B0: the strict canonical Python beam
-contract is frozen, exact v1/v2 parity passes, and named downstream consumers
-fail closed without partial artifacts. The final focused selection passes 451
-cases, its post-hook 416-case invalidated-path replay passes, and the
-source-free B0 wheel `25eacdd7...a803942f` passes the 29-case UAT
-with 15 registered CLI commands. One immutable candidate and hosted PR cycle
-remain before B0 integration. F0 and R0 are pre-authorized successors. Release
-remains exact-candidate work rather than a B0 gate, and the single engineer
-review occurs only after final R0 integration. Shared
+Packets C-E are integrated through B0 candidate `96d7cc93...` and merge
+`44ef7bc4...`, with exact shared tree `12a6f683...`; PR #880 and hosted run
+`33100194911` passed every required changed-path check. The strict canonical
+Python beam contract is frozen, exact v1/v2 parity passes, named downstream
+consumers fail closed without partial artifacts, the final focused selection
+passes 451 cases, the post-hook invalidated-path replay passes 416 cases, and
+the source-free B0 wheel `25eacdd7...a803942f` passes the 29-case UAT with 15
+registered CLI commands. F0 is now the active authorized successor; R0 follows
+accepted F0. Release remains exact-candidate work rather than an F0/R0 gate,
+and the single engineer review occurs only after final R0 integration. Shared
 validation, facade, result, manifest, generated API, documentation, task, and
 session owners remain single-writer surfaces.
+
+The [LIB-PRO-013 Windows evidence lane readiness receipt](verification/lib-pro-013-windows-evidence-lane-readiness.json)
+records `READY_FOR_FUTURE_WINDOWS_EVIDENCE_SETUP_ONLY` at exact B0 merge
+`44ef7bc4...`. The non-OneDrive base clone, isolated Python 3.11.15/Node 24/npm/
+Portable Git toolchain, licensed Excel installation, and ETABS 23.3.1 trial
+export-first boundary are ready. This is setup evidence, not installed
+post-F0 Excel/ETABS acceptance. The lane must be freshly rebound to accepted
+F0 before R0 uses it; Excel and ETABS remain separate evidence tasks.
+
+The owner removed the fixed documentation-count limit. `check_docs.py` now
+reports the active count only as an informational inventory; canonical topic
+ownership, duplicate search, append-first updates, metadata, lifecycle, index,
+and link checks remain enforced. The deprecated `--budget` spelling is a
+non-failing compatibility alias for `--inventory`.
 
 `MAINT-0136` is locally complete through its exact authorized cleanup boundary.
 Phase 1 PR #874 merged at reviewed head `37b36785`; Phase 2A removed the exact

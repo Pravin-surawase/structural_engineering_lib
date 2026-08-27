@@ -1,0 +1,130 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "LIB-PRO-013-WINDOWS-EVIDENCE-LANE-READINESS",
+  "task_id": "LIB-PRO-013-WINDOWS-EVIDENCE-LANE-READINESS",
+  "observed_at_utc": "2026-08-27T19:16:00Z",
+  "status": "READY_FOR_FUTURE_WINDOWS_EVIDENCE_SETUP_ONLY",
+  "claim_boundary": {
+    "setup_ready": true,
+    "windows_acceptance_complete": false,
+    "excel_installed_journey_complete_for_post_f0_artifact": false,
+    "etabs_export_journey_complete_for_post_f0_artifact": false,
+    "etabs_live_com_or_analysis_validated": false,
+    "professional_review_complete": false,
+    "release_authorized": false,
+    "statement": "The host and isolated toolchain are ready. Exact post-F0 Windows, browser, professional-review, and release claims remain separate future evidence or authority gates."
+  },
+  "source_binding": {
+    "programme_baseline": "B0_MERGE",
+    "repository": "https://github.com/Pravin-surawase/structural_engineering_lib.git",
+    "branch": "main",
+    "head_sha": "44ef7bc4e8c98d01f32291730ab77ed16d077823",
+    "origin_main_sha": "44ef7bc4e8c98d01f32291730ab77ed16d077823",
+    "tree": "12a6f683a32df07664e22b4b3dc53edee7f9704b",
+    "ahead": 0,
+    "behind": 0,
+    "worktree_clean": true,
+    "operation": "none",
+    "base_clone_path": "C:\\CodexWork\\structural_engineering_lib-main-evidence",
+    "base_clone_policy": "IMMUTABLE_BASE_LANE_CREATE_TASK_SPECIFIC_CODEX_WORKTREE_BEFORE_EVIDENCE_WRITES",
+    "required_refresh": "Freshly fetch and bind the exact accepted F0 merge SHA and tree before any R0 or post-F0 Windows evidence claim."
+  },
+  "host": {
+    "codex_host_label": "Laptop-360-Pravin",
+    "remote_host_id": "remote-control:env_e_6a8364bf87f083268eba5a17d5f1a220",
+    "remote_task_id": "01a0445f-1eb8-7581-aee5-58faafe5de98",
+    "windows_identity": "LAPTOP-360-PRAV\\P",
+    "hardware": "HP Pavilion x360 Convertible 14-ba1xx; Intel i7-8550U; x64",
+    "os": "Windows 11 Home Single Language 10.0.26200 build 26200",
+    "disk": "C: NTFS; 81.35 GB free at final receipt",
+    "codex": "Desktop app 26.820.9563.0 x64; CLI 0.150.0-alpha.8; native task delegation and HTTPS access verified",
+    "ssh": "OpenSSH client present; no key or running agent; not required for the maintained native Codex and HTTPS workflow"
+  },
+  "isolated_toolchain": {
+    "environment_entry": "C:\\CodexTools\\structural-evidence-env.ps1",
+    "system_path_changed": false,
+    "admin_or_restart_used": false,
+    "uv": "0.12.6",
+    "python": "CPython 3.11.15 in the repository-local .venv; source binding verified",
+    "node": "24.20.0",
+    "npm": "11.19.0",
+    "git": "Portable Git 2.55.0.windows.5",
+    "git_lfs": "3.7.1",
+    "download_sha256": {
+      "uv_x86_64_pc_windows_msvc_zip": "df7cb9f243eae1621400d4fcf5b1b3d90f20e264ece91b64deb3b0078abca6ef",
+      "node_v24_20_0_win_x64_zip": "6cac9ffbca8f6a47091e4b5c772e0606049c3871cb67d900c0cedde630e545ba",
+      "portable_git_2_55_0_5_64_bit": "5aa8a20f6e9abb2c755f0e73c91c687701a46b309ad84a0ca6509380fa4ae290"
+    }
+  },
+  "installed_applications": {
+    "excel": {
+      "version": "Microsoft 365 x64 16.0.20326.20100 Current Channel",
+      "entitlement": "O365HomePremRetail User|Subscription Licensed Provisioned",
+      "caveat": "A parallel older expired grace SKU may show a notification; the active subscription was licensed at setup."
+    },
+    "etabs_23": {
+      "version": "23.3.1.4563",
+      "license_boundary": "TRIAL",
+      "ready_path": "Documented export-first/manual E2K and selected-table CSV workflow",
+      "not_proven": [
+        "commercial license entitlement",
+        "live COM automation",
+        "analysis execution or changes",
+        "model write-back or save",
+        "professional or engineering approval"
+      ]
+    },
+    "etabs_22": "22.5.1.3923 is also installed; future evidence must explicitly select ETABS 23.3.1.4563.",
+    "final_process_state": "Excel, ETABS, and License Assistant stopped; ETABS 23 empty start page was closed normally with no model loaded or save prompt."
+  },
+  "readiness_checks": {
+    "python_source_binding": "PASS",
+    "locked_python_dependencies": "PASS",
+    "node_npm_selector": "PASS",
+    "react_dependencies": "INSTALLED_WITH_NPM_CI",
+    "excel_addin_non_mutating_unit_tests": "PASS_21",
+    "git_state": "PASS_CLEAN_EXACT_B0_BASE",
+    "broad_repository_suite": "NOT_RUN_NOT_REQUIRED_FOR_SETUP",
+    "installed_excel_acceptance": "NOT_RUN",
+    "etabs_export_acceptance": "NOT_RUN"
+  },
+  "operating_rules": [
+    "Treat C:\\CodexWork\\structural_engineering_lib-main-evidence as an immutable base lane; create one task-specific codex/<task-id> worktree before writing session or evidence files.",
+    "Do not use the OneDrive task folder for active Git, workbook, ETABS model, build, or evidence execution; use non-OneDrive disposable copies and verify hashes before and after transfer.",
+    "Freshly fetch origin/main and record exact 40-character source SHA, tree, artifact hash, application versions, dataset hashes, operator identity, and process state at every Windows evidence entry.",
+    "Source the maintained user-local environment entry before repository commands; do not replace global Python, Node, Git, PATH, firewall, SSH, or licensed application configuration without a separately evidenced need.",
+    "Run Excel and ETABS as separate bounded evidence tasks. Do not infer either result from macOS, CI, generated parity, or the other application.",
+    "For ETABS trial evidence, prefer manual export-first E2K and selected-table CSV acquisition. Do not claim COM, analysis, write-back, commercial-license, or professional capability unless separately reproduced and authorized.",
+    "Before opening an Excel workbook or ETABS model, inventory running processes and dialogs, preserve the original, use a disposable copy, and stop on an ambiguous save, recovery, license, analysis, or model-state prompt.",
+    "Preserve older clones, linked worktrees, workbooks, ETABS models, exports, and backups. Never reset, clean, stash, rebase, overwrite, reorganize, or delete them as part of evidence preparation.",
+    "A passing setup or non-mutating unit test is not an installed-journey PASS. Capture exact inputs, outputs, screenshots or logs, hashes, row accounting, errors, and limitations in the task-owned evidence receipt.",
+    "Professional review remains deferred until the exact integrated post-R0 artifact and cumulative dossier exist; release remains a separate exact-version owner decision."
+  ],
+  "refresh_triggers": [
+    "accepted F0 or later merge changes origin/main",
+    "wheel, sdist, workbook, add-in, API/client build, ETABS export, or dataset identity changes",
+    "Windows, Excel, ETABS, Python, Node, Git, Codex, or license state changes",
+    "base clone becomes dirty, behind, diverged, conflicted, detached, or operation-locked",
+    "OneDrive or another sync process enters the execution path",
+    "Excel or ETABS is already running, a model/workbook is open, or a modal/recovery/license dialog exists",
+    "remote Codex visibility disconnects or the evidence operator changes"
+  ],
+  "next_programme_routing": {
+    "next_task": "LIB-PRO-013-F0-FAMILY-CONVERGENCE",
+    "windows_required_for_f0": false,
+    "windows_activation": "After accepted F0, rebind this lane to the exact F0 merge before applicable R0 Windows evidence.",
+    "browser_accessibility": "Separate exact API/client/browser evidence lane during R0; may reuse this host only after exact build and browser identities are frozen.",
+    "final_engineer_review": "After accepted R0 only."
+  },
+  "retention": {
+    "existing_data_deleted_or_overwritten": false,
+    "older_clones_mutated": false,
+    "workbook_or_etabs_model_opened_saved_updated_renamed_or_moved": false,
+    "protected_source_content_read_or_tracked": false,
+    "one_drive_task_folder": "PRESERVED_UNCHANGED",
+    "retained_clone_paths": [
+      "C:\\CodexWork\\structural_engineering_lib",
+      "C:\\Users\\P\\Pravin2025\\Projects\\structural_lib_repo"
+    ]
+  }
+}

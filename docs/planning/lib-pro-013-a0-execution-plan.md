@@ -1,6 +1,6 @@
 ---
 owner: Main Agent
-status: ready
+status: active
 last_updated: 2026-08-27
 doc_type: spec
 complexity: advanced
