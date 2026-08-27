@@ -1,0 +1,166 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-27T16:08:49Z",
+      "query_status": "OK",
+      "reference": "Execute the complete LIB-PRO-013 A0 Consolidated Renewal Audit in one careful, efficient, evidence-backed, read-only repository cycle, then commit, push, create one PR, wait for required checks, and merge the unchanged green head when policy permits.",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "EXECUTE_LIB_PRO_013_A0_READ_ONLY_AUDIT_THROUGH_C2",
+      "CREATE_A0_EVIDENCE_STATUS_AND_HANDOFF_ARTIFACTS",
+      "COMMIT_PUSH_CREATE_PR_AND_MERGE_UNCHANGED_GREEN_HEAD"
+    ],
+    "next_action": "COMMIT_PUSH_CREATE_PR_AND_MERGE_UNCHANGED_GREEN_HEAD",
+    "observed_at_utc": "2026-08-27T16:08:49Z",
+    "prohibited_actions": [
+      "EDIT_RUNTIME_TEST_FORMULA_DEPENDENCY_SIGNATURE_OR_GENERATED_OWNER",
+      "START_LIB_PRO_012_PACKETS_C_THROUGH_I_B0_F0_OR_R0",
+      "CREATE_API_V2_OR_NEW_FACADE",
+      "PUBLISH_RELEASE_VERSION_TAG_OR_PACKAGE",
+      "ACTIVATE_QUALIFIED_REVIEW_PROFESSIONAL_OR_ENGINEERING_USE_APPROVAL",
+      "TRACK_OR_MODIFY_PROTECTED_STANDARD_CONTENT",
+      "DELETE_BRANCH_WORKTREE_REF_ARCHIVE_OR_RETAINED_DATA",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_FORCE_PUSH_OR_BYPASS_CHECKS"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "EXECUTE_LIB_PRO_013_A0_READ_ONLY_AUDIT_THROUGH_C2",
+        "CREATE_A0_EVIDENCE_STATUS_AND_HANDOFF_ARTIFACTS",
+        "COMMIT_PUSH_CREATE_PR_AND_MERGE_UNCHANGED_GREEN_HEAD"
+      ],
+      "branch": "codex/lib-pro-013-a0-consolidated-renewal-audit",
+      "head_sha": "49c2fe4553e923a7433ca0a5fa28ea364956ae30",
+      "task_id": "LIB-PRO-013-A0-CONSOLIDATED-RENEWAL-AUDIT"
+    }
+  },
+  "holds": [
+    "BRANCH_WORKTREE_REF_ARCHIVE_AND_PROTECTED_SOURCE_DELETION_NOT_AUTHORIZED",
+    "LOCAL_HOLD_DIRTY",
+    "PRESERVE_DIRTY_DETACHED_E54A_LANE",
+    "PRESERVE_EVERY_UNRELATED_DIRTY_STAGED_UNTRACKED_STASHED_DETACHED_OR_IGNORED_ITEM",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_A0_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "b7116af0239d214673f35cc89912b1cf0eec07f8abfcd8e8c3c44c5a502fd462",
+    "state": {
+      "branch": "codex/lib-pro-013-a0-consolidated-renewal-audit",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "49c2fe4553e923a7433ca0a5fa28ea364956ae30",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 113.04,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib6",
+      "head_sha": "49c2fe4553e923a7433ca0a5fa28ea364956ae30",
+      "hold_reasons": [
+        "changed paths: 5"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-27T16:09:55.924396+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/58cc/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 5,
+        "modified_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/next-session-brief.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/lib-pro-013-a0-entry-evidence.json",
+          "docs/verification/lib-pro-013-a0-renewal-audit.md"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "49c2fe4553e923a7433ca0a5fa28ea364956ae30",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/58cc/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:b7116af0239d214673f35cc89912b1cf0eec07f8abfcd8e8c3c44c5a502fd462",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-27T16:09:55.924549+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_A0_BRANCH_AND_ALL_UNRELATED_WORKTREES_REFS_ARCHIVES_IGNORED_DATA_AND_PROTECTED_SOURCES",
+    "holds": [
+      "PRESERVE_DIRTY_DETACHED_E54A_LANE",
+      "PRESERVE_EVERY_UNRELATED_DIRTY_STAGED_UNTRACKED_STASHED_DETACHED_OR_IGNORED_ITEM",
+      "BRANCH_WORKTREE_REF_ARCHIVE_AND_PROTECTED_SOURCE_DELETION_NOT_AUTHORIZED"
+    ],
+    "observed_at_utc": "2026-08-27T16:08:49Z",
+    "owner": "Main agent under repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources",
+      "Python/structural_lib",
+      "Python/tests",
+      "fastapi_app",
+      "react_app",
+      "scripts"
+    ],
+    "integration_owner": "governance",
+    "owned_paths": [
+      "docs/verification/lib-pro-013-a0-renewal-audit.md",
+      "docs/verification/lib-pro-013-a0-entry-evidence.json",
+      "docs/verification/lib-pro-013-a0-consolidated-renewal-audit-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "LIB-PRO-013-A0-CONSOLIDATED-RENEWAL-AUDIT"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

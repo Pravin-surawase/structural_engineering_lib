@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-27 — LIB-PRO-012 S0 post-merge acceptance and A0 plan
+**Updated:** 2026-08-27 — LIB-PRO-013 A0 consolidated renewal audit truth freeze
 
 ---
 
@@ -126,42 +126,44 @@
 
 ## Active
 
-`LIB-PRO-012-S0-P0-SAFETY-CLOSURE` merged through PR #877. Final reviewed head
-`efcd4126e120fe3b19723d349681475a1625c30c` and squash merge
-`4cebcccb3a07b8046e31b23332236321ebee1d25` share tree
-`e989ccba44ab89774db17bdf3d0d18ba435fa109`; hosted run 33080623445 passed all
-required checks. The required post-merge review then reproduced three unsafe
-transport manifestations left outside the original root-owner repair: the
-primary beam route accepted unused `rebar_layers`, while BBS/DXF accepted an
-omitted or zero span by inventing `depth * 12` and retained coercive/extra-
-ignoring intake. `LIB-PRO-012-S0-POST-MERGE-AUDIT-A0-PLAN` closes those gaps
-locally with focused regressions, a rebuilt source-free wheel replay, and
-reconciled successor [acceptance evidence](verification/lib-pro-012-s0-post-merge-acceptance.json).
-Its immutable candidate and exact-head hosted checks remain before the merged
-S0 boundary can be treated as fully accepted.
+`LIB-PRO-012-S0-P0-SAFETY-CLOSURE` and its required post-merge repair are
+accepted. Repair PR #878 reviewed candidate
+`1485da58297379a65882be7e4be8a23d6d86117d` and merge
+`49c2fe4553e923a7433ca0a5fa28ea364956ae30` share exact tree
+`704190f7322b8c29bc4a85036d7ade54d355f306`; hosted run 33088194292 passed all
+required changed-path checks. The current exact-wheel A0 replay confirms that
+unused `rebar_layers`, unsafe BBS/DXF span fallback, coercion, and extra fields
+remain fail-closed without changing valid beam, torsion, BBS, or engineering
+`FAIL` outcomes. The public `0.24.0a1` artifacts predate S0 and remain a
+separate held artifact identity.
 
 `LIB-PRO-013` owns the whole-library renewal audit. Its
 [master plan](planning/lib-pro-013-whole-library-renewal-audit-plan.md) defines
 the truth freeze, audit-of-audits, external-user/API, engineering-evidence,
 application, package/dependency, test, Git/CI/release, agent/skill/automation,
-efficiency, retention, and peer-comparison lanes. The audit itself is unstarted;
-the plan authorizes no runtime change, deletion, dependency addition, signature
+efficiency, retention, and peer-comparison lanes. The consolidated
+[A0 audit](verification/lib-pro-013-a0-renewal-audit.md) completes the initial
+read-only universe through C2 at exact source `49c2fe45...` / tree
+`704190f...`: all 42 Section 7 domains are owned and disposed, 16 deduplicated
+findings are routed, and no new current-source P0 was reproduced. The plan and
+audit authorize no runtime change, deletion, dependency addition, signature
 break, release, or professional claim. The derivative
 [A0 execution plan](planning/lib-pro-013-a0-execution-plan.md) groups the
 15–24 engineer-day audit into four evidence passes inside one read-only
-session, branch, candidate, PR, and hosted cycle. A0 remains unstarted until
-the post-merge S0 repair is integrated.
+session, branch, candidate, PR, and hosted cycle. The immutable A0 evidence
+candidate and exact changed-path hosted cycle remain the integration gate.
 
-`LIB-PRO-012` remains the remediation specification and scope authority. Once
-the unchanged green post-merge repair is integrated, S0 closes the mapped
-beam/detailing/BBS, torsion, column, typed-input, identity, and existing REST
-v1 safety boundary. `/api/v2`, EXT-REST-002, the canonical facade, final
-transport parity, generated signature prose, cumulative broad gates, and
-Packets C–I remain later work. The next authorized programme step is then the
-read-only LIB-PRO-013 A0 architecture/truth freeze, not automatic runtime
-implementation of later LIB-PRO-012 packets. Shared validation,
-facade, result, manifest, generated API, documentation, task, and session
-owners remain single-writer surfaces.
+`LIB-PRO-012` remains the remediation specification and scope authority. S0
+closes the mapped beam/detailing/BBS, torsion, column, typed-input, identity,
+and existing REST v1 safety boundary. A0 routes common/canonical/downstream
+contract convergence to B0, family construction/facade convergence to F0, and
+documentation/generated/package/cumulative artifact/evidence closure to R0.
+`/api/v2`, Packets C-I, release, qualified review, professional approval, and
+Windows evidence remain separately held. The next programme state after a
+green unchanged A0 merge is **wait for an explicit owner decision on B0**, not
+automatic runtime implementation. Shared validation, facade, result,
+manifest, generated API, documentation, task, and session owners remain
+single-writer surfaces.
 
 `MAINT-0136` is locally complete through its exact authorized cleanup boundary.
 Phase 1 PR #874 merged at reviewed head `37b36785`; Phase 2A removed the exact
