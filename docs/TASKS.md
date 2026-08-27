@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-28 — LIB-PRO-013 F0 locally complete; immutable candidate and hosted acceptance pending
+**Updated:** 2026-08-28 — accepted F0 is source-bound on the protected Windows lane; rebind receipt integration pending
 
 ---
 
@@ -168,14 +168,15 @@ Python beam contract is frozen, exact v1/v2 parity passes, named downstream
 consumers fail closed without partial artifacts, the final focused selection
 passes 451 cases, the post-hook invalidated-path replay passes 416 cases, and
 the source-free B0 wheel `25eacdd7...a803942f` passes the 29-case UAT with 15
-registered CLI commands. F0 Packets F1-F3 are now locally complete on one
-candidate lane: 13 frozen facade route/contract classes have strict grouped
+registered CLI commands. F0 Packets F1-F3 are accepted through PR #882 at
+merge `59ef74c0ad44da6c313a2ca943c7362158230f38`, tree
+`295c7a61d6781a749796e015e58a1fc38b4fc20f`: 13 frozen facade route/contract classes have strict grouped
 construction, common typed result/error semantics, generated schemas and
 compatibility ownership, and valid/invalid exact-wheel recipes. The 143-case
 focused owner/golden/publication selection and the exact wheel
-`797dfd9a...d73f78f` pass without changing the accepted B0 owners. F0 is not
-accepted until the immutable candidate passes its one hosted cycle and merges
-unchanged. R0 follows accepted F0. Release remains exact-candidate work rather
+`797dfd9a...d73f78f` pass without changing the accepted B0 owners. The
+immutable candidate passed its hosted cycle and merged unchanged. R0 follows
+accepted F0 and the separate Windows source-lane rebind receipt. Release remains exact-candidate work rather
 than an F0/R0 gate,
 and the single engineer review occurs only after final R0 integration. Shared
 validation, facade, result, manifest, generated API, documentation, task, and
@@ -183,11 +184,12 @@ session owners remain single-writer surfaces.
 
 The [LIB-PRO-013 Windows evidence lane readiness receipt](verification/lib-pro-013-windows-evidence-lane-readiness.json)
 records `READY_FOR_FUTURE_WINDOWS_EVIDENCE_SETUP_ONLY` at exact B0 merge
-`44ef7bc4...`. The non-OneDrive base clone, isolated Python 3.11.15/Node 24/npm/
-Portable Git toolchain, licensed Excel installation, and ETABS 23.3.1 trial
-export-first boundary are ready. This is setup evidence, not installed
-post-F0 Excel/ETABS acceptance. The lane must be freshly rebound to accepted
-F0 before R0 uses it; Excel and ETABS remain separate evidence tasks.
+`44ef7bc4...`. The task-owned
+[F0 rebind receipt](verification/lib-pro-013-windows-f0-rebind-evidence.json)
+now proves the separate linked Windows worktree and repository-local Python
+source binding at accepted F0 merge `59ef74c0...`, tree `295c7a61...`. It runs
+no R0, Excel, ETABS, workbook, model, calculation, or engineering acceptance.
+R0 may use that exact lane only after the rebind receipt is integrated.
 
 The owner removed the fixed documentation-count limit. `check_docs.py` now
 reports the active count only as an informational inventory; canonical topic
@@ -378,8 +380,9 @@ write-back/nightly work remain outside E1.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-013-F0 | Converge F1-F3 family construction/facades and exact-wheel recipes on the accepted B0 foundation | @structural-math | 16–26 engineer-days | P1 | 🟡 LOCAL COMPLETE — immutable candidate, hosted checks, and unchanged merge pending; Windows/professional/release claims remain held |
-| LIB-PRO-013-WINDOWS-REBIND | After accepted F0, freshly bind the protected Windows evidence lane to the exact F0 merge before R0 uses it | bounded Windows evidence owner | evidence gate | P1 | ⏸ BLOCKED ON ACCEPTED F0 — do not open or mutate the Windows base clone during F0 |
+| LIB-PRO-013-F0 | Converge F1-F3 family construction/facades and exact-wheel recipes on the accepted B0 foundation | @structural-math | 16–26 engineer-days | P1 | ✅ COMPLETE ON MERGE — PR #882 merged unchanged as `59ef74c0...`, tree `295c7a61...`; Windows/professional/release claims remain held |
+| LIB-PRO-013-WINDOWS-REBIND | Bind the protected Windows source lane to accepted F0 before R0 uses it | bounded Windows evidence owner | evidence gate | P1 | 🟡 LOCAL COMPLETE — exact Git/Python source binding proved; immutable receipt candidate, hosted checks, and unchanged merge pending; R0 and application evidence not run |
+| LIB-PRO-012-R0 | Close external-preview documentation, generated gates, cumulative artifact/evidence, and owner-decision package | Main Agent | final programme cycle | P1 | ⏸ AUTHORIZED AFTER ACCEPTED F0, HELD UNTIL WINDOWS REBIND RECEIPT INTEGRATES — no R0 work in the rebind task |
 | SPARK-001-G0 | Reassess the stale Spark work-program proposal before any implementation | repository owner | review gate | P2 | ⏸ OWNER REVIEW — the 2026-08-11 model/preview assumptions and bulk wave require refresh or rejection |
 
 ## Backlog

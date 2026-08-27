@@ -4,24 +4,24 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-28
-- Focus: Execute authorized LIB-PRO-012 Packets F1-F3 as one F0 family
-- Completed: Freshly fetched and proved exact `origin/main`; Added strict grouped F1, F2, and F3 request contracts; one shared finite; Generated per-route validation schemas, compatibility-owner mappings,
-- Git receipt: docs/verification/lib-pro-013-f0-family-convergence-git-handoff-receipt.json | sha256:f2b7eb3bc07bdd8a7fe2ec319e8aea3f7f8878391485318f09cfa52981f57526 | HOLD
-- Git identity: codex/lib-pro-013-f0-family-convergence@75f951e3d9d8e75ab842fc3f69273b71ca7886a6 | upstream=origin/main@75f951e3d9d8e75ab842fc3f69273b71ca7886a6 | base=origin/main@75f951e3d9d8e75ab842fc3f69273b71ca7886a6 | tree=dirty | operation=none
+- Focus: Rebind and prove the protected Windows evidence lane against accepted F0 without running R0 or application evidence.
+- Completed: Proved exact remote F0 identity and ancestry; preserved the immutable base and all unrelated lanes; created one exact-F0 linked task worktree; proved clean Git and repository-local Python source binding; froze only the bounded rebind receipt and canonical handoff records.
+- Git receipt: docs/verification/lib-pro-013-windows-f0-rebind-git-handoff-receipt.json | sha256:38c84b2b2ac89194441b156b2d4306511c32150d84490d521ab0bee7008de281 | HOLD
+- Git identity: codex/lib-pro-013-windows-rebind@59ef74c0ad44da6c313a2ca943c7362158230f38 | upstream=NONE@UNKNOWN | base=origin/main@59ef74c0ad44da6c313a2ca943c7362158230f38 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
-- Next action: CREATE_IMMUTABLE_F0_CANDIDATE_PUSH_PR_AND_MERGE_UNCHANGED_GREEN_HEAD
+- Next action: CREATE_IMMUTABLE_WINDOWS_F0_REBIND_CANDIDATE_PUSH_PR_AND_MERGE_UNCHANGED_GREEN_HEAD
 <!-- HANDOFF:END -->
 
 ## Latest Handoff
 
 | State | Boundary |
 |---|---|
-| **Current** | F0 Packets F1-F3 are locally complete on `codex/lib-pro-013-f0-family-convergence`, based on accepted preparation merge `75f951e3d9d8e75ab842fc3f69273b71ca7886a6` / tree `9df2321f463e378a5f6a9bb9ea2ce92b6ba050ce`, with accepted B0 merge `44ef7bc4e8c98d01f32291730ab77ed16d077823` preserved as an ancestor. The immutable candidate and hosted acceptance remain pending. |
+| **Current** | F0 Packets F1-F3 are accepted through PR #882 at merge `59ef74c0ad44da6c313a2ca943c7362158230f38` / tree `295c7a61d6781a749796e015e58a1fc38b4fc20f`, with candidate parent `37a332a86e766c2403475b07dadab6793809a50e` and accepted B0 `44ef7bc4e8c98d01f32291730ab77ed16d077823` preserved in ancestry. The protected Windows lane is locally rebound to this exact merge; receipt integration is pending. |
 | **Decision** | The [owner sequencing decision](../verification/lib-pro-013-owner-sequencing-decision.json) authorizes B0 now and F0/R0 after their dependency gates. Professional review is removed as an intermediate gate and deferred to one engineer review of the final integrated library after R0. |
-| **Next** | Freeze one immutable F0 candidate, push one PR, wait for every required changed-path check, and merge only the unchanged reviewed head. After accepted F0, run a separate bounded Windows-lane rebind to the exact merge before R0 uses that lane. |
-| **Held** | Professional/engineering-use claims until the final engineer review; exact release publication until a versioned candidate passes maintained gates; protected-source tracking; destructive retained-data/worktree operations without an exact manifest and recovery proof. |
+| **Next** | Freeze the minimal Windows F0 rebind receipt candidate, push one PR, wait for every required changed-path check, and merge only the unchanged reviewed head. R0 may use this exact lane only after that integration. |
+| **Held** | R0 work and all Windows application evidence during this rebind; professional/engineering-use claims until the final engineer review; exact release publication until a versioned candidate passes maintained gates; protected-source tracking; destructive retained-data/worktree operations without an exact manifest and recovery proof. |
 
-## F0 local outcome
+## F0 accepted outcome
 
 - The F0 registry freezes 13 distinct facade route/contract classes: accepted
   B0 beam; torsion; supplied-steel column; one-way, continuous one-way, and
@@ -44,6 +44,8 @@
   unchanged; generated parity is not presented as independent validation.
 - Task-owned detail is in the
   [F0 evidence receipt](../verification/lib-pro-013-f0-family-convergence-evidence.json).
+- The unchanged reviewed candidate `37a332a8...` merged through PR #882 as
+  `59ef74c0...`; the merge and candidate share exact tree `295c7a61...`.
 
 ## A0 audit outcome
 
@@ -81,9 +83,9 @@
    then merged unchanged as `44ef7bc4...`; repository-wide and Excel jobs were
    correctly skipped by changed-path routing rather than represented as B0
    evidence.
-3. Proceed to the already-authorized F0 dependency cycle without requesting
-   engineer review. Preserve every unrelated branch/worktree/source; the
-   engineer is assigned only after final R0 integration.
+3. F0 is accepted. Complete the separate Windows source-lane rebind receipt
+   before R0 uses that lane. Preserve every unrelated branch/worktree/source;
+   the engineer is assigned only after final R0 integration.
 
 ## Windows evidence lane readiness
 
@@ -118,20 +120,22 @@ Windows acceptance result.
   After accepted F0, freshly fetch and rebind the Windows lane to the exact F0
   merge before R0 uses it.
 
+## Windows F0 source-lane rebind
+
+The task-owned [Windows F0 rebind receipt](../verification/lib-pro-013-windows-f0-rebind-evidence.json) proves only exact Git and repository-local Python source binding.
+
+- The immutable base remains clean on `main` at B0 `44ef7bc4...`; fetched `origin/main` is accepted F0 `59ef74c0...`.
+- Linked worktree `C:\CodexWork\structural_engineering_lib-lib-pro-013-windows-rebind` uses `codex/lib-pro-013-windows-rebind` at F0 tree `295c7a61...`.
+- Maintained Git state is `READY_LOCAL` at entry; Python 3.11 imports `structural_lib` from this worktree with `source_bound=true`.
+- R0 and all application/engineering evidence remain unrun or uninspected. R0 may use this exact lane only after this receipt merges.
+
 ## F0 closeout and successor boundary
 
-1. Do not alter the frozen F0 candidate after review begins. A material defect
-   requires an explicit repaired candidate and replay of affected evidence.
-2. Merge only after every required changed-path check passes and the reviewed
-   head remains unchanged, conflict-free, and policy-compliant.
-3. Do not record post-push/merge facts by rewriting the immutable candidate;
-   keep them in GitHub and the external closeout observation.
-4. After accepted F0, create a separate bounded Windows rebind/evidence task.
-   Freshly bind its protected base lane to the exact F0 merge before any R0
-   Excel or ETABS use. ETABS remains trial/export-first unless separately
-   proven.
-5. R0 remains the authorized successor after accepted F0. It owns the wider
-   documentation/generated/package/cumulative evidence closure, not F0.
+1. Do not alter the frozen candidate after review begins; a material defect requires an explicit repair and affected-check replay.
+2. Merge only after all required changed-path checks pass on the unchanged, conflict-free reviewed head.
+3. Keep post-push/merge facts in GitHub and the external closeout observation; do not rewrite the immutable candidate.
+4. After this receipt integrates, R0 may use this exact source lane; application evidence remains separately bounded.
+5. R0 owns wider dossier closure; this rebind receipt owns no R0 or engineering outcome.
 
 ## Required Reading
 
@@ -141,5 +145,6 @@ Windows acceptance result.
 4. [Owner sequencing decision](../verification/lib-pro-013-owner-sequencing-decision.json)
 5. [B0 evidence](../verification/lib-pro-013-b0-common-contract-evidence.json)
 6. [Windows evidence lane readiness](../verification/lib-pro-013-windows-evidence-lane-readiness.json)
-7. [Family facade cookbook](../cookbook/python/family-facades.md)
-8. [Current task board](../TASKS.md)
+7. [Windows F0 rebind receipt](../verification/lib-pro-013-windows-f0-rebind-evidence.json)
+8. [Family facade cookbook](../cookbook/python/family-facades.md)
+9. [Current task board](../TASKS.md)
