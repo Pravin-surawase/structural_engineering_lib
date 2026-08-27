@@ -20,6 +20,10 @@ change engineering formulas, public signatures, supported cases, release
 metadata, or package artifacts. Implementation requires separately frozen
 repair packets after this evidence is complete.
 
+The approved solution architecture, compatibility strategy, external-user
+facade, examples programme, and dependency-ordered implementation packets are
+owned by the [LIB-PRO-012 remediation programme](../planning/lib-pro-012-external-api-remediation-plan.md).
+
 ## 2. Exact artifact identity
 
 | Item | Bound observation |
@@ -35,7 +39,11 @@ The wheel was downloaded from PyPI, its hash was checked before installation,
 and calls ran from an isolated Python 3.11 environment whose import origin was
 the installed wheel rather than the repository source tree.
 
-## 3. Initial exact-wheel finding register
+`EXT-REST-*` findings are a separately labelled exact-head application lane at
+the audit base above. FastAPI is not included in the wheel; those rows must not
+be presented as published-wheel behavior.
+
+## 3. External finding register
 
 Priority is based on the external main-process outcome. `P0` can produce a
 safe-looking result or materially incomplete downstream artifact from invalid
@@ -76,6 +84,9 @@ stability claim.
 | EXT-ENUM-001 | P2 | Invalid wall/stair/deep-beam public enum strings | Wall/deep errors do not list allowed values; staircase leaks the raw enum `ValueError` for `support_case` | Use one structured public error format with field path, rejected value, and allowed values |
 | EXT-API-001 | P1 | Inspect the root package surface | 222 exports include 100 functions but only one canonical task; 30 functions retain unit-ambiguous dimensional names and public styles mix long positional calls, keyword-only calls, request objects, dictionaries, and typed results | Publish a small canonical journey per member family and classify every other root export as advanced or compatibility in user-facing docs |
 | EXT-API-002 | P1 | Compare API classification to user-facing quick starts | Combined beam, BBS, torsion, optimization, and smart analysis are classified `compatibility` while README/API material advertises them as primary workflows | Safety gates must follow the advertised surface, not only the internal claim disposition |
+| EXT-REST-001 | P0 | Construct `BeamDesignRequest(width=300, depth=500, moment=150)` and call `POST /api/v1/design/beam` | The exact-head application silently supplies `shear=0`, `torsion=0`, `fck=25`, `fy=500`, `clear_cover=25`, and reinforcement diameters; the endpoint returns HTTP 200 with `success=True` and a safe result | Keep v1 as an explicit compatibility transport but remove hidden project/design assumptions from the future canonical request; missing calculation-bearing values must block |
+| EXT-REST-002 | P1 | Compare `/api/v1/design/beam` with the Python service signature | REST uses `width`, `depth`, `moment`, `shear`, `fck`, and `fy`, carries no member/story/case identity, and owns a separate mapping/default layer | Introduce a versioned canonical REST request matching the strict Python model; retain v1 through a documented mapping adapter and migration window |
+| EXT-REST-003 | P0 | Validate a beam payload containing numeric strings plus `unexpected_engineering_field=999` | Pydantic coerces the strings, silently drops the unknown field, and produces an ordinary request; an external typo or unsupported calculation-looking field is therefore not accounted for | Canonical requests use strict numeric/boolean parsing and `extra="forbid"`; v1 compatibility must expose accepted mappings and reject unknown calculation-looking fields |
 | EXT-BUILDER-001 | P2 | Search root/service facades for evidence-heavy request builders | Flat-slab, combined-footing, and strap-footing builders exist only in owner modules and are neither root-exported nor documented in the public guide; wall, stair, deep-beam, and isolated-footing workflows have none | Export and document supported builders or provide complete validated request examples and JSON schemas |
 | EXT-DOC-001 | P1 | Compare `docs/reference/api.md` column heading with `inspect.signature` | The reference shows legacy `fck=25`, `fy=415` defaults while the live route requires `fck_nmm2`/`fy_nmm2`; several builder paths are absent | Generate signature blocks from the live classified API and execute examples against the built wheel |
 | EXT-RELEASE-001 | P1 | Read the published PyPI description and current READMEs | They say `0.24.0a1` is unpublished and `0.23.1a2` remains current, contradicting the live release | Publication metadata must be truthful before artifact upload and current docs must be updated after release |

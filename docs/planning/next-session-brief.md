@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-27
-- Focus: Freeze external API findings, audit-gap root causes, peer comparison, and ordered repair packets; runtime fixes and release action remain excluded.
-- Completed: Published the evidence-bound LIB-PRO-011 external API readiness audit.; Froze prioritized repair packets and a regression matrix for the next work.; Bound the current session, receipt, and next-session handoff to this task.
-- Git receipt: docs/verification/lib-pro-011-external-api-readiness-audit-git-handoff-receipt.json | sha256:d93c07e4680994a2617853f526f912ba91710a1a7f670a1368832bff7f3c5ed7 | HOLD
-- Git identity: codex/lib-pro-011-external-api-audit@24221e3bf07ba0267f39ba36b6b87665c5a80d6b | upstream=NONE@UNKNOWN | base=origin/main@6a4683eb8b21bff77f2991230b4458463e61f419 | tree=dirty | operation=none
+- Focus: Convert LIB-PRO-011 into a complete safety, public API, input UX, examples, migration, and advertised-surface remediation programme without runtime changes.
+- Completed: Published the solution architecture and dependency-ordered A–I packets.; Added Python facade, strict input/error/result, REST versioning, compatibility, cookbook, and generated-audit decisions.; Extended LIB-PRO-011 with exact-head REST findings and cross-linked the audit, plan, and planning index.
+- Git receipt: docs/verification/lib-pro-012-external-api-remediation-plan-git-handoff-receipt.json | sha256:7defb0d9e1af3bb57f9f30446f30b3bf9cf254972bed06988636e2f27e44182b | HOLD
+- Git identity: codex/lib-pro-012-external-api-remediation-plan@f2c35622001ae3fc1f308d829007cd03f250bbbf | upstream=NONE@UNKNOWN | base=origin/main@6a4683eb8b21bff77f2991230b4458463e61f419 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->

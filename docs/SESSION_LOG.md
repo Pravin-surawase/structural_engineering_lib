@@ -5,6 +5,85 @@
 
 ---
 
+## 2026-08-27 — Session: LIB-PRO-012 external API remediation plan
+
+**Agent:** Codex (`governance`, sole writer)
+
+**Branch:** `codex/lib-pro-012-external-api-remediation-plan`.
+
+**Focus:** Convert LIB-PRO-011 into a complete safety, public API, input UX, examples, migration, and advertised-surface remediation programme without runtime changes.
+
+**Completed:**
+
+- Published the solution architecture and dependency-ordered A–I packets.
+- Added Python facade, strict input/error/result, REST versioning, compatibility, cookbook, and generated-audit decisions.
+- Extended LIB-PRO-011 with exact-head REST findings and cross-linked the audit, plan, and planning index.
+
+### Issues encountered
+
+- The existing root/service/request/result surfaces contain useful strict
+  components, but they are split across route-local validators, dataclasses,
+  Pydantic transport models, compatibility wrappers, and evidence-heavy owner
+  modules; a mass parameter rename or another validator would increase drift.
+- Exact source probes confirmed that `/api/v1/design/beam` accepts only width,
+  depth, and moment, silently supplies calculation-bearing materials, shear,
+  cover, and reinforcement diameters, and returns HTTP 200 with a safe result.
+  Its model also coerces numeric strings and silently ignores an unknown
+  calculation-looking field.
+- The first LIB-PRO-012 session start was blocked because the completed
+  LIB-PRO-011 usage timer had not received its explicit closeout checkpoint.
+- An initial inventory command used obsolete guessed paths for the API
+  classification, compatibility ledger, and quickstart.
+- Documentation validation first used unsupported `--exact` syntax and a
+  retired direct `scripts/check_docs_index_links.py` path.
+- A FastAPI source search guessed `fastapi_app/routers/beam.py`; the maintained
+  primary beam route is in `fastapi_app/routers/design.py`.
+
+### Root causes and resolutions
+
+- Confirmed root cause: safety, API shape, transport schema, discovery, and
+  evidence have evolved in separate generations. Resolution: reuse the
+  existing finite validators, Pydantic dependency, result envelope, API
+  classification, compatibility ledger, and workflow catalogue through one
+  three-level validation architecture and one delegating family facade. No
+  calculation logic was changed.
+- Confirmed root cause: FastAPI v1 is a separate permissive transport contract
+  with structural defaults, non-strict Pydantic coercion, and unit-ambiguous
+  field names. Resolution in the plan: fix v1 safety immediately through a
+  mapping adapter, freeze the canonical Python beam contract, then add an
+  explicit-unit `/api/v2` schema with generated-client and React migration.
+- Confirmed root cause: `session end` validation and usage accounting are
+  separate controls. Resolution: record the missing LIB-PRO-011 closeout with
+  all seven non-overlapping phases, then start LIB-PRO-012 normally.
+  ⚠️ TERMINAL ISSUE: unmatched prior usage timer -> recorded its required
+  closeout checkpoint before beginning this task.
+- Confirmed root cause: maintained files moved under `docs/reference/` and the
+  quickstart is `python-quickstart.md`. Resolution: discover exact files with
+  `rg --files` before reading. ⚠️ TERMINAL ISSUE: guessed documentation paths ->
+  reran against discovered paths.
+- Confirmed root cause: `check_docs.py` accepts positional file paths with
+  `--metadata`, and index-link checking is exposed through `--index-links`.
+  Resolution: rerun both supported interfaces successfully. ⚠️ TERMINAL ISSUE:
+  unsupported documentation-check commands -> used the maintained interface.
+- Confirmed root cause: the FastAPI beam model and primary route are separated
+  between `models/beam.py` and `routers/design.py`. Resolution: inspect those
+  exact owners and reproduce the request/endpoint outcomes. ⚠️ TERMINAL ISSUE:
+  guessed beam router path -> used the discovered route owner.
+
+### Validation through content freeze
+
+- LIB-PRO-012 reconciles the earlier professional-remediation and pre-release
+  input-safety plans so completed project/CLI/result/release controls are not
+  reimplemented.
+- The proposed `structural_lib.design.is456` facade is delegation-only; pure
+  calculations remain under `codes/is456` and service contracts own Pydantic.
+- Every LIB-PRO-011 finding family, including the added REST findings, maps to
+  an implementation packet and exact acceptance evidence.
+- Documentation front matter, exact metadata, all maintained local links, the
+  docs index, and the consolidated quick gate pass after content freeze.
+
+**Git handoff receipt:** `docs/verification/lib-pro-012-external-api-remediation-plan-git-handoff-receipt.json`
+
 ## 2026-08-27 — Session: LIB-PRO-011 external API readiness audit
 
 **Agent:** Codex (`governance`, sole writer)
