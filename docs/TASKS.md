@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-28 — v0.24.0 is the current normal software release; broader library development and cumulative engineer review remain in progress
+**Updated:** 2026-08-29 — ETABS/Excel W1 and multi-device synchronization are accepted; W2 read-only beam baseline/topology is planned but not started
 
 ---
 
@@ -413,6 +413,7 @@ write-back/nightly work remain outside E1.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
+| ETABS-EXCEL-BEAM-W2-BASELINE | Freeze and implement the complete read-only beam/model topology, result-provenance, and independent-frame-analysis feasibility contract before any optimization or write-back | Main Agent | one local contract packet plus separate Windows acceptance | P1 | 📋 PLANNED / NOT STARTED — begin from current fetched `origin/main`; no ETABS analysis, save, section mutation, optimization, or engineering approval |
 | LIB-PRO-013-F0 | Converge F1-F3 family construction/facades and exact-wheel recipes on the accepted B0 foundation | @structural-math | 16–26 engineer-days | P1 | ✅ COMPLETE ON MERGE — PR #882 merged unchanged as `59ef74c0...`, tree `295c7a61...`; Windows/professional/release claims remain held |
 | LIB-PRO-013-WINDOWS-REBIND | Bind the protected Windows source lane to accepted F0 before R0 uses it | bounded Windows evidence owner | evidence gate | P1 | ✅ COMPLETE — PR #883 merged at `879d32ca...`; exact F0 Git/Python source binding proved; no application evidence was run |
 | LIB-PRO-012-R0 | Close external-preview documentation, generated gates, cumulative artifact/evidence, and owner-decision package | Main Agent | final programme cycle | P1 | ✅ COMPLETE — PR #884 merged as `b1ba36e3...`, tree `81854f06...`; release, Windows application evidence, and professional claims remain held |

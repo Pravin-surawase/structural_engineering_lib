@@ -2,7 +2,8 @@
 
 **Type:** Guide
 **Audience:** Developers
-**Status:** In Progress
+**Status:** Complete
+**Next Phase:** W2 Planned
 **Created:** 2026-08-28
 **Last Updated:** 2026-08-29
 **Importance:** High
@@ -201,3 +202,10 @@ must still review the ETABS actions and canonical design before engineering use.
 Any next phase that proposes a section change, writes to ETABS, reruns analysis,
 checks global response, or optimizes members requires a separate reviewed scope
 and explicit write-back controls.
+
+The accepted next sequence is recorded in the
+[Excel + ETABS beam next-phase plan](../planning/excel-etabs-beam-next-phase-plan.md).
+W2 first establishes a complete read-only beam baseline, result provenance, and
+topology contract. Design/detailing expansion, construction-practice checks,
+offline optimization, and copied-model write-back/reanalysis remain separate
+later gates.

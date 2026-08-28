@@ -5,6 +5,89 @@
 
 ---
 
+## 2026-08-29 — Session: ETABS/Excel W1 day close and W2A plan
+
+**Agent:** Codex (`orchestrator`/`documentation`, sole writer; no subagents).
+
+**Branch:** `codex/etabs-pilot-day-close-plan` from synchronized `main`
+`45ef7c29428f172878a2157425509003c57b5363`.
+
+**Git handoff receipt:**
+`docs/verification/etabs-excel-beam-day-close-git-handoff-receipt.json`
+
+**Focus:** Consolidate the accepted Windows Excel + ETABS W1 work, the
+multi-device Git result, the VBA/architecture decision, and the safe path from
+read-only beam inventory to later design, constructability, optimization, and
+controlled copied-model reanalysis. This is documentation and planning only;
+no runtime code, ETABS, Excel, model, workbook, analysis, write-back, or
+optimization is changed.
+
+**Completed:**
+
+- Recorded the five merged W1/multi-device PRs and the exact installed-Windows
+  acceptance boundary, including the tracked receipt, copied-model identity,
+  fixed result combination, one-/five-beam reconciliation, and unchanged-model
+  safeguards.
+- Kept the accepted macro-free architecture: Excel Office.js calls trusted
+  localhost FastAPI/Python, which owns ETABS COM transport and canonical design.
+  VBA is optional historical workflow evidence, not a required runtime module
+  or a second calculation engine.
+- Distinguished what W1 proves from the missing whole-model inventory,
+  topology, envelope, supplied-rebar, detailing, constructability,
+  optimization, global-response, and professional-review capabilities.
+- Planned the next work as W2A contract/adapter feasibility, W2B transport and
+  Excel review, and W2C installed-Windows acceptance. Tomorrow is bounded to
+  W2A only and explicitly excludes ETABS execution and mutation.
+- Recorded the source-backed frame-analysis verdict: the maintained gravity
+  workflow is closed-form and explicitly excludes a stiffness/frame solver;
+  current independent frame-analysis support therefore remains
+  `HELD_NOT_SUPPORTED` unless a separate accepted authority is found.
+- Added later gated phases for design/detailing, construction practices,
+  offline optimization, controlled copied-model write-back/reanalysis, and
+  bounded iteration with qualified review.
+- Updated the task board, work log, pilot guide, and next-session briefing with
+  one copy-ready new-chat start and the one-branch/one-writer device rule.
+
+### Issues encountered
+
+- A new canonical session start remained blocked by the historical unmatched
+  `EXCEL-ETABS-PYTHON-BRIDGE-PILOT` usage checkpoint.
+- The first documentation validation rejected the new plan's guessed
+  front-matter values `status: planned` and `doc_type: plan`.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the original pilot recorded a usage start but not its
+  required originating-device closeout, and its old timing cannot now be
+  reconstructed honestly. Resolution: preserve that checkpoint, continue the
+  directly related closeout, and keep the multi-device rule that the writing
+  device must record usage before handoff. No timing was invented or bypassed.
+  ⚠️ TERMINAL ISSUE: `session begin` rejected the unmatched historical
+  checkpoint -> continued the related documented closeout without creating a
+  second start.
+- Confirmed root cause: the repository metadata schema allows `draft` for an
+  unfinished specification and `spec` for this document type; `planned` and
+  `plan` are not valid enum values. Resolution: use `status: draft` and
+  `doc_type: spec`, then rerun the unchanged documentation category. All eight
+  checks pass with zero reuse. ⚠️ TERMINAL ISSUE: doc validation rejected
+  unsupported front matter -> corrected only the schema values and reran it.
+
+### Validation through content freeze
+
+- Fresh documentation category: `8/8 passed`, zero reused checks; the fresh
+  consolidated quick gate also passes `10/10` with zero reuse.
+- The plan is source-grounded against the live bridge, gravity workflow/load
+  services, beam serviceability boundary, and member-only optimizers; it does
+  not claim a frame solver or building reanalysis that the repository lacks.
+- The packet changes only documentation, this session entry, its Git receipt,
+  and the maintained handoff projection. No Python/FastAPI/React/Excel runtime
+  or structural calculation file is changed.
+- Normal hooks, immutable candidate identity, hosted checks, merge-tree
+  comparison, and final local-main synchronization remain the publication
+  closeout sequence.
+
+---
+
 ## 2026-08-29 — Session: Multi-device Git synchronization guidance
 
 **Agent:** Codex (`operations`/`documentation`, sole writer; no subagents).
