@@ -1,0 +1,65 @@
+{
+  "authorization": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-28T06:00:05Z",
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "reference": "The owner requested a cumulative audit of the large completed library programme, correction of confirmed missed issues before the next tag, and then explicitly authorized starting the work. The accepted workflow includes one frozen candidate, one pull request, required hosted checks, and an unchanged policy-compliant merge. The owner separately deferred practicing-engineer review until the intended library is complete.",
+      "status": "OBSERVED",
+      "query_status": "OK",
+      "observed_at_utc": "2026-08-28T06:00:05Z"
+    },
+    "authorized_actions": [
+      "AUDIT_THE_COMPLETE_V0_24_0A1_TO_ACCEPTED_R0_DELTA",
+      "REPAIR_CONFIRMED_OUTCOME_CHANGING_DEFECTS_WITHIN_THE_AUDIT_BOUNDARY",
+      "WRITE_TASK_OWNED_AUDIT_EVIDENCE_AND_CURRENT_HANDOFF_RECORDS",
+      "RUN_FOCUSED_BROWSER_QUICK_FULL_HOOK_AND_REQUIRED_HOSTED_CHECKS",
+      "CREATE_ONE_IMMUTABLE_CANDIDATE_PUSH_ONE_PR_AND_MERGE_THE_UNCHANGED_GREEN_HEAD"
+    ],
+    "prohibited_actions": [
+      "CHANGE_ENGINEERING_FORMULAS_GOLDEN_OUTCOMES_SUPPORTED_FAMILY_SCOPE_OR_CALCULATION_OWNERS_WITHOUT_A_REPRODUCED_DEFECT",
+      "OPEN_INSPECT_RUN_OR_MUTATE_WINDOWS_EXCEL_ETABS_WORKBOOKS_MODELS_OLDER_CLONES_SYSTEM_TOOLCHAINS_OR_EVIDENCE_DATASETS",
+      "CLAIM_OR_CONDUCT_PRACTICING_ENGINEER_APPROVAL_BEFORE_THE_OWNER_DECLARES_THE_INTENDED_LIBRARY_COMPLETE",
+      "SELECT_CHANGE_TAG_RELEASE_OR_PUBLISH_A_VERSION",
+      "DELETE_BRANCH_WORKTREE_REF_ARCHIVE_ISSUE_RETAINED_DATA_OR_PROTECTED_SOURCE",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_REWRITE_FORCE_PUSH_OR_BYPASS_CHECKS",
+      "CLAIM_PROFESSIONAL_APPROVAL_ENGINEERING_READINESS_WINDOWS_ACCEPTANCE_PUBLIC_RELEASE_OR_PUBLICATION"
+    ],
+    "next_action": "CREATE_IMMUTABLE_AUDIT_CANDIDATE_PUSH_ONE_PR_AND_MERGE_UNCHANGED_GREEN_HEAD",
+    "target_binding": {
+      "task_id": "LIB-PRO-014-POST-R0-CUMULATIVE-AUDIT",
+      "branch": "codex/lib-pro-014-post-r0-cumulative-audit",
+      "head_sha": "b1ba36e3e9c4a102d23f1d76faed2ff043a3537f",
+      "actions": [
+        "AUDIT_THE_COMPLETE_V0_24_0A1_TO_ACCEPTED_R0_DELTA",
+        "REPAIR_CONFIRMED_OUTCOME_CHANGING_DEFECTS_WITHIN_THE_AUDIT_BOUNDARY",
+        "WRITE_TASK_OWNED_AUDIT_EVIDENCE_AND_CURRENT_HANDOFF_RECORDS",
+        "RUN_FOCUSED_BROWSER_QUICK_FULL_HOOK_AND_REQUIRED_HOSTED_CHECKS",
+        "CREATE_ONE_IMMUTABLE_CANDIDATE_PUSH_ONE_PR_AND_MERGE_THE_UNCHANGED_GREEN_HEAD"
+      ]
+    }
+  },
+  "integration": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-28T06:00:05Z",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_AUDIT_PR"
+  },
+  "retention": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-28T06:00:05Z",
+    "decision": "RETAIN_ALL_UNRELATED_WORKTREES_REFS_ARCHIVES_DIRTY_STAGED_UNTRACKED_IGNORED_STASHED_DETACHED_DATA_PROTECTED_SOURCES_AND_WINDOWS_APPLICATION_EVIDENCE_STATE",
+    "owner": "Main agent under owner and repository preservation policy",
+    "holds": [
+      "PRESERVE_DIRTY_DETACHED_E54A_LANE_UNTOUCHED",
+      "PRESERVE_EVERY_UNRELATED_DIRTY_STAGED_UNTRACKED_STASHED_DETACHED_OR_IGNORED_ITEM",
+      "PRESERVE_WINDOWS_EXCEL_ETABS_MODELS_WORKBOOKS_TOOLCHAINS_AND_DATASETS_UNINSPECTED",
+      "BRANCH_WORKTREE_REF_ARCHIVE_ISSUE_RETAINED_DATA_AND_PROTECTED_SOURCE_DELETION_NOT_AUTHORIZED"
+    ]
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

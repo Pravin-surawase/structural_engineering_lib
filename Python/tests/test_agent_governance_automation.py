@@ -38,6 +38,7 @@ external_cli = importlib.import_module("external_cli_test")
 find_automation = importlib.import_module("find_automation")
 project_health = importlib.import_module("project_health")
 preflight = importlib.import_module("preflight")
+sync_numbers = importlib.import_module("sync_numbers")
 tool_permissions = importlib.import_module("tool_permissions")
 tool_registry = importlib.import_module("tool_registry")
 control_plane = importlib.import_module("control_plane")
@@ -615,6 +616,76 @@ def test_maintenance_commands_are_discoverable_by_legacy_and_intent_queries(
     registry = tool_registry.load_registry()
     results = tool_registry.find_tools(query, registry, limit=10)
     assert expected in {tool.name for tool, _score in results}
+
+
+def test_sync_numbers_separates_http_operations_paths_and_websockets(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    routers = tmp_path / "fastapi_app" / "routers"
+    routers.mkdir(parents=True)
+    (routers / "sample.py").write_text(
+        '@router.get("/sample")\n@router.websocket("/live")\n', encoding="utf-8"
+    )
+    (tmp_path / "fastapi_app" / "main.py").write_text(
+        '@app.get("/health")\n', encoding="utf-8"
+    )
+    (tmp_path / "fastapi_app" / "openapi_baseline.json").write_text(
+        json.dumps({"paths": {"/sample": {}, "/health": {}}}), encoding="utf-8"
+    )
+    monkeypatch.setattr(sync_numbers, "REPO_ROOT", tmp_path)
+
+    assert sync_numbers.scan_endpoints() == (2, 1)
+    assert sync_numbers.scan_openapi_paths() == 2
+
+
+def test_sync_numbers_repairs_every_maintained_api_inventory_surface(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    surfaces = {
+        "AGENTS.md": "1 OpenAPI HTTP operations across 2 router modules",
+        "llms.txt": "Key API Endpoints (FastAPI) — 3 endpoints across 4 routers",
+        "docs/getting-started/agent-bootstrap.md": "\n".join(
+            [
+                "5 OpenAPI HTTP operation endpoints across 6 router modules",
+                "scanner currently matches 7 OpenAPI paths",
+                "8 public API functions; implementations split across `beam_api.py`, `column_api.py`, and `common_api.py` (9 private helpers)",
+                "Swagger UI for all 10 current OpenAPI HTTP operations.",
+            ]
+        ),
+        "docs/getting-started/mac-mini-setup.md": "\n".join(
+            [
+                "fastapi_app/ # REST backend (11 OpenAPI operations)",
+                "routers/                #   12 routers",
+            ]
+        ),
+    }
+    for relative, content in surfaces.items():
+        path = tmp_path / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content + "\n", encoding="utf-8")
+
+    monkeypatch.setattr(sync_numbers, "REPO_ROOT", tmp_path)
+    metrics = sync_numbers.Metrics(
+        endpoint_count=90,
+        openapi_path_count=89,
+        router_count=27,
+        api_public_count=100,
+        api_private_count=21,
+    )
+    updates = sync_numbers.find_updates(metrics)
+
+    assert len(updates) == 8
+    assert {update.metric for update in updates} == {
+        "endpoint_count",
+        "endpoint_router",
+        "openapi_path_count",
+        "api_functions",
+        "router_count",
+    }
+    assert all(
+        any(value in update.new_text for value in ("90", "89", "27", "100"))
+        for update in updates
+    )
 
 
 def test_metadata_parser_recognizes_multiword_fields():

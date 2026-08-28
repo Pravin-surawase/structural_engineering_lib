@@ -1,0 +1,191 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-28T06:00:05Z",
+      "query_status": "OK",
+      "reference": "The owner requested a cumulative audit of the large completed library programme, correction of confirmed missed issues before the next tag, and then explicitly authorized starting the work. The accepted workflow includes one frozen candidate, one pull request, required hosted checks, and an unchanged policy-compliant merge. The owner separately deferred practicing-engineer review until the intended library is complete.",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "AUDIT_THE_COMPLETE_V0_24_0A1_TO_ACCEPTED_R0_DELTA",
+      "REPAIR_CONFIRMED_OUTCOME_CHANGING_DEFECTS_WITHIN_THE_AUDIT_BOUNDARY",
+      "WRITE_TASK_OWNED_AUDIT_EVIDENCE_AND_CURRENT_HANDOFF_RECORDS",
+      "RUN_FOCUSED_BROWSER_QUICK_FULL_HOOK_AND_REQUIRED_HOSTED_CHECKS",
+      "CREATE_ONE_IMMUTABLE_CANDIDATE_PUSH_ONE_PR_AND_MERGE_THE_UNCHANGED_GREEN_HEAD"
+    ],
+    "next_action": "CREATE_IMMUTABLE_AUDIT_CANDIDATE_PUSH_ONE_PR_AND_MERGE_UNCHANGED_GREEN_HEAD",
+    "observed_at_utc": "2026-08-28T06:00:05Z",
+    "prohibited_actions": [
+      "CHANGE_ENGINEERING_FORMULAS_GOLDEN_OUTCOMES_SUPPORTED_FAMILY_SCOPE_OR_CALCULATION_OWNERS_WITHOUT_A_REPRODUCED_DEFECT",
+      "OPEN_INSPECT_RUN_OR_MUTATE_WINDOWS_EXCEL_ETABS_WORKBOOKS_MODELS_OLDER_CLONES_SYSTEM_TOOLCHAINS_OR_EVIDENCE_DATASETS",
+      "CLAIM_OR_CONDUCT_PRACTICING_ENGINEER_APPROVAL_BEFORE_THE_OWNER_DECLARES_THE_INTENDED_LIBRARY_COMPLETE",
+      "SELECT_CHANGE_TAG_RELEASE_OR_PUBLISH_A_VERSION",
+      "DELETE_BRANCH_WORKTREE_REF_ARCHIVE_ISSUE_RETAINED_DATA_OR_PROTECTED_SOURCE",
+      "RESET_STASH_CLEAN_REBASE_DISCARD_REWRITE_FORCE_PUSH_OR_BYPASS_CHECKS",
+      "CLAIM_PROFESSIONAL_APPROVAL_ENGINEERING_READINESS_WINDOWS_ACCEPTANCE_PUBLIC_RELEASE_OR_PUBLICATION"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "AUDIT_THE_COMPLETE_V0_24_0A1_TO_ACCEPTED_R0_DELTA",
+        "REPAIR_CONFIRMED_OUTCOME_CHANGING_DEFECTS_WITHIN_THE_AUDIT_BOUNDARY",
+        "WRITE_TASK_OWNED_AUDIT_EVIDENCE_AND_CURRENT_HANDOFF_RECORDS",
+        "RUN_FOCUSED_BROWSER_QUICK_FULL_HOOK_AND_REQUIRED_HOSTED_CHECKS",
+        "CREATE_ONE_IMMUTABLE_CANDIDATE_PUSH_ONE_PR_AND_MERGE_THE_UNCHANGED_GREEN_HEAD"
+      ],
+      "branch": "codex/lib-pro-014-post-r0-cumulative-audit",
+      "head_sha": "b1ba36e3e9c4a102d23f1d76faed2ff043a3537f",
+      "task_id": "LIB-PRO-014-POST-R0-CUMULATIVE-AUDIT"
+    }
+  },
+  "holds": [
+    "BRANCH_WORKTREE_REF_ARCHIVE_ISSUE_RETAINED_DATA_AND_PROTECTED_SOURCE_DELETION_NOT_AUTHORIZED",
+    "LOCAL_HOLD_DIRTY",
+    "NEXT_ACTION_NOT_AUTHORIZED",
+    "PRESERVE_DIRTY_DETACHED_E54A_LANE_UNTOUCHED",
+    "PRESERVE_EVERY_UNRELATED_DIRTY_STAGED_UNTRACKED_STASHED_DETACHED_OR_IGNORED_ITEM",
+    "PRESERVE_WINDOWS_EXCEL_ETABS_MODELS_WORKBOOKS_TOOLCHAINS_AND_DATASETS_UNINSPECTED",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "observed_at_utc": "2026-08-28T06:00:05Z",
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_AUDIT_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "33b7c1a2986f762711851a69ccd2d7dca879bee598a8abd5e167f14560af0054",
+    "state": {
+      "branch": "codex/lib-pro-014-post-r0-cumulative-audit",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "b1ba36e3e9c4a102d23f1d76faed2ff043a3537f",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 114.566,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib11",
+      "head_sha": "b1ba36e3e9c4a102d23f1d76faed2ff043a3537f",
+      "hold_reasons": [
+        "changed paths: 15"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-28T06:09:59.023298+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/lib-pro-014/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 15,
+        "modified_paths": [
+          "AGENTS.md",
+          "Python/tests/test_agent_governance_automation.py",
+          "Python/tests/test_session_automation.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/getting-started/agent-bootstrap.md",
+          "docs/getting-started/mac-mini-setup.md",
+          "docs/planning/next-session-brief.md",
+          "docs/reference/api-compatibility-ledger.json",
+          "llms.txt",
+          "scripts/agent_context.py",
+          "scripts/launch_stack.sh",
+          "scripts/sync_numbers.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/lib-pro-014-post-r0-cumulative-audit-evidence.json",
+          "docs/verification/lib-pro-014-post-r0-cumulative-audit-git-handoff-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "b1ba36e3e9c4a102d23f1d76faed2ff043a3537f",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/lib-pro-014/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:33b7c1a2986f762711851a69ccd2d7dca879bee598a8abd5e167f14560af0054",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-28T06:09:59.023444+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_ALL_UNRELATED_WORKTREES_REFS_ARCHIVES_DIRTY_STAGED_UNTRACKED_IGNORED_STASHED_DETACHED_DATA_PROTECTED_SOURCES_AND_WINDOWS_APPLICATION_EVIDENCE_STATE",
+    "holds": [
+      "PRESERVE_DIRTY_DETACHED_E54A_LANE_UNTOUCHED",
+      "PRESERVE_EVERY_UNRELATED_DIRTY_STAGED_UNTRACKED_STASHED_DETACHED_OR_IGNORED_ITEM",
+      "PRESERVE_WINDOWS_EXCEL_ETABS_MODELS_WORKBOOKS_TOOLCHAINS_AND_DATASETS_UNINSPECTED",
+      "BRANCH_WORKTREE_REF_ARCHIVE_ISSUE_RETAINED_DATA_AND_PROTECTED_SOURCE_DELETION_NOT_AUTHORIZED"
+    ],
+    "observed_at_utc": "2026-08-28T06:00:05Z",
+    "owner": "Main agent under owner and repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib",
+      "fastapi_app",
+      "react_app",
+      "private_sources"
+    ],
+    "integration_owner": "Codex orchestrator under owner authorization",
+    "owned_paths": [
+      "Python/tests/test_agent_governance_automation.py",
+      "Python/tests/test_session_automation.py",
+      "docs/getting-started/agent-bootstrap.md",
+      "docs/getting-started/mac-mini-setup.md",
+      "llms.txt",
+      "scripts/agent_context.py",
+      "scripts/launch_stack.sh",
+      "scripts/sync_numbers.py",
+      "docs/verification/lib-pro-014-post-r0-cumulative-audit-evidence.json",
+      "docs/verification/lib-pro-014-post-r0-cumulative-audit-git-handoff-source-evidence.json",
+      "docs/verification/lib-pro-014-post-r0-cumulative-audit-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "AGENTS.md",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md",
+      "docs/reference/api-compatibility-ledger.json"
+    ],
+    "task_id": "LIB-PRO-014-POST-R0-CUMULATIVE-AUDIT"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-28 — accepted F0 is source-bound on the protected Windows lane; rebind receipt integration pending
+**Updated:** 2026-08-28 — accepted R0 is integrated; post-R0 cumulative audit and root-cause repair are locally frozen pending one candidate and hosted closeout
 
 ---
 
@@ -70,7 +70,7 @@
 ## Current Release
 
 | **Current public release** | v0.24.0a1 | ✅ ALPHA RELEASED — immutable tag and GitHub/PyPI artifacts recorded; later `main` work is not included |
-| **Release candidate** | None | Next candidate is not yet selected or authorized |
+| **Release candidate** | None | Post-R0 audit recommends `v0.24.0a2`; no version is selected or authorized |
 - **Release evidence:** tag target `71b70652`; public wheel SHA-256 `b5e0df7b…6201a`; public sdist SHA-256 `8c1d6b76…0a53b`; exact workflow UAT and public identity are green
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization
@@ -92,7 +92,7 @@
 | **v0.21.8** | Performance & Property Testing | 📋 PLANNED | Benchmarks, Hypothesis, performance baselines |
 | **v0.22.0** | Stabilization Release | 📋 PLANNED | API naming convention (Batch 3), provenance, SP:16 verification |
 | **v0.23** | Bounded IS 456 slabs + footing completion | ✅ ALPHA RELEASED | Case-qualified development preview; professional review remains a final stable/engineering-use gate |
-| **v0.24** | Multi-Code Infrastructure | 📋 PLANNED | CodeRegistry activation, DesignEnvelope, units.py, API v2 routes |
+| **v0.24** | Multi-Code Infrastructure and bounded IS 456 external preview | ✅ PROGRAMME INTEGRATED ON `main` | Public `v0.24.0a1` predates S0/B0/F0/R0; next artifact remains held |
 | **v0.25** | ACI 318-19 Beam | 📋 PLANNED | ACI beam flexure + shear, PCA Notes ±0.1% benchmarks |
 | **v1.0** | Production Multi-Code | 📋 PLANNED | IS 456 complete, ACI 318 beam+column, EC2 beam, API stability guarantee |
 
@@ -153,8 +153,9 @@ now authorizes B0, then F0 and R0 after their dependency gates. The derivative
 [A0 execution plan](planning/lib-pro-013-a0-execution-plan.md) groups the
 15–24 engineer-day audit into four evidence passes inside one read-only
 session, branch, candidate, PR, and hosted cycle. Professional review is not an
-intermediate programme gate; one engineer review is deferred until the final
-integrated library and R0 dossier exist.
+intermediate programme gate. The newer owner decision keeps one practicing-
+engineer review deferred until the owner declares the intended library
+complete; R0 integration alone does not trigger that review.
 
 `LIB-PRO-012` remains the remediation specification and scope authority. S0
 closes the mapped beam/detailing/BBS, torsion, column, typed-input, identity,
@@ -177,15 +178,30 @@ focused owner/golden/publication selection and the exact wheel
 `797dfd9a...d73f78f` pass without changing the accepted B0 owners. The
 immutable candidate passed its hosted cycle and merged unchanged. The separate
 Windows source-lane rebind receipt is integrated through PR #883 at merge
-`879d32ca...`, tree `c7ebc826...`. R0 Packets G-I are now locally complete:
+`879d32ca...`, tree `c7ebc826...`. R0 Packets G-I are accepted through PR #884
+at merge `b1ba36e3...`, tree `81854f06...`:
 13 generated cookbook journeys, 28 advertised Python/CLI entries, zero unowned
 promoted request fields, 7,165 broad Python and 526 FastAPI tests, and the
-source-free wheel `53e0485b...c39d4` pass. One immutable candidate, hosted
-checks, and unchanged merge remain before the deferred engineer review.
-Release remains exact-candidate work rather than an F0/R0 gate,
-and the single engineer review occurs only after final R0 integration. Shared
+source-free wheel `53e0485b...c39d4` pass. The immutable candidate passed its
+hosted cycle and merged unchanged. Release remains exact-candidate work rather
+than an F0/R0 gate, and the single engineer review remains deferred until the
+owner declares the intended library complete. Shared
 validation, facade, result, manifest, generated API, documentation, task, and
 session owners remain single-writer surfaces.
+
+`LIB-PRO-014-POST-R0-CUMULATIVE-AUDIT` audits the exact 30-commit, 244-file
+delta from public tag `v0.24.0a1` (`71b70652...`) through accepted R0 merge
+`b1ba36e3...`. The engineering/facade replay found no calculation-owner,
+golden-outcome, supported-family, or contract defect. Two main-process control
+defects were confirmed and repaired at their roots: stale/masked API inventory
+counts, and a full-stack launcher that bypassed the worktree-aware Python
+runtime. The changed Python selection passes 1,050 tests, changed FastAPI
+selection passes 200, React passes lint/283 tests/build, all 13 family journeys
+and 18 canonical beam checks pass, and the real browser/default-beam/BBS route
+plus full-stack start/stop journey pass. One immutable audit candidate, hosted
+checks, and unchanged merge remain. The audit recommends `v0.24.0a2` for a
+later owner-authorized release-selection task; it does not select, tag, or
+publish a version.
 
 The [LIB-PRO-013 Windows evidence lane readiness receipt](verification/lib-pro-013-windows-evidence-lane-readiness.json)
 records `READY_FOR_FUTURE_WINDOWS_EVIDENCE_SETUP_ONLY` at exact B0 merge
@@ -388,7 +404,8 @@ write-back/nightly work remain outside E1.
 |----|------|-------|-----|----------|--------|
 | LIB-PRO-013-F0 | Converge F1-F3 family construction/facades and exact-wheel recipes on the accepted B0 foundation | @structural-math | 16–26 engineer-days | P1 | ✅ COMPLETE ON MERGE — PR #882 merged unchanged as `59ef74c0...`, tree `295c7a61...`; Windows/professional/release claims remain held |
 | LIB-PRO-013-WINDOWS-REBIND | Bind the protected Windows source lane to accepted F0 before R0 uses it | bounded Windows evidence owner | evidence gate | P1 | ✅ COMPLETE — PR #883 merged at `879d32ca...`; exact F0 Git/Python source binding proved; no application evidence was run |
-| LIB-PRO-012-R0 | Close external-preview documentation, generated gates, cumulative artifact/evidence, and owner-decision package | Main Agent | final programme cycle | P1 | 🟡 LOCAL COMPLETE — 13 recipes, 28 advertised entries, zero unowned promoted fields, 7,165 Python and 526 FastAPI tests, exact-wheel UAT, and owner package pass; immutable candidate, hosted checks, and unchanged merge pending |
+| LIB-PRO-012-R0 | Close external-preview documentation, generated gates, cumulative artifact/evidence, and owner-decision package | Main Agent | final programme cycle | P1 | ✅ COMPLETE — PR #884 merged as `b1ba36e3...`, tree `81854f06...`; release, Windows application evidence, and professional claims remain held |
+| LIB-PRO-014-POST-R0-CUMULATIVE-AUDIT | Audit the public-tag-to-R0 programme, repair confirmed misses, and establish the next-tag posture | Main Agent | one bounded audit cycle | P1 | 🟡 LOCAL COMPLETE — no engineering defect reproduced; API inventory and linked-worktree launcher root causes repaired; focused/product/browser evidence passes; immutable candidate, hosted checks, and unchanged merge pending |
 | SPARK-001-G0 | Reassess the stale Spark work-program proposal before any implementation | repository owner | review gate | P2 | ⏸ OWNER REVIEW — the 2026-08-11 model/preview assumptions and bulk wave require refresh or rejection |
 
 ## Backlog
