@@ -1458,3 +1458,31 @@ engineering review was performed for this release candidate. Normal software
 release status does not grant stable-API compatibility, complete IS 456
 coverage, professional approval, engineering-use approval, or construction-use
 approval.
+
+---
+
+## v0.24.0 — Public normal software release receipt
+
+**Published (2026-08-28 07:09:50 UTC):** PR #886 preserved the reviewed
+candidate and authorization descendant and merged as
+`e66de6efa3bb80d3ebc54e6151b1d6c29275c502`, tree
+`e583493eed9943b7216d0b19c6749383f06a33a3`. Annotated tag `v0.24.0` peels to
+that exact merge. Production workflow `33150227524` completed successfully,
+published PyPI `0.24.0`, and created a non-prerelease GitHub Release.
+
+- wheel: `structural_lib_is456-0.24.0-py3-none-any.whl`, 822,111 bytes,
+  SHA-256 `7b5bc0b6ca6721897ae9ccce9860b6aaaa3c5647ded9fefd0945872ed354a093`;
+- sdist: `structural_lib_is456-0.24.0.tar.gz`, 685,836 bytes,
+  SHA-256 `d530f10ca4f64655eade86b9beb8ca3d8b5eb10ddfcf0d7db097e9252d406640`;
+- exact public install: `pip install structural-lib-is456===0.24.0`.
+
+GitHub and PyPI artifact hashes match. The exact workflow wheel passed all 29
+UAT cases across 28 advertised entries, including 15 CLI entries and 13 family
+facades; a separate isolated PyPI install verified package origin and exact
+version. The release is a normal package distribution with Beta maturity, not
+a stable-API, complete-standard, professional, engineering-use, or
+construction-use claim. Broader library development and one cumulative
+practicing-engineer review remain in progress.
+
+**Machine-readable receipt:**
+`docs/verification/release-0240-publication-receipt.json`.

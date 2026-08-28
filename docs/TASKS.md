@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-28 — post-R0 audit is merged; owner-authorized v0.24.0 normal-release preparation is active
+**Updated:** 2026-08-28 — v0.24.0 is the current normal software release; broader library development and cumulative engineer review remain in progress
 
 ---
 
@@ -69,9 +69,9 @@
 
 ## Current Release
 
-| **Current public release** | v0.24.0a1 | ✅ ALPHA RELEASED — immutable tag and GitHub/PyPI artifacts recorded; later `main` work is not included |
-| **Release candidate** | v0.24.0 | 🟡 LOCAL EXACT ARTIFACT READY — normal final version selected and owner-authorized after exact gates; immutable candidate, hosted checks, tag, and publication remain |
-- **Release evidence:** tag target `71b70652`; public wheel SHA-256 `b5e0df7b…6201a`; public sdist SHA-256 `8c1d6b76…0a53b`; exact workflow UAT and public identity are green
+| **Current public release** | v0.24.0 | ✅ NORMAL SOFTWARE RELEASE — immutable tag and non-prerelease GitHub/PyPI artifacts recorded; Beta maturity and supported-scope limitations remain |
+| **Release candidate** | — | No later candidate is selected or authorized |
+- **Release evidence:** tag target `e66de6ef`; public wheel SHA-256 `7b5bc0b6…a093`; public sdist SHA-256 `d530f10c…6640`; production workflow `33150227524`, exact-wheel UAT, and isolated public install are green
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization
 - **Target:** keep later roadmap work inactive until separately activated
@@ -92,7 +92,7 @@
 | **v0.21.8** | Performance & Property Testing | 📋 PLANNED | Benchmarks, Hypothesis, performance baselines |
 | **v0.22.0** | Stabilization Release | 📋 PLANNED | API naming convention (Batch 3), provenance, SP:16 verification |
 | **v0.23** | Bounded IS 456 slabs + footing completion | ✅ ALPHA RELEASED | Case-qualified development preview; professional review remains a final stable/engineering-use gate |
-| **v0.24** | Multi-Code Infrastructure and bounded IS 456 external preview | 🟡 NORMAL RELEASE PREPARATION | Public `v0.24.0a1` predates S0/B0/F0/R0; exact `v0.24.0` local wheel/UAT is green pending candidate, hosted gates, and publication |
+| **v0.24** | Multi-Code Infrastructure and bounded IS 456 external preview | ✅ NORMAL SOFTWARE RELEASED | `v0.24.0` contains accepted S0/B0/F0/R0 and the cumulative audit; normal distribution does not claim stable API, complete IS 456, or professional approval |
 | **v0.25** | ACI 318-19 Beam | 📋 PLANNED | ACI beam flexure + shear, PCA Notes ±0.1% benchmarks |
 | **v1.0** | Production Multi-Code | 📋 PLANNED | IS 456 complete, ACI 318 beam+column, EC2 beam, API stability guarantee |
 
@@ -183,9 +183,10 @@ at merge `b1ba36e3...`, tree `81854f06...`:
 13 generated cookbook journeys, 28 advertised Python/CLI entries, zero unowned
 promoted request fields, 7,165 broad Python and 526 FastAPI tests, and the
 source-free wheel `53e0485b...c39d4` pass. The immutable candidate passed its
-hosted cycle and merged unchanged. Release remains exact-candidate work rather
-than an F0/R0 gate, and the single engineer review remains deferred until the
-owner declares the intended library complete. Shared
+hosted cycle and merged unchanged. Exact `v0.24.0` was subsequently published
+as the normal software release; this does not retroactively make release an
+F0/R0 gate, and the single engineer review remains deferred until the owner
+declares the intended library complete. Shared
 validation, facade, result, manifest, generated API, documentation, task, and
 session owners remain single-writer surfaces.
 
@@ -415,7 +416,8 @@ write-back/nightly work remain outside E1.
 | LIB-PRO-013-F0 | Converge F1-F3 family construction/facades and exact-wheel recipes on the accepted B0 foundation | @structural-math | 16–26 engineer-days | P1 | ✅ COMPLETE ON MERGE — PR #882 merged unchanged as `59ef74c0...`, tree `295c7a61...`; Windows/professional/release claims remain held |
 | LIB-PRO-013-WINDOWS-REBIND | Bind the protected Windows source lane to accepted F0 before R0 uses it | bounded Windows evidence owner | evidence gate | P1 | ✅ COMPLETE — PR #883 merged at `879d32ca...`; exact F0 Git/Python source binding proved; no application evidence was run |
 | LIB-PRO-012-R0 | Close external-preview documentation, generated gates, cumulative artifact/evidence, and owner-decision package | Main Agent | final programme cycle | P1 | ✅ COMPLETE — PR #884 merged as `b1ba36e3...`, tree `81854f06...`; release, Windows application evidence, and professional claims remain held |
-| LIB-PRO-014-POST-R0-CUMULATIVE-AUDIT | Audit the public-tag-to-R0 programme, repair confirmed misses, and establish the next-tag posture | Main Agent | one bounded audit cycle | P1 | 🟡 LOCAL COMPLETE — no engineering defect reproduced; API inventory and linked-worktree launcher root causes repaired; focused/product/browser evidence passes; immutable candidate, hosted checks, and unchanged merge pending |
+| LIB-PRO-014-POST-R0-CUMULATIVE-AUDIT | Audit the public-tag-to-R0 programme, repair confirmed misses, and establish the next-tag posture | Main Agent | one bounded audit cycle | P1 | ✅ COMPLETE — PR #885 merged as `e7956f78...`; no engineering defect reproduced; API inventory and linked-worktree launcher root causes repaired |
+| RELEASE-0240-STABLE-SOFTWARE | Publish the audited supported scope as normal `v0.24.0` while preserving Beta/in-progress claim boundaries | Main Agent | one release cycle | P1 | ✅ RELEASED — PR #886 merged as `e66de6ef...`; tag, PyPI, non-prerelease GitHub Release, public hashes, and isolated install verified |
 | SPARK-001-G0 | Reassess the stale Spark work-program proposal before any implementation | repository owner | review gate | P2 | ⏸ OWNER REVIEW — the 2026-08-11 model/preview assumptions and bulk wave require refresh or rejection |
 
 ## Backlog
