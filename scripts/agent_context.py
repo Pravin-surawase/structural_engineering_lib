@@ -206,12 +206,16 @@ def ctx_backend():
     bullet("visualization/ — geometry_3d.py (beam_to_3d_geometry)")
 
     section("KEY COMMANDS")
-    bullet("API signatures: ./scripts/python_runtime.sh scripts/discover_api_signatures.py <func>")
+    bullet(
+        "API signatures: ./scripts/python_runtime.sh scripts/discover_api_signatures.py <func>"
+    )
     bullet("Tests: ./scripts/python_runtime.sh -m pytest Python/tests/ -v")
     bullet(
         "Import check: ./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib"
     )
-    bullet("Architecture: ./scripts/python_runtime.sh scripts/check_architecture_boundaries.py")
+    bullet(
+        "Architecture: ./scripts/python_runtime.sh scripts/check_architecture_boundaries.py"
+    )
     bullet("Skill: /api-discovery, /is456-verification, /architecture-check")
 
     section("WARNINGS")
@@ -282,7 +286,7 @@ def ctx_frontend():
 def ctx_api_developer():
     print_status()
 
-    section("ROUTER FILES (13 routers, 59 endpoints)")
+    section("ROUTER FILES (live)")
     routers = run("ls fastapi_app/routers/*.py 2>/dev/null")
     if routers:
         for r in routers.splitlines():
@@ -384,7 +388,9 @@ def ctx_reviewer():
 
     section("COMMANDS")
     bullet("./scripts/python_runtime.sh scripts/check_architecture_boundaries.py")
-    bullet("./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib")
+    bullet(
+        "./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib"
+    )
     bullet("./run.sh frontend build")
     bullet("./scripts/python_runtime.sh -m pytest Python/tests/ -v")
 
@@ -413,7 +419,9 @@ def ctx_tester():
 
     section("COMMANDS")
     bullet("./scripts/python_runtime.sh -m pytest Python/tests/ -v")
-    bullet("./scripts/python_runtime.sh -m pytest tests/ --cov=structural_lib --cov-report=term")
+    bullet(
+        "./scripts/python_runtime.sh -m pytest tests/ --cov=structural_lib --cov-report=term"
+    )
     bullet("Skill: /is456-verification — run IS 456 tests by category")
 
     section("REACT TESTS")
@@ -439,7 +447,9 @@ def ctx_doc_master():
   4. ./run.sh session end --agent doc-master""")
 
     section("COMMANDS")
-    bullet("Safe move: ./scripts/python_runtime.sh scripts/safe_file_move.py a b --dry-run")
+    bullet(
+        "Safe move: ./scripts/python_runtime.sh scripts/safe_file_move.py a b --dry-run"
+    )
     bullet(
         "Safe delete preview: ./scripts/python_runtime.sh scripts/safe_file_delete.py f --dry-run"
     )
@@ -523,7 +533,9 @@ def ctx_governance():
     print(f"  Commits (7d): {commits_7d} | Commits (30d): {commits_30d}")
 
     section("MAINTENANCE TASKS")
-    bullet("Check governance: ./scripts/python_runtime.sh scripts/check_governance.py --structure")
+    bullet(
+        "Check governance: ./scripts/python_runtime.sh scripts/check_governance.py --structure"
+    )
     bullet("Sync numbers: ./scripts/python_runtime.sh scripts/sync_numbers.py --fix")
     bullet("Link health: ./scripts/python_runtime.sh scripts/check_links.py")
     bullet("Validate context: ./run.sh context validate")
@@ -531,10 +543,18 @@ def ctx_governance():
     bullet("Classify archive candidates; preview accepted moves as a batch")
 
     section("SUSTAINABILITY CHECKS")
-    bullet("Version consistency: ./scripts/python_runtime.sh scripts/check_doc_versions.py")
-    bullet("Bootstrap freshness: ./scripts/python_runtime.sh scripts/check_bootstrap_freshness.py")
-    bullet("Instruction composition: ./scripts/python_runtime.sh scripts/check_instruction_drift.py")
-    bullet("Architecture: ./scripts/python_runtime.sh scripts/check_architecture_boundaries.py")
+    bullet(
+        "Version consistency: ./scripts/python_runtime.sh scripts/check_doc_versions.py"
+    )
+    bullet(
+        "Bootstrap freshness: ./scripts/python_runtime.sh scripts/check_bootstrap_freshness.py"
+    )
+    bullet(
+        "Instruction composition: ./scripts/python_runtime.sh scripts/check_instruction_drift.py"
+    )
+    bullet(
+        "Architecture: ./scripts/python_runtime.sh scripts/check_architecture_boundaries.py"
+    )
     bullet("Skill: /safe-file-ops, /session-management")
 
 

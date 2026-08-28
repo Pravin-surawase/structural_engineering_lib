@@ -927,6 +927,15 @@ def test_launcher_port_discovery_is_listener_only():
     assert "lsof -ti :" not in commands
 
 
+def test_launcher_uses_worktree_bound_python_runtime():
+    launcher = (REPO_ROOT / "scripts" / "launch_stack.sh").read_text(encoding="utf-8")
+
+    assert 'PYTHON_LAUNCHER="$REPO_ROOT/scripts/python_runtime.sh"' in launcher
+    assert '"$PYTHON_LAUNCHER" -m uvicorn' in launcher
+    assert ".venv/bin/python" not in launcher
+    assert ".venv/bin/uvicorn" not in launcher
+
+
 def test_run_sh_does_not_own_git_or_github_lifecycle():
     run_sh = (REPO_ROOT / "run.sh").read_text(encoding="utf-8")
     assert "_cmd_commit" not in run_sh

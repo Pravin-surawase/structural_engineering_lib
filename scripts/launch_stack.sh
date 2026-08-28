@@ -31,6 +31,7 @@ ARROW="→"
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PYTHON_LAUNCHER="$REPO_ROOT/scripts/python_runtime.sh"
 LOG_FILE="/tmp/structural_lib_launch.log"
 NODE_REQUIRED_MAJOR="$(sed -E 's/^v?([0-9]+).*/\1/' "$REPO_ROOT/.nvmrc")"
 FASTAPI_PID=""
@@ -245,14 +246,12 @@ kill_existing_services() {
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 check_python() {
-    local venv_python="$REPO_ROOT/.venv/bin/python"
-
-    if [[ ! -x "$venv_python" ]]; then
-        error "Python venv not found at .venv/bin/python"
+    if [[ ! -x "$PYTHON_LAUNCHER" ]]; then
+        error "Worktree-aware Python launcher not found at scripts/python_runtime.sh"
         return 1
     fi
 
-    local py_version=$("$venv_python" --version 2>&1 | grep -oE '[0-9]+\.[0-9]+' | head -1)
+    local py_version=$("$PYTHON_LAUNCHER" --version 2>&1 | grep -oE '[0-9]+\.[0-9]+' | head -1)
     local major=$(echo "$py_version" | cut -d. -f1)
     local minor=$(echo "$py_version" | cut -d. -f2)
 
@@ -269,7 +268,7 @@ select_node_runtime() {
     local candidate_bin=""
     local candidate_version=""
 
-    candidate_bin=$("$REPO_ROOT/.venv/bin/python" \
+    candidate_bin=$("$PYTHON_LAUNCHER" \
         "$REPO_ROOT/scripts/node_runtime.py" --bin-dir 2>/dev/null || true)
     if [[ -n "$candidate_bin" ]] && [[ -x "$candidate_bin/node" ]]; then
         candidate_version=$("$candidate_bin/node" --version 2>/dev/null || true)
@@ -353,7 +352,7 @@ check_key_files() {
         "fastapi_app/main.py"
         "react_app/package.json"
         "Python/structural_lib/__init__.py"
-        ".venv/bin/python"
+        "scripts/python_runtime.sh"
     )
 
     for file in "${files[@]}"; do
@@ -374,7 +373,7 @@ check_key_files() {
 
 check_structural_lib() {
     cd "$REPO_ROOT"
-    if .venv/bin/python -c "from structural_lib import api; print('OK')" &>/dev/null; then
+    if "$PYTHON_LAUNCHER" -c "from structural_lib import api; print('OK')" &>/dev/null; then
         success "structural_lib imports OK"
         return 0
     else
@@ -482,16 +481,16 @@ fix_prerequisites() {
         info "Installing npm dependencies..."
         cd "$REPO_ROOT/react_app"
 
-        if npm install; then
-            success "npm install complete"
+        if npm ci; then
+            success "npm ci complete"
         else
-            error "npm install failed — check network connection"
+            error "npm ci failed — check network connection and package-lock.json"
             sleep 2
-            info "Retrying npm install..."
-            if npm install; then
-                success "npm install complete (retry)"
+            info "Retrying npm ci..."
+            if npm ci; then
+                success "npm ci complete (retry)"
             else
-                error "npm install failed after retry"
+                error "npm ci failed after retry"
                 return 1
             fi
         fi
@@ -579,7 +578,7 @@ launch_fastapi_local() {
     local start_time=$(date +%s)
 
     # Launch FastAPI in background, redirect output to log
-    .venv/bin/uvicorn fastapi_app.main:app \
+    "$PYTHON_LAUNCHER" -m uvicorn fastapi_app.main:app \
         --host 0.0.0.0 \
         --port "$FASTAPI_PORT" \
         --reload \

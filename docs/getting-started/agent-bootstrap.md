@@ -134,8 +134,8 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 
 ### FastAPI Endpoints (`fastapi_app/routers/`)
 
-89 OpenAPI HTTP operation endpoints across 26 router modules. The separate
-React-contract scanner currently matches 88 OpenAPI paths; that path metric is
+90 OpenAPI HTTP operation endpoints across 27 router modules. The separate
+React-contract scanner currently matches 89 OpenAPI paths; that path metric is
 not the operation count. The WebSocket route is also outside OpenAPI:
 
 | Router | Endpoint | Purpose |
@@ -205,7 +205,7 @@ not the operation count. The WebSocket route is also outside OpenAPI:
 
 | Module | Key Functions |
 |--------|---------------|
-| `services/api.py` | 97 public API functions; implementations split across `beam_api.py`, `column_api.py`, and `common_api.py` (18 private helpers) |
+| `services/api.py` | 100 public API functions; implementations split across `beam_api.py`, `column_api.py`, and `common_api.py` (21 private helpers) |
 | `api.py` | **Backward-compat stub only** — imports from `services/api.py` |
 | `services/adapters.py` | `GenericCSVAdapter`, `ETABSAdapter`, `SAFEAdapter` |
 | `visualization/geometry_3d.py` | `beam_to_3d_geometry()` — 3D rebar/stirrup positions |
@@ -346,7 +346,7 @@ npm run dev
 # React is now at http://localhost:5173
 ```
 
-This builds and runs the FastAPI container with all Python dependencies + sample data (`Etabs_CSV/`). The `/docs` page auto-generates interactive Swagger UI for all 89 current OpenAPI HTTP operations.
+This builds and runs the FastAPI container with all Python dependencies + sample data (`Etabs_CSV/`). The `/docs` page auto-generates interactive Swagger UI for all 90 current OpenAPI HTTP operations.
 
 For development with hot-reload (code changes reflect without rebuild):
 ```bash

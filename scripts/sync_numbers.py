@@ -8,9 +8,9 @@ Scans actual code to get current counts (tests, scripts, hooks, endpoints,
 etc.) and updates documentation files that reference these numbers.
 
 USAGE:
-    python scripts/sync_numbers.py           # Scan + report (dry run)
-    python scripts/sync_numbers.py --fix     # Scan + update files
-    python scripts/sync_numbers.py --json    # Machine-readable output
+    ./scripts/python_runtime.sh scripts/sync_numbers.py           # Dry run
+    ./scripts/python_runtime.sh scripts/sync_numbers.py --fix     # Update
+    ./scripts/python_runtime.sh scripts/sync_numbers.py --json    # JSON
 
 Part of the "Simplify Agent Documentation Work" initiative (Session 91).
 """
@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import inspect
+import json
 import re
 import sys
 from dataclasses import dataclass
@@ -31,11 +32,13 @@ from _lib.output import StatusLine, print_json
 # ─── Targets ─────────────────────────────────────────────────────────────────
 
 DOCS_TO_SYNC = [
+    REPO_ROOT / "AGENTS.md",
     REPO_ROOT / "README.md",
     REPO_ROOT / "llms.txt",
     REPO_ROOT / "CLAUDE.md",
     REPO_ROOT / ".github" / "copilot-instructions.md",
     REPO_ROOT / "docs" / "getting-started" / "agent-bootstrap.md",
+    REPO_ROOT / "docs" / "getting-started" / "mac-mini-setup.md",
 ]
 
 
@@ -51,6 +54,7 @@ class Metrics:
     hook_count: int = 0
     hook_file_count: int = 0
     endpoint_count: int = 0
+    openapi_path_count: int = 0
     router_count: int = 0
     api_public_count: int = 0
     api_private_count: int = 0
@@ -63,6 +67,7 @@ class Metrics:
             "hook_count": self.hook_count,
             "hook_file_count": self.hook_file_count,
             "endpoint_count": self.endpoint_count,
+            "openapi_path_count": self.openapi_path_count,
             "router_count": self.router_count,
             "api_public_count": self.api_public_count,
             "api_private_count": self.api_private_count,
@@ -136,7 +141,12 @@ def scan_hooks() -> tuple[int, int]:
 
 
 def scan_endpoints() -> tuple[int, int]:
-    """Count API endpoints and router files. Returns (endpoint_count, router_count)."""
+    """Count OpenAPI HTTP operations and router modules.
+
+    The root application owns one HTTP operation outside ``routers/`` and the
+    WebSocket router is intentionally outside OpenAPI. Count those boundaries
+    explicitly so coincidentally equal HTTP/WebSocket totals cannot hide drift.
+    """
     routers_dir = REPO_ROOT / "fastapi_app" / "routers"
     if not routers_dir.exists():
         return 0, 0
@@ -151,10 +161,28 @@ def scan_endpoints() -> tuple[int, int]:
     for f in router_files:
         content = f.read_text(encoding="utf-8", errors="ignore")
         endpoint_count += len(
-            re.findall(r"@router\.(get|post|put|delete|patch|websocket)\b", content)
+            re.findall(r"@router\.(get|post|put|delete|patch)\b", content)
+        )
+
+    app_file = REPO_ROOT / "fastapi_app" / "main.py"
+    if app_file.exists():
+        content = app_file.read_text(encoding="utf-8", errors="ignore")
+        endpoint_count += len(
+            re.findall(r"@app\.(get|post|put|delete|patch)\b", content)
         )
 
     return endpoint_count, len(router_files)
+
+
+def scan_openapi_paths() -> int:
+    """Count distinct paths in the independently checked OpenAPI baseline."""
+
+    baseline = REPO_ROOT / "fastapi_app" / "openapi_baseline.json"
+    if not baseline.exists():
+        return 0
+    spec = json.loads(baseline.read_text(encoding="utf-8"))
+    paths = spec.get("paths", {})
+    return len(paths) if isinstance(paths, dict) else 0
 
 
 def scan_api_functions() -> tuple[int, int]:
@@ -196,6 +224,7 @@ def scan_all() -> Metrics:
     m.script_count = scan_scripts()
     m.hook_count, m.hook_file_count = scan_hooks()
     m.endpoint_count, m.router_count = scan_endpoints()
+    m.openapi_path_count = scan_openapi_paths()
     m.api_public_count, m.api_private_count = scan_api_functions()
     m.component_count = scan_components()
     return m
@@ -279,6 +308,13 @@ def get_update_rules() -> list[UpdateRule]:
             "{endpoints} endpoints across {routers} routers",
             "endpoint_router",
         ),
+        # AGENTS.md — exact OpenAPI and router-module boundary
+        (
+            "AGENTS.md",
+            r"(\d+) OpenAPI HTTP operations across (\d+) router modules",
+            "{endpoints} OpenAPI HTTP operations across {routers} router modules",
+            "endpoint_router",
+        ),
         # agent-bootstrap.md — endpoint/router count
         (
             "docs/getting-started/agent-bootstrap.md",
@@ -286,12 +322,43 @@ def get_update_rules() -> list[UpdateRule]:
             "{endpoints} endpoints across {routers} routers",
             "endpoint_router",
         ),
+        (
+            "docs/getting-started/agent-bootstrap.md",
+            r"(\d+) OpenAPI HTTP operation endpoints across (\d+) router modules",
+            "{endpoints} OpenAPI HTTP operation endpoints across {routers} router modules",
+            "endpoint_router",
+        ),
+        (
+            "docs/getting-started/agent-bootstrap.md",
+            r"all (\d+) current OpenAPI HTTP operations",
+            "all {value} current OpenAPI HTTP operations",
+            "endpoint_count",
+        ),
+        (
+            "docs/getting-started/agent-bootstrap.md",
+            r"scanner currently matches (\d+) OpenAPI paths",
+            "scanner currently matches {value} OpenAPI paths",
+            "openapi_path_count",
+        ),
         # agent-bootstrap.md — public function and private implementation counts
         (
             "docs/getting-started/agent-bootstrap.md",
             r"(\d+) public API functions; implementations split across `beam_api\.py`, `column_api\.py`, and `common_api\.py` \((\d+) private helpers\)",
             "{public} public API functions; implementations split across `beam_api.py`, `column_api.py`, and `common_api.py` ({private} private helpers)",
             "api_functions",
+        ),
+        # mac-mini-setup.md — active architecture snapshot
+        (
+            "docs/getting-started/mac-mini-setup.md",
+            r"REST backend \((\d+) OpenAPI operations\)",
+            "REST backend ({value} OpenAPI operations)",
+            "endpoint_count",
+        ),
+        (
+            "docs/getting-started/mac-mini-setup.md",
+            r"routers/\s+#\s+(\d+) routers",
+            "routers/                #   {value} routers",
+            "router_count",
         ),
     ]
 
@@ -339,6 +406,28 @@ def find_updates(metrics: Metrics) -> list[Update]:
             elif metric_name == "router_count":
                 old_val = int(match.group(1))
                 new_val = metrics.router_count
+                if old_val == new_val:
+                    continue
+                new_text = (
+                    line[: match.start()]
+                    + template.format(value=new_val)
+                    + line[match.end() :]
+                )
+
+            elif metric_name == "endpoint_count":
+                old_val = int(match.group(1))
+                new_val = metrics.endpoint_count
+                if old_val == new_val:
+                    continue
+                new_text = (
+                    line[: match.start()]
+                    + template.format(value=new_val)
+                    + line[match.end() :]
+                )
+
+            elif metric_name == "openapi_path_count":
+                old_val = int(match.group(1))
+                new_val = metrics.openapi_path_count
                 if old_val == new_val:
                     continue
                 new_text = (
@@ -466,6 +555,7 @@ def main() -> int:
     print(
         f"  Endpoints:   {metrics.endpoint_count} across {metrics.router_count} routers"
     )
+    print(f"  OpenAPI paths: {metrics.openapi_path_count}")
     print(
         f"  API funcs:   {metrics.api_public_count} public + {metrics.api_private_count} private"
     )

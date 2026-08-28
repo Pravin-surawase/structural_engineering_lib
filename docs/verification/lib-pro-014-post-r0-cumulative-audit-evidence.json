@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "LIB-PRO-014-POST-R0-CUMULATIVE-AUDIT-EVIDENCE",
+  "task_id": "LIB-PRO-014-POST-R0-CUMULATIVE-AUDIT",
+  "observed_at_utc": "2026-08-28T06:00:05Z",
+  "status": "LOCAL_AUDIT_AND_ROOT_CAUSE_REPAIR_COMPLETE_PENDING_IMMUTABLE_CANDIDATE_AND_HOSTED_CLOSEOUT",
+  "audit_boundary": {
+    "public_tag": "v0.24.0a1",
+    "public_tag_commit": "71b7065216d4266d63ad6b31bd39bba81fa16efc",
+    "public_tag_tree": "221de5561bf6419396a2c20697c574124d721694",
+    "accepted_r0_merge": "b1ba36e3e9c4a102d23f1d76faed2ff043a3537f",
+    "accepted_r0_tree": "81854f068add5b66b0763dfa2aaeff231616b8e9",
+    "accepted_r0_pr": 884,
+    "delta_commits": 30,
+    "delta_files": 244,
+    "delta_insertions": 70112,
+    "delta_deletions": 1601,
+    "branch": "codex/lib-pro-014-post-r0-cumulative-audit",
+    "candidate_commit": "RECORDED_EXTERNALLY_AFTER_COMMIT",
+    "candidate_tree": "RECORDED_EXTERNALLY_AFTER_COMMIT"
+  },
+  "frozen_inventory": {
+    "supported_engineering_families": 13,
+    "advertised_python_and_cli_entries": 28,
+    "http_operations": 90,
+    "openapi_paths": 89,
+    "router_modules": 27,
+    "websocket_routes": 1,
+    "openapi_schemas": 455,
+    "public_python_functions": 100,
+    "private_python_helpers": 21
+  },
+  "audit_outcome": {
+    "engineering_calculation_defects_reproduced": 0,
+    "facade_or_contract_defects_reproduced": 0,
+    "golden_outcome_changes": 0,
+    "engineering_owner_changes": 0,
+    "main_process_control_defects_confirmed": 2,
+    "release_authorization": "NOT_GRANTED",
+    "professional_review": "DEFERRED_UNTIL_OWNER_DECLARES_THE_INTENDED_LIBRARY_COMPLETE"
+  },
+  "confirmed_findings": [
+    {
+      "finding_id": "LIB-PRO-014-F1",
+      "symptom": "Maintained onboarding and agent surfaces still advertised the pre-R0 API, path, router, and Python-function counts.",
+      "main_process_impact": "A new session or external evaluator could audit the wrong public inventory before a release decision.",
+      "root_cause": "The numeric synchronizer counted router HTTP and WebSocket decorators, excluded root HTTP decorators, did not distinguish operations from OpenAPI paths, and did not own every maintained count surface. The old omissions happened to total 90 and masked the drift.",
+      "resolution": "Count root and router HTTP operations without WebSockets, count OpenAPI paths from the checked baseline, cover the maintained count surfaces, and replace the hard-coded router heading with a live label.",
+      "proof": "The live inventory is 90 HTTP operations, 89 paths, 27 router modules, and 100 public plus 21 private Python functions. The synchronizer reports zero updates, and a disposable eight-vector stale-count challenge repairs every owned variant."
+    },
+    {
+      "finding_id": "LIB-PRO-014-F2",
+      "symptom": "The advertised ./run.sh dev command failed from the clean linked audit worktree even though the maintained Python and Node runtime selectors were healthy.",
+      "main_process_impact": "The normal local evaluator journey could not start the product from the repository's standard isolated-worktree workflow.",
+      "root_cause": "The full-stack launcher hard-coded worktree-local .venv Python and uvicorn paths instead of using scripts/python_runtime.sh, so it could not reuse the primary checkout interpreter with source binding.",
+      "resolution": "Route Python checks, imports, Node selection, and uvicorn startup through the worktree-aware launcher; require that launcher as the key file; and use deterministic npm ci when dependencies are absent.",
+      "proof": "Shell syntax and focused contract tests pass, ./run.sh dev --check-only passes, and a real launcher cycle reports healthy FastAPI plus listening React before clean signal-driven shutdown."
+    }
+  ],
+  "sampled_evidence": {
+    "family_facade_and_recipe_selection": "PASS_13",
+    "canonical_beam_selection": "PASS_18",
+    "changed_python_test_files_since_public_tag": "PASS_1050_FROM_30_FILES",
+    "changed_fastapi_test_files_since_public_tag": "PASS_200_FROM_10_FILES",
+    "react": "PASS_LINT_283_TESTS_AND_PRODUCTION_BUILD",
+    "external_preview_verifier": "PASS_13_JOURNEYS_ZERO_UNOWNED_PATHS_ALL_VECTOR_CLASSES",
+    "public_route_safety": "PASS_21_PYTHON_TARGETS_AND_5_FASTAPI_TARGETS",
+    "readiness_audit": "PASS_23_FAIL_0_WARNING_1_LEGACY_CENSUS_ONLY",
+    "architecture_and_imports": "PASS_FROM_ACCEPTED_R0_AND_REPLAYED_AUDIT_CONTROLS",
+    "r0_package_source_diff": "PASS_NO_CHANGES_FROM_ACCEPTED_R0_MERGE",
+    "browser_default_beam_rest_journey": "PASS",
+    "browser_bbs_export_http": "PASS_200",
+    "browser_product_console_errors": 0,
+    "worktree_full_stack_launcher": "PASS_FASTAPI_AND_REACT_START_STOP",
+    "normal_hooks": "PENDING_IMMUTABLE_CANDIDATE",
+    "quick_gate": "PASS_10_OF_10_WITH_3_EXACT_RECEIPTS_REUSED",
+    "full_gate": "PASS_32_OF_32_AFTER_GENERATED_CALLER_LEDGER_REFRESH_WITH_15_EXACT_RECEIPTS_REUSED",
+    "efficiency": "PASS_ONE_PARENT_ZERO_SUBAGENTS_PROVIDER_BILLING_USAGE_NOT_CLAIMED",
+    "hosted_checks": "PENDING_PR"
+  },
+  "non_findings_and_holds": {
+    "legacy_input_validation_warning": "UNCHANGED_SINCE_PUBLIC_TAG_AND_ALREADY_DELEGATED_OR_VALIDATED_NOT_A_REPRODUCED_DEFECT",
+    "nanoid_advisory": "TRANSITIVE_DEV_ONLY_NO_PRODUCT_CALLER_AND_OVERLAPS_ACTIVE_DEPENDABOT_LOCKFILE_CANDIDATES",
+    "threejs_console_warnings": "DEPRECATION_WARNINGS_ONLY_NO_PRODUCT_ERROR_OR_OUTCOME_CHANGE",
+    "browser_native_download_event": "NOT_OBSERVED_BUT_THE_SAME_BBS_API_REQUEST_RETURNED_HTTP_200",
+    "release_artifact": "PUBLIC_0_24_0A1_PREDATES_THE_AUDITED_S0_B0_F0_R0_PROGRAMME",
+    "windows_excel_etabs": "NOT_OPENED_NOT_MUTATED_NOT_REQUIRED",
+    "practicing_engineer_review": "HELD_UNTIL_THE_OWNER_DECLARES_THE_INTENDED_LIBRARY_COMPLETE",
+    "tag_or_publication": "NOT_AUTHORIZED_NOT_PERFORMED"
+  },
+  "generated_dependent_refresh": {
+    "symptom": "The first consolidated gate reached 31 of 32 because the compatibility caller ledger retained one current-brief reference removed by the audit handoff rewrite; staging the new task evidence then introduced its expected preserved reference.",
+    "root_cause": "The compatibility ledger intentionally scans current tracked callers, including the next-session brief and staged verification evidence. Replacing the R0 brief removed its structural_lib.design caller, while indexing this evidence registered one out-of-scope preserved caller.",
+    "resolution": "Regenerated only the maintained API classification owners after the final task evidence was staged and confirmed the classification registry itself was unchanged.",
+    "proof": "The final ledger has 1625 caller records, zero blocked ambiguous callers, its check passes, and the consolidated gate passes 32 of 32."
+  },
+  "version_recommendation": {
+    "recommended_next_version": "v0.24.0a2",
+    "reason": "A second v0.24 alpha truthfully carries the accepted S0/B0/F0/R0 API and multi-code preview programme without consuming the roadmap's v0.25 ACI 318 scope.",
+    "selected": false,
+    "authorized": false,
+    "tag_created": false,
+    "published": false
+  },
+  "retention": {
+    "protected_source_content_read_or_tracked": false,
+    "windows_lane_opened_or_mutated": false,
+    "unrelated_worktree_or_ref_mutated": false,
+    "detached_dirty_e54a_lane": "PRESERVED_UNTOUCHED",
+    "branch_worktree_ref_archive_issue_or_retained_data_deleted": false,
+    "destructive_action_performed": false
+  },
+  "completion_boundary": "Freeze one immutable audit candidate, pass normal hooks and every required hosted changed-path check, and merge only the unchanged reviewed head. A later owner-authorized release-selection task may select v0.24.0a2; no tag or publication belongs to this audit."
+}

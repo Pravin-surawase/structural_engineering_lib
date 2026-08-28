@@ -5,6 +5,132 @@
 
 ---
 
+## 2026-08-28 — Session: LIB-PRO-014 Post-R0 Cumulative Audit
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents).
+
+**Branch:** `codex/lib-pro-014-post-r0-cumulative-audit`.
+
+**Focus:** Audit the complete public-tag-to-accepted-R0 programme, repair only
+confirmed main-process misses before the next release decision, and preserve
+all engineering owners, protected evidence lanes, and held claim boundaries.
+
+**Completed:**
+
+- Proved public tag `v0.24.0a1` at `71b70652...`, tree `221de556...`, and fresh
+  accepted R0 `origin/main` at merge `b1ba36e3...`, tree `81854f06...`. Froze
+  the exact 30-commit, 244-file delta and inspected the live branch, upstream,
+  worktree, operations, open PRs, sibling candidates, and overlap before writes.
+- Audited all 13 supported family construction/facade journeys, distinct
+  request/result/error and status classes, canonical beam goldens, public route
+  safety, generated classification, exact-wheel evidence, changed tests,
+  frontend build, and a live browser default-beam/BBS journey. No engineering
+  calculation, calculation-owner, golden-outcome, supported-family, or facade-
+  contract defect was reproduced; accepted R0 package source remains unchanged.
+- Repaired two confirmed control defects at their roots: the maintained API
+  inventory now distinguishes 90 HTTP operations, 89 OpenAPI paths, 27 routers,
+  one WebSocket, and 100 public plus 21 private Python functions; the normal
+  full-stack launcher now uses the worktree-aware Python runtime instead of a
+  nonexistent linked-worktree `.venv`.
+- Added regression controls for the HTTP/path/WebSocket boundary, all eight
+  maintained count surfaces, and worktree-bound launcher startup. The standard
+  launcher passes preflight and a real healthy FastAPI + React start/stop cycle.
+- Recorded the cumulative audit in
+  `docs/verification/lib-pro-014-post-r0-cumulative-audit-evidence.json`. The
+  recommendation is `v0.24.0a2`, but version selection, tag, publication,
+  Windows application evidence, and practicing-engineer review were not run or
+  claimed. The newer owner decision defers that review until the owner declares
+  the intended library complete.
+
+### Issues encountered
+
+- Maintained onboarding and agent surfaces still reported the pre-R0 endpoint,
+  path, router, and Python-function inventory even though the accepted R0 API
+  had advanced.
+- `./run.sh dev` failed from the clean linked audit worktree because it required
+  `.venv/bin/python` and `.venv/bin/uvicorn` inside that worktree.
+- The first frontend check stopped because the isolated worktree did not yet
+  have its ignored dependency directory. The browser download watcher did not
+  emit a native download event even though the same BBS API call returned 200.
+- Several first-pass command guesses used unsupported options, and the first
+  disposable count-challenge harness omitted its dynamic module registration.
+- The first consolidated gate reached 31/32 because the compatibility caller
+  ledger still retained one maintained caller from the replaced R0 briefing.
+- Staging the new audit evidence registered its expected preserved API caller,
+  requiring the generated ledger to be frozen once more after indexing.
+- The first normal commit-hook pass rejected the rewritten briefing because its
+  required section used sentence case, its state table lacked the exact
+  maintained `Current` and `Next` control-row labels, and its receipt label used
+  a descriptive synonym.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `sync_numbers.py` excluded root application HTTP
+  decorators, included WebSocket decorators, did not own the independent path
+  count, and did not cover every maintained count surface. Coincidentally equal
+  totals masked the drift. Resolution: make the boundaries explicit, read paths
+  from the checked OpenAPI baseline, expand maintained update rules, and remove
+  the hard-coded router heading. Evidence: live scan reports 90 operations, 89
+  paths, 27 routers, 100/21 Python functions, zero updates; scanner boundary and
+  eight-surface stale-vector regressions pass.
+- Confirmed root cause: `launch_stack.sh` bypassed the repository's maintained
+  linked-worktree runtime selector. Resolution: route Python version/import,
+  Node selection, and uvicorn through `scripts/python_runtime.sh`, require that
+  launcher as the key file, and use lockfile-pinned `npm ci` if dependencies are
+  absent. Evidence: syntax, focused contracts, `./run.sh dev --check-only`, and
+  a real FastAPI/React start-stop cycle pass with both ports clean afterward.
+- Confirmed root cause: the isolated worktree intentionally does not share
+  ignored `node_modules`. Resolution: install the frozen lockfile with the
+  maintained pinned Node launcher, then run lint, 283 tests, and the production
+  build. The `nanoid` advisory is transitive development-only, has no product
+  caller, and overlaps active Dependabot lockfile PRs, so it is not another
+  audit candidate.
+- The missing browser download event did not reproduce an export defect: the
+  inspected request returned HTTP 200 and the UI/REST design journey passed.
+  Unsupported command options and the disposable harness setup were corrected
+  without repository mutation or repeated broad suites. ⚠️ TERMINAL ISSUE:
+  unsupported first-pass flags and a missing temporary `sys.modules` binding
+  were replaced by the documented invocations and a corrected disposable
+  harness.
+- Confirmed root cause: the compatibility ledger intentionally scans the
+  current next-session brief, and the audit rewrite removed its prior
+  `structural_lib.design` caller. It also scans tracked verification evidence,
+  so the new audit record appeared only after staging. Resolution: regenerate
+  only the maintained API classification owners after the final files were
+  indexed; the classification registry remained unchanged, the final ledger
+  has 1,625 caller records and zero blocked ambiguous callers, and the affected
+  check plus consolidated gate pass.
+- Confirmed root cause: the session-document checker requires the literal
+  `Required Reading` heading, canonical `Current` and `Next` table rows, and the
+  literal `Git handoff receipt` label, while the rewrite used descriptive
+  variants. Resolution: restore those exact control fields without changing
+  their content. Evidence: the affected session-document hook and the repeated
+  normal commit-hook path pass.
+
+### Validation
+
+- Focused family/beam: 13 family recipe/convergence checks and 18 canonical beam
+  checks pass; changed-tag selections pass 1,050 Python and 200 FastAPI tests.
+- Frontend/browser: lint, 283 tests, production build, live default-beam REST
+  design, BBS HTTP 200, zero product console errors, and full-stack launcher
+  start/stop pass.
+- Audit controls: external preview passes 13 journeys with zero unowned paths;
+  public-route safety passes 21 Python and five FastAPI targets; readiness is
+  23 pass, zero fail, one unchanged legacy-census warning.
+- Architecture passes 233 files with zero violations; circular imports pass 212
+  modules with zero cycles; structural-library imports pass 269 files and 1,701
+  imports with zero broken. OpenAPI is current at 90 operations/455 schemas;
+  control owns 119 operations and all 105 scripts; context and instruction
+  composition pass.
+- The corrected consolidated repository gate passes 32/32 with 15 exact
+  receipts reused; the final quick gate passes 10/10 with three reused. Token-
+  efficiency policy passes with one parent and zero subagents; provider billing
+  tokens/cost remain unavailable and are not estimated. Normal hooks, final
+  session closeout, and hosted checks are recorded at candidate closeout.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-014-post-r0-cumulative-audit-git-handoff-receipt.json`
+
 ## 2026-08-28 — Session: LIB-PRO-012 R0 External-Preview Candidate
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents).
