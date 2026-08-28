@@ -5,6 +5,129 @@
 
 ---
 
+## 2026-08-28 — Session: LIB-PRO-012 R0 External-Preview Candidate
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents).
+
+**Branch:** `codex/lib-pro-012-r0-external-preview-candidate`.
+
+**Focus:** Execute authorized R0 Packets G-I: external-preview documentation,
+generated contract gates, cumulative exact-artifact evidence, and the owner
+decision package without changing engineering calculation owners or entering
+held Windows/application/release/professional-review scope.
+
+**Completed:**
+
+- Proved fresh `origin/main` and worktree base
+  `879d32caffbd7cbbf66e3d5ac6b0fd4f6634f93e`, tree
+  `c7ebc8266e9ba75f6b859bcc76aca9260319bd4f`, with accepted F0
+  `59ef74c0...` and B0 `44ef7bc4...` in ancestry and Windows rebind PR #883
+  integrated. Inspected branch/upstream, operations, PRs, worktrees, stashes,
+  and overlap before writes; no ambiguous or overlapping candidate blocked R0.
+- Completed explicit field decisions for all promoted request-schema leaves,
+  preserved the accepted B0 beam overrides, registered 13 canonical family
+  cookbook/contract/compatibility owners, exposed root `structural_lib.design`,
+  and generated the classification, compatibility ledger, contract reference,
+  family index, and 13 executable recipes from maintained runtime owners.
+- Expanded release UAT to 28 advertised entries (15 CLI plus 13 Python family
+  journeys). The R0 gate reports zero unowned promoted fields and passes every
+  distinct finite, boolean, sign/range, enum/topology, identity, relation,
+  cardinality, unknown, missing-group, compatibility, and JSON-consumer class.
+- Corrected public install/version/security/migration/testing guidance. Public
+  PyPI/GitHub `0.24.0a1` remains explicitly separate because it predates
+  S0/B0/F0/R0; no release or publication was performed.
+- Built wheel SHA-256 `53e0485b...c39d4` and sdist SHA-256
+  `a08f4145...b83ee`; both pass package checks. The disposable target-installed
+  wheel proves its import origin and passes all 13 recipes, R0 vectors,
+  consumers, and 29 UAT cases source-free.
+- Preserved all calculation owners, golden engineering outcomes, protected
+  sources, unrelated lanes, and the dirty detached `e54a` worktree. Windows,
+  Excel, ETABS, workbooks, models, browser evidence, professional approval,
+  release, and publication were not opened, run, mutated, or claimed.
+
+### Issues encountered
+
+- Pydantic accepted integer `1` for acknowledgement fields typed as
+  `Literal[True]`, weakening the advertised boolean intake class.
+- The first broad Python verdict was lost at the command-tool boundary. The
+  required bounded rerun then reported 39 failures across control metadata,
+  workflow inputs, DXF fixtures/assertions, research safety, and torsion error
+  assertions.
+- New control operations initially left the generated legacy automation
+  projection stale, and the new `SECURITY.md` initially lacked a verification
+  impact owner.
+- The first exact-wheel R0 probe failed after importing from the correct
+  disposable install because an older UAT assertion required the global
+  virtual-environment site-packages directory.
+- The first full gate stopped at 30/32 on a stale public API manifest and two
+  governance projections. After their root repair, the next attempt reached
+  31/32 because the compatibility caller ledger still reflected the prior UAT
+  import path.
+- The broader legacy static validation census still reports 433 `UNPROVEN`
+  parameters outside the 13 promoted workflows.
+
+### Root causes and resolutions
+
+- Confirmed root cause: Python/Pydantic literal equality permits `1 == True`
+  before identity-strict interpretation. Resolution: one shared
+  `StrictPublicModel` before-validator rejects non-boolean values for literal
+  boolean fields. Eleven applicable family boolean vectors prove rejection;
+  no calculation formula changed.
+- Confirmed root cause: the first output had no durable receipt. Resolution:
+  repeat only the two required broad commands with bounded output. FastAPI
+  passed 526 tests. The Python failures were traced to accepted strict
+  contracts outpacing stale test inputs/fixtures/messages/counts, plus one DXF
+  test selecting a later bar-mark label instead of the left-aligned title
+  origin. Tests and canonical counts were reconciled without altering
+  calculations; affected clusters pass and the final broad suite passes 7,165
+  tests with three skips and six deselections. ⚠️ TERMINAL ISSUE: the initial
+  broad output vanished at the tool boundary -> reran once because no verdict
+  could be proved.
+- Confirmed root cause: registry and impact projections require explicit
+  regeneration/ownership whenever scripts or root documents are added.
+  Resolution: regenerate `automation-map.json`, register all 105 top-level
+  scripts across 119 operations, and add `SECURITY.md` to the docs rule. Both
+  control and the seven-domain/28-rule verification manifest pass.
+- Confirmed root cause: the R0 verifier proved a temporary `--target` install,
+  then duplicated the proof through a UAT helper designed for normal purelib
+  installs. Resolution: the R0 verifier owns the exact installed-root assertion
+  once and calls UAT without the incompatible duplicate. Exact-wheel evidence
+  passes with the recorded origin and final rebuilt hash.
+- Confirmed root cause: the new root security document advanced the maintained
+  root-file inventory, the package-layer UAT imported upward into the public
+  facade, and generated public signatures/caller records predated the final R0
+  layout. Resolution: raise the exact root inventory from 20 to 21, keep the
+  package UAT within services, move the README facade replay to the external R0
+  verifier, and regenerate the API manifest/classification/compatibility
+  owners. Focused checks pass and the consolidated gate passes 32/32.
+- Confirmed scope disposition: `UNPROVEN` in the broad static census is not a
+  reproduced defect by itself. Resolution: retain the exact 151-function,
+  865-parameter census as residual evidence and keep it distinct from the
+  promoted recursive gate, which reports zero unowned fields.
+
+### Validation through content freeze
+
+- Focused R0 tests: 12 pass; architecture: 232 files / zero violations;
+  circular imports: 212 modules / zero cycles; imports: 745 files / 5,382
+  imports / zero broken; changed Python format/lint and configured mypy pass.
+- Broad Python: 7,165 pass, 3 skip, 6 deselect. FastAPI: 526 pass.
+- Generated API/classification/compatibility/docs, 13 current recipes, 29-case
+  UAT, 28 advertised entries, exact-wheel source-free replay, control plane,
+  and verification manifest pass.
+- Full repository gate: 32/32 pass after the generated-dependent repair; the
+  final verdict reused 15 exact content/runtime receipts and reran every
+  invalidated check. Quick gate passes 10/10 and token-efficiency policy passes;
+  the milestone usage checkpoint records one parent, zero subagents, and no
+  provider token/cost claim. Normal hooks, immutable candidate, read-only
+  session closeout, hosted checks, and merge remain pending.
+
+**Task evidence:**
+`docs/verification/lib-pro-012-r0-external-preview-evidence.json` and
+`docs/verification/lib-pro-012-r0-owner-decision-package.json`.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-012-r0-git-handoff-receipt.json`
+
 ## 2026-08-28 — Session: LIB-PRO-013 Windows F0 source-lane rebind
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents).

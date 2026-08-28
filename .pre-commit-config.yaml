@@ -168,7 +168,14 @@ repos:
         entry: ./scripts/python_runtime.sh scripts/generate_api_classification.py --check
         language: system
         pass_filenames: false
-        files: ^(Python/structural_lib/(__init__|api)\.py|Python/structural_lib/services/api\.py|scripts/generate_api_classification\.py|docs/reference/api-classification\.json)$
+        files: ^(Python/structural_lib/(__init__|api)\.py|Python/structural_lib/services/(api|family_facade_registry)\.py|Python/structural_lib/services/contracts/(beam|common|family_f[123])\.py|scripts/generate_api_classification\.py|docs/reference/api-classification\.json)$
+        verbose: true
+      - id: check-family-facade-docs
+        name: Check generated family facade cookbook and reference
+        entry: ./scripts/python_runtime.sh scripts/generate_family_facade_docs.py --check
+        language: system
+        pass_filenames: false
+        files: ^(Python/structural_lib/services/(family_facade_registry|contracts/(beam|common|family_f[123]))\.py|scripts/(generate_family_facade_docs|verify_lib_pro_013_f0_family_artifact)\.py|docs/cookbook/python/.*\.md|docs/reference/family-facade-contracts\.md)$
         verbose: true
       - id: check-beam-tool-manifest
         name: Check catalogue-derived beam tool manifest

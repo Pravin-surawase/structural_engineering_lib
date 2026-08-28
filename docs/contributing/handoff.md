@@ -91,10 +91,12 @@ When encountering persistent errors, collect this information for handoff:
    ./scripts/python_runtime.sh scripts/collect_diagnostics.py > diagnostics.txt
    ```
 
-2. **Enable debug mode** (Streamlit):
+2. **Inspect the active React/FastAPI stack:**
    ```bash
-   DEBUG=1 streamlit run streamlit_app/app.py
+   ./run.sh dev
    ```
+   Reproduce the request and retain the browser console plus FastAPI terminal
+   output. Streamlit is retired.
 
 3. **Check log files:**
    - the versioned task-to-Git receipt (Git identity and holds)

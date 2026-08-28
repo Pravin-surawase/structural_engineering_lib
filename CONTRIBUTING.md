@@ -9,7 +9,7 @@ python3.11 -m venv .venv
 .venv/bin/python -m pip install --upgrade pip
 .venv/bin/python -m pip install -e "Python/[dev]"
 
-./run.sh session start
+./run.sh session begin --task-id <task> --agent <role>
 ./run.sh check --quick
 ```
 
@@ -236,10 +236,14 @@ External contributors can request a release by opening an issue titled `release:
 ## Reporting Issues
 
 When filing a bug, include:
+
 - What you expected vs what happened
 - Input parameters (b, D, span, fck, fy, Mu/Vu)
 - Whether you used Python, CLI, FastAPI, or the React workbench
 - Any files (CSV) you can share
+
+Report suspected software vulnerabilities privately through the process in
+[`SECURITY.md`](SECURITY.md), not in a public issue.
 
 ## Code of Conduct
 

@@ -59,14 +59,15 @@ This document specifies the data contract for 3D visualization of reinforced con
 
 1. **Python → JavaScript**: Serialize beam geometry from `structural_lib.visualization.geometry_3d`
 2. **JavaScript → Three.js**: Parse JSON and render with react-three-fiber
-3. **Bidirectional**: postMessage API for Streamlit Cloud iframe communication
+3. **Application flow**: FastAPI responses consumed by the maintained React
+   workbench; the retired Streamlit iframe transport is not an active surface.
 
 ```
 ┌─────────────────┐     JSON via      ┌─────────────────┐
-│ Python Backend  │ ─────────────────► │ Three.js Viewer │
-│ (structural_lib)│   postMessage      │ (react-three-   │
-│ Beam3DGeometry  │ ◄───────────────── │  fiber)         │
-└─────────────────┘   user events      └─────────────────┘
+│ Python/FastAPI  │ ─────────────────► │ React/R3F View  │
+│ structural_lib  │     HTTP JSON      │ Three.js scene  │
+│ Beam3DGeometry  │                    │ + DOM evidence  │
+└─────────────────┘                    └─────────────────┘
 ```
 
 ## TypeScript Type Definitions

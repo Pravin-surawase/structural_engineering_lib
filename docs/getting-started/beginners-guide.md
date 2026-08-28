@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-28
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -15,7 +15,7 @@ tags: []
 **Importance:** High
 **Version:** 1.0.0
 **Created:** 2025-12-15
-**Last Updated:** 2026-03-29
+**Last Updated:** 2026-08-28
 
 ---
 
@@ -46,24 +46,31 @@ source .venv/bin/activate   # Windows: .venv\Scripts\activate
 ### Step 3: Install the library
 ```bash
 python3 -m pip install --upgrade pip
-python3 -m pip install structural-lib-is456
+python3 -m pip install "structural-lib-is456===0.24.0a1"
 ```
 
 Optional (only if you want DXF drawings):
 ```bash
-python3 -m pip install "structural-lib-is456[dxf]"
+python3 -m pip install "structural-lib-is456[dxf]===0.24.0a1"
 ```
 
 ### Step 4: Run a first check (no files yet)
 Create a new file named `check.py` and paste this:
 ```python
-from structural_lib.codes.is456.beam import flexure
+from structural_lib.design.is456 import beam
 
-res = flexure.design_singly_reinforced(
-    b=300, d=450, d_total=500, mu_knm=150, fck=25, fy=500
+request = beam.load(
+    {
+        "identity": {"member_id": "B1", "story": "GF", "case_id": "ULS-1"},
+        "section": {"span_mm": 5000.0, "b_mm": 300.0, "D_mm": 500.0, "d_mm": 442.0},
+        "materials": {"fck_nmm2": 25.0, "fy_nmm2": 500.0},
+        "actions": {"mu_knm": 150.0, "vu_kn": 80.0, "tu_knm": 0.0},
+        "calculation_basis": {"d_dash_mm": 58.0, "asv_mm2": 100.0},
+    }
 )
-print("Ast required (mm^2):", round(res.ast_required))
-print("Status:", "OK" if res.is_safe else res.error_message)
+result = beam.design(request)
+print("Engineering status:", result.engineering_status)
+print("Ast required (mm^2):", round(result.calculation.flexure.Ast_required))
 ```
 
 Run it:
@@ -73,8 +80,8 @@ python3 check.py
 
 Expected output:
 ```
-Ast required (mm^2): 882
-Status: OK
+Engineering status: PASS
+Ast required (mm^2): 906
 ```
 
 ### Step 5: Run the CLI with a tiny CSV

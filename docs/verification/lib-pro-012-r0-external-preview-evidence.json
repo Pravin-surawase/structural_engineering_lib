@@ -1,0 +1,161 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "LIB-PRO-012-R0-EXTERNAL-PREVIEW-EVIDENCE",
+  "task_id": "LIB-PRO-012-R0",
+  "observed_at_utc": "2026-08-28T04:13:40Z",
+  "status": "R0_LOCAL_IMPLEMENTATION_AND_EVIDENCE_COMPLETE_PENDING_IMMUTABLE_CANDIDATE_AND_HOSTED_CLOSEOUT",
+  "source_identity": {
+    "branch": "codex/lib-pro-012-r0-external-preview-candidate",
+    "source_commit": "879d32caffbd7cbbf66e3d5ac6b0fd4f6634f93e",
+    "source_tree": "c7ebc8266e9ba75f6b859bcc76aca9260319bd4f",
+    "accepted_f0_merge": "59ef74c0ad44da6c313a2ca943c7362158230f38",
+    "accepted_b0_merge": "44ef7bc4e8c98d01f32291730ab77ed16d077823",
+    "windows_rebind_merge": "879d32caffbd7cbbf66e3d5ac6b0fd4f6634f93e",
+    "windows_rebind_pr": 883,
+    "candidate_commit": "RECORDED_EXTERNALLY_AFTER_COMMIT",
+    "candidate_tree": "RECORDED_EXTERNALLY_AFTER_COMMIT"
+  },
+  "programme_authority": {
+    "remediation_plan": "docs/planning/lib-pro-012-external-api-remediation-plan.md",
+    "owner_sequence": "docs/verification/lib-pro-013-owner-sequencing-decision.json",
+    "packets": [
+      "G_DOCUMENTATION_DISCOVERY_AND_MIGRATION",
+      "H_CONTRACT_GENERATED_AUDIT_AND_RELEASE_GATES",
+      "I_CUMULATIVE_EXTERNAL_PREVIEW_CANDIDATE"
+    ],
+    "professional_review_is_intermediate_gate": false,
+    "final_engineer_review": "DEFERRED_UNTIL_ACCEPTED_R0_INTEGRATED_LIBRARY",
+    "release_authorized": false
+  },
+  "delivered_external_preview": {
+    "advertised_family_journeys": 13,
+    "advertised_entry_points_total": 28,
+    "legacy_cli_entries": 15,
+    "family_python_entries": 13,
+    "cookbook_recipes": 13,
+    "request_schema_unowned_leaf_paths": 0,
+    "root_discovery": "structural_lib.design",
+    "generated_contract_owners": [
+      "docs/reference/api-classification.json",
+      "docs/reference/api-compatibility-ledger.json",
+      "docs/reference/family-facade-contracts.md",
+      "docs/cookbook/python/family-facades.md"
+    ],
+    "common_error_contract": "InputContractError with InputIssueV1",
+    "consumer_contract": "finite JSON result projection with preserved PASS/FAIL/HOLD semantics",
+    "engineering_owner_changes": "NONE"
+  },
+  "contract_vectors": {
+    "finite": 13,
+    "boolean": 11,
+    "route_specific_invalid": 13,
+    "sign_or_range": 13,
+    "enum_or_topology": 13,
+    "identity_or_provenance": 13,
+    "cross_field_relation": 3,
+    "collection_cardinality": 1,
+    "unknown_field": 13,
+    "missing_required_group": 13,
+    "compatibility_target": 13,
+    "finite_json_consumer": 13,
+    "outcome": "PASS"
+  },
+  "exact_artifacts": {
+    "distribution": "structural-lib-is456",
+    "version": "0.24.0a1",
+    "wheel": {
+      "filename": "structural_lib_is456-0.24.0a1-py3-none-any.whl",
+      "sha256": "53e0485b4def190872fec452d79e66317ad766be3ad8117c685b575a4c2c39d4",
+      "size_bytes": 822119,
+      "temporary_path": "/tmp/lib-pro-012-r0-artifacts-final.GiDYdn/dist/structural_lib_is456-0.24.0a1-py3-none-any.whl",
+      "twine_check": "PASS",
+      "source_free_import": "PASS_FROM_DISPOSABLE_TARGET_INSTALL",
+      "cookbook_recipes": 13,
+      "release_uat_cases": 29,
+      "advertised_entry_points": 28,
+      "unowned_request_fields": 0
+    },
+    "sdist": {
+      "filename": "structural_lib_is456-0.24.0a1.tar.gz",
+      "sha256": "a08f41458ecce6d59218ebf7508f68477e04b719d4c8e014f0cba19d1c6b83ee",
+      "size_bytes": 688164,
+      "twine_check": "PASS"
+    }
+  },
+  "public_artifact_separation": {
+    "public_version": "0.24.0a1",
+    "public_tag_commit": "71b7065216d4266d63ad6b31bd39bba81fa16efc",
+    "public_wheel_sha256": "b5e0df7b561e8c715f37c602200eaae2c369ec5dc992eec87110a77c1026201a",
+    "public_sdist_sha256": "8c1d6b762a779686be5d17ed0dd9719f7155a5863a764e943a0e1ba9aeb0a53b",
+    "outcome": "PUBLIC_ARTIFACTS_PREDATE_S0_B0_F0_R0_AND_ARE_NOT_THE_R0_CANDIDATE"
+  },
+  "verification": {
+    "focused_r0_tests": "PASS_12",
+    "broad_python": "PASS_7165_WITH_3_SKIPPED_AND_6_DESELECTED",
+    "fastapi": "PASS_526",
+    "architecture": "PASS_232_FILES_0_VIOLATIONS",
+    "imports": "PASS_745_FILES_5382_IMPORTS_0_BROKEN",
+    "circular_imports": "PASS_212_MODULES_0_CYCLES",
+    "format_lint": "PASS_15_CHANGED_PYTHON_FILES",
+    "mypy": "PASS_11_AFFECTED_SOURCE_FILES",
+    "generated_api_and_docs": "PASS",
+    "control_plane": "PASS_119_ACTIVE_OPERATIONS_105_OF_105_SCRIPTS",
+    "verification_manifest": "PASS_7_DOMAINS_28_RULES_UNKNOWN_TO_ALL",
+    "quick_gate": "PASS_10_OF_10_WITH_3_EXACT_RECEIPTS_REUSED",
+    "full_gate": "PASS_32_OF_32_AFTER_GENERATED_DEPENDENT_REPAIR_WITH_15_EXACT_RECEIPTS_REUSED",
+    "efficiency": "PASS_ONE_PARENT_ZERO_SUBAGENTS_PROVIDER_USAGE_NOT_CLAIMED",
+    "normal_hooks": "PENDING_IMMUTABLE_CANDIDATE",
+    "session_end": "PENDING_IMMUTABLE_CANDIDATE",
+    "hosted_checks": "PENDING_PR"
+  },
+  "broader_legacy_static_census": {
+    "command": "scripts/audit_input_validation.py",
+    "functions": 151,
+    "parameters": 865,
+    "proven": 140,
+    "delegated": 153,
+    "unproven": 433,
+    "not_applicable": 139,
+    "interpretation": "Residual whole-repository advanced and compatibility census. UNPROVEN is not a reproduced defect and is not promoted into the 13-workflow release gate. The promoted workflow gate has zero unowned request fields."
+  },
+  "root_cause_repairs": [
+    {
+      "symptom": "Literal boolean acknowledgements accepted integer 1 at Pydantic intake.",
+      "root_cause": "Literal equality treated bool and int as equal before identity-strict validation.",
+      "resolution": "One common StrictPublicModel before-validator rejects non-bool values for Literal true/false fields.",
+      "proof": "Boolean adversarial vectors pass for all 11 applicable family routes."
+    },
+    {
+      "symptom": "The first cumulative Python run reported 39 failures.",
+      "root_cause": "Accepted strict contracts had outpaced stale test inputs, BBS fixtures, error-message assertions, and frozen control counts; one DXF assertion selected a later bar-mark annotation instead of the title origin.",
+      "resolution": "Reconciled tests and control metadata to the maintained contracts without changing calculation owners or golden arithmetic.",
+      "proof": "Affected clusters pass and the frozen broad suite passes 7165 tests."
+    },
+    {
+      "symptom": "The first exact-wheel R0 probe rejected a temporary target install after already proving its origin.",
+      "root_cause": "The R0 verifier also asked the older UAT helper to require the global virtual-environment purelib path.",
+      "resolution": "The R0 verifier owns the temporary installed-root assertion once and runs UAT without the incompatible duplicate assertion.",
+      "proof": "Exact wheel SHA 53e0485b... passes source-free recipes, vectors, consumers, and UAT."
+    }
+  ],
+  "claim_boundary": {
+    "evaluator_ready_alpha_software_candidate": "LOCAL_EVIDENCE_PASS_PENDING_HOSTED_CLOSEOUT",
+    "professional_approval": "NOT_CLAIMED",
+    "engineering_use_approval": "NOT_CLAIMED",
+    "windows_application_acceptance": "NOT_TESTED_NOT_REQUIRED_FOR_R0",
+    "excel_acceptance": "NOT_TESTED",
+    "etabs_acceptance": "NOT_TESTED_TRIAL_EXPORT_FIRST_BOUNDARY_PRESERVED",
+    "browser_accessibility": "NOT_TESTED_NOT_REQUIRED_BY_CHANGED_PATHS",
+    "public_release": "NOT_AUTHORIZED",
+    "publication": "NOT_PERFORMED"
+  },
+  "retention": {
+    "protected_source_content_read_or_tracked": false,
+    "windows_lane_opened_or_mutated": false,
+    "unrelated_worktree_or_ref_mutated": false,
+    "detached_dirty_e54a_lane": "PRESERVED_UNTOUCHED",
+    "temporary_artifacts": "RETAINED_AT_RECORDED_TMP_PATH_FOR_CURRENT_SESSION_EVIDENCE",
+    "destructive_action_performed": false
+  },
+  "completion_boundary": "After an unchanged candidate passes required hosted checks and merges, assign the exact integrated post-R0 library artifact and this cumulative dossier to one practicing structural engineer. Release authorization and Windows application evidence remain separate tasks."
+}

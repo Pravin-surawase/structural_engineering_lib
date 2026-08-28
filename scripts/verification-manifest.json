@@ -96,7 +96,7 @@
       "domains": ["control_plane", "docs", "repository"]
     },
     {
-      "paths": ["scripts/python_runtime.sh", "scripts/check_api.py", "scripts/validate_api_contracts.py", "scripts/generate_api_manifest.py", "scripts/generate_api_classification.py", "scripts/check_architecture_boundaries.py", "scripts/check_circular_imports.py", "scripts/validate_imports.py", "scripts/check_type_annotations.py", "scripts/check_governance.py"],
+      "paths": ["scripts/python_runtime.sh", "scripts/check_api.py", "scripts/validate_api_contracts.py", "scripts/generate_api_manifest.py", "scripts/generate_api_classification.py", "scripts/generate_family_facade_docs.py", "scripts/verify_lib_pro_012_r0_external_preview.py", "scripts/verify_lib_pro_013_f0_family_artifact.py", "scripts/check_architecture_boundaries.py", "scripts/check_circular_imports.py", "scripts/validate_imports.py", "scripts/check_type_annotations.py", "scripts/check_governance.py"],
       "domains": ["python", "fastapi", "docs"]
     },
     {
@@ -124,7 +124,7 @@
       "domains": ["control_plane", "docs"]
     },
     {
-      "paths": ["docs/**", "README.md", "AUTHORS.md", "CHANGELOG.md", "CITATION.cff", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md", "LICENSE", "LICENSE_ENGINEERING.md", "llms.txt"],
+      "paths": ["docs/**", "README.md", "AUTHORS.md", "CHANGELOG.md", "CITATION.cff", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md", "SECURITY.md", "LICENSE", "LICENSE_ENGINEERING.md", "llms.txt"],
       "domains": ["docs"]
     },
     {

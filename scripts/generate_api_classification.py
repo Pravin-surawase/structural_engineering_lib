@@ -25,7 +25,7 @@ from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
 from types import ModuleType
-from typing import Any
+from typing import Any, get_args
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
@@ -224,6 +224,105 @@ def _import_qualified_type(path: str) -> type[Any]:
     if not inspect.isclass(value):
         raise RuntimeError(f"Family request type is not a class: {path}")
     return value
+
+
+def _nested_model_types(root: type[Any]) -> tuple[type[Any], ...]:
+    """Return one Pydantic request type and all nested request model types."""
+
+    found: dict[str, type[Any]] = {}
+    pending = [root]
+    while pending:
+        model = pending.pop()
+        qualified = f"{model.__module__}.{model.__qualname__}"
+        if qualified in found:
+            continue
+        found[qualified] = model
+        for field in getattr(model, "model_fields", {}).values():
+            candidates = [field.annotation]
+            while candidates:
+                candidate = candidates.pop()
+                candidates.extend(get_args(candidate))
+                if (
+                    inspect.isclass(candidate)
+                    and hasattr(candidate, "model_fields")
+                    and candidate is not model
+                ):
+                    pending.append(candidate)
+    return tuple(found[name] for name in sorted(found))
+
+
+def _validator_inventory(root: type[Any]) -> list[dict[str, Any]]:
+    records: list[dict[str, Any]] = []
+    for model in _nested_model_types(root):
+        decorators = getattr(model, "__pydantic_decorators__", None)
+        records.append(
+            {
+                "request_type": f"{model.__module__}.{model.__qualname__}",
+                "field_validators": sorted(getattr(decorators, "field_validators", {})),
+                "model_validators": sorted(getattr(decorators, "model_validators", {})),
+            }
+        )
+    return records
+
+
+def _family_workflow_record(workflow: Any) -> dict[str, Any]:
+    from structural_lib.services.contracts.common import (
+        ValidationDimension,
+        schema_leaf_paths,
+    )
+
+    request_type = _import_qualified_type(workflow.request_type)
+    schema = request_type.model_json_schema(mode="validation")
+    field_contracts = tuple(request_type.field_contracts)
+    contract_paths = {contract.path for contract in field_contracts}
+    leaf_paths = schema_leaf_paths(request_type)
+    unowned = sorted(set(leaf_paths) - contract_paths)
+    if unowned:
+        raise RuntimeError(
+            f"{workflow.journey_id} has unowned advertised fields: {unowned}"
+        )
+    represented = {
+        dimension.value
+        for contract in field_contracts
+        for dimension in contract.dimensions
+    }
+    all_dimensions = {dimension.value for dimension in ValidationDimension}
+    validators = _validator_inventory(request_type)
+    has_request_relation_validator = any(
+        record["model_validators"] for record in validators
+    )
+    return {
+        "journey_id": workflow.journey_id,
+        "module": workflow.module,
+        "request_contract": workflow.request_contract,
+        "request_type": workflow.request_type,
+        "request_schema": schema,
+        "request_schema_sha256": hashlib.sha256(
+            json.dumps(schema, sort_keys=True, separators=(",", ":")).encode()
+        ).hexdigest(),
+        "request_field_contracts": [
+            contract.model_dump(mode="json") for contract in field_contracts
+        ],
+        "request_field_count": len(leaf_paths),
+        "unowned_field_paths": unowned,
+        "represented_validation_dimensions": sorted(represented),
+        "not_applicable_validation_dimensions": sorted(all_dimensions - represented),
+        "validator_inventory": validators,
+        "cross_field_validation_owner": (
+            "STRICT_REQUEST_MODEL"
+            if has_request_relation_validator
+            else f"DELEGATED_TO_MAINTAINED_OWNER:{workflow.compatibility_owner}"
+        ),
+        "result_contract": workflow.result_contract,
+        "validation_contract": workflow.validation_contract,
+        "error_contract": workflow.error_contract,
+        "constructor": workflow.constructor,
+        "operation": workflow.operation,
+        "consumer_contract": workflow.consumer_contract,
+        "compatibility_owner": workflow.compatibility_owner,
+        "cookbook_path": workflow.cookbook_path,
+        "evidence_class": workflow.evidence_class,
+    }
 
 
 def _identity_key(value: object, fallback: str) -> str:
@@ -798,21 +897,7 @@ def build_registry() -> dict[str, Any]:
             workflow.journey_id for workflow in FAMILY_FACADE_WORKFLOWS
         ],
         "family_facade_workflows": [
-            {
-                "journey_id": workflow.journey_id,
-                "module": workflow.module,
-                "request_contract": workflow.request_contract,
-                "request_type": workflow.request_type,
-                "request_schema": _import_qualified_type(
-                    workflow.request_type
-                ).model_json_schema(mode="validation"),
-                "result_contract": workflow.result_contract,
-                "constructor": workflow.constructor,
-                "operation": workflow.operation,
-                "compatibility_owner": workflow.compatibility_owner,
-                "evidence_class": workflow.evidence_class,
-            }
-            for workflow in FAMILY_FACADE_WORKFLOWS
+            _family_workflow_record(workflow) for workflow in FAMILY_FACADE_WORKFLOWS
         ],
         "canonical_support_exports": sorted(_CANONICAL_SUPPORT_EXPORTS),
         "advanced_capability_exports": sorted(

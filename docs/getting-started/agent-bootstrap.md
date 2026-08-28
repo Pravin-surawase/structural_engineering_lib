@@ -447,7 +447,7 @@ curl http://localhost:8000/health           # Should return {"status":"ok"}
 
 # Validate codebase
 ./run.sh check --quick                               # Fast validation (10 checks, <30s)
-./run.sh check                                       # Full validation (31 checks, parallel)
+./run.sh check                                       # Full validation (32 checks, parallel)
 ./run.sh check --category api                        # One category only
 
 # Run tests

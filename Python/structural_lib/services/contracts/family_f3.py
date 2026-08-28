@@ -9,7 +9,10 @@ from typing import Literal
 from pydantic import Field, StrictInt
 
 from structural_lib.services.canonical_family import FamilyIdentityV1
-from structural_lib.services.contracts.common import StrictPublicModel
+from structural_lib.services.contracts.common import (
+    StrictPublicModel,
+    complete_field_contracts_from_schema,
+)
 
 __all__ = [
     "CombinedFootingInputV1",
@@ -318,3 +321,13 @@ class StrapFootingInputV1(StrictPublicModel):
     @property
     def identity(self) -> FamilyIdentityV1:
         return self.identity_source.identity
+
+
+for _request_model in (
+    IsolatedFootingInputV1,
+    CombinedFootingInputV1,
+    StrapFootingInputV1,
+):
+    _request_model.field_contracts = complete_field_contracts_from_schema(
+        _request_model
+    )

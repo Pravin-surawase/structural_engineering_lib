@@ -21,6 +21,28 @@ class FamilyFacadeWorkflowV1:
     compatibility_owner: str
     evidence_class: str
 
+    @property
+    def cookbook_path(self) -> str:
+        slug = (
+            self.journey_id.removeprefix("is456.")
+            .removesuffix("/v1")
+            .replace(".", "-")
+            .replace("/", "-")
+        )
+        return f"docs/cookbook/python/{slug}.md"
+
+    @property
+    def validation_contract(self) -> str:
+        return "field-contract/v1"
+
+    @property
+    def error_contract(self) -> str:
+        return "input-issue/v1 + structural-problem/v1"
+
+    @property
+    def consumer_contract(self) -> str:
+        return "to_dict() -> finite JSON + structural-result-envelope/v2"
+
 
 FAMILY_FACADE_WORKFLOWS = (
     FamilyFacadeWorkflowV1(

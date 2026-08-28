@@ -23,20 +23,20 @@ IS 456 RC Beam Design Library (Python package).
 - **Additional bounded workflows:** braced walls, straight-flight staircases,
   simply supported deep beams, regular interior flat slabs, symmetric combined
   footings, and property-line strap footings expose case-qualified APIs.
-- **Release evidence:** exact-wheel UAT covers 29 positive and negative cases
-  across all 12 advertised commands, with hosted and local verdicts aligned.
+- **Release evidence:** exact-wheel UAT covers 29 positive and negative cases,
+  15 CLI entries, and the 13 canonical family construction journeys.
 
 ## Install
 
 ```bash
-pip install structural-lib-is456===0.24.0a1       # prepared candidate artifact
-pip install "structural-lib-is456[dxf]===0.24.0a1" # candidate with DXF export
+pip install structural-lib-is456===0.24.0a1        # exact public Alpha
+pip install "structural-lib-is456[dxf]===0.24.0a1" # Alpha with DXF export
 python -m structural_lib install-preflight          # interpreter/origin/extras
 ```
 
-`0.24.0a1` is prepared but not tagged or published. These pins are exercised
-against the exact local wheel during candidate verification; `0.23.1a2` remains
-the current public Alpha unless a separate owner-authorized release occurs.
+`0.24.0a1` is the current public Alpha prerelease on PyPI and GitHub. Pip does
+not select prereleases by default from a version range; use the exact pin when
+evaluating this artifact. Later source revisions are not the immutable release.
 
 > **Requires Python 3.11+.** On Python 3.9–3.10, pip installs the older v0.16.x (beam-only, no column/footing).
 
@@ -44,19 +44,34 @@ the current public Alpha unless a separate owner-authorized release occurs.
 
 ## If You Want To…
 
-### Design a Beam (IS 456 flexure + shear)
+### Design a Beam Through the Canonical Facade
 
 ```python
-from structural_lib import design_beam_is456
+from structural_lib.design.is456 import beam
 
-result = design_beam_is456(
-    units="IS456", b_mm=300, D_mm=500, d_mm=450,
-    fck_nmm2=25, fy_nmm2=500,
-    mu_knm=150, vu_kn=100,
+request = beam.load(
+    {
+        "identity": {"member_id": "B1", "story": "GF", "case_id": "ULS-1"},
+        "section": {
+            "span_mm": 5000.0,
+            "b_mm": 300.0,
+            "D_mm": 500.0,
+            "d_mm": 442.0,
+        },
+        "materials": {"fck_nmm2": 25.0, "fy_nmm2": 500.0},
+        "actions": {"mu_knm": 150.0, "vu_kn": 80.0, "tu_knm": 0.0},
+        "calculation_basis": {"d_dash_mm": 58.0, "asv_mm2": 100.0},
+        "source_provenance": "analysis-envelope:ULS-1",
+    }
 )
-print(f"Ast = {result.flexure.Ast_required:.0f} mm²")
-print(f"Safe? {result.flexure.is_safe}")
+result = beam.design(request)
+
+print(result.engineering_status)
+print(result.to_dict())
 ```
+
+The complete 13-journey cookbook is maintained at
+`docs/cookbook/python/family-facades.md` in the source repository.
 
 ### Get Detailing (bar sizes, stirrups, cut lengths)
 

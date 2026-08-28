@@ -1,6 +1,6 @@
 {
   "root": {
-    "max_files": 20
+    "max_files": 21
   },
   "docs_root": {
     "max_files": 5

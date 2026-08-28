@@ -15,6 +15,8 @@ Guides, references, evidence, and contributor material for the
 | **Integrate an application** | [Platform guide](developers/platform-guide.md) | guide | Build on the Python and FastAPI interfaces |
 | **Inspect tool readiness** | [Beam tool manifest](reference/beam-tool-manifest.md) | reference | Catalogue-derived schema and review boundary without AI activation |
 | **Look up a function** | [API reference](reference/api.md) | reference | Public signatures, parameters, units, and results |
+| **Run a family recipe** | [Family facade cookbook](cookbook/python/family-facades.md) | guide | Copy-paste payloads for all 13 advertised journeys |
+| **Inspect facade contracts** | [Family facade contracts](reference/family-facade-contracts.md) | reference | Generated signatures, schemas, units, enums, issues, and statuses |
 | **Verify supported evidence** | [Evidence crosswalk](verification/is456-library-first-evidence.md) | evidence | Supported cases, sources, unsafe cases, limits, and release evidence |
 | **Contribute code** | [Development guide](contributing/development-guide.md) | guide | Architecture, validation, and pull-request workflow |
 | **Work as a coding agent** | [Agent bootstrap](getting-started/agent-bootstrap.md) | guide | Repository-specific automation and guardrails |

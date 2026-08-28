@@ -9,7 +9,10 @@ from typing import Literal, Self
 from pydantic import Field, StrictBool, StrictInt, model_validator
 
 from structural_lib.services.canonical_family import FamilyIdentityV1
-from structural_lib.services.contracts.common import StrictPublicModel
+from structural_lib.services.contracts.common import (
+    StrictPublicModel,
+    complete_field_contracts_from_schema,
+)
 
 __all__ = [
     "ColumnActionsV1",
@@ -265,3 +268,15 @@ class TwoWaySlabInputV1(StrictPublicModel):
     materials: SlabMaterialsV1
     reinforcement: TwoWaySlabReinforcementV1
     serviceability_evidence: SlabServiceabilityEvidenceV1
+
+
+for _request_model in (
+    TorsionDesignInputV1,
+    ColumnDesignInputV1,
+    OneWaySlabInputV1,
+    ContinuousOneWaySlabInputV1,
+    TwoWaySlabInputV1,
+):
+    _request_model.field_contracts = complete_field_contracts_from_schema(
+        _request_model
+    )

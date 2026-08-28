@@ -120,6 +120,8 @@ nav:
     - Insights: getting-started/insights-guide.md
   - Reference:
     - API Reference: reference/api.md
+    - Family Facade Contracts: reference/family-facade-contracts.md
+    - Family Facade Cookbook: cookbook/python/family-facades.md
     - IS 456 Formulas: reference/is456-formulas.md
     - Error Codes: reference/error-codes.md
     - Troubleshooting: reference/troubleshooting.md

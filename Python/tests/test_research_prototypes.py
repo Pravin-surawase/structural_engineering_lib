@@ -334,10 +334,10 @@ class TestGenerativeDesign:
 
     # ── Invalid inputs ──
 
-    def test_negative_moment_still_produces_results(self):
-        """Negative moment: design_beam_is456 handles it internally."""
-        result = explore_design_space(span_mm=5000, mu_knm=-50, vu_kn=80)
-        assert len(result.candidates) > 0
+    def test_negative_moment_is_rejected(self):
+        """Negative action magnitudes do not produce candidate designs."""
+        with pytest.raises(ValueError, match="No valid designs found"):
+            explore_design_space(span_mm=5000, mu_knm=-50, vu_kn=80)
 
     def test_zero_span_raises(self):
         with pytest.raises((ValueError, Exception)):

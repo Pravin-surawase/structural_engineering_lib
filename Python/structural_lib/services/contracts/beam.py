@@ -14,6 +14,7 @@ from structural_lib.services.contracts.common import (
     FieldContractV1,
     StrictPublicModel,
     ValidationDimension,
+    complete_field_contracts_from_schema,
 )
 from structural_lib.services.project_beam import EffectiveDepthBasisV1
 
@@ -412,4 +413,6 @@ BEAM_FIELD_CONTRACTS = (
     ),
 )
 
-BeamDesignInputV1.field_contracts = BEAM_FIELD_CONTRACTS
+BeamDesignInputV1.field_contracts = complete_field_contracts_from_schema(
+    BeamDesignInputV1, overrides=BEAM_FIELD_CONTRACTS
+)

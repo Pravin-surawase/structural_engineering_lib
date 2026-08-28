@@ -1,13 +1,13 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-23
+last_updated: 2026-08-28
 doc_type: reference
 complexity: intermediate
 tags: []
 ---
 
-# IS 456 RC Beam Design Library — API Reference
+# IS 456 Structural Library — API Reference
 
 The public result dataclasses `api.ComplianceCaseResult`,
 `api.ComplianceReport`, and `api.DesignAndDetailResult` are Alpha-preview
@@ -20,7 +20,7 @@ approval.
 **Importance:** Critical
 **Document Version:** 0.24.0a1
 **Created:** 2025-01-01
-**Last Updated:** 2026-08-24<br>
+**Last Updated:** 2026-08-28<br>
 
 ---
 
@@ -31,6 +31,27 @@ while torsion and other specialist beam cases remain separate utilities. Column
 interaction workflows are limited to rectangular/square sections with symmetric
 two-face reinforcement idealization. These APIs are design aids for qualified
 review, not professional approval or complete IS 456 coverage.
+
+---
+
+## Canonical family facade namespace
+
+New external construction journeys begin at `structural_lib.design.is456`.
+The package root exposes `design` in `dir(structural_lib)` for discovery, while
+maintained flat/service imports remain compatibility routes with no removal
+schedule.
+
+The [13-journey cookbook](../cookbook/python/family-facades.md) contains one
+copy-paste payload per advertised route. The generated
+[family facade contract reference](family-facade-contracts.md) supplies live
+constructor/operation signatures, request-schema hashes, units, enums,
+structured issue codes, and result/review status guidance. Full schemas and
+per-field validation decisions live under `family_facade_workflows` in
+`api-classification.json`.
+
+These facades construct and delegate. They do not generate loads, geometry,
+topology, geotechnical inputs, evidence, review acceptance, or new engineering
+support.
 
 ---
 

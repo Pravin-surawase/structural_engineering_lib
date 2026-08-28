@@ -1358,3 +1358,28 @@ required before any tag, TestPyPI/PyPI upload, or GitHub Release.
 
 **Full changelog:** See
 [CHANGELOG.md](../../CHANGELOG.md#0240a1--prepared-candidate-unreleased-on-hold)
+
+---
+
+## v0.24.0a1 — Public Alpha publication receipt
+
+**Published (2026-08-24 13:56:48 UTC):** The later owner-authorized release
+cycle published Git tag `v0.24.0a1` at
+`71b7065216d4266d63ad6b31bd39bba81fa16efc` to PyPI and as a GitHub
+prerelease. This append-only receipt supersedes the preparation status above;
+it does not rewrite that historical freeze record.
+
+- wheel: `structural_lib_is456-0.24.0a1-py3-none-any.whl`, 774,739 bytes,
+  SHA-256 `b5e0df7b561e8c715f37c602200eaae2c369ec5dc992eec87110a77c1026201a`;
+- sdist: `structural_lib_is456-0.24.0a1.tar.gz`, 652,423 bytes, SHA-256
+  `8c1d6b762a779686be5d17ed0dd9719f7155a5863a764e943a0e1ba9aeb0a53b`;
+- current exact evaluation install:
+  `pip install structural-lib-is456===0.24.0a1`.
+
+Pip still reports stable `0.23.0` for an unconstrained install because it does
+not select prereleases by default. Later `main` source is not the immutable
+`v0.24.0a1` artifact and cannot be republished under the same version.
+
+Publication remains an Alpha software claim only. It is not stable-API,
+qualified-engineer, professional, engineering-use, construction-use, or
+whole-standard approval.

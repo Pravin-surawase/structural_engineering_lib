@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-28
 doc_type: reference
 complexity: intermediate
 tags: []
@@ -11,10 +11,10 @@ tags: []
 
 **Type:** Reference
 **Audience:** Developers
-**Status:** Production Ready
+**Status:** Alpha Preview
 **Importance:** High
 **Created:** 2025-01-01
-**Last Updated:** 2026-03-29
+**Last Updated:** 2026-08-28
 
 ---
 
@@ -28,16 +28,18 @@ Use this when reporting bugs or debugging agent failures:
 
 This captures: environment, git state, and recent automation logs.
 
-## Enable Streamlit Debug Tracebacks
+## Inspect the active React/FastAPI workbench
 
-When you need full tracebacks in the UI, set `DEBUG=1` before running:
+Streamlit is retired. Start the maintained React/FastAPI stack from the
+repository root, reproduce the request, and inspect the browser console plus
+the FastAPI terminal output:
 
 ```bash
-DEBUG=1 streamlit run streamlit_app/app.py
+./run.sh dev
 ```
 
-For one-off debugging inside a page, pass `show_traceback=True` to
-`@handle_errors(...)` in `streamlit_app/utils/error_handler.py`.
+Use `./run.sh dev --kill-only` to stop the local services. Do not restore or
+follow legacy `streamlit_app` paths.
 
 ## VBA Runtime Error 6: Overflow
 
