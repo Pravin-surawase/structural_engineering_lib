@@ -8,11 +8,12 @@
 
 **IS 456 reinforced-concrete design, from calculation to reviewable output.**
 
-An open-source Python library and visual workbench for supported beam, column,
-isolated-footing, and solid-slab workflows under IS 456:2000.
+An open-source Python library and visual workbench for bounded supported beam,
+torsion, column, slab, wall, staircase, deep-beam, flat-slab, and footing
+workflows under IS 456:2000.
 
 [![PyPI version](https://img.shields.io/pypi/v/structural-lib-is456.svg)](https://pypi.org/project/structural-lib-is456/)
-[![Alpha](https://img.shields.io/badge/status-alpha-f59e0b)](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.23.1a2)
+[![Alpha](https://img.shields.io/badge/status-alpha-f59e0b)](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.24.0a1)
 [![PR Gate](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/fast-checks.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/fast-checks.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-22c55e)](LICENSE)
@@ -27,9 +28,9 @@ isolated-footing, and solid-slab workflows under IS 456:2000.
 > **v0.24.0a1 is an Alpha development preview.** Support is case-qualified,
 > not a claim of complete IS 456 coverage or professional design approval.
 > Outputs require independent review by a qualified structural engineer before
-> engineering or construction use. This source is a prepared `v0.24.0a1`
-> candidate; it has not been tagged or published. The exact `v0.23.1a2`
-> artifact remains the current public Alpha.
+> engineering or construction use. The exact `v0.24.0a1` artifact is a
+> published PyPI/GitHub prerelease; current `main` contains later preview work
+> and must not be represented as that immutable artifact.
 
 ## One workflow, four useful surfaces
 
@@ -93,39 +94,41 @@ python3 -m pip install "structural-lib-is456===0.24.0a1"
 The package is installed as `structural-lib-is456` and imported as
 `structural_lib`.
 
-`0.24.0a1` is the prepared, unpublished candidate. The exact pin above is for
-the locally built candidate wheel and will not resolve from PyPI unless a later
-owner-authorized publication occurs. `0.23.1a2` remains the current public
-Alpha. See the [release policy](docs/getting-started/releases.md) before
-selecting a candidate.
+`0.24.0a1` is the current public Alpha prerelease and the exact pin above
+resolves from PyPI. Pip does not select prereleases by default from a version
+range; use the exact pin when evaluating this artifact. See the
+[release policy](docs/getting-started/releases.md) before selecting a build.
 
 ```python
-import structural_lib as sl
+from structural_lib.design.is456 import beam
 
-result = sl.design_and_detail_beam_is456(
-    units="IS456",
-    beam_id="B1",
-    story="GF",
-    span_mm=5000,
-    mu_knm=150,
-    vu_kn=80,
-    b_mm=300,
-    D_mm=500,
-    d_mm=442,
-    cover_mm=40,
-    fck_nmm2=25,
-    fy_nmm2=500,
-    d_dash_mm=58,
-    asv_mm2=100,
-    stirrup_dia_mm=8,
+request = beam.load(
+    {
+        "identity": {"member_id": "B1", "story": "GF", "case_id": "ULS-1"},
+        "section": {
+            "span_mm": 5000.0,
+            "b_mm": 300.0,
+            "D_mm": 500.0,
+            "d_mm": 442.0,
+        },
+        "materials": {"fck_nmm2": 25.0, "fy_nmm2": 500.0},
+        "actions": {"mu_knm": 150.0, "vu_kn": 80.0, "tu_knm": 0.0},
+        "calculation_basis": {"d_dash_mm": 58.0, "asv_mm2": 100.0},
+        "source_provenance": "analysis-envelope:ULS-1",
+    }
 )
+result = beam.design(request)
 
-print(result.summary())
-print(result.is_ok)
+print(result.engineering_status)
+print(result.to_dict())
 ```
 
 Parameter names carry their units—`b_mm`, `mu_knm`, `fck_nmm2`—so the API
 boundary stays explicit.
+
+Use the [13 family recipes](docs/cookbook/python/family-facades.md) for every
+advertised construction journey, including exact enums, evidence fields,
+structured errors, and valid `PASS`/`FAIL`/`HOLD` handling.
 
 Optional capabilities:
 
@@ -265,6 +268,7 @@ Questions, bug reports, feature proposals, and contributions are welcome.
 - [Ask a question](https://github.com/Pravin-surawase/structural_engineering_lib/issues/new?template=support.yml)
 - [Report a bug](https://github.com/Pravin-surawase/structural_engineering_lib/issues/new?template=bug_report.yml)
 - [Request a feature](https://github.com/Pravin-surawase/structural_engineering_lib/issues/new?template=feature_request.yml)
+- [Report a vulnerability privately](SECURITY.md)
 - [Read the contribution guide](CONTRIBUTING.md)
 - [Review the code of conduct](CODE_OF_CONDUCT.md)
 

@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "package_id": "LIB-PRO-012-R0-OWNER-DECISION-PACKAGE",
+  "task_id": "LIB-PRO-012-R0",
+  "observed_at_utc": "2026-08-28T04:13:40Z",
+  "status": "LOCAL_R0_DOSSIER_COMPLETE_PENDING_IMMUTABLE_CANDIDATE_AND_HOSTED_CLOSEOUT",
+  "exact_artifact": {
+    "version": "0.24.0a1",
+    "wheel_sha256": "53e0485b4def190872fec452d79e66317ad766be3ad8117c685b575a4c2c39d4",
+    "sdist_sha256": "a08f41458ecce6d59218ebf7508f68477e04b719d4c8e014f0cba19d1c6b83ee",
+    "source_base": "879d32caffbd7cbbf66e3d5ac6b0fd4f6634f93e",
+    "candidate_commit": "RECORDED_EXTERNALLY_AFTER_COMMIT"
+  },
+  "software_verdict": {
+    "promoted_family_workflows": 13,
+    "advertised_entry_points": 28,
+    "unowned_promoted_request_fields": 0,
+    "cookbook_recipes": 13,
+    "exact_wheel_uat_cases": 29,
+    "broad_python": "PASS_7165",
+    "fastapi": "PASS_526",
+    "full_gate": "PASS_32_OF_32",
+    "quick_gate": "PASS_10_OF_10",
+    "current_local_verdict": "EVALUATOR_READY_ALPHA_SOFTWARE_CANDIDATE_PENDING_GIT_AND_HOSTED_CLOSEOUT"
+  },
+  "recommended_sequence": [
+    "Freeze one immutable R0 candidate commit.",
+    "Push one unchanged branch and open one pull request.",
+    "Require every changed-path hosted check to pass on the reviewed head.",
+    "Merge only that unchanged conflict-free head under repository policy.",
+    "Then assign the exact integrated post-R0 artifact and cumulative dossier to one practicing structural engineer for the deferred final review."
+  ],
+  "separate_future_decisions": {
+    "practicing_engineer_review": "REQUIRED_AFTER_R0_INTEGRATION_BEFORE_PROFESSIONAL_OR_ENGINEERING_USE_CLAIMS",
+    "version_tag_and_publication": "REQUIRES_SEPARATE_EXACT_VERSION_OWNER_AUTHORIZATION_AND_RELEASE_GATES",
+    "windows_excel_evidence": "SEPARATE_BOUNDED_TASK_IF_A_WINDOWS_EXCEL_CLAIM_IS_DESIRED",
+    "windows_etabs_evidence": "SEPARATE_BOUNDED_TRIAL_EXPORT_FIRST_TASK_IF_AN_ETABS_CLAIM_IS_DESIRED"
+  },
+  "claims_not_granted": [
+    "professional approval",
+    "engineering-use approval",
+    "stable professional readiness",
+    "Windows acceptance",
+    "Excel acceptance",
+    "ETABS acceptance",
+    "public release authorization",
+    "package publication"
+  ],
+  "evidence": "docs/verification/lib-pro-012-r0-external-preview-evidence.json"
+}

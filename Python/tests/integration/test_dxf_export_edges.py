@@ -473,8 +473,14 @@ def test_multi_beam_layout_generates_combined_dxf(monkeypatch, tmp_path):
             BarArrangement(
                 count=2, diameter=12, area_provided=226, spacing=100, layers=1
             ),
+            BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            ),
         ],
         bottom_bars=[
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=100, layers=1
+            ),
             BarArrangement(
                 count=2, diameter=16, area_provided=402, spacing=100, layers=1
             ),
@@ -485,6 +491,7 @@ def test_multi_beam_layout_generates_combined_dxf(monkeypatch, tmp_path):
         stirrups=[
             StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=875),
             StirrupArrangement(diameter=8, legs=2, spacing=150, zone_length=1750),
+            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=875),
         ],
         ld_tension=550,
         ld_compression=450,
@@ -568,15 +575,29 @@ def test_multi_beam_layout_rejects_zero_columns(monkeypatch, tmp_path):
         top_bars=[
             BarArrangement(
                 count=2, diameter=16, area_provided=402, spacing=120, layers=1
-            )
+            ),
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=120, layers=1
+            ),
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=120, layers=1
+            ),
         ],
         bottom_bars=[
             BarArrangement(
                 count=3, diameter=16, area_provided=603, spacing=110, layers=1
-            )
+            ),
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=110, layers=1
+            ),
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=110, layers=1
+            ),
         ],
         stirrups=[
-            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000)
+            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1250),
+            StirrupArrangement(diameter=8, legs=2, spacing=150, zone_length=2500),
+            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1250),
         ],
         ld_tension=600,
         ld_compression=500,
@@ -620,15 +641,29 @@ def test_multi_beam_layout_mixed_sizes_no_overlap(monkeypatch, tmp_path):
         top_bars=[
             BarArrangement(
                 count=2, diameter=16, area_provided=402, spacing=120, layers=1
-            )
+            ),
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=120, layers=1
+            ),
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=120, layers=1
+            ),
         ],
         bottom_bars=[
             BarArrangement(
                 count=3, diameter=16, area_provided=603, spacing=110, layers=1
-            )
+            ),
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=110, layers=1
+            ),
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=110, layers=1
+            ),
         ],
         stirrups=[
-            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000)
+            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1250),
+            StirrupArrangement(diameter=8, legs=2, spacing=150, zone_length=2500),
+            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1250),
         ],
         ld_tension=600,
         ld_compression=500,
@@ -647,15 +682,29 @@ def test_multi_beam_layout_mixed_sizes_no_overlap(monkeypatch, tmp_path):
         top_bars=[
             BarArrangement(
                 count=2, diameter=12, area_provided=226, spacing=100, layers=1
-            )
+            ),
+            BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            ),
+            BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            ),
         ],
         bottom_bars=[
             BarArrangement(
                 count=2, diameter=12, area_provided=226, spacing=100, layers=1
-            )
+            ),
+            BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            ),
+            BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            ),
         ],
         stirrups=[
-            StirrupArrangement(diameter=8, legs=2, spacing=150, zone_length=1000)
+            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=750),
+            StirrupArrangement(diameter=8, legs=2, spacing=150, zone_length=1500),
+            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=750),
         ],
         ld_tension=500,
         ld_compression=400,
@@ -687,22 +736,19 @@ def test_multi_beam_layout_mixed_sizes_no_overlap(monkeypatch, tmp_path):
     beam1_title = None
     beam2_title = None
     for t in doc._msp.texts:
-        if "B1-LARGE" in t.text:
+        if t.text.startswith("BEAM B1-LARGE "):
             beam1_title = t
-        elif "B2-SMALL" in t.text:
+        elif t.text.startswith("BEAM B2-SMALL "):
             beam2_title = t
 
     assert beam1_title is not None and beam2_title is not None
 
-    # Beam 1 (large) cell width with sections: span + 500 + b*2 + 200 + DIM_OFFSET + TEXT_HEIGHT + 20
-    # = 5000 + 500 + 350 + 200 + 350 + 100 + 50 + 20 = 6570
-    # Beam 2 should start at >= 6570 + col_spacing(500) = 7070
+    # Compare the actual left-aligned title origins, not later BBS callouts that
+    # also contain the beam ID at positions inside the drawing.
     beam1_x = beam1_title.placement[0][0]  # placement is ((x, y), align)
     beam2_x = beam2_title.placement[0][0]
 
-    # Beam 2's x origin should be significantly greater than beam 1's x origin
-    # At minimum: beam1_x + large_span + section_space + col_spacing
-    min_expected_gap = 5000 + 500  # span + minimal section space
+    min_expected_gap = dxf_export._estimate_cell_width(5000, 350, True) + 500
     assert (
         beam2_x >= beam1_x + min_expected_gap
     ), f"Beam 2 x={beam2_x} should be >= beam1_x({beam1_x}) + {min_expected_gap}"
@@ -742,14 +788,30 @@ def test_multi_beam_layout_single_beam(monkeypatch, tmp_path):
         top_bars=[
             BarArrangement(
                 count=2, diameter=12, area_provided=226, spacing=100, layers=1
-            )
+            ),
+            BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            ),
+            BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            ),
         ],
         bottom_bars=[
             BarArrangement(
                 count=3, diameter=16, area_provided=603, spacing=100, layers=1
-            )
+            ),
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=100, layers=1
+            ),
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=100, layers=1
+            ),
         ],
-        stirrups=[StirrupArrangement(diameter=8, legs=2, spacing=150, zone_length=800)],
+        stirrups=[
+            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=875),
+            StirrupArrangement(diameter=8, legs=2, spacing=150, zone_length=1750),
+            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=875),
+        ],
         ld_tension=500,
         ld_compression=400,
         lap_length=600,
@@ -800,15 +862,44 @@ def test_multi_beam_layout_large_grid(monkeypatch, tmp_path):
             top_bars=[
                 BarArrangement(
                     count=2, diameter=12, area_provided=226, spacing=100, layers=1
-                )
+                ),
+                BarArrangement(
+                    count=2, diameter=12, area_provided=226, spacing=100, layers=1
+                ),
+                BarArrangement(
+                    count=2, diameter=12, area_provided=226, spacing=100, layers=1
+                ),
             ],
             bottom_bars=[
                 BarArrangement(
                     count=3, diameter=16, area_provided=603, spacing=100, layers=1
-                )
+                ),
+                BarArrangement(
+                    count=3, diameter=16, area_provided=603, spacing=100, layers=1
+                ),
+                BarArrangement(
+                    count=3, diameter=16, area_provided=603, spacing=100, layers=1
+                ),
             ],
             stirrups=[
-                StirrupArrangement(diameter=8, legs=2, spacing=150, zone_length=800)
+                StirrupArrangement(
+                    diameter=8,
+                    legs=2,
+                    spacing=100,
+                    zone_length=(3000 + i * 100) / 4,
+                ),
+                StirrupArrangement(
+                    diameter=8,
+                    legs=2,
+                    spacing=150,
+                    zone_length=(3000 + i * 100) / 2,
+                ),
+                StirrupArrangement(
+                    diameter=8,
+                    legs=2,
+                    spacing=100,
+                    zone_length=(3000 + i * 100) / 4,
+                ),
             ],
             ld_tension=500,
             ld_compression=400,

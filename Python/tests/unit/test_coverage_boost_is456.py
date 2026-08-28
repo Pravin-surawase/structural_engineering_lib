@@ -2238,7 +2238,7 @@ class TestTorsionDesignEdgeCases:
         from structural_lib.codes.is456.beam.torsion import design_torsion
         from structural_lib.core.errors import DimensionError
 
-        with pytest.raises(DimensionError, match="overall depth"):
+        with pytest.raises(DimensionError, match=r"D must be > 0 mm"):
             design_torsion(
                 tu_knm=10,
                 vu_kn=50,
@@ -2256,7 +2256,7 @@ class TestTorsionDesignEdgeCases:
         from structural_lib.codes.is456.beam.torsion import design_torsion
         from structural_lib.core.errors import DimensionError
 
-        with pytest.raises(DimensionError, match="effective depth"):
+        with pytest.raises(DimensionError, match=r"d must be > 0 mm"):
             design_torsion(
                 tu_knm=10,
                 vu_kn=50,
@@ -3304,7 +3304,7 @@ class TestTorsionBranchCoverage:
         from structural_lib.codes.is456.beam.torsion import design_torsion
         from structural_lib.core.errors import DimensionError
 
-        with pytest.raises(DimensionError, match="beam width"):
+        with pytest.raises(DimensionError, match=r"b must be > 0 mm"):
             design_torsion(
                 tu_knm=10,
                 vu_kn=50,

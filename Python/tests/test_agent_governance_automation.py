@@ -277,13 +277,13 @@ def test_react_dependency_probe_is_worktree_local_and_actionable(tmp_path):
 
 def test_live_full_gate_count_matches_active_instructions():
     full_count = sum(len(category.checks) for category in check_all.CATEGORIES)
-    assert full_count == 31
+    assert full_count == 32
     for path in (
         REPO_ROOT / "AGENTS.md",
         REPO_ROOT / "docs/guidelines/ai-token-efficiency.md",
         REPO_ROOT / "docs/getting-started/agent-bootstrap.md",
     ):
-        assert "31 checks" in path.read_text(encoding="utf-8"), path
+        assert "32 checks" in path.read_text(encoding="utf-8"), path
 
 
 def test_active_agent_instructions_use_worktree_safe_python_launcher():

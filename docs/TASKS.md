@@ -175,9 +175,14 @@ construction, common typed result/error semantics, generated schemas and
 compatibility ownership, and valid/invalid exact-wheel recipes. The 143-case
 focused owner/golden/publication selection and the exact wheel
 `797dfd9a...d73f78f` pass without changing the accepted B0 owners. The
-immutable candidate passed its hosted cycle and merged unchanged. R0 follows
-accepted F0 and the separate Windows source-lane rebind receipt. Release remains exact-candidate work rather
-than an F0/R0 gate,
+immutable candidate passed its hosted cycle and merged unchanged. The separate
+Windows source-lane rebind receipt is integrated through PR #883 at merge
+`879d32ca...`, tree `c7ebc826...`. R0 Packets G-I are now locally complete:
+13 generated cookbook journeys, 28 advertised Python/CLI entries, zero unowned
+promoted request fields, 7,165 broad Python and 526 FastAPI tests, and the
+source-free wheel `53e0485b...c39d4` pass. One immutable candidate, hosted
+checks, and unchanged merge remain before the deferred engineer review.
+Release remains exact-candidate work rather than an F0/R0 gate,
 and the single engineer review occurs only after final R0 integration. Shared
 validation, facade, result, manifest, generated API, documentation, task, and
 session owners remain single-writer surfaces.
@@ -186,10 +191,11 @@ The [LIB-PRO-013 Windows evidence lane readiness receipt](verification/lib-pro-0
 records `READY_FOR_FUTURE_WINDOWS_EVIDENCE_SETUP_ONLY` at exact B0 merge
 `44ef7bc4...`. The task-owned
 [F0 rebind receipt](verification/lib-pro-013-windows-f0-rebind-evidence.json)
-now proves the separate linked Windows worktree and repository-local Python
-source binding at accepted F0 merge `59ef74c0...`, tree `295c7a61...`. It runs
-no R0, Excel, ETABS, workbook, model, calculation, or engineering acceptance.
-R0 may use that exact lane only after the rebind receipt is integrated.
+is integrated through PR #883 at merge `879d32ca...` and proves the separate
+linked Windows worktree and repository-local Python source binding at accepted
+F0 merge `59ef74c0...`, tree `295c7a61...`. It ran no R0, Excel, ETABS,
+workbook, model, calculation, or engineering acceptance. R0 did not open or
+mutate that protected future application-evidence lane.
 
 The owner removed the fixed documentation-count limit. `check_docs.py` now
 reports the active count only as an informational inventory; canonical topic
@@ -381,8 +387,8 @@ write-back/nightly work remain outside E1.
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
 | LIB-PRO-013-F0 | Converge F1-F3 family construction/facades and exact-wheel recipes on the accepted B0 foundation | @structural-math | 16–26 engineer-days | P1 | ✅ COMPLETE ON MERGE — PR #882 merged unchanged as `59ef74c0...`, tree `295c7a61...`; Windows/professional/release claims remain held |
-| LIB-PRO-013-WINDOWS-REBIND | Bind the protected Windows source lane to accepted F0 before R0 uses it | bounded Windows evidence owner | evidence gate | P1 | 🟡 LOCAL COMPLETE — exact Git/Python source binding proved; immutable receipt candidate, hosted checks, and unchanged merge pending; R0 and application evidence not run |
-| LIB-PRO-012-R0 | Close external-preview documentation, generated gates, cumulative artifact/evidence, and owner-decision package | Main Agent | final programme cycle | P1 | ⏸ AUTHORIZED AFTER ACCEPTED F0, HELD UNTIL WINDOWS REBIND RECEIPT INTEGRATES — no R0 work in the rebind task |
+| LIB-PRO-013-WINDOWS-REBIND | Bind the protected Windows source lane to accepted F0 before R0 uses it | bounded Windows evidence owner | evidence gate | P1 | ✅ COMPLETE — PR #883 merged at `879d32ca...`; exact F0 Git/Python source binding proved; no application evidence was run |
+| LIB-PRO-012-R0 | Close external-preview documentation, generated gates, cumulative artifact/evidence, and owner-decision package | Main Agent | final programme cycle | P1 | 🟡 LOCAL COMPLETE — 13 recipes, 28 advertised entries, zero unowned promoted fields, 7,165 Python and 526 FastAPI tests, exact-wheel UAT, and owner package pass; immutable candidate, hosted checks, and unchanged merge pending |
 | SPARK-001-G0 | Reassess the stale Spark work-program proposal before any implementation | repository owner | review gate | P2 | ⏸ OWNER REVIEW — the 2026-08-11 model/preview assumptions and bulk wave require refresh or rejection |
 
 ## Backlog

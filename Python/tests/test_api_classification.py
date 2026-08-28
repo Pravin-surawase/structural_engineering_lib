@@ -78,6 +78,15 @@ def test_canonical_task_api_is_capability_bound_and_artifact_scoped() -> None:
         and item["request_schema"]["additionalProperties"] is False
         for item in registry["family_facade_workflows"]
     )
+    assert all(
+        not item["unowned_field_paths"]
+        and item["request_field_count"] > 0
+        and item["request_field_contracts"]
+        and item["validator_inventory"]
+        and item["cookbook_path"].endswith(".md")
+        and item["consumer_contract"].startswith("to_dict()")
+        for item in registry["family_facade_workflows"]
+    )
     assert registry["canonical_support_exports"] == [
         "EffectiveDepthBasisV1",
         "EffectiveDepthResolutionV1",

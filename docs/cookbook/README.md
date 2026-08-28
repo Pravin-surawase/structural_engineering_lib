@@ -2,7 +2,7 @@
 
 Task-focused recipes and code snippets for common structural engineering workflows.
 
-**Files:** 2 | **Updated:** 2026-01-11
+**Canonical family recipes:** 13 | **Updated:** 2026-08-28
 
 ---
 
@@ -12,8 +12,8 @@ Task-focused recipes and code snippets for common structural engineering workflo
 |--------|-------------|--------|
 | [cli-reference.md](cli-reference.md) | Complete CLI command reference with examples | ✅ |
 | [python-recipes.md](python-recipes.md) | Copy-paste Python snippets for common tasks | ✅ |
-| [python/beam.md](python/beam.md) | Canonical B0 beam journey | Alpha |
-| [python/family-facades.md](python/family-facades.md) | Canonical F0 family construction journeys | Alpha |
+| [python/family-facades.md](python/family-facades.md) | Index of all 13 canonical family construction journeys | Alpha |
+| [family facade contracts](../reference/family-facade-contracts.md) | Generated signatures, units, enums, errors, and statuses | Alpha |
 
 ---
 
@@ -38,9 +38,6 @@ python -m structural_lib job job.json -o ./output
 ### Quick Validation
 
 ```bash
-# Check a single beam design
-python -m structural_lib check --width 300 --depth 500 --fck 25 --fy 500
-
 # Validate input CSV format
 python -m structural_lib validate input.csv
 ```
@@ -49,35 +46,26 @@ python -m structural_lib validate input.csv
 
 ## 🐍 Quick Python Examples
 
-### Basic Beam Design
+### Canonical Beam Design
 
 ```python
-from structural_lib import design_beam
+from structural_lib.design.is456 import beam
 
-result = design_beam(
-    b=300,           # mm
-    d=500,           # mm effective depth
-    fck=25,          # N/mm²
-    fy=500,          # N/mm²
-    Mu=150,          # kN·m
-    Vu=80,           # kN
+request = beam.load(
+    {
+        "identity": {"member_id": "B1", "story": "GF", "case_id": "ULS-1"},
+        "section": {"span_mm": 5000.0, "b_mm": 300.0, "D_mm": 500.0, "d_mm": 442.0},
+        "materials": {"fck_nmm2": 25.0, "fy_nmm2": 500.0},
+        "actions": {"mu_knm": 150.0, "vu_kn": 80.0, "tu_knm": 0.0},
+        "calculation_basis": {"d_dash_mm": 58.0, "asv_mm2": 100.0},
+    }
 )
-print(f"Main steel: {result.Ast_provided} mm²")
-print(f"Stirrups: {result.stirrup_spacing} mm c/c")
+result = beam.design(request)
+print(result.engineering_status)
 ```
 
-### Batch Processing
-
-```python
-from structural_lib import JobRunner
-
-runner = JobRunner("job_config.json")
-results = runner.run()
-runner.export_bbs("schedule.csv")
-runner.export_dxf("drawings.dxf")
-```
-
-See [python-recipes.md](python-recipes.md) for more examples.
+See the [family facade index](python/family-facades.md) for complete copy-paste
+payloads and valid error/result handling.
 
 ---
 

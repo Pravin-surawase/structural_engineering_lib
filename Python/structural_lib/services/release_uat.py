@@ -459,10 +459,17 @@ _HANDLERS: dict[str, Callable[[], dict[str, Any]]] = {
 
 
 def _advertised_entry_points(matrix_case_ids: set[str]) -> dict[str, Any]:
+    from structural_lib.services.family_facade_registry import (
+        FAMILY_FACADE_WORKFLOWS,
+    )
+
     inventory_bytes = _ENTRYPOINT_RESOURCE.read_bytes()
     inventory = json.loads(inventory_bytes)
-    entries = inventory["entry_points"]
-    commands = [entry["command"] for entry in entries]
+    assert inventory["family_facade_registry"] == (
+        "structural_lib.services.family_facade_registry.FAMILY_FACADE_WORKFLOWS"
+    )
+    cli_entries = inventory["entry_points"]
+    commands = [entry["command"] for entry in cli_entries]
     assert len(commands) == len(set(commands))
 
     parser = cli_main._build_parser()
@@ -484,15 +491,37 @@ def _advertised_entry_points(matrix_case_ids: set[str]) -> dict[str, Any]:
         "deprecated",
         "held",
     }
-    for entry in entries:
+    for entry in cli_entries:
         assert entry["classification"] in allowed_classifications
         assert entry["acceptance"]
         if entry["id"] == "cli.design":
             assert set(entry["acceptance"]).issubset(matrix_case_ids)
+    family_entries = [
+        {
+            "id": f"python.{workflow.journey_id}",
+            "journey_id": workflow.journey_id,
+            "module": workflow.module,
+            "classification": "calculation_entry",
+            "request_contract": workflow.request_contract,
+            "result_contract": workflow.result_contract,
+            "error_contract": workflow.error_contract,
+            "compatibility_owner": workflow.compatibility_owner,
+            "cookbook_path": workflow.cookbook_path,
+            "acceptance": [
+                "r0_exact_wheel_recipe",
+                "r0_strict_field_contract_audit",
+                "r0_finite_json_consumer",
+            ],
+        }
+        for workflow in FAMILY_FACADE_WORKFLOWS
+    ]
+    entries = [*cli_entries, *family_entries]
     return {
         "schema_version": inventory["schema_version"],
         "sha256": hashlib.sha256(inventory_bytes).hexdigest(),
         "entry_count": len(entries),
+        "cli_entry_count": len(cli_entries),
+        "family_facade_entry_count": len(family_entries),
         "entries": entries,
     }
 
@@ -520,7 +549,7 @@ def _public_examples() -> dict[str, Any]:
     )
     batch = design_project_beams_v1([_beam()])
     assert beam.summary() and batch.summary.evaluated == 1
-    return {"readme_beam": True, "python_readme_batch": True}
+    return {"maintained_beam_service": True, "python_readme_batch": True}
 
 
 def run(*, require_installed_wheel: bool = False) -> dict[str, Any]:

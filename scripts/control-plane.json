@@ -1678,6 +1678,45 @@
       },
       "permission": "ReadOnly"
     },
+    "generate family facade docs": {
+      "group": "Documentation",
+      "description": "Generate or check the 13-family cookbook and live contract reference",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/generate_family_facade_docs.py --check",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/generate_family_facade_docs.py",
+              "--check"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
+    "verify lib pro 012 r0 external preview": {
+      "group": "Testing",
+      "description": "Audit advertised family fields and replay cookbook, vectors, UAT, and consumers from one exact wheel",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/verify_lib_pro_012_r0_external_preview.py --wheel <exact-wheel-path>",
+        "steps": [
+          {
+            "argv": [
+              "./scripts/python_runtime.sh",
+              "scripts/verify_lib_pro_012_r0_external_preview.py",
+              "--wheel",
+              "<exact-wheel-path>"
+            ],
+            "cwd": "."
+          }
+        ]
+      },
+      "permission": "ReadOnly"
+    },
     "verify lib pro 013 f0 family artifact": {
       "group": "Testing",
       "description": "Replay all 13 F0 facade workflow classes and invalid contracts from one exact wheel",

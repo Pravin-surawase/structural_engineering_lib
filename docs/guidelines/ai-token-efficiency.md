@@ -172,7 +172,7 @@ is an exception used to guide or debug the change, not a ritual after each edit.
    independent benchmarks, architecture/import checks, the quick gate, normal
    commit hooks, and all required hosted PR checks.
 9. After all intended packets are integrated, run the broad Python suite and
-   `./run.sh check` (currently 31 checks) once at the cumulative closeout.
+   `./run.sh check` (currently 32 checks) once at the cumulative closeout.
    Repeat only a failed portion unless the fix can affect other categories.
 10. Run either broad gate before cumulative closeout only when an
    outcome-changing failure or repository-wide surface makes it necessary.

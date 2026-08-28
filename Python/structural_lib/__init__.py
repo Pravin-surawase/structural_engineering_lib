@@ -24,6 +24,7 @@ __version__ = _get_runtime_version(__file__)
 from . import (
     api,
     compliance,
+    design,
     detailing,
     flexure,
     imports,
@@ -280,6 +281,7 @@ __all__ = [
     "batch",
     "compliance",
     "costing",
+    "design",
     "detailing",
     "dxf_export",
     "etabs_import",

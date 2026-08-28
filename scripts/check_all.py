@@ -119,6 +119,11 @@ CATEGORIES: list[Category] = [
             Check("CLI reference", _py("check_cli_reference.py")),
             Check("Tasks format", _py("check_tasks_format.py")),
             Check("Brief length", _py("check_next_session_brief_length.py")),
+            Check(
+                "Family facade docs",
+                _py("generate_family_facade_docs.py", "--check"),
+                timeout=30,
+            ),
             Check("Control and context", _py("check_scripts_index.py")),
         ],
     ),

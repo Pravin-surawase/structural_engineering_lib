@@ -1,88 +1,75 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-28
 doc_type: guide
-complexity: intermediate
-tags: []
+complexity: beginner
+tags: [installation, react, fastapi, python]
 ---
 
-# Installation & Setup Guide
+# Installation Notes
 
-## ✅ Current Status (Jan 22, 2026)
+## Evaluate the exact public Alpha
 
-All required packages have been installed successfully:
-
-### Installed Packages
-- **Core**: plotly 6.5.2, pandas 2.3.3, numpy 2.4.1, scipy 1.17.0
-- **Structural Design**: structural-lib-is456 0.20.0
-- **DXF/CAD**: ezdxf 1.4.3
-- **PDF/Reports**: reportlab 4.4.9, jinja2 3.1.6
-- **Validation**: jsonschema 4.26.0, pydantic 2.12.5
-- **App**: streamlit 1.53.0
-- **3D Viewer**: pyvista, stpyvista (installing in background)
-
-## 🚀 Quick Start
-
-### Activate Virtual Environment
 ```bash
-cd structural_engineering_lib
+python3 -m venv .venv
 source .venv/bin/activate
+python3 -m pip install --upgrade pip
+python3 -m pip install "structural-lib-is456===0.24.0a1"
+python3 -m structural_lib install-preflight
 ```
 
-### Start Streamlit App
-```bash
-streamlit run streamlit_app/app.py
-```
+The exact pin resolves the immutable public Alpha prerelease. Later `main`
+source, including B0/F0/R0 work, is not that published artifact.
 
-The app will open at: `http://localhost:8501`
+## Run the current repository workbench
 
-## 📦 Installing Additional Packages
-
-If you need to install more packages later:
+From the repository root:
 
 ```bash
-# Using the virtual environment pip directly
-.venv/bin/pip install <package_name>
-
-# Or after activating the venv
+python3.11 -m venv .venv
 source .venv/bin/activate
-pip install <package_name>
+python3 -m pip install -r requirements.txt
+python3 -m pip install -e Python/
+cd react_app && npm install && cd ..
+./run.sh dev
 ```
 
-## 🔧 Important Files
+Open the React workbench at <http://localhost:5173> and FastAPI documentation at
+<http://localhost:8000/docs>. Stop the services with:
 
-- **Python package**: `Python/pyproject.toml` - All Python dependencies
-- **Virtual environment**: `.venv/` - Isolated Python environment
-- **Streamlit app**: `streamlit_app/app.py` - Main entry point
-- **Components**: `streamlit_app/components/` - Reusable UI components
-
-## ⚠️ Troubleshooting
-
-### "ModuleNotFoundError: No module named 'X'"
-Run from the repository root and use the virtual-environment pip explicitly:
 ```bash
-.venv/bin/pip install <package>
+./run.sh dev --kill-only
 ```
 
-### Streamlit Not Found
-Make sure you're in the repo directory and use the full path:
+Streamlit is retired and is not an installation or runtime surface. Do not
+restore or follow `streamlit_app` commands from historical release records.
+
+## Optional package capabilities
+
 ```bash
-cd structural_engineering_lib
-.venv/bin/python -m streamlit run streamlit_app/app.py
+python3 -m pip install "structural-lib-is456[dxf]===0.24.0a1"
+python3 -m pip install "structural-lib-is456[report,pdf]===0.24.0a1"
+python3 -m pip install "structural-lib-is456[render]===0.24.0a1"
 ```
 
-## 📋 Environment Details
+Optional extras should be selected only for their stated purpose. An installed
+extra does not broaden the supported engineering cases.
 
-- **Python Version**: 3.11
-- **Virtual Environment Tool**: venv (built-in)
-- **Location**: `.venv/` in repo root
-- **Package Manager**: pip (via .venv/bin/pip)
+## Diagnostics
 
-## 🎯 Next Steps
+```bash
+python3 -m structural_lib install-preflight
+./scripts/python_runtime.sh --diagnose
+./run.sh frontend runtime
+```
 
-1. ✅ All packages installed
-2. ⏳ PyVista/StPyVista installing (3D viewer support)
-3. 🚀 Ready to run: `streamlit run streamlit_app/app.py`
+Use the first command for an installed wheel. The repository-bound commands
+apply only in a source checkout.
 
-The app should now start without the "ModuleNotFoundError" for plotly!
+## Boundaries
+
+Windows Excel and ETABS require their separately bound evidence lanes. This
+guide does not claim Windows application acceptance, professional approval,
+engineering-use approval, release authorization, or publication of current
+`main`.

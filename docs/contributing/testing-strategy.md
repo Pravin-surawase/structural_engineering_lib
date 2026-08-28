@@ -1,294 +1,168 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-23
+last_updated: 2026-08-28
 doc_type: guide
 complexity: intermediate
-tags: []
+tags: [testing, verification, evidence]
 ---
 
-# Testing Strategy & Setup (Python-first, VBA parity aware)
+# Testing Strategy
 
-**Type:** Guide
-**Audience:** Developers
-**Status:** Production Ready
-**Importance:** High
-**Created:** 2025-01-01
-**Last Updated:** 2026-08-23
+This guide owns the current test entry points and evidence taxonomy. Exact test
+counts are deliberately not copied here because the maintained suites change.
+Use collection or the task-owned evidence receipt when an exact count matters.
 
----
+## Required command boundary
 
-**Purpose:** Document how testing is currently set up, what it covers well, what gaps remain, and the recommended next improvements.
-
-**Scope:** This doc focuses on Python test automation + CI. VBA tests are currently manual and are tracked as future automation work.
-
----
-
-## 1) Current test setup (what exists today)
-
-### Python tests
-
-- Location: `Python/tests/`
-- Runner: `pytest`
-- Config: `Python/pytest.ini` (`testpaths = tests`)
-
-**How to run locally (fast):**
-- From `Python/`: `python -m pytest -q`
-
-**Fast checks before commit:**
-
-- `./run.sh verification plan` shows the whole candidate's explicit domains.
-- `./run.sh check --changed` runs the mapped repository checks; an unknown path
-  or failed Git query expands to every domain.
-- `./run.sh test --changed` keeps focused Python/FastAPI mappings where proved,
-  runs the React/Excel suites for those domains, and falls back to complete
-  product suites when test ownership is unclear.
-- `./run.sh check --quick` remains the required pre-commit gate. Exact prior
-  PASS receipts are reused only when command, runtime, dependency set, and
-  current input bytes have the same content address.
-
-**How to run with coverage:**
-- From `Python/`: `python -m pytest --cov=structural_lib --cov-report=term-missing --cov-report=xml`
-
-**How to run the CI-equivalent check locally (includes coverage gate):**
-- From `Python/`: `python -m pytest --cov=structural_lib --cov-branch --cov-report=term-missing --cov-report=xml --cov-fail-under=85`
-
-### CI (GitHub Actions)
-
-Workflows: `.github/workflows/fast-checks.yml` and
-`.github/workflows/nightly.yml`
-
-- Pull requests receive path-aware format, lint, type, contract, focused test,
-  frontend, API, and repository checks under the required `PR Gate`.
-- Local and hosted scheduling load `scripts/verification-manifest.json`; the
-  workflow does not maintain a second path-filter list. Applicable jobs may
-  reuse an exact PASS receipt only after their current runtime/dependencies are
-  resolved and fingerprinted. Cache misses, malformed receipts, and identity
-  changes execute the job normally.
-- Weekly/manual verification runs the full Ubuntu Python/FastAPI/React suite,
-  branch coverage gate, clean-wheel/CLI verification, dependency audits, and
-  Docker health checks.
-- macOS and Windows smoke checks are available as an explicit manual option.
-
-**What this gives us:**
-- Minimum-version PR confidence plus optional cross-platform smoke evidence
-- Static formatting check
-- Basic typecheck
-- Coverage visibility (artifact)
-- Packaging correctness check
-
----
-
-## 2) What’s being tested well
-
-- Core strength design logic:
-  - Flexure: limiting moment checks, under/over-reinforced behavior.
-  - Shear: Tv/Tc/Tc_max logic, spacing caps, min shear reinforcement behavior.
-- Table and materials edge behavior:
-  - Table 19 pt clamping and grade selection behavior.
-  - Table 20 Tc_max interpolation.
-  - Materials curves and guardrails.
-- Detailing module:
-  - Bond stress lookup.
-  - Development length and lap length.
-  - Spacing and arrangement selection.
-- Integration module:
-  - CSV/JSON parsing.
-  - Data normalization and defaulting.
-- DXF export:
-  - Smoke tests exist (basic generation path).
-
----
-
-## 3) Current coverage snapshot (observed)
-
-Latest verified local run (Dec 2025): **100% total coverage** with `--cov-report=term-missing`.
-
-Notes:
-- CI gate is `--cov-fail-under=85` (branch coverage).
-- Tests that execute modules via `runpy.run_module(...)` clear entries from `sys.modules` to avoid `RuntimeWarning` noise.
-
----
-
-## 4) Key gaps / risks (senior tester assessment)
-
-1. **Coverage gate is conservative**
-  - CI enforces a minimum total branch coverage of 85% to prevent silent regressions.
-  - This is intentionally low to avoid blocking feature work; raise gradually as coverage improves.
-
-2. **High-risk areas (now covered, still sensitive to change)**
-  - These modules historically had the most uncovered branches and are the most regression-prone due to edge conditions and I/O/optional-dependency behavior.
-  - Current status: tests exercise these paths (including optional DXF behavior via stubs), but future refactors here deserve extra review.
-
-3. **Mixed test style and import patterns**
-   - Mix of `unittest.TestCase` and pure pytest.
-   - Several tests add `sys.path.append(...)` even though CI installs the package.
-
-4. **Hermeticity / file cleanup**
-   - Some tests use temp files with manual cleanup; `tmp_path` would be safer.
-
-5. **Parity regressions not yet automated**
-   - There is no Python↔VBA parity harness yet (tracked as future work).
-
----
-
-## 5) Recommendations (priority order)
-
-### P0 — Protect against regression
-
-- Keep the CI **coverage gate** at 85% (current baseline).
-
-### P1 — Increase confidence where failures are expensive
-
-- Add threshold tests around known transitions:
-  - `Mu ≈ Mu_lim` (just below/above)
-  - `Tv ≈ Tc_max` (at/just above)
-  - Table clamp boundaries (`pt=0.149/0.15`, `pt=3.0/3.01`)
-
-### P2 — Harden I/O paths
-
-- Add negative tests for `excel_integration.py`:
-  - missing required columns
-  - wrong data types
-  - empty input files
-  - invalid output directories
-
-### P3 — Improve DXF confidence (without brittle tests)
-
-- Keep tests resilient by checking:
-  - file created
-  - required layers exist
-  - minimum expected entities/text tags exist
-  - avoid asserting exact entity order/coordinates unless needed
-
-### P4 — Test hygiene
-
-- Gradually standardize on pytest style.
-- Prefer `tmp_path` for filesystem tests.
-- Remove `sys.path.append(...)` where not needed.
-
----
-
-## 6) Where to add new tests (map)
-
-- Flexure/shear/table/material behavior: `Python/tests/test_structural.py`, `Python/tests/test_materials_tables_edges.py`
-- Detailing logic: `Python/tests/test_detailing.py`
-- ETABS/CSV/JSON integration: `Python/tests/test_excel_integration.py`
-- DXF generation: `Python/tests/test_dxf_export_smoke.py` (and future deeper DXF tests)
-
----
-
-## 7) Property-Based Testing (Hypothesis)
-
-Property-based testing uses the [Hypothesis](https://hypothesis.readthedocs.io/) library to automatically generate test inputs and discover edge cases that unit tests might miss.
-
-### Location
-
-- Strategies: `Python/tests/property/strategies.py`
-- Tests: `Python/tests/property/test_*_hypothesis.py`
-- Profile config: `Python/tests/conftest.py`
-
-### Available Profiles
-
-| Profile | Examples | Use Case |
-|---------|----------|----------|
-| `dev` | 25 | Fast local development |
-| `default` | 100 | Standard test runs |
-| `ci` | 200 | CI runs (deterministic) |
-| `exhaustive` | 1000 | Thorough testing before release |
-
-### Running Property Tests
+Run commands from the repository root through the worktree-bound launchers:
 
 ```bash
-# Fast development run (25 examples per test)
-python -m pytest Python/tests/property/ --hypothesis-profile=dev
+# Focused Python node
+./scripts/python_runtime.sh -m pytest -q Python/tests/test_release_uat.py
 
-# Standard run (100 examples)
-python -m pytest Python/tests/property/
+# Complete product suites
+./run.sh test
+./run.sh test --fastapi
+./run.sh test --react
+./run.sh test --all
 
-# CI run (200 examples, deterministic)
-python -m pytest Python/tests/property/ --hypothesis-profile=ci
-
-# Thorough run (1000 examples)
-python -m pytest Python/tests/property/ --hypothesis-profile=exhaustive
+# Repository gates
+./run.sh check --quick
+./run.sh check
 ```
 
-### Reusable Strategies
+Do not use bare `python` or `pytest`. Do not assume that a linked worktree
+shares ignored virtual environments or JavaScript dependencies. Confirm source
+binding with `./scripts/python_runtime.sh --diagnose`.
 
-The `strategies.py` module provides domain-specific strategies:
+The implementation sequence is:
 
-| Strategy | Description |
-|----------|-------------|
-| `concrete_grade()` | Valid fck values (20-70 N/mm²) |
-| `steel_grade()` | Valid fy values (250-550 N/mm²) |
-| `beam_section()` | Complete beam geometry (b, d, D) |
-| `flexure_inputs()` | All inputs for flexure design |
-| `shear_inputs()` | All inputs for shear design |
-| `ductile_inputs()` | All inputs for ductile beam check |
+1. use only a narrow reproducer while a change is still being debugged;
+2. finish the bounded code, tests, generated owners, and documentation;
+3. run the affected focused selection once after content freezes;
+4. run architecture/import/generated checks and one quick gate;
+5. run the broad Python suite and full repository gate once at the cumulative
+   milestone required by `AGENTS.md`;
+6. verify one immutable artifact and wait for all required hosted checks.
 
-### What Property Tests Cover
+An outcome-changing repair after freeze repeats its affected evidence and the
+consolidated gate; unchanged broad suites are not rerun for appearance.
 
-1. **Flexure module (13 tests)**
-   - `calculate_mu_lim`: positivity, scaling with dimensions
-   - `calculate_ast_required`: area always positive
-   - `design_singly_reinforced`: valid result structure
+## Python test taxonomy
 
-2. **Shear module (13 tests)**
-   - `calculate_tv`: stress bounds
-   - `get_tc_from_table19`: grade ordering, interpolation
-   - `get_tc_max`: value ordering
-   - `design_shear_reinforcement`: stirrup spacing valid
+The marker vocabulary is defined by `Python/pytest.ini`:
 
-3. **Ductile detailing (17 tests)**
-   - `check_ductile_beam_geometry`: b/D ratio limits
-   - `get_min_steel_percentage`: percentage bounds
-   - `get_confinement_zone_length`: IS 13920 compliance
-   - `check_beam_ductility`: integrated checks
+| Marker | Evidence purpose |
+|---|---|
+| `unit` | Fast calculation-module behavior |
+| `integration` | Multi-module API, CLI, and export behavior |
+| `regression` | Frozen golden and compatibility outcomes |
+| `property` | Generated invariants and boundary exploration |
+| `contract` | Public contract and signature protection |
+| `performance` | Explicit environment-bound benchmarks |
+| `golden` | Retained engineering golden vectors |
+| `repo_only` | Requires the full repository checkout |
+| `slow` | Excluded by the default package configuration |
 
-### Adding New Property Tests
+Examples:
 
-1. **Use existing strategies** from `strategies.py`:
-   ```python
-   from tests.property.strategies import flexure_inputs
+```bash
+./scripts/python_runtime.sh -m pytest -q -m unit Python/tests
+./scripts/python_runtime.sh -m pytest -q -m integration Python/tests/integration
+./scripts/python_runtime.sh -m pytest -q -m regression Python/tests/regression
+./scripts/python_runtime.sh -m pytest -q -m property Python/tests/property
+./scripts/python_runtime.sh -m pytest -q -m contract Python/tests
+```
 
-   @given(inputs=flexure_inputs())
-   def test_my_property(self, inputs: dict) -> None:
-       result = my_function(**inputs)
-       assert invariant_holds(result)
-   ```
+Use `rg --files Python/tests` and targeted symbol searches before selecting a
+path. A directory name does not by itself establish an evidence class.
 
-2. **Create composite strategies** for complex inputs:
-   ```python
-   @st.composite
-   def my_complex_input(draw):
-       fck = draw(concrete_grade())
-       b = draw(st.integers(200, 500))
-       return {"fck": fck, "b": b}
-   ```
+## Property testing
 
-3. **Use `assume()`** for preconditions:
-   ```python
-   @given(b=st.integers(100, 1000), d=st.integers(200, 800))
-   def test_with_precondition(self, b: int, d: int) -> None:
-       assume(d >= b)  # Skip invalid inputs
-       result = function(b, d)
-   ```
+Hypothesis profiles live in `Python/tests/conftest.py`. Use the maintained
+runtime and the intended profile explicitly:
 
-### Key Findings from Property Testing
+```bash
+./scripts/python_runtime.sh -m pytest -q Python/tests/property --hypothesis-profile=dev
+./scripts/python_runtime.sh -m pytest -q Python/tests/property --hypothesis-profile=ci
+./scripts/python_runtime.sh -m pytest -q Python/tests/property --hypothesis-profile=exhaustive
+```
 
-Hypothesis discovered several edge cases:
-- High fck (70) + low fy (250) can exceed 4% max steel even for Mu < Mu_lim
-- Narrow beams (100-150mm) stress the geometry validation logic
-- Shear stress limits are sensitive to concrete grade transitions
+Generated examples can falsify a contract or invariant. They do not become
+independent engineering arithmetic or qualified review.
 
----
+## Coverage
 
-## 8) Definition of "good" (target state)
+Coverage is one software signal, not a readiness score. When a task requires a
+coverage run, bind the exact command, source, exclusions, and threshold in its
+evidence receipt. Do not copy an old percentage into current documentation.
 
-- CI enforces a stable baseline (coverage gate + full test pass).
-- Deterministic tests for boundary conditions and known failure modes.
-- Clear separation:
-  - core calculation tests (fast, numeric)
-  - I/O tests (tmp_path, minimal fixtures)
-  - DXF tests (structural, not brittle)
-- A parity harness exists for shared vectors (Python ↔ VBA) as a longer-term safety net.
+```bash
+./scripts/python_runtime.sh -m pytest Python/tests \
+  --cov=structural_lib --cov-branch --cov-report=term-missing
+```
+
+## Cross-surface verification
+
+For a promoted journey, distinguish and bind the applicable surfaces:
+
+| Surface | Required question |
+|---|---|
+| Direct Python | Does strict input reject before calculation and preserve the valid result? |
+| Request model | Are type, finite, range, unit, enum, identity, relation, and collection decisions explicit? |
+| Compatibility wrapper | Does it delegate to the same calculation owner without changing valid outcomes? |
+| FastAPI | Where the journey is advertised, do error path/code and result status match Python? |
+| Consumer | Can downstream output be produced without silent omission or non-finite values? |
+| Exact wheel | Does the same recipe run with imports bound only to the installed artifact? |
+| UI projection | Is the displayed status/identity current and accessible in the tested application? |
+
+A surface that is unavailable or outside the packet is `NOT_TESTED` or
+`NOT_APPLICABLE`; it is not silently promoted to PASS.
+
+## Evidence classes
+
+Keep these claims separate:
+
+- independent arithmetic;
+- controlled-source example;
+- internal recomputation;
+- wrapper or transport parity;
+- generated regression/property evidence;
+- UI projection;
+- external-software comparison;
+- qualified practicing-engineer review;
+- explicit `NOT_TESTED`.
+
+The cumulative receipt must say which class supports each claim. Green CI and
+source-free artifact replay are software evidence, not professional approval.
+
+## CI and hosted acceptance
+
+The path/domain owner is `scripts/verification-manifest.json`. Unknown impact
+fails closed to every domain. Pull requests must pass every applicable job and
+the required `PR Gate` on the unchanged reviewed head. Never bypass, force,
+or represent a skipped changed-path job as executed evidence.
+
+Weekly/manual workflows can provide broader platform and artifact evidence, but
+only when their exact head, runtime, inputs, and artifacts are bound in the
+receipt.
+
+## Safe troubleshooting
+
+```bash
+./scripts/python_runtime.sh --diagnose
+./scripts/python_runtime.sh scripts/git_state.py --json
+./scripts/python_runtime.sh -m pytest --collect-only Python/tests
+./run.sh verification plan
+```
+
+Do not delete caches, fixtures, retained evidence, ignored data, branches, or
+worktrees to make a test pass. Record terminal dispatch issues and use the
+fallback chain in `AGENTS.md`.
+
+## Claim boundary
+
+No software test, coverage percentage, generated vector, wrapper parity run,
+browser projection, or hosted check grants professional approval,
+engineering-use approval, release authorization, or publication.

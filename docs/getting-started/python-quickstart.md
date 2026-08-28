@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-27
+last_updated: 2026-08-28
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -15,7 +15,7 @@ tags: []
 **Importance:** High
 **Version:** 1.0.0
 **Created:** 2025-12-15
-**Last Updated:** 2026-08-27
+**Last Updated:** 2026-08-28
 
 ---
 
@@ -30,20 +30,19 @@ This is the easiest path for beginners.
 ```bash
 python3 -m pip install --upgrade pip
 
-# Install an exact accepted wheel supplied by the current development cycle
-python3 -m pip install "/absolute/path/to/structural_lib_is456-0.24.0a1-py3-none-any.whl"
+# Install the exact public Alpha prerelease
+python3 -m pip install "structural-lib-is456===0.24.0a1"
 
 # Optional DXF support
-python3 -m pip install "structural-lib-is456[dxf]"
+python3 -m pip install "structural-lib-is456[dxf]===0.24.0a1"
 
 # Verify the interpreter, package origin/version, and installed extras
 python3 -m structural_lib install-preflight
 ```
 
-The older public `0.24.0a1` artifact does not contain the accepted S0 safety
-repair and remains held. Do not use a version string alone as proof that you
-have the repaired artifact. Use the exact current-cycle wheel and its recorded
-SHA-256 identity until a later release cycle publishes a replacement.
+The public `0.24.0a1` artifact predates later B0/F0/R0 source changes. Use the
+exact pin to evaluate that immutable release; use an R0 task-owned wheel and
+its SHA-256 receipt when evaluating the later external-preview candidate.
 
 Engineer review is a single final-stage activity after B0, F0, and R0 complete
 the integrated library. It is not an intermediate approval gate for this B0
@@ -52,7 +51,7 @@ contract cycle, and no current software result claims that review has occurred.
 ## Google Colab quick install
 
 ```python
-%pip install -q "structural-lib-is456[dxf]"
+%pip install -q "structural-lib-is456[dxf]===0.24.0a1"
 ```
 
 Then: `Runtime > Restart runtime` and rerun.
@@ -72,7 +71,7 @@ If you are on Windows, replace `python3` with `py`.
 3. Install the library:
    ```bash
    python3 -m pip install --upgrade pip
-   python3 -m pip install "/absolute/path/to/structural_lib_is456-0.24.0a1-py3-none-any.whl"
+   python3 -m pip install "structural-lib-is456===0.24.0a1"
    python3 -m structural_lib install-preflight
    ```
 4. Optional DXF support:
@@ -114,6 +113,8 @@ PY
 
 For explicit detailing and BBS composition, see the
 [canonical beam recipe](../cookbook/python/beam.md).
+For all advertised families, use the generated
+[13-journey facade cookbook](../cookbook/python/family-facades.md).
 
 ## 3) Use the library in a script (optional)
 Create a file `example.py` with this content:

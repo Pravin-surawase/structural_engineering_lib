@@ -22,6 +22,9 @@ from structural_lib.services.workflow_runner import (
 SAFE_INPUTS = {
     "width": 300.0,
     "depth": 500.0,
+    "clear_cover": 25.0,
+    "stirrup_dia_mm": 8.0,
+    "main_bar_dia_mm": 20.0,
     "moment": 150.0,
     "shear": 75.0,
     "fck": 25.0,

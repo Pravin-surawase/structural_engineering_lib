@@ -1,5 +1,6 @@
 {
-  "schema_version": "advertised-entry-point-inventory/v1",
+  "schema_version": "advertised-entry-point-inventory/v2",
+  "family_facade_registry": "structural_lib.services.family_facade_registry.FAMILY_FACADE_WORKFLOWS",
   "entry_points": [
     {"id": "cli.install-preflight", "command": "install-preflight", "classification": "inspection", "acceptance": ["installed_origin_check"]},
     {"id": "cli.capabilities", "command": "capabilities", "classification": "inspection", "acceptance": ["capability_contract_test"]},

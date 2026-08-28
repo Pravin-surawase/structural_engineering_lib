@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-27",
+  "generated": "2026-08-28",
   "module": "structural_lib.api",
   "python": "3.11.15",
   "count": 199,
@@ -662,7 +662,7 @@
     {
       "name": "compute_dxf",
       "kind": "function",
-      "signature": "(detailing_list: 'list[detailing.BeamDetailingResult]', output: 'str | Path', *, multi: 'bool' = False, include_title_block: 'bool' = False, title_block: 'dict[str, Any] | None' = None, sheet_margin_mm: 'float' = 20.0, title_block_width_mm: 'float' = 120.0, title_block_height_mm: 'float' = 40.0) -> 'Path'"
+      "signature": "(detailing_list: 'object', output: 'str | Path', *, multi: 'bool' = False, include_title_block: 'bool' = False, title_block: 'dict[str, Any] | None' = None, sheet_margin_mm: 'float' = 20.0, title_block_width_mm: 'float' = 120.0, title_block_height_mm: 'float' = 40.0) -> 'Path'"
     },
     {
       "name": "compute_hash",
@@ -677,7 +677,7 @@
     {
       "name": "compute_report",
       "kind": "function",
-      "signature": "(source: 'str | Path | dict[str, Any]', *, format: 'str' = 'html', job_path: 'str | Path | None' = None, results_path: 'str | Path | None' = None, output_path: 'str | Path | None' = None, batch_threshold: 'int' = 80) -> 'str | Path | list[Path]'"
+      "signature": "(source: 'object', *, format: 'str' = 'html', job_path: 'str | Path | None' = None, results_path: 'str | Path | None' = None, output_path: 'str | Path | None' = None, batch_threshold: 'int' = 80) -> 'str | Path | list[Path]'"
     },
     {
       "name": "compute_stirrup_path",
@@ -822,7 +822,7 @@
     {
       "name": "detail_beam_is456",
       "kind": "function",
-      "signature": "(*, units: 'str', beam_id: 'str', story: 'str', b_mm: 'float', D_mm: 'float', span_mm: 'float', cover_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', ast_start_mm2: 'float', ast_mid_mm2: 'float', ast_end_mm2: 'float', asc_start_mm2: 'float' = 0.0, asc_mid_mm2: 'float' = 0.0, asc_end_mm2: 'float' = 0.0, stirrup_dia_mm: 'float' = 8.0, stirrup_spacing_start_mm: 'float' = 150.0, stirrup_spacing_mid_mm: 'float' = 200.0, stirrup_spacing_end_mm: 'float' = 150.0, is_seismic: 'bool' = False) -> 'detailing.BeamDetailingResult'"
+      "signature": "(*, units: 'str', beam_id: 'str', story: 'str', b_mm: 'float', D_mm: 'float', span_mm: 'float', cover_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', ast_start_mm2: 'float', ast_mid_mm2: 'float', ast_end_mm2: 'float', asc_start_mm2: 'float' = 0.0, asc_mid_mm2: 'float' = 0.0, asc_end_mm2: 'float' = 0.0, stirrup_dia_mm: 'float' = 8.0, stirrup_spacing_start_mm: 'float' = 150.0, stirrup_spacing_mid_mm: 'float' = 200.0, stirrup_spacing_end_mm: 'float' = 150.0, is_seismic: 'bool' = False, preferred_tension_bar_dia_mm: 'float | None' = None, preferred_compression_bar_dia_mm: 'float | None' = None, nominal_top_steel_ratio: 'float' = 0.25, stirrup_legs: 'int | None' = None) -> 'detailing.BeamDetailingResult'"
     },
     {
       "name": "detail_column_is456",
@@ -847,7 +847,7 @@
     {
       "name": "export_bbs",
       "kind": "function",
-      "signature": "(bbs_doc: 'bbs.BBSDocument', path: 'str | Path', *, fmt: 'str' = 'csv') -> 'Path'"
+      "signature": "(bbs_doc: 'object', path: 'str | Path', *, fmt: 'str' = 'csv') -> 'Path'"
     },
     {
       "name": "footing_flexure",
