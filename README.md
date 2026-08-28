@@ -29,9 +29,11 @@ workflows under IS 456:2000.
 > not a claim of complete IS 456 coverage or professional design approval.
 > Outputs require independent review by a qualified structural engineer before
 > engineering or construction use. Broader library development and the one
-> cumulative practicing-engineer review remain in progress. Before the exact
-> `v0.24.0` tag is published, this source is a prepared candidate rather than a
-> public artifact; the append-only release ledger records the exact state.
+> cumulative practicing-engineer review remain in progress. The exact release is
+> available from [PyPI](https://pypi.org/project/structural-lib-is456/0.24.0/)
+> and [GitHub Releases](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.24.0);
+> the [current-release page](docs/getting-started/release-status.md) links its
+> append-only artifact and verification evidence.
 
 ## One workflow, four useful surfaces
 
@@ -95,11 +97,11 @@ python3 -m pip install "structural-lib-is456===0.24.0"
 The package is installed as `structural-lib-is456` and imported as
 `structural_lib`.
 
-`0.24.0` is the normal release identifier, so ordinary package resolution will
-select it after publication. Pin the exact version for reproducible work. This
+`0.24.0` is the current normal release, so ordinary package resolution selects
+it. Pin the exact version for reproducible work. This
 normal software release does not claim that broader library development or the
 deferred cumulative practicing-engineer review is complete. See the [release
-policy](docs/getting-started/releases.md) before selecting a build.
+status and policy](docs/getting-started/release-status.md) before selecting a build.
 
 ```python
 from structural_lib.design.is456 import beam

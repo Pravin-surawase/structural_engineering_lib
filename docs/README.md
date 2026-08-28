@@ -11,6 +11,8 @@ Guides, references, evidence, and contributor material for the
 |---|---|---|---|
 | **See the application** | [Product tour](getting-started/product-tour.md) | tour | Real import, 3D review, member inspection, and dashboard screens |
 | **Use the Python package** | [Python quick start](getting-started/python-quickstart.md) | tutorial | Install the package and run a first supported design |
+| **Install or diagnose the package** | [Installation notes](getting-started/installation-notes.md) | guide | Exact release pin, extras, and package-origin checks |
+| **Use the CLI** | [CLI cookbook](cookbook/cli-reference.md) | guide | Strict CSV/JSON input and design/export commands |
 | **Understand the UI workflow** | [React UI user flow](guides/react-ui-user-flow.md) | guide | Import, design, review, dashboard, and export paths |
 | **Integrate an application** | [Platform guide](developers/platform-guide.md) | guide | Build on the Python and FastAPI interfaces |
 | **Inspect tool readiness** | [Beam tool manifest](reference/beam-tool-manifest.md) | reference | Catalogue-derived schema and review boundary without AI activation |
@@ -18,8 +20,9 @@ Guides, references, evidence, and contributor material for the
 | **Run a family recipe** | [Family facade cookbook](cookbook/python/family-facades.md) | guide | Copy-paste payloads for all 13 advertised journeys |
 | **Inspect facade contracts** | [Family facade contracts](reference/family-facade-contracts.md) | reference | Generated signatures, schemas, units, enums, issues, and statuses |
 | **Verify supported evidence** | [Evidence crosswalk](verification/is456-library-first-evidence.md) | evidence | Supported cases, sources, unsafe cases, limits, and release evidence |
+| **Check release status** | [Current release](getting-started/release-status.md) | guide | Public install, maturity, evidence, and claim boundary |
 | **Contribute code** | [Development guide](contributing/development-guide.md) | guide | Architecture, validation, and pull-request workflow |
-| **Work as a coding agent** | [Agent bootstrap](getting-started/agent-bootstrap.md) | guide | Repository-specific automation and guardrails |
+| **Work as a coding agent** | [Agent bootstrap](getting-started/agent-bootstrap.md) | contributor guide | Repository-specific automation and guardrails |
 
 ## Browse by topic
 

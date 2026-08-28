@@ -309,5 +309,6 @@ transport projection uses `structural-problem/v1`.
 - Result consumption is finite JSON through `to_dict()` and
   `structural-result-envelope/v2`.
 
-No status is professional approval, engineering-use approval, Windows
-application acceptance, release authorization, or publication.
+No calculation or review status is professional approval, engineering-use
+approval, construction-use approval, or Windows application acceptance. The
+`v0.24.0` software-release status is tracked separately in the release ledger.

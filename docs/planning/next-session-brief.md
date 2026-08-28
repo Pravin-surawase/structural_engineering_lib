@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-28
-- Focus: Close exact v0.24.0 normal software publication and preserve the next-work boundary
-- Completed: PR #886 merged unchanged; annotated v0.24.0 tag, PyPI, non-prerelease GitHub Release, exact public hashes, workflow UAT, and isolated install verified
-- Git receipt: docs/verification/release-0240-public-closeout-git-handoff-receipt.json | sha256:a8d04ef613847fd3be96c692fbebe8bb92b699898eeaa486d44b783322cc82b6 | HOLD
-- Git identity: codex/release-0240-public-closeout@e66de6efa3bb80d3ebc54e6151b1d6c29275c502 | upstream=origin/main@e66de6efa3bb80d3ebc54e6151b1d6c29275c502 | base=origin/main@e66de6efa3bb80d3ebc54e6151b1d6c29275c502 | tree=dirty | operation=none
+- Focus: Audit the newly published `structural-lib-is456==0.24.0` as an
+- Completed: Verified the current PyPI and GitHub `v0.24.0` publication, then installed the; Replaced stale pre-publication and internal-agent entry points with an; Repaired the synthetic pipeline input contract, removed professional/client
+- Git receipt: docs/verification/external-docs-usability-git-handoff-receipt.json | sha256:4e308db3b9698d87c7515673be3a8ae94e0eb704a5d9f6e9635fdf8e7fc237c4 | HOLD
+- Git identity: codex/external-docs-usability@52b5c256542bbe3917585deaa65c190357a8039a | upstream=origin/main@52b5c256542bbe3917585deaa65c190357a8039a | base=origin/main@52b5c256542bbe3917585deaa65c190357a8039a | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->

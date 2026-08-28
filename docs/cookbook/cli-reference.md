@@ -441,8 +441,8 @@ python -m structural_lib dxf design_results.json -o drawings.dxf
 
 ```bash
 # Create minimal CSV
-echo "BeamID,Story,b,D,Span,Cover,fck,fy,Mu,Vu,Ast_req,Asc_req,Stirrup_Dia,Stirrup_Spacing,Status
-B1,GF,300,500,5000,40,25,500,180,100,0,0,8,150,OK" > beam.csv
+echo "BeamID,Story,b,D,eff_d,Span,Cover,fck,fy,Mu,Vu,Stirrup_Dia,Stirrup_Spacing
+B1,GF,300,500,450,5000,40,25,500,180,100,8,150" > beam.csv
 
 # Run design and view output
 python -m structural_lib design beam.csv

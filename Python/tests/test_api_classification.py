@@ -1,4 +1,4 @@
-"""Executable truth checks for the Alpha API classification registry."""
+"""Executable truth checks for the pre-1.0 API classification registry."""
 
 from __future__ import annotations
 
@@ -39,10 +39,11 @@ def test_every_facade_symbol_has_exactly_one_classification() -> None:
         )
 
 
-def test_alpha_registry_makes_no_stable_export_promise() -> None:
+def test_normal_pre1_registry_makes_no_stable_export_promise() -> None:
     registry = classification.build_registry()
 
-    assert registry["release_channel"] == "alpha"
+    assert registry["release_channel"] == "normal"
+    assert classification._release_channel("0.24.0a1") == "alpha"
     assert registry["stable_exports"] == []
     for surface in registry["surfaces"]:
         assert all(

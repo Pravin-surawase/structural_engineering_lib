@@ -433,19 +433,74 @@ class TestREADMESnippets:
 
     def test_readme_beam_design_snippet(self):
         """README beam design example works."""
-        from structural_lib import design_beam_is456
+        from structural_lib.design.is456 import beam
 
-        result = design_beam_is456(
-            units="IS456",
+        request = beam.load(
+            {
+                "identity": {
+                    "member_id": "B1",
+                    "story": "GF",
+                    "case_id": "ULS-1",
+                },
+                "section": {
+                    "span_mm": 5000.0,
+                    "b_mm": 300.0,
+                    "D_mm": 500.0,
+                    "d_mm": 442.0,
+                },
+                "materials": {"fck_nmm2": 25.0, "fy_nmm2": 500.0},
+                "actions": {"mu_knm": 150.0, "vu_kn": 80.0, "tu_knm": 0.0},
+                "calculation_basis": {"d_dash_mm": 58.0, "asv_mm2": 100.0},
+                "source_provenance": "analysis-envelope:ULS-1",
+            }
+        )
+        result = beam.design(request)
+
+        assert result.engineering_status == "PASS"
+        assert result.calculation.flexure.Ast_required > 0
+
+    def test_python_readme_design_detail_and_bbs_snippet(self):
+        """Published-package README canonical chain works without compatibility APIs."""
+        from structural_lib.design.is456 import beam
+
+        detailing = beam.BeamDetailingOptionsV1(
+            standard=beam.DetailingStandard.IS456,
+            clear_cover_mm=40,
+            tension_bar_diameter_mm=20,
+            compression_bar_diameter_mm=16,
+            nominal_top_steel_ratio=0.25,
+            stirrup_diameter_mm=8,
+            stirrup_legs=2,
+            stirrup_spacing_support_mm=150,
+            stirrup_spacing_mid_mm=200,
+        )
+        request = beam.input(
+            member_id="B1",
+            story="GF",
+            case_id="ULS-1",
+            span_mm=5000,
             b_mm=300,
             D_mm=550,
             d_mm=500,
             fck_nmm2=25,
-            fy_nmm2=415,
+            fy_nmm2=500,
             mu_knm=150,
-            vu_kn=100,
+            vu_kn=80,
+            d_dash_mm=50,
+            asv_mm2=detailing.asv_mm2,
+            detailing=detailing,
+            source_provenance="analysis-envelope:ULS-1",
         )
-        assert result is not None
+
+        result = beam.design_and_detail(
+            request,
+            detailing_standard=beam.DetailingStandard.IS456,
+        )
+        schedule = beam.bbs(result)
+
+        assert result.engineering_status == "PASS"
+        assert schedule.total_weight_kg > 0
+        assert schedule.items
 
     def test_readme_csv_adapter_snippet(self):
         """README CSV adapter import works."""

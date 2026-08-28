@@ -7,21 +7,23 @@ complexity: intermediate
 tags: []
 ---
 
-# Python Recipes
+# Compatibility and Low-Level Python Recipes
 
-Copy-paste snippets for common structural engineering tasks.
+Advanced snippets for maintained compatibility and low-level calculation APIs.
 
-The maintained beginner journey is now the
-[canonical beam recipe](python/beam.md). The examples below retain advanced
-and compatibility surfaces during the Alpha migration; they are not a second
-canonical contract. See the [migration guide](../migration/external-python-api-v1.md).
+These are not the starting point for a new integration and may emit deprecation
+warnings before v1.0. Start with the [canonical beam recipe](python/beam.md) or
+the [13 family facades](python/family-facades.md), which define strict intake,
+structured errors, finite result consumption, and the current review boundary.
+Use the recipes below only when maintaining a caller that already depends on
+the named compatibility or low-level API.
 
 ## Setup
 
 ```bash
-pip install structural-lib-is456
+pip install "structural-lib-is456===0.24.0"
 # For DXF support:
-pip install structural-lib-is456[dxf]
+pip install "structural-lib-is456[dxf]===0.24.0"
 ```
 
 ```python

@@ -1,11 +1,11 @@
 # structural-lib-is456
 
-IS 456 RC Beam Design Library (Python package).
+IS 456 reinforced-concrete design library (Python package).
 
 **Version:** 0.24.0 (normal software release; broader development in progress)
 **Status:** [![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 
-> ⚠️ **Development Preview:** APIs may change until v1.0. For reproducible results, pin to a release tag.
+> ⚠️ **Pre-1.0 API:** APIs may change until v1.0. For reproducible results, pin to an exact release.
 
 > **Supported-case boundary:** this package implements selected IS 456 workflows,
 > not the whole standard. Every output requires independent verification and
@@ -34,8 +34,8 @@ pip install "structural-lib-is456[dxf]===0.24.0"  # release with DXF export
 python -m structural_lib install-preflight          # interpreter/origin/extras
 ```
 
-`0.24.0` is a normal package version and will be selected without `--pre` after
-publication. The Beta maturity classifier and the explicit limitations above
+`0.24.0` is the current normal package version and is selected without `--pre`.
+The Beta maturity classifier and the explicit limitations above
 remain: broader library development and cumulative practicing-engineer review
 are still in progress.
 
@@ -45,27 +45,43 @@ are still in progress.
 
 ## If You Want To…
 
-### Design a Beam Through the Canonical Facade
+### Design and Detail a Beam Through the Canonical Facade
 
 ```python
 from structural_lib.design.is456 import beam
 
-request = beam.load(
-    {
-        "identity": {"member_id": "B1", "story": "GF", "case_id": "ULS-1"},
-        "section": {
-            "span_mm": 5000.0,
-            "b_mm": 300.0,
-            "D_mm": 500.0,
-            "d_mm": 442.0,
-        },
-        "materials": {"fck_nmm2": 25.0, "fy_nmm2": 500.0},
-        "actions": {"mu_knm": 150.0, "vu_kn": 80.0, "tu_knm": 0.0},
-        "calculation_basis": {"d_dash_mm": 58.0, "asv_mm2": 100.0},
-        "source_provenance": "analysis-envelope:ULS-1",
-    }
+detailing = beam.BeamDetailingOptionsV1(
+    standard=beam.DetailingStandard.IS456,
+    clear_cover_mm=40,
+    tension_bar_diameter_mm=20,
+    compression_bar_diameter_mm=16,
+    nominal_top_steel_ratio=0.25,
+    stirrup_diameter_mm=8,
+    stirrup_legs=2,
+    stirrup_spacing_support_mm=150,
+    stirrup_spacing_mid_mm=200,
 )
-result = beam.design(request)
+request = beam.input(
+    member_id="B1",
+    story="GF",
+    case_id="ULS-1",
+    span_mm=5000,
+    b_mm=300,
+    D_mm=550,
+    d_mm=500,
+    fck_nmm2=25,
+    fy_nmm2=500,
+    mu_knm=150,
+    vu_kn=80,
+    d_dash_mm=50,
+    asv_mm2=detailing.asv_mm2,
+    detailing=detailing,
+    source_provenance="analysis-envelope:ULS-1",
+)
+result = beam.design_and_detail(
+    request,
+    detailing_standard=beam.DetailingStandard.IS456,
+)
 
 print(result.engineering_status)
 print(result.to_dict())
@@ -74,52 +90,28 @@ print(result.to_dict())
 The complete 13-journey cookbook is maintained at
 `docs/cookbook/python/family-facades.md` in the source repository.
 
-### Get Detailing (bar sizes, stirrups, cut lengths)
-
-```python
-from structural_lib import build_detailing_input, compute_detailing
-
-detailing_input = build_detailing_input(
-    result, beam_id="B1", b_mm=300, D_mm=500, d_mm=450,
-    span_mm=6000, cover_mm=30, fck_nmm2=25, fy_nmm2=500,
-)
-detailed = compute_detailing(detailing_input)
-
-for beam in detailed:
-    print(f"{beam.beam_id}: {len(beam.top_bars)} top, {len(beam.bottom_bars)} bottom zones")
-```
-
 ### Generate a Bar Bending Schedule (BBS)
 
 ```python
-from structural_lib import compute_bbs
-
-bbs = compute_bbs(detailed, project_name="My Project")
-print(f"Total weight: {bbs.summary.total_weight_kg:.1f} kg")
+bbs = beam.bbs(result)
+print(f"Total weight: {bbs.total_weight_kg:.1f} kg")
 for item in bbs.items:
     print(f"  {item.bar_mark}: ø{item.diameter_mm:.0f} × {item.no_of_bars} nos")
 ```
 
-### Export DXF Drawings
+### Export DXF Drawings and Reports
 
-```python
-from structural_lib import compute_dxf
+Use the fail-closed CLI pipeline for project files and exports:
 
-output_path = compute_dxf(detailed, "beam.dxf")  # returns Path
-print(f"DXF saved to {output_path}")
+```bash
+python -m structural_lib design input.csv -o results.json
+python -m structural_lib detail results.json -o detailing.json
+python -m structural_lib bbs results.json -o schedule.csv
+python -m structural_lib dxf results.json -o drawings.dxf
+python -m structural_lib report results.json --format=html -o report.html
 ```
 
 > Requires the `dxf` extra: `pip install "structural-lib-is456[dxf]"`
-
-### Generate an HTML Report
-
-```python
-from structural_lib import compute_report
-
-html = compute_report(detailing_input, format="html")
-with open("report.html", "w") as f:
-    f.write(html)
-```
 
 ### Batch Design with the Canonical Project Schema
 
@@ -239,8 +231,11 @@ only through the separate explicit torsion workflow.
 | **Bearing** | `check_bearing_pressure`, `bearing_stress_enhancement` | Bearing pressure & stress enhancement |
 | **Load Transfer** | `check_isolated_footing_load_transfer` | Bounded concentric bearing/dowel transfer with approved effective A1 |
 
-Combined, strap, raft and pile-cap foundations, settlement, geotechnical
-design, and lateral stability are outside these footing workflows.
+The low-level functions in this section cover isolated footings. Separate
+canonical facades cover bounded symmetric combined-footing and property-line
+strap-footing cases; use their generated recipes to see every required
+assumption and evidence field. Raft and pile-cap foundations, settlement,
+geotechnical design, and lateral stability remain outside the supported routes.
 
 ### Solid Slab Design (Supported Cases)
 
@@ -250,9 +245,12 @@ design, and lateral stability are outside these footing workflows.
 | **Two-Way Slab** | `design_two_way_slab_is456` | One interior four-edge-continuous flexure case using accepted caller-supplied coefficients |
 | **Discovery** | `get_supported_is456_capabilities` | Machine-readable supported workflows and held cases |
 
-Two-way coefficients are not built in or verified by the library. The two-way
-route requires explicit source approval and a qualified acceptance reference.
-Flat/drop/ribbed slabs, openings, irregular panels and FEM are excluded.
+The canonical two-way facade uses the library's bounded normalized coefficient
+lookup and interpolation for supported common panels. Compatibility functions
+that accept caller-supplied coefficients remain separate and require explicit
+source approval. Drop/ribbed slabs, openings, irregular panels, concentrated
+loads, and FEM remain outside the solid-slab route; use the separate regular
+interior flat-slab facade only for its documented bounded case.
 
 ### IS 13920 Ductile Detailing
 

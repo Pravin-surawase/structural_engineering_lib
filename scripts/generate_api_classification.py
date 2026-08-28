@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate or validate the Alpha public API classification registry.
+"""Generate or validate the pre-1.0 public API classification registry.
 
 The registry covers all declared exports and every public-looking callable on
 the supported root and service facades plus the retained compatibility module.
@@ -845,6 +845,15 @@ def _build_surface(
     }
 
 
+def _release_channel(version: str) -> str:
+    """Return the repository's supported public distribution channel."""
+    if re.fullmatch(r"\d+\.\d+\.\d+", version):
+        return "normal"
+    if re.fullmatch(r"\d+\.\d+\.\d+a\d+", version):
+        return "alpha"
+    raise RuntimeError(f"Unsupported package version for API registry: {version}")
+
+
 def build_registry() -> dict[str, Any]:
     sys.path.insert(0, str(REPO_ROOT / "Python"))
     from structural_lib import __version__
@@ -878,10 +887,10 @@ def build_registry() -> dict[str, Any]:
         "claim_surface_matrix_schema_version": "claim-surface-matrix/v1",
         "generated": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
         "package_version": __version__,
-        "release_channel": "alpha",
+        "release_channel": _release_channel(__version__),
         "classifications": {
-            "stable": "Reserved for a separately approved post-Alpha compatibility promise.",
-            "preview": "Declared Alpha export; callable but subject to documented pre-1.0 change.",
+            "stable": "Reserved for a separately approved stable compatibility promise.",
+            "preview": "Declared pre-1.0 export; callable but subject to documented change.",
             "compatibility": "Retained delegating facade; use the recommended root or service facade.",
             "internal": "Not declared in __all__; no public compatibility promise.",
         },
@@ -1069,7 +1078,7 @@ def _projection_reason(module_name: str, name: str, claim_disposition: str) -> s
         )
     if claim_disposition == "hold":
         return (
-            "The callable remains available inside its documented Alpha boundary, "
+            "The callable remains available inside its documented pre-1.0 boundary, "
             "but its broader claim is held and must not be promoted."
         )
     if module_name == "structural_lib.api":

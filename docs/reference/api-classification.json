@@ -3,10 +3,10 @@
   "claim_surface_matrix_schema_version": "claim-surface-matrix/v1",
   "generated": "2026-08-28",
   "package_version": "0.24.0",
-  "release_channel": "alpha",
+  "release_channel": "normal",
   "classifications": {
-    "stable": "Reserved for a separately approved post-Alpha compatibility promise.",
-    "preview": "Declared Alpha export; callable but subject to documented pre-1.0 change.",
+    "stable": "Reserved for a separately approved stable compatibility promise.",
+    "preview": "Declared pre-1.0 export; callable but subject to documented change.",
     "compatibility": "Retained delegating facade; use the recommended root or service facade.",
     "internal": "Not declared in __all__; no public compatibility promise."
   },

@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-28
 doc_type: reference
 complexity: intermediate
 tags: []
@@ -14,11 +14,11 @@ tags: []
 **Status:** Active
 **Importance:** Medium
 **Created:** 2025-12-01
-**Last Updated:** 2026-04-04
+**Last Updated:** 2026-08-28
 
 ---
 
-> **Status:** Preview (v0.13.0+)
+> **Status:** Experimental compatibility API in package 0.24.0
 > **Stability:** Experimental - API may change before v1.0
 
 Complete API reference for the advisory insights module.
@@ -597,8 +597,8 @@ Where:
 
 ---
 
-**Last updated:** 2026-03-29
-**Version: 0.14.0 (preview)
+**Last updated:** 2026-08-28
+**Package:** 0.24.0 (experimental compatibility API)
 
 ---
 
