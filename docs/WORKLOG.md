@@ -353,3 +353,5 @@ tags: []
 | 2026-08-10 | MAINT-009-B | Fixed Weekly Verification's Python 3.11 typing boundary through explicit Mypy and NumPy constraints; exact current-main run passed | 610b404b, 22bc8a45 |
 | 2026-08-10 | MAINT-009-C | Closed 129 obsolete nightly-failure issues, cleared generated repository artifacts, and prepared the dependency-maintenance handoff | — |
 | 2026-08-29 | ETABS-EXCEL-PILOT-W1 | Repaired installed ETABS COM inventory and exact combination identity; passed direct and installed Excel one-/five-beam reconciliation while preserving the copied model and qualified-review boundary | — |
+| 2026-08-29 | MULTI-DEVICE-GIT-SYNC | Synchronized the Mac primary checkout after the Windows merge and published the one-branch/one-writer fast-forward-only device rule through PR #894 | 45ef7c29 |
+| 2026-08-29 | ETABS-EXCEL-BEAM-NEXT | Closed W1 documentation and froze W2 read-only baseline/topology as the next packet before design expansion, construction checks, optimization, or write-back | — |
