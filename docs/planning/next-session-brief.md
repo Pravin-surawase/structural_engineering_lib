@@ -3,11 +3,11 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-08-28
-- Focus: Repair the installed-Windows model-identity failure after the prior
-- Completed: Open-model identity now uses `SapModel.GetModelFilename(True)`, the ETABS API; Identity validation rejects empty, relative, directory-only, and non-`.edb`; The fake COM model now reproduces the installed behavior: the old filepath
-- Git receipt: docs/verification/etabs-model-filename-identity-git-handoff-receipt.json | sha256:09ee2b5d47e6e2d1e75aa066f80e9ea21c72a22bb6ce88a8828f18098066152a | HOLD
-- Git identity: codex/etabs-model-filename-identity@57ba94af5f5e207474629e1fa26a5a1946e51275 | upstream=origin/main@57ba94af5f5e207474629e1fa26a5a1946e51275 | base=origin/main@57ba94af5f5e207474629e1fa26a5a1946e51275 | tree=dirty | operation=none
+- Date: 2026-08-29
+- Focus: Complete the bounded installed Windows Excel + ETABS software
+- Completed: Repaired the installed ETABS frame-inventory COM binding and exact; Passed direct FastAPI and installed Excel one-beam plus bounded five-beam; Preserved model identity, hash, size, timestamp, lock, analysis results, and
+- Git receipt: docs/verification/etabs-excel-python-pilot-w1-git-handoff-receipt.json | sha256:ebbbac5cf019bc7e91331697c9089074c0c973668ab704c1ba493dfe80127721 | HOLD
+- Git identity: codex/etabs-excel-pilot-w1-continuation-2@3ff3c80a9290e029e80bf182e36c03ed3ece4299 | upstream=NONE@UNKNOWN | base=origin/main@3ff3c80a9290e029e80bf182e36c03ed3ece4299 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -17,8 +17,8 @@
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` is the immutable current normal software release at merge `e66de6efa3bb80d3ebc54e6151b1d6c29275c502`; GitHub prerelease is false and PyPI selects it normally. |
-| **Current** | The exact copied Windows model has current locked analysis results. The tuple/list repair is merged. W1 then proved that ETABS 23.3.1 returns only a directory from `GetModelFilepath()`; `codex/etabs-model-filename-identity` contains the bounded `GetModelFilename(True)` repair with exact full-path and fail-closed identity regressions. This remains an unpublished repair candidate, not completed installed-Windows acceptance or a release. |
-| **Next** | Freeze and publish the identity repair, require its hosted checks, then deploy that exact commit to the existing Windows evidence lane. Reuse the analyzed copied model and run `/connect`, one-beam `/beam-pilot`, Excel, and bounded five-beam evidence without rerunning analysis. |
+| **Current** | `ETABS-EXCEL-PILOT-W1` is a software-acceptance PASS on the exact copied, locked, already-analyzed Windows model. Direct FastAPI and installed Excel reconciled exactly for one beam and the bounded five-beam run after repairing the installed `GetAllFrames` COM binding and exact combination-name grammar. Model identity, lock, case status, present units, hash, size, and timestamp remained safe. The tracked receipt excludes proprietary model paths, force payloads, and workbook contents. |
+| **Next** | Merge the W1 repair and safe receipt after required checks. Then define a separate reviewed scope before any section proposal, ETABS write-back, analysis rerun, global-response comparison, or bounded optimization; keep qualified structural-engineer review explicit before engineering use. |
 | **Held** | Additional ETABS analysis, unlock/save, member-size write-back, iterative whole-model optimization, full frame-solver claims, serviceability/adjacency/congestion/site-practice automation, stable-API guarantee, professional or construction-use approval, release, protected-source mutation, and destructive cleanup. |
 
 ## Published release evidence
@@ -60,9 +60,11 @@
 
 ## Required Reading
 
-1. [Public v0.24.0 receipt](../verification/release-0240-publication-receipt.json)
-2. [Normal-release owner decision](../verification/release-0240-normal-software-owner-decision.json)
-3. [Post-R0 cumulative audit](../verification/lib-pro-014-post-r0-cumulative-audit-evidence.json)
-4. [Release checklist](pre-release-checklist.md)
-5. [Release ledger](../getting-started/releases.md)
-6. [Current task board](../TASKS.md)
+1. [W1 installed Windows receipt](../verification/etabs-excel-python-pilot-w1-evidence.json)
+2. [Excel/Python/ETABS pilot guide](../guides/excel-etabs-python-bridge-pilot.md)
+3. [Public v0.24.0 receipt](../verification/release-0240-publication-receipt.json)
+4. [Normal-release owner decision](../verification/release-0240-normal-software-owner-decision.json)
+5. [Post-R0 cumulative audit](../verification/lib-pro-014-post-r0-cumulative-audit-evidence.json)
+6. [Release checklist](pre-release-checklist.md)
+7. [Release ledger](../getting-started/releases.md)
+8. [Current task board](../TASKS.md)

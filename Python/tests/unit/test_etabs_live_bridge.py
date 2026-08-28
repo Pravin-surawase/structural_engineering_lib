@@ -40,7 +40,7 @@ def _request(*, limit: int = 2) -> bridge.ETABSPilotRequestV1:
     return bridge.ETABSPilotRequestV1(
         result_selection=bridge.ETABSResultSelectionV1(
             kind=bridge.ETABSResultSelectionKind.COMBINATION,
-            name="ULS-1",
+            name="117.(1.5DL+1.5LL)",
         ),
         design_basis=_design_basis(),
         limit=limit,
@@ -77,7 +77,7 @@ class _FakeResults:
             (0.0, 2500.0, 5000.0),
             (f"E-{frame_name}",) * 3,
             (0.0, 2500.0, 5000.0),
-            ("ULS-1",) * 3,
+            ("117.(1.5DL+1.5LL)",) * 3,
             ("Max", "Max", "Min"),
             (0.0, 0.0, 0.0),
             (0.0, 0.0, 0.0),
@@ -95,8 +95,9 @@ class _FakeFrameObj:
     def __init__(self, output_container=tuple) -> None:
         self.output_container = output_container
 
-    def GetAllFrames(self, coordinate_system):
-        assert coordinate_system == "Global"
+    def GetAllFrames(self):
+        # Installed ETABS exposes CSys="Global" as the optional final input;
+        # callers omit all preceding COM output parameters and use that default.
         # B2 is intentionally listed first; deterministic story/name sorting picks B1.
         outputs = (
             3,
@@ -216,7 +217,7 @@ def test_pilot_extracts_sorted_beams_preserves_stations_and_restores_units(
     assert sap_model.unit_calls == [5, 6]
     assert sap_model.Results.Setup.calls == [
         ("deselect",),
-        ("combo", "ULS-1", True),
+        ("combo", "117.(1.5DL+1.5LL)", True),
     ]
     assert sap_model.model_filename_calls == [True]
     assert sap_model.model_filepath_calls == 0

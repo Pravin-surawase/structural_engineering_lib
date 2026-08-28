@@ -455,7 +455,7 @@ def _checked_sequence(
 def _frame_inventory(sap_model: Any) -> list[dict[str, Any]]:
     outputs = _decode_com_outputs(
         "FrameObj.GetAllFrames",
-        sap_model.FrameObj.GetAllFrames("Global"),
+        sap_model.FrameObj.GetAllFrames(),
         output_count=20,
     )
     number = int(outputs[0])

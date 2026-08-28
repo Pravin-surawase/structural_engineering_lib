@@ -35,7 +35,7 @@ __all__ = [
 
 
 BEAM_DESIGN_SCHEMA_VERSION = "beam-design-input/v1"
-_IDENTITY_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:/@+ -]{0,79}$")
+_IDENTITY_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:/@+() -]{0,79}$")
 
 
 class DetailingStandard(StrEnum):
@@ -57,7 +57,7 @@ class MemberIdentityV1(StrictPublicModel):
     def validate_identity(cls, value: str) -> str:
         if not _IDENTITY_PATTERN.fullmatch(value):
             raise ValueError(
-                "identity must use letters, digits, spaces, and . _ : / @ + - only"
+                "identity must use letters, digits, spaces, and . _ : / @ + ( ) - only"
             )
         return value
 
