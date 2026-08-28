@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-28
-- Focus: Repair the Windows-blocking ETABS COM result-container mismatch and
-- Completed: The common ETABS COM decoder now accepts only the two observed outer result; The existing connection and full beam-pilot tests now run against both outer
-- Git receipt: docs/verification/etabs-com-list-compat-git-handoff-receipt.json | sha256:a84a498879cbc8d9dc512b1b80d42e8ca19d91ca8659e3928f03c1284ca17fda | HOLD
-- Git identity: codex/etabs-com-list-compat@d6e83cfd53d444b11637bb0e85f5b314a92333cc | upstream=origin/main@d6e83cfd53d444b11637bb0e85f5b314a92333cc | base=origin/main@d6e83cfd53d444b11637bb0e85f5b314a92333cc | tree=dirty | operation=none
+- Focus: Repair the installed-Windows model-identity failure after the prior
+- Completed: Open-model identity now uses `SapModel.GetModelFilename(True)`, the ETABS API; Identity validation rejects empty, relative, directory-only, and non-`.edb`; The fake COM model now reproduces the installed behavior: the old filepath
+- Git receipt: docs/verification/etabs-model-filename-identity-git-handoff-receipt.json | sha256:09ee2b5d47e6e2d1e75aa066f80e9ea21c72a22bb6ce88a8828f18098066152a | HOLD
+- Git identity: codex/etabs-model-filename-identity@57ba94af5f5e207474629e1fa26a5a1946e51275 | upstream=origin/main@57ba94af5f5e207474629e1fa26a5a1946e51275 | base=origin/main@57ba94af5f5e207474629e1fa26a5a1946e51275 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -17,8 +17,8 @@
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` is the immutable current normal software release at merge `e66de6efa3bb80d3ebc54e6151b1d6c29275c502`; GitHub prerelease is false and PyPI selects it normally. |
-| **Current** | The exact copied Windows model has current locked analysis results. W1 reached `/connect` and exposed a tuple-only COM decoder defect; `codex/etabs-com-list-compat` contains the bounded repair with tuple/list connection and full-pilot regressions. This remains an unpublished repair candidate, not completed installed-Windows acceptance or a release. |
-| **Next** | Freeze and publish the repair candidate, require its hosted checks, then deploy that exact commit to the existing Windows evidence lane. Reuse the analyzed copied model and run `/connect`, one-beam `/beam-pilot`, Excel, and bounded five-beam evidence without rerunning analysis. |
+| **Current** | The exact copied Windows model has current locked analysis results. The tuple/list repair is merged. W1 then proved that ETABS 23.3.1 returns only a directory from `GetModelFilepath()`; `codex/etabs-model-filename-identity` contains the bounded `GetModelFilename(True)` repair with exact full-path and fail-closed identity regressions. This remains an unpublished repair candidate, not completed installed-Windows acceptance or a release. |
+| **Next** | Freeze and publish the identity repair, require its hosted checks, then deploy that exact commit to the existing Windows evidence lane. Reuse the analyzed copied model and run `/connect`, one-beam `/beam-pilot`, Excel, and bounded five-beam evidence without rerunning analysis. |
 | **Held** | Additional ETABS analysis, unlock/save, member-size write-back, iterative whole-model optimization, full frame-solver claims, serviceability/adjacency/congestion/site-practice automation, stable-API guarantee, professional or construction-use approval, release, protected-source mutation, and destructive cleanup. |
 
 ## Published release evidence

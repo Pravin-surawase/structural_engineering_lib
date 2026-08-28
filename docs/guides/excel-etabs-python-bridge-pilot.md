@@ -135,6 +135,14 @@ The optional dependency is `comtypes>=1.4,<2` and is installed only by the
 `etabs` package extra on Windows. The service creates and tears down COM inside
 the FastAPI worker thread that owns the request.
 
+After attaching to the running ETABS object, the service identifies the exact
+open model with `SapModel.GetModelFilename(True)`. The explicit `True` requests
+the filename with its full path; the bridge rejects an empty value, a directory,
+a relative filename, or a path that is not a saved `.edb` model. It does not use
+`GetModelFilepath()`, which ETABS 23.3.1 returned as the containing directory in
+the installed Windows pilot. See CSI's API documentation for
+[GetModelFilename](https://docs.csiamerica.com/help-files/etabs-api-2016/html/375b5267-61cc-04c2-d39c-34940d011f52.htm).
+
 The pilot records the current ETABS present-unit enumeration, temporarily sets
 `kN_mm_C` (CSI enumeration value 5), reads geometry and results, and restores
 the original setting in a `finally` path. CSI's API documentation identifies
