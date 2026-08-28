@@ -134,15 +134,28 @@ class _FakePropFrame:
 
 
 class _FakeSapModel:
-    def __init__(self, output_container=tuple) -> None:
+    def __init__(
+        self,
+        output_container=tuple,
+        *,
+        model_filename: str = r"C:\Models\Pilot Copy.EDB",
+    ) -> None:
         self.output_container = output_container
+        self.model_filename = model_filename
         self.FrameObj = _FakeFrameObj(output_container)
         self.PropFrame = _FakePropFrame(output_container)
         self.Results = _FakeResults(output_container)
         self.unit_calls: list[int] = []
+        self.model_filename_calls: list[bool] = []
+        self.model_filepath_calls = 0
 
     def GetModelFilepath(self):
-        return r"C:\Models\Pilot Copy.edb"
+        self.model_filepath_calls += 1
+        return "C:\\Models\\"
+
+    def GetModelFilename(self, include_path):
+        self.model_filename_calls.append(include_path)
+        return self.model_filename
 
     def GetVersion(self):
         return self.output_container(("ETABS 23.3.1", 23.31, 0))
@@ -186,7 +199,8 @@ def test_pilot_extracts_sorted_beams_preserves_stations_and_restores_units(
 
     result = bridge.run_etabs_beam_pilot_v1(_request(), session_factory=lambda: session)
 
-    assert result.model.model_name == "Pilot Copy.edb"
+    assert result.model.model_name == "Pilot Copy.EDB"
+    assert result.model.model_path == r"C:\Models\Pilot Copy.EDB"
     assert result.candidate_beam_count == 2
     assert result.designed_beam_count == 2
     assert [item.geometry.frame_name for item in result.beams] == ["B1", "B2"]
@@ -204,6 +218,8 @@ def test_pilot_extracts_sorted_beams_preserves_stations_and_restores_units(
         ("deselect",),
         ("combo", "ULS-1", True),
     ]
+    assert sap_model.model_filename_calls == [True]
+    assert sap_model.model_filepath_calls == 0
     assert session.closed is True
 
 
@@ -247,8 +263,36 @@ def test_connect_returns_exact_open_model_without_unit_change(
     result = bridge.connect_etabs_v1(session_factory=lambda: session)
 
     assert result.bridge_status == "CONNECTED"
+    assert result.model.model_name == "Pilot Copy.EDB"
+    assert result.model.model_path == r"C:\Models\Pilot Copy.EDB"
     assert result.model.etabs_version == "ETABS 23.3.1"
+    assert sap_model.model_filename_calls == [True]
+    assert sap_model.model_filepath_calls == 0
     assert sap_model.unit_calls == []
+    assert session.closed is True
+
+
+@pytest.mark.parametrize(
+    ("model_filename", "expected_code"),
+    [
+        ("", "ETABS_MODEL_PATH_MISSING"),
+        ("C:\\Models\\", "ETABS_MODEL_PATH_INVALID"),
+        ("Pilot Copy.edb", "ETABS_MODEL_PATH_INVALID"),
+        (r"C:\Models\Pilot Copy.e2k", "ETABS_MODEL_PATH_INVALID"),
+    ],
+)
+def test_connect_rejects_missing_or_non_edb_model_identity(
+    model_filename, expected_code
+):
+    sap_model = _FakeSapModel(model_filename=model_filename)
+    session = _FakeSession(sap_model)
+
+    with pytest.raises(bridge.ETABSConnectionError) as exc_info:
+        bridge.connect_etabs_v1(session_factory=lambda: session)
+
+    assert exc_info.value.code == expected_code
+    assert sap_model.model_filename_calls == [True]
+    assert sap_model.model_filepath_calls == 0
     assert session.closed is True
 
 

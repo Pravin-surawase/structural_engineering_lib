@@ -5,6 +5,90 @@
 
 ---
 
+## 2026-08-28 — Session: ETABS exact open-model identity repair
+
+**Agent:** Codex (`backend`, sole writer; no subagents).
+
+**Branch:** `codex/etabs-model-filename-identity` from observed current
+`origin/main` `57ba94af5f5e207474629e1fa26a5a1946e51275`.
+
+**Git handoff receipt:**
+`docs/verification/etabs-model-filename-identity-git-handoff-receipt.json`
+
+**Focus:** Repair the installed-Windows model-identity failure after the prior
+COM list/tuple compatibility repair. Attach only to the already-open ETABS
+process, prove the exact saved `.edb` filename and full path, and preserve the
+existing read-only pilot boundary. Analysis, model unlock/save, section or load
+mutation, Excel execution, optimization, and engineering approval remain
+outside this code repair.
+
+**Completed:**
+
+- Open-model identity now uses `SapModel.GetModelFilename(True)`, the ETABS API
+  operation that requests the filename with its full path, rather than
+  `GetModelFilepath()`, which returned only the containing directory on the
+  ETABS 23.3.1 acceptance host.
+- Identity validation rejects empty, relative, directory-only, and non-`.edb`
+  values before reporting `CONNECTED` or extracting any beam. The exact path
+  and its Windows basename remain visible in the existing REST/Excel contract.
+- The fake COM model now reproduces the installed behavior: the old filepath
+  method returns only `C:\\Models\\`, while `GetModelFilename(True)` returns the
+  full uppercase-`.EDB` identity. Connection and full-pilot regressions prove
+  the correct method and fail if the directory-only method is called.
+- The Windows guide records the exact model-identity call, validation boundary,
+  observed ETABS 23.3.1 behavior, and official CSI API reference.
+
+### Issues encountered
+
+- `/connect` returned `CONNECTED` with model name `Downloads` and model path
+  `C:\\Users\\P\\Downloads\\` instead of the open copied model's exact `.EDB`
+  identity, preventing W1 from safely continuing to `/beam-pilot` and Excel.
+- The deterministic COM fake returned a full `.edb` filename from
+  `GetModelFilepath()`, so local tests encoded behavior that did not match the
+  installed ETABS 23.3.1 API result.
+- The canonical session start was rejected by the already-recorded unmatched
+  parent-pilot usage checkpoint.
+- The first targeted mypy invocation mixed repository-root and configured
+  Python package contexts and found the service package under two module names.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `_model_identity` called `GetModelFilepath()`, which is
+  not the filename API and returned the open model's directory on the Windows
+  acceptance host. Resolution: call `GetModelFilename(True)`, parse it with
+  `PureWindowsPath`, and require an absolute `.edb` path. Focused connection and
+  full-pilot tests return the exact name/path and never call the old method.
+- Confirmed root cause: the fake's wrong `GetModelFilepath()` contract made the
+  production misuse look correct. Resolution: model the observed directory
+  return separately from `GetModelFilename(True)` and assert exact call history;
+  empty, directory-only, relative, and non-EDB identities all fail closed.
+- Confirmed root cause: the shared usage log still has the parent
+  `EXCEL-ETABS-PYTHON-BRIDGE-PILOT` start without a separate usage-closeout
+  record. Resolution: continue that trusted active timer, matching the preceding
+  directly related repair, rather than bypassing or duplicating the checkpoint.
+  `session trust` reports `Trusted`/`READY_LOCAL`. ⚠️ TERMINAL ISSUE: new repair
+  session start was rejected by the unmatched parent checkpoint -> continued
+  the trusted parent-pilot timer.
+- Confirmed root cause: configured mypy uses `explicit_package_bases=true` from
+  `Python/`, while the first command passed a root-relative source path.
+  Resolution: run the exact service from the configured `Python/` package
+  context through the worktree-bound runtime; it reports no issues.
+  ⚠️ TERMINAL ISSUE: root-level targeted mypy found the package twice -> used
+  the maintained configured package context.
+
+### Validation through content freeze
+
+- Focused service and REST selection: `16 passed`, covering tuple/list COM
+  containers, exact uppercase-`.EDB` identity, complete bounded beam extraction,
+  unit restoration, and four invalid model-identity shapes.
+- Changed service/test Black and Ruff: pass. Configured mypy for the changed
+  service: no issues. The consolidated quick gate passes `10/10`; normal commit
+  checks remain the candidate-freeze sequence.
+- No ETABS model, workbook, Excel add-in, FastAPI contract, structural formula,
+  design input, analysis state, or result selection was changed by this repair.
+
+---
+
 ## 2026-08-28 — Session: ETABS comtypes list-output compatibility repair
 
 **Agent:** Codex (`backend`, sole writer; no subagents).

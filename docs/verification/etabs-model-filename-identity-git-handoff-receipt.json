@@ -1,0 +1,124 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "09ee2b5d47e6e2d1e75aa066f80e9ea21c72a22bb6ce88a8828f18098066152a",
+    "state": {
+      "branch": "codex/etabs-model-filename-identity",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "57ba94af5f5e207474629e1fa26a5a1946e51275",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 90.212,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "head_sha": "57ba94af5f5e207474629e1fa26a5a1946e51275",
+      "hold_reasons": [
+        "changed paths: 6"
+      ],
+      "linked_worktree": false,
+      "locks": [],
+      "observed_at_utc": "2026-08-28T18:21:15.051442+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 6,
+        "modified_paths": [
+          "Python/structural_lib/services/etabs_live_bridge.py",
+          "Python/tests/unit/test_etabs_live_bridge.py",
+          "docs/SESSION_LOG.md",
+          "docs/guides/excel-etabs-python-bridge-pilot.md",
+          "docs/planning/next-session-brief.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/etabs-model-filename-identity-git-handoff-receipt.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "57ba94af5f5e207474629e1fa26a5a1946e51275",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:09ee2b5d47e6e2d1e75aa066f80e9ea21c72a22bb6ce88a8828f18098066152a",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-28T18:21:15.051581+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "excel_addin",
+      "fastapi_app",
+      "Python/structural_lib/codes/is456"
+    ],
+    "integration_owner": "Codex",
+    "owned_paths": [
+      "Python/structural_lib/services/etabs_live_bridge.py",
+      "Python/tests/unit/test_etabs_live_bridge.py",
+      "docs/guides/excel-etabs-python-bridge-pilot.md"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "ETABS-MODEL-FILENAME-IDENTITY"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

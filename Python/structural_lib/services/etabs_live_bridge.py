@@ -398,17 +398,23 @@ def _default_session_factory() -> _ETABSSession:
 
 
 def _model_identity(sap_model: Any) -> ETABSModelIdentityV1:
-    model_path = str(sap_model.GetModelFilepath() or "").strip()
+    model_path = str(sap_model.GetModelFilename(True) or "").strip()
     if not model_path:
         raise ETABSConnectionError(
             "ETABS_MODEL_PATH_MISSING",
             "Save the copied ETABS model before running the Excel pilot.",
         )
+    parsed_path = PureWindowsPath(model_path)
+    if not parsed_path.is_absolute() or parsed_path.suffix.casefold() != ".edb":
+        raise ETABSConnectionError(
+            "ETABS_MODEL_PATH_INVALID",
+            "ETABS did not return the full path of a saved .edb model.",
+        )
     version, version_number = _decode_com_outputs(
         "SapModel.GetVersion", sap_model.GetVersion(), output_count=2
     )
     return ETABSModelIdentityV1(
-        model_name=PureWindowsPath(model_path).name,
+        model_name=parsed_path.name,
         model_path=model_path,
         etabs_version=str(version),
         etabs_version_number=float(version_number),
