@@ -5,6 +5,115 @@
 
 ---
 
+## 2026-08-28 — Session: RELEASE-0240 Normal Software Release
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents).
+
+**Branch:** `codex/release-0240-stable-software`.
+
+**Focus:** Prepare, verify, merge, tag, publish, and publicly verify exact
+`v0.24.0` as the normal software release of the audited supported scope, while
+keeping broader library development and one cumulative practicing-engineer
+review explicitly in progress.
+
+**Completed:**
+
+- Proved fresh `origin/main` at accepted audit merge `e7956f78...`, tree
+  `78494828...`; confirmed public `v0.24.0a1` identity, absence of `v0.24.0`,
+  the old public normal-version lag, branch/worktree/operation/PR state, sibling
+  candidates, and no outcome-changing overlap. The detached dirty `e54a` lane
+  and all other retained state remain untouched.
+- Recorded the owner's exact `0.24.0` normal-release decision and separated
+  package-distribution status from stable-API, professional, engineering-use,
+  construction-use, and whole-standard claims. The package uses a Beta maturity
+  classifier and states that broader library work remains in progress.
+- Extended version preparation, local preflight, tag validation, and the hosted
+  publish workflow to support Alpha `X.Y.ZaN` and normal final `X.Y.Z` versions.
+  Alpha retains GitHub prerelease status; final `0.24.0` produces a normal
+  GitHub Release.
+- Prepared consistent `0.24.0` package, FastAPI, React, citation, quickstart,
+  API-classification, changelog, checklist, release-ledger, task, and handoff
+  surfaces without changing engineering calculations or supported-family
+  behavior.
+- Built one local wheel/sdist pair. Twine, clean installed import/version/CLI,
+  both public examples, and all 29 exact-wheel UAT cases across 28 advertised
+  entries and 13 family facades pass. These are local rehearsal artifacts; the
+  tag workflow must build and publish its own exact artifacts.
+
+### Issues encountered
+
+- The maintained release tools and hosted workflow rejected every normal final
+  version and forced Alpha development status and GitHub prerelease behavior.
+- A regression test still classified `1.0.0` as invalid and invoked the bump
+  command without dry-run. Once normal final versions became valid, that test
+  temporarily advanced the working release surfaces to `1.0.0`.
+- The first consolidated gate passed 31/32 checks but found the API
+  classification registry and compatibility ledger stale after the version
+  change.
+- The first normal hook run rejected the handoff's descriptive Git receipt line
+  because it did not use the exact generated local-state receipt identity.
+- The first clean session closeout did not recognize the completed-work list
+  because its heading included the additional words “through local content
+  freeze.”
+- A first-pass release-script discovery command used an unmatched zsh glob and
+  was rejected before inspection.
+
+### Root causes and resolutions
+
+- Confirmed root cause: Alpha-only format checks and wording were duplicated in
+  `bump_version.py`, `release.py`, `publish.yml`, and release policy, coupling
+  normal package selection to the unrelated qualified-review gate. Resolution:
+  accept Alpha or final PEP 440 versions, derive GitHub prerelease state from the
+  exact identifier, require the matching Alpha/Beta classifier, and make the
+  master policy distinguish normal software publication from professional-use
+  claims. Focused release/workflow tests and permission checks pass.
+- Confirmed root cause: the invalid-version regression encoded the retired
+  Alpha-only policy and was mutating by design because every listed value was
+  previously guaranteed invalid. Resolution: replace the now-valid final
+  version with an actually unsupported Beta identifier, then run the maintained
+  bump once with `--force` to restore the owner-selected `0.24.0` state. A new
+  isolated fixture proves `0.24.0a1` promotes to final `0.24.0`, changes the
+  classifier and wording, and clears stale publication dates. No unrelated user
+  work was overwritten.
+- Confirmed root cause: the generated API classification owners embed the
+  package version and are intentionally not part of the minimal hard-coded
+  version-file set. Resolution: run their maintained generator after the version
+  mutation and validate the registry and compatibility ledger as current. The
+  failed classification check is the repair evidence.
+- Confirmed root cause: the session contract parses the generated receipt path,
+  local-state hash, and status as an exact three-field projection; the handoff
+  had substituted the receipt file hash and appended prose to the status.
+  Resolution: project the receipt's exact `local_state_receipt_hash`, `HOLD`
+  status, hosted fields, and next action. The failed hook is rerun rather than
+  bypassed.
+- Confirmed root cause: the session closeout parser requires the literal
+  `**Completed:**` heading for its completed-item list. Resolution: use that
+  canonical heading without changing any release evidence or package content;
+  rerun the read-only closeout on the clean amended commit.
+- Confirmed root cause: zsh `nomatch` rejects a glob when no file matches.
+  Resolution: enumerate exact maintained files with `rg --files` before reading
+  them. ⚠️ TERMINAL ISSUE: unmatched `scripts/check_release*.py` aborted the
+  read-only search -> used exact discovered paths.
+
+### Validation through content freeze
+
+- Focused release/version/environment/workflow batch: 152 tests passed; Ruff
+  passed; Black passed after formatting the three changed Python files.
+- Release documentation, version synchronization, public-distribution
+  permission, footing inclusion, instruction composition, configuration
+  precedence, context, and generated API-classification controls pass.
+- Local artifacts: wheel 822,111 bytes,
+  SHA-256 `64343a33...40d1`; sdist 688,176 bytes,
+  SHA-256 `32fb86a0...322c`; Twine and clean exact-wheel checks pass.
+- Quick gate: 10/10. The first full gate was 31/32 before the generated
+  classification refresh; the frozen-state rerun passed 32/32 with 15
+  unaffected checks reused. Normal hooks, clean exact-wheel preflight, candidate
+  receipt, hosted checks, authorization, TestPyPI, merge, tag, publication, and
+  public verification remain closeout.
+
+**Git handoff receipt:**
+`docs/verification/release-0240-preparation-git-handoff-receipt.json`
+
 ## 2026-08-28 — Session: LIB-PRO-014 Post-R0 Cumulative Audit
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents).

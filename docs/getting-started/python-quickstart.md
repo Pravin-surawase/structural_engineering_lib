@@ -11,9 +11,9 @@ tags: []
 
 **Type:** Guide
 **Audience:** Users
-**Status:** Alpha Preview
+**Status:** Beta Maturity / Normal Software Release
 **Importance:** High
-**Version:** 1.0.0
+**Version:** 0.24.0
 **Created:** 2025-12-15
 **Last Updated:** 2026-08-28
 
@@ -30,19 +30,20 @@ This is the easiest path for beginners.
 ```bash
 python3 -m pip install --upgrade pip
 
-# Install the exact public Alpha prerelease
-python3 -m pip install "structural-lib-is456===0.24.0a1"
+# Install the exact normal release
+python3 -m pip install "structural-lib-is456===0.24.0"
 
 # Optional DXF support
-python3 -m pip install "structural-lib-is456[dxf]===0.24.0a1"
+python3 -m pip install "structural-lib-is456[dxf]===0.24.0"
 
 # Verify the interpreter, package origin/version, and installed extras
 python3 -m structural_lib install-preflight
 ```
 
-The public `0.24.0a1` artifact predates later B0/F0/R0 source changes. Use the
-exact pin to evaluate that immutable release; use an R0 task-owned wheel and
-its SHA-256 receipt when evaluating the later external-preview candidate.
+The `0.24.0` normal release includes the accepted B0/F0/R0 programme and the
+post-R0 cumulative audit. Use the exact pin for reproducibility. This is a
+normal software-release claim for the audited supported scope, not complete IS
+456 coverage or professional approval.
 
 Engineer review is a single final-stage activity after B0, F0, and R0 complete
 the integrated library. It is not an intermediate approval gate for this B0
@@ -51,7 +52,7 @@ contract cycle, and no current software result claims that review has occurred.
 ## Google Colab quick install
 
 ```python
-%pip install -q "structural-lib-is456[dxf]===0.24.0a1"
+%pip install -q "structural-lib-is456[dxf]===0.24.0"
 ```
 
 Then: `Runtime > Restart runtime` and rerun.
@@ -71,7 +72,7 @@ If you are on Windows, replace `python3` with `py`.
 3. Install the library:
    ```bash
    python3 -m pip install --upgrade pip
-   python3 -m pip install "structural-lib-is456===0.24.0a1"
+   python3 -m pip install "structural-lib-is456===0.24.0"
    python3 -m structural_lib install-preflight
    ```
 4. Optional DXF support:

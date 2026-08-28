@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-28 — accepted R0 is integrated; post-R0 cumulative audit and root-cause repair are locally frozen pending one candidate and hosted closeout
+**Updated:** 2026-08-28 — post-R0 audit is merged; owner-authorized v0.24.0 normal-release preparation is active
 
 ---
 
@@ -70,7 +70,7 @@
 ## Current Release
 
 | **Current public release** | v0.24.0a1 | ✅ ALPHA RELEASED — immutable tag and GitHub/PyPI artifacts recorded; later `main` work is not included |
-| **Release candidate** | None | Post-R0 audit recommends `v0.24.0a2`; no version is selected or authorized |
+| **Release candidate** | v0.24.0 | 🟡 LOCAL EXACT ARTIFACT READY — normal final version selected and owner-authorized after exact gates; immutable candidate, hosted checks, tag, and publication remain |
 - **Release evidence:** tag target `71b70652`; public wheel SHA-256 `b5e0df7b…6201a`; public sdist SHA-256 `8c1d6b76…0a53b`; exact workflow UAT and public identity are green
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization
@@ -92,7 +92,7 @@
 | **v0.21.8** | Performance & Property Testing | 📋 PLANNED | Benchmarks, Hypothesis, performance baselines |
 | **v0.22.0** | Stabilization Release | 📋 PLANNED | API naming convention (Batch 3), provenance, SP:16 verification |
 | **v0.23** | Bounded IS 456 slabs + footing completion | ✅ ALPHA RELEASED | Case-qualified development preview; professional review remains a final stable/engineering-use gate |
-| **v0.24** | Multi-Code Infrastructure and bounded IS 456 external preview | ✅ PROGRAMME INTEGRATED ON `main` | Public `v0.24.0a1` predates S0/B0/F0/R0; next artifact remains held |
+| **v0.24** | Multi-Code Infrastructure and bounded IS 456 external preview | 🟡 NORMAL RELEASE PREPARATION | Public `v0.24.0a1` predates S0/B0/F0/R0; exact `v0.24.0` local wheel/UAT is green pending candidate, hosted gates, and publication |
 | **v0.25** | ACI 318-19 Beam | 📋 PLANNED | ACI beam flexure + shear, PCA Notes ±0.1% benchmarks |
 | **v1.0** | Production Multi-Code | 📋 PLANNED | IS 456 complete, ACI 318 beam+column, EC2 beam, API stability guarantee |
 
@@ -189,7 +189,7 @@ owner declares the intended library complete. Shared
 validation, facade, result, manifest, generated API, documentation, task, and
 session owners remain single-writer surfaces.
 
-`LIB-PRO-014-POST-R0-CUMULATIVE-AUDIT` audits the exact 30-commit, 244-file
+`LIB-PRO-014-POST-R0-CUMULATIVE-AUDIT` audited the exact 30-commit, 244-file
 delta from public tag `v0.24.0a1` (`71b70652...`) through accepted R0 merge
 `b1ba36e3...`. The engineering/facade replay found no calculation-owner,
 golden-outcome, supported-family, or contract defect. Two main-process control
@@ -197,11 +197,21 @@ defects were confirmed and repaired at their roots: stale/masked API inventory
 counts, and a full-stack launcher that bypassed the worktree-aware Python
 runtime. The changed Python selection passes 1,050 tests, changed FastAPI
 selection passes 200, React passes lint/283 tests/build, all 13 family journeys
-and 18 canonical beam checks pass, and the real browser/default-beam/BBS route
-plus full-stack start/stop journey pass. One immutable audit candidate, hosted
-checks, and unchanged merge remain. The audit recommends `v0.24.0a2` for a
-later owner-authorized release-selection task; it does not select, tag, or
-publish a version.
+  and 18 canonical beam checks pass, and the real browser/default-beam/BBS route
+  plus full-stack start/stop journey pass. PR #885 merged unchanged at
+  `e7956f78...`, tree `78494828...` after required hosted checks passed. The
+  audit's Alpha-version recommendation was superseded by the owner's later
+  exact `v0.24.0` normal-software-release decision.
+
+`RELEASE-0240-STABLE-SOFTWARE` is the active single-writer release task. It
+separates a normal final package version from stable-API, professional,
+engineering-use, and construction-use claims; retains the Beta maturity label;
+and records broader library development plus one cumulative practicing-engineer
+review as still in progress. Local wheel `64343a33...40d1` and sdist
+`32fb86a0...322c` pass Twine, clean import, CLI, 29/29 exact-wheel UAT cases,
+28 advertised entries, and 13 family-facade entries. Immutable candidate,
+hosted checks, exact authorization, TestPyPI, unchanged merge, tag, publication,
+and public verification remain.
 
 The [LIB-PRO-013 Windows evidence lane readiness receipt](verification/lib-pro-013-windows-evidence-lane-readiness.json)
 records `READY_FOR_FUTURE_WINDOWS_EVIDENCE_SETUP_ONLY` at exact B0 merge

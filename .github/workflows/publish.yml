@@ -57,23 +57,31 @@ jobs:
           else
             requested_version="$MANUAL_VERSION"
           fi
-          if [[ ! "$requested_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+a[0-9]+$ ]]; then
-            echo "Invalid Alpha release version: $requested_version"
-            echo "Expected PEP 440 Alpha format X.Y.ZaN (for example, 0.24.0a1)"
+          if [[ ! "$requested_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+(a[0-9]+)?$ ]]; then
+            echo "Invalid release version: $requested_version"
+            echo "Expected PEP 440 Alpha X.Y.ZaN or normal final X.Y.Z format"
             exit 1
           fi
           if [[ "$requested_version" != "$package_version" ]]; then
             echo "Requested version $requested_version does not match package version $package_version"
             exit 1
           fi
-          prerelease=$(python - <<'PY'
+          prerelease=$(RELEASE_VERSION="$requested_version" python - <<'PY'
+          import os
           import tomllib
 
           with open("pyproject.toml", "rb") as stream:
               classifiers = tomllib.load(stream)["project"].get("classifiers", [])
 
-          assert "Development Status :: 3 - Alpha" in classifiers
-          print("true")
+          version = os.environ["RELEASE_VERSION"]
+          is_alpha = "a" in version
+          expected = (
+              "Development Status :: 3 - Alpha"
+              if is_alpha
+              else "Development Status :: 4 - Beta"
+          )
+          assert expected in classifiers
+          print("true" if is_alpha else "false")
           PY
           )
           echo "version=$package_version" >> "$GITHUB_OUTPUT"

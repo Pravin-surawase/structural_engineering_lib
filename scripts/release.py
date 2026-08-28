@@ -7,8 +7,8 @@ When to use: At release time. Runs release verification checks and manages the r
 Consolidates: release.py, verify_release.py, check_release_docs.py, check_pre_release_checklist.py
 
 USAGE:
-    python scripts/release.py run 0.24.0a1 [--dry-run] [--no-open]
-    python scripts/release.py verify [--version 0.24.0a1] [--source wheel]
+    python scripts/release.py run 0.24.0 [--dry-run] [--no-open]
+    python scripts/release.py verify [--version 0.24.0] [--source wheel]
     python scripts/release.py check-docs
     python scripts/release.py checklist
     python scripts/release.py permission-check
@@ -152,7 +152,9 @@ def _public_distribution_permission_errors(path: Path | None = None) -> list[str
     required_boundaries = {
         "authorizes_tag_or_publish": False,
         "per_release_owner_authorization_required": True,
-        "qualified_structural_engineering_review_required_for_stable_or_engineering_use": True,
+        "normal_software_release_requires_qualified_structural_engineering_review": False,
+        "qualified_structural_engineering_review_required_for_engineering_or_construction_use": True,
+        "professional_approval_requires_qualified_structural_engineering_review": True,
     }
     if not isinstance(boundaries, dict):
         errors.append("permission record release_boundaries must be an object")
@@ -188,7 +190,7 @@ def _release_publication_authorization_errors(
     *,
     repo_root: Path | None = None,
 ) -> list[str]:
-    """Fail closed until the owner authorizes the exact Alpha publication."""
+    """Fail closed until the owner authorizes the exact publication."""
 
     path = path or RELEASE_PUBLICATION_AUTHORIZATION
     repo_root = (repo_root or REPO_ROOT).resolve()
@@ -251,7 +253,7 @@ def _release_publication_authorization_errors(
         )
     if data.get("professional_approval") is not False:
         errors.append(
-            "Alpha publication authorization must not imply professional approval"
+            "release publication authorization must not imply professional approval"
         )
     return errors
 
@@ -799,7 +801,7 @@ def cmd_footing_inclusion_check(args: argparse.Namespace) -> int:
 
 
 def _release_version_key(v: str) -> tuple[int, int, int, int, int]:
-    """Order supported Alpha identifiers and the legacy stable release."""
+    """Order supported Alpha identifiers and normal final releases."""
     alpha_match = ALPHA_VERSION_RE.fullmatch(v)
     if alpha_match:
         major, minor, patch, alpha = (int(part) for part in alpha_match.groups())
@@ -913,7 +915,8 @@ def _source_surface_version_errors(
             "CITATION.cff": _version_from_cff(),
             "README.md": _version_from_doc(
                 ROOT_README,
-                r"^> \*\*v(\d+\.\d+\.\d+(?:a\d+)?) is an Alpha development preview\.",
+                r"^> \*\*v(\d+\.\d+\.\d+(?:a\d+)?) is "
+                r"(?:an Alpha development preview|a normal software release of the audited supported scope)\.",
             ),
             "Python/README.md": _version_from_doc(
                 PYTHON_README,
@@ -1384,7 +1387,7 @@ def _print_checklist(version: str) -> None:
     )
     print("  [ ] 7. Commit the packet; run authorization-check for each target")
     print("  [ ] 8. Rehearse TestPyPI, merge with candidate ancestry, then tag once")
-    print("  [ ] 9. Monitor the tag-triggered PyPI and GitHub prerelease workflow")
+    print("  [ ] 9. Monitor the tag-triggered PyPI and GitHub release workflow")
     print()
     print("Verification:")
     print(f"  [ ] Check PyPI: pip install structural-lib-is456=={version}")
@@ -1412,7 +1415,7 @@ def cmd_run(args: argparse.Namespace) -> int:
         )
         print(result.stdout.strip())
         print("\nUsage: python scripts/release.py run <new_version>")
-        print("Example: python scripts/release.py run 0.24.0a1")
+        print("Example: python scripts/release.py run 0.24.0")
         return 1
 
     version = args.version
@@ -1483,8 +1486,14 @@ def cmd_run(args: argparse.Namespace) -> int:
     )
 
     try:
-        if not ALPHA_VERSION_RE.fullmatch(version):
-            print(f"  ERROR: Version {version} must use PEP 440 Alpha format X.Y.ZaN")
+        if not (
+            ALPHA_VERSION_RE.fullmatch(version)
+            or LEGACY_STABLE_VERSION_RE.fullmatch(version)
+        ):
+            print(
+                f"  ERROR: Version {version} must use PEP 440 Alpha X.Y.ZaN "
+                "or normal final X.Y.Z format"
+            )
             return 1
         if _release_version_key(version) <= _release_version_key(current_version):
             print(
@@ -2172,9 +2181,12 @@ def cmd_preflight(args: argparse.Namespace) -> int:
         warnings += 1
 
     if args.version and not wheel_arg:
-        if not ALPHA_VERSION_RE.fullmatch(args.version):
+        if not (
+            ALPHA_VERSION_RE.fullmatch(args.version)
+            or LEGACY_STABLE_VERSION_RE.fullmatch(args.version)
+        ):
             print(f"  ✗ Invalid version format: {args.version}")
-            print("    Expected PEP 440 Alpha format X.Y.ZaN (for example, 0.24.0a1)")
+            print("    Expected PEP 440 Alpha X.Y.ZaN or normal final X.Y.Z format")
             errors += 1
         else:
             try:

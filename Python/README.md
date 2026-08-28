@@ -2,7 +2,7 @@
 
 IS 456 RC Beam Design Library (Python package).
 
-**Version:** 0.24.0a1 (Alpha development preview)
+**Version:** 0.24.0 (normal software release; broader development in progress)
 **Status:** [![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 
 > ⚠️ **Development Preview:** APIs may change until v1.0. For reproducible results, pin to a release tag.
@@ -12,7 +12,7 @@ IS 456 RC Beam Design Library (Python package).
 > qualified structural-engineering review. Use official standards as the
 > authoritative source.
 
-## New in v0.24.0a1
+## New in v0.24.0
 
 - **Fail-closed project intake:** malformed, missing, unknown, or mixed-validity
   beam rows block the whole project instead of being defaulted or skipped.
@@ -29,14 +29,15 @@ IS 456 RC Beam Design Library (Python package).
 ## Install
 
 ```bash
-pip install structural-lib-is456===0.24.0a1        # exact public Alpha
-pip install "structural-lib-is456[dxf]===0.24.0a1" # Alpha with DXF export
+pip install structural-lib-is456===0.24.0         # exact normal release
+pip install "structural-lib-is456[dxf]===0.24.0"  # release with DXF export
 python -m structural_lib install-preflight          # interpreter/origin/extras
 ```
 
-`0.24.0a1` is the current public Alpha prerelease on PyPI and GitHub. Pip does
-not select prereleases by default from a version range; use the exact pin when
-evaluating this artifact. Later source revisions are not the immutable release.
+`0.24.0` is a normal package version and will be selected without `--pre` after
+publication. The Beta maturity classifier and the explicit limitations above
+remain: broader library development and cumulative practicing-engineer review
+are still in progress.
 
 > **Requires Python 3.11+.** On Python 3.9–3.10, pip installs the older v0.16.x (beam-only, no column/footing).
 

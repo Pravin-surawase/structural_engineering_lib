@@ -162,4 +162,4 @@ You should get a number around 196.5 (kN-m).
 - API reference: `docs/reference/api.md`
 - Learning path: `docs/learning/README.md`
 
-Document Version: 0.24.0a1 | Last Updated: 2026-08-24
+Document Version: 0.24.0 | Last Updated: 2026-08-28

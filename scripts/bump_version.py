@@ -7,8 +7,8 @@ When to use: At release time. Bumps version in pyproject.toml and all version st
 This script updates version numbers across the codebase from ONE location.
 
 USAGE:
-    ./scripts/python_runtime.sh scripts/bump_version.py 0.24.0a1
-    ./scripts/python_runtime.sh scripts/bump_version.py 0.24.0a1 --dry-run
+    ./scripts/python_runtime.sh scripts/bump_version.py 0.24.0
+    ./scripts/python_runtime.sh scripts/bump_version.py 0.24.0 --dry-run
     ./scripts/python_runtime.sh scripts/bump_version.py --sync-docs
 
 The single source of truth is Python/pyproject.toml.
@@ -33,6 +33,10 @@ VERSION_FILES = {
     # Python source of truth (packaging)
     "Python/pyproject.toml": [
         (r'^version = "[^"]+"', 'version = "{version}"'),
+        (
+            r'^  "Development Status :: [34] - (?:Alpha|Beta)",$',
+            '  "{development_status}",',
+        ),
     ],
     # React app (keep in sync)
     "react_app/package.json": [
@@ -44,7 +48,7 @@ VERSION_FILES = {
         (r"^date-released: .+\n?", ""),
         (
             r"^message: .+",
-            'message: "Prepared Alpha candidate v{version}; not tagged or published. '
+            'message: "Prepared {candidate_label} candidate v{version}; not tagged or published. '
             "Case-qualified workflows still require independent verification and "
             'qualified professional review for engineering use."',
         ),
@@ -77,8 +81,9 @@ VERSION_FILES = {
 DOC_VERSION_FILES = {
     "README.md": [
         (
-            r"^(> \*\*v)[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?( is an Alpha development preview\.)",
-            r"\g<1>{version}\g<2>",
+            r"^> \*\*v[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)? is "
+            r"(?:an Alpha development preview|a normal software release of the audited supported scope)\.",
+            "> **v{version} is {readme_release_status}.",
         ),
         (
             r"structural-lib-is456={2,3}[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
@@ -87,8 +92,9 @@ DOC_VERSION_FILES = {
     ],
     "Python/README.md": [
         (
-            r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
-            "**Version:** {version}",
+            r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?"
+            r"(?: \((?:Alpha development preview|normal software release; broader development in progress)\))?",
+            "**Version:** {version} ({python_release_status})",
         ),
         (r"^## New in v[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?", "## New in v{version}"),
         (
@@ -98,6 +104,10 @@ DOC_VERSION_FILES = {
         ),
     ],
     "docs/getting-started/python-quickstart.md": [
+        (
+            r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
+            "**Version:** {version}",
+        ),
         (
             r"structural-lib-is456={2,3}[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
             "structural-lib-is456==={version}",
@@ -191,7 +201,7 @@ def read_current_version() -> str:
 
 
 def version_key(version: str) -> tuple[int, int, int, int, int]:
-    """Order supported Alpha identifiers and the legacy stable release."""
+    """Order supported Alpha identifiers and normal final releases."""
     alpha_match = ALPHA_VERSION_RE.fullmatch(version)
     if alpha_match:
         major, minor, patch, alpha = (int(part) for part in alpha_match.groups())
@@ -203,6 +213,34 @@ def version_key(version: str) -> tuple[int, int, int, int, int]:
         return (major, minor, patch, 1, 0)
 
     raise ValueError(f"Unsupported version format: {version}")
+
+
+def release_format_kwargs(version: str, today: str) -> dict[str, str]:
+    """Return maturity-aware replacements for one supported version."""
+    is_alpha = bool(ALPHA_VERSION_RE.fullmatch(version))
+    is_final = bool(LEGACY_STABLE_VERSION_RE.fullmatch(version))
+    if not (is_alpha or is_final):
+        raise ValueError(f"Unsupported version format: {version}")
+    return {
+        "version": version,
+        "date": today,
+        "candidate_label": "Alpha" if is_alpha else "normal software release",
+        "development_status": (
+            "Development Status :: 3 - Alpha"
+            if is_alpha
+            else "Development Status :: 4 - Beta"
+        ),
+        "readme_release_status": (
+            "an Alpha development preview"
+            if is_alpha
+            else "a normal software release of the audited supported scope"
+        ),
+        "python_release_status": (
+            "Alpha development preview"
+            if is_alpha
+            else "normal software release; broader development in progress"
+        ),
+    }
 
 
 def update_file(
@@ -243,7 +281,11 @@ def update_file(
 
 def main():
     parser = argparse.ArgumentParser(description="Bump version across codebase")
-    parser.add_argument("version", nargs="?", help="New Alpha version (e.g., 0.24.0a1)")
+    parser.add_argument(
+        "version",
+        nargs="?",
+        help="New Alpha or normal final version (e.g., 0.24.0a2 or 0.24.0)",
+    )
     parser.add_argument("--dry-run", action="store_true", help="Show what would change")
     parser.add_argument("--current", action="store_true", help="Show current version")
     parser.add_argument(
@@ -300,6 +342,7 @@ def main():
         return 0
 
     today = date.today().isoformat()
+    current_format_kwargs = release_format_kwargs(current, today)
 
     if args.check_docs:
         print("Checking doc version references against current version...")
@@ -307,9 +350,7 @@ def main():
         changes = 0
         for rel_path, patterns in DOC_VERSION_FILES.items():
             filepath = REPO_ROOT / rel_path
-            if update_file(
-                filepath, patterns, {"version": current, "date": today}, dry_run=True
-            ):
+            if update_file(filepath, patterns, current_format_kwargs, dry_run=True):
                 changes += 1
         print()
         if changes:
@@ -327,15 +368,11 @@ def main():
         changes = 0
         for rel_path, patterns in DOC_VERSION_FILES.items():
             filepath = REPO_ROOT / rel_path
-            if update_file(
-                filepath, patterns, {"version": current, "date": today}, args.dry_run
-            ):
+            if update_file(filepath, patterns, current_format_kwargs, args.dry_run):
                 changes += 1
         for rel_path, patterns in DOC_DATE_FILES.items():
             filepath = REPO_ROOT / rel_path
-            if update_file(
-                filepath, patterns, {"version": current, "date": today}, args.dry_run
-            ):
+            if update_file(filepath, patterns, current_format_kwargs, args.dry_run):
                 changes += 1
         print()
         if args.dry_run:
@@ -351,9 +388,7 @@ def main():
         changes = 0
         for rel_path, patterns in DOC_DATE_FILES.items():
             filepath = REPO_ROOT / rel_path
-            if update_file(
-                filepath, patterns, {"version": current, "date": today}, args.dry_run
-            ):
+            if update_file(filepath, patterns, current_format_kwargs, args.dry_run):
                 changes += 1
         print()
         if args.dry_run:
@@ -367,16 +402,20 @@ def main():
         print(
             "\nUsage: ./scripts/python_runtime.sh scripts/bump_version.py <new_version>"
         )
-        print("Example: ./scripts/python_runtime.sh scripts/bump_version.py 0.24.0a1")
+        print("Example: ./scripts/python_runtime.sh scripts/bump_version.py 0.24.0")
         return 1
 
     new_version = args.version
 
     # Validate version format
-    if not ALPHA_VERSION_RE.fullmatch(new_version):
+    is_alpha = bool(ALPHA_VERSION_RE.fullmatch(new_version))
+    is_final = bool(LEGACY_STABLE_VERSION_RE.fullmatch(new_version))
+    if not (is_alpha or is_final):
         print(f"ERROR: Invalid version format: {new_version}")
-        print("Expected PEP 440 Alpha format: X.Y.ZaN (e.g., 0.24.0a1)")
+        print("Expected PEP 440 Alpha X.Y.ZaN or normal final X.Y.Z format")
         return 1
+
+    format_kwargs = release_format_kwargs(new_version, today)
 
     # Validate version is higher than current
     if not args.force:
@@ -404,7 +443,7 @@ def main():
             if update_file(
                 filepath,
                 patterns,
-                {"version": new_version, "date": today},
+                format_kwargs,
                 args.dry_run,
             ):
                 changes += 1
@@ -426,7 +465,7 @@ def main():
             if update_file(
                 filepath,
                 patterns,
-                {"version": new_version, "date": today},
+                format_kwargs,
                 args.dry_run,
             ):
                 doc_changes += 1
@@ -446,7 +485,7 @@ def main():
             if update_file(
                 filepath,
                 patterns,
-                {"version": new_version, "date": today},
+                format_kwargs,
                 args.dry_run,
             ):
                 doc_changes += 1

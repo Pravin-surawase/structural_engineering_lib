@@ -13,7 +13,7 @@ torsion, column, slab, wall, staircase, deep-beam, flat-slab, and footing
 workflows under IS 456:2000.
 
 [![PyPI version](https://img.shields.io/pypi/v/structural-lib-is456.svg)](https://pypi.org/project/structural-lib-is456/)
-[![Alpha](https://img.shields.io/badge/status-alpha-f59e0b)](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.24.0a1)
+[![Release](https://img.shields.io/badge/status-normal%20release-2563eb)](https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.24.0)
 [![PR Gate](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/fast-checks.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/fast-checks.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-22c55e)](LICENSE)
@@ -25,12 +25,13 @@ workflows under IS 456:2000.
 ![StructLib beam inspector showing a 3D building model, reinforcement view, utilization, and IS 456 checks](docs/images/product/beam-inspector.jpg)
 
 > [!IMPORTANT]
-> **v0.24.0a1 is an Alpha development preview.** Support is case-qualified,
+> **v0.24.0 is a normal software release of the audited supported scope.** Support is case-qualified,
 > not a claim of complete IS 456 coverage or professional design approval.
 > Outputs require independent review by a qualified structural engineer before
-> engineering or construction use. The exact `v0.24.0a1` artifact is a
-> published PyPI/GitHub prerelease; current `main` contains later preview work
-> and must not be represented as that immutable artifact.
+> engineering or construction use. Broader library development and the one
+> cumulative practicing-engineer review remain in progress. Before the exact
+> `v0.24.0` tag is published, this source is a prepared candidate rather than a
+> public artifact; the append-only release ledger records the exact state.
 
 ## One workflow, four useful surfaces
 
@@ -88,16 +89,17 @@ reconciliation, or professional approval.
 ### Install the Python package
 
 ```bash
-python3 -m pip install "structural-lib-is456===0.24.0a1"
+python3 -m pip install "structural-lib-is456===0.24.0"
 ```
 
 The package is installed as `structural-lib-is456` and imported as
 `structural_lib`.
 
-`0.24.0a1` is the current public Alpha prerelease and the exact pin above
-resolves from PyPI. Pip does not select prereleases by default from a version
-range; use the exact pin when evaluating this artifact. See the
-[release policy](docs/getting-started/releases.md) before selecting a build.
+`0.24.0` is the normal release identifier, so ordinary package resolution will
+select it after publication. Pin the exact version for reproducible work. This
+normal software release does not claim that broader library development or the
+deferred cumulative practicing-engineer review is complete. See the [release
+policy](docs/getting-started/releases.md) before selecting a build.
 
 ```python
 from structural_lib.design.is456 import beam
@@ -239,7 +241,7 @@ Core types  →  IS 456 pure math  →  Services  →  UI / I/O
 
 - CI covers Python 3.11 and 3.12 across Linux, Windows, and macOS.
 - Golden vectors, contract checks, unsafe-case tests, artifact verification,
-  protected-content gates, and an SBOM support the Alpha release evidence.
+  protected-content gates, and an SBOM support the normal release evidence.
 - Public APIs and outputs use explicit engineering units.
 - Known exclusions are documented alongside supported cases.
 - Passing software checks are evidence of implementation behavior, not a

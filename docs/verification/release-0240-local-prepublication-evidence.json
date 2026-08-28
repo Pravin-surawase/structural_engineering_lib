@@ -1,0 +1,82 @@
+{
+  "schema_version": "local-prepublication-evidence/v1",
+  "record_id": "RELEASE-0240-LOCAL-PREPUBLICATION-EVIDENCE",
+  "task_id": "RELEASE-0240-STABLE-SOFTWARE",
+  "observed_at_utc": "2026-08-28T06:43:43Z",
+  "status": "LOCAL_EXACT_ARTIFACT_READY_PENDING_IMMUTABLE_CANDIDATE_AND_HOSTED_GATES",
+  "target": {
+    "version": "0.24.0",
+    "tag": "v0.24.0",
+    "package_index_status": "NORMAL_FINAL_VERSION",
+    "github_release_prerelease": false,
+    "development_classifier": "Development Status :: 4 - Beta"
+  },
+  "source": {
+    "accepted_base": "e7956f78cc849f1c0cd26fed7c82e9f3cdce9e19",
+    "accepted_base_tree": "7849482826f564023829bd9f9d71377654302dac",
+    "branch": "codex/release-0240-stable-software",
+    "candidate_commit": "ASSIGNED_AFTER_CONTENT_FREEZE",
+    "candidate_tree": "ASSIGNED_AFTER_CONTENT_FREEZE",
+    "candidate_python_tree": "ASSIGNED_AFTER_CONTENT_FREEZE"
+  },
+  "local_artifacts": {
+    "wheel": {
+      "filename": "structural_lib_is456-0.24.0-py3-none-any.whl",
+      "size_bytes": 822111,
+      "sha256": "64343a33f02ff1231dda5c2552bbee4cb58046d2f679c0b3c6178fd5239e40d1"
+    },
+    "sdist": {
+      "filename": "structural_lib_is456-0.24.0.tar.gz",
+      "size_bytes": 688176,
+      "sha256": "32fb86a0a90a9cdcc3c00170c3dc32099fc7695cb0cc0cf220aae3bebb18322c"
+    },
+    "twine_check": "PASS",
+    "publication_note": "Local artifacts are rehearsal evidence only. The tag workflow must build and publish its own exact artifacts and record their public hashes."
+  },
+  "installed_wheel_evidence": {
+    "candidate_check": "PASS",
+    "clean_imported_version": "0.24.0",
+    "cli_help": "PASS",
+    "exact_wheel_uat": "PASS_29_OF_29",
+    "advertised_entry_points": 28,
+    "cli_entry_points": 15,
+    "family_facade_entries": 13,
+    "matrix_schema_version": "release-negative-uat/v1",
+    "matrix_sha256": "dd52015061a443e16f93bb5828016b5e96a580e3e0ebe4516e31a29db88c7757",
+    "library_content_identity": "ac0a3b0cbe98c8e56f874a7901851bb42b7e140bbcb0672d1d28aa2c4d3ce1b4",
+    "public_examples": "PASS"
+  },
+  "focused_controls": {
+    "release_version_policy_tests": "PASS_152",
+    "ruff": "PASS",
+    "black": "PASS_AFTER_FORMAT",
+    "release_docs": "PASS",
+    "public_distribution_permission": "PASS",
+    "footing_release_inclusion": "PASS",
+    "quick_gate": "PASS_10_OF_10",
+    "full_gate_initial": "FAIL_31_OF_32_STALE_GENERATED_API_CLASSIFICATION",
+    "root_cause_resolution": "Regenerated the maintained API classification registry and compatibility ledger after the package-version change; the focused generator check is current.",
+    "full_gate_final": "PASS_32_OF_32_WITH_15_UNAFFECTED_CHECKS_REUSED"
+  },
+  "claim_boundaries": {
+    "normal_software_release": true,
+    "broader_library_development_in_progress": true,
+    "stable_api_guarantee": false,
+    "complete_is456_coverage": false,
+    "qualified_structural_engineering_review": false,
+    "professional_approval": false,
+    "engineering_use_approval": false,
+    "construction_use_approval": false,
+    "windows_excel_acceptance": false,
+    "etabs_acceptance": false
+  },
+  "remaining_gates": [
+    "final consolidated local gate on the frozen tracked state",
+    "immutable candidate commit and clean exact-wheel preflight",
+    "required hosted changed-path checks and exact-head Weekly Verification",
+    "bounded owner review waiver or independent exact-candidate software review",
+    "exact-target publication authorization",
+    "TestPyPI rehearsal",
+    "unchanged merge, exact tag, PyPI/GitHub publication, and public verification"
+  ]
+}

@@ -4,22 +4,22 @@ status: active
 last_updated: 2026-08-24
 doc_type: reference
 complexity: intermediate
-tags: [api, alpha, compatibility]
+tags: [api, beta, compatibility]
 ---
 
 # API Stability and Classification
 
 **Type:** Reference
 **Audience:** Developers
-**Status:** Alpha Preview
+**Status:** Beta Maturity / Normal Software Release
 **Importance:** High
-**Version:** 0.24.0a1
+**Version:** 0.24.0
 **Last Updated:** 2026-08-24
 
-StructLib is a pre-1.0 Alpha. No exported Python symbol currently carries a
-post-1.0 stable compatibility promise, and passing software tests do not imply
-complete IS 456 coverage, qualified structural review, or professional
-approval.
+StructLib is a pre-1.0 Beta-maturity project distributed under a normal final
+package version. No exported Python symbol currently carries a post-1.0 stable
+compatibility promise, and passing software tests do not imply complete IS 456
+coverage, qualified structural review, or professional approval.
 
 ## Machine-readable classification
 
@@ -38,7 +38,7 @@ The four classifications mean:
 
 | Class | Current promise |
 |---|---|
-| `stable` | Reserved for a separately approved compatibility commitment; none exist in this Alpha. |
+| `stable` | Reserved for a separately approved compatibility commitment; none exist in this pre-1.0 release. |
 | `preview` | Deliberately exported and documented, but may change before 1.0. |
 | `compatibility` | Retained migration facade; new callers should use the recommended facade. |
 | `internal` | No public compatibility promise. |
@@ -72,7 +72,7 @@ the repository's small-file boundary.
 
 ## Compatibility policy
 
-Within the Alpha channel, changes remain surgical and documented. Confirmed
+Within the pre-1.0 release series, changes remain surgical and documented. Confirmed
 unsafe behavior is corrected even if permissive callers used it: a
 compatibility route may map known aliases, but it may not fill missing
 structural inputs, hide import loss, or convert missing status to PASS.
@@ -81,10 +81,10 @@ object. Deprecation requires a real replacement and an owner-approved removal
 schedule; held compatibility may instead carry explicit limitation metadata
 with no warning or removal version.
 
-Use exact Alpha pins for reproducibility:
+Use exact release pins for reproducibility:
 
 ```bash
-python3 -m pip install "structural-lib-is456===0.24.0a1"
+python3 -m pip install "structural-lib-is456===0.24.0"
 python3 -c "import structural_lib; print(structural_lib.__version__, structural_lib.__file__)"
 ```
 

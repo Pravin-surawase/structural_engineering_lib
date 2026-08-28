@@ -4,96 +4,67 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-28
-- Focus: Audit the complete public-tag-to-accepted-R0 programme, repair only
-- Completed: Proved public tag `v0.24.0a1` at `71b70652...`, tree `221de556...`, and fresh; Audited all 13 supported family construction/facade journeys, distinct; Repaired two confirmed control defects at their roots: the maintained API
-- Git receipt: docs/verification/lib-pro-014-post-r0-cumulative-audit-git-handoff-receipt.json | sha256:33b7c1a2986f762711851a69ccd2d7dca879bee598a8abd5e167f14560af0054 | HOLD
-- Git identity: codex/lib-pro-014-post-r0-cumulative-audit@b1ba36e3e9c4a102d23f1d76faed2ff043a3537f | upstream=origin/main@b1ba36e3e9c4a102d23f1d76faed2ff043a3537f | base=origin/main@b1ba36e3e9c4a102d23f1d76faed2ff043a3537f | tree=dirty | operation=none
-- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
-- Next action: CREATE_IMMUTABLE_AUDIT_CANDIDATE_PUSH_ONE_PR_AND_MERGE_UNCHANGED_GREEN_HEAD
+- Focus: Prepare, verify, and publish exact v0.24.0 as the normal software release
+- Completed: Selected v0.24.0; split normal distribution status from professional claims; prepared consistent metadata, policy, workflow support, and one exact local wheel/sdist pair
+- Git receipt: docs/verification/release-0240-preparation-git-handoff-receipt.json | sha256:63eba2cf0529ce9a3b01651d0070f40ab7e6ef0b69205332ad65d9fb82b0e85c | HOLD
+- Git identity: codex/release-0240-stable-software@e7956f78cc849f1c0cd26fed7c82e9f3cdce9e19 | upstream=origin/main@e7956f78cc849f1c0cd26fed7c82e9f3cdce9e19 | base=origin/main@e7956f78cc849f1c0cd26fed7c82e9f3cdce9e19 | tree=dirty | operation=none
+- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
+- Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
 
 ## Current boundary
 
 | State | Exact boundary |
 |---|---|
-| **Public baseline** | `v0.24.0a1` is immutable at `71b7065216d4266d63ad6b31bd39bba81fa16efc`, tree `221de5561bf6419396a2c20697c574124d721694`. |
-| **Current** | R0 PR #884 merged at `b1ba36e3e9c4a102d23f1d76faed2ff043a3537f`, tree `81854f068add5b66b0763dfa2aaeff231616b8e9`; accepted F0 and B0 remain in ancestry. |
-| **Next** | `LIB-PRO-014-POST-R0-CUMULATIVE-AUDIT` covers the exact 30-commit, 244-file public-tag-to-R0 delta. Local content and root-cause repair are frozen pending one candidate, PR, hosted checks, and unchanged merge. |
-| **Held** | Version selection, tag, GitHub/PyPI publication, professional or engineering-use claims, Windows/Excel/ETABS application acceptance, protected sources, and destructive cleanup. |
+| **Public** | `v0.24.0a1` remains the immutable public Alpha at `71b7065216d4266d63ad6b31bd39bba81fa16efc`. |
+| **Current** | Accepted post-R0 audit PR #885 merged at `e7956f78cc849f1c0cd26fed7c82e9f3cdce9e19`, tree `7849482826f564023829bd9f9d71377654302dac`. The owner selected exact `v0.24.0` as the next normal software release. |
+| **Next** | Freeze the tracked release preparation, run the clean exact-wheel preflight, push one PR, pass required hosted checks and exact-head Weekly Verification, bind the owner review waiver and exact publication authorization, merge unchanged, then tag/publish/verify. |
+| **Held** | Stable-API guarantee, complete IS 456 coverage, professional approval, engineering-use/construction-use approval, Windows/Excel/ETABS acceptance, protected-source mutation, and destructive cleanup. |
 
-## Audit outcome
+## Prepared release evidence
 
-- Froze 13 supported engineering families, 28 advertised Python/CLI entries,
-  90 HTTP operations, 89 OpenAPI paths, 27 router modules, one WebSocket, 455
-  schemas, and 100 public plus 21 private Python API functions.
-- Replayed every distinct family facade/contract class, all 13 advertised
-  journeys, canonical beam goldens, public route safety, exact-wheel evidence,
-  generated controls, and the changed product tests since the public tag.
-- Reproduced no engineering-calculation, calculation-owner, supported-family,
-  facade-contract, or golden-outcome defect. The accepted R0 Python package
-  source is unchanged.
-- Changed Python test files pass 1,050 tests; changed FastAPI files pass 200.
-  React passes lint, 283 tests, and production build.
-- A live browser default-beam design completed through REST, BBS export returned
-  HTTP 200, and no product console error occurred. The repaired normal launcher
-  started healthy FastAPI and React services from the linked worktree and shut
-  them down cleanly.
+- Normal PEP 440 final version: `0.24.0`; GitHub prerelease flag `false`;
+  maturity classifier `Development Status :: 4 - Beta`.
+- Local wheel: 822,111 bytes, SHA-256
+  `64343a33f02ff1231dda5c2552bbee4cb58046d2f679c0b3c6178fd5239e40d1`.
+- Local sdist: 688,176 bytes, SHA-256
+  `32fb86a0a90a9cdcc3c00170c3dc32099fc7695cb0cc0cf220aae3bebb18322c`.
+- Twine, clean installed import/version/CLI, 29/29 exact-wheel UAT cases, 28
+  advertised entries, 15 CLI entries, 13 family-facade entries, both public
+  examples, 152 focused release controls, and quick 10/10 pass.
+- The first full gate found only the version-bound generated API classification
+  projection. Its maintained generator refreshed the registry and compatibility
+  ledger; the frozen tracked-state rerun passes 32/32 with 15 unaffected checks
+  reused.
 
-## Confirmed root-cause repairs
+## Release logic and claim boundary
 
-1. Maintained docs and agent surfaces retained pre-R0 API counts. The count
-   synchronizer excluded root HTTP operations, included WebSockets, did not
-   distinguish operations from paths, and did not own all maintained surfaces.
-   It now reports 90 HTTP operations, 89 paths, 27 routers, and 100/21 Python
-   functions with zero pending updates; eight stale-count challenge vectors pass.
-2. `./run.sh dev` hard-coded a worktree-local `.venv` and uvicorn path. It now
-   uses the maintained worktree-aware Python launcher for checks, imports, Node
-   selection, and FastAPI startup, and uses deterministic `npm ci` when needed.
-   Focused tests, preflight, and a real full-stack start/stop cycle pass.
-
-## Truth and claim boundary
-
-- The broader legacy validation census warning is unchanged and is not a
-  reproduced defect; promoted R0 workflows still have zero unowned fields.
-- The transitive development-only `nanoid` advisory has no product caller and
-  overlaps active Dependabot lockfile candidates, so this audit does not create
-  another lockfile candidate.
-- Public `v0.24.0a1` artifacts predate S0/B0/F0/R0 and are not the accepted
-  post-R0 library.
-- The audit recommends `v0.24.0a2` because this is still the v0.24 alpha/API and
-  multi-code programme; v0.25 remains reserved for ACI 318 work. This is a
-  recommendation only, not a selected or authorized version.
-- By the owner's newer decision, one practicing-engineer review remains held
-  until the owner declares the intended library complete. R0 or this audit does
-  not trigger incremental professional review.
-
-## Next sequence
-
-1. Finish task-owned evidence, session log, handoff, and Git handoff receipt.
-2. Run the final focused controls, architecture/import/generated/docs checks,
-   one quick gate, one full gate, efficiency/usage checkpoints, and normal hooks.
-3. Create one immutable candidate, run clean read-only session closeout, fetch,
-   and re-prove no conflict or overlapping unmerged candidate.
-4. Push without rewriting history, open one PR, wait for every required
-   changed-path check, and merge only the unchanged reviewed green head.
-5. In a separate owner-authorized task, decide whether to select `v0.24.0a2`
-   and run exact-candidate release preflight. Do not tag or publish in this task.
+- Alpha releases are not selected by ordinary package resolution, which left
+  normal users on a materially older version. A final `0.24.0` fixes that
+  distribution problem without claiming that the entire roadmap is complete.
+- “Normal release” means normal PyPI selection and a non-prerelease GitHub
+  Release for the audited supported scope. The project remains pre-1.0/Beta,
+  with supported-case limitations and no stable-API promise.
+- No practicing-engineer review, professional approval, engineering-use
+  approval, or construction-use approval is claimed. The owner continues to
+  defer one cumulative practicing-engineer review until the intended integrated
+  library is declared complete.
 
 ## Preservation rules
 
 - Do not open or mutate the protected Windows evidence clone, Excel, ETABS,
   workbooks, models, older clones, system toolchains, or evidence datasets.
 - Preserve every unrelated worktree, staged/dirty/untracked/ignored/stashed
-  item, retained source, branch, ref, and archive. The dirty detached `e54a`
+  item, retained source, branch, ref, and archive. The detached dirty `e54a`
   lane remains untouched.
-- Do not claim professional approval, engineering readiness, Windows
-  acceptance, stable release, public release, or publication.
+- Do not rebuild an existing public version, rewrite history, bypass checks,
+  delete branches/worktrees/refs/data, or broaden the release claims.
 
 ## Required Reading
 
-1. [Cumulative audit evidence](../verification/lib-pro-014-post-r0-cumulative-audit-evidence.json)
-2. [R0 evidence](../verification/lib-pro-012-r0-external-preview-evidence.json)
-3. [R0 owner package](../verification/lib-pro-012-r0-owner-decision-package.json)
-4. [Remediation authority](lib-pro-012-external-api-remediation-plan.md)
-5. [Owner sequencing decision](../verification/lib-pro-013-owner-sequencing-decision.json)
+1. [Normal-release owner decision](../verification/release-0240-normal-software-owner-decision.json)
+2. [Local prepublication evidence](../verification/release-0240-local-prepublication-evidence.json)
+3. [Post-R0 cumulative audit](../verification/lib-pro-014-post-r0-cumulative-audit-evidence.json)
+4. [Release checklist](pre-release-checklist.md)
+5. [Release ledger](../getting-started/releases.md)
 6. [Current task board](../TASKS.md)
