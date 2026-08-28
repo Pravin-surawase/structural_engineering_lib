@@ -27,7 +27,7 @@ class Settings(BaseSettings):
 
     # API Configuration
     api_title: str = "Structural Engineering API"
-    api_version: str = "0.24.0a1"
+    api_version: str = "0.24.0"
     api_prefix: str = "/api/v1"
 
     # Server Configuration

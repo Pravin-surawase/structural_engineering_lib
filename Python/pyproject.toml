@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "structural-lib-is456"
-version = "0.24.0a1"
+version = "0.24.0"
 description = "Supported-case IS 456 RC workflows for beams, columns, isolated footings, and solid slabs"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -14,7 +14,7 @@ authors = [
   { name = "Pravin Surawase" }
 ]
 classifiers = [
-  "Development Status :: 3 - Alpha",
+  "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",
   "Topic :: Scientific/Engineering",
   "Programming Language :: Python :: 3",

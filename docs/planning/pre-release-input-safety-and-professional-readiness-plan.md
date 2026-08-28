@@ -256,18 +256,33 @@ for another public Alpha:
    publication after immutable review. Only then may the final gate report
    `READY_TO_PUBLISH`. This plan is not that authorization.
 
-### 5.2 Stable or engineering-use gate
+### 5.2 Normal software release and engineering-use gate
 
-In addition to the Alpha gate, stable or engineering-use language requires:
+A normal PEP 440 final version and an engineering-use claim are separate
+decisions. A final `X.Y.Z` package may be published as the current normal
+software release when the Alpha technical gate above, the cumulative supported-
+scope audit, exact-artifact evidence, hosted checks, and the separate exact-
+version owner authorization all pass. The package may retain a Beta development
+classifier while broader library work continues. A normal package version only
+means that ordinary package resolution and the GitHub release page select it;
+it does not mean complete IS 456 coverage, stable-API compatibility, qualified
+structural-engineering review, professional approval, engineering suitability,
+or construction-use approval.
+
+Engineering-use, construction-use, professional-approval, or qualified-review
+language additionally requires:
 
 - API-CLASS-01, API-DOC-01, ASSUME-01, INSTALL-01, API-NAME-01, RETURN-01,
-  and SERVICE-01 acceptance;
+  and SERVICE-01 acceptance for the exact claimed surface;
 - cumulative independent numerical benchmarks for every claimed supported
   family, not extrapolation from this pilot;
 - explicit serviceability, detailing, load-combination, and applicability
   limits for the claimed surface;
-- a qualified structural engineer's cumulative review of the exact candidate;
-- a separate owner decision approving the stable/engineering-use claim.
+- one practicing structural engineer's cumulative review of the exact
+  integrated library after the owner declares the intended library scope
+  complete; and
+- a separate owner decision approving the exact engineering-use or
+  professional claim.
 
 BUILDING-01 is required only before advertising a whole-building capability.
 Wind, earthquake, geotechnical design, and additional systems remain separate

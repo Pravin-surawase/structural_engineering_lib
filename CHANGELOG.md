@@ -4,6 +4,49 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.24.0] — Prepared candidate (unreleased; on hold)
+
+Prepared normal software release candidate for the cumulative supported scope
+integrated after `v0.24.0a1`. This final PEP 440 version is intended to restore
+ordinary package-manager selection while the broader library roadmap remains in
+progress. At candidate preparation it is not tagged or published. It does not
+claim complete IS 456 coverage, stable-API compatibility, qualified structural-
+engineering review, professional approval, engineering suitability, or
+construction-use approval.
+
+### Added
+
+- Common construction/request/result/error contracts and bounded public facades
+  across all 13 maintained supported engineering families, with compatibility
+  delegation and one advertised construction journey per family.
+- Exact-wheel family-facade recipes and UAT evidence that keep independent
+  arithmetic, internal recomputation, wrapper parity, generated regression, UI
+  projection, and `NOT_TESTED` claims distinct.
+- The bounded R0 external-preview dossier and exact family inventory, with
+  professional review intentionally deferred until the owner declares the
+  intended integrated library complete.
+
+### Changed
+
+- Normal final versions (`X.Y.Z`) are supported by version preparation,
+  preflight, tag validation, GitHub release classification, and PyPI publication
+  controls. The package retains a Beta maturity classifier and explicit
+  in-progress limitations.
+- A normal software release is now explicitly separate from qualified
+  structural-engineering review, professional approval, engineering-use
+  approval, and construction-use approval.
+- The public package description, quickstart, API classification guidance, and
+  release records now identify `0.24.0` consistently.
+
+### Fixed
+
+- Release automation no longer rejects an owner-authorized normal final version
+  or unconditionally marks its GitHub release as a prerelease.
+- The post-R0 audit repaired stale API inventory reporting at its generator and
+  corrected linked-worktree FastAPI/React launcher runtime selection. It
+  reproduced no engineering-calculation, calculation-owner, family-facade, or
+  golden-outcome defect in the audited supported scope.
+
 ## [0.24.0a1] — 2026-08-24
 
 Prepared Alpha candidate for the bounded post-`v0.23.1a2` subset. At candidate
@@ -1527,7 +1570,8 @@ V3 Foundation release — everything built since v0.19.1. Full-stack maturity mi
 
 Format: Keep a section per release with Added/Changed/Fixed as needed. Tag releases as `vX.Y.Z`.
 
-[Unreleased]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.23.1a2...HEAD
+[Unreleased]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.24.0...HEAD
+[0.24.0]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.24.0a1...v0.24.0
 [0.24.0a1]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.23.1a2...HEAD
 [0.23.1a2]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.23.1a1...v0.23.1a2
 [0.23.1a1]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.23.0...v0.23.1a1

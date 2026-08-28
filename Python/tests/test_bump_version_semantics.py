@@ -114,6 +114,53 @@ def test_candidate_bump_resets_published_citation_state(
     assert "owner-authorized" not in content
 
 
+def test_alpha_candidate_can_promote_to_normal_software_release(
+    tmp_path: Path, monkeypatch
+) -> None:
+    pyproject = tmp_path / "Python" / "pyproject.toml"
+    pyproject.parent.mkdir()
+    pyproject.write_text(
+        '[project]\nversion = "0.24.0a1"\nclassifiers = [\n'
+        '  "Development Status :: 3 - Alpha",\n]\n',
+        encoding="utf-8",
+    )
+    python_readme = tmp_path / "Python" / "README.md"
+    python_readme.write_text(
+        "**Version:** 0.24.0a1 (Alpha development preview)\n" "## New in v0.24.0a1\n",
+        encoding="utf-8",
+    )
+    root_readme = tmp_path / "README.md"
+    root_readme.write_text(
+        "> **v0.24.0a1 is an Alpha development preview.** Support is bounded.\n",
+        encoding="utf-8",
+    )
+    citation = tmp_path / "CITATION.cff"
+    citation.write_text(
+        "version: 0.24.0a1\n"
+        "date-released: 2026-08-24\n"
+        'message: "Alpha v0.24.0a1 is published."\n',
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(bump_version, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(sys, "argv", ["bump_version.py", "0.24.0"])
+
+    assert bump_version.main() == 0
+
+    assert 'version = "0.24.0"' in pyproject.read_text(encoding="utf-8")
+    assert "Development Status :: 4 - Beta" in pyproject.read_text(encoding="utf-8")
+    assert (
+        "v0.24.0 is a normal software release of the audited supported scope"
+        in root_readme.read_text(encoding="utf-8")
+    )
+    assert (
+        "Version:** 0.24.0 (normal software release; broader development in progress)"
+        in python_readme.read_text(encoding="utf-8")
+    )
+    citation_text = citation.read_text(encoding="utf-8")
+    assert "Prepared normal software release candidate v0.24.0" in citation_text
+    assert "date-released:" not in citation_text
+
+
 def test_doc_sync_preserves_public_release_identity(tmp_path: Path, monkeypatch):
     """A prepared source version must not relabel the last public release."""
     readme, checklist = _write_public_candidate_fixture(tmp_path)

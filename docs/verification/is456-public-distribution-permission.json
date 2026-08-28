@@ -30,6 +30,8 @@
   "release_boundaries": {
     "authorizes_tag_or_publish": false,
     "per_release_owner_authorization_required": true,
-    "qualified_structural_engineering_review_required_for_stable_or_engineering_use": true
+    "normal_software_release_requires_qualified_structural_engineering_review": false,
+    "qualified_structural_engineering_review_required_for_engineering_or_construction_use": true,
+    "professional_approval_requires_qualified_structural_engineering_review": true
   }
 }

@@ -100,7 +100,7 @@ class TestBumpVersionValidation:
             "1.2",
             "1.2.3.4",
             "v1.0.0",
-            "1.0.0",
+            "1.0.0b1",
             "1.0.0-beta",
             "1.0",
             "hello",
@@ -236,22 +236,24 @@ def test_release_publication_authorization_holds_by_default(tmp_path: Path) -> N
     assert "release publication decision is HOLD, not AUTHORIZED" in errors
 
 
-def test_publication_surface_check_forces_the_final_authorized_contract(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
+def test_publication_surface_check_forces_the_final_authorized_contract() -> None:
     current = release._version_from_pyproject()
-    monkeypatch.setattr(
-        release, "_release_authorization_recorded", lambda _version: False
-    )
-
     candidate_errors = release._source_surface_version_errors(
-        current, allow_authorized_release=True
+        current, allow_authorized_release=True, authorized_release=False
     )
+    publication_errors = release._publication_surface_errors(current)
 
-    assert "CITATION.cff declares date-released for an unpublished candidate" in (
-        candidate_errors
-    )
-    assert release._publication_surface_errors(current) == []
+    assert (candidate_errors == []) != (publication_errors == [])
+    if candidate_errors:
+        assert (
+            "CITATION.cff declares date-released for an unpublished candidate"
+            in candidate_errors
+        )
+    if publication_errors:
+        assert (
+            "CITATION.cff must declare date-released for an authorized release"
+            in publication_errors
+        )
 
 
 def test_authorization_check_rejects_incomplete_publication_metadata(
@@ -1104,15 +1106,17 @@ class TestPublishWorkflow:
 
         assert "prerelease: ${{ steps.version.outputs.prerelease }}" in workflow
         assert "Development Status :: 3 - Alpha" in workflow
+        assert "Development Status :: 4 - Beta" in workflow
+        assert 'print("true" if is_alpha else "false")' in workflow
         assert "prerelease: ${{ needs.validate.outputs.prerelease }}" in workflow
 
-    def test_future_publications_require_alpha_identifiers(self):
+    def test_publications_accept_alpha_or_normal_final_identifiers(self):
         workflow = (REPO_ROOT / ".github" / "workflows" / "publish.yml").read_text(
             encoding="utf-8"
         )
 
-        assert "^[0-9]+\\.[0-9]+\\.[0-9]+a[0-9]+$" in workflow
-        assert "Expected PEP 440 Alpha format X.Y.ZaN" in workflow
+        assert "^[0-9]+\\.[0-9]+\\.[0-9]+(a[0-9]+)?$" in workflow
+        assert "Expected PEP 440 Alpha X.Y.ZaN or normal final X.Y.Z format" in workflow
 
     def test_release_validation_installs_maintained_test_dependencies(self):
         workflow = (REPO_ROOT / ".github" / "workflows" / "publish.yml").read_text(

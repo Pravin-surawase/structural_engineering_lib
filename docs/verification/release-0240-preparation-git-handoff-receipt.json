@@ -1,0 +1,153 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "63eba2cf0529ce9a3b01651d0070f40ab7e6ef0b69205332ad65d9fb82b0e85c",
+    "state": {
+      "branch": "codex/release-0240-stable-software",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "e7956f78cc849f1c0cd26fed7c82e9f3cdce9e19",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 111.488,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib11",
+      "head_sha": "e7956f78cc849f1c0cd26fed7c82e9f3cdce9e19",
+      "hold_reasons": [
+        "changed paths: 33"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-28T06:45:38.209616+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/lib-pro-014/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 33,
+        "modified_paths": [],
+        "staged_paths": [
+          ".github/workflows/publish.yml",
+          "CHANGELOG.md",
+          "CITATION.cff",
+          "Python/README.md",
+          "Python/pyproject.toml",
+          "Python/tests/test_bump_version_semantics.py",
+          "Python/tests/test_release_scripts.py",
+          "README.md",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/getting-started/beginners-guide.md",
+          "docs/getting-started/python-quickstart.md",
+          "docs/getting-started/releases.md",
+          "docs/getting-started/user-guide.md",
+          "docs/planning/next-session-brief.md",
+          "docs/planning/pre-release-checklist.md",
+          "docs/planning/pre-release-input-safety-and-professional-readiness-plan.md",
+          "docs/reference/api-classification.json",
+          "docs/reference/api-compatibility-ledger.json",
+          "docs/reference/api-stability.md",
+          "docs/reference/api.md",
+          "docs/verification/examples.md",
+          "docs/verification/is456-public-distribution-permission.json",
+          "docs/verification/release-0240-local-prepublication-evidence.json",
+          "docs/verification/release-0240-normal-software-owner-decision.json",
+          "docs/verification/validation-pack.md",
+          "fastapi_app/__init__.py",
+          "fastapi_app/config.py",
+          "fastapi_app/openapi_baseline.json",
+          "react_app/package.json",
+          "react_app/src/components/layout/SettingsPanel.tsx",
+          "scripts/bump_version.py",
+          "scripts/release.py"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "e7956f78cc849f1c0cd26fed7c82e9f3cdce9e19",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/lib-pro-014/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:63eba2cf0529ce9a3b01651d0070f40ab7e6ef0b69205332ad65d9fb82b0e85c",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-28T06:45:38.209772+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources"
+    ],
+    "integration_owner": "orchestrator",
+    "owned_paths": [
+      ".github/workflows/publish.yml",
+      "Python/pyproject.toml",
+      "scripts/bump_version.py",
+      "scripts/release.py"
+    ],
+    "shared_paths": [
+      "docs",
+      "README.md",
+      "CHANGELOG.md",
+      "CITATION.cff",
+      "fastapi_app",
+      "react_app"
+    ],
+    "task_id": "RELEASE-0240-STABLE-SOFTWARE"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

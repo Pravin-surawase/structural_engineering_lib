@@ -1383,3 +1383,53 @@ not select prereleases by default. Later `main` source is not the immutable
 Publication remains an Alpha software claim only. It is not stable-API,
 qualified-engineer, professional, engineering-use, construction-use, or
 whole-standard approval.
+
+---
+
+## v0.24.0 — Normal software release decision and prepared candidate
+
+**Status at preparation (2026-08-28):** Prepared candidate; not tagged or
+published. The exact publication receipt must be appended after the immutable
+candidate, hosted checks, authorization, tag, PyPI, and GitHub release all
+complete.
+
+**Superseding publication decision:** The repository owner selected `0.24.0` as
+a normal PEP 440 final version rather than another Alpha. This decision
+supersedes the earlier Alpha-only process for this and later separately
+authorized normal software releases; it does not rewrite any historical release
+entry. A normal version restores ordinary package-manager selection and creates
+a non-prerelease GitHub Release. The package retains a Beta maturity classifier
+because broader library development remains in progress.
+
+**Preparation base:** accepted post-R0 cumulative audit merge
+`e7956f78cc849f1c0cd26fed7c82e9f3cdce9e19`, tree
+`7849482826f564023829bd9f9d71377654302dac`.
+
+**Scope:** The cumulative audited supported scope from public `v0.24.0a1`
+through accepted S0, B0, F0, R0, and the post-R0 audit: 13 maintained
+engineering-family construction/facade journeys, their bounded contracts and
+compatibility routes, exact-wheel recipes, and distinct evidence classes. The
+audit reproduced no engineering-calculation, calculation-owner, supported-
+family, facade-contract, or golden-outcome defect.
+
+**Claim boundary:** “Normal release” is a software distribution status, not a
+stable-API guarantee, complete IS 456 coverage, qualified structural-
+engineering review, professional approval, engineering-use approval, or
+construction-use approval. Broader library development and one cumulative
+practicing-engineer review remain in progress; that review is deferred until
+the owner declares the intended integrated library complete.
+
+**Publication gate:** Build and retain one exact wheel/sdist pair, pass
+source-free installed-package UAT and all focused/cumulative release gates,
+freeze one immutable candidate, pass every required hosted changed-path check
+and exact-head Weekly Verification, bind an independent exact-candidate
+software review or the owner's bounded waiver, record exact-target publication
+authorization, rehearse TestPyPI, merge unchanged, then tag and publish that
+exact merged source. Until those steps pass, `v0.24.0a1` remains the current
+public artifact.
+
+**Owner decision:**
+`docs/verification/release-0240-normal-software-owner-decision.json`.
+
+**Full changelog:** See
+[CHANGELOG.md](../../CHANGELOG.md#0240--prepared-candidate-unreleased-on-hold).

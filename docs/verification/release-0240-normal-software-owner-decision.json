@@ -1,0 +1,54 @@
+{
+  "schema_version": "normal-software-release-owner-decision/v1",
+  "record_id": "RELEASE-0240-NORMAL-SOFTWARE-OWNER-DECISION",
+  "decision": "AUTHORIZED_AFTER_EXACT_RELEASE_GATES",
+  "decision_date": "2026-08-28",
+  "authority": "repository_owner",
+  "owner": "Pravin Surawase",
+  "target": {
+    "version": "0.24.0",
+    "tag": "v0.24.0",
+    "package_index_status": "NORMAL_FINAL_VERSION",
+    "github_release_prerelease": false,
+    "development_classifier": "Development Status :: 4 - Beta"
+  },
+  "authorization": {
+    "prepare_exact_candidate": true,
+    "testpypi": true,
+    "pypi": true,
+    "github_release": true,
+    "push_tag_after_exact_gates": true,
+    "rebuild_or_reuse_existing_version": false
+  },
+  "basis": {
+    "accepted_post_r0_audit_merge": "e7956f78cc849f1c0cd26fed7c82e9f3cdce9e19",
+    "accepted_post_r0_audit_tree": "7849482826f564023829bd9f9d71377654302dac",
+    "audit_result": "No engineering-calculation, calculation-owner, supported-family, facade-contract, or golden-outcome defect was reproduced in the audited supported scope.",
+    "owner_direction": "Prepare and publish the next release as a normal release rather than another Alpha, and state that broader work remains in progress.",
+    "review_sequence": "One cumulative practicing-engineer review remains deferred until the owner declares the intended library complete."
+  },
+  "claims": {
+    "normal_software_release": true,
+    "audited_supported_scope": true,
+    "broader_library_development_in_progress": true,
+    "complete_is456_coverage": false,
+    "stable_api_guarantee": false,
+    "qualified_structural_engineering_review": false,
+    "professional_approval": false,
+    "engineering_use_approval": false,
+    "construction_use_approval": false,
+    "windows_excel_acceptance": false,
+    "etabs_acceptance": false
+  },
+  "required_before_tag": [
+    "one immutable release candidate",
+    "exact candidate wheel and sdist",
+    "source-free installed-package UAT",
+    "focused and cumulative local release gates",
+    "required hosted changed-path checks on the reviewed head",
+    "exact-head Weekly Verification",
+    "owner waiver or independent exact-candidate software review receipt",
+    "machine-readable exact-target publication authorization",
+    "unchanged reviewed Python package tree"
+  ]
+}

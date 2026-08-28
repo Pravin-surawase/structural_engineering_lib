@@ -9,15 +9,36 @@
 
 ## Current State
 
-Current source metadata: 0.24.0a1 (later development source)
+Current source metadata: 0.24.0 (prepared normal release candidate; unpublished)
 Current public Alpha: v0.24.0a1
 
 - **Published source:** tag `v0.24.0a1` at `71b7065216d4266d63ad6b31bd39bba81fa16efc`
 - **Published wheel:** 774,739 bytes; SHA-256 `b5e0df7b561e8c715f37c602200eaae2c369ec5dc992eec87110a77c1026201a`
 - **Published sdist:** 652,423 bytes; SHA-256 `8c1d6b762a779686be5d17ed0dd9719f7155a5863a764e943a0e1ba9aeb0a53b`
 - **Publication state:** `RELEASED_ALPHA` on PyPI and GitHub on 2026-08-24
-- **Current main boundary:** B0/F0 and later external-preview work merged after the tag and are not part of the published artifact
-- **Review policy:** qualified structural-engineering review is required before stable/engineering-use approval, not before this Alpha release
+- **Prepared-candidate base:** accepted post-R0 cumulative audit merge `e7956f78cc849f1c0cd26fed7c82e9f3cdce9e19`, tree `7849482826f564023829bd9f9d71377654302dac`
+- **Candidate state:** `0.24.0` normal software release preparation; not yet tagged or published
+- **Review policy:** qualified structural-engineering review remains required before engineering-use, construction-use, or professional-approval claims; it is deferred until the owner declares the intended library complete and is not a gate on this normal software-release claim
+
+## v0.24.0 Normal Software Release Preparation
+
+- [x] Owner selects normal final version `0.24.0` instead of another Alpha
+- [x] Base the release lane on the accepted post-R0 cumulative audit merge
+- [x] Preserve the 13-family supported inventory and reproduce no engineering-calculation, calculation-owner, facade-contract, or golden-outcome defect in the cumulative audit
+- [x] Separate normal package-manager/GitHub release status from professional, engineering-use, construction-use, stable-API, and whole-standard claims
+- [x] Record broader library development and cumulative practicing-engineer review as in progress
+- [ ] Freeze and build one exact `0.24.0` wheel/sdist pair
+- [ ] Pass source-free installed-package UAT and focused/cumulative release gates
+- [ ] Freeze one immutable candidate and pass every required hosted changed-path check plus exact-head Weekly Verification
+- [ ] Bind the exact reviewed candidate through an independent software-review receipt or the owner's bounded waiver, then record exact-target publication authorization
+- [ ] Rehearse the unchanged candidate on TestPyPI
+- [ ] Merge unchanged, tag exact `v0.24.0`, publish to PyPI and GitHub as a non-prerelease, and verify public hashes/install/UAT
+
+The owner decision is recorded in
+`docs/verification/release-0240-normal-software-owner-decision.json`. “No issues”
+is bounded to no reproduced outcome-changing defect in the cumulative audited
+supported scope; it is not an assertion that the whole library is complete or
+professionally approved.
 
 ## v0.24.0a1 Published Alpha State
 
