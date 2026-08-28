@@ -5,6 +5,106 @@
 
 ---
 
+## 2026-08-28 — Session: Excel -> Python -> live ETABS beam pilot
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents).
+
+**Branch:** `codex/excel-etabs-python-bridge-pilot` from observed current
+`origin/main` `683760a4aef1c384aa475df6842c791eada85959`.
+
+**Git handoff receipt:**
+`docs/verification/excel-etabs-python-bridge-pilot-git-handoff-receipt.json`
+
+**Focus:** Add and document a bounded Windows Office.js -> localhost FastAPI/
+Python -> already-open ETABS COM proof: report library/bridge status, attach and
+identify the open copied model, preserve exact frame-force rows, canonically
+design up to five horizontal rectangular beams, and write only a controlled
+Excel result table. ETABS analysis, model save, section write-back, global
+optimization, serviceability, adjacent-member detailing, construction checks,
+release, and professional-approval claims remain held.
+
+**Completed:**
+
+- Added the optional `structural-lib-is456[etabs]` dependency extra and a
+  fail-closed service that keeps COM imports Windows-only, owns COM apartment
+  initialization in the FastAPI worker thread, attaches without launching
+  ETABS, reads exact model/version identity, and does not call analysis, unlock,
+  save, or frame-section setters.
+- Added typed status, connect, and beam-pilot REST operations. The pilot selects
+  one exact case/combination, temporarily uses CSI `kN_mm_C`, restores the
+  original present-unit setting, filters horizontal frame objects
+  deterministically, accepts rectangular sections only, preserves every
+  returned `FrameForce` station, and feeds absolute governing `V2`, `T`, and
+  `M3` actions plus explicit caller-owned material/detailing inputs to the
+  canonical beam service.
+- Extended the existing macro-free Office.js pane with an ETABS surface that is
+  independent of the packaged E1 workbook. It displays bridge/library and model
+  identity, builds the strict request, and creates or updates only
+  `ETABS_Pilot / tbl_ETABS_Pilot_V1`; worksheet/table collisions or changed
+  headers block without overwrite.
+- Added the Windows setup, architecture, COM/unit behavior, failure contract,
+  exact limitations, installed-application evidence gate, and next-phase
+  boundary in `docs/guides/excel-etabs-python-bridge-pilot.md`. The guide also
+  records why cloud-hosted Python in Excel cannot attach to local ETABS and why
+  no VBA module is required for this Office.js route.
+- Updated the OpenAPI baseline to 93 operations and 471 schemas and synchronized
+  maintained endpoint/router counts to 93 operations across 28 routers.
+
+**Verification:**
+
+- Focused Python/FastAPI: `16 passed` for the new bridge, REST transport, and
+  predecessor Excel Workbench routes.
+- Office.js: `npm test` in `excel_addin` -> `27 passed`.
+- Broad Python: `./run.sh test` -> `7177 passed, 3 skipped, 6 deselected`.
+- Broad FastAPI: `./run.sh test --fastapi` -> `530 passed`.
+- OpenAPI: exact baseline match at `93 endpoints, 471 schemas`.
+- Architecture/import/type/governance: zero boundary violations, zero broken
+  imports, 100% checked annotations, governance pass.
+- Quick gate: `./run.sh check --quick` -> `10/10 passed`.
+- Full gate: `./run.sh check` -> `32/32 passed`; installed Windows Excel +
+  ETABS application acceptance remains explicitly `TO_VERIFY_WINDOWS`.
+
+### Issues encountered
+
+- The first cross-platform fake-COM run returned the full Windows path as the
+  model name instead of `Pilot Copy.edb`, changing the visible Excel/model
+  identity outcome.
+- The first consolidated full gate found missing context-manager return types
+  and one governance-layer violation in the new service. Static import
+  validation also rejected a direct optional `comtypes` import on macOS, and the
+  first router draft imported a core exception across the UI boundary.
+- ⚠️ TERMINAL ISSUE: guessed `scripts/check_architecture.py` and
+  `scripts/check_imports.py` did not exist -> `./run.sh find "architecture
+  import boundary"` resolved the maintained
+  `check_architecture_boundaries.py` and `validate_imports.py` commands.
+- ⚠️ TERMINAL ISSUE: `scripts/sync_numbers.py --write` was not a supported
+  option -> the script's usage output identified and `--fix` applied the
+  maintained count updates.
+
+### Root causes and resolutions
+
+- `pathlib.Path` uses host path semantics, so macOS does not parse backslashes
+  in a Windows ETABS path. The model identity now uses `PureWindowsPath`; the
+  focused service test proves the exact basename and preserved full path.
+- The new context-manager methods lacked explicit return annotations, and the
+  service initially entered the canonical beam through the public
+  `structural_lib.design` facade rather than its own allowed service layer. The
+  methods now declare `AbstractContextManager[None]`/`Iterator[None]`, and the
+  bridge builds the strict contract through `model_validate_or_error` before
+  calling `services.canonical_beam.design_and_detail`. Type, governance, and
+  both architecture checkers pass.
+- Optional COM capability was represented as a normal Python import, which made
+  a valid Windows-only dependency look broken on non-Windows hosts. The service
+  now probes with `find_spec` and loads `comtypes` dynamically only after the
+  Windows gate. The service re-exports the core input exception so the UI router
+  imports only from the allowed service boundary. Import validation reports
+  zero broken imports and the Mac status route remains deterministic.
+- The terminal failures were stale guessed command names/options rather than
+  product defects. Maintained command discovery supplied the exact replacements;
+  no data, worktree, ETABS model, workbook, or unrelated dirty lane was mutated.
+
+---
+
 ## 2026-08-28 — Session: External documentation 0.24.0 polish
 
 **Agent:** Codex (`documentation`, sole writer; no subagents).

@@ -1,0 +1,189 @@
+# Excel -> Python -> ETABS Beam Pilot V1
+
+**Type:** Guide
+**Audience:** Developers
+**Status:** In Progress
+**Created:** 2026-08-28
+**Last Updated:** 2026-08-28
+**Importance:** High
+
+## Outcome
+
+The repository now contains a bounded Windows pilot that lets the existing
+macro-free Excel Office.js task pane call local Python, attach to an already-open
+ETABS model, read an exact result case or combination, design up to five beams
+with the canonical IS 456 library, and write a controlled result table back to
+Excel.
+
+```text
+Excel Office.js task pane
+        | trusted localhost HTTPS
+        v
+FastAPI /api/v1/etabs-bridge/v1
+        | worker-thread COM apartment
+        v
+already-open ETABS copied model
+        |
+        +-- geometry + every FrameForce station
+        v
+canonical Python beam design/detailing
+        |
+        v
+Excel ETABS_Pilot / tbl_ETABS_Pilot_V1
+```
+
+Excel is the operator and review surface. ETABS remains the global-analysis
+source. Python owns validation, action selection, and the canonical beam design.
+No VBA module is required for this route.
+
+## Why this route
+
+Python in Excel is not the local integration runtime for this task. Microsoft
+documents that its Python calculations run in a secure Microsoft Cloud
+container and cannot access the local computer or network. That prevents it
+from attaching to a desktop ETABS COM process or importing an arbitrary local
+repository checkout. See [Microsoft's Python in Excel data-security
+documentation](https://support.microsoft.com/en-us/office/data-security-and-python-in-excel-33cc88a4-4a87-485e-9ff9-f35958278327).
+
+The existing Office.js add-in already has a trusted localhost HTTPS server and
+same-origin `/api/` proxy, so the pilot extends that maintained transport. A
+direct desktop-Python Excel add-in such as PyXLL could be evaluated later, but it
+would add a second deployment and trust model and is not needed for this proof.
+
+## Implemented contract
+
+| Operation | Endpoint | Effect |
+|---|---|---|
+| Check Python/library/COM readiness | `GET /api/v1/etabs-bridge/v1/status` | Read-only; does not attach to ETABS |
+| Prove the open model identity | `POST /api/v1/etabs-bridge/v1/connect` | Attaches, reads model path/name and ETABS version, then releases the COM apartment |
+| Extract and design beams | `POST /api/v1/etabs-bridge/v1/beam-pilot` | Reads an exact result selection and writes nothing to ETABS |
+
+The beam-pilot request must explicitly provide:
+
+- exact ETABS case or combination name and kind;
+- beam count from 1 to 5;
+- `fck` and `fy`;
+- clear cover, selected longitudinal bar diameters, stirrup diameter/legs and
+  support/midspan spacing;
+- compression-steel depth `d'`; and
+- IS 456 or IS 13920 detailing selection.
+
+ETABS supplies frame identity, storey, endpoints, span, rectangular section
+width/depth, section material-property name, and all returned `FrameForce`
+rows. The pilot retains signed station results and sends the absolute governing
+`V2`, `T`, and `M3` magnitudes to the canonical beam design. It never infers
+concrete or reinforcement grades from an ETABS material-property label.
+
+## Windows setup
+
+Prerequisites:
+
+- 64-bit Windows with a supported 64-bit Python and ETABS installation;
+- Microsoft Excel capable of sideloading the existing Office.js manifest;
+- Node.js for the local task-pane HTTPS server;
+- a trusted localhost certificate as described in
+  [the add-in README](../../excel_addin/README.md); and
+- a saved copied ETABS model with the requested case/combination already
+  analyzed.
+
+Run ETABS and the FastAPI process at the same Windows privilege level. For
+example, do not run one as Administrator and the other as a normal user.
+
+From repository root in PowerShell:
+
+```powershell
+py -3.11 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --upgrade pip
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m pip install -e "Python[etabs]"
+```
+
+Start FastAPI from repository root:
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn fastapi_app.main:app --host 127.0.0.1 --port 8000
+```
+
+In a second PowerShell window, start the existing trusted add-in origin:
+
+```powershell
+Set-Location excel_addin
+npm install
+$env:E1_OFFICE_KEY_PATH = "C:\absolute\path\localhost.key"
+$env:E1_OFFICE_CERT_PATH = "C:\absolute\path\localhost.crt"
+npm run serve
+```
+
+Then:
+
+1. Open ETABS and the saved copied `.edb` model. Confirm the intended result
+   case or combination exists and has current analysis results.
+2. Sideload `excel_addin/manifest.xml` and open the task pane in Excel.
+3. In **ETABS beam pilot**, confirm that bridge status is
+   `READY_TO_CONNECT`.
+4. Select **Connect to open ETABS model** and verify the displayed `.edb` name
+   and ETABS version.
+5. Enter the exact result name and all explicit design/detailing values.
+6. Select **Read and design first beams**.
+7. Review `ETABS_Pilot / tbl_ETABS_Pilot_V1`. The add-in creates this surface
+   only when absent, updates only the exact V1 table, and refuses to overwrite a
+   colliding worksheet or altered table.
+
+## COM and unit behavior
+
+The optional dependency is `comtypes>=1.4,<2` and is installed only by the
+`etabs` package extra on Windows. The service creates and tears down COM inside
+the FastAPI worker thread that owns the request.
+
+The pilot records the current ETABS present-unit enumeration, temporarily sets
+`kN_mm_C` (CSI enumeration value 5), reads geometry and results, and restores
+the original setting in a `finally` path. CSI's API documentation identifies
+`SetPresentUnits`, `GetAllFrames`, `GetRectangle`, result-selection setup, and
+`FrameForce` as the relevant calls. See the official CSI API pages for
+[units](https://docs.csiamerica.com/help-files/etabs-api-2016/html/cff40d28-9b1a-7f00-cfb9-0386da2464cc.htm),
+[frame inventory](https://docs.csiamerica.com/help-files/etabs-api-2016/html/9346cf4e-be74-b7be-d1eb-afe69d0f609c.htm), and
+[frame forces](https://docs.csiamerica.com/help-files/etabs-api-2016/html/87689f3e-4175-1627-618b-c4ebae5e89b5.htm).
+
+## Fail-closed boundaries
+
+The current pilot blocks when:
+
+- the host is not Windows or the optional COM dependency is missing;
+- no already-open ETABS model can be attached or the copied model is unsaved;
+- the exact case/combination cannot be selected or has no frame-force results;
+- no horizontal frame candidates exist within the fixed 1 mm vertical
+  tolerance;
+- one of the selected first beams is not rectangular;
+- a returned COM tuple or result-array count differs from the declared CSI API
+  shape;
+- any beam returns more than 2,000 result rows; or
+- canonical beam intake rejects the section, materials, actions, or detailing
+  basis.
+
+The pilot does **not** run ETABS analysis, unlock/save the model, change member
+sizes, perform a second frame analysis, optimize sections, check slabs/columns/
+joints/foundations, evaluate serviceability, coordinate bars across adjacent
+beams, check congestion/layers/site sequence, or claim professional approval.
+All returned designs require qualified structural-engineer review.
+
+## Evidence status and next gate
+
+The Python service, REST contracts, Office.js request/projection, and controlled
+worksheet writes have deterministic macOS/CI-test coverage through fake COM and
+fake Office hosts. That proves the local software contract, not actual ETABS
+application compatibility.
+
+The next gate is an installed Windows run that records:
+
+- exact repository commit and installed package identity;
+- Windows, Python, Excel, Office.js, ETABS, and `comtypes` versions;
+- copied `.edb` name/hash and exact result-selection name;
+- status, connect, and beam-pilot responses;
+- the generated `ETABS_Pilot` table and reconciliation to ETABS station rows;
+- proof that the original ETABS present units were restored; and
+- an independent engineer review of at least one beam's ETABS actions and
+  canonical design result.
+
+Only after that evidence passes should the next phase add a reviewed section-
+change proposal, explicit write-back confirmation, ETABS re-analysis, global
+response checks, and a bounded optimization loop.

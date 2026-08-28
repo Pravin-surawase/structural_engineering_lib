@@ -1,5 +1,6 @@
 import {
   SETTINGS_KEYS,
+  buildEtabsPilotRequest,
   buildPreviewRequest,
   buildReviewBundleExportRequest,
   buildRunRequest,
@@ -7,6 +8,7 @@ import {
   getWorkbenchApi,
   postWorkbenchApi,
   postReviewBundleApi,
+  projectEtabsPilotRows,
   projectLedgerRows,
   projectMappingRows,
   projectPassportRows,
@@ -22,6 +24,7 @@ import {
   officeErrorDetail,
   registerWorksheetChange,
   saveDocumentSettings,
+  writeEtabsPilotResults,
 } from "./taskpane-office.mjs";
 
 const INPUT_SHEET = "Beam_Workbench";
@@ -40,6 +43,8 @@ const state = {
   inputRevision: 0,
   eventRegistered: false,
   workbookSurfaceAvailable: false,
+  etabsBridgeStatus: null,
+  etabsConnected: false,
 };
 
 const ui = {};
@@ -64,6 +69,119 @@ function setBusy(busy) {
     freshnessVerified: state.freshnessVerified,
   });
   ui.status.setAttribute("aria-busy", busy ? "true" : "false");
+}
+
+function setPilotStatus(kind, title, detail = "") {
+  ui.etabsStatus.className = `status ${kind}`;
+  ui.etabsStatusTitle.textContent = title;
+  ui.etabsStatusDetail.textContent = detail;
+}
+
+function setPilotBusy(busy) {
+  ui.etabsConnect.disabled =
+    busy || state.etabsBridgeStatus?.bridge_status !== "READY_TO_CONNECT";
+  ui.etabsRun.disabled = busy || !state.etabsConnected;
+  ui.etabsStatus.setAttribute("aria-busy", busy ? "true" : "false");
+}
+
+function captureEtabsPilotValues() {
+  return {
+    selectionKind: ui.etabsSelectionKind.value,
+    selectionName: ui.etabsSelectionName.value,
+    limit: ui.etabsLimit.value,
+    standard: ui.etabsStandard.value,
+    fck: ui.etabsFck.value,
+    fy: ui.etabsFy.value,
+    clearCover: ui.etabsClearCover.value,
+    stirrupDiameter: ui.etabsStirrupDiameter.value,
+    tensionBarDiameter: ui.etabsTensionBarDiameter.value,
+    compressionBarDiameter: ui.etabsCompressionBarDiameter.value,
+    dDash: ui.etabsDDash.value,
+    nominalTopSteelRatio: ui.etabsTopRatio.value,
+    stirrupLegs: ui.etabsStirrupLegs.value,
+    stirrupSpacingSupport: ui.etabsSpacingSupport.value,
+    stirrupSpacingMid: ui.etabsSpacingMid.value,
+  };
+}
+
+async function refreshEtabsStatus() {
+  setPilotBusy(true);
+  try {
+    const status = await getWorkbenchApi(
+      API_ROOT,
+      "/etabs-bridge/v1/status",
+      { token: ui.token.value },
+    );
+    state.etabsBridgeStatus = status;
+    state.etabsConnected = false;
+    const available = status.bridge_status === "READY_TO_CONNECT";
+    setPilotStatus(
+      available ? "hold" : "blocked",
+      status.bridge_status,
+      available
+        ? `Python library ${status.library_version} is ready. Open the copied model in ETABS, then connect.`
+        : status.issues.join(" "),
+    );
+  } catch (error) {
+    state.etabsBridgeStatus = null;
+    state.etabsConnected = false;
+    setPilotStatus("blocked", "BRIDGE STATUS FAILED", error.message);
+  } finally {
+    setPilotBusy(false);
+  }
+}
+
+async function connectEtabs() {
+  setPilotBusy(true);
+  setPilotStatus("working", "CONNECTING", "Attaching to an already-open ETABS model.");
+  try {
+    const connection = await postWorkbenchApi(
+      API_ROOT,
+      "/etabs-bridge/v1/connect",
+      {},
+      { token: ui.token.value },
+    );
+    state.etabsConnected = true;
+    setPilotStatus(
+      "ready",
+      "ETABS CONNECTED",
+      `${connection.model.model_name} · ${connection.model.etabs_version} · library ${connection.library_version}`,
+    );
+  } catch (error) {
+    state.etabsConnected = false;
+    setPilotStatus("blocked", "ETABS CONNECTION FAILED", error.message);
+  } finally {
+    setPilotBusy(false);
+  }
+}
+
+async function runEtabsPilot() {
+  setPilotBusy(true);
+  setPilotStatus(
+    "working",
+    "READING ETABS",
+    "Extracting the exact selected result and running canonical beam design.",
+  );
+  try {
+    const request = buildEtabsPilotRequest(captureEtabsPilotValues());
+    const result = await postWorkbenchApi(
+      API_ROOT,
+      "/etabs-bridge/v1/beam-pilot",
+      request,
+      { token: ui.token.value },
+    );
+    const rows = projectEtabsPilotRows(result);
+    const write = await writeEtabsPilotResults(Excel, rows);
+    setPilotStatus(
+      "ready",
+      "PILOT COMPLETED",
+      `${result.designed_beam_count} beam(s) from ${result.model.model_name} written to ${write.sheetName} (${write.disposition}). Qualified review is required.`,
+    );
+  } catch (error) {
+    setPilotStatus("blocked", "PILOT BLOCKED", officeErrorDetail(error));
+  } finally {
+    setPilotBusy(false);
+  }
 }
 
 async function persistEvidence(evidence, stale) {
@@ -364,12 +482,35 @@ async function initialize() {
   ui.mapping = document.getElementById("mapping");
   ui.context = document.getElementById("context");
   ui.token = document.getElementById("token");
+  ui.etabsStatus = document.getElementById("etabs-status");
+  ui.etabsStatusTitle = document.getElementById("etabs-status-title");
+  ui.etabsStatusDetail = document.getElementById("etabs-status-detail");
+  ui.etabsConnect = document.getElementById("etabs-connect");
+  ui.etabsRun = document.getElementById("etabs-run");
+  ui.etabsSelectionKind = document.getElementById("etabs-selection-kind");
+  ui.etabsSelectionName = document.getElementById("etabs-selection-name");
+  ui.etabsLimit = document.getElementById("etabs-limit");
+  ui.etabsStandard = document.getElementById("etabs-standard");
+  ui.etabsFck = document.getElementById("etabs-fck");
+  ui.etabsFy = document.getElementById("etabs-fy");
+  ui.etabsClearCover = document.getElementById("etabs-cover");
+  ui.etabsStirrupDiameter = document.getElementById("etabs-stirrup-dia");
+  ui.etabsTensionBarDiameter = document.getElementById("etabs-tension-dia");
+  ui.etabsCompressionBarDiameter = document.getElementById("etabs-compression-dia");
+  ui.etabsDDash = document.getElementById("etabs-d-dash");
+  ui.etabsTopRatio = document.getElementById("etabs-top-ratio");
+  ui.etabsStirrupLegs = document.getElementById("etabs-stirrup-legs");
+  ui.etabsSpacingSupport = document.getElementById("etabs-spacing-support");
+  ui.etabsSpacingMid = document.getElementById("etabs-spacing-mid");
   ui.preview.addEventListener("click", previewMapping);
   ui.review.addEventListener("change", mappingReviewChanged);
   ui.run.addEventListener("click", runCalculation);
   ui.freshness.addEventListener("click", checkFreshness);
   ui.export.addEventListener("click", exportReviewBundle);
+  ui.etabsConnect.addEventListener("click", connectEtabs);
+  ui.etabsRun.addEventListener("click", runEtabsPilot);
   setBusy(true);
+  setPilotBusy(true);
 
   let surface;
   try {
@@ -396,6 +537,7 @@ async function initialize() {
   }
 
   ui.context.textContent = `Connected · library ${state.definition.library_version} · engine ${state.definition.library_content_identity.slice(0, 12)}… · workbook ${state.definition.workbook_artifact_sha256.slice(0, 12)}… · Windows ${state.definition.installed_windows_excel_evidence}`;
+  await refreshEtabsStatus();
   if (!surface.available) {
     setStatus("hold", "E1 WORKBOOK NOT OPEN", surface.detail);
     setBusy(false);

@@ -1,12 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { SETTINGS_KEYS } from "../taskpane-core.mjs";
+import { ETABS_PILOT_HEADERS, SETTINGS_KEYS } from "../taskpane-core.mjs";
 import {
   ensureWorkbookId,
   inspectWorkbookSurface,
   officeErrorDetail,
   registerWorksheetChange,
+  writeEtabsPilotResults,
 } from "../taskpane-office.mjs";
 
 function surfaceExcel(
@@ -222,4 +223,90 @@ test("change handler registration remains strict after surface acceptance", asyn
     ["add", handler],
     ["sync"],
   ]);
+});
+
+function pilotRow(label = "B1") {
+  return ETABS_PILOT_HEADERS.map((_, index) => (index === 0 ? label : null));
+}
+
+function pilotExcel({ existingSheet = false, existingTable = true, wrongHeaders = false } = {}) {
+  const calls = [];
+  const body = {};
+  const header = {
+    values: [wrongHeaders ? ["Wrong"] : [...ETABS_PILOT_HEADERS]],
+    rowIndex: 0,
+    columnIndex: 0,
+    columnCount: ETABS_PILOT_HEADERS.length,
+    load(properties) { calls.push(["header.load", properties]); },
+  };
+  const table = {
+    isNullObject: !existingTable,
+    name: null,
+    load(property) { calls.push(["table.load", property]); },
+    getHeaderRowRange() { return header; },
+    getDataBodyRange() { return body; },
+    resize(range) { calls.push(["table.resize", range]); },
+  };
+  const createdRange = {};
+  const sheet = {
+    isNullObject: !existingSheet,
+    load(property) { calls.push(["sheet.load", property]); },
+    getRangeByIndexes(...args) {
+      calls.push(["range", ...args]);
+      return existingSheet ? { args } : createdRange;
+    },
+    activate() { calls.push(["activate"]); },
+    tables: {
+      getItemOrNullObject(name) { calls.push(["table.get", name]); return table; },
+      add(range, hasHeaders) { calls.push(["table.add", range, hasHeaders]); return table; },
+    },
+  };
+  const context = {
+    workbook: {
+      worksheets: {
+        getItemOrNullObject(name) { calls.push(["sheet.get", name]); return sheet; },
+        add(name) { calls.push(["sheet.add", name]); sheet.isNullObject = false; return sheet; },
+      },
+    },
+    async sync() { calls.push(["sync"]); },
+  };
+  return {
+    calls,
+    body,
+    createdRange,
+    table,
+    api: { async run(callback) { return callback(context); } },
+  };
+}
+
+test("ETABS pilot creates only its controlled sheet and named table", async () => {
+  const excel = pilotExcel();
+  const row = pilotRow();
+  const result = await writeEtabsPilotResults(excel.api, [row]);
+  assert.deepEqual(result, { disposition: "CREATED", sheetName: "ETABS_Pilot" });
+  assert.deepEqual(excel.createdRange.values, [ETABS_PILOT_HEADERS, row]);
+  assert.equal(excel.table.name, "tbl_ETABS_Pilot_V1");
+  assert.equal(excel.calls.some(([name]) => name === "sheet.add"), true);
+});
+
+test("ETABS pilot updates only an exact existing V1 table", async () => {
+  const excel = pilotExcel({ existingSheet: true });
+  const row = pilotRow("B2");
+  const result = await writeEtabsPilotResults(excel.api, [row]);
+  assert.deepEqual(result, { disposition: "UPDATED", sheetName: "ETABS_Pilot" });
+  assert.deepEqual(excel.body.values, [row]);
+  assert.equal(excel.calls.some(([name]) => name === "table.resize"), true);
+});
+
+test("ETABS pilot never overwrites a colliding user worksheet", async () => {
+  const missing = pilotExcel({ existingSheet: true, existingTable: false });
+  await assert.rejects(
+    writeEtabsPilotResults(missing.api, [pilotRow()]),
+    /already exists without tbl_ETABS_Pilot_V1/,
+  );
+  const changed = pilotExcel({ existingSheet: true, wrongHeaders: true });
+  await assert.rejects(
+    writeEtabsPilotResults(changed.api, [pilotRow()]),
+    /headers do not match V1/,
+  );
 });

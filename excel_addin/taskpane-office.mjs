@@ -1,3 +1,8 @@
+import { ETABS_PILOT_HEADERS } from "./taskpane-core.mjs";
+
+const ETABS_PILOT_SHEET = "ETABS_Pilot";
+const ETABS_PILOT_TABLE = "tbl_ETABS_Pilot_V1";
+
 function officeAsyncError(error) {
   const wrapped = new Error(
     error?.message || "Office document settings could not be saved.",
@@ -83,5 +88,64 @@ export async function registerWorksheetChange(
     const sheet = context.workbook.worksheets.getItem(worksheetName);
     sheet.onChanged.add(handler);
     await context.sync();
+  });
+}
+
+export async function writeEtabsPilotResults(excelApi, rows) {
+  if (!Array.isArray(rows) || rows.length === 0) {
+    throw new Error("At least one completed ETABS pilot row is required.");
+  }
+  if (rows.some((row) => !Array.isArray(row) || row.length !== ETABS_PILOT_HEADERS.length)) {
+    throw new Error("ETABS pilot rows do not match the controlled output contract.");
+  }
+  return excelApi.run(async (context) => {
+    const worksheets = context.workbook.worksheets;
+    let sheet = worksheets.getItemOrNullObject(ETABS_PILOT_SHEET);
+    sheet.load("isNullObject");
+    await context.sync();
+
+    if (sheet.isNullObject) {
+      sheet = worksheets.add(ETABS_PILOT_SHEET);
+      const range = sheet.getRangeByIndexes(
+        0,
+        0,
+        rows.length + 1,
+        ETABS_PILOT_HEADERS.length,
+      );
+      range.values = [ETABS_PILOT_HEADERS, ...rows];
+      const table = sheet.tables.add(range, true);
+      table.name = ETABS_PILOT_TABLE;
+      sheet.activate();
+      await context.sync();
+      return { disposition: "CREATED", sheetName: ETABS_PILOT_SHEET };
+    }
+
+    const table = sheet.tables.getItemOrNullObject(ETABS_PILOT_TABLE);
+    table.load("isNullObject");
+    await context.sync();
+    if (table.isNullObject) {
+      throw new Error(
+        `${ETABS_PILOT_SHEET} already exists without ${ETABS_PILOT_TABLE}; no cells were overwritten.`,
+      );
+    }
+    const header = table.getHeaderRowRange();
+    header.load(["values", "rowIndex", "columnIndex", "columnCount"]);
+    await context.sync();
+    if (JSON.stringify(header.values[0]) !== JSON.stringify(ETABS_PILOT_HEADERS)) {
+      throw new Error("The existing ETABS pilot table headers do not match V1; no cells were overwritten.");
+    }
+    table.resize(
+      sheet.getRangeByIndexes(
+        header.rowIndex,
+        header.columnIndex,
+        rows.length + 1,
+        header.columnCount,
+      ),
+    );
+    await context.sync();
+    table.getDataBodyRange().values = rows;
+    sheet.activate();
+    await context.sync();
+    return { disposition: "UPDATED", sheetName: ETABS_PILOT_SHEET };
   });
 }

@@ -46,6 +46,7 @@ from fastapi_app.routers import (
     design,
     design_v2,
     detailing,
+    etabs_bridge,
     excel_workbench,
     export,
     flat_slab,
@@ -180,6 +181,10 @@ API_TAGS_METADATA = [
     {
         "name": "excel-workbench",
         "description": "Selected-table Excel mapping, canonical beam review, and stale evidence.",
+    },
+    {
+        "name": "etabs-bridge",
+        "description": "Bounded Windows ETABS attachment, beam-force extraction, and canonical design pilot.",
     },
     {
         "name": "geometry",
@@ -655,6 +660,10 @@ app.include_router(
 )
 app.include_router(
     excel_workbench.router,
+    prefix=API_V1_PREFIX,
+)
+app.include_router(
+    etabs_bridge.router,
     prefix=API_V1_PREFIX,
 )
 app.include_router(

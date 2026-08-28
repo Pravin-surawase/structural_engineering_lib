@@ -1,0 +1,150 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "404a1248fb9c2f13fd61f46f3e98f8a0ddfd06593770c1fac9645e082f2e7756",
+    "state": {
+      "branch": "codex/excel-etabs-python-bridge-pilot",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "683760a4aef1c384aa475df6842c791eada85959",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 94.087,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "head_sha": "683760a4aef1c384aa475df6842c791eada85959",
+      "hold_reasons": [
+        "changed paths: 23"
+      ],
+      "linked_worktree": false,
+      "locks": [],
+      "observed_at_utc": "2026-08-28T11:26:02.317984+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 23,
+        "modified_paths": [
+          "AGENTS.md",
+          "Python/pyproject.toml",
+          "docs/SESSION_LOG.md",
+          "docs/getting-started/agent-bootstrap.md",
+          "docs/getting-started/mac-mini-setup.md",
+          "docs/guides/README.md",
+          "excel_addin/README.md",
+          "excel_addin/taskpane-core.mjs",
+          "excel_addin/taskpane-office.mjs",
+          "excel_addin/taskpane.css",
+          "excel_addin/taskpane.html",
+          "excel_addin/taskpane.mjs",
+          "excel_addin/tests/serve-static-files.test.mjs",
+          "excel_addin/tests/taskpane-core.test.mjs",
+          "excel_addin/tests/taskpane-office.test.mjs",
+          "fastapi_app/main.py",
+          "fastapi_app/openapi_baseline.json",
+          "llms.txt"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "Python/structural_lib/services/etabs_live_bridge.py",
+          "Python/tests/unit/test_etabs_live_bridge.py",
+          "docs/guides/excel-etabs-python-bridge-pilot.md",
+          "fastapi_app/routers/etabs_bridge.py",
+          "fastapi_app/tests/test_etabs_bridge.py"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:404a1248fb9c2f13fd61f46f3e98f8a0ddfd06593770c1fac9645e082f2e7756",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-28T11:26:02.318166+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Etabs_CSV",
+      "Python/structural_lib/codes/is456",
+      "Python/structural_lib/data/excel/outputs"
+    ],
+    "integration_owner": "Codex",
+    "owned_paths": [
+      "Python/pyproject.toml",
+      "Python/structural_lib/services/etabs_live_bridge.py",
+      "Python/tests/unit/test_etabs_live_bridge.py",
+      "fastapi_app/routers/etabs_bridge.py",
+      "fastapi_app/tests/test_etabs_bridge.py",
+      "excel_addin",
+      "docs/guides/excel-etabs-python-bridge-pilot.md"
+    ],
+    "shared_paths": [
+      "fastapi_app/main.py",
+      "fastapi_app/openapi_baseline.json",
+      "docs/SESSION_LOG.md",
+      "AGENTS.md",
+      "llms.txt",
+      "docs/getting-started/agent-bootstrap.md",
+      "docs/getting-started/mac-mini-setup.md"
+    ],
+    "task_id": "EXCEL-ETABS-PYTHON-BRIDGE-PILOT"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
