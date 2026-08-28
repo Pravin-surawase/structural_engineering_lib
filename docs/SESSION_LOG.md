@@ -5,6 +5,87 @@
 
 ---
 
+## 2026-08-28 — Session: RELEASE-0240 Public Publication Closeout
+
+**Agent:** Codex (`doc-master`, sole writer; no subagents).
+
+**Branch:** `codex/release-0240-public-closeout`.
+
+**Focus:** Record the final public `v0.24.0` identities only after publication
+was observable, close the maintained release task/checklist/ledger/handoff, and
+preserve every engineering, professional-review, Windows, and cleanup hold.
+
+**Completed:**
+
+- Bound the reviewed preparation candidate `6d0d2c15...`, authorization
+  descendant `3e7994f2...`, PR #886 merge `e66de6ef...`, exact tree
+  `e583493e...`, unchanged Python tree `d4f1af4f...`, and annotated
+  `v0.24.0` tag in one publication receipt.
+- Recorded production workflow `33150227524`, non-prerelease GitHub Release,
+  matching GitHub/PyPI wheel and sdist hashes, exact-wheel UAT PASS, and a fresh
+  isolated PyPI identity verification.
+- Updated only maintained documentation/evidence owners. The immutable release,
+  engineering runtime, protected Windows lane, detached dirty `e54a` lane, and
+  all unrelated retained state remain unchanged.
+
+### Issues encountered
+
+- The prior release session had passed clean validation but still had an
+  unmatched usage-start checkpoint, which blocked the canonical closeout
+  session start.
+- Maintained task, checklist, ledger, session, and handoff records necessarily
+  remained at candidate/authorization state because the public facts did not
+  exist before the immutable release commit and tag.
+- A first read-only source search used a pattern beginning with `--phase`, which
+  `rg` parsed as an option.
+- The first combined documentation patch used an exact ledger context that did
+  not match the file's wrapped line, so the atomic patch stopped without writes.
+- The first normal-hook command used the retired `--hook commit` spelling,
+  which the current checker rejected before running hooks.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `session end` is a read-only repository verdict and does
+  not replace the separate measured `session usage --checkpoint closeout`
+  record. Resolution: recorded the exact two candidate heads, PR #886, merge
+  `e66de6ef...`, seven timing phases, retry counters, and five hosted runs before
+  starting this task. The canonical session start then passed.
+- Confirmed root cause: closeout freeze forbids inserting future hosted or
+  publication claims into the pre-publication candidate. Resolution: use this
+  bounded post-publication documentation packet and bind only already-observed
+  public facts. Public tag, workflow, release, hashes, and isolated install were
+  all re-queried before writing.
+- Confirmed root cause: an `rg` pattern starting with a dash requires the option
+  terminator. Resolution: rerun it as `rg -n -- <pattern>`; the search completed
+  without repository mutation. ⚠️ TERMINAL ISSUE: `rg` parsed `--phase` as an
+  unsupported flag -> the exact same read-only search passed with `--`.
+- Confirmed root cause: `apply_patch` requires exact surrounding text, including
+  Markdown wrapping. Resolution: inspect the ledger tail and apply bounded
+  file-specific patches; the failed atomic patch changed nothing. ⚠️ TERMINAL
+  ISSUE: one patch context did not match -> smaller exact-context patches passed.
+- Confirmed root cause: the canonical checker exposes normal hooks as
+  `./run.sh check --pre-commit`, not `--hook commit`. Resolution: use the
+  maintained option; every normal hook passed without bypass. ⚠️ TERMINAL ISSUE:
+  obsolete hook syntax was rejected -> `--pre-commit` passed.
+
+### Validation
+
+- The `v0.24.0` publication-surface check passes against current public
+  metadata; the new receipt is valid JSON and its tag, workflow, release, PyPI,
+  artifact, UAT, and isolated-install identities were re-queried before freeze.
+- Task format, next-session length, documentation structure/front matter,
+  1,095 maintained links, version synchronization, and context validation all
+  pass. Existing informational metadata warnings are unchanged and outside this
+  packet.
+- Quick gate passes 10/10, efficiency policy passes, and all normal hooks pass,
+  including 18 API contract tests, release/session/task/checklist controls, API
+  classification, family-facade generation, and React/FastAPI contract checks.
+- Clean session closeout, immutable documentation candidate, and required
+  hosted documentation checks remain candidate closeout steps.
+
+**Git handoff receipt:**
+`docs/verification/release-0240-public-closeout-git-handoff-receipt.json`
+
 ## 2026-08-28 — Session: RELEASE-0240 Normal Software Release
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents).

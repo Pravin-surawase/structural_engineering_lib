@@ -9,36 +9,42 @@
 
 ## Current State
 
-Current source metadata: 0.24.0 (prepared normal release candidate; unpublished)
-Current public Alpha: v0.24.0a1
+Current source metadata: 0.24.0 (published normal software release)
+Current public release: v0.24.0
 
-- **Published source:** tag `v0.24.0a1` at `71b7065216d4266d63ad6b31bd39bba81fa16efc`
-- **Published wheel:** 774,739 bytes; SHA-256 `b5e0df7b561e8c715f37c602200eaae2c369ec5dc992eec87110a77c1026201a`
-- **Published sdist:** 652,423 bytes; SHA-256 `8c1d6b762a779686be5d17ed0dd9719f7155a5863a764e943a0e1ba9aeb0a53b`
-- **Publication state:** `RELEASED_ALPHA` on PyPI and GitHub on 2026-08-24
+- **Published source:** annotated tag `v0.24.0` at merge `e66de6efa3bb80d3ebc54e6151b1d6c29275c502`, tree `e583493eed9943b7216d0b19c6749383f06a33a3`
+- **Published wheel:** 822,111 bytes; SHA-256 `7b5bc0b6ca6721897ae9ccce9860b6aaaa3c5647ded9fefd0945872ed354a093`
+- **Published sdist:** 685,836 bytes; SHA-256 `d530f10ca4f64655eade86b9beb8ca3d8b5eb10ddfcf0d7db097e9252d406640`
+- **Publication state:** `RELEASED_NORMAL_SOFTWARE` on PyPI and GitHub on 2026-08-28; GitHub prerelease flag `false`, maturity classifier Beta
 - **Prepared-candidate base:** accepted post-R0 cumulative audit merge `e7956f78cc849f1c0cd26fed7c82e9f3cdce9e19`, tree `7849482826f564023829bd9f9d71377654302dac`
-- **Candidate state:** `0.24.0` normal software release preparation; not yet tagged or published
+- **Candidate state:** no later release candidate is selected or authorized
 - **Review policy:** qualified structural-engineering review remains required before engineering-use, construction-use, or professional-approval claims; it is deferred until the owner declares the intended library complete and is not a gate on this normal software-release claim
 
-## v0.24.0 Normal Software Release Preparation
+## v0.24.0 Published Normal Software Release
 
 - [x] Owner selects normal final version `0.24.0` instead of another Alpha
 - [x] Base the release lane on the accepted post-R0 cumulative audit merge
 - [x] Preserve the 13-family supported inventory and reproduce no engineering-calculation, calculation-owner, facade-contract, or golden-outcome defect in the cumulative audit
 - [x] Separate normal package-manager/GitHub release status from professional, engineering-use, construction-use, stable-API, and whole-standard claims
 - [x] Record broader library development and cumulative practicing-engineer review as in progress
-- [ ] Freeze and build one exact `0.24.0` wheel/sdist pair
-- [ ] Pass source-free installed-package UAT and focused/cumulative release gates
-- [ ] Freeze one immutable candidate and pass every required hosted changed-path check plus exact-head Weekly Verification
-- [ ] Bind the exact reviewed candidate through an independent software-review receipt or the owner's bounded waiver, then record exact-target publication authorization
-- [ ] Rehearse the unchanged candidate on TestPyPI
-- [ ] Merge unchanged, tag exact `v0.24.0`, publish to PyPI and GitHub as a non-prerelease, and verify public hashes/install/UAT
+- [x] Freeze and build one exact `0.24.0` wheel/sdist pair
+- [x] Pass source-free installed-package UAT and focused/cumulative release gates
+- [x] Freeze one immutable candidate and pass every required hosted changed-path check plus exact-head Weekly Verification
+- [x] Bind the exact reviewed candidate through the owner's bounded waiver, then record exact-target publication authorization
+- [x] Rehearse the unchanged source candidate on TestPyPI
+- [x] Merge unchanged, tag exact `v0.24.0`, publish to PyPI and GitHub as a non-prerelease, and verify public hashes/install/UAT
 
 The owner decision is recorded in
 `docs/verification/release-0240-normal-software-owner-decision.json`. “No issues”
 is bounded to no reproduced outcome-changing defect in the cumulative audited
 supported scope; it is not an assertion that the whole library is complete or
 professionally approved.
+
+The exact public receipt is
+`docs/verification/release-0240-publication-receipt.json`. The release is the
+latest normal package-manager selection, but the project remains pre-1.0/Beta
+and broader library work plus one cumulative practicing-engineer review remain
+in progress.
 
 ## v0.24.0a1 Published Alpha State
 

@@ -1,0 +1,65 @@
+{
+  "schema_version": "release-publication-receipt/v1",
+  "release": {
+    "version": "0.24.0",
+    "tag": "v0.24.0",
+    "status": "PUBLISHED_NORMAL_SOFTWARE_RELEASE",
+    "maturity": "BETA",
+    "github_prerelease": false,
+    "published_at_utc": "2026-08-28T07:09:50Z"
+  },
+  "source_identity": {
+    "reviewed_candidate_head": "6d0d2c150e391695fc2be7d39cbf240a20dd5a68",
+    "authorization_descendant_head": "3e7994f204582d56f21533d38cb31cd22e80c600",
+    "merge_commit": "e66de6efa3bb80d3ebc54e6151b1d6c29275c502",
+    "source_tree": "e583493eed9943b7216d0b19c6749383f06a33a3",
+    "python_tree": "d4f1af4f9f7a78d069e641fba46e8bdf12cc4efa",
+    "annotated_tag_object": "0c2c5a9fa1ae4d1200be2e798b89c7137edfbe86",
+    "tag_peeled_commit": "e66de6efa3bb80d3ebc54e6151b1d6c29275c502",
+    "pull_request": 886
+  },
+  "hosted_evidence": {
+    "reviewed_candidate_pr_validation_run": 33149305946,
+    "reviewed_candidate_weekly_verification_run": 33149315082,
+    "testpypi_run": 33149832121,
+    "authorization_head_pr_validation_run": 33149834491,
+    "production_release_run": 33150227524,
+    "production_release_status": "PASS"
+  },
+  "public_artifacts": {
+    "pypi_project_url": "https://pypi.org/project/structural-lib-is456/0.24.0/",
+    "github_release_url": "https://github.com/Pravin-surawase/structural_engineering_lib/releases/tag/v0.24.0",
+    "github_and_pypi_hashes_match": true,
+    "wheel": {
+      "filename": "structural_lib_is456-0.24.0-py3-none-any.whl",
+      "size_bytes": 822111,
+      "sha256": "7b5bc0b6ca6721897ae9ccce9860b6aaaa3c5647ded9fefd0945872ed354a093"
+    },
+    "sdist": {
+      "filename": "structural_lib_is456-0.24.0.tar.gz",
+      "size_bytes": 685836,
+      "sha256": "d530f10ca4f64655eade86b9beb8ca3d8b5eb10ddfcf0d7db097e9252d406640"
+    }
+  },
+  "exact_wheel_evidence": {
+    "status": "PASS",
+    "case_count": 29,
+    "advertised_entry_count": 28,
+    "cli_entry_count": 15,
+    "family_facade_entry_count": 13,
+    "library_content_identity": "6d6f704f096125e9b6bd0973cb7be47906282a4fcb076858983c50c080fc1153",
+    "matrix_sha256": "dd52015061a443e16f93bb5828016b5e96a580e3e0ebe4516e31a29db88c7757",
+    "public_pypi_identity_verification": "PASS"
+  },
+  "claim_boundary": {
+    "broader_library_development": "IN_PROGRESS",
+    "cumulative_practicing_engineer_review": "DEFERRED_UNTIL_INTEGRATED_LIBRARY",
+    "stable_api_guarantee": false,
+    "complete_is456_coverage": false,
+    "qualified_structural_engineering_review": false,
+    "professional_approval": false,
+    "engineering_use_approval": false,
+    "construction_use_approval": false,
+    "windows_excel_etabs_acceptance": false
+  }
+}
