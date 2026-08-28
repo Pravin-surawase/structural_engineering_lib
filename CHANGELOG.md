@@ -4,12 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.24.0] — Prepared candidate (unreleased; on hold)
+## [0.24.0] — 2026-08-28
 
-Prepared normal software release candidate for the cumulative supported scope
-integrated after `v0.24.0a1`. This final PEP 440 version is intended to restore
-ordinary package-manager selection while the broader library roadmap remains in
-progress. At candidate preparation it is not tagged or published. It does not
+Owner-authorized normal software release for the cumulative supported scope
+integrated after `v0.24.0a1`. This final PEP 440 version restores ordinary
+package-manager selection while the broader library roadmap remains in
+progress. It does not
 claim complete IS 456 coverage, stable-API compatibility, qualified structural-
 engineering review, professional approval, engineering suitability, or
 construction-use approval.
