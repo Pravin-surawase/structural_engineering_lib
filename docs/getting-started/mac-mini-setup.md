@@ -274,8 +274,8 @@ structural_engineering_lib/
 │   ├── insights/               #   Design insights & analysis
 │   ├── visualization/          #   3D geometry generation
 │   └── reports/                #   Report templates
-├── fastapi_app/                # REST backend (90 OpenAPI operations) + WebSocket
-│   └── routers/                #   27 routers (design, column, geometry, import, export...)
+├── fastapi_app/                # REST backend (93 OpenAPI operations) + WebSocket
+│   └── routers/                #   28 routers (design, column, geometry, import, export...)
 ├── react_app/src/              # React 19 + TypeScript + R3F + Tailwind
 │   ├── components/             #   UI components by feature
 │   ├── hooks/                  #   Custom hooks (CSV, geometry, design, export)

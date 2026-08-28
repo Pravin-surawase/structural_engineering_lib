@@ -60,6 +60,7 @@ docs = [
     "mkdocs-material>=9.5",
     "mkdocstrings[python]>=0.25",
 ]
+etabs = ["comtypes>=1.4,<2; platform_system == 'Windows'"]
 
 [tool.setuptools.packages.find]
 where = ["."]

@@ -1670,6 +1670,150 @@
         "title": "APIResponse[DuctilityCheckResponse]",
         "type": "object"
       },
+      "APIResponse_ETABSBridgeStatusV1_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ETABSBridgeStatusV1"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProblemDetailResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[ETABSBridgeStatusV1]",
+        "type": "object"
+      },
+      "APIResponse_ETABSConnectionV1_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ETABSConnectionV1"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProblemDetailResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[ETABSConnectionV1]",
+        "type": "object"
+      },
+      "APIResponse_ETABSPilotResultV1_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ETABSPilotResultV1"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProblemDetailResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[ETABSPilotResultV1]",
+        "type": "object"
+      },
       "APIResponse_EffectiveLengthResponse_": {
         "example": {
           "data": {
@@ -14439,6 +14583,629 @@
           "clause_refs"
         ],
         "title": "DuctilityCheckResponse",
+        "type": "object"
+      },
+      "ETABSBridgeStatusV1": {
+        "additionalProperties": false,
+        "description": "Non-calculation availability and library identity.",
+        "properties": {
+          "bridge_status": {
+            "enum": [
+              "READY_TO_CONNECT",
+              "CONNECTED",
+              "PLATFORM_UNSUPPORTED",
+              "DEPENDENCY_MISSING"
+            ],
+            "title": "Bridge Status",
+            "type": "string"
+          },
+          "com_dependency": {
+            "enum": [
+              "INSTALLED",
+              "MISSING",
+              "NOT_APPLICABLE"
+            ],
+            "title": "Com Dependency",
+            "type": "string"
+          },
+          "issues": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "library_content_identity": {
+            "title": "Library Content Identity",
+            "type": "string"
+          },
+          "library_version": {
+            "title": "Library Version",
+            "type": "string"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ETABSModelIdentityV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "platform": {
+            "title": "Platform",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "etabs-live-bridge/v1",
+            "default": "etabs-live-bridge/v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "bridge_status",
+          "platform",
+          "com_dependency",
+          "library_version",
+          "library_content_identity"
+        ],
+        "title": "ETABSBridgeStatusV1",
+        "type": "object"
+      },
+      "ETABSConnectionV1": {
+        "additionalProperties": false,
+        "description": "Successful attachment proof without analysis or model mutation.",
+        "properties": {
+          "bridge_status": {
+            "const": "CONNECTED",
+            "default": "CONNECTED",
+            "title": "Bridge Status",
+            "type": "string"
+          },
+          "library_content_identity": {
+            "title": "Library Content Identity",
+            "type": "string"
+          },
+          "library_version": {
+            "title": "Library Version",
+            "type": "string"
+          },
+          "model": {
+            "$ref": "#/components/schemas/ETABSModelIdentityV1"
+          },
+          "schema_version": {
+            "const": "etabs-live-bridge/v1",
+            "default": "etabs-live-bridge/v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "library_version",
+          "library_content_identity",
+          "model"
+        ],
+        "title": "ETABSConnectionV1",
+        "type": "object"
+      },
+      "ETABSForceExtremeV1": {
+        "additionalProperties": false,
+        "description": "Signed governing value retained alongside its absolute magnitude.",
+        "properties": {
+          "absolute_value": {
+            "minimum": 0.0,
+            "title": "Absolute Value",
+            "type": "number"
+          },
+          "component": {
+            "enum": [
+              "V2",
+              "T",
+              "M3"
+            ],
+            "title": "Component",
+            "type": "string"
+          },
+          "load_case": {
+            "title": "Load Case",
+            "type": "string"
+          },
+          "object_station_mm": {
+            "title": "Object Station Mm",
+            "type": "number"
+          },
+          "row_index": {
+            "minimum": 0.0,
+            "title": "Row Index",
+            "type": "integer"
+          },
+          "signed_value": {
+            "title": "Signed Value",
+            "type": "number"
+          },
+          "step_number": {
+            "title": "Step Number",
+            "type": "number"
+          },
+          "step_type": {
+            "title": "Step Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "component",
+          "signed_value",
+          "absolute_value",
+          "row_index",
+          "object_station_mm",
+          "load_case",
+          "step_type",
+          "step_number"
+        ],
+        "title": "ETABSForceExtremeV1",
+        "type": "object"
+      },
+      "ETABSFrameForceStationV1": {
+        "additionalProperties": false,
+        "description": "One untruncated ETABS FrameForce row converted to canonical units.",
+        "properties": {
+          "element_name": {
+            "title": "Element Name",
+            "type": "string"
+          },
+          "element_station_mm": {
+            "title": "Element Station Mm",
+            "type": "number"
+          },
+          "load_case": {
+            "title": "Load Case",
+            "type": "string"
+          },
+          "m2_knm": {
+            "title": "M2 Knm",
+            "type": "number"
+          },
+          "m3_knm": {
+            "title": "M3 Knm",
+            "type": "number"
+          },
+          "object_name": {
+            "title": "Object Name",
+            "type": "string"
+          },
+          "object_station_mm": {
+            "title": "Object Station Mm",
+            "type": "number"
+          },
+          "p_kn": {
+            "title": "P Kn",
+            "type": "number"
+          },
+          "row_index": {
+            "minimum": 0.0,
+            "title": "Row Index",
+            "type": "integer"
+          },
+          "step_number": {
+            "title": "Step Number",
+            "type": "number"
+          },
+          "step_type": {
+            "title": "Step Type",
+            "type": "string"
+          },
+          "t_knm": {
+            "title": "T Knm",
+            "type": "number"
+          },
+          "v2_kn": {
+            "title": "V2 Kn",
+            "type": "number"
+          },
+          "v3_kn": {
+            "title": "V3 Kn",
+            "type": "number"
+          }
+        },
+        "required": [
+          "row_index",
+          "object_name",
+          "object_station_mm",
+          "element_name",
+          "element_station_mm",
+          "load_case",
+          "step_type",
+          "step_number",
+          "p_kn",
+          "v2_kn",
+          "v3_kn",
+          "t_knm",
+          "m2_knm",
+          "m3_knm"
+        ],
+        "title": "ETABSFrameForceStationV1",
+        "type": "object"
+      },
+      "ETABSFrameForcesV1": {
+        "additionalProperties": false,
+        "description": "Complete returned rows plus the three pilot governing actions.",
+        "properties": {
+          "governing_m3": {
+            "$ref": "#/components/schemas/ETABSForceExtremeV1"
+          },
+          "governing_t": {
+            "$ref": "#/components/schemas/ETABSForceExtremeV1"
+          },
+          "governing_v2": {
+            "$ref": "#/components/schemas/ETABSForceExtremeV1"
+          },
+          "result_row_count": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 2000.0,
+            "title": "Result Row Count",
+            "type": "integer"
+          },
+          "selection": {
+            "$ref": "#/components/schemas/ETABSResultSelectionV1"
+          },
+          "stations": {
+            "items": {
+              "$ref": "#/components/schemas/ETABSFrameForceStationV1"
+            },
+            "title": "Stations",
+            "type": "array"
+          }
+        },
+        "required": [
+          "selection",
+          "result_row_count",
+          "stations",
+          "governing_v2",
+          "governing_t",
+          "governing_m3"
+        ],
+        "title": "ETABSFrameForcesV1",
+        "type": "object"
+      },
+      "ETABSFrameGeometryV1": {
+        "additionalProperties": false,
+        "description": "ETABS frame identity and rectangular section geometry in millimetres.",
+        "properties": {
+          "D_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "D Mm",
+            "type": "number"
+          },
+          "b_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "B Mm",
+            "type": "number"
+          },
+          "frame_name": {
+            "title": "Frame Name",
+            "type": "string"
+          },
+          "material_property": {
+            "title": "Material Property",
+            "type": "string"
+          },
+          "point_i": {
+            "title": "Point I",
+            "type": "string"
+          },
+          "point_j": {
+            "title": "Point J",
+            "type": "string"
+          },
+          "section_name": {
+            "title": "Section Name",
+            "type": "string"
+          },
+          "span_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Span Mm",
+            "type": "number"
+          },
+          "story": {
+            "title": "Story",
+            "type": "string"
+          },
+          "x_i_mm": {
+            "title": "X I Mm",
+            "type": "number"
+          },
+          "x_j_mm": {
+            "title": "X J Mm",
+            "type": "number"
+          },
+          "y_i_mm": {
+            "title": "Y I Mm",
+            "type": "number"
+          },
+          "y_j_mm": {
+            "title": "Y J Mm",
+            "type": "number"
+          },
+          "z_i_mm": {
+            "title": "Z I Mm",
+            "type": "number"
+          },
+          "z_j_mm": {
+            "title": "Z J Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "frame_name",
+          "story",
+          "section_name",
+          "material_property",
+          "point_i",
+          "point_j",
+          "x_i_mm",
+          "y_i_mm",
+          "z_i_mm",
+          "x_j_mm",
+          "y_j_mm",
+          "z_j_mm",
+          "span_mm",
+          "b_mm",
+          "D_mm"
+        ],
+        "title": "ETABSFrameGeometryV1",
+        "type": "object"
+      },
+      "ETABSModelIdentityV1": {
+        "additionalProperties": false,
+        "description": "Identity of the ETABS model actually attached by COM.",
+        "properties": {
+          "etabs_version": {
+            "title": "Etabs Version",
+            "type": "string"
+          },
+          "etabs_version_number": {
+            "title": "Etabs Version Number",
+            "type": "number"
+          },
+          "model_name": {
+            "title": "Model Name",
+            "type": "string"
+          },
+          "model_path": {
+            "title": "Model Path",
+            "type": "string"
+          }
+        },
+        "required": [
+          "model_name",
+          "model_path",
+          "etabs_version",
+          "etabs_version_number"
+        ],
+        "title": "ETABSModelIdentityV1",
+        "type": "object"
+      },
+      "ETABSPilotBeamResultV1": {
+        "additionalProperties": false,
+        "description": "Extracted ETABS beam and canonical library design result.",
+        "properties": {
+          "design_result": {
+            "additionalProperties": true,
+            "title": "Design Result",
+            "type": "object"
+          },
+          "forces": {
+            "$ref": "#/components/schemas/ETABSFrameForcesV1"
+          },
+          "geometry": {
+            "$ref": "#/components/schemas/ETABSFrameGeometryV1"
+          }
+        },
+        "required": [
+          "geometry",
+          "forces",
+          "design_result"
+        ],
+        "title": "ETABSPilotBeamResultV1",
+        "type": "object"
+      },
+      "ETABSPilotDesignBasisV1": {
+        "additionalProperties": false,
+        "description": "Explicit caller-owned design and detailing choices for every pilot beam.",
+        "properties": {
+          "ast_mm2_for_shear": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ast Mm2 For Shear"
+          },
+          "d_dash_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "D Dash Mm",
+            "type": "number"
+          },
+          "detailing": {
+            "$ref": "#/components/schemas/BeamDetailingOptionsV1"
+          },
+          "effective_depth_basis": {
+            "$ref": "#/components/schemas/EffectiveDepthBasisRequestV1"
+          },
+          "materials": {
+            "$ref": "#/components/schemas/IS456MaterialsV1"
+          },
+          "pt_percent": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pt Percent"
+          }
+        },
+        "required": [
+          "materials",
+          "effective_depth_basis",
+          "d_dash_mm",
+          "detailing"
+        ],
+        "title": "ETABSPilotDesignBasisV1",
+        "type": "object"
+      },
+      "ETABSPilotRequestV1": {
+        "additionalProperties": false,
+        "description": "Bounded read-and-design request for no more than five ETABS beams.",
+        "properties": {
+          "design_basis": {
+            "$ref": "#/components/schemas/ETABSPilotDesignBasisV1"
+          },
+          "limit": {
+            "default": 5,
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "type": "integer"
+          },
+          "result_selection": {
+            "$ref": "#/components/schemas/ETABSResultSelectionV1"
+          },
+          "schema_version": {
+            "const": "etabs-beam-pilot/v1",
+            "default": "etabs-beam-pilot/v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "result_selection",
+          "design_basis"
+        ],
+        "title": "ETABSPilotRequestV1",
+        "type": "object"
+      },
+      "ETABSPilotResultV1": {
+        "additionalProperties": false,
+        "description": "Completed bounded ETABS read and canonical beam-design proof.",
+        "properties": {
+          "beams": {
+            "items": {
+              "$ref": "#/components/schemas/ETABSPilotBeamResultV1"
+            },
+            "title": "Beams",
+            "type": "array"
+          },
+          "candidate_beam_count": {
+            "minimum": 1.0,
+            "title": "Candidate Beam Count",
+            "type": "integer"
+          },
+          "designed_beam_count": {
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Designed Beam Count",
+            "type": "integer"
+          },
+          "library_content_identity": {
+            "title": "Library Content Identity",
+            "type": "string"
+          },
+          "library_version": {
+            "title": "Library Version",
+            "type": "string"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "model": {
+            "$ref": "#/components/schemas/ETABSModelIdentityV1"
+          },
+          "pilot_status": {
+            "const": "COMPLETED",
+            "default": "COMPLETED",
+            "title": "Pilot Status",
+            "type": "string"
+          },
+          "qualified_review_required": {
+            "const": true,
+            "default": true,
+            "title": "Qualified Review Required",
+            "type": "boolean"
+          },
+          "result_selection": {
+            "$ref": "#/components/schemas/ETABSResultSelectionV1"
+          },
+          "schema_version": {
+            "const": "etabs-beam-pilot/v1",
+            "default": "etabs-beam-pilot/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "units": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Units",
+            "type": "object"
+          }
+        },
+        "required": [
+          "model",
+          "result_selection",
+          "units",
+          "candidate_beam_count",
+          "designed_beam_count",
+          "beams",
+          "library_version",
+          "library_content_identity",
+          "limitations"
+        ],
+        "title": "ETABSPilotResultV1",
+        "type": "object"
+      },
+      "ETABSResultSelectionKind": {
+        "description": "Exact ETABS result source requested by the caller.",
+        "enum": [
+          "CASE",
+          "COMBINATION"
+        ],
+        "title": "ETABSResultSelectionKind",
+        "type": "string"
+      },
+      "ETABSResultSelectionV1": {
+        "additionalProperties": false,
+        "description": "One exact ETABS case or response combination.",
+        "properties": {
+          "kind": {
+            "$ref": "#/components/schemas/ETABSResultSelectionKind"
+          },
+          "name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "name"
+        ],
+        "title": "ETABSResultSelectionV1",
         "type": "object"
       },
       "EffectiveDepthBasisRequestV1": {
@@ -36230,6 +36997,349 @@
         ]
       }
     },
+    "/api/v1/etabs-bridge/v1/beam-pilot": {
+      "post": {
+        "operationId": "run_etabs_beam_pilot_api_v1_etabs_bridge_v1_beam_pilot_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ETABSPilotRequestV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_ETABSPilotResultV1_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Authentication required"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "State conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Concurrency or rate limit"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Internal application error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Capability unavailable"
+          }
+        },
+        "summary": "Extract and canonically design up to five rectangular ETABS beams",
+        "tags": [
+          "etabs-bridge"
+        ]
+      }
+    },
+    "/api/v1/etabs-bridge/v1/connect": {
+      "post": {
+        "operationId": "connect_etabs_api_v1_etabs_bridge_v1_connect_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_ETABSConnectionV1_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Authentication required"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "State conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Concurrency or rate limit"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Internal application error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Capability unavailable"
+          }
+        },
+        "summary": "Attach to the already-open ETABS model and return its identity",
+        "tags": [
+          "etabs-bridge"
+        ]
+      }
+    },
+    "/api/v1/etabs-bridge/v1/status": {
+      "get": {
+        "operationId": "get_etabs_bridge_status_api_v1_etabs_bridge_v1_status_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_ETABSBridgeStatusV1_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Authentication required"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "State conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Concurrency or rate limit"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Internal application error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Capability unavailable"
+          }
+        },
+        "summary": "Check local Python and ETABS COM bridge readiness",
+        "tags": [
+          "etabs-bridge"
+        ]
+      }
+    },
     "/api/v1/excel-workbench/v1/definition": {
       "get": {
         "operationId": "get_excel_workbench_definition_api_v1_excel_workbench_v1_definition_get",
@@ -41408,6 +42518,10 @@
     {
       "description": "Selected-table Excel mapping, canonical beam review, and stale evidence.",
       "name": "excel-workbench"
+    },
+    {
+      "description": "Bounded Windows ETABS attachment, beam-force extraction, and canonical design pilot.",
+      "name": "etabs-bridge"
     },
     {
       "description": "3D geometry generation for visualization.",

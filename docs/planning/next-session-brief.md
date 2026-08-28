@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-28
-- Focus: Apply the external-user review of the published
-- Completed: Kept the typed family facade as the recommended integration route and added; Documented the `beam_id` versus `case_id` distinction, standardized current; Corrected stale Alpha-era labels, clarified that FastAPI/React are exact-head
-- Git receipt: docs/verification/external-docs-polish-git-handoff-receipt.json | sha256:b67b11a97c962c477ed768e89d4351b60cc87c032e309b007aeb394fb4308358 | HOLD
-- Git identity: codex/external-docs-polish@bda7dec0dc65f96ba8fada55960e3682cd3b80cb | upstream=origin/main@bda7dec0dc65f96ba8fada55960e3682cd3b80cb | base=origin/main@bda7dec0dc65f96ba8fada55960e3682cd3b80cb | tree=dirty | operation=none
+- Focus: Add and document a bounded Windows Office.js -> localhost FastAPI/
+- Completed: Added the optional `structural-lib-is456[etabs]` dependency extra and a; Added typed status, connect, and beam-pilot REST operations. The pilot selects; Extended the existing macro-free Office.js pane with an ETABS surface that is
+- Git receipt: docs/verification/excel-etabs-python-bridge-pilot-git-handoff-receipt.json | sha256:404a1248fb9c2f13fd61f46f3e98f8a0ddfd06593770c1fac9645e082f2e7756 | HOLD
+- Git identity: codex/excel-etabs-python-bridge-pilot@683760a4aef1c384aa475df6842c791eada85959 | upstream=NONE@UNKNOWN | base=origin/main@683760a4aef1c384aa475df6842c791eada85959 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -17,9 +17,9 @@
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` is the immutable current normal software release at merge `e66de6efa3bb80d3ebc54e6151b1d6c29275c502`; GitHub prerelease is false and PyPI selects it normally. |
-| **Current** | Release publication and public identity verification are complete. The package remains pre-1.0/Beta and the supported-scope limitations remain authoritative. |
-| **Next** | No later release or engineering packet is selected. Wait for the repository owner to choose the next bounded scope; do not infer a v0.24.1/v0.25 candidate. |
-| **Held** | Stable-API guarantee, complete IS 456 coverage, professional approval, engineering-use/construction-use approval, Windows/Excel/ETABS acceptance, protected-source mutation, and destructive cleanup. |
+| **Current** | `codex/excel-etabs-python-bridge-pilot` contains the locally verified read-only Office.js -> FastAPI/Python -> already-open ETABS beam pilot. Broad Python/FastAPI/Office.js tests and the 32/32 repository gate pass; this is not yet installed Windows ETABS evidence or a release. |
+| **Next** | Run the documented exact-current installed Windows Excel + ETABS acceptance against a saved copied model, reconcile at least one beam's station forces/design independently, and record unit restoration. Do not start ETABS write-back or optimization before that gate passes. |
+| **Held** | ETABS analysis execution, unlock/save, member-size write-back, iterative whole-model optimization, full frame-solver claims, serviceability/adjacency/congestion/site-practice automation, stable-API guarantee, professional or construction-use approval, release, protected-source mutation, and destructive cleanup. |
 
 ## Published release evidence
 

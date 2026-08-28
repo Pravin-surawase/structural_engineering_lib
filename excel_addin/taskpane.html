@@ -47,6 +47,56 @@
         <p id="export-detail" class="detail" aria-live="polite" aria-atomic="true">Export becomes available after a current reviewed run.</p>
       </section>
 
+      <section class="card pilot-card">
+        <h2>ETABS beam pilot</h2>
+        <p>Windows only. Attaches to an already-open copied model, reads one exact result case or combination, and designs up to five horizontal rectangular beams in Python.</p>
+        <section id="etabs-status" class="status hold" aria-live="polite" aria-atomic="true" aria-busy="true">
+          <strong id="etabs-status-title">CHECKING PYTHON BRIDGE</strong>
+          <span id="etabs-status-detail">No ETABS connection has been attempted.</span>
+        </section>
+        <button id="etabs-connect" class="secondary" type="button" disabled>Connect to open ETABS model</button>
+        <div class="input-grid">
+          <label for="etabs-selection-kind">Result type</label>
+          <select id="etabs-selection-kind">
+            <option value="COMBINATION">Combination</option>
+            <option value="CASE">Case</option>
+          </select>
+          <label for="etabs-selection-name">Exact ETABS name</label>
+          <input id="etabs-selection-name" type="text" value="ULS-1" />
+          <label for="etabs-limit">Beam count (1–5)</label>
+          <input id="etabs-limit" type="number" min="1" max="5" step="1" value="5" />
+          <label for="etabs-standard">Detailing standard</label>
+          <select id="etabs-standard">
+            <option value="IS456">IS 456</option>
+            <option value="IS13920">IS 13920</option>
+          </select>
+          <label for="etabs-fck">fck (N/mm²)</label>
+          <input id="etabs-fck" type="number" min="15" max="40" value="25" />
+          <label for="etabs-fy">fy (N/mm²)</label>
+          <input id="etabs-fy" type="number" min="250" max="500" value="500" />
+          <label for="etabs-cover">Clear cover (mm)</label>
+          <input id="etabs-cover" type="number" min="1" value="40" />
+          <label for="etabs-stirrup-dia">Stirrup diameter (mm)</label>
+          <input id="etabs-stirrup-dia" type="number" min="6" max="16" value="8" />
+          <label for="etabs-tension-dia">Tension bar diameter (mm)</label>
+          <input id="etabs-tension-dia" type="number" min="8" max="36" value="20" />
+          <label for="etabs-compression-dia">Compression bar diameter (mm)</label>
+          <input id="etabs-compression-dia" type="number" min="8" max="36" value="16" />
+          <label for="etabs-d-dash">Compression steel d′ (mm)</label>
+          <input id="etabs-d-dash" type="number" min="1" value="40" />
+          <label for="etabs-top-ratio">Nominal top steel ratio</label>
+          <input id="etabs-top-ratio" type="number" min="0.01" max="1" step="0.01" value="0.25" />
+          <label for="etabs-stirrup-legs">Stirrup legs</label>
+          <input id="etabs-stirrup-legs" type="number" min="2" max="6" step="1" value="2" />
+          <label for="etabs-spacing-support">Support spacing (mm)</label>
+          <input id="etabs-spacing-support" type="number" min="1" value="150" />
+          <label for="etabs-spacing-mid">Midspan spacing (mm)</label>
+          <input id="etabs-spacing-mid" type="number" min="1" value="200" />
+        </div>
+        <button id="etabs-run" type="button" disabled>Read and design first beams</button>
+        <p class="detail">The explicit values above are design inputs. Section width/depth, span, and force stations come from ETABS. Results are written only to the controlled <code>ETABS_Pilot</code> sheet.</p>
+      </section>
+
       <details class="card">
         <summary>Local API authentication</summary>
         <label for="token">Bearer token (only when local auth is enabled)</label>
@@ -55,7 +105,7 @@
 
       <aside>
         <strong>Boundaries</strong>
-        <p>No VBA, structural formulas, torsion, serviceability, ETABS access, write-back, or professional-approval claim.</p>
+        <p>No VBA or Excel structural formulas. The ETABS pilot is read-only: no analysis run, size write-back, serviceability, continuity/congestion optimization, or professional-approval claim.</p>
       </aside>
     </main>
   </body>

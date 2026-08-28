@@ -40,3 +40,11 @@ test("installed pane exposes and wires fail-closed review-bundle export", () => 
   assert.match(taskpaneSource, /ui\.export\.addEventListener\("click", exportReviewBundle\)/);
   assert.match(taskpaneSource, /state\.freshnessVerified = false/);
 });
+
+test("installed pane exposes the explicit read-only ETABS pilot controls", () => {
+  assert.match(taskpaneHtml, /id="etabs-connect"[^>]*disabled/);
+  assert.match(taskpaneHtml, /id="etabs-run"[^>]*disabled/);
+  assert.match(taskpaneSource, /\/etabs-bridge\/v1\/status/);
+  assert.match(taskpaneSource, /\/etabs-bridge\/v1\/beam-pilot/);
+  assert.match(taskpaneSource, /writeEtabsPilotResults\(Excel, rows\)/);
+});

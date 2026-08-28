@@ -3,6 +3,7 @@ import { createHash, webcrypto } from "node:crypto";
 import test from "node:test";
 
 import {
+  buildEtabsPilotRequest,
   buildPreviewRequest,
   buildReviewBundleExportRequest,
   buildRunRequest,
@@ -11,6 +12,7 @@ import {
   normalizeCalculationMode,
   postWorkbenchApi,
   postReviewBundleApi,
+  projectEtabsPilotRows,
   projectLedgerRows,
   projectPassportRows,
   projectResultRows,
@@ -19,6 +21,24 @@ import {
   retainEvidence,
   sameSourceSnapshot,
 } from "../taskpane-core.mjs";
+
+const etabsValues = {
+  selectionKind: "COMBINATION",
+  selectionName: "ULS-1",
+  limit: "5",
+  standard: "IS456",
+  fck: "25",
+  fy: "500",
+  clearCover: "40",
+  stirrupDiameter: "8",
+  tensionBarDiameter: "20",
+  compressionBarDiameter: "16",
+  dDash: "40",
+  nominalTopSteelRatio: "0.25",
+  stirrupLegs: "2",
+  stirrupSpacingSupport: "150",
+  stirrupSpacingMid: "200",
+};
 
 const HASH_A = "a".repeat(64);
 const HASH_B = "b".repeat(64);
@@ -51,6 +71,55 @@ test("calculation modes are explicit and unknown modes fail closed", () => {
     "AUTOMATIC_EXCEPT_TABLES",
   );
   assert.throws(() => normalizeCalculationMode("Mystery"), /Unsupported/);
+});
+
+test("ETABS pilot request makes result, material, depth, and detailing basis explicit", () => {
+  const request = buildEtabsPilotRequest(etabsValues);
+  assert.equal(request.schema_version, "etabs-beam-pilot/v1");
+  assert.deepEqual(request.result_selection, {
+    kind: "COMBINATION",
+    name: "ULS-1",
+  });
+  assert.equal(request.design_basis.materials.fck_nmm2, 25);
+  assert.equal(request.design_basis.effective_depth_basis.clear_cover_mm, 40);
+  assert.equal(request.design_basis.detailing.stirrup_legs, 2);
+  assert.equal(request.limit, 5);
+  assert.throws(
+    () => buildEtabsPilotRequest({ ...etabsValues, limit: "6" }),
+    /must not exceed 5/,
+  );
+  assert.throws(
+    () => buildEtabsPilotRequest({ ...etabsValues, selectionName: " " }),
+    /exact ETABS case or combination/,
+  );
+});
+
+test("ETABS projection preserves signed actions, design status, and full JSON", () => {
+  const beam = {
+    geometry: {
+      frame_name: "B1", story: "L1", section_name: "R1", material_property: "M25",
+      span_mm: 5000, b_mm: 300, D_mm: 500,
+    },
+    forces: {
+      selection: { kind: "COMBINATION", name: "ULS-1" }, result_row_count: 3,
+      governing_v2: { signed_value: -110, absolute_value: 110 },
+      governing_t: { signed_value: 1.5, absolute_value: 1.5 },
+      governing_m3: { signed_value: -150, absolute_value: 150 },
+    },
+    design_result: {
+      envelope: { overall_status: "PASS" },
+      design: { calculation: { flexure: { Ast_required: 900 }, shear: { spacing: 175 } } },
+    },
+  };
+  const rows = projectEtabsPilotRows({
+    schema_version: "etabs-beam-pilot/v1",
+    pilot_status: "COMPLETED",
+    beams: [beam],
+  });
+  assert.equal(rows[0][9], -110);
+  assert.equal(rows[0][15], "PASS");
+  assert.equal(rows[0][16], 900);
+  assert.match(rows[0][18], /"frame_name":"B1"/);
 });
 
 test("run request requires a reviewed mapping hash", () => {

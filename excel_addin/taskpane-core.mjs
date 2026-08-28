@@ -6,6 +6,28 @@ const TEMPLATE = Object.freeze({
 });
 const SHA256_PATTERN = /^[0-9a-f]{64}$/;
 
+export const ETABS_PILOT_HEADERS = Object.freeze([
+  "Frame",
+  "Story",
+  "Section",
+  "Material",
+  "Span (mm)",
+  "b (mm)",
+  "D (mm)",
+  "Result selection",
+  "Force rows",
+  "V2 signed (kN)",
+  "|V2| (kN)",
+  "T signed (kN.m)",
+  "|T| (kN.m)",
+  "M3 signed (kN.m)",
+  "|M3| (kN.m)",
+  "Overall status",
+  "Ast required (mm2)",
+  "Shear spacing (mm)",
+  "Canonical result JSON",
+]);
+
 export const SETTINGS_KEYS = Object.freeze({
   workbookId: "excel_workbench_v1.workbook_instance_id",
   previousEvidence: "excel_workbench_v1.previous_evidence",
@@ -23,6 +45,76 @@ export function normalizeCalculationMode(value) {
     return "AUTOMATIC_EXCEPT_TABLES";
   }
   throw new Error(`Unsupported Excel calculation mode: ${value}`);
+}
+
+function requiredNumber(name, value, { minimum = 0, integer = false } = {}) {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed <= minimum) {
+    throw new Error(`${name} must be a finite number greater than ${minimum}.`);
+  }
+  if (integer && !Number.isInteger(parsed)) {
+    throw new Error(`${name} must be an integer.`);
+  }
+  return parsed;
+}
+
+export function buildEtabsPilotRequest(values) {
+  const selectionName = String(values.selectionName ?? "").trim();
+  if (!selectionName) throw new Error("An exact ETABS case or combination name is required.");
+  const selectionKind = String(values.selectionKind ?? "");
+  if (!new Set(["CASE", "COMBINATION"]).has(selectionKind)) {
+    throw new Error("ETABS result selection must be CASE or COMBINATION.");
+  }
+  const standard = String(values.standard ?? "");
+  if (!new Set(["IS456", "IS13920"]).has(standard)) {
+    throw new Error("Detailing standard must be IS456 or IS13920.");
+  }
+  const limit = requiredNumber("Beam limit", values.limit, { integer: true });
+  if (limit > 5) throw new Error("Beam limit must not exceed 5.");
+  const clearCover = requiredNumber("Clear cover", values.clearCover);
+  const stirrupDiameter = requiredNumber("Stirrup diameter", values.stirrupDiameter);
+  const tensionBarDiameter = requiredNumber("Tension bar diameter", values.tensionBarDiameter);
+  const detailing = {
+    standard,
+    clear_cover_mm: clearCover,
+    tension_bar_diameter_mm: tensionBarDiameter,
+    compression_bar_diameter_mm: requiredNumber(
+      "Compression bar diameter",
+      values.compressionBarDiameter,
+    ),
+    nominal_top_steel_ratio: requiredNumber(
+      "Nominal top steel ratio",
+      values.nominalTopSteelRatio,
+    ),
+    stirrup_diameter_mm: stirrupDiameter,
+    stirrup_legs: requiredNumber("Stirrup legs", values.stirrupLegs, { integer: true }),
+    stirrup_spacing_support_mm: requiredNumber(
+      "Support stirrup spacing",
+      values.stirrupSpacingSupport,
+    ),
+    stirrup_spacing_mid_mm: requiredNumber(
+      "Midspan stirrup spacing",
+      values.stirrupSpacingMid,
+    ),
+  };
+  return {
+    schema_version: "etabs-beam-pilot/v1",
+    result_selection: { kind: selectionKind, name: selectionName },
+    design_basis: {
+      materials: {
+        fck_nmm2: requiredNumber("fck", values.fck),
+        fy_nmm2: requiredNumber("fy", values.fy),
+      },
+      effective_depth_basis: {
+        clear_cover_mm: clearCover,
+        stirrup_diameter_mm: stirrupDiameter,
+        tension_bar_diameter_mm: tensionBarDiameter,
+      },
+      d_dash_mm: requiredNumber("Compression steel depth d'", values.dDash),
+      detailing,
+    },
+    limit,
+  };
 }
 
 export function buildPreviewRequest({
@@ -349,6 +441,43 @@ export function projectResultRows(result) {
           : null,
       JSON.stringify(row.result),
     ]);
+}
+
+export function projectEtabsPilotRows(result) {
+  if (
+    result?.schema_version !== "etabs-beam-pilot/v1" ||
+    result?.pilot_status !== "COMPLETED" ||
+    !Array.isArray(result?.beams) ||
+    result.beams.length === 0
+  ) {
+    throw new Error("The ETABS pilot response is incomplete.");
+  }
+  return result.beams.map((item) => {
+    const geometry = item.geometry;
+    const forces = item.forces;
+    const design = item.design_result;
+    return [
+      geometry.frame_name,
+      geometry.story,
+      geometry.section_name,
+      geometry.material_property,
+      geometry.span_mm,
+      geometry.b_mm,
+      geometry.D_mm,
+      `${forces.selection.kind}:${forces.selection.name}`,
+      forces.result_row_count,
+      forces.governing_v2.signed_value,
+      forces.governing_v2.absolute_value,
+      forces.governing_t.signed_value,
+      forces.governing_t.absolute_value,
+      forces.governing_m3.signed_value,
+      forces.governing_m3.absolute_value,
+      design?.envelope?.overall_status ?? null,
+      design?.design?.calculation?.flexure?.Ast_required ?? null,
+      design?.design?.calculation?.shear?.spacing ?? null,
+      JSON.stringify(item),
+    ];
+  });
 }
 
 export function projectPassportRows(result) {
