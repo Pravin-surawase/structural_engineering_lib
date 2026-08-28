@@ -4,7 +4,7 @@
 **Audience:** Developers
 **Status:** In Progress
 **Created:** 2026-08-28
-**Last Updated:** 2026-08-28
+**Last Updated:** 2026-08-29
 **Importance:** High
 
 ## Outcome
@@ -145,7 +145,13 @@ the installed Windows pilot. See CSI's API documentation for
 
 The pilot records the current ETABS present-unit enumeration, temporarily sets
 `kN_mm_C` (CSI enumeration value 5), reads geometry and results, and restores
-the original setting in a `finally` path. CSI's API documentation identifies
+the original setting in a `finally` path. In the installed ETABS 23 typelib,
+the nineteen `GetAllFrames` output parameters precede the optional `CSys`
+input. The Python COM call therefore omits positional arguments and uses the
+documented `Global` default; passing `"Global"` positionally binds it to the
+first integer output and fails before inventory can be decoded. Exact result
+names remain caller-owned identities and may include parentheses, as in common
+factored-combination labels. CSI's API documentation identifies
 `SetPresentUnits`, `GetAllFrames`, `GetRectangle`, result-selection setup, and
 `FrameForce` as the relevant calls. See the official CSI API pages for
 [units](https://docs.csiamerica.com/help-files/etabs-api-2016/html/cff40d28-9b1a-7f00-cfb9-0386da2464cc.htm),
@@ -174,24 +180,24 @@ joints/foundations, evaluate serviceability, coordinate bars across adjacent
 beams, check congestion/layers/site sequence, or claim professional approval.
 All returned designs require qualified structural-engineer review.
 
-## Evidence status and next gate
+## Installed Windows evidence and next gate
 
-The Python service, REST contracts, Office.js request/projection, and controlled
-worksheet writes have deterministic macOS/CI-test coverage through fake COM and
-fake Office hosts. That proves the local software contract, not actual ETABS
-application compatibility.
+`ETABS-EXCEL-PILOT-W1` completed the bounded installed-software acceptance on
+Windows 11 with 64-bit Excel, ETABS 23.3.1, Python 3.11.15, and `comtypes`
+1.4.16. The exact copied, locked, already-analyzed model passed `/status`,
+`/connect`, a mandatory one-beam request, and the conditional five-beam request.
+The installed Office.js pane created then updated only
+`ETABS_Pilot / tbl_ETABS_Pilot_V1`. Every projected field and canonical JSON
+row reconciled to the corresponding direct API response, every retained force
+station used the selected combination, the original units were restored, and
+the copied model hash, size, and timestamp remained unchanged. The safe tracked
+receipt is
+[`etabs-excel-python-pilot-w1-evidence.json`](../verification/etabs-excel-python-pilot-w1-evidence.json);
+proprietary model paths, workbook contents, and force payloads remain outside
+Git.
 
-The next gate is an installed Windows run that records:
-
-- exact repository commit and installed package identity;
-- Windows, Python, Excel, Office.js, ETABS, and `comtypes` versions;
-- copied `.edb` name/hash and exact result-selection name;
-- status, connect, and beam-pilot responses;
-- the generated `ETABS_Pilot` table and reconciliation to ETABS station rows;
-- proof that the original ETABS present units were restored; and
-- an independent engineer review of at least one beam's ETABS actions and
-  canonical design result.
-
-Only after that evidence passes should the next phase add a reviewed section-
-change proposal, explicit write-back confirmation, ETABS re-analysis, global
-response checks, and a bounded optimization loop.
+This proves the bounded software path only. A qualified structural engineer
+must still review the ETABS actions and canonical design before engineering use.
+Any next phase that proposes a section change, writes to ETABS, reruns analysis,
+checks global response, or optimizes members requires a separate reviewed scope
+and explicit write-back controls.

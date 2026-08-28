@@ -156,10 +156,17 @@ SMOKE_TESTS: list[dict[str, Any]] = [
 # ---------------------------------------------------------------------------
 
 
+def _portable_command(cmd: list[str]) -> list[str]:
+    """Run the maintained shell runtime explicitly on every platform."""
+    if cmd and cmd[0] == VENV:
+        return ["bash", *cmd]
+    return list(cmd)
+
+
 def run_test(spec: dict[str, Any], *, verbose: bool = False) -> dict[str, Any]:
     """Run a single smoke test and return its result."""
     name = spec["name"]
-    cmd = spec["cmd"]
+    cmd = _portable_command(spec["cmd"])
     expect_rc = spec.get("expect_rc", 0)
     expect_output = spec.get("expect_output")
 

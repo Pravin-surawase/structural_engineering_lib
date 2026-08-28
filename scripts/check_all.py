@@ -43,6 +43,7 @@ from verification import (
 
 SCRIPTS_DIR = REPO_ROOT / "scripts"
 VENV_PYTHON = str(SCRIPTS_DIR / "python_runtime.sh")
+PRE_COMMIT_TIMEOUT_SECONDS = 900
 
 # Detect sensible default workers based on system
 _default_workers = min(4, max(1, (os.cpu_count() or 2)))
@@ -72,9 +73,14 @@ class Category:
     description: str = ""
 
 
+def _python_runtime(*args: str) -> list[str]:
+    """Build a portable command for the repository-selected Python runtime."""
+    return ["bash", VENV_PYTHON, *args]
+
+
 def _py(script: str, *args: str) -> list[str]:
     """Build a Python script command."""
-    return [VENV_PYTHON, str(SCRIPTS_DIR / script), *args]
+    return _python_runtime(str(SCRIPTS_DIR / script), *args)
 
 
 def _sh(script: str, *args: str) -> list[str]:
@@ -240,7 +246,7 @@ def _detect_changed_domains() -> tuple[set[str], bool, tuple[str, ...]]:
 
 def _run_pre_commit(fix: bool = False) -> int:
     """Run pre-commit hooks and return exit code."""
-    cmd = [VENV_PYTHON, "-m", "pre_commit", "run", "--all-files"]
+    cmd = _python_runtime("-m", "pre_commit", "run", "--all-files")
     if fix:
         # pre-commit auto-fixes by default for formatters
         pass
@@ -250,14 +256,17 @@ def _run_pre_commit(fix: bool = False) -> int:
         result = subprocess.run(
             cmd,
             cwd=str(REPO_ROOT),
-            timeout=300,
+            timeout=PRE_COMMIT_TIMEOUT_SECONDS,
         )
         return result.returncode
     except FileNotFoundError:
         print("  ❌ pre-commit not installed. Run: pip install pre-commit")
         return 1
     except subprocess.TimeoutExpired:
-        print("  ⏱️  pre-commit timed out after 300s")
+        print(
+            "  ⏱️  pre-commit timed out after "
+            f"{PRE_COMMIT_TIMEOUT_SECONDS}s"
+        )
         return 1
 
 
@@ -898,8 +907,7 @@ def _record_task_timing(label: str, duration_sec: float, result_code: int) -> No
     """Best-effort external telemetry; never changes a validation verdict."""
     try:
         subprocess.run(
-            [
-                VENV_PYTHON,
+            _python_runtime(
                 str(SCRIPTS_DIR / "session.py"),
                 "usage",
                 "--event",
@@ -908,7 +916,7 @@ def _record_task_timing(label: str, duration_sec: float, result_code: int) -> No
                 f"{duration_sec:.3f}",
                 "--result-code",
                 str(result_code),
-            ],
+            ),
             cwd=REPO_ROOT,
             capture_output=True,
             text=True,

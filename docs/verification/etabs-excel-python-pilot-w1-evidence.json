@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-EXCEL-PILOT-W1",
+  "verdict": "WINDOWS_PILOT_PASS",
+  "observed_at_utc": "2026-08-28T19:05:30Z",
+  "scope": {
+    "installed_windows_excel_etabs_acceptance": true,
+    "analysis_run": false,
+    "model_writeback": false,
+    "optimization": false,
+    "professional_approval": false
+  },
+  "source": {
+    "starting_merge_commit": "3ff3c80a9290e029e80bf182e36c03ed3ece4299",
+    "starting_tree": "a0af0c93db666ba030c67d544988c49d37257474",
+    "runtime_source_bound": true
+  },
+  "host": {
+    "computer": "LAPTOP-360-PRAV",
+    "os": "Microsoft Windows 11 Home Single Language 10.0.26200 (build 26200, 64-bit)",
+    "python": "3.11.15",
+    "comtypes": "1.4.16",
+    "node": "24.20.0",
+    "npm": "11.19.0",
+    "git": "2.55.0.windows.5",
+    "bash": "5.3.15(2)",
+    "excel": "16.0.20326.20100 (64-bit)",
+    "etabs": "23.3.1.4563"
+  },
+  "repairs": [
+    {
+      "root_cause": "The installed ETABS typelib places nineteen COM output parameters before optional CSys, so positional GetAllFrames(\"Global\") bound the string to the first integer output.",
+      "resolution": "Call GetAllFrames() with no positional arguments and use ETABS' optional Global default; retain exact output-count validation."
+    },
+    {
+      "root_cause": "The canonical beam identity grammar rejected parentheses even though exact ETABS combination names and repository examples use them.",
+      "resolution": "Permit literal parentheses in the bounded identity grammar and regress the exact accepted combination."
+    },
+    {
+      "root_cause": "The Windows check orchestrator launched the Bash Python selector as a native executable, so every nested check failed before execution with WinError 193.",
+      "resolution": "Invoke the maintained Python selector explicitly through Bash for nested checks, hooks, and session telemetry on every platform; preserve native Windows PYTHONPATH lists across MSYS; allow the complete Windows hook set a bounded 900-second wrapper timeout."
+    }
+  ],
+  "frozen_request": {
+    "result_kind": "COMBINATION",
+    "result_name": "117.(1.5DL+1.5LL)",
+    "fck_nmm2": 25,
+    "fy_nmm2": 500,
+    "clear_cover_mm": 40,
+    "detailing_standard": "IS456",
+    "tension_bar_diameter_mm": 20,
+    "compression_bar_diameter_mm": 16,
+    "d_dash_mm": 40,
+    "nominal_top_steel_ratio": 0.25,
+    "stirrup_diameter_mm": 8,
+    "stirrup_legs": 2,
+    "stirrup_spacing_support_mm": 150,
+    "stirrup_spacing_mid_mm": 200
+  },
+  "model_proof": {
+    "sha256": "99b7f3f17051929196ef6494d8f4d220d895fc3dac5e1a57164a53bf8fa6948b",
+    "bytes": 702831,
+    "pre_and_post_identity_equal": true,
+    "locked_after_run": true,
+    "finished_case_count": 15,
+    "present_units_before_and_after": 6
+  },
+  "acceptance": {
+    "status": "READY_TO_CONNECT",
+    "connect_exact_saved_model": true,
+    "library_version": "0.24.0",
+    "library_content_identity": "0528c8321bc1ae0b341b33c7f9e7b5ba13e6d76f627a5eb9db1e714d2be430d0",
+    "one_beam": {
+      "direct_status": "COMPLETED",
+      "excel_sheet": "ETABS_Pilot",
+      "excel_table": "tbl_ETABS_Pilot_V1",
+      "excel_disposition": "created",
+      "designed_beams": 1,
+      "station_rows": [25],
+      "all_projected_fields_match": true,
+      "canonical_json_matches_direct": true,
+      "overall_statuses": [
+        "PASS"
+      ]
+    },
+    "five_beam": {
+      "direct_status": "COMPLETED",
+      "excel_disposition": "updated",
+      "designed_beams": 5,
+      "station_rows": [
+        25,
+        36,
+        29,
+        27,
+        23
+      ],
+      "all_projected_fields_match": true,
+      "all_canonical_json_rows_match_direct": true,
+      "all_station_selection_names_match": true,
+      "overall_statuses": [
+        "PASS",
+        "PASS",
+        "PASS",
+        "PASS",
+        "PASS"
+      ]
+    }
+  },
+  "external_evidence": {
+    "root": "C:/CodexWork/evidence/ETABS-EXCEL-PILOT-W1/completion-local-repair",
+    "one_beam_workbook_sha256": "62090bd7d332fc0bb12d284510b707b1cc529ab1eac7f5c06eefcc819986427a",
+    "five_beam_workbook_sha256": "53af584339436413929993c3ff17600ee98c3f62827f60240abe4ce05db711fe",
+    "one_beam_response_sha256": "755e181f5475680ebd81b9df26d62699fbcc3a0ef96f8b2254d2e07fd408a3f3",
+    "five_beam_response_sha256": "6469f7af5ce64901837625f75146fb5a7dcf84226bf0b6fced479df130b62b3e",
+    "one_beam_reconciliation_sha256": "d0ac5a0b323a792b9b507976e5afd56d0133a2f3ef939b0dc34bd38e78eb322c",
+    "five_beam_reconciliation_sha256": "f8f96ce961aeb90c6f41fffc26ca05656838e6b49a61d897ff0fc1173fd199f0",
+    "post_run_etabs_state_sha256": "de362e63386af5441e87365a5a02ced23c8f990b030d13003bfbd016dc8a5952"
+  },
+  "focused_validation": {
+    "python": "49 passed, 3 skipped",
+    "excel_addin": "27 passed"
+  },
+  "limitations": [
+    "This is software acceptance for a bounded read-only installed workflow, not professional engineering approval.",
+    "No ETABS analysis, model save, unlock, section/load change, write-back, or optimization was performed.",
+    "The model path, force payloads, and workbook contents remain outside Git."
+  ]
+}

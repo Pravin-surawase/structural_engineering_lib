@@ -1,0 +1,139 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "ebbbac5cf019bc7e91331697c9089074c0c973668ab704c1ba493dfe80127721",
+    "state": {
+      "branch": "codex/etabs-excel-pilot-w1-continuation-2",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "3ff3c80a9290e029e80bf182e36c03ed3ece4299",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 1352.895,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git\\worktrees\\etabs-excel-pilot-w1-continuation-2",
+      "head_sha": "3ff3c80a9290e029e80bf182e36c03ed3ece4299",
+      "hold_reasons": [
+        "changed paths: 14"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-28T19:52:41.364680+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\worktrees\\etabs-excel-pilot-w1-continuation-2",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 14,
+        "modified_paths": [
+          "Python/structural_lib/services/contracts/beam.py",
+          "Python/structural_lib/services/etabs_live_bridge.py",
+          "Python/tests/test_agent_governance_automation.py",
+          "Python/tests/unit/test_etabs_live_bridge.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/WORKLOG.md",
+          "docs/guides/excel-etabs-python-bridge-pilot.md",
+          "docs/planning/next-session-brief.md",
+          "scripts/check_all.py",
+          "scripts/python_runtime.sh",
+          "scripts/test_cli_smoke.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/etabs-excel-python-pilot-w1-evidence.json",
+          "docs/verification/etabs-excel-python-pilot-w1-git-handoff-receipt.json"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "C:\\CodexWork\\worktrees\\etabs-excel-pilot-w1-continuation-2"
+    }
+  },
+  "local_state_receipt_hash": "sha256:ebbbac5cf019bc7e91331697c9089074c0c973668ab704c1ba493dfe80127721",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-28T19:52:41.364680+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "C:/Users/P/Downloads/vasant sawale - Copy.EDB",
+      "C:/CodexWork/evidence/ETABS-EXCEL-PILOT-W1/completion-local-repair"
+    ],
+    "integration_owner": "orchestrator",
+    "owned_paths": [
+      "Python/structural_lib/services/contracts/beam.py",
+      "Python/structural_lib/services/etabs_live_bridge.py",
+      "Python/tests/unit/test_etabs_live_bridge.py",
+      "Python/tests/test_agent_governance_automation.py",
+      "scripts/check_all.py",
+      "scripts/python_runtime.sh",
+      "scripts/test_cli_smoke.py",
+      "docs/verification/etabs-excel-python-pilot-w1-evidence.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/WORKLOG.md",
+      "docs/guides/excel-etabs-python-bridge-pilot.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "ETABS-EXCEL-PILOT-W1"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

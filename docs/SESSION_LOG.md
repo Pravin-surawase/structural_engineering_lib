@@ -5,6 +5,156 @@
 
 ---
 
+## 2026-08-29 — Session: ETABS-EXCEL-PILOT-W1 installed Windows acceptance
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/etabs-excel-pilot-w1-continuation-2`.
+
+**Focus:** Complete the bounded installed Windows Excel + ETABS software
+acceptance from merged identity-repair commit `3ff3c80a`; retain the already-
+analyzed copied model, prohibit ETABS analysis/write-back/optimization, and
+keep proprietary workbook/model/force evidence outside Git.
+
+**Completed:**
+
+- Repaired the installed ETABS frame-inventory COM binding and exact
+  combination-name identity boundary with focused regression coverage.
+- Passed direct FastAPI and installed Excel one-beam plus bounded five-beam
+  reconciliation against the exact locked, already-analyzed copied model.
+- Preserved model identity, hash, size, timestamp, lock, analysis results, and
+  present units; created only safe tracked receipts and external proprietary
+  evidence copies.
+- Repaired the Windows control-plane shell/Python launcher boundaries and
+  passed affected checks, the consolidated quick gate, and normal hooks.
+
+### Issues encountered
+
+- The first installed `/beam-pilot` attempt reached frame inventory but
+  `FrameObj.GetAllFrames("Global")` failed because `comtypes` bound the string
+  to the method's first integer output parameter.
+- After frame inventory was repaired, canonical beam intake rejected the exact
+  selected combination `117.(1.5DL+1.5LL)` because its identity grammar did
+  not allow parentheses.
+- The first task-pane start attempt used a raw PowerShell process where `npm`
+  was not on `PATH`. No server started.
+- The first post-run external inspection invoked the user-local environment
+  launcher without returning to the continuation worktree, so the launcher
+  remained source-bound to the immutable base clone and could not import the
+  continuation-only bridge module.
+- The first spreadsheet read occurred before Excel had persisted the Office.js
+  table because keyboard focus remained inside the task pane; the on-disk file
+  still contained only the original blank sheet.
+- The first documentation launcher inherited Windows CP1252 stdout and stopped
+  before any check ran when the maintained checker printed a Unicode symbol.
+- After UTF-8 output was enabled, all eight documentation nodes stopped at zero
+  milliseconds with `WinError 193`; none of their scripts had executed.
+- The first full focused control-plane test run found four retained tests that
+  also launched Bash scripts directly through Windows `subprocess`.
+- The next focused run reached the selector but showed that MSYS split an
+  inherited Windows drive-letter `PYTHONPATH` at `C:` while prepending sources.
+- The first consolidated quick gate passed nine of ten nodes; `CLI smoke`
+  retained the same native `.sh` execution assumption and all 16 cases stopped
+  before execution with `WinError 193`.
+- The first normal hook run normalized mixed line endings in the edited shell
+  selector, rejected the W1 entry at the bottom of the newest-first session
+  log, and then exceeded the orchestrator's 300-second Windows timeout while
+  later hooks were still progressing.
+- The first clean read-only session closeout accepted the Git receipt and all
+  handoff checks but rejected the W1 entry because it lacked the required
+  machine-readable `Completed` list.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the installed ETABS typelib exposes nineteen output
+  parameters before optional final `CSys="Global"`. Resolution: call
+  `GetAllFrames()` without positional arguments, retain exact 20-output
+  decoding, and reproduce that installed signature in the fake COM test.
+- Confirmed root cause: exact ETABS combination identity is copied into the
+  canonical member identity, but the bounded grammar excluded `(` and `)` even
+  though maintained examples use names such as `1.5(DL+LL)`. Resolution: allow
+  literal parentheses and regress the exact W1 combination through bridge,
+  FastAPI, and canonical-facade coverage.
+- Confirmed root cause: the evidence launcher intentionally provides user-local
+  Portable Git, Node, and npm only after it is sourced. Resolution: source
+  `C:\CodexTools\structural-evidence-env.ps1` before `npm run serve`.
+  ⚠️ TERMINAL ISSUE: `npm` was unavailable in raw PowerShell -> sourced the
+  maintained user-local environment and started the exact HTTPS task pane.
+- Confirmed root cause: sourcing that launcher also selects the immutable base
+  checkout as the working directory. Resolution: explicitly return to the W1
+  continuation worktree before invoking `python_runtime.sh`; `--diagnose` then
+  reported `source_bound=true` to the exact continuation source.
+  ⚠️ TERMINAL ISSUE: external diagnostic imported from the base checkout ->
+  reset only the process working directory and reran source-bound.
+- Confirmed root cause: `Ctrl+S` was delivered while the Office.js webview had
+  focus. Resolution: focus the controlled Excel table, save, then verify the
+  on-disk workbook independently before preserving the one- and five-beam
+  copies. No workbook recovery or table collision occurred.
+- Confirmed root cause: the PowerShell-to-Bash process retained the legacy
+  Windows console encoding while Python emitted maintained Unicode status text.
+  Resolution: set `PYTHONUTF8=1` only for the validation process and rerun the
+  unchanged command. ⚠️ TERMINAL ISSUE: CP1252 could not encode checker output
+  -> reran with process-local UTF-8; no machine setting or source was changed.
+- Confirmed root cause: `check_all.py` passed `python_runtime.sh` directly to
+  Windows `subprocess`, which cannot execute a Bash script as a native PE file.
+  Resolution: route nested checks, normal hooks, and session telemetry through
+  explicit `bash python_runtime.sh ...` commands, preserving the one maintained
+  runtime selector. ⚠️ TERMINAL ISSUE: all docs nodes returned `WinError 193`
+  before execution -> repaired the cross-platform launcher and regressed it.
+- The same native-executable assumption remained in three runtime-selector
+  tests and one watcher-help test. Resolution: make those tests invoke their
+  shell entry points explicitly through Bash; no production behavior changed.
+- Confirmed root cause: the selector built a POSIX colon-delimited path list
+  even when launching Windows Python from MSYS; the caller's drive colon was
+  converted into a list separator. Resolution: construct a native semicolon-
+  delimited `PYTHONPATH`, preserve Windows caller entries, and exclude that
+  already-normalized variable from further MSYS conversion.
+- Confirmed root cause: the standalone smoke runner bypassed the repaired
+  orchestrator helper and sent its stored selector path directly to
+  `subprocess`. Resolution: normalize each stored selector command through
+  explicit Bash at the runner boundary and regress that command shape.
+- Confirmed root causes: the shell edit inherited mixed line endings; the
+  session log's machine contract requires the newest entry immediately after
+  its preamble; and the full Windows hook set legitimately exceeds five
+  minutes. Resolution: retain the hook's line-ending normalization, move this
+  intact entry to the required newest-first position, and raise only the
+  orchestrator's bounded hook timeout to 900 seconds. No individual hook or
+  validation requirement was disabled.
+- Confirmed root cause: validation facts were recorded under the content-freeze
+  section, while the closeout parser requires an explicit completed-items
+  contract. Resolution: add the concise `Completed` list above without changing
+  evidence or scope. ⚠️ TERMINAL ISSUE: read-only session closeout returned 1
+  for the missing list -> repaired only the handoff record before publication.
+
+### Validation through content freeze
+
+- Host: `LAPTOP-360-PRAV`, Windows 11 Home Single Language build 26200,
+  Python 3.11.15, `comtypes` 1.4.16, Node 24.20.0, npm 11.19.0, Excel
+  16.0.20326.20100, and ETABS 23.3.1.4563.
+- Exact starting source: merge `3ff3c80a9290e029e80bf182e36c03ed3ece4299`,
+  tree `a0af0c93db666ba030c67d544988c49d37257474`; runtime diagnosis remained
+  source-bound to the continuation worktree.
+- The exact copied model remained locked with all 15 cases finished and
+  present-units enumeration 6. Its SHA-256, 702,831-byte size, and last-write
+  timestamp were unchanged; no analysis, unlock, save, section/load mutation,
+  write-back, or optimization occurred.
+- Direct `/status` and `/connect` passed. The mandatory one-beam request
+  returned 25 station rows and PASS. The controlled Excel table contained one
+  row and all 19 projected fields plus canonical JSON reconciled exactly to the
+  direct response.
+- The conditional five-beam request returned frames 13-17 with 25, 36, 29, 27,
+  and 23 station rows; all five returned PASS. Excel updated the exact V1 table,
+  every projection and canonical JSON row matched the direct response, and all
+  retained stations used the frozen combination.
+- Focused validation passed 49 Python checks with three platform skips and all
+  27 Excel add-in checks. Full proprietary responses, reconciliation records,
+  and workbook copies remain outside Git; the safe tracked receipt records only
+  bounded identities, hashes, counts, and pass/fail facts.
+
+**Evidence receipt:** `docs/verification/etabs-excel-python-pilot-w1-evidence.json`
+
+**Git handoff receipt:** `docs/verification/etabs-excel-python-pilot-w1-git-handoff-receipt.json`
+
 ## 2026-08-28 — Session: ETABS exact open-model identity repair
 
 **Agent:** Codex (`backend`, sole writer; no subagents).

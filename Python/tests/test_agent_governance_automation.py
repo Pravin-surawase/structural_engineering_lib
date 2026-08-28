@@ -87,7 +87,7 @@ def test_python_runtime_launcher_uses_explicit_interpreter():
     env["STRUCTURAL_LIB_PYTHON"] = sys.executable
 
     result = subprocess.run(
-        [str(launcher), "-c", "import sys; print(sys.executable)"],
+        ["bash", str(launcher), "-c", "import sys; print(sys.executable)"],
         cwd=REPO_ROOT,
         env=env,
         capture_output=True,
@@ -119,7 +119,7 @@ print(json.dumps({
 """
 
     result = subprocess.run(
-        [str(launcher), "-c", probe],
+        ["bash", str(launcher), "-c", probe],
         cwd=REPO_ROOT,
         env=env,
         capture_output=True,
@@ -143,7 +143,7 @@ def test_python_runtime_diagnostic_proves_worktree_source_binding():
     env["STRUCTURAL_LIB_PYTHON"] = sys.executable
 
     result = subprocess.run(
-        [str(launcher), "--diagnose"],
+        ["bash", str(launcher), "--diagnose"],
         cwd=REPO_ROOT,
         env=env,
         capture_output=True,
@@ -178,7 +178,26 @@ def test_control_paths_use_python_runtime_launcher():
     entry_lines = [line for line in pre_commit.splitlines() if "entry:" in line]
 
     assert check_all.VENV_PYTHON == launcher
+    assert check_all.PRE_COMMIT_TIMEOUT_SECONDS == 900
+    assert check_all._python_runtime("-m", "pytest") == [
+        "bash",
+        launcher,
+        "-m",
+        "pytest",
+    ]
+    assert check_all._py("check_docs.py", "--all") == [
+        "bash",
+        launcher,
+        str(SCRIPTS_DIR / "check_docs.py"),
+        "--all",
+    ]
     assert cli_smoke.VENV == launcher
+    assert cli_smoke._portable_command([launcher, "-m", "pytest"]) == [
+        "bash",
+        launcher,
+        "-m",
+        "pytest",
+    ]
     assert str(project_health.PYTHON_RUNTIME) == launcher
     assert 'VENV="$SCRIPTS/python_runtime.sh"' in run_sh
     assert all(".venv/bin/python" not in line for line in entry_lines)
@@ -302,7 +321,7 @@ def test_active_agent_instructions_use_worktree_safe_python_launcher():
 
 def test_watch_help_does_not_require_fswatch():
     result = subprocess.run(
-        [str(SCRIPTS_DIR / "watch_tests.sh"), "--help"],
+        ["bash", str(SCRIPTS_DIR / "watch_tests.sh"), "--help"],
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,

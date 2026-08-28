@@ -37,10 +37,27 @@ fi
 run_python_candidate() {
     local candidate="$1"
     local bound_pythonpath="$REPO_ROOT/Python:$REPO_ROOT"
+    local caller_pythonpath="${PYTHONPATH:-}"
     shift
     if [[ -n "$candidate" && -x "$candidate" ]]; then
-        if [[ -n "${PYTHONPATH:-}" ]]; then
-            bound_pythonpath="$bound_pythonpath:$PYTHONPATH"
+        case "$(uname -s)" in
+            MINGW*|MSYS*|CYGWIN*)
+                local native_root
+                local native_caller_pythonpath="$caller_pythonpath"
+                native_root="$(cygpath -w "$REPO_ROOT")"
+                bound_pythonpath="${native_root}\\Python;${native_root}"
+                if [[ -n "$native_caller_pythonpath" ]]; then
+                    if [[ ! "$native_caller_pythonpath" =~ ^[A-Za-z]:[\\/].* && "$native_caller_pythonpath" != *";"* ]]; then
+                        native_caller_pythonpath="$(cygpath -wp "$native_caller_pythonpath")"
+                    fi
+                    bound_pythonpath="$bound_pythonpath;$native_caller_pythonpath"
+                fi
+                MSYS2_ENV_CONV_EXCL="${MSYS2_ENV_CONV_EXCL:+$MSYS2_ENV_CONV_EXCL;}PYTHONPATH" \
+                    PYTHONPATH="$bound_pythonpath" exec "$candidate" "$@"
+                ;;
+        esac
+        if [[ -n "$caller_pythonpath" ]]; then
+            bound_pythonpath="$bound_pythonpath:$caller_pythonpath"
         fi
         PYTHONPATH="$bound_pythonpath" exec "$candidate" "$@"
     fi
