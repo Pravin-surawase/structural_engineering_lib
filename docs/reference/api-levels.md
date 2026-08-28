@@ -14,8 +14,9 @@ tags: [api, reference]
 
 ---
 
-structural_lib exposes three API levels. All are Alpha-preview surfaces; the
-machine-readable classification is in [api-classification.json](api-classification.json).
+structural_lib exposes three API levels. All are pre-1.0 Beta-maturity surfaces;
+the machine-readable classification is in
+[api-classification.json](api-classification.json).
 
 ## Level 1: High-Level Service API (recommended)
 
@@ -56,6 +57,10 @@ full = sl.design_and_detail_beam_is456(
     is_seismic=False,
 )
 ```
+
+Identity naming differs between these retained service routes:
+`design_and_detail_beam_is456()` uses `beam_id`, while
+`design_beam_is456()` uses `case_id`.
 
 **Returns:** The canonical beam task returns a typed result carrying
 `result_envelope`, `effective_depth_resolution`, and compatibility `is_ok`.

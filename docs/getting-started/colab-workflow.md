@@ -24,7 +24,7 @@ not require ETABS or a repository clone.
 Run this in the first cell:
 
 ```python
-%pip install -q "structural-lib-is456[dxf]===0.24.0"
+%pip install -q "structural-lib-is456[dxf]==0.24.0"
 ```
 
 Choose **Runtime → Restart session**, then verify the environment:

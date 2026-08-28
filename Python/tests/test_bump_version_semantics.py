@@ -33,7 +33,7 @@ def _write_candidate_bump_fixture(root: Path) -> tuple[Path, Path, Path]:
         "**Version:** 0.23.0a1 (Alpha development preview)\n"
         "## New in v0.23.0a1\n"
         "pip install structural-lib-is456==0.23.0a1\n"
-        'pip install "structural-lib-is456[dxf]===0.23.0a1"\n',
+        'pip install "structural-lib-is456[dxf]==0.23.0a1"\n',
         encoding="utf-8",
     )
     return tasks, brief, readme
@@ -48,7 +48,7 @@ def _write_public_candidate_fixture(root: Path) -> tuple[Path, Path]:
     readme.write_text(
         "[Alpha](https://example.invalid/releases/tag/v0.23.1a2)\n"
         "> **v0.24.0a1 is an Alpha development preview.\n"
-        'pip install "structural-lib-is456===0.24.0a1"\n'
+        'pip install "structural-lib-is456==0.24.0a1"\n'
         "`0.23.1a2` remains the current public Alpha.\n",
         encoding="utf-8",
     )
@@ -81,8 +81,8 @@ def test_candidate_bump_preserves_published_release_evidence(
     readme_content = readme.read_text(encoding="utf-8")
     assert "**Version:** 0.23.1a1" in readme_content
     assert "## New in v0.23.1a1" in readme_content
-    assert "structural-lib-is456===0.23.1a1" in readme_content
-    assert "structural-lib-is456[dxf]===0.23.1a1" in readme_content
+    assert "structural-lib-is456==0.23.1a1" in readme_content
+    assert "structural-lib-is456[dxf]==0.23.1a1" in readme_content
 
     monkeypatch.setattr(sys, "argv", ["bump_version.py", "--check-docs"])
     assert bump_version.main() == 0

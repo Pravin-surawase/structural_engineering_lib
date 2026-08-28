@@ -159,7 +159,7 @@ def _write_release_surfaces(tmp_path: Path, version: str = "0.23.0") -> dict[str
     api_stability.write_text(f"**Version:** {version}\n", encoding="utf-8")
     quickstart = tmp_path / "python-quickstart.md"
     quickstart.write_text(
-        f'python -m pip install "structural-lib-is456==={version}"\n',
+        f'python -m pip install "structural-lib-is456=={version}"\n',
         encoding="utf-8",
     )
     return {

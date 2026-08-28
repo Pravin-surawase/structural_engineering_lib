@@ -135,7 +135,10 @@ _EXCLUDED_SCAN_PATHS = frozenset(
 _INTENTIONAL_COMPATIBILITY_PATHS = frozenset(
     {
         "Python/scripts/pre_release_check.sh",
+        "Python/README.md",
+        "README.md",
         "docs/contributing/agent-coding-standards.md",
+        "docs/getting-started/python-quickstart.md",
         "docs/guidelines/folder-structure-governance.md",
         "docs/guides/etabs-exported-snapshot-v1.md",
         "docs/reference/api-levels.md",

@@ -9,7 +9,7 @@ git clone https://github.com/Pravin-surawase/structural_engineering_lib.git
 cd structural_engineering_lib
 python3 -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
-python3 -m pip install "structural-lib-is456===0.24.0"
+python3 -m pip install "structural-lib-is456==0.24.0"
 python3 -m structural_lib install-preflight
 ```
 
@@ -44,7 +44,7 @@ python3 examples/full_pipeline_synthetic.py \
   --output-dir ./output/demo_50
 ```
 
-Install `structural-lib-is456[dxf]===0.24.0` and omit `--skip-dxf` to generate
+Install `structural-lib-is456[dxf]==0.24.0` and omit `--skip-dxf` to generate
 drawings. `sample_beam_design.csv` is strict CLI input;
 `sample_building_beams.csv` is an educational fixture for
 `complete_beam_design.py` and includes output-like columns that the strict CLI

@@ -11,7 +11,7 @@ tags: []
 
 **Type:** Reference
 **Audience:** Developers
-**Status:** Alpha Preview
+**Status:** Pre-1.0 Beta
 **Importance:** High
 **Created:** 2025-01-01
 **Last Updated:** 2026-08-28

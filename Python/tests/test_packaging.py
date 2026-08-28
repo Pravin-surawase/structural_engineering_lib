@@ -502,6 +502,27 @@ class TestREADMESnippets:
         assert schedule.total_weight_kg > 0
         assert schedule.items
 
+    def test_readme_compact_compatibility_beam_to_bbs_snippet(self):
+        """README compact compatibility journey works on the installed package."""
+        from structural_lib import api
+
+        result = api.design_and_detail_beam_is456(
+            units="IS456",
+            beam_id="B1",
+            story="GF",
+            span_mm=5500,
+            mu_knm=160,
+            vu_kn=85,
+            b_mm=300,
+            D_mm=500,
+        )
+        bbs = api.compute_bbs(result)
+
+        assert result.is_ok
+        assert result.design.case_id == "B1@GF"
+        assert bbs.summary.total_weight_kg > 0
+        assert bbs.items
+
     def test_readme_csv_adapter_snippet(self):
         """README CSV adapter import works."""
         from structural_lib.services.adapters import GenericCSVAdapter

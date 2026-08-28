@@ -928,7 +928,7 @@ def _source_surface_version_errors(
             ),
             "docs/getting-started/python-quickstart.md": _version_from_doc(
                 PYTHON_QUICKSTART,
-                r"structural-lib-is456===(\d+\.\d+\.\d+(?:a\d+)?)",
+                r"structural-lib-is456={2,3}(\d+\.\d+\.\d+(?:a\d+)?)",
             ),
             "CHANGELOG.md": _latest_documented_version(CHANGELOG),
             "docs/getting-started/releases.md": _latest_documented_version(RELEASES),

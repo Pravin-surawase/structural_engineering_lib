@@ -21,7 +21,7 @@ The current public release is **StructLib 0.24.0**, published on 2026-08-28.
 StructLib 0.24.0 requires Python 3.11 or newer.
 
 ```bash
-python3 -m pip install "structural-lib-is456===0.24.0"
+python3 -m pip install "structural-lib-is456==0.24.0"
 python3 -m structural_lib install-preflight
 ```
 
@@ -34,7 +34,8 @@ The preflight should show:
 
 ## What “normal release” means
 
-`0.24.0` is a normal PEP 440 version, so an ordinary
+`0.24.0` is a normal/final PEP 440 version rather than a prerelease-tagged
+version, so an ordinary
 `pip install structural-lib-is456` selects it on a supported Python version.
 The package retains Beta maturity: APIs may change before v1.0 and the supported
 engineering scope is case-qualified.
