@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-29
-- Focus: Complete the bounded installed Windows Excel + ETABS software
-- Completed: Repaired the installed ETABS frame-inventory COM binding and exact; Passed direct FastAPI and installed Excel one-beam plus bounded five-beam; Preserved model identity, hash, size, timestamp, lock, analysis results, and
-- Git receipt: docs/verification/etabs-excel-python-pilot-w1-git-handoff-receipt.json | sha256:ebbbac5cf019bc7e91331697c9089074c0c973668ab704c1ba493dfe80127721 | HOLD
-- Git identity: codex/etabs-excel-pilot-w1-continuation-2@3ff3c80a9290e029e80bf182e36c03ed3ece4299 | upstream=NONE@UNKNOWN | base=origin/main@3ff3c80a9290e029e80bf182e36c03ed3ece4299 | tree=dirty | operation=none
+- Focus: Synchronize the Mac primary checkout after the Windows Excel + ETABS
+- Completed: Fetched GitHub and verified PRs #890–#893 were merged. The Mac repair branch; Switched the primary checkout to `main` and fast-forwarded it from; Added the canonical multi-device default: one active writer device per task
+- Git receipt: docs/verification/multi-device-git-sync-guidance-git-handoff-receipt.json | sha256:28753b1a09ca22dc4f8d551980a72532c5ab7cc20bc7134e64e221418bc21a0e | HOLD
+- Git identity: codex/multi-device-git-sync-guidance@c959775d9734e5eb26838de99aa722400cf7c276 | upstream=NONE@UNKNOWN | base=origin/main@c959775d9734e5eb26838de99aa722400cf7c276 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->

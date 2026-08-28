@@ -44,6 +44,61 @@ Do not add a repository script that automates this lifecycle. Validation scripts
 may inspect Git state, but they must not stage, commit, push, merge, reset,
 checkout, clean, stash, delete branches, or mutate GitHub state.
 
+## Multi-device rule: one branch, one writer device
+
+GitHub is the shared authority for tracked repository history; an open checkout
+on a Mac or Windows laptop is not. Use this simple default:
+
+> One task branch has one active writer device. Merge through GitHub. Every
+> other device fetches and fast-forwards its local `main` before new work.
+
+At the start of work on each device:
+
+```bash
+git fetch origin
+./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
+```
+
+Confirm the exact current branch, working-tree state, upstream, open pull
+request, and fetched `origin/main`. A clean checkout can still be stale. If the
+local `main` is clean and is an ancestor of `origin/main`, synchronize it only
+by fast-forward:
+
+```bash
+git switch main
+git merge --ff-only origin/main
+```
+
+Create the next `codex/<task-slug>` branch from that synchronized `main`. Do not
+continue new work on an old merged branch merely because it is clean.
+
+If another device has pushed work that is not merged, review and integrate it
+through its pull request; do not copy files between devices. Keep writing on
+the originating device, or make an explicit one-writer handoff after confirming
+that its branch is clean and fully pushed. Concurrent devices use distinct
+branches, and overlapping/shared paths require an explicit merge order.
+
+If `git_state.py` reports dirty, detached, behind, diverged, locked, or an
+active Git operation, stop before switching or pulling. Inspect the exact diff,
+PR, and remote branch first. For a squash-merged branch, `git cherry
+origin/main HEAD` can show that a different commit identity already has the
+same patch; this is evidence for planning, never automatic reset or deletion
+authority.
+
+After a merge from any device:
+
+1. verify the PR, required checks, merge commit, and candidate/merge tree;
+2. close the originating task's session-usage checkpoint while its timing is
+   still available;
+3. fetch on every device before its next task, then fast-forward local `main`;
+4. keep device-local ETABS models, workbooks, credentials, and external evidence
+   outside Git unless their tracked contract explicitly requires otherwise;
+5. retain old branches and worktrees until deletion is separately authorized.
+
+Fetching updates remote-tracking references but does not update the checked-out
+files. A device is current only after its intended checkout is verified against
+the fetched commit.
+
 ## Compact audited integration
 
 Use three roles for work that needs independent acceptance:

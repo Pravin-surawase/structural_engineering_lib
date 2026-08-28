@@ -5,6 +5,91 @@
 
 ---
 
+## 2026-08-29 — Session: Multi-device Git synchronization guidance
+
+**Agent:** Codex (`operations`/`documentation`, sole writer; no subagents).
+
+**Branch:** `codex/multi-device-git-sync-guidance` from fetched `origin/main`
+`c959775d9734e5eb26838de99aa722400cf7c276`.
+
+**Git handoff receipt:**
+`docs/verification/multi-device-git-sync-guidance-git-handoff-receipt.json`
+
+**Focus:** Synchronize the Mac primary checkout after the Windows Excel + ETABS
+pilot merged, then add one simple canonical rule for future Mac/Windows Git
+handoffs. No ETABS, Excel, structural-design, release, branch-retirement, or
+worktree-cleanup action is in scope.
+
+**Completed:**
+
+- Fetched GitHub and verified PRs #890–#893 were merged. The Mac repair branch
+  was clean and its `2c95e811...` patch was already represented on
+  `origin/main`; local `main` was a strict ancestor of the fetched remote.
+- Switched the primary checkout to `main` and fast-forwarded it from
+  `683760a4...` to `c959775d...` without reset, rebase, stash, force push, file
+  copying, or deletion. The resulting tree is clean and exactly equal to
+  `origin/main`.
+- Added the canonical multi-device default: one active writer device per task
+  branch, GitHub as tracked-history authority, fetch plus explicit state
+  inspection on every device, fast-forward-only local-main synchronization,
+  distinct branches for concurrent devices, and PR-based integration instead
+  of copying files.
+- Documented the fail-closed paths for stale, dirty, detached, behind, or
+  diverged checkouts; squash-merge patch equivalence; device-local ETABS/Excel
+  evidence; and immediate session-usage closeout on the originating device.
+- Created the task-to-Git receipt and refreshed the maintained Latest Handoff
+  projection for the exact documentation packet.
+
+### Issues encountered
+
+- The Mac checkout was clean but remained on the already-merged model-identity
+  repair branch, while its local `main` had not received the four pilot PRs.
+- A new canonical session start was rejected because the shared ledger still
+  contains the unmatched `EXCEL-ETABS-PYTHON-BRIDGE-PILOT` start checkpoint.
+- The first normal commit attempt was rejected because the new session entry
+  did not yet reference its required task-to-Git handoff receipt.
+- The first session-doc recheck found that the maintained Latest Handoff block
+  still referenced the preceding Windows acceptance receipt.
+
+### Root causes and resolutions
+
+- Confirmed root cause: merging from the Windows device updated GitHub but
+  cannot update another device's checked-out branch or local `main`.
+  Resolution: fetch first, prove the old branch patch already exists upstream,
+  prove local `main` is an ancestor, then use `git merge --ff-only
+  origin/main`. `git_state.py` and `git status` prove a clean Mac `main` equal
+  to `c959775d...` before the documentation branch was created.
+- Confirmed root cause: the original parent pilot recorded a usage start but
+  not the separately required seven-phase usage closeout. Its historical phase
+  timing cannot now be reconstructed without invention. Resolution: preserve
+  the checkpoint and continue the directly related task rather than bypass or
+  fabricate evidence; the new canonical guidance requires originating-device
+  closeout while timing remains available. ⚠️ TERMINAL ISSUE: new session start
+  was rejected by the unmatched parent checkpoint -> preserved and documented
+  the existing checkpoint.
+- Confirmed root cause: the session-doc hook requires the newest entry to bind
+  a validated receipt before an immutable commit is created. Resolution: create
+  the local fail-closed receipt for the exact documentation paths, reference it
+  above, and repeat only the affected session/documentation validation plus the
+  normal hooks. ⚠️ TERMINAL ISSUE: the first commit was stopped by the missing
+  receipt -> no commit was created and the required receipt was added.
+- Confirmed root cause: creating a new receipt does not silently overwrite the
+  retained handoff projection. Resolution: run the maintained session-handoff
+  command, regenerate the receipt for that final shared path set, and rebind the
+  projection to its exact hash. ⚠️ TERMINAL ISSUE: the first session recheck
+  found the old receipt projection -> the maintained handoff command updated it.
+
+### Validation through content freeze
+
+- Fresh documentation category: `8/8 passed`, with zero reused checks; the
+  consolidated quick gate passes `10/10`.
+- Only the canonical Git workflow guide, this task-owned session entry, its
+  Git receipt, and the maintained handoff projection are changed; no runtime,
+  ETABS bridge, Excel add-in, engineering calculation, or ETABS evidence
+  artifact is modified.
+
+---
+
 ## 2026-08-29 — Session: ETABS-EXCEL-PILOT-W1 installed Windows acceptance
 
 **Agent:** Codex (`orchestrator`, sole writer)
