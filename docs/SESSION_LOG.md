@@ -5,6 +5,84 @@
 
 ---
 
+## 2026-08-28 — Session: ETABS comtypes list-output compatibility repair
+
+**Agent:** Codex (`backend`, sole writer; no subagents).
+
+**Branch:** `codex/etabs-com-list-compat` from observed current `origin/main`
+`d6e83cfd53d444b11637bb0e85f5b314a92333cc`.
+
+**Git handoff receipt:**
+`docs/verification/etabs-com-list-compat-git-handoff-receipt.json`
+
+**Focus:** Repair the Windows-blocking ETABS COM result-container mismatch and
+prove both tuple and list output shapes through connection and the complete
+bounded beam pilot. ETABS model access, analysis, save, write-back, Excel
+execution, design-scope expansion, and optimization remain outside this code
+repair.
+
+**Completed:**
+
+- The common ETABS COM decoder now accepts only the two observed outer result
+  containers, `list` and `tuple`, while preserving exact output-count and native
+  return-code validation and normalizing successful outputs to a tuple.
+- The existing connection and full beam-pilot tests now run against both outer
+  container types. This covers `SapModel.GetVersion`, frame inventory,
+  rectangular section extraction, and frame-force extraction without weakening
+  nested-array or ETABS return-code checks.
+
+### Issues encountered
+
+- Windows ETABS/comtypes returned COM output values as a list, while the merged
+  bridge accepted only a tuple. `/status` therefore passed but `/connect`
+  returned `ETABS_COM_SIGNATURE_MISMATCH`, preventing Excel and `/beam-pilot`
+  from starting.
+- The canonical session start was blocked by an unmatched checkpoint for the
+  already-merged parent pilot even though its recorded `session end` had passed.
+- A targeted mypy-command search included the nonexistent repository-root
+  `pyproject.toml` beside the maintained `Python/pyproject.toml`, causing `rg`
+  to return a path error after producing the requested matches.
+- The first normal-hook pass found that the generated Latest Handoff block still
+  referenced the merged parent pilot and its earlier Git receipt.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `_decode_com_outputs` required `isinstance(value,
+  tuple)`, but comtypes 1.4.16 on the acceptance host materialized the same ETABS
+  out-parameter sequence as a list. Resolution: accept exactly list or tuple,
+  retain length and zero-return-code checks, and normalize the accepted prefix
+  to a tuple. Both connection and complete pilot regressions pass with each
+  container type.
+- Confirmed root cause: the shared usage log has a start for
+  `EXCEL-ETABS-PYTHON-BRIDGE-PILOT` without its separate usage-closeout record;
+  the successful session-end record does not replace that checkpoint.
+  Resolution: do not create a duplicate timer; continue the trusted active
+  parent-pilot timer for this directly related repair. `session usage --active
+  --json` identifies the exact parent task and `session trust` reports
+  `Trusted`/`READY_LOCAL`. ⚠️ TERMINAL ISSUE: new repair session start was
+  rejected by the unmatched parent checkpoint -> continued the trusted parent
+  session instead of bypassing the control.
+- Confirmed root cause: the project configuration lives under `Python/`, not at
+  the repository root. Resolution: run configured mypy using
+  `Python/pyproject.toml`; the changed service reports no issues. ⚠️ TERMINAL
+  ISSUE: mixed existing/nonexistent configuration paths made the search exit
+  nonzero -> used the maintained Python configuration path.
+- Confirmed root cause: creating the new receipt and session entry does not
+  mutate the generated handoff block during implementation. Resolution: run
+  the maintained `session end --fix` preparation step, which selected the new
+  receipt and updated the block; the failed session-doc hook and consolidated
+  quick gate are the only checks repeated after this documentation change.
+
+### Validation through content freeze
+
+- Focused service and REST transport selection: `12 passed`, including tuple
+  and Windows-style list output shapes through connect and full pilot behavior.
+- Changed service configured mypy: no issues. Changed-file Black and Ruff: pass.
+- No ETABS model, workbook, Excel add-in, FastAPI contract, structural
+  calculation, or design input was changed by this repair.
+
+---
+
 ## 2026-08-28 — Session: Excel -> Python -> live ETABS beam pilot
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents).

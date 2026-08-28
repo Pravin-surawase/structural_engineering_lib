@@ -65,12 +65,13 @@ class _FakeSetup:
 
 
 class _FakeResults:
-    def __init__(self) -> None:
+    def __init__(self, output_container=tuple) -> None:
         self.Setup = _FakeSetup()
+        self.output_container = output_container
 
     def FrameForce(self, frame_name, item_type):
         assert item_type == 0
-        return (
+        outputs = (
             3,
             (frame_name,) * 3,
             (0.0, 2500.0, 5000.0),
@@ -87,13 +88,17 @@ class _FakeResults:
             (-150_000.0, 120_000.0, 100_000.0),
             0,
         )
+        return self.output_container(outputs)
 
 
 class _FakeFrameObj:
+    def __init__(self, output_container=tuple) -> None:
+        self.output_container = output_container
+
     def GetAllFrames(self, coordinate_system):
         assert coordinate_system == "Global"
         # B2 is intentionally listed first; deterministic story/name sorting picks B1.
-        return (
+        outputs = (
             3,
             ("B2", "C1", "B1"),
             ("R300x500", "R400x400", "R300x500"),
@@ -116,26 +121,31 @@ class _FakeFrameObj:
             (5, 5, 5),
             0,
         )
+        return self.output_container(outputs)
 
 
 class _FakePropFrame:
+    def __init__(self, output_container=tuple) -> None:
+        self.output_container = output_container
+
     def GetRectangle(self, name):
         assert name == "R300x500"
-        return ("", "M25", 500.0, 300.0, 1, "", "guid", 0)
+        return self.output_container(("", "M25", 500.0, 300.0, 1, "", "guid", 0))
 
 
 class _FakeSapModel:
-    def __init__(self) -> None:
-        self.FrameObj = _FakeFrameObj()
-        self.PropFrame = _FakePropFrame()
-        self.Results = _FakeResults()
+    def __init__(self, output_container=tuple) -> None:
+        self.output_container = output_container
+        self.FrameObj = _FakeFrameObj(output_container)
+        self.PropFrame = _FakePropFrame(output_container)
+        self.Results = _FakeResults(output_container)
         self.unit_calls: list[int] = []
 
     def GetModelFilepath(self):
         return r"C:\Models\Pilot Copy.edb"
 
     def GetVersion(self):
-        return ("ETABS 23.3.1", 23.31, 0)
+        return self.output_container(("ETABS 23.3.1", 23.31, 0))
 
     def GetPresentUnits(self):
         return 6
@@ -166,8 +176,11 @@ class _FakeSession:
             assert self.sap_model.SetPresentUnits(original) == 0
 
 
-def test_pilot_extracts_sorted_beams_preserves_stations_and_restores_units(monkeypatch):
-    sap_model = _FakeSapModel()
+@pytest.mark.parametrize("output_container", [tuple, list], ids=["tuple", "list"])
+def test_pilot_extracts_sorted_beams_preserves_stations_and_restores_units(
+    monkeypatch, output_container
+):
+    sap_model = _FakeSapModel(output_container)
     session = _FakeSession(sap_model)
     monkeypatch.setattr(bridge, "_library_identity", lambda: ("0.24.0", "a" * 64))
 
@@ -223,8 +236,11 @@ def test_com_signature_mismatch_is_a_stable_data_error():
     assert exc_info.value.code == "ETABS_COM_SIGNATURE_MISMATCH"
 
 
-def test_connect_returns_exact_open_model_without_unit_change(monkeypatch):
-    sap_model = _FakeSapModel()
+@pytest.mark.parametrize("output_container", [tuple, list], ids=["tuple", "list"])
+def test_connect_returns_exact_open_model_without_unit_change(
+    monkeypatch, output_container
+):
+    sap_model = _FakeSapModel(output_container)
     session = _FakeSession(sap_model)
     monkeypatch.setattr(bridge, "_library_identity", lambda: ("0.24.0", "c" * 64))
 

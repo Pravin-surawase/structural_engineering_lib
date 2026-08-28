@@ -305,15 +305,15 @@ def _require_zero_return(operation: str, value: object) -> None:
 def _decode_com_outputs(
     operation: str, value: object, *, output_count: int
 ) -> tuple[Any, ...]:
-    """Decode ETABS COM out values followed by the native integer return code."""
+    """Normalize ETABS COM out values followed by the native return code."""
 
-    if not isinstance(value, tuple) or len(value) != output_count + 1:
+    if not isinstance(value, (list, tuple)) or len(value) != output_count + 1:
         raise ETABSDataError(
             "ETABS_COM_SIGNATURE_MISMATCH",
             f"{operation} returned an unexpected COM result shape.",
         )
     _require_zero_return(operation, value[-1])
-    return value[:-1]
+    return tuple(value[:-1])
 
 
 class _ComtypesETABSSession:
