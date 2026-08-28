@@ -29,8 +29,8 @@ IS 456 reinforced-concrete design library (Python package).
 ## Install
 
 ```bash
-pip install structural-lib-is456===0.24.0         # exact normal release
-pip install "structural-lib-is456[dxf]===0.24.0"  # release with DXF export
+pip install structural-lib-is456==0.24.0         # exact normal release
+pip install "structural-lib-is456[dxf]==0.24.0"  # release with DXF export
 python -m structural_lib install-preflight          # interpreter/origin/extras
 ```
 
@@ -98,6 +98,27 @@ print(f"Total weight: {bbs.total_weight_kg:.1f} kg")
 for item in bbs.items:
     print(f"  {item.bar_mark}: ø{item.diameter_mm:.0f} × {item.no_of_bars} nos")
 ```
+
+### Use the Compact Compatibility Beam-to-BBS Route
+
+The canonical facade is recommended for new integrations. The retained
+`structural_lib.api` facade remains useful for existing scripts and quick
+evaluations:
+
+```python
+from structural_lib import api
+
+result = api.design_and_detail_beam_is456(
+    units="IS456", beam_id="B1", story="GF",
+    span_mm=5500, mu_knm=160, vu_kn=85, b_mm=300, D_mm=500,
+)
+print(result.summary())
+bbs = api.compute_bbs(result)
+print(f"BBS weight: {bbs.summary.total_weight_kg:.1f} kg")
+```
+
+`design_and_detail_beam_is456()` uses `beam_id`; the lower-level
+`design_beam_is456()` service uses `case_id`.
 
 ### Export DXF Drawings and Reports
 
@@ -269,13 +290,16 @@ interior flat-slab facade only for its documented bounded case.
 | **Validation** | `validate_job_spec`, `validate_design_results`, `verify_calculation` | Input/output validation |
 | **Audit** | `compute_hash`, `create_calculation_certificate`, `generate_calculation_report` | Calculation audit trail |
 
-> Full API reference: see [docs/reference/api.md](../docs/reference/api.md)
+> Full API reference: see the
+> [online API reference](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/docs/reference/api.md).
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — see the
+[repository license](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/LICENSE).
 
 Engineering-use conditions and professional responsibilities are described in
-the repository's `LICENSE_ENGINEERING.md`. The software is a design aid, not a
-substitute for official code publications, independent calculation, or
-professional approval.
+the repository's
+[engineering-use conditions](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/LICENSE_ENGINEERING.md).
+The software is a design aid, not a substitute for official code publications,
+independent calculation, or professional approval.

@@ -31,24 +31,26 @@ This is the easiest path for beginners.
 python3 -m pip install --upgrade pip
 
 # Install the exact normal release
-python3 -m pip install "structural-lib-is456===0.24.0"
+python3 -m pip install "structural-lib-is456==0.24.0"
 
 # Optional DXF support
-python3 -m pip install "structural-lib-is456[dxf]===0.24.0"
+python3 -m pip install "structural-lib-is456[dxf]==0.24.0"
 
 # Verify the interpreter, package origin/version, and installed extras
 python3 -m structural_lib install-preflight
 ```
 
-`0.24.0` is the current normal release. Use the exact pin for reproducibility.
-It covers the audited supported cases; it does not claim complete IS 456
-coverage, professional approval, or construction readiness. Every result still
-requires independent review by a qualified structural engineer.
+`0.24.0` is the current normal PEP 440 release rather than a prerelease-tagged
+version. The project's development maturity remains Beta. Use the exact pin for
+reproducibility. The release covers audited supported cases; it does not claim
+complete IS 456 coverage, professional approval, or construction readiness.
+Every result still requires independent review by a qualified structural
+engineer.
 
 ## Google Colab quick install
 
 ```python
-%pip install -q "structural-lib-is456[dxf]===0.24.0"
+%pip install -q "structural-lib-is456[dxf]==0.24.0"
 ```
 
 Then: `Runtime > Restart runtime` and rerun.
@@ -68,12 +70,12 @@ If you are on Windows, replace `python3` with `py`.
 3. Install the library:
    ```bash
    python3 -m pip install --upgrade pip
-   python3 -m pip install "structural-lib-is456===0.24.0"
+   python3 -m pip install "structural-lib-is456==0.24.0"
    python3 -m structural_lib install-preflight
    ```
 4. Optional DXF support:
    ```bash
-   python3 -m pip install "structural-lib-is456[dxf]===0.24.0"
+   python3 -m pip install "structural-lib-is456[dxf]==0.24.0"
    ```
 
 ## 2) Canonical beam design (no files)
@@ -112,6 +114,31 @@ For explicit detailing and BBS composition, see the
 [canonical beam recipe](../cookbook/python/beam.md).
 For all advertised families, use the generated
 [13-journey facade cookbook](../cookbook/python/family-facades.md).
+
+### Short compatibility route: beam → detailing → BBS
+
+The canonical facade above is the recommended starting point for new
+integrations. For an existing script or a first evaluation, the retained
+compatibility facade provides a shorter complete beam journey:
+
+```python
+from structural_lib import api
+
+result = api.design_and_detail_beam_is456(
+    units="IS456", beam_id="B1", story="GF",
+    span_mm=5500, mu_knm=160, vu_kn=85, b_mm=300, D_mm=500,
+)
+print(result.summary())
+bbs = api.compute_bbs(result)
+print(f"BBS weight: {bbs.summary.total_weight_kg:.1f} kg")
+```
+
+`design_and_detail_beam_is456()` uses `beam_id`; the lower-level
+`design_beam_is456()` service uses `case_id`. Prefer unit-bearing names such as
+`fck_nmm2` and `fy_nmm2`. The published 0.24.0 wheel still accepts older
+`fck`/`fy` aliases on selected compatibility functions, but their warning text
+contains a stale v0.24 removal date; do not interpret that warning as proof that
+the aliases were removed from 0.24.0.
 
 ## 3) Use the library in a script (optional)
 
@@ -156,7 +183,7 @@ installed wheel.
 ```bash
 git clone https://github.com/Pravin-surawase/structural_engineering_lib.git
 cd structural_engineering_lib
-python3 -m pip install "structural-lib-is456===0.24.0"
+python3 -m pip install "structural-lib-is456==0.24.0"
 cd Python
 python3 examples/full_pipeline_synthetic.py --count 500 --output-dir ./output/demo_500
 ```

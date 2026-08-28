@@ -1569,7 +1569,7 @@ def check_column_ductility_is13920(
     Examples:
         >>> result = check_column_ductility_is13920(
         ...     b_mm=400, D_mm=500, clear_height_mm=3000,
-        ...     bar_dia_mm=20, fck=25, fy=415,
+        ...     bar_dia_mm=20, fck_nmm2=25, fy_nmm2=415,
         ...     Ag_mm2=200000, Ak_mm2=134400, h_mm=420,
         ...     provided_confining_spacing_mm=100,
         ...     provided_confining_length_mm=500,

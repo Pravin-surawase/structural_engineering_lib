@@ -11,9 +11,9 @@ tags: []
 
 **Type:** Reference
 **Audience:** Developers
-**Status:** Alpha Policy
+**Status:** Pre-1.0 Beta Policy
 **Importance:** Medium
-**Version:** 0.23.1a2
+**Version:** 0.24.0
 **Created:** 2025-12-01
 **Last Updated:** 2026-08-24
 
@@ -21,7 +21,7 @@ tags: []
 
 ## Overview
 
-This document defines deprecation behavior for the Alpha package. Deprecation
+This document defines deprecation behavior for the pre-1.0 Beta package. Deprecation
 metadata is a real project commitment, not a label for every compatibility
 facade. No public file, export, or signature may be removed without the
 separate authorization and evidence required by repository Git governance.

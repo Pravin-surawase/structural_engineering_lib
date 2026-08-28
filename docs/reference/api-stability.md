@@ -84,7 +84,7 @@ with no warning or removal version.
 Use exact release pins for reproducibility:
 
 ```bash
-python3 -m pip install "structural-lib-is456===0.24.0"
+python3 -m pip install "structural-lib-is456==0.24.0"
 python3 -c "import structural_lib; print(structural_lib.__version__, structural_lib.__file__)"
 ```
 

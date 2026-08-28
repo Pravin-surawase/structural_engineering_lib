@@ -21,9 +21,9 @@ the named compatibility or low-level API.
 ## Setup
 
 ```bash
-pip install "structural-lib-is456===0.24.0"
+pip install "structural-lib-is456==0.24.0"
 # For DXF support:
-pip install "structural-lib-is456[dxf]===0.24.0"
+pip install "structural-lib-is456[dxf]==0.24.0"
 ```
 
 ```python

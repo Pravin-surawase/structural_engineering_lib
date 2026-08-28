@@ -5,6 +5,103 @@
 
 ---
 
+## 2026-08-28 — Session: External documentation 0.24.0 polish
+
+**Agent:** Codex (`documentation`, sole writer; no subagents).
+
+**Branch:** `codex/external-docs-polish` from observed `origin/main`
+`bda7dec0dc65f96ba8fada55960e3682cd3b80cb`.
+
+**Focus:** Apply the external-user review of the published
+`structural-lib-is456==0.24.0` wheel to the README, package description,
+quickstarts, examples, generated family cookbook, and maintained API caller
+ledger. Runtime engineering behavior, supported capability scope, release
+artifacts, and the append-only release ledger remain unchanged.
+
+**Completed:**
+
+- Kept the typed family facade as the recommended integration route and added
+  a short, executable retained-compatibility beam -> detailing -> BBS journey
+  to the three external front doors.
+- Documented the `beam_id` versus `case_id` distinction, standardized current
+  install examples on `==0.24.0`, and explained that a normal/final PEP 440
+  release can still have a pre-1.0 Beta maturity classifier.
+- Corrected stale Alpha-era labels, clarified that FastAPI/React are exact-head
+  application surfaces rather than wheel contents, and made PyPI-facing links
+  absolute so they resolve outside the repository.
+- Updated the IS 13920 example to unit-bearing material names and documented
+  the published wheel's still-accepted `fck`/`fy` aliases plus stale warning
+  date without changing compatibility behavior.
+- Updated the version-bump, release, family-doc, packaging, and API-caller
+  generators/tests so later releases cannot silently restore the old pin,
+  wording, or unclassified compatibility examples.
+
+### Issues encountered
+
+- Session start was blocked by an unmatched usage checkpoint from the prior
+  read-only external review. The first attempted checkpoint total also did not
+  match the elapsed phase sum.
+- The API compatibility check rejected the three new front-door examples as
+  ambiguous maintained callers even though the prose explicitly identifies
+  the route as retained compatibility.
+- The first normal-hook pass found the generated Latest Handoff block still
+  bound to the preceding external-documentation receipt.
+- One source search used an unescaped `{PROJECT_VERSION}` regular expression;
+  another placed a Markdown backtick inside a double-quoted zsh command.
+- One multi-file patch did not match the exact test context and stopped without
+  applying any part of that patch.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the preceding review timer had ended without the
+  separate seven-phase closeout record required by the session controller.
+  Resolution: inspect its exact reviewed head, record a complete matching
+  closeout with the required counters, and then start this task. The first
+  closeout attempt was rejected because its manually supplied total differed
+  from the controller's current elapsed total; refreshing and supplying the
+  matching total passed. No repository file was affected. ⚠️ TERMINAL ISSUE:
+  session start and the first closeout attempt were rejected -> completed the
+  exact prior checkpoint and began this session normally.
+- Confirmed root cause: the compatibility ledger fails closed for callers in
+  general maintained docs, while these three pages now deliberately document a
+  supported compatibility surface requested by the external review.
+  Resolution: classify only `README.md`, `Python/README.md`, and
+  `docs/getting-started/python-quickstart.md` as intentional compatibility
+  documentation, regenerate the caller ledger, and rerun its ambiguity check;
+  it passes with no API implementation change.
+- Confirmed root cause: a new task receipt does not silently rewrite the
+  maintained next-session projection. Resolution: run the receipt-bound
+  session handoff command, stage the shared projection, regenerate the receipt
+  against that exact candidate path set, and rerun the normal hooks; session
+  consistency and every hook pass.
+- Confirmed root cause: `rg` interpreted one pattern as regex syntax and zsh
+  interpreted the embedded backtick before `rg` could run. Resolution: rerun
+  both bounded searches as fixed-string commands. ⚠️ TERMINAL ISSUE: the two
+  malformed read-only searches failed -> fixed-string searches completed.
+- Confirmed root cause: `apply_patch` is atomic and its broad context no longer
+  matched the exact test fixture. Resolution: inspect the current fixture and
+  apply a narrower exact-context patch; the rejected invocation made no partial
+  write. ⚠️ TERMINAL ISSUE: one patch context was stale -> the bounded patch
+  passed after inspection.
+
+### Validation through content freeze
+
+- The root and PyPI READMEs execute their compact compatibility beam-to-BBS
+  journey in a packaging regression; 22 focused packaging, version-bump, and
+  release-environment tests pass.
+- The generated 15-family cookbook and API classification/compatibility
+  registries are current, with no ambiguous maintained compatibility caller.
+- Documentation structure, front matter, local links, versions, the PyPI
+  renderer, the canonical IS 13920 example, whitespace/error diff checks, and
+  the 10-check repository quick gate pass. Existing informational metadata
+  warnings remain unchanged.
+- The final frozen-candidate 10/10 quick gate and all normal hooks pass. The
+  immutable commit, clean session closeout, and hosted checks remain the
+  closeout sequence.
+
+**Git handoff receipt:**
+`docs/verification/external-docs-polish-git-handoff-receipt.json`
+
 ## 2026-08-28 — Session: External documentation usability audit
 
 **Agent:** Codex (`documentation-writer`, sole writer; no subagents).

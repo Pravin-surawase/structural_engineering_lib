@@ -91,17 +91,19 @@ reconciliation, or professional approval.
 ### Install the Python package
 
 ```bash
-python3 -m pip install "structural-lib-is456===0.24.0"
+python3 -m pip install "structural-lib-is456==0.24.0"
 ```
 
 The package is installed as `structural-lib-is456` and imported as
 `structural_lib`.
 
 `0.24.0` is the current normal release, so ordinary package resolution selects
-it. Pin the exact version for reproducible work. This
-normal software release does not claim that broader library development or the
-deferred cumulative practicing-engineer review is complete. See the [release
-status and policy](docs/getting-started/release-status.md) before selecting a build.
+it. Here, **normal** means a final PEP 440 version rather than an alpha, beta, or
+release-candidate version string; the project's development-maturity classifier
+remains **Beta** until the separately stated pre-1.0 and engineering-review
+boundaries are closed. Pin the exact version for reproducible work. See the
+[release status and policy](docs/getting-started/release-status.md) before
+selecting a build.
 
 ```python
 from structural_lib.design.is456 import beam
@@ -126,6 +128,29 @@ result = beam.design(request)
 print(result.engineering_status)
 print(result.to_dict())
 ```
+
+### Need the shortest beam-to-BBS path?
+
+The canonical facade above is recommended for new integrations. Existing
+scripts and first-time evaluations can use the retained compatibility facade
+for a compact design, detailing, and bar-bending-schedule journey:
+
+```python
+from structural_lib import api
+
+result = api.design_and_detail_beam_is456(
+    units="IS456", beam_id="B1", story="GF",
+    span_mm=5500, mu_knm=160, vu_kn=85, b_mm=300, D_mm=500,
+)
+print(result.summary())
+bbs = api.compute_bbs(result)
+print(f"BBS weight: {bbs.summary.total_weight_kg:.1f} kg")
+```
+
+Identity names differ on two retained service functions:
+`design_and_detail_beam_is456()` uses `beam_id`, while
+`design_beam_is456()` uses `case_id`. Both routes require independent review;
+neither result is professional or construction approval.
 
 Parameter names carry their units—`b_mm`, `mu_knm`, `fck_nmm2`—so the API
 boundary stays explicit.

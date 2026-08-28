@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-28
-- Focus: Audit the newly published `structural-lib-is456==0.24.0` as an
-- Completed: Verified the current PyPI and GitHub `v0.24.0` publication, then installed the; Replaced stale pre-publication and internal-agent entry points with an; Repaired the synthetic pipeline input contract, removed professional/client
-- Git receipt: docs/verification/external-docs-usability-git-handoff-receipt.json | sha256:4e308db3b9698d87c7515673be3a8ae94e0eb704a5d9f6e9635fdf8e7fc237c4 | HOLD
-- Git identity: codex/external-docs-usability@52b5c256542bbe3917585deaa65c190357a8039a | upstream=origin/main@52b5c256542bbe3917585deaa65c190357a8039a | base=origin/main@52b5c256542bbe3917585deaa65c190357a8039a | tree=dirty | operation=none
+- Focus: Apply the external-user review of the published
+- Completed: Kept the typed family facade as the recommended integration route and added; Documented the `beam_id` versus `case_id` distinction, standardized current; Corrected stale Alpha-era labels, clarified that FastAPI/React are exact-head
+- Git receipt: docs/verification/external-docs-polish-git-handoff-receipt.json | sha256:b67b11a97c962c477ed768e89d4351b60cc87c032e309b007aeb394fb4308358 | HOLD
+- Git identity: codex/external-docs-polish@bda7dec0dc65f96ba8fada55960e3682cd3b80cb | upstream=origin/main@bda7dec0dc65f96ba8fada55960e3682cd3b80cb | base=origin/main@bda7dec0dc65f96ba8fada55960e3682cd3b80cb | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->

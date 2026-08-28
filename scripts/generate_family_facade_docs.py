@@ -132,9 +132,9 @@ except InputContractError as error:
 - Exact signatures, units, enums, field decisions, and status guidance:
   [family facade contracts](../../reference/family-facade-contracts.md)
 
-This recipe ships in `structural-lib-is456==={PROJECT_VERSION}` and remains subject to
-qualified review. It is not professional approval, engineering-use approval,
-construction-use approval, or Windows application acceptance.
+This recipe is verified against `structural-lib-is456=={PROJECT_VERSION}` and remains
+subject to qualified review. It is not professional approval, engineering-use
+approval, construction-use approval, or Windows application acceptance.
 '''
 
 
@@ -175,10 +175,10 @@ status guidance. Replay all pages against an exact wheel with:
 ./scripts/python_runtime.sh scripts/verify_lib_pro_012_r0_external_preview.py --wheel dist/structural_lib_is456-*.whl
 ```
 
-These recipes ship in `structural-lib-is456==={PROJECT_VERSION}` and remain subject to
-qualified review. Publication is a software-distribution fact, not professional
-approval, engineering-use approval, construction-use approval, or Windows
-application acceptance.
+These recipes are verified against `structural-lib-is456=={PROJECT_VERSION}` and
+remain subject to qualified review. Publication is a software-distribution fact,
+not professional approval, engineering-use approval, construction-use approval,
+or Windows application acceptance.
 """
 
 

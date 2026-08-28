@@ -7,7 +7,7 @@ is `0.24.0` and requires Python 3.11 or newer.
 ## Install and verify
 
 ```bash
-python3 -m pip install "structural-lib-is456===0.24.0"
+python3 -m pip install "structural-lib-is456==0.24.0"
 python3 -m structural_lib install-preflight
 ```
 

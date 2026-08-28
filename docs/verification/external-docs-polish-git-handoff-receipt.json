@@ -1,0 +1,184 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "b67b11a97c962c477ed768e89d4351b60cc87c032e309b007aeb394fb4308358",
+    "state": {
+      "branch": "codex/external-docs-polish",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "bda7dec0dc65f96ba8fada55960e3682cd3b80cb",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 111.407,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib13",
+      "head_sha": "bda7dec0dc65f96ba8fada55960e3682cd3b80cb",
+      "hold_reasons": [
+        "changed paths: 45"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-28T08:38:12.386085+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/external-docs-polish/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 45,
+        "modified_paths": [],
+        "staged_paths": [
+          "Python/README.md",
+          "Python/examples/README.md",
+          "Python/examples/colab_workflow.py",
+          "Python/structural_lib/services/column_api.py",
+          "Python/tests/test_bump_version_semantics.py",
+          "Python/tests/test_packaging.py",
+          "Python/tests/test_release_environment.py",
+          "README.md",
+          "docs/SESSION_LOG.md",
+          "docs/cookbook/python-recipes.md",
+          "docs/cookbook/python/beam-design.md",
+          "docs/cookbook/python/beam.md",
+          "docs/cookbook/python/column-supplied-steel-check.md",
+          "docs/cookbook/python/combined-footing-symmetric.md",
+          "docs/cookbook/python/deep-beam-simply-supported.md",
+          "docs/cookbook/python/family-facades.md",
+          "docs/cookbook/python/flat-slab-regular-interior.md",
+          "docs/cookbook/python/isolated-footing-concentric.md",
+          "docs/cookbook/python/slab-continuous-one-way.md",
+          "docs/cookbook/python/slab-one-way.md",
+          "docs/cookbook/python/slab-two-way.md",
+          "docs/cookbook/python/staircase-straight-flight.md",
+          "docs/cookbook/python/strap-footing-property-line.md",
+          "docs/cookbook/python/torsion-design.md",
+          "docs/cookbook/python/wall-braced-axial.md",
+          "docs/getting-started/beginners-guide.md",
+          "docs/getting-started/colab-workflow.md",
+          "docs/getting-started/installation-notes.md",
+          "docs/getting-started/python-quickstart.md",
+          "docs/getting-started/release-status.md",
+          "docs/getting-started/user-guide.md",
+          "docs/index.md",
+          "docs/planning/next-session-brief.md",
+          "docs/reference/api-compatibility-ledger.json",
+          "docs/reference/api-levels.md",
+          "docs/reference/api-stability.md",
+          "docs/reference/api.md",
+          "docs/reference/deprecation-policy.md",
+          "docs/reference/fastapi-rest-api.md",
+          "docs/reference/troubleshooting.md",
+          "docs/verification/external-docs-polish-git-handoff-receipt.json",
+          "scripts/bump_version.py",
+          "scripts/generate_api_classification.py",
+          "scripts/generate_family_facade_docs.py",
+          "scripts/release.py"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "bda7dec0dc65f96ba8fada55960e3682cd3b80cb",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/external-docs-polish/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:b67b11a97c962c477ed768e89d4351b60cc87c032e309b007aeb394fb4308358",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-28T08:38:12.386249+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "CHANGELOG.md",
+      "docs/getting-started/releases.md",
+      "fastapi_app",
+      "react_app"
+    ],
+    "integration_owner": "documentation",
+    "owned_paths": [
+      "README.md",
+      "Python/README.md",
+      "Python/examples",
+      "Python/structural_lib/services/column_api.py",
+      "Python/tests/test_bump_version_semantics.py",
+      "Python/tests/test_packaging.py",
+      "Python/tests/test_release_environment.py",
+      "docs/SESSION_LOG.md",
+      "docs/cookbook",
+      "docs/getting-started",
+      "docs/index.md",
+      "docs/planning/next-session-brief.md",
+      "docs/reference/api-compatibility-ledger.json",
+      "docs/reference/api-levels.md",
+      "docs/reference/api-stability.md",
+      "docs/reference/api.md",
+      "docs/reference/deprecation-policy.md",
+      "docs/reference/fastapi-rest-api.md",
+      "docs/reference/troubleshooting.md",
+      "scripts/bump_version.py",
+      "scripts/generate_api_classification.py",
+      "scripts/generate_family_facade_docs.py",
+      "scripts/release.py"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/planning/next-session-brief.md",
+      "docs/reference/api-compatibility-ledger.json"
+    ],
+    "task_id": "DOCS-EXTERNAL-0240-POLISH"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

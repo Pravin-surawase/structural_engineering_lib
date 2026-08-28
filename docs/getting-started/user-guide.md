@@ -29,7 +29,7 @@ StructLib 0.24.0 requires Python 3.11 or newer.
 python3 -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
 python3 -m pip install --upgrade pip
-python3 -m pip install "structural-lib-is456===0.24.0"
+python3 -m pip install "structural-lib-is456==0.24.0"
 python3 -m structural_lib install-preflight
 ```
 
@@ -73,7 +73,7 @@ These commands create:
 For DXF output:
 
 ```bash
-python3 -m pip install "structural-lib-is456[dxf]===0.24.0"
+python3 -m pip install "structural-lib-is456[dxf]==0.24.0"
 python3 -m structural_lib dxf results.json -o drawings.dxf
 ```
 

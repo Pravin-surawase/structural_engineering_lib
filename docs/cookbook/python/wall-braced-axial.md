@@ -103,6 +103,6 @@ except InputContractError as error:
 - Exact signatures, units, enums, field decisions, and status guidance:
   [family facade contracts](../../reference/family-facade-contracts.md)
 
-This recipe ships in `structural-lib-is456===0.24.0` and remains subject to
-qualified review. It is not professional approval, engineering-use approval,
-construction-use approval, or Windows application acceptance.
+This recipe is verified against `structural-lib-is456==0.24.0` and remains
+subject to qualified review. It is not professional approval, engineering-use
+approval, construction-use approval, or Windows application acceptance.

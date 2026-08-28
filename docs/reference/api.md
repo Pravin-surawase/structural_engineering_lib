@@ -10,7 +10,7 @@ tags: []
 # IS 456 Structural Library — API Reference
 
 The public result dataclasses `api.ComplianceCaseResult`,
-`api.ComplianceReport`, and `api.DesignAndDetailResult` are Alpha-preview
+`api.ComplianceReport`, and `api.DesignAndDetailResult` are pre-1.0 Beta-preview
 exports. They describe software calculation evidence; none is professional
 approval.
 
@@ -489,6 +489,9 @@ result = api.design_and_detail_beam_is456(
 print(result.summary())  # 'B1@GF: 300×500mm, Ast=856mm², OK'
 print(result.design.flexure.ast_required)  # 856.26
 ```
+
+Compatibility identity note: `design_and_detail_beam_is456()` uses `beam_id`,
+while `design_beam_is456()` uses `case_id`.
 
 ### 1A.4A Supplied Reinforcement Evaluation
 

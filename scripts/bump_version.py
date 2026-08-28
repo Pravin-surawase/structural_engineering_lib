@@ -87,7 +87,7 @@ DOC_VERSION_FILES = {
         ),
         (
             r"structural-lib-is456={2,3}[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
-            "structural-lib-is456==={version}",
+            "structural-lib-is456=={version}",
         ),
     ],
     "Python/README.md": [
@@ -100,7 +100,7 @@ DOC_VERSION_FILES = {
         (
             r"(structural-lib-is456(?:\[[^\]]+\])?)={2,3}"
             r"[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
-            r"\g<1>==={version}",
+            r"\g<1>=={version}",
         ),
     ],
     "docs/getting-started/python-quickstart.md": [
@@ -110,7 +110,7 @@ DOC_VERSION_FILES = {
         ),
         (
             r"structural-lib-is456={2,3}[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
-            "structural-lib-is456==={version}",
+            "structural-lib-is456=={version}",
         ),
     ],
     "docs/reference/api.md": [
@@ -138,7 +138,7 @@ DOC_VERSION_FILES = {
         ),
         (
             r"structural-lib-is456={2,3}[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
-            "structural-lib-is456==={version}",
+            "structural-lib-is456=={version}",
         ),
     ],
     "docs/verification/validation-pack.md": [

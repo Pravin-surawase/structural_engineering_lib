@@ -21,8 +21,9 @@ tags: [fastapi, rest, openapi, is456]
 ## Overview
 
 The FastAPI application exposes the maintained Python calculation services to
-the React workbench and external clients. The current v0.23.1a2 exact-head
-application surface is recorded by its generated OpenAPI document.
+the React workbench and external clients. FastAPI and React are current
+exact-head application surfaces rather than contents of the 0.24.0 wheel; the
+live generated OpenAPI document records the active application contract.
 
 | Environment | Base URL |
 |---|---|
@@ -295,10 +296,10 @@ names because unit conversion occurs at the service boundary.
 ## Client generation status
 
 Raw HTTP plus the live OpenAPI document is the supported integration path for
-v0.23.1a2 Alpha. Every maintained JSON 2xx operation now declares a response
-schema; binary downloads and SSE routes declare their non-JSON response class.
+the exact-head application. Every maintained JSON 2xx operation declares a
+response schema; binary downloads and SSE routes declare their non-JSON response class.
 The development clients under `clients/` have been regenerated from this
-snapshot and correctly unwrap `{success, data}`. They remain unpublished Alpha
+snapshot and correctly unwrap `{success, data}`. They remain unpublished preview
 templates rather than a stable client-package promise.
 
 Regenerate after an intentional OpenAPI change with:
