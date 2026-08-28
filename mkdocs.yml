@@ -108,16 +108,19 @@ validation:
 nav:
   - Home: index.md
   - Getting Started:
-    - Overview: getting-started/agent-bootstrap.md
+    - Product Tour: getting-started/product-tour.md
     - Quick Start (Python): getting-started/python-quickstart.md
-    - Release Policy: getting-started/releases.md
+    - Beam Workflow: getting-started/user-guide.md
+    - Google Colab: getting-started/colab-workflow.md
+    - Installation Notes: getting-started/installation-notes.md
     - Beginner's Guide: getting-started/beginners-guide.md
+    - Current Release: getting-started/release-status.md
     - Mac Setup: getting-started/mac-mini-setup.md
   - Guides:
-    - Copilot Agents: guides/copilot-agents-usage-guide.md
+    - CLI Cookbook: cookbook/cli-reference.md
     - Cost Optimization: getting-started/cost-optimization-guide.md
     - Design Suggestions: getting-started/design-suggestions-guide.md
-    - Insights: getting-started/insights-guide.md
+    - Insights (experimental): getting-started/insights-guide.md
   - Reference:
     - API Reference: reference/api.md
     - Family Facade Contracts: reference/family-facade-contracts.md
@@ -130,8 +133,11 @@ nav:
     - Data Flow: architecture/data-flow-diagrams.md
     - Dependencies: architecture/dependencies.md
   - Contributing:
+    - Agent Bootstrap: getting-started/agent-bootstrap.md
+    - Copilot Agents: guides/copilot-agents-usage-guide.md
     - Development Guide: contributing/development-guide.md
     - Testing Strategy: contributing/testing-strategy.md
     - Code Standards: contributing/agent-coding-standards.md
+    - Release Ledger: getting-started/releases.md
   - API Docs:
     - structural_lib: api-reference/index.md

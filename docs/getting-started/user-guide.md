@@ -1,69 +1,44 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-28
 doc_type: guide
-complexity: intermediate
-tags: []
+complexity: beginner
+tags: [python, cli, beam, external-user]
 ---
 
-# User Guide — Complete Workflow
+# User Guide — Beam Workflow
 
 **Type:** Guide
 **Audience:** Users
-**Status:** Approved
+**Status:** Active
 **Importance:** High
 **Version:** 0.24.0
-**Created:** 2025-12-15
-**Last Updated:** 2026-03-29
+**Last Updated:** 2026-08-28
 
----
+This guide takes a new user from a clean installation to design results, a bar
+bending schedule, detailing JSON, and a review report. Start with the
+[Python quick start](python-quickstart.md) if you want a single calculation
+without files.
 
-This guide walks you through a complete beam design workflow from start to finish. For detailed installation help, see [Beginner's Guide](beginners-guide.md).
+## 1. Install and verify
 
----
-
-## Prerequisites
-
-```bash
-pip install structural-lib-is456
-```
-
----
-
-## 1. Design a Single Beam (Command Line)
-
-The fastest way to design a beam is via the CLI:
+StructLib 0.24.0 requires Python 3.11 or newer.
 
 ```bash
-# Create input file
-echo '{"schema_version":"cli-beam-design-input/v1","beams":[{"beam_id":"B1","story":"Ground","b":300,"D":500,"d":450,"span":4000,"cover":40,"fck":25,"fy":500,"Mu":150,"Vu":100,"stirrup_dia":8,"stirrup_spacing":150}]}' > beam.json
-
-# Run design
-python -m structural_lib design beam.json -o results.json
+python3 -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+python3 -m pip install --upgrade pip
+python3 -m pip install "structural-lib-is456===0.24.0"
+python3 -m structural_lib install-preflight
 ```
 
-**Output (`results.json`):**
-```json
-{
-  "schema_version": 1,
-  "code": "IS456",
-  "units": "IS456",
-  "beams": [{
-    "beam_id": "B1",
-    "story": "Ground",
-    "flexure": {"ast_required_mm2": 942.3, "is_safe": true},
-    "shear": {"sv_required_mm": 175, "is_safe": true}
-  }],
-  "summary": {"total_beams": 1, "passed": 1, "failed": 0}
-}
-```
+The preflight must report version `0.24.0` and a package origin inside the
+active environment's `site-packages` directory.
 
----
+## 2. Create strict beam input
 
-## 2. Batch Process Multiple Beams
-
-Create a CSV file with your beam data:
+Create `beams.csv` with these exact columns and rows:
 
 ```csv
 BeamID,Story,b,D,eff_d,Span,Cover,fck,fy,Mu,Vu,Stirrup_Dia,Stirrup_Spacing
@@ -72,154 +47,128 @@ B2,Ground,230,450,400,3500,40,20,415,80,75,8,175
 B3,First,350,600,550,5000,40,30,500,250,150,10,125
 ```
 
-Run:
-```bash
-python -m structural_lib design beams.csv -o results.json
-```
+All dimensions are millimetres, actions are kN/kN·m, and material strengths
+are N/mm². `Ast_req`, `Asc_req`, and `Status` are outputs and are not valid
+input columns. Any unknown, missing, duplicate, malformed, non-finite, or
+mixed-validity row blocks the whole file before calculation.
 
----
-
-## 3. Generate Bar Bending Schedule (BBS)
-
-After design, generate the BBS:
+## 3. Run design and exports
 
 ```bash
-python -m structural_lib bbs results.json -o schedule.csv
+python3 -m structural_lib design beams.csv -o results.json
+python3 -m structural_lib detail results.json -o detailing.json
+python3 -m structural_lib bbs results.json -o schedule.csv
+python3 -m structural_lib report results.json --format=html -o report.html
 ```
 
-**Output columns:** Mark, Type, Diameter, Length, Quantity, Weight
+These commands create:
 
----
+| File | Purpose |
+|---|---|
+| `results.json` | Inputs, flexure/shear results, provenance, and result envelope |
+| `detailing.json` | Selected bars, stirrups, development/lap data, and zones |
+| `schedule.csv` | Bar marks, diameters, lengths, quantities, and weights |
+| `report.html` | Human-readable review artifact |
 
-## 4. Generate DXF Drawings
-
-Create CAD-ready drawings (requires `pip install ezdxf`):
+For DXF output:
 
 ```bash
-python -m structural_lib dxf results.json -o drawings.dxf
+python3 -m pip install "structural-lib-is456[dxf]===0.24.0"
+python3 -m structural_lib dxf results.json -o drawings.dxf
 ```
 
-Opens in AutoCAD, LibreCAD, or any DXF viewer.
+## 4. Inspect the result
 
----
-
-## 5. Complete Job Workflow
-
-For complex projects, use a job file that combines everything:
-
-**job.json:**
-```json
-{
-  "project": "My Building",
-  "units": "IS456",
-  "beams": [
-    {"id": "B1", "b": 300, "D": 500, "d": 450, "Mu_mid": 150, "Vu_max": 100, "fck": 25, "fy": 500},
-    {"id": "B2", "b": 230, "D": 450, "d": 400, "Mu_mid": 80, "Vu_max": 75, "fck": 20, "fy": 415}
-  ],
-  "output": {
-    "design": true,
-    "bbs": true,
-    "dxf": true
-  }
-}
-```
-
-Run:
-```bash
-python -m structural_lib job job.json -o ./output/
-```
-
-Creates:
-- `output/design_results.json`
-- `output/bbs_schedule.csv`
-- `output/drawings.dxf`
-
----
-
-## 6. Python API (for scripting)
-
-For integration into your own scripts:
+Create `inspect_results.py` with this content so the check works on Windows,
+macOS, and Linux:
 
 ```python
-import structural_lib as sl
+import json
+from pathlib import Path
 
-# Single beam design
-result = sl.design_beam_is456(
-    b=300, d=450, D=500,
-    Mu_knm=150, Vu_kn=100,
-    fck=25, fy=500,
-    units="IS456"
-)
-
-print(f"Ast required: {result.flexure.ast_required:.0f} mm²")
-print(f"Stirrup spacing: {result.shear.spacing:.0f} mm")
-print(f"Safe: {result.is_compliant}")
+result = json.loads(Path("results.json").read_text(encoding="utf-8"))
+print(result["summary"])
+for member in result["beams"]:
+    envelope = member["result_envelope"]
+    print(
+        member["beam_id"],
+        envelope["engineering_status"],
+        member["governing_check"],
+        round(member["governing_utilization"], 3),
+    )
 ```
 
----
-
-## 7. Interpreting Results
-
-### Flexure Results
-
-| Field | Meaning | Action if Issue |
-|-------|---------|-----------------|
-| `is_safe=True` | Section is adequate | Proceed |
-| `is_safe=False` | Section inadequate | Increase b or D |
-| `section_type="under_reinforced"` | Good (ductile) | Ideal |
-| `section_type="over_reinforced"` | Bad (brittle) | Add compression steel |
-
-### Shear Results
-
-| Field | Meaning | Action if Issue |
-|-------|---------|-----------------|
-| `is_safe=True` | τv ≤ τc,max | Proceed |
-| `is_safe=False` | τv > τc,max | Increase section |
-| `spacing` | Required stirrup spacing | Use standard pitch ≤ spacing |
-
-### Common Warnings
-
-| Warning | Cause | Fix |
-|---------|-------|-----|
-| `"Minimum steel governs"` | Mu is very low | Normal, use minimum |
-| `"Over-reinforced section"` | Mu > Mu,lim | Add Asc or increase section |
-| `"τv exceeds τc,max"` | Shear too high | Increase b or d |
-
----
-
-## 8. Units Reference
-
-The library uses IS 456 standard units:
-
-| Quantity | Unit |
-|----------|------|
-| Dimensions (b, D, d) | mm |
-| Moment (Mu) | kN·m |
-| Shear (Vu) | kN |
-| Stress (fck, fy) | N/mm² |
-| Area (Ast, Asc) | mm² |
-
----
-
-## 9. Getting Help
+Run it:
 
 ```bash
-# CLI help
-python -m structural_lib --help
-python -m structural_lib design --help
-
-# Run tests to verify installation
-cd Python && python -m pytest -q
+python3 inspect_results.py  # Windows: py inspect_results.py
 ```
 
-**Resources:**
-- [API Reference](../reference/api.md)
-- [Verification Examples](../verification/examples.md)
+A calculation can complete with `PASS`, `FAIL`, or `HOLD`. Do not treat file
+creation or intake validity as an engineering pass.
+
+## 5. Use the canonical Python facade
+
+```python
+from structural_lib.design.is456 import beam
+
+request = beam.input(
+    member_id="B1",
+    story="GF",
+    case_id="ULS-1",
+    span_mm=5000,
+    b_mm=300,
+    D_mm=550,
+    d_mm=500,
+    fck_nmm2=25,
+    fy_nmm2=500,
+    mu_knm=150,
+    vu_kn=80,
+    d_dash_mm=50,
+    asv_mm2=100,
+    source_provenance="analysis-envelope:ULS-1",
+)
+result = beam.design(request)
+
+print(result.intake_status)
+print(result.calculation_status)
+print(result.engineering_status)
+print(result.calculation.flexure.Ast_required)
+```
+
+For detailing and BBS composition, use the
+[canonical beam recipe](../cookbook/python/beam.md). For columns, slabs,
+footings, walls, staircases, deep beams, flat slabs, and torsion, choose a
+recipe from the [family facade cookbook](../cookbook/python/family-facades.md).
+
+## 6. Use maintained source examples
+
+Repository examples are not included in the wheel. Clone the repository and
+open the [Python examples guide on
+GitHub](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/Python/examples/README.md).
+
+The strict CLI sample is `sample_beam_design.csv`. The similarly named
+`sample_building_beams.csv` belongs only to the educational
+`complete_beam_design.py` script and is intentionally not strict CLI input.
+
+## 7. Troubleshooting and help
+
+```bash
+python3 -m structural_lib --help
+python3 -m structural_lib design --help
+python3 -m structural_lib install-preflight
+```
+
 - [Troubleshooting](../reference/troubleshooting.md)
+- [Public Python API](../reference/api.md)
+- [Current release](release-status.md)
+- [Append-only release ledger](releases.md)
+- [Ask a question](https://github.com/Pravin-surawase/structural_engineering_lib/issues/new?template=support.yml)
+- [Report a bug](https://github.com/Pravin-surawase/structural_engineering_lib/issues/new?template=bug_report.yml)
 
----
+## Engineering boundary
 
-## Next Steps
-
-1. **Validate your workflow** — Run the [verification examples](../verification/examples.md) to confirm library accuracy
-3. **Explore advanced features** — See [Python Recipes](../cookbook/python-recipes.md) for complex scenarios
+StructLib is a design aid with case-qualified supported scope. Review source
+actions, geometry, materials, assumptions, limitations, `PASS`/`FAIL`/`HOLD`
+status, and outputs independently with a qualified structural engineer before
+engineering or construction use.

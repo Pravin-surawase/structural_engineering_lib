@@ -2,19 +2,21 @@
 
 Quick onboarding guides for new users of the structural engineering library.
 
-**Files:** 15 | **Updated:** 2026-01-11
+**Current release:** 0.24.0 | **Updated:** 2026-08-28
 
 ---
 
 ## 🚀 Quick Start Decision Tree
 
 ```
-What's your background?
-├─ Python developer → Python Quickstart (5 min)
-├─ Excel user → Excel Quickstart (5 min)
-├─ Complete beginner → Beginner's Guide (30 min)
-├─ AI/Copilot user → Copilot Quick Start (10 min)
-└─ Just browsing → User Guide (10 min)
+What do you want to do?
+├─ Verify the published package → Current Release (2 min)
+├─ Run one Python calculation → Python Quickstart (5 min)
+├─ Run a beam file workflow → User Guide (10 min)
+├─ Use Google Colab → Colab Workflow (10 min)
+├─ See the visual workbench → Product Tour (5 min)
+├─ Start from zero → Beginner's Guide (30 min)
+└─ Contribute to the repository → Agent/Development Guides
 ```
 
 ---
@@ -23,8 +25,10 @@ What's your background?
 
 | Guide | Audience | Time |
 |-------|----------|------|
+| [release-status.md](release-status.md) | Anyone installing the public package | 2 min |
 | [user-guide.md](user-guide.md) | All users - comprehensive overview | 10 min |
 | [beginners-guide.md](beginners-guide.md) | First-time users - step by step | 30 min |
+| [product-tour.md](product-tour.md) | Users evaluating the visual workbench | 5 min |
 
 ## Platform-Specific Quickstarts
 
@@ -46,7 +50,7 @@ What's your background?
 
 | Guide | Feature |
 |-------|---------|
-| [insights-guide.md](insights-guide.md) | Smart design insights |
+| [insights-guide.md](insights-guide.md) | Experimental advisory insights compatibility API |
 | [design-suggestions-guide.md](design-suggestions-guide.md) | Design optimization suggestions |
 | [cost-optimization-guide.md](cost-optimization-guide.md) | Cost optimization features |
 
@@ -54,7 +58,8 @@ What's your background?
 
 | Document | Purpose |
 |----------|---------|
-| [releases.md](releases.md) | Release notes and changelog |
+| [release-status.md](release-status.md) | Current public version, install, maturity, and claim boundary |
+| [releases.md](releases.md) | Append-only historical release ledger |
 
 ---
 
@@ -62,6 +67,7 @@ What's your background?
 
 | If you... | Start with |
 |-----------|------------|
+| Need the current public version | [release-status.md](release-status.md) |
 | Want to see the full workflow | [user-guide.md](user-guide.md) |
 | Never used this library before | [beginners-guide.md](beginners-guide.md) |
 | Are a Python developer | [python-quickstart.md](python-quickstart.md) |

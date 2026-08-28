@@ -13,8 +13,9 @@ Usage (local):
     python examples/colab_workflow.py
 
 Usage (Google Colab):
-    1) Install the package from GitHub (see repo README / docs)
-    2) Copy this file into the notebook environment and run it.
+    1) Run: %pip install -q "structural-lib-is456[dxf]===0.24.0"
+    2) Restart the runtime.
+    3) Copy this file into the notebook environment and run it.
 """
 
 from __future__ import annotations

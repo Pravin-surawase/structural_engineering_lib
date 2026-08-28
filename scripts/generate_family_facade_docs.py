@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate or check the 13-family external-preview cookbook and reference."""
+"""Generate or check the 13-family public cookbook and reference."""
 
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ import inspect
 import json
 import runpy
 import sys
+import tomllib
 from collections import Counter
 from collections.abc import Mapping
 from pathlib import Path
@@ -22,6 +23,11 @@ PYTHON_ROOT = REPO_ROOT / "Python"
 COOKBOOK_ROOT = REPO_ROOT / "docs/cookbook/python"
 REFERENCE_PATH = REPO_ROOT / "docs/reference/family-facade-contracts.md"
 INDEX_PATH = COOKBOOK_ROOT / "family-facades.md"
+PROJECT_VERSION = str(
+    tomllib.loads((PYTHON_ROOT / "pyproject.toml").read_text(encoding="utf-8"))[
+        "project"
+    ]["version"]
+)
 
 
 def _recipe_specs() -> tuple[Any, ...]:
@@ -126,8 +132,9 @@ except InputContractError as error:
 - Exact signatures, units, enums, field decisions, and status guidance:
   [family facade contracts](../../reference/family-facade-contracts.md)
 
-This Alpha recipe is not professional approval, engineering-use approval,
-Windows application acceptance, a release authorization, or publication.
+This recipe ships in `structural-lib-is456==={PROJECT_VERSION}` and remains subject to
+qualified review. It is not professional approval, engineering-use approval,
+construction-use approval, or Windows application acceptance.
 '''
 
 
@@ -168,9 +175,10 @@ status guidance. Replay all pages against an exact wheel with:
 ./scripts/python_runtime.sh scripts/verify_lib_pro_012_r0_external_preview.py --wheel dist/structural_lib_is456-*.whl
 ```
 
-This external-preview candidate remains subject to qualified review. It is not
-professional approval, Windows application acceptance, release authorization,
-or publication.
+These recipes ship in `structural-lib-is456==={PROJECT_VERSION}` and remain subject to
+qualified review. Publication is a software-distribution fact, not professional
+approval, engineering-use approval, construction-use approval, or Windows
+application acceptance.
 """
 
 
@@ -324,8 +332,9 @@ transport projection uses `structural-problem/v1`.
 - Result consumption is finite JSON through `to_dict()` and
   `structural-result-envelope/v2`.
 
-No status is professional approval, engineering-use approval, Windows
-application acceptance, release authorization, or publication.
+No calculation or review status is professional approval, engineering-use
+approval, construction-use approval, or Windows application acceptance. The
+`v{PROJECT_VERSION}` software-release status is tracked separately in the release ledger.
 """
 
 

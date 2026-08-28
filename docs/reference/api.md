@@ -16,7 +16,7 @@ approval.
 
 **Type:** Reference
 **Audience:** Developers
-**Status:** Development Preview — Supported Cases Only
+**Status:** Pre-1.0 Public API — Supported Cases Only
 **Importance:** Critical
 **Document Version:** 0.24.0
 **Created:** 2025-01-01
@@ -4272,7 +4272,7 @@ Frozen dataclass: `tau_v_nmm2`, `tau_c_nmm2`, `perimeter_mm`, `Vu_punch_kN`, `d_
 
 ---
 
-## 18. Straight-Flight Staircase Workflow — Development Preview
+## 18. Straight-Flight Staircase Workflow — Supported Case
 
 ```python
 from structural_lib import StraightFlightStaircaseInput
@@ -4333,7 +4333,7 @@ retains workflow, load-basis, benchmark, clause, and source identities.
 
 ---
 
-## 19. Braced-Wall Workflow — Development Preview
+## 19. Braced-Wall Workflow — Supported Case
 
 ```python
 from structural_lib import BracedWallDesignInput
@@ -4383,7 +4383,7 @@ approval remain held.
 
 ---
 
-## 20. Simply Supported Deep-Beam Workflow — Development Preview
+## 20. Simply Supported Deep-Beam Workflow — Supported Case
 
 ```python
 from structural_lib import SimplySupportedDeepBeamDesignInput
@@ -4451,7 +4451,7 @@ professional approval remain held.
 
 ---
 
-## 21. Regular Interior Flat-Slab Workflow — Development Preview
+## 21. Regular Interior Flat-Slab Workflow — Supported Case
 
 ```python
 def design_regular_interior_flat_slab_is456(
@@ -4479,7 +4479,7 @@ remain held.
 
 ---
 
-## 22. Symmetric Combined-Footing Workflow — Development Preview
+## 22. Symmetric Combined-Footing Workflow — Supported Case
 
 ```python
 from structural_lib import (

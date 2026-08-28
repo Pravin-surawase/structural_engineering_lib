@@ -11,9 +11,9 @@ Task-focused recipes and code snippets for common structural engineering workflo
 | Recipe | Description | Status |
 |--------|-------------|--------|
 | [cli-reference.md](cli-reference.md) | Complete CLI command reference with examples | ✅ |
-| [python-recipes.md](python-recipes.md) | Copy-paste Python snippets for common tasks | ✅ |
-| [python/family-facades.md](python/family-facades.md) | Index of all 13 canonical family construction journeys | Alpha |
-| [family facade contracts](../reference/family-facade-contracts.md) | Generated signatures, units, enums, errors, and statuses | Alpha |
+| [python/family-facades.md](python/family-facades.md) | All 13 canonical family construction journeys | Published in 0.24.0 |
+| [family facade contracts](../reference/family-facade-contracts.md) | Generated signatures, units, enums, errors, and statuses | Published in 0.24.0 |
+| [python-recipes.md](python-recipes.md) | Compatibility and low-level API snippets | Advanced / compatibility |
 
 ---
 
@@ -35,11 +35,11 @@ python -m structural_lib dxf results.json -o drawings.dxf
 python -m structural_lib job job.json -o ./output
 ```
 
-### Quick Validation
+### Installation Check
 
 ```bash
-# Validate input CSV format
-python -m structural_lib validate input.csv
+# Confirm interpreter, version, package origin, and optional extras
+python -m structural_lib install-preflight
 ```
 
 ---

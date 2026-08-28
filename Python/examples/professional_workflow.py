@@ -1,12 +1,11 @@
 #!/usr/bin/env python
-"""Professional Engineering Workflow Example.
+"""Review-oriented engineering workflow example.
 
-This example demonstrates the complete professional workflow using the
-v0.18+ modules:
+This example demonstrates audit and report utilities using compatibility APIs:
 - BeamInput: Structured input validation
-- Audit trail: SHA-256 verification and immutable logs
+- Audit trail: SHA-256 calculation fingerprints
 - Calculation reports: HTML/JSON/Markdown output
-- Testing strategies: Quality assurance
+- Testing strategies: automated invariant checks
 
 Example Use Case:
 A structural engineer needs to:
@@ -16,11 +15,10 @@ A structural engineer needs to:
 4. Verify calculation integrity
 5. Run regression tests
 
-This workflow ensures:
-- Full traceability for professional liability
-- Reproducible calculations with SHA-256 verification
-- Print-ready reports for client delivery
-- Quality assurance through property-based testing
+The generated artifacts support reproducibility and review. They are not an
+independent calculation, qualified-engineer review, professional approval, or
+authorization for construction use. New integrations should start with the
+canonical family facades in ``structural_lib.design.is456``.
 """
 
 from __future__ import annotations
@@ -47,9 +45,9 @@ from structural_lib.services.testing_strategies import (
 
 
 def main() -> None:
-    """Run the professional workflow example."""
+    """Run the review-oriented workflow example."""
     print("=" * 60)
-    print("Professional Engineering Workflow - IS 456 Beam Design")
+    print("Review-Oriented Workflow - IS 456 Beam Design")
     print("=" * 60)
 
     # =========================================================================
@@ -150,7 +148,7 @@ def main() -> None:
     print(f"   Integrity: {'✅ Verified' if is_verified else '❌ Failed'}")
 
     # =========================================================================
-    # STEP 4: Generate professional reports
+    # STEP 4: Generate reports for review
     # =========================================================================
     print("\n📄 STEP 4: Report Generation")
     print("-" * 40)
@@ -219,7 +217,7 @@ def main() -> None:
     # SUMMARY
     # =========================================================================
     print("\n" + "=" * 60)
-    print("✅ Professional Workflow Complete")
+    print("✅ Review-Oriented Workflow Complete")
     print("=" * 60)
     print("""
 Summary:
@@ -229,11 +227,13 @@ Summary:
 4. ✅ Reports generated in HTML/JSON/Markdown
 5. ✅ Quality assured with invariant checks
 
-This workflow ensures:
-- Full traceability for professional liability
-- Reproducible calculations with version control
-- Print-ready reports for client delivery
-- Quality assurance through automated testing
+This example demonstrates:
+- Structured inputs and a calculation fingerprint
+- Reproducible calculation artifacts
+- HTML/JSON/Markdown reports for independent review
+- Automated invariant checks
+
+These artifacts do not replace an independent calculation or qualified review.
 """)
 
 

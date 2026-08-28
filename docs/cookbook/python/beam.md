@@ -11,9 +11,9 @@ tags: [beam, canonical-api, lib-pro-013-b0]
 
 Workflow ID: `is456.beam.design/v1` (design, design-and-detail, and BBS modes)
 
-Minimum artifact: the exact accepted B0 wheel containing
-`structural_lib.design.is456.beam`. The older public `0.24.0a1` artifact does
-not contain this contract and remains held.
+Minimum artifact: `structural-lib-is456===0.24.0`, which contains
+`structural_lib.design.is456.beam`. Confirm the installed version and package
+origin with `python -m structural_lib install-preflight`.
 
 Supported case: one rectangular beam, caller-supplied factored non-negative
 action magnitudes, explicit effective depth, IS 456 materials, explicit
@@ -112,7 +112,6 @@ python -m structural_lib beam-v1 request.json --mode design-and-detail
 python -m structural_lib beam-v1 request.json --mode bbs
 ```
 
-The result retains a final-review state field for claim truth. Under the
-current owner sequencing decision, engineer review is assigned once after the
-integrated B0, F0, and R0 library is complete; it is not an intermediate gate
-for this workflow.
+The result retains a final-review state field for claim truth. The published
+software has not received the deferred cumulative practicing-engineer review;
+every project result still requires independent qualified review.

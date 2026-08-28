@@ -5,6 +5,147 @@
 
 ---
 
+## 2026-08-28 — Session: External documentation usability audit
+
+**Agent:** Codex (`documentation-writer`, sole writer; no subagents).
+
+**Branch:** `codex/external-docs-usability`.
+
+**Focus:** Audit the newly published `structural-lib-is456==0.24.0` as an
+external user, repair the public README, installation, quickstart, cookbook,
+generated reference, and runnable-example journeys, and add regressions that
+keep those journeys executable. Engineering calculations, supported scope,
+release artifacts, release authorization, and the append-only release ledger
+remain unchanged.
+
+**Completed:**
+
+- Verified the current PyPI and GitHub `v0.24.0` publication, then installed the
+  exact public wheel in an isolated environment and replayed import, CLI,
+  canonical beam, detailing, BBS, DXF/report, column, and synthetic batch
+  journeys.
+- Replaced stale pre-publication and internal-agent entry points with an
+  external-first documentation route, a current-release status page, concise
+  installation and Colab guidance, and canonical public-facade examples.
+- Repaired the synthetic pipeline input contract, removed professional/client
+  delivery claims from the illustrative workflow, documented compatibility
+  surfaces honestly, and made generated family-facade documentation derive the
+  package version instead of embedding a release-specific preview claim.
+- Added executable regressions for the root and package READMEs plus the
+  synthetic pipeline. The historical release ledger was inspected but not
+  modified because it is append-only.
+
+### Issues encountered
+
+- The root README still described `0.24.0` as unpublished after the public
+  release, and the documentation landing/navigation route sent new users into
+  contributor/agent bootstrap material.
+- The package README's advertised canonical beam design-to-detailing chain
+  failed because it passed a `BeamDesignResultV1` into a compatibility helper
+  that expects the legacy result shape. Other quickstarts used deprecated or
+  renamed low-level attributes and arguments.
+- The synthetic batch example generated CLI-forbidden output fields as inputs
+  and omitted the effective-depth basis, so a published-wheel replay stopped
+  before design. Several cookbook snippets repeated the same input-schema
+  mistake or an invalid validation command.
+- Example and generated-reference pages retained preview, TODO, production,
+  professional-service, or client-delivery language that exceeded the public
+  package's actual claim boundary.
+- The first normal-hook pass found the generated next-session handoff still
+  bound to the preceding publication-closeout receipt and the API compatibility
+  ledger stale after the new canonical example callers were added.
+- Final external-reader review found the package README still describing the
+  API as a development preview, contradicting its own shipped two-way slab and
+  combined/strap-footing facades, while the machine-readable API registry
+  hard-coded release channel `alpha` for normal version `0.24.0`.
+- The first worktree command targeted the not-yet-created worktree as its
+  working directory. A later zsh bulk-edit command treated a newline-delimited
+  scalar as one filename, and one initial patch invocation omitted the required
+  patch header. The first handoff-receipt command also supplied the Markdown
+  session log to an option that accepts structured hosted-evidence JSON only.
+  A focused strict-site build used bare `mkdocs`, which is not on this
+  worktree's shell path. The first closeout-usage command omitted the required
+  phase, candidate, and retry-counter evidence and was rejected without
+  recording a checkpoint.
+
+### Root causes and resolutions
+
+- Confirmed root cause: release-closeout evidence had advanced independently
+  of several external entry pages. Resolution: make the external landing pages
+  point to a single current-release page backed by the immutable publication
+  receipt, while leaving the append-only historical ledger untouched.
+- Confirmed root cause: examples mixed canonical versioned facades with legacy
+  compatibility helpers and guessed result fields. Resolution: use
+  `beam.design_and_detail`, `beam.bbs`, and current column/facade contracts;
+  retain low-level recipes only where explicitly labeled compatibility APIs.
+  The exact public wheel now executes the advertised canonical journeys.
+- Confirmed root cause: the synthetic CSV builder confused computed CLI output
+  columns with strict input columns. Resolution: remove `Ast_req`/`Asc_req`, add
+  `eff_d`, and execute the example in a regression test. Three-beam and
+  five-beam published-wheel runs both complete with PASS results and schedules.
+- Confirmed root cause: hand-maintained release-specific prose existed in the
+  family-facade generator and its outputs. Resolution: derive the version from
+  `pyproject.toml`, use publication-neutral wording, and verify every generated
+  document is current.
+- Confirmed root cause: illustrative docs inherited internal planning and
+  professional-service wording without an external-user review. Resolution:
+  remove TODO/preview/production/client-delivery claims and state the package's
+  engineering-review limitations at the points where users encounter outputs.
+- Confirmed root cause: the maintained handoff block intentionally projects the
+  newest session receipt, while the compatibility ledger inventories every
+  canonical/compatibility caller in documentation and tests. Resolution:
+  regenerate the ledger (caller records 1,625 -> 1,635, with zero ambiguous
+  callers) and update the generated handoff block from this task's receipt; the
+  two failed hooks are the repair evidence.
+- Confirmed root cause: package promotion to a normal version updated release
+  tooling but the API-classification generator, its regression, and several
+  external reference labels retained Alpha-era constants; two Python README
+  boundary paragraphs also predated the canonical family facades. Resolution:
+  derive `normal` versus `alpha` from the supported version forms, retain the
+  separate pre-1.0/no-stable-promise boundary, regenerate both API registries,
+  and align the visible package, slab, footing, insights, and API-reference
+  wording with the shipped supported cases.
+- Confirmed root cause: the command runner requires an existing `workdir`, zsh
+  scalars do not split on newlines by default, and `apply_patch` requires an
+  exact `*** Begin Patch` envelope; the receipt's optional `--evidence` input is
+  JSON rather than a general evidence-file reference. Resolution: create the
+  worktree from the repository root, use NUL-delimited `rg -l -0 | xargs -0`
+  for the bounded generated-doc edit, rerun the malformed patch correctly, and
+  regenerate the receipt without the inapplicable option; final diffs and
+  checks show no partial or unintended write. ⚠️ TERMINAL ISSUE: the initial
+  worktree, bulk-edit, patch, and receipt invocations were rejected, no-ops, or
+  diagnostic-only -> reran them with an existing cwd, NUL-delimited paths, a
+  valid patch envelope, and the receipt's documented local-only inputs.
+- Confirmed root cause: MkDocs is installed in the repository-selected Python
+  runtime rather than exposed as a global shell executable. Resolution: rerun
+  the exact build through `./scripts/python_runtime.sh -m mkdocs`; no repository
+  file was affected by the rejected invocation. ⚠️ TERMINAL ISSUE: bare
+  `mkdocs` was unavailable -> used the worktree-bound Python runtime.
+- Confirmed root cause: a closeout usage checkpoint is an evidence record, not
+  the shorter summary command, and requires all seven non-overlapping phases,
+  an immutable candidate head, and the five audit/retry counters. Resolution:
+  defer the checkpoint until after candidate creation and supply the complete
+  measured record. ⚠️ TERMINAL ISSUE: the incomplete closeout checkpoint was
+  rejected -> use the documented complete closeout arguments on the commit.
+
+### Validation through content freeze
+
+- Public artifact: isolated `structural-lib-is456==0.24.0` install, `pip check`,
+  version/origin preflight, root README call, canonical beam/detail/BBS and
+  column workflows, CLI design/detail/BBS/DXF/report, and the repaired
+  synthetic batch all pass.
+- Focused regressions: five README/example cases pass.
+- Documentation: all maintained documentation checks pass; 518 Markdown files
+  and 1,115 local links have zero broken links; context validation passes.
+- Strict MkDocs production build, changed-Python Ruff, generated family-facade
+  drift check, and whitespace/error diff check pass. Existing informational
+  metadata warnings are unchanged.
+- The repository quick gate, normal hooks, immutable candidate, clean session
+  closeout, and hosted documentation checks remain the closeout sequence.
+
+**Git handoff receipt:**
+`docs/verification/external-docs-usability-git-handoff-receipt.json`
+
 ## 2026-08-28 — Session: RELEASE-0240 Public Publication Closeout
 
 **Agent:** Codex (`doc-master`, sole writer; no subagents).

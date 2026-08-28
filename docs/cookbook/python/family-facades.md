@@ -41,6 +41,7 @@ status guidance. Replay all pages against an exact wheel with:
 ./scripts/python_runtime.sh scripts/verify_lib_pro_012_r0_external_preview.py --wheel dist/structural_lib_is456-*.whl
 ```
 
-This external-preview candidate remains subject to qualified review. It is not
-professional approval, Windows application acceptance, release authorization,
-or publication.
+These recipes ship in `structural-lib-is456===0.24.0` and remain subject to
+qualified review. Publication is a software-distribution fact, not professional
+approval, engineering-use approval, construction-use approval, or Windows
+application acceptance.

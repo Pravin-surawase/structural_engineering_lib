@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-28
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -11,11 +11,11 @@ tags: []
 
 **Type:** Guide
 **Audience:** Users
-**Status:** Approved
+**Status:** Active experimental compatibility API
 **Importance:** Medium
 **Version:** 1.0.0
 **Created:** 2025-12-28
-**Last Updated:** 2026-03-29
+**Last Updated:** 2026-08-28
 
 ---
 
@@ -541,5 +541,5 @@ See [insights-api.md](../reference/insights-api.md) for detailed API documentati
 
 ---
 
-**Last updated:** 2026-03-29
-**Version: 0.14.0 (preview)
+**Last updated:** 2026-08-28
+**Package:** 0.24.0 (experimental compatibility API)
