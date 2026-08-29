@@ -32,6 +32,7 @@ __all__ = [
     "EvidenceStateV1",
     "EvidenceValueV1",
     "LinearStaticCaseParametersV1",
+    "LinearStaticInitialConditionV1",
     "LinearStaticLoadItemV1",
     "LoadCaseDefinitionV1",
     "LoadCaseParameterSetV1",
@@ -181,10 +182,27 @@ class LinearStaticLoadItemV1(_AnalysisContractModel):
     evidence_reference: str = Field(min_length=1, max_length=500)
 
 
+class LinearStaticInitialConditionV1(_AnalysisContractModel):
+    """Installed zero-state sentinel retained without accepting prior cases."""
+
+    raw_initial_case: str = Field(max_length=160)
+    normalized_condition: Literal["ZERO_UNSTRESSED"] = "ZERO_UNSTRESSED"
+    evidence_reference: str = Field(min_length=1, max_length=500)
+
+    @model_validator(mode="after")
+    def validate_zero_state_sentinel(self) -> Self:
+        if self.raw_initial_case.strip().casefold() not in {"", "none"}:
+            raise ValueError(
+                "zero-state linear-static initial condition accepts only blank or None"
+            )
+        return self
+
+
 class LinearStaticCaseParametersV1(_AnalysisContractModel):
     parameter_kind: Literal[LoadCaseParameterSetKindV1.LINEAR_STATIC] = (
         LoadCaseParameterSetKindV1.LINEAR_STATIC
     )
+    initial_condition: LinearStaticInitialConditionV1
     load_items: tuple[LinearStaticLoadItemV1, ...] = Field(min_length=1)
 
     @model_validator(mode="after")

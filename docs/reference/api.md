@@ -191,6 +191,11 @@ adapter consumes a caller-supplied SapModel-shaped provider and never imports
 COM, attaches to ETABS, selects output, runs analysis, or returns a partial
 catalogue after any provider, shape, status, or semantic failure.
 
+`structural_lib.LinearStaticInitialConditionV1` retains the installed raw blank or
+`None` sentinel and normalizes only those documented forms to
+`ZERO_UNSTRESSED`. A real prior-case name remains unsupported and blocks the
+adapter; it is never silently treated as a zero-state case.
+
 Catalogue identity is deterministic through
 `api.canonical_etabs_result_catalogue_hash_basis_json_v1` and
 `api.verify_etabs_result_catalogue_hash_v1`. A caller combines the accepted

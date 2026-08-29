@@ -15003,8 +15003,8 @@
     {
       "module": "structural_lib",
       "export_classification": "preview",
-      "declared_export_count": 272,
-      "classified_symbol_count": 272,
+      "declared_export_count": 273,
+      "classified_symbol_count": 273,
       "symbols": [
         {
           "name": "AnalysisStateV1",
@@ -15756,6 +15756,15 @@
         {
           "name": "LinearStaticCaseParametersV1",
           "qualified_name": "structural_lib.LinearStaticCaseParametersV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "LinearStaticInitialConditionV1",
+          "qualified_name": "structural_lib.LinearStaticInitialConditionV1",
           "kind": "class",
           "classification": "preview",
           "declared_export": true,

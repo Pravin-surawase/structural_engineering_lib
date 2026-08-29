@@ -1,0 +1,89 @@
+{
+  "schema_version": "etabs-w3d-initial-condition-sentinel-repair-evidence/v1",
+  "task_id": "ETABS-EXCEL-BEAM-W3-CAMPAIGN",
+  "packet": "W3D-R1",
+  "verdict": "NARROW_SENTINEL_REPAIR_LOCALLY_ACCEPTED",
+  "observed_at_utc": "2026-08-29T21:31:20.5387664Z",
+  "source": {
+    "accepted_w3c_pr": 903,
+    "accepted_w3c_merge_commit": "a44bf0c8f57de3f3823dc4e584a6e0e3cbf02ee1",
+    "accepted_w3c_tree": "fb6976c31a8ce334dd1198cedd416e9b815d509e",
+    "branch": "codex/etabs-w3d-live-catalogue-windows",
+    "worktree": "C:/CodexWork/worktrees/etabs-w3d-live-catalogue-windows"
+  },
+  "blocked_live_observation": {
+    "adapter_status": "BLOCKED",
+    "issue_code": "LINEAR_STATIC_INITIAL_CASE_UNSUPPORTED",
+    "installed_raw_initial_case": "None",
+    "model_sha256_before_and_after": "99b7f3f17051929196ef6494d8f4d220d895fc3dac5e1a57164a53bf8fa6948b",
+    "model_byte_count_before_and_after": 702831,
+    "model_modified_utc_before_and_after": "2026-08-28T17:00:30.127813Z",
+    "partial_catalogue_returned": false,
+    "external_evidence_root_label": "live-catalogue-a44bf0c8",
+    "external_files": {
+      "preflight.json": {
+        "byte_count": 1985,
+        "sha256": "40256ff2d0c60fe7359b8cf6bd4e90752c27bdcd08be30dac5a11790c3d7b2b7"
+      },
+      "direct-catalogue-result.json": {
+        "byte_count": 14640,
+        "sha256": "3bf4661369c196f2f8e8285a428d03aa6127160fbcd3cfef5e2bf71ebaff1c62"
+      },
+      "blocker.json": {
+        "byte_count": 545,
+        "sha256": "a3cfc0d7ab1670ff7d082ba16b219e328d3504432d01d4c401572858581ef9a5"
+      }
+    }
+  },
+  "semantic_authority": {
+    "source_kind": "CSI_OFFICIAL_API_DOCUMENTATION_PLUS_INSTALLED_ETABS_23_3_1_OBSERVATION",
+    "official_url": "https://docs.csiamerica.com/help-files/etabs-api-2016/html/a91b3c41-9b9f-1131-1d3b-ccb18ae812bf.htm",
+    "documented_semantics": "The getter may return blank, None, or an existing analysis-case name. Blank or None represents zero unstressed initial conditions; a qualifying nonlinear prior case supplies ending stiffness.",
+    "correction": "Accept and losslessly retain only blank or case-insensitive None as ZERO_UNSTRESSED. Continue blocking every actual prior-case name."
+  },
+  "implementation": {
+    "contract_path": {
+      "path": "Python/structural_lib/core/analysis_contracts.py",
+      "byte_count": 18579,
+      "sha256": "87b5a260c5fc0695f06b84b4cb0ed08b320baa21b9b6469bbccf24503de0df3f"
+    },
+    "adapter_path": {
+      "path": "Python/structural_lib/services/etabs_result_catalogue_adapter.py",
+      "byte_count": 42033,
+      "sha256": "ac6e57fcee634698ea96aeab866fb9c1a27505992a220805e2c7b276ca1c31e9"
+    },
+    "public_type": "LinearStaticInitialConditionV1",
+    "accepted_raw_forms": [
+      "",
+      "None (case-insensitive after trimming)"
+    ],
+    "normalized_condition": "ZERO_UNSTRESSED",
+    "prior_case_names_supported": false
+  },
+  "focused_verification": {
+    "pytest": {
+      "passed": 24,
+      "failed": 0
+    },
+    "ruff": "PASS",
+    "mypy": "PASS",
+    "api_controls": "PASS_3_OF_3",
+    "strict_documentation": "PASS_5_OF_5",
+    "quick_gate": {
+      "passed": 10,
+      "failed": 0,
+      "reused": 0,
+      "reported_seconds": 97.6
+    },
+    "historical_w3b_evidence_policy": "W3B's accepted source hashes remain immutable historical facts; its test now validates the embedded accepted identities instead of requiring future contract files to remain byte-identical."
+  },
+  "scope": {
+    "live_attempt_preserved_as_blocked": true,
+    "live_rerun_before_repair_merge": false,
+    "com_import_or_object_creation_by_repair_tests": false,
+    "etabs_or_excel_interaction_by_repair_tests": false,
+    "setter_analysis_design_force_save_or_model_mutation": false,
+    "professional_or_engineering_approval": false
+  },
+  "next_action": "Complete local gates, merge the unchanged repair through a separate PR, then create a fresh continuation worktree and rerun W3D once."
+}
