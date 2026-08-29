@@ -1,8 +1,8 @@
 {
-  "generated": "2026-08-28",
+  "generated": "2026-08-29",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 199,
+  "count": 215,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -18,6 +18,21 @@
       "name": "Beam3DGeometry",
       "kind": "class",
       "signature": "(beam_id: 'str', story: 'str', dimensions: 'dict[str, float]', concrete_outline: 'list[Point3D]', rebars: 'list[RebarPath]', stirrups: 'list[StirrupLoop]', metadata: 'dict' = <factory>) -> None"
+    },
+    {
+      "name": "BeamActionPageV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "BeamDemandBuildResultV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "BeamDemandDerivationRequestV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
     },
     {
       "name": "BeamGeometry",
@@ -153,6 +168,26 @@
       "name": "ETABSForceRow",
       "kind": "class",
       "signature": "(story: 'str', beam_id: 'str', case_id: 'str', station: 'float', m3: 'float', v2: 'float', unique_name: 'str' = '', p: 'float' = 0.0) -> None"
+    },
+    {
+      "name": "ETABSResultCatalogueBuildRequestV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSResultCatalogueBuildResultV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSResultCatalogueCapacityV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSResultCatalogueV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
     },
     {
       "name": "EffectiveDepthBasisV1",
@@ -495,6 +530,16 @@
       "signature": "(library_version: 'str', python_version: 'str', platform: 'str', design_codes: 'tuple[str, ...]', dependencies: 'dict[str, str | None]') -> None"
     },
     {
+      "name": "W3BuildIssueV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "W3BuildStatusV1",
+      "kind": "class",
+      "signature": "(*args, **kwds)"
+    },
+    {
       "name": "WorkflowCatalog",
       "kind": "class",
       "signature": "(schema_version: 'str', catalog_version: 'str', code_edition: 'str', compatible_versions: 'tuple[str, ...]', capabilities: 'tuple[WorkflowCapability, ...]', component_capabilities: 'tuple[IS456Capability, ...]', composed_workflows: 'tuple[ComposedWorkflowCapability, ...]') -> None"
@@ -518,6 +563,11 @@
       "name": "build_detailing_input",
       "kind": "function",
       "signature": "(result: 'ComplianceCaseResult', *, beam_id: 'str' = 'B1', b_mm: 'float' = 300.0, D_mm: 'float' = 500.0, d_mm: 'float' = 450.0, span_mm: 'float' = 4000.0, cover_mm: 'float' = 40.0, fck_nmm2: 'float' = 25.0, fy_nmm2: 'float' = 500.0) -> 'dict[str, Any]'"
+    },
+    {
+      "name": "build_etabs_result_catalogue_v1",
+      "kind": "function",
+      "signature": "(request: 'ETABSResultCatalogueBuildRequestV1', /) -> 'ETABSResultCatalogueBuildResultV1'"
     },
     {
       "name": "build_rectangular_gravity_workflow_request_v1",
@@ -568,6 +618,16 @@
       "name": "calculate_torsion_stirrup_area",
       "kind": "function",
       "signature": "(tu_knm: 'float', vu_kn: 'float', b: 'float', d: 'float', b1: 'float', d1: 'float', fy: 'float', tc: 'float') -> 'tuple[float, float, float]'"
+    },
+    {
+      "name": "canonical_beam_demand_snapshot_hash_basis_json_v1",
+      "kind": "function",
+      "signature": "(snapshot: 'BeamDemandSnapshotV1', /) -> 'str'"
+    },
+    {
+      "name": "canonical_etabs_result_catalogue_hash_basis_json_v1",
+      "kind": "function",
+      "signature": "(catalogue: 'ETABSResultCatalogueV1', /) -> 'str'"
     },
     {
       "name": "check_anchorage_at_simple_support",
@@ -703,6 +763,11 @@
       "name": "create_jobs_from_etabs_csv",
       "kind": "function",
       "signature": "(csv_path: 'str | Path', geometry: 'dict[str, dict[str, float]]', *, output_dir: 'str | Path | None' = None, default_fck: 'float' = 25.0, default_fy: 'float' = 500.0, station_multiplier: 'float' = 1.0) -> 'list[dict[str, Any]]'"
+    },
+    {
+      "name": "derive_beam_demand_snapshot_v1",
+      "kind": "function",
+      "signature": "(request: 'BeamDemandDerivationRequestV1', /) -> 'BeamDemandBuildResultV1'"
     },
     {
       "name": "design_and_detail_beam_is456",
@@ -945,6 +1010,11 @@
       "signature": "(b_mm: 'float', D_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 0.0, n_points: 'int' = 50, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'PMInteractionResult'"
     },
     {
+      "name": "query_beam_action_rows_v1",
+      "kind": "function",
+      "signature": "(baseline: 'ETABSBeamBaselineV1', *, member_ids: 'tuple[str, ...]' = (), selection_ids: 'tuple[str, ...]' = (), cursor: 'str | None' = None, limit: 'int' = 1000) -> 'BeamActionPageV1'"
+    },
+    {
       "name": "run_gravity_workflow_v1",
       "kind": "function",
       "signature": "(request: 'GravityWorkflowRequestV1') -> 'GravityWorkflowResultV1'"
@@ -995,9 +1065,19 @@
       "signature": "(path: 'str | Path') -> 'ValidationReport'"
     },
     {
+      "name": "verify_beam_demand_snapshot_hash_v1",
+      "kind": "function",
+      "signature": "(snapshot: 'BeamDemandSnapshotV1', /) -> 'bool'"
+    },
+    {
       "name": "verify_calculation",
       "kind": "function",
       "signature": "(inputs: 'dict[str, Any]', outputs: 'dict[str, Any]', certificate: 'dict[str, Any]') -> 'tuple[bool, str]'"
+    },
+    {
+      "name": "verify_etabs_result_catalogue_hash_v1",
+      "kind": "function",
+      "signature": "(catalogue: 'ETABSResultCatalogueV1', /) -> 'bool'"
     }
   ]
 }

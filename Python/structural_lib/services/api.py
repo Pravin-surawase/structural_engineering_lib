@@ -284,6 +284,24 @@ from .audit import (  # noqa: F401
     create_calculation_certificate,
     verify_calculation,
 )
+from .contracts.etabs_w3 import (  # noqa: F401
+    BeamActionPageV1,
+    BeamDemandBuildResultV1,
+    BeamDemandDerivationRequestV1,
+    ETABSResultCatalogueBuildRequestV1,
+    ETABSResultCatalogueBuildResultV1,
+    ETABSResultCatalogueCapacityV1,
+    ETABSResultCatalogueV1,
+    W3BuildIssueV1,
+    W3BuildStatusV1,
+    build_etabs_result_catalogue_v1,
+    canonical_beam_demand_snapshot_hash_basis_json_v1,
+    canonical_etabs_result_catalogue_hash_basis_json_v1,
+    derive_beam_demand_snapshot_v1,
+    query_beam_action_rows_v1,
+    verify_beam_demand_snapshot_hash_v1,
+    verify_etabs_result_catalogue_hash_v1,
+)
 from .etabs_import import (  # noqa: F401
     ETABSEnvelopeResult,
     ETABSForceRow,
@@ -295,6 +313,23 @@ from .etabs_import import (  # noqa: F401
 )
 
 __all__ = [
+    # W3 result catalogue and beam demand
+    "BeamActionPageV1",
+    "BeamDemandBuildResultV1",
+    "BeamDemandDerivationRequestV1",
+    "ETABSResultCatalogueBuildRequestV1",
+    "ETABSResultCatalogueBuildResultV1",
+    "ETABSResultCatalogueCapacityV1",
+    "ETABSResultCatalogueV1",
+    "W3BuildIssueV1",
+    "W3BuildStatusV1",
+    "build_etabs_result_catalogue_v1",
+    "canonical_beam_demand_snapshot_hash_basis_json_v1",
+    "canonical_etabs_result_catalogue_hash_basis_json_v1",
+    "derive_beam_demand_snapshot_v1",
+    "query_beam_action_rows_v1",
+    "verify_beam_demand_snapshot_hash_v1",
+    "verify_etabs_result_catalogue_hash_v1",
     # Version
     "get_library_version",
     # Diagnostics (TASK-725)

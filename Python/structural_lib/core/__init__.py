@@ -11,6 +11,34 @@ All code-specific implementations (IS 456, ACI 318, EC2) inherit from these base
 
 from __future__ import annotations
 
+from structural_lib.core.analysis_contracts import (
+    AnalysisStateV1,
+    AnalysisStatusIdentityV1,
+    BeamActionComponentV1,
+    BeamActionRowV1,
+    BeamDemandEnvelopeModeV1,
+    BeamDemandEnvelopeRuleV1,
+    BeamDemandPurposeV1,
+    BeamDemandScenarioV1,
+    BeamDemandSnapshotV1,
+    BeamGoverningReferenceV1,
+    BeamGoverningSignV1,
+    BeamStationDomainV1,
+    DeterministicTieBreakV1,
+    EvidenceStateV1,
+    EvidenceValueV1,
+    LinearStaticCaseParametersV1,
+    LinearStaticLoadItemV1,
+    LoadCaseDefinitionV1,
+    LoadCaseParameterSetKindV1,
+    LoadPatternDefinitionV1,
+    ResponseCombinationDefinitionV1,
+    ResponseCombinationFactorV1,
+    ResponseCombinationSourceKindV1,
+    ResultSelectionIdentityV1,
+    ResultSelectionKindV1,
+    UnsupportedCaseParametersV1,
+)
 from structural_lib.core.base import (
     DesignCode,
     DetailingRules,
@@ -69,6 +97,33 @@ from structural_lib.core.materials import Concrete, MaterialFactory, Steel
 from structural_lib.core.registry import CodeRegistry
 
 __all__ = [
+    # Analysis and evidence V1 contracts
+    "AnalysisStateV1",
+    "AnalysisStatusIdentityV1",
+    "BeamActionComponentV1",
+    "BeamActionRowV1",
+    "BeamDemandEnvelopeModeV1",
+    "BeamDemandEnvelopeRuleV1",
+    "BeamDemandPurposeV1",
+    "BeamDemandScenarioV1",
+    "BeamDemandSnapshotV1",
+    "BeamGoverningReferenceV1",
+    "BeamGoverningSignV1",
+    "BeamStationDomainV1",
+    "DeterministicTieBreakV1",
+    "EvidenceStateV1",
+    "EvidenceValueV1",
+    "LinearStaticCaseParametersV1",
+    "LinearStaticLoadItemV1",
+    "LoadCaseDefinitionV1",
+    "LoadCaseParameterSetKindV1",
+    "LoadPatternDefinitionV1",
+    "ResponseCombinationDefinitionV1",
+    "ResponseCombinationFactorV1",
+    "ResponseCombinationSourceKindV1",
+    "ResultSelectionIdentityV1",
+    "ResultSelectionKindV1",
+    "UnsupportedCaseParametersV1",
     # Base classes
     "DesignCode",
     "FlexureDesigner",
