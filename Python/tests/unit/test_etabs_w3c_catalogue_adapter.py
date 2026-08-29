@@ -8,6 +8,7 @@ import pytest
 
 from structural_lib.core.analysis_contracts import (
     AnalysisStateV1,
+    EvidenceStateV1,
     LinearStaticCaseParametersV1,
     ResponseCombinationSourceKindV1,
     ResultSelectionKindV1,
@@ -255,6 +256,11 @@ def test_w3c_accepts_proved_list_and_tuple_shapes_losslessly(pack) -> None:
         for case in result.catalogue.load_cases
         if isinstance(case.parameters, LinearStaticCaseParametersV1)
     } == {"None", ""}
+    assert all(case.raw_auto_flag == 0 for case in result.catalogue.load_cases)
+    assert all(
+        case.is_auto.state is EvidenceStateV1.PRESENT and case.is_auto.value is False
+        for case in result.catalogue.load_cases
+    )
     nested = result.catalogue.response_combinations[1]
     assert tuple(factor.source_kind for factor in nested.factors) == (
         ResponseCombinationSourceKindV1.COMBINATION,
@@ -297,11 +303,6 @@ def test_w3c_list_and_tuple_catalogue_hashes_are_identical() -> None:
 @pytest.mark.parametrize(
     ("sap_model", "adapter_request", "reason_code"),
     [
-        (
-            _FakeSapModel(auto=2),
-            _request(),
-            "ETABS_AUTO_FLAG_INVALID",
-        ),
         (
             _FakeSapModel(initial_case="PREVIOUS"),
             _request(),
@@ -353,6 +354,23 @@ def test_w3c_fail_closed_vectors_return_no_partial_catalogue(
     assert result.normalized_request is None
     assert result.catalogue is None
     assert reason_code in {issue.code for issue in result.issues}
+
+
+def test_w3c_retains_undocumented_auto_flag_without_boolean_coercion() -> None:
+    result = extract_etabs_result_catalogue_v1(
+        _FakeSapModel(auto=5),
+        _request(),
+    )
+
+    assert result.status is W3BuildStatusV1.ACCEPTED
+    assert result.catalogue is not None
+    assert all(case.raw_auto_flag == 5 for case in result.catalogue.load_cases)
+    assert all(
+        case.is_auto.state is EvidenceStateV1.UNAVAILABLE
+        and case.is_auto.value is None
+        and case.is_auto.reason_code == "ETABS_AUTO_FLAG_SEMANTICS_UNDOCUMENTED"
+        for case in result.catalogue.load_cases
+    )
 
 
 def test_w3c_provider_exception_is_evidenced_and_blocked() -> None:

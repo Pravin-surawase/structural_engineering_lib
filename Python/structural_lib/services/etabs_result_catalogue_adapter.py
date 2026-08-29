@@ -676,14 +676,17 @@ def extract_etabs_result_catalogue_v1(
                 raw_design_type_option_value,
             )
             auto = _exact_int(operation, "auto", raw_auto_value)
-            if auto not in (0, 1):
-                raise _AdapterError(
-                    _issue(
-                        "ETABS_AUTO_FLAG_INVALID",
-                        operation,
-                        f"Load case {name!r} returned Auto={auto!r}; exact 0 or 1 is required.",
-                    )
+            is_auto = (
+                _present(bool(auto), _evidence_reference(operation, name))
+                if auto in (0, 1)
+                else _unavailable(
+                    "ETABS_AUTO_FLAG_SEMANTICS_UNDOCUMENTED",
+                    "The installed ETABS getter returned an exact integer outside "
+                    "the documented 0/1 mapping; the raw value is retained without "
+                    "guessing its Boolean meaning.",
+                    _evidence_reference(operation, name),
                 )
+            )
             case_type_by_name[name] = case_type
             status_code = statuses_by_name.get(name)
             if status_code is None:
@@ -833,7 +836,8 @@ def extract_etabs_result_catalogue_v1(
                 raw_type=raw_case_type,
                 raw_subtype=raw_subtype,
                 raw_design_type=raw_design_type,
-                is_auto=bool(auto),
+                raw_auto_flag=auto,
+                is_auto=is_auto,
                 parameters=parameters,
                 analysis_status_id=status_id,
                 source_ordinal=ordinal,

@@ -85,7 +85,8 @@ def _linear_case(case_id: str, name: str, ordinal: int) -> LoadCaseDefinitionV1:
         raw_type="Linear Static",
         raw_subtype="Linear",
         raw_design_type="Dead",
-        is_auto=False,
+        raw_auto_flag=0,
+        is_auto=_present(False, f"fake:case:{name}"),
         parameters=LinearStaticCaseParametersV1(
             initial_condition=LinearStaticInitialConditionV1(
                 raw_initial_case="None",

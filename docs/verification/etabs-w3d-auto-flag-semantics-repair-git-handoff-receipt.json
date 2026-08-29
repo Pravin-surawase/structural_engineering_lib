@@ -1,0 +1,171 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-29T22:11:07.8590266Z",
+      "query_status": "OK",
+      "reference": "Current user message authorizing completion of the full W3 campaign and ordinary evidence-backed decisions",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "CREATE_W3D_R2_CANDIDATE_COMMIT",
+      "PUSH_W3D_R2_BRANCH",
+      "OPEN_W3D_R2_PULL_REQUEST",
+      "MERGE_UNCHANGED_W3D_R2_AFTER_REQUIRED_CHECKS"
+    ],
+    "next_action": "CREATE_W3D_R2_CANDIDATE_COMMIT",
+    "observed_at_utc": "2026-08-29T22:11:07.8590266Z",
+    "prohibited_actions": [
+      "BYPASS_REQUIRED_CHECKS",
+      "RERUN_W3D_BEFORE_R2_MERGE",
+      "COERCE_UNDOCUMENTED_ETABS_AUTO_FLAG",
+      "REWRITE_HISTORY",
+      "DELETE_BRANCH_WORKTREE_MODEL_WORKBOOK_OR_EVIDENCE",
+      "CLAIM_ENGINEERING_OR_PROFESSIONAL_APPROVAL"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "CREATE_W3D_R2_CANDIDATE_COMMIT",
+        "PUSH_W3D_R2_BRANCH",
+        "OPEN_W3D_R2_PULL_REQUEST",
+        "MERGE_UNCHANGED_W3D_R2_AFTER_REQUIRED_CHECKS"
+      ],
+      "branch": "codex/etabs-w3d-auto-flag-repair-windows",
+      "head_sha": "e16870d0613b27cedc0f0f2ede4c5d205305bba8",
+      "task_id": "ETABS-EXCEL-BEAM-W3-CAMPAIGN"
+    }
+  },
+  "holds": [
+    "AUTHORIZATION_SOURCE_STALE_EVIDENCE",
+    "AUTHORIZATION_STALE_EVIDENCE",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "1f63e2c3f5815fe88db4d3118a585119da6cfb3f90e084b6591b6b48d2738b8b",
+    "state": {
+      "branch": "codex/etabs-w3d-auto-flag-repair-windows",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "e16870d0613b27cedc0f0f2ede4c5d205305bba8",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 1139.611,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git\\worktrees\\etabs-w3d-auto-flag-repair-windows",
+      "head_sha": "e16870d0613b27cedc0f0f2ede4c5d205305bba8",
+      "hold_reasons": [
+        "changed paths: 13"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-29T22:28:25.272149+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\worktrees\\etabs-w3d-auto-flag-repair-windows",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 13,
+        "modified_paths": [
+          "Python/structural_lib/core/analysis_contracts.py",
+          "Python/structural_lib/services/etabs_result_catalogue_adapter.py",
+          "Python/tests/unit/test_etabs_w3_contracts.py",
+          "Python/tests/unit/test_etabs_w3c_catalogue_adapter.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/etabs-data-analysis-optimization-foundation-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/reference/api-classification.json",
+          "docs/reference/api-compatibility-ledger.json",
+          "docs/reference/api-manifest.json",
+          "docs/reference/api.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/etabs-w3d-auto-flag-semantics-repair-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "C:\\CodexWork\\worktrees\\etabs-w3d-auto-flag-repair-windows"
+    }
+  },
+  "local_state_receipt_hash": "sha256:1f63e2c3f5815fe88db4d3118a585119da6cfb3f90e084b6591b6b48d2738b8b",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-29T22:28:25.273174+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "fastapi_app/**",
+      "react_app/**",
+      "excel_addin/**"
+    ],
+    "integration_owner": "Codex orchestrator W3 campaign",
+    "owned_paths": [
+      "Python/structural_lib/core/analysis_contracts.py",
+      "Python/structural_lib/services/etabs_result_catalogue_adapter.py",
+      "Python/tests/unit/test_etabs_w3_contracts.py",
+      "Python/tests/unit/test_etabs_w3c_catalogue_adapter.py",
+      "docs/verification/etabs-w3d-auto-flag-semantics-repair-evidence.json",
+      "docs/verification/etabs-w3d-auto-flag-semantics-repair-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/etabs-data-analysis-optimization-foundation-plan.md",
+      "docs/planning/next-session-brief.md",
+      "docs/reference/api.md",
+      "docs/reference/api-classification.json",
+      "docs/reference/api-compatibility-ledger.json",
+      "docs/reference/api-manifest.json"
+    ],
+    "task_id": "ETABS-EXCEL-BEAM-W3-CAMPAIGN"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

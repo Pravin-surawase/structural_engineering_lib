@@ -730,6 +730,16 @@ nonlinear stiffness semantics and target identity have a separately accepted
 contract. This correction does not authorize a setter, analysis or model
 mutation.
 
+The first clean continuation from accepted R1 exposed a second narrow installed
+value-domain correction. ETABS 23.3.1 returned exact `Auto=5` from
+`LoadCases.GetTypeOAPI_1` for an internal case, while CSI's published 0/1
+mapping does not define that value. `LoadCaseDefinitionV1` therefore retains
+`raw_auto_flag` exactly and represents `is_auto` as an `EvidenceValueV1[bool]`:
+documented 0/1 values are `PRESENT`, while any other exact integer is
+`UNAVAILABLE` with a stable reason. The adapter must not coerce a nonzero value
+to `true`, drop the case, or reject an otherwise complete catalogue solely
+because the Boolean interpretation is undocumented.
+
 ### W3D — Windows live read-only catalogue acceptance (`L3`)
 
 Owner: Windows evidence laptop. Dependencies: accepted W3C, a separately

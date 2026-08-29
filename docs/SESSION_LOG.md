@@ -5,6 +5,73 @@
 
 ---
 
+## 2026-08-30 — Session: W3D installed auto-flag semantic guard
+
+**Agent:** Codex (`orchestrator`/Windows evidence owner, sole writer; no
+subagents).
+
+**Branch:** `codex/etabs-w3d-auto-flag-repair-windows`, created as a separate
+linked worktree from accepted W3D-R1 PR #904 merge
+`e16870d0613b27cedc0f0f2ede4c5d205305bba8`, tree
+`a6584729c159fd8bffaf3bccad824789fc398715`. The clean live continuation and
+all prior blocked/evidence worktrees remain retained.
+
+**Git handoff receipt:**
+`docs/verification/etabs-w3d-auto-flag-semantics-repair-git-handoff-receipt.json`
+(pre-commit conservative receipt; hosted and integration facts remain external
+until the immutable R2 candidate is pushed and reviewed).
+
+**Focus:** Resume W3D once from the exact merged zero-state repair. Preserve
+the no-setter/no-analysis/no-design/no-force/no-save/no-Excel boundary. If the
+installed runtime exposes an undocumented raw value, retain it losslessly and
+use an explicit evidence state instead of guessing or discarding the complete
+catalogue.
+
+**Completed:**
+
+- PR #904 merged the unchanged R1 candidate `a056c440...` normally as
+  `e16870d0...`; candidate and merge tree are both `a6584729...`. Hosted
+  Python, FastAPI, Documentation and PR Gate checks passed.
+- Created a fresh source-bound continuation worktree. Reproved the exact copied
+  model as SHA-256 `99b7f3f1...`, 702,831 bytes with unchanged timestamp;
+  ETABS 23.3.1.4563 was responsive, visibly locked and dialog-free, Excel was
+  absent, and ports 3000/8000 were free.
+- Performed exactly one new getter-only direct attempt. The zero-state repair
+  passed. Extraction then stopped without a partial catalogue at
+  `ETABS_AUTO_FLAG_INVALID` because installed `GetTypeOAPI_1` returned raw
+  `Auto=5` for one ETABS-internal load case. The copied model stayed exact.
+- CSI's official 2016 API help documents only 0 and 1 for this integer. The
+  installed ETABS 23.3.1 signature still exposes a plain `Int32` and provides
+  no proved mapping for 5. Coercing nonzero to `true` would therefore be an
+  unsupported semantic guess.
+- Added `raw_auto_flag` to retain the exact installed integer and changed
+  `is_auto` to `EvidenceValueV1[bool]`: 0/1 remain `PRESENT`; any other exact
+  integer is `UNAVAILABLE` with
+  `ETABS_AUTO_FLAG_SEMANTICS_UNDOCUMENTED`. The catalogue can remain complete
+  without falsely claiming a Boolean meaning.
+- All 24 focused W3A/W3B/W3C tests, targeted Ruff and targeted Mypy pass. No
+  second live retry occurred after this code change; merge and a new clean
+  continuation are mandatory first.
+
+### Issues encountered
+
+- **Issue:** a legacy 0/1-only guard rejected installed raw value 5.
+
+### Root causes and resolutions
+
+- **Root cause:** W3B proved the current getter's signature and output order,
+  but inherited a value-domain assumption from older CSI documentation that
+  does not cover the observed ETABS 23 internal-case value.
+- **Resolution:** keep the exact raw integer, normalize only documented 0/1,
+  and apply the W3 five-state evidence contract to the unknown Boolean
+  interpretation. ⚠️ TERMINAL ISSUE: undocumented installed auto flag ->
+  separate W3D-R2 repair candidate; no retry before merge.
+- The failed continuation payload and blocker remain outside Git with hashes;
+  no proprietary path/name or result payload is added to the repository.
+- Independent frame analysis remains `HELD_NOT_SUPPORTED`; ETABS remains the
+  global-analysis authority. No release, engineering, professional or
+  construction approval is created by this repair.
+
 ## 2026-08-30 — Session: W3D live catalogue blocker and sentinel repair
 
 **Agent:** Codex (`orchestrator`/Windows evidence owner, sole writer; no
