@@ -1,0 +1,103 @@
+{
+  "schema_version": "etabs-w3d-auto-flag-semantics-repair-evidence/v1",
+  "task_id": "ETABS-EXCEL-BEAM-W3-CAMPAIGN",
+  "packet": "W3D-R2",
+  "verdict": "NARROW_AUTO_FLAG_REPAIR_LOCALLY_ACCEPTED",
+  "observed_at_utc": "2026-08-29T22:11:07.8590266Z",
+  "source": {
+    "accepted_r1_pr": 904,
+    "accepted_r1_candidate": "a056c440dabc56bb7da27f82102843425b0f7df3",
+    "accepted_r1_merge_commit": "e16870d0613b27cedc0f0f2ede4c5d205305bba8",
+    "accepted_r1_tree": "a6584729c159fd8bffaf3bccad824789fc398715",
+    "branch": "codex/etabs-w3d-auto-flag-repair-windows",
+    "worktree": "C:/CodexWork/worktrees/etabs-w3d-auto-flag-repair-windows"
+  },
+  "blocked_live_observation": {
+    "adapter_status": "BLOCKED",
+    "issue_code": "ETABS_AUTO_FLAG_INVALID",
+    "installed_raw_auto_flag": 5,
+    "partial_catalogue_returned": false,
+    "model_sha256_before_and_after": "99b7f3f17051929196ef6494d8f4d220d895fc3dac5e1a57164a53bf8fa6948b",
+    "model_byte_count_before_and_after": 702831,
+    "model_modified_utc_before_and_after": "2026-08-28T17:00:30.127813Z",
+    "external_evidence_root_label": "live-catalogue-continuation-e16870d0",
+    "external_files": {
+      "preflight.json": {
+        "byte_count": 1985,
+        "sha256": "8920734b1a5340eeb41069dcf46625316fd19821eebe499317fb4aabc6c51c3a"
+      },
+      "direct-catalogue-result.json": {
+        "byte_count": 27875,
+        "sha256": "a2d89b1ea1c4acd10e788457aab78962275edb69a79e9a5e8b7acc96149c63cf"
+      },
+      "blocker.json": {
+        "byte_count": 530,
+        "sha256": "a0a52f7370ba84bead275b9297de37cb03c49895f409fd290ac3e9821234cf76"
+      },
+      "w3d_direct_continuation.py": {
+        "byte_count": 1128,
+        "sha256": "0432c596a6e34524fb0088cb552891feadce7d558bb6b43c86e4e5b47bc460c3"
+      }
+    }
+  },
+  "semantic_authority": {
+    "source_kind": "CSI_OFFICIAL_LEGACY_API_DOCUMENTATION_PLUS_INSTALLED_ETABS_23_3_1_OBSERVATION",
+    "official_url": "https://docs.csiamerica.com/help-files/etabs-api-2016/html/3d213650-eac5-34f1-98f0-a97996966100.htm",
+    "published_mapping": "The published API page defines Auto=0 as not automatically created and Auto=1 as automatically created.",
+    "installed_help": {
+      "product": "ETABS 23.3.1.4563",
+      "api_help_byte_count": 4305641,
+      "api_help_sha256": "0108deeb19fd054ea03a9be89244dac5c8f5995cc44865eaa508b17f675b9d88",
+      "managed_api_assembly_byte_count": 354152,
+      "managed_api_assembly_sha256": "393492bd1649ee705c97449cf7d485c61b73ec649ed1d01f47f54f957b277e54",
+      "getter_output_type": "System.Int32"
+    },
+    "correction": "Retain every exact integer as raw_auto_flag. Normalize only 0/1 to PRESENT Boolean evidence. Mark every other Boolean interpretation UNAVAILABLE without coercion."
+  },
+  "implementation": {
+    "contract_path": {
+      "path": "Python/structural_lib/core/analysis_contracts.py",
+      "byte_count": 18619,
+      "sha256": "6d9659c1930cc8bc70adc837dcf2e73b4fcd68287a285060ac33165dc5e9f417"
+    },
+    "adapter_path": {
+      "path": "Python/structural_lib/services/etabs_result_catalogue_adapter.py",
+      "byte_count": 42285,
+      "sha256": "2a82a740fcebaed9dfe40e1f678ebdcbc9123cfa14e0661abde51b74bf192d4f"
+    },
+    "raw_field": "LoadCaseDefinitionV1.raw_auto_flag",
+    "normalized_field": "LoadCaseDefinitionV1.is_auto",
+    "documented_present_values": [
+      0,
+      1
+    ],
+    "undocumented_reason_code": "ETABS_AUTO_FLAG_SEMANTICS_UNDOCUMENTED"
+  },
+  "focused_verification": {
+    "pytest": {
+      "passed": 24,
+      "failed": 0
+    },
+    "ruff": "PASS",
+    "mypy": "PASS",
+    "api_controls": "PASS_3_OF_3",
+    "strict_documentation": "PASS_5_OF_5",
+    "quick_gate": {
+      "passed": 10,
+      "failed": 0,
+      "reused": 0,
+      "reported_seconds": 84.4
+    },
+    "normal_hooks": "PENDING",
+    "hosted_checks": "PENDING"
+  },
+  "scope": {
+    "earlier_blocked_attempts_preserved": true,
+    "live_rerun_after_r2_code_change": false,
+    "com_import_or_object_creation_by_repair_tests": false,
+    "etabs_or_excel_interaction_by_repair_tests": false,
+    "setter_analysis_design_force_save_or_model_mutation": false,
+    "professional_or_engineering_approval": false
+  },
+  "next_action": "Complete local gates, merge the unchanged R2 repair through a separate PR, then create a fresh continuation worktree before the next W3D live attempt."
+}

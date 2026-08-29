@@ -196,6 +196,13 @@ catalogue after any provider, shape, status, or semantic failure.
 `ZERO_UNSTRESSED`. A real prior-case name remains unsupported and blocks the
 adapter; it is never silently treated as a zero-state case.
 
+`structural_lib.LoadCaseDefinitionV1.raw_auto_flag` retains the exact integer
+returned by installed `LoadCases.GetTypeOAPI_1`. Its `is_auto` field uses
+`EvidenceValueV1[bool]`: documented raw values 0 and 1 are `PRESENT`; any other
+installed integer is retained but the Boolean interpretation is `UNAVAILABLE`
+with reason `ETABS_AUTO_FLAG_SEMANTICS_UNDOCUMENTED`. The adapter never applies
+Python truthiness to an undocumented vendor value.
+
 Catalogue identity is deterministic through
 `api.canonical_etabs_result_catalogue_hash_basis_json_v1` and
 `api.verify_etabs_result_catalogue_hash_v1`. A caller combines the accepted

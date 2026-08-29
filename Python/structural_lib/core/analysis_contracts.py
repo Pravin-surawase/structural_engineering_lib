@@ -256,7 +256,8 @@ class LoadCaseDefinitionV1(_AnalysisContractModel):
     raw_type: str = Field(min_length=1, max_length=160)
     raw_subtype: str = Field(min_length=1, max_length=160)
     raw_design_type: str = Field(min_length=1, max_length=160)
-    is_auto: bool
+    raw_auto_flag: int
+    is_auto: EvidenceValueV1[bool]
     parameters: LoadCaseParameterSetV1
     analysis_status_id: str = Field(min_length=1, max_length=160)
     source_ordinal: int = Field(ge=0)

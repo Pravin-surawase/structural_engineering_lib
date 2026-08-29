@@ -4,12 +4,12 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-30
-- Focus: Preserve the first blocked W3D live read and repair only the documented ETABS zero-state initial-condition sentinel
-- Completed: Proved live `None` plus official CSI semantics; added lossless `ZERO_UNSTRESSED` contract for blank/`None`; kept real prior cases blocked; passed 24 focused tests, Ruff, Mypy, API/docs controls and quick gate 10/10 without a live rerun
-- Git receipt: docs/verification/etabs-w3d-initial-condition-sentinel-repair-git-handoff-receipt.json | sha256:0174ea9ec33c2e85d9f02e254c21f3ef0c19592c96387c2ee53a3e0ab4803eb2 | HOLD
-- Git identity: codex/etabs-w3d-live-catalogue-windows@a44bf0c8f57de3f3823dc4e584a6e0e3cbf02ee1 | upstream=NONE | base=origin/main@a44bf0c8f57de3f3823dc4e584a6e0e3cbf02ee1 | tree=dirty | operation=none
+- Focus: Preserve the second blocked W3D continuation and repair only the undocumented ETABS 23 auto-flag interpretation
+- Completed: Merged R1 in PR #904; one clean continuation passed zero-state handling and stopped on raw `Auto=5`; added exact `raw_auto_flag` plus five-state Boolean evidence without a live retry; 24 focused tests, Ruff and Mypy pass
+- Git receipt: docs/verification/etabs-w3d-auto-flag-semantics-repair-git-handoff-receipt.json | sha256:051b53ab15ecf29d36f2d9e6c6322b7a077fc758c2e7792ad85c4f594219ff4f | HOLD
+- Git identity: codex/etabs-w3d-auto-flag-repair-windows@e16870d0613b27cedc0f0f2ede4c5d205305bba8 | upstream=NONE | base=origin/main@e16870d0613b27cedc0f0f2ede4c5d205305bba8 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
-- Next action: CREATE_W3D_R1_CANDIDATE_COMMIT
+- Next action: COMPLETE_W3D_R2_GATES_AND_CREATE_CANDIDATE
 <!-- HANDOFF:END -->
 
 ## Current boundary
@@ -17,11 +17,11 @@
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` remains the current immutable normal software release. No release work is authorized. |
-| **Current** | W3A-W3C are accepted through PR #903 merge `a44bf0c8f57de3f3823dc4e584a6e0e3cbf02ee1`, tree `fb6976c31a8ce334dd1198cedd416e9b815d509e`. The first W3D live read correctly blocked with no partial catalogue on ETABS raw initial-case sentinel `None`; the copied model stayed exact. A separate narrow sentinel repair is on `codex/etabs-w3d-live-catalogue-windows` awaiting full review. |
+| **Current** | W3D-R1 is accepted through PR #904 merge `e16870d0613b27cedc0f0f2ede4c5d205305bba8`, tree `a6584729c159fd8bffaf3bccad824789fc398715`. One clean continuation passed the repaired zero-state sentinel, then correctly blocked with no partial catalogue when ETABS 23.3.1 returned undocumented raw `Auto=5`; the copied model stayed exact. A separate R2 candidate retains the raw integer and makes only its Boolean interpretation `UNAVAILABLE`. |
 | **W2 complete** | PR #898 merged reviewed W2C head `57f53d48...` as `f1873e7b...`; candidate and merge tree are both `bb20ba0c...`. Direct service, REST, all seven saved Excel tables, and 3,626,096 reconstructed canonical JSON bytes reconcile to SHA-256 `d4c28586...`. |
 | **Plan gate** | Complete. The owner explicitly authorized the dependency-ordered W3 campaign; every packet still requires its exact predecessor and packet-specific stop conditions. |
-| **Next** | Merge the unchanged sentinel repair only after all required checks pass; then create a fresh continuation worktree from its exact merge/tree and rerun W3D once. Preserve the first blocked evidence permanently. |
-| **Held** | Do not rerun live evidence from dirty or unmerged repair source. W3D must not select output, run analysis/design, call `FrameForce`, unlock, save, write Excel or mutate the copied model. Real prior initial-case names remain blocked. Independent frame analysis, release and engineering/professional/construction approval remain unapproved. |
+| **Next** | Complete API/docs/quick/hook/hosted review for R2, merge only its unchanged head, then create a new clean continuation from its exact merge/tree before one further W3D attempt. Preserve both earlier blocked evidence roots permanently. |
+| **Held** | Do not rerun live evidence from dirty or unmerged R2 source. Do not coerce raw `Auto=5` to a Boolean. W3D must not select output, run analysis/design, call `FrameForce`, unlock, save, write Excel or mutate the copied model. Real prior initial-case names remain blocked. Independent frame analysis, release and engineering/professional/construction approval remain unapproved. |
 
 ## W3A-W3C accepted and W3D sentinel-repair outcome
 
@@ -41,9 +41,7 @@ exact ETABS demand provenance before expanding design or optimization:
 
 W3B binds that accepted surface to ETABS 23.3.1.4563 static installed metadata.
 All 15 operation signatures are proved. W3C uses `GetTypeOAPI_1` for full case
-design/auto identity, accepts `Auto` only as exact zero/one, and blocks any
-nonblank linear-static initial case until that semantic is represented
-publicly. It decodes only proved caller-supplied shapes, retains every call
+design/auto identity and decodes only proved caller-supplied shapes, retaining every call
 verdict/source identity, and returns no partial catalogue after a provider,
 shape, return-code, identity/status, selection, normalization or capacity
 failure. W3C created no COM object, called no live getter and makes no
@@ -53,6 +51,11 @@ linear-static initial condition. CSI's official getter documentation confirms
 blank/`None` are zero-state sentinels. The separate repair retains the raw
 sentinel through `LinearStaticInitialConditionV1`, normalizes only blank/`None`
 to `ZERO_UNSTRESSED`, and continues to block every real prior-case name.
+R1 merged in PR #904. The clean continuation then proved ETABS 23.3.1 may
+return raw `Auto=5` for an internal case although CSI's published mapping only
+defines 0/1. R2 retains that exact integer in `raw_auto_flag`; `is_auto` is
+`PRESENT` only for documented 0/1 and otherwise `UNAVAILABLE`. No truthiness
+coercion or live retry from unmerged source is permitted.
 
 ## Required acceptance
 
@@ -91,7 +94,7 @@ it does not block the read-only W3A contract work.
 
 ## Next W3D handoff
 
-After the sentinel repair merges unchanged, create a fresh continuation
+After the auto-flag repair merges unchanged, create another fresh continuation
 worktree from its exact merge/tree and bind the source-selected runtime to that
 worktree. Reprove the
 authorized copied-model path/hash/size/mtime, ETABS 23.3.1 identity, lock,
@@ -104,21 +107,23 @@ do not overwrite or relabel it. Do not select outputs, run analysis/design,
 call `FrameForce`, unlock, save, write Excel or mutate the copied model during
 W3D.
 
-### Completed W3D repair operator checklist
+### Completed W3D R2 operator checklist
 
 - [x] User explicitly authorized W3D as part of the full W3 campaign.
 - [x] `origin/main`, W3C merge/tree, evidence and contract hashes match.
 - [x] Worktree is operation-free and unrelated retained work is preserved.
 - [x] Only W3B-proved getter operations and exact list/tuple/scalar semantics
   are decoded; every call records source, shape, return and verdict evidence.
-- [x] The first live read was getter-only and returned no partial value on its
-  exact initial-condition guard; the copied model identity stayed unchanged.
+- [x] Both live reads were getter-only and returned no partial value on their
+  exact semantic guards; the copied model identity stayed unchanged.
 - [x] Official CSI semantics plus installed 23.3.1 evidence prove blank/`None`
   mean zero unstressed initial conditions.
-- [x] The narrow public repair retains and accepts only those zero-state forms;
-  every actual prior-case name remains blocked.
-- [x] No live rerun occurred after code modification; a clean merged source is
-  mandatory before the single continuation.
+- [x] R1 retains and accepts only documented zero-state forms; every actual
+  prior-case name remains blocked.
+- [x] R2 retains raw `Auto=5` and makes its Boolean meaning `UNAVAILABLE`; it
+  does not guess, discard the case, or weaken other fail-closed guards.
+- [x] No live rerun occurred after R2 code modification; a clean merged source
+  is mandatory before the next continuation.
 - [x] Transport-neutral compatibility is distinguished from live model,
   solver, engineering and professional acceptance.
 - [x] No secrets, proprietary model/workbook/result bytes or generated vendor
