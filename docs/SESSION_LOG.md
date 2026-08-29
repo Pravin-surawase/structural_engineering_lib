@@ -27,7 +27,7 @@ model after every preflight condition passes. Preserve protected Windows
 `main`, W2A, unrelated worktrees, `HELD_NOT_SUPPORTED`, and every no-analysis/
 no-save/no-mutation/no-optimization/no-writeback/professional-review boundary.
 
-**Phase A completed:**
+**Completed:**
 
 - Fetched GitHub and proved PR #896 merge `0f5c918e...`, reviewed W2A head
   `0972e1af...`, branch absence, retained worktrees, and protected Windows
