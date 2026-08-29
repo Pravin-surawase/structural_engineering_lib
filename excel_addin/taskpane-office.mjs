@@ -188,6 +188,22 @@ function matricesMatch(left, right) {
   return JSON.stringify(left) === JSON.stringify(right);
 }
 
+function firstMatrixMismatch(actual, expected) {
+  for (let row = 0; row < expected.length; row += 1) {
+    for (let column = 0; column < expected[row].length; column += 1) {
+      if (JSON.stringify(actual[row][column]) !== JSON.stringify(expected[row][column])) {
+        return {
+          row: row + 1,
+          column: column + 1,
+          expected: expected[row][column],
+          actual: actual[row][column],
+        };
+      }
+    }
+  }
+  return null;
+}
+
 function normalizeExpectedExcelMatrix(rows) {
   return rows.map((row) => row.map((value) => (value === "" ? null : value)));
 }
@@ -288,7 +304,13 @@ async function verifyEtabsBaselineWrite(context, states, projection, cryptoImpl)
       state.verificationRange.columnCount !== state.spec.headers.length ||
       !matricesMatch(actual, expected)
     ) {
-      throw new Error(`The W2 ${state.key} table failed exact Excel read-back verification.`);
+      const mismatch = firstMatrixMismatch(actual, expected);
+      const detail = mismatch
+        ? ` First mismatch: row ${mismatch.row}, column ${mismatch.column}, expected ${JSON.stringify(mismatch.expected)}, actual ${JSON.stringify(mismatch.actual)}.`
+        : " The table dimensions differ from the controlled contract.";
+      throw new Error(
+        `The W2 ${state.key} table failed exact Excel read-back verification.${detail}`,
+      );
     }
     state.verifiedRows = actual.slice(1);
     verifiedProjectedRows += state.verifiedRows.length;
