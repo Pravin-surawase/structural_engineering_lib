@@ -16,6 +16,11 @@ linked worktree from accepted W3D-R1 PR #904 merge
 `a6584729c159fd8bffaf3bccad824789fc398715`. The clean live continuation and
 all prior blocked/evidence worktrees remain retained.
 
+**Git handoff receipt:**
+`docs/verification/etabs-w3d-auto-flag-semantics-repair-git-handoff-receipt.json`
+(pre-commit conservative receipt; hosted and integration facts remain external
+until the immutable R2 candidate is pushed and reviewed).
+
 **Focus:** Resume W3D once from the exact merged zero-state repair. Preserve
 the no-setter/no-analysis/no-design/no-force/no-save/no-Excel boundary. If the
 installed runtime exposes an undocumented raw value, retain it losslessly and
@@ -48,9 +53,12 @@ catalogue.
   second live retry occurred after this code change; merge and a new clean
   continuation are mandatory first.
 
-### Issues, root cause and resolution
+### Issues encountered
 
 - **Issue:** a legacy 0/1-only guard rejected installed raw value 5.
+
+### Root causes and resolutions
+
 - **Root cause:** W3B proved the current getter's signature and output order,
   but inherited a value-domain assumption from older CSI documentation that
   does not cover the observed ETABS 23 internal-case value.

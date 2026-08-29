@@ -258,8 +258,7 @@ def test_w3c_accepts_proved_list_and_tuple_shapes_losslessly(pack) -> None:
     } == {"None", ""}
     assert all(case.raw_auto_flag == 0 for case in result.catalogue.load_cases)
     assert all(
-        case.is_auto.state is EvidenceStateV1.PRESENT
-        and case.is_auto.value is False
+        case.is_auto.state is EvidenceStateV1.PRESENT and case.is_auto.value is False
         for case in result.catalogue.load_cases
     )
     nested = result.catalogue.response_combinations[1]
@@ -369,8 +368,7 @@ def test_w3c_retains_undocumented_auto_flag_without_boolean_coercion() -> None:
     assert all(
         case.is_auto.state is EvidenceStateV1.UNAVAILABLE
         and case.is_auto.value is None
-        and case.is_auto.reason_code
-        == "ETABS_AUTO_FLAG_SEMANTICS_UNDOCUMENTED"
+        and case.is_auto.reason_code == "ETABS_AUTO_FLAG_SEMANTICS_UNDOCUMENTED"
         for case in result.catalogue.load_cases
     )
 

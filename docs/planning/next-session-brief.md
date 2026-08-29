@@ -6,7 +6,7 @@
 - Date: 2026-08-30
 - Focus: Preserve the second blocked W3D continuation and repair only the undocumented ETABS 23 auto-flag interpretation
 - Completed: Merged R1 in PR #904; one clean continuation passed zero-state handling and stopped on raw `Auto=5`; added exact `raw_auto_flag` plus five-state Boolean evidence without a live retry; 24 focused tests, Ruff and Mypy pass
-- Git receipt: docs/verification/etabs-w3d-auto-flag-semantics-repair-git-handoff-receipt.json | sha256:051b53ab15ecf29d36f2d9e6c6322b7a077fc758c2e7792ad85c4f594219ff4f | HOLD
+- Git receipt: docs/verification/etabs-w3d-auto-flag-semantics-repair-git-handoff-receipt.json | sha256:1f63e2c3f5815fe88db4d3118a585119da6cfb3f90e084b6591b6b48d2738b8b | HOLD
 - Git identity: codex/etabs-w3d-auto-flag-repair-windows@e16870d0613b27cedc0f0f2ede4c5d205305bba8 | upstream=NONE | base=origin/main@e16870d0613b27cedc0f0f2ede4c5d205305bba8 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: COMPLETE_W3D_R2_GATES_AND_CREATE_CANDIDATE
