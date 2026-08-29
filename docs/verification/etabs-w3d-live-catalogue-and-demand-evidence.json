@@ -1,0 +1,205 @@
+{
+  "schema_version": "etabs-w3d-live-catalogue-and-demand-evidence/v1",
+  "task_id": "ETABS-EXCEL-BEAM-W3-CAMPAIGN",
+  "packet": "W3D",
+  "verdict": "WINDOWS_LIVE_READ_ONLY_ACCEPTED",
+  "observed_at_utc": "2026-08-29T23:10:03.1981795Z",
+  "source": {
+    "accepted_r2_pr": 905,
+    "accepted_r2_candidate": "51ceb63145be7d9350a38f7c819f4b16d6a6dcf8",
+    "accepted_r2_merge_commit": "0d26c60f221ec1f64293f61ea05ddde1438025a0",
+    "accepted_r2_tree": "39e9dc9084efc70b6a3c1dc935402ab9c07e01c1",
+    "branch": "codex/etabs-w3d-live-catalogue-continuation-2-windows",
+    "source_bound": true,
+    "python": "3.11.15",
+    "comtypes": "1.4.16",
+    "etabs": "23.3.1.4563"
+  },
+  "authorization": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T23:10:03.1981795Z",
+    "authorized_actions": [
+      "CREATE_W3D_CANDIDATE_COMMIT",
+      "PUSH_W3D_BRANCH",
+      "OPEN_W3D_PULL_REQUEST",
+      "MERGE_UNCHANGED_W3D_AFTER_REQUIRED_CHECKS"
+    ],
+    "prohibited_actions": [
+      "BYPASS_REQUIRED_CHECKS",
+      "REPEAT_COMPLETED_W3D_LIVE_EVIDENCE",
+      "REWRITE_HISTORY",
+      "DELETE_BRANCH_WORKTREE_MODEL_WORKBOOK_OR_EVIDENCE",
+      "CLAIM_ENGINEERING_OR_PROFESSIONAL_APPROVAL"
+    ],
+    "next_action": "CREATE_W3D_CANDIDATE_COMMIT",
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "reference": "Current task delegation authorizing completion of the full W3 campaign and ordinary evidence-backed decisions",
+      "status": "OBSERVED",
+      "query_status": "OK",
+      "observed_at_utc": "2026-08-29T23:10:03.1981795Z"
+    },
+    "target_binding": {
+      "task_id": "ETABS-EXCEL-BEAM-W3-CAMPAIGN",
+      "branch": "codex/etabs-w3d-live-catalogue-continuation-2-windows",
+      "head_sha": "0d26c60f221ec1f64293f61ea05ddde1438025a0",
+      "actions": [
+        "CREATE_W3D_CANDIDATE_COMMIT",
+        "PUSH_W3D_BRANCH",
+        "OPEN_W3D_PULL_REQUEST",
+        "MERGE_UNCHANGED_W3D_AFTER_REQUIRED_CHECKS"
+      ]
+    }
+  },
+  "authorized_copy": {
+    "path_retained_outside_git": true,
+    "sha256_before_and_after": "99b7f3f17051929196ef6494d8f4d220d895fc3dac5e1a57164a53bf8fa6948b",
+    "byte_count_before_and_after": 702831,
+    "modified_utc_before_and_after": "2026-08-28T17:00:30.127813Z",
+    "model_locked_before_and_after": true,
+    "present_units_enum_before_and_after": 6,
+    "etabs_version_returned": "23.3.1",
+    "etabs_version_number_returned": 0.0,
+    "no_save_or_file_mutation": true
+  },
+  "catalogue": {
+    "status": "ACCEPTED",
+    "sha256": "d44e6b89c370ad29213b5911e945297f0838f23db39867f02fda4b24382b9840",
+    "hash_basis_utf8_bytes": 127040,
+    "load_patterns": 12,
+    "load_cases": 15,
+    "response_combinations": 62,
+    "combination_factors": 254,
+    "result_selections": 1,
+    "case_statuses": 15,
+    "live_output_selection_states": 77,
+    "getter_operation_evidence_rows": 192,
+    "raw_auto_values_observed": [
+      0,
+      3,
+      5
+    ],
+    "auto_boolean_states_observed": [
+      "PRESENT",
+      "UNAVAILABLE"
+    ],
+    "selection_name_retained_outside_git": true,
+    "partial_catalogue_returned": false
+  },
+  "demand": {
+    "status": "ACCEPTED",
+    "sha256": "7c1a4e21dae5de5af8c30ea3fe813e2d5d7b0d3dc631534db3688708c19a4fb7",
+    "baseline_sha256": "d4c28586ad7a29bdcba801472481ef0e80354cde502c95b70c93550b7ea5dc67",
+    "member_count": 153,
+    "retained_same_row_action_rows": 3502,
+    "governing_references": 3672,
+    "limitation": "Independent absolute component references are screening-only and are not concurrent."
+  },
+  "direct_rest_reconciliation": {
+    "status_endpoint": "PASS",
+    "connect_endpoint": "PASS_EXACT_SAVED_COPY",
+    "catalogue_endpoint": "PASS",
+    "beam_demand_endpoint": "PASS",
+    "direct_and_rest_catalogue_hashes_match": true,
+    "direct_and_rest_demand_hashes_match": true,
+    "catalogue_state_before_equals_after": true,
+    "model_file_before_equals_after": true,
+    "ports_3000_and_8000_free_after_closeout": true,
+    "excel_process_absent": true,
+    "etabs_left_open_locked_and_dialog_free": true
+  },
+  "local_verification": {
+    "focused_pytest": {
+      "passed": 35,
+      "failed": 0
+    },
+    "focused_post_repair_pytest": {
+      "passed": 11,
+      "failed": 0
+    },
+    "ruff": "PASS",
+    "targeted_mypy": "PASS",
+    "api_documentation_controls": "PASS_3_OF_3",
+    "api_compatibility": "PASS_97_ENDPOINTS_543_SCHEMAS",
+    "fastapi_controls": "PASS_3_OF_3",
+    "documentation": "PASS_5_OF_5_AND_1131_LINKS_ZERO_BROKEN",
+    "quick_gate": {
+      "passed": 10,
+      "failed": 0,
+      "reused": 0,
+      "reported_seconds": 84.0
+    },
+    "normal_hooks": "PENDING",
+    "hosted_checks": "PENDING"
+  },
+  "external_evidence": {
+    "root_label": "live-catalogue-continuation-2-0d26c60f",
+    "proprietary_payloads_remain_outside_git": true,
+    "files": {
+      "direct-catalogue-result.json": {
+        "byte_count": 447791,
+        "sha256": "04b6408d35aae80f1a923376accd3900bf5b38056d3e22b238ece70dcf8c05f4"
+      },
+      "direct-demand-result.json": {
+        "byte_count": 2498411,
+        "sha256": "0fe68f3b6ae050384ca9c8a0c9b681077c6a3748ce037641dc161755bf6003c1"
+      },
+      "rest-catalogue-request.json": {
+        "byte_count": 1338,
+        "sha256": "54c8ca377d3685b761055384720e8d6235083ee659862258301303ae745125fb"
+      },
+      "rest-catalogue-response.json": {
+        "byte_count": 663564,
+        "sha256": "afdf67548ed334f8360d18baf5706c3c631072294eb938d2c2bbbc60fde53aa2"
+      },
+      "rest-beam-demand-request.json": {
+        "byte_count": 5519187,
+        "sha256": "4e495f5f95d5f554e83b4bbd49896bec97114e70e75cfa9dc0fc641368082d84"
+      },
+      "rest-beam-demand-response.json": {
+        "byte_count": 2696931,
+        "sha256": "90091115e8375f0d57c308052af956b2ccb639b8e71d2bb36186ceaff14fdcf9"
+      },
+      "rest-reconciliation-safe-summary.json": {
+        "byte_count": 1507,
+        "sha256": "3a70e3523281563997f94a270f9804f69dffb3a32f02364ac0bc35b13d4a0984"
+      },
+      "fresh-live-preflight.json": {
+        "byte_count": 1474,
+        "sha256": "126b5c55c69f71e61996e260fe10d9085f8721f63def07795188695beec44d0a"
+      },
+      "fresh-live-postflight.json": {
+        "byte_count": 1474,
+        "sha256": "d82d64962be68b44feb375e0979e2265e6c145eaa774b92b6350bf75892dfa58"
+      }
+    }
+  },
+  "issues_and_repairs": [
+    {
+      "issue": "ETABS returned the documented literal None zero-state sentinel.",
+      "resolution": "W3D-R1 retained the raw sentinel and normalized only documented blank/None forms."
+    },
+    {
+      "issue": "ETABS returned undocumented raw Auto values outside the published 0/1 mapping.",
+      "resolution": "W3D-R2 retained every raw integer and marked only the unsupported Boolean interpretation UNAVAILABLE."
+    },
+    {
+      "issue": "The first accepted live catalogue was followed by an offline strict Python-list/tuple evidence-binding error.",
+      "resolution": "The complete live result was preserved; JSON-bound reconstruction used non-strict JSON container conversion without another COM call."
+    }
+  ],
+  "scope": {
+    "getter_only_catalogue": true,
+    "retained_evidence_only_demand_derivation": true,
+    "result_selection_setter_called": false,
+    "frame_force_called_by_w3d": false,
+    "analysis_or_design_run": false,
+    "unlock_save_excel_or_model_mutation": false,
+    "frame_analysis_verdict": "HELD_NOT_SUPPORTED",
+    "professional_or_engineering_approval": false,
+    "release_activity": false,
+    "earlier_blocked_evidence_preserved": true
+  },
+  "next_action": "Merge the unchanged W3D transport/evidence packet through normal review, then execute separate W3R from current origin/main."
+}

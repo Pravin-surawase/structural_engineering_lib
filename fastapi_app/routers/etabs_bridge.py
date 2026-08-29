@@ -3,13 +3,20 @@
 from __future__ import annotations
 
 import logging
+from typing import Any
 
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
+from pydantic import ValidationError
 from starlette.concurrency import run_in_threadpool
 
 from fastapi_app.error_utils import sanitize_error
 from fastapi_app.models.response import APIResponse, error_response, success_response
+from structural_lib.services.contracts.etabs_w3 import (
+    BeamDemandBuildResultV1,
+    BeamDemandDerivationRequestV1,
+    derive_beam_demand_snapshot_v1,
+)
 from structural_lib.services.etabs_beam_bridge import (
     ETABSBeamBaselineCapacityError,
     ETABSBeamBaselinePreflightV1,
@@ -17,6 +24,11 @@ from structural_lib.services.etabs_beam_bridge import (
     ETABSBeamBaselineTransportV1,
     inspect_etabs_beam_baseline_v1,
     run_etabs_beam_baseline_v1,
+)
+from structural_lib.services.etabs_catalogue_bridge import (
+    ETABSLiveCatalogueRunRequestV1,
+    ETABSLiveCatalogueTransportV1,
+    run_etabs_live_catalogue_v1,
 )
 from structural_lib.services.etabs_live_bridge import (
     ETABSBridgeStatusV1,
@@ -144,6 +156,71 @@ async def run_etabs_beam_baseline(request: ETABSBeamBaselineRunRequestV1):
         return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             content=error_response(sanitize_error(exc, "ETABS beam baseline")),
+        )
+
+
+@router.post(
+    "/result-catalogue",
+    response_model=APIResponse[ETABSLiveCatalogueTransportV1],
+    summary="Read one complete preflight-bound W3 result catalogue",
+)
+async def run_etabs_result_catalogue(request: ETABSLiveCatalogueRunRequestV1):
+    try:
+        result = await run_in_threadpool(run_etabs_live_catalogue_v1, request)
+        return success_response(result)
+    except ETABSUnavailableError as exc:
+        return JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content=error_response(exc.to_problem()),
+        )
+    except ETABSConnectionError as exc:
+        return JSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content=error_response(exc.to_problem()),
+        )
+    except ETABSDataError as exc:
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            content=error_response(exc.to_problem()),
+        )
+    except (TypeError, ValueError) as exc:
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            content=error_response(sanitize_error(exc, "ETABS result catalogue")),
+        )
+    except Exception as exc:  # pragma: no cover - defensive COM boundary
+        logger.exception("ETABS result catalogue failed")
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content=error_response(sanitize_error(exc, "ETABS result catalogue")),
+        )
+
+
+@router.post(
+    "/beam-demand",
+    response_model=APIResponse[BeamDemandBuildResultV1],
+    summary="Derive a canonical W3 beam-demand snapshot from retained evidence",
+)
+async def derive_etabs_beam_demand(payload: dict[str, Any]):
+    try:
+        request = BeamDemandDerivationRequestV1.model_validate(payload, strict=False)
+        result = await run_in_threadpool(derive_beam_demand_snapshot_v1, request)
+        return success_response(result)
+    except ValidationError as exc:
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            content=error_response(sanitize_error(exc, "ETABS beam demand")),
+        )
+    except (TypeError, ValueError) as exc:
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            content=error_response(sanitize_error(exc, "ETABS beam demand")),
+        )
+    except Exception as exc:  # pragma: no cover - defensive calculation boundary
+        logger.exception("ETABS beam demand derivation failed")
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content=error_response(sanitize_error(exc, "ETABS beam demand")),
         )
 
 

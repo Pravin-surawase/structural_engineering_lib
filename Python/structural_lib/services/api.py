@@ -302,6 +302,14 @@ from .contracts.etabs_w3 import (  # noqa: F401
     verify_beam_demand_snapshot_hash_v1,
     verify_etabs_result_catalogue_hash_v1,
 )
+from .etabs_catalogue_bridge import (  # noqa: F401
+    ETABSLiveCaseStatusV1,
+    ETABSLiveCatalogueRunRequestV1,
+    ETABSLiveCatalogueStateV1,
+    ETABSLiveCatalogueTransportV1,
+    ETABSLiveSelectionStateV1,
+    run_etabs_live_catalogue_v1,
+)
 from .etabs_import import (  # noqa: F401
     ETABSEnvelopeResult,
     ETABSForceRow,
@@ -332,6 +340,11 @@ __all__ = [
     "ETABSGetterCallEvidenceV1",
     "ETABSGetterContainerKindV1",
     "ETABSGetterOutcomeV1",
+    "ETABSLiveCaseStatusV1",
+    "ETABSLiveCatalogueRunRequestV1",
+    "ETABSLiveCatalogueStateV1",
+    "ETABSLiveCatalogueTransportV1",
+    "ETABSLiveSelectionStateV1",
     "ETABSResultCatalogueBuildRequestV1",
     "ETABSResultCatalogueBuildResultV1",
     "ETABSResultCatalogueCapacityV1",
@@ -344,6 +357,7 @@ __all__ = [
     "derive_beam_demand_snapshot_v1",
     "extract_etabs_result_catalogue_v1",
     "query_beam_action_rows_v1",
+    "run_etabs_live_catalogue_v1",
     "verify_beam_demand_snapshot_hash_v1",
     "verify_etabs_result_catalogue_hash_v1",
     # Version

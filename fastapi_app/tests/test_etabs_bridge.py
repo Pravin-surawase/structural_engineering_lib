@@ -18,10 +18,24 @@ from structural_lib.services.etabs_beam_bridge import (
     ETABSBeamBaselineCountsV1,
     ETABSBeamBaselineTransportV1,
 )
+from structural_lib.services.contracts.etabs_w3 import (
+    W3BuildIssueV1,
+    W3BuildStatusV1,
+)
+from structural_lib.services.etabs_beam_baseline import ETABSModelFileSnapshotV1
+from structural_lib.services.etabs_catalogue_bridge import (
+    ETABSLiveCaseStatusV1,
+    ETABSLiveCatalogueStateV1,
+    ETABSLiveCatalogueTransportV1,
+    ETABSLiveSelectionStateV1,
+)
 from structural_lib.services.etabs_live_bridge import (
     ETABSBridgeStatusV1,
     ETABSConnectionError,
     ETABSDataError,
+)
+from structural_lib.services.etabs_result_catalogue_adapter import (
+    ETABSCatalogueAdapterResultV1,
 )
 
 
@@ -223,10 +237,92 @@ def test_baseline_capacity_error_maps_to_payload_too_large(client, monkeypatch):
     assert response.json()["error"]["code"] == "ETABS_BASELINE_ROW_LIMIT_EXCEEDED"
 
 
-def test_openapi_exposes_five_typed_etabs_operations(client):
+def test_result_catalogue_returns_complete_blocked_domain_result(client, monkeypatch):
+    snapshot = ETABSModelFileSnapshotV1(
+        model_path=r"C:\Models\W3.edb",
+        model_name="W3.edb",
+        sha256="a" * 64,
+        byte_count=10,
+        modified_at_utc="2026-08-29T05:00:00Z",
+        observed_at_utc="2026-08-29T05:01:00Z",
+    )
+    state = ETABSLiveCatalogueStateV1(
+        model_path=snapshot.model_path,
+        etabs_version="ETABS 23.3.1",
+        etabs_version_number=23.31,
+        model_locked=True,
+        present_units_enum=6,
+        case_statuses=(ETABSLiveCaseStatusV1(name="DEAD", raw_status=4),),
+        output_selections=(
+            ETABSLiveSelectionStateV1(
+                kind="COMBINATION",
+                name="ULS-1",
+                selected=True,
+            ),
+        ),
+    )
+    transport = ETABSLiveCatalogueTransportV1(
+        adapter_result=ETABSCatalogueAdapterResultV1(
+            status=W3BuildStatusV1.BLOCKED,
+            issues=(
+                W3BuildIssueV1(
+                    code="CASE_FAMILY_NOT_MODELED",
+                    path="LoadCases.GetTypeOAPI_1",
+                    message="The selected case family is not modeled.",
+                ),
+            ),
+            operation_evidence=(),
+            normalized_request=None,
+            catalogue=None,
+        ),
+        model_file_before=snapshot,
+        model_file_after=snapshot,
+        live_state_before=state,
+        live_state_after=state,
+        catalogue_hash_basis_json=None,
+        catalogue_hash_basis_utf8_bytes=0,
+    )
+    monkeypatch.setattr(
+        etabs_bridge,
+        "run_etabs_live_catalogue_v1",
+        lambda _request: transport,
+    )
+    response = client.post(
+        "/api/v1/etabs-bridge/v1/result-catalogue",
+        json={
+            "authorized_model_file": snapshot.model_dump(mode="json"),
+            "expected_etabs_version": "ETABS 23.3.1",
+            "expected_etabs_version_number": 23.31,
+            "expected_present_units_enum": 6,
+            "runtime_identity_sha256": "b" * 64,
+            "getter_matrix_sha256": "c" * 64,
+            "model_observation_before": "model-file-sha256:" + "a" * 64,
+            "model_observation_after": "model-file-sha256:" + "a" * 64,
+            "observed_at_utc": "2026-08-29T05:01:00Z",
+            "result_selections": [{"kind": "COMBINATION", "name": "ULS-1"}],
+            "approved_copy_confirmed": True,
+        },
+    )
+
+    assert response.status_code == 200, response.text
+    data = unwrap(response)
+    assert data["adapter_result"]["status"] == "BLOCKED"
+    assert data["adapter_result"]["catalogue"] is None
+    assert data["catalogue_hash_basis_json"] is None
+
+
+def test_beam_demand_rejects_incomplete_transport_payload(client):
+    response = client.post("/api/v1/etabs-bridge/v1/beam-demand", json={})
+
+    assert response.status_code == 422
+
+
+def test_openapi_exposes_seven_typed_etabs_operations(client):
     paths = client.app.openapi()["paths"]
     assert "/api/v1/etabs-bridge/v1/status" in paths
     assert "/api/v1/etabs-bridge/v1/connect" in paths
     assert "/api/v1/etabs-bridge/v1/beam-pilot" in paths
     assert "/api/v1/etabs-bridge/v1/beam-baseline/preflight" in paths
     assert "/api/v1/etabs-bridge/v1/beam-baseline" in paths
+    assert "/api/v1/etabs-bridge/v1/result-catalogue" in paths
+    assert "/api/v1/etabs-bridge/v1/beam-demand" in paths
