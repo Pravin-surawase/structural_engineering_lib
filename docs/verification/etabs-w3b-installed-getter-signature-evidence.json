@@ -1,0 +1,425 @@
+{
+  "schema_version": "etabs-w3b-installed-getter-signature-evidence/v1",
+  "task_id": "ETABS-EXCEL-BEAM-W3-CAMPAIGN",
+  "packet": "W3B",
+  "verdict": "STATIC_COMPATIBILITY_PROVED_WITH_GUARDS",
+  "observed_at_utc": "2026-08-29T20:09:21.0145019Z",
+  "source": {
+    "repository": "https://github.com/Pravin-surawase/structural_engineering_lib.git",
+    "accepted_w3a_pr": 901,
+    "accepted_w3a_merge_commit": "b7351bb5a3269e4281ba7b34c780e45d2599749b",
+    "accepted_w3a_tree": "b895008b4f4d3212b6d1e1fe28894e07efc2c7df",
+    "accepted_w3a_evidence_sha256": "f632f73d23137701495b9ab1cd5c1e674785031e865523854d6f8b8487b9684b",
+    "accepted_w3a_contracts": [
+      {
+        "path": "Python/structural_lib/core/analysis_contracts.py",
+        "byte_count": 17840,
+        "sha256": "f264cafb114d1d7b4b7a8af529adc87224ad079483e186c6f461ec05165a12fc"
+      },
+      {
+        "path": "Python/structural_lib/services/contracts/etabs_w3.py",
+        "byte_count": 41957,
+        "sha256": "cb6b880f90cf00fe39f89f3d9b7d1b22404393b5576be00b8a61de1870b029bd"
+      }
+    ],
+    "branch": "codex/etabs-w3b-installed-signatures-windows",
+    "worktree": "C:\\CodexWork\\worktrees\\etabs-w3b-installed-signatures-windows"
+  },
+  "scope": {
+    "static_installed_metadata_only": true,
+    "etabs_process_launched_or_attached": false,
+    "excel_process_launched_or_automated": false,
+    "com_object_created": false,
+    "sapmodel_getter_called": false,
+    "model_or_workbook_opened_by_audit": false,
+    "analysis_or_design_run": false,
+    "model_or_workbook_mutated": false,
+    "generated_vendor_wrapper_committed": false,
+    "professional_or_engineering_approval": false
+  },
+  "host": {
+    "computer": "LAPTOP-360-PRAV",
+    "computer_name_sha256": "a3aaacf351ad33f6af882eebdf07edeab7d914abff8d07b25793a7f08d81434a",
+    "hardware": "HP Pavilion x360 Convertible 14-ba1xx",
+    "os": "Microsoft Windows 11 Home Single Language 10.0.26200 build 26200 64-bit",
+    "powershell": "7.6.4",
+    "python": "3.11.15 MSC v.1944 x64",
+    "comtypes": "1.4.16",
+    "process_boundary": {
+      "etabs_was_already_running": true,
+      "etabs_process_id": 7876,
+      "etabs_process_start_utc": "2026-08-29T14:44:46.2317806Z",
+      "etabs_process_path": "C:/Program Files/Computers and Structures/ETABS 23/ETABS.exe",
+      "observed_window_title": "ETABS Ultimate v23.3.1 - vasant sawale - Copy",
+      "excel_was_running": false,
+      "statement": "Only process, file, registry, managed-assembly, and pre-existing generated-wrapper metadata were inspected. The audit did not interact with the pre-existing ETABS process or its model."
+    }
+  },
+  "installed_sources": {
+    "registry": {
+      "display_name": "ETABS 23",
+      "display_version": "23.3.1",
+      "publisher": "Computers and Structures, Inc.",
+      "install_date": "20260820",
+      "product_id": "{3d13198c-132b-4b16-b26b-516c0fb50596}",
+      "install_location": "C:/Program Files/Computers and Structures/ETABS 23/"
+    },
+    "application": {
+      "source_id": "installed-application",
+      "path": "C:/Program Files/Computers and Structures/ETABS 23/ETABS.exe",
+      "file_version": "23.3.1.4563",
+      "product_version": "23.3.1.4563",
+      "byte_count": 269168,
+      "modified_utc": "2026-07-02T00:39:20Z",
+      "sha256": "16a790087dd3961b45e57e35c32179e90db31d2dab6c6039f6efb91d53e84456",
+      "authenticode_status": "Valid",
+      "signer_subject": "CN=\"Computers and Structures, Inc.\", O=\"Computers and Structures, Inc.\", L=Walnut Creek, S=California, C=US",
+      "signer_thumbprint": "53C754971A08FC2AD74B5CB556F26375E9CC679F"
+    },
+    "managed_signature_assembly": {
+      "source_id": "managed-signature-assembly",
+      "path": "C:/Program Files/Computers and Structures/ETABS 23/ETABSv1.dll",
+      "assembly_identity": "ETABSv1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=453d728ef24c6f5e",
+      "file_version": "2.16.0.0",
+      "product_version": "2.16.0.0",
+      "byte_count": 354152,
+      "modified_utc": "2026-07-02T00:39:10Z",
+      "sha256": "393492bd1649ee705c97449cf7d485c61b73ec649ed1d01f47f54f957b277e54",
+      "authenticode_status": "Valid"
+    },
+    "x64_type_library": {
+      "source_id": "x64-type-library",
+      "path": "C:/Program Files/Computers and Structures/ETABS 23/NativeAPI/x64/ETABSv1.tlb",
+      "library_name": "ETABS Application Programming Interface (API) v1",
+      "libid": "{542F7A9D-3A7D-4061-97B3-3A1276FF83BD}",
+      "version": "1.0",
+      "lcid": 0,
+      "byte_count": 316292,
+      "modified_utc": "2026-08-20T18:43:34.2548572Z",
+      "sha256": "3823416b05d80d148b63a2f490cd2acea2797d0fc64157c5cc8882c8fc24ef0e",
+      "registered_win64_path_matches": true
+    },
+    "generated_raw_wrapper": {
+      "source_id": "generated-raw-wrapper",
+      "path": "C:/Users/P/Pravin2025/Projects/structural_lib_repo/.venv/Lib/site-packages/comtypes/gen/_542F7A9D_3A7D_4061_97B3_3A1276FF83BD_0_1_0.py",
+      "byte_count": 1305797,
+      "modified_utc": "2026-08-29T07:41:54.8236630Z",
+      "sha256": "18e302a44f357e236672aebd1e4697bfed42627a3680ffe2c070b43fbc62084c"
+    },
+    "generated_friendly_wrapper": {
+      "source_id": "generated-friendly-wrapper",
+      "path": "C:/Users/P/Pravin2025/Projects/structural_lib_repo/.venv/Lib/site-packages/comtypes/gen/ETABSv1.py",
+      "byte_count": 86022,
+      "modified_utc": "2026-08-29T07:41:55.3318567Z",
+      "sha256": "40c66ee6dea247eb8816413bfe2e76eea4d4468026748d64a0425125cf2d52f1"
+    },
+    "comtypes_shape_runtime": {
+      "source_id": "comtypes-memberspec",
+      "path": "comtypes/_memberspec.py",
+      "byte_count": 24769,
+      "sha256": "bc85a42d1daf6d84b2697c7ab0f56f70689db4e97122e06bee40af15e583ada2",
+      "generated_callable_signature": "(self, *args, **kw) through comtypes _fix_inout_args",
+      "outer_multi_output_container": "list",
+      "one_dimensional_safearray_container": "tuple"
+    }
+  },
+  "metadata_conventions": {
+    "transport_hresult": "COM transport HRESULT is raised by comtypes on transport failure and is not a normal decoded output.",
+    "csi_return_code": "The ETABS LONG pRetVal is the final decoded list item for every inspected multi-output operation.",
+    "parameter_flags": {
+      "1": "FIN ([in])",
+      "3": "FIN|FOUT ([in,out])",
+      "10": "FOUT|FRETVAL ([out,retval])",
+      "17": "FIN|FOPT ([in,optional])"
+    },
+    "enums": {
+      "eLoadCaseType_LinearStatic": 1,
+      "eCNameType_LoadCase": 0,
+      "eCNameType_LoadCombo": 1,
+      "eItemTypeElm_ObjectElm": 0,
+      "eLoadPatternType_Dead": 1,
+      "eLoadPatternType_SuperDead": 2,
+      "eLoadPatternType_Live": 3,
+      "eLoadPatternType_ReduceLive": 4,
+      "eLoadPatternType_Quake": 5,
+      "eLoadPatternType_Wind": 6
+    }
+  },
+  "operations": [
+    {
+      "operation": "LoadPatterns.GetNameList",
+      "interface": "ETABSv1.cLoadPatterns",
+      "interface_guid": "{0FA969B9-7001-4341-9213-151778D79221}",
+      "dispid": 10,
+      "managed_signature": "Int32 GetNameList(ref Int32 NumberNames, ref String[] MyName)",
+      "output_order": ["NumberNames", "MyName", "CSI return code"],
+      "python_shape": "outer list length 3; MyName SAFEARRAY becomes tuple",
+      "source_ids": ["managed-signature-assembly", "x64-type-library", "generated-raw-wrapper", "comtypes-memberspec"],
+      "verdict": "PROVED"
+    },
+    {
+      "operation": "LoadPatterns.GetLoadType",
+      "interface": "ETABSv1.cLoadPatterns",
+      "interface_guid": "{0FA969B9-7001-4341-9213-151778D79221}",
+      "dispid": 9,
+      "managed_signature": "Int32 GetLoadType(String Name, ref eLoadPatternType MyType)",
+      "input_order": ["Name"],
+      "output_order": ["MyType", "CSI return code"],
+      "python_shape": "outer list length 2",
+      "source_ids": ["managed-signature-assembly", "x64-type-library", "generated-raw-wrapper", "comtypes-memberspec"],
+      "verdict": "PROVED"
+    },
+    {
+      "operation": "LoadPatterns.GetSelfWTMultiplier",
+      "interface": "ETABSv1.cLoadPatterns",
+      "interface_guid": "{0FA969B9-7001-4341-9213-151778D79221}",
+      "dispid": 11,
+      "managed_signature": "Int32 GetSelfWTMultiplier(String Name, ref Double SelfWTMultiplier)",
+      "input_order": ["Name"],
+      "output_order": ["SelfWTMultiplier", "CSI return code"],
+      "python_shape": "outer list length 2",
+      "source_ids": ["managed-signature-assembly", "x64-type-library", "generated-raw-wrapper", "comtypes-memberspec"],
+      "verdict": "PROVED"
+    },
+    {
+      "operation": "LoadCases.GetNameList",
+      "interface": "ETABSv1.cLoadCases",
+      "interface_guid": "{2C074D0A-041A-4A19-A068-0F947DE89054}",
+      "dispid": 7,
+      "managed_signature": "Int32 GetNameList(ref Int32 NumberNames, ref String[] MyName, eLoadCaseType CaseType=0)",
+      "input_order": ["CaseType optional default 0"],
+      "output_order": ["NumberNames", "MyName", "CSI return code"],
+      "python_shape": "outer list length 3; MyName SAFEARRAY becomes tuple",
+      "source_ids": ["managed-signature-assembly", "x64-type-library", "generated-raw-wrapper", "comtypes-memberspec"],
+      "verdict": "PROVED"
+    },
+    {
+      "operation": "LoadCases.GetTypeOAPI",
+      "interface": "ETABSv1.cLoadCases",
+      "interface_guid": "{2C074D0A-041A-4A19-A068-0F947DE89054}",
+      "dispid": 26,
+      "managed_signature": "Int32 GetTypeOAPI(String Name, ref eLoadCaseType CaseType, ref Int32 SubType)",
+      "input_order": ["Name"],
+      "output_order": ["CaseType", "SubType", "CSI return code"],
+      "python_shape": "outer list length 3",
+      "source_ids": ["managed-signature-assembly", "x64-type-library", "generated-raw-wrapper", "comtypes-memberspec"],
+      "verdict": "PROVED_BUT_INSUFFICIENT_ALONE",
+      "guard_id": "USE_GETTYPEOAPI_1"
+    },
+    {
+      "operation": "LoadCases.GetTypeOAPI_1",
+      "interface": "ETABSv1.cLoadCases",
+      "interface_guid": "{2C074D0A-041A-4A19-A068-0F947DE89054}",
+      "dispid": 27,
+      "managed_signature": "Int32 GetTypeOAPI_1(String Name, ref eLoadCaseType CaseType, ref Int32 SubType, ref eLoadPatternType DesignType, ref Int32 DesignTypeOption, ref Int32 Auto)",
+      "input_order": ["Name"],
+      "output_order": ["CaseType", "SubType", "DesignType", "DesignTypeOption", "Auto", "CSI return code"],
+      "python_shape": "outer list length 6",
+      "source_ids": ["managed-signature-assembly", "x64-type-library", "generated-raw-wrapper", "comtypes-memberspec"],
+      "verdict": "PROVED_REQUIRED_OVERLOAD",
+      "guard_id": "USE_GETTYPEOAPI_1"
+    },
+    {
+      "operation": "LoadCases.StaticLinear.GetLoads",
+      "interface": "ETABSv1.cCaseStaticLinear",
+      "interface_guid": "{AE73755E-671C-4FB1-8778-4191654F5CDE}",
+      "dispid": 2,
+      "managed_signature": "Int32 GetLoads(String Name, ref Int32 NumberLoads, ref String[] LoadType, ref String[] LoadName, ref Double[] SF)",
+      "input_order": ["Name"],
+      "output_order": ["NumberLoads", "LoadType", "LoadName", "SF", "CSI return code"],
+      "python_shape": "outer list length 5; all SAFEARRAY values become tuple",
+      "source_ids": ["managed-signature-assembly", "x64-type-library", "generated-raw-wrapper", "comtypes-memberspec"],
+      "verdict": "PROVED"
+    },
+    {
+      "operation": "LoadCases.StaticLinear.GetInitialCase",
+      "interface": "ETABSv1.cCaseStaticLinear",
+      "interface_guid": "{AE73755E-671C-4FB1-8778-4191654F5CDE}",
+      "dispid": 1,
+      "managed_signature": "Int32 GetInitialCase(String Name, ref String InitialCase)",
+      "input_order": ["Name"],
+      "output_order": ["InitialCase", "CSI return code"],
+      "python_shape": "outer list length 2",
+      "source_ids": ["managed-signature-assembly", "x64-type-library", "generated-raw-wrapper", "comtypes-memberspec"],
+      "verdict": "PROVED_REQUIRED_GUARD",
+      "guard_id": "BLOCK_NONBLANK_INITIAL_CASE"
+    },
+    {
+      "operation": "RespCombo.GetNameList",
+      "interface": "ETABSv1.cCombo",
+      "interface_guid": "{A7358245-1148-4351-BBEA-B8C46781D7DD}",
+      "dispid": 10,
+      "managed_signature": "Int32 GetNameList(ref Int32 NumberNames, ref String[] MyName)",
+      "output_order": ["NumberNames", "MyName", "CSI return code"],
+      "python_shape": "outer list length 3; MyName SAFEARRAY becomes tuple",
+      "source_ids": ["managed-signature-assembly", "x64-type-library", "generated-raw-wrapper", "comtypes-memberspec"],
+      "verdict": "PROVED"
+    },
+    {
+      "operation": "RespCombo.GetTypeOAPI",
+      "interface": "ETABSv1.cCombo",
+      "interface_guid": "{A7358245-1148-4351-BBEA-B8C46781D7DD}",
+      "dispid": 16,
+      "managed_signature": "Int32 GetTypeOAPI(String Name, ref Int32 ComboType)",
+      "input_order": ["Name"],
+      "output_order": ["ComboType", "CSI return code"],
+      "python_shape": "outer list length 2",
+      "source_ids": ["managed-signature-assembly", "x64-type-library", "generated-raw-wrapper", "comtypes-memberspec"],
+      "verdict": "PROVED"
+    },
+    {
+      "operation": "RespCombo.GetCaseList",
+      "interface": "ETABSv1.cCombo",
+      "interface_guid": "{A7358245-1148-4351-BBEA-B8C46781D7DD}",
+      "dispid": 8,
+      "managed_signature": "Int32 GetCaseList(String Name, ref Int32 NumberItems, ref eCNameType[] CNameType, ref String[] CName, ref Double[] SF)",
+      "input_order": ["Name"],
+      "output_order": ["NumberItems", "CNameType", "CName", "SF", "CSI return code"],
+      "python_shape": "outer list length 5; all SAFEARRAY values become tuple",
+      "source_ids": ["managed-signature-assembly", "x64-type-library", "generated-raw-wrapper", "comtypes-memberspec"],
+      "verdict": "PROVED"
+    },
+    {
+      "operation": "Analyze.GetCaseStatus",
+      "interface": "ETABSv1.cAnalyze",
+      "interface_guid": "{90E7C3E4-5D56-40A2-BA97-3979CFF08ADC}",
+      "dispid": 4,
+      "managed_signature": "Int32 GetCaseStatus(ref Int32 NumberItems, ref String[] CaseName, ref Int32[] Status)",
+      "output_order": ["NumberItems", "CaseName", "Status", "CSI return code"],
+      "python_shape": "outer list length 4; both SAFEARRAY values become tuple",
+      "source_ids": ["managed-signature-assembly", "x64-type-library", "generated-raw-wrapper", "comtypes-memberspec"],
+      "verdict": "PROVED"
+    },
+    {
+      "operation": "Results.Setup.GetCaseSelectedForOutput",
+      "interface": "ETABSv1.cAnalysisResultsSetup",
+      "interface_guid": "{751DB83E-CF85-4179-B172-D8EFDCE7B056}",
+      "dispid": 2,
+      "managed_signature": "Int32 GetCaseSelectedForOutput(String Name, ref Boolean Selected)",
+      "input_order": ["Name"],
+      "output_order": ["Selected", "CSI return code"],
+      "python_shape": "outer list length 2",
+      "source_ids": ["managed-signature-assembly", "x64-type-library", "generated-raw-wrapper", "comtypes-memberspec"],
+      "verdict": "PROVED"
+    },
+    {
+      "operation": "Results.Setup.GetComboSelectedForOutput",
+      "interface": "ETABSv1.cAnalysisResultsSetup",
+      "interface_guid": "{751DB83E-CF85-4179-B172-D8EFDCE7B056}",
+      "dispid": 3,
+      "managed_signature": "Int32 GetComboSelectedForOutput(String Name, ref Boolean Selected)",
+      "input_order": ["Name"],
+      "output_order": ["Selected", "CSI return code"],
+      "python_shape": "outer list length 2",
+      "source_ids": ["managed-signature-assembly", "x64-type-library", "generated-raw-wrapper", "comtypes-memberspec"],
+      "verdict": "PROVED"
+    },
+    {
+      "operation": "Results.FrameForce",
+      "interface": "ETABSv1.cAnalysisResults",
+      "interface_guid": "{7603BF75-2A18-421B-8660-8B4D2695C4AC}",
+      "dispid": 9,
+      "managed_signature": "Int32 FrameForce(String Name, eItemTypeElm ItemTypeElm, ref Int32 NumberResults, ref String[] Obj, ref Double[] ObjSta, ref String[] Elm, ref Double[] ElmSta, ref String[] LoadCase, ref String[] StepType, ref Double[] StepNum, ref Double[] P, ref Double[] V2, ref Double[] V3, ref Double[] T, ref Double[] M2, ref Double[] M3)",
+      "input_order": ["Name", "ItemTypeElm"],
+      "output_order": ["NumberResults", "Obj", "ObjSta", "Elm", "ElmSta", "LoadCase", "StepType", "StepNum", "P", "V2", "V3", "T", "M2", "M3", "CSI return code"],
+      "python_shape": "outer list length 15; all thirteen SAFEARRAY values become tuple",
+      "source_ids": ["managed-signature-assembly", "x64-type-library", "generated-raw-wrapper", "comtypes-memberspec"],
+      "verdict": "PROVED"
+    }
+  ],
+  "operation_summary": {
+    "total": 15,
+    "static_signatures_proved": 15,
+    "missing_symbols": 0,
+    "version_drift": 0,
+    "static_blockers": 0,
+    "required_fail_closed_guards": 2
+  },
+  "required_w3c_guards": [
+    {
+      "guard_id": "USE_GETTYPEOAPI_1",
+      "requirement": "Use the installed GetTypeOAPI_1 overload, retain CaseType, SubType, DesignType, DesignTypeOption and Auto, and accept Auto only when it is exactly 0 or 1.",
+      "reason": "GetTypeOAPI alone cannot populate the accepted W3A raw design-type and auto identity without inference."
+    },
+    {
+      "guard_id": "BLOCK_NONBLANK_INITIAL_CASE",
+      "requirement": "Call StaticLinear.GetInitialCase and block a nonblank initial-case value until the public contract explicitly models that definition semantic.",
+      "reason": "GetLoads alone is not a complete linear-static definition when an initial case exists."
+    }
+  ],
+  "post_inspection_identity": {
+    "installed_file_hashes_and_sizes_unchanged": true,
+    "generated_wrapper_hashes_and_sizes_unchanged": true,
+    "etabs_process_not_interacted_with": true,
+    "excel_process_not_started": true
+  },
+  "local_checks": [
+    {
+      "name": "focused portable W3B evidence checks",
+      "command": "./scripts/python_runtime.sh -m pytest Python/tests/unit/test_etabs_w3b_signature_evidence.py -q",
+      "result": "PASS",
+      "passed": 4
+    },
+    {
+      "name": "targeted Ruff and Black",
+      "result": "PASS",
+      "checked_files": 1
+    },
+    {
+      "name": "strict documentation checks",
+      "command": "./scripts/python_runtime.sh scripts/check_docs.py --all --strict",
+      "result": "PASS",
+      "passed": 5
+    },
+    {
+      "name": "maintained quick gate",
+      "command": "./run.sh check --quick --no-reuse",
+      "result": "PASS",
+      "passed": 10,
+      "reused": 0,
+      "reported_duration_seconds": 35.6
+    }
+  ],
+  "authorization": {
+    "status": "OBSERVED",
+    "observed_at_utc": "2026-08-29T20:09:21.0145019Z",
+    "authorized_actions": [
+      "CREATE_W3B_CANDIDATE_COMMIT",
+      "PUSH_W3B_BRANCH",
+      "OPEN_W3B_PULL_REQUEST",
+      "MERGE_UNCHANGED_W3B_AFTER_REQUIRED_CHECKS"
+    ],
+    "prohibited_actions": [
+      "BYPASS_REQUIRED_CHECKS",
+      "REWRITE_HISTORY",
+      "DELETE_BRANCH_WORKTREE_MODEL_WORKBOOK_OR_EVIDENCE",
+      "CLAIM_ENGINEERING_OR_PROFESSIONAL_APPROVAL"
+    ],
+    "next_action": "CREATE_W3B_CANDIDATE_COMMIT",
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "reference": "Current task delegation authorizing the complete W3 campaign packet by packet",
+      "status": "OBSERVED",
+      "observed_at_utc": "2026-08-29T20:09:21.0145019Z"
+    },
+    "target_binding": {
+      "task_id": "ETABS-EXCEL-BEAM-W3-CAMPAIGN",
+      "branch": "codex/etabs-w3b-installed-signatures-windows",
+      "head_sha": "b7351bb5a3269e4281ba7b34c780e45d2599749b",
+      "actions": [
+        "CREATE_W3B_CANDIDATE_COMMIT",
+        "PUSH_W3B_BRANCH",
+        "OPEN_W3B_PULL_REQUEST",
+        "MERGE_UNCHANGED_W3B_AFTER_REQUIRED_CHECKS"
+      ]
+    }
+  },
+  "limitations": [
+    "Static metadata proves callable signatures, types, defaults, decoded container shapes and source identity only.",
+    "No live ETABS value, model identity, CSI return-code value, catalogue contents, result freshness, unit state, result selection, row count or application behavior is claimed.",
+    "W3C may implement only these proved operations with both required fail-closed guards and fake list/tuple/scalar fixtures.",
+    "Independent frame analysis remains HELD_NOT_SUPPORTED; ETABS remains global-analysis authority.",
+    "No engineering, practicing-engineer, public, construction, professional or release approval is created."
+  ],
+  "next_action": "IMPLEMENT_W3C_TRANSPORT_NEUTRAL_CATALOGUE_ADAPTER_FROM_PROVED_MATRIX"
+}

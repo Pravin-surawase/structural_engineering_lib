@@ -4,12 +4,12 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-30
-- Focus: Implement only W3A's public vendor-neutral availability,
-- Completed: Fetched `origin` without pruning and verified PR #900's accepted authority; Added Core-owned immutable `EvidenceValueV1[T]` semantics for `PRESENT`,; Added typed load-pattern, linear-static/unsupported case-family, complete
-- Git receipt: docs/verification/etabs-w3a-demand-contract-git-handoff-receipt.json | sha256:b2f0514713062130dce532d4dd88c35cc375e5322ded59bdfde548c522e464f8 | HOLD
-- Git identity: codex/etabs-w3-campaign-windows@69399777b3ccdf9eb678ec567ab8a5c616959132 | upstream=origin/main@69399777b3ccdf9eb678ec567ab8a5c616959132 | base=origin/main@69399777b3ccdf9eb678ec567ab8a5c616959132 | tree=dirty | operation=none
+- Focus: Audit only the installed ETABS 23.3.1 managed assembly, x64 type
+- Completed: Rebound a fresh W3B worktree to exact accepted W3A merge/tree and proved the; Reproved ETABS 23.3.1.4563, signed application/managed-assembly identities,; Statically proved all 15 accepted operations, including managed signature,
+- Git receipt: docs/verification/etabs-w3b-installed-getter-signature-git-handoff-receipt.json | sha256:88ee50d850cf7b4e9fea1917b81d8f00510d78d20d24a1b6a226451108d63694 | HOLD
+- Git identity: codex/etabs-w3b-installed-signatures-windows@b7351bb5a3269e4281ba7b34c780e45d2599749b | upstream=origin/main@b7351bb5a3269e4281ba7b34c780e45d2599749b | base=origin/main@b7351bb5a3269e4281ba7b34c780e45d2599749b | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
-- Next action: CREATE_W3A_CANDIDATE_COMMIT
+- Next action: CREATE_W3B_CANDIDATE_COMMIT
 <!-- HANDOFF:END -->
 
 ## Current boundary
@@ -17,15 +17,15 @@
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` remains the current immutable normal software release. No release work is authorized. |
-| **Current** | PR #900 is the accepted W3 authority: merge `69399777b3ccdf9eb678ec567ab8a5c616959132`, tree `cc1f6528abce3c3a4532d8ad3c1a7b3dc852c71a`. W3A is implemented on `codex/etabs-w3-campaign-windows` and is awaiting candidate freeze, hosted review and normal merge. |
+| **Current** | W3A is accepted in PR #901: merge `b7351bb5a3269e4281ba7b34c780e45d2599749b`, tree `b895008b4f4d3212b6d1e1fe28894e07efc2c7df`. W3B statically proves all 15 installed ETABS 23.3.1.4563 getter signatures on `codex/etabs-w3b-installed-signatures-windows` and is awaiting candidate freeze, hosted review and normal merge. |
 | **W2 complete** | PR #898 merged reviewed W2C head `57f53d48...` as `f1873e7b...`; candidate and merge tree are both `bb20ba0c...`. Direct service, REST, all seven saved Excel tables, and 3,626,096 reconstructed canonical JSON bytes reconcile to SHA-256 `d4c28586...`. |
 | **Plan gate** | Complete. The owner explicitly authorized the dependency-ordered W3 campaign; every packet still requires its exact predecessor and packet-specific stop conditions. |
-| **Next** | Merge unchanged W3A only after all required checks pass; then bind W3B static installed-signature evidence to that exact merge/tree/contract digest. |
-| **Held** | W3A opened no application and added no COM, design, solver or optimizer path. Model mutation remains held until the later expressly bounded copied-model packets; release and engineering/professional/construction approval remain unapproved. |
+| **Next** | Merge unchanged W3B only after all required checks pass; then implement W3C's transport-neutral fake-COM catalogue adapter from the exact proved operation matrix and both fail-closed guards. |
+| **Held** | W3B made no COM object/getter call and no live model-value claim. Model mutation remains held until the later expressly bounded copied-model packets; release and engineering/professional/construction approval remain unapproved. |
 
-## W3A candidate outcome
+## W3A accepted and W3B candidate outcome
 
-The candidate freezes public, versioned, vendor-independent contracts for
+Accepted W3A freezes public, versioned, vendor-independent contracts for
 exact ETABS demand provenance before expanding design or optimization:
 
 1. load-pattern definitions, including type and self-weight multiplier;
@@ -39,9 +39,11 @@ exact ETABS demand provenance before expanding design or optimization:
 8. optional-field semantics that distinguish unavailable, not requested, not
    applicable, blocked, and present values.
 
-W3A remains contract-first and read-only. It adds types, pure validators,
-serialization, fake normalized fixtures, public API registrations, tests and
-documentation, with no COM adapter or installed-application evidence.
+W3B binds that accepted surface to ETABS 23.3.1.4563 static installed metadata.
+All 15 operation signatures are proved. W3C must use `GetTypeOAPI_1` for full
+case design/auto identity and must block any nonblank linear-static initial
+case until that semantic is represented publicly. W3B created no COM object,
+called no getter and makes no live-model claim.
 
 ## Required acceptance
 
@@ -78,47 +80,33 @@ it does not block the read-only W3A contract work.
 - Do not compact the session archive or retire React/hooks/docs/public APIs in
   W3A; those require separate caller, successor, recovery, and owner evidence.
 
-## Next Windows W3B handoff
+## Next W3C handoff
 
-The campaign authority is explicit. Start this bounded static packet only after
-W3A is accepted and merged, replacing every bracketed placeholder with exact
-evidence from that merge.
+After W3B merges unchanged, create a fresh packet worktree from its exact
+merge/tree. Implement only the statically proved getters behind the ETABS
+service boundary using fake list/tuple/scalar providers. Retain every operation
+verdict/source identity; decode nonzero CSI returns, count mismatches, source
+drift and capacity errors as fail-closed blockers. Use `GetTypeOAPI_1`, require
+`Auto` in `{0, 1}`, and block nonblank `GetInitialCase` values. Do not open or
+attach ETABS/Excel during W3C.
 
-```text
-Run one bounded Windows metadata/signature audit for ETABS-EXCEL-BEAM-W3B-INSTALLED-GETTER-SIGNATURES. First fetch and verify origin/main
-at exact W3A merge [W3A_MERGE_SHA], tree [W3A_TREE_SHA], and accepted W3A contract/getter-requirement digest [W3A_CONTRACT_DIGEST].
-Inspect live AGENTS.md, Git/worktree authority, the W3 master plan/brief, accepted W3A contracts/tests, retained W2 signature evidence,
-and installed ETABS source identities before writing.
-
-This is static installed ETABS 23.3.1 getter/signature evidence only. Do not create COM, attach/open ETABS or Excel, call SapModel, run
-analysis/design, change selection, unlock/save, mutate a model/workbook, implement Mac runtime/engineering code, optimize, delete/retire
-branches/worktrees/evidence/public surfaces, publish a release, or claim engineering/professional approval.
-
-Reprove installed ETABS 23.3.1.4563 x64 assembly/type-library/generated-wrapper and Python/comtypes identities. Audit accepted W3A
-operations: LoadPatterns.GetNameList/GetLoadType/GetSelfWTMultiplier; LoadCases.GetNameList/GetTypeOAPI and accepted case-family getters;
-RespCombo.GetNameList/GetTypeOAPI/GetCaseList or installed overload; Analyze.GetCaseStatus; both Results.Setup selection getters; and the
-existing Results.FrameForce provenance contract. Per operation, record installed signature, argument/output order/types, defaults, enum,
-CSI return form, generated Python call signature, outer/SAFEARRAY expectation, source hashes, verdict and limitations. Unknown overload,
-missing symbol, source/runtime drift or operation outside the accepted matrix is BLOCKED, not inferred.
-
-Produce one versioned evidence artifact, concise handoff/issue record and focused static-evidence checks. Report exact Git base/head/tree,
-installed identities, proved/blocked counts and verdicts, limitations, stop reasons and Mac integration next step. Preserve
-HELD_NOT_SUPPORTED and make no live model/result claim.
-```
-
-### Windows W3B operator checklist
+### Completed W3B operator checklist
 
 - [x] User explicitly authorized W3B as part of the full W3 campaign.
-- [ ] `origin/main`, W3A merge/tree and contract digest match the filled prompt.
-- [ ] Worktree has no conflict/operation/unknown owner state; unrelated work is preserved.
-- [ ] Installed ETABS version, x64 typelib/assembly, generated wrapper, Python and comtypes identities are recorded with hashes.
-- [ ] No ETABS/Excel process is opened, attached or automated; no `SapModel` call occurs.
-- [ ] Every accepted getter has exact signature/default/return/container evidence and one verdict.
-- [ ] Unsupported case families and unknown overloads remain blocked; no arbitrary payload mapping is invented.
-- [ ] Evidence distinguishes static compatibility from live model, solver, engineering and professional acceptance.
-- [ ] No secrets, proprietary model/workbook/result bytes or generated vendor wrapper source enter Git.
-- [ ] Stop on predecessor drift, installed-source drift, missing accepted contract, operation outside matrix, or any need to open an application.
-- [ ] Return once to Mac with the clean candidate/evidence identities; do not continue into live getters automatically.
+- [x] `origin/main`, W3A merge/tree and contract hashes match.
+- [x] Worktree is operation-free and unrelated retained work is preserved.
+- [x] Installed application, assembly, typelib, wrapper, Python and comtypes
+  identities are recorded with hashes.
+- [x] No ETABS/Excel process was opened, attached or automated; no `SapModel`
+  call occurred.
+- [x] Every accepted getter has exact signature/default/return/container
+  evidence and a verdict.
+- [x] No arbitrary case payload mapping was invented; both discovered guards
+  fail closed.
+- [x] Static compatibility is distinguished from live model, solver,
+  engineering and professional acceptance.
+- [x] No secrets, proprietary model/workbook/result bytes or generated vendor
+  wrapper source entered Git.
 
 ## Required Reading
 

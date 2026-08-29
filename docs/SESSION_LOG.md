@@ -5,6 +5,103 @@
 
 ---
 
+## 2026-08-30 — Session: W3B installed ETABS getter signatures
+
+**Agent:** Codex (`orchestrator`/Windows evidence owner, sole writer; no
+subagents).
+
+**Branch:** `codex/etabs-w3b-installed-signatures-windows`, created as a fresh
+linked worktree at
+`C:\CodexWork\worktrees\etabs-w3b-installed-signatures-windows` from accepted
+W3A PR #901 merge `b7351bb5a3269e4281ba7b34c780e45d2599749b`, tree
+`b895008b4f4d3212b6d1e1fe28894e07efc2c7df`.
+
+**Git handoff receipt:**
+`docs/verification/etabs-w3b-installed-getter-signature-git-handoff-receipt.json`
+(prepared at candidate freeze; hosted and integration facts remain external
+until the immutable candidate is pushed and reviewed).
+
+**Focus:** Audit only the installed ETABS 23.3.1 managed assembly, x64 type
+library, pre-existing generated comtypes wrapper, and Python container-shape
+runtime against the accepted W3A getter matrix. Do not create COM, call
+`SapModel`, interact with the already-running ETABS process, open Excel, read
+live model values, run analysis/design, change selection/units/lock, mutate a
+model/workbook, implement W3C runtime code, or claim engineering/professional
+approval.
+
+**Completed:**
+
+- Rebound a fresh W3B worktree to exact accepted W3A merge/tree and proved the
+  two W3A contract source hashes plus tracked evidence hash before inspection.
+- Reproved ETABS 23.3.1.4563, signed application/managed-assembly identities,
+  registered x64 type library, Python 3.11.15, comtypes 1.4.16, both existing
+  generated-wrapper hashes, and comtypes container-shape implementation hash.
+  No wrapper was regenerated and every inspected file identity remained exact.
+- Statically proved all 15 accepted operations, including managed signature,
+  interface/GUID/dispid, inputs/defaults, output order, generated Python outer
+  shape, SAFEARRAY tuple shape, CSI return position, enums and source binding.
+  No installed symbol, overload or version blocker remains.
+- Proved that `LoadCases.GetTypeOAPI` alone is insufficient for the accepted
+  W3A design/auto identity. W3C must call installed `GetTypeOAPI_1`, retain all
+  six decoded outputs, and accept `Auto` only when exactly zero or one.
+- Added a second fail-closed W3C guard: call
+  `LoadCases.StaticLinear.GetInitialCase` and block a nonblank value because
+  W3A does not yet model initial-case definition semantics.
+- Added one safe tracked evidence JSON and four portable static-evidence tests.
+  The tests bind exact W3A hashes, exact 15-operation matrix, both required
+  guards, and the no-live/no-professional scope.
+- Observed one already-running ETABS process and no Excel process without
+  interaction. No COM object or getter was used; no model or workbook value is
+  claimed.
+
+### Issues encountered
+
+- A second maintained `session begin` was rejected because the overarching
+  `ETABS-EXCEL-BEAM-W3-CAMPAIGN` parent checkpoint is already active.
+- A read-only workflow inventory assumed `.github/workflows/documentation.yml`,
+  but this repository uses its maintained workflow names including
+  `deploy-docs.yml`.
+- An initial broad wrapper text search matched many interfaces with identical
+  method names and produced truncated, ambiguous output.
+- PowerShell parsed an unquoted `HEAD^{tree}` revision unexpectedly during one
+  read-only Git identity command.
+- The first focused-test command guessed a PowerShell runtime launcher that the
+  repository does not provide.
+- The first targeted Ruff check rejected the new test module's import order.
+- The first receipt command left forbidden-path globs unquoted, so Git Bash
+  expanded them into many repository paths before argument parsing.
+
+### Root causes and resolutions
+
+- The repository enforces one current model-usage checkpoint per parent task.
+  Resolution: continue the already-active authorized W3 campaign checkpoint,
+  do not supersede it, and do not create a duplicate packet session. This is
+  consistent with the owner's one-parent/no-subagent instruction. ⚠️ TERMINAL
+  ISSUE: duplicate session start rejected -> continued the existing parent.
+- The workflow filename was stale knowledge rather than repository evidence.
+  Resolution: enumerate exact maintained workflow paths before selecting later
+  hosted checks. No file was changed by the failed lookup. ⚠️ TERMINAL ISSUE:
+  guessed workflow path absent -> exact inventory used.
+- Method names are not unique across COM interfaces. Resolution: bind each
+  operation to its exact interface `_methods_` metadata and corroborate it with
+  .NET managed reflection. No live provider call was required.
+- PowerShell requires this revision expression to be quoted in this execution
+  context. Resolution: rerun `git rev-parse 'HEAD^{tree}'`, which returned the
+  accepted tree. ⚠️ TERMINAL ISSUE: unquoted revision was misparsed -> quoted
+  exact revision passed.
+- This repository exposes the source-bound launcher as
+  `scripts/python_runtime.sh`. Resolution: invoke it with versioned Portable Git
+  Bash; all four focused W3B tests passed. ⚠️ TERMINAL ISSUE: nonexistent
+  `.ps1` launcher -> maintained Bash launcher used.
+- Ruff's import sorter groups `typing` before `pathlib` under this repository's
+  exact policy. Resolution: apply the formatter's single mechanical import
+  rewrite, then rerun Ruff and Black successfully. No evidence assertion or
+  production behavior changed.
+- The receipt tool expects wildcard policies as literal values. Resolution:
+  quote all four `**` arguments; the exact tracked evidence then generated and
+  validated a conservative `HOLD` pre-commit receipt. ⚠️ TERMINAL ISSUE:
+  unquoted Bash globs expanded -> quoted policy values passed.
+
 ## 2026-08-30 — Session: W3A result-catalogue and beam-demand contracts
 
 **Agent:** Codex (`orchestrator`/`python-core`, sole writer; no subagents).

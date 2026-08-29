@@ -1,0 +1,152 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-29T20:09:21.0145019Z",
+      "reference": "Current task delegation authorizing the complete W3 campaign packet by packet",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "CREATE_W3B_CANDIDATE_COMMIT",
+      "PUSH_W3B_BRANCH",
+      "OPEN_W3B_PULL_REQUEST",
+      "MERGE_UNCHANGED_W3B_AFTER_REQUIRED_CHECKS"
+    ],
+    "next_action": "CREATE_W3B_CANDIDATE_COMMIT",
+    "observed_at_utc": "2026-08-29T20:09:21.0145019Z",
+    "prohibited_actions": [
+      "BYPASS_REQUIRED_CHECKS",
+      "REWRITE_HISTORY",
+      "DELETE_BRANCH_WORKTREE_MODEL_WORKBOOK_OR_EVIDENCE",
+      "CLAIM_ENGINEERING_OR_PROFESSIONAL_APPROVAL"
+    ],
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "CREATE_W3B_CANDIDATE_COMMIT",
+        "PUSH_W3B_BRANCH",
+        "OPEN_W3B_PULL_REQUEST",
+        "MERGE_UNCHANGED_W3B_AFTER_REQUIRED_CHECKS"
+      ],
+      "branch": "codex/etabs-w3b-installed-signatures-windows",
+      "head_sha": "b7351bb5a3269e4281ba7b34c780e45d2599749b",
+      "task_id": "ETABS-EXCEL-BEAM-W3-CAMPAIGN"
+    }
+  },
+  "holds": [
+    "AUTHORIZATION_QUERY_FAILED",
+    "AUTHORIZATION_SOURCE_QUERY_FAILED",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "88ee50d850cf7b4e9fea1917b81d8f00510d78d20d24a1b6a226451108d63694",
+    "state": {
+      "branch": "codex/etabs-w3b-installed-signatures-windows",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "b7351bb5a3269e4281ba7b34c780e45d2599749b",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 455.551,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git\\worktrees\\etabs-w3b-installed-signatures-windows",
+      "head_sha": "b7351bb5a3269e4281ba7b34c780e45d2599749b",
+      "hold_reasons": [
+        "changed paths: 5"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-29T20:19:42.686951+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\worktrees\\etabs-w3b-installed-signatures-windows",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 5,
+        "modified_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/next-session-brief.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "Python/tests/unit/test_etabs_w3b_signature_evidence.py",
+          "docs/verification/etabs-w3b-installed-getter-signature-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "b7351bb5a3269e4281ba7b34c780e45d2599749b",
+        "status": "equal"
+      },
+      "worktree_root": "C:\\CodexWork\\worktrees\\etabs-w3b-installed-signatures-windows"
+    }
+  },
+  "local_state_receipt_hash": "sha256:88ee50d850cf7b4e9fea1917b81d8f00510d78d20d24a1b6a226451108d63694",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-29T20:19:42.686951+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/**",
+      "fastapi_app/**",
+      "react_app/**",
+      "excel_addin/**"
+    ],
+    "integration_owner": "Codex orchestrator W3 campaign",
+    "owned_paths": [
+      "Python/tests/unit/test_etabs_w3b_signature_evidence.py",
+      "docs/verification/etabs-w3b-installed-getter-signature-evidence.json",
+      "docs/verification/etabs-w3b-installed-getter-signature-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "ETABS-EXCEL-BEAM-W3-CAMPAIGN"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
