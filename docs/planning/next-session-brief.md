@@ -4,12 +4,12 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-30
-- Focus: Implement only W3C's transport-neutral ETABS catalogue adapter from the exact accepted W3B getter matrix
-- Completed: Bound a fresh W3C worktree to exact W3B merge/tree; added complete/no-partial proved-shape decoding and seven public exports; passed 24 focused tests, Ruff, Mypy, API controls and quick gate 10/10 without application access
-- Git receipt: docs/verification/etabs-w3c-catalogue-adapter-git-handoff-receipt.json | sha256:12b8413ee4783fa3f6a57f0dd90812477875611f909e1972ddf06c0b95715cf8 | HOLD
-- Git identity: codex/etabs-w3c-catalogue-adapter-windows@94c058f108351dd78195be5ee228b78da1d6a635 | upstream=NONE | base=origin/main@94c058f108351dd78195be5ee228b78da1d6a635 | tree=dirty | operation=none
+- Focus: Preserve the first blocked W3D live read and repair only the documented ETABS zero-state initial-condition sentinel
+- Completed: Proved live `None` plus official CSI semantics; added lossless `ZERO_UNSTRESSED` contract for blank/`None`; kept real prior cases blocked; passed 24 focused tests, Ruff, Mypy, API/docs controls and quick gate 10/10 without a live rerun
+- Git receipt: docs/verification/etabs-w3d-initial-condition-sentinel-repair-git-handoff-receipt.json | sha256:0174ea9ec33c2e85d9f02e254c21f3ef0c19592c96387c2ee53a3e0ab4803eb2 | HOLD
+- Git identity: codex/etabs-w3d-live-catalogue-windows@a44bf0c8f57de3f3823dc4e584a6e0e3cbf02ee1 | upstream=NONE | base=origin/main@a44bf0c8f57de3f3823dc4e584a6e0e3cbf02ee1 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
-- Next action: CREATE_W3C_CANDIDATE_COMMIT
+- Next action: CREATE_W3D_R1_CANDIDATE_COMMIT
 <!-- HANDOFF:END -->
 
 ## Current boundary
@@ -17,13 +17,13 @@
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` remains the current immutable normal software release. No release work is authorized. |
-| **Current** | W3A is accepted in PR #901. W3B is accepted in PR #902: merge `94c058f108351dd78195be5ee228b78da1d6a635`, tree `a93377058f7c04445a311a4267cfd2fb4f21ef11`. W3C implements the transport-neutral catalogue adapter on `codex/etabs-w3c-catalogue-adapter-windows` and is awaiting candidate freeze, hosted review and normal merge. |
+| **Current** | W3A-W3C are accepted through PR #903 merge `a44bf0c8f57de3f3823dc4e584a6e0e3cbf02ee1`, tree `fb6976c31a8ce334dd1198cedd416e9b815d509e`. The first W3D live read correctly blocked with no partial catalogue on ETABS raw initial-case sentinel `None`; the copied model stayed exact. A separate narrow sentinel repair is on `codex/etabs-w3d-live-catalogue-windows` awaiting full review. |
 | **W2 complete** | PR #898 merged reviewed W2C head `57f53d48...` as `f1873e7b...`; candidate and merge tree are both `bb20ba0c...`. Direct service, REST, all seven saved Excel tables, and 3,626,096 reconstructed canonical JSON bytes reconcile to SHA-256 `d4c28586...`. |
 | **Plan gate** | Complete. The owner explicitly authorized the dependency-ordered W3 campaign; every packet still requires its exact predecessor and packet-specific stop conditions. |
-| **Next** | Merge unchanged W3C only after all required checks pass; then create a fresh W3D worktree from its exact merge/tree and run the separately bounded live getter-only acceptance on the positively identified copied model. |
-| **Held** | W3C imported/created no COM object, called no live getter and made no live model-value claim. W3D must not select output, run analysis/design, unlock, save, write Excel or mutate the copied model. Independent frame analysis, release and engineering/professional/construction approval remain unapproved. |
+| **Next** | Merge the unchanged sentinel repair only after all required checks pass; then create a fresh continuation worktree from its exact merge/tree and rerun W3D once. Preserve the first blocked evidence permanently. |
+| **Held** | Do not rerun live evidence from dirty or unmerged repair source. W3D must not select output, run analysis/design, call `FrameForce`, unlock, save, write Excel or mutate the copied model. Real prior initial-case names remain blocked. Independent frame analysis, release and engineering/professional/construction approval remain unapproved. |
 
-## W3A-W3B accepted and W3C candidate outcome
+## W3A-W3C accepted and W3D sentinel-repair outcome
 
 Accepted W3A freezes public, versioned, vendor-independent contracts for
 exact ETABS demand provenance before expanding design or optimization:
@@ -47,7 +47,12 @@ publicly. It decodes only proved caller-supplied shapes, retains every call
 verdict/source identity, and returns no partial catalogue after a provider,
 shape, return-code, identity/status, selection, normalization or capacity
 failure. W3C created no COM object, called no live getter and makes no
-live-model claim.
+live-model claim. W3C is accepted in PR #903. The first W3D live attempt then
+proved that installed ETABS returns literal `None` for the zero unstressed
+linear-static initial condition. CSI's official getter documentation confirms
+blank/`None` are zero-state sentinels. The separate repair retains the raw
+sentinel through `LinearStaticInitialConditionV1`, normalizes only blank/`None`
+to `ZERO_UNSTRESSED`, and continues to block every real prior-case name.
 
 ## Required acceptance
 
@@ -86,28 +91,34 @@ it does not block the read-only W3A contract work.
 
 ## Next W3D handoff
 
-After W3C merges unchanged, create a fresh packet worktree from its exact
-merge/tree and bind the source-selected runtime to that worktree. Reprove the
+After the sentinel repair merges unchanged, create a fresh continuation
+worktree from its exact merge/tree and bind the source-selected runtime to that
+worktree. Reprove the
 authorized copied-model path/hash/size/mtime, ETABS 23.3.1 identity, lock,
 units, complete case statuses and current result-selection state before a live
 getter. Use the accepted W3B source digest and W3C adapter to extract one
 complete catalogue and the linked same-row demand snapshot. Reconcile direct
 and source-bound REST canonical hashes, then prove model file identity, lock,
-units and selection unchanged. Do not select outputs, run analysis/design,
-unlock, save, write Excel or mutate the copied model during W3D.
+units and selection unchanged. Preserve and reference the first blocked attempt;
+do not overwrite or relabel it. Do not select outputs, run analysis/design,
+call `FrameForce`, unlock, save, write Excel or mutate the copied model during
+W3D.
 
-### Completed W3C operator checklist
+### Completed W3D repair operator checklist
 
-- [x] User explicitly authorized W3C as part of the full W3 campaign.
-- [x] `origin/main`, W3B merge/tree, evidence and contract hashes match.
+- [x] User explicitly authorized W3D as part of the full W3 campaign.
+- [x] `origin/main`, W3C merge/tree, evidence and contract hashes match.
 - [x] Worktree is operation-free and unrelated retained work is preserved.
 - [x] Only W3B-proved getter operations and exact list/tuple/scalar semantics
   are decoded; every call records source, shape, return and verdict evidence.
-- [x] `GetTypeOAPI_1`, exact `Auto` and nonblank-initial-case guards are enforced.
-- [x] No ETABS/Excel process was opened, attached or automated; no live
-  `SapModel` call occurred and no REST surface was added.
-- [x] Every tested failure returns a stable issue and no partial normalized
-  request/catalogue.
+- [x] The first live read was getter-only and returned no partial value on its
+  exact initial-condition guard; the copied model identity stayed unchanged.
+- [x] Official CSI semantics plus installed 23.3.1 evidence prove blank/`None`
+  mean zero unstressed initial conditions.
+- [x] The narrow public repair retains and accepts only those zero-state forms;
+  every actual prior-case name remains blocked.
+- [x] No live rerun occurred after code modification; a clean merged source is
+  mandatory before the single continuation.
 - [x] Transport-neutral compatibility is distinguished from live model,
   solver, engineering and professional acceptance.
 - [x] No secrets, proprietary model/workbook/result bytes or generated vendor

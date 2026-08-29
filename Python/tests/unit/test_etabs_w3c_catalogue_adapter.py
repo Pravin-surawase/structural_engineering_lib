@@ -79,7 +79,7 @@ class _FakeLoadCases:
         pack,
         *,
         auto: int = 0,
-        initial_case: str = "",
+        initial_case: str = "None",
         unsupported_live: bool = False,
     ) -> None:
         self.pack = pack
@@ -196,7 +196,7 @@ class _FakeSapModel:
         pack=tuple,
         *,
         auto: int = 0,
-        initial_case: str = "",
+        initial_case: str = "None",
         unsupported_live: bool = False,
         extra_status: bool = False,
         status_code: int = 4,
@@ -250,6 +250,11 @@ def test_w3c_accepts_proved_list_and_tuple_shapes_losslessly(pack) -> None:
         isinstance(case.parameters, LinearStaticCaseParametersV1)
         for case in result.catalogue.load_cases
     )
+    assert {
+        case.parameters.initial_condition.raw_initial_case
+        for case in result.catalogue.load_cases
+        if isinstance(case.parameters, LinearStaticCaseParametersV1)
+    } == {"None", ""}
     nested = result.catalogue.response_combinations[1]
     assert tuple(factor.source_kind for factor in nested.factors) == (
         ResponseCombinationSourceKindV1.COMBINATION,

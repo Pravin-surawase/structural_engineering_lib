@@ -721,6 +721,15 @@ Exit: every approved fake inventory is complete and deterministic; any missing
 definition, unsupported selected case family, getter drift, nonzero return,
 capacity overflow or identity mismatch blocks before an accepted catalogue.
 
+W3D live evidence later established one narrow installed-sentinel correction:
+`LoadCases.StaticLinear.GetInitialCase` may return blank or the literal `None`
+for zero unstressed initial conditions. `LinearStaticInitialConditionV1`
+retains that raw value and normalizes only those two forms to
+`ZERO_UNSTRESSED`; any actual prior-case name remains blocked until its
+nonlinear stiffness semantics and target identity have a separately accepted
+contract. This correction does not authorize a setter, analysis or model
+mutation.
+
 ### W3D — Windows live read-only catalogue acceptance (`L3`)
 
 Owner: Windows evidence laptop. Dependencies: accepted W3C, a separately

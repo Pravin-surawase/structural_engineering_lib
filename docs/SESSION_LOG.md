@@ -5,6 +5,106 @@
 
 ---
 
+## 2026-08-30 — Session: W3D live catalogue blocker and sentinel repair
+
+**Agent:** Codex (`orchestrator`/Windows evidence owner, sole writer; no
+subagents).
+
+**Branch:** `codex/etabs-w3d-live-catalogue-windows`, created as a fresh linked
+worktree at `C:\CodexWork\worktrees\etabs-w3d-live-catalogue-windows` from
+accepted W3C PR #903 merge
+`a44bf0c8f57de3f3823dc4e584a6e0e3cbf02ee1`, tree
+`fb6976c31a8ce334dd1198cedd416e9b815d509e`.
+
+**Git handoff receipt:**
+`docs/verification/etabs-w3d-initial-condition-sentinel-repair-git-handoff-receipt.json`
+(pre-commit conservative receipt; hosted and integration facts remain external
+until the immutable repair candidate is pushed and reviewed).
+
+**Focus:** Run the first W3D getter-only catalogue acceptance against the exact
+authorized copied model and retained W2 baseline. Stop without a partial value
+on a W3C semantic guard. Preserve the blocked external evidence; if the root
+cause is a narrow documented installed sentinel, repair only that public
+semantic in a separate reviewed candidate before any live rerun. Do not select
+output, call a setter or `FrameForce`, run analysis/design, change units/lock,
+save/write Excel, mutate the model, or claim engineering/professional approval.
+
+**Completed:**
+
+- Fetched and proved W3C PR #903 merged unchanged: candidate
+  `b98e0c810a461da684bec1ca89943716f28781e4`, merge
+  `a44bf0c8f57de3f3823dc4e584a6e0e3cbf02ee1`, exact shared tree
+  `fb6976c31a8ce334dd1198cedd416e9b815d509e`. Retained the clean W3C
+  branch/worktree and every earlier W1/W2/W3 item.
+- Created a fresh W3D worktree from that exact merge. Source-bound Python
+  diagnosis passed. The authorized copy remained SHA-256 `99b7f3f1...`,
+  702,831 bytes and unchanged timestamp; ETABS 23.3.1 was responsive with the
+  copy visibly open and no dialog, while Excel and ports 3000/8000 were idle.
+- Performed one serialized direct COM attachment. Read only model identity,
+  version, lock, units, complete statuses/selections and the W3C catalogue
+  getter matrix. No setter, analysis/design, `FrameForce`, save or Excel call
+  occurred.
+- The adapter correctly returned `BLOCKED` with no normalized request or
+  catalogue when a linear-static initial-condition getter returned literal
+  `None`. External preflight, complete blocked adapter result and blocker JSON
+  were retained outside Git; the copied model hash/size/timestamp stayed exact.
+- Proved the root cause with CSI's official `GetInitialCase` documentation:
+  blank or `None` denotes zero unstressed initial conditions, while a real
+  qualifying nonlinear case supplies ending stiffness. The W3B guard treated
+  all nonblank strings as a prior case because static metadata could not prove
+  this value semantic.
+- Added `LinearStaticInitialConditionV1`, which retains the raw blank/`None`
+  value and normalizes only those forms to `ZERO_UNSTRESSED`. Any actual
+  prior-case name still blocks. Updated W3A construction, W3C decoding and
+  tuple/list/failure tests without weakening any other guard.
+- Repaired one historical-test design flaw: W3B's immutable accepted source
+  hashes are historical evidence, so its test now validates those embedded
+  identities rather than requiring all future accepted contract versions to
+  remain byte-identical.
+
+### Issues encountered
+
+- The first live catalogue attempt stopped on
+  `LINEAR_STATIC_INITIAL_CASE_UNSUPPORTED` before any catalogue or demand value
+  was accepted.
+- The first sentinel-repair test assertion expected both blank and `None`, but
+  the top-level fake provider still overrode the nested fake's new default with
+  its retained blank default.
+- Running the historical W3B evidence test against a legitimately evolved W3A
+  contract failed its current-file byte/hash assertion.
+
+### Root causes and resolutions
+
+- Static W3B reflection proved the getter signature but not CSI's string-value
+  convention. Live ETABS returned the documented `None` sentinel; this is zero
+  initial state, not a prior case. Resolution: preserve the blocked attempt,
+  cite official CSI semantics, and add a required lossless zero-state contract.
+  Any value other than blank/`None` remains blocked. ⚠️ TERMINAL ISSUE: live
+  zero-state sentinel misclassified -> narrow separate repair candidate; no
+  live retry before merge.
+- The fake default was defined at two construction layers. Resolution: update
+  the outer supplied provider so the happy path exercises `None`; retain a
+  separate blank path and the named-prior-case blocker.
+- W3B evidence binds the exact W3A files accepted at W3B time, not every future
+  revision. Resolution: assert its immutable embedded path/size/hash records;
+  current W3 contract behavior remains covered by W3A/W3C tests. This preserves
+  history without freezing public evolution accidentally.
+
+### Validation through repair content freeze
+
+- W3A/W3B/W3C focused tests pass 24/24 after the repair; targeted Ruff and
+  Mypy pass.
+- The blocked live evidence and model identity remain external and unchanged.
+  No live rerun occurred after code modification.
+- Strict docs pass 5/5, all three API controls pass, and the no-reuse quick gate
+  passes 10/10. The Windows PTY emitted the buffered report well after its
+  internal 97.6-second duration, but the maintained process exited zero without
+  a timeout. Normal hooks and hosted review remain required before the repair
+  may merge. Only then may a fresh continuation worktree perform one W3D retry.
+- Independent frame analysis remains `HELD_NOT_SUPPORTED`; ETABS remains the
+  global-analysis authority, and release/professional/construction approval
+  remain unapproved.
+
 ## 2026-08-30 — Session: W3C transport-neutral ETABS catalogue adapter
 
 **Agent:** Codex (`orchestrator`/Windows implementation owner, sole writer; no

@@ -24,6 +24,7 @@ from structural_lib.core.analysis_contracts import (
     EvidenceStateV1,
     EvidenceValueV1,
     LinearStaticCaseParametersV1,
+    LinearStaticInitialConditionV1,
     LinearStaticLoadItemV1,
     LoadCaseDefinitionV1,
     LoadPatternDefinitionV1,
@@ -735,12 +736,12 @@ def extract_etabs_result_catalogue_v1(
                             f"Linear-static case {name!r} returned a non-string initial case.",
                         )
                     )
-                if raw_initial_case.strip():
+                if raw_initial_case.strip().casefold() not in {"", "none"}:
                     raise _AdapterError(
                         _issue(
                             "LINEAR_STATIC_INITIAL_CASE_UNSUPPORTED",
                             initial_operation,
-                            f"Linear-static case {name!r} has nonblank initial case {raw_initial_case!r}; W3A does not model this definition semantic.",
+                            f"Linear-static case {name!r} has prior initial case {raw_initial_case!r}; the accepted zero-state contract does not model prior-case stiffness semantics.",
                         )
                     )
                 loads_operation = "LoadCases.StaticLinear.GetLoads"
@@ -783,6 +784,13 @@ def extract_etabs_result_catalogue_v1(
                     expected_count=load_count,
                 )
                 parameters = LinearStaticCaseParametersV1(
+                    initial_condition=LinearStaticInitialConditionV1(
+                        raw_initial_case=raw_initial_case,
+                        evidence_reference=_evidence_reference(
+                            initial_operation,
+                            name,
+                        ),
+                    ),
                     load_items=tuple(
                         LinearStaticLoadItemV1(
                             ordinal=index,
@@ -807,7 +815,7 @@ def extract_etabs_result_catalogue_v1(
                             ),
                         )
                         for index in range(load_count)
-                    )
+                    ),
                 )
             else:
                 parameters = UnsupportedCaseParametersV1(

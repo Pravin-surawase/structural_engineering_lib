@@ -19,6 +19,7 @@ from structural_lib.core.analysis_contracts import (
     EvidenceStateV1,
     EvidenceValueV1,
     LinearStaticCaseParametersV1,
+    LinearStaticInitialConditionV1,
     LinearStaticLoadItemV1,
     LoadCaseDefinitionV1,
     LoadPatternDefinitionV1,
@@ -86,6 +87,10 @@ def _linear_case(case_id: str, name: str, ordinal: int) -> LoadCaseDefinitionV1:
         raw_design_type="Dead",
         is_auto=False,
         parameters=LinearStaticCaseParametersV1(
+            initial_condition=LinearStaticInitialConditionV1(
+                raw_initial_case="None",
+                evidence_reference="fake:initial-case",
+            ),
             load_items=(
                 LinearStaticLoadItemV1(
                     ordinal=0,
@@ -94,7 +99,7 @@ def _linear_case(case_id: str, name: str, ordinal: int) -> LoadCaseDefinitionV1:
                     scale_factor=1.0,
                     evidence_reference=f"fake:case:{name}",
                 ),
-            )
+            ),
         ),
         analysis_status_id=f"status:{case_id}",
         source_ordinal=ordinal,

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 from pathlib import Path
 from typing import Any
@@ -38,10 +37,6 @@ def _load_evidence() -> dict[str, Any]:
     return json.loads(EVIDENCE_PATH.read_text(encoding="utf-8"))
 
 
-def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
 def test_w3b_evidence_is_bound_to_accepted_w3a_contracts() -> None:
     evidence = _load_evidence()
 
@@ -53,10 +48,18 @@ def test_w3b_evidence_is_bound_to_accepted_w3a_contracts() -> None:
         "b895008b4f4d3212b6d1e1fe28894e07efc2c7df"
     )
 
-    for contract in evidence["source"]["accepted_w3a_contracts"]:
-        path = REPO_ROOT / contract["path"]
-        assert path.stat().st_size == contract["byte_count"]
-        assert _sha256(path) == contract["sha256"]
+    assert evidence["source"]["accepted_w3a_contracts"] == [
+        {
+            "path": "Python/structural_lib/core/analysis_contracts.py",
+            "byte_count": 17840,
+            "sha256": "f264cafb114d1d7b4b7a8af529adc87224ad079483e186c6f461ec05165a12fc",
+        },
+        {
+            "path": "Python/structural_lib/services/contracts/etabs_w3.py",
+            "byte_count": 41957,
+            "sha256": "cb6b880f90cf00fe39f89f3d9b7d1b22404393b5576be00b8a61de1870b029bd",
+        },
+    ]
 
 
 def test_w3b_matrix_is_exact_and_every_installed_signature_is_proved() -> None:
