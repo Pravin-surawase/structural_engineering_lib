@@ -444,6 +444,9 @@ curl http://localhost:8000/health           # Should return {"status":"ok"}
 # Session start
 ./run.sh session start                               # Verify env, read priorities
 ./run.sh session usage --checkpoint start --task-id TASK-XXX --task "short scope"
+# For an unreconstructable historical start only; never fabricate closeout time:
+./run.sh session usage --checkpoint superseded --task-id STALE-TASK \
+  --notes "Exact successor task owns current work; no timing claim"
 
 # Validate codebase
 ./run.sh check --quick                               # Fast validation (10 checks, <30s)

@@ -14,7 +14,8 @@ tags: [excel, etabs, beams, windows, optimization, construction]
 The bounded read-only Excel -> Python -> live ETABS W1 pilot is accepted on the
 installed Windows stack. W2A, the static signature audit, W2B transport/review,
 and the first W2C safe-hold campaign are integrated through PR #897 at exact
-`ee50aaa3...`. The continued Windows candidate repairs the remaining Excel
+`ee50aaa3...`. PR #898 then integrated the exact reviewed W2C candidate
+`57f53d48...` as `f1873e7b...`. That continuation repairs the remaining Excel
 transport boundary: typed literal cell values preserve `+`/`-`/`=` JSON
 prefixes, all seven controlled writes are transactional, blank cells and
 Excel's 15-significant-digit numeric round-trip are normalized explicitly, and
@@ -26,8 +27,9 @@ acceptance**. Direct service, source-bound REST, saved Excel tables, and the
 `d4c28586...`; model hash/size/mtime, lock, units, and the exact active
 combination remained unchanged. This is not professional structural or
 construction approval. Independent frame analysis remains
-`HELD_NOT_SUPPORTED`; optimization, model write-back, and W3+ work remain held
-pending Mac review and the explicit W2 close decision.
+`HELD_NOT_SUPPORTED`; optimization and model write-back remain held. The owner
+authorized the W3 start after the W2C integration and W3-readiness maintenance,
+so W3 begins with a read-only contract packet rather than ETABS mutation.
 
 The sequence is deliberate:
 
@@ -58,6 +60,7 @@ and seismic-response dependencies.
 | #895 | Closed W1 and froze the W2A/W2B/W2C next-phase contract | `a3f36cb4...` |
 | #896 | Merged the reviewed W2A baseline and unknown-story fail-closed repair | `0f5c918e...` |
 | #897 | Merged the cumulative reviewed W2 campaign and date-stable compatibility test repair unchanged | `ee50aaa3...` |
+| #898 | Accepted and merged the transactional installed W2C workflow with exact candidate/merge tree equality | `f1873e7b...` |
 
 The tracked W1 receipt is
 [`etabs-excel-python-pilot-w1-evidence.json`](../verification/etabs-excel-python-pilot-w1-evidence.json).
@@ -482,8 +485,8 @@ hidden inside W2.
 | W2B contract and implementation | Windows campaign, then Mac review | Complete and integrated through PR #897 at `ee50aaa3...` | Actual observer/orchestration/serialized COM-thread boundary, REST/Excel schemas, error and row limits, deterministic reconciliation, focused checks, quick gate, clean pushed checkpoint |
 | W2C evidence plan | Windows campaign | Complete | Exact Phase B source, copied-model identity, finished cases, inactive approved combination, lock/units/state checks, tracked safe receipt, and hash-bound external evidence |
 | W2 campaign integration | Mac | Complete | PR #897 merged reviewed candidate `a88595a6...` unchanged as exact `ee50aaa3...`, tree `c1a49958...` |
-| W2C installed acceptance retry | Windows acceptance branch, then Mac review | **Software acceptance passed on the Windows candidate; review pending** | Exact combination active; direct/REST canonical bytes/hash/counts reconcile at `d4c28586...` with 3,502 stations and restored units. Saved Excel contains all seven exact tables, 242 literal JSON chunks, and byte/hash-exact reconstruction. Model identity/lock/units/selection remained exact; independent frame analysis and engineering approval remain held |
-| W2 close decision | Mac | Ready for review; not yet integrated | Review `origin/main...HEAD`, W2A-W2C evidence, transaction semantics, and accepted limitations; decide whether W3 may begin. No automatic progression |
+| W2C installed acceptance retry | Windows acceptance branch, then Mac review | **Complete and integrated through PR #898** | Exact combination active; direct/REST canonical bytes/hash/counts reconcile at `d4c28586...` with 3,502 stations and restored units. Saved Excel contains all seven exact tables, 242 literal JSON chunks, and byte/hash-exact reconstruction. Model identity/lock/units/selection remained exact; independent frame analysis and engineering approval remain held |
+| W2 close decision | Mac | Complete at `f1873e7b...` | Independent Mac review found no outcome-changing defect; full local and hosted Python/FastAPI/Excel/docs gates passed. W3 start was separately authorized after maintenance |
 
 W2B resolved these previously held adapter boundaries:
 
@@ -554,20 +557,18 @@ structural-engineer review before engineering or construction use.
 
 ## Next efficient sequence
 
-1. Windows freezes the transactional installed-acceptance evidence,
-   proportionate validation, and clean branch; pushes it without a PR; and stops
-   writing.
-2. Mac fetches the branch and reviews `origin/main...HEAD`. Verify that
-   `origin/main` is exact `ee50aaa3...`; treat `75668421...` only as the first
-   branch commit, never as the comparison base.
-3. Reproduce focused Office/Python checks and review literal preservation,
-   rollback of new and pre-existing controlled outputs, saved seven-table cell
-   equality, canonical JSON reconstruction, and model preservation.
-4. Mac may open one cumulative PR after review. W2C is accepted only as an
-   installed software workflow on this copied model; the W2 close decision must
-   preserve `HELD_NOT_SUPPORTED` and professional-review boundaries before any
-   W3 decision.
-5. The dev-only npm advisory and every W3+ phase remain separate work.
+1. Treat integrated W2C merge `f1873e7b...` and evidence baseline
+   `d4c28586...` as the immutable W3 predecessor.
+2. Start W3A with versioned read-only contracts for load patterns, load cases,
+   combination definitions, selected scenarios, same-row actions, and envelope
+   rules. Do not open ETABS for this first contract packet.
+3. Expand the installed getter matrix only after the W3A contracts and exact
+   tuple/return-code evidence requirements are frozen.
+4. Start beam design/audit evaluation only from accepted W3A demand scenarios;
+   missing torsion, serviceability, support, material, or detailing inputs remain
+   visible holds.
+5. Keep Pareto shear repair, professional attestation, local beam-line analysis,
+   optimization, and ETABS write-back as separate dependency-ordered packets.
 
 ## Stop conditions
 
@@ -579,16 +580,13 @@ changes, or W2 would need setters beyond temporary unit selection.
 ## New-chat starter
 
 ```text
-On the Mac primary machine, fetch
-`origin/codex/etabs-excel-beam-w2c-installed-acceptance`, verify
-`origin/main` is exact `ee50aaa3cad619b41c6153f5f7970553ef65248c`, and
-review with `git log --oneline origin/main..HEAD` plus
-`git diff --stat origin/main...HEAD`. Commit `75668421...` is the first branch
-commit, not the integration base. Reproduce the focused W2/Office checks and
-review the typed-literal/transaction repair. Confirm the Windows evidence shows
-direct, REST, all seven saved Excel tables, and 3,626,096 reconstructed JSON
-bytes reconcile to `d4c28586...` with 3,502 force stations while model
-hash/size/mtime, lock, units, and active selection remained exact. Open one
-cumulative PR only after review. Do not start W3 automatically, change the
-model, claim engineering approval, or mix the separate nanoid lane.
+Start W3A from exact integrated predecessor `f1873e7b...`. Freeze versioned,
+vendor-neutral read-only contracts for the complete bounded load-pattern,
+load-case, response-combination, selection, same-row beam-action, scenario,
+envelope, and governing-reference foundation. Reuse the accepted W2 model and
+result identities without opening ETABS in this first packet. Optional fields
+may only be query filters or explicit opt-in evidence; missing calculation-
+bearing inputs must fail closed. Keep independent analysis
+`HELD_NOT_SUPPORTED`, and do not add ETABS setters, optimization, professional
+approval, or construction-use claims.
 ```

@@ -254,11 +254,18 @@ IS 456 quality gate.
   verification, and Git state. It deliberately leaves token and billing fields
   empty because the repository cannot measure them.
 
+If a historical task start is genuinely abandoned or replaced and its phase
+timings cannot be reconstructed, do not fabricate a closeout. Record an exact
+`superseded` checkpoint with a reason; it closes only the named active task and
+records no elapsed-time, efficiency, candidate, PR, or integration claim.
+
 ```bash
 ./run.sh session begin --task-id TASK-XXX --agent governance --task "bounded scope"
 ./run.sh session usage --checkpoint milestone --elapsed-min 120 \
   --verification "targeted tests pass" --notes "no subagents"
 ./run.sh session usage --active --json
+./run.sh session usage --checkpoint superseded --task-id STALE-TASK \
+  --notes "Exact successor task owns current work; no timing claim"
 ./run.sh session usage --checkpoint closeout --task-id TASK-XXX \
   --candidate-head <40-character-candidate-sha> \
   --pr-number <number> --merge-commit <40-character-merge-sha> \

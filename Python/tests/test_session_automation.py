@@ -1235,6 +1235,73 @@ def test_usage_defaults_never_infer_model_or_reasoning() -> None:
     )
 
 
+def test_superseded_usage_closes_only_the_exact_active_task_without_timing_claim(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    usage_log = tmp_path / "model_usage.jsonl"
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", usage_log)
+    _write_usage_start(usage_log, task_id="STALE-PILOT")
+    monkeypatch.setattr(session, "_usage_now", lambda: USAGE_NOW)
+    monkeypatch.setattr(
+        session,
+        "_git_checkpoint_state",
+        lambda: {"branch": "task/TEST", "head": "abc1234", "working_tree_files": 0},
+    )
+    args = session.build_parser().parse_args(
+        [
+            "usage",
+            "--checkpoint",
+            "superseded",
+            "--task-id",
+            "STALE-PILOT",
+            "--notes",
+            "Exact successor maintenance task owns current work; no timing claim.",
+        ]
+    )
+
+    assert session.cmd_usage(args) == 0
+    entries = session._read_jsonl(usage_log)
+    assert entries[-1]["checkpoint"] == "superseded"
+    assert entries[-1]["elapsed_min"] is None
+    assert "efficiency" not in entries[-1]
+    assert session._active_usage_start(entries) is None
+
+
+@pytest.mark.parametrize(
+    ("extra_args", "error"),
+    [
+        ([], "requires an explicit --notes reason"),
+        (["--task-id", "OTHER", "--notes", "wrong task"], "exact active task"),
+        (
+            ["--notes", "no timing", "--elapsed-min", "31"],
+            "cannot claim elapsed time",
+        ),
+    ],
+)
+def test_superseded_usage_fails_closed_for_incomplete_or_mismatched_evidence(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+    extra_args: list[str],
+    error: str,
+):
+    usage_log = tmp_path / "model_usage.jsonl"
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", usage_log)
+    _write_usage_start(usage_log, task_id="STALE-PILOT")
+    arguments = [
+        "usage",
+        "--checkpoint",
+        "superseded",
+        "--task-id",
+        "STALE-PILOT",
+        *extra_args,
+    ]
+
+    assert session.cmd_usage(session.build_parser().parse_args(arguments)) == 1
+    assert error in capsys.readouterr().err
+    assert session._active_usage_start(session._read_jsonl(usage_log)) is not None
+
+
 def test_closeout_rejects_short_unresolved_candidate_head(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ):
