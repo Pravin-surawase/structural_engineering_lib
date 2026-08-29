@@ -240,6 +240,13 @@ points and abort criteria for each of those claims. ETABS design-summary reads
 remain blocked because no design getter is frozen, and independent frame
 analysis remains `HELD_NOT_SUPPORTED`.
 
+CSI's [official `Story.GetStories` contract](https://docs.csiamerica.com/help-files/etabs-api-2016/html/3f804fa8-9fef-a9f0-8517-87676c0ea8ef.htm)
+has one important count convention: the reported `NumberStories` excludes
+`Base`, while each returned array contains a leading Base row and has
+`NumberStories + 1` entries. W2 retains that non-story row as an explicit
+exclusion and builds stable story identities only from the following rows. Any
+different count or leading sentinel fails closed.
+
 ## W2 complete-baseline surface
 
 The maintained Office.js pane now keeps the W1 design pilot and adds a separate

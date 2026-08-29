@@ -17,9 +17,9 @@
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` remains the immutable current normal software release; no new release is selected or authorized. |
-| **Current** | GitHub `origin/main` remains exactly `0f5c918eb87b658448737fd6bf023ccb4bd07c74` after PR #896. Phase A is pushed at exact head `4841ab2a...`; the cumulative `codex/etabs-excel-beam-w2-campaign` branch starts from that head and now contains the locally implemented W2B observer/orchestration/REST/Excel candidate. |
+| **Current** | GitHub `origin/main` remains exactly `0f5c918eb87b658448737fd6bf023ccb4bd07c74` after PR #896. Phase A is pushed at `4841ab2a...` and frozen W2B is pushed at exact campaign head `395f0618...`. Installed W2C repaired CSI's documented `GetStories` Base-row shape locally, then stopped before force reads because the approved combination is present but inactive. |
 | **Machine roles** | Mac is the primary development/integration machine. Windows is the installed Excel/ETABS testing and evidence machine. GitHub is the tracked handoff authority; proprietary model/workbook/evidence bytes remain on Windows. |
-| **Next** | Finish the frozen W2B focused/architecture/docs/quick validation, commit and push its exact checkpoint, then revalidate every Phase A/W2B preflight identity. Only then execute guarded read-only W2C. Mac performs one cumulative review after the final campaign push. |
+| **Next** | Finish the installed REST/Excel fail-closed proof without changing result selections, freeze the safe blocked receipt and exact retry prerequisite, run final gates, and push the cumulative campaign. Mac then performs one cumulative review; an accepted force baseline requires a separately authorized ETABS session that already has the exact approved combination active. |
 | **Held** | ETABS analysis, unlock/save, section/load write-back, optimization, complete solver parity, expanded design/detailing/site-practice automation, release, and professional or construction-use approval. |
 
 ## Today closeout
@@ -64,16 +64,24 @@
   selection blockers now stop before `FrameForce`. Fake-COM regressions prove
   zero force calls on those paths while accepted deterministic hashes remain
   unchanged.
+- Phase B passed the consolidated quick gate and every normal hook, committed
+  as exact head `395f0618...`, and was pushed with local/remote equality and no
+  PR.
+- Phase C matched the approved model hash/size/time, locked state, units,
+  runtime, binaries, type library, generated wrappers, finished case inventory,
+  and normal ETABS window. CSI's documented Base-row array convention exposed
+  and justified one narrow `GetStories` repair. The approved exact combination
+  is present but inactive, so the maintained path returns blocked with no
+  baseline/hash basis/stations and leaves file/lock/units unchanged.
 
 ## Next objective
 
-1. Complete the frozen W2B focused, architecture/import, documentation, and
-   quick checks; commit with normal hooks and push the exact Phase B checkpoint.
-2. Revalidate every static identity/precondition against the Phase B head. Then
-   run the approved copied-model W2C read-only journey, retaining full evidence
-   externally and only safe hashes/counts/verdicts in Git.
-3. Freeze final evidence/docs, run final gates, commit/push the clean campaign,
-   stop writing, and give Mac one cumulative review/PR pickup.
+1. Exercise the installed REST and Excel blocked paths against the exact repair
+   checkpoint, proving no W2 table write and no force read.
+2. Freeze the safe W2C hold receipt, external evidence hashes, unchanged model/
+   lock/units proof, and exact already-selected-combination retry prerequisite.
+3. Run final gates, commit/push the clean campaign, stop writing, and give Mac
+   one cumulative review/PR pickup.
 
 ## New-chat starter
 

@@ -746,16 +746,37 @@ def _read_stories(
         "splice_above",
         "splice_height",
     )
+    # CSI documents that NumberStories excludes the leading "Base" row while
+    # every GetStories output array includes it.
+    returned_count = count + 1
     arrays = {
         name: _exact_array(
-            "Story.GetStories", name, outputs[index], expected_count=count
+            "Story.GetStories", name, outputs[index], expected_count=returned_count
         )
         for index, name in enumerate(array_names, start=1)
     }
     stories: list[ETABSStoryV1] = []
     dispositions: list[ETABSBaselineDispositionV1] = []
+    base_name = _nonblank("Story.GetStories", "base row name", arrays["names"][0])
+    if base_name.casefold() != "base":
+        raise ETABSDataError(
+            "ETABS_STORY_BASE_ROW_INVALID",
+            "Story.GetStories did not return the documented leading Base row.",
+        )
+    dispositions.append(
+        _disposition(
+            row_kind=ETABSBaselineRowKind.STORY,
+            source_id=base_name,
+            disposition=ETABSBaselineDisposition.EXCLUDED,
+            reason_code="STORY_BASE_NOT_A_STORY",
+            message=(
+                "CSI GetStories includes Base in every output array but excludes it "
+                "from NumberStories; the non-story row is retained as an exclusion."
+            ),
+        )
+    )
     seen: set[str] = set()
-    for index in range(count):
+    for index in range(1, returned_count):
         name = _nonblank("Story.GetStories", "story name", arrays["names"][index])
         if name in seen:
             raise ETABSDataError(

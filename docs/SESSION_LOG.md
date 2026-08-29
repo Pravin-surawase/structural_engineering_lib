@@ -62,6 +62,13 @@ no-save/no-mutation/no-optimization/no-writeback/professional-review boundary.
 - Reordered W2A blocking decisions so incomplete topology, empty beam inventory,
   or inactive/missing result selection stops before `FrameForce`; accepted
   W2A hashes and the existing W1 path remain unchanged.
+- Passed all normal Phase B hooks, committed the complete transport checkpoint
+  as `395f06180d140ba0c3f568da662fed1e2c370926`, pushed exact local/remote
+  equality, and confirmed that no PR exists.
+- Revalidated the exact Phase B head/tree, GitHub authority, installed ETABS/
+  typelib/wrapper/runtime identities, approved copied-model hash/size/time,
+  locked state, original unit enum, and absence of an application dialog before
+  the first Phase C getter-only preflight.
 
 ### Issues encountered
 
@@ -96,6 +103,13 @@ no-save/no-mutation/no-optimization/no-writeback/professional-review boundary.
   files from mixed line endings and rejected the new `_direct_model_values`
   helper under the full-library `no-untyped-def` mypy rule. No commit was
   created; every other substantive hook passed.
+- The first guarded installed W2A extraction stopped at `Story.GetStories`:
+  ETABS returned `NumberStories=6` and seven entries in every story array, while
+  the fake-COM contract required six entries. No force getter was reached.
+- Getter-only result-selection inventory proved the approved combination is
+  present but not currently selected for output. All 15 cases are finished,
+  four cases are selected, no combination is selected, and changing that state
+  is outside W2's setter policy.
 
 ### Root causes and resolutions
 
@@ -169,6 +183,20 @@ no-save/no-mutation/no-optimization/no-writeback/professional-review boundary.
   normal hooks. No hook was bypassed. ⚠️ TERMINAL ISSUE: first commit stopped on
   mixed Office line endings and one missing type annotation -> repaired their
   source contracts before retrying.
+- Confirmed installed story-shape cause: CSI's official `cStory.GetStories`
+  contract says `NumberStories` excludes `Base` while every output array has
+  `NumberStories + 1` entries beginning with that non-story row. Resolution:
+  require the documented shape and exact Base sentinel, retain Base as an
+  explicit `STORY_BASE_NOT_A_STORY` exclusion, and construct story identities
+  only from the following `NumberStories` rows. Tuple/list fake-COM coverage
+  proves the accepted and malformed-sentinel paths and preserves unit
+  restoration. No getter or setter was added.
+- Confirmed selection-state cause: result-output selection is live ETABS
+  session state and the approved W1 combination is no longer active even though
+  the unchanged file contains finished results. Resolution: preserve the
+  no-selection-setter boundary, abort before `FrameForce`, and continue only
+  getter-only/fail-closed W2C evidence until an independently authorized session
+  starts with the approved combination already active.
 
 ### Validation through content freeze
 
@@ -193,8 +221,14 @@ no-save/no-mutation/no-optimization/no-writeback/professional-review boundary.
   focused mypy. Strict documentation passes all five checks; 520 Markdown files
   and 1,124 local links have zero broken links; task/brief/context/JSON/diff
   validation passes.
-- The consolidated quick gate, normal hooks, immutable receipt, commit/push,
-  and remote proof remain the frozen Phase B closeout sequence.
+- The consolidated quick gate and every normal hook passed; Phase B commit
+  `395f0618...` is clean and exactly equals its GitHub remote with no PR.
+- Phase C preflight matched ETABS `23.3.1.4563`, Python `3.11.15`, `comtypes`
+  `1.4.16`, the frozen typelib/wrapper hashes, copied-model SHA-256
+  `99b7f3f1...948b`, 702,831 bytes, locked state, and original units enum 6.
+  The story-shape failure and inactive approved combination both occurred
+  before any `FrameForce` call; post-failure file/hash/time/lock/units remained
+  unchanged.
 
 ---
 

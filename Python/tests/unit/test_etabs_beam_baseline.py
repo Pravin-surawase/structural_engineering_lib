@@ -87,13 +87,13 @@ class _FakeStory:
         return self.pack(
             (
                 2,
-                self.pack(("L1", "L2")),
-                self.pack((0.0, 3000.0)),
-                self.pack((3000.0, 3000.0)),
-                self.pack((True, False)),
-                self.pack(("", "L1")),
-                self.pack((False, False)),
-                self.pack((0.0, 0.0)),
+                self.pack(("Base", "L1", "L2")),
+                self.pack((0.0, 0.0, 3000.0)),
+                self.pack((0.0, 3000.0, 3000.0)),
+                self.pack((False, True, False)),
+                self.pack(("", "", "L1")),
+                self.pack((False, False, False)),
+                self.pack((0.0, 0.0, 0.0)),
                 0,
             )
         )
@@ -378,7 +378,7 @@ def test_tuple_and_list_shapes_produce_the_same_frozen_hash() -> None:
     assert tuple_result.baseline.baseline_sha256 == list_result.baseline.baseline_sha256
     assert (
         tuple_result.baseline.baseline_sha256
-        == "899adf35ed5afc789149be6811eb8924aee5032ca7664308f4c3487b8bf6efa9"
+        == "2a1ecee7c64e6268d860640dee48e868cb64fe53eed20f361de58d65076466a4"
     )
 
 
@@ -402,6 +402,46 @@ def test_frame_story_must_exist_in_story_inventory_and_restores_units(
 
     assert exc_info.value.code == "ETABS_FRAME_STORY_NOT_IN_INVENTORY"
     assert sap_model.unit_calls == [5, 6]
+
+
+@pytest.mark.parametrize("output_container", [tuple, list], ids=["tuple", "list"])
+def test_story_inventory_requires_documented_leading_base_row(
+    output_container,
+) -> None:
+    sap_model = _FakeSapModel(output_container)
+    sap_model.Story.GetStories = lambda: output_container(
+        (
+            2,
+            output_container(("NOT_BASE", "L1", "L2")),
+            output_container((0.0, 0.0, 3000.0)),
+            output_container((0.0, 3000.0, 3000.0)),
+            output_container((False, True, False)),
+            output_container(("", "", "L1")),
+            output_container((False, False, False)),
+            output_container((0.0, 0.0, 0.0)),
+            0,
+        )
+    )
+
+    with pytest.raises(ETABSDataError) as exc_info:
+        _extract(sap_model)
+
+    assert exc_info.value.code == "ETABS_STORY_BASE_ROW_INVALID"
+    assert sap_model.unit_calls == [5, 6]
+
+
+def test_story_base_row_is_explicitly_excluded_from_retained_stories() -> None:
+    result = _extract(_FakeSapModel())
+
+    assert result.baseline is not None
+    assert [story.name for story in result.baseline.stories] == ["L1", "L2"]
+    base_row = next(
+        row
+        for row in result.baseline.dispositions
+        if row.reason_code == "STORY_BASE_NOT_A_STORY"
+    )
+    assert base_row.source_id == "Base"
+    assert base_row.disposition is baseline.ETABSBaselineDisposition.EXCLUDED
 
 
 def test_getter_matrix_is_frozen_and_contains_no_result_selection_setter() -> None:
