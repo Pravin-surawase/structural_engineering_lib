@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-28
+last_updated: 2026-08-30
 doc_type: reference
 complexity: intermediate
 tags: []
@@ -20,7 +20,7 @@ approval.
 **Importance:** Critical
 **Document Version:** 0.24.0
 **Created:** 2025-01-01
-**Last Updated:** 2026-08-28<br>
+**Last Updated:** 2026-08-30<br>
 
 ---
 
@@ -167,6 +167,34 @@ assignment basis are mandatory. The workflow exposes one
 source/destination ledger identities, totals, residual, tolerance, and balance
 status. It does not infer destinations, generate IS 875 loads, or add a frame
 solver.
+
+### ETABS W3 result-catalogue and beam-demand contracts
+
+The vendor-neutral W3 contract surface accepts normalized immutable inputs; it
+does not itself attach to ETABS, run analysis, select output, or mutate a model.
+`api.ETABSResultCatalogueBuildRequestV1` produces either an accepted
+`api.ETABSResultCatalogueV1` or a blocked
+`api.ETABSResultCatalogueBuildResultV1` through
+`api.build_etabs_result_catalogue_v1`. Capacity is explicit in
+`api.ETABSResultCatalogueCapacityV1`; status and issues use
+`api.W3BuildStatusV1` and `api.W3BuildIssueV1` with no partial value on a
+blocked result.
+
+Catalogue identity is deterministic through
+`api.canonical_etabs_result_catalogue_hash_basis_json_v1` and
+`api.verify_etabs_result_catalogue_hash_v1`. A caller combines the accepted
+catalogue with the immutable W2 baseline in
+`api.BeamDemandDerivationRequestV1`; `api.derive_beam_demand_snapshot_v1`
+returns `api.BeamDemandBuildResultV1` with same-row signed-action provenance.
+Snapshot identity uses
+`api.canonical_beam_demand_snapshot_hash_basis_json_v1` and
+`api.verify_beam_demand_snapshot_hash_v1`. Lossless bounded access to retained
+W2 station rows is available through `api.query_beam_action_rows_v1`, which
+returns `api.BeamActionPageV1`.
+
+These contracts do not establish independent frame-analysis parity. ETABS
+remains the global-analysis authority, and engineering/professional approval
+remains outside the software API.
 
 Beam reinforcement truth is exposed separately through
 `api.evaluate_supplied_beam_reinforcement_v1` and its immutable selection,

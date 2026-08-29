@@ -380,6 +380,38 @@
       "reported_duration_seconds": 35.6
     }
   ],
+  "bounded_api_documentation_repair_checks": [
+    {
+      "name": "public API documentation signatures",
+      "command": "./scripts/python_runtime.sh scripts/check_api.py --docs",
+      "result": "PASS",
+      "passed": 1
+    },
+    {
+      "name": "API documentation classification sync",
+      "command": "./scripts/python_runtime.sh scripts/check_api.py --sync",
+      "result": "PASS",
+      "passed": 1
+    },
+    {
+      "name": "post-repair focused W3B evidence checks",
+      "result": "PASS",
+      "passed": 4
+    },
+    {
+      "name": "post-repair strict documentation checks",
+      "result": "PASS",
+      "passed": 5
+    },
+    {
+      "name": "post-repair maintained quick gate",
+      "command": "./run.sh check --quick --no-reuse",
+      "result": "PASS",
+      "passed": 10,
+      "reused": 0,
+      "reported_duration_seconds": 30.3
+    }
+  ],
   "authorization": {
     "status": "OBSERVED",
     "observed_at_utc": "2026-08-29T20:09:21.0145019Z",

@@ -70,6 +70,8 @@ approval.
 - The first targeted Ruff check rejected the new test module's import order.
 - The first receipt command left forbidden-path globs unquoted, so Git Bash
   expanded them into many repository paths before argument parsing.
+- The normal changed-path hook suite found 16 accepted W3A service exports
+  missing from `docs/reference/api.md` on integrated `main`.
 
 ### Root causes and resolutions
 
@@ -101,6 +103,24 @@ approval.
   quote all four `**` arguments; the exact tracked evidence then generated and
   validated a conservative `HOLD` pre-commit receipt. ⚠️ TERMINAL ISSUE:
   unquoted Bash globs expanded -> quoted policy values passed.
+- W3A regenerated the machine-readable API registries but did not add its new
+  service facade to the human API reference consumed by
+  `check_api.py --docs`. Resolution: document the exact nine public types and
+  seven public functions, including no-COM, no-parity and no-professional-
+  approval boundaries; rerun the affected API-signature/sync checks and normal
+  hooks before push. The source contract and generated registries remain
+  unchanged.
+
+### Validation through content freeze
+
+- Portable W3B evidence checks pass 4/4; strict documentation checks pass 5/5.
+- Targeted Ruff and Black pass for the new Python test.
+- The initial no-reuse quick gate passed 10/10 in 35.6 reported seconds. After
+  the API-reference repair, the affected API documentation/signature and sync
+  checks both pass, the four focused and five strict-documentation checks pass,
+  and the final no-reuse quick gate passes 10/10 in 30.3 reported seconds.
+- The candidate contains no production Python, FastAPI, React or Excel add-in
+  code change and makes no installed live-model or professional claim.
 
 ## 2026-08-30 — Session: W3A result-catalogue and beam-demand contracts
 
