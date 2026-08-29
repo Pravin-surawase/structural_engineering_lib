@@ -5,6 +5,107 @@
 
 ---
 
+## 2026-08-30 — Session: W3A result-catalogue and beam-demand contracts
+
+**Agent:** Codex (`orchestrator`/`python-core`, sole writer; no subagents).
+
+**Branch:** `codex/etabs-w3-campaign-windows`, created as a fresh linked
+worktree at `C:\CodexWork\worktrees\etabs-w3-campaign-windows` from exact
+accepted PR #900 authority merge
+`69399777b3ccdf9eb678ec567ab8a5c616959132`, tree
+`cc1f6528abce3c3a4532d8ad3c1a7b3dc852c71a`.
+
+**Git handoff receipt:**
+`docs/verification/etabs-w3a-demand-contract-git-handoff-receipt.json`
+(pre-commit local receipt; hosted and integration facts remain external until
+the immutable candidate is pushed and reviewed).
+
+**Focus:** Implement only W3A's public vendor-neutral availability,
+load-definition, status/selection, same-row action, scenario/envelope,
+governing-reference, paging and canonical-hash foundation. Preserve the W2
+baseline byte-for-byte and do not open ETABS/Excel, call COM, run analysis or
+design, implement the surrogate/optimizer, mutate files outside this worktree,
+publish a release, or claim engineering/professional approval.
+
+**Completed:**
+
+- Fetched `origin` without pruning and verified PR #900's accepted authority
+  commit is exact current `origin/main`, with exact accepted tree. Inventoried
+  all retained linked worktrees before creating this fresh W3 branch; no W1/W2
+  branch, worktree, stash, model, workbook or evidence record was changed.
+- Added Core-owned immutable `EvidenceValueV1[T]` semantics for `PRESENT`,
+  `UNAVAILABLE`, `NOT_REQUESTED`, `NOT_APPLICABLE` and `BLOCKED`, including
+  valid zero, `false` and empty bounded values without null overloading.
+- Added typed load-pattern, linear-static/unsupported case-family, complete
+  analysis-status, ordered/nested response-combination, result-selection,
+  signed same-row six-action, scenario, envelope and governing-reference
+  contracts. Unsupported case families retain identity and block a requested
+  scenario rather than accepting an arbitrary mapping or hidden default.
+- Added the exact seven accepted W3A public function signatures. Catalogue and
+  demand builders are fail-closed, canonical hashes are deterministic and
+  tamper-detecting, combination factors retain order/sign/repetition/nesting,
+  cycles and missing targets block, selected cases require `FINISHED`, and
+  governing ties resolve by source-row index then stable row ID.
+- Preserved `ETABSBeamBaselineV1` unchanged. The exact baseline-only paging
+  signature returns retained W2 stations losslessly; catalogue-bound
+  `BeamActionRowV1` projections are created only inside demand derivation where
+  both catalogue and baseline hashes are available. Cross-row absolute
+  component screening is explicitly non-concurrent.
+- Root-exported every accepted public type/function through the maintained
+  `structural_lib` and `structural_lib.services.api` facades. Regenerated the
+  API classification, compatibility ledger and API manifest from those live
+  facades.
+- Focused W3A plus W2 compatibility tests pass 34/34. Targeted Ruff/Black and
+  Mypy pass; architecture scanning reports 238 files and zero violations;
+  circular-import scanning reports 218 files/176 modules and zero cycles.
+  No installed ETABS/Excel evidence or global-analysis capability is claimed.
+
+### Issues encountered
+
+- The user-local evidence environment script changed directory into the
+  immutable main-evidence clone, so the first maintained session-start attempt
+  correctly rejected source shadowing after writing only ignored shared usage
+  ledger events.
+- `./run.sh context show etabs` failed because `etabs` is not a registered
+  context area.
+- Eager W3 imports in package initializers exposed a legacy service import
+  cycle during the first root-import smoke test.
+- A root-directory Mypy command saw the same source as both
+  `Python.structural_lib` and `structural_lib`.
+- The first handoff-receipt command passed an explanatory sentence to
+  `--evidence`, which accepts a JSON file path; it created a valid conservative
+  HOLD receipt with unknown authorization rather than inventing evidence.
+
+### Root causes and resolutions
+
+- The environment launcher's hard-coded `Set-Location` targets
+  `C:\CodexWork\structural_engineering_lib-main-evidence`. Resolution: mark
+  that no-write start `superseded`, invoke the versioned Portable Git Bash
+  directly from the W3 worktree, and prove `python_runtime --diagnose`
+  `source_bound=true` before the canonical session start. ⚠️ TERMINAL ISSUE:
+  shared launcher selected the immutable clone -> corrected worktree-bound
+  launcher used; neither checkout received tracked writes from the failed
+  attempt.
+- The context manifest has no `etabs` area. Resolution: use the fully read
+  accepted planning documents plus exact-path searches. ⚠️ TERMINAL ISSUE:
+  unknown context area -> exact maintained sources read without retrying an
+  invented area.
+- `services` and `services.contracts` package initializers execute before the
+  retained baseline/live-bridge dependency chain is complete. Resolution:
+  keep their initializers unchanged and place the W3 service projection in the
+  already-initialized `services.api` facade; root import smoke tests and the
+  circular-import scanner now pass.
+- Mypy was launched one directory above its configured source root. Resolution:
+  rerun from `Python/` with `pyproject.toml`; both new source modules pass with
+  no issues. ⚠️ TERMINAL ISSUE: duplicate module-name diagnostic -> corrected
+  source-root invocation passed.
+- The handoff tool's `--evidence` parameter is path-typed. Resolution: add the
+  explicit user-delegation authority and exact branch/head/action binding to
+  the tracked W3A evidence JSON, then regenerate and validate the pre-commit
+  receipt from that file. ⚠️ TERMINAL ISSUE: explanatory text was treated as a
+  missing evidence file -> the exact tracked evidence file produced a valid
+  fail-closed receipt.
+
 ## 2026-08-30 — Session: W3 ETABS/data/optimization master-plan audit
 
 **Agent:** Codex (`structural-engineer`/`documentation`, sole writer; no

@@ -1,0 +1,137 @@
+{
+  "schema_version": "etabs-w3a-demand-contract-evidence/v1",
+  "task_id": "ETABS-EXCEL-BEAM-W3-CAMPAIGN",
+  "packet": "W3A",
+  "verdict": "CANDIDATE_LOCAL_PASS",
+  "source": {
+    "repository": "https://github.com/Pravin-surawase/structural_engineering_lib.git",
+    "accepted_authority_pr": 900,
+    "accepted_authority_commit": "69399777b3ccdf9eb678ec567ab8a5c616959132",
+    "accepted_authority_tree": "cc1f6528abce3c3a4532d8ad3c1a7b3dc852c71a",
+    "branch": "codex/etabs-w3-campaign-windows",
+    "worktree": "C:\\CodexWork\\worktrees\\etabs-w3-campaign-windows"
+  },
+  "contract_files": [
+    {
+      "path": "Python/structural_lib/core/analysis_contracts.py",
+      "byte_count": 17840,
+      "sha256": "f264cafb114d1d7b4b7a8af529adc87224ad079483e186c6f461ec05165a12fc"
+    },
+    {
+      "path": "Python/structural_lib/services/contracts/etabs_w3.py",
+      "byte_count": 41957,
+      "sha256": "cb6b880f90cf00fe39f89f3d9b7d1b22404393b5576be00b8a61de1870b029bd"
+    }
+  ],
+  "public_contract": {
+    "evidence_states": [
+      "PRESENT",
+      "UNAVAILABLE",
+      "NOT_REQUESTED",
+      "NOT_APPLICABLE",
+      "BLOCKED"
+    ],
+    "exact_function_count": 7,
+    "ordered_and_nested_combination_factors": true,
+    "signed_same_row_action_components": ["P", "V2", "V3", "T", "M2", "M3"],
+    "w2_baseline_modified": false,
+    "independent_frame_analysis_verdict": "HELD_NOT_SUPPORTED"
+  },
+  "local_checks": [
+    {
+      "name": "focused W3A plus W2 compatibility",
+      "command": "./scripts/python_runtime.sh -m pytest Python/tests/unit/test_etabs_w3_contracts.py Python/tests/unit/test_etabs_beam_baseline.py -q",
+      "result": "PASS",
+      "passed": 34
+    },
+    {
+      "name": "targeted Ruff and Black",
+      "result": "PASS"
+    },
+    {
+      "name": "targeted Mypy",
+      "result": "PASS",
+      "checked_source_files": 2
+    },
+    {
+      "name": "architecture boundaries",
+      "result": "PASS",
+      "files_checked": 238,
+      "violations": 0
+    },
+    {
+      "name": "circular imports",
+      "result": "PASS",
+      "files_scanned": 218,
+      "modules_tracked": 176,
+      "cycles": 0
+    },
+    {
+      "name": "API classification, compatibility ledger, and manifest freshness",
+      "result": "PASS"
+    },
+    {
+      "name": "maintained quick gate",
+      "command": "./run.sh check --quick --no-reuse",
+      "result": "PASS",
+      "passed": 10,
+      "reused": 0,
+      "reported_duration_seconds": 41.2
+    }
+  ],
+  "authorization": {
+    "status": "OBSERVED",
+    "observed_at_utc": "2026-08-29T19:55:30.1114178+00:00",
+    "authorized_actions": [
+      "CREATE_W3A_CANDIDATE_COMMIT",
+      "PUSH_W3A_BRANCH",
+      "OPEN_W3A_PULL_REQUEST",
+      "MERGE_UNCHANGED_W3A_AFTER_REQUIRED_CHECKS"
+    ],
+    "prohibited_actions": [
+      "BYPASS_REQUIRED_CHECKS",
+      "REWRITE_HISTORY",
+      "DELETE_BRANCH_WORKTREE_MODEL_WORKBOOK_OR_EVIDENCE",
+      "CLAIM_ENGINEERING_OR_PROFESSIONAL_APPROVAL"
+    ],
+    "next_action": "CREATE_W3A_CANDIDATE_COMMIT",
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "reference": "Current task delegation authorizing the complete W3 campaign packet by packet",
+      "status": "OBSERVED",
+      "observed_at_utc": "2026-08-29T19:55:30.1114178+00:00"
+    },
+    "target_binding": {
+      "task_id": "ETABS-EXCEL-BEAM-W3-CAMPAIGN",
+      "branch": "codex/etabs-w3-campaign-windows",
+      "head_sha": "69399777b3ccdf9eb678ec567ab8a5c616959132",
+      "actions": [
+        "CREATE_W3A_CANDIDATE_COMMIT",
+        "PUSH_W3A_BRANCH",
+        "OPEN_W3A_PULL_REQUEST",
+        "MERGE_UNCHANGED_W3A_AFTER_REQUIRED_CHECKS"
+      ]
+    }
+  },
+  "application_boundary": {
+    "etabs_opened_or_attached": false,
+    "excel_opened_or_automated": false,
+    "com_added_or_called": false,
+    "analysis_or_design_run": false,
+    "model_or_workbook_mutated": false,
+    "solver_or_optimizer_called": false
+  },
+  "claims": {
+    "installed_windows_acceptance": false,
+    "global_analysis_parity": false,
+    "engineering_approval": false,
+    "professional_approval": false,
+    "release": false
+  },
+  "hosted": {
+    "candidate_commit": null,
+    "pull_request": null,
+    "checks": "NOT_RUN_YET",
+    "merge_commit": null
+  }
+}
