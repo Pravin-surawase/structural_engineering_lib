@@ -154,12 +154,25 @@ export async function writeEtabsPilotResults(excelApi, rows) {
   });
 }
 
-function primitiveToCellValue(value) {
-  if (value === null || value === undefined || value === "") return { type: "Empty" };
-  if (typeof value === "string") return { type: "String", basicValue: value };
-  if (typeof value === "boolean") return { type: "Boolean", basicValue: value };
+function normalizeExcelPrimitive(value) {
+  if (value === undefined || value === "") return null;
   if (typeof value === "number" && Number.isFinite(value)) {
-    return { type: "Double", basicValue: value };
+    return Number(value.toPrecision(15));
+  }
+  return value;
+}
+
+function primitiveToCellValue(value) {
+  const normalized = normalizeExcelPrimitive(value);
+  if (normalized === null) return { type: "Empty" };
+  if (typeof normalized === "string") {
+    return { type: "String", basicValue: normalized };
+  }
+  if (typeof normalized === "boolean") {
+    return { type: "Boolean", basicValue: normalized };
+  }
+  if (typeof normalized === "number") {
+    return { type: "Double", basicValue: normalized };
   }
   throw new Error("The W2 Excel projection contains an unsupported cell value.");
 }
@@ -205,7 +218,7 @@ function firstMatrixMismatch(actual, expected) {
 }
 
 function normalizeExpectedExcelMatrix(rows) {
-  return rows.map((row) => row.map((value) => (value === "" ? null : value)));
+  return rows.map((row) => row.map(normalizeExcelPrimitive));
 }
 
 async function restoreEtabsBaselineTransaction(context, states) {

@@ -327,6 +327,7 @@ function baselineProjection({ chunks = ["literal-json"] } = {}) {
     ]),
   );
   tables.summary[0][0] = baselineSha256;
+  tables.frames[0][6] = 6437.202640387113;
   tables.frames[0][20] = "";
   tables.json = chunks.map((chunk, index) => [
     `${baselineSha256}:${String(index + 1).padStart(6, "0")}`,
@@ -362,7 +363,13 @@ function primitiveCell(cell) {
 }
 
 function excelExpected(rows) {
-  return rows.map((row) => row.map((value) => (value === "" ? null : value)));
+  return rows.map((row) => row.map((value) => {
+    if (value === "") return null;
+    if (typeof value === "number" && Number.isFinite(value)) {
+      return Number(value.toPrecision(15));
+    }
+    return value;
+  }));
 }
 
 function baselineExcel({
@@ -399,8 +406,16 @@ function baselineExcel({
     ensureCellGrid(sheet, rowIndex + values.length, columnIndex + (values[0]?.length ?? 0));
     values.forEach((row, rowOffset) => {
       row.forEach((cell, columnOffset) => {
-        sheet.cells[rowIndex + rowOffset][columnIndex + columnOffset] =
-          cell.type === "String" && cell.basicValue === "" ? emptyCell() : { ...cell };
+        if (cell.type === "String" && cell.basicValue === "") {
+          sheet.cells[rowIndex + rowOffset][columnIndex + columnOffset] = emptyCell();
+        } else if (cell.type === "Double") {
+          sheet.cells[rowIndex + rowOffset][columnIndex + columnOffset] = {
+            ...cell,
+            basicValue: Number(cell.basicValue.toPrecision(15)),
+          };
+        } else {
+          sheet.cells[rowIndex + rowOffset][columnIndex + columnOffset] = { ...cell };
+        }
       });
     });
   }
@@ -591,6 +606,11 @@ test("W2 baseline creates only all seven controlled tables", async () => {
     excel.sheets.get(ETABS_BASELINE_TABLES.frames.sheetName).table
       .getRange().values[1][20],
     null,
+  );
+  assert.equal(
+    excel.sheets.get(ETABS_BASELINE_TABLES.frames.sheetName).table
+      .getRange().values[1][6],
+    6437.20264038711,
   );
 });
 
