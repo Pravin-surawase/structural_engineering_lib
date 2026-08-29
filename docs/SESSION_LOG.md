@@ -5,6 +5,210 @@
 
 ---
 
+## 2026-08-29 — Session: Windows W2C installed acceptance continuation
+
+**Agent:** Codex (`windows-evidence`/`python-core`/`excel`/`documentation`/
+`governance`, sole writer; no subagents).
+
+**Branch:** `codex/etabs-excel-beam-w2c-installed-acceptance`, created in a
+fresh Windows worktree from exact pushed retry head
+`7566842192285e5f4fd0a2acbbd1fc05bc16ebc4`, tree
+`cebe45a6f9540c109b5801ad77006c1fdd191635`. Integrated GitHub main remained
+`ee50aaa3cad619b41c6153f5f7970553ef65248c`, tree
+`c1a49958ea85a2c1ea9f399a3fa96b84b8118e76`; protected Windows `main` remained
+`HOLD_MAIN`.
+
+**Git handoff receipt:**
+`docs/verification/etabs-excel-beam-w2c-installed-acceptance-git-handoff-receipt.json`
+(pre-commit Windows-to-Mac continuation receipt; hosted push facts remain
+external).
+
+**Focus:** Continue the bounded installed W2C software acceptance after the
+owner separately authorized the exact result-selection prerequisite. Reprove
+source/runtime/model/selection identity; reconcile direct service, source-bound
+REST, and installed Excel against the same copied model and exact combination;
+preserve model bytes/lock/units; implement at most one outcome-changing repair;
+and stop fail-closed without W3, analysis/design, model save/write-back,
+optimization, release, or engineering-approval claims.
+
+**Completed:**
+
+- Verified GitHub/user authority and exact integrated main, preserved the
+  protected primary checkout plus all prior branches/worktrees/evidence, and
+  created the fresh acceptance lane from exact pushed retry head/tree. Source
+  diagnosis resolved the current checkout before application access.
+- Used the separately authorized one-time
+  `SetComboSelectedForOutput("117.(1.5DL+1.5LL)", true)` prerequisite only:
+  return code zero, getter false before/true after, model locked, units enum
+  `6`, and model hash/size/mtime unchanged. It ran no force, analysis, design,
+  save, or write-back. Acceptance itself called no selection setter.
+- Reproved the exact Windows/ETABS/Python/comtypes/library/getter/model/lock/
+  units/finished-case/active-combination identities. The approved combination
+  was present and getter-active; all 15 cases were finished, four cases and one
+  combination were selected.
+- The first accepted direct and REST extractions returned the same counts but
+  unequal canonical hashes. A structural diff proved the only changing fields
+  were the two before/after file `observed_at_utc` instants. The one authorized
+  bounded repair keeps both instants in full provenance while excluding only
+  them from the canonical cross-transport hash basis. Stable file identity,
+  model/lock/units, runtime, topology, results, and dispositions remain hashed.
+- Added a regression with unequal observation instants and updated the frozen
+  fake-COM hash only after the expected semantic change. The complete baseline
+  unit file then passed `28/28`.
+- Repeated direct and REST extraction from the repaired source. Both returned
+  `ACCEPTED`, exact canonical SHA-256 `d4c28586...`, and byte/count equality:
+  6 stories, 225 frames, 549 links, 153 result sets, 3,502 force stations,
+  4,348 dispositions, and 8,873 projected Excel rows. Units were restored;
+  independent frame analysis remained `HELD_NOT_SUPPORTED`.
+- Installed Excel passed its source/model/selection preflight, displayed the
+  exact combination, verified the server-canonical hash, and entered the
+  controlled write path. It wrote summary, stories, frames, links, stations,
+  and dispositions with exact expected row counts, then reported
+  `GeneralException` at `Range.values`; `ETABS_W2_JSON` remained an empty sheet
+  without its table or 242 rows.
+- Saved and closed the copied workbook as deliberate blocked evidence. ZIP/XML
+  inspection proved exact row/table boundaries without exposing contents. Four
+  projected 15,000-character chunks—12, 43, 109, and 157—begin with `+`/`-`;
+  the official Excel API contract treats `+`, `-`, or `=`-prefixed values as
+  formulas. This confirms the JSON-only failure and the non-atomic partial-
+  table symptom.
+- Per the one-repair cap, implemented no second code/template repair and did
+  not rerun forces. Final read-only postflight proved exact model SHA-256/
+  bytes/mtime, locked state, units enum `6`, and active combination unchanged.
+  W2C is `BLOCKED_SAFE_EXCEL_JSON_WRITE`; the partial workbook is not accepted
+  output.
+- Froze safe counts/hashes/limitations in
+  `docs/verification/etabs-excel-beam-w2c-installed-acceptance-retry2-evidence.json`.
+  Proprietary model path/inventories/forces and workbook bytes remain external
+  and hash-bound.
+- Converted the recurring Windows/ETABS/Excel failures into a mandatory
+  symptom/root-cause/prevention checklist in the maintained pilot guide and
+  linked it from the next-session objective/required reading. It covers source
+  binding, authentication, historical session state, optional COM setup,
+  bitness/elevation, result selection, setter authority, model/story/tuple
+  shapes, freshness/units, deterministic hashes, literal Excel text, atomic
+  seven-table writes, evidence stops, and software-versus-engineering claims.
+
+### Issues encountered
+
+- Required `session begin` again refused the task because the preserved store
+  still contains an unmatched historical
+  `ETABS-EXCEL-BEAM-W2C-COM-SIGNATURE-AUDIT` checkpoint.
+- The computer-control skill documentation path was initially resolved one
+  directory too deep; the first attempted open-dialog coordinate action also
+  had no available geometry. Both stopped without application mutation.
+- First accepted direct/REST results had equal counts but unequal canonical
+  bytes and SHA-256 values.
+- After the hash-basis repair, the first focused unit run failed only at the
+  prior frozen fake-COM digest.
+- Installed Excel failed after six controlled tables with
+  `GeneralException` at `Range.values`, leaving an empty `ETABS_W2_JSON` sheet
+  and a partial workbook.
+- A final postflight launched `uv` without the ETABS extra, producing a
+  missing-`comtypes` diagnostic and an untracked generated `Python/uv.lock`.
+- The required broad Python run reported 31 failures among 7,219 selected
+  tests. All W2 baseline/live/snapshot/import/workbench tests passed; failures
+  were confined to Git/session/release/cleanup portability, timing budgets,
+  Windows path separators, symlink privilege, and the unrelated frozen
+  workbook-manifest path assertion.
+- The laptop restarted unexpectedly during the first consolidated quick gate;
+  that process/session disappeared without a result. Read-only recovery proved
+  the same branch/base, all intended dirty/untracked paths intact, and no
+  leftover task-owned ETABS, Excel, API, add-in, or checker process.
+- The post-restart quick gate passed `9/10`; only brief length failed because
+  the new required-reading link exposed 177 accumulated lines against the
+  maintained 150-line limit.
+
+### Root causes and resolutions
+
+- Confirmed session cause: the repository store retains the documented
+  unmatched historical Phase A checkpoint. Resolution: preserve it, never
+  invent old elapsed time or close another task's checkpoint, and rely on exact
+  Git/source/runtime evidence. ⚠️ TERMINAL ISSUE: `session begin` stopped on
+  the historical checkpoint; the acceptance lane continued only after
+  source-binding and clean-authority proof.
+- Confirmed computer-control causes: the installed skill's `docs` directory is
+  adjacent to its `SKILL.md`, not nested below another skill directory; the
+  first screenshot element had no coordinate geometry. Resolution: read the
+  correct complete skill references, refresh state after every action, and use
+  fresh screenshot coordinates/keyboard focus. No security/privacy setting or
+  unintended application state changed.
+- Confirmed hash cause: two volatile `observed_at_utc` wall-clock readings were
+  included in the cross-transport identity. Resolution: exclude only those two
+  values from `_baseline_hash_payload`, retain them in the baseline, document
+  the stable fields still hashed, and add a regression proving equal hashes
+  with unequal instants. Direct/REST canonical bytes and SHA now match exactly.
+- Confirmed frozen-digest cause: changing the canonical hash semantics
+  necessarily changed the deterministic fake-COM digest. Resolution: update the
+  single frozen expectation to the newly computed value only after the new
+  invariance regression passed; the full 28-test file then passed.
+- Confirmed Excel cause: canonical JSON is split on arbitrary 15,000-code-point
+  boundaries, and four chunks start with formula-significant `+`/`-`. Official
+  `Excel.Range.values` behavior interprets `+`, `-`, and `=` prefixes as
+  formulas, matching the exact JSON-sheet-only `GeneralException`. Resolution:
+  freeze `BLOCKED_SAFE_EXCEL_JSON_WRITE`, save the partial workbook as evidence
+  only, and defer a second bounded repair because this packet's single repair
+  allowance was consumed. The next repair must preserve rejoined bytes, write
+  literal text for all three prefixes, add Office regressions, and make the
+  seven-table commit rollback-safe or transactional.
+- Confirmed postflight-environment cause: `comtypes` is an optional `etabs`
+  extra and the first `uv run` omitted it; `uv` also generated a local lock.
+  Resolution: rerun the exact getter-only postflight with `--extra etabs`, prove
+  model/lock/units/selection preservation, and remove only the task-generated
+  untracked lock before candidate freeze. ⚠️ TERMINAL ISSUE: the first
+  postflight command failed before COM attachment; the corrected command passed.
+- Confirmed repeated-work cause: several failures had been solved in one
+  session but were distributed across evidence, plans, and log entries, so the
+  next operator could rediscover them before reaching the proof. Resolution:
+  centralize the invariant startup order and every recurring symptom/cause/
+  prevention rule in the maintained pilot guide, make it required reading, and
+  require stop-and-freeze rather than a live retry loop.
+- Confirmed broad-suite causes: Windows cannot execute a `.sh` file directly
+  through `subprocess`, `pathlib` emits backslashes where several tests compare
+  portable forward-slash strings, ordinary-user Windows cannot create the
+  tested symlinks, two local Git inventory timings exceed Unix-oriented
+  budgets, and session/release cleanup tests inherit those platform behaviors.
+  The isolated workbook-artifact failure is only the same slash comparison;
+  bytes/hash were not the failing assertion. Resolution: retain the exact
+  `7,175 passed / 31 failed / 13 skipped / 6 deselected` result as a separate
+  Windows portability/governance hold, do not repair it in W2, and rely on the
+  green focused W2/Office/API checks for this packet's changed paths.
+- Confirmed restart cause: unexpected host restart; no repository or
+  application root cause is proven. Resolution: treat the first gate as
+  interrupted/no-result, re-establish branch/tree/process authority, preserve
+  completed installed evidence, and retry only the unfinished gate.
+- Confirmed brief-length cause: the auto handoff/current acceptance boundary
+  was followed by superseded Phase A/B narrative already available in linked
+  evidence. Resolution: compress only that old narrative, retain every current
+  W2C identity/hold/next step and the new recurring-pitfall checklist link, and
+  prove the final brief is 114 lines. The affected brief checker, strict docs,
+  520-file/1,130-link scan, and diff hygiene pass; the nine unaffected quick
+  checks are not rerun.
+
+### Validation
+
+- Focused W2 Python/FastAPI passes `47/47`; Office.js passes `34/34`. Black,
+  Ruff, and configured mypy pass on the two changed Python files.
+- Architecture scans 236 files with zero violations; 753-file import validation
+  resolves all 2,509 internal imports; 216-file circular analysis passes.
+  OpenAPI matches 95 endpoints/501 schemas, and all five schema models plus two
+  enums match.
+- All three task JSON files parse and the handoff receipt validates as `HOLD`.
+  Strict documentation passes `5/5`; 520 Markdown files and 1,129 maintained
+  local links/images have zero broken links; session consistency and diff
+  hygiene pass before the final checklist addition.
+- The broad Windows Python run retained exact result `7,175 passed, 31 failed,
+  13 skipped, 6 deselected` in 1,066.04 seconds. All W2 modules passed. The 31
+  failures are separately classified in the task evidence as known shell/path/
+  symlink/timing/session portability and do not change the installed W2 hold.
+- The first quick attempt has no result because the host restarted. Its single
+  post-restart replay passed `9/10`; only brief length failed. After compressing
+  superseded history, the brief checker passes at 114/150 lines, strict docs
+  pass `5/5`, 520 Markdown files/1,130 links pass, and diff hygiene is clean.
+  Normal hooks and clean session validation remain candidate closeout.
+
+---
+
 ## 2026-08-29 — Session: Windows W2C installed retry fail-closed hold
 
 **Agent:** Codex (`windows-evidence`/`documentation`/`governance`, sole writer;

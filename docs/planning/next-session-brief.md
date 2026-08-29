@@ -4,11 +4,11 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-29
-- Focus: Freeze the separately authorized installed W2C retry at its first fail-closed getter boundary.
-- Completed: Reproved exact merged-main/runtime/model authority; attached only after owner confirmation; the exact approved combination getter still returned inactive, so no request, force, REST, Excel, or setter path ran and file identities remained unchanged.
-- Git receipt: docs/verification/etabs-excel-beam-w2c-installed-retry-git-handoff-receipt.json | sha256:4b731fe9c7bff8c9d63df32d24cd807948295b07cc3afb7beb8c1d728d71e118 | HOLD
-- Git identity: codex/etabs-excel-beam-w2c-installed-retry@ee50aaa3cad619b41c6153f5f7970553ef65248c | upstream=origin/main@ee50aaa3cad619b41c6153f5f7970553ef65248c | base=origin/main@ee50aaa3cad619b41c6153f5f7970553ef65248c | tree=dirty | operation=none
-- Hosted evidence: remote=NOT_APPLICABLE | PR=OBSERVED#0 | review=NOT_APPLICABLE | retention=OBSERVED
+- Focus: Continue the bounded installed W2C software acceptance after the
+- Completed: Verified GitHub/user authority and exact integrated main, preserved the; Used the separately authorized one-time; Reproved the exact Windows/ETABS/Python/comtypes/library/getter/model/lock/
+- Git receipt: docs/verification/etabs-excel-beam-w2c-installed-acceptance-git-handoff-receipt.json | sha256:c29cab2a2a58dad789da246e6bd1588aa62849449d52583bed5fce8c80306560 | HOLD
+- Git identity: codex/etabs-excel-beam-w2c-installed-acceptance@7566842192285e5f4fd0a2acbbd1fc05bc16ebc4 | upstream=origin/codex/etabs-excel-beam-w2c-installed-retry@7566842192285e5f4fd0a2acbbd1fc05bc16ebc4 | base=origin/main@ee50aaa3cad619b41c6153f5f7970553ef65248c | tree=dirty | operation=none
+- Hosted evidence: remote=NOT_APPLICABLE | PR=OBSERVED#UNKNOWN | review=NOT_APPLICABLE | retention=OBSERVED
 - Next action: COMMIT_INTENDED_PATHS
 <!-- HANDOFF:END -->
 
@@ -17,100 +17,67 @@
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` remains the immutable current normal software release; no new release is selected or authorized. |
-| **Current** | PR #897 merged the reviewed W2 campaign unchanged; GitHub `origin/main` is exactly `ee50aaa3cad619b41c6153f5f7970553ef65248c`, tree `c1a49958...`. The separately authorized installed retry repeated the exact source/runtime/model preflight, but the authoritative getter still returned the approved combination inactive despite owner confirmation. It stopped before request construction with no force/REST/Excel/setter and no accepted baseline. |
+| **Current** | PR #897 remains integrated at exact `ee50aaa3...`. A separately authorized selection prerequisite made exact combination `117.(1.5DL+1.5LL)` getter-active without changing model bytes. Direct and REST then accepted and reconciled baseline `d4c28586...` with 3,502 stations after one bounded deterministic-hash repair. Installed Excel wrote six exact controlled tables but failed at empty `ETABS_W2_JSON` with `GeneralException` at `Range.values`; four chunks start with `+`/`-`. W2C remains held. |
 | **Machine roles** | Mac is the primary development/integration machine. Windows is the installed Excel/ETABS testing and evidence machine. GitHub is the tracked handoff authority; proprietary model/workbook/evidence bytes remain on Windows. |
-| **Next** | Mac reviews the clean pushed Windows retry evidence branch against exact merged main and may open one evidence-only PR. W2C remains held; any later attempt requires separate authorization and immediate human UI verification before the first getter. |
+| **Next** | Mac reviews the clean pushed acceptance branch from exact base `75668421...`, reproduces the hash/Office tests, and decides separately whether to authorize a literal-text plus rollback-safe Excel repair and fresh installed run. W2C remains held until all seven tables and canonical JSON reconcile. |
 | **Held** | ETABS analysis, unlock/save, section/load write-back, optimization, complete solver parity, expanded design/detailing/site-practice automation, release, and professional or construction-use approval. |
 
 ## Today closeout
 
-- Fetched GitHub, verified exact PR #896 merge `0f5c918e...`, preserved the
-  stale/protected Windows `main` and retained W2A worktree, and created the
-  dedicated Phase A branch/worktree from exact `origin/main`.
-- Bound installed ETABS `23.3.1.4563` to x64 `ETABSv1.tlb` LIBID
-  `{542F7A9D-3A7D-4061-97B3-3A1276FF83BD}` version `1.0`, SHA-256
-  `3823416b...24ef0e`, using 64-bit Python `3.11.15` and `comtypes 1.4.16`.
-- Proved every frozen W2A operation for interface/name, argument order and
-  defaults, output order/count, enum values, return-code form, and installed
-  scalar/list/SAFEARRAY tuple shapes. No outcome-changing adapter mismatch was
-  found.
-- Recorded the optional `LoadCases.GetNameList(CaseType=0)` detail and required
-  explicit `FrameForce(..., ItemTypeElm=0)` input without changing the correct
-  W2A behavior.
-- Froze exact W2C preconditions, proof points, abort criteria, and live-only
-  questions in the tracked static-audit evidence. ETABS design summary is not a
-  frozen operation; frame analysis remains `HELD_NOT_SUPPORTED`.
-- An ETABS process pre-existed the audit. It was only observed read-only and
-  remained the same process; no COM object was created/attached, no `SapModel`
-  getter ran, and no model/workbook/application was opened by this audit.
-- The Windows primary checkout is clean but intentionally stale/protected. It
-  remains `HOLD_MAIN`; exact task/evidence work uses fetched dedicated
-  worktrees. Mac owns current `main` and normal integration.
-- The dev-only npm advisory remains a separate maintenance packet.
-- One historical unmatched parent-pilot usage checkpoint remains preserved; do
-  not invent old timing to close it.
-- Phase A is committed and pushed at exact remote head `4841ab2a...`; no PR was
-  opened. The campaign branch was created from that exact remote checkpoint.
-- W2B implements the real read-only EDB observer, process-wide ETABS COM
-  serialization, getter-only preflight, preflight-bound run request, exact
-  post-read lock/unit proof, and bounded no-truncation transport envelope.
-- The FastAPI surface adds typed `/beam-baseline/preflight` and
-  `/beam-baseline` operations. Domain-blocked results expose no baseline;
-  connection/data/capacity failures map to 409/422/413.
-- Excel now preflights all seven controlled W2 tables before mutation and
-  retains summary, stories, frames, endpoint connections, every force station,
-  every disposition, and reconstructable server-canonical hash-basis JSON.
-- An outcome-changing W2A ordering defect was traced and repaired: topology or
-  selection blockers now stop before `FrameForce`. Fake-COM regressions prove
-  zero force calls on those paths while accepted deterministic hashes remain
-  unchanged.
-- Phase B passed the consolidated quick gate and every normal hook, committed
-  as exact head `395f0618...`, and was pushed with local/remote equality and no
-  PR.
-- Phase C matched the approved model hash/size/time, locked state, units,
-  runtime, binaries, type library, generated wrappers, finished case inventory,
-  and normal ETABS window. CSI's documented Base-row array convention exposed
-  and justified one narrow `GetStories` repair. The approved exact combination
-  is present but inactive, so the maintained path returns blocked with no
-  baseline/hash basis/stations and leaves file/lock/units unchanged.
-- The narrow installed repair is committed and pushed as exact checkpoint
-  `18926ef48c620213abbb931449cda9e8049eee7c`; no getter/setter scope changed.
-- Direct service and source-bound REST independently returned the same typed
-  `RESULT_SELECTION_NOT_ACTIVE` hold, 846 exhaustive dispositions, zero force
-  stations, no baseline/hash basis, and restored units.
-- Installed Excel displayed the same hold and wrote no `ETABS_W2_*` sheet or
-  table. After a normal unchanged close, workbook SHA-256/bytes exactly matched
-  their pre-run values; model hash/size/time/lock/units also remained exact.
-- Safe counts, identities, hashes, limitations, and retry preconditions are
-  frozen in the tracked W2C receipt. Proprietary model/workbook/result payloads
-  remain external and hash-bound.
-- PR #897 merged the reviewed cumulative W2 candidate unchanged as exact
-  `ee50aaa3...`, tree `c1a49958...`; the Windows retry branch starts from that
-  exact integrated authority and leaves protected Windows `main` untouched.
-- After the owner confirmed the approved copied model open and exact combination
-  active, the retry attached read-only and repeated source/runtime/model/lock/
-  units/finished-case/result-selection preflight. The exact combination was
-  present but the getter returned inactive, with zero selected combinations.
-- The retry obeyed the mandatory first-failure boundary: no direct request or
-  transport, zero `FrameForce` calls/stations, no REST or Excel start, no unit
-  or selection setter, and no analysis/design/save/mutation.
-- Model and copied-workbook hashes, bytes, and timestamps remained unchanged at
-  the file boundary. The preflight unit value was enum `6`; no restoration was
-  required, and the packet prohibited a post-abort COM recheck.
-- The confirmation/getter mismatch root cause is unconfirmed. The new retry
-  receipt retains safe identities/counts/hashes only; proprietary model path,
-  complete inventories, and workbook bytes remain external and hash-bound.
+- Phase A froze all installed ETABS 23.3.1 getter/tuple/return-code signatures;
+  Phase B froze the getter-only service, REST, and seven-table Excel contracts.
+  Their exact evidence remains in Required Reading instead of being repeated
+  here.
+- PR #897 integrated the reviewed cumulative W2 candidate unchanged at exact
+  `ee50aaa3...`, tree `c1a49958...`. Protected Windows `main` remains
+  `HOLD_MAIN`; task work uses fresh one-writer worktrees.
+- The first installed and retry packets stopped safely because the exact combo
+  getter was inactive: zero force calls/stations, no model/workbook mutation,
+  and exact file/lock/unit preservation. The confirmation mismatch remains
+  unconfirmed and is retained in the prior retry evidence.
+- The historical unmatched Phase A session checkpoint and separate dev-only
+  npm advisory remain preserved; do not invent timing or repair either in W2.
+- Under separate owner authority, the exact output-selection setter returned
+  zero and changed the getter from false to true while model hash/size/mtime,
+  locked state, and units enum `6` remained exact. That prerequisite ran no
+  force, analysis, design, or save.
+- The acceptance continuation started from exact pushed retry head/tree
+  `75668421...` / `cebe45a6...` in a fresh branch/worktree; protected Windows
+  `main` and every retained worktree/evidence path remained unchanged.
+- The first accepted direct/REST extractions differed only at the before/after
+  `observed_at_utc` file-observation instants. One bounded repair retained those
+  instants in provenance but excluded only them from canonical identity; the
+  focused baseline file passes `28/28` including the new regression.
+- Fresh direct and REST runs then reconciled exact canonical bytes and SHA-256
+  `d4c28586...`: 6 stories, 225 frames, 549 endpoint links, 153 result sets,
+  3,502 stations, 4,348 dispositions, and 8,873 projected Excel rows. Lock and
+  units were restored and the model file remained byte-identical.
+- Installed Excel passed preflight, displayed the exact combination, verified
+  the server hash, and wrote six controlled tables with exact expected row
+  counts. It then reported `GeneralException` at `Range.values`; the saved
+  blocked workbook has an empty `ETABS_W2_JSON` sheet and no JSON table.
+- Artifact inspection proves 242 planned 15,000-character JSON chunks and four
+  formula-prefix hazards: chunks 12, 43, 109, and 157 begin with `+`/`-`.
+  Microsoft's `Excel.Range.values` contract treats `+`, `-`, and `=` prefixes
+  as formulas. This confirms the JSON-only write cause and also exposes that a
+  later-table error can leave six partial tables.
+- The packet's one-repair allowance was already consumed by the deterministic
+  hash fix. No second code/template repair was made. The saved workbook is
+  blocked evidence only, W2C is `BLOCKED_SAFE_EXCEL_JSON_WRITE`, and model
+  hash/size/mtime/lock/units plus active combination remained exact afterward.
 
 ## Next objective
 
-1. On Mac, fetch `origin/codex/etabs-excel-beam-w2c-installed-retry` and verify
-   its exact base/head/tree, changed paths, safe retry receipt, and preservation
-   proof against merged `origin/main=ee50aaa3...`.
-2. If unchanged and green, open one evidence-only PR. Describe W2C as
-   `BLOCKED_SAFE_NO_FORCE_READ`, not an acceptance pass; do not start W3.
-3. Decide separately whether another human-assisted installed attempt is worth
-   authorizing. It must repeat every preflight and still abort on the first
-   inactive getter without changing output selection.
+1. On Mac, fetch `origin/codex/etabs-excel-beam-w2c-installed-acceptance` and
+   verify exact base `75668421...`, candidate head/tree, changed paths, safe
+   receipt, direct/REST reconciliation, six-table counts, and model preservation.
+2. Read the
+   [Windows recurring-pitfall checklist](../guides/excel-etabs-python-bridge-pilot.md#windows-etabsexcel-recurring-pitfall-checklist),
+   reproduce the focused hash-basis test and Office tests, then review the
+   proposed next repair boundary: byte-exact literal JSON text for `+`, `-`,
+   and `=` prefixes plus rollback-safe or transactional seven-table writing.
+3. Keep W2C held until a separately authorized repair and fresh Windows run
+   proves all seven tables and rejoined canonical JSON. Do not start W3.
 
 ## New-chat starter
 
@@ -119,29 +86,29 @@ Use the copy-ready prompt in
 
 ## Preservation rules
 
-- Installed W2C retry work is complete at the safe hold. Do not change result
-  selection, reattach, or resume force reads under this authorization.
+- Installed W2C acceptance work is complete at the Excel JSON safe hold. Do not
+  reattach, rerun force reads, or implement the second repair under this packet.
 - Preserve every unrelated worktree, staged/dirty/untracked/ignored/stashed
   item, retained source, branch, ref, and archive. Protected `main` remains a
   `HOLD_MAIN` lane.
 - Do not copy repository files between devices; push/PR/fetch through GitHub.
-- Windows remains sole writer for the retry branch until its final push; then it
-  stops and Mac owns review/integration.
+- Windows remains sole writer for the acceptance branch until its final push;
+  then it stops and Mac owns review/integration.
 - Do not rewrite history, bypass checks, delete branches/worktrees/refs/data,
   rebuild a public version, or broaden software/engineering claims.
 
 ## Required Reading
 
-1. [W2C installed retry evidence](../verification/etabs-excel-beam-w2c-installed-retry-evidence.json)
+1. [W2C installed acceptance continuation evidence](../verification/etabs-excel-beam-w2c-installed-acceptance-retry2-evidence.json)
 2. [Excel + ETABS beam next-phase plan](excel-etabs-beam-next-phase-plan.md)
-3. [Prior W2C installed safe-hold evidence](../verification/etabs-excel-beam-w2c-installed-acceptance-evidence.json)
+3. [Prior W2C installed retry evidence](../verification/etabs-excel-beam-w2c-installed-retry-evidence.json)
 4. [Phase A static COM-signature evidence](../verification/etabs-excel-beam-w2c-com-signature-audit-evidence.json)
 5. [W2B contract evidence](../verification/etabs-excel-beam-w2b-contract-evidence.json)
 6. [W1 installed Windows receipt](../verification/etabs-excel-python-pilot-w1-evidence.json)
-7. [Excel/Python/ETABS pilot guide](../guides/excel-etabs-python-bridge-pilot.md)
+7. [Windows ETABS/Excel recurring-pitfall checklist](../guides/excel-etabs-python-bridge-pilot.md#windows-etabsexcel-recurring-pitfall-checklist)
 8. [Multi-device Git workflow](../git-automation/git-workflow-single-source.md#multi-device-rule-one-branch-one-writer-device)
 9. [Current task board](../TASKS.md)
 10. `Python/structural_lib/services/etabs_beam_baseline.py`
 11. `Python/structural_lib/services/etabs_beam_bridge.py`
 12. `Python/tests/unit/test_etabs_beam_baseline.py`
-13. [Newest W2C retry session entry](../SESSION_LOG.md)
+13. [Newest W2C acceptance session entry](../SESSION_LOG.md)

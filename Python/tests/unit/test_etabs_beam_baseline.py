@@ -369,6 +369,36 @@ def test_baseline_is_complete_deterministic_and_restores_units(
     assert baseline.verify_etabs_beam_baseline_hash_v1(artifact)
 
 
+def test_baseline_hash_retains_but_excludes_volatile_observation_instants() -> None:
+    first_observer = _FakeFileObserver()
+    second_observer = _FakeFileObserver()
+    second_observer.before_read = _file_snapshot("2026-08-29T06:01:00Z")
+    second_observer.after_read = _file_snapshot("2026-08-29T06:02:00Z")
+
+    first_result = _extract(_FakeSapModel(tuple), observer=first_observer)
+    second_result = _extract(_FakeSapModel(tuple), observer=second_observer)
+    first = first_result.baseline
+    second = second_result.baseline
+
+    assert first is not None
+    assert second is not None
+    assert (
+        first.model.file_evidence.before_read.observed_at_utc
+        != second.model.file_evidence.before_read.observed_at_utc
+    )
+    assert (
+        first.model.file_evidence.after_read.observed_at_utc
+        != second.model.file_evidence.after_read.observed_at_utc
+    )
+    assert first.baseline_sha256 == second.baseline_sha256
+    first_basis = baseline.canonical_etabs_beam_baseline_hash_basis_json_v1(first)
+    second_basis = baseline.canonical_etabs_beam_baseline_hash_basis_json_v1(second)
+    assert first_basis == second_basis
+    assert "observed_at_utc" not in first_basis
+    assert baseline.verify_etabs_beam_baseline_hash_v1(first)
+    assert baseline.verify_etabs_beam_baseline_hash_v1(second)
+
+
 def test_tuple_and_list_shapes_produce_the_same_frozen_hash() -> None:
     tuple_result = _extract(_FakeSapModel(tuple))
     list_result = _extract(_FakeSapModel(list))
@@ -378,7 +408,7 @@ def test_tuple_and_list_shapes_produce_the_same_frozen_hash() -> None:
     assert tuple_result.baseline.baseline_sha256 == list_result.baseline.baseline_sha256
     assert (
         tuple_result.baseline.baseline_sha256
-        == "2a1ecee7c64e6268d860640dee48e868cb64fe53eed20f361de58d65076466a4"
+        == "cc88b8dac87bf6fcd17c068124f3246fed9a569e0cbd49ca9bf87ff4a200de04"
     )
 
 

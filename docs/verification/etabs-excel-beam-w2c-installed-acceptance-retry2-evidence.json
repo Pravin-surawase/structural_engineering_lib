@@ -1,0 +1,285 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-EXCEL-BEAM-W2C-INSTALLED-ACCEPTANCE",
+  "verdict": "BLOCKED_SAFE_EXCEL_JSON_WRITE",
+  "observed_at_utc": "2026-08-29T12:57:48.1968505Z",
+  "scope": {
+    "installed_windows_etabs": true,
+    "installed_excel": true,
+    "read_only_model_access": true,
+    "analysis_run": false,
+    "design_run": false,
+    "model_save_or_writeback": false,
+    "result_selection_changed_during_acceptance": false,
+    "force_read": true,
+    "controlled_excel_output_write": true,
+    "optimization": false,
+    "professional_or_construction_approval": false
+  },
+  "authority": {
+    "origin_main": "ee50aaa3cad619b41c6153f5f7970553ef65248c",
+    "origin_main_tree": "c1a49958ea85a2c1ea9f399a3fa96b84b8118e76",
+    "reviewed_candidate": "a88595a63ed4725e1bb3c3b897ba19680e4cace0",
+    "prior_retry_head_and_acceptance_base": "7566842192285e5f4fd0a2acbbd1fc05bc16ebc4",
+    "prior_retry_tree_and_acceptance_base_tree": "cebe45a6f9540c109b5801ad77006c1fdd191635",
+    "branch": "codex/etabs-excel-beam-w2c-installed-acceptance",
+    "protected_windows_main_unchanged": true,
+    "runtime_source_bound": true,
+    "matching_pull_requests_before_work": 0
+  },
+  "authorized_selection_prerequisite": {
+    "task_id": "ETABS-W2C-AUTHORIZED-OUTPUT-SELECTION",
+    "user_authorized_exact_setter": true,
+    "operation": "SetComboSelectedForOutput(117.(1.5DL+1.5LL), true)",
+    "setter_return_code": 0,
+    "selected_before": false,
+    "selected_after": true,
+    "analysis_or_design_run": false,
+    "force_read": false,
+    "model_save_or_writeback": false,
+    "model_file_preserved": true,
+    "evidence_root": "C:/CodexWork/evidence/ETABS-EXCEL-BEAM-W2C/authorized-selection-setter-ee50aaa3",
+    "evidence_file": {
+      "name": "selection-result.json",
+      "bytes": 827,
+      "sha256": "088e54a4c1130cbed102708ef78aba3784bbadd7b1ce68003dc6d0935b2424c2"
+    }
+  },
+  "host_and_runtime": {
+    "computer": "LAPTOP-360-PRAV",
+    "os": "Windows NT 10.0.26200.0",
+    "python": "3.11.15 64-bit",
+    "comtypes": "1.4.16",
+    "etabs_api_version": "23.3.1",
+    "etabs_api_numeric_version": 0.0,
+    "etabs_file_version": "23.3.1.4563",
+    "library_version": "0.24.0",
+    "library_content_identity": "9a374374dc97d18d1ee0cfa8ca4d7b02f2a4c56c3b94f8f8a6a5954784f718ff",
+    "getter_matrix_sha256": "f6874c7aa119816548b9a64f242dfdb7df94fbeea8c7fa520dea3ef0f74fb7d8",
+    "excel_addin_taskpane_office_sha256": "cdc72dee2c1c19378b4e75d5537a071cf19a69a88c84ba53f8d3b30cd174f4f6",
+    "excel_addin_taskpane_core_sha256": "a91e982f5ce1e24e0ba1f6748df9e68a27d0354b054f20dc3bd6c5f6a9bd30c7",
+    "etabs_process_count": 1,
+    "normal_etabs_window": true,
+    "unexpected_dialog_observed": false,
+    "excel_closed_after_evidence_save": true
+  },
+  "deterministic_hash_repair": {
+    "symptom": "Two accepted direct and REST extractions produced unequal canonical bytes and baseline SHA-256 values.",
+    "direct_before_repair_sha256": "105a3c3ffcba27137dfa0c4932c8b49f484343e93a4870ae621da5105eebd94a",
+    "rest_before_repair_sha256": "ad006b535ab09260192ed3d2cdfe56002390d027f418adcb4478e369396d2ef3",
+    "before_repair_hash_basis_utf8_bytes": 3626192,
+    "only_differences": [
+      "model.file_evidence.before_read.observed_at_utc",
+      "model.file_evidence.after_read.observed_at_utc"
+    ],
+    "root_cause": "The wall-clock file observation instants were retained provenance but were also included in the cross-transport identity.",
+    "resolution": "Retain both observation instants in the baseline while excluding only those two volatile fields from the canonical hash basis.",
+    "source_sha256_after_repair": "d278bd65d276541c1b8f3733d31392aae7f146f3a4a8e3f0a0a6fbadd6e7b5e4",
+    "regression_test": "test_baseline_hash_retains_but_excludes_volatile_observation_instants",
+    "focused_test_result": "28 passed",
+    "repair_count_consumed": 1
+  },
+  "installed_preflight": {
+    "approved_kind": "COMBINATION",
+    "approved_name": "117.(1.5DL+1.5LL)",
+    "approved_combination_sha256": "81b606dd21d4f04dc3676298947c607dfa9e5b899efb62cd648d476a9c2163a7",
+    "approved_present": true,
+    "approved_selected": true,
+    "load_case_count": 15,
+    "combination_count": 62,
+    "selected_case_count": 4,
+    "selected_combination_count": 1,
+    "all_case_statuses_finished": true,
+    "selected_inventory_sha256": "fba9df864dc945171367d4e9db83259715a63aef83795403520493540255bdf5",
+    "model_locked": true,
+    "present_units_enum": 6
+  },
+  "direct_and_rest": {
+    "direct_status": "ACCEPTED",
+    "rest_preflight_http_status": 200,
+    "rest_run_http_status": 200,
+    "rest_status": "ACCEPTED",
+    "baseline_sha256": "d4c28586ad7a29bdcba801472481ef0e80354cde502c95b70c93550b7ea5dc67",
+    "hash_basis_utf8_bytes": 3626096,
+    "canonical_bytes_equal": true,
+    "sha256_equal": true,
+    "counts_equal": true,
+    "counts": {
+      "stories": 6,
+      "frames": 225,
+      "connectivity_rows": 549,
+      "result_sets": 153,
+      "result_station_rows": 3502,
+      "disposition_rows": 4348,
+      "projected_excel_rows": 8873
+    },
+    "disposition_reason_counts": {
+      "CONNECTIVITY_ACCEPTED_BEAM_TO_BEAM": 208,
+      "CONNECTIVITY_ACCEPTED_BEAM_TO_COLUMN": 341,
+      "FRAME_ACCEPTED_BEAM": 153,
+      "FRAME_ACCEPTED_COLUMN": 72,
+      "NO_FRAME_ENDPOINT_CONNECTION": 64,
+      "RESULT_SELECTION_ACCEPTED": 1,
+      "RESULT_STATION_ACCEPTED": 3502,
+      "STORY_ACCEPTED": 6,
+      "STORY_BASE_NOT_A_STORY": 1
+    },
+    "frame_analysis_verdict": "HELD_NOT_SUPPORTED"
+  },
+  "installed_excel": {
+    "preflight_status": "READY_FOR_READ_ONLY_BASELINE",
+    "exact_combination_displayed": true,
+    "copy_confirmation_checked": true,
+    "server_transport_http_status": 200,
+    "server_transport_status": "ACCEPTED",
+    "server_hash_verified_before_write": true,
+    "overall_status": "BLOCKED",
+    "error_code": "GeneralException",
+    "error_location": "Range.values",
+    "controlled_tables_expected": 7,
+    "controlled_tables_created": 6,
+    "controlled_table_rows": {
+      "ETABS_W2_Summary/tbl_ETABS_W2_Summary_V1": 1,
+      "ETABS_W2_Stories/tbl_ETABS_W2_Stories_V1": 6,
+      "ETABS_W2_Frames/tbl_ETABS_W2_Frames_V1": 225,
+      "ETABS_W2_Links/tbl_ETABS_W2_Links_V1": 549,
+      "ETABS_W2_Stations/tbl_ETABS_W2_Stations_V1": 3502,
+      "ETABS_W2_Dispositions/tbl_ETABS_W2_Dispositions_V1": 4348
+    },
+    "json_sheet_created": true,
+    "json_table_created": false,
+    "json_rows_written": 0,
+    "partial_structured_rows_written": 8631,
+    "complete_seven_table_reconciliation": false,
+    "accepted_workbook_claim": false
+  },
+  "excel_json_write_root_cause": {
+    "status": "CONFIRMED",
+    "canonical_json_characters": 3626096,
+    "chunk_characters": 15000,
+    "chunk_count": 242,
+    "formula_prefix_hazard_count": 4,
+    "formula_prefix_hazards": [
+      {"chunk_index": 12, "first_character": "-"},
+      {"chunk_index": 43, "first_character": "+"},
+      {"chunk_index": 109, "first_character": "-"},
+      {"chunk_index": 157, "first_character": "-"}
+    ],
+    "office_contract": "Excel.Range.values interprets strings beginning with +, -, or = as formulas.",
+    "office_contract_source": "https://learn.microsoft.com/en-us/javascript/api/excel/excel.range?view=excel-js-1.6",
+    "proof": "The six non-JSON tables have exact expected row counts, ETABS_W2_JSON exists without its table or rows, the pane reports GeneralException at Range.values, and four projected JSON chunks begin with formula-significant characters.",
+    "required_future_repair": "Preserve exact reconstructable canonical bytes while writing every JSON chunk as literal text, add real/fake Office regressions for +, -, and = chunk prefixes, and make multi-table output transactional or explicitly rollback-safe.",
+    "repair_implemented_in_this_packet": false,
+    "reason_not_implemented": "The packet authorized at most one bounded outcome-changing root-cause repair; the deterministic hash repair already consumed that allowance."
+  },
+  "preservation": {
+    "model_sha256_before_and_after": "99b7f3f17051929196ef6494d8f4d220d895fc3dac5e1a57164a53bf8fa6948b",
+    "model_bytes_before_and_after": 702831,
+    "model_modified_utc_before_and_after": "2026-08-28T17:00:30.127813Z",
+    "model_locked_before_and_after": true,
+    "present_units_enum_before_and_after": 6,
+    "approved_combination_selected_after_excel": true,
+    "workbook_initial_sha256": "53af584339436413929993c3ff17600ee98c3f62827f60240abe4ce05db711fe",
+    "workbook_initial_bytes": 31361,
+    "workbook_final_sha256": "795afc73b69b712e6241119a37f63a17f8822a7b85d0337abdcb08a2d80bc487",
+    "workbook_final_bytes": 912821,
+    "workbook_final_modified_utc": "2026-08-29T12:47:38.0953990Z",
+    "workbook_change_expected_only_for_controlled_output": true,
+    "workbook_contains_partial_not_accepted_output": true
+  },
+  "external_evidence": {
+    "root": "C:/CodexWork/evidence/ETABS-EXCEL-BEAM-W2C/installed-acceptance-repaired-75668421",
+    "prior_mismatch_root_preserved": "C:/CodexWork/evidence/ETABS-EXCEL-BEAM-W2C/installed-acceptance-75668421",
+    "proprietary_model_path_inventories_forces_and_workbook_bytes_not_committed": true,
+    "files": {
+      "direct-preflight.json": {"bytes": 1474, "sha256": "8699a50331548a695ce4e361b3c09d444c6eadd1df4d04bf9769df01003435ba"},
+      "direct-postflight.json": {"bytes": 1474, "sha256": "f9ff0c0db9ba17e54f3b7cf2be7adc9240d90b7becd8f0b1965fe2a306223914"},
+      "direct-safe-summary.json": {"bytes": 1618, "sha256": "bc2847d16064b1650c86db46501675523672d851dde21d0679ba58f44dbf8462"},
+      "rest-preflight-wrapper.json": {"bytes": 1582, "sha256": "192d0e23b8fa4cdb8717fb794e2afd67987b516b85da24e6d3320cd298054390"},
+      "rest-safe-summary.json": {"bytes": 757, "sha256": "272e4eebae7f0250abcdd666e794dd1be172fb66aa66a711713b7bec8e18a33f"},
+      "selection-preflight.json": {"bytes": 725, "sha256": "a5b46d5f555b68603a8a5bdddf53afa80ba1ab56c074cab46dc4141941c6c361"},
+      "direct-transport.json": {"bytes": 11391189, "sha256": "fcae17510d7ab539a89dfce7c8171e03de6e079a479131dfb777dde38375cf57"},
+      "rest-transport-wrapper.json": {"bytes": 11730053, "sha256": "4d5036db12ec92fd4797a4248f0ce0600826cfba779d439e073bae9785dc8b4f"},
+      "ETABS-EXCEL-BEAM-W2C-accepted.xlsx": {"bytes": 912821, "sha256": "795afc73b69b712e6241119a37f63a17f8822a7b85d0337abdcb08a2d80bc487"},
+      "run_direct_acceptance.py": {"bytes": 7455, "sha256": "0142b1696de20fa2aab5e0b73aadbfdf3ea1881d1a227d78e5b7bf356c56d2d2"},
+      "run_rest_acceptance.py": {"bytes": 3523, "sha256": "f7e08969b7ef50d24477c73ee9235f78855bbc56a893a7dada7f914800c1dab1"}
+    }
+  },
+  "validation": {
+    "focused_w2_python_fastapi": {
+      "passed": 47,
+      "failed": 0
+    },
+    "office_js": {
+      "passed": 34,
+      "failed": 0
+    },
+    "changed_python_quality": {
+      "black": "PASS",
+      "ruff": "PASS",
+      "mypy": "PASS"
+    },
+    "architecture_and_contracts": {
+      "architecture_files": 236,
+      "architecture_violations": 0,
+      "import_files": 753,
+      "internal_imports": 2509,
+      "broken_imports": 0,
+      "circular_files": 216,
+      "circular_imports": 0,
+      "openapi_endpoints": 95,
+      "openapi_schemas": 501,
+      "schema_models": 5,
+      "schema_enums": 2,
+      "status": "PASS"
+    },
+    "documentation_before_final_quick_gate": {
+      "strict_checks_passed": 5,
+      "markdown_files": 520,
+      "local_links": 1129,
+      "broken_links": 0,
+      "receipt": "VALID_HOLD"
+    },
+    "broad_python_windows": {
+      "passed": 7175,
+      "failed": 31,
+      "skipped": 13,
+      "deselected": 6,
+      "duration_seconds": 1066.04,
+      "w2_baseline_live_snapshot_import_and_workbench_tests_passed": true,
+      "failure_module_counts": {
+        "test_git_guidance_semantics.py": 1,
+        "test_git_state.py": 2,
+        "test_install_preflight.py": 1,
+        "test_new_element_completeness.py": 2,
+        "test_phase2a_cache_cleanup.py": 1,
+        "test_phase2b_cleanup_preparation.py": 1,
+        "test_phase2b_google_drive_backup.py": 1,
+        "test_phase2b_recovery_preparation.py": 1,
+        "test_release_scripts.py": 3,
+        "test_repo_context.py": 1,
+        "test_session_automation.py": 16,
+        "test_excel_workbook_artifact.py": 1
+      },
+      "classification": "KNOWN_WINDOWS_SHELL_PATH_SEPARATOR_SYMLINK_PRIVILEGE_TIMING_AND_SESSION_AUTOMATION_HOLD_NO_W2_FAILURE",
+      "isolated_workbook_artifact_proof": "The frozen artifact test differs only because pathlib emits backslashes on Windows while the manifest stores portable forward slashes."
+    },
+    "quick_gate": {
+      "first_attempt": "INTERRUPTED_BY_UNEXPECTED_WINDOWS_RESTART_NO_RESULT",
+      "post_restart_result": "9_OF_10_PASS",
+      "only_failure": "next-session-brief.md was 177 lines; maintained limit is 150",
+      "affected_repair": "Superseded Phase A/B narrative was compressed without removing current W2C facts; final brief is 114 lines.",
+      "affected_replay": "Brief-length checker, strict docs 5/5, 520-file/1130-link validation, and diff hygiene pass.",
+      "unaffected_quick_checks_passed": 9,
+      "broad_gate_rerun_avoided": true
+    }
+  },
+  "limitations": [
+    "Direct service and REST accepted and reconciled, but the installed Excel path did not complete the seventh controlled table.",
+    "The saved workbook is deliberate blocked evidence with six exact tables and an empty ETABS_W2_JSON sheet; it is not an accepted W2 output workbook.",
+    "No second code or workbook-template repair was implemented under the one-repair cap.",
+    "W2C remains held and W3 must not start automatically.",
+    "Independent frame analysis remains HELD_NOT_SUPPORTED.",
+    "This evidence is software workflow evidence, not structural analysis, design, engineering approval, or construction-use approval."
+  ]
+}

@@ -1494,13 +1494,22 @@ def etabs_w2a_getter_matrix_sha256_v1() -> str:
 def _baseline_hash_payload(baseline: ETABSBeamBaselineV1) -> dict[str, Any]:
     payload = baseline.model_dump(mode="json")
     payload.pop("baseline_sha256", None)
+    file_evidence = payload["model"]["file_evidence"]
+    file_evidence["before_read"].pop("observed_at_utc", None)
+    file_evidence["after_read"].pop("observed_at_utc", None)
     return payload
 
 
 def canonical_etabs_beam_baseline_hash_basis_json_v1(
     baseline: ETABSBeamBaselineV1,
 ) -> str:
-    """Serialize the exact UTF-8 JSON text whose digest is ``baseline_sha256``."""
+    """Serialize stable fields whose exact UTF-8 digest is ``baseline_sha256``.
+
+    The two wall-clock file observation instants remain in the baseline as
+    freshness provenance, but are excluded from the cross-transport identity.
+    Hash, size, modified time, path, lock, units, runtime, topology, results,
+    and dispositions remain inside the hash basis.
+    """
 
     return json.dumps(
         _baseline_hash_payload(baseline),
@@ -1511,7 +1520,7 @@ def canonical_etabs_beam_baseline_hash_basis_json_v1(
 
 
 def verify_etabs_beam_baseline_hash_v1(baseline: ETABSBeamBaselineV1) -> bool:
-    """Verify the canonical SHA-256 over every retained W2A field."""
+    """Verify the canonical SHA-256 over every stable retained W2A field."""
 
     encoded = canonical_etabs_beam_baseline_hash_basis_json_v1(baseline).encode("utf-8")
     return sha256(encoded).hexdigest() == baseline.baseline_sha256
