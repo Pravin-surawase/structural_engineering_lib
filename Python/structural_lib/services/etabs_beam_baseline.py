@@ -828,6 +828,7 @@ def _read_frames(
     sap_model: Any,
     *,
     model_sha256: str,
+    story_names: frozenset[str],
     tolerance_mm: float,
 ) -> tuple[
     tuple[ETABSFrameV1, ...],
@@ -878,6 +879,13 @@ def _read_frames(
             sap_model.FrameObj.GetLocalAxes(source_name),
             output_count=2,
         )
+        frame_label = _nonblank("FrameObj.GetLabelFromName", "label", label)
+        frame_story = _nonblank("FrameObj.GetLabelFromName", "story", story)
+        if frame_story not in story_names:
+            raise ETABSDataError(
+                "ETABS_FRAME_STORY_NOT_IN_INVENTORY",
+                f"Frame {source_name!r} reports story {frame_story!r}, which is absent from Story.GetStories.",
+            )
         point_i_name = _nonblank("FrameObj.GetPoints", "point I", point_i_name)
         point_j_name = _nonblank("FrameObj.GetPoints", "point J", point_j_name)
         if point_i_name == point_j_name:
@@ -969,8 +977,8 @@ def _read_frames(
         frame = ETABSFrameV1(
             member_id=member_id,
             source_unique_name=source_name,
-            label=_nonblank("FrameObj.GetLabelFromName", "label", label),
-            story=_nonblank("FrameObj.GetLabelFromName", "story", story),
+            label=frame_label,
+            story=frame_story,
             kind=kind,
             point_i=point_i,
             point_j=point_j,
@@ -1516,6 +1524,7 @@ def extract_etabs_beam_baseline_v1(
         frames, candidates, frame_dispositions = _read_frames(
             sap_model,
             model_sha256=before_read.sha256,
+            story_names=frozenset(story.name for story in stories),
             tolerance_mm=request.orientation_tolerance_mm,
         )
         dispositions.extend(frame_dispositions)

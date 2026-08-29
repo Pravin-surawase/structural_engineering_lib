@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-29
-- Focus: Make the W2A result, Windows setup, machine roles, root causes,
-- Completed: Fetched GitHub and verified authenticated account `Pravin-surawase`, remote; Reinspected both retained Windows worktrees. The W2A worktree is the only; Made the machine ownership explicit in the canonical Git workflow and ETABS
-- Git receipt: docs/verification/etabs-excel-beam-w2a-machine-handoff-git-handoff-receipt.json | sha256:fe900eb16b4441e38bfad4cd0ebaf787700f14ff5f9f7e662290df74973e23dc | HOLD
-- Git identity: codex/etabs-excel-beam-w2a-baseline@c629e362b4b93c915422ba2c1a6fb1cf3d56dadd | upstream=origin/main@a3f36cb460395eeda32f832963917983e9bc4dfb | base=origin/main@a3f36cb460395eeda32f832963917983e9bc4dfb | tree=dirty | operation=none
+- Focus: Independently review the exact Windows W2A branch, repair the one
+- Completed: Verified live GitHub/local identity, exact two-commit ancestry, full diff,; Reproduced an accepted baseline containing frame story `MISSING` while the; Passed the frozen story-name set into frame extraction and now raise stable
+- Git receipt: docs/verification/etabs-excel-beam-w2a-mac-review-git-handoff-receipt.json | sha256:bb7129e98d1e5fdb60d3674c4a758de0e7bd2ee40d7deda7d03de782120525e6 | HOLD
+- Git identity: codex/etabs-excel-beam-w2a-baseline@9bd29fbeb2993985b6f4f5e0b5d680df1cb7c47e | upstream=origin/codex/etabs-excel-beam-w2a-baseline@9bd29fbeb2993985b6f4f5e0b5d680df1cb7c47e | base=origin/main@a3f36cb460395eeda32f832963917983e9bc4dfb | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -17,9 +17,9 @@
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` remains the immutable current normal software release; no new release is selected or authorized. |
-| **Current** | GitHub `origin/main` is `a3f36cb460395eeda32f832963917983e9bc4dfb` after PR #895. Windows produced W2A implementation candidate `c629e362...` plus a documentation/setup successor on `codex/etabs-excel-beam-w2a-baseline`. Windows is handing the fully pushed branch to the Mac and then stops writing it. |
+| **Current** | GitHub `origin/main` is `a3f36cb460395eeda32f832963917983e9bc4dfb` after PR #895. Mac fetched exact Windows W2A head `9bd29fbe...`, reproduced the unknown-story acceptance defect, and repaired it by binding every frame story to `Story.GetStories`; PR/integration remains pending. |
 | **Machine roles** | Mac is the primary development/integration machine. Windows is the installed Excel/ETABS testing and evidence machine. GitHub is the tracked handoff authority; proprietary model/workbook/evidence bytes remain on Windows. |
-| **Next** | On Mac, fetch and verify `origin/codex/etabs-excel-beam-w2a-baseline`, review the full diff, rerun proportionate checks, and accept or make one bounded W2A review repair. W2B and W2C remain unstarted. |
+| **Next** | Mac freezes, verifies, and integrates the bounded W2A repair. After the merge, Windows independently audits the installed ETABS type-library/generated-wrapper signatures and prepares exact W2C evidence/abort criteria on one new branch without launching ETABS/Excel. W2B and W2C execution remain unstarted. |
 | **Held** | ETABS analysis, unlock/save, section/load write-back, optimization, complete solver parity, expanded design/detailing/site-practice automation, release, and professional or construction-use approval. |
 
 ## Today closeout
@@ -58,18 +58,17 @@
 
 ## Next objective
 
-On the Mac primary machine:
-
-1. `git fetch origin` and verify the final remote branch head plus current
-   `origin/main`; do not use the Windows-local `c629e362` as the final head.
-2. Create a clean review worktree from
-   `origin/codex/etabs-excel-beam-w2a-baseline` and inspect the complete
-   `origin/main...HEAD` diff.
-3. Run the W2A focused set and proportionate runtime/governance/quick checks.
-4. Accept W2A or make one bounded Mac-owned review repair, then use the normal
-   PR/check/integration path.
-5. Keep W2B, W2C, installed ETABS/Excel execution, model mutation, and the
-   separate dev-only npm advisory repair outside this review packet.
+1. Mac completes the bounded W2A candidate, normal PR/check path, merge, and
+   exact local-main synchronization.
+2. Windows then creates `codex/etabs-w2c-com-signature-audit` from the fetched
+   W2A merge and works independently until one clean pushed handoff exists.
+3. That Windows packet inspects installed ETABS 23.3.1 type-library or generated
+   wrapper definitions for the frozen W2A getters and sole unit setter, records
+   exact host/tool/source identities, and prepares W2C evidence/abort criteria.
+4. It must not launch ETABS, open a model/workbook, call live-model getters,
+   run analysis, mutate anything, begin W2B/W2C execution, or create/merge a PR.
+5. Windows pushes the completed branch once and stops; Mac performs one review
+   pickup. The dev-only npm advisory stays a separate maintenance packet.
 
 ## New-chat starter
 

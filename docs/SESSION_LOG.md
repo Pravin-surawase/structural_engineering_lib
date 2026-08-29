@@ -5,6 +5,92 @@
 
 ---
 
+## 2026-08-29 — Session: W2A Mac review repair and independent Windows next packet
+
+**Agent:** Codex (`reviewer`/`python-core`/`governance`, sole writer; no
+subagents).
+
+**Branch:** `codex/etabs-excel-beam-w2a-baseline`, fetched and source-bound at
+the exact Windows handoff head
+`9bd29fbeb2993985b6f4f5e0b5d680df1cb7c47e`, based on
+`origin/main` `a3f36cb460395eeda32f832963917983e9bc4dfb`.
+
+**Git handoff receipt:**
+`docs/verification/etabs-excel-beam-w2a-mac-review-git-handoff-receipt.json`
+
+**Focus:** Independently review the exact Windows W2A branch, repair the one
+confirmed outcome-changing story/topology defect, finish the normal Mac
+PR/integration path, and prepare one independent Windows COM-signature/W2C
+readiness packet that can run after merge without opening ETABS or Excel. No
+model, workbook, analysis, W2B surface, optimization, write-back, release, or
+engineering claim is changed.
+
+**Completed:**
+
+- Verified live GitHub/local identity, exact two-commit ancestry, full diff,
+  retained worktrees, open PRs, and the Windows-to-Mac writer transfer before
+  creating the dedicated source-bound Mac worktree.
+- Reproduced an accepted baseline containing frame story `MISSING` while the
+  exact story inventory contained only `L1` and `L2`; this violated the
+  W2A story/member topology contract.
+- Passed the frozen story-name set into frame extraction and now raise stable
+  `ETABS_FRAME_STORY_NOT_IN_INVENTORY` before constructing a frame whose
+  story is absent from `Story.GetStories`.
+- Added tuple/list fake-COM regressions proving the mismatch fails closed and
+  the original ETABS unit enum is restored.
+- Kept the W2A schema/hash basis, lock-state deferral, getter matrix,
+  `HELD_NOT_SUPPORTED` solver verdict, W2B/W2C boundaries, and all unrelated
+  Windows/runtime work unchanged.
+- Prepared the next independent Windows packet
+  `ETABS-EXCEL-BEAM-W2C-COM-SIGNATURE-AUDIT`: inspect installed ETABS 23.3.1
+  type-library/generated-wrapper signatures for the frozen getter matrix,
+  record exact evidence and W2C abort criteria, push one branch, and stop. It
+  must not launch ETABS, open a model/workbook, execute getters against a live
+  model, or begin W2C acceptance.
+
+### Issues encountered
+
+- Canonical `session begin` remained blocked by the historical unmatched
+  `EXCEL-ETABS-PYTHON-BRIDGE-PILOT` checkpoint.
+- The first focused regression run failed because the patch anchor inserted the
+  new test before the preceding deterministic-hash test's final assertion.
+- `session summary --write` refreshed the correct W2A handoff block but also
+  rewrote an unrelated historical MAINT-0136 summary.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the originating pilot device/session never recorded
+  reconstructable closeout timing. Resolution: preserve the existing
+  checkpoint, continue the directly related W2A repair, and record only live
+  evidence; no old timing was invented. ⚠️ TERMINAL ISSUE: `session begin`
+  rejected the known parent checkpoint -> continued the documented related
+  programme without creating a conflicting timer.
+- Confirmed root cause: the patch matched an intermediate hash assertion rather
+  than the end of that test, moving its final assertion into the new function.
+  Resolution: restore the assertion to its original test, keep the new
+  regression separate, and rerun the affected file successfully. Evidence:
+  W2A unit tests and Ruff pass after correction. ⚠️ TERMINAL ISSUE: first
+  focused run raised `NameError: tuple_result` -> corrected test placement.
+- Confirmed root cause: the summary generator selected an older session as its
+  commit-summary target while independently selecting the newest W2A entry for
+  the handoff projection. Resolution: retain the correct generated W2A handoff
+  block, restore the unrelated historical summary exactly, and validate the
+  final staged diff. ⚠️ TERMINAL ISSUE: handoff refresh touched an old session
+  summary -> reverted only that generated rewrite with an explicit patch.
+
+### Validation through content freeze
+
+- The affected six-file W2A/live-bridge/snapshot/gravity/governance/runtime
+  batch passes; targeted Ruff and MyPy pass.
+- Fresh documentation validation passes `8/8` with zero reuse, the maintained
+  brief remains within its 150-line bound, and `git diff --check` is clean.
+- The consolidated quick gate passes `10/10`; only unchanged repository-hygiene
+  and token-efficiency results were reused. Normal hooks, immutable candidate
+  review, and final read-only session validation remain the closeout sequence.
+
+---
+
+
 ## 2026-08-29 — Session: W2A Mac-primary/Windows-evidence handoff
 
 **Agent:** Codex (`documentation`/`governance`, sole writer; no subagents).

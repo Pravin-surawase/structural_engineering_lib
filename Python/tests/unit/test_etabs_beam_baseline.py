@@ -350,6 +350,28 @@ def test_tuple_and_list_shapes_produce_the_same_frozen_hash() -> None:
     )
 
 
+@pytest.mark.parametrize("output_container", [tuple, list], ids=["tuple", "list"])
+def test_frame_story_must_exist_in_story_inventory_and_restores_units(
+    output_container,
+) -> None:
+    sap_model = _FakeSapModel(output_container)
+    original_get_label = sap_model.FrameObj.GetLabelFromName
+
+    def get_label_with_unknown_story(name):
+        label, story, return_code = original_get_label(name)
+        return output_container(
+            (label, "MISSING" if name == "B1" else story, return_code)
+        )
+
+    sap_model.FrameObj.GetLabelFromName = get_label_with_unknown_story
+
+    with pytest.raises(ETABSDataError) as exc_info:
+        _extract(sap_model)
+
+    assert exc_info.value.code == "ETABS_FRAME_STORY_NOT_IN_INVENTORY"
+    assert sap_model.unit_calls == [5, 6]
+
+
 def test_getter_matrix_is_frozen_and_contains_no_result_selection_setter() -> None:
     matrix = baseline.etabs_w2a_getter_matrix_v1()
 
