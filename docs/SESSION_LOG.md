@@ -66,6 +66,8 @@ source-bound REST hashes, and prove state/file preservation.
 - **Issue:** the first API gate found process-specific memory addresses in the
   generated signature for the new live transport, and its 30-second grouped
   classification budget expired although the direct generator completed.
+- **Issue:** hosted Python Validation rejected Black formatting in the new
+  transport although the earlier local hook command displayed Black as passed.
 - **Issue:** the initial OpenAPI update shows a large textual diff because two
   new alphabetically ordered generic response schemas shift many adjacent JSON
   blocks; semantic snapshot validation reports exactly 97 current endpoints
@@ -93,6 +95,15 @@ source-bound REST hashes, and prove state/file preservation.
   compatibility, 3/3 FastAPI and the normal hooks all pass. ⚠️ TERMINAL ISSUE:
   unstable callable-default signature plus grouped timeout -> deterministic
   public signature and direct maintained generator checks passed.
+- **Root cause:** `./run.sh check --pre-commit` invokes the normal staged-file
+  selector. Both local runs occurred before staging or after committing, so the
+  path-aware Black hook had no candidate file even though always-run controls
+  still executed and passed.
+- **Resolution:** run the exact hosted command family against the Python tree,
+  format only `etabs_catalogue_bridge.py`, and rerun Black check, Ruff and the
+  affected 11 tests before a follow-up candidate commit. No source behavior or
+  live evidence changed. ⚠️ TERMINAL ISSUE: unstaged hook selection missed the
+  new file -> exact hosted Black command exposed and corrected the one layout.
 - **Root cause:** OpenAPI's deterministic key order places the two new response
   wrappers among existing generic wrappers, so a line-oriented diff presents
   downstream blocks as moves.

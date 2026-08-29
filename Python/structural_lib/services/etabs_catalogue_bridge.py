@@ -270,14 +270,8 @@ def _read_state(sap_model: Any) -> ETABSLiveCatalogueStateV1:
     case_names = _name_list("LoadCases.GetNameList", sap_model.LoadCases.GetNameList)
     combo_names = _name_list("RespCombo.GetNameList", sap_model.RespCombo.GetNameList)
     selections = tuple(
-        [
-            _selection_state(sap_model, "CASE", name)
-            for name in case_names
-        ]
-        + [
-            _selection_state(sap_model, "COMBINATION", name)
-            for name in combo_names
-        ]
+        [_selection_state(sap_model, "CASE", name) for name in case_names]
+        + [_selection_state(sap_model, "COMBINATION", name) for name in combo_names]
     )
     return ETABSLiveCatalogueStateV1(
         model_path=model_path,
