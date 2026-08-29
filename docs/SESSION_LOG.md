@@ -5,6 +5,113 @@
 
 ---
 
+## 2026-08-29 — Session: Complete Windows W2 campaign
+
+**Agent:** Codex (`documentation`/`python-core`/`api`/`frontend`/`governance`,
+sole writer; no subagents).
+
+**Branches:** Phase A on `codex/etabs-w2c-com-signature-audit` from exact
+`origin/main` `0f5c918eb87b658448737fd6bf023ccb4bd07c74`; the cumulative campaign will
+continue from the exact pushed Phase A head on
+`codex/etabs-excel-beam-w2-campaign`.
+
+**Git handoff receipt:**
+`docs/verification/etabs-excel-beam-w2c-com-signature-audit-git-handoff-receipt.json`
+(Phase A checkpoint; final campaign receipt will supersede it for Mac pickup).
+
+**Focus:** Complete the bounded W2 campaign on the Windows evidence machine:
+first freeze the installed ETABS 23.3.1 static COM-signature audit without COM
+object creation; then implement/freeze W2B's read-only observer, REST, and Excel
+review/reconciliation surface; finally run W2C only against the approved copied
+model after every preflight condition passes. Preserve protected Windows
+`main`, W2A, unrelated worktrees, `HELD_NOT_SUPPORTED`, and every no-analysis/
+no-save/no-mutation/no-optimization/no-writeback/professional-review boundary.
+
+**Phase A completed:**
+
+- Fetched GitHub and proved PR #896 merge `0f5c918e...`, reviewed W2A head
+  `0972e1af...`, branch absence, retained worktrees, and protected Windows
+  `main` before creating the dedicated Phase A lane.
+- Bound installed ETABS `23.3.1.4563` to the registered x64 `ETABSv1.tlb`
+  LIBID `{542F7A9D-3A7D-4061-97B3-3A1276FF83BD}` version `1.0`, exact file/
+  assembly/generated-wrapper hashes, 64-bit Python `3.11.15`, and `comtypes`
+  `1.4.16`.
+- Proved all 18 W2A getters plus `SetPresentUnits` for interface/method,
+  argument/default/output order, types, return-code form, enum values, and
+  current installed Python container shape. The audit found no outcome-changing
+  adapter mismatch or reason for a Windows code repair.
+- Froze every operation verdict, live-only claim, precondition, proof point,
+  and abort criterion in the tracked Phase A evidence. Design-summary reads
+  remain outside the matrix/blocked and frame analysis remains
+  `HELD_NOT_SUPPORTED`.
+
+### Issues encountered
+
+- An ETABS process was already running before the static audit, creating a
+  boundary that could otherwise make a later record look as though the audit
+  launched or attached to the application.
+- The first PowerShell file-identity command piped directly from a parenthesized
+  `foreach`, and two exploratory generated-wrapper commands guessed `LIBID`
+  module attributes that `comtypes 1.4.16` does not expose at module level.
+- The already-running Codex desktop process did not inherit the refreshed user
+  `PATH`, so a direct `gh` authority check and the first normal commit's Bash-
+  based hooks could not find their executables.
+- `session handoff` rewrote the maintained brief with CRLF bytes on Windows,
+  conflicting with the repository's explicit LF checkout policy.
+- The W2A display strings omit one optional typelib detail and present one
+  required explicit enum value in default-like notation.
+
+### Root causes and resolutions
+
+- Root cause of the pre-existing process is **unconfirmed** and outside this
+  task; process start preceded the audit. Resolution: inspect only registry/
+  file/type metadata, never create/attach a COM object, record the existing
+  process identity before/after wrapper generation, and call no live
+  `SapModel` getter. The same process remained present and Excel was absent.
+- Confirmed terminal-command causes: PowerShell does not permit that empty pipe
+  form after the inline `foreach`, and the friendly/raw generated modules expose
+  type-library identity through `Library._reg_typelib_`, not `LIBID` constants.
+  Resolution: collect the loop into `$rows` before piping and query
+  `Library._reg_typelib_`; subsequent metadata/hash extraction passed.
+  ⚠️ TERMINAL ISSUE: three exploratory static-inspection commands failed on
+  shell/module-shape assumptions -> corrected once and used the proved forms.
+- Confirmed cause: machine setup updated the user environment after this
+  desktop process started. Resolution: prepend the current user `PATH` plus the
+  maintained machine path process-locally, then rerun the exact GitHub
+  user/repository/remote-branch checks and normal commit hooks. The persisted
+  user path already contains `C:\Program Files\Git\bin`, so fresh processes need
+  no setup change; no credential or repository setting changed. ⚠️ TERMINAL
+  ISSUE: `gh` and then hook `bash` were absent from the inherited desktop
+  process path -> refreshed only the affected command environments and did not
+  bypass hooks.
+- Confirmed cause: the Python handoff writer used the platform-default text
+  newline conversion even though `.gitattributes` requires LF. Resolution:
+  normalize the one generated brief with Git for Windows `dos2unix`, verify
+  `git diff --check` without the conversion warning, and retain this as a
+  documented Windows generator gap for a separate governance repair if it ever
+  changes a main-process outcome. ⚠️ TERMINAL ISSUE: generated brief became
+  CRLF -> normalized the exact file before candidate freeze.
+- Confirmed cause of signature-text precision: W2A freezes the Python call/
+  decoded-result contract rather than copying full IDL. Resolution: record that
+  `LoadCases.GetNameList` has optional `CaseType=0` and that `FrameForce`
+  requires explicitly supplied `ItemTypeElm=0` (`ObjectElm`). The current calls,
+  counts, decoder, and outcome remain correct, so no adapter code changed.
+
+### Validation through content freeze
+
+- Phase A source binding reports the exact audit worktree and
+  `source_bound=true`; GitHub CLI is authenticated as `Pravin-surawase` and
+  `origin/main` is exactly `0f5c918e...`.
+- Phase A evidence contains 19 explicit operation verdicts: 19 `PROVED`, zero
+  static-operation `NOT_PROVABLE_FROM_STATIC_METADATA`, zero `BLOCKED`, and no
+  silent gaps. Live-only and out-of-contract claims retain their separate
+  `NOT_PROVABLE_FROM_STATIC_METADATA`/`BLOCKED` verdicts.
+- Phase A focused documentation/governance, JSON validation, diff hygiene,
+  quick gate, normal hooks, final session validation, exact commit/push, and
+  remote-head proof remain the checkpoint closeout sequence.
+
+---
+
 ## 2026-08-29 — Session: W2A Mac review repair and independent Windows next packet
 
 **Agent:** Codex (`reviewer`/`python-core`/`governance`, sole writer; no

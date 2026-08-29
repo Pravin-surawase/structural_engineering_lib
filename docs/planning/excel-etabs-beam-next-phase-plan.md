@@ -12,8 +12,12 @@ tags: [excel, etabs, beams, windows, optimization, construction]
 ## Decision summary
 
 The bounded read-only Excel -> Python -> live ETABS pilot is accepted on the
-installed Windows stack. The next task is **W2: a read-only beam baseline and
-topology contract**, not section optimization or model write-back.
+installed Windows stack. W2A's read-only beam baseline/topology contract is
+merged through PR #896 at `0f5c918e...`. The Windows static signature audit now
+proves the installed ETABS 23.3.1 COM surface needed by that contract. The
+authorized next work is the bounded W2B transport/review surface followed by
+guarded W2C installed read-only acceptance—not section optimization or model
+write-back.
 
 The sequence is deliberate:
 
@@ -41,6 +45,8 @@ and seismic-response dependencies.
 | #892 | Proved the exact open saved model with `GetModelFilename(True)` | `3ff3c80a...` |
 | #893 | Completed installed Windows one-/five-beam acceptance and repaired remaining COM/launcher blockers | `c959775d...` |
 | #894 | Added the one-branch/one-writer multi-device synchronization rule | `45ef7c29...` |
+| #895 | Closed W1 and froze the W2A/W2B/W2C next-phase contract | `a3f36cb4...` |
+| #896 | Merged the reviewed W2A baseline and unknown-story fail-closed repair | `0f5c918e...` |
 
 The tracked W1 receipt is
 [`etabs-excel-python-pilot-w1-evidence.json`](../verification/etabs-excel-python-pilot-w1-evidence.json).
@@ -71,31 +77,30 @@ The machine roles are now explicit:
 | **Windows** | Installed Excel/ETABS testing and evidence machine | Exact copied-model/workbook runs, COM/API behavior, direct-vs-Excel reconciliation, device-safe receipts, and only the bounded host-specific repairs needed to make those tests trustworthy | It does not own normal `main`, general feature development, merge decisions, or unreviewed application/model mutation |
 | **GitHub** | Shared tracked-history authority | Task branches, PR review, checks, merge history, and exact writer-device handoff | It does not contain proprietary models/workbooks, credentials, or unapproved external evidence |
 
-The Windows primary checkout is a clean but deliberately protected
-`HOLD_MAIN` lane and was observed behind fetched `origin/main`. That is not a
-request to update or develop on it. Windows W2A work was correctly created in a
-separate worktree from exact `origin/main` `a3f36cb460395eeda32f832963917983e9bc4dfb`.
-The first immutable W2A implementation candidate is
-`c629e362b4b93c915422ba2c1a6fb1cf3d56dadd` on
-`codex/etabs-excel-beam-w2a-baseline`. The documentation/setup closeout may add
-a successor commit on that same branch; therefore the Mac must fetch the remote
-branch and verify its final advertised head rather than treating `c629e362` as
-the final handoff head.
+The Windows primary checkout remains a clean but deliberately stale/protected
+`HOLD_MAIN` lane. W2A was independently reviewed on Mac and merged unchanged
+with its bounded repair through PR #896: reviewed head `0972e1af...`, merge
+`0f5c918eb87b658448737fd6bf023ccb4bd07c74`. Windows fetched and verified that
+exact merge before creating the dedicated static-audit worktree and branch
+`codex/etabs-w2c-com-signature-audit`; neither protected `main` nor the retained
+W2A worktree was changed.
 
-The transfer rule is:
+The user has authorized one cumulative Windows W2 campaign after the static
+audit checkpoint. The transfer rule is now:
 
-1. Windows finishes, verifies, commits, and pushes the exact W2A task branch.
-2. Windows stops writing that branch and states that writer ownership transfers
-   to the Mac.
-3. The Mac fetches GitHub, verifies the branch head/base and clean worktree,
-   reviews the full `origin/main...origin/codex/etabs-excel-beam-w2a-baseline`
-   diff, and reruns proportionate cross-platform checks.
-4. The Mac owns any review repair, PR creation, hosted-check follow-up, and
-   integration. Windows stays read-only unless the Mac explicitly returns the
-   branch for a bounded installed-host repair.
-5. After W2B has a Mac-reviewed candidate, Windows creates or uses a dedicated
-   exact evidence worktree for W2C. It does not copy tracked source through
-   OneDrive/SMB and does not use its stale protected `main` as evidence.
+1. Windows finishes, verifies, commits, and pushes the metadata-only static
+   audit branch as a durable checkpoint.
+2. Windows creates `codex/etabs-excel-beam-w2-campaign` from that exact pushed
+   audit head, remains its sole writer, and freezes/pushes W2B before any
+   installed W2C execution.
+3. W2C may start only when all static-audit preconditions pass against the
+   exact W2B checkpoint and the approved copied model. It remains read-only and
+   aborts before results if identity, freshness, topology, case/combination, or
+   unit restoration cannot be proved.
+4. Windows pushes the final clean campaign branch and stops writing. Mac then
+   performs one cumulative review, PR/check follow-up, and integration.
+5. Source moves only through GitHub; model/workbook/vendor bytes and detailed
+   result payloads remain device-local and hash-bound.
 
 ## Windows host setup snapshot
 
@@ -149,6 +154,7 @@ output, and MSYS/Windows source-path normalization.
 | First W2A freshness draft could not prove temporal order | It accepted a preassembled “after” observation before the COM read occurred | Adapter now calls a supplied read-only file observer immediately before and after COM extraction and checks path/hash/size/timestamp/order | W2B must supply the actual observer; W2C must reconcile its evidence with external file hashes |
 | Windows CLI auth was uncertain after account reconnection | GitHub CLI credential state had changed outside the repository | Completed official browser/device authentication and verified the exact user/repository/main queries | Recheck `gh api user` and repository access before push/PR; never log the token |
 | npm reports one high advisory | Dev-only `nanoid 3.3.17` arrives transitively through `postcss`/Vite and is below fixed `3.3.18`; production-only audit is clean | Recorded but did not mix an unrelated lockfile rewrite into W2A | Resolve in a separate dependency-maintenance candidate, run frontend tests/build/audit, and review the exact lockfile diff |
+| W2A display signatures did not show every typelib input/default detail | The frozen matrix describes the adapter call/result contract, while the installed typelib also exposes optional `LoadCases.GetNameList(CaseType=0)` and requires the explicitly supplied `FrameForce(..., ItemTypeElm)` | Bound all 19 operations to the exact x64 typelib/generated wrapper and recorded both details without changing working behavior | Re-audit the exact typelib hash after any ETABS/comtypes drift; keep the runtime call explicit and fail closed on shape/return drift |
 
 This ledger records software/tooling causes and controls. It does not upgrade
 software checks into engineering approval or authorize model mutation.
@@ -251,6 +257,33 @@ W2A does not call either output-selection setter. The only setter is temporary
 `SetPresentUnits(kN_mm_C=5)`. Its return code is checked, the original unit enum
 is restored after success or failure, and even a reported normalization failure
 triggers a restoration attempt before the error propagates.
+
+### Windows static COM-signature audit
+
+The Phase A audit is recorded in
+[`etabs-excel-beam-w2c-com-signature-audit-evidence.json`](../verification/etabs-excel-beam-w2c-com-signature-audit-evidence.json).
+It inspected only installed registry/file/type-library/generated-wrapper
+metadata. It did not create a COM object, attach to the pre-existing ETABS
+process, call `SapModel`, open a model/workbook, or run analysis/design.
+
+The exact installed authority is ETABS `23.3.1.4563`, x64 `ETABSv1.tlb` LIBID
+`{542F7A9D-3A7D-4061-97B3-3A1276FF83BD}` version `1.0`, SHA-256
+`3823416b...24ef0e`, inspected with 64-bit Python `3.11.15` and `comtypes`
+`1.4.16`. All 18 frozen getters plus `SetPresentUnits` are `PROVED` for name,
+argument/output order, types, defaults, return-code form, and installed Python
+container behavior. No outcome-changing adapter mismatch was found.
+
+Two precision notes remain visible: `LoadCases.GetNameList` has an optional
+trailing input `CaseType=0`, so the no-argument W2A call correctly requests the
+unfiltered inventory; and `FrameForce` requires `ItemTypeElm`, for which W2A
+explicitly supplies enum value 0 (`ObjectElm`) rather than relying on a default.
+The installed provider produces list-shaped outer multi-output results and
+tuple-shaped one-dimensional SAFEARRAYs by default; W2A's tuple/list decoder is
+a compatible superset. Actual data, return-code values, counts, file identity,
+lock/unit restoration, topology, dispositions, results, and hashes remain
+installed-session proof—not static inference. ETABS design summary remains
+`BLOCKED` because it is not a frozen W2A operation, and frame analysis remains
+`HELD_NOT_SUPPORTED`.
 
 Accepted topology is endpoint-exact: horizontal members within tolerance are
 beams, vertical members within tolerance are columns, and only shared ETABS
@@ -366,13 +399,12 @@ hidden inside W2.
 
 | Gate | Owner machine | Status | Required exit evidence |
 |---|---|---|---|
-| W2A remote handoff | Windows, then Mac | In progress until the final task branch is pushed and writer ownership transfers | Exact remote branch/head, clean Windows source tree, no W2A PR assumed |
-| W2A independent review/integration | Mac | Not started | Fresh fetch, exact base/head/diff review, focused cross-platform checks, accepted/repair decision, normal PR/check/merge evidence |
+| W2A integration | Mac | Complete | PR #896 merged reviewed head `0972e1af...` as `0f5c918e...` |
+| Phase A installed signature audit | Windows | Complete locally; branch checkpoint pending push | Exact ETABS/type-library/comtypes identities, 19 operation verdicts, limitations, and W2C preflight/abort evidence |
 | Dev-only `nanoid` advisory | Mac maintenance lane | Open, non-production and separate from W2A | Reviewed lockfile-only or dependency update, frontend tests/lint/build, full npm audit and production-only audit |
-| W2B contract freeze | Mac | Not started | Actual file-observer ownership, live-bridge orchestration, COM-thread boundary, REST schemas/error mapping, Excel table/row identities, collision and reconciliation rules, row-volume limits, explicit non-goals |
-| W2B implementation | Mac | Not started | Transport/review surfaces, focused Python/FastAPI/React/Excel tests, deterministic direct-API/Excel projection proof, one immutable candidate |
-| W2C evidence plan | Mac plus Windows evidence owner | Not started | Exact candidate, copied-model allowlist/hash, workbook/output identities, result selections, lock/units/state checks, abort conditions, safe external evidence locations |
-| W2C installed acceptance | Windows | Not started | Direct API and Excel reconciliation, every retained row, pre/post model hash-size-time-lock-units proof, no analysis/save/mutation, tracked safe receipt |
+| W2B contract and implementation | Windows campaign, then Mac review | Authorized; not started at Phase A checkpoint | Actual observer/orchestration/COM-thread boundary, REST/Excel schemas, error and row limits, deterministic reconciliation, focused checks, quick gate, clean pushed checkpoint |
+| W2C evidence plan | Windows campaign | Static plan complete; live identities pending Phase B | Exact approved candidate, copied-model/workbook/output identities, result selections, lock/units/state checks, safe external evidence location |
+| W2C installed acceptance | Windows campaign | Authorized only after frozen/pushed Phase B and all preflight gates; not started | Direct/REST/Excel reconciliation, exhaustive rows, pre/post model hash-size-time-lock-units proof, no analysis/save/mutation, tracked safe receipt |
 | W2 close decision | Mac | Not started | Review W2A-W2C evidence, document accepted limitations, decide whether W3 may begin; no automatic progression |
 
 W2B design must explicitly resolve these currently held adapter boundaries:
@@ -444,22 +476,22 @@ structural-engineer review before engineering or construction use.
 
 ## Next efficient sequence
 
-1. Windows verifies and pushes only
-   `codex/etabs-excel-beam-w2a-baseline`, records the remote head, and stops
-   writing it. Protected `main` and all proprietary evidence remain untouched.
-2. Mac fetches GitHub, verifies the exact remote branch/base/head, creates a
-   clean review worktree, reads this plan and both W2A session/receipt records,
-   and reviews the complete diff from `origin/main`.
-3. Mac reruns the W2A focused tests plus proportionate runtime/governance and
-   quick checks. It accepts W2A or creates one bounded review repair; it does
-   not open ETABS or treat fake COM as W2C evidence.
-4. Mac owns the normal PR/check/integration sequence for the unchanged reviewed
-   head. Windows does not write the branch during review.
-5. After W2A acceptance, Mac freezes W2B as a separate packet using the
-   remaining-boundary list above. The npm dev-only advisory stays a separate
-   maintenance change rather than being silently mixed into W2B.
-6. W2C remains unscheduled until W2B has a separately accepted immutable
-   candidate and the Mac has approved the exact Windows evidence plan.
+1. Windows pushes the clean Phase A static-audit checkpoint and creates
+   `codex/etabs-excel-beam-w2-campaign` from that exact remote head.
+2. Windows freezes and implements only the documented W2B observer,
+   orchestration, REST, Excel review/reconciliation, error, collision, and row-
+   volume boundaries; it runs focused/architecture/docs checks and one quick
+   gate, then commits and pushes the clean Phase B checkpoint.
+3. Windows revalidates every static preflight identity against that exact Phase
+   B head. Only then may it launch/use installed ETABS/Excel for the approved
+   copied-model read-only W2C journey.
+4. W2C must prove direct/transport/Excel equality, exhaustive topology/result
+   accounting, unchanged file/hash/time/lock/units, and every abort boundary.
+   Full payloads stay external; only safe hashes and summaries enter Git.
+5. Windows freezes final evidence and documentation, runs proportionate final
+   gates, commits/pushes the campaign branch, and stops writing it.
+6. Mac performs one cumulative branch review and normal PR/check/integration.
+   The npm advisory and W3+ remain separate.
 
 ## Stop conditions
 
@@ -471,20 +503,16 @@ changes, or W2 would need setters beyond temporary unit selection.
 ## New-chat starter
 
 ```text
-On the Mac primary development machine, fetch GitHub and review W2A from
-`origin/codex/etabs-excel-beam-w2a-baseline`; do not copy files from Windows.
-Verify the remote branch head and base against fetched `origin/main`, create a
-clean review worktree, and read
-docs/planning/excel-etabs-beam-next-phase-plan.md,
-docs/planning/next-session-brief.md, the W1 receipt, the W2A handoff receipts,
-and the pilot guide. Windows is now the installed Excel/ETABS evidence machine;
-Mac owns normal source review, PR/check follow-up, and integration. Review the
-transport-neutral schemas, pre/post model-file observer contract,
-getter/return-code matrix, exhaustive topology/result dispositions,
-deterministic hashes, tuple/list fake-COM shapes, setup portability repairs,
-and success/failure unit restoration. Rerun proportionate focused and quick
-checks on Mac. Keep `HELD_NOT_SUPPORTED`: the repository has no accepted frame
-solver. Do not open/mutate ETABS, begin W2B, schedule W2C, mix the dev-only npm
-advisory repair into W2A, optimize/write sections, or claim engineering
-approval. Accept W2A or make only one bounded Mac review repair.
+On the Windows evidence machine, verify the pushed Phase A audit branch and
+create `codex/etabs-excel-beam-w2-campaign` from its exact remote head. Read the
+static audit receipt, this plan, the next-session brief, pilot guide, W2A source,
+and Git workflow. Implement only W2B's read-only observer/orchestration,
+REST/Excel contracts, reconciliation, collision/error/row limits, and focused
+fake-COM coverage; preserve `HELD_NOT_SUPPORTED` and all W1/W2A behavior. Freeze,
+validate, commit, and push Phase B. Begin installed W2C only after every static
+preflight identity passes against that exact checkpoint and only against the
+approved copied model/case/combination. Prove exhaustive row reconciliation and
+unchanged model hash/time/lock/units without analysis, design, save, mutation,
+optimization, or write-back. Push the final clean campaign branch without a PR,
+then stop for one cumulative Mac review.
 ```

@@ -3,7 +3,7 @@
 **Type:** Guide
 **Audience:** Developers
 **Status:** Complete
-**Next Phase:** W2A Mac Review; W2B/W2C Not Started
+**Next Phase:** W2A Merged; Static W2C Audit Complete; W2B/W2C Campaign Authorized
 **Created:** 2026-08-28
 **Last Updated:** 2026-08-29
 **Importance:** High
@@ -205,6 +205,41 @@ factored-combination labels. CSI's API documentation identifies
 [frame inventory](https://docs.csiamerica.com/help-files/etabs-api-2016/html/9346cf4e-be74-b7be-d1eb-afe69d0f609c.htm), and
 [frame forces](https://docs.csiamerica.com/help-files/etabs-api-2016/html/87689f3e-4175-1627-618b-c4ebae5e89b5.htm).
 
+### ETABS 23.3.1 static W2 signature proof
+
+The Windows Phase A audit binds the merged W2A matrix to the exact installed
+x64 type library without creating a COM object or calling a live model. The
+tracked evidence is
+[`etabs-excel-beam-w2c-com-signature-audit-evidence.json`](../verification/etabs-excel-beam-w2c-com-signature-audit-evidence.json).
+Its authority is ETABS `23.3.1.4563`, `ETABSv1.tlb` LIBID
+`{542F7A9D-3A7D-4061-97B3-3A1276FF83BD}` version `1.0`, SHA-256
+`3823416b...24ef0e`, 64-bit Python `3.11.15`, and `comtypes 1.4.16`.
+
+All 18 W2A getters and the sole `SetPresentUnits` call are statically
+`PROVED` for exact exposed method, interface, parameter order/direction,
+optional/default inputs, output order/count, CSI return-code position, and the
+installed Python shape. Multi-output ETABS methods use `[in,out]` parameters;
+the inspected `comtypes` implementation therefore returns an outer list and,
+by default, one-dimensional SAFEARRAY values as tuples. A lone `[out,retval]`
+is returned as a direct scalar. W2A deliberately accepts both tuple/list
+containers, validates every trailing CSI return code and inner array length,
+and is compatible with the installed provider.
+
+Two exact-call details should remain visible during W2B/W2C:
+
+- `LoadCases.GetNameList` also exposes optional `CaseType=0` after its two
+  `[in,out]` parameters. Omitting arguments, as W2A does, requests the complete
+  inventory.
+- `Results.FrameForce` has a required `ItemTypeElm` input. W2A explicitly
+  supplies enum 0 (`ObjectElm`); zero is not a typelib default.
+
+Static metadata cannot prove model values, live return-code values, result
+freshness, lock/unit restoration, topology, dispositions, force rows, or
+canonical extraction hashes. The evidence therefore includes exact W2C proof
+points and abort criteria for each of those claims. ETABS design-summary reads
+remain blocked because no design getter is frozen, and independent frame
+analysis remains `HELD_NOT_SUPPORTED`.
+
 ## Fail-closed boundaries
 
 The current pilot blocks when:
@@ -226,6 +261,16 @@ sizes, perform a second frame analysis, optimize sections, check slabs/columns/
 joints/foundations, evaluate serviceability, coordinate bars across adjacent
 beams, check congestion/layers/site sequence, or claim professional approval.
 All returned designs require qualified structural-engineer review.
+
+For the later W2C read-only baseline acceptance, abort even earlier when the
+approved source head/tree, x64 typelib hash, ETABS/comtypes versions, copied
+model allowlist/hash/time/lock, result selection/status, or unit-restoration
+capability differs from its preflight. During the approved run, abort on any
+method/shape/count/return-code drift, incomplete connected topology, empty
+requested beam/result selection, changed post-read file identity, unlocked
+state, un-restored units, or need for a setter beyond `SetPresentUnits`.
+Detailed result/model/workbook payloads remain external; Git receives only
+safe hashes, counts, verdicts, and limitations.
 
 ## Installed Windows evidence and next gate
 
@@ -251,7 +296,8 @@ and explicit write-back controls.
 
 The accepted next sequence is recorded in the
 [Excel + ETABS beam next-phase plan](../planning/excel-etabs-beam-next-phase-plan.md).
-W2 first establishes a complete read-only beam baseline, result provenance, and
-topology contract. Design/detailing expansion, construction-practice checks,
-offline optimization, and copied-model write-back/reanalysis remain separate
-later gates.
+W2A is merged and the static installed signature audit is complete. The
+Windows campaign next freezes W2B's read-only observer/REST/Excel surface, then
+runs W2C only after all preflight gates pass against that exact checkpoint.
+Design/detailing expansion, construction-practice checks, offline optimization,
+and copied-model write-back/reanalysis remain separate later gates.

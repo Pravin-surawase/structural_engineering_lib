@@ -1,0 +1,467 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-EXCEL-BEAM-W2C-COM-SIGNATURE-AUDIT",
+  "verdict": "STATIC_SIGNATURE_AUDIT_COMPLETE",
+  "observed_at_utc": "2026-08-29T07:46:30Z",
+  "scope": {
+    "static_installed_metadata_only": true,
+    "etabs_process_launched": false,
+    "excel_process_launched": false,
+    "com_object_created_or_attached": false,
+    "live_sapmodel_getter_called": false,
+    "model_or_workbook_opened_by_audit": false,
+    "analysis_or_design_run": false,
+    "model_mutation_or_writeback": false,
+    "w2b_or_w2c_execution_started": false,
+    "professional_approval": false
+  },
+  "source": {
+    "starting_merge_commit": "0f5c918eb87b658448737fd6bf023ccb4bd07c74",
+    "starting_tree": "9a2f4cc975c77507c22314c4df6d21dfbae02aab",
+    "merged_pr": 896,
+    "reviewed_w2a_candidate": "0972e1afa6c5623ced4d10cdd36506d9fbc815ec",
+    "branch": "codex/etabs-w2c-com-signature-audit",
+    "w2a_adapter_path": "Python/structural_lib/services/etabs_beam_baseline.py",
+    "w2a_adapter_sha256": "c94de6c42c4783a9bfd7f51a3ef3329456dc7c0a8da55ceb5d0dbb23a9c7e2d4",
+    "w2a_getter_count": 18,
+    "w2a_getter_matrix_sha256": "f6874c7aa119816548b9a64f242dfdb7df94fbeea8c7fa520dea3ef0f74fb7d8",
+    "w2a_unit_setter_count": 1
+  },
+  "host": {
+    "computer": "LAPTOP-360-PRAV",
+    "computer_name_sha256": "a3aaacf351ad33f6af882eebdf07edeab7d914abff8d07b25793a7f08d81434a",
+    "os": "Microsoft Windows 11 Home Single Language 10.0.26200 build 26200 64-bit",
+    "powershell": "7.6.4",
+    "python": "3.11.15 MSC v.1944 64-bit AMD64",
+    "comtypes": "1.4.16",
+    "process_boundary": {
+      "etabs_was_already_running_before_static_inspection": true,
+      "preexisting_process_start_utc": "2026-08-29T05:13:33.8541082Z",
+      "preexisting_process_path": "C:/Program Files/Computers and Structures/ETABS 23/ETABS.exe",
+      "same_process_observed_after_typelib_generation": true,
+      "excel_was_not_running": true,
+      "statement": "The audit did not launch, attach to, automate, or call the pre-existing ETABS process. Process observation, registry reads, file hashing, reflection, and type-library wrapper generation were read-only with respect to ETABS and every model."
+    }
+  },
+  "installed_source": {
+    "uninstall_registry": {
+      "display_name": "ETABS 23",
+      "display_version": "23.3.1",
+      "publisher": "Computers and Structures, Inc.",
+      "install_location": "C:/Program Files/Computers and Structures/ETABS 23/"
+    },
+    "application": {
+      "path": "C:/Program Files/Computers and Structures/ETABS 23/ETABS.exe",
+      "file_version": "23.3.1.4563",
+      "byte_count": 269168,
+      "sha256": "16a790087dd3961b45e57e35c32179e90db31d2dab6c6039f6efb91d53e84456",
+      "authenticode_status": "Valid",
+      "signer": "Computers and Structures, Inc."
+    },
+    "x64_type_library": {
+      "path": "C:/Program Files/Computers and Structures/ETABS 23/NativeAPI/x64/ETABSv1.tlb",
+      "byte_count": 316292,
+      "sha256": "3823416b05d80d148b63a2f490cd2acea2797d0fc64157c5cc8882c8fc24ef0e",
+      "library_name": "ETABS Application Programming Interface (API) v1",
+      "libid": "{542F7A9D-3A7D-4061-97B3-3A1276FF83BD}",
+      "version": "1.0",
+      "lcid": 0,
+      "registered_win64_path_matches": true
+    },
+    "managed_signature_assembly": {
+      "path": "C:/Program Files/Computers and Structures/ETABS 23/ETABSv1.dll",
+      "assembly_identity": "ETABSv1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=453d728ef24c6f5e",
+      "file_version": "2.16.0.0",
+      "byte_count": 354152,
+      "sha256": "393492bd1649ee705c97449cf7d485c61b73ec649ed1d01f47f54f957b277e54",
+      "authenticode_status": "Valid",
+      "signer": "Computers and Structures, Inc."
+    },
+    "generated_comtypes_wrapper": {
+      "generation_source": "exact x64 ETABSv1.tlb path",
+      "raw_module": "comtypes.gen._542F7A9D_3A7D_4061_97B3_3A1276FF83BD_0_1_0",
+      "raw_module_sha256": "18e302a44f357e236672aebd1e4697bfed42627a3680ffe2c070b43fbc62084c",
+      "friendly_module": "comtypes.gen.ETABSv1",
+      "friendly_module_sha256": "40c66ee6dea247eb8816413bfe2e76eea4d4468026748d64a0425125cf2d52f1",
+      "generated_vendor_code_committed": false
+    },
+    "comtypes_shape_runtime": {
+      "implementation_file": "comtypes/_memberspec.py",
+      "implementation_sha256": "bc85a42d1daf6d84b2697c7ab0f56f70689db4e97122e06bee40af15e583ada2",
+      "default_outer_multi_output_container": "list when one or more [in,out] parameters and more than one output are present",
+      "default_one_dimensional_safearray_container": "tuple",
+      "single_retval_container": "direct scalar",
+      "shape_limit": "The generated shape is proved for the inspected comtypes 1.4.16 implementation and metadata. Actual live values, return codes, array lengths, and any provider/context drift still require installed-session observation."
+    }
+  },
+  "metadata_conventions": {
+    "com_method_return": "Every inspected generated COM method returns HRESULT at the transport layer. comtypes raises transport failures rather than exposing HRESULT as a normal Python result.",
+    "parameter_flags": {
+      "1": "FIN ([in])",
+      "3": "FIN|FOUT ([in,out])",
+      "10": "FOUT|FRETVAL ([out,retval])",
+      "17": "FIN|FOPT ([in,optional])"
+    },
+    "native_return_code": "Where pRetVal is LONG, it is the CSI API return code. With other [in,out] outputs, comtypes 1.4.16 returns it as the final list item; with SetPresentUnits it is the direct scalar result.",
+    "enums": {
+      "ETABSv1.eUnits.eUnits_kN_mm_C": 5,
+      "ETABSv1.eItemTypeElm.eItemTypeElm_ObjectElm": 0
+    }
+  },
+  "operations": [
+    {
+      "operation": "SapModel.GetModelFilename",
+      "kind": "GETTER",
+      "interface": "ETABSv1.cSapModel {F0DB2843-BBD6-4482-B859-00FBE390077F}",
+      "dispid": 19,
+      "parameter_order": ["IncludePath: VARIANT_BOOL [in,optional] default True", "pRetVal: BSTR [out,retval]"],
+      "input_semantics": "W2A explicitly supplies True, requesting the full saved model path.",
+      "output_order": ["model filename/path"],
+      "python_shape": "direct str scalar; no CSI integer return code is exposed",
+      "w2a_assumption": "GetModelFilename(IncludePath=True) -> str; DIRECT_VALUE",
+      "comparison": "MATCH",
+      "verdict": "PROVED",
+      "live_only_proof": "Exact nonblank absolute .edb path and equality to the authorized copied-model path."
+    },
+    {
+      "operation": "SapModel.GetVersion",
+      "kind": "GETTER",
+      "interface": "ETABSv1.cSapModel {F0DB2843-BBD6-4482-B859-00FBE390077F}",
+      "dispid": 26,
+      "parameter_order": ["Version: BSTR [in,out]", "MyVersionNumber: DOUBLE [in,out]", "pRetVal: LONG [out,retval]"],
+      "input_semantics": "No caller inputs; comtypes allocates omitted [in,out] containers.",
+      "output_order": ["Version", "MyVersionNumber", "CSI return code"],
+      "python_shape": "list[str, float, int]",
+      "w2a_assumption": "GetVersion() -> (Version, VersionNumber, ret); two outputs plus trailing zero",
+      "comparison": "MATCH; W2A uses a normalized output label for MyVersionNumber",
+      "verdict": "PROVED",
+      "live_only_proof": "Observed version text/number and zero CSI return code."
+    },
+    {
+      "operation": "SapModel.GetModelIsLocked",
+      "kind": "GETTER",
+      "interface": "ETABSv1.cSapModel {F0DB2843-BBD6-4482-B859-00FBE390077F}",
+      "dispid": 21,
+      "parameter_order": ["pRetVal: VARIANT_BOOL [out,retval]"],
+      "input_semantics": "No inputs.",
+      "output_order": ["model locked flag"],
+      "python_shape": "direct bool scalar; no CSI integer return code is exposed",
+      "w2a_assumption": "GetModelIsLocked() -> bool; DIRECT_VALUE",
+      "comparison": "MATCH",
+      "verdict": "PROVED",
+      "live_only_proof": "True before and after W2C; W2A retains but does not itself enforce the required locked state."
+    },
+    {
+      "operation": "SapModel.GetPresentUnits",
+      "kind": "GETTER",
+      "interface": "ETABSv1.cSapModel {F0DB2843-BBD6-4482-B859-00FBE390077F}",
+      "dispid": 23,
+      "parameter_order": ["pRetVal: eUnits/LONG [out,retval]"],
+      "input_semantics": "No inputs.",
+      "output_order": ["present unit enum"],
+      "python_shape": "direct int-compatible scalar; no separate CSI integer return code",
+      "w2a_assumption": "GetPresentUnits() -> positive eUnits integer; DIRECT_VALUE",
+      "comparison": "MATCH; enum value 5 is statically proved as kN_mm_C",
+      "verdict": "PROVED",
+      "live_only_proof": "Original enum, normalized enum during extraction, and exact restored enum after every completed/aborted attempt."
+    },
+    {
+      "operation": "SapModel.SetPresentUnits",
+      "kind": "SOLE_PERMITTED_SETTER",
+      "interface": "ETABSv1.cSapModel {F0DB2843-BBD6-4482-B859-00FBE390077F}",
+      "dispid": 50,
+      "parameter_order": ["Units: eUnits/LONG [in]", "pRetVal: LONG [out,retval]"],
+      "input_semantics": "W2A supplies 5 (eUnits_kN_mm_C), then supplies the exact original enum in its restoration path.",
+      "output_order": ["CSI return code"],
+      "python_shape": "direct int scalar",
+      "w2a_assumption": "SetPresentUnits(enum) -> zero CSI return code; only allowed setter; restore on success/failure",
+      "comparison": "MATCH",
+      "verdict": "PROVED",
+      "live_only_proof": "Both setter calls return zero and a final GetPresentUnits equals the original enum; abort immediately if restoration cannot be proved."
+    },
+    {
+      "operation": "Story.GetStories",
+      "kind": "GETTER",
+      "interface": "ETABSv1.cStory {5FAFC96F-2286-4C5C-A576-B40AA0727125}",
+      "dispid": 8,
+      "parameter_order": ["NumberStories: LONG [in,out]", "StoryNames: SAFEARRAY(BSTR) [in,out]", "StoryElevations: SAFEARRAY(DOUBLE) [in,out]", "StoryHeights: SAFEARRAY(DOUBLE) [in,out]", "IsMasterStory: SAFEARRAY(VARIANT_BOOL) [in,out]", "SimilarToStory: SAFEARRAY(BSTR) [in,out]", "SpliceAbove: SAFEARRAY(VARIANT_BOOL) [in,out]", "SpliceHeight: SAFEARRAY(DOUBLE) [in,out]", "pRetVal: LONG [out,retval]"],
+      "input_semantics": "No caller inputs; comtypes allocates omitted [in,out] containers.",
+      "output_order": ["NumberStories", "StoryNames", "StoryElevations", "StoryHeights", "IsMasterStory", "SimilarToStory", "SpliceAbove", "SpliceHeight", "CSI return code"],
+      "python_shape": "outer list length 9; each one-dimensional SAFEARRAY defaults to tuple",
+      "w2a_assumption": "Eight decoded outputs plus trailing zero; all seven arrays exactly match NumberStories",
+      "comparison": "MATCH",
+      "verdict": "PROVED",
+      "live_only_proof": "Nonempty unique story rows, exact array lengths/types, finite values, boolean flags, and zero CSI return code."
+    },
+    {
+      "operation": "FrameObj.GetNameList",
+      "kind": "GETTER",
+      "interface": "ETABSv1.cFrameObj {F87E3A66-8381-4202-897F-46683A8477D4}",
+      "dispid": 34,
+      "parameter_order": ["NumberNames: LONG [in,out]", "MyName: SAFEARRAY(BSTR) [in,out]", "pRetVal: LONG [out,retval]"],
+      "input_semantics": "No caller inputs; comtypes allocates omitted [in,out] containers.",
+      "output_order": ["NumberNames", "MyName", "CSI return code"],
+      "python_shape": "outer list length 3; MyName defaults to tuple",
+      "w2a_assumption": "Two decoded outputs plus trailing zero",
+      "comparison": "MATCH",
+      "verdict": "PROVED",
+      "live_only_proof": "Nonempty unique frame names, exact array length, and zero CSI return code."
+    },
+    {
+      "operation": "FrameObj.GetLabelFromName",
+      "kind": "GETTER",
+      "interface": "ETABSv1.cFrameObj {F87E3A66-8381-4202-897F-46683A8477D4}",
+      "dispid": 96,
+      "parameter_order": ["Name: BSTR [in]", "Label: BSTR [in,out]", "Story: BSTR [in,out]", "pRetVal: LONG [out,retval]"],
+      "input_semantics": "W2A supplies the unique frame name.",
+      "output_order": ["Label", "Story", "CSI return code"],
+      "python_shape": "list[str, str, int]",
+      "w2a_assumption": "Two decoded outputs plus trailing zero",
+      "comparison": "MATCH",
+      "verdict": "PROVED",
+      "live_only_proof": "Nonblank label/story, story membership in GetStories, and zero CSI return code."
+    },
+    {
+      "operation": "FrameObj.GetPoints",
+      "kind": "GETTER",
+      "interface": "ETABSv1.cFrameObj {F87E3A66-8381-4202-897F-46683A8477D4}",
+      "dispid": 36,
+      "parameter_order": ["Name: BSTR [in]", "Point1: BSTR [in,out]", "Point2: BSTR [in,out]", "pRetVal: LONG [out,retval]"],
+      "input_semantics": "W2A supplies the unique frame name.",
+      "output_order": ["Point1", "Point2", "CSI return code"],
+      "python_shape": "list[str, str, int]",
+      "w2a_assumption": "Two decoded outputs plus trailing zero",
+      "comparison": "MATCH",
+      "verdict": "PROVED",
+      "live_only_proof": "Two distinct nonblank point names and zero CSI return code."
+    },
+    {
+      "operation": "FrameObj.GetSection",
+      "kind": "GETTER",
+      "interface": "ETABSv1.cFrameObj {F87E3A66-8381-4202-897F-46683A8477D4}",
+      "dispid": 38,
+      "parameter_order": ["Name: BSTR [in]", "PropName: BSTR [in,out]", "SAuto: BSTR [in,out]", "pRetVal: LONG [out,retval]"],
+      "input_semantics": "W2A supplies the unique frame name.",
+      "output_order": ["PropName", "SAuto", "CSI return code"],
+      "python_shape": "list[str, str, int]",
+      "w2a_assumption": "Two decoded outputs plus trailing zero",
+      "comparison": "MATCH",
+      "verdict": "PROVED",
+      "live_only_proof": "Nonblank section name, retained auto-select label, and zero CSI return code."
+    },
+    {
+      "operation": "FrameObj.GetLocalAxes",
+      "kind": "GETTER",
+      "interface": "ETABSv1.cFrameObj {F87E3A66-8381-4202-897F-46683A8477D4}",
+      "dispid": 28,
+      "parameter_order": ["Name: BSTR [in]", "Ang: DOUBLE [in,out]", "Advanced: VARIANT_BOOL [in,out]", "pRetVal: LONG [out,retval]"],
+      "input_semantics": "W2A supplies the unique frame name.",
+      "output_order": ["Ang", "Advanced", "CSI return code"],
+      "python_shape": "list[float, bool, int]",
+      "w2a_assumption": "Two decoded outputs plus trailing zero",
+      "comparison": "MATCH; W2A normalizes Ang to rotation terminology",
+      "verdict": "PROVED",
+      "live_only_proof": "Finite angle, boolean advanced flag, and zero CSI return code; advanced axes are explicitly excluded."
+    },
+    {
+      "operation": "PointObj.GetCoordCartesian",
+      "kind": "GETTER",
+      "interface": "ETABSv1.cPointObj {6674645D-E89A-459F-A446-8DB204577C60}",
+      "dispid": 22,
+      "parameter_order": ["Name: BSTR [in]", "X: DOUBLE [in,out]", "Y: DOUBLE [in,out]", "Z: DOUBLE [in,out]", "CSys: BSTR [in,optional] default Global", "pRetVal: LONG [out,retval]"],
+      "input_semantics": "W2A supplies Name only and relies on the proved Global default.",
+      "output_order": ["X", "Y", "Z", "CSI return code"],
+      "python_shape": "list[float, float, float, int]",
+      "w2a_assumption": "Three decoded outputs plus trailing zero with CSys='Global'",
+      "comparison": "MATCH",
+      "verdict": "PROVED",
+      "live_only_proof": "Finite coordinates in normalized units and zero CSI return code."
+    },
+    {
+      "operation": "PropFrame.GetRectangle",
+      "kind": "GETTER",
+      "interface": "ETABSv1.cPropFrame {88AAFE1E-4F8C-43EE-B0BD-3CD28E64D7F8}",
+      "dispid": 21,
+      "parameter_order": ["Name: BSTR [in]", "FileName: BSTR [in,out]", "MatProp: BSTR [in,out]", "T3: DOUBLE [in,out]", "T2: DOUBLE [in,out]", "Color: LONG [in,out]", "notes: BSTR [in,out]", "GUID: BSTR [in,out]", "pRetVal: LONG [out,retval]"],
+      "input_semantics": "W2A supplies the nonblank section property name.",
+      "output_order": ["FileName", "MatProp", "T3", "T2", "Color", "notes", "GUID", "CSI return code"],
+      "python_shape": "list[str, str, float, float, int, str, str, int]",
+      "w2a_assumption": "Seven decoded outputs plus trailing zero",
+      "comparison": "MATCH; metadata spells notes lower-case, which has no positional effect",
+      "verdict": "PROVED",
+      "live_only_proof": "Zero return for rectangular sections, nonblank material-property label, and positive finite T3/T2; nonzero return is explicitly excluded as unavailable/non-rectangular."
+    },
+    {
+      "operation": "LoadCases.GetNameList",
+      "kind": "GETTER",
+      "interface": "ETABSv1.cLoadCases {2C074D0A-041A-4A19-A068-0F947DE89054}",
+      "dispid": 7,
+      "parameter_order": ["NumberNames: LONG [in,out]", "MyName: SAFEARRAY(BSTR) [in,out]", "CaseType: eLoadCaseType/LONG [in,optional] default 0", "pRetVal: LONG [out,retval]"],
+      "input_semantics": "W2A supplies no arguments; default CaseType 0 requests the unfiltered inventory.",
+      "output_order": ["NumberNames", "MyName", "CSI return code"],
+      "python_shape": "outer list length 3; MyName defaults to tuple; optional CaseType is not returned",
+      "w2a_assumption": "GetNameList() -> two decoded outputs plus trailing zero",
+      "comparison": "BEHAVIOR_MATCH_WITH_SIGNATURE_TEXT_PRECISION_NOTE: the frozen text omits the optional CaseType=0 metadata parameter",
+      "verdict": "PROVED",
+      "live_only_proof": "Exact case inventory, unique/count-matched names, and zero CSI return code."
+    },
+    {
+      "operation": "RespCombo.GetNameList",
+      "kind": "GETTER",
+      "interface": "ETABSv1.cCombo {A7358245-1148-4351-BBEA-B8C46781D7DD}",
+      "dispid": 10,
+      "parameter_order": ["NumberNames: LONG [in,out]", "MyName: SAFEARRAY(BSTR) [in,out]", "pRetVal: LONG [out,retval]"],
+      "input_semantics": "No caller inputs; comtypes allocates omitted [in,out] containers.",
+      "output_order": ["NumberNames", "MyName", "CSI return code"],
+      "python_shape": "outer list length 3; MyName defaults to tuple",
+      "w2a_assumption": "Two decoded outputs plus trailing zero",
+      "comparison": "MATCH; SapModel property name RespCombo maps to interface cCombo",
+      "verdict": "PROVED",
+      "live_only_proof": "Exact combination inventory, unique/count-matched names, and zero CSI return code."
+    },
+    {
+      "operation": "Analyze.GetCaseStatus",
+      "kind": "GETTER",
+      "interface": "ETABSv1.cAnalyze {90E7C3E4-5D56-40A2-BA97-3979CFF08ADC}",
+      "dispid": 4,
+      "parameter_order": ["NumberItems: LONG [in,out]", "CaseName: SAFEARRAY(BSTR) [in,out]", "Status: SAFEARRAY(LONG) [in,out]", "pRetVal: LONG [out,retval]"],
+      "input_semantics": "No caller inputs; comtypes allocates omitted [in,out] containers.",
+      "output_order": ["NumberItems", "CaseName", "Status", "CSI return code"],
+      "python_shape": "outer list length 4; both SAFEARRAY values default to tuple",
+      "w2a_assumption": "Three decoded outputs plus trailing zero",
+      "comparison": "MATCH",
+      "verdict": "PROVED",
+      "live_only_proof": "Unique/count-matched cases, integer statuses, requested case status exactly 4, and zero CSI return code."
+    },
+    {
+      "operation": "Results.Setup.GetCaseSelectedForOutput",
+      "kind": "GETTER",
+      "interface": "ETABSv1.cAnalysisResultsSetup {751DB83E-CF85-4179-B172-D8EFDCE7B056}",
+      "dispid": 2,
+      "parameter_order": ["Name: BSTR [in]", "Selected: VARIANT_BOOL [in,out]", "pRetVal: LONG [out,retval]"],
+      "input_semantics": "W2A supplies the exact requested case name.",
+      "output_order": ["Selected", "CSI return code"],
+      "python_shape": "list[bool, int]",
+      "w2a_assumption": "One decoded boolean plus trailing zero; no selection setter",
+      "comparison": "MATCH",
+      "verdict": "PROVED",
+      "live_only_proof": "Selected is true and CSI return code is zero."
+    },
+    {
+      "operation": "Results.Setup.GetComboSelectedForOutput",
+      "kind": "GETTER",
+      "interface": "ETABSv1.cAnalysisResultsSetup {751DB83E-CF85-4179-B172-D8EFDCE7B056}",
+      "dispid": 3,
+      "parameter_order": ["Name: BSTR [in]", "Selected: VARIANT_BOOL [in,out]", "pRetVal: LONG [out,retval]"],
+      "input_semantics": "W2A supplies the exact requested combination name.",
+      "output_order": ["Selected", "CSI return code"],
+      "python_shape": "list[bool, int]",
+      "w2a_assumption": "One decoded boolean plus trailing zero; no selection setter",
+      "comparison": "MATCH",
+      "verdict": "PROVED",
+      "live_only_proof": "Selected is true and CSI return code is zero."
+    },
+    {
+      "operation": "Results.FrameForce",
+      "kind": "GETTER",
+      "interface": "ETABSv1.cAnalysisResults {7603BF75-2A18-421B-8660-8B4D2695C4AC}",
+      "dispid": 9,
+      "parameter_order": ["Name: BSTR [in]", "ItemTypeElm: eItemTypeElm/LONG [in]", "NumberResults: LONG [in,out]", "Obj: SAFEARRAY(BSTR) [in,out]", "ObjSta: SAFEARRAY(DOUBLE) [in,out]", "Elm: SAFEARRAY(BSTR) [in,out]", "ElmSta: SAFEARRAY(DOUBLE) [in,out]", "LoadCase: SAFEARRAY(BSTR) [in,out]", "StepType: SAFEARRAY(BSTR) [in,out]", "StepNum: SAFEARRAY(DOUBLE) [in,out]", "P: SAFEARRAY(DOUBLE) [in,out]", "V2: SAFEARRAY(DOUBLE) [in,out]", "V3: SAFEARRAY(DOUBLE) [in,out]", "T: SAFEARRAY(DOUBLE) [in,out]", "M2: SAFEARRAY(DOUBLE) [in,out]", "M3: SAFEARRAY(DOUBLE) [in,out]", "pRetVal: LONG [out,retval]"],
+      "input_semantics": "W2A explicitly supplies the frame unique name and required ItemTypeElm=0, statically proved as eItemTypeElm_ObjectElm.",
+      "output_order": ["NumberResults", "Obj", "ObjSta", "Elm", "ElmSta", "LoadCase", "StepType", "StepNum", "P", "V2", "V3", "T", "M2", "M3", "CSI return code"],
+      "python_shape": "outer list length 15; all thirteen one-dimensional SAFEARRAY values default to tuple",
+      "w2a_assumption": "Fourteen decoded outputs plus trailing zero; ItemTypeElm=0",
+      "comparison": "BEHAVIOR_MATCH_WITH_SIGNATURE_TEXT_PRECISION_NOTE: ItemTypeElm is a required input whose value 0 is explicitly supplied, not a typelib default",
+      "verdict": "PROVED",
+      "live_only_proof": "Zero CSI return code; count within 0..100000; every array exactly count-matched; exact object/result selection identity; finite stations/forces; at least one requested-selection row per accepted beam."
+    }
+  ],
+  "operation_verdict_summary": {
+    "total": 19,
+    "proved": 19,
+    "not_provable_from_static_metadata": 0,
+    "blocked": 0,
+    "silent_gaps": 0
+  },
+  "adapter_comparison": {
+    "outcome_changing_signature_mismatches": [],
+    "main_process_code_repair_required": false,
+    "precision_notes": [
+      "LoadCases.GetNameList has an installed optional CaseType parameter after the two [in,out] values; its default 0 makes the existing no-argument W2A call correct.",
+      "Results.FrameForce requires ItemTypeElm; W2A correctly supplies 0 (ObjectElm), although the frozen display string resembles a defaulted argument.",
+      "The installed comtypes provider proves list-shaped outer multi-output values and tuple-shaped one-dimensional SAFEARRAY values by default. W2A intentionally accepts tuple or list at both validated boundaries, so it is a compatible superset."
+    ],
+    "interface_navigation": {
+      "SapModel.Story": "read-only cStory property",
+      "SapModel.FrameObj": "read-only cFrameObj property",
+      "SapModel.PointObj": "read-only cPointObj property",
+      "SapModel.PropFrame": "read-only cPropFrame property",
+      "SapModel.LoadCases": "read-only cLoadCases property",
+      "SapModel.RespCombo": "read-only cCombo property",
+      "SapModel.Analyze": "read-only cAnalyze property",
+      "SapModel.Results": "read-only cAnalysisResults property",
+      "SapModel.Results.Setup": "read-only cAnalysisResultsSetup property"
+    }
+  },
+  "non_operation_claims": [
+    {
+      "claim": "W2A control flow restores the original unit enum after successful reads, extraction failures inside the normalized context, and a failed normalization attempt followed by a successful restoration attempt.",
+      "verdict": "PROVED",
+      "evidence": "Static W2A source plus focused fake-COM success/failure tests; actual installed setter return values and final enum remain live-only."
+    },
+    {
+      "claim": "Exact model path/hash/size/timestamps, lock state, stories, frames, sections, topology, selections, statuses, force stations, dispositions, and deterministic baseline hashes for the copied model.",
+      "verdict": "NOT_PROVABLE_FROM_STATIC_METADATA",
+      "evidence": "Type metadata proves signatures and types, not model contents or runtime return values."
+    },
+    {
+      "claim": "Runtime/source provenance and canonical hashes.",
+      "verdict": "NOT_PROVABLE_FROM_STATIC_METADATA",
+      "evidence": "The repository proves schema/hash algorithms and this audit binds source bytes; an installed extraction must populate and reconcile actual values."
+    },
+    {
+      "claim": "Accepted/excluded/blocked topology and result dispositions with stable reason codes.",
+      "verdict": "NOT_PROVABLE_FROM_STATIC_METADATA",
+      "evidence": "The W2A source freezes the exhaustive decision rules, but only installed model rows can exercise them."
+    },
+    {
+      "claim": "ETABS design summary.",
+      "verdict": "BLOCKED",
+      "evidence": "No design-summary getter is frozen or called by W2A, W2A does not run/read ETABS design, and this audit did not add an operation outside the approved matrix."
+    },
+    {
+      "claim": "Independent frame-analysis parity.",
+      "verdict": "PROVED",
+      "evidence": "The merged W2A contract retains frame_analysis_verdict=HELD_NOT_SUPPORTED; static COM metadata adds no accepted solver or parity evidence."
+    }
+  ],
+  "w2c_installed_session_preflight": [
+    "The user-authorized Windows campaign must first freeze, validate, commit, and push W2B. Phase C then requires the exact W2B head, this evidence plan, copied-model allowlist, result selections, workbook/output identities, and every remaining preflight condition. The static audit alone is not execution evidence.",
+    "Fetch GitHub and create a dedicated clean Windows evidence worktree from the exact approved candidate/merge. Prove branch/head/tree, source_bound=true, no Git operation, and no unrelated worktree overlap; protected Windows main remains HOLD_MAIN.",
+    "Require 64-bit Python 3.11, comtypes 1.4.16, ETABS 23.3.1.4563, the x64 ETABSv1 typelib LIBID/version above, and the exact typelib SHA-256 above. Any drift requires a new static audit before COM execution.",
+    "Use only the authorized copied absolute .edb path. Record a read-only pre-observation of path/name/SHA-256/bytes/modified UTC/observed UTC; require the model to be saved, locked, and byte-identical to the approved allowlist.",
+    "Launch ETABS/Excel only in the separately authorized installed session, at matching privilege. Abort on licensing, abnormal-condition, recovery, save, analysis, or other unexpected dialogs.",
+    "Confirm every requested case/combination is exact, already analyzed where applicable, already selected for output, and requires no selection setter. Record the explicit inventory before extraction.",
+    "Record GetPresentUnits before extraction, prove temporary enum 5 while reading, and require exact restoration by a final getter. Keep a manual unit-verification step available if an exception occurs before evidence is serialized.",
+    "Capture operation name, outer/inner Python container types, decoded output count/order, array counts, and CSI return code for every frozen call without recording proprietary model contents in Git.",
+    "Run the W2A extraction and later W2B direct/REST/Excel paths only as approved; reconcile canonical JSON hashes, stable IDs, dispositions, row counts, and every retained station. Keep full payloads/workbooks in the approved external evidence root and track only safe hashes/summaries.",
+    "Immediately after all reads, observe the model file again and prove identical path/hash/bytes/modified time with nondecreasing observation time; prove lock and original units are unchanged."
+  ],
+  "w2c_abort_criteria": [
+    "Abort before COM access if the source head/tree, W2B approval, machine architecture, ETABS/comtypes version, typelib LIBID/version/path/hash, generated shape, or authorized evidence root differs from the approved preflight.",
+    "Abort if the open model is not the exact authorized copied .edb, is unsaved or unlocked, has a different hash/size/timestamp, or any application dialog requests recovery, save, analysis, design, licensing action, or abnormal-condition dismissal.",
+    "Abort on any missing method/property, unexpected argument binding, outer shape outside tuple/list, inner result array outside tuple/list, output-count/order mismatch, nonzero CSI return code, invalid direct scalar, or count/array mismatch.",
+    "Abort if present units are invalid, SetPresentUnits(5) returns nonzero, enum 5 cannot be proved during the run, restoration returns nonzero, or the final unit enum differs from the original. Verify model state manually before any retry.",
+    "Abort if any requested case/combination is absent, inactive for output, unfinished (case status not 4), or yields no retained FrameForce row for any accepted beam. Do not use result-selection setters.",
+    "Abort on duplicate/blank story or frame identities, a frame story outside GetStories, invalid endpoints/coordinates, incomplete connected topology, an unsupported connected frame, no accepted beam, more than 100000 force rows for one frame, member/result identity mismatch, or nonfinite result values.",
+    "Abort if the post-read model observation differs from the pre-read identity, lock state is false, original units are not restored, or reconciliation across approved direct/REST/Excel surfaces is not exact.",
+    "Abort if completion would require any setter other than temporary SetPresentUnits, or any analysis, design, unlock, save, model/workbook mutation, optimization, writeback, or disclosure of proprietary payloads."
+  ],
+  "limitations": [
+    "This is a static installed-API audit, not a live ETABS model acceptance.",
+    "No runtime data value, CSI return-code value, result freshness, model identity, row inventory, unit restoration outcome, or application behavior was inferred from metadata.",
+    "Generated vendor wrapper code and proprietary model/workbook/result bytes are not committed or reproduced.",
+    "W2B transport/Excel implementation and W2C installed execution remain unstarted and separately gated.",
+    "Frame analysis remains HELD_NOT_SUPPORTED and qualified engineering review remains required."
+  ]
+}

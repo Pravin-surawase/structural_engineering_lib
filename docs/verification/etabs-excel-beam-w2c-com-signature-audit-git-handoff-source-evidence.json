@@ -1,0 +1,79 @@
+{
+  "remote": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "reason_code": "FIRST_PUSH_PENDING_REMOTE_BRANCH_ABSENT"
+  },
+  "pull_request": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "reason_code": "USER_PROHIBITED_PHASE_A_PULL_REQUEST"
+  },
+  "review": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "reason_code": "CUMULATIVE_MAC_REVIEW_AFTER_COMPLETE_CAMPAIGN"
+  },
+  "integration": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "reason_code": "PHASE_A_CHECKPOINT_DOES_NOT_INTEGRATE"
+  },
+  "retention": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T08:04:18Z",
+    "decision": "RETAIN_PHASE_A_BRANCH_WORKTREE_AND_ALL_EXISTING_LANES",
+    "owner": "Windows W2 campaign sole writer under user delegation",
+    "holds": []
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  },
+  "authorization": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T08:04:18Z",
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "status": "OBSERVED",
+      "query_status": "OK",
+      "observed_at_utc": "2026-08-29T08:04:18Z",
+      "reference": "source-thread:01a04be8-98a7-7752-b26f-96207473a35e:complete-bounded-w2-campaign"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_CAMPAIGN_BRANCH_FROM_PUSHED_PHASE_A_HEAD",
+      "CONTINUE_W2B_ON_CAMPAIGN"
+    ],
+    "prohibited_actions": [
+      "CREATE_OR_MERGE_PULL_REQUEST",
+      "MODIFY_PROTECTED_MAIN",
+      "REWRITE_HISTORY",
+      "DELETE_BRANCH_OR_WORKTREE",
+      "MODIFY_W2A_BRANCH",
+      "CREATE_OR_ATTACH_COM_OBJECT_DURING_PHASE_A",
+      "LAUNCH_ETABS_OR_EXCEL_DURING_PHASE_A",
+      "OPEN_MODEL_OR_WORKBOOK_DURING_PHASE_A",
+      "RUN_ANALYSIS_OR_DESIGN",
+      "MUTATE_OR_SAVE_MODEL",
+      "START_OPTIMIZATION_OR_WRITEBACK",
+      "REPAIR_NANOID",
+      "START_W3",
+      "CLAIM_ENGINEERING_APPROVAL"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "target_binding": {
+      "task_id": "ETABS-EXCEL-BEAM-W2C-COM-SIGNATURE-AUDIT",
+      "branch": "codex/etabs-w2c-com-signature-audit",
+      "head_sha": "0f5c918eb87b658448737fd6bf023ccb4bd07c74",
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_CAMPAIGN_BRANCH_FROM_PUSHED_PHASE_A_HEAD",
+        "CONTINUE_W2B_ON_CAMPAIGN"
+      ]
+    }
+  }
+}

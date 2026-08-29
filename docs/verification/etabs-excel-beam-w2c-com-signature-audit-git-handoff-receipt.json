@@ -1,0 +1,170 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-29T08:04:18Z",
+      "query_status": "OK",
+      "reference": "source-thread:01a04be8-98a7-7752-b26f-96207473a35e:complete-bounded-w2-campaign",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_CAMPAIGN_BRANCH_FROM_PUSHED_PHASE_A_HEAD",
+      "CONTINUE_W2B_ON_CAMPAIGN"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-29T08:04:18Z",
+    "prohibited_actions": [
+      "CREATE_OR_MERGE_PULL_REQUEST",
+      "MODIFY_PROTECTED_MAIN",
+      "REWRITE_HISTORY",
+      "DELETE_BRANCH_OR_WORKTREE",
+      "MODIFY_W2A_BRANCH",
+      "CREATE_OR_ATTACH_COM_OBJECT_DURING_PHASE_A",
+      "LAUNCH_ETABS_OR_EXCEL_DURING_PHASE_A",
+      "OPEN_MODEL_OR_WORKBOOK_DURING_PHASE_A",
+      "RUN_ANALYSIS_OR_DESIGN",
+      "MUTATE_OR_SAVE_MODEL",
+      "START_OPTIMIZATION_OR_WRITEBACK",
+      "REPAIR_NANOID",
+      "START_W3",
+      "CLAIM_ENGINEERING_APPROVAL"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_CAMPAIGN_BRANCH_FROM_PUSHED_PHASE_A_HEAD",
+        "CONTINUE_W2B_ON_CAMPAIGN"
+      ],
+      "branch": "codex/etabs-w2c-com-signature-audit",
+      "head_sha": "0f5c918eb87b658448737fd6bf023ccb4bd07c74",
+      "task_id": "ETABS-EXCEL-BEAM-W2C-COM-SIGNATURE-AUDIT"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "PHASE_A_CHECKPOINT_DOES_NOT_INTEGRATE",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "1a5720ee52c7e075c6a995f8b466d73796012880fab53d30ce38b8f8549cd868",
+    "state": {
+      "branch": "codex/etabs-w2c-com-signature-audit",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "0f5c918eb87b658448737fd6bf023ccb4bd07c74",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 443.884,
+      "git_common_dir": "C:\\Users\\P\\Pravin2025\\Projects\\structural_lib_repo\\.git",
+      "git_dir": "C:\\Users\\P\\Pravin2025\\Projects\\structural_lib_repo\\.git\\worktrees\\structural_lib_repo-w2c-com-signature-audit",
+      "head_sha": "0f5c918eb87b658448737fd6bf023ccb4bd07c74",
+      "hold_reasons": [
+        "changed paths: 9"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-29T08:04:43.152730+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\Users\\P\\Pravin2025\\Projects\\structural_lib_repo-w2c-com-signature-audit",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 9,
+        "modified_paths": [],
+        "staged_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/WORKLOG.md",
+          "docs/guides/excel-etabs-python-bridge-pilot.md",
+          "docs/planning/excel-etabs-beam-next-phase-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/etabs-excel-beam-w2c-com-signature-audit-evidence.json",
+          "docs/verification/etabs-excel-beam-w2c-com-signature-audit-git-handoff-receipt.json",
+          "docs/verification/etabs-excel-beam-w2c-com-signature-audit-git-handoff-source-evidence.json"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "0f5c918eb87b658448737fd6bf023ccb4bd07c74",
+        "status": "equal"
+      },
+      "worktree_root": "C:\\Users\\P\\Pravin2025\\Projects\\structural_lib_repo-w2c-com-signature-audit"
+    }
+  },
+  "local_state_receipt_hash": "sha256:1a5720ee52c7e075c6a995f8b466d73796012880fab53d30ce38b8f8549cd868",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-29T08:04:43.152730+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "reason_code": "USER_PROHIBITED_PHASE_A_PULL_REQUEST",
+    "status": "NOT_APPLICABLE"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "reason_code": "FIRST_PUSH_PENDING_REMOTE_BRANCH_ABSENT",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_PHASE_A_BRANCH_WORKTREE_AND_ALL_EXISTING_LANES",
+    "holds": [],
+    "observed_at_utc": "2026-08-29T08:04:18Z",
+    "owner": "Windows W2 campaign sole writer under user delegation",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "reason_code": "CUMULATIVE_MAC_REVIEW_AFTER_COMPLETE_CAMPAIGN",
+    "status": "NOT_APPLICABLE"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/services/etabs_beam_baseline.py",
+      "fastapi_app",
+      "react_app",
+      "excel_addin"
+    ],
+    "integration_owner": "mac-main-agent",
+    "owned_paths": [
+      "docs/verification/etabs-excel-beam-w2c-com-signature-audit-evidence.json",
+      "docs/verification/etabs-excel-beam-w2c-com-signature-audit-git-handoff-source-evidence.json",
+      "docs/guides/excel-etabs-python-bridge-pilot.md",
+      "docs/planning/excel-etabs-beam-next-phase-plan.md"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/WORKLOG.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "ETABS-EXCEL-BEAM-W2C-COM-SIGNATURE-AUDIT"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
