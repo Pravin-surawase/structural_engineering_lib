@@ -16,9 +16,8 @@ sole writer; no subagents).
 from that exact checkpoint on `codex/etabs-excel-beam-w2-campaign`.
 
 **Git handoff receipt:**
-`docs/verification/etabs-excel-beam-w2c-git-handoff-receipt.json`
-(installed safe-hold evidence checkpoint; the final campaign governance receipt
-will supersede it for Mac pickup).
+`docs/verification/etabs-excel-beam-w2-campaign-git-handoff-receipt.json`
+(final cumulative Windows-to-Mac campaign pickup).
 
 **Focus:** Complete the bounded W2 campaign on the Windows evidence machine:
 first freeze the installed ETABS 23.3.1 static COM-signature audit without COM
@@ -91,6 +90,9 @@ no-save/no-mutation/no-optimization/no-writeback/professional-review boundary.
   hash-bound Windows evidence root.
 - Regenerated the maintained OpenAPI baseline omitted at the Phase B checkpoint;
   the exact W2B surface now validates at 95 endpoints and 501 schemas.
+- Passed every normal hook and committed the immutable installed safe-hold
+  evidence as `5a41aee61f57f6ccc16b8ef5ba5ee8bbd194b66b`, tree
+  `368bae66e22820799d471a61f53e5f0bf7805524`.
 
 ### Issues encountered
 
@@ -354,6 +356,9 @@ no-save/no-mutation/no-optimization/no-writeback/professional-review boundary.
   strict documentation passes 5/5, 520-file link validation passes 1,126 links,
   context and session checks pass, diff hygiene is clean, the OpenAPI snapshot
   matches, and the consolidated quick gate passes 10/10.
+- Normal evidence-commit hooks passed without bypass, including JSON, line
+  endings, quick verification, task/session/docs/API consistency, control-plane
+  registries, and link checks.
 
 ---
 

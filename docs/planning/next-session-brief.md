@@ -6,9 +6,9 @@
 - Date: 2026-08-29
 - Focus: Complete the bounded W2 campaign on the Windows evidence machine:
 - Completed: Fetched GitHub and proved PR #896 merge `0f5c918e...`, reviewed W2A head; Bound installed ETABS `23.3.1.4563` to the registered x64 `ETABSv1.tlb`; Proved all 18 W2A getters plus `SetPresentUnits` for interface/method,
-- Git receipt: docs/verification/etabs-excel-beam-w2c-git-handoff-receipt.json | sha256:fc76cb7d0cec40ed483b81cd31b45c6012f8e534f0995ff9fa2cfae94193366f | HOLD
-- Git identity: codex/etabs-excel-beam-w2-campaign@18926ef48c620213abbb931449cda9e8049eee7c | upstream=origin/codex/etabs-excel-beam-w2-campaign@18926ef48c620213abbb931449cda9e8049eee7c | base=origin/main@0f5c918eb87b658448737fd6bf023ccb4bd07c74 | tree=dirty | operation=none
-- Hosted evidence: remote=UNKNOWN | PR=NOT_APPLICABLE#UNKNOWN | review=NOT_APPLICABLE | retention=UNKNOWN
+- Git receipt: docs/verification/etabs-excel-beam-w2-campaign-git-handoff-receipt.json | sha256:d9921a6a22266db876df8dbfdec75952543d224005880954b3f675a65a198832 | HOLD
+- Git identity: codex/etabs-excel-beam-w2-campaign@5a41aee61f57f6ccc16b8ef5ba5ee8bbd194b66b | upstream=origin/codex/etabs-excel-beam-w2-campaign@18926ef48c620213abbb931449cda9e8049eee7c | base=origin/main@0f5c918eb87b658448737fd6bf023ccb4bd07c74 | tree=dirty | operation=none
+- Hosted evidence: remote=OBSERVED | PR=NOT_APPLICABLE#UNKNOWN | review=NOT_APPLICABLE | retention=OBSERVED
 - Next action: COMMIT_INTENDED_PATHS
 <!-- HANDOFF:END -->
 
@@ -17,7 +17,7 @@
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` remains the immutable current normal software release; no new release is selected or authorized. |
-| **Current** | GitHub `origin/main` remains exactly `0f5c918eb87b658448737fd6bf023ccb4bd07c74` after PR #896. Phase A is pushed at `4841ab2a...`, W2B at `395f0618...`, and the installed `GetStories` repair at `18926ef4...`. Direct/REST/installed Excel all stopped before force reads on the inactive approved combination; model/workbook bytes, lock, and units remained unchanged. |
+| **Current** | GitHub `origin/main` remains exactly `0f5c918eb87b658448737fd6bf023ccb4bd07c74` after PR #896. Phase A is `4841ab2a...`, W2B is `395f0618...`, the installed `GetStories` repair is `18926ef4...`, and the frozen safe-hold evidence is `5a41aee6...`. Direct/REST/installed Excel all stopped before force reads on the inactive approved combination; model/workbook bytes, lock, and units remained unchanged. |
 | **Machine roles** | Mac is the primary development/integration machine. Windows is the installed Excel/ETABS testing and evidence machine. GitHub is the tracked handoff authority; proprietary model/workbook/evidence bytes remain on Windows. |
 | **Next** | Mac performs one cumulative campaign review and may open the integration PR. W2C remains held—not accepted. A separately authorized installed retry requires the exact approved combination already active before Codex attaches and every identity/preflight check repeated. |
 | **Held** | ETABS analysis, unlock/save, section/load write-back, optimization, complete solver parity, expanded design/detailing/site-practice automation, release, and professional or construction-use approval. |
