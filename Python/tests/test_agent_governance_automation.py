@@ -298,6 +298,29 @@ def test_pre_commit_manual_command_uses_repository_runtime():
     assert "# Run manually: pre-commit" not in source
 
 
+def test_api_classification_hook_covers_tracked_caller_text_surfaces():
+    config = yaml.safe_load(
+        (REPO_ROOT / ".pre-commit-config.yaml").read_text(encoding="utf-8")
+    )
+    hooks = [hook for repo in config["repos"] for hook in repo["hooks"]]
+    hook = next(hook for hook in hooks if hook["id"] == "check-api-classification")
+    matcher = re.compile(hook["files"])
+
+    scanned_caller_examples = (
+        "README.md",
+        "docs/planning/new-contract.md",
+        "Python/structural_lib/new_surface.py",
+        "fastapi_app/routers/new_route.py",
+        "react_app/src/hooks/useNewSurface.ts",
+        "excel_addin/taskpane-new.mjs",
+        "scripts/control-plane.json",
+        ".github/workflows/fast-checks.yml",
+        "pyproject.toml",
+    )
+    assert all(matcher.search(path) for path in scanned_caller_examples)
+    assert not matcher.search("docs/reference/vendor/etabs/help.chm")
+
+
 def test_react_dependency_probe_is_worktree_local_and_actionable(tmp_path):
     assert preflight.missing_react_dependencies(tmp_path) == [
         "eslint",

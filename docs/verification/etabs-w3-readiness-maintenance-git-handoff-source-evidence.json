@@ -2,7 +2,7 @@
   "authorization": {
     "authority_source": {
       "kind": "USER_DELEGATION",
-      "observed_at_utc": "2026-08-29T18:14:31Z",
+      "observed_at_utc": "2026-08-29T18:21:52Z",
       "query_status": "OK",
       "reference": "active Codex task: okay let run a maintenance session and cleaning so we can start w3",
       "status": "OBSERVED"
@@ -12,11 +12,12 @@
       "PRESERVE_AND_REFRESH_ETABS_FOUNDATION_AUDITS",
       "REPAIR_EXACT_SESSION_CHECKPOINT_CONTROL",
       "REMOVE_ONLY_VERIFIED_IGNORED_REGENERABLE_CACHES",
+      "REFRESH_TRACKED_API_CALLER_LEDGER_AND_PRECOMMIT_ROUTING",
       "RUN_FOCUSED_QUICK_FULL_AND_HOSTED_VALIDATION",
       "COMMIT_PUSH_CREATE_PR_AND_MERGE_WHEN_REQUIRED_CHECKS_PASS"
     ],
     "next_action": "COMMIT_PUSH_CREATE_PR_AND_MERGE_WHEN_REQUIRED_CHECKS_PASS",
-    "observed_at_utc": "2026-08-29T18:14:31Z",
+    "observed_at_utc": "2026-08-29T18:21:52Z",
     "prohibited_actions": [
       "DELETE_BRANCH_WORKTREE_ARCHIVE_EVIDENCE_PROTECTED_SOURCE_OR_PUBLIC_API",
       "RESET_REBASE_REWRITE_FORCE_PUSH_OR_BYPASS_CHECKS",
@@ -33,11 +34,12 @@
         "PRESERVE_AND_REFRESH_ETABS_FOUNDATION_AUDITS",
         "REPAIR_EXACT_SESSION_CHECKPOINT_CONTROL",
         "REMOVE_ONLY_VERIFIED_IGNORED_REGENERABLE_CACHES",
+        "REFRESH_TRACKED_API_CALLER_LEDGER_AND_PRECOMMIT_ROUTING",
         "RUN_FOCUSED_QUICK_FULL_AND_HOSTED_VALIDATION",
         "COMMIT_PUSH_CREATE_PR_AND_MERGE_WHEN_REQUIRED_CHECKS_PASS"
       ],
       "branch": "codex/etabs-analysis-foundation-audit",
-      "head_sha": "f1873e7b910134e01abf082169d20c04d6375669",
+      "head_sha": "af4f4827ea57f69c88e6438b96387d3ab3da0c4d",
       "task_id": "ETABS-W3-READINESS-MAINTENANCE"
     }
   },
@@ -59,7 +61,7 @@
   "retention": {
     "decision": "RETAIN_ALL_BRANCHES_WORKTREES_EVIDENCE_PUBLIC_SURFACES_AND_HISTORICAL_SESSION_RECORDS",
     "holds": [],
-    "observed_at_utc": "2026-08-29T18:14:31Z",
+    "observed_at_utc": "2026-08-29T18:21:52Z",
     "owner": "Main Agent under user-requested W3-readiness maintenance and repository preservation policy",
     "query_status": "OK",
     "status": "OBSERVED"

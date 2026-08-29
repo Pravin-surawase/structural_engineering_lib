@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "claim_surface_matrix_schema_version": "claim-surface-matrix/v1",
-  "generated": "2026-08-28",
+  "generated": "2026-08-29",
   "package_version": "0.24.0",
   "release_channel": "normal",
   "classifications": {

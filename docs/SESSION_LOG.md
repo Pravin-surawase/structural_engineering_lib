@@ -71,6 +71,15 @@ engineering/professional approval.
   and the full repository gate passed 32/32 with eight unchanged results reused.
   The removed cache targets remained absent and `react_app` measured about
   1.7 MiB at candidate freeze.
+- Hosted PR #899 documentation validation exposed one stale generated caller
+  ledger. Regenerated the API classification and compatibility artifacts from
+  the tracked candidate, added the new planning-document caller, and expanded
+  the pre-commit trigger to every text suffix scanned by that generator so the
+  same defect is rejected before push in future packets.
+- Repair validation passed the exact hosted documentation command including
+  strict MkDocs, 188 focused compatibility/API/governance tests, and the full
+  repository gate 32/32 with three unchanged FastAPI results reused. The local
+  strict build's ignored 83 MiB `site/` output was removed after validation.
 
 ### Issues encountered
 
@@ -94,6 +103,11 @@ engineering/professional approval.
   brief's sentence-case `Required reading` heading.
 - A guessed `scripts/check_documentation.py --strict` diagnostic path did not
   exist; the maintained documentation command has a different exact name.
+- The first PR #899 head failed hosted documentation validation because the new
+  professional-surface audit referenced the maintained `structural_lib` facade
+  but the checked-in compatibility ledger did not contain that tracked caller.
+  The earlier local full gate ran while the new audit was still untracked, and
+  the narrow pre-commit trigger did not run for general maintained text files.
 
 ### Root causes and resolutions
 
@@ -140,6 +154,16 @@ engineering/professional approval.
   `scripts/check_docs.py`, not the guessed filename. Resolution: run the exact
   maintained checker; all five checks passed. ⚠️ TERMINAL ISSUE: guessed strict-
   docs script was absent -> `check_docs.py` completed the required validation.
+- Confirmed hosted-ledger cause: the caller scanner intentionally inventories
+  tracked text, so it could not see the new untracked audit during the local
+  pre-stage gate; after commit, hosted validation correctly found one added
+  caller record. The pre-commit hook covered only selected API source paths,
+  even though the generator scans Markdown, JSON, Python, shell, TOML,
+  JavaScript, TypeScript, and YAML callers. Resolution: regenerate both ledgers
+  from the tracked candidate, prove the only new semantic record is the audit's
+  `structural_lib` reference, broaden the hook suffix trigger, and add a routing
+  regression. Evidence: generator `--check` and the focused compatibility/API/
+  governance tests pass before the repair candidate gate.
 
 ## 2026-08-29 — Session: ETABS, Excel, professional-attestation, and surface-retirement audit
 

@@ -6,8 +6,8 @@
 - Date: 2026-08-29
 - Focus: Integrate the accepted W2C predecessor, preserve and rebind the
 - Completed: Rechecked PR #898 against exact base `ee50aaa3...`, exact head; Preserved the two task-owned audit plans and the historical BHEEM link,; Added a fail-closed `superseded` session-usage checkpoint for a genuinely
-- Git receipt: docs/verification/etabs-w3-readiness-maintenance-git-handoff-receipt.json | sha256:2c64608e89c8ab1dacf03daf4df819172ea34b852478ab0925e796e06cf44328 | HOLD
-- Git identity: codex/etabs-analysis-foundation-audit@f1873e7b910134e01abf082169d20c04d6375669 | upstream=NONE@UNKNOWN | base=origin/main@f1873e7b910134e01abf082169d20c04d6375669 | tree=dirty | operation=none
+- Git receipt: docs/verification/etabs-w3-readiness-maintenance-git-handoff-receipt.json | sha256:029d9dda57315db9d9d52542545c1b127d5f0553a1bf06c82e4b7252b946a6b9 | HOLD
+- Git identity: codex/etabs-analysis-foundation-audit@af4f4827ea57f69c88e6438b96387d3ab3da0c4d | upstream=origin/codex/etabs-analysis-foundation-audit@af4f4827ea57f69c88e6438b96387d3ab3da0c4d | base=origin/main@f1873e7b910134e01abf082169d20c04d6375669 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_APPLICABLE | PR=NOT_APPLICABLE#UNKNOWN | review=NOT_APPLICABLE | retention=OBSERVED
 - Next action: COMMIT_PUSH_CREATE_PR_AND_MERGE_WHEN_REQUIRED_CHECKS_PASS
 <!-- HANDOFF:END -->

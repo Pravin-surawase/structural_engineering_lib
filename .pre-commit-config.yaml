@@ -168,7 +168,7 @@ repos:
         entry: ./scripts/python_runtime.sh scripts/generate_api_classification.py --check
         language: system
         pass_filenames: false
-        files: ^(Python/structural_lib/(__init__|api)\.py|Python/structural_lib/services/(api|family_facade_registry)\.py|Python/structural_lib/services/contracts/(beam|common|family_f[123])\.py|scripts/generate_api_classification\.py|docs/reference/api-classification\.json)$
+        files: \.(json|md|mjs|py|sh|toml|ts|tsx|ya?ml)$
         verbose: true
       - id: check-family-facade-docs
         name: Check generated family facade cookbook and reference
