@@ -271,7 +271,8 @@
       "affected_repair": "Superseded Phase A/B narrative was compressed without removing current W2C facts; final brief is 114 lines.",
       "affected_replay": "Brief-length checker, strict docs 5/5, 520-file/1130-link validation, and diff hygiene pass.",
       "unaffected_quick_checks_passed": 9,
-      "broad_gate_rerun_avoided": true
+      "broad_gate_rerun_avoided": true,
+      "normal_commit_hook_quick_result": "10_OF_10_PASS_WITH_3_EXACT_RESULTS_REUSED"
     }
   },
   "limitations": [

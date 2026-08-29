@@ -118,6 +118,11 @@ optimization, release, or engineering-approval claims.
 - The post-restart quick gate passed `9/10`; only brief length failed because
   the new required-reading link exposed 177 accumulated lines against the
   maintained 150-line limit.
+- Normal candidate hooks passed and created implementation/evidence commit
+  `c999b6f5`. The hook's exact quick set passed `10/10` with three unchanged
+  receipts reused; Black, Ruff, mypy over 272 sources, Bandit, JSON, task,
+  session, docs/API, control/context/verification registry, and link controls
+  also passed without bypass.
 
 ### Root causes and resolutions
 
@@ -205,7 +210,9 @@ optimization, release, or engineering-approval claims.
   post-restart replay passed `9/10`; only brief length failed. After compressing
   superseded history, the brief checker passes at 114/150 lines, strict docs
   pass `5/5`, 520 Markdown files/1,130 links pass, and diff hygiene is clean.
-  Normal hooks and clean session validation remain candidate closeout.
+- Normal hooks then passed, including the repaired quick gate at `10/10` with
+  three exact unaffected receipts reused. Clean session validation and push
+  remain external candidate closeout.
 
 ---
 
