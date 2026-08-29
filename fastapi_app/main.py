@@ -184,7 +184,7 @@ API_TAGS_METADATA = [
     },
     {
         "name": "etabs-bridge",
-        "description": "Bounded Windows ETABS attachment, beam-force extraction, and canonical design pilot.",
+        "description": "Bounded Windows ETABS pilot plus preflight-bound read-only W2 beam baseline.",
     },
     {
         "name": "geometry",

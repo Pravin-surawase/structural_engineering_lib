@@ -15,6 +15,7 @@ from contextlib import AbstractContextManager, contextmanager
 from enum import StrEnum
 from importlib.util import find_spec
 from pathlib import PureWindowsPath
+from threading import Lock
 from typing import Any, Literal, Protocol
 
 from pydantic import Field
@@ -48,6 +49,7 @@ __all__ = [
     "ETABSUnavailableError",
     "InputContractError",
     "connect_etabs_v1",
+    "etabs_com_operation_v1",
     "get_etabs_bridge_status_v1",
     "run_etabs_beam_pilot_v1",
 ]
@@ -59,6 +61,7 @@ ETABS_OBJECT_ITEM_TYPE = 0
 ETABS_KN_MM_C_UNITS = 5
 MAX_RESULT_ROWS_PER_BEAM = 2_000
 HORIZONTAL_TOLERANCE_MM = 1.0
+_ETABS_COM_OPERATION_LOCK = Lock()
 
 
 class ETABSResultSelectionKind(StrEnum):
@@ -316,6 +319,14 @@ def _decode_com_outputs(
     return tuple(value[:-1])
 
 
+@contextmanager
+def etabs_com_operation_v1() -> Iterator[None]:
+    """Serialize access to the singleton ETABS process across worker threads."""
+
+    with _ETABS_COM_OPERATION_LOCK:
+        yield
+
+
 class _ComtypesETABSSession:
     """One worker-thread COM apartment attached to an open ETABS process."""
 
@@ -426,8 +437,9 @@ def connect_etabs_v1(
 ) -> ETABSConnectionV1:
     """Attach to ETABS and return the exact open-model identity."""
 
-    with session_factory() as session:
-        model = _model_identity(session.sap_model)
+    with etabs_com_operation_v1():
+        with session_factory() as session:
+            model = _model_identity(session.sap_model)
     library_version, content_identity = _library_identity()
     return ETABSConnectionV1(
         library_version=library_version,
@@ -707,28 +719,29 @@ def run_etabs_beam_pilot_v1(
 ) -> ETABSPilotResultV1:
     """Extract and design the first bounded set of deterministic beam candidates."""
 
-    with session_factory() as session:
-        model = _model_identity(session.sap_model)
-        with session.normalized_kn_mm_units():
-            inventory = _frame_inventory(session.sap_model)
-            _select_results(session.sap_model, request.result_selection)
-            results: list[ETABSPilotBeamResultV1] = []
-            for frame in inventory[: request.limit]:
-                geometry = _rectangular_geometry(session.sap_model, frame)
-                forces = _frame_forces(
-                    session.sap_model,
-                    geometry.frame_name,
-                    request.result_selection,
-                )
-                results.append(
-                    ETABSPilotBeamResultV1(
-                        geometry=geometry,
-                        forces=forces,
-                        design_result=_design_beam(
-                            geometry, forces, request.design_basis
-                        ),
+    with etabs_com_operation_v1():
+        with session_factory() as session:
+            model = _model_identity(session.sap_model)
+            with session.normalized_kn_mm_units():
+                inventory = _frame_inventory(session.sap_model)
+                _select_results(session.sap_model, request.result_selection)
+                results: list[ETABSPilotBeamResultV1] = []
+                for frame in inventory[: request.limit]:
+                    geometry = _rectangular_geometry(session.sap_model, frame)
+                    forces = _frame_forces(
+                        session.sap_model,
+                        geometry.frame_name,
+                        request.result_selection,
                     )
-                )
+                    results.append(
+                        ETABSPilotBeamResultV1(
+                            geometry=geometry,
+                            forces=forces,
+                            design_result=_design_beam(
+                                geometry, forces, request.design_basis
+                            ),
+                        )
+                    )
     library_version, content_identity = _library_identity()
     return ETABSPilotResultV1(
         model=model,

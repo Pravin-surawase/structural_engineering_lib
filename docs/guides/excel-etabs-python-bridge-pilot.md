@@ -240,6 +240,38 @@ points and abort criteria for each of those claims. ETABS design-summary reads
 remain blocked because no design getter is frozen, and independent frame
 analysis remains `HELD_NOT_SUPPORTED`.
 
+## W2 complete-baseline surface
+
+The maintained Office.js pane now keeps the W1 design pilot and adds a separate
+W2 read-only baseline journey. First call
+`POST /api/v1/etabs-bridge/v1/beam-baseline/preflight`; compare the returned
+path/hash/size/time, ETABS/runtime/getter identities, locked state, and present
+unit enum with the approved copied-model evidence. Confirm that identity only
+when it is exact, then send the returned identities plus one exact already-
+selected case or combination to
+`POST /api/v1/etabs-bridge/v1/beam-baseline`.
+
+The W2 call is serialized with every other maintained ETABS COM operation,
+runs inside one worker-thread COM apartment, and supplies the real read-only
+file observer required by W2A. It refuses runtime/getter/version/path/hash/size/
+timestamp/unit/lock drift before extraction, resolves topology and selection
+blockers before any `FrameForce` call, and re-gets the lock and original unit
+enum after W2A has restored units. It never calls a result-selection setter.
+
+Accepted output is written only after the server-canonical W2A hash-basis JSON
+is independently hashed in the pane. Seven `ETABS_W2_*` sheets retain summary,
+stories, frames, endpoint links, every station, every disposition, and 15,000-
+code-point JSON chunks. Rejoining the chunk column must reproduce the exact
+server string and `baseline_sha256`. All seven sheet/table/header identities are
+preflighted before the first cell change; collisions, duplicate stable row IDs,
+count drift, more than 100,000 projected rows, or a blocked service result write
+nothing. A zero-row inventory is represented by a header-only controlled table.
+
+This is software evidence, not ETABS design or professional approval. It does
+not infer materials, reinforcement, slabs, supports, or engineering intent;
+does not run analysis/design; and retains `HELD_NOT_SUPPORTED` for independent
+frame analysis.
+
 ## Fail-closed boundaries
 
 The current pilot blocks when:

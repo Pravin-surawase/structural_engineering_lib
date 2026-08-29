@@ -4,6 +4,20 @@ from __future__ import annotations
 
 from fastapi_app.routers import etabs_bridge
 from fastapi_app.tests.conftest import unwrap
+from structural_lib.services.etabs_beam_baseline import (
+    ETABSBaselineBuildResultV1,
+    ETABSBaselineBuildStatus,
+    ETABSBaselineDisposition,
+    ETABSBaselineDispositionV1,
+    ETABSBaselineIssueV1,
+    ETABSBaselineRowKind,
+)
+from structural_lib.services.etabs_beam_bridge import (
+    ETABSBeamBaselineCapacityError,
+    ETABSBeamBaselineCapacityV1,
+    ETABSBeamBaselineCountsV1,
+    ETABSBeamBaselineTransportV1,
+)
 from structural_lib.services.etabs_live_bridge import (
     ETABSBridgeStatusV1,
     ETABSConnectionError,
@@ -26,7 +40,7 @@ def test_status_exposes_python_library_and_bridge_readiness(client, monkeypatch)
 
     response = client.get("/api/v1/etabs-bridge/v1/status")
 
-    assert response.status_code == 200
+    assert response.status_code == 200, response.text
     assert unwrap(response)["bridge_status"] == "READY_TO_CONNECT"
     assert unwrap(response)["library_content_identity"] == "a" * 64
 
@@ -84,8 +98,135 @@ def test_pilot_maps_unsupported_model_data_to_unprocessable(client, monkeypatch)
     assert response.json()["error"]["code"] == "ETABS_SECTION_NOT_RECTANGULAR"
 
 
-def test_openapi_exposes_three_typed_etabs_operations(client):
+def test_baseline_preflight_maps_unreadable_model_to_unprocessable(client, monkeypatch):
+    def fail():
+        raise ETABSDataError(
+            "ETABS_MODEL_FILE_UNREADABLE", "The copied model could not be read."
+        )
+
+    monkeypatch.setattr(etabs_bridge, "inspect_etabs_beam_baseline_v1", fail)
+
+    response = client.post("/api/v1/etabs-bridge/v1/beam-baseline/preflight")
+
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "ETABS_MODEL_FILE_UNREADABLE"
+
+
+def test_blocked_baseline_is_a_complete_domain_result_not_partial_success(
+    client, monkeypatch
+):
+    disposition = ETABSBaselineDispositionV1(
+        row_id="etabs-row:123",
+        row_kind=ETABSBaselineRowKind.RESULT_SELECTION,
+        source_id="ULS-1",
+        disposition=ETABSBaselineDisposition.BLOCKED,
+        reason_code="RESULT_SELECTION_NOT_ACTIVE",
+        message="The requested combination is not selected for output.",
+    )
+    issue = ETABSBaselineIssueV1(
+        code=disposition.reason_code,
+        path="result_selection:ULS-1",
+        message=disposition.message,
+    )
+    transport = ETABSBeamBaselineTransportV1(
+        build_result=ETABSBaselineBuildResultV1(
+            status=ETABSBaselineBuildStatus.BLOCKED,
+            dispositions=(disposition,),
+            issues=(issue,),
+            baseline=None,
+        ),
+        counts=ETABSBeamBaselineCountsV1(
+            stories=0,
+            frames=0,
+            connectivity_rows=0,
+            result_sets=0,
+            result_station_rows=0,
+            disposition_rows=1,
+            projected_excel_rows=0,
+        ),
+        capacity=ETABSBeamBaselineCapacityV1(),
+        baseline_hash_basis_json=None,
+        baseline_hash_basis_utf8_bytes=0,
+    )
+    monkeypatch.setattr(
+        etabs_bridge, "run_etabs_beam_baseline_v1", lambda _request: transport
+    )
+
+    response = client.post(
+        "/api/v1/etabs-bridge/v1/beam-baseline",
+        json={
+            "authorized_model_file": {
+                "model_path": r"C:\Models\W2.edb",
+                "model_name": "W2.edb",
+                "sha256": "a" * 64,
+                "byte_count": 10,
+                "modified_at_utc": "2026-08-29T05:00:00Z",
+                "observed_at_utc": "2026-08-29T05:01:00Z",
+            },
+            "expected_etabs_version": "ETABS 23.3.1",
+            "expected_etabs_version_number": 23.31,
+            "expected_present_units_enum": 6,
+            "expected_runtime_provenance": {
+                "library_version": "0.24.0",
+                "library_content_identity": "b" * 64,
+                "python_version": "3.11.15",
+                "platform": "Windows-11",
+                "com_provider": "comtypes/1.4.16;64-bit",
+            },
+            "expected_getter_matrix_sha256": "c" * 64,
+            "result_selections": [{"kind": "COMBINATION", "name": "ULS-1"}],
+            "approved_copy_confirmed": True,
+        },
+    )
+
+    assert response.status_code == 200, response.text
+    data = unwrap(response)
+    assert data["build_result"]["status"] == "BLOCKED"
+    assert data["build_result"]["baseline"] is None
+    assert data["baseline_hash_basis_json"] is None
+
+
+def test_baseline_capacity_error_maps_to_payload_too_large(client, monkeypatch):
+    def fail(_request):
+        raise ETABSBeamBaselineCapacityError(
+            "ETABS_BASELINE_ROW_LIMIT_EXCEEDED", "The complete baseline is too large."
+        )
+
+    monkeypatch.setattr(etabs_bridge, "run_etabs_beam_baseline_v1", fail)
+    payload = {
+        "authorized_model_file": {
+            "model_path": r"C:\Models\W2.edb",
+            "model_name": "W2.edb",
+            "sha256": "a" * 64,
+            "byte_count": 10,
+            "modified_at_utc": "2026-08-29T05:00:00Z",
+            "observed_at_utc": "2026-08-29T05:01:00Z",
+        },
+        "expected_etabs_version": "ETABS 23.3.1",
+        "expected_etabs_version_number": 23.31,
+        "expected_present_units_enum": 6,
+        "expected_runtime_provenance": {
+            "library_version": "0.24.0",
+            "library_content_identity": "b" * 64,
+            "python_version": "3.11.15",
+            "platform": "Windows-11",
+            "com_provider": "comtypes/1.4.16;64-bit",
+        },
+        "expected_getter_matrix_sha256": "c" * 64,
+        "result_selections": [{"kind": "COMBINATION", "name": "ULS-1"}],
+        "approved_copy_confirmed": True,
+    }
+
+    response = client.post("/api/v1/etabs-bridge/v1/beam-baseline", json=payload)
+
+    assert response.status_code == 413, response.text
+    assert response.json()["error"]["code"] == "ETABS_BASELINE_ROW_LIMIT_EXCEEDED"
+
+
+def test_openapi_exposes_five_typed_etabs_operations(client):
     paths = client.app.openapi()["paths"]
     assert "/api/v1/etabs-bridge/v1/status" in paths
     assert "/api/v1/etabs-bridge/v1/connect" in paths
     assert "/api/v1/etabs-bridge/v1/beam-pilot" in paths
+    assert "/api/v1/etabs-bridge/v1/beam-baseline/preflight" in paths
+    assert "/api/v1/etabs-bridge/v1/beam-baseline" in paths

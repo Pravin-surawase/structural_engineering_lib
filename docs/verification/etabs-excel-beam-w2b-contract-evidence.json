@@ -1,0 +1,191 @@
+{
+  "schema_version": "etabs-excel-beam-w2b-contract-evidence/v1",
+  "task_id": "ETABS-EXCEL-BEAM-W2B-TRANSPORT",
+  "observed_at_utc": "2026-08-29T08:31:39.726Z",
+  "authority": {
+    "branch": "codex/etabs-excel-beam-w2-campaign",
+    "phase_a_remote_head": "4841ab2a37504fa009842a812e1a0fa9e8b95d8f",
+    "phase_a_tree": "38fb9d8ce09326ee7a01fbb04ed78c81a4c0838e",
+    "origin_main": "0f5c918eb87b658448737fd6bf023ccb4bd07c74",
+    "writer_machine": "Windows",
+    "checkpoint_status": "FROZEN_LOCAL_CANDIDATE_PENDING_COMMIT",
+    "pull_request_created": false
+  },
+  "contracts": {
+    "preflight_schema": "etabs-beam-baseline-preflight/v1",
+    "run_request_schema": "etabs-beam-baseline-run-request/v1",
+    "transport_schema": "etabs-beam-baseline-transport/v1",
+    "w2a_build_result_schema": "etabs-beam-baseline-build-result/v1",
+    "w2a_baseline_schema": "etabs-beam-baseline/v1",
+    "w2a_hash_basis": "etabs-beam-baseline-hash/v1",
+    "frame_analysis_verdict": "HELD_NOT_SUPPORTED",
+    "truncation_permitted": false,
+    "partial_accepted_baseline_permitted": false
+  },
+  "service_boundary": {
+    "implementation": "Python/structural_lib/services/etabs_beam_bridge.py",
+    "model_file_observer": {
+      "mode": "read-only filesystem hash/stat",
+      "observations": [
+        "orchestration precheck",
+        "W2A immediately before COM extraction",
+        "W2A immediately after COM extraction"
+      ],
+      "identity_fields": [
+        "absolute Windows EDB path",
+        "model name",
+        "SHA-256",
+        "byte count",
+        "modified timestamp",
+        "observation timestamp"
+      ],
+      "unstable_during_hash": "BLOCKED"
+    },
+    "com_ownership": {
+      "worker_thread_apartment": "ONE_APARTMENT_PER_OPERATION",
+      "singleton_process_serialization": true,
+      "launch_etabs": false,
+      "result_selection_setter": false
+    },
+    "pre_result_abort_order": [
+      "runtime and getter-matrix identity",
+      "open model path and ETABS version",
+      "approved present units",
+      "locked model",
+      "current file hash/size/time",
+      "W2A story/frame/topology dispositions",
+      "W2A already-selected result identity and status",
+      "FrameForce"
+    ],
+    "post_read_proof": [
+      "W2A file observation unchanged",
+      "GetModelIsLocked remains true",
+      "GetPresentUnits equals approved original enum"
+    ],
+    "only_setter": "SapModel.SetPresentUnits",
+    "analysis_or_design_called": false,
+    "model_saved_or_written": false
+  },
+  "windows_checkout_policy": {
+    "office_module_pattern": "*.mjs text eol=lf",
+    "reason": "Prevent core.autocrlf Windows checkouts plus patch edits from producing mixed Office-module line endings.",
+    "normal_commit_hook_required": true
+  },
+  "rest": {
+    "preflight": "POST /api/v1/etabs-bridge/v1/beam-baseline/preflight",
+    "run": "POST /api/v1/etabs-bridge/v1/beam-baseline",
+    "domain_blocked": {
+      "http_status": 200,
+      "baseline": null,
+      "hash_basis_json": null
+    },
+    "error_mapping": {
+      "unavailable": 503,
+      "connection_or_open_model": 409,
+      "contract_or_model_data": 422,
+      "capacity": 413,
+      "unexpected": 500
+    }
+  },
+  "capacity": {
+    "max_frames": 10000,
+    "max_connectivity_rows": 25000,
+    "max_result_station_rows": 50000,
+    "max_disposition_rows": 75000,
+    "max_projected_excel_rows": 100000,
+    "max_hash_basis_utf8_bytes": 25000000,
+    "excel_json_chunk_unicode_code_points": 15000,
+    "whole_response_rejected_on_limit": true
+  },
+  "excel": {
+    "implementation": [
+      "excel_addin/taskpane-core.mjs",
+      "excel_addin/taskpane-office.mjs",
+      "excel_addin/taskpane.mjs",
+      "excel_addin/taskpane.html"
+    ],
+    "tables": [
+      ["ETABS_W2_Summary", "tbl_ETABS_W2_Summary_V1"],
+      ["ETABS_W2_Stories", "tbl_ETABS_W2_Stories_V1"],
+      ["ETABS_W2_Frames", "tbl_ETABS_W2_Frames_V1"],
+      ["ETABS_W2_Links", "tbl_ETABS_W2_Links_V1"],
+      ["ETABS_W2_Stations", "tbl_ETABS_W2_Stations_V1"],
+      ["ETABS_W2_Dispositions", "tbl_ETABS_W2_Dispositions_V1"],
+      ["ETABS_W2_JSON", "tbl_ETABS_W2_JSON_V1"]
+    ],
+    "stable_row_identities": [
+      "story_id",
+      "member_id",
+      "connection_id",
+      "station_id",
+      "disposition row_id",
+      "baseline digest plus chunk index"
+    ],
+    "pre_mutation_checks": [
+      "all seven sheet identities",
+      "all seven table identities",
+      "all seven exact header vectors",
+      "all row widths",
+      "all stable row ID uniqueness",
+      "all server/projected row counts",
+      "lock and unit-restoration proof",
+      "HELD_NOT_SUPPORTED verdict",
+      "exact SHA-256 of reconstructed W2A hash-basis JSON"
+    ],
+    "empty_inventory_representation": "HEADER_ONLY_TABLE",
+    "blocked_result_writes_cells": false
+  },
+  "outcome_changing_repair": {
+    "symptom": "Blocked incomplete topology or inactive result selections still reached Results.FrameForce before returning a blocked W2A result.",
+    "root_cause": "The W2A extraction sequence accumulated blocking dispositions but did not test them until after force extraction.",
+    "resolution": "Resolve empty beam inventory, connected topology, and result-selection blockers before _read_results; skip FrameForce whenever any pre-result blocker exists.",
+    "proof": "Fake-COM regressions assert zero FrameForce calls for inactive selection, connected unsupported section, and connected advanced local axes; accepted deterministic hash tests remain passing."
+  },
+  "focused_validation": [
+    {
+      "command": "pytest Python/tests/unit/test_etabs_live_bridge.py Python/tests/unit/test_etabs_beam_baseline.py fastapi_app/tests/test_etabs_bridge.py",
+      "result": "PASS"
+    },
+    {
+      "command": "npm --prefix excel_addin test",
+      "result": "PASS (34 tests before final documentation freeze)"
+    },
+    {
+      "command": "ruff check on affected Python/FastAPI paths",
+      "result": "PASS"
+    },
+    {
+      "command": "mypy on W2B service and FastAPI router",
+      "result": "PASS"
+    },
+    {
+      "command": "architecture, structural_lib imports, and circular imports",
+      "result": "PASS (236 architecture files, 272 import files, 216 circular-import files)"
+    },
+    {
+      "command": "strict documentation, local links, task/brief/context, and JSON validation",
+      "result": "PASS (5 documentation checks, 520 Markdown files, 1124 links, 0 broken)"
+    }
+  ],
+  "remaining_installed_only_claims": [
+    "exact copied-model path/hash/size/time allowlist",
+    "live ETABS return values and counts",
+    "approved already-selected case or combination",
+    "complete supported topology on the evidence model",
+    "post-read lock/unit/file identity",
+    "direct REST and installed Excel equality",
+    "controlled-sheet create/update behavior in installed Excel"
+  ],
+  "non_goals": [
+    "ETABS or Excel launch during W2B",
+    "analysis or design",
+    "result-selection mutation",
+    "model unlock/save/write-back",
+    "optimization",
+    "W3 or later work",
+    "engineering or construction approval"
+  ],
+  "contains_proprietary_model_or_result_payload": false,
+  "contains_vendor_code_or_binary": false,
+  "contains_credentials": false
+}

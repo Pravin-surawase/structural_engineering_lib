@@ -5,9 +5,10 @@
 <!-- HANDOFF:START -->
 - Date: 2026-08-29
 - Focus: Complete the bounded W2 campaign on the Windows evidence machine:
-- Git receipt: docs/verification/etabs-excel-beam-w2c-com-signature-audit-git-handoff-receipt.json | sha256:1a5720ee52c7e075c6a995f8b466d73796012880fab53d30ce38b8f8549cd868 | HOLD
-- Git identity: codex/etabs-w2c-com-signature-audit@0f5c918eb87b658448737fd6bf023ccb4bd07c74 | upstream=origin/main@0f5c918eb87b658448737fd6bf023ccb4bd07c74 | base=origin/main@0f5c918eb87b658448737fd6bf023ccb4bd07c74 | tree=dirty | operation=none
-- Hosted evidence: remote=NOT_APPLICABLE | PR=NOT_APPLICABLE#UNKNOWN | review=NOT_APPLICABLE | retention=OBSERVED
+- Completed: Fetched GitHub and proved PR #896 merge `0f5c918e...`, reviewed W2A head; Bound installed ETABS `23.3.1.4563` to the registered x64 `ETABSv1.tlb`; Proved all 18 W2A getters plus `SetPresentUnits` for interface/method,
+- Git receipt: docs/verification/etabs-excel-beam-w2b-git-handoff-receipt.json | sha256:00fd77e9a3465aa4b8e162e21ffd992749a29d2cd81b48d62852ac057aa6026f | HOLD
+- Git identity: codex/etabs-excel-beam-w2-campaign@4841ab2a37504fa009842a812e1a0fa9e8b95d8f | upstream=NONE@UNKNOWN | base=origin/main@0f5c918eb87b658448737fd6bf023ccb4bd07c74 | tree=dirty | operation=none
+- Hosted evidence: remote=NOT_APPLICABLE | PR=NOT_APPLICABLE#UNKNOWN | review=NOT_APPLICABLE | retention=UNKNOWN
 - Next action: COMMIT_INTENDED_PATHS
 <!-- HANDOFF:END -->
 
@@ -16,9 +17,9 @@
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` remains the immutable current normal software release; no new release is selected or authorized. |
-| **Current** | GitHub `origin/main` is exactly `0f5c918eb87b658448737fd6bf023ccb4bd07c74` after PR #896 merged reviewed W2A head `0972e1af...`. The Windows Phase A branch statically proves all 18 W2A getters plus `SetPresentUnits` against installed ETABS 23.3.1 metadata; checkpoint validation/push is next. |
+| **Current** | GitHub `origin/main` remains exactly `0f5c918eb87b658448737fd6bf023ccb4bd07c74` after PR #896. Phase A is pushed at exact head `4841ab2a...`; the cumulative `codex/etabs-excel-beam-w2-campaign` branch starts from that head and now contains the locally implemented W2B observer/orchestration/REST/Excel candidate. |
 | **Machine roles** | Mac is the primary development/integration machine. Windows is the installed Excel/ETABS testing and evidence machine. GitHub is the tracked handoff authority; proprietary model/workbook/evidence bytes remain on Windows. |
-| **Next** | Push the clean Phase A audit checkpoint; create `codex/etabs-excel-beam-w2-campaign` from its exact remote head; freeze/push W2B; then execute guarded read-only W2C only after every preflight gate passes. Mac performs one cumulative review after the final campaign push. |
+| **Next** | Finish the frozen W2B focused/architecture/docs/quick validation, commit and push its exact checkpoint, then revalidate every Phase A/W2B preflight identity. Only then execute guarded read-only W2C. Mac performs one cumulative review after the final campaign push. |
 | **Held** | ETABS analysis, unlock/save, section/load write-back, optimization, complete solver parity, expanded design/detailing/site-practice automation, release, and professional or construction-use approval. |
 
 ## Today closeout
@@ -48,20 +49,30 @@
 - The dev-only npm advisory remains a separate maintenance packet.
 - One historical unmatched parent-pilot usage checkpoint remains preserved; do
   not invent old timing to close it.
+- Phase A is committed and pushed at exact remote head `4841ab2a...`; no PR was
+  opened. The campaign branch was created from that exact remote checkpoint.
+- W2B implements the real read-only EDB observer, process-wide ETABS COM
+  serialization, getter-only preflight, preflight-bound run request, exact
+  post-read lock/unit proof, and bounded no-truncation transport envelope.
+- The FastAPI surface adds typed `/beam-baseline/preflight` and
+  `/beam-baseline` operations. Domain-blocked results expose no baseline;
+  connection/data/capacity failures map to 409/422/413.
+- Excel now preflights all seven controlled W2 tables before mutation and
+  retains summary, stories, frames, endpoint connections, every force station,
+  every disposition, and reconstructable server-canonical hash-basis JSON.
+- An outcome-changing W2A ordering defect was traced and repaired: topology or
+  selection blockers now stop before `FrameForce`. Fake-COM regressions prove
+  zero force calls on those paths while accepted deterministic hashes remain
+  unchanged.
 
 ## Next objective
 
-1. Finish Phase A documentation/session/governance, run proportionate focused
-   checks and the quick gate once, commit with normal hooks, push, and verify the
-   exact remote checkpoint.
-2. Create `codex/etabs-excel-beam-w2-campaign` from that exact pushed head.
-3. Implement only maintained W2B observer/orchestration, REST/Excel review,
-   reconciliation/collision/error/row-limit contracts and fake-COM coverage;
-   freeze, validate, commit, and push the Phase B checkpoint.
-4. Revalidate every static identity/precondition against the Phase B head. Then
+1. Complete the frozen W2B focused, architecture/import, documentation, and
+   quick checks; commit with normal hooks and push the exact Phase B checkpoint.
+2. Revalidate every static identity/precondition against the Phase B head. Then
    run the approved copied-model W2C read-only journey, retaining full evidence
    externally and only safe hashes/counts/verdicts in Git.
-5. Freeze final evidence/docs, run final gates, commit/push the clean campaign,
+3. Freeze final evidence/docs, run final gates, commit/push the clean campaign,
    stop writing, and give Mac one cumulative review/PR pickup.
 
 ## New-chat starter
@@ -88,9 +99,11 @@ Use the copy-ready prompt in
 1. [Excel + ETABS beam next-phase plan](excel-etabs-beam-next-phase-plan.md)
 2. [Phase A static COM-signature evidence](../verification/etabs-excel-beam-w2c-com-signature-audit-evidence.json)
 3. [W1 installed Windows receipt](../verification/etabs-excel-python-pilot-w1-evidence.json)
-4. [Excel/Python/ETABS pilot guide](../guides/excel-etabs-python-bridge-pilot.md)
-5. [Multi-device Git workflow](../git-automation/git-workflow-single-source.md#multi-device-rule-one-branch-one-writer-device)
-6. [Current task board](../TASKS.md)
-7. `Python/structural_lib/services/etabs_beam_baseline.py`
-8. `Python/tests/unit/test_etabs_beam_baseline.py`
-9. [Newest W2 campaign session entry](../SESSION_LOG.md)
+4. [W2B contract evidence](../verification/etabs-excel-beam-w2b-contract-evidence.json)
+5. [Excel/Python/ETABS pilot guide](../guides/excel-etabs-python-bridge-pilot.md)
+6. [Multi-device Git workflow](../git-automation/git-workflow-single-source.md#multi-device-rule-one-branch-one-writer-device)
+7. [Current task board](../TASKS.md)
+8. `Python/structural_lib/services/etabs_beam_baseline.py`
+9. `Python/structural_lib/services/etabs_beam_bridge.py`
+10. `Python/tests/unit/test_etabs_beam_baseline.py`
+11. [Newest W2 campaign session entry](../SESSION_LOG.md)

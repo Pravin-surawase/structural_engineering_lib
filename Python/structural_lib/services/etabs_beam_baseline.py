@@ -64,7 +64,9 @@ __all__ = [
     "ETABSStoryV1",
     "ETABSUnitProofV1",
     "ETABSUnitMutationPolicyV1",
+    "canonical_etabs_beam_baseline_hash_basis_json_v1",
     "etabs_w2a_getter_matrix_v1",
+    "etabs_w2a_getter_matrix_sha256_v1",
     "etabs_w2a_unit_mutation_policy_v1",
     "extract_etabs_beam_baseline_v1",
     "verify_etabs_beam_baseline_hash_v1",
@@ -1462,18 +1464,36 @@ def _getter_matrix_sha256() -> str:
     )
 
 
+def etabs_w2a_getter_matrix_sha256_v1() -> str:
+    """Return the deterministic identity of the frozen W2A getter matrix."""
+
+    return _getter_matrix_sha256()
+
+
 def _baseline_hash_payload(baseline: ETABSBeamBaselineV1) -> dict[str, Any]:
     payload = baseline.model_dump(mode="json")
     payload.pop("baseline_sha256", None)
     return payload
 
 
+def canonical_etabs_beam_baseline_hash_basis_json_v1(
+    baseline: ETABSBeamBaselineV1,
+) -> str:
+    """Serialize the exact UTF-8 JSON text whose digest is ``baseline_sha256``."""
+
+    return json.dumps(
+        _baseline_hash_payload(baseline),
+        allow_nan=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    )
+
+
 def verify_etabs_beam_baseline_hash_v1(baseline: ETABSBeamBaselineV1) -> bool:
     """Verify the canonical SHA-256 over every retained W2A field."""
 
-    return (
-        _canonical_sha256(_baseline_hash_payload(baseline)) == baseline.baseline_sha256
-    )
+    encoded = canonical_etabs_beam_baseline_hash_basis_json_v1(baseline).encode("utf-8")
+    return sha256(encoded).hexdigest() == baseline.baseline_sha256
 
 
 def _blocked_issues(
@@ -1533,7 +1553,27 @@ def extract_etabs_beam_baseline_v1(
         selection_evidence = _selection_evidence(
             sap_model, request.result_selections, dispositions
         )
-        results = _read_results(sap_model, frames, selection_evidence, dispositions)
+        accepted_beams = [
+            frame for frame in frames if frame.kind is ETABSFrameKind.BEAM
+        ]
+        if not accepted_beams:
+            dispositions.append(
+                _disposition(
+                    row_kind=ETABSBaselineRowKind.FRAME,
+                    source_id="beam-inventory",
+                    disposition=ETABSBaselineDisposition.BLOCKED,
+                    reason_code="BEAM_INVENTORY_EMPTY",
+                    message="No rectangular horizontal beams remain after explicit dispositions.",
+                )
+            )
+        pre_result_blocked = any(
+            row.disposition is ETABSBaselineDisposition.BLOCKED for row in dispositions
+        )
+        results = (
+            ()
+            if pre_result_blocked
+            else _read_results(sap_model, frames, selection_evidence, dispositions)
+        )
 
     after_read = observe_model_file(authorized.model_path)
     if not isinstance(after_read, ETABSModelFileSnapshotV1):
@@ -1560,17 +1600,6 @@ def extract_etabs_beam_baseline_v1(
         }
     )
 
-    accepted_beams = [frame for frame in frames if frame.kind is ETABSFrameKind.BEAM]
-    if not accepted_beams:
-        dispositions.append(
-            _disposition(
-                row_kind=ETABSBaselineRowKind.FRAME,
-                source_id="beam-inventory",
-                disposition=ETABSBaselineDisposition.BLOCKED,
-                reason_code="BEAM_INVENTORY_EMPTY",
-                message="No rectangular horizontal beams remain after explicit dispositions.",
-            )
-        )
     ordered_dispositions = tuple(
         sorted(
             dispositions,

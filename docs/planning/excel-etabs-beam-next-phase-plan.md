@@ -118,7 +118,7 @@ toolchain on Windows:
 | Hooks | `pre-commit 4.6.2` installed in the shared Git common hooks directory |
 | Source binding | Linked-worktree launcher imports the invoking W2A source and reports `source_bound=true` |
 | User runtime controls | `STRUCTURAL_LIB_PYTHON` points to the primary `.venv` interpreter; `PYTHONUTF8=1` |
-| Checkout normalization | System Git has `core.autocrlf=true`; tracked E2K/XML/CSV/JSON/Python/docs and shell scripts are protected by explicit LF attributes where byte identity/execution matters |
+| Checkout normalization | System Git has `core.autocrlf=true`; tracked E2K/XML/CSV/JSON/Python/docs, Office `.mjs`, and shell scripts are protected by explicit LF attributes where byte identity/execution matters |
 
 The previous unusable virtual environment is recoverably retained as
 `.venv-broken-20260829`; it was not deleted. WSL and Docker were not installed
@@ -155,6 +155,7 @@ output, and MSYS/Windows source-path normalization.
 | Windows CLI auth was uncertain after account reconnection | GitHub CLI credential state had changed outside the repository | Completed official browser/device authentication and verified the exact user/repository/main queries | Recheck `gh api user` and repository access before push/PR; never log the token |
 | npm reports one high advisory | Dev-only `nanoid 3.3.17` arrives transitively through `postcss`/Vite and is below fixed `3.3.18`; production-only audit is clean | Recorded but did not mix an unrelated lockfile rewrite into W2A | Resolve in a separate dependency-maintenance candidate, run frontend tests/build/audit, and review the exact lockfile diff |
 | W2A display signatures did not show every typelib input/default detail | The frozen matrix describes the adapter call/result contract, while the installed typelib also exposes optional `LoadCases.GetNameList(CaseType=0)` and requires the explicitly supplied `FrameForce(..., ItemTypeElm)` | Bound all 19 operations to the exact x64 typelib/generated wrapper and recorded both details without changing working behavior | Re-audit the exact typelib hash after any ETABS/comtypes drift; keep the runtime call explicit and fail closed on shape/return drift |
+| First W2B commit hook normalized six Office modules and rejected one untyped helper | The Windows LF policy covered `.js` but omitted the maintained `.mjs` extension, while focused mypy did not enable the full-project `no-untyped-def` rule | Added explicit `*.mjs text eol=lf`, retained the hook's safe normalization, and annotated the COM getter helper | Normal hooks and fresh Windows checkouts now enforce one LF representation and the same type rule as the full library hook |
 
 This ledger records software/tooling causes and controls. It does not upgrade
 software checks into engineering approval or authorize model mutation.
@@ -325,8 +326,62 @@ paths, serviceability defers continuous behavior to frame analysis, and no
 accepted stiffness/frame solver exists. W2A adds no solver or parity claim.
 Focused tuple/list, getter/return-code, topology/disposition, result-completeness,
 file-freshness, deterministic-hash, JSON round-trip, and unit-restoration tests
-live in `Python/tests/unit/test_etabs_beam_baseline.py`. W2B REST/Excel work and
-W2C installed execution remain unstarted.
+live in `Python/tests/unit/test_etabs_beam_baseline.py`. W2B now supplies the
+bounded service/REST/Excel surface below; W2C installed execution remains
+unstarted.
+
+### W2B frozen transport and Excel contract
+
+W2B is implemented on the cumulative Windows campaign branch in
+`Python/structural_lib/services/etabs_beam_bridge.py`, the existing versioned
+ETABS FastAPI router, and the maintained Office.js pane. Every COM call for one
+operation remains inside one worker-thread apartment, and a process-wide lock
+serializes the singleton ETABS automation object so concurrent localhost
+requests cannot interleave temporary unit state. The service attaches only to
+an already-open process; it does not launch ETABS or select results.
+
+The getter-only `etabs-beam-baseline-preflight/v1` response records the exact
+saved EDB path/hash/size/time, ETABS version, lock state, present units, Python/
+library/COM identity, getter-matrix hash, row limits, and
+`HELD_NOT_SUPPORTED`. The operator must compare that identity with the approved
+copied-model evidence. `etabs-beam-baseline-run-request/v1` then binds the
+confirmed preflight, exact already-selected case/combination, original unit
+enum, ETABS/runtime/getter identities, locked-model requirement, and 1 mm
+orientation tolerance. A stale or unlocked request fails before force reads.
+
+`POST /api/v1/etabs-bridge/v1/beam-baseline/preflight` exposes the getter-only
+inspection; `POST /api/v1/etabs-bridge/v1/beam-baseline` returns
+`etabs-beam-baseline-transport/v1`. The run uses a real read-only file observer
+before orchestration and W2A's before/after observations during extraction. It
+re-gets lock and present units afterward and rejects any drift. Domain-blocked
+W2A results remain typed HTTP 200 results with no baseline/hash-basis payload;
+connection, data, and capacity failures map to 409, 422, and 413 respectively.
+No partial accepted baseline is returned.
+
+The complete response limits are fixed and never truncate: 10,000 frames,
+25,000 connectivity rows, 50,000 force stations, 75,000 dispositions, 100,000
+projected Excel rows, and 25,000,000 UTF-8 bytes for the exact W2A hash-basis
+JSON. The JSON is split by 15,000 Unicode code points, keeping every Excel cell
+within its text limit even for surrogate pairs. Any limit breach rejects the
+whole response.
+
+Excel writes seven controlled V1 tables only: summary, stories, frames,
+connectivity, force stations, dispositions, and chunked canonical JSON. Story,
+member, connection, station, disposition, and JSON-chunk row identities are
+unique and stable. Every existing sheet/table/header is inspected before the
+first cell mutation; a colliding user sheet or changed header blocks all
+writes. Rejoining the JSON chunk column reproduces the exact server-generated
+W2A hash-basis bytes, whose digest must equal `baseline_sha256` before Excel is
+called. Empty controlled inventories remain header-only rather than receiving
+fabricated data rows.
+
+Tracing the maintained W2A call order exposed one outcome-changing W2C safety
+gap: incomplete topology or an inactive requested result was dispositioned as
+blocked, but `FrameForce` was still called before the blocked result returned.
+W2B repairs the root ordering so beam inventory, topology, and result-selection
+blockers are resolved before force extraction. Fake-COM regressions prove zero
+`FrameForce` calls on all three held paths, while accepted hashes and W1/W2A
+behavior remain unchanged.
 
 ### Required read-only inventory
 
@@ -400,9 +455,9 @@ hidden inside W2.
 | Gate | Owner machine | Status | Required exit evidence |
 |---|---|---|---|
 | W2A integration | Mac | Complete | PR #896 merged reviewed head `0972e1af...` as `0f5c918e...` |
-| Phase A installed signature audit | Windows | Complete locally; branch checkpoint pending push | Exact ETABS/type-library/comtypes identities, 19 operation verdicts, limitations, and W2C preflight/abort evidence |
+| Phase A installed signature audit | Windows | Complete and pushed at exact head `4841ab2a...` | Exact ETABS/type-library/comtypes identities, 19 operation verdicts, limitations, and W2C preflight/abort evidence |
 | Dev-only `nanoid` advisory | Mac maintenance lane | Open, non-production and separate from W2A | Reviewed lockfile-only or dependency update, frontend tests/lint/build, full npm audit and production-only audit |
-| W2B contract and implementation | Windows campaign, then Mac review | Authorized; not started at Phase A checkpoint | Actual observer/orchestration/COM-thread boundary, REST/Excel schemas, error and row limits, deterministic reconciliation, focused checks, quick gate, clean pushed checkpoint |
+| W2B contract and implementation | Windows campaign, then Mac review | Implemented locally; frozen validation/commit/push pending | Actual observer/orchestration/serialized COM-thread boundary, REST/Excel schemas, error and row limits, deterministic reconciliation, focused checks, quick gate, clean pushed checkpoint |
 | W2C evidence plan | Windows campaign | Static plan complete; live identities pending Phase B | Exact approved candidate, copied-model/workbook/output identities, result selections, lock/units/state checks, safe external evidence location |
 | W2C installed acceptance | Windows campaign | Authorized only after frozen/pushed Phase B and all preflight gates; not started | Direct/REST/Excel reconciliation, exhaustive rows, pre/post model hash-size-time-lock-units proof, no analysis/save/mutation, tracked safe receipt |
 | W2 close decision | Mac | Not started | Review W2A-W2C evidence, document accepted limitations, decide whether W3 may begin; no automatic progression |

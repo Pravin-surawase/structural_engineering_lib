@@ -11,13 +11,13 @@
 sole writer; no subagents).
 
 **Branches:** Phase A on `codex/etabs-w2c-com-signature-audit` from exact
-`origin/main` `0f5c918eb87b658448737fd6bf023ccb4bd07c74`; the cumulative campaign will
-continue from the exact pushed Phase A head on
-`codex/etabs-excel-beam-w2-campaign`.
+`origin/main` `0f5c918eb87b658448737fd6bf023ccb4bd07c74`, pushed at exact head
+`4841ab2a37504fa009842a812e1a0fa9e8b95d8f`; the cumulative campaign continues
+from that exact checkpoint on `codex/etabs-excel-beam-w2-campaign`.
 
 **Git handoff receipt:**
-`docs/verification/etabs-excel-beam-w2c-com-signature-audit-git-handoff-receipt.json`
-(Phase A checkpoint; final campaign receipt will supersede it for Mac pickup).
+`docs/verification/etabs-excel-beam-w2b-git-handoff-receipt.json`
+(Phase B checkpoint; final campaign receipt will supersede it for Mac pickup).
 
 **Focus:** Complete the bounded W2 campaign on the Windows evidence machine:
 first freeze the installed ETABS 23.3.1 static COM-signature audit without COM
@@ -44,6 +44,24 @@ no-save/no-mutation/no-optimization/no-writeback/professional-review boundary.
   and abort criterion in the tracked Phase A evidence. Design-summary reads
   remain outside the matrix/blocked and frame analysis remains
   `HELD_NOT_SUPPORTED`.
+- Committed Phase A as `6a4ade61...` plus governance repair `4841ab2a...`,
+  passed final clean session validation, pushed the exact remote head, verified
+  local/remote equality, and confirmed no PR exists.
+- Created the cumulative campaign branch from exact Phase A head `4841ab2a...`
+  and implemented W2B's real read-only EDB observer, runtime/getter/version/
+  file/unit/lock-bound preflight and run schemas, serialized single-apartment
+  COM orchestration, post-read lock/unit getters, and no-truncation response
+  limits.
+- Added typed FastAPI preflight/run operations and stable 503/409/422/413/500
+  error mapping. A domain-blocked W2A result remains a typed result with no
+  partial baseline or hash-basis payload.
+- Added seven controlled Excel tables for summary, stories, frames, endpoint
+  links, every force station, every disposition, and reconstructable server-
+  canonical W2A hash-basis JSON. All sheet/table/header collisions and stable
+  IDs are checked before the first cell mutation.
+- Reordered W2A blocking decisions so incomplete topology, empty beam inventory,
+  or inactive/missing result selection stops before `FrameForce`; accepted
+  W2A hashes and the existing W1 path remain unchanged.
 
 ### Issues encountered
 
@@ -60,6 +78,24 @@ no-save/no-mutation/no-optimization/no-writeback/professional-review boundary.
   conflicting with the repository's explicit LF checkout policy.
 - The W2A display strings omit one optional typelib detail and present one
   required explicit enum value in default-like notation.
+- The first REST tests for the new W2B run contract returned HTTP 422 before the
+  mocked service was called.
+- Tracing the W2C abort checklist against W2A showed that a connected unsupported
+  frame or inactive result selection was marked blocked but force rows were
+  still read before the blocked result returned.
+- An unquoted PowerShell `git rev-parse HEAD^{tree}` inspection treated the
+  brace expression as PowerShell syntax and passed an encoded script argument
+  to Git instead of the requested revision expression.
+- Two guessed handoff-validation spellings used the absent short script name
+  `check_brief_length.py` and unsupported `session handoff --check`; one retry
+  also omitted the already-required process-local PATH refresh for Bash.
+- The first W2B `session check` found that the generated brief referenced the
+  new Phase B receipt while this multi-phase session entry still named the
+  preceding Phase A receipt.
+- The first normal Phase B commit hook normalized six edited Office `.mjs`
+  files from mixed line endings and rejected the new `_direct_model_values`
+  helper under the full-library `no-untyped-def` mypy rule. No commit was
+  created; every other substantive hook passed.
 
 ### Root causes and resolutions
 
@@ -96,6 +132,43 @@ no-save/no-mutation/no-optimization/no-writeback/professional-review boundary.
   `LoadCases.GetNameList` has optional `CaseType=0` and that `FrameForce`
   requires explicitly supplied `ItemTypeElm=0` (`ObjectElm`). The current calls,
   counts, decoder, and outcome remain correct, so no adapter code changed.
+- Confirmed REST cause: strict Pydantic tuple intake is appropriate for local
+  immutable W2A models but JSON represents arrays as lists, so the public W2B
+  request rejected its valid `result_selections` array. Resolution: make the
+  transport request field a bounded strict list and convert it to the frozen
+  W2A tuple internally. Both blocked-result and 413 mapping tests then reached
+  the service and passed.
+- Confirmed force-order cause: W2A accumulated blocking dispositions but only
+  converted them to issues after `_read_results`. Resolution: resolve beam-
+  inventory, connected-topology, and result-selection blockers before the
+  result loop and skip `_read_results` on any blocker. Fake-COM tests prove zero
+  `FrameForce` calls for inactive selection, connected unsupported section, and
+  connected advanced axes; accepted deterministic hashes still pass.
+- Confirmed terminal cause: unquoted braces are parsed by PowerShell rather than
+  preserved as a literal Git revision suffix. Resolution: quote
+  `'HEAD^{tree}'`; Git returned exact Phase A tree `38fb9d8c...` on the next
+  call. ⚠️ TERMINAL ISSUE: unquoted Git tree syntax became an encoded PowerShell
+  argument -> quoted the exact revision expression.
+- Confirmed validation-command cause: the maintained names are
+  `check_next_session_brief_length.py` and `session check`; `handoff` is a writer,
+  not a `--check` carrier. Resolution: restore the documented process-local PATH
+  for this inherited desktop process and run both maintained read-only checks;
+  both exit zero. ⚠️ TERMINAL ISSUE: two guessed brief/handoff commands and one
+  stale-PATH retry failed -> used the discovered registered commands.
+- Confirmed receipt mismatch cause: the shared session entry intentionally spans
+  Phase A through W2C, but its receipt pointer had not advanced when Phase B's
+  handoff block was generated. Resolution: advance the entry to the W2B receipt,
+  retain the text that the final campaign receipt will supersede it, and rerun
+  `session check`; it exits zero.
+- Confirmed hook causes: `.gitattributes` explicitly protected `.js` but not the
+  maintained `.mjs` extension on this `core.autocrlf=true` Windows host, and the
+  narrow two-file mypy command did not enable the full hook's untyped-definition
+  rule. Resolution: add `*.mjs text eol=lf`, retain the hook-normalized files,
+  annotate the COM helper's input and exact five-value tuple return, refresh the
+  task receipt for the expanded path set, and rerun focused formatting/mypy plus
+  normal hooks. No hook was bypassed. ⚠️ TERMINAL ISSUE: first commit stopped on
+  mixed Office line endings and one missing type annotation -> repaired their
+  source contracts before retrying.
 
 ### Validation through content freeze
 
@@ -107,8 +180,21 @@ no-save/no-mutation/no-optimization/no-writeback/professional-review boundary.
   silent gaps. Live-only and out-of-contract claims retain their separate
   `NOT_PROVABLE_FROM_STATIC_METADATA`/`BLOCKED` verdicts.
 - Phase A focused documentation/governance, JSON validation, diff hygiene,
-  quick gate, normal hooks, final session validation, exact commit/push, and
-  remote-head proof remain the checkpoint closeout sequence.
+  quick gate, normal hooks, final clean session validation, exact two-commit
+  push, local/remote-head equality, and no-PR proof all passed.
+- W2B focused Python/FastAPI coverage passes the live bridge, W2A baseline, real
+  Windows file-observer, orchestration, abort-order, capacity, response, and
+  OpenAPI paths. The maintained Office.js suite passes 34 tests covering exact
+  preflight binding, canonical JSON hashing/reconstruction, stable rows,
+  header-only empty tables, all-seven-table creation, and pre-mutation collision
+  blocking. Affected Ruff checks pass.
+- W2B architecture scans 236 files with zero violations, validates 272 internal-
+  import files and 216 circular-import files without a failure, and passes
+  focused mypy. Strict documentation passes all five checks; 520 Markdown files
+  and 1,124 local links have zero broken links; task/brief/context/JSON/diff
+  validation passes.
+- The consolidated quick gate, normal hooks, immutable receipt, commit/push,
+  and remote proof remain the frozen Phase B closeout sequence.
 
 ---
 

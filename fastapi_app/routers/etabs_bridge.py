@@ -10,6 +10,14 @@ from starlette.concurrency import run_in_threadpool
 
 from fastapi_app.error_utils import sanitize_error
 from fastapi_app.models.response import APIResponse, error_response, success_response
+from structural_lib.services.etabs_beam_bridge import (
+    ETABSBeamBaselineCapacityError,
+    ETABSBeamBaselinePreflightV1,
+    ETABSBeamBaselineRunRequestV1,
+    ETABSBeamBaselineTransportV1,
+    inspect_etabs_beam_baseline_v1,
+    run_etabs_beam_baseline_v1,
+)
 from structural_lib.services.etabs_live_bridge import (
     ETABSBridgeStatusV1,
     ETABSConnectionError,
@@ -62,6 +70,80 @@ async def connect_etabs():
         return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             content=error_response(sanitize_error(exc, "ETABS connection")),
+        )
+
+
+@router.post(
+    "/beam-baseline/preflight",
+    response_model=APIResponse[ETABSBeamBaselinePreflightV1],
+    summary="Inspect the open ETABS model and runtime before a W2 baseline read",
+)
+async def inspect_etabs_beam_baseline():
+    try:
+        result = await run_in_threadpool(inspect_etabs_beam_baseline_v1)
+        return success_response(result)
+    except ETABSUnavailableError as exc:
+        return JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content=error_response(exc.to_problem()),
+        )
+    except ETABSConnectionError as exc:
+        return JSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content=error_response(exc.to_problem()),
+        )
+    except ETABSDataError as exc:
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            content=error_response(exc.to_problem()),
+        )
+    except Exception as exc:  # pragma: no cover - defensive COM boundary
+        logger.exception("ETABS baseline preflight failed")
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content=error_response(sanitize_error(exc, "ETABS baseline preflight")),
+        )
+
+
+@router.post(
+    "/beam-baseline",
+    response_model=APIResponse[ETABSBeamBaselineTransportV1],
+    summary="Read one complete preflight-bound W2 beam baseline",
+)
+async def run_etabs_beam_baseline(request: ETABSBeamBaselineRunRequestV1):
+    try:
+        result = await run_in_threadpool(run_etabs_beam_baseline_v1, request)
+        return success_response(result)
+    except ETABSUnavailableError as exc:
+        return JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content=error_response(exc.to_problem()),
+        )
+    except ETABSConnectionError as exc:
+        return JSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content=error_response(exc.to_problem()),
+        )
+    except ETABSBeamBaselineCapacityError as exc:
+        return JSONResponse(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            content=error_response(exc.to_problem()),
+        )
+    except ETABSDataError as exc:
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            content=error_response(exc.to_problem()),
+        )
+    except (TypeError, ValueError) as exc:
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            content=error_response(sanitize_error(exc, "ETABS beam baseline")),
+        )
+    except Exception as exc:  # pragma: no cover - defensive COM boundary
+        logger.exception("ETABS beam baseline failed")
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content=error_response(sanitize_error(exc, "ETABS beam baseline")),
         )
 
 
