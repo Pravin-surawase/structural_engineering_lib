@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-EXCEL-BEAM-W2C-INSTALLED-RETRY",
+  "verdict": "BLOCKED_SAFE_NO_FORCE_READ",
+  "observed_at_utc": "2026-08-29T11:18:54.021176Z",
+  "scope": {
+    "installed_windows_etabs": true,
+    "installed_excel_started": false,
+    "read_only": true,
+    "analysis_run": false,
+    "design_run": false,
+    "model_save_or_writeback": false,
+    "result_selection_setter": false,
+    "force_read": false,
+    "optimization": false,
+    "professional_or_construction_approval": false
+  },
+  "authority": {
+    "user_confirmed_approved_copy_open": true,
+    "user_confirmed_approved_combination_active": true,
+    "confirmation_reference": "current-thread:user-confirmed-approved-copy-and-active-combination",
+    "getter_verified_approved_combination_active": false,
+    "resolution": "The authoritative read-only getter disproved the transient-state confirmation, so the packet stopped at its mandatory earliest abort boundary without retry, selection change, or result read."
+  },
+  "source": {
+    "origin_main": "ee50aaa3cad619b41c6153f5f7970553ef65248c",
+    "origin_main_tree": "c1a49958ea85a2c1ea9f399a3fa96b84b8118e76",
+    "reviewed_candidate": "a88595a63ed4725e1bb3c3b897ba19680e4cace0",
+    "prior_windows_campaign_head": "471761767896263e64bd3c237f50134b19c50bab",
+    "branch": "codex/etabs-excel-beam-w2c-installed-retry",
+    "clean_at_execution": true,
+    "runtime_source_bound": true,
+    "pull_request_exists": false,
+    "baseline_source_sha256": "c3b7bf6704a41520e9245f32f59d18bee27a37d35c443e7866eaeb4d67ff62f4"
+  },
+  "host_and_runtime": {
+    "computer": "LAPTOP-360-PRAV",
+    "os": "Windows NT 10.0.26200.0",
+    "python": "3.11.15 64-bit",
+    "comtypes": "1.4.16",
+    "etabs_api_version": "23.3.1",
+    "etabs_api_numeric_version": 0.0,
+    "etabs_file_version": "23.3.1.4563",
+    "library_version": "0.24.0",
+    "library_content_identity": "89f79850fbeceefeb612d7ca76d8fa914c08908ef8a5bad2646d03435e52b857",
+    "getter_matrix_sha256": "f6874c7aa119816548b9a64f242dfdb7df94fbeea8c7fa520dea3ef0f74fb7d8",
+    "application_sha256": "16a790087dd3961b45e57e35c32179e90db31d2dab6c6039f6efb91d53e84456",
+    "application_signature_valid": true,
+    "x64_typelib_sha256": "3823416b05d80d148b63a2f490cd2acea2797d0fc64157c5cc8882c8fc24ef0e",
+    "managed_signature_assembly_sha256": "393492bd1649ee705c97449cf7d485c61b73ec649ed1d01f47f54f957b277e54",
+    "raw_wrapper_sha256": "18e302a44f357e236672aebd1e4697bfed42627a3680ffe2c070b43fbc62084c",
+    "friendly_wrapper_sha256": "40c66ee6dea247eb8816413bfe2e76eea4d4468026748d64a0425125cf2d52f1",
+    "etabs_process_count": 1,
+    "normal_etabs_window": true,
+    "unexpected_dialog_observed": false,
+    "excel_process_count": 0
+  },
+  "model_preflight": {
+    "path_and_name_retained_external_only": true,
+    "model_path_sha256": "6668cf9b74c815546c998f0275e4be9a764f739ff2c8c640bf24549d86a024bc",
+    "model_name_sha256": "d1835cd9b99da5f85e7d053ec2f52deb037877ecb95471641ab94f372f61da0a",
+    "sha256": "99b7f3f17051929196ef6494d8f4d220d895fc3dac5e1a57164a53bf8fa6948b",
+    "bytes": 702831,
+    "modified_utc": "2026-08-28T17:00:30.127813Z",
+    "locked": true,
+    "present_units_enum": 6,
+    "all_case_statuses_finished": true
+  },
+  "result_selection_preflight": {
+    "approved_kind": "COMBINATION",
+    "approved_name": "117.(1.5DL+1.5LL)",
+    "load_case_count": 15,
+    "combination_count": 62,
+    "approved_combination_present": true,
+    "approved_combination_selected": false,
+    "selected_case_count": 4,
+    "selected_combination_count": 0,
+    "selected_inventory_sha256": "166621c7905ad7239c0e9048800bdaa3c2694d10a5cee1093ab351810795adf6",
+    "selection_inventory_getters_return_code_zero": true,
+    "selection_state_changed_by_task": false,
+    "abort_reason": "RESULT_SELECTION_NOT_ACTIVE"
+  },
+  "abort_boundary": {
+    "direct_preflight_completed": true,
+    "direct_run_request_created": false,
+    "direct_transport_created": false,
+    "topology_extraction_started": false,
+    "frame_force_call_count": 0,
+    "result_station_rows": 0,
+    "rest_started": false,
+    "installed_excel_started": false,
+    "controlled_excel_tables_written": 0,
+    "unit_setter_called": false,
+    "selection_setter_called": false,
+    "selection_recheck_or_retry_performed": false,
+    "frame_analysis_verdict": "HELD_NOT_SUPPORTED",
+    "basis": "The retry runner asserted the exact approved combination's getter-verified active state before constructing a request. The false value raised the stop assertion, so every result and transport surface remained unreachable."
+  },
+  "preservation": {
+    "model_sha256_before_and_after": "99b7f3f17051929196ef6494d8f4d220d895fc3dac5e1a57164a53bf8fa6948b",
+    "model_bytes_before_and_after": 702831,
+    "model_modified_utc_before_and_after": "2026-08-28T17:00:30.127813Z",
+    "workbook_sha256_before_and_after": "53af584339436413929993c3ff17600ee98c3f62827f60240abe4ce05db711fe",
+    "workbook_bytes_before_and_after": 31361,
+    "workbook_modified_utc_before_and_after": "2026-08-28T19:05:30.6904832Z",
+    "model_lock_preflight": true,
+    "present_units_enum_preflight": 6,
+    "unit_restoration_not_required": true,
+    "post_abort_com_recheck_prohibited_by_packet": true,
+    "file_level_preservation_proved": true
+  },
+  "external_evidence": {
+    "root": "C:/CodexWork/evidence/ETABS-EXCEL-BEAM-W2C/installed-retry-ee50aaa3",
+    "proprietary_model_path_and_full_inventories_are_not_committed": true,
+    "files": {
+      "direct-preflight.json": {
+        "bytes": 1474,
+        "sha256": "34b677fa81281560d36f610b37253210df82dbccc114e7b1677c5b13a01b6320"
+      },
+      "selection-preflight.json": {
+        "bytes": 697,
+        "sha256": "98ad759b4927585bd294cab5186b2289eeaf14123715924898d40dc81beb3dc0"
+      },
+      "direct-run.log": {
+        "bytes": 295,
+        "sha256": "4e73ecb3b48e3f28ab2e638bd53c86836fd54df034155035b538531573a87a68"
+      },
+      "run_direct_retry.py": {
+        "bytes": 7435,
+        "sha256": "74aa47c7d98fb041fc2e265f2617727fa782ace34a5fab08d826d65af62d0250"
+      },
+      "safe-summary.json": {
+        "bytes": 2247,
+        "sha256": "446ea89d346623d84de99b724b53c7d7b51e4df2e6ef322d265c8207a9bbe391"
+      },
+      "ETABS-EXCEL-BEAM-W2C-retry.xlsx": {
+        "bytes": 31361,
+        "sha256": "53af584339436413929993c3ff17600ee98c3f62827f60240abe4ce05db711fe"
+      }
+    }
+  },
+  "root_cause_and_resolution": {
+    "symptom": "The user confirmed the exact combination active, but the installed getter returned false with zero selected combinations.",
+    "root_cause": "unconfirmed; active output selection is transient live ETABS session state, and the evidence does not prove why the human-visible expectation and getter state differed",
+    "resolution": "Stop fail-closed at the first false getter, do not loop, do not change selection, and retain exact getter/file/process evidence for a later independently authorized attempt."
+  },
+  "retry_preconditions": [
+    "A human must verify the exact ETABS output-selection UI immediately before a future separately authorized attachment; the task still must not activate or change selection.",
+    "Repeat exact Git head/tree, runtime/binary/type-library/wrapper, copied-model path/hash/size/time/lock/unit, analysis-status, and selection preflight.",
+    "Abort again before force reads on any drift, inactive selection, unfinished case, unsupported topology, unexpected dialog, or need for an unapproved setter."
+  ],
+  "limitations": [
+    "The retry did not produce or accept a force baseline, station inventory, canonical baseline hash, or direct/REST/Excel seven-table reconciliation.",
+    "The retry did not start REST or Excel because the direct getter failed the shared mandatory precondition.",
+    "No post-abort COM getter was called; file hashes prove byte preservation, the preflight units value is retained, and no unit setter was called.",
+    "The blocked result is positive fail-closed software evidence, not W2C installed acceptance.",
+    "Independent frame analysis remains HELD_NOT_SUPPORTED.",
+    "This evidence is not structural analysis, design approval, engineering approval, or construction-use approval."
+  ]
+}

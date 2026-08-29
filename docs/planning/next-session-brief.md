@@ -4,11 +4,11 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-29
-- Focus: Independently review and prepare the cumulative W2 Mac integration candidate.
-- Completed: Reproved exact main/campaign authority and no PR; independently accepted the W2 source/evidence boundary; repaired the daily date-sensitive compatibility-ledger test without rewriting the semantically current ledger.
-- Git receipt: docs/verification/etabs-excel-beam-w2-mac-integration-git-handoff-receipt.json | sha256:5a1fa6af6ee355be96f29ea019c77b401b2503dfd78f3af0f413bfedaa49b48b | HOLD
-- Git identity: codex/etabs-excel-beam-w2-mac-integration@471761767896263e64bd3c237f50134b19c50bab | upstream=origin/codex/etabs-excel-beam-w2-campaign@471761767896263e64bd3c237f50134b19c50bab | base=origin/main@0f5c918eb87b658448737fd6bf023ccb4bd07c74 | tree=dirty | operation=none
-- Hosted evidence: remote=NOT_APPLICABLE | PR=OBSERVED#UNKNOWN | review=OBSERVED | retention=OBSERVED
+- Focus: Freeze the separately authorized installed W2C retry at its first fail-closed getter boundary.
+- Completed: Reproved exact merged-main/runtime/model authority; attached only after owner confirmation; the exact approved combination getter still returned inactive, so no request, force, REST, Excel, or setter path ran and file identities remained unchanged.
+- Git receipt: docs/verification/etabs-excel-beam-w2c-installed-retry-git-handoff-receipt.json | sha256:4b731fe9c7bff8c9d63df32d24cd807948295b07cc3afb7beb8c1d728d71e118 | HOLD
+- Git identity: codex/etabs-excel-beam-w2c-installed-retry@ee50aaa3cad619b41c6153f5f7970553ef65248c | upstream=origin/main@ee50aaa3cad619b41c6153f5f7970553ef65248c | base=origin/main@ee50aaa3cad619b41c6153f5f7970553ef65248c | tree=dirty | operation=none
+- Hosted evidence: remote=NOT_APPLICABLE | PR=OBSERVED#0 | review=NOT_APPLICABLE | retention=OBSERVED
 - Next action: COMMIT_INTENDED_PATHS
 <!-- HANDOFF:END -->
 
@@ -17,9 +17,9 @@
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` remains the immutable current normal software release; no new release is selected or authorized. |
-| **Current** | GitHub `origin/main` remains exactly `0f5c918eb87b658448737fd6bf023ccb4bd07c74`. Exact Windows campaign head `47176176...` passed independent Mac review with no essential finding. The Mac integration candidate preserves every W2 file and adds only the date-stable compatibility-ledger test repair before cumulative validation/PR. W2C remains a safe blocked result with no force read or accepted baseline. |
+| **Current** | PR #897 merged the reviewed W2 campaign unchanged; GitHub `origin/main` is exactly `ee50aaa3cad619b41c6153f5f7970553ef65248c`, tree `c1a49958...`. The separately authorized installed retry repeated the exact source/runtime/model preflight, but the authoritative getter still returned the approved combination inactive despite owner confirmation. It stopped before request construction with no force/REST/Excel/setter and no accepted baseline. |
 | **Machine roles** | Mac is the primary development/integration machine. Windows is the installed Excel/ETABS testing and evidence machine. GitHub is the tracked handoff authority; proprietary model/workbook/evidence bytes remain on Windows. |
-| **Next** | Freeze and validate the Mac cumulative candidate, then open/merge one PR only on an unchanged green head. After integration, separately authorize the Windows W2C retry only when the exact approved combination is already active before attachment. |
+| **Next** | Mac reviews the clean pushed Windows retry evidence branch against exact merged main and may open one evidence-only PR. W2C remains held; any later attempt requires separate authorization and immediate human UI verification before the first getter. |
 | **Held** | ETABS analysis, unlock/save, section/load write-back, optimization, complete solver parity, expanded design/detailing/site-practice automation, release, and professional or construction-use approval. |
 
 ## Today closeout
@@ -84,19 +84,33 @@
 - Safe counts, identities, hashes, limitations, and retry preconditions are
   frozen in the tracked W2C receipt. Proprietary model/workbook/result payloads
   remain external and hash-bound.
+- PR #897 merged the reviewed cumulative W2 candidate unchanged as exact
+  `ee50aaa3...`, tree `c1a49958...`; the Windows retry branch starts from that
+  exact integrated authority and leaves protected Windows `main` untouched.
+- After the owner confirmed the approved copied model open and exact combination
+  active, the retry attached read-only and repeated source/runtime/model/lock/
+  units/finished-case/result-selection preflight. The exact combination was
+  present but the getter returned inactive, with zero selected combinations.
+- The retry obeyed the mandatory first-failure boundary: no direct request or
+  transport, zero `FrameForce` calls/stations, no REST or Excel start, no unit
+  or selection setter, and no analysis/design/save/mutation.
+- Model and copied-workbook hashes, bytes, and timestamps remained unchanged at
+  the file boundary. The preflight unit value was enum `6`; no restoration was
+  required, and the packet prohibited a post-abort COM recheck.
+- The confirmation/getter mismatch root cause is unconfirmed. The new retry
+  receipt retains safe identities/counts/hashes only; proprietary model path,
+  complete inventories, and workbook bytes remain external and hash-bound.
 
 ## Next objective
 
-1. Complete cumulative Mac validation of the integration candidate, including
-   focused W2/Office checks, quick/full gates, broad Python, normal hooks, and
-   final clean session validation.
-2. Push and open one cumulative PR. Merge only if every hosted check passes on
-   the unchanged reviewed head, and describe W2C as
-   `BLOCKED_SAFE_NO_FORCE_READ`, not an acceptance pass.
-3. After merged-main synchronization, separately authorize the installed W2C
-   retry only with exact combination `117.(1.5DL+1.5LL)` already active and
-   every source/runtime/model/unit/lock/result preflight repeated. Do not start
-   W3 before that retry passes or is explicitly deferred.
+1. On Mac, fetch `origin/codex/etabs-excel-beam-w2c-installed-retry` and verify
+   its exact base/head/tree, changed paths, safe retry receipt, and preservation
+   proof against merged `origin/main=ee50aaa3...`.
+2. If unchanged and green, open one evidence-only PR. Describe W2C as
+   `BLOCKED_SAFE_NO_FORCE_READ`, not an acceptance pass; do not start W3.
+3. Decide separately whether another human-assisted installed attempt is worth
+   authorizing. It must repeat every preflight and still abort on the first
+   inactive getter without changing output selection.
 
 ## New-chat starter
 
@@ -105,28 +119,29 @@ Use the copy-ready prompt in
 
 ## Preservation rules
 
-- Installed W2C work is complete at the safe hold. Do not change result
-  selection or resume force reads under this authorization.
+- Installed W2C retry work is complete at the safe hold. Do not change result
+  selection, reattach, or resume force reads under this authorization.
 - Preserve every unrelated worktree, staged/dirty/untracked/ignored/stashed
   item, retained source, branch, ref, and archive. Protected `main` remains a
   `HOLD_MAIN` lane.
 - Do not copy repository files between devices; push/PR/fetch through GitHub.
-- Windows remains sole writer for the cumulative campaign until its final push;
-  then it stops and Mac owns review/integration.
+- Windows remains sole writer for the retry branch until its final push; then it
+  stops and Mac owns review/integration.
 - Do not rewrite history, bypass checks, delete branches/worktrees/refs/data,
   rebuild a public version, or broaden software/engineering claims.
 
 ## Required Reading
 
-1. [Excel + ETABS beam next-phase plan](excel-etabs-beam-next-phase-plan.md)
-2. [Phase A static COM-signature evidence](../verification/etabs-excel-beam-w2c-com-signature-audit-evidence.json)
-3. [W1 installed Windows receipt](../verification/etabs-excel-python-pilot-w1-evidence.json)
-4. [W2B contract evidence](../verification/etabs-excel-beam-w2b-contract-evidence.json)
-5. [W2C installed safe-hold evidence](../verification/etabs-excel-beam-w2c-installed-acceptance-evidence.json)
-6. [Excel/Python/ETABS pilot guide](../guides/excel-etabs-python-bridge-pilot.md)
-7. [Multi-device Git workflow](../git-automation/git-workflow-single-source.md#multi-device-rule-one-branch-one-writer-device)
-8. [Current task board](../TASKS.md)
-9. `Python/structural_lib/services/etabs_beam_baseline.py`
-10. `Python/structural_lib/services/etabs_beam_bridge.py`
-11. `Python/tests/unit/test_etabs_beam_baseline.py`
-12. [Newest W2 campaign session entry](../SESSION_LOG.md)
+1. [W2C installed retry evidence](../verification/etabs-excel-beam-w2c-installed-retry-evidence.json)
+2. [Excel + ETABS beam next-phase plan](excel-etabs-beam-next-phase-plan.md)
+3. [Prior W2C installed safe-hold evidence](../verification/etabs-excel-beam-w2c-installed-acceptance-evidence.json)
+4. [Phase A static COM-signature evidence](../verification/etabs-excel-beam-w2c-com-signature-audit-evidence.json)
+5. [W2B contract evidence](../verification/etabs-excel-beam-w2b-contract-evidence.json)
+6. [W1 installed Windows receipt](../verification/etabs-excel-python-pilot-w1-evidence.json)
+7. [Excel/Python/ETABS pilot guide](../guides/excel-etabs-python-bridge-pilot.md)
+8. [Multi-device Git workflow](../git-automation/git-workflow-single-source.md#multi-device-rule-one-branch-one-writer-device)
+9. [Current task board](../TASKS.md)
+10. `Python/structural_lib/services/etabs_beam_baseline.py`
+11. `Python/structural_lib/services/etabs_beam_bridge.py`
+12. `Python/tests/unit/test_etabs_beam_baseline.py`
+13. [Newest W2C retry session entry](../SESSION_LOG.md)

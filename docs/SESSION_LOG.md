@@ -5,6 +5,117 @@
 
 ---
 
+## 2026-08-29 — Session: Windows W2C installed retry fail-closed hold
+
+**Agent:** Codex (`windows-evidence`/`documentation`/`governance`, sole writer;
+no subagents).
+
+**Branch:** `codex/etabs-excel-beam-w2c-installed-retry`, created in a fresh
+Windows worktree from exact `origin/main`
+`ee50aaa3cad619b41c6153f5f7970553ef65248c`, tree
+`c1a49958ea85a2c1ea9f399a3fa96b84b8118e76`, after PR #897 merged the reviewed
+W2 candidate unchanged.
+
+**Git handoff receipt:**
+`docs/verification/etabs-excel-beam-w2c-installed-retry-git-handoff-receipt.json`
+(pre-commit Windows-to-Mac retry receipt; hosted push facts remain external).
+
+**Focus:** Retry only the installed W2C read-only acceptance after the owner
+confirmed that the approved copied model was open and exact combination
+`117.(1.5DL+1.5LL)` was active for output. Reprove source/runtime/model and
+transient result-selection state before results; stop at the first failed
+precondition without changing selection, looping, reading forces, opening
+Excel, running analysis/design, saving/mutating the model, or broadening the
+software evidence into engineering approval.
+
+**Completed:**
+
+- Fetched GitHub, verified exact PR #897 merge/head/tree authority, preserved
+  the protected Windows primary checkout as `HOLD_MAIN`, preserved all retained
+  W2 worktrees/evidence, and created the fresh retry worktree from exact
+  `origin/main` with no matching local/remote branch or PR.
+- Reproved source binding and exact Windows/ETABS/Python/comtypes/library,
+  binary/type-library/wrapper, getter-matrix, model-file, locked-state, unit,
+  finished-case, and normal-window identities. Excel was absent.
+- Attached read-only only after the user's required confirmation. The exact
+  combination existed, but the authoritative selection getter returned false;
+  all 15 cases remained finished, four cases were selected, and zero
+  combinations were selected.
+- Stopped immediately at `RESULT_SELECTION_NOT_ACTIVE`. The retry constructed
+  no direct request/transport, made zero `FrameForce` calls, produced zero force
+  stations, started neither REST nor Excel, called no unit or selection setter,
+  and performed no analysis, design, save, or model/workbook mutation.
+- Proved the copied model SHA-256/bytes/timestamp and copied workbook
+  SHA-256/bytes/timestamp unchanged at the file boundary. Because the packet
+  forbade looping after a false active-selection getter, no post-abort COM
+  getter was called; the preflight units remained enum `6` and no unit
+  restoration was required.
+- Froze only safe identities/counts/hashes and limitations in
+  `docs/verification/etabs-excel-beam-w2c-installed-retry-evidence.json`;
+  proprietary model path/inventories and workbook bytes remain hash-bound on
+  the Windows evidence host. W2C remains `BLOCKED_SAFE_NO_FORCE_READ`, and
+  independent frame analysis remains `HELD_NOT_SUPPORTED`.
+
+### Issues encountered
+
+- The required `session begin` command refused the retry task because the
+  preserved store still contains an unmatched start checkpoint for
+  `ETABS-EXCEL-BEAM-W2C-COM-SIGNATURE-AUDIT`.
+- The first local diagnostic asserted that ETABS's numeric API-version output
+  would equal `23.3`; the installed getter returned the stable value `0.0`, so
+  that diagnostic stopped after writing its getter-only preflight.
+- The owner-provided active-combination confirmation did not match the live
+  getter: exact combination `117.(1.5DL+1.5LL)` was present but inactive, with
+  zero selected combinations. This blocked every result and reconciliation
+  surface.
+- The first normal commit-hook run rejected the Latest Handoff because it
+  recorded the receipt file's SHA-256 instead of the receipt's canonical
+  `local_state_receipt_hash`.
+
+### Root causes and resolutions
+
+- Confirmed session cause: the repository session store retains the documented
+  unmatched historical Phase A checkpoint. Resolution: preserve it, do not
+  invent old timing or close another task's checkpoint, and use clean
+  worktree/Git/runtime evidence for this retry. ⚠️ TERMINAL ISSUE: `session
+  begin` stopped on the historical unmatched checkpoint -> preserved it
+  unchanged and continued only after `READY_LOCAL` source-binding proof.
+- Confirmed diagnostic cause: the diagnostic guessed a semantic numeric
+  version from the display version, while both the current and prior installed
+  W2C preflights prove the numeric provider output is `0.0`; ETABS file version
+  `23.3.1.4563`, API string `23.3.1`, signed binary hash, and type-library hash
+  are the maintained version proofs. Resolution: removed that incorrect
+  diagnostic expectation; no product code or contract change was needed.
+- Active-selection mismatch root cause: **unconfirmed**. Output selection is
+  transient live-session state, and the evidence does not prove why the
+  confirmation and getter disagreed. Resolution: obey the frozen guard,
+  perform no recheck loop or selection setter, and stop before request
+  construction. Getter inventory plus the absence of request/transport files,
+  zero REST/Excel processes, and unchanged model/workbook hashes prove the safe
+  outcome.
+- Confirmed handoff-hook cause: the Latest Handoff contract cites the internal
+  canonical `local_state_receipt_hash`, but the first draft cited the JSON
+  file-byte hash. Resolution: replaced it with the receipt's exact
+  `sha256:4b731fe9...`, then reran normal hooks. ⚠️ TERMINAL ISSUE: the first
+  commit stopped at `check-session-docs` -> corrected the required hash field;
+  a follow-up raw-hash diagnostic also required `bash -lc` because PowerShell
+  does not expose `sha256sum` directly.
+
+### Validation
+
+- All three new retry/source/handoff JSON files parse; `git diff --check`
+  passes; strict documentation passes `5/5`; 520 Markdown files and 1,128
+  maintained local links have zero broken links; OpenAPI matches 95 endpoints/
+  501 schemas; and all five schema snapshots plus two enums match.
+- Focused W2 Python/FastAPI passes `46/46`, and Office.js passes `34/34`.
+  Architecture scans 236 files with zero violations; 753-file import validation
+  resolves all 2,509 internal imports; and 216-file circular analysis passes.
+- The consolidated quick gate passes `10/10` with zero reused results.
+  Normal commit hooks and final clean `session end` remain the immutable-
+  candidate closeout steps.
+
+---
+
 ## 2026-08-29 — Session: Mac W2 cumulative review and integration repair
 
 **Agent:** Codex (`reviewer`/`governance`/`integration`, sole writer; no

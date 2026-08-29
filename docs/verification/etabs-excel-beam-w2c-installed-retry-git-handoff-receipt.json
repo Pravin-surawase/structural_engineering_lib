@@ -1,0 +1,199 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-29T11:27:00Z",
+      "query_status": "OK",
+      "reference": "current-thread:w2c-installed-retry-packet-and-approved-model-active-combination-confirmation",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-29T11:27:00Z",
+    "prohibited_actions": [
+      "CREATE_OR_MERGE_PULL_REQUEST",
+      "CHANGE_MAIN",
+      "REWRITE_HISTORY",
+      "DELETE_BRANCH_WORKTREE_OR_EVIDENCE",
+      "REATTACH_ETABS_UNDER_THIS_PACKET",
+      "OPEN_EXCEL_UNDER_THIS_PACKET",
+      "CHANGE_OR_RECHECK_RESULT_SELECTION",
+      "READ_FRAME_FORCES",
+      "RUN_ANALYSIS_OR_DESIGN",
+      "UNLOCK_MUTATE_OR_SAVE_MODEL",
+      "START_W3_OR_REPAIR_NANOID",
+      "CLAIM_W2C_ACCEPTANCE_PASS",
+      "CLAIM_ENGINEERING_APPROVAL"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH"
+      ],
+      "branch": "codex/etabs-excel-beam-w2c-installed-retry",
+      "head_sha": "ee50aaa3cad619b41c6153f5f7970553ef65248c",
+      "task_id": "ETABS-EXCEL-BEAM-W2C-INSTALLED-RETRY"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "NO_BRANCH_OR_WORKTREE_DELETION",
+    "PRESERVE_PRIOR_AND_RETRY_EXTERNAL_EVIDENCE",
+    "PRESERVE_PRIOR_WINDOWS_CAMPAIGN_HEAD_47176176",
+    "PRESERVE_W2A_AND_PHASE_A_WORKTREES",
+    "PRESERVE_WINDOWS_PRIMARY_HOLD_MAIN",
+    "PULL_REQUEST_HEAD_MISMATCH",
+    "PULL_REQUEST_IDENTITY_UNKNOWN",
+    "PULL_REQUEST_SHA_MALFORMED",
+    "REQUIRED_CHECKS_MALFORMED"
+  ],
+  "integration": {
+    "base_head_sha": "ee50aaa3cad619b41c6153f5f7970553ef65248c",
+    "base_tree_sha": "c1a49958ea85a2c1ea9f399a3fa96b84b8118e76",
+    "observed_at_utc": "2026-08-29T11:27:00Z",
+    "pull_request": 897,
+    "query_status": "OK",
+    "reviewed_candidate_sha": "a88595a63ed4725e1bb3c3b897ba19680e4cace0",
+    "status": "OBSERVED",
+    "verdict": "PR_897_MERGED_REVIEWED_CANDIDATE_UNCHANGED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "4b731fe9c7bff8c9d63df32d24cd807948295b07cc3afb7beb8c1d728d71e118",
+    "state": {
+      "branch": "codex/etabs-excel-beam-w2c-installed-retry",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "ee50aaa3cad619b41c6153f5f7970553ef65248c",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 682.481,
+      "git_common_dir": "C:\\Users\\P\\Pravin2025\\Projects\\structural_lib_repo\\.git",
+      "git_dir": "C:\\Users\\P\\Pravin2025\\Projects\\structural_lib_repo\\.git\\worktrees\\structural_lib_repo-w2c-retry",
+      "head_sha": "ee50aaa3cad619b41c6153f5f7970553ef65248c",
+      "hold_reasons": [
+        "changed paths: 9"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-29T11:28:25.228000+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\Users\\P\\Pravin2025\\Projects\\structural_lib_repo-w2c-retry",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 9,
+        "modified_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/WORKLOG.md",
+          "docs/guides/excel-etabs-python-bridge-pilot.md",
+          "docs/planning/excel-etabs-beam-next-phase-plan.md",
+          "docs/planning/next-session-brief.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/etabs-excel-beam-w2c-installed-retry-evidence.json",
+          "docs/verification/etabs-excel-beam-w2c-installed-retry-git-handoff-receipt.json",
+          "docs/verification/etabs-excel-beam-w2c-installed-retry-git-handoff-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "ee50aaa3cad619b41c6153f5f7970553ef65248c",
+        "status": "equal"
+      },
+      "worktree_root": "C:\\Users\\P\\Pravin2025\\Projects\\structural_lib_repo-w2c-retry"
+    }
+  },
+  "local_state_receipt_hash": "sha256:4b731fe9c7bff8c9d63df32d24cd807948295b07cc3afb7beb8c1d728d71e118",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-29T11:28:25.228000+00:00",
+  "pull_request": {
+    "base": "main",
+    "head": "codex/etabs-excel-beam-w2c-installed-retry",
+    "matching_pull_requests": 0,
+    "observed_at_utc": "2026-08-29T11:27:00Z",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "branch": "codex/etabs-excel-beam-w2c-installed-retry",
+    "matching_remote_heads": 0,
+    "observed_at_utc": "2026-08-29T11:27:00Z",
+    "query_status": "UNKNOWN",
+    "reason_code": "RETRY_BRANCH_NOT_PUSHED_BEFORE_CANDIDATE_FREEZE",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_PROTECTED_WINDOWS_MAIN_ALL_W2_WORKTREES_BRANCHES_AND_EXTERNAL_EVIDENCE",
+    "holds": [
+      "PRESERVE_WINDOWS_PRIMARY_HOLD_MAIN",
+      "PRESERVE_PRIOR_WINDOWS_CAMPAIGN_HEAD_47176176",
+      "PRESERVE_W2A_AND_PHASE_A_WORKTREES",
+      "PRESERVE_PRIOR_AND_RETRY_EXTERNAL_EVIDENCE",
+      "NO_BRANCH_OR_WORKTREE_DELETION"
+    ],
+    "observed_at_utc": "2026-08-29T11:27:00Z",
+    "owner": "Windows retry sole writer until clean push; Mac owns review and integration afterward",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "observed_at_utc": "2026-08-29T11:27:00Z",
+    "query_status": "UNKNOWN",
+    "reason_code": "WINDOWS_RETRY_CANDIDATE_NOT_YET_COMMITTED",
+    "status": "NOT_APPLICABLE",
+    "verdict": "MAC_REVIEW_PENDING"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/services/etabs_beam_baseline.py",
+      "Python/structural_lib/services/etabs_beam_bridge.py",
+      "Python/structural_lib/services/etabs_live_bridge.py",
+      "fastapi_app",
+      "excel_addin",
+      "docs/verification/etabs-excel-beam-w2c-installed-acceptance-evidence.json"
+    ],
+    "integration_owner": "Mac primary review PR checks and main integration",
+    "owned_paths": [
+      "docs/verification/etabs-excel-beam-w2c-installed-retry-evidence.json",
+      "docs/verification/etabs-excel-beam-w2c-installed-retry-git-handoff-source-evidence.json",
+      "docs/verification/etabs-excel-beam-w2c-installed-retry-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/WORKLOG.md",
+      "docs/planning/excel-etabs-beam-next-phase-plan.md",
+      "docs/planning/next-session-brief.md",
+      "docs/guides/excel-etabs-python-bridge-pilot.md"
+    ],
+    "task_id": "ETABS-EXCEL-BEAM-W2C-INSTALLED-RETRY"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "query_status": "OK",
+    "reason_code": "CURRENT_RETRY_TASK_REMAINS_ACTIVE_UNTIL_CLEAN_PUSH",
+    "status": "NOT_APPLICABLE"
+  }
+}

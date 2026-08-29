@@ -3,7 +3,7 @@
 **Type:** Guide
 **Audience:** Developers
 **Status:** Complete
-**Next Phase:** W2 Campaign Ready for Mac Review; Installed W2C Held Fail-Closed
+**Next Phase:** W2 Integrated; Installed Retry Held Fail-Closed; Mac Evidence Review
 **Created:** 2026-08-28
 **Last Updated:** 2026-08-29
 **Importance:** High
@@ -348,3 +348,18 @@ authorization and an ETABS session where the exact approved combination is
 already active before Codex attaches, followed by the complete preflight again.
 Design/detailing expansion, construction-practice checks, offline optimization,
 and copied-model write-back/reanalysis remain separate later gates.
+
+PR #897 subsequently integrated the reviewed cumulative W2 campaign unchanged
+as `ee50aaa3...`. In the separately authorized installed retry, the owner
+confirmed the approved copy open and exact combination active before attachment,
+but the authoritative read-only getter still returned the combination inactive
+with zero selected combinations. The workflow stopped before constructing a
+run request: zero `FrameForce` calls and force stations, no REST or Excel start,
+no unit/result-selection setter, and no analysis, design, save, or mutation.
+The model and copied-workbook file identities remained unchanged. The safe
+retry receipt is
+[`etabs-excel-beam-w2c-installed-retry-evidence.json`](../verification/etabs-excel-beam-w2c-installed-retry-evidence.json).
+The confirmation/getter mismatch root cause is unconfirmed; do not retry under
+the same authorization or attempt to repair selection through the API. W2C
+remains `BLOCKED_SAFE_NO_FORCE_READ`, and independent frame analysis remains
+`HELD_NOT_SUPPORTED`.
