@@ -280,6 +280,15 @@ from .services.contracts.etabs_w3 import (
     verify_beam_demand_snapshot_hash_v1,
     verify_etabs_result_catalogue_hash_v1,
 )
+from .services.etabs_result_catalogue_adapter import (
+    ETABSCatalogueAdapterRequestV1,
+    ETABSCatalogueAdapterResultV1,
+    ETABSCatalogueSelectionRequestV1,
+    ETABSGetterCallEvidenceV1,
+    ETABSGetterContainerKindV1,
+    ETABSGetterOutcomeV1,
+    extract_etabs_result_catalogue_v1,
+)
 
 # Import 3D visualization from visualization.geometry_3d
 from .visualization.geometry_3d import (
@@ -339,6 +348,12 @@ __all__ = [
     "BeamGoverningSignV1",
     "BeamStationDomainV1",
     "DeterministicTieBreakV1",
+    "ETABSCatalogueAdapterRequestV1",
+    "ETABSCatalogueAdapterResultV1",
+    "ETABSCatalogueSelectionRequestV1",
+    "ETABSGetterCallEvidenceV1",
+    "ETABSGetterContainerKindV1",
+    "ETABSGetterOutcomeV1",
     "ETABSResultCatalogueBuildRequestV1",
     "ETABSResultCatalogueBuildResultV1",
     "ETABSResultCatalogueCapacityV1",
@@ -362,6 +377,7 @@ __all__ = [
     "canonical_beam_demand_snapshot_hash_basis_json_v1",
     "canonical_etabs_result_catalogue_hash_basis_json_v1",
     "derive_beam_demand_snapshot_v1",
+    "extract_etabs_result_catalogue_v1",
     "query_beam_action_rows_v1",
     "verify_beam_demand_snapshot_hash_v1",
     "verify_etabs_result_catalogue_hash_v1",

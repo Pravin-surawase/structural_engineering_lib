@@ -1,0 +1,112 @@
+{
+  "schema_version": "etabs-w3c-catalogue-adapter-evidence/v1",
+  "task_id": "ETABS-EXCEL-BEAM-W3-CAMPAIGN",
+  "packet": "W3C",
+  "verdict": "TRANSPORT_NEUTRAL_ADAPTER_ACCEPTED_LOCALLY",
+  "observed_at_utc": "2026-08-29T21:02:18.5024282Z",
+  "source": {
+    "repository": "https://github.com/Pravin-surawase/structural_engineering_lib.git",
+    "accepted_w3b_pr": 902,
+    "accepted_w3b_merge_commit": "94c058f108351dd78195be5ee228b78da1d6a635",
+    "accepted_w3b_tree": "a93377058f7c04445a311a4267cfd2fb4f21ef11",
+    "accepted_w3b_evidence_path": "docs/verification/etabs-w3b-installed-getter-signature-evidence.json",
+    "accepted_w3b_evidence_sha256": "c45b260be79f0d43a10bb90dd078a26b1390b13f05e500d230eb95bf0bd62017",
+    "branch": "codex/etabs-w3c-catalogue-adapter-windows",
+    "worktree": "C:/CodexWork/worktrees/etabs-w3c-catalogue-adapter-windows"
+  },
+  "accepted_contracts": [
+    {
+      "path": "Python/structural_lib/core/analysis_contracts.py",
+      "byte_count": 17840,
+      "sha256": "f264cafb114d1d7b4b7a8af529adc87224ad079483e186c6f461ec05165a12fc"
+    },
+    {
+      "path": "Python/structural_lib/services/contracts/etabs_w3.py",
+      "byte_count": 41957,
+      "sha256": "cb6b880f90cf00fe39f89f3d9b7d1b22404393b5576be00b8a61de1870b029bd"
+    }
+  ],
+  "implementation": {
+    "path": "Python/structural_lib/services/etabs_result_catalogue_adapter.py",
+    "byte_count": 41609,
+    "sha256": "fc4e7bd3888e3de1f8045277c8f863736a89393f359f0ded9823156e27501337",
+    "public_symbols": [
+      "ETABSCatalogueAdapterRequestV1",
+      "ETABSCatalogueAdapterResultV1",
+      "ETABSCatalogueSelectionRequestV1",
+      "ETABSGetterCallEvidenceV1",
+      "ETABSGetterContainerKindV1",
+      "ETABSGetterOutcomeV1",
+      "extract_etabs_result_catalogue_v1"
+    ],
+    "proved_getter_operations": [
+      "LoadPatterns.GetNameList",
+      "LoadPatterns.GetLoadType",
+      "LoadPatterns.GetSelfWTMultiplier",
+      "LoadCases.GetNameList",
+      "LoadCases.GetTypeOAPI_1",
+      "LoadCases.StaticLinear.GetInitialCase",
+      "LoadCases.StaticLinear.GetLoads",
+      "Analyze.GetCaseStatus",
+      "RespCombo.GetNameList",
+      "RespCombo.GetTypeOAPI",
+      "RespCombo.GetCaseList",
+      "Results.Setup.GetCaseSelectedForOutput",
+      "Results.Setup.GetComboSelectedForOutput"
+    ],
+    "installed_signature_guards": [
+      "GetTypeOAPI is never called; GetTypeOAPI_1 retains case type, subtype, design type, design option and exact Auto flag",
+      "Auto must be exactly 0 or 1",
+      "a nonblank linear-static initial case blocks until represented by a public contract",
+      "unsupported selected case families block",
+      "nonzero CSI returns, provider exceptions, container drift, count mismatch, invalid decoded values, incomplete status inventory, inactive selection, normalization failure and capacity overflow return no partial catalogue"
+    ]
+  },
+  "focused_verification": {
+    "test_path": "Python/tests/unit/test_etabs_w3c_catalogue_adapter.py",
+    "test_byte_count": 12287,
+    "test_sha256": "eca1cbbcff4cd6c4b14b31f152003b778f8bf4571f0dae83a685dc520bf8c565",
+    "pytest": {
+      "command": "./scripts/python_runtime.sh -m pytest Python/tests/unit/test_etabs_w3_contracts.py Python/tests/unit/test_etabs_w3b_signature_evidence.py Python/tests/unit/test_etabs_w3c_catalogue_adapter.py -q",
+      "passed": 24,
+      "failed": 0
+    },
+    "mypy": {
+      "command": "./scripts/python_runtime.sh -m mypy Python/structural_lib/services/etabs_result_catalogue_adapter.py",
+      "result": "SUCCESS"
+    },
+    "ruff": {
+      "result": "SUCCESS"
+    },
+    "public_export_identity": "7/7 root and service-facade exports are identical",
+    "api_control": "React/FastAPI call sites, api.__all__ documentation and API classification synchronization passed",
+    "quick_gate": {
+      "command": "./run.sh check --quick --no-reuse",
+      "passed": 10,
+      "failed": 0,
+      "reused": 0
+    }
+  },
+  "scope": {
+    "caller_supplied_sap_model_shape_only": true,
+    "com_import_or_object_creation": false,
+    "etabs_process_launched_attached_or_automated": false,
+    "excel_process_launched_or_automated": false,
+    "frame_force_called": false,
+    "analysis_or_design_run": false,
+    "result_selection_changed": false,
+    "units_changed": false,
+    "model_or_workbook_opened_or_mutated": false,
+    "rest_surface_added": false,
+    "professional_or_engineering_approval": false
+  },
+  "next_boundary": {
+    "packet": "W3D",
+    "action": "After W3C merges unchanged, bind a fresh read-only Windows acceptance workspace to the exact merge tree and extract one complete live catalogue plus linked same-row demand snapshot from the positively identified copied model.",
+    "holds": [
+      "Do not select outputs, run analysis or design, unlock, save, write Excel or mutate the copied model during W3D.",
+      "Independent frame analysis remains HELD_NOT_SUPPORTED.",
+      "ETABS remains the global-analysis authority; professional and construction approval remain unapproved."
+    ]
+  }
+}

@@ -311,12 +311,27 @@ from .etabs_import import (  # noqa: F401
     normalize_etabs_forces,
     validate_etabs_csv,
 )
+from .etabs_result_catalogue_adapter import (  # noqa: F401
+    ETABSCatalogueAdapterRequestV1,
+    ETABSCatalogueAdapterResultV1,
+    ETABSCatalogueSelectionRequestV1,
+    ETABSGetterCallEvidenceV1,
+    ETABSGetterContainerKindV1,
+    ETABSGetterOutcomeV1,
+    extract_etabs_result_catalogue_v1,
+)
 
 __all__ = [
     # W3 result catalogue and beam demand
     "BeamActionPageV1",
     "BeamDemandBuildResultV1",
     "BeamDemandDerivationRequestV1",
+    "ETABSCatalogueAdapterRequestV1",
+    "ETABSCatalogueAdapterResultV1",
+    "ETABSCatalogueSelectionRequestV1",
+    "ETABSGetterCallEvidenceV1",
+    "ETABSGetterContainerKindV1",
+    "ETABSGetterOutcomeV1",
     "ETABSResultCatalogueBuildRequestV1",
     "ETABSResultCatalogueBuildResultV1",
     "ETABSResultCatalogueCapacityV1",
@@ -327,6 +342,7 @@ __all__ = [
     "canonical_beam_demand_snapshot_hash_basis_json_v1",
     "canonical_etabs_result_catalogue_hash_basis_json_v1",
     "derive_beam_demand_snapshot_v1",
+    "extract_etabs_result_catalogue_v1",
     "query_beam_action_rows_v1",
     "verify_beam_demand_snapshot_hash_v1",
     "verify_etabs_result_catalogue_hash_v1",
