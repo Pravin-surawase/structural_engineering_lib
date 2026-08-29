@@ -1,0 +1,186 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-29T18:21:52Z",
+      "query_status": "OK",
+      "reference": "active Codex task: okay let run a maintenance session and cleaning so we can start w3",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "INTEGRATE_ACCEPTED_W2C_PREDECESSOR",
+      "PRESERVE_AND_REFRESH_ETABS_FOUNDATION_AUDITS",
+      "REPAIR_EXACT_SESSION_CHECKPOINT_CONTROL",
+      "REMOVE_ONLY_VERIFIED_IGNORED_REGENERABLE_CACHES",
+      "REFRESH_TRACKED_API_CALLER_LEDGER_AND_PRECOMMIT_ROUTING",
+      "RUN_FOCUSED_QUICK_FULL_AND_HOSTED_VALIDATION",
+      "COMMIT_PUSH_CREATE_PR_AND_MERGE_WHEN_REQUIRED_CHECKS_PASS"
+    ],
+    "next_action": "COMMIT_PUSH_CREATE_PR_AND_MERGE_WHEN_REQUIRED_CHECKS_PASS",
+    "observed_at_utc": "2026-08-29T18:21:52Z",
+    "prohibited_actions": [
+      "DELETE_BRANCH_WORKTREE_ARCHIVE_EVIDENCE_PROTECTED_SOURCE_OR_PUBLIC_API",
+      "RESET_REBASE_REWRITE_FORCE_PUSH_OR_BYPASS_CHECKS",
+      "OPEN_ETABS_OR_EXCEL_OR_MUTATE_A_MODEL_OR_WORKBOOK",
+      "RUN_ETABS_ANALYSIS_DESIGN_OPTIMIZATION_OR_WRITE_BACK",
+      "IMPLEMENT_W3_SOLVER_OR_OPTIMIZER_IN_MAINTENANCE_PACKET",
+      "PUBLISH_RELEASE_OR_CLAIM_ENGINEERING_PROFESSIONAL_OR_CONSTRUCTION_APPROVAL"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "INTEGRATE_ACCEPTED_W2C_PREDECESSOR",
+        "PRESERVE_AND_REFRESH_ETABS_FOUNDATION_AUDITS",
+        "REPAIR_EXACT_SESSION_CHECKPOINT_CONTROL",
+        "REMOVE_ONLY_VERIFIED_IGNORED_REGENERABLE_CACHES",
+        "REFRESH_TRACKED_API_CALLER_LEDGER_AND_PRECOMMIT_ROUTING",
+        "RUN_FOCUSED_QUICK_FULL_AND_HOSTED_VALIDATION",
+        "COMMIT_PUSH_CREATE_PR_AND_MERGE_WHEN_REQUIRED_CHECKS_PASS"
+      ],
+      "branch": "codex/etabs-analysis-foundation-audit",
+      "head_sha": "af4f4827ea57f69c88e6438b96387d3ab3da0c4d",
+      "task_id": "ETABS-W3-READINESS-MAINTENANCE"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_FINAL_CANDIDATE",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "029d9dda57315db9d9d52542545c1b127d5f0553a1bf06c82e4b7252b946a6b9",
+    "state": {
+      "branch": "codex/etabs-analysis-foundation-audit",
+      "default_base": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "f1873e7b910134e01abf082169d20c04d6375669",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 107.261,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "head_sha": "af4f4827ea57f69c88e6438b96387d3ab3da0c4d",
+      "hold_reasons": [
+        "changed paths: 6"
+      ],
+      "linked_worktree": false,
+      "locks": [],
+      "observed_at_utc": "2026-08-29T18:22:19.188729+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 6,
+        "modified_paths": [
+          ".pre-commit-config.yaml",
+          "Python/tests/test_agent_governance_automation.py",
+          "docs/SESSION_LOG.md",
+          "docs/reference/api-classification.json",
+          "docs/reference/api-compatibility-ledger.json",
+          "docs/verification/etabs-w3-readiness-maintenance-git-handoff-source-evidence.json"
+        ],
+        "staged_paths": [],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/codex/etabs-analysis-foundation-audit",
+        "sha": "af4f4827ea57f69c88e6438b96387d3ab3da0c4d",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:029d9dda57315db9d9d52542545c1b127d5f0553a1bf06c82e4b7252b946a6b9",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-29T18:22:19.189092+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_PULL_REQUEST_BEFORE_CANDIDATE_FREEZE",
+    "status": "NOT_APPLICABLE"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_REMOTE_BRANCH_BEFORE_CANDIDATE_FREEZE",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_ALL_BRANCHES_WORKTREES_EVIDENCE_PUBLIC_SURFACES_AND_HISTORICAL_SESSION_RECORDS",
+    "holds": [],
+    "observed_at_utc": "2026-08-29T18:21:52Z",
+    "owner": "Main Agent under user-requested W3-readiness maintenance and repository preservation policy",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_HOSTED_REVIEW_BEFORE_CANDIDATE_FREEZE",
+    "status": "NOT_APPLICABLE"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "private_sources/**",
+      ".venv/**",
+      ".git/**",
+      "react_app/src/**"
+    ],
+    "integration_owner": "orchestrator",
+    "owned_paths": [
+      ".pre-commit-config.yaml",
+      "Python/tests/test_agent_governance_automation.py",
+      "Python/tests/test_session_automation.py",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/WORKLOG.md",
+      "docs/getting-started/agent-bootstrap.md",
+      "docs/guidelines/ai-token-efficiency.md",
+      "docs/planning/etabs-killer-masterplan.md",
+      "docs/planning/etabs-data-analysis-optimization-foundation-plan.md",
+      "docs/planning/etabs-excel-professional-surface-audit.md",
+      "docs/planning/excel-etabs-beam-next-phase-plan.md",
+      "docs/planning/next-session-brief.md",
+      "docs/reference/api-classification.json",
+      "docs/reference/api-compatibility-ledger.json",
+      "docs/verification/etabs-w3-readiness-maintenance-git-handoff-source-evidence.json",
+      "docs/verification/etabs-w3-readiness-maintenance-git-handoff-receipt.json",
+      "scripts/automation-map.json",
+      "scripts/control-plane.json",
+      "scripts/session.py"
+    ],
+    "shared_paths": [
+      ".pre-commit-config.yaml",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/WORKLOG.md",
+      "docs/planning/next-session-brief.md",
+      "docs/reference/api-classification.json",
+      "docs/reference/api-compatibility-ledger.json",
+      "scripts/automation-map.json",
+      "scripts/control-plane.json"
+    ],
+    "task_id": "ETABS-W3-READINESS-MAINTENANCE"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "LOCAL_MAINTENANCE_ACTIVE_HOSTED_CLOSEOUT_PENDING"
+  }
+}

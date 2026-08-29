@@ -906,11 +906,11 @@
       "description": "Record or summarize shared task-bound model identity, derived elapsed time, step durations, verification, and Git state without estimating billing tokens",
       "permission": "ReadOnly",
       "permission_modes": {
-        "--checkpoint start|milestone|closeout": "WorkspaceWrite",
+        "--checkpoint start|milestone|closeout|superseded": "WorkspaceWrite",
         "--event <label>": "WorkspaceWrite"
       },
       "options": {
-        "--checkpoint start|milestone|closeout": "Append a local checkpoint",
+        "--checkpoint start|milestone|closeout|superseded": "Append a local checkpoint; superseded closes only the exact active task without timing or integration claims",
         "--event <label>": "Append one automatically timed task step",
         "--active": "Show the unmatched task timer and recorded steps",
         "--closed-task-ids": "Print exact externally closed task IDs",

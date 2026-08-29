@@ -14,7 +14,7 @@ USAGE:
     ./scripts/python_runtime.sh scripts/session.py check
     ./scripts/python_runtime.sh scripts/session.py summary [--write]
     ./scripts/python_runtime.sh scripts/session.py sync [--fix] [--json]
-    ./scripts/python_runtime.sh scripts/session.py usage [--checkpoint start|milestone|closeout] [...]
+    ./scripts/python_runtime.sh scripts/session.py usage [--checkpoint start|milestone|closeout|superseded] [...]
     # Prefer ./run.sh session begin --task-id TASK --agent ROLE for a complete start.
     ./scripts/python_runtime.sh scripts/session.py compact [--keep-last N] [--dry-run]
 """
@@ -743,7 +743,7 @@ def _latest_open_start(task_id: str, entries: list[dict]) -> dict | None:
         if entry.get("task_id") != task_id:
             continue
         checkpoint = entry.get("checkpoint")
-        if checkpoint == "closeout":
+        if checkpoint in {"closeout", "superseded"}:
             return None
         if checkpoint == "start":
             return entry
@@ -758,7 +758,7 @@ def _active_usage_start(entries: list[dict]) -> dict | None:
             continue
         if entry.get("checkpoint") == "start":
             open_starts[task_id] = entry
-        elif entry.get("checkpoint") == "closeout":
+        elif entry.get("checkpoint") in {"closeout", "superseded"}:
             open_starts.pop(task_id, None)
     if not open_starts:
         return None
@@ -1159,9 +1159,9 @@ def cmd_usage(args: argparse.Namespace) -> int:
         return 0
 
     if args.checkpoint:
-        if args.checkpoint in {"start", "closeout"} and not args.task_id:
+        if args.checkpoint in {"start", "closeout", "superseded"} and not args.task_id:
             print(
-                "ERROR: start and closeout checkpoints require --task-id",
+                "ERROR: start, closeout, and superseded checkpoints require --task-id",
                 file=sys.stderr,
             )
             return 1
@@ -1173,6 +1173,46 @@ def cmd_usage(args: argparse.Namespace) -> int:
                 file=sys.stderr,
             )
             return 1
+        if args.checkpoint == "superseded":
+            if active_start is None:
+                print("ERROR: no unmatched start checkpoint exists", file=sys.stderr)
+                return 1
+            if active_start.get("task_id") != args.task_id:
+                print(
+                    "ERROR: superseded checkpoint must name the exact active task "
+                    f"{active_start.get('task_id')}",
+                    file=sys.stderr,
+                )
+                return 1
+            if not args.notes.strip():
+                print(
+                    "ERROR: superseded checkpoint requires an explicit --notes reason",
+                    file=sys.stderr,
+                )
+                return 1
+            if args.elapsed_min is not None:
+                print(
+                    "ERROR: superseded checkpoint cannot claim elapsed time",
+                    file=sys.stderr,
+                )
+                return 1
+            observed_at = _usage_now()
+            try:
+                efficiency = _efficiency_payload(
+                    args, entries=entries, observed_at=observed_at
+                )
+            except ValueError as exc:
+                print(f"ERROR: {exc}", file=sys.stderr)
+                return 1
+            entry = _record_usage_checkpoint(args, efficiency, observed_at=observed_at)
+            if args.json_output:
+                print(json.dumps(entry, indent=2))
+            else:
+                print(
+                    "Usage checkpoint recorded: superseded | no elapsed or "
+                    "integration claim"
+                )
+            return 0
         observed_at = _usage_now()
         try:
             efficiency = _efficiency_payload(
@@ -3013,7 +3053,9 @@ def build_parser() -> argparse.ArgumentParser:
     p_usage = sub.add_parser(
         "usage", help="Record/show observable model and agent usage checkpoints"
     )
-    p_usage.add_argument("--checkpoint", choices=("start", "milestone", "closeout"))
+    p_usage.add_argument(
+        "--checkpoint", choices=("start", "milestone", "closeout", "superseded")
+    )
     p_usage.add_argument("--task-id", default="", help="Task identifier")
     p_usage.add_argument("--task", default="", help="Short task description")
     p_usage.add_argument(

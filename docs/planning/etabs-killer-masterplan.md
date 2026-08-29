@@ -7,6 +7,19 @@
 **Created:** 2026-04-11
 **Last Updated:** 2026-04-11
 
+> **Current planning boundary (2026-08-29):** This document is a directional
+> product vision and contains historical capability claims, estimates, and
+> implementation proposals. It is not current execution authority or
+> acceptance evidence. Use
+> [ETABS Data, Beam Analysis, and Optimization Foundation](etabs-data-analysis-optimization-foundation-plan.md)
+> for the dependency-ordered W2/W3 data, bounded beam-line surrogate, and
+> ETABS-verified optimization plan. Use the companion
+> [ETABS, Excel, Professional Attestation, and Surface Retirement Audit](etabs-excel-professional-surface-audit.md)
+> for Excel review, professional evidence, API retirement, React freeze, and
+> compaction decisions. Use
+> [Excel + ETABS Beam Workflow — Next-Phase Plan](excel-etabs-beam-next-phase-plan.md)
+> for the integrated W2 evidence and W3 execution boundary.
+
 > **BHEEM** — **B**uilding **H**olistic **E**ngineering **E**nvironment with **M**achine-intelligence
 > An open-source, AI-native structural design platform that aims to surpass ETABS in usability, transparency, and accessibility.
 
