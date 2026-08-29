@@ -48,3 +48,13 @@ test("installed pane exposes the explicit read-only ETABS pilot controls", () =>
   assert.match(taskpaneSource, /\/etabs-bridge\/v1\/beam-pilot/);
   assert.match(taskpaneSource, /writeEtabsPilotResults\(Excel, rows\)/);
 });
+
+test("installed pane exposes the preflight-bound W2 baseline controls", () => {
+  assert.match(taskpaneHtml, /id="etabs-w2-preflight"[^>]*disabled/);
+  assert.match(taskpaneHtml, /id="etabs-w2-confirm"[^>]*disabled/);
+  assert.match(taskpaneHtml, /id="etabs-w2-run"[^>]*disabled/);
+  assert.match(taskpaneSource, /\/etabs-bridge\/v1\/beam-baseline\/preflight/);
+  assert.match(taskpaneSource, /\/etabs-bridge\/v1\/beam-baseline/);
+  assert.match(taskpaneSource, /verifyEtabsBaselineTransport\(transport\)/);
+  assert.match(taskpaneSource, /writeEtabsBaselineResults\(Excel, projection\)/);
+});

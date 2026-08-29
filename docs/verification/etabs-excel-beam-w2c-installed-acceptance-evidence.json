@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-EXCEL-BEAM-W2C-INSTALLED-ACCEPTANCE",
+  "verdict": "BLOCKED_SAFE_NO_FORCE_READ",
+  "observed_at_utc": "2026-08-29T09:22:51Z",
+  "scope": {
+    "installed_windows_etabs_excel": true,
+    "read_only": true,
+    "analysis_run": false,
+    "design_run": false,
+    "model_save_or_writeback": false,
+    "result_selection_setter": false,
+    "force_read": false,
+    "optimization": false,
+    "professional_or_construction_approval": false
+  },
+  "source": {
+    "origin_main_at_campaign_start": "0f5c918eb87b658448737fd6bf023ccb4bd07c74",
+    "phase_a_head": "4841ab2a37504fa009842a812e1a0fa9e8b95d8f",
+    "phase_b_head": "395f06180d140ba0c3f568da662fed1e2c370926",
+    "installed_execution_head": "18926ef48c620213abbb931449cda9e8049eee7c",
+    "installed_execution_tree": "0089ec724828d65d25ab19832c7d25ae445e4e67",
+    "branch": "codex/etabs-excel-beam-w2-campaign",
+    "local_remote_head_equal": true,
+    "clean_at_execution": true,
+    "pull_request_exists": false,
+    "runtime_source_bound": true
+  },
+  "host_and_runtime": {
+    "computer": "LAPTOP-360-PRAV",
+    "os": "Microsoft Windows 11 Home Single Language 10.0.26200 build 26200 64-bit",
+    "python": "3.11.15 64-bit",
+    "comtypes": "1.4.16",
+    "excel": "16.0.20326.20100 64-bit",
+    "etabs_file_version": "23.3.1.4563",
+    "library_version": "0.24.0",
+    "library_content_identity": "89f79850fbeceefeb612d7ca76d8fa914c08908ef8a5bad2646d03435e52b857",
+    "getter_matrix_sha256": "f6874c7aa119816548b9a64f242dfdb7df94fbeea8c7fa520dea3ef0f74fb7d8",
+    "application_sha256": "16a790087dd3961b45e57e35c32179e90db31d2dab6c6039f6efb91d53e84456",
+    "application_signature_valid": true,
+    "x64_typelib_sha256": "3823416b05d80d148b63a2f490cd2acea2797d0fc64157c5cc8882c8fc24ef0e",
+    "managed_signature_assembly_sha256": "393492bd1649ee705c97449cf7d485c61b73ec649ed1d01f47f54f957b277e54",
+    "raw_wrapper_sha256": "18e302a44f357e236672aebd1e4697bfed42627a3680ffe2c070b43fbc62084c",
+    "friendly_wrapper_sha256": "40c66ee6dea247eb8816413bfe2e76eea4d4468026748d64a0425125cf2d52f1"
+  },
+  "model_proof": {
+    "path_retained_external_only": true,
+    "model_name_sha256": "d1835cd9b99da5f85e7d053ec2f52deb037877ecb95471641ab94f372f61da0a",
+    "sha256_before_and_after": "99b7f3f17051929196ef6494d8f4d220d895fc3dac5e1a57164a53bf8fa6948b",
+    "bytes_before_and_after": 702831,
+    "modified_utc_before_and_after": "2026-08-28T17:00:30.127813Z",
+    "locked_before_and_after": true,
+    "present_units_before_and_after": 6,
+    "temporary_units_enum": 5,
+    "unit_restoration_proved": true,
+    "normal_etabs_window_before_and_after": true,
+    "unexpected_dialog_observed": false
+  },
+  "installed_story_shape_repair": {
+    "first_attempt_error": "ETABS_RESULT_ARRAY_MISMATCH",
+    "number_stories": 6,
+    "outer_container": "list",
+    "decoded_output_count": 8,
+    "array_containers": [
+      "tuple",
+      "tuple",
+      "tuple",
+      "tuple",
+      "tuple",
+      "tuple",
+      "tuple"
+    ],
+    "array_lengths": [
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7
+    ],
+    "return_code": 0,
+    "leading_name_is_base": true,
+    "story_names_sha256": "e82101ab76db044f33888ab3a897bd76cd0ae7f31dcfbf75ce89da0fbf2ba09e",
+    "official_contract": "https://docs.csiamerica.com/help-files/etabs-api-2016/html/3f804fa8-9fef-a9f0-8517-87676c0ea8ef.htm",
+    "root_cause": "CSI excludes Base from NumberStories but includes the leading Base row in every returned array.",
+    "repair": "Require NumberStories + 1 arrays and the exact leading Base sentinel, retain Base as STORY_BASE_NOT_A_STORY, and build only the following NumberStories rows.",
+    "repair_head": "18926ef48c620213abbb931449cda9e8049eee7c",
+    "getter_or_setter_scope_changed": false
+  },
+  "result_selection_preflight": {
+    "approved_kind": "COMBINATION",
+    "approved_name": "117.(1.5DL+1.5LL)",
+    "load_case_count": 15,
+    "all_case_statuses_finished": true,
+    "combination_count": 62,
+    "approved_combination_present": true,
+    "approved_combination_selected": false,
+    "selected_case_count": 4,
+    "selected_combination_count": 0,
+    "selected_inventory_sha256": "6ec33c4d80cabf50e0e2c762375f57799b5a134d1bc217abdeff3ae459457ec6",
+    "selection_inventory_getters_return_code_zero": true,
+    "selection_state_changed": false,
+    "abort_reason": "RESULT_SELECTION_NOT_ACTIVE"
+  },
+  "blocked_transport": {
+    "http_status": 200,
+    "schema_version": "etabs-beam-baseline-transport/v1",
+    "build_status": "BLOCKED",
+    "units_restored": true,
+    "baseline_present": false,
+    "baseline_hash_basis_present": false,
+    "baseline_hash_basis_bytes": 0,
+    "issue_codes": [
+      "RESULT_SELECTION_NOT_ACTIVE"
+    ],
+    "frame_force_call_count": 0,
+    "result_station_rows": 0,
+    "disposition_count": 846,
+    "disposition_reason_counts": {
+      "STORY_BASE_NOT_A_STORY": 1,
+      "STORY_ACCEPTED": 6,
+      "FRAME_ACCEPTED_BEAM": 153,
+      "FRAME_ACCEPTED_COLUMN": 72,
+      "CONNECTIVITY_ACCEPTED_BEAM_TO_BEAM": 208,
+      "CONNECTIVITY_ACCEPTED_BEAM_TO_COLUMN": 341,
+      "NO_FRAME_ENDPOINT_CONNECTION": 64,
+      "RESULT_SELECTION_NOT_ACTIVE": 1
+    },
+    "frame_analysis_verdict": "HELD_NOT_SUPPORTED",
+    "basis": "The exact source resolves selection blockers before _read_results; the installed response contains no baseline, hash basis, result set, or station row."
+  },
+  "surface_reconciliation": {
+    "direct_service": {
+      "status": "BLOCKED",
+      "issue": "RESULT_SELECTION_NOT_ACTIVE",
+      "baseline_present": false,
+      "hash_basis_present": false,
+      "units_restored": true
+    },
+    "rest": {
+      "status": "BLOCKED",
+      "issue": "RESULT_SELECTION_NOT_ACTIVE",
+      "baseline_present": false,
+      "hash_basis_present": false,
+      "result_station_rows": 0
+    },
+    "installed_excel": {
+      "status_message": "W2 BASELINE BLOCKED",
+      "issue": "RESULT_SELECTION_NOT_ACTIVE",
+      "message_says_no_baseline_tables_written": true,
+      "w2_sheet_count_after": 0,
+      "w2_table_count_after": 0,
+      "workbook_sha256_unchanged": true,
+      "workbook_bytes_unchanged": true
+    },
+    "verdict": "BLOCKED_PATH_RECONCILED",
+    "accepted_baseline_reconciled": false
+  },
+  "external_evidence": {
+    "root": "C:/CodexWork/evidence/ETABS-EXCEL-BEAM-W2C/blocked-inactive-selection-18926ef4",
+    "full_payloads_and_workbook_are_not_committed": true,
+    "files": {
+      "ETABS-EXCEL-BEAM-W2C-blocked.xlsx": {
+        "bytes": 31361,
+        "sha256": "53af584339436413929993c3ff17600ee98c3f62827f60240abe4ce05db711fe"
+      },
+      "rest-preflight.json": {
+        "bytes": 1282,
+        "sha256": "4b1c38ddb74423a4c08efe57757d45625ae71b6082f1bdfb4693240841063d15"
+      },
+      "rest-blocked-transport.json": {
+        "bytes": 261150,
+        "sha256": "04552e023c37d6d8d7ba1fe066cfb55e95b2b9b9fadcf162254b6c0f6d2822fc"
+      },
+      "rest-post-excel-preflight.json": {
+        "bytes": 1282,
+        "sha256": "c1a746216af8ede13350cd06a78604b116c67e0f715289448d3d2329fa267245"
+      },
+      "fastapi.stdout.log": {
+        "bytes": 815,
+        "sha256": "5cdab52e61b3262a5ce3cbfe4538da9e048827f2cef6609748e0277cb20b2624"
+      },
+      "fastapi.stderr.log": {
+        "bytes": 513,
+        "sha256": "5ec64c1a5bad32ec65737cb18f9025b92cb3eb10148847468254befb55993591"
+      },
+      "office.stdout.log": {
+        "bytes": 184,
+        "sha256": "34b144739b046553a3553897cda326554840cdc6796abce2255c59cc67efe27b"
+      },
+      "office.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "retry_preconditions": [
+    "Use a separately authorized installed ETABS session in which the exact approved combination 117.(1.5DL+1.5LL) is already active before Codex attaches; W2 will not set it.",
+    "Repeat exact repository head/tree, ETABS/type-library/wrapper/runtime, copied-model hash/size/time/path, locked-state, unit, normal-window, case-status, and selection preflight checks.",
+    "Abort again before force reads on any drift, inactive selection, unfinished case, topology blocker, unexpected dialog, or need for a setter beyond temporary SetPresentUnits."
+  ],
+  "limitations": [
+    "W2C did not produce or accept a force baseline, canonical baseline hash, station inventory, or accepted direct/REST/Excel data reconciliation because the approved combination was inactive.",
+    "The blocked-path result is positive fail-closed software evidence, not a W2 installed acceptance pass.",
+    "ETABS design-summary reads remain outside the frozen getter matrix and blocked.",
+    "Independent frame analysis remains HELD_NOT_SUPPORTED.",
+    "This evidence is not structural analysis, design approval, engineering approval, or construction-use approval."
+  ]
+}

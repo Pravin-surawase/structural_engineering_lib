@@ -3,6 +3,8 @@ import { createHash, webcrypto } from "node:crypto";
 import test from "node:test";
 
 import {
+  ETABS_BASELINE_TABLES,
+  buildEtabsBaselineRequest,
   buildEtabsPilotRequest,
   buildPreviewRequest,
   buildReviewBundleExportRequest,
@@ -12,6 +14,7 @@ import {
   normalizeCalculationMode,
   postWorkbenchApi,
   postReviewBundleApi,
+  projectEtabsBaselineTables,
   projectEtabsPilotRows,
   projectLedgerRows,
   projectPassportRows,
@@ -20,6 +23,7 @@ import {
   reviewBundleExportEligible,
   retainEvidence,
   sameSourceSnapshot,
+  verifyEtabsBaselineTransport,
 } from "../taskpane-core.mjs";
 
 const etabsValues = {
@@ -120,6 +124,183 @@ test("ETABS projection preserves signed actions, design status, and full JSON", 
   assert.equal(rows[0][15], "PASS");
   assert.equal(rows[0][16], 900);
   assert.match(rows[0][18], /"frame_name":"B1"/);
+});
+
+function baselinePreflight() {
+  return {
+    schema_version: "etabs-beam-baseline-preflight/v1",
+    observed_model_file: {
+      model_path: "C:\\Models\\W2.edb",
+      model_name: "W2.edb",
+      sha256: HASH_A,
+      byte_count: 100,
+      modified_at_utc: "2026-08-29T05:00:00Z",
+      observed_at_utc: "2026-08-29T05:01:00Z",
+    },
+    etabs_version: "ETABS 23.3.1",
+    etabs_version_number: 23.31,
+    model_locked: true,
+    present_units_enum: 6,
+    runtime_provenance: {
+      adapter_version: "etabs-beam-baseline-adapter/v1",
+      library_version: "0.24.0",
+      library_content_identity: HASH_B,
+      python_version: "3.11.15",
+      platform: "Windows-11",
+      com_provider: "comtypes/1.4.16;64-bit",
+    },
+    getter_matrix_sha256: HASH_C,
+  };
+}
+
+function acceptedBaselineTransport() {
+  const basis = '{"contract":"W2","value":1.0}';
+  const baselineHash = createHash("sha256").update(basis).digest("hex");
+  const file = baselinePreflight().observed_model_file;
+  const station = {
+    station_id: "station:1",
+    member_id: "member:1",
+    source_frame_name: "B1",
+    source_row_index: 0,
+    object_name: "B1",
+    object_station_mm: 0,
+    element_name: "E1",
+    element_station_mm: 0,
+    step_type: "Max",
+    step_number: 0,
+    p_kn: 1,
+    v2_kn: 2,
+    v3_kn: 3,
+    t_knm: 4,
+    m2_knm: 5,
+    m3_knm: 6,
+  };
+  return {
+    schema_version: "etabs-beam-baseline-transport/v1",
+    build_result: {
+      status: "ACCEPTED",
+      baseline: {
+        baseline_sha256: baselineHash,
+        model: {
+          model_name: "W2.edb",
+          model_path: "C:\\Models\\W2.edb",
+          file_evidence: { before_read: file, after_read: file },
+          etabs_version: "ETABS 23.3.1",
+          etabs_version_number: 23.31,
+          model_locked: true,
+        },
+        units: {
+          original_present_units_enum: 6,
+          restored_present_units_enum: 6,
+          restoration_status: "RESTORED",
+        },
+        stories: [{
+          story_id: "story:1", name: "L1", elevation_mm: 0, height_mm: 3000,
+          is_master_story: true, similar_to_story: "", splice_above: false,
+          splice_height_mm: 0,
+        }],
+        frames: [{
+          member_id: "member:1", source_unique_name: "B1", label: "B1-L1",
+          story: "L1", kind: "BEAM",
+          point_i: { point_name: "P1", x_mm: 0, y_mm: 0, z_mm: 0 },
+          point_j: { point_name: "P2", x_mm: 5000, y_mm: 0, z_mm: 0 },
+          local_axis: {
+            local_axis_rotation_deg: 0, advanced_axes_active: false,
+            direction_x: 1, direction_y: 0, direction_z: 0, length_mm: 5000,
+          },
+          section: {
+            section_name: "R300x500", auto_select_list: "",
+            material_property_label: "M25", depth_t3_mm: 500, width_t2_mm: 300,
+          },
+        }],
+        connectivity: [{
+          connection_id: "connection:1", kind: "BEAM_TO_COLUMN", point_name: "P1",
+          member_a_id: "member:1", member_b_id: "member:2",
+        }],
+        results: [{
+          member_id: "member:1", source_frame_name: "B1",
+          selection_evidence: {
+            selection: { kind: "COMBINATION", name: "ULS-1" },
+            status: "COMBINATION_ROWS_REQUIRED", case_status_code: null,
+          },
+          stations: [station],
+        }],
+        dispositions: [{
+          row_id: "row:1", row_kind: "FRAME", source_id: "B1",
+          disposition: "ACCEPTED", reason_code: "FRAME_ACCEPTED_BEAM",
+          canonical_id: "member:1", message: "Accepted beam.",
+        }],
+        runtime_provenance: baselinePreflight().runtime_provenance,
+        getter_matrix_sha256: HASH_C,
+        frame_analysis_verdict: "HELD_NOT_SUPPORTED",
+      },
+    },
+    counts: {
+      stories: 1,
+      frames: 1,
+      connectivity_rows: 1,
+      result_sets: 1,
+      result_station_rows: 1,
+      disposition_rows: 1,
+      projected_excel_rows: 7,
+    },
+    capacity: {
+      max_projected_excel_rows: 100000,
+      excel_json_chunk_characters: 15000,
+    },
+    baseline_hash_basis_json: basis,
+    baseline_hash_basis_utf8_bytes: Buffer.byteLength(basis),
+  };
+}
+
+test("W2 request is bound to a locked approved preflight and exact selection", () => {
+  const request = buildEtabsBaselineRequest(baselinePreflight(), {
+    selectionKind: "COMBINATION",
+    selectionName: "ULS-1",
+    approvedCopyConfirmed: true,
+  });
+  assert.equal(request.schema_version, "etabs-beam-baseline-run-request/v1");
+  assert.equal(request.authorized_model_file.sha256, HASH_A);
+  assert.equal(request.expected_runtime_provenance.library_content_identity, HASH_B);
+  assert.deepEqual(request.result_selections, [{ kind: "COMBINATION", name: "ULS-1" }]);
+  assert.equal(request.require_locked_model, true);
+  assert.throws(
+    () => buildEtabsBaselineRequest(baselinePreflight(), {
+      selectionKind: "CASE", selectionName: "DEAD", approvedCopyConfirmed: false,
+    }),
+    /Confirm the exact copied model/,
+  );
+});
+
+test("W2 projection verifies canonical bytes and reconciles every stable row", async () => {
+  const transport = acceptedBaselineTransport();
+  const verified = await verifyEtabsBaselineTransport(transport, { cryptoImpl: webcrypto });
+  const projection = projectEtabsBaselineTables(transport);
+
+  assert.equal(verified.baselineSha256, transport.build_result.baseline.baseline_sha256);
+  assert.equal(projection.projectedRows, 7);
+  assert.deepEqual(Object.keys(projection.tables), Object.keys(ETABS_BASELINE_TABLES));
+  assert.equal(projection.tables.frames[0][0], "member:1");
+  assert.equal(projection.tables.stations[0][0], "station:1");
+  assert.equal(projection.tables.dispositions[0][0], "row:1");
+  assert.equal(
+    projection.tables.json.map((row) => row[5]).join(""),
+    transport.baseline_hash_basis_json,
+  );
+});
+
+test("W2 projection rejects blocked and duplicate-row responses before Excel", () => {
+  const blocked = acceptedBaselineTransport();
+  blocked.build_result.status = "BLOCKED";
+  blocked.build_result.baseline = null;
+  assert.throws(() => projectEtabsBaselineTables(blocked), /complete accepted/);
+
+  const duplicate = acceptedBaselineTransport();
+  duplicate.build_result.baseline.stories.push({
+    ...duplicate.build_result.baseline.stories[0],
+  });
+  duplicate.counts.stories = 2;
+  assert.throws(() => projectEtabsBaselineTables(duplicate), /duplicate stable row/);
 });
 
 test("run request requires a reviewed mapping hash", () => {

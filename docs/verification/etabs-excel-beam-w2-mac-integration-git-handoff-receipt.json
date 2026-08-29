@@ -1,0 +1,197 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-29T10:54:28Z",
+      "query_status": "OK",
+      "reference": "current-thread:user-approved-continue-mac-maintenance-w2-integration",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_PULL_REQUEST",
+      "MERGE_UNCHANGED_GREEN_PULL_REQUEST",
+      "FAST_FORWARD_CLEAN_LOCAL_MAIN"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "observed_at_utc": "2026-08-29T10:54:28Z",
+    "prohibited_actions": [
+      "MODIFY_WINDOWS_CAMPAIGN_BRANCH",
+      "REWRITE_HISTORY",
+      "DELETE_BRANCH_OR_WORKTREE",
+      "BYPASS_REQUIRED_CHECKS",
+      "OPEN_ETABS_OR_EXCEL",
+      "CHANGE_RESULT_SELECTION",
+      "RUN_ANALYSIS_OR_DESIGN",
+      "UNLOCK_MUTATE_OR_SAVE_MODEL",
+      "START_W2C_RETRY",
+      "START_W3",
+      "REPAIR_NANOID_OR_UNRELATED_WINDOWS_PORTABILITY",
+      "CLAIM_W2C_ACCEPTANCE_PASS",
+      "CLAIM_ENGINEERING_APPROVAL"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_PULL_REQUEST",
+        "MERGE_UNCHANGED_GREEN_PULL_REQUEST",
+        "FAST_FORWARD_CLEAN_LOCAL_MAIN"
+      ],
+      "branch": "codex/etabs-excel-beam-w2-mac-integration",
+      "head_sha": "471761767896263e64bd3c237f50134b19c50bab",
+      "task_id": "ETABS-EXCEL-BEAM-W2-MAC-INTEGRATION"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "NO_BRANCH_OR_WORKTREE_DELETION",
+    "PRESERVE_DETACHED_DIRTY_E54A_SESSION_LOG",
+    "PRESERVE_WINDOWS_CAMPAIGN_HEAD_47176176",
+    "PULL_REQUEST_HEAD_MISMATCH",
+    "PULL_REQUEST_IDENTITY_UNKNOWN",
+    "PULL_REQUEST_SHA_MALFORMED",
+    "REQUIRED_CHECKS_MALFORMED",
+    "REVIEW_IDENTITY_UNKNOWN"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "CANDIDATE_COMMIT_HOSTED_CHECKS_AND_MERGE_PENDING",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "5a1fa6af6ee355be96f29ea019c77b401b2503dfd78f3af0f413bfedaa49b48b",
+    "state": {
+      "branch": "codex/etabs-excel-beam-w2-mac-integration",
+      "default_base": {
+        "ahead": 6,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "0f5c918eb87b658448737fd6bf023ccb4bd07c74",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 105.136,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib16",
+      "head_sha": "471761767896263e64bd3c237f50134b19c50bab",
+      "hold_reasons": [
+        "changed paths: 7"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-29T10:55:37.543798+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/w2-mac-integration/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 7,
+        "modified_paths": [
+          "Python/tests/test_compatibility_convergence.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/WORKLOG.md",
+          "docs/planning/excel-etabs-beam-next-phase-plan.md",
+          "docs/planning/next-session-brief.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/etabs-excel-beam-w2-mac-integration-git-handoff-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/codex/etabs-excel-beam-w2-campaign",
+        "sha": "471761767896263e64bd3c237f50134b19c50bab",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/w2-mac-integration/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:5a1fa6af6ee355be96f29ea019c77b401b2503dfd78f3af0f413bfedaa49b48b",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-29T10:55:37.543950+00:00",
+  "pull_request": {
+    "base": "main",
+    "head": "codex/etabs-excel-beam-w2-mac-integration",
+    "matching_pull_requests": 0,
+    "observed_at_utc": "2026-08-29T10:54:28Z",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "branch": "codex/etabs-excel-beam-w2-mac-integration",
+    "matching_remote_heads": 0,
+    "observed_at_utc": "2026-08-29T10:54:28Z",
+    "query_status": "UNKNOWN",
+    "reason_code": "INTEGRATION_BRANCH_NOT_PUSHED_BEFORE_CANDIDATE_FREEZE",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_WINDOWS_CAMPAIGN_REVIEW_WORKTREE_DIRTY_E54A_AND_ALL_EXISTING_BRANCHES_WORKTREES",
+    "holds": [
+      "PRESERVE_WINDOWS_CAMPAIGN_HEAD_47176176",
+      "PRESERVE_DETACHED_DIRTY_E54A_SESSION_LOG",
+      "NO_BRANCH_OR_WORKTREE_DELETION"
+    ],
+    "observed_at_utc": "2026-08-29T10:54:28Z",
+    "owner": "Mac integration sole writer; Windows campaign stopped",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "observed_at_utc": "2026-08-29T10:54:28Z",
+    "query_status": "OK",
+    "reviewed_head_sha": "471761767896263e64bd3c237f50134b19c50bab",
+    "reviewed_tree_sha": "6d3889041ca2e2c6a9d0d7d533f7d44c9d81acf9",
+    "status": "OBSERVED",
+    "verdict": "NO_ESSENTIAL_W2_FINDINGS_MAINTENANCE_REPAIR_REQUIRED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/services/etabs_beam_baseline.py",
+      "Python/structural_lib/services/etabs_beam_bridge.py",
+      "Python/structural_lib/services/etabs_live_bridge.py",
+      "fastapi_app",
+      "excel_addin",
+      "docs/verification/etabs-excel-beam-w2c-installed-acceptance-evidence.json",
+      "docs/reference/api-classification.json",
+      "docs/reference/api-compatibility-ledger.json"
+    ],
+    "integration_owner": "Mac primary review PR checks and main integration",
+    "owned_paths": [
+      "Python/tests/test_compatibility_convergence.py",
+      "docs/verification/etabs-excel-beam-w2-mac-integration-git-handoff-source-evidence.json",
+      "docs/verification/etabs-excel-beam-w2-mac-integration-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/WORKLOG.md",
+      "docs/planning/next-session-brief.md",
+      "docs/planning/excel-etabs-beam-next-phase-plan.md"
+    ],
+    "task_id": "ETABS-EXCEL-BEAM-W2-MAC-INTEGRATION"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "query_status": "OK",
+    "reason_code": "CURRENT_INTEGRATION_TASK_REMAINS_ACTIVE_UNTIL_MERGE",
+    "status": "NOT_APPLICABLE"
+  }
+}

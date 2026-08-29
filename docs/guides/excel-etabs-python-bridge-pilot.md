@@ -3,7 +3,7 @@
 **Type:** Guide
 **Audience:** Developers
 **Status:** Complete
-**Next Phase:** W2A Mac Review; W2B/W2C Not Started
+**Next Phase:** W2 Campaign Ready for Mac Review; Installed W2C Held Fail-Closed
 **Created:** 2026-08-28
 **Last Updated:** 2026-08-29
 **Importance:** High
@@ -205,6 +205,80 @@ factored-combination labels. CSI's API documentation identifies
 [frame inventory](https://docs.csiamerica.com/help-files/etabs-api-2016/html/9346cf4e-be74-b7be-d1eb-afe69d0f609c.htm), and
 [frame forces](https://docs.csiamerica.com/help-files/etabs-api-2016/html/87689f3e-4175-1627-618b-c4ebae5e89b5.htm).
 
+### ETABS 23.3.1 static W2 signature proof
+
+The Windows Phase A audit binds the merged W2A matrix to the exact installed
+x64 type library without creating a COM object or calling a live model. The
+tracked evidence is
+[`etabs-excel-beam-w2c-com-signature-audit-evidence.json`](../verification/etabs-excel-beam-w2c-com-signature-audit-evidence.json).
+Its authority is ETABS `23.3.1.4563`, `ETABSv1.tlb` LIBID
+`{542F7A9D-3A7D-4061-97B3-3A1276FF83BD}` version `1.0`, SHA-256
+`3823416b...24ef0e`, 64-bit Python `3.11.15`, and `comtypes 1.4.16`.
+
+All 18 W2A getters and the sole `SetPresentUnits` call are statically
+`PROVED` for exact exposed method, interface, parameter order/direction,
+optional/default inputs, output order/count, CSI return-code position, and the
+installed Python shape. Multi-output ETABS methods use `[in,out]` parameters;
+the inspected `comtypes` implementation therefore returns an outer list and,
+by default, one-dimensional SAFEARRAY values as tuples. A lone `[out,retval]`
+is returned as a direct scalar. W2A deliberately accepts both tuple/list
+containers, validates every trailing CSI return code and inner array length,
+and is compatible with the installed provider.
+
+Two exact-call details should remain visible during W2B/W2C:
+
+- `LoadCases.GetNameList` also exposes optional `CaseType=0` after its two
+  `[in,out]` parameters. Omitting arguments, as W2A does, requests the complete
+  inventory.
+- `Results.FrameForce` has a required `ItemTypeElm` input. W2A explicitly
+  supplies enum 0 (`ObjectElm`); zero is not a typelib default.
+
+Static metadata cannot prove model values, live return-code values, result
+freshness, lock/unit restoration, topology, dispositions, force rows, or
+canonical extraction hashes. The evidence therefore includes exact W2C proof
+points and abort criteria for each of those claims. ETABS design-summary reads
+remain blocked because no design getter is frozen, and independent frame
+analysis remains `HELD_NOT_SUPPORTED`.
+
+CSI's [official `Story.GetStories` contract](https://docs.csiamerica.com/help-files/etabs-api-2016/html/3f804fa8-9fef-a9f0-8517-87676c0ea8ef.htm)
+has one important count convention: the reported `NumberStories` excludes
+`Base`, while each returned array contains a leading Base row and has
+`NumberStories + 1` entries. W2 retains that non-story row as an explicit
+exclusion and builds stable story identities only from the following rows. Any
+different count or leading sentinel fails closed.
+
+## W2 complete-baseline surface
+
+The maintained Office.js pane now keeps the W1 design pilot and adds a separate
+W2 read-only baseline journey. First call
+`POST /api/v1/etabs-bridge/v1/beam-baseline/preflight`; compare the returned
+path/hash/size/time, ETABS/runtime/getter identities, locked state, and present
+unit enum with the approved copied-model evidence. Confirm that identity only
+when it is exact, then send the returned identities plus one exact already-
+selected case or combination to
+`POST /api/v1/etabs-bridge/v1/beam-baseline`.
+
+The W2 call is serialized with every other maintained ETABS COM operation,
+runs inside one worker-thread COM apartment, and supplies the real read-only
+file observer required by W2A. It refuses runtime/getter/version/path/hash/size/
+timestamp/unit/lock drift before extraction, resolves topology and selection
+blockers before any `FrameForce` call, and re-gets the lock and original unit
+enum after W2A has restored units. It never calls a result-selection setter.
+
+Accepted output is written only after the server-canonical W2A hash-basis JSON
+is independently hashed in the pane. Seven `ETABS_W2_*` sheets retain summary,
+stories, frames, endpoint links, every station, every disposition, and 15,000-
+code-point JSON chunks. Rejoining the chunk column must reproduce the exact
+server string and `baseline_sha256`. All seven sheet/table/header identities are
+preflighted before the first cell change; collisions, duplicate stable row IDs,
+count drift, more than 100,000 projected rows, or a blocked service result write
+nothing. A zero-row inventory is represented by a header-only controlled table.
+
+This is software evidence, not ETABS design or professional approval. It does
+not infer materials, reinforcement, slabs, supports, or engineering intent;
+does not run analysis/design; and retains `HELD_NOT_SUPPORTED` for independent
+frame analysis.
+
 ## Fail-closed boundaries
 
 The current pilot blocks when:
@@ -226,6 +300,16 @@ sizes, perform a second frame analysis, optimize sections, check slabs/columns/
 joints/foundations, evaluate serviceability, coordinate bars across adjacent
 beams, check congestion/layers/site sequence, or claim professional approval.
 All returned designs require qualified structural-engineer review.
+
+For the later W2C read-only baseline acceptance, abort even earlier when the
+approved source head/tree, x64 typelib hash, ETABS/comtypes versions, copied
+model allowlist/hash/time/lock, result selection/status, or unit-restoration
+capability differs from its preflight. During the approved run, abort on any
+method/shape/count/return-code drift, incomplete connected topology, empty
+requested beam/result selection, changed post-read file identity, unlocked
+state, un-restored units, or need for a setter beyond `SetPresentUnits`.
+Detailed result/model/workbook payloads remain external; Git receives only
+safe hashes, counts, verdicts, and limitations.
 
 ## Installed Windows evidence and next gate
 
@@ -251,7 +335,16 @@ and explicit write-back controls.
 
 The accepted next sequence is recorded in the
 [Excel + ETABS beam next-phase plan](../planning/excel-etabs-beam-next-phase-plan.md).
-W2 first establishes a complete read-only beam baseline, result provenance, and
-topology contract. Design/detailing expansion, construction-practice checks,
-offline optimization, and copied-model write-back/reanalysis remain separate
-later gates.
+W2A is merged, the static installed signature audit and W2B transport are
+complete, and the Windows W2C path was exercised only through its safe blocker.
+The exact approved combination was present but inactive, so direct service,
+source-bound REST, and installed Excel all returned
+`RESULT_SELECTION_NOT_ACTIVE` before `FrameForce`; Excel wrote no W2 table and
+the model/workbook identities, lock, and units remained unchanged. The tracked
+safe receipt is
+[`etabs-excel-beam-w2c-installed-acceptance-evidence.json`](../verification/etabs-excel-beam-w2c-installed-acceptance-evidence.json).
+This does not pass installed W2 baseline acceptance. A retry requires separate
+authorization and an ETABS session where the exact approved combination is
+already active before Codex attaches, followed by the complete preflight again.
+Design/detailing expansion, construction-practice checks, offline optimization,
+and copied-model write-back/reanalysis remain separate later gates.

@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-29 — ETABS/Excel W1 and multi-device synchronization are accepted; W2 read-only beam baseline/topology is planned but not started
+**Updated:** 2026-08-29 — W2 Windows campaign is safely held and independently Mac-reviewed; cumulative integration candidate is in progress
 
 ---
 
@@ -413,7 +413,7 @@ write-back/nightly work remain outside E1.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| ETABS-EXCEL-BEAM-W2-BASELINE | Freeze and implement the complete read-only beam/model topology, result-provenance, and independent-frame-analysis feasibility contract before any optimization or write-back | Main Agent | one local contract packet plus separate Windows acceptance | P1 | 🟡 W2A MAC REVIEW REPAIR COMPLETE / CANDIDATE PENDING — the exact Windows handoff was independently reproduced; unknown frame-story identities now fail closed against `Story.GetStories` with tuple/list unit-restoration evidence. Mac PR/integration remains pending; the next independent Windows packet is type-library/COM-signature and W2C evidence-plan readiness only. W2B REST/Excel and W2C installed acceptance are NOT STARTED; `HELD_NOT_SUPPORTED` retained |
+| ETABS-EXCEL-BEAM-W2-BASELINE | Freeze and implement the complete read-only beam/model topology, result-provenance, and independent-frame-analysis feasibility contract before any optimization or write-back | Main Agent | one local contract packet plus separate Windows acceptance | P1 | 🟡 MAC REVIEW PASSED / INTEGRATION CANDIDATE — exact Windows head `47176176...` passed independent source/evidence review with no essential finding. Static audit `4841ab2a...`, transport `395f0618...`, installed Base-row repair `18926ef4...`, and safe hold `5a41aee6...` remain unchanged. The Mac candidate adds only a root-cause repair for the daily generated-date compatibility test before cumulative gates/PR. W2C remains `BLOCKED_SAFE_NO_FORCE_READ`: the inactive approved combination caused zero force reads/tables and no accepted baseline. Retry requires separate authorization with the exact combination already active; `HELD_NOT_SUPPORTED`, no-analysis/no-mutation, and professional-review holds remain. |
 | LIB-PRO-013-F0 | Converge F1-F3 family construction/facades and exact-wheel recipes on the accepted B0 foundation | @structural-math | 16–26 engineer-days | P1 | ✅ COMPLETE ON MERGE — PR #882 merged unchanged as `59ef74c0...`, tree `295c7a61...`; Windows/professional/release claims remain held |
 | LIB-PRO-013-WINDOWS-REBIND | Bind the protected Windows source lane to accepted F0 before R0 uses it | bounded Windows evidence owner | evidence gate | P1 | ✅ COMPLETE — PR #883 merged at `879d32ca...`; exact F0 Git/Python source binding proved; no application evidence was run |
 | LIB-PRO-012-R0 | Close external-preview documentation, generated gates, cumulative artifact/evidence, and owner-decision package | Main Agent | final programme cycle | P1 | ✅ COMPLETE — PR #884 merged as `b1ba36e3...`, tree `81854f06...`; release, Windows application evidence, and professional claims remain held |

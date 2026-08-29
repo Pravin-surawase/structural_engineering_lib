@@ -1670,6 +1670,102 @@
         "title": "APIResponse[DuctilityCheckResponse]",
         "type": "object"
       },
+      "APIResponse_ETABSBeamBaselinePreflightV1_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ETABSBeamBaselinePreflightV1"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProblemDetailResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[ETABSBeamBaselinePreflightV1]",
+        "type": "object"
+      },
+      "APIResponse_ETABSBeamBaselineTransportV1_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ETABSBeamBaselineTransportV1"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProblemDetailResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[ETABSBeamBaselineTransportV1]",
+        "type": "object"
+      },
       "APIResponse_ETABSBridgeStatusV1_": {
         "example": {
           "data": {
@@ -14585,6 +14681,576 @@
         "title": "DuctilityCheckResponse",
         "type": "object"
       },
+      "ETABSBaselineBuildResultV1": {
+        "additionalProperties": false,
+        "description": "Fail-closed W2A extraction result with complete decision evidence.",
+        "properties": {
+          "baseline": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ETABSBeamBaselineV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "dispositions": {
+            "items": {
+              "$ref": "#/components/schemas/ETABSBaselineDispositionV1"
+            },
+            "title": "Dispositions",
+            "type": "array"
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/ETABSBaselineIssueV1"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "etabs-beam-baseline-build-result/v1",
+            "default": "etabs-beam-baseline-build-result/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ETABSBaselineBuildStatus"
+          },
+          "units_restored": {
+            "const": true,
+            "default": true,
+            "title": "Units Restored",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "status",
+          "dispositions",
+          "issues",
+          "baseline"
+        ],
+        "title": "ETABSBaselineBuildResultV1",
+        "type": "object"
+      },
+      "ETABSBaselineBuildStatus": {
+        "description": "Fail-closed outcome for one complete W2A extraction.",
+        "enum": [
+          "ACCEPTED",
+          "BLOCKED"
+        ],
+        "title": "ETABSBaselineBuildStatus",
+        "type": "string"
+      },
+      "ETABSBaselineDisposition": {
+        "description": "Exhaustive decision for one topology or result source row.",
+        "enum": [
+          "ACCEPTED",
+          "EXCLUDED",
+          "BLOCKED"
+        ],
+        "title": "ETABSBaselineDisposition",
+        "type": "string"
+      },
+      "ETABSBaselineDispositionV1": {
+        "additionalProperties": false,
+        "properties": {
+          "canonical_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Canonical Id"
+          },
+          "disposition": {
+            "$ref": "#/components/schemas/ETABSBaselineDisposition"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "reason_code": {
+            "title": "Reason Code",
+            "type": "string"
+          },
+          "row_id": {
+            "title": "Row Id",
+            "type": "string"
+          },
+          "row_kind": {
+            "$ref": "#/components/schemas/ETABSBaselineRowKind"
+          },
+          "source_id": {
+            "title": "Source Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "row_id",
+          "row_kind",
+          "source_id",
+          "disposition",
+          "reason_code",
+          "message"
+        ],
+        "title": "ETABSBaselineDispositionV1",
+        "type": "object"
+      },
+      "ETABSBaselineIssueV1": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "path": {
+            "title": "Path",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "path",
+          "message"
+        ],
+        "title": "ETABSBaselineIssueV1",
+        "type": "object"
+      },
+      "ETABSBaselineRowKind": {
+        "enum": [
+          "STORY",
+          "FRAME",
+          "CONNECTIVITY",
+          "RESULT_SELECTION",
+          "RESULT_STATION"
+        ],
+        "title": "ETABSBaselineRowKind",
+        "type": "string"
+      },
+      "ETABSBeamBaselineCapacityV1": {
+        "additionalProperties": false,
+        "properties": {
+          "excel_json_chunk_characters": {
+            "const": 15000,
+            "default": 15000,
+            "title": "Excel Json Chunk Characters",
+            "type": "integer"
+          },
+          "max_connectivity_rows": {
+            "const": 25000,
+            "default": 25000,
+            "title": "Max Connectivity Rows",
+            "type": "integer"
+          },
+          "max_disposition_rows": {
+            "const": 75000,
+            "default": 75000,
+            "title": "Max Disposition Rows",
+            "type": "integer"
+          },
+          "max_frames": {
+            "const": 10000,
+            "default": 10000,
+            "title": "Max Frames",
+            "type": "integer"
+          },
+          "max_hash_basis_utf8_bytes": {
+            "const": 25000000,
+            "default": 25000000,
+            "title": "Max Hash Basis Utf8 Bytes",
+            "type": "integer"
+          },
+          "max_projected_excel_rows": {
+            "const": 100000,
+            "default": 100000,
+            "title": "Max Projected Excel Rows",
+            "type": "integer"
+          },
+          "max_result_station_rows": {
+            "const": 50000,
+            "default": 50000,
+            "title": "Max Result Station Rows",
+            "type": "integer"
+          },
+          "truncation_permitted": {
+            "const": false,
+            "default": false,
+            "title": "Truncation Permitted",
+            "type": "boolean"
+          }
+        },
+        "title": "ETABSBeamBaselineCapacityV1",
+        "type": "object"
+      },
+      "ETABSBeamBaselineCountsV1": {
+        "additionalProperties": false,
+        "properties": {
+          "connectivity_rows": {
+            "minimum": 0.0,
+            "title": "Connectivity Rows",
+            "type": "integer"
+          },
+          "disposition_rows": {
+            "minimum": 0.0,
+            "title": "Disposition Rows",
+            "type": "integer"
+          },
+          "frames": {
+            "minimum": 0.0,
+            "title": "Frames",
+            "type": "integer"
+          },
+          "projected_excel_rows": {
+            "minimum": 0.0,
+            "title": "Projected Excel Rows",
+            "type": "integer"
+          },
+          "result_sets": {
+            "minimum": 0.0,
+            "title": "Result Sets",
+            "type": "integer"
+          },
+          "result_station_rows": {
+            "minimum": 0.0,
+            "title": "Result Station Rows",
+            "type": "integer"
+          },
+          "stories": {
+            "minimum": 0.0,
+            "title": "Stories",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "stories",
+          "frames",
+          "connectivity_rows",
+          "result_sets",
+          "result_station_rows",
+          "disposition_rows",
+          "projected_excel_rows"
+        ],
+        "title": "ETABSBeamBaselineCountsV1",
+        "type": "object"
+      },
+      "ETABSBeamBaselinePreflightV1": {
+        "additionalProperties": false,
+        "description": "Getter-only identity shown to the operator before a W2 baseline read.",
+        "properties": {
+          "approved_copy_confirmation_required": {
+            "const": true,
+            "default": true,
+            "title": "Approved Copy Confirmation Required",
+            "type": "boolean"
+          },
+          "capacity": {
+            "$ref": "#/components/schemas/ETABSBeamBaselineCapacityV1"
+          },
+          "etabs_version": {
+            "minLength": 1,
+            "title": "Etabs Version",
+            "type": "string"
+          },
+          "etabs_version_number": {
+            "title": "Etabs Version Number",
+            "type": "number"
+          },
+          "frame_analysis_verdict": {
+            "const": "HELD_NOT_SUPPORTED",
+            "default": "HELD_NOT_SUPPORTED",
+            "title": "Frame Analysis Verdict",
+            "type": "string"
+          },
+          "getter_matrix_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Getter Matrix Sha256",
+            "type": "string"
+          },
+          "model_locked": {
+            "title": "Model Locked",
+            "type": "boolean"
+          },
+          "observed_model_file": {
+            "$ref": "#/components/schemas/ETABSModelFileSnapshotV1"
+          },
+          "present_units_enum": {
+            "minimum": 1.0,
+            "title": "Present Units Enum",
+            "type": "integer"
+          },
+          "result_selections_are_getter_verified_only": {
+            "const": true,
+            "default": true,
+            "title": "Result Selections Are Getter Verified Only",
+            "type": "boolean"
+          },
+          "runtime_provenance": {
+            "$ref": "#/components/schemas/ETABSRuntimeProvenanceV1"
+          },
+          "schema_version": {
+            "const": "etabs-beam-baseline-preflight/v1",
+            "default": "etabs-beam-baseline-preflight/v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "observed_model_file",
+          "etabs_version",
+          "etabs_version_number",
+          "model_locked",
+          "present_units_enum",
+          "runtime_provenance",
+          "getter_matrix_sha256"
+        ],
+        "title": "ETABSBeamBaselinePreflightV1",
+        "type": "object"
+      },
+      "ETABSBeamBaselineRunRequestV1": {
+        "additionalProperties": false,
+        "description": "Exact preflight-bound request for one read-only W2 baseline extraction.",
+        "properties": {
+          "approved_copy_confirmed": {
+            "const": true,
+            "title": "Approved Copy Confirmed",
+            "type": "boolean"
+          },
+          "authorized_model_file": {
+            "$ref": "#/components/schemas/ETABSModelFileSnapshotV1"
+          },
+          "expected_etabs_version": {
+            "minLength": 1,
+            "title": "Expected Etabs Version",
+            "type": "string"
+          },
+          "expected_etabs_version_number": {
+            "title": "Expected Etabs Version Number",
+            "type": "number"
+          },
+          "expected_getter_matrix_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Expected Getter Matrix Sha256",
+            "type": "string"
+          },
+          "expected_present_units_enum": {
+            "minimum": 1.0,
+            "title": "Expected Present Units Enum",
+            "type": "integer"
+          },
+          "expected_runtime_provenance": {
+            "$ref": "#/components/schemas/ETABSRuntimeProvenanceV1"
+          },
+          "orientation_tolerance_mm": {
+            "default": 1.0,
+            "exclusiveMinimum": 0.0,
+            "maximum": 10.0,
+            "title": "Orientation Tolerance Mm",
+            "type": "number"
+          },
+          "require_locked_model": {
+            "const": true,
+            "default": true,
+            "title": "Require Locked Model",
+            "type": "boolean"
+          },
+          "result_selections": {
+            "items": {
+              "$ref": "#/components/schemas/ETABSResultSelectionV1"
+            },
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Result Selections",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "etabs-beam-baseline-run-request/v1",
+            "default": "etabs-beam-baseline-run-request/v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "authorized_model_file",
+          "expected_etabs_version",
+          "expected_etabs_version_number",
+          "expected_present_units_enum",
+          "expected_runtime_provenance",
+          "expected_getter_matrix_sha256",
+          "result_selections",
+          "approved_copy_confirmed"
+        ],
+        "title": "ETABSBeamBaselineRunRequestV1",
+        "type": "object"
+      },
+      "ETABSBeamBaselineTransportV1": {
+        "additionalProperties": false,
+        "description": "Bounded REST/Excel payload preserving the exact W2A hash basis.",
+        "properties": {
+          "baseline_hash_basis_json": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Baseline Hash Basis Json"
+          },
+          "baseline_hash_basis_utf8_bytes": {
+            "minimum": 0.0,
+            "title": "Baseline Hash Basis Utf8 Bytes",
+            "type": "integer"
+          },
+          "build_result": {
+            "$ref": "#/components/schemas/ETABSBaselineBuildResultV1"
+          },
+          "capacity": {
+            "$ref": "#/components/schemas/ETABSBeamBaselineCapacityV1"
+          },
+          "counts": {
+            "$ref": "#/components/schemas/ETABSBeamBaselineCountsV1"
+          },
+          "frame_analysis_verdict": {
+            "const": "HELD_NOT_SUPPORTED",
+            "default": "HELD_NOT_SUPPORTED",
+            "title": "Frame Analysis Verdict",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "etabs-beam-baseline-transport/v1",
+            "default": "etabs-beam-baseline-transport/v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "build_result",
+          "counts",
+          "capacity",
+          "baseline_hash_basis_json",
+          "baseline_hash_basis_utf8_bytes"
+        ],
+        "title": "ETABSBeamBaselineTransportV1",
+        "type": "object"
+      },
+      "ETABSBeamBaselineV1": {
+        "additionalProperties": false,
+        "description": "Accepted complete W2A beam/model/result baseline.",
+        "properties": {
+          "baseline_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Baseline Sha256",
+            "type": "string"
+          },
+          "connectivity": {
+            "items": {
+              "$ref": "#/components/schemas/ETABSConnectivityV1"
+            },
+            "title": "Connectivity",
+            "type": "array"
+          },
+          "dispositions": {
+            "items": {
+              "$ref": "#/components/schemas/ETABSBaselineDispositionV1"
+            },
+            "title": "Dispositions",
+            "type": "array"
+          },
+          "frame_analysis_basis": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Frame Analysis Basis",
+            "type": "array"
+          },
+          "frame_analysis_verdict": {
+            "const": "HELD_NOT_SUPPORTED",
+            "default": "HELD_NOT_SUPPORTED",
+            "title": "Frame Analysis Verdict",
+            "type": "string"
+          },
+          "frames": {
+            "items": {
+              "$ref": "#/components/schemas/ETABSFrameV1"
+            },
+            "title": "Frames",
+            "type": "array"
+          },
+          "getter_matrix_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Getter Matrix Sha256",
+            "type": "string"
+          },
+          "hash_basis_version": {
+            "const": "etabs-beam-baseline-hash/v1",
+            "default": "etabs-beam-baseline-hash/v1",
+            "title": "Hash Basis Version",
+            "type": "string"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "model": {
+            "$ref": "#/components/schemas/structural_lib__services__etabs_beam_baseline__ETABSModelIdentityV1"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/ETABSFrameResultV1"
+            },
+            "title": "Results",
+            "type": "array"
+          },
+          "runtime_provenance": {
+            "$ref": "#/components/schemas/ETABSRuntimeProvenanceV1"
+          },
+          "schema_version": {
+            "const": "etabs-beam-baseline/v1",
+            "default": "etabs-beam-baseline/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "stories": {
+            "items": {
+              "$ref": "#/components/schemas/ETABSStoryV1"
+            },
+            "title": "Stories",
+            "type": "array"
+          },
+          "units": {
+            "$ref": "#/components/schemas/ETABSUnitProofV1"
+          }
+        },
+        "required": [
+          "model",
+          "units",
+          "stories",
+          "frames",
+          "connectivity",
+          "results",
+          "dispositions",
+          "runtime_provenance",
+          "getter_matrix_sha256",
+          "frame_analysis_basis",
+          "limitations",
+          "baseline_sha256"
+        ],
+        "title": "ETABSBeamBaselineV1",
+        "type": "object"
+      },
       "ETABSBridgeStatusV1": {
         "additionalProperties": false,
         "description": "Non-calculation availability and library identity.",
@@ -14627,7 +15293,7 @@
           "model": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ETABSModelIdentityV1"
+                "$ref": "#/components/schemas/structural_lib__services__etabs_live_bridge__ETABSModelIdentityV1"
               },
               {
                 "type": "null"
@@ -14674,7 +15340,7 @@
             "type": "string"
           },
           "model": {
-            "$ref": "#/components/schemas/ETABSModelIdentityV1"
+            "$ref": "#/components/schemas/structural_lib__services__etabs_live_bridge__ETABSModelIdentityV1"
           },
           "schema_version": {
             "const": "etabs-live-bridge/v1",
@@ -14689,6 +15355,47 @@
           "model"
         ],
         "title": "ETABSConnectionV1",
+        "type": "object"
+      },
+      "ETABSConnectivityKind": {
+        "enum": [
+          "BEAM_TO_BEAM",
+          "BEAM_TO_COLUMN"
+        ],
+        "title": "ETABSConnectivityKind",
+        "type": "string"
+      },
+      "ETABSConnectivityV1": {
+        "additionalProperties": false,
+        "properties": {
+          "connection_id": {
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/ETABSConnectivityKind"
+          },
+          "member_a_id": {
+            "title": "Member A Id",
+            "type": "string"
+          },
+          "member_b_id": {
+            "title": "Member B Id",
+            "type": "string"
+          },
+          "point_name": {
+            "title": "Point Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "connection_id",
+          "kind",
+          "point_name",
+          "member_a_id",
+          "member_b_id"
+        ],
+        "title": "ETABSConnectivityV1",
         "type": "object"
       },
       "ETABSForceExtremeV1": {
@@ -14746,6 +15453,100 @@
           "step_number"
         ],
         "title": "ETABSForceExtremeV1",
+        "type": "object"
+      },
+      "ETABSForceStationV1": {
+        "additionalProperties": false,
+        "properties": {
+          "element_name": {
+            "title": "Element Name",
+            "type": "string"
+          },
+          "element_station_mm": {
+            "title": "Element Station Mm",
+            "type": "number"
+          },
+          "m2_knm": {
+            "title": "M2 Knm",
+            "type": "number"
+          },
+          "m3_knm": {
+            "title": "M3 Knm",
+            "type": "number"
+          },
+          "member_id": {
+            "title": "Member Id",
+            "type": "string"
+          },
+          "object_name": {
+            "title": "Object Name",
+            "type": "string"
+          },
+          "object_station_mm": {
+            "title": "Object Station Mm",
+            "type": "number"
+          },
+          "p_kn": {
+            "title": "P Kn",
+            "type": "number"
+          },
+          "selection": {
+            "$ref": "#/components/schemas/ETABSResultSelectionV1"
+          },
+          "source_frame_name": {
+            "title": "Source Frame Name",
+            "type": "string"
+          },
+          "source_row_index": {
+            "minimum": 0.0,
+            "title": "Source Row Index",
+            "type": "integer"
+          },
+          "station_id": {
+            "title": "Station Id",
+            "type": "string"
+          },
+          "step_number": {
+            "title": "Step Number",
+            "type": "number"
+          },
+          "step_type": {
+            "title": "Step Type",
+            "type": "string"
+          },
+          "t_knm": {
+            "title": "T Knm",
+            "type": "number"
+          },
+          "v2_kn": {
+            "title": "V2 Kn",
+            "type": "number"
+          },
+          "v3_kn": {
+            "title": "V3 Kn",
+            "type": "number"
+          }
+        },
+        "required": [
+          "station_id",
+          "member_id",
+          "source_frame_name",
+          "source_row_index",
+          "selection",
+          "object_name",
+          "object_station_mm",
+          "element_name",
+          "element_station_mm",
+          "step_type",
+          "step_number",
+          "p_kn",
+          "v2_kn",
+          "v3_kn",
+          "t_knm",
+          "m2_knm",
+          "m3_knm"
+        ],
+        "title": "ETABSForceStationV1",
         "type": "object"
       },
       "ETABSFrameForceStationV1": {
@@ -14958,34 +15759,203 @@
         "title": "ETABSFrameGeometryV1",
         "type": "object"
       },
-      "ETABSModelIdentityV1": {
+      "ETABSFrameKind": {
+        "enum": [
+          "BEAM",
+          "COLUMN"
+        ],
+        "title": "ETABSFrameKind",
+        "type": "string"
+      },
+      "ETABSFrameResultV1": {
         "additionalProperties": false,
-        "description": "Identity of the ETABS model actually attached by COM.",
         "properties": {
-          "etabs_version": {
-            "title": "Etabs Version",
+          "member_id": {
+            "title": "Member Id",
             "type": "string"
           },
-          "etabs_version_number": {
-            "title": "Etabs Version Number",
-            "type": "number"
+          "selection_evidence": {
+            "$ref": "#/components/schemas/ETABSResultSelectionEvidenceV1"
           },
-          "model_name": {
-            "title": "Model Name",
+          "source_frame_name": {
+            "title": "Source Frame Name",
             "type": "string"
           },
-          "model_path": {
-            "title": "Model Path",
+          "stations": {
+            "items": {
+              "$ref": "#/components/schemas/ETABSForceStationV1"
+            },
+            "minItems": 1,
+            "title": "Stations",
+            "type": "array"
+          }
+        },
+        "required": [
+          "member_id",
+          "source_frame_name",
+          "selection_evidence",
+          "stations"
+        ],
+        "title": "ETABSFrameResultV1",
+        "type": "object"
+      },
+      "ETABSFrameV1": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "$ref": "#/components/schemas/ETABSFrameKind"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "local_axis": {
+            "$ref": "#/components/schemas/ETABSLocalAxisV1"
+          },
+          "member_id": {
+            "title": "Member Id",
+            "type": "string"
+          },
+          "point_i": {
+            "$ref": "#/components/schemas/ETABSPointV1"
+          },
+          "point_j": {
+            "$ref": "#/components/schemas/ETABSPointV1"
+          },
+          "section": {
+            "$ref": "#/components/schemas/ETABSRectangularSectionV1"
+          },
+          "source_unique_name": {
+            "title": "Source Unique Name",
+            "type": "string"
+          },
+          "story": {
+            "title": "Story",
             "type": "string"
           }
         },
         "required": [
-          "model_name",
-          "model_path",
-          "etabs_version",
-          "etabs_version_number"
+          "member_id",
+          "source_unique_name",
+          "label",
+          "story",
+          "kind",
+          "point_i",
+          "point_j",
+          "local_axis",
+          "section"
         ],
-        "title": "ETABSModelIdentityV1",
+        "title": "ETABSFrameV1",
+        "type": "object"
+      },
+      "ETABSLocalAxisV1": {
+        "additionalProperties": false,
+        "properties": {
+          "advanced_axes_active": {
+            "title": "Advanced Axes Active",
+            "type": "boolean"
+          },
+          "direction_x": {
+            "title": "Direction X",
+            "type": "number"
+          },
+          "direction_y": {
+            "title": "Direction Y",
+            "type": "number"
+          },
+          "direction_z": {
+            "title": "Direction Z",
+            "type": "number"
+          },
+          "length_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Length Mm",
+            "type": "number"
+          },
+          "local_axis_rotation_deg": {
+            "title": "Local Axis Rotation Deg",
+            "type": "number"
+          }
+        },
+        "required": [
+          "local_axis_rotation_deg",
+          "advanced_axes_active",
+          "direction_x",
+          "direction_y",
+          "direction_z",
+          "length_mm"
+        ],
+        "title": "ETABSLocalAxisV1",
+        "type": "object"
+      },
+      "ETABSModelFileEvidenceV1": {
+        "additionalProperties": false,
+        "description": "Pre/post identity proof that the authorized model file stayed unchanged.",
+        "properties": {
+          "after_read": {
+            "$ref": "#/components/schemas/ETABSModelFileSnapshotV1"
+          },
+          "before_read": {
+            "$ref": "#/components/schemas/ETABSModelFileSnapshotV1"
+          },
+          "freshness_verdict": {
+            "const": "VERIFIED_UNCHANGED",
+            "default": "VERIFIED_UNCHANGED",
+            "title": "Freshness Verdict",
+            "type": "string"
+          }
+        },
+        "required": [
+          "before_read",
+          "after_read"
+        ],
+        "title": "ETABSModelFileEvidenceV1",
+        "type": "object"
+      },
+      "ETABSModelFileSnapshotV1": {
+        "additionalProperties": false,
+        "description": "One exact filesystem identity observation of the authorized EDB copy.",
+        "properties": {
+          "byte_count": {
+            "minimum": 1.0,
+            "title": "Byte Count",
+            "type": "integer"
+          },
+          "model_name": {
+            "minLength": 1,
+            "title": "Model Name",
+            "type": "string"
+          },
+          "model_path": {
+            "minLength": 1,
+            "title": "Model Path",
+            "type": "string"
+          },
+          "modified_at_utc": {
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?Z$",
+            "title": "Modified At Utc",
+            "type": "string"
+          },
+          "observed_at_utc": {
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?Z$",
+            "title": "Observed At Utc",
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "model_path",
+          "model_name",
+          "sha256",
+          "byte_count",
+          "modified_at_utc",
+          "observed_at_utc"
+        ],
+        "title": "ETABSModelFileSnapshotV1",
         "type": "object"
       },
       "ETABSPilotBeamResultV1": {
@@ -15133,7 +16103,7 @@
             "type": "array"
           },
           "model": {
-            "$ref": "#/components/schemas/ETABSModelIdentityV1"
+            "$ref": "#/components/schemas/structural_lib__services__etabs_live_bridge__ETABSModelIdentityV1"
           },
           "pilot_status": {
             "const": "COMPLETED",
@@ -15178,6 +16148,118 @@
         "title": "ETABSPilotResultV1",
         "type": "object"
       },
+      "ETABSPointV1": {
+        "additionalProperties": false,
+        "properties": {
+          "point_name": {
+            "title": "Point Name",
+            "type": "string"
+          },
+          "x_mm": {
+            "title": "X Mm",
+            "type": "number"
+          },
+          "y_mm": {
+            "title": "Y Mm",
+            "type": "number"
+          },
+          "z_mm": {
+            "title": "Z Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "point_name",
+          "x_mm",
+          "y_mm",
+          "z_mm"
+        ],
+        "title": "ETABSPointV1",
+        "type": "object"
+      },
+      "ETABSRectangularSectionV1": {
+        "additionalProperties": false,
+        "properties": {
+          "auto_select_list": {
+            "title": "Auto Select List",
+            "type": "string"
+          },
+          "depth_t3_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Depth T3 Mm",
+            "type": "number"
+          },
+          "material_property_label": {
+            "title": "Material Property Label",
+            "type": "string"
+          },
+          "section_name": {
+            "title": "Section Name",
+            "type": "string"
+          },
+          "width_t2_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Width T2 Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "section_name",
+          "auto_select_list",
+          "material_property_label",
+          "depth_t3_mm",
+          "width_t2_mm"
+        ],
+        "title": "ETABSRectangularSectionV1",
+        "type": "object"
+      },
+      "ETABSResultSelectionEvidenceV1": {
+        "additionalProperties": false,
+        "properties": {
+          "available": {
+            "const": true,
+            "default": true,
+            "title": "Available",
+            "type": "boolean"
+          },
+          "case_status_code": {
+            "anyOf": [
+              {
+                "maximum": 4.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Case Status Code"
+          },
+          "selected_for_output": {
+            "const": true,
+            "default": true,
+            "title": "Selected For Output",
+            "type": "boolean"
+          },
+          "selection": {
+            "$ref": "#/components/schemas/ETABSResultSelectionV1"
+          },
+          "status": {
+            "enum": [
+              "FINISHED",
+              "COMBINATION_ROWS_REQUIRED"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "selection",
+          "status"
+        ],
+        "title": "ETABSResultSelectionEvidenceV1",
+        "type": "object"
+      },
       "ETABSResultSelectionKind": {
         "description": "Exact ETABS result source requested by the caller.",
         "enum": [
@@ -15206,6 +16288,154 @@
           "name"
         ],
         "title": "ETABSResultSelectionV1",
+        "type": "object"
+      },
+      "ETABSRuntimeProvenanceV1": {
+        "additionalProperties": false,
+        "description": "Deterministic identity of the source/runtime used for extraction.",
+        "properties": {
+          "adapter_version": {
+            "const": "etabs-beam-baseline-adapter/v1",
+            "default": "etabs-beam-baseline-adapter/v1",
+            "title": "Adapter Version",
+            "type": "string"
+          },
+          "com_provider": {
+            "minLength": 1,
+            "title": "Com Provider",
+            "type": "string"
+          },
+          "library_content_identity": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Library Content Identity",
+            "type": "string"
+          },
+          "library_version": {
+            "minLength": 1,
+            "title": "Library Version",
+            "type": "string"
+          },
+          "platform": {
+            "minLength": 1,
+            "title": "Platform",
+            "type": "string"
+          },
+          "python_version": {
+            "minLength": 1,
+            "title": "Python Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "library_version",
+          "library_content_identity",
+          "python_version",
+          "platform",
+          "com_provider"
+        ],
+        "title": "ETABSRuntimeProvenanceV1",
+        "type": "object"
+      },
+      "ETABSStoryV1": {
+        "additionalProperties": false,
+        "properties": {
+          "elevation_mm": {
+            "title": "Elevation Mm",
+            "type": "number"
+          },
+          "height_mm": {
+            "minimum": 0.0,
+            "title": "Height Mm",
+            "type": "number"
+          },
+          "is_master_story": {
+            "title": "Is Master Story",
+            "type": "boolean"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "similar_to_story": {
+            "title": "Similar To Story",
+            "type": "string"
+          },
+          "splice_above": {
+            "title": "Splice Above",
+            "type": "boolean"
+          },
+          "splice_height_mm": {
+            "minimum": 0.0,
+            "title": "Splice Height Mm",
+            "type": "number"
+          },
+          "story_id": {
+            "title": "Story Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "story_id",
+          "name",
+          "elevation_mm",
+          "height_mm",
+          "is_master_story",
+          "similar_to_story",
+          "splice_above",
+          "splice_height_mm"
+        ],
+        "title": "ETABSStoryV1",
+        "type": "object"
+      },
+      "ETABSUnitProofV1": {
+        "additionalProperties": false,
+        "properties": {
+          "extraction_present_units_enum": {
+            "const": 5,
+            "default": 5,
+            "title": "Extraction Present Units Enum",
+            "type": "integer"
+          },
+          "force": {
+            "const": "kN",
+            "default": "kN",
+            "title": "Force",
+            "type": "string"
+          },
+          "length": {
+            "const": "mm",
+            "default": "mm",
+            "title": "Length",
+            "type": "string"
+          },
+          "moment": {
+            "const": "kN.m",
+            "default": "kN.m",
+            "title": "Moment",
+            "type": "string"
+          },
+          "original_present_units_enum": {
+            "minimum": 1.0,
+            "title": "Original Present Units Enum",
+            "type": "integer"
+          },
+          "restoration_status": {
+            "const": "RESTORED",
+            "default": "RESTORED",
+            "title": "Restoration Status",
+            "type": "string"
+          },
+          "restored_present_units_enum": {
+            "minimum": 1.0,
+            "title": "Restored Present Units Enum",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "original_present_units_enum",
+          "restored_present_units_enum"
+        ],
+        "title": "ETABSUnitProofV1",
         "type": "object"
       },
       "EffectiveDepthBasisRequestV1": {
@@ -31128,6 +32358,74 @@
         ],
         "title": "BeamParams",
         "type": "object"
+      },
+      "structural_lib__services__etabs_beam_baseline__ETABSModelIdentityV1": {
+        "additionalProperties": false,
+        "properties": {
+          "etabs_version": {
+            "title": "Etabs Version",
+            "type": "string"
+          },
+          "etabs_version_number": {
+            "title": "Etabs Version Number",
+            "type": "number"
+          },
+          "file_evidence": {
+            "$ref": "#/components/schemas/ETABSModelFileEvidenceV1"
+          },
+          "model_locked": {
+            "title": "Model Locked",
+            "type": "boolean"
+          },
+          "model_name": {
+            "title": "Model Name",
+            "type": "string"
+          },
+          "model_path": {
+            "title": "Model Path",
+            "type": "string"
+          }
+        },
+        "required": [
+          "model_name",
+          "model_path",
+          "file_evidence",
+          "etabs_version",
+          "etabs_version_number",
+          "model_locked"
+        ],
+        "title": "ETABSModelIdentityV1",
+        "type": "object"
+      },
+      "structural_lib__services__etabs_live_bridge__ETABSModelIdentityV1": {
+        "additionalProperties": false,
+        "description": "Identity of the ETABS model actually attached by COM.",
+        "properties": {
+          "etabs_version": {
+            "title": "Etabs Version",
+            "type": "string"
+          },
+          "etabs_version_number": {
+            "title": "Etabs Version Number",
+            "type": "number"
+          },
+          "model_name": {
+            "title": "Model Name",
+            "type": "string"
+          },
+          "model_path": {
+            "title": "Model Path",
+            "type": "string"
+          }
+        },
+        "required": [
+          "model_name",
+          "model_path",
+          "etabs_version",
+          "etabs_version_number"
+        ],
+        "title": "ETABSModelIdentityV1",
+        "type": "object"
       }
     }
   },
@@ -36997,6 +38295,238 @@
         ]
       }
     },
+    "/api/v1/etabs-bridge/v1/beam-baseline": {
+      "post": {
+        "operationId": "run_etabs_beam_baseline_api_v1_etabs_bridge_v1_beam_baseline_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ETABSBeamBaselineRunRequestV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_ETABSBeamBaselineTransportV1_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Authentication required"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "State conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Concurrency or rate limit"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Internal application error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Capability unavailable"
+          }
+        },
+        "summary": "Read one complete preflight-bound W2 beam baseline",
+        "tags": [
+          "etabs-bridge"
+        ]
+      }
+    },
+    "/api/v1/etabs-bridge/v1/beam-baseline/preflight": {
+      "post": {
+        "operationId": "inspect_etabs_beam_baseline_api_v1_etabs_bridge_v1_beam_baseline_preflight_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_ETABSBeamBaselinePreflightV1_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Authentication required"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "State conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Concurrency or rate limit"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Internal application error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Capability unavailable"
+          }
+        },
+        "summary": "Inspect the open ETABS model and runtime before a W2 baseline read",
+        "tags": [
+          "etabs-bridge"
+        ]
+      }
+    },
     "/api/v1/etabs-bridge/v1/beam-pilot": {
       "post": {
         "operationId": "run_etabs_beam_pilot_api_v1_etabs_bridge_v1_beam_pilot_post",
@@ -42520,7 +44050,7 @@
       "name": "excel-workbench"
     },
     {
-      "description": "Bounded Windows ETABS attachment, beam-force extraction, and canonical design pilot.",
+      "description": "Bounded Windows ETABS pilot plus preflight-bound read-only W2 beam baseline.",
       "name": "etabs-bridge"
     },
     {

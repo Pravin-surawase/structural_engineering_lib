@@ -1,5 +1,6 @@
 import {
   SETTINGS_KEYS,
+  buildEtabsBaselineRequest,
   buildEtabsPilotRequest,
   buildPreviewRequest,
   buildReviewBundleExportRequest,
@@ -8,6 +9,7 @@ import {
   getWorkbenchApi,
   postWorkbenchApi,
   postReviewBundleApi,
+  projectEtabsBaselineTables,
   projectEtabsPilotRows,
   projectLedgerRows,
   projectMappingRows,
@@ -17,6 +19,7 @@ import {
   reviewBundleExportEligible,
   retainEvidence,
   sameSourceSnapshot,
+  verifyEtabsBaselineTransport,
 } from "./taskpane-core.mjs";
 import {
   ensureWorkbookId,
@@ -24,6 +27,7 @@ import {
   officeErrorDetail,
   registerWorksheetChange,
   saveDocumentSettings,
+  writeEtabsBaselineResults,
   writeEtabsPilotResults,
 } from "./taskpane-office.mjs";
 
@@ -45,6 +49,7 @@ const state = {
   workbookSurfaceAvailable: false,
   etabsBridgeStatus: null,
   etabsConnected: false,
+  etabsBaselinePreflight: null,
 };
 
 const ui = {};
@@ -82,6 +87,22 @@ function setPilotBusy(busy) {
     busy || state.etabsBridgeStatus?.bridge_status !== "READY_TO_CONNECT";
   ui.etabsRun.disabled = busy || !state.etabsConnected;
   ui.etabsStatus.setAttribute("aria-busy", busy ? "true" : "false");
+}
+
+function setBaselineStatus(kind, title, detail = "") {
+  ui.etabsBaselineStatus.className = `status ${kind}`;
+  ui.etabsBaselineStatusTitle.textContent = title;
+  ui.etabsBaselineStatusDetail.textContent = detail;
+}
+
+function setBaselineBusy(busy) {
+  const preflight = state.etabsBaselinePreflight;
+  ui.etabsBaselinePreflight.disabled =
+    busy || state.etabsBridgeStatus?.bridge_status !== "READY_TO_CONNECT";
+  ui.etabsBaselineConfirm.disabled = busy || !preflight || !preflight.model_locked;
+  ui.etabsBaselineRun.disabled =
+    busy || !preflight || ui.etabsBaselineConfirm.checked !== true;
+  ui.etabsBaselineStatus.setAttribute("aria-busy", busy ? "true" : "false");
 }
 
 function captureEtabsPilotValues() {
@@ -128,6 +149,7 @@ async function refreshEtabsStatus() {
     setPilotStatus("blocked", "BRIDGE STATUS FAILED", error.message);
   } finally {
     setPilotBusy(false);
+    setBaselineBusy(false);
   }
 }
 
@@ -181,6 +203,87 @@ async function runEtabsPilot() {
     setPilotStatus("blocked", "PILOT BLOCKED", officeErrorDetail(error));
   } finally {
     setPilotBusy(false);
+  }
+}
+
+async function preflightEtabsBaseline() {
+  setBaselineBusy(true);
+  setBaselineStatus(
+    "working",
+    "INSPECTING W2 SOURCE",
+    "Reading only open-model, file, lock, unit, ETABS, and bridge identities.",
+  );
+  try {
+    const preflight = await postWorkbenchApi(
+      API_ROOT,
+      "/etabs-bridge/v1/beam-baseline/preflight",
+      {},
+      { token: ui.token.value },
+    );
+    state.etabsBaselinePreflight = preflight;
+    ui.etabsBaselineConfirm.checked = false;
+    const file = preflight.observed_model_file;
+    setBaselineStatus(
+      preflight.model_locked ? "hold" : "blocked",
+      preflight.model_locked ? "COPY CONFIRMATION REQUIRED" : "MODEL NOT LOCKED",
+      `${file.model_name} · ${preflight.etabs_version} · SHA-256 ${file.sha256.slice(0, 16)}… · ${file.byte_count} bytes · units enum ${preflight.present_units_enum}`,
+    );
+  } catch (error) {
+    state.etabsBaselinePreflight = null;
+    ui.etabsBaselineConfirm.checked = false;
+    setBaselineStatus("blocked", "W2 PREFLIGHT FAILED", error.message);
+  } finally {
+    setBaselineBusy(false);
+  }
+}
+
+function baselineConfirmationChanged() {
+  const confirmed = ui.etabsBaselineConfirm.checked === true;
+  setBaselineStatus(
+    confirmed ? "ready" : "hold",
+    confirmed ? "READY FOR READ-ONLY BASELINE" : "COPY CONFIRMATION REQUIRED",
+    confirmed
+      ? "The run will re-prove every identity, active result selection, topology row, file hash, and restored unit setting."
+      : "Confirm only after comparing this preflight with the approved copied-model evidence.",
+  );
+  setBaselineBusy(false);
+}
+
+async function runEtabsBaseline() {
+  setBaselineBusy(true);
+  setBaselineStatus(
+    "working",
+    "READING COMPLETE W2 BASELINE",
+    "No analysis, design, result-selection setter, model save, or write-back is permitted.",
+  );
+  try {
+    const request = buildEtabsBaselineRequest(state.etabsBaselinePreflight, {
+      selectionKind: ui.etabsBaselineSelectionKind.value,
+      selectionName: ui.etabsBaselineSelectionName.value,
+      approvedCopyConfirmed: ui.etabsBaselineConfirm.checked,
+    });
+    const transport = await postWorkbenchApi(
+      API_ROOT,
+      "/etabs-bridge/v1/beam-baseline",
+      request,
+      { token: ui.token.value },
+    );
+    if (transport.build_result.status !== "ACCEPTED") {
+      const codes = transport.build_result.issues.map((issue) => issue.code).join(", ");
+      throw new Error(`W2 baseline blocked: ${codes || "unknown disposition"}. No baseline tables were written.`);
+    }
+    await verifyEtabsBaselineTransport(transport);
+    const projection = projectEtabsBaselineTables(transport);
+    const write = await writeEtabsBaselineResults(Excel, projection);
+    setBaselineStatus(
+      "ready",
+      "W2 BASELINE CURRENT",
+      `${transport.counts.frames} frames, ${transport.counts.connectivity_rows} links, and ${transport.counts.result_station_rows} force stations written across ${write.sheets.length} controlled sheets (${write.disposition}). SHA-256 ${write.baselineSha256}. Qualified review is required.`,
+    );
+  } catch (error) {
+    setBaselineStatus("blocked", "W2 BASELINE BLOCKED", officeErrorDetail(error));
+  } finally {
+    setBaselineBusy(false);
   }
 }
 
@@ -502,6 +605,14 @@ async function initialize() {
   ui.etabsStirrupLegs = document.getElementById("etabs-stirrup-legs");
   ui.etabsSpacingSupport = document.getElementById("etabs-spacing-support");
   ui.etabsSpacingMid = document.getElementById("etabs-spacing-mid");
+  ui.etabsBaselineStatus = document.getElementById("etabs-w2-status");
+  ui.etabsBaselineStatusTitle = document.getElementById("etabs-w2-status-title");
+  ui.etabsBaselineStatusDetail = document.getElementById("etabs-w2-status-detail");
+  ui.etabsBaselinePreflight = document.getElementById("etabs-w2-preflight");
+  ui.etabsBaselineConfirm = document.getElementById("etabs-w2-confirm");
+  ui.etabsBaselineSelectionKind = document.getElementById("etabs-w2-selection-kind");
+  ui.etabsBaselineSelectionName = document.getElementById("etabs-w2-selection-name");
+  ui.etabsBaselineRun = document.getElementById("etabs-w2-run");
   ui.preview.addEventListener("click", previewMapping);
   ui.review.addEventListener("change", mappingReviewChanged);
   ui.run.addEventListener("click", runCalculation);
@@ -509,8 +620,12 @@ async function initialize() {
   ui.export.addEventListener("click", exportReviewBundle);
   ui.etabsConnect.addEventListener("click", connectEtabs);
   ui.etabsRun.addEventListener("click", runEtabsPilot);
+  ui.etabsBaselinePreflight.addEventListener("click", preflightEtabsBaseline);
+  ui.etabsBaselineConfirm.addEventListener("change", baselineConfirmationChanged);
+  ui.etabsBaselineRun.addEventListener("click", runEtabsBaseline);
   setBusy(true);
   setPilotBusy(true);
+  setBaselineBusy(true);
 
   let surface;
   try {

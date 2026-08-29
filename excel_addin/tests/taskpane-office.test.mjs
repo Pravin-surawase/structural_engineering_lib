@@ -1,12 +1,17 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { ETABS_PILOT_HEADERS, SETTINGS_KEYS } from "../taskpane-core.mjs";
+import {
+  ETABS_BASELINE_TABLES,
+  ETABS_PILOT_HEADERS,
+  SETTINGS_KEYS,
+} from "../taskpane-core.mjs";
 import {
   ensureWorkbookId,
   inspectWorkbookSurface,
   officeErrorDetail,
   registerWorksheetChange,
+  writeEtabsBaselineResults,
   writeEtabsPilotResults,
 } from "../taskpane-office.mjs";
 
@@ -309,4 +314,142 @@ test("ETABS pilot never overwrites a colliding user worksheet", async () => {
     writeEtabsPilotResults(changed.api, [pilotRow()]),
     /headers do not match V1/,
   );
+});
+
+function baselineProjection() {
+  const tables = Object.fromEntries(
+    Object.entries(ETABS_BASELINE_TABLES).map(([key, spec]) => [
+      key,
+      [spec.headers.map((_, index) => (index === 0 ? `${key}:1` : null))],
+    ]),
+  );
+  return { baselineSha256: "a".repeat(64), projectedRows: 7, tables };
+}
+
+function baselineExcel({ existing = false, missingTableKey = null, wrongHeaderKey = null } = {}) {
+  const calls = [];
+  const sheets = new Map();
+  const keyBySheet = new Map(
+    Object.entries(ETABS_BASELINE_TABLES).map(([key, spec]) => [spec.sheetName, key]),
+  );
+
+  function makeSheet(name, exists) {
+    const key = keyBySheet.get(name);
+    const spec = ETABS_BASELINE_TABLES[key];
+    const body = {};
+    const header = {
+      values: [wrongHeaderKey === key ? ["Wrong"] : [...spec.headers]],
+      rowIndex: 0,
+      columnIndex: 0,
+      columnCount: spec.headers.length,
+      load(properties) { calls.push(["header.load", key, properties]); },
+    };
+    const table = {
+      isNullObject: missingTableKey === key,
+      name: null,
+      load(property) { calls.push(["table.load", key, property]); },
+      getHeaderRowRange() { return header; },
+      getDataBodyRange() { return body; },
+      resize(range) { calls.push(["resize", key, range]); },
+    };
+    const sheet = {
+      isNullObject: !exists,
+      body,
+      table,
+      ranges: [],
+      load(property) { calls.push(["sheet.load", key, property]); },
+      getRangeByIndexes(...args) {
+        const range = { args };
+        sheet.ranges.push(range);
+        calls.push(["range", key, ...args]);
+        return range;
+      },
+      activate() { calls.push(["activate", key]); },
+      tables: {
+        getItemOrNullObject(tableName) {
+          calls.push(["table.get", key, tableName]);
+          return table;
+        },
+        add(range, hasHeaders) {
+          calls.push(["table.add", key, range, hasHeaders]);
+          return table;
+        },
+      },
+    };
+    return sheet;
+  }
+
+  for (const spec of Object.values(ETABS_BASELINE_TABLES)) {
+    sheets.set(spec.sheetName, makeSheet(spec.sheetName, existing));
+  }
+  const context = {
+    workbook: {
+      worksheets: {
+        getItemOrNullObject(name) {
+          calls.push(["sheet.get", keyBySheet.get(name)]);
+          return sheets.get(name);
+        },
+        add(name) {
+          const sheet = sheets.get(name);
+          sheet.isNullObject = false;
+          calls.push(["sheet.add", keyBySheet.get(name)]);
+          return sheet;
+        },
+      },
+    },
+    async sync() { calls.push(["sync"]); },
+  };
+  return {
+    calls,
+    sheets,
+    api: { async run(callback) { return callback(context); } },
+  };
+}
+
+test("W2 baseline creates only all seven controlled tables", async () => {
+  const excel = baselineExcel();
+  const projection = baselineProjection();
+
+  const result = await writeEtabsBaselineResults(excel.api, projection);
+
+  assert.equal(result.disposition, "CREATED");
+  assert.equal(result.baselineSha256, projection.baselineSha256);
+  assert.equal(result.sheets.length, 7);
+  assert.equal(excel.calls.filter(([name]) => name === "sheet.add").length, 7);
+  for (const [key, spec] of Object.entries(ETABS_BASELINE_TABLES)) {
+    const sheet = excel.sheets.get(spec.sheetName);
+    assert.equal(sheet.table.name, spec.tableName);
+    assert.deepEqual(sheet.ranges[0].values, [spec.headers, ...projection.tables[key]]);
+  }
+});
+
+test("W2 baseline keeps an empty controlled table header-only", async () => {
+  const excel = baselineExcel();
+  const projection = baselineProjection();
+  projection.tables.connectivity = [];
+  projection.projectedRows = 6;
+
+  await writeEtabsBaselineResults(excel.api, projection);
+
+  const spec = ETABS_BASELINE_TABLES.connectivity;
+  const sheet = excel.sheets.get(spec.sheetName);
+  assert.deepEqual(sheet.ranges[0].values, [spec.headers]);
+  assert.equal(sheet.ranges[0].args[2], 1);
+});
+
+test("W2 baseline preflights every collision before changing cells", async () => {
+  const missing = baselineExcel({ existing: true, missingTableKey: "stations" });
+  await assert.rejects(
+    writeEtabsBaselineResults(missing.api, baselineProjection()),
+    /ETABS_W2_Stations already exists without tbl_ETABS_W2_Stations_V1/,
+  );
+  assert.equal(missing.calls.some(([name]) => name === "resize"), false);
+  assert.equal(missing.calls.some(([name]) => name === "sheet.add"), false);
+
+  const changed = baselineExcel({ existing: true, wrongHeaderKey: "frames" });
+  await assert.rejects(
+    writeEtabsBaselineResults(changed.api, baselineProjection()),
+    /ETABS_W2_Frames headers do not match/,
+  );
+  assert.equal(changed.calls.some(([name]) => name === "resize"), false);
 });

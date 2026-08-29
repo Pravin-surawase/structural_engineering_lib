@@ -5,6 +5,447 @@
 
 ---
 
+## 2026-08-29 — Session: Mac W2 cumulative review and integration repair
+
+**Agent:** Codex (`reviewer`/`governance`/`integration`, sole writer; no
+subagents).
+
+**Branch:** `codex/etabs-excel-beam-w2-mac-integration`, created in a fresh Mac
+worktree from exact frozen Windows campaign head
+`471761767896263e64bd3c237f50134b19c50bab`, tree
+`6d3889041ca2e2c6a9d0d7d533f7d44c9d81acf9`, with exact merge base
+`origin/main` `0f5c918eb87b658448737fd6bf023ccb4bd07c74`.
+
+**Git handoff receipt:**
+`docs/verification/etabs-excel-beam-w2-mac-integration-git-handoff-receipt.json`
+(pre-commit Mac candidate receipt; PR/hosted/merge facts remain external).
+
+**Focus:** Independently reproduce the complete Windows W2 campaign on Mac,
+preserve the Windows branch unchanged, repair the one repository-wide
+date-sensitive compatibility-ledger test at its confirmed root cause, and
+prepare one cumulative integration candidate. Keep W2C explicitly
+`BLOCKED_SAFE_NO_FORCE_READ`; do not open ETABS/Excel, retry installed evidence,
+change result selection, start W3, repair unrelated Windows portability or npm
+advisories, or broaden software evidence into engineering approval.
+
+**Completed:**
+
+- Refetched GitHub and proved clean local/remote `main` equality at
+  `0f5c918e...`, exact Windows campaign head/tree `47176176...` /
+  `6d388904...`, exact merge base, and zero matching pull requests before
+  creating the Mac integration lane.
+- Inspected every registered worktree. Preserved the historical detached dirty
+  `e54a` lane and its sole `docs/SESSION_LOG.md` overlay without reading it as a
+  write target, cleaning it, or changing any sibling branch/worktree.
+- Proved the fresh integration worktree is source-bound to its own checkout and
+  `READY_LOCAL`, with no operation/conflict/lock and no initial dirty path.
+- Independently reviewed Phase A installed metadata, Phase B service/REST/Excel
+  transport, the installed `GetStories` Base-row repair, W2C safe-hold evidence,
+  and the end-to-end abort-before-`FrameForce` path. No outcome-changing W2
+  finding was identified; the Windows campaign code remains byte-unchanged.
+- Reproduced the broad-suite failure in the exact integration lane: the packed
+  compatibility ledger retained `generated=2026-08-28` while the live fixture
+  used `2026-08-29`. In the same before-state, the canonical generator's
+  `--check` passed and reported the classification registry/ledger current.
+- Repaired the test contract rather than regenerating a date-only artifact:
+  the checked-in representation must repack canonically, and a freshly built
+  ledger must survive an exact pack/unpack round trip. Semantic freshness
+  remains owned by the existing normalized generator comparison.
+- Proved the repair with the isolated reproducer, all 22 compatibility-
+  convergence tests, and the canonical generator check; all passed without a
+  generated-ledger rewrite.
+- Froze and validated the cumulative Mac candidate: focused W2 plus
+  compatibility tests passed `67` with one expected macOS-only skip; Office.js
+  passed `34/34`; affected Ruff and mypy checks passed; the quick gate passed
+  `10/10`; and the repository-wide Python suite passed `7,214`, with four
+  expected skips and six deselections. No ETABS or Excel application was
+  opened and no installed retry was attempted.
+
+### Issues encountered
+
+- The required `session begin` command refused to create the current task
+  checkpoint because an unmatched historical start remains for
+  `EXCEL-ETABS-PYTHON-BRIDGE-PILOT`.
+- The broad compatibility test failed on a date-only difference even though the
+  canonical generator's own freshness check passed.
+
+### Root causes and resolutions
+
+- Confirmed session cause: the repository session store contains a preserved
+  unmatched parent-pilot start, so a second task timer is rejected. Resolution:
+  do not close or rewrite the historical checkpoint and do not invent elapsed
+  time. Preserve the exact error, continue only after clean Git/source-binding
+  proof, and use repository/Git/hosted command evidence for this candidate.
+  ⚠️ TERMINAL ISSUE: `session begin` stopped on the historical unmatched
+  checkpoint -> preserved it unchanged and used the source-bound fresh
+  integration worktree.
+- Confirmed ledger cause: `build_compatibility_ledger()` emits the current UTC
+  date, while the maintained generator intentionally removes `generated` in
+  `_normalized()` before freshness comparison. The encoding test instead
+  compared the checked-in expanded ledger directly with today's live ledger,
+  turning a volatile timestamp into a daily test failure. Resolution: prove
+  exact canonical repacking of the checked-in payload plus exact lossless
+  pack/unpack of the live payload; retain normalized semantic freshness and do
+  not regenerate for date alone. The previously failing isolated test, the
+  complete 22-test file, and generator `--check` all pass.
+
+## 2026-08-29 — Session: Complete Windows W2 campaign
+
+**Agent:** Codex (`documentation`/`python-core`/`api`/`frontend`/`governance`,
+sole writer; no subagents).
+
+**Branches:** Phase A on `codex/etabs-w2c-com-signature-audit` from exact
+`origin/main` `0f5c918eb87b658448737fd6bf023ccb4bd07c74`, pushed at exact head
+`4841ab2a37504fa009842a812e1a0fa9e8b95d8f`; the cumulative campaign continues
+from that exact checkpoint on `codex/etabs-excel-beam-w2-campaign`.
+
+**Git handoff receipt:**
+`docs/verification/etabs-excel-beam-w2-campaign-git-handoff-receipt.json`
+(final cumulative Windows-to-Mac campaign pickup).
+
+**Focus:** Complete the bounded W2 campaign on the Windows evidence machine:
+first freeze the installed ETABS 23.3.1 static COM-signature audit without COM
+object creation; then implement/freeze W2B's read-only observer, REST, and Excel
+review/reconciliation surface; finally run W2C only against the approved copied
+model after every preflight condition passes. Preserve protected Windows
+`main`, W2A, unrelated worktrees, `HELD_NOT_SUPPORTED`, and every no-analysis/
+no-save/no-mutation/no-optimization/no-writeback/professional-review boundary.
+
+**Completed:**
+
+- Fetched GitHub and proved PR #896 merge `0f5c918e...`, reviewed W2A head
+  `0972e1af...`, branch absence, retained worktrees, and protected Windows
+  `main` before creating the dedicated Phase A lane.
+- Bound installed ETABS `23.3.1.4563` to the registered x64 `ETABSv1.tlb`
+  LIBID `{542F7A9D-3A7D-4061-97B3-3A1276FF83BD}` version `1.0`, exact file/
+  assembly/generated-wrapper hashes, 64-bit Python `3.11.15`, and `comtypes`
+  `1.4.16`.
+- Proved all 18 W2A getters plus `SetPresentUnits` for interface/method,
+  argument/default/output order, types, return-code form, enum values, and
+  current installed Python container shape. The audit found no outcome-changing
+  adapter mismatch or reason for a Windows code repair.
+- Froze every operation verdict, live-only claim, precondition, proof point,
+  and abort criterion in the tracked Phase A evidence. Design-summary reads
+  remain outside the matrix/blocked and frame analysis remains
+  `HELD_NOT_SUPPORTED`.
+- Committed Phase A as `6a4ade61...` plus governance repair `4841ab2a...`,
+  passed final clean session validation, pushed the exact remote head, verified
+  local/remote equality, and confirmed no PR exists.
+- Created the cumulative campaign branch from exact Phase A head `4841ab2a...`
+  and implemented W2B's real read-only EDB observer, runtime/getter/version/
+  file/unit/lock-bound preflight and run schemas, serialized single-apartment
+  COM orchestration, post-read lock/unit getters, and no-truncation response
+  limits.
+- Added typed FastAPI preflight/run operations and stable 503/409/422/413/500
+  error mapping. A domain-blocked W2A result remains a typed result with no
+  partial baseline or hash-basis payload.
+- Added seven controlled Excel tables for summary, stories, frames, endpoint
+  links, every force station, every disposition, and reconstructable server-
+  canonical W2A hash-basis JSON. All sheet/table/header collisions and stable
+  IDs are checked before the first cell mutation.
+- Reordered W2A blocking decisions so incomplete topology, empty beam inventory,
+  or inactive/missing result selection stops before `FrameForce`; accepted
+  W2A hashes and the existing W1 path remain unchanged.
+- Passed all normal Phase B hooks, committed the complete transport checkpoint
+  as `395f06180d140ba0c3f568da662fed1e2c370926`, pushed exact local/remote
+  equality, and confirmed that no PR exists.
+- Revalidated the exact Phase B head/tree, GitHub authority, installed ETABS/
+  typelib/wrapper/runtime identities, approved copied-model hash/size/time,
+  locked state, original unit enum, and absence of an application dialog before
+  the first Phase C getter-only preflight.
+- Committed and pushed the installed `GetStories` shape repair as exact campaign
+  checkpoint `18926ef48c620213abbb931449cda9e8049eee7c`; local and remote heads
+  matched and no PR existed before installed acceptance resumed.
+- Exercised the repaired direct service, source-bound REST API, and installed
+  Excel pane against the exact approved combination. All three independently
+  returned `BLOCKED` with `RESULT_SELECTION_NOT_ACTIVE`; no baseline/hash basis,
+  result station, or `FrameForce` read was produced.
+- Reconciled 846 exhaustive blocked-path dispositions across direct/REST,
+  including the explicit Base-row exclusion, six accepted stories, 225 accepted
+  beams/columns, 549 accepted endpoint links, 64 disconnected endpoints, and
+  one result-selection blocker. `HELD_NOT_SUPPORTED` remains unchanged.
+- Proved the copied-model hash/size/mtime/lock/unit enum unchanged after every
+  permitted getter path. The installed workbook also retained its exact hash and
+  byte count, and artifact-level inspection proved zero `ETABS_W2_*` sheets or
+  tables were created.
+- Froze the safe installed receipt in
+  `docs/verification/etabs-excel-beam-w2c-installed-acceptance-evidence.json`.
+  Full REST payloads, logs, and workbook bytes remain outside Git in the
+  hash-bound Windows evidence root.
+- Regenerated the maintained OpenAPI baseline omitted at the Phase B checkpoint;
+  the exact W2B surface now validates at 95 endpoints and 501 schemas.
+- Passed every normal hook and committed the immutable installed safe-hold
+  evidence as `5a41aee61f57f6ccc16b8ef5ba5ee8bbd194b66b`, tree
+  `368bae66e22820799d471a61f53e5f0bf7805524`.
+
+### Issues encountered
+
+- An ETABS process was already running before the static audit, creating a
+  boundary that could otherwise make a later record look as though the audit
+  launched or attached to the application.
+- The first PowerShell file-identity command piped directly from a parenthesized
+  `foreach`, and two exploratory generated-wrapper commands guessed `LIBID`
+  module attributes that `comtypes 1.4.16` does not expose at module level.
+- The already-running Codex desktop process did not inherit the refreshed user
+  `PATH`, so a direct `gh` authority check and the first normal commit's Bash-
+  based hooks could not find their executables.
+- `session handoff` rewrote the maintained brief with CRLF bytes on Windows,
+  conflicting with the repository's explicit LF checkout policy.
+- The W2A display strings omit one optional typelib detail and present one
+  required explicit enum value in default-like notation.
+- The first REST tests for the new W2B run contract returned HTTP 422 before the
+  mocked service was called.
+- Tracing the W2C abort checklist against W2A showed that a connected unsupported
+  frame or inactive result selection was marked blocked but force rows were
+  still read before the blocked result returned.
+- An unquoted PowerShell `git rev-parse HEAD^{tree}` inspection treated the
+  brace expression as PowerShell syntax and passed an encoded script argument
+  to Git instead of the requested revision expression.
+- Two guessed handoff-validation spellings used the absent short script name
+  `check_brief_length.py` and unsupported `session handoff --check`; one retry
+  also omitted the already-required process-local PATH refresh for Bash.
+- The first W2B `session check` found that the generated brief referenced the
+  new Phase B receipt while this multi-phase session entry still named the
+  preceding Phase A receipt.
+- The first normal Phase B commit hook normalized six edited Office `.mjs`
+  files from mixed line endings and rejected the new `_direct_model_values`
+  helper under the full-library `no-untyped-def` mypy rule. No commit was
+  created; every other substantive hook passed.
+- The first guarded installed W2A extraction stopped at `Story.GetStories`:
+  ETABS returned `NumberStories=6` and seven entries in every story array, while
+  the fake-COM contract required six entries. No force getter was reached.
+- Getter-only result-selection inventory proved the approved combination is
+  present but not currently selected for output. All 15 cases are finished,
+  four cases are selected, no combination is selected, and changing that state
+  is outside W2's setter policy.
+- The repository virtual environment did not include `openpyxl`, so it could not
+  independently inspect the installed `.xlsx` without adding an unplanned
+  dependency to the campaign.
+- The first post-run workbook hash attempt occurred while Excel still held the
+  file, and the first cleanup check could not safely attribute port listeners
+  from child command lines alone.
+- The inherited desktop environment did not populate Office development
+  certificate variables for the source-bound taskpane server.
+- A bare `python -m json.tool` closeout check resolved to the disabled Windows
+  Store application alias rather than the repository runtime.
+- The first final Office test command could not find `npm` in the inherited
+  desktop-process `PATH` even though the maintained frontend runtime was
+  installed and present in the persisted user environment.
+- The required broad Python suite completed with 7,173 passes, 13 skips, six
+  deselections, and 32 failures outside the W2 changed paths. The failures group
+  into direct POSIX `.sh` execution on Windows, forward-slash-only path
+  assertions, unavailable unprivileged Windows symlinks, Windows Git timing
+  budgets, one current-date ledger mismatch, and existing release/session/
+  context fixtures built on those assumptions.
+- The first integrated full gate exposed that Phase B had not regenerated the
+  maintained OpenAPI snapshot for its two new endpoints. The same parallel run
+  timed out API classification at 35 seconds and reported 52 governance errors
+  from Windows path interpretation.
+
+### Root causes and resolutions
+
+- Root cause of the pre-existing process is **unconfirmed** and outside this
+  task; process start preceded the audit. Resolution: inspect only registry/
+  file/type metadata, never create/attach a COM object, record the existing
+  process identity before/after wrapper generation, and call no live
+  `SapModel` getter. The same process remained present and Excel was absent.
+- Confirmed terminal-command causes: PowerShell does not permit that empty pipe
+  form after the inline `foreach`, and the friendly/raw generated modules expose
+  type-library identity through `Library._reg_typelib_`, not `LIBID` constants.
+  Resolution: collect the loop into `$rows` before piping and query
+  `Library._reg_typelib_`; subsequent metadata/hash extraction passed.
+  ⚠️ TERMINAL ISSUE: three exploratory static-inspection commands failed on
+  shell/module-shape assumptions -> corrected once and used the proved forms.
+- Confirmed cause: machine setup updated the user environment after this
+  desktop process started. Resolution: prepend the current user `PATH` plus the
+  maintained machine path process-locally, then rerun the exact GitHub
+  user/repository/remote-branch checks and normal commit hooks. The persisted
+  user path already contains `C:\Program Files\Git\bin`, so fresh processes need
+  no setup change; no credential or repository setting changed. ⚠️ TERMINAL
+  ISSUE: `gh` and then hook `bash` were absent from the inherited desktop
+  process path -> refreshed only the affected command environments and did not
+  bypass hooks.
+- Confirmed cause: the Python handoff writer used the platform-default text
+  newline conversion even though `.gitattributes` requires LF. Resolution:
+  normalize the one generated brief with Git for Windows `dos2unix`, verify
+  `git diff --check` without the conversion warning, and retain this as a
+  documented Windows generator gap for a separate governance repair if it ever
+  changes a main-process outcome. ⚠️ TERMINAL ISSUE: generated brief became
+  CRLF -> normalized the exact file before candidate freeze.
+- Confirmed cause of signature-text precision: W2A freezes the Python call/
+  decoded-result contract rather than copying full IDL. Resolution: record that
+  `LoadCases.GetNameList` has optional `CaseType=0` and that `FrameForce`
+  requires explicitly supplied `ItemTypeElm=0` (`ObjectElm`). The current calls,
+  counts, decoder, and outcome remain correct, so no adapter code changed.
+- Confirmed REST cause: strict Pydantic tuple intake is appropriate for local
+  immutable W2A models but JSON represents arrays as lists, so the public W2B
+  request rejected its valid `result_selections` array. Resolution: make the
+  transport request field a bounded strict list and convert it to the frozen
+  W2A tuple internally. Both blocked-result and 413 mapping tests then reached
+  the service and passed.
+- Confirmed force-order cause: W2A accumulated blocking dispositions but only
+  converted them to issues after `_read_results`. Resolution: resolve beam-
+  inventory, connected-topology, and result-selection blockers before the
+  result loop and skip `_read_results` on any blocker. Fake-COM tests prove zero
+  `FrameForce` calls for inactive selection, connected unsupported section, and
+  connected advanced axes; accepted deterministic hashes still pass.
+- Confirmed terminal cause: unquoted braces are parsed by PowerShell rather than
+  preserved as a literal Git revision suffix. Resolution: quote
+  `'HEAD^{tree}'`; Git returned exact Phase A tree `38fb9d8c...` on the next
+  call. ⚠️ TERMINAL ISSUE: unquoted Git tree syntax became an encoded PowerShell
+  argument -> quoted the exact revision expression.
+- Confirmed validation-command cause: the maintained names are
+  `check_next_session_brief_length.py` and `session check`; `handoff` is a writer,
+  not a `--check` carrier. Resolution: restore the documented process-local PATH
+  for this inherited desktop process and run both maintained read-only checks;
+  both exit zero. ⚠️ TERMINAL ISSUE: two guessed brief/handoff commands and one
+  stale-PATH retry failed -> used the discovered registered commands.
+- Confirmed receipt mismatch cause: the shared session entry intentionally spans
+  Phase A through W2C, but its receipt pointer had not advanced when Phase B's
+  handoff block was generated. Resolution: advance the entry to the W2B receipt,
+  retain the text that the final campaign receipt will supersede it, and rerun
+  `session check`; it exits zero.
+- Confirmed hook causes: `.gitattributes` explicitly protected `.js` but not the
+  maintained `.mjs` extension on this `core.autocrlf=true` Windows host, and the
+  narrow two-file mypy command did not enable the full hook's untyped-definition
+  rule. Resolution: add `*.mjs text eol=lf`, retain the hook-normalized files,
+  annotate the COM helper's input and exact five-value tuple return, refresh the
+  task receipt for the expanded path set, and rerun focused formatting/mypy plus
+  normal hooks. No hook was bypassed. ⚠️ TERMINAL ISSUE: first commit stopped on
+  mixed Office line endings and one missing type annotation -> repaired their
+  source contracts before retrying.
+- Confirmed installed story-shape cause: CSI's official `cStory.GetStories`
+  contract says `NumberStories` excludes `Base` while every output array has
+  `NumberStories + 1` entries beginning with that non-story row. Resolution:
+  require the documented shape and exact Base sentinel, retain Base as an
+  explicit `STORY_BASE_NOT_A_STORY` exclusion, and construct story identities
+  only from the following `NumberStories` rows. Tuple/list fake-COM coverage
+  proves the accepted and malformed-sentinel paths and preserves unit
+  restoration. No getter or setter was added.
+- Confirmed selection-state cause: result-output selection is live ETABS
+  session state and the approved W1 combination is no longer active even though
+  the unchanged file contains finished results. Resolution: preserve the
+  no-selection-setter boundary, abort before `FrameForce`, and continue only
+  getter-only/fail-closed W2C evidence until an independently authorized session
+  starts with the approved combination already active.
+- Confirmed workbook-inspection cause: `openpyxl` is optional and absent from the
+  repository runtime. Resolution: use the installed, bundled spreadsheet
+  artifact runtime read-only; it proved the workbook contained only its two
+  original sheets and no W2 controlled table. No dependency or workbook byte
+  changed.
+- Confirmed file-hash cause: Windows denied a stable independent read while the
+  normal Excel process retained the workbook handle. Resolution: close the
+  unchanged workbook normally, observe no save prompt, then hash the file; its
+  SHA-256 and size exactly matched the pre-run values. ⚠️ TERMINAL ISSUE: the
+  first post-run workbook hash was attempted while Excel held the file -> close
+  normally without saving, then hash and inspect the immutable bytes.
+- Confirmed server-cleanup cause: the actual localhost listeners were child
+  Python/Node processes and their individual command lines did not retain the
+  launching worktree. Resolution: trace each listener's exact process-parent
+  chain to the two task-owned launch PIDs before stopping only those chains;
+  ports 8000 and 3000 then had zero listeners. ⚠️ TERMINAL ISSUE: the first
+  process-attribution query was intentionally refused as insufficient -> prove
+  exact parent ownership before cleanup.
+- Confirmed certificate-environment cause: the inherited process did not expose
+  the dev-certificate variables even though the trusted certificate/key already
+  existed in the standard Office add-in location. Resolution: bind those exact
+  existing files process-locally for the source-bound server; no certificate was
+  created, installed, exported, or committed.
+- Confirmed runtime-command cause: this inherited process does not have a bare
+  Python executable ahead of the Windows Store alias. Resolution: use the
+  repository's maintained `scripts/python_runtime.sh` selector for JSON and
+  repository checks. ⚠️ TERMINAL ISSUE: bare `python` opened the disabled Store
+  alias -> used the maintained pinned runtime selector.
+- Confirmed Node-command cause: the refreshed persisted user path contains the
+  maintained Node 24.19.0/npm 11.17.0 binary directory, but the already-running
+  desktop process predates that refresh. Resolution: compose user and machine
+  paths process-locally, verify `./run.sh frontend runtime`, and rerun the exact
+  Office suite; all 34 tests pass. ⚠️ TERMINAL ISSUE: bare inherited `npm` was
+  absent -> use the repository-proved persisted runtime without installing or
+  changing machine state.
+- Confirmed broad-suite causes by isolated reproducers: Windows cannot execute
+  repository `.sh` files directly through `subprocess`, native `Path` strings
+  use backslashes where several assertions demand `/`, standard user mode lacks
+  symlink privilege, and the Windows Git fixtures exceed Linux-oriented timing
+  budgets. The compatibility ledger alone compares its checked-in 2026-08-28
+  generation date with the live 2026-08-29 inventory; the workbook-manifest
+  failure is also only `/` versus `\\`. Resolution: record the complete broad
+  result without repairing unrelated governance, packaging, workbook, or test-
+  portability code in W2. The affected W2 focused tests, Office tests, and
+  static architecture/import checks remain passing.
+- Confirmed OpenAPI cause: Phase B validated endpoint tests and OpenAPI runtime
+  behavior but omitted the repository's generated
+  `fastapi_app/openapi_baseline.json` owner. Resolution: regenerate it with
+  `scripts/check_openapi_snapshot.py --update`, inspect the expected two-path/
+  30-schema expansion, and validate exact 95-endpoint/501-schema parity.
+- Confirmed full-gate non-campaign causes: API classification passes when run
+  directly after the parallel timeout; governance's 52 errors print Windows
+  backslash paths into POSIX-oriented archive/name/layer rules, while the
+  maintained architecture checker independently passes all 236 files.
+  Resolution: retain both as Windows gate limitations and do not rewrite
+  unrelated governance/path policy in W2.
+
+### Validation through content freeze
+
+- Phase A source binding reports the exact audit worktree and
+  `source_bound=true`; GitHub CLI is authenticated as `Pravin-surawase` and
+  `origin/main` is exactly `0f5c918e...`.
+- Phase A evidence contains 19 explicit operation verdicts: 19 `PROVED`, zero
+  static-operation `NOT_PROVABLE_FROM_STATIC_METADATA`, zero `BLOCKED`, and no
+  silent gaps. Live-only and out-of-contract claims retain their separate
+  `NOT_PROVABLE_FROM_STATIC_METADATA`/`BLOCKED` verdicts.
+- Phase A focused documentation/governance, JSON validation, diff hygiene,
+  quick gate, normal hooks, final clean session validation, exact two-commit
+  push, local/remote-head equality, and no-PR proof all passed.
+- W2B focused Python/FastAPI coverage passes the live bridge, W2A baseline, real
+  Windows file-observer, orchestration, abort-order, capacity, response, and
+  OpenAPI paths. The maintained Office.js suite passes 34 tests covering exact
+  preflight binding, canonical JSON hashing/reconstruction, stable rows,
+  header-only empty tables, all-seven-table creation, and pre-mutation collision
+  blocking. Affected Ruff checks pass.
+- W2B architecture scans 236 files with zero violations, validates 272 internal-
+  import files and 216 circular-import files without a failure, and passes
+  focused mypy. Strict documentation passes all five checks; 520 Markdown files
+  and 1,124 local links have zero broken links; task/brief/context/JSON/diff
+  validation passes.
+- The consolidated quick gate and every normal hook passed; Phase B commit
+  `395f0618...` is clean and exactly equals its GitHub remote with no PR.
+- Phase C preflight matched ETABS `23.3.1.4563`, Python `3.11.15`, `comtypes`
+  `1.4.16`, the frozen typelib/wrapper hashes, copied-model SHA-256
+  `99b7f3f1...948b`, 702,831 bytes, locked state, and original units enum 6.
+  The story-shape failure and inactive approved combination both occurred
+  before any `FrameForce` call; post-failure file/hash/time/lock/units remained
+  unchanged.
+- The repaired direct service and source-bound REST endpoint both returned the
+  same typed `RESULT_SELECTION_NOT_ACTIVE` hold, zero stations, no baseline or
+  hash basis, and restored units. Installed Excel displayed the same hold and
+  wrote no W2 sheet/table; its on-disk SHA-256/byte count remained unchanged.
+- ETABS remained in one normal locked-model window without a save, analysis,
+  design, mutation, selection setter, or unexpected dialog. Excel and both
+  task-owned local servers were closed after evidence capture; ETABS was left
+  open and untouched.
+- Final changed-path checks pass: 46 focused W2 Python/FastAPI tests, 34 Office
+  tests, 236-file architecture validation, 753-file/2,509-internal-import
+  validation, 216-file circular analysis, and all 1,126 local links across 520
+  Markdown files.
+- The required broad Python run is retained exactly as a Windows portability/
+  current-date hold: 7,173 passed, 32 failed, 13 skipped, and six deselected in
+  679.33 seconds. Isolated reproducers confirm no W2 runtime assertion failed;
+  all 27 `test_etabs_beam_baseline.py` tests passed inside that run.
+- After the OpenAPI repair, the no-reuse full gate passes 30/32: FastAPI is
+  3/3 and all Docs/Architecture/Git/Stale/Code checks pass. Only the reproduced
+  35-second parallel classification timeout and 52 Windows-path governance
+  errors remain; direct classification exits zero.
+- The final receipt/source/installed JSON all parse and the receipt validates;
+  strict documentation passes 5/5, 520-file link validation passes 1,126 links,
+  context and session checks pass, diff hygiene is clean, the OpenAPI snapshot
+  matches, and the consolidated quick gate passes 10/10.
+- Normal evidence-commit hooks passed without bypass, including JSON, line
+  endings, quick verification, task/session/docs/API consistency, control-plane
+  registries, and link checks.
+
+---
+
 ## 2026-08-29 — Session: W2A Mac review repair and independent Windows next packet
 
 **Agent:** Codex (`reviewer`/`python-core`/`governance`, sole writer; no

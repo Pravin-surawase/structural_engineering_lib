@@ -4,10 +4,14 @@
 
 from __future__ import annotations
 
+import platform
+from hashlib import sha256
+
 import pytest
 from pydantic import ValidationError
 
 from structural_lib.services import etabs_beam_baseline as baseline
+from structural_lib.services import etabs_beam_bridge as beam_bridge
 from structural_lib.services.etabs_live_bridge import (
     ETABSDataError,
     ETABSResultSelectionKind,
@@ -83,13 +87,13 @@ class _FakeStory:
         return self.pack(
             (
                 2,
-                self.pack(("L1", "L2")),
-                self.pack((0.0, 3000.0)),
-                self.pack((3000.0, 3000.0)),
-                self.pack((True, False)),
-                self.pack(("", "L1")),
-                self.pack((False, False)),
-                self.pack((0.0, 0.0)),
+                self.pack(("Base", "L1", "L2")),
+                self.pack((0.0, 0.0, 3000.0)),
+                self.pack((0.0, 3000.0, 3000.0)),
+                self.pack((False, True, False)),
+                self.pack(("", "", "L1")),
+                self.pack((False, False, False)),
+                self.pack((0.0, 0.0, 0.0)),
                 0,
             )
         )
@@ -209,9 +213,11 @@ class _FakeResults:
     def __init__(self, pack, *, case_selected: bool = True) -> None:
         self.pack = pack
         self.Setup = _FakeSetup(pack, case_selected=case_selected)
+        self.frame_force_calls: list[str] = []
 
     def FrameForce(self, frame_name, item_type):
         assert item_type == 0
+        self.frame_force_calls.append(frame_name)
         load_cases = ("DEAD", "ULS-1", "DEAD", "ULS-1", "EXTRA")
         return self.pack(
             (
@@ -274,6 +280,32 @@ class _FakeSapModel:
     def SetPresentUnits(self, units):
         self.unit_calls.append(units)
         return 0
+
+
+class _FakeSession:
+    def __init__(self, sap_model: _FakeSapModel) -> None:
+        self.sap_model = sap_model
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc, traceback) -> None:
+        return None
+
+
+def _w2b_run_request(
+    runtime: baseline.ETABSRuntimeProvenanceV1,
+) -> beam_bridge.ETABSBeamBaselineRunRequestV1:
+    return beam_bridge.ETABSBeamBaselineRunRequestV1(
+        authorized_model_file=_file_snapshot("2026-08-29T05:00:30Z"),
+        expected_etabs_version="ETABS 23.3.1",
+        expected_etabs_version_number=23.31,
+        expected_present_units_enum=6,
+        expected_runtime_provenance=runtime,
+        expected_getter_matrix_sha256=baseline.etabs_w2a_getter_matrix_sha256_v1(),
+        result_selections=list(_request().result_selections),
+        approved_copy_confirmed=True,
+    )
 
 
 @pytest.mark.parametrize("output_container", [tuple, list], ids=["tuple", "list"])
@@ -346,7 +378,7 @@ def test_tuple_and_list_shapes_produce_the_same_frozen_hash() -> None:
     assert tuple_result.baseline.baseline_sha256 == list_result.baseline.baseline_sha256
     assert (
         tuple_result.baseline.baseline_sha256
-        == "899adf35ed5afc789149be6811eb8924aee5032ca7664308f4c3487b8bf6efa9"
+        == "2a1ecee7c64e6268d860640dee48e868cb64fe53eed20f361de58d65076466a4"
     )
 
 
@@ -370,6 +402,46 @@ def test_frame_story_must_exist_in_story_inventory_and_restores_units(
 
     assert exc_info.value.code == "ETABS_FRAME_STORY_NOT_IN_INVENTORY"
     assert sap_model.unit_calls == [5, 6]
+
+
+@pytest.mark.parametrize("output_container", [tuple, list], ids=["tuple", "list"])
+def test_story_inventory_requires_documented_leading_base_row(
+    output_container,
+) -> None:
+    sap_model = _FakeSapModel(output_container)
+    sap_model.Story.GetStories = lambda: output_container(
+        (
+            2,
+            output_container(("NOT_BASE", "L1", "L2")),
+            output_container((0.0, 0.0, 3000.0)),
+            output_container((0.0, 3000.0, 3000.0)),
+            output_container((False, True, False)),
+            output_container(("", "", "L1")),
+            output_container((False, False, False)),
+            output_container((0.0, 0.0, 0.0)),
+            0,
+        )
+    )
+
+    with pytest.raises(ETABSDataError) as exc_info:
+        _extract(sap_model)
+
+    assert exc_info.value.code == "ETABS_STORY_BASE_ROW_INVALID"
+    assert sap_model.unit_calls == [5, 6]
+
+
+def test_story_base_row_is_explicitly_excluded_from_retained_stories() -> None:
+    result = _extract(_FakeSapModel())
+
+    assert result.baseline is not None
+    assert [story.name for story in result.baseline.stories] == ["L1", "L2"]
+    base_row = next(
+        row
+        for row in result.baseline.dispositions
+        if row.reason_code == "STORY_BASE_NOT_A_STORY"
+    )
+    assert base_row.source_id == "Base"
+    assert base_row.disposition is baseline.ETABSBaselineDisposition.EXCLUDED
 
 
 def test_getter_matrix_is_frozen_and_contains_no_result_selection_setter() -> None:
@@ -417,6 +489,7 @@ def test_unselected_explicit_result_blocks_without_using_a_setter() -> None:
     assert "RESULT_SELECTION_NOT_ACTIVE" in {issue.code for issue in result.issues}
     assert sap_model.Results.Setup.calls == [("case", "DEAD"), ("combo", "ULS-1")]
     assert sap_model.unit_calls == [5, 6]
+    assert sap_model.Results.frame_force_calls == []
 
 
 def test_connected_excluded_frame_blocks_topology_and_restores_units() -> None:
@@ -433,6 +506,7 @@ def test_connected_excluded_frame_blocks_topology_and_restores_units() -> None:
         for row in result.dispositions
     )
     assert sap_model.unit_calls == [5, 6]
+    assert sap_model.Results.frame_force_calls == []
 
 
 def test_connected_advanced_local_axis_frame_blocks_incomplete_topology() -> None:
@@ -449,6 +523,7 @@ def test_connected_advanced_local_axis_frame_blocks_incomplete_topology() -> Non
         for row in result.dispositions
     )
     assert sap_model.unit_calls == [5, 6]
+    assert sap_model.Results.frame_force_calls == []
 
 
 def test_com_shape_failure_restores_original_units() -> None:
@@ -553,3 +628,149 @@ def test_baseline_schema_round_trip_retains_hash() -> None:
 
     assert baseline.verify_etabs_beam_baseline_hash_v1(restored)
     assert restored == result.baseline
+
+
+def test_w2b_preflight_is_getter_only_and_retains_exact_source_identity(
+    monkeypatch,
+) -> None:
+    sap_model = _FakeSapModel(list)
+    observer = _FakeFileObserver()
+    runtime = _request().runtime_provenance
+    monkeypatch.setattr(beam_bridge, "_runtime_provenance", lambda: runtime)
+
+    result = beam_bridge.inspect_etabs_beam_baseline_v1(
+        session_factory=lambda: _FakeSession(sap_model),
+        observe_model_file=observer,
+    )
+
+    assert result.schema_version == "etabs-beam-baseline-preflight/v1"
+    assert result.observed_model_file.sha256 == "a" * 64
+    assert result.model_locked is True
+    assert result.present_units_enum == 6
+    assert result.runtime_provenance == runtime
+    assert result.frame_analysis_verdict == "HELD_NOT_SUPPORTED"
+    assert observer.calls == [r"C:\Models\W2 Authorized Copy.edb"]
+    assert sap_model.unit_calls == []
+
+
+@pytest.mark.skipif(platform.system() != "Windows", reason="Windows path contract")
+def test_w2b_real_file_observer_hashes_exact_saved_edb_without_mutation(
+    tmp_path,
+) -> None:
+    model_path = tmp_path / "W2 Authorized Copy.edb"
+    content = b"read-only-w2-evidence"
+    model_path.write_bytes(content)
+    before = model_path.stat()
+
+    snapshot = beam_bridge.observe_etabs_model_file_v1(str(model_path))
+
+    after = model_path.stat()
+    assert snapshot.model_path == str(model_path)
+    assert snapshot.model_name == model_path.name
+    assert snapshot.sha256 == sha256(content).hexdigest()
+    assert snapshot.byte_count == len(content)
+    assert (before.st_size, before.st_mtime_ns) == (after.st_size, after.st_mtime_ns)
+
+
+def test_w2b_transport_preserves_exact_hash_basis_and_complete_row_counts(
+    monkeypatch,
+) -> None:
+    sap_model = _FakeSapModel(tuple)
+    observer = _FakeFileObserver()
+    runtime = _request().runtime_provenance
+    monkeypatch.setattr(beam_bridge, "_runtime_provenance", lambda: runtime)
+
+    result = beam_bridge.run_etabs_beam_baseline_v1(
+        _w2b_run_request(runtime),
+        session_factory=lambda: _FakeSession(sap_model),
+        observe_model_file=observer,
+    )
+
+    artifact = result.build_result.baseline
+    assert artifact is not None
+    assert result.build_result.status is baseline.ETABSBaselineBuildStatus.ACCEPTED
+    assert result.counts.frames == len(artifact.frames)
+    assert result.counts.connectivity_rows == len(artifact.connectivity)
+    assert result.counts.result_station_rows == 8
+    assert result.counts.disposition_rows == len(artifact.dispositions)
+    assert result.baseline_hash_basis_json is not None
+    encoded = result.baseline_hash_basis_json.encode("utf-8")
+    assert len(encoded) == result.baseline_hash_basis_utf8_bytes
+    assert sha256(encoded).hexdigest() == artifact.baseline_sha256
+    assert observer.calls == [r"C:\Models\W2 Authorized Copy.edb"] * 3
+    assert sap_model.unit_calls == [5, 6]
+
+
+def test_w2b_unlocked_model_aborts_before_observer_units_or_result_reads(
+    monkeypatch,
+) -> None:
+    sap_model = _FakeSapModel()
+    sap_model.GetModelIsLocked = lambda: False
+    observer = _FakeFileObserver()
+    runtime = _request().runtime_provenance
+    monkeypatch.setattr(beam_bridge, "_runtime_provenance", lambda: runtime)
+
+    with pytest.raises(ETABSDataError, match="requires.*locked") as exc_info:
+        beam_bridge.run_etabs_beam_baseline_v1(
+            _w2b_run_request(runtime),
+            session_factory=lambda: _FakeSession(sap_model),
+            observe_model_file=observer,
+        )
+
+    assert exc_info.value.code == "ETABS_MODEL_NOT_LOCKED"
+    assert observer.calls == []
+    assert sap_model.unit_calls == []
+
+
+def test_w2b_runtime_drift_aborts_before_com_session(monkeypatch) -> None:
+    expected = _request().runtime_provenance
+    current = expected.model_copy(update={"library_content_identity": "c" * 64})
+    monkeypatch.setattr(beam_bridge, "_runtime_provenance", lambda: current)
+    session_created = False
+
+    def session_factory():
+        nonlocal session_created
+        session_created = True
+        return _FakeSession(_FakeSapModel())
+
+    with pytest.raises(ETABSDataError) as exc_info:
+        beam_bridge.run_etabs_beam_baseline_v1(
+            _w2b_run_request(expected), session_factory=session_factory
+        )
+
+    assert exc_info.value.code == "ETABS_RUNTIME_IDENTITY_MISMATCH"
+    assert session_created is False
+
+
+def test_w2b_post_read_unit_getter_proves_restoration(monkeypatch) -> None:
+    sap_model = _FakeSapModel()
+    unit_getter_calls = 0
+
+    def present_units():
+        nonlocal unit_getter_calls
+        unit_getter_calls += 1
+        return 6 if unit_getter_calls < 3 else 5
+
+    sap_model.GetPresentUnits = present_units
+    runtime = _request().runtime_provenance
+    monkeypatch.setattr(beam_bridge, "_runtime_provenance", lambda: runtime)
+
+    with pytest.raises(ETABSDataError) as exc_info:
+        beam_bridge.run_etabs_beam_baseline_v1(
+            _w2b_run_request(runtime),
+            session_factory=lambda: _FakeSession(sap_model),
+            observe_model_file=_FakeFileObserver(),
+        )
+
+    assert exc_info.value.code == "ETABS_UNIT_RESTORATION_FAILED"
+    assert sap_model.unit_calls == [5, 6]
+
+
+def test_w2b_capacity_failure_returns_no_partial_baseline(monkeypatch) -> None:
+    build_result = _extract(_FakeSapModel())
+    monkeypatch.setattr(beam_bridge, "ETABS_BASELINE_MAX_RESULT_STATIONS", 1)
+
+    with pytest.raises(beam_bridge.ETABSBeamBaselineCapacityError) as exc_info:
+        beam_bridge._enforce_capacity(build_result)
+
+    assert exc_info.value.code == "ETABS_BASELINE_ROW_LIMIT_EXCEEDED"

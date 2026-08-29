@@ -1,0 +1,82 @@
+{
+  "remote": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T09:58:23Z",
+    "branch": "codex/etabs-excel-beam-w2-campaign",
+    "head_sha": "18926ef48c620213abbb931449cda9e8049eee7c",
+    "local_head_sha": "5a41aee61f57f6ccc16b8ef5ba5ee8bbd194b66b",
+    "reason_code": "FINAL_GOVERNANCE_COMMIT_AND_PUSH_PENDING"
+  },
+  "pull_request": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T09:58:23Z",
+    "reason_code": "USER_PROHIBITED_WINDOWS_CAMPAIGN_PULL_REQUEST",
+    "matching_pull_requests": 0
+  },
+  "review": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "reason_code": "CUMULATIVE_MAC_REVIEW_AFTER_FINAL_PUSH"
+  },
+  "integration": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "reason_code": "MAC_PRIMARY_MACHINE_OWNS_REVIEW_AND_INTEGRATION"
+  },
+  "retention": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T09:58:23Z",
+    "decision": "RETAIN_CAMPAIGN_PHASE_A_W2A_AND_ALL_EXISTING_BRANCHES_WORKTREES",
+    "owner": "Windows W2 campaign sole writer through final push",
+    "holds": []
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  },
+  "authorization": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T09:58:23Z",
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "status": "OBSERVED",
+      "query_status": "OK",
+      "observed_at_utc": "2026-08-29T09:58:23Z",
+      "reference": "source-thread:01a04be8-98a7-7752-b26f-96207473a35e:complete-bounded-w2-campaign"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "STOP_WINDOWS_WRITING_AFTER_FINAL_PUSH"
+    ],
+    "prohibited_actions": [
+      "CREATE_OR_MERGE_PULL_REQUEST",
+      "MODIFY_PROTECTED_MAIN",
+      "REWRITE_HISTORY",
+      "DELETE_BRANCH_OR_WORKTREE",
+      "MODIFY_W2A_OR_PHASE_A_BRANCH",
+      "RUN_ANALYSIS_OR_DESIGN",
+      "CHANGE_RESULT_SELECTION",
+      "UNLOCK_MUTATE_OR_SAVE_MODEL",
+      "START_OPTIMIZATION_OR_WRITEBACK",
+      "REPAIR_NANOID",
+      "START_W3",
+      "CLAIM_W2C_ACCEPTANCE_PASS",
+      "CLAIM_ENGINEERING_APPROVAL"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "target_binding": {
+      "task_id": "ETABS-EXCEL-BEAM-W2-CAMPAIGN-CLOSEOUT",
+      "branch": "codex/etabs-excel-beam-w2-campaign",
+      "head_sha": "5a41aee61f57f6ccc16b8ef5ba5ee8bbd194b66b",
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "STOP_WINDOWS_WRITING_AFTER_FINAL_PUSH"
+      ]
+    }
+  }
+}

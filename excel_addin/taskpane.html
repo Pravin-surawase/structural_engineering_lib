@@ -22,6 +22,31 @@
         <span id="status-detail">Checking the workbook contract.</span>
       </section>
 
+      <section class="card pilot-card">
+        <h2>ETABS W2 read-only baseline</h2>
+        <p>Windows only. Freezes the complete supported beam/column topology and every station for one exact already-selected case or combination. It does not run structural design.</p>
+        <section id="etabs-w2-status" class="status hold" aria-live="polite" aria-atomic="true" aria-busy="true">
+          <strong id="etabs-w2-status-title">W2 PREFLIGHT REQUIRED</strong>
+          <span id="etabs-w2-status-detail">No model file, runtime, lock, or unit identity has been approved.</span>
+        </section>
+        <button id="etabs-w2-preflight" class="secondary" type="button" disabled>Inspect W2 source identity</button>
+        <label class="check">
+          <input id="etabs-w2-confirm" type="checkbox" disabled />
+          <span>I compared the displayed path/hash/version with the approved locked copied model.</span>
+        </label>
+        <div class="input-grid">
+          <label for="etabs-w2-selection-kind">Result type</label>
+          <select id="etabs-w2-selection-kind">
+            <option value="COMBINATION">Combination</option>
+            <option value="CASE">Case</option>
+          </select>
+          <label for="etabs-w2-selection-name">Exact already-selected ETABS name</label>
+          <input id="etabs-w2-selection-name" type="text" value="ULS-1" />
+        </div>
+        <button id="etabs-w2-run" type="button" disabled>Read complete W2 baseline</button>
+        <p class="detail">Accepted data is written only to seven controlled <code>ETABS_W2_*</code> sheets. Stable IDs and chunked server-canonical JSON preserve exact reconciliation. Colliding user sheets, stale identities, inactive results, incomplete topology, oversize output, unlocked state, and failed unit restoration all block the write.</p>
+      </section>
+
       <section class="card">
         <h2>1. Preview mapping</h2>
         <p>Reads only <code>Beam_Workbench / tbl_Beam_Workbench_V1</code>. Every table row remains accounted for.</p>
@@ -105,7 +130,7 @@
 
       <aside>
         <strong>Boundaries</strong>
-        <p>No VBA or Excel structural formulas. The ETABS pilot is read-only: no analysis run, size write-back, serviceability, continuity/congestion optimization, or professional-approval claim.</p>
+        <p>No VBA or Excel structural formulas. ETABS paths are read-only: no analysis/design run, result-selection change, size write-back, serviceability, continuity/congestion optimization, or professional-approval claim. Frame analysis remains HELD_NOT_SUPPORTED.</p>
       </aside>
     </main>
   </body>

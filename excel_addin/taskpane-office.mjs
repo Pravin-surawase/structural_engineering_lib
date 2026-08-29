@@ -1,4 +1,4 @@
-import { ETABS_PILOT_HEADERS } from "./taskpane-core.mjs";
+import { ETABS_BASELINE_TABLES, ETABS_PILOT_HEADERS } from "./taskpane-core.mjs";
 
 const ETABS_PILOT_SHEET = "ETABS_Pilot";
 const ETABS_PILOT_TABLE = "tbl_ETABS_Pilot_V1";
@@ -147,5 +147,112 @@ export async function writeEtabsPilotResults(excelApi, rows) {
     sheet.activate();
     await context.sync();
     return { disposition: "UPDATED", sheetName: ETABS_PILOT_SHEET };
+  });
+}
+
+export async function writeEtabsBaselineResults(excelApi, projection) {
+  if (
+    !projection ||
+    typeof projection.baselineSha256 !== "string" ||
+    !projection.tables
+  ) {
+    throw new Error("A complete projected W2 baseline is required.");
+  }
+  const entries = Object.entries(ETABS_BASELINE_TABLES).map(([key, spec]) => {
+    const rows = projection.tables[key];
+    if (!Array.isArray(rows)) {
+      throw new Error(`The W2 ${key} table is missing.`);
+    }
+    if (rows.some((row) => !Array.isArray(row) || row.length !== spec.headers.length)) {
+      throw new Error(`The W2 ${key} rows do not match the controlled V1 headers.`);
+    }
+    return { key, spec, rows };
+  });
+  const projectedRows = entries.reduce((total, entry) => total + entry.rows.length, 0);
+  if (projectedRows !== projection.projectedRows) {
+    throw new Error("The W2 projected Excel row total does not reconcile.");
+  }
+
+  return excelApi.run(async (context) => {
+    const worksheets = context.workbook.worksheets;
+    const states = entries.map((entry) => {
+      const sheet = worksheets.getItemOrNullObject(entry.spec.sheetName);
+      sheet.load("isNullObject");
+      return { ...entry, sheet, exists: false, table: null, header: null };
+    });
+    await context.sync();
+
+    for (const state of states) {
+      state.exists = !state.sheet.isNullObject;
+      if (state.exists) {
+        state.table = state.sheet.tables.getItemOrNullObject(state.spec.tableName);
+        state.table.load("isNullObject");
+      }
+    }
+    await context.sync();
+
+    for (const state of states) {
+      if (!state.exists) continue;
+      if (state.table.isNullObject) {
+        throw new Error(
+          `${state.spec.sheetName} already exists without ${state.spec.tableName}; no cells were overwritten.`,
+        );
+      }
+      state.header = state.table.getHeaderRowRange();
+      state.header.load(["values", "rowIndex", "columnIndex", "columnCount"]);
+    }
+    await context.sync();
+
+    for (const state of states) {
+      if (
+        state.exists &&
+        JSON.stringify(state.header.values[0]) !== JSON.stringify(state.spec.headers)
+      ) {
+        throw new Error(
+          `${state.spec.sheetName} headers do not match the controlled V1 contract; no cells were overwritten.`,
+        );
+      }
+    }
+
+    for (const state of states) {
+      if (!state.exists) {
+        state.sheet = worksheets.add(state.spec.sheetName);
+        const range = state.sheet.getRangeByIndexes(
+          0,
+          0,
+          state.rows.length + 1,
+          state.spec.headers.length,
+        );
+        range.values = [state.spec.headers, ...state.rows];
+        state.table = state.sheet.tables.add(range, true);
+        state.table.name = state.spec.tableName;
+      } else {
+        state.table.resize(
+          state.sheet.getRangeByIndexes(
+            state.header.rowIndex,
+            state.header.columnIndex,
+            state.rows.length + 1,
+            state.header.columnCount,
+          ),
+        );
+      }
+    }
+    await context.sync();
+
+    for (const state of states) {
+      if (!state.exists || state.rows.length === 0) continue;
+      state.table.getDataBodyRange().values = state.rows;
+    }
+    states.find((state) => state.key === "summary").sheet.activate();
+    await context.sync();
+
+    const created = states.filter((state) => !state.exists).length;
+    const disposition =
+      created === states.length ? "CREATED" : created === 0 ? "UPDATED" : "RECONCILED";
+    return {
+      disposition,
+      baselineSha256: projection.baselineSha256,
+      sheets: states.map((state) => state.spec.sheetName),
+    };
   });
 }

@@ -271,6 +271,7 @@ def test_checked_in_ledger_uses_lossless_small_file_encoding(
     ledger: dict[str, Any],
 ) -> None:
     checked_in = json.loads(_LEDGER_PATH.read_text(encoding="utf-8"))
+    unpacked = classification._unpack_compatibility_ledger(checked_in)
 
     assert checked_in["encoding"] == "column-dictionary-v1"
     # Compactness follows the live reconciled inventory rather than a stale
@@ -278,7 +279,13 @@ def test_checked_in_ledger_uses_lossless_small_file_encoding(
     # than the same expanded ledger serialized without whitespace.
     expanded_size = len(json.dumps(ledger, separators=(",", ":")).encode("utf-8"))
     assert _LEDGER_PATH.stat().st_size < expanded_size / 4
-    assert classification._unpack_compatibility_ledger(checked_in) == ledger
+    assert classification._pack_compatibility_ledger(unpacked) == checked_in
+    assert (
+        classification._unpack_compatibility_ledger(
+            classification._pack_compatibility_ledger(ledger)
+        )
+        == ledger
+    )
 
 
 @pytest.mark.parametrize(
