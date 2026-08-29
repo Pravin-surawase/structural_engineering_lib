@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib
+import json
 import os
 import subprocess
 import sys
@@ -41,6 +42,16 @@ def test_type_check_toolchain_requires_explicit_migration():
     assert "numpy==2.4.6" in locked_requirements.splitlines()
 
 
+def test_react_build_script_is_cross_platform():
+    package = json.loads(
+        (REPO_ROOT / "react_app" / "package.json").read_text(encoding="utf-8")
+    )
+    build = package["scripts"]["build"]
+
+    assert "NODE_OPTIONS=" not in build
+    assert build.count("node --max-old-space-size=1536") == 2
+
+
 def test_available_ram_uses_memory_pressure_percentage(
     monkeypatch: pytest.MonkeyPatch,
 ):
@@ -70,6 +81,16 @@ def test_node_runtime_prefers_required_healthy_binary(
     node.chmod(0o755)
     npm.chmod(0o755)
     monkeypatch.setattr(release, "_required_node_major", lambda: "24")
+    monkeypatch.setattr(
+        node_runtime.shutil,
+        "which",
+        lambda command, *, path=None: str(node if command == "node" else npm),
+    )
+    monkeypatch.setattr(
+        node_runtime.subprocess,
+        "run",
+        lambda args, **kwargs: subprocess.CompletedProcess(args, 0, "v24.19.0\n", ""),
+    )
 
     env, status = release._node_runtime_env(candidate_bins=[node_bin])
 
@@ -91,6 +112,18 @@ def test_node_runtime_rejects_wrong_major(
         )
         executable.chmod(0o755)
     monkeypatch.setattr(release, "_required_node_major", lambda: "24")
+    monkeypatch.setattr(
+        node_runtime.shutil,
+        "which",
+        lambda command, *, path=None: str(
+            node_bin / ("node" if command == "node" else "npm")
+        ),
+    )
+    monkeypatch.setattr(
+        node_runtime.subprocess,
+        "run",
+        lambda args, **kwargs: subprocess.CompletedProcess(args, 0, "v25.2.1\n", ""),
+    )
 
     env, status = release._node_runtime_env(candidate_bins=[node_bin])
 
@@ -117,6 +150,36 @@ def test_shared_node_runtime_rejects_missing_npm(tmp_path: Path):
 
     assert env is None
     assert "Node 24.x" in status
+
+
+def test_shared_node_runtime_accepts_windows_executable_suffixes(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    node_bin = tmp_path / "node24"
+    node_bin.mkdir()
+    node = node_bin / "node.exe"
+    npm = node_bin / "npm.cmd"
+    node.touch()
+    npm.touch()
+
+    def fake_which(command: str, *, path: str | None = None):
+        assert path == str(node_bin.resolve())
+        return str(node if command == "node" else npm if command == "npm" else "")
+
+    def fake_run(args, **kwargs):
+        assert args == [str(node), "--version"]
+        return subprocess.CompletedProcess(args, 0, "v24.19.0\n", "")
+
+    monkeypatch.setattr(node_runtime.shutil, "which", fake_which)
+    monkeypatch.setattr(node_runtime.subprocess, "run", fake_run)
+
+    env, status = node_runtime.node_runtime_env(
+        required_major="24", candidate_bins=[node_bin]
+    )
+
+    assert env is not None
+    assert env["PATH"].split(os.pathsep)[0] == str(node_bin.resolve())
+    assert status == "v24.19.0"
 
 
 def test_launcher_delegates_to_shared_node_runtime():

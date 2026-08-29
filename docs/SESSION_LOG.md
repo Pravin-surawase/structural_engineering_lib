@@ -5,6 +5,143 @@
 
 ---
 
+## 2026-08-29 — Session: ETABS/Excel beam W2A baseline contract and Windows setup
+
+**Agent:** Codex (`orchestrator`/`python-core`/`documentation`, sole writer; no
+subagents).
+
+**Branch:** `codex/etabs-excel-beam-w2a-baseline` from fetched `origin/main`
+`a3f36cb460395eeda32f832963917983e9bc4dfb`; protected `main` remained an
+untouched `HOLD_MAIN` lane.
+
+**Git handoff receipt:**
+`docs/verification/etabs-excel-beam-w2a-baseline-git-handoff-receipt.json`
+
+**Focus:** First make the Windows host maintainably ready for this and future
+work, verify the reconnected GitHub CLI account, then implement W2A only: a
+local, transport-neutral, read-only ETABS beam/model/topology/result baseline.
+W2B REST/Excel work, W2C installed execution, ETABS/Excel opening, analysis,
+model mutation, design, optimization, write-back, and engineering approval all
+remain outside scope.
+
+**Completed:**
+
+- Installed and verified Git for Windows, GitHub CLI, `uv`, Node 24/npm, and an
+  `uv`-managed Python 3.11 runtime. Replaced the unusable Store-Python virtual
+  environment with a complete primary `.venv`; the previous directory remains
+  recoverably retained as `.venv-broken-20260829`.
+- Persisted the repository Python selector and UTF-8 mode for this user,
+  installed the full Python extras needed by the maintained workflows, and
+  installed the normal pre-commit hook without changing protected `main`.
+- Repaired the maintained launchers for Windows `.venv/Scripts/python.exe`,
+  `node.exe`, and `npm.cmd`; made the React production build cross-platform;
+  and froze `.e2k`/`.xml` fixture checkout bytes to LF so their tracked hashes
+  remain deterministic under `core.autocrlf=true`.
+- Authenticated GitHub CLI through the official browser/device flow and verified
+  active account `Pravin-surawase`, HTTPS Git protocol, required scopes,
+  repository access, exact remote main `a3f36cb4...`, and no existing W2A PR.
+  No credential value was written to tracked files or logs.
+- Added `etabs_beam_baseline.py` with versioned immutable request/build/baseline
+  schemas, canonical SHA-256 identities, source/runtime provenance, a frozen
+  18-getter matrix, exact tuple/list decoding, trailing return-code and array-
+  length checks, and a read-only pre/post model-file observation contract.
+- Added exhaustive story/frame/topology/result dispositions. Accepted frames
+  preserve stable source identity, endpoints, direction/local-axis rotation,
+  story, rectangular section dimensions, auto-select label, and material-
+  property label. Connectivity uses only shared ETABS point identities.
+  Unsupported orientation, advanced axes, and sections are explicit exclusions;
+  a retained beam connected to an excluded frame blocks incomplete topology.
+- Required explicit already-active result cases/combinations and retained every
+  selected `FrameForce` station with signed actions, step/station provenance,
+  source row identity, and deterministic hash. Unrequested rows are explicitly
+  excluded and missing/unfinished/empty requested results block the baseline.
+- Limited mutation to temporary `SetPresentUnits(kN_mm_C=5)`, checked its return
+  code, restored the original unit enum on successful and failed reads, and
+  attempted restoration even when normalization itself reported failure.
+- Preserved the frame-analysis verdict as `HELD_NOT_SUPPORTED`, grounded in the
+  existing closed-form gravity workflows and the absence of an accepted
+  stiffness/frame solver. Updated the canonical next-phase plan, task board,
+  and next-session brief; W2B and W2C remain unstarted.
+
+### Issues encountered
+
+- The assigned initial directory was an empty no-commit Git repository, while
+  the actual project and protected checkout were elsewhere on the Windows host.
+- Bash, Git, GitHub CLI, `uv`, Node, and a usable Python 3.11 were absent from
+  the initial process environment; the retained `.venv` pointed to unavailable
+  Windows Store Python aliases.
+- A Python setup command failed when the default Windows `cp1252` console could
+  not encode Unicode output.
+- The shared Node selector looked only for extensionless `node`/`npm`, and the
+  React build used a POSIX-only inline `NODE_OPTIONS` assignment.
+- Git's Windows checkout conversion changed E2K/XML fixture bytes from LF to
+  CRLF, breaking exact snapshot digests despite unchanged logical text.
+- The first W2A draft accepted a preassembled before/after file-evidence object,
+  which did not prove that the observations actually bracketed the COM read.
+- The repository still records the historical unmatched parent-pilot usage
+  checkpoint; no old duration can be reconstructed honestly.
+- `npm audit` reports one high-severity transitive frontend advisory. No
+  unrelated lockfile mutation or automated force fix was authorized in W2A.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the desktop task opened a different retained workspace
+  root, not the source checkout named in the handoff. Resolution: located the
+  exact repository read-only, fetched GitHub, inspected worktrees/overlap, and
+  created this fresh worktree from `origin/main`; protected `main` was not
+  switched or changed. ⚠️ TERMINAL ISSUE: initial cwd had no project commit ->
+  resolved and used the exact retained W2A worktree.
+- Confirmed root cause: this was a newly prepared Windows host with stale Store
+  aliases and an environment created on another runtime. Resolution: installed
+  maintained toolchains with Windows Package Manager, created the canonical
+  Python 3.11 environment with `uv`, and verified source binding to the invoking
+  worktree. ⚠️ TERMINAL ISSUE: project Bash/Python launchers were initially
+  unavailable -> installed the required runtimes and used explicit Git Bash for
+  this already-running process.
+- Confirmed root cause: the console inherited the legacy Windows code page, and
+  the already-running desktop process did not inherit the newly persisted user
+  variable. Resolution: persisted `PYTHONUTF8=1`, made the maintained Python
+  launcher default child runtimes to UTF-8, and reran the exact command
+  successfully. ⚠️ TERMINAL ISSUE: `cp1252` Unicode encoding failure, including
+  the first quick-gate launch before any check ran -> UTF-8 mode restored
+  deterministic command output.
+- Confirmed root cause: POSIX executable names and environment-assignment syntax
+  had been assumed by shared runtime code. Resolution: resolve commands with
+  `shutil.which`, execute the resolved binary, use explicit Node memory flags,
+  and add platform-focused regressions. ⚠️ TERMINAL ISSUE: Node selection and
+  frontend build failed on normal Windows suffixes/syntax -> repaired the shared
+  launch paths and production build command.
+- Confirmed root cause: `.gitattributes` covered byte-frozen CSV/HTML fixtures
+  but not E2K/XML. Resolution: add explicit LF attributes, restore exact tracked
+  bytes, prove worktree and index blob hashes match, and retain no fixture diff.
+  ⚠️ TERMINAL ISSUE: snapshot tests reported digest drift -> corrected checkout
+  normalization rather than weakening or regenerating expected hashes.
+- Confirmed root cause: request-time post-read evidence is temporally incapable
+  of proving a later extraction. Resolution: require a supplied read-only
+  observer that is invoked immediately before and after COM reads, authorize the
+  first exact identity, restore units before the second observation, and fail on
+  any path/hash/size/timestamp change or reversed observation order.
+- Confirmed root cause: the historical pilot timer belongs to its originating
+  device/session. Resolution: preserve the documented unmatched checkpoint and
+  record only this task's observable usage; no historical timing was invented.
+
+### Validation through content freeze
+
+- Runtime diagnosis reports the primary Windows Python 3.11 environment,
+  current W2A module root, and `source_bound=true`; structural-library,
+  `comtypes`, FastAPI, and NumPy smoke imports pass.
+- Windows runtime/governance regressions, the W2A contract, existing live bridge,
+  ETABS snapshot, and gravity workflow pass together: `139 passed` across six
+  focused files. Ruff and Black pass for affected Python files; MyPy passes for
+  the new service.
+- React ESLint passes; Vitest passes all 52 files/283 tests; the cross-platform
+  production build succeeds on Node 24.
+- The content-frozen candidate remains subject to the one required consolidated
+  quick gate before commit and the normal clean-candidate session validation.
+  No W2A test opened ETABS/Excel, read a proprietary `.edb`, or used Windows COM.
+
+---
+
 ## 2026-08-29 — Session: ETABS/Excel W1 day close and W2A plan
 
 **Agent:** Codex (`orchestrator`/`documentation`, sole writer; no subagents).

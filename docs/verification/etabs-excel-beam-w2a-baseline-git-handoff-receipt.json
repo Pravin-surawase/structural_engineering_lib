@@ -1,0 +1,139 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "797353e473fbb646ae9cc8eded4e19b8bdf7010a38b3a7b6003b0024d6686916",
+    "state": {
+      "branch": "codex/etabs-excel-beam-w2a-baseline",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "a3f36cb460395eeda32f832963917983e9bc4dfb",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 475.11,
+      "git_common_dir": "C:\\Users\\P\\Pravin2025\\Projects\\structural_lib_repo\\.git",
+      "git_dir": "C:\\Users\\P\\Pravin2025\\Projects\\structural_lib_repo\\.git\\worktrees\\structural_lib_repo-w2a",
+      "head_sha": "a3f36cb460395eeda32f832963917983e9bc4dfb",
+      "hold_reasons": [
+        "changed paths: 14"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-29T06:14:30.804790+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\Users\\P\\Pravin2025\\Projects\\structural_lib_repo-w2a",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 14,
+        "modified_paths": [
+          ".gitattributes",
+          "Python/tests/test_agent_governance_automation.py",
+          "Python/tests/test_release_environment.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/WORKLOG.md",
+          "docs/planning/excel-etabs-beam-next-phase-plan.md",
+          "docs/planning/next-session-brief.md",
+          "react_app/package.json",
+          "scripts/node_runtime.py",
+          "scripts/python_runtime.sh"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "Python/structural_lib/services/etabs_beam_baseline.py",
+          "Python/tests/unit/test_etabs_beam_baseline.py",
+          "docs/verification/etabs-excel-beam-w2a-baseline-git-handoff-receipt.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "a3f36cb460395eeda32f832963917983e9bc4dfb",
+        "status": "equal"
+      },
+      "worktree_root": "C:\\Users\\P\\Pravin2025\\Projects\\structural_lib_repo-w2a"
+    }
+  },
+  "local_state_receipt_hash": "sha256:797353e473fbb646ae9cc8eded4e19b8bdf7010a38b3a7b6003b0024d6686916",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-29T06:14:30.804790+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "fastapi_app",
+      "excel_addin"
+    ],
+    "integration_owner": "main-agent",
+    "owned_paths": [
+      "Python/structural_lib/services/etabs_beam_baseline.py",
+      "Python/tests/unit/test_etabs_beam_baseline.py",
+      "scripts/python_runtime.sh",
+      "scripts/node_runtime.py",
+      "react_app/package.json",
+      ".gitattributes"
+    ],
+    "shared_paths": [
+      "Python/tests/test_agent_governance_automation.py",
+      "Python/tests/test_release_environment.py",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/WORKLOG.md",
+      "docs/planning/excel-etabs-beam-next-phase-plan.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "ETABS-EXCEL-BEAM-W2A-BASELINE"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

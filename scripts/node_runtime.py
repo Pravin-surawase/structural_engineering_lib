@@ -84,13 +84,13 @@ def node_runtime_env(
         if resolved in seen:
             continue
         seen.add(resolved)
-        node = resolved / "node"
-        npm = resolved / "npm"
-        if not node.is_file() or not npm.exists():
+        node_path = shutil.which("node", path=str(resolved))
+        npm_path = shutil.which("npm", path=str(resolved))
+        if not node_path or not npm_path:
             continue
         try:
             result = subprocess.run(
-                [str(node), "--version"],
+                [node_path, "--version"],
                 capture_output=True,
                 text=True,
                 timeout=5,
@@ -168,8 +168,12 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.show_runtime or not command:
+        npm = shutil.which("npm", path=env.get("PATH", ""))
+        if not npm:
+            print("ERROR: npm is missing from the selected Node environment", file=sys.stderr)
+            return 1
         npm_result = subprocess.run(
-            [str(Path(bin_dir) / "npm"), "--version"],
+            [npm, "--version"],
             capture_output=True,
             text=True,
             env=env,
@@ -190,6 +194,9 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     try:
+        executable = shutil.which(command[0], path=env.get("PATH", ""))
+        if executable:
+            command[0] = executable
         result = subprocess.run(command, cwd=cwd, env=env)
     except FileNotFoundError:
         print(

@@ -99,6 +99,17 @@ def test_python_runtime_launcher_uses_explicit_interpreter():
     assert Path(result.stdout.strip()).resolve() == Path(sys.executable).resolve()
 
 
+def test_python_runtime_launcher_discovers_windows_virtualenvs():
+    launcher = (SCRIPTS_DIR / "python_runtime.sh").read_text(encoding="utf-8")
+
+    assert 'export PYTHONUTF8="${PYTHONUTF8:-1}"' in launcher
+    assert 'run_python_candidate "$REPO_ROOT/.venv/Scripts/python.exe"' in launcher
+    assert (
+        'run_python_candidate "$primary_worktree/.venv/Scripts/python.exe"' in launcher
+    )
+    assert 'run_python_candidate "$VIRTUAL_ENV/Scripts/python.exe"' in launcher
+
+
 def test_python_runtime_launcher_binds_invoking_repository_imports(tmp_path):
     launcher = SCRIPTS_DIR / "python_runtime.sh"
     caller_path = tmp_path / "caller-pythonpath"

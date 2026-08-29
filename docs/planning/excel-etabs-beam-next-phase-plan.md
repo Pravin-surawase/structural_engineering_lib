@@ -116,6 +116,93 @@ W2 is split to keep each candidate reviewable:
 | **W2B — transport and review surface** | Live-bridge orchestration, FastAPI contract, controlled Excel tables, reconciliation and collision guards | Local focused checks and one immutable candidate |
 | **W2C — installed Windows acceptance** | Exact copied model, direct API/Excel reconciliation, state/hash/unit proof | Tracked safe receipt plus external hash-bound evidence |
 
+### W2A frozen local contract
+
+W2A is implemented locally in
+`Python/structural_lib/services/etabs_beam_baseline.py`. It accepts an already
+supplied `SapModel`-shaped object and a caller-owned read-only model-file
+observer. It does not connect to or launch ETABS. The observer is called before
+and after the COM reads; the open-model path must equal the authorized absolute
+`.edb` path, and path, SHA-256, byte count, and modified timestamp must remain
+identical across both observations. The post-read observation cannot precede
+the pre-read observation.
+
+The versioned transport-neutral schemas are:
+
+| Schema | Frozen responsibility |
+|---|---|
+| `etabs-beam-baseline-request/v1` | Authorized file identity, runtime/source provenance, unique explicit case/combination selections, and the 1 mm default orientation tolerance |
+| `etabs-beam-baseline-build-result/v1` | Either one accepted baseline with no issues or a blocked result with stable issues and no partial baseline |
+| `etabs-beam-baseline/v1` | Model/file/lock identity, restored units, stories, accepted frames, endpoint topology, every retained force station, exhaustive dispositions, runtime identity, getter-matrix hash, limitations, and frame-analysis verdict |
+| `etabs-beam-baseline-hash/v1` | Canonical sorted-key UTF-8 JSON SHA-256 over every baseline field except the digest field itself |
+
+Stable story, member, connection, station, disposition-row, result-selection,
+getter-matrix, and whole-baseline identities are derived from canonical JSON and
+SHA-256. A member identity binds the exact source unique name to the authorized
+model digest. Runtime provenance keeps the adapter version, library version and
+content identity, Python version, platform, and COM provider identity.
+
+The exact getter matrix accepts both tuple- and list-shaped fake/live-COM
+outputs and requires a trailing zero return code unless marked as a direct
+value:
+
+| Area | Frozen getters |
+|---|---|
+| Model | `GetModelFilename(True)`, `GetVersion()`, `GetModelIsLocked()`, `GetPresentUnits()` |
+| Stories | `Story.GetStories()` |
+| Frames and points | `FrameObj.GetNameList()`, `GetLabelFromName(Name)`, `GetPoints(Name)`, `GetSection(Name)`, `GetLocalAxes(Name)`, `PointObj.GetCoordCartesian(Name)` |
+| Sections | `PropFrame.GetRectangle(Name)` |
+| Result identity/status | `LoadCases.GetNameList()`, `RespCombo.GetNameList()`, `Analyze.GetCaseStatus()`, `Results.Setup.GetCaseSelectedForOutput(Name)`, `GetComboSelectedForOutput(Name)` |
+| Force rows | `Results.FrameForce(Name, ItemTypeElm=0)` with all 14 outputs and every declared array length checked |
+
+W2A does not call either output-selection setter. The only setter is temporary
+`SetPresentUnits(kN_mm_C=5)`. Its return code is checked, the original unit enum
+is restored after success or failure, and even a reported normalization failure
+triggers a restoration attempt before the error propagates.
+
+Accepted topology is endpoint-exact: horizontal members within tolerance are
+beams, vertical members within tolerance are columns, and only shared ETABS
+point names establish `BEAM_TO_BEAM` or `BEAM_TO_COLUMN` connectivity. No
+coordinate-proximity, support, slab, material-grade, reinforcement, or design-
+basis inference is permitted. Rectangular members retain labels, stories,
+endpoints, normalized line direction, length, rotation, advanced-axis flag,
+section dimensions, auto-select label, and material-property label. Diagonal
+members, unavailable/non-rectangular sections, and frames with advanced local
+axes are explicitly excluded; a retained beam connected to any excluded frame
+blocks the baseline because the topology would be incomplete.
+
+The frozen disposition reason codes are:
+
+- accepted: `STORY_ACCEPTED`, `FRAME_ACCEPTED_BEAM`,
+  `FRAME_ACCEPTED_COLUMN`, `CONNECTIVITY_ACCEPTED_BEAM_TO_BEAM`,
+  `CONNECTIVITY_ACCEPTED_BEAM_TO_COLUMN`, `RESULT_SELECTION_ACCEPTED`, and
+  `RESULT_STATION_ACCEPTED`;
+- excluded: `FRAME_ORIENTATION_UNSUPPORTED`,
+  `FRAME_ADVANCED_LOCAL_AXES_UNSUPPORTED`,
+  `SECTION_NOT_RECTANGULAR_OR_UNAVAILABLE`,
+  `NO_FRAME_ENDPOINT_CONNECTION`, and `RESULT_SELECTION_NOT_REQUESTED`; and
+- blocked: `CONNECTED_FRAME_EXCLUDED`, `RESULT_SELECTION_NOT_AVAILABLE`,
+  `RESULT_SELECTION_NOT_ACTIVE`, `RESULT_CASE_NOT_FINISHED`,
+  `RESULT_SELECTION_EMPTY_FOR_BEAM`, and `BEAM_INVENTORY_EMPTY`.
+
+An explicit case must exist, already be selected for output, and have finished
+status code 4. An explicit combination must exist and already be selected;
+every accepted beam must then return at least one row for it. Every
+`FrameForce` row is length-checked and retained or dispositioned. Retained rows
+preserve object/element names and stations, case/combination identity, step
+type/number, signed `P`, `V2`, `V3`, `T`, `M2`, and `M3`, source row index, and
+stable station identity. Moment/torsion units are normalized from kN-mm to
+kN.m.
+
+The independent-analysis audit remains exactly `HELD_NOT_SUPPORTED`:
+`gravity_workflow` and `gravity_loads` are documented closed-form gravity
+paths, serviceability defers continuous behavior to frame analysis, and no
+accepted stiffness/frame solver exists. W2A adds no solver or parity claim.
+Focused tuple/list, getter/return-code, topology/disposition, result-completeness,
+file-freshness, deterministic-hash, JSON round-trip, and unit-restoration tests
+live in `Python/tests/unit/test_etabs_beam_baseline.py`. W2B REST/Excel work and
+W2C installed execution remain unstarted.
+
 ### Required read-only inventory
 
 - exact model/version/hash/lock/unit identity;
@@ -233,21 +320,17 @@ Iterate only over accepted candidate families, with a finite evaluation budget,
 deterministic stopping rules, full mutation/evidence ledgers, and qualified
 structural-engineer review before engineering or construction use.
 
-## Tomorrow's efficient sequence
+## Next efficient sequence
 
-1. Fetch GitHub and prove the new chat is on current `origin/main`; inspect all
-   worktrees and open PRs before creating the W2 branch.
-2. Read this plan, the W1 receipt, the pilot guide, the live bridge contract,
-   and the existing gravity/frame-analysis services.
-3. Inventory any accessible legacy VBA evidence by exact identity; do not run
-   macros or copy formulas.
-4. Freeze the W2 schema, ETABS calls, result-selection policy, topology rules,
-   dispositions, non-goals, and focused tests.
-5. Complete W2A only: implement the transport-neutral contract and fake-COM
-   adapter/shape evidence, then run affected focused tests and the consolidated
-   quick gate once.
-6. Stop at a clean W2A candidate and review the diff. Do not begin W2B or
-   schedule W2C until W2A is accepted.
+1. Review the clean W2A candidate on
+   `codex/etabs-excel-beam-w2a-baseline` against the frozen contract above.
+2. Confirm the affected focused checks and consolidated quick-gate receipt for
+   the exact candidate; W2A intentionally has no live ETABS/Excel evidence.
+3. Accept or repair W2A as its own bounded packet.
+4. Only after W2A acceptance, scope W2B separately for live-bridge
+   orchestration, REST/Excel projection, reconciliation, and collision guards.
+5. Keep W2C unscheduled until W2B has a separately accepted immutable
+   candidate and an exact authorized copied-model evidence plan.
 
 ## Stop conditions
 
@@ -259,14 +342,14 @@ changes, or W2 would need setters beyond temporary unit selection.
 ## New-chat starter
 
 ```text
-Resume the Excel + ETABS beam programme from the current fetched GitHub main.
-Read docs/planning/excel-etabs-beam-next-phase-plan.md, the W1 receipt, and the
-pilot guide first. Start W2A only: freeze and implement the transport-neutral
-read-only beam baseline/topology/result-provenance contract plus fake-COM shape
-tests. Inspect legacy VBA evidence only by exact identity and reuse ideas, not
-formulas. The current repository explicitly has no frame solver, so retain
-`HELD_NOT_SUPPORTED` unless a different accepted solver authority is found. Do
-not open or mutate ETABS, run analysis, add REST/Excel W2 surfaces, write
-sections, optimize, or claim engineering approval. Finish at a clean locally
-verified W2A candidate and leave W2B/W2C separate.
+Review W2A of the Excel + ETABS beam programme on
+`codex/etabs-excel-beam-w2a-baseline`. Read the frozen W2A contract in
+docs/planning/excel-etabs-beam-next-phase-plan.md, the W1 receipt, and the pilot
+guide. Verify the transport-neutral schemas, pre/post model-file observation,
+getter/return-code matrix, exhaustive topology/result dispositions,
+deterministic hashes, tuple/list fake-COM shapes, and success/failure unit
+restoration. Keep `HELD_NOT_SUPPORTED`: the repository has no accepted frame
+solver. Do not open or mutate ETABS, run analysis, add W2B REST/Excel surfaces,
+schedule W2C, optimize, write sections, or claim engineering approval. Accept
+or repair only this clean W2A candidate.
 ```
