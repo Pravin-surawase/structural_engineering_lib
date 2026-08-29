@@ -327,6 +327,7 @@ function baselineProjection({ chunks = ["literal-json"] } = {}) {
     ]),
   );
   tables.summary[0][0] = baselineSha256;
+  tables.frames[0][20] = "";
   tables.json = chunks.map((chunk, index) => [
     `${baselineSha256}:${String(index + 1).padStart(6, "0")}`,
     baselineSha256,
@@ -358,6 +359,10 @@ function cloneCells(rows) {
 function primitiveCell(cell) {
   if (cell?.type === "Empty") return null;
   return cell?.basicValue ?? cell;
+}
+
+function excelExpected(rows) {
+  return rows.map((row) => row.map((value) => (value === "" ? null : value)));
 }
 
 function baselineExcel({
@@ -394,7 +399,8 @@ function baselineExcel({
     ensureCellGrid(sheet, rowIndex + values.length, columnIndex + (values[0]?.length ?? 0));
     values.forEach((row, rowOffset) => {
       row.forEach((cell, columnOffset) => {
-        sheet.cells[rowIndex + rowOffset][columnIndex + columnOffset] = { ...cell };
+        sheet.cells[rowIndex + rowOffset][columnIndex + columnOffset] =
+          cell.type === "String" && cell.basicValue === "" ? emptyCell() : { ...cell };
       });
     });
   }
@@ -577,10 +583,15 @@ test("W2 baseline creates only all seven controlled tables", async () => {
     assert.equal(sheet.table.name, spec.tableName);
     assert.deepEqual(
       sheet.table.getRange().values,
-      [spec.headers, ...projection.tables[key]],
+      excelExpected([spec.headers, ...projection.tables[key]]),
     );
   }
   assert.equal(excel.calls.some(([name]) => name === "unsafe.values"), false);
+  assert.equal(
+    excel.sheets.get(ETABS_BASELINE_TABLES.frames.sheetName).table
+      .getRange().values[1][20],
+    null,
+  );
 });
 
 test("W2 baseline keeps an empty controlled table header-only", async () => {

@@ -155,7 +155,7 @@ export async function writeEtabsPilotResults(excelApi, rows) {
 }
 
 function primitiveToCellValue(value) {
-  if (value === null || value === undefined) return { type: "Empty" };
+  if (value === null || value === undefined || value === "") return { type: "Empty" };
   if (typeof value === "string") return { type: "String", basicValue: value };
   if (typeof value === "boolean") return { type: "Boolean", basicValue: value };
   if (typeof value === "number" && Number.isFinite(value)) {
@@ -186,6 +186,10 @@ function cloneCellValueMatrix(rows) {
 
 function matricesMatch(left, right) {
   return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function normalizeExpectedExcelMatrix(rows) {
+  return rows.map((row) => row.map((value) => (value === "" ? null : value)));
 }
 
 async function restoreEtabsBaselineTransaction(context, states) {
@@ -277,7 +281,7 @@ async function verifyEtabsBaselineWrite(context, states, projection, cryptoImpl)
 
   let verifiedProjectedRows = 0;
   for (const state of states) {
-    const expected = [state.spec.headers, ...state.rows];
+    const expected = normalizeExpectedExcelMatrix([state.spec.headers, ...state.rows]);
     const actual = fromCellValueMatrix(state.verificationRange.valuesAsJson);
     if (
       state.verificationRange.rowCount !== expected.length ||
