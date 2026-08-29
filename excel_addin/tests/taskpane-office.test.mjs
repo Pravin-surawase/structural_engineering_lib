@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash, webcrypto } from "node:crypto";
 import test from "node:test";
 
 import {
@@ -316,55 +317,182 @@ test("ETABS pilot never overwrites a colliding user worksheet", async () => {
   );
 });
 
-function baselineProjection() {
+function baselineProjection({ chunks = ["literal-json"] } = {}) {
+  const hashBasisJson = chunks.join("");
+  const baselineSha256 = createHash("sha256").update(hashBasisJson).digest("hex");
   const tables = Object.fromEntries(
     Object.entries(ETABS_BASELINE_TABLES).map(([key, spec]) => [
       key,
       [spec.headers.map((_, index) => (index === 0 ? `${key}:1` : null))],
     ]),
   );
-  return { baselineSha256: "a".repeat(64), projectedRows: 7, tables };
+  tables.summary[0][0] = baselineSha256;
+  tables.json = chunks.map((chunk, index) => [
+    `${baselineSha256}:${String(index + 1).padStart(6, "0")}`,
+    baselineSha256,
+    index + 1,
+    chunks.length,
+    Buffer.byteLength(hashBasisJson),
+    chunk,
+  ]);
+  return {
+    baselineSha256,
+    hashBasisJson,
+    projectedRows: 6 + chunks.length,
+    tables,
+  };
 }
 
-function baselineExcel({ existing = false, missingTableKey = null, wrongHeaderKey = null } = {}) {
+function stringCell(value) {
+  return { type: "String", basicValue: value };
+}
+
+function emptyCell() {
+  return { type: "Empty" };
+}
+
+function cloneCells(rows) {
+  return rows.map((row) => row.map((cell) => ({ ...cell })));
+}
+
+function primitiveCell(cell) {
+  if (cell?.type === "Empty") return null;
+  return cell?.basicValue ?? cell;
+}
+
+function baselineExcel({
+  existing = false,
+  missingTableKey = null,
+  wrongHeaderKey = null,
+  failJsonWrite = false,
+} = {}) {
   const calls = [];
   const sheets = new Map();
+  let pendingSyncError = null;
+  let jsonFailureConsumed = false;
   const keyBySheet = new Map(
     Object.entries(ETABS_BASELINE_TABLES).map(([key, spec]) => [spec.sheetName, key]),
   );
 
+  function ensureCellGrid(sheet, rowCount, columnCount) {
+    while (sheet.cells.length < rowCount) sheet.cells.push([]);
+    for (let row = 0; row < rowCount; row += 1) {
+      while (sheet.cells[row].length < columnCount) sheet.cells[row].push(emptyCell());
+    }
+  }
+
+  function readCells(sheet, rowIndex, columnIndex, rowCount, columnCount) {
+    ensureCellGrid(sheet, rowIndex + rowCount, columnIndex + columnCount);
+    return Array.from({ length: rowCount }, (_, rowOffset) =>
+      Array.from({ length: columnCount }, (_, columnOffset) => ({
+        ...sheet.cells[rowIndex + rowOffset][columnIndex + columnOffset],
+      })),
+    );
+  }
+
+  function writeCells(sheet, rowIndex, columnIndex, values) {
+    ensureCellGrid(sheet, rowIndex + values.length, columnIndex + (values[0]?.length ?? 0));
+    values.forEach((row, rowOffset) => {
+      row.forEach((cell, columnOffset) => {
+        sheet.cells[rowIndex + rowOffset][columnIndex + columnOffset] = { ...cell };
+      });
+    });
+  }
+
   function makeSheet(name, exists) {
     const key = keyBySheet.get(name);
     const spec = ETABS_BASELINE_TABLES[key];
-    const body = {};
-    const header = {
-      values: [wrongHeaderKey === key ? ["Wrong"] : [...spec.headers]],
-      rowIndex: 0,
-      columnIndex: 0,
-      columnCount: spec.headers.length,
-      load(properties) { calls.push(["header.load", key, properties]); },
-    };
-    const table = {
-      isNullObject: missingTableKey === key,
-      name: null,
-      load(property) { calls.push(["table.load", key, property]); },
-      getHeaderRowRange() { return header; },
-      getDataBodyRange() { return body; },
-      resize(range) { calls.push(["resize", key, range]); },
-    };
+    const originalRows = [
+      spec.headers.map((_, index) => (index === 0 ? `original:${key}:1` : null)),
+      spec.headers.map((_, index) => (index === 0 ? `original:${key}:2` : null)),
+    ];
+    const initialHeader = wrongHeaderKey === key ? ["Wrong"] : [...spec.headers];
+    const initialMatrix = [initialHeader, ...originalRows].map((row) =>
+      row.map((value) => (value === null ? emptyCell() : stringCell(value))),
+    );
     const sheet = {
-      isNullObject: !exists,
-      body,
-      table,
+      exists,
+      tableExists: exists && missingTableKey !== key,
+      tableName: exists && missingTableKey !== key ? spec.tableName : null,
+      tableRowCount: exists && missingTableKey !== key ? initialMatrix.length : 0,
+      cells: exists ? cloneCells(initialMatrix) : [],
       ranges: [],
+    };
+
+    function makeRange(rowIndex, columnIndex, rowCount, columnCount) {
+      const range = {
+        args: [rowIndex, columnIndex, rowCount, columnCount],
+        rowIndex,
+        columnIndex,
+        rowCount,
+        columnCount,
+        load(properties) { calls.push(["range.load", key, properties]); },
+      };
+      Object.defineProperty(range, "valuesAsJson", {
+        get() {
+          return readCells(sheet, rowIndex, columnIndex, rowCount, columnCount);
+        },
+        set(values) {
+          calls.push(["valuesAsJson", key, values.length]);
+          writeCells(sheet, rowIndex, columnIndex, values);
+          if (key === "json" && failJsonWrite && !jsonFailureConsumed) {
+            jsonFailureConsumed = true;
+            pendingSyncError = new Error("Injected ETABS_W2_JSON write failure");
+          }
+        },
+      });
+      Object.defineProperty(range, "values", {
+        get() {
+          return readCells(sheet, rowIndex, columnIndex, rowCount, columnCount)
+            .map((row) => row.map(primitiveCell));
+        },
+        set(values) {
+          calls.push(["unsafe.values", key]);
+          const converted = values.map((row) => row.map((value) => {
+            if (typeof value === "string" && /^[+=-]/.test(value)) {
+              return stringCell("#FORMULA_INTERPRETED");
+            }
+            return value === null ? emptyCell() : stringCell(value);
+          }));
+          writeCells(sheet, rowIndex, columnIndex, converted);
+        },
+      });
+      sheet.ranges.push(range);
+      return range;
+    }
+
+    const table = {
+      get isNullObject() { return !sheet.tableExists; },
+      get name() { return sheet.tableName; },
+      set name(value) { sheet.tableName = value; },
+      load(property) { calls.push(["table.load", key, property]); },
+      getHeaderRowRange() {
+        return makeRange(0, 0, 1, spec.headers.length);
+      },
+      getRange() {
+        return makeRange(0, 0, sheet.tableRowCount, spec.headers.length);
+      },
+      resize(range) {
+        calls.push(["resize", key, range.args]);
+        sheet.tableRowCount = range.rowCount;
+        ensureCellGrid(sheet, range.rowCount, range.columnCount);
+      },
+    };
+    Object.assign(sheet, {
       load(property) { calls.push(["sheet.load", key, property]); },
       getRangeByIndexes(...args) {
-        const range = { args };
-        sheet.ranges.push(range);
         calls.push(["range", key, ...args]);
-        return range;
+        return makeRange(...args);
       },
       activate() { calls.push(["activate", key]); },
+      delete() {
+        calls.push(["sheet.delete", key]);
+        sheet.exists = false;
+        sheet.tableExists = false;
+        sheet.tableName = null;
+        sheet.tableRowCount = 0;
+        sheet.cells = [];
+      },
       tables: {
         getItemOrNullObject(tableName) {
           calls.push(["table.get", key, tableName]);
@@ -372,10 +500,16 @@ function baselineExcel({ existing = false, missingTableKey = null, wrongHeaderKe
         },
         add(range, hasHeaders) {
           calls.push(["table.add", key, range, hasHeaders]);
+          sheet.tableExists = true;
+          sheet.tableRowCount = range.rowCount;
           return table;
         },
       },
-    };
+      table,
+    });
+    Object.defineProperty(sheet, "isNullObject", {
+      get() { return !sheet.exists; },
+    });
     return sheet;
   }
 
@@ -391,17 +525,33 @@ function baselineExcel({ existing = false, missingTableKey = null, wrongHeaderKe
         },
         add(name) {
           const sheet = sheets.get(name);
-          sheet.isNullObject = false;
+          sheet.exists = true;
           calls.push(["sheet.add", keyBySheet.get(name)]);
           return sheet;
         },
       },
     },
-    async sync() { calls.push(["sync"]); },
+    async sync() {
+      calls.push(["sync"]);
+      if (pendingSyncError) {
+        const error = pendingSyncError;
+        pendingSyncError = null;
+        throw error;
+      }
+    },
   };
   return {
     calls,
     sheets,
+    snapshot() {
+      return Object.fromEntries([...sheets.entries()].map(([name, sheet]) => [name, {
+        exists: sheet.exists,
+        tableExists: sheet.tableExists,
+        tableName: sheet.tableName,
+        tableRowCount: sheet.tableRowCount,
+        cells: cloneCells(sheet.cells),
+      }]));
+    },
     api: { async run(callback) { return callback(context); } },
   };
 }
@@ -410,17 +560,27 @@ test("W2 baseline creates only all seven controlled tables", async () => {
   const excel = baselineExcel();
   const projection = baselineProjection();
 
-  const result = await writeEtabsBaselineResults(excel.api, projection);
+  const result = await writeEtabsBaselineResults(
+    excel.api,
+    projection,
+    { cryptoImpl: webcrypto },
+  );
 
   assert.equal(result.disposition, "CREATED");
   assert.equal(result.baselineSha256, projection.baselineSha256);
+  assert.equal(result.verifiedProjectedRows, projection.projectedRows);
+  assert.equal(result.verifiedHashBasisUtf8Bytes, Buffer.byteLength(projection.hashBasisJson));
   assert.equal(result.sheets.length, 7);
   assert.equal(excel.calls.filter(([name]) => name === "sheet.add").length, 7);
   for (const [key, spec] of Object.entries(ETABS_BASELINE_TABLES)) {
     const sheet = excel.sheets.get(spec.sheetName);
     assert.equal(sheet.table.name, spec.tableName);
-    assert.deepEqual(sheet.ranges[0].values, [spec.headers, ...projection.tables[key]]);
+    assert.deepEqual(
+      sheet.table.getRange().values,
+      [spec.headers, ...projection.tables[key]],
+    );
   }
+  assert.equal(excel.calls.some(([name]) => name === "unsafe.values"), false);
 });
 
 test("W2 baseline keeps an empty controlled table header-only", async () => {
@@ -429,18 +589,79 @@ test("W2 baseline keeps an empty controlled table header-only", async () => {
   projection.tables.connectivity = [];
   projection.projectedRows = 6;
 
-  await writeEtabsBaselineResults(excel.api, projection);
+  await writeEtabsBaselineResults(excel.api, projection, { cryptoImpl: webcrypto });
 
   const spec = ETABS_BASELINE_TABLES.connectivity;
   const sheet = excel.sheets.get(spec.sheetName);
-  assert.deepEqual(sheet.ranges[0].values, [spec.headers]);
-  assert.equal(sheet.ranges[0].args[2], 1);
+  assert.deepEqual(sheet.table.getRange().values, [spec.headers]);
+  assert.equal(sheet.tableRowCount, 1);
+});
+
+test("W2 JSON chunks preserve leading plus, minus, and equals as exact text", async () => {
+  const excel = baselineExcel();
+  const projection = baselineProjection({ chunks: ["+alpha", "-beta", "=gamma"] });
+
+  const result = await writeEtabsBaselineResults(
+    excel.api,
+    projection,
+    { cryptoImpl: webcrypto },
+  );
+
+  const jsonSheet = excel.sheets.get(ETABS_BASELINE_TABLES.json.sheetName);
+  const jsonCells = jsonSheet.table.getRange().valuesAsJson.slice(1);
+  assert.deepEqual(jsonCells.map((row) => row[5]), [
+    stringCell("+alpha"),
+    stringCell("-beta"),
+    stringCell("=gamma"),
+  ]);
+  assert.equal(jsonCells.map((row) => row[5].basicValue).join(""), projection.hashBasisJson);
+  assert.equal(result.baselineSha256, projection.baselineSha256);
+  assert.equal(excel.calls.some(([name]) => name === "unsafe.values"), false);
+});
+
+test("W2 transaction removes every new controlled output after a JSON failure", async () => {
+  const excel = baselineExcel({ failJsonWrite: true });
+
+  await assert.rejects(
+    writeEtabsBaselineResults(
+      excel.api,
+      baselineProjection({ chunks: ["+fails"] }),
+      { cryptoImpl: webcrypto },
+    ),
+    /Injected ETABS_W2_JSON write failure/,
+  );
+
+  for (const spec of Object.values(ETABS_BASELINE_TABLES)) {
+    const sheet = excel.sheets.get(spec.sheetName);
+    assert.equal(sheet.exists, false);
+    assert.equal(sheet.tableExists, false);
+  }
+});
+
+test("W2 transaction exactly restores pre-existing controlled tables after failure", async () => {
+  const excel = baselineExcel({ existing: true, failJsonWrite: true });
+  const before = excel.snapshot();
+
+  await assert.rejects(
+    writeEtabsBaselineResults(
+      excel.api,
+      baselineProjection({ chunks: ["=fails", "+again"] }),
+      { cryptoImpl: webcrypto },
+    ),
+    /Injected ETABS_W2_JSON write failure/,
+  );
+
+  assert.deepEqual(excel.snapshot(), before);
 });
 
 test("W2 baseline preflights every collision before changing cells", async () => {
   const missing = baselineExcel({ existing: true, missingTableKey: "stations" });
   await assert.rejects(
-    writeEtabsBaselineResults(missing.api, baselineProjection()),
+    writeEtabsBaselineResults(
+      missing.api,
+      baselineProjection(),
+      { cryptoImpl: webcrypto },
+    ),
     /ETABS_W2_Stations already exists without tbl_ETABS_W2_Stations_V1/,
   );
   assert.equal(missing.calls.some(([name]) => name === "resize"), false);
@@ -448,7 +669,11 @@ test("W2 baseline preflights every collision before changing cells", async () =>
 
   const changed = baselineExcel({ existing: true, wrongHeaderKey: "frames" });
   await assert.rejects(
-    writeEtabsBaselineResults(changed.api, baselineProjection()),
+    writeEtabsBaselineResults(
+      changed.api,
+      baselineProjection(),
+      { cryptoImpl: webcrypto },
+    ),
     /ETABS_W2_Frames headers do not match/,
   );
   assert.equal(changed.calls.some(([name]) => name === "resize"), false);

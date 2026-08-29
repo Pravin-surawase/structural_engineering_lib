@@ -278,6 +278,7 @@ test("W2 projection verifies canonical bytes and reconciles every stable row", a
   const projection = projectEtabsBaselineTables(transport);
 
   assert.equal(verified.baselineSha256, transport.build_result.baseline.baseline_sha256);
+  assert.equal(projection.hashBasisJson, transport.baseline_hash_basis_json);
   assert.equal(projection.projectedRows, 7);
   assert.deepEqual(Object.keys(projection.tables), Object.keys(ETABS_BASELINE_TABLES));
   assert.equal(projection.tables.frames[0][0], "member:1");
