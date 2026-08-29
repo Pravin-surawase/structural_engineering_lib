@@ -1,4 +1,8 @@
-import { ETABS_BASELINE_TABLES, ETABS_PILOT_HEADERS } from "./taskpane-core.mjs";
+import {
+  ETABS_BASELINE_TABLES,
+  ETABS_PILOT_HEADERS,
+  sha256Hex,
+} from "./taskpane-core.mjs";
 
 const ETABS_PILOT_SHEET = "ETABS_Pilot";
 const ETABS_PILOT_TABLE = "tbl_ETABS_Pilot_V1";
@@ -150,10 +154,208 @@ export async function writeEtabsPilotResults(excelApi, rows) {
   });
 }
 
-export async function writeEtabsBaselineResults(excelApi, projection) {
+function normalizeExcelPrimitive(value) {
+  if (value === undefined || value === "") return null;
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return Number(value.toPrecision(15));
+  }
+  return value;
+}
+
+function primitiveToCellValue(value) {
+  const normalized = normalizeExcelPrimitive(value);
+  if (normalized === null) return { type: "Empty" };
+  if (typeof normalized === "string") {
+    return { type: "String", basicValue: normalized };
+  }
+  if (typeof normalized === "boolean") {
+    return { type: "Boolean", basicValue: normalized };
+  }
+  if (typeof normalized === "number") {
+    return { type: "Double", basicValue: normalized };
+  }
+  throw new Error("The W2 Excel projection contains an unsupported cell value.");
+}
+
+function toCellValueMatrix(rows) {
+  return rows.map((row) => row.map(primitiveToCellValue));
+}
+
+function cellValueToPrimitive(value) {
+  if (value === null || value === undefined) return null;
+  if (typeof value !== "object") return value;
+  if (value.type === "Empty") return null;
+  if (Object.hasOwn(value, "basicValue")) return value.basicValue;
+  throw new Error(`The W2 Excel read-back contains unsupported cell type ${value.type}.`);
+}
+
+function fromCellValueMatrix(rows) {
+  return rows.map((row) => row.map(cellValueToPrimitive));
+}
+
+function cloneCellValueMatrix(rows) {
+  return rows.map((row) => row.map((cell) => ({ ...cell })));
+}
+
+function matricesMatch(left, right) {
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function firstMatrixMismatch(actual, expected) {
+  for (let row = 0; row < expected.length; row += 1) {
+    for (let column = 0; column < expected[row].length; column += 1) {
+      if (JSON.stringify(actual[row][column]) !== JSON.stringify(expected[row][column])) {
+        return {
+          row: row + 1,
+          column: column + 1,
+          expected: expected[row][column],
+          actual: actual[row][column],
+        };
+      }
+    }
+  }
+  return null;
+}
+
+function normalizeExpectedExcelMatrix(rows) {
+  return rows.map((row) => row.map(normalizeExcelPrimitive));
+}
+
+async function restoreEtabsBaselineTransaction(context, states) {
+  const worksheets = context.workbook.worksheets;
+  const recovery = states.map((state) => {
+    const sheet = worksheets.getItemOrNullObject(state.spec.sheetName);
+    sheet.load("isNullObject");
+    return { state, sheet, table: null, touchedRange: null };
+  });
+  await context.sync();
+
+  for (const item of recovery) {
+    if (!item.state.exists) continue;
+    if (item.sheet.isNullObject) {
+      throw new Error(`Rollback could not find ${item.state.spec.sheetName}.`);
+    }
+    item.table = item.sheet.tables.getItemOrNullObject(item.state.spec.tableName);
+    item.table.load("isNullObject");
+  }
+  await context.sync();
+
+  for (const item of recovery) {
+    const { state, sheet } = item;
+    if (!state.exists) {
+      if (!sheet.isNullObject) sheet.delete();
+      continue;
+    }
+    if (item.table.isNullObject) {
+      throw new Error(`Rollback could not find ${state.spec.tableName}.`);
+    }
+    item.table.resize(
+      sheet.getRangeByIndexes(
+        state.header.rowIndex,
+        state.header.columnIndex,
+        state.originalRowCount,
+        state.header.columnCount,
+      ),
+    );
+    item.touchedRange = sheet.getRangeByIndexes(
+      state.header.rowIndex,
+      state.header.columnIndex,
+      state.touchedRowCount,
+      state.header.columnCount,
+    );
+    item.touchedRange.valuesAsJson = cloneCellValueMatrix(state.snapshotValuesAsJson);
+  }
+  await context.sync();
+
+  const createdChecks = [];
+  for (const item of recovery) {
+    const { state } = item;
+    if (!state.exists) {
+      const sheet = worksheets.getItemOrNullObject(state.spec.sheetName);
+      sheet.load("isNullObject");
+      createdChecks.push(sheet);
+      continue;
+    }
+    const tableRange = item.table.getRange();
+    tableRange.load(["rowCount", "columnCount"]);
+    item.touchedRange.load(["valuesAsJson", "rowCount", "columnCount"]);
+    item.tableRange = tableRange;
+  }
+  await context.sync();
+
+  if (createdChecks.some((sheet) => !sheet.isNullObject)) {
+    throw new Error("Rollback left a newly created W2 worksheet behind.");
+  }
+  for (const item of recovery) {
+    const { state } = item;
+    if (!state.exists) continue;
+    if (
+      item.tableRange.rowCount !== state.originalRowCount ||
+      item.tableRange.columnCount !== state.header.columnCount ||
+      item.touchedRange.rowCount !== state.touchedRowCount ||
+      item.touchedRange.columnCount !== state.header.columnCount ||
+      !matricesMatch(item.touchedRange.valuesAsJson, state.snapshotValuesAsJson)
+    ) {
+      throw new Error(`Rollback did not exactly restore ${state.spec.tableName}.`);
+    }
+  }
+}
+
+async function verifyEtabsBaselineWrite(context, states, projection, cryptoImpl) {
+  for (const state of states) {
+    state.verificationRange = state.table.getRange();
+    state.verificationRange.load(["valuesAsJson", "rowCount", "columnCount"]);
+  }
+  await context.sync();
+
+  let verifiedProjectedRows = 0;
+  for (const state of states) {
+    const expected = normalizeExpectedExcelMatrix([state.spec.headers, ...state.rows]);
+    const actual = fromCellValueMatrix(state.verificationRange.valuesAsJson);
+    if (
+      state.verificationRange.rowCount !== expected.length ||
+      state.verificationRange.columnCount !== state.spec.headers.length ||
+      !matricesMatch(actual, expected)
+    ) {
+      const mismatch = firstMatrixMismatch(actual, expected);
+      const detail = mismatch
+        ? ` First mismatch: row ${mismatch.row}, column ${mismatch.column}, expected ${JSON.stringify(mismatch.expected)}, actual ${JSON.stringify(mismatch.actual)}.`
+        : " The table dimensions differ from the controlled contract.";
+      throw new Error(
+        `The W2 ${state.key} table failed exact Excel read-back verification.${detail}`,
+      );
+    }
+    state.verifiedRows = actual.slice(1);
+    verifiedProjectedRows += state.verifiedRows.length;
+  }
+  if (verifiedProjectedRows !== projection.projectedRows) {
+    throw new Error("The verified W2 Excel row total does not reconcile.");
+  }
+
+  const reconstructedJson = states
+    .find((state) => state.key === "json")
+    .verifiedRows.map((row) => row[5])
+    .join("");
+  if (reconstructedJson !== projection.hashBasisJson) {
+    throw new Error("The W2 JSON chunks did not rejoin to the exact hash-basis text.");
+  }
+  const bytes = new TextEncoder().encode(reconstructedJson);
+  const digest = await sha256Hex(bytes, { cryptoImpl });
+  if (digest !== projection.baselineSha256) {
+    throw new Error("The reconstructed W2 JSON failed SHA-256 verification.");
+  }
+  return { verifiedProjectedRows, verifiedHashBasisUtf8Bytes: bytes.length };
+}
+
+export async function writeEtabsBaselineResults(
+  excelApi,
+  projection,
+  { cryptoImpl = globalThis.crypto } = {},
+) {
   if (
     !projection ||
     typeof projection.baselineSha256 !== "string" ||
+    typeof projection.hashBasisJson !== "string" ||
     !projection.tables
   ) {
     throw new Error("A complete projected W2 baseline is required.");
@@ -172,13 +374,26 @@ export async function writeEtabsBaselineResults(excelApi, projection) {
   if (projectedRows !== projection.projectedRows) {
     throw new Error("The W2 projected Excel row total does not reconcile.");
   }
+  if (projection.tables.json.map((row) => row[5]).join("") !== projection.hashBasisJson) {
+    throw new Error("The projected W2 JSON chunks do not rejoin exactly.");
+  }
 
   return excelApi.run(async (context) => {
     const worksheets = context.workbook.worksheets;
     const states = entries.map((entry) => {
       const sheet = worksheets.getItemOrNullObject(entry.spec.sheetName);
       sheet.load("isNullObject");
-      return { ...entry, sheet, exists: false, table: null, header: null };
+      return {
+        ...entry,
+        sheet,
+        exists: false,
+        table: null,
+        header: null,
+        tableRange: null,
+        originalRowCount: null,
+        touchedRowCount: null,
+        snapshotValuesAsJson: null,
+      };
     });
     await context.sync();
 
@@ -200,6 +415,8 @@ export async function writeEtabsBaselineResults(excelApi, projection) {
       }
       state.header = state.table.getHeaderRowRange();
       state.header.load(["values", "rowIndex", "columnIndex", "columnCount"]);
+      state.tableRange = state.table.getRange();
+      state.tableRange.load(["rowCount", "columnCount"]);
     }
     await context.sync();
 
@@ -215,44 +432,82 @@ export async function writeEtabsBaselineResults(excelApi, projection) {
     }
 
     for (const state of states) {
-      if (!state.exists) {
-        state.sheet = worksheets.add(state.spec.sheetName);
-        const range = state.sheet.getRangeByIndexes(
-          0,
-          0,
-          state.rows.length + 1,
-          state.spec.headers.length,
-        );
-        range.values = [state.spec.headers, ...state.rows];
-        state.table = state.sheet.tables.add(range, true);
-        state.table.name = state.spec.tableName;
-      } else {
-        state.table.resize(
-          state.sheet.getRangeByIndexes(
-            state.header.rowIndex,
-            state.header.columnIndex,
-            state.rows.length + 1,
-            state.header.columnCount,
-          ),
-        );
-      }
+      if (!state.exists) continue;
+      state.originalRowCount = state.tableRange.rowCount;
+      state.touchedRowCount = Math.max(state.originalRowCount, state.rows.length + 1);
+      state.snapshotRange = state.sheet.getRangeByIndexes(
+        state.header.rowIndex,
+        state.header.columnIndex,
+        state.touchedRowCount,
+        state.header.columnCount,
+      );
+      state.snapshotRange.load(["valuesAsJson", "rowCount", "columnCount"]);
     }
     await context.sync();
 
     for (const state of states) {
-      if (!state.exists || state.rows.length === 0) continue;
-      state.table.getDataBodyRange().values = state.rows;
+      if (!state.exists) continue;
+      state.snapshotValuesAsJson = cloneCellValueMatrix(state.snapshotRange.valuesAsJson);
+      if (
+        state.snapshotRange.rowCount !== state.touchedRowCount ||
+        state.snapshotRange.columnCount !== state.header.columnCount
+      ) {
+        throw new Error(`Could not snapshot ${state.spec.tableName} before mutation.`);
+      }
     }
-    states.find((state) => state.key === "summary").sheet.activate();
-    await context.sync();
 
-    const created = states.filter((state) => !state.exists).length;
-    const disposition =
-      created === states.length ? "CREATED" : created === 0 ? "UPDATED" : "RECONCILED";
-    return {
-      disposition,
-      baselineSha256: projection.baselineSha256,
-      sheets: states.map((state) => state.spec.sheetName),
-    };
+    try {
+      for (const state of states) {
+        const rowCount = state.rows.length + 1;
+        if (!state.exists) {
+          state.sheet = worksheets.add(state.spec.sheetName);
+        }
+        const range = state.sheet.getRangeByIndexes(
+          state.exists ? state.header.rowIndex : 0,
+          state.exists ? state.header.columnIndex : 0,
+          rowCount,
+          state.spec.headers.length,
+        );
+        if (state.exists) {
+          state.table.resize(range);
+        }
+        range.valuesAsJson = toCellValueMatrix([state.spec.headers, ...state.rows]);
+        if (!state.exists) {
+          state.table = state.sheet.tables.add(range, true);
+          state.table.name = state.spec.tableName;
+        }
+      }
+      await context.sync();
+
+      states.find((state) => state.key === "summary").sheet.activate();
+      await context.sync();
+      const verification = await verifyEtabsBaselineWrite(
+        context,
+        states,
+        projection,
+        cryptoImpl,
+      );
+
+      const created = states.filter((state) => !state.exists).length;
+      const disposition =
+        created === states.length ? "CREATED" : created === 0 ? "UPDATED" : "RECONCILED";
+      return {
+        disposition,
+        baselineSha256: projection.baselineSha256,
+        verifiedProjectedRows: verification.verifiedProjectedRows,
+        verifiedHashBasisUtf8Bytes: verification.verifiedHashBasisUtf8Bytes,
+        sheets: states.map((state) => state.spec.sheetName),
+      };
+    } catch (error) {
+      try {
+        await restoreEtabsBaselineTransaction(context, states);
+      } catch (rollbackError) {
+        throw new Error(
+          `${error.message} Transaction rollback also failed: ${rollbackError.message}`,
+          { cause: error },
+        );
+      }
+      throw error;
+    }
   });
 }

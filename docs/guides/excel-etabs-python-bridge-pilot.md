@@ -3,7 +3,7 @@
 **Type:** Guide
 **Audience:** Developers
 **Status:** Complete
-**Next Phase:** W2 Campaign Ready for Mac Review; Installed W2C Held Fail-Closed
+**Next Phase:** W2 Integrated; Installed Retry Held Fail-Closed; Mac Evidence Review
 **Created:** 2026-08-28
 **Last Updated:** 2026-08-29
 **Importance:** High
@@ -176,6 +176,58 @@ Then:
    only when absent, updates only the exact V1 table, and refuses to overwrite a
    colliding worksheet or altered table.
 
+## Windows ETABS/Excel recurring-pitfall checklist
+
+Read this section before launching ETABS, attaching COM, or opening Excel for
+any W2 continuation. It records repeated symptoms from W1/W2 so a later agent
+does not spend an installed session rediscovering them.
+
+| Repeated symptom | Confirmed cause | Prevention and required proof |
+|---|---|---|
+| Work runs from protected/stale Windows `main` or the wrong worktree | The Windows primary checkout is intentionally a `HOLD_MAIN` lane while GitHub/Mac owns integration | Fetch first; print repository root, branch, head, tree, upstream, and `source_bound=true`; create a fresh one-writer worktree from the exact authorized SHA. Never copy repository files between machines. |
+| GitHub commands fail or target the wrong identity | CLI authentication or repository binding was assumed rather than checked | Run `gh auth status`, verify the active account, query the exact repository, then prove the target remote branch/PR state. Authentication is setup evidence, not authority to create/merge a PR. |
+| `session begin` refuses a new W2 task | A historical unmatched Phase A checkpoint remains in the shared store | Record the exact refusal, do not invent timing, and do not close or overwrite another task's checkpoint. Continue only from exact Git/source/runtime evidence when the task packet permits it. |
+| Python cannot import `comtypes`, or a large untracked `Python/uv.lock` appears | `comtypes` is in the optional `etabs` extra; a bare `uv run` can resolve a new environment and generate a lock | Use the maintained runtime with the `etabs` extra and 64-bit Python. Check `git status` immediately; remove only a task-generated untracked lock after resolving its exact in-worktree path. |
+| COM attach behaves differently from the tested bridge | Python/ETABS bitness or Windows privilege levels differ | Prove 64-bit Python, ETABS, typelib, wrapper/runtime hashes, and matching ETABS/API-process privilege before attachment. Do not keep retrying attachment under mixed elevation. |
+| A combo looks highlighted in ETABS but the API says it is inactive | Visible list focus or display-table selection is not proof of `Results.Setup` output state; live selection is transient | Treat `GetComboSelectedForOutput(exact_name)` as authoritative. Read it once after identity preflight. If false, stop before `FrameForce`; do not loop, guess, or reinterpret the UI. |
+| An agent tries to activate a result inside the read-only acceptance | The result-selection prerequisite and the getter-only acceptance boundary were conflated | A setter requires separate explicit owner authority naming the exact combo and action. If authorized, call only `SetComboSelectedForOutput(exact_name, true)`, check return zero and before/after getter state, then prove model hash/size/mtime, lock, and units unchanged. The acceptance path itself still calls no selection setter. |
+| The model path is empty, relative, or names only a directory | `GetModelFilepath()` returned the containing folder on the installed version | Use `GetModelFilename(True)` and require an exact saved approved `.edb` copy. Bind path, SHA-256, size, UTC mtime, lock, ETABS version, and runtime identity before result reads. |
+| Story arrays appear one row longer than `NumberStories` | CSI's contract excludes `Base` from the count but includes it as the first item in every returned array | Require `NumberStories + 1` aligned entries, retain `Base` as an explicit excluded disposition, and create stable story identities only from the remaining rows. Any other shape fails closed. |
+| Fake COM passes while installed COM decodes differently | Generated `comtypes` methods return list/tuple/SAFEARRAY combinations and place the CSI return code according to the typelib signature | Use the frozen getter matrix, accept only the proved tuple/list variants, validate every array length, and check every CSI return code. Never infer output order from memory or silently discard a trailing scalar. |
+| Forces are read from stale or unintended results | Analysis completeness and exact selected case/combination were not proved before `FrameForce` | Require the approved exact case/combination, completed analysis status for its constituent cases, supported topology, and explicit `ItemTypeElm=0`. Any mismatch stops before the first force call; W2 never runs analysis or design. |
+| ETABS remains in temporary units after an exception | Unit restoration was treated as a success-only step | Capture the original enum, set only the frozen read units when necessary, restore in `finally`, check every setter return, and re-get the original enum after both success and failure. Preserve the model lock throughout. |
+| Direct and REST counts match but canonical hashes differ | Volatile file-observation wall-clock instants were included in cross-transport identity | Retain both `observed_at_utc` values in full provenance but exclude only those two instants from the hash basis. Continue hashing stable file identity, runtime, model/lock/units, topology, results, and dispositions. Diagnose structural diffs before changing any frozen digest. |
+| `ETABS_W2_JSON` fails at `Range.values` although the server hash is valid | Arbitrary JSON chunks can begin with `+`, `-`, or `=`; Excel interprets those strings as formulas | Use typed `valuesAsJson` string cells, never formula-coercing `Range.values`, and verify exact rejoined bytes/SHA-256 after readback. Regressions cover all three prefixes without changing canonical JSON. |
+| Six W2 tables remain after the seventh table fails | Collision preflight prevents overwrites but does not make a multi-sheet write atomic | Snapshot every touched controlled range. On failure, delete newly created controlled sheets and restore every pre-existing controlled table's exact cells/dimensions; verify rollback before reporting the error. Installed retry and regressions now prove this behavior. |
+| Exact readback reports `""` versus blank or a small numeric tail difference | Typed empty strings become blank cells, while desktop Excel stores standard numeric cells at 15 significant digits | Normalize structured-table blanks and numbers to Excel's storage semantics before comparison. Keep the server-canonical JSON full precision and require its byte/hash-exact reconstruction separately. |
+| A restarted laptop still appears to have the prior installed state | Open model, COM object, add-in server, workbook, and result selection are session state, not file state | Treat every restart as a fresh installed preflight. Reprove repository/source/process identity, reopen only the approved copied model/workbook, and getter-check lock/units/analysis/selection before any force read. |
+| The installed run is repeated immediately after a blocker | Failure evidence was treated as an invitation to probe or repair live state | Stop at the earliest safe boundary, close task-owned servers, preserve before/after hashes and the exact symptom, and continue only under a new reviewed packet. Do not rerun forces merely to confirm a failure. |
+| A green software path is described as structural approval | Software reconciliation and professional engineering review were conflated | Report only installed/software acceptance. Preserve `HELD_NOT_SUPPORTED` for independent frame analysis and require qualified structural-engineer review for design or construction use. |
+
+Use this fixed order for the next installed packet:
+
+1. Prove Git/worktree/GitHub authority and a clean source-bound runtime.
+2. Prove 64-bit ETABS/Python/comtypes/type-library identities without touching
+   the model.
+3. Require the approved copied model already open; snapshot file, lock, units,
+   analysis, and exact result-selection getter state.
+4. Stop before forces if any identity or state differs. A selection change is
+   a separate owner-authorized prerequisite, never an implicit repair.
+5. Run direct service once, then source-bound REST once, and require exact
+   canonical byte/hash/count equality.
+6. Start installed Excel only from the reviewed typed-literal/transactional
+   implementation and require rollback proof for any failed attempt.
+7. Reconcile all seven tables, then prove model/workbook preservation, restored
+   units, locked state, and unchanged result selection.
+8. On any failure, freeze evidence and stop; do not loop. Keep proprietary
+   paths, model/workbook bytes, inventories, and forces outside Git.
+
+Repository-wide Windows runs can also report unrelated shell-execution,
+backslash-normalization, symlink-privilege, local timing-budget, session-store,
+or frozen-workbook-manifest failures. Record their exact tests separately;
+never use them to overwrite a green focused W2 result or to broaden an installed
+ETABS packet into general Windows maintenance.
+
 ## COM and unit behavior
 
 The optional dependency is `comtypes>=1.4,<2` and is installed only by the
@@ -274,6 +326,16 @@ preflighted before the first cell change; collisions, duplicate stable row IDs,
 count drift, more than 100,000 projected rows, or a blocked service result write
 nothing. A zero-row inventory is represented by a header-only controlled table.
 
+Installed W2C exposed and then closed one Excel-specific exception to this
+contract. Arbitrary 15,000-character boundaries can leave a JSON chunk starting
+with `+`, `-`, or `=`; formula-coercing writes failed after six tables. The
+maintained path now uses typed literal cells, verifies every structured cell,
+rejoins and hashes the JSON, and treats all seven writes as one transaction.
+New-sheet failures remove all new output; existing-sheet failures restore the
+previous controlled contents and dimensions exactly. Blank cells and desktop
+Excel's 15-significant-digit numeric storage are normalized only for structured
+tables; the canonical JSON remains full precision and byte-exact.
+
 This is software evidence, not ETABS design or professional approval. It does
 not infer materials, reinforcement, slabs, supports, or engineering intent;
 does not run analysis/design; and retains `HELD_NOT_SUPPORTED` for independent
@@ -348,3 +410,47 @@ authorization and an ETABS session where the exact approved combination is
 already active before Codex attaches, followed by the complete preflight again.
 Design/detailing expansion, construction-practice checks, offline optimization,
 and copied-model write-back/reanalysis remain separate later gates.
+
+PR #897 subsequently integrated the reviewed cumulative W2 campaign unchanged
+as `ee50aaa3...`. In the separately authorized installed retry, the owner
+confirmed the approved copy open and exact combination active before attachment,
+but the authoritative read-only getter still returned the combination inactive
+with zero selected combinations. The workflow stopped before constructing a
+run request: zero `FrameForce` calls and force stations, no REST or Excel start,
+no unit/result-selection setter, and no analysis, design, save, or mutation.
+The model and copied-workbook file identities remained unchanged. The safe
+retry receipt is
+[`etabs-excel-beam-w2c-installed-retry-evidence.json`](../verification/etabs-excel-beam-w2c-installed-retry-evidence.json).
+The confirmation/getter mismatch root cause is unconfirmed; do not retry under
+the same authorization or attempt to repair selection through the API. W2C
+remains `BLOCKED_SAFE_NO_FORCE_READ`, and independent frame analysis remains
+`HELD_NOT_SUPPORTED`.
+
+A later owner-authorized prerequisite set the exact combination active with the
+single `SetComboSelectedForOutput(..., true)` call and return code zero; model
+hash/size/mtime, lock, and units were unchanged, and no force, analysis, design,
+or save occurred in that prerequisite. The continuation then completed direct
+and source-bound REST extraction against the same identity. Both paths returned
+`ACCEPTED`, baseline SHA-256 `d4c28586...`, 6 stories, 225 frames, 549 links,
+153 result sets, 3,502 force stations, 4,348 dispositions, and exact canonical
+byte equality with units restored.
+
+The first direct/REST comparison had differed only at the two wall-clock
+`observed_at_utc` file-observation instants. The bounded repair keeps both
+instants in full provenance but excludes only those volatile values from the
+cross-transport hash identity; file hash/size/mtime/path, model/lock/units,
+runtime, topology, results, and dispositions remain hashed. A regression proves
+two different observation times retain equal canonical hashes.
+
+That partial artifact remains immutable blocked evidence in
+[`etabs-excel-beam-w2c-installed-acceptance-retry2-evidence.json`](../verification/etabs-excel-beam-w2c-installed-acceptance-retry2-evidence.json).
+The later transactional retry used the same copied model and exact combination.
+Direct service and REST returned the same canonical 3,626,096 bytes and
+`d4c28586...` digest; installed Excel saved all seven tables, including 242
+literal JSON chunks. Independent read-only workbook inspection matched every
+cell to the normalized direct projection and reconstructed the exact canonical
+bytes/hash. Final getter-only postflight preserved model SHA-256/size/mtime,
+locked state, units enum `6`, and active combination. The durable receipt is
+[`etabs-excel-beam-w2c-installed-acceptance-transactional-evidence.json`](../verification/etabs-excel-beam-w2c-installed-acceptance-transactional-evidence.json).
+This passes W2C installed software workflow acceptance on the bounded copied
+model only; `HELD_NOT_SUPPORTED` and qualified-engineer review remain.

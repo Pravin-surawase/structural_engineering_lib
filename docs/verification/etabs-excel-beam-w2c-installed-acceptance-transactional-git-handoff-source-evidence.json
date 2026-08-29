@@ -1,0 +1,94 @@
+{
+  "remote": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T15:49:41Z",
+    "branch": "codex/etabs-excel-beam-w2c-installed-acceptance",
+    "matching_remote_heads": 1,
+    "head_sha": "eef506cbc5898cefc38431b704c5abb03e6ef546"
+  },
+  "pull_request": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T15:49:41Z",
+    "matching_pull_requests": 0,
+    "base": "main",
+    "head": "codex/etabs-excel-beam-w2c-installed-acceptance"
+  },
+  "review": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T15:49:41Z",
+    "reason_code": "WINDOWS_TRANSACTIONAL_CANDIDATE_REVIEW_PENDING",
+    "verdict": "MAC_REVIEW_PENDING"
+  },
+  "integration": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T15:49:41Z",
+    "base_head_sha": "ee50aaa3cad619b41c6153f5f7970553ef65248c",
+    "base_tree_sha": "c1a49958ea85a2c1ea9f399a3fa96b84b8118e76",
+    "pull_request": 897,
+    "reviewed_candidate_sha": "a88595a63ed4725e1bb3c3b897ba19680e4cace0",
+    "review_range": "origin/main...HEAD",
+    "first_branch_commit_not_base": "7566842192285e5f4fd0a2acbbd1fc05bc16ebc4",
+    "verdict": "PR_897_MERGED_REVIEWED_CANDIDATE_UNCHANGED_WINDOWS_CONTINUATION_PENDING_REVIEW"
+  },
+  "retention": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T15:49:41Z",
+    "decision": "RETAIN_PROTECTED_WINDOWS_MAIN_ALL_W2_WORKTREES_BRANCHES_AND_EXTERNAL_EVIDENCE",
+    "owner": "Windows acceptance sole writer until clean push; Mac owns review and integration afterward",
+    "holds": [
+      "PRESERVE_WINDOWS_PRIMARY_HOLD_MAIN",
+      "PRESERVE_PRIOR_WINDOWS_CAMPAIGN_HEAD_47176176",
+      "PRESERVE_PUSHED_RETRY_HEAD_75668421",
+      "PRESERVE_W2A_AND_PHASE_A_WORKTREES",
+      "PRESERVE_ALL_PRIOR_AND_CURRENT_EXTERNAL_EVIDENCE",
+      "NO_BRANCH_OR_WORKTREE_DELETION"
+    ]
+  },
+  "task_archive": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "reason_code": "CURRENT_ACCEPTANCE_TASK_REMAINS_ACTIVE_UNTIL_CLEAN_PUSH"
+  },
+  "authorization": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T15:49:41Z",
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "status": "OBSERVED",
+      "query_status": "OK",
+      "observed_at_utc": "2026-08-29T15:49:41Z",
+      "reference": "current-thread:complete-bounded-w2c-implementation-installed-retry-evidence-commit-and-push"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH"
+    ],
+    "prohibited_actions": [
+      "CREATE_OR_MERGE_PULL_REQUEST",
+      "CHANGE_MAIN",
+      "REWRITE_HISTORY",
+      "DELETE_BRANCH_WORKTREE_OR_EVIDENCE",
+      "RUN_ETABS_ANALYSIS_OR_DESIGN",
+      "UNLOCK_MUTATE_OR_SAVE_MODEL",
+      "START_W3_OR_REPAIR_NANOID",
+      "CLAIM_ENGINEERING_OR_CONSTRUCTION_APPROVAL"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "target_binding": {
+      "task_id": "ETABS-EXCEL-BEAM-W2C-INSTALLED-TRANSACTIONAL-ACCEPTANCE",
+      "branch": "codex/etabs-excel-beam-w2c-installed-acceptance",
+      "head_sha": "a894a83222715e36c71cb3283eb4943107b92517",
+      "review_base_sha": "ee50aaa3cad619b41c6153f5f7970553ef65248c",
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH"
+      ]
+    }
+  }
+}

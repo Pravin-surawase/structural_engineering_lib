@@ -12,13 +12,22 @@ tags: [excel, etabs, beams, windows, optimization, construction]
 ## Decision summary
 
 The bounded read-only Excel -> Python -> live ETABS W1 pilot is accepted on the
-installed Windows stack. W2A's read-only beam baseline/topology contract is
-merged through PR #896 at `0f5c918e...`; the Windows static signature audit and
-W2B transport/review surface are complete. W2C then proved the direct, REST,
-and installed Excel paths fail closed before force reads when the exact approved
-combination is present but inactive. This is positive blocker evidence, not an
-installed W2 baseline acceptance pass. No section optimization, model
-write-back, or W3+ work is authorized.
+installed Windows stack. W2A, the static signature audit, W2B transport/review,
+and the first W2C safe-hold campaign are integrated through PR #897 at exact
+`ee50aaa3...`. The continued Windows candidate repairs the remaining Excel
+transport boundary: typed literal cell values preserve `+`/`-`/`=` JSON
+prefixes, all seven controlled writes are transactional, blank cells and
+Excel's 15-significant-digit numeric round-trip are normalized explicitly, and
+readback verifies every cell plus the rejoined canonical JSON/hash.
+
+The fresh installed retry passed as bounded W2C **software workflow
+acceptance**. Direct service, source-bound REST, saved Excel tables, and the
+3,626,096-byte reconstructed JSON all reconcile to baseline SHA-256
+`d4c28586...`; model hash/size/mtime, lock, units, and the exact active
+combination remained unchanged. This is not professional structural or
+construction approval. Independent frame analysis remains
+`HELD_NOT_SUPPORTED`; optimization, model write-back, and W3+ work remain held
+pending Mac review and the explicit W2 close decision.
 
 The sequence is deliberate:
 
@@ -48,6 +57,7 @@ and seismic-response dependencies.
 | #894 | Added the one-branch/one-writer multi-device synchronization rule | `45ef7c29...` |
 | #895 | Closed W1 and froze the W2A/W2B/W2C next-phase contract | `a3f36cb4...` |
 | #896 | Merged the reviewed W2A baseline and unknown-story fail-closed repair | `0f5c918e...` |
+| #897 | Merged the cumulative reviewed W2 campaign and date-stable compatibility test repair unchanged | `ee50aaa3...` |
 
 The tracked W1 receipt is
 [`etabs-excel-python-pilot-w1-evidence.json`](../verification/etabs-excel-python-pilot-w1-evidence.json).
@@ -86,21 +96,21 @@ exact merge before creating the dedicated static-audit worktree and branch
 `codex/etabs-w2c-com-signature-audit`; neither protected `main` nor the retained
 W2A worktree was changed.
 
-The user has authorized one cumulative Windows W2 campaign after the static
-audit checkpoint. The transfer rule is now:
+The cumulative campaign and Mac integration are complete through PR #897. The
+first retry is frozen at `75668421...`; the continuation uses the dedicated
+branch `codex/etabs-excel-beam-w2c-installed-acceptance` from that exact pushed
+head. Its transfer rule is:
 
-1. Windows finishes, verifies, commits, and pushes the metadata-only static
-   audit branch as a durable checkpoint.
-2. Windows creates `codex/etabs-excel-beam-w2-campaign` from that exact pushed
-   audit head, remains its sole writer, and freezes/pushes W2B before any
-   installed W2C execution.
-3. W2C may start only when all static-audit preconditions pass against the
-   exact W2B checkpoint and the approved copied model. It remains read-only and
-   aborts before results if identity, freshness, topology, case/combination, or
-   unit restoration cannot be proved.
-4. Windows pushes the final clean campaign branch and stops writing. Mac then
-   performs one cumulative review, PR/check follow-up, and integration.
-5. Source moves only through GitHub; model/workbook/vendor bytes and detailed
+1. Windows re-proves source/runtime/model authority before application access;
+   the separately authorized one-time selection prerequisite is recorded in
+   its own hash-bound evidence and is not repeated by the acceptance workflow.
+2. Getter-verified result selection remains authoritative. Any later false
+   value still aborts before force, REST, or Excel work.
+3. Windows freezes safe evidence, validation, and one clean pushed branch, then
+   stops writing. Mac reviews the cumulative branch with
+   `git diff origin/main...HEAD`; `75668421...` is the first branch commit, not
+   the integration base. Mac alone owns PR/integration and the W2 close decision.
+4. Source moves only through GitHub; model/workbook/vendor bytes and detailed
    result payloads remain device-local and hash-bound.
 
 ## Windows host setup snapshot
@@ -159,6 +169,11 @@ output, and MSYS/Windows source-path normalization.
 | First W2B commit hook normalized six Office modules and rejected one untyped helper | The Windows LF policy covered `.js` but omitted the maintained `.mjs` extension, while focused mypy did not enable the full-project `no-untyped-def` rule | Added explicit `*.mjs text eol=lf`, retained the hook's safe normalization, and annotated the COM getter helper | Normal hooks and fresh Windows checkouts now enforce one LF representation and the same type rule as the full library hook |
 | First installed W2C extraction rejected every `Story.GetStories` array as one row too long | CSI defines `NumberStories` without `Base`, but every returned array includes a leading `Base` row and therefore has `NumberStories + 1` entries | Require that exact shape and sentinel, retain Base as explicit `STORY_BASE_NOT_A_STORY`, and build only the following story rows | Fake COM must reproduce the installed shape; W2C records safe live count/type/return-code evidence and aborts malformed arrays |
 | Approved W2C combination is present but inactive | Output selection is transient live-session state; the unchanged EDB and finished case statuses do not prove that a combination remains selected | Keep result-selection setters prohibited and stop before `FrameForce`; retain a blocked receipt rather than changing ETABS state | A future installed retry requires the approved exact combination to be active before Codex attaches, with the same model/source preflight repeated |
+| Owner confirmation said the exact combination was active, but the retry getter still returned inactive | **Unconfirmed:** transient ETABS output-selection state cannot be established by conversational confirmation, and the evidence does not prove why the expected UI state and API state differed | Treat the getter as authoritative, stop before request construction, perform no recheck loop or selection setter, and freeze file/process evidence | A later separately authorized attempt must have a human verify the exact output-selection UI immediately before attachment and must still abort on the first false getter |
+| Accepted direct and REST baselines had different hashes | The retained before/after `observed_at_utc` wall-clock instants varied between otherwise identical extractions | Keep both instants in full provenance but exclude only those two volatile fields from the canonical cross-transport hash basis; add a regression proving equal hashes with unequal observation times | Cross-transport identity still covers file hash/size/mtime/path, model/lock/units, runtime, topology, results, and dispositions; do not remove any stable evidence field |
+| Installed Excel wrote six W2 tables, then failed at `ETABS_W2_JSON` with `GeneralException` at `Range.values` | Four 15,000-character canonical chunks begin with `+` or `-`; the Office API interprets `+`, `-`, or `=`-prefixed `Range.values` strings as formulas | Write typed `valuesAsJson` cell values, verify rejoined text and SHA-256, and transactionally restore pre-existing controlled ranges or remove newly created sheets on any error | Office regressions cover `+`, `-`, `=` literals, seven-table success, and rollback of both new and pre-existing controlled outputs; installed Excel completed all seven tables |
+| Installed readback differed at blank and high-precision numeric cells | Typed empty strings round-trip as blank cells, and desktop Excel stores standard numeric cells at 15 significant digits | Normalize empty/undefined values to blank and structured numeric projections to Excel's 15-significant-digit representation; keep canonical JSON at full precision | Compare every saved structured cell to the normalized projection and separately require byte-exact full-precision JSON reconstruction/hash |
+| The laptop restarted during an earlier gate and ETABS later reopened at its start page | Application/session state is not durable across a host restart; the EDB hash does not retain the live result-selection state | Re-establish Git/process/source authority, require the approved copied model to be open again, and getter-check the exact result selection before forces | Treat every restart as a new installed preflight; never infer open-model or selection state from prior evidence |
 
 This ledger records software/tooling causes and controls. It does not upgrade
 software checks into engineering approval or authorize model mutation.
@@ -236,7 +251,7 @@ The versioned transport-neutral schemas are:
 | `etabs-beam-baseline-request/v1` | Authorized file identity, runtime/source provenance, unique explicit case/combination selections, and the 1 mm default orientation tolerance |
 | `etabs-beam-baseline-build-result/v1` | Either one accepted baseline with no issues or a blocked result with stable issues and no partial baseline |
 | `etabs-beam-baseline/v1` | Model/file/lock identity, restored units, stories, accepted frames, endpoint topology, every retained force station, exhaustive dispositions, runtime identity, getter-matrix hash, limitations, and frame-analysis verdict |
-| `etabs-beam-baseline-hash/v1` | Canonical sorted-key UTF-8 JSON SHA-256 over every baseline field except the digest field itself |
+| `etabs-beam-baseline-hash/v1` | Canonical sorted-key UTF-8 JSON SHA-256 over every stable baseline field except the digest and the two volatile before/after `observed_at_utc` instants; those instants remain in full baseline provenance |
 
 Stable story, member, connection, station, disposition-row, result-selection,
 getter-matrix, and whole-baseline identities are derived from canonical JSON and
@@ -365,8 +380,12 @@ The complete response limits are fixed and never truncate: 10,000 frames,
 25,000 connectivity rows, 50,000 force stations, 75,000 dispositions, 100,000
 projected Excel rows, and 25,000,000 UTF-8 bytes for the exact W2A hash-basis
 JSON. The JSON is split by 15,000 Unicode code points, keeping every Excel cell
-within its text limit even for surrogate pairs. Any limit breach rejects the
-whole response.
+within its text limit even for surrogate pairs. The installed retry proved a
+remaining Excel-specific hazard: arbitrary chunk boundaries can place `+`,
+`-`, or `=` first, and `Range.values` then interprets the chunk as a formula.
+Until a literal-text and rollback-safe repair is reviewed, the seven-table
+Excel path remains held even though the direct and REST transports reconcile.
+Any limit breach still rejects the whole response.
 
 Excel writes seven controlled V1 tables only: summary, stories, frames,
 connectivity, force stations, dispositions, and chunked canonical JSON. Story,
@@ -460,10 +479,11 @@ hidden inside W2.
 | W2A integration | Mac | Complete | PR #896 merged reviewed head `0972e1af...` as `0f5c918e...` |
 | Phase A installed signature audit | Windows | Complete and pushed at exact head `4841ab2a...` | Exact ETABS/type-library/comtypes identities, 19 operation verdicts, limitations, and W2C preflight/abort evidence |
 | Dev-only `nanoid` advisory | Mac maintenance lane | Open, non-production and separate from W2A | Reviewed lockfile-only or dependency update, frontend tests/lint/build, full npm audit and production-only audit |
-| W2B contract and implementation | Windows campaign, then Mac review | Complete and pushed at exact checkpoint `395f0618...` | Actual observer/orchestration/serialized COM-thread boundary, REST/Excel schemas, error and row limits, deterministic reconciliation, focused checks, quick gate, clean pushed checkpoint |
+| W2B contract and implementation | Windows campaign, then Mac review | Complete and integrated through PR #897 at `ee50aaa3...` | Actual observer/orchestration/serialized COM-thread boundary, REST/Excel schemas, error and row limits, deterministic reconciliation, focused checks, quick gate, clean pushed checkpoint |
 | W2C evidence plan | Windows campaign | Complete | Exact Phase B source, copied-model identity, finished cases, inactive approved combination, lock/units/state checks, tracked safe receipt, and hash-bound external evidence |
-| W2C installed acceptance | Windows campaign plus Mac integration review | **Held—not passed**; all safe work complete and cumulative Mac review found no essential W2 defect | Direct/REST/installed Excel reconcile on `RESULT_SELECTION_NOT_ACTIVE`; model/workbook bytes, lock, units, and zero force reads proved. Retry only after the cumulative PR integrates and in a separately authorized session where the exact approved combination is already active before Codex attaches |
-| W2 close decision | Mac | Not started | Review W2A-W2C evidence, document accepted limitations, decide whether W3 may begin; no automatic progression |
+| W2 campaign integration | Mac | Complete | PR #897 merged reviewed candidate `a88595a6...` unchanged as exact `ee50aaa3...`, tree `c1a49958...` |
+| W2C installed acceptance retry | Windows acceptance branch, then Mac review | **Software acceptance passed on the Windows candidate; review pending** | Exact combination active; direct/REST canonical bytes/hash/counts reconcile at `d4c28586...` with 3,502 stations and restored units. Saved Excel contains all seven exact tables, 242 literal JSON chunks, and byte/hash-exact reconstruction. Model identity/lock/units/selection remained exact; independent frame analysis and engineering approval remain held |
+| W2 close decision | Mac | Ready for review; not yet integrated | Review `origin/main...HEAD`, W2A-W2C evidence, transaction semantics, and accepted limitations; decide whether W3 may begin. No automatic progression |
 
 W2B resolved these previously held adapter boundaries:
 
@@ -534,17 +554,19 @@ structural-engineer review before engineering or construction use.
 
 ## Next efficient sequence
 
-1. Windows freezes the final safe receipt, validation, and clean campaign head,
-   pushes it, and stops writing the branch.
-2. Mac fetches and reviews the complete campaign cumulatively from exact
-   `origin/main`, including the static audit, W2B implementation, installed
-   `GetStories` repair, blocked-path receipt, and retained no-force boundary.
-3. Mac may open one cumulative PR after review. It must describe W2C as held,
-   not accepted, and must not advance W3 automatically.
-4. If the owner separately authorizes an installed retry, ETABS must already
-   have exact combination `117.(1.5DL+1.5LL)` active before Codex attaches.
-   Repeat source/runtime/model/hash/lock/unit/case/selection/topology preflight
-   and abort again on any drift or need for another setter.
+1. Windows freezes the transactional installed-acceptance evidence,
+   proportionate validation, and clean branch; pushes it without a PR; and stops
+   writing.
+2. Mac fetches the branch and reviews `origin/main...HEAD`. Verify that
+   `origin/main` is exact `ee50aaa3...`; treat `75668421...` only as the first
+   branch commit, never as the comparison base.
+3. Reproduce focused Office/Python checks and review literal preservation,
+   rollback of new and pre-existing controlled outputs, saved seven-table cell
+   equality, canonical JSON reconstruction, and model preservation.
+4. Mac may open one cumulative PR after review. W2C is accepted only as an
+   installed software workflow on this copied model; the W2 close decision must
+   preserve `HELD_NOT_SUPPORTED` and professional-review boundaries before any
+   W3 decision.
 5. The dev-only npm advisory and every W3+ phase remain separate work.
 
 ## Stop conditions
@@ -558,12 +580,15 @@ changes, or W2 would need setters beyond temporary unit selection.
 
 ```text
 On the Mac primary machine, fetch
-`origin/codex/etabs-excel-beam-w2-campaign` and review it cumulatively against
-exact `origin/main`. Verify the Phase A static audit, W2B observer/REST/Excel
-contract, installed `GetStories` Base-row repair, and W2C safe blocked receipt.
-Confirm direct/REST/Excel all stopped at `RESULT_SELECTION_NOT_ACTIVE` with no
-force read, no W2 table write, restored units, unchanged model/workbook bytes,
-and `HELD_NOT_SUPPORTED`. If satisfied, open one cumulative PR; do not call W2C
-an acceptance pass, start W3, change ETABS result selection, or mix the separate
-nanoid maintenance lane.
+`origin/codex/etabs-excel-beam-w2c-installed-acceptance`, verify
+`origin/main` is exact `ee50aaa3cad619b41c6153f5f7970553ef65248c`, and
+review with `git log --oneline origin/main..HEAD` plus
+`git diff --stat origin/main...HEAD`. Commit `75668421...` is the first branch
+commit, not the integration base. Reproduce the focused W2/Office checks and
+review the typed-literal/transaction repair. Confirm the Windows evidence shows
+direct, REST, all seven saved Excel tables, and 3,626,096 reconstructed JSON
+bytes reconcile to `d4c28586...` with 3,502 force stations while model
+hash/size/mtime, lock, units, and active selection remained exact. Open one
+cumulative PR only after review. Do not start W3 automatically, change the
+model, claim engineering approval, or mix the separate nanoid lane.
 ```

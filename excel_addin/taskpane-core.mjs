@@ -518,6 +518,7 @@ export function projectEtabsBaselineTables(transport) {
   ]];
   return {
     baselineSha256: baseline.baseline_sha256,
+    hashBasisJson: transport.baseline_hash_basis_json,
     projectedRows,
     tables: {
       summary: summaryRows,

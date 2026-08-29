@@ -49,8 +49,8 @@ The behavior is bound to Microsoft's maintained documentation for
 [application-specific API errors](https://learn.microsoft.com/en-us/office/dev/add-ins/testing/application-specific-api-error-handling),
 and
 [worksheet collection lookup](https://learn.microsoft.com/en-us/javascript/api/excel/excel.worksheetcollection).
-The manifest's ExcelApi 1.7 requirement is above the 1.4 requirement for
-`getItemOrNullObject()`.
+The manifest now requires ExcelApi 1.16 for typed W2 `valuesAsJson` writes; this
+is also above the 1.4 requirement for `getItemOrNullObject()`.
 
 ## Repair contract
 
