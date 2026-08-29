@@ -5,6 +5,376 @@
 
 ---
 
+## 2026-08-29 — Session: W2A Mac review repair and independent Windows next packet
+
+**Agent:** Codex (`reviewer`/`python-core`/`governance`, sole writer; no
+subagents).
+
+**Branch:** `codex/etabs-excel-beam-w2a-baseline`, fetched and source-bound at
+the exact Windows handoff head
+`9bd29fbeb2993985b6f4f5e0b5d680df1cb7c47e`, based on
+`origin/main` `a3f36cb460395eeda32f832963917983e9bc4dfb`.
+
+**Git handoff receipt:**
+`docs/verification/etabs-excel-beam-w2a-mac-review-git-handoff-receipt.json`
+
+**Focus:** Independently review the exact Windows W2A branch, repair the one
+confirmed outcome-changing story/topology defect, finish the normal Mac
+PR/integration path, and prepare one independent Windows COM-signature/W2C
+readiness packet that can run after merge without opening ETABS or Excel. No
+model, workbook, analysis, W2B surface, optimization, write-back, release, or
+engineering claim is changed.
+
+**Completed:**
+
+- Verified live GitHub/local identity, exact two-commit ancestry, full diff,
+  retained worktrees, open PRs, and the Windows-to-Mac writer transfer before
+  creating the dedicated source-bound Mac worktree.
+- Reproduced an accepted baseline containing frame story `MISSING` while the
+  exact story inventory contained only `L1` and `L2`; this violated the
+  W2A story/member topology contract.
+- Passed the frozen story-name set into frame extraction and now raise stable
+  `ETABS_FRAME_STORY_NOT_IN_INVENTORY` before constructing a frame whose
+  story is absent from `Story.GetStories`.
+- Added tuple/list fake-COM regressions proving the mismatch fails closed and
+  the original ETABS unit enum is restored.
+- Kept the W2A schema/hash basis, lock-state deferral, getter matrix,
+  `HELD_NOT_SUPPORTED` solver verdict, W2B/W2C boundaries, and all unrelated
+  Windows/runtime work unchanged.
+- Prepared the next independent Windows packet
+  `ETABS-EXCEL-BEAM-W2C-COM-SIGNATURE-AUDIT`: inspect installed ETABS 23.3.1
+  type-library/generated-wrapper signatures for the frozen getter matrix,
+  record exact evidence and W2C abort criteria, push one branch, and stop. It
+  must not launch ETABS, open a model/workbook, execute getters against a live
+  model, or begin W2C acceptance.
+
+### Issues encountered
+
+- Canonical `session begin` remained blocked by the historical unmatched
+  `EXCEL-ETABS-PYTHON-BRIDGE-PILOT` checkpoint.
+- The first focused regression run failed because the patch anchor inserted the
+  new test before the preceding deterministic-hash test's final assertion.
+- `session summary --write` refreshed the correct W2A handoff block but also
+  rewrote an unrelated historical MAINT-0136 summary.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the originating pilot device/session never recorded
+  reconstructable closeout timing. Resolution: preserve the existing
+  checkpoint, continue the directly related W2A repair, and record only live
+  evidence; no old timing was invented. ⚠️ TERMINAL ISSUE: `session begin`
+  rejected the known parent checkpoint -> continued the documented related
+  programme without creating a conflicting timer.
+- Confirmed root cause: the patch matched an intermediate hash assertion rather
+  than the end of that test, moving its final assertion into the new function.
+  Resolution: restore the assertion to its original test, keep the new
+  regression separate, and rerun the affected file successfully. Evidence:
+  W2A unit tests and Ruff pass after correction. ⚠️ TERMINAL ISSUE: first
+  focused run raised `NameError: tuple_result` -> corrected test placement.
+- Confirmed root cause: the summary generator selected an older session as its
+  commit-summary target while independently selecting the newest W2A entry for
+  the handoff projection. Resolution: retain the correct generated W2A handoff
+  block, restore the unrelated historical summary exactly, and validate the
+  final staged diff. ⚠️ TERMINAL ISSUE: handoff refresh touched an old session
+  summary -> reverted only that generated rewrite with an explicit patch.
+
+### Validation through content freeze
+
+- The affected six-file W2A/live-bridge/snapshot/gravity/governance/runtime
+  batch passes; targeted Ruff and MyPy pass.
+- Fresh documentation validation passes `8/8` with zero reuse, the maintained
+  brief remains within its 150-line bound, and `git diff --check` is clean.
+- The consolidated quick gate passes `10/10`; only unchanged repository-hygiene
+  and token-efficiency results were reused. Normal hooks, immutable candidate
+  review, and final read-only session validation remain the closeout sequence.
+
+---
+
+
+## 2026-08-29 — Session: W2A Mac-primary/Windows-evidence handoff
+
+**Agent:** Codex (`documentation`/`governance`, sole writer; no subagents).
+
+**Branch:** `codex/etabs-excel-beam-w2a-baseline`, continuing exact clean W2A
+candidate `c629e362b4b93c915422ba2c1a6fb1cf3d56dadd` from fetched
+`origin/main` `a3f36cb460395eeda32f832963917983e9bc4dfb`.
+
+**Git handoff receipt:**
+`docs/verification/etabs-excel-beam-w2a-machine-handoff-git-handoff-receipt.json`
+
+**Focus:** Make the W2A result, Windows setup, machine roles, root causes,
+solutions, remaining gaps, and exact next sequence durable for the Mac primary
+development machine. Repair the one newly reproduced Windows onboarding defect,
+then push only the task branch as the GitHub handoff. Do not update protected
+`main`, create/merge a PR, open ETABS/Excel, run analysis, mutate a model, begin
+W2B/W2C, or broaden engineering claims.
+
+**Completed:**
+
+- Fetched GitHub and verified authenticated account `Pravin-surawase`, remote
+  `main` `a3f36cb4...`, no W2A PR, no existing remote W2A branch, and a clean
+  local W2A head `c629e362...` before this successor work.
+- Reinspected both retained Windows worktrees. The W2A worktree is the only
+  writer lane. The Windows primary checkout is clean, a strict ancestor of
+  `origin/main`, and 846 commits behind; it remains an untouched `HOLD_MAIN`
+  lane rather than a normal development checkout.
+- Made the machine ownership explicit in the canonical Git workflow and ETABS
+  plan: Mac owns normal development, current-main integration, PR/check/merge
+  follow-up, and cross-platform review; Windows owns installed Excel/ETABS COM,
+  copied-model/workbook tests, device-only evidence, and only bounded
+  host-specific repairs. GitHub is the sole tracked-history transfer boundary.
+- Added the exact writer handoff: Windows commits/pushes and stops writing; Mac
+  fetches/verifies the advertised remote head, reviews in a clean worktree, and
+  becomes the sole writer. Windows later runs W2C only from an exact Mac-
+  accepted candidate/evidence worktree.
+- Recorded the verified Windows toolchain and controls: Git
+  `2.55.0.windows.3`, GitHub CLI `2.98.0`, `uv 0.12.7`, Node `24.19.0`, npm
+  `11.17.0`, Python `3.11.15`, `comtypes 1.4.16`, `pydantic 2.13.5`, FastAPI
+  `0.141.1`, NumPy `2.4.6`, pre-commit `4.6.2`, source-bound shared `.venv`,
+  UTF-8 child runtime, and LF byte controls under system `core.autocrlf=true`.
+- Preserved the recoverable `.venv-broken-20260829` directory and the deliberate
+  no-WSL/no-Docker decision. No cleanup, deletion, reinstall, or protected-lane
+  mutation was performed.
+- Added a source-backed root-cause/solution/future-control table for wrong
+  workspace, missing/broken toolchains, console encoding, Windows executable
+  suffixes, POSIX React syntax, CRLF hash drift, source-path comparison, W2A
+  temporal freshness, CLI authentication, and the remaining npm advisory.
+- Confirmed the npm high advisory is dev-only `nanoid 3.3.17` through
+  `postcss`/Vite; `npm audit --omit=dev` is clean. Kept its lockfile remediation
+  in a separate Mac maintenance candidate rather than mixing it into W2A.
+- Expanded the remaining W2 ledger with distinct Mac-owned W2A review, W2B
+  contract/implementation, Mac+Windows W2C evidence planning, installed W2C
+  execution, and W2 close-decision gates. W2B/W2C remain not started and frame
+  analysis remains `HELD_NOT_SUPPORTED`.
+- Repaired `agent_start.sh` so Windows/MSYS and Python source paths are
+  canonicalized before comparison; the correct linked W2A source now passes
+  while the fail-closed shadowing check remains active.
+
+### Issues encountered
+
+- Canonical `session begin` recorded the task usage start but stopped during
+  onboarding with `Python source shadowing detected`, while
+  `python_runtime.sh --diagnose` proved the module was correctly bound to this
+  exact worktree.
+- The W2A branch existed only locally after the first candidate, so the Mac
+  could not fetch or review any of the Windows work despite complete local
+  documentation.
+- The Windows primary checkout was clean but 846 commits behind current
+  `origin/main`, demonstrating again that cleanliness does not mean freshness.
+- This already-running desktop process did not inherit all newly persisted
+  `PATH` entries, although a process built from the user `PATH` resolved every
+  installed tool correctly.
+- `npm audit` reports one high advisory, while its production-only audit reports
+  zero vulnerabilities.
+- The first documentation-category command used the positional form
+  `run.sh check docs`, which the current consolidated checker does not accept.
+- The first two commit attempts ran all semantic hooks successfully but the
+  mixed-line-ending hook first normalized `agent_start.sh`, then normalized the
+  attributes file itself once its new self-LF rule was introduced. Both
+  attempts correctly stopped before creating a commit.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `agent_start.sh` compared Git Bash/MSYS
+  `$PROJECT_ROOT` with a Windows `pathlib` source string. Replacing backslashes
+  alone was insufficient because `/c/...` and `C:/...` still differed.
+  Resolution: canonicalize both values with `cygpath -m` on
+  MINGW/MSYS/Cygwin, keep separator normalization elsewhere, add a governance
+  regression, and rerun real Windows onboarding successfully. ⚠️ TERMINAL
+  ISSUE: canonical session start falsely rejected correct source binding ->
+  repaired path canonicalization and proved `Python source binding: current
+  worktree`.
+- Confirmed root cause: the earlier requirement was explicitly one clean local
+  candidate, so no remote branch/PR was created. Resolution: this user-requested
+  cross-machine handoff now authorizes pushing only the completed task branch;
+  Windows stops writing after push and Mac verifies the remote head before use.
+- Confirmed root cause: Git fetch updates remote-tracking refs but never moves a
+  checked-out local `main`; the Windows primary is intentionally not the
+  programme's main development lane. Resolution: preserve it as `HOLD_MAIN` and
+  use exact fetched task/evidence worktrees on Windows; Mac remains the primary
+  development/integration owner.
+- Confirmed root cause: environment changes cannot update the parent process of
+  an already-running desktop task. Resolution: document a fresh-terminal/Codex
+  restart after machine setup and continue using explicit maintained launchers
+  in the current process. ⚠️ TERMINAL ISSUE: short tool names were absent from
+  the inherited process `PATH` -> user-PATH reconstruction proved the installed
+  commands; fresh processes inherit it normally.
+- Confirmed root cause: `nanoid` is a transitive development dependency below
+  its fixed patch, not an installed ETABS/Excel runtime dependency. Resolution:
+  document the exact chain and require a separate reviewed dependency update
+  with frontend test/build/audit evidence; do not silently rewrite W2A's lock.
+- Confirmed root cause: the maintained checker exposes categories only through
+  `--category`. Resolution: rerun the unchanged documentation set with
+  `run.sh check --category docs --no-reuse`; all eight checks pass fresh.
+  ⚠️ TERMINAL ISSUE: positional `check docs` was rejected before validation ->
+  used the checker-advertised category option and changed no content to obtain
+  the result.
+- Confirmed root cause: system `core.autocrlf=true` applied to shell scripts
+  because `.gitattributes` protected many source/fixture formats but not
+  `*.sh` or the attributes file itself. Resolution: add explicit LF rules for
+  `.gitattributes` and `*.sh`, retain each hook-normalized working byte stream,
+  refresh the exact receipt, and retry normal hooks. The one-time self-file
+  normalization is expected before its newly staged rule governs future
+  checkouts. ⚠️ TERMINAL ISSUE: commit attempts stopped after line-ending
+  normalization -> made LF checkout policy durable; no hook was bypassed and no
+  failed candidate commit exists.
+
+### Validation through content freeze
+
+- Live GitHub/user/repository/main/PR queries, fetched Git state, worktree
+  inventory, ancestry, and changed-path inspection are exact and read-only.
+- Windows tool/version/import, environment-variable, Git attribute, and common
+  pre-commit-hook probes pass. Production-only npm audit is clean; the one
+  dev-only advisory is explicitly retained in the remaining-work ledger.
+- Updated governance/release-environment tests pass together (`87 passed`), and real
+  `scripts/agent_start.sh --quick` completes with current-worktree source
+  binding instead of the reproduced false rejection.
+- Fresh documentation category passes `8/8` with zero reuse, including links,
+  metadata/version checks, task/brief controls, and context/control registries.
+- The documentation/setup successor remains subject to the focused
+  documentation/runtime checks, one consolidated quick gate, normal hooks,
+  clean candidate/session validation, exact remote push, and post-push remote
+  head verification. No installed ETABS/Excel or proprietary evidence was used.
+
+---
+
+## 2026-08-29 — Session: ETABS/Excel beam W2A baseline contract and Windows setup
+
+**Agent:** Codex (`orchestrator`/`python-core`/`documentation`, sole writer; no
+subagents).
+
+**Branch:** `codex/etabs-excel-beam-w2a-baseline` from fetched `origin/main`
+`a3f36cb460395eeda32f832963917983e9bc4dfb`; protected `main` remained an
+untouched `HOLD_MAIN` lane.
+
+**Git handoff receipt:**
+`docs/verification/etabs-excel-beam-w2a-baseline-git-handoff-receipt.json`
+
+**Focus:** First make the Windows host maintainably ready for this and future
+work, verify the reconnected GitHub CLI account, then implement W2A only: a
+local, transport-neutral, read-only ETABS beam/model/topology/result baseline.
+W2B REST/Excel work, W2C installed execution, ETABS/Excel opening, analysis,
+model mutation, design, optimization, write-back, and engineering approval all
+remain outside scope.
+
+**Completed:**
+
+- Installed and verified Git for Windows, GitHub CLI, `uv`, Node 24/npm, and an
+  `uv`-managed Python 3.11 runtime. Replaced the unusable Store-Python virtual
+  environment with a complete primary `.venv`; the previous directory remains
+  recoverably retained as `.venv-broken-20260829`.
+- Persisted the repository Python selector and UTF-8 mode for this user,
+  installed the full Python extras needed by the maintained workflows, and
+  installed the normal pre-commit hook without changing protected `main`.
+- Repaired the maintained launchers for Windows `.venv/Scripts/python.exe`,
+  `node.exe`, and `npm.cmd`; made the React production build cross-platform;
+  and froze `.e2k`/`.xml` fixture checkout bytes to LF so their tracked hashes
+  remain deterministic under `core.autocrlf=true`.
+- Authenticated GitHub CLI through the official browser/device flow and verified
+  active account `Pravin-surawase`, HTTPS Git protocol, required scopes,
+  repository access, exact remote main `a3f36cb4...`, and no existing W2A PR.
+  No credential value was written to tracked files or logs.
+- Added `etabs_beam_baseline.py` with versioned immutable request/build/baseline
+  schemas, canonical SHA-256 identities, source/runtime provenance, a frozen
+  18-getter matrix, exact tuple/list decoding, trailing return-code and array-
+  length checks, and a read-only pre/post model-file observation contract.
+- Added exhaustive story/frame/topology/result dispositions. Accepted frames
+  preserve stable source identity, endpoints, direction/local-axis rotation,
+  story, rectangular section dimensions, auto-select label, and material-
+  property label. Connectivity uses only shared ETABS point identities.
+  Unsupported orientation, advanced axes, and sections are explicit exclusions;
+  a retained beam connected to an excluded frame blocks incomplete topology.
+- Required explicit already-active result cases/combinations and retained every
+  selected `FrameForce` station with signed actions, step/station provenance,
+  source row identity, and deterministic hash. Unrequested rows are explicitly
+  excluded and missing/unfinished/empty requested results block the baseline.
+- Limited mutation to temporary `SetPresentUnits(kN_mm_C=5)`, checked its return
+  code, restored the original unit enum on successful and failed reads, and
+  attempted restoration even when normalization itself reported failure.
+- Preserved the frame-analysis verdict as `HELD_NOT_SUPPORTED`, grounded in the
+  existing closed-form gravity workflows and the absence of an accepted
+  stiffness/frame solver. Updated the canonical next-phase plan, task board,
+  and next-session brief; W2B and W2C remain unstarted.
+
+### Issues encountered
+
+- The assigned initial directory was an empty no-commit Git repository, while
+  the actual project and protected checkout were elsewhere on the Windows host.
+- Bash, Git, GitHub CLI, `uv`, Node, and a usable Python 3.11 were absent from
+  the initial process environment; the retained `.venv` pointed to unavailable
+  Windows Store Python aliases.
+- A Python setup command failed when the default Windows `cp1252` console could
+  not encode Unicode output.
+- The shared Node selector looked only for extensionless `node`/`npm`, and the
+  React build used a POSIX-only inline `NODE_OPTIONS` assignment.
+- Git's Windows checkout conversion changed E2K/XML fixture bytes from LF to
+  CRLF, breaking exact snapshot digests despite unchanged logical text.
+- The first W2A draft accepted a preassembled before/after file-evidence object,
+  which did not prove that the observations actually bracketed the COM read.
+- The repository still records the historical unmatched parent-pilot usage
+  checkpoint; no old duration can be reconstructed honestly.
+- `npm audit` reports one high-severity transitive frontend advisory. No
+  unrelated lockfile mutation or automated force fix was authorized in W2A.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the desktop task opened a different retained workspace
+  root, not the source checkout named in the handoff. Resolution: located the
+  exact repository read-only, fetched GitHub, inspected worktrees/overlap, and
+  created this fresh worktree from `origin/main`; protected `main` was not
+  switched or changed. ⚠️ TERMINAL ISSUE: initial cwd had no project commit ->
+  resolved and used the exact retained W2A worktree.
+- Confirmed root cause: this was a newly prepared Windows host with stale Store
+  aliases and an environment created on another runtime. Resolution: installed
+  maintained toolchains with Windows Package Manager, created the canonical
+  Python 3.11 environment with `uv`, and verified source binding to the invoking
+  worktree. ⚠️ TERMINAL ISSUE: project Bash/Python launchers were initially
+  unavailable -> installed the required runtimes and used explicit Git Bash for
+  this already-running process.
+- Confirmed root cause: the console inherited the legacy Windows code page, and
+  the already-running desktop process did not inherit the newly persisted user
+  variable. Resolution: persisted `PYTHONUTF8=1`, made the maintained Python
+  launcher default child runtimes to UTF-8, and reran the exact command
+  successfully. ⚠️ TERMINAL ISSUE: `cp1252` Unicode encoding failure, including
+  the first quick-gate launch before any check ran -> UTF-8 mode restored
+  deterministic command output.
+- Confirmed root cause: POSIX executable names and environment-assignment syntax
+  had been assumed by shared runtime code. Resolution: resolve commands with
+  `shutil.which`, execute the resolved binary, use explicit Node memory flags,
+  and add platform-focused regressions. ⚠️ TERMINAL ISSUE: Node selection and
+  frontend build failed on normal Windows suffixes/syntax -> repaired the shared
+  launch paths and production build command.
+- Confirmed root cause: `.gitattributes` covered byte-frozen CSV/HTML fixtures
+  but not E2K/XML. Resolution: add explicit LF attributes, restore exact tracked
+  bytes, prove worktree and index blob hashes match, and retain no fixture diff.
+  ⚠️ TERMINAL ISSUE: snapshot tests reported digest drift -> corrected checkout
+  normalization rather than weakening or regenerating expected hashes.
+- Confirmed root cause: request-time post-read evidence is temporally incapable
+  of proving a later extraction. Resolution: require a supplied read-only
+  observer that is invoked immediately before and after COM reads, authorize the
+  first exact identity, restore units before the second observation, and fail on
+  any path/hash/size/timestamp change or reversed observation order.
+- Confirmed root cause: the historical pilot timer belongs to its originating
+  device/session. Resolution: preserve the documented unmatched checkpoint and
+  record only this task's observable usage; no historical timing was invented.
+
+### Validation through content freeze
+
+- Runtime diagnosis reports the primary Windows Python 3.11 environment,
+  current W2A module root, and `source_bound=true`; structural-library,
+  `comtypes`, FastAPI, and NumPy smoke imports pass.
+- Windows runtime/governance regressions, the W2A contract, existing live bridge,
+  ETABS snapshot, and gravity workflow pass together: `139 passed` across six
+  focused files. Ruff and Black pass for affected Python files; MyPy passes for
+  the new service.
+- React ESLint passes; Vitest passes all 52 files/283 tests; the cross-platform
+  production build succeeds on Node 24.
+- The content-frozen candidate remains subject to the one required consolidated
+  quick gate before commit and the normal clean-candidate session validation.
+  No W2A test opened ETABS/Excel, read a proprietary `.edb`, or used Windows COM.
+
+---
+
 ## 2026-08-29 — Session: ETABS/Excel W1 day close and W2A plan
 
 **Agent:** Codex (`orchestrator`/`documentation`, sole writer; no subagents).

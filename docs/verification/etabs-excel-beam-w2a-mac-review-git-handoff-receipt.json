@@ -1,0 +1,127 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "bb7129e98d1e5fdb60d3674c4a758de0e7bd2ee40d7deda7d03de782120525e6",
+    "state": {
+      "branch": "codex/etabs-excel-beam-w2a-baseline",
+      "default_base": {
+        "ahead": 2,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "a3f36cb460395eeda32f832963917983e9bc4dfb",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 100.346,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib14",
+      "head_sha": "9bd29fbeb2993985b6f4f5e0b5d680df1cb7c47e",
+      "hold_reasons": [
+        "changed paths: 7"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-29T07:30:10.612725+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/w2a-mac/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 7,
+        "modified_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/planning/next-session-brief.md"
+        ],
+        "staged_paths": [
+          "Python/structural_lib/services/etabs_beam_baseline.py",
+          "Python/tests/unit/test_etabs_beam_baseline.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/WORKLOG.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/etabs-excel-beam-w2a-mac-review-git-handoff-receipt.json"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/codex/etabs-excel-beam-w2a-baseline",
+        "sha": "9bd29fbeb2993985b6f4f5e0b5d680df1cb7c47e",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/w2a-mac/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:bb7129e98d1e5fdb60d3674c4a758de0e7bd2ee40d7deda7d03de782120525e6",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-29T07:30:10.612859+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "fastapi_app",
+      "excel_addin"
+    ],
+    "integration_owner": "main-agent",
+    "owned_paths": [
+      "Python/structural_lib/services/etabs_beam_baseline.py",
+      "Python/tests/unit/test_etabs_beam_baseline.py"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/WORKLOG.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "ETABS-EXCEL-BEAM-W2A-MAC-REPAIR"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

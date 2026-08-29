@@ -11,6 +11,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+export PYTHONUTF8="${PYTHONUTF8:-1}"
 
 if [[ "${1:-}" == "--diagnose" ]]; then
     export STRUCTURAL_LIB_RUNTIME_REPO_ROOT="$REPO_ROOT"
@@ -72,17 +73,20 @@ if [[ -n "${STRUCTURAL_LIB_PYTHON:-}" ]]; then
 fi
 
 run_python_candidate "$REPO_ROOT/.venv/bin/python" "$@"
+run_python_candidate "$REPO_ROOT/.venv/Scripts/python.exe" "$@"
 
 git_common_dir="$(git -C "$REPO_ROOT" rev-parse --path-format=absolute --git-common-dir 2>/dev/null || true)"
 if [[ -n "$git_common_dir" ]]; then
     primary_worktree="$(dirname "$git_common_dir")"
     if [[ "$primary_worktree" != "$REPO_ROOT" ]]; then
         run_python_candidate "$primary_worktree/.venv/bin/python" "$@"
+        run_python_candidate "$primary_worktree/.venv/Scripts/python.exe" "$@"
     fi
 fi
 
 if [[ -n "${VIRTUAL_ENV:-}" ]]; then
     run_python_candidate "$VIRTUAL_ENV/bin/python" "$@"
+    run_python_candidate "$VIRTUAL_ENV/Scripts/python.exe" "$@"
 fi
 
 echo "ERROR: No project Python interpreter found." >&2

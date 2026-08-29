@@ -61,6 +61,98 @@ The proprietary model path, force payloads, workbook contents, and external
 evidence remain on the Windows evidence host and are referenced only by hashes
 in Git.
 
+## Machine roles and exact W2A handoff
+
+The machine roles are now explicit:
+
+| Machine | Role | Normal work | Held work |
+|---|---|---|---|
+| **Mac** | Primary development and integration machine | Planning, normal Python/FastAPI/React/Excel source work, cross-platform tests, candidate review, PR/check follow-up, merge verification, and current `main` ownership | It cannot supply installed ETABS/Excel COM evidence and must not claim that fake-COM tests are installed acceptance |
+| **Windows** | Installed Excel/ETABS testing and evidence machine | Exact copied-model/workbook runs, COM/API behavior, direct-vs-Excel reconciliation, device-safe receipts, and only the bounded host-specific repairs needed to make those tests trustworthy | It does not own normal `main`, general feature development, merge decisions, or unreviewed application/model mutation |
+| **GitHub** | Shared tracked-history authority | Task branches, PR review, checks, merge history, and exact writer-device handoff | It does not contain proprietary models/workbooks, credentials, or unapproved external evidence |
+
+The Windows primary checkout is a clean but deliberately protected
+`HOLD_MAIN` lane and was observed behind fetched `origin/main`. That is not a
+request to update or develop on it. Windows W2A work was correctly created in a
+separate worktree from exact `origin/main` `a3f36cb460395eeda32f832963917983e9bc4dfb`.
+The first immutable W2A implementation candidate is
+`c629e362b4b93c915422ba2c1a6fb1cf3d56dadd` on
+`codex/etabs-excel-beam-w2a-baseline`. The documentation/setup closeout may add
+a successor commit on that same branch; therefore the Mac must fetch the remote
+branch and verify its final advertised head rather than treating `c629e362` as
+the final handoff head.
+
+The transfer rule is:
+
+1. Windows finishes, verifies, commits, and pushes the exact W2A task branch.
+2. Windows stops writing that branch and states that writer ownership transfers
+   to the Mac.
+3. The Mac fetches GitHub, verifies the branch head/base and clean worktree,
+   reviews the full `origin/main...origin/codex/etabs-excel-beam-w2a-baseline`
+   diff, and reruns proportionate cross-platform checks.
+4. The Mac owns any review repair, PR creation, hosted-check follow-up, and
+   integration. Windows stays read-only unless the Mac explicitly returns the
+   branch for a bounded installed-host repair.
+5. After W2B has a Mac-reviewed candidate, Windows creates or uses a dedicated
+   exact evidence worktree for W2C. It does not copy tracked source through
+   OneDrive/SMB and does not use its stale protected `main` as evidence.
+
+## Windows host setup snapshot
+
+The W2A preparation established and verified this development/evidence
+toolchain on Windows:
+
+| Component | Observed version/state |
+|---|---|
+| Git for Windows | `2.55.0.windows.3`; Git Bash available |
+| GitHub CLI | `2.98.0`; authenticated as `Pravin-surawase`; HTTPS repository access verified |
+| `uv` | `0.12.7` |
+| Node/npm | Node `24.19.0`; npm `11.17.0` |
+| Python | `3.11.15` in the primary checkout `.venv` |
+| Key Python runtime | `comtypes 1.4.16`, `pydantic 2.13.5`, `fastapi 0.141.1`, `numpy 2.4.6` |
+| Hooks | `pre-commit 4.6.2` installed in the shared Git common hooks directory |
+| Source binding | Linked-worktree launcher imports the invoking W2A source and reports `source_bound=true` |
+| User runtime controls | `STRUCTURAL_LIB_PYTHON` points to the primary `.venv` interpreter; `PYTHONUTF8=1` |
+| Checkout normalization | System Git has `core.autocrlf=true`; tracked E2K/XML/CSV/JSON/Python/docs and shell scripts are protected by explicit LF attributes where byte identity/execution matters |
+
+The previous unusable virtual environment is recoverably retained as
+`.venv-broken-20260829`; it was not deleted. WSL and Docker were not installed
+because W2A/W2C do not require them, and adding a heavyweight restart/licensing
+surface would not improve ETABS/Excel evidence.
+
+Use these host checks from the exact task worktree before future Windows
+evidence:
+
+```bash
+./scripts/python_runtime.sh --diagnose
+./scripts/python_runtime.sh scripts/node_runtime.py --show-runtime
+./scripts/agent_start.sh --quick
+gh api user --jq .login
+git status --short --branch
+```
+
+Open a fresh terminal/Codex process after machine-level installation so it
+inherits the updated user `PATH`. The maintained launchers remain authoritative
+and now handle Windows virtual-environment paths, executable suffixes, UTF-8
+output, and MSYS/Windows source-path normalization.
+
+## Root-cause and solution ledger
+
+| Symptom | Root cause | Implemented solution | Future control |
+|---|---|---|---|
+| Initial task opened in an empty no-commit workspace | Desktop task root was not the retained source repository | Located the exact repository read-only, fetched GitHub, inspected all worktrees, and created a separate W2A worktree from `origin/main` | Always prove repository root, branch, worktrees, and fetched base before edits |
+| Project Python/Bash/tooling unavailable | New Windows host had missing CLI tools, Store-Python aliases, and an unusable inherited `.venv` | Installed maintained Git/GitHub/uv/Node/Python toolchains and rebuilt the canonical primary `.venv` with required extras | Use only repository launchers; diagnose source binding before evidence |
+| Unicode commands crashed under `cp1252` | Existing desktop process inherited the legacy Windows console encoding | Persisted `PYTHONUTF8=1` and made `python_runtime.sh` default child Python to UTF-8 | Status symbols and JSON output must work in a fresh and already-running Windows shell |
+| Node runtime and React build failed on Windows | Shared code assumed extensionless `node`/`npm` and POSIX inline environment assignment | Resolve executables with `shutil.which`; invoke explicit Node memory flags for TypeScript/Vite | Runtime tests cover `.exe`/`.cmd`; production build must pass on Windows |
+| Frozen ETABS snapshot hashes changed and shell hooks rewrote `.sh` files | System `core.autocrlf=true` converted formats that lacked explicit checkout policy | Added LF attributes for E2K/XML, `.gitattributes`, and shell scripts; restored exact index-equal bytes | Never regenerate expected hashes to hide checkout conversion; compare blob/worktree hashes and require shell scripts to remain LF |
+| Correct linked-worktree source was rejected as shadowing | Git Bash/MSYS and Windows Python returned equivalent paths with different drive/separator forms | `agent_start.sh` canonicalizes both paths with `cygpath -m` on Windows before comparison | `agent_start.sh --quick` and governance regression must prove `Python source binding: current worktree` |
+| First W2A freshness draft could not prove temporal order | It accepted a preassembled “after” observation before the COM read occurred | Adapter now calls a supplied read-only file observer immediately before and after COM extraction and checks path/hash/size/timestamp/order | W2B must supply the actual observer; W2C must reconcile its evidence with external file hashes |
+| Windows CLI auth was uncertain after account reconnection | GitHub CLI credential state had changed outside the repository | Completed official browser/device authentication and verified the exact user/repository/main queries | Recheck `gh api user` and repository access before push/PR; never log the token |
+| npm reports one high advisory | Dev-only `nanoid 3.3.17` arrives transitively through `postcss`/Vite and is below fixed `3.3.18`; production-only audit is clean | Recorded but did not mix an unrelated lockfile rewrite into W2A | Resolve in a separate dependency-maintenance candidate, run frontend tests/build/audit, and review the exact lockfile diff |
+
+This ledger records software/tooling causes and controls. It does not upgrade
+software checks into engineering approval or authorize model mutation.
+
 ## Architecture and VBA decision
 
 Keep the accepted route:
@@ -115,6 +207,93 @@ W2 is split to keep each candidate reviewable:
 | **W2A — contract and adapter feasibility** | Exact schemas, ETABS getter inventory, topology/disposition rules, source identities, fake-COM shapes, frame-solver verdict | Local Python contract and focused tests; no REST/Excel/Windows run |
 | **W2B — transport and review surface** | Live-bridge orchestration, FastAPI contract, controlled Excel tables, reconciliation and collision guards | Local focused checks and one immutable candidate |
 | **W2C — installed Windows acceptance** | Exact copied model, direct API/Excel reconciliation, state/hash/unit proof | Tracked safe receipt plus external hash-bound evidence |
+
+### W2A frozen local contract
+
+W2A is implemented locally in
+`Python/structural_lib/services/etabs_beam_baseline.py`. It accepts an already
+supplied `SapModel`-shaped object and a caller-owned read-only model-file
+observer. It does not connect to or launch ETABS. The observer is called before
+and after the COM reads; the open-model path must equal the authorized absolute
+`.edb` path, and path, SHA-256, byte count, and modified timestamp must remain
+identical across both observations. The post-read observation cannot precede
+the pre-read observation.
+
+The versioned transport-neutral schemas are:
+
+| Schema | Frozen responsibility |
+|---|---|
+| `etabs-beam-baseline-request/v1` | Authorized file identity, runtime/source provenance, unique explicit case/combination selections, and the 1 mm default orientation tolerance |
+| `etabs-beam-baseline-build-result/v1` | Either one accepted baseline with no issues or a blocked result with stable issues and no partial baseline |
+| `etabs-beam-baseline/v1` | Model/file/lock identity, restored units, stories, accepted frames, endpoint topology, every retained force station, exhaustive dispositions, runtime identity, getter-matrix hash, limitations, and frame-analysis verdict |
+| `etabs-beam-baseline-hash/v1` | Canonical sorted-key UTF-8 JSON SHA-256 over every baseline field except the digest field itself |
+
+Stable story, member, connection, station, disposition-row, result-selection,
+getter-matrix, and whole-baseline identities are derived from canonical JSON and
+SHA-256. A member identity binds the exact source unique name to the authorized
+model digest. Runtime provenance keeps the adapter version, library version and
+content identity, Python version, platform, and COM provider identity.
+
+The exact getter matrix accepts both tuple- and list-shaped fake/live-COM
+outputs and requires a trailing zero return code unless marked as a direct
+value:
+
+| Area | Frozen getters |
+|---|---|
+| Model | `GetModelFilename(True)`, `GetVersion()`, `GetModelIsLocked()`, `GetPresentUnits()` |
+| Stories | `Story.GetStories()` |
+| Frames and points | `FrameObj.GetNameList()`, `GetLabelFromName(Name)`, `GetPoints(Name)`, `GetSection(Name)`, `GetLocalAxes(Name)`, `PointObj.GetCoordCartesian(Name)` |
+| Sections | `PropFrame.GetRectangle(Name)` |
+| Result identity/status | `LoadCases.GetNameList()`, `RespCombo.GetNameList()`, `Analyze.GetCaseStatus()`, `Results.Setup.GetCaseSelectedForOutput(Name)`, `GetComboSelectedForOutput(Name)` |
+| Force rows | `Results.FrameForce(Name, ItemTypeElm=0)` with all 14 outputs and every declared array length checked |
+
+W2A does not call either output-selection setter. The only setter is temporary
+`SetPresentUnits(kN_mm_C=5)`. Its return code is checked, the original unit enum
+is restored after success or failure, and even a reported normalization failure
+triggers a restoration attempt before the error propagates.
+
+Accepted topology is endpoint-exact: horizontal members within tolerance are
+beams, vertical members within tolerance are columns, and only shared ETABS
+point names establish `BEAM_TO_BEAM` or `BEAM_TO_COLUMN` connectivity. No
+coordinate-proximity, support, slab, material-grade, reinforcement, or design-
+basis inference is permitted. Rectangular members retain labels, stories,
+endpoints, normalized line direction, length, rotation, advanced-axis flag,
+section dimensions, auto-select label, and material-property label. Diagonal
+members, unavailable/non-rectangular sections, and frames with advanced local
+axes are explicitly excluded; a retained beam connected to any excluded frame
+blocks the baseline because the topology would be incomplete.
+
+The frozen disposition reason codes are:
+
+- accepted: `STORY_ACCEPTED`, `FRAME_ACCEPTED_BEAM`,
+  `FRAME_ACCEPTED_COLUMN`, `CONNECTIVITY_ACCEPTED_BEAM_TO_BEAM`,
+  `CONNECTIVITY_ACCEPTED_BEAM_TO_COLUMN`, `RESULT_SELECTION_ACCEPTED`, and
+  `RESULT_STATION_ACCEPTED`;
+- excluded: `FRAME_ORIENTATION_UNSUPPORTED`,
+  `FRAME_ADVANCED_LOCAL_AXES_UNSUPPORTED`,
+  `SECTION_NOT_RECTANGULAR_OR_UNAVAILABLE`,
+  `NO_FRAME_ENDPOINT_CONNECTION`, and `RESULT_SELECTION_NOT_REQUESTED`; and
+- blocked: `CONNECTED_FRAME_EXCLUDED`, `RESULT_SELECTION_NOT_AVAILABLE`,
+  `RESULT_SELECTION_NOT_ACTIVE`, `RESULT_CASE_NOT_FINISHED`,
+  `RESULT_SELECTION_EMPTY_FOR_BEAM`, and `BEAM_INVENTORY_EMPTY`.
+
+An explicit case must exist, already be selected for output, and have finished
+status code 4. An explicit combination must exist and already be selected;
+every accepted beam must then return at least one row for it. Every
+`FrameForce` row is length-checked and retained or dispositioned. Retained rows
+preserve object/element names and stations, case/combination identity, step
+type/number, signed `P`, `V2`, `V3`, `T`, `M2`, and `M3`, source row index, and
+stable station identity. Moment/torsion units are normalized from kN-mm to
+kN.m.
+
+The independent-analysis audit remains exactly `HELD_NOT_SUPPORTED`:
+`gravity_workflow` and `gravity_loads` are documented closed-form gravity
+paths, serviceability defers continuous behavior to frame analysis, and no
+accepted stiffness/frame solver exists. W2A adds no solver or parity claim.
+Focused tuple/list, getter/return-code, topology/disposition, result-completeness,
+file-freshness, deterministic-hash, JSON round-trip, and unit-restoration tests
+live in `Python/tests/unit/test_etabs_beam_baseline.py`. W2B REST/Excel work and
+W2C installed execution remain unstarted.
 
 ### Required read-only inventory
 
@@ -183,6 +362,36 @@ hidden inside W2.
 - claiming a general 2D/3D frame solver; or
 - professional or construction-use approval.
 
+### Remaining W2 ledger
+
+| Gate | Owner machine | Status | Required exit evidence |
+|---|---|---|---|
+| W2A remote handoff | Windows, then Mac | In progress until the final task branch is pushed and writer ownership transfers | Exact remote branch/head, clean Windows source tree, no W2A PR assumed |
+| W2A independent review/integration | Mac | Not started | Fresh fetch, exact base/head/diff review, focused cross-platform checks, accepted/repair decision, normal PR/check/merge evidence |
+| Dev-only `nanoid` advisory | Mac maintenance lane | Open, non-production and separate from W2A | Reviewed lockfile-only or dependency update, frontend tests/lint/build, full npm audit and production-only audit |
+| W2B contract freeze | Mac | Not started | Actual file-observer ownership, live-bridge orchestration, COM-thread boundary, REST schemas/error mapping, Excel table/row identities, collision and reconciliation rules, row-volume limits, explicit non-goals |
+| W2B implementation | Mac | Not started | Transport/review surfaces, focused Python/FastAPI/React/Excel tests, deterministic direct-API/Excel projection proof, one immutable candidate |
+| W2C evidence plan | Mac plus Windows evidence owner | Not started | Exact candidate, copied-model allowlist/hash, workbook/output identities, result selections, lock/units/state checks, abort conditions, safe external evidence locations |
+| W2C installed acceptance | Windows | Not started | Direct API and Excel reconciliation, every retained row, pre/post model hash-size-time-lock-units proof, no analysis/save/mutation, tracked safe receipt |
+| W2 close decision | Mac | Not started | Review W2A-W2C evidence, document accepted limitations, decide whether W3 may begin; no automatic progression |
+
+W2B design must explicitly resolve these currently held adapter boundaries:
+
+- implement the real read-only Windows model-file observer required by W2A and
+  bracket the COM extraction with its observations;
+- preserve COM apartment/thread ownership without launching ETABS or selecting
+  result cases through setters;
+- decide the bounded response/Excel row-volume policy for potentially large
+  complete station inventories;
+- map blocked dispositions and transport errors without returning a partial
+  accepted baseline;
+- keep advanced local axes, non-rectangular/unsupported frames, slab/area
+  adjacency, and incomplete connected topology visibly excluded or blocked;
+- make locked-model state an explicit W2C acceptance requirement rather than
+  merely a retained field; and
+- reconcile canonical JSON and hashes across direct service, REST, and Excel
+  without changing the W2A hash basis.
+
 ## Later phases after W2
 
 ### W3 — beam design and detailing audit
@@ -233,21 +442,24 @@ Iterate only over accepted candidate families, with a finite evaluation budget,
 deterministic stopping rules, full mutation/evidence ledgers, and qualified
 structural-engineer review before engineering or construction use.
 
-## Tomorrow's efficient sequence
+## Next efficient sequence
 
-1. Fetch GitHub and prove the new chat is on current `origin/main`; inspect all
-   worktrees and open PRs before creating the W2 branch.
-2. Read this plan, the W1 receipt, the pilot guide, the live bridge contract,
-   and the existing gravity/frame-analysis services.
-3. Inventory any accessible legacy VBA evidence by exact identity; do not run
-   macros or copy formulas.
-4. Freeze the W2 schema, ETABS calls, result-selection policy, topology rules,
-   dispositions, non-goals, and focused tests.
-5. Complete W2A only: implement the transport-neutral contract and fake-COM
-   adapter/shape evidence, then run affected focused tests and the consolidated
-   quick gate once.
-6. Stop at a clean W2A candidate and review the diff. Do not begin W2B or
-   schedule W2C until W2A is accepted.
+1. Windows verifies and pushes only
+   `codex/etabs-excel-beam-w2a-baseline`, records the remote head, and stops
+   writing it. Protected `main` and all proprietary evidence remain untouched.
+2. Mac fetches GitHub, verifies the exact remote branch/base/head, creates a
+   clean review worktree, reads this plan and both W2A session/receipt records,
+   and reviews the complete diff from `origin/main`.
+3. Mac reruns the W2A focused tests plus proportionate runtime/governance and
+   quick checks. It accepts W2A or creates one bounded review repair; it does
+   not open ETABS or treat fake COM as W2C evidence.
+4. Mac owns the normal PR/check/integration sequence for the unchanged reviewed
+   head. Windows does not write the branch during review.
+5. After W2A acceptance, Mac freezes W2B as a separate packet using the
+   remaining-boundary list above. The npm dev-only advisory stays a separate
+   maintenance change rather than being silently mixed into W2B.
+6. W2C remains unscheduled until W2B has a separately accepted immutable
+   candidate and the Mac has approved the exact Windows evidence plan.
 
 ## Stop conditions
 
@@ -259,14 +471,20 @@ changes, or W2 would need setters beyond temporary unit selection.
 ## New-chat starter
 
 ```text
-Resume the Excel + ETABS beam programme from the current fetched GitHub main.
-Read docs/planning/excel-etabs-beam-next-phase-plan.md, the W1 receipt, and the
-pilot guide first. Start W2A only: freeze and implement the transport-neutral
-read-only beam baseline/topology/result-provenance contract plus fake-COM shape
-tests. Inspect legacy VBA evidence only by exact identity and reuse ideas, not
-formulas. The current repository explicitly has no frame solver, so retain
-`HELD_NOT_SUPPORTED` unless a different accepted solver authority is found. Do
-not open or mutate ETABS, run analysis, add REST/Excel W2 surfaces, write
-sections, optimize, or claim engineering approval. Finish at a clean locally
-verified W2A candidate and leave W2B/W2C separate.
+On the Mac primary development machine, fetch GitHub and review W2A from
+`origin/codex/etabs-excel-beam-w2a-baseline`; do not copy files from Windows.
+Verify the remote branch head and base against fetched `origin/main`, create a
+clean review worktree, and read
+docs/planning/excel-etabs-beam-next-phase-plan.md,
+docs/planning/next-session-brief.md, the W1 receipt, the W2A handoff receipts,
+and the pilot guide. Windows is now the installed Excel/ETABS evidence machine;
+Mac owns normal source review, PR/check follow-up, and integration. Review the
+transport-neutral schemas, pre/post model-file observer contract,
+getter/return-code matrix, exhaustive topology/result dispositions,
+deterministic hashes, tuple/list fake-COM shapes, setup portability repairs,
+and success/failure unit restoration. Rerun proportionate focused and quick
+checks on Mac. Keep `HELD_NOT_SUPPORTED`: the repository has no accepted frame
+solver. Do not open/mutate ETABS, begin W2B, schedule W2C, mix the dev-only npm
+advisory repair into W2A, optimize/write sections, or claim engineering
+approval. Accept W2A or make only one bounded Mac review repair.
 ```

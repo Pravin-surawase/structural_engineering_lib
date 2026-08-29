@@ -136,8 +136,18 @@ PYTHON_SOURCE=$("$PYTHON_RUNTIME" -c 'from pathlib import Path; import structura
     exit 1
 }
 EXPECTED_SOURCE="$PROJECT_ROOT/Python/structural_lib"
-case "$PYTHON_SOURCE" in
-    "$EXPECTED_SOURCE"/*)
+case "$(uname -s)" in
+    MINGW*|MSYS*|CYGWIN*)
+        NORMALIZED_PYTHON_SOURCE="$(cygpath -m "$PYTHON_SOURCE")"
+        NORMALIZED_EXPECTED_SOURCE="$(cygpath -m "$EXPECTED_SOURCE")"
+        ;;
+    *)
+        NORMALIZED_PYTHON_SOURCE="${PYTHON_SOURCE//\\//}"
+        NORMALIZED_EXPECTED_SOURCE="${EXPECTED_SOURCE//\\//}"
+        ;;
+esac
+case "$NORMALIZED_PYTHON_SOURCE" in
+    "$NORMALIZED_EXPECTED_SOURCE"/*)
         echo -e "  ${GREEN}✓${NC} Python source binding: current worktree"
         ;;
     *)

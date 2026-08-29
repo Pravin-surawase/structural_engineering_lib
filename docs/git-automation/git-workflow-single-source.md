@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-15
+last_updated: 2026-08-29
 doc_type: guide
 complexity: intermediate
 tags: [git, github, codex, workflow]
@@ -51,6 +51,40 @@ on a Mac or Windows laptop is not. Use this simple default:
 
 > One task branch has one active writer device. Merge through GitHub. Every
 > other device fetches and fast-forwards its local `main` before new work.
+
+### Primary-development and installed-evidence devices
+
+A programme may name different machine roles without changing GitHub's
+authority or the one-writer rule:
+
+| Role | Owns | Must not assume |
+|---|---|---|
+| Primary development/integration device | Normal source work, planning, local cross-platform tests, candidate review, PR creation, hosted-check follow-up, and integration | That a clean local checkout contains device-only installed evidence |
+| Installed-evidence device | Exact installed-application runs, device-only APIs, copied models/workbooks, screenshots/logs, safe external evidence, and bounded host-specific repairs | That its local `main`, open checkout, application state, or unpushed branch is shared history |
+| GitHub | Tracked branch/PR/merge history and the exact transfer boundary between devices | Device-local models, workbooks, credentials, or external evidence bytes |
+
+The Excel + ETABS programme designates the **Mac as the primary development and
+integration device** and **Windows as the installed Excel/ETABS evidence
+device**. The programme-specific scope and evidence rules live in
+[`excel-etabs-beam-next-phase-plan.md`](../planning/excel-etabs-beam-next-phase-plan.md).
+Windows may implement a bounded host-specific repair on its own task branch,
+but it becomes the sole writer for that branch until it commits, verifies,
+pushes, and explicitly hands writer ownership back to the Mac.
+
+Use this handoff sequence:
+
+1. The originating device proves a clean candidate, pushes its exact task
+   branch, records the remote head, then stops writing that branch.
+2. The receiving device fetches and verifies `origin/<task-branch>` and the
+   advertised commit before creating a worktree or continuing it.
+3. The Mac performs normal review/integration. If it repairs the same branch,
+   Windows remains read-only until the Mac pushes and hands it back.
+4. Windows installed acceptance uses an exact fetched candidate or merged
+   commit in a dedicated evidence worktree; it never relies on a stale local
+   `main` or copies source files through OneDrive/SMB.
+5. Application models, workbooks, credentials, and proprietary evidence remain
+   device-local. Only approved hash-bound receipts and safe summaries enter
+   Git.
 
 At the start of work on each device:
 
