@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-EXCEL-BEAM-W2C-INSTALLED-TRANSACTIONAL-ACCEPTANCE",
+  "verdict": "ACCEPTED_SOFTWARE_WORKFLOW",
+  "observed_at_utc": "2026-08-29T15:39:55.310188Z",
+  "scope": {
+    "installed_windows_etabs": true,
+    "installed_excel": true,
+    "read_only_model_access": true,
+    "analysis_run": false,
+    "design_run": false,
+    "model_save_or_writeback": false,
+    "result_selection_changed_during_acceptance": false,
+    "force_read": true,
+    "controlled_excel_output_write": true,
+    "optimization": false,
+    "professional_or_construction_approval": false
+  },
+  "authority": {
+    "origin_main_and_review_base": "ee50aaa3cad619b41c6153f5f7970553ef65248c",
+    "origin_main_tree": "c1a49958ea85a2c1ea9f399a3fa96b84b8118e76",
+    "branch": "codex/etabs-excel-beam-w2c-installed-acceptance",
+    "starting_pushed_head": "eef506cbc5898cefc38431b704c5abb03e6ef546",
+    "first_branch_commit_not_review_base": "7566842192285e5f4fd0a2acbbd1fc05bc16ebc4",
+    "installed_execution_head": "a894a83222715e36c71cb3283eb4943107b92517",
+    "installed_execution_tree": "83b64de30579f20cc371ca2d4589f9c104abc5f0",
+    "review_range": "origin/main...HEAD",
+    "protected_windows_main_unchanged": true,
+    "runtime_source_bound": true,
+    "matching_pull_requests_before_closeout": 0
+  },
+  "repair": {
+    "literal_json": {
+      "root_cause": "Excel Range.values interprets strings beginning with +, -, or = as formulas.",
+      "resolution": "Write typed valuesAsJson string cells and require exact literal readback, rejoin, UTF-8 byte count, and SHA-256.",
+      "canonical_json_changed": false,
+      "covered_prefixes": ["+", "-", "="]
+    },
+    "transaction": {
+      "root_cause": "Collision preflight did not make seven sequential controlled sheet/table writes atomic.",
+      "resolution": "Snapshot the full touched union range for existing controlled tables; on any failure delete new controlled sheets and restore pre-existing cells and dimensions exactly; verify rollback.",
+      "new_sheet_rollback_covered": true,
+      "pre_existing_table_rollback_covered": true,
+      "json_failure_included": true
+    },
+    "installed_readback": {
+      "blank_root_cause": "Typed empty strings round-trip as blank cells.",
+      "numeric_root_cause": "Desktop Excel stores standard numeric cells at 15 significant digits.",
+      "resolution": "Normalize structured-table blanks and numeric projections to Excel storage semantics while retaining full-precision canonical JSON.",
+      "canonical_json_full_precision": true
+    },
+    "source_files": {
+      "excel_addin/taskpane-core.mjs": {"bytes": 29499, "sha256": "87bce706578631c8900905cc9441499a29baaaa2bde3488577f7a1020b913c41"},
+      "excel_addin/taskpane-office.mjs": {"bytes": 17156, "sha256": "9d158cb9205d92a1167e239d6bbfb051f79861ee779de5b77b289bdecd62c327"},
+      "excel_addin/manifest.xml": {"bytes": 972, "sha256": "b5953a03eccd3b80a5feeb5210cfac98a595dbf7f9e92692084145ddd840bd67"},
+      "excel_addin/tests/taskpane-core.test.mjs": {"bytes": 18135, "sha256": "01097df6cfe9b58d90cac488a748996f628fe01dd130f1bb2475ec30e43e31d4"},
+      "excel_addin/tests/taskpane-office.test.mjs": {"bytes": 22486, "sha256": "6cdf1eef95e5f2f12823ba90af9346f3da874d5166433f709ac13a896b51f210"}
+    }
+  },
+  "host_and_runtime": {
+    "computer": "LAPTOP-360-PRAV",
+    "os_build": "Windows NT 10.0.26200.0",
+    "architecture": "64-bit",
+    "python": "3.11.15 64-bit",
+    "comtypes": "1.4.16",
+    "etabs_api_version": "23.3.1",
+    "library_version": "0.24.0",
+    "library_content_identity": "9a374374dc97d18d1ee0cfa8ca4d7b02f2a4c56c3b94f8f8a6a5954784f718ff",
+    "getter_matrix_sha256": "f6874c7aa119816548b9a64f242dfdb7df94fbeea8c7fa520dea3ef0f74fb7d8",
+    "excel_api_minimum": "1.16",
+    "task_owned_servers_stopped_after_evidence": true,
+    "ports_3000_and_8000_free_after_evidence": true,
+    "excel_closed_after_save": true
+  },
+  "installed_preflight": {
+    "approved_kind": "COMBINATION",
+    "approved_name": "117.(1.5DL+1.5LL)",
+    "approved_combination_sha256": "81b606dd21d4f04dc3676298947c607dfa9e5b899efb62cd648d476a9c2163a7",
+    "approved_present": true,
+    "approved_selected": true,
+    "selection_restoration_was_separate_and_owner_authorized": true,
+    "selection_restoration_return_code": 0,
+    "selection_restoration_force_read": false,
+    "model_locked": true,
+    "present_units_enum": 6
+  },
+  "direct_rest_and_excel_reconciliation": {
+    "direct_status": "ACCEPTED",
+    "rest_preflight_http_status": 200,
+    "rest_run_http_status": 200,
+    "rest_status": "ACCEPTED",
+    "baseline_sha256": "d4c28586ad7a29bdcba801472481ef0e80354cde502c95b70c93550b7ea5dc67",
+    "hash_basis_utf8_bytes": 3626096,
+    "direct_rest_canonical_bytes_equal": true,
+    "direct_rest_full_transport_expected_timestamp_differences": [
+      "build_result.baseline.model.file_evidence.before_read.observed_at_utc",
+      "build_result.baseline.model.file_evidence.after_read.observed_at_utc"
+    ],
+    "counts_equal": true,
+    "counts": {
+      "stories": 6,
+      "frames": 225,
+      "connectivity_rows": 549,
+      "result_sets": 153,
+      "result_station_rows": 3502,
+      "disposition_rows": 4348,
+      "projected_excel_rows": 8873,
+      "json_chunks": 242
+    },
+    "frame_analysis_verdict": "HELD_NOT_SUPPORTED",
+    "excel": {
+      "pane_status": "W2_BASELINE_CURRENT",
+      "controlled_tables_expected": 7,
+      "controlled_tables_saved": 7,
+      "all_seven_tables_exact": true,
+      "table_rows_with_header": {
+        "ETABS_W2_Summary/tbl_ETABS_W2_Summary_V1": 2,
+        "ETABS_W2_Stories/tbl_ETABS_W2_Stories_V1": 7,
+        "ETABS_W2_Frames/tbl_ETABS_W2_Frames_V1": 226,
+        "ETABS_W2_Links/tbl_ETABS_W2_Links_V1": 550,
+        "ETABS_W2_Stations/tbl_ETABS_W2_Stations_V1": 3503,
+        "ETABS_W2_Dispositions/tbl_ETABS_W2_Dispositions_V1": 4349,
+        "ETABS_W2_JSON/tbl_ETABS_W2_JSON_V1": 243
+      },
+      "structured_cells_match_normalized_direct_projection": true,
+      "json_reconstructed_exactly": true,
+      "json_reconstructed_utf8_bytes": 3626096,
+      "json_reconstructed_sha256": "d4c28586ad7a29bdcba801472481ef0e80354cde502c95b70c93550b7ea5dc67",
+      "verification_tool": "@oai/artifact-tool",
+      "verification_read_only": true
+    }
+  },
+  "preservation": {
+    "model_sha256_before_and_after": "99b7f3f17051929196ef6494d8f4d220d895fc3dac5e1a57164a53bf8fa6948b",
+    "model_bytes_before_and_after": 702831,
+    "model_modified_utc_before_and_after": "2026-08-28T17:00:30.127813Z",
+    "model_locked_before_and_after": true,
+    "present_units_enum_before_and_after": 6,
+    "approved_combination_selected_after_excel": true,
+    "final_postflight_force_read": false,
+    "final_postflight_selection_write": false,
+    "workbook_initial_sha256": "53af584339436413929993c3ff17600ee98c3f62827f60240abe4ce05db711fe",
+    "workbook_initial_bytes": 31361,
+    "workbook_final_sha256": "d941283e6367d3c058a5388a58e5ab47a77ded2e412ae2fcc240b55ba433bde1",
+    "workbook_final_bytes": 1482248,
+    "workbook_final_modified_utc": "2026-08-29T15:28:10.9669748Z",
+    "workbook_change_expected_only_for_controlled_output": true,
+    "accepted_workbook_claim": true
+  },
+  "external_evidence": {
+    "root_label": "installed-acceptance-transactional-6ac76fa7",
+    "proprietary_model_path_inventories_forces_and_workbook_bytes_not_committed": true,
+    "files": {
+      "selection-restoration.json": {"bytes": 861, "sha256": "e3ee088f22af512fa84be2022be0c166bdd408db4b0d6637f82bae6193b95671"},
+      "direct-preflight.json": {"bytes": 1474, "sha256": "0dca0aa76c9e06bba5cb201640fa38b90bd4906dc17aab5c1371bbf9f52447eb"},
+      "direct-postflight.json": {"bytes": 1474, "sha256": "0f4c12b1cabce812260d7e2450ff8dc25d828319604cfc3446a4a1a884998759"},
+      "direct-safe-summary.json": {"bytes": 1618, "sha256": "bc2847d16064b1650c86db46501675523672d851dde21d0679ba58f44dbf8462"},
+      "rest-preflight-wrapper.json": {"bytes": 1582, "sha256": "836f3bbba6855715ba282e4a890261465a19febd8cf20ec349cd5ea010802971"},
+      "rest-safe-summary.json": {"bytes": 757, "sha256": "366648aa6faa3130bf543bd32ab831c0f66381c9ecfd59ff8678dcb210234906"},
+      "selection-preflight.json": {"bytes": 725, "sha256": "a5b46d5f555b68603a8a5bdddf53afa80ba1ab56c074cab46dc4141941c6c361"},
+      "direct-transport.json": {"bytes": 11391189, "sha256": "b087fc2ae1450909a7db132ef06b3c067cf1f4b497b81e2a4b23e3d1b70bb236"},
+      "rest-transport-wrapper.json": {"bytes": 11730053, "sha256": "f717baa8243b0ce92a545ed4eecff96390fea1664e110271aba9dafdce2e1e10"},
+      "ETABS-EXCEL-BEAM-W2C-transactional.xlsx": {"bytes": 1482248, "sha256": "d941283e6367d3c058a5388a58e5ab47a77ded2e412ae2fcc240b55ba433bde1"},
+      "saved-workbook-verification.json": {"bytes": 3725, "sha256": "257db1719f040b753cac1e8cfa347706d3477dd3fbf096fb516a60f9f6e7ae2a"},
+      "final-postflight.json": {"bytes": 914, "sha256": "3e06f3f42f3ab086d7dd60031f7215cd341a213bea740ade9b0e2aaa3bbc14cd"}
+    }
+  },
+  "validation": {
+    "office_js": {"passed": 37, "failed": 0},
+    "focused_w2_python_fastapi": {"passed": 55, "failed": 0},
+    "documentation": {"strict_checks_passed": 5, "brief_lines": 98, "session_consistency": "PASS"},
+    "quick_gate": {"passed": 10, "failed": 0, "reused": 3},
+    "normal_commit_hooks": "RUN_AT_FINAL_COMMIT_CLOSEOUT",
+    "known_unrelated_windows_portability": "scripts/test_changed.py cannot launch scripts/python_runtime.sh as a native Windows executable (WinError 193); the maintained Git Bash quick gate is authoritative for this packet.",
+    "broad_python_rerun_required": false,
+    "broad_python_reason": "No Python production code changed in the transactional continuation; prior broad Windows W2 result and separately classified portability holds remain unchanged."
+  },
+  "limitations": [
+    "Acceptance is limited to the installed read-only software workflow on the exact approved copied model and exact result combination.",
+    "The authorized prerequisite changed only live output selection before acceptance; it did not run analysis/design or save/mutate the model.",
+    "Independent frame analysis remains HELD_NOT_SUPPORTED.",
+    "No ETABS analysis, design, unlock, save, section/load mutation, optimization, or write-back was performed.",
+    "This is not structural analysis validation, professional engineering approval, or construction-use approval.",
+    "Mac review and integration are still required before the W2 close decision; W3 does not start automatically."
+  ]
+}

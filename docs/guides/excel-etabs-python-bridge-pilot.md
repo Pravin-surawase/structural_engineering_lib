@@ -197,8 +197,10 @@ does not spend an installed session rediscovering them.
 | Forces are read from stale or unintended results | Analysis completeness and exact selected case/combination were not proved before `FrameForce` | Require the approved exact case/combination, completed analysis status for its constituent cases, supported topology, and explicit `ItemTypeElm=0`. Any mismatch stops before the first force call; W2 never runs analysis or design. |
 | ETABS remains in temporary units after an exception | Unit restoration was treated as a success-only step | Capture the original enum, set only the frozen read units when necessary, restore in `finally`, check every setter return, and re-get the original enum after both success and failure. Preserve the model lock throughout. |
 | Direct and REST counts match but canonical hashes differ | Volatile file-observation wall-clock instants were included in cross-transport identity | Retain both `observed_at_utc` values in full provenance but exclude only those two instants from the hash basis. Continue hashing stable file identity, runtime, model/lock/units, topology, results, and dispositions. Diagnose structural diffs before changing any frozen digest. |
-| `ETABS_W2_JSON` fails at `Range.values` although the server hash is valid | Arbitrary JSON chunks can begin with `+`, `-`, or `=`; Excel interprets those strings as formulas | Before another installed attempt, implement and review a literal-text representation that preserves byte-exact rejoining. Add Office regressions for all three prefixes and prove the reconstructed string hashes to the server value. Do not solve this by altering canonical JSON bytes. |
-| Six W2 tables remain after the seventh table fails | Collision preflight prevents overwrites but the seven-table write is not atomic | A future repair must stage then commit all seven tables, or deterministically roll back every task-created sheet/table on any exception. A partial workbook is blocked evidence, never accepted output. |
+| `ETABS_W2_JSON` fails at `Range.values` although the server hash is valid | Arbitrary JSON chunks can begin with `+`, `-`, or `=`; Excel interprets those strings as formulas | Use typed `valuesAsJson` string cells, never formula-coercing `Range.values`, and verify exact rejoined bytes/SHA-256 after readback. Regressions cover all three prefixes without changing canonical JSON. |
+| Six W2 tables remain after the seventh table fails | Collision preflight prevents overwrites but does not make a multi-sheet write atomic | Snapshot every touched controlled range. On failure, delete newly created controlled sheets and restore every pre-existing controlled table's exact cells/dimensions; verify rollback before reporting the error. Installed retry and regressions now prove this behavior. |
+| Exact readback reports `""` versus blank or a small numeric tail difference | Typed empty strings become blank cells, while desktop Excel stores standard numeric cells at 15 significant digits | Normalize structured-table blanks and numbers to Excel's storage semantics before comparison. Keep the server-canonical JSON full precision and require its byte/hash-exact reconstruction separately. |
+| A restarted laptop still appears to have the prior installed state | Open model, COM object, add-in server, workbook, and result selection are session state, not file state | Treat every restart as a fresh installed preflight. Reprove repository/source/process identity, reopen only the approved copied model/workbook, and getter-check lock/units/analysis/selection before any force read. |
 | The installed run is repeated immediately after a blocker | Failure evidence was treated as an invitation to probe or repair live state | Stop at the earliest safe boundary, close task-owned servers, preserve before/after hashes and the exact symptom, and continue only under a new reviewed packet. Do not rerun forces merely to confirm a failure. |
 | A green software path is described as structural approval | Software reconciliation and professional engineering review were conflated | Report only installed/software acceptance. Preserve `HELD_NOT_SUPPORTED` for independent frame analysis and require qualified structural-engineer review for design or construction use. |
 
@@ -213,8 +215,8 @@ Use this fixed order for the next installed packet:
    a separate owner-authorized prerequisite, never an implicit repair.
 5. Run direct service once, then source-bound REST once, and require exact
    canonical byte/hash/count equality.
-6. Start installed Excel only when the seven-table literal-text and atomicity
-   defects are repaired and covered by Office tests.
+6. Start installed Excel only from the reviewed typed-literal/transactional
+   implementation and require rollback proof for any failed attempt.
 7. Reconcile all seven tables, then prove model/workbook preservation, restored
    units, locked state, and unchanged result selection.
 8. On any failure, freeze evidence and stop; do not loop. Keep proprietary
@@ -324,14 +326,15 @@ preflighted before the first cell change; collisions, duplicate stable row IDs,
 count drift, more than 100,000 projected rows, or a blocked service result write
 nothing. A zero-row inventory is represented by a header-only controlled table.
 
-Installed W2C evidence now identifies one held Excel exception to this intended
+Installed W2C exposed and then closed one Excel-specific exception to this
 contract. Arbitrary 15,000-character boundaries can leave a JSON chunk starting
-with `+`, `-`, or `=`. Excel's `Range.values` contract interprets those strings
-as formulas. The accepted 3,626,096-character sample produced four such chunks
-and failed at `ETABS_W2_JSON` after the other six tables had already been
-created. Until a reviewed literal-text and rollback-safe repair is installed,
-the seven-table path must be treated as `BLOCKED_SAFE_EXCEL_JSON_WRITE`, and a
-partial workbook must never be presented as current W2 output.
+with `+`, `-`, or `=`; formula-coercing writes failed after six tables. The
+maintained path now uses typed literal cells, verifies every structured cell,
+rejoins and hashes the JSON, and treats all seven writes as one transaction.
+New-sheet failures remove all new output; existing-sheet failures restore the
+previous controlled contents and dimensions exactly. Blank cells and desktop
+Excel's 15-significant-digit numeric storage are normalized only for structured
+tables; the canonical JSON remains full precision and byte-exact.
 
 This is software evidence, not ETABS design or professional approval. It does
 not infer materials, reinforcement, slabs, supports, or engineering intent;
@@ -439,15 +442,15 @@ cross-transport hash identity; file hash/size/mtime/path, model/lock/units,
 runtime, topology, results, and dispositions remain hashed. A regression proves
 two different observation times retain equal canonical hashes.
 
-Installed Excel passed source/model/selection preflight and verified the
-accepted server hash before writing. The saved blocked artifact contains exact
-summary/story/frame/link/station/disposition table row counts, but
-`ETABS_W2_JSON` has no table or rows. Chunks 12, 43, 109, and 157 begin with
-formula-significant `+`/`-` characters, matching the reported Office
-`GeneralException` at `Range.values`. Model hash/size/mtime, lock, units, and
-the active combination remained unchanged afterward. The tracked safe receipt
-is
+That partial artifact remains immutable blocked evidence in
 [`etabs-excel-beam-w2c-installed-acceptance-retry2-evidence.json`](../verification/etabs-excel-beam-w2c-installed-acceptance-retry2-evidence.json).
-W2C is still held: direct/REST software evidence passed, installed Excel did
-not complete seven-table reconciliation, and `HELD_NOT_SUPPORTED` remains the
-independent-frame-analysis verdict.
+The later transactional retry used the same copied model and exact combination.
+Direct service and REST returned the same canonical 3,626,096 bytes and
+`d4c28586...` digest; installed Excel saved all seven tables, including 242
+literal JSON chunks. Independent read-only workbook inspection matched every
+cell to the normalized direct projection and reconstructed the exact canonical
+bytes/hash. Final getter-only postflight preserved model SHA-256/size/mtime,
+locked state, units enum `6`, and active combination. The durable receipt is
+[`etabs-excel-beam-w2c-installed-acceptance-transactional-evidence.json`](../verification/etabs-excel-beam-w2c-installed-acceptance-transactional-evidence.json).
+This passes W2C installed software workflow acceptance on the bounded copied
+model only; `HELD_NOT_SUPPORTED` and qualified-engineer review remain.

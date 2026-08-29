@@ -16,20 +16,20 @@ fresh Windows worktree from exact pushed retry head
 `cebe45a6f9540c109b5801ad77006c1fdd191635`. Integrated GitHub main remained
 `ee50aaa3cad619b41c6153f5f7970553ef65248c`, tree
 `c1a49958ea85a2c1ea9f399a3fa96b84b8118e76`; protected Windows `main` remained
-`HOLD_MAIN`.
+`HOLD_MAIN`. The cumulative review basis is exact `origin/main...HEAD`;
+`75668421...` is the first branch commit, not the integration base.
 
 **Git handoff receipt:**
-`docs/verification/etabs-excel-beam-w2c-installed-acceptance-git-handoff-receipt.json`
-(pre-commit Windows-to-Mac continuation receipt; hosted push facts remain
-external).
+`docs/verification/etabs-excel-beam-w2c-installed-acceptance-transactional-git-handoff-receipt.json`
+(final transactional Windows-to-Mac pre-commit receipt; hosted push facts
+remain external).
 
-**Focus:** Continue the bounded installed W2C software acceptance after the
-owner separately authorized the exact result-selection prerequisite. Reprove
-source/runtime/model/selection identity; reconcile direct service, source-bound
-REST, and installed Excel against the same copied model and exact combination;
-preserve model bytes/lock/units; implement at most one outcome-changing repair;
-and stop fail-closed without W3, analysis/design, model save/write-back,
-optimization, release, or engineering-approval claims.
+**Focus:** Complete the bounded installed W2C software acceptance after the
+owner separately authorized the literal-text/transaction repair and fresh
+Windows retry. Reprove source/runtime/model/selection identity; reconcile direct
+service, source-bound REST, all seven saved Excel tables, and canonical JSON;
+preserve model bytes/lock/units; and stop without W3, analysis/design, model
+save/write-back, optimization, release, or engineering-approval claims.
 
 **Completed:**
 
@@ -72,11 +72,10 @@ optimization, release, or engineering-approval claims.
   the official Excel API contract treats `+`, `-`, or `=`-prefixed values as
   formulas. This confirms the JSON-only failure and the non-atomic partial-
   table symptom.
-- Per the one-repair cap, implemented no second code/template repair and did
-  not rerun forces. Final read-only postflight proved exact model SHA-256/
-  bytes/mtime, locked state, units enum `6`, and active combination unchanged.
-  W2C is `BLOCKED_SAFE_EXCEL_JSON_WRITE`; the partial workbook is not accepted
-  output.
+- At that initial packet boundary, the one-repair cap prevented a second code/
+  template repair. The getter-only postflight proved exact model SHA-256/bytes/
+  mtime, locked state, units enum `6`, and active combination unchanged; the
+  partial workbook remains immutable `BLOCKED_SAFE_EXCEL_JSON_WRITE` evidence.
 - Froze safe counts/hashes/limitations in
   `docs/verification/etabs-excel-beam-w2c-installed-acceptance-retry2-evidence.json`.
   Proprietary model path/inventories/forces and workbook bytes remain external
@@ -88,6 +87,43 @@ optimization, release, or engineering-approval claims.
   bitness/elevation, result selection, setter authority, model/story/tuple
   shapes, freshness/units, deterministic hashes, literal Excel text, atomic
   seven-table writes, evidence stops, and software-versus-engineering claims.
+- Under the later owner-authorized continuation, implemented typed
+  `valuesAsJson` cells so `+`, `-`, and `=` prefixes remain literal, added exact
+  JSON rejoin/byte/hash verification, and made all seven controlled writes one
+  transaction. Any failure deletes newly created controlled sheets and restores
+  pre-existing controlled tables' cells and dimensions exactly.
+- Added focused Office regressions for all three literal prefixes, successful
+  seven-table reconciliation, and rollback of both new and pre-existing output.
+  Installed readback additionally proved that typed empty strings become blank
+  cells and standard numeric cells retain 15 significant digits; structured
+  comparison now normalizes those storage semantics while canonical JSON stays
+  full precision.
+- After the laptop restart, re-established the exact repository/runtime/process
+  boundary. ETABS had no model open and the exact combination was inactive, so
+  both attempts stopped before force reads. Reopened only the approved copied
+  model and used the separately authorized selection-only prerequisite: return
+  code zero, getter false then true, zero force/analysis/design/save calls, and
+  unchanged model hash/size/mtime/lock/units.
+- The fresh direct service and source-bound REST paths both returned accepted
+  canonical JSON with SHA-256 `d4c28586...`, 3,626,096 UTF-8 bytes, and exact
+  counts: 6 stories, 225 frames, 549 links, 153 result sets, 3,502 stations,
+  4,348 dispositions, and 8,873 projected rows. Their only full-transport
+  differences are the expected two observation timestamps.
+- Installed Excel reached `W2 BASELINE CURRENT`, saved all seven controlled
+  tables, and closed normally. Read-only `@oai/artifact-tool` inspection matched
+  every saved structured cell to the normalized direct projection and rejoined
+  all 242 literal chunks to the exact 3,626,096 bytes/hash. The workbook grew
+  from 31,361 bytes (`53af5843...`) to the accepted controlled-output artifact
+  of 1,482,248 bytes (`d941283e...`).
+- Final getter-only postflight proved model SHA-256
+  `99b7f3f1...fa6948b`, 702,831 bytes, original UTC mtime, locked state, units
+  enum `6`, and the active exact combination unchanged. Task-owned localhost
+  servers stopped and ports 3000/8000 were free. W2C passes only as bounded
+  installed software workflow acceptance; independent frame analysis remains
+  `HELD_NOT_SUPPORTED` and professional/construction approval remains held.
+- Froze the accepted result in
+  `docs/verification/etabs-excel-beam-w2c-installed-acceptance-transactional-evidence.json`;
+  proprietary model/workbook/result bytes remain Windows-local and hash-bound.
 
 ### Issues encountered
 
@@ -104,6 +140,16 @@ optimization, release, or engineering-approval claims.
 - Installed Excel failed after six controlled tables with
   `GeneralException` at `Range.values`, leaving an empty `ETABS_W2_JSON` sheet
   and a partial workbook.
+- The restarted ETABS process was on its start page with no model, and the exact
+  approved combination was inactive after reopening the copied model.
+- The first installed transactional attempts rolled back safely on two exact
+  readback mismatches: empty string versus blank, then
+  `6437.202640387113` versus Excel's stored `6437.20264038711`.
+- Excel retained unsaved controlled output until its explicit close-time Save
+  action; the on-disk workbook initially retained its 31,361-byte identity.
+- `scripts/test_changed.py --verbose` failed before tests with Windows
+  `[WinError 193]` because it tried to execute `scripts/python_runtime.sh` as a
+  native process.
 - A final postflight launched `uv` without the ETABS extra, producing a
   missing-`comtypes` diagnostic and an untracked generated `Python/uv.lock`.
 - The required broad Python run reported 31 failures among 7,219 selected
@@ -156,6 +202,29 @@ optimization, release, or engineering-approval claims.
   allowance was consumed. The next repair must preserve rejoined bytes, write
   literal text for all three prefixes, add Office regressions, and make the
   seven-table commit rollback-safe or transactional.
+- Confirmed restart/open-model cause: ETABS, workbook, COM attachment, and
+  output selection are live session state and did not survive the host restart.
+  Resolution: treat restart as a new installed preflight, stop before force when
+  no model or inactive selection is observed, then use only the separately
+  authorized exact selection prerequisite after the approved copy is open.
+- Confirmed literal/transaction resolution: typed `valuesAsJson` strings avoid
+  formula coercion without altering canonical bytes; touched-range snapshots and
+  rollback verification protect both new and pre-existing controlled outputs.
+  Office regressions and the installed retry prove all seven tables succeed.
+- Confirmed installed readback causes: typed empty strings become blank cells,
+  and desktop Excel persists ordinary numeric cells at 15 significant digits.
+  Resolution: normalize only structured table readback to those semantics;
+  preserve full precision in canonical JSON and require exact byte/hash rejoin.
+- Confirmed workbook-save cause: the installed workbook contained current
+  in-memory tables but its file bytes were unchanged until Excel's Save action
+  completed during close. Resolution: require an explicit save/close boundary,
+  then hash the closed file and independently inspect its seven tables before
+  acceptance.
+- Confirmed changed-test launcher cause: `scripts/test_changed.py` invokes the
+  POSIX shell launcher directly, which Windows rejects as an executable.
+  Resolution: classify the existing portability defect separately, run focused
+  commands through the exact Python/Node runtimes, and use Git Bash for the
+  maintained consolidated quick gate; do not broaden W2 into launcher repair.
 - Confirmed postflight-environment cause: `comtypes` is an optional `etabs`
   extra and the first `uv run` omitted it; `uv` also generated a local lock.
   Resolution: rerun the exact getter-only postflight with `--extra etabs`, prove
@@ -213,6 +282,14 @@ optimization, release, or engineering-approval claims.
 - Normal hooks then passed, including the repaired quick gate at `10/10` with
   three exact unaffected receipts reused. Clean session validation and push
   remain external candidate closeout.
+- The transactional continuation passes `55/55` focused W2 Python/FastAPI tests
+  and `37/37` Office tests. JSON, JavaScript, and manifest syntax pass; the new
+  handoff receipt validates as `HOLD`; strict documentation passes `5/5`; the
+  98-line brief and session-consistency checks pass.
+- The final maintained Git Bash quick gate passes `10/10` with three exact
+  unchanged results reused. No broad Python rerun is required because this
+  continuation changes no Python production code; the prior classified broad
+  Windows portability hold remains unchanged.
 
 ---
 
