@@ -3,7 +3,7 @@
 **Type:** Guide
 **Audience:** Developers
 **Status:** Complete
-**Next Phase:** W2A Merged; Static W2C Audit Complete; W2B/W2C Campaign Authorized
+**Next Phase:** W2 Campaign Ready for Mac Review; Installed W2C Held Fail-Closed
 **Created:** 2026-08-28
 **Last Updated:** 2026-08-29
 **Importance:** High
@@ -335,8 +335,16 @@ and explicit write-back controls.
 
 The accepted next sequence is recorded in the
 [Excel + ETABS beam next-phase plan](../planning/excel-etabs-beam-next-phase-plan.md).
-W2A is merged and the static installed signature audit is complete. The
-Windows campaign next freezes W2B's read-only observer/REST/Excel surface, then
-runs W2C only after all preflight gates pass against that exact checkpoint.
+W2A is merged, the static installed signature audit and W2B transport are
+complete, and the Windows W2C path was exercised only through its safe blocker.
+The exact approved combination was present but inactive, so direct service,
+source-bound REST, and installed Excel all returned
+`RESULT_SELECTION_NOT_ACTIVE` before `FrameForce`; Excel wrote no W2 table and
+the model/workbook identities, lock, and units remained unchanged. The tracked
+safe receipt is
+[`etabs-excel-beam-w2c-installed-acceptance-evidence.json`](../verification/etabs-excel-beam-w2c-installed-acceptance-evidence.json).
+This does not pass installed W2 baseline acceptance. A retry requires separate
+authorization and an ETABS session where the exact approved combination is
+already active before Codex attaches, followed by the complete preflight again.
 Design/detailing expansion, construction-practice checks, offline optimization,
 and copied-model write-back/reanalysis remain separate later gates.

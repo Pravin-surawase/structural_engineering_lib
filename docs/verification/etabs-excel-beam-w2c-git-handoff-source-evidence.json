@@ -1,0 +1,81 @@
+{
+  "remote": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T09:31:00Z",
+    "branch": "codex/etabs-excel-beam-w2-campaign",
+    "head_sha": "18926ef48c620213abbb931449cda9e8049eee7c",
+    "local_remote_head_equal": true
+  },
+  "pull_request": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T09:31:00Z",
+    "reason_code": "USER_PROHIBITED_CAMPAIGN_PULL_REQUEST",
+    "matching_pull_requests": 0
+  },
+  "review": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "reason_code": "CUMULATIVE_MAC_REVIEW_AFTER_COMPLETE_CAMPAIGN"
+  },
+  "integration": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "reason_code": "WINDOWS_CAMPAIGN_CHECKPOINT_DOES_NOT_INTEGRATE"
+  },
+  "retention": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T09:31:00Z",
+    "decision": "RETAIN_CAMPAIGN_PHASE_A_W2A_AND_ALL_EXISTING_BRANCHES_WORKTREES",
+    "owner": "Windows W2 campaign sole writer under user delegation",
+    "holds": []
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  },
+  "authorization": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T09:31:00Z",
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "status": "OBSERVED",
+      "query_status": "OK",
+      "observed_at_utc": "2026-08-29T09:31:00Z",
+      "reference": "source-thread:01a04be8-98a7-7752-b26f-96207473a35e:complete-bounded-w2-campaign"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "STOP_WINDOWS_WRITING_AFTER_FINAL_PUSH"
+    ],
+    "prohibited_actions": [
+      "CREATE_OR_MERGE_PULL_REQUEST",
+      "MODIFY_PROTECTED_MAIN",
+      "REWRITE_HISTORY",
+      "DELETE_BRANCH_OR_WORKTREE",
+      "MODIFY_W2A_OR_PHASE_A_BRANCH",
+      "RUN_ANALYSIS_OR_DESIGN",
+      "CHANGE_RESULT_SELECTION",
+      "UNLOCK_MUTATE_OR_SAVE_MODEL",
+      "START_OPTIMIZATION_OR_WRITEBACK",
+      "REPAIR_NANOID",
+      "START_W3",
+      "CLAIM_W2C_ACCEPTANCE_PASS",
+      "CLAIM_ENGINEERING_APPROVAL"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "target_binding": {
+      "task_id": "ETABS-EXCEL-BEAM-W2C-INSTALLED-HOLD",
+      "branch": "codex/etabs-excel-beam-w2-campaign",
+      "head_sha": "18926ef48c620213abbb931449cda9e8049eee7c",
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "STOP_WINDOWS_WRITING_AFTER_FINAL_PUSH"
+      ]
+    }
+  }
+}

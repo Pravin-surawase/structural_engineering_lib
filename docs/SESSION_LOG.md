@@ -16,8 +16,9 @@ sole writer; no subagents).
 from that exact checkpoint on `codex/etabs-excel-beam-w2-campaign`.
 
 **Git handoff receipt:**
-`docs/verification/etabs-excel-beam-w2b-git-handoff-receipt.json`
-(Phase B checkpoint; final campaign receipt will supersede it for Mac pickup).
+`docs/verification/etabs-excel-beam-w2c-git-handoff-receipt.json`
+(installed safe-hold evidence checkpoint; the final campaign governance receipt
+will supersede it for Mac pickup).
 
 **Focus:** Complete the bounded W2 campaign on the Windows evidence machine:
 first freeze the installed ETABS 23.3.1 static COM-signature audit without COM
@@ -69,6 +70,27 @@ no-save/no-mutation/no-optimization/no-writeback/professional-review boundary.
   typelib/wrapper/runtime identities, approved copied-model hash/size/time,
   locked state, original unit enum, and absence of an application dialog before
   the first Phase C getter-only preflight.
+- Committed and pushed the installed `GetStories` shape repair as exact campaign
+  checkpoint `18926ef48c620213abbb931449cda9e8049eee7c`; local and remote heads
+  matched and no PR existed before installed acceptance resumed.
+- Exercised the repaired direct service, source-bound REST API, and installed
+  Excel pane against the exact approved combination. All three independently
+  returned `BLOCKED` with `RESULT_SELECTION_NOT_ACTIVE`; no baseline/hash basis,
+  result station, or `FrameForce` read was produced.
+- Reconciled 846 exhaustive blocked-path dispositions across direct/REST,
+  including the explicit Base-row exclusion, six accepted stories, 225 accepted
+  beams/columns, 549 accepted endpoint links, 64 disconnected endpoints, and
+  one result-selection blocker. `HELD_NOT_SUPPORTED` remains unchanged.
+- Proved the copied-model hash/size/mtime/lock/unit enum unchanged after every
+  permitted getter path. The installed workbook also retained its exact hash and
+  byte count, and artifact-level inspection proved zero `ETABS_W2_*` sheets or
+  tables were created.
+- Froze the safe installed receipt in
+  `docs/verification/etabs-excel-beam-w2c-installed-acceptance-evidence.json`.
+  Full REST payloads, logs, and workbook bytes remain outside Git in the
+  hash-bound Windows evidence root.
+- Regenerated the maintained OpenAPI baseline omitted at the Phase B checkpoint;
+  the exact W2B surface now validates at 95 endpoints and 501 schemas.
 
 ### Issues encountered
 
@@ -110,6 +132,29 @@ no-save/no-mutation/no-optimization/no-writeback/professional-review boundary.
   present but not currently selected for output. All 15 cases are finished,
   four cases are selected, no combination is selected, and changing that state
   is outside W2's setter policy.
+- The repository virtual environment did not include `openpyxl`, so it could not
+  independently inspect the installed `.xlsx` without adding an unplanned
+  dependency to the campaign.
+- The first post-run workbook hash attempt occurred while Excel still held the
+  file, and the first cleanup check could not safely attribute port listeners
+  from child command lines alone.
+- The inherited desktop environment did not populate Office development
+  certificate variables for the source-bound taskpane server.
+- A bare `python -m json.tool` closeout check resolved to the disabled Windows
+  Store application alias rather than the repository runtime.
+- The first final Office test command could not find `npm` in the inherited
+  desktop-process `PATH` even though the maintained frontend runtime was
+  installed and present in the persisted user environment.
+- The required broad Python suite completed with 7,173 passes, 13 skips, six
+  deselections, and 32 failures outside the W2 changed paths. The failures group
+  into direct POSIX `.sh` execution on Windows, forward-slash-only path
+  assertions, unavailable unprivileged Windows symlinks, Windows Git timing
+  budgets, one current-date ledger mismatch, and existing release/session/
+  context fixtures built on those assumptions.
+- The first integrated full gate exposed that Phase B had not regenerated the
+  maintained OpenAPI snapshot for its two new endpoints. The same parallel run
+  timed out API classification at 35 seconds and reported 52 governance errors
+  from Windows path interpretation.
 
 ### Root causes and resolutions
 
@@ -197,6 +242,62 @@ no-save/no-mutation/no-optimization/no-writeback/professional-review boundary.
   no-selection-setter boundary, abort before `FrameForce`, and continue only
   getter-only/fail-closed W2C evidence until an independently authorized session
   starts with the approved combination already active.
+- Confirmed workbook-inspection cause: `openpyxl` is optional and absent from the
+  repository runtime. Resolution: use the installed, bundled spreadsheet
+  artifact runtime read-only; it proved the workbook contained only its two
+  original sheets and no W2 controlled table. No dependency or workbook byte
+  changed.
+- Confirmed file-hash cause: Windows denied a stable independent read while the
+  normal Excel process retained the workbook handle. Resolution: close the
+  unchanged workbook normally, observe no save prompt, then hash the file; its
+  SHA-256 and size exactly matched the pre-run values. ⚠️ TERMINAL ISSUE: the
+  first post-run workbook hash was attempted while Excel held the file -> close
+  normally without saving, then hash and inspect the immutable bytes.
+- Confirmed server-cleanup cause: the actual localhost listeners were child
+  Python/Node processes and their individual command lines did not retain the
+  launching worktree. Resolution: trace each listener's exact process-parent
+  chain to the two task-owned launch PIDs before stopping only those chains;
+  ports 8000 and 3000 then had zero listeners. ⚠️ TERMINAL ISSUE: the first
+  process-attribution query was intentionally refused as insufficient -> prove
+  exact parent ownership before cleanup.
+- Confirmed certificate-environment cause: the inherited process did not expose
+  the dev-certificate variables even though the trusted certificate/key already
+  existed in the standard Office add-in location. Resolution: bind those exact
+  existing files process-locally for the source-bound server; no certificate was
+  created, installed, exported, or committed.
+- Confirmed runtime-command cause: this inherited process does not have a bare
+  Python executable ahead of the Windows Store alias. Resolution: use the
+  repository's maintained `scripts/python_runtime.sh` selector for JSON and
+  repository checks. ⚠️ TERMINAL ISSUE: bare `python` opened the disabled Store
+  alias -> used the maintained pinned runtime selector.
+- Confirmed Node-command cause: the refreshed persisted user path contains the
+  maintained Node 24.19.0/npm 11.17.0 binary directory, but the already-running
+  desktop process predates that refresh. Resolution: compose user and machine
+  paths process-locally, verify `./run.sh frontend runtime`, and rerun the exact
+  Office suite; all 34 tests pass. ⚠️ TERMINAL ISSUE: bare inherited `npm` was
+  absent -> use the repository-proved persisted runtime without installing or
+  changing machine state.
+- Confirmed broad-suite causes by isolated reproducers: Windows cannot execute
+  repository `.sh` files directly through `subprocess`, native `Path` strings
+  use backslashes where several assertions demand `/`, standard user mode lacks
+  symlink privilege, and the Windows Git fixtures exceed Linux-oriented timing
+  budgets. The compatibility ledger alone compares its checked-in 2026-08-28
+  generation date with the live 2026-08-29 inventory; the workbook-manifest
+  failure is also only `/` versus `\\`. Resolution: record the complete broad
+  result without repairing unrelated governance, packaging, workbook, or test-
+  portability code in W2. The affected W2 focused tests, Office tests, and
+  static architecture/import checks remain passing.
+- Confirmed OpenAPI cause: Phase B validated endpoint tests and OpenAPI runtime
+  behavior but omitted the repository's generated
+  `fastapi_app/openapi_baseline.json` owner. Resolution: regenerate it with
+  `scripts/check_openapi_snapshot.py --update`, inspect the expected two-path/
+  30-schema expansion, and validate exact 95-endpoint/501-schema parity.
+- Confirmed full-gate non-campaign causes: API classification passes when run
+  directly after the parallel timeout; governance's 52 errors print Windows
+  backslash paths into POSIX-oriented archive/name/layer rules, while the
+  maintained architecture checker independently passes all 236 files.
+  Resolution: retain both as Windows gate limitations and do not rewrite
+  unrelated governance/path policy in W2.
 
 ### Validation through content freeze
 
@@ -229,6 +330,30 @@ no-save/no-mutation/no-optimization/no-writeback/professional-review boundary.
   The story-shape failure and inactive approved combination both occurred
   before any `FrameForce` call; post-failure file/hash/time/lock/units remained
   unchanged.
+- The repaired direct service and source-bound REST endpoint both returned the
+  same typed `RESULT_SELECTION_NOT_ACTIVE` hold, zero stations, no baseline or
+  hash basis, and restored units. Installed Excel displayed the same hold and
+  wrote no W2 sheet/table; its on-disk SHA-256/byte count remained unchanged.
+- ETABS remained in one normal locked-model window without a save, analysis,
+  design, mutation, selection setter, or unexpected dialog. Excel and both
+  task-owned local servers were closed after evidence capture; ETABS was left
+  open and untouched.
+- Final changed-path checks pass: 46 focused W2 Python/FastAPI tests, 34 Office
+  tests, 236-file architecture validation, 753-file/2,509-internal-import
+  validation, 216-file circular analysis, and all 1,126 local links across 520
+  Markdown files.
+- The required broad Python run is retained exactly as a Windows portability/
+  current-date hold: 7,173 passed, 32 failed, 13 skipped, and six deselected in
+  679.33 seconds. Isolated reproducers confirm no W2 runtime assertion failed;
+  all 27 `test_etabs_beam_baseline.py` tests passed inside that run.
+- After the OpenAPI repair, the no-reuse full gate passes 30/32: FastAPI is
+  3/3 and all Docs/Architecture/Git/Stale/Code checks pass. Only the reproduced
+  35-second parallel classification timeout and 52 Windows-path governance
+  errors remain; direct classification exits zero.
+- The final receipt/source/installed JSON all parse and the receipt validates;
+  strict documentation passes 5/5, 520-file link validation passes 1,126 links,
+  context and session checks pass, diff hygiene is clean, the OpenAPI snapshot
+  matches, and the consolidated quick gate passes 10/10.
 
 ---
 
