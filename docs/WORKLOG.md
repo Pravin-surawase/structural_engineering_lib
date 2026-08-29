@@ -356,3 +356,4 @@ tags: []
 | 2026-08-29 | MULTI-DEVICE-GIT-SYNC | Synchronized the Mac primary checkout after the Windows merge and published the one-branch/one-writer fast-forward-only device rule through PR #894 | 45ef7c29 |
 | 2026-08-29 | ETABS-EXCEL-BEAM-NEXT | Closed W1 documentation and froze W2 read-only baseline/topology as the next packet before design expansion, construction checks, optimization, or write-back | — |
 | 2026-08-29 | ETABS-EXCEL-BEAM-W2A-BASELINE | Added the transport-neutral read-only model/topology/result contract, deterministic provenance, exhaustive dispositions, fake-COM tests, and Windows runtime portability repairs; retained W2B/W2C and engineering holds | pending candidate |
+| 2026-08-29 | ETABS-EXCEL-BEAM-W2A-MACHINE-HANDOFF | Designated Mac as primary development/integration and Windows as installed Excel/ETABS evidence; documented the exact setup/root-cause/remaining-work ledger and repaired Windows source-path onboarding | pending candidate |

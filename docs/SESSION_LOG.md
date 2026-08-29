@@ -5,6 +5,153 @@
 
 ---
 
+## 2026-08-29 — Session: W2A Mac-primary/Windows-evidence handoff
+
+**Agent:** Codex (`documentation`/`governance`, sole writer; no subagents).
+
+**Branch:** `codex/etabs-excel-beam-w2a-baseline`, continuing exact clean W2A
+candidate `c629e362b4b93c915422ba2c1a6fb1cf3d56dadd` from fetched
+`origin/main` `a3f36cb460395eeda32f832963917983e9bc4dfb`.
+
+**Git handoff receipt:**
+`docs/verification/etabs-excel-beam-w2a-machine-handoff-git-handoff-receipt.json`
+
+**Focus:** Make the W2A result, Windows setup, machine roles, root causes,
+solutions, remaining gaps, and exact next sequence durable for the Mac primary
+development machine. Repair the one newly reproduced Windows onboarding defect,
+then push only the task branch as the GitHub handoff. Do not update protected
+`main`, create/merge a PR, open ETABS/Excel, run analysis, mutate a model, begin
+W2B/W2C, or broaden engineering claims.
+
+**Completed:**
+
+- Fetched GitHub and verified authenticated account `Pravin-surawase`, remote
+  `main` `a3f36cb4...`, no W2A PR, no existing remote W2A branch, and a clean
+  local W2A head `c629e362...` before this successor work.
+- Reinspected both retained Windows worktrees. The W2A worktree is the only
+  writer lane. The Windows primary checkout is clean, a strict ancestor of
+  `origin/main`, and 846 commits behind; it remains an untouched `HOLD_MAIN`
+  lane rather than a normal development checkout.
+- Made the machine ownership explicit in the canonical Git workflow and ETABS
+  plan: Mac owns normal development, current-main integration, PR/check/merge
+  follow-up, and cross-platform review; Windows owns installed Excel/ETABS COM,
+  copied-model/workbook tests, device-only evidence, and only bounded
+  host-specific repairs. GitHub is the sole tracked-history transfer boundary.
+- Added the exact writer handoff: Windows commits/pushes and stops writing; Mac
+  fetches/verifies the advertised remote head, reviews in a clean worktree, and
+  becomes the sole writer. Windows later runs W2C only from an exact Mac-
+  accepted candidate/evidence worktree.
+- Recorded the verified Windows toolchain and controls: Git
+  `2.55.0.windows.3`, GitHub CLI `2.98.0`, `uv 0.12.7`, Node `24.19.0`, npm
+  `11.17.0`, Python `3.11.15`, `comtypes 1.4.16`, `pydantic 2.13.5`, FastAPI
+  `0.141.1`, NumPy `2.4.6`, pre-commit `4.6.2`, source-bound shared `.venv`,
+  UTF-8 child runtime, and LF byte controls under system `core.autocrlf=true`.
+- Preserved the recoverable `.venv-broken-20260829` directory and the deliberate
+  no-WSL/no-Docker decision. No cleanup, deletion, reinstall, or protected-lane
+  mutation was performed.
+- Added a source-backed root-cause/solution/future-control table for wrong
+  workspace, missing/broken toolchains, console encoding, Windows executable
+  suffixes, POSIX React syntax, CRLF hash drift, source-path comparison, W2A
+  temporal freshness, CLI authentication, and the remaining npm advisory.
+- Confirmed the npm high advisory is dev-only `nanoid 3.3.17` through
+  `postcss`/Vite; `npm audit --omit=dev` is clean. Kept its lockfile remediation
+  in a separate Mac maintenance candidate rather than mixing it into W2A.
+- Expanded the remaining W2 ledger with distinct Mac-owned W2A review, W2B
+  contract/implementation, Mac+Windows W2C evidence planning, installed W2C
+  execution, and W2 close-decision gates. W2B/W2C remain not started and frame
+  analysis remains `HELD_NOT_SUPPORTED`.
+- Repaired `agent_start.sh` so Windows/MSYS and Python source paths are
+  canonicalized before comparison; the correct linked W2A source now passes
+  while the fail-closed shadowing check remains active.
+
+### Issues encountered
+
+- Canonical `session begin` recorded the task usage start but stopped during
+  onboarding with `Python source shadowing detected`, while
+  `python_runtime.sh --diagnose` proved the module was correctly bound to this
+  exact worktree.
+- The W2A branch existed only locally after the first candidate, so the Mac
+  could not fetch or review any of the Windows work despite complete local
+  documentation.
+- The Windows primary checkout was clean but 846 commits behind current
+  `origin/main`, demonstrating again that cleanliness does not mean freshness.
+- This already-running desktop process did not inherit all newly persisted
+  `PATH` entries, although a process built from the user `PATH` resolved every
+  installed tool correctly.
+- `npm audit` reports one high advisory, while its production-only audit reports
+  zero vulnerabilities.
+- The first documentation-category command used the positional form
+  `run.sh check docs`, which the current consolidated checker does not accept.
+- The first two commit attempts ran all semantic hooks successfully but the
+  mixed-line-ending hook first normalized `agent_start.sh`, then normalized the
+  attributes file itself once its new self-LF rule was introduced. Both
+  attempts correctly stopped before creating a commit.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `agent_start.sh` compared Git Bash/MSYS
+  `$PROJECT_ROOT` with a Windows `pathlib` source string. Replacing backslashes
+  alone was insufficient because `/c/...` and `C:/...` still differed.
+  Resolution: canonicalize both values with `cygpath -m` on
+  MINGW/MSYS/Cygwin, keep separator normalization elsewhere, add a governance
+  regression, and rerun real Windows onboarding successfully. ⚠️ TERMINAL
+  ISSUE: canonical session start falsely rejected correct source binding ->
+  repaired path canonicalization and proved `Python source binding: current
+  worktree`.
+- Confirmed root cause: the earlier requirement was explicitly one clean local
+  candidate, so no remote branch/PR was created. Resolution: this user-requested
+  cross-machine handoff now authorizes pushing only the completed task branch;
+  Windows stops writing after push and Mac verifies the remote head before use.
+- Confirmed root cause: Git fetch updates remote-tracking refs but never moves a
+  checked-out local `main`; the Windows primary is intentionally not the
+  programme's main development lane. Resolution: preserve it as `HOLD_MAIN` and
+  use exact fetched task/evidence worktrees on Windows; Mac remains the primary
+  development/integration owner.
+- Confirmed root cause: environment changes cannot update the parent process of
+  an already-running desktop task. Resolution: document a fresh-terminal/Codex
+  restart after machine setup and continue using explicit maintained launchers
+  in the current process. ⚠️ TERMINAL ISSUE: short tool names were absent from
+  the inherited process `PATH` -> user-PATH reconstruction proved the installed
+  commands; fresh processes inherit it normally.
+- Confirmed root cause: `nanoid` is a transitive development dependency below
+  its fixed patch, not an installed ETABS/Excel runtime dependency. Resolution:
+  document the exact chain and require a separate reviewed dependency update
+  with frontend test/build/audit evidence; do not silently rewrite W2A's lock.
+- Confirmed root cause: the maintained checker exposes categories only through
+  `--category`. Resolution: rerun the unchanged documentation set with
+  `run.sh check --category docs --no-reuse`; all eight checks pass fresh.
+  ⚠️ TERMINAL ISSUE: positional `check docs` was rejected before validation ->
+  used the checker-advertised category option and changed no content to obtain
+  the result.
+- Confirmed root cause: system `core.autocrlf=true` applied to shell scripts
+  because `.gitattributes` protected many source/fixture formats but not
+  `*.sh` or the attributes file itself. Resolution: add explicit LF rules for
+  `.gitattributes` and `*.sh`, retain each hook-normalized working byte stream,
+  refresh the exact receipt, and retry normal hooks. The one-time self-file
+  normalization is expected before its newly staged rule governs future
+  checkouts. ⚠️ TERMINAL ISSUE: commit attempts stopped after line-ending
+  normalization -> made LF checkout policy durable; no hook was bypassed and no
+  failed candidate commit exists.
+
+### Validation through content freeze
+
+- Live GitHub/user/repository/main/PR queries, fetched Git state, worktree
+  inventory, ancestry, and changed-path inspection are exact and read-only.
+- Windows tool/version/import, environment-variable, Git attribute, and common
+  pre-commit-hook probes pass. Production-only npm audit is clean; the one
+  dev-only advisory is explicitly retained in the remaining-work ledger.
+- Updated governance/release-environment tests pass together (`87 passed`), and real
+  `scripts/agent_start.sh --quick` completes with current-worktree source
+  binding instead of the reproduced false rejection.
+- Fresh documentation category passes `8/8` with zero reuse, including links,
+  metadata/version checks, task/brief controls, and context/control registries.
+- The documentation/setup successor remains subject to the focused
+  documentation/runtime checks, one consolidated quick gate, normal hooks,
+  clean candidate/session validation, exact remote push, and post-push remote
+  head verification. No installed ETABS/Excel or proprietary evidence was used.
+
+---
+
 ## 2026-08-29 — Session: ETABS/Excel beam W2A baseline contract and Windows setup
 
 **Agent:** Codex (`orchestrator`/`python-core`/`documentation`, sole writer; no

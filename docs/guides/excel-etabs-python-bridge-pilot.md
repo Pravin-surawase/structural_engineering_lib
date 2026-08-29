@@ -3,7 +3,7 @@
 **Type:** Guide
 **Audience:** Developers
 **Status:** Complete
-**Next Phase:** W2 Planned
+**Next Phase:** W2A Mac Review; W2B/W2C Not Started
 **Created:** 2026-08-28
 **Last Updated:** 2026-08-29
 **Importance:** High
@@ -77,6 +77,45 @@ concrete or reinforcement grades from an ETABS material-property label.
 
 ## Windows setup
 
+### Machine role
+
+The Mac is the programme's primary development/integration machine. Windows is
+the installed Excel/ETABS testing and evidence machine. Keep normal feature
+work, PR integration, and current `main` on the Mac; use Windows only for exact
+installed behavior, copied-model/workbook evidence, and bounded host-specific
+repairs. Tracked work moves only through GitHub under the one-branch/one-writer
+rule. Never copy repository source between the machines through OneDrive/SMB,
+and never commit proprietary model/workbook bytes or credentials.
+
+The Windows W2A preparation verified Git `2.55.0.windows.3`, GitHub CLI
+`2.98.0`, `uv 0.12.7`, Node `24.19.0`, npm `11.17.0`, Python `3.11.15`, and
+`comtypes 1.4.16`. The primary checkout owns the shared `.venv`; linked
+evidence worktrees use `scripts/python_runtime.sh`, which binds imports back to
+the invoking worktree. The old unusable environment is retained recoverably as
+`.venv-broken-20260829` rather than deleted.
+
+After installing or changing machine-level tools, start a fresh terminal/Codex
+process so the user `PATH` is inherited. Then verify:
+
+```bash
+./scripts/python_runtime.sh --diagnose
+./scripts/python_runtime.sh scripts/node_runtime.py --show-runtime
+./scripts/agent_start.sh --quick
+gh api user --jq .login
+```
+
+The expected source diagnosis must name the current task worktree and report
+`source_bound=true`. On Windows, the onboarding check now canonicalizes MSYS
+and Python paths before comparing them; a path-separator difference is not
+source shadowing. The launcher also defaults Python to UTF-8, recognizes
+`.venv/Scripts/python.exe`, and the Node selector recognizes `.exe`/`.cmd`.
+
+System Git uses `core.autocrlf=true` on this host. `.gitattributes` therefore
+forces LF for byte-frozen ETABS export/source formats and executable shell
+scripts. If a snapshot hash
+changes, compare the Git blob and worktree bytes; do not regenerate expected
+hashes to conceal CRLF conversion.
+
 Prerequisites:
 
 - 64-bit Windows with a supported 64-bit Python and ETABS installation;
@@ -90,14 +129,21 @@ Prerequisites:
 Run ETABS and the FastAPI process at the same Windows privilege level. For
 example, do not run one as Administrator and the other as a normal user.
 
-From repository root in PowerShell:
+For a new Windows primary environment, prefer the installed `uv` runtime from
+repository root in PowerShell:
 
 ```powershell
-py -3.11 -m venv .venv
+uv python install 3.11
+uv venv --python 3.11 .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe -m pip install -e "Python[etabs]"
 ```
+
+The prepared W2A host installed the complete repository extras because it is a
+general evidence machine. A minimal pilot host needs only the maintained base
+requirements and `Python[etabs]`; do not reinstall or replace a healthy shared
+environment from a linked worktree.
 
 Start FastAPI from repository root:
 

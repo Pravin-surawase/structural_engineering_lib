@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-29
-- Focus: First make the Windows host maintainably ready for this and future
-- Completed: Installed and verified Git for Windows, GitHub CLI, `uv`, Node 24/npm, and an; Persisted the repository Python selector and UTF-8 mode for this user,; Repaired the maintained launchers for Windows `.venv/Scripts/python.exe`,
-- Git receipt: docs/verification/etabs-excel-beam-w2a-baseline-git-handoff-receipt.json | sha256:797353e473fbb646ae9cc8eded4e19b8bdf7010a38b3a7b6003b0024d6686916 | HOLD
-- Git identity: codex/etabs-excel-beam-w2a-baseline@a3f36cb460395eeda32f832963917983e9bc4dfb | upstream=origin/main@a3f36cb460395eeda32f832963917983e9bc4dfb | base=origin/main@a3f36cb460395eeda32f832963917983e9bc4dfb | tree=dirty | operation=none
+- Focus: Make the W2A result, Windows setup, machine roles, root causes,
+- Completed: Fetched GitHub and verified authenticated account `Pravin-surawase`, remote; Reinspected both retained Windows worktrees. The W2A worktree is the only; Made the machine ownership explicit in the canonical Git workflow and ETABS
+- Git receipt: docs/verification/etabs-excel-beam-w2a-machine-handoff-git-handoff-receipt.json | sha256:fe900eb16b4441e38bfad4cd0ebaf787700f14ff5f9f7e662290df74973e23dc | HOLD
+- Git identity: codex/etabs-excel-beam-w2a-baseline@c629e362b4b93c915422ba2c1a6fb1cf3d56dadd | upstream=origin/main@a3f36cb460395eeda32f832963917983e9bc4dfb | base=origin/main@a3f36cb460395eeda32f832963917983e9bc4dfb | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -17,8 +17,9 @@
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` remains the immutable current normal software release; no new release is selected or authorized. |
-| **Current** | GitHub `origin/main` is `a3f36cb460395eeda32f832963917983e9bc4dfb` after PR #895. W2A is a locally verified candidate on `codex/etabs-excel-beam-w2a-baseline`: its transport-neutral baseline/topology/result contract and fake-COM adapter are frozen without opening ETABS or Excel. |
-| **Next** | Review and accept or repair the clean W2A candidate only. W2B live-bridge/REST/Excel expansion and W2C installed-Windows acceptance remain unstarted and require separate scope after W2A acceptance. |
+| **Current** | GitHub `origin/main` is `a3f36cb460395eeda32f832963917983e9bc4dfb` after PR #895. Windows produced W2A implementation candidate `c629e362...` plus a documentation/setup successor on `codex/etabs-excel-beam-w2a-baseline`. Windows is handing the fully pushed branch to the Mac and then stops writing it. |
+| **Machine roles** | Mac is the primary development/integration machine. Windows is the installed Excel/ETABS testing and evidence machine. GitHub is the tracked handoff authority; proprietary model/workbook/evidence bytes remain on Windows. |
+| **Next** | On Mac, fetch and verify `origin/codex/etabs-excel-beam-w2a-baseline`, review the full diff, rerun proportionate checks, and accept or make one bounded W2A review repair. W2B and W2C remain unstarted. |
 | **Held** | ETABS analysis, unlock/save, section/load write-back, optimization, complete solver parity, expanded design/detailing/site-practice automation, release, and professional or construction-use approval. |
 
 ## Today closeout
@@ -40,6 +41,15 @@
   discover Windows virtual environments and executable suffixes, the React
   build is cross-platform, byte-frozen E2K/XML fixtures stay LF, and the active
   GitHub CLI account is `Pravin-surawase`.
+- Windows onboarding now canonicalizes MSYS and Windows/Python paths, fixing the
+  false `Python source shadowing detected` result while preserving the real
+  source-bound fail-closed check.
+- The Windows primary checkout is clean but intentionally stale/protected. It
+  remains `HOLD_MAIN`; exact task/evidence work uses fetched dedicated
+  worktrees. Mac owns current `main` and normal integration.
+- The full root-cause ledger, tool versions, setup/recovery commands, npm
+  dev-only advisory, machine handoff, and remaining W2 gates are recorded in
+  the next-phase plan and pilot guide.
 - W2A did not open ETABS/Excel, run analysis/design, mutate a model, add
   REST/Excel W2 surfaces, optimize, or claim engineering approval. The verdict
   remains `HELD_NOT_SUPPORTED`.
@@ -48,11 +58,18 @@
 
 ## Next objective
 
-Review the exact W2A candidate and its verification evidence. Accept it or make
-only a bounded W2A repair. Do not begin W2B or W2C merely because the local gate
-is green. The next-phase plan contains the frozen schemas, getter matrix,
-topology rules, reason codes, provenance/hash basis, result-row policy, and
-`HELD_NOT_SUPPORTED` rationale.
+On the Mac primary machine:
+
+1. `git fetch origin` and verify the final remote branch head plus current
+   `origin/main`; do not use the Windows-local `c629e362` as the final head.
+2. Create a clean review worktree from
+   `origin/codex/etabs-excel-beam-w2a-baseline` and inspect the complete
+   `origin/main...HEAD` diff.
+3. Run the W2A focused set and proportionate runtime/governance/quick checks.
+4. Accept W2A or make one bounded Mac-owned review repair, then use the normal
+   PR/check/integration path.
+5. Keep W2B, W2C, installed ETABS/Excel execution, model mutation, and the
+   separate dev-only npm advisory repair outside this review packet.
 
 ## New-chat starter
 
@@ -67,6 +84,7 @@ Use the copy-ready prompt in
   item, retained source, branch, ref, and archive. Protected `main` remains a
   `HOLD_MAIN` lane.
 - Do not copy repository files between devices; push/PR/fetch through GitHub.
+- Windows stops writing the W2A branch after push; Mac becomes its sole writer.
 - Do not rewrite history, bypass checks, delete branches/worktrees/refs/data,
   rebuild a public version, or broaden software/engineering claims.
 
@@ -79,3 +97,4 @@ Use the copy-ready prompt in
 5. [Current task board](../TASKS.md)
 6. `Python/structural_lib/services/etabs_beam_baseline.py`
 7. `Python/tests/unit/test_etabs_beam_baseline.py`
+8. [Newest W2A Windows/setup session entry](../SESSION_LOG.md)
