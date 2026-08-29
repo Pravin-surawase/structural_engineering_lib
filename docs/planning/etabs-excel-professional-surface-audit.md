@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: draft
-last_updated: 2026-08-29
+last_updated: 2026-08-30
 doc_type: spec
 complexity: advanced
 tags: [etabs, excel, professional-review, digital-signature, api, react, retirement]
@@ -19,10 +19,12 @@ compaction.
 
 This audit authorizes no deletion, public-contract break, release, ETABS
 analysis/design/save/write-back, credential claim, or professional approval.
-W2C is now integrated through PR #898. The W3-readiness maintenance separately
-authorized removal of only the ignored, recreatable local React dependency and
-build caches; all tracked API, React, evidence, documentation, branch, and
-worktree retirement remains held.
+W2C is integrated through PR #898, and the exact W3-readiness predecessor is
+PR #899 merge `7af545ec0e239bac8fa6d480ecbb2b05a60aa40d` with tree
+`cc40650b7f6569227c880d61a9967ee3bbdfab31`. The W3-readiness maintenance
+separately authorized removal of only the ignored, recreatable local React
+dependency and build caches; all tracked API, React, evidence, documentation,
+branch, and worktree retirement remains held.
 
 The intended operating model is:
 
@@ -66,6 +68,11 @@ installed evidence reconciles the same 3,502-station direct/REST baseline with
 all seven Excel tables and exact canonical JSON. The earlier six-table
 `BLOCKED_SAFE_EXCEL_JSON_WRITE` artifact remains retained as historical
 root-cause evidence, not the current verdict.
+
+The 2026-08-30 W3 planning pass fetched and independently verified
+`origin/main`, `FETCH_HEAD`, PR #899 and merged-tree identity before editing.
+This companion inherits the master plan's `L0`-`L7` evidence levels and does
+not promote workbook, signature or software evidence to professional approval.
 
 ### Current surface sizes
 
@@ -241,6 +248,40 @@ Add provider-neutral contracts before integrating any signing service:
 | `DigitalSignatureEvidenceV1` | Provider/mechanism, signed-artifact hash, signature value/reference, certificate subject/issuer/serial/thumbprint, algorithm, signing time, chain/revocation status and verification time |
 | `SignedCalculationDossierV1` | Project/model/catalogue/demand/calculation/report hashes, all attestations, signature evidence, immutable artifact identity, and final status |
 
+The provider-neutral public function signatures are:
+
+```python
+def build_calculation_dossier_v1(
+    request: CalculationDossierBuildRequestV1, /
+) -> CalculationDossierBuildResultV1: ...
+
+def record_review_attestation_v1(
+    dossier: CalculationDossierV1,
+    attestation: ReviewAttestationV1,
+    /,
+) -> AttestedCalculationDossierV1: ...
+
+def attach_digital_signature_evidence_v1(
+    dossier: AttestedCalculationDossierV1,
+    evidence: DigitalSignatureEvidenceV1,
+    /,
+) -> SignedCalculationDossierV1: ...
+
+def verify_signed_calculation_dossier_v1(
+    dossier: SignedCalculationDossierV1,
+    *,
+    verification_time_utc: str,
+) -> DossierVerificationResultV1: ...
+```
+
+These functions build and verify evidence; they do not sign bytes, hold private
+keys, validate professional eligibility for every jurisdiction, or turn a
+typed name into approval. `record_review_attestation_v1` rejects a dossier hash
+or review scope mismatch. `attach_digital_signature_evidence_v1` rejects a
+signed-artifact hash mismatch. Verification separately reports artifact hash,
+certificate chain, revocation, credential-evidence and review-scope states so
+one success cannot mask another hold.
+
 The library validates schema, hashes, internal consistency, staleness, and
 cryptographic verification evidence. A credential-authority adapter may verify
 external facts for one jurisdiction. The core library must not claim that the
@@ -292,7 +333,8 @@ publication affordance, but it is not an unresolved W2 blocker.
 
 ### X2 — Review workbook
 
-Add formula-free controlled tables for:
+After the W3 data contracts are accepted, add formula-free controlled tables
+for:
 
 - project/model/runtime identity and source hashes;
 - load-pattern/case/combination catalogue and selected scenarios;
@@ -301,9 +343,32 @@ Add formula-free controlled tables for:
 - reviewer comments/dispositions and revision history; and
 - dossier/export/signature verification status.
 
+The bounded projection separates compact review from lossless transport:
+
+- identity/catalogue tables retain pattern, case, status, selection,
+  combination and ordered-factor rows;
+- scenario/governing tables retain exact `BeamGoverningReferenceV1` row IDs and
+  never present independent extrema as one concurrent action;
+- raw action, displacement and reaction rows use explicit bounded pages or the
+  canonical JSON bundle rather than silent truncation;
+- comments/dispositions are user-owned review data with revision identity and
+  never alter canonical calculation bytes; and
+- dossier/signature tables display evidence state but never store private keys
+  or fabricate approval.
+
+Before any write, the add-in must preflight requirement sets, controlled sheet/
+table collisions, headers, row/byte limits and the complete intended write
+set. Publication is all-table transactional: snapshot existing controlled
+ranges, write typed values, read back structured cells, rejoin canonical UTF-8
+bytes, verify counts/hashes, then mark the revision committed. Failure removes
+new controlled sheets and restores every existing controlled range/dimension.
+The accepted W2 `valuesAsJson` literal-string path remains the first transport
+choice; any fallback needs its own installed proof.
+
 Workbook settings may cache UI freshness state, but the canonical evidence
 must remain in hash-bound tables/bundles. Sheet protection is presentation
-control only.
+control only. Mac owns schema/transaction/fake-host tests; Windows owns the
+separately authorized installed Excel save/readback/rollback evidence.
 
 ### X3 — Professional-signature handoff
 
@@ -462,11 +527,14 @@ provider and project/jurisdiction requirements; it must not be guessed.
 
 1. Start W3A by freezing the load pattern/case/combination catalogue and demand
    contracts without opening or mutating ETABS.
-2. Repair Pareto shear truth in a separate library packet before optimizer use.
-3. Add the professional dossier/attestation types before adding signature UI.
-4. Build the bounded beam-line solver and local screening only on accepted
+2. After W3A is accepted and merged, and only after separate user authority,
+   run the bounded Windows ETABS 23.3.1 static getter/signature audit; do not
+   infer live model values from it.
+3. Repair Pareto shear truth in a separate library packet before optimizer use.
+4. Add the professional dossier/attestation types before adding signature UI.
+5. Build the bounded beam-line solver and local screening only on accepted
    W3A inputs.
-5. Prune only proven dead React adapters and compact only proven historical or
+6. Prune only proven dead React adapters and compact only proven historical or
    recreatable material in separately authorized packets.
 
 Do not start with public-function deletion, a broad React removal, worksheet

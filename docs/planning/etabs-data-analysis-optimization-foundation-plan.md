@@ -1,23 +1,30 @@
 ---
 owner: Main Agent
 status: draft
-last_updated: 2026-08-29
+last_updated: 2026-08-30
 doc_type: spec
 complexity: advanced
 tags: [etabs, beams, data-contracts, frame-analysis, optimization, provenance]
 ---
 
-# ETABS Data, Beam Analysis, and Optimization Foundation
+# W3 ETABS Data, Beam Analysis, and Optimization Master Plan
 
 ## Purpose and authority
 
-This document converts the recent W1/W2 ETABS work into a practical public-
-library foundation for beam audit, local candidate screening, and later
-ETABS-verified optimization. It is the current planning authority for that
-foundation only. W2C is integrated through PR #898 at merge
-`f1873e7b...`; the owner has authorized the W3 start after this maintenance
-closeout. This document does not itself authorize ETABS analysis or design,
-mutate an ETABS model, or establish engineering/professional approval.
+This document converts the accepted W1/W2 ETABS work into the durable W3
+programme for public data contracts, beam audit, local candidate screening,
+and later ETABS-verified optimization. It is the planning authority for that
+foundation only. The exact W3-readiness predecessor is PR #899 merge
+`7af545ec0e239bac8fa6d480ecbb2b05a60aa40d`, with merged tree
+`cc40650b7f6569227c880d61a9967ee3bbdfab31`. The plan remains draft until the
+owner accepts it; acceptance authorizes no implementation packet by itself.
+
+W3A is intentionally the first bounded Mac read-only contract packet. No W3
+packet in this plan authorizes opening ETABS or Excel, running ETABS analysis
+or design, mutating a model or workbook, starting optimization, deleting a
+public surface or retained evidence, publishing a release, or making an
+engineering/professional claim. Each later installed or mutation packet needs
+its own explicit authority and exact predecessor check.
 
 Use the companion
 [ETABS, Excel, Professional Attestation, and Surface Retirement Audit](etabs-excel-professional-surface-audit.md)
@@ -38,7 +45,11 @@ the public library verifies the fresh actions and records the comparison
 ```
 
 The objective is fewer ETABS trips without pretending that a local beam model
-has full 3D ETABS parity.
+has full 3D ETABS parity. Independent frame analysis remains exactly
+`HELD_NOT_SUPPORTED` until a separately accepted solver packet and separately
+accepted model-specific calibration evidence both exist. Even then, the local
+solver remains a bounded surrogate and ETABS remains the global-analysis
+authority.
 
 ## Exact audit boundary
 
@@ -62,12 +73,26 @@ The W3-readiness maintenance refreshed that boundary after a new fetch:
 - no ETABS analysis/design/save/write-back occurred, while independent frame
   analysis remains `HELD_NOT_SUPPORTED`.
 
+This W3 planning audit refreshed the boundary again on 2026-08-30 before any
+write:
+
+- `git fetch origin main` completed successfully;
+- `origin/main`, `FETCH_HEAD`, and the starting `HEAD` all resolved to exact
+  PR #899 merge `7af545ec0e239bac8fa6d480ecbb2b05a60aa40d`;
+- GitHub reported PR #899 `MERGED` into `main` with that merge commit;
+- both `origin/main^{tree}` and `FETCH_HEAD^{tree}` resolved to exact tree
+  `cc40650b7f6569227c880d61a9967ee3bbdfab31`;
+- the starting linked worktree was clean, operation-free, lock-free, and
+  detached at that exact predecessor; and
+- sibling worktrees were retained unchanged. No clean/behind/detached state was
+  treated as deletion, retirement, or mutation authority.
+
 The earlier blocked retry and six-table JSON-write evidence remain retained as
 historical fail-closed records. They no longer describe the current W2 state.
 
-The required repository session start was also blocked by the preserved
-unmatched `EXCEL-ETABS-PYTHON-BRIDGE-PILOT` checkpoint. The audit did not close,
-rewrite, or borrow that historical timing state.
+The historical session-timer issue recorded by the predecessor is closed. This
+planning audit began exact task `W3-PLAN-AUDIT` through the maintained session
+command and recorded no borrowed timing or installed-application evidence.
 
 ## Current capability truth
 
@@ -172,6 +197,26 @@ Optimization and verification orchestration
 ETABS remains the final global-analysis authority. The local solver is a
 surrogate for gravity-dominated beam-line screening and sensitivity studies.
 
+### Architecture ownership and allowed dependencies
+
+| Owner | Planned paths | Responsibility | Must not own |
+|---|---|---|---|
+| Core contracts | `Python/structural_lib/core/analysis_contracts.py`, later `core/beam_line.py` | Vendor-neutral immutable states, definitions, action rows, scenarios, governing references, beam-line requests/results | COM objects, ETABS enum decoding, I/O, IS 456 calculations |
+| IS 456 calculations | Existing `Python/structural_lib/codes/is456/` modules | Pure code checks over explicit units and accepted demand/design inputs | ETABS access, Excel transport, optimization orchestration |
+| Services/contracts | `Python/structural_lib/services/contracts/etabs_w3.py` | ETABS identity wrappers, catalogue/snapshot build requests and results, hash-link contracts | Raw vendor arrays in public values, hidden engineering defaults |
+| ETABS adapter | Later `Python/structural_lib/services/etabs_w3_adapter.py` | Decode reviewed getters, normalize units, enforce model/runtime/getter identity, produce normalized build requests | Analysis/design/setters except a separately approved future mutation adapter |
+| Demand and audit services | Later `Python/structural_lib/services/beam_demand.py`, `beam_audit.py` | Pure derivation, paging, audit composition, evidence/status propagation | COM access or Excel writes |
+| Optimization orchestration | Existing optimizer services plus later candidate services | Feasibility-first generation, deterministic ranking, shortlist and comparison | Global-analysis acceptance or bypass of ETABS reanalysis |
+| UI/transport | `fastapi_app/`, `excel_addin/`, narrow React review surfaces | Versioned request/response projection, formula-free workbook review, explicit evidence display | Structural recomputation or silent state coercion |
+
+The dependency direction remains Core -> IS 456 -> Services -> UI/IO. A
+vendor-neutral core contract may be used by an ETABS, CSV, Excel, SAFE, or
+future solver adapter; a core or IS 456 module may never import an ETABS service
+or transport model. W3A must either root-export each accepted public symbol
+through the maintained service facade and `structural_lib` facade or record it
+as intentionally adapter-internal. It may not create an undocumented third
+public surface.
+
 ## Data foundation
 
 ### Snapshot set
@@ -230,10 +275,27 @@ Optional must mean one of:
 3. an opt-in module whose omission visibly holds that check; or
 4. an expected-state guard used only for a future mutation request.
 
-Missing information must be represented as typed `NOT_AVAILABLE`,
-`NOT_APPLICABLE`, `NOT_REQUESTED`, or `BLOCKED_MISSING_INPUT` evidence. Do not
-substitute hidden engineering defaults and do not copy COM by-reference output
-arrays into the public API.
+Every calculation-bearing value that can be absent uses one exact public state:
+
+| State | Meaning | Value rule |
+|---|---|---|
+| `PRESENT` | Getter/caller supplied and validated the value | `value` is present; zero, `false`, and an empty bounded collection remain valid values |
+| `UNAVAILABLE` | The approved source cannot provide the value in this evidence packet | `value` is absent; stable reason and source evidence are required |
+| `NOT_REQUESTED` | The approved query deliberately omitted an opt-in module | `value` is absent; the dependent check remains visibly held |
+| `NOT_APPLICABLE` | The field cannot apply to the declared type/scenario | `value` is absent; applicability basis is required |
+| `BLOCKED` | The value is required for the requested outcome but failed validation or is missing | `value` is absent; no accepted parent result may be returned |
+
+The exact reusable contract is `EvidenceValueV1[T]` with `state`, `value`,
+`reason_code`, `message`, and `source_references`. `PRESENT` requires a non-null
+typed value and forbids a blocking reason. Every other state requires a null
+value and a stable reason. `None` by itself is never a public semantic state.
+An omitted JSON key is accepted only for a read filter or backward-compatible
+request default whose omission cannot change an engineering conclusion.
+
+Do not substitute hidden engineering defaults and do not copy COM by-reference
+output arrays into the public API. Unsupported selected-case parameters,
+missing combination factors, an unfinished selected case, or an absent action
+row must become `BLOCKED`, not `UNAVAILABLE` or zero.
 
 ### Result volume and access
 
@@ -250,53 +312,161 @@ and `M3`; those extrema can come from different rows. That is acceptable only
 as explicitly labelled independent-component screening. It must not be called
 a concurrent load state.
 
-Add transport-neutral public contracts:
+W3A freezes the following transport-neutral public contracts before any ETABS
+getter is added.
 
-### `BeamActionRowV1`
+### Definition catalogue contracts
 
-Required fields:
+| Contract | Required semantics |
+|---|---|
+| `LoadPatternDefinitionV1` | Stable ID/name, raw and normalized type, exact self-weight multiplier, source ordinal and evidence reference |
+| `LoadCaseParameterSetV1` | Discriminated case-family union; selected supported families require typed parameters, while unsupported families retain identity plus an explicit non-`PRESENT` evidence state |
+| `LoadCaseDefinitionV1` | Stable ID/name, raw type/subtype/design type, auto flag, typed parameter set, analysis-status reference and definition digest |
+| `AnalysisStatusIdentityV1` | Case ID, raw installed status code, normalized state, getter/signature identity, model/catalogue observation bracket and evidence time |
+| `ResponseCombinationFactorV1` | Zero-based ordinal, source kind (`CASE` or `COMBINATION`), exact source ID/name and signed scale factor |
+| `ResponseCombinationDefinitionV1` | Stable ID/name, raw and normalized combination type, ordered factor tuple, definition digest and design-purpose evidence |
+| `ResultSelectionIdentityV1` | Selection ID/kind/name, selected-for-output state, linked case status or combination definition, model/runtime/getter identity and observation bracket |
+| `ETABSResultCatalogueV1` | Model/runtime identity, complete pattern/case/combination inventories, selection identities, getter-matrix digest, capacity counts and catalogue SHA-256 |
 
-- source snapshot and baseline digests;
-- member and station identities;
-- result selection, step type and step number;
-- object/element station and source row index;
-- signed `P`, `V2`, `V3`, `T`, `M2`, `M3`; and
-- unit basis.
+The initial `LoadCaseParameterSetV1` discriminated union contains
+`LinearStaticCaseParametersV1` with ordered `LinearStaticLoadItemV1` values and
+`UnsupportedCaseParametersV1` with retained raw type/subtype plus a non-
+`PRESENT` evidence state. Additional modal, response-spectrum, nonlinear or
+other family parameter types require their own later versioned contract and
+installed getter packet; W3A does not stuff arbitrary mappings into the union.
 
-### `BeamDemandScenarioV1`
+Combination factors remain ordered and lossless. Repeated factors are not
+coalesced, signed factors are not converted to absolute values, and nested
+combinations reference exact combination IDs. Catalogue validation rejects a
+missing factor target, duplicate stable ID, cycle in the nested-combination
+graph, unproved selected definition, unfinished selected case, or digest
+mismatch. Names alone are never definition identity.
 
-Required fields:
+W3A does not pretend to know every ETABS case-family getter. It freezes the
+discriminated union and fail-closed unsupported-family state; W3B then proves
+the installed 23.3.1 getter/signature surface, and a later Mac adapter packet
+implements only the accepted subset. A case used by an accepted scenario must
+have `PRESENT` parameters sufficient for that scenario.
 
-- scenario ID and purpose (`STRENGTH`, `SERVICE`, or `COMPARISON`);
-- included selection IDs and definition-catalogue digest;
-- station domain and component policy;
-- concurrency rule;
-- governing row references; and
-- explicit held components/checks.
+### Same-row action, scenario, envelope, and governing contracts
 
-### `BeamDemandEnvelopeRuleV1`
+`BeamActionRowV1` is a lossless design-facing projection of one retained W2
+force row. It requires the model, W2 baseline and catalogue digests; member,
+source frame and stable station IDs; selection ID/kind/name; exact output-case
+name; object/element names and stations; step type/number; source row index;
+signed `P`, `V2`, `V3`, `T`, `M2`, and `M3`; unit and local-axis basis; and a
+row digest. All six actions always travel together. An action component may not
+be copied into a different row or stripped of its sign.
 
-It must state whether the result is:
+`BeamDemandScenarioV1` requires scenario ID/revision, purpose (`STRENGTH`,
+`SERVICE`, or `COMPARISON`), catalogue and baseline digests, included selection
+IDs, member/station domain, component requirements, rule IDs, deterministic
+tie-break policy, and explicit held checks.
 
-- one exact same-row concurrent action;
-- signed positive/negative extrema per component;
-- an independent-component absolute envelope; or
-- a caller-defined code/design envelope.
+`BeamDemandEnvelopeRuleV1` declares exactly one mode:
 
-No function may label actions concurrent unless they originate from the same
-retained result row.
+- `SAME_ROW_CONCURRENT`: one retained row supplies every reported component;
+- `SIGNED_COMPONENT_EXTREMA`: positive and negative extrema are separate
+  governing references and are not called one concurrent state;
+- `INDEPENDENT_ABSOLUTE_COMPONENTS`: each absolute component may cite a
+  different row and the result is labelled screening-only; or
+- `CALLER_DEFINED_CODE_ENVELOPE`: the caller supplies a typed rule/basis and
+  every contributing row remains referenced.
 
-### Pure functions
+`BeamGoverningReferenceV1` binds scenario, member, component/sign, rule,
+governing value, action-row ID(s), selection and deterministic tie-break. A
+concurrent reference must cite exactly one row. A multi-row reference must
+declare itself non-concurrent. `BeamDemandSnapshotV1` contains compact
+governing references plus hashes/counts; `BeamActionPageV1` provides explicit
+bounded access to raw rows without duplicating or truncating evidence.
 
-- `build_etabs_result_catalogue_v1(...)`
-- `verify_etabs_result_catalogue_hash_v1(...)`
-- `derive_beam_demand_scenarios_v1(baseline, catalogue, rules)`
-- `build_beam_audit_inputs_v1(demands, design_basis)`
-- `evaluate_beam_audit_v1(inputs)`
+### Exact W3A public function signatures
 
-The ETABS-named function owns translation/provenance. Demand derivation and
-beam evaluation remain adapter-neutral and reusable by CSV, Excel, SAFE, or
-future analysis sources.
+The W3A implementation packet must use these signatures or stop and update the
+accepted plan before changing them:
+
+```python
+def build_etabs_result_catalogue_v1(
+    request: ETABSResultCatalogueBuildRequestV1, /
+) -> ETABSResultCatalogueBuildResultV1: ...
+
+def canonical_etabs_result_catalogue_hash_basis_json_v1(
+    catalogue: ETABSResultCatalogueV1, /
+) -> str: ...
+
+def verify_etabs_result_catalogue_hash_v1(
+    catalogue: ETABSResultCatalogueV1, /
+) -> bool: ...
+
+def derive_beam_demand_snapshot_v1(
+    request: BeamDemandDerivationRequestV1, /
+) -> BeamDemandBuildResultV1: ...
+
+def canonical_beam_demand_snapshot_hash_basis_json_v1(
+    snapshot: BeamDemandSnapshotV1, /
+) -> str: ...
+
+def verify_beam_demand_snapshot_hash_v1(
+    snapshot: BeamDemandSnapshotV1, /
+) -> bool: ...
+
+def query_beam_action_rows_v1(
+    baseline: ETABSBeamBaselineV1,
+    *,
+    member_ids: tuple[str, ...] = (),
+    selection_ids: tuple[str, ...] = (),
+    cursor: str | None = None,
+    limit: int = 1000,
+) -> BeamActionPageV1: ...
+```
+
+Build functions return `ACCEPTED` with one complete immutable value and no
+issues, or `BLOCKED` with stable issues and no partial value. The ETABS-named
+builder owns identity/provenance validation over normalized inputs; W3A does
+not accept `sap_model: Any` as a root public parameter. Installed COM decoding
+stays in the later adapter. Demand derivation remains adapter-neutral and
+reusable by CSV, Excel, SAFE, or future analysis sources.
+
+### Later public snapshots and functions needed for calibration
+
+The following are planned after W3A and the installed getter audit:
+
+```python
+def build_etabs_model_definition_snapshot_v1(
+    request: ETABSModelDefinitionBuildRequestV1, /
+) -> ETABSModelDefinitionBuildResultV1: ...
+
+def build_etabs_displacement_snapshot_v1(
+    request: ETABSDisplacementBuildRequestV1, /
+) -> ETABSDisplacementBuildResultV1: ...
+
+def build_etabs_reaction_snapshot_v1(
+    request: ETABSReactionBuildRequestV1, /
+) -> ETABSReactionBuildResultV1: ...
+
+def verify_etabs_model_definition_snapshot_hash_v1(
+    snapshot: ETABSModelDefinitionSnapshotV1, /
+) -> bool: ...
+
+def verify_etabs_displacement_snapshot_hash_v1(
+    snapshot: ETABSDisplacementSnapshotV1, /
+) -> bool: ...
+
+def verify_etabs_reaction_snapshot_hash_v1(
+    snapshot: ETABSReactionSnapshotV1, /
+) -> bool: ...
+```
+
+The model-definition snapshot must capture exact beam-line connectivity,
+coordinates, local axes, sections/material labels, end releases, end offsets/
+insertion points, stiffness/mass/weight modifiers, restraints, springs,
+assigned loads and explicitly supplied diaphragm/slab context. Displacement
+rows retain joint/object/element identity, selection, step, six signed degrees
+of freedom, source row, units and model/catalogue digests. Reaction rows retain
+support/joint identity, selection, step, six signed components, source row,
+units and the same digests. Missing displacement evidence permits an explicit
+action-only comparison; missing required topology or reaction evidence blocks
+the calibration mode that depends on it.
 
 ## Local beam-line surrogate
 
@@ -323,19 +493,39 @@ construction, soil-structure interaction, or ETABS-parity claims.
 
 ### Proposed public contracts and functions
 
-- `BeamLineNodeV1`
-- `BeamLineSpanV1`
-- `BeamLineSupportV1`
-- `BeamLineLoadCaseV1`
-- `BeamLineCombinationV1`
-- `BeamLineScenarioV1`
-- `BeamLineAnalysisRequestV1`
-- `BeamLineAnalysisResultV1`
-- `solve_beam_line_linear_v1(request)`
-- `compare_beam_line_to_reference_v1(local, reference, policy)`
+- `BeamLineNodeV1`, `BeamLineSpanV1`, `BeamLineSupportV1` and
+  `BeamLineSupportSpringV1` freeze geometry, degrees of freedom, releases,
+  offsets and support stiffness without inferring them from ETABS labels.
+- `BeamLineLoadCaseV1`, `BeamLineCombinationV1` and `BeamLineScenarioV1`
+  freeze UDL/point/self-weight loads, signed factors, service/factored purpose,
+  patterned loading and deterministic uncertainty assumptions.
+- `BeamLineAnalysisRequestV1` binds model-definition, catalogue and scenario
+  digests, explicit `E`, `I`, density and stiffness modifier, unit basis,
+  station sampling and finite limits.
+- `BeamLineAnalysisResultV1` retains nodal translations/rotations, reactions,
+  member-end actions, signed station diagrams, equilibrium residuals,
+  deterministic hash and mandatory `SURROGATE_ONLY` status.
+
+```python
+def solve_beam_line_linear_v1(
+    request: BeamLineAnalysisRequestV1, /
+) -> BeamLineAnalysisBuildResultV1: ...
+
+def compare_beam_line_to_reference_v1(
+    request: BeamLineComparisonRequestV1, /
+) -> BeamLineCalibrationV1: ...
+```
 
 Torsion cannot be derived by the first 2D solver. It must be supplied from an
 ETABS demand scenario or reported as `HELD_NOT_DERIVED`.
+
+An accepted numerical solver does not by itself clear independent-frame-
+analysis status. `HELD_NOT_SUPPORTED` remains on the existing ETABS baseline
+and public capability until the solver has passed its own acceptance packet
+and an independently accepted calibration packet binds it to the exact model,
+definitions, selections, actions and required displacement/reaction evidence.
+Calibration clears only the declared model/scenarios/components; it never
+establishes general ETABS parity.
 
 ### Scenario and uncertainty model
 
@@ -401,143 +591,296 @@ Future public orchestration types:
 - `ETABSReanalysisEvidenceV1`
 - `AnalysisIterationComparisonV1`
 
+Planned orchestration signatures are:
+
+```python
+def screen_beam_family_candidates_v1(
+    request: CandidateScreeningRequestV1, /
+) -> CandidateScreeningBatchResultV1: ...
+
+def build_candidate_shortlist_v1(
+    request: CandidateShortlistRequestV1, /
+) -> CandidateShortlistV1: ...
+
+def build_etabs_reanalysis_plan_v1(
+    request: ETABSReanalysisPlanRequestV1, /
+) -> ETABSReanalysisPlanBuildResultV1: ...
+
+def compare_etabs_reanalysis_v1(
+    request: ETABSReanalysisComparisonRequestV1, /
+) -> AnalysisIterationComparisonV1: ...
+```
+
 `ETABSReanalysisPlanV1` must include an allowlisted copy, baseline hash,
 expected old assignments, proposed new definitions/assignments, approved cases,
 combination/catalogue digest, backup identity, unit/lock policy, save target,
 abort policy and finite evaluation budget. This is a future separately reviewed
 mutation contract, not part of the initial solver.
 
+Local screening may reject candidates and may rank a bounded shortlist. It may
+not declare a changed section/family accepted for the ETABS model. Every
+shortlisted candidate that remains under consideration requires fresh ETABS
+reanalysis on an authorized recoverable copy before any final selection, and
+the chosen final candidate requires one independent repeat from the clean
+approved baseline. Fresh force results, displacements/reactions and every
+predeclared whole-model safeguard are compared against their exact prior
+identities. A locally feasible candidate that lacks successful ETABS
+reanalysis is `SCREENED_ONLY`, never approved.
+
+## Evidence levels
+
+Evidence levels are cumulative only when every predecessor identity remains
+exact. One level must never be described as a higher level:
+
+| Level | Evidence | Permitted claim |
+|---|---|---|
+| `L0_PLAN` | Reviewed plan, repository/Git authority and frozen boundaries | Scope and sequence only |
+| `L1_LOCAL_SOFTWARE` | Mac types, validators, hashes, fakes, pure functions and maintained tests | Local software behavior only |
+| `L2_INSTALLED_SIGNATURE` | Installed ETABS 23.3.1 assembly/type-library/generated-wrapper identities and exact getter signatures/shapes | Compatibility of the frozen adapter surface; no model value or live result claim |
+| `L3_INSTALLED_READ_ONLY` | Exact authorized copied model, live getter return codes/shapes/data, unchanged file/lock/units and hash-linked snapshots | Bounded read-only installed evidence for that model/version |
+| `L4_INSTALLED_EXCEL_REVIEW` | Saved workbook typed-cell readback, all-table transaction/rollback and exact canonical rejoin/hash | Bounded Excel transport/review evidence |
+| `L5_SOLVER_CALIBRATION` | Accepted solver benchmarks plus model-specific action/displacement/reaction comparison under frozen tolerances | `SURROGATE_ONLY` screening for declared model/scenarios/components |
+| `L6_CONTROLLED_REANALYSIS` | Authorized copied-model mutation, approved ETABS analysis, fresh snapshots, restore/save and whole-model comparison | One bounded ETABS-verified candidate result; no professional approval |
+| `L7_QUALIFIED_REVIEW` | Immutable dossier, in-scope qualified review and independently verified external signature evidence | The recorded professional decision only, subject to jurisdiction/project scope |
+
+`HELD_NOT_SUPPORTED` remains the independent frame-analysis verdict through
+`L0`-`L4`. `L5` adds a bounded `SURROGATE_ONLY` capability; it does not rename
+or erase the existing verdict or establish general solver parity.
+
 ## Dependency-ordered execution packets
 
-### P0 — Complete: W2C integrated
+### P0 — Complete predecessor: PR #899 integrated
 
-PR #898 integrated the exact reviewed candidate after independent Mac review,
-full local verification, and green Python/FastAPI/Excel/documentation hosted
-checks. Typed literal cells, seven-table rollback, exact readback/rejoin/hash,
-and installed model preservation all passed. This closes the W2 predecessor as
-software workflow evidence only; it does not change the solver, mutation, or
-professional-review holds.
+PR #899 merged as exact commit `7af545ec0e239bac8fa6d480ecbb2b05a60aa40d`
+with tree `cc40650b7f6569227c880d61a9967ee3bbdfab31`. It contains the accepted W2C
+foundation and W3-readiness maintenance. This is software/evidence readiness,
+not solver, mutation, optimization or professional acceptance.
 
-### P1 — Pareto optimizer truth repair
+### W3A — Mac read-only definition and demand contracts (`L1`)
 
-- Make shear participate in feasibility and reported utilization, or reject
-  nonzero `vu_kn` until that is implemented.
-- Validate objective names strictly rather than silently treating unknown
-  objectives as cost.
-- Label remaining torsion, serviceability, stirrup-cost and fixed-action holds.
+Owner: Mac. Dependency: accepted plan and exact P0 predecessor. Indicative
+effort: 8-15 focused engineer-days.
 
-Exit: a high-shear regression produces no shear-unsafe Pareto recommendation;
-every reported safe candidate states exactly which checks ran and which remain
-held.
+- Add the frozen availability, definition/catalogue, analysis-status,
+  selection, same-row action, scenario, envelope, governing-reference, page and
+  build-result contracts.
+- Add the exact public functions listed above, deterministic canonical hashes,
+  root/service exports and caller/API ledger registration.
+- Use normalized fake-adapter fixtures only. Do not add a COM dependency,
+  FastAPI operation, Excel write, beam design call, solver or optimizer call.
+- Keep the existing W2 types byte-compatible; link rather than reinterpret
+  `ETABSBeamBaselineV1`.
 
-### P2 — Result catalogue and demand contracts
+Focused acceptance: strict unknown-field rejection; all five evidence-value
+states including valid zero/false `PRESENT`; ordered/nested factors; missing
+target and cycle rejection; finished/selected identity; same-row concurrency;
+cross-row concurrency rejection; deterministic tie-breaking; canonical hash
+round-trip/tamper rejection; lossless paging/capacity failure; architecture and
+public-export/ledger checks. Accepted builds expose one complete value and no
+issues; blocked builds expose issues and no partial value.
 
-- Freeze the typed load pattern/case/combination catalogue and hash.
-- Expand the getter matrix only for approved exact operations.
-- Add same-row action, scenario, envelope and governing-reference contracts.
-- Add a separately versioned displacement snapshot and exact node/selection/
-  step mapping before any later packet compares displacements; an action-only
-  packet may leave it explicitly `NOT_REQUESTED`.
-- Link every W3 input to W2 baseline and catalogue digests.
+### W3B — Windows installed 23.3.1 getter/signature audit (`L2`)
 
-Exit: unapproved selections, missing constituents, hash mismatch, absent
-station, cross-row concurrency, or missing design basis fail closed.
+Owner: Windows evidence laptop. Dependencies: accepted and merged W3A contract,
+exact W3A commit/tree supplied in the handoff, and separate user authorization
+to start the laptop task. Indicative effort: 2-4 focused days.
 
-### P3 — Beam audit evaluator
+This is metadata/signature evidence first. It must not create a COM object,
+attach to ETABS, open a model/workbook, or call a getter. Reprove the exact
+installed ETABS `23.3.1.4563`/x64 type-library/generated-wrapper/runtime
+identity and audit the W3A-required getter candidates:
 
-- Convert accepted demand scenarios plus explicit materials/detailing basis to
-  strict beam inputs.
-- Freeze typed strength and service scenario results.
-- Keep torsion and serviceability visibly held until their required inputs and
-  strict contracts exist.
+- `LoadPatterns.GetNameList`, `GetLoadType`, `GetSelfWTMultiplier`;
+- `LoadCases.GetNameList`, `GetTypeOAPI`, and only the case-family definition
+  getters selected by the accepted W3A union/inventory policy;
+- `RespCombo.GetNameList`, `GetTypeOAPI`, `GetCaseList`/installed overload;
+- `Analyze.GetCaseStatus`, `Results.Setup.GetCaseSelectedForOutput`, and
+  `GetComboSelectedForOutput`; and
+- the existing `Results.FrameForce` contract only to bind retained W2 row
+  provenance to the same installed source identity.
 
-Exit: every flexure/shear/torsion/serviceability outcome cites its exact demand
-scenario, governing station row, assumptions and clause evidence.
+For every operation record the managed signature, argument/output order and
+types, optional/default inputs, enum identity, CSI return-code form, generated
+Python call signature, outer/SAFEARRAY container expectations, source file
+hash and verdict. Unknown overloads or version drift are `BLOCKED`, not guessed.
 
-### P4 — Independent beam-line kernel
+### W3C — Mac ETABS catalogue adapter and transport-neutral integration (`L1`)
 
-- Freeze model/load/result types.
-- Implement deterministic stiffness assembly and boundary handling.
-- Support one to five spans with UDL/point loads.
-- Add equilibrium, closed-form, symmetry and continuous-beam benchmarks.
+Owner: Mac. Dependencies: accepted W3A and W3B. Indicative effort: 5-10 focused
+days.
 
-Exit criteria:
+- Implement only the `PROVED` getter decoders behind the ETABS service boundary.
+- Convert reviewed COM shapes to normalized W3A build requests and retain every
+  operation verdict/source identity.
+- Use list/tuple/scalar fake shapes and nonzero return-code fixtures; no installed
+  application access occurs on Mac.
+- Add a versioned service/REST surface only if the accepted user journey needs
+  it; otherwise keep the builder as the public library surface.
 
-- simply supported UDL and point-load cases agree with closed form under a
-  frozen absolute-plus-relative tolerance per dimensional quantity;
-- deterministic equilibrium residual norm is at most `1e-8` of the nonzero
-  applied-load norm, with a separately frozen absolute floor;
-- symmetric two-span cases satisfy a frozen absolute-plus-relative comparison;
-- singular/unstable systems fail closed with a typed reason; and
-- result serialization and candidate ordering are deterministic.
+Exit: every approved fake inventory is complete and deterministic; any missing
+definition, unsupported selected case family, getter drift, nonzero return,
+capacity overflow or identity mismatch blocks before an accepted catalogue.
 
-Every numerical benchmark must declare units, a nonzero characteristic
-reference scale, absolute tolerance, and relative tolerance. Use
-`abs(error) <= atol + rtol * reference_scale`; never divide by an expected
-quantity that may legitimately be zero.
+### W3D — Windows live read-only catalogue acceptance (`L3`)
 
-### P5 — Scenario screening and family optimization
+Owner: Windows evidence laptop. Dependencies: accepted W3C, a separately
+authorized exact copied model and explicit permission to open/attach ETABS.
+Indicative effort: 3-7 focused days.
 
-- Couple candidate `E/I`, self-weight and scenario loads to the local solver.
-- Run strength, typed service and constructability checks.
-- Group beams into engineer-editable constructible families.
-- Return robust and Pareto shortlists with held-check ledgers.
+Run getter-only preflight, compare the exact model/runtime/getter identity with
+the approved handoff, then extract one complete catalogue and the linked
+same-row demand snapshot. Do not select outputs, run analysis/design, unlock,
+save, or write Excel. Reconcile direct and source-bound REST canonical hashes;
+postflight must prove file/hash/size/mtime, lock, units and output-selection
+state unchanged.
 
-Target benchmark, to be measured rather than assumed: 100 section candidates
-over five spans and five scenarios complete locally in two seconds on the
-recorded supported runtime. Performance failure changes implementation choice,
-not engineering tolerances.
+### W3R — Separate Pareto shear-feasibility repair (`L1`)
 
-### P6 — ETABS calibration adapter
+Owner: Mac. Dependency: it does not block W3A-W3D, but it blocks all reuse of
+the Pareto optimizer for candidate selection. Indicative effort: 2-5 focused
+days. It must remain a separate candidate/PR from W3A.
 
-- Map an accepted W2/W3 baseline to comparison stations.
-- Compare local actions under frozen tolerances. Compare displacements only
-  when a hash-linked accepted `ETABSDisplacementSnapshotV1` exists; otherwise
-  return an explicit action-only calibration status.
-- Store model-specific calibration and invalidation evidence.
+Confirmed defect: public `optimize_pareto_front(span_mm, mu_knm, vu_kn, ...)`
+accepts `vu_kn`, imports only flexure in its candidate path, sets
+`is_safe=True`, and reports flexural utilization without a shear check.
 
-Exit: missing station/scenario data is `NOT_COMPARABLE`; no candidate becomes
-`CALIBRATED` unless every declared comparison passes.
+- Route candidate feasibility through the maintained shear design/check with
+  explicit stirrup inputs, or fail closed on nonzero shear until a compatible
+  typed contract is accepted.
+- Report flexure and shear utilization/check evidence separately and compute a
+  truthful governing feasibility status.
+- Reject unknown objective names rather than silently treating them as cost.
+- Preserve explicit holds for torsion, serviceability, stirrup cost and
+  fixed-action/global-analysis limitations.
 
-### P7 — Controlled copied-model reanalysis
+Focused acceptance: a deliberately high-shear demand cannot return any safe or
+best Pareto candidate; changing `vu_kn` changes feasibility/results; safe
+fixtures reconcile the maintained shear service; unknown objectives fail;
+public Python, FastAPI response and compatibility surfaces remain coherent.
 
-- Freeze the mutation/reanalysis contract before implementing setters.
-- Apply one candidate plan to an allowlisted recoverable copy.
-- Run approved analysis cases and capture fresh results.
-- Compare beams plus affected columns, reactions, drifts and other frozen
-  whole-model constraints.
+### W3E — Beam audit evaluator (`L1`, later `L3` evidence)
 
-Exit: the exact copy, changes, analysis run, result snapshot, restoration and
-comparison reconcile. Any unexpected dialog, stale result, model drift, failed
-analysis, out-of-scope affected member or restore failure rejects the candidate.
+Owner: Mac implementation; Windows supplies no new evidence unless an accepted
+W3D snapshot is exercised. Dependencies: W3A/W3D. Indicative effort: 10-20
+focused days.
 
-### P8 — Bounded iterative controller
+Build strict beam-audit inputs from accepted scenarios and explicit materials,
+detailing, serviceability and applicability bases. Every flexure, shear,
+torsion, serviceability or held outcome cites its scenario, governing action
+row(s), assumptions and clause evidence. Missing design-bearing inputs remain
+`BLOCKED`/held, not assumed.
 
-- Use a finite candidate budget and deterministic stopping rules.
-- Cache by baseline/scenario/candidate digest.
-- Start every ETABS candidate from the clean approved baseline.
-- Independently rerun the selected final candidate.
+```python
+def build_beam_audit_inputs_v1(
+    request: BeamAuditInputBuildRequestV1, /
+) -> BeamAuditInputBuildResultV1: ...
 
-Exit: convergence or budget exhaustion is explicit; no infinite overnight loop
-or silent “best available” engineering acceptance is permitted.
+def evaluate_beam_audit_v1(
+    request: BeamAuditEvaluationRequestV1, /
+) -> BeamAuditEvaluationResultV1: ...
+```
 
-## Work sizing
+### W3F — Model/topology/displacement/reaction foundation (`L1` then `L2/L3`)
 
-These are planning ranges for one experienced developer, not delivery promises:
+Owner: Mac contracts/adapter; Windows static and live evidence are separately
+bounded continuations. Dependencies: W3A-W3D. Indicative effort: 10-25 Mac days
+plus 3-7 Windows evidence days.
 
-| Foundation | Indicative effort | Dominant risk |
-|---|---:|---|
-| P1 optimizer truth repair | 2–5 focused days | Compatibility and result-schema truth |
-| P2 result catalogue/demand contracts | 2–4 weeks | Exact ETABS definitions and provenance |
-| P3 beam audit evaluator | 2–4 weeks | Typed serviceability and governing-action rules |
-| P4 validated beam-line kernel | 4–8 weeks | Boundary/load equivalence and benchmarks |
-| P5 scenario/family screening | 3–6 weeks | Constructability and deterministic ranking |
-| P6 calibration adapter | 2–4 weeks after accepted W2/W3 data | Exact member/station/scenario mapping |
-| P7 controlled ETABS reanalysis | 4–8 weeks plus installed Windows evidence | Safe mutation, analysis, restoration and global comparisons |
+Freeze the model-definition, displacement and reaction contracts/functions
+listed above. Then audit installed signatures for exact release, offset,
+modifier, restraint/spring, displacement and reaction getters before any live
+call. Live acceptance uses explicit node/member/selection limits and unchanged
+model-state proof. An action-only dataset may be accepted as such but cannot
+support displacement/reaction calibration claims.
 
-A dependable public beam-line screening programme is therefore a multi-packet,
-roughly three-to-six-month effort. A general 2D/3D building FEM engine is a
-separate much larger programme and is not required to reduce ETABS trips.
+### W3G — Bounded 2D beam-line surrogate (`L1`; verdict still held)
+
+Owner: Mac. Dependencies: accepted W3F contracts; no installed application
+dependency for the pure kernel. Indicative effort: 20-40 focused days.
+
+Implement the one-to-five-span Euler-Bernoulli scope and exact signatures above.
+Acceptance requires simply supported UDL/point-load closed forms, symmetric
+continuous-beam cases, support/release behavior, unit-aware absolute-plus-
+relative tolerances, equilibrium residual at most `1e-8` of nonzero applied-load
+norm with an absolute floor, deterministic serialization, and typed failure for
+singular/unstable systems. Torsion and all excluded 3D/nonlinear effects remain
+held. Passing W3G produces `SURROGATE_ONLY`; it does not clear
+`HELD_NOT_SUPPORTED` without W3H.
+
+### W3H — Model-specific calibration (`L5`)
+
+Owner: Mac comparison implementation; Windows supplies accepted W3D/W3F
+reference evidence. Dependencies: W3D, W3F and W3G. Indicative effort: 10-20
+focused days plus bounded Windows extraction.
+
+Bind exact model/baseline/catalogue/topology/scenario/station digests and
+predeclared action/displacement/reaction tolerances. Missing mappings are
+`NOT_COMPARABLE`; any declared component outside tolerance is `OUT_OF_BAND`.
+Calibration invalidates on any relevant model, load, support, stiffness,
+definition, selection, analysis-setting, ETABS-version or file-digest change.
+
+### W3I — Scenario/family candidate screening (`L5`)
+
+Owner: Mac. Dependencies: W3E, W3H and W3R. Indicative effort: 15-30 focused
+days.
+
+Generate bounded engineer-editable families, couple candidate `E/I` and
+self-weight to every mandatory scenario, run strength/serviceability/
+constructability checks, reject every unsafe or held mandatory outcome, and
+return deterministic robust/Pareto shortlists. A target benchmark of 100
+sections over five spans and five scenarios in two seconds may guide
+implementation, but performance never relaxes engineering checks. Every result
+remains `SCREENED_ONLY` pending W3K.
+
+### W3J — Excel review and professional dossier (`L4`, optionally `L7` later)
+
+Owner: Mac contracts/transport tests; Windows installed Excel evidence;
+qualified reviewer/signature provider remains external. Dependencies: W3D for
+catalogue/demand review, W3E for calculations, and the separate professional
+contracts in the companion audit. Indicative effort: 10-20 Mac days plus 3-7
+Windows evidence days; provider/jurisdiction work is separately estimated.
+
+Project formula-free, controlled tables for identity, patterns, cases,
+combination definitions/factors, selection/status, scenarios, governing rows,
+held checks, comments/revisions and dossier/signature verification. Preserve
+lossless detail through bounded pages and canonical JSON, typed literal cells,
+all-table preflight/transaction/rollback, installed readback and exact hash
+rejoin. Excel never becomes the structural calculator or private-key store.
+
+### W3K — Controlled candidate ETABS reanalysis (`L6`)
+
+Owner: Mac freezes/reviews the mutation and comparison contract; Windows alone
+executes a separately authorized installed packet. Dependencies: accepted W3I,
+explicit owner authorization, allowlisted recoverable copy and approved
+analysis cases. Indicative effort: 20-40 focused days plus installed evidence.
+
+Apply one candidate plan to a fresh approved baseline copy, run only approved
+cases, capture fresh result/catalogue/model identities, and compare affected
+beams, columns, joints, reactions, displacements/drifts and other predeclared
+whole-model safeguards. Unexpected dialogs, stale results, model drift,
+analysis failure, out-of-scope effects or restore/save mismatch reject the
+candidate. The chosen final candidate is independently repeated from the clean
+baseline. No local shortlist can bypass this mandatory ETABS reanalysis.
+
+### W3L — Bounded iteration and review
+
+Owner: Mac orchestration plus Windows W3K evidence cycles. Dependency: accepted
+W3K. Use a finite evaluation budget, deterministic stop rules and cache keys
+bound to baseline/scenario/candidate digests. Budget exhaustion is explicit;
+there is no infinite overnight loop or silent “best available” acceptance.
+
+## Work sizing and critical path
+
+The packet estimates above are planning ranges for one experienced developer,
+not delivery promises. W3A-W3D form the first contract/evidence milestone.
+W3E and W3F can be planned after W3D, but W3G depends on accepted topology/load
+contracts, W3H depends on both the solver and installed reference evidence, and
+W3I depends on the separate Pareto repair. W3K is the first packet allowed to
+produce a freshly ETABS-reanalysed candidate, and only under new authority.
+
+A dependable public beam-line screening programme remains a multi-month effort.
+A general 2D/3D building FEM engine is a separate, much larger programme and is
+not required to reduce ETABS trips.
 
 ## Expected time saving
 
@@ -550,7 +893,7 @@ The target operating pattern is:
 5. one independent final ETABS run.
 
 No trip-reduction percentage or force-accuracy percentage may be claimed until
-P6 benchmarks representative models. The main success metrics are fewer ETABS
+W3H benchmarks representative models. The main success metrics are fewer ETABS
 analysis cycles, zero unsafe screened recommendations, explicit held checks,
 stable candidate ranking, and improving model-specific prediction error.
 
@@ -564,6 +907,7 @@ stable candidate ranking, and improving model-specific prediction error.
 | Solver math | Closed-form, equilibrium, symmetry, singularity and deterministic serialization tests |
 | Beam checks | Flexure, shear, torsion/service holds, service scenario and detailing evidence |
 | Optimization | Feasibility before ranking, deterministic objectives, held-check ledger, bounded budget |
+| Model/calibration inputs | Releases, offsets, modifiers, supports, assigned loads, displacement/reaction identities and explicit missing states |
 | Calibration | Predeclared tolerances, exact reference mapping, invalidation on model drift |
 | ETABS iteration | Authorized copy, expected-state guards, analysis success, fresh results, restore/save proof |
 | Whole-model review | Affected beams, columns, reactions, drifts and other explicitly governed metrics |
@@ -572,23 +916,31 @@ stable candidate ranking, and improving model-specific prediction error.
 
 Stop and request direction when:
 
-- the exact integrated W2 predecessor or its evidence identities no longer
-  match `f1873e7b...` / `57f53d48...`;
+- the exact integrated W3-readiness predecessor no longer matches PR #899 merge
+  `7af545ec0e239bac8fa6d480ecbb2b05a60aa40d` and tree
+  `cc40650b7f6569227c880d61a9967ee3bbdfab31` before W3A branches;
+- an accepted packet's exact merge/tree or hash-linked predecessor cannot be
+  verified before its successor begins;
 - the authorized model file, hash, ETABS version or result definitions change;
 - analysis results are stale, incomplete, inactive or not traceable;
 - a required getter/setter is outside the reviewed matrix;
+- a catalogue has missing/nested-cycle definitions or a selected case is not
+  finished under its exact observed analysis status;
+- an envelope would call cross-row components concurrent or drop signed
+  same-row provenance;
+- a calculation-bearing optional value would require a hidden default;
 - a local scenario requires an unsupported 3D/nonlinear behavior;
 - an optimizer cannot prove all declared feasibility checks;
 - a future ETABS mutation cannot guarantee an allowlisted copy and recovery;
 - an unexpected ETABS/license/abnormal-condition dialog appears; or
-- software evidence is being represented as engineering or construction
-  approval.
+- software, signature or installed evidence is being represented as broader
+  engineering, professional or construction approval.
 
 ## Immediate next decision
 
-Start W3 with P2 as the bounded W3A contract packet: freeze the typed load
-pattern/case/combination catalogue, same-row demand scenarios, envelope rules,
-and governing references before designing any beam. Keep P1 as a separate
-high-priority optimizer-truth repair before Pareto optimization is reused; it
-does not block the read-only W3A data contract. P3 follows only after W3A is
-accepted. Do not start with a broad FEM engine or ETABS write-back setters.
+The immediate decision is plan acceptance only. After acceptance, start W3A on
+Mac from the exact integrated predecessor. Do not dispatch the Windows handoff
+until W3A is accepted and merged and the user separately authorizes W3B. Keep
+W3R as a separate high-priority repair before Pareto use; it does not block the
+read-only W3A definition/demand contract. Do not start with installed ETABS,
+Excel, a broad FEM engine, optimization or write-back setters.

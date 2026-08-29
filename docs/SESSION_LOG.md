@@ -5,6 +5,122 @@
 
 ---
 
+## 2026-08-30 — Session: W3 ETABS/data/optimization master-plan audit
+
+**Agent:** Codex (`structural-engineer`/`documentation`, sole writer; no
+subagents).
+
+**Branch:** `codex/etabs-w3-master-plan-audit`, created from the clean detached
+starting checkout after a live fetch proved exact `origin/main`/`FETCH_HEAD`/
+`HEAD` PR #899 merge `7af545ec0e239bac8fa6d480ecbb2b05a60aa40d`
+and exact tree `cc40650b7f6569227c880d61a9967ee3bbdfab31`.
+
+**Git handoff receipt:**
+`docs/verification/etabs-w3-master-plan-audit-git-handoff-receipt.json`
+(pre-commit receipt; no hosted or integration claim).
+
+**Focus:** Audit and plan W3 from the exact integrated W3-readiness
+predecessor. Freeze the dependency-ordered public definition/demand,
+beam-audit, model/calibration, bounded-surrogate, candidate/mandatory-ETABS,
+Excel-review and professional-evidence programme and prepare a guarded
+next-machine prompt without implementing runtime engineering code, opening
+ETABS/Excel, running analysis/design/optimization, mutating models/workbooks,
+deleting retained/public state, publishing a release, or claiming engineering/
+professional approval.
+
+**Completed:**
+
+- Fetched `origin/main` and verified `origin/main`, `FETCH_HEAD` and starting
+  `HEAD` at exact PR #899 merge `7af545ec...`; both fetched trees resolve to
+  exact `cc40650b...`. GitHub independently reported PR #899 merged into
+  `main`. The starting linked worktree was clean, operation-free and detached;
+  all sibling worktrees were retained unchanged.
+- Read live `AGENTS.md`, documentation rules, the existing W3 foundation,
+  professional/Excel companion, beam next-phase plan, next-session handoff,
+  current task/work/session authorities, retained W2 signature evidence,
+  ETABS public reference, W2 baseline/result-selection contracts and the public
+  Pareto implementation before planning changes.
+- Confirmed the W2 baseline already retains complete signed same-row six-
+  component force provenance but lacks complete typed pattern/case/combination
+  definitions, nested factors, accepted case-family parameters, full analysis-
+  status identity, model/support semantics, displacement/reaction evidence and
+  W3 governing-demand contracts.
+- Confirmed the public Pareto path accepts `vu_kn`, imports only flexure for
+  candidate feasibility, reports flexural utilization and sets
+  `is_safe=True`; preserved it as a separate high-priority repair that blocks
+  Pareto candidate use but does not block W3A.
+- Promoted the existing ETABS data/analysis foundation into the durable W3
+  master plan. It now freezes exact public type semantics and function
+  signatures, five-state optional evidence, ordered/nested combination
+  validation, selection/status identity, lossless same-row actions, scenarios/
+  envelopes/governing references, architecture ownership, calibration inputs,
+  bounded 2D surrogate, feasibility-first candidate screening, mandatory ETABS
+  reanalysis, `L0`-`L7` evidence levels, acceptance tests, work estimates,
+  Mac/Windows ownership, stop conditions and W3A-W3L packet dependencies.
+- Kept W3A first as a bounded Mac fake-adapter/read-only contract packet. Made
+  installed ETABS 23.3.1 getter/signature evidence a later W3B Windows packet
+  after accepted/merged W3A and separate user authority. Preserved
+  `HELD_NOT_SUPPORTED` until separately accepted solver and model-specific
+  calibration evidence; even then the local capability remains
+  `SURROGATE_ONLY` and ETABS remains final global-analysis authority.
+- Expanded the Excel/professional companion with exact dossier/attestation/
+  digital-signature function signatures, formula-free compact review plus
+  lossless paged/canonical transport, typed literal cells, complete transaction/
+  rollback/readback proof and strict separation of signature evidence from
+  credential/jurisdiction/professional approval.
+- Updated the next-phase plan, task board, worklog and maintained next-session
+  brief. The brief contains cohesive W3A Mac and later W3B Windows copy/paste
+  prompts plus an operator checklist. It explicitly forbids automatic dispatch
+  and leaves placeholders for the future accepted W3A merge/tree/contract
+  digest.
+- Strict documentation validation passed all five checks; 522 maintained
+  Markdown files, 1,131 local links and six images have zero broken links;
+  context-manifest validation, token-efficiency policy, API classification/
+  compatibility ledger freshness and diff whitespace all pass.
+
+### Issues encountered
+
+- `./run.sh context show etabs` failed because `etabs` is not a registered
+  context area; a later context-summary attempt also passed a file where the
+  command accepts an area or directory.
+- Two broad read-only searches included guessed paths that do not exist in this
+  checkout: `OfficeAddin` and a root `Makefile`. Those compound searches
+  returned nonzero after partial output.
+- The first consolidated quick gate passed 9/10 but rejected the maintained
+  next-session brief at 168 lines against its 150-line maximum.
+- The first required usage closeout rejected the seven phase totals because
+  their 17.00 minutes did not match the derived 17.26-minute session duration.
+
+### Root causes and resolutions
+
+- Confirmed context cause: `scripts/context-manifest.json` registers ten areas
+  (`agents`, `automation`, `docs`, `fastapi`, `is456`, `python`, `react`,
+  `repository`, `services`, `verification`) and the summary command accepts a
+  registered area or directory, not an individual file. Resolution: use
+  targeted `rg`/exact file reads and the successful
+  `./run.sh context summary docs/planning` inventory. ⚠️ TERMINAL ISSUE:
+  unregistered `etabs`/file context requests failed -> registered docs planning
+  summary plus exact searches completed the audit.
+- Confirmed path cause: repository inventory shows the Office.js root is
+  `excel_addin/`, and this repository's maintained entry point is `run.sh`
+  rather than a root `Makefile`. Resolution: rerun from `rg --files`, inspect
+  exact `excel_addin/` paths, and call the registered `run.sh`/direct validation
+  commands. ⚠️ TERMINAL ISSUE: guessed `OfficeAddin`/`Makefile` paths caused
+  read-only search errors -> exact tracked-path searches completed without
+  mutation.
+- Confirmed quick-gate cause: the complete Mac and guarded Windows prompts plus
+  checklist were line-wrapped as ordinary prose, exceeding the maintained
+  brief-size control even though the content was in scope. Resolution: reflow
+  only the two copy/paste code blocks while preserving every dispatch gate,
+  operation, prohibition, return requirement and checklist; the brief is now
+  145 lines. Evidence: `wc -l docs/planning/next-session-brief.md` reports 145.
+- Confirmed usage cause: the closeout control derives elapsed time from the
+  exact task start and requires the seven caller-supplied phase totals to match
+  it, including the fractional minute. Resolution: preserve the derived value,
+  allocate the remaining 0.26 minute to final local closeout, and rerun without
+  inventing or rounding elapsed time. ⚠️ TERMINAL ISSUE: integer phase totals
+  blocked usage closeout -> exact derived fractional allocation is used.
+
 ## 2026-08-29 — Session: ETABS W3-readiness maintenance and safe cleanup
 
 **Agent:** Codex (`governance`/`documentation`/`python-core`, sole writer; no

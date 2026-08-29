@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: draft
-last_updated: 2026-08-29
+last_updated: 2026-08-30
 doc_type: spec
 complexity: advanced
 tags: [excel, etabs, beams, windows, optimization, construction]
@@ -28,8 +28,12 @@ acceptance**. Direct service, source-bound REST, saved Excel tables, and the
 combination remained unchanged. This is not professional structural or
 construction approval. Independent frame analysis remains
 `HELD_NOT_SUPPORTED`; optimization and model write-back remain held. The owner
-authorized the W3 start after the W2C integration and W3-readiness maintenance,
-so W3 begins with a read-only contract packet rather than ETABS mutation.
+authorized W3 planning after the W2C integration and W3-readiness maintenance.
+PR #899 merged that exact maintenance as
+`7af545ec0e239bac8fa6d480ecbb2b05a60aa40d`, tree
+`cc40650b7f6569227c880d61a9967ee3bbdfab31`. The detailed W3 master plan still
+requires acceptance before W3A implementation begins, and W3A remains a
+read-only Mac contract packet rather than ETABS mutation.
 
 The sequence is deliberate:
 
@@ -557,13 +561,16 @@ structural-engineer review before engineering or construction use.
 
 ## Next efficient sequence
 
-1. Treat integrated W2C merge `f1873e7b...` and evidence baseline
-   `d4c28586...` as the immutable W3 predecessor.
+1. Treat PR #899 merge `7af545ec0e239bac8fa6d480ecbb2b05a60aa40d`
+   and tree `cc40650b7f6569227c880d61a9967ee3bbdfab31` as the immutable
+   W3-readiness predecessor. Retain W2 evidence baseline `d4c28586...` as a
+   separate hash-linked data identity, not a Git predecessor.
 2. Start W3A with versioned read-only contracts for load patterns, load cases,
    combination definitions, selected scenarios, same-row actions, and envelope
    rules. Do not open ETABS for this first contract packet.
-3. Expand the installed getter matrix only after the W3A contracts and exact
-   tuple/return-code evidence requirements are frozen.
+3. Expand the installed ETABS 23.3.1 getter/signature matrix on Windows only
+   after W3A is accepted and merged and the user separately authorizes that
+   bounded laptop task.
 4. Start beam design/audit evaluation only from accepted W3A demand scenarios;
    missing torsion, serviceability, support, material, or detailing inputs remain
    visible holds.
@@ -580,7 +587,9 @@ changes, or W2 would need setters beyond temporary unit selection.
 ## New-chat starter
 
 ```text
-Start W3A from exact integrated predecessor `f1873e7b...`. Freeze versioned,
+Start W3A from exact integrated predecessor
+`7af545ec0e239bac8fa6d480ecbb2b05a60aa40d`, tree
+`cc40650b7f6569227c880d61a9967ee3bbdfab31`. Freeze versioned,
 vendor-neutral read-only contracts for the complete bounded load-pattern,
 load-case, response-combination, selection, same-row beam-action, scenario,
 envelope, and governing-reference foundation. Reuse the accepted W2 model and
