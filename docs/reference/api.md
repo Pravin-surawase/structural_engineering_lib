@@ -180,6 +180,17 @@ does not itself attach to ETABS, run analysis, select output, or mutate a model.
 `api.W3BuildStatusV1` and `api.W3BuildIssueV1` with no partial value on a
 blocked result.
 
+The installed-runtime boundary is represented by
+`api.ETABSCatalogueAdapterRequestV1`,
+`api.ETABSCatalogueSelectionRequestV1`, and
+`api.extract_etabs_result_catalogue_v1`, which return a complete
+`api.ETABSCatalogueAdapterResultV1`. Every proved getter invocation is retained
+as `api.ETABSGetterCallEvidenceV1`, with explicit
+`api.ETABSGetterContainerKindV1` and `api.ETABSGetterOutcomeV1` values. The
+adapter consumes a caller-supplied SapModel-shaped provider and never imports
+COM, attaches to ETABS, selects output, runs analysis, or returns a partial
+catalogue after any provider, shape, status, or semantic failure.
+
 Catalogue identity is deterministic through
 `api.canonical_etabs_result_catalogue_hash_basis_json_v1` and
 `api.verify_etabs_result_catalogue_hash_v1`. A caller combines the accepted

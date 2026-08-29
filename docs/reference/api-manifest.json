@@ -2,7 +2,7 @@
   "generated": "2026-08-29",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 215,
+  "count": 222,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -160,6 +160,21 @@
       "signature": "(stirrup_dia_mm: 'float' = 8.0, stirrup_spacing_start_mm: 'float' = 150.0, stirrup_spacing_mid_mm: 'float' = 200.0, stirrup_spacing_end_mm: 'float | None' = None, is_seismic: 'bool' = False, preferred_bar_dias: 'tuple[float, ...]' = (12.0, 16.0, 20.0, 25.0), max_bar_layers: 'int' = 2, d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0) -> None"
     },
     {
+      "name": "ETABSCatalogueAdapterRequestV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSCatalogueAdapterResultV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSCatalogueSelectionRequestV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
       "name": "ETABSEnvelopeResult",
       "kind": "class",
       "signature": "(story: 'str', beam_id: 'str', case_id: 'str', mu_knm: 'float', vu_kn: 'float', station_count: 'int' = 1, moment_signed_knm: 'float | None' = None, moment_station: 'float | None' = None, shear_signed_kn: 'float | None' = None, shear_station: 'float | None' = None, shear_at_moment_station_kn: 'float | None' = None, moment_at_shear_station_knm: 'float | None' = None, envelope_basis: 'str' = 'independent_absolute_extrema_with_concurrent_values') -> None"
@@ -168,6 +183,21 @@
       "name": "ETABSForceRow",
       "kind": "class",
       "signature": "(story: 'str', beam_id: 'str', case_id: 'str', station: 'float', m3: 'float', v2: 'float', unique_name: 'str' = '', p: 'float' = 0.0) -> None"
+    },
+    {
+      "name": "ETABSGetterCallEvidenceV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSGetterContainerKindV1",
+      "kind": "class",
+      "signature": "(*args, **kwds)"
+    },
+    {
+      "name": "ETABSGetterOutcomeV1",
+      "kind": "class",
+      "signature": "(*args, **kwds)"
     },
     {
       "name": "ETABSResultCatalogueBuildRequestV1",
@@ -913,6 +943,11 @@
       "name": "export_bbs",
       "kind": "function",
       "signature": "(bbs_doc: 'object', path: 'str | Path', *, fmt: 'str' = 'csv') -> 'Path'"
+    },
+    {
+      "name": "extract_etabs_result_catalogue_v1",
+      "kind": "function",
+      "signature": "(sap_model: 'Any', request: 'ETABSCatalogueAdapterRequestV1', /) -> 'ETABSCatalogueAdapterResultV1'"
     },
     {
       "name": "footing_flexure",

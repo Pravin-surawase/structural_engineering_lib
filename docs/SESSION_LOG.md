@@ -5,6 +5,104 @@
 
 ---
 
+## 2026-08-30 — Session: W3C transport-neutral ETABS catalogue adapter
+
+**Agent:** Codex (`orchestrator`/Windows implementation owner, sole writer; no
+subagents).
+
+**Branch:** `codex/etabs-w3c-catalogue-adapter-windows`, created as a fresh
+linked worktree at
+`C:\CodexWork\worktrees\etabs-w3c-catalogue-adapter-windows` from accepted W3B
+PR #902 merge `94c058f108351dd78195be5ee228b78da1d6a635`, tree
+`a93377058f7c04445a311a4267cfd2fb4f21ef11`.
+
+**Git handoff receipt:**
+`docs/verification/etabs-w3c-catalogue-adapter-git-handoff-receipt.json`
+(prepared at candidate freeze; hosted and integration facts remain external
+until the immutable candidate is pushed and reviewed).
+
+**Focus:** Implement only W3C's public, transport-neutral decoder behind the
+ETABS service boundary using caller-supplied fake list/tuple/scalar shapes.
+Bind it to the exact W3B getter evidence, retain each getter verdict/source
+identity, and fail closed before a partial catalogue. Do not import or create
+COM, attach to the already-running ETABS process, call `FrameForce`, select
+output, run analysis/design, change units/lock, open Excel, mutate a model or
+workbook, add a REST route, implement W3D/live evidence, or claim engineering
+or professional approval.
+
+**Completed:**
+
+- Rebound a fresh W3C worktree to the exact accepted W3B merge/tree and proved
+  `scripts/python_runtime.sh --diagnose` is source-bound to that worktree.
+- Added a strict caller-supplied-provider adapter for the 13 catalogue/selection
+  operations needed at runtime from W3B's 15-operation installed matrix. The
+  two remaining proved operations are `Results.FrameForce`, retained for W3D
+  same-row demand extraction, and the deliberately insufficient
+  `LoadCases.GetTypeOAPI`, which the adapter never calls.
+- Preserved ordered/repeated/signed/nested combination factors, exact case
+  family/design/auto identity, complete analysis-status inventory, active
+  result-selection identity, deterministic definitions and W3A catalogue hash.
+- Retained per-call operation, target, W3B source digest, proved verdict, outer
+  list/tuple shape, decoded output count, CSI return code and evidence reference.
+- Implemented no-partial fail-closed outcomes for provider exceptions, outer or
+  nested container drift, count mismatch, nonzero returns, invalid values,
+  incomplete status inventory, nonblank linear-static initial case, unsupported
+  selected family, inactive selection, normalization failure and capacity
+  overflow.
+- Exported the seven public W3C symbols through both supported Python facades,
+  documented their no-COM/no-mutation boundary, and regenerated the maintained
+  API classification, compatibility ledger and manifest.
+- Added deterministic tuple/list equivalence and blocked-vector tests. All 24
+  focused W3A/W3B/W3C tests, targeted Ruff, Mypy, public-export identity and all
+  three API controls pass at content freeze.
+
+### Issues encountered
+
+- Pytest reserves the parameter name `request`, so the first new test
+  collection stopped before executing a test.
+- The initial hand-count of fake getter calls omitted two inventory operations.
+- Targeted Ruff required the new service import to follow the repository's
+  established lexical order and required an internal exception name ending in
+  `Error`.
+- Targeted Mypy could not infer loop-captured lambda default types and inferred
+  only the first branch of the typed case-parameter union.
+- The first PowerShell evidence-hash expression piped directly from a `foreach`
+  statement, which this shell parsed as an empty pipeline element.
+
+### Root causes and resolutions
+
+- `request` is a built-in pytest fixture name. Resolution: renamed only the
+  test parameter to `adapter_request`; the public positional request signature
+  is unchanged. ⚠️ TERMINAL ISSUE: collection rejected reserved parameter ->
+  renamed test parameter and all focused tests passed.
+- The correct accepted fake path makes 19 calls: seven inventory/status calls,
+  six per-case definition calls, five combination calls and one selection
+  call. Resolution: corrected both count and contiguous-index assertions.
+- The local lint policy is stricter than the initial manual order/name.
+  Resolution: reordered the import and renamed `_AdapterFailure` to
+  `_AdapterError`; behavior is unchanged.
+- Dynamic provider access is intentional, but typed partial application is
+  clearer than untyped loop lambdas. Resolution: use `functools.partial` and
+  explicitly type the discriminated parameter union; targeted Mypy then passes
+  with no issues.
+- PowerShell statement output must be accumulated before piping in this form.
+  Resolution: collected the read-only file facts into an array and serialized
+  it after the loop. ⚠️ TERMINAL ISSUE: invalid read-only shell expression ->
+  corrected expression returned all hashes.
+
+### Validation through content freeze
+
+- W3A/W3B/W3C focused tests: 24 passed, 0 failed.
+- Targeted Ruff and Mypy pass; both fake provider outer shapes produce the same
+  canonical catalogue hash; all seven root/facade export identities reconcile.
+- React/FastAPI call-site control, public API documentation and classification
+  synchronization all pass. The no-reuse quick gate passes 10/10. Normal
+  changed-path hooks and hosted review are required before merge.
+- W3C opened or attached no application and made no live-model claim. W3D
+  remains the first live getter-only acceptance boundary. Independent frame
+  analysis remains `HELD_NOT_SUPPORTED`; release and professional/construction
+  approval remain unapproved.
+
 ## 2026-08-30 — Session: W3B installed ETABS getter signatures
 
 **Agent:** Codex (`orchestrator`/Windows evidence owner, sole writer; no
