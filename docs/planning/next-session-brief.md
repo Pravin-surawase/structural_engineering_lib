@@ -6,8 +6,8 @@
 - Date: 2026-08-30
 - Focus: Audit only the installed ETABS 23.3.1 managed assembly, x64 type
 - Completed: Rebound a fresh W3B worktree to exact accepted W3A merge/tree and proved the; Reproved ETABS 23.3.1.4563, signed application/managed-assembly identities,; Statically proved all 15 accepted operations, including managed signature,
-- Git receipt: docs/verification/etabs-w3b-installed-getter-signature-git-handoff-receipt.json | sha256:a948ed14f5573f620417a038ac1368f664618562da07076e5ad26f9869ca3acf | HOLD
-- Git identity: codex/etabs-w3b-installed-signatures-windows@4c4af8316b6f1c02e946452fc44354a4dd7196e6 | upstream=origin/main@b7351bb5a3269e4281ba7b34c780e45d2599749b | base=origin/main@b7351bb5a3269e4281ba7b34c780e45d2599749b | tree=dirty | operation=none
+- Git receipt: docs/verification/etabs-w3b-installed-getter-signature-git-handoff-receipt.json | sha256:05dcb3d7a4c7fbac80d1900177772423016fcd0ef7a3898c6913045a6c2f20ad | HOLD
+- Git identity: codex/etabs-w3b-installed-signatures-windows@3ce8c81ba26448d6a3b319bc6288864dcfaed189 | upstream=origin/main@b7351bb5a3269e4281ba7b34c780e45d2599749b | base=origin/main@b7351bb5a3269e4281ba7b34c780e45d2599749b | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: CREATE_W3B_CANDIDATE_COMMIT
 <!-- HANDOFF:END -->

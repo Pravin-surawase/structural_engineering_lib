@@ -72,6 +72,8 @@ approval.
   expanded them into many repository paths before argument parsing.
 - The normal changed-path hook suite found 16 accepted W3A service exports
   missing from `docs/reference/api.md` on integrated `main`.
+- After that reference repair, the compatibility-ledger hook correctly reported
+  that its generated caller inventory was stale.
 
 ### Root causes and resolutions
 
@@ -110,6 +112,11 @@ approval.
   approval boundaries; rerun the affected API-signature/sync checks and normal
   hooks before push. The source contract and generated registries remain
   unchanged.
+- `api.md` is itself an indexed public-facade caller source, so documenting the
+  missing symbols changed the compatibility-ledger caller rows even though no
+  Python export changed. Resolution: run the maintained API-classification
+  generator and retain its compatibility-ledger projection; the generator's
+  `--check` mode then reports both registries current.
 
 ### Validation through content freeze
 
@@ -119,6 +126,8 @@ approval.
   the API-reference repair, the affected API documentation/signature and sync
   checks both pass, the four focused and five strict-documentation checks pass,
   and the final no-reuse quick gate passes 10/10 in 30.3 reported seconds.
+- The regenerated API classification registry and compatibility ledger pass
+  their deterministic freshness check.
 - The candidate contains no production Python, FastAPI, React or Excel add-in
   code change and makes no installed live-model or professional claim.
 

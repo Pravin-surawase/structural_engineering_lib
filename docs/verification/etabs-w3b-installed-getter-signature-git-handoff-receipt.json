@@ -50,27 +50,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "a948ed14f5573f620417a038ac1368f664618562da07076e5ad26f9869ca3acf",
+    "receipt_sha256": "05dcb3d7a4c7fbac80d1900177772423016fcd0ef7a3898c6913045a6c2f20ad",
     "state": {
       "branch": "codex/etabs-w3b-installed-signatures-windows",
       "default_base": {
-        "ahead": 1,
+        "ahead": 2,
         "behind": 0,
         "ref": "origin/main",
         "sha": "b7351bb5a3269e4281ba7b34c780e45d2599749b",
         "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 450.826,
+      "duration_ms": 470.389,
       "git_common_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git",
       "git_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git\\worktrees\\etabs-w3b-installed-signatures-windows",
-      "head_sha": "4c4af8316b6f1c02e946452fc44354a4dd7196e6",
+      "head_sha": "3ce8c81ba26448d6a3b319bc6288864dcfaed189",
       "hold_reasons": [
-        "changed paths: 3"
+        "changed paths: 4"
       ],
       "linked_worktree": true,
       "locks": [],
-      "observed_at_utc": "2026-08-29T20:24:27.181310+00:00",
+      "observed_at_utc": "2026-08-29T20:27:15.438791+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -81,17 +81,18 @@
       "tree": {
         "clean": false,
         "conflicted_paths": [],
-        "dirty_count": 3,
+        "dirty_count": 4,
         "modified_paths": [
           "docs/SESSION_LOG.md",
-          "docs/reference/api.md",
+          "docs/reference/api-classification.json",
+          "docs/reference/api-compatibility-ledger.json",
           "docs/verification/etabs-w3b-installed-getter-signature-evidence.json"
         ],
         "staged_paths": [],
         "untracked_paths": []
       },
       "upstream": {
-        "ahead": 1,
+        "ahead": 2,
         "behind": 0,
         "ref": "origin/main",
         "sha": "b7351bb5a3269e4281ba7b34c780e45d2599749b",
@@ -100,9 +101,9 @@
       "worktree_root": "C:\\CodexWork\\worktrees\\etabs-w3b-installed-signatures-windows"
     }
   },
-  "local_state_receipt_hash": "sha256:a948ed14f5573f620417a038ac1368f664618562da07076e5ad26f9869ca3acf",
+  "local_state_receipt_hash": "sha256:05dcb3d7a4c7fbac80d1900177772423016fcd0ef7a3898c6913045a6c2f20ad",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-08-29T20:24:27.181310+00:00",
+  "observed_at_utc": "2026-08-29T20:27:15.438791+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"
@@ -140,7 +141,9 @@
       "docs/SESSION_LOG.md",
       "docs/TASKS.md",
       "docs/planning/next-session-brief.md",
-      "docs/reference/api.md"
+      "docs/reference/api.md",
+      "docs/reference/api-classification.json",
+      "docs/reference/api-compatibility-ledger.json"
     ],
     "task_id": "ETABS-EXCEL-BEAM-W3-CAMPAIGN"
   },

@@ -394,6 +394,11 @@
       "passed": 1
     },
     {
+      "name": "API classification and compatibility-ledger freshness",
+      "command": "./scripts/python_runtime.sh scripts/generate_api_classification.py --check",
+      "result": "PASS"
+    },
+    {
       "name": "post-repair focused W3B evidence checks",
       "result": "PASS",
       "passed": 4
