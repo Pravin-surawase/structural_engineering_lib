@@ -4,11 +4,11 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-29
-- Focus: Complete the bounded W2 campaign on the Windows evidence machine:
-- Completed: Fetched GitHub and proved PR #896 merge `0f5c918e...`, reviewed W2A head; Bound installed ETABS `23.3.1.4563` to the registered x64 `ETABSv1.tlb`; Proved all 18 W2A getters plus `SetPresentUnits` for interface/method,
-- Git receipt: docs/verification/etabs-excel-beam-w2-campaign-git-handoff-receipt.json | sha256:d9921a6a22266db876df8dbfdec75952543d224005880954b3f675a65a198832 | HOLD
-- Git identity: codex/etabs-excel-beam-w2-campaign@5a41aee61f57f6ccc16b8ef5ba5ee8bbd194b66b | upstream=origin/codex/etabs-excel-beam-w2-campaign@18926ef48c620213abbb931449cda9e8049eee7c | base=origin/main@0f5c918eb87b658448737fd6bf023ccb4bd07c74 | tree=dirty | operation=none
-- Hosted evidence: remote=OBSERVED | PR=NOT_APPLICABLE#UNKNOWN | review=NOT_APPLICABLE | retention=OBSERVED
+- Focus: Independently review and prepare the cumulative W2 Mac integration candidate.
+- Completed: Reproved exact main/campaign authority and no PR; independently accepted the W2 source/evidence boundary; repaired the daily date-sensitive compatibility-ledger test without rewriting the semantically current ledger.
+- Git receipt: docs/verification/etabs-excel-beam-w2-mac-integration-git-handoff-receipt.json | sha256:5a1fa6af6ee355be96f29ea019c77b401b2503dfd78f3af0f413bfedaa49b48b | HOLD
+- Git identity: codex/etabs-excel-beam-w2-mac-integration@471761767896263e64bd3c237f50134b19c50bab | upstream=origin/codex/etabs-excel-beam-w2-campaign@471761767896263e64bd3c237f50134b19c50bab | base=origin/main@0f5c918eb87b658448737fd6bf023ccb4bd07c74 | tree=dirty | operation=none
+- Hosted evidence: remote=NOT_APPLICABLE | PR=OBSERVED#UNKNOWN | review=OBSERVED | retention=OBSERVED
 - Next action: COMMIT_INTENDED_PATHS
 <!-- HANDOFF:END -->
 
@@ -17,9 +17,9 @@
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` remains the immutable current normal software release; no new release is selected or authorized. |
-| **Current** | GitHub `origin/main` remains exactly `0f5c918eb87b658448737fd6bf023ccb4bd07c74` after PR #896. Phase A is `4841ab2a...`, W2B is `395f0618...`, the installed `GetStories` repair is `18926ef4...`, and the frozen safe-hold evidence is `5a41aee6...`. Direct/REST/installed Excel all stopped before force reads on the inactive approved combination; model/workbook bytes, lock, and units remained unchanged. |
+| **Current** | GitHub `origin/main` remains exactly `0f5c918eb87b658448737fd6bf023ccb4bd07c74`. Exact Windows campaign head `47176176...` passed independent Mac review with no essential finding. The Mac integration candidate preserves every W2 file and adds only the date-stable compatibility-ledger test repair before cumulative validation/PR. W2C remains a safe blocked result with no force read or accepted baseline. |
 | **Machine roles** | Mac is the primary development/integration machine. Windows is the installed Excel/ETABS testing and evidence machine. GitHub is the tracked handoff authority; proprietary model/workbook/evidence bytes remain on Windows. |
-| **Next** | Mac performs one cumulative campaign review and may open the integration PR. W2C remains held—not accepted. A separately authorized installed retry requires the exact approved combination already active before Codex attaches and every identity/preflight check repeated. |
+| **Next** | Freeze and validate the Mac cumulative candidate, then open/merge one PR only on an unchanged green head. After integration, separately authorize the Windows W2C retry only when the exact approved combination is already active before attachment. |
 | **Held** | ETABS analysis, unlock/save, section/load write-back, optimization, complete solver parity, expanded design/detailing/site-practice automation, release, and professional or construction-use approval. |
 
 ## Today closeout
@@ -87,14 +87,16 @@
 
 ## Next objective
 
-1. On Mac, fetch the exact cumulative campaign branch and compare it with exact
-   `origin/main`; review Phase A, W2B, the installed story-shape repair, the safe
-   W2C hold receipt, and all retained boundaries.
-2. If review passes, open one cumulative PR and run the normal hosted checks.
-   Describe W2C as `BLOCKED_SAFE_NO_FORCE_READ`, not an acceptance pass.
-3. Do not start W3 or retry installed W2C without separate authorization. Any
-   retry must begin with exact combination `117.(1.5DL+1.5LL)` already active
-   and must repeat every source/runtime/model/unit/lock/result preflight.
+1. Complete cumulative Mac validation of the integration candidate, including
+   focused W2/Office checks, quick/full gates, broad Python, normal hooks, and
+   final clean session validation.
+2. Push and open one cumulative PR. Merge only if every hosted check passes on
+   the unchanged reviewed head, and describe W2C as
+   `BLOCKED_SAFE_NO_FORCE_READ`, not an acceptance pass.
+3. After merged-main synchronization, separately authorize the installed W2C
+   retry only with exact combination `117.(1.5DL+1.5LL)` already active and
+   every source/runtime/model/unit/lock/result preflight repeated. Do not start
+   W3 before that retry passes or is explicitly deferred.
 
 ## New-chat starter
 

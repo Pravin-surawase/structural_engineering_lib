@@ -5,6 +5,90 @@
 
 ---
 
+## 2026-08-29 — Session: Mac W2 cumulative review and integration repair
+
+**Agent:** Codex (`reviewer`/`governance`/`integration`, sole writer; no
+subagents).
+
+**Branch:** `codex/etabs-excel-beam-w2-mac-integration`, created in a fresh Mac
+worktree from exact frozen Windows campaign head
+`471761767896263e64bd3c237f50134b19c50bab`, tree
+`6d3889041ca2e2c6a9d0d7d533f7d44c9d81acf9`, with exact merge base
+`origin/main` `0f5c918eb87b658448737fd6bf023ccb4bd07c74`.
+
+**Git handoff receipt:**
+`docs/verification/etabs-excel-beam-w2-mac-integration-git-handoff-receipt.json`
+(pre-commit Mac candidate receipt; PR/hosted/merge facts remain external).
+
+**Focus:** Independently reproduce the complete Windows W2 campaign on Mac,
+preserve the Windows branch unchanged, repair the one repository-wide
+date-sensitive compatibility-ledger test at its confirmed root cause, and
+prepare one cumulative integration candidate. Keep W2C explicitly
+`BLOCKED_SAFE_NO_FORCE_READ`; do not open ETABS/Excel, retry installed evidence,
+change result selection, start W3, repair unrelated Windows portability or npm
+advisories, or broaden software evidence into engineering approval.
+
+**Completed:**
+
+- Refetched GitHub and proved clean local/remote `main` equality at
+  `0f5c918e...`, exact Windows campaign head/tree `47176176...` /
+  `6d388904...`, exact merge base, and zero matching pull requests before
+  creating the Mac integration lane.
+- Inspected every registered worktree. Preserved the historical detached dirty
+  `e54a` lane and its sole `docs/SESSION_LOG.md` overlay without reading it as a
+  write target, cleaning it, or changing any sibling branch/worktree.
+- Proved the fresh integration worktree is source-bound to its own checkout and
+  `READY_LOCAL`, with no operation/conflict/lock and no initial dirty path.
+- Independently reviewed Phase A installed metadata, Phase B service/REST/Excel
+  transport, the installed `GetStories` Base-row repair, W2C safe-hold evidence,
+  and the end-to-end abort-before-`FrameForce` path. No outcome-changing W2
+  finding was identified; the Windows campaign code remains byte-unchanged.
+- Reproduced the broad-suite failure in the exact integration lane: the packed
+  compatibility ledger retained `generated=2026-08-28` while the live fixture
+  used `2026-08-29`. In the same before-state, the canonical generator's
+  `--check` passed and reported the classification registry/ledger current.
+- Repaired the test contract rather than regenerating a date-only artifact:
+  the checked-in representation must repack canonically, and a freshly built
+  ledger must survive an exact pack/unpack round trip. Semantic freshness
+  remains owned by the existing normalized generator comparison.
+- Proved the repair with the isolated reproducer, all 22 compatibility-
+  convergence tests, and the canonical generator check; all passed without a
+  generated-ledger rewrite.
+- Froze and validated the cumulative Mac candidate: focused W2 plus
+  compatibility tests passed `67` with one expected macOS-only skip; Office.js
+  passed `34/34`; affected Ruff and mypy checks passed; the quick gate passed
+  `10/10`; and the repository-wide Python suite passed `7,214`, with four
+  expected skips and six deselections. No ETABS or Excel application was
+  opened and no installed retry was attempted.
+
+### Issues encountered
+
+- The required `session begin` command refused to create the current task
+  checkpoint because an unmatched historical start remains for
+  `EXCEL-ETABS-PYTHON-BRIDGE-PILOT`.
+- The broad compatibility test failed on a date-only difference even though the
+  canonical generator's own freshness check passed.
+
+### Root causes and resolutions
+
+- Confirmed session cause: the repository session store contains a preserved
+  unmatched parent-pilot start, so a second task timer is rejected. Resolution:
+  do not close or rewrite the historical checkpoint and do not invent elapsed
+  time. Preserve the exact error, continue only after clean Git/source-binding
+  proof, and use repository/Git/hosted command evidence for this candidate.
+  ⚠️ TERMINAL ISSUE: `session begin` stopped on the historical unmatched
+  checkpoint -> preserved it unchanged and used the source-bound fresh
+  integration worktree.
+- Confirmed ledger cause: `build_compatibility_ledger()` emits the current UTC
+  date, while the maintained generator intentionally removes `generated` in
+  `_normalized()` before freshness comparison. The encoding test instead
+  compared the checked-in expanded ledger directly with today's live ledger,
+  turning a volatile timestamp into a daily test failure. Resolution: prove
+  exact canonical repacking of the checked-in payload plus exact lossless
+  pack/unpack of the live payload; retain normalized semantic freshness and do
+  not regenerate for date alone. The previously failing isolated test, the
+  complete 22-test file, and generator `--check` all pass.
+
 ## 2026-08-29 — Session: Complete Windows W2 campaign
 
 **Agent:** Codex (`documentation`/`python-core`/`api`/`frontend`/`governance`,

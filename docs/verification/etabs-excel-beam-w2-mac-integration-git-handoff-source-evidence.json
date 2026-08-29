@@ -1,0 +1,95 @@
+{
+  "remote": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T10:54:28Z",
+    "reason_code": "INTEGRATION_BRANCH_NOT_PUSHED_BEFORE_CANDIDATE_FREEZE",
+    "branch": "codex/etabs-excel-beam-w2-mac-integration",
+    "matching_remote_heads": 0
+  },
+  "pull_request": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T10:54:28Z",
+    "matching_pull_requests": 0,
+    "base": "main",
+    "head": "codex/etabs-excel-beam-w2-mac-integration"
+  },
+  "review": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T10:54:28Z",
+    "reviewed_head_sha": "471761767896263e64bd3c237f50134b19c50bab",
+    "reviewed_tree_sha": "6d3889041ca2e2c6a9d0d7d533f7d44c9d81acf9",
+    "verdict": "NO_ESSENTIAL_W2_FINDINGS_MAINTENANCE_REPAIR_REQUIRED"
+  },
+  "integration": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "reason_code": "CANDIDATE_COMMIT_HOSTED_CHECKS_AND_MERGE_PENDING"
+  },
+  "retention": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T10:54:28Z",
+    "decision": "RETAIN_WINDOWS_CAMPAIGN_REVIEW_WORKTREE_DIRTY_E54A_AND_ALL_EXISTING_BRANCHES_WORKTREES",
+    "owner": "Mac integration sole writer; Windows campaign stopped",
+    "holds": [
+      "PRESERVE_WINDOWS_CAMPAIGN_HEAD_47176176",
+      "PRESERVE_DETACHED_DIRTY_E54A_SESSION_LOG",
+      "NO_BRANCH_OR_WORKTREE_DELETION"
+    ]
+  },
+  "task_archive": {
+    "status": "NOT_APPLICABLE",
+    "query_status": "OK",
+    "reason_code": "CURRENT_INTEGRATION_TASK_REMAINS_ACTIVE_UNTIL_MERGE"
+  },
+  "authorization": {
+    "status": "OBSERVED",
+    "query_status": "OK",
+    "observed_at_utc": "2026-08-29T10:54:28Z",
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "status": "OBSERVED",
+      "query_status": "OK",
+      "observed_at_utc": "2026-08-29T10:54:28Z",
+      "reference": "current-thread:user-approved-continue-mac-maintenance-w2-integration"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_PULL_REQUEST",
+      "MERGE_UNCHANGED_GREEN_PULL_REQUEST",
+      "FAST_FORWARD_CLEAN_LOCAL_MAIN"
+    ],
+    "prohibited_actions": [
+      "MODIFY_WINDOWS_CAMPAIGN_BRANCH",
+      "REWRITE_HISTORY",
+      "DELETE_BRANCH_OR_WORKTREE",
+      "BYPASS_REQUIRED_CHECKS",
+      "OPEN_ETABS_OR_EXCEL",
+      "CHANGE_RESULT_SELECTION",
+      "RUN_ANALYSIS_OR_DESIGN",
+      "UNLOCK_MUTATE_OR_SAVE_MODEL",
+      "START_W2C_RETRY",
+      "START_W3",
+      "REPAIR_NANOID_OR_UNRELATED_WINDOWS_PORTABILITY",
+      "CLAIM_W2C_ACCEPTANCE_PASS",
+      "CLAIM_ENGINEERING_APPROVAL"
+    ],
+    "next_action": "COMMIT_INTENDED_PATHS",
+    "target_binding": {
+      "task_id": "ETABS-EXCEL-BEAM-W2-MAC-INTEGRATION",
+      "branch": "codex/etabs-excel-beam-w2-mac-integration",
+      "head_sha": "471761767896263e64bd3c237f50134b19c50bab",
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_PULL_REQUEST",
+        "MERGE_UNCHANGED_GREEN_PULL_REQUEST",
+        "FAST_FORWARD_CLEAN_LOCAL_MAIN"
+      ]
+    }
+  }
+}
