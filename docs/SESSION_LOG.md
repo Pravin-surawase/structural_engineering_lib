@@ -5,6 +5,103 @@
 
 ---
 
+## 2026-08-30 — Session: W3E same-row beam-audit evaluator
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents).
+
+**Branch:** `codex/etabs-w3e-beam-audit-windows`, fresh linked worktree from
+W3R PR #907 merge `f67c2406a511a7fddb1065219657c776229aa28e`, exact reviewed
+tree `d253b003598a4f8ccbb0ce8d8b146eed0e2fe6aa`. W3R's Python, FastAPI,
+React, Documentation and PR Gate checks passed before the unchanged merge;
+its candidate `7167084606ab4a7491f608456ead5d4dc0862619` and branch remain
+retained. A fresh fetch confirmed no intervening main change. All old dirty
+W1 files and every W2/W3 branch/worktree/data record were preserved.
+
+**Git handoff receipt:**
+`docs/verification/etabs-w3e-beam-audit-git-handoff-receipt.json`
+(pre-commit conservative receipt; subsequent hosted facts remain external).
+
+**Focus:** Build and evaluate strict beam-audit inputs using the accepted
+W3A/W3D demand contract and the maintained canonical beam owner. No new math,
+COM, Excel, ETABS, model read/write, solver, optimization or approval.
+
+**Completed:**
+
+- Added the exact two planned positional-only public functions and immutable
+  versioned requests/results. Demand must equal canonical re-derivation; every
+  retained station is evaluated with its six signed actions intact.
+- Required PRESENT section/material/calculation/detailing/applicability
+  evidence, exact baseline section/span identity, caller-owned excluded-action
+  limits, explicit factored basis and opposite signed-M3 tension faces.
+- Retained all independent envelope references without combining extrema.
+  Canonical Mu/Vu/Tu are magnitudes from one row. Per-check governors retain
+  exact scenario/row/input/clause references and deterministic tie-breaking.
+- Kept all five optional states. Missing design inputs block without partial
+  output; requested canonical serviceability remains explicitly held. A
+  software strength pass is neither installed-rebar acceptance nor global,
+  serviceability, engineering, construction or professional approval.
+- Passed 29 focused W3E implementation tests, changed Ruff and targeted Mypy.
+  Synthetic three-row evidence matches the canonical owner exactly; flexure
+  governs at station 2 while shear/torsion govern at station 1. No cross-row
+  load vector is manufactured. Consolidated packet gates follow content freeze.
+
+### Issues encountered
+
+- Bare sibling-test import failed collection. A strict result JSON roundtrip
+  rejected decoded lists at tuple fields, as on the existing W3 contracts.
+- Guessed discovery targets (`check` on the compatibility facade and a
+  services/beam compliance path) were not their maintained owners.
+- `session handoff --write` rejected the extra flag before writing; handoff
+  itself is the explicit write operation, unlike read-only summary/sync/end.
+- Documentation/quick gates spent several minutes silently fingerprinting
+  the newly created worktree before dispatching checks.
+- Documentation passed 7/8 and quick passed 9/10, both failing only because
+  the handoff brief was 151 lines against its maintained 150-line cap.
+- Normal hooks normalized mixed line endings in the generated handoff brief;
+  every other hook passed, including Mypy on 277 sources and 18 API contracts.
+
+### Root causes and resolutions
+
+- Tests are package-imported: used `tests.unit.test_etabs_w3_contracts` to
+  reuse the existing synthetic fixture. JSON transport reconstruction uses
+  the established explicit `model_validate_json(..., strict=False)` for
+  canonical self-serialized bytes; Python construction stays strict and
+  evaluation re-derives the complete input identity. All 29 tests pass,
+  including exact JSON/hash roundtrip and rejection of changed inputs.
+- `canonical_beam.check` is the strict owner, not a named compatibility
+  facade export; compliance math lives at `codes/is456/compliance.py`.
+  Inspected the actual signatures and source, then delegated to that owner
+  without duplicating engineering math. ⚠️ TERMINAL ISSUE: guessed discovery
+  names/paths and bare test import -> used actual owners and package-qualified
+  test fixture import; focused tests, Ruff and Mypy pass.
+- Read the maintained handoff parser and used `session handoff --git-receipt`
+  without the unsupported flag. No session begin or existing timing was
+  replaced. ⚠️ TERMINAL ISSUE: unsupported handoff `--write` -> exact maintained
+  handoff command used before immutable candidate freeze.
+- A read-only stack trace located the wait in `verification._path_digest` /
+  `Path.read_bytes`. A bounded progress probe proved advancing ETABS vendor
+  documentation paths (2,644 to 2,668 inputs over ten seconds), not a deadlock.
+  The sampled 44,065-byte file read immediately using both .NET and Python
+  after the initial scan. The OS-level cause of cold-read latency is
+  unconfirmed. Stopped only the task-owned diagnostic processes after their
+  observations; allowed the unchanged gates to finish, with no exclusions,
+  security changes, source workaround or pass inferred from partial output.
+  ⚠️ TERMINAL ISSUE: silent pre-check fingerprint delay -> verified forward
+  progress and retained full validation rather than restarting the gates.
+- The W3E handoff added one excess line. Compressed the unchanged warning
+  into one line without dropping its meaning; reran the focused brief check
+  and required consolidated gate: docs 8/8 and fresh quick 10/10 now pass.
+- The Windows handoff writer and subsequent text patch produced mixed line
+  endings. Retained the normal hook's formatting correction and reran normal
+  staged hooks before commit; no Git/global line-ending setting changed.
+
+**Consolidated evidence at final content freeze:** 53 focused tests pass;
+architecture checks 241 files with zero violations; all 885 internal imports
+resolve across 277 files; docs 8/8 and fresh quick 10/10 pass. Hook recheck and
+hosted/integration outcomes remain external after candidate freeze.
+
+**Evidence:** `docs/verification/etabs-w3e-beam-audit-evidence.json`.
+
 ## 2026-08-30 — Session: W3R Pareto shear-feasibility repair
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents).

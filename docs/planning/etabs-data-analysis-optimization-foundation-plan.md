@@ -822,6 +822,21 @@ def evaluate_beam_audit_v1(
 ) -> BeamAuditEvaluationResultV1: ...
 ```
 
+W3E implementation evidence is recorded in
+`../verification/etabs-w3e-beam-audit-evidence.json`. The two planned public
+functions are owned by `services/beam_audit.py` and exported from
+`structural_lib`. Inputs bind the accepted demand derivation and snapshot,
+explicit per-member evidence, serviceability requirement and a finite complete
+row bound. All retained rows—not an independently maximized action triple—are
+checked through `canonical_beam.check`. Results retain signed row identity,
+face mapping, complete canonical JSON/hash, clauses and per-check governors.
+The caller supplies applicability limits and factored/material/detailing bases;
+these are never derived from an ETABS material label or chosen by the library.
+The existing canonical serviceability scope hold remains explicit. W3E does
+not claim supplied/installed reinforcement adequacy, serviceability, global
+analysis, or professional approval. This is L1 synthetic software evidence,
+not new installed W3D evidence.
+
 ### W3F — Model/topology/displacement/reaction foundation (`L1` then `L2/L3`)
 
 Owner: Mac contracts/adapter; Windows static and live evidence are separately
