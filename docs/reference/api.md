@@ -59,6 +59,35 @@ support.
 
 Machine-readable signatures live in `docs/reference/api-manifest.json`.
 
+### W3J calculation dossier and review-evidence foundation
+
+The root `structural_lib` exports the provider-neutral dossier functions:
+
+```python
+def build_calculation_dossier_v1(request: CalculationDossierBuildRequestV1, /) -> CalculationDossierBuildResultV1: ...
+def record_review_attestation_v1(dossier: CalculationDossierV1, attestation: ReviewAttestationV1, /) -> AttestedCalculationDossierV1: ...
+def attach_digital_signature_evidence_v1(dossier: AttestedCalculationDossierV1, evidence: DigitalSignatureEvidenceV1, /) -> SignedCalculationDossierV1: ...
+def verify_signed_calculation_dossier_v1(dossier: SignedCalculationDossierV1, *, verification_time_utc: str) -> DossierVerificationResultV1: ...
+```
+
+Core models also export `DossierIdentityV1`, `DossierArtifactV1`,
+`ProfessionalIdentityV1`, `ReviewScopeV1` and `DossierIssueV1`. The pure service
+owns canonical request/scope/attested-envelope hashes and immutable ordered
+review history. A build is complete or blocked without a partial dossier;
+wrong scope, revision or signed-artifact identity fails closed. Public models
+are strict, finite and frozen; optional identities use the existing five-state
+evidence type. Revalidate JSON with the model's `model_validate_json` method.
+
+This API does not sign, read external files, authenticate a signing provider or
+establish professional eligibility. Provider-reported signature, chain,
+non-revocation and credential evidence remain separate from recomputed local
+hash/scope results. Even all-positive provider claims retain
+`SIGNATURE_PENDING` and an UNAVAILABLE provider-trust state; real
+`SIGNED_VERIFIED` requires a separately accepted external-trust adapter. Claimed
+review acceptance never changes the underlying software PASS/FAIL/HOLD state
+or produces professional approval. See the
+[W3J contract semantics](../planning/etabs-excel-professional-surface-audit.md#w3j-provider-neutral-contract-checkpoint-2026-08-31).
+
 ```bash
 .venv/bin/python scripts/generate_api_manifest.py
 ```

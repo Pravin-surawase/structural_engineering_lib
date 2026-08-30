@@ -120,6 +120,21 @@ from .core.beam_line_calibration import (
     BeamLineReferenceMappingV1,
     BeamLineReferenceV1,
 )
+from .core.calculation_dossier import (
+    AttestedCalculationDossierV1,
+    CalculationDossierBuildRequestV1,
+    CalculationDossierBuildResultV1,
+    CalculationDossierV1,
+    DigitalSignatureEvidenceV1,
+    DossierArtifactV1,
+    DossierIdentityV1,
+    DossierIssueV1,
+    DossierVerificationResultV1,
+    ProfessionalIdentityV1,
+    ReviewAttestationV1,
+    ReviewScopeV1,
+    SignedCalculationDossierV1,
+)
 
 # Import EndCondition enum (needed for calculate_effective_length_is456)
 from .core.data_types import EndCondition
@@ -332,6 +347,12 @@ from .services.beam_audit import (
 )
 from .services.beam_line import solve_beam_line_linear_v1
 from .services.beam_line_calibration import compare_beam_line_to_reference_v1
+from .services.calculation_dossier import (
+    attach_digital_signature_evidence_v1,
+    build_calculation_dossier_v1,
+    record_review_attestation_v1,
+    verify_signed_calculation_dossier_v1,
+)
 from .services.contracts.etabs_w3 import (
     BeamActionPageV1,
     BeamDemandBuildResultV1,
@@ -425,6 +446,23 @@ except ImportError:
     reports = None
 
 __all__ = [
+    "AttestedCalculationDossierV1",
+    "CalculationDossierBuildRequestV1",
+    "CalculationDossierBuildResultV1",
+    "CalculationDossierV1",
+    "DigitalSignatureEvidenceV1",
+    "DossierArtifactV1",
+    "DossierIdentityV1",
+    "DossierIssueV1",
+    "DossierVerificationResultV1",
+    "ProfessionalIdentityV1",
+    "ReviewAttestationV1",
+    "ReviewScopeV1",
+    "SignedCalculationDossierV1",
+    "attach_digital_signature_evidence_v1",
+    "build_calculation_dossier_v1",
+    "record_review_attestation_v1",
+    "verify_signed_calculation_dossier_v1",
     "BeamLineNodeV1",
     "BeamLineSpanV1",
     "BeamLineSupportV1",

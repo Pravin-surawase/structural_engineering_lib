@@ -1,0 +1,134 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "65c99c2ae848036f956e200dfadf86ebd0a080d7358b9c1ce7d2df811ea16a25",
+    "state": {
+      "branch": "codex/etabs-w3-completion-audit-windows",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "d6b7a105c22b7d6fde0d532bc1b5c375b43f6e2b",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 487.52,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git\\worktrees\\etabs-w3-completion-audit-windows",
+      "head_sha": "d6b7a105c22b7d6fde0d532bc1b5c375b43f6e2b",
+      "hold_reasons": [
+        "changed paths: 11"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-30T18:50:41.635997+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\worktrees\\etabs-w3-completion-audit-windows",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 11,
+        "modified_paths": [
+          "Python/structural_lib/__init__.py",
+          "docs/SESSION_LOG.md",
+          "docs/planning/etabs-data-analysis-optimization-foundation-plan.md",
+          "docs/planning/etabs-excel-professional-surface-audit.md",
+          "docs/planning/excel-etabs-beam-next-phase-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/reference/api.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "Python/structural_lib/core/calculation_dossier.py",
+          "Python/structural_lib/services/calculation_dossier.py",
+          "Python/tests/unit/test_calculation_dossier.py",
+          "docs/verification/etabs-w3-completion-audit-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "C:\\CodexWork\\worktrees\\etabs-w3-completion-audit-windows"
+    }
+  },
+  "local_state_receipt_hash": "sha256:65c99c2ae848036f956e200dfadf86ebd0a080d7358b9c1ce7d2df811ea16a25",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-30T18:50:41.635997+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [],
+    "integration_owner": "Codex-Windows",
+    "owned_paths": [
+      "Python/structural_lib/core/calculation_dossier.py",
+      "Python/structural_lib/services/calculation_dossier.py",
+      "Python/tests/unit/test_calculation_dossier.py",
+      "docs/verification/etabs-w3-completion-audit-evidence.json",
+      "docs/verification/etabs-w3-completion-audit-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "Python/structural_lib/__init__.py",
+      "docs/SESSION_LOG.md",
+      "docs/planning/next-session-brief.md",
+      "docs/planning/etabs-data-analysis-optimization-foundation-plan.md",
+      "docs/planning/etabs-excel-professional-surface-audit.md",
+      "docs/planning/excel-etabs-beam-next-phase-plan.md",
+      "docs/reference/api.md",
+      "docs/reference/api-classification.json",
+      "docs/reference/api-compatibility-ledger.json"
+    ],
+    "task_id": "ETABS-W3-COMPLETION-AUDIT"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
