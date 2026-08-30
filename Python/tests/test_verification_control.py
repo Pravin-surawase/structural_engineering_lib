@@ -25,6 +25,83 @@ check_all = importlib.import_module("check_all")
 test_changed = importlib.import_module("test_changed")
 
 
+def test_parallel_fingerprints_preserve_exact_bytes_and_sorted_identity(tmp_path):
+    manifest = verification.load_manifest()
+    paths = []
+    for index in range(40):
+        path = f"docs/{index}.md"
+        target = tmp_path / path
+        target.parent.mkdir(exist_ok=True)
+        target.write_bytes(f"bytes-{index}\r\n".encode())
+        paths.append(path)
+    identities = [
+        verification.FingerprintContext(
+            manifest, root=tmp_path, inventory=paths, workers=n
+        ).identity(profile="parallel-parity", domains=("docs",), command=("test",))
+        for n in (1, 4)
+    ]
+    assert identities[0] == identities[1]
+    (tmp_path / paths[0]).write_bytes(b"changed\n")
+    changed = verification.FingerprintContext(
+        manifest, root=tmp_path, inventory=paths
+    ).identity(profile="parallel-parity", domains=("docs",), command=("test",))
+    assert changed.fingerprint != identities[0].fingerprint
+
+
+def test_parallel_read_error_never_publishes_partial_digest_cache(
+    tmp_path, monkeypatch
+):
+    context = verification.FingerprintContext(
+        verification.load_manifest(), root=tmp_path, inventory=()
+    )
+
+    def read(path):
+        if path == "docs/12.md":
+            raise OSError("read denied")
+        return "digest"
+
+    monkeypatch.setattr(context, "_read_path_digest", read)
+    with pytest.raises(OSError, match="read denied"):
+        context._populate_path_digests([f"docs/{i}.md" for i in range(40)])
+    assert context._path_digest_cache == {}
+
+
+def test_timing_json_distinguishes_child_sum_from_wall(capsys):
+    checks = [
+        check_all.CheckResult(
+            name="one", category="docs", passed=True, exit_code=0, duration=3
+        ),
+        check_all.CheckResult(
+            name="two", category="docs", passed=True, exit_code=0, duration=4
+        ),
+    ]
+    timings = {
+        "wall_seconds": 6,
+        "preparation_seconds": 1,
+        "checks_wall_seconds": 4,
+        "postflight_seconds": 1,
+    }
+    check_all._print_json_results(checks, timings)
+    result = json.loads(capsys.readouterr().out)
+    assert result["duration"] == 7
+    assert result["timings"]["wall_seconds"] == 6
+    assert result["duration_semantics"] == "sum_of_child_check_seconds_not_wall_time"
+
+
+def test_failed_check_json_retains_actionable_output_without_rerunning(capsys):
+    result = check_all.CheckResult(
+        name="failed",
+        category="docs",
+        passed=False,
+        exit_code=1,
+        duration=1,
+        stdout="ERROR: projection is stale",
+    )
+    check_all._print_json_results([result])
+    output = json.loads(capsys.readouterr().out)
+    assert output["checks"][0]["failure_output"] == "ERROR: projection is stale"
+
+
 @pytest.mark.parametrize(
     ("argv", "label"),
     [

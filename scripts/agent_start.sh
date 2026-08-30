@@ -101,112 +101,18 @@ echo -e "${BOLD}║           🤖 Agent Start - Unified Onboarding v3.0        
 echo -e "${BOLD}╚════════════════════════════════════════════════════════════╝${NC}"
 echo ""
 
-# Step 0: Confirm the retired wrapper-enforcement hook path is not active.
-echo -e "${BLUE}[0/6]${NC} Checking Codex-native Git mode..."
-HOOKS_PATH=$(git config --get core.hooksPath 2>/dev/null || true)
-if [[ "$HOOKS_PATH" == "scripts/git-hooks" || "$HOOKS_PATH" == */scripts/git-hooks ]]; then
-    echo -e "  ${RED}✗${NC} Retired wrapper hooks are still configured."
-    echo -e "  ${YELLOW}→${NC} Remove the local override: git config --unset core.hooksPath"
-    exit 1
-else
-    echo -e "  ${GREEN}✓${NC} Repository Git wrapper enforcement is disabled"
-fi
-
-# Step 1: Process-local pager configuration (no global Git mutation).
-echo -e "${BLUE}[1/6]${NC} Configuring process-local Git pager..."
+# Process-local display settings only; repository configuration is untouched.
 export GIT_PAGER=cat
 export GIT_EDITOR=":"
 export PAGER=cat
-echo -e "  ${GREEN}✓${NC} Git pager disabled"
 
-# Step 2: Resolve the approved Python runtime for this or the primary worktree.
-echo -e "${BLUE}[2/6]${NC} Resolving Python runtime..."
-if [ ! -x "$PYTHON_RUNTIME" ]; then
-    echo -e "  ${RED}✗${NC} Python runtime launcher not found: $PYTHON_RUNTIME"
-    exit 1
+# One maintained authority for Git state, Python source and effective hook proof.
+# --skip-preflight skips optional app/dependency probes, never these safety facts.
+PREFLIGHT_ARGS=(--expected-root "$PROJECT_ROOT")
+if [ -n "$QUICK" ] || [ -n "$SKIP_PREFLIGHT" ]; then
+    PREFLIGHT_ARGS+=(--environment-only)
 fi
-PYTHON_PATH=$("$PYTHON_RUNTIME" -c 'import sys; print(sys.executable)' 2>/dev/null) || {
-    echo -e "  ${RED}✗${NC} No approved Python interpreter could be resolved"
-    echo -e "  ${YELLOW}→${NC} Create .venv in the primary checkout or set STRUCTURAL_LIB_PYTHON"
-    exit 1
-}
-echo -e "  ${GREEN}✓${NC} Python runtime: $PYTHON_PATH"
-PYTHON_SOURCE=$("$PYTHON_RUNTIME" -c 'from pathlib import Path; import structural_lib; print(Path(structural_lib.__file__).resolve())' 2>/dev/null) || {
-    echo -e "  ${RED}✗${NC} structural_lib could not be imported through the approved runtime"
-    exit 1
-}
-EXPECTED_SOURCE="$PROJECT_ROOT/Python/structural_lib"
-case "$(uname -s)" in
-    MINGW*|MSYS*|CYGWIN*)
-        NORMALIZED_PYTHON_SOURCE="$(cygpath -m "$PYTHON_SOURCE")"
-        NORMALIZED_EXPECTED_SOURCE="$(cygpath -m "$EXPECTED_SOURCE")"
-        ;;
-    *)
-        NORMALIZED_PYTHON_SOURCE="${PYTHON_SOURCE//\\//}"
-        NORMALIZED_EXPECTED_SOURCE="${EXPECTED_SOURCE//\\//}"
-        ;;
-esac
-case "$NORMALIZED_PYTHON_SOURCE" in
-    "$NORMALIZED_EXPECTED_SOURCE"/*)
-        echo -e "  ${GREEN}✓${NC} Python source binding: current worktree"
-        ;;
-    *)
-        echo -e "  ${RED}✗${NC} Python source shadowing detected: $PYTHON_SOURCE"
-        echo -e "  ${YELLOW}→${NC} Diagnose with: ./scripts/python_runtime.sh --diagnose"
-        exit 1
-        ;;
-esac
-
-# Step 3: Pre-flight Check (skip in quick mode or if explicitly skipped)
-echo -e "${BLUE}[3/6]${NC} Running pre-flight checks..."
-
-# Dependency verification (skip in quick mode)
-if [ -z "$QUICK" ]; then
-    MISSING_DEPS=""
-
-    # Check critical dependencies (fail fast if missing)
-    "$PYTHON_RUNTIME" -c "import pydantic" 2>/dev/null || MISSING_DEPS="$MISSING_DEPS pydantic"
-    "$PYTHON_RUNTIME" -c "import pandas" 2>/dev/null || MISSING_DEPS="$MISSING_DEPS pandas"
-    "$PYTHON_RUNTIME" -c "import numpy" 2>/dev/null || MISSING_DEPS="$MISSING_DEPS numpy"
-
-    if [ -n "$MISSING_DEPS" ]; then
-        echo -e "  ${YELLOW}⚠${NC} Missing dependencies:$MISSING_DEPS"
-        echo -e "  ${YELLOW}→${NC} Install dependencies in the resolved environment before continuing"
-    else
-        echo -e "  ${GREEN}✓${NC} Critical dependencies verified"
-    fi
-else
-    echo -e "  ${YELLOW}⊘${NC} Dependency check skipped (quick mode)"
-fi
-if [ -n "$SKIP_PREFLIGHT" ]; then
-    echo -e "  ${YELLOW}⊘${NC} Skipped (--skip-preflight)"
-elif [ -n "$QUICK" ]; then
-    # Quick mode: basic git state check only
-    if git status --porcelain | grep -q '^UU\|^AA'; then
-        echo -e "  ${YELLOW}⚠${NC} Unresolved merge conflicts detected"
-    else
-        echo -e "  ${GREEN}✓${NC} Quick pre-flight passed"
-    fi
-else
-    # Full mode: inline pre-flight checks (agent_preflight.sh was consolidated here)
-    PREFLIGHT_OK=true
-    # Check for merge conflicts
-    if git status --porcelain | grep -q '^UU\|^AA'; then
-        echo -e "  ${RED}✗${NC} Unresolved merge conflicts!"
-        PREFLIGHT_OK=false
-    fi
-    # Check for broken imports
-    "$PYTHON_RUNTIME" -c "import structural_lib" 2>/dev/null || {
-        echo -e "  ${YELLOW}⚠${NC} structural_lib import failed (check Python/)"
-    }
-    if [ "$PREFLIGHT_OK" = false ]; then
-        echo -e "  ${RED}✗${NC} Pre-flight failed! Fix issues before continuing."
-        echo -e "  ${YELLOW}→${NC} Run with --skip-preflight to bypass (not recommended)"
-        exit 1
-    else
-        echo -e "  ${GREEN}✓${NC} Pre-flight checks passed"
-    fi
-fi
+"$PYTHON_RUNTIME" "$SCRIPT_DIR/preflight.py" "${PREFLIGHT_ARGS[@]}"
 
 if [ -n "$PREFLIGHT_ONLY" ]; then
     echo -e "  ${GREEN}✓${NC} Environment preflight complete"

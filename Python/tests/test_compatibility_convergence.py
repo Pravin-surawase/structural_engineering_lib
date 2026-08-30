@@ -45,6 +45,66 @@ def _resolve(qualified_path: str) -> Any:
     raise AssertionError(f"Could not resolve {qualified_path}")
 
 
+def test_generator_rejects_omitted_untracked_callers_before_any_output(
+    monkeypatch, capsys
+):
+    monkeypatch.setattr(sys, "argv", ["generate_api_classification.py"])
+    monkeypatch.setattr(
+        classification, "_untracked_caller_paths", lambda: ["Python/new_caller.py"]
+    )
+    monkeypatch.setattr(
+        classification,
+        "build_registry",
+        lambda: pytest.fail("must stop before generation"),
+    )
+    assert classification.main() == 1
+    assert "stage only intended" in capsys.readouterr().err
+
+
+def test_generator_untracked_inventory_failure_stops_without_writes(monkeypatch):
+    monkeypatch.setattr(sys, "argv", ["generate_api_classification.py", "--check"])
+
+    def fail():
+        raise RuntimeError("Git inventory unavailable")
+
+    monkeypatch.setattr(classification, "_untracked_caller_paths", fail)
+    monkeypatch.setattr(
+        classification,
+        "build_registry",
+        lambda: pytest.fail("must stop before generation"),
+    )
+    assert classification.main() == 1
+
+
+def test_generator_writes_lf_without_platform_translation(monkeypatch, tmp_path):
+    registry = tmp_path / "registry.json"
+    ledger = tmp_path / "ledger.json"
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "generate_api_classification.py",
+            "--out",
+            str(registry),
+            "--compatibility-out",
+            str(ledger),
+        ],
+    )
+    monkeypatch.setattr(classification, "_untracked_caller_paths", list)
+    monkeypatch.setattr(classification, "build_registry", lambda: {"test": "registry"})
+    monkeypatch.setattr(
+        classification, "build_compatibility_ledger", lambda _: {"test": "ledger"}
+    )
+    monkeypatch.setattr(
+        classification, "_pack_compatibility_ledger", lambda value: value
+    )
+    assert classification.main() == 0
+    assert all(
+        b"\r\n" not in path.read_bytes() and path.read_bytes().endswith(b"\n")
+        for path in (registry, ledger)
+    )
+
+
 @pytest.fixture(scope="module")
 def ledger() -> dict[str, Any]:
     return classification.build_compatibility_ledger()

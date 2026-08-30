@@ -5,6 +5,105 @@
 
 ---
 
+## 2026-08-30 — Session: cross-device workflow readiness before W3H
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `WORKFLOW-READINESS-CROSS-DEVICE`.
+**Branch:** `codex/workflow-readiness-cross-device`, fresh from fetched W3G
+merge `3a21b626153dcfdb18873b51250f15b02e90328e`, tree
+`586d3f84ac09848fc48db8161bb2a455835d563e`.
+**Git handoff receipt:** `docs/verification/workflow-readiness-git-handoff-receipt.json`
+**Focus:** Fix confirmed repeated setup/verification failures before W3H while
+preserving Mac/Windows ownership, all prior worktrees and every application file.
+
+**Completed:**
+
+- Reused the existing preflight, canonical Git state and session-start owner;
+  added no Git lifecycle wrapper or automatic recovery/installation.
+- Native current-interpreter source proof, effective standard-hook/interpreter
+  inspection, requested-worktree identity, fail-closed Git query handling and
+  optional-free JSON diagnostics now compose into session startup.
+- Bounded four-reader exact-byte hashing preserves serial identity; gate JSON
+  separates preparation/check/postflight wall intervals from child duration sums.
+  Reused checks no longer construct an unnecessary receipt-publication context.
+- Caller-inventory generation stops before writing when untracked text would
+  be omitted and emits LF bytes on both systems.
+- Shared terminal/gate guidance is path-neutral and consistent with `AGENTS.md`.
+  Windows's external environment script preserves cwd, supports explicit target
+  selection and avoids repeated PATH entries; the exact original is backed up.
+
+### Issues encountered
+
+- Existing preflight crashed with Windows `WinError 193` before runtime proof.
+  It independently classified Git, ignored failed status queries, and session
+  startup checked only a subset of conflict markers without active-hook proof.
+- An exact-input 3,452-file fingerprint took 235.215 seconds cold and 1.608
+  seconds warm. Gate output exposed child durations, not preparation wall time.
+- W3G's API generator silently omitted new unstaged caller files and used
+  platform newline translation. This task also reproduced CRLF generation in
+  the maintained Git receipt/next-brief writers; all three now write LF.
+  Type-check invocation depended on package cwd.
+- Shared terminal rules named one Mac's absolute root and obsolete editFiles/
+  delegation requirements. Full-gate wording conflicted across instruction owners.
+- The Windows host-local environment script silently moved cwd to the protected
+  evidence clone. Main-only fetch configuration also explained why a pushed
+  task branch could have configured upstream but no local tracking ref.
+- Consolidated verification found 17 failures: one stale control projection and
+  16 session-test failures caused by native `.sh` execution or POSIX-only fake
+  absolute paths on Windows. Full validation passed 30/32 but exposed 52 false
+  governance errors and missing failure details in its JSON output.
+- Governance compared Windows path strings against POSIX exception keys; the
+  separate architecture scanner had the inverse defect and could skip layers.
+
+### Root causes and resolutions
+
+- Windows cannot natively spawn Bash scripts. Preflight now checks the already
+  selected interpreter using native `Path` identity and consumes only
+  `git_state.py` classifications; failed/unsafe states fail, dirty state remains
+  explicit warning without mutation authority. Hook presence is distinct from
+  package installation; custom hooks are preserved and held for inspection.
+  Direct corrected Windows preflight completed in 2.717 seconds with source,
+  hook and requested-root PASS and the expected dirty implementation warning.
+- Sequential file opens serialize first-read latency; OS/storage/security cause
+  remains unconfirmed. Same-source serial/four-reader warm measurements were
+  1.533/1.120 seconds with identical hashes; a controlled-delay overlap probe
+  was 0.393/0.102 seconds with identical per-file digests. No security setting or
+  exact-input invalidation was weakened. Fresh cold post-fix timing remains a
+  next-worktree observation, not an asserted speedup.
+- The generator inventories Git's tracked allowlist. Added a read-only
+  untracked-caller guard and explicit LF output instead of automatic staging or
+  scanning private ignored data. Documented the actual configured mypy cwd.
+- Replaced device-specific/obsolete terminal guidance, retained native Codex
+  Git ownership and the verified CLI fallback, and aligned full-gate cadence
+  with the canonical milestone/risk policy. The small skill change is validated.
+- Removed only the external environment script's implicit cwd change; repeated
+  sourcing now proves unchanged cwd and idempotent process PATH. No global PATH,
+  remote refspec, Mac configuration or protected checkout was changed. Documented
+  explicit receiving-branch fetch and one-writer handoff instead of assuming
+  the other device is synchronized. No Mac filesystem execution is claimed.
+- Regenerated the maintained control projection and made its writer LF-stable.
+  Session tests now invoke Bash and provide native absolute fixture paths;
+  production Git-path validation remains unchanged. Governance normalizes rule
+  keys with `as_posix`, and architecture layer discovery does the same. The
+  corrected Windows governance reports zero errors (two retained informational
+  stub warnings); architecture actively checks 244 files across all four layers.
+  Paired Windows/POSIX path fixtures plus a deliberately invalid import prove
+  valid exceptions and real violations remain distinguishable. Gate JSON now
+  carries a bounded failed-check output tail, avoiding a rerun just for diagnosis.
+
+**Verification:** Corrected focused regressions: 331 passed in 78.20 seconds
+(80.656 seconds process wall). Corrected full gate: 32/32 PASS, no reuse,
+60.922 seconds process wall; its 172.14-second child sum is not elapsed time.
+The initial failed full run and corrected repeat are both retained. Exact-byte
+benchmark, direct Windows startup and skill validation passed. Quick gate,
+normal hooks, immutable audit and hosted acceptance remain required at freeze.
+Final measured verdicts are in `docs/verification/workflow-readiness-evidence.json`;
+hosted/merge/timing facts stay in the successor external closeout after push.
+**Next:** W3H remains separate. No ETABS/Excel/model/workbook operation, engineering
+logic, optimization, release or professional approval occurred in this task.
+
+---
+
 ## 2026-08-30 — Session: W3G pure beam-line solver and measured validation
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).

@@ -106,7 +106,7 @@ def _cmd_export(args: argparse.Namespace) -> int:
         return 1
     content = canonical_json(legacy_projection(registry))
     if args.write:
-        LEGACY_PATH.write_text(content, encoding="utf-8")
+        LEGACY_PATH.write_text(content, encoding="utf-8", newline="\n")
         print(f"Wrote {LEGACY_PATH}")
         return 0
     if legacy_is_current(registry):

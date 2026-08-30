@@ -27,8 +27,8 @@ from dataclasses import dataclass, replace
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _lib.utils import REPO_ROOT
 from _lib.output import StatusLine, print_json
+from _lib.utils import REPO_ROOT
 from verification import (
     REQUIRED_DOMAINS,
     EvidenceIdentity,
@@ -263,10 +263,7 @@ def _run_pre_commit(fix: bool = False) -> int:
         print("  ❌ pre-commit not installed. Run: pip install pre-commit")
         return 1
     except subprocess.TimeoutExpired:
-        print(
-            "  ⏱️  pre-commit timed out after "
-            f"{PRE_COMMIT_TIMEOUT_SECONDS}s"
-        )
+        print("  ⏱️  pre-commit timed out after " f"{PRE_COMMIT_TIMEOUT_SECONDS}s")
         return 1
 
 
@@ -561,13 +558,17 @@ def _print_results_table(results: list[CheckResult]) -> None:
         print()
 
 
-def _print_json_results(results: list[CheckResult]) -> None:
+def _print_json_results(
+    results: list[CheckResult], timings: dict[str, float] | None = None
+) -> None:
     """Print results as JSON."""
     output = {
         "total": len(results),
         "passed": sum(1 for r in results if r.passed),
         "failed": sum(1 for r in results if not r.passed),
         "duration": round(sum(r.duration for r in results), 2),
+        "duration_semantics": "sum_of_child_check_seconds_not_wall_time",
+        "timings": timings,
         "reused": sum(1 for r in results if r.reused),
         "categories": {},
         "checks": [],
@@ -595,6 +596,9 @@ def _print_json_results(results: list[CheckResult]) -> None:
                 "reused": r.reused,
                 "fingerprint": r.fingerprint or None,
                 "error": r.error or None,
+                "failure_output": (
+                    (r.stderr or r.stdout)[-8000:] if not r.passed else None
+                ),
             }
         )
 
@@ -628,6 +632,7 @@ def _print_list() -> None:
 
 
 def _main() -> int:
+    wall_started = time.monotonic()
     parser = argparse.ArgumentParser(
         prog="check_all.py",
         description="Run all validation checks in parallel, grouped by category.",
@@ -749,11 +754,16 @@ def _main() -> int:
         else:
             mode = "all"
         fix_tag = " (fix mode)" if args.fix else ""
-        print(f"🔍 Running {len(checks)} check(s) [{mode}]{fix_tag}...")
+        print(f"🔍 Running {len(checks)} check(s) [{mode}]{fix_tag}...", flush=True)
+        print(
+            "  Preparing exact input/runtime identities (included in wall timing)...",
+            flush=True,
+        )
         if impact_fail_closed:
             detail = "; ".join(impact_reasons) or "unknown impact"
             print(f"  ⚠️  Impact is unknown; running every domain: {detail}")
 
+    preparation_started = time.monotonic()
     evidence_context: FingerprintContext | None = None
     evidence_manifest: dict[str, object] | None = None
     prepared: dict[tuple[str, str], tuple[EvidenceIdentity, Path]] = {}
@@ -777,6 +787,8 @@ def _main() -> int:
             evidence_manifest = None
             prepared = {}
 
+    preparation_seconds = time.monotonic() - preparation_started
+    checks_started = time.monotonic()
     # Run checks
     results: list[CheckResult] = []
 
@@ -856,13 +868,21 @@ def _main() -> int:
     cat_order = {cat.name: i for i, cat in enumerate(CATEGORIES)}
     results.sort(key=lambda r: (cat_order.get(r.category, 99), r.name))
 
+    checks_seconds = time.monotonic() - checks_started
+    postflight_started = time.monotonic()
     # Record only exact PASS identities that remained unchanged through the run.
-    if evidence_manifest is not None and prepared:
+    # Reused checks cannot publish a new receipt; avoid a redundant context.
+    recordable = [
+        r
+        for r in results
+        if r.passed and not r.reused and (r.category, r.name) in prepared
+    ]
+    if evidence_manifest is not None and recordable:
         try:
             post_context = FingerprintContext(evidence_manifest)
             categories = {cat.name: cat.impact_domains for cat in CATEGORIES}
             checks_by_key = {(cat, check.name): check for check, cat in checks}
-            for result in results:
+            for result in recordable:
                 key = (result.category, result.name)
                 if not result.passed or result.reused or key not in prepared:
                     continue
@@ -878,11 +898,26 @@ def _main() -> int:
         except (OSError, VerificationError):
             pass
 
+    # These are non-overlapping wall intervals. Child durations may overlap.
+    timings = {
+        "planning_seconds": round(preparation_started - wall_started, 4),
+        "preparation_seconds": round(preparation_seconds, 4),
+        "checks_wall_seconds": round(checks_seconds, 4),
+        "postflight_seconds": round(time.monotonic() - postflight_started, 4),
+        "wall_seconds": round(time.monotonic() - wall_started, 4),
+    }
     # Output
     if args.json:
-        _print_json_results(results)
+        _print_json_results(results, timings)
     else:
         _print_results_table(results)
+        print(
+            "  Wall timing: "
+            + ", ".join(f"{key}={value:.3f}s" for key, value in timings.items())
+        )
+        print(
+            "  Child duration totals overlap in parallel mode; output/usage-recording tail is excluded."
+        )
 
     # Exit code
     failed = sum(1 for r in results if not r.passed)

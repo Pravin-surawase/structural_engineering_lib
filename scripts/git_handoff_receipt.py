@@ -562,7 +562,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     payload = json.dumps(receipt, indent=2, sort_keys=True) + "\n"
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(payload, encoding="utf-8")
+        args.output.write_text(payload, encoding="utf-8", newline="\n")
     else:
         print(payload, end="")
     return 0

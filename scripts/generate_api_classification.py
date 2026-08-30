@@ -1657,6 +1657,28 @@ def _unpack_compatibility_ledger(ledger: dict[str, Any]) -> dict[str, Any]:
     return unpacked
 
 
+def _untracked_caller_paths() -> list[str]:
+    """Do not silently generate an incomplete tracked-only caller inventory."""
+    if not (REPO_ROOT / ".git").exists():
+        return []  # Source archives retain their existing deterministic scan.
+    result = subprocess.run(
+        ["git", "ls-files", "--others", "--exclude-standard", "-z"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        check=False,
+        env={**os.environ, "GIT_OPTIONAL_LOCKS": "0", "GIT_TERMINAL_PROMPT": "0"},
+    )
+    if result.returncode:
+        raise RuntimeError(
+            "Cannot establish untracked caller inventory; no outputs written"
+        )
+    return sorted(
+        os.fsdecode(path)
+        for path in result.stdout.split(b"\0")
+        if path and _is_scannable_text_path(Path(os.fsdecode(path)))
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
@@ -1665,6 +1687,20 @@ def main() -> int:
     )
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
+
+    try:
+        untracked = _untracked_caller_paths()
+    except (OSError, RuntimeError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
+    if untracked:
+        print(
+            "ERROR: Untracked caller text would be omitted. Review and stage only intended paths before generating/checking:",
+            file=sys.stderr,
+        )
+        for path in untracked:
+            print(f"  {path}", file=sys.stderr)
+        return 1
 
     expected = build_registry()
     expected_compatibility = build_compatibility_ledger(expected)
@@ -1705,7 +1741,9 @@ def main() -> int:
         return 0
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(json.dumps(expected, indent=2) + "\n", encoding="utf-8")
+    args.out.write_text(
+        json.dumps(expected, indent=2) + "\n", encoding="utf-8", newline="\n"
+    )
     args.compatibility_out.parent.mkdir(parents=True, exist_ok=True)
     args.compatibility_out.write_text(
         json.dumps(
@@ -1714,6 +1752,7 @@ def main() -> int:
         )
         + "\n",
         encoding="utf-8",
+        newline="\n",
     )
     print(f"Wrote API classification registry to {args.out}")
     print(f"Wrote API compatibility ledger to {args.compatibility_out}")

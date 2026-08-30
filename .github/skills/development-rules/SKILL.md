@@ -42,7 +42,10 @@ Load only the section for the changed domain. Existing project automation and ad
 
 - During implementation, change or add the narrow evidence required by the requested behavior; do not add tests during review-only work.
 - Use real structural result types when their behavior is part of the process. Do not use mocks that make impossible states appear valid.
-- Run targeted checks while editing, `./run.sh check --quick` once before commit, and `./run.sh check` once at closeout.
+- Run only necessary targeted diagnostics while editing, then the consolidated
+  focused selection and `./run.sh check --quick` once before commit. Follow
+  `AGENTS.md` for the full gate: once at cumulative milestone closeout, earlier
+  only for repository-wide risk; not once per ordinary packet.
 - Use release/UAT automation only for release or packaging scope.
 
 ## Documentation and State

@@ -1,218 +1,243 @@
 #!/usr/bin/env python3
-"""Pre-flight check — catch common mistakes BEFORE they happen.
+"""Read-only, worktree-bound startup diagnostics for Windows and POSIX.
 
-When to use: Before implementation when you need a read-only environment,
-branch, merge-state, dependency, and local-port diagnostic.
-
-Usage:
-    ./scripts/python_runtime.sh scripts/preflight.py
-
-Checks:
-    1. On correct branch (not detached HEAD)
-    2. No uncommitted changes (warn, not block)
-    3. .venv is active and correct
-    4. No merge conflicts in progress
-    5. Key files exist (run.sh, services/api.py, etc.)
-    6. Port conflicts (8000, 5173)
+Use ./scripts/python_runtime.sh scripts/preflight.py --environment-only --json
+for Git, source binding and active-hook proof without ports or optional apps.
+No fetch, installation, Git configuration, application start or file writes.
 """
 
+from __future__ import annotations
+
 import argparse
+import importlib
+import json
 import os
+import platform
+import shlex
+import socket
 import subprocess
 import sys
-import socket
+import time
 from pathlib import Path
 
-REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PYTHON_RUNTIME = os.path.join(REPO_ROOT, "scripts", "python_runtime.sh")
+from git_state import collect_repository_state
+
+REPO_ROOT = str(Path(__file__).resolve().parents[1])
+PYTHON_RUNTIME = str(Path(REPO_ROOT) / "scripts/python_runtime.sh")
 REACT_INSTALL_COMMAND = (
-    "./scripts/python_runtime.sh scripts/node_runtime.py -- "
-    "npm --prefix react_app ci"
+    "./scripts/python_runtime.sh scripts/node_runtime.py -- npm --prefix react_app ci"
 )
 REACT_REQUIRED_TOOLS = ("eslint", "tsc", "vite", "vitest")
 
-GREEN = "\033[32m"
-RED = "\033[31m"
-YELLOW = "\033[33m"
-DIM = "\033[2m"
-BOLD = "\033[1m"
-NC = "\033[0m"
 
-passed = 0
-warned = 0
-failed = 0
-
-
-def _run(cmd: list[str], cwd: str | None = None) -> tuple[int, str]:
-    """Run command, return (returncode, stdout)."""
-    result = subprocess.run(cmd, capture_output=True, text=True, cwd=cwd or REPO_ROOT)
-    return result.returncode, result.stdout.strip()
-
-
-def _pass(msg: str) -> None:
-    global passed
-    passed += 1
-    print(f"  {GREEN}✓{NC} {msg}")
-
-
-def _warn(msg: str, fix: str = "") -> None:
-    global warned
-    warned += 1
-    hint = f" {DIM}({fix}){NC}" if fix else ""
-    print(f"  {YELLOW}⚠{NC} {msg}{hint}")
-
-
-def _fail(msg: str, fix: str = "") -> None:
-    global failed
-    failed += 1
-    hint = f" {DIM}({fix}){NC}" if fix else ""
-    print(f"  {RED}✗{NC} {msg}{hint}")
-
-
-def check_branch() -> None:
-    """Ensure we're on a real branch, not detached HEAD."""
-    rc, branch = _run(["git", "rev-parse", "--abbrev-ref", "HEAD"])
-    if rc != 0:
-        _fail("Not a git repository")
-    elif branch == "HEAD":
-        _fail(
-            "Detached HEAD — not on a branch", "Stop and have Codex inspect Git state"
+def _run(cmd: list[str]) -> tuple[int, str]:
+    try:
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            cwd=REPO_ROOT,
+            timeout=10,
+            check=False,
+            env={**os.environ, "GIT_OPTIONAL_LOCKS": "0", "GIT_TERMINAL_PROMPT": "0"},
         )
-    else:
-        _pass(f"On branch: {branch}")
-
-
-def check_uncommitted() -> None:
-    """Warn about uncommitted changes."""
-    rc, status = _run(["git", "status", "--porcelain"])
-    if status:
-        count = len(status.strip().split("\n"))
-        _warn(f"{count} uncommitted change(s)", "Codex must review and scope them")
-    else:
-        _pass("Working tree clean")
-
-
-def check_python_runtime() -> None:
-    """Ensure this checkout can resolve an approved Python interpreter."""
-    rc, version = _run([PYTHON_RUNTIME, "--version"])
-    if rc == 0:
-        _pass(f"Python runtime resolved: {version}")
-    else:
-        _fail(
-            "Python runtime unavailable",
-            "Create .venv in the primary checkout or set STRUCTURAL_LIB_PYTHON",
+        return (
+            result.returncode,
+            (result.stdout if result.returncode == 0 else result.stderr).strip(),
         )
+    except (OSError, subprocess.SubprocessError) as exc:
+        return 1, str(exc)
 
 
-def check_merge_conflicts() -> None:
-    """Detect unresolved merge conflicts."""
-    merge_rc, _merge_head = _run(["git", "rev-parse", "-q", "--verify", "MERGE_HEAD"])
-    if merge_rc == 0:
-        _fail("Unfinished merge in progress", "Stop and have Codex inspect git status")
-        return
-    rc, output = _run(["git", "diff", "--check"])
-    if output and "conflict" in output.lower():
-        _fail("Merge conflicts detected", "Stop and have Codex inspect git status")
-    else:
-        _pass("No merge conflicts")
+def python_binding() -> dict:
+    """Check the interpreter already selected by python_runtime.sh; no shell spawn."""
+    try:
+        module = importlib.import_module("structural_lib")
+        source = Path(module.__file__).resolve()
+        bound = source.is_relative_to(Path(REPO_ROOT) / "Python/structural_lib")
+        return {
+            "status": "PASS" if bound else "FAIL",
+            "source_bound": bound,
+            "module": str(source),
+            "interpreter": sys.executable,
+            "version": platform.python_version(),
+            "detail": (
+                "Python source binding: current worktree"
+                if bound
+                else "Python source shadowing detected"
+            ),
+        }
+    except (ImportError, OSError, TypeError) as exc:
+        return {"status": "FAIL", "source_bound": False, "detail": str(exc)}
 
 
-def check_key_files() -> None:
-    """Ensure critical files exist."""
-    critical = [
+def hook_readiness() -> dict:
+    """Respect Git's effective hook path; never install/replace an unknown hook."""
+    rc, output = _run(
+        ["git", "rev-parse", "--path-format=absolute", "--git-path", "hooks/pre-commit"]
+    )
+    if rc:
+        return {
+            "status": "FAIL",
+            "detail": "Cannot resolve effective pre-commit hook: " + output,
+        }
+    path = Path(output)
+    if not path.is_absolute():
+        path = Path(REPO_ROOT) / path
+    hint = "Inspect existing configuration; install only if absent: ./scripts/python_runtime.sh -m pre_commit install"
+    if not path.is_file():
+        return {
+            "status": "FAIL",
+            "path": str(path),
+            "detail": "Active pre-commit hook missing",
+            "action": hint,
+        }
+    try:
+        text = path.read_text(encoding="utf-8")
+        assignments = [
+            line.partition("=")[2]
+            for line in text.splitlines()
+            if line.startswith("INSTALL_PYTHON=")
+        ]
+        interpreter = shlex.split(assignments[0])[0] if len(assignments) == 1 else ""
+    except (OSError, UnicodeError, ValueError, IndexError) as exc:
+        return {
+            "status": "FAIL",
+            "path": str(path),
+            "detail": "Unreadable hook: " + str(exc),
+        }
+    if (
+        "File generated by pre-commit:" not in text
+        or "hook-impl" not in text
+        or not interpreter
+    ):
+        return {
+            "status": "FAIL",
+            "path": str(path),
+            "detail": "Custom/unrecognized hook: inspect; do not overwrite",
+        }
+    if not os.access(path, os.X_OK) or not Path(interpreter).is_file():
+        return {
+            "status": "FAIL",
+            "path": str(path),
+            "detail": "Hook or bound interpreter is not executable/available",
+        }
+    rc, detail = _run([interpreter, "-c", "import pre_commit"])
+    return {
+        "status": "PASS" if rc == 0 else "FAIL",
+        "path": str(path),
+        "interpreter": interpreter,
+        "detail": (
+            "Standard pre-commit hook and interpreter ready" if rc == 0 else detail
+        ),
+    }
+
+
+def missing_react_dependencies(repo_root: Path | None = None) -> list[str]:
+    root = repo_root or Path(REPO_ROOT)
+    bin_dir = root / "react_app/node_modules/.bin"
+    return [
+        name
+        for name in REACT_REQUIRED_TOOLS
+        if not (bin_dir / name).exists() and not (bin_dir / f"{name}.cmd").exists()
+    ]
+
+
+def collect_readiness(
+    *, environment_only: bool = False, expected_root: Path | None = None
+) -> dict:
+    started = time.monotonic()
+    root = Path(REPO_ROOT).resolve()
+    state = collect_repository_state(root, timeout=5)
+    checks = {}
+    if expected_root is not None:
+        checks["requested_worktree"] = {
+            "status": "PASS" if expected_root.resolve() == root else "FAIL",
+            "detail": f"requested={expected_root.resolve()}; actual={root}",
+        }
+    git_status = (
+        "PASS"
+        if state.ready_local
+        else "WARN" if state.derived_action == "HOLD_DIRTY" else "FAIL"
+    )
+    checks["git"] = {
+        "status": git_status,
+        "detail": state.derived_action,
+        "action": "Inspect dirty/held state; no automatic recovery or cross-device synchronization",
+    }
+    checks["python"] = python_binding()
+    checks["hook"] = hook_readiness()
+    critical = (
         "run.sh",
         "Python/structural_lib/services/api.py",
         "Python/structural_lib/__init__.py",
         "fastapi_app/main.py",
         "react_app/package.json",
         "docs/git-automation/git-workflow-single-source.md",
-    ]
-    missing = [f for f in critical if not os.path.exists(os.path.join(REPO_ROOT, f))]
-    if missing:
-        _fail(f"Missing critical files: {', '.join(missing)}")
-    else:
-        _pass(f"All {len(critical)} critical files present")
+    )
+    missing_files = [name for name in critical if not (root / name).is_file()]
+    checks["key_files"] = {
+        "status": "FAIL" if missing_files else "PASS",
+        "missing": missing_files,
+    }
+    if not environment_only:
+        missing = missing_react_dependencies()
+        checks["react_dependencies"] = {
+            "status": "WARN" if missing else "PASS",
+            "missing": missing,
+            "action": REACT_INSTALL_COMMAND,
+        }
+        for port, name in ((8000, "FastAPI"), (5173, "React")):
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+                sock.settimeout(1)
+                busy = sock.connect_ex(("127.0.0.1", port)) == 0
+            checks[f"port_{port}"] = {
+                "status": "WARN" if busy else "PASS",
+                "detail": f"{name}: {'in use; inspect owner, do not kill' if busy else 'available'}",
+            }
+    statuses = {row["status"] for row in checks.values()}
+    return {
+        "schema_version": 1,
+        "repository": str(root),
+        "host": platform.node(),
+        "platform": platform.system(),
+        "status": (
+            "FAIL" if "FAIL" in statuses else "WARN" if "WARN" in statuses else "PASS"
+        ),
+        "checks": checks,
+        "git_state": state.to_dict(),
+        "remote_and_other_device": "NOT_CHECKED",
+        "mutation_policy": "READ_ONLY",
+        "duration_seconds": round(time.monotonic() - started, 4),
+    }
 
 
-def check_port(port: int, service: str) -> None:
-    """Check if a port is already in use."""
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        sock.settimeout(1)
-        result = sock.connect_ex(("127.0.0.1", port))
-        if result == 0:
-            _warn(f"Port {port} in use ({service})", f"lsof -i :{port}")
-        else:
-            _pass(f"Port {port} available ({service})")
-    finally:
-        sock.close()
-
-
-def missing_react_dependencies(repo_root: Path | None = None) -> list[str]:
-    """Return missing local React tools required by repository commands."""
-    root = repo_root or Path(REPO_ROOT)
-    bin_dir = root / "react_app" / "node_modules" / ".bin"
-    return [name for name in REACT_REQUIRED_TOOLS if not (bin_dir / name).exists()]
-
-
-def check_node_modules() -> None:
-    """Report whether this worktree has its lockfile-pinned React tools."""
-    missing = missing_react_dependencies()
-    if not missing:
-        _pass("react_app lockfile dependencies ready")
-    else:
-        _warn(
-            f"react_app dependencies missing local tools: {', '.join(missing)}",
-            REACT_INSTALL_COMMAND,
-        )
-
-
-def check_stub_not_modified() -> None:
-    """Warn if the stub api.py was recently modified (common mistake)."""
-    stub = os.path.join("Python", "structural_lib", "api.py")
-    rc, log = _run(["git", "log", "-1", "--format=%cr", "--", stub])
-    if rc == 0 and log:
-        # If modified in last day, warn
-        if "second" in log or "minute" in log or "hour" in log:
-            _warn(
-                f"Stub api.py was modified {log} — is this intentional?",
-                "Real code is in services/api.py",
-            )
-        else:
-            _pass("Stub api.py not recently modified")
-    else:
-        _pass("Stub api.py not recently modified")
-
-
-def main() -> None:
+def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.parse_args()
-    print(f"\n{BOLD}Pre-flight Check{NC}\n")
-
-    check_branch()
-    check_uncommitted()
-    check_python_runtime()
-    check_merge_conflicts()
-    check_key_files()
-    check_port(8000, "FastAPI")
-    check_port(5173, "React dev")
-    check_node_modules()
-    check_stub_not_modified()
-
-    print()
-    total = passed + warned + failed
-    summary = f"{passed}/{total} passed"
-    if warned:
-        summary += f", {warned} warnings"
-    if failed:
-        summary += f", {RED}{failed} failed{NC}"
-        print(f"{RED}{BOLD}Pre-flight FAILED{NC}: {summary}")
-        sys.exit(1)
-    elif warned:
-        print(f"{YELLOW}{BOLD}Pre-flight OK (with warnings){NC}: {summary}")
+    parser.add_argument("--environment-only", action="store_true")
+    parser.add_argument("--expected-root", type=Path)
+    parser.add_argument("--json", action="store_true")
+    args = parser.parse_args()
+    report = collect_readiness(
+        environment_only=args.environment_only, expected_root=args.expected_root
+    )
+    if args.json:
+        print(json.dumps(report, indent=2))
     else:
-        print(f"{GREEN}{BOLD}Pre-flight OK{NC}: {summary}")
+        print(
+            f"Read-only preflight: {report['status']} ({report['duration_seconds']:.2f}s)"
+        )
+        for name, row in report["checks"].items():
+            print(
+                f"  {row['status']} {name}: {row.get('detail', row.get('missing', ''))}"
+            )
+            if row["status"] != "PASS" and row.get("action"):
+                print(f"    {row['action']}")
+        print(
+            "  Other device and remote freshness: NOT_CHECKED; fetch/inspect through Codex before writes."
+        )
+    return 1 if report["status"] == "FAIL" else 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

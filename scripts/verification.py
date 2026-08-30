@@ -363,7 +363,11 @@ class FingerprintContext:
         root: Path = REPO_ROOT,
         runtime_extra: bytes = b"",
         inventory: Sequence[str] | None = None,
+        workers: int = 4,
     ) -> None:
+        if not 1 <= workers <= 4:
+            raise ValueError("fingerprint workers must be between 1 and 4")
+        self.workers = workers
         self.manifest = manifest
         self.root = root.resolve()
         self.inventory = (
@@ -383,6 +387,12 @@ class FingerprintContext:
         cached = self._path_digest_cache.get(relative)
         if cached is not None:
             return cached
+        digest = self._read_path_digest(relative)
+        self._path_digest_cache[relative] = digest
+        return digest
+
+    def _read_path_digest(self, relative: str) -> str:
+        """Read exact current bytes; no persistent stat/mtime shortcut."""
         path = self.root / relative
         if path.is_symlink():
             payload = b"symlink\0" + os.fsencode(os.readlink(path))
@@ -392,9 +402,21 @@ class FingerprintContext:
             payload = b"non-file"
         else:
             payload = b"missing"
-        digest = hashlib.sha256(payload).hexdigest()
-        self._path_digest_cache[relative] = digest
-        return digest
+        return hashlib.sha256(payload).hexdigest()
+
+    def _populate_path_digests(self, paths: Sequence[str]) -> None:
+        missing = [path for path in paths if path not in self._path_digest_cache]
+        if self.workers == 1 or len(missing) < 32:
+            for path in missing:
+                self._path_digest(path)
+            return
+        from concurrent.futures import ThreadPoolExecutor
+
+        # Independent reads hide serialized filesystem latency. Preserve sorted
+        # identity order and publish no partial batch if any read raises.
+        with ThreadPoolExecutor(max_workers=self.workers) as executor:
+            digests = list(executor.map(self._read_path_digest, missing))
+        self._path_digest_cache.update(zip(missing, digests, strict=True))
 
     def _paths_for_domain(self, domain: str) -> tuple[str, ...]:
         cached = self._domain_paths_cache.get(domain)
@@ -429,6 +451,7 @@ class FingerprintContext:
             {path for domain in domain_tuple for path in self._paths_for_domain(domain)}
         )
         normalized_command = _normalize_command(command, self.root)
+        self._populate_path_digests(selected_paths)
         payload = {
             "schema_version": EVIDENCE_SCHEMA_VERSION,
             "profile": profile,

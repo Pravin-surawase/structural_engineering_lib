@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "task_id": "WORKFLOW-READINESS-CROSS-DEVICE",
+  "observation_boundary": "PRE_CANDIDATE_LOCAL_BEHAVIOR; exact final head/tree/hosted/merge facts belong to successor external closeout",
+  "accepted_base": "3a21b626153dcfdb18873b51250f15b02e90328e",
+  "accepted_base_tree": "586d3f84ac09848fc48db8161bb2a455835d563e",
+  "application_and_model_operations": 0,
+  "git_lifecycle_automation_added": false,
+  "mac_execution": "NOT_PERFORMED; portable logic and required hosted POSIX checks are not proof of current Mac state",
+  "observed": {
+    "windows_preflight_before": "FAIL: WinError 193 on direct native .sh execution",
+    "windows_preflight_after": "source_bound, expected worktree, active hook and key files PASS; expected dirty implementation state WARN; exit 0",
+    "preflight_wall_seconds": 2.717363,
+    "initial_readiness_cache_timing_regressions": "PASS",
+    "skill_validation": "PASS",
+    "environment_cwd_preservation": "PASS",
+    "environment_path_idempotence": "PASS",
+    "first_focused_frozen_run": "305 passed, 17 failed; exact path/shell fixture and projection causes recorded in SESSION_LOG",
+    "first_full_gate": "30/32; projection and Windows governance failures diagnosed",
+    "corrected_focused_run": "331 passed in 78.20 seconds; measured process wall 80.656 seconds",
+    "corrected_full_gate": "32/32 PASS; no reuse; measured process wall 60.922 seconds",
+    "corrected_full_gate_timing_seconds": {"preparation": 2.86, "checks_wall": 53.344, "postflight": 2.687, "runner_wall": 58.891, "child_sum_not_wall": 172.14},
+    "windows_governance_after_path_correction": "0 errors; 2 retained stub warnings",
+    "windows_architecture_after_layer_correction": "244 files in four layers; 0 violations",
+    "baseline_doc_inputs": 3452,
+    "baseline_identical_input_cold_warm_seconds": [235.214771, 1.607816],
+    "corrected_same_input_serial_parallel_warm_seconds": [1.532751, 1.119876],
+    "corrected_serial_parallel_fingerprint": "ba77a7bda8d654428b672b7e85080076320f338065a364d2d233058a143f7d8c",
+    "controlled_delay_serial_parallel_seconds": [0.392823, 0.101955],
+    "exact_hash_parity": true,
+    "cold_filesystem_underlying_cause": "UNCONFIRMED",
+    "fresh_cold_postfix_speedup": "NOT_MEASURED; observe next task without flushing system caches or weakening security"
+  },
+  "external_artifact_sha256": {
+    "baseline.json": "3961d05c04933e9618c223b60639c6c8edb13ce75d3b0a58d4e0ef643b43d552",
+    "corrected-readiness.json": "2cd4d8475c5b3f03f4d9f1df8fb68ece59e16856e0e89726bf46863f15b11222",
+    "windows_environment_original": "3903fbe3bdd394d7cab57ccbe8f5be47252123d3dd23525dcc0bf9ae7f6cafb9",
+    "windows_environment_corrected": "34bafd0e328ee55521c0420c504cdbc15ef810b211ba4b1f0aeb5fa401fab288"
+  },
+  "required_before_integration": [
+    "Focused startup, cache, generator, session and governance regressions",
+    "Instruction/control checks and one quick gate",
+    "One full repository gate because exact-verification infrastructure changed",
+    "Normal hooks, unchanged-head local audit, all required hosted changed-path checks",
+    "Exact reviewed/merged tree equality and originating usage closeout"
+  ],
+  "preservation": [
+    "Protected base and all prior worktrees/branches/stashes retained",
+    "No ETABS, Excel, model, workbook, security-setting, global PATH or Mac configuration mutation",
+    "Original Windows environment script backed up byte-for-byte before its scoped correction",
+    "Single-branch remote fetch configuration retained; advertised branch visibility documented",
+    "No engineering logic, W3H calibration, optimization, release or professional approval"
+  ]
+}

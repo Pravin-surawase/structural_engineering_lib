@@ -234,7 +234,7 @@ def extract_patterns(file_path: Path) -> Iterator[tuple[str, int]]:
 
 def get_layer(file_path: Path, project_root: Path) -> str | None:
     """Determine which layer a file belongs to."""
-    rel_path = str(file_path.relative_to(project_root))
+    rel_path = file_path.relative_to(project_root).as_posix()
 
     for layer_name, config in LAYERS.items():
         for layer_path in config["paths"]:
