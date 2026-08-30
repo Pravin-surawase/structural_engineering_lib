@@ -229,9 +229,55 @@ case. No design command ran. Selection and units were restored, the test
 instance closed, and the owner copy/backup/immutable baseline, lock, units,
 15 case statuses and 77 selection flags stayed exact. No Excel/service started.
 
-Next software-only packet: define a separate two-span linear benchmark and
-independent closed-form/reference values before any installed result. Audit
+At this checkpoint the next software-only packet was to define a separate
+two-span linear benchmark and independent reference values before results. Audit
 only additional required operations, retain the new immutable baseline, and
 use one candidate/check sequence per stable packet. Do not repeat this passed
 run or the building recovery. Multi-span, interior-displacement and physical
 building calibration remain separate; W3I and professional approval stay held.
+
+### Two-span and earlier-building regression (2026-08-30 successor)
+
+The owner approved the three-track validation plan: exact ETABS data transport,
+beam design checks using ETABS actions and explicit design inputs, and separately
+bounded independent force prediction. The earlier building remains a regression
+asset rather than being discarded because one reduced-line mapping is missing.
+See the [active plan](../planning/etabs-data-analysis-optimization-foundation-plan.md#owner-approved-validation-continuation-2026-08-30).
+
+The [two-span receipt](../verification/etabs-w3h-two-span-evidence.json) records
+two equal 6 m continuous spans, three vertically restrained/free-rotation joints,
+300 x 500 mm sections, E = 25,000 N/mm2, no self-weight, and -10 kN/m on both
+spans. Before any installed result, the specification froze three-moment,
+equilibrium and integration reference formulas, 50 station rows, component
+signs and numerical criteria. All 112 public comparisons pass: support
+reactions 22.5/75/22.5 kN, middle-support moment -45 kNm and peak sagging
+moment 25.3125 kNm. This is symmetric two-span software evidence only.
+
+ETABS section shear-area modifiers were explicitly zero while all other
+modifiers remained one. CSI defines zero shear area as suppressing transverse
+shear deformation, so this authored test deliberately matches Euler-Bernoulli
+kinematics; it is not a demonstration of native shear-flexible building parity.
+See the [CSI analysis reference, printed page 116](https://docs.csiamerica.com/manuals/etabs/Analysis%20Reference.pdf#page=138)
+and [modifier definitions](https://docs.csiamerica.com/help-files/etabs-api-2016/html/511bdadb-f147-812f-f69b-de6f6e723ca1.htm).
+No interior displacement or torsion/3D claim was added.
+
+One new instance/model and one analysis invocation were used. The known
+post-save EDB/text-export getter inconsistency recurred; its predeclared single
+exact-new-EDB reload restored identity with unchanged bytes and definition.
+The requested case and ETABS internal `~LLRF` finished. Units and selection
+were preserved/restored, both immutable test stages retained and only the
+new instance closed. Owner copy/backup/baseline and all earlier benchmark EDBs
+retained exact hash/size/mtime; owner lock, units, statuses and flags were exact.
+
+Separately, an application-free replay verified 60 saved evidence files, the
+153-beam/3,502-station saved-revision baseline, catalogue hashes and exact W3F
+normalization. Explicit JSON rehydration was followed by complete serialized
+value equality and canonical hash checks. This is a saved-data regression,
+not a fresh Excel run, new force extraction, design comparison or calibration.
+Required-calibration mode still blocks on the retained missing physical basis.
+
+Next: a bounded saved-building capability/mapping assessment alongside
+asymmetric/patterned-load benchmarks, without guessing effective supports.
+Action-only comparisons must declare their reduced scope; neither this test
+nor an unavailable building field is a reason to demand professional sign-off
+before ordinary software development. W3I and construction approval stay held.
