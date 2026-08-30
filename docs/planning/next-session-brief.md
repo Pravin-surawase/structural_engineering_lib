@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-30
-- Focus: Freeze the six planned model-definition/displacement/reaction builders and hash verifiers as pure normalized contracts, before installed getter work.
-- Completed: Added vendor-neutral typed points, joints, frame definitions, supports,; Bound exact saved file/version, baseline, catalogue, complete analysis and; Blocked required missing/BLOCKED evidence, changed identity/state, incomplete
-- Git receipt: docs/verification/etabs-w3f-foundation-git-handoff-receipt.json | sha256:73d51d9632bf1288938e36c6539b02578fdba2604e05fb5b79056d697d59616c | HOLD
-- Git identity: codex/etabs-w3f-foundation-windows@06285155e4bd57f1e763810a56f9685f53894790 | upstream=NONE@UNKNOWN | base=origin/main@06285155e4bd57f1e763810a56f9685f53894790 | tree=dirty | operation=none
+- Focus: Prove installed W3F signatures and field semantics, then normalize bounded recorded outputs without creating COM or changing an application.
+- Completed: Compared 38 managed and generated-wrapper signatures, parameter types,; Read installed API help outside Git. Confirmed joint-local results, both; Added a transport-neutral readback adapter using the six accepted builders,
+- Git receipt: docs/verification/etabs-w3f-installed-signature-git-handoff-receipt.json | sha256:8c4a56405b7ed266b6902a740c3a08a0994adf18fdf499dc5c9cb10439e463e9 | HOLD
+- Git identity: codex/etabs-w3f-installed-signatures-windows@c84c62d063eaf45fe4ea4e71926d3d6caef7a48b | upstream=NONE@UNKNOWN | base=origin/main@c84c62d063eaf45fe4ea4e71926d3d6caef7a48b | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -17,27 +17,24 @@
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` remains the current immutable normal software release. No release work is authorized. |
-| **Current** | W3A-E and separate W3R are merged. W3E PR #908 merge `06285155e4bd57f1e763810a56f9685f53894790` exactly matches corrected candidate tree `98dc2abe224c3ddc42378dfa3121235e9d4c4a74`; Python/FastAPI/Documentation/PR Gate passed. W3F pure contracts are now at local content freeze. |
+| **Current** | W3A-E and separate W3R are merged. W3F contract PR #909 merged as `c84c62d063eaf45fe4ea4e71926d3d6caef7a48b`, exact candidate/merge tree `06bbd1a9959249e800f71be7dea9e85c5eda333a`; Python/FastAPI/Documentation/PR Gate passed. W3F installed signatures and readback adapter are at local content freeze. |
 | **W2 complete** | PR #898 merged reviewed W2C head `57f53d48...` as `f1873e7b...`; candidate and merge tree are both `bb20ba0c...`. Direct service, REST, all seven saved Excel tables, and 3,626,096 reconstructed canonical JSON bytes reconcile to SHA-256 `d4c28586...`. |
 | **Plan gate** | Complete. The owner explicitly authorized the dependency-ordered W3 campaign; every packet still requires its exact predecessor and packet-specific stop conditions. |
-| **Next** | Finish W3F contract focused/quick/hooks, clean closeout and hosted checks, merge unchanged, then audit installed getter signatures before bounded live W3F evidence. Do not repeat W3D or start a duplicate campaign session. |
+| **Next** | Validate and merge the W3F static/readback candidate, then one separately bounded merged-source live W3F read. Owner requests stop after W3F; do not start W3G or later work in this chat. Do not repeat W3D or begin a duplicate campaign session. |
 | **Held** | W3E does not accept installed reinforcement or canonical serviceability. Pareto torsion/serviceability/stirrup-cost/global-analysis holds remain. No shortlist or mutating candidate until W3F-H calibration and W3I criteria pass. Release and engineering/professional/construction approval remain unapproved. |
 
 ## W3A-W3D accepted through local W3D content freeze
 
-Accepted W3A freezes public, versioned, vendor-independent contracts for
-exact ETABS demand provenance before expanding design or optimization:
+Accepted W3A freezes versioned, vendor-independent ETABS demand contracts:
 
 1. load-pattern definitions, including type and self-weight multiplier;
-2. load-case catalogue and relevant typed case parameters/status;
-3. response-combination type, ordered constituents, scale factors, and nested
-   combination references;
+2. load-case catalogue and typed case parameters/status;
+3. combination type, ordered constituents, factors and nested references;
 4. result-selection identity and definition/catalogue digests;
 5. same-row signed beam actions with member/station/step provenance;
 6. explicit demand scenarios, envelope rules, and compact governing references;
 7. links back to the immutable W2 baseline and exact raw station identities;
-8. optional-field semantics that distinguish unavailable, not requested, not
-   applicable, blocked, and present values.
+8. distinct unavailable, not requested, not applicable, blocked and present states.
 
 W3B binds that accepted surface to ETABS 23.3.1.4563 static installed metadata.
 All 15 operation signatures are proved. W3C uses `GetTypeOAPI_1` for full case
@@ -78,8 +75,7 @@ the strict pure beam-audit layer; its evidence is L1 synthetic acceptance only.
   source-definition digest; names alone are insufficient.
 - Optional fields never silently default missing ETABS information to zero,
   false, or an assumed engineering value.
-- The new contracts respect Core -> IS 456 -> Services -> UI import direction,
-  explicit units, and deterministic canonical serialization.
+- Contracts preserve Core -> IS 456 -> Services -> UI, explicit units and canonical JSON.
 - No ETABS setter, `RunAnalysis`, design command, unlock/save, section/load
   mutation, Excel write, or optimization path is introduced.
 - Independent frame analysis remains `HELD_NOT_SUPPORTED` until its separate
@@ -108,9 +104,12 @@ are also accepted. W3R merged unchanged in PR #907. Its acceptance evidence is
 W3F freezes exact typed topology, signed frame/nodal loads and six-component
 displacement/reaction snapshots; source counts, identities and five states
 fail closed. See `docs/verification/etabs-w3f-foundation-evidence.json`.
-After contract merge, preserve this lane and fetch main for a separate static
-signature audit. Live getters require proved signatures, a verified copy,
-explicit bounds and unchanged file/lock/units/status/selection postflight.
+Contract PR #909 is merged; preserve that lane. The static/readback candidate
+records 38 installed signatures and explicit semantic guards in
+`docs/verification/etabs-w3f-installed-signature-evidence.json`.
+Live getters require its accepted merge, a verified copy, explicit scopes and
+unchanged file/lock/units/status/selection postflight. Nonempty undocumented
+joint-load steps and unproved spring forms remain visibly UNAVAILABLE.
 Synthetic W3E/F fixtures are NOT owner engineering criteria or live evidence.
 
 ### Completed W3D operator checklist
