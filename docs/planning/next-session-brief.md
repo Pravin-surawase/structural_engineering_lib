@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-30
-- Focus: Accept the bounded installed read with explicit calibration holds, then stop before W3G.
-- Completed: Preserved the repair branch and all older lanes/data. Rebound the task-owned; Inspected the existing ETABS 23.3.1 copied-model window before and after the; One attachment completed all 40 scoped getter records for one accepted
-- Git receipt: docs/verification/etabs-w3f-spring-live-git-handoff-receipt.json | sha256:90738f8057927297c4930dce86c93b169e03f5c8243f13704299f316e6c82b6b | HOLD
-- Git identity: codex/etabs-w3f-spring-live-windows@cce05508ea5f55559f5aeb07b8945bbabb7f3c06 | upstream=NONE@UNKNOWN | base=origin/main@cce05508ea5f55559f5aeb07b8945bbabb7f3c06 | tree=dirty | operation=none
+- Focus: Implement the bounded pure solver, preserve W3H calibration holds,
+- Completed: Preserved the protected base and all 18 prior worktrees, including dirty; Added strict vendor-neutral one-to-five-span contracts and one public pure; Explicit supports, independent hinge rotations, unloaded rigid offsets,
+- Git receipt: docs/verification/etabs-w3g-git-handoff-receipt.json | sha256:a83fe3a98624b4bffc0ee6643ca2eb83961ded98617174a59ff2f1851c68c585 | HOLD
+- Git identity: codex/etabs-w3g-beam-line-windows@384e14a0153109e40a7b025f1ce89bf6c5205dd9 | upstream=NONE@UNKNOWN | base=origin/main@384e14a0153109e40a7b025f1ce89bf6c5205dd9 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -20,7 +20,7 @@
 | **Current** | W3A-E/W3R and W3F static/readback are merged. PR #911 repaired merge guards/manifest; PR #912 merged the plan-only LIB-PRO-015 update. W3F spring repair PR #913 merged as `cce05508ea5f55559f5aeb07b8945bbabb7f3c06`, tree `d384f56d548e43454c5dc464ae9ec9f82d9bd230`; its bounded installed read now reconciles with unchanged copy/state and explicit calibration holds. |
 | **W2 complete** | PR #898 merged reviewed W2C head `57f53d48...` as `f1873e7b...`; candidate and merge tree are both `bb20ba0c...`. Direct service, REST, all seven saved Excel tables, and 3,626,096 reconstructed canonical JSON bytes reconcile to SHA-256 `d4c28586...`. |
 | **Plan gate** | Complete. The owner explicitly authorized the dependency-ordered W3 campaign; every packet still requires its exact predecessor and packet-specific stop conditions. |
-| **Next** | Stop after W3F as the owner requested. New chat: fetch, inspect the accepted stop receipt and preserved lanes, then separately resume W3G pure solver work; do not repeat live W3D/F. LIB-PRO-015 still needs plan acceptance before D0. Shared-path predecessors must be accepted or explicitly rebound first. |
+| **Next** | The owner resumed W3G on Windows. Pure solver and 40 numerical/contract tests pass locally; finish exact-candidate integration before W3H. No ETABS/Excel access is needed for W3G. LIB-PRO-015 still needs separate plan acceptance. |
 | **Held** | W3E does not accept installed reinforcement or canonical serviceability. Pareto torsion/serviceability/stirrup-cost/global-analysis holds remain. No shortlist or mutating candidate until W3F-H calibration and W3I criteria pass. Release and engineering/professional/construction approval remain unapproved. |
 
 ## W3A-W3D accepted through local W3D content freeze
@@ -110,33 +110,25 @@ Synthetic W3E/F fixtures are NOT owner engineering criteria or live evidence.
 
 W3F spring repair PR #913 is accepted; its exact merge completed 40 installed getters, one-frame/three-joint definition, 3 displacement + 1 reaction rows and all 24 signed components. Model hash/size/mtime, lock, units, 15 finished cases and 77 flags stayed unchanged.
 Springs and diaphragm/slab context remain UNAVAILABLE; required-calibration replay blocks with no partial snapshots. Exact replay/hashes/counts/signs reconcile. See the newest session and `docs/verification/etabs-w3f-spring-live-evidence.json`; all old dirty lanes remain preserved.
-Stop before W3G. No analysis, design, model mutation, Excel, services, optimization or professional approval occurred in this continuation.
+That W3F session closed before W3G. Its data and unavailable calibration fields remain unchanged.
 
-### Completed W3D operator checklist
+## W3G pure solver checkpoint
 
-- [x] User explicitly authorized W3D as part of the full W3 campaign.
-- [x] `origin/main`, W3C merge/tree, evidence and contract hashes match.
-- [x] Worktree is operation-free and unrelated retained work is preserved.
-- [x] Only W3B-proved getter operations and exact list/tuple/scalar semantics
-  are decoded; every call records source, shape, return and verdict evidence.
-- [x] Both live reads were getter-only and returned no partial value on their
-  exact semantic guards; the copied model identity stayed unchanged.
-- [x] Official CSI semantics plus installed 23.3.1 evidence prove blank/`None`
-  mean zero unstressed initial conditions.
-- [x] R1 retains and accepts only documented zero-state forms; every actual
-  prior-case name remains blocked.
-- [x] R2 retains raw `Auto=5` and makes its Boolean meaning `UNAVAILABLE`; it
-  does not guess, discard the case, or weaken other fail-closed guards.
-- [x] No live rerun occurred before R2 merge; the accepted run used a fresh
-  continuation bound to exact merged source.
-- [x] The complete catalogue and retained-evidence demand were reconciled
-  through source-bound REST with exact canonical hash equality.
-- [x] Postflight re-proved copied-model file identity, lock, units, statuses and
-  all output-selection states unchanged; services stopped and ports are free.
-- [x] Transport-neutral compatibility is distinguished from live model,
-  solver, engineering and professional acceptance.
-- [x] No secrets, proprietary model/workbook/result bytes or generated vendor
-  wrapper source entered Git.
+`solve_beam_line_linear_v1(request, /)` now has strict core contracts, explicit
+signs/units/supports/releases/offsets/loads and deterministic complete results.
+Forty local reference tests pass; 94% branch-aware coverage. See
+`../verification/etabs-w3g-beam-line-evidence.json` and the newest session.
+Final integration truth is GitHub/external closeout, not the pre-push receipt.
+W3H owns reference comparison/calibration; springs, diaphragm context, exact
+model mapping and owner engineering tolerances must be proved. No hidden zero
+stiffness, general ETABS parity, optimizer or professional approval is accepted.
+
+### Retained W3D acceptance
+
+W3D source/runtime/getter identity, sentinel repairs, canonical direct/REST
+reconciliation and unchanged model/units/selection proof remain in its accepted
+receipt and session history. No live repeat is part of W3G; proprietary payloads
+stay outside Git and all old blocked evidence is preserved.
 
 ## Required Reading
 

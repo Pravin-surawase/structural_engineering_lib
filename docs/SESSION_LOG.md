@@ -5,6 +5,86 @@
 
 ---
 
+## 2026-08-30 — Session: W3G pure beam-line solver and measured validation
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3G-BEAM-LINE`; one maintained session start.
+**Branch:** `codex/etabs-w3g-beam-line-windows` from freshly fetched PR #914
+merge `384e14a0153109e40a7b025f1ce89bf6c5205dd9`, tree
+`258c0c0498f43c6a24bc66a973367be7d799ed40`. The owner resumed the next packet
+here after the W3F stop and requested validation-overhead measurement.
+**Git handoff receipt:** `docs/verification/etabs-w3g-git-handoff-receipt.json`
+**Focus:** Implement the bounded pure solver, preserve W3H calibration holds,
+and measure the real verification costs without weakening gates.
+
+**Completed:**
+
+- Preserved the protected base and all 18 prior worktrees, including dirty
+  W1/W3F lanes. No overlapping W3G branch or open campaign PR was found.
+- Added strict vendor-neutral one-to-five-span contracts and one public pure
+  direct-stiffness solver, root projections and maintained API records.
+- Explicit supports, independent hinge rotations, unloaded rigid offsets,
+  signed uniform/point/nodal loads, self-weight, nested combinations and
+  exact piecewise station fields retain source request and deterministic hash.
+- Forty development reference/contract tests pass with 94% branch-aware
+  coverage. Closed forms, symmetry, equilibrium, singularity, spring behavior,
+  both point-load sides, strict states and JSON/hash roundtrip are covered.
+- No ETABS, Excel, model, workbook, analysis, calibration or optimizer action.
+  W3H comparison/engineering criteria and unavailable physical evidence stay held.
+
+### Issues encountered
+
+- Initial successful-result construction omitted the existing evidence type's
+  required source references; all nominal numerical tests therefore blocked.
+- Initial type/lint checks found mixed load-loop typing, untyped keyword maps,
+  import ordering and missing explicit zip semantics before candidate freeze.
+- The user observed disproportionate validation overhead in W3F. Historical
+  documentation wall time was much larger than reported child-check time.
+- Shell startup changes cwd to the protected base; Windows `rg` does not expand
+  wildcard path arguments. Both required corrected explicit invocation context.
+- The first consolidated compatibility test found a stale caller ledger, and
+  the type-check invocation reported unrelated existing Pydantic typing errors.
+- The first unpublished local commit completed in 0.336 seconds without hooks.
+
+### Root causes and resolutions
+
+- The new nodal-rotation output and spring fixture did not satisfy the reused
+  `EvidenceValueV1` constructor. Added exact node/reference provenance, not a
+  weakened validator. All 40 tests then passed in 3.75 seconds wall time.
+- Distinct typed load loops and validated station dictionaries resolve mypy;
+  explicit zip lengths and maintained formatters resolve style before hooks.
+- Gate preparation runs outside child-check timers. A fresh external profile
+  measured 179.875 seconds for 3,450 documentation inputs, with 176.652 seconds
+  inside `io.open`; a second pass took 3.063 seconds. This confirms first-read
+  filesystem latency, not its OS/storage/security cause (unconfirmed). Source
+  edits occurred during profiling, so this is diagnostic localization, not an
+  exact-input speedup benchmark. No gate or security setting was changed.
+- Explicitly restore task cwd after the user-local environment script, and use
+  `rg -g` patterns with real directories. No protected checkout write occurred.
+- The API generator inventories `git ls-files --cached`, so generation before
+  staging new files omitted their callers. Stage intended new paths first, then
+  generate, normalize LF and restage only its two outputs. Mypy from repo root
+  lacked `Python/pyproject.toml`. Merely adding that config still duplicated
+  package names with `explicit_package_bases`; using the normal hook's exact
+  `cd Python && ../scripts/python_runtime.sh -m mypy structural_lib/` context
+  resolves both. These are invocation/preparation fixes, not suppression or
+  unrelated library changes; affected checks were repeated.
+- Inspection proved the shared clone had only `pre-commit.sample`, no active
+  `pre-commit` and no `core.hooksPath`, despite the installed 4.6.2 package.
+  Registered the standard hook only after confirming its exact target absent,
+  then ran the complete configured hooks against the unpublished candidate.
+  The source candidate was not represented as hook-verified or pushed early.
+  This issue record is a pre-publication follow-up commit through the now-active
+  hook; no existing hook, sample, model, branch or checkout was overwritten.
+
+**Next:** Finish unchanged-candidate checks/review/PR integration. Then W3H is
+separate and requires exact model mappings, physical evidence and predeclared
+engineering comparison tolerances. Do not repeat W3F live reads or infer springs.
+Final hosted/merge/timing facts belong to GitHub and external closeout, not a
+post-push rewrite of this frozen candidate.
+
+---
+
 ## 2026-08-30 — Session: W3F installed spring-readback acceptance checkpoint
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
