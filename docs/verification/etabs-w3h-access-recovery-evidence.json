@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-W3H-ACCESS-RECHECK",
+  "observed_date": "2026-08-30",
+  "verdict": "REFERENCE_RECOVERED_CALIBRATION_HELD",
+  "source": {
+    "commit": "3cdb34679e393a931e49733b4f88cf033da48311",
+    "tree": "dd8f80ce93df782d05913841bf8c8b08d61f7e96",
+    "accepted_pr": 917,
+    "runtime_source_bound": true,
+    "repository_implementation_changes": 0
+  },
+  "runtime": {
+    "os": "Windows 11 Home Single Language 10.0.26200 x64",
+    "python": "3.11.15",
+    "comtypes": "1.4.16",
+    "etabs": "23.3.1.4563",
+    "audited_getter_signatures_revalidated": 38,
+    "installed_exe_dll_typelib_hashes_unchanged": true,
+    "regenerated_wrapper_audited_methods_equal": true,
+    "license_entitlement_or_expiry": "NOT_VERIFIED"
+  },
+  "copied_model": {
+    "safe_identity": "owner-saved-revision-92b3fa00",
+    "sha256": "92b3fa009f25b2228cc956cedb1b76268bb73414e16b361be334c0b3d81f6269",
+    "bytes": 702855,
+    "mtime_ns": 1788091924341316100,
+    "protected_files": 3,
+    "copy_backup_and_immutable_baseline_unchanged": true,
+    "immutable_baseline_never_opened": true,
+    "proprietary_paths_and_payloads": "EXTERNAL_ONLY"
+  },
+  "recovery": {
+    "prior_symptom": "Two existing frame-force getters returned CSI 1 and zero rows despite FINISHED case statuses and an already-true selected-combination flag.",
+    "operation": "Results.Setup.SetComboSelectedForOutput",
+    "selection_kind": "COMBINATION",
+    "selection_name": "117.(1.5DL+1.5LL)",
+    "selected_before": true,
+    "selected_argument": true,
+    "setter_count": 1,
+    "return_code": 0,
+    "recovered_probe_rows": [15, 21],
+    "observed_boundary": "Active result-output-state inconsistency resolved by explicit idempotent selection reassertion.",
+    "internal_csi_mechanism": "UNCONFIRMED",
+    "silent_setter_added_to_readonly_extractor": false,
+    "restarts_reopens_analysis_design_save_unlock": 0
+  },
+  "fresh_reference": {
+    "baseline_status": "ACCEPTED",
+    "baseline_sha256": "2903d158645cfd59b3f08a54648cefda7603930a94c2d7ee4b3e92d8546f7906",
+    "catalogue_status": "ACCEPTED",
+    "catalogue_sha256": "353b28a82da954c20d46dafa774a30826e77f247f60d0ee545654f024a4b4d1b",
+    "frames": 225,
+    "beam_result_sets": 153,
+    "force_station_rows": 3502,
+    "patterns": 12,
+    "cases": 15,
+    "combinations": 62,
+    "excel_projection_rows_not_written": 8873
+  },
+  "fresh_foundation": {
+    "status": "ACCEPTED_WITH_HOLDS",
+    "getters": 40,
+    "frames": 1,
+    "joints": 3,
+    "displacement_rows": 3,
+    "reaction_rows": 1,
+    "model_definition_sha256": "39cb3b2e274d42c4c3a793ad4702a50cbba08763d780c54186ff6cb0988738a7",
+    "displacements_sha256": "d273e5726233941ad29591df0065dec24551550eb7f381bd855706c7ab9634f8",
+    "reactions_sha256": "e6384230d4c545e6c1521441270a204f8d07d696e4fae9bb31610d939a5f3f35",
+    "offline_replay_exact": true,
+    "signed_components_reconciled": 24,
+    "reference_and_foundation_file_digests_verified": 60,
+    "calibration_fields_complete": false,
+    "required_calibration_replay": "BLOCKED_NO_PARTIAL_SNAPSHOTS",
+    "foundation_setters": 0
+  },
+  "preservation": {
+    "model_locked": true,
+    "present_units_before_after": 6,
+    "units": "kN/m/C; maintained W2 temporary normalization restored",
+    "all_case_statuses_finished": 15,
+    "unchanged_output_selection_flags": 77,
+    "files_hash_size_mtime_unchanged": true,
+    "excel_operations": 0,
+    "services_started": 0,
+    "ports_3000_8000": "FREE",
+    "etabs_final": "OPEN_LOCKED_NO_VISIBLE_BLOCKING_DIALOG",
+    "background_node_processes": "PRESERVED",
+    "existing_data_deleted_reset_overwritten_stashed_reorganized": false
+  },
+  "external_evidence": {
+    "directory_key": "ETABS-W3H-RESULT-RECOVERY-20260830",
+    "manifest_file_count": 81,
+    "manifest_sha256": "134a84f10dd32f263331b7979cddfff9db24e524ec8450d42963e072c1f5feb4",
+    "reassert_result_sha256": "dcaa2a5c0d02c1d9c6df654a9695ceddc89113851735faab3d829e71ec95cd01",
+    "reference_capture_report_sha256": "86c0e2a31aa3c18408a45dff0f4690f09405d788a2fa97bcd95e8471cded1b38",
+    "foundation_final_state_sha256": "fc74715a7e605a774bf21810e692bd5de7cb634fbd1ad65f5fb15e8483b8e083",
+    "offline_reconciliation_sha256": "53bfb0cf30af75ad6ba1e59e5472afc9603ba7d72dc9c71b97ad571365c1bab6",
+    "closeout_state_sha256": "4408da39d033f64abbcfc6c9b85b3cf1de609ccb9ab341aa48ddb9d5a6c6079f",
+    "system_postflight_sha256": "187d6e6be63323e4b31b3d25118edf0ac8302b0e5c556c9b72a4e306d6ba1226"
+  },
+  "remaining_holds": [
+    "Three joint spring fields and the frame line-spring assignment are UNAVAILABLE, not absent or zero.",
+    "Diaphragm/slab participation and independent supported physical mapping are not established.",
+    "Predeclared engineering comparison criteria are not supplied; there are no inferred project defaults.",
+    "L5 model-specific calibration and W3I optimization remain held."
+  ],
+  "claim_boundary": {
+    "installed_reference_recovery_only": true,
+    "calibration_or_full_campaign_completion": false,
+    "general_etabs_parity": false,
+    "professional_engineering_construction_approval": "NOT_PROVIDED",
+    "release": "NOT_AUTHORIZED",
+    "mac_synchronization": "NOT_CLAIMED"
+  }
+}
