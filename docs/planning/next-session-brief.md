@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-30
-- Focus: Continue software verification without inventing building assumptions.
-- Completed: Owner chose the separately authored software-test route. Read all current; Froze geometry, restraints, material/load basis, component signs, comparison; Created and saved only a new 6 m rectangular simple beam. Verified exact
-- Git receipt: docs/verification/etabs-w3h-independent-benchmark-git-handoff-receipt.json | sha256:9069d8b05027f32aea1130c03600ab59ded1f917bee54b5a469bfbb230f50b67 | HOLD
-- Git identity: codex/etabs-w3h-independent-benchmark-windows@da50f0b5279db220c212b47b9387a225114ddc68 | upstream=NONE@UNKNOWN | base=origin/main@da50f0b5279db220c212b47b9387a225114ddc68 | tree=dirty | operation=none
+- Focus: Validate controlled cases and earlier-building evidence separately.
+- Completed: Updated the existing master plan: three distinct acceptance tracks for; Verified GitHub main, open PRs, all retained worktrees and current runtime;; Froze a separate two-span software model, EB-compatible shear basis, signs,
+- Git receipt: docs/verification/etabs-w3h-two-span-git-handoff-receipt.json | sha256:87bda7095dd60b49ec95935c6175db119ec901bbe9e08be779e757574427aaff | HOLD
+- Git identity: codex/etabs-w3h-validation-two-span-windows@19e181595b8a61c32281591c50e664f83bef2790 | upstream=NONE@UNKNOWN | base=origin/main@19e181595b8a61c32281591c50e664f83bef2790 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -27,7 +27,7 @@ W3H continuation: [guide](../guides/beam-line-calibration.md) and [receipt](../v
 `ETABS-W3H-ACCESS-RECHECK` recovered force access by one explicit reassertion of the already-selected combination. Fresh evidence: 153 beams/3,502 stations, complete catalogue, 40 foundation getters and 24 reconciled signed joint components; files/lock/units/status/flags unchanged. [Recovery receipt](../verification/etabs-w3h-access-recovery-evidence.json) and external `ETABS-W3H-RESULT-RECOVERY-20260830` supersede the old readback blocker. Do not rerun registration/recovery/analysis. L5/W3I still require supported physical mapping, unavailable spring/slab evidence and predeclared criteria; do not ask the owner to guess them. No Mac synchronization or calibration claim.
 
 `ETABS-W3H-CALIBRATION-FEASIBILITY` assessed all 77 geometric lines: every line has an external endpoint/interior geometric contact; the 23 endpoint-graph exceptions are not proved isolated. A 31-getter read found the shortest candidate pinned but on unrestrained moving joints. Current solver support types do not encode imposed vertical movement. [Feasibility receipt](../verification/etabs-w3h-feasibility-evidence.json) distinguishes these facts from full mesh/support proof.
-Owner chose the independent software-only route. The [benchmark receipt](../verification/etabs-w3h-independent-benchmark-evidence.json) records a new 6 m simple beam: one ETABS analysis, 13 force stations, 34 passing public comparisons, exact protected building state, and closed test instance. No engineer input is needed for this explicitly authored test; it does not calibrate the building or unlock W3I. Next: a separately frozen two-span software benchmark; no repeat of the passed run, setup or building recovery. Preserve all files and use GitHub/single-writer discipline.
+Owner approved three distinct validation tracks: data transport, beam checks using ETABS forces, and bounded independent prediction; see the active master plan. The [single-span receipt](../verification/etabs-w3h-independent-benchmark-evidence.json) retains 34 passing comparisons. The [two-span successor](../verification/etabs-w3h-two-span-evidence.json) adds 112 passing comparisons over 50 stations, one new analysis and exact protected building state. Zero ETABS shear-area modifiers explicitly match the EB benchmark basis, not native building behaviour. A saved-building replay verifies 60 evidence files, 153 beam sets/3,502 stations, catalogue and foundation output without Excel or new extraction. Next: bounded saved-building capability/mapping assessment plus asymmetric/patterned-load benchmarks. No repeat setup/recovery/passed runs; no guessed supports, whole-building calibration, W3I or professional approval. Windows owns this branch; Mac must fetch the accepted GitHub boundary.
 
 ## W3A-W3D accepted through local W3D content freeze
 

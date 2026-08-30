@@ -1,6 +1,6 @@
 ---
 owner: Main Agent
-status: draft
+status: active
 last_updated: 2026-08-30
 doc_type: spec
 complexity: advanced
@@ -16,8 +16,9 @@ programme for public data contracts, beam audit, local candidate screening,
 and later ETABS-verified optimization. It is the planning authority for that
 foundation only. The exact W3-readiness predecessor is PR #899 merge
 `7af545ec0e239bac8fa6d480ecbb2b05a60aa40d`, with merged tree
-`cc40650b7f6569227c880d61a9967ee3bbdfab31`. The plan remains draft until the
-owner accepts it; acceptance authorizes no implementation packet by itself.
+`cc40650b7f6569227c880d61a9967ee3bbdfab31`. The owner subsequently accepted the
+dependency-ordered W3 campaign and its bounded Windows execution. Current
+continuations still require exact predecessor, scope and evidence checks.
 
 W3A is intentionally the first bounded Mac read-only contract packet. No W3
 packet in this plan authorizes opening ETABS or Excel, running ETABS analysis
@@ -95,6 +96,56 @@ planning audit began exact task `W3-PLAN-AUDIT` through the maintained session
 command and recorded no borrowed timing or installed-application evidence.
 
 ## Current capability truth
+
+### Owner-approved validation continuation (2026-08-30)
+
+This successor decision supersedes the historical startup-only and capability
+descriptions below where later accepted packets have implemented them. W3A-H
+software checkpoints and installed evidence are recorded in the current
+[calibration guide](../guides/beam-line-calibration.md). It does not change
+public signatures, evidence levels, packet dependencies or professional holds.
+
+The owner requested both controlled tests and comparison with the earlier real
+building. Keep three separate acceptance tracks; none substitutes for another:
+
+| Track | Reference and acceptance | Claim boundary |
+|---|---|---|
+| ETABS data transport | Exact saved revision, definitions, selection, units, every signed station row and canonical API/Excel bytes | Faithful transport of ETABS results, not independent analysis |
+| Beam design checks | Accepted ETABS actions plus explicit materials/detailing/applicability; use the same code/preferences/overwrites for any ETABS-design comparison | Public section checks only; absent installed rebar or serviceability remains held |
+| Independent force prediction | Authored benchmarks first, then physically supported building subcases with frozen mapping, scope and tolerances | Bounded numerical agreement; never arbitrary-model or whole-building parity |
+
+The earlier W2C building acceptance covers 153 beam result sets and 3,502 force
+stations with exact canonical JSON rejoin. The owner's subsequent save is a
+distinct revision with fresh W3H reference evidence; do not reuse the old file
+hash or relabel old results as current. Retain both revisions and their receipts.
+Replay saved reference hashes/contracts without opening applications when that
+answers the regression question; a replay is not fresh installed/Excel evidence.
+
+Continue with one separately authored two-span, linear-elastic software
+benchmark after the accepted single-span test. Freeze loads, connectivity,
+support conditions, stiffness/shear-deformation basis, signs, station domain,
+independent formulas and numerical tolerances before ETABS results exist.
+Do not fit supports, signs or tolerances to obtain a match. A deliberately
+Euler-Bernoulli-compatible benchmark does not validate native shear-flexible
+building behaviour. Use only a new model/instance and preserve the owner files.
+
+For later real models, first classify requested capabilities against observed
+connectivity, supports, releases/offsets, stiffness, loads/combination families,
+axes, slab participation and analysis settings. Unsupported or missing physical
+inputs remain explicit; they do not become zero or a guessed support. A scoped
+action-only study may be useful without proving displacements or full model
+calibration. The moving joints in the inspected building subcase do not prove
+that every member is unsuitable. Develop supported comparisons without asking
+the owner to invent missing engineering facts or treating professional sign-off
+as a blanket software-development prerequisite.
+
+The next progression is two-span verification, then asymmetric/patterned-load
+benchmarks and a bounded building capability/mapping assessment. No benchmark
+alone unlocks W3I: model-specific calibration and required screening criteria
+still govern candidate work. ETABS remains final global-analysis authority.
+No construction, professional approval, release or model optimization is
+authorized by this plan clarification. Windows owns this task branch; the Mac
+must fetch the accepted GitHub boundary before further work.
 
 ### W2 beam baseline: useful and bounded
 
@@ -1086,11 +1137,18 @@ Stop and request direction when:
 - software, signature or installed evidence is being represented as broader
   engineering, professional or construction approval.
 
-## Immediate next decision
+## Current continuation
 
-The immediate decision is plan acceptance only. After acceptance, start W3A on
-Mac from the exact integrated predecessor. Do not dispatch the Windows handoff
-until W3A is accepted and merged and the user separately authorizes W3B. Keep
-W3R as a separate high-priority repair before Pareto use; it does not block the
-read-only W3A definition/demand contract. Do not start with installed ETABS,
-Excel, a broad FEM engine, optimization or write-back setters.
+Do not restart accepted W3A-G work or request plan acceptance again. Follow the
+owner-approved three-track validation continuation above and the exact current
+[session brief](next-session-brief.md). The two-span EB-compatible benchmark
+now passes 112 comparisons after one installed analysis; saved-building
+baseline/catalogue/foundation regression also passes. See the
+[successor receipt](../verification/etabs-w3h-two-span-evidence.json).
+
+Next, assess a bounded real-building mapping/capability scope from retained
+evidence and prepare asymmetric/patterned-load reference tests. Keep data
+transport, design checks and independent analysis distinct. Do not repeat the
+two passed installed benchmarks, reopen building recovery, unlock W3I or claim
+complete model-specific calibration. No broad FEM, release or professional
+approval follows from this software checkpoint.

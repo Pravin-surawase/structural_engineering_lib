@@ -5,6 +5,75 @@
 
 ---
 
+## 2026-08-30 — Session: W3H validation plan and two-span benchmark
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3H-VALIDATION-TWO-SPAN`.
+**Branch:** `codex/etabs-w3h-validation-two-span-windows`, from freshly fetched
+PR #920 merge `19e181595b8a61c32281591c50e664f83bef2790`, tree
+`b6007652ace92e6379502a60fc6e311638bfd5f8`.
+**Status:** `TWO_SPAN_SOFTWARE_BENCHMARK_AND_SAVED_REGRESSION_PASS`.
+**Git handoff receipt:** `docs/verification/etabs-w3h-two-span-git-handoff-receipt.json`
+**Focus:** Validate controlled cases and earlier-building evidence separately.
+
+**Completed:**
+
+- Updated the existing master plan: three distinct acceptance tracks for
+  transport, design checks and independent force prediction. Preserved public
+  signatures, evidence levels, dependency gates and engineering boundaries.
+- Verified GitHub main, open PRs, all retained worktrees and current runtime;
+  began one new maintained session and preserved the immutable main checkout.
+- Froze a separate two-span software model, EB-compatible shear basis, signs,
+  full station domain, independent formulas and criteria before ETABS output.
+  Audited 59 installed signatures/help contracts; no library code was changed.
+- One new ETABS 23.3.1 instance and analysis produced 50 signed six-component
+  stations and three displacement/reaction rows. All 112 declared public
+  comparisons pass; independent three-moment/equilibrium/integration formulas
+  agree. Support reactions are 22.5/75/22.5 kN, central moment -45 kNm.
+- Replayed 60 saved-building evidence files, complete 153-beam/3,502-station
+  baseline and catalogue hashes, and exact W3F normalization. No new building
+  force extraction, Excel run, analysis, save, unlock or design took place.
+- Retained immutable preanalysis/analyzed test copies. Closed only the new
+  ETABS instance after restoring its selection. Owner file/backup/baseline and
+  three earlier test EDBs retained exact hash/size/mtime; owner lock, units,
+  all case statuses and selection flags stayed exact. Ports 3000/8000 free.
+- Sealed 184 external evidence files. Only safe receipts and existing
+  plan/guide/session/brief updates enter Git. Use focused solver/comparison and
+  docs checks, one quick gate, normal hooks and hosted checks after this freeze.
+  Post-push merge/check facts remain external, not a second candidate update.
+
+### Issues encountered
+
+- ETABS repeated its post-save full-path getter inconsistency: automatic
+  text-export path versus the new EDB filename. The pre-analysis guard held.
+- First saved-building replay rejected JSON arrays for strict tuple fields.
+- Initial occluded-window capture did not show the requested ETABS image.
+- Historical plan startup text still requested W3A/plan acceptance despite
+  completed successors and could cause repeated work.
+
+### Root causes and resolutions
+
+- Confirmed same post-save getter inconsistency; internal CSI cause unconfirmed.
+  The frozen operator already allowed one exact-new-EDB reload. Immutable bytes
+  and complete definition were rechecked before the sole analysis; no guessed
+  extension, repeated analysis, owner-model mutation or code repair.
+- The external replay harness omitted explicit JSON deserialization for the
+  strict public tuple contract. Used explicit rehydration, then required exact
+  full serialized values and canonical hashes. The saved baseline/catalogue
+  and foundation replay pass; no source or data values were altered.
+- Capture/occlusion mismatch, internal helper cause unconfirmed. Activated the
+  exact returned ETABS window and recaptured before any live phase. Only window
+  activation was used; no dialog was dismissed.
+- Kept historical audit records but replaced the current startup instruction
+  with the owner-approved continuation and explicit three-track acceptance.
+  No inferred professional approval or bypass of model-calibration inputs.
+
+**Next:** Bounded saved-building capability/mapping assessment plus separately
+frozen asymmetric/patterned-load tests. No repeated passed runs or recovery;
+physical building calibration/W3I, release and professional approval stay held.
+
+---
+
 ## 2026-08-30 — Session: W3H independent installed software benchmark
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
