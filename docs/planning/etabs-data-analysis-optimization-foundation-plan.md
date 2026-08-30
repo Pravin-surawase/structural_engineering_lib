@@ -117,7 +117,7 @@ not a Windows audit of the Mac checkout. Each new branch still has one writer.
 | W3G | Bounded pure solver, PR #915, L1 | Always SURROGATE_ONLY; not general 3D analysis |
 | W3H | Comparator #917 and recovery/feasibility/benchmarks #918-#921 | Actual-building L5 calibration NOT complete |
 | W3I | Planned functions absent at the audited base | W3H plus explicit complete screening criteria |
-| W3J | Dossier foundation #922; review exporter, 16 controlled projections and transactional fake-host implementation #923 | Installed attempt blocked at host window activation before any workbook; all-table rollback/readback still required; no L7 signature |
+| W3J | Dossier/review software #922/#923; installed sixteen-table publication/readback, comment retention/export and exact revision-2 history now reconcile | Installed update-only failure/rollback is unproved; no complete L4 or L7 signature claim |
 | W3K | Planned functions absent at the audited base | Accepted W3I, guarded fresh-copy mutation and mandatory ETABS reanalysis |
 | W3L | Not implemented | Accepted W3K, finite iteration and independent final baseline repeat |
 
@@ -156,6 +156,16 @@ Its [receipt](../verification/etabs-w3-validation-repair-evidence.json) binds th
 diagnostics and final external gate observations. Owner-assisted disposable
 Excel UI is the simpler installed route; it still requires the same atomic
 publication/readback/rollback proof. No ETABS rerun is needed for that packet.
+
+The next bounded review packet fixes confirmed intrinsic-grid overflow and
+proves native publication/readback plus comment retention and exact-successor
+refresh on a separate disposable workbook: sixteen tables, 78 rows, 68,969
+canonical bytes and both revision identities independently reconcile after save.
+The earlier accepted workbook and all models remain unchanged. See the
+[review-persistence receipt](../verification/etabs-w3j-review-completion-evidence.json).
+Only installed update-only failure/rollback remains on this acceptance lane;
+the native diagnostic input could not be safely targeted, so no failure was
+injected. Do not infer complete L4, building calibration or W3 completion.
 
 Completion requires the remaining packet exits, one integrated broad
 Python/FastAPI/React/Excel/full-gate run, exact final dossier and Mac integrated

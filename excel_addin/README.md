@@ -70,6 +70,19 @@ and the complete rejoined JSON again. This is saved-evidence freshness only;
 it does not attach to or claim current ETABS state. The blank routine E1 pane
 may independently report its API unavailable; W3 saved review remains usable.
 
+Review controls remain within the task-pane width, including at 280 px. Long
+hashes and complete publication/readback JSON wrap without truncation; vertical
+scrolling is expected. The displayed status remains lossless. If an old pane
+still shows blank button bars or horizontal overflow, refresh the pane from the
+verified current HTTPS source; do not change certificate or security settings.
+
+Installed Windows evidence now includes publication, separate readback,
+same-dossier comment retention/export and exact-successor revision refresh in
+a separate disposable workbook. See the
+[bounded review receipt](../docs/verification/etabs-w3j-review-completion-evidence.json).
+Installed failure-injection rollback remains unproved; fake-host rollback
+tests are not a substitute for that L4 acceptance row.
+
 The write preflights all sheet/table/header collisions and the full write set,
 snapshots existing touched ranges, uses ExcelApi 1.16 literal typed values,
 checks all structured cells and exact canonical UTF-8 bytes/SHA-256, then

@@ -5,6 +5,80 @@
 
 ---
 
+## 2026-08-31 — Session: W3J review layout and installed persistence
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3J-REVIEW-COMPLETION`.
+**Branch:** `codex/etabs-w3j-review-completion-windows`.
+**Source:** PR #925 merge `619f8c2be67e8e6964b8f876a1ffcf2260b76d68`,
+tree `8327840793370e94f0b9bb329d8891599d4bb851`.
+**Focus:** Finish readable Excel review controls and bounded installed persistence;
+retain the distinct installed rollback hold rather than claiming complete W3J.
+**Git handoff receipt:** `docs/verification/etabs-w3j-review-completion-git-handoff-receipt.json`
+
+**Completed:**
+
+- Fetched and independently queried GitHub main; no other W3 PR was open.
+  Created a fresh lane/session. All 29 predecessors, including dirty W1/W3F
+  and immutable main, remain untouched; the Mac was not directly queried.
+- Reproduced the 2,002-pixel card inside a 320-pixel pane. Narrow CSS grid,
+  wrapping and file-input constraints now fit 280/320/560/800-pixel widths
+  with identical status text, without clipping or JSON truncation.
+- Preserved the prior accepted workbook and opened a separately named copy.
+  Exact-source installed publication and separate readback reconcile sixteen
+  tables, 76 rows and 68,944 canonical bytes. A labelled fictional test comment
+  survived same-dossier refresh and exported with its original revision/hash.
+- Built revision 2 through the existing public dossier owner and maintained
+  exporter. Installed refresh/readback retained both revisions and the comment:
+  78 rows, 68,969 bytes. Independent saved-file comparison checks every table,
+  formula absence, complete canonical bytes and unchanged bytes during reading.
+- No ETABS API call, model change, new dependency, global PATH/trust change,
+  branch deletion, release or professional approval. Proprietary files remain
+  outside Git. Final local/hosted observations remain external after freeze.
+
+### Issues encountered
+
+- Complete JSON status widened the pane until action labels disappeared.
+- The installed console could be opened but its edit focus could not be
+  reliably observed; UIA value-setting returned `0x80070057`. No diagnostic
+  JavaScript or failure injection was executed. Installed rollback is unproved.
+- API discovery searched the compatibility facade and missed the accepted
+  root-exported dossier builder. An external fixture draft also used an invalid
+  evidence field; strict validation rejected it before creating an output.
+- The external service cleanup initially rejected an identical process start
+  time because JSON converted its timestamp to `DateTime` before string comparison.
+- The Python check printed seven passes, but its external log-hash step briefly
+  hit a sharing violation before retaining the exit receipt; lock owner unconfirmed.
+
+### Root causes and resolutions
+
+- The implicit grid track used the long unbroken JSON token's intrinsic minimum.
+  Use `minmax(0, 1fr)`, zero card minimum, anywhere wrapping and bounded file input.
+  Four measured widths plus native publication/readback prove usable controls;
+  the regression test freezes these constraints, not an engineering behavior.
+- Host-control focus/capture inconsistency remains **unconfirmed**. Ordinary
+  installed controls worked after fresh observations; no unsafe console typing,
+  security bypass or synthetic L4 rollback claim. Future continuation must prove
+  a targetable diagnostic surface before one update-only rollback test.
+- Inspected the actual root export/signature and `EvidenceValueV1` schema;
+  supplied ordered source references and used the maintained exporter. The
+  revision-2 carrier then passed both Python validation and installed readback.
+  No public API or discovery implementation was changed in this UI packet.
+- Compared exact executable, command line and UTC ticks, preserving the earlier
+  served-source record. Only the owned HTTPS/layout servers were selected for
+  cleanup; postflight verifies their ports and all protected file identities.
+- Use shared read-only access for the completed log, preserving its first copy.
+  Repeat only those seven checks with a fresh exit/hash receipt; retain the
+  already-passing 52 add-in tests and run the consolidated quick gate once.
+
+**Next:** Finish the single remaining installed update-only failure/rollback
+row on another verified disposable copy, with complete typed-cell/table-dimension
+before/after proof. Do not repeat accepted publication/retention work, W3 setup,
+ETABS analysis or the prior full suite without outcome-changing cause. Actual
+building W3H and downstream I/K/L, L7 signature and release remain held.
+
+---
+
 ## 2026-08-31 — Session: W3 Windows validation blocker repair
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
