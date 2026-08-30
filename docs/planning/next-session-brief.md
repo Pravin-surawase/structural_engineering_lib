@@ -3,24 +3,26 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-08-30
-- Focus: Validate controlled cases and earlier-building evidence separately.
-- Completed: Updated the existing master plan: three distinct acceptance tracks for; Verified GitHub main, open PRs, all retained worktrees and current runtime;; Froze a separate two-span software model, EB-compatible shear basis, signs,
-- Git receipt: docs/verification/etabs-w3h-two-span-git-handoff-receipt.json | sha256:87bda7095dd60b49ec95935c6175db119ec901bbe9e08be779e757574427aaff | HOLD
-- Git identity: codex/etabs-w3h-validation-two-span-windows@19e181595b8a61c32281591c50e664f83bef2790 | upstream=NONE@UNKNOWN | base=origin/main@19e181595b8a61c32281591c50e664f83bef2790 | tree=dirty | operation=none
+- Date: 2026-08-31
+- Focus: Correct W3 drift and advance dependency-ready dossier contracts.
+- Completed: Reconciled W3A-G/W3R merges, bounded receipts and code against the plan.; Reverified 196 retained external evidence files and unchanged copied-model; Corrected current startup/handoff instructions across the existing three
+- Git receipt: docs/verification/etabs-w3-completion-audit-git-handoff-receipt.json | sha256:65c99c2ae848036f956e200dfadf86ebd0a080d7358b9c1ce7d2df811ea16a25 | HOLD
+- Git identity: codex/etabs-w3-completion-audit-windows@d6b7a105c22b7d6fde0d532bc1b5c375b43f6e2b | upstream=NONE@UNKNOWN | base=origin/main@d6b7a105c22b7d6fde0d532bc1b5c375b43f6e2b | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
 
 ## Current boundary
 
+The 2026-08-31 completion audit in the [master plan](etabs-data-analysis-optimization-foundation-plan.md#completion-audit-and-active-critical-path-2026-08-31) is the active packet/status authority. W3A-G/W3R are accepted within scope; W3H actual-building calibration is not complete. The new W3J dossier foundation implements four planned pure functions; controlled Excel review/atomic readback is next and does not depend on W3H or a real signature. W3I/K/L stay gated. Do not restart W3A or add benchmark-only packets without a declared acceptance dependency. Current source, audit and preservation are in `docs/verification/etabs-w3-completion-audit-evidence.json`. The Mac fetch is owner-reported; Windows remains sole writer of this task branch.
+
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` remains the current immutable normal software release. No release work is authorized. |
-| **Current** | W3A-E/W3R and W3F static/readback are merged. PR #911 repaired merge guards/manifest; PR #912 merged the plan-only LIB-PRO-015 update. W3F spring repair PR #913 merged as `cce05508ea5f55559f5aeb07b8945bbabb7f3c06`, tree `d384f56d548e43454c5dc464ae9ec9f82d9bd230`; its bounded installed read now reconciles with unchanged copy/state and explicit calibration holds. |
+| **Current** | W3A-G/W3R and W3H comparison/benchmarks are merged through PR #921 (`d6b7a105...`, tree `dbdc261c...`). This successor adds the W3J provider-neutral dossier foundation; its exact current candidate/merge facts belong to GitHub/external closeout. Actual-building calibration remains incomplete. |
 | **W2 complete** | PR #898 merged reviewed W2C head `57f53d48...` as `f1873e7b...`; candidate and merge tree are both `bb20ba0c...`. Direct service, REST, all seven saved Excel tables, and 3,626,096 reconstructed canonical JSON bytes reconcile to SHA-256 `d4c28586...`. |
 | **Plan gate** | Complete. The owner explicitly authorized the dependency-ordered W3 campaign; every packet still requires its exact predecessor and packet-specific stop conditions. |
-| **Next** | W3G PR #915, workflow-readiness PR #916 and W3H L1 comparison PR #917 (`3cdb3467...`, tree `dd8f80ce...`) are merged. Installed access/result recovery and fresh saved-revision references now pass. L5 remains held for explicit project mapping, support/slab basis and predeclared tolerances. LIB-PRO-015 still needs separate plan acceptance. |
+| **Next** | Complete W3J controlled Excel review/atomic readback on the accepted dossier foundation; resolve the exact W3H mapping/criteria before I/K/L. No repeat setup, recovery or benchmark-only packet. LIB-PRO-015 remains a separate plan. |
 | **Held** | W3E does not accept installed reinforcement or canonical serviceability. Pareto torsion/serviceability/stirrup-cost/global-analysis holds remain. No shortlist or mutating candidate until W3F-H calibration and W3I criteria pass. Release and engineering/professional/construction approval remain unapproved. |
 
 W3H continuation: [guide](../guides/beam-line-calibration.md) and [receipt](../verification/etabs-w3h-comparison-evidence.json) bind the L1 checkpoint, exact next inputs and one-writer handoff; L5/W3I remain held.
@@ -120,10 +122,7 @@ That W3F session closed before W3G. Its data and unavailable calibration fields 
 
 ## W3G pure solver checkpoint
 
-W3G merged unchanged; its originating usage checkpoint is closed. The workflow
-repair adds read-only worktree/source/hook preflight and explicit gate wall
-timings. Both devices must fetch before new work; Mac execution is not inferred
-from Windows/POSIX tests. See the newest session and workflow readiness receipt.
+W3G merged unchanged and its usage checkpoint is closed. The workflow repair adds read-only source/hook preflight and gate wall timings. Both devices fetch before new work; Mac execution is not inferred from Windows/POSIX tests. See the newest session and workflow readiness receipt.
 
 `solve_beam_line_linear_v1(request, /)` now has strict core contracts, explicit
 signs/units/supports/releases/offsets/loads and deterministic complete results.

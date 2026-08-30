@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-30
+last_updated: 2026-08-31
 doc_type: spec
 complexity: advanced
 tags: [etabs, beams, data-contracts, frame-analysis, optimization, provenance]
@@ -96,6 +96,52 @@ planning audit began exact task `W3-PLAN-AUDIT` through the maintained session
 command and recorded no borrowed timing or installed-application evidence.
 
 ## Current capability truth
+
+### Completion audit and active critical path (2026-08-31)
+
+The owner requested a drift check and completion of W3 after reporting the Mac
+fetch complete. Windows freshly fetched GitHub at PR #921 merge
+`d6b7a105c22b7d6fde0d532bc1b5c375b43f6e2b`, tree
+`dbdc261c45f150c3a99237d4bb70093b42b02f89`. The Mac observation is owner-reported,
+not a Windows audit of the Mac checkout. Each new branch still has one writer.
+
+| Packet | Accepted implementation/evidence | Remaining gate |
+|---|---|---|
+| W3A | Definition/demand contracts, PR #901, L1 | None within its bounded contract |
+| W3B | Installed signatures, PR #902, L2 | New operations require a new signature audit |
+| W3C | Catalogue adapter, PR #903 with #904/#905 repairs, L1 | None for the accepted getter subset |
+| W3D | Complete installed catalogue/demand, PR #906, L3 | Current live state must be rechecked before a new installed task |
+| W3R | Separate shear-feasibility repair, PR #907, L1 | Not a calibrated model optimizer |
+| W3E | Same-row canonical strength audit, PR #908, L1 | Required serviceability and installed-rebar acceptance remain held |
+| W3F | Contracts/signatures/readback, #909/#910/#913/#914, L1-L3 | Saved building spring/slab/support basis is incomplete for calibration |
+| W3G | Bounded pure solver, PR #915, L1 | Always SURROGATE_ONLY; not general 3D analysis |
+| W3H | Comparator #917 and recovery/feasibility/benchmarks #918-#921 | Actual-building L5 calibration NOT complete |
+| W3I | Planned functions absent at the audited base | W3H plus explicit complete screening criteria |
+| W3J | Provider-neutral dossier foundation implemented in this successor | Excel review projection and installed all-table rollback/readback still required |
+| W3K | Planned functions absent at the audited base | Accepted W3I, guarded fresh-copy mutation and mandatory ETABS reanalysis |
+| W3L | Not implemented | Accepted W3K, finite iteration and independent final baseline repeat |
+
+The two installed authored benchmarks are useful W3G/H software evidence, but
+additional benchmark passes alone do not clear the actual-building W3H gate.
+Do not turn a sequence of benchmark receipts into a claim that W3 is finished.
+The saved foundation covers only one frame and three joints; it explicitly
+reports `calibration_fields_complete=false`. The shortest inspected member is
+pinned at both ends on moving, unrestrained building joints. That does not rule
+out every action-only comparison, but no complete independent load/support/slab
+mapping or project criteria has yet been accepted. Hashing cannot fill that gap.
+
+Advance independent dependencies instead of waiting for a professional
+signature: W3J depends on W3D/W3E and provider-neutral review contracts, not W3H.
+Its dossier foundation is ordinary software work. It cannot assert professional
+eligibility, sign bytes or upgrade a supplied provider Boolean to trusted proof.
+Next complete its bounded Excel projection and installed transaction/readback;
+retain all building-calibration and downstream candidate holds. If the building
+basis cannot be proved by bounded read-only discovery, report the exact missing
+physical inputs; do not guess them or ask for blanket professional approval.
+
+Completion requires the remaining packet exits, one integrated broad
+Python/FastAPI/React/Excel/full-gate run, exact final dossier and Mac integrated
+review. Neither this audit nor the dossier contract is complete W3 acceptance.
 
 ### Owner-approved validation continuation (2026-08-30)
 
@@ -1048,6 +1094,17 @@ lossless detail through bounded pages and canonical JSON, typed literal cells,
 all-table preflight/transaction/rollback, installed readback and exact hash
 rejoin. Excel never becomes the structural calculator or private-key store.
 
+The completion-audit successor implements the four exact provider-neutral
+dossier signatures in `services/calculation_dossier.py`, with immutable types
+in `core/calculation_dossier.py` and root exports. It binds source Git/library/
+ETABS identities, model/catalogue/demand/calculation/report hashes and explicit
+five-state workbook/surrogate/calibration/optimization/governing identities.
+Review scope, append-only attestation history and the separately signed
+attested artifact are hash-bound. Unknown provider trust remains UNAVAILABLE;
+verification reports supplied evidence separately and never produces
+`SIGNED_VERIFIED` in this provider-neutral packet. This is an L1 prerequisite,
+not installed Excel, a signed professional dossier or W3J completion.
+
 ### W3K — Controlled candidate ETABS reanalysis (`L6`)
 
 Owner: Mac freezes/reviews the mutation and comparison contract; Windows alone
@@ -1146,9 +1203,11 @@ now passes 112 comparisons after one installed analysis; saved-building
 baseline/catalogue/foundation regression also passes. See the
 [successor receipt](../verification/etabs-w3h-two-span-evidence.json).
 
-Next, assess a bounded real-building mapping/capability scope from retained
-evidence and prepare asymmetric/patterned-load reference tests. Keep data
+Follow the completion audit above: complete dependency-ready W3J review
+transport and installed atomic readback, and address only the precise missing
+building mapping/criteria needed for W3H. Do not schedule another benchmark-only
+packet unless its result can resolve a declared acceptance row. Keep data
 transport, design checks and independent analysis distinct. Do not repeat the
-two passed installed benchmarks, reopen building recovery, unlock W3I or claim
-complete model-specific calibration. No broad FEM, release or professional
-approval follows from this software checkpoint.
+passed installed benchmarks, reopen building recovery, unlock W3I prematurely
+or claim model-specific calibration. No broad FEM, release or professional
+approval follows from a software checkpoint.

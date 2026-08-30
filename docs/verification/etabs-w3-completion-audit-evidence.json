@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-W3-COMPLETION-AUDIT",
+  "observed_date": "2026-08-31",
+  "source_commit": "d6b7a105c22b7d6fde0d532bc1b5c375b43f6e2b",
+  "source_tree": "dbdc261c45f150c3a99237d4bb70093b42b02f89",
+  "overall_w3": "NOT_COMPLETE",
+  "current_packet": "W3J_PROVIDER_NEUTRAL_DOSSIER_FOUNDATION",
+  "evidence_level": "L1_LOCAL_SOFTWARE",
+  "writer": "Windows sole writer; Mac fetch owner-reported only",
+  "accepted_bounded_packets": ["W3A", "W3B", "W3C", "W3D", "W3R", "W3E", "W3F", "W3G"],
+  "remaining": {
+    "W3H": "Actual-building independent mapping/criteria and L5 acceptance incomplete",
+    "W3I": "Screening/shortlist functions absent at source; requires W3H and complete criteria",
+    "W3J": "Dossier foundation implemented here; Excel projection and installed atomic readback remain",
+    "W3K": "Reanalysis plan/comparison functions absent at source; requires W3I",
+    "W3L": "Finite iteration/final baseline repeat not implemented; requires W3K",
+    "integrated_gates": "Deferred until intended packets integrate, not claimed passed"
+  },
+  "public_functions": [
+    "build_calculation_dossier_v1",
+    "record_review_attestation_v1",
+    "attach_digital_signature_evidence_v1",
+    "verify_signed_calculation_dossier_v1"
+  ],
+  "contracts": {
+    "immutable_bounded_types": true,
+    "five_optional_states": true,
+    "source_scope_artifact_revision_hashes": true,
+    "append_only_attestation_history": true,
+    "software_and_claimed_review_decisions_separate": true,
+    "wrong_signature_or_scope_binding_rejected": true,
+    "external_provider_evidence_authenticated": false,
+    "provider_trust": "UNAVAILABLE",
+    "all_positive_provider_claims": "SIGNATURE_PENDING",
+    "private_key_or_signing_operation": false,
+    "professional_approval": "NOT_PROVIDED"
+  },
+  "saved_evidence_audit": {
+    "prior_manifest_files_reverified": 196,
+    "model_sha256": "92b3fa009f25b2228cc956cedb1b76268bb73414e16b361be334c0b3d81f6269",
+    "model_bytes": 702855,
+    "model_mtime_ns": 1788091924341316100,
+    "saved_foundation_frames": 1,
+    "saved_foundation_joints": 3,
+    "calibration_fields_complete": false,
+    "diaphragm_slab_state": "UNAVAILABLE",
+    "current_com_state_results_license_excel": "NOT_FRESHLY_VERIFIED",
+    "prior_worktrees_preserved": 25,
+    "current_worktrees": 26,
+    "existing_data_deleted_reset_stashed_overwritten": false
+  },
+  "external_evidence": {
+    "directory_key": "ETABS-W3-COMPLETION-AUDIT-20260831",
+    "campaign_audit_sha256": "47c2ea489709af5a9bfc5fb17d42f017c099c7eb6c17bfd05827d0cb9848ebed",
+    "proprietary_paths_payloads": "EXTERNAL_ONLY",
+    "verification_and_hosted_facts": "Bound after content freeze outside this immutable candidate"
+  },
+  "non_goals_performed": {
+    "etabs_or_excel_calls": 0,
+    "analysis_design_save_unlock": 0,
+    "new_benchmarks": 0,
+    "optimization": 0,
+    "release_or_retirement": 0
+  }
+}

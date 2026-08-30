@@ -15003,8 +15003,8 @@
     {
       "module": "structural_lib",
       "export_classification": "preview",
-      "declared_export_count": 359,
-      "classified_symbol_count": 359,
+      "declared_export_count": 376,
+      "classified_symbol_count": 376,
       "symbols": [
         {
           "name": "AnalysisStateV1",
@@ -15022,6 +15022,15 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "AttestedCalculationDossierV1",
+          "qualified_name": "structural_lib.AttestedCalculationDossierV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.calculation_dossier",
           "claim_disposition": "compatibility"
         },
         {
@@ -15628,6 +15637,33 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "CalculationDossierBuildRequestV1",
+          "qualified_name": "structural_lib.CalculationDossierBuildRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.calculation_dossier",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "CalculationDossierBuildResultV1",
+          "qualified_name": "structural_lib.CalculationDossierBuildResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.calculation_dossier",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "CalculationDossierV1",
+          "qualified_name": "structural_lib.CalculationDossierV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.calculation_dossier",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "CalculationHash",
           "qualified_name": "structural_lib.CalculationHash",
           "kind": "class",
@@ -15769,6 +15805,51 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "DigitalSignatureEvidenceV1",
+          "qualified_name": "structural_lib.DigitalSignatureEvidenceV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.calculation_dossier",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "DossierArtifactV1",
+          "qualified_name": "structural_lib.DossierArtifactV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.calculation_dossier",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "DossierIdentityV1",
+          "qualified_name": "structural_lib.DossierIdentityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.calculation_dossier",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "DossierIssueV1",
+          "qualified_name": "structural_lib.DossierIssueV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.calculation_dossier",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "DossierVerificationResultV1",
+          "qualified_name": "structural_lib.DossierVerificationResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.calculation_dossier",
           "claim_disposition": "compatibility"
         },
         {
@@ -16609,6 +16690,15 @@
           "claim_disposition": "hold"
         },
         {
+          "name": "ProfessionalIdentityV1",
+          "qualified_name": "structural_lib.ProfessionalIdentityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.calculation_dossier",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "ProjectInfo",
           "qualified_name": "structural_lib.ProjectInfo",
           "kind": "class",
@@ -16768,6 +16858,33 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ReviewAttestationV1",
+          "qualified_name": "structural_lib.ReviewAttestationV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.calculation_dossier",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ReviewScopeV1",
+          "qualified_name": "structural_lib.ReviewScopeV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.calculation_dossier",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "SignedCalculationDossierV1",
+          "qualified_name": "structural_lib.SignedCalculationDossierV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.calculation_dossier",
           "claim_disposition": "compatibility"
         },
         {
@@ -16987,6 +17104,15 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "attach_digital_signature_evidence_v1",
+          "qualified_name": "structural_lib.attach_digital_signature_evidence_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.calculation_dossier",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "audit",
           "qualified_name": "structural_lib.audit",
           "kind": "module",
@@ -17038,6 +17164,15 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.beam_audit",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "build_calculation_dossier_v1",
+          "qualified_name": "structural_lib.build_calculation_dossier_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.calculation_dossier",
           "claim_disposition": "compatibility"
         },
         {
@@ -18013,6 +18148,15 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "record_review_attestation_v1",
+          "qualified_name": "structural_lib.record_review_attestation_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.calculation_dossier",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "reports",
           "qualified_name": "structural_lib.reports",
           "kind": "module",
@@ -18235,6 +18379,15 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "verify_signed_calculation_dossier_v1",
+          "qualified_name": "structural_lib.verify_signed_calculation_dossier_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.calculation_dossier",
           "claim_disposition": "compatibility"
         }
       ]

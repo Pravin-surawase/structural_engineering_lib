@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: draft
-last_updated: 2026-08-30
+last_updated: 2026-08-31
 doc_type: spec
 complexity: advanced
 tags: [excel, etabs, beams, windows, optimization, construction]
@@ -31,9 +31,13 @@ construction approval. Independent frame analysis remains
 authorized W3 planning after the W2C integration and W3-readiness maintenance.
 PR #899 merged that exact maintenance as
 `7af545ec0e239bac8fa6d480ecbb2b05a60aa40d`, tree
-`cc40650b7f6569227c880d61a9967ee3bbdfab31`. The detailed W3 master plan still
-requires acceptance before W3A implementation begins, and W3A remains a
-read-only Mac contract packet rather than ETABS mutation.
+`cc40650b7f6569227c880d61a9967ee3bbdfab31`. The owner subsequently accepted
+the full W3 programme and bounded Windows execution. The
+[master plan completion audit](etabs-data-analysis-optimization-foundation-plan.md#completion-audit-and-active-critical-path-2026-08-31)
+now governs continuation; W3A-G/W3R are accepted within scope, actual-building
+W3H remains incomplete, and W3J's independent review work can proceed. The
+W1-W7 descriptions below retain the historical product roadmap, not a second
+instruction to restart W3A or bypass W3H/W3I/W3K dependencies.
 
 The sequence is deliberate:
 
@@ -561,21 +565,17 @@ structural-engineer review before engineering or construction use.
 
 ## Next efficient sequence
 
-1. Treat PR #899 merge `7af545ec0e239bac8fa6d480ecbb2b05a60aa40d`
-   and tree `cc40650b7f6569227c880d61a9967ee3bbdfab31` as the immutable
-   W3-readiness predecessor. Retain W2 evidence baseline `d4c28586...` as a
-   separate hash-linked data identity, not a Git predecessor.
-2. Start W3A with versioned read-only contracts for load patterns, load cases,
-   combination definitions, selected scenarios, same-row actions, and envelope
-   rules. Do not open ETABS for this first contract packet.
-3. Expand the installed ETABS 23.3.1 getter/signature matrix on Windows only
-   after W3A is accepted and merged and the user separately authorizes that
-   bounded laptop task.
-4. Start beam design/audit evaluation only from accepted W3A demand scenarios;
-   missing torsion, serviceability, support, material, or detailing inputs remain
-   visible holds.
-5. Keep Pareto shear repair, professional attestation, local beam-line analysis,
-   optimization, and ETABS write-back as separate dependency-ordered packets.
+1. Fetch GitHub, inspect all retained lanes, and bind a fresh single-writer task
+   to the accepted current main. Never treat the protected Windows base checkout
+   or historical W2 hash as the current source boundary.
+2. Use the W3 master plan's current completion matrix; do not repeat accepted
+   W3A-G/W3R, recovery or authored benchmarks.
+3. Finish dependency-ready W3J review transport and installed Excel evidence.
+   Dossier metadata and provider claims are not professional signatures.
+4. Prove the missing physical mapping and predeclared criteria for actual-model
+   W3H. Unknown support/slab/serviceability data remains explicit, never zero.
+5. Only after the required W3H/W3I gates pass, execute fresh-copy W3K and finite
+   W3L with mandatory ETABS reanalysis; then run integrated gates and Mac review.
 
 ## Stop conditions
 
@@ -587,15 +587,11 @@ changes, or W2 would need setters beyond temporary unit selection.
 ## New-chat starter
 
 ```text
-Start W3A from exact integrated predecessor
-`7af545ec0e239bac8fa6d480ecbb2b05a60aa40d`, tree
-`cc40650b7f6569227c880d61a9967ee3bbdfab31`. Freeze versioned,
-vendor-neutral read-only contracts for the complete bounded load-pattern,
-load-case, response-combination, selection, same-row beam-action, scenario,
-envelope, and governing-reference foundation. Reuse the accepted W2 model and
-result identities without opening ETABS in this first packet. Optional fields
-may only be query filters or explicit opt-in evidence; missing calculation-
-bearing inputs must fail closed. Keep independent analysis
-`HELD_NOT_SUPPORTED`, and do not add ETABS setters, optimization, professional
-approval, or construction-use claims.
+Continue W3 from freshly fetched and inspected GitHub main. Read the master
+plan completion audit and current session brief. Preserve every retained
+worktree and device-local model/workbook/evidence record. Do not restart W3A
+or repeat the passed authored benchmarks. Complete dependency-ready W3J
+review transport and installed atomic readback; resolve actual-model W3H
+mapping/criteria before W3I/K/L. Preserve all explicit holds and one-writer
+device ownership. No release or professional/construction approval is implied.
 ```

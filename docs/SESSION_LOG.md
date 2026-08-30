@@ -5,6 +5,73 @@
 
 ---
 
+## 2026-08-31 — Session: W3 completion audit and dossier foundation
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3-COMPLETION-AUDIT`.
+**Branch:** `codex/etabs-w3-completion-audit-windows`.
+**Source:** Freshly fetched PR #921 merge
+`d6b7a105c22b7d6fde0d532bc1b5c375b43f6e2b`, tree
+`dbdc261c45f150c3a99237d4bb70093b42b02f89`.
+**Focus:** Correct W3 drift and advance dependency-ready dossier contracts.
+**Status:** W3 NOT complete; W3J provider-neutral foundation implemented.
+**Git handoff receipt:** `docs/verification/etabs-w3-completion-audit-git-handoff-receipt.json`
+
+**Completed:**
+
+- Reconciled W3A-G/W3R merges, bounded receipts and code against the plan.
+- Reverified 196 retained external evidence files and unchanged copied-model
+  bytes/size/mtime. No live COM state, results, license or Excel were reverified.
+- Corrected current startup/handoff instructions across the existing three
+  plan owners; retained historical records and all 25 prior worktrees, including
+  dirty W1/W3F lanes. The Mac fetch is owner-reported, not remotely inspected.
+- Implemented the four planned W3J provider-neutral dossier functions, immutable
+  core models, root exports and explicit hash/scope/revision/evidence rules.
+  Provider claims never become trusted signature verification or approval.
+- Preserved separate W3H model-calibration, W3I screening and W3K/L reanalysis
+  gates. W3J's independent R3/R4 dependency can advance without a signature.
+  No ETABS/Excel calls, model mutation, optimizer or additional benchmark ran.
+
+### Issues encountered
+
+- Companion next-phase and surface-audit starters still instructed future tasks
+  to restart W3A despite accepted successors. Benchmark progress also risked
+  being mistaken for completion of actual-building calibration.
+- The eight planned W3I/K and dossier functions were absent at the audited base.
+  Existing Excel tables are W2 transport, not the planned W3J review/dossier.
+- Retained W3F data covers one frame and three joints with incomplete physical
+  calibration fields. The inspected pinned member's joints move; spring/slab
+  evidence and accepted independent mapping/criteria remain missing.
+- An initial signature test incorrectly required the verifier's first argument
+  to be positional-only, unlike the accepted `dossier, *, verification_time_utc`
+  signature. Static checking also required explicit narrowing of a PRESENT hash.
+
+### Root causes and resolutions
+
+- Historical and current instructions shared active entry points. Added one
+  current packet matrix, routed all starters to it, and kept numerical benchmark
+  evidence distinct from model-specific L5 acceptance. No gate was relaxed.
+- Source AST inspection proved absence; implemented only the dependency-ready
+  W3J dossier prerequisite. Core owns vendor-neutral types; services own pure
+  hashes/history/validation. Planned I/K functions remain explicitly absent.
+- Confirmed bounded saved-data coverage and CSI nonzero spring returns, not an
+  inference of absent springs. Independent support/load/slab mapping cannot be
+  fabricated from force agreement. No extra live call or fitted assumption was
+  used; W3H/I/K/L remain held while independent W3J work progresses.
+- Kept the exact planned verifier signature and corrected the test expectation;
+  narrowed the validated optional hash before assignment. Focused contract tests
+  and mypy prove the corrected software path. These were implementation-time
+  corrections, not a failed frozen candidate or a hosted retry.
+
+**Next:** Merge this exact verified foundation, then complete W3J controlled
+review projection and installed all-table transaction/readback in its own
+dependency-bound packet. Resolve the exact building W3H inputs before I/K/L;
+no professional signature is required for ordinary software development.
+Broad integrated gates and final Mac review remain the W3 cumulative closeout,
+not a claim of completion in this packet. Hosted facts remain external after push.
+
+---
+
 ## 2026-08-30 — Session: W3H validation plan and two-span benchmark
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).

@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: draft
-last_updated: 2026-08-30
+last_updated: 2026-08-31
 doc_type: spec
 complexity: advanced
 tags: [etabs, excel, professional-review, digital-signature, api, react, retirement]
@@ -226,7 +226,46 @@ identity, returned shape, status, units, count, disposition, and snapshot hash.
 
 ## Professional review and signature foundation
 
-### Current gap
+### W3J provider-neutral contract checkpoint (2026-08-31)
+
+The four signatures below are now implemented in
+`Python/structural_lib/services/calculation_dossier.py`; their immutable core
+models are exported through `structural_lib`. This successor is L1 software
+evidence only. It does not open Excel/ETABS, perform signing, choose a provider
+or establish a person's legal authority.
+
+`DossierIdentityV1` and `DossierArtifactV1` bind the exact Git commit/tree,
+library/version, ETABS version, model identity and required artifact digests.
+Workbook, surrogate, calibration, optimization and governing-candidate hashes
+use the existing five-state evidence contract. Required blocked evidence returns
+no partial dossier. Supplied canonical JSON must exactly reserialize and hash;
+external binary hashes remain caller evidence, not a claim that files were read.
+
+The dossier hash covers its full build request. Scope has a separate hash.
+Attestations bind both and retain ordered revision/supersedes history. Revisions
+cannot silently replace another identity's role or erase a rejection. A claimed
+accepted review does not change the independent software PASS/FAIL/HOLD result.
+Where independent checking is requested, a separate checker identity is needed
+before the claimed review state becomes accepted; this does not authenticate
+that person's credential.
+
+The attested-artifact hash covers the dossier and complete attestation history.
+Signature evidence must bind that exact hash and an active attestor, with valid
+timestamp ordering. The signed-envelope hash covers both artifact and evidence.
+Verification recomputes local hashes/scope and separately reports provider
+signature, chain, non-revocation and credential evidence. Future/stale evidence
+is `STALE_SUPERSEDED`; explicit false or inconsistent evidence is invalid.
+Even all-positive provider claims remain `SIGNATURE_PENDING` because provider
+trust is UNAVAILABLE without a separately accepted adapter. `SIGNED_VERIFIED`
+is reserved, never fabricated. No private key or actual signature operation is
+part of this contract.
+
+W3J still requires the controlled Excel review projection and installed atomic
+rollback/readback. The R3/R4 dependency permits this work while the separate W3H
+building calibration gate remains held. Real signing/provider integration is
+optional later work, not a blocker for ordinary W3 software development.
+
+### Historical gap motivating the contract
 
 The repository already separates software `PASS/FAIL/HOLD`, freshness, and
 qualified-review state. Calculation passports bind inputs, results, library
@@ -525,17 +564,14 @@ provider and project/jurisdiction requirements; it must not be guessed.
 
 ## Immediate order
 
-1. Start W3A by freezing the load pattern/case/combination catalogue and demand
-   contracts without opening or mutating ETABS.
-2. After W3A is accepted and merged, and only after separate user authority,
-   run the bounded Windows ETABS 23.3.1 static getter/signature audit; do not
-   infer live model values from it.
-3. Repair Pareto shear truth in a separate library packet before optimizer use.
-4. Add the professional dossier/attestation types before adding signature UI.
-5. Build the bounded beam-line solver and local screening only on accepted
-   W3A inputs.
-6. Prune only proven dead React adapters and compact only proven historical or
-   recreatable material in separately authorized packets.
+1. Use the master plan's current completion matrix. W3A-G/W3R are already
+   accepted within their scopes; do not restart their historical instructions.
+2. Complete W3J review projection and installed Excel transaction/readback on
+   the provider-neutral dossier foundation, without inferring a real signature.
+3. Resolve actual-building W3H mapping/criteria before W3I, then preserve the
+   W3K/W3L fresh-copy, mandatory reanalysis and finite-iteration gates.
+4. Keep signing-provider/jurisdiction integration, API/React retirement and
+   compaction separate; none is required to claim ordinary software progress.
 
 Do not start with public-function deletion, a broad React removal, worksheet
 signature images, ETABS setters, or a general 3D FEM engine.
