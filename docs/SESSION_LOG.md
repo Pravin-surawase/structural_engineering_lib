@@ -5,6 +5,89 @@
 
 ---
 
+## 2026-08-31 — Session: W3 Windows validation blocker repair
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3-VALIDATION-REPAIR`.
+**Branch:** `codex/etabs-w3-validation-repair-windows`.
+**Source:** PR #924 merge `2ad7ad9557ae21e8154646308b3ce35983f50c46`,
+tree `cbd76424060ccea7e8f191e9d21cbfebdd3696e1`.
+**Focus:** Repair the recorded integrated validation blockers without changing
+engineering calculations, ETABS, machine configuration or the Mac checkout.
+**Git handoff receipt:** `docs/verification/etabs-w3-validation-repair-git-handoff-receipt.json`
+
+**Completed:**
+
+- Fetched current main, inspected open PRs and retained lanes, then created a
+  separate clean Windows branch. Existing dirty W1/W3F and protected main remain.
+- Corrected parameterized-alias ownership, cross-platform archive digest order,
+  Git path-query overhead, and stale/platform-specific test expectations.
+- Preserved real native-symlink coverage on capable hosts; on Windows without
+  creation privilege only those native cases skip. Separate reported-mode cases
+  exercise the unchanged rejection guards without elevated permissions.
+- User created a new disposable workbook and added the existing review add-in.
+  Served unchanged merged W3J source using the existing trusted certificate and
+  restricted catalogue. Manual UI assistance is an alternative to the unreliable
+  host activation path, not installed acceptance by itself. Excel results remain
+  external until publication, readback and rollback are independently proved.
+- No ETABS call, model mutation, dependency installation, global PATH/security
+  change, release, branch deletion or professional approval occurred.
+
+### Issues encountered
+
+- The previous integrated run had 16 unresolved failures plus one already-proved
+  snapshot contamination. Most expected POSIX shell/path/symlink behavior.
+- Parameterized `Literal` metadata named the factory rather than the export;
+  the operation test predated the accepted 120th operation/106th script.
+- Windows archive restoration hashed the same files in a different order.
+- The six-worktree diagnostic exceeded its unchanged two-second budget.
+- An initial repair batched only marker groups; it still exceeded the budget
+  under concurrent host load. A new operation assertion omitted its arguments.
+- The native screen helper could return the foreground Codex screenshot with
+  null accessibility while identifying Excel; fresh selection did not correct
+  this observation. Ordinary file hashing also conflicted with Excel's open handle.
+- A diagnostic command cleared pytest's default `not slow` filter, inadvertently
+  starting slow release-preflight tests and a nested broad suite; its partial
+  output is not a pass. Only the proved owned test process tree was stopped.
+
+### Root causes and resolutions
+
+- Invoke Bash explicitly in the two shell tests, compare native path components
+  or canonical POSIX artifact identities, and assert the platform's isolated pip
+  path. No launcher, installed workbook, public API or rejection rule changed.
+- Require reflected owner metadata to resolve to the identical object; otherwise
+  retain the actual public binding. Regenerated the maintained ledger; facade
+  identity/signature tests exercise the exported alias, not the typing factory.
+  Updated the exact operation count and complete accepted exporter command.
+- Sort archive records by canonical relative-path strings before hashing. The
+  existing three-file restore and every permutation of mixed-case paths now
+  share the same digest. No existing archive or backup was modified.
+- Profiling proved 91 Git subprocesses, including 48 individual marker-path
+  lookups, took 2182.608 ms for six lanes. Resolve all eleven paths in one
+  `rev-parse` per lane: 31 calls, 1364 ms observed, unchanged 2000 ms limit.
+  Git still determines every path, including linked-worktree/environment rules;
+  malformed batch output fails closed. Operation/lock/state tests remain required.
+- Corrected the incomplete new exporter assertion during implementation; did not
+  weaken the budget after the first partial batching attempt failed.
+- Host capture/activation root cause remains **unconfirmed**. No input was sent
+  against the mismatched capture. The user handles workbook/add-in clicks, and
+  saved-file evidence uses read-only shared access. A standalone browser correctly
+  requires Excel; this is not an Office.js acceptance substitute. No trust bypass.
+- Freeze all tracked writes before snapshot-sensitive verification. Final local
+  evidence is in `docs/verification/etabs-w3-validation-repair-evidence.json`;
+  normal hooks/session closeout and hosted/merge facts remain in the external
+  exact-candidate closeout. Earlier failed logs are retained, not relabelled PASS.
+- Preserve the maintained `not slow` selection when overriding output verbosity;
+  the final runner uses an explicit marker and exit-code capture. No release or
+  dependency mutation was authorized by the accidental diagnostic selection.
+
+**Remaining boundary:** actual-building W3H calibration and downstream I/K/L
+remain held. The building's moving supports and unavailable spring/slab mapping
+cannot be replaced by guessed zero-motion supports, fitted forces, or more
+benchmark-only passes. Manual Excel progress grants no engineering approval.
+
+---
+
 ## 2026-08-31 — Session: W3J installed boundary and integrated closeout
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
 from structural_lib import __main__ as cli
 
@@ -14,7 +15,10 @@ def test_install_preflight_reports_origin_version_extras_and_repair(capsys) -> N
     assert report["interpreter"]
     assert report["python_version"]
     assert report["package_version"]
-    assert report["package_origin"].endswith("structural_lib/__init__.py")
+    assert Path(report["package_origin"]).parts[-2:] == (
+        "structural_lib",
+        "__init__.py",
+    )
     assert report["runtime_identity"]["package_version"] == report["package_version"]
     assert report["runtime_identity"]["package_origin"] == report["package_origin"]
     assert report["runtime_identity"]["execution_mode"] in {

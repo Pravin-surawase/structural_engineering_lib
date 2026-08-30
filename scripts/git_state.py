@@ -245,14 +245,45 @@ def _absolute_path(raw: str | None, repo: Path) -> Path | None:
     return path if path.is_absolute() else (repo / path).resolve()
 
 
-def _git_path(runner: GitRunner, name: str) -> Path | None:
-    return _absolute_path(
-        runner.run(["rev-parse", "--path-format=absolute", "--git-path", name]),
-        runner.repo,
-    )
+def _repository_paths(runner: GitRunner) -> dict[str, Path | None]:
+    """Resolve paths in one Git call, preserving worktree/env path semantics."""
+    names = [
+        "worktree_root",
+        "git_dir",
+        "common_dir",
+        "MERGE_HEAD",
+        "CHERRY_PICK_HEAD",
+        "REVERT_HEAD",
+        "BISECT_START",
+        "rebase-merge",
+        "rebase-apply",
+        "index.lock",
+        "HEAD.lock",
+    ]
+    args = [
+        "rev-parse",
+        "--path-format=absolute",
+        "--show-toplevel",
+        "--git-dir",
+        "--git-common-dir",
+    ]
+    for name in names[3:]:
+        args.extend(["--git-path", name])
+    raw = runner.run(args)
+    rows = raw.splitlines() if raw is not None else []
+    if len(rows) != len(names) or any(not row for row in rows):
+        if raw is not None:
+            runner.failures.append(
+                QueryFailure("git " + " ".join(args), "unexpected path batch output")
+            )
+        return dict.fromkeys(names)
+    return {
+        name: _absolute_path(row, runner.repo)
+        for name, row in zip(names, rows, strict=True)
+    }
 
 
-def _detect_operation(runner: GitRunner) -> tuple[str, list[str]]:
+def _detect_operation(paths: dict[str, Path | None]) -> tuple[str, list[str]]:
     marker_names = {
         "merge": ("MERGE_HEAD",),
         "cherry_pick": ("CHERRY_PICK_HEAD",),
@@ -264,7 +295,7 @@ def _detect_operation(runner: GitRunner) -> tuple[str, list[str]]:
     operation = "none"
     for candidate, names in marker_names.items():
         for name in names:
-            path = _git_path(runner, name)
+            path = paths[name]
             if path is not None and path.exists():
                 active.append(f"{name}:{path}")
                 if operation == "none":
@@ -272,10 +303,10 @@ def _detect_operation(runner: GitRunner) -> tuple[str, list[str]]:
     return operation, active
 
 
-def _detect_locks(runner: GitRunner, common_dir: Path | None) -> list[str]:
+def _detect_locks(paths: dict[str, Path | None], common_dir: Path | None) -> list[str]:
     locks: list[str] = []
     for name in ("index.lock", "HEAD.lock"):
-        path = _git_path(runner, name)
+        path = paths[name]
         if path is not None and path.exists():
             locks.append(f"{name}:{path}")
     if common_dir is not None:
@@ -719,18 +750,10 @@ def collect_repository_state(
     )
     headers, tree = _parse_status(status_raw)
 
-    worktree_root = _absolute_path(
-        active_runner.run(["rev-parse", "--path-format=absolute", "--show-toplevel"]),
-        requested_root,
-    )
-    git_dir = _absolute_path(
-        active_runner.run(["rev-parse", "--path-format=absolute", "--git-dir"]),
-        requested_root,
-    )
-    common_dir = _absolute_path(
-        active_runner.run(["rev-parse", "--path-format=absolute", "--git-common-dir"]),
-        requested_root,
-    )
+    paths = _repository_paths(active_runner)
+    worktree_root = paths["worktree_root"]
+    git_dir = paths["git_dir"]
+    common_dir = paths["common_dir"]
 
     branch_header = headers.get("branch.head")
     if status_raw is None:
@@ -748,8 +771,8 @@ def collect_repository_state(
     default_base = _relation(active_runner, resolved_default, none_status="unknown")
     upstream_ref = headers.get("branch.upstream")
     upstream = _relation(active_runner, upstream_ref, none_status="none")
-    operation, operation_markers = _detect_operation(active_runner)
-    locks = _detect_locks(active_runner, common_dir)
+    operation, operation_markers = _detect_operation(paths)
+    locks = _detect_locks(paths, common_dir)
     linked = (
         git_dir != common_dir
         if git_dir is not None and common_dir is not None

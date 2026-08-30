@@ -290,12 +290,12 @@ def test_preparation_rejects_reappeared_phase2a_target(
     assert (paths["old"] / ".mypy_cache").is_dir()
 
 
-def test_cache_contract_rejects_symlink(tmp_path: Path) -> None:
+def test_cache_contract_rejects_symlink(tmp_path: Path, symlink_factory) -> None:
     worktree = tmp_path / "worktree"
     outside = tmp_path / "outside"
     worktree.mkdir()
     outside.mkdir()
-    (worktree / ".ruff_cache").symlink_to(outside, target_is_directory=True)
+    symlink_factory(worktree / ".ruff_cache", outside, target_is_directory=True)
 
     with pytest.raises(preparation.PreparationError, match="symlink"):
         preparation._validate_cache_path(worktree, ".ruff_cache")

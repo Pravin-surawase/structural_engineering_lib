@@ -127,7 +127,7 @@ def _hash_stream(handle: BinaryIO) -> str:
 
 def _aggregate_records(records: Iterable[dict[str, Any]]) -> str:
     digest = hashlib.sha256()
-    for record in records:
+    for record in sorted(records, key=lambda row: row["relative_path"]):
         digest.update(record["relative_path"].encode("utf-8", "surrogateescape"))
         digest.update(b"\0")
         digest.update(str(record["size_bytes"]).encode("ascii"))

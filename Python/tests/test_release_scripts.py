@@ -8,6 +8,7 @@ import argparse
 import hashlib
 import importlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -883,7 +884,11 @@ class TestReleaseVerifyDependencies:
         assert result == 0
         install_commands = [cmd for cmd, _, _ in calls if "install" in cmd]
         assert [
-            str(tmp_path / "venv" / "bin" / "pip"),
+            str(
+                tmp_path
+                / "venv"
+                / ("Scripts/pip.exe" if os.name == "nt" else "bin/pip")
+            ),
             "install",
             f"{wheel}[dev,validation]",
             "httpx>=0.27",
@@ -949,7 +954,11 @@ class TestReleaseVerifyDependencies:
         assert pypi_calls == [
             (
                 [
-                    str(tmp_path / "venv" / "bin" / "pip"),
+                    str(
+                        tmp_path
+                        / "venv"
+                        / ("Scripts/pip.exe" if os.name == "nt" else "bin/pip")
+                    ),
                     "install",
                     "--no-cache-dir",
                     "--index-url",
@@ -1072,13 +1081,13 @@ class TestReleaseReactDependencies:
         assert calls == [["npm", "ci"]]
 
     def test_dependency_symlink_is_rejected_without_running_npm(
-        self, tmp_path, monkeypatch
+        self, tmp_path, monkeypatch, symlink_factory
     ):
         react_dir = tmp_path / "react_app"
         react_dir.mkdir()
         target = tmp_path / "shared-node-modules"
         target.mkdir()
-        (react_dir / "node_modules").symlink_to(target, target_is_directory=True)
+        symlink_factory(react_dir / "node_modules", target, target_is_directory=True)
         called = False
 
         def fail_if_called(*_args, **_kwargs):

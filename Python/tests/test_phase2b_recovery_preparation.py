@@ -2,14 +2,35 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
+from itertools import permutations
 from pathlib import Path, PurePosixPath
 
 import pytest
 from scripts._lib import phase2b_recovery_preparation as recovery
 
 pytestmark = pytest.mark.repo_only
+
+
+def test_aggregate_uses_canonical_case_sensitive_path_order() -> None:
+    records = [
+        {"relative_path": name, "size_bytes": 1, "sha256": "a" * 64}
+        for name in (
+            ".hypothesis/example",
+            "Python/dist/package.whl",
+            "logs/sessions.json",
+        )
+    ]
+    expected = hashlib.sha256(
+        b"".join(
+            f"{row['relative_path']}\0{row['size_bytes']}\0{row['sha256']}\n".encode()
+            for row in records
+        )
+    ).hexdigest()
+    for ordered in permutations(records):
+        assert recovery._aggregate_records(ordered) == expected
 
 
 def _git_ignored_worktree(path: Path) -> None:

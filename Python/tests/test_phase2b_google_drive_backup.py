@@ -14,11 +14,11 @@ from scripts._lib import phase2b_google_drive_backup as backup
 pytestmark = pytest.mark.repo_only
 
 
-def test_source_record_rejects_symlink(tmp_path: Path) -> None:
+def test_source_record_rejects_symlink(tmp_path: Path, symlink_factory) -> None:
     source = tmp_path / "source"
     source.write_text("source", encoding="utf-8")
     link = tmp_path / "link"
-    link.symlink_to(source)
+    symlink_factory(link, source)
 
     with pytest.raises(backup.BackupPackageError, match="not a regular file"):
         backup._source_record(link, "recovery/link", "TEST")
