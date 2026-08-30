@@ -15003,8 +15003,8 @@
     {
       "module": "structural_lib",
       "export_classification": "preview",
-      "declared_export_count": 273,
-      "classified_symbol_count": 273,
+      "declared_export_count": 279,
+      "classified_symbol_count": 279,
       "symbols": [
         {
           "name": "AnalysisStateV1",
@@ -15472,6 +15472,51 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.etabs_result_catalogue_adapter",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSLiveCaseStatusV1",
+          "qualified_name": "structural_lib.ETABSLiveCaseStatusV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_catalogue_bridge",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSLiveCatalogueRunRequestV1",
+          "qualified_name": "structural_lib.ETABSLiveCatalogueRunRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_catalogue_bridge",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSLiveCatalogueStateV1",
+          "qualified_name": "structural_lib.ETABSLiveCatalogueStateV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_catalogue_bridge",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSLiveCatalogueTransportV1",
+          "qualified_name": "structural_lib.ETABSLiveCatalogueTransportV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_catalogue_bridge",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSLiveSelectionStateV1",
+          "qualified_name": "structural_lib.ETABSLiveSelectionStateV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_catalogue_bridge",
           "claim_disposition": "compatibility"
         },
         {
@@ -17302,6 +17347,15 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "run_etabs_live_catalogue_v1",
+          "qualified_name": "structural_lib.run_etabs_live_catalogue_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_catalogue_bridge",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "run_gravity_workflow_v1",
           "qualified_name": "structural_lib.run_gravity_workflow_v1",
           "kind": "function",
@@ -17468,8 +17522,8 @@
     {
       "module": "structural_lib.services.api",
       "export_classification": "preview",
-      "declared_export_count": 222,
-      "classified_symbol_count": 222,
+      "declared_export_count": 228,
+      "classified_symbol_count": 228,
       "symbols": [
         {
           "name": "AuditLogEntry",
@@ -17820,6 +17874,51 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.etabs_result_catalogue_adapter",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSLiveCaseStatusV1",
+          "qualified_name": "structural_lib.services.api.ETABSLiveCaseStatusV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_catalogue_bridge",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSLiveCatalogueRunRequestV1",
+          "qualified_name": "structural_lib.services.api.ETABSLiveCatalogueRunRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_catalogue_bridge",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSLiveCatalogueStateV1",
+          "qualified_name": "structural_lib.services.api.ETABSLiveCatalogueStateV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_catalogue_bridge",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSLiveCatalogueTransportV1",
+          "qualified_name": "structural_lib.services.api.ETABSLiveCatalogueTransportV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_catalogue_bridge",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSLiveSelectionStateV1",
+          "qualified_name": "structural_lib.services.api.ETABSLiveSelectionStateV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_catalogue_bridge",
           "claim_disposition": "compatibility"
         },
         {
@@ -19353,6 +19452,15 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "run_etabs_live_catalogue_v1",
+          "qualified_name": "structural_lib.services.api.run_etabs_live_catalogue_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_catalogue_bridge",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "run_gravity_workflow_v1",
           "qualified_name": "structural_lib.services.api.run_gravity_workflow_v1",
           "kind": "function",
@@ -19474,8 +19582,8 @@
     {
       "module": "structural_lib.api",
       "export_classification": "compatibility",
-      "declared_export_count": 222,
-      "classified_symbol_count": 222,
+      "declared_export_count": 228,
+      "classified_symbol_count": 228,
       "symbols": [
         {
           "name": "AuditLogEntry",
@@ -19826,6 +19934,51 @@
           "classification": "compatibility",
           "declared_export": true,
           "defined_in": "structural_lib.services.etabs_result_catalogue_adapter",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSLiveCaseStatusV1",
+          "qualified_name": "structural_lib.api.ETABSLiveCaseStatusV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_catalogue_bridge",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSLiveCatalogueRunRequestV1",
+          "qualified_name": "structural_lib.api.ETABSLiveCatalogueRunRequestV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_catalogue_bridge",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSLiveCatalogueStateV1",
+          "qualified_name": "structural_lib.api.ETABSLiveCatalogueStateV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_catalogue_bridge",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSLiveCatalogueTransportV1",
+          "qualified_name": "structural_lib.api.ETABSLiveCatalogueTransportV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_catalogue_bridge",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSLiveSelectionStateV1",
+          "qualified_name": "structural_lib.api.ETABSLiveSelectionStateV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_catalogue_bridge",
           "claim_disposition": "compatibility"
         },
         {
@@ -21356,6 +21509,15 @@
           "classification": "compatibility",
           "declared_export": true,
           "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "run_etabs_live_catalogue_v1",
+          "qualified_name": "structural_lib.api.run_etabs_live_catalogue_v1",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_catalogue_bridge",
           "claim_disposition": "compatibility"
         },
         {

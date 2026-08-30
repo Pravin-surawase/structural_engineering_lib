@@ -191,6 +191,18 @@ adapter consumes a caller-supplied SapModel-shaped provider and never imports
 COM, attaches to ETABS, selects output, runs analysis, or returns a partial
 catalogue after any provider, shape, status, or semantic failure.
 
+The Windows localhost transport adds the preflight-bound getter-only types
+`api.ETABSLiveCatalogueRunRequestV1`, `api.ETABSLiveCatalogueTransportV1`,
+`api.ETABSLiveCatalogueStateV1`, `api.ETABSLiveCaseStatusV1`, and
+`api.ETABSLiveSelectionStateV1`, plus
+`api.run_etabs_live_catalogue_v1`. The matching FastAPI operations are
+`POST /api/v1/etabs-bridge/v1/result-catalogue` for one complete live catalogue
+and `POST /api/v1/etabs-bridge/v1/beam-demand` for deterministic derivation from
+retained baseline/catalogue evidence. The live operation proves the exact saved
+copy, lock, units, case statuses, output selections, and file identity unchanged
+before and after extraction; it contains no setter, force, analysis, design,
+save, or Excel operation.
+
 `structural_lib.LinearStaticInitialConditionV1` retains the installed raw blank or
 `None` sentinel and normalizes only those documented forms to
 `ZERO_UNSTRESSED`. A real prior-case name remains unsupported and blocks the

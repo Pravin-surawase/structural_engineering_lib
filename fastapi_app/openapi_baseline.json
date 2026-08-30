@@ -230,6 +230,54 @@
         "title": "APIResponse[BeamCheckResponse]",
         "type": "object"
       },
+      "APIResponse_BeamDemandBuildResultV1_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/BeamDemandBuildResultV1"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProblemDetailResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[BeamDemandBuildResultV1]",
+        "type": "object"
+      },
       "APIResponse_BeamDesignResponse_": {
         "example": {
           "data": {
@@ -1860,6 +1908,54 @@
           "data"
         ],
         "title": "APIResponse[ETABSConnectionV1]",
+        "type": "object"
+      },
+      "APIResponse_ETABSLiveCatalogueTransportV1_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ETABSLiveCatalogueTransportV1"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProblemDetailResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[ETABSLiveCatalogueTransportV1]",
         "type": "object"
       },
       "APIResponse_ETABSPilotResultV1_": {
@@ -4021,6 +4117,90 @@
         "title": "AdditionalMomentResponse",
         "type": "object"
       },
+      "AnalysisStateV1": {
+        "enum": [
+          "NOT_RUN",
+          "COULD_NOT_START",
+          "NOT_FINISHED",
+          "FINISHED",
+          "UNKNOWN"
+        ],
+        "title": "AnalysisStateV1",
+        "type": "string"
+      },
+      "AnalysisStatusIdentityV1": {
+        "additionalProperties": false,
+        "properties": {
+          "case_id": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Case Id",
+            "type": "string"
+          },
+          "evidence_reference": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Evidence Reference",
+            "type": "string"
+          },
+          "getter_identity": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Getter Identity",
+            "type": "string"
+          },
+          "model_observation_after": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Model Observation After",
+            "type": "string"
+          },
+          "model_observation_before": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Model Observation Before",
+            "type": "string"
+          },
+          "observed_at_utc": {
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?Z$",
+            "title": "Observed At Utc",
+            "type": "string"
+          },
+          "raw_status_code": {
+            "minimum": 0.0,
+            "title": "Raw Status Code",
+            "type": "integer"
+          },
+          "signature_identity": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Signature Identity",
+            "type": "string"
+          },
+          "state": {
+            "$ref": "#/components/schemas/AnalysisStateV1"
+          },
+          "status_id": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Status Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status_id",
+          "case_id",
+          "raw_status_code",
+          "state",
+          "getter_identity",
+          "signature_identity",
+          "model_observation_before",
+          "model_observation_after",
+          "observed_at_utc",
+          "evidence_reference"
+        ],
+        "title": "AnalysisStatusIdentityV1",
+        "type": "object"
+      },
       "AnchorageCheckRequest": {
         "description": "Request for anchorage check at simple support.",
         "properties": {
@@ -4678,6 +4858,18 @@
         "title": "Beam3DGeometryModel",
         "type": "object"
       },
+      "BeamActionComponentV1": {
+        "enum": [
+          "P",
+          "V2",
+          "V3",
+          "T",
+          "M2",
+          "M3"
+        ],
+        "title": "BeamActionComponentV1",
+        "type": "string"
+      },
       "BeamActionsV1": {
         "additionalProperties": false,
         "description": "Finite non-negative factored action magnitudes.",
@@ -5023,6 +5215,224 @@
           "x_mm"
         ],
         "title": "BeamCrackWidthParams",
+        "type": "object"
+      },
+      "BeamDemandBuildResultV1": {
+        "additionalProperties": false,
+        "properties": {
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/W3BuildIssueV1"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "beam-demand-build-result/v1",
+            "default": "beam-demand-build-result/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "snapshot": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BeamDemandSnapshotV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "$ref": "#/components/schemas/W3BuildStatusV1"
+          }
+        },
+        "required": [
+          "status",
+          "issues",
+          "snapshot"
+        ],
+        "title": "BeamDemandBuildResultV1",
+        "type": "object"
+      },
+      "BeamDemandPurposeV1": {
+        "enum": [
+          "STRENGTH",
+          "SERVICE",
+          "COMPARISON"
+        ],
+        "title": "BeamDemandPurposeV1",
+        "type": "string"
+      },
+      "BeamDemandScenarioV1": {
+        "additionalProperties": false,
+        "properties": {
+          "baseline_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Baseline Sha256",
+            "type": "string"
+          },
+          "catalogue_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Catalogue Sha256",
+            "type": "string"
+          },
+          "envelope_rule_ids": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 64,
+            "minItems": 1,
+            "title": "Envelope Rule Ids",
+            "type": "array"
+          },
+          "held_checks": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/EvidenceValueV1_str_"
+            },
+            "title": "Held Checks",
+            "type": "array"
+          },
+          "included_selection_ids": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 1000,
+            "minItems": 1,
+            "title": "Included Selection Ids",
+            "type": "array"
+          },
+          "member_ids": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 10000,
+            "title": "Member Ids",
+            "type": "array"
+          },
+          "purpose": {
+            "$ref": "#/components/schemas/BeamDemandPurposeV1"
+          },
+          "required_components": {
+            "items": {
+              "$ref": "#/components/schemas/BeamActionComponentV1"
+            },
+            "maxItems": 6,
+            "minItems": 1,
+            "title": "Required Components",
+            "type": "array"
+          },
+          "revision": {
+            "minimum": 1.0,
+            "title": "Revision",
+            "type": "integer"
+          },
+          "scenario_id": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Scenario Id",
+            "type": "string"
+          },
+          "station_domain": {
+            "$ref": "#/components/schemas/BeamStationDomainV1",
+            "default": "ALL_RETAINED"
+          },
+          "tie_break_policy": {
+            "$ref": "#/components/schemas/DeterministicTieBreakV1",
+            "default": "SOURCE_ROW_INDEX_THEN_ROW_ID"
+          }
+        },
+        "required": [
+          "scenario_id",
+          "revision",
+          "purpose",
+          "catalogue_sha256",
+          "baseline_sha256",
+          "included_selection_ids",
+          "required_components",
+          "envelope_rule_ids"
+        ],
+        "title": "BeamDemandScenarioV1",
+        "type": "object"
+      },
+      "BeamDemandSnapshotV1": {
+        "additionalProperties": false,
+        "properties": {
+          "baseline_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Baseline Sha256",
+            "type": "string"
+          },
+          "catalogue_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Catalogue Sha256",
+            "type": "string"
+          },
+          "governing_references": {
+            "items": {
+              "$ref": "#/components/schemas/BeamGoverningReferenceV1"
+            },
+            "minItems": 1,
+            "title": "Governing References",
+            "type": "array"
+          },
+          "hash_basis_version": {
+            "const": "beam-demand-snapshot-hash/v1",
+            "default": "beam-demand-snapshot-hash/v1",
+            "title": "Hash Basis Version",
+            "type": "string"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "member_count": {
+            "minimum": 1.0,
+            "title": "Member Count",
+            "type": "integer"
+          },
+          "model_identity_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Model Identity Sha256",
+            "type": "string"
+          },
+          "retained_action_row_count": {
+            "minimum": 1.0,
+            "title": "Retained Action Row Count",
+            "type": "integer"
+          },
+          "scenario": {
+            "$ref": "#/components/schemas/BeamDemandScenarioV1"
+          },
+          "schema_version": {
+            "const": "beam-demand-snapshot/v1",
+            "default": "beam-demand-snapshot/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "snapshot_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Snapshot Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "scenario",
+          "model_identity_sha256",
+          "baseline_sha256",
+          "catalogue_sha256",
+          "retained_action_row_count",
+          "member_count",
+          "governing_references",
+          "limitations",
+          "snapshot_sha256"
+        ],
+        "title": "BeamDemandSnapshotV1",
         "type": "object"
       },
       "BeamDesignInputV1": {
@@ -5914,6 +6324,103 @@
         "title": "BeamGeometryResponse",
         "type": "object"
       },
+      "BeamGoverningReferenceV1": {
+        "additionalProperties": false,
+        "properties": {
+          "action_row_ids": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 10000,
+            "minItems": 1,
+            "title": "Action Row Ids",
+            "type": "array"
+          },
+          "component": {
+            "$ref": "#/components/schemas/BeamActionComponentV1"
+          },
+          "governing_value": {
+            "title": "Governing Value",
+            "type": "number"
+          },
+          "is_concurrent": {
+            "title": "Is Concurrent",
+            "type": "boolean"
+          },
+          "member_id": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Member Id",
+            "type": "string"
+          },
+          "reference_id": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Reference Id",
+            "type": "string"
+          },
+          "rule_id": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "scenario_id": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Scenario Id",
+            "type": "string"
+          },
+          "selection_ids": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 1000,
+            "minItems": 1,
+            "title": "Selection Ids",
+            "type": "array"
+          },
+          "sign": {
+            "$ref": "#/components/schemas/BeamGoverningSignV1"
+          },
+          "tie_break_basis": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Tie Break Basis",
+            "type": "string"
+          },
+          "tie_break_policy": {
+            "$ref": "#/components/schemas/DeterministicTieBreakV1"
+          }
+        },
+        "required": [
+          "reference_id",
+          "scenario_id",
+          "member_id",
+          "component",
+          "sign",
+          "rule_id",
+          "governing_value",
+          "action_row_ids",
+          "selection_ids",
+          "is_concurrent",
+          "tie_break_policy",
+          "tie_break_basis"
+        ],
+        "title": "BeamGoverningReferenceV1",
+        "type": "object"
+      },
+      "BeamGoverningSignV1": {
+        "enum": [
+          "CONCURRENT",
+          "POSITIVE",
+          "NEGATIVE",
+          "ABSOLUTE",
+          "CALLER_DEFINED"
+        ],
+        "title": "BeamGoverningSignV1",
+        "type": "string"
+      },
       "BeamMetadata": {
         "description": "Per-beam metadata for BOQ aggregation.",
         "properties": {
@@ -6174,6 +6681,13 @@
         },
         "title": "BeamServiceabilityV1",
         "type": "object"
+      },
+      "BeamStationDomainV1": {
+        "enum": [
+          "ALL_RETAINED"
+        ],
+        "title": "BeamStationDomainV1",
+        "type": "string"
       },
       "BeamWith3D": {
         "description": "Beam data with 3D positioning for visualization.",
@@ -14420,6 +14934,13 @@
         "title": "DetailingStandard",
         "type": "string"
       },
+      "DeterministicTieBreakV1": {
+        "enum": [
+          "SOURCE_ROW_INDEX_THEN_ROW_ID"
+        ],
+        "title": "DeterministicTieBreakV1",
+        "type": "string"
+      },
       "DevelopmentLengthResponse": {
         "description": "One development-length calculation with explicit inputs and clause.",
         "properties": {
@@ -15321,6 +15842,83 @@
         "title": "ETABSBridgeStatusV1",
         "type": "object"
       },
+      "ETABSCatalogueAdapterResultV1": {
+        "additionalProperties": false,
+        "properties": {
+          "catalogue": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ETABSResultCatalogueV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/W3BuildIssueV1"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "normalized_request": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ETABSResultCatalogueBuildRequestV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "operation_evidence": {
+            "items": {
+              "$ref": "#/components/schemas/ETABSGetterCallEvidenceV1"
+            },
+            "title": "Operation Evidence",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "etabs-catalogue-adapter-result/v1",
+            "default": "etabs-catalogue-adapter-result/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/W3BuildStatusV1"
+          }
+        },
+        "required": [
+          "status",
+          "issues",
+          "operation_evidence",
+          "normalized_request",
+          "catalogue"
+        ],
+        "title": "ETABSCatalogueAdapterResultV1",
+        "type": "object"
+      },
+      "ETABSCatalogueSelectionRequestV1": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "$ref": "#/components/schemas/ResultSelectionKindV1"
+          },
+          "name": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "name"
+        ],
+        "title": "ETABSCatalogueSelectionRequestV1",
+        "type": "object"
+      },
       "ETABSConnectionV1": {
         "additionalProperties": false,
         "description": "Successful attachment proof without analysis or model mutation.",
@@ -15848,6 +16446,391 @@
         "title": "ETABSFrameV1",
         "type": "object"
       },
+      "ETABSGetterCallEvidenceV1": {
+        "additionalProperties": false,
+        "properties": {
+          "call_index": {
+            "minimum": 0.0,
+            "title": "Call Index",
+            "type": "integer"
+          },
+          "csi_return_code": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Csi Return Code"
+          },
+          "decoded_output_count": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decoded Output Count"
+          },
+          "evidence_reference": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Evidence Reference",
+            "type": "string"
+          },
+          "operation": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Operation",
+            "type": "string"
+          },
+          "outcome": {
+            "$ref": "#/components/schemas/ETABSGetterOutcomeV1"
+          },
+          "outer_container": {
+            "$ref": "#/components/schemas/ETABSGetterContainerKindV1"
+          },
+          "reason_code": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason Code"
+          },
+          "signature_verdict": {
+            "const": "PROVED",
+            "default": "PROVED",
+            "title": "Signature Verdict",
+            "type": "string"
+          },
+          "source_identity_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Source Identity Sha256",
+            "type": "string"
+          },
+          "target": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Target",
+            "type": "string"
+          }
+        },
+        "required": [
+          "call_index",
+          "operation",
+          "target",
+          "source_identity_sha256",
+          "outcome",
+          "outer_container",
+          "evidence_reference"
+        ],
+        "title": "ETABSGetterCallEvidenceV1",
+        "type": "object"
+      },
+      "ETABSGetterContainerKindV1": {
+        "enum": [
+          "LIST",
+          "TUPLE",
+          "UNAVAILABLE"
+        ],
+        "title": "ETABSGetterContainerKindV1",
+        "type": "string"
+      },
+      "ETABSGetterOutcomeV1": {
+        "enum": [
+          "ACCEPTED",
+          "BLOCKED"
+        ],
+        "title": "ETABSGetterOutcomeV1",
+        "type": "string"
+      },
+      "ETABSLiveCaseStatusV1": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "raw_status": {
+            "minimum": 0.0,
+            "title": "Raw Status",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "raw_status"
+        ],
+        "title": "ETABSLiveCaseStatusV1",
+        "type": "object"
+      },
+      "ETABSLiveCatalogueRunRequestV1": {
+        "additionalProperties": false,
+        "description": "Exact direct-evidence request replayed through localhost REST.",
+        "properties": {
+          "approved_copy_confirmed": {
+            "const": true,
+            "title": "Approved Copy Confirmed",
+            "type": "boolean"
+          },
+          "authorized_model_file": {
+            "$ref": "#/components/schemas/ETABSModelFileSnapshotV1"
+          },
+          "capacity_limit": {
+            "default": 100000,
+            "maximum": 100000.0,
+            "minimum": 1.0,
+            "title": "Capacity Limit",
+            "type": "integer"
+          },
+          "expected_etabs_version": {
+            "minLength": 1,
+            "title": "Expected Etabs Version",
+            "type": "string"
+          },
+          "expected_etabs_version_number": {
+            "title": "Expected Etabs Version Number",
+            "type": "number"
+          },
+          "expected_present_units_enum": {
+            "minimum": 1.0,
+            "title": "Expected Present Units Enum",
+            "type": "integer"
+          },
+          "getter_matrix_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Getter Matrix Sha256",
+            "type": "string"
+          },
+          "model_observation_after": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Model Observation After",
+            "type": "string"
+          },
+          "model_observation_before": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Model Observation Before",
+            "type": "string"
+          },
+          "observed_at_utc": {
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?Z$",
+            "title": "Observed At Utc",
+            "type": "string"
+          },
+          "require_locked_model": {
+            "const": true,
+            "default": true,
+            "title": "Require Locked Model",
+            "type": "boolean"
+          },
+          "result_selections": {
+            "items": {
+              "$ref": "#/components/schemas/ETABSCatalogueSelectionRequestV1"
+            },
+            "maxItems": 1000,
+            "minItems": 1,
+            "title": "Result Selections",
+            "type": "array"
+          },
+          "runtime_identity_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Runtime Identity Sha256",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "etabs-live-catalogue-run-request/v1",
+            "default": "etabs-live-catalogue-run-request/v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "authorized_model_file",
+          "expected_etabs_version",
+          "expected_etabs_version_number",
+          "expected_present_units_enum",
+          "runtime_identity_sha256",
+          "getter_matrix_sha256",
+          "model_observation_before",
+          "model_observation_after",
+          "observed_at_utc",
+          "result_selections",
+          "approved_copy_confirmed"
+        ],
+        "title": "ETABSLiveCatalogueRunRequestV1",
+        "type": "object"
+      },
+      "ETABSLiveCatalogueStateV1": {
+        "additionalProperties": false,
+        "properties": {
+          "case_statuses": {
+            "items": {
+              "$ref": "#/components/schemas/ETABSLiveCaseStatusV1"
+            },
+            "minItems": 1,
+            "title": "Case Statuses",
+            "type": "array"
+          },
+          "etabs_version": {
+            "minLength": 1,
+            "title": "Etabs Version",
+            "type": "string"
+          },
+          "etabs_version_number": {
+            "title": "Etabs Version Number",
+            "type": "number"
+          },
+          "model_locked": {
+            "title": "Model Locked",
+            "type": "boolean"
+          },
+          "model_path": {
+            "minLength": 1,
+            "title": "Model Path",
+            "type": "string"
+          },
+          "output_selections": {
+            "items": {
+              "$ref": "#/components/schemas/ETABSLiveSelectionStateV1"
+            },
+            "minItems": 1,
+            "title": "Output Selections",
+            "type": "array"
+          },
+          "present_units_enum": {
+            "minimum": 1.0,
+            "title": "Present Units Enum",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "model_path",
+          "etabs_version",
+          "etabs_version_number",
+          "model_locked",
+          "present_units_enum",
+          "case_statuses",
+          "output_selections"
+        ],
+        "title": "ETABSLiveCatalogueStateV1",
+        "type": "object"
+      },
+      "ETABSLiveCatalogueTransportV1": {
+        "additionalProperties": false,
+        "properties": {
+          "adapter_result": {
+            "$ref": "#/components/schemas/ETABSCatalogueAdapterResultV1"
+          },
+          "catalogue_hash_basis_json": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Catalogue Hash Basis Json"
+          },
+          "catalogue_hash_basis_utf8_bytes": {
+            "minimum": 0.0,
+            "title": "Catalogue Hash Basis Utf8 Bytes",
+            "type": "integer"
+          },
+          "frame_analysis_verdict": {
+            "const": "HELD_NOT_SUPPORTED",
+            "default": "HELD_NOT_SUPPORTED",
+            "title": "Frame Analysis Verdict",
+            "type": "string"
+          },
+          "live_state_after": {
+            "$ref": "#/components/schemas/ETABSLiveCatalogueStateV1"
+          },
+          "live_state_before": {
+            "$ref": "#/components/schemas/ETABSLiveCatalogueStateV1"
+          },
+          "model_file_after": {
+            "$ref": "#/components/schemas/ETABSModelFileSnapshotV1"
+          },
+          "model_file_before": {
+            "$ref": "#/components/schemas/ETABSModelFileSnapshotV1"
+          },
+          "no_setter_force_analysis_design_save_or_excel_call": {
+            "const": true,
+            "default": true,
+            "title": "No Setter Force Analysis Design Save Or Excel Call",
+            "type": "boolean"
+          },
+          "professional_approval": {
+            "const": false,
+            "default": false,
+            "title": "Professional Approval",
+            "type": "boolean"
+          },
+          "schema_version": {
+            "const": "etabs-live-catalogue-transport/v1",
+            "default": "etabs-live-catalogue-transport/v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "adapter_result",
+          "model_file_before",
+          "model_file_after",
+          "live_state_before",
+          "live_state_after",
+          "catalogue_hash_basis_json",
+          "catalogue_hash_basis_utf8_bytes"
+        ],
+        "title": "ETABSLiveCatalogueTransportV1",
+        "type": "object"
+      },
+      "ETABSLiveSelectionStateV1": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "enum": [
+              "CASE",
+              "COMBINATION"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "selected": {
+            "title": "Selected",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "kind",
+          "name",
+          "selected"
+        ],
+        "title": "ETABSLiveSelectionStateV1",
+        "type": "object"
+      },
       "ETABSLocalAxisV1": {
         "additionalProperties": false,
         "properties": {
@@ -16211,6 +17194,233 @@
           "width_t2_mm"
         ],
         "title": "ETABSRectangularSectionV1",
+        "type": "object"
+      },
+      "ETABSResultCatalogueBuildRequestV1": {
+        "additionalProperties": false,
+        "properties": {
+          "analysis_statuses": {
+            "items": {
+              "$ref": "#/components/schemas/AnalysisStatusIdentityV1"
+            },
+            "title": "Analysis Statuses",
+            "type": "array"
+          },
+          "capacity_limit": {
+            "default": 100000,
+            "maximum": 100000.0,
+            "minimum": 1.0,
+            "title": "Capacity Limit",
+            "type": "integer"
+          },
+          "getter_matrix_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Getter Matrix Sha256",
+            "type": "string"
+          },
+          "load_cases": {
+            "items": {
+              "$ref": "#/components/schemas/LoadCaseDefinitionV1"
+            },
+            "title": "Load Cases",
+            "type": "array"
+          },
+          "load_patterns": {
+            "items": {
+              "$ref": "#/components/schemas/LoadPatternDefinitionV1"
+            },
+            "title": "Load Patterns",
+            "type": "array"
+          },
+          "model_identity_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Model Identity Sha256",
+            "type": "string"
+          },
+          "response_combinations": {
+            "items": {
+              "$ref": "#/components/schemas/ResponseCombinationDefinitionV1"
+            },
+            "title": "Response Combinations",
+            "type": "array"
+          },
+          "result_selections": {
+            "items": {
+              "$ref": "#/components/schemas/ResultSelectionIdentityV1"
+            },
+            "title": "Result Selections",
+            "type": "array"
+          },
+          "runtime_identity_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Runtime Identity Sha256",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "etabs-result-catalogue-build-request/v1",
+            "default": "etabs-result-catalogue-build-request/v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "model_identity_sha256",
+          "runtime_identity_sha256",
+          "getter_matrix_sha256",
+          "load_patterns",
+          "load_cases",
+          "analysis_statuses",
+          "response_combinations",
+          "result_selections"
+        ],
+        "title": "ETABSResultCatalogueBuildRequestV1",
+        "type": "object"
+      },
+      "ETABSResultCatalogueCapacityV1": {
+        "additionalProperties": false,
+        "properties": {
+          "accepted_capacity_limit": {
+            "maximum": 100000.0,
+            "minimum": 1.0,
+            "title": "Accepted Capacity Limit",
+            "type": "integer"
+          },
+          "analysis_status_count": {
+            "minimum": 0.0,
+            "title": "Analysis Status Count",
+            "type": "integer"
+          },
+          "combination_factor_count": {
+            "minimum": 0.0,
+            "title": "Combination Factor Count",
+            "type": "integer"
+          },
+          "load_case_count": {
+            "minimum": 0.0,
+            "title": "Load Case Count",
+            "type": "integer"
+          },
+          "load_pattern_count": {
+            "minimum": 0.0,
+            "title": "Load Pattern Count",
+            "type": "integer"
+          },
+          "response_combination_count": {
+            "minimum": 0.0,
+            "title": "Response Combination Count",
+            "type": "integer"
+          },
+          "result_selection_count": {
+            "minimum": 0.0,
+            "title": "Result Selection Count",
+            "type": "integer"
+          },
+          "total_source_row_count": {
+            "minimum": 0.0,
+            "title": "Total Source Row Count",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "load_pattern_count",
+          "load_case_count",
+          "analysis_status_count",
+          "response_combination_count",
+          "combination_factor_count",
+          "result_selection_count",
+          "total_source_row_count",
+          "accepted_capacity_limit"
+        ],
+        "title": "ETABSResultCatalogueCapacityV1",
+        "type": "object"
+      },
+      "ETABSResultCatalogueV1": {
+        "additionalProperties": false,
+        "properties": {
+          "analysis_statuses": {
+            "items": {
+              "$ref": "#/components/schemas/AnalysisStatusIdentityV1"
+            },
+            "title": "Analysis Statuses",
+            "type": "array"
+          },
+          "capacity": {
+            "$ref": "#/components/schemas/ETABSResultCatalogueCapacityV1"
+          },
+          "catalogue_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Catalogue Sha256",
+            "type": "string"
+          },
+          "getter_matrix_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Getter Matrix Sha256",
+            "type": "string"
+          },
+          "hash_basis_version": {
+            "const": "etabs-result-catalogue-hash/v1",
+            "default": "etabs-result-catalogue-hash/v1",
+            "title": "Hash Basis Version",
+            "type": "string"
+          },
+          "load_cases": {
+            "items": {
+              "$ref": "#/components/schemas/LoadCaseDefinitionV1"
+            },
+            "title": "Load Cases",
+            "type": "array"
+          },
+          "load_patterns": {
+            "items": {
+              "$ref": "#/components/schemas/LoadPatternDefinitionV1"
+            },
+            "title": "Load Patterns",
+            "type": "array"
+          },
+          "model_identity_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Model Identity Sha256",
+            "type": "string"
+          },
+          "response_combinations": {
+            "items": {
+              "$ref": "#/components/schemas/ResponseCombinationDefinitionV1"
+            },
+            "title": "Response Combinations",
+            "type": "array"
+          },
+          "result_selections": {
+            "items": {
+              "$ref": "#/components/schemas/ResultSelectionIdentityV1"
+            },
+            "title": "Result Selections",
+            "type": "array"
+          },
+          "runtime_identity_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Runtime Identity Sha256",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "etabs-result-catalogue/v1",
+            "default": "etabs-result-catalogue/v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "model_identity_sha256",
+          "runtime_identity_sha256",
+          "getter_matrix_sha256",
+          "load_patterns",
+          "load_cases",
+          "analysis_statuses",
+          "response_combinations",
+          "result_selections",
+          "capacity",
+          "catalogue_sha256"
+        ],
+        "title": "ETABSResultCatalogueV1",
         "type": "object"
       },
       "ETABSResultSelectionEvidenceV1": {
@@ -16930,6 +18140,138 @@
           "qualified_review_requirement"
         ],
         "title": "EvidenceEnvelopeResponse",
+        "type": "object"
+      },
+      "EvidenceStateV1": {
+        "description": "Exhaustive public meaning of a calculation-bearing optional value.",
+        "enum": [
+          "PRESENT",
+          "UNAVAILABLE",
+          "NOT_REQUESTED",
+          "NOT_APPLICABLE",
+          "BLOCKED"
+        ],
+        "title": "EvidenceStateV1",
+        "type": "string"
+      },
+      "EvidenceValueV1_bool_": {
+        "additionalProperties": false,
+        "properties": {
+          "message": {
+            "anyOf": [
+              {
+                "maxLength": 500,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          },
+          "reason_code": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason Code"
+          },
+          "source_references": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 64,
+            "minItems": 1,
+            "title": "Source References",
+            "type": "array"
+          },
+          "state": {
+            "$ref": "#/components/schemas/EvidenceStateV1"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "state",
+          "source_references"
+        ],
+        "title": "EvidenceValueV1[bool]",
+        "type": "object"
+      },
+      "EvidenceValueV1_str_": {
+        "additionalProperties": false,
+        "properties": {
+          "message": {
+            "anyOf": [
+              {
+                "maxLength": 500,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          },
+          "reason_code": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason Code"
+          },
+          "source_references": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 64,
+            "minItems": 1,
+            "title": "Source References",
+            "type": "array"
+          },
+          "state": {
+            "$ref": "#/components/schemas/EvidenceStateV1"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "state",
+          "source_references"
+        ],
+        "title": "EvidenceValueV1[str]",
         "type": "object"
       },
       "ExcelCalculationModeV1": {
@@ -23890,6 +25232,104 @@
         "title": "IntegratedTorsionResult",
         "type": "object"
       },
+      "LinearStaticCaseParametersV1": {
+        "additionalProperties": false,
+        "properties": {
+          "initial_condition": {
+            "$ref": "#/components/schemas/LinearStaticInitialConditionV1"
+          },
+          "load_items": {
+            "items": {
+              "$ref": "#/components/schemas/LinearStaticLoadItemV1"
+            },
+            "minItems": 1,
+            "title": "Load Items",
+            "type": "array"
+          },
+          "parameter_kind": {
+            "const": "LINEAR_STATIC",
+            "default": "LINEAR_STATIC",
+            "title": "Parameter Kind",
+            "type": "string"
+          }
+        },
+        "required": [
+          "initial_condition",
+          "load_items"
+        ],
+        "title": "LinearStaticCaseParametersV1",
+        "type": "object"
+      },
+      "LinearStaticInitialConditionV1": {
+        "additionalProperties": false,
+        "description": "Installed zero-state sentinel retained without accepting prior cases.",
+        "properties": {
+          "evidence_reference": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Evidence Reference",
+            "type": "string"
+          },
+          "normalized_condition": {
+            "const": "ZERO_UNSTRESSED",
+            "default": "ZERO_UNSTRESSED",
+            "title": "Normalized Condition",
+            "type": "string"
+          },
+          "raw_initial_case": {
+            "maxLength": 160,
+            "title": "Raw Initial Case",
+            "type": "string"
+          }
+        },
+        "required": [
+          "raw_initial_case",
+          "evidence_reference"
+        ],
+        "title": "LinearStaticInitialConditionV1",
+        "type": "object"
+      },
+      "LinearStaticLoadItemV1": {
+        "additionalProperties": false,
+        "properties": {
+          "evidence_reference": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Evidence Reference",
+            "type": "string"
+          },
+          "load_name": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Load Name",
+            "type": "string"
+          },
+          "load_type": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Load Type",
+            "type": "string"
+          },
+          "ordinal": {
+            "minimum": 0.0,
+            "title": "Ordinal",
+            "type": "integer"
+          },
+          "scale_factor": {
+            "title": "Scale Factor",
+            "type": "number"
+          }
+        },
+        "required": [
+          "ordinal",
+          "load_type",
+          "load_name",
+          "scale_factor",
+          "evidence_reference"
+        ],
+        "title": "LinearStaticLoadItemV1",
+        "type": "object"
+      },
       "LoadAnalysisRequest": {
         "additionalProperties": false,
         "description": "Request model for simple load analysis (BMD/SFD).",
@@ -24019,6 +25459,104 @@
           "critical_points"
         ],
         "title": "LoadAnalysisResponse",
+        "type": "object"
+      },
+      "LoadCaseDefinitionV1": {
+        "additionalProperties": false,
+        "properties": {
+          "analysis_status_id": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Analysis Status Id",
+            "type": "string"
+          },
+          "case_id": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Case Id",
+            "type": "string"
+          },
+          "definition_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Definition Sha256",
+            "type": "string"
+          },
+          "evidence_reference": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Evidence Reference",
+            "type": "string"
+          },
+          "is_auto": {
+            "$ref": "#/components/schemas/EvidenceValueV1_bool_"
+          },
+          "name": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "parameters": {
+            "discriminator": {
+              "mapping": {
+                "LINEAR_STATIC": "#/components/schemas/LinearStaticCaseParametersV1",
+                "UNSUPPORTED": "#/components/schemas/UnsupportedCaseParametersV1"
+              },
+              "propertyName": "parameter_kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LinearStaticCaseParametersV1"
+              },
+              {
+                "$ref": "#/components/schemas/UnsupportedCaseParametersV1"
+              }
+            ],
+            "title": "Parameters"
+          },
+          "raw_auto_flag": {
+            "title": "Raw Auto Flag",
+            "type": "integer"
+          },
+          "raw_design_type": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Raw Design Type",
+            "type": "string"
+          },
+          "raw_subtype": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Raw Subtype",
+            "type": "string"
+          },
+          "raw_type": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Raw Type",
+            "type": "string"
+          },
+          "source_ordinal": {
+            "minimum": 0.0,
+            "title": "Source Ordinal",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "case_id",
+          "name",
+          "raw_type",
+          "raw_subtype",
+          "raw_design_type",
+          "raw_auto_flag",
+          "is_auto",
+          "parameters",
+          "analysis_status_id",
+          "source_ordinal",
+          "evidence_reference",
+          "definition_sha256"
+        ],
+        "title": "LoadCaseDefinitionV1",
         "type": "object"
       },
       "LoadItem": {
@@ -24167,6 +25705,61 @@
           "approved_exclusions"
         ],
         "title": "LoadModelV1",
+        "type": "object"
+      },
+      "LoadPatternDefinitionV1": {
+        "additionalProperties": false,
+        "properties": {
+          "evidence_reference": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Evidence Reference",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "normalized_type": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Normalized Type",
+            "type": "string"
+          },
+          "pattern_id": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Pattern Id",
+            "type": "string"
+          },
+          "raw_type": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Raw Type",
+            "type": "string"
+          },
+          "self_weight_multiplier": {
+            "title": "Self Weight Multiplier",
+            "type": "number"
+          },
+          "source_ordinal": {
+            "minimum": 0.0,
+            "title": "Source Ordinal",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "pattern_id",
+          "name",
+          "raw_type",
+          "normalized_type",
+          "self_weight_multiplier",
+          "source_ordinal",
+          "evidence_reference"
+        ],
+        "title": "LoadPatternDefinitionV1",
         "type": "object"
       },
       "LongColumnRequest": {
@@ -26937,6 +28530,128 @@
         "title": "RegularInteriorFlatSlabResponse",
         "type": "object"
       },
+      "ResponseCombinationDefinitionV1": {
+        "additionalProperties": false,
+        "properties": {
+          "combination_id": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Combination Id",
+            "type": "string"
+          },
+          "definition_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Definition Sha256",
+            "type": "string"
+          },
+          "design_purpose": {
+            "$ref": "#/components/schemas/EvidenceValueV1_str_"
+          },
+          "evidence_reference": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Evidence Reference",
+            "type": "string"
+          },
+          "factors": {
+            "items": {
+              "$ref": "#/components/schemas/ResponseCombinationFactorV1"
+            },
+            "minItems": 1,
+            "title": "Factors",
+            "type": "array"
+          },
+          "name": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "normalized_type": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Normalized Type",
+            "type": "string"
+          },
+          "raw_type": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Raw Type",
+            "type": "string"
+          },
+          "source_ordinal": {
+            "minimum": 0.0,
+            "title": "Source Ordinal",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "combination_id",
+          "name",
+          "raw_type",
+          "normalized_type",
+          "factors",
+          "design_purpose",
+          "source_ordinal",
+          "evidence_reference",
+          "definition_sha256"
+        ],
+        "title": "ResponseCombinationDefinitionV1",
+        "type": "object"
+      },
+      "ResponseCombinationFactorV1": {
+        "additionalProperties": false,
+        "properties": {
+          "evidence_reference": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Evidence Reference",
+            "type": "string"
+          },
+          "ordinal": {
+            "minimum": 0.0,
+            "title": "Ordinal",
+            "type": "integer"
+          },
+          "scale_factor": {
+            "title": "Scale Factor",
+            "type": "number"
+          },
+          "source_id": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Source Id",
+            "type": "string"
+          },
+          "source_kind": {
+            "$ref": "#/components/schemas/ResponseCombinationSourceKindV1"
+          },
+          "source_name": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Source Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ordinal",
+          "source_kind",
+          "source_id",
+          "source_name",
+          "scale_factor",
+          "evidence_reference"
+        ],
+        "title": "ResponseCombinationFactorV1",
+        "type": "object"
+      },
+      "ResponseCombinationSourceKindV1": {
+        "enum": [
+          "CASE",
+          "COMBINATION"
+        ],
+        "title": "ResponseCombinationSourceKindV1",
+        "type": "string"
+      },
       "ResultIdentityResponse": {
         "description": "Replay identity attached to a calculation-bearing result.",
         "properties": {
@@ -26988,6 +28703,92 @@
         ],
         "title": "ResultIdentityResponse",
         "type": "object"
+      },
+      "ResultSelectionIdentityV1": {
+        "additionalProperties": false,
+        "properties": {
+          "case_status_id": {
+            "$ref": "#/components/schemas/EvidenceValueV1_str_"
+          },
+          "combination_definition_id": {
+            "$ref": "#/components/schemas/EvidenceValueV1_str_"
+          },
+          "evidence_reference": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Evidence Reference",
+            "type": "string"
+          },
+          "getter_identity_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Getter Identity Sha256",
+            "type": "string"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/ResultSelectionKindV1"
+          },
+          "model_identity_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Model Identity Sha256",
+            "type": "string"
+          },
+          "model_observation_after": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Model Observation After",
+            "type": "string"
+          },
+          "model_observation_before": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Model Observation Before",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "runtime_identity_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Runtime Identity Sha256",
+            "type": "string"
+          },
+          "selected_for_output": {
+            "$ref": "#/components/schemas/EvidenceValueV1_bool_"
+          },
+          "selection_id": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Selection Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "selection_id",
+          "kind",
+          "name",
+          "selected_for_output",
+          "case_status_id",
+          "combination_definition_id",
+          "model_identity_sha256",
+          "runtime_identity_sha256",
+          "getter_identity_sha256",
+          "model_observation_before",
+          "model_observation_after",
+          "evidence_reference"
+        ],
+        "title": "ResultSelectionIdentityV1",
+        "type": "object"
+      },
+      "ResultSelectionKindV1": {
+        "enum": [
+          "CASE",
+          "COMBINATION"
+        ],
+        "title": "ResultSelectionKindV1",
+        "type": "string"
       },
       "SampleDataResponse": {
         "description": "Response from sample data endpoint with 3D geometry.",
@@ -31524,6 +33325,39 @@
         "title": "TwoWaySlabPanelDesignResponse",
         "type": "object"
       },
+      "UnsupportedCaseParametersV1": {
+        "additionalProperties": false,
+        "properties": {
+          "parameter_evidence": {
+            "$ref": "#/components/schemas/EvidenceValueV1_bool_"
+          },
+          "parameter_kind": {
+            "const": "UNSUPPORTED",
+            "default": "UNSUPPORTED",
+            "title": "Parameter Kind",
+            "type": "string"
+          },
+          "raw_subtype": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Raw Subtype",
+            "type": "string"
+          },
+          "raw_type": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Raw Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "raw_type",
+          "raw_subtype",
+          "parameter_evidence"
+        ],
+        "title": "UnsupportedCaseParametersV1",
+        "type": "object"
+      },
       "ValidationResult": {
         "description": "Validation result details.",
         "properties": {
@@ -31560,6 +33394,44 @@
         ],
         "title": "ValidationResult",
         "type": "object"
+      },
+      "W3BuildIssueV1": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Message",
+            "type": "string"
+          },
+          "path": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Path",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "path",
+          "message"
+        ],
+        "title": "W3BuildIssueV1",
+        "type": "object"
+      },
+      "W3BuildStatusV1": {
+        "enum": [
+          "ACCEPTED",
+          "BLOCKED"
+        ],
+        "title": "W3BuildStatusV1",
+        "type": "string"
       },
       "WallDirectionalReinforcementResponse": {
         "properties": {
@@ -38527,6 +40399,129 @@
         ]
       }
     },
+    "/api/v1/etabs-bridge/v1/beam-demand": {
+      "post": {
+        "operationId": "derive_etabs_beam_demand_api_v1_etabs_bridge_v1_beam_demand_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "title": "Payload",
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_BeamDemandBuildResultV1_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Authentication required"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "State conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Concurrency or rate limit"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Internal application error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Capability unavailable"
+          }
+        },
+        "summary": "Derive a canonical W3 beam-demand snapshot from retained evidence",
+        "tags": [
+          "etabs-bridge"
+        ]
+      }
+    },
     "/api/v1/etabs-bridge/v1/beam-pilot": {
       "post": {
         "operationId": "run_etabs_beam_pilot_api_v1_etabs_bridge_v1_beam_pilot_post",
@@ -38754,6 +40749,127 @@
           }
         },
         "summary": "Attach to the already-open ETABS model and return its identity",
+        "tags": [
+          "etabs-bridge"
+        ]
+      }
+    },
+    "/api/v1/etabs-bridge/v1/result-catalogue": {
+      "post": {
+        "operationId": "run_etabs_result_catalogue_api_v1_etabs_bridge_v1_result_catalogue_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ETABSLiveCatalogueRunRequestV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_ETABSLiveCatalogueTransportV1_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Authentication required"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "State conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Concurrency or rate limit"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Internal application error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemResponse"
+                }
+              }
+            },
+            "description": "Capability unavailable"
+          }
+        },
+        "summary": "Read one complete preflight-bound W3 result catalogue",
         "tags": [
           "etabs-bridge"
         ]

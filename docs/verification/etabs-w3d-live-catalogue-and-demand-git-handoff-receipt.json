@@ -1,0 +1,175 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-29T23:10:03.1981795Z",
+      "query_status": "OK",
+      "reference": "Current task delegation authorizing completion of the full W3 campaign and ordinary evidence-backed decisions",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "CREATE_W3D_CANDIDATE_COMMIT",
+      "PUSH_W3D_BRANCH",
+      "OPEN_W3D_PULL_REQUEST",
+      "MERGE_UNCHANGED_W3D_AFTER_REQUIRED_CHECKS"
+    ],
+    "next_action": "CREATE_W3D_CANDIDATE_COMMIT",
+    "observed_at_utc": "2026-08-29T23:10:03.1981795Z",
+    "prohibited_actions": [
+      "BYPASS_REQUIRED_CHECKS",
+      "REPEAT_COMPLETED_W3D_LIVE_EVIDENCE",
+      "REWRITE_HISTORY",
+      "DELETE_BRANCH_WORKTREE_MODEL_WORKBOOK_OR_EVIDENCE",
+      "CLAIM_ENGINEERING_OR_PROFESSIONAL_APPROVAL"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "CREATE_W3D_CANDIDATE_COMMIT",
+        "PUSH_W3D_BRANCH",
+        "OPEN_W3D_PULL_REQUEST",
+        "MERGE_UNCHANGED_W3D_AFTER_REQUIRED_CHECKS"
+      ],
+      "branch": "codex/etabs-w3d-live-catalogue-continuation-2-windows",
+      "head_sha": "0d26c60f221ec1f64293f61ea05ddde1438025a0",
+      "task_id": "ETABS-EXCEL-BEAM-W3-CAMPAIGN"
+    }
+  },
+  "holds": [
+    "AUTHORIZATION_SOURCE_STALE_EVIDENCE",
+    "AUTHORIZATION_STALE_EVIDENCE",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "fb855a7504b030bf861350171a76c6f892d208f563170ec93418a0a48482ad1c",
+    "state": {
+      "branch": "codex/etabs-w3d-live-catalogue-continuation-2-windows",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "0d26c60f221ec1f64293f61ea05ddde1438025a0",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 1182.065,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git\\worktrees\\etabs-w3d-live-catalogue-continuation-2-windows",
+      "head_sha": "0d26c60f221ec1f64293f61ea05ddde1438025a0",
+      "hold_reasons": [
+        "changed paths: 18"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-29T23:30:51.026038+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\worktrees\\etabs-w3d-live-catalogue-continuation-2-windows",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 18,
+        "modified_paths": [
+          "Python/structural_lib/__init__.py",
+          "Python/structural_lib/services/api.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/guides/excel-etabs-python-bridge-pilot.md",
+          "docs/planning/etabs-data-analysis-optimization-foundation-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/reference/api-classification.json",
+          "docs/reference/api-compatibility-ledger.json",
+          "docs/reference/api-manifest.json",
+          "docs/reference/api.md",
+          "fastapi_app/openapi_baseline.json",
+          "fastapi_app/routers/etabs_bridge.py",
+          "fastapi_app/tests/test_etabs_bridge.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "Python/structural_lib/services/etabs_catalogue_bridge.py",
+          "Python/tests/unit/test_etabs_w3d_catalogue_bridge.py",
+          "docs/verification/etabs-w3d-live-catalogue-and-demand-evidence.json",
+          "docs/verification/etabs-w3d-live-catalogue-and-demand-git-handoff-receipt.json"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "C:\\CodexWork\\worktrees\\etabs-w3d-live-catalogue-continuation-2-windows"
+    }
+  },
+  "local_state_receipt_hash": "sha256:fb855a7504b030bf861350171a76c6f892d208f563170ec93418a0a48482ad1c",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-29T23:30:51.027414+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [],
+    "integration_owner": "Codex orchestrator W3 campaign",
+    "owned_paths": [
+      "Python/structural_lib/services/etabs_catalogue_bridge.py",
+      "Python/structural_lib/services/api.py",
+      "Python/structural_lib/__init__.py",
+      "Python/tests/unit/test_etabs_w3d_catalogue_bridge.py",
+      "fastapi_app/routers/etabs_bridge.py",
+      "fastapi_app/tests/test_etabs_bridge.py",
+      "fastapi_app/openapi_baseline.json",
+      "docs/verification/etabs-w3d-live-catalogue-and-demand-evidence.json",
+      "docs/verification/etabs-w3d-live-catalogue-and-demand-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/etabs-data-analysis-optimization-foundation-plan.md",
+      "docs/planning/next-session-brief.md",
+      "docs/reference/api.md",
+      "docs/reference/api-classification.json",
+      "docs/reference/api-compatibility-ledger.json",
+      "docs/reference/api-manifest.json",
+      "docs/guides/excel-etabs-python-bridge-pilot.md"
+    ],
+    "task_id": "ETABS-EXCEL-BEAM-W3-CAMPAIGN"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

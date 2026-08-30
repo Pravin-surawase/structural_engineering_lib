@@ -2,7 +2,7 @@
   "generated": "2026-08-29",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 222,
+  "count": 228,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -198,6 +198,31 @@
       "name": "ETABSGetterOutcomeV1",
       "kind": "class",
       "signature": "(*args, **kwds)"
+    },
+    {
+      "name": "ETABSLiveCaseStatusV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSLiveCatalogueRunRequestV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSLiveCatalogueStateV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSLiveCatalogueTransportV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSLiveSelectionStateV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
     },
     {
       "name": "ETABSResultCatalogueBuildRequestV1",
@@ -1048,6 +1073,11 @@
       "name": "query_beam_action_rows_v1",
       "kind": "function",
       "signature": "(baseline: 'ETABSBeamBaselineV1', *, member_ids: 'tuple[str, ...]' = (), selection_ids: 'tuple[str, ...]' = (), cursor: 'str | None' = None, limit: 'int' = 1000) -> 'BeamActionPageV1'"
+    },
+    {
+      "name": "run_etabs_live_catalogue_v1",
+      "kind": "function",
+      "signature": "(request: 'ETABSLiveCatalogueRunRequestV1', *, session_factory: 'SessionFactory | None' = None, observe_model_file: 'ModelFileObserver | None' = None) -> 'ETABSLiveCatalogueTransportV1'"
     },
     {
       "name": "run_gravity_workflow_v1",

@@ -753,6 +753,16 @@ save, or write Excel. Reconcile direct and source-bound REST canonical hashes;
 postflight must prove file/hash/size/mtime, lock, units and output-selection
 state unchanged.
 
+Windows acceptance on 2026-08-30 completed this boundary after the separately
+reviewed R1/R2 installed-sentinel repairs. The complete catalogue contains 12
+patterns, 15 cases, 62 combinations and 254 ordered factors; its direct and
+localhost REST canonical identity is `d44e6b89...`. The linked 153-member,
+3,502-row same-row demand snapshot reconciles at `7c1a4e21...`. The copied
+model identity, lock, units, all case statuses and all 77 output-selection
+states remained unchanged. This is installed-software evidence only: ETABS
+remains global-analysis authority, and independent frame analysis plus
+professional approval remain held.
+
 ### W3R — Separate Pareto shear-feasibility repair (`L1`)
 
 Owner: Mac. Dependency: it does not block W3A-W3D, but it blocks all reuse of

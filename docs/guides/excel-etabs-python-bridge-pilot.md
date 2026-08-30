@@ -341,6 +341,25 @@ not infer materials, reinforcement, slabs, supports, or engineering intent;
 does not run analysis/design; and retains `HELD_NOT_SUPPORTED` for independent
 frame analysis.
 
+## W3 read-only catalogue and demand surface
+
+After an exact copied-model preflight, the Windows-only
+`POST /api/v1/etabs-bridge/v1/result-catalogue` operation reads one complete
+load-pattern, load-case, response-combination, ordered-factor, case-status, and
+current output-selection catalogue. Its request freezes the saved file digest,
+ETABS/runtime/getter identities, present units, lock requirement, and exact
+already-selected result identity. The response includes before/after file and
+live-state brackets plus the canonical catalogue hash basis. Any incomplete
+provider result or any state/file drift fails closed without a partial
+catalogue.
+
+`POST /api/v1/etabs-bridge/v1/beam-demand` then derives the accepted W3 demand
+snapshot only from retained W2 baseline and W3 catalogue evidence. It performs
+no COM operation. Same-row signed actions remain distinct from signed extrema
+and independent-absolute screening references. Neither endpoint selects
+output, calls `FrameForce`, runs ETABS analysis/design, unlocks/saves a model,
+writes Excel, supplies an independent solver, or creates professional approval.
+
 ## Fail-closed boundaries
 
 The current pilot blocks when:

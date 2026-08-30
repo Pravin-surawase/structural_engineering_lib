@@ -5,6 +5,115 @@
 
 ---
 
+## 2026-08-30 — Session: W3D complete live catalogue and demand acceptance
+
+**Agent:** Codex (`orchestrator`/Windows evidence owner, sole writer; no
+subagents).
+
+**Branch:** `codex/etabs-w3d-live-catalogue-continuation-2-windows`, created as
+a separate clean linked worktree from accepted W3D-R2 PR #905 merge
+`0d26c60f221ec1f64293f61ea05ddde1438025a0`, tree
+`39e9dc9084efc70b6a3c1dc935402ab9c07e01c1`. Every earlier blocked run,
+worktree, branch, model, workbook and external evidence root remains retained.
+
+**Git handoff receipt:**
+`docs/verification/etabs-w3d-live-catalogue-and-demand-git-handoff-receipt.json`
+(pre-commit conservative receipt; candidate/hosted/integration facts are
+completed only after normal review).
+
+**Focus:** Finish W3D from exact merged source without selecting output,
+calling `FrameForce`, running ETABS analysis/design, unlocking/saving the model,
+writing Excel or mutating any ETABS data. Produce one complete live catalogue,
+derive the linked demand snapshot from retained W2 rows, reconcile direct and
+source-bound REST hashes, and prove state/file preservation.
+
+**Completed:**
+
+- Reproved source binding to exact R2 merge/tree with Python 3.11.15 and
+  `comtypes` 1.4.16. ETABS 23.3.1.4563 displayed the authorized copied model,
+  was responsive, locked and dialog-free; Excel was absent and ports 3000/8000
+  were free.
+- Preserved the accepted live catalogue after the evidence harness reached an
+  offline Python list/strict-tuple binding error. No second COM extraction was
+  needed to recover the direct demand result. JSON-bound reconstruction used
+  the canonical contracts and reproduced all hashes.
+- The complete catalogue is accepted: 12 patterns, 15 cases, 62 combinations,
+  254 ordered factors, one exact selected combination and 192 getter-evidence
+  rows. Canonical SHA-256 is `d44e6b89...`; installed raw `Auto` values 3/5 are
+  retained with `UNAVAILABLE` Boolean meaning rather than guessed.
+- The linked accepted demand snapshot binds W2 baseline `d4c28586...`, 153
+  members, 3,502 retained signed same-row stations and 3,672 governing
+  references. Canonical SHA-256 is `7c1a4e21...`; independent-absolute
+  references remain explicitly screening-only/nonconcurrent.
+- Added one serialized getter-only `/result-catalogue` route and one pure
+  retained-evidence `/beam-demand` route. `/status` and `/connect` proved the
+  exact runtime/model. Direct and REST catalogue hashes match exactly; direct
+  and REST demand hashes match exactly.
+- The live transport compared model file, lock, units, all 15 case statuses and
+  all 77 case/combination output-selection states before/after. Postflight
+  re-proved the copied file at the same 702,831 bytes, SHA-256 `99b7f3f1...`
+  and timestamp, locked in units enum 6. The service stopped normally; ports
+  3000/8000 are free and ETABS remains open safely.
+- Focused W3/FastAPI tests, Ruff and targeted Mypy pass. Proprietary path,
+  selected name, complete catalogue/demand/force payloads and model bytes stay
+  outside Git; tracked evidence contains only bounded identities, counts,
+  hashes and claim limits.
+
+### Issues encountered
+
+- **Issue:** the first successful live extraction's external harness tried to
+  validate JSON-loaded Python lists against intentionally strict tuple fields.
+- **Issue:** the first API gate found process-specific memory addresses in the
+  generated signature for the new live transport, and its 30-second grouped
+  classification budget expired although the direct generator completed.
+- **Issue:** hosted Python Validation rejected Black formatting in the new
+  transport although the earlier local hook command displayed Black as passed.
+- **Issue:** the initial OpenAPI update shows a large textual diff because two
+  new alphabetically ordered generic response schemas shift many adjacent JSON
+  blocks; semantic snapshot validation reports exactly 97 current endpoints
+  and 543 schemas with no residual drift.
+
+### Root causes and resolutions
+
+- **Root cause:** the transport contract is strict for in-process callers,
+  while a JSON document legitimately represents tuples as arrays. The evidence
+  harness crossed the JSON boundary with `model_validate` on a Python object
+  instead of `model_validate_json`/explicit JSON-mode conversion.
+- **Resolution:** preserve the already-complete live result, reconstruct only
+  retained JSON with non-strict container conversion, and add a REST boundary
+  that validates the complete canonical request after JSON-array conversion.
+  No ETABS call or source contract was weakened. ⚠️ TERMINAL ISSUE: strict
+  Python-container binding rejected retained JSON arrays -> recovered offline
+  through the canonical JSON boundary.
+- **Root cause:** the public function used concrete callable objects as keyword
+  defaults, so `inspect.signature` included their process addresses; the full
+  classification registry also takes about 36 seconds on this laptop, above
+  the grouped runner's fixed 30-second node budget.
+- **Resolution:** expose stable `None` defaults and resolve both callables
+  internally. Regenerate the public manifest, then run classification directly
+  to completion; manifest/classification freshness, 3/3 API documentation,
+  compatibility, 3/3 FastAPI and the normal hooks all pass. ⚠️ TERMINAL ISSUE:
+  unstable callable-default signature plus grouped timeout -> deterministic
+  public signature and direct maintained generator checks passed.
+- **Root cause:** `./run.sh check --pre-commit` invokes the normal staged-file
+  selector. Both local runs occurred before staging or after committing, so the
+  path-aware Black hook had no candidate file even though always-run controls
+  still executed and passed.
+- **Resolution:** run the exact hosted command family against the Python tree,
+  format only `etabs_catalogue_bridge.py`, and rerun Black check, Ruff and the
+  affected 11 tests before a follow-up candidate commit. No source behavior or
+  live evidence changed. ⚠️ TERMINAL ISSUE: unstaged hook selection missed the
+  new file -> exact hosted Black command exposed and corrected the one layout.
+- **Root cause:** OpenAPI's deterministic key order places the two new response
+  wrappers among existing generic wrappers, so a line-oriented diff presents
+  downstream blocks as moves.
+- **Resolution:** regenerate through the maintained snapshot tool and validate
+  semantic endpoint/schema equality; do not hand-edit or minimize the generated
+  owner file.
+- Independent frame analysis remains `HELD_NOT_SUPPORTED`; ETABS remains the
+  global-analysis authority. This packet does not create engineering,
+  professional, construction or release approval.
+
 ## 2026-08-30 — Session: W3D installed auto-flag semantic guard
 
 **Agent:** Codex (`orchestrator`/Windows evidence owner, sole writer; no
