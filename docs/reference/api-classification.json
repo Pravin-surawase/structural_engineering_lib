@@ -15003,8 +15003,8 @@
     {
       "module": "structural_lib",
       "export_classification": "preview",
-      "declared_export_count": 279,
-      "classified_symbol_count": 279,
+      "declared_export_count": 291,
+      "classified_symbol_count": 291,
       "symbols": [
         {
           "name": "AnalysisStateV1",
@@ -15076,6 +15076,96 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamAuditApplicabilityBasisV1",
+          "qualified_name": "structural_lib.BeamAuditApplicabilityBasisV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_audit",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamAuditCheckV1",
+          "qualified_name": "structural_lib.BeamAuditCheckV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_audit",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamAuditEvaluationRequestV1",
+          "qualified_name": "structural_lib.BeamAuditEvaluationRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_audit",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamAuditEvaluationResultV1",
+          "qualified_name": "structural_lib.BeamAuditEvaluationResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_audit",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamAuditInputBuildRequestV1",
+          "qualified_name": "structural_lib.BeamAuditInputBuildRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_audit",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamAuditInputBuildResultV1",
+          "qualified_name": "structural_lib.BeamAuditInputBuildResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_audit",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamAuditInputsV1",
+          "qualified_name": "structural_lib.BeamAuditInputsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_audit",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamAuditMemberBasisV1",
+          "qualified_name": "structural_lib.BeamAuditMemberBasisV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_audit",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamAuditRowInputV1",
+          "qualified_name": "structural_lib.BeamAuditRowInputV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_audit",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamAuditRowResultV1",
+          "qualified_name": "structural_lib.BeamAuditRowResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_audit",
           "claim_disposition": "compatibility"
         },
         {
@@ -16402,6 +16492,15 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "build_beam_audit_inputs_v1",
+          "qualified_name": "structural_lib.build_beam_audit_inputs_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_audit",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "build_detailing_input",
           "qualified_name": "structural_lib.build_detailing_input",
           "kind": "function",
@@ -17065,6 +17164,15 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "evaluate_beam_audit_v1",
+          "qualified_name": "structural_lib.evaluate_beam_audit_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_audit",
           "claim_disposition": "compatibility"
         },
         {

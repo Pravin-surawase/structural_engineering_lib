@@ -263,6 +263,20 @@ from .services.api import (  # Audit & Verification; Input dataclasses; Calculat
 )
 
 # Import W3 contracts after the established services facade has initialized.
+from .services.beam_audit import (
+    BeamAuditApplicabilityBasisV1,
+    BeamAuditCheckV1,
+    BeamAuditEvaluationRequestV1,
+    BeamAuditEvaluationResultV1,
+    BeamAuditInputBuildRequestV1,
+    BeamAuditInputBuildResultV1,
+    BeamAuditInputsV1,
+    BeamAuditMemberBasisV1,
+    BeamAuditRowInputV1,
+    BeamAuditRowResultV1,
+    build_beam_audit_inputs_v1,
+    evaluate_beam_audit_v1,
+)
 from .services.contracts.etabs_w3 import (
     BeamActionPageV1,
     BeamDemandBuildResultV1,
@@ -389,6 +403,18 @@ __all__ = [
     "W3BuildIssueV1",
     "W3BuildStatusV1",
     "build_etabs_result_catalogue_v1",
+    "BeamAuditApplicabilityBasisV1",
+    "BeamAuditCheckV1",
+    "BeamAuditEvaluationRequestV1",
+    "BeamAuditEvaluationResultV1",
+    "BeamAuditInputBuildRequestV1",
+    "BeamAuditInputBuildResultV1",
+    "BeamAuditInputsV1",
+    "BeamAuditMemberBasisV1",
+    "BeamAuditRowInputV1",
+    "BeamAuditRowResultV1",
+    "build_beam_audit_inputs_v1",
+    "evaluate_beam_audit_v1",
     "canonical_beam_demand_snapshot_hash_basis_json_v1",
     "canonical_etabs_result_catalogue_hash_basis_json_v1",
     "derive_beam_demand_snapshot_v1",
