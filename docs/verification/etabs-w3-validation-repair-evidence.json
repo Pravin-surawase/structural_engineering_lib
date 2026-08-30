@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-W3-VALIDATION-REPAIR",
+  "source_sha": "2ad7ad9557ae21e8154646308b3ce35983f50c46",
+  "source_tree": "cbd76424060ccea7e8f191e9d21cbfebdd3696e1",
+  "branch": "codex/etabs-w3-validation-repair-windows",
+  "boundary": "Windows validation repair; not W3 completion, installed Excel acceptance or engineering approval",
+  "repairs": [
+    "Parameterized typing alias ownership must resolve to the identical exported object.",
+    "Archive digests sort canonical case-sensitive POSIX relative paths.",
+    "One Git path batch per worktree preserves every operation/lock check and fails closed on malformed output.",
+    "Windows tests explicitly invoke Bash and use native path/pip or canonical manifest identities.",
+    "Native symlink creation skips only WinError 1314; separate reported-mode tests exercise all four unchanged rejection paths.",
+    "Freeze the accepted 120 operations/106 scripts and exact review-export command."
+  ],
+  "git_profile": {
+    "six_worktree_before_calls": 91,
+    "six_worktree_after_calls": 31,
+    "before_ms": 2182.608,
+    "after_ms_rounded": 1364,
+    "unchanged_budget_ms": 2000,
+    "not_a_universal_performance_guarantee": true
+  },
+  "evidence_directory": "C:/CodexWork/evidence/ETABS-W3-VALIDATION-REPAIR-20260831",
+  "final_gate_evidence": "External final-closeout.json and closeout-manifest.json bind exact candidate/head/tree, completed tests, normal hooks, PR/check/merge observations and file hashes; no future hosted result is asserted by this pre-push receipt.",
+  "initial_diagnostics": "git-before failed; first partial batching/command assertion required correction; first focused selection accidentally included slow tests and was stopped. Partial output is not PASS.",
+  "manual_excel": {
+    "source_sha": "2ad7ad9557ae21e8154646308b3ce35983f50c46",
+    "source_tree": "cbd76424060ccea7e8f191e9d21cbfebdd3696e1",
+    "owner_reports": ["new disposable workbook saved", "existing add-in added"],
+    "evidence_directory": "C:/CodexWork/evidence/ETABS-W3J-USER-REVIEW-20260831",
+    "server": "Trusted existing localhost certificate/catalog; exact five served source hashes match; no FastAPI or ETABS calls",
+    "installed_acceptance": "NOT_CLAIMED; full all-table publication/readback/rollback still requires its own external proof"
+  },
+  "preserved": ["Mac checkout", "immutable evidence main", "all prior branches/worktrees", "dirty W1/W3F lanes", "models/workbooks/archives", "trust and global configuration"],
+  "remaining_holds": ["Actual-building W3H calibration/mapping", "W3I/K/L downstream acceptance", "Installed W3J atomic evidence until separately proved", "Release and professional approval"]
+}

@@ -24,9 +24,13 @@ def test_nested_staircase_test_package_is_discovered() -> None:
     result = checker.check_tests("staircase", verbose=True)
 
     assert result["test_functions"] >= 19
-    assert any(path.endswith("staircase/test_design.py") for path in result["files"])
     assert any(
-        path.endswith("staircase/test_geometry_actions.py") for path in result["files"]
+        Path(path).parts[-2:] == ("staircase", "test_design.py")
+        for path in result["files"]
+    )
+    assert any(
+        Path(path).parts[-2:] == ("staircase", "test_geometry_actions.py")
+        for path in result["files"]
     )
 
 
@@ -34,7 +38,10 @@ def test_code_or_service_layer_staircase_result_type_is_discovered() -> None:
     result = checker.check_types("staircase", verbose=True)
 
     assert result["result_type"] is True
-    assert any(path.endswith("services/staircase_api.py") for path in result["files"])
+    assert any(
+        Path(path).parts[-2:] == ("services", "staircase_api.py")
+        for path in result["files"]
+    )
 
 
 def test_reexported_staircase_public_api_is_discovered() -> None:

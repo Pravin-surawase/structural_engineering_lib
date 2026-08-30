@@ -62,9 +62,39 @@ settings.load_profile("default")
 # =============================================================================
 
 import json  # noqa: E402
+import os  # noqa: E402
+import stat  # noqa: E402
 from pathlib import Path  # noqa: E402
 
 import pytest  # noqa: E402
+
+
+@pytest.fixture(params=["native", "reported-mode"])
+def symlink_factory(request, monkeypatch):
+    """Exercise both real links and the lstat rejection without elevating Windows."""
+    original_lstat = Path.lstat
+
+    def create(link: Path, target: Path, *, target_is_directory: bool = False):
+        if request.param == "native":
+            try:
+                link.symlink_to(target, target_is_directory=target_is_directory)
+            except OSError as exc:
+                if getattr(exc, "winerror", None) == 1314:
+                    pytest.skip(
+                        "Native symlink creation requires unavailable Windows privilege"
+                    )
+                raise
+            return
+
+        def reported_lstat(path, *args, **kwargs):
+            if path == link:
+                return os.stat_result((stat.S_IFLNK | 0o777, 0, 0, 1, 0, 0, 0, 0, 0, 0))
+            return original_lstat(path, *args, **kwargs)
+
+        monkeypatch.setattr(Path, "lstat", reported_lstat)
+
+    return create
+
 
 # =============================================================================
 # GOLDEN VECTORS FIXTURE

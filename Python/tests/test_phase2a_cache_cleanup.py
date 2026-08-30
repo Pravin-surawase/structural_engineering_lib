@@ -106,12 +106,12 @@ def test_freeze_is_bounded_by_phase1_identities(
     assert (target / ".ruff_cache").is_dir()
 
 
-def test_target_contract_rejects_symlink(tmp_path: Path) -> None:
+def test_target_contract_rejects_symlink(tmp_path: Path, symlink_factory) -> None:
     worktree = tmp_path / "worktree"
     outside = tmp_path / "outside"
     worktree.mkdir()
     outside.mkdir()
-    (worktree / ".mypy_cache").symlink_to(outside, target_is_directory=True)
+    symlink_factory(worktree / ".mypy_cache", outside, target_is_directory=True)
 
     with pytest.raises(cleanup.CacheCleanupError, match="symlink"):
         cleanup._validate_target_path(worktree, ".mypy_cache")

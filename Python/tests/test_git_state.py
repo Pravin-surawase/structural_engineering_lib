@@ -774,6 +774,25 @@ def test_six_worktree_inventory_meets_budget(tmp_path: Path):
     assert inventory["duration_ms"] <= 2000
 
 
+def test_truncated_git_path_batch_is_unknown_not_clean(tmp_path: Path, monkeypatch):
+    repo = _repo(tmp_path)
+    _feature(repo)
+    runner = git_state.GitRunner(repo)
+    original_run = runner.run
+
+    def truncated(args, **kwargs):
+        if args.count("--git-path") > 1:
+            return str(repo / ".git" / "MERGE_HEAD")
+        return original_run(args, **kwargs)
+
+    monkeypatch.setattr(runner, "run", truncated)
+    state = git_state.collect_repository_state(repo, default_ref="main", runner=runner)
+    assert state.derived_action == "HOLD_UNKNOWN"
+    assert any(
+        item.reason == "unexpected path batch output" for item in state.query_failures
+    )
+
+
 def test_cli_emits_typed_json_and_fail_closed_branch_guard(tmp_path: Path):
     repo = _repo(tmp_path)
     command = [

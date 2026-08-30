@@ -217,7 +217,13 @@ def _canonical_owner(value: object, fallback: str) -> str:
     module = getattr(value, "__module__", None)
     name = getattr(value, "__qualname__", None) or getattr(value, "__name__", None)
     if module and name:
-        return f"{module}.{name}"
+        # Parameterized typing aliases inherit their factory's metadata. Only
+        # name that metadata as the owner when it resolves to this exact object.
+        owner = importlib.import_module(module)
+        for part in name.split("."):
+            owner = getattr(owner, part, None)
+        if owner is value:
+            return f"{module}.{name}"
     return fallback
 
 

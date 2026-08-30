@@ -59,7 +59,7 @@ def test_tracked_workbook_matches_frozen_artifact_manifest() -> None:
     payload = WORKBOOK.read_bytes()
 
     assert manifest["schema_version"] == "excel-workbook-artifact-manifest/v1"
-    assert manifest["artifact"] == str(WORKBOOK.relative_to(REPO_ROOT))
+    assert manifest["artifact"] == WORKBOOK.relative_to(REPO_ROOT).as_posix()
     assert manifest["artifact_size_bytes"] == len(payload)
     assert manifest["artifact_sha256"] == hashlib.sha256(payload).hexdigest()
     assert manifest["installed_windows_excel_evidence"] == "TO_VERIFY_WINDOWS"

@@ -139,7 +139,7 @@ proved trusted HTTPS and exact source bytes, but Windows control could not
 activate Excel after fresh discovery and one recovery. No workbook was created
 or opened and no writer/rollback ran. See the
 [installed receipt](../verification/etabs-w3j-installed-review-evidence.json).
-Restore host activation before installed transaction/readback;
+Restore reliable host control or use owner-assisted UI steps before installed transaction/readback;
 retain all building-calibration and downstream candidate holds. If the building
 basis cannot be proved by bounded read-only discovery, report the exact missing
 physical inputs; do not guess them or ask for blanket professional approval.
@@ -149,6 +149,13 @@ ownership/registry expectations and Windows launcher/path/restore ordering.
 Its exact diagnosis and remaining gate results are retained in the installed
 receipt/session and external logs. Repair these in a separate bounded software
 packet; do not label the integrated gate green or alter live evidence code.
+
+The bounded Windows repair now corrects those confirmed software causes without
+changing engineering math, public types, timing budgets or security settings.
+Its [receipt](../verification/etabs-w3-validation-repair-evidence.json) binds the
+diagnostics and final external gate observations. Owner-assisted disposable
+Excel UI is the simpler installed route; it still requires the same atomic
+publication/readback/rollback proof. No ETABS rerun is needed for that packet.
 
 Completion requires the remaining packet exits, one integrated broad
 Python/FastAPI/React/Excel/full-gate run, exact final dossier and Mac integrated

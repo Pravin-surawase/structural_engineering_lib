@@ -20,6 +20,20 @@ sys.modules[_SPEC.name] = classification
 _SPEC.loader.exec_module(classification)
 
 
+def test_parameterized_alias_owner_resolves_to_alias_not_typing_factory() -> None:
+    from scripts.generate_api_classification import _canonical_owner
+
+    from structural_lib import BeamLineComparisonComponentV1
+
+    assert (
+        _canonical_owner(
+            BeamLineComparisonComponentV1,
+            "structural_lib.BeamLineComparisonComponentV1",
+        )
+        == "structural_lib.BeamLineComparisonComponentV1"
+    )
+
+
 def test_every_facade_symbol_has_exactly_one_classification() -> None:
     registry = classification.build_registry()
 

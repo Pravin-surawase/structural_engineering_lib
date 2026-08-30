@@ -206,7 +206,7 @@ def test_retired_generator_bridges_are_absent_and_context_stays_canonical() -> N
         assert (repository_root / "scripts" / "_archive" / name).exists()
 
     result = subprocess.run(
-        [str(repository_root / "run.sh"), "context", "validate"],
+        ["bash", str(repository_root / "run.sh"), "context", "validate"],
         cwd=repository_root,
         capture_output=True,
         text=True,
