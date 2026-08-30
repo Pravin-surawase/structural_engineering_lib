@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { createHash, webcrypto } from "node:crypto";
 import test from "node:test";
+import fs from "node:fs";
+import { ETABS_REVIEW_TABLES, projectCalculationReview } from "../review-core.mjs";
 
 import {
   ETABS_BASELINE_TABLES,
@@ -14,6 +16,9 @@ import {
   registerWorksheetChange,
   writeEtabsBaselineResults,
   writeEtabsPilotResults,
+  writeCalculationReview,
+  verifyCalculationReview,
+  readCalculationReviewComments,
 } from "../taskpane-office.mjs";
 
 function surfaceExcel(
@@ -373,6 +378,7 @@ function excelExpected(rows) {
 }
 
 function baselineExcel({
+  specifications = ETABS_BASELINE_TABLES,
   existing = false,
   missingTableKey = null,
   wrongHeaderKey = null,
@@ -383,7 +389,7 @@ function baselineExcel({
   let pendingSyncError = null;
   let jsonFailureConsumed = false;
   const keyBySheet = new Map(
-    Object.entries(ETABS_BASELINE_TABLES).map(([key, spec]) => [spec.sheetName, key]),
+    Object.entries(specifications).map(([key, spec]) => [spec.sheetName, key]),
   );
 
   function ensureCellGrid(sheet, rowCount, columnCount) {
@@ -422,7 +428,7 @@ function baselineExcel({
 
   function makeSheet(name, exists) {
     const key = keyBySheet.get(name);
-    const spec = ETABS_BASELINE_TABLES[key];
+    const spec = specifications[key];
     const originalRows = [
       spec.headers.map((_, index) => (index === 0 ? `original:${key}:1` : null)),
       spec.headers.map((_, index) => (index === 0 ? `original:${key}:2` : null)),
@@ -534,12 +540,13 @@ function baselineExcel({
     return sheet;
   }
 
-  for (const spec of Object.values(ETABS_BASELINE_TABLES)) {
+  for (const spec of Object.values(specifications)) {
     sheets.set(spec.sheetName, makeSheet(spec.sheetName, existing));
   }
   const context = {
     workbook: {
       worksheets: {
+        getItem(name) { return sheets.get(name); },
         getItemOrNullObject(name) {
           calls.push(["sheet.get", keyBySheet.get(name)]);
           return sheets.get(name);
@@ -549,6 +556,11 @@ function baselineExcel({
           sheet.exists = true;
           calls.push(["sheet.add", keyBySheet.get(name)]);
           return sheet;
+        },
+      },
+      tables: {
+        getItemOrNullObject(name) {
+          return [...sheets.values()].find((sheet) => sheet.tableName === name)?.table ?? { isNullObject: true, load() {} };
         },
       },
     },
@@ -564,6 +576,7 @@ function baselineExcel({
   return {
     calls,
     sheets,
+    failNextJsonWrite() { failJsonWrite = true; jsonFailureConsumed = false; },
     snapshot() {
       return Object.fromEntries([...sheets.entries()].map(([name, sheet]) => [name, {
         exists: sheet.exists,
@@ -576,6 +589,87 @@ function baselineExcel({
     api: { async run(callback) { return callback(context); } },
   };
 }
+
+function reviewTransport() {
+  return JSON.parse(fs.readFileSync(new URL("./fixtures/calculation-review-v1.json", import.meta.url), "utf8"));
+}
+
+test("W3 publishes all sixteen literal tables and commits only after complete readback", async () => {
+  const excel = baselineExcel({ specifications: ETABS_REVIEW_TABLES });
+  const projection = await projectCalculationReview(reviewTransport(), { cryptoImpl: webcrypto });
+  const result = await writeCalculationReview(excel.api, projection, { cryptoImpl: webcrypto });
+  assert.equal(result.sheets.length, 16);
+  assert.equal(result.verifiedHashBasisUtf8Bytes, reviewTransport().dossier_utf8_bytes);
+  assert.equal(result.verifiedProjectedRows, projection.projectedRows);
+  assert.equal(excel.calls.some(([name]) => name === "unsafe.values"), false);
+  const checked = await verifyCalculationReview(excel.api, projection, { cryptoImpl: webcrypto });
+  assert.equal(checked.publication, "COMMITTED");
+  assert.equal(checked.professionalApproval, "NOT_PROVIDED");
+});
+
+test("W3 same-dossier refresh retains user comments and export binds the revision", async () => {
+  const excel = baselineExcel({ specifications: ETABS_REVIEW_TABLES });
+  const projection = await projectCalculationReview(reviewTransport(), { cryptoImpl: webcrypto });
+  await writeCalculationReview(excel.api, projection, { cryptoImpl: webcrypto });
+  const sheet = excel.sheets.get(ETABS_REVIEW_TABLES.comments.sheetName);
+  sheet.cells[1][5] = stringCell("=This is a literal user comment, not approval");
+  sheet.cells[1][4] = stringCell("HOLD");
+  await writeCalculationReview(excel.api, projection, { cryptoImpl: webcrypto });
+  const comments = await readCalculationReviewComments(excel.api);
+  assert.equal(comments.rows[0][1], projection.dossierSha256);
+  assert.equal(comments.rows[0][5], "=This is a literal user comment, not approval");
+  assert.equal(projection.tables.comments[0][5], "");
+  assert.equal((await verifyCalculationReview(excel.api, projection, { cryptoImpl: webcrypto })).publication, "COMMITTED");
+});
+
+test("W3 failure removes all newly created sheets and never leaves COMMITTED output", async () => {
+  const excel = baselineExcel({ specifications: ETABS_REVIEW_TABLES, failJsonWrite: true });
+  const projection = await projectCalculationReview(reviewTransport(), { cryptoImpl: webcrypto });
+  await assert.rejects(writeCalculationReview(excel.api, projection, { cryptoImpl: webcrypto }), /Injected/);
+  assert.ok([...excel.sheets.values()].every((sheet) => !sheet.exists));
+});
+
+test("W3 failed refresh restores every table and prior user comment exactly", async () => {
+  const excel = baselineExcel({ specifications: ETABS_REVIEW_TABLES });
+  const projection = await projectCalculationReview(reviewTransport(), { cryptoImpl: webcrypto });
+  await writeCalculationReview(excel.api, projection, { cryptoImpl: webcrypto });
+  excel.sheets.get(ETABS_REVIEW_TABLES.comments.sheetName).cells[1][5] = stringCell("-KEEP");
+  const before = excel.snapshot();
+  excel.failNextJsonWrite();
+  await assert.rejects(writeCalculationReview(excel.api, projection, { cryptoImpl: webcrypto }), /Injected/);
+  assert.deepEqual(excel.snapshot(), before);
+});
+
+test("W3 collision and wrong revision stop before mutation", async () => {
+  const excel = baselineExcel({ specifications: ETABS_REVIEW_TABLES });
+  const projection = await projectCalculationReview(reviewTransport(), { cryptoImpl: webcrypto });
+  await writeCalculationReview(excel.api, projection, { cryptoImpl: webcrypto });
+  const before = excel.snapshot();
+  const other = structuredClone(projection);
+  other.dossierSha256 = "f".repeat(64);
+  await assert.rejects(writeCalculationReview(excel.api, other, { cryptoImpl: webcrypto }), /exact next revision/);
+  assert.deepEqual(excel.snapshot(), before);
+  excel.sheets.get(ETABS_REVIEW_TABLES.governing.sheetName).cells[0][0] = stringCell("USER HEADER");
+  await assert.rejects(writeCalculationReview(excel.api, projection, { cryptoImpl: webcrypto }), /headers/);
+});
+
+test("W3 readback rejects changed signed governing actions", async () => {
+  const excel = baselineExcel({ specifications: ETABS_REVIEW_TABLES });
+  const projection = await projectCalculationReview(reviewTransport(), { cryptoImpl: webcrypto });
+  await writeCalculationReview(excel.api, projection, { cryptoImpl: webcrypto });
+  excel.sheets.get(ETABS_REVIEW_TABLES.governing.sheetName).cells[1][20] = { type: "Double", basicValue: 999 };
+  await assert.rejects(verifyCalculationReview(excel.api, projection, { cryptoImpl: webcrypto }), /read-back/);
+});
+
+test("W3 refuses tampered revision history before a refresh", async () => {
+  const excel = baselineExcel({ specifications: ETABS_REVIEW_TABLES });
+  const projection = await projectCalculationReview(reviewTransport(), { cryptoImpl: webcrypto });
+  await writeCalculationReview(excel.api, projection, { cryptoImpl: webcrypto });
+  excel.sheets.get(ETABS_REVIEW_TABLES.revisions.sheetName).cells[1][5] = stringCell("f".repeat(64));
+  const before = excel.snapshot();
+  await assert.rejects(writeCalculationReview(excel.api, projection, { cryptoImpl: webcrypto }), /revision history/);
+  assert.deepEqual(excel.snapshot(), before);
+});
 
 test("W2 baseline creates only all seven controlled tables", async () => {
   const excel = baselineExcel();

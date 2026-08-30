@@ -30,6 +30,7 @@ import {
   writeEtabsBaselineResults,
   writeEtabsPilotResults,
 } from "./taskpane-office.mjs";
+import { initializeCalculationReviewPane } from "./review-pane.mjs";
 
 const INPUT_SHEET = "Beam_Workbench";
 const INPUT_TABLE = "tbl_Beam_Workbench_V1";
@@ -573,6 +574,7 @@ async function exportReviewBundle() {
 }
 
 async function initialize() {
+  initializeCalculationReviewPane(Office, Excel);
   ui.status = document.getElementById("status");
   ui.statusTitle = document.getElementById("status-title");
   ui.statusDetail = document.getElementById("status-detail");

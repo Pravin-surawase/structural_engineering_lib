@@ -21,6 +21,8 @@ const staticFiles = new Map([
   ["/taskpane.mjs", ["taskpane.mjs", "text/javascript; charset=utf-8"]],
   ["/taskpane-core.mjs", ["taskpane-core.mjs", "text/javascript; charset=utf-8"]],
   ["/taskpane-office.mjs", ["taskpane-office.mjs", "text/javascript; charset=utf-8"]],
+  ["/review-core.mjs", ["review-core.mjs", "text/javascript; charset=utf-8"]],
+  ["/review-pane.mjs", ["review-pane.mjs", "text/javascript; charset=utf-8"]],
 ]);
 
 function proxyApi(request, response) {

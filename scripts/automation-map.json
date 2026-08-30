@@ -2,7 +2,7 @@
   "_comment": "GENERATED compatibility projection from scripts/control-plane.json; do not edit directly",
   "_usage": "Use ./run.sh find <query> or ./run.sh control find <query>",
   "_source": "scripts/control-plane.json",
-  "_coverage": "105/105 top-level scripts registered",
+  "_coverage": "106/106 top-level scripts registered",
   "tasks": {
     "resolve python runtime": {
       "script": "./scripts/python_runtime.sh --version",
@@ -729,6 +729,12 @@
       "group": "Testing",
       "description": "Verify A1 source-free Python and CLI plus exact-head FastAPI binding to one wheel",
       "permission": "ReadOnly"
+    },
+    "export calculation review": {
+      "script": "./scripts/python_runtime.sh scripts/export_calculation_review.py --dossier <dossier-json> --output <new-review-json>",
+      "group": "Operations",
+      "description": "Validate a saved W3J dossier through canonical Python owners and export a new bounded Office.js review transport without ETABS or Excel access",
+      "permission": "WorkspaceWrite"
     },
     "generate family facade docs": {
       "script": "./scripts/python_runtime.sh scripts/generate_family_facade_docs.py --check",

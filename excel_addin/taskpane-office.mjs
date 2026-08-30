@@ -3,6 +3,7 @@ import {
   ETABS_PILOT_HEADERS,
   sha256Hex,
 } from "./taskpane-core.mjs";
+import { ETABS_REVIEW_TABLES, validateReviewRows } from "./review-core.mjs";
 
 const ETABS_PILOT_SHEET = "ETABS_Pilot";
 const ETABS_PILOT_TABLE = "tbl_ETABS_Pilot_V1";
@@ -221,6 +222,18 @@ function normalizeExpectedExcelMatrix(rows) {
   return rows.map((row) => row.map(normalizeExcelPrimitive));
 }
 
+async function checkReviewHistory(rows, summary, cryptoImpl) {
+  if (!rows.length || new Set(rows.map((row) => row[0])).size !== rows.length) throw new Error("Review revision history is incomplete or duplicated.");
+  for (let index = 0; index < rows.length; index += 1) {
+    const row = rows[index];
+    if (!/^[a-f0-9]{64}$/.test(row[0]) || !/^[a-f0-9]{64}$/.test(row[5]) || !Number.isSafeInteger(row[1]) || row[1] < 1) throw new Error("Invalid review revision identity.");
+    if (index && (row[1] !== rows[index - 1][1] + 1 || row[3] !== "PRESENT" || row[4] !== rows[index - 1][0])) throw new Error("Review revision chain is broken.");
+  }
+  const last = rows.at(-1);
+  const digest = await sha256Hex(new TextEncoder().encode(JSON.stringify(rows)), { cryptoImpl });
+  if (last[0] !== summary.get("Dossier SHA-256") || last[1] !== summary.get("Revision") || last[5] !== summary.get("Dossier content SHA-256") || digest !== summary.get("Review history SHA-256")) throw new Error("Review revision history does not bind the committed dossier.");
+}
+
 async function restoreEtabsBaselineTransaction(context, states) {
   const worksheets = context.workbook.worksheets;
   const recovery = states.map((state) => {
@@ -347,10 +360,10 @@ async function verifyEtabsBaselineWrite(context, states, projection, cryptoImpl)
   return { verifiedProjectedRows, verifiedHashBasisUtf8Bytes: bytes.length };
 }
 
-export async function writeEtabsBaselineResults(
+async function writeControlledResults(
   excelApi,
   projection,
-  { cryptoImpl = globalThis.crypto } = {},
+  { cryptoImpl = globalThis.crypto, specifications = ETABS_BASELINE_TABLES, review = false } = {},
 ) {
   if (
     !projection ||
@@ -360,7 +373,7 @@ export async function writeEtabsBaselineResults(
   ) {
     throw new Error("A complete projected W2 baseline is required.");
   }
-  const entries = Object.entries(ETABS_BASELINE_TABLES).map(([key, spec]) => {
+  const entries = Object.entries(specifications).map(([key, spec]) => {
     const rows = projection.tables[key];
     if (!Array.isArray(rows)) {
       throw new Error(`The W2 ${key} table is missing.`);
@@ -416,7 +429,7 @@ export async function writeEtabsBaselineResults(
       state.header = state.table.getHeaderRowRange();
       state.header.load(["values", "rowIndex", "columnIndex", "columnCount"]);
       state.tableRange = state.table.getRange();
-      state.tableRange.load(["rowCount", "columnCount"]);
+      state.tableRange.load(review ? ["valuesAsJson", "rowCount", "columnCount"] : ["rowCount", "columnCount"]);
     }
     await context.sync();
 
@@ -429,6 +442,36 @@ export async function writeEtabsBaselineResults(
           `${state.spec.sheetName} headers do not match the controlled V1 contract; no cells were overwritten.`,
         );
       }
+    }
+
+    if (review) {
+      const existingCount = states.filter((state) => state.exists).length;
+      if (existingCount !== 0 && existingCount !== states.length) throw new Error("Incomplete W3 review surface; no cells were overwritten.");
+      const globalTables = states.map((state) => {
+        const table = context.workbook.tables.getItemOrNullObject(state.spec.tableName);
+        table.load("isNullObject");
+        return { state, table };
+      });
+      await context.sync();
+      if (globalTables.some(({ state, table }) => !state.exists && !table.isNullObject)) throw new Error("A W3 table name is already used on another sheet; no cells were overwritten.");
+      if (existingCount) {
+        const prior = new Map(fromCellValueMatrix(states.find((state) => state.key === "summary").tableRange.valuesAsJson).slice(1).map((row) => [row[0], row[2]]));
+        await checkReviewHistory(fromCellValueMatrix(states.find((state) => state.key === "revisions").tableRange.valuesAsJson).slice(1), prior, cryptoImpl);
+        const sameDossier = prior.get("Dossier SHA-256") === projection.dossierSha256;
+        if (sameDossier && prior.get("Dossier content SHA-256") !== projection.baselineSha256) throw new Error("The same dossier has different attestation bytes; preserve this workbook and use a new review workbook.");
+        if (prior.get("Publication") !== "COMMITTED" || (!sameDossier && (projection.supersedes?.value !== prior.get("Dossier SHA-256") || projection.revision !== prior.get("Revision") + 1))) throw new Error("W3 refresh must be the same dossier or its exact next revision.");
+        for (const key of ["comments", "revisions"]) {
+          const state = states.find((item) => item.key === key);
+          const priorRows = fromCellValueMatrix(state.tableRange.valuesAsJson).slice(1);
+          const merged = priorRows.map((row) => [...row]);
+          for (const row of state.rows) if (!merged.some((old) => old[0] === row[0])) merged.push(row);
+          state.rows = merged;
+          projection.tables[key] = merged;
+        }
+        const historyDigest = await sha256Hex(new TextEncoder().encode(JSON.stringify(projection.tables.revisions)), { cryptoImpl });
+        projection.tables.summary.find((row) => row[0] === "Review history SHA-256")[2] = historyDigest;
+      }
+      projection.projectedRows = validateReviewRows(projection.tables);
     }
 
     for (const state of states) {
@@ -454,6 +497,7 @@ export async function writeEtabsBaselineResults(
       ) {
         throw new Error(`Could not snapshot ${state.spec.tableName} before mutation.`);
       }
+      if (review && state.snapshotValuesAsJson.slice(state.originalRowCount).some((row) => row.some((cell) => cell.type !== "Empty"))) throw new Error("W3 expansion would overwrite cells outside a controlled table.");
     }
 
     try {
@@ -470,8 +514,10 @@ export async function writeEtabsBaselineResults(
         );
         if (state.exists) {
           state.table.resize(range);
+          if (review && state.originalRowCount > rowCount) state.sheet.getRangeByIndexes(state.header.rowIndex + rowCount, state.header.columnIndex, state.originalRowCount - rowCount, state.header.columnCount).valuesAsJson = Array.from({ length: state.originalRowCount - rowCount }, () => Array.from({ length: state.header.columnCount }, () => ({ type: "Empty" })));
         }
-        range.valuesAsJson = toCellValueMatrix([state.spec.headers, ...state.rows]);
+        const rows = review && state.key === "summary" ? state.rows.map((row) => row[0] === "Publication" ? [row[0], row[1], "PENDING", row[3]] : row) : state.rows;
+        range.valuesAsJson = toCellValueMatrix([state.spec.headers, ...rows]);
         if (!state.exists) {
           state.table = state.sheet.tables.add(range, true);
           state.table.name = state.spec.tableName;
@@ -481,6 +527,16 @@ export async function writeEtabsBaselineResults(
 
       states.find((state) => state.key === "summary").sheet.activate();
       await context.sync();
+      if (review) {
+        const summary = states.find((state) => state.key === "summary");
+        const intended = summary.rows;
+        summary.rows = intended.map((row) => row[0] === "Publication" ? [row[0], row[1], "PENDING", row[3]] : row);
+        await verifyEtabsBaselineWrite(context, states, projection, cryptoImpl);
+        summary.rows = intended;
+        const rowIndex = intended.findIndex((row) => row[0] === "Publication");
+        summary.sheet.getRangeByIndexes((summary.exists ? summary.header.rowIndex : 0) + rowIndex + 1, summary.exists ? summary.header.columnIndex : 0, 1, summary.spec.headers.length).valuesAsJson = toCellValueMatrix([intended[rowIndex]]);
+        await context.sync();
+      }
       const verification = await verifyEtabsBaselineWrite(
         context,
         states,
@@ -509,5 +565,59 @@ export async function writeEtabsBaselineResults(
       }
       throw error;
     }
+  });
+}
+
+export async function writeEtabsBaselineResults(excelApi, projection, { cryptoImpl = globalThis.crypto } = {}) {
+  return writeControlledResults(excelApi, projection, { cryptoImpl });
+}
+
+export async function writeCalculationReview(excelApi, projection, { cryptoImpl = globalThis.crypto } = {}) {
+  validateReviewRows(projection.tables);
+  // Clone so current user-owned comments/history never mutate the imported carrier.
+  return writeControlledResults(excelApi, structuredClone(projection), { cryptoImpl, specifications: ETABS_REVIEW_TABLES, review: true });
+}
+
+export async function readCalculationReviewComments(excelApi) {
+  return excelApi.run(async (context) => {
+    const spec = ETABS_REVIEW_TABLES.comments;
+    const table = context.workbook.worksheets.getItem(spec.sheetName).tables.getItemOrNullObject(spec.tableName);
+    table.load("isNullObject");
+    await context.sync();
+    if (table.isNullObject) throw new Error("No controlled W3 comments table.");
+    const range = table.getRange();
+    range.load(["valuesAsJson", "rowCount", "columnCount"]);
+    await context.sync();
+    const rows = fromCellValueMatrix(range.valuesAsJson);
+    if (!matricesMatch(rows[0], spec.headers)) throw new Error("Review comment headers changed.");
+    return { schema_version: "calculation-review-comments/v1", professional_approval: "NOT_PROVIDED", headers: spec.headers, rows: rows.slice(1) };
+  });
+}
+
+export async function verifyCalculationReview(excelApi, projection, { cryptoImpl = globalThis.crypto } = {}) {
+  const expected = structuredClone(projection);
+  return excelApi.run(async (context) => {
+    const states = Object.entries(ETABS_REVIEW_TABLES).map(([key, spec]) => {
+      const table = context.workbook.worksheets.getItem(spec.sheetName).tables.getItemOrNullObject(spec.tableName);
+      table.load("isNullObject");
+      return { key, spec, table, rows: expected.tables[key] };
+    });
+    await context.sync();
+    if (states.some((state) => state.table.isNullObject)) throw new Error("The complete W3 review surface is required.");
+    for (const state of states.filter((item) => ["summary", "comments", "revisions"].includes(item.key))) {
+      state.range = state.table.getRange();
+      state.range.load("valuesAsJson");
+    }
+    await context.sync();
+    const summary = new Map(fromCellValueMatrix(states.find((state) => state.key === "summary").range.valuesAsJson).slice(1).map((row) => [row[0], row[2]]));
+    for (const state of states.filter((item) => ["comments", "revisions"].includes(item.key))) {
+      state.rows = fromCellValueMatrix(state.range.valuesAsJson).slice(1);
+      expected.tables[state.key] = state.rows;
+    }
+    await checkReviewHistory(expected.tables.revisions, summary, cryptoImpl);
+    expected.tables.summary.find((row) => row[0] === "Review history SHA-256")[2] = summary.get("Review history SHA-256");
+    expected.projectedRows = validateReviewRows(expected.tables);
+    const result = await verifyEtabsBaselineWrite(context, states, expected, cryptoImpl);
+    return { ...result, dossierSha256: expected.dossierSha256, contentSha256: expected.baselineSha256, publication: "COMMITTED", freshness: "SAVED_EVIDENCE_ONLY", professionalApproval: "NOT_PROVIDED" };
   });
 }

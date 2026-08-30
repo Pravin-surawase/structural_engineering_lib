@@ -21,6 +21,7 @@ test("HTTPS server exposes every local task-pane module dependency", () => {
     ([, modulePath]) => modulePath,
   );
   assert.deepEqual(modulePaths.sort(), [
+    "review-pane.mjs",
     "taskpane-core.mjs",
     "taskpane-office.mjs",
   ]);
@@ -31,6 +32,12 @@ test("HTTPS server exposes every local task-pane module dependency", () => {
       `${modulePath} must be served over the trusted HTTPS origin`,
     );
   }
+});
+
+test("W3 review loads before any optional API connection and serves every transitive module", () => {
+  assert.ok(taskpaneSource.indexOf("initializeCalculationReviewPane(Office, Excel)") < taskpaneSource.indexOf('ui.status = document.getElementById'));
+  for (const name of ["review-core.mjs", "review-pane.mjs"]) assert.ok(serverSource.includes(`["/${name}",`));
+  for (const id of ["w3-review-file", "w3-review-preview", "w3-review-publish", "w3-review-verify", "w3-review-comments"]) assert.ok(taskpaneHtml.includes(`id="${id}"`));
 });
 
 test("installed pane exposes and wires fail-closed review-bundle export", () => {

@@ -5,6 +5,77 @@
 
 ---
 
+## 2026-08-31 — Session: W3J controlled Excel review implementation
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3J-EXCEL-REVIEW`.
+**Branch:** `codex/etabs-w3j-excel-review-windows`.
+**Source:** PR #922 merge `904f6b3455842e14a5ed5f42653ab24715433856`,
+tree `557fb1db1fda837df3a8a36a2a460cbb9a130e7a`.
+**Focus:** Complete the dependency-ready W3J saved-review software surface.
+**Status:** Implementation/fake-host acceptance only; installed L4 is next.
+**Git handoff receipt:** `docs/verification/etabs-w3j-excel-review-git-handoff-receipt.json`
+
+**Completed:**
+
+- Added a registered non-overwriting exporter that replays catalogue/demand
+  through existing Python contracts and verifies dossier/history/source hashes.
+- Added sixteen formula-free controlled tables, complete canonical JSON,
+  same-row signed governors, separate comments and hash-bound revision history.
+- Reused the accepted W2 transaction implementation with unchanged W2 defaults;
+  W3 preflights all collisions, preserves comments, refuses nonempty expansion,
+  snapshots/restores touched cells, verifies full readback, then commits.
+- Exposed saved review independently of optional FastAPI/ETABS availability.
+  No ETABS/Excel process, model, workbook or prior evidence was changed here.
+- Retained all 26 prior worktrees including dirty W1/W3F, and the protected
+  main clone. Mac fetch remains owner-reported; Windows alone owns this branch.
+
+### Issues encountered
+
+- Existing W2 tables did not provide the planned W3 dossier/review surface;
+  task-pane initialization also returned early if the optional API was absent.
+- Strict public-model JSON decoding rejected list-encoded tuples in the new
+  exporter during fixture generation. One new test guessed three combination
+  factors although the retained fictional fixture defines four.
+- A handoff-preparation command used `session sync --write`, which the parser
+  rejected; no write happened. `sync` owns numerical documentation counts,
+  not task handoffs.
+- The first consolidated quick gate passed 9/10 but rejected a 157-line brief
+  against its 150-line limit.
+- Normal commit hooks normalized the generated fixture's final newline/CRLF;
+  the initial commit was refused without creating a candidate.
+
+### Root causes and resolutions
+
+- Routed saved W3 review before optional live API initialization and reused
+  the existing all-table writer, preserving W2 behavior. Added complete review
+  projections and explicit saved-evidence-only freshness. Focused Node tests
+  cover literal cells, comments, revision integrity, collisions, readback and
+  complete rollback rather than relying on row counts alone.
+- Used the existing public JSON-decoding convention (`strict=False`) followed
+  by exact normalized-value equality and full canonical catalogue/demand
+  replay. No engineering value is defaulted. Corrected the factor test to the
+  actual four-row source, not the implementation. Python/Node share one
+  Python-generated fictional fixture, verified by exact bytes/digests.
+- Inspected the maintained parser and used `session handoff --git-receipt`
+  for the owned task receipt. No global count-sync or unrelated doc repair ran.
+- The new R4 status had been appended beside its superseded status paragraph.
+  Replaced both with one current boundary and corrected the current/next rows;
+  retained the historical evidence. Rechecked affected documentation and the
+  consolidated quick gate once; no code or application retry was required.
+- Kept the hook's formatting, proved parsed transport and canonical dossier
+  bytes unchanged, and corrected the external fixture builder to emit LF plus
+  a final newline. Restaged only that formatting and this issue record before
+  running normal hooks again; no engineering or source contract changed.
+
+**Next:** Merge the unchanged verified candidate, then perform bounded
+installed Excel save/readback/rollback on exact reviewed source and disposable
+workbooks. W3H actual-building calibration, I/K/L, signatures, release and
+professional/construction approval remain held. Hosted merge facts stay in
+GitHub and external closeout; no post-push status-only candidate.
+
+---
+
 ## 2026-08-31 — Session: W3 completion audit and dossier foundation
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).

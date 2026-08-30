@@ -1678,6 +1678,16 @@
       },
       "permission": "ReadOnly"
     },
+    "export calculation review": {
+      "group": "Operations",
+      "description": "Validate a saved W3J dossier through canonical Python owners and export a new bounded Office.js review transport without ETABS or Excel access",
+      "status": "active",
+      "command": {
+        "display": "./scripts/python_runtime.sh scripts/export_calculation_review.py --dossier <dossier-json> --output <new-review-json>",
+        "steps": [{"argv": ["./scripts/python_runtime.sh", "scripts/export_calculation_review.py", "--dossier", "<dossier-json>", "--output", "<new-review-json>"], "cwd": "."}]
+      },
+      "permission": "WorkspaceWrite"
+    },
     "generate family facade docs": {
       "group": "Documentation",
       "description": "Generate or check the 13-family cookbook and live contract reference",
