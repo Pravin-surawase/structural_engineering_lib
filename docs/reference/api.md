@@ -243,6 +243,36 @@ The exact public types are `api.BeamReinforcementEvaluationV1`,
 `api.GravityBeamDesignBasisV1`, `api.GravityBeamReinforcementBasisV1`, and
 `api.GravityLongitudinalBarLayersV1`.
 
+### ETABS W3F normalized model and joint-result snapshots
+
+These are pure, positional-only builders over normalized immutable evidence,
+not COM getters. `api.ETABSModelContextV1` binds the exact saved file/version,
+lock, present/database units, runtime/getter identity and complete analysis
+state; `api.ETABSOutputSelectionStateV1` retains every current case/combination
+selection flag. No unit or selection setter is assumed.
+
+| Builder | Request | Complete-or-blocked result | Accepted snapshot |
+|---|---|---|---|
+| `api.build_etabs_model_definition_snapshot_v1` | `api.ETABSModelDefinitionBuildRequestV1` | `api.ETABSModelDefinitionBuildResultV1` | `api.ETABSModelDefinitionSnapshotV1` |
+| `api.build_etabs_displacement_snapshot_v1` | `api.ETABSDisplacementBuildRequestV1` | `api.ETABSDisplacementBuildResultV1` | `api.ETABSDisplacementSnapshotV1` |
+| `api.build_etabs_reaction_snapshot_v1` | `api.ETABSReactionBuildRequestV1` | `api.ETABSReactionBuildResultV1` | `api.ETABSReactionSnapshotV1` |
+
+The matching positional-only verifiers are
+`api.verify_etabs_model_definition_snapshot_hash_v1`,
+`api.verify_etabs_displacement_snapshot_hash_v1` and
+`api.verify_etabs_reaction_snapshot_hash_v1`. Builders retain explicit bounded
+topology, section/material properties, modifiers, supports/springs, releases,
+offsets/insertion, signed frame/nodal loads and supplied diaphragm/slab context.
+Joint results retain all six signed components, exact selection/step/object/
+element/source-row identities and source counts; no group may be truncated.
+Translations are mm, rotations rad, forces kN and moments kN.m. Missing
+required/BLOCKED evidence, changed identity/state or exceeded capacity returns
+no partial snapshot. Optional missing evidence holds dependent calibration;
+hash verification is integrity evidence, not a professional signature.
+
+This L1 software contract does not establish installed extraction, a solver,
+model-specific calibration, ETABS parity or engineering/professional approval.
+
 ## 0. Unified CLI (v0.9.4+)
 
 The library provides a unified command-line interface:

@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-30
-- Focus: Propagate required/explicitly BLOCKED evidence to a blocked parent audit, as the accepted five-state policy requires.
-- Completed: Block required serviceability before building inputs unless the caller; Propagate explicit BLOCKED serviceability and scenario-check evidence.; Preserve the successful synthetic three-row strength vector, all exact
-- Git receipt: docs/verification/etabs-w3e-required-evidence-repair-git-handoff-receipt.json | sha256:d0254e8d8ccdcd615b73a7f8e9f2e903fd4e3bcbd7393f93be1e275f11562778 | HOLD
-- Git identity: codex/etabs-w3e-beam-audit-windows@97e5d4d4124c1a933e99566edc81c6122885002f | upstream=NONE@UNKNOWN | base=origin/main@f67c2406a511a7fddb1065219657c776229aa28e | tree=dirty | operation=none
+- Focus: Freeze the six planned model-definition/displacement/reaction builders and hash verifiers as pure normalized contracts, before installed getter work.
+- Completed: Added vendor-neutral typed points, joints, frame definitions, supports,; Bound exact saved file/version, baseline, catalogue, complete analysis and; Blocked required missing/BLOCKED evidence, changed identity/state, incomplete
+- Git receipt: docs/verification/etabs-w3f-foundation-git-handoff-receipt.json | sha256:73d51d9632bf1288938e36c6539b02578fdba2604e05fb5b79056d697d59616c | HOLD
+- Git identity: codex/etabs-w3f-foundation-windows@06285155e4bd57f1e763810a56f9685f53894790 | upstream=NONE@UNKNOWN | base=origin/main@06285155e4bd57f1e763810a56f9685f53894790 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -17,10 +17,10 @@
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` remains the current immutable normal software release. No release work is authorized. |
-| **Current** | W3A-D and W3R are accepted through PR #907 merge `f67c2406...`, tree `d253b003...`. W3E PR #908 is unmerged: its first candidate passed hosted checks but replay found required-BLOCKED evidence returned an accepted parent. An explicit additive repair now blocks before partial output; no application/model activity occurred. |
+| **Current** | W3A-E and separate W3R are merged. W3E PR #908 merge `06285155e4bd57f1e763810a56f9685f53894790` exactly matches corrected candidate tree `98dc2abe224c3ddc42378dfa3121235e9d4c4a74`; Python/FastAPI/Documentation/PR Gate passed. W3F pure contracts are now at local content freeze. |
 | **W2 complete** | PR #898 merged reviewed W2C head `57f53d48...` as `f1873e7b...`; candidate and merge tree are both `bb20ba0c...`. Direct service, REST, all seven saved Excel tables, and 3,626,096 reconstructed canonical JSON bytes reconcile to SHA-256 `d4c28586...`. |
 | **Plan gate** | Complete. The owner explicitly authorized the dependency-ordered W3 campaign; every packet still requires its exact predecessor and packet-specific stop conditions. |
-| **Next** | Finish W3E repair focused/quick/hooks, closeout and fresh hosted checks in PR #908. Merge only its corrected unchanged head. Then fetch main and create a fresh W3F lane for contracts and separately bounded static/live evidence. Do not repeat W3D. |
+| **Next** | Finish W3F contract focused/quick/hooks, clean closeout and hosted checks, merge unchanged, then audit installed getter signatures before bounded live W3F evidence. Do not repeat W3D or start a duplicate campaign session. |
 | **Held** | W3E does not accept installed reinforcement or canonical serviceability. Pareto torsion/serviceability/stirrup-cost/global-analysis holds remain. No shortlist or mutating candidate until W3F-H calibration and W3I criteria pass. Release and engineering/professional/construction approval remain unapproved. |
 
 ## W3A-W3D accepted through local W3D content freeze
@@ -103,15 +103,15 @@ are also accepted. W3R merged unchanged in PR #907. Its acceptance evidence is
 - Do not compact the session archive or retire React/hooks/docs/public APIs in
   W3A; those require separate caller, successor, recovery, and owner evidence.
 
-## W3E closeout and W3F handoff
+## W3F contract closeout and installed handoff
 
-Do not repeat W3D or W3R. Finish W3E's consolidated packet checks, normal hooks
-and unchanged GitHub review. After merging, preserve this worktree, fetch
-current `origin/main`, and create a fresh W3F worktree. Freeze the exact planned
-topology/displacement/reaction public contracts before any installed getter.
-Then audit installed signatures and use only a positively identified copy
-with explicit node/member/selection bounds and unchanged pre/postflight.
-W3E's synthetic applicability limits are NOT owner criteria for live design or calibration.
+W3F freezes exact typed topology, signed frame/nodal loads and six-component
+displacement/reaction snapshots; source counts, identities and five states
+fail closed. See `docs/verification/etabs-w3f-foundation-evidence.json`.
+After contract merge, preserve this lane and fetch main for a separate static
+signature audit. Live getters require proved signatures, a verified copy,
+explicit bounds and unchanged file/lock/units/status/selection postflight.
+Synthetic W3E/F fixtures are NOT owner engineering criteria or live evidence.
 
 ### Completed W3D operator checklist
 

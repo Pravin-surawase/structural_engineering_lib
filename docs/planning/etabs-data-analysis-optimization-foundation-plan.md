@@ -854,6 +854,15 @@ call. Live acceptance uses explicit node/member/selection limits and unchanged
 model-state proof. An action-only dataset may be accepted as such but cannot
 support displacement/reaction calibration claims.
 
+The W3F L1 implementation freezes the six signatures above in the maintained
+ETABS service-contract owner, with vendor-neutral definitions/results in
+`core/analysis_contracts.py`. Its evidence is recorded in
+`docs/verification/etabs-w3f-foundation-evidence.json`: explicit frame and
+nodal loads, complete source-row counts, exact saved/version/state identity,
+five-state evidence propagation and deterministic separate snapshots. This
+does not prove installed signatures, live extraction, a numerical solver or
+calibration. Those retain the separate L2/L3 and W3G/H acceptance gates.
+
 ### W3G — Bounded 2D beam-line surrogate (`L1`; verdict still held)
 
 Owner: Mac. Dependencies: accepted W3F contracts; no installed application
