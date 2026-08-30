@@ -5,6 +5,71 @@
 
 ---
 
+## 2026-08-30 — Session: LIB-PRO-015 resolved-merge hook repair
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents).
+
+**Branch:** `codex/lib-pro-015-resolved-merge-hook`, from accepted main
+`f353afe54f2c328a300361418ca3b1816b611dc4` (W3F static/readback PR #910).
+Reused the clean task-owned scratch checkout. Both saved audit worktrees and
+the original `60501286` plan commit remain intact. The unmatched
+`LIB-PRO-015-PROFESSIONAL-API-AUDIT-PLAN` session timer is continued, not replaced.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-015-merge-hook-git-handoff-receipt.json`
+
+**Focus:** Repair the existing pre-commit completion exception before refreshing the saved API audit plan.
+
+**Completed:**
+
+- Applied completion mode to both Git checks in the shared quick gate.
+- Kept one resolved-merge predicate: safe named branch, known state, no locks
+  or unresolved paths, and required refs included by HEAD plus the merge parent.
+- Proved a real linked-worktree conflict/resolution/commit sequence through
+  both generated hook commands; ordinary post-commit validation then passes.
+- Kept normal validation strict and the open-merge state `HOLD_OPERATION`.
+
+### Issues encountered
+
+- The audit merge had no unresolved paths, but normal commit hooks rejected it.
+  Its earlier explanation incorrectly said no completion exception existed.
+- The first regression harness treated a Bash launcher as Python; retaining
+  that launcher then exposed the synthetic repository's absent runtime.
+- A fresh main moved beyond the saved audit's W3C baseline; its quantitative
+  audit and shared records must be refreshed before publication.
+- The full local gate on initial candidate `f4580a95` passed 31/32 checks;
+  the API manifest lacked 17 already-exported W3F symbols inherited from main.
+
+### Root causes and resolutions
+
+- `check_all._allow_operation_completion` forwarded the flag only to the
+  operation guard. The validation guard still rejected every active merge and
+  expected divergence, and its CLI rejected that flag. Both now share the
+  bounded completion rule. A later default/upstream commit outside the pending
+  merge remains a blocker. Tests exercise the actual two hook commands, not
+  only their flags; normal validation before the merge commit still fails.
+- The harness had assumed the command began with Python instead of
+  `bash python_runtime.sh`. It now uses the exact registered command and binds
+  `STRUCTURAL_LIB_PYTHON` to the test interpreter for the synthetic repository.
+  The real merge regression passes; no production launcher change was needed.
+- Main advances were separate accepted W3D/E/F and W3R packets, not lost audit
+  content. This repair precedes the explicit audit rebind; no stale audit is
+  represented as current, and no abandoned merge is discarded in this commit.
+- The W3F exports changed without refreshing `api-manifest.json`; the hook
+  repair changed no library source or manifest. Regenerated the existing
+  manifest from current exports as the single pre-push repair candidate.
+  `generate_api_manifest.py --check` and the repeated consolidated full gate
+  are required before publishing; no missing export or check is suppressed.
+
+**Verification contract:** Post-freeze focused Git-state/verification tests,
+architecture/import checks, docs checks, quick gate and normal hooks precede
+the immutable local audit. Full and required hosted checks precede integration;
+their final results remain external, not preclaimed here.
+
+**Boundary:** No engineering formulas, public APIs, ETABS/Excel application
+actions, release, history rewrite, branch deletion or hook bypass. After this
+repair is accepted, refresh the saved audit against that exact merged source.
+
 ## 2026-08-30 — Session: W3F installed signatures and readback adapter
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents).

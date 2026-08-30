@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-30 — W3A-D and separate W3R are merged through PR #907; W3E strict same-row beam audit is locally accepted and entering normal packet review
+**Updated:** 2026-08-30 — W3F static/readback PR #910 is merged; LIB-PRO-015 repairs merge completion before refreshing the saved API audit
 
 ---
 
@@ -422,6 +422,7 @@ write-back/nightly work remain outside E1.
 | ETABS-W3-PARETO-SHEAR-REPAIR | Repair the public Pareto optimizer so nonzero shear participates in feasibility/utilization and unknown objectives fail closed | Main Agent | separate candidate after W3D | P1 | ✅ ACCEPTED — PR #907 merged unchanged as `f67c2406...`, tree `d253b003...`; focused 28 Python/FastAPI and 6 React tests, docs 8/8, quick 10/10, normal hooks and every required hosted check passed. Shear changes feasibility/Pareto membership; all scope holds remain. |
 | ETABS-EXCEL-BEAM-W3E-AUDIT | Bind strict caller-owned material/detailing/applicability bases to accepted demand and evaluate every signed station through canonical beam checks | Main Agent | one L1 packet after W3D and W3R | P1 | ✅ ACCEPTED — PR #908 merged corrected candidate `07b696df...` as `06285155...`, tree `98dc2abe...`; 53 focused tests and required local/hosted gates passed. Required serviceability BLOCKED propagates; optional unavailable stays visible. No installed reinforcement/serviceability approval. |
 | ETABS-EXCEL-BEAM-W3F-FOUNDATION | Freeze model/topology/displacement/reaction contracts, prove installed getter signatures, normalize and accept separately bounded read-only evidence | Main Agent / Windows evidence | L1 then L2/L3, before W3G/H | P1 | 🟢 IN PROGRESS — contract PR #909 merged `c84c62d0...`, tree `06bbd1a9...`; current static/readback packet proves 38 signatures and passes 63 combined W3F tests. Live evidence remains separate. Owner requests stop after W3F, before W3G. |
+| LIB-PRO-015-MERGE-HOOK | Repair the existing resolved-merge exception in both pre-commit Git guards | Main Agent | one bounded repair before audit rebind | P1 | 🟢 IN PROGRESS — real linked-worktree merge regression passes; normal, unknown, locked, conflicted and unrelated stale-ref holds remain. Saved audit lanes retained; final local/hosted gates precede integration. |
 | LIB-PRO-013-F0 | Converge F1-F3 family construction/facades and exact-wheel recipes on the accepted B0 foundation | @structural-math | 16–26 engineer-days | P1 | ✅ COMPLETE ON MERGE — PR #882 merged unchanged as `59ef74c0...`, tree `295c7a61...`; Windows/professional/release claims remain held |
 | LIB-PRO-013-WINDOWS-REBIND | Bind the protected Windows source lane to accepted F0 before R0 uses it | bounded Windows evidence owner | evidence gate | P1 | ✅ COMPLETE — PR #883 merged at `879d32ca...`; exact F0 Git/Python source binding proved; no application evidence was run |
 | LIB-PRO-012-R0 | Close external-preview documentation, generated gates, cumulative artifact/evidence, and owner-decision package | Main Agent | final programme cycle | P1 | ✅ COMPLETE — PR #884 merged as `b1ba36e3...`, tree `81854f06...`; release, Windows application evidence, and professional claims remain held |

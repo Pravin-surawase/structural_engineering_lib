@@ -396,11 +396,12 @@ def test_shared_precommit_gate_preserves_merge_completion_exception():
 
     original_commands = {check.name: check.cmd for check, _category in original}
     adapted_commands = {check.name: check.cmd for check, _category in adapted}
-    assert adapted_commands["Unfinished operation"] == [
-        *original_commands["Unfinished operation"],
-        "--allow-operation-completion",
-    ]
-    assert adapted_commands["Git state"] == original_commands["Git state"]
+    for name, command in original_commands.items():
+        assert adapted_commands[name] == (
+            [*command, "--allow-operation-completion"]
+            if name in {"Git state", "Unfinished operation"}
+            else command
+        )
 
 
 def test_changed_test_files_map_to_themselves_without_forcing_a_broad_suite():

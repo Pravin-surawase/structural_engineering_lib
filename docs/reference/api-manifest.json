@@ -2,7 +2,7 @@
   "generated": "2026-08-30",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 228,
+  "count": 245,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -175,6 +175,21 @@
       "signature": "(**data: 'Any') -> 'None'"
     },
     {
+      "name": "ETABSDisplacementBuildRequestV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSDisplacementBuildResultV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSDisplacementSnapshotV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
       "name": "ETABSEnvelopeResult",
       "kind": "class",
       "signature": "(story: 'str', beam_id: 'str', case_id: 'str', mu_knm: 'float', vu_kn: 'float', station_count: 'int' = 1, moment_signed_knm: 'float | None' = None, moment_station: 'float | None' = None, shear_signed_kn: 'float | None' = None, shear_station: 'float | None' = None, shear_at_moment_station_kn: 'float | None' = None, moment_at_shear_station_knm: 'float | None' = None, envelope_basis: 'str' = 'independent_absolute_extrema_with_concurrent_values') -> None"
@@ -221,6 +236,46 @@
     },
     {
       "name": "ETABSLiveSelectionStateV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSModelContextV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSModelDefinitionBuildRequestV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSModelDefinitionBuildResultV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSModelDefinitionSnapshotV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSOutputSelectionStateV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSReactionBuildRequestV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSReactionBuildResultV1",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
+      "name": "ETABSReactionSnapshotV1",
       "kind": "class",
       "signature": "(**data: 'Any') -> 'None'"
     },
@@ -618,6 +673,21 @@
       "name": "build_detailing_input",
       "kind": "function",
       "signature": "(result: 'ComplianceCaseResult', *, beam_id: 'str' = 'B1', b_mm: 'float' = 300.0, D_mm: 'float' = 500.0, d_mm: 'float' = 450.0, span_mm: 'float' = 4000.0, cover_mm: 'float' = 40.0, fck_nmm2: 'float' = 25.0, fy_nmm2: 'float' = 500.0) -> 'dict[str, Any]'"
+    },
+    {
+      "name": "build_etabs_displacement_snapshot_v1",
+      "kind": "function",
+      "signature": "(request: 'ETABSDisplacementBuildRequestV1', /) -> 'ETABSDisplacementBuildResultV1'"
+    },
+    {
+      "name": "build_etabs_model_definition_snapshot_v1",
+      "kind": "function",
+      "signature": "(request: 'ETABSModelDefinitionBuildRequestV1', /) -> 'ETABSModelDefinitionBuildResultV1'"
+    },
+    {
+      "name": "build_etabs_reaction_snapshot_v1",
+      "kind": "function",
+      "signature": "(request: 'ETABSReactionBuildRequestV1', /) -> 'ETABSReactionBuildResultV1'"
     },
     {
       "name": "build_etabs_result_catalogue_v1",
@@ -1138,6 +1208,21 @@
       "name": "verify_calculation",
       "kind": "function",
       "signature": "(inputs: 'dict[str, Any]', outputs: 'dict[str, Any]', certificate: 'dict[str, Any]') -> 'tuple[bool, str]'"
+    },
+    {
+      "name": "verify_etabs_displacement_snapshot_hash_v1",
+      "kind": "function",
+      "signature": "(snapshot: 'ETABSDisplacementSnapshotV1', /) -> 'bool'"
+    },
+    {
+      "name": "verify_etabs_model_definition_snapshot_hash_v1",
+      "kind": "function",
+      "signature": "(snapshot: 'ETABSModelDefinitionSnapshotV1', /) -> 'bool'"
+    },
+    {
+      "name": "verify_etabs_reaction_snapshot_hash_v1",
+      "kind": "function",
+      "signature": "(snapshot: 'ETABSReactionSnapshotV1', /) -> 'bool'"
     },
     {
       "name": "verify_etabs_result_catalogue_hash_v1",

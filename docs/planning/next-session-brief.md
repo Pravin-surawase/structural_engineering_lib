@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-30
-- Focus: Prove installed W3F signatures and field semantics, then normalize bounded recorded outputs without creating COM or changing an application.
-- Completed: Compared 38 managed and generated-wrapper signatures, parameter types,; Read installed API help outside Git. Confirmed joint-local results, both; Added a transport-neutral readback adapter using the six accepted builders,
-- Git receipt: docs/verification/etabs-w3f-installed-signature-git-handoff-receipt.json | sha256:8c4a56405b7ed266b6902a740c3a08a0994adf18fdf499dc5c9cb10439e463e9 | HOLD
-- Git identity: codex/etabs-w3f-installed-signatures-windows@c84c62d063eaf45fe4ea4e71926d3d6caef7a48b | upstream=NONE@UNKNOWN | base=origin/main@c84c62d063eaf45fe4ea4e71926d3d6caef7a48b | tree=dirty | operation=none
+- Focus: Repair the existing pre-commit completion exception before refreshing the saved API audit plan.
+- Completed: Applied completion mode to both Git checks in the shared quick gate.; Kept one resolved-merge predicate: safe named branch, known state, no locks; Proved a real linked-worktree conflict/resolution/commit sequence through
+- Git receipt: docs/verification/lib-pro-015-merge-hook-git-handoff-receipt.json | sha256:6bb3d0781edbd91de91ee512cb658a6c2acd3d564e3eb97c3b0c5f06267baf28 | HOLD
+- Git identity: codex/lib-pro-015-resolved-merge-hook@f4580a9524f095c8a3d8ca9432464c905e135b54 | upstream=origin/main@f353afe54f2c328a300361418ca3b1816b611dc4 | base=origin/main@f353afe54f2c328a300361418ca3b1816b611dc4 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
