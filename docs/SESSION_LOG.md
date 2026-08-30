@@ -5,6 +5,98 @@
 
 ---
 
+## 2026-08-31 — Session: W3J installed boundary and integrated closeout
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3J-INSTALLED-REVIEW`.
+**Branch:** `codex/etabs-w3j-installed-review-windows`.
+**Source:** PR #923 merge `3716420ded8d56a74e159da322f031c589e09474`,
+tree `6db544c062f6b3a81fa8e523fa146f79f5426e15`.
+**Focus:** Installed saved-review acceptance and one integrated W3 gate run.
+**Status:** BLOCKED before workbook; W3 remains incomplete.
+**Git handoff receipt:** `docs/verification/etabs-w3j-installed-review-git-handoff-receipt.json`
+
+**Completed:**
+
+- Fresh clean source/runtime, app-file versions, restricted Office catalogue,
+  valid existing CA chain and free-port preflight. Five HTTPS source responses
+  matched exact reviewed bytes; the saved-review page rendered in the browser.
+- Launched Excel to its startup page. Blank-workbook input failed at window
+  activation, including fresh discovery and one documented recovery. Stopped
+  app input without creating/opening a workbook or exercising the writer.
+- Stopped the exact task-owned HTTPS process; ports 3000/8000 are free. No API
+  server or ETABS call/analysis/design/reanalysis/save/unlock ran. Left Excel
+  at startup and preserved the existing ETABS window without force closure.
+- Proved all six protected file hashes, sizes and timestamps unchanged.
+  Retained every earlier branch/worktree, dirty W1/W3F and protected main.
+- Kept the active W3 boundary accurate: #922/#923 are software prerequisites,
+  not installed L4, actual-building calibration or professional approval.
+  Complete integrated gate outputs are retained outside Git, never inferred
+  from a progress percentage or partial log.
+
+### Issues encountered
+
+- The host helper could capture Excel's startup state but could not activate
+  it: `failed to activate captured window`. No Office.js operation was reached.
+- The first external certificate check incorrectly required the leaf in the
+  root store. The first external postflight compared an ISO string against a
+  PowerShell-decoded `DateTime`, falsely reporting changed timestamps.
+- A guessed `scripts/node_runtime.sh --print` path did not exist. A direct
+  npm shim reported a different version from the maintained Node selector;
+  PowerShell also rejected wildcard path operands in a narrow `rg` query.
+- The optional browser-check CLI was unavailable in the inspected runtime.
+- The integrated Python gate reported 17 failures: incorrect parameterized
+  typing-alias ownership, stale operation count, Windows launcher/path/symlink
+  assumptions, restore-digest ordering, one timing-budget miss and one
+  Git-snapshot test contaminated by an agent-owned closeout write.
+- The full repository run was 31/32: classification refused two intended but
+  not-yet-staged receipt files before its check. No generator wrote anything.
+
+### Root causes and resolutions
+
+- Host activation root cause remains **unconfirmed**. Both applications are
+  responding in the same Windows session; fresh returned handles did not fix
+  activation. Preserved exact errors and startup state in external evidence;
+  no repository repair or fake-host result substitutes for installed L4.
+- Validated the Office-issued leaf through its existing trusted CA chain,
+  then normal HTTPS requests succeeded. Compared exact UTC ticks for file
+  preservation; all six hashes/sizes/ticks match. Preserved initial false-hold
+  outputs alongside corrected evidence; no certificate/model was changed.
+- Used the documented `./run.sh frontend runtime` (Node 24.20.0/npm 11.19.0)
+  and `scripts/node_runtime.py` entry points. Used `rg --files scripts` and
+  exact file paths rather than shell-dependent path globs. No PATH/config edit.
+- Used the available Browser skill for visual verification and Computer Use
+  for installed Excel. Render/source verification passed; host activation did
+  not. Security warnings, trust settings and application dialogs were not bypassed.
+- Traced alias ownership to metadata resolving a parameterized `Literal` as
+  the `typing.Literal` factory; the registry now has 120 operations but its
+  frozen test still expects 119. Traced archive mismatch to case-insensitive
+  WindowsPath ordering versus canonical POSIX-string ordering; all three
+  source/restored file contents match. These remain separate repair work,
+  not permission to patch code during installed evidence.
+- Two tests execute `.sh` directly (WinError 193), four require unavailable
+  symlink privilege (WinError 1314), four assert POSIX-only paths and two
+  expect `venv/bin/pip` despite the correct Windows `Scripts/pip.exe` result.
+  Six-worktree duration was 2308.669 ms against 2000 ms; its latency cause is
+  unconfirmed. No threshold, privilege or security setting was weakened.
+- The Git-snapshot test overlapped this agent's receipt preparation. Its
+  failure does not prove the read-only command mutated Git. After freezing
+  tracked writes, the isolated retest passed (1 test, 2.77 s). Retained both
+  results; the other 16 Python failures remain unresolved. No aggregate PASS.
+- Staged only the six intended documentation/receipt paths and reran the
+  classification check successfully. The initial 31/32 run remains recorded,
+  not rewritten as a clean first pass. FastAPI passed 537 tests; React lint,
+  283 tests and build passed; all 51 add-in tests passed. Installed acceptance
+  is still blocked and these checks do not clear W3H/I/K/L.
+
+**Next:** Address the recorded integrated validation defects as a separate
+bounded repair, and restore host activation before exact-source installed W3J
+continuation. Actual-building W3H still needs supported physical mapping and
+screening criteria before I/K/L. Preserve the no-professional-approval boundary.
+Final gate/candidate/PR/merge facts stay in GitHub and external closeout.
+
+---
+
 ## 2026-08-31 — Session: W3J controlled Excel review implementation
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).

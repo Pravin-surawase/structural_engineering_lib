@@ -1,0 +1,119 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "5c26dc9751b89a8d6eb69624c8db394175ee9fc867927d81fa704a074a201e1f",
+    "state": {
+      "branch": "codex/etabs-w3j-installed-review-windows",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "3716420ded8d56a74e159da322f031c589e09474",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 541.479,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git\\worktrees\\etabs-w3j-installed-review-windows",
+      "head_sha": "3716420ded8d56a74e159da322f031c589e09474",
+      "hold_reasons": [
+        "changed paths: 4"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-30T19:54:00.022727+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\worktrees\\etabs-w3j-installed-review-windows",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 4,
+        "modified_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/planning/etabs-data-analysis-optimization-foundation-plan.md",
+          "docs/planning/next-session-brief.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/etabs-w3j-installed-review-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "C:\\CodexWork\\worktrees\\etabs-w3j-installed-review-windows"
+    }
+  },
+  "local_state_receipt_hash": "sha256:5c26dc9751b89a8d6eb69624c8db394175ee9fc867927d81fa704a074a201e1f",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-30T19:54:00.022727+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [],
+    "integration_owner": "Codex-Windows",
+    "owned_paths": [
+      "docs/verification/etabs-w3j-installed-review-evidence.json",
+      "docs/verification/etabs-w3j-installed-review-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/planning/next-session-brief.md",
+      "docs/planning/etabs-data-analysis-optimization-foundation-plan.md",
+      "docs/planning/etabs-excel-professional-surface-audit.md"
+    ],
+    "task_id": "ETABS-W3J-INSTALLED-REVIEW"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

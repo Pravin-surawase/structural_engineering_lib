@@ -117,7 +117,7 @@ not a Windows audit of the Mac checkout. Each new branch still has one writer.
 | W3G | Bounded pure solver, PR #915, L1 | Always SURROGATE_ONLY; not general 3D analysis |
 | W3H | Comparator #917 and recovery/feasibility/benchmarks #918-#921 | Actual-building L5 calibration NOT complete |
 | W3I | Planned functions absent at the audited base | W3H plus explicit complete screening criteria |
-| W3J | Dossier foundation #922; review exporter, 16 controlled projections and transactional fake-host implementation in its R4 successor | Exact reviewed source still needs installed all-table rollback/readback; no L7 signature |
+| W3J | Dossier foundation #922; review exporter, 16 controlled projections and transactional fake-host implementation #923 | Installed attempt blocked at host window activation before any workbook; all-table rollback/readback still required; no L7 signature |
 | W3K | Planned functions absent at the audited base | Accepted W3I, guarded fresh-copy mutation and mandatory ETABS reanalysis |
 | W3L | Not implemented | Accepted W3K, finite iteration and independent final baseline repeat |
 
@@ -134,10 +134,21 @@ Advance independent dependencies instead of waiting for a professional
 signature: W3J depends on W3D/W3E and provider-neutral review contracts, not W3H.
 Its dossier foundation is ordinary software work. It cannot assert professional
 eligibility, sign bytes or upgrade a supplied provider Boolean to trusted proof.
-Next complete its bounded Excel projection and installed transaction/readback;
+The bounded Excel projection is merged in #923. Its installed continuation
+proved trusted HTTPS and exact source bytes, but Windows control could not
+activate Excel after fresh discovery and one recovery. No workbook was created
+or opened and no writer/rollback ran. See the
+[installed receipt](../verification/etabs-w3j-installed-review-evidence.json).
+Restore host activation before installed transaction/readback;
 retain all building-calibration and downstream candidate holds. If the building
 basis cannot be proved by bounded read-only discovery, report the exact missing
 physical inputs; do not guess them or ask for blanket professional approval.
+
+The integrated Windows Python run also reported 17 failures, including alias
+ownership/registry expectations and Windows launcher/path/restore ordering.
+Its exact diagnosis and remaining gate results are retained in the installed
+receipt/session and external logs. Repair these in a separate bounded software
+packet; do not label the integrated gate green or alter live evidence code.
 
 Completion requires the remaining packet exits, one integrated broad
 Python/FastAPI/React/Excel/full-gate run, exact final dossier and Mac integrated
@@ -1110,7 +1121,10 @@ catalogue/demand replay, sixteen controlled review tables, canonical JSON
 transport, separate user comments, hash-bound append-only revision history,
 all-table preflight/snapshot/typed publication/readback/rollback, and a
 post-verification commit marker. Its software fixture is explicitly fictional;
-installed Excel acceptance remains a separate exact-source continuation.
+installed Excel acceptance remains a separate exact-source continuation. The
+first attempt from #923 stopped at host-control activation, before workbook or
+table operations; this is not evidence of an Office.js writer defect or an L4
+pass. The existing certificate/catalog and all model/evidence files were kept.
 `scripts/export_calculation_review.py` is the maintained carrier entry point;
 see `excel_addin/README.md`. No new model extraction or ETABS state change is
 needed to review existing saved evidence. This does not clear W3H/I/K/L.
