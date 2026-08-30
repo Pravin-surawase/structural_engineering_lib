@@ -103,6 +103,14 @@ describe('ParetoPanel', () => {
           cost: 12500,
           steel_weight_kg: 7.7,
           utilization: 0.85,
+          flexural_utilization: 0.85,
+          shear_utilization: 0.42,
+          stirrup_utilization: 0.25,
+          shear_tau_v_nmm2: 1.18,
+          shear_tau_c_nmm2: 0.62,
+          shear_tau_c_max_nmm2: 2.8,
+          stirrup_spacing_mm: 200,
+          shear_reinforcement_area_mm2: 100.53,
           is_safe: true,
           governing_clauses: ['Cl 38.1'],
           rank: 1,
@@ -116,6 +124,10 @@ describe('ParetoPanel', () => {
       best_by_cost: null,
       best_by_utilization: null,
       best_by_weight: null,
+      limitations: [
+        'Torsion and torsion-shear interaction are not evaluated.',
+        'Serviceability is not evaluated.',
+      ],
     };
 
     mockHookReturn = {

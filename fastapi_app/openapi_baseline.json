@@ -27053,6 +27053,11 @@
             "title": "Fck Nmm2",
             "type": "integer"
           },
+          "flexural_utilization": {
+            "description": "Flexural limiting-capacity utilization",
+            "title": "Flexural Utilization",
+            "type": "number"
+          },
           "fy_nmm2": {
             "description": "Steel grade (N/mm\u00b2)",
             "title": "Fy Nmm2",
@@ -27076,13 +27081,48 @@
             "title": "Rank",
             "type": "integer"
           },
+          "shear_reinforcement_area_mm2": {
+            "description": "Area of supplied vertical stirrup legs (mm\u00b2)",
+            "title": "Shear Reinforcement Area Mm2",
+            "type": "number"
+          },
+          "shear_tau_c_max_nmm2": {
+            "description": "Maximum concrete shear stress (N/mm\u00b2)",
+            "title": "Shear Tau C Max Nmm2",
+            "type": "number"
+          },
+          "shear_tau_c_nmm2": {
+            "description": "Concrete design shear strength (N/mm\u00b2)",
+            "title": "Shear Tau C Nmm2",
+            "type": "number"
+          },
+          "shear_tau_v_nmm2": {
+            "description": "Nominal shear stress (N/mm\u00b2)",
+            "title": "Shear Tau V Nmm2",
+            "type": "number"
+          },
+          "shear_utilization": {
+            "description": "Maximum concrete shear-stress utilization",
+            "title": "Shear Utilization",
+            "type": "number"
+          },
           "steel_weight_kg": {
             "description": "Steel weight (kg)",
             "title": "Steel Weight Kg",
             "type": "number"
           },
+          "stirrup_spacing_mm": {
+            "description": "Maintained shear-design stirrup spacing (mm)",
+            "title": "Stirrup Spacing Mm",
+            "type": "number"
+          },
+          "stirrup_utilization": {
+            "description": "Required-to-provided stirrup utilization",
+            "title": "Stirrup Utilization",
+            "type": "number"
+          },
           "utilization": {
-            "description": "Capacity utilization ratio (0-1)",
+            "description": "Governing capacity utilization ratio",
             "title": "Utilization",
             "type": "number"
           }
@@ -27099,6 +27139,14 @@
           "cost",
           "steel_weight_kg",
           "utilization",
+          "flexural_utilization",
+          "shear_utilization",
+          "stirrup_utilization",
+          "shear_tau_v_nmm2",
+          "shear_tau_c_nmm2",
+          "shear_tau_c_max_nmm2",
+          "stirrup_spacing_mm",
+          "shear_reinforcement_area_mm2",
           "is_safe",
           "rank",
           "crowding_distance"
@@ -27109,6 +27157,13 @@
       "ParetoRequest": {
         "description": "Request model for Pareto multi-objective beam optimization.",
         "properties": {
+          "asv_mm2": {
+            "default": 100.53,
+            "description": "Area of supplied vertical stirrup legs (mm\u00b2)",
+            "exclusiveMinimum": 0.0,
+            "title": "Asv Mm2",
+            "type": "number"
+          },
           "cover_mm": {
             "default": 40,
             "description": "Concrete cover (mm)",
@@ -27227,6 +27282,14 @@
             "title": "Computation Time Sec",
             "type": "number"
           },
+          "limitations": {
+            "description": "Explicit analysis, serviceability, and quantity holds",
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
           "objectives_used": {
             "description": "Objectives optimized",
             "items": {
@@ -27259,7 +27322,8 @@
           "pareto_count",
           "total_candidates",
           "objectives_used",
-          "computation_time_sec"
+          "computation_time_sec",
+          "limitations"
         ],
         "title": "ParetoResponse",
         "type": "object"
@@ -44323,7 +44387,7 @@
     },
     "/api/v1/optimization/beam/pareto": {
       "post": {
-        "description": "Find Pareto-optimal beam designs balancing cost, weight, and utilization using NSGA-II inspired algorithm.",
+        "description": "Find Pareto-optimal flexure-and-shear-feasible beam designs balancing cost, weight, and governing utilization using an NSGA-II inspired algorithm.",
         "operationId": "optimize_beam_pareto_api_v1_optimization_beam_pareto_post",
         "requestBody": {
           "content": {

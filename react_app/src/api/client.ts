@@ -655,6 +655,14 @@ export interface ParetoCandidateResponse {
   cost: number;
   steel_weight_kg: number;
   utilization: number;
+  flexural_utilization: number;
+  shear_utilization: number;
+  stirrup_utilization: number;
+  shear_tau_v_nmm2: number;
+  shear_tau_c_nmm2: number;
+  shear_tau_c_max_nmm2: number;
+  stirrup_spacing_mm: number;
+  shear_reinforcement_area_mm2: number;
   is_safe: boolean;
   governing_clauses: string[];
   rank: number;
@@ -668,6 +676,7 @@ export interface ParetoRequest {
   objectives?: string[];
   cover_mm?: number;
   max_candidates?: number;
+  asv_mm2?: number;
 }
 
 export interface ParetoResponse {
@@ -679,10 +688,11 @@ export interface ParetoResponse {
   best_by_cost: ParetoCandidateResponse | null;
   best_by_utilization: ParetoCandidateResponse | null;
   best_by_weight: ParetoCandidateResponse | null;
+  limitations: string[];
 }
 
 /**
- * Find Pareto-optimal beam designs balancing cost, weight, and utilization.
+ * Find Pareto-optimal flexure-and-shear-feasible beam designs.
  */
 export async function optimizeParetoFront(
   params: ParetoRequest

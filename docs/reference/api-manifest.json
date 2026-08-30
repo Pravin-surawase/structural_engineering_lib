@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-29",
+  "generated": "2026-08-30",
   "module": "structural_lib.api",
   "python": "3.11.15",
   "count": 228,
@@ -422,12 +422,12 @@
     {
       "name": "ParetoCandidate",
       "kind": "class",
-      "signature": "(b_mm: 'int', D_mm: 'int', d_mm: 'int', fck_nmm2: 'int', fy_nmm2: 'int', ast_required: 'float', ast_provided: 'float', bar_config: 'str', cost: 'float', steel_weight_kg: 'float', utilization: 'float', is_safe: 'bool', governing_clauses: 'list[str]' = <factory>, rank: 'int' = 0, crowding_distance: 'float' = 0.0) -> None"
+      "signature": "(b_mm: 'int', D_mm: 'int', d_mm: 'int', fck_nmm2: 'int', fy_nmm2: 'int', ast_required: 'float', ast_provided: 'float', bar_config: 'str', cost: 'float', steel_weight_kg: 'float', utilization: 'float', is_safe: 'bool', flexural_utilization: 'float' = 0.0, shear_utilization: 'float' = 0.0, stirrup_utilization: 'float' = 0.0, shear_tau_v_nmm2: 'float' = 0.0, shear_tau_c_nmm2: 'float' = 0.0, shear_tau_c_max_nmm2: 'float' = 0.0, stirrup_spacing_mm: 'float' = 0.0, shear_reinforcement_area_mm2: 'float' = 100.53, governing_clauses: 'list[str]' = <factory>, rank: 'int' = 0, crowding_distance: 'float' = 0.0) -> None"
     },
     {
       "name": "ParetoOptimizationResult",
       "kind": "class",
-      "signature": "(pareto_front: 'list[ParetoCandidate]', all_candidates: 'list[ParetoCandidate]', objectives_used: 'list[str]', generations: 'int', computation_time_sec: 'float', best_by_cost: 'ParetoCandidate | None', best_by_utilization: 'ParetoCandidate | None', best_by_weight: 'ParetoCandidate | None') -> None"
+      "signature": "(pareto_front: 'list[ParetoCandidate]', all_candidates: 'list[ParetoCandidate]', objectives_used: 'list[str]', generations: 'int', computation_time_sec: 'float', best_by_cost: 'ParetoCandidate | None', best_by_utilization: 'ParetoCandidate | None', best_by_weight: 'ParetoCandidate | None', limitations: 'tuple[str, ...]' = ('Torsion and torsion-shear interaction are not evaluated.', 'Serviceability is not evaluated.', 'Stirrup mass and cost are excluded because perimeter and anchorage inputs are absent.', 'The supplied actions are fixed inputs; global analysis and action redistribution are not performed.')) -> None"
     },
     {
       "name": "Point3D",
@@ -1062,7 +1062,7 @@
     {
       "name": "optimize_pareto_front",
       "kind": "function",
-      "signature": "(span_mm: 'float', mu_knm: 'float', vu_kn: 'float', objectives: 'list[str] | None' = None, cost_profile: 'CostProfile | None' = None, cover_mm: 'int' = 40, max_candidates: 'int' = 50, random_seed: 'int | None' = None) -> 'ParetoOptimizationResult'"
+      "signature": "(span_mm: 'float', mu_knm: 'float', vu_kn: 'float', objectives: 'list[str] | None' = None, cost_profile: 'CostProfile | None' = None, cover_mm: 'int' = 40, max_candidates: 'int' = 50, random_seed: 'int | None' = None, asv_mm2: 'float' = 100.53) -> 'ParetoOptimizationResult'"
     },
     {
       "name": "pm_interaction_curve_is456",

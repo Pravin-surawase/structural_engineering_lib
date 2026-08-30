@@ -33,7 +33,7 @@ import time
 from dataclasses import dataclass, field
 from typing import Any
 
-from structural_lib.codes.is456.beam import flexure
+from structural_lib.codes.is456.beam import flexure, shear
 from structural_lib.services.costing import CostProfile, calculate_beam_cost
 
 logger = logging.getLogger(__name__)
@@ -41,6 +41,14 @@ logger = logging.getLogger(__name__)
 _PT_MIN_COEFF = 0.85  # IS 456 Cl 26.5.1.1
 _MU_LIM_WARNING_RATIO = 0.9
 _HIGH_UTILIZATION_THRESHOLD = 0.85
+_SUPPORTED_OBJECTIVES = frozenset({"cost", "steel_weight", "utilization"})
+_DEFAULT_ASV_MM2 = 100.53  # two-legged 8 mm stirrup
+_PARETO_LIMITATIONS = (
+    "Torsion and torsion-shear interaction are not evaluated.",
+    "Serviceability is not evaluated.",
+    "Stirrup mass and cost are excluded because perimeter and anchorage inputs are absent.",
+    "The supplied actions are fixed inputs; global analysis and action redistribution are not performed.",
+)
 
 
 @dataclass
@@ -59,6 +67,9 @@ class ParetoCandidate:
         cost: Total cost (INR)
         steel_weight_kg: Steel weight (kg)
         utilization: Capacity utilization ratio (0.0 to 1.0)
+        flexural_utilization: Flexural limiting-capacity utilization
+        shear_utilization: Maximum concrete shear-stress utilization
+        stirrup_utilization: Required-to-provided stirrup utilization
         is_safe: Whether design meets IS 456 requirements
         governing_clauses: IS 456 clauses that govern this design
         rank: Pareto rank (1 = best front)
@@ -77,6 +88,14 @@ class ParetoCandidate:
     steel_weight_kg: float
     utilization: float
     is_safe: bool
+    flexural_utilization: float = 0.0
+    shear_utilization: float = 0.0
+    stirrup_utilization: float = 0.0
+    shear_tau_v_nmm2: float = 0.0
+    shear_tau_c_nmm2: float = 0.0
+    shear_tau_c_max_nmm2: float = 0.0
+    stirrup_spacing_mm: float = 0.0
+    shear_reinforcement_area_mm2: float = _DEFAULT_ASV_MM2
     governing_clauses: list[str] = field(default_factory=list)
     rank: int = 0
     crowding_distance: float = 0.0
@@ -95,6 +114,14 @@ class ParetoCandidate:
             "cost": round(self.cost, 2),
             "steel_weight_kg": round(self.steel_weight_kg, 2),
             "utilization": round(self.utilization, 3),
+            "flexural_utilization": round(self.flexural_utilization, 3),
+            "shear_utilization": round(self.shear_utilization, 3),
+            "stirrup_utilization": round(self.stirrup_utilization, 3),
+            "shear_tau_v_nmm2": round(self.shear_tau_v_nmm2, 4),
+            "shear_tau_c_nmm2": round(self.shear_tau_c_nmm2, 4),
+            "shear_tau_c_max_nmm2": round(self.shear_tau_c_max_nmm2, 4),
+            "stirrup_spacing_mm": round(self.stirrup_spacing_mm, 1),
+            "shear_reinforcement_area_mm2": round(self.shear_reinforcement_area_mm2, 2),
             "is_safe": self.is_safe,
             "governing_clauses": self.governing_clauses,
             "rank": self.rank,
@@ -125,6 +152,7 @@ class ParetoOptimizationResult:
     best_by_cost: ParetoCandidate | None
     best_by_utilization: ParetoCandidate | None
     best_by_weight: ParetoCandidate | None
+    limitations: tuple[str, ...] = _PARETO_LIMITATIONS
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for UI consumption."""
@@ -142,6 +170,7 @@ class ParetoOptimizationResult:
             "best_by_weight": (
                 self.best_by_weight.to_dict() if self.best_by_weight else None
             ),
+            "limitations": list(self.limitations),
         }
 
 
@@ -265,8 +294,8 @@ def _fast_non_dominated_sort(
                 # For utilization, we want HIGH utilization (close to 1.0)
                 # So minimize (1 - utilization)
                 values.append(1.0 - c.utilization)
-            else:
-                values.append(c.cost)  # Default to cost
+            else:  # pragma: no cover - validated at the public boundary
+                raise ValueError(f"Unsupported Pareto objective: {obj!r}")
         return values
 
     # Domination count and dominated set for each candidate
@@ -333,7 +362,7 @@ def _crowding_distance(
             return c.steel_weight_kg
         elif obj == "utilization":
             return 1.0 - c.utilization
-        return c.cost
+        raise ValueError(f"Unsupported Pareto objective: {obj!r}")
 
     for obj in objectives:
         # Sort by objective
@@ -419,6 +448,7 @@ def optimize_pareto_front(
     cover_mm: int = 40,
     max_candidates: int = 50,
     random_seed: int | None = None,
+    asv_mm2: float = _DEFAULT_ASV_MM2,
 ) -> ParetoOptimizationResult:
     """Find Pareto-optimal beam designs using NSGA-II inspired algorithm.
 
@@ -438,6 +468,8 @@ def optimize_pareto_front(
         cover_mm: Concrete cover (default 40mm)
         max_candidates: Maximum number of candidates to generate
         random_seed: Random seed for reproducibility
+        asv_mm2: Area of the vertical stirrup legs used by the maintained
+            IS 456 shear design (mm²). The default is two-legged 8 mm.
 
     Returns:
         ParetoOptimizationResult with Pareto front and analysis
@@ -456,6 +488,30 @@ def optimize_pareto_front(
 
     if objectives is None:
         objectives = ["cost", "utilization"]
+
+    unknown_objectives = sorted(set(objectives) - _SUPPORTED_OBJECTIVES)
+    if unknown_objectives:
+        raise ValueError(
+            "Unsupported Pareto objective(s): " + ", ".join(unknown_objectives)
+        )
+    if not objectives:
+        raise ValueError("At least one Pareto objective is required")
+    numeric_inputs = {
+        "span_mm": span_mm,
+        "mu_knm": mu_knm,
+        "vu_kn": vu_kn,
+        "cover_mm": cover_mm,
+        "asv_mm2": asv_mm2,
+    }
+    for name, value in numeric_inputs.items():
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            raise ValueError(f"{name} must be a finite real number")
+        if not math.isfinite(value):
+            raise ValueError(f"{name} must be a finite real number")
+    if span_mm <= 0 or cover_mm <= 0 or asv_mm2 <= 0:
+        raise ValueError("span_mm, cover_mm, and asv_mm2 must be positive")
+    if mu_knm < 0 or vu_kn < 0:
+        raise ValueError("mu_knm and vu_kn must be non-negative factored actions")
 
     if cost_profile is None:
         cost_profile = CostProfile()
@@ -527,9 +583,48 @@ def optimize_pareto_front(
                 steel_vol_m3 = ast_provided * span_mm / 1e9  # mm² * mm / 1e9 = m³
                 steel_weight_kg = steel_vol_m3 * steel_density
 
-                # Calculate utilization
-                utilization = mu_knm / mu_lim if mu_lim > 0 else 0.0
-                utilization = min(utilization, 1.0)
+                # Evaluate the same provided longitudinal reinforcement through
+                # the maintained shear service.  A flexure-valid candidate is
+                # not feasible until both the maximum shear-stress check and
+                # the supplied stirrup-area check pass.
+                pt_provided = 100.0 * ast_provided / (b * d)
+                shear_design = shear.design_shear(
+                    vu_kn=vu_kn,
+                    b=b,
+                    d=d,
+                    fck=fck,
+                    fy=fy,
+                    asv=asv_mm2,
+                    pt=pt_provided,
+                )
+                if not shear_design.is_safe:
+                    continue
+
+                provided_stirrup_capacity_kn = (
+                    0.87 * fy * asv_mm2 * d / (shear_design.spacing * 1000.0)
+                    if shear_design.spacing > 0
+                    else 0.0
+                )
+                stirrup_utilization = (
+                    shear_design.Vus / provided_stirrup_capacity_kn
+                    if shear_design.Vus > 0 and provided_stirrup_capacity_kn > 0
+                    else 0.0
+                )
+                if stirrup_utilization > 1.0 + 1e-9:
+                    continue
+
+                flexural_utilization = mu_knm / mu_lim if mu_lim > 0 else 0.0
+                flexural_utilization = min(flexural_utilization, 1.0)
+                shear_utilization = (
+                    shear_design.tau_v / shear_design.tau_c_max
+                    if shear_design.tau_c_max > 0
+                    else float("inf")
+                )
+                utilization = max(
+                    flexural_utilization,
+                    shear_utilization,
+                    stirrup_utilization,
+                )
 
                 # Calculate cost
                 steel_pct = 100 * design.Ast_required / (b * d)
@@ -545,6 +640,7 @@ def optimize_pareto_front(
 
                 # Get governing clauses
                 governing = _get_governing_clauses(design, b, d, fck, fy)
+                governing.append("Cl. 40.1: Shear design")
 
                 candidate = ParetoCandidate(
                     b_mm=b,
@@ -559,6 +655,14 @@ def optimize_pareto_front(
                     steel_weight_kg=steel_weight_kg,
                     utilization=utilization,
                     is_safe=True,
+                    flexural_utilization=flexural_utilization,
+                    shear_utilization=shear_utilization,
+                    stirrup_utilization=stirrup_utilization,
+                    shear_tau_v_nmm2=shear_design.tau_v,
+                    shear_tau_c_nmm2=shear_design.tau_c,
+                    shear_tau_c_max_nmm2=shear_design.tau_c_max,
+                    stirrup_spacing_mm=shear_design.spacing,
+                    shear_reinforcement_area_mm2=asv_mm2,
                     governing_clauses=governing,
                 )
 

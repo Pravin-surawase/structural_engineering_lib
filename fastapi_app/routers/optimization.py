@@ -300,7 +300,7 @@ async def get_cost_rates():
     "/beam/pareto",
     response_model=APIResponse[ParetoResponse],
     summary="Pareto Multi-Objective Beam Optimization",
-    description="Find Pareto-optimal beam designs balancing cost, weight, and utilization using NSGA-II inspired algorithm.",
+    description="Find Pareto-optimal flexure-and-shear-feasible beam designs balancing cost, weight, and governing utilization using an NSGA-II inspired algorithm.",
 )
 async def optimize_beam_pareto(
     request: ParetoRequest,
@@ -327,6 +327,7 @@ async def optimize_beam_pareto(
             cost_profile=CostProfile(),
             cover_mm=request.cover_mm,
             max_candidates=request.max_candidates,
+            asv_mm2=request.asv_mm2,
         )
 
         def _candidate_to_response(c) -> ParetoCandidateResponse:
@@ -357,6 +358,7 @@ async def optimize_beam_pareto(
                 if result.best_by_weight
                 else None
             ),
+            limitations=list(result.limitations),
         )
 
         return success_response(response.model_dump())

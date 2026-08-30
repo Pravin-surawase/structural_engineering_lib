@@ -2,7 +2,7 @@
  * ParetoPanel — Displays Pareto-optimal beam design alternatives.
  *
  * Shows results from POST /api/v1/optimization/beam/pareto as a compact table
- * highlighting cheapest, safest, and lightest alternatives.
+ * highlighting cheapest, governing-utilization, and lightest alternatives.
  */
 import { useState } from "react";
 import { Loader2, Sparkles, DollarSign, Zap, Feather, CheckCircle, XCircle, ChevronDown, ChevronRight } from "lucide-react";
@@ -180,9 +180,12 @@ export function ParetoPanel({ spanMm, muKnm, vuKn }: ParetoPanelProps) {
                       <span className="text-white/80 font-medium">₹{candidate.cost.toFixed(0)}</span>
                     </div>
                     <div>
-                      <span className="text-zinc-400">Utilization:</span>{" "}
+                      <span className="text-zinc-400">Governing:</span>{" "}
                       <span className={`font-medium ${candidate.utilization > 0.9 ? "text-amber-400" : "text-white/80"}`}>
                         {(candidate.utilization * 100).toFixed(0)}%
+                      </span>
+                      <span className="block text-[9px] text-zinc-500">
+                        F {(candidate.flexural_utilization * 100).toFixed(0)}% / S {(candidate.shear_utilization * 100).toFixed(0)}%
                       </span>
                     </div>
                     <div>
@@ -200,6 +203,10 @@ export function ParetoPanel({ spanMm, muKnm, vuKn }: ParetoPanelProps) {
               +{data.pareto_front.length - 8} more alternative{data.pareto_front.length - 8 !== 1 ? "s" : ""}
             </p>
           )}
+
+          <p className="text-[9px] text-zinc-500">
+            {data.limitations.join(" ")}
+          </p>
 
           <button
             onClick={handleFindAlternatives}

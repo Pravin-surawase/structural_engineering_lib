@@ -2,7 +2,7 @@
  * useParetoDesign — Hook for Pareto multi-objective beam optimization.
  *
  * Calls POST /api/v1/optimization/beam/pareto to find Pareto-optimal designs
- * balancing cost, weight, and utilization.
+ * balancing cost, weight, and governing flexure/shear utilization.
  */
 import { useMutation } from "@tanstack/react-query";
 import { optimizeParetoFront } from "../api/client";
