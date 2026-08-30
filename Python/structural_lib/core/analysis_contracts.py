@@ -690,6 +690,16 @@ class ModelFrameDefinitionV1(_AnalysisContractModel):
     insertion_point: EvidenceValueV1[ModelInsertionPointV1]
     object_modifiers: EvidenceValueV1[ModelModifiersV1]
     assigned_loads: EvidenceValueV1[tuple[_FrameLoadV1, ...]]
+    # Omitted legacy input is visibly NOT_REQUESTED, never an absent spring.
+    # A named property is metadata only, not its stiffness/constitutive model.
+    line_spring_assignment: EvidenceValueV1[str] = Field(
+        default_factory=lambda: EvidenceValueV1[str](
+            state=EvidenceStateV1.NOT_REQUESTED,
+            reason_code="LINE_SPRING_ASSIGNMENT_NOT_REQUESTED",
+            message="Line spring assignment evidence was not supplied.",
+            source_references=("model-frame:line-spring-assignment",),
+        )
+    )
     evidence_reference: str = Field(min_length=1)
 
 

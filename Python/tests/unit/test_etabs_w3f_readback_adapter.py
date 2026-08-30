@@ -278,6 +278,73 @@ def test_spring_unavailability_is_explicit_and_required_mode_blocks(
     assert not optional.model_definition.value.calibration_fields_complete
 
 
+@pytest.mark.parametrize("container", [list, tuple])
+@pytest.mark.parametrize("scope", ["joint", "frame", "both"])
+def test_unsuccessful_assignment_is_unavailable_not_zero_or_global_failure(
+    container: Any,
+    scope: str,
+) -> None:
+    request = _request()
+    if scope in ("joint", "both"):
+        request.raw_calls["PointObj.GetSpringAssignment:P1"] = container([None, 1])
+        request.raw_calls["PointObj.IsSpringCoupled:P1"] = container([False, 1])
+        request.raw_calls["PointObj.GetSpring:P1"] = container([[], 1])
+    if scope in ("frame", "both"):
+        request.raw_calls["FrameObj.GetSpringAssignment:B1"] = container([None, 1])
+    required = normalize_etabs_foundation_readback_v1(request)
+    assert required.status is w3.W3BuildStatusV1.BLOCKED
+    assert required.model_definition.value is required.displacements.value is None
+    optional = normalize_etabs_foundation_readback_v1(
+        request.model_copy(update={"require_calibration_fields": False})
+    )
+    assert optional.status is w3.W3BuildStatusV1.ACCEPTED, optional.issues
+    definition = optional.model_definition.value
+    assert definition is not None and not definition.calibration_fields_complete
+    if scope in ("joint", "both"):
+        assert definition.joints[0].springs.state is EvidenceStateV1.UNAVAILABLE
+        assert definition.joints[0].springs.value is None
+    if scope in ("frame", "both"):
+        assert (
+            definition.frame_definitions[0].line_spring_assignment.state
+            is EvidenceStateV1.UNAVAILABLE
+        )
+        assert definition.frame_definitions[0].line_spring_assignment.value is None
+    assert (
+        optional.displacements.state
+        is optional.reactions.state
+        is EvidenceStateV1.PRESENT
+    )
+    assert optional.displacements.value.rows[0].u1_mm == -1.0
+    assert optional.reactions.value.rows[0].m2_knm == -5.0
+    assert w3.verify_etabs_model_definition_snapshot_hash_v1(definition)
+    assert request.raw_calls.get("FrameObj.GetSpringAssignment:B1")[-1] == (
+        1 if scope in ("frame", "both") else 0
+    )
+
+
+@pytest.mark.parametrize("owner,name", [("PointObj", "P1"), ("FrameObj", "B1")])
+@pytest.mark.parametrize(
+    "raw", [[None, 0], [False, 0], [None, True], [None], [None, "1"]]
+)
+def test_malformed_assignment_still_blocks_optional_read(
+    owner: str,
+    name: str,
+    raw: Any,
+) -> None:
+    request = _request()
+    request.raw_calls[f"{owner}.GetSpringAssignment:{name}"] = raw
+    result = normalize_etabs_foundation_readback_v1(
+        request.model_copy(update={"require_calibration_fields": False})
+    )
+    assert result.status is w3.W3BuildStatusV1.BLOCKED
+    assert (
+        result.model_definition.value
+        is result.displacements.value
+        is result.reactions.value
+        is None
+    )
+
+
 def test_no_result_group_never_becomes_zero_or_partial_snapshot() -> None:
     request = _request()
     request.raw_calls["Results.JointReact:P1"] = [0, *([None] * 11), 0]
