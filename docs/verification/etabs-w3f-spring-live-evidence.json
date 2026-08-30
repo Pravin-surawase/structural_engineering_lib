@@ -1,0 +1,54 @@
+{
+  "schema_version": "etabs-w3f-spring-live-evidence/v1",
+  "task_id": "ETABS-W3F-SPRING-READBACK",
+  "verdict": "W3F_READONLY_ACCEPTED_WITH_HOLDS",
+  "observed_at_utc": "2026-08-30T05:28:32.266103Z",
+  "source": {
+    "repair_pr": 913,
+    "candidate": "89736ca2d36d2636bed438c344f8eb2496a65aba",
+    "merge": "cce05508ea5f55559f5aeb07b8945bbabb7f3c06",
+    "candidate_and_merge_tree": "d384f56d548e43454c5dc464ae9ec9f82d9bd230",
+    "source_bound": true,
+    "live_checkout_was_clean": true,
+    "repair_checks": "90 focused + 22 compatibility; docs 8/8; quick 10/10; normal hooks; clean closeout; hosted Python/FastAPI/Documentation/PR Gate passed"
+  },
+  "runtime": {"host": "LAPTOP-360-PRAV", "python": "3.11.15", "comtypes": "1.4.16", "pydantic": "2.13.5", "etabs_executable": "23.3.1.4563", "etabs_api": "23.3.1"},
+  "scope": {"getter_records": 40, "frames": 1, "joints": 3, "displacement_rows": 3, "reaction_rows": 1, "same_row_signed_components_reconciled": 24, "capacity_limit": 2000, "result_kind": "COMBINATION", "exact_result_identity": "Hash-bound external request and catalogue; no guessed/default selection"},
+  "snapshot_sha256": {
+    "model_definition": "9d4856e20d3e790cc9459ad2f3bb30ed6d3c0108b20fa6d0f37e325f68647b60",
+    "displacements": "7cd1080cc1a8d882433bec7af0f28640354e9480c51d1e1639578a1e3da6e717",
+    "reactions": "cc90efe60b0b97374db419c2c7718e74e8a2cb1dcc49456c9a2f647548e1a33d"
+  },
+  "preservation": {
+    "copied_model_sha256_before_after": "99b7f3f17051929196ef6494d8f4d220d895fc3dac5e1a57164a53bf8fa6948b",
+    "bytes_before_after": 702831,
+    "mtime_utc_before_after": "2026-08-28T17:00:30.127813Z",
+    "complete_state_file_sha256_before_after": "269cd944e7f96144f769ea7eafb66ac9d37df4abc0a75a43e8ab2319fa3a361c",
+    "locked": true,
+    "present_units_enum": 6,
+    "database_units_enum": 6,
+    "present_units_components": [4, 6, 2],
+    "finished_case_count": 15,
+    "selection_flags_preserved": 77,
+    "ui_before_after": "Normal copied-model window, closed lock icon, no save/license/abnormal dialog",
+    "analysis_design_reanalysis_save_unlock_setters": 0,
+    "excel_service_starts": 0,
+    "old_dirty_w3f_paths_preserved": 6,
+    "old_dirty_w1_paths_preserved": 3
+  },
+  "reconciliation": {"original_artifact_hashes_verified": 47, "exact_json_hydration_roundtrip": true, "same_raw_offline_replay_identical": true, "all_snapshot_hashes_valid": true, "selected_row_counts_and_six_signed_components_exact": true, "translations_m_to_mm_only": true, "rotations_rad_forces_kn_moments_knm_preserved": true, "coordinate_basis": "JOINT_LOCAL"},
+  "holds": {"joint_spring_unavailable_count": 3, "line_spring_assignment_unavailable_count": 1, "diaphragm_slab_context": "UNAVAILABLE", "calibration_fields_complete": false, "required_calibration_replay": "BLOCKED_NO_PARTIAL_SNAPSHOTS", "provider_absence_versus_failure": "UNCONFIRMED; never inferred as no spring", "prior_broad_windows_findings": "Retained Python/FastAPI/governance findings; not relabeled PASS"},
+  "external_evidence": {
+    "directory": "ETABS-W3F/live-spring-cce05508",
+    "manifest_sha256": "8bbe50aef158685cfdbc332211766b07e62f07f0dfe9cf4ba64ac84da25ea3ab",
+    "verification_manifest_sha256": "aeda4c8156f55797fa8e049ab0e50564b4012198971fc9488e27ecb04db1f257",
+    "reconciliation_sha256": "e5e2ca6864070833497568342f72dccf575d1f97cc8273c9c32a1487be8506d1",
+    "raw_calls_sha256": "7175d833de45eefb7328496babbab7039c6cac05fdfebff4f222e04782043cd9",
+    "normalized_request_sha256": "6b3ef1b5cc889a92958b400d1d7fac73abc95ace06afab34959379591891ce46",
+    "normalized_result_sha256": "cb148917d1f5c0d286c373e370926f29bac303d914378700030fdd4d88553569",
+    "final_state_sha256": "89f6dae92ea97935d45d25291a59ae61cf29c83b204e2efacae12f54a837b2fb",
+    "proprietary_paths_payloads": "Outside Git only"
+  },
+  "closeout": "Documentation-only checkpoint candidate/hosted/merge facts are recorded externally after content freeze.",
+  "claims": {"w3g_started": false, "solver_verified": false, "calibration_accepted": false, "full_model_equilibrium_claimed": false, "optimization_accepted": false, "professional_approval": false, "release_authorized": false}
+}

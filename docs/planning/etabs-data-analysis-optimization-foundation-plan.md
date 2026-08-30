@@ -886,8 +886,12 @@ Calibration completeness requires PRESENT empty line-assignment evidence and
 all other required physical fields. A property name is not a stiffness model.
 This additive representation and its new canonical bytes do not change the six
 public function signatures or certify prior snapshots that lacked this field.
-The original blocked raw evidence remains immutable; live acceptance requires
-the separately reviewed repair and a new unchanged-state read.
+The original blocked raw evidence remains immutable. PR #913 accepted the repair;
+its exact merged source completed 40 installed getter records with unchanged
+file/state, three displacement rows, one reaction row and all 24 signed components
+reconciled. See `../verification/etabs-w3f-spring-live-evidence.json`. Springs and
+diaphragm/slab context remain UNAVAILABLE; required-calibration mode still blocks.
+This W3F read-only checkpoint does not start W3G or accept model-specific calibration.
 
 ### W3G — Bounded 2D beam-line surrogate (`L1`; verdict still held)
 

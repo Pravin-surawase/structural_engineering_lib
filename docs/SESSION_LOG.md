@@ -5,6 +5,79 @@
 
 ---
 
+## 2026-08-30 — Session: W3F installed spring-readback acceptance checkpoint
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+
+**Branch:** `codex/etabs-w3f-spring-live-windows`, clean continuation from
+PR #913 merge `cce05508ea5f55559f5aeb07b8945bbabb7f3c06`, tree
+`d384f56d548e43454c5dc464ae9ec9f82d9bd230`. The repair candidate
+`89736ca2d36d2636bed438c344f8eb2496a65aba` has the same tree. Its 90 focused
+and 22 compatibility tests, docs 8/8, quick 10/10, normal hooks, clean local
+closeout, hosted Python/FastAPI/Documentation and PR Gate passed unchanged.
+The same maintained `ETABS-W3F-SPRING-READBACK` session continues; no second begin.
+
+**Git handoff receipt:**
+`docs/verification/etabs-w3f-spring-live-git-handoff-receipt.json`
+
+**Focus:** Accept the bounded installed read with explicit calibration holds, then stop before W3G.
+
+**Completed:**
+
+- Preserved the repair branch and all older lanes/data. Rebound the task-owned
+  clean worktree to the exact accepted repair; Python source binding passed.
+- Inspected the existing ETABS 23.3.1 copied-model window before and after the
+  read. Closed lock icon, normal workspace, no abnormal/license/save dialog.
+- One attachment completed all 40 scoped getter records for one accepted
+  baseline frame, three joints and the exact retained result selection.
+- Model definition, three displacement rows and one reaction row are PRESENT.
+  Offline replay is identical; all three snapshot hashes, source counts and
+  24 signed same-row components reconcile to the original raw getter arrays.
+- Section, restraints, releases, offsets, insertion point, modifiers and
+  assigned-load evidence are retained. Three joint springs, one line-spring
+  assignment and diaphragm/slab context remain explicitly UNAVAILABLE.
+- Required-calibration replay returns BLOCKED with no partial snapshots.
+  This is installed-software readback acceptance, not calibration or approval.
+- Copied-file SHA/size/mtime and complete lock/units/status/selection state are
+  unchanged: locked, units enum 6, all 15 cases finished, 77 flags preserved.
+- Zero analysis, design, reanalysis, save, unlock, setter, Excel or service
+  starts. ETABS stays open normally; no workbook/model/evidence was deleted.
+
+### Issues encountered
+
+- The first offline reconciliation loader rejected JSON lists at strict tuple
+  fields before any reconciliation output; the installed read itself passed.
+- The repair's registry generator emitted CRLF for its otherwise unchanged
+  classification file, temporarily reporting dirty state after candidate commit.
+- Calibration remains incomplete because spring and diaphragm/slab physical
+  evidence is not established. Earlier broad Windows holds remain unresolved.
+
+### Root causes and resolutions
+
+- Nested strict Pydantic contracts require explicit JSON hydration in this
+  external operator, as the accepted baseline loader already uses. A separately
+  retained verifier v2 uses `strict=False` only for JSON hydration and requires
+  exact JSON roundtrip equality before replay. It verifies all 47 original
+  artifact hashes, replay equality, selection/count/sign/unit provenance and
+  the required-mode block. No COM retry, product repair or data coercion occurred.
+- Git diff proved no registry content change; `dos2unix` restored required LF.
+  Exact candidate SHA/tree stayed unchanged and READY_LOCAL/clean session end
+  passed. No reset, stash, overwrite of retained evidence or additional commit.
+- Unknown spring metadata is not absence or zero stiffness. The accepted repair
+  retains UNAVAILABLE and the live required-mode check proves the dependent
+  calibration gate remains closed. Slab/diaphragm assumptions are not inferred.
+- Prior broad Python/FastAPI/governance findings remain in the preserved external
+  consolidated report. This packet does not repeat or relabel those suites.
+
+**Evidence:** `docs/verification/etabs-w3f-spring-live-evidence.json`;
+external `ETABS-W3F/live-spring-cce05508`, including immutable raw payloads and
+separate operator/reconciliation manifests. No proprietary paths or rows enter Git.
+
+**Next:** Stop at W3F. In a new chat, fetch and inspect this checkpoint before
+separately resuming W3G's pure solver work. W3H model-specific calibration still
+requires the explicit missing physical evidence and owner criteria; no generic
+ETABS parity, optimization, professional signature or release is accepted.
+
 ## 2026-08-30 — Session: W3F spring-readback availability repair
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
