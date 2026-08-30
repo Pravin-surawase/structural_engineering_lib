@@ -260,8 +260,8 @@ trust is UNAVAILABLE without a separately accepted adapter. `SIGNED_VERIFIED`
 is reserved, never fabricated. No private key or actual signature operation is
 part of this contract.
 
-W3J still requires the controlled Excel review projection and installed atomic
-rollback/readback. The R3/R4 dependency permits this work while the separate W3H
+W3J's controlled Excel review projection is merged in #923; installed atomic
+rollback/readback remains required. The R3/R4 dependency permits this work while the separate W3H
 building calibration gate remains held. Real signing/provider integration is
 optional later work, not a blocker for ordinary W3 software development.
 
@@ -420,6 +420,12 @@ Fake-host tests are software evidence only; installed save/readback and
 rollback must run on the exact reviewed source before claiming W3J L4.
 Provider signature verification remains `NOT_PROVIDED` in this workbook path.
 
+The installed continuation proved trusted HTTPS/exact source, then the host
+helper failed to activate Excel after one recovery. No workbook or table was
+created, opened or written. Restore host activation before L4 continuation;
+see [the installed boundary receipt](../verification/etabs-w3j-installed-review-evidence.json).
+No repository writer defect or successful installed rollback is inferred.
+
 Excel gathers review metadata and freezes the dossier. It then exports the
 canonical JSON plus a human-readable PDF/HTML report for external signing.
 After signing, Excel may import verification evidence and display it. It does
@@ -575,8 +581,8 @@ provider and project/jurisdiction requirements; it must not be guessed.
 
 1. Use the master plan's current completion matrix. W3A-G/W3R are already
    accepted within their scopes; do not restart their historical instructions.
-2. Complete W3J review projection and installed Excel transaction/readback on
-   the provider-neutral dossier foundation, without inferring a real signature.
+2. Restore Windows window activation, then complete installed W3J transaction/
+   readback/rollback on the accepted #923 projection without inferring a signature.
 3. Resolve actual-building W3H mapping/criteria before W3I, then preserve the
    W3K/W3L fresh-copy, mandatory reanalysis and finite-iteration gates.
 4. Keep signing-provider/jurisdiction integration, API/React retirement and

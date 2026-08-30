@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-W3J-INSTALLED-REVIEW",
+  "observed_date": "2026-08-31",
+  "source_commit": "3716420ded8d56a74e159da322f031c589e09474",
+  "source_tree": "6db544c062f6b3a81fa8e523fa146f79f5426e15",
+  "source_pr": 923,
+  "verdict": "BLOCKED_HOST_UI_CONTROL_BEFORE_WORKBOOK",
+  "overall_w3": "NOT_COMPLETE",
+  "host": "LAPTOP-360-PRAV",
+  "os": "Windows 11 Home Single Language 10.0.26200 x64",
+  "runtime": {"python": "3.11.15", "source_bound": true, "node": "24.20.0", "maintained_npm": "11.19.0", "excel": "16.0.20326.20112", "etabs_file_version": "23.3.1.4563"},
+  "preflight": {"source_clean": true, "ports_3000_8000_free": true, "existing_office_ca_chain_valid": true, "trust_settings_changed": false, "existing_user_restricted_catalog_preserved": true, "catalog_manifest_excel_api_floor": "1.7", "repository_manifest_excel_api_floor": "1.16", "installed_excel_api_1_16": "NOT_FRESHLY_VERIFIED"},
+  "https": {"served_source_files": 5, "http_status": 200, "all_bytes_sha256_match_reviewed_source": true, "rendered_saved_review_page": true, "fastapi_started": false},
+  "installed_excel": {"launch": "OPENED_STARTUP_PAGE", "activation": "FAILED_AFTER_FRESH_DISCOVERY_AND_ONE_RECOVERY", "error": "failed to activate captured window", "root_cause": "UNCONFIRMED_HOST_CONTROL_FAILURE", "repository_writer_called": false, "workbook_created_or_opened": false, "table_publication": "NOT_RUN", "rollback": "NOT_RUN", "saved_file_readback": "NOT_RUN", "final_state": "STARTUP_PAGE_LEFT_OPEN_NO_FORCE_CLOSE"},
+  "calls": {"etabs": 0, "analysis": 0, "design": 0, "reanalysis": 0, "save_unlock_writeback": 0},
+  "model": {"safe_identity": "owner-authorized copied building model", "sha256": "92b3fa009f25b2228cc956cedb1b76268bb73414e16b361be334c0b3d81f6269", "size": 702855, "pre_post_hash_size_mtime_equal": true, "license_lock_units_selection_case_status": "NOT_FRESHLY_VERIFIED"},
+  "postflight": {"protected_files_unchanged": 6, "task_owned_https_process_stopped": true, "ports_3000_8000_free": true, "temporary_browser_tab_closed": true, "existing_etabs_window_preserved": true},
+  "external_evidence_directory_key": "ETABS-W3J-INSTALLED-REVIEW-20260831",
+  "external_hashes": {
+    "preflight-chain-verified.json": "d2a6d0d89539d0474e68123aa0ecefae557be47a328c9208ed62acfaa1f27cd6",
+    "served-source.json": "6d477e5a9b1d41597c6aa8a991301659f3b30c790d56b70ecc1309c119f72a33",
+    "installed-outcome.json": "ecfc82676e364fdb549fbfa6a77b4c73fb8601c77a685e77e7e4a88be51f39c8",
+    "postflight-ticks-verified.json": "c9bb676a1d2eebb4d4092e702efe872b5768d385d723c9c5aa89dcabbf1d3ce6",
+    "integrated-python-diagnosis.json": "0435142c4dc0a0a10a44d7b1de5128ff68d65ff30c37cd54479930597442424f",
+    "api-classification-after-staging.log": "9fa26d2108804a542bacafd9126d0da6579e6236c816d14162a9faf5eeb1efda",
+    "session-readonly-isolated.log": "6732fec7711374fc415ca2e0e73685261ba72495322e1bfe888b83770cab9afe"
+  },
+  "verification": {"integrated_python": "FAILED_17_INITIAL_FAILURES_16_UNRESOLVED_AFTER_ISOLATED_RETEST", "isolated_git_snapshot_retest": "PASS_1_TEST_WITH_NO_CONCURRENT_WRITES", "fastapi": "PASS_537_TESTS", "react": "PASS_LINT_283_TESTS_BUILD", "excel_addin": "PASS_51_TESTS_NOT_INSTALLED_EXCEL", "repository_full": "INITIAL_31_OF_32; CLASSIFICATION_PASS_AFTER_STAGING_INTENDED_RECEIPTS", "python_root_causes": ["Parameterized typing alias owner resolves to the factory", "Registry operation count changed from 119 to 120", "Windows launcher/path/symlink test assumptions", "Windows restore aggregate uses different path ordering", "One timing-budget miss, latency cause unconfirmed", "One Git-snapshot test contaminated by agent-owned closeout writes, isolated retest passed"], "repair_scope": "Separate software packet; no code repair inside installed evidence", "candidate_and_hosted_facts": "Captured outside candidate; partial output is not PASS"},
+  "preservation": {"prior_worktrees": 27, "dirty_w1_and_w3f_retained": true, "existing_data_deleted_reset_overwritten_stashed_reorganized": false},
+  "next": "Restore host window activation before exact-source installed W3J continuation. Independently establish supported actual-building load/support/slab mapping and screening criteria before W3H/I/K/L",
+  "professional_approval": "NOT_PROVIDED"
+}
