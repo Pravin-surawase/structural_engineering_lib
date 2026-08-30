@@ -1,0 +1,153 @@
+{
+  "schema_version": "etabs-w3r-pareto-shear-feasibility-evidence/v1",
+  "task_id": "ETABS-EXCEL-BEAM-W3-CAMPAIGN",
+  "packet": "W3R",
+  "verdict": "LOCAL_SOFTWARE_CONTRACT_ACCEPTED",
+  "observed_at_utc": "2026-08-30T00:29:17.9978015Z",
+  "source": {
+    "accepted_predecessor_pr": 906,
+    "accepted_predecessor_merge_commit": "d0cc95bf3b07120db51cf64439d28a5bb216337e",
+    "accepted_predecessor_tree": "56acf7ea2b5335d5da04cb6a7f9e9e6f43e8aab0",
+    "branch": "codex/etabs-w3r-pareto-shear-windows",
+    "remote": "https://github.com/Pravin-surawase/structural_engineering_lib.git",
+    "source_bound": true,
+    "python": "3.11.15",
+    "node": "24.20.0",
+    "npm": "11.19.0"
+  },
+  "confirmed_defect": {
+    "vu_kn_was_used_in_candidate_feasibility": false,
+    "flexure_valid_candidates_were_marked_safe_without_shear": true,
+    "unknown_objectives_silently_fell_back_to_cost": true
+  },
+  "accepted_contract": {
+    "maintained_flexure_service_used": true,
+    "maintained_shear_service_used": true,
+    "explicit_asv_mm2": true,
+    "default_asv_mm2": 100.53,
+    "flexural_utilization_reported_separately": true,
+    "maximum_shear_stress_utilization_reported_separately": true,
+    "stirrup_utilization_reported_separately": true,
+    "compatibility_utilization_is_governing_maximum": true,
+    "unknown_objectives_fail_closed": true,
+    "python_fastapi_openapi_and_react_surfaces_coherent": true
+  },
+  "deterministic_acceptance_vectors": {
+    "common": {
+      "span_mm": 5000,
+      "mu_knm": 120,
+      "max_candidates": 50,
+      "random_seed": 1,
+      "asv_mm2": 100.53
+    },
+    "low_shear": {
+      "vu_kn": 60,
+      "total_candidates": 50,
+      "pareto_count": 2,
+      "pareto_member_sections": [
+        "200x425-M30-Fe415",
+        "200x475-M25-Fe500"
+      ],
+      "maximum_retained_shear_utilization": 0.22263450834879409
+    },
+    "changed_shear": {
+      "vu_kn": 200,
+      "total_candidates": 50,
+      "pareto_count": 5,
+      "pareto_member_sections": [
+        "200x475-M25-Fe500",
+        "200x625-M25-Fe415",
+        "230x450-M30-Fe500",
+        "230x450-M25-Fe500",
+        "200x550-M25-Fe500"
+      ],
+      "representative_reconciliation": {
+        "section": "200x475-M25-Fe500",
+        "d_mm": 435,
+        "tau_v_nmm2": 2.2988505747126435,
+        "tau_c_nmm2": 0.614793997284248,
+        "tau_c_max_nmm2": 3.1,
+        "stirrup_spacing_mm": 125.0,
+        "flexural_utilization": 0.94930661206855,
+        "shear_utilization": 0.7415647015202076,
+        "stirrup_utilization": 0.9627460536332128,
+        "governing_utilization": 0.9627460536332128,
+        "maintained_shear_service_exact_match": true
+      }
+    },
+    "infeasible_high_shear": {
+      "vu_kn": 500,
+      "safe_candidate_returned": false,
+      "best_candidate_returned": false,
+      "exception_type": "ValueError",
+      "message": "No valid designs found. Check inputs or loosen constraints."
+    },
+    "unknown_objective": {
+      "name": "carbon",
+      "accepted": false,
+      "python_and_fastapi_fail_closed": true
+    }
+  },
+  "explicit_holds": [
+    "TORSION_AND_TORSION_SHEAR_INTERACTION_NOT_EVALUATED",
+    "SERVICEABILITY_NOT_EVALUATED",
+    "STIRRUP_MASS_AND_COST_EXCLUDED",
+    "FIXED_ACTION_INPUTS_ONLY",
+    "GLOBAL_ANALYSIS_NOT_PERFORMED",
+    "ETABS_ACCEPTANCE_NOT_PERFORMED",
+    "ENGINEERING_OR_PROFESSIONAL_APPROVAL_NOT_CREATED",
+    "RELEASE_NOT_AUTHORIZED_OR_PERFORMED"
+  ],
+  "local_verification": {
+    "focused_python_and_fastapi_pytest": {
+      "passed": 28,
+      "failed": 0
+    },
+    "focused_react_component": {
+      "passed": 6,
+      "failed": 0
+    },
+    "changed_python_ruff": "PASS",
+    "targeted_core_mypy": "PASS",
+    "api_manifest": "PASS",
+    "api_classification_and_compatibility_ledger": "PASS",
+    "openapi": "PASS_97_ENDPOINTS_543_SCHEMAS",
+    "changed_react_eslint": "PASS",
+    "react_production_build": "PASS_2435_MODULES",
+    "documentation": "PASS_8_OF_8_ZERO_REUSE",
+    "quick_gate": "PENDING",
+    "normal_hooks": "PENDING",
+    "hosted_checks": "PENDING"
+  },
+  "issues_and_repairs": [
+    {
+      "issue": "The first worktree-local React test could not start a Vitest worker.",
+      "root_cause": "npm 11 quarantined the pinned esbuild post-install script, leaving the ignored local dependency binary unavailable.",
+      "resolution": "Ran only the exact lockfile package's local install script inside node_modules; the same test then passed 6/6. No tracked dependency or machine-wide setting changed."
+    },
+    {
+      "issue": "A broad targeted Mypy invocation followed FastAPI imports into unrelated existing modules and reported 36 pre-existing diagnostics.",
+      "root_cause": "Mypy expands imported modules even when three entry files are supplied; the repository's normal governed hook is the authoritative broad type lane.",
+      "resolution": "Ran configured Mypy on the changed transport-neutral optimizer owner, which passed, and reserved the normal staged hook for the complete governed type check."
+    },
+    {
+      "issue": "A guessed session status subcommand was not supported and a packet-level session begin was rejected.",
+      "root_cause": "The maintained session CLI has no status command, and the overarching ETABS-EXCEL-BEAM-W3-CAMPAIGN start checkpoint is intentionally still active.",
+      "resolution": "Retained the campaign checkpoint, did not overwrite its timing, and used maintained context/check/end interfaces only."
+    },
+    {
+      "issue": "The first documentation command guessed an unsupported --docs shorthand.",
+      "root_cause": "The unified checker accepts the explicit --category docs selector.",
+      "resolution": "Reran the exact maintained docs category with no reuse; all eight checks passed."
+    }
+  ],
+  "scope": {
+    "etabs_or_excel_opened_by_w3r": false,
+    "model_or_workbook_read_or_mutated_by_w3r": false,
+    "analysis_design_or_solver_run": false,
+    "global_path_or_machine_software_changed": false,
+    "tracked_dependency_manifest_changed": false,
+    "previous_worktrees_branches_models_workbooks_and_evidence_preserved": true
+  },
+  "next_action": "Complete docs, quick gate and normal hooks; create one immutable W3R candidate, run normal hosted review, merge only an unchanged head, then start W3E from fetched current main."
+}

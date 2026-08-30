@@ -335,7 +335,29 @@ class ParetoCandidateResponse(BaseModel):
     bar_config: str = Field(description="Bar configuration (e.g. '4-16mm')")
     cost: float = Field(description="Total cost (INR)")
     steel_weight_kg: float = Field(description="Steel weight (kg)")
-    utilization: float = Field(description="Capacity utilization ratio (0-1)")
+    utilization: float = Field(description="Governing capacity utilization ratio")
+    flexural_utilization: float = Field(
+        description="Flexural limiting-capacity utilization"
+    )
+    shear_utilization: float = Field(
+        description="Maximum concrete shear-stress utilization"
+    )
+    stirrup_utilization: float = Field(
+        description="Required-to-provided stirrup utilization"
+    )
+    shear_tau_v_nmm2: float = Field(description="Nominal shear stress (N/mm²)")
+    shear_tau_c_nmm2: float = Field(
+        description="Concrete design shear strength (N/mm²)"
+    )
+    shear_tau_c_max_nmm2: float = Field(
+        description="Maximum concrete shear stress (N/mm²)"
+    )
+    stirrup_spacing_mm: float = Field(
+        description="Maintained shear-design stirrup spacing (mm)"
+    )
+    shear_reinforcement_area_mm2: float = Field(
+        description="Area of supplied vertical stirrup legs (mm²)"
+    )
     is_safe: bool = Field(description="Meets IS 456 requirements")
     governing_clauses: list[str] = Field(
         default_factory=list, description="Governing IS 456 clauses"
@@ -383,6 +405,11 @@ class ParetoRequest(BaseModel):
         le=200,
         description="Maximum number of candidates to generate",
     )
+    asv_mm2: float = Field(
+        default=100.53,
+        gt=0,
+        description="Area of supplied vertical stirrup legs (mm²)",
+    )
 
 
 class ParetoResponse(BaseModel):
@@ -403,4 +430,7 @@ class ParetoResponse(BaseModel):
     )
     best_by_weight: ParetoCandidateResponse | None = Field(
         default=None, description="Lightest design"
+    )
+    limitations: list[str] = Field(
+        description="Explicit analysis, serviceability, and quantity holds"
     )

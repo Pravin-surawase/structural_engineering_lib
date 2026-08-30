@@ -1256,25 +1256,37 @@ utilization.
 Raised when no candidate satisfies the explicit flexure, maximum-shear,
 supplied-stirrup-capacity, geometry, and utilization basis.
 
-### `optimize_pareto_front(span_mm, mu_knm, vu_kn, objectives=None, cost_profile=None, cover_mm=40, max_candidates=50, random_seed=None) → ParetoOptimizationResult`
+### `optimize_pareto_front(span_mm, mu_knm, vu_kn, objectives=None, cost_profile=None, cover_mm=40, max_candidates=50, random_seed=None, asv_mm2=100.53) → ParetoOptimizationResult`
 
-NSGA-II multi-objective beam optimization. Objectives: cost, steel_weight, utilization. Returns `api.ParetoOptimizationResult`.
+NSGA-II-inspired multi-objective beam optimization. Objectives are exactly
+`cost`, `steel_weight`, and `utilization`; unknown names fail closed. Candidate
+feasibility uses the maintained IS 456 flexure and shear services plus the
+explicit supplied stirrup-leg area. `utilization` is the governing value across
+the separately reported flexural, maximum-shear-stress, and supplied-stirrup
+checks. Torsion, serviceability, stirrup cost, and global-analysis/action
+redistribution remain explicit holds. Returns `api.ParetoOptimizationResult`.
 
 ```python
 result = api.optimize_pareto_front(
     span_mm=6000, mu_knm=200, vu_kn=120,
     objectives=["cost", "steel_weight"], max_candidates=100,
+    asv_mm2=100.53,
 )
 print(result.best_by_cost)
 ```
 
 ### `api.ParetoOptimizationResult`
 
-Frozen dataclass: `pareto_front: list[ParetoCandidate]`, `all_candidates`, `objectives_used`, `generations`, `computation_time_sec`, `best_by_cost`, `best_by_utilization`, `best_by_weight`.
+Frozen dataclass: `pareto_front: list[ParetoCandidate]`, `all_candidates`,
+`objectives_used`, `generations`, `computation_time_sec`, `best_by_cost`,
+`best_by_utilization`, `best_by_weight`, and `limitations`.
 
 ### `api.ParetoCandidate`
 
-Frozen dataclass: `b_mm`, `D_mm`, `d_mm`, `fck_nmm2`, `fy_nmm2`, `ast_required`, `ast_provided`, `bar_config`, `cost`, `steel_weight_kg`, `utilization`, `is_safe`, `governing_clauses`, `rank`, `crowding_distance`.
+Frozen dataclass with geometry/material/reinforcement/cost fields plus governing,
+flexural, shear, and stirrup utilization; nominal/design/maximum shear stresses;
+stirrup spacing and supplied leg area; safety, clauses, rank, and crowding
+distance. Stirrup quantity and cost are not implied by the supplied leg area.
 
 ---
 

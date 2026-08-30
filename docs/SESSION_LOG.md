@@ -5,6 +5,72 @@
 
 ---
 
+## 2026-08-30 — Session: W3R Pareto shear-feasibility repair
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents).
+
+**Branch:** `codex/etabs-w3r-pareto-shear-windows`, created as a fresh linked
+worktree from accepted W3D PR #906 merge
+`d0cc95bf3b07120db51cf64439d28a5bb216337e`, tree
+`56acf7ea2b5335d5da04cb6a7f9e9e6f43e8aab0`. All earlier W2/W3 worktrees,
+branches, copied models, workbooks and evidence remain retained.
+
+**Git handoff receipt:**
+`docs/verification/etabs-w3r-pareto-shear-feasibility-git-handoff-receipt.json`
+(pre-commit conservative receipt; hosted and integration facts remain external).
+
+**Focus:** Repair only the confirmed Pareto shear-feasibility and unknown-objective defects while preserving every W3 claim and application boundary.
+
+**Completed:**
+
+- Routed each flexure-valid candidate through maintained IS 456 shear using explicit `asv_mm2`; maximum stress and supplied stirrup capacity both govern.
+- Added separate flexure/shear/stirrup utilization and exact shear/spacing evidence; compatibility `utilization` is their truthful governing maximum.
+- Rejected empty/unknown objectives; Python, FastAPI/OpenAPI, generated compatibility data and React expose one coherent additive contract.
+- Deterministic 5,000 mm / 120 kNm vectors prove that changing shear from 60 to
+  200 kN changes the Pareto front from two to five member identities; 500 kN
+  returns no safe or best candidate. A representative 200×475 M25/Fe500
+  candidate reconciles the maintained shear service exactly.
+- Focused Python/FastAPI tests pass 28/28; React component tests pass 6/6;
+  changed-file Ruff, targeted owner Mypy, API manifest/classification/OpenAPI,
+  changed React lint and the 2,435-module production build pass.
+
+### Issues encountered
+
+- A guessed `session status` subcommand does not exist; a later packet-level
+  `session begin` correctly rejected because the overarching W3 campaign start
+  checkpoint remains active.
+- The first React test started no tests because its worker timed out.
+- A three-entry Mypy command followed FastAPI imports into unrelated existing
+  files and reported 36 pre-existing diagnostics outside W3R.
+- The first documentation command guessed unsupported `--docs` shorthand.
+
+### Root causes and resolutions
+
+- The maintained session CLI uses context/check/end, not status, and permits
+  only one unmatched start. Retained the existing
+  `ETABS-EXCEL-BEAM-W3-CAMPAIGN` checkpoint and did not invent or overwrite
+  timing. ⚠️ TERMINAL ISSUE: unsupported status and duplicate begin -> used the
+  active campaign checkpoint and maintained interfaces.
+- npm 11 quarantined the exact lockfile `esbuild` post-install script, leaving
+  its ignored worktree-local binary unavailable. Ran only that pinned package's
+  local install script inside `node_modules`; the same test passed 6/6, lint
+  passed and production build passed. No tracked dependency or machine-wide
+  setting changed. ⚠️ TERMINAL ISSUE: quarantined local build tool -> restored
+  only the worktree-local lockfile dependency state.
+- Mypy expands imported modules beyond named entry files. Used configured
+  targeted Mypy on the changed transport-neutral optimizer owner, which
+  passed, and reserved the repository's normal staged hook for the governed
+  broad type lane. No unrelated diagnostic was changed.
+- The unified checker requires `--category docs`. Reran that exact maintained
+  category fresh; all eight documentation checks passed. ⚠️ TERMINAL ISSUE:
+  unsupported `--docs` shorthand -> used `--category docs --no-reuse`.
+- W3R is software-contract acceptance only. It ran no ETABS/Excel operation,
+  solver, model/workbook read or mutation, analysis, design, release, or
+  engineering/professional/construction approval.
+
+**Evidence:**
+`docs/verification/etabs-w3r-pareto-shear-feasibility-evidence.json`.
+
 ## 2026-08-30 — Session: W3D complete live catalogue and demand acceptance
 
 **Agent:** Codex (`orchestrator`/Windows evidence owner, sole writer; no

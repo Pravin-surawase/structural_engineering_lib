@@ -98,6 +98,14 @@ class TestParetoOptimization:
                 "cost",
                 "steel_weight_kg",
                 "utilization",
+                "flexural_utilization",
+                "shear_utilization",
+                "stirrup_utilization",
+                "shear_tau_v_nmm2",
+                "shear_tau_c_nmm2",
+                "shear_tau_c_max_nmm2",
+                "stirrup_spacing_mm",
+                "shear_reinforcement_area_mm2",
                 "is_safe",
                 "governing_clauses",
                 "rank",
@@ -128,6 +136,32 @@ class TestParetoOptimization:
 
         data = unwrap(response)
         assert "cost" in data["objectives_used"]
+
+    def test_pareto_unknown_objective_is_rejected(self, client):
+        """Unknown objective names must fail instead of becoming cost."""
+        response = client.post(
+            "/api/v1/optimization/beam/pareto",
+            json={
+                "span_mm": 5000.0,
+                "mu_knm": 120.0,
+                "vu_kn": 60.0,
+                "objectives": ["carbon"],
+            },
+        )
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+    def test_pareto_high_shear_fails_closed(self, client):
+        """The endpoint cannot return flexure-only candidates for high shear."""
+        response = client.post(
+            "/api/v1/optimization/beam/pareto",
+            json={
+                "span_mm": 5000.0,
+                "mu_knm": 120.0,
+                "vu_kn": 500.0,
+                "max_candidates": 50,
+            },
+        )
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
     def test_pareto_best_by_fields(self, client):
         """best_by_cost, best_by_utilization, best_by_weight are present (may be null)."""

@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import pytest
 
+from structural_lib.codes.is456.beam import shear
 from structural_lib.services import multi_objective_optimizer as optimizer_module
 from structural_lib.services.multi_objective_optimizer import (
     ParetoCandidate,
@@ -115,6 +116,83 @@ class TestParetoOptimization:
             # All designs should have at least flexure clause
             if candidate.ast_provided > 0:
                 assert len(candidate.governing_clauses) >= 0
+
+    def test_high_shear_cannot_return_a_safe_or_best_candidate(self):
+        """A demand beyond every candidate's tc,max must fail closed."""
+        with pytest.raises(ValueError, match="No valid designs found"):
+            optimize_pareto_front(
+                span_mm=5000,
+                mu_knm=120,
+                vu_kn=500,
+                max_candidates=50,
+            )
+
+    def test_shear_demand_changes_feasibility_and_pareto_membership(self):
+        """vu_kn is a design-bearing input, not ignored metadata."""
+        low = optimize_pareto_front(
+            span_mm=5000,
+            mu_knm=120,
+            vu_kn=60,
+            max_candidates=50,
+        )
+        high = optimize_pareto_front(
+            span_mm=5000,
+            mu_knm=120,
+            vu_kn=200,
+            max_candidates=50,
+        )
+
+        low_front = {(c.b_mm, c.D_mm, c.fck_nmm2, c.fy_nmm2) for c in low.pareto_front}
+        high_front = {
+            (c.b_mm, c.D_mm, c.fck_nmm2, c.fy_nmm2) for c in high.pareto_front
+        }
+        assert low_front != high_front
+        assert max(c.shear_utilization for c in high.all_candidates) > max(
+            c.shear_utilization for c in low.all_candidates
+        )
+
+    def test_candidate_reconciles_maintained_shear_service(self):
+        """Reported shear evidence comes from the maintained IS 456 service."""
+        result = optimize_pareto_front(
+            span_mm=5000,
+            mu_knm=120,
+            vu_kn=200,
+            max_candidates=50,
+            asv_mm2=100.53,
+        )
+        candidate = result.pareto_front[0]
+        maintained = shear.design_shear(
+            vu_kn=200,
+            b=candidate.b_mm,
+            d=candidate.d_mm,
+            fck=candidate.fck_nmm2,
+            fy=candidate.fy_nmm2,
+            asv=100.53,
+            pt=100.0 * candidate.ast_provided / (candidate.b_mm * candidate.d_mm),
+        )
+
+        assert maintained.is_safe
+        assert candidate.shear_tau_v_nmm2 == pytest.approx(maintained.tau_v)
+        assert candidate.shear_tau_c_nmm2 == pytest.approx(maintained.tau_c)
+        assert candidate.shear_tau_c_max_nmm2 == pytest.approx(maintained.tau_c_max)
+        assert candidate.stirrup_spacing_mm == pytest.approx(maintained.spacing)
+        assert candidate.utilization == pytest.approx(
+            max(
+                candidate.flexural_utilization,
+                candidate.shear_utilization,
+                candidate.stirrup_utilization,
+            )
+        )
+
+    def test_unknown_objective_is_rejected(self):
+        """Unknown names must not silently fall back to cost."""
+        with pytest.raises(ValueError, match="Unsupported Pareto objective"):
+            optimize_pareto_front(
+                span_mm=5000,
+                mu_knm=120,
+                vu_kn=80,
+                objectives=["carbon"],
+            )
 
 
 class TestDesignExplanation:

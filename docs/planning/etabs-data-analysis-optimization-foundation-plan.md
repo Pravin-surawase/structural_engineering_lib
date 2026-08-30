@@ -787,6 +787,19 @@ best Pareto candidate; changing `vu_kn` changes feasibility/results; safe
 fixtures reconcile the maintained shear service; unknown objectives fail;
 public Python, FastAPI response and compatibility surfaces remain coherent.
 
+Windows implementation acceptance on 2026-08-30 routes every retained
+candidate through the maintained IS 456 shear design using explicit
+`asv_mm2` (default two-legged 8 mm), reports flexure, maximum-shear-stress and
+stirrup utilization separately, and uses their maximum as the compatibility
+`utilization` value. Demands of 60 and 200 kN produce different Pareto
+membership, while the deliberately infeasible 500 kN fixture returns no safe
+or best candidate. Unknown objective names fail before search. Python,
+FastAPI/OpenAPI and the maintained React client expose the same evidence and
+retain explicit holds for torsion, serviceability, stirrup cost, and
+fixed-action/global-analysis limitations. This is local software-contract
+acceptance pending the packet's normal immutable review; it is not ETABS,
+engineering, professional, construction or release approval.
+
 ### W3E — Beam audit evaluator (`L1`, later `L3` evidence)
 
 Owner: Mac implementation; Windows supplies no new evidence unless an accepted
