@@ -6,8 +6,8 @@
 - Date: 2026-08-30
 - Focus: Repair the existing pre-commit completion exception before refreshing the saved API audit plan.
 - Completed: Applied completion mode to both Git checks in the shared quick gate.; Kept one resolved-merge predicate: safe named branch, known state, no locks; Proved a real linked-worktree conflict/resolution/commit sequence through
-- Git receipt: docs/verification/lib-pro-015-merge-hook-git-handoff-receipt.json | sha256:48a369ac1e2b4781ab06b8e8dcf0d3633497917d967af78c240569538a7efbff | HOLD
-- Git identity: codex/lib-pro-015-resolved-merge-hook@f353afe54f2c328a300361418ca3b1816b611dc4 | upstream=origin/main@f353afe54f2c328a300361418ca3b1816b611dc4 | base=origin/main@f353afe54f2c328a300361418ca3b1816b611dc4 | tree=dirty | operation=none
+- Git receipt: docs/verification/lib-pro-015-merge-hook-git-handoff-receipt.json | sha256:6bb3d0781edbd91de91ee512cb658a6c2acd3d564e3eb97c3b0c5f06267baf28 | HOLD
+- Git identity: codex/lib-pro-015-resolved-merge-hook@f4580a9524f095c8a3d8ca9432464c905e135b54 | upstream=origin/main@f353afe54f2c328a300361418ca3b1816b611dc4 | base=origin/main@f353afe54f2c328a300361418ca3b1816b611dc4 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->

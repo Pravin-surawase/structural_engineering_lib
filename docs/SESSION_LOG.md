@@ -37,6 +37,8 @@ the original `60501286` plan commit remain intact. The unmatched
   that launcher then exposed the synthetic repository's absent runtime.
 - A fresh main moved beyond the saved audit's W3C baseline; its quantitative
   audit and shared records must be refreshed before publication.
+- The full local gate on initial candidate `f4580a95` passed 31/32 checks;
+  the API manifest lacked 17 already-exported W3F symbols inherited from main.
 
 ### Root causes and resolutions
 
@@ -53,6 +55,11 @@ the original `60501286` plan commit remain intact. The unmatched
 - Main advances were separate accepted W3D/E/F and W3R packets, not lost audit
   content. This repair precedes the explicit audit rebind; no stale audit is
   represented as current, and no abandoned merge is discarded in this commit.
+- The W3F exports changed without refreshing `api-manifest.json`; the hook
+  repair changed no library source or manifest. Regenerated the existing
+  manifest from current exports as the single pre-push repair candidate.
+  `generate_api_manifest.py --check` and the repeated consolidated full gate
+  are required before publishing; no missing export or check is suppressed.
 
 **Verification contract:** Post-freeze focused Git-state/verification tests,
 architecture/import checks, docs checks, quick gate and normal hooks precede
