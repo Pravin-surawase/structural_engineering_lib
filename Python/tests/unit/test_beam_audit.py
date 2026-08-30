@@ -185,20 +185,31 @@ def test_serviceability_five_states_retained_and_never_faked(
         else _absent(state)
     )
     basis = request.member_bases[0].model_copy(update={"serviceability_basis": service})
-    result = _evaluate(
-        request.model_copy(
-            update={"member_bases": (basis,), "require_serviceability": True}
-        )
+    required = request.model_copy(
+        update={"member_bases": (basis,), "require_serviceability": True}
     )
+    built = audit.build_beam_audit_inputs_v1(required)
+    if state is not EvidenceStateV1.NOT_APPLICABLE:
+        assert built.status is W3BuildStatusV1.BLOCKED and built.inputs is None
+        assert all(
+            issue.code == "BEAM_AUDIT_REQUIRED_SERVICEABILITY_BLOCKED"
+            for issue in built.issues
+        )
+    else:
+        assert built.status is W3BuildStatusV1.ACCEPTED
+    optional = required.model_copy(update={"require_serviceability": False})
+    if state is EvidenceStateV1.BLOCKED:
+        blocked = audit.build_beam_audit_inputs_v1(optional)
+        assert blocked.status is W3BuildStatusV1.BLOCKED and blocked.inputs is None
+        return
+    result = _evaluate(optional)
     for row in result.rows:
         check = next(item for item in row.checks if item.check == "serviceability")
         assert check.outcome.value is None
         assert check.outcome.state is (
-            EvidenceStateV1.BLOCKED if state is EvidenceStateV1.PRESENT else state
+            EvidenceStateV1.UNAVAILABLE if state is EvidenceStateV1.PRESENT else state
         )
         assert row.input.serviceability_basis == service
-    if state is not EvidenceStateV1.NOT_APPLICABLE:
-        assert result.verdict in {"HELD", "FAIL"}
 
 
 def test_hash_geometry_capacity_member_and_applicability_guards() -> None:

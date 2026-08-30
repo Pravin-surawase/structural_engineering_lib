@@ -833,6 +833,10 @@ face mapping, complete canonical JSON/hash, clauses and per-check governors.
 The caller supplies applicability limits and factored/material/detailing bases;
 these are never derived from an ETABS material label or chosen by the library.
 The existing canonical serviceability scope hold remains explicit. W3E does
+not return an accepted parent when serviceability is required but unevaluable,
+or when any requested basis/scenario check is explicitly BLOCKED. Optional
+unevaluated serviceability remains UNAVAILABLE/NOT_REQUESTED/NOT_APPLICABLE.
+W3E does
 not claim supplied/installed reinforcement adequacy, serviceability, global
 analysis, or professional approval. This is L1 synthetic software evidence,
 not new installed W3D evidence.

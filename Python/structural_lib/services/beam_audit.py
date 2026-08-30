@@ -88,7 +88,7 @@ class BeamAuditMemberBasisV1(StrictPublicModel):
     calculation_basis: EvidenceValueV1[BeamCalculationBasisV1]
     detailing: EvidenceValueV1[BeamDetailingOptionsV1]
     applicability: EvidenceValueV1[BeamAuditApplicabilityBasisV1]
-    # PRESENT requests remain BLOCKED until canonical typed serviceability exists.
+    # Required serviceability blocks until the canonical typed route exists.
     serviceability_basis: EvidenceValueV1[str]
     assumptions: tuple[str, ...] = Field(min_length=1)
 
@@ -224,6 +224,17 @@ def build_beam_audit_inputs_v1(
                 "canonical strength requires an explicit STRENGTH scenario",
             )
         )
+    if any(
+        check.state is EvidenceStateV1.BLOCKED
+        for check in request.demand.scenario.held_checks
+    ):
+        issues.append(
+            _issue(
+                "BEAM_AUDIT_SCENARIO_CHECK_BLOCKED",
+                "demand.scenario.held_checks",
+                "BLOCKED scenario evidence cannot produce an accepted parent audit",
+            )
+        )
     if issues:
         return BeamAuditInputBuildResultV1(
             status=W3BuildStatusV1.BLOCKED, issues=tuple(issues), inputs=None
@@ -261,6 +272,21 @@ def build_beam_audit_inputs_v1(
                     "BEAM_AUDIT_MEMBER_MISSING",
                     action.row_id,
                     "retained member requires both frame identity and explicit basis",
+                )
+            )
+            continue
+        service = basis.serviceability_basis
+        if service.state is EvidenceStateV1.BLOCKED or (
+            request.require_serviceability
+            and service.state is not EvidenceStateV1.NOT_APPLICABLE
+        ):
+            issues.append(
+                _issue(
+                    "BEAM_AUDIT_REQUIRED_SERVICEABILITY_BLOCKED",
+                    f"member_bases:{action.member_id}.serviceability_basis",
+                    "Required serviceability cannot be evaluated by the current canonical route; "
+                    f"scenario={request.demand.scenario.scenario_id}, row={action.row_id}, "
+                    f"source_state={service.state.value}. No partial accepted audit is returned.",
                 )
             )
             continue
@@ -485,7 +511,7 @@ def evaluate_beam_audit_v1(
         state = (
             service.state
             if service.state is not EvidenceStateV1.PRESENT
-            else EvidenceStateV1.BLOCKED
+            else EvidenceStateV1.UNAVAILABLE
         )
         missing = _not_evaluated(
             state,

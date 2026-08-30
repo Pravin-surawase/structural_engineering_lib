@@ -5,6 +5,55 @@
 
 ---
 
+## 2026-08-30 — Session: W3E required-evidence propagation repair
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents).
+
+**Branch:** `codex/etabs-w3e-beam-audit-windows`. This is an explicit material
+repair candidate appended without rewriting the first W3E candidate
+`97e5d4d4124c1a933e99566edc81c6122885002f`, tree
+`7b959ca192161bd6aa92aada737ccda5a1097105`, in PR #908. That candidate's
+hosted Python/FastAPI/Documentation/PR Gate passed, but it was NOT merged.
+All original candidate history, other worktrees and data remain preserved.
+
+**Git handoff receipt:**
+`docs/verification/etabs-w3e-required-evidence-repair-git-handoff-receipt.json`
+
+**Focus:** Propagate required/explicitly BLOCKED evidence to a blocked parent audit, as the accepted five-state policy requires.
+
+**Completed:**
+
+- Block required serviceability before building inputs unless the caller
+  explicitly proves it NOT_APPLICABLE; the current canonical route cannot
+  evaluate it. Return no partial accepted audit and cite member/scenario/row.
+- Propagate explicit BLOCKED serviceability and scenario-check evidence.
+  Optional PRESENT service criteria are retained, while the unavailable
+  optional calculation is UNAVAILABLE, never a pass or an accepted BLOCKED field.
+- Preserve the successful synthetic three-row strength vector, all exact
+  public signatures, six-action provenance, canonical owner and claim limits.
+
+### Issues encountered
+
+- Main-process replay proved that required BLOCKED serviceability produced
+  an ACCEPTED input build followed by ACCEPTED/HELD evaluation with three
+  rows. This contradicted the accepted optional-state table's rule that a
+  BLOCKED required value cannot produce an accepted parent result.
+
+### Root causes and resolutions
+
+- The first W3E builder guarded section/material/detailing/applicability but
+  deferred serviceability to a verdict-only hold. Moved required evidence
+  propagation into the builder before any partial output. Updated the existing
+  five-state regression to prove required and optional parent dispositions.
+  This is a material correction, not a routine post-push documentation change;
+  PR #908 must run required checks again on the new immutable candidate.
+- No terminal issue or ETABS/Excel/model operation occurred in this repair.
+
+**Evidence:** `docs/verification/etabs-w3e-beam-audit-evidence.json` plus the
+same-row/five-state focused tests. Fresh affected checks, quick gate, normal
+hooks and read-only closeout precede the candidate push; later hosted facts
+remain external.
+
 ## 2026-08-30 — Session: W3E same-row beam-audit evaluator
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents).

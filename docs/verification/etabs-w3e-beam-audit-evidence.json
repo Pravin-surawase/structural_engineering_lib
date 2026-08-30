@@ -15,6 +15,15 @@
   "public_functions": ["build_beam_audit_inputs_v1", "evaluate_beam_audit_v1"],
   "owner": "Python/structural_lib/services/beam_audit.py",
   "calculation_owner": "structural_lib.services.canonical_beam.check",
+  "explicit_repair_candidate": {
+    "prior_candidate": "97e5d4d4124c1a933e99566edc81c6122885002f",
+    "prior_candidate_merged": false,
+    "issue": "Required BLOCKED serviceability produced ACCEPTED/HELD with partial rows.",
+    "root_cause": "Required serviceability was deferred to verdict aggregation instead of parent build validation.",
+    "correction": "Required unavailable serviceability and explicit BLOCKED basis/scenario evidence block the builder without partial output.",
+    "optional_present_serviceability_calculation_state": "UNAVAILABLE",
+    "public_signatures_changed": false
+  },
   "synthetic_acceptance": {
     "rows": 3,
     "verdict": "PASS",
@@ -35,10 +44,10 @@
     "focused_w3e_tests_passed": 29,
     "ruff": "PASS",
     "targeted_mypy": "PASS",
-    "consolidated_focused_and_architecture": "PASS_53_TESTS_241_ARCHITECTURE_FILES_885_INTERNAL_IMPORTS",
-    "documentation": "PASS_8_OF_8_ZERO_REUSE",
-    "quick_gate": "PASS_10_OF_10_ZERO_REUSE",
-    "normal_hooks": "FORMAT_CORRECTION_APPLIED_FINAL_RECHECK_PENDING",
+    "consolidated_focused_and_architecture": "PRIOR_CANDIDATE_PASS_53_TESTS_REPAIR_RECHECK_PENDING",
+    "documentation": "PRIOR_CANDIDATE_PASS_8_OF_8_REPAIR_RECHECK_PENDING",
+    "quick_gate": "REPAIR_RECHECK_PENDING",
+    "normal_hooks": "REPAIR_RECHECK_PENDING",
     "hosted_checks": "PENDING"
   },
   "limitations": [
