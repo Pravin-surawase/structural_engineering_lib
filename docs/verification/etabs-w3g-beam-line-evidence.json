@@ -1,0 +1,72 @@
+{
+  "schema_version": "etabs-w3g-beam-line-evidence/v1",
+  "task_id": "ETABS-W3G-BEAM-LINE",
+  "packet": "W3G",
+  "evidence_level": "L1_LOCAL_SOFTWARE",
+  "verdict_at_content_freeze": "NUMERICAL_REFERENCE_TESTS_PASS_INTEGRATION_PENDING",
+  "source": {
+    "predecessor_pr": 914,
+    "predecessor_merge": "384e14a0153109e40a7b025f1ce89bf6c5205dd9",
+    "predecessor_tree": "258c0c0498f43c6a24bc66a973367be7d799ed40",
+    "branch": "codex/etabs-w3g-beam-line-windows",
+    "python": "3.11.15",
+    "source_bound": true,
+    "writer_device": "Windows; owner resumed next campaign packet"
+  },
+  "public_function": "solve_beam_line_linear_v1(request: BeamLineAnalysisRequestV1, /) -> BeamLineAnalysisBuildResultV1",
+  "architecture": {
+    "contracts": "Python/structural_lib/core/beam_line.py",
+    "pure_solver": "Python/structural_lib/services/beam_line.py",
+    "public_projection": "structural_lib",
+    "numpy_or_vendor_dependency_added": false
+  },
+  "acceptance": {
+    "focused_tests_passed_during_development": 40,
+    "branch_aware_coverage_percent": 94,
+    "simply_supported_udl_point_closed_forms": true,
+    "cantilever_and_fixed_closed_forms": true,
+    "two_to_five_span_symmetry_and_equilibrium": true,
+    "independent_continuous_support_moments": true,
+    "release_offset_rotational_spring_compatibility": true,
+    "signed_nested_factors_self_weight_stiffness": true,
+    "two_sides_of_point_load_jumps": true,
+    "deterministic_json_hash_roundtrip": true,
+    "singularity_missing_evidence_and_capacity_block_without_partial_result": true,
+    "max_equilibrium_relative_tolerance": 1e-8,
+    "default_absolute_force_kn": 1e-9,
+    "default_absolute_moment_knm": 1e-9
+  },
+  "reference_sources": [
+    "https://oit.tudelft.nl/CIEM5000/2026/lecture1/other_elements.html",
+    "https://www.clemson.edu/cecas/departments/me/academics/graduate/qualifying_exams/media/solid-2.pdf"
+  ],
+  "synthetic_benchmark": {
+    "iterations": 100,
+    "spans": 5,
+    "station_rows_per_solve": 105,
+    "elapsed_seconds": 0.19235050000133924,
+    "request_sha256": "be925c681c7288e09d4dffced720ed44ee9996873cbe04a056f8b28fd71df5a7",
+    "result_sha256": "0a2e1ee656e5695294d89c281c87b4585d7d6d18806c00eee0a84899f18078ec",
+    "payload_sha256": "6026a61d5acb7f3f1b30803bd683b7924514083abbcbeadc2a9089899becd405",
+    "claim": "One host synthetic microbenchmark; no ETABS trip-reduction or model accuracy claim"
+  },
+  "verification_after_freeze": "Consolidated focused/API/architecture/import/docs checks, one quick gate, normal hooks, exact-head audit and required hosted checks; final facts remain external and on GitHub",
+  "limitations": [
+    "SURROGATE_ONLY; independent frame analysis remains HELD_NOT_SUPPORTED until separate W3H acceptance.",
+    "No model-specific ETABS calibration, torsion derivation, 3D/nonlinear analysis, optimizer, design or professional approval.",
+    "Pure synthetic reference inputs are not owner-supplied model engineering criteria.",
+    "Only unloaded rigid end arms; all member loading/self-weight is on flexible length. No support settlement or vertical springs.",
+    "Negative reactions retain uplift; bilateral ideal restraints do not certify contact.",
+    "Planned reference-comparison/calibration public function belongs to W3H and is not implemented as a placeholder.",
+    "W3F unavailable spring/diaphragm evidence and historical broad Windows holds remain preserved.",
+    "Zero ETABS/Excel/model/workbook operations; no release, deletion or retirement."
+  ],
+  "workflow_measurement": {
+    "docs_input_files": 3450,
+    "first_profile_wall_seconds": 179.875,
+    "first_profile_io_open_seconds": 176.652,
+    "second_profile_wall_seconds": 3.063,
+    "conclusion": "First-read filesystem opens dominate; underlying OS/storage/security cause unconfirmed. Diagnostic input bytes changed during implementation, so no exact-input speedup claim.",
+    "gate_code_or_security_settings_changed": false
+  }
+}

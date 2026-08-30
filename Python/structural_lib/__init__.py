@@ -84,6 +84,30 @@ from .core.analysis_contracts import (
     UnsupportedCaseParametersV1,
 )
 
+# Import W3 contracts after the established services facade has initialized.
+from .core.beam_line import (
+    BeamLineAnalysisBuildResultV1,
+    BeamLineAnalysisRequestV1,
+    BeamLineAnalysisResultV1,
+    BeamLineCombinationV1,
+    BeamLineEquilibriumV1,
+    BeamLineFactorV1,
+    BeamLineIssueV1,
+    BeamLineLoadCaseV1,
+    BeamLineNodalLoadV1,
+    BeamLineNodeResultV1,
+    BeamLineNodeV1,
+    BeamLineNumericsV1,
+    BeamLinePointLoadV1,
+    BeamLineScenarioV1,
+    BeamLineSpanResultV1,
+    BeamLineSpanV1,
+    BeamLineStationV1,
+    BeamLineSupportSpringV1,
+    BeamLineSupportV1,
+    BeamLineUniformLoadV1,
+)
+
 # Import EndCondition enum (needed for calculate_effective_length_is456)
 from .core.data_types import EndCondition
 
@@ -279,8 +303,6 @@ from .services.api import (  # Audit & Verification; Input dataclasses; Calculat
     validate_job_spec,
     verify_calculation,
 )
-
-# Import W3 contracts after the established services facade has initialized.
 from .services.beam_audit import (
     BeamAuditApplicabilityBasisV1,
     BeamAuditCheckV1,
@@ -295,6 +317,7 @@ from .services.beam_audit import (
     build_beam_audit_inputs_v1,
     evaluate_beam_audit_v1,
 )
+from .services.beam_line import solve_beam_line_linear_v1
 from .services.contracts.etabs_w3 import (
     BeamActionPageV1,
     BeamDemandBuildResultV1,
@@ -388,6 +411,27 @@ except ImportError:
     reports = None
 
 __all__ = [
+    "BeamLineNodeV1",
+    "BeamLineSpanV1",
+    "BeamLineSupportV1",
+    "BeamLineSupportSpringV1",
+    "BeamLineUniformLoadV1",
+    "BeamLinePointLoadV1",
+    "BeamLineNodalLoadV1",
+    "BeamLineLoadCaseV1",
+    "BeamLineFactorV1",
+    "BeamLineCombinationV1",
+    "BeamLineScenarioV1",
+    "BeamLineNumericsV1",
+    "BeamLineAnalysisRequestV1",
+    "BeamLineNodeResultV1",
+    "BeamLineStationV1",
+    "BeamLineSpanResultV1",
+    "BeamLineEquilibriumV1",
+    "BeamLineAnalysisResultV1",
+    "BeamLineIssueV1",
+    "BeamLineAnalysisBuildResultV1",
+    "solve_beam_line_linear_v1",
     "ModelJointLoadV1",
     "JointResultSourceCountV1",
     "JointDisplacementRowV1",

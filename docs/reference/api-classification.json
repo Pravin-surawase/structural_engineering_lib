@@ -15003,8 +15003,8 @@
     {
       "module": "structural_lib",
       "export_classification": "preview",
-      "declared_export_count": 326,
-      "classified_symbol_count": 326,
+      "declared_export_count": 347,
+      "classified_symbol_count": 347,
       "symbols": [
         {
           "name": "AnalysisStateV1",
@@ -15274,6 +15274,186 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.inputs",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineAnalysisBuildResultV1",
+          "qualified_name": "structural_lib.BeamLineAnalysisBuildResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineAnalysisRequestV1",
+          "qualified_name": "structural_lib.BeamLineAnalysisRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineAnalysisResultV1",
+          "qualified_name": "structural_lib.BeamLineAnalysisResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineCombinationV1",
+          "qualified_name": "structural_lib.BeamLineCombinationV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineEquilibriumV1",
+          "qualified_name": "structural_lib.BeamLineEquilibriumV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineFactorV1",
+          "qualified_name": "structural_lib.BeamLineFactorV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineIssueV1",
+          "qualified_name": "structural_lib.BeamLineIssueV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineLoadCaseV1",
+          "qualified_name": "structural_lib.BeamLineLoadCaseV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineNodalLoadV1",
+          "qualified_name": "structural_lib.BeamLineNodalLoadV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineNodeResultV1",
+          "qualified_name": "structural_lib.BeamLineNodeResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineNodeV1",
+          "qualified_name": "structural_lib.BeamLineNodeV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineNumericsV1",
+          "qualified_name": "structural_lib.BeamLineNumericsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLinePointLoadV1",
+          "qualified_name": "structural_lib.BeamLinePointLoadV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineScenarioV1",
+          "qualified_name": "structural_lib.BeamLineScenarioV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineSpanResultV1",
+          "qualified_name": "structural_lib.BeamLineSpanResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineSpanV1",
+          "qualified_name": "structural_lib.BeamLineSpanV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineStationV1",
+          "qualified_name": "structural_lib.BeamLineStationV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineSupportSpringV1",
+          "qualified_name": "structural_lib.BeamLineSupportSpringV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineSupportV1",
+          "qualified_name": "structural_lib.BeamLineSupportV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineUniformLoadV1",
+          "qualified_name": "structural_lib.BeamLineUniformLoadV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line",
           "claim_disposition": "compatibility"
         },
         {
@@ -17830,6 +18010,15 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.beam_api",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "solve_beam_line_linear_v1",
+          "qualified_name": "structural_lib.solve_beam_line_linear_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_line",
           "claim_disposition": "compatibility"
         },
         {

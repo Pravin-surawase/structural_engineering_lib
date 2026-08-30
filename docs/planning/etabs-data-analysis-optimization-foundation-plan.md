@@ -907,6 +907,34 @@ singular/unstable systems. Torsion and all excluded 3D/nonlinear effects remain
 held. Passing W3G produces `SURROGATE_ONLY`; it does not clear
 `HELD_NOT_SUPPORTED` without W3H.
 
+The owner resumed W3G on the Windows campaign task on 2026-08-30. This bounded
+pure-kernel packet uses `core/beam_line.py` for immutable inputs/results and
+`services/beam_line.py` for `solve_beam_line_linear_v1(request, /)`, with root
+facade exports. No installed application is needed or called. The planned
+`compare_beam_line_to_reference_v1` and calibration contracts remain W3H work;
+W3G does not export a placeholder or imply model-specific calibration.
+
+The explicit V1 convention is x right, vertical displacement/load up, nodal
+rotation/couple counterclockwise, sagging-positive internal moment and shear
+`dM/dx`. `E` in N/mm2 and `I` in mm4 become `EI` in kN.m2 using `1e-9`.
+Only unloaded horizontal rigid end arms are supported; member UDL/point loads
+and explicit density/area/gravity self-weight act on the flexible length.
+Perfect end hinges have independent rotations; disconnected nodal rotation is
+NOT_APPLICABLE, never a measured zero. Vertical supports are fixed/free at zero
+settlement; rotational supports are fixed/free or an explicitly evidenced
+nonnegative spring. No vertical spring, settlement or load on a rigid arm is
+implemented. Negative reactions retain uplift and do not certify contact.
+
+Consistent loads, diagonal-scaled Cholesky and exact piecewise station
+integration are checked against simply supported UDL/point closed forms,
+cantilever/fixed/continuous beams, spring compatibility, releases and offsets.
+Point-load stations retain both sides of shear jumps. Signed ordered nested
+linear combinations preserve the full request; overflow blocks, never truncates.
+Numerical residual limits are at most `1e-8` of applied-load norm plus explicit
+force/moment floors. These are numerical tolerances, not W3H engineering criteria.
+No ETABS force mapping, calibration, torsion derivation, optimizer or professional
+approval follows. See `../verification/etabs-w3g-beam-line-evidence.json`.
+
 ### W3H — Model-specific calibration (`L5`)
 
 Owner: Mac comparison implementation; Windows supplies accepted W3D/W3F
