@@ -107,6 +107,19 @@ from .core.beam_line import (
     BeamLineSupportV1,
     BeamLineUniformLoadV1,
 )
+from .core.beam_line_calibration import (
+    BeamLineActionMappingV1,
+    BeamLineCalibrationV1,
+    BeamLineComparisonComponentV1,
+    BeamLineComparisonCriteriaV1,
+    BeamLineComparisonRequestV1,
+    BeamLineComponentComparisonV1,
+    BeamLineComponentToleranceV1,
+    BeamLineJointMappingV1,
+    BeamLineReferenceIdentityV1,
+    BeamLineReferenceMappingV1,
+    BeamLineReferenceV1,
+)
 
 # Import EndCondition enum (needed for calculate_effective_length_is456)
 from .core.data_types import EndCondition
@@ -318,6 +331,7 @@ from .services.beam_audit import (
     evaluate_beam_audit_v1,
 )
 from .services.beam_line import solve_beam_line_linear_v1
+from .services.beam_line_calibration import compare_beam_line_to_reference_v1
 from .services.contracts.etabs_w3 import (
     BeamActionPageV1,
     BeamDemandBuildResultV1,
@@ -432,6 +446,18 @@ __all__ = [
     "BeamLineIssueV1",
     "BeamLineAnalysisBuildResultV1",
     "solve_beam_line_linear_v1",
+    "BeamLineActionMappingV1",
+    "BeamLineCalibrationV1",
+    "BeamLineComparisonComponentV1",
+    "BeamLineComparisonCriteriaV1",
+    "BeamLineComparisonRequestV1",
+    "BeamLineComponentComparisonV1",
+    "BeamLineComponentToleranceV1",
+    "BeamLineJointMappingV1",
+    "BeamLineReferenceIdentityV1",
+    "BeamLineReferenceMappingV1",
+    "BeamLineReferenceV1",
+    "compare_beam_line_to_reference_v1",
     "ModelJointLoadV1",
     "JointResultSourceCountV1",
     "JointDisplacementRowV1",
