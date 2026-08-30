@@ -5,6 +5,88 @@
 
 ---
 
+## 2026-08-31 — Session: W3J installed update-only rollback
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3J-NATIVE-ROLLBACK`.
+**Branch:** `codex/etabs-w3j-native-rollback-windows`.
+**Source:** PR #926 merge `cced0b632894ae23f6daf43f4802f48353ee47bf`,
+tree `8d46f95b46242d7aa6191ae650e9694cc7dd1c10`.
+**Focus:** One installed update-only rollback test; no ETABS or writer changes.
+**Checkpoint:** `NATIVE_ROLLBACK_PASS`; bounded fictional L4 software evidence.
+**Git handoff receipt:** `docs/verification/etabs-w3j-native-rollback-git-handoff-receipt.json`
+
+**Completed:**
+
+- Fresh fetch and GitHub query confirm the exact accepted predecessor. All
+  thirty older worktrees are retained, including dirty historical W1/W3F lanes.
+- New isolated lane and one canonical session; source-bound runtime and standard
+  hooks pass. Existing localhost certificate/catalog were inspected unchanged.
+- Created a separately named, hash-identical revision-2 workbook copy. Opened
+  only that copy; the accepted workbook and nine protected file identities
+  remain unchanged. The seven served source files match this exact worktree.
+- Read the unchanged writer's native transaction and existing `cryptoImpl`
+  parameter. Frozen plan: capture all sixteen typed tables, inject once only
+  after native `PENDING` readback, then require exact native rollback and
+  independent canonical reconciliation. No implementation or public hook added.
+- Initial attempt paused before code execution at DevTools' paste-safety
+  barrier. After the user's manual hand-off, the same session resumed without
+  another session begin, lane or workbook. The read-only Office probe proved
+  the exact disposable workbook and native Excel host before any write.
+- Exactly one unchanged `writeCalculationReview` call reached native `PENDING`
+  readback. The existing `cryptoImpl` seam then threw one labelled failure.
+  The unchanged writer restored all sixteen typed matrices, dimensions and
+  positions; before/after digest `7d414159...` matches exactly. No test-side repair.
+- Separate native verification returned `COMMITTED`, 78 rows and 68,969 bytes;
+  comments and both revisions survived. Exported complete before/PENDING/after
+  evidence; independent saved-file import reconciled all sixteen formula-free
+  tables to the native after-state. Workbook SHA-256 `bb4c79d3...` is unchanged.
+- All eleven input/protected file identities and thirty older lanes stayed
+  unchanged. Stopped only owned HTTPS PID 7856 by executable/start-tick identity;
+  ports 3000/3001/8000 are free. Excel remains open with restored tables and
+  DevTools with the result. No ETABS calls, workbook saves or model saves.
+
+### Issues encountered
+
+- File-dialog accessibility reference was stale; Inspect lay outside the
+  captured Excel window. Focus metadata named the diagnostic title, not its caret.
+- The copy opened before its local server, so its first pane load was offline.
+- DevTools refused the pasted read-only probe with its self-XSS safety warning.
+- External cleanup initially rejected a matching process start timestamp.
+- Two inspection commands assumed obsolete receipt/helper/workflow filenames.
+
+### Root causes and resolutions
+
+- A fresh screenshot proved the file-entry and console carets; native keyboard
+  navigation selected the visibly highlighted Inspect item. UIA focus reporting
+  remains inconsistent; its underlying host/helper cause is unconfirmed.
+- The verified server was started, HTTP/source hashes checked, then the native
+  pane's Retry was used once. It loaded without trust or configuration changes.
+- The displayed warning explicitly blocks pasted console code. Computer-use
+  rules require a user hand-off, not automated permission or an alternate bypass.
+  User completion was freshly verified by the harmless Office identity probe;
+  the one-shot native test then passed. No agent security/trust change occurred.
+- PowerShell JSON materialized a `DateTime`; converting it to a display string
+  discarded fractional seconds. Compare its original UTC ticks directly.
+  Exact PID/executable/ticks were proved before stopping only the owned server.
+- The inspection failures were incorrect path assumptions, not missing runtime
+  prerequisites. `rg --files` located the maintained receipt and `session.py`;
+  exact paths and command help replaced the guesses. No repair/install needed.
+
+**Evidence:** `C:/CodexWork/evidence/ETABS-W3J-NATIVE-ROLLBACK-20260831`
+contains the frozen plan, retained pause, exact served-source hashes, native
+result, saved-copy verification and final preservation/cleanup. Safe tracked
+counts/digests: `docs/verification/etabs-w3j-native-rollback-evidence.json`.
+**Verification:** Content-freeze receipt/docs checks, one quick gate, normal
+hooks and clean local audit/closeout; exact results and later hosted/merge facts
+remain external. No broad suite or unchanged prior acceptance suite is repeated.
+**Next:** Integrate this one evidence candidate, then address only the missing
+saved-building physical mapping/calibration and screening criteria. Do not
+repeat the accepted Excel rollback or benchmark setup. Actual-building W3H,
+W3I/K/L, final integrated review, L7/signature and release remain unapproved.
+
+---
+
 ## 2026-08-31 — Session: W3J review layout and installed persistence
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
