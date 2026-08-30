@@ -15003,8 +15003,8 @@
     {
       "module": "structural_lib",
       "export_classification": "preview",
-      "declared_export_count": 347,
-      "classified_symbol_count": 347,
+      "declared_export_count": 359,
+      "classified_symbol_count": 359,
       "symbols": [
         {
           "name": "AnalysisStateV1",
@@ -15277,6 +15277,15 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "BeamLineActionMappingV1",
+          "qualified_name": "structural_lib.BeamLineActionMappingV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line_calibration",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "BeamLineAnalysisBuildResultV1",
           "qualified_name": "structural_lib.BeamLineAnalysisBuildResultV1",
           "kind": "class",
@@ -15304,12 +15313,66 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "BeamLineCalibrationV1",
+          "qualified_name": "structural_lib.BeamLineCalibrationV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line_calibration",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "BeamLineCombinationV1",
           "qualified_name": "structural_lib.BeamLineCombinationV1",
           "kind": "class",
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineComparisonComponentV1",
+          "qualified_name": "structural_lib.BeamLineComparisonComponentV1",
+          "kind": "value",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "typing",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineComparisonCriteriaV1",
+          "qualified_name": "structural_lib.BeamLineComparisonCriteriaV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line_calibration",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineComparisonRequestV1",
+          "qualified_name": "structural_lib.BeamLineComparisonRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line_calibration",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineComponentComparisonV1",
+          "qualified_name": "structural_lib.BeamLineComponentComparisonV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line_calibration",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineComponentToleranceV1",
+          "qualified_name": "structural_lib.BeamLineComponentToleranceV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line_calibration",
           "claim_disposition": "compatibility"
         },
         {
@@ -15337,6 +15400,15 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineJointMappingV1",
+          "qualified_name": "structural_lib.BeamLineJointMappingV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line_calibration",
           "claim_disposition": "compatibility"
         },
         {
@@ -15391,6 +15463,33 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.beam_line",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineReferenceIdentityV1",
+          "qualified_name": "structural_lib.BeamLineReferenceIdentityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line_calibration",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineReferenceMappingV1",
+          "qualified_name": "structural_lib.BeamLineReferenceMappingV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line_calibration",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "BeamLineReferenceV1",
+          "qualified_name": "structural_lib.BeamLineReferenceV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.beam_line_calibration",
           "claim_disposition": "compatibility"
         },
         {
@@ -17209,6 +17308,15 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.column_api",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "compare_beam_line_to_reference_v1",
+          "qualified_name": "structural_lib.compare_beam_line_to_reference_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_line_calibration",
           "claim_disposition": "compatibility"
         },
         {

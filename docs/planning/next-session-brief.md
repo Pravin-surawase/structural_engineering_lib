@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-30
-- Focus: Fix confirmed repeated setup/verification failures before W3H while
-- Completed: Reused the existing preflight, canonical Git state and session-start owner;; Native current-interpreter source proof, effective standard-hook/interpreter; Bounded four-reader exact-byte hashing preserves serial identity; gate JSON
-- Git receipt: docs/verification/workflow-readiness-git-handoff-receipt.json | sha256:193f82de53db19475b721ef1b805ebeef547c3919324cfd4876c3e8463e560ac | HOLD
-- Git identity: codex/workflow-readiness-cross-device@3a21b626153dcfdb18873b51250f15b02e90328e | upstream=NONE@UNKNOWN | base=origin/main@3a21b626153dcfdb18873b51250f15b02e90328e | tree=dirty | operation=none
+- Focus: Continue the safe W3H software layer and reconcile the owner's saved
+- Completed: Verified a new clean worktree, source binding and effective standard hook;; Implemented the exact planned pure comparison signature, immutable public; Added independent simply-supported/cantilever comparisons, nonzero mm/rad
+- Git receipt: docs/verification/etabs-w3h-git-handoff-receipt.json | sha256:7bfc4d402123d030e4a980e4ac73a40dbddc2d1cb0f62892815a770fe5b4e0b0 | HOLD
+- Git identity: codex/etabs-w3h-calibration-windows@31fb89c23cd86137f3e20d3ea22aa1d5963a265a | upstream=NONE@UNKNOWN | base=origin/main@31fb89c23cd86137f3e20d3ea22aa1d5963a265a | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -20,8 +20,11 @@
 | **Current** | W3A-E/W3R and W3F static/readback are merged. PR #911 repaired merge guards/manifest; PR #912 merged the plan-only LIB-PRO-015 update. W3F spring repair PR #913 merged as `cce05508ea5f55559f5aeb07b8945bbabb7f3c06`, tree `d384f56d548e43454c5dc464ae9ec9f82d9bd230`; its bounded installed read now reconciles with unchanged copy/state and explicit calibration holds. |
 | **W2 complete** | PR #898 merged reviewed W2C head `57f53d48...` as `f1873e7b...`; candidate and merge tree are both `bb20ba0c...`. Direct service, REST, all seven saved Excel tables, and 3,626,096 reconstructed canonical JSON bytes reconcile to SHA-256 `d4c28586...`. |
 | **Plan gate** | Complete. The owner explicitly authorized the dependency-ordered W3 campaign; every packet still requires its exact predecessor and packet-specific stop conditions. |
-| **Next** | W3G is accepted in PR #915 (`3a21b626...`, tree `586d3f84...`). Finish the bounded cross-device workflow-readiness repair, then start W3H separately. No ETABS/Excel access belongs to this maintenance. LIB-PRO-015 still needs separate plan acceptance. |
+| **Next** | W3G PR #915 and workflow-readiness PR #916 (`31fb89c2...`, tree `7a5eac9e...`) are accepted. W3H's L1 pure comparison checkpoint is content-complete, integration pending. L5 model calibration remains held for explicit project mapping, support/slab basis and predeclared tolerances. No installed app access occurred. LIB-PRO-015 still needs separate plan acceptance. |
 | **Held** | W3E does not accept installed reinforcement or canonical serviceability. Pareto torsion/serviceability/stirrup-cost/global-analysis holds remain. No shortlist or mutating candidate until W3F-H calibration and W3I criteria pass. Release and engineering/professional/construction approval remain unapproved. |
+
+W3H continuation: [guide](../guides/beam-line-calibration.md) and [receipt](../verification/etabs-w3h-comparison-evidence.json) bind the L1 checkpoint, exact next inputs and one-writer handoff; L5/W3I remain held.
+The owner-saved revision and historical backup are preserved; no app operation or Mac synchronization is claimed. ETABS shows `ETABS License Message` (body/cause unverified); do not dismiss it or attempt live calibration here.
 
 ## W3A-W3D accepted through local W3D content freeze
 

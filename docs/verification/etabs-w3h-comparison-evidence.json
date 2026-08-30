@@ -1,0 +1,71 @@
+{
+  "schema_version": "etabs-w3h-comparison-evidence/v1",
+  "task_id": "ETABS-W3H-CALIBRATION",
+  "packet": "W3H_SOFTWARE_CONTRACT_ONLY",
+  "evidence_level": "L1_LOCAL_SOFTWARE",
+  "verdict_at_content_freeze": "FOCUSED_SOFTWARE_PASS_INTEGRATION_PENDING_L5_HELD",
+  "source": {
+    "predecessor_pr": 916,
+    "predecessor_merge": "31fb89c23cd86137f3e20d3ea22aa1d5963a265a",
+    "predecessor_tree": "7a5eac9ee6312fed3b1a6250d6ccaffb690bce31",
+    "branch": "codex/etabs-w3h-calibration-windows",
+    "writer": "Windows sole writer under resumed owner campaign authority; no Mac synchronization claimed",
+    "python": "3.11.15",
+    "source_bound": true
+  },
+  "public_function": "compare_beam_line_to_reference_v1(request: BeamLineComparisonRequestV1, /) -> BeamLineCalibrationV1",
+  "acceptance_during_implementation": {
+    "focused_tests_passed": 58,
+    "signed_udl_and_cantilever_independent_references": true,
+    "distinct_file_and_normalized_model_identity": true,
+    "exact_internal_scenario_to_reference_selection_mapping": true,
+    "all_retained_rows_and_declared_components_required": true,
+    "explicit_axis_sign_station_side_and_units": true,
+    "missing_evidence_no_partial_comparison": true,
+    "identity_invalidation_hash_roundtrip_and_out_of_band": true,
+    "project_tolerance_defaults": false
+  },
+  "saved_model_readonly_audit": {
+    "owner_report": "Owner intentionally clicked Save while closing the copied model",
+    "saved_copy_sha256": "92b3fa009f25b2228cc956cedb1b76268bb73414e16b361be334c0b3d81f6269",
+    "saved_copy_bytes": 702855,
+    "existing_backup_sha256": "99b7f3f17051929196ef6494d8f4d220d895fc3dac5e1a57164a53bf8fa6948b",
+    "existing_backup_bytes": 702831,
+    "backup_matches_accepted_old_model_bytes": true,
+    "retained_w3f_payload_sha256": "cb148917d1f5c0d286c373e370926f29bac303d914378700030fdd4d88553569",
+    "model_or_application_operations": 0,
+    "current_lock_units_selection_analysis": "NOT_FRESHLY_VERIFIED_NO_APP_ACCESS"
+  },
+  "read_only_application_observation": {
+    "etabs_window_title": "ETABS License Message",
+    "dialog_body_and_license_cause": "UNCONFIRMED_NOT_INSPECTED",
+    "task_launched_or_interacted_with_application": false,
+    "ports_3000_8000_listeners": 0,
+    "live_run_disposition": "HELD_DO_NOT_DISMISS_DIALOG"
+  },
+  "synthetic_microbenchmark": {
+    "iterations": 100,
+    "comparisons_per_iteration": 50,
+    "elapsed_seconds": 0.5369063999996797,
+    "request_sha256": "acfeadf8cd820bb0135fd4a755c4e4957402ef4267acddecb7c2fd8f302b4367",
+    "calibration_sha256": "c33c00a32327650d211fab4025d8e94739325c00489657806604d18d25d806dd",
+    "claim": "One-host synthetic comparison timing only; no engineering accuracy or ETABS trip-reduction claim"
+  },
+  "startup_observation": {
+    "worktree_creation_seconds": 6.2777418,
+    "first_session_begin_seconds": 20.6634122,
+    "included_environment_preflight_seconds": 7.75,
+    "source_and_standard_hook_verified": true,
+    "cold_filesystem_speedup_claim": false
+  },
+  "after_freeze": "Consolidated focused/architecture/import/API/docs checks, quick once, normal hooks, clean session closeout and exact-head hosted checks. Final integration facts remain external/GitHub.",
+  "remaining_holds": [
+    "W3H model-specific L5 calibration is not complete; W3I remains held.",
+    "Reference input normalization, physical validity, upstream completeness and chronology of criteria declarations need independent evidence/review; hashes do not establish them.",
+    "W3F required spring/support and diaphragm/slab context remains incomplete.",
+    "Exact approved project member/span/node/station/scenario/axis mapping and predeclared tolerances remain missing.",
+    "Newly saved model needs fresh accepted reference evidence if chosen; old snapshots remain historical.",
+    "SURROGATE_ONLY; independent frame analysis HELD_NOT_SUPPORTED; no general ETABS parity, optimization, release or professional/construction approval.",
+    "No ETABS or Excel operations, model restore/save/analysis, global changes, Mac writes, data deletion or branch/worktree retirement."
+  ]
+}

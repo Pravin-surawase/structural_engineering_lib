@@ -5,6 +5,95 @@
 
 ---
 
+## 2026-08-30 — Session: W3H comparison software and saved-copy reconciliation
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3H-CALIBRATION`.
+**Branch:** `codex/etabs-w3h-calibration-windows`, fresh from fetched PR #916
+merge `31fb89c23cd86137f3e20d3ea22aa1d5963a265a`, tree
+`7a5eac9ee6312fed3b1a6250d6ccaffb690bce31`.
+**Git handoff receipt:** `docs/verification/etabs-w3h-git-handoff-receipt.json`
+**Focus:** Continue the safe W3H software layer and reconcile the owner's saved
+copy without guessing model calibration criteria or reopening installed apps.
+
+**Completed:**
+
+- Verified a new clean worktree, source binding and effective standard hook;
+  checkout 6.278 seconds, first session begin 20.663 seconds including 7.75-second
+  environment proof. These are actual startup observations, not a cold-I/O
+  speedup comparison. Both-device writer boundaries remain explicit.
+- Implemented the exact planned pure comparison signature, immutable public
+  contracts, full signed reference rows, exact selection/member/station/node
+  mapping and caller-declared component tolerances. Missing identity/evidence
+  fails closed; out-of-band outcomes retain every declared comparison.
+- Added independent simply-supported/cantilever comparisons, nonzero mm/rad
+  conversion, signed plane mapping, invalidation, five-state, digest, missing
+  row and tolerance regressions: 58 tests passed during implementation.
+- Recorded the saved copy and existing backup identities externally; the backup
+  exactly matches the accepted historical model bytes. Preserved both versions,
+  every retained worktree, old dirty evidence and all application files.
+- Separated L1 numerical comparison from project L5 calibration. No default
+  tolerance, spring absence, support idealization or slab assumption was invented.
+
+### Issues encountered
+
+- The saved copied-model digest no longer matches historical W3F evidence.
+  Treating this as unexplained drift would repeat the prior blocker even after
+  the owner explained the Save action.
+- W3F's accepted reference has unavailable spring/slab context and
+  `calibration_fields_complete=false`; project mapping and predeclared
+  engineering tolerances have not been supplied. These prevent L5, not pure
+  software implementation.
+- Initial test collection used an unqualified sibling-test import and failed;
+  local type checking also exposed action/joint loop-variable reuse and generic
+  optional-row union inference. These affected the new module only.
+- The first quick gate passed 9/10; the task's added handoff text made the brief
+  174 lines against its 150-line bound. Its measured 117.093-second process wall
+  included 94.015 seconds preparation and 19.156 seconds check wall; child sum
+  was 38.16 seconds and is not elapsed wall time.
+- During read-only process inspection, ETABS showed a window titled
+  `ETABS License Message`. No app had been launched or attached by this task;
+  its dialog body and license cause are unconfirmed.
+
+### Root causes and resolutions
+
+- Owner-reported Save explains the new revision, but does not prove why its
+  internal bytes changed or refresh results. Fresh SHA-256/size/mtime checks
+  found the existing backup byte-identical to the accepted model. No restoration
+  or overwrite was performed; snapshots retain their original identity. The
+  safe receipt records hashes; proprietary paths remain external.
+- Missing physical/model criteria cannot be inferred from the numerical solver
+  or M25/Fe500 design defaults. The new comparator explicitly consumes reviewed
+  mapping/context and caller-predeclared tolerances and returns NOT_COMPARABLE
+  when required evidence is absent. L5/W3I remain held. Passing synthetic
+  comparisons is not a replacement for this missing engineering basis.
+- This repository uses packaged `tests.unit` imports; corrected the new import.
+  Used distinct typed joint variables, explicit optional-state checks and enum
+  members; targeted mypy passed. No dependency, global setting or old source
+  environment was changed. PowerShell literal globs are not expanded for `rg`;
+  file discovery uses `rg --files -g` instead.
+- Condensed only this task's new handoff prose into links to the full guide and
+  receipt; the first correction was still 151 lines and failed 9/10, then the
+  narrow length check passed at 150. Preserved prior context and the gate. The corrected brief
+  and consolidated quick gate are rerun, not the unchanged numerical tests.
+  Exact-byte preparation remains the largest first-gate cost; this observation
+  does not isolate OS cache/storage/security causes or prove a cold speedup.
+- Preserved the newly observed ETABS license window without clicking, closing,
+  opening a model or querying COM. This is an additional live-run stop, not a
+  defect in the pure comparison function or grounds to invent license facts.
+
+**Verification boundary:** Consolidated focused/API/docs/architecture/import
+checks, quick once, normal hooks, exact-head audit and clean read-only session
+closeout precede publication. Required hosted/merge facts remain on GitHub and
+in external evidence; no post-push status commit is planned. Broad milestone
+gates are not repeated for this bounded pure comparison packet.
+
+**Preserved/held:** No ETABS/Excel launch, COM getter, model save/unlock/analysis,
+workbook operation, original/baseline/candidate overwrite, global/Mac change,
+reset, clean, stash, deletion, branch/worktree retirement, release or
+professional/construction approval. No Mac synchronization claim. L5 calibration
+and W3I remain blocked by the exact missing project evidence above.
+
 ## 2026-08-30 — Session: cross-device workflow readiness before W3H
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).

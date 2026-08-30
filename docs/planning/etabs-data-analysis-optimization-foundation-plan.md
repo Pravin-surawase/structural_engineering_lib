@@ -947,6 +947,28 @@ predeclared action/displacement/reaction tolerances. Missing mappings are
 Calibration invalidates on any relevant model, load, support, stiffness,
 definition, selection, analysis-setting, ETABS-version or file-digest change.
 
+The owner-resumed Windows campaign now has a bounded W3H **L1 software
+comparison checkpoint**, not completed L5 calibration. The exact planned
+`compare_beam_line_to_reference_v1(request, /)` signature is implemented with
+immutable `core/beam_line_calibration.py` contracts and a pure service, exported
+through `structural_lib`. It consumes independently normalized, hash-bound
+reference rows and caller-reviewed mappings/criteria; it does not extract or
+certify them. Every retained action row, declared component and requested joint
+domain must reconcile. Same-plane axes, signs, station sides/origins, distinct
+file/model hashes and explicit local-to-reference scenario IDs are preserved.
+Missing evidence is `NOT_COMPARABLE` with no partial comparison. See
+[the comparison guide](../guides/beam-line-calibration.md) and
+[software receipt](../verification/etabs-w3h-comparison-evidence.json).
+
+`CALIBRATED` from this pure function means only scoped numerical agreement with
+supplied tolerances; independent acceptance of model assumptions, mappings,
+reference completeness and predeclared engineering criteria remains required
+for L5. Existing capability stays `HELD_NOT_SUPPORTED` and `SURROGATE_ONLY`.
+The current project lacks that complete input basis. The owner-reported saved
+copy is a new revision, while an existing backup still matches the accepted
+old model bytes. Neither is altered or promoted by this software checkpoint.
+Do not begin W3I until the separate model-specific W3H acceptance passes.
+
 ### W3I — Scenario/family candidate screening (`L5`)
 
 Owner: Mac. Dependencies: W3E, W3H and W3R. Indicative effort: 15-30 focused
