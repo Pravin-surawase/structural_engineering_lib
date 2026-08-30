@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-30
-- Focus: Correct spring metadata availability without inferring absent springs or accepting missing calibration inputs.
-- Completed: Re-read the retained blocked checkpoint and fetched current GitHub. Preserved; Directly inspected the copied-model window: ETABS 23.3.1, closed lock icon,; A 14-getter diagnostic on exact clean main confirmed successful object
-- Git receipt: docs/verification/etabs-w3f-spring-readback-git-handoff-receipt.json | sha256:e555684105127a3d7f3b98d6636c66721d0e1a95e028855da57f52809df7d084 | HOLD
-- Git identity: codex/etabs-w3f-spring-readback-windows@c405cf6432bd8f9e64ccc13556fb9d9ad52cda23 | upstream=NONE@UNKNOWN | base=origin/main@c405cf6432bd8f9e64ccc13556fb9d9ad52cda23 | tree=dirty | operation=none
+- Focus: Accept the bounded installed read with explicit calibration holds, then stop before W3G.
+- Completed: Preserved the repair branch and all older lanes/data. Rebound the task-owned; Inspected the existing ETABS 23.3.1 copied-model window before and after the; One attachment completed all 40 scoped getter records for one accepted
+- Git receipt: docs/verification/etabs-w3f-spring-live-git-handoff-receipt.json | sha256:90738f8057927297c4930dce86c93b169e03f5c8243f13704299f316e6c82b6b | HOLD
+- Git identity: codex/etabs-w3f-spring-live-windows@cce05508ea5f55559f5aeb07b8945bbabb7f3c06 | upstream=NONE@UNKNOWN | base=origin/main@cce05508ea5f55559f5aeb07b8945bbabb7f3c06 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -17,10 +17,10 @@
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` remains the current immutable normal software release. No release work is authorized. |
-| **Current** | W3A-E/W3R and W3F static/readback PR #910 are merged. Resolved-merge/API-manifest repair PR #911 merged as `17494b53c84c273f4eef1d3d9224f234186d3eca`, tree `9b89431b8ecce1cee9e132780869945727b8fa24`, after all required gates. LIB-PRO-015 now freezes the refreshed API/documentation plan against that source. |
+| **Current** | W3A-E/W3R and W3F static/readback are merged. PR #911 repaired merge guards/manifest; PR #912 merged the plan-only LIB-PRO-015 update. W3F spring repair PR #913 merged as `cce05508ea5f55559f5aeb07b8945bbabb7f3c06`, tree `d384f56d548e43454c5dc464ae9ec9f82d9bd230`; its bounded installed read now reconciles with unchanged copy/state and explicit calibration holds. |
 | **W2 complete** | PR #898 merged reviewed W2C head `57f53d48...` as `f1873e7b...`; candidate and merge tree are both `bb20ba0c...`. Direct service, REST, all seven saved Excel tables, and 3,626,096 reconstructed canonical JSON bytes reconcile to SHA-256 `d4c28586...`. |
 | **Plan gate** | Complete. The owner explicitly authorized the dependency-ordered W3 campaign; every packet still requires its exact predecessor and packet-specific stop conditions. |
-| **Next** | Review/integrate the plan-only LIB-PRO-015 candidate, then seek plan acceptance before Packet D0. A bounded W3F live read remains separately owned; do not repeat W3D, start W3G onward, or begin a duplicate campaign. Shared-path predecessors must be accepted or explicitly rebound first. |
+| **Next** | Stop after W3F as the owner requested. New chat: fetch, inspect the accepted stop receipt and preserved lanes, then separately resume W3G pure solver work; do not repeat live W3D/F. LIB-PRO-015 still needs plan acceptance before D0. Shared-path predecessors must be accepted or explicitly rebound first. |
 | **Held** | W3E does not accept installed reinforcement or canonical serviceability. Pareto torsion/serviceability/stirrup-cost/global-analysis holds remain. No shortlist or mutating candidate until W3F-H calibration and W3I criteria pass. Release and engineering/professional/construction approval remain unapproved. |
 
 ## W3A-W3D accepted through local W3D content freeze
@@ -108,9 +108,9 @@ unchanged file/lock/units/status/selection postflight. Nonempty undocumented
 joint-load steps and unproved spring forms remain visibly UNAVAILABLE.
 Synthetic W3E/F fixtures are NOT owner engineering criteria or live evidence.
 
-The owner resumed only the W3F spring-readback block. A fresh PR #912-based lane preserves all six old dirty receipt paths. Fourteen getters confirmed unsuccessful joint/frame assignment metadata with unchanged model/state.
-The repair retains UNAVAILABLE, never inferred absence; additive `line_spring_assignment` defaults to NOT_REQUESTED. Missing/named line evidence cannot complete calibration. See the newest session and `docs/verification/etabs-w3f-spring-readback-repair-evidence.json`.
-Repair integration precedes the exact-source live read. No W3G, analysis, model mutation, Excel or professional approval.
+W3F spring repair PR #913 is accepted; its exact merge completed 40 installed getters, one-frame/three-joint definition, 3 displacement + 1 reaction rows and all 24 signed components. Model hash/size/mtime, lock, units, 15 finished cases and 77 flags stayed unchanged.
+Springs and diaphragm/slab context remain UNAVAILABLE; required-calibration replay blocks with no partial snapshots. Exact replay/hashes/counts/signs reconcile. See the newest session and `docs/verification/etabs-w3f-spring-live-evidence.json`; all old dirty lanes remain preserved.
+Stop before W3G. No analysis, design, model mutation, Excel, services, optimization or professional approval occurred in this continuation.
 
 ### Completed W3D operator checklist
 
