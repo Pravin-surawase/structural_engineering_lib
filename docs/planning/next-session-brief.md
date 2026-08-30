@@ -4,25 +4,25 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-31
-- Focus: Repair the recorded integrated validation blockers without changing
-- Completed: Fetched current main, inspected open PRs and retained lanes, then created a; Corrected parameterized-alias ownership, cross-platform archive digest order,; Preserved real native-symlink coverage on capable hosts; on Windows without
-- Git receipt: docs/verification/etabs-w3-validation-repair-git-handoff-receipt.json | sha256:0bf324b81ef75f4df6dedc02b5764a5f8b2f0482d363979539b587d341d1b9eb | HOLD
-- Git identity: codex/etabs-w3-validation-repair-windows@2ad7ad9557ae21e8154646308b3ce35983f50c46 | upstream=NONE@UNKNOWN | base=origin/main@2ad7ad9557ae21e8154646308b3ce35983f50c46 | tree=dirty | operation=none
+- Focus: Finish readable Excel review controls and bounded installed persistence;
+- Completed: Fetched and independently queried GitHub main; no other W3 PR was open.; Reproduced the 2,002-pixel card inside a 320-pixel pane. Narrow CSS grid,; Preserved the prior accepted workbook and opened a separately named copy.
+- Git receipt: docs/verification/etabs-w3j-review-completion-git-handoff-receipt.json | sha256:3000d73553a6a9e0926509db7850ded1ab8975e63eeb06818bf05a0f5644c6e1 | HOLD
+- Git identity: codex/etabs-w3j-review-completion-windows@619f8c2be67e8e6964b8f876a1ffcf2260b76d68 | upstream=NONE@UNKNOWN | base=origin/main@619f8c2be67e8e6964b8f876a1ffcf2260b76d68 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
 
 ## Current boundary
 
-The [master-plan audit](etabs-data-analysis-optimization-foundation-plan.md#completion-audit-and-active-critical-path-2026-08-31) is the status authority. W3A-G/W3R are accepted within scope; actual-building W3H and I/K/L remain held. W3J dossier/review software merged in #922/#923. #924 retains the blocked installed attempt. A separate Windows validation repair corrects alias ownership, archive ordering, Git overhead and platform-specific tests; see `docs/verification/etabs-w3-validation-repair-evidence.json`. The user created a new disposable workbook and added the existing review pane; manual clicks avoid the unreliable host-control path. **Next: exact-source installed publication/readback/rollback**, without ETABS calls. No L4/W3-complete claim. Mac fetch is owner-reported; Windows is the sole branch writer.
+The [master-plan audit](etabs-data-analysis-optimization-foundation-plan.md#completion-audit-and-active-critical-path-2026-08-31) is the status authority. W3A-G/W3R are accepted within scope; actual-building W3H and I/K/L remain held. #925 repaired the integrated Windows gates. W3J now has installed publication/readback, same-dossier comment retention/export and exact revision-2 refresh: sixteen tables, 78 rows and 68,969 canonical bytes reconcile in a separate saved workbook. Pane overflow is corrected without truncation. **Next: only the unproved installed update-only failure/rollback row**, after a safely targetable native diagnostic surface is established. See `docs/verification/etabs-w3j-review-completion-evidence.json`. No full L4/W3-complete claim. Windows is the sole branch writer; Mac state is not inferred.
 
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` remains the current immutable normal software release. No release work is authorized. |
-| **Current** | W3A-G/W3R and W3H comparison/benchmarks through #921; W3J dossier/review software #922/#923. Installed W3J blocked before workbook by host activation. Services stopped, protected files unchanged, Excel left at startup. Integrated gate logs and final Git facts remain external. |
+| **Current** | W3J installed persistence passes on fictional software evidence; rollback injection was not executed because diagnostic input focus was unproved. Original workbook/models retained. Exact saved-file and process/Git closeout remain external. |
 | **W2 complete** | PR #898 merged reviewed W2C head `57f53d48...` as `f1873e7b...`; candidate and merge tree are both `bb20ba0c...`. Direct service, REST, all seven saved Excel tables, and 3,626,096 reconstructed canonical JSON bytes reconcile to SHA-256 `d4c28586...`. |
 | **Plan gate** | Complete. The owner explicitly authorized the dependency-ordered W3 campaign; every packet still requires its exact predecessor and packet-specific stop conditions. |
-| **Next** | Verify the Windows repair's exact PR/merge closeout; use user-assisted installed W3J publication/readback/rollback. Resolve actual-building W3H mapping/criteria before I/K/L. No repeat accepted packets, licensing recovery or baseline analysis. LIB-PRO-015 remains separate. |
+| **Next** | Fetch/verify this packet's exact PR/merge; preserve the revision-2 workbook. Derive a fresh copy for one native update-only rollback test with exact pre/post typed tables/dimensions. No repeat completed publication/retention, full suites, licensing recovery or analysis. Resolve real-building W3H mapping before I/K/L. |
 | **Held** | W3E does not accept installed reinforcement or canonical serviceability. Pareto torsion/serviceability/stirrup-cost/global-analysis holds remain. No shortlist or mutating candidate until W3F-H calibration and W3I criteria pass. Release and engineering/professional/construction approval remain unapproved. |
 
 W3H continuation: [guide](../guides/beam-line-calibration.md) and [receipt](../verification/etabs-w3h-comparison-evidence.json) bind the L1 checkpoint, exact next inputs and one-writer handoff; L5/W3I remain held.

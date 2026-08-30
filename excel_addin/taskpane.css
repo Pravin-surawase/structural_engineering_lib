@@ -13,9 +13,11 @@ h2 { margin: 0 0 8px; font-size: 16px; }
 p { margin: 6px 0; line-height: 1.45; }
 .eyebrow { color: #8fe0e5; font-size: 11px; font-weight: 700; letter-spacing: .08em; }
 .lede { color: #d9e7f1; font-size: 13px; }
-main { display: grid; gap: 12px; padding: 14px; }
-.card, aside { padding: 14px; border: 1px solid #c8d2da; border-radius: 8px; background: white; }
+main { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 14px; }
+.card, aside { min-width: 0; padding: 14px; border: 1px solid #c8d2da; border-radius: 8px; background: white; }
 .card p, aside p, .detail, label { font-size: 12px; color: #536471; }
+.detail, .status { overflow-wrap: anywhere; }
+input[type="file"] { max-width: 100%; }
 .context { padding: 8px; border-radius: 4px; background: #eaf1f8; overflow-wrap: anywhere; }
 .status { display: grid; gap: 3px; padding: 11px 13px; border-left: 5px solid; border-radius: 5px; font-size: 12px; }
 .status.ready { border-color: #137333; background: #e6f4ea; }

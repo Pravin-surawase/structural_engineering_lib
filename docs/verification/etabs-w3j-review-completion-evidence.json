@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-W3J-REVIEW-COMPLETION",
+  "source_sha": "619f8c2be67e8e6964b8f876a1ffcf2260b76d68",
+  "source_tree": "8327840793370e94f0b9bb329d8891599d4bb851",
+  "branch": "codex/etabs-w3j-review-completion-windows",
+  "packet_verdict": "LAYOUT_AND_INSTALLED_PERSISTENCE_PASS",
+  "w3j_complete": false,
+  "l4_complete": false,
+  "w3_complete": false,
+  "scope": "CSS layout only; unchanged canonical writer, review projection, Python calculations and public APIs",
+  "layout": {
+    "root_cause": "Implicit grid intrinsic minimum expanded to an unbroken complete JSON status token",
+    "before_card_width_px": 2001.75,
+    "tested_widths_px": [280, 320, 560, 800],
+    "after_card_widths_px": [252, 292, 532, 772],
+    "identical_status_text": true,
+    "truncation": false,
+    "native_buttons_visible": true
+  },
+  "installed_review": {
+    "fictional_software_fixture_only": true,
+    "table_count": 16,
+    "revision_1_rows": 76,
+    "revision_1_utf8_bytes": 68944,
+    "same_dossier_comment_retention_and_export": "PASS",
+    "exact_successor_refresh": "PASS",
+    "revision_2_rows_with_history": 78,
+    "revision_2_utf8_bytes": 68969,
+    "revision_2_dossier_sha256": "489865b08bbbaa5a9ef522e46b3b54cee3830de82fd6dc99d6ddfbc0718311b4",
+    "revision_2_canonical_sha256": "4c6504cb5dfa5a445477ca1fa87e60e53647b44b0cff130abad3be15f0c05300",
+    "separate_native_readback": "PASS",
+    "saved_all_table_and_canonical_readback": "PASS",
+    "formula_count": 0,
+    "saved_workbook_bytes": 59605,
+    "saved_workbook_sha256": "bb4c79d3eca96b587fb37ff5189a65c7f63dd254862b6088409808aa6da108e4",
+    "installed_rollback": "NOT_EXECUTED: native diagnostic prompt focus was not safely proved; no failure injected",
+    "freshness": "SAVED_EVIDENCE_ONLY",
+    "professional_approval": "NOT_PROVIDED"
+  },
+  "evidence_directory": "C:/CodexWork/evidence/ETABS-W3J-REVIEW-COMPLETION-20260831",
+  "external_hashes": {
+    "saved-revision-2-reconciliation.json": "407b10fa488141672f58544d48d30d6cb690144c5ea67847949f3db209b2eac9",
+    "installed-comments-revision-1.json": "eb27356bb66ebb1a03bd9fe3ff3fb082faefdc906f69884576d1a224672a1073",
+    "served-source.json": "c8316f3327496cd2df4d93e06d4640f4c092fd363a79695db6ec1e4516ab97d5",
+    "postflight.json": "135cffb17f58a4d3671ab654f1d49bc0406b4381fd2328e436baf59df49f06a6"
+  },
+  "preservation": {
+    "prior_workbook_sha256": "ca3e465399ead7de132843a075f19575981579a0d232970b9b9a876dd9428900",
+    "six_protected_model_file_identities_unchanged": true,
+    "prior_workbook_and_catalog_hash_size_mtime_unchanged": true,
+    "etabs_calls": 0,
+    "ports_3000_3001_8000_free": true,
+    "excel_and_etabs_left_open": true,
+    "trust_or_global_configuration_changes": false,
+    "retained_predecessor_worktrees": 29,
+    "mac_directly_queried": false,
+    "deleted_reset_overwritten_stashed_reorganized_existing_data": false
+  },
+  "verification": "Focused add-in/exporter checks, quick gate, normal hooks and exact local/hosted closeout are recorded externally after content freeze. No future hosted/merge fact is claimed by this receipt.",
+  "next": "Fresh copy of the accepted revision-2 workbook; prove native diagnostic input first, then one update-only injected failure and all sixteen typed tables/dimensions restored exactly. Do not repeat accepted W3 setup or model analysis.",
+  "remaining_holds": ["Installed rollback", "Actual-building W3H physical mapping/calibration", "W3I/K/L", "L7 signature and professional approval", "Release"]
+}
