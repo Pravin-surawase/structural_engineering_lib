@@ -155,3 +155,44 @@ establish that basis from engineering evidence; endpoint restraint flags alone
 do not model a building member coupled to other beams/columns. A synthetic
 benchmark or ETABS-derived boundary fitted to the same forces is not independent
 calibration of this building.
+
+### Saved-evidence feasibility checkpoint (2026-08-30)
+
+The [feasibility receipt](../verification/etabs-w3h-feasibility-evidence.json)
+records a successor assessment, not another recovery or calibration run. All
+81 prior evidence files rehash correctly. The complete saved frame population
+contains 77 horizontal, one-to-three-span geometric groups. The endpoint-only
+graph leaves 23 groups apparently isolated; geometric projection locates every
+one on other frame interiors. All 77 therefore have external endpoint or
+interior geometric contacts. Coincidence and text-export meshing flags are
+**not** an audited analysis-mesh graph or an effective support model.
+
+One narrow installed read checked the shortest candidate and its two joints:
+31 audited getter records, no new force extraction, no setter. Both joints have
+six false restraint flags and nonzero vertical displacement for the exact
+accepted combination. The member has both bending rotations released at both
+ends and zero end-length offsets. Seven spring-related calls return CSI 1;
+their evidence remains unavailable, not absent. File, backup, immutable-copy,
+lock, units, case statuses and all selection flags remain exact.
+
+The current solver cannot encode imposed vertical settlement or surrounding
+frame/slab participation. Replacing these moving joints with zero-displacement
+supports would change the physical basis; declaring the isolated line FREE
+does not represent its supporting structure. This does not prove all 153
+members unsuitable or rule out a justified action-only study of a pinned
+member. Such a study must explicitly declare its reduced scope and cannot
+establish displacement agreement or full project calibration.
+
+The next engineering input is a specific independently reviewed reduced-line
+mapping: member/span/station/axis identity, effective supports, complete loads,
+slab participation, linear-response basis and predeclared comparison criteria.
+Ask the originating engineer for that basis, not the owner to guess defaults.
+Alternatively, a separately accepted programme decision may define a fully
+specified independent benchmark for installed software verification only; it
+must not be relabelled as calibration of this building or unlock W3I.
+
+Do not repeat registration, output-selection recovery, full extraction or
+analysis to address this hold. No solver/comparator, Excel or service was run
+in this checkpoint. The external notebook replays three code cells through
+Python and retains outputs; Jupyter-kernel/nbclient validation was not performed
+because those optional packages are absent. No dependency was installed.

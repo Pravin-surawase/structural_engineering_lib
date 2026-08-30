@@ -5,6 +5,101 @@
 
 ---
 
+## 2026-08-30 — Session: W3H saved-reference calibration feasibility
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3H-CALIBRATION-FEASIBILITY`.
+**Branch:** `codex/etabs-w3h-calibration-feasibility-windows`, fresh from fetched
+PR #918 merge `aeb2c67087900edf17a7f3bf7caa776d745b58a6`, tree
+`ad4e58b8e147ed81280ccdcd49202a957408d9c7`.
+**Status:** `FEASIBILITY_ASSESSED_CALIBRATION_HELD`.
+**Git handoff receipt:** `docs/verification/etabs-w3h-feasibility-git-handoff-receipt.json`
+**Focus:** Assess saved topology before any further calibration/model operation.
+
+**Completed:**
+
+- Read current authorities, fetched origin, proved PR #918/source/tree, and
+  began one maintained session in a new worktree. Source-bound Python 3.11.15
+  preflight passed in 8.22 seconds. No setup/dependency/registry work repeated.
+- Rehashed all 81 saved recovery evidence files; validated canonical baseline
+  and catalogue. Profiled 225 frames, 153 beam result sets, 3,502 signed force
+  station rows and 549 object connectivity rows: unique member identities,
+  no result coverage gaps or connectivity orphans.
+- Located 77 horizontal simple geometric chains (35 one-span, eight two-span,
+  34 three-span). All 23 groups lacking shared-endpoint connections have
+  endpoints on other members' interiors. This is geometric evidence, not
+  installed analysis-mesh connectivity or engineering support reduction.
+- Revalidated 38 installed signatures and performed one 31-getter read of the
+  shortest member and two joints. The ends are bending-released but their
+  unrestrained joints move vertically in the selected combination. Seven
+  spring-related return-code-1 observations remain UNAVAILABLE. No force
+  extraction, analysis, design, solver/comparator, unlock, save or setter ran.
+- Proved exact before/after copy, backup and immutable-baseline hashes, sizes
+  and mtimes; lock, units enum 6, 15 finished statuses and 77 flags unchanged.
+  Computer-use pre/postflight found one copied-model window, no blocking
+  dialog; no UI input. Excel stayed closed and ports 3000/8000 free.
+- Saved a local replay notebook, executed all three code cells through Python,
+  and retained stdout. Optional nbformat/nbclient/kernel packages are absent;
+  no Jupyter-kernel validation is claimed and none were installed. Data-quality
+  checks kept missing evidence distinct from false/zero and exposed the
+  endpoint-graph limitation. All proprietary details stay outside Git.
+- Retained 46 external files in a hash-bound manifest. Only safe receipt,
+  existing guide, session log, next brief and Git transition receipt enter Git.
+  The current repository implementation is unchanged.
+- Inspected all 23 linked worktrees and open PRs before publication: no Git
+  operation or active programme candidate was found; historical dirty W1/W3F
+  lanes remain untouched. GitHub remains shared authority; Mac state is not
+  inferred. Focused docs, quick gate, normal hooks and hosted evidence belong
+  to the frozen candidate and external final closeout, not a post-push edit.
+
+### Issues encountered
+
+- The endpoint graph suggested 23 isolated lines and could have encouraged
+  false simple-support assumptions. Live candidate joints instead have
+  nonzero support movement; no independent mapping/criteria is established.
+- Spring/slab evidence remains unavailable. ETABS accessibility is working;
+  repeatedly rerunning access recovery or analysis cannot supply this basis.
+- The first offline replay compared integer histogram keys to JSON string
+  keys and stopped before producing the notebook. Optional notebook packages
+  were absent. Neither event altered the source data or installed environment.
+- Terminal discovery used a wrong guide/helper filename and PowerShell mixed
+  object formatting hid some output. Exact discovered paths and explicit
+  scalar/JSON formatting produced readable evidence; failures were not passes.
+- The first quick gate passed 9/10 but rejected a 163-line handoff brief against
+  the maintained 150-line bound; no runtime/evidence check failed.
+
+### Root causes and resolutions
+
+- Confirmed endpoint-only object graph omits intermediate geometric contacts:
+  segment projection accounts for all 23 apparent exceptions. Documented the
+  distinction; did not change the accepted object-topology contract or claim
+  full meshing from coordinate coincidence.
+- Confirmed physical mismatch for the inspected candidate's absolute support
+  movement: the current solver only has FIXED/FREE vertical supports, whereas
+  the installed read reports unrestrained, vertically moving end joints.
+  A carefully justified pinned action-only study is not excluded, but does not
+  prove displacement agreement or project calibration. L5/W3I remain held.
+- Kept CSI code 1 as UNAVAILABLE and retained every raw response. No zero
+  stiffness or slab/load assumption was fabricated. Next required evidence is
+  an engineer-reviewed reduction and criteria, or a separately approved
+  software-only benchmark, not guessed owner defaults or fitted boundaries.
+- Normalized the replay histogram through JSON serialization before comparing
+  the serialized artifact; the final three-cell replay passes exactly. Used
+  standard-library sequential execution with explicit kernel-validation gap;
+  no dependency or repository repair was necessary.
+- Exact-path discovery and compact typed output resolved terminal inspection;
+  no shell/source-binding failure prevented the installed read.
+- The new handoff paragraph exceeded a brief already at its size boundary.
+  Condensed current/duplicated summary prose without changing the guide,
+  historical records or evidence. Rerun the affected length check and sole
+  corrected-candidate quick gate; retain the first failed result externally.
+
+**Next:** Keep model-specific calibration and optimization held pending the
+specific independent physical basis/criteria described in the updated guide.
+No release, professional/engineering/construction approval or full W3 completion.
+
+---
+
 ## 2026-08-30 — Session: W3H access recheck after owner-restored ETABS access
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).

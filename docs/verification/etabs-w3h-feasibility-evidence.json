@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-W3H-CALIBRATION-FEASIBILITY",
+  "observed_date": "2026-08-30",
+  "verdict": "FEASIBILITY_ASSESSED_CALIBRATION_HELD",
+  "source": {
+    "commit": "aeb2c67087900edf17a7f3bf7caa776d745b58a6",
+    "tree": "ad4e58b8e147ed81280ccdcd49202a957408d9c7",
+    "accepted_pr": 918,
+    "runtime_source_bound": true,
+    "implementation_changes": 0
+  },
+  "runtime": {
+    "python": "3.11.15",
+    "comtypes": "1.4.16",
+    "etabs": "23.3.1.4563",
+    "audited_signatures_revalidated": 38,
+    "license_entitlement_expiry": "NOT_VERIFIED"
+  },
+  "saved_evidence_quality": {
+    "prior_manifest_files_verified": 81,
+    "prior_manifest_sha256": "134a84f10dd32f263331b7979cddfff9db24e524ec8450d42963e072c1f5feb4",
+    "canonical_baseline_sha256": "2903d158645cfd59b3f08a54648cefda7603930a94c2d7ee4b3e92d8546f7906",
+    "canonical_catalogue_sha256": "353b28a82da954c20d46dafa774a30826e77f247f60d0ee545654f024a4b4d1b",
+    "frames": 225,
+    "beam_result_sets": 153,
+    "station_rows": 3502,
+    "missing_beam_results": 0,
+    "connectivity_orphans": 0,
+    "geometric_groups": 77,
+    "one_two_three_span_group_counts": [35, 8, 34],
+    "groups_without_shared_endpoint_contact": 23,
+    "same_groups_with_interior_geometric_contact": 23,
+    "groups_without_any_geometric_frame_contact": 0,
+    "geometric_contact_is_not_audited_mesh_or_support_model": true
+  },
+  "bounded_readonly_scope": {
+    "candidate_selection": "Shortest saved horizontal geometric group",
+    "frames": 1,
+    "joints": 2,
+    "getter_records": 31,
+    "counted_load_displacement_rows": 3,
+    "both_end_bending_releases": true,
+    "joint_restraint_flags_all_false": true,
+    "nonzero_signed_vertical_joint_displacements": 2,
+    "spring_calls_with_status_1": 7,
+    "spring_evidence": "UNAVAILABLE_NOT_ABSENT",
+    "new_force_extractions": 0,
+    "solver_comparator_calls": 0
+  },
+  "preservation": {
+    "safe_model_identity": "owner-saved-revision-92b3fa00",
+    "model_sha256": "92b3fa009f25b2228cc956cedb1b76268bb73414e16b361be334c0b3d81f6269",
+    "model_bytes": 702855,
+    "model_mtime_ns": 1788091924341316100,
+    "copy_backup_immutable_hash_size_mtime_unchanged": true,
+    "immutable_baseline_not_opened": true,
+    "model_locked": true,
+    "present_units_before_after": 6,
+    "all_finished_case_statuses": 15,
+    "unchanged_selection_flags": 77,
+    "setters_analysis_design_save_unlock": 0,
+    "excel_operations_services_started": 0,
+    "ui_input_actions": 0,
+    "ports_3000_8000": "FREE",
+    "etabs_final": "OPEN_LOCKED_NO_VISIBLE_BLOCKING_DIALOG",
+    "old_worktrees_branches_stashes_models_workbooks_evidence": "PRESERVED"
+  },
+  "external_evidence": {
+    "directory_key": "ETABS-W3H-CALIBRATION-FEASIBILITY-20260830",
+    "manifest_file_count": 46,
+    "manifest_sha256": "0297915d1466dffa8935254d1329696fb90a343b9004043876c3bfd2fcc321df",
+    "assessment_sha256": "9ebcf8e6338a8af02dfda727d9681e9bdf2da46b831931f83c9a3941594e4bfb",
+    "notebook_sha256": "2eb0a6e84580655ffd9cd15f797780a827baf825bdb0d5c4fded0ed1ecd62dad",
+    "readonly_postflight_sha256": "e73800183d3b8feada48d54843da0019316d2f1bdef87a028041cb12633ce4c6",
+    "notebook_code_cells_executed": 3,
+    "execution_method": "Sequential Python cells with recorded stdout; structural JSON checks",
+    "jupyter_kernel_nbclient_nbformat_validation": "NOT_PERFORMED_OPTIONAL_PACKAGES_ABSENT",
+    "proprietary_paths_payloads": "EXTERNAL_ONLY"
+  },
+  "remaining_holds": [
+    "No independent supported physical reduction or predeclared project comparison criteria.",
+    "Current solver does not encode imposed vertical support movement or surrounding frame/slab participation.",
+    "Spring/slab context remains unavailable; coordinate coincidence does not prove full analysis-mesh connectivity.",
+    "One live candidate does not prove every beam unsuitable; justified action-only study is not ruled out but is not full calibration."
+  ],
+  "next_route": "Originating engineer reviews a specific reduced-line/support/load/slab mapping and predeclared criteria, or a separate programme decision defines software-only benchmark verification without project calibration claims.",
+  "claim_boundary": {
+    "model_specific_L5_calibration": "HELD",
+    "W3I_optimization": "HELD",
+    "independent_frame_analysis": "HELD_NOT_SUPPORTED",
+    "general_ETABS_parity": false,
+    "professional_engineering_construction_approval": "NOT_PROVIDED",
+    "release": "NOT_AUTHORIZED",
+    "mac_synchronization": "NOT_CLAIMED"
+  }
+}

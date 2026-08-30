@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-30
-- Focus: Recover installed result readback and refresh saved-revision references.
-- Completed: Read the current authorities, fetched HTTPS `origin/main`, verified PR #917; Began the maintained session in a new clean lane. Environment preflight; Computer-use inspection showed ETABS Ultimate v23.3.1 displaying the copied
-- Git receipt: docs/verification/etabs-w3h-access-git-handoff-receipt.json | sha256:8afde19312ecafaa2c0b14fc816171f1ef61b8fb90a2fb42bf4234c2a14d2dd4 | HOLD
-- Git identity: codex/etabs-w3h-access-recheck-windows@3cdb34679e393a931e49733b4f88cf033da48311 | upstream=NONE@UNKNOWN | base=origin/main@3cdb34679e393a931e49733b4f88cf033da48311 | tree=dirty | operation=none
+- Focus: Assess saved topology before any further calibration/model operation.
+- Completed: Read current authorities, fetched origin, proved PR #918/source/tree, and; Rehashed all 81 saved recovery evidence files; validated canonical baseline; Located 77 horizontal simple geometric chains (35 one-span, eight two-span,
+- Git receipt: docs/verification/etabs-w3h-feasibility-git-handoff-receipt.json | sha256:be615f3e59a001b3e4f423dc725c0dde9dd2a54f9d24ee6840372c1b227ed9af | HOLD
+- Git identity: codex/etabs-w3h-calibration-feasibility-windows@aeb2c67087900edf17a7f3bf7caa776d745b58a6 | upstream=NONE@UNKNOWN | base=origin/main@aeb2c67087900edf17a7f3bf7caa776d745b58a6 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -25,6 +25,9 @@
 
 W3H continuation: [guide](../guides/beam-line-calibration.md) and [receipt](../verification/etabs-w3h-comparison-evidence.json) bind the L1 checkpoint, exact next inputs and one-writer handoff; L5/W3I remain held.
 `ETABS-W3H-ACCESS-RECHECK` recovered force access by one explicit reassertion of the already-selected combination. Fresh evidence: 153 beams/3,502 stations, complete catalogue, 40 foundation getters and 24 reconciled signed joint components; files/lock/units/status/flags unchanged. [Recovery receipt](../verification/etabs-w3h-access-recovery-evidence.json) and external `ETABS-W3H-RESULT-RECOVERY-20260830` supersede the old readback blocker. Do not rerun registration/recovery/analysis. L5/W3I still require supported physical mapping, unavailable spring/slab evidence and predeclared criteria; do not ask the owner to guess them. No Mac synchronization or calibration claim.
+
+`ETABS-W3H-CALIBRATION-FEASIBILITY` assessed all 77 geometric lines: every line has an external endpoint/interior geometric contact; the 23 endpoint-graph exceptions are not proved isolated. A 31-getter read found the shortest candidate pinned but on unrestrained moving joints. Current solver support types do not encode imposed vertical movement. [Feasibility receipt](../verification/etabs-w3h-feasibility-evidence.json) distinguishes these facts from full mesh/support proof.
+Next: obtain the originating engineer's specific reduced-line/load/slab basis and predeclared criteria, or separately accept a software benchmark that does not count as building calibration. No W3I shortlist, fitted ETABS boundary, setup/extraction/analysis repeat or model action is implied; preserve all revisions and evidence.
 
 ## W3A-W3D accepted through local W3D content freeze
 
@@ -133,10 +136,7 @@ stiffness, general ETABS parity, optimizer or professional approval is accepted.
 
 ### Retained W3D acceptance
 
-W3D source/runtime/getter identity, sentinel repairs, canonical direct/REST
-reconciliation and unchanged model/units/selection proof remain in its accepted
-receipt and session history. No live repeat is part of W3G; proprietary payloads
-stay outside Git and all old blocked evidence is preserved.
+W3D source/runtime/getter identity, repairs, direct/REST reconciliation and model/state preservation remain in its accepted receipt/session history. No live repeat; proprietary payloads stay outside Git and all old blocked evidence is preserved.
 
 ## Required Reading
 
