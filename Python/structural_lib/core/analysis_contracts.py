@@ -16,6 +16,24 @@ from typing import Annotated, Generic, Literal, Self, TypeVar
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 __all__ = [
+    "ModelJointLoadV1",
+    "JointResultSourceCountV1",
+    "ModelPointV1",
+    "ModelDofRestraintsV1",
+    "ModelSpringTermV1",
+    "ModelSpringV1",
+    "ModelJointDefinitionV1",
+    "ModelReleasesV1",
+    "ModelEndOffsetsV1",
+    "ModelInsertionPointV1",
+    "ModelModifiersV1",
+    "ModelMaterialV1",
+    "ModelSectionV1",
+    "ModelFramePointLoadV1",
+    "ModelFrameDistributedLoadV1",
+    "ModelFrameDefinitionV1",
+    "JointDisplacementRowV1",
+    "JointReactionRowV1",
     "AnalysisStateV1",
     "AnalysisStatusIdentityV1",
     "BeamActionComponentV1",
@@ -471,3 +489,252 @@ class BeamDemandSnapshotV1(_AnalysisContractModel):
     governing_references: tuple[BeamGoverningReferenceV1, ...] = Field(min_length=1)
     limitations: tuple[str, ...]
     snapshot_sha256: str = Field(pattern=_SHA256_PATTERN)
+
+
+# W3F normalized model and result evidence. No vendor enums or array layouts.
+class ModelPointV1(_AnalysisContractModel):
+    x_mm: float
+    y_mm: float
+    z_mm: float
+
+
+class ModelDofRestraintsV1(_AnalysisContractModel):
+    u1: bool
+    u2: bool
+    u3: bool
+    r1: bool
+    r2: bool
+    r3: bool
+
+
+_DofV1 = Literal["U1", "U2", "U3", "R1", "R2", "R3"]
+_DOFS = ("U1", "U2", "U3", "R1", "R2", "R3")
+
+
+class ModelSpringTermV1(_AnalysisContractModel):
+    resultant_dof: _DofV1
+    displacement_dof: _DofV1
+    stiffness: float
+    unit: Literal["kN/mm", "kN/rad", "kN.m/mm", "kN.m/rad"]
+
+    @model_validator(mode="after")
+    def validate_coefficient_unit(self) -> Self:
+        numerator = "kN" if self.resultant_dof.startswith("U") else "kN.m"
+        denominator = "mm" if self.displacement_dof.startswith("U") else "rad"
+        if self.unit != f"{numerator}/{denominator}":
+            raise ValueError(
+                "spring unit must match its explicit resultant/displacement pair"
+            )
+        return self
+
+
+class ModelSpringV1(_AnalysisContractModel):
+    coordinate_system: str = Field(min_length=1)
+    representation: Literal["DIAGONAL", "FULL_MATRIX"]
+    terms: tuple[ModelSpringTermV1, ...] = Field(min_length=6, max_length=36)
+
+    @model_validator(mode="after")
+    def validate_complete_matrix(self) -> Self:
+        pairs = [(term.resultant_dof, term.displacement_dof) for term in self.terms]
+        expected = (
+            {(dof, dof) for dof in _DOFS}
+            if self.representation == "DIAGONAL"
+            else {(row, col) for row in _DOFS for col in _DOFS}
+        )
+        if len(pairs) != len(set(pairs)) or set(pairs) != expected:
+            raise ValueError(
+                "spring evidence must contain each required coefficient exactly once"
+            )
+        return self
+
+
+class ModelJointLoadV1(_AnalysisContractModel):
+    assignment_id: str = Field(min_length=1)
+    pattern_id: str = Field(min_length=1)
+    coordinate_system: str = Field(min_length=1)
+    f1_kn: float
+    f2_kn: float
+    f3_kn: float
+    m1_knm: float
+    m2_knm: float
+    m3_knm: float
+    evidence_reference: str = Field(min_length=1)
+
+
+class ModelJointDefinitionV1(_AnalysisContractModel):
+    joint_id: str = Field(min_length=1, max_length=160)
+    source_joint_name: str = Field(min_length=1)
+    point: ModelPointV1
+    restraint_basis: Literal["GLOBAL", "JOINT_LOCAL"]
+    restraints: EvidenceValueV1[ModelDofRestraintsV1]
+    springs: EvidenceValueV1[ModelSpringV1]
+    local_axes_basis: EvidenceValueV1[str]
+    assigned_loads: EvidenceValueV1[tuple[ModelJointLoadV1, ...]]
+    evidence_reference: str = Field(min_length=1)
+
+
+class ModelReleasesV1(_AnalysisContractModel):
+    end_i: ModelDofRestraintsV1
+    end_j: ModelDofRestraintsV1
+    # True flags mean RELEASED, not restrained; each spring has explicit units.
+    partial_fixity_i: ModelSpringV1
+    partial_fixity_j: ModelSpringV1
+
+
+class ModelEndOffsetsV1(_AnalysisContractModel):
+    automatic: bool
+    length_i_mm: float = Field(ge=0)
+    length_j_mm: float = Field(ge=0)
+    rigid_zone_factor: float = Field(ge=0, le=1)
+
+
+class ModelInsertionPointV1(_AnalysisContractModel):
+    cardinal_point: int
+    mirror_local_2: bool
+    mirror_local_3: bool
+    transform_stiffness: bool
+    coordinate_system: str = Field(min_length=1)
+    offset_i: ModelPointV1
+    offset_j: ModelPointV1
+
+
+class ModelModifiersV1(_AnalysisContractModel):
+    axial_area: float = Field(ge=0)
+    shear_area_2: float = Field(ge=0)
+    shear_area_3: float = Field(ge=0)
+    torsion: float = Field(ge=0)
+    inertia_2: float = Field(ge=0)
+    inertia_3: float = Field(ge=0)
+    mass: float = Field(ge=0)
+    weight: float = Field(ge=0)
+
+
+class ModelMaterialV1(_AnalysisContractModel):
+    material_label: str = Field(min_length=1)
+    elastic_modulus_nmm2: float = Field(gt=0)
+    poisson_ratio: float = Field(gt=-1, lt=0.5)
+    mass_density_kg_per_m3: float = Field(ge=0)
+    weight_density_kn_per_m3: float = Field(ge=0)
+    evidence_reference: str = Field(min_length=1)
+
+
+class ModelSectionV1(_AnalysisContractModel):
+    section_label: str = Field(min_length=1)
+    material_label: str = Field(min_length=1)
+    area_mm2: float = Field(gt=0)
+    shear_area_2_mm2: float = Field(gt=0)
+    shear_area_3_mm2: float = Field(gt=0)
+    torsional_constant_mm4: float = Field(gt=0)
+    inertia_2_mm4: float = Field(gt=0)
+    inertia_3_mm4: float = Field(gt=0)
+    material: EvidenceValueV1[ModelMaterialV1]
+    modifiers: EvidenceValueV1[ModelModifiersV1]
+    evidence_reference: str = Field(min_length=1)
+
+
+class ModelFramePointLoadV1(_AnalysisContractModel):
+    kind: Literal["POINT"] = "POINT"
+    assignment_id: str = Field(min_length=1)
+    pattern_id: str = Field(min_length=1)
+    coordinate_system: str = Field(min_length=1)
+    direction_basis: str = Field(min_length=1)
+    action_kind: Literal["FORCE", "MOMENT"]
+    distance_mm: float = Field(ge=0)
+    value: float
+    unit: Literal["kN", "kN.m"]
+    evidence_reference: str = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_unit(self) -> Self:
+        if self.unit != ("kN" if self.action_kind == "FORCE" else "kN.m"):
+            raise ValueError("point-load unit must match action kind")
+        return self
+
+
+class ModelFrameDistributedLoadV1(_AnalysisContractModel):
+    kind: Literal["DISTRIBUTED"] = "DISTRIBUTED"
+    assignment_id: str = Field(min_length=1)
+    pattern_id: str = Field(min_length=1)
+    coordinate_system: str = Field(min_length=1)
+    direction_basis: str = Field(min_length=1)
+    action_kind: Literal["FORCE", "MOMENT"]
+    start_distance_mm: float = Field(ge=0)
+    end_distance_mm: float = Field(gt=0)
+    start_value: float
+    end_value: float
+    unit: Literal["kN/mm", "kN.m/mm"]
+    evidence_reference: str = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_domain(self) -> Self:
+        if self.end_distance_mm <= self.start_distance_mm:
+            raise ValueError("distributed-load domain must be positive")
+        if self.unit != ("kN/mm" if self.action_kind == "FORCE" else "kN.m/mm"):
+            raise ValueError("distributed-load unit must match action kind")
+        return self
+
+
+_FrameLoadV1 = Annotated[
+    ModelFramePointLoadV1 | ModelFrameDistributedLoadV1, Field(discriminator="kind")
+]
+
+
+class ModelFrameDefinitionV1(_AnalysisContractModel):
+    member_id: str = Field(min_length=1, max_length=160)
+    source_frame_name: str = Field(min_length=1)
+    joint_i_id: str = Field(min_length=1)
+    joint_j_id: str = Field(min_length=1)
+    section: EvidenceValueV1[ModelSectionV1]
+    releases: EvidenceValueV1[ModelReleasesV1]
+    end_offsets: EvidenceValueV1[ModelEndOffsetsV1]
+    insertion_point: EvidenceValueV1[ModelInsertionPointV1]
+    object_modifiers: EvidenceValueV1[ModelModifiersV1]
+    assigned_loads: EvidenceValueV1[tuple[_FrameLoadV1, ...]]
+    evidence_reference: str = Field(min_length=1)
+
+
+class JointResultSourceCountV1(_AnalysisContractModel):
+    joint_id: str = Field(min_length=1)
+    selection_id: str = Field(min_length=1)
+    source_row_count: int = Field(ge=1, le=100000)
+    evidence_reference: str = Field(min_length=1)
+
+
+class _JointResultRowV1(_AnalysisContractModel):
+    row_id: str = Field(min_length=1, max_length=160)
+    joint_id: str = Field(min_length=1, max_length=160)
+    object_name: str = Field(min_length=1)
+    element_name: str = Field(min_length=1)
+    selection_id: str = Field(min_length=1, max_length=160)
+    output_case_name: str = Field(min_length=1)
+    step_type: str
+    step_number: float
+    source_row_index: int = Field(ge=0)
+    model_identity_sha256: str = Field(pattern=_SHA256_PATTERN)
+    baseline_sha256: str = Field(pattern=_SHA256_PATTERN)
+    catalogue_sha256: str = Field(pattern=_SHA256_PATTERN)
+    coordinate_system: str = Field(min_length=1)
+    evidence_reference: str = Field(min_length=1)
+    row_sha256: str = Field(pattern=_SHA256_PATTERN)
+
+
+class JointDisplacementRowV1(_JointResultRowV1):
+    u1_mm: float
+    u2_mm: float
+    u3_mm: float
+    r1_rad: float
+    r2_rad: float
+    r3_rad: float
+    translation_unit: Literal["mm"] = "mm"
+    rotation_unit: Literal["rad"] = "rad"
+
+
+class JointReactionRowV1(_JointResultRowV1):
+    f1_kn: float
+    f2_kn: float
+    f3_kn: float
+    m1_knm: float
+    m2_knm: float
+    m3_knm: float
+    force_unit: Literal["kN"] = "kN"
+    moment_unit: Literal["kN.m"] = "kN.m"

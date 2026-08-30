@@ -12,9 +12,9 @@ from collections import defaultdict
 from collections.abc import Iterable, Mapping, Sequence
 from enum import StrEnum
 from hashlib import sha256
-from typing import Any, Literal, Self
+from typing import Any, Generic, Literal, Self, TypeVar
 
-from pydantic import Field, model_validator
+from pydantic import BaseModel, Field, model_validator
 
 from structural_lib.core.analysis_contracts import (
     AnalysisStateV1,
@@ -28,8 +28,14 @@ from structural_lib.core.analysis_contracts import (
     BeamGoverningReferenceV1,
     BeamGoverningSignV1,
     EvidenceStateV1,
+    EvidenceValueV1,
+    JointDisplacementRowV1,
+    JointReactionRowV1,
+    JointResultSourceCountV1,
     LoadCaseDefinitionV1,
     LoadPatternDefinitionV1,
+    ModelFrameDefinitionV1,
+    ModelJointDefinitionV1,
     ResponseCombinationDefinitionV1,
     ResponseCombinationSourceKindV1,
     ResultSelectionIdentityV1,
@@ -40,10 +46,30 @@ from structural_lib.services.contracts.common import StrictPublicModel
 from structural_lib.services.etabs_beam_baseline import (
     ETABSBeamBaselineV1,
     ETABSForceStationV1,
+    ETABSFrameV1,
+    ETABSModelIdentityV1,
+    ETABSStoryV1,
     verify_etabs_beam_baseline_hash_v1,
 )
 
 __all__ = [
+    "ETABSModelContextV1",
+    "ETABSOutputSelectionStateV1",
+    "ETABSModelDefinitionBuildRequestV1",
+    "ETABSModelDefinitionBuildResultV1",
+    "ETABSModelDefinitionSnapshotV1",
+    "ETABSDisplacementBuildRequestV1",
+    "ETABSDisplacementBuildResultV1",
+    "ETABSDisplacementSnapshotV1",
+    "ETABSReactionBuildRequestV1",
+    "ETABSReactionBuildResultV1",
+    "ETABSReactionSnapshotV1",
+    "build_etabs_model_definition_snapshot_v1",
+    "build_etabs_displacement_snapshot_v1",
+    "build_etabs_reaction_snapshot_v1",
+    "verify_etabs_model_definition_snapshot_hash_v1",
+    "verify_etabs_displacement_snapshot_hash_v1",
+    "verify_etabs_reaction_snapshot_hash_v1",
     "BeamActionPageV1",
     "BeamDemandBuildResultV1",
     "BeamDemandDerivationRequestV1",
@@ -1145,3 +1171,707 @@ def verify_beam_demand_snapshot_hash_v1(snapshot: BeamDemandSnapshotV1, /) -> bo
         canonical_beam_demand_snapshot_hash_basis_json_v1(snapshot).encode("utf-8")
     ).hexdigest()
     return digest == snapshot.snapshot_sha256
+
+
+class ETABSOutputSelectionStateV1(StrictPublicModel):
+    kind: ResultSelectionKindV1 = Field(strict=False)
+    name: str = Field(min_length=1)
+    selected: bool
+
+
+class ETABSModelContextV1(StrictPublicModel):
+    """Normalized read-only pre/post evidence; no assumed unit switch."""
+
+    model: ETABSModelIdentityV1
+    present_units_before: int = Field(ge=1)
+    present_units_after: int = Field(ge=1)
+    database_units_enum: int = Field(ge=1)
+    runtime_identity_sha256: str = Field(pattern=_SHA256_PATTERN)
+    getter_matrix_sha256: str = Field(pattern=_SHA256_PATTERN)
+    analysis_statuses: tuple[AnalysisStatusIdentityV1, ...] = Field(min_length=1)
+    output_selection_states: tuple[ETABSOutputSelectionStateV1, ...] = Field(
+        min_length=1
+    )
+    # These bind complete getter-state observations, not timestamped wrappers.
+    state_before_sha256: str = Field(pattern=_SHA256_PATTERN)
+    state_after_sha256: str = Field(pattern=_SHA256_PATTERN)
+    normalization_evidence_reference: str = Field(min_length=1)
+    canonical_length_unit: Literal["mm"] = "mm"
+    canonical_force_unit: Literal["kN"] = "kN"
+    canonical_moment_unit: Literal["kN.m"] = "kN.m"
+
+
+class ETABSModelDefinitionBuildRequestV1(StrictPublicModel):
+    baseline: ETABSBeamBaselineV1
+    catalogue: ETABSResultCatalogueV1
+    context: ETABSModelContextV1
+    member_ids: tuple[str, ...] = Field(min_length=1, max_length=5000)
+    joint_ids: tuple[str, ...] = Field(min_length=1, max_length=10000)
+    joints: tuple[ModelJointDefinitionV1, ...] = Field(min_length=1)
+    frame_definitions: tuple[ModelFrameDefinitionV1, ...] = Field(min_length=1)
+    diaphragm_slab_context: EvidenceValueV1[str]
+    require_calibration_fields: bool
+    capacity_limit: int = Field(ge=1, le=100000)
+
+
+class ETABSModelDefinitionSnapshotV1(StrictPublicModel):
+    schema_version: Literal["etabs-model-definition-snapshot/v1"] = (
+        "etabs-model-definition-snapshot/v1"
+    )
+    context: ETABSModelContextV1
+    baseline_sha256: str = Field(pattern=_SHA256_PATTERN)
+    catalogue_sha256: str = Field(pattern=_SHA256_PATTERN)
+    member_ids: tuple[str, ...]
+    joint_ids: tuple[str, ...]
+    stories: tuple[ETABSStoryV1, ...]
+    frames: tuple[ETABSFrameV1, ...]
+    joints: tuple[ModelJointDefinitionV1, ...]
+    frame_definitions: tuple[ModelFrameDefinitionV1, ...]
+    diaphragm_slab_context: EvidenceValueV1[str]
+    calibration_fields_complete: bool
+    limitations: tuple[str, ...]
+    snapshot_sha256: str = Field(pattern=_SHA256_PATTERN)
+
+
+_SnapshotT = TypeVar("_SnapshotT")
+
+
+class _W3FSnapshotBuildResultV1(StrictPublicModel, Generic[_SnapshotT]):
+    status: W3BuildStatusV1 = Field(strict=False)
+    issues: tuple[W3BuildIssueV1, ...]
+    snapshot: _SnapshotT | None
+
+    @model_validator(mode="after")
+    def validate_complete_or_blocked(self) -> Self:
+        if self.status is W3BuildStatusV1.ACCEPTED:
+            if self.snapshot is None or self.issues:
+                raise ValueError(
+                    "accepted builds require a complete snapshot and no issues"
+                )
+        elif self.snapshot is not None or not self.issues:
+            raise ValueError("blocked builds require issues and no partial snapshot")
+        return self
+
+
+class ETABSModelDefinitionBuildResultV1(
+    _W3FSnapshotBuildResultV1[ETABSModelDefinitionSnapshotV1]
+):
+    pass
+
+
+class _JointSnapshotRequestV1(StrictPublicModel):
+    model_definition: ETABSModelDefinitionSnapshotV1
+    catalogue: ETABSResultCatalogueV1
+    context: ETABSModelContextV1
+    joint_ids: tuple[str, ...] = Field(min_length=1, max_length=10000)
+    selection_ids: tuple[str, ...] = Field(min_length=1, max_length=1000)
+    source_row_counts: tuple[JointResultSourceCountV1, ...] = Field(
+        min_length=1, max_length=100000
+    )
+    capacity_limit: int = Field(ge=1, le=100000)
+
+
+class ETABSDisplacementBuildRequestV1(_JointSnapshotRequestV1):
+    rows: tuple[JointDisplacementRowV1, ...]
+
+
+class ETABSReactionBuildRequestV1(_JointSnapshotRequestV1):
+    rows: tuple[JointReactionRowV1, ...]
+
+
+class _JointSnapshotV1(StrictPublicModel):
+    context: ETABSModelContextV1
+    model_definition_sha256: str = Field(pattern=_SHA256_PATTERN)
+    baseline_sha256: str = Field(pattern=_SHA256_PATTERN)
+    catalogue_sha256: str = Field(pattern=_SHA256_PATTERN)
+    joint_ids: tuple[str, ...]
+    selection_ids: tuple[str, ...]
+    row_count: int = Field(ge=1)
+    source_row_counts: tuple[JointResultSourceCountV1, ...]
+    limitations: tuple[str, ...]
+    snapshot_sha256: str = Field(pattern=_SHA256_PATTERN)
+
+
+class ETABSDisplacementSnapshotV1(_JointSnapshotV1):
+    schema_version: Literal["etabs-displacement-snapshot/v1"] = (
+        "etabs-displacement-snapshot/v1"
+    )
+    rows: tuple[JointDisplacementRowV1, ...]
+
+
+class ETABSReactionSnapshotV1(_JointSnapshotV1):
+    schema_version: Literal["etabs-reaction-snapshot/v1"] = "etabs-reaction-snapshot/v1"
+    rows: tuple[JointReactionRowV1, ...]
+
+
+class ETABSDisplacementBuildResultV1(
+    _W3FSnapshotBuildResultV1[ETABSDisplacementSnapshotV1]
+):
+    pass
+
+
+class ETABSReactionBuildResultV1(_W3FSnapshotBuildResultV1[ETABSReactionSnapshotV1]):
+    pass
+
+
+def _w3f_digest(value: BaseModel, hash_field: str = "snapshot_sha256") -> str:
+    return _sha(value.model_dump(mode="json", exclude={hash_field}))
+
+
+def _w3f_context_issues(
+    context: ETABSModelContextV1, catalogue: ETABSResultCatalogueV1
+) -> list[W3BuildIssueV1]:
+    issues: list[W3BuildIssueV1] = []
+    if not verify_etabs_result_catalogue_hash_v1(catalogue):
+        issues.append(
+            _issue(
+                "W3F_CATALOGUE_HASH_INVALID",
+                "catalogue",
+                "catalogue identity must verify",
+            )
+        )
+    if (
+        context.model.file_evidence.before_read.sha256
+        != catalogue.model_identity_sha256
+    ):
+        issues.append(
+            _issue(
+                "W3F_MODEL_IDENTITY_MISMATCH",
+                "context.model",
+                "context and catalogue must bind the same saved model",
+            )
+        )
+    if (
+        context.model.model_path != context.model.file_evidence.before_read.model_path
+        or context.model.model_name
+        != context.model.file_evidence.before_read.model_name
+    ):
+        issues.append(
+            _issue(
+                "W3F_MODEL_PATH_MISMATCH",
+                "context.model",
+                "visible model identity must match saved file proof",
+            )
+        )
+    if (
+        not context.model.model_locked
+        or context.present_units_before != context.present_units_after
+        or context.state_before_sha256 != context.state_after_sha256
+    ):
+        issues.append(
+            _issue(
+                "W3F_POSTFLIGHT_BLOCKED",
+                "context",
+                "lock, units and complete getter-state preservation are required",
+            )
+        )
+    statuses = {status.case_id: status for status in context.analysis_statuses}
+    expected_statuses = {item.case_id: item for item in catalogue.analysis_statuses}
+    if (
+        len(statuses) != len(context.analysis_statuses)
+        or set(statuses) != set(expected_statuses)
+        or any(
+            (item.status_id, item.raw_status_code, item.state)
+            != (
+                expected_statuses[case_id].status_id,
+                expected_statuses[case_id].raw_status_code,
+                expected_statuses[case_id].state,
+            )
+            for case_id, item in statuses.items()
+            if case_id in expected_statuses
+        )
+    ):
+        issues.append(
+            _issue(
+                "W3F_ANALYSIS_STATUS_BLOCKED",
+                "context.analysis_statuses",
+                "every exact catalogue case needs matching current status evidence; unrequested cases need not be finished",
+            )
+        )
+    selections = {
+        (item.kind.value, item.name): item.selected
+        for item in context.output_selection_states
+    }
+    expected = {("CASE", item.name) for item in catalogue.load_cases} | {
+        ("COMBINATION", item.name) for item in catalogue.response_combinations
+    }
+    if (
+        len(selections) != len(context.output_selection_states)
+        or set(selections) != expected
+    ):
+        issues.append(
+            _issue(
+                "W3F_SELECTION_STATE_INCOMPLETE",
+                "context.output_selection_states",
+                "every case and combination output-selection state must be retained",
+            )
+        )
+    return issues
+
+
+def _w3f_evidence_values(value: Any) -> Iterable[EvidenceValueV1[Any]]:
+    if isinstance(value, EvidenceValueV1):
+        yield value
+        if value.value is not None:
+            yield from _w3f_evidence_values(value.value)
+    elif isinstance(value, BaseModel):
+        for name in type(value).model_fields:
+            yield from _w3f_evidence_values(getattr(value, name))
+    elif isinstance(value, (tuple, list)):
+        for item in value:
+            yield from _w3f_evidence_values(item)
+
+
+def build_etabs_model_definition_snapshot_v1(
+    request: ETABSModelDefinitionBuildRequestV1, /
+) -> ETABSModelDefinitionBuildResultV1:
+    """Bind normalized model semantics without touching any application."""
+    issues = _w3f_context_issues(request.context, request.catalogue)
+    baseline = request.baseline
+    if (
+        not verify_etabs_beam_baseline_hash_v1(baseline)
+        or baseline.model.file_evidence.before_read.sha256
+        != request.catalogue.model_identity_sha256
+    ):
+        issues.append(
+            _issue(
+                "W3F_BASELINE_IDENTITY_INVALID",
+                "baseline",
+                "the exact accepted baseline must bind the same model",
+            )
+        )
+    baseline_file = baseline.model.file_evidence.before_read
+    current_file = request.context.model.file_evidence.before_read
+    file_fields = (
+        "model_path",
+        "model_name",
+        "sha256",
+        "byte_count",
+        "modified_at_utc",
+    )
+    if any(
+        getattr(baseline_file, name) != getattr(current_file, name)
+        for name in file_fields
+    ) or (baseline.model.etabs_version, baseline.model.etabs_version_number) != (
+        request.context.model.etabs_version,
+        request.context.model.etabs_version_number,
+    ):
+        issues.append(
+            _issue(
+                "W3F_BASELINE_CONTEXT_MISMATCH",
+                "context.model",
+                "exact saved identity, size, mtime and ETABS version must match the accepted baseline",
+            )
+        )
+    members = {item.member_id: item for item in request.frame_definitions}
+    joints = {item.joint_id: item for item in request.joints}
+    baseline_frames = {item.member_id: item for item in baseline.frames}
+    if (
+        len(members) != len(request.frame_definitions)
+        or len(set(request.member_ids)) != len(request.member_ids)
+        or set(members) != set(request.member_ids)
+        or not set(members) <= set(baseline_frames)
+    ):
+        issues.append(
+            _issue(
+                "W3F_MEMBER_SCOPE_INVALID",
+                "member_ids",
+                "explicit unique member scope must exactly match definitions and exist in baseline",
+            )
+        )
+    if (
+        len(joints) != len(request.joints)
+        or len(set(request.joint_ids)) != len(request.joint_ids)
+        or set(joints) != set(request.joint_ids)
+    ):
+        issues.append(
+            _issue(
+                "W3F_JOINT_SCOPE_INVALID",
+                "joint_ids",
+                "explicit unique joint scope must exactly match normalized joints",
+            )
+        )
+    values = tuple(
+        _w3f_evidence_values(
+            (request.joints, request.frame_definitions, request.diaphragm_slab_context)
+        )
+    )
+    complete = all(
+        value.state in {EvidenceStateV1.PRESENT, EvidenceStateV1.NOT_APPLICABLE}
+        for value in values
+    )
+    # These fields apply to every retained beam line; NOT_APPLICABLE cannot
+    # stand in for its section, connectivity/support or assigned-load evidence.
+    required: list[EvidenceValueV1[Any]] = [
+        field
+        for joint in request.joints
+        for field in (joint.restraints, joint.local_axes_basis, joint.assigned_loads)
+    ]
+    required.extend(
+        field
+        for member in request.frame_definitions
+        for field in (
+            member.section,
+            member.releases,
+            member.end_offsets,
+            member.insertion_point,
+            member.object_modifiers,
+            member.assigned_loads,
+        )
+    )
+    required.extend(
+        field
+        for member in request.frame_definitions
+        if member.section.value is not None
+        for field in (member.section.value.material, member.section.value.modifiers)
+    )
+    complete = complete and all(
+        field.state is EvidenceStateV1.PRESENT for field in required
+    )
+    if any(value.state is EvidenceStateV1.BLOCKED for value in values) or (
+        request.require_calibration_fields and not complete
+    ):
+        issues.append(
+            _issue(
+                "W3F_REQUIRED_DEFINITION_EVIDENCE_BLOCKED",
+                "definitions",
+                "BLOCKED evidence or missing required calibration fields forbids an accepted parent snapshot",
+            )
+        )
+    load_owners: tuple[ModelFrameDefinitionV1 | ModelJointDefinitionV1, ...] = (
+        *members.values(),
+        *joints.values(),
+    )
+    assignments = [
+        load
+        for member in load_owners
+        if member.assigned_loads.value is not None
+        for load in member.assigned_loads.value
+    ]
+    if len(members) + len(joints) + len(assignments) > request.capacity_limit:
+        issues.append(
+            _issue(
+                "W3F_CAPACITY_EXCEEDED",
+                "capacity_limit",
+                "complete definitions exceed caller bound; no truncation",
+            )
+        )
+    patterns = {pattern.pattern_id for pattern in request.catalogue.load_patterns}
+    if len({load.assignment_id for load in assignments}) != len(assignments) or any(
+        load.pattern_id not in patterns for load in assignments
+    ):
+        issues.append(
+            _issue(
+                "W3F_LOAD_ASSIGNMENT_IDENTITY_INVALID",
+                "assigned_loads",
+                "assignment IDs must be unique and patterns must exist in the catalogue",
+            )
+        )
+    for member_id, definition in members.items():
+        frame = baseline_frames.get(member_id)
+        if frame is None:
+            continue
+        if definition.source_frame_name != frame.source_unique_name:
+            issues.append(
+                _issue(
+                    "W3F_FRAME_IDENTITY_MISMATCH",
+                    member_id,
+                    "source frame name must match the baseline",
+                )
+            )
+        for node_id, point in (
+            (definition.joint_i_id, frame.point_i),
+            (definition.joint_j_id, frame.point_j),
+        ):
+            joint = joints.get(node_id)
+            if (
+                joint is None
+                or joint.source_joint_name != point.point_name
+                or (joint.point.x_mm, joint.point.y_mm, joint.point.z_mm)
+                != (point.x_mm, point.y_mm, point.z_mm)
+            ):
+                issues.append(
+                    _issue(
+                        "W3F_CONNECTIVITY_MISMATCH",
+                        member_id,
+                        "endpoint identity and coordinates must match exact baseline connectivity",
+                    )
+                )
+        section = definition.section.value
+        if section is not None and (
+            section.section_label != frame.section.section_name
+            or section.material_label != frame.section.material_property_label
+            or (
+                section.material.value is not None
+                and section.material.value.material_label != section.material_label
+            )
+        ):
+            issues.append(
+                _issue(
+                    "W3F_SECTION_MATERIAL_MISMATCH",
+                    member_id,
+                    "section/material identities must match the baseline and each other",
+                )
+            )
+        if definition.assigned_loads.value is not None:
+            for load in definition.assigned_loads.value:
+                end = load.distance_mm if load.kind == "POINT" else load.end_distance_mm
+                if end > frame.local_axis.length_mm:
+                    issues.append(
+                        _issue(
+                            "W3F_LOAD_DOMAIN_INVALID",
+                            load.assignment_id,
+                            "assigned load lies outside the retained frame length",
+                        )
+                    )
+    if issues:
+        return ETABSModelDefinitionBuildResultV1(
+            status=W3BuildStatusV1.BLOCKED, issues=tuple(issues), snapshot=None
+        )
+    frames = tuple(baseline_frames[member_id] for member_id in request.member_ids)
+    stories = tuple(
+        story
+        for story in baseline.stories
+        if story.name in {frame.story for frame in frames}
+    )
+    snapshot = ETABSModelDefinitionSnapshotV1(
+        context=request.context,
+        baseline_sha256=baseline.baseline_sha256,
+        catalogue_sha256=request.catalogue.catalogue_sha256,
+        member_ids=request.member_ids,
+        joint_ids=request.joint_ids,
+        stories=stories,
+        frames=frames,
+        joints=request.joints,
+        frame_definitions=request.frame_definitions,
+        diaphragm_slab_context=request.diaphragm_slab_context,
+        calibration_fields_complete=complete,
+        limitations=(
+            "Normalized definition evidence only; no solver or calibration acceptance.",
+        )
+        + (
+            ()
+            if complete
+            else (
+                "Missing optional definition fields prevent dependent calibration claims.",
+            )
+        ),
+        snapshot_sha256="0" * 64,
+    )
+    snapshot = snapshot.model_copy(update={"snapshot_sha256": _w3f_digest(snapshot)})
+    return ETABSModelDefinitionBuildResultV1(
+        status=W3BuildStatusV1.ACCEPTED, issues=(), snapshot=snapshot
+    )
+
+
+def verify_etabs_model_definition_snapshot_hash_v1(
+    snapshot: ETABSModelDefinitionSnapshotV1, /
+) -> bool:
+    return _w3f_digest(snapshot) == snapshot.snapshot_sha256
+
+
+def _joint_rows_issues(
+    request: ETABSDisplacementBuildRequestV1 | ETABSReactionBuildRequestV1,
+) -> list[W3BuildIssueV1]:
+    issues = _w3f_context_issues(request.context, request.catalogue)
+    definition = request.model_definition
+    if (
+        not verify_etabs_model_definition_snapshot_hash_v1(definition)
+        or definition.catalogue_sha256 != request.catalogue.catalogue_sha256
+        or definition.context.model.file_evidence.before_read.sha256
+        != request.context.model.file_evidence.before_read.sha256
+    ):
+        issues.append(
+            _issue(
+                "W3F_DEFINITION_IDENTITY_INVALID",
+                "model_definition",
+                "definition hash and model/catalogue links must verify",
+            )
+        )
+    joint_by_id = {joint.joint_id: joint for joint in definition.joints}
+    selection_by_id = {
+        selection.selection_id: selection
+        for selection in request.catalogue.result_selections
+    }
+    if (
+        len(set(request.joint_ids)) != len(request.joint_ids)
+        or not set(request.joint_ids) <= set(joint_by_id)
+        or len(set(request.selection_ids)) != len(request.selection_ids)
+        or not set(request.selection_ids) <= set(selection_by_id)
+    ):
+        issues.append(
+            _issue(
+                "W3F_RESULT_SCOPE_INVALID",
+                "joint_ids/selection_ids",
+                "joint and selection scopes must be unique and exist in their accepted parents",
+            )
+        )
+    if len(request.rows) > request.capacity_limit or not request.rows:
+        issues.append(
+            _issue(
+                "W3F_RESULT_CAPACITY_OR_EMPTY",
+                "rows",
+                "requested complete nonempty rows must fit the explicit bound",
+            )
+        )
+    row_ids = {row.row_id for row in request.rows}
+    if len(row_ids) != len(request.rows):
+        issues.append(
+            _issue(
+                "W3F_DUPLICATE_RESULT_ROW",
+                "rows",
+                "every retained source row requires a unique identity",
+            )
+        )
+    actual_pairs = {(row.joint_id, row.selection_id) for row in request.rows}
+    source_counts = {
+        (item.joint_id, item.selection_id): item.source_row_count
+        for item in request.source_row_counts
+    }
+    actual_counts: dict[tuple[str, str], int] = defaultdict(int)
+    source_indexes = set()
+    for row in request.rows:
+        actual_counts[(row.joint_id, row.selection_id)] += 1
+        source_indexes.add((row.joint_id, row.selection_id, row.source_row_index))
+    if (
+        len(source_counts) != len(request.source_row_counts)
+        or source_counts != dict(actual_counts)
+        or len(source_indexes) != len(request.rows)
+    ):
+        issues.append(
+            _issue(
+                "W3F_SOURCE_ROW_COUNT_MISMATCH",
+                "source_row_counts",
+                "each complete source group must retain its exact row count and unique source indexes",
+            )
+        )
+    expected_pairs = {
+        (joint, selection)
+        for joint in request.joint_ids
+        for selection in request.selection_ids
+    }
+    if actual_pairs != expected_pairs:
+        issues.append(
+            _issue(
+                "W3F_RESULT_DOMAIN_INCOMPLETE",
+                "rows",
+                "every requested joint/selection pair needs rows and no out-of-domain row is allowed",
+            )
+        )
+    states = {
+        (item.kind.value, item.name): item.selected
+        for item in request.context.output_selection_states
+    }
+    statuses = {item.case_id: item for item in request.context.analysis_statuses}
+    for selection_id in request.selection_ids:
+        selection = selection_by_id.get(selection_id)
+        if selection is not None:
+            needed_cases = _selected_case_ids(selection, request.catalogue)
+            if not needed_cases or any(
+                case_id not in statuses
+                or statuses[case_id].state is not AnalysisStateV1.FINISHED
+                for case_id in needed_cases
+            ):
+                issues.append(
+                    _issue(
+                        "W3F_SELECTED_RESULTS_NOT_FINISHED",
+                        selection_id,
+                        "all constituent cases for requested result rows must be current and finished",
+                    )
+                )
+    for row in request.rows:
+        joint = joint_by_id.get(row.joint_id)
+        selection = selection_by_id.get(row.selection_id)
+        if joint is None or selection is None:
+            continue
+        if (
+            row.object_name != joint.source_joint_name
+            or row.output_case_name != selection.name
+            or not states.get((selection.kind.value, selection.name), False)
+        ):
+            issues.append(
+                _issue(
+                    "W3F_RESULT_SOURCE_MISMATCH",
+                    row.row_id,
+                    "row object/output case and selected-for-output state must match exact requested identities",
+                )
+            )
+        if (
+            row.model_identity_sha256 != request.catalogue.model_identity_sha256
+            or row.baseline_sha256 != definition.baseline_sha256
+            or row.catalogue_sha256 != definition.catalogue_sha256
+            or _w3f_digest(row, "row_sha256") != row.row_sha256
+        ):
+            issues.append(
+                _issue(
+                    "W3F_RESULT_HASH_MISMATCH",
+                    row.row_id,
+                    "signed six-component row hash and parent links must verify",
+                )
+            )
+    return issues
+
+
+def _joint_snapshot_arguments(
+    request: _JointSnapshotRequestV1, row_count: int
+) -> dict[str, Any]:
+    return {
+        "context": request.context,
+        "model_definition_sha256": request.model_definition.snapshot_sha256,
+        "baseline_sha256": request.model_definition.baseline_sha256,
+        "catalogue_sha256": request.catalogue.catalogue_sha256,
+        "joint_ids": request.joint_ids,
+        "selection_ids": request.selection_ids,
+        "row_count": row_count,
+        "source_row_counts": request.source_row_counts,
+        "limitations": (
+            "Read-only normalized result evidence; no calibration or engineering approval.",
+        ),
+        "snapshot_sha256": "0" * 64,
+    }
+
+
+def build_etabs_displacement_snapshot_v1(
+    request: ETABSDisplacementBuildRequestV1, /
+) -> ETABSDisplacementBuildResultV1:
+    issues = _joint_rows_issues(request)
+    if issues:
+        return ETABSDisplacementBuildResultV1(
+            status=W3BuildStatusV1.BLOCKED, issues=tuple(issues), snapshot=None
+        )
+    snapshot = ETABSDisplacementSnapshotV1(
+        **_joint_snapshot_arguments(request, len(request.rows)), rows=request.rows
+    )
+    snapshot = snapshot.model_copy(update={"snapshot_sha256": _w3f_digest(snapshot)})
+    return ETABSDisplacementBuildResultV1(
+        status=W3BuildStatusV1.ACCEPTED, issues=(), snapshot=snapshot
+    )
+
+
+def build_etabs_reaction_snapshot_v1(
+    request: ETABSReactionBuildRequestV1, /
+) -> ETABSReactionBuildResultV1:
+    issues = _joint_rows_issues(request)
+    if issues:
+        return ETABSReactionBuildResultV1(
+            status=W3BuildStatusV1.BLOCKED, issues=tuple(issues), snapshot=None
+        )
+    snapshot = ETABSReactionSnapshotV1(
+        **_joint_snapshot_arguments(request, len(request.rows)), rows=request.rows
+    )
+    snapshot = snapshot.model_copy(update={"snapshot_sha256": _w3f_digest(snapshot)})
+    return ETABSReactionBuildResultV1(
+        status=W3BuildStatusV1.ACCEPTED, issues=(), snapshot=snapshot
+    )
+
+
+def verify_etabs_displacement_snapshot_hash_v1(
+    snapshot: ETABSDisplacementSnapshotV1, /
+) -> bool:
+    return _w3f_digest(snapshot) == snapshot.snapshot_sha256
+
+
+def verify_etabs_reaction_snapshot_hash_v1(
+    snapshot: ETABSReactionSnapshotV1, /
+) -> bool:
+    return _w3f_digest(snapshot) == snapshot.snapshot_sha256

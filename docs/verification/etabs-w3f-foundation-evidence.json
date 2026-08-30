@@ -1,0 +1,56 @@
+{
+  "schema_version": "etabs-w3f-foundation-evidence/v1",
+  "task_id": "ETABS-EXCEL-BEAM-W3-CAMPAIGN",
+  "packet": "W3F_CONTRACTS",
+  "verdict": "LOCAL_SOFTWARE_CONTRACT_ACCEPTED",
+  "evidence_level": "L1_SYNTHETIC",
+  "source": {
+    "predecessor_pr": 908,
+    "predecessor_merge": "06285155e4bd57f1e763810a56f9685f53894790",
+    "predecessor_tree": "98dc2abe224c3ddc42378dfa3121235e9d4c4a74",
+    "branch": "codex/etabs-w3f-foundation-windows",
+    "source_bound": true,
+    "python": "3.11.15"
+  },
+  "public_functions": [
+    "build_etabs_model_definition_snapshot_v1",
+    "build_etabs_displacement_snapshot_v1",
+    "build_etabs_reaction_snapshot_v1",
+    "verify_etabs_model_definition_snapshot_hash_v1",
+    "verify_etabs_displacement_snapshot_hash_v1",
+    "verify_etabs_reaction_snapshot_hash_v1"
+  ],
+  "synthetic_acceptance": {
+    "members": 1,
+    "joints": 2,
+    "model_definition_sha256": "895de5ce63cd2701a2e61f6c8978c30627c1e3904bde1d573373497b3b445a98",
+    "displacement_rows": 2,
+    "displacement_sha256": "55e8e57da5654d2def98b5eb5f0ebc8d1ad42da46c825dfbc8a1e5498edc60ac",
+    "reaction_rows": 2,
+    "reaction_sha256": "10cc12a81d4e26da01f718a3c0e9ac0d809b1a6444e7bbde0aa9c477b0a9adae",
+    "all_six_signed_result_components_retained": true,
+    "signed_frame_and_nodal_loads_retained": true,
+    "complete_source_counts_required": true,
+    "json_round_trip_lossless": true,
+    "required_missing_or_blocked_evidence_blocks_parent": true,
+    "unrequested_unfinished_cases_retained_explicitly": true,
+    "requested_constituent_cases_must_be_finished": true,
+    "identity_state_capacity_failures_return_partial_output": false,
+    "unit_switch_assumed": false
+  },
+  "verification_at_content_freeze": {
+    "focused_w3f_tests_passed": 40,
+    "consolidated_focused_architecture_docs": "PENDING",
+    "quick_gate": "PENDING",
+    "normal_hooks": "PENDING",
+    "hosted_checks": "PENDING"
+  },
+  "limitations": [
+    "Pure normalized L1 contracts; installed signatures and live getters are NOT VERIFIED by this packet.",
+    "Caller-supplied evidence is not proof of ETABS extraction or engineering applicability.",
+    "Optional missing definitions prevent dependent calibration claims.",
+    "No application/model/workbook I/O, ETABS analysis/design/save/unlock, solver, calibration or optimization occurred.",
+    "No release, engineering, construction or professional approval."
+  ],
+  "closeout_policy": "Candidate frozen before push; subsequent check and merge facts remain in GitHub/external handoff and the next packet."
+}

@@ -5,6 +5,73 @@
 
 ---
 
+## 2026-08-30 — Session: W3F normalized foundation contracts
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents).
+
+**Branch:** `codex/etabs-w3f-foundation-windows`, fresh linked worktree from
+W3E PR #908 merge `06285155e4bd57f1e763810a56f9685f53894790`, tree
+`98dc2abe224c3ddc42378dfa3121235e9d4c4a74`. The corrected W3E candidate
+`07b696dfd91cd14756dc9c0c6dcc4572b603424b` passed Python, FastAPI,
+Documentation and PR Gate before unchanged normal merge. Both W3E candidates,
+all historical worktrees and the retained dirty W1 evidence remain preserved.
+The maintained campaign session continues; no duplicate session begin.
+
+**Git handoff receipt:**
+`docs/verification/etabs-w3f-foundation-git-handoff-receipt.json`
+
+**Focus:** Freeze the six planned model-definition/displacement/reaction builders and hash verifiers as pure normalized contracts, before installed getter work.
+
+**Completed:**
+
+- Added vendor-neutral typed points, joints, frame definitions, supports,
+  springs, releases, offsets, insertion, modifiers, section/material properties,
+  signed frame/nodal loads and six-component joint result rows.
+- Bound exact saved file/version, baseline, catalogue, complete analysis and
+  selection state, source counts and hashes. No unit setter is assumed.
+- Blocked required missing/BLOCKED evidence, changed identity/state, incomplete
+  source groups and exceeded bounds without partial snapshots. Unrequested
+  unfinished cases remain explicit; requested constituent cases must finish.
+- Exported the exact six positional-only public functions and regenerated
+  the maintained API classification/compatibility inventories without retirement.
+
+### Issues encountered
+
+- The first maintained Git-state read timed out at its default two-second
+  bound on this cold worktree, returning UNKNOWN rather than clean proof.
+- PowerShell `Get-Content -Tail` stalled on the compact compatibility ledger;
+  a broad text search also produced an oversized generated-data output.
+- Mypy inferred an overly narrow common type for heterogeneous evidence and
+  frame/joint load-owner collections, blocking the required type check.
+- The normal API-documentation hook rejected the 17 new service exports
+  because their canonical API-reference entries were absent.
+
+### Root causes and resolutions
+
+- The cold Git subprocess exceeded the helper's default bound. Re-ran the
+  same maintained authority with `--timeout 10 --strict --worktrees`; it proved
+  this lane clean and operation-free before writes, preserving the dirty W1 lane.
+- Located the stalled task-owned read at process 16104, verified its exact
+  command, and stopped only that read. Used bounded fields/explicit file paths
+  instead of tailing/searching compact generated JSON. No app was terminated.
+- Added explicit typed evidence-list and frame/joint-owner union annotations;
+  no runtime coercion or public signature change. Consolidated type checks
+  and focused tests must pass before the immutable candidate is published.
+- Traced the hook to its exact service-facade export/documentation comparison;
+  added all 17 symbols, units, complete-or-blocked behavior and claim limits
+  to `docs/reference/api.md`. Re-run the affected documentation and quick
+  checks plus normal hooks; do not bypass the failed documentation control.
+
+**Evidence:** `docs/verification/etabs-w3f-foundation-evidence.json` records
+40 passing focused construction tests and synthetic hashes. Affected W3A/W3F,
+architecture/docs checks, quick gate, normal hooks and clean read-only closeout
+precede push; hosted/merge facts stay external until the next packet.
+
+**Boundary:** L1 normalized software evidence only. No ETABS/Excel/COM/model
+I/O, analysis, design, save, unlock, solver, calibration, optimization or release.
+Static installed signatures and bounded live W3F acceptance remain separate;
+no engineering, construction or professional approval is claimed.
+
 ## 2026-08-30 — Session: W3E required-evidence propagation repair
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents).

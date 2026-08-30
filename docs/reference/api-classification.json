@@ -15003,8 +15003,8 @@
     {
       "module": "structural_lib",
       "export_classification": "preview",
-      "declared_export_count": 291,
-      "classified_symbol_count": 291,
+      "declared_export_count": 326,
+      "classified_symbol_count": 326,
       "symbols": [
         {
           "name": "AnalysisStateV1",
@@ -15520,6 +15520,33 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "ETABSDisplacementBuildRequestV1",
+          "qualified_name": "structural_lib.ETABSDisplacementBuildRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSDisplacementBuildResultV1",
+          "qualified_name": "structural_lib.ETABSDisplacementBuildResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSDisplacementSnapshotV1",
+          "qualified_name": "structural_lib.ETABSDisplacementSnapshotV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "ETABSEnvelopeResult",
           "qualified_name": "structural_lib.ETABSEnvelopeResult",
           "kind": "class",
@@ -15607,6 +15634,78 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.etabs_catalogue_bridge",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSModelContextV1",
+          "qualified_name": "structural_lib.ETABSModelContextV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSModelDefinitionBuildRequestV1",
+          "qualified_name": "structural_lib.ETABSModelDefinitionBuildRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSModelDefinitionBuildResultV1",
+          "qualified_name": "structural_lib.ETABSModelDefinitionBuildResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSModelDefinitionSnapshotV1",
+          "qualified_name": "structural_lib.ETABSModelDefinitionSnapshotV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSOutputSelectionStateV1",
+          "qualified_name": "structural_lib.ETABSOutputSelectionStateV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSReactionBuildRequestV1",
+          "qualified_name": "structural_lib.ETABSReactionBuildRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSReactionBuildResultV1",
+          "qualified_name": "structural_lib.ETABSReactionBuildResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSReactionSnapshotV1",
+          "qualified_name": "structural_lib.ETABSReactionSnapshotV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
           "claim_disposition": "compatibility"
         },
         {
@@ -15889,6 +15988,33 @@
           "claim_disposition": "advanced"
         },
         {
+          "name": "JointDisplacementRowV1",
+          "qualified_name": "structural_lib.JointDisplacementRowV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "JointReactionRowV1",
+          "qualified_name": "structural_lib.JointReactionRowV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "JointResultSourceCountV1",
+          "qualified_name": "structural_lib.JointResultSourceCountV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "LinearStaticCaseParametersV1",
           "qualified_name": "structural_lib.LinearStaticCaseParametersV1",
           "kind": "class",
@@ -16012,6 +16138,141 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.inputs",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ModelDofRestraintsV1",
+          "qualified_name": "structural_lib.ModelDofRestraintsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ModelEndOffsetsV1",
+          "qualified_name": "structural_lib.ModelEndOffsetsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ModelFrameDefinitionV1",
+          "qualified_name": "structural_lib.ModelFrameDefinitionV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ModelFrameDistributedLoadV1",
+          "qualified_name": "structural_lib.ModelFrameDistributedLoadV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ModelFramePointLoadV1",
+          "qualified_name": "structural_lib.ModelFramePointLoadV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ModelInsertionPointV1",
+          "qualified_name": "structural_lib.ModelInsertionPointV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ModelJointDefinitionV1",
+          "qualified_name": "structural_lib.ModelJointDefinitionV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ModelJointLoadV1",
+          "qualified_name": "structural_lib.ModelJointLoadV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ModelMaterialV1",
+          "qualified_name": "structural_lib.ModelMaterialV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ModelModifiersV1",
+          "qualified_name": "structural_lib.ModelModifiersV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ModelPointV1",
+          "qualified_name": "structural_lib.ModelPointV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ModelReleasesV1",
+          "qualified_name": "structural_lib.ModelReleasesV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ModelSectionV1",
+          "qualified_name": "structural_lib.ModelSectionV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ModelSpringTermV1",
+          "qualified_name": "structural_lib.ModelSpringTermV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ModelSpringV1",
+          "qualified_name": "structural_lib.ModelSpringV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.analysis_contracts",
           "claim_disposition": "compatibility"
         },
         {
@@ -16507,6 +16768,33 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.beam_api",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "build_etabs_displacement_snapshot_v1",
+          "qualified_name": "structural_lib.build_etabs_displacement_snapshot_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "build_etabs_model_definition_snapshot_v1",
+          "qualified_name": "structural_lib.build_etabs_model_definition_snapshot_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "build_etabs_reaction_snapshot_v1",
+          "qualified_name": "structural_lib.build_etabs_reaction_snapshot_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
           "claim_disposition": "compatibility"
         },
         {
@@ -17617,6 +17905,33 @@
           "claim_disposition": "advanced"
         },
         {
+          "name": "verify_etabs_displacement_snapshot_hash_v1",
+          "qualified_name": "structural_lib.verify_etabs_displacement_snapshot_hash_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "verify_etabs_model_definition_snapshot_hash_v1",
+          "qualified_name": "structural_lib.verify_etabs_model_definition_snapshot_hash_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "verify_etabs_reaction_snapshot_hash_v1",
+          "qualified_name": "structural_lib.verify_etabs_reaction_snapshot_hash_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "verify_etabs_result_catalogue_hash_v1",
           "qualified_name": "structural_lib.verify_etabs_result_catalogue_hash_v1",
           "kind": "function",
@@ -17630,8 +17945,8 @@
     {
       "module": "structural_lib.services.api",
       "export_classification": "preview",
-      "declared_export_count": 228,
-      "classified_symbol_count": 228,
+      "declared_export_count": 245,
+      "classified_symbol_count": 245,
       "symbols": [
         {
           "name": "AuditLogEntry",
@@ -17940,6 +18255,33 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "ETABSDisplacementBuildRequestV1",
+          "qualified_name": "structural_lib.services.api.ETABSDisplacementBuildRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSDisplacementBuildResultV1",
+          "qualified_name": "structural_lib.services.api.ETABSDisplacementBuildResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSDisplacementSnapshotV1",
+          "qualified_name": "structural_lib.services.api.ETABSDisplacementSnapshotV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "ETABSEnvelopeResult",
           "qualified_name": "structural_lib.services.api.ETABSEnvelopeResult",
           "kind": "class",
@@ -18027,6 +18369,78 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.etabs_catalogue_bridge",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSModelContextV1",
+          "qualified_name": "structural_lib.services.api.ETABSModelContextV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSModelDefinitionBuildRequestV1",
+          "qualified_name": "structural_lib.services.api.ETABSModelDefinitionBuildRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSModelDefinitionBuildResultV1",
+          "qualified_name": "structural_lib.services.api.ETABSModelDefinitionBuildResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSModelDefinitionSnapshotV1",
+          "qualified_name": "structural_lib.services.api.ETABSModelDefinitionSnapshotV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSOutputSelectionStateV1",
+          "qualified_name": "structural_lib.services.api.ETABSOutputSelectionStateV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSReactionBuildRequestV1",
+          "qualified_name": "structural_lib.services.api.ETABSReactionBuildRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSReactionBuildResultV1",
+          "qualified_name": "structural_lib.services.api.ETABSReactionBuildResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSReactionSnapshotV1",
+          "qualified_name": "structural_lib.services.api.ETABSReactionSnapshotV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
           "claim_disposition": "compatibility"
         },
         {
@@ -18738,6 +19152,33 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.beam_api",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "build_etabs_displacement_snapshot_v1",
+          "qualified_name": "structural_lib.services.api.build_etabs_displacement_snapshot_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "build_etabs_model_definition_snapshot_v1",
+          "qualified_name": "structural_lib.services.api.build_etabs_model_definition_snapshot_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "build_etabs_reaction_snapshot_v1",
+          "qualified_name": "structural_lib.services.api.build_etabs_reaction_snapshot_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
           "claim_disposition": "compatibility"
         },
         {
@@ -19677,6 +20118,33 @@
           "claim_disposition": "advanced"
         },
         {
+          "name": "verify_etabs_displacement_snapshot_hash_v1",
+          "qualified_name": "structural_lib.services.api.verify_etabs_displacement_snapshot_hash_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "verify_etabs_model_definition_snapshot_hash_v1",
+          "qualified_name": "structural_lib.services.api.verify_etabs_model_definition_snapshot_hash_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "verify_etabs_reaction_snapshot_hash_v1",
+          "qualified_name": "structural_lib.services.api.verify_etabs_reaction_snapshot_hash_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "verify_etabs_result_catalogue_hash_v1",
           "qualified_name": "structural_lib.services.api.verify_etabs_result_catalogue_hash_v1",
           "kind": "function",
@@ -19690,8 +20158,8 @@
     {
       "module": "structural_lib.api",
       "export_classification": "compatibility",
-      "declared_export_count": 228,
-      "classified_symbol_count": 228,
+      "declared_export_count": 245,
+      "classified_symbol_count": 245,
       "symbols": [
         {
           "name": "AuditLogEntry",
@@ -20000,6 +20468,33 @@
           "claim_disposition": "compatibility"
         },
         {
+          "name": "ETABSDisplacementBuildRequestV1",
+          "qualified_name": "structural_lib.api.ETABSDisplacementBuildRequestV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSDisplacementBuildResultV1",
+          "qualified_name": "structural_lib.api.ETABSDisplacementBuildResultV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSDisplacementSnapshotV1",
+          "qualified_name": "structural_lib.api.ETABSDisplacementSnapshotV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
           "name": "ETABSEnvelopeResult",
           "qualified_name": "structural_lib.api.ETABSEnvelopeResult",
           "kind": "class",
@@ -20087,6 +20582,78 @@
           "classification": "compatibility",
           "declared_export": true,
           "defined_in": "structural_lib.services.etabs_catalogue_bridge",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSModelContextV1",
+          "qualified_name": "structural_lib.api.ETABSModelContextV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSModelDefinitionBuildRequestV1",
+          "qualified_name": "structural_lib.api.ETABSModelDefinitionBuildRequestV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSModelDefinitionBuildResultV1",
+          "qualified_name": "structural_lib.api.ETABSModelDefinitionBuildResultV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSModelDefinitionSnapshotV1",
+          "qualified_name": "structural_lib.api.ETABSModelDefinitionSnapshotV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSOutputSelectionStateV1",
+          "qualified_name": "structural_lib.api.ETABSOutputSelectionStateV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSReactionBuildRequestV1",
+          "qualified_name": "structural_lib.api.ETABSReactionBuildRequestV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSReactionBuildResultV1",
+          "qualified_name": "structural_lib.api.ETABSReactionBuildResultV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "ETABSReactionSnapshotV1",
+          "qualified_name": "structural_lib.api.ETABSReactionSnapshotV1",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
           "claim_disposition": "compatibility"
         },
         {
@@ -20798,6 +21365,33 @@
           "classification": "compatibility",
           "declared_export": true,
           "defined_in": "structural_lib.services.beam_api",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "build_etabs_displacement_snapshot_v1",
+          "qualified_name": "structural_lib.api.build_etabs_displacement_snapshot_v1",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "build_etabs_model_definition_snapshot_v1",
+          "qualified_name": "structural_lib.api.build_etabs_model_definition_snapshot_v1",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "build_etabs_reaction_snapshot_v1",
+          "qualified_name": "structural_lib.api.build_etabs_reaction_snapshot_v1",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
           "claim_disposition": "compatibility"
         },
         {
@@ -21734,6 +22328,33 @@
           "classification": "compatibility",
           "declared_export": true,
           "defined_in": "structural_lib.services.audit",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "verify_etabs_displacement_snapshot_hash_v1",
+          "qualified_name": "structural_lib.api.verify_etabs_displacement_snapshot_hash_v1",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "verify_etabs_model_definition_snapshot_hash_v1",
+          "qualified_name": "structural_lib.api.verify_etabs_model_definition_snapshot_hash_v1",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility"
+        },
+        {
+          "name": "verify_etabs_reaction_snapshot_hash_v1",
+          "qualified_name": "structural_lib.api.verify_etabs_reaction_snapshot_hash_v1",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.etabs_w3",
           "claim_disposition": "compatibility"
         },
         {
