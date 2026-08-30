@@ -5,6 +5,91 @@
 
 ---
 
+## 2026-08-30 — Session: LIB-PRO-015 refreshed professional API audit plan
+
+**Agent:** Codex (`governance`, sole parent/writer; no subagents).
+
+**Branch:** `codex/lib-pro-015-professional-api-audit-plan-integrated`, reused
+and fast-forwarded to `17494b53c84c273f4eef1d3d9224f234186d3eca`, tree
+`9b89431b8ecce1cee9e132780869945727b8fa24`. Required predecessor PR #911
+merged the unchanged hook-repair head `6c58040a86e3ec250dd9f2c3687dbb96be21b084`
+after every hosted domain and PR Gate passed, with identical candidate/merge
+trees. Its 120 focused tests, architecture 3/3, docs 8/8, quick 10/10, full
+32/32, normal hooks and clean closeout passed. The broad Python suite passed
+7,350 tests, skipped 4 and deselected 6; this plan changes no runtime code.
+
+**Git handoff receipt:**
+`docs/verification/lib-pro-015-professional-api-audit-plan-git-handoff-receipt.json`
+
+**Focus:** Finish the research-backed, implementation-ready API/documentation plan without changing public behavior.
+
+**Completed:**
+
+- Refreshed the preserved plan against accepted W3D/E/F, W3R and merge repair.
+- Measured 117 root functions, 41 facade projections across 11 modules/13
+  journeys, 562 request-field leaves, and 97 HTTP operations/543 schemas.
+- Reconciled installed W3B/F static metadata with W3D's bounded live evidence;
+  preserved the separate W3F live, engineering and professional-review gates.
+- Retained the primary-source comparison of NumPy, SciPy, Pydantic,
+  FastAPI/OpenAPI, concreteproperties, sectionproperties, PyNite, OpenSeesPy,
+  Diataxis, Sphinx/numpydoc, Pint and CSI without adding any dependency.
+- Kept one dependency-ordered D0/D1/S1/F1-F3/R1-R2/E1/C1 plan with exact-wheel
+  documentation/examples gates, migration compatibility and explicit stops.
+
+### Issues encountered
+
+- The original saved merge had no unresolved paths but could not pass both
+  pre-commit Git guards; later main advances also made its audit counts stale.
+- The saved draft counted only singular example headers, mixed module and
+  journey counts, left the dimensional-name metric underspecified, and
+  understated the sum of its ten packet estimates.
+- The first audit preparation used an already-owned task ID, an unregistered
+  `api` context key, unsupported `doc_type: plan`, and a not-yet-created receipt.
+  Normal hooks later found a stale handoff and compatibility caller ledger.
+- The input-validation inventory returns exit 1 for unresolved ownership debt;
+  `--json` also requires an explicit output path.
+- The connected merge action rejected argument binding; it did not merge.
+
+### Root causes and resolutions
+
+- The two-guard flag mismatch is repaired and accepted in PR #911, including
+  real merge and stale-ref regressions. That packet also regenerated the
+  inherited W3F API manifest after its full gate exposed 17 missing exports.
+  Preserved both saved audit patches with SHA-256 receipts outside Git, then
+  reversed only the exact task-owned seven-path delta and fast-forwarded the
+  same integrated worktree. Restored the plan/evidence and rebuilt shared
+  records from current main; no foreign work or predecessor content was lost.
+- Recounted whole-line `Example:` and `Examples:` sections (41/117), explicitly
+  scoped the unsuffixed-name metric to `fck/fy/b/d` (26 functions), distinguished
+  11 modules from 13 journeys, and summed the packet ranges (43-72 days).
+  The evidence records the counting rules, missing-docstring names and exact
+  baseline so these figures can be independently reproduced.
+- Superseded the earlier mistaken task checkpoint and retained the unique
+  LIB-PRO-015 timer. Used registered `python`/`services` contexts, `spec` front
+  matter, and the maintained receipt/handoff/classification generators at
+  freeze. No generic folder-index generation or session archive cleanup.
+- The maintained inventory reports 168 functions/890 parameters: 150 PROVEN,
+  153 DELEGATED, 448 UNPROVEN and 139 NOT_APPLICABLE. Its expected exit 1 is
+  planning evidence, not a new runtime defect. The reproduction command now
+  supplies a task-owned output file instead of omitting the required argument.
+- The connector's binding failure root cause is unconfirmed. Native
+  `gh pr merge --merge --match-head-commit` completed PR #911 only after its
+  exact head, all checks, empty review threads and mergeability were verified.
+
+**Validation contract:** Reproduce all refreshed inventory counts; run affected
+documentation/API checks and the consolidated quick gate; create the immutable
+plan commit through normal hooks; then read-only closeout/full verification and
+required hosted checks. These remaining gates are not preclaimed as passed.
+
+**Preservation:** Original commit `6050128691defe71091d46fafb0493fe140a0c6f`
+and both branches remain recoverable. The abandoned resolved-merge state may
+be aborted only after the refreshed plan is safely committed and its recovery
+patch is verified. No branch/worktree deletion, reset, stash/drop or rebase.
+
+**Next:** Owner acceptance of the plan, then Packet D0 only under a separately
+frozen scope and fresh shared-path inspection. No public signature, formula,
+dependency, ETABS/Excel operation, release or professional approval is granted.
+
 ## 2026-08-30 — Session: LIB-PRO-015 resolved-merge hook repair
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents).

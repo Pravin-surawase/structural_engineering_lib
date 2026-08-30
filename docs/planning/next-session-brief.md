@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-30
-- Focus: Repair the existing pre-commit completion exception before refreshing the saved API audit plan.
-- Completed: Applied completion mode to both Git checks in the shared quick gate.; Kept one resolved-merge predicate: safe named branch, known state, no locks; Proved a real linked-worktree conflict/resolution/commit sequence through
-- Git receipt: docs/verification/lib-pro-015-merge-hook-git-handoff-receipt.json | sha256:6bb3d0781edbd91de91ee512cb658a6c2acd3d564e3eb97c3b0c5f06267baf28 | HOLD
-- Git identity: codex/lib-pro-015-resolved-merge-hook@f4580a9524f095c8a3d8ca9432464c905e135b54 | upstream=origin/main@f353afe54f2c328a300361418ca3b1816b611dc4 | base=origin/main@f353afe54f2c328a300361418ca3b1816b611dc4 | tree=dirty | operation=none
+- Focus: Finish the research-backed, implementation-ready API/documentation plan without changing public behavior.
+- Completed: Refreshed the preserved plan against accepted W3D/E/F, W3R and merge repair.; Measured 117 root functions, 41 facade projections across 11 modules/13; Reconciled installed W3B/F static metadata with W3D's bounded live evidence;
+- Git receipt: docs/verification/lib-pro-015-professional-api-audit-plan-git-handoff-receipt.json | sha256:6cac3fd5d55e68ef4731c21aae9c0d4882af26a5d9d1335f0832f26717dfaab8 | HOLD
+- Git identity: codex/lib-pro-015-professional-api-audit-plan-integrated@17494b53c84c273f4eef1d3d9224f234186d3eca | upstream=origin/main@17494b53c84c273f4eef1d3d9224f234186d3eca | base=origin/main@17494b53c84c273f4eef1d3d9224f234186d3eca | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -17,10 +17,10 @@
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` remains the current immutable normal software release. No release work is authorized. |
-| **Current** | W3A-E and separate W3R are merged. W3F contract PR #909 merged as `c84c62d063eaf45fe4ea4e71926d3d6caef7a48b`, exact candidate/merge tree `06bbd1a9959249e800f71be7dea9e85c5eda333a`; Python/FastAPI/Documentation/PR Gate passed. W3F installed signatures and readback adapter are at local content freeze. |
+| **Current** | W3A-E/W3R and W3F static/readback PR #910 are merged. Resolved-merge/API-manifest repair PR #911 merged as `17494b53c84c273f4eef1d3d9224f234186d3eca`, tree `9b89431b8ecce1cee9e132780869945727b8fa24`, after all required gates. LIB-PRO-015 now freezes the refreshed API/documentation plan against that source. |
 | **W2 complete** | PR #898 merged reviewed W2C head `57f53d48...` as `f1873e7b...`; candidate and merge tree are both `bb20ba0c...`. Direct service, REST, all seven saved Excel tables, and 3,626,096 reconstructed canonical JSON bytes reconcile to SHA-256 `d4c28586...`. |
 | **Plan gate** | Complete. The owner explicitly authorized the dependency-ordered W3 campaign; every packet still requires its exact predecessor and packet-specific stop conditions. |
-| **Next** | Validate and merge the W3F static/readback candidate, then one separately bounded merged-source live W3F read. Owner requests stop after W3F; do not start W3G or later work in this chat. Do not repeat W3D or begin a duplicate campaign session. |
+| **Next** | Review/integrate the plan-only LIB-PRO-015 candidate, then seek plan acceptance before Packet D0. A bounded W3F live read remains separately owned; do not repeat W3D, start W3G onward, or begin a duplicate campaign. Shared-path predecessors must be accepted or explicitly rebound first. |
 | **Held** | W3E does not accept installed reinforcement or canonical serviceability. Pareto torsion/serviceability/stirrup-cost/global-analysis holds remain. No shortlist or mutating candidate until W3F-H calibration and W3I criteria pass. Release and engineering/professional/construction approval remain unapproved. |
 
 ## W3A-W3D accepted through local W3D content freeze
@@ -104,7 +104,7 @@ are also accepted. W3R merged unchanged in PR #907. Its acceptance evidence is
 W3F freezes exact typed topology, signed frame/nodal loads and six-component
 displacement/reaction snapshots; source counts, identities and five states
 fail closed. See `docs/verification/etabs-w3f-foundation-evidence.json`.
-Contract PR #909 is merged; preserve that lane. The static/readback candidate
+Contract PR #909 and static/readback PR #910 are merged; preserve both lanes. The latter
 records 38 installed signatures and explicit semantic guards in
 `docs/verification/etabs-w3f-installed-signature-evidence.json`.
 Live getters require its accepted merge, a verified copy, explicit scopes and
@@ -147,3 +147,4 @@ Synthetic W3E/F fixtures are NOT owner engineering criteria or live evidence.
 5. [Windows ETABS/Excel recurring-pitfall guide](../guides/excel-etabs-python-bridge-pilot.md#windows-etabsexcel-recurring-pitfall-checklist)
 6. [Current task board](../TASKS.md)
 7. [Newest session entry](../SESSION_LOG.md)
+8. [Professional API and documentation renewal plan](lib-pro-015-professional-api-and-documentation-renewal-plan.md)

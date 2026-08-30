@@ -1,0 +1,158 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "LIB-PRO-015-PROFESSIONAL-API-AUDIT-EVIDENCE",
+  "task_id": "LIB-PRO-015-PROFESSIONAL-API-AUDIT-PLAN",
+  "observed_at_utc": "2026-08-30T04:29:18.639Z",
+  "status": "PLAN_ONLY_AUDIT_COMPLETE_PENDING_IMMUTABLE_CANDIDATE_AND_HOSTED_CLOSEOUT",
+  "baseline": {
+    "branch": "codex/lib-pro-015-professional-api-audit-plan-integrated",
+    "origin_main_commit": "17494b53c84c273f4eef1d3d9224f234186d3eca",
+    "origin_main_tree": "9b89431b8ecce1cee9e132780869945727b8fa24",
+    "initial_audit_commit": "94c058f108351dd78195be5ee228b78da1d6a635",
+    "integrated_predecessor": "W3D_E_F_AND_W3R_THROUGH_PR_910_PLUS_MERGE_HOOK_AND_API_MANIFEST_REPAIR_PR_911",
+    "remote_freshness_at_initial_fetch": "FETCHED_AND_EXACT",
+    "candidate_commit": "RECORDED_EXTERNALLY_AFTER_COMMIT",
+    "candidate_tree": "RECORDED_EXTERNALLY_AFTER_COMMIT"
+  },
+  "public_python": {
+    "root_public_functions": 117,
+    "root_missing_docstrings": 9,
+    "root_missing_docstring_functions": [
+      "build_etabs_displacement_snapshot_v1",
+      "build_etabs_reaction_snapshot_v1",
+      "verify_etabs_model_definition_snapshot_hash_v1",
+      "verify_etabs_displacement_snapshot_hash_v1",
+      "verify_etabs_reaction_snapshot_hash_v1",
+      "canonical_beam_demand_snapshot_hash_basis_json_v1",
+      "canonical_etabs_result_catalogue_hash_basis_json_v1",
+      "verify_beam_demand_snapshot_hash_v1",
+      "verify_etabs_result_catalogue_hash_v1"
+    ],
+    "root_with_example_or_examples_section": 41,
+    "root_with_parameter_section": 63,
+    "root_with_return_section": 63,
+    "root_with_raises_section": 36,
+    "root_with_more_than_12_parameters": 17,
+    "root_with_selected_unsuffixed_dimension_parameters": 26,
+    "selected_unsuffixed_dimension_parameters": ["fck", "fy", "b", "d"],
+    "root_signatures_mentioning_any": 17,
+    "root_with_generic_container_return_annotations": 23,
+    "more_than_12_parameter_functions": [
+      {"name": "design_two_way_slab_panel_is456", "parameters": 40},
+      {"name": "design_continuous_one_way_slab_is456", "parameters": 32},
+      {"name": "design_two_way_slab_panel_builtin_is456", "parameters": 31},
+      {"name": "design_continuous_one_way_slab_builtin_is456", "parameters": 29},
+      {"name": "detail_beam_is456", "parameters": 24},
+      {"name": "design_flanged_beam_is456", "parameters": 24},
+      {"name": "design_column_is456", "parameters": 19},
+      {"name": "design_beam_is456", "parameters": 19},
+      {"name": "design_complete_one_way_slab_is456", "parameters": 18},
+      {"name": "design_and_detail_beam_is456", "parameters": 18},
+      {"name": "smart_analyze_design", "parameters": 17},
+      {"name": "design_two_way_slab_is456", "parameters": 17},
+      {"name": "design_long_column_is456", "parameters": 17},
+      {"name": "check_column_ductility_is13920", "parameters": 17},
+      {"name": "evaluate_supplied_beam_reinforcement_v1", "parameters": 16},
+      {"name": "check_isolated_footing_load_transfer", "parameters": 14},
+      {"name": "biaxial_bending_check_is456", "parameters": 13}
+    ]
+  },
+  "recommended_family_facades": {
+    "modules": 11,
+    "function_projections": 41,
+    "missing_docstrings": 33,
+    "with_examples_section": 0,
+    "with_complete_args_returns_raises_sections": 0,
+    "request_field_leaves": 562,
+    "journeys": 13
+  },
+  "openapi": {
+    "paths": 96,
+    "operations": 97,
+    "schemas": 543,
+    "direct_schema_properties": 4255,
+    "operations_missing_description": 17,
+    "direct_properties_missing_description": 3348,
+    "direct_properties_with_example_or_examples": 148
+  },
+  "documentation": {
+    "manual_api_reference_lines": 4780,
+    "manual_api_reference_mentions_all_root_symbols": true,
+    "generated_api_index_includes_all_11_family_facade_modules": false,
+    "beginner_recommendation_conflict": true,
+    "python_documentation_gate_checks_exact_signatures": false,
+    "python_documentation_gate_checks_symbol_name_presence": true,
+    "check_api_signatures_selector_scope": "REACT_CALLS_AGAINST_OPENAPI_ROUTES"
+  },
+  "etabs_reference": {
+    "accepted_installed_product": "ETABS 23.3.1",
+    "accepted_w3b_operations": 15,
+    "accepted_w3c_transport_neutral_catalogue_adapter": true,
+    "installed_static_signature_evidence": true,
+    "accepted_w3d_live_catalogue_and_demand_evidence": true,
+    "accepted_w3d_evidence_path": "docs/verification/etabs-w3d-live-catalogue-and-demand-evidence.json",
+    "accepted_w3f_static_signatures": 38,
+    "accepted_w3f_evidence_path": "docs/verification/etabs-w3f-installed-signature-evidence.json",
+    "w3f_live_getter_acceptance_claimed": false,
+    "tracked_vendor_readme_current_wrapper_authority": false,
+    "required_authority_order": [
+      "INSTALLED_SIGNED_APPLICATION_AND_VERSION",
+      "INSTALLED_MANAGED_ASSEMBLY_AND_X64_TYPE_LIBRARY",
+      "INSTALLED_CHM_AND_GENERATED_WRAPPER_METADATA",
+      "AUTHORIZED_CONTROLLED_LIVE_GETTER_EVIDENCE",
+      "CURRENT_CSI_DEVELOPER_AND_FAQ_PAGES",
+      "OLD_PUBLIC_WEB_HELP_AS_HISTORICAL_CORROBORATION_ONLY"
+    ]
+  },
+  "input_validation_inventory": {
+    "functions": 168,
+    "parameters": 890,
+    "proven": 150,
+    "delegated": 153,
+    "unproven": 448,
+    "not_applicable": 139,
+    "command_exit": 1,
+    "interpretation": "EXPECTED_UNRESOLVED_LEGACY_INVENTORY_NOT_A_NEW_RUNTIME_FAILURE"
+  },
+  "confirmed_findings": [
+    "LIB-PRO-015-DOC-GATE-001",
+    "LIB-PRO-015-FACADE-DOC-001",
+    "LIB-PRO-015-SIGNATURE-001",
+    "LIB-PRO-015-DISCOVERY-001",
+    "LIB-PRO-015-OPENAPI-DOC-001",
+    "LIB-PRO-015-ETABS-REF-001",
+    "LIB-PRO-015-ROOT-SURFACE-001",
+    "LIB-PRO-015-DOC-ARCH-001"
+  ],
+  "audit_outcome": {
+    "engineering_calculation_p0_defects_reproduced": 0,
+    "runtime_files_changed": 0,
+    "formula_or_golden_changes": 0,
+    "signature_changes": 0,
+    "dependency_changes": 0,
+    "etabs_process_or_model_interaction": false,
+    "sourcebook_runtime_coupling_added": false,
+    "structproof_runtime_coupling_added": false,
+    "release_authorization": "NOT_GRANTED",
+    "professional_approval": "NOT_CLAIMED"
+  },
+  "reproduction": {
+    "source_runtime": "./scripts/python_runtime.sh",
+    "git_authority": "./scripts/python_runtime.sh scripts/git_state.py --json --worktrees",
+    "api_gate": "./scripts/python_runtime.sh scripts/check_api.py --all",
+    "input_validation_inventory": "./scripts/python_runtime.sh scripts/audit_input_validation.py --json /absolute/task-owned/output.json",
+    "method": "inspect.signature and inspect.getdoc over the exact source-bound package; registry projection over structural_lib.design.is456 family __all__ exports; FastAPI app.openapi() schema traversal; tracked documentation and accepted W3 evidence inspection",
+    "section_count_rule": "Multiline whole-line Google-style headers with optional surrounding whitespace: Example: or Examples:; Args:, Arguments: or Parameters:; Return: or Returns:; Raises:. Count each function at most once per category.",
+    "function_selection": "Root: inspect.isfunction for names in structural_lib.__all__. Facades: inspect.isfunction for each module __all__ export, traversing the 11 modules in structural_lib.design.is456.__all__; projections, not deduplicated function identities.",
+    "signature_count_rule": "Parameter count uses len(inspect.signature(function).parameters). Any matches a whole annotation token. Container-return inventory matches dict, tuple or list annotation tokens, including typed containers; it is not itself a defect verdict.",
+    "openapi_count_rule": "Only HTTP operation keys get/post/put/patch/delete/options/head/trace in paths. Direct properties in components.schemas only. Description missing means empty or absent; examples means example/examples key present.",
+    "limitations": "Counts describe the exact bound baseline and must be regenerated after public-surface changes. Documentation completeness counts section presence, not prose quality. OpenAPI property counts are direct schema-property counts and do not recursively duplicate referenced properties."
+  },
+  "draft_corrections": [
+    "The saved example-section count included singular Example: only. The current count includes singular and plural whole-line headers.",
+    "The dimensional-name metric is now explicitly bounded to fck/fy/b/d, yielding 26 functions; it does not claim to inventory every legacy alias.",
+    "Eleven facade modules cover thirteen workflow journeys.",
+    "The ten implementation packet ranges sum to 43-72 engineer-days, not the earlier 38-65 total."
+  ],
+  "completion_boundary": "Implement no public change from this evidence alone. Accept the plan, recheck active shared-path predecessors, then execute Packet D0 as a separately frozen and verified candidate."
+}
