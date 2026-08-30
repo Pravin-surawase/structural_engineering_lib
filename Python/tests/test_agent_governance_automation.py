@@ -111,12 +111,9 @@ def test_python_runtime_launcher_discovers_windows_virtualenvs():
 
 
 def test_agent_start_normalizes_windows_source_path_separators():
-    launcher = (SCRIPTS_DIR / "agent_start.sh").read_text(encoding="utf-8")
-
-    assert 'NORMALIZED_PYTHON_SOURCE="$(cygpath -m "$PYTHON_SOURCE")"' in launcher
-    assert 'NORMALIZED_EXPECTED_SOURCE="$(cygpath -m "$EXPECTED_SOURCE")"' in launcher
-    assert 'NORMALIZED_PYTHON_SOURCE="${PYTHON_SOURCE//\\\\//}"' in launcher
-    assert 'case "$NORMALIZED_PYTHON_SOURCE" in' in launcher
+    binding = preflight.python_binding()
+    assert binding["source_bound"] is True
+    assert Path(binding["module"]).is_relative_to(REPO_ROOT / "Python/structural_lib")
 
 
 def test_python_runtime_launcher_binds_invoking_repository_imports(tmp_path):
@@ -232,8 +229,12 @@ def test_control_paths_use_python_runtime_launcher():
     assert "git fetch" not in agent_start_source
     assert "gh pr" not in agent_start_source
     assert "chmod +x" not in agent_start_source
-    assert "Python source binding: current worktree" in agent_start_source
-    assert "Python source shadowing detected" in agent_start_source
+    assert '"$SCRIPT_DIR/preflight.py"' in agent_start_source
+    preflight_source = (SCRIPTS_DIR / "preflight.py").read_text(encoding="utf-8")
+    assert "Python source binding: current worktree" in preflight_source
+    assert "Python source shadowing detected" in preflight_source
+    assert "collect_repository_state" in preflight_source
+    assert "git status --porcelain" not in agent_start_source
 
     workflow = (REPO_ROOT / ".github" / "workflows" / "fast-checks.yml").read_text(
         encoding="utf-8"

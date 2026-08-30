@@ -133,6 +133,22 @@ Fetching updates remote-tracking references but does not update the checked-out
 files. A device is current only after its intended checkout is verified against
 the fetched commit.
 
+A single-branch evidence clone may fetch only `main`. In that case `push -u`
+can record an upstream name without creating its remote-tracking ref; a later
+local report of upstream `NONE` is not proof that the remote branch is absent.
+Inspect the configured fetch refspec and exact remote head. On a receiving
+device, fetch the advertised branch explicitly into its remote-tracking ref
+before binding a worktree. Do not silently broaden another clone's fetch
+configuration, move its checkout or treat an unqueried Mac as synchronized.
+
+Before implementation, the maintained `session begin` preflight verifies
+source binding, local Git state and the active standard pre-commit hook. Use
+`./run.sh preflight --environment-only --json` for a standalone read-only
+diagnostic. A missing/custom hook is an inspection hold, never authority to
+overwrite it. Host-local environment setup must preserve cwd unless an exact
+repository is explicitly requested; portable repository scripts contain no
+Mac/Windows owner-specific absolute root.
+
 ## Compact audited integration
 
 Use three roles for work that needs independent acceptance:
@@ -163,8 +179,10 @@ The stage gates are:
 5. **Candidate ceiling:** allow the initial candidate and at most one
    consolidated repair candidate. A second rejection triggers contract/design
    re-planning; do not start another patch cycle.
-6. **Final local gate:** only after independent local PASS on the unchanged
-   head, run one final full gate.
+6. **Final local gate:** after local PASS on the unchanged head, use the
+   verification ladder in `AGENTS.md`: full gate once at cumulative milestone
+   closeout, or earlier for repository-wide risk. Do not interpret this step as
+   an additional full-suite run for every dependency-stable packet.
 7. **Hosted closeout and merge:** push once, complete one hosted CI/review
    closeout, and immediately recheck the exact head/tree, base, required checks,
    reviews, unresolved threads, conflicts, and mergeability. Merge only the

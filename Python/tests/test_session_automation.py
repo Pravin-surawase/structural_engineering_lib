@@ -67,7 +67,7 @@ def test_agent_brief_filters_multiline_closed_task_ids_without_awk_failure(tmp_p
 
 def test_run_sh_routes_receipt_bound_handoff_help():
     result = subprocess.run(
-        [str(REPO_ROOT / "run.sh"), "session", "handoff", "--help"],
+        ["bash", str(REPO_ROOT / "run.sh"), "session", "handoff", "--help"],
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,
@@ -122,10 +122,10 @@ def _closeout_state(
     return git_state.RepositoryState(
         schema_version=schema_version,
         observed_at_utc=datetime.now(UTC).isoformat(),
-        repository_root="/tmp/repo",
-        worktree_root="/tmp/repo",
-        git_dir="/tmp/repo/.git",
-        git_common_dir="/tmp/repo/.git",
+        repository_root=str(Path("/tmp/repo").resolve()),
+        worktree_root=str(Path("/tmp/repo").resolve()),
+        git_dir=str(Path("/tmp/repo/.git").resolve()),
+        git_common_dir=str(Path("/tmp/repo/.git").resolve()),
         linked_worktree=False,
         branch="codex/git-7e",
         head_sha="a" * 40,
@@ -665,21 +665,21 @@ def test_run_task_brief_and_context_help_are_read_only():
     ).stdout
 
     brief = subprocess.run(
-        [str(REPO_ROOT / "run.sh"), "task", "brief", "fix CSV import"],
+        ["bash", str(REPO_ROOT / "run.sh"), "task", "brief", "fix CSV import"],
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,
         timeout=20,
     )
     help_result = subprocess.run(
-        [str(REPO_ROOT / "run.sh"), "context", "summary", "--help"],
+        ["bash", str(REPO_ROOT / "run.sh"), "context", "summary", "--help"],
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,
         timeout=20,
     )
     task_help = subprocess.run(
-        [str(REPO_ROOT / "run.sh"), "task", "brief", "--help"],
+        ["bash", str(REPO_ROOT / "run.sh"), "task", "brief", "--help"],
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,
@@ -715,6 +715,7 @@ def test_context_summary_replaces_index_routes_without_writes():
 
     result = subprocess.run(
         [
+            "bash",
             str(REPO_ROOT / "run.sh"),
             "context",
             "summary",
@@ -741,7 +742,7 @@ def test_context_summary_replaces_index_routes_without_writes():
 def test_retired_index_generate_routes_are_rejected():
     for subcommand in ("indexes", "docs-index"):
         result = subprocess.run(
-            [str(REPO_ROOT / "run.sh"), "generate", subcommand],
+            ["bash", str(REPO_ROOT / "run.sh"), "generate", subcommand],
             cwd=REPO_ROOT,
             capture_output=True,
             text=True,
@@ -875,10 +876,10 @@ def test_session_trust_accepts_only_kernel_ready_local(action: str, trusted: boo
     state = git_state.RepositoryState(
         schema_version=1,
         observed_at_utc="2026-08-13T00:00:00+00:00",
-        repository_root="/tmp/repo",
-        worktree_root="/tmp/repo",
-        git_dir="/tmp/repo/.git",
-        git_common_dir="/tmp/repo/.git",
+        repository_root=str(Path("/tmp/repo").resolve()),
+        worktree_root=str(Path("/tmp/repo").resolve()),
+        git_dir=str(Path("/tmp/repo/.git").resolve()),
+        git_common_dir=str(Path("/tmp/repo/.git").resolve()),
         linked_worktree=False,
         branch="codex/task",
         head_sha="a" * 40,

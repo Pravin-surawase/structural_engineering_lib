@@ -5,8 +5,22 @@ applyTo: "**"
 # Terminal Rules (ALL Agents)
 
 ## Project Root
-Absolute path: `/Users/pravinsurawase/VS_code_project/structural_engineering_lib`
-All commands below assume cwd = this directory unless stated otherwise.
+Use the invoking task's verified worktree root, never a device-specific path.
+Mac and Windows clones share GitHub history, not local folders or environments.
+Commands below assume cwd = that root unless explicitly stated otherwise.
+After a host-local environment script, verify cwd and Python source binding.
+On Windows invoke Bash explicitly (`bash -lc '...'`); do not ask Windows to
+execute a `.sh` file as a native executable.
+
+```bash
+./scripts/python_runtime.sh scripts/preflight.py --environment-only --expected-root "$PWD" --json
+```
+
+This read-only check covers the maintained Git state, actual source binding and
+effective pre-commit hook. It never installs hooks, changes Git configuration,
+fetches, starts applications or claims that the other device is synchronized.
+Normal session startup runs the same check. A custom/missing hook requires
+inspection; an installed pre-commit package alone is insufficient.
 
 ## Python Runtime and venv Location
 The approved `.venv/` may be in this checkout or the primary worktree. Always
@@ -18,6 +32,18 @@ CHECK:   ./scripts/python_runtime.sh --diagnose
 WRONG:   cd Python && python -m pytest tests/          ← cwd and interpreter are implicit
 WRONG:   python scripts/...                        ← wrong env, missing deps
 ```
+
+Use the exact configured type-check context (the package's mypy configuration
+and package-base interpretation live under `Python`):
+```bash
+(cd Python && ../scripts/python_runtime.sh -m mypy structural_lib/)
+```
+
+Before regenerating the API classification/compatibility ledger, inspect and
+stage only intended new caller files. The generator uses a tracked allowlist
+and now stops before writing if untracked caller text would be omitted. Do not
+stage unrelated files just to satisfy this check. Generated outputs use LF on
+both devices.
 
 ## cwd Persists Between Commands
 If you run `cd react_app`, your NEXT command is still in `react_app/`.
@@ -67,6 +93,11 @@ If `./run.sh <cmd>` produces no output or fails:
 | `./run.sh dev` | `bash scripts/launch_stack.sh` | `colima start && docker compose up --build` |
 | `./run.sh dev --docker` | `bash scripts/launch_stack.sh --docker` | `colima start && docker compose up --build` |
 | `./run.sh dev --kill-only` | `bash scripts/launch_stack.sh --kill-only` | Stop only listeners started for this task; never kill arbitrary port owners |
+
+If the connected GitHub tool fails at its API/query layer, inspect the PR state
+using the installed GitHub CLI before a bounded equivalent retry. Do not assume
+an uncertain mutation failed, duplicate a PR, or bypass required checks. Inspect
+effective branch rules as well as legacy branch-protection settings.
 
 ## Common Commands Quick Reference
 
@@ -141,32 +172,13 @@ Closing issues or pull requests and deleting branches require **explicit user
 confirmation**. In-scope PR merges do not require additional confirmation once
 the reviewed head and required checks are verified.
 
-## File Creation (IMPORTANT)
+## File Creation
 
-**NEVER use heredoc syntax in terminals.** It fails because the terminal tool doesn't handle multi-line input properly.
-
-```bash
-# ❌ WRONG — heredoc delimiter gets "command not found":
-cat > file.py << 'EOF'
-content
-EOF
-
-# ❌ WRONG — multiline printf fails with escaping issues:
-printf "line1\nline2\n" > file.py
-
-# ✅ RIGHT — use the editFiles tool (available to most agents):
-# Simply use the VS Code file editing tool to create/write files.
-# This is the ONLY reliable method for creating files with content.
-
-# ✅ ACCEPTABLE — create empty placeholder, then fill with editFiles tool:
-touch file.py
-# Then use editFiles tool to add content
-```
-
-**Rule:** If your agent has `editFiles` in its tool list, ALWAYS use it for file creation. Never attempt to write file content through terminal commands.
-
-**Agents with editFiles:** backend, structural-math, api-developer, tester, frontend, doc-master, governance, agent-evolver, ops
-**Agents WITHOUT editFiles:** orchestrator, ui-designer, structural-engineer, reviewer, library-expert, security — delegate file creation to @backend or @doc-master
+Use the active agent's structured file-edit tool (Codex: `apply_patch`) for
+source/document edits. Follow the actual tool inventory and higher-priority
+instructions; do not require a VS Code-only `editFiles` tool or spawn another
+agent merely to write a file. Avoid shell heredocs/string-built write commands.
+Preserve unrelated files and staged/unstaged changes.
 
 ## MANDATORY: Document Terminal Issues
 

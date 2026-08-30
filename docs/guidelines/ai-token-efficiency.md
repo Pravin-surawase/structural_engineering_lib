@@ -178,6 +178,16 @@ is an exception used to guide or debug the change, not a ritual after each edit.
    outcome-changing failure or repository-wide surface makes it necessary.
 Required hosted checks are never deferred or bypassed.
 
+`check` JSON retains `duration` as the sum of child-check seconds for
+compatibility; it is not elapsed time when checks run in parallel. Use `timings`
+for non-overlapping planning, exact-input preparation, checks-wall and
+postflight seconds plus their wall total. Console output reports the same
+breakdown; output/usage-recording overhead is outside that gate interval.
+Fingerprint preparation uses at most four independent exact-byte readers,
+preserves deterministic sorted identities and never substitutes mtime/stat
+metadata for bytes. Actual fresh cold-disk improvement must be measured on the
+next worktree; a warm run or controlled-delay benchmark is not that proof.
+
 Content-addressed reuse is evidence reuse, not a weakened gate. A receipt is
 accepted only for the same check command, declared domains, current input bytes,
 Python/platform/dependency identity, and verification contract. Failed or
@@ -200,7 +210,8 @@ controls:
 - only then commit an immutable local candidate for a read-only independent
   audit and return one consolidated blocker list after the full audit matrix;
 - run no hosted CI before `PASS <head> <tree>` from that local audit;
-- after PASS, run one full gate at closeout, then push once for one hosted run;
+- after PASS, run the full gate at cumulative milestone closeout (earlier only
+  for repository-wide risk), then push once for one hosted validation cycle;
 - allow the initial candidate plus one consolidated repair candidate; a second
   rejection requires contract/design re-planning; and
 - if the audited head changes, invalidate the PASS rather than spending another

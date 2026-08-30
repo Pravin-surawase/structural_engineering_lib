@@ -828,7 +828,7 @@
     "preflight checks": {
       "script": "./scripts/python_runtime.sh scripts/preflight.py",
       "group": "Session",
-      "description": "Pre-flight checks before starting work (branch, runtime, ports, conflicts)",
+      "description": "Read-only worktree/source/active-hook readiness; --environment-only omits optional ports and frontend dependency probes; --json emits local evidence, not remote/device synchronization proof",
       "permission": "ReadOnly"
     },
     "test changed files": {

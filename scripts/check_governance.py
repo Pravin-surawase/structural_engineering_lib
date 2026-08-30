@@ -427,7 +427,7 @@ def check_dated_files(report: GovernanceReport) -> None:
     violations = 0
     for md_file in REPO_ROOT.rglob("*.md"):
         if pattern.search(md_file.name):
-            rel_path = md_file.relative_to(REPO_ROOT)
+            rel_path = md_file.relative_to(REPO_ROOT).as_posix()
             in_allowed = any(str(rel_path).startswith(loc) for loc in allowed_locations)
             if not in_allowed:
                 report.add_error(
@@ -466,7 +466,7 @@ def check_naming_conventions(report: GovernanceReport) -> None:
     for md_file in docs_path.rglob("*.md"):
         if md_file.name in skip_names:
             continue
-        rel_path = str(md_file.relative_to(REPO_ROOT))
+        rel_path = md_file.relative_to(REPO_ROOT).as_posix()
         if any(skip in rel_path for skip in skip_paths):
             continue
         if not docs_pattern.match(md_file.name):
@@ -757,7 +757,7 @@ def check_python_layer_boundaries(report: GovernanceReport) -> None:
         allowed = set(allowed_list) if isinstance(allowed_list, list) else set()
         for py_file in _iter_layer_files(lib_root, layer):
             rel = py_file.relative_to(REPO_ROOT)
-            rel_in_lib = str(rel).replace("Python/structural_lib/", "")
+            rel_in_lib = py_file.relative_to(lib_root).as_posix()
             file_exceptions = set(exceptions.get(rel_in_lib, []))
             for line_no, module in _absolute_structural_imports(py_file):
                 parts = module.split(".")

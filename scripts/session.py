@@ -1943,7 +1943,7 @@ def _update_next_brief(handoff_lines: list[str]) -> None:
             insert_idx = 2
         new_lines = lines[:insert_idx] + ["", block, ""] + lines[insert_idx:]
         new_text = "\n".join(new_lines)
-    NEXT_BRIEF.write_text(new_text.strip() + "\n", encoding="utf-8")
+    NEXT_BRIEF.write_text(new_text.strip() + "\n", encoding="utf-8", newline="\n")
 
 
 def _do_handoff(
