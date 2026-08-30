@@ -196,3 +196,42 @@ analysis to address this hold. No solver/comparator, Excel or service was run
 in this checkpoint. The external notebook replays three code cells through
 Python and retains outputs; Jupyter-kernel/nbclient validation was not performed
 because those optional packages are absent. No dependency was installed.
+
+### Independent installed software benchmark (2026-08-30 successor)
+
+The owner chose to continue without involving the originating engineer. That
+authorizes a separately specified software test, not guessed building supports
+or professional approval. The [benchmark receipt](../verification/etabs-w3h-independent-benchmark-evidence.json)
+records one new isolated ETABS 23.3.1 instance/model: a 6 m, 300 x 500 mm elastic
+simple beam, E = 25,000 N/mm2, explicit pin/roller and out-of-plane restraints,
+zero self-weight, and a -10 kN/m global-Z linear-static case. No building member
+or old model was changed. Both preanalysis and analyzed test copies are retained.
+
+Geometry, loads, signs and numerical criteria were frozen before ETABS startup.
+The declared scope is all 13 signed force stations plus both endpoint
+displacement/rotation/reaction rows. All 34 comparisons pass through the public
+solver/comparator; peak sagging moment is 45 kNm and each support reaction is
+30 kN. Full same-row P/V2/V3/T/M2/M3 remains in the external reference. Interior
+displacement is explicitly NOT_REQUESTED: this packet does not reconcile
+ETABS shear deformation with the Euler-Bernoulli solver. The comparator's
+`CALIBRATED` status is scoped numeric agreement, not building/L5 acceptance.
+
+Installed startup returns a null filename before a model exists. After the
+first new-model save, its full-path getter instead named the auto-created
+`.$et` text export while the filename-only getter named `.EDB`. The guard
+stopped before analysis. One statically audited reload of the exact newly
+saved `.EDB` restored exact API identity with unchanged file bytes; the internal
+CSI cause is unconfirmed. Never strip/replace the extension to manufacture an
+identity or generalize this recovery to a user's open model.
+
+Exactly one analysis invocation ran; ETABS also generated its internal `~LLRF`
+case. No design command ran. Selection and units were restored, the test
+instance closed, and the owner copy/backup/immutable baseline, lock, units,
+15 case statuses and 77 selection flags stayed exact. No Excel/service started.
+
+Next software-only packet: define a separate two-span linear benchmark and
+independent closed-form/reference values before any installed result. Audit
+only additional required operations, retain the new immutable baseline, and
+use one candidate/check sequence per stable packet. Do not repeat this passed
+run or the building recovery. Multi-span, interior-displacement and physical
+building calibration remain separate; W3I and professional approval stay held.

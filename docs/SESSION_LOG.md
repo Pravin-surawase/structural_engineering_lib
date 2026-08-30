@@ -5,6 +5,82 @@
 
 ---
 
+## 2026-08-30 — Session: W3H independent installed software benchmark
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3H-INDEPENDENT-BENCHMARK`.
+**Branch:** `codex/etabs-w3h-independent-benchmark-windows`, fresh from fetched
+PR #919 merge `da50f0b5279db220c212b47b9387a225114ddc68`, tree
+`f1d9232774b21af101007f4a6b59255c4478861c`.
+**Status:** `INDEPENDENT_INSTALLED_SOFTWARE_BENCHMARK_PASS`.
+**Git handoff receipt:** `docs/verification/etabs-w3h-independent-benchmark-git-handoff-receipt.json`
+**Focus:** Continue software verification without inventing building assumptions.
+
+**Completed:**
+
+- Owner chose the separately authored software-test route. Read all current
+  campaign authorities; fetched main, inspected open PRs and all 24 worktrees,
+  and began one source-bound session. No library implementation was changed.
+- Froze geometry, restraints, material/load basis, component signs, comparison
+  scope and numerical tolerances before starting a separate ETABS instance.
+  Audited 50 installed wrapper/managed/help methods and six reload/read methods.
+- Created and saved only a new 6 m rectangular simple beam. Verified exact
+  saved identity, centroid insertion, zero offsets, full restraint/axis basis,
+  uniform load, unit modifiers and zero-initial-condition linear-static case.
+  Retained immutable preanalysis and analyzed copies outside Git.
+- Invoked analysis once, no design; requested case and automatic `~LLRF`
+  finished. The analysis log reports zero negative stiffness eigenvalues.
+  Retained 13 six-component force rows and two displacement/two reaction rows.
+- Public solver and comparator pass all 34 frozen comparisons; independent
+  closed-form actions also agree. Max moment error is 2.14e-14 kNm; max rotation
+  error is 2.82e-18 rad. Criteria/signs were never fitted or relaxed. Interior
+  displacement, torsion/3D and building calibration are outside this scope.
+- Restored test selection/units; closed only its new process without another
+  save. Owner model, backup and immutable baseline hash/size/mtime, lock, units,
+  all 15 statuses and 77 flags remained exact throughout. Computer-use checks
+  found no blocking dialog; input was window activation only. Excel remained
+  closed; ports 3000/8000 free and unrelated Node processes preserved.
+- Sealed 135 external evidence files. Only safe receipt, existing guide,
+  session/brief and transition receipt enter Git. Old dirty W1/W3F lanes and
+  every prior branch/worktree/model/workbook/evidence item are preserved.
+- Freeze all scoped documentation before focused solver/comparison and docs
+  checks, one quick gate, normal hooks and hosted checks. Keep post-push
+  check/merge facts external; no routine follow-up documentation commit.
+
+### Issues encountered
+
+- Noninteractive operator hit EOF before starting ETABS. The next guarded
+  startup stopped on null rather than empty-string blank-model identity.
+- New-model Save returned zero, but full-path/name-only getters disagreed:
+  `.$et` automatic text export versus `.EDB`. Analysis correctly did not run.
+- First offline comparison rejected equivalent raw COM tuple/JSON list values.
+- Native Windows rg rejected a wildcard path supplied as a literal argument.
+
+### Root causes and resolutions
+
+- Confirmed absent terminal input channel, then an overly narrow local harness
+  blank-name check. Used a PTY and proved the same new PID's null filename,
+  zero-case/unlocked state and empty start page. Resumed that process without
+  another launch; preserved every interrupted-attempt record.
+- Confirmed post-save getter inconsistency associated with automatic text
+  export; CSI's internal cause remains unconfirmed. Statically proved OpenFile,
+  preserved the new EDB, and reloaded only that exact file once. Exact EDB API
+  identity returned and its hash/size/mtime stayed unchanged. No extension
+  normalization, repeated save, owner-model operation or library patch.
+- Canonicalized COM containers through JSON before saved/current equality.
+  Verified existing deterministic solver output instead of overwriting it;
+  reran only normalization/comparison, not ETABS analysis. All 34 comparisons
+  pass with the original frozen tolerances and signed mapping.
+- Used an exact search directory with `-g` filtering; no shell or source-binding
+  ambiguity remained. These are operator lessons, not engineering approvals.
+
+**Next:** Independently specified two-span software benchmark; do not repeat
+this accepted run. No owner engineer input is needed for an authored software
+test. Building-specific calibration/W3I, professional approval and release
+remain held; the whole W3 campaign is not declared complete.
+
+---
+
 ## 2026-08-30 — Session: W3H saved-reference calibration feasibility
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
