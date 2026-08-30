@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-30
-- Focus: Continue the safe W3H software layer and reconcile the owner's saved
-- Completed: Verified a new clean worktree, source binding and effective standard hook;; Implemented the exact planned pure comparison signature, immutable public; Added independent simply-supported/cantilever comparisons, nonzero mm/rad
-- Git receipt: docs/verification/etabs-w3h-git-handoff-receipt.json | sha256:7bfc4d402123d030e4a980e4ac73a40dbddc2d1cb0f62892815a770fe5b4e0b0 | HOLD
-- Git identity: codex/etabs-w3h-calibration-windows@31fb89c23cd86137f3e20d3ea22aa1d5963a265a | upstream=NONE@UNKNOWN | base=origin/main@31fb89c23cd86137f3e20d3ea22aa1d5963a265a | tree=dirty | operation=none
+- Focus: Recover installed result readback and refresh saved-revision references.
+- Completed: Read the current authorities, fetched HTTPS `origin/main`, verified PR #917; Began the maintained session in a new clean lane. Environment preflight; Computer-use inspection showed ETABS Ultimate v23.3.1 displaying the copied
+- Git receipt: docs/verification/etabs-w3h-access-git-handoff-receipt.json | sha256:8afde19312ecafaa2c0b14fc816171f1ef61b8fb90a2fb42bf4234c2a14d2dd4 | HOLD
+- Git identity: codex/etabs-w3h-access-recheck-windows@3cdb34679e393a931e49733b4f88cf033da48311 | upstream=NONE@UNKNOWN | base=origin/main@3cdb34679e393a931e49733b4f88cf033da48311 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -20,11 +20,11 @@
 | **Current** | W3A-E/W3R and W3F static/readback are merged. PR #911 repaired merge guards/manifest; PR #912 merged the plan-only LIB-PRO-015 update. W3F spring repair PR #913 merged as `cce05508ea5f55559f5aeb07b8945bbabb7f3c06`, tree `d384f56d548e43454c5dc464ae9ec9f82d9bd230`; its bounded installed read now reconciles with unchanged copy/state and explicit calibration holds. |
 | **W2 complete** | PR #898 merged reviewed W2C head `57f53d48...` as `f1873e7b...`; candidate and merge tree are both `bb20ba0c...`. Direct service, REST, all seven saved Excel tables, and 3,626,096 reconstructed canonical JSON bytes reconcile to SHA-256 `d4c28586...`. |
 | **Plan gate** | Complete. The owner explicitly authorized the dependency-ordered W3 campaign; every packet still requires its exact predecessor and packet-specific stop conditions. |
-| **Next** | W3G PR #915 and workflow-readiness PR #916 (`31fb89c2...`, tree `7a5eac9e...`) are accepted. W3H's L1 pure comparison checkpoint is content-complete, integration pending. L5 model calibration remains held for explicit project mapping, support/slab basis and predeclared tolerances. No installed app access occurred. LIB-PRO-015 still needs separate plan acceptance. |
+| **Next** | W3G PR #915, workflow-readiness PR #916 and W3H L1 comparison PR #917 (`3cdb3467...`, tree `dd8f80ce...`) are merged. Installed access/result recovery and fresh saved-revision references now pass. L5 remains held for explicit project mapping, support/slab basis and predeclared tolerances. LIB-PRO-015 still needs separate plan acceptance. |
 | **Held** | W3E does not accept installed reinforcement or canonical serviceability. Pareto torsion/serviceability/stirrup-cost/global-analysis holds remain. No shortlist or mutating candidate until W3F-H calibration and W3I criteria pass. Release and engineering/professional/construction approval remain unapproved. |
 
 W3H continuation: [guide](../guides/beam-line-calibration.md) and [receipt](../verification/etabs-w3h-comparison-evidence.json) bind the L1 checkpoint, exact next inputs and one-writer handoff; L5/W3I remain held.
-The owner-saved revision and historical backup are preserved; no app operation or Mac synchronization is claimed. ETABS shows `ETABS License Message` (body/cause unverified); do not dismiss it or attempt live calibration here.
+`ETABS-W3H-ACCESS-RECHECK` recovered force access by one explicit reassertion of the already-selected combination. Fresh evidence: 153 beams/3,502 stations, complete catalogue, 40 foundation getters and 24 reconciled signed joint components; files/lock/units/status/flags unchanged. [Recovery receipt](../verification/etabs-w3h-access-recovery-evidence.json) and external `ETABS-W3H-RESULT-RECOVERY-20260830` supersede the old readback blocker. Do not rerun registration/recovery/analysis. L5/W3I still require supported physical mapping, unavailable spring/slab evidence and predeclared criteria; do not ask the owner to guess them. No Mac synchronization or calibration claim.
 
 ## W3A-W3D accepted through local W3D content freeze
 

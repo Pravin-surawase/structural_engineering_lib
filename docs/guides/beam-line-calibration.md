@@ -100,7 +100,7 @@ Any change to the file, model, topology (geometry/releases/offsets/modifiers/
 supports), loads/combinations/scenario, selection, settings or ETABS version
 invalidates the frozen identity. Never relabel old snapshots after a save.
 
-## Current project hold and next installed packet
+## Historical software checkpoint and current project hold
 
 The owner reported saving the copied model while closing ETABS. Read-only
 hashing proved the existing `.ebk` still contains the accepted old model bytes;
@@ -124,3 +124,34 @@ boundary, not a reason to reopen or retry ETABS from this software checkpoint.
 Evidence: [W3H software receipt](../verification/etabs-w3h-comparison-evidence.json),
 [W3F retained holds](../verification/etabs-w3f-spring-live-evidence.json),
 [accepted foundation plan](../planning/etabs-data-analysis-optimization-foundation-plan.md).
+
+### Saved-revision access recovery (2026-08-30 successor)
+
+The later owner-resumed Windows observation supersedes the live-state facts
+above: both current copy and backup now match saved-revision hash `92b3fa00...`;
+neither is the historical `99b7f3f1...` file. A separate verified immutable copy
+of the saved revision is retained outside Git and was never opened.
+
+After owner-restored COM registration, audited getter signatures were
+revalidated. All cases reported finished and the requested combination reported
+selected, but two force getters returned code 1/zero rows. One explicit
+`SetComboSelectedForOutput(name, True)` reassertion of the already-true selection
+returned 0 and restored result readback without analysis, restart or save.
+This is observed output-state inconsistency; the internal CSI cause remains
+unconfirmed. Do not silently add this setter to read-only extraction or repeat
+it when force access already works.
+
+The [successor receipt](../verification/etabs-w3h-access-recovery-evidence.json)
+binds a complete fresh W2 baseline/catalogue and the bounded 40-getter W3F
+refresh to that saved revision. File bytes/size/mtime, lock, statuses, selection
+flags and restored units remained exact. No blocking dialog was visible at
+postflight; license duration/entitlement was not certified.
+
+Spring and diaphragm/slab evidence remains unavailable, and independent
+physical mapping and predeclared criteria are still missing. Required-
+calibration replay blocks without partial snapshots. Those are the current L5
+and W3I boundary, not COM activation or unreadable forces. The next packet must
+establish that basis from engineering evidence; endpoint restraint flags alone
+do not model a building member coupled to other beams/columns. A synthetic
+benchmark or ETABS-derived boundary fitted to the same forces is not independent
+calibration of this building.

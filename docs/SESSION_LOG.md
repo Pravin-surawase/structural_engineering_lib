@@ -5,6 +5,184 @@
 
 ---
 
+## 2026-08-30 — Session: W3H access recheck after owner-restored ETABS access
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3H-ACCESS-RECHECK`.
+**Branch:** `codex/etabs-w3h-access-recheck-windows`, fresh from fetched PR #917
+merge `3cdb34679e393a931e49733b4f88cf033da48311`, tree
+`dd8f80ce93df782d05913841bf8c8b08d61f7e96`.
+**Status:** `REFERENCE_RECOVERED_CALIBRATION_HELD`; installed reference recovery,
+not model-specific W3H calibration or engineering approval.
+**Git handoff receipt:** `docs/verification/etabs-w3h-access-git-handoff-receipt.json`
+**Focus:** Recover installed result readback and refresh saved-revision references.
+
+**Completed:**
+
+- Read the current authorities, fetched HTTPS `origin/main`, verified PR #917
+  merged and exact source/tree equality, and retained every prior worktree.
+- Began the maintained session in a new clean lane. Environment preflight
+  passed in 9.02 seconds; Python 3.11.15 is source-bound to this worktree and
+  the standard hook is ready. No dependency or global configuration changed.
+- Computer-use inspection showed ETABS Ultimate v23.3.1 displaying the copied
+  model with no visible blocking dialog. No UI model operation was performed.
+- Rehashed the saved copy and backup before/after one attach-only attempt.
+  Both remained 702,855 bytes with SHA-256
+  `92b3fa009f25b2228cc956cedb1b76268bb73414e16b361be334c0b3d81f6269`.
+- Application, managed API assembly, x64 type library and generated-wrapper
+  hashes match the accepted installed signature evidence. `comtypes` is
+  1.4.16. Dependency-only status returned READY_TO_CONNECT, not live access.
+- Preserved proprietary paths and diagnostics outside Git. The external
+  `access-report.json` hash is
+  `9a1e819f03a104d42c0712daac0529fb709cbcce3a75deba01049e849fae91fd`.
+- After the owner reported running the signed registration utility, all four
+  checked API registration keys were present and one fresh read-only successor
+  attached successfully. Exact copied-model path, ETABS 23.3.1, locked state,
+  15 finished cases and 62 combinations were proved. The approved combination
+  is selected; its five ordered factors were retained outside Git.
+- Before/after state hashes both equal
+  `269cd944e7f96144f769ea7eafb66ac9d37df4abc0a75a43e8ab2319fa3a361c`:
+  lock, units (enum 6), all case statuses and all 77 output-selection flags
+  stayed exact. Both files retained their hashes, size and timestamp.
+  Successor access report:
+  `12d874edc09dedaf8327f6a83f4f3146774db640172694ad93bcb3c95c5e0c09`.
+- After the owner could not supply the engineer's assumptions, continued with
+  bounded model discovery instead of inventing supports or calibration criteria.
+  Created a new separate read-only backup of the saved revision, verified its
+  exact hash/size/mtime, and never opened or analyzed that baseline.
+- Revalidated the regenerated wrapper statically: all 38 audited getter return
+  types and ordered parameters/defaults match by interface/method identity.
+  EXE, managed assembly and typelib content hashes remain exact. The external
+  revalidation receipt hash is
+  `acb789dd0ad9cf8ef7e211836905f15693ceba0e66b00185e9f750f6afc037df`.
+- Captured a fresh accepted typed catalogue for the saved revision: 12 patterns,
+  15 cases and 62 combinations; canonical catalogue digest
+  `9396b5028d2f1f75eae00a23f356ef851cf7db0a2de82055d673e51376a02a34`.
+  This is definition/status evidence, not proof that force results are readable.
+- Captured diagnostic topology and bounded physical getters outside Git. The
+  reference member is coupled to columns and other beams; point restraint flags
+  do not establish isolated simple supports. Spring evidence remains unavailable.
+  The saved text companion supplies useful material/diaphragm clues but is not
+  promoted into an audited COM foundation snapshot or engineering assumption.
+- Complete W2 reference extraction failed at `Results.FrameForce`. Two bounded
+  diagnostic member reads each returned zero rows and CSI return code 1. The
+  partial work was retained as failure evidence, not an accepted baseline.
+- Model, backup and immutable-copy hashes/sizes/mtimes stayed exact. Full
+  lock/units/status/selection brackets passed, including restoration of enum 6
+  after maintained temporary W2 normalization. No analysis, design, save,
+  unlock, result-selection setter, Excel operation or service startup occurred.
+  Ports 3000/8000 were free; no Excel/Python process remained. ETABS stayed open
+  without a visible abnormal, licensing or save dialog; background Node processes
+  were preserved, not treated as task services or terminated.
+- In the subsequent owner-resumed recovery, one installed-signature-verified
+  `SetComboSelectedForOutput` call reasserted the already-true approved selection.
+  Return code 0 and two raw force probes (15 and 21 rows) proved recovery.
+  All 77 recorded flags, units, lock, statuses and three protected files stayed
+  exact. No reopening, restart, reanalysis, save or unlock was needed.
+- Fresh complete W2 extraction accepted 225 frames, 153 beam result sets and
+  3,502 station rows. The fresh catalogue accepted 12 patterns, 15 cases and
+  62 combinations. Canonical baseline and catalogue digests are in the new
+  [recovery receipt](verification/etabs-w3h-access-recovery-evidence.json).
+- Refreshed the existing bounded W3F scope using 40 audited getters: one frame,
+  three joints, three displacement rows and one reaction row. Offline replay,
+  all three snapshot hashes and all 24 signed components reconcile exactly;
+  60 reference/foundation file digests verify. Required-calibration replay
+  still blocks with no partial snapshot because spring/slab evidence is missing.
+- Computer-use opened a display-only force dialog, but floating controls did
+  not respond reliably. Closed it without Apply/OK; before/after API state was
+  exact. Final window inspection found no save, abnormal or licensing dialog.
+  No workbook or server was started; ports 3000/8000 remained free.
+
+### Issues encountered
+
+- The maintained COM helper failed before any model getter with
+  `Invalid class string`, HRESULT `0x800401F3`. The wrapper's generic request
+  to open ETABS is misleading here because the UI is already open.
+- The current backup no longer has the historical accepted model hash; it
+  already matched the owner's saved revision before this probe.
+- Model-specific mapping, physical support/slab basis and predeclared
+  engineering calibration tolerances remain missing independently of access.
+- Wrapper byte identity changed after owner registration. The first new capture
+  stopped before COM attachment; a first static comparison also exposed changed
+  interface declaration order, not changed method parameter order.
+- Actual force retrieval initially failed although all cases report FINISHED. The
+  maintained extraction error omits the failing member identity; separate bounded
+  diagnostics preserve exact member names and raw responses outside Git.
+- The output-selection getter reported the approved combination selected even
+  while force retrieval failed. A display-only UI attempt could not reliably
+  apply its floating selection; no UI result was claimed.
+- The bounded sibling inventory returned UNKNOWN for one retained dirty W3F
+  lane. Direct read-only inspection resolved its exact old head and six dirty
+  paths; none were changed. The transient query cause remains unconfirmed.
+- PowerShell literal path globs and guessed session helper filenames failed
+  during discovery; explicit directories with `rg -g` and `rg --files` resolved
+  the actual files. No command failure was counted as a pass.
+
+### Root causes and resolutions
+
+- Confirmed missing ETABS API registration: `ETABSv1.Helper`,
+  `CSI.ETABS.API.ETABSObject`, the helper CLSID and matching typelib registry
+  key were absent, while installed binaries remained exact. Why registration was
+  removed is unconfirmed; v22 removal is only a possible explanation. Located
+  and signature-verified the installed CSI RegisterETABS utility; did not run
+  it, unregister anything or alter licensing. The owner performed that step;
+  restored keys and the successful successor attach/state bracket now prove
+  this access blocker resolved without any library code change. The earlier
+  failed attempt is retained. No license expiry/entitlement claim is made.
+- Do not reuse or relabel historical W3F snapshots for the saved revision or
+  claim the current backup is an immutable historical baseline. Both current
+  files and all historical evidence remain preserved; no restore/save occurred.
+- Caller-owned physical criteria cannot be inferred from M25/Fe500 defaults.
+  The owner could not supply them. Read recorded topology, assignments and saved
+  text instead; retained observed facts separately from physical idealization.
+  No solver or optimization was run. Failed force extraction cannot establish
+  calibration, and label-based material assumptions are not used.
+- Registration changed the typelib timestamp and regenerated the wrapper.
+  Audited methods match exactly when keyed by interface/name; signatures retain
+  parameter order and defaults. Full old wrapper bytes were not archived, so
+  whole-file semantic equivalence is not claimed. Preserved historical receipts
+  and the failed attempt; no installed wrapper or repository code was repaired.
+- Confirmed immediate boundary was `Results.FrameForce` code 1/zero rows.
+  A single explicit true-to-true selection reassertion then restored both probes,
+  full extraction and the refreshed foundation read. This isolates an active
+  result-output-state inconsistency; the internal CSI mechanism remains
+  **unconfirmed**. It does not prove corrupt files, missing analysis or license
+  denial. Preserve the failed reads and successor success together. Do not put
+  a hidden selection setter into the read-only extractor or repeat recovery
+  when results already work. Reassertion is an explicit recovery operation,
+  not a read-only getter; all observed flags and protected bytes remained exact.
+- The UI automation limitation was isolated to the floating display dialog;
+  it was closed without applying it. The installed API recovery, independent
+  postflight and raw force evidence proved the main-process outcome instead.
+- Preserved the resolved old W3F head `f353afe54f2c328a300361418ca3b1816b611dc4`
+  and all six dirty paths. Used explicit Windows paths for diagnostics; no
+  reset, cleanup, stash, source repair or registration workaround was attempted.
+
+**External checkpoint:** `ETABS-W3H-MODEL-DISCOVERY-20260830` contains the immutable
+copy, exclusive-output scripts, raw diagnostics and recovery instructions.
+Final-state SHA-256:
+`28c0a424d7c37c7dda20c7c1b7717743611ece7bed3a5792d89e3894f72ba6ef`;
+external manifest:
+`e105710de2479667c93d624043603bcd361fa19356621cf03ae097e983cf0876`.
+
+**Successor evidence:** `ETABS-W3H-RESULT-RECOVERY-20260830` preserves the explicit
+recovery intent/return, raw probes, complete fresh reference, fresh foundation,
+offline reconciliation and final manifest. The earlier checkpoint above is
+historical failure evidence, not the current verdict. Maintained W2 extraction
+temporarily normalized units and restored enum 6; the separate foundation
+refresh used zero setters. No analysis, design, save, unlock or model edit ran.
+
+**Next:** Establish an independently reviewed supported mapping/physical basis
+and predeclared calibration criteria from these saved-revision references.
+The coupled building member must not be silently treated as simply supported;
+unavailable spring data is not zero stiffness. A known-physics benchmark would
+not calibrate this building. L5/W3I remain held. Do not repeat registration,
+selection recovery, setup or historical tests. Keep one Windows writer until
+the safe documentation/evidence candidate is pushed; the Mac must fetch its
+exact head before taking ownership. No Mac synchronization, release or full
+campaign-completion claim. Hosted and merge facts belong to the external
+successor closeout, not this frozen pre-publication record.
+
 ## 2026-08-30 — Session: W3H comparison software and saved-copy reconciliation
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
