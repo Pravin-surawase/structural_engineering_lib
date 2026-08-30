@@ -80,8 +80,12 @@ Installed Windows evidence now includes publication, separate readback,
 same-dossier comment retention/export and exact-successor revision refresh in
 a separate disposable workbook. See the
 [bounded review receipt](../docs/verification/etabs-w3j-review-completion-evidence.json).
-Installed failure-injection rollback remains unproved; fake-host rollback
-tests are not a substitute for that L4 acceptance row.
+The separate [native rollback receipt](../docs/verification/etabs-w3j-native-rollback-evidence.json)
+proves one installed update-only failure after PENDING readback and exact
+restoration of all sixteen typed tables, comments and revision history. Native
+and unchanged saved-file readbacks reconcile 78 rows and 68,969 canonical bytes.
+This is bounded fictional L4 software evidence, not general fault coverage,
+current ETABS state, actual-building calibration or professional approval.
 
 The write preflights all sheet/table/header collisions and the full write set,
 snapshots existing touched ranges, uses ExcelApi 1.16 literal typed values,

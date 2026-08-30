@@ -117,7 +117,7 @@ not a Windows audit of the Mac checkout. Each new branch still has one writer.
 | W3G | Bounded pure solver, PR #915, L1 | Always SURROGATE_ONLY; not general 3D analysis |
 | W3H | Comparator #917 and recovery/feasibility/benchmarks #918-#921 | Actual-building L5 calibration NOT complete |
 | W3I | Planned functions absent at the audited base | W3H plus explicit complete screening criteria |
-| W3J | Dossier/review software #922/#923; installed sixteen-table publication/readback, comment retention/export and exact revision-2 history now reconcile | Installed update-only failure/rollback is unproved; no complete L4 or L7 signature claim |
+| W3J | Dossier/review #922/#923; persistence #926 plus separate installed update-only rollback: sixteen tables/78 rows reconcile | Bounded fictional L4 software PASS; no actual-model calibration, L7 signature or professional approval |
 | W3K | Planned functions absent at the audited base | Accepted W3I, guarded fresh-copy mutation and mandatory ETABS reanalysis |
 | W3L | Not implemented | Accepted W3K, finite iteration and independent final baseline repeat |
 
@@ -163,9 +163,15 @@ refresh on a separate disposable workbook: sixteen tables, 78 rows, 68,969
 canonical bytes and both revision identities independently reconcile after save.
 The earlier accepted workbook and all models remain unchanged. See the
 [review-persistence receipt](../verification/etabs-w3j-review-completion-evidence.json).
-Only installed update-only failure/rollback remains on this acceptance lane;
-the native diagnostic input could not be safely targeted, so no failure was
-injected. Do not infer complete L4, building calibration or W3 completion.
+That packet left installed update-only rollback unproved. Its separate
+[native rollback successor](../verification/etabs-w3j-native-rollback-evidence.json)
+now proves exact workbook identity after the user's DevTools safety hand-off,
+one unchanged writer call, one labelled failure after native PENDING readback,
+and exact restoration of all sixteen typed matrices/dimensions/positions.
+Independent native and saved-copy verification reconcile 78 rows, 68,969 bytes,
+both revisions and comments. All input/protected files remain unchanged and
+owned services are stopped. This closes the bounded fictional L4 software row;
+it is not a general fault-matrix, actual-building calibration, L7 or W3 claim.
 
 Completion requires the remaining packet exits, one integrated broad
 Python/FastAPI/React/Excel/full-gate run, exact final dossier and Mac integrated
@@ -1146,6 +1152,13 @@ pass. The existing certificate/catalog and all model/evidence files were kept.
 see `excel_addin/README.md`. No new model extraction or ETABS state change is
 needed to review existing saved evidence. This does not clear W3H/I/K/L.
 
+The installed successor now supplies publication, comment/history persistence
+and one native update-only rollback after PENDING verification. It uses the
+existing hash-provider parameter without changing writer code. Complete
+before/after typed state and unchanged saved bytes reconcile independently;
+see the native rollback receipt above. Evidence remains fictional software
+acceptance, not a supplied professional signature or calibrated building dossier.
+
 ### W3K — Controlled candidate ETABS reanalysis (`L6`)
 
 Owner: Mac freezes/reviews the mutation and comparison contract; Windows alone
@@ -1244,9 +1257,9 @@ now passes 112 comparisons after one installed analysis; saved-building
 baseline/catalogue/foundation regression also passes. See the
 [successor receipt](../verification/etabs-w3h-two-span-evidence.json).
 
-Follow the completion audit above: complete dependency-ready W3J review
-transport and installed atomic readback, and address only the precise missing
-building mapping/criteria needed for W3H. Do not schedule another benchmark-only
+Follow the completion audit above: retain the bounded W3J review/rollback
+acceptance and address only the precise missing building mapping/criteria
+needed for W3H. Do not schedule another benchmark-only
 packet unless its result can resolve a declared acceptance row. Keep data
 transport, design checks and independent analysis distinct. Do not repeat the
 passed installed benchmarks, reopen building recovery, unlock W3I prematurely
