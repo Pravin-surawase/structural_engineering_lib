@@ -863,6 +863,19 @@ five-state evidence propagation and deterministic separate snapshots. This
 does not prove installed signatures, live extraction, a numerical solver or
 calibration. Those retain the separate L2/L3 and W3G/H acceptance gates.
 
+The bounded W3F readback adapter consumes caller-recorded getter outputs; it
+does not attach to COM. Installed ETABS 23.3.1 metadata and help bind its exact
+shapes and semantics in
+`docs/verification/etabs-w3f-installed-signature-evidence.json`. It retains
+joint-local signed results, both insertion mirrors and explicit missing states.
+Its initial normalization is explicitly kN/m/C only, with at most five frames,
+sixteen joints and 2,000 total returned rows. Unproved spring/step forms do not
+become defaults. Missing a requested joint-result group makes the entire
+requested displacement or reaction snapshot UNAVAILABLE, not a partial value.
+None of these software bounds declares a calibrated beam line or model-specific
+engineering assumptions. The owner requested a session stop after W3F on
+2026-08-30; W3G and later packets resume only in the next chat.
+
 ### W3G — Bounded 2D beam-line surrogate (`L1`; verdict still held)
 
 Owner: Mac. Dependencies: accepted W3F contracts; no installed application

@@ -1,0 +1,4332 @@
+{
+  "schema_version": "etabs-w3f-installed-signature-evidence/v1",
+  "task_id": "ETABS-EXCEL-BEAM-W3-CAMPAIGN",
+  "packet": "W3F-L2-AND-READBACK-ADAPTER",
+  "verdict": "STATIC_COMPATIBILITY_PROVED_WITH_GUARDS",
+  "source": {
+    "accepted_contract_pr": 909,
+    "accepted_contract_merge": "c84c62d063eaf45fe4ea4e71926d3d6caef7a48b",
+    "accepted_contract_tree": "06bbd1a9959249e800f71be7dea9e85c5eda333a",
+    "contract_evidence_sha256": "899b9d536b3bd009742a1d0e1492fa7104345fd73698e7c88f262d9022a4a420",
+    "branch": "codex/etabs-w3f-installed-signatures-windows",
+    "accepted_core_sha256": "e6a1dd369c79cf35a3ef181a94f9e768f8402044c3742b7cf571946a39a12a07",
+    "accepted_service_contract_sha256": "6176edc1a8aedc035db9610fd99554a34eb877470311e9bcdac073c6cc161bff"
+  },
+  "host": {
+    "computer": "LAPTOP-360-PRAV",
+    "os": "Windows 11 Home Single Language 10.0.26200 x64",
+    "powershell": "7.6.4",
+    "python": "3.11.15",
+    "comtypes": "1.4.16",
+    "pydantic": "2.13.5",
+    "etabs_executable_version": "23.3.1.4563",
+    "etabs_process_id": 7876,
+    "excel_process_observed": false,
+    "license_state": "NOT_FRESHLY_VERIFIED"
+  },
+  "installed_sources": {
+    "application": {
+      "bytes": 269168,
+      "sha256": "16a790087dd3961b45e57e35c32179e90db31d2dab6c6039f6efb91d53e84456"
+    },
+    "managed_assembly": {
+      "identity": "ETABSv1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=453d728ef24c6f5e",
+      "file_version": "2.16.0.0",
+      "bytes": 354152,
+      "sha256": "393492bd1649ee705c97449cf7d485c61b73ec649ed1d01f47f54f957b277e54"
+    },
+    "x64_type_library": {
+      "bytes": 316292,
+      "sha256": "3823416b05d80d148b63a2f490cd2acea2797d0fc64157c5cc8882c8fc24ef0e",
+      "registered_path_matches": true
+    },
+    "raw_generated_wrapper": {
+      "bytes": 1305797,
+      "sha256": "18e302a44f357e236672aebd1e4697bfed42627a3680ffe2c070b43fbc62084c",
+      "comtypes_version_check": "1.4.16",
+      "imported": false
+    },
+    "comtypes_shape_runtime": {
+      "sha256": "bc85a42d1daf6d84b2697c7ab0f56f70689db4e97122e06bee40af15e583ada2",
+      "multi_out": "list",
+      "one_dimensional_safearray": "tuple",
+      "single_out": "scalar"
+    },
+    "installed_api_help": {
+      "file_name": "CSI API ETABS v1.chm",
+      "bytes": 4305641,
+      "sha256": "0108deeb19fd054ea03a9be89244dac5c8f5995cc44865eaa508b17f675b9d88",
+      "extracted_off_git": true,
+      "extracted_files": 1890
+    },
+    "external_static_reports": [
+      {
+        "name": "managed-signatures.json",
+        "sha256": "fbe0f74a496287b66203776f80924522fa118e660035dcc68d4de72b1dff1969"
+      },
+      {
+        "name": "wrapper-signatures.json",
+        "sha256": "011f7bd6c0d33456604429b6f6b4911729179b11285e542dabab67d3c972850d"
+      }
+    ]
+  },
+  "operations": [
+    {
+      "operation": "cSapModel.GetDatabaseUnits",
+      "managed_signature": "ETABSv1.eUnits GetDatabaseUnits()",
+      "managed_return_type": "ETABSv1.eUnits",
+      "managed_parameters": [],
+      "com_parameters": [
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(eUnits)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "pRetVal"
+      ],
+      "decoded_container": "SCALAR",
+      "decoded_output_count": 1,
+      "return_semantics": "DIRECT_VALUE_NOT_CSI_STATUS",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cSapModel.GetDatabaseUnits_2",
+      "managed_signature": "Int32 GetDatabaseUnits_2(ETABSv1.eForce ByRef, ETABSv1.eLength ByRef, ETABSv1.eTemperature ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "forceUnits",
+          "type": "ETABSv1.eForce&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "lengthUnits",
+          "type": "ETABSv1.eLength&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "temperatureUnits",
+          "type": "ETABSv1.eTemperature&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(eForce)",
+          "name": "forceUnits",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(eLength)",
+          "name": "lengthUnits",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(eTemperature)",
+          "name": "temperatureUnits",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "forceUnits",
+        "lengthUnits",
+        "temperatureUnits",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 4,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cSapModel.GetPresentUnits",
+      "managed_signature": "ETABSv1.eUnits GetPresentUnits()",
+      "managed_return_type": "ETABSv1.eUnits",
+      "managed_parameters": [],
+      "com_parameters": [
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(eUnits)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "pRetVal"
+      ],
+      "decoded_container": "SCALAR",
+      "decoded_output_count": 1,
+      "return_semantics": "DIRECT_VALUE_NOT_CSI_STATUS",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cSapModel.GetPresentUnits_2",
+      "managed_signature": "Int32 GetPresentUnits_2(ETABSv1.eForce ByRef, ETABSv1.eLength ByRef, ETABSv1.eTemperature ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "forceUnits",
+          "type": "ETABSv1.eForce&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "lengthUnits",
+          "type": "ETABSv1.eLength&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "temperatureUnits",
+          "type": "ETABSv1.eTemperature&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(eForce)",
+          "name": "forceUnits",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(eLength)",
+          "name": "lengthUnits",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(eTemperature)",
+          "name": "temperatureUnits",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "forceUnits",
+        "lengthUnits",
+        "temperatureUnits",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 4,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cSapModel.GetModelFilename",
+      "managed_signature": "System.String GetModelFilename(Boolean)",
+      "managed_return_type": "System.String",
+      "managed_parameters": [
+        {
+          "name": "IncludePath",
+          "type": "System.Boolean",
+          "optional": true,
+          "default": "True"
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in",
+            "optional"
+          ],
+          "type": "VARIANT_BOOL",
+          "name": "IncludePath",
+          "default": "True"
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "pRetVal"
+      ],
+      "decoded_container": "SCALAR",
+      "decoded_output_count": 1,
+      "return_semantics": "DIRECT_VALUE_NOT_CSI_STATUS",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cSapModel.GetModelIsLocked",
+      "managed_signature": "Boolean GetModelIsLocked()",
+      "managed_return_type": "System.Boolean",
+      "managed_parameters": [],
+      "com_parameters": [
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(VARIANT_BOOL)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "pRetVal"
+      ],
+      "decoded_container": "SCALAR",
+      "decoded_output_count": 1,
+      "return_semantics": "DIRECT_VALUE_NOT_CSI_STATUS",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cSapModel.GetVersion",
+      "managed_signature": "Int32 GetVersion(System.String ByRef, Double ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Version",
+          "type": "System.String&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "MyVersionNumber",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "Version",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "MyVersionNumber",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "Version",
+        "MyVersionNumber",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 3,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cFrameObj.GetReleases",
+      "managed_signature": "Int32 GetReleases(System.String, Boolean[] ByRef, Boolean[] ByRef, Double[] ByRef, Double[] ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "II",
+          "type": "System.Boolean[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "JJ",
+          "type": "System.Boolean[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "StartValue",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "EndValue",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(VARIANT_BOOL))",
+          "name": "II",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(VARIANT_BOOL))",
+          "name": "JJ",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "StartValue",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "EndValue",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "II",
+        "JJ",
+        "StartValue",
+        "EndValue",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 5,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cFrameObj.GetEndLengthOffset",
+      "managed_signature": "Int32 GetEndLengthOffset(System.String, Boolean ByRef, Double ByRef, Double ByRef, Double ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "AutoOffset",
+          "type": "System.Boolean&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Length1",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Length2",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "RZ",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(VARIANT_BOOL)",
+          "name": "AutoOffset",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "Length1",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "Length2",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "RZ",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "AutoOffset",
+        "Length1",
+        "Length2",
+        "RZ",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 5,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cFrameObj.GetInsertionPoint",
+      "managed_signature": "Int32 GetInsertionPoint(System.String, Int32 ByRef, Boolean ByRef, Boolean ByRef, Double[] ByRef, Double[] ByRef, System.String ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "CardinalPoint",
+          "type": "System.Int32&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Mirror2",
+          "type": "System.Boolean&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "StiffTransform",
+          "type": "System.Boolean&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Offset1",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Offset2",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "CSys",
+          "type": "System.String&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "CardinalPoint",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(VARIANT_BOOL)",
+          "name": "Mirror2",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(VARIANT_BOOL)",
+          "name": "StiffTransform",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "Offset1",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "Offset2",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "CSys",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "CardinalPoint",
+        "Mirror2",
+        "StiffTransform",
+        "Offset1",
+        "Offset2",
+        "CSys",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 7,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cFrameObj.GetInsertionPoint_1",
+      "managed_signature": "Int32 GetInsertionPoint_1(System.String, Int32 ByRef, Boolean ByRef, Boolean ByRef, Boolean ByRef, Double[] ByRef, Double[] ByRef, System.String ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "CardinalPoint",
+          "type": "System.Int32&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Mirror2",
+          "type": "System.Boolean&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Mirror3",
+          "type": "System.Boolean&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "StiffTransform",
+          "type": "System.Boolean&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Offset1",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Offset2",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "CSys",
+          "type": "System.String&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "CardinalPoint",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(VARIANT_BOOL)",
+          "name": "Mirror2",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(VARIANT_BOOL)",
+          "name": "Mirror3",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(VARIANT_BOOL)",
+          "name": "StiffTransform",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "Offset1",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "Offset2",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "CSys",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "CardinalPoint",
+        "Mirror2",
+        "Mirror3",
+        "StiffTransform",
+        "Offset1",
+        "Offset2",
+        "CSys",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 8,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cFrameObj.GetModifiers",
+      "managed_signature": "Int32 GetModifiers(System.String, Double[] ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Value",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "Value",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "Value",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 2,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cFrameObj.GetLoadDistributed",
+      "managed_signature": "Int32 GetLoadDistributed(System.String, Int32 ByRef, System.String[] ByRef, System.String[] ByRef, Int32[] ByRef, System.String[] ByRef, Int32[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, ETABSv1.eItemType)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "NumberItems",
+          "type": "System.Int32&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "FrameName",
+          "type": "System.String[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "LoadPat",
+          "type": "System.String[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "MyType",
+          "type": "System.Int32[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "CSys",
+          "type": "System.String[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Dir",
+          "type": "System.Int32[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "RD1",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "RD2",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Dist1",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Dist2",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Val1",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Val2",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "ItemType",
+          "type": "ETABSv1.eItemType",
+          "optional": true,
+          "default": "Objects"
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "NumberItems",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(BSTR))",
+          "name": "FrameName",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(BSTR))",
+          "name": "LoadPat",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_int))",
+          "name": "MyType",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(BSTR))",
+          "name": "CSys",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_int))",
+          "name": "Dir",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "RD1",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "RD2",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "Dist1",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "Dist2",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "Val1",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "Val2",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "optional"
+          ],
+          "type": "eItemType",
+          "name": "ItemType",
+          "default": "0"
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "NumberItems",
+        "FrameName",
+        "LoadPat",
+        "MyType",
+        "CSys",
+        "Dir",
+        "RD1",
+        "RD2",
+        "Dist1",
+        "Dist2",
+        "Val1",
+        "Val2",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 13,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cFrameObj.GetLoadPoint",
+      "managed_signature": "Int32 GetLoadPoint(System.String, Int32 ByRef, System.String[] ByRef, System.String[] ByRef, Int32[] ByRef, System.String[] ByRef, Int32[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, ETABSv1.eItemType)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "NumberItems",
+          "type": "System.Int32&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "FrameName",
+          "type": "System.String[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "LoadPat",
+          "type": "System.String[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "MyType",
+          "type": "System.Int32[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "CSys",
+          "type": "System.String[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Dir",
+          "type": "System.Int32[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "RelDist",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Dist",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Val",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "ItemType",
+          "type": "ETABSv1.eItemType",
+          "optional": true,
+          "default": "Objects"
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "NumberItems",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(BSTR))",
+          "name": "FrameName",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(BSTR))",
+          "name": "LoadPat",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_int))",
+          "name": "MyType",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(BSTR))",
+          "name": "CSys",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_int))",
+          "name": "Dir",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "RelDist",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "Dist",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "Val",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "optional"
+          ],
+          "type": "eItemType",
+          "name": "ItemType",
+          "default": "0"
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "NumberItems",
+        "FrameName",
+        "LoadPat",
+        "MyType",
+        "CSys",
+        "Dir",
+        "RelDist",
+        "Dist",
+        "Val",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 10,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cFrameObj.GetSection",
+      "managed_signature": "Int32 GetSection(System.String, System.String ByRef, System.String ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "PropName",
+          "type": "System.String&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "SAuto",
+          "type": "System.String&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "PropName",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "SAuto",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "PropName",
+        "SAuto",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 3,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cFrameObj.GetLocalAxes",
+      "managed_signature": "Int32 GetLocalAxes(System.String, Double ByRef, Boolean ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Ang",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Advanced",
+          "type": "System.Boolean&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "Ang",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(VARIANT_BOOL)",
+          "name": "Advanced",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "Ang",
+        "Advanced",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 3,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cFrameObj.GetPoints",
+      "managed_signature": "Int32 GetPoints(System.String, System.String ByRef, System.String ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Point1",
+          "type": "System.String&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Point2",
+          "type": "System.String&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "Point1",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "Point2",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "Point1",
+        "Point2",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 3,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cFrameObj.GetSpringAssignment",
+      "managed_signature": "Int32 GetSpringAssignment(System.String, System.String ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "SpringProp",
+          "type": "System.String&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "SpringProp",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "SpringProp",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 2,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cPointObj.GetRestraint",
+      "managed_signature": "Int32 GetRestraint(System.String, Boolean[] ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Value",
+          "type": "System.Boolean[]&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(VARIANT_BOOL))",
+          "name": "Value",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "Value",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 2,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cPointObj.GetSpring",
+      "managed_signature": "Int32 GetSpring(System.String, Double[] ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "K",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "K",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "K",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 2,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cPointObj.GetSpringCoupled",
+      "managed_signature": "Int32 GetSpringCoupled(System.String, Double[] ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "K",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "K",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "K",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 2,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cPointObj.IsSpringCoupled",
+      "managed_signature": "Int32 IsSpringCoupled(System.String, Boolean ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "IsCoupled",
+          "type": "System.Boolean&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(VARIANT_BOOL)",
+          "name": "IsCoupled",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "IsCoupled",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 2,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cPointObj.GetSpringAssignment",
+      "managed_signature": "Int32 GetSpringAssignment(System.String, System.String ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "SpringProp",
+          "type": "System.String&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "SpringProp",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "SpringProp",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 2,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cPointObj.GetLocalAxes",
+      "managed_signature": "Int32 GetLocalAxes(System.String, Double ByRef, Double ByRef, Double ByRef, Boolean ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "A",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "B",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "C",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Advanced",
+          "type": "System.Boolean&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "A",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "B",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "C",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(VARIANT_BOOL)",
+          "name": "Advanced",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "A",
+        "B",
+        "C",
+        "Advanced",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 5,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cPointObj.GetTransformationMatrix",
+      "managed_signature": "Int32 GetTransformationMatrix(System.String, Double[] ByRef, Boolean)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Value",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "IsGlobal",
+          "type": "System.Boolean",
+          "optional": true,
+          "default": "True"
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "Value",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "optional"
+          ],
+          "type": "VARIANT_BOOL",
+          "name": "IsGlobal",
+          "default": "True"
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "Value",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 2,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cPointObj.GetLoadForce",
+      "managed_signature": "Int32 GetLoadForce(System.String, Int32 ByRef, System.String[] ByRef, System.String[] ByRef, Int32[] ByRef, System.String[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, ETABSv1.eItemType)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "NumberItems",
+          "type": "System.Int32&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "PointName",
+          "type": "System.String[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "LoadPat",
+          "type": "System.String[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "LcStep",
+          "type": "System.Int32[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "CSys",
+          "type": "System.String[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "F1",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "F2",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "F3",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "M1",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "M2",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "M3",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "ItemType",
+          "type": "ETABSv1.eItemType",
+          "optional": true,
+          "default": "Objects"
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "NumberItems",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(BSTR))",
+          "name": "PointName",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(BSTR))",
+          "name": "LoadPat",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_int))",
+          "name": "LcStep",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(BSTR))",
+          "name": "CSys",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "F1",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "F2",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "F3",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "M1",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "M2",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "M3",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "optional"
+          ],
+          "type": "eItemType",
+          "name": "ItemType",
+          "default": "0"
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "NumberItems",
+        "PointName",
+        "LoadPat",
+        "LcStep",
+        "CSys",
+        "F1",
+        "F2",
+        "F3",
+        "M1",
+        "M2",
+        "M3",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 12,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cPointObj.GetCoordCartesian",
+      "managed_signature": "Int32 GetCoordCartesian(System.String, Double ByRef, Double ByRef, Double ByRef, System.String)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "X",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Y",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Z",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "CSys",
+          "type": "System.String",
+          "optional": true,
+          "default": "Global"
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "X",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "Y",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "Z",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "optional"
+          ],
+          "type": "BSTR",
+          "name": "CSys",
+          "default": "'Global'"
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "X",
+        "Y",
+        "Z",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 4,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cPointObj.GetConnectivity",
+      "managed_signature": "Int32 GetConnectivity(System.String, Int32 ByRef, Int32[] ByRef, System.String[] ByRef, Int32[] ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "NumberItems",
+          "type": "System.Int32&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "ObjectType",
+          "type": "System.Int32[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "ObjectName",
+          "type": "System.String[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "PointNumber",
+          "type": "System.Int32[]&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "NumberItems",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_int))",
+          "name": "ObjectType",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(BSTR))",
+          "name": "ObjectName",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_int))",
+          "name": "PointNumber",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "NumberItems",
+        "ObjectType",
+        "ObjectName",
+        "PointNumber",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 5,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cPropFrame.GetSectProps",
+      "managed_signature": "Int32 GetSectProps(System.String, Double ByRef, Double ByRef, Double ByRef, Double ByRef, Double ByRef, Double ByRef, Double ByRef, Double ByRef, Double ByRef, Double ByRef, Double ByRef, Double ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Area",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "As2",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "As3",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Torsion",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "I22",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "I33",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "S22",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "S33",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Z22",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Z33",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "R22",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "R33",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "Area",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "As2",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "As3",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "Torsion",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "I22",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "I33",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "S22",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "S33",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "Z22",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "Z33",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "R22",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "R33",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "Area",
+        "As2",
+        "As3",
+        "Torsion",
+        "I22",
+        "I33",
+        "S22",
+        "S33",
+        "Z22",
+        "Z33",
+        "R22",
+        "R33",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 13,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cPropFrame.GetMaterial",
+      "managed_signature": "Int32 GetMaterial(System.String, System.String ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "MatProp",
+          "type": "System.String&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "MatProp",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "MatProp",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 2,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cPropFrame.GetRectangle",
+      "managed_signature": "Int32 GetRectangle(System.String, System.String ByRef, System.String ByRef, Double ByRef, Double ByRef, Int32 ByRef, System.String ByRef, System.String ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "FileName",
+          "type": "System.String&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "MatProp",
+          "type": "System.String&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "T3",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "T2",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Color",
+          "type": "System.Int32&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Notes",
+          "type": "System.String&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "GUID",
+          "type": "System.String&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "FileName",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "MatProp",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "T3",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "T2",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "Color",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "notes",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "GUID",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "FileName",
+        "MatProp",
+        "T3",
+        "T2",
+        "Color",
+        "notes",
+        "GUID",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 8,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cPropFrame.GetModifiers",
+      "managed_signature": "Int32 GetModifiers(System.String, Double[] ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Value",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "Value",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "Value",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 2,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cPropMaterial.GetMPIsotropic",
+      "managed_signature": "Int32 GetMPIsotropic(System.String, Double ByRef, Double ByRef, Double ByRef, Double ByRef, Double)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "E",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "U",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "A",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "G",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Temp",
+          "type": "System.Double",
+          "optional": true,
+          "default": "0"
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "E",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "U",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "A",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "G",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "optional"
+          ],
+          "type": "c_double",
+          "name": "Temp",
+          "default": "0.0"
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "E",
+        "U",
+        "A",
+        "G",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 5,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cPropMaterial.GetWeightAndMass",
+      "managed_signature": "Int32 GetWeightAndMass(System.String, Double ByRef, Double ByRef, Double)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "W",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "M",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Temp",
+          "type": "System.Double",
+          "optional": true,
+          "default": "0"
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "W",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "M",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "optional"
+          ],
+          "type": "c_double",
+          "name": "Temp",
+          "default": "0.0"
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "W",
+        "M",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 3,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cAnalysisResults.JointDispl",
+      "managed_signature": "Int32 JointDispl(System.String, ETABSv1.eItemTypeElm, Int32 ByRef, System.String[] ByRef, System.String[] ByRef, System.String[] ByRef, System.String[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "ItemTypeElm",
+          "type": "ETABSv1.eItemTypeElm",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "NumberResults",
+          "type": "System.Int32&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Obj",
+          "type": "System.String[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Elm",
+          "type": "System.String[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "LoadCase",
+          "type": "System.String[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "StepType",
+          "type": "System.String[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "StepNum",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "U1",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "U2",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "U3",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "R1",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "R2",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "R3",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "eItemTypeElm",
+          "name": "ItemTypeElm",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "NumberResults",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(BSTR))",
+          "name": "Obj",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(BSTR))",
+          "name": "Elm",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(BSTR))",
+          "name": "LoadCase",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(BSTR))",
+          "name": "StepType",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "StepNum",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "U1",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "U2",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "U3",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "R1",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "R2",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "R3",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "NumberResults",
+        "Obj",
+        "Elm",
+        "LoadCase",
+        "StepType",
+        "StepNum",
+        "U1",
+        "U2",
+        "U3",
+        "R1",
+        "R2",
+        "R3",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 13,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cAnalysisResults.JointReact",
+      "managed_signature": "Int32 JointReact(System.String, ETABSv1.eItemTypeElm, Int32 ByRef, System.String[] ByRef, System.String[] ByRef, System.String[] ByRef, System.String[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef, Double[] ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "ItemTypeElm",
+          "type": "ETABSv1.eItemTypeElm",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "NumberResults",
+          "type": "System.Int32&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Obj",
+          "type": "System.String[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Elm",
+          "type": "System.String[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "LoadCase",
+          "type": "System.String[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "StepType",
+          "type": "System.String[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "StepNum",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "F1",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "F2",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "F3",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "M1",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "M2",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "M3",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "eItemTypeElm",
+          "name": "ItemTypeElm",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "NumberResults",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(BSTR))",
+          "name": "Obj",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(BSTR))",
+          "name": "Elm",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(BSTR))",
+          "name": "LoadCase",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(BSTR))",
+          "name": "StepType",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "StepNum",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "F1",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "F2",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "F3",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "M1",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "M2",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "M3",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "NumberResults",
+        "Obj",
+        "Elm",
+        "LoadCase",
+        "StepType",
+        "StepNum",
+        "F1",
+        "F2",
+        "F3",
+        "M1",
+        "M2",
+        "M3",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 13,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cPropPointSpring.GetPointSpringProp",
+      "managed_signature": "Int32 GetPointSpringProp(System.String, Int32 ByRef, Double[] ByRef, System.String ByRef, System.String ByRef, System.String ByRef, Double ByRef, Int32 ByRef, System.String ByRef, System.String ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "SpringOption",
+          "type": "System.Int32&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "k",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "CSys",
+          "type": "System.String&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "SoilProfile",
+          "type": "System.String&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Footing",
+          "type": "System.String&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "Period",
+          "type": "System.Double&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "color",
+          "type": "System.Int32&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "notes",
+          "type": "System.String&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "iGUID",
+          "type": "System.String&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "SpringOption",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "K",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "CSys",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "SoilProfile",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "Footing",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_double)",
+          "name": "Period",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "Color",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "notes",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(BSTR)",
+          "name": "iGUID",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "SpringOption",
+        "K",
+        "CSys",
+        "SoilProfile",
+        "Footing",
+        "Period",
+        "Color",
+        "notes",
+        "iGUID",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 10,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cPropPointSpring.GetLinks",
+      "managed_signature": "Int32 GetLinks(System.String, Int32 ByRef, System.String[] ByRef, Int32[] ByRef, Double[] ByRef)",
+      "managed_return_type": "System.Int32",
+      "managed_parameters": [
+        {
+          "name": "Name",
+          "type": "System.String",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "NumberLinks",
+          "type": "System.Int32&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "LinkNames",
+          "type": "System.String[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "LinkAxialDirs",
+          "type": "System.Int32[]&",
+          "optional": false,
+          "default": null
+        },
+        {
+          "name": "LinkAngles",
+          "type": "System.Double[]&",
+          "optional": false,
+          "default": null
+        }
+      ],
+      "com_parameters": [
+        {
+          "flags": [
+            "in"
+          ],
+          "type": "BSTR",
+          "name": "Name",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "NumberLinks",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(BSTR))",
+          "name": "LinkNames",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_int))",
+          "name": "LinkAxialDirs",
+          "default": null
+        },
+        {
+          "flags": [
+            "in",
+            "out"
+          ],
+          "type": "POINTER(_midlSAFEARRAY(c_double))",
+          "name": "LinkAngles",
+          "default": null
+        },
+        {
+          "flags": [
+            "out",
+            "retval"
+          ],
+          "type": "POINTER(c_int)",
+          "name": "pRetVal",
+          "default": null
+        }
+      ],
+      "decoded_output_order": [
+        "NumberLinks",
+        "LinkNames",
+        "LinkAxialDirs",
+        "LinkAngles",
+        "pRetVal"
+      ],
+      "decoded_container": "LIST",
+      "decoded_output_count": 5,
+      "return_semantics": "FINAL_CSI_RETURN_CODE",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    }
+  ],
+  "enums": [
+    {
+      "name": "eUnits",
+      "values": [
+        {
+          "name": "lb_in_F",
+          "value": 1
+        },
+        {
+          "name": "lb_ft_F",
+          "value": 2
+        },
+        {
+          "name": "kip_in_F",
+          "value": 3
+        },
+        {
+          "name": "kip_ft_F",
+          "value": 4
+        },
+        {
+          "name": "kN_mm_C",
+          "value": 5
+        },
+        {
+          "name": "kN_m_C",
+          "value": 6
+        },
+        {
+          "name": "kgf_mm_C",
+          "value": 7
+        },
+        {
+          "name": "kgf_m_C",
+          "value": 8
+        },
+        {
+          "name": "N_mm_C",
+          "value": 9
+        },
+        {
+          "name": "N_m_C",
+          "value": 10
+        },
+        {
+          "name": "Ton_mm_C",
+          "value": 11
+        },
+        {
+          "name": "Ton_m_C",
+          "value": 12
+        },
+        {
+          "name": "kN_cm_C",
+          "value": 13
+        },
+        {
+          "name": "kgf_cm_C",
+          "value": 14
+        },
+        {
+          "name": "N_cm_C",
+          "value": 15
+        },
+        {
+          "name": "Ton_cm_C",
+          "value": 16
+        }
+      ]
+    },
+    {
+      "name": "eForce",
+      "values": [
+        {
+          "name": "NotApplicable",
+          "value": 0
+        },
+        {
+          "name": "lb",
+          "value": 1
+        },
+        {
+          "name": "kip",
+          "value": 2
+        },
+        {
+          "name": "N",
+          "value": 3
+        },
+        {
+          "name": "kN",
+          "value": 4
+        },
+        {
+          "name": "kgf",
+          "value": 5
+        },
+        {
+          "name": "tonf",
+          "value": 6
+        }
+      ]
+    },
+    {
+      "name": "eLength",
+      "values": [
+        {
+          "name": "NotApplicable",
+          "value": 0
+        },
+        {
+          "name": "inch",
+          "value": 1
+        },
+        {
+          "name": "ft",
+          "value": 2
+        },
+        {
+          "name": "micron",
+          "value": 3
+        },
+        {
+          "name": "mm",
+          "value": 4
+        },
+        {
+          "name": "cm",
+          "value": 5
+        },
+        {
+          "name": "m",
+          "value": 6
+        }
+      ]
+    },
+    {
+      "name": "eTemperature",
+      "values": [
+        {
+          "name": "NotApplicable",
+          "value": 0
+        },
+        {
+          "name": "F",
+          "value": 1
+        },
+        {
+          "name": "C",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "name": "eItemType",
+      "values": [
+        {
+          "name": "Objects",
+          "value": 0
+        },
+        {
+          "name": "Group",
+          "value": 1
+        },
+        {
+          "name": "SelectedObjects",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "name": "eItemTypeElm",
+      "values": [
+        {
+          "name": "ObjectElm",
+          "value": 0
+        },
+        {
+          "name": "Element",
+          "value": 1
+        },
+        {
+          "name": "GroupElm",
+          "value": 2
+        },
+        {
+          "name": "SelectionElm",
+          "value": 3
+        }
+      ]
+    }
+  ],
+  "operation_summary": {
+    "total": 38,
+    "missing_symbols": 0,
+    "managed_wrapper_parameter_differences": 0,
+    "live_calls_proved": 0
+  },
+  "required_guards": [
+    {
+      "id": "INSERTION_POINT_1",
+      "requirement": "Use GetInsertionPoint_1: seven payload outputs plus CSI status; retain both mirror flags. Legacy overload is insufficient."
+    },
+    {
+      "id": "JOINT_LOCAL_RESULTS",
+      "requirement": "Retain signed U1/U2/U3/R1/R2/R3 and F1/F2/F3/M1/M2/M3 in JOINT_LOCAL coordinates, with exact object/element/selection/step/source indexes. Do not relabel Global."
+    },
+    {
+      "id": "NO_ABSENT_SPRING_ZERO",
+      "requirement": "GetSpring nonzero means absence OR failure. Preserve UNAVAILABLE, never fabricate six zeros. Coupled/named spring semantics remain unavailable to this bounded normalizer; required calibration fields block."
+    },
+    {
+      "id": "NO_UNPROVED_COUPLED_MATRIX",
+      "requirement": "GetSpringCoupled serialization and transformation-matrix ordering are not documented in installed help. Their signatures are proved, but no normalization or live use is authorized by this matrix alone."
+    },
+    {
+      "id": "NO_UNPROVED_JOINT_LOAD_STEP",
+      "requirement": "Nonempty GetLoadForce includes undocumented LcStep. Retain raw rows; assigned-load evidence is UNAVAILABLE until step semantics are proved. Never collapse steps."
+    },
+    {
+      "id": "EXACT_UNITS_AND_SCOPE",
+      "requirement": "Current bounded normalizer supports only present enum 6, kN/m/C. No setter. Explicit at most five frames, sixteen joints and 2000 total returned rows; account every raw call."
+    },
+    {
+      "id": "NO_PARTIAL_RESULT_GROUPS",
+      "requirement": "Explicit separate displacement/reaction joint scopes; any missing requested group makes that entire result snapshot UNAVAILABLE, not zero or an accepted partial result."
+    },
+    {
+      "id": "ADVANCED_AXES_AND_LINE_SPRINGS",
+      "requirement": "Block advanced axes and nonempty frame spring assignment outside the frozen definition. Preserve exact baseline axes and verify fresh coordinates within 1e-6 mm unit-roundtrip precision only."
+    },
+    {
+      "id": "CURRENT_COMPLETE_STATE",
+      "requirement": "Before live calls verify exact saved copied file/version, lock, all case statuses and output selections. Prove unchanged file/units/lock/status/selections afterward; no analysis/design/save/selection setter."
+    }
+  ],
+  "semantic_sources": [
+    {
+      "method": "cAnalysisResults.JointDispl",
+      "help_page": "993054d6-91df-b03c-5f1f-79ab0dfce583.htm",
+      "sha256": "f308da90fbe2546f9e4c17ca52b9bf71d21952772d42490f2ec0c094f54ac43b",
+      "finding": "Six signed joint-local translations/rotations; [L] and radians, with full row identity."
+    },
+    {
+      "method": "cAnalysisResults.JointReact",
+      "help_page": "10645966-190c-ff74-46f2-a87da774df65.htm",
+      "sha256": "33dc17c49073aa123dee17a8b90d11d4197919bd569edf5f6a7b698c870e8f3e",
+      "finding": "Six signed joint-local reactions from restraints/springs/grounded links, force and force-length units."
+    },
+    {
+      "method": "cFrameObj.GetInsertionPoint_1",
+      "help_page": "ea3cc193-4efa-195e-db7d-39ab7678fffb.htm",
+      "sha256": "88779a62a96d40b476cd8890be85e9ad26e7a7e7c0f3be3c92f9a1799c3f1bc7",
+      "finding": "Both mirror flags, stiffness transform, cardinal point, two offset vectors and coordinate system."
+    },
+    {
+      "method": "cPointObj.GetSpring",
+      "help_page": "001c55da-41a5-a188-8af9-15c260f79748.htm",
+      "sha256": "c37c8d05f6bca7eeb61d12a0f0bf303d4b61e734cd3c2b6fd2f0cf229b4620c3",
+      "finding": "Summed joint-local six diagonal stiffness terms; nonzero does not distinguish absent spring from read failure."
+    },
+    {
+      "method": "cPointObj.GetSpringCoupled",
+      "help_page": "2bca72e5-dda3-be20-2b7a-db3033b0b728.htm",
+      "sha256": "e631531cf36b10f84d8c75ef7d9a1d5ba69ae2314c338a4b14aaa11d0302bd11",
+      "finding": "Signature only; coupled coefficient ordering not proved."
+    },
+    {
+      "method": "cPointObj.GetLoadForce",
+      "help_page": "c40b741a-c797-d11e-2822-6e5d156f5505.htm",
+      "sha256": "e3c3cc531863e51bcf666f1933e3a9c82a93767f7d530f9b379653a3f0046f84",
+      "finding": "LcStep present but undefined; do not infer static/staged semantics."
+    },
+    {
+      "method": "cPropPointSpring.GetPointSpringProp",
+      "help_page": "7e28e6fd-d50d-b05b-af48-f887d2417444.htm",
+      "sha256": "f8474d309aa9a95bca7d780066e13aeb03dc115ffe48461e16110acdde8fe21d",
+      "finding": "Option 1 uses six stiffnesses plus named coordinate basis; option 2 uses soil/footing/period. Named links need separate proof."
+    },
+    {
+      "method": "cPropMaterial.GetWeightAndMass",
+      "help_page": "35a593d3-423d-53f1-47be-c3aebb058e2e.htm",
+      "sha256": "8ea3bb82b9a6c3e6a875b88da89a2b1434c3d70326078987fb2c2ab54920e0e2",
+      "finding": "Weight/volume and mass/volume; fixed kN/m/s dimensional conversion uses 1000 kg per kN s²/m. Temperature is explicitly the getter default 0."
+    },
+    {
+      "method": "cFrameObj.GetReleases",
+      "url": "https://docs.csiamerica.com/help-files/etabs-api-2016/html/967eb7da-6e42-0708-a4e9-00a61d506575.htm",
+      "finding": "Official assignment semantics identify six end-release DOFs and same-order partial-fixity springs; inspected as documentation only, setter never called."
+    }
+  ],
+  "scope": {
+    "new_com_object": false,
+    "live_sapmodel_call": false,
+    "model_saved_or_modified": false,
+    "analysis_or_design": false,
+    "excel_opened_or_written": false,
+    "read_only_window_observation": true,
+    "generated_vendor_source_tracked": false,
+    "professional_approval": false
+  },
+  "normalization_basis": {
+    "length_mm_per_m": 1000,
+    "area_mm2_per_m2": 1000000,
+    "inertia_mm4_per_m4": 1000000000000,
+    "elastic_nmm2_per_knm2": 0.001,
+    "mass_kg_per_kn_s2_per_m": 1000,
+    "force": "kN unchanged",
+    "moment": "kN.m unchanged",
+    "rotation": "radians unchanged",
+    "load_direction": "retained literal basis, including positive gravity = negative Global Z",
+    "geometry": "Accepted baseline mm coordinates retained after independent live m readback agrees within 1e-6 mm and identical saved file hash."
+  },
+  "local_checks": {
+    "focused_adapter": "PASS: 20 synthetic adapter tests",
+    "static_matrix": "PASS: 3 portable signature tests; combined W3F contracts/adapter/static 63 passed",
+    "mypy": "PASS: one new adapter module",
+    "ruff_black": "PASS: three owned Python files",
+    "quick": "PENDING",
+    "hooks": "PENDING",
+    "hosted": "PENDING"
+  },
+  "limitations": [
+    "L2 signatures and L1 synthetic normalization only until separate merged-source live evidence.",
+    "No model-specific calibration, solver, optimizer, whole-model balance or ETABS parity claim.",
+    "Independent frame analysis remains HELD_NOT_SUPPORTED; no release or professional/construction approval.",
+    "Owner requests stop after W3F and resume W3G in a new chat."
+  ]
+}

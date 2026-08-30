@@ -5,6 +5,86 @@
 
 ---
 
+## 2026-08-30 — Session: W3F installed signatures and readback adapter
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents).
+
+**Branch:** `codex/etabs-w3f-installed-signatures-windows`, fresh from W3F
+contract PR #909 merge `c84c62d063eaf45fe4ea4e71926d3d6caef7a48b`, exact tree
+`06bbd1a9959249e800f71be7dea9e85c5eda333a`. Candidate `e2fd08b5...` passed
+46 W3A/F tests, architecture/import checks, docs 8/8, quick 10/10, normal
+hooks and hosted Python/FastAPI/Documentation/PR Gate before normal merge.
+All older lanes, including three dirty W1 paths, remain preserved. The same
+campaign session continues; no duplicate begin. The owner now requests a
+stop after W3F, with W3G onward deferred to a new chat.
+
+**Git handoff receipt:**
+`docs/verification/etabs-w3f-installed-signature-git-handoff-receipt.json`
+
+**Focus:** Prove installed W3F signatures and field semantics, then normalize bounded recorded outputs without creating COM or changing an application.
+
+**Completed:**
+
+- Compared 38 managed and generated-wrapper signatures, parameter types,
+  flags, defaults, return shape and unit enums; no mismatches or missing symbols.
+- Read installed API help outside Git. Confirmed joint-local results, both
+  insertion mirrors, modifier order, offsets, load directions and spring holds.
+- Added a transport-neutral readback adapter using the six accepted builders,
+  explicit node/member/result scopes, raw-call hashes, complete source groups,
+  signed six-component results and exact file/state identity checks.
+- Kept unproved coupled/named springs and nonempty undocumented joint-load
+  steps UNAVAILABLE. Required calibration fields still block. No absent
+  reaction/displacement group is turned into zero or an accepted partial table.
+- Observed the existing copied-model window read-only. No dialog was visible;
+  no new license entitlement, live getter or model-state acceptance is claimed.
+
+### Issues encountered
+
+- `python -m pip show comtypes` could not run because this isolated runtime has
+  no pip module; this was not proof that comtypes was absent.
+- Native `hh.exe -decompile` exited without extracted help after two bounded
+  attempts. Windows tar explicitly rejected CHM as an unsupported archive.
+- An ad hoc PowerShell help-read pipeline used a statement directly before a
+  pipe and failed parsing. A speculative script path and Windows wildcard also
+  failed; exact `rg --files` discovery was used instead.
+- The first decoder fixture rejected insertion output with an array-count
+  mismatch. Normal lint also required explicit strict zip and literal maps.
+- Mypy rejected inferred string DOFs and overly narrow mixed load/result types.
+- The documentation gate rejected a 153-line next-session brief (limit 150).
+
+### Root causes and resolutions
+
+- Standard-library package metadata proved comtypes 1.4.16 and Pydantic 2.13.5
+  in the source-bound CPython 3.11.15 runtime. No pip/global installation was made.
+- The native help-extractor root cause remains unconfirmed; no application
+  crash event proved a cause. Downloaded official 7-Zip 26.02 release assets,
+  verified both published SHA-256 digests, and extracted the self-extracting
+  archive without installing it. The portable reader extracted 1,890 help files
+  off Git; original CHM and software files were preserved. No machine PATH or
+  application configuration changed.
+- Assigned the PowerShell loop output before serializing it, and used exact
+  discovered paths instead of speculative/wildcard file arguments. Forwarded
+  screenshot content as an image rather than serializing its binary payload.
+- The installed `_1` method has seven payload outputs plus CSI status, not
+  eight payload outputs. Corrected that count and included operation identity
+  in shape failures; the 20 focused adapter fixtures then passed. Applied
+  normal formatting and explicit exact-length zip semantics, without suppressions.
+- Added explicit literal DOF, point/distributed-load union and displacement/
+  reaction union annotations plus typed builder argument mappings; no runtime
+  coercion, suppression or root public signature change was introduced.
+- The generated handoff expanded the brief beyond its cap. Condensed repeated
+  contract descriptions without removing a decision; reran the affected docs gate.
+
+**Evidence:** `docs/verification/etabs-w3f-installed-signature-evidence.json`.
+Static matrix, adapter/contract tests, architecture/import/docs, quick gate,
+normal hooks and clean closeout precede publication. Hosted/merge facts remain
+external until the successor live receipt. Do not treat pending gates as passed.
+
+**Boundary:** L2 static signatures and L1 synthetic normalization. No COM
+attachment, live getter, analysis/design/save/unlock/selection change, Excel
+write, solver, calibration or optimizer in this candidate. Installed L3 is a
+separate exact-merged-source read-only continuation. No professional approval.
+
 ## 2026-08-30 — Session: W3F normalized foundation contracts
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents).
