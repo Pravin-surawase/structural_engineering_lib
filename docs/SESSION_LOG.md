@@ -44,6 +44,7 @@ and measure the real verification costs without weakening gates.
   wildcard path arguments. Both required corrected explicit invocation context.
 - The first consolidated compatibility test found a stale caller ledger, and
   the type-check invocation reported unrelated existing Pydantic typing errors.
+- The first unpublished local commit completed in 0.336 seconds without hooks.
 
 ### Root causes and resolutions
 
@@ -68,6 +69,13 @@ and measure the real verification costs without weakening gates.
   `cd Python && ../scripts/python_runtime.sh -m mypy structural_lib/` context
   resolves both. These are invocation/preparation fixes, not suppression or
   unrelated library changes; affected checks were repeated.
+- Inspection proved the shared clone had only `pre-commit.sample`, no active
+  `pre-commit` and no `core.hooksPath`, despite the installed 4.6.2 package.
+  Registered the standard hook only after confirming its exact target absent,
+  then ran the complete configured hooks against the unpublished candidate.
+  The source candidate was not represented as hook-verified or pushed early.
+  This issue record is a pre-publication follow-up commit through the now-active
+  hook; no existing hook, sample, model, branch or checkout was overwritten.
 
 **Next:** Finish unchanged-candidate checks/review/PR integration. Then W3H is
 separate and requires exact model mappings, physical evidence and predeclared

@@ -67,6 +67,7 @@
     "first_profile_io_open_seconds": 176.652,
     "second_profile_wall_seconds": 3.063,
     "conclusion": "First-read filesystem opens dominate; underlying OS/storage/security cause unconfirmed. Diagnostic input bytes changed during implementation, so no exact-input speedup claim.",
-    "gate_code_or_security_settings_changed": false
+    "gate_code_or_security_settings_changed": false,
+    "repository_hook_registration": "The shared clone lacked its active pre-commit hook. Standard pre-commit 4.6.2 registration was restored at the proved-absent repository-local target; full normal hooks run on the unpublished candidate before publication. No global config or existing hook overwritten."
   }
 }
