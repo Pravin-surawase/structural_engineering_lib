@@ -194,7 +194,11 @@ audit; routine status reporting never creates a second documentation commit.
 An authorized merge-resolution candidate is the narrow exception to the
 pre-commit quick-gate order: `git_state.py` must report `HOLD_OPERATION` until
 the resolving merge commit exists. After all conflicts are resolved and the
-unmerged-path set is empty, run focused/content checks, create the merge commit
+unmerged-path set is empty, both pre-commit Git guards accept completion only
+on a named non-main branch when HEAD plus the pending merge parent contain
+every required default/upstream ref. Locks, unknown queries, other operations,
+and unrelated behind/diverged refs remain blockers. The completion flag never
+weakens ordinary operation-free validation. Run focused/content checks, create the merge commit
 through normal hooks, then run the sole quick gate immediately on that clean
 merge head before independent audit or push. A content or hook failure remains
 a blocker; this exception never permits bypassing hooks or auditing an open

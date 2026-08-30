@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 import importlib
 import json
+import shlex
 import subprocess
 import sys
 from datetime import UTC, datetime, timedelta
@@ -503,6 +504,106 @@ def test_canonical_guards_allow_operation_completion_but_fail_closed_on_main(
     assert "HOLD_OPERATION" in completion.stdout
     assert main_guard.returncode == 1
     assert "HOLD_MAIN" in main_guard.stdout
+
+
+def _pending_merge(tmp_path: Path) -> tuple[Path, Path]:
+    repo = _repo(tmp_path)
+    linked = tmp_path / "linked"
+    _git(repo, "worktree", "add", "-b", "feature", str(linked))
+    _git(linked, "branch", "--set-upstream-to=main")
+    _commit(repo, "tracked.txt", "main change\n", "main change")
+    _commit(linked, "tracked.txt", "feature change\n", "feature change")
+    assert _git(linked, "merge", "main", check=False).returncode == 1
+    return repo, linked
+
+
+def test_real_resolved_merge_commits_through_both_precommit_git_guards(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    _repo_path, linked = _pending_merge(tmp_path)
+    # The synthetic repository has no runtime; use this test's interpreter.
+    monkeypatch.setenv("STRUCTURAL_LIB_PYTHON", sys.executable)
+    check_all = importlib.import_module("scripts.check_all")
+    checks = check_all._allow_operation_completion(
+        check_all._collect_checks(None, True)
+    )
+    hook_commands = [
+        [*check.cmd, "--repo", str(linked), "--default-ref", "main"]
+        for check, _category in checks
+        if check.name in {"Git state", "Unfinished operation"}
+    ]
+    assert len(hook_commands) == 2
+    conflicted = git_state.collect_repository_state(linked, default_ref="main")
+    assert conflicted.tree.conflicted_paths == ["tracked.txt"]
+    for command in hook_commands:
+        blocked = subprocess.run(command, capture_output=True, text=True)
+        assert blocked.returncode == 1
+        assert "HOLD_OPERATION" in blocked.stdout
+
+    _write(linked, "tracked.txt", "resolved main and feature\n")
+    _git(linked, "add", "tracked.txt")
+    resolved = git_state.collect_repository_state(linked, default_ref="main")
+    assert resolved.derived_action == "HOLD_OPERATION"
+    assert resolved.default_base.status == resolved.upstream.status == "diverged"
+    for guard in ("operation", "validation"):
+        assert not git_state._guard_allows(resolved, guard, allow_completion=False)
+
+    # Git itself invokes the same two commands selected by the shared gate.
+    # No completion-mode result is treated as normal post-commit validation.
+    hook = _marker_path(linked, "hooks/pre-commit")
+    hook.write_text(
+        "#!/bin/sh\nset -e\n"
+        + "\n".join(shlex.join(cmd) for cmd in hook_commands)
+        + "\n",
+        encoding="utf-8",
+    )
+    hook.chmod(0o755)
+    result = _git(linked, "commit", "-m", "resolved merge", check=False)
+    assert result.returncode == 0, result.stdout + result.stderr
+    parents = _git(linked, "rev-list", "--parents", "-n", "1", "HEAD").stdout.split()
+    assert len(parents) == 3
+    completed = git_state.collect_repository_state(linked, default_ref="main")
+    assert completed.ready_local
+    for guard in ("operation", "validation"):
+        assert git_state._guard_allows(completed, guard, allow_completion=False)
+
+
+@pytest.mark.parametrize("required_ref", ["main", "upstream"])
+def test_completion_does_not_waive_a_required_ref_outside_the_merge(
+    tmp_path: Path, required_ref: str
+):
+    repo, linked = _pending_merge(tmp_path)
+    _write(linked, "tracked.txt", "resolved\n")
+    _git(linked, "add", "tracked.txt")
+    if required_ref == "upstream":
+        _git(repo, "switch", "-c", "upstream")
+        _git(linked, "branch", "--set-upstream-to=upstream")
+    _commit(repo, "later.txt", "outside pending merge\n", "new required commit")
+    state = git_state.collect_repository_state(linked, default_ref="main")
+    for guard in ("operation", "validation"):
+        assert not git_state._guard_allows(state, guard, allow_completion=True)
+
+
+@pytest.mark.parametrize(
+    "blocker", ["lock", "unknown", "main", "detached", "other_operation"]
+)
+def test_resolved_merge_completion_retains_safety_holds(tmp_path: Path, blocker: str):
+    _repo_path, linked = _pending_merge(tmp_path)
+    _write(linked, "tracked.txt", "resolved\n")
+    _git(linked, "add", "tracked.txt")
+    if blocker == "lock":
+        _marker_path(linked, "index.lock").write_text("owned\n", encoding="utf-8")
+    if blocker == "other_operation":
+        _create_operation_marker(linked, "CHERRY_PICK_HEAD")
+    state = git_state.collect_repository_state(
+        linked, default_ref="missing" if blocker == "unknown" else "main"
+    )
+    if blocker == "main":
+        state.branch = "main"
+    if blocker == "detached":
+        state.branch = "DETACHED"
+    for guard in ("operation", "validation"):
+        assert not git_state._guard_allows(state, guard, allow_completion=True)
 
 
 def test_query_error_and_timeout_are_unknown_not_clean(

@@ -437,7 +437,7 @@ def _allow_operation_completion(
         (
             (
                 replace(check, cmd=[*check.cmd, "--allow-operation-completion"])
-                if check.name == "Unfinished operation"
+                if check.name in {"Git state", "Unfinished operation"}
                 else check
             ),
             category,

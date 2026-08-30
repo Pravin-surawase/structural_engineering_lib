@@ -896,6 +896,40 @@ def format_human(state: RepositoryState) -> str:
     return "\n".join(lines)
 
 
+def _resolved_merge_allows(state: RepositoryState) -> bool:
+    """Admit only a merge whose parents include every required local ref.
+
+    HEAD is necessarily behind/diverged while merging an updated base. Check
+    reachability through the pending parent without upgrading HOLD_OPERATION
+    to READY_LOCAL or waiving a different, still-unmerged required ref.
+    """
+    if (
+        state.operation != "merge"
+        or state.branch in {"main", "master", "DETACHED", "UNKNOWN"}
+        or len(state.operation_markers) != 1
+        or not state.operation_markers[0].startswith("MERGE_HEAD:")
+        or not state.head_sha
+        or state.default_base.status not in {"ahead", "equal", "behind", "diverged"}
+        or state.upstream.status not in {"none", "ahead", "equal", "behind", "diverged"}
+    ):
+        return False
+    runner = GitRunner(state.repository_root)
+    merge_head = runner.run(["rev-parse", "--verify", "MERGE_HEAD^{commit}"])
+    if merge_head is None or SHA_RE.fullmatch(merge_head) is None:
+        return False
+    for relation in (state.default_base, state.upstream):
+        if relation.status not in {"behind", "diverged"}:
+            continue
+        if relation.sha is None:
+            return False
+        missing = runner.run(
+            ["rev-list", "--count", relation.sha, "--not", state.head_sha, merge_head]
+        )
+        if missing != "0":
+            return False
+    return not runner.failures
+
+
 def _guard_allows(
     state: RepositoryState, guard: str, *, allow_completion: bool
 ) -> bool:
@@ -904,17 +938,16 @@ def _guard_allows(
             state.branch not in {"main", "master", "DETACHED", "UNKNOWN"}
             and not state.query_failures
         )
-    if guard == "operation":
+    if guard in {"operation", "validation"}:
         if state.query_failures or state.locks or state.tree.conflicted_paths:
             return False
-        return allow_completion or state.operation == "none"
+        if state.operation != "none":
+            return allow_completion and _resolved_merge_allows(state)
+    if guard == "operation":
+        return True
     if guard == "validation":
         if (
-            state.query_failures
-            or state.operation != "none"
-            or state.locks
-            or state.branch in {"DETACHED", "UNKNOWN"}
-            or state.tree.conflicted_paths
+            state.branch in {"DETACHED", "UNKNOWN"}
             or state.default_base.status in {"behind", "diverged", "unknown"}
             or state.upstream.status in {"behind", "diverged", "unknown"}
         ):
@@ -934,7 +967,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--allow-operation-completion",
         action="store_true",
-        help="For the pre-commit compatibility entrypoint only.",
+        help="For pre-commit only: complete a resolved merge containing required refs.",
     )
     parser.add_argument(
         "--timeout", type=float, default=DEFAULT_COMMAND_TIMEOUT_SECONDS
@@ -944,9 +977,12 @@ def _build_parser() -> argparse.ArgumentParser:
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = _build_parser().parse_args(argv)
-    if args.allow_operation_completion and args.guard != "operation":
+    if args.allow_operation_completion and args.guard not in {
+        "operation",
+        "validation",
+    }:
         print(
-            "ERROR: --allow-operation-completion requires --guard operation",
+            "ERROR: --allow-operation-completion requires --guard operation or validation",
             file=sys.stderr,
         )
         return 2
