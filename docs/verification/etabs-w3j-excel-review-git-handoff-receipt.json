@@ -1,0 +1,150 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "a73c8c1db8872c6abd02dc6ddcfb7c93304e663cf2ce59316ae15c4cc20efab0",
+    "state": {
+      "branch": "codex/etabs-w3j-excel-review-windows",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "904f6b3455842e14a5ed5f42653ab24715433856",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 458.913,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git\\worktrees\\etabs-w3j-excel-review-windows",
+      "head_sha": "904f6b3455842e14a5ed5f42653ab24715433856",
+      "hold_reasons": [
+        "changed paths: 20"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-30T19:23:33.355959+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\worktrees\\etabs-w3j-excel-review-windows",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 20,
+        "modified_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/planning/etabs-data-analysis-optimization-foundation-plan.md",
+          "docs/planning/etabs-excel-professional-surface-audit.md",
+          "docs/planning/next-session-brief.md",
+          "excel_addin/README.md",
+          "excel_addin/serve.mjs",
+          "excel_addin/taskpane-office.mjs",
+          "excel_addin/taskpane.html",
+          "excel_addin/taskpane.mjs",
+          "excel_addin/tests/serve-static-files.test.mjs",
+          "excel_addin/tests/taskpane-office.test.mjs",
+          "scripts/automation-map.json",
+          "scripts/control-plane.json"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "Python/tests/unit/test_calculation_review.py",
+          "docs/verification/etabs-w3j-excel-review-evidence.json",
+          "excel_addin/review-core.mjs",
+          "excel_addin/review-pane.mjs",
+          "excel_addin/tests/fixtures/calculation-review-v1.json",
+          "excel_addin/tests/review-core.test.mjs",
+          "scripts/export_calculation_review.py"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "C:\\CodexWork\\worktrees\\etabs-w3j-excel-review-windows"
+    }
+  },
+  "local_state_receipt_hash": "sha256:a73c8c1db8872c6abd02dc6ddcfb7c93304e663cf2ce59316ae15c4cc20efab0",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-30T19:23:33.355959+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [],
+    "integration_owner": "Codex-Windows",
+    "owned_paths": [
+      "scripts/export_calculation_review.py",
+      "Python/tests/unit/test_calculation_review.py",
+      "excel_addin/review-core.mjs",
+      "excel_addin/review-pane.mjs",
+      "excel_addin/tests/review-core.test.mjs",
+      "excel_addin/tests/fixtures/calculation-review-v1.json",
+      "docs/verification/etabs-w3j-excel-review-evidence.json",
+      "docs/verification/etabs-w3j-excel-review-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "excel_addin/taskpane-office.mjs",
+      "excel_addin/taskpane.mjs",
+      "excel_addin/taskpane.html",
+      "excel_addin/serve.mjs",
+      "excel_addin/tests/taskpane-office.test.mjs",
+      "excel_addin/tests/serve-static-files.test.mjs",
+      "excel_addin/README.md",
+      "scripts/control-plane.json",
+      "scripts/automation-map.json",
+      "docs/SESSION_LOG.md",
+      "docs/planning/next-session-brief.md",
+      "docs/planning/etabs-data-analysis-optimization-foundation-plan.md",
+      "docs/planning/etabs-excel-professional-surface-audit.md"
+    ],
+    "task_id": "ETABS-W3J-EXCEL-REVIEW"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

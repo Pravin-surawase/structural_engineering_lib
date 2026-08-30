@@ -411,6 +411,15 @@ separately authorized installed Excel save/readback/rollback evidence.
 
 ### X3 — Professional-signature handoff
 
+R4 implementation checkpoint (2026-08-31): the `W3 calculation review` pane
+imports a Python-validated saved dossier without FastAPI/ETABS access. Sixteen
+controlled tables cover the planned X2 surface and full canonical transport.
+Publication checks all typed cells and JSON hashes before a `COMMITTED`
+marker, retains user comments separately, and binds revision history by hash.
+Fake-host tests are software evidence only; installed save/readback and
+rollback must run on the exact reviewed source before claiming W3J L4.
+Provider signature verification remains `NOT_PROVIDED` in this workbook path.
+
 Excel gathers review metadata and freezes the dossier. It then exports the
 canonical JSON plus a human-readable PDF/HTML report for external signing.
 After signing, Excel may import verification evidence and display it. It does

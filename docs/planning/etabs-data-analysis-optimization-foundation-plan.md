@@ -117,7 +117,7 @@ not a Windows audit of the Mac checkout. Each new branch still has one writer.
 | W3G | Bounded pure solver, PR #915, L1 | Always SURROGATE_ONLY; not general 3D analysis |
 | W3H | Comparator #917 and recovery/feasibility/benchmarks #918-#921 | Actual-building L5 calibration NOT complete |
 | W3I | Planned functions absent at the audited base | W3H plus explicit complete screening criteria |
-| W3J | Provider-neutral dossier foundation implemented in this successor | Excel review projection and installed all-table rollback/readback still required |
+| W3J | Dossier foundation #922; review exporter, 16 controlled projections and transactional fake-host implementation in its R4 successor | Exact reviewed source still needs installed all-table rollback/readback; no L7 signature |
 | W3K | Planned functions absent at the audited base | Accepted W3I, guarded fresh-copy mutation and mandatory ETABS reanalysis |
 | W3L | Not implemented | Accepted W3K, finite iteration and independent final baseline repeat |
 
@@ -1104,6 +1104,16 @@ attested artifact are hash-bound. Unknown provider trust remains UNAVAILABLE;
 verification reports supplied evidence separately and never produces
 `SIGNED_VERIFIED` in this provider-neutral packet. This is an L1 prerequisite,
 not installed Excel, a signed professional dossier or W3J completion.
+
+The R4 implementation adds an offline saved-dossier route, Python-owned
+catalogue/demand replay, sixteen controlled review tables, canonical JSON
+transport, separate user comments, hash-bound append-only revision history,
+all-table preflight/snapshot/typed publication/readback/rollback, and a
+post-verification commit marker. Its software fixture is explicitly fictional;
+installed Excel acceptance remains a separate exact-source continuation.
+`scripts/export_calculation_review.py` is the maintained carrier entry point;
+see `excel_addin/README.md`. No new model extraction or ETABS state change is
+needed to review existing saved evidence. This does not clear W3H/I/K/L.
 
 ### W3K — Controlled candidate ETABS reanalysis (`L6`)
 

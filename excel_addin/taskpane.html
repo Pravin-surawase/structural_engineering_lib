@@ -17,6 +17,18 @@
     </header>
 
     <main>
+      <section class="card">
+        <h2>W3 calculation review</h2>
+        <p>Formula-free review of a saved Python-validated dossier. No ETABS connection is needed. This does not calculate, sign, approve, or change a model.</p>
+        <label for="w3-review-file">Exported review transport JSON</label>
+        <input id="w3-review-file" type="file" accept=".json,application/json" />
+        <button id="w3-review-preview" type="button">Verify saved dossier</button>
+        <button id="w3-review-publish" type="button" disabled>Publish all W3 review tables</button>
+        <button id="w3-review-verify" type="button" disabled>Read back saved review</button>
+        <button id="w3-review-comments" class="secondary" type="button">Export user comments</button>
+        <p id="w3-review-status" class="detail" aria-live="polite">No dossier selected. Writes are limited to the sixteen controlled ETABS_W3_* tables.</p>
+        <p class="detail">Comments and prior revision identities are preserved on exact-successor refresh. Edit only comment/disposition/reviewer/UTC cells in ETABS_W3_Comments. Raw details remain in hash-bound JSON; the compact governor table keeps each complete signed source row.</p>
+      </section>
       <section id="status" class="status hold" aria-live="polite" aria-atomic="true" aria-busy="true" tabindex="-1">
         <strong id="status-title">INITIALIZING</strong>
         <span id="status-detail">Checking the workbook contract.</span>
