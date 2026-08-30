@@ -206,6 +206,19 @@ def _point(raw: Any) -> core.ModelPointV1:
     return core.ModelPointV1(x_mm=xyz[0], y_mm=xyz[1], z_mm=xyz[2])
 
 
+def _spring_assignment(
+    read: _Readback, owner: str, name: str
+) -> core.EvidenceValueV1[str]:
+    operation = f"{owner}.GetSpringAssignment"
+    reference = f"w3f:{operation}:{name}"
+    value = read.out(operation, name, 1, optional=True)
+    if value is None:
+        return _absent("W3F_SPRING_ASSIGNMENT_UNAVAILABLE", reference)
+    if not isinstance(value[0], str):
+        raise ValueError(f"W3F_SPRING_ASSIGNMENT_STRING_REQUIRED:{operation}:{name}")
+    return _present(value[0], reference)
+
+
 def _joint(read: _Readback, name: str, point: Any) -> core.ModelJointDefinitionV1:
     ref = "w3f:joint:" + name
     current = _point(read.required("PointObj.GetCoordCartesian", name, 3))
@@ -226,10 +239,12 @@ def _joint(read: _Readback, name: str, point: Any) -> core.ModelJointDefinitionV
         + "; rotations about 3, resulting 2, resulting 1"
     )
     restraint = _flags(read.required("PointObj.GetRestraint", name, 1)[0])
-    assignment = read.required("PointObj.GetSpringAssignment", name, 1)[0]
+    assignment = _spring_assignment(read, "PointObj", name)
     coupled = read.out("PointObj.IsSpringCoupled", name, 1, optional=True)
     spring = read.out("PointObj.GetSpring", name, 1, optional=True)
-    if assignment:
+    if assignment.state is not core.EvidenceStateV1.PRESENT:
+        spring_value = _absent("W3F_SPRING_ASSIGNMENT_UNAVAILABLE", ref)
+    elif assignment.value:
         spring_value = _absent(
             "W3F_NAMED_SPRING_REQUIRES_SEPARATE_PROPERTY_AND_LINK_SCOPE", ref
         )
@@ -340,7 +355,8 @@ def _frame(read: _Readback, frame: Any) -> core.ModelFrameDefinitionV1:
     angle, advanced = read.required("FrameObj.GetLocalAxes", name, 2)
     if _boolean(advanced) or _number(angle) != frame.local_axis.local_axis_rotation_deg:
         raise ValueError("W3F_FRAME_AXES_MISMATCH")
-    if read.required("FrameObj.GetSpringAssignment", name, 1)[0]:
+    line_spring_assignment = _spring_assignment(read, "FrameObj", name)
+    if line_spring_assignment.value:
         raise ValueError("W3F_LINE_SPRING_OUTSIDE_FROZEN_CONTRACT")
     release = read.required("FrameObj.GetReleases", name, 4)
     start = _spring(release[2]).model_copy(update={"coordinate_system": "FRAME_LOCAL"})
@@ -417,6 +433,7 @@ def _frame(read: _Readback, frame: Any) -> core.ModelFrameDefinitionV1:
         object_modifiers=_present(
             _modifiers(read.required("FrameObj.GetModifiers", name, 1)[0]), ref
         ),
+        line_spring_assignment=line_spring_assignment,
         assigned_loads=_present(_frame_loads(read, name), ref),
         evidence_reference=ref,
     )

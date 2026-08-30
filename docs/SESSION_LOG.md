@@ -5,6 +5,102 @@
 
 ---
 
+## 2026-08-30 — Session: W3F spring-readback availability repair
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+
+**Branch:** `codex/etabs-w3f-spring-readback-windows`, fresh from PR #912 merge
+`c405cf6432bd8f9e64ccc13556fb9d9ad52cda23`, tree
+`480571c84839e0aa17ecdd313677c9ab3a829262`. PRs #911/#912 integrated before
+this packet; their shared documents are preserved. The prior campaign was
+superseded at the owner's checkpoint. One new bounded session,
+`ETABS-W3F-SPRING-READBACK`, began; no W3G work is authorized here.
+
+**Git handoff receipt:**
+`docs/verification/etabs-w3f-spring-readback-git-handoff-receipt.json`
+
+**Focus:** Correct spring metadata availability without inferring absent springs or accepting missing calibration inputs.
+
+**Completed:**
+
+- Re-read the retained blocked checkpoint and fetched current GitHub. Preserved
+  the old six dirty W3F documentation paths, old W1 data and every retained lane.
+- Directly inspected the copied-model window: ETABS 23.3.1, closed lock icon,
+  no save/license/abnormal dialog. Only window activation occurred.
+- A 14-getter diagnostic on exact clean main confirmed successful object
+  identities but unsuccessful point and line spring metadata. Its complete
+  file/state postflight matched, including 15 finished cases and 77 selections.
+- Corrected the pure decoder: structurally valid unsuccessful assignment reads
+  become explicit UNAVAILABLE evidence; malformed shapes/statuses still block.
+- Added `ModelFrameDefinitionV1.line_spring_assignment`. Omitted legacy input
+  is NOT_REQUESTED, never a physical default. Calibration requires explicit
+  empty assignment evidence; a property name alone cannot prove stiffness.
+- Prepared 81 passing snapshot/adapter regressions, including both COM outer
+  containers, joint/frame failures, signed result retention, five-state
+  propagation, omitted input, named-property holds and malformed readbacks.
+
+### Issues encountered
+
+- The earlier live attempt stopped at the first spring assignment status 1.
+  The new diagnostic proved the frame assignment shares this boundary too.
+- The frame definition had no field in which to retain unknown line-spring
+  assignment evidence; simply allowing the failed call would imply absence.
+- The first external diagnostic assumed the `--worktrees` JSON envelope while
+  invoking current-lane Git state only; it failed before COM or evidence writes.
+- A local HTML-to-text PowerShell expression was parsed as multiple arguments.
+- Frozen verification found a stale historical-contract byte comparison and
+  a 161-line handoff brief against the 150-line limit.
+- Normal hooks found the generated compatibility ledger still described the
+  pre-repair frame constructor.
+- Earlier consolidated Windows Python/FastAPI and governance failures remain
+  historical holds. PR #911 repaired the manifest; no broad Windows pass is
+  inferred from that merge or from this focused packet.
+
+### Root causes and resolutions
+
+- The operator and adapter used required-success handling for an optional
+  assignment query. Three valid joints and one valid frame returned null/status
+  1; point stiffness/coupling reads also returned status 1. Installed CSI help
+  says unsuccessful retrieval, and GetSpring also uses nonzero for no springs.
+  The provider's exact absence-versus-failure cause remains **unconfirmed**.
+  The confirmed software defect is failure to represent that uncertainty.
+  The repair retains raw hashes and UNAVAILABLE; no zero/default conversion.
+- The additive frame evidence field closes the missing contract representation.
+  NOT_REQUESTED/UNAVAILABLE/NOT_APPLICABLE cannot complete calibration; BLOCKED
+  propagates even in non-calibration mode. Successful named line properties
+  remain outside this decoder's supported scope. All six public build/verify
+  signatures and physical units are unchanged. Existing omitted-field inputs
+  remain constructible but cannot claim complete calibration evidence.
+- A separately retained diagnostic v2 consumes the actual current-lane JSON.
+  It made one attachment and 14 bounded getter calls with unchanged postflight;
+  the first script remains preserved. No product Git-state code was changed.
+- Assigning the stripped HTML to a string before HtmlDecode resolved the shell
+  expression; no installed help, application, or model file was edited.
+- The signature test conflated the historical accepted contract with current
+  successor bytes. The historical receipt remains byte-identical; the new
+  repair receipt binds both predecessor and successor hashes explicitly.
+  The test verifies that chain. The brief was reflowed without removing its
+  prior accepted facts. The initial frozen run (89/90 tests, docs 7/8) remains
+  external; one consolidated correction reruns affected tests/docs/quick.
+- The additive frame field changes its constructor signature and identity key.
+  The maintained classification generator refreshed only those two fields on
+  the canonical owner and its facade projection; the decoded delta contains
+  exactly four leaves, with no caller or other API change. The classification
+  registry itself is unchanged. Normal hooks are rerun without bypass.
+- Prior broad failure logs and root-cause groups remain external. No threshold
+  relaxation, privilege change, test suppression or unrelated repair is part
+  of this packet. Focused checks, normal hooks, exact-candidate review and hosted
+  gates must pass before an accepted-source live continuation.
+
+**Evidence:** `docs/verification/etabs-w3f-spring-readback-repair-evidence.json`;
+external `ETABS-W3F/spring-diagnostic-c405cf64` and retained prior checkpoint.
+Final gate/candidate/hosted/merge facts belong to the external closeout, not a
+post-push rewrite. The repaired live normalization has not yet run at this
+content freeze. No analysis, design, unlock, save, setter, Excel or service run.
+
+**Next:** Accept this exact repair before a new bounded W3F read; retain every
+missing spring/load/slab hold and immutable-model postflight. Stop before W3G.
+
 ## 2026-08-30 — Session: LIB-PRO-015 refreshed professional API audit plan
 
 **Agent:** Codex (`governance`, sole parent/writer; no subagents).

@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-30
-- Focus: Finish the research-backed, implementation-ready API/documentation plan without changing public behavior.
-- Completed: Refreshed the preserved plan against accepted W3D/E/F, W3R and merge repair.; Measured 117 root functions, 41 facade projections across 11 modules/13; Reconciled installed W3B/F static metadata with W3D's bounded live evidence;
-- Git receipt: docs/verification/lib-pro-015-professional-api-audit-plan-git-handoff-receipt.json | sha256:6cac3fd5d55e68ef4731c21aae9c0d4882af26a5d9d1335f0832f26717dfaab8 | HOLD
-- Git identity: codex/lib-pro-015-professional-api-audit-plan-integrated@17494b53c84c273f4eef1d3d9224f234186d3eca | upstream=origin/main@17494b53c84c273f4eef1d3d9224f234186d3eca | base=origin/main@17494b53c84c273f4eef1d3d9224f234186d3eca | tree=dirty | operation=none
+- Focus: Correct spring metadata availability without inferring absent springs or accepting missing calibration inputs.
+- Completed: Re-read the retained blocked checkpoint and fetched current GitHub. Preserved; Directly inspected the copied-model window: ETABS 23.3.1, closed lock icon,; A 14-getter diagnostic on exact clean main confirmed successful object
+- Git receipt: docs/verification/etabs-w3f-spring-readback-git-handoff-receipt.json | sha256:e555684105127a3d7f3b98d6636c66721d0e1a95e028855da57f52809df7d084 | HOLD
+- Git identity: codex/etabs-w3f-spring-readback-windows@c405cf6432bd8f9e64ccc13556fb9d9ad52cda23 | upstream=NONE@UNKNOWN | base=origin/main@c405cf6432bd8f9e64ccc13556fb9d9ad52cda23 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -83,10 +83,8 @@ the strict pure beam-audit layer; its evidence is L1 synthetic acceptance only.
 
 ## Separate high-priority repair
 
-W3R now repairs the confirmed Pareto defect as a separate P1 packet. Keep the
-optimizer unavailable for ETABS candidate selection until W3E/W3H/W3I gates
-are also accepted. W3R merged unchanged in PR #907. Its acceptance evidence is
-`docs/verification/etabs-w3r-pareto-shear-feasibility-evidence.json`.
+W3R repairs the confirmed Pareto defect as a separate P1 packet, merged unchanged in PR #907.
+Keep the optimizer unavailable for ETABS candidate selection until W3E/W3H/W3I gates are also accepted. Evidence: `docs/verification/etabs-w3r-pareto-shear-feasibility-evidence.json`.
 
 ## Preservation rules
 
@@ -104,13 +102,15 @@ are also accepted. W3R merged unchanged in PR #907. Its acceptance evidence is
 W3F freezes exact typed topology, signed frame/nodal loads and six-component
 displacement/reaction snapshots; source counts, identities and five states
 fail closed. See `docs/verification/etabs-w3f-foundation-evidence.json`.
-Contract PR #909 and static/readback PR #910 are merged; preserve both lanes. The latter
-records 38 installed signatures and explicit semantic guards in
-`docs/verification/etabs-w3f-installed-signature-evidence.json`.
+Contract PR #909 and static/readback PR #910 are merged; preserve both lanes. The latter records 38 installed signatures and semantic guards in `docs/verification/etabs-w3f-installed-signature-evidence.json`.
 Live getters require its accepted merge, a verified copy, explicit scopes and
 unchanged file/lock/units/status/selection postflight. Nonempty undocumented
 joint-load steps and unproved spring forms remain visibly UNAVAILABLE.
 Synthetic W3E/F fixtures are NOT owner engineering criteria or live evidence.
+
+The owner resumed only the W3F spring-readback block. A fresh PR #912-based lane preserves all six old dirty receipt paths. Fourteen getters confirmed unsuccessful joint/frame assignment metadata with unchanged model/state.
+The repair retains UNAVAILABLE, never inferred absence; additive `line_spring_assignment` defaults to NOT_REQUESTED. Missing/named line evidence cannot complete calibration. See the newest session and `docs/verification/etabs-w3f-spring-readback-repair-evidence.json`.
+Repair integration precedes the exact-source live read. No W3G, analysis, model mutation, Excel or professional approval.
 
 ### Completed W3D operator checklist
 

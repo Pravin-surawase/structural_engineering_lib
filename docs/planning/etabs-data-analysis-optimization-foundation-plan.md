@@ -876,6 +876,19 @@ None of these software bounds declares a calibrated beam line or model-specific
 engineering assumptions. The owner requested a session stop after W3F on
 2026-08-30; W3G and later packets resume only in the next chat.
 
+The installed spring diagnostic exposed one narrow W3F contract correction:
+`ModelFrameDefinitionV1.line_spring_assignment` now retains five-state string
+evidence. Omitted input is explicitly NOT_REQUESTED, not a no-spring assumption.
+An unsuccessful, shape-valid point/frame assignment query is UNAVAILABLE in a
+non-calibration read. Required calibration still blocks, as does malformed
+readback; named line-spring properties remain outside the bounded decoder.
+Calibration completeness requires PRESENT empty line-assignment evidence and
+all other required physical fields. A property name is not a stiffness model.
+This additive representation and its new canonical bytes do not change the six
+public function signatures or certify prior snapshots that lacked this field.
+The original blocked raw evidence remains immutable; live acceptance requires
+the separately reviewed repair and a new unchanged-state read.
+
 ### W3G — Bounded 2D beam-line surrogate (`L1`; verdict still held)
 
 Owner: Mac. Dependencies: accepted W3F contracts; no installed application

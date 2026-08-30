@@ -153,6 +153,7 @@ def _definition_request() -> w3.ETABSModelDefinitionBuildRequestV1:
             )
         ),
         object_modifiers=_present(modifiers),
+        line_spring_assignment=_present(""),
         assigned_loads=_present(
             (
                 core.ModelFrameDistributedLoadV1(
@@ -306,6 +307,49 @@ def test_five_states_never_overload_missing_mandatory_topology(
             optional.snapshot is not None
             and not optional.snapshot.calibration_fields_complete
         )
+
+
+@pytest.mark.parametrize("state", list(core.EvidenceStateV1)[1:])
+def test_line_spring_state_cannot_silently_complete_calibration(
+    state: core.EvidenceStateV1,
+) -> None:
+    request = _definition_request()
+    frame = request.frame_definitions[0].model_copy(
+        update={"line_spring_assignment": _absent(state)}
+    )
+    request = request.model_copy(update={"frame_definitions": (frame,)})
+    required = w3.build_etabs_model_definition_snapshot_v1(request)
+    assert required.snapshot is None
+    optional = w3.build_etabs_model_definition_snapshot_v1(
+        request.model_copy(update={"require_calibration_fields": False})
+    )
+    if state is core.EvidenceStateV1.BLOCKED:
+        assert optional.snapshot is None
+    else:
+        assert optional.snapshot is not None
+        assert not optional.snapshot.calibration_fields_complete
+        assert (
+            optional.snapshot.frame_definitions[0].line_spring_assignment.state is state
+        )
+        assert w3.verify_etabs_model_definition_snapshot_hash_v1(optional.snapshot)
+
+
+def test_omitted_or_named_line_spring_never_implies_a_calibration_model() -> None:
+    request = _definition_request()
+    original = request.frame_definitions[0]
+    omitted = core.ModelFrameDefinitionV1.model_validate(
+        original.model_dump(exclude={"line_spring_assignment"})
+    )
+    assert omitted.line_spring_assignment.state is core.EvidenceStateV1.NOT_REQUESTED
+    named = original.model_copy(update={"line_spring_assignment": _present("spring-1")})
+    for frame in (omitted, named):
+        required = request.model_copy(update={"frame_definitions": (frame,)})
+        assert w3.build_etabs_model_definition_snapshot_v1(required).snapshot is None
+        optional = w3.build_etabs_model_definition_snapshot_v1(
+            required.model_copy(update={"require_calibration_fields": False})
+        )
+        assert optional.snapshot is not None
+        assert not optional.snapshot.calibration_fields_complete
 
 
 @pytest.mark.parametrize(

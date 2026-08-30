@@ -1517,6 +1517,7 @@ def build_etabs_model_definition_snapshot_v1(
             member.insertion_point,
             member.object_modifiers,
             member.assigned_loads,
+            member.line_spring_assignment,
         )
     )
     required.extend(
@@ -1527,6 +1528,13 @@ def build_etabs_model_definition_snapshot_v1(
     )
     complete = complete and all(
         field.state is EvidenceStateV1.PRESENT for field in required
+    )
+    # A property name alone cannot supply the line spring's stiffness/law.
+    # Only explicit empty assignment evidence fits the current no-line-spring
+    # calibration contract; missing/NOT_APPLICABLE evidence is not absence.
+    complete = complete and all(
+        member.line_spring_assignment.value == ""
+        for member in request.frame_definitions
     )
     if any(value.state is EvidenceStateV1.BLOCKED for value in values) or (
         request.require_calibration_fields and not complete

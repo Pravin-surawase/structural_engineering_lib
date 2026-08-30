@@ -1,0 +1,79 @@
+{
+  "schema_version": "etabs-w3f-spring-readback-repair/v1",
+  "task_id": "ETABS-W3F-SPRING-READBACK",
+  "verdict": "REPAIR_PREPARED_LIVE_NORMALIZATION_PENDING",
+  "base_sha": "c405cf6432bd8f9e64ccc13556fb9d9ad52cda23",
+  "base_tree": "480571c84839e0aa17ecdd313677c9ab3a829262",
+  "accepted_predecessor_prs": [909, 910, 911, 912],
+  "contract_bindings": {
+    "historical_signature_receipt_sha256": "8cd55527dc571c8586be2ae0b0b9e9b562cea1be5d524e4f3a7b10833dff18e3",
+    "successor_sources": {
+      "Python/structural_lib/core/analysis_contracts.py": {
+        "predecessor_sha256": "e6a1dd369c79cf35a3ef181a94f9e768f8402044c3742b7cf571946a39a12a07",
+        "current_sha256": "84d0ce919b625c8364cfa16749fdb4825735964ce962dc7fc1bc0430234769d8"
+      },
+      "Python/structural_lib/services/contracts/etabs_w3.py": {
+        "predecessor_sha256": "6176edc1a8aedc035db9610fd99554a34eb877470311e9bcdac073c6cc161bff",
+        "current_sha256": "3147ae766498bc45eac6265a62fa7224de3138948d5e91423a5332c7ecaa47e5"
+      }
+    },
+    "meaning": "Historical signature evidence is unchanged; the additive availability representation has an explicit successor binding, not retroactive certification."
+  },
+  "host": "LAPTOP-360-PRAV",
+  "runtime": {"python": "3.11.15", "comtypes": "1.4.16", "etabs": "23.3.1.4563"},
+  "diagnostic": {
+    "observed_at_utc": "2026-08-30T04:48:28.299720Z",
+    "directory": "ETABS-W3F/spring-diagnostic-c405cf64",
+    "manifest_sha256": "1ea04a7bca1f7e67569aa2a3221a0fc6826265fa8216015cdbb7b63de56f42d5",
+    "raw_calls_sha256": "df59774d8e4d50f6f81ab20b580f32d748617a6147207a65b15613a28fc5f220",
+    "final_state_sha256": "849d7c49bba1a915c0f20f1fcd75f814f7f9aa056cea6f41f83a717436654cdd",
+    "before_after_state_sha256": "269cd944e7f96144f769ea7eafb66ac9d37df4abc0a75a43e8ab2319fa3a361c",
+    "getter_calls": 14,
+    "joint_scope": 3,
+    "frame_scope": 1,
+    "assignment_outputs": [null, 1],
+    "coupling_outputs": [false, 1],
+    "stiffness_outputs": [[], 1],
+    "identity_getters_succeeded": true,
+    "provider_absence_versus_failure_root_cause": "UNCONFIRMED",
+    "ui": "Copied model open normally, locked, no save/license/abnormal dialog; activation only.",
+    "proprietary_names_paths_payloads": "Retained outside Git"
+  },
+  "preservation": {
+    "copied_model_sha256_before_after": "99b7f3f17051929196ef6494d8f4d220d895fc3dac5e1a57164a53bf8fa6948b",
+    "copied_model_bytes_before_after": 702831,
+    "copied_model_mtime_utc_before_after": "2026-08-28T17:00:30.127813Z",
+    "model_locked": true,
+    "present_units_enum": 6,
+    "finished_case_count": 15,
+    "unchanged_selection_flags": 77,
+    "analysis_design_reanalysis_save_unlock_setter_count": 0,
+    "excel_and_service_starts": 0,
+    "all_retained_worktrees_and_data_preserved": true,
+    "old_dirty_w3f_documentation_paths_preserved": 6,
+    "old_dirty_w1_paths_preserved": 3
+  },
+  "confirmed_software_causes": [
+    "Assignment metadata was required-success even when calibration evidence was optional.",
+    "Frame definitions lacked an explicit line-spring assignment availability field."
+  ],
+  "correction": {
+    "unsuccessful_assignment": "UNAVAILABLE; raw status remains in the hash-bound readback",
+    "new_frame_field": "line_spring_assignment: EvidenceValueV1[str]",
+    "omitted_legacy_input": "NOT_REQUESTED; no physical default or calibration-complete claim",
+    "required_calibration": "Still BLOCKED for unavailable/not-requested/not-applicable or named line-spring evidence",
+    "known_named_line_spring_in_adapter": "Still BLOCKED outside the frozen physical model",
+    "malformed_shape_or_status": "Still BLOCKED, no partial normalized values",
+    "six_public_function_signatures": "Unchanged",
+    "generated_compatibility_ledger": "Frame constructor signature/identity updated on its canonical owner and facade projection only; four decoded leaves changed",
+    "new_canonical_bytes": "Include the explicit assignment field; no retroactive certification of older hashes"
+  },
+  "verification": {
+    "preparation_snapshot_adapter_tests": "81 passed",
+    "frozen_focused_static_architecture_docs_quick_hooks": "Required before candidate acceptance; exact outcomes in external closeout",
+    "hosted_checks_and_merge": "Not yet observed at content freeze",
+    "repaired_live_normalization": "Not run before accepted repair",
+    "broad_windows_suite": "Not repeated; prior Python/FastAPI/governance holds remain separately recorded; no broad PASS"
+  },
+  "claims": {"w3g_started": false, "calibration_accepted": false, "optimization_accepted": false, "professional_approval": false, "release_authorized": false}
+}

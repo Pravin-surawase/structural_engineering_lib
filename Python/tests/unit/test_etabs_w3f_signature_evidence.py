@@ -19,6 +19,19 @@ def _evidence() -> dict:
 
 def test_exact_accepted_contracts_and_installed_sources() -> None:
     evidence = _evidence()
+    repair = json.loads(
+        (
+            ROOT / "docs/verification/etabs-w3f-spring-readback-repair-evidence.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert (
+        hashlib.sha256(
+            (
+                ROOT / "docs/verification/etabs-w3f-installed-signature-evidence.json"
+            ).read_bytes()
+        ).hexdigest()
+        == repair["contract_bindings"]["historical_signature_receipt_sha256"]
+    )
     assert (
         evidence["source"]["accepted_contract_merge"]
         == "c84c62d063eaf45fe4ea4e71926d3d6caef7a48b"
@@ -34,9 +47,11 @@ def test_exact_accepted_contracts_and_installed_sources() -> None:
             "accepted_service_contract_sha256",
         ),
     ):
+        binding = repair["contract_bindings"]["successor_sources"][path]
+        assert binding["predecessor_sha256"] == evidence["source"][key]
         assert (
             hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
-            == evidence["source"][key]
+            == binding["current_sha256"]
         )
     assert evidence["host"]["etabs_executable_version"] == "23.3.1.4563"
     assert evidence["host"]["comtypes"] == "1.4.16"
