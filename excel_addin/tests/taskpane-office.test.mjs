@@ -591,7 +591,7 @@ function baselineExcel({
 }
 
 function reviewTransport() {
-  return JSON.parse(fs.readFileSync(new URL("./fixtures/calculation-review-reinforcement-v2.json", import.meta.url), "utf8"));
+  return JSON.parse(fs.readFileSync(new URL("./fixtures/calculation-review-serviceability-v3.json", import.meta.url), "utf8"));
 }
 
 test("W3 publishes all sixteen literal tables and commits only after complete readback", async () => {

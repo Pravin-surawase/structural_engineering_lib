@@ -5,6 +5,98 @@
 
 ---
 
+## 2026-08-31 — Session: W3 bounded serviceability
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3E-SERVICEABILITY`.
+**Branch:** `codex/etabs-w3e-serviceability-windows`.
+**Source:** PR #936 merge `773d96739aaa68d5205d606010f0e0540dc4aa7c`.
+**Focus:** Complete the simplest source-supported serviceability path without new analysis or inferred inputs.
+**Checkpoint:** `FOCUSED_VERIFIED_REQUIRES_INTEGRATION`.
+**Git handoff receipt:** `docs/verification/etabs-w3-serviceability-git-handoff-receipt.json`
+
+**Completed:**
+
+- Added strict complete span/depth and supplied Annex F service checks through
+  existing owners, canonical Python/REST and W3 row-bound audit/governors.
+- Kept separate service-case/source/geometry/bar-revision evidence; no factored
+  force conversion, partial service PASS or automatic steel/strain assumptions.
+- Corrected aggressive crack-width limits and added explicit EXTREME handling.
+- Recorded original-source/amendment review, independent vectors, migration,
+  recurrence checks and remaining W3 dependencies in the serviceability plan.
+- Preserved historical source-bound review fixtures and selected a new revision.
+
+### Issues encountered
+
+- Existing very-severe default allowed 0.2 mm and unrecognized EXTREME fell back
+  to moderate, permitting a wrong crack verdict on the shared owner route.
+- Existing canonical intake held every service request; W3 could not evaluate
+  complete service evidence or include it in its governing checks.
+- The first 42-case implementation diagnostic passed 41 cases and found that
+  the new source-review identity was hashed internally but not shown publicly.
+- Several inspection commands used obsolete/guessed paths; file discovery
+  located the maintained owners. No missing capability was inferred from them.
+- The BIS temporary amendment PDF URL did not fetch; original published
+  documents on mirrors and the retained page renders supplied the review.
+- An external freeze helper assumed UTF-16 and a flat Git-state object. The
+  actual output was UTF-8 with a `current` wrapper when using `--worktrees`.
+- Focused behavior, REST and Node checks passed, but configured mypy rejected
+  reused variable names with different nullable/evidence types in the W3 builder.
+- Pre-commit consumer audit found that automatic detailing can select a different
+  reinforcement layout from the supplied service analysis, invalidating that PASS.
+- The first committed-candidate audit follow-through found that each output row
+  repeated the complete member service list, making large review payloads grow
+  quadratically; matching also rescanned the same list for every row.
+
+### Root causes and resolutions
+
+- Traced the permissive exposure mapping to the pure serviceability owner.
+  Applied the Amendment 4 0.1 mm ceiling for very-severe/extreme and retained
+  explicit strict limit/exposure validation. Independent 0.163636 mm vectors
+  distinguish the corrected FAIL from the former false PASS.
+- Replaced the all-or-nothing opaque hold with an additional strict typed
+  variant. Both checks, service-source evidence, section identity and exact W3
+  row/location associations are mandatory; old untyped/missing inputs stay held.
+  Regression cases exercise complete PASS, each service FAIL, stale/partial
+  domain rejection, direct/REST parity and deterministic W3 replay.
+- Added the service source ids/review id to canonical public provenance; the
+  original failing assertion is retained in the focused verification set.
+- Use discovered maintained paths, finish source/formatting first, then refresh
+  generated schemas/ledgers and the new source-bound review fixture before gates.
+  Mirror review does not claim a fresh byte match to the private source corpus.
+- Wait for the state command to complete, inspect its schema and decode the
+  actual bytes before normalization. The helper was corrected without repository
+  source loss; the retained current/worktree snapshot remains the authority.
+- Gave the complete-domain loop distinct `member_basis`/`service_set` variables.
+  This is a static typing repair, with no arithmetic or acceptance change.
+  Refresh source-bound consumers after the final bytes and rerun affected gates.
+- Blocked canonical direct/combined detailing and therefore generated BBS for
+  typed service requests until the generated bar revision is independently
+  rebound/rechecked. Verified by a direct consumer diagnostic; no new tests were
+  added during audit. This is a bounded hold, not a new detailing implementation.
+- The one consolidated candidate repair uses an association index and retains
+  only the row's service evidence in its result. The full list remains once in
+  the build request; source identity and complete-domain gates are unchanged.
+  Existing replay, invalid-domain, canonical and Node checks verify the repaired
+  route; fixture size comparison records the reduction without adding review tests.
+  The three-row fixture retains 3 row-service records instead of 9 embedded
+  associations, shrinks from 231,801 to 212,439 bytes, and preserves numerical
+  check results. The 116 affected Python cases, 285-file mypy and 31 Node checks
+  pass after this repair; the consolidated quick/commit/hosted gates still follow.
+
+**Verification:** 245 focused Python, 102 API and 53 Node cases passed;
+architecture found zero violations in 249 files. After the typing repair, mypy
+passes 285 files and 91 affected Python/31 Node rechecks pass. One quick gate,
+normal hooks, immutable-candidate audit and required hosted checks follow.
+Exact final outcomes/timings and merge facts remain external. Cumulative broad
+W3 gates remain deferred by programme policy. No ETABS/Excel/COM action or model mutation.
+
+**Next:** Project service evidence; mandatory torsion distribution/detailing;
+H physical support/mesh/transfer decision; then dependent I/K/L and cumulative
+Mac integration. No release or engineering approval.
+
+---
+
 ## 2026-08-31 — Session: W3 reinforcement root-cause corrections
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).

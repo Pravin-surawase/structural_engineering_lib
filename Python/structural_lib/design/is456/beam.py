@@ -31,6 +31,12 @@ from structural_lib.services.contracts.beam import (
     MemberIdentityV1,
     RectangularBeamSectionV1,
 )
+from structural_lib.services.contracts.beam_serviceability import (
+    BeamAnnexFCrackCheckV1,
+    BeamServiceabilityBasisV1,
+    BeamServiceabilityChecksV1,
+    BeamSpanDepthCheckV1,
+)
 from structural_lib.services.contracts.common import model_validate_or_error
 
 __all__ = [
@@ -44,6 +50,10 @@ __all__ = [
     "BeamDetailingOptionsV1",
     "BeamDetailingResultV1",
     "BeamServiceabilityV1",
+    "BeamServiceabilityChecksV1",
+    "BeamServiceabilityBasisV1",
+    "BeamSpanDepthCheckV1",
+    "BeamAnnexFCrackCheckV1",
     "DetailingStandard",
     "EffectiveDepthBasisRequestV1",
     "CentroidCoverDepthRequestV1",
@@ -86,7 +96,7 @@ def input(  # noqa: A001 - frozen public facade spelling
     pt_percent: float | None = None,
     ast_mm2_for_shear: float | None = None,
     detailing: BeamDetailingOptionsV1 | None = None,
-    serviceability: BeamServiceabilityV1 | None = None,
+    serviceability: BeamServiceabilityV1 | BeamServiceabilityChecksV1 | None = None,
     source_provenance: str | None = None,
 ) -> BeamDesignInputV1:
     """Build the strict nested request without exposing Pydantic exceptions."""

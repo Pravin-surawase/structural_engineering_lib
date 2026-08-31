@@ -143,8 +143,11 @@ Explicit source evidence exposes clear-versus-centroid cover and separate steel
 grade mapping gaps. The [reinforcement root-cause packet](etabs-w3-reinforcement-root-causes.md)
 now implements compatible material/cover variants and corrects source-verified
 shear/torsion defects, including opposite-face demand and unsafe spacing rounding.
-**Immediate priority:** finish its gates, then implement strict serviceability
-and mandatory constructability/distribution criteria. Stop broad table work; residual H acquisition
+The reinforcement corrections are accepted in PR #936 (`773d9673`). The next
+[bounded serviceability packet](etabs-w3-serviceability.md) implements strict
+span/depth and supplied Annex F checks through canonical/W3 consumers; its gates
+and external integration receipt govern acceptance. Mandatory constructability/
+torsion-distribution criteria remain next. Stop broad table work; residual H acquisition
 must answer a required physical row and cannot repair unsupported solver physics.
 
 Keep three tracks separate: faithful ETABS data transport, beam checks using
@@ -1257,8 +1260,10 @@ Stop and request direction when:
 
 ## Current continuation
 
-Start with saved physical-basis reconciliation and the independent audit/criteria
-specification in the whole-W3 execution reset. Do not automatically resume the
+Saved physical-basis reconciliation is accepted in #935 and reinforcement root
+corrections in #936. Complete the bounded strict serviceability packet, then
+mandatory detailing and the physical H decision in the whole-W3 execution reset.
+Do not automatically resume the
 table launcher. The research audit identifies the existing text backup and
 documented export alternatives; neither is already validated model evidence.
 Retain accepted A-G/R/J work, the closed W3H attempts and all historical files.

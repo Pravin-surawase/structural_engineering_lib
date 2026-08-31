@@ -12,7 +12,8 @@ from structural_lib.core.calculation_dossier import (
     DossierArtifactV1,
 )
 from structural_lib.services.calculation_dossier import build_calculation_dossier_v1
-from tests.unit.test_beam_audit import _evaluate, _request
+from tests.integration.test_beam_serviceability import typed_audit_request
+from tests.unit.test_beam_audit import _evaluate
 from tests.unit.test_calculation_dossier import dossier_request, ev
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -26,7 +27,7 @@ SPEC.loader.exec_module(EXPORT)
 
 def review_fixture():
     base = dossier_request.__wrapped__()
-    request = _request()
+    request = typed_audit_request()
     values = {
         "MODEL": {"fixture": "fictional-model-no-file"},
         "CATALOGUE": request.demand.catalogue.model_dump(mode="json"),
@@ -66,7 +67,7 @@ def review_fixture():
     data["scope"] = base.scope.model_copy(
         update={
             "member_ids": ("member:1",),
-            "scenario_ids": (request.demand.scenario.scenario_id,),
+            "scenario_ids": (request.demand.scenario.scenario_id, "SLS-1"),
             "reviewed_input_hashes": tuple(
                 hashes[k] for k in ("MODEL", "CATALOGUE", "DEMAND")
             ),
@@ -86,7 +87,7 @@ def test_python_export_replays_all_service_identities_and_exact_frozen_node_fixt
     dossier = review_fixture()
     transport = EXPORT.export_review(dossier)
     fixture = (
-        ROOT / "excel_addin/tests/fixtures/calculation-review-reinforcement-v2.json"
+        ROOT / "excel_addin/tests/fixtures/calculation-review-serviceability-v3.json"
     )
     assert transport == json.loads(fixture.read_text(encoding="utf-8"))
     assert (
