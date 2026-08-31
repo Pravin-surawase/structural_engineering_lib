@@ -5,6 +5,79 @@
 
 ---
 
+## 2026-08-31 — Session: W3H typed client and pre-attachment launcher stop
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3H-TYPED-GUARD`.
+**Branch:** `codex/etabs-w3h-typed-guard-client-windows`.
+**Source:** PR #932 merge `0342f5bdc510e4c16c15dd1719da6bbb2d56aee5`,
+tree `b3ea898aeedf9da1053acc29ac64126c142d5c9a`.
+**Focus:** Complete typed-client offline proof and exact pre-attachment stop.
+**Checkpoint:** `BLOCKED_BEFORE_ATTACHMENT_TIMESTAMP_TYPE_COMPARISON`.
+**Git handoff receipt:** `docs/verification/etabs-w3h-typed-guard-git-handoff-receipt.json`
+
+**Completed:**
+
+- Verified the external chat handoff hash, accepted GitHub source and all 35
+  predecessor lanes, then began exactly one fresh source-bound session.
+- Compiled explicit C# calls against the installed ETABS interfaces. The shared
+  model guard/raw logger/error/postflight passed 45 controlled cases, with
+  15 case and 62 combination flags and exact numeric/timestamp evidence.
+- Fresh UI, saved-file, source, process and privilege checks preceded a frozen
+  contract. Its launcher stopped before attachment; zero ETABS table or Python
+  live calls, no live retries, setters, analysis, save or Excel action.
+- Traced the timestamp type mismatch, preserved every frozen input, and added
+  a corrected outer launcher with 24 passing offline cases. Its live mode is
+  disabled for this closed packet. No installed compatibility claim.
+- Eleven saved-file identities and all 35 prior lanes are unchanged. Post-stop
+  UI has no blocking dialog; complete fresh live model guards remain NOT_PROVED.
+
+### Issues encountered
+
+- The first offline logger tried serializing the controlled interface object
+  and failed. The persisted-output audit initially treated a scalar Boolean
+  raw result as a dictionary.
+- The frozen launcher reported `Process replaced` although the exact process
+  start was unchanged. It stopped before the compiled client's attempt marker.
+- The initial 45-case proof omitted the PowerShell outer launcher and therefore
+  did not establish complete entrypoint proof before the attempted observation.
+- The first UI screenshot was occluded by Codex and was rejected as model proof;
+  one activation exposed the returned ETABS window for inspection.
+
+### Root causes and resolutions
+
+- Interface-object serialization was the confirmed logger defect. The compiled
+  logger now records attachment metadata only, never traverses application
+  properties, and retains table raw values even if their logger fails. The
+  shared path passes 45 cases and an independent 9,995-file output audit.
+  The audit's scalar/dictionary discrimination was corrected without rerunning
+  the compiled matrix; exact numeric types, arrays and error records pass.
+- PowerShell `ConvertFrom-Json` promoted ISO `start_utc` to `System.DateTime`.
+  The launcher compared a fresh round-trip string with the implicit DateTime
+  representation. Offline reproduction shows that comparison false while
+  exact round-trip values match. `-DateKind String` preserves contract types;
+  the separate outer launcher passes 24 cases including the whole compiled
+  path, changed process/source/privilege/UI guards, logging and file postflight.
+- Honored the no-retry boundary: frozen launcher/contract were not modified or
+  rerun, and v2 live execution is disabled. A successor still must integrate
+  its real-environment collector through the corrected outer entrypoint and
+  prove that exact entrypoint offline before freezing an installed observation.
+  Older managed COM binder and CSI 1 causes remain **unconfirmed** and were
+  not exercised. No process replacement or licence cause is established.
+- Rejected the occluded screenshot; the returned window's fresh screenshot and
+  accessibility supplied pre/post UI evidence, with activation only.
+
+**Verification:** 45 compiled and 24 outer offline cases; independent saved
+output, exact frozen-source and preservation checks. Affected docs, one quick
+gate, normal hooks, unchanged-candidate audit and read-only session end follow
+content freeze; exact results and hosted/merge facts remain external.
+
+**Next:** Follow external `NEXT_PACKET.md` bound by the typed-guard receipt.
+No fresh lock/units/status/selection proof, table access, actual-building W3H,
+W3I/K/L, professional approval or release acceptance follows from this packet.
+
+---
+
 ## 2026-08-31 — Session: W3H transport diagnostic guard-binding stop
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).

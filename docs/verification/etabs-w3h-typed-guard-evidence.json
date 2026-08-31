@@ -1,0 +1,170 @@
+{
+  "blocking_dialog_visible": false,
+  "compiled_offline_cases": 45,
+  "complete_fresh_live_model_guard": "NOT_PROVED",
+  "confirmed_root_cause": "ISO JSON timestamp was promoted to DateTime by PowerShell; string/DateTime comparison falsely reported process replacement. Exact round-trip starts match.",
+  "correction": "Preserve ISO strings with -DateKind String; audit the complete outer launcher with the compiled client. v2 Live is disabled in this closed packet.",
+  "evidence_level": "OFFLINE_SOFTWARE_ONLY",
+  "external_manifest": [
+    {
+      "bytes": 2388,
+      "name": "ACCEPTANCE.md",
+      "sha256": "9387edcbfdd76dd8bae6ab03830264e17f250365ae193b0223b6343fdef6474f"
+    },
+    {
+      "bytes": 15352,
+      "name": "TypedGuard.cs",
+      "sha256": "ed5284b7498291792ba15a299c53a749c6ff9fe42170969904d3a43aafaf799e"
+    },
+    {
+      "bytes": 560,
+      "name": "compile-client.ps1",
+      "sha256": "5e8fcbe1da790ad99fe0fe8abbc4b743f653b287be2faeb2202b210a7d739fb1"
+    },
+    {
+      "bytes": 4362,
+      "name": "offline-proof.ps1",
+      "sha256": "fdc810e775f6df55510a284068996c86d982c79f8fd6370612127c916465e7d1"
+    },
+    {
+      "bytes": 10653,
+      "name": "offline-02/proof.json",
+      "sha256": "a36c9780e5e09d66646e1bc043e32cd57895d4eced82e364065d5b41ad53129c"
+    },
+    {
+      "bytes": 2049113,
+      "name": "offline-audit.json",
+      "sha256": "1e5f291509e1655fa6b6110866d0c3e0037bed728325ee41d36bc3b6f2b0f0e2"
+    },
+    {
+      "bytes": 3492,
+      "name": "verify-offline.py",
+      "sha256": "daf977f77ef575020d3789d1734e42bba81ced6ce696947bf740fde4797a6206"
+    },
+    {
+      "bytes": 1625,
+      "name": "ProcessToken.cs",
+      "sha256": "27ba888dc922e89ee9f81a783ba4038e4024780d392db679684f8f236c9f28bd"
+    },
+    {
+      "bytes": 1235,
+      "name": "host-guard.ps1",
+      "sha256": "c3ee5210ec1493fda5604cb6769508103572b31172356fec03a3a129b15a25f8"
+    },
+    {
+      "bytes": 2008,
+      "name": "managed-live.ps1",
+      "sha256": "2964dd647ea26e1f95bb4179ed0e8470680c1ac53d53e5a8f316e5d672cc5926"
+    },
+    {
+      "bytes": 3589,
+      "name": "freeze.ps1",
+      "sha256": "e22a5d36309ee9cfec99c67980ce4e0c7e38a2cb6c7d045638218b902311a55a"
+    },
+    {
+      "bytes": 5920,
+      "name": "CALL_CONTRACT.json",
+      "sha256": "b37545e72ebd2e5f5081c9f5f59e22f8308c89f3df52d485afaa66c40be470f3"
+    },
+    {
+      "bytes": 19631,
+      "name": "preflight.json",
+      "sha256": "880471a8b6393f8d261c05e3a50ee6f040ab4f60ebba4058bac38cd4746b7a50"
+    },
+    {
+      "bytes": 19633,
+      "name": "postflight.json",
+      "sha256": "2e94d9500450125edb9dbb4e4b94fcfb30a66c28e8ac4a893dbc2f4b2d5652de"
+    },
+    {
+      "bytes": 3330,
+      "name": "protected-files.json",
+      "sha256": "9319af1509fdc91812c6fb1205cd0d64fd5733cac932729c92f25879fb7e0206"
+    },
+    {
+      "bytes": 3425,
+      "name": "ui-preflight.json",
+      "sha256": "8e2ee84665cba90be28c72263325059dec18e4b915be7e82c490ad0acb583082"
+    },
+    {
+      "bytes": 3632,
+      "name": "ui-postflight.json",
+      "sha256": "3a7e9811e821dbca6d8dbe6ff2dae3826236eda1dc0cb7b941001680153f9572"
+    },
+    {
+      "bytes": 1047,
+      "name": "managed-launcher-stop.json",
+      "sha256": "26a9ff6abd66c862ecffa1512f79f5f4732c5aab34adfcfeb2bc81f10bf581c9"
+    },
+    {
+      "bytes": 4200,
+      "name": "launcher-v2.ps1",
+      "sha256": "fdd63b834d020184d549b0f63d48ba79607966339d269a678bcfcc7c23ee067b"
+    },
+    {
+      "bytes": 5085,
+      "name": "prove-launcher-v2.ps1",
+      "sha256": "1b8fea97b426f0324877e8c79ee2f7499fd3aacec330f61762a6e491faa1a7fa"
+    },
+    {
+      "bytes": 3862,
+      "name": "launcher-offline-01/proof.json",
+      "sha256": "202d6880eb4469df8e7083c201842dff6ae71948df1447dfd885bb4caf920d87"
+    },
+    {
+      "bytes": 267,
+      "name": "launcher-offline-01/root-cause.json",
+      "sha256": "a86057c645b26e0d2a8b0522503e5bd66c04971b88a6dfa218c4d53ef7404e2e"
+    },
+    {
+      "bytes": 299940,
+      "name": "launcher-audit.json",
+      "sha256": "7664dac8045c1a1f1b93b9fb46b8440e1e1c3ab82a0073bc53fc07a7029dba51"
+    },
+    {
+      "bytes": 2898,
+      "name": "NEXT_PACKET.md",
+      "sha256": "be5245510afdfe998d857462c35341d96cc57bb513b2a4136bfd27ea24ddc724"
+    }
+  ],
+  "external_root": "C:\\CodexWork\\evidence\\ETABS-W3H-TYPED-GUARD-20260831",
+  "historical_csi_1_cause": "UNCONFIRMED",
+  "historical_managed_binding_cause": "UNCONFIRMED",
+  "holds": [
+    "Actual-building W3H mapping/calibration",
+    "W3I",
+    "W3K",
+    "W3L",
+    "Integrated final gates and Mac review",
+    "Professional/construction approval",
+    "Release"
+  ],
+  "live": {
+    "analysis_design_save_unlock_selection_setters": 0,
+    "attachments": 0,
+    "catalogue_schema_rows": 0,
+    "excel_operations": 0,
+    "managed_table_calls": 0,
+    "python_calls": 0,
+    "retries": 0
+  },
+  "next_packet": "Reuse offline corrected components; prove the entire next real collector/launcher offline, freeze fresh no-retry managed observation, Python only after success.",
+  "observed_at_utc": "2026-08-31T08:59:50.850903+00:00",
+  "offline_scope": "Actual installed interfaces; complete model guard, raw logging, errors, postflight; outer JSON/host/source/UI/file validators and whole controlled path",
+  "outer_offline_cases": 24,
+  "parent_agents": 1,
+  "predecessor_pr": 932,
+  "predecessor_worktrees_preserved": 35,
+  "preparation_gap": "The initial 45-case proof covered the compiled client but omitted its PowerShell launcher. The post-stop 24-case proof adds that outer path; a future real-environment collector still needs exact-entrypoint integration.",
+  "proprietary_payloads": "EXTERNAL_ONLY",
+  "protected_files_count": 11,
+  "saved_files_preserved": true,
+  "schema_version": 1,
+  "source_commit": "0342f5bdc510e4c16c15dd1719da6bbb2d56aee5",
+  "source_tree": "b3ea898aeedf9da1053acc29ac64126c142d5c9a",
+  "subagents": 0,
+  "table_selection_options_preservation": "NOT_PROVED",
+  "task_id": "ETABS-W3H-TYPED-GUARD",
+  "total_worktrees": 36,
+  "verdict": "BLOCKED_BEFORE_ATTACHMENT_TIMESTAMP_TYPE_COMPARISON"
+}
