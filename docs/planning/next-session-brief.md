@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-31
-- Focus: One installed update-only rollback test; no ETABS or writer changes.
-- Completed: Fresh fetch and GitHub query confirm the exact accepted predecessor. All; New isolated lane and one canonical session; source-bound runtime and standard; Created a separately named, hash-identical revision-2 workbook copy. Opened
-- Git receipt: docs/verification/etabs-w3j-native-rollback-git-handoff-receipt.json | sha256:3888840b06a70e812851854414b13fac82d1bcaabc79c0f13b8ae3595593cdca | HOLD
-- Git identity: codex/etabs-w3j-native-rollback-windows@cced0b632894ae23f6daf43f4802f48353ee47bf | upstream=NONE@UNKNOWN | base=origin/main@cced0b632894ae23f6daf43f4802f48353ee47bf | tree=dirty | operation=none
+- Focus: Saved-data capability/physical-input assessment; no application calls.
+- Completed: Fetched/query-verified exact GitHub main and merged predecessor. Every retained; Rehashed 127 files in two accepted manifests; five public canonical validators; Separated one normalized definition frame/three joints and one other raw frame
+- Git receipt: docs/verification/etabs-w3h-building-mapping-git-handoff-receipt.json | sha256:7434038adba17306f2eb49f78fbfd660d9c8d28ba892330a029413c698881fb3 | HOLD
+- Git identity: codex/etabs-w3h-building-mapping-windows@27ec55aca509a2cf93d2b46e32caaa5f1294e810 | upstream=NONE@UNKNOWN | base=origin/main@27ec55aca509a2cf93d2b46e32caaa5f1294e810 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -19,13 +19,13 @@ The [master-plan audit](etabs-data-analysis-optimization-foundation-plan.md#comp
 | State | Exact boundary |
 |---|---|
 | **Public** | `v0.24.0` remains the current immutable normal software release. No release work is authorized. |
-| **Current** | `ETABS-W3J-NATIVE-ROLLBACK`: native PASS, one writer call/injection, all-table rollback and separate saved-file proof. Eleven file identities/thirty predecessor lanes unchanged; services stopped. Candidate/hosted/merge truth belongs to the external closeout, not this pre-push row. |
+| **Current** | `ETABS-W3H-BUILDING-MAPPING`: saved mapping assessment complete, actual-building L5 held. 127 files/five canonical snapshots verified; 153 result sets/3,502 signed rows intact. No application/solver/design calls. Candidate/hosted/merge facts belong to the external closeout. |
 | **W2 complete** | PR #898 merged reviewed W2C head `57f53d48...` as `f1873e7b...`; candidate and merge tree are both `bb20ba0c...`. Direct service, REST, all seven saved Excel tables, and 3,626,096 reconstructed canonical JSON bytes reconcile to SHA-256 `d4c28586...`. |
 | **Plan gate** | Complete. The owner explicitly authorized the dependency-ordered W3 campaign; every packet still requires its exact predecessor and packet-specific stop conditions. |
-| **Next** | After exact GitHub integration/fetch, freeze one bounded read-only saved-building capability/mapping assessment for W3H and required screening criteria. No guessed moving-support/spring/slab basis, repeat Excel rollback, repeat accepted benchmarks or premature W3I/K/L. No ETABS action is needed merely to review this evidence. |
+| **Next** | After exact GitHub integration/fetch, start one bounded static installed mapping-signature audit: analysis-element connectivity, area/load-transfer and spring-inventory evidence for the already-inspected target. No COM/model open in that static packet. Use the mapping receipt and external `NEXT_PACKET.md`; do not repeat this assessment or accepted Excel/benchmark runs. |
 | **Held** | W3E does not accept installed reinforcement or canonical serviceability. Pareto torsion/serviceability/stirrup-cost/global-analysis holds remain. No shortlist or mutating candidate until W3F-H calibration and W3I criteria pass. Release and engineering/professional/construction approval remain unapproved. |
 
-W3H continuation: [guide](../guides/beam-line-calibration.md) and [receipt](../verification/etabs-w3h-comparison-evidence.json) bind the L1 checkpoint, exact next inputs and one-writer handoff; L5/W3I remain held.
+W3H continuation: the [guide](../guides/beam-line-calibration.md#saved-building-mapping-assessment-2026-08-31-successor) and [mapping receipt](../verification/etabs-w3h-building-mapping-evidence.json) bind the current next step. Five ordered contributing cases must not become two label-inferred loads. 132 beams repeat object-station coordinates; all 153 have at least one nonzero axial/minor action. Preserve element/side identity and explicit applicability limits. One normalized definition frame plus one raw diagnostic frame is not complete building mapping. Pilot materials/detailing are already supplied; comparison criteria, serviceability scope and screening families/scenarios/objectives are not. L5/W3I/K/L stay held. No professional signature is a prerequisite for the next ordinary software audit.
 `ETABS-W3H-ACCESS-RECHECK` recovered force access by one explicit reassertion of the already-selected combination. Fresh evidence: 153 beams/3,502 stations, complete catalogue, 40 foundation getters and 24 reconciled signed joint components; files/lock/units/status/flags unchanged. [Recovery receipt](../verification/etabs-w3h-access-recovery-evidence.json) and external `ETABS-W3H-RESULT-RECOVERY-20260830` supersede the old readback blocker. Do not rerun registration/recovery/analysis. L5/W3I still require supported physical mapping, unavailable spring/slab evidence and predeclared criteria; do not ask the owner to guess them. No Mac synchronization or calibration claim.
 
 `ETABS-W3H-CALIBRATION-FEASIBILITY` assessed all 77 geometric lines: every line has an external endpoint/interior geometric contact; the 23 endpoint-graph exceptions are not proved isolated. A 31-getter read found the shortest candidate pinned but on unrestrained moving joints. Current solver support types do not encode imposed vertical movement. [Feasibility receipt](../verification/etabs-w3h-feasibility-evidence.json) distinguishes these facts from full mesh/support proof.

@@ -5,6 +5,81 @@
 
 ---
 
+## 2026-08-31 — Session: W3H saved-building capability mapping
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3H-BUILDING-MAPPING`.
+**Branch:** `codex/etabs-w3h-building-mapping-windows`.
+**Source:** PR #927 merge `27ec55aca509a2cf93d2b46e32caaa5f1294e810`,
+tree `d659c1e7d9a74a3c57f5e6d8ab9acdc2101ab74e`.
+**Focus:** Saved-data capability/physical-input assessment; no application calls.
+**Checkpoint:** `SAVED_MAPPING_ASSESSED_L5_HELD`.
+**Git handoff receipt:** `docs/verification/etabs-w3h-building-mapping-git-handoff-receipt.json`
+
+**Completed:**
+
+- Fetched/query-verified exact GitHub main and merged predecessor. Every retained
+  local head is an ancestor; only unrelated dependency PRs were open. Created
+  one new lane/session, verified source binding and the standard hook. Preserved
+  31 earlier lanes, including dirty W1/W3F and immutable main. Mac not queried.
+- Rehashed 127 files in two accepted manifests; five public canonical validators
+  and exact complete serialized equality pass. Profiled all 153 beam result sets
+  and 3,502 rows: no missing sets/components, duplicate IDs or broken member/
+  selection links. Signed actions remain complete and proprietary outside Git.
+- Separated one normalized definition frame/three joints and one other raw frame
+  diagnostic from the complete force inventory. No calibration-ready mapping.
+- Traced all five ordered combination factors through linear-static cases to
+  patterns/self-weight. Found 132 beams with repeated station coordinates and
+  153 with a nonzero axial/minor component; neither was deduplicated, dropped or
+  judged against an invented acceptance threshold.
+- Recorded supported/held uses, exact physical/criteria gaps and the next static
+  signature-first mesh/area/load-transfer/spring discovery packet. No request
+  for repeated pilot defaults or blanket professional approval.
+- Companion notebook's three code cells executed sequentially through Python
+  with recorded outputs. Jupyter/nbclient/nbformat are absent; no kernel claim
+  or dependency install. Eleven protected file identities match the predecessor;
+  no Excel/ETABS/solver/design calls or service starts. Ports are unoccupied.
+
+### Issues encountered
+
+- Ordinary file hashing could not read a workbook already held open by Excel.
+- Initial offline intake repeated the strict JSON-array/tuple replay error.
+- Two inspection commands assumed a contracts path or Windows wildcard expansion.
+- Complete forces could otherwise be mistaken for complete calibration inputs,
+  and pilot defaults for complete applicability/screening criteria.
+
+### Root causes and resolutions
+
+- The ordinary file-open sharing mode conflicted with the active Excel handle.
+  An explicit read-only shared-read/write/delete handle hashed saved disk bytes
+  without closing or saving Excel; all eleven hash/size/mtime identities match.
+  This does not verify unsaved workbook cells or current ETABS live state.
+- `StrictPublicModel`'s before-validator exposes JSON lists before strict tuple
+  intake. Reused the accepted prior replay's explicit `strict=False` rehydration,
+  then required byte-exact complete serialized equality and public canonical
+  hashes. All five pass; no library or source-data change. The calibration guide
+  now records this replay requirement so it need not be rediscovered.
+- These were caller path/glob assumptions, not absent tools. `rg --files`, the
+  real service owner and `rg -g '*.ps1'` resolved the inspections; no install.
+- The force snapshot and bounded definition snapshot have different capture
+  grains/scopes. Current solver/support and W3E request fields confirm the gap.
+  The receipt and next packet now separate source coverage, physical reduction,
+  numerical criteria and design applicability; no invented values or calibration
+  claim. Static signature discovery is useful software work while L5 stays held.
+
+**Evidence:** `C:/CodexWork/evidence/ETABS-W3H-BUILDING-MAPPING-20260831`
+contains the frozen plan, reproducible assessment, executed companion, protected
+state observations and exact `NEXT_PACKET.md`. Safe counts/digests are in
+`docs/verification/etabs-w3h-building-mapping-evidence.json`.
+**Verification:** Frozen offline replay/receipt/docs, one quick gate, normal
+hooks and read-only exact-candidate audit/session end. Exact local/hosted/merge
+observations remain external after content freeze. No broad or prior live suite.
+**Next:** Integrate this assessment; perform only the bounded installed mapping-
+signature audit before any new copied-model getter task. W3H L5, W3I/K/L and
+final integrated campaign review remain incomplete. No professional/release claim.
+
+---
+
 ## 2026-08-31 — Session: W3J installed update-only rollback
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).

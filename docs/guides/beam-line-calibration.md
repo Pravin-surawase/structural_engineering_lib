@@ -281,3 +281,54 @@ asymmetric/patterned-load benchmarks, without guessing effective supports.
 Action-only comparisons must declare their reduced scope; neither this test
 nor an unavailable building field is a reason to demand professional sign-off
 before ordinary software development. W3I and construction approval stay held.
+
+### Saved-building mapping assessment (2026-08-31 successor)
+
+The [mapping receipt](../verification/etabs-w3h-building-mapping-evidence.json)
+closes that bounded assessment. Both accepted manifests rehash (127 files),
+and current public validators verify the complete saved baseline, catalogue,
+definition, displacement and reaction identities. All 153 result sets and
+3,502 signed station rows have unique IDs, complete components and exact member/
+selection links. This is saved-byte evidence, not freshly queried application
+state; no ETABS, Excel, solver, comparator or design operation ran.
+
+The outcome-changing gaps are now explicit:
+
+- Only one frame/three joints have a normalized foundation. One other frame
+  has bounded raw definition evidence. Neither is a complete accepted reduced
+  model; the broader force inventory must not imply broader physical coverage.
+- The accepted combination has five ordered case factors, not two inferred
+  from its label. Every contributing case/pattern and the nonzero self-weight
+  multiplier must survive any future mapping. Direct frame loads alone do not
+  prove complete area/slab/transferred loading.
+- 132 of 153 beam result sets repeat an object-station coordinate. Preserve
+  element identity, row identity and station side; never deduplicate or infer
+  a nearest-station comparison from coordinates alone.
+- All 153 beam sets have at least one exactly nonzero axial/minor-axis action.
+  This is a coverage observation, not a code failure or recommended tolerance.
+  W3E's explicit applicability bounds and face mapping cannot silently be zero
+  or be fitted to these observed maxima. Pilot materials/detailing do not supply
+  those criteria, serviceability scope or W3I families/scenarios/objectives.
+
+The next bounded packet is **installed mapping-signature discovery**, not another
+benchmark, analysis or blanket request for an engineer. Use installed metadata
+to identify proved read-only analysis-element connectivity, area/load-transfer
+and spring-inventory paths for the already-inspected target. Its external plan
+freezes the information needs and static-only boundary. Only a later separately
+bounded getter packet may read a copied model. If those sources cannot prove a
+supported physical reduction, retain the exact hold. Do not fit supports/loads
+from the reference actions or add settlement support just to obtain agreement.
+
+Model-specific comparison still requires independently established mappings,
+linear-response scope and predeclared criteria; W3I additionally requires its
+complete screening basis. None is supplied by hashes or synthetic fixtures.
+Actual-building L5 and W3I/K/L remain held, not permanently impossible.
+
+For offline replay, use explicit JSON rehydration followed by exact complete
+serialized-value equality and the public canonical validators. The inherited
+`StrictPublicModel` before-validator exposes JSON arrays as Python lists before
+strict tuple intake; a bare strict `model_validate_json` is not the accepted
+replay path. This packet reuses the earlier replay's explicit `strict=False`
+intake, rejects any changed serialized value and changes no library contract.
+For open-workbook disk identity, a shared-read file handle can hash saved bytes
+without closing/saving Excel; it does not prove unsaved workbook content.
