@@ -1,0 +1,199 @@
+{
+  "schema_version": "w3h-table-metadata-evidence/v1",
+  "task_id": "ETABS-W3H-TABLE-METADATA",
+  "packet": "W3H",
+  "verdict": "TABLE_METADATA_BLOCKED_CSI_1_MODEL_PRESERVED",
+  "source": {
+    "repository": "Pravin-surawase/structural_engineering_lib",
+    "remote": "https://github.com/Pravin-surawase/structural_engineering_lib.git",
+    "predecessor_pr": 930,
+    "commit": "47efd7c5f1839a52372d04cf4d89f92ddfda02de",
+    "tree": "0772d6a0dc1f35f50065a7ff653a74f24be12757",
+    "branch": "codex/etabs-w3h-table-metadata-windows",
+    "fetched_and_remote_queried": true,
+    "other_device_state": "NOT_CHECKED"
+  },
+  "host": {
+    "identity": "LAPTOP-360-PRAV",
+    "os": "Windows 11 Home Single Language 10.0.26200 x64",
+    "python": "3.11.15",
+    "comtypes": "1.4.16",
+    "pydantic": "2.13.5",
+    "worktree_source_bound": true,
+    "etabs_api_version": "23.3.1",
+    "etabs_file_version": "23.3.1.4563"
+  },
+  "scope": {
+    "attachment_count": 1,
+    "table_discovery_calls": 1,
+    "table_postflight_calls": 0,
+    "catalogue_calls": 0,
+    "schema_calls": 0,
+    "table_data_rows": 0,
+    "force_calls": 0,
+    "analysis_design_save_unlock_setters": 0,
+    "excel_calls": 0,
+    "services_started": 0,
+    "retries": 0
+  },
+  "failure": {
+    "operation": "DatabaseTables.GetLoadCasesSelectedForDisplay",
+    "explicit_inputs": {
+      "count": 0,
+      "names": []
+    },
+    "outer_result_type": "list",
+    "outer_length": 3,
+    "returned_count": 0,
+    "returned_array_length": 12,
+    "returned_null_entries": 12,
+    "csi_return_code": 1,
+    "decoder_error": "ETABS_API_CALL_FAILED",
+    "interpretation": "Nonzero native status; not an empty selected-case list. No catalogue or schema availability inference.",
+    "root_cause_status": "UNCONFIRMED_INTERNAL_CSI_OR_COM_CAUSE",
+    "confirmed_path": "The call returned a COM output container. Maintained decoder rejected trailing CSI 1 before using array contents. Installed source/runtime hashes and model guards passed.",
+    "unproved_hypotheses": [
+      "Explicit-empty versus omitted typed-null SAFEARRAY behavior",
+      "Native table-provider condition",
+      "A licensing cause is not established"
+    ],
+    "runtime_code_repair": false
+  },
+  "evidence_states": {
+    "model_identity_and_guard_preservation": "PRESENT",
+    "table_display_selection": "UNAVAILABLE",
+    "table_display_preservation": "BLOCKED_NOT_PROVED",
+    "table_catalogue": "NOT_REQUESTED_AFTER_GUARD_FAILURE",
+    "field_schemas": "NOT_REQUESTED_AFTER_GUARD_FAILURE",
+    "calibration": "BLOCKED"
+  },
+  "model_proof": {
+    "authorized_copy_sha256": "92b3fa009f25b2228cc956cedb1b76268bb73414e16b361be334c0b3d81f6269",
+    "byte_size": 702855,
+    "mtime_ns": 1788091924341316100,
+    "full_path_verified_outside_git": true,
+    "hash_size_mtime_unchanged": true,
+    "locked_before_after": true,
+    "present_units_enum": 6,
+    "database_units_enum": 6,
+    "present_units_components": [
+      4,
+      6,
+      2
+    ],
+    "case_status_count": 15,
+    "finished_case_count": 15,
+    "result_selection_flags": 77,
+    "complete_model_guard_equality": true,
+    "state_before_sha256": "269cd944e7f96144f769ea7eafb66ac9d37df4abc0a75a43e8ab2319fa3a361c",
+    "state_after_sha256": "269cd944e7f96144f769ea7eafb66ac9d37df4abc0a75a43e8ab2319fa3a361c"
+  },
+  "ui_observation": {
+    "method": "Windows computer-use window selection and observation; one activation, no content input",
+    "etabs_window_count": 1,
+    "visible_save_abnormal_license_dialog_before_after": false,
+    "initial_occluded_capture_rejected": true,
+    "excel_windows_not_operated": true,
+    "licensing_entitlement_claim": "NOT_ESTABLISHED"
+  },
+  "preservation": {
+    "protected_saved_files": 11,
+    "predecessor_worktrees": 33,
+    "all_pre_post_saved_hash_size_mtime_equal": true,
+    "retained_dirty_lanes_preserved": true,
+    "ports_3000_3001_8000_listeners": 0,
+    "no_existing_data_deleted_reset_overwritten_stashed_reorganized": true
+  },
+  "static_runtime_diagnosis": {
+    "memberspec_sha256": "bc85a42d1daf6d84b2697c7ab0f56f70689db4e97122e06bee40af15e583ada2",
+    "safearray_sha256": "021ece5b94a2a25944f00d2861b8ad26d2065a6bed82d0aa76d1d4877eb9c551",
+    "fact": "Installed comtypes constructs omitted in/out parameters as typed empty objects; explicitly supplied arrays take the from_param conversion path.",
+    "causality": "NOT_PROVED_NO_ALTERNATE_LIVE_CALL"
+  },
+  "external_evidence": {
+    "directory_label": "ETABS-W3H-TABLE-METADATA-20260831",
+    "files": [
+      {
+        "bytes": 2464,
+        "name": "ACCEPTANCE.md",
+        "sha256": "b017f6e7e27b5dcdca870cd5a66c9e74797001e39e41f463f94f9801bebdae1e"
+      },
+      {
+        "bytes": 2617,
+        "name": "observe-state.ps1",
+        "sha256": "2763bd9e7d3ca15f1fa85332afe50e7ba39212d4bc42d3dd4851d08bc29d7b0d"
+      },
+      {
+        "bytes": 18384,
+        "name": "preflight.json",
+        "sha256": "ce5858592e4935aadae7349b380d2bb8fdbf374084bb582b35142de7732a6bb0"
+      },
+      {
+        "bytes": 11301,
+        "name": "read_metadata.py",
+        "sha256": "09595c10f3b920d61cb8d8bc45aabb56ad5e1905f9ee70fc0bd13f0675296ea0"
+      },
+      {
+        "bytes": 2396,
+        "name": "live-preflight.json",
+        "sha256": "c0976d4c44d5621cc1a7b9701d57b63c431e60e258569e488e626c155bbad51e"
+      },
+      {
+        "bytes": 7121,
+        "name": "live-state-before.json",
+        "sha256": "269cd944e7f96144f769ea7eafb66ac9d37df4abc0a75a43e8ab2319fa3a361c"
+      },
+      {
+        "bytes": 372,
+        "name": "call-01.json",
+        "sha256": "37fe251cb6023c237bd5e12b9b4acc138487f3994c12d9af7f4d421cb1a07d4c"
+      },
+      {
+        "bytes": 7121,
+        "name": "live-state-after.json",
+        "sha256": "269cd944e7f96144f769ea7eafb66ac9d37df4abc0a75a43e8ab2319fa3a361c"
+      },
+      {
+        "bytes": 1114,
+        "name": "metadata-summary.json",
+        "sha256": "0b0d14594eb71be87b8d6d2168a1e4d2d92e63cc491b8b973c153acc45f5a4fc"
+      },
+      {
+        "bytes": 18385,
+        "name": "postflight.json",
+        "sha256": "25e3d6b9df253c9899213e95da3b8fef4ba09b613928a84df0e42047123d549d"
+      },
+      {
+        "bytes": 2902,
+        "name": "NEXT_PACKET.md",
+        "sha256": "6a4da894a046b114be6f66bc0f4041367026059325c0dc034fa89552bc958ce4"
+      },
+      {
+        "bytes": 2393,
+        "name": "verify_evidence.py",
+        "sha256": "1fb2b83c8d3141ac463c002bd5a1345a9b35fb89a9ba4498412b39796c5ea40c"
+      }
+    ]
+  },
+  "verification": {
+    "offline_failure_and_preservation_checks": "PASS",
+    "installed_metadata_acceptance": "BLOCKED",
+    "protocol_test": "PASS_WITHOUT_COM",
+    "broad_suites_repeated": false,
+    "frozen_local_hosted_results": "Recorded externally at candidate/merge closeout, not preclaimed here."
+  },
+  "next": {
+    "plan_file": "NEXT_PACKET.md",
+    "plan_sha256": "6a4da894a046b114be6f66bc0f4041367026059325c0dc034fa89552bc958ce4",
+    "scope": "Separate static-first same-getter transport diagnosis; freeze any additional live call budget and input conditions before execution. No metadata-campaign retry or model changes.",
+    "executed": false
+  },
+  "limitations": [
+    "No table-display baseline or preservation proof exists.",
+    "No table catalogue, field schema or model row was read.",
+    "No alternative placeholder/managed transport was tested.",
+    "Trial/license denial is not established.",
+    "Physical building mapping, actual-building L5 and W3I/K/L remain held.",
+    "No professional, engineering, construction, release or whole-W3 acceptance."
+  ]
+}

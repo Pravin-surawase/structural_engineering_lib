@@ -5,6 +5,80 @@
 
 ---
 
+## 2026-08-31 — Session: W3H table metadata guarded stop
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3H-TABLE-METADATA`.
+**Branch:** `codex/etabs-w3h-table-metadata-windows`.
+**Source:** PR #930 merge `47efd7c5f1839a52372d04cf4d89f92ddfda02de`,
+tree `0772d6a0dc1f35f50065a7ff653a74f24be12757`.
+**Focus:** Read-only installed table metadata; stopped at its first guard.
+**Checkpoint:** `TABLE_METADATA_BLOCKED_CSI_1_MODEL_PRESERVED`.
+**Git handoff receipt:** `docs/verification/etabs-w3h-table-metadata-git-handoff-receipt.json`
+
+**Completed:**
+
+- Fresh HTTPS fetch and PR #930/main identity verified. Every earlier local
+  head is an ancestor; no other active Codex PR. One new worktree/session;
+  source-bound maintained Python, normal hook, 33 predecessor lanes preserved.
+- Used the Windows computer-use skill to inspect the sole existing ETABS
+  window. No visible save/abnormal/license dialog before or after the read.
+  No model/app launched, closed, switched, saved, unlocked or analyzed.
+- Reused the hash-verified W3D state reader and current library attach/decoder.
+  Exact copied-file identity, ETABS version, lock, units, fifteen finished case
+  statuses and all 77 result-selection flags match before/after the attachment.
+- The first new table getter returned CSI 1. Stopped without retry, catalogue,
+  schemas, table rows or any setter. Complete model postflight succeeded; table
+  display preservation is NOT_PROVED because its first baseline read failed.
+- Eleven protected saved-file hash/size/mtime identities and all prior lanes
+  remain exact; no Excel calls or services. All evidence stays outside Git
+  except a sanitized receipt. A separate transport-diagnosis plan is retained.
+
+### Issues encountered
+
+- The initial occluded screenshot showed the foreground app rather than ETABS,
+  although the accessibility tree correctly identified ETABS.
+- `DatabaseTables.GetLoadCasesSelectedForDisplay(0, [])` returned a three-item
+  list: count 0, twelve null array entries, CSI code 1. No accepted table-display
+  baseline exists, so further metadata discovery cannot pass its prerequisite.
+- Pre-commit receipt inspection found a 100 ns rounding difference in the
+  transcribed file timestamp; the original live evidence was exact and intact.
+
+### Root causes and resolutions
+
+- The initial visual capture was not usable target evidence. Re-selected the
+  sole returned ETABS window, raised it once, then observed the correct model
+  view. No coordinate/model input or dialog dismissal was used. Internal helper
+  capture cause is unconfirmed; the before/after ETABS views were inspected.
+- The COM call returned to the caller, but its native CSI status was nonzero;
+  the maintained decoder correctly rejected it before array interpretation.
+  Installed wrapper, assembly, runtime and source hashes still match the static
+  audit. Successful model guards rule out a wrong copy or stale case status at
+  this checkpoint. Internal CSI/COM cause is **unconfirmed**; neither licensing
+  failure nor universal table unavailability is established.
+- Static comtypes source distinguishes omitted typed-null from explicit empty
+  SAFEARRAY construction, but this does not establish causality. No alternative
+  call or repair was attempted under the zero-retry contract. The next separate
+  packet must isolate transport/placeholder effects with exact guards, not skip
+  the failed getter or infer a zero/empty catalogue. Offline evidence validation
+  proves one failed call, zero catalogue/schema/data rows and complete model/
+  saved-file preservation. The blocker itself is not claimed resolved.
+- Corrected the receipt timestamp to the original integer and extended its
+  existing offline validator to compare exact timestamp, size and hash directly.
+  The error was in receipt transcription, not model state; the precise earlier
+  conversion step is unconfirmed. Preserved the initial checks and reran affected
+  validation plus one consolidated quick gate after this pre-commit correction.
+
+**Verification:** Offline failure/preservation evidence passes. Candidate scope
+requires affected docs/control, normal hooks and read-only closeout;
+hosted/merge facts remain in the external closeout. No broad suites repeated.
+
+**Next:** Separate static-first same-getter transport diagnosis. Keep all model
+and workbook state, avoid selection recovery/reinstall/registry changes, and
+retain actual-building L5/W3I/K/L and professional/release holds.
+
+---
+
 ## 2026-08-31 — Session: W3H installed mapping signatures
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
