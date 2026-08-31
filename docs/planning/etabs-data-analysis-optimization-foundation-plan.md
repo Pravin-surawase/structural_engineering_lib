@@ -204,6 +204,17 @@ static-first same-getter transport diagnosis, not selection recovery, analysis,
 reinstall or optimization. The native cause remains unconfirmed, and actual-
 building L5/W3I/K/L holds are unchanged.
 
+The [transport successor](../verification/etabs-w3h-table-transport-evidence.json)
+then stopped earlier: PowerShell could not bind a managed load-case guard call.
+One attachment, zero table calls, no Python live comparison and no retries.
+Saved-file identities and all 34 prior lanes are preserved; complete live model
+guards were not obtained. The table-only offline stand-in missed the guard path.
+Next batch must prove a complete typed compiled client offline, with every
+argument explicit, before a separately frozen observation. Exact-default static
+tests do not reproduce the COM binder error, so its internal cause and the
+historical CSI 1 cause remain unconfirmed. No reanalysis/reinstall or model
+change is justified, and W3H/I/K/L acceptance has not advanced.
+
 ### Owner-approved validation continuation (2026-08-30)
 
 This successor decision supersedes the historical startup-only and capability
