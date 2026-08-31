@@ -17,7 +17,9 @@ from structural_lib.core.errors import (
     E_SHEAR_004,
     E_SHEAR_005,
     E_SHEAR_006,
+    DesignError,
     DimensionError,
+    Severity,
 )
 from structural_lib.core.validation import validate_finite_reals, validate_materials
 
@@ -470,6 +472,10 @@ def design_shear(
         # IS 456 Cl 40.3: Enhanced shear strength near supports
         tc = enhanced_shear_strength(fck, pt, d, av_mm)
 
+    # Cl. 40.4 and 26.5.1.6 limit the strength used for stirrup design.
+    # Validate the supplied grade above; do not clamp invalid material inputs.
+    fy_design = min(fy, 415.0)
+
     # 4. Calculate Vus and Spacing
     vu_n = abs(vu_kn) * 1000.0
     vc_n = tc * b * d
@@ -481,18 +487,18 @@ def design_shear(
         design_errors.append(E_SHEAR_003)
 
         # Spacing for min reinforcement (Cl. 26.5.1.6)
-        spacing_calc = (0.87 * fy * asv) / (0.4 * b)
+        spacing_calc = (0.87 * fy_design * asv) / (0.4 * b)
     else:
         # Design for shear
         vus = (vu_n - vc_n) / 1000.0  # N → kN
 
         # sv = (0.87 * fy * Asv * d) / Vus_N
-        spacing_calc = (0.87 * fy * asv * d) / (vus * 1000.0)  # kN → N
+        spacing_calc = (0.87 * fy_design * asv * d) / (vus * 1000.0)  # kN → N
 
     # 5. Apply Max Spacing Limits (Cl. 26.5.1.5)
     max_spacing_1 = 0.75 * d
     max_spacing_2 = 300.0
-    max_spacing_min_reinf = (0.87 * fy * asv) / (0.4 * b)
+    max_spacing_min_reinf = (0.87 * fy_design * asv) / (0.4 * b)
 
     spacing = spacing_calc
     if spacing > max_spacing_1:
@@ -503,7 +509,26 @@ def design_shear(
         spacing = max_spacing_min_reinf
 
     # 6. Round to practical construction spacing (conservative)
-    spacing = round_to_practical_spacing(spacing, round_down=True)
+    rounded_spacing = round_to_practical_spacing(spacing, round_down=True)
+    if rounded_spacing > spacing:
+        return ShearResult(
+            tau_v=tv,
+            tau_c=tc,
+            tau_c_max=tc_max,
+            Vus=vus,
+            spacing=0.0,
+            is_safe=False,
+            errors=(
+                DesignError(
+                    code="SHEAR_SPACING_NOT_CONSTRUCTIBLE",
+                    severity=Severity.ERROR,
+                    message="Required spacing is below the supported 75 mm minimum; choose larger stirrup area or redesign.",
+                    field="asv",
+                    clause="Cl. 40.4; Cl. 26.5.1.5",
+                ),
+            ),
+        )
+    spacing = rounded_spacing
 
     return ShearResult(
         tau_v=tv,

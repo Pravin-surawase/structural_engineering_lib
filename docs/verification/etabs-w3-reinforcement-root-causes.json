@@ -1,0 +1,51 @@
+{
+  "schema_version": "w3-reinforcement-root-cause-evidence/v1",
+  "task_id": "ETABS-W3E-ROOT-CAUSE-FIXES",
+  "source_merge": "349502d31236680d32d58f7ff2d412d279f3e10f",
+  "status": "FOCUSED_VERIFIED_REQUIRES_INTEGRATION",
+  "live_application_calls": 0,
+  "model_mutations": 0,
+  "reference_pdf_sha256": "6ec8f9033bc521420f2f550123edb6f0f444d9d3b7033a87b1b7ec569c143f8d",
+  "source_pages_printed": [
+    37,
+    38,
+    47,
+    48,
+    73,
+    75,
+    95
+  ],
+  "independent_vectors": {
+    "G7": {
+      "Ast_Me1": 756.7512617992963,
+      "Asv_torsion": 0.46161658126759914,
+      "Asv_shear": 0.19695640800750897,
+      "Asv_floor": 0.3545215344135161,
+      "Asv_total": 0.6585729892751081
+    },
+    "S0": {
+      "Asv_total": 0.5648217557887723
+    }
+  },
+  "development_targeted_tests": 141,
+  "final_verification": {
+    "focused_python": {"tests": 716, "failures": 0, "errors": 0},
+    "affected_fastapi": {"tests": 101, "failures": 0, "errors": 0},
+    "excel_node": {"tests": 52, "failures": 0},
+    "configured_mypy": {"source_files": 284, "errors": 0},
+    "architecture": {"files": 248, "violations": 0},
+    "generated": "API manifest, classification/compatibility ledger and OpenAPI regenerated; affected convergence checks pass",
+    "first_broad_python": "14 failures identified; one missed typed caller, legacy authored expectations and generated records repaired; every failed test included in the passing focused repair batch",
+    "first_broad_fastapi": "537 passed, one inconsistent authored depth fixture failed; repaired fixture passes in the 101-test affected batch",
+    "broad_policy": "Do not repeat unchanged full suites per edit. Final cumulative W3 Python/full gates remain required.",
+    "quick_hooks_hosted": "Required before merge; exact outcomes and commit identities belong to the external closeout"
+  },
+  "remaining_holds": [
+    "strict canonical serviceability",
+    "torsion perimeter detailing/BBS",
+    "actual-building W3H physical mapping",
+    "W3I/K/L",
+    "cumulative integration and Mac review",
+    "professional/release approval"
+  ]
+}

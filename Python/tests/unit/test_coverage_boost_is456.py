@@ -2249,6 +2249,8 @@ class TestTorsionDesignEdgeCases:
                 fck=25,
                 fy=415,
                 cover=40,
+                corner_bar_centres_mm=(184.0, -116.0),
+                d_opposite_mm=450.0,
             )
 
     def test_design_torsion_eff_depth_zero_raises(self):
@@ -2267,6 +2269,8 @@ class TestTorsionDesignEdgeCases:
                 fck=25,
                 fy=415,
                 cover=40,
+                corner_bar_centres_mm=(184.0, 384.0),
+                d_opposite_mm=0.0,
             )
 
     def test_design_torsion_zero_asv_total_uses_max_spacing(self):
@@ -2284,6 +2288,8 @@ class TestTorsionDesignEdgeCases:
             fck=25,
             fy=415,
             cover=40,
+            corner_bar_centres_mm=(184.0, 384.0),
+            d_opposite_mm=450.0,
         )
         assert result.is_safe
         # Spacing should still be a valid value (clamped to practical range)
@@ -2305,6 +2311,8 @@ class TestTorsionDesignEdgeCases:
                 fck=0,
                 fy=415,
                 cover=40,
+                corner_bar_centres_mm=(184.0, 384.0),
+                d_opposite_mm=450.0,
             )
 
     def test_design_torsion_fy_zero_raises(self):
@@ -2323,6 +2331,8 @@ class TestTorsionDesignEdgeCases:
                 fck=25,
                 fy=0,
                 cover=40,
+                corner_bar_centres_mm=(184.0, 384.0),
+                d_opposite_mm=450.0,
             )
 
     def test_equivalent_moment_d_mm_deprecation(self):
@@ -3097,11 +3107,14 @@ class TestTorsionBranchCoverage:
             fck=25,
             fy=415,
             cover=40,
+            corner_bar_centres_mm=(184.0, 384.0),
+            d_opposite_mm=450.0,
         )
         assert result.is_safe
         assert result.Tu_knm == 0.0
         assert result.Asv_torsion == 0.0
-        assert result.Al_torsion == 0.0
+        # Al now reports total Me1/Me2 tension steel, not an additive torsion area.
+        assert result.Al_torsion == pytest.approx(1065.0)
         assert result.requires_closed_stirrups
 
     def test_torsion_very_small_tu_below_threshold(self):
@@ -3118,6 +3131,8 @@ class TestTorsionBranchCoverage:
             fck=25,
             fy=415,
             cover=40,
+            corner_bar_centres_mm=(184.0, 384.0),
+            d_opposite_mm=450.0,
         )
         assert result.is_safe
         # Torsion contribution should be negligible
@@ -3138,6 +3153,8 @@ class TestTorsionBranchCoverage:
             fck=20,
             fy=415,
             cover=30,
+            corner_bar_centres_mm=(54.0, 154.0),
+            d_opposite_mm=200.0,
         )
         assert not result.is_safe
         assert result.Asv_total == 0
@@ -3245,8 +3262,8 @@ class TestTorsionBranchCoverage:
                 tc=0.5,
             )
 
-    def test_stirrup_area_shear_component_zero(self):
-        """Cl 41.4.3: When Vu < Vc, shear component is zero."""
+    def test_stirrup_area_uses_total_shear_even_below_vc(self):
+        """Cl 41.4.3 uses total Vu in the combined transverse equation."""
         from structural_lib.codes.is456.beam.torsion import (
             calculate_torsion_stirrup_area,
         )
@@ -3262,8 +3279,8 @@ class TestTorsionBranchCoverage:
             fy=415,
             tc=1.0,
         )
-        assert asv_shear == 0
-        assert asv_total == asv_tor
+        assert asv_shear == pytest.approx(10000 / (2.5 * 420 * 0.87 * 415))
+        assert asv_total == pytest.approx(asv_tor + asv_shear)
 
     def test_longitudinal_torsion_steel_fy_zero_raises(self):
         """Cl 41.4.2: fy <= 0 raises MaterialError."""
@@ -3315,6 +3332,8 @@ class TestTorsionBranchCoverage:
                 fck=25,
                 fy=415,
                 cover=40,
+                corner_bar_centres_mm=(-116.0, 384.0),
+                d_opposite_mm=450.0,
             )
 
     def test_design_torsion_clause_refs_populated(self):
@@ -3331,6 +3350,8 @@ class TestTorsionBranchCoverage:
             fck=25,
             fy=415,
             cover=40,
+            corner_bar_centres_mm=(184.0, 384.0),
+            d_opposite_mm=450.0,
         )
         assert result.is_safe
         assert "Ve" in result.clause_refs

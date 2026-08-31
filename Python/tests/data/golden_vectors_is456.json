@@ -70,9 +70,9 @@
           "tv": 1.4814814814814814,
           "tc": 0.4919478896002198,
           "tc_max": 3.1,
-          "spacing": 125.0,
+          "spacing": 100.0,
           "is_safe": true,
-          "_note": "spacing rounded to practical value (was 146.5mm)"
+          "_note": "Cl 40.4 fy=415 limit: calculated spacing 121.6093 mm, rounded down to 100 mm"
         }
       }
     },
@@ -211,7 +211,7 @@
       "case_id": "G7",
       "category": "beam_torsion",
       "description": "Torsion design — IS 456 Cl 41.4 (Tu=15kNm, Vu=80kN, Mu=100kNm, M25/Fe415)",
-      "source": "IS 456:2000, Cl 41.3.1 (Ve), Cl 41.4.2 (Me), Cl 41.4.3 (Asv)",
+      "source": "IS 456:2000, Cl 41.3.1 (Ve), Cl 41.4.2 (Me), Cl 41.4.3 (Asv); corrected 2026-08-31 from original standard pp 73,75: explicit corner centres 200x450 mm, Me2=0; Al is total Me1-required tension steel, not additive torsion steel.",
       "tolerance": 0.001,
       "inputs": {
         "tu_knm": 15.0,
@@ -224,7 +224,12 @@
         "fy_nmm2": 415.0,
         "cover_mm": 25.0,
         "stirrup_dia_mm": 8.0,
-        "pt_percent": 1.0
+        "pt_percent": 1.0,
+        "corner_bar_centres_mm": [
+          200,
+          450
+        ],
+        "d_opposite_mm": 500
       },
       "expected": {
         "is_safe": true,
@@ -233,11 +238,11 @@
         "tau_ve": 1.067,
         "tau_c": 0.64,
         "tau_c_max": 3.1,
-        "Asv_torsion": 0.3489,
-        "Al_torsion": 256.0,
-        "stirrup_spacing": 175,
+        "Asv_torsion": 0.4616,
+        "Al_torsion": 757,
+        "stirrup_spacing": 150,
         "requires_closed_stirrups": true,
-        "Asv_total": 0.3489
+        "Asv_total": 0.6586
       }
     }
   ],

@@ -41,6 +41,7 @@ from structural_lib.services.common_api import (
     _validate_plausibility,
 )
 from structural_lib.services.project_beam import (
+    CentroidCoverDepthBasisV1,
     EffectiveDepthBasisV1,
     resolve_effective_depth_v1,
 )
@@ -1456,6 +1457,8 @@ def _design_beam_is456_calculation(
     d_mm: float | None,
     fck_nmm2: float,
     fy_nmm2: float,
+    fy_transverse_nmm2: float | None = None,
+    torsion_corner_bar_centres_mm: tuple[float, float] | None = None,
     d_dash_mm: float | None = None,
     asv_mm2: float = 100.0,
     pt_percent: float | None = None,
@@ -1465,7 +1468,9 @@ def _design_beam_is456_calculation(
     tu_knm: float = 0.0,
     cover_mm: float | None = None,
     stirrup_dia_mm: float = 8.0,
-    effective_depth_basis: EffectiveDepthBasisV1 | None = None,
+    effective_depth_basis: (
+        EffectiveDepthBasisV1 | CentroidCoverDepthBasisV1 | None
+    ) = None,
 ) -> ComplianceCaseResult:
     """Design/check a single IS 456 beam case (strength + optional serviceability).
 
@@ -1532,7 +1537,13 @@ def _design_beam_is456_calculation(
         effective_depth_basis=effective_depth_basis,
     )
     d_mm = depth_resolution.d_mm
+    _require_finite_real("tu_knm", tu_knm)
     if d_dash_mm is None:
+        if tu_knm > 0:
+            raise ValueError(
+                "TORSION_OPPOSITE_DEPTH_REQUIRED: supply explicit d_dash_mm; "
+                "opposite-face depth must not be inferred from tension cover or 50 mm."
+            )
         d_dash_mm = D_mm - d_mm if effective_depth_basis is not None else 50.0
 
     for name, value in (
@@ -1606,6 +1617,8 @@ def _design_beam_is456_calculation(
         d_mm=d_mm,
         fck_nmm2=fck_nmm2,
         fy_nmm2=fy_nmm2,
+        fy_transverse_nmm2=fy_transverse_nmm2,
+        torsion_corner_bar_centres_mm=torsion_corner_bar_centres_mm,
         d_dash_mm=d_dash_mm,
         asv_mm2=asv_mm2,
         pt_percent=pt_percent,
@@ -1657,6 +1670,16 @@ def _design_beam_is456_calculation(
             ),
             "deflection_params": _parameter_mapping(deflection_params),
             "crack_width_params": _parameter_mapping(crack_width_params),
+            **(
+                {"fy_transverse_nmm2": fy_transverse_nmm2}
+                if fy_transverse_nmm2 is not None
+                else {}
+            ),
+            **(
+                {"torsion_corner_bar_centres_mm": torsion_corner_bar_centres_mm}
+                if torsion_corner_bar_centres_mm is not None
+                else {}
+            ),
         },
         is_ok=result.is_ok,
         governing_utilization=result.governing_utilization,
@@ -1680,6 +1703,8 @@ def design_beam_is456(
     d_mm: float | None,
     fck_nmm2: float,
     fy_nmm2: float,
+    fy_transverse_nmm2: float | None = None,
+    torsion_corner_bar_centres_mm: tuple[float, float] | None = None,
     d_dash_mm: float | None = None,
     asv_mm2: float = 100.0,
     pt_percent: float | None = None,
@@ -1689,7 +1714,9 @@ def design_beam_is456(
     tu_knm: float = 0.0,
     cover_mm: float | None = None,
     stirrup_dia_mm: float = 8.0,
-    effective_depth_basis: EffectiveDepthBasisV1 | None = None,
+    effective_depth_basis: (
+        EffectiveDepthBasisV1 | CentroidCoverDepthBasisV1 | None
+    ) = None,
 ) -> ComplianceCaseResult:
     """Compatibility signature delegating to the canonical beam service owner."""
 
@@ -1705,6 +1732,8 @@ def design_beam_is456(
         d_mm=d_mm,
         fck_nmm2=fck_nmm2,
         fy_nmm2=fy_nmm2,
+        fy_transverse_nmm2=fy_transverse_nmm2,
+        torsion_corner_bar_centres_mm=torsion_corner_bar_centres_mm,
         d_dash_mm=d_dash_mm,
         asv_mm2=asv_mm2,
         pt_percent=pt_percent,

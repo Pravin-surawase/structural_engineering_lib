@@ -5,6 +5,92 @@
 
 ---
 
+## 2026-08-31 — Session: W3 reinforcement root-cause corrections
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3E-ROOT-CAUSE-FIXES`.
+**Branch:** `codex/etabs-w3e-root-cause-fixes-windows`.
+**Source:** PR #935 merge `349502d31236680d32d58f7ff2d412d279f3e10f`.
+**Focus:** Correct the actual reinforcement calculation path before expanding W3E.
+**Checkpoint:** `FOCUSED_VERIFIED_REQUIRES_INTEGRATION`.
+**Git handoff receipt:** `docs/verification/etabs-w3-reinforcement-git-handoff-receipt.json`
+
+**Completed:**
+
+- Added compatible centroid-cover and separate-transverse-grade contracts and
+  carried them through the real W3 audit, Python/REST and evidence identities.
+- Corrected shear grade limitation and unsafe sub-minimum spacing rounding.
+- Corrected torsion transverse formula/floor, corner geometry and opposite-face
+  equivalent-moment checks using maintained calculation owners.
+- Replaced unsupported longitudinal formula acceptance with explicit complete
+  basis requirements; held torsion detailing/BBS pending perimeter distribution.
+- Source-checked original IS456 pages and independently recomputed the affected
+  golden vectors. Preserved historical artifacts and all predecessor worktrees.
+- Updated the whole-W3 sequence, migration guidance and root-cause register.
+  No installed-application action, live evidence claim or model mutation.
+
+### Issues encountered
+
+- Source FE500/FE415 and centroid cover did not fit existing canonical inputs.
+- Tracing consumers found outcome-changing shear/torsion formulas and a spacing
+  rounding path that could return safe for an unsupported arrangement.
+- Torsion geometry/longitudinal checks lacked necessary inputs; old empirical
+  golden expectations repeated the implementation rather than the source.
+- A hand-computed lower-bound fixture contained an arithmetic transcription
+  error; the first narrow run caught it. Corrected by independent equation
+  arithmetic, not by accepting the implementation output as the reference.
+- Bundled PDF runtime lacks PyMuPDF and the PDF has no extractable text. Used
+  existing Poppler rendering to inspect original equations; installed nothing.
+
+- Broad gates exposed one missed typed torsion facade, its recipe, legacy
+  numerical fixtures and generated classifications. Migrated that real caller,
+  corrected authored expectations from clause arithmetic and retained the old
+  W3J fixture beside a newly named calculation-revision fixture.
+- The session preparation referenced a receipt before it was generated. Created
+  and validated the bounded Git receipt before retrying handoff preparation.
+- Static checking found the public compatibility depth annotation had not been
+  widened with the resolver. Aligned the public annotation; no runtime coercion.
+- Classification generation refused to omit untracked caller text. Reviewed and
+  staged the five intended new paths, then regenerated the maintained records.
+- One type-check invocation ran from the repository root without the maintained
+  Python configuration. The normal hook command from `Python/` passes all 284
+  source files; no unrelated type policy or product code was changed for it.
+- The commit hook caught the generated torsion cookbook/reference still using
+  the old typed contract. Regenerated both from the corrected maintained recipe
+  with `scripts/generate_family_facade_docs.py`; the hook checks recipe drift.
+- Immutable-candidate audit caught a remaining compatibility fallback to 50 mm
+  (or tension centroid) for missing opposite-face cover. An authored call returned
+  276.506 mm2 instead of 272.819 mm2 with its explicit 56 mm basis. The repair
+  requires explicit `d_dash_mm` for nonzero torsion in both service and compliance
+  owners; zero-torsion compatibility is retained. The before/after audit is in
+  the external closeout, alongside the consolidated affected checks.
+- The final repair also changed source-bound ledger/review identities. Initial
+  checks ran before those projections were refreshed and exposed two stale-data
+  failures. Refreshed after the source freeze; the fixture comparison proves
+  identity-only changes. Rerun those affected suites and Node parity, rather
+  than repeating the already passing numerical suites. Future contract packets
+  must finish generators and source-bound fixtures before starting their gates.
+
+### Root causes and resolutions
+
+- RC1-RC7: implemented at the maintained contracts/resolver/code owners and
+  propagated through main consumers. See the source-linked register in
+  `docs/planning/etabs-w3-reinforcement-root-causes.md` and its named regressions.
+- RC8: source review showed that strength checks do not implement corner/perimeter
+  distribution. The actual detailing/BBS consumer now refuses that unsupported
+  claim. Distribution is planned work, not a closed feature.
+- Development proof: 141 targeted shear/torsion/canonical checks passed after the
+  independent reference correction. The consolidated repair batch passes 716
+  Python checks, 101 affected FastAPI checks and 52 Excel/Node checks. Configured
+  mypy passes 284 source files; architecture reports zero violations in 248 files.
+  The first broad runs exposed 14 Python failures and one FastAPI fixture failure;
+  all failed cases are included in the passing repair batch. Exact final
+  quick/hooks/hosted and commit evidence belongs to the external closeout.
+- CSI return/binder internal causes remain unconfirmed; the timestamp-normalization
+  defect remains closed. No new live retries or repeated user-parameter requests.
+
+---
+
 ## 2026-08-31 — Session: W3 saved basis and executable criteria gaps
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).

@@ -113,6 +113,15 @@ def normalize_beam_design_inputs(inputs: Mapping[str, Any]) -> dict[str, Any]:
     normalized["tu_knm"] = float(
         inputs.get("tu_knm", _CONSUMED_INPUT_DEFAULTS["tu_knm"])
     )
+    if inputs.get("fy_transverse_nmm2") is not None:
+        normalized["fy_transverse_nmm2"] = float(inputs["fy_transverse_nmm2"])
+    if (
+        inputs.get("torsion_corner_bar_centres_mm") is not None
+        and normalized["tu_knm"] > 0
+    ):
+        normalized["torsion_corner_bar_centres_mm"] = [
+            float(value) for value in inputs["torsion_corner_bar_centres_mm"]
+        ]
     if normalized["tu_knm"] > 0:
         for name in ("cover_mm", "stirrup_dia_mm"):
             if name not in inputs:

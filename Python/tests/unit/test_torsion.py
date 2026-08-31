@@ -191,8 +191,7 @@ class TestTorsionStirrupArea:
         assert asv_torsion == pytest.approx(0, abs=0.001)
         # Vus = Vu - Vc = 100×1000 - 0.62×300×450 = 100000 - 83700 = 16300 N
         # Asv/sv = Vus / (0.87 × fy × d) = 16300 / (0.87 × 500 × 450) = 0.083
-        vus = 100 * 1000 - 0.62 * 300 * 450
-        expected_shear = vus / (0.87 * 500 * 450)
+        expected_shear = 100000 / (2.5 * 420 * 0.87 * 500)
         assert asv_shear == pytest.approx(expected_shear, rel=0.05)
 
     def test_zero_fy_raises(self):
@@ -213,19 +212,9 @@ class TestTorsionStirrupArea:
 class TestLongitudinalTorsionSteel:
     """Tests for longitudinal reinforcement for torsion."""
 
-    def test_basic_calculation(self):
-        """Al = Tu × (b1 + d1) / (b1 × d1 × 0.87 × fy)"""
-        # Tu = 10 kN·m, b1 = 220 mm, d1 = 420 mm, fy = 500 N/mm²
-        al = calculate_longitudinal_torsion_steel(
-            tu_knm=10,
-            vu_kn=100,
-            b1=220,
-            d1=420,
-            fy=500,
-            sv=150,
-        )
-        expected = 10e6 * (220 + 420) / (220 * 420 * 0.87 * 500)
-        assert al == pytest.approx(expected, rel=0.01)
+    def test_legacy_formula_requires_complete_code_basis(self):
+        with pytest.raises(ValueError, match="TORSION_LONGITUDINAL_BASIS_REQUIRED"):
+            calculate_longitudinal_torsion_steel(10, 100, 220, 420, 500, 150)
 
     def test_zero_fy_raises(self):
         """Zero steel strength should raise MaterialError."""
@@ -308,6 +297,8 @@ class TestDesignTorsion:
             cover=40,
             stirrup_dia=8,
             pt=1.0,
+            corner_bar_centres_mm=(184.0, 384.0),
+            d_opposite_mm=450.0,
         )
         assert result.is_safe is True
         assert result.requires_closed_stirrups is True
@@ -328,6 +319,8 @@ class TestDesignTorsion:
             fck=25,
             fy=500,
             cover=40,
+            corner_bar_centres_mm=(184.0, 384.0),
+            d_opposite_mm=450.0,
         )
         assert isinstance(result, TorsionResult)
 
@@ -343,6 +336,8 @@ class TestDesignTorsion:
             fck=25,
             fy=500,
             cover=40,
+            corner_bar_centres_mm=(184.0, 384.0),
+            d_opposite_mm=450.0,
         )
         # Ve = Vu + 1.6 × Tu/b = 100 + 1.6 × 10000/300 = 153.33 kN
         expected_ve = 100 + 1.6 * 10000 / 300
@@ -360,6 +355,8 @@ class TestDesignTorsion:
             fck=20,
             fy=500,
             cover=40,
+            corner_bar_centres_mm=(84.0, 284.0),
+            d_opposite_mm=350.0,
         )
         # τve = Ve / (b × d) should be very high
         # τc,max for M20 = 2.8 N/mm²
@@ -380,6 +377,8 @@ class TestDesignTorsion:
                 fck=25,
                 fy=500,
                 cover=40,
+                corner_bar_centres_mm=(-116.0, 384.0),
+                d_opposite_mm=450.0,
             )
 
     def test_zero_fck_raises(self):
@@ -395,6 +394,8 @@ class TestDesignTorsion:
                 fck=0,
                 fy=500,
                 cover=40,
+                corner_bar_centres_mm=(184.0, 384.0),
+                d_opposite_mm=450.0,
             )
 
     def test_zero_fy_raises(self):
@@ -410,6 +411,8 @@ class TestDesignTorsion:
                 fck=25,
                 fy=0,
                 cover=40,
+                corner_bar_centres_mm=(184.0, 384.0),
+                d_opposite_mm=450.0,
             )
 
     def test_spacing_limits_applied(self):
@@ -424,6 +427,8 @@ class TestDesignTorsion:
             fck=25,
             fy=500,
             cover=40,
+            corner_bar_centres_mm=(184.0, 384.0),
+            d_opposite_mm=450.0,
         )
         # Check spacing limits
         assert result.stirrup_spacing <= 0.75 * 450  # 0.75d limit
@@ -441,6 +446,8 @@ class TestDesignTorsion:
             fck=25,
             fy=500,
             cover=40,
+            corner_bar_centres_mm=(184.0, 384.0),
+            d_opposite_mm=450.0,
         )
         expected_total = result.Asv_torsion + result.Asv_shear
         assert result.Asv_total == pytest.approx(expected_total, rel=0.01)
@@ -461,6 +468,8 @@ class TestEdgeCases:
             fck=25,
             fy=500,
             cover=40,
+            corner_bar_centres_mm=(184.0, 384.0),
+            d_opposite_mm=450.0,
         )
         assert result.is_safe is True
         assert result.stirrup_spacing > 0
@@ -477,6 +486,8 @@ class TestEdgeCases:
             fck=25,
             fy=500,
             cover=40,
+            corner_bar_centres_mm=(184.0, 384.0),
+            d_opposite_mm=450.0,
         )
         assert result.is_safe is True
         assert result.Me_knm > 0  # Me should still be > 0 due to Mt
@@ -493,6 +504,8 @@ class TestEdgeCases:
             fck=30,
             fy=500,
             cover=50,
+            corner_bar_centres_mm=(464.0, 864.0),
+            d_opposite_mm=950.0,
         )
         assert result.is_safe is True
         assert result.stirrup_spacing > 0
@@ -509,6 +522,8 @@ class TestEdgeCases:
             fck=40,
             fy=500,
             cover=40,
+            corner_bar_centres_mm=(184.0, 384.0),
+            d_opposite_mm=450.0,
         )
         result_m20 = design_torsion(
             tu_knm=20,
@@ -520,6 +535,8 @@ class TestEdgeCases:
             fck=20,
             fy=500,
             cover=40,
+            corner_bar_centres_mm=(184.0, 384.0),
+            d_opposite_mm=450.0,
         )
         assert result_m40.tau_c_max > result_m20.tau_c_max
 

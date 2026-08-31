@@ -140,8 +140,11 @@ authorize setters, save/unlock, analysis/design, export, installation or upload.
 joins all 225 frame assignments and reconciles selected load lineage. Three
 preselected lines remain NOT_COMPARABLE_AS_IS; no complete W3F snapshot or L5.
 Explicit source evidence exposes clear-versus-centroid cover and separate steel
-grade mapping gaps. **Immediate priority:** implement the typed W3E basis and
-source-verified serviceability route. Stop broad table work; residual H acquisition
+grade mapping gaps. The [reinforcement root-cause packet](etabs-w3-reinforcement-root-causes.md)
+now implements compatible material/cover variants and corrects source-verified
+shear/torsion defects, including opposite-face demand and unsafe spacing rounding.
+**Immediate priority:** finish its gates, then implement strict serviceability
+and mandatory constructability/distribution criteria. Stop broad table work; residual H acquisition
 must answer a required physical row and cannot repair unsupported solver physics.
 
 Keep three tracks separate: faithful ETABS data transport, beam checks using

@@ -4,7 +4,7 @@ import fs from "node:fs";
 import test from "node:test";
 import { ETABS_REVIEW_TABLES, projectCalculationReview, validateReviewRows } from "../review-core.mjs";
 
-const fixture = () => JSON.parse(fs.readFileSync(new URL("./fixtures/calculation-review-v1.json", import.meta.url), "utf8"));
+const fixture = () => JSON.parse(fs.readFileSync(new URL("./fixtures/calculation-review-reinforcement-v2.json", import.meta.url), "utf8"));
 test("Python-produced review fixture projects complete same-row signed evidence", async () => {
   const transport = fixture();
   const projection = await projectCalculationReview(transport, { cryptoImpl: webcrypto });

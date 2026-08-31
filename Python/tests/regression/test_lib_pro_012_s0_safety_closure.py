@@ -72,6 +72,8 @@ def _detail_kwargs() -> dict:
 
 def _torsion_kwargs() -> dict:
     return {
+        "corner_bar_centres_mm": (184.0, 384.0),
+        "d_opposite_mm": 450.0,
         "tu_knm": 10.0,
         "vu_kn": 100.0,
         "mu_knm": 150.0,
@@ -364,7 +366,7 @@ def test_ext_typed_007_zero_loads_are_preserved_by_alias_parsing():
     assert loads.vu_kn == 0
 
 
-def test_valid_beam_and_torsion_golden_values_are_unchanged():
+def test_valid_beam_values_and_corrected_torsion_source_vector():
     combined = design_and_detail_beam_is456(**_combined_kwargs())
     assert combined.design.flexure.Ast_required == pytest.approx(883.7158126109596)
     assert combined.design.shear.tau_v == pytest.approx(0.5925925925925926)
@@ -374,5 +376,6 @@ def test_valid_beam_and_torsion_golden_values_are_unchanged():
     torsion = design_torsion(**_torsion_kwargs())
     assert torsion.Ve_kn == pytest.approx(153.33333333333334)
     assert torsion.Me_knm == pytest.approx(165.68627450980392)
-    assert torsion.Asv_total == pytest.approx(0.3327)
+    assert torsion.Asv_total == pytest.approx(0.5648)
+    # Stirrup dimensions 212x412 give a 156 mm spacing ceiling => 150 mm.
     assert torsion.stirrup_spacing == pytest.approx(150.0)

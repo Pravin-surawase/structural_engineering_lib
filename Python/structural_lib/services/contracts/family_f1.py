@@ -38,6 +38,9 @@ class TorsionGeometryV1(StrictPublicModel):
     D_mm: float = Field(gt=0)
     d_mm: float = Field(gt=0)
     clear_cover_mm: float = Field(gt=0)
+    corner_bar_centres_b1_mm: float = Field(gt=0)
+    corner_bar_centres_d1_mm: float = Field(gt=0)
+    d_opposite_mm: float = Field(gt=0)
 
 
 class TorsionActionsV1(StrictPublicModel):
@@ -49,6 +52,7 @@ class TorsionActionsV1(StrictPublicModel):
 class TorsionMaterialsV1(StrictPublicModel):
     fck_nmm2: float = Field(ge=15, le=40)
     fy_nmm2: float = Field(ge=250, le=500)
+    fy_transverse_nmm2: float | None = Field(default=None, ge=250, le=500)
 
 
 class TorsionReinforcementV1(StrictPublicModel):

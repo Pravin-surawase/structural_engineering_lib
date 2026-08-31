@@ -137,6 +137,8 @@ def test_beam_torsion_golden(vector: dict):
         cover=inp["cover_mm"],
         stirrup_dia=inp["stirrup_dia_mm"],
         pt=inp["pt_percent"],
+        corner_bar_centres_mm=tuple(inp["corner_bar_centres_mm"]),
+        d_opposite_mm=inp["d_opposite_mm"],
     )
 
     exp = vector["expected"]

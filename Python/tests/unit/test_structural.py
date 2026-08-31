@@ -217,7 +217,9 @@ class TestStructuralLib(unittest.TestCase):
         """Tv == Tc_max should be treated as OK; Tv > Tc_max should fail."""
         b, d = 230, 450
         fck, fy = 20, 415
-        asv, pt = 100.5, 1.0
+        # Provide sufficient stirrup area so the concrete threshold, not
+        # unsupported sub-75 mm spacing, controls this authored fixture.
+        asv, pt = 300.0, 1.0
 
         tc_max = tables.get_tc_max_value(fck)
         vu_at = (tc_max * b * d) / 1000.0

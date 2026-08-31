@@ -132,6 +132,19 @@ async def design_beam(request: BeamDesignRequest):
                     exclude_none=True
                 )
 
+        torsion_centres = (
+            EffectiveDepthBasisV1(
+                clear_cover_mm=request.clear_cover,
+                stirrup_diameter_mm=request.stirrup_dia_mm,
+                tension_bar_diameter_mm=request.main_bar_dia_mm,
+            ).corner_bar_centres_mm(
+                request.width,
+                request.depth,
+                compression_bar_diameter_mm=request.main_bar_dia_mm,
+            )
+            if request.torsion > 0
+            else None
+        )
         # Call the design function with actual API parameter names
         result = design_beam_is456(
             units="IS456",
@@ -157,6 +170,7 @@ async def design_beam(request: BeamDesignRequest):
             deflection_params=deflection_params,
             crack_width_params=crack_width_params,
             tu_knm=request.torsion,
+            torsion_corner_bar_centres_mm=torsion_centres,
             cover_mm=request.clear_cover,
             stirrup_dia_mm=request.stirrup_dia_mm,
         )
@@ -214,6 +228,7 @@ async def design_beam(request: BeamDesignRequest):
                 "mu_knm": request.moment,
                 "vu_kn": request.shear if request.shear > 0 else 0.0,
                 "tu_knm": request.torsion,
+                "torsion_corner_bar_centres_mm": torsion_centres,
                 "b_mm": request.width,
                 "D_mm": request.depth,
                 "d_mm": effective_depth,
@@ -280,6 +295,8 @@ async def design_beam(request: BeamDesignRequest):
                 asv_total=result.torsion.Asv_total,
                 stirrup_spacing=result.torsion.stirrup_spacing,
                 al_torsion=result.torsion.Al_torsion,
+                me_opposite_knm=result.torsion.Me_opposite_knm,
+                ast_opposite_mm2=result.torsion.Ast_opposite_mm2,
                 requires_closed_stirrups=result.torsion.requires_closed_stirrups,
                 errors=[error.to_dict() for error in result.torsion.errors],
                 clause_refs=result.torsion.clause_refs,
@@ -560,10 +577,8 @@ async def design_beam_torsion(
     try:
         from structural_lib.services.api import design_torsion
 
-        # Calculate effective depth if not provided
         d = request.effective_depth
-        if d is None:
-            d = request.depth - request.clear_cover - 25
+        assert d is not None
 
         result = design_torsion(
             tu_knm=request.torsion,
@@ -577,13 +592,15 @@ async def design_beam_torsion(
             cover=request.clear_cover,
             stirrup_dia=request.stirrup_dia,
             pt=request.pt,
+            corner_bar_centres_mm=request.corner_bar_centres_mm,
+            d_opposite_mm=request.d_opposite_mm,
+            fy_transverse_nmm2=request.fy_transverse_nmm2,
         )
 
         warnings: list[str] = []
         if not result.is_safe:
             warnings.append(
-                f"Section unsafe: τve ({result.tau_ve:.2f}) > τc,max ({result.tau_c_max:.2f}). "
-                "Increase section size."
+                "One or more torsion/flexure checks failed; inspect the clause-specific errors."
             )
         if result.requires_closed_stirrups:
             warnings.append("Closed stirrups mandatory for torsion (IS 456 Cl 41.4.3)")
@@ -610,6 +627,8 @@ async def design_beam_torsion(
                 asv_total=result.Asv_total,
                 stirrup_spacing=result.stirrup_spacing,
                 al_torsion=result.Al_torsion,
+                me_opposite_knm=result.Me_opposite_knm,
+                ast_opposite_mm2=result.Ast_opposite_mm2,
                 is_safe=result.is_safe,
                 requires_closed_stirrups=result.requires_closed_stirrups,
                 warnings=warnings,

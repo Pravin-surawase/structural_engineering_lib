@@ -28,6 +28,7 @@ from structural_lib.services.contracts.beam import (
     BeamDesignInputV1,
     BeamDetailingOptionsV1,
     IS456MaterialsV1,
+    IS456ReinforcementMaterialsV1,
     MemberIdentityV1,
     RectangularBeamSectionV1,
 )
@@ -84,7 +85,7 @@ class BeamAuditApplicabilityBasisV1(StrictPublicModel):
 class BeamAuditMemberBasisV1(StrictPublicModel):
     member_id: str = Field(min_length=1)
     section: EvidenceValueV1[RectangularBeamSectionV1]
-    materials: EvidenceValueV1[IS456MaterialsV1]
+    materials: EvidenceValueV1[IS456MaterialsV1 | IS456ReinforcementMaterialsV1]
     calculation_basis: EvidenceValueV1[BeamCalculationBasisV1]
     detailing: EvidenceValueV1[BeamDetailingOptionsV1]
     applicability: EvidenceValueV1[BeamAuditApplicabilityBasisV1]

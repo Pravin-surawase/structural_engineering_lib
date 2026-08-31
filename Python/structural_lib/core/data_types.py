@@ -494,7 +494,7 @@ class TorsionResult:
         Asv_shear: Area of stirrups for shear per unit length (mm²/mm)
         Asv_total: Total stirrup area per unit length (mm²/mm)
         stirrup_spacing: Designed stirrup spacing (mm)
-        Al_torsion: Longitudinal steel for torsion (mm²)
+        Al_torsion: Total required tension steel for Me1 and Me2 (mm²), not additive to flexure
         is_safe: True if section is safe
         requires_closed_stirrups: True (always for torsion)
         errors: List of structured errors/warnings
@@ -517,6 +517,10 @@ class TorsionResult:
     requires_closed_stirrups: bool = True
     errors: list[DesignError] = field(default_factory=list)
     clause_refs: dict[str, str] = field(default_factory=dict)
+    Me_opposite_knm: float = 0.0
+    Ast_opposite_mm2: float = 0.0
+    corner_bar_centres_mm: tuple[float, float] | None = None
+    fy_transverse_nmm2: float | None = None
 
     @property
     def tu_knm(self) -> float:

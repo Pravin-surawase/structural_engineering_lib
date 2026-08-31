@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "claim_surface_matrix_schema_version": "claim-surface-matrix/v1",
-  "generated": "2026-08-30",
+  "generated": "2026-08-31",
   "package_version": "0.24.0",
   "release_channel": "normal",
   "classifications": {
@@ -220,6 +220,22 @@
             "title": "BeamServiceabilityV1",
             "type": "object"
           },
+          "CentroidCoverDepthRequestV1": {
+            "additionalProperties": false,
+            "description": "Explicit longitudinal-group centroid cover; never clear cover.",
+            "properties": {
+              "centroid_cover_mm": {
+                "exclusiveMinimum": 0,
+                "title": "Centroid Cover Mm",
+                "type": "number"
+              }
+            },
+            "required": [
+              "centroid_cover_mm"
+            ],
+            "title": "CentroidCoverDepthRequestV1",
+            "type": "object"
+          },
           "DetailingStandard": {
             "description": "Explicit detailing ruleset selected by the caller.",
             "enum": [
@@ -279,6 +295,37 @@
               "fy_nmm2"
             ],
             "title": "IS456MaterialsV1",
+            "type": "object"
+          },
+          "IS456ReinforcementMaterialsV1": {
+            "additionalProperties": false,
+            "description": "Retain actual longitudinal fy and a separately specified stirrup grade.",
+            "properties": {
+              "fck_nmm2": {
+                "maximum": 40,
+                "minimum": 15,
+                "title": "Fck Nmm2",
+                "type": "number"
+              },
+              "fy_nmm2": {
+                "maximum": 500,
+                "minimum": 250,
+                "title": "Fy Nmm2",
+                "type": "number"
+              },
+              "fy_transverse_nmm2": {
+                "maximum": 500,
+                "minimum": 250,
+                "title": "Fy Transverse Nmm2",
+                "type": "number"
+              }
+            },
+            "required": [
+              "fck_nmm2",
+              "fy_nmm2",
+              "fy_transverse_nmm2"
+            ],
+            "title": "IS456ReinforcementMaterialsV1",
             "type": "object"
           },
           "MemberIdentityV1": {
@@ -360,10 +407,14 @@
                     "$ref": "#/$defs/EffectiveDepthBasisRequestV1"
                   },
                   {
+                    "$ref": "#/$defs/CentroidCoverDepthRequestV1"
+                  },
+                  {
                     "type": "null"
                   }
                 ],
-                "default": null
+                "default": null,
+                "title": "Effective Depth Basis"
               }
             },
             "required": [
@@ -389,7 +440,15 @@
             "$ref": "#/$defs/RectangularBeamSectionV1"
           },
           "materials": {
-            "$ref": "#/$defs/IS456MaterialsV1"
+            "anyOf": [
+              {
+                "$ref": "#/$defs/IS456MaterialsV1"
+              },
+              {
+                "$ref": "#/$defs/IS456ReinforcementMaterialsV1"
+              }
+            ],
+            "title": "Materials"
           },
           "actions": {
             "$ref": "#/$defs/BeamActionsV1"
@@ -443,7 +502,7 @@
         "title": "BeamDesignInputV1",
         "type": "object"
       },
-      "request_schema_sha256": "d08953d000f8d67ca62c57b08984f2802b73c1b4b6dc7cc30c54368c7610a349",
+      "request_schema_sha256": "332675e92ca54321dc14e2477888a70b145a3f20542f593dc432b9acf9c8f2ca",
       "request_field_contracts": [
         {
           "path": "$",
@@ -675,6 +734,16 @@
           "compatibility_aliases": []
         },
         {
+          "path": "materials",
+          "dimensions": [
+            "TYPE_AND_FINITE_VALUE",
+            "CODE_AND_MATERIAL_DOMAIN"
+          ],
+          "unit": null,
+          "zero_allowed": null,
+          "compatibility_aliases": []
+        },
+        {
           "path": "materials.fck_nmm2",
           "dimensions": [
             "TYPE_AND_FINITE_VALUE",
@@ -757,40 +826,6 @@
           "compatibility_aliases": []
         },
         {
-          "path": "section.effective_depth_basis.clear_cover_mm",
-          "dimensions": [
-            "TYPE_AND_FINITE_VALUE",
-            "RANGE_AND_ZERO_POLICY",
-            "UNIT_AND_QUANTITY"
-          ],
-          "unit": "mm",
-          "zero_allowed": false,
-          "compatibility_aliases": []
-        },
-        {
-          "path": "section.effective_depth_basis.stirrup_diameter_mm",
-          "dimensions": [
-            "TYPE_AND_FINITE_VALUE",
-            "RANGE_AND_ZERO_POLICY",
-            "UNIT_AND_QUANTITY"
-          ],
-          "unit": "mm",
-          "zero_allowed": false,
-          "compatibility_aliases": []
-        },
-        {
-          "path": "section.effective_depth_basis.tension_bar_diameter_mm",
-          "dimensions": [
-            "TYPE_AND_FINITE_VALUE",
-            "RANGE_AND_ZERO_POLICY",
-            "UNIT_AND_QUANTITY",
-            "CODE_AND_MATERIAL_DOMAIN"
-          ],
-          "unit": "mm",
-          "zero_allowed": false,
-          "compatibility_aliases": []
-        },
-        {
           "path": "section.span_mm",
           "dimensions": [
             "TYPE_AND_FINITE_VALUE",
@@ -833,7 +868,7 @@
           "compatibility_aliases": []
         }
       ],
-      "request_field_count": 32,
+      "request_field_count": 29,
       "unowned_field_paths": [],
       "represented_validation_dimensions": [
         "CODE_AND_MATERIAL_DOMAIN",
@@ -893,6 +928,13 @@
           ]
         },
         {
+          "request_type": "structural_lib.services.contracts.beam.CentroidCoverDepthRequestV1",
+          "field_validators": [],
+          "model_validators": [
+            "reject_literal_boolean_coercion"
+          ]
+        },
+        {
           "request_type": "structural_lib.services.contracts.beam.EffectiveDepthBasisRequestV1",
           "field_validators": [],
           "model_validators": [
@@ -901,6 +943,13 @@
         },
         {
           "request_type": "structural_lib.services.contracts.beam.IS456MaterialsV1",
+          "field_validators": [],
+          "model_validators": [
+            "reject_literal_boolean_coercion"
+          ]
+        },
+        {
+          "request_type": "structural_lib.services.contracts.beam.IS456ReinforcementMaterialsV1",
           "field_validators": [],
           "model_validators": [
             "reject_literal_boolean_coercion"
@@ -1057,13 +1106,31 @@
                 "exclusiveMinimum": 0,
                 "title": "Clear Cover Mm",
                 "type": "number"
+              },
+              "corner_bar_centres_b1_mm": {
+                "exclusiveMinimum": 0,
+                "title": "Corner Bar Centres B1 Mm",
+                "type": "number"
+              },
+              "corner_bar_centres_d1_mm": {
+                "exclusiveMinimum": 0,
+                "title": "Corner Bar Centres D1 Mm",
+                "type": "number"
+              },
+              "d_opposite_mm": {
+                "exclusiveMinimum": 0,
+                "title": "D Opposite Mm",
+                "type": "number"
               }
             },
             "required": [
               "b_mm",
               "D_mm",
               "d_mm",
-              "clear_cover_mm"
+              "clear_cover_mm",
+              "corner_bar_centres_b1_mm",
+              "corner_bar_centres_d1_mm",
+              "d_opposite_mm"
             ],
             "title": "TorsionGeometryV1",
             "type": "object"
@@ -1082,6 +1149,20 @@
                 "minimum": 250,
                 "title": "Fy Nmm2",
                 "type": "number"
+              },
+              "fy_transverse_nmm2": {
+                "anyOf": [
+                  {
+                    "maximum": 500,
+                    "minimum": 250,
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Fy Transverse Nmm2"
               }
             },
             "required": [
@@ -1148,7 +1229,7 @@
         "title": "TorsionDesignInputV1",
         "type": "object"
       },
-      "request_schema_sha256": "73d27ecc83fe3548c089f53fa7954f143a5c1e77c15bdfafeca8fa580427e4e0",
+      "request_schema_sha256": "6fc17a274b7f91760a6129e336e0ff30400b318ebf802c9ed25e071baffec278",
       "request_field_contracts": [
         {
           "path": "$",
@@ -1228,7 +1309,42 @@
           "compatibility_aliases": []
         },
         {
+          "path": "geometry.corner_bar_centres_b1_mm",
+          "dimensions": [
+            "TYPE_AND_FINITE_VALUE",
+            "RANGE_AND_ZERO_POLICY",
+            "UNIT_AND_QUANTITY",
+            "CODE_AND_MATERIAL_DOMAIN"
+          ],
+          "unit": "mm",
+          "zero_allowed": false,
+          "compatibility_aliases": []
+        },
+        {
+          "path": "geometry.corner_bar_centres_d1_mm",
+          "dimensions": [
+            "TYPE_AND_FINITE_VALUE",
+            "RANGE_AND_ZERO_POLICY",
+            "UNIT_AND_QUANTITY",
+            "CODE_AND_MATERIAL_DOMAIN"
+          ],
+          "unit": "mm",
+          "zero_allowed": false,
+          "compatibility_aliases": []
+        },
+        {
           "path": "geometry.d_mm",
+          "dimensions": [
+            "TYPE_AND_FINITE_VALUE",
+            "RANGE_AND_ZERO_POLICY",
+            "UNIT_AND_QUANTITY"
+          ],
+          "unit": "mm",
+          "zero_allowed": false,
+          "compatibility_aliases": []
+        },
+        {
+          "path": "geometry.d_opposite_mm",
           "dimensions": [
             "TYPE_AND_FINITE_VALUE",
             "RANGE_AND_ZERO_POLICY",
@@ -1313,6 +1429,18 @@
           "compatibility_aliases": []
         },
         {
+          "path": "materials.fy_transverse_nmm2",
+          "dimensions": [
+            "TYPE_AND_FINITE_VALUE",
+            "RANGE_AND_ZERO_POLICY",
+            "UNIT_AND_QUANTITY",
+            "CODE_AND_MATERIAL_DOMAIN"
+          ],
+          "unit": "N/mm2",
+          "zero_allowed": false,
+          "compatibility_aliases": []
+        },
+        {
           "path": "reinforcement.stirrup_diameter_mm",
           "dimensions": [
             "TYPE_AND_FINITE_VALUE",
@@ -1348,7 +1476,7 @@
           "compatibility_aliases": []
         }
       ],
-      "request_field_count": 17,
+      "request_field_count": 21,
       "unowned_field_paths": [],
       "represented_validation_dimensions": [
         "CODE_AND_MATERIAL_DOMAIN",
@@ -12917,8 +13045,8 @@
     {
       "module": "structural_lib.design.is456.beam",
       "export_classification": "preview",
-      "declared_export_count": 24,
-      "classified_symbol_count": 27,
+      "declared_export_count": 26,
+      "classified_symbol_count": 29,
       "symbols": [
         {
           "name": "Any",
@@ -13020,6 +13148,15 @@
           "claim_disposition": "canonical"
         },
         {
+          "name": "CentroidCoverDepthRequestV1",
+          "qualified_name": "structural_lib.design.is456.beam.CentroidCoverDepthRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam",
+          "claim_disposition": "canonical"
+        },
+        {
           "name": "DetailingStandard",
           "qualified_name": "structural_lib.design.is456.beam.DetailingStandard",
           "kind": "class",
@@ -13040,6 +13177,15 @@
         {
           "name": "IS456MaterialsV1",
           "qualified_name": "structural_lib.design.is456.beam.IS456MaterialsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "IS456ReinforcementMaterialsV1",
+          "qualified_name": "structural_lib.design.is456.beam.IS456ReinforcementMaterialsV1",
           "kind": "class",
           "classification": "preview",
           "declared_export": true,

@@ -71,7 +71,7 @@ def _request() -> audit.BeamAuditInputBuildRequestV1:
         materials=_present(IS456MaterialsV1(fck_nmm2=25.0, fy_nmm2=500.0)),
         calculation_basis=_present(
             BeamCalculationBasisV1(
-                d_dash_mm=40.0, asv_mm2=detailing.asv_mm2, pt_percent=1.0
+                d_dash_mm=56.0, asv_mm2=detailing.asv_mm2, pt_percent=1.0
             )
         ),
         detailing=_present(detailing),

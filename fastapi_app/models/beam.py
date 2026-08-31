@@ -5,6 +5,7 @@ Models for beam design, checking, and detailing API endpoints.
 All dimensions in mm, forces in kN, moments in kN·m, stresses in N/mm².
 """
 
+import math
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -210,6 +211,19 @@ class BeamDesignRequest(BaseModel):
                 raise ValueError(
                     "TORSION_SCOPE_HOLD: primary-route torsion is limited to "
                     "fy <= 500 N/mm²."
+                )
+            expected_depth = (
+                self.depth
+                - self.clear_cover
+                - self.stirrup_dia_mm
+                - self.main_bar_dia_mm / 2
+            )
+            if self.rebar_layers or (
+                self.effective_depth is not None
+                and not math.isclose(self.effective_depth, expected_depth)
+            ):
+                raise ValueError(
+                    "TORSION_SCOPE_HOLD: explicit single-layer corner-bar depths must agree; multi-layer torsion is not supported"
                 )
             core_width = self.width - 2 * (self.clear_cover + self.stirrup_dia_mm / 2)
             core_depth = self.depth - 2 * (self.clear_cover + self.stirrup_dia_mm / 2)
@@ -504,7 +518,11 @@ class IntegratedTorsionResult(BaseModel):
     asv_shear: float = Field(description="Shear stirrup demand (mm²/mm)")
     asv_total: float = Field(description="Combined stirrup demand (mm²/mm)")
     stirrup_spacing: float = Field(description="Designed closed-stirrup spacing (mm)")
-    al_torsion: float = Field(description="Longitudinal torsion steel (mm²)")
+    al_torsion: float = Field(
+        description="Total Me1/Me2 tension steel (mm²), not additive to flexure"
+    )
+    me_opposite_knm: float = 0.0
+    ast_opposite_mm2: float = 0.0
     requires_closed_stirrups: bool
     errors: list[dict[str, Any]] = Field(default_factory=list)
     clause_refs: dict[str, str] = Field(default_factory=dict)
@@ -716,12 +734,23 @@ class TorsionDesignRequest(BaseModel):
     effective_depth: float | None = Field(
         default=None,
         gt=0,
-        description="Effective depth d (mm). Auto-calculated if not provided.",
+        description="Explicit effective depth d (mm), required for torsion.",
     )
+    corner_bar_centres_mm: tuple[float, float] | None = None
+    d_opposite_mm: float | None = Field(default=None, gt=0)
+    fy_transverse_nmm2: float | None = Field(default=None, ge=250, le=500)
 
     @model_validator(mode="after")
     def validate_depth_relationships(self) -> "TorsionDesignRequest":
         """Validate cross-field depth constraints."""
+        if (
+            self.effective_depth is None
+            or self.corner_bar_centres_mm is None
+            or self.d_opposite_mm is None
+        ):
+            raise ValueError(
+                "TORSION_BASIS_REQUIRED: effective_depth, corner_bar_centres_mm and d_opposite_mm must be explicit"
+            )
         if self.effective_depth is not None and self.effective_depth >= self.depth:
             raise ValueError(
                 f"effective_depth ({self.effective_depth}mm) must be less than "
@@ -760,7 +789,11 @@ class TorsionDesignResponse(BaseModel):
     asv_shear: float = Field(description="Stirrup area for shear (mm²/mm)")
     asv_total: float = Field(description="Total stirrup area (mm²/mm)")
     stirrup_spacing: float = Field(description="Designed stirrup spacing (mm)")
-    al_torsion: float = Field(description="Longitudinal steel for torsion (mm²)")
+    al_torsion: float = Field(
+        description="Total Me1/Me2 tension steel (mm²), not additive to flexure"
+    )
+    me_opposite_knm: float = 0.0
+    ast_opposite_mm2: float = 0.0
 
     # Status
     is_safe: bool = Field(description="Section safe against combined loading")
