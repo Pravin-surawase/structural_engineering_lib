@@ -4,33 +4,31 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-31
-- Focus: Whole-W3 research, missing dependencies and repeated-work audit.
-- Completed: Fetched the accepted GitHub boundary, inspected 36 prior lanes and open PRs,; Audited the full W3 plan and implementation/evidence owners. Corrected stale; Identified an existing 271,593-byte text backup and inventoried its input
-- Git receipt: docs/verification/etabs-w3-whole-plan-audit-git-handoff-receipt.json | sha256:b3a8a962e1956d901781ee14323783cca9da1bf3e881823f1979aeef34b9729d | HOLD
-- Git identity: codex/etabs-w3-whole-plan-audit-windows@ce9c799030754cbb105a308f45da9f66434392a8 | upstream=origin/main@ce9c799030754cbb105a308f45da9f66434392a8 | base=origin/main@ce9c799030754cbb105a308f45da9f66434392a8 | tree=dirty | operation=none
+- Focus: Saved source reconciliation, three physical matrices and audit criteria.
+- Completed: Bound seven saved files to two accepted manifests and verified five typed; Joined all 225 frame assignments and 170 point identities; exact section; Retained 151 direct frame loads, 112 shell loads, 56 assigned slab contexts,
+- Git receipt: docs/verification/etabs-w3-saved-basis-git-handoff-receipt.json | sha256:ba6a80f3108610bde75edb504b97563a373fa22db471fd26f475004c7159b5c4 | HOLD
+- Git identity: codex/etabs-w3-saved-basis-windows@f5e425ced924546d1f67d07f17841d0b83bfb68c | upstream=origin/main@f5e425ced924546d1f67d07f17841d0b83bfb68c | base=origin/main@f5e425ced924546d1f67d07f17841d0b83bfb68c | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
 
 ## Current boundary
 
-The [whole-W3 reset](etabs-data-analysis-optimization-foundation-plan.md#whole-w3-execution-reset-2026-08-31) owns sequencing; the [research audit](etabs-w3-whole-plan-research-audit.md) explains it.
-Base: PR #933 merge `ce9c799030754cbb105a308f45da9f66434392a8`.
-Windows owns this branch; Mac is NOT_CHECKED. Fetch the accepted audit merge before continuing.
+The [whole-W3 reset](etabs-data-analysis-optimization-foundation-plan.md#whole-w3-execution-reset-2026-08-31) owns sequencing; the [saved-basis decision](etabs-w3-saved-basis-and-criteria.md) owns the current next packet.
+Source: accepted PR #934 merge `f5e425ced924546d1f67d07f17841d0b83bfb68c`.
+Fetch the accepted saved-basis packet before continuing; Windows owns this branch, Mac NOT_CHECKED.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | W3A-D data contracts/catalogue, W3R shear repair, W3E strength software, bounded W3F, W3G solver, W3H comparator/authored benchmarks and bounded fictional W3J review/rollback. #925 validation repair is closed. |
-| New finding | An existing 271,593-byte `.$et` backup contains model-input sections. Its narrow section inventory is not semantic/revision reconciliation or a completed W3F snapshot. |
-| **Next** | Reconcile saved definitions/loads against accepted evidence, make at most three candidate-line input matrices, and decide physical suitability before another API packet. Independently specify serviceability/applicability and screening criteria. |
-| Alternative sources | Already proved object getters; supported SQLite/CSV/XML exports; integrated managed table client only for residual required gaps. Any installed action still needs its own exact packet. |
-| Closed diagnostics | #931 CSI 1 and #932 managed-binding causes unconfirmed; #933 outer timestamp type defect confirmed. 69 controlled cases do not prove the real collector/entrypoint. No frozen retry; no table access proved. |
-| Held | Actual-building H; required canonical serviceability and any installed-rebar claim; candidate screening I, reanalysis K, iteration L, final integrated gates/Mac review, professional/release approval. |
+| **Current** | Saved text joins all 225 frames and selected five-case lineage. Three preselected lines remain NOT_COMPARABLE_AS_IS. This is research evidence, not a typed W3F importer or L5. |
+| New findings | Separate longitudinal/confinement steel grades and ETABS centroid-cover versus library clear-cover bases must be preserved. Explicit Concrete/Strength metadata is not approval. |
+| **Next** | W3E typed basis/serviceability: trace existing consumers, freeze compatible provenance-bearing contracts, verify methods independently and retain precise holds. Do not repeat pilot inputs or infer installed rebar. |
+| H route | Stop broad table diagnosis. Acquire only named support/mesh/transfer gaps after physical route choice; more getters cannot fix unsupported solver physics. No solver fitting. |
+| Retained | A-D/R, bounded E/F/G/H/J acceptance; #925 repair closed. #931 CSI 1 and #932 binder causes unconfirmed; #933 timestamp defect confirmed. No frozen retry. |
+| Held | Actual-building H; required serviceability and installed-rebar claims; I/K/L; final combined gates/Mac review; professional/release approval. |
 
-No applications, solver or benchmarks ran in this planning audit. Existing saved
-data are not fresh lock/units/status/selection proof. Do not repeat accepted
-benchmarks, recovery, registration or broad validation just to revisit the plan.
-`v0.24.0` remains the retained release boundary; no release work is authorized.
+No ETABS/UI/export/solver/design calls in this packet. Saved evidence is not fresh
+lock/units/status/selection proof. Keep `v0.24.0`; no release is authorized.
 
 ## Historical W3A-W3D details (current sequence above takes precedence)
 

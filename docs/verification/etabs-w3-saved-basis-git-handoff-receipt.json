@@ -1,0 +1,121 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "ba6a80f3108610bde75edb504b97563a373fa22db471fd26f475004c7159b5c4",
+    "state": {
+      "branch": "codex/etabs-w3-saved-basis-windows",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "f5e425ced924546d1f67d07f17841d0b83bfb68c",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 235.193,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git\\worktrees\\etabs-w3-saved-basis-windows",
+      "head_sha": "f5e425ced924546d1f67d07f17841d0b83bfb68c",
+      "hold_reasons": [
+        "changed paths: 6"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-31T11:18:29.091769+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\worktrees\\etabs-w3-saved-basis-windows",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 6,
+        "modified_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/etabs-data-analysis-optimization-foundation-plan.md",
+          "docs/planning/next-session-brief.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/planning/etabs-w3-saved-basis-and-criteria.md",
+          "docs/verification/etabs-w3-saved-basis-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "f5e425ced924546d1f67d07f17841d0b83bfb68c",
+        "status": "equal"
+      },
+      "worktree_root": "C:\\CodexWork\\worktrees\\etabs-w3-saved-basis-windows"
+    }
+  },
+  "local_state_receipt_hash": "sha256:ba6a80f3108610bde75edb504b97563a373fa22db471fd26f475004c7159b5c4",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-31T11:18:29.091769+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [],
+    "integration_owner": "orchestrator",
+    "owned_paths": [
+      "docs/planning/etabs-w3-saved-basis-and-criteria.md",
+      "docs/verification/etabs-w3-saved-basis-evidence.json"
+    ],
+    "shared_paths": [
+      "docs/planning/etabs-data-analysis-optimization-foundation-plan.md",
+      "docs/planning/next-session-brief.md",
+      "docs/TASKS.md",
+      "docs/SESSION_LOG.md"
+    ],
+    "task_id": "ETABS-W3-SAVED-BASIS"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
