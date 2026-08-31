@@ -5,6 +5,85 @@
 
 ---
 
+## 2026-08-31 — Session: Whole-W3 source and completion audit
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3-WHOLE-PLAN-AUDIT`.
+**Branch:** `codex/etabs-w3-whole-plan-audit-windows`.
+**Source:** PR #933 merge `ce9c799030754cbb105a308f45da9f66434392a8`,
+tree `8562f8fb0b9ce2b3320787ffec21d4ac62543206`.
+**Focus:** Whole-W3 research, missing dependencies and repeated-work audit.
+**Checkpoint:** `WHOLE_W3_PLAN_REVISED_NO_LIVE_ACCEPTANCE`.
+**Git handoff receipt:** `docs/verification/etabs-w3-whole-plan-audit-git-handoff-receipt.json`
+
+**Completed:**
+
+- Fetched the accepted GitHub boundary, inspected 36 prior lanes and open PRs,
+  and began one new source-bound audit session/worktree. Older lanes untouched.
+- Audited the full W3 plan and implementation/evidence owners. Corrected stale
+  solver/Pareto/W3H task status and superseded repeated benchmark/launcher next
+  steps with one current sequence; retained original contracts and receipts.
+- Identified an existing 271,593-byte text backup and inventoried its input
+  sections. Its hash is retained; semantic/model revision equality is unproved.
+- Studied installed API help and official CSI/Microsoft sources. Current CSI
+  documentation supports considering SQLite export and retaining .NET 10;
+  neither proves this host's table access or cures the unconfirmed CSI error.
+- Reconciled five recent W3H elapsed closeouts: 146.552 minutes, of which the
+  last three used 102.137. No claim that all time was wasted or covers all W3.
+- Added source-route ranking, three-candidate physical suitability decision,
+  serviceability/criteria work, I/K/L exits and finite investigation checkpoints.
+  No COM, app UI, exports, solver, analysis/design or benchmark calls.
+
+### Issues encountered
+
+- The active plan mixed accepted and historical instructions, while TASKS
+  still marked W3H comparator integration pending. This could repeat work.
+- Recent offline proofs omitted parts of the actual installed entrypoint;
+  continued table troubleshooting still would not complete physical mapping.
+- A useful saved text source was not part of the active acquisition sequence;
+  serviceability/criteria and downstream implementation remained hidden by H.
+- A recursive installed-help scan was slow; an assumed closeout filename was
+  absent. These were read-only inspection issues, not product/API failures.
+- The first receipt verifier expected ten overlapping historical help files;
+  the actual overlap was nine, with two additional topics studied only now.
+- The expanded brief exceeded its 150-line limit; duplicate orientation was removed.
+- Normal commit hooks rejected changed machine-read brief labels and mixed
+  line endings from Windows text writes followed by patches; no commit was created.
+
+### Root causes and resolutions
+
+- Confirmed planning drift from appended chronology: replaced active status
+  and sequence, labelled original specifications/estimates, and corrected
+  task status against accepted receipts. Diff/status/link checks follow freeze.
+- Confirmed test-boundary omissions are documented without relabelling the
+  older COM binder/CSI causes. The future managed path must prove its real CLI,
+  collector, parsing, logging and full pre/postflight before any frozen attempt.
+- Confirmed saved-source omission: local section inventory plus CSI's text
+  backup documentation supports a bounded reconciliation first. This audit
+  does not claim a ready importer, complete transferred loading or L5.
+- Used actual file listing and the CHM index for exact topic reads; stopped the
+  slow scan. No tool/runtime installation or model change was needed.
+- Replaced the verifier's unsupported count threshold with the nine exact
+  method identities and their retained hashes. Additional help study is not
+  relabelled as prior signature acceptance. The affected verifier is rerun.
+- The compact brief retains the new sequence within its existing line budget;
+  no limit or validation rule was relaxed.
+- Restored the exact Current/Next table labels required by `session.py check`
+  and normalized the seven owned text files to LF. Focused session consistency
+  and the consolidated quick gate are repeated before normal commit hooks;
+  neither a skipped hook nor a product-code repair is used.
+
+**Verification:** Static receipt/source reconciliation and full plan review;
+affected documentation/task/brief/handoff checks, one quick gate, normal hooks,
+immutable-candidate audit and session end follow content freeze. Hosted/merge
+facts remain external. No new software tests or broad campaign rerun.
+
+**Next:** Saved physical-basis reconciliation plus independent audit/criteria
+specification under the master reset. Actual-building H, I/K/L, final combined
+gates and Mac review remain due; professional/release approval is not provided.
+
+---
+
 ## 2026-08-31 — Session: W3H typed client and pre-attachment launcher stop
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).

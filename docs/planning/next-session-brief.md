@@ -4,34 +4,35 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-31
-- Focus: Complete typed-client offline proof and exact pre-attachment stop.
-- Completed: Verified the external chat handoff hash, accepted GitHub source and all 35; Compiled explicit C# calls against the installed ETABS interfaces. The shared; Fresh UI, saved-file, source, process and privilege checks preceded a frozen
-- Git receipt: docs/verification/etabs-w3h-typed-guard-git-handoff-receipt.json | sha256:0a7ac69b4e7815f2637b350b756eee1a2ac797253aa75caedb398e60673df20c | HOLD
-- Git identity: codex/etabs-w3h-typed-guard-client-windows@0342f5bdc510e4c16c15dd1719da6bbb2d56aee5 | upstream=origin/main@0342f5bdc510e4c16c15dd1719da6bbb2d56aee5 | base=origin/main@0342f5bdc510e4c16c15dd1719da6bbb2d56aee5 | tree=dirty | operation=none
+- Focus: Whole-W3 research, missing dependencies and repeated-work audit.
+- Completed: Fetched the accepted GitHub boundary, inspected 36 prior lanes and open PRs,; Audited the full W3 plan and implementation/evidence owners. Corrected stale; Identified an existing 271,593-byte text backup and inventoried its input
+- Git receipt: docs/verification/etabs-w3-whole-plan-audit-git-handoff-receipt.json | sha256:b3a8a962e1956d901781ee14323783cca9da1bf3e881823f1979aeef34b9729d | HOLD
+- Git identity: codex/etabs-w3-whole-plan-audit-windows@ce9c799030754cbb105a308f45da9f66434392a8 | upstream=origin/main@ce9c799030754cbb105a308f45da9f66434392a8 | base=origin/main@ce9c799030754cbb105a308f45da9f66434392a8 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
 
 ## Current boundary
 
-The [master-plan audit](etabs-data-analysis-optimization-foundation-plan.md#completion-audit-and-active-critical-path-2026-08-31) is the status authority. W3A-G/W3R are accepted within scope; actual-building W3H and I/K/L remain held. #925 repaired the integrated Windows gates. W3J publication/readback, comment retention/export and revision-2 refresh are accepted through #926. The separate installed update-only rollback now passes: one native failure after PENDING, sixteen typed tables restored exactly, 78 rows and 68,969 canonical bytes independently reconciled. See `docs/verification/etabs-w3j-native-rollback-evidence.json`. This closes the bounded fictional L4 row, not W3 or professional approval. Windows is the sole branch writer; Mac state is not inferred.
+The [whole-W3 reset](etabs-data-analysis-optimization-foundation-plan.md#whole-w3-execution-reset-2026-08-31) owns sequencing; the [research audit](etabs-w3-whole-plan-research-audit.md) explains it.
+Base: PR #933 merge `ce9c799030754cbb105a308f45da9f66434392a8`.
+Windows owns this branch; Mac is NOT_CHECKED. Fetch the accepted audit merge before continuing.
 
-| State | Exact boundary |
+| State | Next action / claim boundary |
 |---|---|
-| **Public** | `v0.24.0` remains the current immutable normal software release. No release work is authorized. |
-| **Current** | `ETABS-W3H-TYPED-GUARD`: 45 compiled + 24 outer offline cases pass. Frozen launcher stopped before attachment on a confirmed ISO-string/DateTime defect; zero COM/table/Python calls or retries. Eleven files/35 prior lanes preserved; complete fresh live guards NOT_PROVED. Integration facts remain external. |
-| **W2 complete** | PR #898 merged reviewed W2C head `57f53d48...` as `f1873e7b...`; candidate and merge tree are both `bb20ba0c...`. Direct service, REST, all seven saved Excel tables, and 3,626,096 reconstructed canonical JSON bytes reconcile to SHA-256 `d4c28586...`. |
-| **Plan gate** | Complete. The owner explicitly authorized the dependency-ordered W3 campaign; every packet still requires its exact predecessor and packet-specific stop conditions. |
-| **Next** | After exact GitHub integration/fetch, use the typed-guard receipt and external `NEXT_PACKET.md`: integrate the real collector through the corrected outer entrypoint, prove that entire entrypoint offline, then freeze one new managed observation. Reuse compiled/outer proofs; do not rerun frozen attempts. v2 live is disabled for the closed packet. |
-| **Held** | W3E does not accept installed reinforcement or canonical serviceability. Pareto torsion/serviceability/stirrup-cost/global-analysis holds remain. No shortlist or mutating candidate until W3F-H calibration and W3I criteria pass. Release and engineering/professional/construction approval remain unapproved. |
+| **Current** | W3A-D data contracts/catalogue, W3R shear repair, W3E strength software, bounded W3F, W3G solver, W3H comparator/authored benchmarks and bounded fictional W3J review/rollback. #925 validation repair is closed. |
+| New finding | An existing 271,593-byte `.$et` backup contains model-input sections. Its narrow section inventory is not semantic/revision reconciliation or a completed W3F snapshot. |
+| **Next** | Reconcile saved definitions/loads against accepted evidence, make at most three candidate-line input matrices, and decide physical suitability before another API packet. Independently specify serviceability/applicability and screening criteria. |
+| Alternative sources | Already proved object getters; supported SQLite/CSV/XML exports; integrated managed table client only for residual required gaps. Any installed action still needs its own exact packet. |
+| Closed diagnostics | #931 CSI 1 and #932 managed-binding causes unconfirmed; #933 outer timestamp type defect confirmed. 69 controlled cases do not prove the real collector/entrypoint. No frozen retry; no table access proved. |
+| Held | Actual-building H; required canonical serviceability and any installed-rebar claim; candidate screening I, reanalysis K, iteration L, final integrated gates/Mac review, professional/release approval. |
 
-W3H continuation: the [guide](../guides/beam-line-calibration.md#typed-client-and-outer-launcher-checkpoint-2026-08-31-successor) and [typed-guard receipt](../verification/etabs-w3h-typed-guard-evidence.json) bind the next step. The newest failure is a confirmed outer JSON timestamp comparison, before COM; string-preserving parsing passes offline. Older managed binding and CSI 1 causes remain unconfirmed; do not infer trial denial. Earlier full live guards are historical. Five ordered cases, exact element/station-side identity and applicability limits remain required. Pilot materials/detailing are supplied; comparison criteria, serviceability and screening families/scenarios/objectives are not. L5/W3I/K/L stay held. No professional signature is needed for software diagnosis.
-`ETABS-W3H-ACCESS-RECHECK` recovered force access by one explicit reassertion of the already-selected combination. Fresh evidence: 153 beams/3,502 stations, complete catalogue, 40 foundation getters and 24 reconciled signed joint components; files/lock/units/status/flags unchanged. [Recovery receipt](../verification/etabs-w3h-access-recovery-evidence.json) and external `ETABS-W3H-RESULT-RECOVERY-20260830` supersede the old readback blocker. Do not rerun registration/recovery/analysis. L5/W3I still require supported physical mapping, unavailable spring/slab evidence and predeclared criteria; do not ask the owner to guess them. No Mac synchronization or calibration claim.
+No applications, solver or benchmarks ran in this planning audit. Existing saved
+data are not fresh lock/units/status/selection proof. Do not repeat accepted
+benchmarks, recovery, registration or broad validation just to revisit the plan.
+`v0.24.0` remains the retained release boundary; no release work is authorized.
 
-`ETABS-W3H-CALIBRATION-FEASIBILITY` assessed all 77 geometric lines: every line has an external endpoint/interior geometric contact; the 23 endpoint-graph exceptions are not proved isolated. A 31-getter read found the shortest candidate pinned but on unrestrained moving joints. Current solver support types do not encode imposed vertical movement. [Feasibility receipt](../verification/etabs-w3h-feasibility-evidence.json) distinguishes these facts from full mesh/support proof.
-Owner approved three distinct validation tracks: data transport, beam checks using ETABS forces, and bounded independent prediction; see the active master plan. The [single-span receipt](../verification/etabs-w3h-independent-benchmark-evidence.json) retains 34 passing comparisons. The [two-span successor](../verification/etabs-w3h-two-span-evidence.json) adds 112 passing comparisons over 50 stations, one new analysis and exact protected building state. Zero ETABS shear-area modifiers explicitly match the EB benchmark basis, not native building behaviour. A saved-building replay verifies 60 evidence files, 153 beam sets/3,502 stations, catalogue and foundation output without Excel or new extraction. Next: bounded saved-building capability/mapping assessment plus asymmetric/patterned-load benchmarks. No repeat setup/recovery/passed runs; no guessed supports, whole-building calibration, W3I or professional approval. Windows owns this branch; Mac must fetch the accepted GitHub boundary.
-
-## W3A-W3D accepted through local W3D content freeze
+## Historical W3A-W3D details (current sequence above takes precedence)
 
 Accepted W3A freezes versioned, vendor-independent ETABS demand contracts:
 

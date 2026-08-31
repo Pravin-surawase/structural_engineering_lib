@@ -9,6 +9,9 @@ tags: [etabs, beams, data-contracts, frame-analysis, optimization, provenance]
 
 # W3 ETABS Data, Beam Analysis, and Optimization Master Plan
 
+Start with the [current execution reset](#whole-w3-execution-reset-2026-08-31).
+The original contract specifications below remain reference material.
+
 ## Purpose and authority
 
 This document converts the accepted W1/W2 ETABS work into the durable W3
@@ -20,7 +23,7 @@ foundation only. The exact W3-readiness predecessor is PR #899 merge
 dependency-ordered W3 campaign and its bounded Windows execution. Current
 continuations still require exact predecessor, scope and evidence checks.
 
-W3A is intentionally the first bounded Mac read-only contract packet. No W3
+W3A was the first bounded read-only contract packet and is accepted. No W3
 packet in this plan authorizes opening ETABS or Excel, running ETABS analysis
 or design, mutating a model or workbook, starting optimization, deleting a
 public surface or retained evidence, publishing a release, or making an
@@ -52,7 +55,7 @@ accepted model-specific calibration evidence both exist. Even then, the local
 solver remains a bounded surrogate and ETABS remains the global-analysis
 authority.
 
-## Exact audit boundary
+## Historical audit boundaries
 
 The original audit was performed on 2026-08-29 from:
 
@@ -99,182 +102,121 @@ command and recorded no borrowed timing or installed-application evidence.
 
 ### Completion audit and active critical path (2026-08-31)
 
-The owner requested a drift check and completion of W3 after reporting the Mac
-fetch complete. Windows freshly fetched GitHub at PR #921 merge
-`d6b7a105c22b7d6fde0d532bc1b5c375b43f6e2b`, tree
-`dbdc261c45f150c3a99237d4bb70093b42b02f89`. The Mac observation is owner-reported,
-not a Windows audit of the Mac checkout. Each new branch still has one writer.
+This current status supersedes chronological next-step wording in earlier
+handoffs and guides. Immutable evidence remains unchanged. The whole-W3 audit
+freshly fetched PR #933 merge `ce9c799030754cbb105a308f45da9f66434392a8`, tree
+`8562f8fb0b9ce2b3320787ffec21d4ac62543206`. Windows owns the audit branch;
+the Mac has not been queried. Every successor must fetch and bind its actual
+accepted predecessor, not restart at the historical PR #899 boundary.
 
-| Packet | Accepted implementation/evidence | Remaining gate |
+| Packet | Accepted within scope | Remaining completion gate |
 |---|---|---|
-| W3A | Definition/demand contracts, PR #901, L1 | None within its bounded contract |
-| W3B | Installed signatures, PR #902, L2 | New operations require a new signature audit |
-| W3C | Catalogue adapter, PR #903 with #904/#905 repairs, L1 | None for the accepted getter subset |
-| W3D | Complete installed catalogue/demand, PR #906, L3 | Current live state must be rechecked before a new installed task |
-| W3R | Separate shear-feasibility repair, PR #907, L1 | Not a calibrated model optimizer |
-| W3E | Same-row canonical strength audit, PR #908, L1 | Required serviceability and installed-rebar acceptance remain held |
-| W3F | Contracts/signatures/readback, #909/#910/#913/#914, L1-L3 | Saved building spring/slab/support basis is incomplete for calibration |
-| W3G | Bounded pure solver, PR #915, L1 | Always SURROGATE_ONLY; not general 3D analysis |
-| W3H | Comparator #917 and recovery/feasibility/benchmarks #918-#921 | Actual-building L5 calibration NOT complete |
-| W3I | Planned functions absent at the audited base | W3H plus explicit complete screening criteria |
-| W3J | Dossier/review #922/#923; persistence #926 plus separate installed update-only rollback: sixteen tables/78 rows reconcile | Bounded fictional L4 software PASS; no actual-model calibration, L7 signature or professional approval |
-| W3K | Planned functions absent at the audited base | Accepted W3I, guarded fresh-copy mutation and mandatory ETABS reanalysis |
-| W3L | Not implemented | Accepted W3K, finite iteration and independent final baseline repeat |
+| W3A-D | Contracts, installed signatures, catalogue/demand; #901-#906 including two sentinel repairs | Reuse saved identities; fresh state required only for new installed work |
+| W3R | Pareto shear-feasibility repair #907 | Torsion/serviceability/cost/global limitations remain |
+| W3E | Same-row strength-audit software #908 | Required canonical serviceability, project applicability/detailing and any claimed installed-rebar acceptance |
+| W3F | Contracts/signatures/bounded readback #909/#910/#913/#914 | Complete physical definitions, supports/slab/load transfer and mesh identity for the chosen building scope |
+| W3G | Pure bounded solver #915 | SURROGATE_ONLY; no general 3D or moving-support capability |
+| W3H | Comparator #917; recovery/feasibility and two authored benchmarks #918-#921; saved mapping #929, signatures #930, stopped diagnostics #931-#933 | Actual-building L5 remains HELD: no complete independent physical mapping or accepted project criteria |
+| W3I | Planned service definitions absent | W3E/H/R plus complete screening criteria and candidate-range applicability |
+| W3J | Dossier/review #922/#923; installed persistence #926 and native rollback #927 | Bounded fictional L4 passes; real-building dossier and optional external L7 are separate |
+| W3K | Planned service definitions absent | Accepted W3I, exact mutation authority, whole-model safeguards and fresh ETABS reanalysis |
+| W3L | Not implemented | Bounded iteration, independent final baseline repeat, final dossier and integrated review |
 
-The two installed authored benchmarks are useful W3G/H software evidence, but
-additional benchmark passes alone do not clear the actual-building W3H gate.
-Do not turn a sequence of benchmark receipts into a claim that W3 is finished.
-The saved foundation covers only one frame and three joints; it explicitly
-reports `calibration_fields_complete=false`. The shortest inspected member is
-pinned at both ends on moving, unrestrained building joints. That does not rule
-out every action-only comparison, but no complete independent load/support/slab
-mapping or project criteria has yet been accepted. Hashing cannot fill that gap.
+The Windows validation repair #925 is accepted; its historical 17-failure run
+is not a current open defect. The final combined Python/FastAPI/React/Excel/full
+gate and Mac review remain due after intended packets integrate. Neither
+another broad run now nor a fictional workbook pass completes W3.
 
-Advance independent dependencies instead of waiting for a professional
-signature: W3J depends on W3D/W3E and provider-neutral review contracts, not W3H.
-Its dossier foundation is ordinary software work. It cannot assert professional
-eligibility, sign bytes or upgrade a supplied provider Boolean to trusted proof.
-The bounded Excel projection is merged in #923. Its installed continuation
-proved trusted HTTPS and exact source bytes, but Windows control could not
-activate Excel after fresh discovery and one recovery. No workbook was created
-or opened and no writer/rollback ran. See the
-[installed receipt](../verification/etabs-w3j-installed-review-evidence.json).
-Restore reliable host control or use owner-assisted UI steps before installed transaction/readback;
-retain all building-calibration and downstream candidate holds. If the building
-basis cannot be proved by bounded read-only discovery, report the exact missing
-physical inputs; do not guess them or ask for blanket professional approval.
+### Whole-W3 execution reset (2026-08-31)
 
-The integrated Windows Python run also reported 17 failures, including alias
-ownership/registry expectations and Windows launcher/path/restore ordering.
-Its exact diagnosis and remaining gate results are retained in the installed
-receipt/session and external logs. Repair these in a separate bounded software
-packet; do not label the integrated gate green or alter live evidence code.
+The owner requested a whole-programme audit because repeated local fixes were
+taking too long. The [research and completion audit](etabs-w3-whole-plan-research-audit.md)
+records causes, timings, official sources and acquisition alternatives. Its
+[receipt](../verification/etabs-w3-whole-plan-audit-evidence.json) binds saved
+evidence only. This plan update runs no installed observation and does not
+authorize setters, save/unlock, analysis/design, export, installation or upload.
 
-The bounded Windows repair now corrects those confirmed software causes without
-changing engineering math, public types, timing budgets or security settings.
-Its [receipt](../verification/etabs-w3-validation-repair-evidence.json) binds the
-diagnostics and final external gate observations. Owner-assisted disposable
-Excel UI is the simpler installed route; it still requires the same atomic
-publication/readback/rollback proof. No ETABS rerun is needed for that packet.
+**Immediate priority:** reconcile the existing saved text backup and decide
+which building subcases the current surrogate can honestly represent. The
+existing `.$et` contains useful input sections; it is not yet a validated W3
+definition snapshot. This investigation precedes more table-client work.
 
-The next bounded review packet fixes confirmed intrinsic-grid overflow and
-proves native publication/readback plus comment retention and exact-successor
-refresh on a separate disposable workbook: sixteen tables, 78 rows, 68,969
-canonical bytes and both revision identities independently reconcile after save.
-The earlier accepted workbook and all models remain unchanged. See the
-[review-persistence receipt](../verification/etabs-w3j-review-completion-evidence.json).
-That packet left installed update-only rollback unproved. Its separate
-[native rollback successor](../verification/etabs-w3j-native-rollback-evidence.json)
-now proves exact workbook identity after the user's DevTools safety hand-off,
-one unchanged writer call, one labelled failure after native PENDING readback,
-and exact restoration of all sixteen typed matrices/dimensions/positions.
-Independent native and saved-copy verification reconcile 78 rows, 68,969 bytes,
-both revisions and comments. All input/protected files remain unchanged and
-owned services are stopped. This closes the bounded fictional L4 software row;
-it is not a general fault-matrix, actual-building calibration, L7 or W3 claim.
+Keep three tracks separate: faithful ETABS data transport, beam checks using
+ETABS actions, and independent force prediction. Progress on the first two can
+remain useful while the third is held. No track silently substitutes for another.
 
-Completion requires the remaining packet exits, one integrated broad
-Python/FastAPI/React/Excel/full-gate run, exact final dossier and Mac integrated
-review. Neither this audit nor the dossier contract is complete W3 acceptance.
+| Order / packet | Work and dependency | Measurable exit / stop |
+|---|---|---|
+| 1. Saved physical-basis reconciliation | Reuse W3D/F/H evidence; inspect existing `.$et`, explicit units/story expansion, object assignments, loads and settings. No app calls. Prefer a narrow importer into current W3 contracts, not a general E2K parser. | At most three deterministic candidate lines have a required-input matrix; saved-source identity and overlapping definitions reconcile or remain explicitly unproved. List exact residual fields and their source route. |
+| 2. Building suitability decision | Use packet 1 to classify independently specified loads, mesh/station sides, supports, axes, stiffness/shear/slab participation and excluded effects. | One supported scope with predeclared comparison requirements, or a documented no-go/justified extension decision. Do not solve first and fit the mapping later. |
+| 3. Residual acquisition, only if needed | Choose already proved object getters, supported SQLite/CSV/XML export, or the managed table path for the named gaps. Installed action remains a separate exact-authority packet. | Every requested field maps to a required W3H row. Catalogue/schema limit stays 1,000 keys, 12 schemas and 200 fields/schema; row reads need a new explicit bound. Stop if the source cannot resolve the physical question. |
+| 4. Complete audit and criteria preparation | Independent of COM diagnosis: specify W3E serviceability/applicability/detailing, W3H comparison scope and W3I families/scenarios/objectives/cost bounds. Software repairs can proceed after their own contract freezes. | Mandatory checks have a typed executable route or remain held; genuine project decisions are listed for review. No hidden limits, guessed supports or W3I screening before H acceptance. |
+| 5. Actual-building W3H | Requires packets 1-4's relevant physical basis, reference identities and predeclared criteria. Reuse the accepted comparator and benchmarks. | L5 accepted only for the explicit model/scenarios/components, or NOT_COMPARABLE/OUT_OF_BAND with cause. Baseline agreement does not validate a whole candidate range. |
+| 6. W3I implementation and bounded screening | Requires accepted E/H/R and complete mandatory strength/serviceability/constructability checks, candidate/scenario bounds and applicability evidence. | Deterministic feasible shortlist with no held mandatory checks; status SCREENED_ONLY. |
+| 7. W3K then W3L | Separate guarded-copy mutation/reanalysis authority; freeze affected beams/columns/joints/reactions/drifts and other required global safeguards, abort/recovery and budget first. | Fresh ETABS results per retained candidate, finite iteration, independent final repeat from clean baseline and exact dossier. |
+| 8. Integrated acceptance | All intended software/evidence packets integrated; refresh the real-data W3J projection at meaningful milestones. | One combined broad gate, final evidence reconciliation and Mac integrated review; professional signature/release remain distinct approvals. |
 
-The bounded [saved-building mapping assessment](../verification/etabs-w3h-building-mapping-evidence.json)
-now verifies 127 retained files and all five canonical snapshot identities.
-Its 153-beam/3,502-row profile proves complete force provenance but only one
-normalized definition frame/three joints plus one other raw frame readback.
-It records five ordered contributing cases, 132 beams with repeated object-
-station coordinates and 153 with a nonzero excluded-action component. These
-facts require exact factor/element/side mapping and explicit applicability
-criteria; they are not engineering failure thresholds or new calibration.
-The [installed mapping-signature audit](../verification/etabs-w3h-mapping-signatures-evidence.json)
-now proves forty signatures and their installed help sources without application
-calls. The interface is `cLineElm`, not `cFrameElm`; several element topics lack
-the semantics needed for a physical interpretation. Area assignment loads are
-not complete transferred beam actions. The documented table catalogue/schema
-API is a narrower alternative: the next separate packet reads only available
-keys and at most twelve field schemas, with exact copied-model and table-display
-pre/post guards. It reads no model rows and makes no calibration claim. No new
-analysis, solver extension, benchmark-only packet or W3I advance resolves the
-remaining physical basis merely by producing more numerical agreement.
+Packets 1 and 4 are useful offline work and should not queue behind a COM
+getter. Use one parent and one writer; independent dependencies do not require
+parallel agents or overlapping branches. Bundle related corrections and evidence
+into one reviewable candidate, not one PR for each stand-in or failed comparison.
 
-The [subsequent table metadata attempt](../verification/etabs-w3h-table-metadata-evidence.json)
-stopped at its first table-display getter: CSI 1, count 0 and twelve null
-entries. Exact model/file guards were preserved; no catalogue, schema or model
-rows were read. This is not an accepted empty table selection. Next is a separate
-static-first same-getter transport diagnosis, not selection recovery, analysis,
-reinstall or optimization. The native cause remains unconfirmed, and actual-
-building L5/W3I/K/L holds are unchanged.
+**Decision checkpoints, not delivery promises:** give the saved-source
+reconciliation an initial 60-90 minutes of focused work and the route/suitability
+decision 30 minutes after its evidence is available. If unresolved, return the
+missing-input matrix and costed next option rather than automatically extending
+the experiment. Reserve another 60-90 minutes for the audit/criteria gap
+specification. These are planning caps for investigation, exclude required
+review/CI, and do not estimate implementing serviceability, screening or W3K/L.
+Any extension must name the acceptance row it will close. Re-estimate remaining
+implementation from that scope; original packet day ranges below are not a
+remaining-work schedule.
 
-The [transport successor](../verification/etabs-w3h-table-transport-evidence.json)
-then stopped earlier: PowerShell could not bind a managed load-case guard call.
-One attachment, zero table calls, no Python live comparison and no retries.
-Saved-file identities and all 34 prior lanes are preserved; complete live model
-guards were not obtained. The table-only offline stand-in missed the guard path.
-Next batch must prove a complete typed compiled client offline, with every
-argument explicit, before a separately frozen observation. Exact-default static
-tests do not reproduce the COM binder error, so its internal cause and the
-historical CSI 1 cause remain unconfirmed. No reanalysis/reinstall or model
-change is justified, and W3H/I/K/L acceptance has not advanced.
+If the bounded candidates are outside current solver scope, retain the useful
+ETABS-sourced audit/review path and present a concrete choice between a justified
+surrogate extension and an ETABS-first candidate programme. Neither a no-go nor
+an alternate route marks W3H/I/K/L complete or silently changes their contract.
 
-The [typed-guard successor](../verification/etabs-w3h-typed-guard-evidence.json)
-now passes 45 compiled-client offline cases. Its frozen outer launcher stopped
-before attachment on a confirmed ISO-string/DateTime comparison defect, with
-zero application or table calls and no retry. Exact process start is unchanged.
-A corrected outer path passes 24 additional offline cases and keeps live mode
-disabled. The initial compiled-only proof omitted that launcher; the next real
-collector/entrypoint must be integrated and proved offline before a new frozen
-observation. All eleven files/35 prior lanes are preserved; complete fresh live
-model guards remain NOT_PROVED. This adds software evidence, not table access
-or W3H/I/K/L acceptance, and leaves both older causes unconfirmed.
+#### Managed table path, if selected after the source audit
+
+Reuse `TypedGuard.cs` and the corrected outer functions; no broad rewrite.
+The 45 compiled and 24 controlled outer cases are component proof, not proof
+that the prospective real command and collector work. Use one entrypoint with
+offline/replay, real-host-preflight-with-attachment-disabled, and separately
+frozen live modes. Parse the real disk contract with explicit types; check
+required manifest coverage, source/runtime/process/privilege/UI/file identities;
+then run complete model guards, raw logging, error handling and postflight.
+Prove the actual CLI/new-process path before freezing. Log failures before
+attachment as well as after it. No helper may be added after proof without
+invalidating affected evidence.
+
+Only then is one separately authorized managed existing-process attachment and
+one `GetLoadCasesSelectedForDisplay` observation eligible. Any guard/native
+failure closes the attempt; no catalogue or Python call follows it. A separately
+proved/frozen matched Python observation is conditional on managed success and
+on whether the result changes the selected acquisition route. Full table-display
+case/combo/pattern/options preservation remains a separate prerequisite to any
+later catalogue/schema packet; do not skip it to bypass the failing getter.
+
+The newest launcher timestamp defect is confirmed. The earlier managed binding
+and Python CSI 1 causes remain unconfirmed. No reinstall, downgrade, licensing
+change, repeated recovery, new analysis or benchmark-only packet is justified
+by these failures. The frozen #931-#933 attempts remain closed.
 
 ### Owner-approved validation continuation (2026-08-30)
 
-This successor decision supersedes the historical startup-only and capability
-descriptions below where later accepted packets have implemented them. W3A-H
-software checkpoints and installed evidence are recorded in the current
-[calibration guide](../guides/beam-line-calibration.md). It does not change
-public signatures, evidence levels, packet dependencies or professional holds.
+The owner requested controlled tests and comparison with the earlier building.
+The single-span and two-span installed benchmarks have already passed. Reuse
+their exact receipts; add a benchmark only when a declared new physical behavior
+requires one. An EB-compatible benchmark does not prove native shear-flexible
+building behavior. The saved building has a distinct later revision, and no old
+hash or analysis observation may be relabelled as current.
 
-The owner requested both controlled tests and comparison with the earlier real
-building. Keep three separate acceptance tracks; none substitutes for another:
-
-| Track | Reference and acceptance | Claim boundary |
-|---|---|---|
-| ETABS data transport | Exact saved revision, definitions, selection, units, every signed station row and canonical API/Excel bytes | Faithful transport of ETABS results, not independent analysis |
-| Beam design checks | Accepted ETABS actions plus explicit materials/detailing/applicability; use the same code/preferences/overwrites for any ETABS-design comparison | Public section checks only; absent installed rebar or serviceability remains held |
-| Independent force prediction | Authored benchmarks first, then physically supported building subcases with frozen mapping, scope and tolerances | Bounded numerical agreement; never arbitrary-model or whole-building parity |
-
-The earlier W2C building acceptance covers 153 beam result sets and 3,502 force
-stations with exact canonical JSON rejoin. The owner's subsequent save is a
-distinct revision with fresh W3H reference evidence; do not reuse the old file
-hash or relabel old results as current. Retain both revisions and their receipts.
-Replay saved reference hashes/contracts without opening applications when that
-answers the regression question; a replay is not fresh installed/Excel evidence.
-
-Continue with one separately authored two-span, linear-elastic software
-benchmark after the accepted single-span test. Freeze loads, connectivity,
-support conditions, stiffness/shear-deformation basis, signs, station domain,
-independent formulas and numerical tolerances before ETABS results exist.
-Do not fit supports, signs or tolerances to obtain a match. A deliberately
-Euler-Bernoulli-compatible benchmark does not validate native shear-flexible
-building behaviour. Use only a new model/instance and preserve the owner files.
-
-For later real models, first classify requested capabilities against observed
-connectivity, supports, releases/offsets, stiffness, loads/combination families,
-axes, slab participation and analysis settings. Unsupported or missing physical
-inputs remain explicit; they do not become zero or a guessed support. A scoped
-action-only study may be useful without proving displacements or full model
-calibration. The moving joints in the inspected building subcase do not prove
-that every member is unsuitable. Develop supported comparisons without asking
-the owner to invent missing engineering facts or treating professional sign-off
-as a blanket software-development prerequisite.
-
-The next progression is two-span verification, then asymmetric/patterned-load
-benchmarks and a bounded building capability/mapping assessment. No benchmark
-alone unlocks W3I: model-specific calibration and required screening criteria
-still govern candidate work. ETABS remains final global-analysis authority.
-No construction, professional approval, release or model optimization is
-authorized by this plan clarification. Windows owns this task branch; the Mac
-must fetch the accepted GitHub boundary before further work.
+Supported action-only comparisons remain possible in principle, but require
+independent loading/boundary evidence. Moving joints in one inspected candidate
+do not prove all members unsuitable. Complete model-specific criteria, not
+professional-signature permission, govern software calibration. Final ETABS
+global-analysis authority and all professional/release holds remain unchanged.
 
 ### W2 beam baseline: useful and bounded
 
@@ -295,9 +237,9 @@ before `FrameForce`. No partial accepted baseline is returned. These controls
 should be extended by linked snapshots rather than weakened or silently
 reinterpreted.
 
-### W2 gaps that matter to later work
+### W2 gaps and their W3 disposition
 
-The current baseline inventories case and combination names only to validate
+The W2 baseline inventories case and combination names only to validate
 explicitly requested selections. It does not expose a complete typed catalogue
 of:
 
@@ -310,7 +252,11 @@ of:
 - design-combination ownership or purpose; or
 - the exact definition digest used by a future local or ETABS reanalysis.
 
-It also retains endpoint topology but does not yet interpret a beam line,
+W3A-D now provide the accepted catalogue/demand subset described above. The
+list records why W3 was needed, not work to repeat. W3F supplies only bounded
+physical-definition evidence; completeness for calibration is still missing.
+
+The W2 baseline also retains endpoint topology but does not interpret a beam line,
 support condition, span continuity, releases, offsets, stiffness modifiers, or
 slab participation. Those are engineering-model inputs, not safe inferences
 from frame labels.
@@ -335,10 +281,10 @@ It does not evaluate torsion, serviceability, continuity, stiffness
 redistribution, model provenance, beam families, or whole-model constraints.
 Its result is therefore a fixed-action screening result.
 
-The current Pareto optimizer has an outcome-changing defect: it accepts
-`vu_kn` but its candidate path performs flexure only and marks candidates safe
-without a shear check. It must remain held from engineering or ETABS candidate
-selection until shear participates in feasibility and reported utilization.
+The historical Pareto shear omission was repaired in W3R/#907: shear now
+participates in feasibility and reported utilization. Do not repair it again.
+Its remaining torsion/serviceability/cost/global-analysis limits still prevent
+use as a complete W3I candidate evaluator.
 
 The rebar optimizer is a useful deterministic bar-arrangement helper for a
 known required steel area. It is not a frame solver, action generator,
@@ -346,9 +292,10 @@ torsion/shear design, or complete constructability optimizer.
 
 ### Independent analysis truth
 
-There is no accepted direct-stiffness or continuous-beam solver in the current
-library. The gravity workflow is solver-free, and the serviceability module
-explicitly limits its continuous-beam approximation. The older Project BHEEM
+W3G/#915 now provides an accepted bounded direct-stiffness beam-line solver;
+W3H/#917 supplies its comparator. Neither establishes actual-building L5.
+The separate gravity workflow remains solver-free, and canonical serviceability
+is still held; do not confuse the solver with a completed serviceability check. The older Project BHEEM
 masterplan contains a broad future FEM vision; it is not current capability,
 acceptance evidence, or the execution plan for this bounded programme.
 
@@ -412,7 +359,7 @@ snapshots with explicit scope:
 | Existing `ETABSBeamBaselineV1` | Complete bounded beam topology and same-row signed force stations for requested selections | Heavy immutable W2 evidence |
 | `ETABSDisplacementSnapshotV1` | Joint/member displacement rows for explicit selections, with node, step, units, source row and catalogue/baseline identity | Optional calibration evidence; new getter scope |
 | `BeamDemandSnapshotV1` | Compact member/scenario demand records with references to exact baseline station IDs | W3 design/audit input |
-| `ETABSReanalysisEvidenceV1` | Pre/post model identity, approved change plan, run status, fresh result identity, comparison and abort/revert evidence | Future W6 only |
+| `ETABSReanalysisEvidenceV1` | Pre/post model identity, approved change plan, run status, fresh result identity, comparison and abort/revert evidence | Future W3K only |
 
 The existing exported-file `ETABSCanonicalSnapshotV1` remains a useful
 export-first path, but its old `ProjectBeamDesignInputV1` projection must not be
@@ -829,6 +776,11 @@ or erase the existing verdict or establish general solver parity.
 
 ## Dependency-ordered execution packets
 
+The sections below preserve original contract scope and accepted implementation
+notes. Original owner labels/day ranges are historical planning context, not
+unstarted tasks or the remaining schedule. Use the current reset/status above
+for execution order; one writer and exact evidence boundaries still apply.
+
 ### P0 — Complete predecessor: PR #899 integrated
 
 PR #899 merged as exact commit `7af545ec0e239bac8fa6d480ecbb2b05a60aa40d`
@@ -949,7 +901,7 @@ Owner: Mac. Dependency: it does not block W3A-W3D, but it blocks all reuse of
 the Pareto optimizer for candidate selection. Indicative effort: 2-5 focused
 days. It must remain a separate candidate/PR from W3A.
 
-Confirmed defect: public `optimize_pareto_front(span_mm, mu_knm, vu_kn, ...)`
+Original defect, now repaired by #907: public `optimize_pareto_front(span_mm, mu_knm, vu_kn, ...)`
 accepts `vu_kn`, imports only flexure in its candidate path, sets
 `is_safe=True`, and reports flexural utilization without a shear check.
 
@@ -1232,6 +1184,9 @@ there is no infinite overnight loop or silent “best available” acceptance.
 
 ## Work sizing and critical path
 
+Remaining work is governed by the whole-W3 reset above. The following ranges
+described the original programme and must not be summed as a current forecast.
+
 The packet estimates above are planning ranges for one experienced developer,
 not delivery promises. W3A-W3D form the first contract/evidence milestone.
 W3E and W3F can be planned after W3D, but W3G depends on accepted topology/load
@@ -1277,9 +1232,6 @@ stable candidate ranking, and improving model-specific prediction error.
 
 Stop and request direction when:
 
-- the exact integrated W3-readiness predecessor no longer matches PR #899 merge
-  `7af545ec0e239bac8fa6d480ecbb2b05a60aa40d` and tree
-  `cc40650b7f6569227c880d61a9967ee3bbdfab31` before W3A branches;
 - an accepted packet's exact merge/tree or hash-linked predecessor cannot be
   verified before its successor begins;
 - the authorized model file, hash, ETABS version or result definitions change;
@@ -1299,18 +1251,10 @@ Stop and request direction when:
 
 ## Current continuation
 
-Do not restart accepted W3A-G work or request plan acceptance again. Follow the
-owner-approved three-track validation continuation above and the exact current
-[session brief](next-session-brief.md). The two-span EB-compatible benchmark
-now passes 112 comparisons after one installed analysis; saved-building
-baseline/catalogue/foundation regression also passes. See the
-[successor receipt](../verification/etabs-w3h-two-span-evidence.json).
-
-Follow the completion audit above: retain the bounded W3J review/rollback
-acceptance and address only the precise missing building mapping/criteria
-needed for W3H. Do not schedule another benchmark-only
-packet unless its result can resolve a declared acceptance row. Keep data
-transport, design checks and independent analysis distinct. Do not repeat the
-passed installed benchmarks, reopen building recovery, unlock W3I prematurely
-or claim model-specific calibration. No broad FEM, release or professional
-approval follows from a software checkpoint.
+Start with saved physical-basis reconciliation and the independent audit/criteria
+specification in the whole-W3 execution reset. Do not automatically resume the
+table launcher. The research audit identifies the existing text backup and
+documented export alternatives; neither is already validated model evidence.
+Retain accepted A-G/R/J work, the closed W3H attempts and all historical files.
+Do not repeat benchmarks, registration/recovery or completed validation repairs.
+Actual-building H, complete I/K/L, final integration and Mac review remain due.

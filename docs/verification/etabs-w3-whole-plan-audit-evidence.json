@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-W3-WHOLE-PLAN-AUDIT",
+  "observed_date": "2026-08-31",
+  "verdict": "WHOLE_W3_PLAN_REVISED_NO_LIVE_ACCEPTANCE",
+  "source": {
+    "accepted_pr": 933,
+    "commit": "ce9c799030754cbb105a308f45da9f66434392a8",
+    "tree": "8562f8fb0b9ce2b3320787ffec21d4ac62543206",
+    "fresh_fetch_and_github_merge_inspected": true,
+    "writer": "Windows; Mac NOT_CHECKED"
+  },
+  "audit_scope": [
+    "W3A-D",
+    "W3R",
+    "W3E",
+    "W3F",
+    "W3G",
+    "W3H",
+    "W3I",
+    "W3J",
+    "W3K",
+    "W3L",
+    "final integration/Mac review"
+  ],
+  "saved_source": {
+    "text_backup_bytes": 271593,
+    "text_backup_sha256": "ffa5b268708009210f9fe0e1a750d8edb4ee2639220e8f0ade64d695e86f26fe",
+    "edb_sha256": "92b3fa009f25b2228cc956cedb1b76268bb73414e16b361be334c0b3d81f6269",
+    "inspection": "Section inventory only; not a validated parser or semantic/revision reconciliation",
+    "definition_snapshot_accepted": false
+  },
+  "timing_subset": {
+    "sessions": 5,
+    "minutes": 146.552,
+    "last_three_minutes": 102.137,
+    "candidate_heads": 5,
+    "hosted_runs": 5,
+    "measurement": "Retained elapsed-session closeouts, not all W3 time or wasted-time attribution"
+  },
+  "research_findings": [
+    "Existing saved text backup precedes new acquisition",
+    "CSI 23.3 release documents SQLite export and .NET 10 COM support",
+    "Typed CLI and real collector remain unproved as one executable path",
+    "W3E mandatory serviceability, W3H physical suitability, W3I criteria and K/L implementation remain required"
+  ],
+  "external_evidence": {
+    "directory_key": "ETABS-W3-WHOLE-PLAN-AUDIT-20260831",
+    "files": {
+      "inspect_saved.py": "9c941c26c7c696bf5acf47c029bc57d70264ead487b1f3ee1eb66d3ca9298f6d",
+      "saved-input-audit.json": "3ec2b2ce538a6cd29da984ffd48a7b1bf42918dddeb0d91ba32aec8d58c5616e",
+      "installed-help-study.json": "4535a6181e04b1342ba0d2ea66db31004ffde700857e84d2b61b2cc068f12705",
+      "ACCEPTANCE.md": "0b48dd96e3a934a99f65979648d89650a60ca990b269afd1d27aab646596962e"
+    }
+  },
+  "actions": {
+    "application_attachments": 0,
+    "application_ui": 0,
+    "new_exports": 0,
+    "model_writes": 0,
+    "analysis_design_solver_benchmarks": 0,
+    "frozen_retries": 0,
+    "product_code_or_test_changes": 0
+  },
+  "remaining": {
+    "W3H_L5": "HELD",
+    "W3I_K_L": "HELD",
+    "canonical_required_serviceability": "HELD",
+    "final_integrated_gates_and_mac_review": "DUE_AFTER_INTENDED_INTEGRATION",
+    "professional_release_approval": "NOT_PROVIDED"
+  },
+  "integration_evidence": "External candidate audit, validation logs and final-closeout.json; no future hosted/merge result asserted in this pre-commit receipt"
+}
