@@ -332,3 +332,50 @@ replay path. This packet reuses the earlier replay's explicit `strict=False`
 intake, rejects any changed serialized value and changes no library contract.
 For open-workbook disk identity, a shared-read file handle can hash saved bytes
 without closing/saving Excel; it does not prove unsaved workbook content.
+
+### Installed mapping signatures (2026-08-31 successor)
+
+The [static mapping receipt](../verification/etabs-w3h-mapping-signatures-evidence.json)
+verifies forty selected operations against installed ETABS 23.3.1.4563 managed
+metadata, the current generated COM-wrapper AST and forty installed help topics.
+No COM instance was created and no model, workbook or application was operated.
+The five installed files were freshly hashed; the wrapper is not assumed to be
+byte-identical to its historical W3F generation. All parameter types, direction,
+order and six defaults match. Four case-only parameter spellings are preserved;
+use proved positional binding, not assumed cross-language keyword spellings.
+
+The installed analysis-frame interface is `cLineElm`, reached from
+`SapModel.LineElm`; there is no `cFrameElm`. `FrameObj.GetElm`, line/point/area
+element getters and object spring/area-load getters exist. Their existence is
+not complete semantic proof: installed help for the element getters omits
+connectivity type-code meanings, numeric units and fixed-array lengths. Do not
+infer these from similarly named object APIs or another CSI product/version.
+`FrameObj.GetSupports` describes supporting objects, not mechanical restraint
+or an isolated reduced system. Point spring property option 2 and area spring
+future-release placeholders cannot become ordinary linear stiffness values.
+
+The area-object load getters document pressure units, coordinate/direction and
+one-/two-way distribution assignments. They do **not** establish the complete
+slab-to-beam transferred action or prove all other load contributions absent.
+Spring assignment CSI failure is unavailable evidence, never a zero spring.
+Line and area spring properties use stiffness per length/area, unlike a point
+spring; all preserve their own nonlinear options and units.
+
+A documented alternative is `DatabaseTables.GetAvailableTables` followed by
+`GetAllFieldsInTable`: exact keys, versions, descriptions and per-field unit
+strings can be discovered without importing, editing or exporting model rows.
+Table display selection/options are separate from result-selection flags and
+must be guarded independently. No table key or field is presumed present yet.
+`GetTableForDisplayArray` is row-major with an exact record/column product, but
+has no row-limit argument: blank/All group requests all applicable objects. A
+post-return cap is not a server-side extraction bound.
+
+The next separate packet is therefore **read-only table catalogue/schema
+discovery**, not another analysis or a trial numeric mesh decoder. Its external
+`NEXT_PACKET.md` freezes the exact copied revision, full pre/post model and table
+selection guards, at most 1000 catalogue entries and twelve schemas of at most
+200 fields each. It reads zero frame/joint/area content and zero table data rows.
+If actual schema descriptions cannot close the graph/load/spring meanings,
+retain the exact unsupported-information hold. A later data read needs its own
+proved keys, bounds and shape contract. Actual-building L5, W3I/K/L and all
+professional/release claims remain held; software discovery needs no signature.
