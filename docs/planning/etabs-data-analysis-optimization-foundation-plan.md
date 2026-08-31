@@ -196,6 +196,14 @@ pre/post guards. It reads no model rows and makes no calibration claim. No new
 analysis, solver extension, benchmark-only packet or W3I advance resolves the
 remaining physical basis merely by producing more numerical agreement.
 
+The [subsequent table metadata attempt](../verification/etabs-w3h-table-metadata-evidence.json)
+stopped at its first table-display getter: CSI 1, count 0 and twelve null
+entries. Exact model/file guards were preserved; no catalogue, schema or model
+rows were read. This is not an accepted empty table selection. Next is a separate
+static-first same-getter transport diagnosis, not selection recovery, analysis,
+reinstall or optimization. The native cause remains unconfirmed, and actual-
+building L5/W3I/K/L holds are unchanged.
+
 ### Owner-approved validation continuation (2026-08-30)
 
 This successor decision supersedes the historical startup-only and capability

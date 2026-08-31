@@ -379,3 +379,32 @@ If actual schema descriptions cannot close the graph/load/spring meanings,
 retain the exact unsupported-information hold. A later data read needs its own
 proved keys, bounds and shape contract. Actual-building L5, W3I/K/L and all
 professional/release claims remain held; software discovery needs no signature.
+
+### Table metadata guard failure (2026-08-31 successor)
+
+The [installed metadata receipt](../verification/etabs-w3h-table-metadata-evidence.json)
+records the next packet's bounded stop. Exact copied-file identity, locked
+state, present/database units, fifteen finished case statuses and all 77 result
+flags passed before/after one existing-instance attachment. No visible dialog
+appeared. Eleven saved-file identities and every earlier lane were preserved.
+
+The first required table-display getter, `GetLoadCasesSelectedForDisplay`,
+returned count 0, twelve null array entries and CSI code 1 for explicit in/out
+placeholders `(0, [])`. The maintained decoder correctly failed closed. This
+does not mean no selected cases or no available tables. Catalogue/schema calls
+were NOT_REQUESTED after the failure, and no table data row was read. Table-
+display preservation is NOT_PROVED; full model-guard preservation is proved.
+
+The internal CSI/COM cause is unconfirmed. Successful model guards and exact
+installed/runtime hashes do not establish whether the issue is marshaling,
+table-provider behavior or another native condition. In particular, do not
+label this trial-license denial, demand another analysis or recommend reinstall.
+The installed comtypes code constructs omitted typed-null and explicit empty
+SAFEARRAY parameters differently, but no causal comparison was executed.
+
+Next is a separately frozen, static-first transport diagnosis of this same
+getter, possibly through the installed managed interface. Preserve the exact
+failed response; compare like input conditions or explicitly record any changed
+placeholder variable. Do not retry the metadata campaign, skip selection guards,
+change table/result selections, or export rows in that diagnostic. Actual-
+building calibration and W3I/K/L remain held, not declared impossible.
