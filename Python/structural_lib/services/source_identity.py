@@ -15,6 +15,7 @@ from structural_lib.core.source_identity import (
 __all__ = [
     "AMENDMENT_6_SOURCE_ID",
     "BEAM_STRENGTH_SOURCE_BASIS",
+    "BEAM_SERVICEABILITY_SOURCE_BASIS",
     "IS456_CONSOLIDATED_SOURCE_ID",
     "AmendmentApplicability",
     "ControlledSourceBasisV1",
@@ -63,4 +64,12 @@ BEAM_STRENGTH_SOURCE_BASIS = ControlledSourceBasisV1(
     amendment_identity=AMENDMENT_6_SOURCE_ID,
     amendment_applicability=AmendmentApplicability.REVIEWED_NO_CALCULATION_CHANGE,
     applicability_review_id="LIB-PRO-002-E-BEAM-AMENDMENT-REVIEW",
+)
+
+BEAM_SERVICEABILITY_SOURCE_BASIS = ControlledSourceBasisV1(
+    route_id="canonical_beam_serviceability_v1",
+    source_ids=(IS456_CONSOLIDATED_SOURCE_ID, AMENDMENT_6_SOURCE_ID),
+    amendment_identity=AMENDMENT_6_SOURCE_ID,
+    amendment_applicability=AmendmentApplicability.REVIEWED_NO_CALCULATION_CHANGE,
+    applicability_review_id="ETABS-W3E-SERVICEABILITY-CLAUSES-23-35-ANNEX-F",
 )

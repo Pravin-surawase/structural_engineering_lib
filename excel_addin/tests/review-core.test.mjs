@@ -4,7 +4,7 @@ import fs from "node:fs";
 import test from "node:test";
 import { ETABS_REVIEW_TABLES, projectCalculationReview, validateReviewRows } from "../review-core.mjs";
 
-const fixture = () => JSON.parse(fs.readFileSync(new URL("./fixtures/calculation-review-reinforcement-v2.json", import.meta.url), "utf8"));
+const fixture = () => JSON.parse(fs.readFileSync(new URL("./fixtures/calculation-review-serviceability-v3.json", import.meta.url), "utf8"));
 test("Python-produced review fixture projects complete same-row signed evidence", async () => {
   const transport = fixture();
   const projection = await projectCalculationReview(transport, { cryptoImpl: webcrypto });
@@ -22,9 +22,17 @@ test("Python-produced review fixture projects complete same-row signed evidence"
     assert.equal(row[9], station.selection.name);
   }
   assert.equal(projection.tables.checks.length, 12);
-  assert.ok(projection.tables.checks.some((row) => row[2] === "serviceability" && row[3] !== "PRESENT"));
+  const services = projection.tables.checks.filter((row) => row[2] === "serviceability");
+  assert.equal(services.length, 3);
+  assert.ok(services.every((row) => row[1] === "SLS-1" && row[3] === "PRESENT" && row[4] === "PASS"));
   assert.equal(projection.projectedRows, validateReviewRows(projection.tables));
   for (const [key, spec] of Object.entries(ETABS_REVIEW_TABLES)) assert.ok(projection.tables[key].every((row) => row.length === spec.headers.length));
+});
+
+test("Historical missing serviceability is still displayed without a pass", async () => {
+  const historical = JSON.parse(fs.readFileSync(new URL("./fixtures/calculation-review-reinforcement-v2.json", import.meta.url), "utf8"));
+  const projection = await projectCalculationReview(historical, { cryptoImpl: webcrypto });
+  assert.ok(projection.tables.checks.some((row) => row[2] === "serviceability" && row[3] !== "PRESENT"));
 });
 
 for (const field of ["dossier_content_sha256", "dossier_utf8_bytes", "request_json", "scope_json"]) test(`Review rejects corrupted ${field} before publication`, async () => {

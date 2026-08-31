@@ -45,6 +45,10 @@ from structural_lib.services.project_beam import (
     EffectiveDepthBasisV1,
     resolve_effective_depth_v1,
 )
+from structural_lib.services.source_identity import (
+    BEAM_STRENGTH_SOURCE_BASIS,
+    ControlledSourceBasisV1,
+)
 
 from .api_results import (
     CostBreakdown,
@@ -1471,6 +1475,7 @@ def _design_beam_is456_calculation(
     effective_depth_basis: (
         EffectiveDepthBasisV1 | CentroidCoverDepthBasisV1 | None
     ) = None,
+    source_basis: ControlledSourceBasisV1 = BEAM_STRENGTH_SOURCE_BASIS,
 ) -> ComplianceCaseResult:
     """Design/check a single IS 456 beam case (strength + optional serviceability).
 
@@ -1648,6 +1653,7 @@ def _design_beam_is456_calculation(
         raise TypeError("Serviceability parameters must expose a mapping contract.")
 
     evidence = build_beam_evidence_envelope(
+        source_basis=source_basis,
         inputs={
             "units": units,
             "case_id": case_id,

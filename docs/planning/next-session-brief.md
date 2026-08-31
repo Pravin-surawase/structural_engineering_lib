@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-31
-- Focus: Correct the actual reinforcement calculation path before expanding W3E.
-- Completed: Added compatible centroid-cover and separate-transverse-grade contracts and; Corrected shear grade limitation and unsafe sub-minimum spacing rounding.; Corrected torsion transverse formula/floor, corner geometry and opposite-face
-- Git receipt: docs/verification/etabs-w3-reinforcement-git-handoff-receipt.json | sha256:c849ee271534ad9c26f71d9912092c332f642248adb692275be810509c12ffcb | HOLD
-- Git identity: codex/etabs-w3e-root-cause-fixes-windows@349502d31236680d32d58f7ff2d412d279f3e10f | upstream=origin/main@349502d31236680d32d58f7ff2d412d279f3e10f | base=origin/main@349502d31236680d32d58f7ff2d412d279f3e10f | tree=dirty | operation=none
+- Focus: Complete the simplest source-supported serviceability path without new analysis or inferred inputs.
+- Completed: Added strict complete span/depth and supplied Annex F service checks through; Kept separate service-case/source/geometry/bar-revision evidence; no factored; Corrected aggressive crack-width limits and added explicit EXTREME handling.
+- Git receipt: docs/verification/etabs-w3-serviceability-git-handoff-receipt.json | sha256:aa8a18b3a5ae43dafa938f57641dfbd52427e85325b27a9ce7780ff762288dc9 | HOLD
+- Git identity: codex/etabs-w3e-serviceability-windows@773d96739aaa68d5205d606010f0e0540dc4aa7c | upstream=origin/main@773d96739aaa68d5205d606010f0e0540dc4aa7c | base=origin/main@773d96739aaa68d5205d606010f0e0540dc4aa7c | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -15,14 +15,14 @@
 ## Current boundary
 
 The [whole-W3 reset](etabs-data-analysis-optimization-foundation-plan.md#whole-w3-execution-reset-2026-08-31) owns sequencing; the [saved-basis decision](etabs-w3-saved-basis-and-criteria.md) owns the current next packet.
-Source: accepted PR #935 merge `349502d31236680d32d58f7ff2d412d279f3e10f`; [current root-cause packet](etabs-w3-reinforcement-root-causes.md).
-Fetch the accepted root-cause packet before continuing; Windows owns this branch, Mac NOT_CHECKED.
+Source: accepted PR #936 merge `773d96739aaa68d5205d606010f0e0540dc4aa7c`; [current serviceability packet](etabs-w3-serviceability.md).
+Windows owns the bounded serviceability branch; exact external integration receipt governs acceptance. Mac NOT_CHECKED.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | Reinforcement root causes implemented: separate grades, centroid depth, shear cap/spacing, torsion equation/geometry/opposite-face checks. Candidate gates and integration receipt govern acceptance. No live calls. |
+| **Current** | Strict span/depth <=10 m and supplied Annex F inputs implemented through canonical/W3 checks. Complete service evidence required; separate SLS identity and exact row/location binding. Candidate gates/integration receipt govern acceptance. No live calls. |
 | Migration | Nonzero raw torsion now requires explicit corner-bar geometry and opposite depth. Al is total Me1/Me2 required tension steel, not additive torsion steel; source-corrected G7 replaces historical numbers. |
-| **Next** | Strict serviceability contracts and mandatory detailing/constructability criteria. Torsion detailing/BBS remains held until corner/perimeter distribution is implemented. Reuse corrected owners; do not repeat pilot inputs. |
+| **Next** | Project service-input evidence and mandatory detailing/constructability criteria. Direct/long-term deflection and torsion detailing/BBS remain held. Reuse accepted owners; do not repeat pilot inputs. |
 | H route | Stop broad table diagnosis. Acquire only named support/mesh/transfer gaps after physical route choice; more getters cannot fix unsupported solver physics. No solver fitting. |
 | Retained | A-D/R, bounded E/F/G/H/J acceptance; #925 repair closed. #931 CSI 1 and #932 binder causes unconfirmed; #933 timestamp defect confirmed. No frozen retry. |
 | Held | Actual-building H; required serviceability and installed-rebar claims; I/K/L; final combined gates/Mac review; professional/release approval. |

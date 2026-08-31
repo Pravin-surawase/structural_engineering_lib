@@ -10,7 +10,11 @@ from enum import Enum
 from typing import TYPE_CHECKING, Any, Protocol, runtime_checkable
 
 from structural_lib.codes.is456.beam.detailing import BeamDetailingResult
-from structural_lib.core.data_types import ComplianceCaseResult
+from structural_lib.core.data_types import (
+    ComplianceCaseResult,
+    CrackWidthParams,
+    DeflectionParams,
+)
 from structural_lib.core.errors import (
     CalculationError,
     InputContractError,
@@ -34,9 +38,16 @@ from structural_lib.services.contracts.beam import (
     IS456ReinforcementMaterialsV1,
     MemberIdentityV1,
 )
+from structural_lib.services.contracts.beam_serviceability import (
+    BeamServiceabilityChecksV1,
+)
 from structural_lib.services.project_beam import (
     EffectiveDepthBasisV1,
     resolve_effective_depth_v1,
+)
+from structural_lib.services.source_identity import (
+    BEAM_SERVICEABILITY_SOURCE_BASIS,
+    BEAM_STRENGTH_SOURCE_BASIS,
 )
 
 if TYPE_CHECKING:
@@ -137,7 +148,11 @@ def _envelope(
             contract_version=BEAM_DESIGN_SCHEMA_VERSION,
             library_version=get_runtime_version(),
             input_hash=_input_hash(request),
-            calculation_identity="is456-rectangular-beam-strength/v2",
+            calculation_identity=(
+                "is456-rectangular-beam-serviceability/v1"
+                if isinstance(request.serviceability, BeamServiceabilityChecksV1)
+                else "is456-rectangular-beam-strength/v2"
+            ),
         ),
     )
 
@@ -358,6 +373,30 @@ def design(request: BeamDesignInputV1) -> BeamDesignResultV1:
     from structural_lib.services.beam_api import _design_beam_is456_calculation
 
     detailing = request.detailing
+    service = request.serviceability
+    deflection_params: DeflectionParams | None = None
+    crack_width_params: CrackWidthParams | None = None
+    if isinstance(service, BeamServiceabilityChecksV1):
+        deflection, crack = service.deflection, service.crack_width
+        deflection_params = {
+            "span_mm": deflection.effective_span_mm,
+            "d_mm": service.basis.d_mm,
+            "support_condition": deflection.support_condition,
+            "mf_tension_steel": deflection.mf_tension_steel,
+            "mf_compression_steel": deflection.mf_compression_steel,
+            "mf_flanged": 1.0,
+        }
+        crack_width_params = {
+            "exposure_class": crack.exposure_class,
+            "limit_mm": crack.limit_mm,
+            "acr_mm": crack.acr_mm,
+            "cmin_mm": crack.cmin_mm,
+            "h_mm": service.basis.h_mm,
+            "x_mm": crack.x_mm,
+            "epsilon_m": crack.epsilon_m,
+            "fs_service_nmm2": crack.fs_service_nmm2,
+            "es_nmm2": crack.es_nmm2,
+        }
     corner_centres = None
     if request.actions.tu_knm > 0:
         assert detailing is not None
@@ -395,8 +434,13 @@ def design(request: BeamDesignInputV1) -> BeamDesignResultV1:
         asv_mm2=request.calculation_basis.asv_mm2,
         pt_percent=request.calculation_basis.pt_percent,
         ast_mm2_for_shear=request.calculation_basis.ast_mm2_for_shear,
-        deflection_params=None,
-        crack_width_params=None,
+        deflection_params=deflection_params,
+        crack_width_params=crack_width_params,
+        source_basis=(
+            BEAM_SERVICEABILITY_SOURCE_BASIS
+            if isinstance(service, BeamServiceabilityChecksV1)
+            else BEAM_STRENGTH_SOURCE_BASIS
+        ),
         tu_knm=request.actions.tu_knm,
         cover_mm=detailing.clear_cover_mm if detailing is not None else None,
         stirrup_dia_mm=(
@@ -412,11 +456,19 @@ def design(request: BeamDesignInputV1) -> BeamDesignResultV1:
             failed_checks=calculation.failed_checks,
         ),
         limitations=(
-            "Rectangular IS 456 beam strength route only.",
+            "Rectangular IS 456 beam strength with only explicitly requested bounded serviceability checks.",
             "Factored actions are supplied by the caller; load generation is excluded.",
+            "Service factors, service strains and bar revision are caller evidence, not independently derived or installed-steel acceptance.",
+            "Span/depth <=10 m and Annex F tension-surface flexural cracks only; direct/long-term deflection and other cracking remain outside this route.",
         ),
         assumptions=("Actions use the documented non-negative magnitude convention.",),
-        provenance=("IS 456 maintained calculation owners",),
+        provenance=("IS 456 maintained calculation owners",)
+        + (
+            BEAM_SERVICEABILITY_SOURCE_BASIS.source_ids
+            + (str(BEAM_SERVICEABILITY_SOURCE_BASIS.applicability_review_id),)
+            if isinstance(service, BeamServiceabilityChecksV1)
+            else ()
+        ),
     )
 
 
@@ -469,6 +521,16 @@ def detail(
             )
         )
     request = design_result.request
+    if isinstance(request.serviceability, BeamServiceabilityChecksV1):
+        raise InputContractError(
+            (
+                InputIssueV1(
+                    code="CONSUMER_RESULT_NOT_ACCEPTED",
+                    path="request.serviceability",
+                    message="SERVICEABILITY_DETAILING_SCOPE_HOLD: generated bars require a new service analysis and bar-revision binding; the supplied service PASS cannot certify automatic detailing or BBS",
+                ),
+            )
+        )
     if request.actions.tu_knm > 0:
         raise InputContractError(
             (

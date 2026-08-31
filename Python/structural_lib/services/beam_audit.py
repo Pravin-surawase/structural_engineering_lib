@@ -32,6 +32,9 @@ from structural_lib.services.contracts.beam import (
     MemberIdentityV1,
     RectangularBeamSectionV1,
 )
+from structural_lib.services.contracts.beam_serviceability import (
+    BeamServiceabilityChecksV1,
+)
 from structural_lib.services.contracts.common import StrictPublicModel
 from structural_lib.services.contracts.etabs_w3 import (
     BeamDemandDerivationRequestV1,
@@ -44,6 +47,8 @@ from structural_lib.services.contracts.etabs_w3 import (
 __all__ = [
     "BeamAuditApplicabilityBasisV1",
     "BeamAuditMemberBasisV1",
+    "BeamAuditServiceabilityRowV1",
+    "BeamAuditServiceabilityV1",
     "BeamAuditInputBuildRequestV1",
     "BeamAuditInputBuildResultV1",
     "BeamAuditInputsV1",
@@ -82,6 +87,18 @@ class BeamAuditApplicabilityBasisV1(StrictPublicModel):
         return self
 
 
+class BeamAuditServiceabilityRowV1(StrictPublicModel):
+    """Explicit association, not a conversion from ULS to SLS demand."""
+
+    action_row_id: str = Field(min_length=1)
+    action_row_sha256: str = Field(pattern=_SHA)
+    checks: BeamServiceabilityChecksV1
+
+
+class BeamAuditServiceabilityV1(StrictPublicModel):
+    rows: tuple[BeamAuditServiceabilityRowV1, ...] = Field(min_length=1)
+
+
 class BeamAuditMemberBasisV1(StrictPublicModel):
     member_id: str = Field(min_length=1)
     section: EvidenceValueV1[RectangularBeamSectionV1]
@@ -89,8 +106,7 @@ class BeamAuditMemberBasisV1(StrictPublicModel):
     calculation_basis: EvidenceValueV1[BeamCalculationBasisV1]
     detailing: EvidenceValueV1[BeamDetailingOptionsV1]
     applicability: EvidenceValueV1[BeamAuditApplicabilityBasisV1]
-    # Required serviceability blocks until the canonical typed route exists.
-    serviceability_basis: EvidenceValueV1[str]
+    serviceability_basis: EvidenceValueV1[str | BeamAuditServiceabilityV1]
     assumptions: tuple[str, ...] = Field(min_length=1)
 
 
@@ -109,7 +125,7 @@ class BeamAuditRowInputV1(StrictPublicModel):
     demand_governing_reference_ids: tuple[str, ...]
     basis_source_references: tuple[str, ...]
     assumptions: tuple[str, ...]
-    serviceability_basis: EvidenceValueV1[str]
+    serviceability_basis: EvidenceValueV1[str | BeamAuditServiceabilityV1]
 
 
 class BeamAuditInputsV1(StrictPublicModel):
@@ -168,7 +184,7 @@ class BeamAuditEvaluationResultV1(StrictPublicModel):
     evaluation_sha256: str = Field(pattern=_SHA)
     limitations: tuple[str, ...] = (
         "Software strength-design checks only; required steel is not installed-steel acceptance.",
-        "Canonical serviceability remains held; no global analysis or professional approval.",
+        "Only explicit bounded service inputs are evaluated; no global analysis or professional approval.",
         "Independent extrema remain references only; every evaluation uses one signed source row.",
     )
 
@@ -263,6 +279,23 @@ def build_beam_audit_inputs_v1(
             )
         )
     frames = {frame.member_id: frame for frame in request.demand.baseline.frames}
+    for member_id, member_basis in bases.items():
+        service_set = member_basis.serviceability_basis.value
+        if isinstance(service_set, BeamAuditServiceabilityV1):
+            expected = {
+                (a.row_id, a.row_sha256) for a in actions if a.member_id == member_id
+            }
+            supplied = {
+                (s.action_row_id, s.action_row_sha256) for s in service_set.rows
+            }
+            if supplied != expected or len(supplied) != len(service_set.rows):
+                issues.append(
+                    _issue(
+                        "BEAM_AUDIT_SERVICE_ROW_MISMATCH",
+                        member_id,
+                        "service evidence must bind every retained row exactly once by id and digest",
+                    )
+                )
     rows: list[BeamAuditRowInputV1] = []
     for action in actions:
         basis = bases.get(action.member_id)
@@ -277,15 +310,17 @@ def build_beam_audit_inputs_v1(
             )
             continue
         service = basis.serviceability_basis
+        typed_service = isinstance(service.value, BeamAuditServiceabilityV1)
         if service.state is EvidenceStateV1.BLOCKED or (
             request.require_serviceability
             and service.state is not EvidenceStateV1.NOT_APPLICABLE
+            and not typed_service
         ):
             issues.append(
                 _issue(
                     "BEAM_AUDIT_REQUIRED_SERVICEABILITY_BLOCKED",
                     f"member_bases:{action.member_id}.serviceability_basis",
-                    "Required serviceability cannot be evaluated by the current canonical route; "
+                    "Required serviceability needs complete typed service checks; "
                     f"scenario={request.demand.scenario.scenario_id}, row={action.row_id}, "
                     f"source_state={service.state.value}. No partial accepted audit is returned.",
                 )
@@ -341,6 +376,34 @@ def build_beam_audit_inputs_v1(
                 )
             )
             continue
+        face: Literal["TOP", "BOTTOM", "ZERO_MOMENT"] = "ZERO_MOMENT"
+        if action.m3_knm > 0:
+            face = applicability.positive_m3_tension_face
+        elif action.m3_knm < 0:
+            face = applicability.negative_m3_tension_face
+        service_checks = None
+        if isinstance(service.value, BeamAuditServiceabilityV1):
+            matched = [
+                s
+                for s in service.value.rows
+                if (s.action_row_id, s.action_row_sha256)
+                == (action.row_id, action.row_sha256)
+            ]
+            if len(matched) != 1:
+                continue  # Complete-domain issue above prevents any partial acceptance.
+            service_checks = matched[0].checks
+            if (
+                service_checks.basis.station_mm != action.object_station_mm
+                or service_checks.basis.tension_face != face
+            ):
+                issues.append(
+                    _issue(
+                        "BEAM_AUDIT_SERVICE_LOCATION_MISMATCH",
+                        action.row_id,
+                        "service evidence must match the retained station and explicit tension face; zero-moment association is unsupported",
+                    )
+                )
+                continue
         try:
             canonical = BeamDesignInputV1(
                 identity=MemberIdentityV1(
@@ -357,6 +420,7 @@ def build_beam_audit_inputs_v1(
                 ),
                 calculation_basis=calculation,
                 detailing=detailing,
+                serviceability=service_checks,
                 source_provenance=f"beam-audit:{request.accepted_snapshot.snapshot_sha256}:{action.row_sha256}",
             )
         except ValidationError as exc:
@@ -364,11 +428,6 @@ def build_beam_audit_inputs_v1(
                 _issue("BEAM_AUDIT_CANONICAL_INPUT_BLOCKED", action.row_id, str(exc))
             )
             continue
-        face: Literal["TOP", "BOTTOM", "ZERO_MOMENT"] = "ZERO_MOMENT"
-        if action.m3_knm > 0:
-            face = applicability.positive_m3_tension_face
-        elif action.m3_knm < 0:
-            face = applicability.negative_m3_tension_face
         rows.append(
             BeamAuditRowInputV1(
                 action=action,
@@ -509,27 +568,63 @@ def evaluate_beam_audit_v1(
                 )
             )
         service = row.serviceability_basis
-        state = (
-            service.state
-            if service.state is not EvidenceStateV1.PRESENT
-            else EvidenceStateV1.UNAVAILABLE
-        )
-        missing = _not_evaluated(
-            state,
-            service.reason_code or "CANONICAL_SERVICEABILITY_SCOPE_HOLD",
-            service.message
-            or "Strict canonical serviceability is not implemented; supplied basis retained without a pass claim.",
-            refs + service.source_references,
-        )
+        service_checks = row.canonical_request.serviceability
+        service_scenario = scenario_id
+        if isinstance(service_checks, BeamServiceabilityChecksV1):
+            assert (
+                calculation.deflection is not None
+                and calculation.crack_width is not None
+            )
+            service_scenario = service_checks.basis.service_case_id
+            service_refs = (
+                refs
+                + service.source_references
+                + (
+                    f"service-source:{service_checks.basis.source_sha256}",
+                    service_checks.basis.source_reference,
+                    service_checks.basis.service_load_reference,
+                    service_checks.basis.reinforcement_reference,
+                )
+            )
+            outcome = EvidenceValueV1[Literal["PASS", "FAIL"]](
+                state=EvidenceStateV1.PRESENT,
+                value=(
+                    "PASS"
+                    if calculation.deflection.is_ok and calculation.crack_width.is_ok
+                    else "FAIL"
+                ),
+                source_references=service_refs,
+            )
+            utilization = EvidenceValueV1[float](
+                state=EvidenceStateV1.PRESENT,
+                value=max(
+                    calculation.utilizations["deflection"],
+                    calculation.utilizations["crack_width"],
+                ),
+                source_references=service_refs,
+            )
+        else:
+            state = (
+                service.state
+                if service.state is not EvidenceStateV1.PRESENT
+                else EvidenceStateV1.UNAVAILABLE
+            )
+            missing = _not_evaluated(
+                state,
+                service.reason_code or "CANONICAL_SERVICEABILITY_SCOPE_HOLD",
+                service.message
+                or "Complete typed service checks are absent; supplied text retained without a pass claim.",
+                refs + service.source_references,
+            )
+            outcome = EvidenceValueV1[Literal["PASS", "FAIL"]].model_validate(missing)
+            utilization = EvidenceValueV1[float].model_validate(missing)
         checks.append(
             BeamAuditCheckV1(
                 check="serviceability",
-                scenario_id=scenario_id,
+                scenario_id=service_scenario,
                 action_row_id=row.action.row_id,
-                outcome=EvidenceValueV1[Literal["PASS", "FAIL"]].model_validate(
-                    missing
-                ),
-                utilization=EvidenceValueV1[float].model_validate(missing),
+                outcome=outcome,
+                utilization=utilization,
                 clause_references=(
                     calculation.clause_refs["deflection"],
                     calculation.clause_refs["crack_width"],
@@ -555,7 +650,7 @@ def evaluate_beam_audit_v1(
         )
     governors: list[BeamAuditCheckV1] = []
     for member_id in sorted({row.input.action.member_id for row in rows}):
-        for name in ("flexure", "shear", "torsion"):
+        for name in ("flexure", "shear", "torsion", "serviceability"):
             candidates = [
                 (row, check)
                 for row in rows
@@ -578,8 +673,11 @@ def evaluate_beam_audit_v1(
     held = bool(inputs.source_request.demand.scenario.held_checks) or (
         inputs.source_request.require_serviceability
         and any(
-            row.input.serviceability_basis.state is not EvidenceStateV1.NOT_APPLICABLE
+            check.outcome.state
+            not in (EvidenceStateV1.PRESENT, EvidenceStateV1.NOT_APPLICABLE)
             for row in rows
+            for check in row.checks
+            if check.check == "serviceability"
         )
     )
     return _evaluation_result(

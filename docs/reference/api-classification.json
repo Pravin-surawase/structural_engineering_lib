@@ -71,6 +71,94 @@
             "title": "BeamActionsV1",
             "type": "object"
           },
+          "BeamAnnexFCrackCheckV1": {
+            "additionalProperties": false,
+            "description": "Supplied mean strain at the tension surface; not fs/Es by substitution.",
+            "properties": {
+              "method": {
+                "const": "IS456_ANNEX_F_TENSION_SURFACE",
+                "title": "Method",
+                "type": "string"
+              },
+              "exposure_class": {
+                "enum": [
+                  "MILD",
+                  "MODERATE",
+                  "SEVERE",
+                  "VERY_SEVERE",
+                  "EXTREME"
+                ],
+                "title": "Exposure Class",
+                "type": "string"
+              },
+              "cracking_harmful": {
+                "title": "Cracking Harmful",
+                "type": "boolean"
+              },
+              "limit_mm": {
+                "exclusiveMinimum": 0,
+                "maximum": 0.3,
+                "title": "Limit Mm",
+                "type": "number"
+              },
+              "limit_reference": {
+                "minLength": 1,
+                "title": "Limit Reference",
+                "type": "string"
+              },
+              "acr_mm": {
+                "exclusiveMinimum": 0,
+                "title": "Acr Mm",
+                "type": "number"
+              },
+              "cmin_mm": {
+                "exclusiveMinimum": 0,
+                "title": "Cmin Mm",
+                "type": "number"
+              },
+              "x_mm": {
+                "exclusiveMinimum": 0,
+                "title": "X Mm",
+                "type": "number"
+              },
+              "epsilon_m": {
+                "minimum": 0,
+                "title": "Epsilon M",
+                "type": "number"
+              },
+              "fs_service_nmm2": {
+                "minimum": 0,
+                "title": "Fs Service Nmm2",
+                "type": "number"
+              },
+              "es_nmm2": {
+                "exclusiveMinimum": 0,
+                "title": "Es Nmm2",
+                "type": "number"
+              },
+              "strain_geometry_reference": {
+                "minLength": 1,
+                "title": "Strain Geometry Reference",
+                "type": "string"
+              }
+            },
+            "required": [
+              "method",
+              "exposure_class",
+              "cracking_harmful",
+              "limit_mm",
+              "limit_reference",
+              "acr_mm",
+              "cmin_mm",
+              "x_mm",
+              "epsilon_m",
+              "fs_service_nmm2",
+              "es_nmm2",
+              "strain_geometry_reference"
+            ],
+            "title": "BeamAnnexFCrackCheckV1",
+            "type": "object"
+          },
           "BeamCalculationBasisV1": {
             "additionalProperties": false,
             "description": "Explicit section/reinforcement values consumed by strength calculation.",
@@ -186,6 +274,115 @@
             "title": "BeamDetailingOptionsV1",
             "type": "object"
           },
+          "BeamServiceabilityBasisV1": {
+            "additionalProperties": false,
+            "description": "Caller-owned service analysis bound to a section, station and bar revision.",
+            "properties": {
+              "member_id": {
+                "maxLength": 80,
+                "minLength": 1,
+                "title": "Member Id",
+                "type": "string"
+              },
+              "service_case_id": {
+                "maxLength": 80,
+                "minLength": 1,
+                "title": "Service Case Id",
+                "type": "string"
+              },
+              "station_mm": {
+                "minimum": 0,
+                "title": "Station Mm",
+                "type": "number"
+              },
+              "tension_face": {
+                "enum": [
+                  "TOP",
+                  "BOTTOM"
+                ],
+                "title": "Tension Face",
+                "type": "string"
+              },
+              "b_mm": {
+                "exclusiveMinimum": 0,
+                "title": "B Mm",
+                "type": "number"
+              },
+              "h_mm": {
+                "exclusiveMinimum": 0,
+                "title": "H Mm",
+                "type": "number"
+              },
+              "d_mm": {
+                "exclusiveMinimum": 0,
+                "title": "D Mm",
+                "type": "number"
+              },
+              "reinforcement_reference": {
+                "minLength": 1,
+                "title": "Reinforcement Reference",
+                "type": "string"
+              },
+              "service_load_reference": {
+                "minLength": 1,
+                "title": "Service Load Reference",
+                "type": "string"
+              },
+              "source_reference": {
+                "minLength": 1,
+                "title": "Source Reference",
+                "type": "string"
+              },
+              "source_sha256": {
+                "pattern": "^[0-9a-f]{64}$",
+                "title": "Source Sha256",
+                "type": "string"
+              }
+            },
+            "required": [
+              "member_id",
+              "service_case_id",
+              "station_mm",
+              "tension_face",
+              "b_mm",
+              "h_mm",
+              "d_mm",
+              "reinforcement_reference",
+              "service_load_reference",
+              "source_reference",
+              "source_sha256"
+            ],
+            "title": "BeamServiceabilityBasisV1",
+            "type": "object"
+          },
+          "BeamServiceabilityChecksV1": {
+            "additionalProperties": false,
+            "description": "Both bounded checks are mandatory; opaque/partial method inputs stay held.",
+            "properties": {
+              "schema_version": {
+                "const": "beam-serviceability-checks/v1",
+                "title": "Schema Version",
+                "type": "string"
+              },
+              "basis": {
+                "$ref": "#/$defs/BeamServiceabilityBasisV1"
+              },
+              "deflection": {
+                "$ref": "#/$defs/BeamSpanDepthCheckV1"
+              },
+              "crack_width": {
+                "$ref": "#/$defs/BeamAnnexFCrackCheckV1"
+              }
+            },
+            "required": [
+              "schema_version",
+              "basis",
+              "deflection",
+              "crack_width"
+            ],
+            "title": "BeamServiceabilityChecksV1",
+            "type": "object"
+          },
           "BeamServiceabilityV1": {
             "additionalProperties": false,
             "description": "Explicit opt-in serviceability parameters consumed by the beam service.",
@@ -218,6 +415,65 @@
               }
             },
             "title": "BeamServiceabilityV1",
+            "type": "object"
+          },
+          "BeamSpanDepthCheckV1": {
+            "additionalProperties": false,
+            "description": "Cl 23.2.1, rectangular member <=10 m; externally justified Fig 4/5 factors.",
+            "properties": {
+              "method": {
+                "const": "IS456_SPAN_DEPTH",
+                "title": "Method",
+                "type": "string"
+              },
+              "effective_span_mm": {
+                "exclusiveMinimum": 0,
+                "maximum": 10000,
+                "title": "Effective Span Mm",
+                "type": "number"
+              },
+              "support_condition": {
+                "enum": [
+                  "CANTILEVER",
+                  "SIMPLY_SUPPORTED",
+                  "CONTINUOUS"
+                ],
+                "title": "Support Condition",
+                "type": "string"
+              },
+              "mf_tension_steel": {
+                "exclusiveMinimum": 0,
+                "maximum": 2,
+                "title": "Mf Tension Steel",
+                "type": "number"
+              },
+              "mf_compression_steel": {
+                "maximum": 1.5,
+                "minimum": 1,
+                "title": "Mf Compression Steel",
+                "type": "number"
+              },
+              "span_support_reference": {
+                "minLength": 1,
+                "title": "Span Support Reference",
+                "type": "string"
+              },
+              "modification_factors_reference": {
+                "minLength": 1,
+                "title": "Modification Factors Reference",
+                "type": "string"
+              }
+            },
+            "required": [
+              "method",
+              "effective_span_mm",
+              "support_condition",
+              "mf_tension_steel",
+              "mf_compression_steel",
+              "span_support_reference",
+              "modification_factors_reference"
+            ],
+            "title": "BeamSpanDepthCheckV1",
             "type": "object"
           },
           "CentroidCoverDepthRequestV1": {
@@ -473,10 +729,14 @@
                 "$ref": "#/$defs/BeamServiceabilityV1"
               },
               {
+                "$ref": "#/$defs/BeamServiceabilityChecksV1"
+              },
+              {
                 "type": "null"
               }
             ],
-            "default": null
+            "default": null,
+            "title": "Serviceability"
           },
           "source_provenance": {
             "anyOf": [
@@ -502,7 +762,7 @@
         "title": "BeamDesignInputV1",
         "type": "object"
       },
-      "request_schema_sha256": "332675e92ca54321dc14e2477888a70b145a3f20542f593dc432b9acf9c8f2ca",
+      "request_schema_sha256": "afb92bb35bc9ccb0fd19c3c5fee5c548273efef21453af390293a16ee939b01b",
       "request_field_contracts": [
         {
           "path": "$",
@@ -838,20 +1098,9 @@
           "compatibility_aliases": []
         },
         {
-          "path": "serviceability.crack_width_params",
+          "path": "serviceability",
           "dimensions": [
-            "TYPE_AND_FINITE_VALUE",
-            "COLLECTION_CARDINALITY_AND_UNIQUENESS"
-          ],
-          "unit": null,
-          "zero_allowed": null,
-          "compatibility_aliases": []
-        },
-        {
-          "path": "serviceability.deflection_params",
-          "dimensions": [
-            "TYPE_AND_FINITE_VALUE",
-            "COLLECTION_CARDINALITY_AND_UNIQUENESS"
+            "TYPE_AND_FINITE_VALUE"
           ],
           "unit": null,
           "zero_allowed": null,
@@ -868,11 +1117,10 @@
           "compatibility_aliases": []
         }
       ],
-      "request_field_count": 29,
+      "request_field_count": 28,
       "unowned_field_paths": [],
       "represented_validation_dimensions": [
         "CODE_AND_MATERIAL_DOMAIN",
-        "COLLECTION_CARDINALITY_AND_UNIQUENESS",
         "COMPATIBILITY_ALIAS_AND_MIGRATION_TARGET",
         "CROSS_FIELD_RELATION",
         "DOWNSTREAM_CONSUMABILITY",
@@ -882,7 +1130,9 @@
         "TYPE_AND_FINITE_VALUE",
         "UNIT_AND_QUANTITY"
       ],
-      "not_applicable_validation_dimensions": [],
+      "not_applicable_validation_dimensions": [
+        "COLLECTION_CARDINALITY_AND_UNIQUENESS"
+      ],
       "validator_inventory": [
         {
           "request_type": "structural_lib.services.contracts.beam.BeamActionsV1",
@@ -970,6 +1220,35 @@
           "model_validators": [
             "reject_literal_boolean_coercion",
             "validate_depth_basis"
+          ]
+        },
+        {
+          "request_type": "structural_lib.services.contracts.beam_serviceability.BeamAnnexFCrackCheckV1",
+          "field_validators": [],
+          "model_validators": [
+            "reject_literal_boolean_coercion",
+            "validate_limit_and_cover"
+          ]
+        },
+        {
+          "request_type": "structural_lib.services.contracts.beam_serviceability.BeamServiceabilityBasisV1",
+          "field_validators": [],
+          "model_validators": [
+            "reject_literal_boolean_coercion"
+          ]
+        },
+        {
+          "request_type": "structural_lib.services.contracts.beam_serviceability.BeamServiceabilityChecksV1",
+          "field_validators": [],
+          "model_validators": [
+            "reject_literal_boolean_coercion"
+          ]
+        },
+        {
+          "request_type": "structural_lib.services.contracts.beam_serviceability.BeamSpanDepthCheckV1",
+          "field_validators": [],
+          "model_validators": [
+            "reject_literal_boolean_coercion"
           ]
         }
       ],
@@ -13045,8 +13324,8 @@
     {
       "module": "structural_lib.design.is456.beam",
       "export_classification": "preview",
-      "declared_export_count": 26,
-      "classified_symbol_count": 29,
+      "declared_export_count": 30,
+      "classified_symbol_count": 33,
       "symbols": [
         {
           "name": "Any",
@@ -13073,6 +13352,15 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.contracts.beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "BeamAnnexFCrackCheckV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamAnnexFCrackCheckV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_serviceability",
           "claim_disposition": "canonical"
         },
         {
@@ -13139,12 +13427,39 @@
           "claim_disposition": "canonical"
         },
         {
+          "name": "BeamServiceabilityBasisV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamServiceabilityBasisV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_serviceability",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "BeamServiceabilityChecksV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamServiceabilityChecksV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_serviceability",
+          "claim_disposition": "canonical"
+        },
+        {
           "name": "BeamServiceabilityV1",
           "qualified_name": "structural_lib.design.is456.beam.BeamServiceabilityV1",
           "kind": "class",
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.contracts.beam",
+          "claim_disposition": "canonical"
+        },
+        {
+          "name": "BeamSpanDepthCheckV1",
+          "qualified_name": "structural_lib.design.is456.beam.BeamSpanDepthCheckV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.contracts.beam_serviceability",
           "claim_disposition": "canonical"
         },
         {

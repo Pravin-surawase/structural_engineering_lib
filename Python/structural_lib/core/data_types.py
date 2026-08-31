@@ -93,6 +93,9 @@ class DeflectionParams(TypedDict, total=False):
     span_mm: float
     d_mm: float
     support_condition: str  # "CANTILEVER", "SIMPLY_SUPPORTED", "CONTINUOUS"
+    mf_tension_steel: float
+    mf_compression_steel: float
+    mf_flanged: float
 
 
 class CrackWidthParams(TypedDict, total=False):
@@ -318,6 +321,7 @@ class ExposureClass(Enum):
     MODERATE = auto()
     SEVERE = auto()
     VERY_SEVERE = auto()
+    EXTREME = auto()
 
 
 # TODO(SM-6): Freeze FlexureResult after flexure.py:507 refactor

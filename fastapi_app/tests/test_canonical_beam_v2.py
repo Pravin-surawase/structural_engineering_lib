@@ -80,3 +80,53 @@ def test_v2_preserves_centroid_and_transverse_grade_through_calculation(client):
     assert response.status_code == 200
     assert response.json() == expected
     assert response.json()["calculation"]["effective_depth_resolution"]["d_mm"] == 510
+
+
+def test_v2_typed_service_checks_match_python_and_propagate_failure(client):
+    payload = _payload()
+    payload["serviceability"] = {
+        "schema_version": "beam-serviceability-checks/v1",
+        "basis": {
+            "member_id": "B1",
+            "service_case_id": "SLS-1",
+            "station_mm": 1500,
+            "tension_face": "BOTTOM",
+            "b_mm": 300,
+            "h_mm": 550,
+            "d_mm": 500,
+            "reinforcement_reference": "synthetic:bars-r1",
+            "service_load_reference": "synthetic:service-analysis",
+            "source_reference": "synthetic:calculation",
+            "source_sha256": "a" * 64,
+        },
+        "deflection": {
+            "method": "IS456_SPAN_DEPTH",
+            "effective_span_mm": 5000,
+            "support_condition": "SIMPLY_SUPPORTED",
+            "mf_tension_steel": 1.2,
+            "mf_compression_steel": 1.1,
+            "span_support_reference": "synthetic:span",
+            "modification_factors_reference": "synthetic:figures-4-5",
+        },
+        "crack_width": {
+            "method": "IS456_ANNEX_F_TENSION_SURFACE",
+            "exposure_class": "VERY_SEVERE",
+            "cracking_harmful": True,
+            "limit_mm": 0.1,
+            "limit_reference": "synthetic:aggressive-exposure",
+            "acr_mm": 60,
+            "cmin_mm": 40,
+            "x_mm": 150,
+            "epsilon_m": 0.001,
+            "fs_service_nmm2": 200,
+            "es_nmm2": 200000,
+            "strain_geometry_reference": "synthetic:section-analysis",
+        },
+    }
+    response = client.post("/api/v2/design/beam", json=payload)
+    assert response.status_code == 200
+    assert response.json() == beam.check(beam.load(payload)).to_dict()
+    assert response.json()["envelope"]["overall_status"] == "FAIL"
+    assert "crack_width" in response.json()["calculation"]["failed_checks"]
+    del payload["serviceability"]["crack_width"]["epsilon_m"]
+    assert client.post("/api/v2/design/beam", json=payload).status_code == 422

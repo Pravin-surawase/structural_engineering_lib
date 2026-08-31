@@ -57,7 +57,8 @@ _DEFAULT_CRACK_LIMITS_MM: dict[ExposureClass, float] = {
     ExposureClass.MILD: 0.3,
     ExposureClass.MODERATE: 0.3,
     ExposureClass.SEVERE: 0.2,
-    ExposureClass.VERY_SEVERE: 0.2,
+    ExposureClass.VERY_SEVERE: 0.1,
+    ExposureClass.EXTREME: 0.1,
 }
 
 
@@ -118,6 +119,8 @@ def _normalize_exposure_class(
         return ExposureClass.SEVERE, None
     if normalized in {"very severe", "very_severe", "very-severe", "vs"}:
         return ExposureClass.VERY_SEVERE, None
+    if normalized == "extreme":
+        return ExposureClass.EXTREME, None
 
     return (
         ExposureClass.MODERATE,

@@ -10,6 +10,9 @@ from typing import Any, Self
 from pydantic import Field, ValidationInfo, field_validator, model_validator
 from pydantic_core import PydanticCustomError
 
+from structural_lib.services.contracts.beam_serviceability import (
+    BeamServiceabilityChecksV1,
+)
 from structural_lib.services.contracts.common import (
     FieldContractV1,
     StrictPublicModel,
@@ -205,19 +208,67 @@ class BeamDesignInputV1(StrictPublicModel):
     actions: BeamActionsV1
     calculation_basis: BeamCalculationBasisV1
     detailing: BeamDetailingOptionsV1 | None = None
-    serviceability: BeamServiceabilityV1 | None = None
+    serviceability: BeamServiceabilityV1 | BeamServiceabilityChecksV1 | None = None
     source_provenance: str | None = Field(default=None, max_length=240)
 
     @field_validator("serviceability")
     @classmethod
     def hold_unfrozen_serviceability(
-        cls, value: BeamServiceabilityV1 | None
-    ) -> BeamServiceabilityV1 | None:
-        if value is not None:
+        cls,
+        value: BeamServiceabilityV1 | BeamServiceabilityChecksV1 | None,
+        info: ValidationInfo,
+    ) -> BeamServiceabilityV1 | BeamServiceabilityChecksV1 | None:
+        if isinstance(value, BeamServiceabilityV1):
             raise PydanticCustomError(
                 "serviceability_scope_hold",
-                "canonical serviceability is held until its strict typed models freeze",
+                "opaque serviceability parameters are held; use beam-serviceability-checks/v1",
             )
+        if isinstance(value, BeamServiceabilityChecksV1):
+            basis, crack = value.basis, value.crack_width
+            section = info.data.get("section")
+            identity = info.data.get("identity")
+            materials = info.data.get("materials")
+            if isinstance(identity, MemberIdentityV1):
+                if basis.member_id != identity.member_id:
+                    raise ValueError("service basis belongs to another member")
+                if basis.service_case_id == identity.case_id:
+                    raise ValueError(
+                        "service case must be separate from the factored strength case"
+                    )
+            if isinstance(section, RectangularBeamSectionV1):
+                if (basis.b_mm, basis.h_mm, basis.d_mm) != (
+                    section.b_mm,
+                    section.D_mm,
+                    section.resolved_d_mm(),
+                ):
+                    raise ValueError(
+                        "service basis section must match the canonical section"
+                    )
+                if section.span_mm is None or basis.station_mm > section.span_mm:
+                    raise ValueError(
+                        "service station requires the member length and must lie within it"
+                    )
+                if crack.x_mm >= basis.d_mm:
+                    raise ValueError("Annex F requires x_mm < d_mm")
+                if crack.cmin_mm >= basis.h_mm - basis.d_mm:
+                    raise ValueError(
+                        "longitudinal-bar surface cover must be below centroid cover"
+                    )
+                unmodified_surface_strain = (
+                    crack.fs_service_nmm2
+                    / crack.es_nmm2
+                    * (basis.h_mm - crack.x_mm)
+                    / (basis.d_mm - crack.x_mm)
+                )
+                if crack.epsilon_m > unmodified_surface_strain + 1e-12:
+                    raise ValueError(
+                        "mean surface strain exceeds the supplied elastic tension strain"
+                    )
+            if isinstance(materials, IS456MaterialsV1):
+                if crack.fs_service_nmm2 > 0.8 * materials.fy_nmm2:
+                    raise ValueError(
+                        "Annex F tension-reinforcement strain limit 0.8 fy/Es exceeded"
+                    )
         return value
 
     @field_validator("calculation_basis")
