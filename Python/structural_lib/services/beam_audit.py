@@ -125,7 +125,7 @@ class BeamAuditRowInputV1(StrictPublicModel):
     demand_governing_reference_ids: tuple[str, ...]
     basis_source_references: tuple[str, ...]
     assumptions: tuple[str, ...]
-    serviceability_basis: EvidenceValueV1[str | BeamAuditServiceabilityV1]
+    serviceability_basis: EvidenceValueV1[str | BeamServiceabilityChecksV1]
 
 
 class BeamAuditInputsV1(StrictPublicModel):
@@ -279,6 +279,7 @@ def build_beam_audit_inputs_v1(
             )
         )
     frames = {frame.member_id: frame for frame in request.demand.baseline.frames}
+    service_index: dict[tuple[str, str, str], BeamServiceabilityChecksV1] = {}
     for member_id, member_basis in bases.items():
         service_set = member_basis.serviceability_basis.value
         if isinstance(service_set, BeamAuditServiceabilityV1):
@@ -288,6 +289,10 @@ def build_beam_audit_inputs_v1(
             supplied = {
                 (s.action_row_id, s.action_row_sha256) for s in service_set.rows
             }
+            service_index.update(
+                ((member_id, s.action_row_id, s.action_row_sha256), s.checks)
+                for s in service_set.rows
+            )
             if supplied != expected or len(supplied) != len(service_set.rows):
                 issues.append(
                     _issue(
@@ -383,15 +388,11 @@ def build_beam_audit_inputs_v1(
             face = applicability.negative_m3_tension_face
         service_checks = None
         if isinstance(service.value, BeamAuditServiceabilityV1):
-            matched = [
-                s
-                for s in service.value.rows
-                if (s.action_row_id, s.action_row_sha256)
-                == (action.row_id, action.row_sha256)
-            ]
-            if len(matched) != 1:
+            service_checks = service_index.get(
+                (action.member_id, action.row_id, action.row_sha256)
+            )
+            if service_checks is None:
                 continue  # Complete-domain issue above prevents any partial acceptance.
-            service_checks = matched[0].checks
             if (
                 service_checks.basis.station_mm != action.object_station_mm
                 or service_checks.basis.tension_face != face
@@ -448,7 +449,17 @@ def build_beam_audit_inputs_v1(
                     applicability.factored_action_basis,
                     "Canonical Mu/Vu/Tu are magnitudes projected together from this one retained signed row.",
                 ),
-                serviceability_basis=basis.serviceability_basis,
+                serviceability_basis=EvidenceValueV1[str | BeamServiceabilityChecksV1](
+                    state=service.state,
+                    value=(
+                        service_checks
+                        if service_checks is not None
+                        else service.value if isinstance(service.value, str) else None
+                    ),
+                    reason_code=service.reason_code,
+                    message=service.message,
+                    source_references=service.source_references,
+                ),
             )
         )
     if issues:

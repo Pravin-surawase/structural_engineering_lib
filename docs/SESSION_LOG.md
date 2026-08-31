@@ -44,6 +44,9 @@
   reused variable names with different nullable/evidence types in the W3 builder.
 - Pre-commit consumer audit found that automatic detailing can select a different
   reinforcement layout from the supplied service analysis, invalidating that PASS.
+- The first committed-candidate audit follow-through found that each output row
+  repeated the complete member service list, making large review payloads grow
+  quadratically; matching also rescanned the same list for every row.
 
 ### Root causes and resolutions
 
@@ -71,6 +74,15 @@
   typed service requests until the generated bar revision is independently
   rebound/rechecked. Verified by a direct consumer diagnostic; no new tests were
   added during audit. This is a bounded hold, not a new detailing implementation.
+- The one consolidated candidate repair uses an association index and retains
+  only the row's service evidence in its result. The full list remains once in
+  the build request; source identity and complete-domain gates are unchanged.
+  Existing replay, invalid-domain, canonical and Node checks verify the repaired
+  route; fixture size comparison records the reduction without adding review tests.
+  The three-row fixture retains 3 row-service records instead of 9 embedded
+  associations, shrinks from 231,801 to 212,439 bytes, and preserves numerical
+  check results. The 116 affected Python cases, 285-file mypy and 31 Node checks
+  pass after this repair; the consolidated quick/commit/hosted gates still follow.
 
 **Verification:** 245 focused Python, 102 API and 53 Node cases passed;
 architecture found zero violations in 249 files. After the typing repair, mypy

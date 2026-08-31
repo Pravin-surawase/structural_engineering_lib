@@ -43,6 +43,9 @@ audit; justified NOT_APPLICABLE retains its existing explicit state.
 Automatic detailing/BBS is held for this variant: a generated bar arrangement
 is a new reinforcement revision and requires its own service analysis. The
 supplied service PASS must not be transferred to a different generated layout.
+The complete member association list is retained once in the build request.
+Each output row carries only its own service evidence; indexed lookup avoids
+repeated scans and copying the entire member list into every result row.
 
 ## Source review
 
@@ -74,6 +77,7 @@ No protected source prose/images enter Git.
 | A service check could be computed without affecting the parent result | Existing compliance aggregate and W3 service governor consume both checks | Independent deflection and cracking failures propagate through canonical and W3 |
 | Source review id was hashed internally but absent from public canonical provenance | Expose route source ids and review id with the canonical result | Public result traceability assertion |
 | Automatic detailing could select bars different from the supplied service basis | Explicit serviceability detailing/BBS hold until new layout reanalysis/binding exists | Direct and combined consumer diagnostic rejects before producing detailing |
+| Repeating the whole member service list in every result inflated review size quadratically | Keep only row-specific evidence in row results and index associations once | Existing complete-domain/replay/Node fixtures reconcile with smaller serialized review |
 
 Independent hand vector: L/d = 5000/500 = 10, allowable = 20×1.2×1.1 = 26.4;
 crack width = 0.180/1.100 = 0.1636363636 mm. Regression evidence uses synthetic
