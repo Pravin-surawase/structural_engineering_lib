@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-W3H-BUILDING-MAPPING",
+  "observed_date": "2026-08-31",
+  "verdict": "SAVED_MAPPING_ASSESSED_L5_HELD",
+  "source": {
+    "commit": "27ec55aca509a2cf93d2b46e32caaa5f1294e810",
+    "tree": "d659c1e7d9a74a3c57f5e6d8ab9acdc2101ab74e",
+    "accepted_predecessor_pr": 927,
+    "runtime_source_bound": true,
+    "implementation_changes": 0,
+    "writer_device": "Windows; Mac not queried"
+  },
+  "evidence_mode": "SAVED_BYTES_ONLY_NOT_FRESH_INSTALLED_STATE",
+  "quality": {
+    "accepted_manifest_files_rehashed": 127,
+    "canonical_snapshots_verified": 5,
+    "complete_serialized_value_equality": true,
+    "frames": 225,
+    "beam_result_sets": 153,
+    "signed_station_rows": 3502,
+    "duplicate_frame_ids": 0,
+    "duplicate_station_ids": 0,
+    "orphan_result_members": 0,
+    "missing_result_sets": 0,
+    "missing_signed_components": 0,
+    "selection_mismatches": 0,
+    "normalized_definition_frames": 1,
+    "normalized_definition_joints": 3,
+    "distinct_definition_readback_frames": 2,
+    "members_with_repeated_object_station": 132,
+    "members_with_nonzero_excluded_actions": 153,
+    "calibration_ready_mappings": 0,
+    "ordered_combination_factors": 5,
+    "observed_nonzero_is_not_engineering_failure_or_tolerance": true
+  },
+  "identities": {
+    "safe_model_revision": "owner-saved-revision-92b3fa00",
+    "model_sha256": "92b3fa009f25b2228cc956cedb1b76268bb73414e16b361be334c0b3d81f6269",
+    "model_bytes": 702855,
+    "baseline_sha256": "2903d158645cfd59b3f08a54648cefda7603930a94c2d7ee4b3e92d8546f7906",
+    "catalogue_sha256": "353b28a82da954c20d46dafa774a30826e77f247f60d0ee545654f024a4b4d1b",
+    "definition_sha256": "39cb3b2e274d42c4c3a793ad4702a50cbba08763d780c54186ff6cb0988738a7"
+  },
+  "external_evidence": {
+    "directory_key": "ETABS-W3H-BUILDING-MAPPING-20260831",
+    "assessment_sha256": "17249a6f47c5016aef5e2f9682208e774475fd4fe609a4530cb67e8d18731b9a",
+    "notebook_sha256": "7a5bf5bfe64b93b7ea3012178afb24180adc26e38811f68785c6bfd8046764c1",
+    "operator_sha256": "c53b4d56aa17aae5ea34c4c01809410373701e4efdf270fe47894ccd94d521f1",
+    "next_packet_sha256": "b8d215289e429de8900711d1689e58806b9f32ce21c078e78b6c5e1601a76874",
+    "notebook_code_cells_executed": 3,
+    "execution": "Sequential Python execution with outputs and structural JSON validation; no Jupyter kernel",
+    "nbformat_nbclient_ipykernel": "ABSENT_NOT_INSTALLED",
+    "proprietary_paths_forces_factor_lineage": "EXTERNAL_ONLY"
+  },
+  "preservation": {
+    "protected_file_identities": 11,
+    "predecessor_git_lanes": 31,
+    "protected_hash_size_mtime_unchanged_before_after": true,
+    "ports_3000_3001_8000": "FREE_AT_BOTH_OBSERVATIONS",
+    "model_excel_com_solver_design_calls": 0,
+    "services_started": 0,
+    "new_analyses_or_benchmarks": 0,
+    "old_clones_branches_worktrees_stashes_data": "PRESERVED",
+    "current_app_units_lock_status_license_dialogs": "NOT_FRESHLY_VERIFIED"
+  },
+  "remaining_holds": [
+    "No complete independently justified building mesh/support/load-transfer/slab mapping.",
+    "Spring query failure is unavailable, not zero or absent.",
+    "Current vertical FIXED/FREE solver cannot establish moving-support displacement agreement.",
+    "Nonzero shear areas differ from the authored Euler-Bernoulli-compatible test basis.",
+    "Exact station/element/side/axis mapping and predeclared model-specific comparison criteria remain required.",
+    "Pilot defaults do not supply W3E applicability/serviceability decisions or W3I families/scenarios/objectives/safeguards."
+  ],
+  "next_packet": "Static installed mapping-signature audit, then only a separately bounded getter-only packet if the required information can be proved. No guessed criteria, repeated benchmark, W3I/K/L or solver extension to fit forces.",
+  "claims": {
+    "W3H_L5": "HELD",
+    "W3I_K_L": "HELD",
+    "independent_frame_analysis": "HELD_NOT_SUPPORTED",
+    "professional_engineering_construction_approval": "NOT_PROVIDED",
+    "release": "NOT_AUTHORIZED"
+  }
+}

@@ -177,6 +177,18 @@ Completion requires the remaining packet exits, one integrated broad
 Python/FastAPI/React/Excel/full-gate run, exact final dossier and Mac integrated
 review. Neither this audit nor the dossier contract is complete W3 acceptance.
 
+The bounded [saved-building mapping assessment](../verification/etabs-w3h-building-mapping-evidence.json)
+now verifies 127 retained files and all five canonical snapshot identities.
+Its 153-beam/3,502-row profile proves complete force provenance but only one
+normalized definition frame/three joints plus one other raw frame readback.
+It records five ordered contributing cases, 132 beams with repeated object-
+station coordinates and 153 with a nonzero excluded-action component. These
+facts require exact factor/element/side mapping and explicit applicability
+criteria; they are not engineering failure thresholds or new calibration.
+Next is a static installed-signature audit for bounded analysis-mesh,
+area/load-transfer and spring evidence. No new analysis, solver extension,
+benchmark-only packet or W3I advance resolves the missing physical basis.
+
 ### Owner-approved validation continuation (2026-08-30)
 
 This successor decision supersedes the historical startup-only and capability
