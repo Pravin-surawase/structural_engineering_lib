@@ -185,9 +185,16 @@ It records five ordered contributing cases, 132 beams with repeated object-
 station coordinates and 153 with a nonzero excluded-action component. These
 facts require exact factor/element/side mapping and explicit applicability
 criteria; they are not engineering failure thresholds or new calibration.
-Next is a static installed-signature audit for bounded analysis-mesh,
-area/load-transfer and spring evidence. No new analysis, solver extension,
-benchmark-only packet or W3I advance resolves the missing physical basis.
+The [installed mapping-signature audit](../verification/etabs-w3h-mapping-signatures-evidence.json)
+now proves forty signatures and their installed help sources without application
+calls. The interface is `cLineElm`, not `cFrameElm`; several element topics lack
+the semantics needed for a physical interpretation. Area assignment loads are
+not complete transferred beam actions. The documented table catalogue/schema
+API is a narrower alternative: the next separate packet reads only available
+keys and at most twelve field schemas, with exact copied-model and table-display
+pre/post guards. It reads no model rows and makes no calibration claim. No new
+analysis, solver extension, benchmark-only packet or W3I advance resolves the
+remaining physical basis merely by producing more numerical agreement.
 
 ### Owner-approved validation continuation (2026-08-30)
 

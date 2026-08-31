@@ -5,6 +5,71 @@
 
 ---
 
+## 2026-08-31 — Session: W3H installed mapping signatures
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3H-MAPPING-SIGNATURES`.
+**Branch:** `codex/etabs-w3h-mapping-signatures-windows`.
+**Source:** PR #929 merge `b6996e3ddf431b2c06c951daae7b12c1e8538600`,
+tree `70750c6229a994b400eebf6dd87085451112de9c`.
+**Focus:** Installed static mapping metadata; no COM/model/application calls.
+**Checkpoint:** `STATIC_SIGNATURES_VERIFIED_PHYSICAL_MAPPING_HELD`.
+**Git handoff receipt:** `docs/verification/etabs-w3h-mapping-signatures-git-handoff-receipt.json`
+
+**Completed:**
+
+- Fetched exact HTTPS main and verified PR #929 merged before creating one new
+  lane. All 32 predecessor lanes retained, including dirty W1/W3F; immutable
+  main untouched. One canonical session, source-bound maintained Python.
+- Matched forty managed signatures to the current wrapper AST, including
+  parameter order/types/directions and six defaults. Read forty installed help
+  topics, five freshly hashed installed files and exact enum metadata. Neither
+  wrapper import nor COM/application instantiation occurred.
+- Proved `SapModel.LineElm`/`cLineElm` as the installed analysis-frame interface.
+  Distinguished signature-only graph/numeric operations from documented area
+  assignment loads, spring properties and table catalogue/schema operations.
+- Froze the next separate metadata-only packet with exact model pre/post and
+  independent table-display guards, catalogue/schema caps and zero model rows.
+  No engineering criteria or calibration success was invented.
+- Eleven saved protected files retain exact hash/size/mtime before/after the
+  audit. No model/workbook opened, saved, analyzed or altered; no services
+  started. Live lock/units/status/license/dialogs not freshly verified.
+
+### Issues encountered
+
+- Initial cross-language name-equality assertion rejected spring parameters.
+- Installed element help exposes types but omits essential physical meanings;
+  raw signatures alone cannot authorize a numeric calibration interpretation.
+- A broad help-file scan was slow and was stopped; the installed topic index
+  supplied exact paths without repeatedly scanning the help tree.
+
+### Root causes and resolutions
+
+- The wrapper spells four parameters `K`/`Color` while managed metadata uses
+  `k`/`color`. Exact positions, types, directions and defaults agree. The external
+  comparator retains both spellings, permits only case-equivalent names and
+  proves all forty operations; no library/vendor wrapper was changed. This is
+  an evidence-harness correction, not an ETABS runtime defect.
+- The installed element topics omit descriptions, type-code meanings and
+  fixed-array/units contracts. Object load getters describe assignments rather
+  than full transferred actions. Documented table field metadata offers a
+  narrower next discovery route, not proof of present model data. The static
+  receipt and next packet preserve those holds and forbid guessed decoding.
+- Direct lookup through the existing CHM index found all forty exact topics.
+  No help extraction, install or repository implementation was required.
+
+**Verification:** Forty static matches/topics, five file hashes and six defaults
+pass the independent external validator. Frozen affected documentation/control,
+quick, normal hooks and read-only closeout are required for the candidate;
+hosted/merge facts remain in its external closeout, not a post-push edit.
+No broad Python/FastAPI/React/Excel or accepted benchmark suites repeated.
+
+**Next:** Integrate this packet, then read the exact copied model's table
+catalogue/schema metadata under the external plan. Do not execute that live
+packet within this static audit. Actual-building L5/W3I/K/L remain held.
+
+---
+
 ## 2026-08-31 — Session: W3H saved-building capability mapping
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).

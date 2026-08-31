@@ -1,0 +1,271 @@
+{
+  "schema_version": "w3h-mapping-signatures-evidence/v1",
+  "task_id": "ETABS-W3H-MAPPING-SIGNATURES",
+  "packet": "W3H",
+  "verdict": "STATIC_SIGNATURES_VERIFIED_PHYSICAL_MAPPING_HELD",
+  "evidence_level": "L2_STATIC_INSTALLED_METADATA_ONLY",
+  "source": {
+    "repository": "Pravin-surawase/structural_engineering_lib",
+    "remote": "https://github.com/Pravin-surawase/structural_engineering_lib.git",
+    "predecessor_pr": 929,
+    "commit": "b6996e3ddf431b2c06c951daae7b12c1e8538600",
+    "tree": "70750c6229a994b400eebf6dd87085451112de9c",
+    "branch": "codex/etabs-w3h-mapping-signatures-windows",
+    "fetched_main_and_queried_remote": true,
+    "mac_state": "NOT_CHECKED"
+  },
+  "host": {
+    "identity": "LAPTOP-360-PRAV",
+    "os": "Windows 11 Home Single Language 10.0.26200 x64",
+    "etabs_file_version": "23.3.1.4563",
+    "python": "3.11.15",
+    "node": "24.20.0",
+    "npm": "11.19.0",
+    "git": "2.55.0.windows.5",
+    "powershell": "7.6.4",
+    "worktree_source_bound": true
+  },
+  "installed_sources": [
+    {
+      "name": "ETABS.exe",
+      "bytes": 269168,
+      "sha256": "16a790087dd3961b45e57e35c32179e90db31d2dab6c6039f6efb91d53e84456",
+      "file_version": "23.3.1.4563"
+    },
+    {
+      "name": "ETABSv1.dll",
+      "bytes": 354152,
+      "sha256": "393492bd1649ee705c97449cf7d485c61b73ec649ed1d01f47f54f957b277e54",
+      "file_version": "2.16.0.0"
+    },
+    {
+      "name": "CSI API ETABS v1.chm",
+      "bytes": 4305641,
+      "sha256": "0108deeb19fd054ea03a9be89244dac5c8f5995cc44865eaa508b17f675b9d88"
+    },
+    {
+      "name": "_542F7A9D_3A7D_4061_97B3_3A1276FF83BD_0_1_0.py",
+      "bytes": 1305812,
+      "sha256": "ee4cd46835acba0ca1a8de2be20f66a0d6ae054ef0ab68f2894748ee4aa36b14"
+    },
+    {
+      "name": "ETABSv1.tlb",
+      "bytes": 316292,
+      "sha256": "3823416b05d80d148b63a2f490cd2acea2797d0fc64157c5cc8882c8fc24ef0e"
+    }
+  ],
+  "method_proof": {
+    "count": 40,
+    "managed_wrapper_type_direction_order_matches": 40,
+    "optional_defaults_verified": 6,
+    "installed_help_topics_read": 40,
+    "model_accessor_count": 7,
+    "frame_element_interface": "cLineElm",
+    "cFrameElm_exists": false,
+    "current_wrapper_imported": false,
+    "com_instance_created": false,
+    "name_case_variants": [
+      {
+        "operation": "cPropPointSpring.GetPointSpringProp",
+        "managed": "k",
+        "wrapper": "K",
+        "interpretation": "Case-only metadata spelling; retain both, bind by proved position"
+      },
+      {
+        "operation": "cPropPointSpring.GetPointSpringProp",
+        "managed": "color",
+        "wrapper": "Color",
+        "interpretation": "Case-only metadata spelling; retain both, bind by proved position"
+      },
+      {
+        "operation": "cPropLineSpring.GetLineSpringProp",
+        "managed": "color",
+        "wrapper": "Color",
+        "interpretation": "Case-only metadata spelling; retain both, bind by proved position"
+      },
+      {
+        "operation": "cPropAreaSpring.GetAreaSpringProp",
+        "managed": "color",
+        "wrapper": "Color",
+        "interpretation": "Case-only metadata spelling; retain both, bind by proved position"
+      }
+    ],
+    "operations": [
+      "cFrameObj.GetElm",
+      "cFrameObj.GetSpringAssignment",
+      "cFrameObj.GetSupports",
+      "cLineElm.GetObj",
+      "cLineElm.GetPoints",
+      "cLineElm.GetLoadDistributed",
+      "cLineElm.GetLoadPoint",
+      "cLineElm.GetLocalAxes",
+      "cLineElm.GetTransformationMatrix",
+      "cLineElm.GetReleases",
+      "cLineElm.GetEndLengthOffset",
+      "cPointElm.GetConnectivity",
+      "cPointElm.GetObj",
+      "cPointElm.GetCoordCartesian",
+      "cPointElm.GetRestraint",
+      "cPointElm.GetSpring",
+      "cPointElm.GetSpringCoupled",
+      "cPointElm.IsSpringCoupled",
+      "cAreaElm.GetObj",
+      "cAreaElm.GetPoints",
+      "cAreaElm.GetLoadUniform",
+      "cAreaObj.GetElm",
+      "cAreaObj.GetProperty",
+      "cAreaObj.GetOpening",
+      "cAreaObj.GetLoadUniform",
+      "cAreaObj.GetLoadUniformToFrame",
+      "cAreaObj.GetSpringAssignment",
+      "cAreaObj.GetEdgeConstraint",
+      "cPointObj.GetSpringAssignment",
+      "cPropPointSpring.GetPointSpringProp",
+      "cPropLineSpring.GetLineSpringProp",
+      "cPropAreaSpring.GetAreaSpringProp",
+      "cDatabaseTables.GetAllTables",
+      "cDatabaseTables.GetAvailableTables",
+      "cDatabaseTables.GetAllFieldsInTable",
+      "cDatabaseTables.GetTableForDisplayArray",
+      "cDatabaseTables.GetLoadCasesSelectedForDisplay",
+      "cDatabaseTables.GetLoadCombinationsSelectedForDisplay",
+      "cDatabaseTables.GetLoadPatternsSelectedForDisplay",
+      "cDatabaseTables.GetOutputOptionsForDisplay"
+    ],
+    "help_index_sha256": "92d8ba8b63983f0089cd1391f376985ac1883610ba6106b84ad2c07f3e908028"
+  },
+  "interpretation": {
+    "graph": "Signatures exist, but installed element help omits essential connectivity type-code meanings, numeric units and fixed-array dimensions. No physical graph interpretation is accepted.",
+    "supports": "FrameObj.GetSupports describes supporting objects, not mechanical restraint, isolation or zero movement.",
+    "area_loads": "Object load assignments expose pressure [F/L^2], coordinate system, direction and one/two-way distribution. They do not prove complete transferred beam actions or zero other contributions.",
+    "springs": "CSI nonzero is unavailable, never absent. Point option 2 and area future-release fields cannot be treated as user linear stiffness. Line translation is [F/L^2], line rotation [F/rad], area translation [F/L^3], point translation [F/L] and point rotation [FL/rad].",
+    "tables": "Available-table and field-schema getters document exact keys, table versions, descriptions and per-field units. Actual availability and completeness are NOT_CHECKED.",
+    "table_rows": "GetTableForDisplayArray is row-major; len(TableData) must equal NumberRecords times len(FieldsKeysIncluded). It has no row-limit parameter. Blank/All group means all applicable objects. No data row read in this packet.",
+    "selection": "Database table-display cases/combinations/patterns and output options are separate from Results.Setup flags; both require independent guards."
+  },
+  "next_packet": {
+    "name": "ETABS-W3H-TABLE-METADATA",
+    "mode": "SEPARATE_READ_ONLY_INSTALLED_PACKET_NOT_EXECUTED",
+    "plan_file": "NEXT_PACKET.md",
+    "plan_sha256": "d1136815428762073a291c98d2be6e98004abb4e66883811c404d2394c3eaf77",
+    "max_table_catalogue_entries": 1000,
+    "max_schemas": 12,
+    "max_fields_per_schema": 200,
+    "discovery_call_cap": 17,
+    "additional_table_postflight_guard_calls": 4,
+    "frame_joint_area_content_calls": 0,
+    "model_data_rows": 0,
+    "pre_post_guards": [
+      "exact saved copied identity/hash/size/mtime",
+      "installed version",
+      "model lock",
+      "all case statuses",
+      "present/database units",
+      "all result-selection flags",
+      "table-display selection/options",
+      "all protected files"
+    ],
+    "forbidden": [
+      "model open/switch",
+      "setters or selection recovery",
+      "analysis/design",
+      "save/unlock",
+      "Excel",
+      "table-row export",
+      "guessed keys/units/shape meanings",
+      "library repair",
+      "optimization"
+    ]
+  },
+  "preservation": {
+    "protected_saved_files": 11,
+    "predecessor_lanes": 32,
+    "pre_post_hash_size_mtime_match": true,
+    "retained_dirty_lanes_preserved": true,
+    "model_workbook_calls": 0,
+    "analysis_design_calls": 0,
+    "services_started": 0,
+    "ports_3000_3001_8000_listeners": 0,
+    "live_lock_units_status_license_dialogs": "NOT_FRESHLY_VERIFIED_NO_COM_OR_UI",
+    "existing_data_deleted_reset_overwritten_stashed_reorganized": false
+  },
+  "verification": {
+    "static_validator": "PASS: 40 signatures/topics, five hashes, six defaults, four preserved spelling variants",
+    "first_comparator_failure": "Case-sensitive metadata-name assertion; corrected harness retains both spellings and still requires exact positions/types/directions.",
+    "broad_suites_repeated": false,
+    "final_candidate_checks": "Separate frozen local and hosted evidence in external closeout; no preclaimed hosted result."
+  },
+  "external_evidence": {
+    "directory_label": "ETABS-W3H-MAPPING-SIGNATURES-20260831",
+    "files": [
+      {
+        "name": "ACCEPTANCE.md",
+        "bytes": 2139,
+        "sha256": "b95ba8ed749901f57bd144a6fa2bb3ca252659c0bfedadaf925ec05401382ffb"
+      },
+      {
+        "name": "inspect-static.ps1",
+        "bytes": 3854,
+        "sha256": "87b0bc055f152390d4a3920d8ea9043a110ccedc0c2e563ca7314874151684df"
+      },
+      {
+        "name": "managed-signatures.json",
+        "bytes": 56922,
+        "sha256": "f3b762a7f452a9391984c0f0d8d343cdfa22149d345c1fde085c7ae3f0f80fb2"
+      },
+      {
+        "name": "audit_static.py",
+        "bytes": 5782,
+        "sha256": "f82ebd8ff2aac31668b2810763b81c01d9760075ea4a7d727490e3676e3ab5de"
+      },
+      {
+        "name": "static-audit.json",
+        "bytes": 152010,
+        "sha256": "ef7763920f2212460ef29577f368553caadd642cb56dc3dbc55504b3ada073fb"
+      },
+      {
+        "name": "validate_static.py",
+        "bytes": 1978,
+        "sha256": "7efa03c84c134b0b4e6a2a9be9cb92a1fd5f1b35493705fec36c975b1ef40aa0"
+      },
+      {
+        "name": "eObjType.json",
+        "bytes": 200,
+        "sha256": "0b137f308695fd85b2723044a3619797ee44325d0df2409d592b3488a2c8688f"
+      },
+      {
+        "name": "NEXT_PACKET.md",
+        "bytes": 5071,
+        "sha256": "d1136815428762073a291c98d2be6e98004abb4e66883811c404d2394c3eaf77"
+      },
+      {
+        "name": "observe-state.ps1",
+        "bytes": 2620,
+        "sha256": "f00aaa7d378d5e0b42015a420d24b3416f2ef5ea034e7a83aa06a26246a6d819"
+      },
+      {
+        "name": "preflight.json",
+        "bytes": 17995,
+        "sha256": "80772735a010e1008da18410dde37e25053afbaf6566a096cce47a81f7541eba"
+      },
+      {
+        "name": "post-static.json",
+        "bytes": 17992,
+        "sha256": "52dfca2abcb01215d1b062aebea3f766c86d611fe7c7dd0e01df5049d6ff19e5"
+      },
+      {
+        "name": "runtime.json",
+        "bytes": 557,
+        "sha256": "241f6a19307024e6a20b3745ba7ebd1163f1354d5db3479a661be4490599b2d5"
+      }
+    ]
+  },
+  "limitations": [
+    "Static signatures are not runtime return or licensing proof.",
+    "No copied-model live getter or workbook interaction occurred.",
+    "No complete mesh, transferred-load or spring-absence evidence is accepted.",
+    "Actual-building L5 and W3I/K/L remain held.",
+    "Predeclared applicability/calibration/screening criteria remain separate; pilot material defaults do not fill them.",
+    "No professional, construction, general ETABS parity, release or whole-W3 approval."
+  ]
+}
