@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-W3-SAVED-BASIS",
+  "observed_date": "2026-08-31",
+  "source": {
+    "accepted_pr": 934,
+    "commit": "f5e425ced924546d1f67d07f17841d0b83bfb68c",
+    "tree": "4d7bf0bef5fb5f7c8900954249893e223406a0ba",
+    "writer": "Windows; Mac NOT_CHECKED"
+  },
+  "verdict": "SAVED_INPUT_CROSSWALK_COMPLETE_WITHIN_SCOPE_L5_HELD",
+  "counts": {
+    "area_assignments": 56,
+    "candidate_population": 77,
+    "candidates": 3,
+    "direct_frame_load_records": 151,
+    "frames_joined": 225,
+    "patterns_self_weight_matched": 9,
+    "point_identities_joined": 170,
+    "section_exact_matches": 225,
+    "shell_load_records": 112
+  },
+  "canonical_checks_passed": 5,
+  "text_sha256": "ffa5b268708009210f9fe0e1a750d8edb4ee2639220e8f0ade64d695e86f26fe",
+  "baseline_sha256": "2903d158645cfd59b3f08a54648cefda7603930a94c2d7ee4b3e92d8546f7906",
+  "catalogue_sha256": "353b28a82da954c20d46dafa774a30826e77f247f60d0ee545654f024a4b4d1b",
+  "coordinate_equality": "NOT_ASSERTED_PRINTED_DIFFERENCES_RETAINED",
+  "selected_case_load_lists_and_ordered_factors": "EXACT_OVERLAP",
+  "text_initial_condition_equivalence": "UNPROVED_PRESET_SEMANTICS",
+  "candidate_verdicts": [
+    "NOT_COMPARABLE_AS_IS",
+    "NOT_COMPARABLE_AS_IS",
+    "NOT_COMPARABLE_AS_IS"
+  ],
+  "candidate_selection": "Saved shortest known line; shortest other and longest other simple chains within 1-5 spans; length then stable line identity; no result fitting",
+  "new_audit_basis_findings": [
+    "Separate longitudinal/confinement steel grades cannot be retained by single-fy contract",
+    "ETABS beam cover to rebar centroid is not library clear cover",
+    "Explicit Concrete/Strength combination metadata is source evidence, not approval"
+  ],
+  "external_evidence": {
+    "directory_key": "ETABS-W3-SAVED-BASIS-20260831",
+    "files": {
+      "ACCEPTANCE.md": "46a6c9c910c4401f5c033b0b10993afdbecd770be4b6b0e03bda23e0aec0351f",
+      "reconcile_saved.py": "94089bd860afa6499ee74d399a9861d875a2d5805043afc583060fa07a090460",
+      "test_reconcile_saved.py": "56a4070656ca485327f93c0f3c2f515b440865067b2a488cd45a3dd344d655a3",
+      "study_sources.py": "504fb37eed6b9cfb3153599ac3f6803c2c82e2d754c0faffa596913fa4aaddd1",
+      "saved-basis-assessment.json": "12f686fed527457d21257a158d5dc7c258b0e9eb837f1cde1d1b210285525482",
+      "source-study.json": "cb4c45080a59645d46edd52c0e09ce49f30196d4b7bccd13293ae725843ea795"
+    }
+  },
+  "actions": {
+    "application_attachments": 0,
+    "application_ui": 0,
+    "exports": 0,
+    "model_writes": 0,
+    "solver_analysis_design": 0,
+    "product_code_changes": 0
+  },
+  "claims": {
+    "typed_W3F_importer": "NOT_IMPLEMENTED",
+    "complete_saved_revision_equality": "NOT_PROVED",
+    "W3H_L5": "HELD",
+    "W3I_K_L": "HELD",
+    "required_canonical_serviceability": "HELD",
+    "installed_rebar": "NOT_ACCEPTED"
+  },
+  "validation": "Focused external parser tests and deterministic replay; document/session/quick/hooks/immutable-candidate/hosted checks recorded externally after freeze",
+  "next_packet": "W3E typed basis/serviceability with independent source verification; residual H acquisition only after physical route decision",
+  "integration": "No future commit/hosted/merge result asserted; external final-closeout is authoritative"
+}

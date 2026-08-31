@@ -136,10 +136,13 @@ records causes, timings, official sources and acquisition alternatives. Its
 evidence only. This plan update runs no installed observation and does not
 authorize setters, save/unlock, analysis/design, export, installation or upload.
 
-**Immediate priority:** reconcile the existing saved text backup and decide
-which building subcases the current surrogate can honestly represent. The
-existing `.$et` contains useful input sections; it is not yet a validated W3
-definition snapshot. This investigation precedes more table-client work.
+**Saved-basis checkpoint:** the [bounded reconciliation and criteria matrix](etabs-w3-saved-basis-and-criteria.md)
+joins all 225 frame assignments and reconciles selected load lineage. Three
+preselected lines remain NOT_COMPARABLE_AS_IS; no complete W3F snapshot or L5.
+Explicit source evidence exposes clear-versus-centroid cover and separate steel
+grade mapping gaps. **Immediate priority:** implement the typed W3E basis and
+source-verified serviceability route. Stop broad table work; residual H acquisition
+must answer a required physical row and cannot repair unsupported solver physics.
 
 Keep three tracks separate: faithful ETABS data transport, beam checks using
 ETABS actions, and independent force prediction. Progress on the first two can
@@ -147,10 +150,10 @@ remain useful while the third is held. No track silently substitutes for another
 
 | Order / packet | Work and dependency | Measurable exit / stop |
 |---|---|---|
-| 1. Saved physical-basis reconciliation | Reuse W3D/F/H evidence; inspect existing `.$et`, explicit units/story expansion, object assignments, loads and settings. No app calls. Prefer a narrow importer into current W3 contracts, not a general E2K parser. | At most three deterministic candidate lines have a required-input matrix; saved-source identity and overlapping definitions reconcile or remain explicitly unproved. List exact residual fields and their source route. |
-| 2. Building suitability decision | Use packet 1 to classify independently specified loads, mesh/station sides, supports, axes, stiffness/shear/slab participation and excluded effects. | One supported scope with predeclared comparison requirements, or a documented no-go/justified extension decision. Do not solve first and fit the mapping later. |
+| 1. Saved physical-basis reconciliation — bounded investigation completed | Reuse W3D/F/H evidence; inspect existing `.$et`, explicit units/story expansion, object assignments, loads and settings. No app calls. Prefer a narrow importer into current W3 contracts, not a general E2K parser. | At most three deterministic candidate lines have a required-input matrix; saved-source identity and overlapping definitions reconcile or remain explicitly unproved. List exact residual fields and their source route. |
+| 2. Building suitability decision — three lines not comparable as-is | Use packet 1 to classify independently specified loads, mesh/station sides, supports, axes, stiffness/shear/slab participation and excluded effects. | One supported scope with predeclared comparison requirements, or a documented no-go/justified extension decision. Do not solve first and fit the mapping later. |
 | 3. Residual acquisition, only if needed | Choose already proved object getters, supported SQLite/CSV/XML export, or the managed table path for the named gaps. Installed action remains a separate exact-authority packet. | Every requested field maps to a required W3H row. Catalogue/schema limit stays 1,000 keys, 12 schemas and 200 fields/schema; row reads need a new explicit bound. Stop if the source cannot resolve the physical question. |
-| 4. Complete audit and criteria preparation | Independent of COM diagnosis: specify W3E serviceability/applicability/detailing, W3H comparison scope and W3I families/scenarios/objectives/cost bounds. Software repairs can proceed after their own contract freezes. | Mandatory checks have a typed executable route or remain held; genuine project decisions are listed for review. No hidden limits, guessed supports or W3I screening before H acceptance. |
+| 4. Complete audit and criteria — matrix prepared, software next | Independent of COM diagnosis: specify W3E serviceability/applicability/detailing, W3H comparison scope and W3I families/scenarios/objectives/cost bounds. Software repairs can proceed after their own contract freezes. | Mandatory checks have a typed executable route or remain held; genuine project decisions are listed for review. No hidden limits, guessed supports or W3I screening before H acceptance. |
 | 5. Actual-building W3H | Requires packets 1-4's relevant physical basis, reference identities and predeclared criteria. Reuse the accepted comparator and benchmarks. | L5 accepted only for the explicit model/scenarios/components, or NOT_COMPARABLE/OUT_OF_BAND with cause. Baseline agreement does not validate a whole candidate range. |
 | 6. W3I implementation and bounded screening | Requires accepted E/H/R and complete mandatory strength/serviceability/constructability checks, candidate/scenario bounds and applicability evidence. | Deterministic feasible shortlist with no held mandatory checks; status SCREENED_ONLY. |
 | 7. W3K then W3L | Separate guarded-copy mutation/reanalysis authority; freeze affected beams/columns/joints/reactions/drifts and other required global safeguards, abort/recovery and budget first. | Fresh ETABS results per retained candidate, finite iteration, independent final repeat from clean baseline and exact dossier. |

@@ -5,6 +5,71 @@
 
 ---
 
+## 2026-08-31 — Session: W3 saved basis and executable criteria gaps
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3-SAVED-BASIS`.
+**Branch:** `codex/etabs-w3-saved-basis-windows`.
+**Source:** PR #934 merge `f5e425ced924546d1f67d07f17841d0b83bfb68c`.
+**Focus:** Saved source reconciliation, three physical matrices and audit criteria.
+**Checkpoint:** `SAVED_INPUT_CROSSWALK_COMPLETE_WITHIN_SCOPE_L5_HELD`.
+**Git handoff receipt:** `docs/verification/etabs-w3-saved-basis-git-handoff-receipt.json`
+
+**Completed:**
+
+- Bound seven saved files to two accepted manifests and verified five typed
+  canonical snapshots; preserved all 37 predecessor worktrees.
+- Joined all 225 frame assignments and 170 point identities; exact section
+  overlap and five-case load/combination lineage reconcile. Printed coordinate
+  differences and unproved PRESET/default semantics remain explicit.
+- Retained 151 direct frame loads, 112 shell loads, 56 assigned slab contexts,
+  explicit release tokens and bounded readback overlap. No transfer inferred.
+- Assessed three deterministically selected lines without force fitting;
+  all remain NOT_COMPARABLE_AS_IS for identified physical evidence gaps.
+- Specified typed serviceability/applicability/constructability/screening gaps
+  against maintained software, including separate steel grades and centroid
+  versus clear-cover semantics. No new serviceability or installed-rebar pass.
+- Updated current plan/brief/task sequence to the W3E basis/serviceability
+  packet; no ETABS, UI, export, solver, model mutation or product code change.
+
+### Issues encountered
+
+- Direct-load and endpoint-only evidence cannot close slab transfer or effective
+  support behavior; all three scoped candidates remain unsuitable as-is.
+- The first narrow combination decoder assumed every post-type row was a
+  factor and stopped on an explicit design-purpose row before writing output.
+- Saved text has adjacent quoted/keyword release fields and rounded coordinates;
+  treating whitespace or numeric agreement as full semantics would lose data.
+- Source cover and steel-grade bases differ from what the canonical contract
+  can represent; serviceability placeholders remain deliberately held.
+
+### Root causes and resolutions
+
+- Physical model scope, not transport failure, controls comparability. The
+  candidate matrices name remaining support/mesh/transfer evidence and stop
+  further acquisition without a physical route decision; no L5 claim.
+- Confirmed mixed COMBO record kinds: separated ordered factors from explicit
+  design metadata, retained both, and reconciled the five factors. Successful
+  saved assessment and independent literal cross-check prove the correction.
+- Tokenizer preserves quote boundaries and source lines; decimal conversion
+  retains every difference without a fitted tolerance or omitted defaults.
+  Ten synthetic checks and complete saved replay are the focused verification.
+- CSI reinforcement definitions confirm the cover distinction; single-fy and
+  untyped/rejected serviceability fields are confirmed in maintained owners.
+  The next contract packet must preserve these bases and verify applicable
+  methods; no speculative defect in accepted engineering results is asserted.
+
+**Verification:** External source/replay/parser and independent literal checks;
+affected docs/tasks/brief/handoff/session checks, one quick gate, normal hooks,
+immutable-candidate review and required hosted checks follow content freeze.
+No broad campaign rerun. Final Git/hosted facts are external closeout evidence.
+
+**Next:** W3E typed basis/serviceability with verified methods; H physical-route
+decision before residual acquisition. H/I/K/L, final integration/Mac review and
+professional/release gates remain held or due within their separate scopes.
+
+---
+
 ## 2026-08-31 — Session: Whole-W3 source and completion audit
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
