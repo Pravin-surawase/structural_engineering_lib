@@ -194,7 +194,7 @@ def check_compliance_case(
     fy_nmm2: float,
     fy_transverse_nmm2: float | None = None,
     torsion_corner_bar_centres_mm: tuple[float, float] | None = None,
-    d_dash_mm: float = 50.0,
+    d_dash_mm: float | None = None,
     # Shear reinforcement input
     asv_mm2: float = 100.0,
     pt_percent: float | None = None,
@@ -227,6 +227,14 @@ def check_compliance_case(
     - If pt_percent is not provided, it is computed from ast_mm2_for_shear when available,
       else falls back to using flexure-required Ast (recorded as an assumption).
     """
+
+    _require_finite_inputs(tu_knm=tu_knm)
+    if d_dash_mm is None:
+        if tu_knm > 0:
+            raise ValueError(
+                "TORSION_OPPOSITE_DEPTH_REQUIRED: supply explicit d_dash_mm"
+            )
+        d_dash_mm = 50.0
 
     finite_inputs: dict[str, object] = {
         "mu_knm": mu_knm,

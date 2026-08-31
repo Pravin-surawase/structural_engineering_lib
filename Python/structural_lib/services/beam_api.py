@@ -1537,7 +1537,13 @@ def _design_beam_is456_calculation(
         effective_depth_basis=effective_depth_basis,
     )
     d_mm = depth_resolution.d_mm
+    _require_finite_real("tu_knm", tu_knm)
     if d_dash_mm is None:
+        if tu_knm > 0:
+            raise ValueError(
+                "TORSION_OPPOSITE_DEPTH_REQUIRED: supply explicit d_dash_mm; "
+                "opposite-face depth must not be inferred from tension cover or 50 mm."
+            )
         d_dash_mm = D_mm - d_mm if effective_depth_basis is not None else 50.0
 
     for name, value in (

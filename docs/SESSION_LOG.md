@@ -58,6 +58,18 @@
 - The commit hook caught the generated torsion cookbook/reference still using
   the old typed contract. Regenerated both from the corrected maintained recipe
   with `scripts/generate_family_facade_docs.py`; the hook checks recipe drift.
+- Immutable-candidate audit caught a remaining compatibility fallback to 50 mm
+  (or tension centroid) for missing opposite-face cover. An authored call returned
+  276.506 mm2 instead of 272.819 mm2 with its explicit 56 mm basis. The repair
+  requires explicit `d_dash_mm` for nonzero torsion in both service and compliance
+  owners; zero-torsion compatibility is retained. The before/after audit is in
+  the external closeout, alongside the consolidated affected checks.
+- The final repair also changed source-bound ledger/review identities. Initial
+  checks ran before those projections were refreshed and exposed two stale-data
+  failures. Refreshed after the source freeze; the fixture comparison proves
+  identity-only changes. Rerun those affected suites and Node parity, rather
+  than repeating the already passing numerical suites. Future contract packets
+  must finish generators and source-bound fixtures before starting their gates.
 
 ### Root causes and resolutions
 

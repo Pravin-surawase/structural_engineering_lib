@@ -59,6 +59,8 @@ ETABS design overwrites are not proof of installed steel.
 - Raw `design_torsion`: supply `corner_bar_centres_mm` and `d_opposite_mm`.
   `design_beam_is456` accepts `torsion_corner_bar_centres_mm` and the explicit
   opposite-face depth basis `d_dash_mm`. Never use stirrup centres as bar centres.
+  Nonzero torsion rejects omitted `d_dash_mm` in service and compliance owners;
+  neither the old 50 mm fallback nor tension-face cover proves that basis.
 - The standalone torsion REST endpoint now requires explicit effective depth,
   corner centres and opposite-face effective depth. Its old 25 mm depth offset
   is removed. The primary v1 route already has explicit bar/cover parameters;
@@ -92,6 +94,9 @@ Do not describe unknown CSI/binder internals as diagnosed root causes.
 Contract changes must also refresh the maintained API manifest, classification,
 OpenAPI and family-facade recipe documentation. Their normal hooks reject stale
 consumers; do not replace those generators with hand-edited projections.
+Finish package source edits before refreshing source-bound review fixtures, then
+start the affected checks. Reusing a fixture from an earlier source hash causes
+avoidable drift failures even when its numerical results are unchanged.
 
 ## Remaining W3 work
 
