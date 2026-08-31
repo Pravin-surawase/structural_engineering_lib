@@ -192,6 +192,8 @@ def check_compliance_case(
     d_mm: float,
     fck_nmm2: float,
     fy_nmm2: float,
+    fy_transverse_nmm2: float | None = None,
+    torsion_corner_bar_centres_mm: tuple[float, float] | None = None,
     d_dash_mm: float = 50.0,
     # Shear reinforcement input
     asv_mm2: float = 100.0,
@@ -245,10 +247,14 @@ def check_compliance_case(
         ("cover_mm", cover_mm),
         ("bf_mm", bf_mm),
         ("Df_mm", Df_mm),
+        ("fy_transverse_nmm2", fy_transverse_nmm2),
     ):
         if value is not None:
             finite_inputs[name] = value
     _require_finite_inputs(**finite_inputs)
+    fy_stirrup = fy_nmm2 if fy_transverse_nmm2 is None else fy_transverse_nmm2
+    if fy_transverse_nmm2 is not None and not 250 <= fy_stirrup <= 500:
+        raise ValueError("fy_transverse_nmm2 must be between 250 and 500 N/mm2")
     if ast_mm2_for_shear is not None and ast_mm2_for_shear <= 0:
         raise ValueError("ast_mm2_for_shear must be > 0 when supplied.")
 
@@ -345,16 +351,21 @@ def check_compliance_case(
             cover=cover_mm,
             stirrup_dia=stirrup_dia_mm,
             pt=torsion_lookup_pt_percent,
+            fy_transverse_nmm2=fy_stirrup,
+            corner_bar_centres_mm=torsion_corner_bar_centres_mm,
+            d_opposite_mm=D_mm - d_dash_mm,
         )
         design_mu_knm = torsion_result.Me_knm
         design_vu_kn = torsion_result.Ve_kn
+        # Opposite-face tension is retained in torsion_result.Ast_opposite_mm2.
+        # It must not be relabelled as flexural compression reinforcement.
 
     sh = shear.design_shear(
         vu_kn=design_vu_kn,
         b=b_mm,
         d=d_mm,
         fck=fck_nmm2,
-        fy=fy_nmm2,
+        fy=fy_stirrup,
         asv=asv_mm2,
         pt=pt_percent,
     )

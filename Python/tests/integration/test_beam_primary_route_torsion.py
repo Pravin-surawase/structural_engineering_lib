@@ -19,6 +19,7 @@ def ordinary_beam() -> dict[str, float | str]:
         "fck_nmm2": 25.0,
         "fy_nmm2": 500.0,
         "d_dash_mm": 43.0,
+        "torsion_corner_bar_centres_mm": (214.0, 414.0),
     }
 
 
@@ -73,6 +74,7 @@ def test_unsafe_torsion_fails_combined_primary_result() -> None:
         fy_nmm2=500.0,
         d_dash_mm=50.0,
         cover_mm=40.0,
+        torsion_corner_bar_centres_mm=(84.0, 284.0),
         stirrup_dia_mm=8.0,
     )
 

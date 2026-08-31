@@ -36,7 +36,10 @@ payload = json.loads(
         "D_mm": 500.0,
         "b_mm": 300.0,
         "clear_cover_mm": 25.0,
-        "d_mm": 457.0
+        "corner_bar_centres_b1_mm": 214.0,
+        "corner_bar_centres_d1_mm": 414.0,
+        "d_mm": 457.0,
+        "d_opposite_mm": 457.0
     },
     "identity": {
         "case_id": "TOR-F0",

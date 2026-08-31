@@ -68,6 +68,7 @@ class _FakeResults:
     def __init__(self, output_container=tuple) -> None:
         self.Setup = _FakeSetup()
         self.output_container = output_container
+        self.torsion_values = (1000.0, -1500.0, 500.0)
 
     def FrameForce(self, frame_name, item_type):
         assert item_type == 0
@@ -83,7 +84,7 @@ class _FakeResults:
             (0.0, 0.0, 0.0),
             (80.0, -110.0, 90.0),
             (5.0, 4.0, -6.0),
-            (1000.0, -1500.0, 500.0),
+            self.torsion_values,
             (10_000.0, 20_000.0, -15_000.0),
             (-150_000.0, 120_000.0, 100_000.0),
             0,
@@ -191,10 +192,12 @@ class _FakeSession:
 
 
 @pytest.mark.parametrize("output_container", [tuple, list], ids=["tuple", "list"])
-def test_pilot_extracts_sorted_beams_preserves_stations_and_restores_units(
+def test_zero_torsion_pilot_preserves_sorted_beams_stations_and_units(
     monkeypatch, output_container
 ):
     sap_model = _FakeSapModel(output_container)
+    # Pilot includes detailing, which deliberately excludes torsion distribution.
+    sap_model.Results.torsion_values = (0.0, 0.0, 0.0)
     session = _FakeSession(sap_model)
     monkeypatch.setattr(bridge, "_library_identity", lambda: ("0.24.0", "a" * 64))
 
@@ -210,7 +213,7 @@ def test_pilot_extracts_sorted_beams_preserves_stations_and_restores_units(
     assert result.beams[0].forces.result_row_count == 3
     assert result.beams[0].forces.governing_v2.signed_value == -110.0
     assert result.beams[0].forces.governing_m3.signed_value == -150.0
-    assert result.beams[0].forces.governing_t.absolute_value == 1.5
+    assert result.beams[0].forces.governing_t.absolute_value == 0.0
     assert (
         result.beams[0].design_result["envelope"]["qualified_review_required"] is True
     )

@@ -81,6 +81,12 @@ def design(request: TorsionDesignInputV1) -> CanonicalFamilyResultV1:
             cover=geometry.clear_cover_mm,
             stirrup_dia=reinforcement.stirrup_diameter_mm,
             pt=reinforcement.tension_steel_percent,
+            corner_bar_centres_mm=(
+                geometry.corner_bar_centres_b1_mm,
+                geometry.corner_bar_centres_d1_mm,
+            ),
+            d_opposite_mm=geometry.d_opposite_mm,
+            fy_transverse_nmm2=materials.fy_transverse_nmm2,
         )
     except (ValidationError, ValueError) as error:
         translate_owner_input_error(error)

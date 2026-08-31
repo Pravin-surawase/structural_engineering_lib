@@ -32,6 +32,7 @@ from structural_lib.core.errors import (
 from .. import tables
 from .._validation import require_finite_real
 from ..traceability import clause
+from . import flexure
 
 __all__ = [
     "TorsionResult",
@@ -256,8 +257,8 @@ def calculate_torsion_stirrup_area(
 
     Formula:
         Asv/sv (torsion) = Tu × 10⁶ / (b1 × d1 × 0.87 × fy)
-        Asv/sv (shear) = Vus / (0.87 × fy × d)
-        Asv/sv (total) = asv_torsion + asv_shear
+        Asv/sv (shear) = Vu / (2.5 × d1 × 0.87 × fy)
+        Total is at least (tau_ve - tau_c) × b / (0.87 × fy).
 
     Reference:
         IS 456:2000, Clause 41.4.3
@@ -280,19 +281,11 @@ def calculate_torsion_stirrup_area(
     tu_nmm = tu_knm * 1e6
     asv_torsion = tu_nmm / (b1 * d1 * 0.87 * fy)
 
-    # Shear component: Asv/sv = Vus / (0.87 × fy × d)
-    # First calculate Vus = Vu - Vc
-    vu_n = vu_kn * 1000
-    vc_n = tc * b * d
-    vus_n = max(0, vu_n - vc_n)
-
-    if vus_n > 0:
-        asv_shear = vus_n / (0.87 * fy * d)
-    else:
-        asv_shear = 0
-
-    # Total = torsion + shear (both legs contribute to both)
-    asv_total = asv_torsion + asv_shear
+    # Cl. 41.4.3 uses total Vu in this term, not residual Vu - Vc.
+    asv_shear = vu_kn * 1000 / (2.5 * d1 * 0.87 * fy)
+    tau_ve = calculate_equivalent_shear(vu_kn, tu_knm, b) * 1000 / (b * d)
+    equivalent_floor = max(0.0, (tau_ve - tc) * b / (0.87 * fy))
+    asv_total = max(asv_torsion + asv_shear, equivalent_floor)
 
     return asv_torsion, asv_shear, asv_total
 
@@ -307,7 +300,7 @@ def calculate_longitudinal_torsion_steel(
     sv: float,
 ) -> float:
     """
-    Calculate longitudinal reinforcement for torsion.
+    Retained legacy signature; nonzero torsion requires the complete design route.
 
     Args:
         tu_knm: Factored torsional moment (kN·m)
@@ -320,9 +313,9 @@ def calculate_longitudinal_torsion_steel(
     Returns:
         Longitudinal steel area Al (mm²)
 
-    Formula:
-        Al = Tu × 10⁶ × (b1 + d1) / (b1 × d1 × 0.87 × fy)
-        But not less than: Asv × (b1 + d1) / sv
+    This signature cannot evaluate the equivalent-moment section checks in
+    Cl. 41.4.2. It returns zero only for zero torsion and otherwise raises a
+    basis-required error. Use ``design_torsion`` with explicit geometry.
 
     Reference:
         IS 456:2000, Clause 41.4.2.1
@@ -336,13 +329,13 @@ def calculate_longitudinal_torsion_steel(
     )
     _require_positive_dimension("sv", sv, "Cl. 41.4.2")
 
-    # Tu in kN·m → N·mm
-    tu_nmm = tu_knm * 1e6
-
-    # Al = Tu × (b1 + d1) / (b1 × d1 × 0.87 × fy)
-    al = tu_nmm * (b1 + d1) / (b1 * d1 * 0.87 * fy)
-
-    return al
+    if tu_knm == 0:
+        return 0.0
+    raise ValueError(
+        "TORSION_LONGITUDINAL_BASIS_REQUIRED: this legacy signature lacks Mu, "
+        "section and concrete data needed for Cl. 41.4.2; use design_torsion "
+        "with explicit corner-bar geometry and opposite-face effective depth."
+    )
 
 
 # =============================================================================
@@ -363,13 +356,16 @@ def design_torsion(
     cover: float,
     stirrup_dia: float = 8,
     pt: float = 1.0,
+    *,
+    fy_transverse_nmm2: float | None = None,
+    corner_bar_centres_mm: tuple[float, float] | None = None,
+    d_opposite_mm: float | None = None,
 ) -> TorsionResult:
     """
     Design beam for combined torsion, shear, and bending.
 
-    This function performs complete torsion design per IS 456 Clause 41,
-    calculating equivalent shear, equivalent moment, and required
-    reinforcement for combined loading.
+    Evaluate equivalent actions and required reinforcement per Clause 41.
+    This does not generate or accept perimeter reinforcement distribution.
 
     Args:
         tu_knm: Factored torsional moment (kN·m)
@@ -383,13 +379,17 @@ def design_torsion(
         cover: Clear cover (mm)
         stirrup_dia: Stirrup diameter (mm), default 8
         pt: Tension steel percentage (%), default 1.0
+        fy_transverse_nmm2: Explicit stirrup grade; legacy omission uses fy.
+        corner_bar_centres_mm: Required longitudinal corner-bar b1,d1 (mm).
+        d_opposite_mm: Required effective depth for opposite-face tension (mm).
 
     Returns:
         TorsionResult with complete design output
 
     Notes:
         - Closed stirrups are mandatory for torsion (Cl 41.4.3)
-        - Longitudinal steel distributed around perimeter (Cl 41.4.2.1)
+        - Perimeter distribution per Cl 26.5.1.7 requires separate detailing.
+        - Both equivalent moments must fit singly reinforced capacity.
         - If τve > τc,max, section is unsafe and must be redesigned
 
     Reference:
@@ -436,7 +436,7 @@ def design_torsion(
         "tau_ve": "IS 456 Cl 41.3.1",
         "Asv_torsion": "IS 456 Cl 41.4.3",
         "Al_torsion": "IS 456 Cl 41.4.2",
-        "sv_max": "IS 456 Cl 41.4.3, Cl 26.5.1.5",
+        "sv_max": "IS 456 Cl 26.5.1.5 and 26.5.1.7",
     }
 
     if d >= D:
@@ -448,18 +448,38 @@ def design_torsion(
     if not 0.15 <= pt <= 3.0:
         raise ValueError("pt must be between 0.15 and 3.0 percent")
 
-    # Calculate core dimensions for stirrup (center-to-center of corners)
-    # b1 = b - 2*(cover + stirrup_dia/2)
-    # d1 = D - 2*(cover + stirrup_dia/2)
-    b1 = b - 2 * (cover + stirrup_dia / 2)
-    d1 = D - 2 * (cover + stirrup_dia / 2)
-
-    if b1 <= 0 or d1 <= 0:
+    if b - 2 * (cover + stirrup_dia / 2) <= 0 or D - 2 * (cover + stirrup_dia / 2) <= 0:
         raise DimensionError(
             "cover and stirrup_dia must leave a positive closed-stirrup core.",
-            details={"b1": b1, "d1": d1, "cover": cover},
+            details={"cover": cover},
             clause_ref="Cl. 41.4.3",
         )
+    if corner_bar_centres_mm is None:
+        raise ValueError(
+            "TORSION_CORNER_GEOMETRY_REQUIRED: supply b1,d1 between longitudinal "
+            "corner-bar centres; clear cover and stirrup diameter are insufficient."
+        )
+    b1, d1 = corner_bar_centres_mm
+    b1 = _require_positive_dimension("b1", b1, "Cl. 41.4.3")
+    d1 = _require_positive_dimension("d1", d1, "Cl. 41.4.3")
+    if b1 >= b - 2 * (cover + stirrup_dia) or d1 >= D - 2 * (cover + stirrup_dia):
+        raise ValueError("corner-bar centres must lie inside the closed stirrup")
+    fy_stirrup = _require_supported_material(
+        "fy_transverse_nmm2",
+        fy if fy_transverse_nmm2 is None else fy_transverse_nmm2,
+        minimum=250,
+        maximum=500,
+        clause_ref="Cl. 41.4.3",
+    )
+    if d_opposite_mm is None:
+        raise ValueError(
+            "TORSION_OPPOSITE_DEPTH_REQUIRED: supply opposite-face effective depth"
+        )
+    d_opposite_mm = _require_positive_dimension(
+        "d_opposite_mm", d_opposite_mm, "Cl. 41.4.2"
+    )
+    if d_opposite_mm >= D:
+        raise ValueError("d_opposite_mm must be less than D")
 
     # Step 1: Calculate equivalent shear (Cl 41.3.1)
     ve_kn = calculate_equivalent_shear(vu_kn, tu_knm, b)
@@ -502,8 +522,10 @@ def design_torsion(
 
     # Step 6: Calculate stirrup reinforcement
     asv_torsion, asv_shear, asv_total = calculate_torsion_stirrup_area(
-        tu_knm, vu_kn, b, d, b1, d1, fy, tc
+        tu_knm, vu_kn, b, d, b1, d1, fy_stirrup, tc
     )
+    # Cl. 26.5.1.6 also governs small torsion/equivalent shear.
+    asv_total = max(asv_total, 0.4 * b / (0.87 * min(fy_stirrup, 415.0)))
 
     # Step 7: Calculate stirrup spacing
     # Using 2-legged 8mm stirrups: Asv = 2 × π × (8/2)² = 100.5 mm²
@@ -518,8 +540,11 @@ def design_torsion(
     # Apply maximum spacing limits (Cl 26.5.1.5)
     sv_max_1 = 0.75 * d
     sv_max_2 = 300
-    # For torsion: spacing ≤ (x1 + y1)/4 or 300mm (Cl 41.4.3)
-    sv_max_torsion = min((b1 + d1) / 4, 300)
+    # Cl. 26.5.1.7 uses stirrup dimensions x1,y1, distinct from the
+    # longitudinal corner-bar centre dimensions b1,d1 in Cl. 41.4.3.
+    x1 = b - 2 * (cover + stirrup_dia / 2)
+    y1 = D - 2 * (cover + stirrup_dia / 2)
+    sv_max_torsion = min(x1, y1, (x1 + y1) / 4, 300)
 
     sv = min(sv_calc, sv_max_1, sv_max_2, sv_max_torsion)
 
@@ -532,8 +557,25 @@ def design_torsion(
             clause_ref="Cl. 41.4.3",
         )
 
-    # Step 8: Calculate longitudinal reinforcement
-    al = calculate_longitudinal_torsion_steel(tu_knm, vu_kn, b1, d1, fy, sv)
+    # Cl. 41.4.2: design both equivalent bending moments using the existing
+    # flexural owner. This bounded route requires singly reinforced capacity
+    # on each face; doubly reinforced coupled torsion is not accepted.
+    me_opposite = max(0.0, me_knm - 2 * mu_knm)
+    primary = flexure.design_singly_reinforced(
+        b=b, d=d, d_total=D, mu_knm=me_knm, fck=fck, fy=fy
+    )
+    opposite = (
+        flexure.design_singly_reinforced(
+            b=b, d=d_opposite_mm, d_total=D, mu_knm=me_opposite, fck=fck, fy=fy
+        )
+        if me_opposite > 0
+        else None
+    )
+    errors.extend(primary.errors)
+    if opposite is not None:
+        errors.extend(opposite.errors)
+    opposite_ast = opposite.Ast_required if opposite is not None else 0.0
+    al = primary.Ast_required + opposite_ast
 
     return TorsionResult(
         Tu_knm=tu_knm,
@@ -549,8 +591,12 @@ def design_torsion(
         Asv_total=round(asv_total, 4),
         stirrup_spacing=round(sv, 0),
         Al_torsion=round(al, 0),
-        is_safe=True,
+        is_safe=primary.is_safe and (opposite is None or opposite.is_safe),
         requires_closed_stirrups=True,
         errors=errors,
         clause_refs=clause_refs,
+        Me_opposite_knm=me_opposite,
+        Ast_opposite_mm2=opposite_ast,
+        corner_bar_centres_mm=(b1, d1),
+        fy_transverse_nmm2=fy_stirrup,
     )

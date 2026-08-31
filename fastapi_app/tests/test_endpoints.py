@@ -312,6 +312,9 @@ class TestDesignEndpoints:
     def test_torsion_design_basic(self, client):
         """Test torsion design per IS 456 Cl 41."""
         request = {
+            "effective_depth": 450,
+            "corner_bar_centres_mm": [200, 400],
+            "d_opposite_mm": 450,
             "width": 300,
             "depth": 500,
             "torsion": 10,
@@ -334,6 +337,9 @@ class TestDesignEndpoints:
     def test_torsion_design_unsafe_section(self, client):
         """Test torsion design with very high torsion → unsafe."""
         request = {
+            "effective_depth": 250,
+            "corner_bar_centres_mm": [64, 214],
+            "d_opposite_mm": 250,
             "width": 150,
             "depth": 300,
             "torsion": 100,

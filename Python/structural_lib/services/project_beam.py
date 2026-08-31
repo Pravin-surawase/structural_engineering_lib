@@ -26,6 +26,7 @@ __all__ = [
     "PROJECT_BEAM_RESULT_SCHEMA_VERSION",
     "PROJECT_BEAM_SCHEMA_VERSION",
     "EffectiveDepthBasisV1",
+    "CentroidCoverDepthBasisV1",
     "EffectiveDepthResolutionV1",
     "ProjectBeamBatchResultV1",
     "ProjectBeamBatchSummaryV1",
@@ -61,6 +62,24 @@ class EffectiveDepthBasisV1:
     stirrup_diameter_mm: float
     tension_bar_diameter_mm: float
 
+    def corner_bar_centres_mm(
+        self, b_mm: float, D_mm: float, *, compression_bar_diameter_mm: float
+    ) -> tuple[float, float]:
+        """Single-layer corner geometry from explicit clear cover and bar sizes.
+
+        Unequal face bar sizes use the smaller horizontal centre separation.
+        This does not infer group centroids for multi-layer reinforcement.
+        """
+        outer = self.clear_cover_mm + self.stirrup_diameter_mm
+        return (
+            b_mm
+            - 2 * outer
+            - max(self.tension_bar_diameter_mm, compression_bar_diameter_mm),
+            D_mm
+            - 2 * outer
+            - (self.tension_bar_diameter_mm + compression_bar_diameter_mm) / 2,
+        )
+
     def derive_d_mm(self, D_mm: float) -> float:
         """Return ``D - cover - stirrup diameter - main-bar radius``."""
 
@@ -80,13 +99,28 @@ class EffectiveDepthBasisV1:
 
 
 @dataclass(frozen=True)
+class CentroidCoverDepthBasisV1:
+    """Distance from the tension face to the longitudinal steel centroid."""
+
+    centroid_cover_mm: float
+
+    def derive_d_mm(self, D_mm: float) -> float:
+        return D_mm - self.centroid_cover_mm
+
+    def to_dict(self) -> dict[str, float]:
+        return {"centroid_cover_mm": self.centroid_cover_mm}
+
+
+@dataclass(frozen=True)
 class EffectiveDepthResolutionV1:
     """One explicit or auditably derived effective-depth decision."""
 
     d_mm: float
     source: Literal["EXPLICIT", "DERIVED"]
     D_mm: float
-    effective_depth_basis: EffectiveDepthBasisV1 | None = None
+    effective_depth_basis: EffectiveDepthBasisV1 | CentroidCoverDepthBasisV1 | None = (
+        None
+    )
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -106,7 +140,9 @@ def resolve_effective_depth_v1(
     *,
     D_mm: float,
     d_mm: float | None = None,
-    effective_depth_basis: EffectiveDepthBasisV1 | None = None,
+    effective_depth_basis: (
+        EffectiveDepthBasisV1 | CentroidCoverDepthBasisV1 | None
+    ) = None,
 ) -> EffectiveDepthResolutionV1:
     """Resolve effective depth from exactly one complete, finite basis."""
 

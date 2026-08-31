@@ -23,9 +23,11 @@ from structural_lib.services.contracts.beam import (
     BeamDesignInputV1,
     BeamDetailingOptionsV1,
     BeamServiceabilityV1,
+    CentroidCoverDepthRequestV1,
     DetailingStandard,
     EffectiveDepthBasisRequestV1,
     IS456MaterialsV1,
+    IS456ReinforcementMaterialsV1,
     MemberIdentityV1,
     RectangularBeamSectionV1,
 )
@@ -44,7 +46,9 @@ __all__ = [
     "BeamServiceabilityV1",
     "DetailingStandard",
     "EffectiveDepthBasisRequestV1",
+    "CentroidCoverDepthRequestV1",
     "IS456MaterialsV1",
+    "IS456ReinforcementMaterialsV1",
     "InputContractError",
     "InputIssueV1",
     "MemberIdentityV1",
@@ -69,12 +73,15 @@ def input(  # noqa: A001 - frozen public facade spelling
     D_mm: float,
     fck_nmm2: float,
     fy_nmm2: float,
+    fy_transverse_nmm2: float | None = None,
     mu_knm: float,
     vu_kn: float,
     d_dash_mm: float,
     asv_mm2: float,
     d_mm: float | None = None,
-    effective_depth_basis: EffectiveDepthBasisRequestV1 | None = None,
+    effective_depth_basis: (
+        EffectiveDepthBasisRequestV1 | CentroidCoverDepthRequestV1 | None
+    ) = None,
     tu_knm: float = 0.0,
     pt_percent: float | None = None,
     ast_mm2_for_shear: float | None = None,
@@ -99,7 +106,15 @@ def input(  # noqa: A001 - frozen public facade spelling
                 "d_mm": d_mm,
                 "effective_depth_basis": effective_depth_basis,
             },
-            "materials": {"fck_nmm2": fck_nmm2, "fy_nmm2": fy_nmm2},
+            "materials": {
+                "fck_nmm2": fck_nmm2,
+                "fy_nmm2": fy_nmm2,
+                **(
+                    {"fy_transverse_nmm2": fy_transverse_nmm2}
+                    if fy_transverse_nmm2 is not None
+                    else {}
+                ),
+            },
             "actions": {"mu_knm": mu_knm, "vu_kn": vu_kn, "tu_knm": tu_knm},
             "calculation_basis": {
                 "d_dash_mm": d_dash_mm,

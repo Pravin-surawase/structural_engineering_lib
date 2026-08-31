@@ -220,7 +220,8 @@ def test_api_optimize_beam_cost_enforces_supplied_stirrup_area():
         asv_mm2=157.0,
     )
     assert result.optimal_design.stirrup_utilization <= 1.0
-    assert result.optimal_design.stirrup_spacing_mm == 100.0
+    # Cl. 40.4 uses fy=415 for transverse design despite longitudinal Fe500.
+    assert result.optimal_design.stirrup_spacing_mm == 75.0
 
 
 def test_api_optimize_beam_cost_to_dict():

@@ -686,6 +686,8 @@ def test_torsion_design_contract():
         fck=25.0,
         fy=415.0,
         cover=30.0,
+        corner_bar_centres_mm=(204.0, 404.0),
+        d_opposite_mm=450.0,
     )
     assert isinstance(result, TorsionResult)
     assert hasattr(result, "Tu_knm")

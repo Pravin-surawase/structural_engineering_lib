@@ -68,3 +68,15 @@ def test_v2_openapi_exposes_nested_canonical_request(client):
         "actions",
         "calculation_basis",
     }
+
+
+def test_v2_preserves_centroid_and_transverse_grade_through_calculation(client):
+    payload = _payload()
+    payload["section"].pop("d_mm")
+    payload["section"]["effective_depth_basis"] = {"centroid_cover_mm": 40}
+    payload["materials"]["fy_transverse_nmm2"] = 415
+    expected = beam.design(beam.load(payload)).to_dict()
+    response = client.post("/api/v2/design/beam", json=payload)
+    assert response.status_code == 200
+    assert response.json() == expected
+    assert response.json()["calculation"]["effective_depth_resolution"]["d_mm"] == 510

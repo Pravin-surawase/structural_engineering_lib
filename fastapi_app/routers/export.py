@@ -8,6 +8,7 @@ using StreamingResponse for efficient delivery.
 import html as html_lib
 import io
 import json
+import math
 import re
 from typing import Optional
 
@@ -341,6 +342,33 @@ async def export_report(request: ExportReportRequest):
                 exclude_none=True
             )
 
+    from structural_lib.services.project_beam import EffectiveDepthBasisV1
+
+    torsion_centres = (
+        EffectiveDepthBasisV1(
+            request.clear_cover,
+            request.stirrup_dia_mm,
+            request.main_bar_dia_mm,
+        ).corner_bar_centres_mm(
+            request.width,
+            request.depth,
+            compression_bar_diameter_mm=request.main_bar_dia_mm,
+        )
+        if request.torsion > 0
+        else None
+    )
+    expected_depth = (
+        request.depth
+        - request.clear_cover
+        - request.stirrup_dia_mm
+        - request.main_bar_dia_mm / 2
+    )
+    if request.torsion > 0 and not math.isclose(effective_depth, expected_depth):
+        raise HTTPException(
+            status_code=422,
+            detail="TORSION_SCOPE_HOLD: single-layer corner depths must agree",
+        )
+
     # Re-run the exact supported calculation and require its identity to match
     # the current primary response.  Client safety/utilization claims are never
     # used as authority.
@@ -358,6 +386,7 @@ async def export_report(request: ExportReportRequest):
         + request.stirrup_dia_mm
         + request.main_bar_dia_mm / 2,
         tu_knm=request.torsion,
+        torsion_corner_bar_centres_mm=torsion_centres,
         cover_mm=request.clear_cover,
         stirrup_dia_mm=request.stirrup_dia_mm,
         deflection_params=deflection_params,
@@ -371,6 +400,7 @@ async def export_report(request: ExportReportRequest):
             "mu_knm": request.moment,
             "vu_kn": request.shear,
             "tu_knm": request.torsion,
+            "torsion_corner_bar_centres_mm": torsion_centres,
             "b_mm": request.width,
             "D_mm": request.depth,
             "d_mm": effective_depth,

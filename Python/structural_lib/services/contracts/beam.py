@@ -16,7 +16,11 @@ from structural_lib.services.contracts.common import (
     ValidationDimension,
     complete_field_contracts_from_schema,
 )
-from structural_lib.services.project_beam import EffectiveDepthBasisV1
+from structural_lib.services.project_beam import (
+    CentroidCoverDepthBasisV1,
+    EffectiveDepthBasisV1,
+    resolve_effective_depth_v1,
+)
 
 __all__ = [
     "BEAM_DESIGN_SCHEMA_VERSION",
@@ -28,7 +32,9 @@ __all__ = [
     "BeamServiceabilityV1",
     "DetailingStandard",
     "EffectiveDepthBasisRequestV1",
+    "CentroidCoverDepthRequestV1",
     "IS456MaterialsV1",
+    "IS456ReinforcementMaterialsV1",
     "MemberIdentityV1",
     "RectangularBeamSectionV1",
 ]
@@ -77,6 +83,15 @@ class EffectiveDepthBasisRequestV1(StrictPublicModel):
         )
 
 
+class CentroidCoverDepthRequestV1(StrictPublicModel):
+    """Explicit longitudinal-group centroid cover; never clear cover."""
+
+    centroid_cover_mm: float = Field(gt=0)
+
+    def to_service(self) -> CentroidCoverDepthBasisV1:
+        return CentroidCoverDepthBasisV1(centroid_cover_mm=self.centroid_cover_mm)
+
+
 class RectangularBeamSectionV1(StrictPublicModel):
     """Rectangular section with one explicit effective-depth basis."""
 
@@ -84,7 +99,17 @@ class RectangularBeamSectionV1(StrictPublicModel):
     b_mm: float = Field(gt=0, le=2000)
     D_mm: float = Field(gt=0, le=3000)
     d_mm: float | None = Field(default=None, gt=0)
-    effective_depth_basis: EffectiveDepthBasisRequestV1 | None = None
+    effective_depth_basis: (
+        EffectiveDepthBasisRequestV1 | CentroidCoverDepthRequestV1 | None
+    ) = None
+
+    def resolved_d_mm(self) -> float:
+        basis = self.effective_depth_basis
+        return resolve_effective_depth_v1(
+            D_mm=self.D_mm,
+            d_mm=self.d_mm,
+            effective_depth_basis=basis.to_service() if basis is not None else None,
+        ).d_mm
 
     @model_validator(mode="after")
     def validate_depth_basis(self) -> Self:
@@ -93,19 +118,7 @@ class RectangularBeamSectionV1(StrictPublicModel):
             raise ValueError(
                 "supply exactly one of d_mm or a complete effective_depth_basis"
             )
-        if self.d_mm is not None:
-            d_mm = self.d_mm
-        else:
-            basis = self.effective_depth_basis
-            assert basis is not None
-            d_mm = (
-                self.D_mm
-                - basis.clear_cover_mm
-                - basis.stirrup_diameter_mm
-                - basis.tension_bar_diameter_mm / 2
-            )
-        if d_mm >= self.D_mm:
-            raise ValueError("effective depth must be less than D_mm")
+        self.resolved_d_mm()
         if self.D_mm / self.b_mm > 6:
             raise ValueError("D_mm / b_mm must not exceed the supported ratio 6")
         return self
@@ -116,6 +129,12 @@ class IS456MaterialsV1(StrictPublicModel):
 
     fck_nmm2: float = Field(ge=15, le=40)
     fy_nmm2: float = Field(ge=250, le=500)
+
+
+class IS456ReinforcementMaterialsV1(IS456MaterialsV1):
+    """Retain actual longitudinal fy and a separately specified stirrup grade."""
+
+    fy_transverse_nmm2: float = Field(ge=250, le=500)
 
 
 class BeamActionsV1(StrictPublicModel):
@@ -182,7 +201,7 @@ class BeamDesignInputV1(StrictPublicModel):
     schema_version: str = Field(default=BEAM_DESIGN_SCHEMA_VERSION, frozen=True)
     identity: MemberIdentityV1
     section: RectangularBeamSectionV1
-    materials: IS456MaterialsV1
+    materials: IS456MaterialsV1 | IS456ReinforcementMaterialsV1
     actions: BeamActionsV1
     calculation_basis: BeamCalculationBasisV1
     detailing: BeamDetailingOptionsV1 | None = None
@@ -210,17 +229,7 @@ class BeamDesignInputV1(StrictPublicModel):
     ) -> BeamCalculationBasisV1:
         section = info.data.get("section")
         if isinstance(section, RectangularBeamSectionV1):
-            if section.d_mm is not None:
-                d_mm = section.d_mm
-            else:
-                basis = section.effective_depth_basis
-                assert basis is not None
-                d_mm = (
-                    section.D_mm
-                    - basis.clear_cover_mm
-                    - basis.stirrup_diameter_mm
-                    - basis.tension_bar_diameter_mm / 2
-                )
+            d_mm = section.resolved_d_mm()
             if value.d_dash_mm >= d_mm:
                 raise ValueError("d_dash_mm must be less than effective depth")
         return value
@@ -250,7 +259,18 @@ class BeamDesignInputV1(StrictPublicModel):
             and section.effective_depth_basis is not None
         ):
             basis = section.effective_depth_basis
-            if not (
+            if isinstance(basis, CentroidCoverDepthRequestV1):
+                expected = (
+                    value.clear_cover_mm
+                    + value.stirrup_diameter_mm
+                    + value.tension_bar_diameter_mm / 2
+                )
+                if not math.isclose(basis.centroid_cover_mm, expected):
+                    raise ValueError(
+                        "centroid cover conflicts with the selected single-layer detailing; "
+                        "do not substitute centroid cover for clear cover"
+                    )
+            elif not (
                 math.isclose(basis.clear_cover_mm, value.clear_cover_mm)
                 and math.isclose(basis.stirrup_diameter_mm, value.stirrup_diameter_mm)
                 and math.isclose(
@@ -269,6 +289,26 @@ class BeamDesignInputV1(StrictPublicModel):
             raise ValueError(f"schema_version must be {BEAM_DESIGN_SCHEMA_VERSION}")
         if self.actions.tu_knm > 0 and self.detailing is None:
             raise ValueError("detailing is required when tu_knm is greater than zero")
+        if self.actions.tu_knm > 0 and self.detailing is not None:
+            options = self.detailing
+            tension_centroid = (
+                options.clear_cover_mm
+                + options.stirrup_diameter_mm
+                + options.tension_bar_diameter_mm / 2
+            )
+            opposite_centroid = (
+                options.clear_cover_mm
+                + options.stirrup_diameter_mm
+                + options.compression_bar_diameter_mm / 2
+            )
+            if not math.isclose(
+                self.section.resolved_d_mm(), self.section.D_mm - tension_centroid
+            ) or not math.isclose(self.calculation_basis.d_dash_mm, opposite_centroid):
+                raise ValueError(
+                    "torsion requires section depths consistent with the explicit single-layer corner-bar detailing"
+                )
+            if options.stirrup_legs != 2:
+                raise ValueError("torsion route requires two-legged closed stirrups")
         if self.detailing is not None:
             if self.section.span_mm is None:
                 raise ValueError("section.span_mm is required for detailing")

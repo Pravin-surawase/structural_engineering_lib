@@ -85,7 +85,9 @@ def review_fixture():
 def test_python_export_replays_all_service_identities_and_exact_frozen_node_fixture():
     dossier = review_fixture()
     transport = EXPORT.export_review(dossier)
-    fixture = ROOT / "excel_addin/tests/fixtures/calculation-review-v1.json"
+    fixture = (
+        ROOT / "excel_addin/tests/fixtures/calculation-review-reinforcement-v2.json"
+    )
     assert transport == json.loads(fixture.read_text(encoding="utf-8"))
     assert (
         hashlib.sha256(transport["dossier_json"].encode()).hexdigest()

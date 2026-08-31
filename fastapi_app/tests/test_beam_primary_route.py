@@ -185,7 +185,7 @@ def test_unsafe_torsion_fails_primary_result(client) -> None:
         json={
             "width": 200.0,
             "depth": 400.0,
-            "effective_depth": 350.0,
+            "effective_depth": 342.0,
             "moment": 300.0,
             "shear": 200.0,
             "torsion": 100.0,
@@ -459,10 +459,13 @@ def test_explicit_effective_depth_is_not_combined_with_adapter_basis(client) -> 
     assert resolution["effective_depth_basis"] is None
 
 
-def test_separate_torsion_endpoint_contract_is_unchanged(client) -> None:
+def test_separate_torsion_endpoint_requires_explicit_geometry(client) -> None:
     response = client.post(
         "/api/v1/design/beam/torsion",
         json={
+            "effective_depth": 442.0,
+            "corner_bar_centres_mm": [184.0, 384.0],
+            "d_opposite_mm": 442.0,
             "width": 300.0,
             "depth": 500.0,
             "torsion": 10.0,
@@ -492,6 +495,8 @@ def test_separate_torsion_endpoint_contract_is_unchanged(client) -> None:
         "asv_total",
         "stirrup_spacing",
         "al_torsion",
+        "me_opposite_knm",
+        "ast_opposite_mm2",
         "is_safe",
         "requires_closed_stirrups",
         "warnings",

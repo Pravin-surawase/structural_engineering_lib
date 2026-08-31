@@ -31,9 +31,13 @@ from structural_lib.services.contracts.beam import (
     BEAM_DESIGN_SCHEMA_VERSION,
     BeamDesignInputV1,
     DetailingStandard,
+    IS456ReinforcementMaterialsV1,
     MemberIdentityV1,
 )
-from structural_lib.services.project_beam import resolve_effective_depth_v1
+from structural_lib.services.project_beam import (
+    EffectiveDepthBasisV1,
+    resolve_effective_depth_v1,
+)
 
 if TYPE_CHECKING:
     from structural_lib.services.beam_api import DesignAndDetailResult
@@ -133,7 +137,7 @@ def _envelope(
             contract_version=BEAM_DESIGN_SCHEMA_VERSION,
             library_version=get_runtime_version(),
             input_hash=_input_hash(request),
-            calculation_identity="is456-rectangular-beam-strength/v1",
+            calculation_identity="is456-rectangular-beam-strength/v2",
         ),
     )
 
@@ -354,6 +358,18 @@ def design(request: BeamDesignInputV1) -> BeamDesignResultV1:
     from structural_lib.services.beam_api import _design_beam_is456_calculation
 
     detailing = request.detailing
+    corner_centres = None
+    if request.actions.tu_knm > 0:
+        assert detailing is not None
+        corner_centres = EffectiveDepthBasisV1(
+            clear_cover_mm=detailing.clear_cover_mm,
+            stirrup_diameter_mm=detailing.stirrup_diameter_mm,
+            tension_bar_diameter_mm=detailing.tension_bar_diameter_mm,
+        ).corner_bar_centres_mm(
+            request.section.b_mm,
+            request.section.D_mm,
+            compression_bar_diameter_mm=detailing.compression_bar_diameter_mm,
+        )
     calculation = _design_beam_is456_calculation(
         units="IS456",
         case_id=request.identity.case_id,
@@ -369,6 +385,12 @@ def design(request: BeamDesignInputV1) -> BeamDesignResultV1:
         ),
         fck_nmm2=request.materials.fck_nmm2,
         fy_nmm2=request.materials.fy_nmm2,
+        fy_transverse_nmm2=(
+            request.materials.fy_transverse_nmm2
+            if isinstance(request.materials, IS456ReinforcementMaterialsV1)
+            else None
+        ),
+        torsion_corner_bar_centres_mm=corner_centres,
         d_dash_mm=request.calculation_basis.d_dash_mm,
         asv_mm2=request.calculation_basis.asv_mm2,
         pt_percent=request.calculation_basis.pt_percent,
@@ -447,6 +469,16 @@ def detail(
             )
         )
     request = design_result.request
+    if request.actions.tu_knm > 0:
+        raise InputContractError(
+            (
+                InputIssueV1(
+                    code="CONSUMER_RESULT_NOT_ACCEPTED",
+                    path="request.actions.tu_knm",
+                    message="TORSION_DETAILING_SCOPE_HOLD: checked forces and required steel do not prove corner/perimeter bar distribution; torsion detailing and BBS are not supported",
+                ),
+            )
+        )
     options = request.detailing
     if options is None:
         raise InputContractError(

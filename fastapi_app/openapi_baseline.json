@@ -5459,7 +5459,15 @@
             "$ref": "#/components/schemas/MemberIdentityV1"
           },
           "materials": {
-            "$ref": "#/components/schemas/IS456MaterialsV1"
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IS456MaterialsV1"
+              },
+              {
+                "$ref": "#/components/schemas/IS456ReinforcementMaterialsV1"
+              }
+            ],
+            "title": "Materials"
           },
           "schema_version": {
             "default": "beam-design-input/v1",
@@ -8763,6 +8771,22 @@
           "choices"
         ],
         "title": "CatalogFieldModel",
+        "type": "object"
+      },
+      "CentroidCoverDepthRequestV1": {
+        "additionalProperties": false,
+        "description": "Explicit longitudinal-group centroid cover; never clear cover.",
+        "properties": {
+          "centroid_cover_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Centroid Cover Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "centroid_cover_mm"
+        ],
+        "title": "CentroidCoverDepthRequestV1",
         "type": "object"
       },
       "CheckDetail": {
@@ -24973,6 +24997,37 @@
         "title": "IS456MaterialsV1",
         "type": "object"
       },
+      "IS456ReinforcementMaterialsV1": {
+        "additionalProperties": false,
+        "description": "Retain actual longitudinal fy and a separately specified stirrup grade.",
+        "properties": {
+          "fck_nmm2": {
+            "maximum": 40.0,
+            "minimum": 15.0,
+            "title": "Fck Nmm2",
+            "type": "number"
+          },
+          "fy_nmm2": {
+            "maximum": 500.0,
+            "minimum": 250.0,
+            "title": "Fy Nmm2",
+            "type": "number"
+          },
+          "fy_transverse_nmm2": {
+            "maximum": 500.0,
+            "minimum": 250.0,
+            "title": "Fy Transverse Nmm2",
+            "type": "number"
+          }
+        },
+        "required": [
+          "fck_nmm2",
+          "fy_nmm2",
+          "fy_transverse_nmm2"
+        ],
+        "title": "IS456ReinforcementMaterialsV1",
+        "type": "object"
+      },
       "IS456SemanticContractModel": {
         "description": "Units, aliases, statuses, and limitations for supported routes.",
         "properties": {
@@ -25148,8 +25203,13 @@
         "description": "Torsion calculation details embedded in the primary beam result.",
         "properties": {
           "al_torsion": {
-            "description": "Longitudinal torsion steel (mm\u00b2)",
+            "description": "Total Me1/Me2 tension steel (mm\u00b2), not additive to flexure",
             "title": "Al Torsion",
+            "type": "number"
+          },
+          "ast_opposite_mm2": {
+            "default": 0.0,
+            "title": "Ast Opposite Mm2",
             "type": "number"
           },
           "asv_shear": {
@@ -25185,6 +25245,11 @@
           "is_safe": {
             "title": "Is Safe",
             "type": "boolean"
+          },
+          "me_opposite_knm": {
+            "default": 0.0,
+            "title": "Me Opposite Knm",
+            "type": "number"
           },
           "requires_closed_stirrups": {
             "title": "Requires Closed Stirrups",
@@ -28306,9 +28371,13 @@
                 "$ref": "#/components/schemas/EffectiveDepthBasisRequestV1"
               },
               {
+                "$ref": "#/components/schemas/CentroidCoverDepthRequestV1"
+              },
+              {
                 "type": "null"
               }
-            ]
+            ],
+            "title": "Effective Depth Basis"
           },
           "span_mm": {
             "anyOf": [
@@ -32846,6 +32915,39 @@
             "title": "Clear Cover",
             "type": "number"
           },
+          "corner_bar_centres_mm": {
+            "anyOf": [
+              {
+                "maxItems": 2,
+                "minItems": 2,
+                "prefixItems": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ],
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Corner Bar Centres Mm"
+          },
+          "d_opposite_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "D Opposite Mm"
+          },
           "depth": {
             "description": "Overall beam depth D (mm)",
             "examples": [
@@ -32868,7 +32970,7 @@
                 "type": "null"
               }
             ],
-            "description": "Effective depth d (mm). Auto-calculated if not provided.",
+            "description": "Explicit effective depth d (mm), required for torsion.",
             "title": "Effective Depth"
           },
           "fck": {
@@ -32886,6 +32988,19 @@
             "minimum": 250.0,
             "title": "Fy",
             "type": "number"
+          },
+          "fy_transverse_nmm2": {
+            "anyOf": [
+              {
+                "maximum": 500.0,
+                "minimum": 250.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fy Transverse Nmm2"
           },
           "moment": {
             "description": "Factored bending moment Mu (kN\u00b7m)",
@@ -32961,8 +33076,13 @@
         "description": "Response model for torsion design.",
         "properties": {
           "al_torsion": {
-            "description": "Longitudinal steel for torsion (mm\u00b2)",
+            "description": "Total Me1/Me2 tension steel (mm\u00b2), not additive to flexure",
             "title": "Al Torsion",
+            "type": "number"
+          },
+          "ast_opposite_mm2": {
+            "default": 0.0,
+            "title": "Ast Opposite Mm2",
             "type": "number"
           },
           "asv_shear": {
@@ -32988,6 +33108,11 @@
           "me_knm": {
             "description": "Equivalent moment Me (kN\u00b7m)",
             "title": "Me Knm",
+            "type": "number"
+          },
+          "me_opposite_knm": {
+            "default": 0.0,
+            "title": "Me Opposite Knm",
             "type": "number"
           },
           "message": {

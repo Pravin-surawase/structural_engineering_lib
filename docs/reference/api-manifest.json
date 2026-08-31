@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-30",
+  "generated": "2026-08-31",
   "module": "structural_lib.api",
   "python": "3.11.15",
   "count": 245,
@@ -307,7 +307,7 @@
     {
       "name": "EffectiveDepthResolutionV1",
       "kind": "class",
-      "signature": "(d_mm: 'float', source: \"Literal['EXPLICIT', 'DERIVED']\", D_mm: 'float', effective_depth_basis: 'EffectiveDepthBasisV1 | None' = None) -> None"
+      "signature": "(d_mm: 'float', source: \"Literal['EXPLICIT', 'DERIVED']\", D_mm: 'float', effective_depth_basis: 'EffectiveDepthBasisV1 | CentroidCoverDepthBasisV1 | None' = None) -> None"
     },
     {
       "name": "FlangedBeamDesignResult",
@@ -622,7 +622,7 @@
     {
       "name": "TorsionResult",
       "kind": "class",
-      "signature": "(Tu_knm: 'float', Vu_kn: 'float', Mu_knm: 'float', Ve_kn: 'float', Me_knm: 'float', tau_ve: 'float', tau_c: 'float', tau_c_max: 'float', Asv_torsion: 'float', Asv_shear: 'float', Asv_total: 'float', stirrup_spacing: 'float', Al_torsion: 'float', is_safe: 'bool', requires_closed_stirrups: 'bool' = True, errors: 'list[DesignError]' = <factory>, clause_refs: 'dict[str, str]' = <factory>) -> None"
+      "signature": "(Tu_knm: 'float', Vu_kn: 'float', Mu_knm: 'float', Ve_kn: 'float', Me_knm: 'float', tau_ve: 'float', tau_c: 'float', tau_c_max: 'float', Asv_torsion: 'float', Asv_shear: 'float', Asv_total: 'float', stirrup_spacing: 'float', Al_torsion: 'float', is_safe: 'bool', requires_closed_stirrups: 'bool' = True, errors: 'list[DesignError]' = <factory>, clause_refs: 'dict[str, str]' = <factory>, Me_opposite_knm: 'float' = 0.0, Ast_opposite_mm2: 'float' = 0.0, corner_bar_centres_mm: 'tuple[float, float] | None' = None, fy_transverse_nmm2: 'float | None' = None) -> None"
     },
     {
       "name": "TwoWaySlabPanelWorkflowResult",
@@ -902,7 +902,7 @@
     {
       "name": "design_beam_is456",
       "kind": "function",
-      "signature": "(*, units: 'str', case_id: 'str' = 'CASE-1', mu_knm: 'float', vu_kn: 'float', b_mm: 'float', D_mm: 'float', d_mm: 'float | None', fck_nmm2: 'float', fy_nmm2: 'float', d_dash_mm: 'float | None' = None, asv_mm2: 'float' = 100.0, pt_percent: 'float | None' = None, ast_mm2_for_shear: 'float | None' = None, deflection_params: 'DeflectionParams | None' = None, crack_width_params: 'CrackWidthParams | None' = None, tu_knm: 'float' = 0.0, cover_mm: 'float | None' = None, stirrup_dia_mm: 'float' = 8.0, effective_depth_basis: 'EffectiveDepthBasisV1 | None' = None) -> 'ComplianceCaseResult'"
+      "signature": "(*, units: 'str', case_id: 'str' = 'CASE-1', mu_knm: 'float', vu_kn: 'float', b_mm: 'float', D_mm: 'float', d_mm: 'float | None', fck_nmm2: 'float', fy_nmm2: 'float', fy_transverse_nmm2: 'float | None' = None, torsion_corner_bar_centres_mm: 'tuple[float, float] | None' = None, d_dash_mm: 'float | None' = None, asv_mm2: 'float' = 100.0, pt_percent: 'float | None' = None, ast_mm2_for_shear: 'float | None' = None, deflection_params: 'DeflectionParams | None' = None, crack_width_params: 'CrackWidthParams | None' = None, tu_knm: 'float' = 0.0, cover_mm: 'float | None' = None, stirrup_dia_mm: 'float' = 8.0, effective_depth_basis: 'EffectiveDepthBasisV1 | CentroidCoverDepthBasisV1 | None' = None) -> 'ComplianceCaseResult'"
     },
     {
       "name": "design_braced_wall_is456",
@@ -992,7 +992,7 @@
     {
       "name": "design_torsion",
       "kind": "function",
-      "signature": "(tu_knm: 'float', vu_kn: 'float', mu_knm: 'float', b: 'float', D: 'float', d: 'float', fck: 'float', fy: 'float', cover: 'float', stirrup_dia: 'float' = 8, pt: 'float' = 1.0) -> 'TorsionResult'"
+      "signature": "(tu_knm: 'float', vu_kn: 'float', mu_knm: 'float', b: 'float', D: 'float', d: 'float', fck: 'float', fy: 'float', cover: 'float', stirrup_dia: 'float' = 8, pt: 'float' = 1.0, *, fy_transverse_nmm2: 'float | None' = None, corner_bar_centres_mm: 'tuple[float, float] | None' = None, d_opposite_mm: 'float | None' = None) -> 'TorsionResult'"
     },
     {
       "name": "design_two_way_slab_is456",
