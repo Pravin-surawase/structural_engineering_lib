@@ -5,6 +5,80 @@
 
 ---
 
+## 2026-08-31 — Session: W3H transport diagnostic guard-binding stop
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3H-TABLE-TRANSPORT`.
+**Branch:** `codex/etabs-w3h-table-transport-windows`.
+**Source:** PR #931 merge `18556d1ebc18ee1079ec2f31074761a42c7b3f85`,
+tree `d44843f8e6f6df1f0682e098096a6771cb4f801a`.
+**Focus:** Frozen managed/Python getter comparison; stopped before the getter.
+**Checkpoint:** `TRANSPORT_BLOCKED_MANAGED_GUARD_BINDING`.
+**Git handoff receipt:** `docs/verification/etabs-w3h-table-transport-git-handoff-receipt.json`
+
+**Completed:**
+
+- Fetched and verified exact GitHub predecessor, inspected all prior lanes and
+  open candidates, then began one clean source-bound Windows worktree/session.
+- Reflected installed interfaces, proved typed-null versus allocated-empty
+  construction offline and froze script/source hashes and the two-cell ceiling.
+  Caller and sole existing ETABS process were non-elevated medium integrity.
+- Used the Windows computer-use skill for pre/post model-window and dialog
+  inspection, with one activation only. No visible blocking dialog; no content
+  input, app start/close, Excel operation, service or model mutation.
+- One managed attachment stopped during its full model guard. Zero table calls,
+  zero Python live calls and zero retries. Saved copy hash/size/exact timestamp,
+  eleven protected files and 34 predecessor lanes remain unchanged.
+- Complete live model guards were **not obtained**; historical lock, units,
+  statuses, selections and COM model path are not fresh proof. Preserved the
+  frozen failed client and documented a complete-client correction prerequisite.
+
+### Issues encountered
+
+- The external managed guard called `LoadCases.GetNameList` with two arguments;
+  PowerShell reported no matching overload. Postflight hit the same boundary.
+  The planned table getter and conditional Python comparison were not reached.
+- Offline preflight tested the table-getter stand-in, not the complete guard
+  path; it therefore did not satisfy the intended whole-client wiring proof.
+- One combined shell inspection returned exit 1 without output. The external
+  observer initially failed parsing a variable followed by a literal colon.
+- The offline diagnostic compile needed the installed `netstandard` reference.
+  A numeric PowerShell cast rejected the unnamed load-case enum value zero;
+  an initial optional-only stand-in also omitted the actual default metadata.
+
+### Root causes and resolutions
+
+- Confirmed failing boundary is external PowerShell managed/COM invocation,
+  before any table request, not an ETABS CSI table return or licence denial.
+  The installed method has a third optional enum parameter with default zero.
+  A corrected exact-default static stand-in accepts omission and explicit boxed
+  zero, so it **does not reproduce** the COM binder failure. Internal binder
+  cause remains **unconfirmed**; no installed correction is claimed. The older
+  CSI 1 failure is unchanged historical evidence, not today's outcome.
+- The preparation defect is incomplete guard-path validation. Stopped under
+  the frozen no-retry rule; require a fully typed compiled client, every argument
+  explicit, and complete preflight/error/logger/postflight dry-run before a new
+  separately frozen live packet. No runtime/library repair or new attachment
+  was attempted after the stop. Full live preservation remains NOT_PROVED.
+- Combined-command cause is **unconfirmed**; separate reads and a persisted
+  offline reflection script supplied the missing evidence. The observer parser
+  error was resolved with braced variable interpolation; pre/post observations
+  then verified eleven files and 34 lanes without application calls.
+- Added the existing `netstandard` assembly only to the offline compiler inputs.
+  Read actual default metadata and used `Enum.ToObject` in the local stand-in;
+  output is captured in `offline-guard-root-cause.json`. No installation or
+  global setting changed, and local stand-in success is not COM acceptance.
+
+**Verification:** Exact external receipt/failure/preservation checks and affected
+docs/control/quick/hooks/read-only closeout are required at this content freeze;
+their actual results and hosted/merge facts remain external. No broad repeat.
+
+**Next:** Complete typed guard-client correction and offline whole-path proof,
+then a separately frozen guarded observation. Preserve all blocked attempts;
+W3H physical mapping/calibration, W3I/K/L and professional/release holds remain.
+
+---
+
 ## 2026-08-31 — Session: W3H table metadata guarded stop
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).

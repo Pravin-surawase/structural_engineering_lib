@@ -408,3 +408,26 @@ failed response; compare like input conditions or explicitly record any changed
 placeholder variable. Do not retry the metadata campaign, skip selection guards,
 change table/result selections, or export rows in that diagnostic. Actual-
 building calibration and W3I/K/L remain held, not declared impossible.
+
+### Transport-client guard failure (2026-08-31 successor)
+
+The [transport receipt](../verification/etabs-w3h-table-transport-evidence.json)
+records a different failure, before the table getter: one managed attachment
+failed to bind the two-argument `LoadCases.GetNameList` guard. Postflight failed
+at the same invocation. Zero managed/Python table calls or retries occurred.
+The saved copy and eleven protected file identities are unchanged and the
+visible model window has no blocking dialog, but full live model identity,
+lock, units, case statuses and selections were **not freshly verified**.
+
+Reflection shows a third optional enum argument whose default zero is unnamed.
+PowerShell rejects a normal numeric enum-zero cast; explicit `Enum.ToObject`
+works locally. However, a static stand-in with the exact default accepts both
+omission and explicit zero, so the internal managed/COM binding cause remains
+unconfirmed. This does not resolve or repeat the earlier CSI 1 table failure.
+The initial offline proof covered only the table-call binder, not every guard.
+
+The next packet must first exercise a complete fully typed compiled guard
+client, all arguments explicit, including error/postflight/logger paths, without
+ETABS. Freeze any new live comparison only after that whole-path proof and
+fresh source/process/file/UI checks. Do not patch and rerun this frozen client,
+infer full preservation from file hashes, or advance metadata/calibration.

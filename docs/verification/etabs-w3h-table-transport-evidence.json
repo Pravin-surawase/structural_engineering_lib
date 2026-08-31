@@ -1,0 +1,215 @@
+{
+  "schema_version": "w3h-table-transport-evidence/v1",
+  "task_id": "ETABS-W3H-TABLE-TRANSPORT",
+  "packet": "W3H",
+  "verdict": "TRANSPORT_BLOCKED_MANAGED_GUARD_BINDING",
+  "source": {
+    "repository": "Pravin-surawase/structural_engineering_lib",
+    "remote": "https://github.com/Pravin-surawase/structural_engineering_lib.git",
+    "predecessor_pr": 931,
+    "commit": "18556d1ebc18ee1079ec2f31074761a42c7b3f85",
+    "tree": "d44843f8e6f6df1f0682e098096a6771cb4f801a",
+    "branch": "codex/etabs-w3h-table-transport-windows",
+    "fetched_and_remote_queried": true,
+    "other_device_state": "NOT_CHECKED"
+  },
+  "host": {
+    "identity": "LAPTOP-360-PRAV",
+    "os": "Windows 11 Home Single Language 10.0.26200 x64",
+    "powershell": "7.6.4",
+    "dotnet": "10.0.10",
+    "python": "3.11.15",
+    "comtypes": "1.4.16",
+    "worktree_source_bound": true,
+    "etabs_file_version": "23.3.1.4563",
+    "managed_apartment": "STA",
+    "caller_etabs_integrity_rid": 8192,
+    "caller_etabs_elevated": false
+  },
+  "scope": {
+    "managed_attachment_count": 1,
+    "managed_table_calls": 0,
+    "python_live_calls": 0,
+    "table_catalogue_schema_rows": 0,
+    "analysis_design_save_unlock_setters": 0,
+    "excel_calls": 0,
+    "services_started": 0,
+    "retries": 0
+  },
+  "failure": {
+    "operation": "Managed LoadCases.GetNameList guard",
+    "supplied_argument_count": 2,
+    "installed_parameter_count": 3,
+    "third_optional_enum_default": 0,
+    "error": "Cannot find an overload for \"GetNameList\" and the argument count: \"2\".",
+    "error_type": "System.Management.Automation.MethodException",
+    "exception_hresult": -2146233087,
+    "csi_table_result": "NOT_REQUESTED",
+    "postflight_same_binding_error": true,
+    "confirmed_boundary": "External PowerShell managed/COM guard invocation before table access; complete guard-path offline proof was missing.",
+    "root_cause": "UNCONFIRMED_INTERNAL_BINDING_CAUSE",
+    "offline_findings": "Exact-default static stand-in accepts omitted and explicit boxed enum zero. It does not reproduce the COM failure. Numeric enum-zero PowerShell cast rejects unnamed value; Enum.ToObject works only as an offline construction proof.",
+    "installed_correction": "NOT_EXECUTED",
+    "prior_csi_1_failure": "HISTORICAL_UNRESOLVED_NOT_REPEATED"
+  },
+  "evidence_states": {
+    "full_live_model_guard_preservation": "BLOCKED_NOT_PROVED",
+    "com_model_path": "NOT_FRESHLY_VERIFIED",
+    "lock_units_all_case_statuses_and_selections": "NOT_FRESHLY_VERIFIED",
+    "table_display_selection_and_preservation": "BLOCKED_NOT_PROVED",
+    "python_comparison": "NOT_REQUESTED_AFTER_GUARD_FAILURE",
+    "calibration": "BLOCKED"
+  },
+  "model_proof": {
+    "authorized_copy_sha256": "92b3fa009f25b2228cc956cedb1b76268bb73414e16b361be334c0b3d81f6269",
+    "byte_size": 702855,
+    "mtime_ns": "1788091924341316100",
+    "saved_path_verified_outside_git": true,
+    "com_path_freshly_verified": false,
+    "hash_size_mtime_unchanged": true,
+    "complete_live_guard_obtained": false,
+    "historical_guard_sha256": "269cd944e7f96144f769ea7eafb66ac9d37df4abc0a75a43e8ab2319fa3a361c",
+    "historical_guard_is_current_proof": false
+  },
+  "ui_observation": {
+    "method": "Windows computer-use selected window, one activation then pre/post screenshot/accessibility; no content input",
+    "etabs_window_count": 1,
+    "visible_save_abnormal_license_dialog_before_after": false,
+    "excel_not_operated": true,
+    "licence_entitlement": "NOT_ESTABLISHED"
+  },
+  "preservation": {
+    "protected_saved_files": 11,
+    "predecessor_worktrees": 34,
+    "all_pre_post_saved_hash_size_mtime_equal": true,
+    "retained_dirty_lanes_preserved": true,
+    "ports_3000_3001_8000_listeners": 0,
+    "no_existing_data_deleted_reset_overwritten_stashed_reorganized": true
+  },
+  "external_evidence": {
+    "directory_label": "ETABS-W3H-TABLE-TRANSPORT-20260831",
+    "files": [
+      {
+        "name": "ACCEPTANCE.md",
+        "bytes": 2537,
+        "sha256": "7381ebb31bdf06db9bb3432f60bec0c78c96e201356923aa5cfb794cb14194ca"
+      },
+      {
+        "name": "CALL_CONTRACT.json",
+        "bytes": 4037,
+        "sha256": "12c4d1ed053d95d24f6d9b0e1e5079cce7ee4a87c1c2eabdde7a59776da5f3f5"
+      },
+      {
+        "name": "freeze-contract.ps1",
+        "bytes": 6274,
+        "sha256": "c3f874712e4638f3202b74197b2f2c7697ea6036fae634485dda660d6e54fd34"
+      },
+      {
+        "name": "inspect-managed.ps1",
+        "bytes": 1977,
+        "sha256": "281411dc06af66b88b9343065c1af58a9381724e103031f5a4da72df92453da0"
+      },
+      {
+        "name": "managed-cell.ps1",
+        "bytes": 9905,
+        "sha256": "26a5c1977bb702d47162c5cc78fd0a47ebd89b148cf881e09c26e3de975f54e1"
+      },
+      {
+        "name": "managed-signatures.json",
+        "bytes": 9346,
+        "sha256": "164ba4dc663c551e9b132791b90ce257dd06139e958403c65bf13d88a15f65ba"
+      },
+      {
+        "name": "managed-start.json",
+        "bytes": 569,
+        "sha256": "c08d79cc00e52baf1013d3c8bfc4fcd4577cac77a5dd12c53a147f4444318367"
+      },
+      {
+        "name": "managed-summary.json",
+        "bytes": 1233,
+        "sha256": "74fefb543f32f63025841dc941255412fc98020f2a77e1952c1a576bba94472f"
+      },
+      {
+        "name": "NEXT_PACKET.md",
+        "bytes": 2619,
+        "sha256": "bcd0bf409d1e3bd93ac4b96bf5458bbf488f0018ae963cb4c18c23c7507313fc"
+      },
+      {
+        "name": "observe-state.ps1",
+        "bytes": 2316,
+        "sha256": "9bae3bc0293fc4dd14fe1d28c7b68ccb7134db5ac14b36900d3bc0bf961dacea"
+      },
+      {
+        "name": "offline-guard-root-cause.json",
+        "bytes": 1384,
+        "sha256": "8bc3f512ad2bb2b8970df2ce757a7c0a980e5e82fad3cdafd10ece679d0d96b2"
+      },
+      {
+        "name": "offline-managed.json",
+        "bytes": 543,
+        "sha256": "a6eeb5e78d0535f4ce61612161bdf2b51e4f93301170e2b9d15790c36210489b"
+      },
+      {
+        "name": "offline-python.json",
+        "bytes": 360,
+        "sha256": "6ba716e2c772fc568598d052833827c79fca67029cbce401ef3ecf2866c79c64"
+      },
+      {
+        "name": "postflight.json",
+        "bytes": 18508,
+        "sha256": "f752e1521a87e139cf625a611a1bfc78576abe4499966c054f9fa5222e68c151"
+      },
+      {
+        "name": "preflight.json",
+        "bytes": 18508,
+        "sha256": "627315c57544d549689dc54606850c60b48ebb2f3a5f6c472b2fd21bd0f5a099"
+      },
+      {
+        "name": "prove-guard-binding.ps1",
+        "bytes": 2882,
+        "sha256": "c5f243e285811d71e63644127bb0e4dbd37e38509b37ccc17dce48a7a37277b8"
+      },
+      {
+        "name": "python-cell.py",
+        "bytes": 8931,
+        "sha256": "eca416f2189dfca6807a40f3c2b3256cd382e47ebcd1886a72475fbd89bf3fe8"
+      },
+      {
+        "name": "runtime.json",
+        "bytes": 313,
+        "sha256": "498e6af217bae8462291416ad184b80a00e20a0e433da32b7410eb5705499b40"
+      },
+      {
+        "name": "session-begin.log",
+        "bytes": 2188,
+        "sha256": "d7a73d1eac646cd314ccaa77201eb8e073c38fa861d8655798104cefac288620"
+      },
+      {
+        "name": "ui-postflight.json",
+        "bytes": 533,
+        "sha256": "c338bd4bce13addb7a52590db13f45219832903ab9d9caf2351adc90a7ca6ca7"
+      }
+    ]
+  },
+  "verification": {
+    "offline_table_binder_and_typed_null_construction": "PASS_NOT_LIVE",
+    "offline_full_guard_path_before_attachment": "INCOMPLETE",
+    "installed_acceptance": "BLOCKED",
+    "broad_suites_repeated": false,
+    "local_hosted_results": "Required checks recorded externally after candidate freeze; not preclaimed"
+  },
+  "next": {
+    "plan_file": "NEXT_PACKET.md",
+    "plan_sha256": "bcd0bf409d1e3bd93ac4b96bf5458bbf488f0018ae963cb4c18c23c7507313fc",
+    "scope": "Complete typed compiled client with explicit parameters and full guard/error/logger/postflight offline proof, then separately frozen observation. No rerun of this failed frozen client.",
+    "executed": false
+  },
+  "limitations": [
+    "No managed or Python table observation was made.",
+    "Full live path/lock/units/status/selection proof was not obtained; unchanged saved file is not equivalent.",
+    "Historical CSI 1 table failure remains unresolved.",
+    "No licence denial, wrong model or analysis defect established.",
+    "W3H physical mapping/calibration, W3I/K/L and integrated milestone/Mac review remain held.",
+    "No professional, engineering, construction, release or whole-W3 acceptance."
+  ]
+}
