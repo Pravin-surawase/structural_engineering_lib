@@ -215,6 +215,17 @@ tests do not reproduce the COM binder error, so its internal cause and the
 historical CSI 1 cause remain unconfirmed. No reanalysis/reinstall or model
 change is justified, and W3H/I/K/L acceptance has not advanced.
 
+The [typed-guard successor](../verification/etabs-w3h-typed-guard-evidence.json)
+now passes 45 compiled-client offline cases. Its frozen outer launcher stopped
+before attachment on a confirmed ISO-string/DateTime comparison defect, with
+zero application or table calls and no retry. Exact process start is unchanged.
+A corrected outer path passes 24 additional offline cases and keeps live mode
+disabled. The initial compiled-only proof omitted that launcher; the next real
+collector/entrypoint must be integrated and proved offline before a new frozen
+observation. All eleven files/35 prior lanes are preserved; complete fresh live
+model guards remain NOT_PROVED. This adds software evidence, not table access
+or W3H/I/K/L acceptance, and leaves both older causes unconfirmed.
+
 ### Owner-approved validation continuation (2026-08-30)
 
 This successor decision supersedes the historical startup-only and capability

@@ -431,3 +431,30 @@ client, all arguments explicit, including error/postflight/logger paths, without
 ETABS. Freeze any new live comparison only after that whole-path proof and
 fresh source/process/file/UI checks. Do not patch and rerun this frozen client,
 infer full preservation from file hashes, or advance metadata/calibration.
+
+### Typed-client and outer-launcher checkpoint (2026-08-31 successor)
+
+The [typed-guard receipt](../verification/etabs-w3h-typed-guard-evidence.json)
+records 45 compiled-client offline cases using actual installed interfaces,
+explicit arguments and all 77 flags. These prove local wiring and error/logging/
+postflight behavior, not installed COM compatibility.
+
+The separately frozen launcher stopped **before attachment**. PowerShell JSON
+parsing promoted its ISO process-start string to `DateTime`; comparing the
+fresh string against that value falsely reported `Process replaced`. Exact
+round-trip timestamps match. This is a confirmed outer-client type defect,
+separate from the unconfirmed historical COM binding and CSI 1 failures.
+Zero ETABS attachments/table calls, Python live calls or retries occurred.
+
+The initial offline matrix omitted that outer launcher. A separate correction
+preserves ISO strings with `-DateKind String` and adds 24 offline cases covering
+outer guards/logger/file postflight plus the whole compiled path. Its live
+mode is disabled for this closed packet. Reuse those components, but require
+the next real-environment collector and launcher to pass offline through their
+exact shared entrypoint before a new contract. Do not rerun any frozen attempt.
+
+Eleven saved-file identities and 35 predecessor lanes are preserved; visible
+pre/post UI has no blocking dialog. Complete fresh live model state and full
+table-selection/options preservation remain NOT_PROVED. Only a separate
+guarded managed success can make the matched Python observation eligible.
+Actual-building W3H and W3I/K/L remain held.
