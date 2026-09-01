@@ -5,6 +5,108 @@
 
 ---
 
+## 2026-09-01 — Session: W3 saved-candidate consumption and signed-face repair
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3E-SAVED-CANDIDATE-CONSUMPTION`.
+**Branch:** `codex/etabs-w3e-saved-candidate-consumption-windows`.
+**Source:** `main` commit `07d7c9024183a3cd03a51d794e3ada0da7729d11`,
+tree `14c6cec10ca6a72ebcd353c1c06decdd78abd1b4`.
+**Focus:** Consume the three accepted saved candidate lines through the real
+strength/detailing/BBS owners, close defects exposed by same-row use, and retain
+all project/service/calibration holds.
+**Checkpoint:** `FOCUSED_VERIFIED_REQUIRES_INTEGRATION`.
+**Evidence:** `docs/verification/etabs-w3-saved-candidate-consumption-evidence.json`.
+**Git handoff receipt:** `docs/verification/etabs-w3-saved-candidate-consumption-git-handoff-receipt.json`
+
+**Completed:**
+
+- Bound the offline operator to the accepted direct baseline, catalogue and
+  saved-basis file/semantic hashes. No ETABS, COM, UI, export, solver or model
+  operation was made.
+- Evaluated 107 exact same-row station records across three candidate lines and
+  five 230x450 members. M25, Fe500 longitudinal, Fe415 transverse and the
+  accepted pilot detailing inputs retain their original meanings.
+- Proved that legacy d'=40 conflicts with 40 mm clear cover plus the declared
+  8 mm stirrup and 16 mm opposite bar; all 107 requests block at intake. The
+  exact single-layer opposite centroid is 56 mm.
+- Proved that the migrated d'=56 strength cases pass while the frozen 150/200 mm
+  stirrups block all 107 rows at detailing. Authored 75/75 mm and computed
+  per-member 75/100/125 mm feasibility cases pass strength, detailing and BBS
+  for every row. Each passing schedule has two full-span longitudinal sets and
+  three closed-stirrup zones; D=450 needs no side-face bars.
+- Fixed signed-face loss across the canonical request, W3 audit projection,
+  detailing owner, torsion result and BBS validation. Ninety-one rows place
+  primary steel on bottom, 14 place it on top, and two zero-moment rows use the
+  deterministic legacy bottom convention. An independent external verifier
+  checks both physical bar locations for all 107 rows.
+- Kept project service/bar/factor evidence, caller-owned excluded-action limits,
+  installed reinforcement and W3H support/mesh/slab-transfer compatibility
+  visibly held. Calculated spacing is a proposal, not approval.
+
+### Issues encountered
+
+- The first offline script used a guessed BBS summary attribute
+  `total_steel_weight_kg`; the actual public field is `total_weight_kg`.
+- Two PowerShell attempts piped a `foreach` statement directly to
+  `ConvertTo-Json` and failed at the empty-pipe parse boundary.
+- The first numerical feasibility output passed its independent totals, but a
+  manual signed-row review found that 14 negative-M3 rows were scheduled as if
+  primary tension were on the bottom.
+- The first top-primary regression retained the 30 kN.m authored torsion action
+  after changing to the 230x450 saved section, so the chosen 75 mm stirrup
+  spacing correctly failed before the orientation assertions.
+- Changed-file Black found five edited files requiring formatting. A broad Ruff
+  call including the pre-existing SDK generator also reported two unrelated
+  missing `check=False` warnings in that generator.
+- The first candidate commit hooks rejected a generic tuple-comprehension type
+  for the three-zone opposite-face demand; no commit object was created.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the operator guessed a summary name instead of reading
+  the dataclass contract. Resolution: inspect `BBSummary`, use
+  `total_weight_kg`, rerun from saved inputs and keep the independent verifier.
+  ⚠️ TERMINAL ISSUE: guessed BBS summary field -> inspected the public dataclass
+  and reran the complete 107-row operator.
+- Confirmed terminal cause: PowerShell does not accept the attempted statement
+  pipeline form. Resolution: accumulate the objects in a task-specific variable,
+  then pipe that value to `ConvertTo-Json`. ⚠️ TERMINAL ISSUE: direct
+  `foreach {...} | ConvertTo-Json` parse failed twice -> collect, then pipe.
+- Confirmed product root cause: `BeamAuditRowInputV1` retained signed M3 face,
+  but `BeamActionsV1` retained only magnitude and the detailing owner always
+  mapped Ast to bottom. Resolution: add optional explicit primary face, exclude
+  null from predecessor serialization, project signed audit orientation, map
+  logical primary/opposite demands and chosen diameters to physical top/bottom,
+  and make torsion/BBS validate the same face. The invalidated first evidence
+  was regenerated after the repair.
+- Confirmed test-fixture cause: section/action edits changed the torsion spacing
+  limit while the test still asserted a 75 mm detailing path. Resolution: use a
+  bounded 10 kN.m authored torsion action for the physical-face regression; the
+  independent saved-row operator continues to use exact retained actions.
+- Confirmed formatting scope: five edited Python files needed Black; the two SDK
+  Ruff findings predate this packet and are outside the changed line. Resolution:
+  format the changed files and run focused Ruff without broadening into unrelated
+  generator cleanup.
+- Confirmed type cause: a tuple comprehension inferred `tuple[float, ...]` while
+  the physical three-zone assignment requires `tuple[float, float, float]`.
+  Resolution: construct the start/mid/end tuple explicitly; configured mypy and
+  the affected detailing tests must pass before retrying the commit.
+
+**Verification through evidence freeze:** 107/107 saved rows pass the independent
+physical-face verifier under both authored-feasible and computed-spacing cases.
+The focused canonical, audit, detailing, BBS and compatibility suites pass. The
+maintained OpenAPI, API manifest/classification/compatibility, family facade and
+client projections were regenerated after source freeze. Candidate quick, hooks
+and hosted integration remain.
+
+**Next:** Finish unchanged-candidate gates and integrate this packet. Then obtain
+the missing project service/applicability evidence and resolve only the named W3H
+support/mesh/slab-transfer gaps. Do not repeat accepted ETABS inputs or promote
+feasibility schedules to installed/project approval.
+
+---
+
 ## 2026-09-01 — Session: W3 torsion distribution and BBS closure
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).

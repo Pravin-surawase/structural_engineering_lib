@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Literal
 
 from structural_lib.core.errors import InputContractError, InputIssueV1
 from structural_lib.services.canonical_beam import (
@@ -93,6 +93,7 @@ def input(  # noqa: A001 - frozen public facade spelling
         EffectiveDepthBasisRequestV1 | CentroidCoverDepthRequestV1 | None
     ) = None,
     tu_knm: float = 0.0,
+    primary_tension_face: Literal["TOP", "BOTTOM"] | None = None,
     pt_percent: float | None = None,
     ast_mm2_for_shear: float | None = None,
     detailing: BeamDetailingOptionsV1 | None = None,
@@ -125,7 +126,16 @@ def input(  # noqa: A001 - frozen public facade spelling
                     else {}
                 ),
             },
-            "actions": {"mu_knm": mu_knm, "vu_kn": vu_kn, "tu_knm": tu_knm},
+            "actions": {
+                "mu_knm": mu_knm,
+                "vu_kn": vu_kn,
+                "tu_knm": tu_knm,
+                **(
+                    {"primary_tension_face": primary_tension_face}
+                    if primary_tension_face is not None
+                    else {}
+                ),
+            },
             "calculation_basis": {
                 "d_dash_mm": d_dash_mm,
                 "asv_mm2": asv_mm2,

@@ -5,7 +5,7 @@ from __future__ import annotations
 import math
 import re
 from enum import StrEnum
-from typing import Any, Self
+from typing import Any, Literal, Self
 
 from pydantic import Field, ValidationInfo, field_validator, model_validator
 from pydantic_core import PydanticCustomError
@@ -146,6 +146,10 @@ class BeamActionsV1(StrictPublicModel):
     mu_knm: float = Field(ge=0)
     vu_kn: float = Field(ge=0)
     tu_knm: float = Field(default=0.0, ge=0)
+    primary_tension_face: Literal["TOP", "BOTTOM"] | None = Field(
+        default=None,
+        exclude_if=lambda value: value is None,
+    )
 
 
 class BeamCalculationBasisV1(StrictPublicModel):
@@ -454,6 +458,10 @@ BEAM_FIELD_CONTRACTS = (
         dimensions=(_TYPE, _RANGE, _UNIT, _RELATION),
         unit="kN.m",
         zero_allowed=True,
+    ),
+    FieldContractV1(
+        path="actions.primary_tension_face",
+        dimensions=(_TYPE, _ENUM, _RELATION, _DOWNSTREAM),
     ),
     FieldContractV1(
         path="calculation_basis.d_dash_mm",

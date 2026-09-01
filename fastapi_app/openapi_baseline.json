@@ -4879,6 +4879,21 @@
             "title": "Mu Knm",
             "type": "number"
           },
+          "primary_tension_face": {
+            "anyOf": [
+              {
+                "enum": [
+                  "TOP",
+                  "BOTTOM"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Primary Tension Face"
+          },
           "tu_knm": {
             "default": 0.0,
             "minimum": 0.0,

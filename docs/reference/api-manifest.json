@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-31",
+  "generated": "2026-09-01",
   "module": "structural_lib.api",
   "python": "3.11.15",
   "count": 245,
@@ -897,7 +897,7 @@
     {
       "name": "design_and_detail_beam_is456",
       "kind": "function",
-      "signature": "(*, units: 'str', beam_id: 'str', story: 'str', span_mm: 'float', mu_knm: 'float', vu_kn: 'float', b_mm: 'float', D_mm: 'float', d_mm: 'float | None' = None, cover_mm: 'float' = 40.0, fck_nmm2: 'float' = 25.0, fy_nmm2: 'float' = 500.0, d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0, stirrup_dia_mm: 'float' = 8.0, stirrup_spacing_support_mm: 'float' = 150.0, stirrup_spacing_mid_mm: 'float' = 200.0, is_seismic: 'bool' = False) -> 'DesignAndDetailResult'"
+      "signature": "(*, units: 'str', beam_id: 'str', story: 'str', span_mm: 'float', mu_knm: 'float', vu_kn: 'float', b_mm: 'float', D_mm: 'float', d_mm: 'float | None' = None, cover_mm: 'float' = 40.0, fck_nmm2: 'float' = 25.0, fy_nmm2: 'float' = 500.0, d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0, stirrup_dia_mm: 'float' = 8.0, stirrup_spacing_support_mm: 'float' = 150.0, stirrup_spacing_mid_mm: 'float' = 200.0, is_seismic: 'bool' = False, primary_tension_face: \"Literal['TOP', 'BOTTOM']\" = 'BOTTOM') -> 'DesignAndDetailResult'"
     },
     {
       "name": "design_beam_is456",
@@ -1012,7 +1012,7 @@
     {
       "name": "detail_beam_is456",
       "kind": "function",
-      "signature": "(*, units: 'str', beam_id: 'str', story: 'str', b_mm: 'float', D_mm: 'float', span_mm: 'float', cover_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', ast_start_mm2: 'float', ast_mid_mm2: 'float', ast_end_mm2: 'float', asc_start_mm2: 'float' = 0.0, asc_mid_mm2: 'float' = 0.0, asc_end_mm2: 'float' = 0.0, stirrup_dia_mm: 'float' = 8.0, stirrup_spacing_start_mm: 'float' = 150.0, stirrup_spacing_mid_mm: 'float' = 200.0, stirrup_spacing_end_mm: 'float' = 150.0, is_seismic: 'bool' = False, preferred_tension_bar_dia_mm: 'float | None' = None, preferred_compression_bar_dia_mm: 'float | None' = None, nominal_top_steel_ratio: 'float' = 0.25, stirrup_legs: 'int | None' = None) -> 'detailing.BeamDetailingResult'"
+      "signature": "(*, units: 'str', beam_id: 'str', story: 'str', b_mm: 'float', D_mm: 'float', span_mm: 'float', cover_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', ast_start_mm2: 'float', ast_mid_mm2: 'float', ast_end_mm2: 'float', asc_start_mm2: 'float' = 0.0, asc_mid_mm2: 'float' = 0.0, asc_end_mm2: 'float' = 0.0, stirrup_dia_mm: 'float' = 8.0, stirrup_spacing_start_mm: 'float' = 150.0, stirrup_spacing_mid_mm: 'float' = 200.0, stirrup_spacing_end_mm: 'float' = 150.0, is_seismic: 'bool' = False, preferred_tension_bar_dia_mm: 'float | None' = None, preferred_compression_bar_dia_mm: 'float | None' = None, nominal_top_steel_ratio: 'float' = 0.25, stirrup_legs: 'int | None' = None, torsion_primary_required_mm2: 'float | None' = None, torsion_opposite_required_mm2: 'float' = 0.0, torsion_max_stirrup_spacing_mm: 'float | None' = None, side_face_bar_dia_mm: 'float | None' = None, primary_tension_face: \"Literal['TOP', 'BOTTOM']\" = 'BOTTOM') -> 'detailing.BeamDetailingResult'"
     },
     {
       "name": "detail_column_is456",

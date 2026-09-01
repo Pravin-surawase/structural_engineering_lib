@@ -13,7 +13,7 @@ import warnings
 from collections.abc import Sequence
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
-from typing import Any, TypeVar
+from typing import Any, Literal, TypeVar
 
 from structural_lib.codes.is456 import compliance, slenderness
 from structural_lib.codes.is456.beam import detailing, flexure, serviceability
@@ -2125,6 +2125,7 @@ def detail_beam_is456(
     torsion_opposite_required_mm2: float = 0.0,
     torsion_max_stirrup_spacing_mm: float | None = None,
     side_face_bar_dia_mm: float | None = None,
+    primary_tension_face: Literal["TOP", "BOTTOM"] = "BOTTOM",
 ) -> detailing.BeamDetailingResult:
     """Create IS456/SP34 detailing outputs from design Ast/Asc and stirrups.
 
@@ -2157,6 +2158,7 @@ def detail_beam_is456(
         torsion_opposite_required_mm2: Me2 opposite-face demand (mm²).
         torsion_max_stirrup_spacing_mm: Calculated torsion spacing limit (mm).
         side_face_bar_dia_mm: Additional longitudinal side-face diameter (mm).
+        primary_tension_face: Physical face carrying the Ast/Me1 demand.
 
     Returns:
         BeamDetailingResult with bars, stirrups, and development lengths.
@@ -2224,6 +2226,7 @@ def detail_beam_is456(
         torsion_opposite_required=torsion_opposite_required_mm2,
         torsion_max_stirrup_spacing=torsion_max_stirrup_spacing_mm,
         side_face_bar_dia=side_face_bar_dia_mm,
+        primary_tension_face=primary_tension_face,
     )
 
 
@@ -2247,6 +2250,7 @@ def _design_and_detail_beam_is456_calculation(
     stirrup_spacing_support_mm: float = 150.0,
     stirrup_spacing_mid_mm: float = 200.0,
     is_seismic: bool = False,
+    primary_tension_face: Literal["TOP", "BOTTOM"] = "BOTTOM",
 ) -> DesignAndDetailResult:
     """Design AND detail a beam in one call (IS 456:2000).
 
@@ -2279,6 +2283,7 @@ def _design_and_detail_beam_is456_calculation(
         stirrup_spacing_support_mm: Stirrup spacing at supports (mm). Default: 150.
         stirrup_spacing_mid_mm: Stirrup spacing at midspan (mm). Default: 200.
         is_seismic: Apply IS 13920 detailing if True. Default: False.
+        primary_tension_face: Physical face carrying the primary Ast demand.
 
     Returns:
         DesignAndDetailResult with:
@@ -2377,6 +2382,7 @@ def _design_and_detail_beam_is456_calculation(
         stirrup_spacing_mid_mm=stirrup_spacing_mid_mm,
         stirrup_spacing_end_mm=stirrup_spacing_support_mm,
         is_seismic=is_seismic,
+        primary_tension_face=primary_tension_face,
     )
 
     # Combine results
@@ -2428,6 +2434,7 @@ def design_and_detail_beam_is456(
     stirrup_spacing_support_mm: float = 150.0,
     stirrup_spacing_mid_mm: float = 200.0,
     is_seismic: bool = False,
+    primary_tension_face: Literal["TOP", "BOTTOM"] = "BOTTOM",
 ) -> DesignAndDetailResult:
     """Compatibility signature delegating to the canonical beam service owner."""
 
@@ -2454,6 +2461,7 @@ def design_and_detail_beam_is456(
         stirrup_spacing_support_mm=stirrup_spacing_support_mm,
         stirrup_spacing_mid_mm=stirrup_spacing_mid_mm,
         is_seismic=is_seismic,
+        primary_tension_face=primary_tension_face,
     )
 
 

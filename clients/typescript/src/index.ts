@@ -32,7 +32,7 @@ export interface CanonicalBeamDesignRequestV1 {
     };
   };
   materials: { fck_nmm2: number; fy_nmm2: number };
-  actions: { mu_knm: number; vu_kn: number; tu_knm?: number };
+  actions: { mu_knm: number; vu_kn: number; tu_knm?: number; primary_tension_face?: "TOP" | "BOTTOM" };
   calculation_basis: {
     d_dash_mm: number;
     asv_mm2: number;

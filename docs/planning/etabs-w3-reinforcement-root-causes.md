@@ -24,6 +24,8 @@ the external closeout owns the final commit/check identities.
 The RC8/RC9 continuation has its own
 [torsion-detailing receipt](../verification/etabs-w3-torsion-detailing-evidence.json)
 and remains pure offline software evidence.
+The saved-candidate continuation is recorded in the
+[candidate-consumption receipt](../verification/etabs-w3-saved-candidate-consumption-evidence.json).
 
 ## Root-cause register
 
@@ -38,8 +40,9 @@ and remains pure offline software evidence.
 | RC7 | Practical shear spacing could round a sub-75 mm requirement upward and return safe. | Return an explicit failed design with zero offered spacing when no supported spacing satisfies demand. | `test_shear_cap_and_constructibility_are_decisive`; no false pass after the grade correction. |
 | RC8 | A strength result alone does not prove torsion corner/perimeter reinforcement distribution. | Consume Me1 steel on the primary face and Me2 steel on the opposite face without additive double counting; preserve the explicit single-layer corner geometry; schedule the governing corner sets continuously for the full span; require closed stirrups within the calculated torsion limit; add side-face bars when D exceeds 450 mm. | The authored 300x500 fixture produces full-span 2-20 primary, full-span 2-16 opposite, 1-16/face side bars at 193 mm and six deterministic BBS items. Missing choices and unsupported widths fail closed. |
 | RC9 | The shared side-face helper treated 0.1% as a per-face requirement, subtracted cover from rectangular web depth, and returned a constant 300 mm spacing. This doubled required steel and missed the web-thickness cap. | Use 0.1% of rectangular web area in total, half on each face, with maximum spacing `min(300 mm, b)`. Share the same unrounded requirement owner with torsion distribution. | D=800, b=300 gives 120 mm2 per face; a 230 mm web limits spacing to 230 mm. Unit and canonical/BBS regressions exercise the corrected owner. |
+| RC10 | The audit retained signed M3 and a TOP/BOTTOM tension face, but projected only `abs(M3)` into the canonical request. Detailing therefore placed every primary set on the bottom face; 14 of 107 saved rows would have produced physically reversed schedules. | Add optional `actions.primary_tension_face`; project signed audit orientation; map logical Ast/opposite demands and selected diameters onto physical top/bottom bars; make torsion detailing and BBS validate the same orientation. Omitted input retains the legacy BOTTOM convention and is not serialized. | A top-primary canonical regression produces full-span top 2-20 and bottom 2-16. The independent external verifier checks both physical BBS locations for all 107 saved rows: 91 bottom, 14 top and two deterministic zero-moment conventions. |
 
-RC1-RC9 have implemented numerical/contract corrections subject to their packet
+RC1-RC10 have implemented numerical/contract corrections subject to their packet
 gates. Numerical corrections intentionally change affected results; old accepted
 artifacts are historical evidence and are not rewritten. Canonical calculation identity is now
 `is456-rectangular-beam-strength/v2`. Existing single-grade and clear-cover input
@@ -73,6 +76,11 @@ ETABS design overwrites are not proof of installed steel.
   separately from flexural compression steel. The supported detailing consumer
   keeps those two demands on their respective faces and rejects a selected bar
   arrangement that changes the corner geometry used by strength design.
+- `actions.mu_knm` remains a non-negative magnitude. Set
+  `actions.primary_tension_face` to `TOP` or `BOTTOM` when the physical schedule
+  depends on signed bending. The W3 audit now projects its explicit signed M3
+  mapping into this field. Omission preserves the predecessor BOTTOM convention;
+  it must not be used to erase known sign orientation.
 - For torsion detailing with D above 450 mm, supply
   `detailing.side_face_bar_diameter_mm`. The route schedules identical full-span
   bars on both faces and counts their area and spacing once through the shared
@@ -114,13 +122,14 @@ avoidable drift failures even when its numerical results are unchanged.
 
 ## Remaining W3 work
 
-1. Complete strict serviceability method/basis contracts. Source-verified span/depth
-   and Annex F formulas are candidate routes; do not substitute factored moments
-   for service actions or default an unknown support/strain/limit. Direct-deflection
-   and long-term methods need independent validation before canonical acceptance.
-2. Apply the supported torsion distribution/BBS consumer to candidate inputs and
-   resolve any candidate outside its explicit width, layer or coupled-design
-   applicability. Do not infer missing side-bar choices.
+1. Obtain project-specific service-analysis, bar-revision and factor evidence for
+   the candidate rows. The bounded span/depth and supplied Annex F software is
+   accepted, but generated layouts require their own service binding. Detailed
+   direct/long-term deflection remains a separate method packet.
+2. Supply caller-owned axial, minor-shear and minor-moment applicability limits.
+   Do not manufacture criteria from the observed maxima. The saved-candidate
+   software feasibility is complete for all 107 rows, but it is not project or
+   installed-reinforcement acceptance.
 3. Resolve the physical support/mesh/slab-transfer matrix for W3H. The three saved
    candidates remain NOT_COMPARABLE_AS_IS; none is promoted by these software fixes.
 4. Implement W3I/K/L after their E/H dependencies; finish cumulative integration,

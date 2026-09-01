@@ -118,6 +118,9 @@ def test_every_signed_row_matches_canonical_owner_and_governor_provenance() -> N
         "BOTTOM",
         "TOP",
     ]
+    assert [
+        row.input.canonical_request.actions.primary_tension_face for row in result.rows
+    ] == ["BOTTOM", "BOTTOM", "TOP"]
     assert result.rows[0].input.canonical_request.actions.vu_kn == 20.0
     assert result.rows[1].input.canonical_request.actions.mu_knm == 50.0
     for row in result.rows:

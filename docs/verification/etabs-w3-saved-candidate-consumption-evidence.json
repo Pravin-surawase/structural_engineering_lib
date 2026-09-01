@@ -1,0 +1,72 @@
+{
+  "schema_version": "w3-saved-candidate-consumption-evidence/v1",
+  "task_id": "ETABS-W3E-SAVED-CANDIDATE-CONSUMPTION",
+  "source_merge": "07d7c9024183a3cd03a51d794e3ada0da7729d11",
+  "status": "FOCUSED_VERIFIED_REQUIRES_INTEGRATION",
+  "scope": {
+    "candidate_lines": 3,
+    "members": 5,
+    "same_row_evaluations": 107,
+    "section_mm": {"b": 230, "D": 450},
+    "etabs_com_ui_calls": 0,
+    "exports": 0,
+    "model_writes": 0,
+    "solver_runs": 0
+  },
+  "accepted_source_bindings": {
+    "direct_baseline_file_sha256": "80359590ce7eea93fa517c9fc185ffd94c28675b6a7b6e4b159d16ca931ac746",
+    "direct_catalogue_file_sha256": "a2096cd14ab69543f5ec7c781922debdab4583cd9d37e460de62915ec08edca4",
+    "saved_basis_file_sha256": "12f686fed527457d21257a158d5dc7c258b0e9eb837f1cde1d1b210285525482",
+    "baseline_semantic_sha256": "2903d158645cfd59b3f08a54648cefda7603930a94c2d7ee4b3e92d8546f7906",
+    "catalogue_semantic_sha256": "353b28a82da954c20d46dafa774a30826e77f247f60d0ee545654f024a4b4d1b"
+  },
+  "root_cause": {
+    "problem": "The signed audit row retained its TOP/BOTTOM tension face, but the canonical action stored only moment magnitude and detailing always placed primary Ast on the bottom face.",
+    "affected_saved_rows": 14,
+    "correction": "Carry an optional explicit primary tension face through the canonical request and audit projection; map logical primary/opposite demands to physical top/bottom bars; validate that orientation in torsion detailing and BBS.",
+    "compatibility": "Omitted orientation retains the existing BOTTOM convention and is excluded from serialized predecessor requests."
+  },
+  "orientation_domain": {
+    "bottom_primary_rows": 91,
+    "top_primary_rows": 14,
+    "zero_moment_rows": 2,
+    "zero_moment_physical_convention": "BOTTOM; equivalent torsion face demands make this deterministic convention non-inferential"
+  },
+  "outcomes": {
+    "legacy_d_dash_40_input_blocked": 107,
+    "reason": "40 mm compression centroid conflicts with the declared 40 mm clear cover, 8 mm stirrup and 16 mm opposite-face bar; exact single-layer d_dash is 56 mm.",
+    "migrated_d_dash_56_frozen_150_200_strength_passed": 107,
+    "migrated_d_dash_56_frozen_150_200_detailing_blocked": 107,
+    "reason_frozen_spacing": "selected stirrup spacing exceeds the calculated torsion limit",
+    "authored_75_75_strength_detailing_bbs_passed": 107,
+    "computed_member_spacing_strength_detailing_bbs_passed": 107,
+    "computed_member_spacing_distribution_mm": {"75": 1, "100": 2, "125": 2},
+    "maximum_utilization": {
+      "flexure": 0.4215354133914973,
+      "shear": 0.43964394312084015,
+      "torsion": 0.43967741935483867
+    },
+    "passing_bbs_items_per_row": 5,
+    "passing_longitudinal_schedule": "full-span 2-20 on the explicit primary face and full-span 2-16 on the physical opposite face, plus three closed-stirrup zones",
+    "side_face_bars": "not required at D=450 mm"
+  },
+  "external_evidence": {
+    "directory_key": "ETABS-W3E-SAVED-CANDIDATE-CONSUMPTION-20260901",
+    "consumer_sha256": "ed07a0309d53958dead01807271d5dadfe6485727bb8b5325b7a366139c89884",
+    "result_sha256": "79b1221af956bf479027f24d588a64696066260a013835983d3a738e61c68167",
+    "independent_verifier_sha256": "83e72c155b1a673597bea36cc5f3f862317d45805e430e53a2ed89783d865947",
+    "verifier_result": "PASS: 107 same-row strength/detailing/BBS outcomes verified",
+    "retention": "Proprietary member ids, stations and signed action rows remain outside Git."
+  },
+  "unresolved_parent_gates": [
+    "Project service-analysis, bar-revision and factor evidence is absent.",
+    "Caller-owned axial, minor-shear and minor-moment applicability bounds are absent and are not inferred from observed maxima.",
+    "Saved support, mesh and slab-transfer basis keeps all three lines NOT_COMPARABLE_AS_IS for W3H.",
+    "Calculated spacing is a feasibility recommendation, not installed or approved reinforcement."
+  ],
+  "verification": {
+    "focused_python": "canonical, audit, detailing, BBS and compatibility suites passing",
+    "generated_contracts": "OpenAPI, API manifest/classification/compatibility, family facade docs and clients refreshed from maintained owners",
+    "quick_hooks_hosted": "required before integration; exact outcomes belong to the task closeout"
+  }
+}

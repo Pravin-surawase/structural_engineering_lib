@@ -70,6 +70,7 @@ def test_centroid_cover_and_separate_grades_survive_real_journey():
     detailed = beam.detail(result, detailing_standard=beam.DetailingStandard.IS456)
     assert detailed.is_ok
     assert detailed.detailing.torsion is not None
+    assert detailed.detailing.torsion.primary_tension_face == "BOTTOM"
     assert detailed.detailing.torsion.primary_area_required == pytest.approx(
         result.calculation.flexure.Ast_required
     )
@@ -98,6 +99,29 @@ def test_centroid_cover_and_separate_grades_survive_real_journey():
     assert parsed_mark["loc"] == "F"
     assert bbs.summary.total_items == 6
     assert beam.load(json.loads(request.model_dump_json())) == request
+
+
+def test_top_primary_face_is_preserved_through_detailing_and_bbs():
+    payload = _canonical_payload()
+    payload["section"]["b_mm"] = 230
+    payload["section"]["D_mm"] = 450
+    payload["section"]["effective_depth_basis"] = {"centroid_cover_mm": 58}
+    payload["actions"]["tu_knm"] = 10
+    payload["actions"]["primary_tension_face"] = "TOP"
+    payload["detailing"].pop("side_face_bar_diameter_mm")
+    request = beam.load(payload)
+    strength = beam.check(request)
+    detailed = beam.detail(strength, detailing_standard=beam.DetailingStandard.IS456)
+    assert detailed.detailing.torsion is not None
+    assert detailed.detailing.torsion.primary_tension_face == "TOP"
+    assert all(item.callout() == "2-20φ" for item in detailed.detailing.top_bars)
+    assert all(item.callout() == "2-16φ" for item in detailed.detailing.bottom_bars)
+    bbs = beam.bbs(detailed)
+    bottom_items = [item for item in bbs.items if item.location == "bottom"]
+    top_items = [item for item in bbs.items if item.location == "top"]
+    assert len(bottom_items) == 1 and bottom_items[0].diameter_mm == 16
+    assert len(top_items) == 1 and top_items[0].diameter_mm == 20
+    assert bbs.summary.total_items == 5
 
 
 def test_torsion_strength_stays_available_when_side_face_detailing_choice_is_missing():

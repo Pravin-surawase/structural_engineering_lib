@@ -150,6 +150,7 @@ class TorsionDetailingResult:
 
     primary_area_required: float  # mm², equivalent moment Me1 face
     opposite_area_required: float  # mm², equivalent moment Me2 face
+    primary_tension_face: Literal["TOP", "BOTTOM"]
     side_face_bars: SideFaceArrangement | None
     corner_bars_enclosed: bool
     full_span_corner_bars: bool
@@ -1093,6 +1094,7 @@ def _create_torsion_detailing(
     primary_required: float,
     opposite_required: float,
     max_stirrup_spacing: float,
+    primary_tension_face: Literal["TOP", "BOTTOM"],
 ) -> TorsionDetailingResult:
     """Distribute designed torsion steel per IS 456 Cl 26.5.1.7."""
 
@@ -1119,9 +1121,18 @@ def _create_torsion_detailing(
             "calculated IS 456 torsion limit."
         )
 
+    if primary_tension_face == "BOTTOM":
+        primary_bars, opposite_bars = bottom_bars, top_bars
+    else:
+        primary_bars, opposite_bars = top_bars, bottom_bars
     for label, bars, required, selected_dia in (
-        ("primary", bottom_bars, primary_required, preferred_tension_bar_dia),
-        ("opposite", top_bars, opposite_required, preferred_compression_bar_dia),
+        ("primary", primary_bars, primary_required, preferred_tension_bar_dia),
+        (
+            "opposite",
+            opposite_bars,
+            opposite_required,
+            preferred_compression_bar_dia,
+        ),
     ):
         if any(item.count < 2 for item in bars):
             raise ValueError(
@@ -1177,6 +1188,7 @@ def _create_torsion_detailing(
     return TorsionDetailingResult(
         primary_area_required=primary_required,
         opposite_area_required=opposite_required,
+        primary_tension_face=primary_tension_face,
         side_face_bars=side_face_bars,
         corner_bars_enclosed=True,
         full_span_corner_bars=True,
@@ -1396,6 +1408,7 @@ def create_beam_detailing(
     torsion_opposite_required: float = 0.0,
     torsion_max_stirrup_spacing: float | None = None,
     side_face_bar_dia: float | None = None,
+    primary_tension_face: Literal["TOP", "BOTTOM"] = "BOTTOM",
 ) -> BeamDetailingResult:
     """
     Create complete beam detailing from design output.
@@ -1428,6 +1441,7 @@ def create_beam_detailing(
         torsion_opposite_required: Me2 opposite-face tension demand (mm²).
         torsion_max_stirrup_spacing: Calculated torsion spacing limit (mm).
         side_face_bar_dia: Explicit additional longitudinal side-face diameter.
+        primary_tension_face: Physical face carrying the Ast/Me1 demand.
 
     Returns:
         BeamDetailingResult with complete detailing information
@@ -1478,6 +1492,8 @@ def create_beam_detailing(
         stirrup_spacing_end, "stirrup_spacing_end"
     )
     is_seismic = require_strict_bool(is_seismic, "is_seismic")
+    if primary_tension_face not in ("TOP", "BOTTOM"):
+        raise ValueError("primary_tension_face must be TOP or BOTTOM.")
     nominal_top_steel_ratio = require_positive_real(
         nominal_top_steel_ratio, "nominal_top_steel_ratio"
     )
@@ -1524,58 +1540,51 @@ def create_beam_detailing(
 
     assumption_notes: list[str] = []
 
-    # Select bar arrangements
-    # Note: At supports (start/end), tension is typically top; at mid, tension is bottom
-    # This simplification assumes Ast is always the tension side
-
-    # Note: If compression steel (Asc) is not provided, we use a heuristic 25% of Ast.
-    # This is a drafting aid only; callers should provide explicit Asc when known.
+    # Select physical top/bottom arrangements from logical primary/opposite demands.
+    # If opposite steel (Asc) is absent, the explicit ratio remains a drafting aid.
+    opposite_face = "Top" if primary_tension_face == "BOTTOM" else "Bottom"
     if asc_start <= 0 and ast_start > 0:
         assumption_notes.append(
-            f"Top steel at start used caller-selected {nominal_top_steel_ratio:g}×Ast "
+            f"{opposite_face} steel at start used caller-selected {nominal_top_steel_ratio:g}×Ast "
             "(Asc was zero)."
         )
     if asc_mid <= 0 and ast_mid > 0:
         assumption_notes.append(
-            f"Top steel at mid used caller-selected {nominal_top_steel_ratio:g}×Ast "
+            f"{opposite_face} steel at mid used caller-selected {nominal_top_steel_ratio:g}×Ast "
             "(Asc was zero)."
         )
     if asc_end <= 0 and ast_end > 0:
         assumption_notes.append(
-            f"Top steel at end used caller-selected {nominal_top_steel_ratio:g}×Ast "
+            f"{opposite_face} steel at end used caller-selected {nominal_top_steel_ratio:g}×Ast "
             "(Asc was zero)."
         )
-
-    top_start = select_bar_arrangement(
+    primary_demands = (ast_start, ast_mid, ast_end)
+    opposite_demands = (
         asc_start if asc_start > 0 else ast_start * nominal_top_steel_ratio,
-        b,
-        cover,
-        stirrup_dia,
-        preferred_dia=preferred_compression_bar_dia,
-    )
-    top_mid = select_bar_arrangement(
         asc_mid if asc_mid > 0 else ast_mid * nominal_top_steel_ratio,
-        b,
-        cover,
-        stirrup_dia,
-        preferred_dia=preferred_compression_bar_dia,
-    )
-    top_end = select_bar_arrangement(
         asc_end if asc_end > 0 else ast_end * nominal_top_steel_ratio,
-        b,
-        cover,
-        stirrup_dia,
-        preferred_dia=preferred_compression_bar_dia,
     )
-
-    bot_start = select_bar_arrangement(
-        ast_start, b, cover, stirrup_dia, preferred_dia=preferred_tension_bar_dia
+    if primary_tension_face == "BOTTOM":
+        bottom_demands, top_demands = primary_demands, opposite_demands
+        bottom_dia, top_dia = (
+            preferred_tension_bar_dia,
+            preferred_compression_bar_dia,
+        )
+    else:
+        bottom_demands, top_demands = opposite_demands, primary_demands
+        bottom_dia, top_dia = (
+            preferred_compression_bar_dia,
+            preferred_tension_bar_dia,
+        )
+    top_start, top_mid, top_end = (
+        select_bar_arrangement(required, b, cover, stirrup_dia, preferred_dia=top_dia)
+        for required in top_demands
     )
-    bot_mid = select_bar_arrangement(
-        ast_mid, b, cover, stirrup_dia, preferred_dia=preferred_tension_bar_dia
-    )
-    bot_end = select_bar_arrangement(
-        ast_end, b, cover, stirrup_dia, preferred_dia=preferred_tension_bar_dia
+    bot_start, bot_mid, bot_end = (
+        select_bar_arrangement(
+            required, b, cover, stirrup_dia, preferred_dia=bottom_dia
+        )
+        for required in bottom_demands
     )
 
     # Use max diameter for Ld
@@ -1621,9 +1630,11 @@ def create_beam_detailing(
             primary_required=torsion_primary_required,
             opposite_required=torsion_opposite_required,
             max_stirrup_spacing=torsion_max_stirrup_spacing,
+            primary_tension_face=primary_tension_face,
         )
         assumption_notes.append(
-            "Torsion longitudinal steel was distributed to the primary, opposite "
+            f"Torsion primary steel was placed on the {primary_tension_face.lower()} "
+            "face and longitudinal steel was distributed to the opposite "
             "and required side faces with corner bars enclosed by closed stirrups."
         )
 

@@ -644,6 +644,7 @@ def detail(
                 torsion.stirrup_spacing if torsion is not None else None
             ),
             side_face_bar_dia_mm=options.side_face_bar_diameter_mm,
+            primary_tension_face=(request.actions.primary_tension_face or "BOTTOM"),
         )
     except ValueError as exc:
         if str(exc).startswith("TORSION_"):

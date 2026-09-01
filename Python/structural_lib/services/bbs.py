@@ -416,6 +416,8 @@ def _validate_detailing_for_bbs(detailing: object) -> BeamDetailingResult:
             raise ValueError(f"stirrups[{index}].legs must be > 0.")
     if detailing.torsion is not None:
         torsion = detailing.torsion
+        if torsion.primary_tension_face not in ("TOP", "BOTTOM"):
+            raise ValueError("torsion primary_tension_face must be TOP or BOTTOM.")
         if (
             not torsion.corner_bars_enclosed
             or not torsion.full_span_corner_bars
@@ -432,18 +434,28 @@ def _validate_detailing_for_bbs(detailing: object) -> BeamDetailingResult:
         )
         if torsion.opposite_area_required < 0:
             raise ValueError("torsion.opposite_area_required must be >= 0.")
+        primary_bars = (
+            detailing.bottom_bars
+            if torsion.primary_tension_face == "BOTTOM"
+            else detailing.top_bars
+        )
+        opposite_bars = (
+            detailing.top_bars
+            if torsion.primary_tension_face == "BOTTOM"
+            else detailing.bottom_bars
+        )
         if any(
             item.layers != 1
             or item.count < 2
             or item.area_provided + 1e-9 < torsion.primary_area_required
-            for item in detailing.bottom_bars
+            for item in primary_bars
         ):
             raise ValueError("torsion primary-face corner bars are not consumable.")
         if any(
             item.layers != 1
             or item.count < 2
             or item.area_provided + 1e-9 < torsion.opposite_area_required
-            for item in detailing.top_bars
+            for item in opposite_bars
         ):
             raise ValueError("torsion opposite-face corner bars are not consumable.")
         if any(
@@ -595,7 +607,7 @@ def generate_bbs_from_detailing(
         bottom_schedule = list(zip(detailing.bottom_bars, zones, strict=False))
         top_schedule = list(zip(detailing.top_bars, zones, strict=False))
 
-    # Process bottom bars. Torsion corner bars remain continuous for the full span.
+    # Process physical bottom bars. Torsion corner bars remain full-span.
     for bar_arr, zone in bottom_schedule:
         if bar_arr.count > 0:
             cut_length = calculate_straight_bar_length(
@@ -631,7 +643,7 @@ def generate_bbs_from_detailing(
                 )
             )
 
-    # Process top bars. The torsion opposite face is a tension face.
+    # Process physical top bars. Both torsion faces carry longitudinal tension.
     for bar_arr, zone in top_schedule:
         if bar_arr.count > 0:
             cut_length = calculate_straight_bar_length(
