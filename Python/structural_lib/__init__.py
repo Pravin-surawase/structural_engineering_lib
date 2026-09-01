@@ -349,6 +349,17 @@ from .services.beam_audit import (
     evaluate_beam_audit_row_v1,
     evaluate_beam_audit_v1,
 )
+from .services.beam_candidate_evaluator import (
+    BeamCandidateCheckEvidenceV2,
+    BeamCandidateCheckResultV2,
+    BeamCandidateCompositionV2,
+    BeamCandidateDefinitionDraftV2,
+    BeamCandidateDefinitionV2,
+    BeamCandidateEvaluationResultV2,
+    build_beam_candidate_definition_v2,
+    check_beam_candidate_composition_v2,
+    evaluate_beam_candidate_v2,
+)
 from .services.beam_line import solve_beam_line_linear_v1
 from .services.beam_line_calibration import compare_beam_line_to_reference_v1
 from .services.beam_project_contracts import (
@@ -685,6 +696,15 @@ __all__ = [
     "canonical_beam_action_row_sha256_v1",
     "evaluate_beam_audit_row_v1",
     "evaluate_beam_audit_v1",
+    "BeamCandidateCheckEvidenceV2",
+    "BeamCandidateCheckResultV2",
+    "BeamCandidateCompositionV2",
+    "BeamCandidateDefinitionDraftV2",
+    "BeamCandidateDefinitionV2",
+    "BeamCandidateEvaluationResultV2",
+    "build_beam_candidate_definition_v2",
+    "check_beam_candidate_composition_v2",
+    "evaluate_beam_candidate_v2",
     "BeamCriteriaScenarioV1",
     "BeamCriteriaStopPolicyV1",
     "BeamExistingPropertyDraftV1",
