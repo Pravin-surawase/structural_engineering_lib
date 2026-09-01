@@ -5,6 +5,103 @@
 
 ---
 
+## 2026-09-01 — Session: W3 project criteria, legacy VBA and ETABS transaction audit
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3-PROJECT-CRITERIA-RECOVERY`.
+**Branch:** `codex/etabs-w3-project-criteria-windows`.
+**Source:** accepted PR #940 merge `c53571311be560fc37cdb0e87516d0f58ac85e3b`.
+**Focus:** Audit legacy VBA and current COM/optimizer owners, then freeze the smallest PID-safe ETABS, canonical candidate-evaluation and owned-copy W3K/L plan without application or model calls.
+**Checkpoint:** `DOCS_8_OF_8_PASSED_REQUIRES_CANDIDATE_INTEGRATION`.
+**Evidence:** `docs/verification/etabs-w3-com-vba-plan-audit-evidence.json`.
+**Git handoff receipt:** `docs/verification/etabs-w3-com-vba-plan-git-handoff-receipt.json`
+
+**Completed:**
+
+- Isolated this plan from LIB-PRO-015 and kept one dedicated W3 worktree.
+  LIB-PRO-015 owns public beam façade/Sourcebook documentation; this packet
+  owns the ETABS process, state, transaction and candidate-evaluation plan.
+- Audited three generations of legacy VBA beam, column, reaction and export sources.
+  These include the current v2.0.1 Excel controller, the separate project2
+  column workflow and the earlier structural-library modules.
+- Bound legacy and installed-help findings in a safe hash-based evidence receipt.
+  External workbook/source bytes were not copied into Git.
+- Confirmed reusable legacy patterns: display model identity, bulk frame reads,
+  beam/column classification, design summaries, unit/output-selection restore,
+  bulk Excel writes, append logs and copy-before-edit intent.
+- Confirmed unsafe legacy behavior: ambiguous `GetObject` attachment, live
+  unlock/section writes, incomplete recovery, no expected-old/readback contract,
+  inconsistent state restoration, blind reconnect/retry and no distinction
+  between attached and owned ETABS processes.
+- Audited installed CHM interfaces for PID attachment, table/schema/CSV calls,
+  case status/run flags, concrete design summaries, object design procedure,
+  beam rebar properties and Indian IS 456 preferences/overwrites. The CHM hash
+  and exact interface names are bound in the safe evidence.
+- Confirmed current P0 defects: the Python live pilot attaches without PID,
+  changes output selection without restoration, and converts signed M3 to an
+  absolute demand without setting `primary_tension_face`, bypassing PR #940.
+- Confirmed that bar, cost and Pareto optimizers use different feasibility
+  paths and that current multi-layer recommendations do not prove exact layer
+  distribution, vertical spacing and effective-depth identity.
+- Authored the ETABS COM/VBA/reanalysis plan with required contracts, functions,
+  API-guide scope, acquisition hierarchy, solver decision, packet exits, effort
+  ranges and recurrence controls. Updated the W3 master sequence, planning
+  index and task board, including PR #940 acceptance.
+- No ETABS process, COM object, Excel application, model, table export,
+  analysis/design run, solver run or mutation was used.
+
+### Issues encountered
+
+- The first two canonical Git-state launcher calls appeared blank because the
+  command exceeded the default 10-second tool yield.
+- A broad recursive source search included a legacy virtual environment and
+  produced excessive output before the audit narrowed to authored VBA/project
+  files.
+- A prior task ID supplied for thread lookup was no longer readable on the
+  connected host; the on-disk sources and hashes supplied the durable evidence.
+- The first docs check tool wrapper retained only command output and hid the
+  ongoing exec-session ID, so a second invocation was required to obtain a
+  pollable session.
+- The first normal commit hooks rejected the handoff because the final receipt
+  regeneration changed its local-state hash after the brief had been written.
+
+### Root causes and resolutions
+
+- Confirmed terminal cause: `git_state.py` needed more than the default yield,
+  not a different Git command. Resolution: invoke the same canonical authority
+  through the repository Python runtime with a 30-second yield. ⚠️ TERMINAL
+  ISSUE: blank 10-second Git-state yield -> exact JSON returned with a 30-second
+  yield.
+- Confirmed search-scope cause: the old project contains a checked-in `venv`,
+  so a root file inventory overwhelmed the useful authored-source results.
+  Resolution: search named `.bas`/documentation roots and exclude environment
+  contents from conclusions.
+- Confirmed evidence cause: the unavailable old task summary was not necessary
+  authority. Resolution: inspect the current local source, retained backups and
+  file hashes directly; do not infer behavior from the missing thread.
+- Confirmed orchestration cause: the first wrapper printed only the stdout
+  field, omitting the returned session ID while the docs gate continued.
+  Resolution: keep the complete exec result for long-running checks and poll
+  the returned session. ⚠️ TERMINAL ISSUE: hidden docs-check session ID -> one
+  pollable invocation completed 8/8.
+- Confirmed closeout-order cause: the final receipt must precede the exact
+  receipt projection in the handoff. Resolution: bind the brief to the existing
+  final receipt hash, stage both files and do not regenerate the receipt again.
+  No commit object was created by the rejected attempt.
+
+**Verification through evidence freeze:** audit JSON parses; `git diff --check`
+passes; the repository docs category passes 8/8 including broken links, task
+format, context and family-facade documentation. No code or model behavior was
+changed.
+
+**Next:** Integrate this documentation packet without overlapping LIB-PRO-015.
+Then implement Packet A only: PID discovery/selection, exact session identity,
+raw-call ledger and state capture/restore with fake adapters. Do not open ETABS
+for that offline implementation. Installed acceptance, SQLite export and all
+model mutations remain separate exact-authority packets.
+
+---
+
 ## 2026-09-01 — Session: W3 saved-candidate consumption and signed-face repair
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).

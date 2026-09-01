@@ -5,7 +5,7 @@
 **Status:** Production Ready
 **Importance:** High
 **Created:** 2025-01-01
-**Last Updated:** 2026-08-27
+**Last Updated:** 2026-09-01
 
 ---
 
@@ -19,6 +19,7 @@ Internal planning documents and research notes.
 |----------|---------|
 | [Next Session Brief](next-session-brief.md) | What to work on next |
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
+| [ETABS COM, VBA and W3 Reanalysis Plan](etabs-w3-com-vba-and-reanalysis-plan.md) | PID-safe ETABS sessions, legacy VBA lessons, common candidate evaluation and owned-copy W3K/L transactions |
 | [LIB-PRO-013 Whole-Library Renewal Audit](lib-pro-013-whole-library-renewal-audit-plan.md) | Whole-product audit aligned to the six-cycle low-Git remediation programme |
 | [LIB-PRO-012 External API Remediation](lib-pro-012-external-api-remediation-plan.md) | Immediate Python/REST P0 safety plus canonical API work grouped into four implementation cycles |
 | [MAINT-0136 Cleanup Preservation](maint-0136-cleanup-preservation-plan.md) | Current topology, verified local recovery, and fail-closed Phase 2 gate |
@@ -45,6 +46,7 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
+| `etabs-w3-com-vba-and-reanalysis-plan.md` | 2026-09-01 | 🚧 Audit and implementation sequence ready; ETABS/model calls remain separately gated |
 | `lib-pro-013-whole-library-renewal-audit-plan.md` | 2026-08-28 | 🔄 A0 and B0 integrated; F0 next, then R0 and one final engineer review |
 | `lib-pro-012-external-api-remediation-plan.md` | 2026-08-28 | 🔄 S0/A0/B0 integrated; F0 family convergence active next; Windows lane prepared for later exact R0 evidence |
 | `maint-0136-phase-2b-w-execution-closeout.md` | 2026-08-27 | ✅ Exact 63/63 worktree removal complete; 15 retained and all branches, refs, backups, and protected sources preserved |

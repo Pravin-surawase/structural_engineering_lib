@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-01
-- Focus: Consume the three accepted saved candidate lines through the real
-- Completed: Bound the offline operator to the accepted direct baseline, catalogue and; Evaluated 107 exact same-row station records across three candidate lines and; Proved that legacy d'=40 conflicts with 40 mm clear cover plus the declared
-- Git receipt: docs/verification/etabs-w3-saved-candidate-consumption-git-handoff-receipt.json | sha256:7878af2696d7b5c0664b342a1714b573b4af50790bb2e07f1f6f3d4ff4ffc64a | HOLD
-- Git identity: codex/etabs-w3e-saved-candidate-consumption-windows@07d7c9024183a3cd03a51d794e3ada0da7729d11 | upstream=origin/main@07d7c9024183a3cd03a51d794e3ada0da7729d11 | base=origin/main@07d7c9024183a3cd03a51d794e3ada0da7729d11 | tree=dirty | operation=none
+- Focus: Audit legacy VBA and current COM/optimizer owners, then freeze the smallest PID-safe ETABS, canonical candidate-evaluation and owned-copy W3K/L plan without application or model calls.
+- Completed: Isolated the plan from LIB-PRO-015; audited three generations of legacy VBA; bound the findings in a safe hash-based evidence receipt.
+- Git receipt: docs/verification/etabs-w3-com-vba-plan-git-handoff-receipt.json | sha256:d43e81228e0afca6124c4556f8465bdac87661472d6059893d93f6998265b067 | HOLD
+- Git identity: codex/etabs-w3-project-criteria-windows@c53571311be560fc37cdb0e87516d0f58ac85e3b | upstream=origin/main@c53571311be560fc37cdb0e87516d0f58ac85e3b | base=origin/main@c53571311be560fc37cdb0e87516d0f58ac85e3b | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
