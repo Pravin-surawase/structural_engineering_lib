@@ -550,9 +550,7 @@ def test_real_resolved_merge_commits_through_precommit_operation_guard(
     # No completion-mode result is treated as normal post-commit validation.
     hook = _marker_path(linked, "hooks/pre-commit")
     hook.write_text(
-        "#!/bin/sh\nset -e\n"
-        + shlex.join(hook_command)
-        + "\n",
+        "#!/bin/sh\nset -e\n" + shlex.join(hook_command) + "\n",
         encoding="utf-8",
     )
     hook.chmod(0o755)

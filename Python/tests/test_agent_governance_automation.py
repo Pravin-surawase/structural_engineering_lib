@@ -272,9 +272,7 @@ def test_pre_commit_contract_has_three_commit_guards_and_eight_manual_checks():
         for hook in hooks
         if "pre-commit" in hook.get("stages", config["default_stages"])
     }
-    manual_hooks = {
-        hook["id"] for hook in hooks if "manual" in hook.get("stages", [])
-    }
+    manual_hooks = {hook["id"] for hook in hooks if "manual" in hook.get("stages", [])}
     assert commit_hooks == {
         "check-merge-conflict",
         "check-added-large-files",
@@ -352,7 +350,9 @@ def test_api_classification_moved_from_commit_hook_to_hosted_coverage():
         (SCRIPTS_DIR / "validation-coverage.json").read_text(encoding="utf-8")
     )
     entry = next(
-        item for item in coverage["entries"] if item["source_id"] == "check-api-classification"
+        item
+        for item in coverage["entries"]
+        if item["source_id"] == "check-api-classification"
     )
 
     assert "check-api-classification" not in hook_ids
