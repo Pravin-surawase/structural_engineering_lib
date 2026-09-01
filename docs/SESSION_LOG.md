@@ -5,6 +5,117 @@
 
 ---
 
+## 2026-09-02 — Session: Offline B1B/B2 candidate evaluator and search convergence
+
+**Agent:** Codex (`orchestrator`; sole writer; no implementation subagents).
+**Task:** `ETABS-W3-B1B-B2-OFFLINE-BATCH`.
+**Branch:** `codex/w3-offline-candidate-evaluator-search`.
+**Source:** accepted commit-gate consolidation PR #949 merge
+`e6c684a580803a27cea9fc6e8cd25b0888795a2`.
+**Git handoff receipt:** docs/verification/w3-offline-candidate-evaluator-search-git-handoff-receipt.json
+**Focus:** Implement fake-only B1B/B2 as two local commits and one milestone PR.
+**Boundary:** Python contracts/services/tests and chronological plan/task/session
+evidence only. No ETABS, Excel, COM, model, workbook, export, analysis/design,
+release or deployment action occurred. C2 remains held for accepted C1 schema
+evidence.
+
+### Summary
+
+- Added `BeamCandidateDefinitionV2` and `evaluate_beam_candidate_v2` as the one
+  W3 feasibility owner. The builder binds the sealed signed action row,
+  declared strength/service domains, physical tension face, mutation-ready
+  existing property, and criteria/catalogue/schedule digests.
+- Rebuilt the accepted supplied-beam V2 request from the exact serialized
+  schedule. Effective depth is the selected physical layer centroid; the
+  maintained 500/40/8/20 mm case resolves to 442 mm and the maintained
+  strength/detailing owner is rerun with that value.
+- Added the independent composition checker. It recomputes face areas,
+  centroid/clear spacing, full-span longitudinal mass, deterministic two-leg
+  transverse-zone counts/mass, concrete/formwork quantities and catalogue
+  cost without calling the evaluator or optimizer. Untyped multi-leg geometry
+  returns `HOLD` instead of a fabricated exact quantity.
+- Missing torsion/serviceability/lap evidence, incomplete service-scenario
+  coverage, excluded-action/applicability drift, non-mutation-ready properties,
+  side-face holds, or authored fixture owners cannot produce project `PASS`.
+  Signed TOP/BOTTOM mirrors retain logical capacity/utilization while mapping
+  the physical layers correctly.
+- Added the B2 canonical finite domain and hash-ordered traversal. Direct, cost
+  and Pareto projections retain byte-identical B1B evaluation hashes/verdicts;
+  no beam calculation is copied into search.
+- Added generated/pruned/evaluated/accepted/ranked counts, exact domain/budget
+  digests, criteria tie-breaks and the four terminal search states. Only
+  complete, unblocked enumeration claims optimum or Pareto completeness; only
+  complete failed enumeration claims infeasibility. Truncated or evidence-held
+  rankings remain explicitly provisional, and a criteria policy may suppress
+  an incomplete shortlist entirely.
+- Created local B1B commit `e6f8ad7f` and B2 commit `c990863b`. Each ran only
+  the three ordinary mutation-safety hooks; neither commit was pushed and no PR
+  was opened between units.
+- Reconciled the accepted A0/B0/B1A/C0 PR #947 and maintenance PR #949 states.
+  Split C2 into a later offline milestone because its exact allowlist depends
+  on the separately authorized A1/C1 installed export/schema evidence.
+- Background inspection found no task-owned Python, pytest, Git Bash, ETABS or
+  Excel process. Codex/MCP Node helpers were preserved; no cleanup mutation was
+  required.
+
+### Issues encountered
+
+- The first B1B result construction failed strict validation after nested tuple
+  models were normalized to JSON lists for hashing.
+- B1A permits four-leg transverse stock but does not type the additional link
+  geometry needed for an exact steel quantity.
+- The inherited reduced-PR milestone grouped C2 with B1B/B2 even though C2's
+  allowlisted parser requires C1's not-yet-acquired real SQLite schema.
+- The first root-export smoke command used a heredoc through nested PowerShell
+  and Git Bash quoting and was rejected before Python started.
+
+### Root causes and resolutions
+
+- Root cause: one temporary payload was incorrectly used for two boundaries:
+  canonical JSON hashing and strict Python-model validation. Resolution: retain
+  strict nested model objects for validation and normalize them only inside the
+  canonical digest serializer. The exact failing evaluator tests and the final
+  union pass.
+- Root cause: a leg count does not define the perimeter/crosstie arrangement of
+  a multi-leg link. Resolution: quantity truth is supported only for the typed
+  two-leg closed-link slice; any multi-leg zone yields a composition and final
+  `HOLD`. Its focused regression passes.
+- Root cause: C0 intentionally makes no ETABS schema-support claim, so no safe
+  table/column allowlist exists before C1. Resolution: narrow this milestone to
+  B1B/B2 and hold C2 until a separately authorized A1/C1 session produces a
+  complete hash-bound artifact and exact schema inventory. The canonical plan,
+  task board and next-session brief now agree.
+- Root cause: the shell wrapper parsed the heredoc delimiter across two quoting
+  layers. Resolution: rerun the smoke check with a bounded `python -c` command;
+  all root exports loaded. ⚠️ TERMINAL ISSUE: nested heredoc quoting failed
+  before Python execution -> bounded `python -c` import check passed.
+
+### Validation through content freeze
+
+- B1B focused acceptance: 6 evaluator/composition cases pass, including sealed
+  identity tamper rejection, authored/missing-evidence holds, 442 mm centroid
+  depth, exact schedule quantities, multi-leg hold and TOP/BOTTOM mirroring.
+- B2 focused acceptance: 7 domain/search cases pass, including order-independent
+  traversal, route identity convergence, disallowed/allowed budget shortlists,
+  complete infeasibility, fixture block, mixed PASS/HOLD provisional ranking and
+  digest tamper rejection.
+- Frozen union: Ruff passes on all changed Python files; 113/113 evaluator,
+  search, B1A, supplied-beam, rebar, cost and legacy multi-objective focused
+  tests pass in one invocation.
+- Root package smoke: candidate evaluator/search public symbols import from
+  `structural_lib` without an initialization cycle.
+- No broad local quick/full gate was repeated. Comprehensive formatting,
+  typing, security, generated-contract, documentation and test assurance remains
+  the single required hosted PR cycle under the accepted PR #949 policy.
+
+### Next action
+
+Freeze the chronological closeout commit, push all batch commits together once,
+open one PR, and accept only the unchanged head with every required hosted job
+and strict `PR Gate` green. Preserve the branch unless deletion is separately
+authorized. Do not start A1/C1 or C2 without the separate installed-evidence
+authorization and exact accepted schema artifact.
+
 ## 2026-09-02 — Session: Commit and PR validation consolidation implementation
 
 **Agent:** Codex (`orchestrator`; sole writer; no implementation subagents).

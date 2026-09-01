@@ -48,8 +48,8 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
-| `commit-pr-validation-consolidation-plan.md` | 2026-09-02 | 🟡 Plan frozen; next maintenance batch adds hosted parity first, then reduces 34 commit hooks to 3 and removes the duplicate main-push run |
-| `w3-beam-professional-integrated-execution-plan.md` | 2026-09-02 | ✅ Offline A0/B0/B1A/C0 accepted in PR #947; installed A1/C1 remain separately authorized |
+| `commit-pr-validation-consolidation-plan.md` | 2026-09-02 | ✅ Accepted in PR #949; ordinary commits run three mutation-safety hooks and comprehensive assurance runs once on the batched PR |
+| `w3-beam-professional-integrated-execution-plan.md` | 2026-09-02 | 🟡 Offline B1B/B2 evaluator/search candidate integrated locally; C2 held until separately authorized A1/C1 freezes the exact schema |
 | `etabs-w3-com-vba-and-reanalysis-plan.md` | 2026-09-01 | 🚧 Host/transaction sequence remains authoritative; ETABS/model calls remain separately gated |
 | `lib-pro-013-whole-library-renewal-audit-plan.md` | 2026-08-28 | 🔄 A0 and B0 integrated; F0 next, then R0 and one final engineer review |
 | `lib-pro-012-external-api-remediation-plan.md` | 2026-08-28 | 🔄 S0/A0/B0 integrated; F0 family convergence active next; Windows lane prepared for later exact R0 evidence |
@@ -63,7 +63,7 @@ Internal planning documents and research notes.
 | `maint-0136-cleanup-preservation-plan.md` | 2026-08-27 | ✅ Phase 0 through exact Phase 2C complete; consolidated integration candidate prepared after PR #874 |
 | `maint-0133-cleanup-inventory-and-authorization.md` | 2026-08-23 | 🚧 Immutable inventory candidate; two moves ready for later authorization, four held, zero deletes |
 | `public-route-safety-closure-plan.md` | 2026-08-22 | ✅ LIB-PRO-003-D local candidate accepted; hosted/exact-tree closure pending; release and professional claims held by PARTIAL readiness |
-| `next-session-brief.md` | 2026-09-02 | 🔄 Publish the offline foundations candidate; installed A1/C1 requires separate authorization after acceptance |
+| `next-session-brief.md` | 2026-09-02 | 🔄 Publish the offline B1B/B2 batch in one PR; installed A1/C1 remains separately authorized and C2 stays held until then |
 | `pre-release-input-safety-and-professional-readiness-plan.md` | 2026-08-17 | 🚧 A-G merged; CLI, hosted-interpreter, preflight-verdict, and authorization holds remain through I-J |
 | `is456-solid-slabs-master-plan.md` | 2026-08-10 | 📋 Master plan ready; implementation has not started |
 | `ui-experience-foundation-master-plan.md` | 2026-08-10 | ✅ Two-session P0-P15 workbench/capability program accepted |
