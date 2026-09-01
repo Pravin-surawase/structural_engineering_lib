@@ -19,6 +19,7 @@ Internal planning documents and research notes.
 |----------|---------|
 | [Next Session Brief](next-session-brief.md) | What to work on next |
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
+| [Commit and PR Validation Consolidation Plan](commit-pr-validation-consolidation-plan.md) | Reduce ordinary commits to three safety hooks, move complete assurance to one batched PR, and remove duplicate post-merge validation |
 | [W3 and Professional Beam Integrated Execution Plan](w3-beam-professional-integrated-execution-plan.md) | Long-term route/API, PID/runtime, beam criteria/search, evidence acquisition and owned-copy W3 sequence |
 | [ETABS COM, VBA and W3 Reanalysis Plan](etabs-w3-com-vba-and-reanalysis-plan.md) | PID-safe ETABS sessions, legacy VBA lessons, common candidate evaluation and owned-copy W3K/L transactions |
 | [LIB-PRO-013 Whole-Library Renewal Audit](lib-pro-013-whole-library-renewal-audit-plan.md) | Whole-product audit aligned to the six-cycle low-Git remediation programme |
@@ -47,7 +48,8 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
-| `w3-beam-professional-integrated-execution-plan.md` | 2026-09-02 | 🔄 Offline A0/B0/B1A/C0 milestone integrated; one commit/PR pending, then separately authorized installed A1/C1 |
+| `commit-pr-validation-consolidation-plan.md` | 2026-09-02 | 🟡 Plan frozen; next maintenance batch adds hosted parity first, then reduces 34 commit hooks to 3 and removes the duplicate main-push run |
+| `w3-beam-professional-integrated-execution-plan.md` | 2026-09-02 | ✅ Offline A0/B0/B1A/C0 accepted in PR #947; installed A1/C1 remain separately authorized |
 | `etabs-w3-com-vba-and-reanalysis-plan.md` | 2026-09-01 | 🚧 Host/transaction sequence remains authoritative; ETABS/model calls remain separately gated |
 | `lib-pro-013-whole-library-renewal-audit-plan.md` | 2026-08-28 | 🔄 A0 and B0 integrated; F0 next, then R0 and one final engineer review |
 | `lib-pro-012-external-api-remediation-plan.md` | 2026-08-28 | 🔄 S0/A0/B0 integrated; F0 family convergence active next; Windows lane prepared for later exact R0 evidence |
