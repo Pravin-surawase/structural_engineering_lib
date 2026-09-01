@@ -18873,8 +18873,8 @@
     {
       "module": "structural_lib",
       "export_classification": "preview",
-      "declared_export_count": 456,
-      "classified_symbol_count": 456,
+      "declared_export_count": 473,
+      "classified_symbol_count": 473,
       "symbols": [
         {
           "name": "AnalysisStateV1",
@@ -19263,6 +19263,215 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.beam_audit",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamCandidateCheckEvidenceV2",
+          "qualified_name": "structural_lib.BeamCandidateCheckEvidenceV2",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_candidate_evaluator",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamCandidateCheckResultV2",
+          "qualified_name": "structural_lib.BeamCandidateCheckResultV2",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_candidate_evaluator",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamCandidateCompositionV2",
+          "qualified_name": "structural_lib.BeamCandidateCompositionV2",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_candidate_evaluator",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamCandidateDefinitionDraftV2",
+          "qualified_name": "structural_lib.BeamCandidateDefinitionDraftV2",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_candidate_evaluator",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamCandidateDefinitionV2",
+          "qualified_name": "structural_lib.BeamCandidateDefinitionV2",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_candidate_evaluator",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamCandidateEvaluationResultV2",
+          "qualified_name": "structural_lib.BeamCandidateEvaluationResultV2",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_candidate_evaluator",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamCandidateProjectionV1",
+          "qualified_name": "structural_lib.BeamCandidateProjectionV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_candidate_search",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamCandidateSearchDomainDraftV1",
+          "qualified_name": "structural_lib.BeamCandidateSearchDomainDraftV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_candidate_search",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamCandidateSearchDomainV1",
+          "qualified_name": "structural_lib.BeamCandidateSearchDomainV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_candidate_search",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamCandidateSearchRequestV1",
+          "qualified_name": "structural_lib.BeamCandidateSearchRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_candidate_search",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamCandidateSearchResultV1",
+          "qualified_name": "structural_lib.BeamCandidateSearchResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_candidate_search",
           "claim_disposition": "compatibility",
           "documentation": {
             "role": "PUBLIC_CONTRACT",
@@ -23245,6 +23454,25 @@
           }
         },
         {
+          "name": "OptimizationSearchBudgetV1",
+          "qualified_name": "structural_lib.OptimizationSearchBudgetV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_candidate_search",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "ParetoCandidate",
           "qualified_name": "structural_lib.ParetoCandidate",
           "kind": "class",
@@ -24451,6 +24679,44 @@
           }
         },
         {
+          "name": "build_beam_candidate_definition_v2",
+          "qualified_name": "structural_lib.build_beam_candidate_definition_v2",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_candidate_evaluator",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(draft: 'BeamCandidateDefinitionDraftV2', /, *, criteria: 'ProjectBeamCriteriaV1', catalogue: 'ProjectBeamCandidateCatalogueV1') -> 'BeamCandidateDefinitionV2'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "build_beam_candidate_search_domain_v1",
+          "qualified_name": "structural_lib.build_beam_candidate_search_domain_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_candidate_search",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(draft: 'BeamCandidateSearchDomainDraftV1', /, *, criteria: 'ProjectBeamCriteriaV1', catalogue: 'ProjectBeamCandidateCatalogueV1') -> 'BeamCandidateSearchDomainV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "build_beam_existing_property_v1",
           "qualified_name": "structural_lib.build_beam_existing_property_v1",
           "kind": "function",
@@ -25082,6 +25348,25 @@
             "docstring_sections": [
               "returns"
             ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "check_beam_candidate_composition_v2",
+          "qualified_name": "structural_lib.check_beam_candidate_composition_v2",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_candidate_evaluator",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(candidate: 'BeamCandidateDefinitionV2', /, *, catalogue: 'ProjectBeamCandidateCatalogueV1') -> 'BeamCandidateCompositionV2'",
+            "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
           }
@@ -26426,6 +26711,25 @@
           }
         },
         {
+          "name": "evaluate_beam_candidate_v2",
+          "qualified_name": "structural_lib.evaluate_beam_candidate_v2",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_candidate_evaluator",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(candidate: 'BeamCandidateDefinitionV2', /, *, criteria: 'ProjectBeamCriteriaV1', catalogue: 'ProjectBeamCandidateCatalogueV1') -> 'BeamCandidateEvaluationResultV2'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "evaluate_supplied_beam_reinforcement_v1",
           "qualified_name": "structural_lib.evaluate_supplied_beam_reinforcement_v1",
           "kind": "function",
@@ -27248,6 +27552,25 @@
               "CLASSIFIED_PUBLIC_ROLE"
             ],
             "signature": "(request: 'GravityWorkflowRequestV1') -> 'GravityWorkflowRunBundleV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "search_beam_candidates_v1",
+          "qualified_name": "structural_lib.search_beam_candidates_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_candidate_search",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(request: 'BeamCandidateSearchRequestV1', /, *, criteria: 'ProjectBeamCriteriaV1', catalogue: 'ProjectBeamCandidateCatalogueV1') -> 'BeamCandidateSearchResultV1'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []

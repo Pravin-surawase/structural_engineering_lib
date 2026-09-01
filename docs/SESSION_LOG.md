@@ -57,6 +57,10 @@ evidence.
 - Background inspection found no task-owned Python, pytest, Git Bash, ETABS or
   Excel process. Codex/MCP Node helpers were preserved; no cleanup mutation was
   required.
+- Published the three frozen batch commits together in PR #950. Its first
+  hosted cycle exposed two bounded candidate defects: missing strict helper
+  annotations and stale generated API-classification artifacts. Both are
+  included in one explicit repair candidate; no unrelated gate was rerun.
 
 ### Issues encountered
 
@@ -68,6 +72,14 @@ evidence.
   allowlisted parser requires C1's not-yet-acquired real SQLite schema.
 - The first root-export smoke command used a heredoc through nested PowerShell
   and Git Bash quoting and was rejected before Python started.
+- The first PR #950 cycle failed Python Validation because mypy required return
+  annotations on the canonical helper functions and the mandatory-check helper
+  accepted `str` instead of the closed check-name literal.
+- Documentation Validation failed because the newly exported root symbols had
+  not yet been projected into the generated API classification and compatibility
+  ledger.
+- The first local mypy replay was launched from the repository root, while the
+  hosted job owns `Python/` as its working directory, so mypy received no target.
 
 ### Root causes and resolutions
 
@@ -89,6 +101,18 @@ evidence.
   layers. Resolution: rerun the smoke check with a bounded `python -c` command;
   all root exports loaded. ⚠️ TERMINAL ISSUE: nested heredoc quoting failed
   before Python execution -> bounded `python -c` import check passed.
+- Root cause: helper signatures relied on inference that Ruff accepts but the
+  repository's strict mypy configuration does not. Resolution: type the raising
+  helpers as `NoReturn`, make strict-model validation generic, and constrain the
+  mandatory-check name to its literal domain; behavior and serialized contracts
+  are unchanged.
+- Root cause: root `__all__` additions are inputs to the maintained API registry
+  generator. Resolution: run the canonical generator and retain only its 17 new
+  preview-symbol projections plus reconciled ledger counts.
+- Root cause: the hosted Python job changes directory before invoking mypy.
+  Resolution: replay its exact command from `Python/`; all 293 source files pass.
+  ⚠️ TERMINAL ISSUE: root-level mypy replay had no target -> exact hosted-
+  directory replay passed.
 
 ### Validation through content freeze
 
@@ -104,17 +128,21 @@ evidence.
   tests pass in one invocation.
 - Root package smoke: candidate evaluator/search public symbols import from
   `structural_lib` without an initialization cycle.
+- Repair evidence: Ruff passes on both changed modules; strict mypy passes on all
+  293 source files from the hosted working directory; the canonical API
+  classification `--check` reports both generated artifacts current; and
+  `git diff --check` passes.
 - No broad local quick/full gate was repeated. Comprehensive formatting,
   typing, security, generated-contract, documentation and test assurance remains
   the single required hosted PR cycle under the accepted PR #949 policy.
 
 ### Next action
 
-Freeze the chronological closeout commit, push all batch commits together once,
-open one PR, and accept only the unchanged head with every required hosted job
-and strict `PR Gate` green. Preserve the branch unless deletion is separately
-authorized. Do not start A1/C1 or C2 without the separate installed-evidence
-authorization and exact accepted schema artifact.
+Commit and push the one consolidated PR #950 repair, then accept only that exact
+head with every required hosted job and strict `PR Gate` green. Preserve the
+branch unless deletion is separately authorized. Do not start A1/C1 or C2
+without the separate installed-evidence authorization and exact accepted schema
+artifact.
 
 ## 2026-09-02 — Session: Commit and PR validation consolidation implementation
 

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from typing import Any, Literal, Self
+from typing import Any, Literal, NoReturn, Self, TypeVar
 
 from pydantic import Field, model_validator
 
@@ -42,9 +42,10 @@ SearchTerminalState = Literal[
     "NO_FEASIBLE_CANDIDATE",
     "BLOCKED_MANDATORY_CHECK",
 ]
+_ModelT = TypeVar("_ModelT", bound=StrictPublicModel)
 
 
-def _raise_json_type(value: object):
+def _raise_json_type(value: object) -> NoReturn:
     raise TypeError(f"{type(value).__name__} is not canonically JSON serializable")
 
 
@@ -69,7 +70,7 @@ def _digest(value: object) -> str:
     return hashlib.sha256(_json(value).encode("utf-8")).hexdigest()
 
 
-def _validated(model: type[StrictPublicModel], value: StrictPublicModel):
+def _validated(model: type[_ModelT], value: StrictPublicModel) -> _ModelT:
     return model.model_validate(value.model_dump(mode="python"))
 
 

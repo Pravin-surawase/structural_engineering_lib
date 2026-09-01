@@ -11,7 +11,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
-from typing import Any, Literal, Self
+from typing import Any, Literal, NoReturn, Self, TypeVar
 
 from pydantic import Field, model_validator
 
@@ -69,6 +69,7 @@ _MANDATORY_CHECK = Literal[
     "CONSTRUCTABILITY",
 ]
 CandidateVerdict = Literal["PASS", "FAIL", "HOLD"]
+_ModelT = TypeVar("_ModelT", bound=StrictPublicModel)
 
 
 def _json(value: object) -> str:
@@ -88,7 +89,7 @@ def _json(value: object) -> str:
     )
 
 
-def _raise_json_type(value: object):
+def _raise_json_type(value: object) -> NoReturn:
     raise TypeError(f"{type(value).__name__} is not canonically JSON serializable")
 
 
@@ -96,7 +97,7 @@ def _digest(value: object) -> str:
     return hashlib.sha256(_json(value).encode("utf-8")).hexdigest()
 
 
-def _validated(model: type[StrictPublicModel], value: StrictPublicModel):
+def _validated(model: type[_ModelT], value: StrictPublicModel) -> _ModelT:
     return model.model_validate(value.model_dump(mode="python"))
 
 
@@ -598,7 +599,7 @@ def _bool_status(value: bool | None) -> CandidateVerdict:
 
 
 def _native_check(
-    name: str,
+    name: _MANDATORY_CHECK,
     *,
     supplied: dict[str, Any],
     candidate: BeamCandidateDefinitionV2,
