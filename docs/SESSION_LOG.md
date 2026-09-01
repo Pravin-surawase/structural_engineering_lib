@@ -5,6 +5,119 @@
 
 ---
 
+## 2026-09-01 — Session: Integrated W3 and professional beam execution audit
+
+**Agent:** Codex (`orchestrator`; two bounded read-only subagents, sole writer).
+**Task:** `W3-BEAM-INTEGRATED-PLAN-20260901`.
+**Branch:** `codex/w3-beam-integrated-plan-audit`.
+**Source:** fetched merged PR #941 commit
+`5aad93b8f3dc5e6f9ca916350bf0276c51ad683d`.
+**Focus:** Re-audit merged W3 PID/session/reanalysis planning with current beam API and freeze one dependency-aware execution sequence; no application/model operation.
+**Git handoff receipt:** `docs/verification/w3-beam-integrated-plan-git-handoff-receipt.json`
+
+**Completed:**
+
+- Fetched and bound the audit to merged PR #941 commit `5aad93b8`.
+- Reproduced public depth/check defects and reviewed W3 freshness, signed-face and evaluator dependencies.
+- Authored the integrated plan and reconciled maintained status owners without changing runtime code.
+
+### Issues encountered
+
+- The prior completed read-only beam audit had a passing session-end check but
+  no closing timing checkpoint, so the new exact task could not start.
+- The promoted compatibility design/detail path still treats clear cover as a
+  complete effective-depth deduction.
+- The REST existing-beam check accepts effective depth, supplied compression
+  steel and stirrup spacing but ignores all three; materially different inputs
+  produced byte-identical adequacy responses.
+- WebSocket `check_beam` still invents effective depth without main-bar geometry
+  and emits a compliance result without a supplied-reinforcement contract.
+- The merged W3 target contract did not distinguish an on-disk model hash from
+  potentially unsaved in-memory ETABS session state.
+- The task row, next-session brief and final foundation continuation retained
+  pre-merge or pre-serviceability/detailing instructions.
+- Updating the durable handoff expanded `next-session-brief.md` to 154 lines,
+  four above the maintained limit, so the first frozen docs/changed gate failed.
+- The first device-decision check used an unsupported direct-script flag, the
+  compact brief reached 151 lines, and the first receipt validation attempt
+  named a nonexistent validator path.
+
+### Root causes and resolutions
+
+- Confirmed checkpoint root cause: `session end` is read-only validation and
+  does not itself record the required usage closeout. Resolution: record an
+  explicit `superseded` checkpoint for the already completed audit, with no
+  elapsed or integration claim, then begin this exact task. ⚠️ TERMINAL ISSUE:
+  unmatched prior start blocked session begin -> exact superseded checkpoint
+  restored one active task.
+- Confirmed depth root cause: a compatibility shortcut reused clear cover as
+  `D - d`, omitting stirrup diameter and half the main-bar diameter. Resolution:
+  make `LIB-BEAM-S0-CHECK-TRUTH` the first packet and require explicit depth or
+  a complete typed centroid basis. The 500/40/8/20 mm reproduction yielded
+  460 mm versus 442 mm and 5.44% understated required steel.
+- Confirmed REST root cause: the transport schema and implementation have
+  diverged; the handler hardcodes depth/compression depth and never consumes
+  `effective_depth`, `asc_provided` or `stirrup_spacing`. Resolution: delegate
+  to a typed supplied-reinforcement owner or narrow the compatibility route to
+  an explicit held/demand-screening contract. Two 200 responses with those
+  three materially different inputs were byte-identical.
+- Confirmed WebSocket root cause: a transport-specific depth shortcut became an
+  engineering assumption and the route name overstates its boundary.
+  Resolution: converge REST/WebSocket request and status semantics in BEAM-S0.
+- Confirmed ETABS identity root cause: persistent-file identity and live-session
+  identity were combined without a freshness discriminator. Resolution: add
+  `ETABSModelFreshnessV1`; every attached session defaults to unknown/unsaved.
+  A clean disposition requires a reviewed installed API signal or a time-bound
+  operator-saved checkpoint. Unknown state cannot become hash-bound baseline or
+  copy evidence, and the attached session is never saved to manufacture proof.
+- Confirmed candidate-orientation root cause: B0 alone would protect the legacy
+  pilot but a new evaluator could still omit row-bound signed-face provenance.
+  Resolution: require `BeamActionsV1` or equivalent signed source identity and
+  mirrored TOP/BOTTOM direct/cost/Pareto acceptance in B1/B2.
+- Confirmed planning-state root cause: the canonical sequence advanced through
+  PRs #937-#941 without every chronological entry surface being reconciled.
+  Resolution: update the task row, foundation continuation, planning index and
+  next-session handoff while leaving immutable historical evidence unchanged.
+- Confirmed brief-length root cause: the new handoff block was added while a
+  redundant historical W3R paragraph remained in the compact brief. Resolution:
+  remove only that superseded four-line paragraph; W3R acceptance and its hold
+  remain owned by the integrated/foundation plans and task history. The failed
+  docs node is the repair evidence.
+- Confirmed command/brief root cause: the maintained interfaces are
+  `./run.sh check --category docs` and
+  `scripts/git_handoff_receipt.py validate`; the direct checker and guessed
+  validator do not own those operations. The device wording also added two
+  lines beyond the brief budget. Resolution: use the maintained commands,
+  compact the wording to the limit and record this terminal issue before the
+  successful rerun. ⚠️ TERMINAL ISSUE: unsupported docs flag and nonexistent
+  validator path -> maintained docs and receipt commands passed.
+
+### Validation through content freeze
+
+- `git fetch origin --prune` advanced `origin/main` from `c5357131` to merged
+  PR #941 commit `5aad93b8`; the dedicated worktree began clean and equal.
+- GitHub independently reports PR #941 merged into `main` with nine checks.
+- Two bounded read-only reviewers independently confirmed the W3 host/state and
+  beam/API/candidate findings; the parent reproduced the material beam outcomes.
+- The first brief-length repair rerun passed docs 8/8 and the complete changed
+  documentation/Git/stale domain gate 16/16; the consolidated quick gate passed
+  10/10 with fresh inputs.
+- The task-to-Git handoff receipt validates in expected pre-integration `HOLD`
+  state. Normal hooks then passed without bypass, including the repaired quick
+  gate at 10/10. The final clean-tree session closeout remains the immutable
+  candidate validation step.
+- The owner selected a continuity-first device strategy. The integrated plan
+  now assigns the whole next implementation sequence to one dedicated Windows
+  worktree. Offline packets keep ETABS/Excel closed; installed use remains a
+  separate gate, and Mac becomes a bounded read-only milestone reviewer.
+- The first post-device-edit documentation command used an unsupported
+  `check_docs.py --category docs` flag and the handoff brief was 151 lines.
+  The maintained `run.sh` docs gate is the category owner; the preservation
+  wording was compacted without removing its device boundary before rerunning
+  the maintained checks.
+- After the continuity-first device edit, docs passed 8/8 and changed domains
+  passed 16/16; the receipt validates in expected pre-integration `HOLD` state.
+
 ## 2026-09-01 — Session: W3 project criteria, legacy VBA and ETABS transaction audit
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).

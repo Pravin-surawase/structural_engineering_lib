@@ -116,6 +116,22 @@ the pilot does not capture or restore the predecessor selection. The bridge
 already serializes operations with a process lock; the missing control is a
 complete state guard, not another lock.
 
+### P0 — disk identity is not live-session freshness
+
+The proposed exact target binds saved path, SHA-256, size and UTC mtime, but an
+already-open ETABS process may contain unsaved in-memory changes. A disk hash
+therefore proves only the persisted file, not equality with the live session.
+The host adapter must expose a separate `ETABSModelFreshnessV1` disposition:
+`SAVED_CLEAN_CONFIRMED`, `SESSION_UNSAVED_OR_UNKNOWN`, `FILE_DRIFT` or
+`FILE_UNAVAILABLE`. Every attached session defaults to
+`SESSION_UNSAVED_OR_UNKNOWN`. `SAVED_CLEAN_CONFIRMED` requires separately
+reviewed installed evidence from either an API cleanliness signal or an explicit
+operator-saved checkpoint bound to PID, path, hash, mtime and observation timing,
+with no intervening edit. Unknown session freshness may support a bounded
+read-only observation with explicit limitations, but it cannot become hash-bound
+baseline or copied-model evidence. The adapter must never save the attached user
+session to manufacture this proof.
+
 ### P0 — the old live pilot bypasses the repaired signed-face route
 
 `_design_beam` sends absolute governing M3, V2 and T to a separate
@@ -195,6 +211,7 @@ the useful operation, but also the exact failure mode to avoid.
 | `ETABSProcessCandidateV1` | PID, executable path/version, process start time, architecture and discovery source |
 | `ETABSConnectionTargetV2` | exact PID; expected ETABS major/build; expected saved model path, SHA-256, size and UTC mtime; allowed access `READ_ONLY` or `OWNED_COPY_MUTATION` |
 | `ETABSSessionIdentityV1` | PID, connection origin (`ATTACHED_EXISTING` or `STARTED_OWNED`), full model path/name, version, units, lock, saved-file identity and observation time |
+| `ETABSModelFreshnessV1` | session/file disposition, saved path identity, before/after file stat/hash evidence where available, observation source, limitations and whether hash-bound baseline use is allowed |
 | `ETABSStateSnapshotV1` | session identity, units, lock, selected output cases/combinations, case statuses, run flags and named table/display selections used by the operation |
 | `ETABSCallRecordV1` | transaction/call ID, method, reviewed signature ID, redacted arguments, raw return projection, return code, start/end time, decoder version and error |
 
@@ -232,13 +249,16 @@ they receive separate typed operations and safeguards.
    candidates for the UI.
 4. `connect_etabs_target_v2(target)` — resolve exactly one PID/model and reject
    ambiguity or drift.
-5. `capture_etabs_state_v1(session, operation_scope)` and
+5. `classify_etabs_model_freshness_v1(session, expected_file)` — distinguish
+   persisted-file identity from live in-memory freshness and block baseline use
+   when the session is unsaved or unknown.
+6. `capture_etabs_state_v1(session, operation_scope)` and
    `restore_etabs_state_v1(...)` — implement the state guard and postflight.
-6. `record_etabs_call_v1(...)` — persist the raw call projection before strict
+7. `record_etabs_call_v1(...)` — persist the raw call projection before strict
    decoding can raise.
-7. `read_etabs_demand_snapshot_v2(...)` — return signed row-bound forces and
+8. `read_etabs_demand_snapshot_v2(...)` — return signed row-bound forces and
    exact selection identity without running design calculations.
-8. Deprecate `run_etabs_beam_pilot_v1` calculation ownership; keep a compatible
+9. Deprecate `run_etabs_beam_pilot_v1` calculation ownership; keep a compatible
    adapter that calls the canonical audit and returns explicit deprecation and
    limitations metadata.
 
@@ -337,7 +357,8 @@ new calibration packet. It does not belong in the P0 COM repair.
 
 | Packet | Work | Exit | Planning effort |
 |---|---|---|---:|
-| A — P0 session target and guard | PID discovery/selection, identity, raw call ledger, units/selections postflight | Multiple-instance fake tests; exact target or fail; pre/post state equal after success and every injected failure | 3–5 focused days |
+| A0 — offline P0 session target and guard | PID discovery/selection contracts, two-phase identity confirmation, model freshness, raw call ledger, units/selections postflight through fakes | Multiple-instance fake tests; exact target or fail; unsaved/unknown session cannot become hash-bound baseline evidence; pre/post state equal after success and every injected failure; no COM call | 3–5 focused days |
+| A1 — installed read-only acceptance | PID-specific attachment and guarded observation on the exact Windows/ETABS authority | Selected PID/model is visible and exact; attached session remains read-only; state is preserved; saved-file evidence is not promoted beyond the observed freshness disposition | one bounded evidence session after separate authorization |
 | B — canonical pilot/evaluator convergence | Remove pilot calculation ownership; exact signed face; common layer-aware candidate evaluator used by three optimizers | Same candidate has one feasibility verdict across direct, cost and Pareto routes; predecessor adapters remain deterministic | 5–9 focused days |
 | C — design and named data snapshot | Concrete design basis plus allowlisted SQLite importer | Matched-basis comparison available; every requested table closes a named W3 row or is rejected | 3–6 focused days plus one installed read/export packet |
 | D — W3H project decision | Resolve or retain support/mesh/slab-transfer and applicability criteria | Explicit comparable scope, bounded extension decision, or `NOT_COMPARABLE` with no further generic acquisition | 2–5 focused days if evidence exists |
@@ -346,8 +367,9 @@ new calibration packet. It does not belong in the P0 COM repair.
 | G — W3L bounded iteration | Finite budget, cache keys, final clean-baseline repeat and dossier | Budgeted termination and independently repeated final candidate or explicit no-solution outcome | 4–8 focused days plus candidate cycles |
 
 These are engineering planning ranges, not delivery promises. Project evidence,
-ETABS runtime and independent review dominate the calendar. Packet A should be
-done before any new live pilot. Packets B and the offline parts of C can proceed
+ETABS runtime and independent review dominate the calendar. Packet A0 should be
+done before any new live pilot; A1 remains separately authorized installed
+acceptance. Packets B and the offline parts of C can proceed
 without opening ETABS. D must stop if the necessary project basis does not
 exist; repeated table or solver work is not the default response.
 
@@ -355,6 +377,9 @@ exist; repeated table or solver work is not the default response.
 
 - No API function may attach to “the running ETABS” without a target PID or an
   exact unique identity rule.
+- A saved-file hash does not prove live-session cleanliness. Unknown or unsaved
+  session state cannot be promoted to hash-bound baseline/copy evidence, and the
+  attached user session is never saved to manufacture that proof.
 - If more than one process exists, the UI shows PID, version and model name; the
   operation remains blocked until one exact target is chosen.
 - A read-only operation proves units, lock, output selections and saved-model
