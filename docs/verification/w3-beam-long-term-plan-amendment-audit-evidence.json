@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "w3_beam_long_term_plan_amendment_audit",
+  "observed_at_utc": "2026-09-01T13:59:24.7822908Z",
+  "repository": {
+    "branch": "codex/etabs-w3-project-criteria-windows",
+    "source_head_sha": "35ea6b89220de6ab38ede01213a5f4c48e2a3364",
+    "source_origin_main_sha": "35ea6b89220de6ab38ede01213a5f4c48e2a3364",
+    "source_pr": 942,
+    "git_authority": "scripts/git_state.py"
+  },
+  "execution_boundary": {
+    "audit_and_planning_only": true,
+    "etabs_or_excel_opened": false,
+    "com_object_created": false,
+    "export_or_sqlite_acquired": false,
+    "solver_executed": false,
+    "analysis_or_design_run": false,
+    "model_mutated": false
+  },
+  "audit_tracks": [
+    {
+      "role": "ETABS runtime/session/recovery",
+      "reviewer": "Galileo",
+      "mode": "read-only"
+    },
+    {
+      "role": "beam evaluator/search/solver",
+      "reviewer": "Feynman",
+      "mode": "read-only"
+    },
+    {
+      "role": "public API/client/data evidence",
+      "reviewer": "Raman",
+      "mode": "read-only"
+    }
+  ],
+  "reviewed_sources": [
+    {
+      "path": "Python/structural_lib/services/etabs_live_bridge.py",
+      "sha256": "1e9df6c0961123372fe86c983ae5768cfe8d46c6e30be6aa04a3813d291b4802"
+    },
+    {
+      "path": "Python/structural_lib/services/beam_audit.py",
+      "sha256": "ba025b1f564d3b8d7dd4154bd8f642adc482b3b04722ec4849874d2b6221b1e8"
+    },
+    {
+      "path": "Python/structural_lib/services/rebar_optimizer.py",
+      "sha256": "6fe384f150b11943fdc1724b0d90fe10e69afecfe7482105becf65d416b29429"
+    },
+    {
+      "path": "Python/structural_lib/services/optimization.py",
+      "sha256": "9e42fb54d0cca52abf1c9518269be5796a2fb3afe9f17e10371c88eb0f319983"
+    },
+    {
+      "path": "Python/structural_lib/services/multi_objective_optimizer.py",
+      "sha256": "a15ca9ad041a6e8a2fffa43d35f4182fe5ff0031c7c6fcf6918643188c18adc4"
+    },
+    {
+      "path": "fastapi_app/main.py",
+      "sha256": "a008e4b7f545c9aee209f9f1997f1109a06d6e7bc6f0c95a869fa66c85a7f9f3"
+    },
+    {
+      "path": "fastapi_app/routers/etabs_bridge.py",
+      "sha256": "92f8d98c8b014f00b1f6ff52153f133d03410a2dfdcf62401a8c23f597433378"
+    },
+    {
+      "path": "fastapi_app/routers/websocket.py",
+      "sha256": "4b5bc69b3bec226bf1208993ad1995e27915358ecdb057bfd93812f6d4bf0514"
+    },
+    {
+      "path": "fastapi_app/models/beam.py",
+      "sha256": "3aa36a1349c29c98d02c652f85c66c25b68e1f3bcca4d6565d85a5f931f45c0f"
+    }
+  ],
+  "added_findings": [
+    {
+      "id": "ETABS-LIVE-G0",
+      "priority": "P0",
+      "decision": "Gate live routes before beam/API work; disabled-by-default, loopback-only, HTTP/WebSocket auth before COM construction or attach."
+    },
+    {
+      "id": "ETABS-EXEC-009",
+      "priority": "P0",
+      "decision": "Use an OS lease plus supervised single-STA broker; timeout fences the target and never kills an attached ETABS process."
+    },
+    {
+      "id": "ETABS-IDENTITY-010",
+      "priority": "P0",
+      "decision": "Bind PID plus process start time and measured runtime fingerprint to every observation and operation."
+    },
+    {
+      "id": "ETABS-EPOCH-012",
+      "priority": "P0",
+      "decision": "Separate model freshness from uninterrupted result/design epoch identity."
+    },
+    {
+      "id": "W3-CRITERIA-013",
+      "priority": "P0",
+      "decision": "Freeze criteria, candidate catalogue and exact reinforcement schedule digests before candidate generation."
+    },
+    {
+      "id": "W3-SEARCH-015",
+      "priority": "P0",
+      "decision": "Only complete enumeration or proved-safe pruning can claim optimum, Pareto completeness or infeasibility."
+    },
+    {
+      "id": "ETABS-RECOVERY-016",
+      "priority": "P1",
+      "decision": "Persist a hash-chained raw-before-decode ledger and stage-before-call journal; recovery verifies or quarantines without replay."
+    },
+    {
+      "id": "ETABS-SQLITE-018",
+      "priority": "P1",
+      "decision": "Use C0 generic contracts, C1 installed export/schema inventory, then C2 exact-schema offline parser/comparison."
+    },
+    {
+      "id": "W3-ROUTE-019",
+      "priority": "P0",
+      "decision": "H0 chooses a proved surrogate envelope, ETABS-first screening or HOLD."
+    }
+  ],
+  "solver_decision": {
+    "add_new_solver_now": false,
+    "reason": "The missing support, mesh and slab-transfer basis is input uncertainty; added physics would not establish actual-building validity.",
+    "reconsider_only_if": "One named unsupported behavior has complete independent inputs, bounded applicability, independent reference acceptance and better value than copied-model ETABS evaluation."
+  },
+  "official_sources": [
+    "https://learn.microsoft.com/en-us/windows/win32/com/processes--threads--and-apartments",
+    "https://learn.microsoft.com/en-us/windows/win32/com/canceling-method-calls",
+    "https://www.sqlite.org/uri.html",
+    "docs/reference/CSI API ETABS v1.chm"
+  ],
+  "next_packet": "ETABS-LIVE-G0-ROUTE-GATE"
+}

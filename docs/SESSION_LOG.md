@@ -5,6 +5,119 @@
 
 ---
 
+## 2026-09-01 — Session: W3 long-term plan amendment
+
+**Agent:** Codex (`orchestrator`; three bounded read-only subagents, sole writer).
+**Task:** `W3-BEAM-LONG-TERM-PLAN-AMENDMENT`.
+**Branch:** `codex/etabs-w3-project-criteria-windows`.
+**Source:** merged PR #942 commit
+`35ea6b89220de6ab38ede01213a5f4c48e2a3364`.
+**Focus:** Audit the complete future W3 path for recurring time loss and missing
+controls across ETABS runtime, public beam/API semantics, criteria/evaluator/
+search, data acquisition, solver scope and copied-model recovery. Planning and
+static source review only.
+**Evidence:**
+`docs/verification/w3-beam-long-term-plan-amendment-audit-evidence.json`.
+**Git handoff receipt:** `docs/verification/w3-beam-long-term-plan-amendment-git-handoff-receipt.json`
+
+**Completed:**
+
+- Reconciled the integrated, COM/VBA/reanalysis and whole-W3 foundation plans
+  against independent runtime, API/data and evaluator/solver reviews.
+- Inserted `ETABS-LIVE-G0-ROUTE-GATE` before beam/API work because the maintained
+  router can otherwise expose live behavior before the later PID/session guard.
+- Added exact process/runtime identity, OS-wide serialization, supervised STA
+  execution, getter-only attached observation, separate result epochs and a
+  crash-durable hash-chained raw-call evidence bundle to A0/A1.
+- Added declared-before-generation criteria/catalogue/schedule digests, one
+  layer-centroid evaluator, independent composition checks and complete-search
+  semantics before cost/Pareto/W3I claims.
+- Split ETABS data work into C0 generic contracts, C1 installed design/export/
+  schema inventory and C2 exact-schema offline parsing/comparison.
+- Added H0's explicit `SURROGATE_ASSISTED`, `ETABS_FIRST` or `HOLD` decision and
+  retained the no-new-solver decision until one named behavior has complete
+  independent inputs and a proved advantage over copied-model ETABS evaluation.
+- Restricted the first K programme to verified existing beam properties in new
+  owned local copies; new property definitions and column mutation need separate
+  engineering. Recovery verifies or quarantines and never replays a setter,
+  analysis, design, save or exit call.
+- Updated the task register, planning index and continuation boundary. No ETABS,
+  COM, Excel, export, SQLite acquisition, solver, analysis/design or model call
+  occurred.
+
+### Issues encountered
+
+- The shared session timer still named the PR #941 planning predecessor even
+  though that work and PR #942 were merged, so the maintained session begin
+  command refused a second active task.
+- The existing live bridge uses a process-local Python lock; it cannot serialize
+  another Uvicorn worker, CLI or Excel-launched bridge and cannot bound a hung
+  COM server call.
+- The API router is mounted while example startup binds `0.0.0.0`, development
+  authentication defaults off and a missing WebSocket token is accepted.
+- The earlier attached read-only plan still allowed unit/result-selection
+  setters, confusing successful restoration with absence of user-session change.
+- The earlier C plan proposed writing a parser before one installed export had
+  proved the actual ETABS schema. The optimizer also allowed bounded truncation
+  to be represented as a Pareto result without a completeness proof.
+- The initial long-term plan did not state crash durability between raw COM
+  return and decoding/final evidence publication.
+- The first normal commit hook repaired the new evidence file's mixed line
+  endings and then rejected the task because the newest session entry did not
+  yet have its required task-to-Git handoff receipt.
+- The next hook found the receipt but interpreted its split-line Markdown path
+  with a trailing delimiter, so it could not open the otherwise valid file.
+
+### Root causes and resolutions
+
+- Confirmed planning-state root cause: merged predecessors advanced without a
+  terminal shared usage checkpoint. Resolution: record the exact stale task as
+  `superseded`, then begin this exact amendment through the maintained session
+  commands. Historical evidence was not rewritten. ⚠️ TERMINAL ISSUE: unmatched
+  predecessor timer blocked session begin -> maintained superseded checkpoint
+  restored one active task.
+- Confirmed live-exposure root cause: global optional API auth was treated as
+  ETABS operation authority. Resolution: G0 rejects disabled, remote,
+  unauthenticated and wrong-scope HTTP/WebSocket traffic before COM import or
+  attachment; A0 later adds the target-bound capability and OS lease.
+- Confirmed COM-execution root cause: one in-process lock was treated as machine-
+  wide serialization and cancellation was treated as proof the server stopped.
+  Resolution: PID/start-time OS lease, supervised single-STA broker, bounded
+  heartbeat/deadline and fencing after timeout; never kill an attached ETABS
+  process or blindly retry.
+- Confirmed attached-state root cause: restoration was treated as equivalent to
+  no mutation. Resolution: attached observation is getter-only, normalizes from
+  observed units and returns `HOLD` when required outputs are not already active.
+- Confirmed evidence root cause: ordinary append logging can lose or reorder the
+  last raw return around a crash. Resolution: monotonic previous-hash records,
+  durable `STARTED`/`RETURNED` flushes and an atomic manifest whose verifier
+  rejects gaps, truncation, missing artifacts or unfinalized transactions.
+- Confirmed data-order root cause: generic fixtures cannot prove a vendor schema.
+  Resolution: C0 contract only, C1 one exact installed acquisition/inventory,
+  then C2 offline exact-schema parser and diagnostic comparison.
+- Confirmed optimization/solver root cause: candidate-domain uncertainty and
+  missing building inputs were being approached as algorithm/physics work.
+  Resolution: criteria/catalogue and complete-search proofs first; H0 selects a
+  supported route. No new solver is scheduled to compensate for missing inputs.
+- Confirmed commit-gate root cause: the task log was frozen before its versioned
+  receipt existed, and the evidence file inherited a mixed worktree line ending.
+  Resolution: allow the normal hook to normalize the file, create/validate the
+  maintained receipt (`valid: HOLD` while the candidate is staged/dirty), embed
+  its path on the parser's maintained same-line field, restage and rerun the
+  normal hooks. ⚠️ TERMINAL ISSUE: first two commit attempts rejected missing/
+  malformed receipt metadata and mixed line ending -> maintained same-line
+  receipt field and normalized file restore the candidate gate.
+
+### Validation boundary
+
+- The amendment started clean and equal to locally fetched `origin/main` at
+  `35ea6b89`. Three subagents were read-only and the parent was the sole writer.
+- Official COM apartment/cancellation and SQLite URI guidance were reviewed;
+  installed CHM/signature evidence remains the authority for ETABS call shapes.
+- Content-freeze gates passed: docs 8/8, changed docs/Git/stale-reference domains
+  16/16 and quick 10/10. Publication/hosted evidence and the final handoff
+  receipt are recorded by the normal closeout.
+
 ## 2026-09-01 — Session: Integrated W3 and professional beam execution audit
 
 **Agent:** Codex (`orchestrator`; two bounded read-only subagents, sole writer).

@@ -160,6 +160,18 @@ snapshot and owned-copy W3K transaction. It is a static audit only. The
 parallel LIB-PRO-015 capability review owns public beam façade/documentation
 questions; this checkpoint owns the ETABS host/session and transaction path.
 
+The [integrated long-term amendment](w3-beam-professional-integrated-execution-plan.md)
+closes the remaining cross-packet gaps found after PR #942: the mounted live
+route is disabled-by-default, loopback-only and authenticated before any COM
+import/attach; attached access is getter-only; live COM uses a target-bound capability, exact process/runtime
+observation, OS lease and supervised STA broker; model and result freshness are
+separate; project criteria/catalogue/search completeness become digest-bound;
+generic SQLite contracts, installed acquisition/schema inventory and exact-
+schema offline parsing are separate; W3K starts with a dry-run
+existing-beam-property transaction and non-replaying recovery. It also inserts
+H0 so the actual building explicitly chooses a proved surrogate envelope,
+ETABS-first screening, or `HOLD`. No new solver physics is scheduled.
+
 Keep three tracks separate: faithful ETABS data transport, beam checks using
 ETABS actions, and independent force prediction. Progress on the first two can
 remain useful while the third is held. No track silently substitutes for another.
@@ -169,10 +181,10 @@ remain useful while the third is held. No track silently substitutes for another
 | 1. Saved physical-basis reconciliation — bounded investigation completed | Reuse W3D/F/H evidence; inspect existing `.$et`, explicit units/story expansion, object assignments, loads and settings. No app calls. Prefer a narrow importer into current W3 contracts, not a general E2K parser. | At most three deterministic candidate lines have a required-input matrix; saved-source identity and overlapping definitions reconcile or remain explicitly unproved. List exact residual fields and their source route. |
 | 2. Building suitability decision — three lines not comparable as-is | Use packet 1 to classify independently specified loads, mesh/station sides, supports, axes, stiffness/shear/slab participation and excluded effects. | One supported scope with predeclared comparison requirements, or a documented no-go/justified extension decision. Do not solve first and fit the mapping later. |
 | 3. Residual acquisition, only if needed | Use accepted saved sources first, then already proved object getters, then an allowlisted ETABS 23.3 SQLite export for named gaps. Equivalent managed/Python table API calls are closed for this model/host after the correct zero-argument call also returned CSI 1. Installed action remains a separate exact-authority packet. | Every requested field maps to a required W3H row. Export assessment names only missing tables/fields and has its own bound and preservation proof. Stop if the source cannot resolve the physical question. |
-| 4. Complete audit and criteria — bounded software accepted, project criteria pending | PRs #936/#937/#939/#940 close traced material/cover, bounded serviceability, torsion/detailing and signed-face defects. Obtain the remaining project service/bar/factor evidence, caller-owned excluded-action limits and W3I family/scenario/objective/cost bounds. | Mandatory checks have a typed executable route or remain held; genuine project decisions are listed for review. No hidden limits, guessed supports or W3I screening before H acceptance. |
-| 5. Actual-building W3H | Requires packets 1-4's relevant physical basis, reference identities and predeclared criteria. Reuse the accepted comparator and benchmarks. | L5 accepted only for the explicit model/scenarios/components, or NOT_COMPARABLE/OUT_OF_BAND with cause. Baseline agreement does not validate a whole candidate range. |
-| 6. W3I implementation and bounded screening | Requires accepted E/H/R and complete mandatory strength/serviceability/constructability checks, candidate/scenario bounds and applicability evidence. | Deterministic feasible shortlist with no held mandatory checks; status SCREENED_ONLY. |
-| 7. W3K then W3L | Implement the linked PID/state/call-ledger plan first. Mutate only an owned ETABS process opening a hash-bound copy; every beam/column section change requires expected-old validation and readback. Freeze affected beams/columns/joints/reactions/drifts, other global safeguards, abort/recovery and budget first. | Attached user session and baseline remain unchanged; fresh ETABS results per retained candidate, finite iteration, independent final repeat from a clean copy and exact dossier. |
+| 4. Complete audit and criteria/catalogue | PRs #936/#937/#939/#940 close traced material/cover, bounded serviceability, torsion/detailing and signed-face defects. Freeze one declared-before-generation criteria digest plus permitted existing ETABS beam properties, materials/bar stock, reinforcement schedule, service/applicability/sensitivity and objective/search bounds. | Mandatory checks have a typed route or remain held; criteria/catalogue changes invalidate all downstream identities. No hidden limits, unavailable stock/property, guessed supports or authored-fixture substitution. |
+| 5. Actual-building H0 route decision | Requires packets 1-4's relevant physical basis, reference identities and accepted project criteria/catalogue instance. Reuse accepted comparator/benchmarks only within their scope. | `SURROGATE_ASSISTED` with a complete candidate-range envelope, `ETABS_FIRST` with mutation-ready baseline-action proposals, or terminal `HOLD`. Baseline agreement does not validate changed stiffness. |
+| 6. W3I implementation and complete bounded screening | Requires accepted E/R, H0 and all mandatory checks. Common evaluator owns verdict; search declares full domain/traversal/pruning/counts. | Complete deterministic `SCREENED_ONLY` shortlist with no held mandatory check. Budget-truncated nondominated results remain provisional and cannot claim optimal/Pareto/infeasible. |
+| 7. W3K then W3L | Implement A0/A1 and offline K0 first: exact process/runtime/lease/broker/result epoch, getter-only attached path, dry-run existing-beam-property change set, durable stage journal and recovery. K1 mutates only an owned ETABS process opening a new local hash-bound copy; columns/joints are safeguards, not mutation targets. | Attached user session/baseline unchanged; no replay/reuse of failed copies; fresh uninterrupted results per candidate; finite attempts/analyses/retries; independent final clean-copy repeat or explicit no-solution/budget/block outcome. |
 | 8. Integrated acceptance | All intended software/evidence packets integrated; refresh the real-data W3J projection at meaningful milestones. | One combined broad gate, final evidence reconciliation and Mac integrated review; professional signature/release remain distinct approvals. |
 
 Packets 1 and 4 are useful offline work and should not queue behind a COM
@@ -1114,12 +1126,15 @@ for L5. Existing capability stays `HELD_NOT_SUPPORTED` and `SURROGATE_ONLY`.
 The current project lacks that complete input basis. The owner-reported saved
 copy is a new revision, while an existing backup still matches the accepted
 old model bytes. Neither is altered or promoted by this software checkpoint.
-Do not begin W3I until the separate model-specific W3H acceptance passes.
+Do not begin W3I until H0 accepts either a model-specific surrogate envelope or
+the ETABS-first baseline-action route. `NOT_COMPARABLE` baseline calibration is
+compatible with ETABS-first planning; it never becomes candidate-range validity.
 
 ### W3I — Scenario/family candidate screening (`L5`)
 
-Owner: Mac. Dependencies: W3E, W3H and W3R. Indicative effort: 15-30 focused
-days.
+Owner: the dedicated Windows writer; Mac may perform bounded read-only review.
+Dependencies: W3E, W3R, B1A/B1B/B2 and accepted H0. Indicative effort: 5-10
+focused days after the common evaluator/search packets.
 
 Generate bounded engineer-editable families, couple candidate `E/I` and
 self-weight to every mandatory scenario, run strength/serviceability/
@@ -1127,7 +1142,10 @@ constructability checks, reject every unsafe or held mandatory outcome, and
 return deterministic robust/Pareto shortlists. A target benchmark of 100
 sections over five spans and five scenarios in two seconds may guide
 implementation, but performance never relaxes engineering checks. Every result
-remains `SCREENED_ONLY` pending W3K.
+remains `SCREENED_ONLY` pending W3K. Report the complete candidate domain,
+traversal, safe pruning and generated/evaluated/accepted/ranked counts. A
+budget-truncated set is provisional and cannot claim optimum, Pareto completeness
+or infeasibility.
 
 ### W3J — Excel review and professional dossier (`L4`, optionally `L7` later)
 
@@ -1177,24 +1195,33 @@ acceptance, not a supplied professional signature or calibrated building dossier
 
 ### W3K — Controlled candidate ETABS reanalysis (`L6`)
 
-Owner: Mac freezes/reviews the mutation and comparison contract; Windows alone
-executes a separately authorized installed packet. Dependencies: accepted W3I,
+Owner: the dedicated Windows writer freezes the offline K0 transaction/recovery
+kernel and alone executes separately authorized installed K1; Mac may review the
+frozen milestone read-only. Dependencies: accepted W3I,
 explicit owner authorization, allowlisted recoverable copy and approved
 analysis cases. Indicative effort: 20-40 focused days plus installed evidence.
 
-Apply one candidate plan to a fresh approved baseline copy, run only approved
-cases, capture fresh result/catalogue/model identities, and compare affected
+First create a getter-only change-set dry run. Apply only verified existing beam
+properties to a fresh approved local non-synchronised baseline copy in an exact
+owned process; new property definitions and column mutations remain held. Run
+the complete approved case dependency closure, capture one uninterrupted result
+epoch, and compare affected
 beams, columns, joints, reactions, displacements/drifts and other predeclared
 whole-model safeguards. Unexpected dialogs, stale results, model drift,
 analysis failure, out-of-scope effects or restore/save mismatch reject the
 candidate. The chosen final candidate is independently repeated from the clean
-baseline. No local shortlist can bypass this mandatory ETABS reanalysis.
+baseline. Durable stage-before-call recovery may verify or quarantine but never
+replay a non-idempotent call. No local shortlist can bypass this reanalysis.
 
 ### W3L — Bounded iteration and review
 
-Owner: Mac orchestration plus Windows W3K evidence cycles. Dependency: accepted
-W3K. Use a finite evaluation budget, deterministic stop rules and cache keys
-bound to baseline/scenario/candidate digests. Budget exhaustion is explicit;
+Owner: Windows orchestration/evidence; Mac may perform read-only milestone
+review. Dependency: accepted transaction machinery plus one complete W3K
+attempt. Freeze maximum candidate attempts, analyses, correction cycles, stage
+retries and final repeats before the first run. Cache keys bind baseline,
+demand/result epoch, criteria, catalogue, route, candidate and analysis-setting
+digests. Failed/aborted copies consume budget and are never reused. Budget
+exhaustion is explicit;
 there is no infinite overnight loop or silent “best available” acceptance.
 
 ## Work sizing and critical path
