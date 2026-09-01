@@ -23,6 +23,35 @@ if str(SCRIPTS_DIR) not in sys.path:
 verification = importlib.import_module("verification")
 check_all = importlib.import_module("check_all")
 test_changed = importlib.import_module("test_changed")
+validate_imports = importlib.import_module("validate_imports")
+
+
+@pytest.mark.parametrize(
+    "package",
+    [
+        "ezdxf",
+        "jsonschema",
+        "jwt",
+        "pydantic_core",
+        "pydantic_settings",
+        "sse_starlette",
+        "weasyprint",
+        "websockets",
+    ],
+)
+def test_import_validator_knows_declared_project_dependencies(package: str):
+    assert package in validate_imports.EXTERNAL_PACKAGES
+    assert validate_imports.can_resolve_module(package)
+
+
+def test_import_validator_resolves_checked_in_namespace_without_environment(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    monkeypatch.setattr(
+        validate_imports.importlib.util, "find_spec", lambda _name: None
+    )
+
+    assert validate_imports.can_resolve_module("scripts")
 
 
 def test_parallel_fingerprints_preserve_exact_bytes_and_sorted_identity(tmp_path):
