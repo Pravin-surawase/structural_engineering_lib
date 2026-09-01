@@ -21,7 +21,7 @@ guidance, and retire only the completed W3 worktree residue.
 hook and workflow topology is unchanged in this candidate. No ETABS, Excel,
 COM, model, workbook, release or deployment action occurred.
 
-### What we did
+### Summary
 
 - Independently reconciled three read-only audits: the exact 34-hook inventory
   and timing, current PR/CI parity and routing gaps, and Windows
@@ -77,6 +77,9 @@ COM, model, workbook, release or deployment action occurred.
   The first session check also required the exact `Required Reading` heading;
   API classification correctly held until the two intended new files were
   staged.
+- The first final read-only session check rejected the otherwise complete log
+  because its outcome parser recognizes `### Summary` or `**Completed:**`, not
+  the initially used `### What we did` heading.
 
 ### Root causes and resolutions
 
@@ -116,6 +119,10 @@ COM, model, workbook, release or deployment action occurred.
   ⚠️ TERMINAL ISSUE: PowerShell expressions were sent to Bash and junction
   `Remove-Item` was policy-rejected -> the corrected PowerShell checks and the
   exact non-recursive `.NET Directory.Delete(path, false)` cleanup passed.
+- Root cause: the session parser has a narrower outcome-heading vocabulary
+  than the prose convention used initially. Resolution: rename the section to
+  canonical `### Summary`. Evidence: the repaired final session check passes
+  on the clean candidate.
 
 ### Next action
 
