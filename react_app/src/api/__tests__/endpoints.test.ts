@@ -42,6 +42,63 @@ const RESULT_CONTRACT = {
   result_identity: null,
 };
 
+function suppliedCheckResult(request: BeamSuppliedCheckRequestV2) {
+  return {
+    schema_version: 'beam-supplied-check-result/v2',
+    correlation_id: request.correlation_id,
+    status: 'PASS',
+    identity: request.identity,
+    primary_tension_face: request.actions.primary_tension_face,
+    request,
+    effective_depth_resolution: {
+      contract_version: 'effective-depth-basis/v1',
+      source: 'EXPLICIT',
+      D_mm: request.section.D_mm,
+      d_mm: request.section.d_mm ?? 442,
+      effective_depth_basis: null,
+    },
+    d_dash_used_mm: 54,
+    longitudinal: {
+      schema_version: 'beam-reinforcement-evaluation/v1',
+      status: 'PASS',
+      ast_required_mm2: 570,
+      asc_required_mm2: 0,
+      recommended_tension: null,
+      supplied_tension: { area_provided_mm2: 1256.6 },
+      supplied_compression_or_hanger: { area_provided_mm2: 226.2 },
+      checks: { supply_complete: true },
+      issues: [],
+      clause_refs: { longitudinal_reinforcement: 'IS 456:2000 Cl 26.5.1' },
+      provenance: {
+        selection_constraints: request.selection.source_reference,
+        supplied_reinforcement: request.reinforcement.source_reference,
+        support_width: null,
+      },
+      limitations: ['Qualified review remains required.'],
+      qualified_review_required: true,
+    },
+    shear: {
+      schema_version: 'beam-supplied-shear-check/v2',
+      status: 'PASS',
+      required_Vus_kn: 0,
+      concrete_capacity_kn: 80,
+      provided_stirrup_capacity_kn: 106,
+      total_capacity_kn: 186,
+      provided_asv_mm2: 100.5,
+      provided_spacing_mm: 150,
+      maximum_permitted_spacing_mm: 300,
+      spacing_is_adequate: true,
+      capacity_is_adequate: true,
+      section_shear_is_adequate: true,
+      utilization: 0.32,
+      issues: [],
+      clause_refs: { shear_strength: 'IS 456:2000 Cl 40' },
+    },
+    result_envelope: RESULT_CONTRACT,
+    limitations: ['One ordinary rectangular beam and one factored case only.'],
+  };
+}
+
 // ═══════════════════════════════════════════════════════════════════════
 // 0. RESPONSE UNWRAPPING
 // ═══════════════════════════════════════════════════════════════════════
@@ -846,23 +903,51 @@ describe('API Response Contract — unwrap enforcement', () => {
         source_reference: 'Project bar catalogue',
       },
     } satisfies BeamSuppliedCheckRequestV2;
-    mockFetch({
-      success: true,
-      data: {
-        schema_version: 'beam-supplied-check-result/v2',
-        correlation_id: request.correlation_id,
-        status: 'PASS',
-        request,
-        shear: { schema_version: 'beam-supplied-shear-check/v2' },
-        result_envelope: RESULT_CONTRACT,
-      },
-    });
+    mockFetch({ success: true, data: suppliedCheckResult(request) });
 
     const result = await checkSuppliedBeam(request);
 
     expect(result.correlation_id).toBe('REACT-B1-ULS');
     expect(result.status).toBe('PASS');
     expect(result.result_envelope.overall_status).toBe('PASS');
+  });
+
+  it('checkSuppliedBeam() rejects an incomplete V2 result projection', async () => {
+    const request = {
+      schema_version: 'beam-supplied-check/v2',
+      correlation_id: 'REACT-B1-INCOMPLETE',
+      identity: { member_id: 'B1', story: 'L1', case_id: 'ULS-1' },
+      section: { b_mm: 300, D_mm: 500, d_mm: 442 },
+      materials: { fck_nmm2: 25, fy_nmm2: 500, fy_transverse_nmm2: 415 },
+      actions: { mu_knm: 100, vu_kn: 60, primary_tension_face: 'BOTTOM' },
+      reinforcement: {
+        clear_cover_mm: 40,
+        tension: { diameter_mm: 20, bars_per_layer: [4] },
+        compression_or_hanger: { diameter_mm: 12, bars_per_layer: [2] },
+        stirrup_diameter_mm: 8,
+        stirrup_legs: 2,
+        stirrup_spacing_mm: 150,
+        bar_type: 'deformed',
+        has_standard_bend_at_start: true,
+        has_standard_bend_at_end: true,
+        source_reference: 'B1 schedule',
+      },
+      selection: {
+        permitted_diameters_mm: [12, 20],
+        maximum_layers: 2,
+        maximum_bars_per_layer: 8,
+        nominal_max_aggregate_size_mm: 20,
+        effective_depth_tolerance_mm: 1,
+        objective: 'min_area',
+        source_reference: 'Project bar catalogue',
+      },
+    } satisfies BeamSuppliedCheckRequestV2;
+    const incomplete = { ...suppliedCheckResult(request), longitudinal: undefined };
+    mockFetch({ success: true, data: incomplete });
+
+    await expect(checkSuppliedBeam(request)).rejects.toThrow(
+      'missing or incompatible',
+    );
   });
 
   it('loadSampleData() unwraps response envelope', async () => {

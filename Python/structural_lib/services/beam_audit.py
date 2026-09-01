@@ -53,12 +53,16 @@ __all__ = [
     "BeamAuditInputBuildResultV1",
     "BeamAuditInputsV1",
     "BeamAuditRowInputV1",
+    "BeamAuditRowEvaluationRequestV1",
+    "BeamAuditRowEvaluationResultV1",
     "BeamAuditCheckV1",
     "BeamAuditRowResultV1",
     "BeamAuditEvaluationRequestV1",
     "BeamAuditEvaluationResultV1",
     "build_beam_audit_inputs_v1",
+    "canonical_beam_action_row_sha256_v1",
     "evaluate_beam_audit_v1",
+    "evaluate_beam_audit_row_v1",
 ]
 
 _SHA = r"^[0-9a-f]{64}$"
@@ -207,12 +211,55 @@ class BeamAuditEvaluationResultV1(StrictPublicModel):
         return self
 
 
+class BeamAuditRowEvaluationRequestV1(StrictPublicModel):
+    """Bounded compatibility entry into the canonical signed-row audit owner."""
+
+    schema_version: Literal["beam-audit-row-evaluation-request/v1"] = (
+        "beam-audit-row-evaluation-request/v1"
+    )
+    row: BeamAuditRowInputV1
+    scenario_id: str = Field(min_length=1, max_length=160)
+    context_sha256: str = Field(pattern=_SHA)
+    require_serviceability: bool
+
+
+class BeamAuditRowEvaluationResultV1(StrictPublicModel):
+    schema_version: Literal["beam-audit-row-evaluation/v1"] = (
+        "beam-audit-row-evaluation/v1"
+    )
+    status: W3BuildStatusV1
+    verdict: Literal["PASS", "FAIL", "HELD", "BLOCKED"]
+    issues: tuple[W3BuildIssueV1, ...]
+    context_sha256: str = Field(pattern=_SHA)
+    row: BeamAuditRowResultV1 | None
+    evaluation_sha256: str = Field(pattern=_SHA)
+    limitations: tuple[str, ...] = (
+        "Compatibility row evaluation does not replace a complete demand-domain audit.",
+        "The caller must retain the accepted baseline/catalogue identities behind the row.",
+    )
+
+    @model_validator(mode="after")
+    def _complete_or_blocked(self) -> Self:
+        if self.status is W3BuildStatusV1.BLOCKED:
+            if not self.issues or self.row is not None or self.verdict != "BLOCKED":
+                raise ValueError("blocked row evaluation exposes issues only")
+        elif self.issues or self.row is None or self.verdict == "BLOCKED":
+            raise ValueError("accepted row evaluation requires one complete row")
+        return self
+
+
 def _json(value: object) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False)
 
 
 def _sha(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+def canonical_beam_action_row_sha256_v1(row: BeamActionRowV1, /) -> str:
+    """Return the canonical digest used by retained signed beam-action rows."""
+
+    return _sha(_json(row.model_dump(mode="json", exclude={"row_sha256"})))
 
 
 def _issue(code: str, path: str, message: str) -> W3BuildIssueV1:
@@ -487,6 +534,211 @@ def _not_evaluated(
         "message": message,
         "source_references": refs,
     }
+
+
+def _row_evaluation_result(**values: object) -> BeamAuditRowEvaluationResultV1:
+    provisional = BeamAuditRowEvaluationResultV1.model_validate(
+        {**values, "evaluation_sha256": "0" * 64}
+    )
+    payload = provisional.model_dump(mode="json", exclude={"evaluation_sha256"})
+    return provisional.model_copy(update={"evaluation_sha256": _sha(_json(payload))})
+
+
+def evaluate_beam_audit_row_v1(
+    request: BeamAuditRowEvaluationRequestV1, /
+) -> BeamAuditRowEvaluationResultV1:
+    """Evaluate one exact signed action row through the canonical audit owner."""
+
+    row = request.row
+    action = row.action
+    canonical = row.canonical_request
+    issues: list[W3BuildIssueV1] = []
+    if action.row_sha256 != canonical_beam_action_row_sha256_v1(action):
+        issues.append(
+            _issue(
+                "BEAM_AUDIT_ACTION_ROW_IDENTITY_INVALID",
+                action.row_id,
+                "signed action row digest does not match its canonical fields",
+            )
+        )
+    expected_face: Literal["TOP", "BOTTOM", "ZERO_MOMENT"] = row.tension_face
+    if action.m3_knm == 0:
+        expected_face = "ZERO_MOMENT"
+    expected_primary = expected_face if expected_face != "ZERO_MOMENT" else None
+    expected_actions = (
+        abs(action.m3_knm),
+        abs(action.v2_kn),
+        abs(action.t_knm),
+        expected_primary,
+    )
+    actual_actions = (
+        canonical.actions.mu_knm,
+        canonical.actions.vu_kn,
+        canonical.actions.tu_knm,
+        canonical.actions.primary_tension_face,
+    )
+    if expected_actions != actual_actions:
+        issues.append(
+            _issue(
+                "BEAM_AUDIT_SAME_ROW_OR_FACE_MISMATCH",
+                action.row_id,
+                "canonical actions must be same-row magnitudes with the explicit physical face",
+            )
+        )
+    if (
+        canonical.identity.member_id != action.member_id
+        or canonical.identity.case_id != action.selection_id
+        or canonical.source_provenance is None
+        or action.row_sha256 not in canonical.source_provenance
+    ):
+        issues.append(
+            _issue(
+                "BEAM_AUDIT_ROW_PROVENANCE_MISMATCH",
+                action.row_id,
+                "canonical member/case/source provenance must bind the exact signed row",
+            )
+        )
+    if issues:
+        return _row_evaluation_result(
+            status=W3BuildStatusV1.BLOCKED,
+            verdict="BLOCKED",
+            issues=tuple(issues),
+            context_sha256=request.context_sha256,
+            row=None,
+        )
+    refs = (
+        f"scenario:{request.scenario_id}",
+        f"action:{action.row_sha256}",
+        f"context:{request.context_sha256}",
+    )
+    try:
+        result = canonical_beam.check(canonical)
+        serialized = _json(result.to_dict())
+    except (StructuralLibError, ValueError, ArithmeticError) as exc:
+        return _row_evaluation_result(
+            status=W3BuildStatusV1.BLOCKED,
+            verdict="BLOCKED",
+            issues=(
+                _issue(
+                    "BEAM_AUDIT_CALCULATION_BLOCKED",
+                    action.row_id,
+                    f"{type(exc).__name__}: {exc}",
+                ),
+            ),
+            context_sha256=request.context_sha256,
+            row=None,
+        )
+    calculation = result.calculation
+    checks: list[BeamAuditCheckV1] = []
+    for name in ("flexure", "shear", "torsion"):
+        item = getattr(calculation, name)
+        if item is None:
+            missing = _not_evaluated(
+                EvidenceStateV1.NOT_APPLICABLE,
+                "ZERO_TORSION_DEMAND",
+                "The retained row has exactly zero torsion.",
+                refs,
+            )
+            outcome = EvidenceValueV1[Literal["PASS", "FAIL"]].model_validate(missing)
+            utilization = EvidenceValueV1[float].model_validate(missing)
+        else:
+            outcome = EvidenceValueV1[Literal["PASS", "FAIL"]](
+                state=EvidenceStateV1.PRESENT,
+                value="PASS" if item.is_safe else "FAIL",
+                source_references=refs,
+            )
+            utilization = EvidenceValueV1[float](
+                state=EvidenceStateV1.PRESENT,
+                value=calculation.utilizations[name],
+                source_references=refs,
+            )
+        checks.append(
+            BeamAuditCheckV1(
+                check=name,
+                scenario_id=request.scenario_id,
+                action_row_id=action.row_id,
+                outcome=outcome,
+                utilization=utilization,
+                clause_references=(
+                    calculation.clause_refs.get(
+                        name, "IS 456 Cl 41; zero torsion scope"
+                    ),
+                ),
+            )
+        )
+    service = row.serviceability_basis
+    service_checks = canonical.serviceability
+    service_scenario = request.scenario_id
+    if isinstance(service_checks, BeamServiceabilityChecksV1):
+        assert (
+            calculation.deflection is not None and calculation.crack_width is not None
+        )
+        service_scenario = service_checks.basis.service_case_id
+        service_refs = refs + service.source_references
+        outcome = EvidenceValueV1[Literal["PASS", "FAIL"]](
+            state=EvidenceStateV1.PRESENT,
+            value=(
+                "PASS"
+                if calculation.deflection.is_ok and calculation.crack_width.is_ok
+                else "FAIL"
+            ),
+            source_references=service_refs,
+        )
+        utilization = EvidenceValueV1[float](
+            state=EvidenceStateV1.PRESENT,
+            value=max(
+                calculation.utilizations["deflection"],
+                calculation.utilizations["crack_width"],
+            ),
+            source_references=service_refs,
+        )
+    else:
+        state = (
+            service.state
+            if service.state is not EvidenceStateV1.PRESENT
+            else EvidenceStateV1.UNAVAILABLE
+        )
+        missing = _not_evaluated(
+            state,
+            service.reason_code or "CANONICAL_SERVICEABILITY_SCOPE_HOLD",
+            service.message or "Complete typed service checks are absent.",
+            refs + service.source_references,
+        )
+        outcome = EvidenceValueV1[Literal["PASS", "FAIL"]].model_validate(missing)
+        utilization = EvidenceValueV1[float].model_validate(missing)
+    checks.append(
+        BeamAuditCheckV1(
+            check="serviceability",
+            scenario_id=service_scenario,
+            action_row_id=action.row_id,
+            outcome=outcome,
+            utilization=utilization,
+            clause_references=(
+                calculation.clause_refs["deflection"],
+                calculation.clause_refs["crack_width"],
+            ),
+        )
+    )
+    row_result = BeamAuditRowResultV1(
+        input=row,
+        checks=tuple(checks),
+        canonical_result_json=serialized,
+        canonical_result_sha256=_sha(serialized),
+    )
+    failed = any(check.outcome.value == "FAIL" for check in checks)
+    service_hold = request.require_serviceability and any(
+        check.outcome.state
+        not in (EvidenceStateV1.PRESENT, EvidenceStateV1.NOT_APPLICABLE)
+        for check in checks
+        if check.check == "serviceability"
+    )
+    return _row_evaluation_result(
+        status=W3BuildStatusV1.ACCEPTED,
+        verdict="FAIL" if failed else "HELD" if service_hold else "PASS",
+        issues=(),
+        context_sha256=request.context_sha256,
+        row=row_result,
+    )
 
 
 def _evaluation_result(**values: object) -> BeamAuditEvaluationResultV1:

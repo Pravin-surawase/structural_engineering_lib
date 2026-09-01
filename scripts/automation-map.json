@@ -603,7 +603,7 @@
     "check next session brief": {
       "script": "./scripts/python_runtime.sh scripts/check_next_session_brief_length.py",
       "group": "Quality",
-      "description": "Ensure next-session-brief.md stays concise",
+      "description": "Ensure next-session-brief.md exists, is UTF-8, and is non-empty without an arbitrary line cap",
       "permission": "ReadOnlyTerminal"
     },
     "check root file count": {

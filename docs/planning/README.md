@@ -5,7 +5,7 @@
 **Status:** Production Ready
 **Importance:** High
 **Created:** 2025-01-01
-**Last Updated:** 2026-09-01
+**Last Updated:** 2026-09-02
 
 ---
 
@@ -47,8 +47,8 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
-| `w3-beam-professional-integrated-execution-plan.md` | 2026-09-01 | 🚧 Long-term amendment ready; G0 route gate first, then beam truth and offline session guard |
-| `etabs-w3-com-vba-and-reanalysis-plan.md` | 2026-09-01 | 🚧 Audit and implementation sequence ready; ETABS/model calls remain separately gated |
+| `w3-beam-professional-integrated-execution-plan.md` | 2026-09-02 | 🔄 Offline A0/B0/B1A/C0 milestone integrated; one commit/PR pending, then separately authorized installed A1/C1 |
+| `etabs-w3-com-vba-and-reanalysis-plan.md` | 2026-09-01 | 🚧 Host/transaction sequence remains authoritative; ETABS/model calls remain separately gated |
 | `lib-pro-013-whole-library-renewal-audit-plan.md` | 2026-08-28 | 🔄 A0 and B0 integrated; F0 next, then R0 and one final engineer review |
 | `lib-pro-012-external-api-remediation-plan.md` | 2026-08-28 | 🔄 S0/A0/B0 integrated; F0 family convergence active next; Windows lane prepared for later exact R0 evidence |
 | `maint-0136-phase-2b-w-execution-closeout.md` | 2026-08-27 | ✅ Exact 63/63 worktree removal complete; 15 retained and all branches, refs, backups, and protected sources preserved |
@@ -61,7 +61,7 @@ Internal planning documents and research notes.
 | `maint-0136-cleanup-preservation-plan.md` | 2026-08-27 | ✅ Phase 0 through exact Phase 2C complete; consolidated integration candidate prepared after PR #874 |
 | `maint-0133-cleanup-inventory-and-authorization.md` | 2026-08-23 | 🚧 Immutable inventory candidate; two moves ready for later authorization, four held, zero deletes |
 | `public-route-safety-closure-plan.md` | 2026-08-22 | ✅ LIB-PRO-003-D local candidate accepted; hosted/exact-tree closure pending; release and professional claims held by PARTIAL readiness |
-| `next-session-brief.md` | 2026-09-01 | 🚧 Accept the W3 amendment, then start only ETABS-LIVE-G0 with applications closed |
+| `next-session-brief.md` | 2026-09-02 | 🔄 Publish the offline foundations candidate; installed A1/C1 requires separate authorization after acceptance |
 | `pre-release-input-safety-and-professional-readiness-plan.md` | 2026-08-17 | 🚧 A-G merged; CLI, hosted-interpreter, preflight-verdict, and authorization holds remain through I-J |
 | `is456-solid-slabs-master-plan.md` | 2026-08-10 | 📋 Master plan ready; implementation has not started |
 | `ui-experience-foundation-master-plan.md` | 2026-08-10 | ✅ Two-session P0-P15 workbench/capability program accepted |

@@ -5,6 +5,175 @@
 
 ---
 
+## 2026-09-02 — Session: Offline ETABS foundations and beam contract convergence
+
+**Agent:** Codex (`orchestrator`; sole writer; no subagents).
+**Task:** `ETABS-W3-A0-OFFLINE-SESSION-GUARD`,
+`ETABS-W3-B0-CANONICAL-PILOT`,
+`ETABS-W3-B1A-PROJECT-CRITERIA-CATALOGUE` and
+`ETABS-W3-C0-OFFLINE-ACQUISITION-CONTRACT`.
+**Branch:** `codex/w3-offline-etabs-foundations`.
+**Source:** accepted public-beam PR #946 merge
+`f2a5c6f158647a1d09fb4ff54f158d1734440fba`.
+**Git handoff receipt:** docs/verification/w3-offline-etabs-foundations-git-handoff-receipt.json
+**Focus:** Deep-audit the accepted public beam milestone, implement the
+dependency-ordered A0/B0/B1A/C0 offline foundations, remove the arbitrary
+handoff line cap and freeze one milestone commit/PR cadence.
+**Boundary:** Offline software, fakes, contracts and maintained documentation
+only. ETABS and Excel remained closed. No COM object, application, model, UI,
+export, SQLite parser, analysis/design, save, unlock, setter or mutation call
+was made.
+
+### What we did
+
+- Deep-reviewed the accepted supplied-beam milestone before A0 and repaired an
+  outcome-changing transverse-grade omission: `fy_transverse_nmm2` now reaches
+  the canonical supplied check per case. Also made the React V2 result decoder
+  strict for nested values and constrained the OpenAPI `schema_version` to the
+  exact `beam-supplied-check/v2` literal. Focused Python/FastAPI/React tests and
+  regenerated schema artifacts cover the repairs.
+- Replaced the arbitrary 150-line next-session-brief failure with a compatibility
+  integrity check for presence, UTF-8 readability and non-empty content. Session
+  structure/freshness remains owned by `session.py check`; registries and the
+  professionalism guide use the truthful check name.
+- Implemented A0 OS-only ETABS process discovery, process/runtime/session/file
+  identities, saved-checkpoint-bound freshness, expiring target observations,
+  scoped capabilities with enforced single-use mutation consumption,
+  getter-only attached capture/readiness/state comparison and result epochs.
+- Added the A0 process-wide lease, heartbeat/fence behavior, supervised spawned
+  broker, broker-only timeout termination, crash-durable hash-chained
+  raw-before-decode call ledger, atomic artifact manifest and fail-closed
+  operation outcome. Failure injection covers PID reuse, drift/expiry,
+  capability replay, contention/loss, hangs, call/decode errors, unmatched or
+  truncated records and artifact corruption.
+- Converged B0 calculation ownership on the canonical row-bound beam audit.
+  The legacy compatibility adapter retains one signed same-station P/V2/V3/T/
+  M2/M3 row, binds model/baseline/catalogue/selection/scenario provenance and
+  maps positive/negative local M3 to explicit physical TOP/BOTTOM faces.
+  Missing provenance returns `HOLD`; the old transport remains disabled and
+  deprecated pending A1.
+- Added B1A deterministic project criteria, permitted existing-beam-property
+  catalogue and initial reinforcement-schedule contracts. They bind declaration
+  chronology, strength/service scenarios, applicability, mandatory checks,
+  objectives/tie-breaks/stop policy, section modifiers, separate longitudinal
+  and transverse grades, bar/stirrup stock, costs, full-span TOP/BOTTOM layers,
+  contiguous transverse zones and canonical digests. Authored fixtures remain
+  `HOLD` and cannot authorize actual-project screening or mutation.
+- Added C0 matched concrete-design basis and create-new export-manifest
+  contracts bound to target/runtime/model/result epoch, exact requested
+  comparison rows, bounds, artifact identity and equal pre/post state. C0
+  explicitly permits only generic fixtures, rejects pending WAL/SHM and makes
+  no installed ETABS schema or parser-support claim.
+- Published the maintained ETABS API integration guide against tracked CHM
+  SHA-256 `a730756c...a700`, with the getter-only/owned split, identity, lease,
+  broker, strict decoding, units/signs, result epoch, design/export and recovery
+  boundaries. The guide separates fake-tested A0/C0 behavior from separately
+  authorized A1/C1 installed evidence.
+- Reviewed Git cadence against the actual hooks. The repository has 34 hooks,
+  11 unconditional; this cross-surface change activates about 28. Internal
+  units therefore use focused worktree checkpoints and one milestone commit/PR.
+  A separate `MAINT-COMMIT-GATE-CONSOLIDATION` packet will measure timing and
+  overlap before consolidating duplicated unconditional controls; no safety
+  hook is weakened inside this candidate.
+
+### Issues encountered
+
+- The accepted supplied check could falsely pass with the wrong transverse
+  reinforcement grade; the React decoder and OpenAPI version constraint were
+  also looser than the server contract.
+- Session startup found a superseded unmatched usage timer, PowerShell did not
+  produce useful direct Bash-script output and the fresh worktree had no ignored
+  Node dependency directory.
+- Strict durable JSON models exposed timestamp decoding and unsupported
+  `model_dump(update=...)` assumptions; the first B0 import exposed a circular
+  dependency.
+- Two guessed verification command forms were invalid, and the documentation
+  checker found an inherited invalid metadata vocabulary value in the changed
+  migration guide.
+- The first normal commit attempt found one Pydantic literal default that passed
+  runtime tests but failed the configured full-library mypy hook, plus generated
+  API classification artifacts that had not yet been refreshed for the new
+  package-root exports.
+- The configured commit path is heavier than the internal-unit risk warrants:
+  34 hooks exist, 11 always run and this milestone activates about 28.
+
+### Root causes and resolutions
+
+- The prior public check could emit a false `PASS` for transverse steel because
+  only longitudinal grade crossed the facade boundary. The case model/service
+  propagation was incomplete; the grade is now explicit and regression-tested.
+- The React client accepted a versioned outer result while trusting incomplete
+  nested objects. The hand-written decoder did not mirror the strict server
+  contract; it now validates every consumed nested field and rejects malformed
+  fixtures.
+- The OpenAPI schema advertised `schema_version` as an unconstrained string.
+  The Pydantic owner used `str`; an exact `Literal` now keeps runtime, OpenAPI,
+  clients and WebSocket documentation aligned.
+- The inherited session telemetry contained an unmatched superseded timer. It
+  was closed through the maintained usage command before starting the exact
+  `W3-OFFLINE-ETABS-FOUNDATIONS` timer; historical records were not rewritten.
+- Direct execution of Bash scripts from PowerShell produced no useful result on
+  this host. All maintained Python/script calls now use explicit
+  `bash ./scripts/python_runtime.sh ...`.
+- The fresh worktree lacked ignored Node dependencies. A worktree-local junction
+  to the existing lockfile-bound dependency tree restored tests without an
+  install or dependency change.
+- Strict Pydantic JSON validation correctly rejected timestamp strings and
+  `model_dump(update=...)` is unsupported. A0 retained strict models, added a
+  narrow canonical UTC decoder for durable JSON and uses `model_validate` for
+  updated payloads.
+- The first B0 import created a baseline/live-bridge/audit cycle. The live
+  compatibility seam now resolves the canonical row evaluator lazily at call
+  time; architecture and circular-import checks remain green.
+- The first OpenAPI validation invocation used a nonexistent `--check` flag and
+  the first guessed import-boundary script path did not exist. The maintained
+  no-argument snapshot checker, architecture checker, circular-import checker
+  and import validator were then run directly; no product repair was required.
+- Documentation validation exposed an inherited invalid `doc_type: migration`
+  on the already changed V2 migration guide. The active vocabulary supports
+  `guide`, so its metadata was corrected rather than suppressing the checker.
+- Mypy inferred the `Field(default=...)` overload as plain `str` even though the
+  field annotation was a one-value `Literal`. The schema-version constant and
+  direct frozen-model default now carry the exact literal type. Publishing 80
+  new versioned root contracts also changes the generated preview registry; the
+  maintained classification generator refreshed that registry and compatibility
+  ledger, and its check is green.
+
+### Validation through integrated content
+
+- Consolidated affected Python union: 138 passed across supplied checks,
+  compliance, generated clients, A0 guard/operation control, beam audit/live
+  adapter/baseline, B1A and C0.
+- Focused FastAPI/OpenAPI union: 90 passed; OpenAPI matches 92 endpoints and 487
+  schemas. React endpoint boundary: 53 passed; ESLint and production build pass.
+- Ruff formatting/lint, configured mypy and Bandit pass on the new offline
+  modules. Architecture reports 257 files with zero violations; 795-file import
+  validation has zero broken imports; circular-import validation is green.
+- After the first hook repair, the exact configured mypy command passes all 291
+  library source files, the API classification/compatibility projection is
+  current, and the supplied-check/documentation regression selection passes 12.
+- Documentation checks pass all five maintained categories and local links pass
+  across 534 Markdown files. The one consolidated quick gate passed 10/10 in
+  35.1 check-seconds (105.6 seconds including exact input/runtime preparation).
+  The first normal commit attempt passed all reported hooks except configured
+  mypy and API classification; both concrete failures are repaired and verified.
+  The normal commit retry, push, PR and hosted checks remain.
+
+### What next
+
+1. Run the normal hook cycle once on one milestone commit; push one branch and
+   open one PR.
+2. After this milestone is accepted, do not start an installed action
+   automatically. A1 plus C1 belongs on
+   `codex/w3-installed-readonly-evidence` only after separate user authorization
+   and a fresh target/runtime preflight; attached access remains getter-only.
+3. Run B1B/B2 only from accepted B1A contracts. Authored fixture criteria and
+   catalogue identities remain software-test evidence, not actual-project
+   screening authority.
+4. Schedule `MAINT-COMMIT-GATE-CONSOLIDATION` separately from installed ETABS
+   evidence, prove before/after coverage and wall time, and consolidate only
+   genuinely duplicated commit-time controls.
+
 ## 2026-09-01 — Session: Public beam truth and beam facade documentation
 
 **Agent:** Codex (`orchestrator`; sole writer).

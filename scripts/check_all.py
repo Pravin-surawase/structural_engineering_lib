@@ -124,7 +124,7 @@ CATEGORIES: list[Category] = [
             Check("Doc versions", _py("check_doc_versions.py")),
             Check("CLI reference", _py("check_cli_reference.py")),
             Check("Tasks format", _py("check_tasks_format.py")),
-            Check("Brief length", _py("check_next_session_brief_length.py")),
+            Check("Brief integrity", _py("check_next_session_brief_length.py")),
             Check(
                 "Family facade docs",
                 _py("generate_family_facade_docs.py", "--check"),
@@ -225,7 +225,7 @@ CATEGORIES: list[Category] = [
 
 # Quick checks — a curated fast subset
 QUICK_CHECKS: dict[str, list[str]] = {
-    "docs": ["Broken links", "Doc versions", "Brief length"],
+    "docs": ["Broken links", "Doc versions", "Brief integrity"],
     "arch": ["Import validation"],
     "governance": ["Repo hygiene", "Token efficiency"],
     "git": ["Git state", "Unfinished operation"],

@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-09-01
+last_updated: 2026-09-02
 doc_type: spec
 complexity: advanced
 tags: [beam, etabs, w3, api, safety, optimization, execution]
@@ -16,7 +16,8 @@ Continue W3 from accepted preflight PR #944 while separating three different own
 1. **public beam safety and semantics** — effective-depth truth, supplied-beam
    check truth, REST/WebSocket parity and executable examples;
 2. **ETABS host and state safety** — PID selection, live-session identity,
-   session-versus-file freshness, guarded state restoration and raw call records;
+   session-versus-file freshness, getter-only state capture/compare and raw call
+   records;
 3. **candidate engineering feasibility** — signed row-bound actions, exact bar
    layers, supplied-reinforcement checks, serviceability, detailing, quantities,
    applicability and one common verdict for direct, cost and Pareto routes.
@@ -47,6 +48,12 @@ to replace missing project evidence with more solver complexity.
   preflight fetched `origin/main`, verified that exact authority, and started an
   equal, clean Windows worktree from it. G0 must start from the exact accepted
   successor of that preflight rather than from the older PR #942 planning head.
+- PR #946 accepted the public beam S0 plus beam-only D0/D1 milestone at merge
+  `f2a5c6f158647a1d09fb4ff54f158d1734440fba`, with candidate/merge tree
+  `d96a58edb53b853aa6447cb8b43404023945a822`. The offline-foundations branch
+  starts from that exact merge. Its pre-A0 audit repaired transverse-grade
+  propagation and React result-boundary validation without opening ETABS or
+  Excel.
 - The [W3 COM/VBA/reanalysis plan](etabs-w3-com-vba-and-reanalysis-plan.md)
   remains the ETABS host, transaction and reanalysis owner.
 - The [professional API renewal plan](lib-pro-015-professional-api-and-documentation-renewal-plan.md)
@@ -205,16 +212,16 @@ declared before candidate inspection.
 |---:|---|---|---|---|---:|
 | 0 | `W3-BEAM-INTEGRATED-PLAN` | Initial authority/finding/dependency freeze | PR #941 | Accepted through PR #942 at `35ea6b89`; plan exists at exact merged head | complete |
 | 0A | `W3-BEAM-LONG-TERM-PLAN-AMENDMENT` | Close runtime, criteria, search, acquisition, recovery and route gaps found after merge | accepted PR #942 | Accepted through PR #943 at `3b0d689d`; plans, tasks, continuation and evidence owners agree; no application call | complete |
-| 1 | `ETABS-LIVE-G0-ROUTE-GATE` | Disable live routes by default; enforce loopback bind, HTTP/WebSocket authentication and operation classification before any COM import/attach | accepted PR #943 plus bounded preflight | Disabled/denied requests prove zero COM creation or attachment; missing WebSocket token is rejected before accept; OpenAPI security and startup checks match runtime | next after ETABS/Excel absence recheck; 1-2 focused days |
-| 2 | `LIB-BEAM-S0-CHECK-TRUTH` | Effective-depth safety plus truthful, versioned REST/WebSocket supplied-beam checking | accepted G0 | No hidden depth or ignored field; one terminal status vocabulary; REST/WebSocket/OpenAPI/client and compatibility ledger agree | 3-5 focused days |
-| 3 | `ETABS-W3-A0-OFFLINE-SESSION-GUARD` | Offline process-instance/target/runtime fingerprint, getter-only attached policy, live-route capability, OS lease, supervised STA broker, freshness/result-epoch/state/call contracts and fakes | accepted `LIB-BEAM-S0` head for single-writer order only | PID reuse/runtime drift/second process/hung call fail deterministically; attached path invokes no setter; uncertain restoration fences reuse; durable ledger verifies; zero COM/application calls | 8-12 focused days |
+| 1 | `ETABS-LIVE-G0-ROUTE-GATE` | Disable live routes by default; enforce loopback bind, HTTP/WebSocket authentication and operation classification before any COM import/attach | accepted PR #943 plus bounded preflight | Disabled/denied requests prove zero COM creation or attachment; missing WebSocket token is rejected before accept; OpenAPI security and startup checks match runtime | accepted through PR #945 |
+| 2 | `LIB-BEAM-S0-CHECK-TRUTH` | Effective-depth safety plus truthful, versioned REST/WebSocket supplied-beam checking | accepted G0 | No hidden depth or ignored field; one terminal status vocabulary; REST/WebSocket/OpenAPI/client and compatibility ledger agree | accepted through PR #946; successor audit repairs included here |
+| 3 | `ETABS-W3-A0-OFFLINE-SESSION-GUARD` | Offline process-instance/target/runtime fingerprint, getter-only attached policy, live-route capability, OS lease, supervised STA broker, freshness/result-epoch/state/call contracts and fakes | accepted `LIB-BEAM-S0` head for single-writer order only | PID reuse/runtime drift/second process/hung call fail deterministically; attached path invokes no setter; uncertain restoration fences reuse; durable ledger verifies; zero COM/application calls | integrated candidate; milestone publication pending |
 | 4 | `ETABS-W3-A1-INSTALLED-READONLY-ACCEPTANCE` | Prove exact getter-only attachment on the Windows/ETABS authority | accepted A0 plus separate user authorization | Process instance, target observation, runtime fingerprint and model shown; no setter; pre/post state/file equal; unknown model/result freshness cannot become baseline/comparison proof | one bounded evidence session |
-| 5 | `ETABS-W3-B0-CANONICAL-PILOT` | Deprecate live-pilot calculation ownership and delegate to signed row-bound W3 audit | A0; installed run not required | Positive/negative M3 preserve physical face; missing face provenance holds; compatibility result declares delegation/limitations | 2-4 focused days |
-| 6 | `ETABS-W3-B1A-PROJECT-CRITERIA-CATALOGUE` | Freeze criteria, permitted existing ETABS beam properties, materials/bar stock, reinforcement schedule scope, scenarios, objectives and digests | BEAM-S0, B0 and accepted W3A demand contracts | Strict canonical hashes and declaration chronology; no hidden fallback; any change invalidates downstream identities; actual instance may remain `HOLD` | 3-5 focused days |
+| 5 | `ETABS-W3-B0-CANONICAL-PILOT` | Deprecate live-pilot calculation ownership and delegate to signed row-bound W3 audit | A0; installed run not required | Positive/negative M3 preserve physical face; missing face provenance holds; compatibility result declares delegation/limitations | integrated candidate; milestone publication pending |
+| 6 | `ETABS-W3-B1A-PROJECT-CRITERIA-CATALOGUE` | Freeze criteria, permitted existing ETABS beam properties, materials/bar stock, reinforcement schedule scope, scenarios, objectives and digests | BEAM-S0, B0 and accepted W3A demand contracts | Strict canonical hashes and declaration chronology; no hidden fallback; any change invalidates downstream identities; actual instance may remain `HOLD` | integrated candidate; milestone publication pending |
 | 7 | `ETABS-W3-B1B-CANDIDATE-EVALUATOR` | Freeze exact signed-action, row-bound, layer-aware candidate request/result and one feasibility owner | B1A | Effective depth is recomputed from serialized layers; every mandatory row/scenario/check is accepted or held; independent composition checks pass | 5-9 focused days |
 | 8 | `LIB-PRO-015-D0-D1-BEAM` | Exact-wheel documentation gate and complete beam facade reference/examples | BEAM-S0 semantic freeze | Valid/invalid/FAIL/HOLD examples execute from built wheel; signatures, units, defaults, errors, limitations and provenance match runtime | 4-7 focused days |
 | 9 | `ETABS-W3-B2-OPTIMIZER-CONVERGENCE` | Route bar, cost and Pareto through B1B; freeze complete search and quantity/cost basis | B1B | One evaluation hash across routes; complete domain/counts/tie-breaks; incomplete search cannot claim optimum/Pareto/infeasible; exact serialized schedule owns quantities | 5-9 focused days |
-| 10 | `ETABS-W3-C0-OFFLINE-ACQUISITION-CONTRACT` | Freeze matched-design and export-manifest contracts plus generic bounded fixture/scaffolding; make no ETABS schema-support claim | A0 | Synthetic generic fixtures prove contract, limits and zero ETABS/UI call; exact ETABS tables/columns remain unresolved | 2-4 focused days |
+| 10 | `ETABS-W3-C0-OFFLINE-ACQUISITION-CONTRACT` | Freeze matched-design and export-manifest contracts plus generic bounded fixture/scaffolding; make no ETABS schema-support claim | A0 | Synthetic generic fixtures prove contract, limits and zero ETABS/UI call; exact ETABS tables/columns remain unresolved | integrated candidate; milestone publication pending |
 | 11 | `ETABS-W3-C1-INSTALLED-DESIGN-EXPORT-INVENTORY` | Acquire one target/runtime/epoch-bound design snapshot, named export manifest and actual SQLite schema inventory | A1 and C0 plus separate authorization | Every requested field/table closes a named row or is rejected; acquisition mode explicit; artifact complete/hash-bound; state/file preservation passes | 3-5 focused days plus one evidence session |
 | 12 | `ETABS-W3-C2-OFFLINE-EXACT-SCHEMA-PARSER` | Implement the parser and matched comparison against the acquired exact schema | accepted C1 artifact | Frozen export passes integrity/schema/row bounds; canonical evidence and diagnostic comparison are reproducible; no ETABS/UI call | 3-5 focused days |
 | 13 | `ETABS-W3-H0-ROUTE-DECISION` | Select `SURROGATE_ASSISTED`, `ETABS_FIRST` or terminal `HOLD` | B2, C2 and accepted project criteria/catalogue instance | Surrogate envelope covers the candidate domain, or ETABS-first admits only mutation-ready baseline-action proposals; baseline calibration is not candidate-range validity | 1-2 days for ETABS-first decision; separately cost a surrogate campaign |
@@ -567,6 +574,11 @@ internal unit, run only its affected focused tests or a narrow reproducer needed
 to guide a repair; do not run quick, hooks, push, PR or hosted CI at that
 checkpoint.
 
+Internal checkpoints are worktree/session/task checkpoints, not ordinary Git
+commits. Freeze one milestone commit after all units converge. This avoids
+rerunning mandatory commit hooks for intermediate snapshots while retaining one
+reviewable commit, one push and one PR for the safety boundary.
+
 After the complete milestone content freezes, run exactly one publication
 sequence:
 
@@ -582,6 +594,23 @@ Create every successor from the exact accepted predecessor. Before publishing,
 inspect active candidate worktrees and shared/generated paths. Do not stack two
 unmerged writers on `docs/SESSION_LOG.md`, `docs/TASKS.md`, generated API/OpenAPI
 artifacts or next-session handoff owners.
+
+### Commit-gate follow-up
+
+The current repository config contains 34 pre-commit hooks, including 11
+`always_run` controls. The changed paths in this cross-surface milestone activate
+about 28 hooks. Repeating that set for A0, B0, B1A and C0 checkpoint commits
+would be disproportionate, which is why internal checkpoints remain focused
+worktree checkpoints and the milestone gets one normal commit/hook cycle.
+
+After this milestone is accepted, run the separate
+`MAINT-COMMIT-GATE-CONSOLIDATION` maintenance packet before adding more
+commit-time controls. Record per-hook wall time and overlap; retain touched-file
+hygiene, formatting, lint, type and security checks; consolidate duplicated
+unconditional governance checks behind one content-bound receipt; and keep broad
+or release-only assurance in the PR/hosted lane. The packet must prove the same
+required coverage before removing a hook and must not share a branch with A1/C1
+installed evidence.
 
 ## Stop conditions
 
@@ -620,13 +649,19 @@ Stop the active packet when:
 
 ## Exact next action
 
-The `LIB-BEAM-S0-CHECK-TRUTH` plus beam-only `LIB-PRO-015-D0-D1-BEAM`
-candidate is frozen on `codex/w3-public-beam-truth` from exact accepted G0
-merge `f7da72bdf837a38e4c07ef6d7a21fb9267804ad5`. Keep ETABS and Excel closed
-and publish one milestone PR after its single consolidated quick/hook cycle.
-After acceptance, `codex/w3-offline-etabs-foundations` starts with A0, then
-runs B0, B1A and C0 in dependency order; it remains fake-adapter-only and makes
-zero application calls.
+Publish the integrated `codex/w3-offline-etabs-foundations` A0/B0/B1A/C0
+candidate as one milestone commit and one PR from exact PR #946 merge
+`f2a5c6f158647a1d09fb4ff54f158d1734440fba`. The candidate remains
+fake/contract-only: ETABS and Excel stayed closed and no application, COM, UI,
+export or SQLite-parser call occurred.
+
+After that milestone is accepted, the next branch is
+`codex/w3-installed-readonly-evidence` for A1 plus C1. It must not start without
+separate user authorization and a fresh target/runtime/application-absence
+preflight. Its attached path is getter-only; C1's export acquisition is
+explicitly operator-UI unless an exact installed API signature is proved.
+B1B/B2 follows only from accepted B1A contracts and cannot use authored fixture
+criteria as actual-project evidence.
 
 ## Long-term amendment sources
 

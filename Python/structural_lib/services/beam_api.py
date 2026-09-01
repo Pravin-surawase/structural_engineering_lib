@@ -1352,7 +1352,8 @@ def check_compliance_report(
     """Run a multi-case IS 456 compliance report.
 
     Args:
-        cases: List of dicts with at least `case_id`, `mu_knm`, `vu_kn`.
+        cases: List of dicts with at least `case_id`, `mu_knm`, `vu_kn` and
+            optional `fy_transverse_nmm2` for a case-specific stirrup grade.
         b_mm: Beam width (mm).
         D_mm: Overall depth (mm).
         d_mm: Effective depth (mm).
@@ -2072,6 +2073,11 @@ def check_beam_is456(
         case_ids.append(require_nonblank_string(case.get("case_id"), "case_id"))
         _require_finite_real("mu_knm", case.get("mu_knm"))
         _require_finite_real("vu_kn", case.get("vu_kn"))
+        fy_transverse_nmm2 = case.get("fy_transverse_nmm2")
+        if fy_transverse_nmm2 is not None:
+            _require_finite_real("fy_transverse_nmm2", fy_transverse_nmm2)
+            if not 250 <= fy_transverse_nmm2 <= 500:
+                raise ValueError("fy_transverse_nmm2 must be between 250 and 500 N/mm2")
         _validate_plausibility(
             mu_knm=case.get("mu_knm"),
             vu_kn=case.get("vu_kn"),

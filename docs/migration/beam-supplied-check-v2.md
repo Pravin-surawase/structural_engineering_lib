@@ -2,7 +2,7 @@
 owner: Main Agent
 status: active
 last_updated: 2026-09-01
-doc_type: migration
+doc_type: guide
 tags: [beam, api, websocket, compatibility]
 ---
 
