@@ -45,6 +45,14 @@ BASE_GATE_ENV = {
 }
 
 
+def test_pr_validation_runs_once_for_pull_requests_not_again_on_main_push():
+    source = FAST_CHECKS.read_text(encoding="utf-8")
+    trigger = source.partition("\non:\n")[2].partition("\npermissions:")[0]
+
+    assert "pull_request:" in trigger
+    assert "\n  push:" not in trigger
+
+
 def _workflow() -> dict:
     return yaml.safe_load(FAST_CHECKS.read_text(encoding="utf-8"))
 

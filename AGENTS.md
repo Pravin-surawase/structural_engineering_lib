@@ -52,19 +52,20 @@ The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines
   before the routine verification sequence. While implementing, run only a
   narrow reproducer, test, or diagnostic that is needed to guide or debug the
   current change; do not rerun quick, full, or unchanged suites after each
-  edit. After content freezes, run the affected focused checks together, the
-  quick gate once, normal commit hooks, and the required hosted checks. If an
-  outcome-changing repair alters the frozen candidate, rerun the affected
-  focused evidence and then the consolidated gate once.
+  edit. After content freezes, run the affected focused checks together and
+  publish one batched PR for the required hosted checks. Ordinary commits run
+  only the three mutation-safety hooks; broad local validation is explicit and
+  risk-driven, not a mandatory pre-publication duplicate. If an outcome-changing
+  repair alters the frozen candidate, rerun only its affected focused evidence.
 - A milestone branch may contain several sequential internal implementation
   units when they share one accepted authority and do not cross an installed-
   application, mutation-authorization, or external-artifact gate. Internal
   units get only their affected focused tests and any required independent
-  benchmark while work is in progress; they do not each trigger the quick
-  gate, normal hooks, a push, a PR, or hosted CI. After all intended units are
-  integrated and content freezes, run their union of focused/benchmark and
-  architecture/import checks, `./run.sh check --quick` once, normal commit
-  hooks once, and one required hosted PR cycle for the milestone. Run the broad
+  benchmark while work is in progress; they do not each trigger broad local
+  gates, a push, a PR, or hosted CI. After all intended units are integrated
+  and content freezes, run their union of focused/benchmark evidence, push the
+  commits together once, and use one required hosted PR cycle for the milestone.
+  Run the broad
   Python suite and `./run.sh check` (currently 32 checks) only at the plan's
   named cumulative gate. Run any broad gate earlier only when an outcome-
   changing failure or repository-wide surface makes it necessary; never bypass
@@ -286,7 +287,7 @@ This feeds the improvement loop — recurring issues get fixed in agent instruct
 ./run.sh session begin --task-id <task> --agent <role>
 
 # END: update task/handoff only when state changed, then use Codex Git/GitHub
-./run.sh check --quick
+# Run affected focused diagnostics; comprehensive assurance belongs to the PR.
 # Codex stages intended paths and creates the immutable candidate commit.
 ./run.sh session end --agent <role>              # Final read-only validation
 # Codex pushes and creates/updates the PR.

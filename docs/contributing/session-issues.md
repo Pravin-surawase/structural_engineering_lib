@@ -21,7 +21,8 @@ Purpose: capture recurring friction points and the fixes so we do not repeat the
 - Historical Git-wrapper failures (when present in old logs)
 
 **What to do with this data:**
-1. **High pre-commit failures?** → Run `black` and `ruff` before committing
+1. **High pre-commit failures?** → Inspect conflict markers, added-file size,
+   and the exact live Git operation state
 2. **Git workflow issue?** → Codex inspects scope and the exact repository state
 3. **Missing messages?** → Write meaningful commit messages describing the change
 

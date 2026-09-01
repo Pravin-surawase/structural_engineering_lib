@@ -1010,9 +1010,10 @@ pytest tests/ -v
 | `feature/xxx` | Individual features |
 | `fix/xxx` | Bug fixes |
 
-### 11.2 Pre-Commit Hooks (Required)
+### 11.2 Commit Safety Hooks (Required)
 
-This project uses pre-commit hooks to enforce formatting and linting **before** commits. This prevents CI failures.
+This project keeps ordinary commits cheap. Pre-commit protects only the local
+mutation boundary; comprehensive content validation runs once for the PR.
 
 **First-time setup:**
 ```bash
@@ -1022,13 +1023,14 @@ pip install pre-commit   # or: pip install -e ".[dev]"
 ```
 
 **What happens on `git commit`:**
-1. **black** — Auto-formats Python code
-2. **ruff** — Checks for lint errors (unused imports, variables, etc.)
-3. If issues found, commit is blocked and fixes are shown
+1. conflict markers are rejected;
+2. newly added files over 500 KB are rejected; and
+3. unsafe or unresolved Git operations are rejected, while a proved resolved
+   merge may complete.
 
-**Run manually on all files:**
+**Run the PR file-integrity profile manually:**
 ```bash
-./scripts/python_runtime.sh -m pre_commit run --all-files
+./scripts/python_runtime.sh -m pre_commit run --hook-stage manual --all-files
 ```
 
 ### 11.3 Commit Messages
@@ -1073,7 +1075,7 @@ Consider using a tool like [vba-blocks](https://github.com/vba-blocks/vba-blocks
 
 **DON'T merge for:**
 - Single-line typo fixes (batch with other changes)
-- Formatting-only changes (these should be caught by pre-commit)
+- Formatting-only changes (batch these with related maintenance)
 - WIP or incomplete work
 - Every small incremental change
 
@@ -1281,7 +1283,7 @@ python -m pip install -e ".[dev]"
 
 cd ..
 ./scripts/python_runtime.sh -m pre_commit install
-./scripts/python_runtime.sh -m pre_commit run --all-files
+./scripts/python_runtime.sh -m pre_commit run --hook-stage manual --all-files
 ```
 
 **Optional extras:**

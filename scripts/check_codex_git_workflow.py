@@ -533,7 +533,7 @@ def main() -> int:
     if pre_commit.exists():
         pre_commit_text = pre_commit.read_text(encoding="utf-8")
         expected_completion_guard = (
-            "scripts/check_all.py --quick --allow-operation-completion"
+            "scripts/git_state.py --guard operation --allow-operation-completion"
         )
         if expected_completion_guard not in pre_commit_text:
             errors.append(

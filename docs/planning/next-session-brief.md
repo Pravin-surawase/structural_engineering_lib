@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-02
-- Focus: Audit every local hook and hosted owner, freeze a lower-cost
-- Git receipt: docs/verification/commit-pr-validation-consolidation-plan-git-handoff-receipt.json | sha256:3f890f8c75b4fc5d1cdb8ceb1b0db2dc6864b6c130da0e96d2f4a1f200594025 | HOLD
-- Git identity: codex/commit-gate-consolidation-plan@16be0db796dc85f0462a3a49a5990dc0232ef0b4 | upstream=origin/main@16be0db796dc85f0462a3a49a5990dc0232ef0b4 | base=origin/main@16be0db796dc85f0462a3a49a5990dc0232ef0b4 | tree=dirty | operation=none
+- Focus: Establish complete hosted parity first, then reduce ordinary commits
+- Git receipt: docs/verification/commit-gate-consolidation-git-handoff-receipt.json | sha256:b62fde2473968ea6158fe2e39e5c8055063f24c8073e9fe533740643879eead9 | HOLD
+- Git identity: codex/commit-gate-consolidation@d698029b581e411c5004688190b2e88338956764 | upstream=origin/main@fa0284ef457071c8d7064cf4acb7af641dfda7a2 | base=origin/main@fa0284ef457071c8d7064cf4acb7af641dfda7a2 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -14,33 +14,32 @@
 ## Current boundary
 
 The [commit and PR validation consolidation
-plan](commit-pr-validation-consolidation-plan.md) is the next maintenance
-authority. It is plan-only in this candidate: `.pre-commit-config.yaml` and
-`.github/workflows/fast-checks.yml` are deliberately unchanged.
+plan](commit-pr-validation-consolidation-plan.md) is implemented locally in its
+required order: hosted parity first, commit-lane reduction second. The branch
+is at the pre-publication boundary; hosted acceptance remains external.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | The complete 34-hook disposition, hosted gaps, resolved-merge exception, batching policy, fault matrix and quantitative exit criteria are frozen. The remaining active 150-line direct-commit rule is removed. |
-| **Next** | From accepted current `main`, implement hosted parity first and the three-hook commit lane second as two logical commits. Push both together once and use one PR. |
-| Commit target | Exactly `check-merge-conflict`, `check-added-large-files --maxkb=500`, and the live Git-operation guard. No formatter, linter, type, security, test, generator, docs or quick/full gate runs on ordinary commits. |
-| PR target | Keep strict required `PR Gate`; run complete candidate assurance once for the final batch. Remove `fast-checks.yml` `push: main` only while the strict no-bypass ruleset remains proved. |
+| **Current** | All 34 former hooks have explicit hosted/guard/retirement ownership. Focused regressions and the eight-hook manual integrity profile pass. The arbitrary 150-line cap remains removed. |
+| **Next** | Freeze the second coherent commit, push both commits together once, create one PR and wait for every required job plus strict `PR Gate`. |
+| Commit lane | Exactly `check-merge-conflict`, `check-added-large-files --maxkb=500`, and the live Git-operation guard. Five warm Windows samples measured p50 4.405s and observed p95 4.960s versus the old 110.34-second gate. |
+| PR lane | Formatting, linting, typing, security, tests, generated contracts, docs and API parity run once for the batch. `fast-checks.yml` no longer triggers on the merge push. |
 | W3 state | Offline A0/B0/B1A/C0 is accepted through PR #947. A1/C1 remains a separate, explicitly authorized installed ETABS evidence boundary and must not share the maintenance branch. |
 | Held | ETABS/Excel/COM/model/workbook actions; A1/C1; mutation/analysis/design/export; release/publication; unrelated worktree or branch cleanup. |
 
-## Implementation order
+## Hosted closeout order
 
-1. Re-prove exact current-main source and the active strict `PR Gate` ruleset.
-2. Freeze the machine-readable 34-row coverage matrix and complete-hook timing
-   baseline.
-3. Add PR parity, path ownership and negative workflow-contract tests while
-   the old commit hooks still exist.
-4. Reduce the commit stages to the three safety hooks and update the exact
-   resolved-merge regression.
-5. Update active instructions after executable topology is final; do not add a
-   line/file threshold or pre-push hook.
-6. Push the two commits together once. On a real hosted failure, reproduce only
-   the owning check, make one consolidated repair and push once more.
-7. Observe 5-10 successor PRs for routing misses, false failures, wall time and
+1. Commit the frozen hook/workflow/guidance packet through the three safety
+   hooks; do not add another local broad gate.
+2. Push the two commits together once and create one PR.
+3. Accept only the unchanged head with every applicable job and strict
+   `PR Gate` green. On a real hosted failure, reproduce only the owning check
+   and create one consolidated repair candidate.
+4. Merge without bypass, prove candidate/merge tree equality, and confirm no
+   new `fast-checks.yml` run starts for the merge push.
+5. Close task usage and remove only the implementation worktree. Preserve the
+   branch unless deletion is separately authorized.
+6. Observe 5-10 successor PRs for routing misses, false failures, wall time and
    exact receipt behavior.
 
 ## Cleanup state

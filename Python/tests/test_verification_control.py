@@ -105,10 +105,6 @@ def test_failed_check_json_retains_actionable_output_without_rerunning(capsys):
 @pytest.mark.parametrize(
     ("argv", "label"),
     [
-        (
-            ["--quick", "--allow-operation-completion"],
-            "check commit hook",
-        ),
         (["--quick"], "check quick"),
         (["--pre-commit"], "check pre-commit"),
         (["--changed"], "check changed"),
@@ -499,20 +495,6 @@ def test_aggregate_runner_omission_is_an_explicit_failure():
     assert results[0].passed is False
     assert results[0].timed_out is True
     assert results[0].error == "aggregate runner did not return a result"
-
-
-def test_shared_precommit_gate_preserves_merge_completion_exception():
-    original = check_all._collect_checks(None, True)
-    adapted = check_all._allow_operation_completion(original)
-
-    original_commands = {check.name: check.cmd for check, _category in original}
-    adapted_commands = {check.name: check.cmd for check, _category in adapted}
-    for name, command in original_commands.items():
-        assert adapted_commands[name] == (
-            [*command, "--allow-operation-completion"]
-            if name in {"Git state", "Unfinished operation"}
-            else command
-        )
 
 
 def test_changed_test_files_map_to_themselves_without_forcing_a_broad_suite():

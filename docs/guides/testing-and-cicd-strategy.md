@@ -60,19 +60,21 @@ markers =
 
 | Workflow | Purpose | Trigger |
 |----------|---------|---------|
-| `fast-checks.yml` | Path-aware validation and required `PR Gate` | PR + short main verification |
+| `fast-checks.yml` | Path-aware validation and required `PR Gate` | Pull requests |
 | `nightly.yml` | Full tests, coverage, dependency audits, Docker, optional cross-platform smoke | Weekly + manual |
 | `publish.yml` | Verified TestPyPI/PyPI/GitHub release publication and release SBOM | Manual TestPyPI or tag |
 | `deploy-docs.yml` | MkDocs publication | Relevant main changes + manual |
 
-### 1.4 Pre-Commit Hooks (25+ hooks)
+### 1.4 Pre-Commit Hooks (3 commit guards + 6 manual-only checks)
 
-**File:** `.pre-commit-config.yaml` (269 lines)
+**File:** `.pre-commit-config.yaml`
 
-- **Formatting:** black; Ruff `I` rules own import sorting
-- **Linting:** ruff (7 rule categories), bandit
-- **Type checking:** mypy (strict mode)
-- **Custom hooks:** API contracts, circular imports, fragment violations, performance anti-patterns
+- **Ordinary commits:** merge-conflict markers, newly added files over 500 KB,
+  and the live Git-operation guard
+- **Manual/PR integrity:** YAML, TOML, JSON, final newline, trailing whitespace,
+  and mixed line endings, plus the two shared commit guards
+- **PR assurance:** formatting, linting, typing, security, tests, API contracts,
+  generated artifacts, and documentation checks
 
 ### 1.5 Code Quality Tools
 
@@ -100,8 +102,9 @@ scripts/
 
 **Installed:** `.git/hooks/pre-commit`, `commit-msg`
 
-- Standard pre-commit validates content; Codex owns scoped Git operations
-- Enforces automation workflow
+- Standard pre-commit protects the local mutation boundary; Codex owns scoped
+  Git operations
+- GitHub PR Validation owns comprehensive content assurance
 
 ---
 
@@ -135,7 +138,7 @@ coverage:
 	cd Python && pytest --cov=structural_lib --cov-report=html tests/
 
 pre-commit:
-	./scripts/python_runtime.sh -m pre_commit run --all-files
+	./scripts/python_runtime.sh -m pre_commit run --hook-stage manual --all-files
 ```
 
 ### 2.2 Performance Baseline Tracking
@@ -220,7 +223,7 @@ ruff check --fix Python/
 mypy Python/structural_lib/
 
 # All pre-commit hooks
-./scripts/python_runtime.sh -m pre_commit run --all-files
+./scripts/python_runtime.sh -m pre_commit run --hook-stage manual --all-files
 ```
 
 ### CI Simulation
@@ -244,7 +247,7 @@ mypy Python/structural_lib/
 - [x] Pytest configuration with markers
 - [x] 95+ test files across 5 categories
 - [x] 14 GitHub Actions workflows
-- [x] 25+ pre-commit hooks
+- [x] Three ordinary commit guards and complete PR-owned assurance
 - [x] Strict mypy configuration
 - [x] 85% coverage requirement
 - [x] Security scanning (daily)

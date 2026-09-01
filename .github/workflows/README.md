@@ -6,13 +6,15 @@ Actions supplies independent, repeatable verification and controlled publication
 
 ## Pull request gate
 
-`fast-checks.yml` is the only workflow triggered by pull requests. It creates these
-checks:
+`fast-checks.yml` runs once for pull requests and is not repeated after merge as
+a `main`-push validation. The active ruleset requires the strict, up-to-date
+`PR Gate`, so the reviewed head is the candidate assurance boundary. It creates
+these checks:
 
 | Check | When it runs | Evidence |
 |---|---|---|
 | `Detect Changes` | Every PR | Loads the canonical seven-domain manifest; unknown impact selects all domains |
-| `Repository Validation` | Repository-policy inputs | YAML, hygiene, and maintenance-script contracts |
+| `Repository Validation` | Every PR | Manual-stage file integrity, version consistency, hygiene, and maintenance-script contracts |
 | `Python Validation` | Python inputs | Format, lint, types, contracts, focused core tests, architecture policy |
 | `FastAPI Validation` | API or deployment inputs | Format, lint, API tests, architecture, contracts, Docker/OpenAPI configuration |
 | `React Validation` | React inputs | Lint, production build, and Vitest |
@@ -28,6 +30,12 @@ paths or Git-query failures select all seven domains. `PR Gate` rejects missing
 applicability values, partial fail-closed plans, and skipped applicable jobs.
 The same rules also define each domain's fingerprint inputs, preventing a
 scheduler/evidence ownership drift.
+
+Ordinary local commits intentionally run only three fast mutation guards. The
+PR jobs own formatting, linting, typing, security scans, tests, documentation,
+API parity, generated contracts, and the decomposed quick-gate coverage. The
+machine-readable disposition of every former hook is
+`scripts/validation-coverage.json`.
 
 Every applicable job resolves its runtime and dependencies before computing an
 evidence identity. An exact-key `actions/cache` entry may then skip only the
@@ -75,10 +83,10 @@ issues.
 | `link-check.yml` | Internal link validation runs in both verification lanes |
 | `performance.yml` | Standalone baseline/comment reporting is parked; executable latency and degradation thresholds remain in `fastapi_app/tests/test_load.py` and run in the full FastAPI/Python verification surfaces |
 | `python-tests.yml` | Full Python, FastAPI, React, coverage, drift, and clean-wheel checks run in `nightly.yml` |
-| `root-file-limit.yml` | Repository hygiene remains in the local quick gate |
+| `root-file-limit.yml` | Repository hygiene remains in PR Repository Validation |
 | `sbom.yml` | CycloneDX release asset is generated and attached by `publish.yml` |
 | `scorecard.yml` | Standalone scorecard reporting parked |
 | `security.yml` | Locked Python and production npm audits run in `nightly.yml` |
 
-Use `./run.sh check --quick` before committing and the full `./run.sh check` once at
-MAINT-008 closeout. Do not bypass a failing `PR Gate`.
+Use focused local diagnostics while implementing and let the batched PR own
+comprehensive candidate assurance. Do not bypass a failing `PR Gate`.

@@ -138,9 +138,9 @@ Solo default:
 - No auto-commits are pushed by CI
 
 **Best Practice:**
-- ✅ **Use pre-commit hooks** (they run `black` and `ruff` locally)
-- ✅ Commit → hooks fix → re-stage → commit (or amend)
-- ✅ CI only verifies formatting
+- ✅ **Use pre-commit hooks** for conflict, oversized-file, and live-operation safety
+- ✅ Run affected focused diagnostics while implementing
+- ✅ Push coherent commits together and let the PR verify formatting and content
 
 ---
 Supply-chain stance:
@@ -333,9 +333,10 @@ git rebase --abort
 git pull --no-rebase origin main
 ```
 
-#### Issue: Can't push — pre-commit hooks fail
+#### Issue: Can't commit — pre-commit safety hooks fail
 
-**Cause:** Code doesn't pass pre-commit checks (black, ruff, custom scripts).
+**Cause:** The candidate contains conflict markers, a newly added oversized file,
+or an unsafe/unresolved Git operation.
 
 **Solution:**
 ```bash

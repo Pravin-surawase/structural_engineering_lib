@@ -256,7 +256,7 @@ You type: git commit -m "feat: ..."
 
 | Hook | When | What It Does |
 |------|------|-------------|
-| `pre-commit` | Before commit is saved | Lint, format, quick checks |
+| `pre-commit` | Before commit is saved | Fast mutation-safety checks |
 | `commit-msg` | After message is written | Validate conventional commit format |
 | `pre-push` | Before push to remote | Run tests |
 | `post-commit` | After commit succeeds | Optional follow-up automation |
@@ -264,8 +264,10 @@ You type: git commit -m "feat: ..."
 ### This project's maintained controls
 
 The former repository hook framework is archived. Normal commit hooks come from
-the checked-in pre-commit configuration, while prompt routing and tool
-permissions are enforced by `prompt_router.py` and `tool_permissions.py`.
+the checked-in pre-commit configuration and protect conflict, file-size, and
+live-operation boundaries. Comprehensive content assurance runs in the PR,
+while prompt routing and tool permissions are enforced by `prompt_router.py`
+and `tool_permissions.py`.
 
 ---
 

@@ -23,7 +23,7 @@ import subprocess
 import sys
 import time
 from concurrent.futures import Future, as_completed
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -426,23 +426,6 @@ def _collect_checks(
     return checks
 
 
-def _allow_operation_completion(
-    checks: list[tuple[Check, str]],
-) -> list[tuple[Check, str]]:
-    """Preserve the pre-commit merge-completion exception on the shared gate."""
-    return [
-        (
-            (
-                replace(check, cmd=[*check.cmd, "--allow-operation-completion"])
-                if check.name in {"Git state", "Unfinished operation"}
-                else check
-            ),
-            category,
-        )
-        for check, category in checks
-    ]
-
-
 # ── Output ─────────────────────────────────────────────────────────────────
 
 
@@ -671,7 +654,7 @@ def _main() -> int:
     parser.add_argument(
         "--pre-commit",
         action="store_true",
-        help="Run pre-commit hooks (black, ruff, mypy, bandit)",
+        help="Run the three local commit-safety hooks",
     )
     parser.add_argument(
         "--fix",
@@ -697,11 +680,6 @@ def _main() -> int:
         "--no-reuse",
         action="store_true",
         help="Run checks even when an exact content/runtime PASS receipt exists",
-    )
-    parser.add_argument(
-        "--allow-operation-completion",
-        action="store_true",
-        help=argparse.SUPPRESS,
     )
     parser.add_argument(
         "--workers",
@@ -734,8 +712,6 @@ def _main() -> int:
 
     # Collect checks to run
     checks = _collect_checks(args.category, args.quick, changed_domains)
-    if args.allow_operation_completion:
-        checks = _allow_operation_completion(checks)
 
     if not checks:
         if args.category:
@@ -925,8 +901,6 @@ def _main() -> int:
 
 
 def _timing_label(argv: list[str]) -> str:
-    if "--allow-operation-completion" in argv:
-        return "check commit hook"
     if "--pre-commit" in argv:
         return "check pre-commit"
     if "--quick" in argv:

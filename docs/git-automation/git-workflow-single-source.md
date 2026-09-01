@@ -168,11 +168,11 @@ The stage gates are:
    matrices, adversarial cases, maintained callers, non-goals, path ownership,
    focused commands, and evidence expected at closeout.
 2. **Focused implementation:** use focused checks while writing. After content
-   freezes, the sole writer updates already-maintained generated projections,
-   reruns focused checks, and runs the sole quick gate.
+   freezes, the sole writer updates already-maintained generated projections
+   and reruns the affected focused checks.
 3. **Immutable local audit:** only then commit a clean local candidate and pause
    before push. Give the auditor its exact base, head, tree, diff, focused
-   evidence, and quick-gate result.
+   evidence, and any explicit risk-driven local-gate result.
 4. **Consolidated decision:** the auditor returns either `PASS <head> <tree>` or
    one deduplicated blocker list with reproduction, main-process impact, and
    required outcome after completing the whole matrix.
@@ -209,16 +209,16 @@ facts and must not be appended to that same candidate after push. A material
 post-push defect creates an explicit repair candidate and invalidates the prior
 audit; routine status reporting never creates a second documentation commit.
 
-An authorized merge-resolution candidate is the narrow exception to the
-pre-commit quick-gate order: `git_state.py` must report `HOLD_OPERATION` until
+An authorized merge-resolution candidate is the narrow exception handled by
+the commit operation guard: `git_state.py` must report `HOLD_OPERATION` until
 the resolving merge commit exists. After all conflicts are resolved and the
-unmerged-path set is empty, both pre-commit Git guards accept completion only
+unmerged-path set is empty, the pre-commit operation guard accepts completion only
 on a named non-main branch when HEAD plus the pending merge parent contain
 every required default/upstream ref. Locks, unknown queries, other operations,
 and unrelated behind/diverged refs remain blockers. The completion flag never
 weakens ordinary operation-free validation. Run focused/content checks, create the merge commit
-through normal hooks, then run the sole quick gate immediately on that clean
-merge head before independent audit or push. A content or hook failure remains
+through the normal safety hooks, then continue to independent audit or the
+batched PR. A content or hook failure remains
 a blocker; this exception never permits bypassing hooks or auditing an open
 merge.
 
@@ -313,9 +313,9 @@ closeout observation.
 ## Verification before publication
 
 - Follow the compact audited-integration gates above when independent acceptance
-  is required. Routine low-risk work still uses focused checks, then
-  `./run.sh check --quick` before publication and the full `./run.sh check` once
-  at closeout when its risk or release scope requires it.
+  is required. Routine work uses focused diagnostics locally and one batched PR
+  for comprehensive assurance. Run `./run.sh check --quick` or the full local
+  gate only when a named cumulative/release boundary or investigation requires it.
 - Never bypass pre-commit hooks or required GitHub checks.
 - A green software gate is evidence about the software, not structural design
   approval or formula certification.
@@ -373,9 +373,14 @@ its head or base changes. Never use administrator bypasses, `--no-verify`,
 
 ## Local hooks
 
-The standard `pre-commit` framework may validate a commit. Repository hooks must
-not block Codex-native Git merely because a legacy wrapper environment variable
-is absent. `core.hooksPath` must not point to the retired enforcement hooks.
+The standard `pre-commit` framework protects the local mutation boundary with
+exactly three ordinary-commit hooks: merge-conflict markers, newly added files
+over 500 KB, and the live Git-operation guard. The six generic file-integrity
+hooks use the manual stage and run in PR Repository Validation. Formatting,
+linting, type checks, security scans, tests, generated-contract checks, and the
+quick gate are not commit hooks. Repository hooks must not block Codex-native
+Git merely because a legacy wrapper environment variable is absent.
+`core.hooksPath` must not point to the retired enforcement hooks.
 
 ## Historical material
 

@@ -47,8 +47,10 @@ create a conventional commit; push without rewriting history; and create or
 update the PR through the connected GitHub integration. The canonical contract
 is [git-workflow-single-source.md](../docs/git-automation/git-workflow-single-source.md).
 
-Standard pre-commit validation may run during a Codex commit. Repository-owned
-hook enforcement and scripts that automate the Git lifecycle are prohibited.
+Standard pre-commit runs only the three local mutation-safety guards during a
+Codex commit. Comprehensive validation runs once for the batched PR; explicit
+local quick/full commands remain available for diagnostics and named cumulative
+or release gates. Scripts that automate the Git lifecycle are prohibited.
 
 ## Important tools
 
@@ -86,7 +88,7 @@ hook enforcement and scripts that automate the Git lifecycle are prohibited.
 - Use `./run.sh context show <area>` for routing and
   `./run.sh context summary <area-or-folder>` for a bounded live inventory.
   Both are read-only.
-- Prefer targeted checks while editing and one full gate at closeout.
+- Prefer targeted checks while editing and one batched PR assurance cycle.
 - Quick/full checks reuse only an exact PASS receipt from the shared Git common
   directory. `./run.sh check --no-reuse` forces fresh execution; failed,
   malformed, runtime-different, command-different, or input-different evidence
