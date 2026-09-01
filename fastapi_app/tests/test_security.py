@@ -363,10 +363,12 @@ class TestWebSocketSecurity:
     """Tests for WebSocket security."""
 
     def test_websocket_without_token(self, client: TestClient):
-        """The documented public WebSocket mode accepts a missing token."""
-        with client.websocket_connect("/ws/design/test123") as websocket:
-            websocket.send_json({"type": "ping"})
-            assert websocket.receive_json()["type"] == "pong"
+        """A missing token closes before the server accepts the socket."""
+        with pytest.raises(WebSocketDisconnect) as exc_info:
+            with client.websocket_connect("/ws/design/test123"):
+                pytest.fail("missing token unexpectedly opened a WebSocket")
+
+        assert exc_info.value.code == 4001
 
     def test_websocket_with_invalid_token(self, client: TestClient):
         """An explicitly supplied invalid token closes with the auth code."""

@@ -1,0 +1,128 @@
+{
+  "schema_version": "etabs-live-g0-route-gate-evidence/v1",
+  "task_id": "ETABS-LIVE-G0-ROUTE-GATE",
+  "observed_at_utc": "2026-09-01T16:15:39Z",
+  "source_authority": {
+    "accepted_preflight_pull_request": 944,
+    "base_commit_sha": "3fc9ddcdfd1eb18fcaabf0b4d7e71a70ceed4df4",
+    "base_tree_sha": "0f54b64d46af7889b648496507b0c8cdfba756dd",
+    "branch": "codex/etabs-live-g0-route-gate",
+    "worktree": "C:\\CodexWork\\worktrees\\etabs-live-g0-route-gate"
+  },
+  "default_surface": {
+    "etabs_live_bridge_enabled": false,
+    "etabs_live_mutation_enabled": false,
+    "mounted_offline_paths": [
+      "/api/v1/etabs-bridge/v1/status",
+      "/api/v1/etabs-bridge/v1/beam-demand"
+    ],
+    "unmounted_live_read_paths": [
+      "/api/v1/etabs-bridge/v1/connect",
+      "/api/v1/etabs-bridge/v1/beam-baseline/preflight",
+      "/api/v1/etabs-bridge/v1/beam-baseline",
+      "/api/v1/etabs-bridge/v1/result-catalogue"
+    ],
+    "unmounted_live_mutation_paths": [
+      "/api/v1/etabs-bridge/v1/beam-pilot"
+    ],
+    "openapi_delta": {
+      "base_paths": 96,
+      "candidate_paths": 91,
+      "removed_paths": 5,
+      "added_paths": 0,
+      "candidate_operations": 92,
+      "candidate_schemas": 478,
+      "unrelated_path_changes": 0
+    }
+  },
+  "server_owned_operation_policy": {
+    "OFFLINE": [
+      "GET /api/v1/etabs-bridge/v1/status",
+      "POST /api/v1/etabs-bridge/v1/beam-demand"
+    ],
+    "LIVE_READ": {
+      "required_scope": "etabs:live:read",
+      "operations": [
+        "POST /api/v1/etabs-bridge/v1/connect",
+        "POST /api/v1/etabs-bridge/v1/beam-baseline/preflight",
+        "POST /api/v1/etabs-bridge/v1/beam-baseline",
+        "POST /api/v1/etabs-bridge/v1/result-catalogue"
+      ]
+    },
+    "LIVE_MUTATION": {
+      "required_scope": "etabs:live:mutate",
+      "operations": [
+        "POST /api/v1/etabs-bridge/v1/beam-pilot"
+      ],
+      "classification_basis": "temporarily changes present units and output selection, then restores both"
+    }
+  },
+  "startup_and_request_gates": {
+    "live_bridge_requires": [
+      "loopback HOST",
+      "AUTH_ENABLED=true",
+      "non-default JWT secret of at least 32 characters"
+    ],
+    "mutation_requires_live_bridge": true,
+    "http_peer_must_be_loopback": true,
+    "http_scope_checked_before_route_body": true,
+    "websocket_required_scope": "design",
+    "websocket_rejects_before_accept": [
+      "missing token: 4001",
+      "invalid token: 4001",
+      "wrong scope: 4003"
+    ],
+    "signed_malformed_claims_fail_as_authentication": true
+  },
+  "zero_side_effect_proof": {
+    "disabled_live_route_status": 404,
+    "missing_invalid_wrong_scope_http_statuses": [
+      401,
+      401,
+      403
+    ],
+    "remote_peer_status": 403,
+    "com_tripwire_reached": false,
+    "offline_status_constructed_com_session": false,
+    "excel_processes_observed_at_freeze": 0,
+    "etabs_processes_observed_at_freeze": 0,
+    "com_objects_created": 0,
+    "etabs_attachments": 0,
+    "models_or_workbooks_touched": 0
+  },
+  "owned_startup_profiles": {
+    "direct_local_default_host": "127.0.0.1",
+    "container_host": "0.0.0.0",
+    "container_live_bridge_enabled": false,
+    "container_live_mutation_enabled": false
+  },
+  "frozen_focused_validation": {
+    "python_fastapi_tests": "87 passed",
+    "react_tests": "55 passed across 2 files",
+    "ruff_changed_python": "PASS",
+    "react_eslint": "PASS",
+    "react_typescript_and_production_build": "PASS",
+    "openapi_snapshot": "92 operations / 478 schemas; exact match",
+    "api_contract_validator": "PASS; no breaking changes detected",
+    "package_lock_sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67",
+    "dependency_manifests_changed": false
+  },
+  "publication_cadence": {
+    "previous_task_level_pull_requests": 17,
+    "approved_milestone_pull_requests": 7,
+    "internal_unit_rule": "affected focused tests only",
+    "milestone_freeze_rule": "one quick gate, one hook pass, one push, one PR, one hosted cycle",
+    "separate_authority_boundaries": [
+      "installed read-only evidence",
+      "installed mutation",
+      "external artifact acquisition"
+    ]
+  },
+  "publication_boundary": {
+    "quick_gate": "RUN_ONCE_AFTER_THIS_RECORD_FREEZES",
+    "normal_commit_hooks": "RUN_ONCE_AFTER_THIS_RECORD_FREEZES",
+    "hosted_checks": "REQUIRED_AFTER_PUSH",
+    "installed_etabs_or_excel_evidence_claimed": false,
+    "engineering_approval_claimed": false
+  }
+}

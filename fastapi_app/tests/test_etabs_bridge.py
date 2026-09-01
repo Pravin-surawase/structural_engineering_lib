@@ -2,6 +2,16 @@
 
 from __future__ import annotations
 
+import pytest
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
+
+from fastapi_app.auth import (
+    require_etabs_live_mutation,
+    require_etabs_live_read,
+    require_loopback_request,
+)
+from fastapi_app.main import app as default_app
 from fastapi_app.routers import etabs_bridge
 from fastapi_app.tests.conftest import unwrap
 from structural_lib.services.etabs_beam_baseline import (
@@ -37,6 +47,21 @@ from structural_lib.services.etabs_live_bridge import (
 from structural_lib.services.etabs_result_catalogue_adapter import (
     ETABSCatalogueAdapterResultV1,
 )
+
+
+@pytest.fixture
+def client():
+    """Mount every bridge class while bypassing policy for transport unit tests."""
+
+    test_app = FastAPI()
+    test_app.dependency_overrides[require_loopback_request] = lambda: None
+    test_app.dependency_overrides[require_etabs_live_read] = lambda: None
+    test_app.dependency_overrides[require_etabs_live_mutation] = lambda: None
+    test_app.include_router(etabs_bridge.offline_router, prefix="/api/v1")
+    test_app.include_router(etabs_bridge.live_read_router, prefix="/api/v1")
+    test_app.include_router(etabs_bridge.live_mutation_router, prefix="/api/v1")
+    with TestClient(test_app) as test_client:
+        yield test_client
 
 
 def test_status_exposes_python_library_and_bridge_readiness(client, monkeypatch):
@@ -317,12 +342,12 @@ def test_beam_demand_rejects_incomplete_transport_payload(client):
     assert response.status_code == 422
 
 
-def test_openapi_exposes_seven_typed_etabs_operations(client):
-    paths = client.app.openapi()["paths"]
+def test_default_openapi_exposes_offline_etabs_operations_only():
+    paths = default_app.openapi()["paths"]
     assert "/api/v1/etabs-bridge/v1/status" in paths
-    assert "/api/v1/etabs-bridge/v1/connect" in paths
-    assert "/api/v1/etabs-bridge/v1/beam-pilot" in paths
-    assert "/api/v1/etabs-bridge/v1/beam-baseline/preflight" in paths
-    assert "/api/v1/etabs-bridge/v1/beam-baseline" in paths
-    assert "/api/v1/etabs-bridge/v1/result-catalogue" in paths
     assert "/api/v1/etabs-bridge/v1/beam-demand" in paths
+    assert "/api/v1/etabs-bridge/v1/connect" not in paths
+    assert "/api/v1/etabs-bridge/v1/beam-pilot" not in paths
+    assert "/api/v1/etabs-bridge/v1/beam-baseline/preflight" not in paths
+    assert "/api/v1/etabs-bridge/v1/beam-baseline" not in paths
+    assert "/api/v1/etabs-bridge/v1/result-catalogue" not in paths

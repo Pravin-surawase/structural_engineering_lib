@@ -13,7 +13,9 @@ Usage:
     # Protect WebSocket
     @router.websocket("/ws/design/{session}")
     async def ws_endpoint(websocket: WebSocket, token: str = Query(...)):
-        user = await verify_ws_token(token)
+        user = await verify_ws_token(websocket, token)
+        if not user:
+            return
         ...
 
     # Rate limiting is applied via dependency injection (see check_rate_limit)
@@ -32,9 +34,14 @@ from fastapi import Depends, HTTPException, Query, Request, Response, WebSocket,
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 import jwt
 from jwt.exceptions import PyJWTError
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 
 from fastapi_app.config import is_insecure_jwt_secret
+from fastapi_app.etabs_live_policy import (
+    ETABS_LIVE_MUTATION_SCOPE,
+    ETABS_LIVE_READ_SCOPE,
+    is_loopback_host,
+)
 
 auth_logger = logging.getLogger("auth.events")
 
@@ -157,7 +164,7 @@ def decode_token(token: str) -> TokenData:
             detail="Invalid or expired authentication token",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    except PyJWTError:
+    except (PyJWTError, ValidationError, TypeError, ValueError, OverflowError):
         auth_logger.warning("auth.token_invalid", extra={"reason": "decode_error"})
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -219,6 +226,52 @@ async def require_auth(
     return user
 
 
+def _require_scope(user: User, required_scope: str) -> User:
+    """Require one exact scope without broadening it through role inference."""
+
+    if required_scope not in user.scopes:
+        auth_logger.warning(
+            "auth.scope_missing",
+            extra={"sub": user.id, "required_scope": required_scope},
+        )
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Required scope is missing: {required_scope}",
+        )
+    return user
+
+
+async def require_etabs_live_read(
+    user: User = Depends(require_auth),
+) -> User:
+    """Require the explicit ETABS read/attach scope."""
+
+    return _require_scope(user, ETABS_LIVE_READ_SCOPE)
+
+
+async def require_etabs_live_mutation(
+    user: User = Depends(require_auth),
+) -> User:
+    """Require the explicit ETABS mutation scope."""
+
+    return _require_scope(user, ETABS_LIVE_MUTATION_SCOPE)
+
+
+async def require_loopback_request(request: Request) -> None:
+    """Reject live ETABS HTTP requests received from a non-loopback peer."""
+
+    peer_host = request.client.host if request.client else ""
+    if not is_loopback_host(peer_host):
+        auth_logger.warning(
+            "auth.etabs_non_loopback_peer",
+            extra={"peer_host": peer_host or "unknown"},
+        )
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="ETABS live routes accept loopback clients only",
+        )
+
+
 # =============================================================================
 # WebSocket Authentication
 # =============================================================================
@@ -227,16 +280,19 @@ async def require_auth(
 async def verify_ws_token(
     websocket: WebSocket,
     token: str | None = Query(None),
+    *,
+    required_scopes: tuple[str, ...] = ("design",),
 ) -> User | None:
     """
     Verify JWT token for WebSocket connections.
 
     Token can be passed as query parameter: ws://host/ws/design/123?token=xxx
 
-    Returns None if no token (allows public access).
-    Closes WebSocket with 4001 if token is invalid.
+    Missing or invalid tokens are closed with 4001 before acceptance.
+    Missing scopes are closed with 4003 before acceptance.
     """
     if not token:
+        await websocket.close(code=4001, reason="Authentication required")
         return None
 
     try:
@@ -245,11 +301,20 @@ async def verify_ws_token(
             await websocket.close(code=4001, reason="Invalid token payload")
             return None
 
-        return User(
+        user = User(
             id=token_data.user_id,
             email=token_data.email or "",
             scopes=token_data.scopes,
         )
+        missing_scopes = [
+            required_scope
+            for required_scope in required_scopes
+            if required_scope not in user.scopes
+        ]
+        if missing_scopes:
+            await websocket.close(code=4003, reason="Required scope is missing")
+            return None
+        return user
     except HTTPException:
         await websocket.close(code=4001, reason="Invalid or expired token")
         return None

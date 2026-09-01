@@ -1,6 +1,21 @@
 import { describe, expect, it } from 'vitest';
 
-import { normalizeWebSocketDesignResult, requiresCanonicalHttp } from '../useDesignWebSocket';
+import {
+  buildDesignWebSocketUrl,
+  normalizeWebSocketDesignResult,
+  requiresCanonicalHttp,
+} from '../useDesignWebSocket';
+
+describe('buildDesignWebSocketUrl', () => {
+  it('requires and safely encodes the design JWT', () => {
+    expect(buildDesignWebSocketUrl('ws://localhost:8000', 'session-1', 'a+b/c=')).toBe(
+      'ws://localhost:8000/ws/design/session-1?token=a%2Bb%2Fc%3D',
+    );
+    expect(() => buildDesignWebSocketUrl('ws://localhost:8000', 'session-1', '')).toThrow(
+      'design scope',
+    );
+  });
+});
 
 describe('normalizeWebSocketDesignResult', () => {
   it('preserves the complete design response contract', () => {

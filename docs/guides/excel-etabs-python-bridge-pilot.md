@@ -5,7 +5,7 @@
 **Status:** Complete
 **Next Phase:** W2 Integrated; Installed Retry Held Fail-Closed; Mac Evidence Review
 **Created:** 2026-08-28
-**Last Updated:** 2026-08-29
+**Last Updated:** 2026-09-01
 **Importance:** High
 
 ## Outcome
@@ -57,7 +57,23 @@ would add a second deployment and trust model and is not needed for this proof.
 |---|---|---|
 | Check Python/library/COM readiness | `GET /api/v1/etabs-bridge/v1/status` | Read-only; does not attach to ETABS |
 | Prove the open model identity | `POST /api/v1/etabs-bridge/v1/connect` | Attaches, reads model path/name and ETABS version, then releases the COM apartment |
-| Extract and design beams | `POST /api/v1/etabs-bridge/v1/beam-pilot` | Reads an exact result selection and writes nothing to ETABS |
+| Extract and design beams | `POST /api/v1/etabs-bridge/v1/beam-pilot` | Temporarily changes result selection/present units, restores both, and makes no model-data edit |
+
+### Live-route startup and request gate
+
+The default application mounts only `status` and the retained-evidence
+`beam-demand` calculation. COM-attaching routes are absent from both routing
+and OpenAPI until `ETABS_LIVE_BRIDGE_ENABLED=true`. That startup opt-in is
+accepted only for a loopback `HOST`, enabled JWT authentication, and a
+non-default secret. Each live request is then checked again for a loopback peer
+and the `etabs:live:read` scope before any COM boundary can run.
+
+`beam-pilot` is classified separately because it temporarily changes ETABS
+present units and output selection even though it restores the prior state and
+does not edit model data. It remains absent unless
+`ETABS_LIVE_MUTATION_ENABLED=true` and requires the narrower
+`etabs:live:mutate` scope. Container entrypoints bind publicly only with both
+live flags disabled.
 
 The beam-pilot request must explicitly provide:
 

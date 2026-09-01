@@ -34,6 +34,15 @@ export function requiresCanonicalHttp(inputs: {
   return (inputs.torsion ?? 0) > 0 || Boolean(inputs.include_serviceability);
 }
 
+export function buildDesignWebSocketUrl(
+  baseUrl: string,
+  sessionId: string,
+  accessToken: string
+): string {
+  if (!accessToken) throw new Error('A JWT with the design scope is required');
+  return `${baseUrl}/ws/design/${sessionId}?token=${encodeURIComponent(accessToken)}`;
+}
+
 type WebSocketDesignData = Omit<Partial<BeamDesignResponse>, 'flexure' | 'shear'> & {
   flexure?: Partial<BeamDesignResponse['flexure']> & {
     // Legacy field used by servers before the REST/WebSocket contract was aligned.
@@ -124,10 +133,14 @@ const RWS_OPTIONS = {
   reconnectionDelayGrowFactor: 1.3,
 };
 
-export function useDesignWebSocket(sessionId: string, enabled: boolean = true) {
+export function useDesignWebSocket(
+  sessionId: string,
+  enabled: boolean = true,
+  accessToken?: string
+) {
   const { inputs, setResult, setLoading, setError, length } = useDesignStore();
   const wsRef = useRef<ReconnectingWebSocket | null>(null);
-  const webSocketAllowed = enabled && !requiresCanonicalHttp(inputs);
+  const webSocketAllowed = enabled && Boolean(accessToken) && !requiresCanonicalHttp(inputs);
   const retryCountRef = useRef(0);
   const [state, setState] = useState<WebSocketState>({
     isConnected: false,
@@ -171,7 +184,7 @@ export function useDesignWebSocket(sessionId: string, enabled: boolean = true) {
       setState((s) => ({ ...s, status: 'connecting', error: null }));
 
       const ws = new ReconnectingWebSocket(
-        `${WS_BASE_URL}/ws/design/${sessionId}`,
+        buildDesignWebSocketUrl(WS_BASE_URL, sessionId, accessToken ?? ''),
         [],
         RWS_OPTIONS
       );
@@ -223,7 +236,7 @@ export function useDesignWebSocket(sessionId: string, enabled: boolean = true) {
         error: (err as Error).message,
       }));
     }
-  }, [sessionId, webSocketAllowed, handleMessage]);
+  }, [sessionId, accessToken, webSocketAllowed, handleMessage]);
 
   // Send design request
   const sendDesign = useCallback(() => {

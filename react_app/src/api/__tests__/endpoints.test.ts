@@ -612,10 +612,12 @@ describe('WebSocket Router', () => {
   it('WS /ws/design/{session_id} — endpoint path is correct', () => {
     // WebSocket can't be fully tested in jsdom, but validate the URL construction
     const sessionId = 'test-session-123';
-    const wsUrl = `ws://localhost:8000/ws/design/${sessionId}`;
+    const token = 'signed-design-token';
+    const wsUrl = `ws://localhost:8000/ws/design/${sessionId}?token=${encodeURIComponent(token)}`;
 
     expect(wsUrl).toMatch(/^ws:\/\/localhost:8000\/ws\/design\/.+/);
     expect(wsUrl).toContain(sessionId);
+    expect(wsUrl).toContain(`token=${token}`);
   });
 });
 

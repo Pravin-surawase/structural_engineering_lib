@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-01
-- Focus: Audit only maintenance that could block, invalidate or materially
-- Completed: Fetched canonical `origin/main`, confirmed PR #943 `MERGED` and bound a unique; Started the maintained session as; Restored only the ignored `react_app/node_modules` tree through `npm ci` from
-- Git receipt: docs/verification/etabs-live-g0-route-gate-preflight-git-handoff-receipt.json | sha256:ecdb060ca2041a157512b4cad525728e7199670b11da5079017ee0a98b768623 | HOLD
-- Git identity: codex/etabs-live-g0-route-gate-preflight-20260901@3b0d689dabddae7891758648b09acf9beef088ee | upstream=origin/main@3b0d689dabddae7891758648b09acf9beef088ee | base=origin/main@3b0d689dabddae7891758648b09acf9beef088ee | tree=dirty | operation=none
+- Focus: Default-disable every COM-attaching ETABS route; enforce startup,
+- Completed: Added an immutable server-owned classification for all seven ETABS bridge; Kept only nonattaching `status` and retained-evidence `beam-demand` mounted by; Made live startup fail closed unless the configured host is loopback,
+- Git receipt: docs/verification/etabs-live-g0-route-gate-git-handoff-receipt.json | sha256:bf872e63a15d45516dafe753770b32484ddff7d265cdb0decbd408a1b7f41904 | HOLD
+- Git identity: codex/etabs-live-g0-route-gate@3fc9ddcdfd1eb18fcaabf0b4d7e71a70ceed4df4 | upstream=origin/main@3fc9ddcdfd1eb18fcaabf0b4d7e71a70ceed4df4 | base=origin/main@3fc9ddcdfd1eb18fcaabf0b4d7e71a70ceed4df4 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -18,13 +18,13 @@ The [integrated W3 and professional beam execution plan](w3-beam-professional-in
 owns the immediate sequence. The [whole-W3 reset](etabs-data-analysis-optimization-foundation-plan.md#whole-w3-execution-reset-2026-08-31)
 continues to own the A-L evidence/capability sequence, and the
 [COM/VBA/reanalysis plan](etabs-w3-com-vba-and-reanalysis-plan.md) owns ETABS
-host/session and transaction behavior. Source: merged PR #943 commit `3b0d689d`;
-the accepted preflight successor is G0's exact authority. One Windows writer owns the next sequence; installed actions remain separately gated.
+host/session and transaction behavior. Source: accepted preflight PR #944 commit `3fc9ddcd`;
+its exact successor is the active G0 branch. One Windows writer owns the next sequence; installed actions remain separately gated.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | PR #943 is merged. Bounded maintenance verified the exact source head, Python/Node/dependency readiness, normal hooks, focused API/WebSocket tests and OpenAPI/client controls. Runtime code is unchanged. |
-| **Next** | `HOLD` until ETABS and Excel are both closed and absence is reverified. Then start only `ETABS-LIVE-G0-ROUTE-GATE` from the exact accepted preflight head: default-disable live routes and prove loopback/auth denials happen before any COM creation or attach. |
+| **Current** | G0 and its cadence amendment are a frozen local candidate from accepted preflight `3fc9ddcd`. ETABS/Excel stayed closed; focused tests, lint/build, OpenAPI/API contracts, the repaired brief check, and the hook-level exact quick gate pass. |
+| **Next** | Complete the repaired hook attempt and publish one G0 PR with hosted checks. After acceptance, start `codex/w3-public-beam-truth`; its three internal units share one PR and focused tests until freeze. |
 | W3 next | After G0, run `LIB-BEAM-S0-CHECK-TRUTH`; then start A0 from its exact accepted head. A0 uses fakes only; installed getter-only A1 remains separately authorized. |
 | H/data route | C0 freezes generic contracts, C1 acquires one exact schema/export, and C2 parses offline. H0 then chooses a proved surrogate envelope, ETABS-first baseline-action screening, or `HOLD`. No broad table retry or new solver physics. |
 | Retained | A-D/R, bounded E/F/G/H/J acceptance; #925 repair closed. #931's explicit-placeholder hypothesis is disproved and equivalent table API retries are closed; the native CSI 1 and #932 binder causes remain unconfirmed; #933 timestamp defect is confirmed. |

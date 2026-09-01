@@ -11,7 +11,7 @@ tags: [beam, etabs, w3, api, safety, optimization, execution]
 
 ## Decision
 
-Continue W3 from merged PR #942 only after separating three different owners:
+Continue W3 from accepted preflight PR #944 while separating three different owners:
 
 1. **public beam safety and semantics** — effective-depth truth, supplied-beam
    check truth, REST/WebSocket parity and executable examples;
@@ -21,13 +21,13 @@ Continue W3 from merged PR #942 only after separating three different owners:
    layers, supplied-reinforcement checks, serviceability, detailing, quantities,
    applicability and one common verdict for direct, cost and Pareto routes.
 
-Use one writer and one implementation packet at a time. Read-only reviewers may
-run in parallel, but overlapping code, task, session, generated-reference or
-handoff writers may not. A small live-route gate goes first, then the public beam
-safety packet, then the offline W3 PID/state/runtime packet from its exact
-accepted predecessor. Use one
-dedicated Windows worktree as the primary writer for the whole implementation
-sequence so packet boundaries do not also become device handoffs. No ETABS,
+Use one writer and one milestone branch at a time. Read-only reviewers may run
+in parallel, but overlapping code, task, session, generated-reference or
+handoff writers may not. Sequential task IDs inside one milestone are internal
+implementation units, not automatic branch/PR boundaries. A small live-route
+gate goes first, then related units are grouped by common authority and safety
+boundary. Use one dedicated Windows repository lane for the whole sequence so
+milestone boundaries do not also become device handoffs. No ETABS,
 COM, Excel, export, solver, analysis/design, save, unlock or model mutation is
 authorized merely by this plan.
 
@@ -98,10 +98,34 @@ offline `W3-B0/B1/B2` code packets instead of alternating devices.
   useful. It is not an alternating implementation lane, so normal progress does
   not require changing devices after every packet.
 
-At every new packet, still refresh Git and verify the Windows repository,
-interpreter, ETABS version and model/workbook identity appropriate to that
-packet. A persistent device does not mean a persistent unverified application
-session.
+At every new milestone, and again immediately before any installed internal
+unit, refresh Git and verify the Windows repository, interpreter, ETABS version
+and model/workbook identity appropriate to that work. A persistent device does
+not mean a persistent unverified application session.
+
+## Reduced-PR milestone map
+
+The owner decision on 2026-09-01 replaces one-PR-per-task-ID execution with the
+following seven publishable milestones. The detailed packet register below
+remains the acceptance checklist and dependency truth; rows grouped into one
+milestone are implemented sequentially on one branch and are not independently
+pushed or reviewed.
+
+| Milestone branch | Sequential internal units | Publication boundary |
+|---|---|---|
+| `codex/etabs-live-g0-route-gate` | `ETABS-LIVE-G0-ROUTE-GATE` plus this cadence amendment | urgent disabled-by-default live-route boundary; one PR |
+| `codex/w3-public-beam-truth` | `LIB-BEAM-S0-CHECK-TRUTH`, `LIB-PRO-015-D0-D1-BEAM`, `ETABS-W3-B0-CANONICAL-PILOT` | one public beam/API/OpenAPI/client candidate |
+| `codex/w3-offline-etabs-foundations` | `ETABS-W3-A0-OFFLINE-SESSION-GUARD`, `ETABS-W3-B1A-PROJECT-CRITERIA-CATALOGUE`, `ETABS-W3-C0-OFFLINE-ACQUISITION-CONTRACT` | one offline fake/contract candidate; zero application calls |
+| `codex/w3-installed-readonly-evidence` | `ETABS-W3-A1-INSTALLED-READONLY-ACCEPTANCE`, `ETABS-W3-C1-INSTALLED-DESIGN-EXPORT-INVENTORY` | one separately authorized installed read-only evidence session/PR |
+| `codex/w3-candidate-data-convergence` | `ETABS-W3-B1B-CANDIDATE-EVALUATOR`, `ETABS-W3-B2-OPTIMIZER-CONVERGENCE`, `ETABS-W3-C2-OFFLINE-EXACT-SCHEMA-PARSER` | one offline evaluator/search/parser candidate |
+| `codex/w3-screening-transaction-kernel` | `ETABS-W3-H0-ROUTE-DECISION`, `ETABS-W3-I-SCREENING`, `ETABS-W3-K0-OFFLINE-TRANSACTION-KERNEL` | one offline route/screen/dry-run candidate |
+| `codex/w3-owned-copy-iteration` | `ETABS-W3-K1-INSTALLED-OWNED-COPY`, `ETABS-W3-L-BOUNDED-ITERATION` | one separately authorized installed mutation milestone and terminal evidence PR |
+
+Do not create a planning-only PR between these milestones. Update this plan,
+task/session evidence and the affected implementation on the active milestone
+branch, then publish them together. A milestone must split only when an internal
+unit discovers an outcome-changing dependency break, an accepted predecessor is
+required by an installed run, or authorization/rollback scope changes.
 
 ## Confirmed issues added by this audit
 
@@ -537,14 +561,21 @@ authorization are separate.
 
 ## Efficient verification and Git sequence
 
-For each packet, finish implementation, tests, documentation and task/session
-evidence before the normal consolidated checks:
+For each milestone, finish all sequential internal units, tests, documentation
+and task/session evidence before the normal consolidated checks. During an
+internal unit, run only its affected focused tests or a narrow reproducer needed
+to guide a repair; do not run quick, hooks, push, PR or hosted CI at that
+checkpoint.
 
-1. affected focused tests and independent arithmetic/evidence checks;
-2. architecture/import/API-client checks for changed public surfaces;
-3. `./run.sh check --quick` once after content freeze;
-4. normal commit hooks and required hosted checks;
-5. broad Python/FastAPI/React gate once after the B1B/B2 milestone, unless an
+After the complete milestone content freezes, run exactly one publication
+sequence:
+
+1. the union of affected focused tests and independent arithmetic/evidence checks;
+2. architecture/import/API-client checks for all changed public surfaces;
+3. `./run.sh check --quick` once;
+4. normal commit hooks once, one push, one PR and one required hosted cycle;
+5. the broad Python/FastAPI/React gate once after the candidate/data-convergence
+   milestone, unless an
    outcome-changing earlier failure proves repository-wide impact.
 
 Create every successor from the exact accepted predecessor. Before publishing,
@@ -589,15 +620,15 @@ Stop the active packet when:
 
 ## Exact next action
 
-After the bounded preflight maintenance is accepted and process absence is
-reverified, start only `ETABS-LIVE-G0-ROUTE-GATE` on the Windows host from that
-preflight's exact accepted merge commit. Keep ETABS and Excel closed. Its
-denied-path tests must prove no COM module/session creation or attachment. After
-G0 is accepted, start
-`LIB-BEAM-S0-CHECK-TRUTH`; do not combine it with W3-A0. When BEAM-S0 is
-accepted, create the next exact task/branch in the same dedicated Windows
-repository lane for `ETABS-W3-A0-OFFLINE-SESSION-GUARD`; that packet remains
-offline and fake-adapter-only.
+Run `ETABS-LIVE-G0-ROUTE-GATE` on branch
+`codex/etabs-live-g0-route-gate` from accepted preflight merge `3fc9ddcd`. Keep
+ETABS and Excel closed. Its denied-path tests must prove no COM module/session
+creation or attachment. Publish G0 and this cadence amendment together as the
+first milestone PR. After that merge, create `codex/w3-public-beam-truth` from
+the exact accepted head and implement its three internal units sequentially;
+do not create intermediate PRs. The following
+`codex/w3-offline-etabs-foundations` milestone remains fake-adapter-only and
+makes zero application calls.
 
 ## Long-term amendment sources
 

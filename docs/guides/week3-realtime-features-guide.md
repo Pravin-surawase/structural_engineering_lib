@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-09-01
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -14,7 +14,7 @@ tags: []
 **Status:** Production Ready
 **Importance:** High
 **Created:** 2026-01-24
-**Last Updated:** 2026-01-24
+**Last Updated:** 2026-09-01
 **Related Tasks:** TASK-WS-001, TASK-AUTH-001
 
 ---
@@ -66,8 +66,11 @@ Location: [fastapi_app/routers/websocket.py](../../fastapi_app/routers/websocket
 async def websocket_design_endpoint(
     websocket: WebSocket,
     session_id: str,
-    token: str | None = Query(None),  # JWT auth
+    token: str = Query(...),  # JWT with design scope
 ):
+    user = await verify_ws_token(websocket, token, required_scopes=("design",))
+    if not user:
+        return
     await websocket.accept()
 
     # Process messages
@@ -262,7 +265,7 @@ async def ws_endpoint(
     session: str,
     token: str | None = Query(None),
 ):
-    user = await verify_ws_token(websocket, token)
+    user = await verify_ws_token(websocket, token, required_scopes=("design",))
     if not user:
         return  # Connection closed by verify_ws_token
 
@@ -342,8 +345,9 @@ from fastapi.testclient import TestClient
 
 def test_websocket_design():
     client = TestClient(app)
+    token = create_access_token({"sub": "test", "scopes": ["design"]})
 
-    with client.websocket_connect("/ws/design/test123") as ws:
+    with client.websocket_connect(f"/ws/design/test123?token={token}") as ws:
         ws.send_json({"action": "design", "beam": {...}})
         response = ws.receive_json()
         assert response["type"] == "design_result"
@@ -381,7 +385,7 @@ import httpx
 import websockets
 
 async def test_websocket():
-    uri = "ws://localhost:8000/ws/design/session123"
+    uri = "ws://localhost:8000/ws/design/session123?token=" + token
     async with websockets.connect(uri) as ws:
         await ws.send(json.dumps({
             "action": "design",
@@ -465,7 +469,8 @@ async def with_timeout(coro, timeout: float = 30.0):
 
 ### 5. Secure Endpoints
 
-- Always use JWT in production
+- Always require JWT before accepting a WebSocket; the design endpoint requires
+  the `design` scope in every environment
 - Never expose secrets in code
 - Use HTTPS/WSS in production
 - Rate limit public endpoints

@@ -5,6 +5,149 @@
 
 ---
 
+## 2026-09-01 — Session: ETABS live G0 route gate and reduced-PR cadence
+
+**Agent:** Codex (`orchestrator`; sole writer).
+**Task:** `ETABS-LIVE-G0-ROUTE-GATE`.
+**Branch:** `codex/etabs-live-g0-route-gate`.
+**Source:** accepted preflight PR #944 merge commit
+`3fc9ddcdfd1eb18fcaabf0b4d7e71a70ceed4df4`.
+**Focus:** Default-disable every COM-attaching ETABS route; enforce startup,
+loopback, JWT scope and pre-accept WebSocket gates; and replace task-level PR
+ritual with seven safety-boundary milestone PRs. No ETABS, COM, Excel, model,
+workbook, analysis/design, solver or export operation was authorized or run.
+**Evidence:**
+`docs/verification/etabs-live-g0-route-gate-evidence.json`.
+**Git handoff receipt:** docs/verification/etabs-live-g0-route-gate-git-handoff-receipt.json
+
+**Completed:**
+
+- Added an immutable server-owned classification for all seven ETABS bridge
+  operations: two offline, four live read/attach, and one live mutation.
+- Kept only nonattaching `status` and retained-evidence `beam-demand` mounted by
+  default. The five live paths are absent from routing and OpenAPI unless their
+  startup gates are explicitly enabled.
+- Made live startup fail closed unless the configured host is loopback,
+  authentication is enabled, and the JWT secret is non-default and at least 32
+  characters. Mutation cannot be enabled without the live bridge.
+- Enforced loopback peer identity and exact `etabs:live:read` or
+  `etabs:live:mutate` scopes before route bodies. Disabled, unauthenticated,
+  malformed, wrongly scoped and remote requests tripwired before COM.
+- Required the `design` scope for every design WebSocket. Missing/invalid tokens
+  close with 4001 and wrong-scope tokens with 4003 before `accept()`; the React
+  hook and maintained examples now require and encode a token.
+- Bound owned direct-local startup to loopback and made the public container
+  bind explicit while both live flags remain false. Updated current ETABS and
+  real-time guides plus the exact OpenAPI baseline.
+- Replaced 17 task-level W3 PRs with seven milestone PRs. Internal units use
+  affected focused tests only; quick/hooks/push/PR/hosted CI run once after the
+  complete milestone freezes. Installed read-only evidence, installed mutation
+  and external acquisition remain separate authority boundaries.
+
+### Issues encountered
+
+- The first large multi-file patch repeated a planning-file context and failed
+  atomically before writing any file.
+- A Windows `rg` call passed the literal `docker-compose*.yml` wildcard and a
+  nonexistent `Dockerfile` name, so the read-only search reported invalid paths.
+- The system `python` did not have FastAPI and `run.sh` has no `python`
+  subcommand, so an initial TestClient signature probe used the wrong runtime.
+- The OpenAPI checker has no `--check` option; its default mode is the check.
+- The new linked worktree intentionally had no ignored React dependencies, so
+  the first focused Vitest invocation could not start.
+- Ruff's first formatting check found three changed Python files needing the
+  repository formatter.
+- One evidence inspection guessed a filename that is not present in this
+  checkout before enumerating the exact verification paths.
+- PowerShell interpreted an unquoted `HEAD^{tree}` native argument incorrectly
+  during a read-only source receipt query.
+- A JSON syntax probe redirected to Unix `/dev/null` from a PowerShell command,
+  which PowerShell resolved as the nonexistent Windows path `C:\dev\null`.
+- The first session-preparation pass read Markdown punctuation as part of the
+  not-yet-created Git receipt filename.
+- `npm ci` reported one existing high-severity development dependency advisory
+  and an `esbuild` install-script policy notice; no manifest or lockfile changed.
+- The one quick gate passed nine checks but rejected the auto-refreshed
+  next-session brief at 151 lines against its 150-line cap.
+- The first commit hook cycle normalized mixed line endings in `.env.example`
+  and `Dockerfile.fastapi`, reformatted one WebSocket assertion with Black, and
+  rejected the deliberate `0.0.0.0` startup-refusal fixture as Bandit B104.
+
+### Root causes and resolutions
+
+- Confirmed patch root cause: duplicate context in one oversized patch made the
+  match ambiguous. Resolution: split the edit into exact bounded patches; the
+  failure was atomic. ⚠️ TERMINAL ISSUE: duplicate patch context -> exact
+  per-owner patches.
+- Confirmed search root cause: PowerShell did not expand the wildcard for `rg`
+  and the repository owns `Dockerfile.fastapi`. Resolution: enumerate files and
+  use exact names. ⚠️ TERMINAL ISSUE: literal wildcard/nonexistent filename ->
+  exact discovered paths.
+- Confirmed runtime root cause: the maintained source-bound interpreter is
+  selected by `scripts/python_runtime.sh`, not the system `python` or a `run.sh
+  python` alias. Resolution: use that launcher for all Python commands. ⚠️
+  TERMINAL ISSUE: wrong interpreter/unknown CLI subcommand -> maintained runtime.
+- Confirmed OpenAPI CLI root cause: check behavior is the optionless default and
+  `--update` is the only write mode. Resolution: update once, then invoke the
+  checker without an option. ⚠️ TERMINAL ISSUE: unsupported `--check` -> default
+  read-only check.
+- Confirmed Node root cause: ignored dependencies are per-worktree and are not
+  copied by Git. Resolution: exact `npm ci`; the lock SHA-256 remains
+  `e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67`.
+  The preflight already proved zero production advisories for this exact lock;
+  no dependency upgrade or audit-fix mutation is in G0 scope.
+- Confirmed formatting root cause: changed files had not yet passed the
+  repository formatter. Resolution: one targeted Ruff format, then the check
+  passed. ⚠️ TERMINAL ISSUE: format check rejected three files -> targeted
+  formatter.
+- Confirmed evidence-path root cause: the inspected W2 filename was inferred
+  instead of discovered. Resolution: enumerate `docs/verification` and use only
+  exact paths. ⚠️ TERMINAL ISSUE: nonexistent evidence guess -> path discovery.
+- Confirmed Git-query root cause: PowerShell treated braces in the unquoted
+  revision expression as syntax. Resolution: quote `HEAD^{tree}`; the exact base
+  tree is `0f54b64d46af7889b648496507b0c8cdfba756dd`. ⚠️ TERMINAL ISSUE:
+  unquoted revision expression -> quoted Git object name.
+- Confirmed redirection root cause: the outer command interpreter was
+  PowerShell even though the executable was Bash. Resolution: validate JSON
+  with an inline Python load that needs no redirection. ⚠️ TERMINAL ISSUE: Unix
+  null-device path under PowerShell -> output-free inline validation.
+- Confirmed receipt-path root cause: the session parser requires an exact plain
+  repository path on the `Git handoff receipt` line; trailing Markdown backticks
+  and punctuation are not stripped. Resolution: use the canonical plain-path
+  form and create the source-bound receipt before freeze.
+- Confirmed brief root cause: the refreshed handoff block added one line to a
+  document already at its governance limit. Resolution: compact two current-
+  boundary sentences without dropping a claim, then rerun only the failed
+  `check_next_session_brief_length.py` component; the other nine quick checks
+  retain their exact PASS evidence.
+- Confirmed hook root causes: patching CRLF-owned root files produced mixed
+  working-copy endings; targeted Ruff formatting does not guarantee Black's
+  exact wrapping; and Bandit cannot infer that `0.0.0.0` is an intentionally
+  unsafe test input. Resolution: retain the hook's line-ending/Black rewrites
+  and mark only that test literal `# nosec B104` with its rejection-fixture
+  reason. The required hook-level quick check independently passed 10/10; no
+  hook or security check is bypassed.
+
+### Validation through content freeze
+
+- ETABS and Excel process counts were both zero immediately before the frozen
+  batch. No COM object, attachment, model or workbook was touched.
+- The consolidated focused Python/FastAPI selection passed 87 tests. Exact
+  default/enabled schemas, startup refusals, peer/scope denials, malformed
+  claims, status nonattachment and WebSocket pre-accept denials are covered.
+- The unchanged frozen React selection passed 55 tests across two files; one
+  ESLint run and one TypeScript/production build also pass.
+- OpenAPI matches the canonical 92-operation/478-schema baseline. The delta is
+  exactly five removed live ETABS paths, zero added paths and zero unrelated
+  path changes. The API contract validator reports no breaking change.
+- Targeted Ruff checks, the repaired brief component, and the required
+  hook-level exact quick check (10/10) pass. The first hook cycle made expected
+  formatting repairs and exposed one test-only Bandit annotation; the repaired
+  hook attempt, push and hosted checks remain. Broad Python/full-repository
+  gates are intentionally deferred to the named cumulative W3 milestone.
+
+## 2026-09-01 — Session: ETABS live G0 route-gate maintenance preflight
+
 ## 2026-09-01 — Session: ETABS live G0 route-gate maintenance preflight
 
 **Agent:** Codex (`orchestrator`; sole writer).

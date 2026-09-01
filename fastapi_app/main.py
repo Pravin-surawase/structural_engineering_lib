@@ -8,7 +8,7 @@ This module creates and configures the FastAPI application with:
 - Health check and version endpoints
 
 Usage:
-    uvicorn fastapi_app.main:app --reload --host 0.0.0.0 --port 8000
+    uvicorn fastapi_app.main:app --reload --host 127.0.0.1 --port 8000
 
 API Docs:
     - Swagger UI: http://localhost:8000/docs
@@ -184,7 +184,10 @@ API_TAGS_METADATA = [
     },
     {
         "name": "etabs-bridge",
-        "description": "Bounded Windows ETABS pilot plus preflight-bound read-only W2 beam baseline.",
+        "description": (
+            "Offline ETABS evidence routes plus an opt-in, loopback-only, "
+            "authenticated live bridge with separate read and mutation scopes."
+        ),
     },
     {
         "name": "geometry",
@@ -341,7 +344,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
             from fastapi_app.auth import decode_token
 
             decode_token(token)
-        except (jwt.PyJWTError, KeyError, AttributeError):
+        except (StarletteHTTPException, jwt.PyJWTError, KeyError, AttributeError):
             return StarletteJSONResponse(
                 status_code=401,
                 content=error_response(
@@ -404,6 +407,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
 
 _settings = get_settings()
+app.state.etabs_live_route_policy = _settings.etabs_live_route_policy
 app.add_middleware(
     RateLimitMiddleware,
     requests_per_minute=_settings.rate_limit_per_minute,
@@ -663,9 +667,19 @@ app.include_router(
     prefix=API_V1_PREFIX,
 )
 app.include_router(
-    etabs_bridge.router,
+    etabs_bridge.offline_router,
     prefix=API_V1_PREFIX,
 )
+if _settings.etabs_live_bridge_enabled:
+    app.include_router(
+        etabs_bridge.live_read_router,
+        prefix=API_V1_PREFIX,
+    )
+if _settings.etabs_live_mutation_enabled:
+    app.include_router(
+        etabs_bridge.live_mutation_router,
+        prefix=API_V1_PREFIX,
+    )
 app.include_router(
     geometry.router,
     prefix=API_V1_PREFIX,
@@ -767,6 +781,17 @@ async def startup_event():
     Initializes any required resources or connections.
     """
     settings = get_settings()
+    if settings.etabs_live_bridge_enabled:
+        logger.warning(
+            "ETABS live bridge enabled on %s with read scope %s",
+            settings.host,
+            "etabs:live:read",
+        )
+    if settings.etabs_live_mutation_enabled:
+        logger.warning(
+            "ETABS live mutation enabled with scope %s",
+            "etabs:live:mutate",
+        )
     if not settings.auth_enabled:
         logger.warning(
             "AUTH_ENABLED=False — all endpoints are PUBLIC. "

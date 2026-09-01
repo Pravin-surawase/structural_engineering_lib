@@ -9,6 +9,12 @@ from functools import lru_cache
 from pydantic import model_validator
 from pydantic_settings import BaseSettings
 
+from fastapi_app.etabs_live_policy import (
+    ETABSLiveRoutePolicyV1,
+    build_etabs_live_route_policy_v1,
+    is_loopback_host,
+)
+
 _PRODUCTION_ENVIRONMENTS = frozenset({"production", "prod", "staging"})
 _INSECURE_JWT_SECRET_MARKERS = ("change", "dev-secret")
 MINIMUM_JWT_SECRET_LENGTH = 32
@@ -75,6 +81,11 @@ class Settings(BaseSettings):
     # opts in explicitly. This is not enabled by the production compose profile.
     workflow_runner_enabled: bool = False
 
+    # Live ETABS access is absent unless a local authenticated process opts in.
+    # Mutation remains a separate, narrower gate above read/attach access.
+    etabs_live_bridge_enabled: bool = False
+    etabs_live_mutation_enabled: bool = False
+
     # Upload Limits
     max_upload_size_bytes: int = 10 * 1024 * 1024  # 10 MB
 
@@ -83,22 +94,47 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def validate_production_security(self) -> "Settings":
-        """Refuse public deployment profiles without usable authentication."""
-        if self.environment.lower() not in _PRODUCTION_ENVIRONMENTS:
-            return self
+        """Refuse unsafe public or live-bridge startup profiles."""
+        production_like = self.environment.lower() in _PRODUCTION_ENVIRONMENTS
+        live_bridge = self.etabs_live_bridge_enabled
 
-        if not self.auth_enabled:
+        if self.etabs_live_mutation_enabled and not live_bridge:
             raise ValueError(
-                "AUTH_ENABLED=true is required when ENVIRONMENT is production, prod, or staging."
+                "ETABS_LIVE_MUTATION_ENABLED=true requires "
+                "ETABS_LIVE_BRIDGE_ENABLED=true."
             )
 
-        if is_insecure_jwt_secret(self.jwt_secret_key):
+        if live_bridge and not is_loopback_host(self.host):
+            raise ValueError(
+                "ETABS live bridge startup requires HOST to be localhost or a "
+                "loopback IP address."
+            )
+
+        if (production_like or live_bridge) and not self.auth_enabled:
+            raise ValueError(
+                "AUTH_ENABLED=true is required for production-like or ETABS "
+                "live-bridge startup."
+            )
+
+        if (production_like or live_bridge) and is_insecure_jwt_secret(
+            self.jwt_secret_key
+        ):
             raise ValueError(
                 "JWT_SECRET_KEY must be non-default and at least 32 characters "
-                "when ENVIRONMENT is production, prod, or staging."
+                "for production-like or ETABS live-bridge startup."
             )
 
         return self
+
+    @property
+    def etabs_live_route_policy(self) -> ETABSLiveRoutePolicyV1:
+        """Return the immutable route policy resolved at application startup."""
+
+        return build_etabs_live_route_policy_v1(
+            live_bridge_enabled=self.etabs_live_bridge_enabled,
+            live_mutation_enabled=self.etabs_live_mutation_enabled,
+            bind_host=self.host,
+        )
 
     class Config:
         """Pydantic settings configuration."""
