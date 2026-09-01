@@ -82,6 +82,18 @@ except InputContractError as error:
     print([issue.to_dict() for issue in error.issues])
 ```
 
+## Engineering `FAIL` example
+```python
+failed_payload = dict(payload)
+failed_payload["actions"] = dict(payload["actions"], mu_knm=2000.0)
+failed = beam.design(beam.load(failed_payload))
+assert failed.engineering_status.value == "FAIL"
+assert failed.to_dict()["envelope"]["overall_status"] == "FAIL"
+```
+
+This is valid intake and a completed calculation. It must not be represented as
+an exception, HTTP failure, or professional acceptance.
+
 ## Compatibility and evidence
 
 - Maintained calculation owner: `structural_lib.services.canonical_beam.design`

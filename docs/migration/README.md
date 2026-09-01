@@ -18,6 +18,7 @@ Master index for splitting the monorepo into:
 
 | # | File | Purpose |
 |---|------|---------|
+| Current | [beam-supplied-check-v2.md](beam-supplied-check-v2.md) | Exact field-by-field migration for REST/WebSocket supplied-beam checking |
 | 01 | [01-adr-library-separation.md](01-adr-library-separation.md) | ADR: Decision record — why two repos, naming (`rcdesign`), architecture |
 | 02 | [02-library-research.md](02-library-research.md) | Research: 20 libraries deep-dived (pyproject.toml configs, CI/CD, pre-commit, structural eng libs) |
 | 03 | [03-library-repo-blueprint.md](03-library-repo-blueprint.md) | Blueprint: Complete library repo — dir structure, pyproject.toml with hatch-vcs + 19 ruff rules |

@@ -61,8 +61,12 @@ HTTP acceptance is not an engineering result:
 Thus HTTP 200 with outer success and nested engineering `FAIL` is correct and
 unambiguous.
 
-The compatibility WebSocket path is fail-closed: a payload without
-`structural-result-envelope/v2` is presented by the React client as `HOLD`.
+The supplied-beam WebSocket path validates the exact shared V2 request and emits
+one terminal `check_result` or `beam-supplied-check-error/v2`. Its
+[machine-readable exchange schema](beam-supplied-check-websocket-v2.schema.json)
+is regenerated with the OpenAPI snapshot. A payload without
+`structural-result-envelope/v2` remains fail-closed and is presented by the
+React client as `HOLD`.
 
 ## Artifact boundary
 

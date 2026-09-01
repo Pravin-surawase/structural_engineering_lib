@@ -60,19 +60,59 @@ def sample_beam_design_request():
 
 @pytest.fixture
 def sample_beam_check_request():
-    """Sample beam check request data."""
+    """Sample supplied-beam V2 check request data."""
     return {
-        "width": 300.0,
-        "depth": 500.0,
-        "moment": 150.0,
-        "shear": 75.0,
-        "ast_provided": 942.0,  # 3T20
-        "asc_provided": 0.0,
-        "stirrup_area": 100.5,  # 2L8
-        "stirrup_spacing": 150.0,
-        "fck": 25.0,
-        "fy": 500.0,
-        "clear_cover": 25.0,
+        "schema_version": "beam-supplied-check/v2",
+        "correlation_id": "REST-B1-ULS-1",
+        "identity": {"member_id": "B1", "story": "L1", "case_id": "ULS-1"},
+        "section": {
+            "b_mm": 300.0,
+            "D_mm": 500.0,
+            "effective_depth_basis": {
+                "clear_cover_mm": 40.0,
+                "stirrup_diameter_mm": 8.0,
+                "tension_bar_diameter_mm": 20.0,
+            },
+        },
+        "materials": {
+            "fck_nmm2": 25.0,
+            "fy_nmm2": 500.0,
+            "fy_transverse_nmm2": 415.0,
+        },
+        "actions": {
+            "mu_knm": 100.0,
+            "vu_kn": 60.0,
+            "primary_tension_face": "BOTTOM",
+        },
+        "reinforcement": {
+            "clear_cover_mm": 40.0,
+            "tension": {"diameter_mm": 20.0, "bars_per_layer": [4]},
+            "compression_or_hanger": {
+                "diameter_mm": 12.0,
+                "bars_per_layer": [2],
+            },
+            "stirrup_diameter_mm": 8.0,
+            "stirrup_legs": 2,
+            "stirrup_spacing_mm": 150.0,
+            "bar_type": "deformed",
+            "has_standard_bend_at_start": True,
+            "has_standard_bend_at_end": True,
+            "source_reference": "Reviewed schedule B1-R1",
+        },
+        "selection": {
+            "permitted_diameters_mm": [12.0, 16.0, 20.0, 25.0],
+            "maximum_layers": 2,
+            "maximum_bars_per_layer": 8,
+            "nominal_max_aggregate_size_mm": 20.0,
+            "effective_depth_tolerance_mm": 1.0,
+            "objective": "min_area",
+            "source_reference": "Reviewed project bar catalogue P1",
+        },
+        "support": {
+            "start_width_mm": 5000.0,
+            "end_width_mm": 5000.0,
+            "source_reference": "Reviewed supports C1 and C2",
+        },
     }
 
 

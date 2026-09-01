@@ -383,10 +383,10 @@ def evaluate_supplied_beam_reinforcement_v1(
         ("stirrup_dia_mm", stirrup_dia_mm),
         ("fck_nmm2", fck_nmm2),
         ("fy_nmm2", fy_nmm2),
-        ("vu_kn", vu_kn),
     ):
         _finite_positive(name, value)
     _finite_non_negative("asc_required_mm2", asc_required_mm2)
+    _finite_non_negative("vu_kn", vu_kn)
     if not 0 < d_design_mm < D_mm:
         raise ValueError("d_design_mm must lie within the overall depth")
     if d_dash_design_mm is not None:

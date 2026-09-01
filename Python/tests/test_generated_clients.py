@@ -15,7 +15,7 @@ sys.path.insert(0, str(CLIENT_ROOT))
 
 from scripts.generate_client_sdks import generate_basic_typescript_client  # noqa: E402
 from scripts.validate_imports import can_resolve_module  # noqa: E402
-from structural_client.client import StructuralDesignClient  # noqa: E402
+from structural_client.client import API_VERSION, StructuralDesignClient  # noqa: E402
 
 
 class _Response:
@@ -62,6 +62,20 @@ class _Transport:
                     "limitations": [],
                     "assumptions": [],
                     "provenance": [],
+                }
+            )
+        if path == "/api/v1/design/beam/check":
+            request = kwargs["json"]
+            return _Response(
+                {
+                    "success": True,
+                    "data": {
+                        "schema_version": "beam-supplied-check-result/v2",
+                        "correlation_id": request["correlation_id"],
+                        "status": "PASS",
+                        "request": request,
+                        "result_envelope": {"engineering_status": "PASS"},
+                    },
                 }
             )
         if path.endswith("/design/beam"):
@@ -167,6 +181,27 @@ def test_python_client_exposes_versioned_canonical_beam_route():
     assert result["envelope"]["overall_status"] == "PASS"
 
 
+def test_python_client_exposes_supplied_beam_v2_route():
+    client = StructuralDesignClient.__new__(StructuralDesignClient)
+    client._client = _Transport()
+    request = {
+        "schema_version": "beam-supplied-check/v2",
+        "correlation_id": "CLIENT-B1-ULS",
+    }
+
+    result = client.check_supplied_beam_v2(request)
+
+    assert result["schema_version"] == "beam-supplied-check-result/v2"
+    assert result["correlation_id"] == "CLIENT-B1-ULS"
+    assert result["result_envelope"]["engineering_status"] == "PASS"
+
+
+def test_generated_clients_advertise_the_release_api_version():
+    release_version = (REPO_ROOT / "Python/pyproject.toml").read_text(encoding="utf-8")
+
+    assert f'version = "{API_VERSION}"' in release_version
+
+
 def test_typescript_client_matches_generator_with_side_face_choice(tmp_path):
     assert generate_basic_typescript_client(tmp_path)
     generated = tmp_path / "typescript" / "src" / "index.ts"
@@ -175,3 +210,5 @@ def test_typescript_client_matches_generator_with_side_face_choice(tmp_path):
         encoding="utf-8"
     )
     assert "side_face_bar_diameter_mm?:" in generated.read_text(encoding="utf-8")
+    assert "checkSuppliedBeam" in generated.read_text(encoding="utf-8")
+    assert "beam-supplied-check-result/v2" in generated.read_text(encoding="utf-8")

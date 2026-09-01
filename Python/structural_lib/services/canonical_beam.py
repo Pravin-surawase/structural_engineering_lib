@@ -357,7 +357,50 @@ def _resolved_depth(request: BeamDesignInputV1) -> float:
 
 
 def design(request: BeamDesignInputV1) -> BeamDesignResultV1:
-    """Run the canonical strength journey from an already strict request."""
+    """Run the canonical rectangular-beam design journey.
+
+    Parameters
+    ----------
+    request : BeamDesignInputV1
+        Strict caller-owned identity, section, materials, actions, and basis.
+
+    Returns
+    -------
+    BeamDesignResultV1
+        Typed calculation and orthogonal result envelope. Engineering
+        inadequacy is returned as ``FAIL`` rather than raised as intake error.
+
+    Raises
+    ------
+    InputContractError
+        If ``request`` is not a ``BeamDesignInputV1``.
+    CalculationError
+        If the maintained calculation owner cannot complete the calculation.
+
+    Examples
+    --------
+    >>> from structural_lib.design.is456 import beam
+    >>> request = beam.load({
+    ...     "identity": {"member_id": "B1", "story": "L1", "case_id": "ULS"},
+    ...     "section": {"span_mm": 5000, "b_mm": 300, "D_mm": 500, "d_mm": 442},
+    ...     "materials": {"fck_nmm2": 25, "fy_nmm2": 500},
+    ...     "actions": {"mu_knm": 100, "vu_kn": 60, "tu_knm": 0},
+    ...     "calculation_basis": {"d_dash_mm": 58, "asv_mm2": 100.53},
+    ... })
+    >>> beam.design(request).engineering_status.value
+    'PASS'
+
+    Limitations
+    -----------
+    The request supplies factored actions. This operation does not generate
+    loads or professional acceptance and supports only its declared rectangular
+    strength and bounded serviceability scope.
+
+    Provenance
+    ----------
+    Delegates to the maintained IS 456 beam calculation owner and returns its
+    clause/source basis in the canonical result.
+    """
 
     if not isinstance(request, BeamDesignInputV1):
         raise InputContractError(
@@ -473,7 +516,42 @@ def design(request: BeamDesignInputV1) -> BeamDesignResultV1:
 
 
 def check(request: BeamDesignInputV1) -> BeamDesignResultV1:
-    """Evaluate the canonical request; engineering inadequacy remains a result."""
+    """Evaluate a canonical request without converting failure into an exception.
+
+    Parameters
+    ----------
+    request : BeamDesignInputV1
+        Strict canonical beam request.
+
+    Returns
+    -------
+    BeamDesignResultV1
+        The same typed result as ``design`` with explicit engineering status.
+
+    Raises
+    ------
+    InputContractError
+        If the request type is not the canonical input contract.
+    CalculationError
+        If the maintained calculation cannot complete.
+
+    Examples
+    --------
+    >>> from structural_lib.design.is456 import beam
+    >>> inspectable = beam.check
+    >>> inspectable is beam.design
+    False
+
+    Limitations
+    -----------
+    This is a semantic alias for required-design evaluation, not the supplied-
+    reinforcement V2 check. Use ``check_supplied`` for exact installed bars.
+
+    Provenance
+    ----------
+    Delegates directly to ``design`` and therefore has identical calculation
+    and result ownership.
+    """
 
     return design(request)
 
@@ -507,7 +585,45 @@ def detail(
     *,
     detailing_standard: DetailingStandard,
 ) -> BeamDetailingResultV1:
-    """Create explicit detailing from a completed canonical design result."""
+    """Create explicit detailing from a completed canonical design result.
+
+    Parameters
+    ----------
+    design_result : BeamDesignResultV1
+        Completed canonical design whose request includes detailing options.
+    detailing_standard : DetailingStandard
+        Explicit standard, which must match the request's choice.
+
+    Returns
+    -------
+    BeamDetailingResultV1
+        Typed detailing and result envelope bound to the source request.
+
+    Raises
+    ------
+    InputContractError
+        If the source type/status/options are unacceptable or the standard,
+        serviceability, torsion, spacing, or side-face basis is incomplete.
+    ValueError
+        If the maintained detailing owner rejects an unsupported value outside
+        the translated public issue cases.
+
+    Examples
+    --------
+    >>> from structural_lib.design.is456 import beam
+    >>> callable(beam.detail)
+    True
+
+    Limitations
+    -----------
+    This operation consumes explicit options. It does not choose project bar
+    stock, revise service analysis, or approve detailing for construction.
+
+    Provenance
+    ----------
+    Delegates to ``detail_beam_is456`` and retains the canonical request and
+    calculation envelope in the returned result.
+    """
 
     if not isinstance(design_result, BeamDesignResultV1):
         raise InputContractError(
@@ -674,7 +790,43 @@ def design_and_detail(
     *,
     detailing_standard: DetailingStandard,
 ) -> BeamDesignAndDetailResultV1:
-    """Compose canonical strength and detailing without hidden choices."""
+    """Compose canonical design and detailing without hidden choices.
+
+    Parameters
+    ----------
+    request : BeamDesignInputV1
+        Strict request containing complete detailing options.
+    detailing_standard : DetailingStandard
+        Explicit standard matching ``request.detailing.standard``.
+
+    Returns
+    -------
+    BeamDesignAndDetailResultV1
+        Design and detailing results with one fail-closed aggregate envelope.
+
+    Raises
+    ------
+    InputContractError
+        If design/detailing intake, scope, or standard reconciliation fails.
+    CalculationError
+        If the maintained strength calculation cannot complete.
+
+    Examples
+    --------
+    >>> from structural_lib.design.is456 import beam
+    >>> callable(beam.design_and_detail)
+    True
+
+    Limitations
+    -----------
+    Composition does not turn a ``FAIL`` into ``PASS`` and does not create
+    project load, stock, review, or construction-approval evidence.
+
+    Provenance
+    ----------
+    Calls the exact canonical ``design`` and ``detail`` owners sequentially and
+    aggregates their existing result identities.
+    """
 
     design_result = design(request)
     detailing_result = detail(design_result, detailing_standard=detailing_standard)

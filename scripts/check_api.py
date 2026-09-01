@@ -7,7 +7,7 @@ OpenAPI schema. It fails closed when no source files or call sites are found.
 
 Usage:
     .venv/bin/python scripts/check_api.py
-    .venv/bin/python scripts/check_api.py --signatures
+    .venv/bin/python scripts/check_api.py --react-openapi
     .venv/bin/python scripts/check_api.py --docs
     .venv/bin/python scripts/check_api.py --sync
 """
@@ -174,7 +174,7 @@ def _same_route_shape(client_path: str, server_path: str) -> bool:
     return True
 
 
-def check_signatures(
+def check_react_openapi(
     files: list[str] | None = None,
     pages_dir: str = "react_app/src",
     show_fix: bool = False,
@@ -218,7 +218,7 @@ def check_signatures(
 
     try:
         routes = _load_openapi_routes()
-    except Exception as exc:  # pragma: no cover - environment-specific import failure
+    except Exception as exc:  # noqa: BLE001  # pragma: no cover - environment import
         print(f"ERROR: Cannot load FastAPI OpenAPI schema: {exc}")
         return 1
 
@@ -351,7 +351,7 @@ def main() -> int:
     )
     group = parser.add_argument_group("Check selectors (default: --all)")
     group.add_argument(
-        "--signatures",
+        "--react-openapi",
         action="store_true",
         help="Check production React call sites against FastAPI OpenAPI",
     )
@@ -373,12 +373,14 @@ def main() -> int:
     contract.add_argument("files", nargs="*", help="Specific TS/TSX files to scan")
 
     args = parser.parse_args()
-    run_all = args.all or not any((args.signatures, args.docs, args.sync))
+    run_all = args.all or not any((args.react_openapi, args.docs, args.sync))
     results: list[int] = []
 
-    if run_all or args.signatures:
+    if run_all or args.react_openapi:
         print("⚙️  Checking React/FastAPI contract...")
-        results.append(check_signatures(args.files or None, args.pages_dir, args.fix))
+        results.append(
+            check_react_openapi(args.files or None, args.pages_dir, args.fix)
+        )
     if run_all or args.docs:
         print("📖 Checking api.__all__ documentation...")
         results.append(check_docs())

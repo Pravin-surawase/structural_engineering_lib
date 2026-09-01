@@ -246,6 +246,21 @@ main-bar-diameter basis above.
 These examples are exercised by
 `fastapi_app/tests/test_public_documentation_contract.py`.
 
+### Supplied-beam V2 check
+
+`POST /api/v1/design/beam/check` accepts only the nested
+`beam-supplied-check/v2` contract. It requires explicit identity, correlation,
+section/depth basis, materials, actions, reinforcement layers, stirrups,
+selection constraints, and source references. Support widths are optional, but
+omitting them produces an engineering `HOLD` for the anchorage boundary rather
+than an adequate Boolean. REST and WebSocket call the same service and return
+the same `beam-supplied-check-result/v2` data object.
+
+The old flat field names are not adapted or silently ignored. See the
+[field-by-field V1 migration](../migration/beam-supplied-check-v2.md), the live
+OpenAPI document for HTTP, and the checked-in
+[WebSocket machine schema](beam-supplied-check-websocket-v2.schema.json).
+
 ## Endpoint families
 
 The live OpenAPI document is authoritative for every field. The main endpoint

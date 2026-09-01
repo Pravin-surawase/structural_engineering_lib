@@ -18,16 +18,21 @@ from __future__ import annotations
 import asyncio
 import logging
 from datetime import datetime, timezone
-from typing import Any
+from typing import Any, Literal
 
 from fastapi import APIRouter, Query, WebSocket, WebSocketDisconnect
-from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from pydantic import BaseModel, ConfigDict, Field, TypeAdapter, ValidationError
 
-# Import the owning beam service with proper signature discovery
+# Import the owning beam services with proper signature discovery.
 # See: scripts/discover_api_signatures.py design_beam_is456
-from structural_lib.services.beam_api import check_beam_is456, design_beam_is456
+from structural_lib.services.beam_api import design_beam_is456
+from structural_lib.services.contracts.beam_supplied_check import (
+    BeamSuppliedCheckRequestV2,
+)
+from structural_lib.services.supplied_beam_check import check_supplied_beam_v2
 from fastapi_app.auth import verify_ws_token
 from fastapi_app.error_utils import sanitize_error
+from fastapi_app.models.beam import BeamSuppliedCheckResponseV2
 
 logger = logging.getLogger(__name__)
 
@@ -145,7 +150,7 @@ async def design_websocket(
                     await handle_design_beam(session_id, data.get("params", {}))
 
                 elif message_type == "check_beam":
-                    await handle_check_beam(session_id, data.get("params", {}))
+                    await handle_check_beam(session_id, data)
 
                 elif message_type == "ping":
                     await manager.send_json(
@@ -209,31 +214,56 @@ class WSDesignParams(BaseModel):
     )
 
 
-class WSCheckLoadCase(BaseModel):
-    """Validated factored actions for one WebSocket beam check case."""
+class WSBeamCheckMessageV2(BaseModel):
+    """Exact client message for the supplied-beam V2 check."""
 
-    model_config = ConfigDict(
-        extra="forbid", allow_inf_nan=False, str_strip_whitespace=True
+    model_config = ConfigDict(strict=True, extra="forbid", allow_inf_nan=False)
+
+    type: Literal["check_beam"]
+    params: BeamSuppliedCheckRequestV2
+
+
+class WSBeamCheckResultMessageV2(BaseModel):
+    """One terminal supplied-beam result emitted by the WebSocket."""
+
+    model_config = ConfigDict(strict=True, extra="forbid", allow_inf_nan=False)
+
+    type: Literal["check_result"]
+    latency_ms: float = Field(ge=0)
+    correlation_id: str
+    data: BeamSuppliedCheckResponseV2
+
+
+class WSBeamCheckErrorMessageV2(BaseModel):
+    """Terminal intake or calculation error for the WebSocket check."""
+
+    model_config = ConfigDict(strict=True, extra="forbid", allow_inf_nan=False)
+
+    type: Literal["error"]
+    schema_version: Literal["beam-supplied-check-error/v2"]
+    terminal_status: Literal["ERROR"]
+    correlation_id: str | None
+    message: str
+
+
+_WS_BEAM_CHECK_MACHINE_MESSAGE_V2 = TypeAdapter(
+    WSBeamCheckMessageV2 | WSBeamCheckResultMessageV2 | WSBeamCheckErrorMessageV2
+)
+
+
+def beam_check_websocket_schema_v2() -> dict[str, Any]:
+    """Return the exact machine schema for the V2 WebSocket exchange."""
+
+    schema = _WS_BEAM_CHECK_MACHINE_MESSAGE_V2.json_schema()
+    schema["$schema"] = "https://json-schema.org/draft/2020-12/schema"
+    schema["$id"] = (
+        "https://structural-lib.example/schemas/beam-supplied-check-websocket-v2.json"
     )
-
-    case_id: str = Field(..., min_length=1, description="Unique load-case identifier")
-    mu_knm: float = Field(..., description="Factored bending moment in kN·m")
-    vu_kn: float = Field(..., description="Factored shear force in kN")
-
-
-class WSCheckParams(BaseModel):
-    """Validated parameters for check_beam WebSocket messages."""
-
-    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
-
-    width: float = Field(..., ge=100, le=2000, description="Beam width in mm")
-    depth: float = Field(..., ge=150, le=3000, description="Overall beam depth in mm")
-    fck: float = Field(..., ge=15, le=80, description="Concrete strength fck in N/mm²")
-    fy: float = Field(
-        ..., ge=250, le=600, description="Steel yield strength fy in N/mm²"
+    schema["title"] = "Beam supplied-check WebSocket exchange V2"
+    schema["description"] = (
+        "Exact check_beam client message and terminal check_result/error messages."
     )
-    cover: float = Field(..., ge=20, le=75, description="Clear cover in mm")
-    cases: list[WSCheckLoadCase] = Field(..., description="Factored load cases")
+    return schema
 
 
 # =============================================================================
@@ -377,59 +407,61 @@ async def handle_design_beam(session_id: str, params: dict[str, Any]) -> None:
     )
 
 
-async def handle_check_beam(session_id: str, params: dict[str, Any]) -> None:
+async def handle_check_beam(session_id: str, message: dict[str, Any]) -> None:
     """
-    Handle check_beam message for compliance check.
-
-    Uses structural_lib.services.beam_api.check_beam_is456 with correct signature.
-    Discovered via: scripts/discover_api_signatures.py check_beam_is456
+    Run the same supplied-beam V2 request and result used by REST.
     """
     start_time = datetime.now(timezone.utc)
+    params = message.get("params") if isinstance(message, dict) else None
+    correlation_id = (
+        params.get("correlation_id")
+        if isinstance(params, dict) and isinstance(params.get("correlation_id"), str)
+        else None
+    )
 
-    # Validate input with Pydantic
     try:
-        validated = WSCheckParams(**params)
+        validated = WSBeamCheckMessageV2.model_validate(message).params
     except ValidationError as e:
+        error = WSBeamCheckErrorMessageV2(
+            type="error",
+            schema_version="beam-supplied-check-error/v2",
+            terminal_status="ERROR",
+            correlation_id=correlation_id,
+            message=sanitize_error(e, "live check input"),
+        )
         await manager.send_json(
             session_id,
-            {"type": "error", "message": sanitize_error(e, "live check input")},
+            error.model_dump(mode="json"),
         )
         return
 
-    if not validated.cases:
+    try:
+        result = await asyncio.to_thread(check_supplied_beam_v2, validated)
+    except (ValueError, TypeError, RuntimeError, KeyError, AttributeError) as e:
+        logger.exception("Supplied beam WebSocket check failed for %s", session_id)
+        error = WSBeamCheckErrorMessageV2(
+            type="error",
+            schema_version="beam-supplied-check-error/v2",
+            terminal_status="ERROR",
+            correlation_id=validated.correlation_id,
+            message=sanitize_error(e, "live check calculation"),
+        )
         await manager.send_json(
-            session_id, {"type": "error", "message": "No load cases provided"}
+            session_id,
+            error.model_dump(mode="json"),
         )
         return
-
-    d_mm = validated.depth - validated.cover - 8
-
-    # Run check in thread pool
-    result = await asyncio.to_thread(
-        check_beam_is456,
-        units="IS456",
-        cases=[case.model_dump() for case in validated.cases],
-        b_mm=float(validated.width),
-        D_mm=float(validated.depth),
-        d_mm=float(d_mm),
-        fck_nmm2=float(validated.fck),
-        fy_nmm2=float(validated.fy),
-    )
 
     end_time = datetime.now(timezone.utc)
     latency_ms = (end_time - start_time).total_seconds() * 1000
 
+    response = WSBeamCheckResultMessageV2(
+        type="check_result",
+        latency_ms=round(latency_ms, 2),
+        correlation_id=result.correlation_id,
+        data=BeamSuppliedCheckResponseV2.model_validate(result.to_dict()),
+    )
     await manager.send_json(
         session_id,
-        {
-            "type": "check_result",
-            "latency_ms": round(latency_ms, 2),
-            "data": {
-                "is_ok": result.is_ok,
-                "governing_case_id": result.governing_case_id,
-                "governing_utilization": result.governing_utilization,
-                "summary": result.summary,
-                "num_cases": len(result.cases),
-            },
-        },
+        response.model_dump(mode="json", by_alias=True),
     )

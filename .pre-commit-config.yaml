@@ -207,7 +207,7 @@ repos:
         verbose: true
       - id: check-api-signatures
         name: Check React/FastAPI endpoint contract
-        entry: ./scripts/python_runtime.sh scripts/check_api.py --signatures
+        entry: ./scripts/python_runtime.sh scripts/check_api.py --react-openapi
         language: system
         pass_filenames: false
         files: ^(react_app/src/.*\.(ts|tsx)|fastapi_app/.*\.py)$

@@ -11,6 +11,8 @@ from typing import Any, Optional
 
 import httpx
 
+API_VERSION = "0.24.0"
+
 
 @dataclass
 class FlexureResult:
@@ -204,6 +206,29 @@ class StructuralDesignClient:
             message = problem.get("message", "Request failed")
             raise RuntimeError(f"Canonical design failed: {code}: {message}") from exc
         return response.json()
+
+    def check_supplied_beam_v2(self, request: dict[str, Any]) -> dict[str, Any]:
+        """Run the exact ``beam-supplied-check/v2`` REST operation."""
+
+        response = self._client.post("/api/v1/design/beam/check", json=request)
+        try:
+            response.raise_for_status()
+        except httpx.HTTPStatusError as exc:
+            problem = response.json().get("error", {})
+            code = problem.get("code", response.status_code)
+            message = problem.get("message", "Request failed")
+            raise RuntimeError(
+                f"Supplied beam check failed: {code}: {message}"
+            ) from exc
+        envelope = response.json()
+        if envelope.get("success") is not True:
+            raise RuntimeError(
+                f"Supplied beam check failed: {envelope.get('error', 'unknown error')}"
+            )
+        data = envelope["data"]
+        if data.get("schema_version") != "beam-supplied-check-result/v2":
+            raise RuntimeError("Supplied beam check returned an incompatible result")
+        return data
 
     def calculate_geometry(
         self,

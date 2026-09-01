@@ -51,7 +51,7 @@ This checklist defines the minimum evidence requirements for audit readiness. Ea
 | Type annotation rate ≥50% | ⬜ | `scripts/check_type_annotations.py` | ✅ Yes |
 | No Streamlit AST issues | ⬜ | `scripts/check_streamlit.py` | ✅ Yes |
 | No fragment API violations | ⬜ | `scripts/check_streamlit.py --fragments` | ✅ Yes |
-| API signatures valid | ⬜ | `scripts/check_api.py --signatures` | ✅ Yes |
+| React/FastAPI routes agree | ⬜ | `scripts/check_api.py --react-openapi` | ✅ Yes |
 
 ---
 

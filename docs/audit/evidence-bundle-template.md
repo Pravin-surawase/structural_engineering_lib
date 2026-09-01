@@ -76,7 +76,7 @@ tags: []
 | check_streamlit.py --fragments | ⬜ Pass | 0 |
 | check_circular_imports.py | ⬜ Pass | 0 |
 | check_type_annotations.py | ⬜ Pass | ≥50% |
-| check_api.py --signatures | ⬜ Pass | 0 |
+| check_api.py --react-openapi | ⬜ Pass | 0 |
 
 ---
 

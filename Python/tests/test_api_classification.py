@@ -51,6 +51,7 @@ def test_every_facade_symbol_has_exactly_one_classification() -> None:
             in {"canonical", "advanced", "compatibility", "hold", "internal"}
             for record in surface["symbols"]
         )
+        assert all(record["documentation"]["role"] for record in surface["symbols"])
 
 
 def test_normal_pre1_registry_makes_no_stable_export_promise() -> None:
@@ -155,3 +156,61 @@ def test_canonical_task_api_is_capability_bound_and_artifact_scoped() -> None:
     }
     classified_modules = {surface["module"] for surface in registry["surfaces"]}
     assert family_facade_modules <= classified_modules
+
+
+def test_beam_documentation_slice_has_no_baselined_or_current_debt() -> None:
+    registry = classification.build_registry()
+    contract = registry["documentation_contract"]
+
+    assert contract["schema_version"] == "api-documentation-contract/v1"
+    assert not contract["unbaselined_debt"]
+    assert not any(
+        item["qualified_name"].startswith("structural_lib.design.is456.beam.")
+        for item in contract["current_debt"]
+    )
+    assert not any(
+        name.startswith("structural_lib.design.is456.beam.")
+        for name in contract["temporary_debt_baseline"]
+    )
+
+    beam_surface = next(
+        surface
+        for surface in registry["surfaces"]
+        if surface["module"] == "structural_lib.design.is456.beam"
+    )
+    records = {item["name"]: item for item in beam_surface["symbols"]}
+    for operation in contract["exact_wheel_beam_operations"]:
+        documentation = records[operation]["documentation"]
+        assert documentation["role"] == "CANONICAL_WORKFLOW_OPERATION"
+        assert not documentation["missing_docstring_sections"]
+        assert documentation["signature"]
+        assert documentation["example_ids"]
+
+    example_ids = {item["example_id"] for item in contract["example_inventory"]}
+    assert len(example_ids) == len(contract["example_inventory"])
+    assert {item["kind"] for item in contract["example_inventory"]} >= {
+        "VALID",
+        "INVALID",
+        "ENGINEERING_FAIL",
+        "ENGINEERING_HOLD",
+        "DOCSTRING",
+    }
+
+
+def test_documentation_contract_detects_missing_canonical_sections() -> None:
+    def undocumented(request: object) -> object:
+        """Incomplete canonical operation."""
+
+        return request
+
+    record = classification._documentation_record(
+        value=undocumented,
+        qualified_name="example.undocumented",
+        kind="function",
+        declared_export=True,
+        claim_disposition="canonical",
+    )
+
+    assert set(record["missing_docstring_sections"]) == set(
+        classification._CANONICAL_DOCSTRING_SECTIONS
+    )

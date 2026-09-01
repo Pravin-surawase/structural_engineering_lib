@@ -10,11 +10,12 @@ import inspect
 import json
 import runpy
 import sys
-import tomllib
 from collections import Counter
 from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
+
+import tomllib
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
@@ -66,6 +67,21 @@ def _python_assignment(path: tuple[str, ...], value: Any) -> str:
 def _page(workflow: Any, recipe: Any) -> str:
     alias = workflow.module.rsplit(".", 1)[-1]
     payload = json.dumps(recipe.payload, indent=4, sort_keys=True, allow_nan=False)
+    engineering_failure = ""
+    if workflow.journey_id == "is456.beam.design/v1":
+        engineering_failure = """## Engineering `FAIL` example
+```python
+failed_payload = dict(payload)
+failed_payload["actions"] = dict(payload["actions"], mu_knm=2000.0)
+failed = beam.design(beam.load(failed_payload))
+assert failed.engineering_status.value == "FAIL"
+assert failed.to_dict()["envelope"]["overall_status"] == "FAIL"
+```
+
+This is valid intake and a completed calculation. It must not be represented as
+an exception, HTTP failure, or professional acceptance.
+
+"""
     return f'''---
 owner: Main Agent
 status: active
@@ -124,7 +140,7 @@ except InputContractError as error:
     print([issue.to_dict() for issue in error.issues])
 ```
 
-## Compatibility and evidence
+{engineering_failure}## Compatibility and evidence
 
 - Maintained calculation owner: `{workflow.compatibility_owner}`
 - Result consumer: `{workflow.consumer_contract}`
@@ -338,6 +354,187 @@ approval, construction-use approval, or Windows application acceptance. The
 """
 
 
+def _beam_documentation_namespace() -> dict[str, Any]:
+    return runpy.run_path(
+        str(REPO_ROOT / "scripts/verify_lib_pro_012_r0_external_preview.py")
+    )
+
+
+def _beam_supplied_page(namespace: Mapping[str, Any]) -> str:
+    payload = namespace["_beam_supplied_documentation_payload"]()
+    serialized = json.dumps(payload, indent=4, sort_keys=True, allow_nan=False)
+    return f'''---
+owner: Main Agent
+status: active
+last_updated: 2026-09-01
+doc_type: guide
+complexity: advanced
+tags: [beam, supplied-reinforcement, canonical-api, lib-pro-015-d1]
+---
+
+# Supplied Beam Reinforcement Check V2
+
+Request: `beam-supplied-check/v2`<br>
+Result: `beam-supplied-check-result/v2`<br>
+Errors: `input-issue/v1`, `structural-problem/v1`, and
+`beam-supplied-check-error/v2`
+
+The check consumes exact longitudinal layers, stirrup diameter/legs/spacing,
+effective depth, materials, factored actions, selection constraints, support
+basis, source references, identity, tension face, and correlation identity.
+
+## Valid `PASS`
+
+```python
+import json
+
+from structural_lib.design.is456 import beam
+
+payload = json.loads(
+    r"""{serialized}"""
+)
+request = beam.load_supplied_check(payload)
+result = beam.check_supplied(request)
+assert result.status == "PASS"
+assert result.effective_depth_resolution["d_mm"] == 442.0
+```
+
+## Rejected input
+
+```python
+import copy
+
+from structural_lib.core.errors import InputContractError
+
+invalid_payload = copy.deepcopy(payload)
+del invalid_payload["section"]["effective_depth_basis"]
+
+try:
+    beam.load_supplied_check(invalid_payload)
+except InputContractError as error:
+    issue = error.issues[0]
+    assert issue.code == "CROSS_FIELD_CONTRACT_INVALID"
+    assert issue.path == "section"
+```
+
+## Engineering `FAIL`
+
+```python
+failed_payload = copy.deepcopy(payload)
+failed_payload["actions"]["vu_kn"] = 200.0
+failed_payload["reinforcement"]["stirrup_spacing_mm"] = 300.0
+failed = beam.check_supplied(beam.load_supplied_check(failed_payload))
+assert failed.status == "FAIL"
+assert failed.shear.spacing_is_adequate is False
+```
+
+## Engineering `HOLD`
+
+```python
+held_payload = copy.deepcopy(payload)
+held_payload["support"] = None
+held = beam.check_supplied(beam.load_supplied_check(held_payload))
+assert held.status == "HOLD"
+assert held.result_envelope.overall_status.value == "HOLD"
+```
+
+`HOLD` is never an adequate Boolean. REST and WebSocket project the same result
+dictionary and preserve `correlation_id`. See the
+[V1 migration](../../migration/beam-supplied-check-v2.md) and
+[beam facade reference](../../reference/beam-facade.md).
+
+These examples execute from `structural-lib-is456=={PROJECT_VERSION}`. Software
+status is not professional, engineering-use, or construction-use approval.
+'''
+
+
+def _beam_reference() -> str:
+    module = importlib.import_module("structural_lib.design.is456.beam")
+    operations = (
+        "input",
+        "load",
+        "design",
+        "check",
+        "detail",
+        "design_and_detail",
+        "bbs",
+        "load_supplied_check",
+        "check_supplied",
+    )
+    rows: list[str] = []
+    sections: list[str] = []
+    for name in operations:
+        value = getattr(module, name)
+        signature = inspect.signature(value)
+        summary = (inspect.getdoc(value) or "").splitlines()[0]
+        rows.append(
+            f"| `{name}` | `structural_lib.design.is456.beam.{name}{signature}` | "
+            f"{summary} |"
+        )
+        sections.append(
+            f"### `{name}`\n\n"
+            f"```python\n{name}{signature}\n```\n\n"
+            f"{inspect.getdoc(value)}"
+        )
+    return f"""---
+owner: Main Agent
+status: active
+last_updated: 2026-09-01
+doc_type: reference
+complexity: advanced
+tags: [beam, canonical-api, exact-signatures, lib-pro-015-d1]
+---
+
+# Canonical IS 456 Beam Facade
+
+Recommended import: `from structural_lib.design.is456 import beam`<br>
+Classification: pre-1.0 canonical workflow facade<br>
+Introduced contract family: `beam-design-input/v1`; supplied check added as
+`beam-supplied-check/v2`<br>
+Exact-wheel version: `structural-lib-is456=={PROJECT_VERSION}`
+
+## Operations
+
+| Operation | Exact live signature | Purpose |
+|---|---|---|
+{chr(10).join(rows)}
+
+## Request, result, and error contracts
+
+| Journey | Request | Result | Intake/calculation errors |
+|---|---|---|---|
+| Required design/detailing | `BeamDesignInputV1` | `BeamDesignResultV1`, `BeamDetailingResultV1`, `BeamDesignAndDetailResultV1`, `BeamBBSResultV1` | `InputContractError` / `input-issue/v1`; calculation errors remain distinct |
+| Supplied reinforcement | `BeamSuppliedCheckRequestV2` | `BeamSuppliedCheckResultV2` with `PASS`/`FAIL`/`HOLD` | Same Python issue boundary; REST 422 problem; WebSocket terminal `ERROR` |
+
+The typed request schemas own field type, unit-suffixed name, domain,
+optionality, defaults, identity/provenance, and cross-field validation. The
+machine-readable schemas and per-field decisions are in
+[`api-classification.json`](api-classification.json). Supplied-check HTTP fields
+are also in `/openapi.json`; WebSocket uses the checked-in
+[V2 exchange schema](beam-supplied-check-websocket-v2.schema.json).
+
+## Examples and migration
+
+- [Design valid, invalid, and engineering `FAIL`](../cookbook/python/beam-design.md)
+- [Supplied check valid, invalid, `FAIL`, and `HOLD`](../cookbook/python/beam-supplied-check.md)
+- [Flat V1 supplied-check migration](../migration/beam-supplied-check-v2.md)
+- REST: `POST /api/v2/design/beam` and retained path
+  `POST /api/v1/design/beam/check`
+
+## Limitations and review boundary
+
+The facade does not generate project loads, infer reinforcement/source facts,
+expand supported topology, or provide professional acceptance. Result intake,
+calculation, engineering, freshness, and qualified-review axes remain separate.
+Calculation provenance remains with the maintained IS 456 owners named by each
+result; facade functions contain no independent formula.
+
+## Operation docstrings
+
+{chr(10).join(sections)}
+"""
+
+
 def build_outputs() -> dict[Path, str]:
     sys.path.insert(0, str(PYTHON_ROOT))
     from structural_lib.services.family_facade_registry import (
@@ -357,6 +554,11 @@ def build_outputs() -> dict[Path, str]:
     }
     outputs[INDEX_PATH.relative_to(REPO_ROOT)] = _index(workflows, recipes)
     outputs[REFERENCE_PATH.relative_to(REPO_ROOT)] = _reference(workflows)
+    beam_namespace = _beam_documentation_namespace()
+    outputs[Path("docs/cookbook/python/beam-supplied-check.md")] = _beam_supplied_page(
+        beam_namespace
+    )
+    outputs[Path("docs/reference/beam-facade.md")] = _beam_reference()
     return outputs
 
 
