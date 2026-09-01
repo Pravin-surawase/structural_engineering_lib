@@ -360,6 +360,34 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+function hasFiniteNumberFields(
+  value: Record<string, unknown>,
+  fields: readonly string[],
+): boolean {
+  return fields.every(
+    (field) => typeof value[field] === 'number' && Number.isFinite(value[field]),
+  );
+}
+
+function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every((item) => typeof item === 'string');
+}
+
+function isIssueArray(value: unknown, requirePath: boolean): boolean {
+  return Array.isArray(value) && value.every(
+    (issue) => isRecord(issue)
+      && typeof issue.code === 'string'
+      && typeof issue.message === 'string'
+      && (!requirePath || typeof issue.path === 'string'),
+  );
+}
+
+function isStringMap(value: unknown, nullableValues = false): boolean {
+  return isRecord(value) && Object.values(value).every(
+    (item) => typeof item === 'string' || (nullableValues && item === null),
+  );
+}
+
 export function parseStructuralResultEnvelope(
   value: unknown,
 ): StructuralResultEnvelope {
@@ -491,16 +519,83 @@ function parseBeamDesignResponse(value: unknown): BeamDesignResponse {
 export function parseBeamSuppliedCheckResult(
   value: unknown,
 ): BeamSuppliedCheckResultV2 {
+  const request = isRecord(value) && isRecord(value.request) ? value.request : null;
+  const requestIdentity = request && isRecord(request.identity) ? request.identity : null;
+  const requestSection = request && isRecord(request.section) ? request.section : null;
+  const requestActions = request && isRecord(request.actions) ? request.actions : null;
+  const identity = isRecord(value) && isRecord(value.identity) ? value.identity : null;
+  const depth = isRecord(value) && isRecord(value.effective_depth_resolution)
+    ? value.effective_depth_resolution
+    : null;
+  const longitudinal = isRecord(value) && isRecord(value.longitudinal)
+    ? value.longitudinal
+    : null;
+  const shear = isRecord(value) && isRecord(value.shear) ? value.shear : null;
   if (
     !isRecord(value)
     || value.schema_version !== 'beam-supplied-check-result/v2'
     || typeof value.correlation_id !== 'string'
     || !['PASS', 'FAIL', 'HOLD', 'ERROR'].includes(String(value.status))
-    || !isRecord(value.request)
-    || value.request.schema_version !== 'beam-supplied-check/v2'
-    || value.request.correlation_id !== value.correlation_id
-    || !isRecord(value.shear)
-    || value.shear.schema_version !== 'beam-supplied-shear-check/v2'
+    || request === null
+    || request.schema_version !== 'beam-supplied-check/v2'
+    || request.correlation_id !== value.correlation_id
+    || requestIdentity === null
+    || !['member_id', 'story', 'case_id'].every(
+      (field) => typeof requestIdentity[field] === 'string',
+    )
+    || requestSection === null
+    || !hasFiniteNumberFields(requestSection, ['b_mm', 'D_mm'])
+    || !isRecord(request.materials)
+    || !hasFiniteNumberFields(
+      request.materials,
+      ['fck_nmm2', 'fy_nmm2', 'fy_transverse_nmm2'],
+    )
+    || requestActions === null
+    || !hasFiniteNumberFields(requestActions, ['mu_knm', 'vu_kn'])
+    || !['TOP', 'BOTTOM'].includes(String(requestActions.primary_tension_face))
+    || !isRecord(request.reinforcement)
+    || !isRecord(request.selection)
+    || identity === null
+    || !['member_id', 'story', 'case_id'].every(
+      (field) => identity[field] === requestIdentity[field],
+    )
+    || value.primary_tension_face !== requestActions.primary_tension_face
+    || depth === null
+    || depth.contract_version !== 'effective-depth-basis/v1'
+    || !['EXPLICIT', 'DERIVED'].includes(String(depth.source))
+    || !hasFiniteNumberFields(depth, ['D_mm', 'd_mm'])
+    || depth.D_mm !== requestSection.D_mm
+    || (depth.effective_depth_basis !== null && !isRecord(depth.effective_depth_basis))
+    || typeof value.d_dash_used_mm !== 'number'
+    || !Number.isFinite(value.d_dash_used_mm)
+    || longitudinal === null
+    || longitudinal.schema_version !== 'beam-reinforcement-evaluation/v1'
+    || !['PASS', 'FAIL', 'HOLD'].includes(String(longitudinal.status))
+    || !hasFiniteNumberFields(longitudinal, ['ast_required_mm2', 'asc_required_mm2'])
+    || !isRecord(longitudinal.checks)
+    || !isIssueArray(longitudinal.issues, false)
+    || !isStringMap(longitudinal.clause_refs)
+    || !isStringMap(longitudinal.provenance, true)
+    || !isStringArray(longitudinal.limitations)
+    || longitudinal.qualified_review_required !== true
+    || shear === null
+    || shear.schema_version !== 'beam-supplied-shear-check/v2'
+    || !['PASS', 'FAIL'].includes(String(shear.status))
+    || !hasFiniteNumberFields(shear, [
+      'required_Vus_kn',
+      'concrete_capacity_kn',
+      'provided_stirrup_capacity_kn',
+      'total_capacity_kn',
+      'provided_asv_mm2',
+      'provided_spacing_mm',
+      'maximum_permitted_spacing_mm',
+      'utilization',
+    ])
+    || !['spacing_is_adequate', 'capacity_is_adequate', 'section_shear_is_adequate']
+      .every((field) => typeof shear[field] === 'boolean')
+    || !isIssueArray(shear.issues, true)
+    || !isStringMap(shear.clause_refs)
+    || !isStringArray(value.limitations)
   ) {
     throw new Error('Supplied beam check result is missing or incompatible');
   }
@@ -510,6 +605,15 @@ export function parseBeamSuppliedCheckResult(
     && resultEnvelope.engineering_status !== value.status
   ) {
     throw new Error('Supplied beam check has contradictory terminal status');
+  }
+  if (
+    (value.status === 'PASS'
+      && (longitudinal.status !== 'PASS' || shear.status !== 'PASS'))
+    || (value.status === 'FAIL'
+      && longitudinal.status !== 'FAIL' && shear.status !== 'FAIL')
+    || (value.status === 'HOLD' && longitudinal.status !== 'HOLD')
+  ) {
+    throw new Error('Supplied beam check has contradictory component status');
   }
   return {
     ...value,

@@ -36,7 +36,9 @@ __all__ = [
 ]
 
 
-BEAM_SUPPLIED_CHECK_SCHEMA_VERSION = "beam-supplied-check/v2"
+BEAM_SUPPLIED_CHECK_SCHEMA_VERSION: Literal["beam-supplied-check/v2"] = (
+    "beam-supplied-check/v2"
+)
 
 
 class BeamBarLayersV2(StrictPublicModel):
@@ -204,9 +206,8 @@ class BeamSupportBasisV2(StrictPublicModel):
 class BeamSuppliedCheckRequestV2(StrictPublicModel):
     """Complete supplied-reinforcement beam-check request."""
 
-    schema_version: str = Field(
-        default=BEAM_SUPPLIED_CHECK_SCHEMA_VERSION,
-        frozen=True,
+    schema_version: Literal["beam-supplied-check/v2"] = (
+        BEAM_SUPPLIED_CHECK_SCHEMA_VERSION
     )
     correlation_id: str = Field(min_length=1, max_length=120)
     identity: MemberIdentityV1

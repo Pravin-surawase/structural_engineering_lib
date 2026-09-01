@@ -250,6 +250,7 @@ def check_supplied_beam_v2(
                 "mu_knm": request.actions.mu_knm,
                 "vu_kn": request.actions.vu_kn,
                 "ast_mm2_for_shear": supplied.tension.area_provided_mm2,
+                "fy_transverse_nmm2": request.materials.fy_transverse_nmm2,
             }
         ],
         b_mm=request.section.b_mm,

@@ -519,6 +519,7 @@ def check_compliance_report(
     - deflection_params: dict
     - crack_width_params: dict
     - ast_mm2_for_shear: float
+    - fy_transverse_nmm2: float
     """
 
     results: list[ComplianceCaseResult] = []
@@ -550,6 +551,7 @@ def check_compliance_report(
         defl_params = c.get("deflection_params", deflection_defaults)
         crack_params = c.get("crack_width_params", crack_width_defaults)
         ast_for_shear = c.get("ast_mm2_for_shear")
+        fy_transverse = c.get("fy_transverse_nmm2")
 
         results.append(
             check_compliance_case(
@@ -561,6 +563,9 @@ def check_compliance_report(
                 d_mm=d_mm,
                 fck_nmm2=fck_nmm2,
                 fy_nmm2=fy_nmm2,
+                fy_transverse_nmm2=(
+                    float(fy_transverse) if fy_transverse is not None else None
+                ),
                 d_dash_mm=d_dash_mm,
                 asv_mm2=asv_mm2,
                 pt_percent=pt_percent,

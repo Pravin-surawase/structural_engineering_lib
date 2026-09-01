@@ -143,6 +143,26 @@ def test_supplied_stirrup_spacing_changes_the_shear_result() -> None:
     )
 
 
+def test_transverse_grade_owns_minimum_shear_reinforcement_spacing() -> None:
+    low_grade = _payload()
+    materials = low_grade["materials"]
+    reinforcement = low_grade["reinforcement"]
+    assert isinstance(materials, dict)
+    assert isinstance(reinforcement, dict)
+    materials["fy_transverse_nmm2"] = 250.0
+    reinforcement["stirrup_spacing_mm"] = 250.0
+
+    result = _check(low_grade)
+
+    assert result.shear.status == "FAIL"
+    assert result.shear.maximum_permitted_spacing_mm == pytest.approx(175.0)
+    assert result.shear.spacing_is_adequate is False
+    assert any(
+        issue["code"] == "BEAM_STIRRUP_SPACING_INADEQUATE"
+        for issue in result.shear.issues
+    )
+
+
 def test_supplied_compression_steel_changes_the_flexural_result() -> None:
     insufficient = _payload()
     actions = insufficient["actions"]

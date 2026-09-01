@@ -309,3 +309,45 @@ def test_exact_public_signatures_strictness_and_hash_basis() -> None:
         ).hexdigest()
         == result.evaluation_sha256
     )
+
+
+def test_row_compatibility_evaluator_matches_full_audit_and_rejects_face_tamper() -> (
+    None
+):
+    request = _request()
+    built = audit.build_beam_audit_inputs_v1(request)
+    assert built.inputs is not None
+    source_row = built.inputs.rows[2]
+    full = audit.evaluate_beam_audit_v1(
+        audit.BeamAuditEvaluationRequestV1(inputs=built.inputs)
+    )
+    expected = next(
+        row for row in full.rows if row.input.action.row_id == source_row.action.row_id
+    )
+    row_request = audit.BeamAuditRowEvaluationRequestV1(
+        row=source_row,
+        scenario_id=request.demand.scenario.scenario_id,
+        context_sha256=built.inputs.inputs_sha256,
+        require_serviceability=False,
+    )
+
+    evaluated = audit.evaluate_beam_audit_row_v1(row_request)
+
+    assert evaluated.status is W3BuildStatusV1.ACCEPTED
+    assert evaluated.row is not None
+    assert evaluated.row.canonical_result_sha256 == expected.canonical_result_sha256
+    changed_actions = source_row.canonical_request.actions.model_copy(
+        update={"primary_tension_face": "BOTTOM"}
+    )
+    tampered_row = source_row.model_copy(
+        update={
+            "canonical_request": source_row.canonical_request.model_copy(
+                update={"actions": changed_actions}
+            )
+        }
+    )
+    blocked = audit.evaluate_beam_audit_row_v1(
+        row_request.model_copy(update={"row": tampered_row})
+    )
+    assert blocked.status is W3BuildStatusV1.BLOCKED
+    assert blocked.issues[0].code == "BEAM_AUDIT_SAME_ROW_OR_FACE_MISMATCH"

@@ -120,6 +120,7 @@ nav:
     - CLI Cookbook: cookbook/cli-reference.md
     - Cost Optimization: getting-started/cost-optimization-guide.md
     - Design Suggestions: getting-started/design-suggestions-guide.md
+    - ETABS API Integration: guides/etabs-api-integration.md
     - Insights (experimental): getting-started/insights-guide.md
   - Reference:
     - API Reference: reference/api.md

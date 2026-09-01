@@ -8,6 +8,7 @@ End-user and developer guides for specific workflows.
 |-------|-------------|
 | `ai-agent-coding-guide.md` | AI agent coding practices |
 | `cross-surface-parity-v1.md` | Canonical Python, REST, React, and Excel identity/freshness contract |
+| `etabs-api-integration.md` | Versioned ETABS API safety, identity, execution, evidence, and recovery boundary |
 | `etabs-exported-snapshot-v1.md` | Read-only, trial-compatible ETABS exported-file snapshot workflow |
 | `excel-etabs-python-bridge-pilot.md` | Windows Office.js -> local Python -> live ETABS read-only beam pilot |
 | `code-reuse-and-library-structure.md` | Library structure and reuse patterns |

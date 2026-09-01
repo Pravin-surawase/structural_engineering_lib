@@ -6626,6 +6626,7 @@
             "$ref": "#/components/schemas/BeamSuppliedReinforcementV2"
           },
           "schema_version": {
+            "const": "beam-supplied-check/v2",
             "default": "beam-supplied-check/v2",
             "title": "Schema Version",
             "type": "string"

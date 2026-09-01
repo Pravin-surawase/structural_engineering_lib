@@ -1,0 +1,161 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "1a149df93c4df9c77dd3c3a5da6c27f9b91936dbdea7025f1994e3438aefd7ca",
+    "state": {
+      "branch": "codex/w3-offline-etabs-foundations",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "f2a5c6f158647a1d09fb4ff54f158d1734440fba",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 249.1,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git\\worktrees\\w3-offline-etabs-foundations",
+      "head_sha": "f2a5c6f158647a1d09fb4ff54f158d1734440fba",
+      "hold_reasons": [
+        "changed paths: 42"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-09-01T18:58:21.220532+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\worktrees\\w3-offline-etabs-foundations",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 42,
+        "modified_paths": [
+          "Python/structural_lib/__init__.py",
+          "Python/structural_lib/codes/is456/compliance.py",
+          "Python/structural_lib/services/beam_api.py",
+          "Python/structural_lib/services/beam_audit.py",
+          "Python/structural_lib/services/contracts/beam_supplied_check.py",
+          "Python/structural_lib/services/etabs_live_bridge.py",
+          "Python/structural_lib/services/supplied_beam_check.py",
+          "Python/tests/unit/test_beam_audit.py",
+          "Python/tests/unit/test_beam_supplied_check_v2.py",
+          "Python/tests/unit/test_etabs_live_bridge.py",
+          "clients/python/structural_client/__init__.py",
+          "clients/python/structural_client/client.py",
+          "clients/typescript/package.json",
+          "clients/typescript/src/index.ts",
+          "clients/typescript/tsconfig.json",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/contributing/repo-professionalism.md",
+          "docs/guides/README.md",
+          "docs/migration/beam-supplied-check-v2.md",
+          "docs/planning/README.md",
+          "docs/planning/next-session-brief.md",
+          "docs/planning/w3-beam-professional-integrated-execution-plan.md",
+          "docs/reference/beam-supplied-check-websocket-v2.schema.json",
+          "fastapi_app/openapi_baseline.json",
+          "fastapi_app/tests/test_public_documentation_contract.py",
+          "mkdocs.yml",
+          "react_app/src/api/__tests__/endpoints.test.ts",
+          "react_app/src/api/client.ts",
+          "scripts/automation-map.json",
+          "scripts/check_all.py",
+          "scripts/check_next_session_brief_length.py",
+          "scripts/control-plane.json"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "Python/structural_lib/services/beam_project_contracts.py",
+          "Python/structural_lib/services/etabs_acquisition_contracts.py",
+          "Python/structural_lib/services/etabs_operation_control.py",
+          "Python/structural_lib/services/etabs_session_guard.py",
+          "Python/tests/unit/test_beam_project_contracts.py",
+          "Python/tests/unit/test_etabs_acquisition_contracts.py",
+          "Python/tests/unit/test_etabs_operation_control.py",
+          "Python/tests/unit/test_etabs_session_guard.py",
+          "docs/guides/etabs-api-integration.md"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "f2a5c6f158647a1d09fb4ff54f158d1734440fba",
+        "status": "equal"
+      },
+      "worktree_root": "C:\\CodexWork\\worktrees\\w3-offline-etabs-foundations"
+    }
+  },
+  "local_state_receipt_hash": "sha256:1a149df93c4df9c77dd3c3a5da6c27f9b91936dbdea7025f1994e3438aefd7ca",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-09-01T18:58:21.220532+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "docs/reference/vendor"
+    ],
+    "integration_owner": "Main Agent / sole Windows writer",
+    "owned_paths": [
+      "Python/structural_lib/services/etabs_session_guard.py",
+      "Python/structural_lib/services/etabs_operation_control.py",
+      "Python/structural_lib/services/beam_project_contracts.py",
+      "Python/structural_lib/services/etabs_acquisition_contracts.py"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md",
+      "fastapi_app/openapi_baseline.json"
+    ],
+    "task_id": "W3-OFFLINE-ETABS-FOUNDATIONS"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

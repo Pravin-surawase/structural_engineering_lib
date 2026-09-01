@@ -7,7 +7,9 @@ and restores the user's present-unit setting before returning.
 
 from __future__ import annotations
 
+import hashlib
 import importlib
+import json
 import math
 import platform
 from collections.abc import Callable, Iterator, Sequence
@@ -18,21 +20,27 @@ from pathlib import PureWindowsPath
 from threading import Lock
 from typing import Any, Literal, Protocol
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
+from structural_lib.core.analysis_contracts import (
+    BeamActionRowV1,
+    EvidenceStateV1,
+    EvidenceValueV1,
+    ResultSelectionKindV1,
+)
 from structural_lib.core.errors import InputContractError
-from structural_lib.services.canonical_beam import design_and_detail
 from structural_lib.services.common_api import get_library_version
 from structural_lib.services.contracts.beam import (
+    BeamActionsV1,
+    BeamCalculationBasisV1,
     BeamDesignInputV1,
     BeamDetailingOptionsV1,
     EffectiveDepthBasisRequestV1,
     IS456MaterialsV1,
+    MemberIdentityV1,
+    RectangularBeamSectionV1,
 )
-from structural_lib.services.contracts.common import (
-    StrictPublicModel,
-    model_validate_or_error,
-)
+from structural_lib.services.contracts.common import StrictPublicModel
 from structural_lib.services.evidence import get_library_content_identity
 
 __all__ = [
@@ -41,6 +49,7 @@ __all__ = [
     "ETABSConnectionError",
     "ETABSConnectionV1",
     "ETABSDataError",
+    "ETABSPilotAuditProvenanceV1",
     "ETABSPilotDesignBasisV1",
     "ETABSPilotRequestV1",
     "ETABSPilotResultV1",
@@ -78,6 +87,30 @@ class ETABSResultSelectionV1(StrictPublicModel):
     name: str = Field(min_length=1, max_length=80)
 
 
+class ETABSPilotAuditProvenanceV1(StrictPublicModel):
+    """Accepted identities and signed M3-to-physical-face mapping for B0."""
+
+    model_identity_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    baseline_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    catalogue_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    selection_id: str = Field(min_length=1, max_length=160)
+    scenario_id: str = Field(min_length=1, max_length=160)
+    local_axis_basis: str = Field(min_length=1, max_length=500)
+    factored_action_basis: str = Field(min_length=1, max_length=500)
+    max_abs_axial_kn: float = Field(ge=0)
+    max_abs_minor_shear_kn: float = Field(ge=0)
+    max_abs_minor_moment_knm: float = Field(ge=0)
+    positive_m3_tension_face: Literal["TOP", "BOTTOM"]
+    negative_m3_tension_face: Literal["TOP", "BOTTOM"]
+    source_references: tuple[str, ...] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_faces(self) -> ETABSPilotAuditProvenanceV1:
+        if self.positive_m3_tension_face == self.negative_m3_tension_face:
+            raise ValueError("opposite M3 signs require opposite physical faces")
+        return self
+
+
 class ETABSPilotDesignBasisV1(StrictPublicModel):
     """Explicit caller-owned design and detailing choices for every pilot beam."""
 
@@ -87,6 +120,7 @@ class ETABSPilotDesignBasisV1(StrictPublicModel):
     detailing: BeamDetailingOptionsV1
     pt_percent: float | None = Field(default=None, gt=0)
     ast_mm2_for_shear: float | None = Field(default=None, gt=0)
+    audit_provenance: ETABSPilotAuditProvenanceV1 | None = None
 
 
 class ETABSPilotRequestV1(StrictPublicModel):
@@ -210,17 +244,28 @@ class ETABSPilotResultV1(StrictPublicModel):
     """Completed bounded ETABS read and canonical beam-design proof."""
 
     schema_version: Literal["etabs-beam-pilot/v1"] = ETABS_PILOT_SCHEMA_VERSION
-    pilot_status: Literal["COMPLETED"] = "COMPLETED"
+    pilot_status: Literal["COMPLETED", "HELD"]
     model: ETABSModelIdentityV1
     result_selection: ETABSResultSelectionV1
     units: dict[str, str]
     candidate_beam_count: int = Field(ge=1)
-    designed_beam_count: int = Field(ge=1, le=5)
+    designed_beam_count: int = Field(ge=0, le=5)
+    held_beam_count: int = Field(ge=0, le=5)
     beams: tuple[ETABSPilotBeamResultV1, ...]
     library_version: str
     library_content_identity: str
+    calculation_owner: Literal["beam-audit-row/v1"] = "beam-audit-row/v1"
+    legacy_transport_status: Literal["DEPRECATED_PENDING_A1"] = "DEPRECATED_PENDING_A1"
     qualified_review_required: Literal[True] = True
     limitations: tuple[str, ...]
+
+    @model_validator(mode="after")
+    def validate_counts(self) -> ETABSPilotResultV1:
+        if self.designed_beam_count + self.held_beam_count != len(self.beams):
+            raise ValueError("delegated plus held counts must equal beam results")
+        if (self.pilot_status == "COMPLETED") != (self.held_beam_count == 0):
+            raise ValueError("pilot status must reflect held compatibility rows")
+        return self
 
 
 class ETABSBridgeError(RuntimeError):
@@ -673,43 +718,221 @@ def _design_beam(
     forces: ETABSFrameForcesV1,
     basis: ETABSPilotDesignBasisV1,
 ) -> dict[str, Any]:
-    options = basis.detailing
-    request = model_validate_or_error(
-        BeamDesignInputV1,
-        {
-            "identity": {
-                "member_id": geometry.frame_name,
-                "story": geometry.story,
-                "case_id": forces.selection.name,
-            },
-            "section": {
-                "span_mm": geometry.span_mm,
-                "b_mm": geometry.b_mm,
-                "D_mm": geometry.D_mm,
-                "d_mm": None,
-                "effective_depth_basis": basis.effective_depth_basis,
-            },
-            "materials": basis.materials,
-            "actions": {
-                "mu_knm": forces.governing_m3.absolute_value,
-                "vu_kn": forces.governing_v2.absolute_value,
-                "tu_knm": forces.governing_t.absolute_value,
-            },
-            "calculation_basis": {
-                "d_dash_mm": basis.d_dash_mm,
-                "asv_mm2": options.asv_mm2,
-                "pt_percent": basis.pt_percent,
-                "ast_mm2_for_shear": basis.ast_mm2_for_shear,
-            },
-            "detailing": options,
-            "serviceability": None,
-            "source_provenance": (
-                f"ETABS:{geometry.frame_name}:{geometry.story}:"
-                f"{forces.selection.kind.value}:{forces.selection.name}"
-            ),
-        },
+    # Lazy import avoids the legacy baseline -> live bridge dependency cycle.
+    audit = importlib.import_module("structural_lib.services.beam_audit")
+    provenance = basis.audit_provenance
+    if provenance is None:
+        return {
+            "compatibility_status": "HELD",
+            "delegated_to": "evaluate_beam_audit_row_v1",
+            "issues": [
+                {
+                    "code": "ETABS_PILOT_FACE_PROVENANCE_REQUIRED",
+                    "message": (
+                        "Signed M3-to-physical-face mapping and accepted source "
+                        "identities are required; the legacy pilot will not infer them."
+                    ),
+                }
+            ],
+            "limitations": [
+                "No design result is emitted without explicit signed-face provenance.",
+                "Use the complete W3 beam audit for accepted demand-domain evidence.",
+            ],
+        }
+    governing_station = next(
+        (
+            station
+            for station in forces.stations
+            if station.row_index == forces.governing_m3.row_index
+        ),
+        None,
     )
-    return design_and_detail(request, detailing_standard=options.standard).to_dict()
+    if governing_station is None:
+        raise ETABSDataError(
+            "ETABS_GOVERNING_ROW_MISSING",
+            "The signed governing M3 reference does not identify a retained station.",
+        )
+    if (
+        abs(governing_station.p_kn) > provenance.max_abs_axial_kn
+        or abs(governing_station.v3_kn) > provenance.max_abs_minor_shear_kn
+        or abs(governing_station.m2_knm) > provenance.max_abs_minor_moment_knm
+    ):
+        return {
+            "compatibility_status": "HELD",
+            "delegated_to": "evaluate_beam_audit_row_v1",
+            "issues": [
+                {
+                    "code": "ETABS_PILOT_APPLICABILITY_EXCEEDED",
+                    "message": "A same-row excluded action exceeds the caller-owned bound.",
+                }
+            ],
+            "limitations": [
+                "No partial major-axis strength result is emitted outside applicability."
+            ],
+        }
+    tension_face: Literal["TOP", "BOTTOM", "ZERO_MOMENT"] = "ZERO_MOMENT"
+    if governing_station.m3_knm > 0:
+        tension_face = provenance.positive_m3_tension_face
+    elif governing_station.m3_knm < 0:
+        tension_face = provenance.negative_m3_tension_face
+    source_identity = {
+        "member_id": geometry.frame_name,
+        "story": geometry.story,
+        "selection_id": provenance.selection_id,
+        "selection_kind": forces.selection.kind.value,
+        "selection_name": forces.selection.name,
+        "row_index": governing_station.row_index,
+        "object_station_mm": governing_station.object_station_mm,
+        "element_name": governing_station.element_name,
+        "element_station_mm": governing_station.element_station_mm,
+        "step_type": governing_station.step_type,
+        "step_number": governing_station.step_number,
+    }
+    source_json = json.dumps(
+        source_identity, sort_keys=True, separators=(",", ":"), allow_nan=False
+    )
+    station_id = (
+        f"etabs-pilot-row:{hashlib.sha256(source_json.encode()).hexdigest()[:24]}"
+    )
+    selection_kind = (
+        ResultSelectionKindV1.CASE
+        if forces.selection.kind is ETABSResultSelectionKind.CASE
+        else ResultSelectionKindV1.COMBINATION
+    )
+    provisional_action = BeamActionRowV1(
+        row_id=station_id,
+        model_identity_sha256=provenance.model_identity_sha256,
+        baseline_sha256=provenance.baseline_sha256,
+        catalogue_sha256=provenance.catalogue_sha256,
+        member_id=geometry.frame_name,
+        source_frame_name=geometry.frame_name,
+        station_id=station_id,
+        selection_id=provenance.selection_id,
+        selection_kind=selection_kind,
+        selection_name=forces.selection.name,
+        output_case_name=governing_station.load_case,
+        object_name=governing_station.object_name,
+        object_station_mm=governing_station.object_station_mm,
+        element_name=governing_station.element_name,
+        element_station_mm=governing_station.element_station_mm,
+        step_type=governing_station.step_type,
+        step_number=governing_station.step_number,
+        source_row_index=governing_station.row_index,
+        p_kn=governing_station.p_kn,
+        v2_kn=governing_station.v2_kn,
+        v3_kn=governing_station.v3_kn,
+        t_knm=governing_station.t_knm,
+        m2_knm=governing_station.m2_knm,
+        m3_knm=governing_station.m3_knm,
+        local_axis_basis=provenance.local_axis_basis,
+        row_sha256="0" * 64,
+    )
+    action = provisional_action.model_copy(
+        update={
+            "row_sha256": audit.canonical_beam_action_row_sha256_v1(provisional_action)
+        }
+    )
+    section = RectangularBeamSectionV1(
+        span_mm=geometry.span_mm,
+        b_mm=geometry.b_mm,
+        D_mm=geometry.D_mm,
+        d_mm=None,
+        effective_depth_basis=basis.effective_depth_basis,
+    )
+    calculation_basis = BeamCalculationBasisV1(
+        d_dash_mm=basis.d_dash_mm,
+        asv_mm2=basis.detailing.asv_mm2,
+        pt_percent=basis.pt_percent,
+        ast_mm2_for_shear=basis.ast_mm2_for_shear,
+    )
+    canonical = BeamDesignInputV1(
+        identity=MemberIdentityV1(
+            member_id=geometry.frame_name,
+            story=geometry.story,
+            case_id=provenance.selection_id,
+        ),
+        section=section,
+        materials=basis.materials,
+        actions=BeamActionsV1(
+            mu_knm=abs(action.m3_knm),
+            vu_kn=abs(action.v2_kn),
+            tu_knm=abs(action.t_knm),
+            primary_tension_face=(
+                tension_face if tension_face != "ZERO_MOMENT" else None
+            ),
+        ),
+        calculation_basis=calculation_basis,
+        detailing=basis.detailing,
+        serviceability=None,
+        source_provenance=f"beam-audit-compat:{action.row_sha256}",
+    )
+    serviceability = EvidenceValueV1[str](
+        state=EvidenceStateV1.NOT_REQUESTED,
+        value=None,
+        reason_code="ETABS_PILOT_SERVICEABILITY_NOT_REQUESTED",
+        message="Legacy pilot compatibility is bounded to strength.",
+        source_references=provenance.source_references,
+    )
+    row = audit.BeamAuditRowInputV1(
+        action=action,
+        canonical_request=canonical,
+        tension_face=tension_face,
+        demand_governing_reference_ids=(action.row_id,),
+        basis_source_references=provenance.source_references,
+        assumptions=(
+            provenance.factored_action_basis,
+            "Same-row actions are retained; independent extrema are references only.",
+        ),
+        serviceability_basis=serviceability,
+    )
+    context_payload = {
+        "provenance": provenance.model_dump(mode="json"),
+        "geometry": geometry.model_dump(mode="json"),
+        "action_row_sha256": action.row_sha256,
+    }
+    context_sha256 = hashlib.sha256(
+        json.dumps(
+            context_payload,
+            sort_keys=True,
+            separators=(",", ":"),
+            allow_nan=False,
+        ).encode()
+    ).hexdigest()
+    evaluation = audit.evaluate_beam_audit_row_v1(
+        audit.BeamAuditRowEvaluationRequestV1(
+            row=row,
+            scenario_id=provenance.scenario_id,
+            context_sha256=context_sha256,
+            require_serviceability=False,
+        )
+    )
+    if evaluation.row is None:
+        return {
+            "compatibility_status": "HELD",
+            "delegated_to": "evaluate_beam_audit_row_v1",
+            "tension_face": tension_face,
+            "action_row_sha256": action.row_sha256,
+            "audit_evaluation": evaluation.model_dump(mode="json"),
+            "issues": [issue.model_dump(mode="json") for issue in evaluation.issues],
+            "limitations": list(evaluation.limitations),
+        }
+    return {
+        "compatibility_status": "DELEGATED",
+        "delegated_to": "evaluate_beam_audit_row_v1",
+        "tension_face": tension_face,
+        "action_row_sha256": action.row_sha256,
+        "same_row_actions": {
+            "p_kn": action.p_kn,
+            "v2_kn": action.v2_kn,
+            "v3_kn": action.v3_kn,
+            "t_knm": action.t_knm,
+            "m2_knm": action.m2_knm,
+            "m3_knm": action.m3_knm,
+        },
+        "audit_evaluation": evaluation.model_dump(mode="json"),
+        "canonical_result": json.loads(evaluation.row.canonical_result_json),
+        "limitations": list(evaluation.limitations),
+    }
 
 
 def run_etabs_beam_pilot_v1(
@@ -743,7 +966,13 @@ def run_etabs_beam_pilot_v1(
                         )
                     )
     library_version, content_identity = _library_identity()
+    delegated_count = sum(
+        item.design_result.get("compatibility_status") == "DELEGATED"
+        for item in results
+    )
+    held_count = len(results) - delegated_count
     return ETABSPilotResultV1(
+        pilot_status="HELD" if held_count else "COMPLETED",
         model=model,
         result_selection=request.result_selection,
         units={
@@ -753,14 +982,16 @@ def run_etabs_beam_pilot_v1(
             "stress": "N/mm2",
         },
         candidate_beam_count=len(inventory),
-        designed_beam_count=len(results),
+        designed_beam_count=delegated_count,
+        held_beam_count=held_count,
         beams=tuple(results),
         library_version=library_version,
         library_content_identity=content_identity,
         limitations=(
-            "Read-only pilot: no ETABS analysis run, section write-back, or model save.",
+            "Legacy live transport is deprecated and remains disabled pending A1 acceptance.",
             "Only frame objects horizontal within 1 mm and using rectangular sections are supported.",
-            "Canonical actions use absolute governing ETABS V2, T, and M3 values; signed source rows are retained.",
+            "The signed governing M3 row retains its concurrent P, V2, V3, T and M2 values; independent extrema are references only.",
+            "Calculation ownership is delegated to the canonical beam-audit row evaluator.",
             "Materials and reinforcement/detailing choices are explicit caller inputs, not inferred from ETABS material names.",
             "Serviceability, adjacent-member continuity, joint congestion, constructability optimization, and whole-building iteration are not evaluated.",
             "Every result requires qualified structural-engineer review.",

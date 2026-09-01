@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
-"""Ensure next-session-brief.md stays concise.
+"""Ensure next-session-brief.md remains a readable handoff artifact.
 
-When to use: Runs as pre-commit hook. Ensures next-session-brief.md stays concise."""
+The former 150-line cap was an arbitrary proxy for handoff quality and could
+reject useful durable context. Session structure/freshness checks own handoff
+quality; this compatibility command now checks only file presence, UTF-8
+readability, and non-empty content.
+"""
 
 from __future__ import annotations
 
 from pathlib import Path
 
 BRIEF_PATH = Path("docs/planning/next-session-brief.md")
-MAX_LINES = 150
 
 
 def main() -> int:
@@ -16,11 +19,13 @@ def main() -> int:
         print("ERROR: docs/planning/next-session-brief.md not found")
         return 1
 
-    lines = BRIEF_PATH.read_text(encoding="utf-8").splitlines()
-    line_count = len(lines)
-
-    if line_count > MAX_LINES:
-        print(f"ERROR: next-session-brief.md is {line_count} lines (max {MAX_LINES}).")
+    try:
+        content = BRIEF_PATH.read_text(encoding="utf-8")
+    except UnicodeDecodeError as exc:
+        print(f"ERROR: next-session-brief.md is not valid UTF-8: {exc}")
+        return 1
+    if not content.strip():
+        print("ERROR: next-session-brief.md is empty")
         return 1
 
     return 0

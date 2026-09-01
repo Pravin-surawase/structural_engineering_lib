@@ -104,6 +104,10 @@ def test_supplied_beam_openapi_contract_is_exact_and_stable(client: TestClient):
     assert operation["responses"]["200"]["content"]["application/json"]["schema"] == {
         "$ref": "#/components/schemas/APIResponse_BeamSuppliedCheckResponseV2_"
     }
+    request_schema = schema["components"]["schemas"]["BeamSuppliedCheckRequestV2"]
+    assert request_schema["properties"]["schema_version"]["const"] == (
+        "beam-supplied-check/v2"
+    )
 
 
 def test_public_guides_retain_the_maintained_contract_language():

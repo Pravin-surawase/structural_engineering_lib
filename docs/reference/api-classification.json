@@ -18873,8 +18873,8 @@
     {
       "module": "structural_lib",
       "export_classification": "preview",
-      "declared_export_count": 376,
-      "classified_symbol_count": 376,
+      "declared_export_count": 456,
+      "classified_symbol_count": 456,
       "symbols": [
         {
           "name": "AnalysisStateV1",
@@ -19200,6 +19200,44 @@
           }
         },
         {
+          "name": "BeamAuditRowEvaluationRequestV1",
+          "qualified_name": "structural_lib.BeamAuditRowEvaluationRequestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_audit",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamAuditRowEvaluationResultV1",
+          "qualified_name": "structural_lib.BeamAuditRowEvaluationResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_audit",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "BeamAuditRowInputV1",
           "qualified_name": "structural_lib.BeamAuditRowInputV1",
           "kind": "class",
@@ -19225,6 +19263,44 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.beam_audit",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamCriteriaScenarioV1",
+          "qualified_name": "structural_lib.BeamCriteriaScenarioV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_project_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamCriteriaStopPolicyV1",
+          "qualified_name": "structural_lib.BeamCriteriaStopPolicyV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_project_contracts",
           "claim_disposition": "compatibility",
           "documentation": {
             "role": "PUBLIC_CONTRACT",
@@ -19358,6 +19434,44 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamExistingPropertyDraftV1",
+          "qualified_name": "structural_lib.BeamExistingPropertyDraftV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_project_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamExistingPropertyV1",
+          "qualified_name": "structural_lib.BeamExistingPropertyV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_project_contracts",
           "claim_disposition": "compatibility",
           "documentation": {
             "role": "PUBLIC_CONTRACT",
@@ -20060,6 +20174,101 @@
           }
         },
         {
+          "name": "BeamLongitudinalLayerV1",
+          "qualified_name": "structural_lib.BeamLongitudinalLayerV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_project_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamLongitudinalStockV1",
+          "qualified_name": "structural_lib.BeamLongitudinalStockV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_project_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamMemberReinforcementScheduleDraftV1",
+          "qualified_name": "structural_lib.BeamMemberReinforcementScheduleDraftV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_project_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamMemberReinforcementScheduleV1",
+          "qualified_name": "structural_lib.BeamMemberReinforcementScheduleV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_project_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamPropertyCostBasisV1",
+          "qualified_name": "structural_lib.BeamPropertyCostBasisV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_project_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "BeamReinforcementEvaluationV1",
           "qualified_name": "structural_lib.BeamReinforcementEvaluationV1",
           "kind": "class",
@@ -20104,6 +20313,44 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.analysis_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamTransverseStockV1",
+          "qualified_name": "structural_lib.BeamTransverseStockV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_project_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "BeamTransverseZoneV1",
+          "qualified_name": "structural_lib.BeamTransverseZoneV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_project_contracts",
           "claim_disposition": "compatibility",
           "documentation": {
             "role": "PUBLIC_CONTRACT",
@@ -20670,6 +20917,158 @@
           }
         },
         {
+          "name": "ETABSAccessModeV1",
+          "qualified_name": "structural_lib.ETABSAccessModeV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSArtifactIdentityV1",
+          "qualified_name": "structural_lib.ETABSArtifactIdentityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_operation_control",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSAttachedStateReaderV1",
+          "qualified_name": "structural_lib.ETABSAttachedStateReaderV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSBridgeCapabilityV1",
+          "qualified_name": "structural_lib.ETABSBridgeCapabilityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSBrokerResultV1",
+          "qualified_name": "structural_lib.ETABSBrokerResultV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_operation_control",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSCallLedgerIdentityV1",
+          "qualified_name": "structural_lib.ETABSCallLedgerIdentityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_operation_control",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSCallLedgerV1",
+          "qualified_name": "structural_lib.ETABSCallLedgerV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_operation_control",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSCallRecordV1",
+          "qualified_name": "structural_lib.ETABSCallRecordV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_operation_control",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "ETABSCatalogueAdapterRequestV1",
           "qualified_name": "structural_lib.ETABSCatalogueAdapterRequestV1",
           "kind": "class",
@@ -20714,6 +21113,63 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.etabs_result_catalogue_adapter",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSConcreteDesignBasisDraftV1",
+          "qualified_name": "structural_lib.ETABSConcreteDesignBasisDraftV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_acquisition_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSConcreteDesignBasisV1",
+          "qualified_name": "structural_lib.ETABSConcreteDesignBasisV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_acquisition_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSDesignSettingV1",
+          "qualified_name": "structural_lib.ETABSDesignSettingV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_acquisition_contracts",
           "claim_disposition": "compatibility",
           "documentation": {
             "role": "PUBLIC_CONTRACT",
@@ -20803,6 +21259,82 @@
           }
         },
         {
+          "name": "ETABSEvidenceBundleV1",
+          "qualified_name": "structural_lib.ETABSEvidenceBundleV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_operation_control",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSExpectedModelIntentV1",
+          "qualified_name": "structural_lib.ETABSExpectedModelIntentV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSExportBoundsV1",
+          "qualified_name": "structural_lib.ETABSExportBoundsV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_acquisition_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSFileIdentityV1",
+          "qualified_name": "structural_lib.ETABSFileIdentityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "ETABSForceRow",
           "qualified_name": "structural_lib.ETABSForceRow",
           "kind": "class",
@@ -20866,6 +21398,25 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.etabs_result_catalogue_adapter",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSLeaseHandleV1",
+          "qualified_name": "structural_lib.ETABSLeaseHandleV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_operation_control",
           "claim_disposition": "compatibility",
           "documentation": {
             "role": "PUBLIC_CONTRACT",
@@ -21050,12 +21601,107 @@
           }
         },
         {
+          "name": "ETABSModelFreshnessDispositionV1",
+          "qualified_name": "structural_lib.ETABSModelFreshnessDispositionV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSModelFreshnessV1",
+          "qualified_name": "structural_lib.ETABSModelFreshnessV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSOperationLeaseV1",
+          "qualified_name": "structural_lib.ETABSOperationLeaseV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_operation_control",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSOperationOutcomeV1",
+          "qualified_name": "structural_lib.ETABSOperationOutcomeV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_operation_control",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "ETABSOutputSelectionStateV1",
           "qualified_name": "structural_lib.ETABSOutputSelectionStateV1",
           "kind": "class",
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSProcessInstanceV1",
+          "qualified_name": "structural_lib.ETABSProcessInstanceV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
           "claim_disposition": "compatibility",
           "documentation": {
             "role": "PUBLIC_CONTRACT",
@@ -21113,6 +21759,25 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSRequestedTableV1",
+          "qualified_name": "structural_lib.ETABSRequestedTableV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_acquisition_contracts",
           "claim_disposition": "compatibility",
           "documentation": {
             "role": "PUBLIC_CONTRACT",
@@ -21189,6 +21854,196 @@
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.services.contracts.etabs_w3",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSResultEpochDispositionV1",
+          "qualified_name": "structural_lib.ETABSResultEpochDispositionV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSResultEpochV1",
+          "qualified_name": "structural_lib.ETABSResultEpochV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSRuntimeArtifactV1",
+          "qualified_name": "structural_lib.ETABSRuntimeArtifactV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSRuntimeFingerprintV1",
+          "qualified_name": "structural_lib.ETABSRuntimeFingerprintV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSSQLiteExportManifestDraftV1",
+          "qualified_name": "structural_lib.ETABSSQLiteExportManifestDraftV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_acquisition_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSSQLiteExportManifestV1",
+          "qualified_name": "structural_lib.ETABSSQLiteExportManifestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_acquisition_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSSavedCheckpointV1",
+          "qualified_name": "structural_lib.ETABSSavedCheckpointV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSSessionIdentityV1",
+          "qualified_name": "structural_lib.ETABSSessionIdentityV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSStateSnapshotV1",
+          "qualified_name": "structural_lib.ETABSStateSnapshotV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSTargetObservationV1",
+          "qualified_name": "structural_lib.ETABSTargetObservationV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
           "claim_disposition": "compatibility",
           "documentation": {
             "role": "PUBLIC_CONTRACT",
@@ -22447,12 +23302,107 @@
           }
         },
         {
+          "name": "ProcessObservationV1",
+          "qualified_name": "structural_lib.ProcessObservationV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "ProfessionalIdentityV1",
           "qualified_name": "structural_lib.ProfessionalIdentityV1",
           "kind": "class",
           "classification": "preview",
           "declared_export": true,
           "defined_in": "structural_lib.core.calculation_dossier",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ProjectBeamCandidateCatalogueDraftV1",
+          "qualified_name": "structural_lib.ProjectBeamCandidateCatalogueDraftV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_project_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ProjectBeamCandidateCatalogueV1",
+          "qualified_name": "structural_lib.ProjectBeamCandidateCatalogueV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_project_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ProjectBeamCriteriaDraftV1",
+          "qualified_name": "structural_lib.ProjectBeamCriteriaDraftV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_project_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ProjectBeamCriteriaV1",
+          "qualified_name": "structural_lib.ProjectBeamCriteriaV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_project_contracts",
           "claim_disposition": "compatibility",
           "documentation": {
             "role": "PUBLIC_CONTRACT",
@@ -23283,6 +24233,25 @@
           }
         },
         {
+          "name": "acquire_etabs_operation_lease_v1",
+          "qualified_name": "structural_lib.acquire_etabs_operation_lease_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_operation_control",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(process_instance: 'ETABSProcessInstanceV1', transaction_id: 'str', *, lease_directory: 'str | Path', acquired_at_utc: 'datetime | None' = None, duration: 'timedelta' = datetime.timedelta(seconds=300), lease_id: 'str | None' = None) -> 'ETABSLeaseHandleV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "adapters",
           "qualified_name": "structural_lib.adapters",
           "kind": "module",
@@ -23315,6 +24284,25 @@
               "CLASSIFIED_PUBLIC_ROLE"
             ],
             "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "assess_attached_output_readiness_v1",
+          "qualified_name": "structural_lib.assess_attached_output_readiness_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(snapshot: 'ETABSStateSnapshotV1', *, required_cases: 'Sequence[str]' = (), required_combinations: 'Sequence[str]' = ()) -> \"Literal['READY', 'HOLD']\"",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
@@ -23463,6 +24451,44 @@
           }
         },
         {
+          "name": "build_beam_existing_property_v1",
+          "qualified_name": "structural_lib.build_beam_existing_property_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_project_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(draft: 'BeamExistingPropertyDraftV1', /) -> 'BeamExistingPropertyV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "build_beam_member_reinforcement_schedule_v1",
+          "qualified_name": "structural_lib.build_beam_member_reinforcement_schedule_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_project_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(draft: 'BeamMemberReinforcementScheduleDraftV1', /, *, criteria: 'ProjectBeamCriteriaV1', catalogue: 'ProjectBeamCandidateCatalogueV1') -> 'BeamMemberReinforcementScheduleV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "build_calculation_dossier_v1",
           "qualified_name": "structural_lib.build_calculation_dossier_v1",
           "kind": "function",
@@ -23498,6 +24524,25 @@
             "docstring_sections": [
               "returns"
             ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "build_etabs_concrete_design_basis_v1",
+          "qualified_name": "structural_lib.build_etabs_concrete_design_basis_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_acquisition_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(draft: 'ETABSConcreteDesignBasisDraftV1', /) -> 'ETABSConcreteDesignBasisV1'",
+            "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
           }
@@ -23541,6 +24586,25 @@
           }
         },
         {
+          "name": "build_etabs_operation_outcome_v1",
+          "qualified_name": "structural_lib.build_etabs_operation_outcome_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_operation_control",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(*, broker_result: 'ETABSBrokerResultV1', access_mode: \"Literal['ATTACHED_OBSERVE', 'OWNED_COPY_MUTATION']\", primary_outcome: \"Literal['COMPLETED', 'BLOCKED', 'ERROR', 'TIMED_OUT']\", restoration_outcome: \"Literal['NOT_REQUIRED', 'VERIFIED_EQUAL', 'FAILED', 'NOT_ATTEMPTED']\", deadline_seconds: 'float', call_ledger: 'ETABSCallLedgerIdentityV1 | None', pre_state_sha256: 'str | None' = None, post_state_sha256: 'str | None' = None, fence_reason: 'str | None' = None) -> 'ETABSOperationOutcomeV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "build_etabs_reaction_snapshot_v1",
           "qualified_name": "structural_lib.build_etabs_reaction_snapshot_v1",
           "kind": "function",
@@ -23573,6 +24637,120 @@
               "CLASSIFIED_PUBLIC_ROLE"
             ],
             "signature": "(request: 'ETABSResultCatalogueBuildRequestV1', /) -> 'ETABSResultCatalogueBuildResultV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "build_etabs_result_epoch_v1",
+          "qualified_name": "structural_lib.build_etabs_result_epoch_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(*, model_identity_sha256: 'str', runtime_fingerprint: 'ETABSRuntimeFingerprintV1', process_instance: 'ETABSProcessInstanceV1', transaction_id: 'str', authorized_cases: 'Sequence[str]', case_dependency_closure: 'Sequence[str]', pre_statuses: 'Mapping[str, str]', post_statuses: 'Mapping[str, str]', run_flags: 'Mapping[str, bool]', analysis_call_ids: 'Sequence[str]', design_call_ids: 'Sequence[str]', selection_sha256: 'str', result_sha256: 'str', uninterrupted_process: 'bool', uninterrupted_runtime: 'bool', copy_identity_sha256: 'str | None' = None, change_set_sha256: 'str | None' = None, design_basis_sha256: 'str | None' = None, blocked_reasons: 'Sequence[str]' = (), observed_at_utc: 'datetime | None' = None) -> 'ETABSResultEpochV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "build_etabs_runtime_fingerprint_v1",
+          "qualified_name": "structural_lib.build_etabs_runtime_fingerprint_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(process_instance: 'ETABSProcessInstanceV1', *, type_library_path: 'str | Path | None' = None, generated_wrapper_path: 'str | Path | None' = None, managed_assembly_path: 'str | Path | None' = None, installed_chm_path: 'str | Path | None' = None, com_shape_runtime: \"Literal['comtypes', 'managed-wrapper', 'unavailable']\" = 'comtypes', observed_at_utc: 'datetime | None' = None) -> 'ETABSRuntimeFingerprintV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "build_etabs_saved_checkpoint_v1",
+          "qualified_name": "structural_lib.build_etabs_saved_checkpoint_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(*, process_instance: 'ETABSProcessInstanceV1', session_identity: 'ETABSSessionIdentityV1', file_identity: 'ETABSFileIdentityV1', save_call_id: 'str', saved_at_utc: 'datetime', observed_at_utc: 'datetime') -> 'ETABSSavedCheckpointV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "build_etabs_session_identity_v1",
+          "qualified_name": "structural_lib.build_etabs_session_identity_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(*, process_instance: 'ETABSProcessInstanceV1', connection_origin: \"Literal['ATTACHED_EXISTING', 'STARTED_OWNED']\", model_name: 'str', model_path: 'str | None', etabs_version: 'str', present_units: 'str', model_locked: 'bool', saved_file_identity: 'ETABSFileIdentityV1 | None', observed_at_utc: 'datetime | None' = None) -> 'ETABSSessionIdentityV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "build_project_beam_candidate_catalogue_v1",
+          "qualified_name": "structural_lib.build_project_beam_candidate_catalogue_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_project_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(draft: 'ProjectBeamCandidateCatalogueDraftV1', /, *, criteria: 'ProjectBeamCriteriaV1') -> 'ProjectBeamCandidateCatalogueV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "build_project_beam_criteria_v1",
+          "qualified_name": "structural_lib.build_project_beam_criteria_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_project_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(draft: 'ProjectBeamCriteriaDraftV1', /) -> 'ProjectBeamCriteriaV1'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
@@ -23793,6 +24971,25 @@
           }
         },
         {
+          "name": "canonical_beam_action_row_sha256_v1",
+          "qualified_name": "structural_lib.canonical_beam_action_row_sha256_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_audit",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(row: 'BeamActionRowV1', /) -> 'str'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "canonical_beam_demand_snapshot_hash_basis_json_v1",
           "qualified_name": "structural_lib.canonical_beam_demand_snapshot_hash_basis_json_v1",
           "kind": "function",
@@ -23825,6 +25022,44 @@
               "CLASSIFIED_PUBLIC_ROLE"
             ],
             "signature": "(catalogue: 'ETABSResultCatalogueV1', /) -> 'str'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "capture_attached_etabs_state_v1",
+          "qualified_name": "structural_lib.capture_attached_etabs_state_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(reader: 'ETABSAttachedStateReaderV1', *, session_sha256: 'str', observed_at_utc: 'datetime | None' = None) -> 'ETABSStateSnapshotV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "capture_etabs_state_v1",
+          "qualified_name": "structural_lib.capture_etabs_state_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(*, session_sha256: 'str', present_units: 'str', model_locked: 'bool', selected_output_cases: 'Sequence[str]', selected_output_combinations: 'Sequence[str]', case_statuses: 'Mapping[str, str]', run_flags: 'Mapping[str, bool]', table_display_selection_sha256: 'str | None' = None, observed_at_utc: 'datetime | None' = None) -> 'ETABSStateSnapshotV1'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
@@ -24108,6 +25343,44 @@
               "raises",
               "returns"
             ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "classify_etabs_model_freshness_v1",
+          "qualified_name": "structural_lib.classify_etabs_model_freshness_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(*, session_identity: 'ETABSSessionIdentityV1', before_file: 'ETABSFileIdentityV1 | None', after_file: 'ETABSFileIdentityV1 | None', observed_at_utc: 'datetime', attached_session: 'bool', api_clean_signal_call_id: 'str | None' = None, saved_checkpoint: 'ETABSSavedCheckpointV1 | None' = None) -> 'ETABSModelFreshnessV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "compare_attached_etabs_state_v1",
+          "qualified_name": "structural_lib.compare_attached_etabs_state_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(before: 'ETABSStateSnapshotV1', after: 'ETABSStateSnapshotV1') -> \"Literal['COMPLETED', 'RESTORATION_UNVERIFIED']\"",
+            "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
           }
@@ -25035,6 +26308,25 @@
           }
         },
         {
+          "name": "discover_etabs_processes_v1",
+          "qualified_name": "structural_lib.discover_etabs_processes_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(*, process_provider: 'ProcessProviderV1 | None' = None, observed_at_utc: 'datetime | None' = None) -> 'tuple[ETABSProcessInstanceV1, ...]'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "dxf_export",
           "qualified_name": "structural_lib.dxf_export",
           "kind": "module",
@@ -25090,6 +26382,25 @@
               "CLASSIFIED_PUBLIC_ROLE"
             ],
             "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "evaluate_beam_audit_row_v1",
+          "qualified_name": "structural_lib.evaluate_beam_audit_row_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_audit",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(request: 'BeamAuditRowEvaluationRequestV1', /) -> 'BeamAuditRowEvaluationResultV1'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
@@ -25185,6 +26496,63 @@
               "CLASSIFIED_PUBLIC_ROLE"
             ],
             "signature": "(sap_model: 'Any', request: 'ETABSCatalogueAdapterRequestV1', /) -> 'ETABSCatalogueAdapterResultV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "file_identity_v1",
+          "qualified_name": "structural_lib.file_identity_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(path: 'str | Path') -> 'ETABSFileIdentityV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "finalize_etabs_evidence_bundle_v1",
+          "qualified_name": "structural_lib.finalize_etabs_evidence_bundle_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_operation_control",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(manifest_path: 'str | Path', *, evidence_root: 'str | Path', ledger_path: 'str | Path', transaction_id: 'str', storage_identity: 'str', redaction_policy: 'str', retention_policy: 'str', target_observation_sha256: 'str', runtime_fingerprint_sha256: 'str', model_identity_sha256: 'str', result_epoch_sha256: 'str | None', artifact_paths: 'Sequence[str | Path]' = (), finalized_at_utc: 'datetime | None' = None) -> 'ETABSEvidenceBundleV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "finalize_etabs_sqlite_export_manifest_v1",
+          "qualified_name": "structural_lib.finalize_etabs_sqlite_export_manifest_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_acquisition_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(draft: 'ETABSSQLiteExportManifestDraftV1', /, *, artifact_path: 'str | Path', completed_at_utc: 'datetime', post_state_sha256: 'str') -> 'ETABSSQLiteExportManifestV1'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
@@ -25509,6 +26877,44 @@
           }
         },
         {
+          "name": "invoke_recorded_etabs_call_v1",
+          "qualified_name": "structural_lib.invoke_recorded_etabs_call_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_operation_control",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(ledger: 'ETABSCallLedgerV1', *, call_id: 'str', method: 'str', reviewed_signature: 'str', redacted_arguments: 'Mapping[str, Any]', invoke: 'Callable[[], Any]', decode: 'Callable[[Any], Any]', decoder_name: 'str') -> 'Any'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "issue_etabs_bridge_capability_v1",
+          "qualified_name": "structural_lib.issue_etabs_bridge_capability_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(observation: 'ETABSTargetObservationV1', *, transaction_id: 'str', signing_key: 'bytes', issued_at_utc: 'datetime | None' = None, ttl: 'timedelta' = datetime.timedelta(seconds=45), capability_id: 'str | None' = None, nonce: 'str | None' = None) -> 'ETABSBridgeCapabilityV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "load_etabs_csv",
           "qualified_name": "structural_lib.load_etabs_csv",
           "kind": "function",
@@ -25589,6 +26995,25 @@
             "docstring_sections": [
               "returns"
             ],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "observe_etabs_target_v1",
+          "qualified_name": "structural_lib.observe_etabs_target_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(process_instance: 'ETABSProcessInstanceV1', expected_intent: 'ETABSExpectedModelIntentV1', runtime_fingerprint: 'ETABSRuntimeFingerprintV1', session_identity: 'ETABSSessionIdentityV1', model_freshness: 'ETABSModelFreshnessV1', *, observed_at_utc: 'datetime | None' = None, ttl: 'timedelta' = datetime.timedelta(seconds=120), observation_id: 'str | None' = None) -> 'ETABSTargetObservationV1'",
+            "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
           }
@@ -25766,6 +27191,25 @@
               "CLASSIFIED_PUBLIC_ROLE"
             ],
             "signature": "(request: 'ETABSLiveCatalogueRunRequestV1', *, session_factory: 'SessionFactory | None' = None, observe_model_file: 'ModelFileObserver | None' = None) -> 'ETABSLiveCatalogueTransportV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "run_etabs_sta_broker_v1",
+          "qualified_name": "structural_lib.run_etabs_sta_broker_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_operation_control",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(operation: 'Callable[..., Any]', *, args: 'Sequence[Any]' = (), kwargs: 'Mapping[str, Any] | None' = None, deadline_seconds: 'float', lease: 'ETABSLeaseHandleV1', heartbeat_seconds: 'float' = 0.25, initialize_com: 'bool' = False) -> 'ETABSBrokerResultV1'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
@@ -26129,6 +27573,44 @@
           }
         },
         {
+          "name": "verify_etabs_bridge_capability_v1",
+          "qualified_name": "structural_lib.verify_etabs_bridge_capability_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(capability: 'ETABSBridgeCapabilityV1', observation: 'ETABSTargetObservationV1', *, transaction_id: 'str', required_access: 'ETABSAccessModeV1', signing_key: 'bytes', verified_at_utc: 'datetime | None' = None, consume_single_use: 'Callable[[ETABSBridgeCapabilityV1, datetime], None] | None' = None) -> 'None'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "verify_etabs_call_ledger_v1",
+          "qualified_name": "structural_lib.verify_etabs_call_ledger_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_operation_control",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(path: 'str | Path', *, transaction_id: 'str', storage_identity: 'str', redaction_policy: 'str') -> 'ETABSCallLedgerIdentityV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "verify_etabs_displacement_snapshot_hash_v1",
           "qualified_name": "structural_lib.verify_etabs_displacement_snapshot_hash_v1",
           "kind": "function",
@@ -26142,6 +27624,25 @@
               "CLASSIFIED_PUBLIC_ROLE"
             ],
             "signature": "(snapshot: 'ETABSDisplacementSnapshotV1', /) -> 'bool'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "verify_etabs_evidence_bundle_v1",
+          "qualified_name": "structural_lib.verify_etabs_evidence_bundle_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_operation_control",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(manifest_path: 'str | Path', *, evidence_root: 'str | Path') -> 'ETABSEvidenceBundleV1'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
@@ -26199,6 +27700,25 @@
               "CLASSIFIED_PUBLIC_ROLE"
             ],
             "signature": "(catalogue: 'ETABSResultCatalogueV1', /) -> 'bool'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "verify_etabs_target_observation_v1",
+          "qualified_name": "structural_lib.verify_etabs_target_observation_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(observation: 'ETABSTargetObservationV1', *, current_process: 'ETABSProcessInstanceV1', current_runtime: 'ETABSRuntimeFingerprintV1', current_session: 'ETABSSessionIdentityV1', verified_at_utc: 'datetime | None' = None, maximum_revalidation_age: 'timedelta' = datetime.timedelta(seconds=15)) -> 'None'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []

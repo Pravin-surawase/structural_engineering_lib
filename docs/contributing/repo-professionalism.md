@@ -76,7 +76,9 @@ Canonical sources:
 - API docs sync is enforced locally and in CI: `scripts/check_api.py --sync`.
 - Pre-release checklist structure is enforced locally and in CI: `scripts/release.py checklist`.
 - API doc signatures are enforced locally and in CI: `scripts/check_api.py --docs`.
-- Next-session brief length is enforced locally and in CI: `scripts/check_next_session_brief_length.py`.
+- Next-session brief integrity is checked locally and in CI without an arbitrary
+  line cap: `scripts/check_next_session_brief_length.py`. Session structure and
+  freshness remain owned by `scripts/session.py check`.
 - CLI reference completeness is enforced locally and in CI: `scripts/check_cli_reference.py`.
 - Docs index links are enforced locally and in CI: `scripts/check_governance.py --index-links`.
 - Repo hygiene artifacts are blocked locally: `scripts/check_repo_hygiene.py`.
