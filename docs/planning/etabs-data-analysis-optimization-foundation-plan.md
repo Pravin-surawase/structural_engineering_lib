@@ -1266,9 +1266,14 @@ Stop and request direction when:
 
 ## Current continuation
 
-Saved physical-basis reconciliation is accepted in #935 and reinforcement root
-corrections in #936. Complete the bounded strict serviceability packet, then
-mandatory detailing and the physical H decision in the whole-W3 execution reset.
+Saved physical-basis reconciliation is accepted in #935, reinforcement root
+corrections in #936, strict serviceability in #937, torsion/detailing in #939,
+signed-face saved-candidate consumption in #940 and the PID-safe COM/VBA audit
+in merged PR #941 (`5aad93b8`). The
+[integrated W3 and professional beam execution plan](w3-beam-professional-integrated-execution-plan.md)
+now owns the immediate sequence: repair public effective-depth and supplied-beam
+check truth, then implement the offline PID/session/freshness/state guard before
+any new live pilot. Actual-building H and I/K/L remain held.
 Do not automatically resume the
 table launcher. The research audit identifies the existing text backup and
 documented export alternatives; neither is already validated model evidence.

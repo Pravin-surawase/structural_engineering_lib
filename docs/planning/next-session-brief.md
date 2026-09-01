@@ -4,24 +4,28 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-01
-- Focus: Audit legacy VBA and current COM/optimizer owners, then freeze the smallest PID-safe ETABS, canonical candidate-evaluation and owned-copy W3K/L plan without application or model calls.
-- Completed: Isolated the plan from LIB-PRO-015; audited three generations of legacy VBA; bound the findings in a safe hash-based evidence receipt.
-- Git receipt: docs/verification/etabs-w3-com-vba-plan-git-handoff-receipt.json | sha256:d43e81228e0afca6124c4556f8465bdac87661472d6059893d93f6998265b067 | HOLD
-- Git identity: codex/etabs-w3-project-criteria-windows@c53571311be560fc37cdb0e87516d0f58ac85e3b | upstream=origin/main@c53571311be560fc37cdb0e87516d0f58ac85e3b | base=origin/main@c53571311be560fc37cdb0e87516d0f58ac85e3b | tree=dirty | operation=none
+- Focus: Re-audit merged W3 PID/session/reanalysis planning with current beam API and freeze one dependency-aware execution sequence; no application/model operation.
+- Completed: Fetched and bound the audit to merged PR #941 commit `5aad93b8`.; Reproduced public depth/check defects and reviewed W3 freshness, signed-face and evaluator dependencies.; Authored the integrated plan and reconciled maintained status owners without changing runtime code.
+- Git receipt: docs/verification/w3-beam-integrated-plan-git-handoff-receipt.json | sha256:a43559377ecbb805fe4e65c6779c1bb7597a47cba51bf86d2d15b26a185a54b7 | HOLD
+- Git identity: codex/w3-beam-integrated-plan-audit@5aad93b8f3dc5e6f9ca916350bf0276c51ad683d | upstream=origin/main@5aad93b8f3dc5e6f9ca916350bf0276c51ad683d | base=origin/main@5aad93b8f3dc5e6f9ca916350bf0276c51ad683d | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
 
 ## Current boundary
 
-The [whole-W3 reset](etabs-data-analysis-optimization-foundation-plan.md#whole-w3-execution-reset-2026-08-31) owns sequencing; the [saved-basis decision](etabs-w3-saved-basis-and-criteria.md) owns the current next packet.
-Source: accepted PR #939 merge `07d7c902`; [serviceability](etabs-w3-serviceability.md), bounded W3H table-call closure, accepted torsion detailing and current saved-candidate consumer. Mac NOT_CHECKED.
+The [integrated W3 and professional beam execution plan](w3-beam-professional-integrated-execution-plan.md)
+owns the immediate sequence. The [whole-W3 reset](etabs-data-analysis-optimization-foundation-plan.md#whole-w3-execution-reset-2026-08-31)
+continues to own the A-L evidence/capability sequence, and the
+[COM/VBA/reanalysis plan](etabs-w3-com-vba-and-reanalysis-plan.md) owns ETABS
+host/session and transaction behavior. Source: fetched merged PR #941 commit
+`5aad93b8`; one Windows writer owns the next sequence; installed actions remain separately gated.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | The offline consumer evaluated all 107 saved rows through strength, physical-face detailing and BBS. Authored 75 mm and computed 75/100/125 mm spacing cases pass; legacy d'=40 and frozen 150/200 spacing fail closed. Fourteen top-primary rows now schedule primary steel on top. No live calls. |
-| Migration | Preserve signed bending orientation with optional `actions.primary_tension_face`; omission keeps the predecessor BOTTOM convention and adds no null field. Use d'=56 for the declared single-layer 40 clear + 8 stirrup + 16 opposite bar basis. Calculated spacing remains a proposal. |
-| **Next** | Obtain project service-analysis/bar-revision/factor evidence and caller-owned excluded-action applicability limits. Resolve H support/mesh/slab transfer from named saved/proved sources. Do not repeat accepted ETABS inputs or broad table diagnosis. |
+| **Current** | PR #941 is merged. A fresh software audit reproduced hidden effective-depth assumptions, ignored supplied REST fields, misleading WebSocket check semantics, signed-face loss in the legacy pilot, split optimizer feasibility and missing live-session/file freshness distinction. The plan/task surfaces are reconciled; runtime code is unchanged. |
+| **Next** | After this planning candidate is accepted, start only `LIB-BEAM-S0-CHECK-TRUTH`: remove hidden depth assumptions and make supplied-beam REST/WebSocket outcomes truthful. No ETABS/COM call. |
+| W3 next | After BEAM-S0 is accepted, start a new exact task/worktree for `ETABS-W3-A0-OFFLINE-SESSION-GUARD`: PID/target/freshness/state/call-record contracts through fake adapters only. Installed PID attachment is A1 and separately authorized. |
 | H route | Stop broad table diagnosis. The installed wrapper's correct zero-argument table call still returned CSI 1 with complete preservation, disproving the output-placeholder theory. Acquire only named support/mesh/transfer gaps from saved sources, proved direct getters, or bounded supported export. No solver fitting. |
 | Retained | A-D/R, bounded E/F/G/H/J acceptance; #925 repair closed. #931's explicit-placeholder hypothesis is disproved and equivalent table API retries are closed; the native CSI 1 and #932 binder causes remain unconfirmed; #933 timestamp defect is confirmed. |
 | Held | Project service and applicability criteria; actual-building H; installed-rebar claims; wider/multilayer/coupled torsion detailing; I/K/L; final combined gates/Mac review; professional/release approval. |
@@ -90,17 +94,13 @@ the strict pure beam-audit layer; its evidence is L1 synthetic acceptance only.
 - Independent frame analysis remains `HELD_NOT_SUPPORTED` until its separate
   solver and model-specific calibration packets are both separately accepted.
 
-## Separate high-priority repair
-
-W3R repairs the confirmed Pareto defect as a separate P1 packet, merged unchanged in PR #907.
-Keep the optimizer unavailable for ETABS candidate selection until W3E/W3H/W3I gates are also accepted. Evidence: `docs/verification/etabs-w3r-pareto-shear-feasibility-evidence.json`.
-
 ## Preservation rules
 
 - Preserve all retained W2 branches, worktrees, receipts, evidence, models,
   workbooks, historical blocked runs, and public compatibility surfaces.
-- Mac owns normal W3A development/review/integration. Windows remains the
-  installed Excel/ETABS evidence host for a separately bounded getter packet.
+- Windows owns the next implementation sequence in one dedicated worktree.
+  Keep ETABS/Excel closed for offline work; installed/live calls remain
+  separately authorized. Mac is a read-only milestone reviewer, not the writer.
 - Move source only through GitHub. Proprietary model/workbook/result payloads
   remain off Git and are referenced only through bounded digests/counts.
 - Do not compact the session archive or retire React/hooks/docs/public APIs in
