@@ -206,7 +206,11 @@ def classify_paths(
 ) -> ImpactPlan:
     """Classify paths; any unknown path or upstream failure selects all domains."""
     normalized = tuple(sorted(set(path for path in paths if path)))
-    selected: set[str] = set()
+    selected: set[str] = {
+        name
+        for name, info in manifest["domains"].items()
+        if info.get("always_run") is True
+    }
     unknown: list[str] = []
     for path in normalized:
         if not _valid_pattern(path):
@@ -422,6 +426,10 @@ class FingerprintContext:
         cached = self._domain_paths_cache.get(domain)
         if cached is not None:
             return cached
+        if self.manifest["domains"][domain].get("always_run") is True:
+            selected = tuple(self.inventory)
+            self._domain_paths_cache[domain] = selected
+            return selected
         patterns = [
             pattern
             for rule in self.manifest["rules"]

@@ -83,6 +83,9 @@
         "hosted_job": {
           "type": "string",
           "minLength": 1
+        },
+        "always_run": {
+          "type": "boolean"
         }
       }
     },

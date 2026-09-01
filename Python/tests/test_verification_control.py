@@ -149,6 +149,11 @@ def test_live_verification_manifest_is_strict_and_covers_every_path():
 
     assert tuple(manifest["domains"]) == verification.REQUIRED_DOMAINS
     assert manifest["metadata"]["unknown_impact"] == "all_domains"
+    assert {
+        name
+        for name, info in manifest["domains"].items()
+        if info.get("always_run") is True
+    } == {"repository"}
     assert {info["hosted_job"] for info in manifest["domains"].values()} == {
         "python-validation",
         "fastapi-validation",
@@ -179,17 +184,17 @@ def test_manifest_rejects_duplicate_keys_and_unknown_fields(tmp_path):
     [
         (
             "Python/structural_lib/services/api.py",
-            {"python", "fastapi", "docs"},
+            {"python", "fastapi", "docs", "repository"},
         ),
-        ("fastapi_app/main.py", {"fastapi"}),
-        ("react_app/src/App.tsx", {"react"}),
-        ("excel_addin/taskpane.mjs", {"excel"}),
-        ("docs/contributing/testing-strategy.md", {"docs"}),
+        ("fastapi_app/main.py", {"fastapi", "repository"}),
+        ("react_app/src/App.tsx", {"react", "fastapi", "repository"}),
+        ("excel_addin/taskpane.mjs", {"excel", "repository"}),
+        ("docs/contributing/testing-strategy.md", {"docs", "repository"}),
         ("mkdocs.yml", {"docs", "repository"}),
         ("scripts/check_all.py", set(verification.REQUIRED_DOMAINS)),
         (
             "scripts/check_openapi_snapshot.py",
-            {"fastapi", "control_plane"},
+            {"fastapi", "control_plane", "repository"},
         ),
         ("scripts/safe_file_move.py", {"control_plane", "repository"}),
         (
@@ -198,14 +203,14 @@ def test_manifest_rejects_duplicate_keys_and_unknown_fields(tmp_path):
         ),
         (
             "scripts/_lib/indian_code_manifest.py",
-            {"python", "control_plane", "docs"},
+            {"python", "control_plane", "docs", "repository"},
         ),
         (
             "scripts/_lib/utils.py",
             {"python", "fastapi", "control_plane", "docs", "repository"},
         ),
-        ("scripts/_lib/agent_data.py", {"control_plane"}),
-        ("scripts/check_links.py", {"control_plane", "docs"}),
+        ("scripts/_lib/agent_data.py", {"control_plane", "repository"}),
+        ("scripts/check_links.py", {"control_plane", "docs", "repository"}),
         (
             ".github/actions/verification-evidence/action.yml",
             set(verification.REQUIRED_DOMAINS),
@@ -237,6 +242,35 @@ def test_unknown_path_and_git_query_failure_select_every_domain(monkeypatch):
     assert failed.fail_closed is True
     assert failed.domains == verification.REQUIRED_DOMAINS
     assert failed.failure_reasons == ("simulated Git failure",)
+
+
+def test_repository_domain_is_universal_without_hiding_unknown_paths(tmp_path):
+    manifest = verification.load_manifest()
+    known = verification.classify_paths(["docs/known.md"], manifest)
+    unknown = verification.classify_paths(["future/unowned.file"], manifest)
+
+    assert "repository" in known.domains
+    assert known.fail_closed is False
+    assert unknown.fail_closed is True
+    assert unknown.unknown_paths == ("future/unowned.file",)
+
+    first = tmp_path / "known.txt"
+    second = tmp_path / "other.txt"
+    first.write_text("first\n", encoding="utf-8")
+    second.write_text("other\n", encoding="utf-8")
+    context = verification.FingerprintContext(
+        manifest,
+        root=tmp_path,
+        inventory=("known.txt", "other.txt"),
+        workers=1,
+    )
+    identity = context.identity(
+        profile="repository-universal",
+        domains=("repository",),
+        command=("test",),
+    )
+
+    assert identity.input_count == 2
 
 
 def test_unknown_live_path_is_plannable_but_strict_validation_rejects_it():

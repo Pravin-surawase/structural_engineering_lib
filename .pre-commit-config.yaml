@@ -1,6 +1,8 @@
 # Pre-commit hooks for structural_engineering_lib
 # Install hooks: ./scripts/python_runtime.sh -m pre_commit install
-# Run manually: ./scripts/python_runtime.sh -m pre_commit run --all-files
+# Run PR file integrity: ./scripts/python_runtime.sh -m pre_commit run --hook-stage manual --all-files
+
+default_stages: [pre-commit]
 
 repos:
   # General file hygiene
@@ -9,25 +11,33 @@ repos:
     hooks:
       - id: check-yaml
         files: \.(yml|yaml)$  # Only run on YAML files
+        stages: [manual]
         # MkDocs uses a Python callable tag for Mermaid fences. Its config is
         # validated by the strict MkDocs workflow instead of the safe YAML loader.
         exclude: ^mkdocs\.yml$
       - id: check-toml
         files: \.toml$  # Only run on TOML files
+        stages: [manual]
       - id: check-json
         files: \.json$  # Only run on JSON files
+        stages: [manual]
         # TypeScript consumes these two deliberate JSONC configuration files.
         # Every other .json file remains under strict JSON validation.
         exclude: ^react_app/tsconfig\.(app|node)\.json$
       - id: end-of-file-fixer
         exclude: &preserved-text-artifacts ^(VBA/|Excel/|\.vite/|docs/_archive/|docs/reference/vendor/|Python/tests/data/|Python/tests/fixtures/|react_app/src/__fixtures__/|tests/fixtures/)
+        stages: [manual]
       - id: trailing-whitespace
         exclude: *preserved-text-artifacts
+        stages: [manual]
       - id: mixed-line-ending
         exclude: *preserved-text-artifacts
+        stages: [manual]
       - id: check-merge-conflict
+        stages: [pre-commit, manual]
       - id: check-added-large-files
         args: ['--maxkb=500']
+        stages: [pre-commit, manual]
 
   # Python formatting
   - repo: https://github.com/psf/black

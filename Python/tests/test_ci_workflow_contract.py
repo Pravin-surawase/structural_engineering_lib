@@ -23,6 +23,7 @@ EVIDENCE_ACTION = (
     REPO_ROOT / ".github" / "actions" / "verification-evidence" / "action.yml"
 )
 VERIFICATION_MANIFEST = REPO_ROOT / "scripts" / "verification-manifest.json"
+VALIDATION_COVERAGE = REPO_ROOT / "scripts" / "validation-coverage.json"
 
 BASE_GATE_ENV = {
     "CHANGES_RESULT": "success",
@@ -202,8 +203,22 @@ def test_pr_gate_topology_and_cancellation_are_scoped_per_pr():
     )
     assert "python scripts/check_doc_versions.py --ci" in docs_run
     assert "python scripts/check_tasks_format.py" in docs_run
-    assert "python scripts/check_links.py" in docs_run
-    assert "python scripts/generate_api_classification.py --check" in docs_run
+    for command in (
+        "python scripts/check_docs.py --index",
+        "python scripts/check_docs.py --index-links",
+        "python scripts/check_links.py",
+        "python scripts/check_next_session_brief_length.py",
+        "python scripts/release.py check-docs",
+        "python scripts/release.py checklist",
+        "python scripts/session.py check",
+        "python scripts/check_api.py --sync",
+        "python scripts/check_api.py --docs",
+        "python scripts/generate_family_facade_docs.py --check",
+        "python scripts/generate_beam_tool_manifest.py --check",
+        "python scripts/generate_api_classification.py --check",
+        "python scripts/check_cli_reference.py",
+    ):
+        assert command in docs_run
     assert docs_run.rstrip().endswith("mkdocs build --strict")
 
     excel_steps = jobs["excel-validation"]["steps"]
@@ -227,11 +242,18 @@ def test_pr_gate_topology_and_cancellation_are_scoped_per_pr():
 
 
 def test_hosted_validation_checks_are_split_by_natural_domain_without_loss():
+    python_security = _named_step_run(
+        FAST_CHECKS,
+        "python-validation",
+        "Security, imports, and generated API contract",
+    )
     python_policy = _named_step_run(
         FAST_CHECKS, "python-validation", "Architecture and code-quality policy"
     )
     fastapi_policy = _named_step_run(
-        FAST_CHECKS, "fastapi-validation", "API and deployment contracts"
+        FAST_CHECKS,
+        "fastapi-validation",
+        "Security, API, and deployment contracts",
     )
     control_policy = _named_step_run(
         FAST_CHECKS,
@@ -244,9 +266,29 @@ def test_hosted_validation_checks_are_split_by_natural_domain_without_loss():
     repository_policy = _named_step_run(
         FAST_CHECKS, "repository-validation", "Validate repository policy"
     )
+    candidate_integrity = _named_step_run(
+        FAST_CHECKS, "repository-validation", "Validate candidate file integrity"
+    )
+    version_policy = _named_step_run(
+        FAST_CHECKS,
+        "repository-validation",
+        "Validate Python version consistency",
+    )
 
+    for command in (
+        "python -m bandit --quiet --recursive Python/structural_lib --skip B101",
+        "python scripts/validate_imports.py",
+        "python scripts/generate_api_manifest.py --check",
+    ):
+        assert command in python_security
     assert "check_architecture_boundaries.py" in python_policy
-    assert "check_architecture_boundaries.py" in fastapi_policy
+    for command in (
+        "python -m bandit --quiet --recursive fastapi_app --skip B101",
+        "python scripts/check_api.py --react-openapi",
+        "python scripts/check_architecture_boundaries.py",
+        "python scripts/check_openapi_snapshot.py",
+    ):
+        assert command in fastapi_policy
     for command in (
         "check_scripts_index.py",
         "validate_script_refs.py",
@@ -258,12 +300,78 @@ def test_hosted_validation_checks_are_split_by_natural_domain_without_loss():
     for command in (
         "check_doc_versions.py --ci",
         "check_tasks_format.py",
+        "check_docs.py --index",
+        "check_docs.py --index-links",
         "check_links.py",
+        "check_next_session_brief_length.py",
+        "release.py check-docs",
+        "release.py checklist",
+        "session.py check",
+        "check_api.py --sync",
+        "check_api.py --docs",
+        "generate_family_facade_docs.py --check",
+        "generate_beam_tool_manifest.py --check",
         "generate_api_classification.py --check",
+        "check_cli_reference.py",
         "mkdocs build --strict",
     ):
         assert command in docs_policy
     assert repository_policy.strip() == "python scripts/check_repo_hygiene.py"
+    assert candidate_integrity.strip() == (
+        "python -m pre_commit run --hook-stage manual --all-files"
+    )
+    assert version_policy.strip() == "python scripts/check_python_version.py --ci"
+
+
+def test_every_retired_commit_hook_has_a_hosted_owner_or_explicit_disposition():
+    workflow = _workflow()
+    coverage = json.loads(VALIDATION_COVERAGE.read_text(encoding="utf-8"))
+    entries = coverage["entries"]
+
+    assert coverage["schema_version"] == 1
+    assert len(entries) == 34
+    assert len({entry["key"] for entry in entries}) == 34
+    assert set(coverage["target_commit_hook_ids"]) == {
+        "check-merge-conflict",
+        "check-added-large-files",
+        "git-operation-guard",
+    }
+    assert set(coverage["target_manual_hook_ids"]) == {
+        "check-yaml",
+        "check-toml",
+        "check-json",
+        "end-of-file-fixer",
+        "trailing-whitespace",
+        "mixed-line-ending",
+        "check-merge-conflict",
+        "check-added-large-files",
+    }
+
+    retired = [entry for entry in entries if "retirement" in entry]
+    assert [entry["key"] for entry in retired] == ["check-doc-metadata"]
+    for entry in entries:
+        hosted_checks = entry.get("hosted_checks", [])
+        assert hosted_checks or entry.get("retirement")
+        for hosted in hosted_checks:
+            run_source = "\n".join(
+                step.get("run", "") for step in workflow["jobs"][hosted["job"]]["steps"]
+            )
+            assert hosted["token"] in run_source, entry["key"]
+
+
+def test_react_exact_evidence_is_probed_before_dependency_installation():
+    steps = _workflow()["jobs"]["react-validation"]["steps"]
+    evidence_index = next(
+        index for index, step in enumerate(steps) if step.get("id") == "evidence"
+    )
+    install_index = next(
+        index
+        for index, step in enumerate(steps)
+        if step["name"] == "Install dependencies"
+    )
+
+    assert evidence_index < install_index
+    assert steps[install_index]["if"] == "steps.evidence.outputs.valid != 'true'"
 
 
 def test_every_hosted_command_file_is_an_input_of_its_scheduled_domain():

@@ -35,7 +35,8 @@
     },
     "repository": {
       "description": "Repository configuration, hygiene, YAML, and maintenance-script contracts",
-      "hosted_job": "repository-validation"
+      "hosted_job": "repository-validation",
+      "always_run": true
     }
   },
   "rules": [
@@ -68,6 +69,10 @@
       "domains": ["fastapi"]
     },
     {
+      "paths": ["react_app/src/**"],
+      "domains": ["react", "fastapi"]
+    },
+    {
       "paths": ["react_app/**", ".vite/**"],
       "domains": ["react"]
     },
@@ -96,7 +101,7 @@
       "domains": ["control_plane", "docs", "repository"]
     },
     {
-      "paths": ["scripts/python_runtime.sh", "scripts/check_api.py", "scripts/validate_api_contracts.py", "scripts/generate_api_manifest.py", "scripts/generate_api_classification.py", "scripts/generate_family_facade_docs.py", "scripts/verify_lib_pro_012_r0_external_preview.py", "scripts/verify_lib_pro_013_f0_family_artifact.py", "scripts/check_architecture_boundaries.py", "scripts/check_circular_imports.py", "scripts/validate_imports.py", "scripts/check_type_annotations.py", "scripts/check_governance.py"],
+      "paths": ["scripts/python_runtime.sh", "scripts/check_api.py", "scripts/validate_api_contracts.py", "scripts/generate_api_manifest.py", "scripts/generate_api_classification.py", "scripts/generate_family_facade_docs.py", "scripts/generate_beam_tool_manifest.py", "scripts/verify_lib_pro_012_r0_external_preview.py", "scripts/verify_lib_pro_013_f0_family_artifact.py", "scripts/check_architecture_boundaries.py", "scripts/check_circular_imports.py", "scripts/validate_imports.py", "scripts/check_type_annotations.py", "scripts/check_governance.py"],
       "domains": ["python", "fastapi", "docs"]
     },
     {
@@ -104,7 +109,7 @@
       "domains": ["fastapi"]
     },
     {
-      "paths": ["scripts/check_docs.py", "scripts/check_links.py", "scripts/check_doc_versions.py", "scripts/check_cli_reference.py", "scripts/check_tasks_format.py", "scripts/check_next_session_brief_length.py", "scripts/check_scripts_index.py", "scripts/validate_script_refs.py", "scripts/test_cli_smoke.py", "scripts/check_instruction_drift.py", "scripts/check_bootstrap_freshness.py"],
+      "paths": ["scripts/check_docs.py", "scripts/check_links.py", "scripts/check_doc_versions.py", "scripts/check_cli_reference.py", "scripts/check_tasks_format.py", "scripts/check_next_session_brief_length.py", "scripts/check_scripts_index.py", "scripts/validate_script_refs.py", "scripts/test_cli_smoke.py", "scripts/check_instruction_drift.py", "scripts/check_bootstrap_freshness.py", "scripts/release.py", "scripts/session.py"],
       "domains": ["docs"]
     },
     {
@@ -112,7 +117,7 @@
       "domains": ["control_plane"]
     },
     {
-      "paths": ["scripts/check_repo_hygiene.py", "scripts/agent_start.sh", "scripts/git_state.py", "scripts/migrate_python_module.py", "scripts/migrate_react_component.py", "scripts/safe_file_move.py", "scripts/safe_file_delete.py", "scripts/batch_migrate_runner.py", ".github/**", ".pre-commit-config.yaml"],
+      "paths": ["scripts/check_repo_hygiene.py", "scripts/check_python_version.py", "scripts/agent_start.sh", "scripts/git_state.py", "scripts/migrate_python_module.py", "scripts/migrate_react_component.py", "scripts/safe_file_move.py", "scripts/safe_file_delete.py", "scripts/batch_migrate_runner.py", ".github/**", ".pre-commit-config.yaml"],
       "domains": ["control_plane", "repository"]
     },
     {
