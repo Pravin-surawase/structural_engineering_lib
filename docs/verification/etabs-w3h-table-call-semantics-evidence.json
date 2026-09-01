@@ -1,0 +1,123 @@
+{
+  "schema_version": "w3h-table-call-semantics-evidence/v1",
+  "task_id": "ETABS-W3H-TABLE-CALL-SEMANTICS",
+  "packet": "W3H",
+  "verdict": "TABLE_API_ZERO_ARGUMENT_STILL_CSI_1_ROUTE_CLOSED",
+  "source": {
+    "repository": "Pravin-surawase/structural_engineering_lib",
+    "remote": "https://github.com/Pravin-surawase/structural_engineering_lib.git",
+    "commit": "690b2dad60586e5aea8b89c4642971b03a9b79a0",
+    "tree": "9166afd63e118d42e0492927c455020ba4dd396b",
+    "branch": "codex/etabs-w3h-table-call-semantics-windows",
+    "upstream_at_start": "origin/main",
+    "other_device_state": "NOT_CHECKED"
+  },
+  "host": {
+    "os": "Windows",
+    "python": "3.11.15",
+    "comtypes": "1.4.16",
+    "etabs_application": "23.3.1",
+    "etabs_file_version": "23.3.1.4563",
+    "installed_wrapper_sha256": "ee4cd46835acba0ca1a8de2be20f66a0d6ae054ef0ab68f2894748ee4aa36b14"
+  },
+  "hypothesis": {
+    "historical_call": "DatabaseTables.GetLoadCasesSelectedForDisplay(0, [])",
+    "historical_result": "count 0, twelve null entries, CSI status 1",
+    "candidate_cause": "Explicit output placeholders differed from the installed generated Python call shape.",
+    "installed_wrapper_usage": "GetLoadCasesSelectedForDisplay()",
+    "outcome": "DISPROVED_BY_MATCHED_ZERO_ARGUMENT_LIVE_CALL"
+  },
+  "offline_proof": {
+    "verdict": "OFFLINE_ZERO_ARGUMENT_CALL_PROVED",
+    "cases": 7,
+    "proved": [
+      "tuple and list output containers",
+      "raw observation before CSI-status decoding",
+      "nonzero CSI-status rejection",
+      "count mismatch rejection",
+      "null and duplicate identity rejection",
+      "complete state projection including database and present-unit components"
+    ],
+    "live_attachments": 0,
+    "live_table_calls": 0
+  },
+  "live_observations": {
+    "first_observation": {
+      "attachments": 1,
+      "table_calls": 0,
+      "stop": "The probe's state projection omitted database units and three present-unit components.",
+      "root_cause": "CONFIRMED_INCOMPLETE_PROBE_PROJECTION",
+      "complete_model_state_preserved": true,
+      "model_file_preserved": true
+    },
+    "second_observation": {
+      "attachments": 1,
+      "table_calls": 1,
+      "call_shape": "zero arguments",
+      "error": "DatabaseTables.GetLoadCasesSelectedForDisplay returned 1; expected ETABS return code 0.",
+      "csi_return_code": 1,
+      "complete_model_state_preserved": true,
+      "model_file_preserved": true,
+      "process_identity_preserved": true,
+      "model_identity_preserved": true,
+      "raw_payload_claim": "NOT_CLAIMED_LOGGER_WAS_AFTER_DECODER",
+      "retry": false
+    }
+  },
+  "root_cause_results": {
+    "explicit_output_placeholders": "DISPROVED",
+    "first_live_guard_stop": "CONFIRMED_PROBE_PROJECTION_DEFECT_FIXED_AND_OFFLINE_PROVED",
+    "raw_payload_omission": "CONFIRMED_LOGGING_ORDER_DEFECT_FIXED_RAW_BEFORE_DECODE_AND_OFFLINE_PROVED",
+    "native_csi_status_1": "UNCONFIRMED_ETABS_TABLE_PROVIDER_CAUSE"
+  },
+  "scope": {
+    "analysis_calls": 0,
+    "design_calls": 0,
+    "save_calls": 0,
+    "unlock_calls": 0,
+    "selection_changes": 0,
+    "export_calls": 0,
+    "excel_calls": 0,
+    "model_mutations": 0
+  },
+  "model_proof": {
+    "authorized_copy_sha256": "92b3fa009f25b2228cc956cedb1b76268bb73414e16b361be334c0b3d81f6269",
+    "byte_size": 702855,
+    "hash_size_mtime_unchanged": true,
+    "locked_before_after": true,
+    "present_units_enum": 6,
+    "database_units_enum": 6,
+    "present_units_components": [
+      4,
+      6,
+      2
+    ],
+    "case_status_count": 15,
+    "finished_case_count": 15,
+    "result_selection_flags": 77,
+    "complete_model_guard_equality": true,
+    "state_before_after_sha256": "269cd944e7f96144f769ea7eafb66ac9d37df4abc0a75a43e8ab2319fa3a361c"
+  },
+  "decision": {
+    "equivalent_table_api_retries": "CLOSED_FOR_THIS_MODEL_AND_HOST",
+    "acquisition_order": [
+      "accepted saved source and snapshots",
+      "already proved direct object getters for named fields",
+      "separately scoped supported SQLite, CSV or XML export only for named residual fields"
+    ],
+    "reopen_condition": "A materially new vendor-supported cause or a named required field that cannot be obtained through a cheaper trustworthy route.",
+    "product_code_added": false
+  },
+  "external_evidence": {
+    "directory_label": "ETABS-W3H-TABLE-CALL-SEMANTICS-20260901",
+    "manifest_sha256": "942dc4aa9b4ec9cbf55d4324817f6cea805501898aad39864e35441290b80bd7",
+    "proprietary_payloads_versioned": false
+  },
+  "limitations": [
+    "The native ETABS reason for CSI status 1 is unconfirmed.",
+    "No live raw table payload is claimed because the live logger ran after status decoding; corrected raw-before-decode behavior is proved offline.",
+    "No table catalogue, schema or data row was read.",
+    "No licensing, installation or model-corruption cause is established.",
+    "Physical building mapping, actual-building L5, W3I/K/L and whole-W3 acceptance remain held."
+  ]
+}

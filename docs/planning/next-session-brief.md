@@ -3,11 +3,11 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-08-31
-- Focus: Complete the simplest source-supported serviceability path without new analysis or inferred inputs.
-- Completed: Added strict complete span/depth and supplied Annex F service checks through; Kept separate service-case/source/geometry/bar-revision evidence; no factored; Corrected aggressive crack-width limits and added explicit EXTREME handling.
-- Git receipt: docs/verification/etabs-w3-serviceability-git-handoff-receipt.json | sha256:aa8a18b3a5ae43dafa938f57641dfbd52427e85325b27a9ce7780ff762288dc9 | HOLD
-- Git identity: codex/etabs-w3e-serviceability-windows@773d96739aaa68d5205d606010f0e0540dc4aa7c | upstream=origin/main@773d96739aaa68d5205d606010f0e0540dc4aa7c | base=origin/main@773d96739aaa68d5205d606010f0e0540dc4aa7c | tree=dirty | operation=none
+- Date: 2026-09-01
+- Focus: Resolve the repeated ETABS table-call hypothesis and choose the simplest trustworthy W3H acquisition route.
+- Completed: Inspected the installed generated comtypes wrapper and proved that; Proved seven offline collector/decoder/state cases, then made one eligible; Disproved explicit `(0, [])` output placeholders as the historical cause.
+- Git receipt: docs/verification/etabs-w3h-table-call-semantics-git-handoff-receipt.json | sha256:4b4a5a317c84254bd72fff8f511fc182ca93c191165a07c68f607e7d0a24e6e0 | HOLD
+- Git identity: codex/etabs-w3h-table-call-semantics-windows@690b2dad60586e5aea8b89c4642971b03a9b79a0 | upstream=origin/main@690b2dad60586e5aea8b89c4642971b03a9b79a0 | base=origin/main@690b2dad60586e5aea8b89c4642971b03a9b79a0 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -15,20 +15,22 @@
 ## Current boundary
 
 The [whole-W3 reset](etabs-data-analysis-optimization-foundation-plan.md#whole-w3-execution-reset-2026-08-31) owns sequencing; the [saved-basis decision](etabs-w3-saved-basis-and-criteria.md) owns the current next packet.
-Source: accepted PR #936 merge `773d96739aaa68d5205d606010f0e0540dc4aa7c`; [current serviceability packet](etabs-w3-serviceability.md).
-Windows owns the bounded serviceability branch; exact external integration receipt governs acceptance. Mac NOT_CHECKED.
+Source: accepted PR #936 merge `773d96739aaa68d5205d606010f0e0540dc4aa7c`; [current serviceability packet](etabs-w3-serviceability.md) and the bounded W3H table-call closure.
+Windows owns the bounded W3H closure branch; exact external evidence and integration receipt govern acceptance. Mac NOT_CHECKED.
 
 | State | Next action / claim boundary |
 |---|---|
 | **Current** | Strict span/depth <=10 m and supplied Annex F inputs implemented through canonical/W3 checks. Complete service evidence required; separate SLS identity and exact row/location binding. Candidate gates/integration receipt govern acceptance. No live calls. |
 | Migration | Nonzero raw torsion now requires explicit corner-bar geometry and opposite depth. Al is total Me1/Me2 required tension steel, not additive torsion steel; source-corrected G7 replaces historical numbers. |
 | **Next** | Project service-input evidence and mandatory detailing/constructability criteria. Direct/long-term deflection and torsion detailing/BBS remain held. Reuse accepted owners; do not repeat pilot inputs. |
-| H route | Stop broad table diagnosis. Acquire only named support/mesh/transfer gaps after physical route choice; more getters cannot fix unsupported solver physics. No solver fitting. |
-| Retained | A-D/R, bounded E/F/G/H/J acceptance; #925 repair closed. #931 CSI 1 and #932 binder causes unconfirmed; #933 timestamp defect confirmed. No frozen retry. |
+| H route | Stop broad table diagnosis. The installed wrapper's correct zero-argument table call still returned CSI 1 with complete preservation, disproving the output-placeholder theory. Acquire only named support/mesh/transfer gaps from saved sources, proved direct getters, or bounded supported export. No solver fitting. |
+| Retained | A-D/R, bounded E/F/G/H/J acceptance; #925 repair closed. #931's explicit-placeholder hypothesis is disproved and equivalent table API retries are closed; the native CSI 1 and #932 binder causes remain unconfirmed; #933 timestamp defect is confirmed. |
 | Held | Actual-building H; required serviceability and installed-rebar claims; I/K/L; final combined gates/Mac review; professional/release approval. |
 
-No ETABS/UI/export/solver/design calls in this packet. Saved evidence is not fresh
-lock/units/status/selection proof. Keep `v0.24.0`; no release is authorized.
+The serviceability packet made no ETABS/UI/export/solver/design calls. The W3H
+closure made one read-only zero-argument table getter after complete guards; no
+catalogue, schema, row, export, analysis, design, save, unlock or selection call.
+Its fresh preservation evidence applies only to that exact observation. Keep `v0.24.0`; no release is authorized.
 
 ## Historical W3A-W3D details (current sequence above takes precedence)
 

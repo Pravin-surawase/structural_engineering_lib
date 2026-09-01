@@ -129,7 +129,7 @@ state and does not repair a failing preflight. No table call is authorized here.
 | 1 | Existing `.$et` plus accepted saved snapshots | Object definitions, explicit assignments/loads/settings; source-to-result identity candidates | No COM. Narrow parser/reconciliation needed. Story templates, labels, units and omitted defaults must be resolved explicitly. Input backup does not prove generated mesh, transferred loads or result freshness. |
 | 2 | Already accepted typed object getters | Specific residual assignment or identity questions covered by proved interfaces | Reuse reviewed decoding; new live observations need their own guards. Avoid broad interface rescans. |
 | 3 | Supported UI export to SQLite, or documented CSV/XML if suitable | Versioned model tables and any available required output tables | Assess only the missing tables. SQLite is a new supported export, not a promise of desired fields. UI changes/exports need a separate exact packet and preservation proof; no Excel dependency is required for SQLite parsing. |
-| 4 | Complete managed table client | Reusable unattended table access if still necessary | Reuse typed client and corrected outer functions. No new live attempt until the actual entrypoint and collector pass offline/host-only proof. Conditional matched Python diagnosis only if it changes the chosen route. |
+| 4 | Equivalent managed/Python table client | Reusable unattended table access | Closed for this model/host: the installed wrapper's correct zero-argument call still returned CSI 1 with complete preservation. Reopen only for a materially new vendor-supported cause and a named required field that cannot use priorities 1-3. |
 | Escalation | Sanitized CSI reproduction or a formally scoped solver extension | Unresolved vendor semantics, or a proved missing physical capability | Draft only; no vendor send/upload, subscription, installation or solver expansion is authorized by this audit. |
 
 The old P5 exported-snapshot path hashes E2K and parses geometry/force CSV; it
@@ -137,6 +137,13 @@ does **not** implement a general E2K/`.$et` model-definition parser. Reuse its
 identity and row-ledger patterns, not its reduced fixed `mu/vu` projection as
 a replacement for W3's signed same-row contracts. A new narrow importer must
 feed current W3 contracts or explicitly remain unaccepted research evidence.
+
+The zero-argument closure also adds a recurrence rule for every future ETABS
+probe: persist the raw COM result before strict decoding can raise, and prove the
+complete guard projection through the exact entrypoint before a live call. A
+guard-projection failure consumes no table-call budget and must be corrected
+offline. Do not use another live call merely to recover raw logging that was
+ordered incorrectly.
 
 ## Smallest useful building investigation
 

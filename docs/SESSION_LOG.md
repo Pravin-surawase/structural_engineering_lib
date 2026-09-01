@@ -5,6 +5,99 @@
 
 ---
 
+## 2026-09-01 — Session: W3H ETABS table-call semantics closure
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3H-TABLE-CALL-SEMANTICS`.
+**Branch:** `codex/etabs-w3h-table-call-semantics-windows`.
+**Source:** `main` commit `690b2dad60586e5aea8b89c4642971b03a9b79a0`, tree `9166afd63e118d42e0492927c455020ba4dd396b`.
+**Focus:** Resolve the repeated ETABS table-call hypothesis and choose the simplest trustworthy W3H acquisition route.
+**Checkpoint:** `EVIDENCE_COMPLETE_REQUIRES_INTEGRATION`.
+**Evidence:** `docs/verification/etabs-w3h-table-call-semantics-evidence.json`
+**Git handoff receipt:** `docs/verification/etabs-w3h-table-call-semantics-git-handoff-receipt.json`
+
+**Completed:**
+
+- Inspected the installed generated comtypes wrapper and proved that
+  `GetLoadCasesSelectedForDisplay` takes zero Python arguments and returns
+  count, names and CSI status.
+- Proved seven offline collector/decoder/state cases, then made one eligible
+  guarded zero-argument live call. It still returned CSI status 1.
+- Disproved explicit `(0, [])` output placeholders as the historical cause.
+  Kept the native ETABS table-provider cause unconfirmed.
+- Preserved the same ETABS process/model, locked complete state, 15 finished
+  cases, 77 result-selection flags and exact model file bytes. Made no analysis,
+  design, save, unlock, selection, export, Excel or model-mutation call.
+- Closed equivalent table API retries for this model/host. Updated W3 to prefer
+  accepted saved sources, proved direct getters and a separately bounded
+  supported SQLite/CSV/XML export only for named residual fields.
+
+### Issues encountered
+
+- A broad maintained Git-state query with sibling worktrees exceeded its bounded
+  command time and produced no complete JSON; current-lane state remained clean.
+- ETABS startup returned before a targetable window appeared even though the
+  process had started.
+- A WPF element-index click targeted the startup-page checkbox instead of the
+  intended recent-model card and temporarily unchecked it.
+- The first live probe attached once but stopped before the table call because
+  its state projection omitted database units and present-unit components.
+- The correct zero-argument table call still returned CSI status 1.
+- The second live probe attempted to write raw output after strict decoding, so
+  its CSI failure prevented a raw-payload artifact.
+- The first session preparation run could not associate the newly created Git
+  handoff receipt with this session entry.
+- The first quick gate passed 9 of 10 checks but rejected the generated next-
+  session brief at 151 lines against its maintained 150-line limit.
+
+### Root causes and resolutions
+
+- The sibling-worktree query timeout cause is unconfirmed within this packet;
+  it is associated with the broad topology query, not current-lane ambiguity.
+  Reused the already inspected predecessor topology and used the maintained
+  current-state-only command, which returned a clean ready lane. Avoid another
+  broad topology query unless merge ordering has materially changed.
+- ETABS application initialization lagged process creation. Used one bounded
+  wait and fresh application observation; the same process then exposed one
+  responsive model window. No duplicate launch occurred.
+- The returned WPF element index did not map to the intended recent-file card;
+  the exact UI-automation mapping cause is unconfirmed. Restored the startup
+  checkbox immediately before opening any model, then used screenshot-backed
+  coordinates and the standard file dialog to open the exact copied file.
+- The probe reused the guard payload without reproducing its separate database/
+  present-unit augmentation. Added those exact getter outputs to the projection
+  and proved the complete state case offline. The first observation made zero
+  table calls and preserved state/model bytes.
+- The zero-argument result disproves the output-placeholder cause. The internal
+  CSI table-provider cause remains unconfirmed, so no product adapter, reinstall,
+  licensing assertion or equivalent retry is justified. The one live call and
+  complete pre/post state/file/process evidence close that route safely.
+- Raw logging followed decoding in the probe, so CSI status 1 raised first.
+  Moved raw persistence before decoding and proved the failure ordering offline.
+  No raw live payload is claimed and no additional live call was spent to obtain it.
+- The session entry named the technical evidence but omitted the maintained
+  `Git handoff receipt` field, so closeout correctly treated the receipt as
+  missing. Added the exact versioned receipt path; the repeated preparation
+  validation resolved the association before candidate freeze.
+- The new W3H route note added one wrapped line after handoff generation and
+  exceeded the briefing budget. Condensed the unchanged release-boundary
+  sentence by one line; the affected consolidated quick gate is rerun once.
+
+**Verification:** Final offline proof passed 7 cases with zero attachment/table
+calls. Live observation 1 attached once, made zero table calls and preserved
+state/file. Live observation 2 attached once, made one correct zero-argument
+call, received CSI status 1 and preserved complete state, model file and process/
+model identity. External manifest SHA-256 is
+`942dc4aa9b4ec9cbf55d4324817f6cea805501898aad39864e35441290b80bd7`.
+Repository gates and integration facts follow after candidate freeze.
+
+**Next:** Continue pure-software torsion distribution/detailing and the saved-
+source physical-basis/suitability route. Use direct getters or supported export
+only for named missing fields. Actual-building W3H and W3I/K/L remain held; no
+release or engineering approval.
+
+---
+
 ## 2026-08-31 — Session: W3 bounded serviceability
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
