@@ -1,0 +1,126 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "d43e81228e0afca6124c4556f8465bdac87661472d6059893d93f6998265b067",
+    "state": {
+      "branch": "codex/etabs-w3-project-criteria-windows",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "c53571311be560fc37cdb0e87516d0f58ac85e3b",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 482.088,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git\\worktrees\\etabs-w3-project-criteria-windows",
+      "head_sha": "c53571311be560fc37cdb0e87516d0f58ac85e3b",
+      "hold_reasons": [
+        "changed paths: 8"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-09-01T12:29:08.289372+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\worktrees\\etabs-w3-project-criteria-windows",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 8,
+        "modified_paths": [],
+        "staged_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/README.md",
+          "docs/planning/etabs-data-analysis-optimization-foundation-plan.md",
+          "docs/planning/etabs-w3-com-vba-and-reanalysis-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/etabs-w3-com-vba-plan-audit-evidence.json",
+          "docs/verification/etabs-w3-com-vba-plan-git-handoff-receipt.json"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "c53571311be560fc37cdb0e87516d0f58ac85e3b",
+        "status": "equal"
+      },
+      "worktree_root": "C:\\CodexWork\\worktrees\\etabs-w3-project-criteria-windows"
+    }
+  },
+  "local_state_receipt_hash": "sha256:d43e81228e0afca6124c4556f8465bdac87661472d6059893d93f6998265b067",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-09-01T12:29:08.289372+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "docs/planning/lib-pro-015-professional-api-and-documentation-renewal-plan.md"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "docs/planning/etabs-w3-com-vba-and-reanalysis-plan.md",
+      "docs/verification/etabs-w3-com-vba-plan-audit-evidence.json",
+      "docs/verification/etabs-w3-com-vba-plan-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/planning/etabs-data-analysis-optimization-foundation-plan.md",
+      "docs/planning/README.md",
+      "docs/TASKS.md",
+      "docs/SESSION_LOG.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "ETABS-W3-PROJECT-CRITERIA-RECOVERY"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

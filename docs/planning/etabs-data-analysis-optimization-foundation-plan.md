@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-31
+last_updated: 2026-09-01
 doc_type: spec
 complexity: advanced
 tags: [etabs, beams, data-contracts, frame-analysis, optimization, provenance]
@@ -143,12 +143,22 @@ Explicit source evidence exposes clear-versus-centroid cover and separate steel
 grade mapping gaps. The [reinforcement root-cause packet](etabs-w3-reinforcement-root-causes.md)
 now implements compatible material/cover variants and corrects source-verified
 shear/torsion defects, including opposite-face demand and unsafe spacing rounding.
-The reinforcement corrections are accepted in PR #936 (`773d9673`). The next
-[bounded serviceability packet](etabs-w3-serviceability.md) implements strict
-span/depth and supplied Annex F checks through canonical/W3 consumers; its gates
-and external integration receipt govern acceptance. Mandatory constructability/
-torsion-distribution criteria remain next. Stop broad table work; residual H acquisition
-must answer a required physical row and cannot repair unsupported solver physics.
+The reinforcement corrections are accepted in PR #936 (`773d9673`). Strict
+bounded serviceability is accepted in PR #937, torsion detailing in PR #939,
+and the saved-candidate signed-face repair in PR #940 (`c5357131`). The retained
+75/100/125 mm schedules prove bounded feasibility only. Project-specific
+service scenarios, bar revision/factor evidence, caller-owned excluded-action
+limits, wider/multilayer/coupled torsion and the W3H support/mesh/slab-transfer
+basis remain unresolved. Stop broad table work; residual H acquisition must
+answer a required physical row and cannot repair unsupported solver physics.
+
+**COM/VBA/reanalysis checkpoint:** the
+[legacy-source and current-adapter audit](etabs-w3-com-vba-and-reanalysis-plan.md)
+defines the missing PID target, state guard, raw call ledger, canonical pilot
+composition, common layer-aware candidate evaluator, matched ETABS design
+snapshot and owned-copy W3K transaction. It is a static audit only. The
+parallel LIB-PRO-015 capability review owns public beam façade/documentation
+questions; this checkpoint owns the ETABS host/session and transaction path.
 
 Keep three tracks separate: faithful ETABS data transport, beam checks using
 ETABS actions, and independent force prediction. Progress on the first two can
@@ -158,11 +168,11 @@ remain useful while the third is held. No track silently substitutes for another
 |---|---|---|
 | 1. Saved physical-basis reconciliation — bounded investigation completed | Reuse W3D/F/H evidence; inspect existing `.$et`, explicit units/story expansion, object assignments, loads and settings. No app calls. Prefer a narrow importer into current W3 contracts, not a general E2K parser. | At most three deterministic candidate lines have a required-input matrix; saved-source identity and overlapping definitions reconcile or remain explicitly unproved. List exact residual fields and their source route. |
 | 2. Building suitability decision — three lines not comparable as-is | Use packet 1 to classify independently specified loads, mesh/station sides, supports, axes, stiffness/shear/slab participation and excluded effects. | One supported scope with predeclared comparison requirements, or a documented no-go/justified extension decision. Do not solve first and fit the mapping later. |
-| 3. Residual acquisition, only if needed | Use accepted saved sources first, then already proved object getters, then a supported SQLite/CSV/XML export for named gaps. Equivalent managed/Python table API calls are closed for this model/host after the correct zero-argument call also returned CSI 1. Installed action remains a separate exact-authority packet. | Every requested field maps to a required W3H row. Export assessment names only missing tables/fields and has its own bound and preservation proof. Stop if the source cannot resolve the physical question. |
-| 4. Complete audit and criteria — matrix prepared, software next | Independent of COM diagnosis: specify W3E serviceability/applicability/detailing, W3H comparison scope and W3I families/scenarios/objectives/cost bounds. Software repairs can proceed after their own contract freezes. | Mandatory checks have a typed executable route or remain held; genuine project decisions are listed for review. No hidden limits, guessed supports or W3I screening before H acceptance. |
+| 3. Residual acquisition, only if needed | Use accepted saved sources first, then already proved object getters, then an allowlisted ETABS 23.3 SQLite export for named gaps. Equivalent managed/Python table API calls are closed for this model/host after the correct zero-argument call also returned CSI 1. Installed action remains a separate exact-authority packet. | Every requested field maps to a required W3H row. Export assessment names only missing tables/fields and has its own bound and preservation proof. Stop if the source cannot resolve the physical question. |
+| 4. Complete audit and criteria — bounded software accepted, project criteria pending | PRs #936/#937/#939/#940 close traced material/cover, bounded serviceability, torsion/detailing and signed-face defects. Obtain the remaining project service/bar/factor evidence, caller-owned excluded-action limits and W3I family/scenario/objective/cost bounds. | Mandatory checks have a typed executable route or remain held; genuine project decisions are listed for review. No hidden limits, guessed supports or W3I screening before H acceptance. |
 | 5. Actual-building W3H | Requires packets 1-4's relevant physical basis, reference identities and predeclared criteria. Reuse the accepted comparator and benchmarks. | L5 accepted only for the explicit model/scenarios/components, or NOT_COMPARABLE/OUT_OF_BAND with cause. Baseline agreement does not validate a whole candidate range. |
 | 6. W3I implementation and bounded screening | Requires accepted E/H/R and complete mandatory strength/serviceability/constructability checks, candidate/scenario bounds and applicability evidence. | Deterministic feasible shortlist with no held mandatory checks; status SCREENED_ONLY. |
-| 7. W3K then W3L | Separate guarded-copy mutation/reanalysis authority; freeze affected beams/columns/joints/reactions/drifts and other required global safeguards, abort/recovery and budget first. | Fresh ETABS results per retained candidate, finite iteration, independent final repeat from clean baseline and exact dossier. |
+| 7. W3K then W3L | Implement the linked PID/state/call-ledger plan first. Mutate only an owned ETABS process opening a hash-bound copy; every beam/column section change requires expected-old validation and readback. Freeze affected beams/columns/joints/reactions/drifts, other global safeguards, abort/recovery and budget first. | Attached user session and baseline remain unchanged; fresh ETABS results per retained candidate, finite iteration, independent final repeat from a clean copy and exact dossier. |
 | 8. Integrated acceptance | All intended software/evidence packets integrated; refresh the real-data W3J projection at meaningful milestones. | One combined broad gate, final evidence reconciliation and Mac integrated review; professional signature/release remain distinct approvals. |
 
 Packets 1 and 4 are useful offline work and should not queue behind a COM

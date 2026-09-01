@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "etabs_com_vba_and_reanalysis_plan_audit",
+  "observed_at_utc": "2026-09-01T12:20:48.723502Z",
+  "repository": {
+    "branch": "codex/etabs-w3-project-criteria-windows",
+    "head_sha": "c53571311be560fc37cdb0e87516d0f58ac85e3b",
+    "git_authority": "scripts/git_state.py",
+    "git_state": "READY_LOCAL",
+    "remote_freshness": "NOT_CHECKED"
+  },
+  "execution_boundary": {
+    "audit_only": true,
+    "etabs_process_attached": false,
+    "com_object_created": false,
+    "excel_opened": false,
+    "model_opened": false,
+    "analysis_or_design_run": false,
+    "table_exported": false,
+    "model_mutated": false
+  },
+  "installed_reference": {
+    "logical_path": "docs/reference/CSI API ETABS v1.chm",
+    "sha256": "a730756ccd283ffc17f592a2e21c973d50b5a14ed3489244fca1524e58f3a700",
+    "size_bytes": 4000373,
+    "confirmed_interfaces": [
+      "cHelper.GetObjectProcess(string typeName, int pid)",
+      "cDatabaseTables.GetAvailableTables",
+      "cDatabaseTables.GetAllFieldsInTable",
+      "cDatabaseTables.GetTableForDisplayArray",
+      "cDatabaseTables.GetTableForDisplayCSVFile",
+      "cAnalyze.GetCaseStatus",
+      "cAnalyze.SetRunCaseFlag",
+      "cDesignConcrete.GetResultsAvailable",
+      "cDesignConcrete.GetCode",
+      "cDesignConcrete.GetSummaryResultsBeam",
+      "cFrameObj.GetDesignProcedure",
+      "cPropFrame.GetRebarBeam",
+      "cDesignConcrete.Indian_IS_456_2000.GetPreference",
+      "cDesignConcrete.Indian_IS_456_2000.GetOverwrite"
+    ]
+  },
+  "legacy_sources": [
+    {
+      "source_id": "current_excel_controller_v2_0_1",
+      "file_name": "ETABS_Automation.bas",
+      "sha256": "d8a0be6433b71f29a12c5b8388037472cb7f263646201e85cc2ee04c6d8eabdc"
+    },
+    {
+      "source_id": "current_excel_controller_packager",
+      "file_name": "package_etabs_controller_v2.ps1",
+      "sha256": "9040935696da64394f0303d568dceacf716580bbed13e82cac7218e9b2e9ff40"
+    },
+    {
+      "source_id": "project2_column_workflow",
+      "file_name": "Column_Design_Module.bas",
+      "sha256": "39dc3e3a04416d20107f758fa3f26df1c9b3d82a8bfa63a5fc7c507aabde7976"
+    },
+    {
+      "source_id": "legacy_columns",
+      "file_name": "COLUMNS.bas",
+      "sha256": "ea188d54c4cc013cc4170e7e380c42cfc6f4bbeb6f351aca016f7fe2ee90a871"
+    },
+    {
+      "source_id": "legacy_beam_design",
+      "file_name": "BEAM_DESIGN.bas",
+      "sha256": "0fb03f10bb6e8965edb068d26b939f46ef88d4bfd98eaf4c405cf5bcdc53d1fb"
+    },
+    {
+      "source_id": "legacy_beam_type_and_reinforcement",
+      "file_name": "BeamType.bas",
+      "sha256": "e561b4ef24a8b105651c619b4c8cf12a789e0f6dbabd1948a90b04fdae3ed800"
+    },
+    {
+      "source_id": "legacy_base_reactions",
+      "file_name": "BASE_REACTIONS.bas",
+      "sha256": "7a0bb20af95d2b77c83c223c2ea3ccde3abac3d3870ac6aaafe89b814390dae59"
+    },
+    {
+      "source_id": "modular_vba_connection",
+      "file_name": "mod_Connection.bas",
+      "sha256": "6166096385217b792f540134095916ce34f0238ce612b8ecfb310363397cfcc8"
+    },
+    {
+      "source_id": "modular_vba_analysis",
+      "file_name": "mod_Analysis.bas",
+      "sha256": "92daa2d4696beb45d869c3a1017225d955ec3f8b3c1a75b0cc4aa669bf4c52e5"
+    }
+  ],
+  "current_library_sources": [
+    {
+      "path": "Python/structural_lib/services/etabs_live_bridge.py",
+      "sha256": "1e9df6c0961123372fe86c983ae5768cfe8d46c6e30be6aa04a3813d291b4802"
+    },
+    {
+      "path": "Python/structural_lib/services/rebar_optimizer.py",
+      "sha256": "6fe384f150b11943fdc1724b0d90fe10e69afecfe7482105becf65d416b29429"
+    },
+    {
+      "path": "Python/structural_lib/services/optimization.py",
+      "sha256": "9e42fb54d0cca52abf1c9518269be5796a2fb3afe9f17e10371c88eb0f319983"
+    },
+    {
+      "path": "Python/structural_lib/services/multi_objective_optimizer.py",
+      "sha256": "a15ca9ad041a6e8a2fffa43d35f4182fe5ff0031c7c6fcf6918643188c18adc4"
+    },
+    {
+      "path": "Python/structural_lib/services/beam_reinforcement.py",
+      "sha256": "976dcd59fc93e0aa9f7de8b83e26c31e715aa92edb702a0d5e5f86d2d1176a7d"
+    }
+  ],
+  "confirmed_findings": [
+    {
+      "id": "COM-TARGET-001",
+      "priority": "P0",
+      "finding": "The current Python live bridge and legacy VBA attach without a PID and can target an ambiguous running ETABS instance."
+    },
+    {
+      "id": "COM-STATE-002",
+      "priority": "P0",
+      "finding": "The current Python pilot changes result output selection without restoring the predecessor selection."
+    },
+    {
+      "id": "BEAM-FACE-003",
+      "priority": "P0",
+      "finding": "The current live pilot converts governing M3 to magnitude and omits primary_tension_face, bypassing the signed-face repair accepted in PR 940."
+    },
+    {
+      "id": "OPT-PARITY-004",
+      "priority": "P0",
+      "finding": "Bar, cost and Pareto optimizers use different feasibility paths; multi-layer recommendations do not carry exact layer distribution and effective-depth proof."
+    },
+    {
+      "id": "DESIGN-BASIS-005",
+      "priority": "P1",
+      "finding": "Legacy beam and column result reads do not bind design code, preferences, overwrites, object design procedure and section rebar definition into one comparison snapshot."
+    },
+    {
+      "id": "MUTATION-TXN-006",
+      "priority": "P1",
+      "finding": "Legacy frame section updates lack PID/model binding, expected-old validation, per-object readback, complete rollback and owned-process isolation."
+    },
+    {
+      "id": "ACQUISITION-007",
+      "priority": "P1",
+      "finding": "The broad W3H table COM route is closed for this model and host; named missing fields should use saved evidence, proved getters or ETABS 23.3 SQLite export."
+    },
+    {
+      "id": "SOLVER-SCOPE-008",
+      "priority": "P2",
+      "finding": "Support, mesh and slab-transfer basis remains incomplete, so a general solver extension would not by itself make the saved candidates comparable."
+    }
+  ],
+  "decisions": [
+    "Add PID-specific session discovery and connection contracts before any new live pilot.",
+    "Add a complete state guard and raw-call ledger before strict COM decoding.",
+    "Deprecate the pilot calculation owner and compose the canonical W3 audit.",
+    "Use one layer-aware candidate evaluator for bar, cost and Pareto ranking.",
+    "Use a matched-basis read-only ETABS design snapshot for comparison.",
+    "Use named SQLite acquisition before any reconsideration of broad table COM calls.",
+    "Allow setters only in an owned ETABS process operating on a hash-bound copy.",
+    "Keep ETABS as global analysis authority and the existing local solver bounded."
+  ],
+  "official_sources": [
+    "https://www.csiamerica.com/products/etabs/enhancements",
+    "https://web.wiki.csiamerica.com/wiki/spaces/kb/pages/2000456/OAPI%2BFAQ",
+    "https://docs.csiamerica.com/help-files/etabs/Keyboard_Commands_and_Special_Features/Choose_Tables_form.htm"
+  ]
+}
