@@ -579,7 +579,7 @@ launch_fastapi_local() {
 
     # Launch FastAPI in background, redirect output to log
     "$PYTHON_LAUNCHER" -m uvicorn fastapi_app.main:app \
-        --host 0.0.0.0 \
+        --host "${HOST:-127.0.0.1}" \
         --port "$FASTAPI_PORT" \
         --reload \
         >> "$LOG_FILE" 2>&1 &

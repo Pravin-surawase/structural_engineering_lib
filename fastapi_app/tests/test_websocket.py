@@ -4,8 +4,12 @@ Tests for WebSocket Live Design Endpoint.
 Week 3 Priority 2: WebSocket Live Design Tests
 """
 
+import pytest
 from fastapi.testclient import TestClient
+from fastapi_app.auth import create_access_token
 from fastapi_app.main import app
+from fastapi_app.routers import websocket as websocket_router
+from starlette.websockets import WebSocketDisconnect
 
 
 def _design_params(**overrides):
@@ -37,13 +41,47 @@ def _check_params(**overrides):
     return params
 
 
+def _ws_path(session_id: str, *scopes: str) -> str:
+    token = create_access_token(
+        {
+            "sub": "websocket-test-user",
+            "email": "websocket@example.com",
+            "scopes": list(scopes or ("design",)),
+        }
+    )
+    return f"/ws/design/{session_id}?token={token}"
+
+
 class TestWebSocketDesign:
     """Test WebSocket design endpoint."""
+
+    @pytest.mark.parametrize(
+        ("path", "close_code"),
+        [
+            ("/ws/design/auth-missing", 4001),
+            ("/ws/design/auth-invalid?token=invalid", 4001),
+            (_ws_path("auth-wrong-scope", "analyze"), 4003),
+        ],
+    )
+    def test_websocket_rejects_auth_failure_before_accept(
+        self, monkeypatch, path, close_code
+    ):
+        async def fail_if_accepted(*_args, **_kwargs):
+            raise AssertionError("WebSocket must not be accepted before auth passes")
+
+        monkeypatch.setattr(websocket_router.manager, "connect", fail_if_accepted)
+        client = TestClient(app)
+
+        with pytest.raises(WebSocketDisconnect) as exc_info:
+            with client.websocket_connect(path):
+                pass
+
+        assert exc_info.value.code == close_code
 
     def test_websocket_connect_disconnect(self):
         """Test basic WebSocket connection lifecycle."""
         client = TestClient(app)
-        with client.websocket_connect("/ws/design/test-session-1") as websocket:
+        with client.websocket_connect(_ws_path("test-session-1")) as websocket:
             # Send ping
             websocket.send_json({"type": "ping"})
             response = websocket.receive_json()
@@ -54,7 +92,7 @@ class TestWebSocketDesign:
     def test_websocket_design_beam(self):
         """Test design_beam message via WebSocket."""
         client = TestClient(app)
-        with client.websocket_connect("/ws/design/test-session-2") as websocket:
+        with client.websocket_connect(_ws_path("test-session-2")) as websocket:
             # Send design request
             websocket.send_json(
                 {
@@ -100,7 +138,7 @@ class TestWebSocketDesign:
         }
         rest = client.post("/api/v1/design/beam", json=rest_payload).json()["data"]
 
-        with client.websocket_connect("/ws/design/evidence-parity") as websocket:
+        with client.websocket_connect(_ws_path("evidence-parity")) as websocket:
             websocket.send_json(
                 {
                     "type": "design_beam",
@@ -121,7 +159,7 @@ class TestWebSocketDesign:
     def test_websocket_design_beam_latency(self):
         """Test that WebSocket design is fast (<100ms)."""
         client = TestClient(app)
-        with client.websocket_connect("/ws/design/test-session-3") as websocket:
+        with client.websocket_connect(_ws_path("test-session-3")) as websocket:
             websocket.send_json(
                 {
                     "type": "design_beam",
@@ -138,7 +176,7 @@ class TestWebSocketDesign:
     def test_websocket_design_beam_rejects_empty_params(self):
         """No calculation may run from implicit engineering defaults."""
         client = TestClient(app)
-        with client.websocket_connect("/ws/design/missing-inputs") as websocket:
+        with client.websocket_connect(_ws_path("missing-inputs")) as websocket:
             websocket.send_json({"type": "design_beam", "params": {}})
             response = websocket.receive_json()
 
@@ -149,7 +187,7 @@ class TestWebSocketDesign:
     def test_websocket_unknown_message_type(self):
         """Test handling of unknown message types."""
         client = TestClient(app)
-        with client.websocket_connect("/ws/design/test-session-4") as websocket:
+        with client.websocket_connect(_ws_path("test-session-4")) as websocket:
             websocket.send_json({"type": "unknown_type"})
             response = websocket.receive_json()
 
@@ -159,7 +197,7 @@ class TestWebSocketDesign:
     def test_websocket_check_beam(self):
         """Test check_beam message via WebSocket."""
         client = TestClient(app)
-        with client.websocket_connect("/ws/design/test-session-5") as websocket:
+        with client.websocket_connect(_ws_path("test-session-5")) as websocket:
             websocket.send_json(
                 {
                     "type": "check_beam",
@@ -181,7 +219,7 @@ class TestWebSocketDesign:
     def test_websocket_check_beam_no_cases(self):
         """Test check_beam with no cases returns error."""
         client = TestClient(app)
-        with client.websocket_connect("/ws/design/test-session-6") as websocket:
+        with client.websocket_connect(_ws_path("test-session-6")) as websocket:
             websocket.send_json(
                 {
                     "type": "check_beam",
@@ -196,7 +234,7 @@ class TestWebSocketDesign:
     def test_websocket_check_beam_rejects_hidden_engineering_defaults(self):
         """The exact load-case-only reproducer must not run a calculation."""
         client = TestClient(app)
-        with client.websocket_connect("/ws/design/check-missing-inputs") as websocket:
+        with client.websocket_connect(_ws_path("check-missing-inputs")) as websocket:
             websocket.send_json(
                 {
                     "type": "check_beam",
@@ -211,7 +249,7 @@ class TestWebSocketDesign:
 
     def test_websocket_check_beam_rejects_unknown_field(self):
         client = TestClient(app)
-        with client.websocket_connect("/ws/design/check-unknown-input") as websocket:
+        with client.websocket_connect(_ws_path("check-unknown-input")) as websocket:
             websocket.send_json(
                 {
                     "type": "check_beam",
@@ -226,7 +264,7 @@ class TestWebSocketDesign:
 
     def test_websocket_check_beam_rejects_non_finite_case_action(self):
         client = TestClient(app)
-        with client.websocket_connect("/ws/design/check-nan-input") as websocket:
+        with client.websocket_connect(_ws_path("check-nan-input")) as websocket:
             websocket.send_json(
                 {
                     "type": "check_beam",
@@ -250,7 +288,7 @@ class TestWebSocketDesign:
     def test_websocket_multiple_messages(self):
         """Test multiple design messages on same connection."""
         client = TestClient(app)
-        with client.websocket_connect("/ws/design/test-session-7") as websocket:
+        with client.websocket_connect(_ws_path("test-session-7")) as websocket:
             # First design
             websocket.send_json(
                 {

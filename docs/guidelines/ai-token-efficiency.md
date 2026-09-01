@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-23
+last_updated: 2026-09-01
 doc_type: guide
 ---
 
@@ -168,15 +168,22 @@ is an exception used to guide or debug the change, not a ritual after each edit.
 7. If verification exposes an outcome-changing defect, repair its root cause,
    rerun the failed or affected narrow evidence, and repeat the consolidated
    gate once for the new frozen candidate.
-8. For a multi-packet milestone, keep each completed packet to focused tests,
-   independent benchmarks, architecture/import checks, the quick gate, normal
-   commit hooks, and all required hosted PR checks.
-9. After all intended packets are integrated, run the broad Python suite and
+8. Treat a multi-unit milestone branch as the publication and validation unit.
+   Complete its sequential internal task IDs with only their affected focused
+   tests and any required independent benchmark; do not run quick/hooks/hosted
+   CI or create a PR for every internal unit. Once all intended units are
+   integrated, run their union of focused and architecture/import checks, the
+   quick gate once, normal hooks once, then push once for one PR/hosted cycle.
+   Installed-application evidence, mutation authority, and externally acquired
+   artifacts remain separate milestone boundaries.
+9. After all intended milestone branches are integrated, run the broad Python suite and
    `./run.sh check` (currently 32 checks) once at the cumulative closeout.
    Repeat only a failed portion unless the fix can affect other categories.
 10. Run either broad gate before cumulative closeout only when an
    outcome-changing failure or repository-wide surface makes it necessary.
-Required hosted checks are never deferred or bypassed.
+Required hosted checks are never deferred or bypassed for a publishable
+milestone candidate; they are intentionally not invoked for unpublished
+internal checkpoints on the same branch.
 
 `check` JSON retains `duration` as the sum of child-check seconds for
 compatibility; it is not elapsed time when checks run in parallel. Use `timings`

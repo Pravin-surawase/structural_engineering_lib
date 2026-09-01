@@ -8,7 +8,7 @@ Demonstrates how to use:
 
 Usage:
     # Start the server first:
-    uvicorn fastapi_app.main:app --reload --host 0.0.0.0 --port 8000
+    uvicorn fastapi_app.main:app --reload --host 127.0.0.1 --port 8000
 
     # Then run this client:
     python fastapi_app/examples/test_client.py
@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import os
 from urllib.parse import quote
 
 import httpx
@@ -28,6 +29,7 @@ import httpx
 BASE_URL = "http://localhost:8000"
 WS_URL = "ws://localhost:8000"
 REQUEST_TIMEOUT_SECONDS = 30.0
+WS_ACCESS_TOKEN = os.environ.get("WS_ACCESS_TOKEN")
 
 
 # =============================================================================
@@ -49,12 +51,15 @@ async def test_websocket_design():
     except ImportError:
         print("❌ websockets package not installed. Run: pip install websockets")
         return
+    if not WS_ACCESS_TOKEN:
+        print("❌ Set WS_ACCESS_TOKEN to a JWT with the design scope.")
+        return
 
     print("\n" + "=" * 60)
     print("🔌 Testing WebSocket Live Design")
     print("=" * 60)
 
-    uri = f"{WS_URL}/ws/design/test-client-1"
+    uri = f"{WS_URL}/ws/design/test-client-1?token={quote(WS_ACCESS_TOKEN)}"
 
     try:
         async with websockets.connect(uri) as ws:

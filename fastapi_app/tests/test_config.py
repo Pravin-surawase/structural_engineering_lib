@@ -54,6 +54,61 @@ def test_development_defaults_remain_unauthenticated(monkeypatch):
 
     assert settings.environment == "development"
     assert settings.auth_enabled is False
+    assert settings.etabs_live_bridge_enabled is False
+    assert settings.etabs_live_mutation_enabled is False
+
+
+def test_etabs_mutation_requires_live_bridge(monkeypatch):
+    monkeypatch.setenv("ETABS_LIVE_BRIDGE_ENABLED", "false")
+    monkeypatch.setenv("ETABS_LIVE_MUTATION_ENABLED", "true")
+
+    with pytest.raises(ValidationError, match="requires ETABS_LIVE_BRIDGE_ENABLED"):
+        Settings(_env_file=None)
+
+
+def test_etabs_live_bridge_requires_loopback_bind(monkeypatch):
+    monkeypatch.setenv(
+        "HOST", "0.0.0.0"  # nosec B104 - unsafe bind is the rejection fixture
+    )
+    monkeypatch.setenv("ETABS_LIVE_BRIDGE_ENABLED", "true")
+    monkeypatch.setenv("AUTH_ENABLED", "true")
+    monkeypatch.setenv("JWT_SECRET_KEY", _VALID_PRODUCTION_SECRET)
+
+    with pytest.raises(ValidationError, match="requires HOST.*loopback"):
+        Settings(_env_file=None)
+
+
+def test_etabs_live_bridge_requires_authentication(monkeypatch):
+    monkeypatch.setenv("HOST", "127.0.0.1")
+    monkeypatch.setenv("ETABS_LIVE_BRIDGE_ENABLED", "true")
+    monkeypatch.setenv("AUTH_ENABLED", "false")
+    monkeypatch.setenv("JWT_SECRET_KEY", _VALID_PRODUCTION_SECRET)
+
+    with pytest.raises(ValidationError, match="AUTH_ENABLED=true is required"):
+        Settings(_env_file=None)
+
+
+def test_etabs_live_bridge_requires_non_default_secret(monkeypatch):
+    monkeypatch.setenv("HOST", "127.0.0.1")
+    monkeypatch.setenv("ETABS_LIVE_BRIDGE_ENABLED", "true")
+    monkeypatch.setenv("AUTH_ENABLED", "true")
+    monkeypatch.setenv("JWT_SECRET_KEY", _DEFAULT_DEVELOPMENT_SECRET)
+
+    with pytest.raises(ValidationError, match="JWT_SECRET_KEY must be non-default"):
+        Settings(_env_file=None)
+
+
+def test_etabs_live_bridge_accepts_secured_loopback_profile(monkeypatch):
+    monkeypatch.setenv("HOST", "::1")
+    monkeypatch.setenv("ETABS_LIVE_BRIDGE_ENABLED", "true")
+    monkeypatch.setenv("ETABS_LIVE_MUTATION_ENABLED", "true")
+    monkeypatch.setenv("AUTH_ENABLED", "true")
+    monkeypatch.setenv("JWT_SECRET_KEY", _VALID_PRODUCTION_SECRET)
+
+    settings = Settings(_env_file=None)
+
+    assert settings.etabs_live_route_policy.live_bridge_enabled is True
+    assert settings.etabs_live_route_policy.live_mutation_enabled is True
 
 
 def test_production_requires_authentication(monkeypatch):

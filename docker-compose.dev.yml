@@ -7,7 +7,10 @@ services:
     ports:
       - "8000:8000"
     environment:
+      - HOST=0.0.0.0
       - JWT_SECRET_KEY=${JWT_SECRET_KEY:-dev-secret}
+      - ETABS_LIVE_BRIDGE_ENABLED=false
+      - ETABS_LIVE_MUTATION_ENABLED=false
       - RATE_LIMIT_REQUESTS=${RATE_LIMIT_REQUESTS:-100}
       - RATE_LIMIT_WINDOW=${RATE_LIMIT_WINDOW:-60}
     # Security: read-only mounts prevent container from modifying host source

@@ -56,13 +56,19 @@ The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines
   quick gate once, normal commit hooks, and the required hosted checks. If an
   outcome-changing repair alters the frozen candidate, rerun the affected
   focused evidence and then the consolidated gate once.
-- For a multi-packet milestone, run focused tests, independent benchmarks,
-  architecture/import checks, `./run.sh check --quick`, normal commit hooks,
-  and every required hosted PR check for each packet. Run the broad Python
-  suite and `./run.sh check` (currently 32 checks) once after all intended
-  packets are integrated. Run either broad gate earlier only when an
-  outcome-changing failure or repository-wide surface makes it necessary;
-  never bypass required hosted checks.
+- A milestone branch may contain several sequential internal implementation
+  units when they share one accepted authority and do not cross an installed-
+  application, mutation-authorization, or external-artifact gate. Internal
+  units get only their affected focused tests and any required independent
+  benchmark while work is in progress; they do not each trigger the quick
+  gate, normal hooks, a push, a PR, or hosted CI. After all intended units are
+  integrated and content freezes, run their union of focused/benchmark and
+  architecture/import checks, `./run.sh check --quick` once, normal commit
+  hooks once, and one required hosted PR cycle for the milestone. Run the broad
+  Python suite and `./run.sh check` (currently 32 checks) only at the plan's
+  named cumulative gate. Run any broad gate earlier only when an outcome-
+  changing failure or repository-wide surface makes it necessary; never bypass
+  required checks on a published milestone candidate.
 - Route changed paths by their maintained callers and outcome owners. A shared
   folder name alone must not select unrelated product domains; unknown or
   unclassified impact still fails closed to every domain.

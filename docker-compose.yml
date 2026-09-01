@@ -9,7 +9,10 @@ services:
       # This Compose file is the production profile. Local evaluation uses
       # docker-compose.dev.yml or direct local startup instead.
       - ENVIRONMENT=production
+      - HOST=0.0.0.0
       - AUTH_ENABLED=true
+      - ETABS_LIVE_BRIDGE_ENABLED=false
+      - ETABS_LIVE_MUTATION_ENABLED=false
       # Set a non-default value in .env before deploying. See .env.example.
       - JWT_SECRET_KEY=${JWT_SECRET_KEY:?JWT_SECRET_KEY must be set - see .env.example}
       - RATE_LIMIT_REQUESTS=${RATE_LIMIT_REQUESTS:-100}

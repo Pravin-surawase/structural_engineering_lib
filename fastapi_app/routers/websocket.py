@@ -8,7 +8,7 @@ This module provides WebSocket endpoints for real-time beam design:
 Week 3 Priority 2 Implementation (V3 Migration)
 
 Usage:
-    Connect to ws://localhost:8000/ws/design/{session_id}
+    Connect to ws://localhost:8000/ws/design/{session_id}?token={jwt}
     Send: {"type": "design_beam", "params": {...}}
     Receive: {"type": "design_result", "data": {...}}
 """
@@ -112,7 +112,9 @@ async def design_websocket(
 
     Example:
         ```javascript
-        const ws = new WebSocket('ws://localhost:8000/ws/design/session123');
+        const ws = new WebSocket(
+            'ws://localhost:8000/ws/design/session123?token=' + token
+        );
 
         ws.send(JSON.stringify({
             type: 'design_beam',
@@ -126,8 +128,8 @@ async def design_websocket(
         }));
         ```
     """
-    user = await verify_ws_token(websocket, token)
-    if token and not user:
+    user = await verify_ws_token(websocket, token, required_scopes=("design",))
+    if not user:
         return
 
     await manager.connect(session_id, websocket)

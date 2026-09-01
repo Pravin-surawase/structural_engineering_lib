@@ -162,8 +162,11 @@ export class StructuralDesignClient {
 export class LiveDesignClient {
   private ws: WebSocket | null = null;
   private baseUrl: string;
+  private accessToken: string;
 
-  constructor(baseUrl: string = WS_URL) {
+  constructor(accessToken: string, baseUrl: string = WS_URL) {
+    if (!accessToken) throw new Error('A JWT with the design scope is required');
+    this.accessToken = accessToken;
     this.baseUrl = baseUrl;
   }
 
@@ -172,7 +175,7 @@ export class LiveDesignClient {
    */
   async connect(clientId: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      const url = `${this.baseUrl}/ws/design/${clientId}`;
+      const url = `${this.baseUrl}/ws/design/${clientId}?token=${encodeURIComponent(this.accessToken)}`;
       this.ws = new WebSocket(url);
 
       this.ws.onopen = () => {
