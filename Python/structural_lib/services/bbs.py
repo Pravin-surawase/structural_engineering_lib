@@ -68,7 +68,7 @@ class BBSLineItem:
 
     bar_mark: str  # Unique identifier (e.g., "B1-B-S-D16-01")
     member_id: str  # Beam/element ID
-    location: str  # "bottom", "top", "stirrup"
+    location: str  # "bottom", "top", "side-face", "stirrup"
     zone: str  # "start", "mid", "end", or "full"
     shape_code: str  # Shape per IS 2502 (A, B, C, D, E, etc.)
     diameter_mm: float  # Bar diameter
@@ -342,6 +342,7 @@ def _bar_mark_loc_code(location: str) -> str:
     return {
         "bottom": "B",
         "top": "T",
+        "side-face": "F",
         "stirrup": "S",
     }.get(location, "X")
 
@@ -413,6 +414,64 @@ def _validate_detailing_for_bbs(detailing: object) -> BeamDetailingResult:
             raise ValueError(f"stirrups[{index}].legs must be an integer.")
         if stirrup.legs <= 0:
             raise ValueError(f"stirrups[{index}].legs must be > 0.")
+    if detailing.torsion is not None:
+        torsion = detailing.torsion
+        if (
+            not torsion.corner_bars_enclosed
+            or not torsion.full_span_corner_bars
+            or not torsion.closed_stirrups
+        ):
+            raise ValueError(
+                "torsion detailing requires full-span corner bars enclosed in closed stirrups."
+            )
+        require_positive_real(
+            torsion.primary_area_required, "torsion.primary_area_required"
+        )
+        require_positive_real(
+            torsion.max_stirrup_spacing, "torsion.max_stirrup_spacing"
+        )
+        if torsion.opposite_area_required < 0:
+            raise ValueError("torsion.opposite_area_required must be >= 0.")
+        if any(
+            item.layers != 1
+            or item.count < 2
+            or item.area_provided + 1e-9 < torsion.primary_area_required
+            for item in detailing.bottom_bars
+        ):
+            raise ValueError("torsion primary-face corner bars are not consumable.")
+        if any(
+            item.layers != 1
+            or item.count < 2
+            or item.area_provided + 1e-9 < torsion.opposite_area_required
+            for item in detailing.top_bars
+        ):
+            raise ValueError("torsion opposite-face corner bars are not consumable.")
+        if any(
+            item.legs != 2 or item.spacing > torsion.max_stirrup_spacing + 1e-9
+            for item in detailing.stirrups
+        ):
+            raise ValueError("torsion closed-stirrup arrangement exceeds its limit.")
+        side = torsion.side_face_bars
+        if side is not None:
+            if isinstance(side.count_each_face, bool) or not isinstance(
+                side.count_each_face, int
+            ):
+                raise ValueError("side-face count_each_face must be an integer.")
+            if side.count_each_face <= 0:
+                raise ValueError("side-face count_each_face must be > 0.")
+            require_positive_real(side.diameter, "side-face diameter")
+            require_positive_real(
+                side.area_required_each_face, "side-face required area"
+            )
+            require_positive_real(
+                side.area_provided_each_face, "side-face provided area"
+            )
+            require_positive_real(side.spacing, "side-face spacing")
+            require_positive_real(side.max_spacing, "side-face max spacing")
+            if side.area_provided_each_face + 1e-9 < side.area_required_each_face:
+                raise ValueError("side-face provided area is below the required area.")
+            if side.spacing > side.max_spacing + 1e-9:
+                raise ValueError("side-face bar spacing exceeds the maximum spacing.")
     if b - 2 * cover <= 0 or D - 2 * cover <= 0:
         raise ValueError("cover leaves no positive BBS stirrup dimensions.")
     return detailing
@@ -420,7 +479,7 @@ def _validate_detailing_for_bbs(detailing: object) -> BeamDetailingResult:
 
 BAR_MARK_PATTERN = re.compile(
     r"(?P<beam_id>[A-Z0-9]+(?:-[A-Z0-9]+)*)-"
-    r"(?P<loc>[BTS])-(?P<zone>[SMEF])-D(?P<dia>\d+)-(?P<seq>\d{2})",
+    r"(?P<loc>[BTSF])-(?P<zone>[SMEF])-D(?P<dia>\d+)-(?P<seq>\d{2})",
     flags=re.IGNORECASE,
 )
 
@@ -526,11 +585,18 @@ def generate_bbs_from_detailing(
     detailing = _validate_detailing_for_bbs(detailing)
     items = []
 
-    # Process bottom bars
     zones = ["start", "mid", "end"]
-    for _i, (bar_arr, zone) in enumerate(
-        zip(detailing.bottom_bars, zones, strict=False)
-    ):
+    if detailing.torsion is not None:
+        bottom_schedule = [
+            (max(detailing.bottom_bars, key=lambda item: item.count), "full")
+        ]
+        top_schedule = [(max(detailing.top_bars, key=lambda item: item.count), "full")]
+    else:
+        bottom_schedule = list(zip(detailing.bottom_bars, zones, strict=False))
+        top_schedule = list(zip(detailing.top_bars, zones, strict=False))
+
+    # Process bottom bars. Torsion corner bars remain continuous for the full span.
+    for bar_arr, zone in bottom_schedule:
         if bar_arr.count > 0:
             cut_length = calculate_straight_bar_length(
                 span_mm=detailing.span,
@@ -565,13 +631,17 @@ def generate_bbs_from_detailing(
                 )
             )
 
-    # Process top bars
-    for _i, (bar_arr, zone) in enumerate(zip(detailing.top_bars, zones, strict=False)):
+    # Process top bars. The torsion opposite face is a tension face.
+    for bar_arr, zone in top_schedule:
         if bar_arr.count > 0:
             cut_length = calculate_straight_bar_length(
                 span_mm=detailing.span,
                 cover_mm=detailing.cover,
-                ld_mm=detailing.ld_compression,
+                ld_mm=(
+                    detailing.ld_tension
+                    if detailing.torsion is not None
+                    else detailing.ld_compression
+                ),
                 location="top",
                 zone=zone,
             )
@@ -600,6 +670,41 @@ def generate_bbs_from_detailing(
                     remarks=f"Top {zone} - {bar_arr.callout()}",
                 )
             )
+
+    # Process full-span additional longitudinal bars on both side faces.
+    if detailing.torsion is not None and detailing.torsion.side_face_bars is not None:
+        side = detailing.torsion.side_face_bars
+        cut_length = calculate_straight_bar_length(
+            span_mm=detailing.span,
+            cover_mm=detailing.cover,
+            ld_mm=detailing.ld_tension,
+            location="side-face",
+            zone="full",
+        )
+        total_count = 2 * side.count_each_face
+        unit_wt = calculate_bar_weight(side.diameter, cut_length)
+        total_wt = calculate_bar_weight(
+            side.diameter,
+            cut_length * total_count,
+            round_weight=False,
+        )
+        items.append(
+            BBSLineItem(
+                bar_mark="",
+                member_id=detailing.beam_id,
+                location="side-face",
+                zone="full",
+                shape_code="A",
+                diameter_mm=side.diameter,
+                no_of_bars=total_count,
+                cut_length_mm=cut_length,
+                total_length_mm=cut_length * total_count,
+                unit_weight_kg=unit_wt,
+                total_weight_kg=round(total_wt, WEIGHT_ROUND_DECIMALS),
+                a_mm=cut_length,
+                remarks=f"Both side faces - {side.callout()}",
+            )
+        )
 
     # Process stirrups
     for _i, (stirrup, zone) in enumerate(zip(detailing.stirrups, zones, strict=False)):

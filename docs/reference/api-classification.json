@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "claim_surface_matrix_schema_version": "claim-surface-matrix/v1",
-  "generated": "2026-08-31",
+  "generated": "2026-09-01",
   "package_version": "0.24.0",
   "release_channel": "normal",
   "classifications": {
@@ -230,6 +230,20 @@
                 "minimum": 8,
                 "title": "Compression Bar Diameter Mm",
                 "type": "number"
+              },
+              "side_face_bar_diameter_mm": {
+                "anyOf": [
+                  {
+                    "maximum": 36,
+                    "minimum": 8,
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Side Face Bar Diameter Mm"
               },
               "nominal_top_steel_ratio": {
                 "exclusiveMinimum": 0,
@@ -762,7 +776,7 @@
         "title": "BeamDesignInputV1",
         "type": "object"
       },
-      "request_schema_sha256": "afb92bb35bc9ccb0fd19c3c5fee5c548273efef21453af390293a16ee939b01b",
+      "request_schema_sha256": "42c4bb944e99e815e98581456de467197ed57f4a707f3cdad4c2b4659dc4d23b",
       "request_field_contracts": [
         {
           "path": "$",
@@ -889,6 +903,19 @@
             "DOWNSTREAM_CONSUMABILITY"
           ],
           "unit": null,
+          "zero_allowed": false,
+          "compatibility_aliases": []
+        },
+        {
+          "path": "detailing.side_face_bar_diameter_mm",
+          "dimensions": [
+            "TYPE_AND_FINITE_VALUE",
+            "RANGE_AND_ZERO_POLICY",
+            "UNIT_AND_QUANTITY",
+            "ENUM_AND_TOPOLOGY",
+            "DOWNSTREAM_CONSUMABILITY"
+          ],
+          "unit": "mm",
           "zero_allowed": false,
           "compatibility_aliases": []
         },
@@ -1117,7 +1144,7 @@
           "compatibility_aliases": []
         }
       ],
-      "request_field_count": 28,
+      "request_field_count": 29,
       "unowned_field_paths": [],
       "represented_validation_dimensions": [
         "CODE_AND_MATERIAL_DOMAIN",

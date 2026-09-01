@@ -5970,6 +5970,19 @@
             "title": "Nominal Top Steel Ratio",
             "type": "number"
           },
+          "side_face_bar_diameter_mm": {
+            "anyOf": [
+              {
+                "maximum": 36.0,
+                "minimum": 8.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Side Face Bar Diameter Mm"
+          },
           "standard": {
             "$ref": "#/components/schemas/DetailingStandard"
           },

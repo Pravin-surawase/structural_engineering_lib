@@ -13,6 +13,7 @@ CLIENT_ROOT = REPO_ROOT / "clients/python"
 sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(CLIENT_ROOT))
 
+from scripts.generate_client_sdks import generate_basic_typescript_client  # noqa: E402
 from scripts.validate_imports import can_resolve_module  # noqa: E402
 from structural_client.client import StructuralDesignClient  # noqa: E402
 
@@ -164,3 +165,13 @@ def test_python_client_exposes_versioned_canonical_beam_route():
 
     assert result["schema_version"] == "beam-design-result/v1"
     assert result["envelope"]["overall_status"] == "PASS"
+
+
+def test_typescript_client_matches_generator_with_side_face_choice(tmp_path):
+    assert generate_basic_typescript_client(tmp_path)
+    generated = tmp_path / "typescript" / "src" / "index.ts"
+    checked_in = REPO_ROOT / "clients" / "typescript" / "src" / "index.ts"
+    assert generated.read_text(encoding="utf-8") == checked_in.read_text(
+        encoding="utf-8"
+    )
+    assert "side_face_bar_diameter_mm?:" in generated.read_text(encoding="utf-8")

@@ -1,0 +1,128 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "d21ef87b22e5077db888f176a73b53f7b518e1f69880d764024a9cafdf91e6f3",
+    "state": {
+      "branch": "codex/etabs-w3e-torsion-detailing-windows",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "c8cdee9d1ee72acf756651c45520562512e2f5f4",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 253.196,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git\\worktrees\\etabs-w3e-serviceability-windows",
+      "head_sha": "c8cdee9d1ee72acf756651c45520562512e2f5f4",
+      "hold_reasons": [
+        "changed paths: 22"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-09-01T11:00:33.560086+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\worktrees\\etabs-w3e-serviceability-windows",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 22,
+        "modified_paths": [],
+        "staged_paths": [
+          "Python/structural_lib/codes/is456/beam/detailing.py",
+          "Python/structural_lib/services/bbs.py",
+          "Python/structural_lib/services/beam_api.py",
+          "Python/structural_lib/services/canonical_beam.py",
+          "Python/structural_lib/services/contracts/beam.py",
+          "Python/tests/integration/test_canonical_beam_facade.py",
+          "Python/tests/integration/test_w3_reinforcement_root_causes.py",
+          "Python/tests/test_generated_clients.py",
+          "Python/tests/unit/test_detailing.py",
+          "clients/typescript/src/index.ts",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/etabs-w3-reinforcement-root-causes.md",
+          "docs/planning/etabs-w3-serviceability.md",
+          "docs/planning/next-session-brief.md",
+          "docs/reference/api-classification.json",
+          "docs/reference/api-compatibility-ledger.json",
+          "docs/reference/family-facade-contracts.md",
+          "docs/verification/etabs-w3-torsion-detailing-evidence.json",
+          "docs/verification/etabs-w3-torsion-detailing-git-handoff-receipt.json",
+          "fastapi_app/openapi_baseline.json",
+          "scripts/generate_client_sdks.py"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "c8cdee9d1ee72acf756651c45520562512e2f5f4",
+        "status": "equal"
+      },
+      "worktree_root": "C:\\CodexWork\\worktrees\\etabs-w3e-serviceability-windows"
+    }
+  },
+  "local_state_receipt_hash": "sha256:d21ef87b22e5077db888f176a73b53f7b518e1f69880d764024a9cafdf91e6f3",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-09-01T11:00:33.560086+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [],
+    "integration_owner": "Main Agent",
+    "owned_paths": [],
+    "shared_paths": [],
+    "task_id": "ETABS-W3E-TORSION-DETAILING"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

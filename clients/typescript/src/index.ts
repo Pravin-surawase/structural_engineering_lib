@@ -49,6 +49,7 @@ export interface CanonicalBeamDetailingOptionsV1 {
   clear_cover_mm: number;
   tension_bar_diameter_mm: 8 | 10 | 12 | 16 | 20 | 25 | 32;
   compression_bar_diameter_mm: 8 | 10 | 12 | 16 | 20 | 25 | 32;
+  side_face_bar_diameter_mm?: 8 | 10 | 12 | 16 | 20 | 25 | 32;
   nominal_top_steel_ratio: number;
   stirrup_diameter_mm: number;
   stirrup_legs: number;

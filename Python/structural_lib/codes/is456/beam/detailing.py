@@ -39,7 +39,9 @@ from ..traceability import clause
 __all__ = [
     # Classes
     "BarArrangement",
+    "SideFaceArrangement",
     "StirrupArrangement",
+    "TorsionDetailingResult",
     "BeamDetailingResult",
     "HookDimensions",
     "TensionBarAnchorageResultV1",
@@ -126,6 +128,37 @@ class StirrupArrangement:
 
 
 @dataclass
+class SideFaceArrangement:
+    """Additional full-span longitudinal bars placed on both side faces."""
+
+    count_each_face: int
+    diameter: float  # mm
+    area_required_each_face: float  # mm²
+    area_provided_each_face: float  # mm²
+    spacing: float  # mm (center-to-center between adjacent longitudinal bars)
+    max_spacing: float  # mm
+
+    def callout(self) -> str:
+        """Return the bar callout for one face."""
+
+        return f"{self.count_each_face}-{int(self.diameter)}φ/face"
+
+
+@dataclass
+class TorsionDetailingResult:
+    """IS 456 longitudinal distribution and closed-stirrup evidence."""
+
+    primary_area_required: float  # mm², equivalent moment Me1 face
+    opposite_area_required: float  # mm², equivalent moment Me2 face
+    side_face_bars: SideFaceArrangement | None
+    corner_bars_enclosed: bool
+    full_span_corner_bars: bool
+    closed_stirrups: bool
+    max_stirrup_spacing: float  # mm
+    clause_refs: tuple[str, ...]
+
+
+@dataclass
 class BeamDetailingResult:
     """Complete detailing result for a beam section."""
 
@@ -149,6 +182,7 @@ class BeamDetailingResult:
     # Validity
     is_valid: bool
     remarks: str
+    torsion: TorsionDetailingResult | None = None
 
     def to_3d_json(self, is_seismic: bool = False) -> dict:
         """
@@ -1003,8 +1037,8 @@ def check_side_face_reinforcement(
 
     Requirements (IS 456 Cl 26.5.1.3):
     - Required when D > 750 mm
-    - Area: 0.1% of web area per face
-    - Spacing: ≤ 300 mm
+    - Total area: 0.1% of web area, distributed equally on two faces
+    - Spacing: ≤ 300 mm or web thickness, whichever is less
 
     Args:
         D: Overall beam depth (mm)
@@ -1014,34 +1048,142 @@ def check_side_face_reinforcement(
     Returns:
         (is_required, area_per_face_mm2, max_spacing_mm)
         - is_required: True if D > 750 mm
-        - area_per_face_mm2: Required area per face (0 if not required)
-        - max_spacing_mm: Maximum spacing (300 mm if required, 0 otherwise)
+        - area_per_face_mm2: Half of the required total area (0 if not required)
+        - max_spacing_mm: Lesser of 300 mm and web thickness
 
     Reference:
         IS 456:2000, Clause 26.5.1.3
     """
-    # Threshold depth for side-face reinforcement
-    DEPTH_THRESHOLD = 750.0  # mm
+    if D <= 0 or b <= 0 or cover < 0 or 2 * cover >= D:
+        raise ValueError("D, b and cover must define a positive rectangular web.")
 
-    # Required percentage of web area per face
-    PERCENTAGE_WEB_AREA = 0.001  # 0.1%
+    required, area_per_face, max_spacing = _side_face_reinforcement_requirements(
+        D=D, b=b, threshold=750.0
+    )
+    return required, round(area_per_face, 1), max_spacing
 
-    # Maximum spacing limit
-    MAX_SPACING = 300.0  # mm
 
-    if D <= DEPTH_THRESHOLD:
+def _side_face_reinforcement_requirements(
+    *, D: float, b: float, threshold: float
+) -> tuple[bool, float, float]:
+    """Return shared Cl 26.5.1.3 area and spacing requirements."""
+
+    if D <= threshold:
         return False, 0.0, 0.0
 
-    # Web height = D - 2*cover (approximate; exact depends on bar diameters)
-    web_height = D - 2 * cover
+    # For a rectangular beam the web area is b*D. Clause 26.5.1.3 sets
+    # 0.1% total, shared equally between the two faces.
+    area_per_face = 0.0005 * b * D
+    return True, area_per_face, min(300.0, b)
 
-    # Web area per face = width * web height
-    web_area_per_face = b * web_height
 
-    # Required steel area per face = 0.1% of web area
-    area_per_face = PERCENTAGE_WEB_AREA * web_area_per_face
+def _create_torsion_detailing(
+    *,
+    b: float,
+    D: float,
+    cover: float,
+    stirrup_dia: float,
+    stirrup_legs: int,
+    stirrups: list[StirrupArrangement],
+    bottom_bars: list[BarArrangement],
+    top_bars: list[BarArrangement],
+    preferred_tension_bar_dia: float | None,
+    preferred_compression_bar_dia: float | None,
+    side_face_bar_dia: float | None,
+    primary_required: float,
+    opposite_required: float,
+    max_stirrup_spacing: float,
+) -> TorsionDetailingResult:
+    """Distribute designed torsion steel per IS 456 Cl 26.5.1.7."""
 
-    return True, round(area_per_face, 1), MAX_SPACING
+    if b > 450:
+        raise ValueError(
+            "TORSION_DETAILING_SECTION_UNSUPPORTED: b > 450 mm requires "
+            "additional transverse/internal distribution not modeled by the "
+            "two-legged rectangular-stirrup route."
+        )
+    if preferred_tension_bar_dia is None or preferred_compression_bar_dia is None:
+        raise ValueError(
+            "TORSION_CORNER_GEOMETRY_REQUIRED: explicit tension and opposite-face "
+            "bar diameters are required."
+        )
+    if stirrup_legs != 2:
+        raise ValueError(
+            "TORSION_CLOSED_STIRRUPS_REQUIRED: use two-legged rectangular closed stirrups."
+        )
+    if max_stirrup_spacing <= 0:
+        raise ValueError("torsion_max_stirrup_spacing must be > 0.")
+    if any(item.spacing > max_stirrup_spacing + 1e-9 for item in stirrups):
+        raise ValueError(
+            "TORSION_STIRRUP_SPACING_EXCEEDED: selected spacing exceeds the "
+            "calculated IS 456 torsion limit."
+        )
+
+    for label, bars, required, selected_dia in (
+        ("primary", bottom_bars, primary_required, preferred_tension_bar_dia),
+        ("opposite", top_bars, opposite_required, preferred_compression_bar_dia),
+    ):
+        if any(item.count < 2 for item in bars):
+            raise ValueError(
+                f"TORSION_CORNER_BARS_MISSING: {label} face needs corner bars."
+            )
+        if any(item.layers != 1 or item.diameter != selected_dia for item in bars):
+            raise ValueError(
+                "TORSION_CORNER_GEOMETRY_CONFLICT: selected bars changed the "
+                "explicit single-layer corner-bar geometry used by strength design."
+            )
+        if any(item.area_provided + 1e-9 < required for item in bars):
+            raise ValueError(
+                f"TORSION_LONGITUDINAL_AREA_INADEQUATE: {label} face area is below demand."
+            )
+
+    side_face_bars: SideFaceArrangement | None = None
+    if D > 450:
+        if side_face_bar_dia is None:
+            raise ValueError(
+                "TORSION_SIDE_FACE_BAR_REQUIRED: side_face_bar_diameter_mm is "
+                "required when D exceeds 450 mm."
+            )
+        if side_face_bar_dia not in STANDARD_BAR_DIAMETERS:
+            raise ValueError(
+                f"side_face_bar_dia must be one of {STANDARD_BAR_DIAMETERS}."
+            )
+
+        _, area_required_each_face, max_spacing = _side_face_reinforcement_requirements(
+            D=D, b=b, threshold=450.0
+        )
+        bottom_dia = bottom_bars[0].diameter
+        top_dia = top_bars[0].diameter
+        corner_vertical_spacing = D - (
+            2 * (cover + stirrup_dia) + (bottom_dia + top_dia) / 2
+        )
+        if corner_vertical_spacing <= 0:
+            raise ValueError("torsion corner bars leave no positive side-face spacing.")
+
+        bar_area = math.pi * side_face_bar_dia**2 / 4
+        area_count = math.ceil(area_required_each_face / bar_area)
+        spacing_count = max(0, math.ceil(corner_vertical_spacing / max_spacing) - 1)
+        count_each_face = max(1, area_count, spacing_count)
+        actual_spacing = corner_vertical_spacing / (count_each_face + 1)
+        side_face_bars = SideFaceArrangement(
+            count_each_face=count_each_face,
+            diameter=side_face_bar_dia,
+            area_required_each_face=round(area_required_each_face, 1),
+            area_provided_each_face=round(count_each_face * bar_area, 1),
+            spacing=round(actual_spacing, 1),
+            max_spacing=max_spacing,
+        )
+
+    return TorsionDetailingResult(
+        primary_area_required=primary_required,
+        opposite_area_required=opposite_required,
+        side_face_bars=side_face_bars,
+        corner_bars_enclosed=True,
+        full_span_corner_bars=True,
+        closed_stirrups=True,
+        max_stirrup_spacing=max_stirrup_spacing,
+        clause_refs=("IS 456:2000 Cl 26.5.1.3", "IS 456:2000 Cl 26.5.1.7"),
+    )
 
 
 # =============================================================================
@@ -1250,6 +1392,10 @@ def create_beam_detailing(
     preferred_compression_bar_dia: float | None = None,
     nominal_top_steel_ratio: float = 0.25,
     stirrup_legs: int | None = None,
+    torsion_primary_required: float | None = None,
+    torsion_opposite_required: float = 0.0,
+    torsion_max_stirrup_spacing: float | None = None,
+    side_face_bar_dia: float | None = None,
 ) -> BeamDetailingResult:
     """
     Create complete beam detailing from design output.
@@ -1278,6 +1424,10 @@ def create_beam_detailing(
         preferred_compression_bar_dia: First top/compression diameter to try.
         nominal_top_steel_ratio: Explicit drafting ratio used only when Asc is zero.
         stirrup_legs: Explicit number of legs, or compatibility auto-selection.
+        torsion_primary_required: Me1-face demand; ``None`` disables torsion detailing.
+        torsion_opposite_required: Me2 opposite-face tension demand (mm²).
+        torsion_max_stirrup_spacing: Calculated torsion spacing limit (mm).
+        side_face_bar_dia: Explicit additional longitudinal side-face diameter.
 
     Returns:
         BeamDetailingResult with complete detailing information
@@ -1346,6 +1496,22 @@ def create_beam_detailing(
             raise ValueError("stirrup_legs must be an integer.")
         if stirrup_legs < 2:
             raise ValueError("stirrup_legs must be >= 2.")
+    if torsion_primary_required is not None:
+        torsion_primary_required = require_nonnegative_real(
+            torsion_primary_required, "torsion_primary_required"
+        )
+        torsion_opposite_required = require_nonnegative_real(
+            torsion_opposite_required, "torsion_opposite_required"
+        )
+        if torsion_max_stirrup_spacing is None:
+            raise ValueError(
+                "torsion_max_stirrup_spacing is required for torsion detailing."
+            )
+        torsion_max_stirrup_spacing = require_positive_real(
+            torsion_max_stirrup_spacing, "torsion_max_stirrup_spacing"
+        )
+    if side_face_bar_dia is not None:
+        require_positive_real(side_face_bar_dia, "side_face_bar_dia")
 
     if not 15 <= fck <= 80:
         raise ValueError("fck must be between 15 and 80 N/mm².")
@@ -1437,6 +1603,30 @@ def create_beam_detailing(
         StirrupArrangement(stirrup_dia, legs, stirrup_spacing_end, zone_length),
     ]
 
+    torsion_detailing = None
+    if torsion_primary_required is not None:
+        assert torsion_max_stirrup_spacing is not None
+        torsion_detailing = _create_torsion_detailing(
+            b=b,
+            D=D,
+            cover=cover,
+            stirrup_dia=stirrup_dia,
+            stirrup_legs=legs,
+            stirrups=stirrups,
+            bottom_bars=[bot_start, bot_mid, bot_end],
+            top_bars=[top_start, top_mid, top_end],
+            preferred_tension_bar_dia=preferred_tension_bar_dia,
+            preferred_compression_bar_dia=preferred_compression_bar_dia,
+            side_face_bar_dia=side_face_bar_dia,
+            primary_required=torsion_primary_required,
+            opposite_required=torsion_opposite_required,
+            max_stirrup_spacing=torsion_max_stirrup_spacing,
+        )
+        assumption_notes.append(
+            "Torsion longitudinal steel was distributed to the primary, opposite "
+            "and required side faces with corner bars enclosed by closed stirrups."
+        )
+
     # Spacing sanity-check (horizontal clear spacing). Vertical layer clearance is not modeled.
     spacing_violations: list[str] = []
     for label, arr in [
@@ -1475,4 +1665,5 @@ def create_beam_detailing(
         lap_length=lap_length,
         is_valid=is_valid,
         remarks="; ".join(remarks_parts),
+        torsion=torsion_detailing,
     )

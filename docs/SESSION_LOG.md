@@ -5,6 +5,122 @@
 
 ---
 
+## 2026-09-01 — Session: W3 torsion distribution and BBS closure
+
+**Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
+**Task:** `ETABS-W3E-TORSION-DETAILING`.
+**Branch:** `codex/etabs-w3e-torsion-detailing-windows`.
+**Source:** `main` commit `c8cdee9d1ee72acf756651c45520562512e2f5f4`.
+**Focus:** Replace the bounded nonzero-torsion detailing/BBS hold with an IS
+456 longitudinal-distribution consumer while preserving the separate
+serviceability hold and explicit applicability gates.
+**Checkpoint:** `LOCAL_QUICK_PASSED_REQUIRES_HOOKS_AND_INTEGRATION`.
+**Evidence:** `docs/verification/etabs-w3-torsion-detailing-evidence.json`.
+**Git handoff receipt:** `docs/verification/etabs-w3-torsion-detailing-git-handoff-receipt.json`
+
+**Completed:**
+
+- Routed the existing Me1 primary-face and Me2 opposite-face demands through
+  the maintained beam-detailing owner without adding or relabelling steel.
+- Preserved the exact single-layer corner-bar diameters used by strength
+  geometry and rejected arrangements that change that basis.
+- Required two-legged closed stirrups within the calculated torsion spacing;
+  supported widths end at 450 mm and wider sections fail closed.
+- Added explicit side-face diameter input only when detailing needs it. For
+  D above 450 mm, the owner provides full-span bars on both faces using the
+  shared Cl 26.5.1.3 area and spacing requirements.
+- Added a distinct side-face BBS location/mark and all-or-nothing validation.
+  The 300x500 authored vector schedules full-span 2-20 primary, full-span
+  2-16 opposite and 1-16 per side face at 193 mm, with closed 8 mm stirrups
+  at 75 mm. Its torsion BBS has six items instead of curtailed corner sets.
+- Kept strength-only torsion available when the side-bar choice is absent and
+  kept `SERVICEABILITY_DETAILING_SCOPE_HOLD` ahead of automatic detailing.
+
+### Issues encountered
+
+- The maintained side-face helper doubled the steel requirement, reduced the
+  web depth by cover and ignored the web-thickness spacing cap.
+- The canonical strength result exposed both longitudinal torsion demands but
+  the detailing consumer blocked every nonzero torsion result, so no valid BBS
+  could be produced even for the bounded rectangular case.
+- The inherited BBS generator split top and bottom sets into three curtailed
+  zones, which did not prove continuous torsion corner bars.
+- The first diagnostic invoked the Bash Python launcher directly from
+  PowerShell and returned no probe output.
+- The first OpenAPI drift check correctly detected the new optional detailing
+  field against the old baseline.
+- The first changed-file Black check found three edited modules unformatted.
+- A root-directory mypy invocation missed the package configuration and exposed
+  nine unrelated baseline diagnostics; a direct client TypeScript invocation
+  also found no installed compiler in this isolated worktree.
+- A guessed architecture-check filename did not exist; the maintained script
+  uses the longer `check_architecture_boundaries.py` name.
+- The first normal commit hooks rejected punctuation around the handoff receipt
+  path and found stale API classification/compatibility and family-facade docs.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the helper read total 0.1% web reinforcement as 0.1%
+  on each face, used `D-2*cover` instead of rectangular web depth D, and used
+  a constant 300 mm. Resolution: one shared unrounded owner now computes 0.1%
+  total, half per face, and `min(300 mm, b)`. Unit vectors prove 120 mm2 per
+  face for 300x800 and a 230 mm cap for a 230 mm web.
+- Confirmed root cause: the strength and detailing owners stopped at separate
+  result types; no consumer mapped Me1/Me2, corner bars, side bars and closed
+  stirrup limits into one accepted detailing object. Resolution: extend the
+  existing detailing object and BBS generator, then exercise the real canonical
+  detail/BBS journey. Missing diameter, excessive spacing, changed corner
+  geometry and unsupported width all fail closed.
+- Confirmed root cause: the generic flexural BBS schedule was reused without
+  a torsion continuity branch. Resolution: select each governing primary and
+  opposite arrangement once and schedule it for the full span; side-face bars
+  are also full span. The ordinary zero-torsion nine-item schedule is unchanged.
+- Confirmed terminal cause: `scripts/python_runtime.sh` is a Bash launcher and
+  the PowerShell direct invocation did not execute the probe as intended.
+  Resolution: invoke it through `bash`; the repeated probe printed the exact
+  Ast/Asv/spacing/geometry values. ⚠️ TERMINAL ISSUE: direct PowerShell launch
+  produced no diagnostic output -> used `bash ./scripts/python_runtime.sh`.
+- Confirmed root cause: the Pydantic request schema gained one reviewed optional
+  field while the committed OpenAPI snapshot still represented the predecessor.
+  Resolution: update the maintained snapshot after focused REST tests; the final
+  no-drift check remains part of candidate verification.
+- Confirmed root cause: implementation edits had not yet passed the formatter.
+  Resolution: run Black on exactly the three reported modules; the repeated
+  seven-file Black check passes with no source change.
+- Confirmed root cause: mypy configuration is rooted under `Python/`, and the
+  standalone TypeScript client has no lockfile-bound compiler in this worktree.
+  Resolution: use the maintained `cd Python` mypy hook command, which passes
+  285 source files, and prove the TypeScript source by exact generator parity
+  instead of installing an adjacent toolchain. ⚠️ TERMINAL ISSUE: root mypy
+  used the wrong configuration and direct npx had no local compiler -> used the
+  repository hook context and generated-client parity test.
+- Confirmed terminal cause: the architecture checker was called by an obsolete
+  guessed filename. Resolution: discover and run the maintained boundary
+  checker; all 249 files pass with zero violations. ⚠️ TERMINAL ISSUE: missing
+  `check_architecture.py` -> used `check_architecture_boundaries.py`.
+- Confirmed root cause: a period immediately after the receipt code span was
+  retained by the session path parser, while the new public request field and
+  detailing signature changed three maintained generated projections.
+  Resolution: remove the punctuation, regenerate API classification and
+  compatibility plus family-facade reference from their owners, rebuild the
+  dirty-tree receipt, and rerun normal hooks. The first commit created no Git
+  object; every other hook, including quick, mypy, Ruff and Bandit, passed.
+
+**Verification through content freeze:** 221 focused Python tests pass and 10
+packaging cases skip as declared; 68 affected FastAPI endpoint tests pass.
+Configured mypy passes 285 source files, architecture passes 249 files, Ruff
+and Black pass the changed Python surface, generated TypeScript matches its
+maintained generator exactly, all five documentation checks pass, and OpenAPI
+has no drift at 97 endpoints/549 schemas. The consolidated quick gate passes
+10/10 with zero reuse. Normal commit hooks and hosted integration remain.
+
+**Next:** Finish unchanged-candidate gates and integrate this packet. Then use
+the bounded torsion consumer only for matching saved candidates; resolve wider,
+multilayer or coupled cases separately. Actual-building W3H and W3I/K/L remain
+held; no ETABS/model call, project acceptance, release or professional claim.
+
+---
+
 ## 2026-09-01 — Session: W3H ETABS table-call semantics closure
 
 **Agent:** Codex (`orchestrator`, sole Windows writer; no subagents).
