@@ -93,12 +93,14 @@ def test_advertised_beam_fields_have_machine_readable_validation_dimensions():
 
     assert "identity.member_id" in contracts
     assert "actions.mu_knm" in contracts
+    assert "actions.primary_tension_face" in contracts
     assert "detailing.stirrup_spacing_support_mm" in contracts
     assert "detailing.side_face_bar_diameter_mm" in contracts
     assert (
         "side_face_bar_diameter_mm"
         not in _request(with_detailing=True).model_dump()["detailing"]
     )
+    assert "primary_tension_face" not in _request().model_dump()["actions"]
     assert all(item.dimensions for item in contracts.values())
     assert len(contracts) == len(beam.BEAM_FIELD_CONTRACTS)
 

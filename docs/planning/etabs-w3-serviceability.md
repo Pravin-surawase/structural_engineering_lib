@@ -87,11 +87,14 @@ the newly named serviceability revision after the last source-byte change.
 
 ## Remaining W3 sequence
 
-1. Accept this bounded software packet, then supply project-specific service
-   analysis and bar/factor evidence. Missing actual-building data stays held.
-2. Use the supported torsion distribution/BBS consumer for rectangular beams at
-   or below its 450 mm width limit. Resolve wider, multilayer or coupled-design
-   candidates separately; do not promote them through the bounded route.
+1. Supply project-specific service analysis, bar-revision and factor evidence.
+   The saved-candidate consumer passed strength/detailing/BBS for all 107 rows
+   under authored feasible spacings, but deliberately did not transfer a service
+   PASS to those generated bars. Missing actual-building data stays held.
+2. Retain the accepted 230x450 saved-candidate feasibility as proposed software
+   output only. Its per-member 75/100/125 mm spacing recommendations are neither
+   installed reinforcement nor approval, and the wider/multilayer/coupled route
+   remains separate.
 3. Resolve H physical support/mesh/slab-transfer compatibility. The three saved
    candidates remain NOT_COMPARABLE_AS_IS; broader getters cannot fix that.
 4. Only after E/H/R dependencies are accepted, implement I screening, K/L and

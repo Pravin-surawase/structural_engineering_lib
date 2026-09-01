@@ -418,6 +418,7 @@ def build_beam_audit_inputs_v1(
                     mu_knm=abs(action.m3_knm),
                     vu_kn=abs(action.v2_kn),
                     tu_knm=abs(action.t_knm),
+                    primary_tension_face=(face if face != "ZERO_MOMENT" else None),
                 ),
                 calculation_basis=calculation,
                 detailing=detailing,

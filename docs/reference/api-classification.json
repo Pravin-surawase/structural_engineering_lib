@@ -62,6 +62,22 @@
                 "minimum": 0,
                 "title": "Tu Knm",
                 "type": "number"
+              },
+              "primary_tension_face": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "TOP",
+                      "BOTTOM"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Primary Tension Face"
               }
             },
             "required": [
@@ -776,7 +792,7 @@
         "title": "BeamDesignInputV1",
         "type": "object"
       },
-      "request_schema_sha256": "42c4bb944e99e815e98581456de467197ed57f4a707f3cdad4c2b4659dc4d23b",
+      "request_schema_sha256": "5a3177be6125735296085f2292099fff74cc5affebdfcdf77b0570c2fd7e1f5a",
       "request_field_contracts": [
         {
           "path": "$",
@@ -798,6 +814,18 @@
           ],
           "unit": "kN.m",
           "zero_allowed": true,
+          "compatibility_aliases": []
+        },
+        {
+          "path": "actions.primary_tension_face",
+          "dimensions": [
+            "TYPE_AND_FINITE_VALUE",
+            "ENUM_AND_TOPOLOGY",
+            "CROSS_FIELD_RELATION",
+            "DOWNSTREAM_CONSUMABILITY"
+          ],
+          "unit": null,
+          "zero_allowed": null,
           "compatibility_aliases": []
         },
         {
@@ -1144,7 +1172,7 @@
           "compatibility_aliases": []
         }
       ],
-      "request_field_count": 29,
+      "request_field_count": 30,
       "unowned_field_paths": [],
       "represented_validation_dimensions": [
         "CODE_AND_MATERIAL_DOMAIN",
