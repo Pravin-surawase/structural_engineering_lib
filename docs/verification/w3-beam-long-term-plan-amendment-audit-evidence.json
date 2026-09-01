@@ -3,7 +3,7 @@
   "evidence_kind": "w3_beam_long_term_plan_amendment_audit",
   "observed_at_utc": "2026-09-01T13:59:24.7822908Z",
   "repository": {
-    "branch": "codex/etabs-w3-project-criteria-windows",
+    "branch": "codex/w3-beam-long-term-plan-amendment",
     "source_head_sha": "35ea6b89220de6ab38ede01213a5f4c48e2a3364",
     "source_origin_main_sha": "35ea6b89220de6ab38ede01213a5f4c48e2a3364",
     "source_pr": 942,

@@ -9,7 +9,7 @@
 
 **Agent:** Codex (`orchestrator`; three bounded read-only subagents, sole writer).
 **Task:** `W3-BEAM-LONG-TERM-PLAN-AMENDMENT`.
-**Branch:** `codex/etabs-w3-project-criteria-windows`.
+**Branch:** `codex/w3-beam-long-term-plan-amendment`.
 **Source:** merged PR #942 commit
 `35ea6b89220de6ab38ede01213a5f4c48e2a3364`.
 **Focus:** Audit the complete future W3 path for recurring time loss and missing
@@ -62,11 +62,16 @@ static source review only.
   to be represented as a Pareto result without a completeness proof.
 - The initial long-term plan did not state crash durability between raw COM
   return and decoding/final evidence publication.
-- The first normal commit hook repaired the new evidence file's mixed line
-  endings and then rejected the task because the newest session entry did not
-  yet have its required task-to-Git handoff receipt.
+- The first normal commit hook, and the later branch-identity evidence rewrite,
+  repaired the new evidence file's mixed line endings. The first hook also
+  rejected the task because the newest session entry did not yet have its
+  required task-to-Git handoff receipt.
 - The next hook found the receipt but interpreted its split-line Markdown path
   with a trailing delimiter, so it could not open the otherwise valid file.
+- The first publication push found that this worktree's original branch name
+  still existed remotely as the already merged PR #941 candidate. Because that
+  squash-merged head is not an ancestor of the new PR #942-based candidate, Git
+  correctly rejected a non-fast-forward update.
 
 ### Root causes and resolutions
 
@@ -107,6 +112,12 @@ static source review only.
   normal hooks. ⚠️ TERMINAL ISSUE: first two commit attempts rejected missing/
   malformed receipt metadata and mixed line ending -> maintained same-line
   receipt field and normalized file restore the candidate gate.
+- Confirmed publication root cause: a local worktree reused a branch name whose
+  historical remote ref was intentionally retained after PR #941. Resolution:
+  do not force, delete or combine histories; rename the local branch to the
+  unique `codex/w3-beam-long-term-plan-amendment`, refresh branch-bound evidence
+  and publish that new ref. ⚠️ TERMINAL ISSUE: stale remote branch rejected push
+  -> unique branch preserves both histories without rewriting either.
 
 ### Validation boundary
 

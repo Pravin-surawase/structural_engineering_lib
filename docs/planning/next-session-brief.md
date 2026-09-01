@@ -6,8 +6,8 @@
 - Date: 2026-09-01
 - Focus: Audit the complete future W3 path for recurring time loss and missing
 - Completed: Reconciled the integrated, COM/VBA/reanalysis and whole-W3 foundation plans; Inserted `ETABS-LIVE-G0-ROUTE-GATE` before beam/API work because the maintained; Added exact process/runtime identity, OS-wide serialization, supervised STA
-- Git receipt: docs/verification/w3-beam-long-term-plan-amendment-git-handoff-receipt.json | sha256:b8c3974d65e308f87712b91fc00868a5aa030250a5f903f5d3fef8acd7f2c6fb | HOLD
-- Git identity: codex/etabs-w3-project-criteria-windows@35ea6b89220de6ab38ede01213a5f4c48e2a3364 | upstream=NONE@UNKNOWN | base=origin/main@35ea6b89220de6ab38ede01213a5f4c48e2a3364 | tree=dirty | operation=none
+- Git receipt: docs/verification/w3-beam-long-term-plan-amendment-git-handoff-receipt.json | sha256:5e6d8983b51dfb8932ed3a56e34a452ca42f1e32763c33d862ce7da28def457b | HOLD
+- Git identity: codex/w3-beam-long-term-plan-amendment@ab1853bf8eb399e66f41eca3cb0e977a1f197cf3 | upstream=NONE@UNKNOWN | base=origin/main@35ea6b89220de6ab38ede01213a5f4c48e2a3364 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->

@@ -22,27 +22,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "b8c3974d65e308f87712b91fc00868a5aa030250a5f903f5d3fef8acd7f2c6fb",
+    "receipt_sha256": "5e6d8983b51dfb8932ed3a56e34a452ca42f1e32763c33d862ce7da28def457b",
     "state": {
-      "branch": "codex/etabs-w3-project-criteria-windows",
+      "branch": "codex/w3-beam-long-term-plan-amendment",
       "default_base": {
-        "ahead": 0,
+        "ahead": 1,
         "behind": 0,
         "ref": "origin/main",
         "sha": "35ea6b89220de6ab38ede01213a5f4c48e2a3364",
-        "status": "equal"
+        "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 221.732,
+      "duration_ms": 204.872,
       "git_common_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git",
       "git_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git\\worktrees\\etabs-w3-project-criteria-windows",
-      "head_sha": "35ea6b89220de6ab38ede01213a5f4c48e2a3364",
+      "head_sha": "ab1853bf8eb399e66f41eca3cb0e977a1f197cf3",
       "hold_reasons": [
-        "changed paths: 8"
+        "changed paths: 2"
       ],
       "linked_worktree": true,
       "locks": [],
-      "observed_at_utc": "2026-09-01T14:05:45.834002+00:00",
+      "observed_at_utc": "2026-09-01T14:10:18.259664+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -53,20 +53,12 @@
       "tree": {
         "clean": false,
         "conflicted_paths": [],
-        "dirty_count": 8,
+        "dirty_count": 2,
         "modified_paths": [
-          "docs/verification/w3-beam-long-term-plan-amendment-audit-evidence.json"
-        ],
-        "staged_paths": [
           "docs/SESSION_LOG.md",
-          "docs/TASKS.md",
-          "docs/planning/README.md",
-          "docs/planning/etabs-data-analysis-optimization-foundation-plan.md",
-          "docs/planning/etabs-w3-com-vba-and-reanalysis-plan.md",
-          "docs/planning/next-session-brief.md",
-          "docs/planning/w3-beam-professional-integrated-execution-plan.md",
           "docs/verification/w3-beam-long-term-plan-amendment-audit-evidence.json"
         ],
+        "staged_paths": [],
         "untracked_paths": []
       },
       "upstream": {
@@ -79,9 +71,9 @@
       "worktree_root": "C:\\CodexWork\\worktrees\\etabs-w3-project-criteria-windows"
     }
   },
-  "local_state_receipt_hash": "sha256:b8c3974d65e308f87712b91fc00868a5aa030250a5f903f5d3fef8acd7f2c6fb",
+  "local_state_receipt_hash": "sha256:5e6d8983b51dfb8932ed3a56e34a452ca42f1e32763c33d862ce7da28def457b",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-09-01T14:05:45.834002+00:00",
+  "observed_at_utc": "2026-09-01T14:10:18.259664+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"
