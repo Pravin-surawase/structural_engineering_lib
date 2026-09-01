@@ -19,7 +19,7 @@ Internal planning documents and research notes.
 |----------|---------|
 | [Next Session Brief](next-session-brief.md) | What to work on next |
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
-| [W3 and Professional Beam Integrated Execution Plan](w3-beam-professional-integrated-execution-plan.md) | Dependency-ordered public beam safety, PID/session guard, signed pilot and candidate-evaluator sequence |
+| [W3 and Professional Beam Integrated Execution Plan](w3-beam-professional-integrated-execution-plan.md) | Long-term route/API, PID/runtime, beam criteria/search, evidence acquisition and owned-copy W3 sequence |
 | [ETABS COM, VBA and W3 Reanalysis Plan](etabs-w3-com-vba-and-reanalysis-plan.md) | PID-safe ETABS sessions, legacy VBA lessons, common candidate evaluation and owned-copy W3K/L transactions |
 | [LIB-PRO-013 Whole-Library Renewal Audit](lib-pro-013-whole-library-renewal-audit-plan.md) | Whole-product audit aligned to the six-cycle low-Git remediation programme |
 | [LIB-PRO-012 External API Remediation](lib-pro-012-external-api-remediation-plan.md) | Immediate Python/REST P0 safety plus canonical API work grouped into four implementation cycles |
@@ -47,7 +47,7 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
-| `w3-beam-professional-integrated-execution-plan.md` | 2026-09-01 | 🚧 Audit complete; public beam safety first, then offline PID/session/freshness guard |
+| `w3-beam-professional-integrated-execution-plan.md` | 2026-09-01 | 🚧 Long-term amendment ready; G0 route gate first, then beam truth and offline session guard |
 | `etabs-w3-com-vba-and-reanalysis-plan.md` | 2026-09-01 | 🚧 Audit and implementation sequence ready; ETABS/model calls remain separately gated |
 | `lib-pro-013-whole-library-renewal-audit-plan.md` | 2026-08-28 | 🔄 A0 and B0 integrated; F0 next, then R0 and one final engineer review |
 | `lib-pro-012-external-api-remediation-plan.md` | 2026-08-28 | 🔄 S0/A0/B0 integrated; F0 family convergence active next; Windows lane prepared for later exact R0 evidence |
@@ -61,7 +61,7 @@ Internal planning documents and research notes.
 | `maint-0136-cleanup-preservation-plan.md` | 2026-08-27 | ✅ Phase 0 through exact Phase 2C complete; consolidated integration candidate prepared after PR #874 |
 | `maint-0133-cleanup-inventory-and-authorization.md` | 2026-08-23 | 🚧 Immutable inventory candidate; two moves ready for later authorization, four held, zero deletes |
 | `public-route-safety-closure-plan.md` | 2026-08-22 | ✅ LIB-PRO-003-D local candidate accepted; hosted/exact-tree closure pending; release and professional claims held by PARTIAL readiness |
-| `next-session-brief.md` | 2026-08-22 | 🚧 Publish/validate the immutable Packet D candidate, then resume read-only INDIA-3-G0 |
+| `next-session-brief.md` | 2026-09-01 | 🚧 Accept the W3 amendment, then start only ETABS-LIVE-G0 with applications closed |
 | `pre-release-input-safety-and-professional-readiness-plan.md` | 2026-08-17 | 🚧 A-G merged; CLI, hosted-interpreter, preflight-verdict, and authorization holds remain through I-J |
 | `is456-solid-slabs-master-plan.md` | 2026-08-10 | 📋 Master plan ready; implementation has not started |
 | `ui-experience-foundation-master-plan.md` | 2026-08-10 | ✅ Two-session P0-P15 workbench/capability program accepted |

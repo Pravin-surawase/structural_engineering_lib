@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-01
-- Focus: Re-audit merged W3 PID/session/reanalysis planning with current beam API and freeze one dependency-aware execution sequence; no application/model operation.
-- Completed: Fetched and bound the audit to merged PR #941 commit `5aad93b8`.; Reproduced public depth/check defects and reviewed W3 freshness, signed-face and evaluator dependencies.; Authored the integrated plan and reconciled maintained status owners without changing runtime code.
-- Git receipt: docs/verification/w3-beam-integrated-plan-git-handoff-receipt.json | sha256:a43559377ecbb805fe4e65c6779c1bb7597a47cba51bf86d2d15b26a185a54b7 | HOLD
-- Git identity: codex/w3-beam-integrated-plan-audit@5aad93b8f3dc5e6f9ca916350bf0276c51ad683d | upstream=origin/main@5aad93b8f3dc5e6f9ca916350bf0276c51ad683d | base=origin/main@5aad93b8f3dc5e6f9ca916350bf0276c51ad683d | tree=dirty | operation=none
+- Focus: Audit the complete future W3 path for recurring time loss and missing
+- Completed: Reconciled the integrated, COM/VBA/reanalysis and whole-W3 foundation plans; Inserted `ETABS-LIVE-G0-ROUTE-GATE` before beam/API work because the maintained; Added exact process/runtime identity, OS-wide serialization, supervised STA
+- Git receipt: docs/verification/w3-beam-long-term-plan-amendment-git-handoff-receipt.json | sha256:5e6d8983b51dfb8932ed3a56e34a452ca42f1e32763c33d862ce7da28def457b | HOLD
+- Git identity: codex/w3-beam-long-term-plan-amendment@ab1853bf8eb399e66f41eca3cb0e977a1f197cf3 | upstream=NONE@UNKNOWN | base=origin/main@35ea6b89220de6ab38ede01213a5f4c48e2a3364 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -18,15 +18,15 @@ The [integrated W3 and professional beam execution plan](w3-beam-professional-in
 owns the immediate sequence. The [whole-W3 reset](etabs-data-analysis-optimization-foundation-plan.md#whole-w3-execution-reset-2026-08-31)
 continues to own the A-L evidence/capability sequence, and the
 [COM/VBA/reanalysis plan](etabs-w3-com-vba-and-reanalysis-plan.md) owns ETABS
-host/session and transaction behavior. Source: fetched merged PR #941 commit
-`5aad93b8`; one Windows writer owns the next sequence; installed actions remain separately gated.
+host/session and transaction behavior. Source: merged PR #942 commit `35ea6b89`;
+one Windows writer owns the next sequence; installed actions remain separately gated.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | PR #941 is merged. A fresh software audit reproduced hidden effective-depth assumptions, ignored supplied REST fields, misleading WebSocket check semantics, signed-face loss in the legacy pilot, split optimizer feasibility and missing live-session/file freshness distinction. The plan/task surfaces are reconciled; runtime code is unchanged. |
-| **Next** | After this planning candidate is accepted, start only `LIB-BEAM-S0-CHECK-TRUTH`: remove hidden depth assumptions and make supplied-beam REST/WebSocket outcomes truthful. No ETABS/COM call. |
-| W3 next | After BEAM-S0 is accepted, start a new exact task/worktree for `ETABS-W3-A0-OFFLINE-SESSION-GUARD`: PID/target/freshness/state/call-record contracts through fake adapters only. Installed PID attachment is A1 and separately authorized. |
-| H route | Stop broad table diagnosis. The installed wrapper's correct zero-argument table call still returned CSI 1 with complete preservation, disproving the output-placeholder theory. Acquire only named support/mesh/transfer gaps from saved sources, proved direct getters, or bounded supported export. No solver fitting. |
+| **Current** | PR #942 is merged. The long-term audit adds executable controls for live-route exposure, COM hangs/process reuse, model versus result freshness, criteria/catalogue drift, incomplete search, export schema uncertainty and owned-copy crash recovery. Runtime code is unchanged. |
+| **Next** | After this amendment is accepted, start only `ETABS-LIVE-G0-ROUTE-GATE`: default-disable live routes and prove loopback/auth denials happen before any COM creation or attach. ETABS/Excel stay closed. |
+| W3 next | After G0, run `LIB-BEAM-S0-CHECK-TRUTH`; then start A0 from its exact accepted head. A0 uses fakes only; installed getter-only A1 remains separately authorized. |
+| H/data route | C0 freezes generic contracts, C1 acquires one exact schema/export, and C2 parses offline. H0 then chooses a proved surrogate envelope, ETABS-first baseline-action screening, or `HOLD`. No broad table retry or new solver physics. |
 | Retained | A-D/R, bounded E/F/G/H/J acceptance; #925 repair closed. #931's explicit-placeholder hypothesis is disproved and equivalent table API retries are closed; the native CSI 1 and #932 binder causes remain unconfirmed; #933 timestamp defect is confirmed. |
 | Held | Project service and applicability criteria; actual-building H; installed-rebar claims; wider/multilayer/coupled torsion detailing; I/K/L; final combined gates/Mac review; professional/release approval. |
 
