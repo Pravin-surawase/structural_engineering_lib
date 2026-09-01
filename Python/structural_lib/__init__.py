@@ -360,6 +360,16 @@ from .services.beam_candidate_evaluator import (
     check_beam_candidate_composition_v2,
     evaluate_beam_candidate_v2,
 )
+from .services.beam_candidate_search import (
+    BeamCandidateProjectionV1,
+    BeamCandidateSearchDomainDraftV1,
+    BeamCandidateSearchDomainV1,
+    BeamCandidateSearchRequestV1,
+    BeamCandidateSearchResultV1,
+    OptimizationSearchBudgetV1,
+    build_beam_candidate_search_domain_v1,
+    search_beam_candidates_v1,
+)
 from .services.beam_line import solve_beam_line_linear_v1
 from .services.beam_line_calibration import compare_beam_line_to_reference_v1
 from .services.beam_project_contracts import (
@@ -705,6 +715,14 @@ __all__ = [
     "build_beam_candidate_definition_v2",
     "check_beam_candidate_composition_v2",
     "evaluate_beam_candidate_v2",
+    "BeamCandidateProjectionV1",
+    "BeamCandidateSearchDomainDraftV1",
+    "BeamCandidateSearchDomainV1",
+    "BeamCandidateSearchRequestV1",
+    "BeamCandidateSearchResultV1",
+    "OptimizationSearchBudgetV1",
+    "build_beam_candidate_search_domain_v1",
+    "search_beam_candidates_v1",
     "BeamCriteriaScenarioV1",
     "BeamCriteriaStopPolicyV1",
     "BeamExistingPropertyDraftV1",

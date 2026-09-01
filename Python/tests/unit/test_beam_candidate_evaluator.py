@@ -34,8 +34,15 @@ from tests.unit.test_beam_project_contracts import (
 )
 
 
-def _owners(*, reviewed: bool):
+def _owners(*, reviewed: bool, allow_incomplete_shortlist: bool = False):
     criteria_draft = _criteria_draft()
+    criteria_draft = criteria_draft.model_copy(
+        update={
+            "stop_policy": criteria_draft.stop_policy.model_copy(
+                update={"allow_incomplete_shortlist": allow_incomplete_shortlist}
+            )
+        }
+    )
     if reviewed:
         criteria_draft = criteria_draft.model_copy(
             update={
@@ -128,8 +135,16 @@ def _supplemental(*, service_status: str = "PASS"):
     )
 
 
-def _candidate(*, reviewed: bool = True, m3_knm: float = 100.0):
-    criteria, catalogue, schedule = _owners(reviewed=reviewed)
+def _candidate(
+    *,
+    reviewed: bool = True,
+    m3_knm: float = 100.0,
+    allow_incomplete_shortlist: bool = False,
+):
+    criteria, catalogue, schedule = _owners(
+        reviewed=reviewed,
+        allow_incomplete_shortlist=allow_incomplete_shortlist,
+    )
     row = _action_row(m3_knm=m3_knm)
     draft = BeamCandidateDefinitionDraftV2(
         candidate_id=f"candidate:{m3_knm:+g}",
