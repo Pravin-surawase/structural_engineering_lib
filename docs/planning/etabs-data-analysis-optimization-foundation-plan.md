@@ -158,7 +158,7 @@ remain useful while the third is held. No track silently substitutes for another
 |---|---|---|
 | 1. Saved physical-basis reconciliation — bounded investigation completed | Reuse W3D/F/H evidence; inspect existing `.$et`, explicit units/story expansion, object assignments, loads and settings. No app calls. Prefer a narrow importer into current W3 contracts, not a general E2K parser. | At most three deterministic candidate lines have a required-input matrix; saved-source identity and overlapping definitions reconcile or remain explicitly unproved. List exact residual fields and their source route. |
 | 2. Building suitability decision — three lines not comparable as-is | Use packet 1 to classify independently specified loads, mesh/station sides, supports, axes, stiffness/shear/slab participation and excluded effects. | One supported scope with predeclared comparison requirements, or a documented no-go/justified extension decision. Do not solve first and fit the mapping later. |
-| 3. Residual acquisition, only if needed | Choose already proved object getters, supported SQLite/CSV/XML export, or the managed table path for the named gaps. Installed action remains a separate exact-authority packet. | Every requested field maps to a required W3H row. Catalogue/schema limit stays 1,000 keys, 12 schemas and 200 fields/schema; row reads need a new explicit bound. Stop if the source cannot resolve the physical question. |
+| 3. Residual acquisition, only if needed | Use accepted saved sources first, then already proved object getters, then a supported SQLite/CSV/XML export for named gaps. Equivalent managed/Python table API calls are closed for this model/host after the correct zero-argument call also returned CSI 1. Installed action remains a separate exact-authority packet. | Every requested field maps to a required W3H row. Export assessment names only missing tables/fields and has its own bound and preservation proof. Stop if the source cannot resolve the physical question. |
 | 4. Complete audit and criteria — matrix prepared, software next | Independent of COM diagnosis: specify W3E serviceability/applicability/detailing, W3H comparison scope and W3I families/scenarios/objectives/cost bounds. Software repairs can proceed after their own contract freezes. | Mandatory checks have a typed executable route or remain held; genuine project decisions are listed for review. No hidden limits, guessed supports or W3I screening before H acceptance. |
 | 5. Actual-building W3H | Requires packets 1-4's relevant physical basis, reference identities and predeclared criteria. Reuse the accepted comparator and benchmarks. | L5 accepted only for the explicit model/scenarios/components, or NOT_COMPARABLE/OUT_OF_BAND with cause. Baseline agreement does not validate a whole candidate range. |
 | 6. W3I implementation and bounded screening | Requires accepted E/H/R and complete mandatory strength/serviceability/constructability checks, candidate/scenario bounds and applicability evidence. | Deterministic feasible shortlist with no held mandatory checks; status SCREENED_ONLY. |
@@ -186,31 +186,27 @@ ETABS-sourced audit/review path and present a concrete choice between a justifie
 surrogate extension and an ETABS-first candidate programme. Neither a no-go nor
 an alternate route marks W3H/I/K/L complete or silently changes their contract.
 
-#### Managed table path, if selected after the source audit
+#### Table API route closure after the source audit
 
-Reuse `TypedGuard.cs` and the corrected outer functions; no broad rewrite.
-The 45 compiled and 24 controlled outer cases are component proof, not proof
-that the prospective real command and collector work. Use one entrypoint with
-offline/replay, real-host-preflight-with-attachment-disabled, and separately
-frozen live modes. Parse the real disk contract with explicit types; check
-required manifest coverage, source/runtime/process/privilege/UI/file identities;
-then run complete model guards, raw logging, error handling and postflight.
-Prove the actual CLI/new-process path before freezing. Log failures before
-attachment as well as after it. No helper may be added after proof without
-invalidating affected evidence.
+The 45 compiled and 24 controlled outer cases remain component proof. The
+installed generated Python wrapper then established the exact zero-argument
+usage for `GetLoadCasesSelectedForDisplay`. Seven offline cases proved its
+collector, strict decoding, full unit-state projection and raw-before-decode
+logging. One guarded zero-argument live call still returned CSI status 1 while
+complete state, process/model identity and model bytes remained unchanged.
 
-Only then is one separately authorized managed existing-process attachment and
-one `GetLoadCasesSelectedForDisplay` observation eligible. Any guard/native
-failure closes the attempt; no catalogue or Python call follows it. A separately
-proved/frozen matched Python observation is conditional on managed success and
-on whether the result changes the selected acquisition route. Full table-display
-case/combo/pattern/options preservation remains a separate prerequisite to any
-later catalogue/schema packet; do not skip it to bypass the failing getter.
+Explicit `(0, [])` output placeholders are therefore disproved as the cause.
+The native ETABS table-provider reason remains unconfirmed. Equivalent managed,
+Python and placeholder variants are closed for this model/host; do not build a
+new table adapter or repeat #931-#933. Reopen only for materially new vendor-
+supported evidence or a named required field with no cheaper trustworthy source.
 
-The newest launcher timestamp defect is confirmed. The earlier managed binding
-and Python CSI 1 causes remain unconfirmed. No reinstall, downgrade, licensing
-change, repeated recovery, new analysis or benchmark-only packet is justified
-by these failures. The frozen #931-#933 attempts remain closed.
+Residual acquisition now follows this order: accepted `.$et`/saved snapshots,
+proved direct getters, then a separately scoped supported SQLite/CSV/XML export
+for named missing fields. Any export still requires exact model/UI/file guards,
+bounds and postflight; it is not proof that the desired field exists. No
+reinstall, downgrade, licensing change, new analysis or benchmark-only packet is
+justified by the closed failures.
 
 ### Owner-approved validation continuation (2026-08-30)
 

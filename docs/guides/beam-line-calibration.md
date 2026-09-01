@@ -458,3 +458,34 @@ pre/post UI has no blocking dialog. Complete fresh live model state and full
 table-selection/options preservation remain NOT_PROVED. Only a separate
 guarded managed success can make the matched Python observation eligible.
 Actual-building W3H and W3I/K/L remain held.
+
+### Zero-argument table-call closure (2026-09-01)
+
+The [call-semantics receipt](../verification/etabs-w3h-table-call-semantics-evidence.json)
+closes the remaining placeholder hypothesis. The installed generated comtypes
+wrapper documents `GetLoadCasesSelectedForDisplay()` with no Python arguments;
+its returned order is count, names and CSI status. Seven offline cases proved
+that call shape, both supported output containers, strict identity/count checks,
+complete unit-state projection and raw-before-status logging.
+
+The first guarded observation attached once but made zero table calls because
+the new probe omitted database units and the three present-unit components from
+its comparison projection. The complete ETABS state itself was unchanged. The
+probe was corrected and the exact projection was proved offline before the next
+observation. One later zero-argument call then returned CSI status 1. Complete
+model state, process/model identity and model bytes remained unchanged.
+
+This disproves explicit `(0, [])` output placeholders as the cause of the
+historical failure. The native ETABS table-provider reason remains unconfirmed;
+no licensing, installation or model-corruption cause is established. The live
+raw payload is not claimed because that probe logged after decoding raised. The
+logger now records raw output before decoding, proved offline, and no live retry
+was needed.
+
+Do not repeat equivalent managed, Python or placeholder variants for this
+model/host. Acquire named residual data from accepted saved sources, already
+proved direct getters, or a separately scoped supported SQLite/CSV/XML export.
+Reopen table API diagnosis only for a materially new vendor-supported cause or
+a named required field that has no cheaper trustworthy route. No table
+catalogue, schema or data row was read; actual-building W3H and W3I/K/L remain
+held.
