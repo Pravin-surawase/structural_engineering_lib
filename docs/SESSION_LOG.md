@@ -5,6 +5,100 @@
 
 ---
 
+## 2026-09-01 — Session: ETABS live G0 route-gate maintenance preflight
+
+**Agent:** Codex (`orchestrator`; sole writer).
+**Task:** `ETABS-LIVE-G0-ROUTE-GATE-PREFLIGHT-20260901`.
+**Branch:** `codex/etabs-live-g0-route-gate-preflight-20260901`.
+**Source:** freshly fetched merged PR #943 commit
+`3b0d689dabddae7891758648b09acf9beef088ee`.
+**Focus:** Audit only maintenance that could block, invalidate or materially
+slow `ETABS-LIVE-G0-ROUTE-GATE`. No G0 implementation and no ETABS, COM, Excel,
+SQLite, solver, analysis/design, export or model operation.
+**Evidence:**
+`docs/verification/etabs-live-g0-route-gate-preflight-evidence.json`.
+**Git handoff receipt:** docs/verification/etabs-live-g0-route-gate-preflight-git-handoff-receipt.json
+
+**Completed:**
+
+- Fetched canonical `origin/main`, confirmed PR #943 `MERGED` and bound a unique
+  clean Windows branch/worktree to exact merge commit `3b0d689d`.
+- Started the maintained session as
+  `ETABS-LIVE-G0-ROUTE-GATE-PREFLIGHT-20260901`; Python 3.11.15 is source-bound
+  to this worktree, Node 24.19.0/npm 11.17.0 match the pinned engines and the
+  standard pre-commit 4.6.2 configuration validates.
+- Restored only the ignored `react_app/node_modules` tree through `npm ci` from
+  the unchanged lockfile. The production npm audit has zero vulnerabilities;
+  one transitive development-only `nanoid` advisory does not affect the G0
+  runtime or justify an out-of-scope upgrade.
+- Traced G0 ownership to `fastapi_app/config.py`, `fastapi_app/main.py`,
+  `fastapi_app/routers/etabs_bridge.py`, `fastapi_app/auth.py` and
+  `fastapi_app/routers/websocket.py`; traced generated control to the checked-in
+  OpenAPI baseline, snapshot checker, SDK generator and checked-in clients.
+- Passed 51 focused Python/FastAPI/auth/WebSocket/generated-client tests, three
+  focused React WebSocket-hook tests, exact 97-operation/549-schema OpenAPI
+  parity and 115/115 FastAPI schema compatibility. All ETABS route tests use
+  fakes/monkeypatches; `/status` is explicitly nonattaching.
+- Inspected all 43 registered worktrees. Two older dirty lanes are 122 and 62
+  commits behind, zero commits ahead, have no Git operation/lock or repository
+  process, and overlap only preserved documentation/evidence paths. They are
+  not G0 predecessors; any future recovery must rebind and reconcile them.
+- Rebound the long-term plan, task board and next-session boundary from the
+  stale pre-merge PR #942/amendment wording to accepted PR #943 and the exact
+  accepted preflight successor. Runtime code, dependency declarations,
+  generated artifacts and G0 behavior are unchanged.
+
+### Issues encountered
+
+- ETABS PID 11820 was already running when the process boundary was checked, so
+  the required closed-application G0 start condition is false.
+- The fresh linked worktree had no ignored `react_app/node_modules`, so Node
+  package and React focused checks initially had no installed dependencies.
+- The maintained plan/next-session handoff still described the long-term
+  amendment as awaiting acceptance and named PR #942 as the next-task source,
+  even though PR #943 had merged.
+- Two historical dirty worktrees overlap shared session/task/handoff paths, but
+  are behind main and have no committed candidate ahead of it.
+- One initial Windows `rg` command passed an unexpanded `docker-compose*.yml`
+  wildcard and reported an invalid path before the audit used explicit files.
+
+### Root causes and resolutions
+
+- ETABS process root cause: `unconfirmed`; the process start time predates this
+  preflight and this task did not open, attach to, inspect or close it.
+  Resolution: retain `HOLD` and require the user to close ETABS, keep Excel
+  closed and reverify process absence before G0 task creation. Evidence:
+  read-only process inventory; zero COM/application/model calls were made.
+- Confirmed Node dependency root cause: ignored dependencies are intentionally
+  not copied into a fresh Git worktree. Resolution: exact `npm ci` against the
+  unchanged package lock; `npm ls --depth=0` and the three focused Vitest cases
+  pass. No manifest or lockfile changed.
+- Confirmed authority-drift root cause: closeout freeze correctly preserved the
+  immutable PR #943 candidate, but no accepted-successor preflight had yet
+  rebound the next-task surfaces to the hosted merge. Resolution: update only
+  the maintained plan/task/handoff owners and record exact source evidence.
+- Confirmed sibling-overlap root cause: historical interrupted lanes retained
+  local documentation/evidence changes without a published commit or upstream.
+  Resolution: preserve them; do not integrate, delete or overwrite them. They
+  must rebind/reconcile after current main before any future use and do not
+  block this exact PR #943 successor.
+- Confirmed terminal root cause: PowerShell did not expand the wildcard passed
+  directly to `rg`. Resolution: rerun the bounded search with explicit compose
+  filenames. ⚠️ TERMINAL ISSUE: unexpanded Windows wildcard rejected -> explicit
+  paths completed the same read-only audit.
+
+### Validation boundary
+
+- Focused offline validation: 51 Python/FastAPI tests, three React tests,
+  OpenAPI 97/97 operations and 549/549 schemas, FastAPI compatibility 115/115.
+- Consolidated quick gate 10/10 and all normal commit hooks pass. Required
+  hosted checks remain mandatory before merge. No live or installed evidence is
+  authorized or claimed.
+- Verdict: `HOLD` only on ETABS/Excel process absence. After this bounded
+  maintenance is accepted and both applications are verified closed, create
+  task `ETABS-LIVE-G0-ROUTE-GATE` on branch
+  `codex/etabs-live-g0-route-gate` from the exact accepted maintenance merge.
+
 ## 2026-09-01 — Session: W3 long-term plan amendment
 
 **Agent:** Codex (`orchestrator`; three bounded read-only subagents, sole writer).
