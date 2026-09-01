@@ -1,0 +1,113 @@
+{
+  "schema_version": "etabs-live-g0-route-gate-preflight/v1",
+  "task_id": "ETABS-LIVE-G0-ROUTE-GATE-PREFLIGHT-20260901",
+  "observed_at_utc": "2026-09-01T15:16:03Z",
+  "source_authority": {
+    "canonical_checkout": "C:\\CodexWork\\structural_engineering_lib-main-evidence",
+    "remote": "origin",
+    "branch": "main",
+    "fresh_fetch": "PASS",
+    "commit_sha": "3b0d689dabddae7891758648b09acf9beef088ee",
+    "pull_request": 943,
+    "pull_request_state": "MERGED"
+  },
+  "preflight_lane": {
+    "branch": "codex/etabs-live-g0-route-gate-preflight-20260901",
+    "worktree": "C:\\CodexWork\\worktrees\\etabs-live-g0-route-gate-preflight-20260901",
+    "base_sha": "3b0d689dabddae7891758648b09acf9beef088ee",
+    "session_task_id": "ETABS-LIVE-G0-ROUTE-GATE-PREFLIGHT-20260901",
+    "session_agent": "orchestrator",
+    "session_trust": "READY_LOCAL"
+  },
+  "writer_audit": {
+    "registered_worktrees": 43,
+    "current_lane_clean_at_start": true,
+    "locks_or_git_operations": 0,
+    "repository_processes_bound_to_older_dirty_lanes": 0,
+    "older_dirty_lanes": [
+      {
+        "branch": "codex/etabs-excel-pilot-w1",
+        "head_sha": "d6e83cfd53d444b11637bb0e85f5b314a92333cc",
+        "ahead_of_origin_main": 0,
+        "behind_origin_main": 122,
+        "dirty_paths": 3,
+        "disposition": "PRESERVE; REBIND_AND_RECONCILE_BEFORE_FUTURE_USE"
+      },
+      {
+        "branch": "codex/etabs-w3f-live-foundation-windows",
+        "head_sha": "f353afe54f2c328a300361418ca3b1816b611dc4",
+        "ahead_of_origin_main": 0,
+        "behind_origin_main": 62,
+        "dirty_paths": 6,
+        "disposition": "PRESERVE; REBIND_AND_RECONCILE_BEFORE_FUTURE_USE"
+      }
+    ]
+  },
+  "runtime_readiness": {
+    "python": {
+      "version": "3.11.15",
+      "source_bound_to_current_worktree": true,
+      "requirements_lock_sha256": "13bd838aa54ec332ae2ec38b3012ff5be29041014f989ceb0a7074abe410c52f",
+      "required_imports": "PASS"
+    },
+    "node": {
+      "version": "24.19.0",
+      "npm_version": "11.17.0",
+      "package_lock_sha256": "e5dbae38f61cdfa11661b973a199b05838b124e59abf9e12c201775524620d67",
+      "lockfile_install": "PASS",
+      "production_audit_vulnerabilities": 0,
+      "non_blocking_dev_only_audit": "one transitive nanoid advisory; no upgrade authorized or required for G0 readiness"
+    },
+    "pre_commit_version": "4.6.2",
+    "pre_commit_config": "PASS"
+  },
+  "ownership": {
+    "server_configuration": "fastapi_app/config.py",
+    "router_mount_and_startup": "fastapi_app/main.py",
+    "etabs_router": "fastapi_app/routers/etabs_bridge.py",
+    "authentication": "fastapi_app/auth.py",
+    "websocket": "fastapi_app/routers/websocket.py",
+    "openapi_baseline": "fastapi_app/openapi_baseline.json",
+    "openapi_check": "scripts/check_openapi_snapshot.py",
+    "client_generator": "scripts/generate_client_sdks.py",
+    "checked_in_clients": [
+      "clients/python",
+      "clients/typescript"
+    ]
+  },
+  "focused_validation": {
+    "python_fastapi_auth_websocket_generated_client_tests": "51 passed",
+    "react_websocket_hook_tests": "3 passed",
+    "openapi_operations": 97,
+    "openapi_schemas": 549,
+    "openapi_drift": "NONE",
+    "fastapi_schema_compatibility": "115/115",
+    "quick_gate": "10/10 passed",
+    "normal_commit_hooks": "PASS"
+  },
+  "application_boundary": {
+    "excel_processes_observed": 0,
+    "etabs_processes_observed": 1,
+    "etabs_process_id": 11820,
+    "etabs_process_started_before_preflight": true,
+    "com_objects_created": 0,
+    "etabs_attachments": 0,
+    "models_or_workbooks_touched": 0,
+    "solver_analysis_design_or_export_calls": 0
+  },
+  "maintenance_disposition": {
+    "runtime_code_changed": false,
+    "dependencies_changed": false,
+    "g0_implemented": false,
+    "essential_versioned_maintenance": [
+      "REBIND_LONG_TERM_PLAN_TO_ACCEPTED_PR_943",
+      "REPAIR_STALE_TASK_AND_NEXT_SESSION_AUTHORITY",
+      "RECORD_EXACT_PREFLIGHT_AND_ENVIRONMENTAL_HOLD"
+    ],
+    "verdict": "HOLD",
+    "remaining_blocker": "ETABS must be closed and ETABS/Excel absence reverified before G0 starts",
+    "next_task_id": "ETABS-LIVE-G0-ROUTE-GATE",
+    "next_branch": "codex/etabs-live-g0-route-gate",
+    "next_source_authority": "EXACT_ACCEPTED_PREFLIGHT_MERGE_COMMIT"
+  }
+}

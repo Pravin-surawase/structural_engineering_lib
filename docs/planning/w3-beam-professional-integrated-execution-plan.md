@@ -42,9 +42,11 @@ to replace missing project evidence with more solver complexity.
 
 ## Current authority and users
 
-- `origin/main` was fetched and observed at merged PR #942 commit
-  `35ea6b89220de6ab38ede01213a5f4c48e2a3364`; this amendment started from an
-  equal, clean Windows worktree at that exact head.
+- PR #943 accepted this amended plan at merge commit
+  `3b0d689dabddae7891758648b09acf9beef088ee`. The bounded G0 maintenance
+  preflight fetched `origin/main`, verified that exact authority, and started an
+  equal, clean Windows worktree from it. G0 must start from the exact accepted
+  successor of that preflight rather than from the older PR #942 planning head.
 - The [W3 COM/VBA/reanalysis plan](etabs-w3-com-vba-and-reanalysis-plan.md)
   remains the ETABS host, transaction and reanalysis owner.
 - The [professional API renewal plan](lib-pro-015-professional-api-and-documentation-renewal-plan.md)
@@ -58,6 +60,21 @@ Primary users are library/API consumers, W3 audit and screening services,
 Windows ETABS evidence operators, and qualified reviewers. The goal is one
 truthful beam result path from explicit input through calculation, supplied-bar
 evaluation, detailing, screening and later copied-model reanalysis.
+
+### G0 maintenance preflight
+
+The 2026-09-01 bounded preflight found the Python, pinned Node/npm, normal hook,
+focused FastAPI/WebSocket, OpenAPI snapshot and checked-in client controls ready
+without a runtime-code repair. It restored only the ignored lockfile-bound
+`node_modules` tree in the fresh worktree; no dependency version changed. Two
+older dirty worktrees are behind `origin/main`, have no commit ahead of main and
+have no active repository process or Git operation; preserve their unknown
+local changes and rebind/reconcile them before any future use.
+
+The same preflight observed an already-running ETABS process and did not attach
+to, close or inspect its model. Therefore G0 implementation remains on `HOLD`
+until ETABS and Excel are closed and their absence is reverified. This is an
+environmental start gate, not permission to perform any application operation.
 
 ## Device decision
 
@@ -163,8 +180,8 @@ declared before candidate inspection.
 | Order | Task ID | Work | Hard dependency | Measurable exit | Effort |
 |---:|---|---|---|---|---:|
 | 0 | `W3-BEAM-INTEGRATED-PLAN` | Initial authority/finding/dependency freeze | PR #941 | Accepted through PR #942 at `35ea6b89`; plan exists at exact merged head | complete |
-| 0A | `W3-BEAM-LONG-TERM-PLAN-AMENDMENT` | Close runtime, criteria, search, acquisition, recovery and route gaps found after merge | accepted PR #942 | Plans, tasks, continuation and evidence owners agree; docs/quick/hooks pass; no application call | current packet |
-| 1 | `ETABS-LIVE-G0-ROUTE-GATE` | Disable live routes by default; enforce loopback bind, HTTP/WebSocket authentication and operation classification before any COM import/attach | accepted amended plan | Disabled/denied requests prove zero COM creation or attachment; missing WebSocket token is rejected before accept; OpenAPI security and startup checks match runtime | 1-2 focused days |
+| 0A | `W3-BEAM-LONG-TERM-PLAN-AMENDMENT` | Close runtime, criteria, search, acquisition, recovery and route gaps found after merge | accepted PR #942 | Accepted through PR #943 at `3b0d689d`; plans, tasks, continuation and evidence owners agree; no application call | complete |
+| 1 | `ETABS-LIVE-G0-ROUTE-GATE` | Disable live routes by default; enforce loopback bind, HTTP/WebSocket authentication and operation classification before any COM import/attach | accepted PR #943 plus bounded preflight | Disabled/denied requests prove zero COM creation or attachment; missing WebSocket token is rejected before accept; OpenAPI security and startup checks match runtime | next after ETABS/Excel absence recheck; 1-2 focused days |
 | 2 | `LIB-BEAM-S0-CHECK-TRUTH` | Effective-depth safety plus truthful, versioned REST/WebSocket supplied-beam checking | accepted G0 | No hidden depth or ignored field; one terminal status vocabulary; REST/WebSocket/OpenAPI/client and compatibility ledger agree | 3-5 focused days |
 | 3 | `ETABS-W3-A0-OFFLINE-SESSION-GUARD` | Offline process-instance/target/runtime fingerprint, getter-only attached policy, live-route capability, OS lease, supervised STA broker, freshness/result-epoch/state/call contracts and fakes | accepted `LIB-BEAM-S0` head for single-writer order only | PID reuse/runtime drift/second process/hung call fail deterministically; attached path invokes no setter; uncertain restoration fences reuse; durable ledger verifies; zero COM/application calls | 8-12 focused days |
 | 4 | `ETABS-W3-A1-INSTALLED-READONLY-ACCEPTANCE` | Prove exact getter-only attachment on the Windows/ETABS authority | accepted A0 plus separate user authorization | Process instance, target observation, runtime fingerprint and model shown; no setter; pre/post state/file equal; unknown model/result freshness cannot become baseline/comparison proof | one bounded evidence session |
@@ -572,10 +589,11 @@ Stop the active packet when:
 
 ## Exact next action
 
-After this plan is accepted, start only
-`ETABS-LIVE-G0-ROUTE-GATE` on the Windows host from the plan's exact merge
-commit. Keep ETABS and Excel closed. Its denied-path tests must prove no COM
-module/session creation or attachment. After G0 is accepted, start
+After the bounded preflight maintenance is accepted and process absence is
+reverified, start only `ETABS-LIVE-G0-ROUTE-GATE` on the Windows host from that
+preflight's exact accepted merge commit. Keep ETABS and Excel closed. Its
+denied-path tests must prove no COM module/session creation or attachment. After
+G0 is accepted, start
 `LIB-BEAM-S0-CHECK-TRUTH`; do not combine it with W3-A0. When BEAM-S0 is
 accepted, create the next exact task/branch in the same dedicated Windows
 repository lane for `ETABS-W3-A0-OFFLINE-SESSION-GUARD`; that packet remains
