@@ -177,15 +177,27 @@ class BeamDetailingOptionsV1(StrictPublicModel):
     clear_cover_mm: float = Field(gt=0)
     tension_bar_diameter_mm: float = Field(ge=8, le=36)
     compression_bar_diameter_mm: float = Field(ge=8, le=36)
+    side_face_bar_diameter_mm: float | None = Field(
+        default=None,
+        ge=8,
+        le=36,
+        exclude_if=lambda value: value is None,
+    )
     nominal_top_steel_ratio: float = Field(gt=0, le=1)
     stirrup_diameter_mm: float = Field(ge=6, le=16)
     stirrup_legs: int = Field(ge=2, le=6)
     stirrup_spacing_support_mm: float = Field(gt=0)
     stirrup_spacing_mid_mm: float = Field(gt=0)
 
-    @field_validator("tension_bar_diameter_mm", "compression_bar_diameter_mm")
+    @field_validator(
+        "tension_bar_diameter_mm",
+        "compression_bar_diameter_mm",
+        "side_face_bar_diameter_mm",
+    )
     @classmethod
-    def validate_supported_bar_diameter(cls, value: float) -> float:
+    def validate_supported_bar_diameter(cls, value: float | None) -> float | None:
+        if value is None:
+            return value
         allowed = (8, 10, 12, 16, 20, 25, 32)
         if value not in allowed:
             raise ValueError(f"bar diameter must be one of {allowed}")
@@ -470,6 +482,12 @@ BEAM_FIELD_CONTRACTS = (
     ),
     FieldContractV1(
         path="detailing.compression_bar_diameter_mm",
+        dimensions=(_TYPE, _RANGE, _UNIT, _ENUM, _DOWNSTREAM),
+        unit="mm",
+        zero_allowed=False,
+    ),
+    FieldContractV1(
+        path="detailing.side_face_bar_diameter_mm",
         dimensions=(_TYPE, _RANGE, _UNIT, _ENUM, _DOWNSTREAM),
         unit="mm",
         zero_allowed=False,

@@ -13,6 +13,7 @@ from structural_lib.codes.is456.beam import shear, torsion
 from structural_lib.core.errors import InputContractError
 from structural_lib.design.is456 import beam
 from structural_lib.services import beam_audit
+from structural_lib.services.bbs import parse_bar_mark
 from tests.unit.test_beam_audit import _evaluate, _request
 from tests.unit.test_etabs_w3_contracts import _present
 
@@ -38,6 +39,7 @@ def _canonical_payload():
             "clear_cover_mm": 40,
             "tension_bar_diameter_mm": 20,
             "compression_bar_diameter_mm": 16,
+            "side_face_bar_diameter_mm": 16,
             "nominal_top_steel_ratio": 0.25,
             "stirrup_diameter_mm": 8,
             "stirrup_legs": 2,
@@ -65,9 +67,75 @@ def test_centroid_cover_and_separate_grades_survive_real_journey():
     assert result.calculation.flexure.Asc_required == 0
     assert result.calculation.torsion.Ast_opposite_mm2 > 0
     assert result.is_ok
-    with pytest.raises(InputContractError, match="TORSION_DETAILING_SCOPE_HOLD"):
-        beam.detail(result, detailing_standard=beam.DetailingStandard.IS456)
+    detailed = beam.detail(result, detailing_standard=beam.DetailingStandard.IS456)
+    assert detailed.is_ok
+    assert detailed.detailing.torsion is not None
+    assert detailed.detailing.torsion.primary_area_required == pytest.approx(
+        result.calculation.flexure.Ast_required
+    )
+    assert detailed.detailing.torsion.opposite_area_required == pytest.approx(
+        result.calculation.torsion.Ast_opposite_mm2
+    )
+    assert all(item.callout() == "2-20φ" for item in detailed.detailing.bottom_bars)
+    assert all(item.callout() == "2-16φ" for item in detailed.detailing.top_bars)
+    side = detailed.detailing.torsion.side_face_bars
+    assert side is not None
+    assert side.callout() == "1-16φ/face"
+    assert side.area_provided_each_face >= side.area_required_each_face
+    assert side.spacing <= side.max_spacing
+    bbs = beam.bbs(detailed)
+    bottom_items = [item for item in bbs.items if item.location == "bottom"]
+    top_items = [item for item in bbs.items if item.location == "top"]
+    assert len(bottom_items) == 1 and bottom_items[0].zone == "full"
+    assert len(top_items) == 1 and top_items[0].zone == "full"
+    side_items = [item for item in bbs.items if item.location == "side-face"]
+    assert len(side_items) == 1
+    assert side_items[0].zone == "full"
+    assert side_items[0].no_of_bars == 2
+    assert "-F-F-D16-" in side_items[0].bar_mark
+    parsed_mark = parse_bar_mark(side_items[0].bar_mark)
+    assert parsed_mark is not None
+    assert parsed_mark["loc"] == "F"
+    assert bbs.summary.total_items == 6
     assert beam.load(json.loads(request.model_dump_json())) == request
+
+
+def test_torsion_strength_stays_available_when_side_face_detailing_choice_is_missing():
+    payload = _canonical_payload()
+    payload["detailing"].pop("side_face_bar_diameter_mm")
+    result = beam.design(beam.load(payload))
+    assert result.is_ok
+    with pytest.raises(InputContractError) as exc_info:
+        beam.detail(result, detailing_standard=beam.DetailingStandard.IS456)
+    assert exc_info.value.issues[0].path.endswith("side_face_bar_diameter_mm")
+    assert "TORSION_SIDE_FACE_BAR_REQUIRED" in exc_info.value.issues[0].message
+
+
+@pytest.mark.parametrize(
+    ("mutation", "path", "message"),
+    [
+        (
+            lambda payload: payload["section"].update({"b_mm": 500}),
+            "request.section.b_mm",
+            "TORSION_DETAILING_SECTION_UNSUPPORTED",
+        ),
+        (
+            lambda payload: payload["detailing"].update(
+                {"stirrup_spacing_mid_mm": 100}
+            ),
+            "request.detailing.stirrup_spacing_mid_mm",
+            "TORSION_STIRRUP_SPACING_EXCEEDED",
+        ),
+    ],
+)
+def test_torsion_detailing_applicability_fails_closed(mutation, path, message):
+    payload = _canonical_payload()
+    mutation(payload)
+    result = beam.design(beam.load(payload))
+    with pytest.raises(InputContractError) as exc_info:
+        beam.detail(result, detailing_standard=beam.DetailingStandard.IS456)
+    assert exc_info.value.issues[0].path == path
+    assert message in exc_info.value.issues[0].message
 
 
 def test_etabs_40_centroid_is_not_40_clear_cover():

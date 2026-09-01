@@ -390,18 +390,16 @@ class TestSideFaceReinforcement:
         """
         Test area calculation for D=800mm, b=300mm, cover=40mm.
 
-        Web height = 800 - 2*40 = 720 mm
-        Web area per face = 300 * 720 = 216,000 mm²
-        Required area = 0.1% = 0.001 * 216,000 = 216 mm²
+        Web area = 300 * 800 = 240,000 mm²
+        Required total area = 0.1%; each face receives half = 120 mm²
         """
         is_required, area, spacing = check_side_face_reinforcement(
             D=800, b=300, cover=40
         )
 
         # Expected calculation
-        web_height = 800 - 2 * 40  # 720 mm
-        web_area = 300 * web_height  # 216,000 mm²
-        expected_area = 0.001 * web_area  # 216 mm²
+        web_area = 300 * 800
+        expected_area = 0.0005 * web_area
 
         assert is_required is True
         assert area == pytest.approx(expected_area, abs=0.5)
@@ -411,17 +409,15 @@ class TestSideFaceReinforcement:
         """
         Test area calculation for D=1000mm, b=400mm, cover=50mm.
 
-        Web height = 1000 - 2*50 = 900 mm
-        Web area per face = 400 * 900 = 360,000 mm²
-        Required area = 0.1% = 0.001 * 360,000 = 360 mm²
+        Web area = 400 * 1000 = 400,000 mm²
+        Required area per face = 0.05% = 200 mm²
         """
         is_required, area, spacing = check_side_face_reinforcement(
             D=1000, b=400, cover=50
         )
 
-        web_height = 1000 - 2 * 50  # 900 mm
-        web_area = 400 * web_height  # 360,000 mm²
-        expected_area = 0.001 * web_area  # 360 mm²
+        web_area = 400 * 1000
+        expected_area = 0.0005 * web_area
 
         assert is_required is True
         assert area == pytest.approx(expected_area, abs=0.5)
@@ -440,9 +436,8 @@ class TestSideFaceReinforcement:
             D=751, b=300, cover=30
         )
 
-        web_height = 751 - 2 * 30  # 691 mm
-        web_area = 300 * web_height  # 207,300 mm²
-        expected_area = 0.001 * web_area  # 207.3 mm²
+        web_area = 300 * 751
+        expected_area = 0.0005 * web_area
 
         assert is_required is True
         assert area == pytest.approx(expected_area, abs=0.5)
@@ -454,23 +449,64 @@ class TestSideFaceReinforcement:
             D=1500, b=600, cover=50
         )
 
-        web_height = 1500 - 2 * 50  # 1400 mm
-        web_area = 600 * web_height  # 840,000 mm²
-        expected_area = 0.001 * web_area  # 840 mm²
+        web_area = 600 * 1500
+        expected_area = 0.0005 * web_area
 
         assert is_required is True
         assert area == pytest.approx(expected_area, abs=0.5)
         assert spacing == 300.0
 
-    def test_spacing_always_300mm_when_required(self):
-        """Maximum spacing is always 300mm per IS 456 Cl 26.5.1.3."""
+    def test_spacing_is_lesser_of_300mm_and_web_thickness(self):
         _, _, spacing1 = check_side_face_reinforcement(D=800, b=300, cover=40)
-        _, _, spacing2 = check_side_face_reinforcement(D=1200, b=400, cover=50)
+        _, _, spacing2 = check_side_face_reinforcement(D=1200, b=230, cover=50)
         _, _, spacing3 = check_side_face_reinforcement(D=2000, b=600, cover=60)
 
         assert spacing1 == 300.0
-        assert spacing2 == 300.0
+        assert spacing2 == 230.0
         assert spacing3 == 300.0
+
+    def test_torsion_distribution_preserves_corner_geometry_and_side_faces(self):
+        result = create_beam_detailing(
+            beam_id="T1",
+            story="GF",
+            b=300,
+            D=500,
+            span=3000,
+            cover=40,
+            fck=25,
+            fy=500,
+            ast_start=283.02,
+            ast_mid=283.02,
+            ast_end=283.02,
+            asc_start=226.44,
+            asc_mid=226.44,
+            asc_end=226.44,
+            stirrup_dia=8,
+            stirrup_spacing_start=75,
+            stirrup_spacing_mid=75,
+            stirrup_spacing_end=75,
+            preferred_tension_bar_dia=20,
+            preferred_compression_bar_dia=16,
+            stirrup_legs=2,
+            torsion_primary_required=283.02,
+            torsion_opposite_required=226.44,
+            torsion_max_stirrup_spacing=75,
+            side_face_bar_dia=16,
+        )
+
+        assert result.torsion is not None
+        assert all(item.callout() == "2-20φ" for item in result.bottom_bars)
+        assert all(item.callout() == "2-16φ" for item in result.top_bars)
+        assert result.torsion.corner_bars_enclosed
+        assert result.torsion.full_span_corner_bars
+        assert result.torsion.closed_stirrups
+        side = result.torsion.side_face_bars
+        assert side is not None
+        assert side.count_each_face == 1
+        assert side.area_required_each_face == 75.0
+        assert side.area_provided_each_face == pytest.approx(201.1, abs=0.1)
+        assert side.spacing == 193.0
+        assert side.max_spacing == 300.0
 
 
 # =============================================================================

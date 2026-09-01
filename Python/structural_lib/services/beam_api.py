@@ -2121,6 +2121,10 @@ def detail_beam_is456(
     preferred_compression_bar_dia_mm: float | None = None,
     nominal_top_steel_ratio: float = 0.25,
     stirrup_legs: int | None = None,
+    torsion_primary_required_mm2: float | None = None,
+    torsion_opposite_required_mm2: float = 0.0,
+    torsion_max_stirrup_spacing_mm: float | None = None,
+    side_face_bar_dia_mm: float | None = None,
 ) -> detailing.BeamDetailingResult:
     """Create IS456/SP34 detailing outputs from design Ast/Asc and stirrups.
 
@@ -2149,6 +2153,10 @@ def detail_beam_is456(
         preferred_compression_bar_dia_mm: First explicit top diameter to try.
         nominal_top_steel_ratio: Drafting ratio used when calculated Asc is zero.
         stirrup_legs: Explicit legs, or compatibility auto-selection when omitted.
+        torsion_primary_required_mm2: Me1-face longitudinal demand, if applicable.
+        torsion_opposite_required_mm2: Me2 opposite-face demand (mm²).
+        torsion_max_stirrup_spacing_mm: Calculated torsion spacing limit (mm).
+        side_face_bar_dia_mm: Additional longitudinal side-face diameter (mm).
 
     Returns:
         BeamDetailingResult with bars, stirrups, and development lengths.
@@ -2212,6 +2220,10 @@ def detail_beam_is456(
         preferred_compression_bar_dia=preferred_compression_bar_dia_mm,
         nominal_top_steel_ratio=nominal_top_steel_ratio,
         stirrup_legs=stirrup_legs,
+        torsion_primary_required=torsion_primary_required_mm2,
+        torsion_opposite_required=torsion_opposite_required_mm2,
+        torsion_max_stirrup_spacing=torsion_max_stirrup_spacing_mm,
+        side_face_bar_dia=side_face_bar_dia_mm,
     )
 
 

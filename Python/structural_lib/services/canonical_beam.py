@@ -531,16 +531,6 @@ def detail(
                 ),
             )
         )
-    if request.actions.tu_knm > 0:
-        raise InputContractError(
-            (
-                InputIssueV1(
-                    code="CONSUMER_RESULT_NOT_ACCEPTED",
-                    path="request.actions.tu_knm",
-                    message="TORSION_DETAILING_SCOPE_HOLD: checked forces and required steel do not prove corner/perimeter bar distribution; torsion detailing and BBS are not supported",
-                ),
-            )
-        )
     options = request.detailing
     if options is None:
         raise InputContractError(
@@ -570,32 +560,103 @@ def detail(
     from structural_lib.services.beam_api import detail_beam_is456
 
     calculation = design_result.calculation
-    detailing = detail_beam_is456(
-        units="IS456",
-        beam_id=request.identity.member_id,
-        story=request.identity.story,
-        b_mm=request.section.b_mm,
-        D_mm=request.section.D_mm,
-        span_mm=span_mm,
-        cover_mm=options.clear_cover_mm,
-        fck_nmm2=request.materials.fck_nmm2,
-        fy_nmm2=request.materials.fy_nmm2,
-        ast_start_mm2=calculation.flexure.Ast_required,
-        ast_mid_mm2=calculation.flexure.Ast_required,
-        ast_end_mm2=calculation.flexure.Ast_required,
-        asc_start_mm2=calculation.flexure.Asc_required,
-        asc_mid_mm2=calculation.flexure.Asc_required,
-        asc_end_mm2=calculation.flexure.Asc_required,
-        stirrup_dia_mm=options.stirrup_diameter_mm,
-        stirrup_spacing_start_mm=options.stirrup_spacing_support_mm,
-        stirrup_spacing_mid_mm=options.stirrup_spacing_mid_mm,
-        stirrup_spacing_end_mm=options.stirrup_spacing_support_mm,
-        is_seismic=detailing_standard is DetailingStandard.IS13920,
-        preferred_tension_bar_dia_mm=options.tension_bar_diameter_mm,
-        preferred_compression_bar_dia_mm=options.compression_bar_diameter_mm,
-        nominal_top_steel_ratio=options.nominal_top_steel_ratio,
-        stirrup_legs=options.stirrup_legs,
+    torsion = calculation.torsion
+    if torsion is not None:
+        if request.section.b_mm > 450:
+            raise InputContractError(
+                (
+                    InputIssueV1(
+                        code="CONSUMER_RESULT_NOT_ACCEPTED",
+                        path="request.section.b_mm",
+                        message="TORSION_DETAILING_SECTION_UNSUPPORTED: widths above 450 mm require additional transverse/internal distribution outside the two-legged closed-stirrup route",
+                    ),
+                )
+            )
+        if request.section.D_mm > 450 and options.side_face_bar_diameter_mm is None:
+            raise InputContractError(
+                (
+                    InputIssueV1(
+                        code="DOWNSTREAM_INPUT_MISSING",
+                        path="request.detailing.side_face_bar_diameter_mm",
+                        message="TORSION_SIDE_FACE_BAR_REQUIRED: an explicit diameter is required for the additional longitudinal bars on both side faces",
+                    ),
+                )
+            )
+        if (
+            max(
+                options.stirrup_spacing_support_mm,
+                options.stirrup_spacing_mid_mm,
+            )
+            > torsion.stirrup_spacing + 1e-9
+        ):
+            raise InputContractError(
+                (
+                    InputIssueV1(
+                        code="CROSS_FIELD_CONTRACT_INVALID",
+                        path="request.detailing.stirrup_spacing_mid_mm",
+                        message="TORSION_STIRRUP_SPACING_EXCEEDED: selected support and midspan spacings must not exceed the calculated torsion limit",
+                        received=max(
+                            options.stirrup_spacing_support_mm,
+                            options.stirrup_spacing_mid_mm,
+                        ),
+                    ),
+                )
+            )
+
+    opposite_required = (
+        max(calculation.flexure.Asc_required, torsion.Ast_opposite_mm2)
+        if torsion is not None
+        else calculation.flexure.Asc_required
     )
+    try:
+        detailing = detail_beam_is456(
+            units="IS456",
+            beam_id=request.identity.member_id,
+            story=request.identity.story,
+            b_mm=request.section.b_mm,
+            D_mm=request.section.D_mm,
+            span_mm=span_mm,
+            cover_mm=options.clear_cover_mm,
+            fck_nmm2=request.materials.fck_nmm2,
+            fy_nmm2=request.materials.fy_nmm2,
+            ast_start_mm2=calculation.flexure.Ast_required,
+            ast_mid_mm2=calculation.flexure.Ast_required,
+            ast_end_mm2=calculation.flexure.Ast_required,
+            asc_start_mm2=opposite_required,
+            asc_mid_mm2=opposite_required,
+            asc_end_mm2=opposite_required,
+            stirrup_dia_mm=options.stirrup_diameter_mm,
+            stirrup_spacing_start_mm=options.stirrup_spacing_support_mm,
+            stirrup_spacing_mid_mm=options.stirrup_spacing_mid_mm,
+            stirrup_spacing_end_mm=options.stirrup_spacing_support_mm,
+            is_seismic=detailing_standard is DetailingStandard.IS13920,
+            preferred_tension_bar_dia_mm=options.tension_bar_diameter_mm,
+            preferred_compression_bar_dia_mm=options.compression_bar_diameter_mm,
+            nominal_top_steel_ratio=options.nominal_top_steel_ratio,
+            stirrup_legs=options.stirrup_legs,
+            torsion_primary_required_mm2=(
+                calculation.flexure.Ast_required if torsion is not None else None
+            ),
+            torsion_opposite_required_mm2=(
+                torsion.Ast_opposite_mm2 if torsion is not None else 0.0
+            ),
+            torsion_max_stirrup_spacing_mm=(
+                torsion.stirrup_spacing if torsion is not None else None
+            ),
+            side_face_bar_dia_mm=options.side_face_bar_diameter_mm,
+        )
+    except ValueError as exc:
+        if str(exc).startswith("TORSION_"):
+            raise InputContractError(
+                (
+                    InputIssueV1(
+                        code="CONSUMER_RESULT_NOT_ACCEPTED",
+                        path="request.detailing",
+                        message=str(exc),
+                    ),
+                )
+            ) from exc
+        raise
     return BeamDetailingResultV1(
         request=request,
         detailing=detailing,

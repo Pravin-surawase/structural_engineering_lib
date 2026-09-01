@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-31
+last_updated: 2026-09-01
 doc_type: reference
 complexity: advanced
 tags: [etabs, w3, serviceability, verification]
@@ -89,8 +89,9 @@ the newly named serviceability revision after the last source-byte change.
 
 1. Accept this bounded software packet, then supply project-specific service
    analysis and bar/factor evidence. Missing actual-building data stays held.
-2. Finish mandatory torsion perimeter/distribution detailing and other candidate
-   constructability/applicability checks. No torsion BBS promotion in this packet.
+2. Use the supported torsion distribution/BBS consumer for rectangular beams at
+   or below its 450 mm width limit. Resolve wider, multilayer or coupled-design
+   candidates separately; do not promote them through the bounded route.
 3. Resolve H physical support/mesh/slab-transfer compatibility. The three saved
    candidates remain NOT_COMPARABLE_AS_IS; broader getters cannot fix that.
 4. Only after E/H/R dependencies are accepted, implement I screening, K/L and

@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-31
+last_updated: 2026-09-01
 doc_type: reference
 complexity: advanced
 tags: [etabs, w3, root-cause, verification]
@@ -21,6 +21,9 @@ authored software fixtures. They are not acceptance of the actual building.
 The [verification receipt](../verification/etabs-w3-reinforcement-root-causes.json)
 records the bounded evidence. Required automated checks must pass before merge;
 the external closeout owns the final commit/check identities.
+The RC8/RC9 continuation has its own
+[torsion-detailing receipt](../verification/etabs-w3-torsion-detailing-evidence.json)
+and remains pure offline software evidence.
 
 ## Root-cause register
 
@@ -33,12 +36,12 @@ the external closeout owns the final commit/check identities.
 | RC5 | Torsion used stirrup-centre dimensions where Cl 41.4.3 requires longitudinal corner-bar centres. | Require explicit corner geometry in the raw kernel/compatibility path. Canonical and v1 single-layer adapters derive it from declared bar sizes. Keep stirrup dimensions separate for spacing limits. | Missing geometry is rejected. Canonical 300x500 fixture resolves b1=184 and d1=386 mm; Python/REST/report use the same resolver. |
 | RC6 | An empirical longitudinal-area expression was labelled as Cl 41.4.2 and opposite-face moment demand was absent. | Use the maintained flexure owner for Me1 and max(Mt-Mu,0); carry opposite-face required steel to the strength result. Reject the incomplete legacy helper. Require singly reinforced capacity on each face. | Pure-torsion/opposite-moment and golden tests; no additive double counting of `Al_torsion`. |
 | RC7 | Practical shear spacing could round a sub-75 mm requirement upward and return safe. | Return an explicit failed design with zero offered spacing when no supported spacing satisfies demand. | `test_shear_cap_and_constructibility_are_decisive`; no false pass after the grade correction. |
-| RC8 | A strength result alone does not prove torsion corner/perimeter reinforcement distribution. | Block canonical torsion detailing/BBS until the distribution consumer exists. Continue exposing verified force/required-steel checks. | `TORSION_DETAILING_SCOPE_HOLD` is exercised through the actual detailing entrypoint. This is containment of an unimplemented consumer, not completed detailing. |
+| RC8 | A strength result alone does not prove torsion corner/perimeter reinforcement distribution. | Consume Me1 steel on the primary face and Me2 steel on the opposite face without additive double counting; preserve the explicit single-layer corner geometry; schedule the governing corner sets continuously for the full span; require closed stirrups within the calculated torsion limit; add side-face bars when D exceeds 450 mm. | The authored 300x500 fixture produces full-span 2-20 primary, full-span 2-16 opposite, 1-16/face side bars at 193 mm and six deterministic BBS items. Missing choices and unsupported widths fail closed. |
+| RC9 | The shared side-face helper treated 0.1% as a per-face requirement, subtracted cover from rectangular web depth, and returned a constant 300 mm spacing. This doubled required steel and missed the web-thickness cap. | Use 0.1% of rectangular web area in total, half on each face, with maximum spacing `min(300 mm, b)`. Share the same unrounded requirement owner with torsion distribution. | D=800, b=300 gives 120 mm2 per face; a 230 mm web limits spacing to 230 mm. Unit and canonical/BBS regressions exercise the corrected owner. |
 
-RC1-RC7 have implemented numerical/contract corrections subject to this packet's
-gates. RC8 remains an explicit feature hold. Numerical corrections intentionally
-change affected results; old accepted artifacts are historical evidence and are
-not rewritten. Canonical calculation identity is now
+RC1-RC9 have implemented numerical/contract corrections subject to their packet
+gates. Numerical corrections intentionally change affected results; old accepted
+artifacts are historical evidence and are not rewritten. Canonical calculation identity is now
 `is456-rectangular-beam-strength/v2`. Existing single-grade and clear-cover input
 shapes remain valid; new variants do not add null fields to those inputs.
 
@@ -67,7 +70,18 @@ ETABS design overwrites are not proof of installed steel.
   inconsistent or multilayer torsion input is held.
 - `Al_torsion` is total required tension steel from the two equivalent moments,
   not additional steel to add to primary flexure. Opposite-face demand is exposed
-  separately from flexural compression steel. Doubly reinforced coupled torsion and shop detailing remain held.
+  separately from flexural compression steel. The supported detailing consumer
+  keeps those two demands on their respective faces and rejects a selected bar
+  arrangement that changes the corner geometry used by strength design.
+- For torsion detailing with D above 450 mm, supply
+  `detailing.side_face_bar_diameter_mm`. The route schedules identical full-span
+  bars on both faces and counts their area and spacing once through the shared
+  Cl 26.5.1.3 owner. Strength-only calculations remain available when that
+  downstream choice is absent.
+- The supported torsion detailing applicability is a rectangular beam with
+  b at or below 450 mm, explicit single-layer corner bars and two-legged closed
+  stirrups. Wider sections, changed/multilayer corner geometry and doubly
+  reinforced coupled torsion fail closed pending a separate constructability route.
 - The separate typed torsion facade requires explicit `corner_bar_centres_b1_mm`,
   `corner_bar_centres_d1_mm` and `d_opposite_mm`. The older read-and-detail pilot
   remains usable only for its supported zero-torsion detailing scope; do not drop
@@ -104,8 +118,9 @@ avoidable drift failures even when its numerical results are unchanged.
    and Annex F formulas are candidate routes; do not substitute factored moments
    for service actions or default an unknown support/strain/limit. Direct-deflection
    and long-term methods need independent validation before canonical acceptance.
-2. Complete torsion perimeter/distribution detailing and other mandatory
-   constructability/applicability criteria before candidate screening.
+2. Apply the supported torsion distribution/BBS consumer to candidate inputs and
+   resolve any candidate outside its explicit width, layer or coupled-design
+   applicability. Do not infer missing side-bar choices.
 3. Resolve the physical support/mesh/slab-transfer matrix for W3H. The three saved
    candidates remain NOT_COMPARABLE_AS_IS; none is promoted by these software fixes.
 4. Implement W3I/K/L after their E/H dependencies; finish cumulative integration,

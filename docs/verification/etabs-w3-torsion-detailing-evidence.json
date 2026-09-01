@@ -1,0 +1,50 @@
+{
+  "schema_version": "w3-torsion-detailing-evidence/v1",
+  "task_id": "ETABS-W3E-TORSION-DETAILING",
+  "source_merge": "c8cdee9d1ee72acf756651c45520562512e2f5f4",
+  "status": "FOCUSED_VERIFIED_REQUIRES_INTEGRATION",
+  "live_application_calls": 0,
+  "model_mutations": 0,
+  "source_basis": [
+    "IS 456:2000 Cl 26.5.1.3",
+    "IS 456:2000 Cl 26.5.1.7",
+    "IS 456:2000 Cl 41.4.2",
+    "IS 456:2000 Cl 41.4.3"
+  ],
+  "authored_vector": {
+    "section_mm": {"b": 300, "D": 500, "span": 3000},
+    "actions": {"mu_knm": 5, "vu_kn": 25, "tu_knm": 30},
+    "corner_bar_centres_mm": {"b1": 184, "d1": 386},
+    "primary_required_mm2": 283.0218282729955,
+    "opposite_required_mm2": 226.44,
+    "primary_bars": "full-span 2-20",
+    "opposite_bars": "full-span 2-16",
+    "side_face_bars": "1-16 per face",
+    "side_face_required_each_mm2": 75.0,
+    "side_face_provided_each_mm2": 201.1,
+    "side_face_spacing_mm": 193.0,
+    "torsion_stirrup_spacing_mm": 75,
+    "bbs_items": 6
+  },
+  "applicability": {
+    "supported": "rectangular beam, b <= 450 mm, explicit single-layer corner bars, two-legged closed stirrups",
+    "held": [
+      "b > 450 mm transverse/internal distribution",
+      "multilayer or changed corner geometry",
+      "doubly reinforced coupled torsion",
+      "project and installed-reinforcement acceptance"
+    ]
+  },
+  "verification": {
+    "focused_python": {"passed": 221, "skipped": 10},
+    "serviceability_hold_regression": "included and passing",
+    "fastapi_affected": {"passed": 68},
+    "configured_mypy": {"source_files": 285, "errors": 0},
+    "architecture": {"files": 249, "violations": 0},
+    "generated_client": "checked-in TypeScript exactly matches maintained generator",
+    "documentation": "all five checks passing",
+    "openapi_snapshot": "97 endpoints and 549 schemas; no drift",
+    "quick_gate": {"passed": 10, "failed": 0, "reused": 0},
+    "hooks_hosted": "required before merge; exact outcomes belong to the external closeout"
+  }
+}

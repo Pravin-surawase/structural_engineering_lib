@@ -4,10 +4,10 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-01
-- Focus: Resolve the repeated ETABS table-call hypothesis and choose the simplest trustworthy W3H acquisition route.
-- Completed: Inspected the installed generated comtypes wrapper and proved that; Proved seven offline collector/decoder/state cases, then made one eligible; Disproved explicit `(0, [])` output placeholders as the historical cause.
-- Git receipt: docs/verification/etabs-w3h-table-call-semantics-git-handoff-receipt.json | sha256:4b4a5a317c84254bd72fff8f511fc182ca93c191165a07c68f607e7d0a24e6e0 | HOLD
-- Git identity: codex/etabs-w3h-table-call-semantics-windows@690b2dad60586e5aea8b89c4642971b03a9b79a0 | upstream=origin/main@690b2dad60586e5aea8b89c4642971b03a9b79a0 | base=origin/main@690b2dad60586e5aea8b89c4642971b03a9b79a0 | tree=dirty | operation=none
+- Focus: Replace the bounded nonzero-torsion detailing/BBS hold with an IS
+- Completed: Routed the existing Me1 primary-face and Me2 opposite-face demands through; Preserved the exact single-layer corner-bar diameters used by strength; Required two-legged closed stirrups within the calculated torsion spacing;
+- Git receipt: docs/verification/etabs-w3-torsion-detailing-git-handoff-receipt.json | sha256:d21ef87b22e5077db888f176a73b53f7b518e1f69880d764024a9cafdf91e6f3 | HOLD
+- Git identity: codex/etabs-w3e-torsion-detailing-windows@c8cdee9d1ee72acf756651c45520562512e2f5f4 | upstream=origin/main@c8cdee9d1ee72acf756651c45520562512e2f5f4 | base=origin/main@c8cdee9d1ee72acf756651c45520562512e2f5f4 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -15,19 +15,19 @@
 ## Current boundary
 
 The [whole-W3 reset](etabs-data-analysis-optimization-foundation-plan.md#whole-w3-execution-reset-2026-08-31) owns sequencing; the [saved-basis decision](etabs-w3-saved-basis-and-criteria.md) owns the current next packet.
-Source: accepted PR #936 merge `773d96739aaa68d5205d606010f0e0540dc4aa7c`; [current serviceability packet](etabs-w3-serviceability.md) and the bounded W3H table-call closure.
-Windows owns the bounded W3H closure branch; exact external evidence and integration receipt govern acceptance. Mac NOT_CHECKED.
+Source: accepted PR #938 merge `c8cdee9d`; [serviceability](etabs-w3-serviceability.md), bounded W3H table-call closure and current torsion-detailing packet. Mac NOT_CHECKED.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | Strict span/depth <=10 m and supplied Annex F inputs implemented through canonical/W3 checks. Complete service evidence required; separate SLS identity and exact row/location binding. Candidate gates/integration receipt govern acceptance. No live calls. |
-| Migration | Nonzero raw torsion now requires explicit corner-bar geometry and opposite depth. Al is total Me1/Me2 required tension steel, not additive torsion steel; source-corrected G7 replaces historical numbers. |
-| **Next** | Project service-input evidence and mandatory detailing/constructability criteria. Direct/long-term deflection and torsion detailing/BBS remain held. Reuse accepted owners; do not repeat pilot inputs. |
+| **Current** | Supported b<=450 mm rectangular torsion detailing consumes Me1/Me2 on separate faces, preserves single-layer corner geometry, enforces closed-stirrup spacing and schedules explicit side-face bars/BBS when D>450 mm. Candidate gates govern acceptance; no live calls. |
+| Migration | Nonzero raw torsion requires explicit corner geometry/opposite depth; Al is total Me1/Me2 tension steel, not additive. Torsion detailing adds `side_face_bar_diameter_mm` only when needed and does not add null fields to predecessor requests. |
+| **Next** | Apply the bounded consumer to saved candidates and obtain project service inputs. Resolve wider/multilayer/coupled candidates separately. Direct/long-term deflection remains held; reuse accepted owners and do not repeat pilot inputs. |
 | H route | Stop broad table diagnosis. The installed wrapper's correct zero-argument table call still returned CSI 1 with complete preservation, disproving the output-placeholder theory. Acquire only named support/mesh/transfer gaps from saved sources, proved direct getters, or bounded supported export. No solver fitting. |
 | Retained | A-D/R, bounded E/F/G/H/J acceptance; #925 repair closed. #931's explicit-placeholder hypothesis is disproved and equivalent table API retries are closed; the native CSI 1 and #932 binder causes remain unconfirmed; #933 timestamp defect is confirmed. |
-| Held | Actual-building H; required serviceability and installed-rebar claims; I/K/L; final combined gates/Mac review; professional/release approval. |
+| Held | Actual-building H; required project serviceability and installed-rebar claims; wider/multilayer/coupled torsion detailing; I/K/L; final combined gates/Mac review; professional/release approval. |
 
-The serviceability packet made no ETABS/UI/export/solver/design calls. The W3H
+The serviceability and torsion-detailing packets made no ETABS/UI/export/solver
+or model calls. The W3H
 closure made one read-only zero-argument table getter after complete guards; no
 catalogue, schema, row, export, analysis, design, save, unlock or selection call.
 Its fresh preservation evidence applies only to that exact observation. Keep `v0.24.0`; no release is authorized.

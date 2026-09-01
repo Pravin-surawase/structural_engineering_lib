@@ -10,14 +10,14 @@ tags: [canonical-api, field-contracts, lib-pro-012-r0]
 # Family Facade Contracts
 
 This file is generated from the live 13-journey registry and strict request
-models. It covers 562 advertised request-field leaves. The full JSON
+models. It covers 563 advertised request-field leaves. The full JSON
 schemas and per-field decisions are in `api-classification.json`.
 
 ## Exact signatures and schema identities
 
 | Journey | Constructor | Operation | Fields | Schema SHA-256 |
 |---|---|---|---:|---|
-| `is456.beam.design/v1` | `input(*, member_id: 'str', story: 'str', case_id: 'str', span_mm: 'float', b_mm: 'float', D_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', fy_transverse_nmm2: 'float | None' = None, mu_knm: 'float', vu_kn: 'float', d_dash_mm: 'float', asv_mm2: 'float', d_mm: 'float | None' = None, effective_depth_basis: 'EffectiveDepthBasisRequestV1 | CentroidCoverDepthRequestV1 | None' = None, tu_knm: 'float' = 0.0, pt_percent: 'float | None' = None, ast_mm2_for_shear: 'float | None' = None, detailing: 'BeamDetailingOptionsV1 | None' = None, serviceability: 'BeamServiceabilityV1 | BeamServiceabilityChecksV1 | None' = None, source_provenance: 'str | None' = None) -> 'BeamDesignInputV1'`<br>`load(value: 'Any') -> 'BeamDesignInputV1'` | `design(request: 'BeamDesignInputV1') -> 'BeamDesignResultV1'` | `28` | `afb92bb35bc9ccb0fd19c3c5fee5c548273efef21453af390293a16ee939b01b` |
+| `is456.beam.design/v1` | `input(*, member_id: 'str', story: 'str', case_id: 'str', span_mm: 'float', b_mm: 'float', D_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', fy_transverse_nmm2: 'float | None' = None, mu_knm: 'float', vu_kn: 'float', d_dash_mm: 'float', asv_mm2: 'float', d_mm: 'float | None' = None, effective_depth_basis: 'EffectiveDepthBasisRequestV1 | CentroidCoverDepthRequestV1 | None' = None, tu_knm: 'float' = 0.0, pt_percent: 'float | None' = None, ast_mm2_for_shear: 'float | None' = None, detailing: 'BeamDetailingOptionsV1 | None' = None, serviceability: 'BeamServiceabilityV1 | BeamServiceabilityChecksV1 | None' = None, source_provenance: 'str | None' = None) -> 'BeamDesignInputV1'`<br>`load(value: 'Any') -> 'BeamDesignInputV1'` | `design(request: 'BeamDesignInputV1') -> 'BeamDesignResultV1'` | `29` | `42c4bb944e99e815e98581456de467197ed57f4a707f3cdad4c2b4659dc4d23b` |
 | `is456.torsion.design/v1` | `input(*, identity: 'Any', geometry: 'Any', actions: 'Any', materials: 'Any', reinforcement: 'Any') -> 'TorsionDesignInputV1'`<br>`load(value: 'Any') -> 'TorsionDesignInputV1'` | `design(request: 'TorsionDesignInputV1') -> 'CanonicalFamilyResultV1'` | `21` | `6fc17a274b7f91760a6129e336e0ff30400b318ebf802c9ed25e071baffec278` |
 | `is456.column.supplied-steel-check/v1` | `input(*, identity: 'Any', geometry: 'Any', actions: 'Any', materials: 'Any', reinforcement: 'Any') -> 'ColumnDesignInputV1'`<br>`load(value: 'Any') -> 'ColumnDesignInputV1'` | `design(request: 'ColumnDesignInputV1') -> 'CanonicalFamilyResultV1'`<br>`check(request: 'ColumnDesignInputV1') -> 'CanonicalFamilyResultV1'` | `23` | `9974b5c7f061f55be6a85627211558145485483eeb7ee6b86e5fb4069685fa48` |
 | `is456.slab.one-way/v1` | `load_one_way(value: 'Any') -> 'OneWaySlabInputV1'` | `design_one_way(request: 'OneWaySlabInputV1') -> 'CanonicalFamilyResultV1'` | `24` | `230f08e5dd24fa358bb23b834f33ddff90a9a90c9633a8effe5f4f8d7c4e722c` |
@@ -65,7 +65,7 @@ decision rather than a hidden conversion.
 | `kN/m` | 2 |
 | `kN/m2` | 18 |
 | `kPa` | 1 |
-| `mm` | 181 |
+| `mm` | 182 |
 | `mm2` | 4 |
 
 ## Enum and topology values
