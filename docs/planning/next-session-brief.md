@@ -4,28 +4,28 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-01
-- Focus: Default-disable every COM-attaching ETABS route; enforce startup,
-- Completed: Added an immutable server-owned classification for all seven ETABS bridge; Kept only nonattaching `status` and retained-evidence `beam-demand` mounted by; Made live startup fail closed unless the configured host is loopback,
-- Git receipt: docs/verification/etabs-live-g0-route-gate-git-handoff-receipt.json | sha256:bf872e63a15d45516dafe753770b32484ddff7d265cdb0decbd408a1b7f41904 | HOLD
-- Git identity: codex/etabs-live-g0-route-gate@3fc9ddcdfd1eb18fcaabf0b4d7e71a70ceed4df4 | upstream=origin/main@3fc9ddcdfd1eb18fcaabf0b4d7e71a70ceed4df4 | base=origin/main@3fc9ddcdfd1eb18fcaabf0b4d7e71a70ceed4df4 | tree=dirty | operation=none
+- Focus: Replace the partial supplied-beam compatibility payload with one
+- Completed: Added strict `beam-supplied-check/v2` and result V2 owners with explicit; Routed the retained REST check and WebSocket `check_beam` operation through; Regenerated the OpenAPI baseline and Python/TypeScript clients, updated the
+- Git receipt: docs/verification/w3-public-beam-truth-git-handoff-receipt.json | sha256:5484eb7a723e7dbab5f1afb39650a19d4066bc94cfae099df0186bfdfd65aab6 | HOLD
+- Git identity: codex/w3-public-beam-truth@f7da72bdf837a38e4c07ef6d7a21fb9267804ad5 | upstream=origin/main@f7da72bdf837a38e4c07ef6d7a21fb9267804ad5 | base=origin/main@f7da72bdf837a38e4c07ef6d7a21fb9267804ad5 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
 
 ## Current boundary
 
-The [integrated W3 and professional beam execution plan](w3-beam-professional-integrated-execution-plan.md)
-owns the immediate sequence. The [whole-W3 reset](etabs-data-analysis-optimization-foundation-plan.md#whole-w3-execution-reset-2026-08-31)
-continues to own the A-L evidence/capability sequence, and the
-[COM/VBA/reanalysis plan](etabs-w3-com-vba-and-reanalysis-plan.md) owns ETABS
-host/session and transaction behavior. Source: accepted preflight PR #944 commit `3fc9ddcd`;
-its exact successor is the active G0 branch. One Windows writer owns the next sequence; installed actions remain separately gated.
+The [integrated W3 and professional beam execution plan](w3-beam-professional-integrated-execution-plan.md) owns the immediate sequence.
+The [whole-W3 reset](etabs-data-analysis-optimization-foundation-plan.md#whole-w3-execution-reset-2026-08-31) continues to own the A-L evidence/capability sequence, and the [COM/VBA/reanalysis plan](etabs-w3-com-vba-and-reanalysis-plan.md) owns ETABS
+host/session and transaction behavior. Source: accepted G0 PR #945 merge
+`f7da72bdf837a38e4c07ef6d7a21fb9267804ad5`; its exact successor is the active
+`codex/w3-public-beam-truth` branch. One Windows writer owns the next sequence;
+installed actions remain separately gated.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | G0 and its cadence amendment are a frozen local candidate from accepted preflight `3fc9ddcd`. ETABS/Excel stayed closed; focused tests, lint/build, OpenAPI/API contracts, the repaired brief check, and the hook-level exact quick gate pass. |
-| **Next** | Complete the repaired hook attempt and publish one G0 PR with hosted checks. After acceptance, start `codex/w3-public-beam-truth`; its three internal units share one PR and focused tests until freeze. |
-| W3 next | After G0, run `LIB-BEAM-S0-CHECK-TRUTH`; then start A0 from its exact accepted head. A0 uses fakes only; installed getter-only A1 remains separately authorized. |
+| **Current** | G0 is accepted through PR #945. The `codex/w3-public-beam-truth` S0 plus beam-only D0/D1 candidate is frozen: shared Python/REST/WebSocket V2 semantics, clients, compatibility/migration records and nine-operation generated documentation agree; exact-wheel replay passes. ETABS/Excel stayed closed. |
+| **Next** | Run the milestone's single quick/hook/push/PR sequence. Do not add another beam unit or intermediate PR. |
+| W3 next | After this milestone is accepted, start the fake-only offline foundations branch and execute A0, B0, B1A and C0 in dependency order. Installed getter-only A1 remains separately authorized. |
 | H/data route | C0 freezes generic contracts, C1 acquires one exact schema/export, and C2 parses offline. H0 then chooses a proved surrogate envelope, ETABS-first baseline-action screening, or `HOLD`. No broad table retry or new solver physics. |
 | Retained | A-D/R, bounded E/F/G/H/J acceptance; #925 repair closed. #931's explicit-placeholder hypothesis is disproved and equivalent table API retries are closed; the native CSI 1 and #932 binder causes remain unconfirmed; #933 timestamp defect is confirmed. |
 | Held | Project service and applicability criteria; actual-building H; installed-rebar claims; wider/multilayer/coupled torsion detailing; I/K/L; final combined gates/Mac review; professional/release approval. |

@@ -9,6 +9,9 @@ import math
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
+from structural_lib.services.contracts.beam_supplied_check import (
+    BeamSuppliedCheckRequestV2,
+)
 
 from fastapi_app.models.response import StructuralResultEnvelopeResponse
 
@@ -596,6 +599,73 @@ class BeamCheckResponse(BaseModel):
 
     # Warnings
     warnings: list[str] = Field(default_factory=list, description="Check warnings")
+
+
+class BeamSuppliedDepthResolutionV2(BaseModel):
+    """Exact effective-depth decision returned by the V2 supplied check."""
+
+    contract_version: Literal["effective-depth-basis/v1"]
+    source: Literal["EXPLICIT", "DERIVED"]
+    D_mm: float
+    d_mm: float
+    effective_depth_basis: dict[str, float] | None = None
+
+
+class BeamSuppliedLongitudinalResponseV2(BaseModel):
+    """Transport projection of the accepted longitudinal evaluator."""
+
+    schema_version: Literal["beam-reinforcement-evaluation/v1"]
+    status: Literal["PASS", "FAIL", "HOLD"]
+    ast_required_mm2: float
+    asc_required_mm2: float
+    recommended_tension: dict[str, Any] | None
+    supplied_tension: dict[str, Any] | None
+    supplied_compression_or_hanger: dict[str, Any] | None
+    checks: dict[str, Any]
+    issues: list[dict[str, str]]
+    clause_refs: dict[str, str]
+    provenance: dict[str, str | None]
+    limitations: list[str]
+    qualified_review_required: bool
+
+
+class BeamSuppliedShearResponseV2(BaseModel):
+    """Exact supplied stirrup area/spacing result."""
+
+    model_config = ConfigDict(populate_by_name=True)
+
+    schema_version: Literal["beam-supplied-shear-check/v2"]
+    status: Literal["PASS", "FAIL"]
+    required_vus_kn: float = Field(alias="required_Vus_kn")
+    concrete_capacity_kn: float
+    provided_stirrup_capacity_kn: float
+    total_capacity_kn: float
+    provided_asv_mm2: float
+    provided_spacing_mm: float
+    maximum_permitted_spacing_mm: float
+    spacing_is_adequate: bool
+    capacity_is_adequate: bool
+    section_shear_is_adequate: bool
+    utilization: float
+    issues: list[dict[str, str]]
+    clause_refs: dict[str, str]
+
+
+class BeamSuppliedCheckResponseV2(BaseModel):
+    """Versioned REST projection of the canonical supplied-check result."""
+
+    schema_version: Literal["beam-supplied-check-result/v2"]
+    correlation_id: str
+    status: Literal["PASS", "FAIL", "HOLD", "ERROR"]
+    identity: dict[str, str]
+    primary_tension_face: Literal["TOP", "BOTTOM"]
+    request: BeamSuppliedCheckRequestV2
+    effective_depth_resolution: BeamSuppliedDepthResolutionV2
+    d_dash_used_mm: float
+    longitudinal: BeamSuppliedLongitudinalResponseV2
+    shear: BeamSuppliedShearResponseV2
+    result_envelope: StructuralResultEnvelopeResponse
+    limitations: list[str]
 
 
 class BarArrangement(BaseModel):

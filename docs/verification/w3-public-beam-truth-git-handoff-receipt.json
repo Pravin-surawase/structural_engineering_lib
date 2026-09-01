@@ -1,0 +1,175 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "5484eb7a723e7dbab5f1afb39650a19d4066bc94cfae099df0186bfdfd65aab6",
+    "state": {
+      "branch": "codex/w3-public-beam-truth",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "f7da72bdf837a38e4c07ef6d7a21fb9267804ad5",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 234.098,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git\\worktrees\\w3-public-beam-truth",
+      "head_sha": "f7da72bdf837a38e4c07ef6d7a21fb9267804ad5",
+      "hold_reasons": [
+        "changed paths: 65"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-09-01T17:26:09.071655+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\worktrees\\w3-public-beam-truth",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 65,
+        "modified_paths": [
+          "Python/structural_lib/design/is456/beam.py",
+          "Python/structural_lib/services/beam_reinforcement.py",
+          "Python/structural_lib/services/canonical_beam.py",
+          "Python/tests/test_api_classification.py",
+          "Python/tests/test_control_plane.py",
+          "Python/tests/test_generated_clients.py",
+          "Python/tests/test_session_automation.py",
+          "Python/tests/unit/test_beam_supplied_check_v2.py",
+          "clients/python/structural_client/__init__.py",
+          "clients/python/structural_client/client.py",
+          "clients/typescript/package.json",
+          "clients/typescript/src/index.ts",
+          "clients/typescript/tsconfig.json",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/audit/audit-readiness.md",
+          "docs/audit/evidence-bundle-template.md",
+          "docs/cookbook/README.md",
+          "docs/cookbook/python/beam-design.md",
+          "docs/cookbook/python/beam-supplied-check.md",
+          "docs/cookbook/python/column-supplied-steel-check.md",
+          "docs/cookbook/python/combined-footing-symmetric.md",
+          "docs/cookbook/python/deep-beam-simply-supported.md",
+          "docs/cookbook/python/family-facades.md",
+          "docs/cookbook/python/flat-slab-regular-interior.md",
+          "docs/cookbook/python/isolated-footing-concentric.md",
+          "docs/cookbook/python/slab-continuous-one-way.md",
+          "docs/cookbook/python/slab-one-way.md",
+          "docs/cookbook/python/slab-two-way.md",
+          "docs/cookbook/python/staircase-straight-flight.md",
+          "docs/cookbook/python/strap-footing-property-line.md",
+          "docs/cookbook/python/torsion-design.md",
+          "docs/cookbook/python/wall-braced-axial.md",
+          "docs/migration/README.md",
+          "docs/planning/next-session-brief.md",
+          "docs/planning/w3-beam-professional-integrated-execution-plan.md",
+          "docs/reference/README.md",
+          "docs/reference/api-classification.json",
+          "docs/reference/api-compatibility-ledger.json",
+          "docs/reference/api.md",
+          "docs/reference/beam-facade.md",
+          "docs/reference/canonical-result-contract.md",
+          "docs/reference/family-facade-contracts.md",
+          "docs/reference/fastapi-rest-api.md",
+          "fastapi_app/models/beam.py",
+          "fastapi_app/openapi_baseline.json",
+          "fastapi_app/routers/design.py",
+          "fastapi_app/routers/websocket.py",
+          "fastapi_app/tests/conftest.py",
+          "fastapi_app/tests/test_endpoints.py",
+          "fastapi_app/tests/test_public_documentation_contract.py",
+          "fastapi_app/tests/test_websocket.py",
+          "react_app/src/api/__tests__/endpoints.test.ts",
+          "react_app/src/api/client.ts",
+          "scripts/audit_readiness_report.py",
+          "scripts/check_api.py",
+          "scripts/check_openapi_snapshot.py",
+          "scripts/generate_api_classification.py",
+          "scripts/generate_client_sdks.py",
+          "scripts/generate_family_facade_docs.py",
+          "scripts/verify_lib_pro_012_r0_external_preview.py"
+        ],
+        "staged_paths": [
+          "Python/structural_lib/services/contracts/beam_supplied_check.py",
+          "Python/structural_lib/services/supplied_beam_check.py",
+          "Python/tests/unit/test_beam_supplied_check_v2.py",
+          "docs/cookbook/python/beam-supplied-check.md",
+          "docs/migration/beam-supplied-check-v2.md",
+          "docs/reference/beam-facade.md",
+          "docs/reference/beam-supplied-check-websocket-v2.schema.json"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "f7da72bdf837a38e4c07ef6d7a21fb9267804ad5",
+        "status": "equal"
+      },
+      "worktree_root": "C:\\CodexWork\\worktrees\\w3-public-beam-truth"
+    }
+  },
+  "local_state_receipt_hash": "sha256:5484eb7a723e7dbab5f1afb39650a19d4066bc94cfae099df0186bfdfd65aab6",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-09-01T17:26:09.071655+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [],
+    "integration_owner": "orchestrator",
+    "owned_paths": [],
+    "shared_paths": [],
+    "task_id": "W3-PUBLIC-BEAM-TRUTH-MILESTONE"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

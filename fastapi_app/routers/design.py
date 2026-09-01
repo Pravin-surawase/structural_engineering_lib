@@ -8,6 +8,10 @@ import logging
 
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
+from structural_lib.services.contracts.beam_supplied_check import (
+    BeamSuppliedCheckRequestV2,
+)
+from structural_lib.services.supplied_beam_check import check_supplied_beam_v2
 
 from fastapi_app.error_utils import (
     sanitize_error,
@@ -17,8 +21,7 @@ from fastapi_app.error_utils import (
 from fastapi_app.models.beam import (
     BeamDesignRequest,
     BeamDesignResponse,
-    BeamCheckRequest,
-    BeamCheckResponse,
+    BeamSuppliedCheckResponseV2,
     CombinedBeamActions,
     CrackWidthCheckResult,
     DeflectionCheckResult,
@@ -384,108 +387,32 @@ async def design_beam(request: BeamDesignRequest):
 
 @router.post(
     "/beam/check",
-    response_model=APIResponse[BeamCheckResponse],
-    summary="Check Beam Adequacy",
-    description="Check if a beam with given reinforcement is adequate for the applied loads.",
+    response_model=APIResponse[BeamSuppliedCheckResponseV2],
+    summary="Check Supplied Beam Reinforcement",
+    description=(
+        "Evaluate one versioned, source-referenced rectangular-beam reinforcement "
+        "schedule. The request must supply explicit effective depth or a complete "
+        "depth basis; legacy flat payloads are rejected rather than adapted with "
+        "hidden cover or bar assumptions."
+    ),
 )
-async def check_beam(request: BeamCheckRequest):
+async def check_beam(request: BeamSuppliedCheckRequestV2):
     """
-    Check adequacy of a beam section with provided reinforcement.
-
-    Verifies:
-    - Moment capacity vs applied moment
-    - Shear capacity vs applied shear
-    - Code compliance checks
-
-    Returns utilization ratios and pass/fail status.
+    Return the canonical V2 supplied-reinforcement result without private math.
     """
     try:
-        from structural_lib.services.api import check_beam_is456
-
-        # Calculate effective depth
-        effective_depth = request.depth - request.clear_cover - 25  # ~bar_dia/2
-
-        # Build cases list for check_beam_is456
-        # API expects: label, mu_knm, vu_kn, ast_provided
-        cases = [
-            {
-                "case_id": "CHECK-1",
-                "mu_knm": request.moment,
-                "vu_kn": request.shear,
-                "ast_provided": request.ast_provided,
-            }
-        ]
-
-        result = check_beam_is456(
-            units="IS456",
-            cases=cases,
-            b_mm=request.width,
-            D_mm=request.depth,
-            d_mm=effective_depth,
-            fck_nmm2=request.fck,
-            fy_nmm2=request.fy,
-            d_dash_mm=request.clear_cover + 25,
-            asv_mm2=request.stirrup_area,
-            pt_percent=request.ast_provided / (request.width * effective_depth) * 100,
-        )
-
-        # Extract first case result from ComplianceReport.cases
-        case_result = result.cases[0] if result.cases else None
-        if not case_result:
-            raise ValueError("No results returned from check")
-
-        # Get flexure and shear from case result
-        flexure = case_result.flexure
-        shear = case_result.shear
-
-        moment_capacity = flexure.Mu_lim
-        shear_capacity = (
-            shear.tau_c * request.width * effective_depth / 1000
-            if shear
-            else request.shear * 1.5
-        )
-
-        moment_util = request.moment / moment_capacity if moment_capacity > 0 else 1.0
-        shear_util = request.shear / shear_capacity if shear_capacity > 0 else 0.0
-
-        flexure_ok = moment_util <= 1.0
-        shear_ok = shear_util <= 1.0
-
-        warnings = []
-        if moment_util > 0.9:
-            warnings.append("Flexure utilization >90% - limited reserve capacity")
-        if shear_util > 0.9:
-            warnings.append("Shear utilization >90% - limited reserve capacity")
-
-        return success_response(
-            BeamCheckResponse(
-                is_adequate=flexure_ok and shear_ok,
-                success=True,
-                message=(
-                    "Beam is adequate"
-                    if (flexure_ok and shear_ok)
-                    else "Beam is NOT adequate"
-                ),
-                moment_capacity=moment_capacity,
-                shear_capacity=shear_capacity,
-                moment_utilization=min(moment_util, 2.0),
-                shear_utilization=min(shear_util, 2.0),
-                flexure_adequate=flexure_ok,
-                shear_adequate=shear_ok,
-                warnings=warnings,
-            )
-        )
-
-    except ImportError as e:
-        return JSONResponse(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            content=error_response(sanitize_error(e, "beam check")),
-        )
+        return success_response(check_supplied_beam_v2(request).to_dict())
     except (ValueError, AttributeError, TypeError) as e:
         logger.exception("Invalid input for beam check")
         return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            content=error_response(sanitize_error(e, "beam check")),
+            content=error_response(
+                {
+                    "code": "BEAM_SUPPLIED_CHECK_INPUT_INVALID",
+                    "message": sanitize_error(e, "beam check"),
+                },
+                request_id=request.correlation_id,
+            ),
         )
     except (RuntimeError, KeyError) as e:
         logger.exception("Check calculation failed")

@@ -7,9 +7,13 @@ engineering values; this module owns the public request fields, response
 envelope, and documented access path.
 """
 
+import json
+import re
+import tomllib
 from pathlib import Path
 
 from fastapi.testclient import TestClient
+from structural_lib import __version__ as structural_lib_version
 
 from fastapi_app import __version__
 
@@ -44,16 +48,62 @@ def test_documented_beam_request_and_response_path(client: TestClient):
     assert 0 <= design["utilization_ratio"] <= 1
 
 
-def test_documented_health_version_matches_application(client: TestClient):
-    """The version shown in the public health reference is current."""
+def test_release_version_matches_every_advertised_surface(client: TestClient):
+    """Release metadata, OpenAPI, and maintained clients share one API version."""
     health = client.get("/health")
     info = client.get("/health/info")
+    root = client.get("/")
+    openapi = client.get("/openapi.json")
+
+    pyproject = tomllib.loads(
+        (REPO_ROOT / "Python/pyproject.toml").read_text(encoding="utf-8")
+    )
+    release_version = pyproject["project"]["version"]
+    python_client = (
+        REPO_ROOT / "clients/python/structural_client/client.py"
+    ).read_text(encoding="utf-8")
+    typescript_client = (REPO_ROOT / "clients/typescript/src/index.ts").read_text(
+        encoding="utf-8"
+    )
+    react_package = json.loads(
+        (REPO_ROOT / "react_app/package.json").read_text(encoding="utf-8")
+    )
 
     assert health.status_code == 200
     assert info.status_code == 200
-    assert health.json()["version"] == __version__
-    assert info.json()["api_version"] == __version__
+    assert root.status_code == 200
+    assert openapi.status_code == 200
+    assert release_version == __version__ == structural_lib_version
+    assert health.json()["version"] == release_version
+    assert info.json()["api_version"] == release_version
+    assert root.json()["version"] == release_version
+    assert openapi.json()["info"]["version"] == release_version
+    assert re.search(
+        rf'^API_VERSION = "{re.escape(release_version)}"$',
+        python_client,
+        re.MULTILINE,
+    )
+    assert re.search(
+        rf"^export const API_VERSION = '{re.escape(release_version)}' as const;$",
+        typescript_client,
+        re.MULTILINE,
+    )
+    assert react_package["version"] == release_version
     assert info.json()["structural_lib_available"] is True
+
+
+def test_supplied_beam_openapi_contract_is_exact_and_stable(client: TestClient):
+    """The supplied-check request, response, and operation identity are public."""
+    schema = client.get("/openapi.json").json()
+    operation = schema["paths"]["/api/v1/design/beam/check"]["post"]
+
+    assert operation["operationId"] == "check_beam_api_v1_design_beam_check_post"
+    assert operation["requestBody"]["content"]["application/json"]["schema"] == {
+        "$ref": "#/components/schemas/BeamSuppliedCheckRequestV2"
+    }
+    assert operation["responses"]["200"]["content"]["application/json"]["schema"] == {
+        "$ref": "#/components/schemas/APIResponse_BeamSuppliedCheckResponseV2_"
+    }
 
 
 def test_public_guides_retain_the_maintained_contract_language():

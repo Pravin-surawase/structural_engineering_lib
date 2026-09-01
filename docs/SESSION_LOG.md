@@ -5,6 +5,119 @@
 
 ---
 
+## 2026-09-01 — Session: Public beam truth and beam facade documentation
+
+**Agent:** Codex (`orchestrator`; sole writer).
+**Task:** `LIB-BEAM-S0-CHECK-TRUTH` plus beam-only
+`LIB-PRO-015-D0-D1-BEAM`.
+**Branch:** `codex/w3-public-beam-truth`.
+**Source:** accepted G0 PR #945 merge
+`f7da72bdf837a38e4c07ef6d7a21fb9267804ad5`.
+**Focus:** Replace the partial supplied-beam compatibility payload with one
+strict V2 Python/REST/WebSocket/client contract, then complete the exact-wheel
+documentation gate and generated reference for the canonical beam facade. No
+ETABS, COM, Excel, model, workbook, solver, analysis/design application, export
+or mutation operation was authorized or run.
+**Git handoff receipt:** docs/verification/w3-public-beam-truth-git-handoff-receipt.json
+
+**Completed:**
+
+- Added strict `beam-supplied-check/v2` and result V2 owners with explicit
+  effective-depth basis, exact bar layers/stirrups, selection/support/source
+  evidence, correlation identity, and orthogonal `PASS`/`FAIL`/`HOLD` status.
+- Routed the retained REST check and WebSocket `check_beam` operation through
+  the same calculation service and result dictionary; rejected the incomplete
+  flat payload instead of accepting ignored fields or hidden cover assumptions.
+- Regenerated the OpenAPI baseline and Python/TypeScript clients, updated the
+  maintained React client, froze a WebSocket exchange schema, enforced version
+  parity, and published an explicit field-by-field V1 migration table.
+- Extended the API classification owner with documentation roles, debt freeze,
+  exact signatures and a machine example inventory. Added complete beam
+  facade docstrings, generated reference/cookbook pages, and source-bound plus
+  exact-wheel execution for valid, invalid, `FAIL`, and `HOLD` examples.
+- Repaired the milestone dependency conflict: this branch contains S0 and the
+  beam-only D0/D1 slice; A0 precedes B0 on the following fake-only offline
+  foundations branch. One quick/hook/push/PR cycle owns this frozen milestone.
+
+### Issues encountered
+
+- The inherited milestone table placed B0 on this public-beam branch even
+  though B0 depends on A0, which was assigned to the following branch.
+- Conditional generation of the beam-only engineering-failure section added
+  blank-line churn to every non-beam cookbook and introduced Markdown trailing
+  whitespace in the generator source.
+- The documentation plan identified `check_api.py --signatures` as misleading:
+  the selector checks React call sites against FastAPI OpenAPI, not Python
+  signatures.
+- The first exact-wheel attempt built the wheel successfully but the verifier
+  could not install it because the maintained source-bound Python deliberately
+  contains neither `pip` nor packaging build tools.
+- Large initial patches for the parity models and WebSocket projection did not
+  match their current contexts and failed atomically; a combined patch also
+  contained a malformed boundary.
+- The consolidated quick gate passed nine checks but the refreshed automatic
+  handoff block made the next-session brief 152 lines against its 150-line cap.
+- The first normal hook cycle reformatted three tests, found one missing return
+  annotation on the new depth resolver, and found the pre-commit API hook still
+  invoking the retired `--signatures` selector.
+
+### Root causes and resolutions
+
+- Confirmed planning root cause: branch grouping contradicted the packet's
+  hard dependency. Resolution: retain only S0 plus beam D0/D1 here and sequence
+  A0, B0, B1A and C0 on the next offline branch. The plan, task board and
+  handoff now agree.
+- Confirmed generator root cause: an empty interpolated optional section was
+  surrounded by unconditional blank lines, while Markdown hard breaks were
+  stored as trailing spaces. Resolution: make the optional section own its
+  spacing and use explicit `<br>` markers. Regeneration leaves all non-beam
+  content unchanged and `git diff --check` passes.
+- Confirmed selector root cause: the name survived an older consolidated API
+  checker even after its behavior became React/OpenAPI route validation.
+  Resolution: replace it with `--react-openapi`, rename the implementation and
+  update active audit callers/documentation; the renamed check covers 32 call
+  sites across 12 production files.
+- Confirmed wheel-tooling root cause: the canonical runtime is test-focused and
+  has no `pip`, `setuptools`, or `build` module. Resolution: build the frozen
+  wheel with the installed isolated `uv` builder and make the exact-wheel
+  verifier retain its normal pip installer with a local-wheel-only `uv`
+  fallback. The same wheel then passed source-free with installer `uv`.
+- Confirmed patch root cause: the targeted files had diverged from the assumed
+  large contexts and one composed patch had an invalid delimiter. Resolution:
+  split changes by exact owner/context; failed patches wrote nothing, and the
+  focused transport/parity tests pass.
+- Confirmed brief root cause: the new receipt block added lines to a document
+  already at its governance limit. Resolution: compact two current-boundary
+  links without removing a claim and rerun only the failed brief-length check.
+- Confirmed hook root causes: the focused Ruff formatter does not enforce
+  Black's exact wrapping; the typed Pydantic resolver omitted its concrete
+  `EffectiveDepthResolutionV1` return; and active prose/audit callers were
+  updated without tracing the pre-commit caller. Resolution: retain Black's
+  three changes, annotate the resolver, and update the hook to
+  `--react-openapi`; rerun only Black, configured mypy and that exact hook
+  command before the normal commit retry.
+
+### Validation through content freeze
+
+- Consolidated focused Python/FastAPI selection: 264 passed. Earlier focused
+  React client selection: 52 passed; the checked-in TypeScript client compiles.
+- OpenAPI matches 92 endpoints and 487 schemas. The React/OpenAPI checker maps
+  32 production call sites to 91 paths; generated client, API classification,
+  family documentation and WebSocket schema projections are current.
+- Targeted Ruff and `git diff --check` pass. The source-bound documentation
+  verifier executes nine beam operations, 23 docstring examples and 16
+  registered journey examples without unbaselined beam documentation debt.
+- Exact wheel `structural_lib_is456-0.24.0-py3-none-any.whl` passes source-free
+  with SHA-256
+  `7f30f3a5fcafc98befc2e1cb92ee9b48589e9ca7b6ddac320eb191ea7dda3eed`.
+  Package origin is the temporary installed target, not the source tree.
+- The milestone quick gate passed 9/10 on its one consolidated run; only the
+  repaired brief-length component required a failed-only replay. Normal commit
+  hooks passed every other check on their first cycle; Black, mypy and the
+  renamed React/OpenAPI hook require failed-only repair evidence before the
+  normal commit retry. Push, PR and hosted checks remain. Broad Python and the
+  full repository gate remain deferred to the named cumulative W3 gate.
+
 ## 2026-09-01 — Session: ETABS live G0 route gate and reduced-PR cadence
 
 **Agent:** Codex (`orchestrator`; sole writer).

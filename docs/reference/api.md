@@ -49,6 +49,13 @@ structured issue codes, and result/review status guidance. Full schemas and
 per-field validation decisions live under `family_facade_workflows` in
 `api-classification.json`.
 
+The completed beam vertical slice has a focused generated
+[facade reference](beam-facade.md), a required-design
+[recipe](../cookbook/python/beam-design.md), a supplied-reinforcement
+[V2 recipe](../cookbook/python/beam-supplied-check.md), and an explicit
+[flat-V1 migration](../migration/beam-supplied-check-v2.md). Prefer those pages
+to hand-copied signatures elsewhere in this historical compatibility index.
+
 These facades construct and delegate. They do not generate loads, geometry,
 topology, geotechnical inputs, evidence, review acceptance, or new engineering
 support.

@@ -1038,7 +1038,7 @@ def test_api_route_shape_matches_dynamic_segments():
 
 
 def test_api_contract_scan_fails_closed_without_typescript(tmp_path: Path):
-    assert check_api.check_signatures(pages_dir=str(tmp_path)) == 1
+    assert check_api.check_react_openapi(pages_dir=str(tmp_path)) == 1
 
 
 def test_usage_checkpoint_records_observable_fields_only(

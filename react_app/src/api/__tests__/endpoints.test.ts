@@ -5,7 +5,15 @@
  * Uses fetch mocking — no real server needed.
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { unwrapResponse, designBeam, loadSampleData, generateBeamGeometry, checkHealth } from '../client';
+import {
+  unwrapResponse,
+  designBeam,
+  checkSuppliedBeam,
+  loadSampleData,
+  generateBeamGeometry,
+  checkHealth,
+  type BeamSuppliedCheckRequestV2,
+} from '../client';
 import * as fixtures from '../../test/api-fixtures';
 
 const API = 'http://localhost:8000';
@@ -806,6 +814,55 @@ describe('API Response Contract — unwrap enforcement', () => {
     })).rejects.toThrow(
       'BEAM_DESIGN_INPUT_INVALID: Effective depth is invalid',
     );
+  });
+
+  it('checkSuppliedBeam() preserves V2 correlation and terminal status', async () => {
+    const request = {
+      schema_version: 'beam-supplied-check/v2',
+      correlation_id: 'REACT-B1-ULS',
+      identity: { member_id: 'B1', story: 'L1', case_id: 'ULS-1' },
+      section: { b_mm: 300, D_mm: 500, d_mm: 442 },
+      materials: { fck_nmm2: 25, fy_nmm2: 500, fy_transverse_nmm2: 415 },
+      actions: { mu_knm: 100, vu_kn: 60, primary_tension_face: 'BOTTOM' },
+      reinforcement: {
+        clear_cover_mm: 40,
+        tension: { diameter_mm: 20, bars_per_layer: [4] },
+        compression_or_hanger: { diameter_mm: 12, bars_per_layer: [2] },
+        stirrup_diameter_mm: 8,
+        stirrup_legs: 2,
+        stirrup_spacing_mm: 150,
+        bar_type: 'deformed',
+        has_standard_bend_at_start: true,
+        has_standard_bend_at_end: true,
+        source_reference: 'B1 schedule',
+      },
+      selection: {
+        permitted_diameters_mm: [12, 20],
+        maximum_layers: 2,
+        maximum_bars_per_layer: 8,
+        nominal_max_aggregate_size_mm: 20,
+        effective_depth_tolerance_mm: 1,
+        objective: 'min_area',
+        source_reference: 'Project bar catalogue',
+      },
+    } satisfies BeamSuppliedCheckRequestV2;
+    mockFetch({
+      success: true,
+      data: {
+        schema_version: 'beam-supplied-check-result/v2',
+        correlation_id: request.correlation_id,
+        status: 'PASS',
+        request,
+        shear: { schema_version: 'beam-supplied-shear-check/v2' },
+        result_envelope: RESULT_CONTRACT,
+      },
+    });
+
+    const result = await checkSuppliedBeam(request);
+
+    expect(result.correlation_id).toBe('REACT-B1-ULS');
+    expect(result.status).toBe('PASS');
+    expect(result.result_envelope.overall_status).toBe('PASS');
   });
 
   it('loadSampleData() unwraps response envelope', async () => {

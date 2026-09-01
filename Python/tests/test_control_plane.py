@@ -25,7 +25,7 @@ tool_registry = importlib.import_module("tool_registry")
 openapi_snapshot = importlib.import_module("check_openapi_snapshot")
 
 
-def test_openapi_snapshot_detects_full_spec_drift_but_ignores_version():
+def test_openapi_snapshot_detects_full_spec_drift_including_version():
     baseline = {
         "info": {"title": "Structural API", "version": "1"},
         "paths": {"/beam": {"get": {"summary": "Before"}}},
@@ -36,9 +36,9 @@ def test_openapi_snapshot_detects_full_spec_drift_but_ignores_version():
     changed_summary = json.loads(json.dumps(version_only))
     changed_summary["paths"]["/beam"]["get"]["summary"] = "After"
 
-    assert not openapi_snapshot._has_changes(
-        openapi_snapshot._diff_specs(baseline, version_only)
-    )
+    version_diff = openapi_snapshot._diff_specs(baseline, version_only)
+    assert openapi_snapshot._has_changes(version_diff)
+    assert "CHANGED info.version" in version_diff["details"]
     diff = openapi_snapshot._diff_specs(baseline, changed_summary)
     assert openapi_snapshot._has_changes(diff)
     assert "CHANGED paths./beam.get.summary" in diff["details"]

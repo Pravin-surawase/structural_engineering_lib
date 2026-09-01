@@ -285,18 +285,47 @@ class TestDesignEndpoints:
         assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
     def test_check_beam(self, client, sample_beam_check_request):
-        """Test beam adequacy check."""
+        """The REST route returns the canonical supplied-beam V2 result."""
         response = client.post(
             "/api/v1/design/beam/check", json=sample_beam_check_request
         )
         assert response.status_code == status.HTTP_200_OK
 
         data = unwrap(response)
-        assert "is_adequate" in data
-        assert "moment_capacity" in data
-        assert "shear_capacity" in data
-        assert "moment_utilization" in data
-        assert "shear_utilization" in data
+        assert data["schema_version"] == "beam-supplied-check-result/v2"
+        assert data["correlation_id"] == "REST-B1-ULS-1"
+        assert data["status"] == "PASS"
+        assert data["effective_depth_resolution"]["d_mm"] == 442.0
+        assert data["result_envelope"]["engineering_status"] == "PASS"
+        assert data["longitudinal"]["checks"]["compression_area"]["is_adequate"] is True
+        assert data["shear"]["provided_spacing_mm"] == 150.0
+
+    def test_check_beam_rejects_legacy_flat_payload(self, client):
+        """An incompatible V1 payload is rejected before calculation."""
+
+        response = client.post(
+            "/api/v1/design/beam/check",
+            json={
+                "width": 300,
+                "depth": 500,
+                "moment": 100,
+                "shear": 60,
+                "ast_provided": 1256,
+                "asc_provided": 0,
+                "stirrup_area": 100.5,
+                "stirrup_spacing": 150,
+                "fck": 25,
+                "fy": 500,
+                "clear_cover": 40,
+                "effective_depth": 442,
+            },
+        )
+
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+        body = response.json()
+        assert body["success"] is False
+        assert body["data"] is None
+        assert body["error"]["schema_version"] == "structural-problem/v1"
 
     def test_get_design_limits(self, client):
         """Test get design limits endpoint."""

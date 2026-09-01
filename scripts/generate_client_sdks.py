@@ -22,11 +22,20 @@ import subprocess
 import sys
 from pathlib import Path
 
+import tomllib
+
 # Project root
 ROOT = Path(__file__).parent.parent
 FASTAPI_DIR = ROOT / "fastapi_app"
 OPENAPI_SPEC = FASTAPI_DIR / "openapi_baseline.json"
 OUTPUT_DIR = ROOT / "clients"
+PYPROJECT = ROOT / "Python" / "pyproject.toml"
+
+
+def get_api_version() -> str:
+    """Return the canonical release version used by generated clients."""
+    data = tomllib.loads(PYPROJECT.read_text(encoding="utf-8"))
+    return str(data["project"]["version"])
 
 
 def check_openapi_spec() -> dict:
@@ -58,6 +67,7 @@ def generate_python_client(output_dir: Path, spec_path: Path) -> bool:
             ["openapi-python-client", "--version"],
             capture_output=True,
             text=True,
+            check=False,
         )
         has_tool = result.returncode == 0
     except FileNotFoundError:
@@ -86,6 +96,7 @@ def generate_python_client(output_dir: Path, spec_path: Path) -> bool:
         ],
         capture_output=True,
         text=True,
+        check=False,
     )
 
     if result.returncode == 0:
@@ -108,13 +119,13 @@ Structural Design API Client.
 Auto-generated from OpenAPI specification.
 """
 
-from .client import StructuralDesignClient
+from .client import API_VERSION, StructuralDesignClient
 
-__all__ = ["StructuralDesignClient"]
+__all__ = ["API_VERSION", "StructuralDesignClient"]
 ''')
 
     # client.py
-    (client_dir / "client.py").write_text('''"""
+    client_source = '''"""
 Structural Design API Client.
 
 Provides type-safe access to the FastAPI structural design API.
@@ -126,6 +137,8 @@ from dataclasses import dataclass
 from typing import Any, Optional
 
 import httpx
+
+API_VERSION = "__API_VERSION__"
 
 
 @dataclass
@@ -321,6 +334,29 @@ class StructuralDesignClient:
             raise RuntimeError(f"Canonical design failed: {code}: {message}") from exc
         return response.json()
 
+    def check_supplied_beam_v2(self, request: dict[str, Any]) -> dict[str, Any]:
+        """Run the exact ``beam-supplied-check/v2`` REST operation."""
+
+        response = self._client.post("/api/v1/design/beam/check", json=request)
+        try:
+            response.raise_for_status()
+        except httpx.HTTPStatusError as exc:
+            problem = response.json().get("error", {})
+            code = problem.get("code", response.status_code)
+            message = problem.get("message", "Request failed")
+            raise RuntimeError(
+                f"Supplied beam check failed: {code}: {message}"
+            ) from exc
+        envelope = response.json()
+        if envelope.get("success") is not True:
+            raise RuntimeError(
+                f"Supplied beam check failed: {envelope.get('error', 'unknown error')}"
+            )
+        data = envelope["data"]
+        if data.get("schema_version") != "beam-supplied-check-result/v2":
+            raise RuntimeError("Supplied beam check returned an incompatible result")
+        return data
+
     def calculate_geometry(
         self,
         width: float,
@@ -357,7 +393,8 @@ class StructuralDesignClient:
                 f"Geometry generation failed: {envelope.get('error', 'unknown error')}"
             )
         return envelope["data"]
-''')
+'''.replace("__API_VERSION__", get_api_version())
+    (client_dir / "client.py").write_text(client_source)
 
     print(f"✅ Basic Python client generated: {client_dir}")
     return True
@@ -420,11 +457,13 @@ def generate_basic_typescript_client(output_dir: Path) -> bool:
     src_dir = client_dir / "src"
     src_dir.mkdir(exist_ok=True)
 
-    (src_dir / "index.ts").write_text("""/**
+    typescript_source = """/**
  * Structural Design API Client
  *
  * Auto-generated TypeScript client for the FastAPI structural design API.
  */
+
+export const API_VERSION = '__API_VERSION__' as const;
 
 export interface BeamDesignRequest {
   width: number;
@@ -488,6 +527,107 @@ export interface CanonicalBeamDesignResponseV1 {
   limitations: string[];
   assumptions: string[];
   provenance: string[];
+}
+
+export interface BeamBarLayersV2 {
+  diameter_mm: number;
+  bars_per_layer: number[];
+  vertical_center_spacings_mm?: number[];
+}
+
+export interface BeamSuppliedCheckRequestV2 {
+  schema_version?: 'beam-supplied-check/v2';
+  correlation_id: string;
+  identity: { member_id: string; story: string; case_id: string };
+  section: {
+    b_mm: number;
+    D_mm: number;
+    d_mm?: number;
+    effective_depth_basis?:
+      | {
+          clear_cover_mm: number;
+          stirrup_diameter_mm: number;
+          tension_bar_diameter_mm: number;
+        }
+      | { centroid_cover_mm: number };
+  };
+  materials: {
+    fck_nmm2: number;
+    fy_nmm2: number;
+    fy_transverse_nmm2: number;
+  };
+  actions: {
+    mu_knm: number;
+    vu_kn: number;
+    primary_tension_face: 'TOP' | 'BOTTOM';
+  };
+  reinforcement: {
+    clear_cover_mm: number;
+    tension: BeamBarLayersV2;
+    compression_or_hanger: BeamBarLayersV2;
+    stirrup_diameter_mm: number;
+    stirrup_legs: number;
+    stirrup_spacing_mm: number;
+    bar_type: 'deformed' | 'plain';
+    has_standard_bend_at_start: boolean;
+    has_standard_bend_at_end: boolean;
+    source_reference: string;
+  };
+  selection: {
+    permitted_diameters_mm: number[];
+    maximum_layers: number;
+    maximum_bars_per_layer: number;
+    nominal_max_aggregate_size_mm: number;
+    effective_depth_tolerance_mm: number;
+    objective: 'min_area' | 'min_bar_count' | 'max_spacing';
+    source_reference: string;
+  };
+  support?: {
+    start_width_mm: number;
+    end_width_mm: number;
+    source_reference: string;
+  } | null;
+  source_provenance?: string;
+}
+
+export interface BeamSuppliedCheckResultV2 {
+  schema_version: 'beam-supplied-check-result/v2';
+  correlation_id: string;
+  status: 'PASS' | 'FAIL' | 'HOLD' | 'ERROR';
+  identity: BeamSuppliedCheckRequestV2['identity'];
+  primary_tension_face: 'TOP' | 'BOTTOM';
+  request: BeamSuppliedCheckRequestV2;
+  effective_depth_resolution: {
+    contract_version: 'effective-depth-basis/v1';
+    source: 'EXPLICIT' | 'DERIVED';
+    D_mm: number;
+    d_mm: number;
+    effective_depth_basis: Record<string, number> | null;
+  };
+  d_dash_used_mm: number;
+  longitudinal: {
+    schema_version: 'beam-reinforcement-evaluation/v1';
+    status: 'PASS' | 'FAIL' | 'HOLD';
+    ast_required_mm2: number;
+    asc_required_mm2: number;
+    checks: Record<string, unknown>;
+    issues: Array<{ code: string; message: string }>;
+    limitations: string[];
+  } & Record<string, unknown>;
+  shear: {
+    schema_version: 'beam-supplied-shear-check/v2';
+    status: 'PASS' | 'FAIL';
+    required_Vus_kn: number;
+    provided_asv_mm2: number;
+    provided_spacing_mm: number;
+    maximum_permitted_spacing_mm: number;
+    spacing_is_adequate: boolean;
+    capacity_is_adequate: boolean;
+    section_shear_is_adequate: boolean;
+    issues: Array<{ code: string; path: string; message: string }>;
+  } & Record<string, unknown>;
+  result_envelope: BeamDesignResponse['result_envelope'];
+  limitations: string[];
 }
 
 export interface APIResponse<T> {
@@ -638,6 +778,28 @@ export class StructuralDesignClient {
     return response.json() as Promise<CanonicalBeamDesignResponseV1>;
   }
 
+  /** Check one exact supplied reinforcement schedule with the V2 contract. */
+  async checkSuppliedBeam(
+    request: BeamSuppliedCheckRequestV2,
+  ): Promise<BeamSuppliedCheckResultV2> {
+    const response = await fetch(`${this.baseUrl}/api/v1/design/beam/check`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(request),
+    });
+    if (!response.ok) {
+      const problem = await response.json() as ProblemResponse;
+      throw new Error(
+        `Supplied beam check failed: ${problem.error?.code ?? response.status}: ${problem.error?.message ?? 'Request failed'}`,
+      );
+    }
+    const envelope = await response.json() as APIResponse<BeamSuppliedCheckResultV2>;
+    if (envelope.data.schema_version !== 'beam-supplied-check-result/v2') {
+      throw new Error('Supplied beam check returned an incompatible result');
+    }
+    return envelope.data;
+  }
+
   /**
    * Calculate beam geometry metrics.
    */
@@ -665,7 +827,8 @@ export class StructuralDesignClient {
 }
 
 export default StructuralDesignClient;
-""")
+""".replace("__API_VERSION__", get_api_version())
+    (src_dir / "index.ts").write_text(typescript_source)
 
     print(f"✅ TypeScript client generated: {client_dir}")
     return True

@@ -30,12 +30,57 @@ def _design_params(**overrides):
 
 def _check_params(**overrides):
     params = {
-        "width": 300,
-        "depth": 500,
-        "fck": 25,
-        "fy": 500,
-        "cover": 40,
-        "cases": [{"case_id": "LC1", "mu_knm": 100, "vu_kn": 50}],
+        "schema_version": "beam-supplied-check/v2",
+        "correlation_id": "WS-B1-ULS-1",
+        "identity": {"member_id": "B1", "story": "L1", "case_id": "ULS-1"},
+        "section": {
+            "b_mm": 300.0,
+            "D_mm": 500.0,
+            "effective_depth_basis": {
+                "clear_cover_mm": 40.0,
+                "stirrup_diameter_mm": 8.0,
+                "tension_bar_diameter_mm": 20.0,
+            },
+        },
+        "materials": {
+            "fck_nmm2": 25.0,
+            "fy_nmm2": 500.0,
+            "fy_transverse_nmm2": 415.0,
+        },
+        "actions": {
+            "mu_knm": 100.0,
+            "vu_kn": 60.0,
+            "primary_tension_face": "BOTTOM",
+        },
+        "reinforcement": {
+            "clear_cover_mm": 40.0,
+            "tension": {"diameter_mm": 20.0, "bars_per_layer": [4]},
+            "compression_or_hanger": {
+                "diameter_mm": 12.0,
+                "bars_per_layer": [2],
+            },
+            "stirrup_diameter_mm": 8.0,
+            "stirrup_legs": 2,
+            "stirrup_spacing_mm": 150.0,
+            "bar_type": "deformed",
+            "has_standard_bend_at_start": True,
+            "has_standard_bend_at_end": True,
+            "source_reference": "Reviewed schedule B1-R1",
+        },
+        "selection": {
+            "permitted_diameters_mm": [12.0, 16.0, 20.0, 25.0],
+            "maximum_layers": 2,
+            "maximum_bars_per_layer": 8,
+            "nominal_max_aggregate_size_mm": 20.0,
+            "effective_depth_tolerance_mm": 1.0,
+            "objective": "min_area",
+            "source_reference": "Reviewed project bar catalogue P1",
+        },
+        "support": {
+            "start_width_mm": 5000.0,
+            "end_width_mm": 5000.0,
+            "source_reference": "Reviewed supports C1 and C2",
+        },
     }
     params.update(overrides)
     return params
@@ -201,35 +246,51 @@ class TestWebSocketDesign:
             websocket.send_json(
                 {
                     "type": "check_beam",
-                    "params": _check_params(
-                        cases=[
-                            {"case_id": "DL", "mu_knm": 100, "vu_kn": 50},
-                            {"case_id": "LL", "mu_knm": 150, "vu_kn": 75},
-                        ]
-                    ),
+                    "params": _check_params(),
                 }
             )
             response = websocket.receive_json()
 
             assert response["type"] == "check_result"
-            assert "data" in response
-            assert "is_ok" in response["data"]
-            assert response["data"]["num_cases"] == 2
+            assert response["correlation_id"] == "WS-B1-ULS-1"
+            assert response["data"]["schema_version"] == (
+                "beam-supplied-check-result/v2"
+            )
+            assert response["data"]["status"] == "PASS"
+            assert response["data"]["effective_depth_resolution"]["d_mm"] == 442.0
 
-    def test_websocket_check_beam_no_cases(self):
-        """Test check_beam with no cases returns error."""
+    def test_websocket_check_beam_matches_rest_result_exactly(self):
+        """REST and WebSocket project the same V2 service result."""
+
+        client = TestClient(app)
+        params = _check_params()
+        rest = client.post("/api/v1/design/beam/check", json=params)
+        assert rest.status_code == 200
+
+        with client.websocket_connect(_ws_path("check-parity")) as websocket:
+            websocket.send_json({"type": "check_beam", "params": params})
+            websocket_result = websocket.receive_json()
+
+        assert websocket_result["type"] == "check_result"
+        assert websocket_result["correlation_id"] == params["correlation_id"]
+        assert websocket_result["data"] == rest.json()["data"]
+
+    def test_websocket_check_beam_rejects_legacy_cases_shape(self):
+        """The old load-case screening payload cannot claim supplied adequacy."""
         client = TestClient(app)
         with client.websocket_connect(_ws_path("test-session-6")) as websocket:
             websocket.send_json(
                 {
                     "type": "check_beam",
-                    "params": _check_params(cases=[]),
+                    "params": {"correlation_id": "WS-LEGACY", "cases": []},
                 }
             )
             response = websocket.receive_json()
 
             assert response["type"] == "error"
-            assert "no load cases" in response["message"].lower()
+            assert response["terminal_status"] == "ERROR"
+            assert response["correlation_id"] == "WS-LEGACY"
+            assert "invalid input" in response["message"].lower()
 
     def test_websocket_check_beam_rejects_hidden_engineering_defaults(self):
         """The exact load-case-only reproducer must not run a calculation."""
@@ -244,6 +305,7 @@ class TestWebSocketDesign:
             response = websocket.receive_json()
 
         assert response["type"] == "error"
+        assert response["terminal_status"] == "ERROR"
         assert "invalid input" in response["message"].lower()
         assert "data" not in response
 
@@ -264,19 +326,13 @@ class TestWebSocketDesign:
 
     def test_websocket_check_beam_rejects_non_finite_case_action(self):
         client = TestClient(app)
+        params = _check_params()
+        params["actions"]["mu_knm"] = float("nan")
         with client.websocket_connect(_ws_path("check-nan-input")) as websocket:
             websocket.send_json(
                 {
                     "type": "check_beam",
-                    "params": _check_params(
-                        cases=[
-                            {
-                                "case_id": "LC1",
-                                "mu_knm": float("nan"),
-                                "vu_kn": 5,
-                            }
-                        ]
-                    ),
+                    "params": params,
                 }
             )
             response = websocket.receive_json()

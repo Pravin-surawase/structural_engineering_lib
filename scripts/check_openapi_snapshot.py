@@ -22,20 +22,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
 
 BASELINE_PATH = REPO_ROOT / "fastapi_app" / "openapi_baseline.json"
-IGNORED_PATHS = {("info", "version")}
-
-
-def _strip_ignored(value: object, path: tuple[str, ...] = ()) -> object:
-    """Copy an OpenAPI value while removing intentionally variable fields."""
-    if isinstance(value, dict):
-        return {
-            key: _strip_ignored(item, path + (key,))
-            for key, item in value.items()
-            if path + (key,) not in IGNORED_PATHS
-        }
-    if isinstance(value, list):
-        return [_strip_ignored(item, path) for item in value]
-    return value
+WEBSOCKET_SCHEMA_PATH = (
+    REPO_ROOT / "docs" / "reference" / "beam-supplied-check-websocket-v2.schema.json"
+)
 
 
 def _collect_deep_diffs(
@@ -81,6 +70,14 @@ def _get_current_spec() -> dict:
     return app.openapi()
 
 
+def _get_current_websocket_schema() -> dict:
+    """Generate the machine contract for the supplied-beam WebSocket exchange."""
+    sys.path.insert(0, str(REPO_ROOT))
+    from fastapi_app.routers.websocket import beam_check_websocket_schema_v2
+
+    return beam_check_websocket_schema_v2()
+
+
 def _extract_endpoints(spec: dict) -> dict[str, set[str]]:
     """Extract {path: set(methods)} from an OpenAPI spec."""
     endpoints: dict[str, set[str]] = {}
@@ -100,10 +97,6 @@ def _extract_schemas(spec: dict) -> set[str]:
 
 def _diff_specs(baseline: dict, current: dict) -> dict:
     """Compare baseline and current specs, return structured diff."""
-    normalized_baseline = _strip_ignored(baseline)
-    normalized_current = _strip_ignored(current)
-    assert isinstance(normalized_baseline, dict)
-    assert isinstance(normalized_current, dict)
     b_endpoints = _extract_endpoints(baseline)
     c_endpoints = _extract_endpoints(current)
     b_schemas = _extract_schemas(baseline)
@@ -156,13 +149,13 @@ def _diff_specs(baseline: dict, current: dict) -> dict:
         "current_endpoints": sum(len(v) for v in c_endpoints.values()),
         "baseline_schemas": len(b_schemas),
         "current_schemas": len(c_schemas),
-        "details": _collect_deep_diffs(normalized_baseline, normalized_current),
+        "details": _collect_deep_diffs(baseline, current),
     }
 
 
 def _has_changes(diff: dict) -> bool:
     """Check if any changes were detected."""
-    return bool(diff["details"])
+    return bool(diff["details"] or diff.get("websocket_details"))
 
 
 def main() -> int:
@@ -178,7 +171,8 @@ def main() -> int:
     # Generate current spec
     try:
         current = _get_current_spec()
-    except Exception as e:
+        current_websocket = _get_current_websocket_schema()
+    except Exception as e:  # noqa: BLE001 - report arbitrary app import failures
         if args.json:
             print(json.dumps({"error": f"Failed to load FastAPI app: {e}"}))
         else:
@@ -189,6 +183,10 @@ def main() -> int:
     if args.update:
         BASELINE_PATH.write_text(
             json.dumps(current, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+        WEBSOCKET_SCHEMA_PATH.write_text(
+            json.dumps(current_websocket, indent=2, sort_keys=True) + "\n",
             encoding="utf-8",
         )
         if args.json:
@@ -219,9 +217,24 @@ def main() -> int:
             print("ERROR: No baseline found at fastapi_app/openapi_baseline.json")
             print("  Run: .venv/bin/python scripts/check_openapi_snapshot.py --update")
         return 1
+    if not WEBSOCKET_SCHEMA_PATH.exists():
+        if args.json:
+            print(json.dumps({"error": "No WebSocket schema snapshot found."}))
+        else:
+            print(
+                "ERROR: No WebSocket schema found at "
+                "docs/reference/beam-supplied-check-websocket-v2.schema.json"
+            )
+            print("  Run the OpenAPI snapshot command with --update first.")
+        return 1
 
     baseline = json.loads(BASELINE_PATH.read_text(encoding="utf-8"))
+    baseline_websocket = json.loads(WEBSOCKET_SCHEMA_PATH.read_text(encoding="utf-8"))
     diff = _diff_specs(baseline, current)
+    diff["websocket_details"] = _collect_deep_diffs(
+        baseline_websocket,
+        current_websocket,
+    )
 
     if args.json:
         diff["has_changes"] = _has_changes(diff)
@@ -253,6 +266,14 @@ def main() -> int:
         print(f"  Removed schemas: {', '.join(diff['schemas']['removed'])}")
     if diff["schemas"]["changed"]:
         print(f"  Changed schemas: {', '.join(diff['schemas']['changed'])}")
+
+    if diff["websocket_details"]:
+        print(
+            "  Supplied-beam WebSocket schema differences: "
+            f"{len(diff['websocket_details'])}"
+        )
+        for detail in diff["websocket_details"][:40]:
+            print(f"    {detail}")
 
     print(f"  Full-spec differences: {len(diff['details'])}")
     for detail in diff["details"][:40]:

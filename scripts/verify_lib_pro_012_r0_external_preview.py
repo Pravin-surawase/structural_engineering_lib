@@ -5,12 +5,16 @@ from __future__ import annotations
 
 import argparse
 import copy
+import doctest
 import hashlib
 import importlib
+import inspect
 import json
 import math
 import os
+import re
 import runpy
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -25,6 +29,247 @@ def _recipe_specs() -> tuple[Any, ...]:
         str(REPO_ROOT / "scripts/verify_lib_pro_013_f0_family_artifact.py")
     )
     return namespace["recipe_specs"]()
+
+
+def _beam_design_documentation_payload(*, mu_knm: float = 100.0) -> dict[str, Any]:
+    return {
+        "identity": {"member_id": "B-DOC", "story": "L1", "case_id": "ULS-1"},
+        "section": {
+            "span_mm": 5000.0,
+            "b_mm": 300.0,
+            "D_mm": 500.0,
+            "d_mm": 442.0,
+        },
+        "materials": {"fck_nmm2": 25.0, "fy_nmm2": 500.0},
+        "actions": {"mu_knm": mu_knm, "vu_kn": 60.0, "tu_knm": 0.0},
+        "calculation_basis": {"d_dash_mm": 58.0, "asv_mm2": 100.53},
+        "source_provenance": "LIB-PRO-015-D1-BEAM",
+    }
+
+
+def _beam_supplied_documentation_payload() -> dict[str, Any]:
+    return {
+        "schema_version": "beam-supplied-check/v2",
+        "correlation_id": "DOC-B1-ULS-1",
+        "identity": {"member_id": "B1", "story": "L1", "case_id": "ULS-1"},
+        "section": {
+            "b_mm": 300.0,
+            "D_mm": 500.0,
+            "effective_depth_basis": {
+                "clear_cover_mm": 40.0,
+                "stirrup_diameter_mm": 8.0,
+                "tension_bar_diameter_mm": 20.0,
+            },
+        },
+        "materials": {
+            "fck_nmm2": 25.0,
+            "fy_nmm2": 500.0,
+            "fy_transverse_nmm2": 415.0,
+        },
+        "actions": {
+            "mu_knm": 100.0,
+            "vu_kn": 60.0,
+            "primary_tension_face": "BOTTOM",
+        },
+        "reinforcement": {
+            "clear_cover_mm": 40.0,
+            "tension": {"diameter_mm": 20.0, "bars_per_layer": [4]},
+            "compression_or_hanger": {
+                "diameter_mm": 12.0,
+                "bars_per_layer": [2],
+            },
+            "stirrup_diameter_mm": 8.0,
+            "stirrup_legs": 2,
+            "stirrup_spacing_mm": 150.0,
+            "bar_type": "deformed",
+            "has_standard_bend_at_start": True,
+            "has_standard_bend_at_end": True,
+            "source_reference": "reviewed schedule B1-R1",
+        },
+        "selection": {
+            "permitted_diameters_mm": [12.0, 16.0, 20.0, 25.0],
+            "maximum_layers": 2,
+            "maximum_bars_per_layer": 8,
+            "nominal_max_aggregate_size_mm": 20.0,
+            "effective_depth_tolerance_mm": 1.0,
+            "objective": "min_area",
+            "source_reference": "reviewed project bar catalogue P1",
+        },
+        "support": {
+            "start_width_mm": 5000.0,
+            "end_width_mm": 5000.0,
+            "source_reference": "reviewed supports C1 and C2",
+        },
+        "source_provenance": "reviewed supplied reinforcement schedule",
+    }
+
+
+def run_beam_documentation_examples() -> list[dict[str, str]]:
+    """Execute valid, invalid, FAIL, and HOLD beam examples."""
+
+    from structural_lib.core.errors import InputContractError
+    from structural_lib.design.is456 import beam
+
+    records: list[dict[str, str]] = []
+    valid = beam.design(beam.load(_beam_design_documentation_payload()))
+    records.append(
+        {
+            "example_id": "is456.beam.design.valid",
+            "outcome": valid.engineering_status.value,
+        }
+    )
+
+    invalid = _beam_design_documentation_payload(mu_knm=-1.0)
+    try:
+        beam.load(invalid)
+    except InputContractError as error:
+        issue = error.issues[0]
+        records.append(
+            {
+                "example_id": "is456.beam.design.invalid",
+                "outcome": f"{issue.code}:{issue.path}",
+            }
+        )
+    else:
+        raise AssertionError("Invalid beam documentation vector was accepted")
+
+    failed = beam.design(beam.load(_beam_design_documentation_payload(mu_knm=2000.0)))
+    records.append(
+        {
+            "example_id": "is456.beam.design.engineering-fail",
+            "outcome": failed.engineering_status.value,
+        }
+    )
+
+    supplied_payload = _beam_supplied_documentation_payload()
+    supplied = beam.check_supplied(beam.load_supplied_check(supplied_payload))
+    records.append(
+        {
+            "example_id": "is456.beam.supplied.valid",
+            "outcome": supplied.status,
+        }
+    )
+
+    invalid_supplied = copy.deepcopy(supplied_payload)
+    del invalid_supplied["section"]["effective_depth_basis"]
+    try:
+        beam.load_supplied_check(invalid_supplied)
+    except InputContractError as error:
+        issue = error.issues[0]
+        records.append(
+            {
+                "example_id": "is456.beam.supplied.invalid",
+                "outcome": f"{issue.code}:{issue.path}",
+            }
+        )
+    else:
+        raise AssertionError("Invalid supplied-beam documentation vector was accepted")
+
+    failed_supplied = copy.deepcopy(supplied_payload)
+    failed_supplied["actions"]["vu_kn"] = 200.0
+    failed_supplied["reinforcement"]["stirrup_spacing_mm"] = 300.0
+    failed_result = beam.check_supplied(beam.load_supplied_check(failed_supplied))
+    records.append(
+        {
+            "example_id": "is456.beam.supplied.engineering-fail",
+            "outcome": failed_result.status,
+        }
+    )
+
+    held_supplied = copy.deepcopy(supplied_payload)
+    held_supplied["support"] = None
+    held_result = beam.check_supplied(beam.load_supplied_check(held_supplied))
+    records.append(
+        {
+            "example_id": "is456.beam.supplied.engineering-hold",
+            "outcome": held_result.status,
+        }
+    )
+    return records
+
+
+def run_beam_documentation_contract() -> dict[str, Any]:
+    """Verify generated beam documentation against the imported package."""
+
+    from structural_lib.design.is456 import beam
+
+    registry = json.loads(
+        (REPO_ROOT / "docs/reference/api-classification.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    contract = registry["documentation_contract"]
+    assert not contract["unbaselined_debt"]
+    assert not any(
+        name.startswith("structural_lib.design.is456.beam.")
+        for name in contract["temporary_debt_baseline"]
+    )
+    surface = next(
+        item
+        for item in registry["surfaces"]
+        if item["module"] == "structural_lib.design.is456.beam"
+    )
+    records = {item["name"]: item for item in surface["symbols"]}
+    required_sections = set(contract["required_canonical_docstring_sections"])
+    operations = tuple(contract["exact_wheel_beam_operations"])
+    docstring_results: list[dict[str, Any]] = []
+    for operation in operations:
+        value = getattr(beam, operation)
+        record = records[operation]
+        signature = str(inspect.signature(value)).replace(
+            "typing.Annotated[", "Annotated["
+        )
+        assert signature == record["documentation"]["signature"]
+        docstring = inspect.getdoc(value) or ""
+        present_sections = {
+            section
+            for section in required_sections
+            if re.search(rf"(?m)^\s*{section.title()}:?\s*$", docstring)
+        }
+        assert present_sections == required_sections, (operation, present_sections)
+        assert not record["documentation"]["missing_docstring_sections"]
+
+        finder = doctest.DocTestParser()
+        test = finder.get_doctest(
+            docstring,
+            vars(importlib.import_module(value.__module__)).copy(),
+            f"structural_lib.design.is456.beam.{operation}",
+            value.__module__,
+            0,
+        )
+        output: list[str] = []
+        result = doctest.DocTestRunner().run(test, out=output.append)
+        if result.failed:
+            raise AssertionError("".join(output))
+        docstring_results.append(
+            {
+                "operation": operation,
+                "signature": signature,
+                "example_count": len(test.examples),
+            }
+        )
+
+    actual_examples = {
+        item["example_id"]: item["outcome"]
+        for item in run_beam_documentation_examples()
+    }
+    for operation in operations:
+        actual_examples[f"is456.beam.facade.{operation}.docstring"] = (
+            "EXECUTES_FROM_EXACT_WHEEL"
+        )
+    expected_examples = {
+        item["example_id"]: item["expected"] for item in contract["example_inventory"]
+    }
+    assert actual_examples == expected_examples
+    return {
+        "schema_version": contract["schema_version"],
+        "operation_count": len(operations),
+        "docstring_example_count": sum(
+            item["example_count"] for item in docstring_results
+        ),
+        "registered_example_count": len(actual_examples),
+        "operations": docstring_results,
+    }
 
 
 def _set_path(payload: dict[str, Any], path: tuple[str, ...], value: Any) -> None:
@@ -206,9 +451,11 @@ def run_contract_vectors() -> dict[str, Any]:
 
         non_finite_path = _find_path(
             recipe.payload,
-            lambda _key, value: isinstance(value, (int, float))
-            and not isinstance(value, bool)
-            and math.isfinite(float(value)),
+            lambda _key, value: (
+                isinstance(value, (int, float))
+                and not isinstance(value, bool)
+                and math.isfinite(float(value))
+            ),
         )
         assert non_finite_path is not None
         non_finite = copy.deepcopy(recipe.payload)
@@ -232,8 +479,9 @@ def run_contract_vectors() -> dict[str, Any]:
 
         identity_path = _find_path(
             recipe.payload,
-            lambda key, value: isinstance(value, str)
-            and key in {"member_id", "case_id", "family_id"},
+            lambda key, value: (
+                isinstance(value, str) and key in {"member_id", "case_id", "family_id"}
+            ),
         )
         assert identity_path is not None
         identity_payload = copy.deepcopy(recipe.payload)
@@ -303,6 +551,7 @@ def run_current() -> dict[str, Any]:
 
     recipes = namespace["run_recipes"]()
     release_uat = run_release_uat()
+    beam_documentation = run_beam_documentation_contract()
     from structural_lib.design.is456 import beam
 
     request = beam.load(
@@ -329,6 +578,7 @@ def run_current() -> dict[str, Any]:
         "source_free": False,
         "contract_audit": run_contract_audit(),
         "contract_vectors": run_contract_vectors(),
+        "beam_documentation": beam_documentation,
         "recipe_count": len(recipes),
         "recipes": recipes,
         "release_uat": {
@@ -366,6 +616,53 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _install_wheel(wheel: Path, installed_root: Path, temp_root: Path) -> str:
+    pip_install = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "pip",
+            "install",
+            "--disable-pip-version-check",
+            "--no-deps",
+            "--target",
+            str(installed_root),
+            str(wheel),
+        ],
+        cwd=temp_root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if pip_install.returncode == 0:
+        return "pip"
+
+    uv = shutil.which("uv")
+    if uv is None:
+        raise RuntimeError(pip_install.stderr)
+    uv_install = subprocess.run(
+        [
+            uv,
+            "pip",
+            "install",
+            "--no-deps",
+            "--target",
+            str(installed_root),
+            str(wheel),
+        ],
+        cwd=temp_root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if uv_install.returncode:
+        raise RuntimeError(
+            "wheel installation failed with both pip and uv\n"
+            f"pip: {pip_install.stderr}\nuv: {uv_install.stderr}"
+        )
+    return "uv"
+
+
 def verify(wheel: Path) -> dict[str, Any]:
     wheel = wheel.resolve()
     if not wheel.is_file() or wheel.suffix != ".whl":
@@ -388,25 +685,7 @@ def verify(wheel: Path) -> dict[str, Any]:
         temp_root = Path(raw_temp)
         installed_root = temp_root / "installed"
         installed_root.mkdir()
-        install = subprocess.run(
-            [
-                sys.executable,
-                "-m",
-                "pip",
-                "install",
-                "--disable-pip-version-check",
-                "--no-deps",
-                "--target",
-                str(installed_root),
-                str(wheel),
-            ],
-            cwd=temp_root,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        if install.returncode:
-            raise RuntimeError(install.stderr)
+        wheel_installer = _install_wheel(wheel, installed_root, temp_root)
         probe = (
             "import json, pathlib, structural_lib; "
             "from scripts.verify_lib_pro_012_r0_external_preview import run_current; "
@@ -432,6 +711,7 @@ def verify(wheel: Path) -> dict[str, Any]:
         receipt = json.loads(result.stdout)
         receipt["wheel"] = str(wheel)
         receipt["wheel_sha256"] = _sha256(wheel)
+        receipt["wheel_installer"] = wheel_installer
         receipt["cookbook_generation_check"] = "PASS"
         return receipt
 

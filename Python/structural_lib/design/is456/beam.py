@@ -37,7 +37,23 @@ from structural_lib.services.contracts.beam_serviceability import (
     BeamServiceabilityChecksV1,
     BeamSpanDepthCheckV1,
 )
+from structural_lib.services.contracts.beam_supplied_check import (
+    BEAM_SUPPLIED_CHECK_SCHEMA_VERSION,
+    BeamBarLayersV2,
+    BeamReinforcementSelectionV2,
+    BeamSuppliedCheckActionsV2,
+    BeamSuppliedCheckRequestV2,
+    BeamSuppliedCheckSectionV2,
+    BeamSuppliedReinforcementV2,
+    BeamSupportBasisV2,
+)
 from structural_lib.services.contracts.common import model_validate_or_error
+from structural_lib.services.supplied_beam_check import (
+    BEAM_SUPPLIED_CHECK_RESULT_SCHEMA_VERSION,
+    BeamSuppliedCheckResultV2,
+    BeamSuppliedShearEvaluationV2,
+    check_supplied_beam_v2,
+)
 
 __all__ = [
     "BeamActionsV1",
@@ -54,6 +70,17 @@ __all__ = [
     "BeamServiceabilityBasisV1",
     "BeamSpanDepthCheckV1",
     "BeamAnnexFCrackCheckV1",
+    "BEAM_SUPPLIED_CHECK_SCHEMA_VERSION",
+    "BEAM_SUPPLIED_CHECK_RESULT_SCHEMA_VERSION",
+    "BeamBarLayersV2",
+    "BeamReinforcementSelectionV2",
+    "BeamSuppliedCheckActionsV2",
+    "BeamSuppliedCheckRequestV2",
+    "BeamSuppliedCheckResultV2",
+    "BeamSuppliedCheckSectionV2",
+    "BeamSuppliedReinforcementV2",
+    "BeamSuppliedShearEvaluationV2",
+    "BeamSupportBasisV2",
     "DetailingStandard",
     "EffectiveDepthBasisRequestV1",
     "CentroidCoverDepthRequestV1",
@@ -65,11 +92,13 @@ __all__ = [
     "RectangularBeamSectionV1",
     "bbs",
     "check",
+    "check_supplied",
     "design",
     "design_and_detail",
     "detail",
     "input",
     "load",
+    "load_supplied_check",
 ]
 
 
@@ -100,7 +129,67 @@ def input(  # noqa: A001 - frozen public facade spelling
     serviceability: BeamServiceabilityV1 | BeamServiceabilityChecksV1 | None = None,
     source_provenance: str | None = None,
 ) -> BeamDesignInputV1:
-    """Build the strict nested request without exposing Pydantic exceptions."""
+    """Build one strict rectangular-beam design request.
+
+    Parameters
+    ----------
+    member_id, story, case_id : str
+        Caller-owned member and action-case identity.
+    span_mm, b_mm, D_mm : float
+        Span, section width, and overall depth in millimetres.
+    fck_nmm2, fy_nmm2, fy_transverse_nmm2 : float
+        Concrete, longitudinal-steel, and optional transverse-steel strengths.
+    mu_knm, vu_kn, tu_knm : float
+        Caller-supplied factored bending, shear, and torsion actions.
+    d_dash_mm, asv_mm2 : float
+        Compression-steel depth and transverse-reinforcement area basis.
+    d_mm : float, optional
+        Explicit effective depth; mutually exclusive with ``effective_depth_basis``.
+    effective_depth_basis : EffectiveDepthBasisRequestV1 or CentroidCoverDepthRequestV1, optional
+        Complete typed basis used by the shared effective-depth owner.
+    primary_tension_face : {"TOP", "BOTTOM"}, optional
+        Physical tension face required for signed/torsional workflows.
+    pt_percent, ast_mm2_for_shear : float, optional
+        Explicit shear-design longitudinal-steel basis.
+    detailing : BeamDetailingOptionsV1, optional
+        Complete caller-selected detailing choices.
+    serviceability : BeamServiceabilityV1 or BeamServiceabilityChecksV1, optional
+        Versioned bounded serviceability evidence.
+    source_provenance : str, optional
+        Caller-owned source reference for the request.
+
+    Returns
+    -------
+    BeamDesignInputV1
+        Immutable, strictly validated canonical request.
+
+    Raises
+    ------
+    InputContractError
+        If a field or cross-field relationship violates the public contract.
+
+    Examples
+    --------
+    >>> from structural_lib.design.is456 import beam
+    >>> request = beam.input(
+    ...     member_id="B1", story="L1", case_id="ULS-1", span_mm=5000,
+    ...     b_mm=300, D_mm=500, d_mm=442, fck_nmm2=25, fy_nmm2=500,
+    ...     mu_knm=100, vu_kn=60, d_dash_mm=58, asv_mm2=100.53,
+    ...     source_provenance="reviewed schedule B1",
+    ... )
+    >>> request.schema_version
+    'beam-design-input/v1'
+
+    Limitations
+    -----------
+    This builder does not generate loads, infer project criteria, or approve a
+    section. Complex evidence remains in the named typed groups.
+
+    Provenance
+    ----------
+    Field validation is owned by ``BeamDesignInputV1`` and is shared with the
+    canonical CLI and REST V2 journey.
+    """
 
     return model_validate_or_error(
         BeamDesignInputV1,
@@ -150,9 +239,141 @@ def input(  # noqa: A001 - frozen public facade spelling
 
 
 def load(value: Any) -> BeamDesignInputV1:
-    """Validate nested Python/JSON data into the canonical request."""
+    """Parse nested Python or decoded JSON into a canonical beam request.
+
+    Parameters
+    ----------
+    value : Any
+        Mapping-like decoded data for ``beam-design-input/v1``.
+
+    Returns
+    -------
+    BeamDesignInputV1
+        Strict typed request with no coercion of numeric strings or booleans.
+
+    Raises
+    ------
+    InputContractError
+        If input type, fields, values, identity, or cross-field basis is invalid.
+
+    Examples
+    --------
+    >>> from structural_lib.design.is456 import beam
+    >>> request = beam.load({
+    ...     "identity": {"member_id": "B1", "story": "L1", "case_id": "ULS"},
+    ...     "section": {"span_mm": 5000, "b_mm": 300, "D_mm": 500, "d_mm": 442},
+    ...     "materials": {"fck_nmm2": 25, "fy_nmm2": 500},
+    ...     "actions": {"mu_knm": 100, "vu_kn": 60, "tu_knm": 0},
+    ...     "calculation_basis": {"d_dash_mm": 58, "asv_mm2": 100.53},
+    ... })
+    >>> request.identity.member_id
+    'B1'
+
+    Limitations
+    -----------
+    Parsing validates caller data only; it does not create actions, geometry,
+    reinforcement choices, or qualified-review evidence.
+
+    Provenance
+    ----------
+    Validation errors are translated by the shared library-owned
+    ``model_validate_or_error`` boundary.
+    """
 
     return model_validate_or_error(BeamDesignInputV1, value)
+
+
+def load_supplied_check(value: Any) -> BeamSuppliedCheckRequestV2:
+    """Parse the exact supplied-reinforcement V2 request.
+
+    Parameters
+    ----------
+    value : Any
+        Nested decoded data conforming to ``beam-supplied-check/v2``.
+
+    Returns
+    -------
+    BeamSuppliedCheckRequestV2
+        Strict request that preserves identity, depth, bars, stirrups, and sources.
+
+    Raises
+    ------
+    InputContractError
+        If the request is partial, flat/legacy, coercive, non-finite, or inconsistent.
+
+    Examples
+    --------
+    >>> from structural_lib.design.is456 import beam
+    >>> schema = beam.BeamSuppliedCheckRequestV2.model_json_schema()
+    >>> schema["additionalProperties"]
+    False
+
+    Limitations
+    -----------
+    The former flat area-only payload is rejected because it cannot reconstruct
+    exact layers, transverse reinforcement, or source evidence.
+
+    Provenance
+    ----------
+    ``BeamSuppliedCheckRequestV2`` is the shared Python, REST, and WebSocket
+    intake owner; the full executable request is in the supplied-check cookbook.
+    """
+
+    return model_validate_or_error(BeamSuppliedCheckRequestV2, value)
+
+
+def check_supplied(
+    request: BeamSuppliedCheckRequestV2,
+) -> BeamSuppliedCheckResultV2:
+    """Evaluate exact supplied longitudinal bars and stirrups for one case.
+
+    Parameters
+    ----------
+    request : BeamSuppliedCheckRequestV2
+        Fully validated section, action, reinforcement, selection, and source basis.
+
+    Returns
+    -------
+    BeamSuppliedCheckResultV2
+        Correlated ``PASS``, ``FAIL``, or ``HOLD`` result and orthogonal envelope.
+
+    Raises
+    ------
+    InputContractError
+        If a non-V2 request reaches the facade boundary.
+    CalculationError
+        If the maintained calculation owner cannot complete the declared check.
+
+    Examples
+    --------
+    >>> from structural_lib.design.is456 import beam
+    >>> callable(beam.check_supplied)
+    True
+
+    Limitations
+    -----------
+    This rectangular-beam slice does not infer support widths or professional
+    acceptance. Missing support evidence returns ``HOLD``.
+
+    Provenance
+    ----------
+    Delegates without formula duplication to ``check_supplied_beam_v2``; the
+    complete valid, invalid, ``FAIL``, and ``HOLD`` vectors are executable in
+    the supplied-check cookbook.
+    """
+
+    if not isinstance(request, BeamSuppliedCheckRequestV2):
+        raise InputContractError(
+            (
+                InputIssueV1(
+                    code="INPUT_TYPE_INVALID",
+                    path="request",
+                    message="request must be BeamSuppliedCheckRequestV2",
+                    received=f"<{type(request).__name__}>",
+                ),
+            )
+        )
+    return check_supplied_beam_v2(request)
 
 
 def bbs(
@@ -162,6 +383,38 @@ def bbs(
         | list[BeamDetailingResultV1]
     ),
 ) -> BeamBBSResultV1:
-    """Generate a canonical BBS from exact accepted result types."""
+    """Generate a canonical BBS from exact accepted detailing results.
+
+    Parameters
+    ----------
+    result : BeamDesignAndDetailResultV1, BeamDetailingResultV1, or list
+        One accepted result, or a non-empty list of accepted detailing results.
+
+    Returns
+    -------
+    BeamBBSResultV1
+        All-or-nothing finite bar-bending schedule with source result identities.
+
+    Raises
+    ------
+    InputContractError
+        If the input type, collection, or engineering/detailing status is unaccepted.
+
+    Examples
+    --------
+    >>> from structural_lib.design.is456 import beam
+    >>> callable(beam.bbs)
+    True
+
+    Limitations
+    -----------
+    BBS generation consumes accepted canonical detailing; it does not revise
+    bars, invent a span, or convert a failed/held result into an artifact.
+
+    Provenance
+    ----------
+    The facade delegates to ``generate_bbs`` and preserves the source result
+    schema versions in the returned schedule.
+    """
 
     return generate_bbs(result)

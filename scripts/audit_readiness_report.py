@@ -351,22 +351,24 @@ def collect_static_analysis_evidence(report: AuditReport) -> None:
             )
         )
 
-    # Check API signatures (consolidated into check_api.py)
+    # Check the React/FastAPI route contract (consolidated into check_api.py)
     api_checker = _REPO_ROOT / "scripts/check_api.py"
     if api_checker.exists():
-        code, stdout, stderr = run_script(_repo_relative(api_checker), ["--signatures"])
+        code, _stdout, _stderr = run_script(
+            _repo_relative(api_checker), ["--react-openapi"]
+        )
         passed = code == 0
         report.add_evidence(
             EvidenceItem(
                 category="StaticAnalysis",
-                name="API Signature Validation",
+                name="React/FastAPI Contract Validation",
                 status="PASS" if passed else "FAIL",
                 required=True,
                 source=str(api_checker),
                 details=(
-                    "All API signatures valid"
+                    "All React call sites match OpenAPI"
                     if passed
-                    else "API signature issues found"
+                    else "React/OpenAPI contract issues found"
                 ),
             )
         )

@@ -114,8 +114,8 @@ pushed or reviewed.
 | Milestone branch | Sequential internal units | Publication boundary |
 |---|---|---|
 | `codex/etabs-live-g0-route-gate` | `ETABS-LIVE-G0-ROUTE-GATE` plus this cadence amendment | urgent disabled-by-default live-route boundary; one PR |
-| `codex/w3-public-beam-truth` | `LIB-BEAM-S0-CHECK-TRUTH`, `LIB-PRO-015-D0-D1-BEAM`, `ETABS-W3-B0-CANONICAL-PILOT` | one public beam/API/OpenAPI/client candidate |
-| `codex/w3-offline-etabs-foundations` | `ETABS-W3-A0-OFFLINE-SESSION-GUARD`, `ETABS-W3-B1A-PROJECT-CRITERIA-CATALOGUE`, `ETABS-W3-C0-OFFLINE-ACQUISITION-CONTRACT` | one offline fake/contract candidate; zero application calls |
+| `codex/w3-public-beam-truth` | `LIB-BEAM-S0-CHECK-TRUTH`, `LIB-PRO-015-D0-D1-BEAM` | one public beam/API/OpenAPI/client/documentation candidate |
+| `codex/w3-offline-etabs-foundations` | `ETABS-W3-A0-OFFLINE-SESSION-GUARD`, `ETABS-W3-B0-CANONICAL-PILOT`, `ETABS-W3-B1A-PROJECT-CRITERIA-CATALOGUE`, `ETABS-W3-C0-OFFLINE-ACQUISITION-CONTRACT` | one dependency-ordered offline fake/contract candidate; zero application calls |
 | `codex/w3-installed-readonly-evidence` | `ETABS-W3-A1-INSTALLED-READONLY-ACCEPTANCE`, `ETABS-W3-C1-INSTALLED-DESIGN-EXPORT-INVENTORY` | one separately authorized installed read-only evidence session/PR |
 | `codex/w3-candidate-data-convergence` | `ETABS-W3-B1B-CANDIDATE-EVALUATOR`, `ETABS-W3-B2-OPTIMIZER-CONVERGENCE`, `ETABS-W3-C2-OFFLINE-EXACT-SCHEMA-PARSER` | one offline evaluator/search/parser candidate |
 | `codex/w3-screening-transaction-kernel` | `ETABS-W3-H0-ROUTE-DECISION`, `ETABS-W3-I-SCREENING`, `ETABS-W3-K0-OFFLINE-TRANSACTION-KERNEL` | one offline route/screen/dry-run candidate |
@@ -620,15 +620,13 @@ Stop the active packet when:
 
 ## Exact next action
 
-Run `ETABS-LIVE-G0-ROUTE-GATE` on branch
-`codex/etabs-live-g0-route-gate` from accepted preflight merge `3fc9ddcd`. Keep
-ETABS and Excel closed. Its denied-path tests must prove no COM module/session
-creation or attachment. Publish G0 and this cadence amendment together as the
-first milestone PR. After that merge, create `codex/w3-public-beam-truth` from
-the exact accepted head and implement its three internal units sequentially;
-do not create intermediate PRs. The following
-`codex/w3-offline-etabs-foundations` milestone remains fake-adapter-only and
-makes zero application calls.
+The `LIB-BEAM-S0-CHECK-TRUTH` plus beam-only `LIB-PRO-015-D0-D1-BEAM`
+candidate is frozen on `codex/w3-public-beam-truth` from exact accepted G0
+merge `f7da72bdf837a38e4c07ef6d7a21fb9267804ad5`. Keep ETABS and Excel closed
+and publish one milestone PR after its single consolidated quick/hook cycle.
+After acceptance, `codex/w3-offline-etabs-foundations` starts with A0, then
+runs B0, B1A and C0 in dependency order; it remains fake-adapter-only and makes
+zero application calls.
 
 ## Long-term amendment sources
 

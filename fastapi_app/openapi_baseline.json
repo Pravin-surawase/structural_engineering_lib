@@ -182,54 +182,6 @@
         "title": "APIResponse[BarAreasResponse]",
         "type": "object"
       },
-      "APIResponse_BeamCheckResponse_": {
-        "example": {
-          "data": {
-            "Ast_mm2": 603.2
-          },
-          "success": true
-        },
-        "properties": {
-          "clause_refs": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Clause Refs"
-          },
-          "data": {
-            "$ref": "#/components/schemas/BeamCheckResponse"
-          },
-          "error": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ProblemDetailResponse"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "success": {
-            "const": true,
-            "default": true,
-            "title": "Success",
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "data"
-        ],
-        "title": "APIResponse[BeamCheckResponse]",
-        "type": "object"
-      },
       "APIResponse_BeamDemandBuildResultV1_": {
         "example": {
           "data": {
@@ -420,6 +372,54 @@
           "data"
         ],
         "title": "APIResponse[BeamGeometryResponse]",
+        "type": "object"
+      },
+      "APIResponse_BeamSuppliedCheckResponseV2_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/BeamSuppliedCheckResponseV2"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProblemDetailResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[BeamSuppliedCheckResponseV2]",
         "type": "object"
       },
       "APIResponse_BiaxialCheckResponse_": {
@@ -4677,6 +4677,41 @@
         "title": "BeamAnnexFCrackCheckV1",
         "type": "object"
       },
+      "BeamBarLayersV2": {
+        "additionalProperties": false,
+        "description": "One diameter in explicit layers, ordered inward from one beam face.",
+        "properties": {
+          "bars_per_layer": {
+            "items": {
+              "type": "integer"
+            },
+            "maxItems": 4,
+            "minItems": 1,
+            "title": "Bars Per Layer",
+            "type": "array"
+          },
+          "diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 40.0,
+            "title": "Diameter Mm",
+            "type": "number"
+          },
+          "vertical_center_spacings_mm": {
+            "default": [],
+            "items": {
+              "type": "number"
+            },
+            "title": "Vertical Center Spacings Mm",
+            "type": "array"
+          }
+        },
+        "required": [
+          "diameter_mm",
+          "bars_per_layer"
+        ],
+        "title": "BeamBarLayersV2",
+        "type": "object"
+      },
       "BeamCalculationBasisV1": {
         "additionalProperties": false,
         "description": "Explicit section/reinforcement values consumed by strength calculation.",
@@ -4721,192 +4756,6 @@
           "asv_mm2"
         ],
         "title": "BeamCalculationBasisV1",
-        "type": "object"
-      },
-      "BeamCheckRequest": {
-        "description": "Request model for checking existing beam with provided reinforcement.",
-        "properties": {
-          "asc_provided": {
-            "default": 0.0,
-            "description": "Provided compression reinforcement area Asc (mm\u00b2)",
-            "minimum": 0.0,
-            "title": "Asc Provided",
-            "type": "number"
-          },
-          "ast_provided": {
-            "description": "Provided tension reinforcement area Ast (mm\u00b2)",
-            "examples": [
-              615.0,
-              942.0,
-              1256.0
-            ],
-            "exclusiveMinimum": 0.0,
-            "title": "Ast Provided",
-            "type": "number"
-          },
-          "clear_cover": {
-            "default": 25.0,
-            "description": "Cover (mm)",
-            "maximum": 75.0,
-            "minimum": 20.0,
-            "title": "Clear Cover",
-            "type": "number"
-          },
-          "depth": {
-            "description": "Overall beam depth D (mm)",
-            "exclusiveMinimum": 0.0,
-            "maximum": 3000.0,
-            "title": "Depth",
-            "type": "number"
-          },
-          "effective_depth": {
-            "anyOf": [
-              {
-                "exclusiveMinimum": 0.0,
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Effective depth d (mm). Auto-calculated if not provided.",
-            "title": "Effective Depth"
-          },
-          "fck": {
-            "default": 25.0,
-            "description": "fck (N/mm\u00b2)",
-            "maximum": 80.0,
-            "minimum": 15.0,
-            "title": "Fck",
-            "type": "number"
-          },
-          "fy": {
-            "default": 500.0,
-            "description": "fy (N/mm\u00b2)",
-            "maximum": 600.0,
-            "minimum": 250.0,
-            "title": "Fy",
-            "type": "number"
-          },
-          "moment": {
-            "description": "Factored design moment Mu (kN\u00b7m)",
-            "minimum": 0.0,
-            "title": "Moment",
-            "type": "number"
-          },
-          "shear": {
-            "default": 0.0,
-            "description": "Factored shear Vu (kN)",
-            "minimum": 0.0,
-            "title": "Shear",
-            "type": "number"
-          },
-          "stirrup_area": {
-            "default": 0.0,
-            "description": "Two-legged stirrup area Asv (mm\u00b2)",
-            "examples": [
-              100.5,
-              157.0,
-              201.0
-            ],
-            "minimum": 0.0,
-            "title": "Stirrup Area",
-            "type": "number"
-          },
-          "stirrup_spacing": {
-            "default": 150.0,
-            "description": "Stirrup spacing sv (mm)",
-            "exclusiveMinimum": 0.0,
-            "maximum": 300.0,
-            "title": "Stirrup Spacing",
-            "type": "number"
-          },
-          "width": {
-            "description": "Beam width b (mm)",
-            "exclusiveMinimum": 0.0,
-            "maximum": 2000.0,
-            "title": "Width",
-            "type": "number"
-          }
-        },
-        "required": [
-          "width",
-          "depth",
-          "moment",
-          "ast_provided"
-        ],
-        "title": "BeamCheckRequest",
-        "type": "object"
-      },
-      "BeamCheckResponse": {
-        "description": "Response model for beam adequacy check.",
-        "properties": {
-          "flexure_adequate": {
-            "description": "Whether flexure is adequate",
-            "title": "Flexure Adequate",
-            "type": "boolean"
-          },
-          "is_adequate": {
-            "description": "Whether beam is adequate for loads",
-            "title": "Is Adequate",
-            "type": "boolean"
-          },
-          "message": {
-            "description": "Summary message",
-            "title": "Message",
-            "type": "string"
-          },
-          "moment_capacity": {
-            "description": "Moment capacity Mu,cap (kN\u00b7m)",
-            "title": "Moment Capacity",
-            "type": "number"
-          },
-          "moment_utilization": {
-            "description": "Mu/Mu,cap ratio",
-            "title": "Moment Utilization",
-            "type": "number"
-          },
-          "shear_adequate": {
-            "description": "Whether shear is adequate",
-            "title": "Shear Adequate",
-            "type": "boolean"
-          },
-          "shear_capacity": {
-            "description": "Shear capacity Vu,cap (kN)",
-            "title": "Shear Capacity",
-            "type": "number"
-          },
-          "shear_utilization": {
-            "description": "Vu/Vu,cap ratio",
-            "title": "Shear Utilization",
-            "type": "number"
-          },
-          "success": {
-            "description": "Whether calculation completed successfully",
-            "title": "Success",
-            "type": "boolean"
-          },
-          "warnings": {
-            "description": "Check warnings",
-            "items": {
-              "type": "string"
-            },
-            "title": "Warnings",
-            "type": "array"
-          }
-        },
-        "required": [
-          "is_adequate",
-          "success",
-          "message",
-          "moment_capacity",
-          "shear_capacity",
-          "moment_utilization",
-          "shear_utilization",
-          "flexure_adequate",
-          "shear_adequate"
-        ],
-        "title": "BeamCheckResponse",
         "type": "object"
       },
       "BeamCrackWidthParams": {
@@ -6283,6 +6132,68 @@
         "title": "BeamMetadata",
         "type": "object"
       },
+      "BeamReinforcementSelectionV2": {
+        "additionalProperties": false,
+        "description": "Caller-owned limits used by the bounded arrangement evaluator.",
+        "properties": {
+          "effective_depth_tolerance_mm": {
+            "minimum": 0.0,
+            "title": "Effective Depth Tolerance Mm",
+            "type": "number"
+          },
+          "maximum_bars_per_layer": {
+            "maximum": 20.0,
+            "minimum": 2.0,
+            "title": "Maximum Bars Per Layer",
+            "type": "integer"
+          },
+          "maximum_layers": {
+            "maximum": 4.0,
+            "minimum": 1.0,
+            "title": "Maximum Layers",
+            "type": "integer"
+          },
+          "nominal_max_aggregate_size_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Nominal Max Aggregate Size Mm",
+            "type": "number"
+          },
+          "objective": {
+            "enum": [
+              "min_area",
+              "min_bar_count",
+              "max_spacing"
+            ],
+            "title": "Objective",
+            "type": "string"
+          },
+          "permitted_diameters_mm": {
+            "items": {
+              "type": "number"
+            },
+            "minItems": 1,
+            "title": "Permitted Diameters Mm",
+            "type": "array"
+          },
+          "source_reference": {
+            "maxLength": 240,
+            "minLength": 1,
+            "title": "Source Reference",
+            "type": "string"
+          }
+        },
+        "required": [
+          "permitted_diameters_mm",
+          "maximum_layers",
+          "maximum_bars_per_layer",
+          "nominal_max_aggregate_size_mm",
+          "effective_depth_tolerance_mm",
+          "objective",
+          "source_reference"
+        ],
+        "title": "BeamReinforcementSelectionV2",
+        "type": "object"
+      },
       "BeamResult": {
         "description": "A single beam design result for dashboard aggregation.",
         "properties": {
@@ -6660,6 +6571,610 @@
         ],
         "title": "BeamStationDomainV1",
         "type": "string"
+      },
+      "BeamSuppliedCheckActionsV2": {
+        "additionalProperties": false,
+        "description": "Factored actions supported by the rectangular supplied-check slice.",
+        "properties": {
+          "mu_knm": {
+            "minimum": 0.0,
+            "title": "Mu Knm",
+            "type": "number"
+          },
+          "primary_tension_face": {
+            "enum": [
+              "TOP",
+              "BOTTOM"
+            ],
+            "title": "Primary Tension Face",
+            "type": "string"
+          },
+          "vu_kn": {
+            "minimum": 0.0,
+            "title": "Vu Kn",
+            "type": "number"
+          }
+        },
+        "required": [
+          "mu_knm",
+          "vu_kn",
+          "primary_tension_face"
+        ],
+        "title": "BeamSuppliedCheckActionsV2",
+        "type": "object"
+      },
+      "BeamSuppliedCheckRequestV2": {
+        "additionalProperties": false,
+        "description": "Complete supplied-reinforcement beam-check request.",
+        "properties": {
+          "actions": {
+            "$ref": "#/components/schemas/BeamSuppliedCheckActionsV2"
+          },
+          "correlation_id": {
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Correlation Id",
+            "type": "string"
+          },
+          "identity": {
+            "$ref": "#/components/schemas/MemberIdentityV1"
+          },
+          "materials": {
+            "$ref": "#/components/schemas/IS456ReinforcementMaterialsV1"
+          },
+          "reinforcement": {
+            "$ref": "#/components/schemas/BeamSuppliedReinforcementV2"
+          },
+          "schema_version": {
+            "default": "beam-supplied-check/v2",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "section": {
+            "$ref": "#/components/schemas/BeamSuppliedCheckSectionV2"
+          },
+          "selection": {
+            "$ref": "#/components/schemas/BeamReinforcementSelectionV2"
+          },
+          "source_provenance": {
+            "anyOf": [
+              {
+                "maxLength": 240,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Provenance"
+          },
+          "support": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BeamSupportBasisV2"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "correlation_id",
+          "identity",
+          "section",
+          "materials",
+          "actions",
+          "reinforcement",
+          "selection"
+        ],
+        "title": "BeamSuppliedCheckRequestV2",
+        "type": "object"
+      },
+      "BeamSuppliedCheckResponseV2": {
+        "description": "Versioned REST projection of the canonical supplied-check result.",
+        "properties": {
+          "correlation_id": {
+            "title": "Correlation Id",
+            "type": "string"
+          },
+          "d_dash_used_mm": {
+            "title": "D Dash Used Mm",
+            "type": "number"
+          },
+          "effective_depth_resolution": {
+            "$ref": "#/components/schemas/BeamSuppliedDepthResolutionV2"
+          },
+          "identity": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Identity",
+            "type": "object"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "longitudinal": {
+            "$ref": "#/components/schemas/BeamSuppliedLongitudinalResponseV2"
+          },
+          "primary_tension_face": {
+            "enum": [
+              "TOP",
+              "BOTTOM"
+            ],
+            "title": "Primary Tension Face",
+            "type": "string"
+          },
+          "request": {
+            "$ref": "#/components/schemas/BeamSuppliedCheckRequestV2"
+          },
+          "result_envelope": {
+            "$ref": "#/components/schemas/StructuralResultEnvelopeResponse"
+          },
+          "schema_version": {
+            "const": "beam-supplied-check-result/v2",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "shear": {
+            "$ref": "#/components/schemas/BeamSuppliedShearResponseV2"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "HOLD",
+              "ERROR"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "correlation_id",
+          "status",
+          "identity",
+          "primary_tension_face",
+          "request",
+          "effective_depth_resolution",
+          "d_dash_used_mm",
+          "longitudinal",
+          "shear",
+          "result_envelope",
+          "limitations"
+        ],
+        "title": "BeamSuppliedCheckResponseV2",
+        "type": "object"
+      },
+      "BeamSuppliedCheckSectionV2": {
+        "additionalProperties": false,
+        "description": "Rectangular section with exactly one complete effective-depth owner.",
+        "properties": {
+          "D_mm": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 3000.0,
+            "title": "D Mm",
+            "type": "number"
+          },
+          "b_mm": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 2000.0,
+            "title": "B Mm",
+            "type": "number"
+          },
+          "d_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "D Mm"
+          },
+          "effective_depth_basis": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EffectiveDepthBasisRequestV1"
+              },
+              {
+                "$ref": "#/components/schemas/CentroidCoverDepthRequestV1"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective Depth Basis"
+          }
+        },
+        "required": [
+          "b_mm",
+          "D_mm"
+        ],
+        "title": "BeamSuppliedCheckSectionV2",
+        "type": "object"
+      },
+      "BeamSuppliedDepthResolutionV2": {
+        "description": "Exact effective-depth decision returned by the V2 supplied check.",
+        "properties": {
+          "D_mm": {
+            "title": "D Mm",
+            "type": "number"
+          },
+          "contract_version": {
+            "const": "effective-depth-basis/v1",
+            "title": "Contract Version",
+            "type": "string"
+          },
+          "d_mm": {
+            "title": "D Mm",
+            "type": "number"
+          },
+          "effective_depth_basis": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective Depth Basis"
+          },
+          "source": {
+            "enum": [
+              "EXPLICIT",
+              "DERIVED"
+            ],
+            "title": "Source",
+            "type": "string"
+          }
+        },
+        "required": [
+          "contract_version",
+          "source",
+          "D_mm",
+          "d_mm"
+        ],
+        "title": "BeamSuppliedDepthResolutionV2",
+        "type": "object"
+      },
+      "BeamSuppliedLongitudinalResponseV2": {
+        "description": "Transport projection of the accepted longitudinal evaluator.",
+        "properties": {
+          "asc_required_mm2": {
+            "title": "Asc Required Mm2",
+            "type": "number"
+          },
+          "ast_required_mm2": {
+            "title": "Ast Required Mm2",
+            "type": "number"
+          },
+          "checks": {
+            "additionalProperties": true,
+            "title": "Checks",
+            "type": "object"
+          },
+          "clause_refs": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Clause Refs",
+            "type": "object"
+          },
+          "issues": {
+            "items": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "provenance": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": "Provenance",
+            "type": "object"
+          },
+          "qualified_review_required": {
+            "title": "Qualified Review Required",
+            "type": "boolean"
+          },
+          "recommended_tension": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommended Tension"
+          },
+          "schema_version": {
+            "const": "beam-reinforcement-evaluation/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "HOLD"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "supplied_compression_or_hanger": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supplied Compression Or Hanger"
+          },
+          "supplied_tension": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supplied Tension"
+          }
+        },
+        "required": [
+          "schema_version",
+          "status",
+          "ast_required_mm2",
+          "asc_required_mm2",
+          "recommended_tension",
+          "supplied_tension",
+          "supplied_compression_or_hanger",
+          "checks",
+          "issues",
+          "clause_refs",
+          "provenance",
+          "limitations",
+          "qualified_review_required"
+        ],
+        "title": "BeamSuppliedLongitudinalResponseV2",
+        "type": "object"
+      },
+      "BeamSuppliedReinforcementV2": {
+        "additionalProperties": false,
+        "description": "Exact longitudinal layers and transverse reinforcement being checked.",
+        "properties": {
+          "bar_type": {
+            "enum": [
+              "deformed",
+              "plain"
+            ],
+            "title": "Bar Type",
+            "type": "string"
+          },
+          "clear_cover_mm": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 100.0,
+            "title": "Clear Cover Mm",
+            "type": "number"
+          },
+          "compression_or_hanger": {
+            "$ref": "#/components/schemas/BeamBarLayersV2"
+          },
+          "has_standard_bend_at_end": {
+            "title": "Has Standard Bend At End",
+            "type": "boolean"
+          },
+          "has_standard_bend_at_start": {
+            "title": "Has Standard Bend At Start",
+            "type": "boolean"
+          },
+          "source_reference": {
+            "maxLength": 240,
+            "minLength": 1,
+            "title": "Source Reference",
+            "type": "string"
+          },
+          "stirrup_diameter_mm": {
+            "maximum": 16.0,
+            "minimum": 6.0,
+            "title": "Stirrup Diameter Mm",
+            "type": "number"
+          },
+          "stirrup_legs": {
+            "maximum": 6.0,
+            "minimum": 2.0,
+            "title": "Stirrup Legs",
+            "type": "integer"
+          },
+          "stirrup_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 300.0,
+            "title": "Stirrup Spacing Mm",
+            "type": "number"
+          },
+          "tension": {
+            "$ref": "#/components/schemas/BeamBarLayersV2"
+          }
+        },
+        "required": [
+          "clear_cover_mm",
+          "tension",
+          "compression_or_hanger",
+          "stirrup_diameter_mm",
+          "stirrup_legs",
+          "stirrup_spacing_mm",
+          "bar_type",
+          "has_standard_bend_at_start",
+          "has_standard_bend_at_end",
+          "source_reference"
+        ],
+        "title": "BeamSuppliedReinforcementV2",
+        "type": "object"
+      },
+      "BeamSuppliedShearResponseV2": {
+        "description": "Exact supplied stirrup area/spacing result.",
+        "properties": {
+          "capacity_is_adequate": {
+            "title": "Capacity Is Adequate",
+            "type": "boolean"
+          },
+          "clause_refs": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Clause Refs",
+            "type": "object"
+          },
+          "concrete_capacity_kn": {
+            "title": "Concrete Capacity Kn",
+            "type": "number"
+          },
+          "issues": {
+            "items": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "maximum_permitted_spacing_mm": {
+            "title": "Maximum Permitted Spacing Mm",
+            "type": "number"
+          },
+          "provided_asv_mm2": {
+            "title": "Provided Asv Mm2",
+            "type": "number"
+          },
+          "provided_spacing_mm": {
+            "title": "Provided Spacing Mm",
+            "type": "number"
+          },
+          "provided_stirrup_capacity_kn": {
+            "title": "Provided Stirrup Capacity Kn",
+            "type": "number"
+          },
+          "required_Vus_kn": {
+            "title": "Required Vus Kn",
+            "type": "number"
+          },
+          "schema_version": {
+            "const": "beam-supplied-shear-check/v2",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "section_shear_is_adequate": {
+            "title": "Section Shear Is Adequate",
+            "type": "boolean"
+          },
+          "spacing_is_adequate": {
+            "title": "Spacing Is Adequate",
+            "type": "boolean"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "total_capacity_kn": {
+            "title": "Total Capacity Kn",
+            "type": "number"
+          },
+          "utilization": {
+            "title": "Utilization",
+            "type": "number"
+          }
+        },
+        "required": [
+          "schema_version",
+          "status",
+          "required_Vus_kn",
+          "concrete_capacity_kn",
+          "provided_stirrup_capacity_kn",
+          "total_capacity_kn",
+          "provided_asv_mm2",
+          "provided_spacing_mm",
+          "maximum_permitted_spacing_mm",
+          "spacing_is_adequate",
+          "capacity_is_adequate",
+          "section_shear_is_adequate",
+          "utilization",
+          "issues",
+          "clause_refs"
+        ],
+        "title": "BeamSuppliedShearResponseV2",
+        "type": "object"
+      },
+      "BeamSupportBasisV2": {
+        "additionalProperties": false,
+        "description": "Source-referenced support widths used for the anchorage check.",
+        "properties": {
+          "end_width_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "End Width Mm",
+            "type": "number"
+          },
+          "source_reference": {
+            "maxLength": 240,
+            "minLength": 1,
+            "title": "Source Reference",
+            "type": "string"
+          },
+          "start_width_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Start Width Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "start_width_mm",
+          "end_width_mm",
+          "source_reference"
+        ],
+        "title": "BeamSupportBasisV2",
+        "type": "object"
       },
       "BeamWith3D": {
         "description": "Beam data with 3D positioning for visualization.",
@@ -32458,13 +32973,13 @@
     },
     "/api/v1/design/beam/check": {
       "post": {
-        "description": "Check if a beam with given reinforcement is adequate for the applied loads.",
+        "description": "Evaluate one versioned, source-referenced rectangular-beam reinforcement schedule. The request must supply explicit effective depth or a complete depth basis; legacy flat payloads are rejected rather than adapted with hidden cover or bar assumptions.",
         "operationId": "check_beam_api_v1_design_beam_check_post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/BeamCheckRequest"
+                "$ref": "#/components/schemas/BeamSuppliedCheckRequestV2"
               }
             }
           },
@@ -32475,7 +32990,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse_BeamCheckResponse_"
+                  "$ref": "#/components/schemas/APIResponse_BeamSuppliedCheckResponseV2_"
                 }
               }
             },
@@ -32572,7 +33087,7 @@
             "description": "Capability unavailable"
           }
         },
-        "summary": "Check Beam Adequacy",
+        "summary": "Check Supplied Beam Reinforcement",
         "tags": [
           "design"
         ]

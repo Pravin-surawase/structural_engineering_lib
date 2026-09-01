@@ -12,6 +12,7 @@ Task-focused recipes and code snippets for common structural engineering workflo
 |--------|-------------|--------|
 | [cli-reference.md](cli-reference.md) | Complete CLI command reference with examples | ✅ |
 | [python/family-facades.md](python/family-facades.md) | All 13 canonical family construction journeys | Published in 0.24.0 |
+| [python/beam-supplied-check.md](python/beam-supplied-check.md) | Exact supplied-reinforcement V2 `PASS`/`FAIL`/`HOLD` journey | Current beam contract |
 | [family facade contracts](../reference/family-facade-contracts.md) | Generated signatures, units, enums, errors, and statuses | Published in 0.24.0 |
 | [python-recipes.md](python-recipes.md) | Compatibility and low-level API snippets | Advanced / compatibility |
 

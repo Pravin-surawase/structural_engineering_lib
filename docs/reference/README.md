@@ -32,6 +32,7 @@ Comprehensive lookup documentation for APIs, formulas, contracts, and troublesho
 | Document | Description |
 |----------|-------------|
 | [api.md](api.md) | Full Python API reference with function signatures |
+| [beam-facade.md](beam-facade.md) | Generated canonical beam operations, contracts, examples, and exact signatures |
 | [insights-api.md](insights-api.md) | Insights API for smart analysis features |
 | [api-stability.md](api-stability.md) | API versioning and stability guarantees |
 | [deprecation-policy.md](deprecation-policy.md) | Deprecation timeline and migration paths |

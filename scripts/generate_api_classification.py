@@ -181,6 +181,203 @@ _OPTIONAL_DEPENDENCY_STUB_SYMBOLS = frozenset(
         "structural_lib.dxf_export.units",
     }
 )
+_CANONICAL_DOCSTRING_SECTIONS = (
+    "parameters",
+    "returns",
+    "raises",
+    "examples",
+    "limitations",
+    "provenance",
+)
+_DOCSTRING_SECTION_PATTERNS = {
+    section: re.compile(rf"(?m)^\s*{section.title()}:?\s*$")
+    for section in _CANONICAL_DOCSTRING_SECTIONS
+}
+_DOCUMENTED_BEAM_OPERATIONS = frozenset(
+    {
+        "bbs",
+        "check",
+        "check_supplied",
+        "design",
+        "design_and_detail",
+        "detail",
+        "input",
+        "load",
+        "load_supplied_check",
+    }
+)
+_TEMPORARY_DOCUMENTATION_DEBT_BASELINE = frozenset(
+    {
+        "structural_lib.design.is456.column.check",
+        "structural_lib.design.is456.column.design",
+        "structural_lib.design.is456.column.input",
+        "structural_lib.design.is456.column.load",
+        "structural_lib.design.is456.combined_footing.design",
+        "structural_lib.design.is456.combined_footing.input",
+        "structural_lib.design.is456.combined_footing.load",
+        "structural_lib.design.is456.deep_beam.design",
+        "structural_lib.design.is456.deep_beam.input",
+        "structural_lib.design.is456.deep_beam.load",
+        "structural_lib.design.is456.flat_slab.design",
+        "structural_lib.design.is456.flat_slab.input",
+        "structural_lib.design.is456.flat_slab.load",
+        "structural_lib.design.is456.isolated_footing.design",
+        "structural_lib.design.is456.isolated_footing.input",
+        "structural_lib.design.is456.isolated_footing.load",
+        "structural_lib.design.is456.slab.design_continuous_one_way",
+        "structural_lib.design.is456.slab.design_one_way",
+        "structural_lib.design.is456.slab.design_two_way",
+        "structural_lib.design.is456.slab.load_continuous_one_way",
+        "structural_lib.design.is456.slab.load_one_way",
+        "structural_lib.design.is456.slab.load_two_way",
+        "structural_lib.design.is456.staircase.design",
+        "structural_lib.design.is456.staircase.input",
+        "structural_lib.design.is456.staircase.load",
+        "structural_lib.design.is456.strap_footing.design",
+        "structural_lib.design.is456.strap_footing.input",
+        "structural_lib.design.is456.strap_footing.load",
+        "structural_lib.design.is456.torsion.design",
+        "structural_lib.design.is456.torsion.input",
+        "structural_lib.design.is456.torsion.load",
+        "structural_lib.design.is456.wall.design",
+        "structural_lib.design.is456.wall.input",
+        "structural_lib.design.is456.wall.load",
+    }
+)
+_BEAM_EXAMPLE_INVENTORY = (
+    *(
+        {
+            "example_id": f"is456.beam.facade.{operation}.docstring",
+            "operation": operation,
+            "kind": "DOCSTRING",
+            "expected": "EXECUTES_FROM_EXACT_WHEEL",
+            "path": "docs/reference/beam-facade.md",
+        }
+        for operation in sorted(_DOCUMENTED_BEAM_OPERATIONS)
+    ),
+    {
+        "example_id": "is456.beam.design.valid",
+        "operation": "design",
+        "kind": "VALID",
+        "expected": "PASS",
+        "path": "docs/cookbook/python/beam-design.md",
+    },
+    {
+        "example_id": "is456.beam.design.invalid",
+        "operation": "load",
+        "kind": "INVALID",
+        "expected": "INPUT_OUT_OF_RANGE:actions.mu_knm",
+        "path": "docs/cookbook/python/beam-design.md",
+    },
+    {
+        "example_id": "is456.beam.design.engineering-fail",
+        "operation": "design",
+        "kind": "ENGINEERING_FAIL",
+        "expected": "FAIL",
+        "path": "docs/cookbook/python/beam-design.md",
+    },
+    {
+        "example_id": "is456.beam.supplied.valid",
+        "operation": "check_supplied",
+        "kind": "VALID",
+        "expected": "PASS",
+        "path": "docs/cookbook/python/beam-supplied-check.md",
+    },
+    {
+        "example_id": "is456.beam.supplied.invalid",
+        "operation": "load_supplied_check",
+        "kind": "INVALID",
+        "expected": "CROSS_FIELD_CONTRACT_INVALID:section",
+        "path": "docs/cookbook/python/beam-supplied-check.md",
+    },
+    {
+        "example_id": "is456.beam.supplied.engineering-fail",
+        "operation": "check_supplied",
+        "kind": "ENGINEERING_FAIL",
+        "expected": "FAIL",
+        "path": "docs/cookbook/python/beam-supplied-check.md",
+    },
+    {
+        "example_id": "is456.beam.supplied.engineering-hold",
+        "operation": "check_supplied",
+        "kind": "ENGINEERING_HOLD",
+        "expected": "HOLD",
+        "path": "docs/cookbook/python/beam-supplied-check.md",
+    },
+)
+
+
+def _documentation_role(
+    *, kind: str, declared_export: bool, claim_disposition: str
+) -> str:
+    """Classify one symbol's public documentation obligation."""
+
+    if not declared_export:
+        return "INTERNAL_NO_PUBLIC_DOCUMENTATION"
+    if kind == "function" and claim_disposition == "canonical":
+        return "CANONICAL_WORKFLOW_OPERATION"
+    if kind == "function" and claim_disposition == "advanced":
+        return "EXPERT_OPERATION"
+    if kind == "function":
+        return "COMPATIBILITY_OPERATION"
+    if kind == "class" and claim_disposition == "canonical":
+        return "CANONICAL_CONTRACT"
+    if kind == "class":
+        return "PUBLIC_CONTRACT"
+    return "PUBLIC_VALUE"
+
+
+def _documentation_record(
+    *,
+    value: object,
+    qualified_name: str,
+    kind: str,
+    declared_export: bool,
+    claim_disposition: str,
+) -> dict[str, Any]:
+    """Return measurable documentation obligations for one classified symbol."""
+
+    role = _documentation_role(
+        kind=kind,
+        declared_export=declared_export,
+        claim_disposition=claim_disposition,
+    )
+    docstring = inspect.getdoc(value) or ""
+    present_sections = sorted(
+        section
+        for section, pattern in _DOCSTRING_SECTION_PATTERNS.items()
+        if pattern.search(docstring)
+    )
+    required_sections = (
+        list(_CANONICAL_DOCSTRING_SECTIONS)
+        if role == "CANONICAL_WORKFLOW_OPERATION"
+        else []
+    )
+    missing_sections = sorted(set(required_sections) - set(present_sections))
+    example_ids = [
+        item["example_id"]
+        for item in _BEAM_EXAMPLE_INVENTORY
+        if qualified_name == "structural_lib.design.is456.beam." + item["operation"]
+    ]
+    return {
+        "role": role,
+        "obligations": (
+            [
+                "EXACT_SIGNATURE",
+                "COMPLETE_DOCSTRING",
+                "GENERATED_REFERENCE",
+                "REGISTERED_EXECUTABLE_EXAMPLE",
+            ]
+            if role == "CANONICAL_WORKFLOW_OPERATION"
+            else ["CLASSIFIED_PUBLIC_ROLE"]
+            if declared_export
+            else []
+        ),
+        "signature": _signature(value) if kind == "function" else "",
+        "docstring_sections": present_sections,
+        "missing_docstring_sections": missing_sections,
+        "example_ids": example_ids,
+    }
 
 
 def _kind(value: object) -> str:
@@ -804,21 +1001,31 @@ def _build_surface(
     for name in sorted(declared_set):
         value = getattr(module, name)
         defined_in = getattr(value, "__module__", module_name)
+        kind = _kind(value)
+        qualified_name = f"{module_name}.{name}"
+        claim_disposition = _claim_disposition(
+            module_name=module_name,
+            name=name,
+            defined_in=defined_in,
+            declared_export=True,
+            canonical_task_exports=canonical_task_exports,
+            capability_bound_exports=capability_bound_exports,
+        )
         records.append(
             {
                 "name": name,
-                "qualified_name": f"{module_name}.{name}",
-                "kind": _kind(value),
+                "qualified_name": qualified_name,
+                "kind": kind,
                 "classification": export_class,
                 "declared_export": True,
                 "defined_in": defined_in,
-                "claim_disposition": _claim_disposition(
-                    module_name=module_name,
-                    name=name,
-                    defined_in=defined_in,
+                "claim_disposition": claim_disposition,
+                "documentation": _documentation_record(
+                    value=value,
+                    qualified_name=qualified_name,
+                    kind=kind,
                     declared_export=True,
-                    canonical_task_exports=canonical_task_exports,
-                    capability_bound_exports=capability_bound_exports,
+                    claim_disposition=claim_disposition,
                 ),
             }
         )
@@ -833,15 +1040,24 @@ def _build_surface(
         ):
             continue
         defined_in = getattr(value, "__module__", module_name)
+        kind = _kind(value)
+        qualified_name = f"{module_name}.{name}"
         records.append(
             {
                 "name": name,
-                "qualified_name": f"{module_name}.{name}",
-                "kind": _kind(value),
+                "qualified_name": qualified_name,
+                "kind": kind,
                 "classification": "internal",
                 "declared_export": False,
                 "defined_in": defined_in,
                 "claim_disposition": "internal",
+                "documentation": _documentation_record(
+                    value=value,
+                    qualified_name=qualified_name,
+                    kind=kind,
+                    declared_export=False,
+                    claim_disposition="internal",
+                ),
             }
         )
 
@@ -861,6 +1077,38 @@ def _release_channel(version: str) -> str:
     if re.fullmatch(r"\d+\.\d+\.\d+a\d+", version):
         return "alpha"
     raise RuntimeError(f"Unsupported package version for API registry: {version}")
+
+
+def _documentation_contract(surfaces: list[dict[str, Any]]) -> dict[str, Any]:
+    """Build the debt-frozen documentation contract from classified surfaces."""
+
+    canonical_debt = [
+        {
+            "qualified_name": record["qualified_name"],
+            "missing_docstring_sections": record["documentation"][
+                "missing_docstring_sections"
+            ],
+        }
+        for surface in surfaces
+        for record in surface["symbols"]
+        if record["documentation"]["role"] == "CANONICAL_WORKFLOW_OPERATION"
+        and record["documentation"]["missing_docstring_sections"]
+    ]
+    current_names = {item["qualified_name"] for item in canonical_debt}
+    return {
+        "schema_version": "api-documentation-contract/v1",
+        "required_canonical_docstring_sections": list(_CANONICAL_DOCSTRING_SECTIONS),
+        "temporary_debt_baseline": sorted(_TEMPORARY_DOCUMENTATION_DEBT_BASELINE),
+        "current_debt": canonical_debt,
+        "unbaselined_debt": sorted(
+            current_names - _TEMPORARY_DOCUMENTATION_DEBT_BASELINE
+        ),
+        "resolved_baseline_symbols": sorted(
+            _TEMPORARY_DOCUMENTATION_DEBT_BASELINE - current_names
+        ),
+        "exact_wheel_beam_operations": sorted(_DOCUMENTED_BEAM_OPERATIONS),
+        "example_inventory": list(_BEAM_EXAMPLE_INVENTORY),
+    }
 
 
 def build_registry() -> dict[str, Any]:
@@ -891,6 +1139,7 @@ def build_registry() -> dict[str, Any]:
         )
         for module_name, export_class in SURFACE_POLICY
     ]
+    documentation_contract = _documentation_contract(surfaces)
     return {
         "schema_version": "2.0",
         "claim_surface_matrix_schema_version": "claim-surface-matrix/v1",
@@ -1042,6 +1291,7 @@ def build_registry() -> dict[str, Any]:
             "taxonomy": list(_COMPATIBILITY_TAXONOMY),
             "projection_reconciliation": "Every classified facade symbol has exactly one projection record.",
         },
+        "documentation_contract": documentation_contract,
         "surfaces": surfaces,
     }
 
@@ -1709,6 +1959,15 @@ def main() -> int:
         return 1
 
     expected = build_registry()
+    unbaselined_debt = expected["documentation_contract"]["unbaselined_debt"]
+    if unbaselined_debt:
+        print(
+            "ERROR: canonical documentation debt is not in the temporary baseline:",
+            file=sys.stderr,
+        )
+        for qualified_name in unbaselined_debt:
+            print(f"  {qualified_name}", file=sys.stderr)
+        return 1
     expected_compatibility = build_compatibility_ledger(expected)
     if args.check:
         failed = False
