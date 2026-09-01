@@ -161,19 +161,18 @@ is an exception used to guide or debug the change, not a ritual after each edit.
    generic committed folder indexes require no refresh.
 5. Run the affected focused tests, benchmarks, and architecture/import checks
    together as one consolidated selection.
-6. Add one or two independent reviews only when risk justifies them, then run
-   `./run.sh check --quick` once before committing and allow normal hooks to run.
-   The hook calls the same quick orchestrator, so exact PASS receipts are reused
-   instead of rerunning unchanged checks; Git-state checks always execute fresh.
+6. Add one or two independent reviews only when risk justifies them, then create
+   coherent commits. Ordinary commits run only conflict, large-file, and live
+   Git-operation safety guards; comprehensive assurance belongs to the PR.
 7. If verification exposes an outcome-changing defect, repair its root cause,
    rerun the failed or affected narrow evidence, and repeat the consolidated
    gate once for the new frozen candidate.
 8. Treat a multi-unit milestone branch as the publication and validation unit.
    Complete its sequential internal task IDs with only their affected focused
-   tests and any required independent benchmark; do not run quick/hooks/hosted
-   CI or create a PR for every internal unit. Once all intended units are
-   integrated, run their union of focused and architecture/import checks, the
-   quick gate once, normal hooks once, then push once for one PR/hosted cycle.
+   tests and any required independent benchmark; do not run broad local gates,
+   hosted CI, or create a PR for every internal unit. Once all intended units
+   are integrated, run their union of focused evidence, then push once for one
+   PR/hosted cycle.
    Installed-application evidence, mutation authority, and externally acquired
    artifacts remain separate milestone boundaries.
 9. After all intended milestone branches are integrated, run the broad Python suite and
@@ -213,7 +212,7 @@ controls:
 - one writer owns all mutable, shared, and generated surfaces;
 - freeze acceptance rows, maintained callers, and context scope before editing;
 - use focused gates during iteration; after content freezes, validate live
-  context once, rerun focused checks, and run the sole quick gate;
+  context once and rerun the affected focused checks;
 - only then commit an immutable local candidate for a read-only independent
   audit and return one consolidated blocker list after the full audit matrix;
 - run no hosted CI before `PASS <head> <tree>` from that local audit;
@@ -320,8 +319,9 @@ bounded work. Give each a concise packet with objective, exact files, non-goals,
 pitfalls, acceptance criteria, tests, and return format—never full conversation
 history. Verify every result before accepting it. Complete the bounded
 implementation first; use a narrow diagnostic during editing only when needed,
-then run one consolidated focused selection and one quick gate after content
-freezes. Run the full gate once at cumulative closeout. Close subagents and stop
+then run one consolidated focused selection after content freezes. Let the
+batched PR own comprehensive candidate assurance; run the full local gate only
+at a named cumulative or release boundary. Close subagents and stop
 when done.
 ```
 

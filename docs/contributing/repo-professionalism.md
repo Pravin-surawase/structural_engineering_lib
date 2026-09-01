@@ -56,32 +56,34 @@ Canonical sources:
 
 ### Branching and PRs
 - Use short-lived branches: `feat/task-XXX-...`, `fix/task-XXX-...`.
-- Squash merge after CI passes: `gh pr merge <PR> --squash --delete-branch`.
-- Delete branches after merge (the command above does this automatically).
-- Local guardrail: pre-commit blocks commits on `main` (see `.pre-commit-config.yaml`).
-- CI guardrail: pushes to `main` must be associated with a PR (see `.github/workflows/main-branch-guard.yml`).
+- Squash merge after CI passes; branch deletion remains a separately authorized
+  operation.
+- Local guardrail: pre-commit blocks conflict markers, oversized additions, and
+  unsafe Git operations (see `.pre-commit-config.yaml`).
+- CI guardrail: the active ruleset requires an up-to-date PR and strict
+  `PR Gate`; comprehensive validation is not repeated on the merge push.
 
 ### Task hygiene
-- TASKS format is enforced locally: `scripts/check_tasks_format.py`.
+- TASKS format is enforced in PR Validation: `scripts/check_tasks_format.py`.
 - Keep WIP=1 and move tasks between sections (no duplicates).
 - For phased initiatives, use a single umbrella task and list included TASK IDs in its description; track the included tasks in Recently Done.
 
 ### Docs hygiene
-- Docs index structure is enforced locally and in CI: `scripts/check_docs.py --index`.
-- Release docs consistency is enforced locally and in CI: `scripts/release.py check-docs`.
-- Session docs consistency is enforced locally and in CI: `scripts/session.py check`.
+- Docs index structure is enforced in CI: `scripts/check_docs.py --index`.
+- Release docs consistency is enforced in CI: `scripts/release.py check-docs`.
+- Session docs consistency is enforced in CI: `scripts/session.py check`.
 - Handoff brief is derived from SESSION_LOG: `scripts/session.py handoff` or
   preparation-only `scripts/session.py end --fix`. Run either before the
   candidate freeze; plain `session.py end` supplies the read-only verdict.
-- API docs sync is enforced locally and in CI: `scripts/check_api.py --sync`.
-- Pre-release checklist structure is enforced locally and in CI: `scripts/release.py checklist`.
-- API doc signatures are enforced locally and in CI: `scripts/check_api.py --docs`.
-- Next-session brief integrity is checked locally and in CI without an arbitrary
+- API docs sync is enforced in CI: `scripts/check_api.py --sync`.
+- Pre-release checklist structure is enforced in CI: `scripts/release.py checklist`.
+- API doc signatures are enforced in CI: `scripts/check_api.py --docs`.
+- Next-session brief integrity is checked in CI without an arbitrary
   line cap: `scripts/check_next_session_brief_length.py`. Session structure and
   freshness remain owned by `scripts/session.py check`.
-- CLI reference completeness is enforced locally and in CI: `scripts/check_cli_reference.py`.
-- Docs index links are enforced locally and in CI: `scripts/check_governance.py --index-links`.
-- Repo hygiene artifacts are blocked locally: `scripts/check_repo_hygiene.py`.
+- CLI reference completeness is enforced in CI: `scripts/check_cli_reference.py`.
+- Docs index links are enforced in CI: `scripts/check_docs.py --index-links`.
+- Repo hygiene artifacts are blocked in CI: `scripts/check_repo_hygiene.py`.
 
 ### PR discipline
 - Use the PR template in `.github/pull_request_template.md`.

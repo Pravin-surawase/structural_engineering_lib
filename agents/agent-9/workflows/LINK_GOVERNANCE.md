@@ -34,18 +34,15 @@ Internal markdown links break when:
 **Trigger:** Every commit through the consolidated quick hook
 
 **Behavior:**
-- Runs the quick orchestrator, whose `Broken links` check calls
-  `scripts/check_links.py`
-- Blocks commit if broken links detected in active docs
+- Runs `scripts/check_links.py` in Documentation Validation
+- Blocks PR integration if broken links are detected in active docs
 - Excludes planning/archive/research directories
-- Reuses only an exact current-candidate PASS receipt; otherwise executes
+- Executes once for the batched PR candidate
 
-**Configuration:** `.pre-commit-config.yaml`
+**Configuration:** `.github/workflows/fast-checks.yml`
 ```yaml
-- id: verification-quick
-  name: Reuse or run the exact quick validation set
-  entry: ./scripts/python_runtime.sh scripts/check_all.py --quick --allow-operation-completion
-  always_run: true
+- name: Run documentation policy checks
+  run: python scripts/check_links.py
 ```
 
 ### Layer 2: CI Validation (Safety Net)

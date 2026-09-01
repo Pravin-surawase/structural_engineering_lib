@@ -52,6 +52,9 @@ Verify the exact browser input → FastAPI request → rendered result or downlo
 
 ## Closeout
 
-Run `./run.sh check --quick` before commit and `./run.sh check` once at stable implementation closeout. Do not run browser, Docker, coverage, or release checks when they are outside the changed user process.
+Run the affected focused checks locally and let the batched PR own comprehensive
+candidate assurance. Use quick/full local gates only at a named cumulative or
+release boundary. Do not run browser, Docker, coverage, or release checks when
+they are outside the changed user process.
 
 For review-only work, report only confirmed failures that change the scoped user outcome; do not add tests or generic frontend cleanup.

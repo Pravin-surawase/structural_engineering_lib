@@ -639,7 +639,7 @@ async def export_building_summary(request: BatchExportRequest):
         if key not in story_data:
             story_data[key] = {
                 "beams": 0,
-                "pass": 0,
+                "pass": 0,  # nosec B105 - result-count field, not a credential
                 "fail": 0,
                 "pending": 0,
                 "ast_total": 0.0,

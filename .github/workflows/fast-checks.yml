@@ -3,8 +3,6 @@ name: PR Validation
 on:
   pull_request:
     branches: [main]
-  push:
-    branches: [main]
 
 permissions:
   contents: read
@@ -88,6 +86,13 @@ jobs:
         working-directory: Python
         run: python -m mypy
 
+      - name: Security, imports, and generated API contract
+        if: steps.evidence.outputs.valid != 'true'
+        run: |
+          python -m bandit --quiet --recursive Python/structural_lib --skip B101
+          python scripts/validate_imports.py
+          python scripts/generate_api_manifest.py --check
+
       - name: Contract and core tests
         if: steps.evidence.outputs.valid != 'true'
         run: |
@@ -156,18 +161,20 @@ jobs:
           python -m black --check fastapi_app
           python -m ruff check fastapi_app
 
-      - name: FastAPI tests
-        if: steps.evidence.outputs.valid != 'true'
-        run: python -m pytest -c fastapi_app/pytest.ini fastapi_app/tests -v --tb=short -m "not slow and not performance"
-
-      - name: API and deployment contracts
+      - name: Security, API, and deployment contracts
         if: steps.evidence.outputs.valid != 'true'
         run: |
+          python -m bandit --quiet --recursive fastapi_app --skip B101
           python scripts/validate_api_contracts.py
+          python scripts/check_api.py --react-openapi
           python scripts/check_architecture_boundaries.py
           python scripts/check_fastapi_issues.py
           python scripts/check_docker_config.py
           python scripts/check_openapi_snapshot.py
+
+      - name: FastAPI tests
+        if: steps.evidence.outputs.valid != 'true'
+        run: python -m pytest -c fastapi_app/pytest.ini fastapi_app/tests -v --tb=short -m "not slow and not performance"
 
       - name: Record exact FastAPI PASS evidence
         if: steps.evidence.outputs.valid != 'true'
@@ -195,10 +202,6 @@ jobs:
           cache: npm
           cache-dependency-path: react_app/package-lock.json
 
-      - name: Install dependencies
-        working-directory: react_app
-        run: npm ci
-
       - name: Record React runtime identity
         run: |
           {
@@ -217,6 +220,11 @@ jobs:
           cache-name: react
           receipt: ${{ runner.temp }}/verification-evidence/react.json
           runtime-file: ${{ runner.temp }}/react-runtime.txt
+
+      - name: Install dependencies
+        if: steps.evidence.outputs.valid != 'true'
+        working-directory: react_app
+        run: npm ci
 
       - name: Lint, build, and test
         if: steps.evidence.outputs.valid != 'true'
@@ -384,8 +392,19 @@ jobs:
         run: |
           python scripts/check_doc_versions.py --ci
           python scripts/check_tasks_format.py
+          python scripts/check_docs.py --index
+          python scripts/check_docs.py --index-links
           python scripts/check_links.py
+          python scripts/check_next_session_brief_length.py
+          python scripts/release.py check-docs
+          python scripts/release.py checklist
+          python scripts/session.py check
+          python scripts/check_api.py --sync
+          python scripts/check_api.py --docs
+          python scripts/generate_family_facade_docs.py --check
+          python scripts/generate_beam_tool_manifest.py --check
           python scripts/generate_api_classification.py --check
+          python scripts/check_cli_reference.py
           mkdocs build --strict
 
       - name: Record exact documentation PASS evidence
@@ -431,20 +450,13 @@ jobs:
           cache-name: repository
           receipt: ${{ runner.temp }}/verification-evidence/repository.json
 
-      - name: Validate YAML syntax
+      - name: Validate candidate file integrity
         if: steps.evidence.outputs.valid != 'true'
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          import yaml
+        run: python -m pre_commit run --hook-stage manual --all-files
 
-          for path in sorted(Path('.').rglob('*.yml')) + sorted(Path('.').rglob('*.yaml')):
-              if any(part in {'.venv', 'node_modules'} for part in path.parts):
-                  continue
-              with path.open(encoding='utf-8') as stream:
-                  yaml.compose(stream)
-              print(path)
-          PY
+      - name: Validate Python version consistency
+        if: steps.evidence.outputs.valid != 'true'
+        run: python scripts/check_python_version.py --ci
 
       - name: Validate repository policy
         if: steps.evidence.outputs.valid != 'true'

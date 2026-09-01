@@ -517,28 +517,26 @@ def _pending_merge(tmp_path: Path) -> tuple[Path, Path]:
     return repo, linked
 
 
-def test_real_resolved_merge_commits_through_both_precommit_git_guards(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+def test_real_resolved_merge_commits_through_precommit_operation_guard(
+    tmp_path: Path,
 ):
     _repo_path, linked = _pending_merge(tmp_path)
-    # The synthetic repository has no runtime; use this test's interpreter.
-    monkeypatch.setenv("STRUCTURAL_LIB_PYTHON", sys.executable)
-    check_all = importlib.import_module("scripts.check_all")
-    checks = check_all._allow_operation_completion(
-        check_all._collect_checks(None, True)
-    )
-    hook_commands = [
-        [*check.cmd, "--repo", str(linked), "--default-ref", "main"]
-        for check, _category in checks
-        if check.name in {"Git state", "Unfinished operation"}
+    hook_command = [
+        sys.executable,
+        str(REPO_ROOT / "scripts" / "git_state.py"),
+        "--guard",
+        "operation",
+        "--allow-operation-completion",
+        "--repo",
+        str(linked),
+        "--default-ref",
+        "main",
     ]
-    assert len(hook_commands) == 2
     conflicted = git_state.collect_repository_state(linked, default_ref="main")
     assert conflicted.tree.conflicted_paths == ["tracked.txt"]
-    for command in hook_commands:
-        blocked = subprocess.run(command, capture_output=True, text=True)
-        assert blocked.returncode == 1
-        assert "HOLD_OPERATION" in blocked.stdout
+    blocked = subprocess.run(hook_command, capture_output=True, text=True)
+    assert blocked.returncode == 1
+    assert "HOLD_OPERATION" in blocked.stdout
 
     _write(linked, "tracked.txt", "resolved main and feature\n")
     _git(linked, "add", "tracked.txt")
@@ -548,13 +546,11 @@ def test_real_resolved_merge_commits_through_both_precommit_git_guards(
     for guard in ("operation", "validation"):
         assert not git_state._guard_allows(resolved, guard, allow_completion=False)
 
-    # Git itself invokes the same two commands selected by the shared gate.
+    # Git itself invokes the one operation-safety command configured as the hook.
     # No completion-mode result is treated as normal post-commit validation.
     hook = _marker_path(linked, "hooks/pre-commit")
     hook.write_text(
-        "#!/bin/sh\nset -e\n"
-        + "\n".join(shlex.join(cmd) for cmd in hook_commands)
-        + "\n",
+        "#!/bin/sh\nset -e\n" + shlex.join(hook_command) + "\n",
         encoding="utf-8",
     )
     hook.chmod(0o755)

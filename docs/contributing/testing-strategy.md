@@ -41,13 +41,14 @@ The implementation sequence is:
 1. use only a narrow reproducer while a change is still being debugged;
 2. finish the bounded code, tests, generated owners, and documentation;
 3. run the affected focused selection once after content freezes;
-4. run architecture/import/generated checks and one quick gate;
+4. run any affected architecture/import/generated checks;
 5. run the broad Python suite and full repository gate once at the cumulative
    milestone required by `AGENTS.md`;
-6. verify one immutable artifact and wait for all required hosted checks.
+6. push coherent commits together, verify one immutable artifact, and wait for
+   all required hosted checks in the single PR cycle.
 
-An outcome-changing repair after freeze repeats its affected evidence and the
-consolidated gate; unchanged broad suites are not rerun for appearance.
+An outcome-changing repair after freeze repeats its affected evidence; unchanged
+broad suites are not rerun for appearance.
 
 ## Python test taxonomy
 

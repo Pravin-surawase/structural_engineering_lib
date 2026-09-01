@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "source": ".pre-commit-config.yaml@fa0284ef457071c8d7064cf4acb7af641dfda7a2",
+  "target_commit_hook_ids": [
+    "check-merge-conflict",
+    "check-added-large-files",
+    "git-operation-guard"
+  ],
+  "target_manual_hook_ids": [
+    "check-yaml",
+    "check-toml",
+    "check-json",
+    "end-of-file-fixer",
+    "trailing-whitespace",
+    "mixed-line-ending",
+    "check-merge-conflict",
+    "check-added-large-files"
+  ],
+  "entries": [
+    {
+      "key": "check-yaml",
+      "source_id": "check-yaml",
+      "hosted_checks": [{"job": "repository-validation", "token": "pre_commit run --hook-stage manual --all-files"}]
+    },
+    {
+      "key": "check-toml",
+      "source_id": "check-toml",
+      "hosted_checks": [{"job": "repository-validation", "token": "pre_commit run --hook-stage manual --all-files"}]
+    },
+    {
+      "key": "check-json",
+      "source_id": "check-json",
+      "hosted_checks": [{"job": "repository-validation", "token": "pre_commit run --hook-stage manual --all-files"}]
+    },
+    {
+      "key": "end-of-file-fixer",
+      "source_id": "end-of-file-fixer",
+      "hosted_checks": [{"job": "repository-validation", "token": "pre_commit run --hook-stage manual --all-files"}]
+    },
+    {
+      "key": "trailing-whitespace",
+      "source_id": "trailing-whitespace",
+      "hosted_checks": [{"job": "repository-validation", "token": "pre_commit run --hook-stage manual --all-files"}]
+    },
+    {
+      "key": "mixed-line-ending",
+      "source_id": "mixed-line-ending",
+      "hosted_checks": [{"job": "repository-validation", "token": "pre_commit run --hook-stage manual --all-files"}]
+    },
+    {
+      "key": "check-merge-conflict",
+      "source_id": "check-merge-conflict",
+      "target_commit_id": "check-merge-conflict",
+      "hosted_checks": [{"job": "repository-validation", "token": "pre_commit run --hook-stage manual --all-files"}]
+    },
+    {
+      "key": "check-added-large-files",
+      "source_id": "check-added-large-files",
+      "target_commit_id": "check-added-large-files",
+      "hosted_checks": [{"job": "repository-validation", "token": "pre_commit run --hook-stage manual --all-files"}]
+    },
+    {
+      "key": "black-python",
+      "source_id": "black",
+      "hosted_checks": [{"job": "python-validation", "token": "python -m black --check Python"}]
+    },
+    {
+      "key": "black-fastapi",
+      "source_id": "black",
+      "hosted_checks": [{"job": "fastapi-validation", "token": "python -m black --check fastapi_app"}]
+    },
+    {
+      "key": "ruff-python",
+      "source_id": "ruff",
+      "hosted_checks": [{"job": "python-validation", "token": "python -m ruff check Python"}]
+    },
+    {
+      "key": "ruff-fastapi",
+      "source_id": "ruff",
+      "hosted_checks": [{"job": "fastapi-validation", "token": "python -m ruff check fastapi_app"}]
+    },
+    {
+      "key": "mypy-python",
+      "source_id": "mypy",
+      "hosted_checks": [{"job": "python-validation", "token": "python -m mypy"}]
+    },
+    {
+      "key": "bandit-python",
+      "source_id": "bandit",
+      "hosted_checks": [{"job": "python-validation", "token": "python -m bandit --quiet --recursive Python/structural_lib --skip B101"}]
+    },
+    {
+      "key": "bandit-fastapi",
+      "source_id": "bandit",
+      "hosted_checks": [{"job": "fastapi-validation", "token": "python -m bandit --quiet --recursive fastapi_app --skip B101"}]
+    },
+    {
+      "key": "contract-tests",
+      "source_id": "contract-tests",
+      "hosted_checks": [{"job": "python-validation", "token": "Python/tests/integration/test_contracts.py"}]
+    },
+    {
+      "key": "verification-quick",
+      "source_id": "verification-quick",
+      "target_commit_id": "git-operation-guard",
+      "hosted_checks": [
+        {"job": "documentation-validation", "token": "python scripts/check_links.py"},
+        {"job": "documentation-validation", "token": "python scripts/check_doc_versions.py --ci"},
+        {"job": "documentation-validation", "token": "python scripts/check_next_session_brief_length.py"},
+        {"job": "python-validation", "token": "python scripts/validate_imports.py"},
+        {"job": "repository-validation", "token": "python scripts/check_repo_hygiene.py"},
+        {"job": "control-plane-validation", "token": "python scripts/check_token_efficiency.py"},
+        {"job": "control-plane-validation", "token": "python scripts/validate_script_refs.py"},
+        {"job": "control-plane-validation", "token": "python scripts/test_cli_smoke.py"}
+      ]
+    },
+    {
+      "key": "check-python-version",
+      "source_id": "check-python-version",
+      "hosted_checks": [{"job": "repository-validation", "token": "python scripts/check_python_version.py --ci"}]
+    },
+    {
+      "key": "check-tasks-format",
+      "source_id": "check-tasks-format",
+      "hosted_checks": [{"job": "documentation-validation", "token": "python scripts/check_tasks_format.py"}]
+    },
+    {
+      "key": "check-docs-index",
+      "source_id": "check-docs-index",
+      "hosted_checks": [{"job": "documentation-validation", "token": "python scripts/check_docs.py --index"}]
+    },
+    {
+      "key": "check-release-docs",
+      "source_id": "check-release-docs",
+      "hosted_checks": [{"job": "documentation-validation", "token": "python scripts/release.py check-docs"}]
+    },
+    {
+      "key": "check-session-docs",
+      "source_id": "check-session-docs",
+      "hosted_checks": [{"job": "documentation-validation", "token": "python scripts/session.py check"}]
+    },
+    {
+      "key": "check-api-docs-sync",
+      "source_id": "check-api-docs-sync",
+      "hosted_checks": [{"job": "documentation-validation", "token": "python scripts/check_api.py --sync"}]
+    },
+    {
+      "key": "check-pre-release-checklist",
+      "source_id": "check-pre-release-checklist",
+      "hosted_checks": [{"job": "documentation-validation", "token": "python scripts/release.py checklist"}]
+    },
+    {
+      "key": "check-api-doc-signatures",
+      "source_id": "check-api-doc-signatures",
+      "hosted_checks": [{"job": "documentation-validation", "token": "python scripts/check_api.py --docs"}]
+    },
+    {
+      "key": "check-api-manifest",
+      "source_id": "check-api-manifest",
+      "hosted_checks": [{"job": "python-validation", "token": "python scripts/generate_api_manifest.py --check"}]
+    },
+    {
+      "key": "check-api-classification",
+      "source_id": "check-api-classification",
+      "hosted_checks": [{"job": "documentation-validation", "token": "python scripts/generate_api_classification.py --check"}]
+    },
+    {
+      "key": "check-family-facade-docs",
+      "source_id": "check-family-facade-docs",
+      "hosted_checks": [{"job": "documentation-validation", "token": "python scripts/generate_family_facade_docs.py --check"}]
+    },
+    {
+      "key": "check-beam-tool-manifest",
+      "source_id": "check-beam-tool-manifest",
+      "hosted_checks": [{"job": "documentation-validation", "token": "python scripts/generate_beam_tool_manifest.py --check"}]
+    },
+    {
+      "key": "check-cli-reference",
+      "source_id": "check-cli-reference",
+      "hosted_checks": [{"job": "documentation-validation", "token": "python scripts/check_cli_reference.py"}]
+    },
+    {
+      "key": "check-scripts-index",
+      "source_id": "check-scripts-index",
+      "hosted_checks": [{"job": "control-plane-validation", "token": "python scripts/check_scripts_index.py"}]
+    },
+    {
+      "key": "check-docs-index-links",
+      "source_id": "check-docs-index-links",
+      "hosted_checks": [{"job": "documentation-validation", "token": "python scripts/check_docs.py --index-links"}]
+    },
+    {
+      "key": "check-api-signatures",
+      "source_id": "check-api-signatures",
+      "hosted_checks": [{"job": "fastapi-validation", "token": "python scripts/check_api.py --react-openapi"}]
+    },
+    {
+      "key": "check-doc-metadata",
+      "source_id": "check-doc-metadata",
+      "retirement": "Warning mode never rejected a commit; keep the command informational only."
+    }
+  ]
+}

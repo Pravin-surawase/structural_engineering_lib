@@ -58,6 +58,7 @@ EXTERNAL_PACKAGES = {
     "fastapi",
     "uvicorn",
     "pydantic",
+    "pydantic_core",
     "pytest",
     "hypothesis",
     "coverage",
@@ -102,6 +103,13 @@ EXTERNAL_PACKAGES = {
     "pkgutil",
     "unittest",
     "docker",
+    "ezdxf",
+    "jsonschema",
+    "jwt",
+        "pydantic_settings",
+    "sse_starlette",
+    "weasyprint",
+    "websockets",
     "yaml",
     "toml",
     "tomli",
@@ -180,7 +188,11 @@ def can_resolve_module(module_str: str) -> bool:
     parts = module_str.split(".")
     for module_root in MODULE_ROOTS:
         candidate = module_root / Path(*parts)
-        if candidate.is_dir() and (candidate / "__init__.py").exists():
+        # Top-level repository namespaces such as ``scripts`` are importable
+        # without ``__init__.py`` when the repository root is on sys.path.
+        # Resolve them from checked-in structure rather than the caller's
+        # environment so local and hosted scans agree.
+        if candidate.is_dir():
             return True
         candidate = module_root / Path(*parts).with_suffix(".py")
         if candidate.exists():

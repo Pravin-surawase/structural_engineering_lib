@@ -1,0 +1,147 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "b62fde2473968ea6158fe2e39e5c8055063f24c8073e9fe533740643879eead9",
+    "state": {
+      "branch": "codex/commit-gate-consolidation",
+      "default_base": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "fa0284ef457071c8d7064cf4acb7af641dfda7a2",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 258.49,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git\\worktrees\\commit-gate-consolidation",
+      "head_sha": "d698029b581e411c5004688190b2e88338956764",
+      "hold_reasons": [
+        "changed paths: 27"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-09-01T20:10:02.879466+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\worktrees\\commit-gate-consolidation",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 27,
+        "modified_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/planning/commit-pr-validation-consolidation-plan.md"
+        ],
+        "staged_paths": [
+          ".github/skills/development-rules/SKILL.md",
+          ".github/skills/react-validation/SKILL.md",
+          ".github/workflows/README.md",
+          ".github/workflows/fast-checks.yml",
+          ".pre-commit-config.yaml",
+          "AGENTS.md",
+          "Python/tests/test_agent_governance_automation.py",
+          "Python/tests/test_ci_workflow_contract.py",
+          "Python/tests/test_git_state.py",
+          "Python/tests/test_verification_control.py",
+          "agents/agent-9/workflows/LINK_GOVERNANCE.md",
+          "docs/_internal/git-governance.md",
+          "docs/architecture/unified-architecture-v1.md",
+          "docs/contributing/development-guide.md",
+          "docs/contributing/repo-professionalism.md",
+          "docs/contributing/session-issues.md",
+          "docs/contributing/testing-strategy.md",
+          "docs/git-automation/git-workflow-single-source.md",
+          "docs/guidelines/ai-token-efficiency.md",
+          "docs/guides/testing-and-cicd-strategy.md",
+          "docs/learning-foundations/09-git.md",
+          "docs/planning/commit-pr-validation-consolidation-plan.md",
+          "scripts/README.md",
+          "scripts/check_all.py",
+          "scripts/check_codex_git_workflow.py"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "fa0284ef457071c8d7064cf4acb7af641dfda7a2",
+        "status": "ahead"
+      },
+      "worktree_root": "C:\\CodexWork\\worktrees\\commit-gate-consolidation"
+    }
+  },
+  "local_state_receipt_hash": "sha256:b62fde2473968ea6158fe2e39e5c8055063f24c8073e9fe533740643879eead9",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-09-01T20:10:02.879466+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      ".pre-commit-config.yaml",
+      ".github/workflows/fast-checks.yml",
+      "scripts/validation-coverage.json",
+      "scripts/verification-manifest.json",
+      "scripts/check_all.py",
+      "scripts/check_codex_git_workflow.py",
+      "Python/tests/test_ci_workflow_contract.py",
+      "Python/tests/test_verification_control.py",
+      "Python/tests/test_git_state.py",
+      "Python/tests/test_agent_governance_automation.py",
+      "docs/planning/commit-pr-validation-consolidation-plan.md"
+    ],
+    "shared_paths": [],
+    "task_id": "MAINT-COMMIT-GATE-CONSOLIDATION"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

@@ -249,13 +249,54 @@ def test_control_paths_use_python_runtime_launcher():
     assert install_offset < smoke_offset
 
 
-def test_pre_commit_all_file_contract_preserves_owned_artifacts_and_strict_json():
+def test_pre_commit_contract_has_three_commit_guards_and_eight_manual_checks():
     config = yaml.safe_load(
         (REPO_ROOT / ".pre-commit-config.yaml").read_text(encoding="utf-8")
     )
     hooks = [hook for repo in config["repos"] for hook in repo["hooks"]]
+    by_id = {hook["id"]: hook for hook in hooks}
 
-    check_json = next(hook for hook in hooks if hook["id"] == "check-json")
+    assert set(by_id) == {
+        "check-yaml",
+        "check-toml",
+        "check-json",
+        "end-of-file-fixer",
+        "trailing-whitespace",
+        "mixed-line-ending",
+        "check-merge-conflict",
+        "check-added-large-files",
+        "git-operation-guard",
+    }
+    commit_hooks = {
+        hook["id"]
+        for hook in hooks
+        if "pre-commit" in hook.get("stages", config["default_stages"])
+    }
+    manual_hooks = {hook["id"] for hook in hooks if "manual" in hook.get("stages", [])}
+    assert commit_hooks == {
+        "check-merge-conflict",
+        "check-added-large-files",
+        "git-operation-guard",
+    }
+    assert manual_hooks == {
+        "check-yaml",
+        "check-toml",
+        "check-json",
+        "end-of-file-fixer",
+        "trailing-whitespace",
+        "mixed-line-ending",
+        "check-merge-conflict",
+        "check-added-large-files",
+    }
+    operation_guard = by_id["git-operation-guard"]
+    assert operation_guard["always_run"] is True
+    assert operation_guard["pass_filenames"] is False
+    assert operation_guard["entry"] == (
+        "./scripts/python_runtime.sh scripts/git_state.py --guard operation "
+        "--allow-operation-completion"
+    )
+
+    check_json = by_id["check-json"]
     jsonc_exclude = re.compile(check_json["exclude"])
     assert jsonc_exclude.match("react_app/tsconfig.app.json")
     assert jsonc_exclude.match("react_app/tsconfig.node.json")
@@ -288,38 +329,39 @@ def test_pre_commit_all_file_contract_preserves_owned_artifacts_and_strict_json(
         assert all(matcher.match(path) for path in preserved)
         assert not matcher.match("docs/contributing/development-guide.md")
 
-    bandit_hooks = [hook for hook in hooks if hook["id"] == "bandit"]
-    assert len(bandit_hooks) == 2
-    assert all("exclude" not in hook for hook in bandit_hooks)
+    assert not ({"black", "ruff", "mypy", "bandit", "pytest"} & set(by_id))
 
 
 def test_pre_commit_manual_command_uses_repository_runtime():
     source = (REPO_ROOT / ".pre-commit-config.yaml").read_text(encoding="utf-8")
-    assert "./scripts/python_runtime.sh -m pre_commit run --all-files" in source
+    assert (
+        "./scripts/python_runtime.sh -m pre_commit run --hook-stage manual --all-files"
+        in source
+    )
     assert "# Run manually: pre-commit" not in source
 
 
-def test_api_classification_hook_covers_tracked_caller_text_surfaces():
+def test_api_classification_moved_from_commit_hook_to_hosted_coverage():
     config = yaml.safe_load(
         (REPO_ROOT / ".pre-commit-config.yaml").read_text(encoding="utf-8")
     )
-    hooks = [hook for repo in config["repos"] for hook in repo["hooks"]]
-    hook = next(hook for hook in hooks if hook["id"] == "check-api-classification")
-    matcher = re.compile(hook["files"])
-
-    scanned_caller_examples = (
-        "README.md",
-        "docs/planning/new-contract.md",
-        "Python/structural_lib/new_surface.py",
-        "fastapi_app/routers/new_route.py",
-        "react_app/src/hooks/useNewSurface.ts",
-        "excel_addin/taskpane-new.mjs",
-        "scripts/control-plane.json",
-        ".github/workflows/fast-checks.yml",
-        "pyproject.toml",
+    hook_ids = {hook["id"] for repo in config["repos"] for hook in repo["hooks"]}
+    coverage = json.loads(
+        (SCRIPTS_DIR / "validation-coverage.json").read_text(encoding="utf-8")
     )
-    assert all(matcher.search(path) for path in scanned_caller_examples)
-    assert not matcher.search("docs/reference/vendor/etabs/help.chm")
+    entry = next(
+        item
+        for item in coverage["entries"]
+        if item["source_id"] == "check-api-classification"
+    )
+
+    assert "check-api-classification" not in hook_ids
+    assert entry["hosted_checks"] == [
+        {
+            "job": "documentation-validation",
+            "token": "python scripts/generate_api_classification.py --check",
+        }
+    ]
 
 
 def test_react_dependency_probe_is_worktree_local_and_actionable(tmp_path):

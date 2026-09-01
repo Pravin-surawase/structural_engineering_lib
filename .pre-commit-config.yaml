@@ -1,6 +1,8 @@
 # Pre-commit hooks for structural_engineering_lib
 # Install hooks: ./scripts/python_runtime.sh -m pre_commit install
-# Run manually: ./scripts/python_runtime.sh -m pre_commit run --all-files
+# Run PR file integrity: ./scripts/python_runtime.sh -m pre_commit run --hook-stage manual --all-files
+
+default_stages: [pre-commit]
 
 repos:
   # General file hygiene
@@ -9,217 +11,44 @@ repos:
     hooks:
       - id: check-yaml
         files: \.(yml|yaml)$  # Only run on YAML files
+        stages: [manual]
         # MkDocs uses a Python callable tag for Mermaid fences. Its config is
         # validated by the strict MkDocs workflow instead of the safe YAML loader.
         exclude: ^mkdocs\.yml$
       - id: check-toml
         files: \.toml$  # Only run on TOML files
+        stages: [manual]
       - id: check-json
         files: \.json$  # Only run on JSON files
+        stages: [manual]
         # TypeScript consumes these two deliberate JSONC configuration files.
         # Every other .json file remains under strict JSON validation.
         exclude: ^react_app/tsconfig\.(app|node)\.json$
       - id: end-of-file-fixer
         exclude: &preserved-text-artifacts ^(VBA/|Excel/|\.vite/|docs/_archive/|docs/reference/vendor/|Python/tests/data/|Python/tests/fixtures/|react_app/src/__fixtures__/|tests/fixtures/)
+        stages: [manual]
       - id: trailing-whitespace
         exclude: *preserved-text-artifacts
+        stages: [manual]
       - id: mixed-line-ending
         exclude: *preserved-text-artifacts
+        stages: [manual]
       - id: check-merge-conflict
+        stages: [pre-commit, manual]
       - id: check-added-large-files
         args: ['--maxkb=500']
+        stages: [pre-commit, manual]
 
-  # Python formatting
-  - repo: https://github.com/psf/black
-    rev: 26.5.1
-    hooks:
-      - id: black
-        language_version: python3
-        files: ^Python/
-      - id: black
-        name: black (fastapi)
-        language_version: python3
-        files: ^fastapi_app/
-
-  # Python linting
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.1
-    hooks:
-      - id: ruff
-        args: [--fix, --exit-non-zero-on-fix]
-        files: ^Python/
-      - id: ruff
-        name: ruff (fastapi)
-        args: [--fix, --exit-non-zero-on-fix]
-        files: ^fastapi_app/
-
-  # Python type checking (local hook with correct working directory)
+  # Live operation safety cannot be observed by a hosted checkout.
   - repo: local
     hooks:
-      - id: mypy
-        name: mypy (structural_lib)
-        entry: bash -c 'cd Python && ../scripts/python_runtime.sh -m mypy structural_lib/'
+      - id: git-operation-guard
+        name: Block unsafe Git operations while permitting a resolved merge
+        entry: ./scripts/python_runtime.sh scripts/git_state.py --guard operation --allow-operation-completion
         language: system
-        types: [python]
-        files: ^Python/structural_lib/.*\.py$
         pass_filenames: false
-        verbose: true
+        always_run: true
+        stages: [pre-commit]
 
-  # Python import sorting
-  # Security linting
-  - repo: https://github.com/PyCQA/bandit
-    rev: 1.7.10
-    hooks:
-      - id: bandit
-        args: [--skip, B101]
-        files: ^Python/structural_lib/
-      - id: bandit
-        name: bandit (fastapi)
-        args: [--skip, B101]
-        files: ^fastapi_app/
-
-  # API contract testing (prevent breaking changes)
-  - repo: local
-    hooks:
-      - id: contract-tests
-        name: API contract tests (prevent breaking changes)
-        entry: bash -c "cd Python && ../scripts/python_runtime.sh -m pytest tests/integration/test_contracts.py -m contract -v --tb=short"
-        language: system
-        pass_filenames: false
-        always_run: false
-        files: ^Python/structural_lib/(api|data_types|beam_pipeline)\.py$
-        verbose: true
-
-  # Consolidated quick gate plus two non-overlapping commit-only controls.
-  - repo: local
-    hooks:
-      - id: verification-quick
-        name: Reuse or run the exact quick validation set
-        entry: ./scripts/python_runtime.sh scripts/check_all.py --quick --allow-operation-completion
-        language: system
-        pass_filenames: false
-        always_run: true
-        verbose: true
-      - id: check-python-version
-        name: Check Python version consistency
-        entry: ./scripts/python_runtime.sh scripts/check_python_version.py --ci
-        language: system
-        pass_filenames: false
-        files: (pyproject\.toml|setup\.cfg|\.github/workflows/.*\.yml)$
-        verbose: true
-      - id: check-tasks-format
-        name: Check TASKS.md format
-        entry: ./scripts/python_runtime.sh scripts/check_tasks_format.py
-        language: system
-        pass_filenames: false
-        always_run: true
-        verbose: true
-      - id: check-docs-index
-        name: Check docs index structure
-        entry: ./scripts/python_runtime.sh scripts/check_docs.py --index
-        language: system
-        pass_filenames: false
-        always_run: true
-        verbose: true
-      - id: check-release-docs
-        name: Check release docs consistency
-        entry: ./scripts/python_runtime.sh scripts/release.py check-docs
-        language: system
-        pass_filenames: false
-        always_run: true
-        verbose: true
-      - id: check-session-docs
-        name: Check session docs consistency
-        entry: ./scripts/python_runtime.sh scripts/session.py check
-        language: system
-        pass_filenames: false
-        always_run: true
-        verbose: true
-      - id: check-api-docs-sync
-        name: Check API docs sync
-        entry: ./scripts/python_runtime.sh scripts/check_api.py --sync
-        language: system
-        pass_filenames: false
-        always_run: true
-        verbose: true
-      - id: check-pre-release-checklist
-        name: Check pre-release checklist structure
-        entry: ./scripts/python_runtime.sh scripts/release.py checklist
-        language: system
-        pass_filenames: false
-        always_run: true
-        verbose: true
-      - id: check-api-doc-signatures
-        name: Check API doc signatures
-        entry: ./scripts/python_runtime.sh scripts/check_api.py --docs
-        language: system
-        pass_filenames: false
-        always_run: true
-        verbose: true
-      - id: check-api-manifest
-        name: Check API manifest
-        entry: ./scripts/python_runtime.sh scripts/generate_api_manifest.py --check
-        language: system
-        pass_filenames: false
-        files: ^Python/structural_lib/api\.py$
-        verbose: true
-      - id: check-api-classification
-        name: Check API classification registry
-        entry: ./scripts/python_runtime.sh scripts/generate_api_classification.py --check
-        language: system
-        pass_filenames: false
-        files: \.(json|md|mjs|py|sh|toml|ts|tsx|ya?ml)$
-        verbose: true
-      - id: check-family-facade-docs
-        name: Check generated family facade cookbook and reference
-        entry: ./scripts/python_runtime.sh scripts/generate_family_facade_docs.py --check
-        language: system
-        pass_filenames: false
-        files: ^(Python/structural_lib/services/(family_facade_registry|contracts/(beam|common|family_f[123]))\.py|scripts/(generate_family_facade_docs|verify_lib_pro_013_f0_family_artifact)\.py|docs/cookbook/python/.*\.md|docs/reference/family-facade-contracts\.md)$
-        verbose: true
-      - id: check-beam-tool-manifest
-        name: Check catalogue-derived beam tool manifest
-        entry: ./scripts/python_runtime.sh scripts/generate_beam_tool_manifest.py --check
-        language: system
-        pass_filenames: false
-        files: ^(Python/structural_lib/services/(workflow_catalog|tool_manifest)\.py|scripts/generate_beam_tool_manifest\.py|docs/reference/beam-tool-manifest\.json)$
-        verbose: true
-      - id: check-cli-reference
-        name: Check CLI reference commands
-        entry: ./scripts/python_runtime.sh scripts/check_cli_reference.py
-        language: system
-        pass_filenames: false
-        always_run: true
-        verbose: true
-      - id: check-scripts-index
-        name: Check control, context, and verification registries
-        entry: ./scripts/python_runtime.sh scripts/check_scripts_index.py
-        language: system
-        pass_filenames: false
-        always_run: true
-        verbose: true
-      - id: check-docs-index-links
-        name: Check docs index links
-        entry: ./scripts/python_runtime.sh scripts/check_docs.py --index-links
-        language: system
-        pass_filenames: false
-        always_run: true
-        verbose: true
-      - id: check-api-signatures
-        name: Check React/FastAPI endpoint contract
-        entry: ./scripts/python_runtime.sh scripts/check_api.py --react-openapi
-        language: system
-        pass_filenames: false
-        files: ^(react_app/src/.*\.(ts|tsx)|fastapi_app/.*\.py)$
-        verbose: true
-      - id: check-doc-metadata
-        name: Check doc metadata (warning mode)
-        entry: ./scripts/python_runtime.sh scripts/check_docs.py --metadata
-        language: system
-        pass_filenames: false
-        files: ^docs/.*\.md$
-        verbose: true
-        # Note: This runs in warning mode (non-blocking). Use --strict to enforce.
-
-# CI note: pre-commit hooks run locally only.
-# CI has separate lint/format checks in fast-checks.yml and nightly.yml
+# Required candidate assurance runs once in the PR workflow. Use explicit local
+# format/test/check commands only as implementation diagnostics, never as hooks.

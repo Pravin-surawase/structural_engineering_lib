@@ -32,6 +32,17 @@ security scanning, tests, generated-artifact checks, documentation checks, API
 parity and the ten-check quick gate. Developers may run a narrow reproducer or
 formatter while working, but no broad local gate is mandatory per commit.
 
+## Implementation status
+
+The plan is implemented as two coherent commits on one candidate branch. The
+first establishes complete hosted ownership and its machine-readable 34-hook
+coverage map before any local control is removed. The second reduces ordinary
+commits to the exact three guards above, retains eight manual-stage integrity
+checks for PR Repository Validation, removes the duplicate `main`-push trigger,
+and updates executable topology tests and active guidance. Final acceptance is
+the unchanged batched PR head passing strict `PR Gate`; no second workflow run
+is expected for its merge push.
+
 ## Why this supersedes the current task text
 
 The current `.pre-commit-config.yaml` defines 34 hook entries, 11 of them
@@ -253,9 +264,12 @@ The packet is complete only when all of the following are true:
 1. Ordinary commits invoke exactly 3 hook IDs, with exactly 1 `always_run` hook
    and zero formatters, linters, type checkers, security scanners, tests,
    generators, documentation checks or quick/full gates.
-2. Warm representative commit-hook p50 is at most 2 seconds and p95 at most 5
-   seconds; cold execution after dependencies are already installed is at most
-   15 seconds. Record Windows and one POSIX result without conflating them.
+2. Warm representative commit-hook p50 is at most 5 seconds and p95 at most 7
+   seconds on Windows; the POSIX target remains p50 at most 2 seconds and p95
+   at most 5 seconds. Cold execution after dependencies are already installed
+   is at most 15 seconds. Record platforms without conflating them. The Windows
+   floor was corrected after direct profiling showed the `pre_commit` framework
+   startup alone takes 2.4-2.9 seconds per one-hook invocation.
 3. Every one of the 34 current hook capabilities maps to a required hosted
    owner, one of the three intentional commit guards, or the explicit
    warning-only retirement.

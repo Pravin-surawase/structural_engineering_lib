@@ -1167,40 +1167,37 @@ warnings=["Default: Moderate exposure assumed (IS 456 Table 3)"]
 
 ### 16.5 Pre-commit Hooks
 
-`.pre-commit-config.yaml` is **active** and `.git/hooks/pre-commit` is installed. Current hooks:
+`.pre-commit-config.yaml` is **active** and `.git/hooks/pre-commit` is installed.
+Ordinary commits run exactly three mutation-safety hooks:
 
 ```yaml
 repos:
   # General file hygiene
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
-    hooks: [check-yaml, check-toml, check-json, end-of-file-fixer,
-            trailing-whitespace, mixed-line-ending, check-merge-conflict,
-            check-added-large-files]
+    hooks: [check-merge-conflict, check-added-large-files]
 
-  # Python formatting
-  - repo: https://github.com/psf/black
-    rev: 25.9.0
-    hooks: [black]
+  - repo: local
+    hooks: [git-operation-guard]
 ```
 
-> **Note:** In addition to the basic hygiene hooks, ruff v0.4.4 (lint + auto-fix) and mypy (structural_lib type checking) are **active** pre-commit hooks. black is also active for formatting.
+> **Note:** YAML/TOML/JSON and text-normalization hooks use the manual stage in
+> PR Repository Validation. Black, Ruff, mypy, Bandit, tests, generated checks,
+> and documentation checks are PR-owned rather than commit hooks.
 
 **Planned additions (v0.23):**
 
 | Hook | Purpose | Status |
 |------|---------|--------|
-| ruff lint + format (v0.4.4) | Python linting + auto-fix | ✅ Active |
-| mypy (structural_lib) | Static type checking | ✅ Active |
+| ruff lint + format | Python linting + formatting | ✅ Active in PR |
+| mypy (structural_lib) | Static type checking | ✅ Active in PR |
 | architecture-check | Import boundary validation | 🔲 Planned |
 | api-surface-check | OpenAPI baseline diff | 🔲 Planned |
 | clause-coverage | IS 456 clause parity check | 🔲 Planned |
 
-Git hooks also exist via `ai_commit.sh`, which runs staging, formatting, and push operations. The `.pre-commit-config.yaml` complements these for contributors who don't use agent scripts.
-
 | Status | Target Version |
 |--------|---------------|
-| ✅ Active (basic hygiene + formatting) | v0.21.5 |
+| ✅ Active (commit safety + PR assurance) | v0.24.0 |
 | 🔲 Planned (architecture + API checks) | v0.23 |
 
 ### 16.6 Concurrency Model
