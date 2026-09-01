@@ -5,6 +5,127 @@
 
 ---
 
+## 2026-09-02 — Session: Commit and PR validation consolidation plan
+
+**Agent:** Codex (`orchestrator`; sole writer; three read-only audit roles).
+**Task:** `MAINT-COMMIT-GATE-CONSOLIDATION-PLAN`.
+**Branch:** `codex/commit-gate-consolidation-plan`.
+**Source:** accepted offline-foundations PR #947 merge
+`16be0db796dc85f0462a3a49a5990dc0232ef0b4`, tree
+`64c89d3fc171a99029d71e9d9efe2e9d90b990e5`.
+**Git handoff receipt:** docs/verification/commit-pr-validation-consolidation-plan-git-handoff-receipt.json
+**Focus:** Audit every local hook and hosted owner, freeze a lower-cost
+multiple-commit/one-PR workflow, remove the remaining arbitrary 150-line Git
+guidance, and retire only the completed W3 worktree residue.
+**Boundary:** Planning and active-document reconciliation only. The executable
+hook and workflow topology is unchanged in this candidate. No ETABS, Excel,
+COM, model, workbook, release or deployment action occurred.
+
+### What we did
+
+- Independently reconciled three read-only audits: the exact 34-hook inventory
+  and timing, current PR/CI parity and routing gaps, and Windows
+  process/worktree hygiene. The main agent rechecked the active workflow,
+  tests, Git-operation implementation and live GitHub ruleset before accepting
+  the findings.
+- Froze the [commit and PR validation consolidation
+  plan](planning/commit-pr-validation-consolidation-plan.md). Ordinary commits
+  target exactly three safety hooks: merge markers, added files above 500 KB,
+  and one live Git-operation guard. All formatting, lint, type, security, test,
+  generator, documentation, API and quick-gate evidence moves to the required
+  PR lane after exact parity is added.
+- Mapped all 34 current hooks to an existing/missing hosted owner, one of the
+  three intentional commit guards, or the warning-only metadata retirement.
+  The rollout uses two logical commits, one batched push and one PR. It also
+  removes the duplicate `fast-checks.yml` main-push run only while the active
+  strict no-bypass `PR Gate` ruleset remains proved.
+- Removed the remaining active `<=150 lines, <=2 files` direct-commit rule from
+  agent bootstrap. All tracked changes now use a task branch and PR; batch
+  boundaries follow authority and risk, not line or file counts. The separate
+  handoff-content line cap had already been removed in PR #947.
+- Reconciled the planning index, W3 cadence note, task board and next-work
+  authority. This plan does not prematurely remove any current hook.
+- Verified no ETABS, Excel, Git/GitHub, test, Python or frontend-build process
+  remained. Codex/MCP Node helpers were correctly preserved. Retired the clean,
+  unregistered completed W3 worktree after proving its tree equals the accepted
+  merge tree; its local branch and the shared `node_modules` target remain.
+  Tiny normal pytest retention was left untouched.
+- Focused task/index/index-link/brief/metadata/session checks, 535-file/1,196-
+  link validation, API classification and the 10/10 quick gate passed. The
+  quick gate took 112.250 seconds, directly reinforcing the plan's decision to
+  remove it from ordinary commits rather than cache or rerun it there.
+
+### Issues encountered
+
+- The original maintenance task proposed retaining formatting, type and
+  security hooks at commit time, which conflicted with the owner's newer
+  one-PR assurance direction and would still repeat substantive work.
+- The hosted PR workflow did not yet cover every local hook capability. Exact
+  gaps included TOML/JSON/text hygiene, both Bandit scopes, brief/import/version
+  checks and several session/release/API/generated-document contracts.
+- Removing the quick hook without decomposition would also remove the live
+  resolved-merge operation guard, which a clean hosted checkout cannot replace.
+- Active bootstrap still allowed docs/tests/scripts to commit directly when
+  under an arbitrary 150-line/two-file threshold, despite the canonical
+  no-direct-main rule.
+- The first worktree-cleanup inspection command had a PowerShell expression
+  parse error. After Git removed the registered worktree, PowerShell
+  `Remove-Item` of the exact residual junction was rejected by the host policy
+  before execution.
+- The first combined validation command used Bash while containing two
+  PowerShell line-count expressions, so Bash stopped before those validations.
+  The first session check also required the exact `Required Reading` heading;
+  API classification correctly held until the two intended new files were
+  staged.
+
+### Root causes and resolutions
+
+- Root cause: the task row predated the owner's updated cadence decision and
+  treated local and hosted evidence as reusable even though their profiles,
+  commands, runtimes and dependency identities differ. Resolution: the new
+  plan moves all substantive assurance to PR and retains only three immediate
+  mutation-safety hooks. Evidence: the complete 34-row disposition and timing
+  targets are frozen in the plan.
+- Root cause: PR validation grew by natural domains while several older local
+  hooks remained the sole exact owner. Resolution: add hosted parity and
+  fault-injection contracts before changing hook stages. Evidence: the plan
+  lists every gap, owning job, path-routing constraint and negative test.
+- Root cause: GitHub cannot observe local operation markers, locks or the
+  pending merge parent. Resolution: preserve
+  `git_state.py --guard operation --allow-operation-completion` as the single
+  unconditional local hook and keep its real-merge regression in hosted
+  Control Plane tests. Evidence: direct inspection confirmed the guard blocks
+  conflicts/locks/unknown/other operations and admits only the proved resolved
+  merge case.
+- Root cause: an old size-based hybrid Git rule survived after the repository
+  adopted PR-first governance. Resolution: replace it with authority/risk batch
+  rules and no line/file threshold. Evidence: active-source search now finds no
+  `<=150` direct-commit instruction outside historical archives.
+- Root cause: the first cleanup command embedded a command result inside a
+  PowerShell object expression, and the host blocks `Remove-Item` against a
+  reparse point. Resolution: rerun the validated Git removal with simple
+  variables, verify the sole residual was the exact known junction, then use
+  `.NET Directory.Delete(path, false)` on the junction and two empty parent
+  directories. Evidence: the old worktree path is absent, is not registered,
+  its branch still resolves, and the shared dependency target still exists.
+- Root cause: shell selection was inconsistent with the command syntax, while
+  session/classification checks deliberately enforce exact headings and staged
+  caller scope. Resolution: use PowerShell for the line counts, restore the
+  canonical heading, stage only the eight owned paths, and rerun the focused
+  checks. Evidence: all focused checks and the sole quick gate passed.
+  ⚠️ TERMINAL ISSUE: PowerShell expressions were sent to Bash and junction
+  `Remove-Item` was policy-rejected -> the corrected PowerShell checks and the
+  exact non-recursive `.NET Directory.Delete(path, false)` cleanup passed.
+
+### Next action
+
+Implement the frozen plan on a fresh exact-main maintenance lane as two logical
+commits and one batched push/PR. Add complete hosted parity and negative
+workflow contracts first; then reduce the commit stage to the three safety
+hooks, update active guidance and remove the duplicate main-push validation.
+Do not combine this maintenance batch with separately authorized installed
+ETABS A1/C1 evidence.
+
 ## 2026-09-02 — Session: Offline ETABS foundations and beam contract convergence
 
 **Agent:** Codex (`orchestrator`; sole writer; no subagents).

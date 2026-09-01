@@ -477,18 +477,17 @@ Run `./run.sh --help` or `./run.sh <command> --help` for full usage.
 
 ## 7. Git Workflow
 
-| Change Type | Strategy |
-|-------------|----------|
-| Production code (`Python/structural_lib/`) | PR required |
-| FastAPI code (`fastapi_app/`) | PR required |
-| React code (`react_app/`) | PR required |
-| CI workflows / Dependencies | PR required |
-| Docker config (`Dockerfile*`, `docker-compose*`) | PR required |
-| Docs / tests / scripts (<=150 lines, <=2 files) | Direct commit OK |
+| Change boundary | Strategy |
+|-----------------|----------|
+| Any tracked change | Use a task branch and PR; do not commit directly to `main` |
+| Several coherent implementation units | Keep logical commits local, push the completed batch once, and use one PR |
+| Separate authority, mutation, installed-application, release, or deployment boundary | Use a separate batch and PR |
 
-Production, FastAPI, React, CI, dependency, Docker, and release changes use a
-Codex-managed task branch and PR. Never bypass hooks or checks, automate Git
-recovery, or rewrite history. Merge remains an explicit user-confirmation action.
+PR boundaries are based on authority and risk, never a line-count or file-count
+threshold. Never bypass hooks or required checks, automate Git recovery, or
+rewrite shared history. Merge follows the canonical Git workflow and requires
+an unchanged reviewed head, passing required checks, no conflicts, and no
+unresolved blockers.
 
 **Commit format:** `type: description` (subject <=72 chars, no period at end)
 Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`

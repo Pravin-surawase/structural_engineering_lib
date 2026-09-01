@@ -597,19 +597,14 @@ artifacts or next-session handoff owners.
 
 ### Commit-gate follow-up
 
-The current repository config contains 34 pre-commit hooks, including 11
-`always_run` controls. The changed paths in this cross-surface milestone activate
-about 28 hooks. Repeating that set for A0, B0, B1A and C0 checkpoint commits
-would be disproportionate, which is why internal checkpoints remain focused
-worktree checkpoints and the milestone gets one normal commit/hook cycle.
-
-After this milestone is accepted, run the separate
-`MAINT-COMMIT-GATE-CONSOLIDATION` maintenance packet before adding more
-commit-time controls. Record per-hook wall time and overlap; retain touched-file
-hygiene, formatting, lint, type and security checks; consolidate duplicated
-unconditional governance checks behind one content-bound receipt; and keep broad
-or release-only assurance in the PR/hosted lane. The packet must prove the same
-required coverage before removing a hook and must not share a branch with A1/C1
+The offline A0/B0/B1A/C0 milestone is accepted through PR #947. Its measured
+34-hook, 11-unconditional commit lane is superseded by the separate
+[commit and PR validation consolidation plan](commit-pr-validation-consolidation-plan.md).
+That maintenance packet adds complete hosted parity before reducing ordinary
+commits to three mutation-safety hooks. Formatting, linting, typing, security,
+tests and governance move to one batched PR; the live resolved-merge operation
+guard remains local because a hosted checkout cannot observe the developer's
+Git operation state. The maintenance packet remains separate from A1/C1
 installed evidence.
 
 ## Stop conditions
