@@ -12,8 +12,7 @@
 **Branch:** `codex/legacy-vba-data-flow-lessons`.
 **Source:** current `origin/main` at PR #953 merge
 `a3487e02400cf65d4b8934f484ef4b3882e3a9d9`.
-**Git handoff receipt:**
-`docs/verification/legacy-vba-dataflow-lessons-git-handoff-receipt.json`.
+**Git handoff receipt:** docs/verification/legacy-vba-dataflow-lessons-git-handoff-receipt.json
 **Focus:** Preserve the legacy VBA transient-data pattern and additional useful
 ETABS/Excel workflow ideas in the current six-phase beam programme.
 **Boundary:** Static source and current-library inspection plus documentation
@@ -60,6 +59,9 @@ workbook, API/runtime, release or publication operation was performed.
 - The first governed session start was rejected because the shared usage log
   retained an unmatched `W3-BEAM-MASTER-PLAN` start even though PR #953, the
   completed session-log entry and a successful session-end event were present.
+- The first final session check treated the punctuation after the wrapped Git
+  handoff-receipt path as part of the filename and reported the committed
+  receipt as missing.
 
 ### Root causes and resolutions
 
@@ -76,6 +78,13 @@ workbook, API/runtime, release or publication operation was performed.
   Python binding. ⚠️ TERMINAL ISSUE: `./run.sh session begin` stopped on the
   stale unmatched predecessor checkpoint -> the exact maintained `superseded`
   checkpoint closed it and the successor session began normally.
+- Confirmed cause: the receipt path was placed on the following Markdown line
+  and ended with a prose period, while the session parser expects the literal
+  path without trailing punctuation. Resolution: use the maintained single-line
+  receipt field without punctuation; the repeated final session check resolved
+  the committed receipt successfully. ⚠️ TERMINAL ISSUE: the first
+  `./run.sh session end` misread the punctuated wrapped receipt path -> the
+  canonical single-line field restored exact path resolution.
 - Focused evidence before final consolidated validation: `scripts/check_docs.py`
   completed its maintained 5/5 checks, `scripts/check_links.py` found zero broken
   links across 537 Markdown files, and `git diff --check` passed. Existing
