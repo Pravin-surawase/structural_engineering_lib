@@ -5,6 +5,96 @@
 
 ---
 
+## 2026-09-02 — Session: Beam design and ETABS optimization master plan
+
+**Agent:** Codex (`PM`; sole writer; no subagents).
+**Task:** `W3-BEAM-MASTER-PLAN`.
+**Branch:** `codex/beam-optimization-master-plan`.
+**Source:** accepted A1/C1 PR #952 merge
+`c29a468a7d6023e8be92feb534b9479977eac52f`.
+**Git handoff receipt:** docs/verification/w3-beam-master-plan-git-handoff-receipt.json
+**Focus:** Freeze one understandable six-phase goal and execution plan before further W3 implementation.
+**Boundary:** Planning, task and continuation documents only. No ETABS, COM,
+Excel, SQLite artifact, analysis/design, model, API/runtime, release or
+publication operation was performed.
+
+### Summary
+
+- Confirmed live `origin/main` at PR #952 merge `c29a468a`, inspected every
+  earlier beam/W3 planning lane relevant to these paths and created a clean
+  current-main planning worktree. The former ETABS master-plan audit branch is
+  already an ancestor of main; the older integrated-plan branch is superseded
+  by later merged work and has no open PR.
+- Added `beam-design-optimization-master-plan.md` as the human-facing programme
+  owner. It keeps the owner's six phases, gives every phase one goal, output and
+  exit gate, and makes Phase 1 the only active phase.
+- Defined the north-star outcome as the best feasible project-criteria-bound
+  beam design verified by fresh whole-model ETABS analysis on an owned copy,
+  rather than a smallest-dimension search on stale forces.
+- Separated ETABS whole-building analysis authority from library-owned data
+  interpretation, design, detailing and optimization. A database remains an
+  optional reproducible cache and the bounded beam-line solver remains a
+  screening tool inside a proved applicability envelope.
+- Made reinforcement layers first-class. Face, count, diameter, material and
+  centroid position remain explicit; steel area and effective depth are
+  derived. Unsupported multilayer/mixed-diameter/curtailment cases hold until
+  the first bounded end-to-end loop is proved.
+- Added a function/capability map that distinguishes existing owners from the
+  next required work. The immediate sequence is a minimum Phase 1 allowlist,
+  exact C2 parser, deterministic acquisition receipt, separately authorized
+  fresh result epoch and repeated acquisition.
+- Linked the master plan from the planning index and detailed W3 plan, updated
+  the task board, and refreshed the human continuation brief. A1/C1 now records
+  accepted PR #952 and C2 is the next offline packet while comparison truth
+  remains held by the blocked result epoch.
+- Kept the dense W3 packet plan as the low-level ETABS safety/evidence owner.
+  The new master plan owns only the goal, phase order, phase outputs and
+  definition of done, avoiding a duplicate calculation or safety authority.
+
+### Issues encountered
+
+- The initially focused checkout was a clean but completed branch 89 commits
+  behind the recorded `origin/main`, so it could not safely own the new plan.
+- The planning index, task board, W3 packet rows and next-session brief still
+  described A1/C1 as local/PR-pending and C2 as dependency-blocked after PR
+  #952 had merged.
+- The first documentation check rejected the new document's initial
+  `master-plan`/`accessible` front-matter values.
+- The first long-context task-row patch did not match the exact live table and
+  made no change.
+- The first generated handoff block truncated the focus at the Markdown line
+  break.
+
+### Root causes and resolutions
+
+- Confirmed cause: the primary checkout intentionally remained on the older
+  `codex/etabs-analysis-foundation-audit` lane while later work was merged.
+  Resolution: fetch `origin/main`, inspect relevant worktrees/branches/open PRs
+  and create `codex/beam-optimization-master-plan` from exact merge
+  `c29a468a`. `./run.sh session begin` then reported `READY_LOCAL` and current-
+  worktree Python binding.
+- Confirmed cause: PR #952 updated its owned evidence packet but the other
+  chronological planning projections still held pre-merge text. Resolution:
+  verify PR #952 live as merged with every required check successful, then
+  update only the affected current-status and next-action rows. Historical
+  receipts and raw evidence remain unchanged.
+- Confirmed cause: the documentation validator has a closed vocabulary for
+  `doc_type` and `complexity`. Resolution: use valid `spec` and `intermediate`
+  values. The repeated `check_docs.py` run passed all five checks; its 104
+  pre-existing advisory metadata warnings remain non-failing and untouched.
+- Confirmed cause: the first patch relied on a larger exact-line context than
+  the current table provided. Resolution: inspect the live row and use a
+  narrow anchored insertion. No partial edit occurred.
+  ⚠️ TERMINAL ISSUE: the first task-row patch failed its context check -> the
+  narrow exact-row patch applied cleanly.
+- Confirmed cause: session handoff reads the literal `Focus` line rather than
+  its wrapped Markdown continuation. Resolution: keep the focus on one line and
+  regenerate the handoff block; the complete task purpose is now projected.
+- Validation evidence before the final consolidated gate:
+  `scripts/check_docs.py` passed 5/5, `scripts/check_links.py` found 0 broken
+  links across 536 Markdown files, the next-session-brief length check passed,
+  and `git diff --check` passed.
+
 ## 2026-09-02 — Session: W3 A1/C1 installed read-only evidence milestone
 
 **Agent:** Codex (`orchestrator`; sole writer; no implementation subagents).

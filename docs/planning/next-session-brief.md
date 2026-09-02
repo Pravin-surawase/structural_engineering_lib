@@ -4,43 +4,47 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-02
-- Focus: Complete A1 getter-only acceptance and C1 installed schema inventory.
-- Git receipt: docs/verification/etabs-w3-a1-c1-installed-evidence-git-handoff-receipt.json | sha256:39a59d8a92eaa36d4b2db2495b2358e986db6670163f5d3212409691e21d278f | HOLD
-- Git identity: codex/w3-installed-readonly-evidence@3b5e2b24ada0e57912771f6b0d591bbb75fa2c2d | upstream=origin/main@827ea6786354481f8e2686bd31daee58ec2ae15c | base=origin/main@827ea6786354481f8e2686bd31daee58ec2ae15c | tree=dirty | operation=none
+- Focus: Freeze one understandable six-phase goal and execution plan before further W3 implementation.
+- Git receipt: docs/verification/w3-beam-master-plan-git-handoff-receipt.json | sha256:cc822cd9e393e9e3828b4d9b5413190a533e2a113f7bf1b9cf854205cc4aaeb7 | HOLD
+- Git identity: codex/beam-optimization-master-plan@c29a468a7d6023e8be92feb534b9479977eac52f | upstream=origin/main@c29a468a7d6023e8be92feb534b9479977eac52f | base=origin/main@c29a468a7d6023e8be92feb534b9479977eac52f | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
 
 ## Current boundary
 
-The offline B1B/B2 candidate-convergence batch is accepted through PR #950 at
-merge `742719dd`. A1/C1 is now locally complete on branch
-`codex/w3-installed-readonly-evidence`. The supervised exact-process A1 capture
-proved getter-only state/file preservation. Under the later explicit installed-
-work authorization, one bounded in-memory concrete-design call completed with
-no analysis/save/unlock/input/exit operation, followed by a create-new UI SQLite
-export and getter-only result-count cross-check. ETABS remains open and locked;
-the model file is byte-identical.
+The
+[Beam Design and ETABS Optimization Master Plan](beam-design-optimization-master-plan.md)
+is the human-facing programme authority. It freezes six sequential phases and
+makes Phase 1 the only active phase.
+
+PR #952 is merged at `c29a468a`. It accepted the supervised getter-only A1
+state/file preservation and the exact C1 SQLite schema inventory. All required
+hosted checks passed. The installed run found 160 tables/62,133 rows, all 10
+requested tables and all 80 requested fields. The 3,502 IS 456 beam-summary rows
+matched 3,502 direct getter items across 153/153 beams. The comparison result
+epoch remains `BLOCKED`, so those values remain diagnostic rather than fresh
+project comparison truth.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | A1/C1 installed evidence is locally frozen: exact state-content equality, locked/unchanged model file, 9,641,984-byte immutable export, SQLite integrity `ok`, 160 tables/62,133 rows, 10/10 requested tables and 80/80 fields found. The 3,502 IS 456 beam-summary rows equal 3,502 direct getter items across 153/153 beams. |
-| **Next** | Finish the task-owned evidence/docs, run the focused union and one complete PR-boundary validation cycle, then publish and accept a single A1/C1 PR. Start C2 offline only after that merge. |
+| **Current** | Phase 1 is active. A0/A1/C0/C1 foundations and installed schema evidence are accepted. B1B/B2 later-phase evaluator/search code is retained but does not advance the active phase. |
+| **Next** | Freeze the minimum baseline allowlist/output contract and implement C2 for only the accepted C1 schema, entirely offline. |
 | Commit lane | Exactly the three accepted mutation-safety hooks from PR #949; no broad gate is repeated per commit. |
 | PR lane | Formatting, linting, typing, security, tests, generated contracts, docs and API parity run once for the complete batch. |
-| W3 state | A0/B0/B1A/C0 is accepted through PR #947 and B1B/B2 through PR #950. A1/C1 exact schema evidence is locally complete and awaiting its one PR. |
-| Held | C2 until the A1/C1 PR is accepted; C1 comparison values remain held by missing fresh-analysis/clean-memory/table-selection epoch evidence. Setters, save, unlock, further analysis/design, application exit, model input mutation, Excel automation, original-model changes, release/publication, and unrelated cleanup remain excluded. |
+| Phase 1 exit | Exact process/runtime/model identity, fresh result epoch, explicit types/units, signed forces with physical-face identity, unchanged original model and repeatable normalized acquisition. |
+| Held | Fresh project comparison truth until the result epoch is proved. Installed ETABS work requires separate authorization. Setters, save, unlock, further analysis/design, application exit, model input mutation, Excel automation, original-model changes, release/publication and unrelated cleanup remain excluded from C2. |
 
 ## Next decision order
 
-1. Review only the non-proprietary installed evidence record; keep the model,
-   SQLite artifact and raw model-bearing captures outside Git.
-2. Freeze this branch, run its focused test union and one complete PR-level
-   validation cycle, then push all logical commits together in one PR.
-3. Merge only when the unchanged reviewed head passes every required hosted
-   check; retain ETABS open unless the owner separately asks to close it.
-4. Start C2 from the accepted A1/C1 head. Implement only the observed schema
-   offline and preserve diagnostic `HOLD` for the blocked result epoch.
+1. Freeze the minimum Phase 1 baseline fields and canonical output contract.
+2. Implement the C2 parser for only the accepted C1 tables and fields.
+3. Prove schema, integrity, bounds, units, identity and deterministic
+   normalization offline while preserving the result-epoch `HOLD`.
+4. Add one acquisition/repeatability receipt rather than more independent
+   extraction paths.
+5. Request separate authorization before obtaining fresh installed result-epoch
+   evidence, then repeat acquisition and close Phase 1 only if every gate passes.
 
 ## Cleanup state
 
@@ -58,8 +62,9 @@ the model file is byte-identical.
 
 ## Required Reading
 
-1. [W3 and professional beam integrated plan](w3-beam-professional-integrated-execution-plan.md)
-2. [Current task board](../TASKS.md)
-3. [Newest session entry](../SESSION_LOG.md)
-4. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
-5. [Commit and PR validation consolidation plan](commit-pr-validation-consolidation-plan.md)
+1. [Beam Design and ETABS Optimization Master Plan](beam-design-optimization-master-plan.md)
+2. [W3 and professional beam integrated plan](w3-beam-professional-integrated-execution-plan.md)
+3. [Current task board](../TASKS.md)
+4. [Newest session entry](../SESSION_LOG.md)
+5. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
+6. [Commit and PR validation consolidation plan](commit-pr-validation-consolidation-plan.md)
