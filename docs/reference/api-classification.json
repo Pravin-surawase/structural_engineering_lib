@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "claim_surface_matrix_schema_version": "claim-surface-matrix/v1",
-  "generated": "2026-09-01",
+  "generated": "2026-09-02",
   "package_version": "0.24.0",
   "release_channel": "normal",
   "classifications": {
@@ -18873,8 +18873,8 @@
     {
       "module": "structural_lib",
       "export_classification": "preview",
-      "declared_export_count": 473,
-      "classified_symbol_count": 473,
+      "declared_export_count": 489,
+      "classified_symbol_count": 489,
       "symbols": [
         {
           "name": "AnalysisStateV1",
@@ -21620,6 +21620,101 @@
           }
         },
         {
+          "name": "ETABSInstalledReadOnlyCaptureV1",
+          "qualified_name": "structural_lib.ETABSInstalledReadOnlyCaptureV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_installed_readonly",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSInstalledReadOnlyPreflightV1",
+          "qualified_name": "structural_lib.ETABSInstalledReadOnlyPreflightV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSInstalledReadOnlyReaderV1",
+          "qualified_name": "structural_lib.ETABSInstalledReadOnlyReaderV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_installed_readonly",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSInstalledReadOnlyRunV1",
+          "qualified_name": "structural_lib.ETABSInstalledReadOnlyRunV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_installed_readonly",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSInstalledSQLiteEvidenceV1",
+          "qualified_name": "structural_lib.ETABSInstalledSQLiteEvidenceV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_acquisition_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "ETABSLeaseHandleV1",
           "qualified_name": "structural_lib.ETABSLeaseHandleV1",
           "kind": "class",
@@ -22152,6 +22247,25 @@
           }
         },
         {
+          "name": "ETABSSQLiteColumnInventoryV1",
+          "qualified_name": "structural_lib.ETABSSQLiteColumnInventoryV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_acquisition_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "ETABSSQLiteExportManifestDraftV1",
           "qualified_name": "structural_lib.ETABSSQLiteExportManifestDraftV1",
           "kind": "class",
@@ -22173,6 +22287,82 @@
         {
           "name": "ETABSSQLiteExportManifestV1",
           "qualified_name": "structural_lib.ETABSSQLiteExportManifestV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_acquisition_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSSQLiteRequestedFieldResolutionV1",
+          "qualified_name": "structural_lib.ETABSSQLiteRequestedFieldResolutionV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_acquisition_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSSQLiteRequestedTableResolutionV1",
+          "qualified_name": "structural_lib.ETABSSQLiteRequestedTableResolutionV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_acquisition_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSSQLiteSchemaInventoryV1",
+          "qualified_name": "structural_lib.ETABSSQLiteSchemaInventoryV1",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_acquisition_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "PUBLIC_CONTRACT",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "ETABSSQLiteTableInventoryV1",
+          "qualified_name": "structural_lib.ETABSSQLiteTableInventoryV1",
           "kind": "class",
           "classification": "preview",
           "declared_export": true,
@@ -24833,6 +25023,25 @@
           }
         },
         {
+          "name": "build_etabs_installed_sqlite_evidence_v1",
+          "qualified_name": "structural_lib.build_etabs_installed_sqlite_evidence_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_acquisition_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(manifest: 'ETABSSQLiteExportManifestV1', inventory: 'ETABSSQLiteSchemaInventoryV1', /) -> 'ETABSInstalledSQLiteEvidenceV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "build_etabs_model_definition_snapshot_v1",
           "qualified_name": "structural_lib.build_etabs_model_definition_snapshot_v1",
           "kind": "function",
@@ -25307,6 +25516,25 @@
               "CLASSIFIED_PUBLIC_ROLE"
             ],
             "signature": "(reader: 'ETABSAttachedStateReaderV1', *, session_sha256: 'str', observed_at_utc: 'datetime | None' = None) -> 'ETABSStateSnapshotV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "capture_etabs_installed_readonly_v1",
+          "qualified_name": "structural_lib.capture_etabs_installed_readonly_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_installed_readonly",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(preflight: 'ETABSInstalledReadOnlyPreflightV1', reader: 'ETABSInstalledReadOnlyReaderV1', /, *, required_cases: 'Sequence[str]' = (), required_combinations: 'Sequence[str]' = (), process_provider: 'ProcessProviderV1 | None' = None, observed_at_utc: 'datetime | None' = None, verified_at_utc: 'datetime | None' = None) -> 'ETABSInstalledReadOnlyCaptureV1'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []
@@ -26673,6 +26901,25 @@
           }
         },
         {
+          "name": "etabs_state_content_sha256_v1",
+          "qualified_name": "structural_lib.etabs_state_content_sha256_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_installed_readonly",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(snapshot: 'ETABSStateSnapshotV1', /) -> 'str'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "evaluate_beam_audit_row_v1",
           "qualified_name": "structural_lib.evaluate_beam_audit_row_v1",
           "kind": "function",
@@ -27181,6 +27428,25 @@
           }
         },
         {
+          "name": "inventory_etabs_sqlite_export_v1",
+          "qualified_name": "structural_lib.inventory_etabs_sqlite_export_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_acquisition_contracts",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(manifest: 'ETABSSQLiteExportManifestV1', /, *, artifact_path: 'str | Path', inspected_at_utc: 'datetime | None' = None) -> 'ETABSSQLiteSchemaInventoryV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "invoke_recorded_etabs_call_v1",
           "qualified_name": "structural_lib.invoke_recorded_etabs_call_v1",
           "kind": "function",
@@ -27387,6 +27653,25 @@
           }
         },
         {
+          "name": "preflight_installed_etabs_readonly_v1",
+          "qualified_name": "structural_lib.preflight_installed_etabs_readonly_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_session_guard",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(expected_intent: 'ETABSExpectedModelIntentV1', /, *, selected_pid: 'int | None', selected_start_time_utc: 'datetime | None', type_library_path: 'str | Path | None' = None, generated_wrapper_path: 'str | Path | None' = None, installed_chm_path: 'str | Path | None' = None, process_provider: 'ProcessProviderV1 | None' = None, observed_at_utc: 'datetime | None' = None) -> 'ETABSInstalledReadOnlyPreflightV1'",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
           "name": "query_beam_action_rows_v1",
           "qualified_name": "structural_lib.query_beam_action_rows_v1",
           "kind": "function",
@@ -27476,6 +27761,25 @@
               "CLASSIFIED_PUBLIC_ROLE"
             ],
             "signature": "",
+            "docstring_sections": [],
+            "missing_docstring_sections": [],
+            "example_ids": []
+          }
+        },
+        {
+          "name": "run_etabs_installed_readonly_v1",
+          "qualified_name": "structural_lib.run_etabs_installed_readonly_v1",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_installed_readonly",
+          "claim_disposition": "compatibility",
+          "documentation": {
+            "role": "COMPATIBILITY_OPERATION",
+            "obligations": [
+              "CLASSIFIED_PUBLIC_ROLE"
+            ],
+            "signature": "(preflight: 'ETABSInstalledReadOnlyPreflightV1', /, *, transaction_id: 'str', evidence_directory: 'str | Path', lease_directory: 'str | Path', required_cases: 'Sequence[str]' = (), required_combinations: 'Sequence[str]' = (), deadline_seconds: 'float' = 90.0) -> 'ETABSInstalledReadOnlyRunV1'",
             "docstring_sections": [],
             "missing_docstring_sections": [],
             "example_ids": []

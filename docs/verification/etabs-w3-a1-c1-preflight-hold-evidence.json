@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-W3-A1-C1-INSTALLED-READONLY",
+  "observed_at_utc": "2026-09-02T06:54:22.933213Z",
+  "verdict": "HOLD_NO_RUNNING_TARGET",
+  "repository": {
+    "branch": "codex/w3-installed-readonly-evidence",
+    "head_sha": "59106f135101106af42b390bb6019856ee4ee9e9",
+    "base": "origin/main@827ea6786354481f8e2686bd31daee58ec2ae15c",
+    "remote_freshness": "FETCHED_BEFORE_BRANCH_CREATION",
+    "source_state": "COMMITTED_SOURCE_HEAD_WITH_TASK_OWNED_DOCUMENTATION_WRITES"
+  },
+  "authorization": {
+    "allowed": [
+      "OS process discovery",
+      "installed runtime and static signature inspection",
+      "PID-specific getter-only attached observation",
+      "create-new operator UI SQLite export"
+    ],
+    "not_allowed": [
+      "ETABS setter",
+      "save",
+      "unlock",
+      "analysis or design run",
+      "application exit",
+      "model mutation",
+      "Excel automation",
+      "original-model change"
+    ]
+  },
+  "installed_sources": [
+    {
+      "name": "ETABS.exe",
+      "path": "C:/Program Files/Computers and Structures/ETABS 23/ETABS.exe",
+      "file_version": "23.3.1.4563",
+      "bytes": 269168,
+      "sha256": "16a790087dd3961b45e57e35c32179e90db31d2dab6c6039f6efb91d53e84456"
+    },
+    {
+      "name": "ETABSv1.dll",
+      "path": "C:/Program Files/Computers and Structures/ETABS 23/ETABSv1.dll",
+      "file_version": "2.16.0.0",
+      "bytes": 354152,
+      "sha256": "393492bd1649ee705c97449cf7d485c61b73ec649ed1d01f47f54f957b277e54"
+    },
+    {
+      "name": "ETABSv1.tlb",
+      "path": "C:/Program Files/Computers and Structures/ETABS 23/NativeAPI/x64/ETABSv1.tlb",
+      "bytes": 316292,
+      "sha256": "3823416b05d80d148b63a2f490cd2acea2797d0fc64157c5cc8882c8fc24ef0e"
+    },
+    {
+      "name": "CSI API ETABS v1.chm",
+      "path": "C:/Program Files/Computers and Structures/ETABS 23/CSI API ETABS v1.chm",
+      "bytes": 4305641,
+      "sha256": "0108deeb19fd054ea03a9be89244dac5c8f5995cc44865eaa508b17f675b9d88"
+    },
+    {
+      "name": "comtypes generated raw wrapper",
+      "path": "C:/Users/P/Pravin2025/Projects/structural_lib_repo/.venv/Lib/site-packages/comtypes/gen/_542F7A9D_3A7D_4061_97B3_3A1276FF83BD_0_1_0.py",
+      "comtypes_version": "1.4.16",
+      "bytes": 1305812,
+      "sha256": "ee4cd46835acba0ca1a8de2be20f66a0d6ae054ef0ab68f2894748ee4aa36b14"
+    }
+  ],
+  "static_signature_supplement": [
+    {
+      "operation": "cHelper.GetObjectProcess",
+      "reviewed_signature": "GetObjectProcess(typeName: BSTR, pid: int) -> cOAPI",
+      "com_output": "out retval POINTER(cOAPI)",
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    },
+    {
+      "operation": "cAnalyze.GetRunCaseFlag",
+      "reviewed_signature": "GetRunCaseFlag() -> (NumberItems, CaseName[], Run[], ret)",
+      "com_output_order": [
+        "NumberItems",
+        "CaseName",
+        "Run",
+        "CSI return code"
+      ],
+      "verdict": "STATIC_SIGNATURE_PROVED"
+    }
+  ],
+  "preflight": {
+    "schema_version": "etabs-installed-readonly-preflight/v1",
+    "disposition": "HOLD",
+    "selected_pid": null,
+    "selected_start_time_utc": null,
+    "expected_intent": {
+      "expected_model_path": null,
+      "expected_model_name": null,
+      "expected_etabs_version": null,
+      "allowed_access": "ATTACHED_OBSERVE"
+    },
+    "discovered_processes": [],
+    "selected_process": null,
+    "runtime_fingerprint": null,
+    "observed_at_utc": "2026-09-02T06:54:22.933213Z",
+    "blocked_reasons": [
+      "EXACT_PROCESS_SELECTION_MISSING",
+      "EXPECTED_ETABS_VERSION_MISSING",
+      "EXPECTED_MODEL_NAME_MISSING",
+      "EXPECTED_MODEL_PATH_MISSING",
+      "NO_ETABS_PROCESS_RUNNING"
+    ],
+    "preflight_sha256": "0545aba2ff09323d320e571de28453f4190261ee110e6eedf57504621033b4ce"
+  },
+  "live_call_counts": {
+    "com_objects_created": 0,
+    "etabs_attachments": 0,
+    "getters": 0,
+    "setters": 0,
+    "save_unlock_analysis_design_exit": 0,
+    "exports": 0,
+    "excel_calls": 0,
+    "model_mutations": 0
+  },
+  "limitations": [
+    "No running ETABS process or selected model existed, so A1 live acceptance was not attempted.",
+    "Static installed signatures do not prove live return values or model/result freshness.",
+    "C1 inventory code is fake-tested, but no installed SQLite export exists yet."
+  ],
+  "next_action": "Open the intended saved ETABS model, identify its exact PID/start time/path/version, refresh this preflight, then run the bounded getter-only A1 capture before the create-new operator UI export."
+}

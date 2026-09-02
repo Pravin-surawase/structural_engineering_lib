@@ -5,6 +5,148 @@
 
 ---
 
+## 2026-09-02 — Session: W3 A1/C1 installed read-only evidence milestone
+
+**Agent:** Codex (`orchestrator`; sole writer; no implementation subagents).
+**Task:** `ETABS-W3-A1-C1-INSTALLED-READONLY`.
+**Branch:** `codex/w3-installed-readonly-evidence`.
+**Source:** accepted repository-hygiene PR #951 merge
+`827ea6786354481f8e2686bd31daee58ec2ae15c`.
+**Evidence:** `docs/verification/etabs-w3-a1-c1-preflight-hold-evidence.json`.
+**Focus:** Reconcile the W3 execution state, implement exact-process A1
+getter-only observation and C1 exact-schema inventory, then attempt the bounded
+installed evidence only when one exact running ETABS model exists.
+**Boundary:** Getter-only attachment and a create-new operator-UI SQLite export
+are authorized. Setters, save, unlock, analysis/design, application exit, model
+mutation, Excel automation, original-model changes, release and deployment are
+excluded.
+
+### Summary
+
+- Verified clean local `main` equals freshly fetched `origin/main` at `827ea678`
+  and created the isolated milestone branch/worktree. All retained historical
+  worktrees and branches remain untouched.
+- Reconciled the canonical W3 plan with accepted PRs #947/#950, the accepted
+  multiple-coherent-commits/one-PR cadence, the active A1/C1 authority and C2's
+  unchanged dependency on an accepted C1 schema artifact.
+- Added a no-COM preflight that fails closed unless PID, process start time,
+  model path/name/version, type library, generated wrapper and installed help
+  are exact and present. PID reuse and absent/ambiguous selection cannot reach
+  COM construction.
+- Added a supervised PID-specific read-only transport using
+  `cHelper.GetObjectProcess`. It revalidates the process/runtime inside the STA
+  worker immediately before attachment, uses the existing OS lease and bounded
+  broker, durably records each raw getter return, and brackets session/state/file
+  identity without exposing the underlying `SapModel` or any setter surface.
+- Added a time-independent normalized state-content digest for the operation
+  equality decision while retaining the two separately timestamped state
+  snapshots. Attached memory freshness and unavailable table-display selection
+  remain explicit holds; no baseline/comparison freshness is claimed.
+- Added C1 read-only immutable SQLite inspection. It verifies the frozen C0
+  manifest identity, WAL/SHM absence and SQLite integrity; inventories all
+  tables, columns, declared types, primary-key order and bounded row counts;
+  maps every requested field to its comparison row or an explicit rejection;
+  and binds the inventory to target/runtime/model/result-epoch/export hashes.
+  Parser support remains false for C2.
+- Measured installed ETABS 23.3.1/API 2.16.0 artifacts and statically proved
+  `GetObjectProcess` plus `GetRunCaseFlag` from the current generated wrapper.
+  The fresh process inventory contained no ETABS or Excel process, so the live
+  call counters are all zero and A1/C1 correctly stops at
+  `HOLD_NO_RUNNING_TARGET`.
+- Five coherent implementation/planning commits precede this task-evidence
+  checkpoint. Each commit ran only the three accepted mutation-safety hooks;
+  nothing was pushed and no PR or hosted validation cycle was opened before the
+  installed batch freezes.
+
+### Issues encountered
+
+- The inherited integrated plan still described B1B/B2 as pending, prescribed
+  one milestone commit, and named the already accepted A0/B0/B1A/C0 batch as
+  the next action.
+- No ETABS process or exact model intent existed at either fresh installed
+  preflight.
+- The first PowerShell JSON-key inspection placed a pipe directly after a
+  `foreach` statement and failed to parse before reading the evidence.
+- The existing state snapshot digest includes `observed_at_utc`, while the
+  attached operation outcome requires an equality digest for pre/post state.
+- The first getter-surface test treated the substring `.Set` in
+  `Results.Setup` as a setter call.
+- The first bounded static pass found import-order/formatting differences and
+  five mypy inference failures in the new modules.
+- The API-classification generator refused to run while the new preflight
+  evidence document was untracked.
+- The first two preflight evidence replay commands passed serialized strict
+  lists/timestamps directly to Pydantic and were rejected before digest review.
+
+### Root causes and resolutions
+
+- Confirmed root cause: plan status stopped before PRs #947/#950 and before PR
+  #949's reduced commit gate was exercised by PR #950. Resolution: update only
+  the canonical status, packet rows, commit cadence and exact next action, plus
+  the task/brief projections. Accepted predecessor claims remain unchanged.
+- Confirmed external precondition: the operator has not opened and selected an
+  ETABS model for this evidence session. Resolution: perform no COM/UI action,
+  freeze the exact installed identities and truthful HOLD, and continue only
+  after PID/start/path/name/version are available. Zero live calls prove the
+  boundary.
+- Confirmed root cause: PowerShell requires the `foreach` output to be assigned
+  or wrapped before piping. Resolution: collect the rows first and pipe the
+  collection; the three evidence documents were then inspected successfully.
+  ⚠️ TERMINAL ISSUE: invalid `foreach` pipeline stopped the read-only command
+  before execution -> collected rows, then formatted them.
+- Confirmed root cause: snapshot identity and state-content equality are two
+  different claims; timestamped snapshots should differ even when application
+  state is equal. Resolution: retain each snapshot hash and use a canonical
+  content digest excluding only observation time/snapshot identity for the
+  operation outcome. The focused test proves unequal snapshot hashes and equal
+  state content.
+- Confirmed root cause: `Setup` is an interface name, not a method verb.
+  Resolution: inspect the final method component and require every recorded
+  leaf to begin with `Get`. The complete ledger contains exactly the eleven
+  reviewed attach/getter operations and no setter.
+- Confirmed root cause: the initial source was behavior-complete but had not yet
+  received the batch's one formatter/type pass, and generic call decoding
+  returned `Any` at five strict boundaries. Resolution: add exact local
+  narrowing, replace default-argument lambdas with typed partial calls, organize
+  imports and run Black once. Ruff, Black and configured mypy then pass on the
+  complete changed Python surface.
+- Confirmed root cause: the classification generator intentionally scans only
+  tracked caller text. Resolution: review and stage only the task-owned evidence
+  file, then regenerate the classification and compatibility ledger. No
+  unrelated file was staged.
+- Confirmed root cause: repository `StrictPublicModel` validation requires the
+  declared Python tuple/datetime types and does not coerce the serialized JSON
+  list/time forms in either attempted entry point. Resolution: explicitly
+  reconstruct the strict tuple and timezone-aware datetime fields, then validate
+  the evidence model and canonical digest. The replay reports `preflight
+  evidence: valid`; the evidence bytes were not changed to weaken the contract.
+
+### Validation through current HOLD
+
+- Focused union: `26 passed` across A0 session guards, A1 installed transport
+  and C0/C1 acquisition/inventory contracts after final formatting.
+- Changed Python surface: Ruff passes; Black leaves all six files unchanged;
+  configured mypy reports no issues in the three source modules.
+- Static installed boundary: ETABS `23.3.1.4563`, API assembly `2.16.0.0`, x64
+  type library, installed CHM, comtypes `1.4.16` and generated wrapper hashes are
+  recorded. The wrapper proves exact PID attachment and run-flag getter shapes;
+  the strict reconstructed preflight evidence model and digest validate.
+- Live boundary: zero ETABS/Excel processes, COM objects, attachments, getters,
+  setters, exports, saves, unlocks, analysis/design calls, exits or mutations.
+- Broad local quick/full validation was not duplicated. Generated public API
+  artifacts are refreshed for the new symbols; their final freshness check and
+  comprehensive assurance remain the one PR-boundary cycle after live evidence
+  freezes.
+
+### Next action
+
+The operator must open the intended saved ETABS model and provide/confirm its
+exact PID, process start time, full path/name and version. Refresh the no-COM
+preflight immediately, run one supervised getter-only A1 capture, and stop on
+any state/file/runtime drift. Only after that passes, create a new SQLite export
+through the ETABS operator UI, freeze/hash it and run the offline C1 inventory.
+Do not start C2 or open the batch PR before the installed evidence is complete.
+
 ## 2026-09-02 — Session: Urgent repository performance and hygiene closeout
 
 **Agent:** Codex (`orchestrator`; sole writer; no implementation subagents).

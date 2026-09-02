@@ -18,11 +18,13 @@ merge `742719dd`. The owner then authorized the next bounded A1/C1 milestone.
 Branch `codex/w3-installed-readonly-evidence` started from current
 `origin/main`; ETABS 23.3.1 and API 2.16.0 are installed, but no ETABS process
 was running at preflight, so live attachment/export truthfully remains `HOLD`.
+The exact-process A1 transport and C1 read-only SQLite schema inventory are now
+implemented and pass their focused fake/static checks; no COM object was made.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | PR #950 merged the accepted B1B/B2 tree at `742719dd`. Candidate/action/criteria/catalogue/schedule identities are sealed; authored or incomplete evidence holds. Search claims depend on complete enumeration and unchanged B1B hashes. |
-| **Next** | Implement and fake-test A1 exact-process getter-only observation plus C1 metadata-only schema inventory. When one exact ETABS PID/start/model is available, run the separately bounded installed acceptance and create-new operator-UI export. |
+| **Current** | A1 exact-process preflight/supervised getter capture and C1 immutable SQLite schema inventory are implemented on `codex/w3-installed-readonly-evidence`. Focused tests, Ruff, Black and configured mypy pass; the installed preflight records zero application calls and `HOLD_NO_RUNNING_TARGET`. |
+| **Next** | Open the intended saved ETABS model, record its exact PID/start/path/version, refresh the preflight, then run one bounded getter-only A1 capture. If preservation passes, acquire the C1 create-new SQLite file through the operator UI and inventory it offline. |
 | Commit lane | Exactly the three accepted mutation-safety hooks from PR #949; no broad gate is repeated per commit. |
 | PR lane | Formatting, linting, typing, security, tests, generated contracts, docs and API parity run once for the complete batch. |
 | W3 state | A0/B0/B1A/C0 is accepted through PR #947 and B1B/B2 through PR #950. A1/C1 is active under getter-only/create-new-export authority; its live evidence is not yet acquired. |
@@ -30,12 +32,12 @@ was running at preflight, so live attachment/export truthfully remains `HOLD`.
 
 ## Next decision order
 
-1. Complete the offline A1 runner and C1 schema-inventory contracts with fake
-   evidence; they must fail closed before COM when the selected process/model is
-   absent or ambiguous.
+1. Have the operator open the intended saved ETABS model; do not launch or
+   select a model automatically.
 2. Re-run the no-COM process/runtime preflight immediately before installed
-   work. Require exact PID, start time, model path/name and version.
-3. Keep attached observation getter-only. Acquire C1 by operator UI into a new
+   work and require exact PID, start time, model path/name and version.
+3. Run the supervised attached observation getter-only. Acquire C1 by operator
+   UI into a new
    destination and prove pre/post model, file and state preservation.
 4. Do not start C2 until C1 supplies the complete accepted hash-bound export and
    exact schema inventory.
