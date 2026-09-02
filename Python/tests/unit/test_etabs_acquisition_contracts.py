@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import builtins
 import hashlib
+import sqlite3
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
@@ -17,8 +18,10 @@ from structural_lib.services.etabs_acquisition_contracts import (
     ETABSExportBoundsV1,
     ETABSRequestedTableV1,
     ETABSSQLiteExportManifestDraftV1,
+    build_etabs_installed_sqlite_evidence_v1,
     build_etabs_concrete_design_basis_v1,
     finalize_etabs_sqlite_export_manifest_v1,
+    inventory_etabs_sqlite_export_v1,
 )
 from structural_lib.services.etabs_session_guard import (
     ProcessObservationV1,
@@ -232,4 +235,159 @@ def test_requested_fields_require_exact_comparison_rows_and_bounds() -> None:
             requested_fields=("A", "B"),
             comparison_row_by_field=(("A", "row:a"),),
             request_basis="Negative generic fixture.",
+        )
+
+
+def _installed_manifest(
+    tmp_path: Path,
+    artifact: Path,
+    *,
+    maximum_rows_per_table: int = 100,
+):
+    runtime, epoch = _epoch(tmp_path)
+    requested_tables = (
+        ETABSRequestedTableV1(
+            request_id="request:beam-forces",
+            requested_table_key="Beam Forces",
+            requested_fields=("Frame", "Station", "M3", "Missing Field"),
+            comparison_row_by_field=(
+                ("Frame", "comparison:frame"),
+                ("Station", "comparison:station"),
+                ("M3", "comparison:m3"),
+                ("Missing Field", "comparison:explicit-rejection"),
+            ),
+            request_basis="Offline C1 schema-inventory fixture.",
+        ),
+        ETABSRequestedTableV1(
+            request_id="request:missing-table",
+            requested_table_key="Missing Table",
+            requested_fields=("Missing Column",),
+            comparison_row_by_field=(("Missing Column", "comparison:missing"),),
+            request_basis="Prove explicit table rejection.",
+        ),
+    )
+    draft = ETABSSQLiteExportManifestDraftV1(
+        export_id="fixture:c1-export-1",
+        artifact_scope="INSTALLED_C1_EXPORT",
+        target_observation_sha256=HASH_B,
+        runtime_fingerprint_sha256=runtime.fingerprint_sha256,
+        model_identity_sha256=HASH_A,
+        result_epoch=epoch,
+        requested_tables=requested_tables,
+        filter_selection_state_sha256=HASH_C,
+        destination_path=str(artifact.resolve()),
+        started_at_utc=T0,
+        pre_state_sha256=HASH_A,
+        bounds=ETABSExportBoundsV1(
+            maximum_file_bytes=1024 * 1024,
+            maximum_requested_tables=4,
+            maximum_fields_per_table=16,
+            maximum_rows_per_table=maximum_rows_per_table,
+        ),
+        retention_policy="Retain the offline SQLite fixture for one test only.",
+        limitations=(
+            "Offline fixture proves inventory mechanics, not an ETABS schema.",
+        ),
+    )
+    with sqlite3.connect(artifact) as connection:
+        connection.execute(
+            'CREATE TABLE "Beam Forces" ('
+            '"Frame" TEXT NOT NULL, "Station" REAL NOT NULL, "M3" REAL, '
+            'PRIMARY KEY ("Frame", "Station"))'
+        )
+        connection.executemany(
+            'INSERT INTO "Beam Forces" ("Frame", "Station", "M3") '
+            "VALUES (?, ?, ?)",
+            (("B1", 0.0, -12.5), ("B1", 1.0, 10.25)),
+        )
+        connection.execute('CREATE TABLE "Metadata" ("Name" TEXT, "Value" TEXT)')
+    return finalize_etabs_sqlite_export_manifest_v1(
+        draft,
+        artifact_path=artifact,
+        completed_at_utc=T0 + timedelta(seconds=10),
+        post_state_sha256=HASH_A,
+    )
+
+
+def test_installed_inventory_binds_complete_schema_and_explicit_rejections(
+    tmp_path: Path,
+) -> None:
+    artifact = tmp_path / "installed-export.sqlite"
+    manifest = _installed_manifest(tmp_path, artifact)
+    before = (artifact.stat().st_size, artifact.stat().st_mtime_ns)
+
+    inventory = inventory_etabs_sqlite_export_v1(
+        manifest,
+        artifact_path=artifact,
+        inspected_at_utc=T0 + timedelta(seconds=20),
+    )
+    evidence = build_etabs_installed_sqlite_evidence_v1(manifest, inventory)
+
+    assert tuple(table.table_name for table in inventory.tables) == (
+        "Beam Forces",
+        "Metadata",
+    )
+    beam_table = inventory.tables[0]
+    assert beam_table.row_count == 2
+    assert beam_table.primary_key_columns == ("Frame", "Station")
+    assert tuple(column.declared_type for column in beam_table.columns) == (
+        "TEXT",
+        "REAL",
+        "REAL",
+    )
+    found, missing = inventory.request_resolutions
+    assert found.disposition == "FOUND"
+    assert tuple(field.disposition for field in found.fields) == (
+        "FOUND",
+        "FOUND",
+        "FOUND",
+        "REJECTED",
+    )
+    assert missing.disposition == "REJECTED"
+    assert missing.fields[0].reason == "REQUESTED_TABLE_NOT_FOUND"
+    assert inventory.parser_support_claimed is False
+    assert evidence.parser_support_claimed is False
+    assert evidence.schema_inventory.inventory_sha256 == inventory.inventory_sha256
+    assert (artifact.stat().st_size, artifact.stat().st_mtime_ns) == before
+
+
+def test_installed_inventory_rejects_generic_manifest_before_sqlite_open(
+    tmp_path: Path,
+) -> None:
+    artifact = tmp_path / "generic-fixture.sqlite"
+    artifact.write_bytes(b"not SQLite")
+    manifest = finalize_etabs_sqlite_export_manifest_v1(
+        _manifest_draft(tmp_path, artifact),
+        artifact_path=artifact,
+        completed_at_utc=T0 + timedelta(seconds=10),
+        post_state_sha256=HASH_A,
+    )
+
+    with pytest.raises(ValueError, match="installed C1 export"):
+        inventory_etabs_sqlite_export_v1(manifest, artifact_path=artifact)
+
+
+def test_installed_inventory_rejects_artifact_drift_and_row_bound(
+    tmp_path: Path,
+) -> None:
+    drifted_artifact = tmp_path / "drifted.sqlite"
+    drifted_manifest = _installed_manifest(tmp_path, drifted_artifact)
+    with drifted_artifact.open("ab") as handle:
+        handle.write(b"drift")
+    with pytest.raises(RuntimeError, match="IDENTITY_MISMATCH"):
+        inventory_etabs_sqlite_export_v1(
+            drifted_manifest,
+            artifact_path=drifted_artifact,
+        )
+
+    bounded_artifact = tmp_path / "bounded.sqlite"
+    bounded_manifest = _installed_manifest(
+        tmp_path,
+        bounded_artifact,
+        maximum_rows_per_table=1,
+    )
+    with pytest.raises(RuntimeError, match="ROW_BOUND_EXCEEDED"):
+        inventory_etabs_sqlite_export_v1(
+            bounded_manifest,
+            artifact_path=bounded_artifact,
         )
