@@ -37,6 +37,7 @@ __all__ = [
     "ETABSBridgeCapabilityV1",
     "ETABSExpectedModelIntentV1",
     "ETABSFileIdentityV1",
+    "ETABSInstalledReadOnlyPreflightV1",
     "ETABSModelFreshnessDispositionV1",
     "ETABSModelFreshnessV1",
     "ETABSProcessInstanceV1",
@@ -63,6 +64,7 @@ __all__ = [
     "file_identity_v1",
     "issue_etabs_bridge_capability_v1",
     "observe_etabs_target_v1",
+    "preflight_installed_etabs_readonly_v1",
     "verify_etabs_bridge_capability_v1",
     "verify_etabs_target_observation_v1",
 ]
@@ -456,6 +458,77 @@ class ETABSTargetObservationV1(StrictPublicModel):
         if any(value > observed for value in nested_observations):
             raise ValueError("target observation cannot precede nested observations")
         _require_digest(self, "observation_sha256")
+        return self
+
+
+class ETABSInstalledReadOnlyPreflightV1(StrictPublicModel):
+    """No-COM decision for one exact installed getter-only attachment target."""
+
+    schema_version: Literal["etabs-installed-readonly-preflight/v1"] = (
+        "etabs-installed-readonly-preflight/v1"
+    )
+    disposition: Literal["READY_FOR_GETTER_ONLY_ATTACH", "HOLD"]
+    selected_pid: int | None = Field(default=None, gt=0)
+    selected_start_time_utc: datetime | None = None
+    expected_intent: ETABSExpectedModelIntentV1
+    discovered_processes: tuple[ETABSProcessInstanceV1, ...]
+    selected_process: ETABSProcessInstanceV1 | None = None
+    runtime_fingerprint: ETABSRuntimeFingerprintV1 | None = None
+    observed_at_utc: datetime
+    blocked_reasons: tuple[str, ...] = ()
+    preflight_sha256: str = Field(pattern=_SHA256_PATTERN)
+
+    @model_validator(mode="after")
+    def validate_preflight(self) -> Self:
+        _utc(self.observed_at_utc, "observed_at_utc")
+        if self.selected_start_time_utc is not None:
+            _utc(self.selected_start_time_utc, "selected_start_time_utc")
+        identities = tuple(
+            (process.start_time_utc, process.pid, process.instance_sha256)
+            for process in self.discovered_processes
+        )
+        if identities != tuple(sorted(identities)):
+            raise ValueError("discovered processes must retain deterministic order")
+        if len(identities) != len(set(identities)):
+            raise ValueError("discovered process identities must be unique")
+        if len(self.blocked_reasons) != len(set(self.blocked_reasons)):
+            raise ValueError("blocked reasons must be unique")
+        if self.expected_intent.allowed_access is not ETABSAccessModeV1.ATTACHED_OBSERVE:
+            raise ValueError("installed read-only preflight requires attached observation")
+        if self.disposition == "READY_FOR_GETTER_ONLY_ATTACH":
+            if self.blocked_reasons:
+                raise ValueError("ready preflight cannot carry blocked reasons")
+            if (
+                self.selected_pid is None
+                or self.selected_start_time_utc is None
+                or self.selected_process is None
+                or self.runtime_fingerprint is None
+            ):
+                raise ValueError("ready preflight requires exact process/runtime identity")
+            if (
+                self.expected_intent.expected_model_path is None
+                or self.expected_intent.expected_model_name is None
+                or self.expected_intent.expected_etabs_version is None
+            ):
+                raise ValueError("ready preflight requires exact model intent")
+            if (
+                self.selected_process.pid != self.selected_pid
+                or self.selected_process.start_time_utc
+                != self.selected_start_time_utc
+            ):
+                raise ValueError("selected process differs from the requested instance")
+            if self.selected_process not in self.discovered_processes:
+                raise ValueError("selected process is absent from discovery")
+            if self.runtime_fingerprint.process_instance_sha256 != (
+                self.selected_process.instance_sha256
+            ):
+                raise ValueError("runtime fingerprint is bound to another process")
+        else:
+            if not self.blocked_reasons:
+                raise ValueError("held preflight requires blocked reasons")
+            if self.selected_process is not None or self.runtime_fingerprint is not None:
+                raise ValueError("held preflight cannot authorize a process/runtime")
+        _require_digest(self, "preflight_sha256")
         return self
 
 
@@ -856,6 +929,123 @@ def build_etabs_runtime_fingerprint_v1(
             "artifacts": artifacts,
             "observed_at_utc": observed,
             "fingerprint_sha256": _digest(identity_basis),
+        }
+    )
+
+
+def preflight_installed_etabs_readonly_v1(
+    expected_intent: ETABSExpectedModelIntentV1,
+    /,
+    *,
+    selected_pid: int | None,
+    selected_start_time_utc: datetime | None,
+    type_library_path: str | Path | None = None,
+    generated_wrapper_path: str | Path | None = None,
+    installed_chm_path: str | Path | None = None,
+    process_provider: ProcessProviderV1 | None = None,
+    observed_at_utc: datetime | None = None,
+) -> ETABSInstalledReadOnlyPreflightV1:
+    """Fail closed before COM unless one exact attached target is selectable."""
+
+    if expected_intent.allowed_access is not ETABSAccessModeV1.ATTACHED_OBSERVE:
+        raise ValueError("installed read-only preflight requires attached observation")
+    observed = _utc(observed_at_utc or datetime.now(_UTC), "observed_at_utc")
+    processes = discover_etabs_processes_v1(
+        process_provider=process_provider,
+        observed_at_utc=observed,
+    )
+    reasons: list[str] = []
+    selected: ETABSProcessInstanceV1 | None = None
+
+    if not processes:
+        reasons.append("NO_ETABS_PROCESS_RUNNING")
+    if selected_pid is None or selected_start_time_utc is None:
+        reasons.append("EXACT_PROCESS_SELECTION_MISSING")
+    else:
+        selected_start = _utc(selected_start_time_utc, "selected_start_time_utc")
+        selected = next(
+            (
+                process
+                for process in processes
+                if process.pid == selected_pid
+                and process.start_time_utc == selected_start
+            ),
+            None,
+        )
+        if selected is None:
+            if any(process.pid == selected_pid for process in processes):
+                reasons.append("SELECTED_PROCESS_START_TIME_MISMATCH")
+            elif processes:
+                reasons.append("SELECTED_PROCESS_NOT_RUNNING")
+
+    if expected_intent.expected_model_path is None:
+        reasons.append("EXPECTED_MODEL_PATH_MISSING")
+    else:
+        expected_path = Path(expected_intent.expected_model_path).resolve(strict=False)
+        if not expected_path.is_file():
+            reasons.append("EXPECTED_MODEL_FILE_NOT_AVAILABLE")
+        if (
+            expected_intent.expected_model_name is not None
+            and expected_path.name.casefold()
+            != expected_intent.expected_model_name.casefold()
+        ):
+            reasons.append("EXPECTED_MODEL_NAME_PATH_MISMATCH")
+    if expected_intent.expected_model_name is None:
+        reasons.append("EXPECTED_MODEL_NAME_MISSING")
+    if expected_intent.expected_etabs_version is None:
+        reasons.append("EXPECTED_ETABS_VERSION_MISSING")
+
+    blocked_reasons = tuple(sorted(set(reasons)))
+    runtime: ETABSRuntimeFingerprintV1 | None = None
+    disposition: Literal["READY_FOR_GETTER_ONLY_ATTACH", "HOLD"] = "HOLD"
+    if not blocked_reasons:
+        if selected is None:  # pragma: no cover - guarded by the reasons above
+            raise RuntimeError("exact selected process was not resolved")
+        runtime = build_etabs_runtime_fingerprint_v1(
+            selected,
+            type_library_path=type_library_path,
+            generated_wrapper_path=generated_wrapper_path,
+            installed_chm_path=installed_chm_path,
+            com_shape_runtime="comtypes",
+            observed_at_utc=observed,
+        )
+        disposition = "READY_FOR_GETTER_ONLY_ATTACH"
+
+    basis = {
+        "schema_version": "etabs-installed-readonly-preflight/v1",
+        "disposition": disposition,
+        "selected_pid": selected_pid,
+        "selected_start_time_utc": (
+            _json_time(selected_start_time_utc)
+            if selected_start_time_utc is not None
+            else None
+        ),
+        "expected_intent": expected_intent.model_dump(mode="json"),
+        "discovered_processes": [
+            process.model_dump(mode="json") for process in processes
+        ],
+        "selected_process": (
+            selected.model_dump(mode="json")
+            if selected is not None and not blocked_reasons
+            else None
+        ),
+        "runtime_fingerprint": (
+            runtime.model_dump(mode="json") if runtime is not None else None
+        ),
+        "observed_at_utc": _json_time(observed),
+        "blocked_reasons": list(blocked_reasons),
+    }
+    return ETABSInstalledReadOnlyPreflightV1.model_validate(
+        {
+            **basis,
+            "selected_start_time_utc": selected_start_time_utc,
+            "expected_intent": expected_intent,
+            "discovered_processes": processes,
+            "selected_process": selected if not blocked_reasons else None,
+            "runtime_fingerprint": runtime,
+            "observed_at_utc": observed,
+            "blocked_reasons": blocked_reasons,
+            "preflight_sha256": _digest(basis),
         }
     )
 
