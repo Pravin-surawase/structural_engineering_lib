@@ -9,6 +9,12 @@ tags: [beam, etabs, w3, api, safety, optimization, execution]
 
 # W3 and professional beam integrated execution plan
 
+> **Master roadmap:** The
+> [Beam Design and ETABS Optimization Master Plan](beam-design-optimization-master-plan.md)
+> owns the human-facing goal, six-phase order, phase outputs and definition of
+> done. This document remains the detailed packet, safety-control and evidence
+> register. When a safety boundary differs, the stricter boundary applies.
+
 ## Decision
 
 Continue W3 from accepted preflight PR #944 while separating three different owners:
@@ -60,6 +66,11 @@ to replace missing project evidence with more solver complexity.
   PR #950 accepted the B1B/B2 evaluator/search milestone at merge
   `742719dd3f6c1e30c023e7585e9ea00d13b60fc2`. No installed application
   evidence was part of either offline milestone.
+- PR #952 accepted the installed A1/C1 evidence and exact schema at merge
+  `c29a468a7d6023e8be92feb534b9479977eac52f`. Getter-only A1 state/file
+  preservation passed and the C1 export resolved all requested tables and
+  fields. The comparison result epoch remains `BLOCKED`, so the installed
+  values are diagnostic rather than fresh project comparison truth.
 - The [W3 COM/VBA/reanalysis plan](etabs-w3-com-vba-and-reanalysis-plan.md)
   remains the ETABS host, transaction and reanalysis owner.
 - The [professional API renewal plan](lib-pro-015-professional-api-and-documentation-renewal-plan.md)
@@ -141,7 +152,8 @@ pushed or reviewed.
 | `codex/w3-screening-transaction-kernel` | `ETABS-W3-H0-ROUTE-DECISION`, `ETABS-W3-I-SCREENING`, `ETABS-W3-K0-OFFLINE-TRANSACTION-KERNEL` | one offline route/screen/dry-run candidate |
 | `codex/w3-owned-copy-iteration` | `ETABS-W3-K1-INSTALLED-OWNED-COPY`, `ETABS-W3-L-BOUNDED-ITERATION` | one separately authorized installed mutation milestone and terminal evidence PR |
 
-Do not create a planning-only PR between these milestones. Update this plan,
+The owner-requested six-phase master-plan freeze is the one planning-only
+alignment exception. After it, do not create a planning-only PR between these milestones. Update this plan,
 task/session evidence and the affected implementation on the active milestone
 branch, then publish them together. A milestone must split only when an internal
 unit discovers an outcome-changing dependency break, an accepted predecessor is
@@ -151,10 +163,11 @@ The B1B/B2 implementation reached exactly that split condition for C2: C0
 deliberately freezes only a generic export contract and makes no ETABS SQLite
 schema claim, while C2 requires C1's actual accepted table/column inventory.
 Inventing an allowlist before C1 would invalidate the parser's main outcome.
-Therefore the candidate-data milestone is narrowed to B1B/B2, C2 remains held,
-and the separately authorized A1/C1 evidence PR must precede its later offline
-implementation. This is a dependency correction, not a return to one PR per
-task.
+Therefore the candidate-data milestone was narrowed to B1B/B2 and C2 remained
+held until the separately authorized A1/C1 evidence was accepted. PR #952 now
+satisfies that dependency, so C2 is the next offline implementation packet. It
+must preserve the blocked result-epoch `HOLD`. This is a dependency correction,
+not a return to one PR per task.
 
 ## Confirmed issues added by this audit
 
@@ -237,15 +250,15 @@ declared before candidate inspection.
 | 1 | `ETABS-LIVE-G0-ROUTE-GATE` | Disable live routes by default; enforce loopback bind, HTTP/WebSocket authentication and operation classification before any COM import/attach | accepted PR #943 plus bounded preflight | Disabled/denied requests prove zero COM creation or attachment; missing WebSocket token is rejected before accept; OpenAPI security and startup checks match runtime | accepted through PR #945 |
 | 2 | `LIB-BEAM-S0-CHECK-TRUTH` | Effective-depth safety plus truthful, versioned REST/WebSocket supplied-beam checking | accepted G0 | No hidden depth or ignored field; one terminal status vocabulary; REST/WebSocket/OpenAPI/client and compatibility ledger agree | accepted through PR #946; successor audit repairs included here |
 | 3 | `ETABS-W3-A0-OFFLINE-SESSION-GUARD` | Offline process-instance/target/runtime fingerprint, getter-only attached policy, live-route capability, OS lease, supervised STA broker, freshness/result-epoch/state/call contracts and fakes | accepted `LIB-BEAM-S0` head for single-writer order only | PID reuse/runtime drift/second process/hung call fail deterministically; attached path invokes no setter; uncertain restoration fences reuse; durable ledger verifies; zero COM/application calls | accepted through PR #947 |
-| 4 | `ETABS-W3-A1-INSTALLED-READONLY-ACCEPTANCE` | Prove exact getter-only attachment on the Windows/ETABS authority | accepted A0 plus separate user authorization | Process instance, target observation, runtime fingerprint and model shown; no setter; pre/post state/file equal; unknown model/result freshness cannot become baseline/comparison proof | installed evidence accepted locally; exact PID/runtime/model and getter-only pre/post capture pass, PR pending |
+| 4 | `ETABS-W3-A1-INSTALLED-READONLY-ACCEPTANCE` | Prove exact getter-only attachment on the Windows/ETABS authority | accepted A0 plus separate user authorization | Process instance, target observation, runtime fingerprint and model shown; no setter; pre/post state/file equal; unknown model/result freshness cannot become baseline/comparison proof | accepted through PR #952 at `c29a468a`; exact PID/runtime/model and getter-only pre/post capture pass |
 | 5 | `ETABS-W3-B0-CANONICAL-PILOT` | Deprecate live-pilot calculation ownership and delegate to signed row-bound W3 audit | A0; installed run not required | Positive/negative M3 preserve physical face; missing face provenance holds; compatibility result declares delegation/limitations | accepted through PR #947 |
 | 6 | `ETABS-W3-B1A-PROJECT-CRITERIA-CATALOGUE` | Freeze criteria, permitted existing ETABS beam properties, materials/bar stock, reinforcement schedule scope, scenarios, objectives and digests | BEAM-S0, B0 and accepted W3A demand contracts | Strict canonical hashes and declaration chronology; no hidden fallback; any change invalidates downstream identities; actual instance may remain `HOLD` | accepted through PR #947 |
 | 7 | `ETABS-W3-B1B-CANDIDATE-EVALUATOR` | Freeze exact signed-action, row-bound, layer-aware candidate request/result and one feasibility owner | B1A | Effective depth is recomputed from serialized layers; every mandatory row/scenario/check is accepted or held; independent composition checks pass | accepted through PR #950 |
 | 8 | `LIB-PRO-015-D0-D1-BEAM` | Exact-wheel documentation gate and complete beam facade reference/examples | BEAM-S0 semantic freeze | Valid/invalid/FAIL/HOLD examples execute from built wheel; signatures, units, defaults, errors, limitations and provenance match runtime | 4-7 focused days |
 | 9 | `ETABS-W3-B2-OPTIMIZER-CONVERGENCE` | Route bar, cost and Pareto through B1B; freeze complete search and quantity/cost basis | B1B | One evaluation hash across routes; complete domain/counts/tie-breaks; incomplete search cannot claim optimum/Pareto/infeasible; exact serialized schedule owns quantities | accepted through PR #950 |
 | 10 | `ETABS-W3-C0-OFFLINE-ACQUISITION-CONTRACT` | Freeze matched-design and export-manifest contracts plus generic bounded fixture/scaffolding; make no ETABS schema-support claim | A0 | Synthetic generic fixtures prove contract, limits and zero ETABS/UI call; exact ETABS tables/columns remain unresolved | accepted through PR #947 |
-| 11 | `ETABS-W3-C1-INSTALLED-DESIGN-EXPORT-INVENTORY` | Acquire one target/runtime/epoch-bound design snapshot, named export manifest and actual SQLite schema inventory | A1 and C0 plus separate authorization | Every requested field/table closes a named row or is rejected; acquisition mode explicit; artifact complete/hash-bound; state/file preservation passes | exact installed schema accepted locally: 160 tables/62,133 rows, 10/10 requested tables and 80/80 fields found; comparison epoch remains `BLOCKED`; PR pending |
-| 12 | `ETABS-W3-C2-OFFLINE-EXACT-SCHEMA-PARSER` | Implement the parser and matched comparison against the acquired exact schema | accepted C1 artifact | Frozen export passes integrity/schema/row bounds; canonical evidence and diagnostic comparison are reproducible; no ETABS/UI call | held only until the A1/C1 evidence PR is accepted; exact local schema is available, and comparison values must retain the epoch `HOLD` |
+| 11 | `ETABS-W3-C1-INSTALLED-DESIGN-EXPORT-INVENTORY` | Acquire one target/runtime/epoch-bound design snapshot, named export manifest and actual SQLite schema inventory | A1 and C0 plus separate authorization | Every requested field/table closes a named row or is rejected; acquisition mode explicit; artifact complete/hash-bound; state/file preservation passes | accepted through PR #952 at `c29a468a`: 160 tables/62,133 rows, 10/10 requested tables and 80/80 fields found; comparison epoch remains `BLOCKED` |
+| 12 | `ETABS-W3-C2-OFFLINE-EXACT-SCHEMA-PARSER` | Implement the parser and matched comparison against the acquired exact schema | accepted C1 artifact | Frozen export passes integrity/schema/row bounds; canonical evidence and diagnostic comparison are reproducible; no ETABS/UI call | **NEXT** — PR #952 accepted the exact schema; implement offline and retain the result-epoch `HOLD` for comparison values |
 | 13 | `ETABS-W3-H0-ROUTE-DECISION` | Select `SURROGATE_ASSISTED`, `ETABS_FIRST` or terminal `HOLD` | B2, C2 and accepted project criteria/catalogue instance | Surrogate envelope covers the candidate domain, or ETABS-first admits only mutation-ready baseline-action proposals; baseline calibration is not candidate-range validity | 1-2 days for ETABS-first decision; separately cost a surrogate campaign |
 | 14 | `ETABS-W3-I-SCREENING` | Complete deterministic screening under the H0 route | B2 and H0 | No held mandatory check; explicit screening mode; `SCREENED_ONLY`; no changed-model feasibility claim | 5-10 focused days |
 | 15 | `ETABS-W3-K0-OFFLINE-TRANSACTION-KERNEL` | Dry-run change set, object/copy identities, durable stage journal, result epoch, recovery and failure injection | A0 and accepted W3I | No non-idempotent replay; crash/timeout states verify or quarantine; only existing beam properties allowed; no COM/application call | 5-8 focused days |

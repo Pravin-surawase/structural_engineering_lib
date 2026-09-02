@@ -19,6 +19,7 @@ Internal planning documents and research notes.
 |----------|---------|
 | [Next Session Brief](next-session-brief.md) | What to work on next |
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
+| [Beam Design and ETABS Optimization Master Plan](beam-design-optimization-master-plan.md) | Human-facing six-phase programme from trusted ETABS acquisition through owned-copy reanalysis and convergence |
 | [Commit and PR Validation Consolidation Plan](commit-pr-validation-consolidation-plan.md) | Reduce ordinary commits to three safety hooks, move complete assurance to one batched PR, and remove duplicate post-merge validation |
 | [W3 and Professional Beam Integrated Execution Plan](w3-beam-professional-integrated-execution-plan.md) | Long-term route/API, PID/runtime, beam criteria/search, evidence acquisition and owned-copy W3 sequence |
 | [ETABS COM, VBA and W3 Reanalysis Plan](etabs-w3-com-vba-and-reanalysis-plan.md) | PID-safe ETABS sessions, legacy VBA lessons, common candidate evaluation and owned-copy W3K/L transactions |
@@ -48,8 +49,9 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
+| `beam-design-optimization-master-plan.md` | 2026-09-02 | 🔄 Six-phase master plan frozen; Phase 1 is the only active phase and C2 exact-schema parsing is next |
 | `commit-pr-validation-consolidation-plan.md` | 2026-09-02 | ✅ Accepted in PR #949; ordinary commits run three mutation-safety hooks and comprehensive assurance runs once on the batched PR |
-| `w3-beam-professional-integrated-execution-plan.md` | 2026-09-02 | 🟡 Offline B1B/B2 evaluator/search candidate integrated locally; C2 held until separately authorized A1/C1 freezes the exact schema |
+| `w3-beam-professional-integrated-execution-plan.md` | 2026-09-02 | 🔄 A1/C1 accepted through PR #952; C2 exact-schema parsing is the next offline packet and comparison truth remains held by the blocked result epoch |
 | `etabs-w3-com-vba-and-reanalysis-plan.md` | 2026-09-01 | 🚧 Host/transaction sequence remains authoritative; ETABS/model calls remain separately gated |
 | `lib-pro-013-whole-library-renewal-audit-plan.md` | 2026-08-28 | 🔄 A0 and B0 integrated; F0 next, then R0 and one final engineer review |
 | `lib-pro-012-external-api-remediation-plan.md` | 2026-08-28 | 🔄 S0/A0/B0 integrated; F0 family convergence active next; Windows lane prepared for later exact R0 evidence |
@@ -63,7 +65,7 @@ Internal planning documents and research notes.
 | `maint-0136-cleanup-preservation-plan.md` | 2026-08-27 | ✅ Phase 0 through exact Phase 2C complete; consolidated integration candidate prepared after PR #874 |
 | `maint-0133-cleanup-inventory-and-authorization.md` | 2026-08-23 | 🚧 Immutable inventory candidate; two moves ready for later authorization, four held, zero deletes |
 | `public-route-safety-closure-plan.md` | 2026-08-22 | ✅ LIB-PRO-003-D local candidate accepted; hosted/exact-tree closure pending; release and professional claims held by PARTIAL readiness |
-| `next-session-brief.md` | 2026-09-02 | 🔄 Publish the offline B1B/B2 batch in one PR; installed A1/C1 remains separately authorized and C2 stays held until then |
+| `next-session-brief.md` | 2026-09-02 | 🔄 Close Phase 1 next: C2 exact-schema parsing, then separately authorized fresh-result and repeatability evidence |
 | `pre-release-input-safety-and-professional-readiness-plan.md` | 2026-08-17 | 🚧 A-G merged; CLI, hosted-interpreter, preflight-verdict, and authorization holds remain through I-J |
 | `is456-solid-slabs-master-plan.md` | 2026-08-10 | 📋 Master plan ready; implementation has not started |
 | `ui-experience-foundation-master-plan.md` | 2026-08-10 | ✅ Two-session P0-P15 workbench/capability program accepted |
