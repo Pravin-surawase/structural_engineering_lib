@@ -11,14 +11,20 @@ from pathlib import Path
 
 import pytest
 
+from structural_lib.services import etabs_installed_readonly as installed_readonly
 from structural_lib.services.etabs_installed_readonly import (
     _ETABSPIDGetterOnlyReader,
+    _installed_readonly_worker_payload,
     capture_etabs_installed_readonly_v1,
 )
-from structural_lib.services.etabs_operation_control import ETABSCallLedgerV1
+from structural_lib.services.etabs_operation_control import (
+    ETABSCallLedgerIdentityV1,
+    ETABSCallLedgerV1,
+)
 from structural_lib.services.etabs_session_guard import (
     ETABSAccessModeV1,
     ETABSExpectedModelIntentV1,
+    ETABSInstalledReadOnlyPreflightV1,
     ProcessObservationV1,
     preflight_installed_etabs_readonly_v1,
 )
@@ -184,6 +190,7 @@ def test_pid_reader_captures_equal_state_with_only_reviewed_getters(
         verified_at_utc=T1,
     )
     ledger_identity = ledger.close()
+    worker_payload = _installed_readonly_worker_payload(capture, ledger_identity)
 
     assert client.prog_ids == ["ETABSv1.Helper"]
     assert helper.calls == [("CSI.ETABS.API.ETABSObject", 7300)]
@@ -211,6 +218,11 @@ def test_pid_reader_captures_equal_state_with_only_reviewed_getters(
     }
     method_names = {method.rsplit(".", 1)[-1] for method in methods}
     assert all(name.startswith("Get") for name in method_names)
+    assert type(capture).model_validate(worker_payload["capture"]) == capture
+    assert (
+        ETABSCallLedgerIdentityV1.model_validate(worker_payload["call_ledger"])
+        == ledger_identity
+    )
 
 
 def test_installed_capture_detects_state_drift(
@@ -260,3 +272,31 @@ def test_installed_capture_refuses_held_preflight_before_evidence_write(
 
     with pytest.raises(RuntimeError, match="PREFLIGHT_HOLD"):
         capture_etabs_installed_readonly_v1(preflight, object())
+
+
+def test_supervised_run_sends_python_native_preflight_to_spawned_worker(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    preflight, _model, _provider = _ready_preflight(tmp_path, monkeypatch)
+    received: list[ETABSInstalledReadOnlyPreflightV1] = []
+
+    def broker_sentinel(_operation, *, args, **_kwargs):
+        received.append(ETABSInstalledReadOnlyPreflightV1.model_validate(args[0]))
+        raise RuntimeError("BROKER_SENTINEL")
+
+    monkeypatch.setattr(
+        installed_readonly,
+        "run_etabs_sta_broker_v1",
+        broker_sentinel,
+    )
+
+    with pytest.raises(RuntimeError, match="BROKER_SENTINEL"):
+        installed_readonly.run_etabs_installed_readonly_v1(
+            preflight,
+            transaction_id="TX-A1-SPAWN-PAYLOAD",
+            evidence_directory=tmp_path / "evidence",
+            lease_directory=tmp_path / "leases",
+        )
+
+    assert received == [preflight]

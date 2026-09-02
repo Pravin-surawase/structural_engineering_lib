@@ -734,9 +734,18 @@ def _installed_readonly_worker(
     except BaseException:
         ledger.abandon()
         raise
+    return _installed_readonly_worker_payload(capture, ledger_identity)
+
+
+def _installed_readonly_worker_payload(
+    capture: ETABSInstalledReadOnlyCaptureV1,
+    ledger_identity: ETABSCallLedgerIdentityV1,
+) -> dict[str, object]:
+    """Keep strict Python types intact across the local broker queue."""
+
     return {
-        "capture": capture.model_dump(mode="json"),
-        "call_ledger": ledger_identity.model_dump(mode="json"),
+        "capture": capture.model_dump(mode="python"),
+        "call_ledger": ledger_identity.model_dump(mode="python"),
     }
 
 
@@ -809,7 +818,7 @@ def run_etabs_installed_readonly_v1(
         broker = run_etabs_sta_broker_v1(
             _installed_readonly_worker,
             args=(
-                preflight.model_dump(mode="json"),
+                preflight.model_dump(mode="python"),
                 transaction_id,
                 str(ledger_path),
                 str(evidence_root),
