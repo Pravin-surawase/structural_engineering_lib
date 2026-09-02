@@ -20,6 +20,7 @@ Internal planning documents and research notes.
 | [Next Session Brief](next-session-brief.md) | What to work on next |
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
 | [Beam Design and ETABS Optimization Master Plan](beam-design-optimization-master-plan.md) | Human-facing six-phase programme from trusted ETABS acquisition through owned-copy reanalysis and convergence |
+| [Legacy VBA Data-flow and Workflow Lessons](legacy-vba-dataflow-and-workflow-lessons.md) | Adopted transient-data policy, minimal durable evidence and reusable ETABS/Excel workflow ideas from the preserved VBA |
 | [Commit and PR Validation Consolidation Plan](commit-pr-validation-consolidation-plan.md) | Reduce ordinary commits to three safety hooks, move complete assurance to one batched PR, and remove duplicate post-merge validation |
 | [W3 and Professional Beam Integrated Execution Plan](w3-beam-professional-integrated-execution-plan.md) | Long-term route/API, PID/runtime, beam criteria/search, evidence acquisition and owned-copy W3 sequence |
 | [ETABS COM, VBA and W3 Reanalysis Plan](etabs-w3-com-vba-and-reanalysis-plan.md) | PID-safe ETABS sessions, legacy VBA lessons, common candidate evaluation and owned-copy W3K/L transactions |
@@ -50,6 +51,7 @@ Internal planning documents and research notes.
 | Document | Last Updated | Status |
 |----------|-------------|--------|
 | `beam-design-optimization-master-plan.md` | 2026-09-02 | 🔄 Six-phase master plan frozen; Phase 1 is the only active phase and C2 exact-schema parsing is next |
+| `legacy-vba-dataflow-and-workflow-lessons.md` | 2026-09-02 | ✅ Transient result-batch policy and legacy workflow idea inventory recorded; later-phase implementation remains gated |
 | `commit-pr-validation-consolidation-plan.md` | 2026-09-02 | ✅ Accepted in PR #949; ordinary commits run three mutation-safety hooks and comprehensive assurance runs once on the batched PR |
 | `w3-beam-professional-integrated-execution-plan.md` | 2026-09-02 | 🔄 A1/C1 accepted through PR #952; C2 exact-schema parsing is the next offline packet and comparison truth remains held by the blocked result epoch |
 | `etabs-w3-com-vba-and-reanalysis-plan.md` | 2026-09-01 | 🚧 Host/transaction sequence remains authoritative; ETABS/model calls remain separately gated |

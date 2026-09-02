@@ -79,6 +79,12 @@ Hashes are retained in the audit receipt so later work can detect source drift.
 The files remain outside this repository and are evidence, not maintained
 library code.
 
+The companion
+[legacy VBA data-flow and workflow lessons](legacy-vba-dataflow-and-workflow-lessons.md)
+records the module-level fetch/reduce/retain behavior, the adopted data-lifetime
+policy, additional workflow ideas and outcome-changing patterns that must not be
+ported. This plan remains the authority for ETABS host and transaction safety.
+
 ### Patterns to retain
 
 | Legacy pattern | Value to retain | Maintained replacement |
