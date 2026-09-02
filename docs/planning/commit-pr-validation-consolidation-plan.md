@@ -88,6 +88,11 @@ three-commit feature batch and merged through one required hosted cycle.
 
 - No branch, open PR, dirty file, stash, user cache, artifact, dependency or
   active desktop process was deleted.
+- The retained dirty Excel-pilot and W3F live-foundation lanes have no commits
+  ahead of their historical bases, but their uncommitted task/session/handoff
+  files overlap current `main`. Keep both lanes suspended; before either
+  resumes, preserve its exact dirty files and deliberately rebind the intended
+  work to current `main`. Do not merge, reset, stash or rebase them as cleanup.
 - No ETABS, Excel, COM, model, workbook, release or deployment action occurred.
 - Required `PR Gate`, strict branch protection and the three commit-safety hooks
   remain unchanged.

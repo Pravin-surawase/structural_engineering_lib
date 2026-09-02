@@ -5,8 +5,8 @@
 <!-- HANDOFF:START -->
 - Date: 2026-09-02
 - Focus: Complete urgent repository hygiene and record deferred performance work.
-- Git receipt: docs/verification/repository-hygiene-closeout-git-handoff-receipt.json | sha256:391d2a023da25f18e6c9d12cd93bf6479c5e2d226fd6c334681bc6ed1612764c | HOLD
-- Git identity: codex/repository-hygiene-closeout@742719dd3f6c1e30c023e7585e9ea00d13b60fc2 | upstream=origin/main@742719dd3f6c1e30c023e7585e9ea00d13b60fc2 | base=origin/main@742719dd3f6c1e30c023e7585e9ea00d13b60fc2 | tree=dirty | operation=none
+- Git receipt: docs/verification/repository-hygiene-closeout-git-handoff-receipt.json | sha256:b70205b0e0e85bf8a842738af1e71ac555e280ada31b9b3705e374def75870bc | HOLD
+- Git identity: codex/repository-hygiene-closeout@30395bc1111aee72f3bfc385e4cff9c0e9479609 | upstream=origin/main@742719dd3f6c1e30c023e7585e9ea00d13b60fc2 | base=origin/main@742719dd3f6c1e30c023e7585e9ea00d13b60fc2 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -50,6 +50,10 @@ accepted C1 schema artifact.
   and remote-desktop helpers are unrelated and must remain running.
 - The temporary hygiene-documentation worktree remains only until its PR is
   accepted. Its branch is preserved unless deletion is separately authorized.
+- The dirty Excel-pilot and W3F live-foundation worktrees are suspended
+  preservation lanes with zero commits ahead and overlapping historical docs.
+  Preserve their exact dirty files and rebind deliberately before resumption;
+  do not merge, reset, stash or rebase them as cleanup.
 
 ## Required Reading
 

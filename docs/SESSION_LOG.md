@@ -40,6 +40,10 @@ ETABS, Excel, release or deployment change.
 - Reconciled the task board and next-session brief with the accepted PR #950
   state. C2 remains held for separately authorized A1/C1 schema evidence; no
   new W3 or maintenance implementation was started.
+- The pre-publication sibling audit found all four retained side branches have
+  zero commits ahead. The two dirty lanes are 129 and 69 commits behind and
+  overlap only shared task/session/handoff records owned by this closeout; they
+  remain suspended for deliberate preservation/rebind before any future use.
 
 ### Issues encountered
 
@@ -55,6 +59,8 @@ ETABS, Excel, release or deployment change.
 - The first focused session check rejected the new receipt because the
   generated Latest Handoff block and W3 status text still described the
   pre-merge PR #950 candidate.
+- The required pre-publication sibling audit found two preserved dirty lanes
+  overlap this closeout's shared task/session/handoff paths.
 
 ### Root causes and resolutions
 
@@ -82,6 +88,13 @@ ETABS, Excel, release or deployment change.
   mode, reconcile only the two stale B1B/B2 task rows and current/next brief,
   then regenerate the receipt against all final owned paths. The focused
   session and receipt checks are the final evidence.
+- Root cause: both dirty lanes are historical preservation checkouts with zero
+  commits ahead of their bases, but their uncommitted evidence predates 69/129
+  accepted `main` commits. Resolution: classify them as suspended rather than
+  integration candidates and require exact dirty-file preservation plus a
+  deliberate current-main rebind before resumption. No mutation was applied to
+  either lane; `git_state.py --worktrees` and exact path-overlap comparison are
+  the evidence.
 
 ### Validation through content freeze
 

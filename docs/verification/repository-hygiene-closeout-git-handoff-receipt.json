@@ -22,27 +22,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "391d2a023da25f18e6c9d12cd93bf6479c5e2d226fd6c334681bc6ed1612764c",
+    "receipt_sha256": "b70205b0e0e85bf8a842738af1e71ac555e280ada31b9b3705e374def75870bc",
     "state": {
       "branch": "codex/repository-hygiene-closeout",
       "default_base": {
-        "ahead": 0,
+        "ahead": 1,
         "behind": 0,
         "ref": "origin/main",
         "sha": "742719dd3f6c1e30c023e7585e9ea00d13b60fc2",
-        "status": "equal"
+        "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 243.623,
+      "duration_ms": 247.01,
       "git_common_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git",
       "git_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git\\worktrees\\repository-hygiene-closeout",
-      "head_sha": "742719dd3f6c1e30c023e7585e9ea00d13b60fc2",
+      "head_sha": "30395bc1111aee72f3bfc385e4cff9c0e9479609",
       "hold_reasons": [
-        "changed paths: 5"
+        "changed paths: 3"
       ],
       "linked_worktree": true,
       "locks": [],
-      "observed_at_utc": "2026-09-02T05:20:34.983099+00:00",
+      "observed_at_utc": "2026-09-02T05:23:21.544138+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -53,31 +53,28 @@
       "tree": {
         "clean": false,
         "conflicted_paths": [],
-        "dirty_count": 5,
+        "dirty_count": 3,
         "modified_paths": [
           "docs/SESSION_LOG.md",
-          "docs/TASKS.md",
           "docs/planning/commit-pr-validation-consolidation-plan.md",
           "docs/planning/next-session-brief.md"
         ],
         "staged_paths": [],
-        "untracked_paths": [
-          "docs/verification/repository-hygiene-closeout-git-handoff-receipt.json"
-        ]
+        "untracked_paths": []
       },
       "upstream": {
-        "ahead": 0,
+        "ahead": 1,
         "behind": 0,
         "ref": "origin/main",
         "sha": "742719dd3f6c1e30c023e7585e9ea00d13b60fc2",
-        "status": "equal"
+        "status": "ahead"
       },
       "worktree_root": "C:\\CodexWork\\worktrees\\repository-hygiene-closeout"
     }
   },
-  "local_state_receipt_hash": "sha256:391d2a023da25f18e6c9d12cd93bf6479c5e2d226fd6c334681bc6ed1612764c",
+  "local_state_receipt_hash": "sha256:b70205b0e0e85bf8a842738af1e71ac555e280ada31b9b3705e374def75870bc",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-09-02T05:20:34.983099+00:00",
+  "observed_at_utc": "2026-09-02T05:23:21.544138+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"
