@@ -5,6 +5,119 @@
 
 ---
 
+## 2026-09-02 — Session: Urgent repository performance and hygiene closeout
+
+**Agent:** Codex (`orchestrator`; sole writer; no implementation subagents).
+**Task:** `MAINT-REPOSITORY-HYGIENE-CLOSEOUT`.
+**Branch:** `codex/repository-hygiene-closeout`.
+**Source:** accepted offline B1B/B2 PR #950 merge
+`742719dd3f6c1e30c023e7585e9ea00d13b60fc2`.
+**Git handoff receipt:** docs/verification/repository-hygiene-closeout-git-handoff-receipt.json
+**Focus:** Complete urgent repository hygiene and record deferred performance work.
+**Boundary:** Clean merged worktrees, closed-PR Actions caches, local `main`
+freshness and background-process inspection. No branch, open PR, dirty work,
+active process, formatter, CI topology, merge setting, artifact, dependency,
+ETABS, Excel, release or deployment change.
+
+### Summary
+
+- Revalidated 45 registered worktrees against live status, Git-operation
+  markers and current GitHub PR state. Removed 40 clean merged-PR worktrees
+  without force, retained the five protected lanes and verified every removed
+  branch ref still exists.
+- Deleted 266 exact Actions cache IDs tied to closed/merged PR refs. Their
+  deletion set totaled 2,054,176,530 bytes; the converged live inventory is 302
+  caches / 8,491,048,437 bytes with zero closed-PR caches, while 252 `main`, 32
+  open-PR and 18 other-branch caches remain.
+- Fast-forwarded clean local `main` from `44ef7bc4` to `742719dd`, exactly equal
+  to `origin/main`.
+- Found no stale task-owned Python, pytest, dev-server, Git, ETABS or Excel
+  process. Preserved Codex/MCP helpers and Chrome Remote Desktop.
+- Recorded the workflow decision: coherent internal commits, one PR after the
+  batch freezes, PR-only comprehensive checks and squash merge as the normal
+  default. Formatter migration, merge-setting enforcement and CI redesign are
+  explicitly deferred.
+- Reconciled the task board and next-session brief with the accepted PR #950
+  state. C2 remains held for separately authorized A1/C1 schema evidence; no
+  new W3 or maintenance implementation was started.
+- The pre-publication sibling audit found all four retained side branches have
+  zero commits ahead. The two dirty lanes are 129 and 69 commits behind and
+  overlap only shared task/session/handoff records owned by this closeout; they
+  remain suspended for deliberate preservation/rebind before any future use.
+
+### Issues encountered
+
+- The first PowerShell removal command failed to parse before any worktree
+  removal occurred.
+- Immediately after cache deletion, the cache-list endpoint showed the correct
+  302 remaining records while the aggregate usage endpoint still showed the
+  old total.
+- The repository session tracker still held an unmatched start checkpoint for
+  the already-merged B1B/B2 task and refused the new session start.
+- A broad process-name/command-line filter matched the PowerShell process that
+  was executing the inspection itself.
+- The first focused session check rejected the new receipt because the
+  generated Latest Handoff block and W3 status text still described the
+  pre-merge PR #950 candidate.
+- The required pre-publication sibling audit found two preserved dirty lanes
+  overlap this closeout's shared task/session/handoff paths.
+
+### Root causes and resolutions
+
+- Root cause: the first command embedded a native Git invocation and statement
+  separator inside a PowerShell parenthesized expression. Resolution: replace
+  it with an explicit branch-validation loop and rerun the complete safety
+  classification. Evidence: all 40 removals completed, five worktrees remained
+  and `MISSING_LOCAL_BRANCH_REFS=0`. ⚠️ TERMINAL ISSUE: invalid compound
+  PowerShell expression stopped pre-execution -> explicit loop completed.
+- Root cause: GitHub's cache inventory and aggregate usage views converged on
+  different schedules. Resolution: treat exact cache IDs/inventory as deletion
+  evidence, then re-query both views. Evidence: both later agreed on 302 caches
+  and 8,491,048,437 bytes, with zero closed-PR cache refs.
+- Root cause: PR #950 had merged but its local usage checkpoint had never been
+  closed. Resolution: record that exact task as superseded by the owner-requested
+  maintenance closeout, then start this task normally. Evidence: the new
+  session preflight passed and bound the current worktree/source.
+- Root cause: the inspection terms appeared in the current PowerShell command
+  line, so the query counted itself. Resolution: inspect the sole match by PID
+  and executable before taking action. It was the active query process; no
+  background process was stopped.
+- Root cause: PR #950 merged after the previous candidate-bound task/brief
+  freeze, while the maintenance receipt was created before the handoff block
+  was refreshed. Resolution: update the generated block through preparation
+  mode, reconcile only the two stale B1B/B2 task rows and current/next brief,
+  then regenerate the receipt against all final owned paths. The focused
+  session and receipt checks are the final evidence.
+- Root cause: both dirty lanes are historical preservation checkouts with zero
+  commits ahead of their bases, but their uncommitted evidence predates 69/129
+  accepted `main` commits. Resolution: classify them as suspended rather than
+  integration candidates and require exact dirty-file preservation plus a
+  deliberate current-main rebind before resumption. No mutation was applied to
+  either lane; `git_state.py --worktrees` and exact path-overlap comparison are
+  the evidence.
+
+### Validation through content freeze
+
+- Worktrees: 40/40 verified candidates removed normally; five protected lanes
+  retained; zero removed branch refs missing.
+- Actions caches: 266/266 verified closed/merged-PR IDs deleted; zero such refs
+  remain; all open-PR and `main` caches retained.
+- Git: local `main` and `origin/main` both resolve to `742719dd`; status is
+  clean.
+- Process boundary: no owned stale task process remained after excluding the
+  active inspection process; protected platform/remote-session helpers remain.
+- Documentation-only focused checks and the three normal commit-safety hooks
+  form the local closeout. Comprehensive assurance remains the single hosted PR
+  cycle.
+
+### Next action
+
+Publish this documentation-only closeout once, accept only an unchanged head
+with strict `PR Gate` green, squash merge, and remove only this temporary
+documentation worktree. Preserve its branch. Schedule cache-recurrence and
+FastAPI-lane improvements as later maintenance batches; do not mix them into
+the urgent closeout.
+
 ## 2026-09-02 — Session: Offline B1B/B2 candidate evaluator and search convergence
 
 **Agent:** Codex (`orchestrator`; sole writer; no implementation subagents).
