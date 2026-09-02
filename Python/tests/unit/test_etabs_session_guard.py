@@ -31,6 +31,7 @@ from structural_lib.services.etabs_session_guard import (
     file_identity_v1,
     issue_etabs_bridge_capability_v1,
     observe_etabs_target_v1,
+    preflight_installed_etabs_readonly_v1,
     verify_etabs_bridge_capability_v1,
     verify_etabs_target_observation_v1,
 )
@@ -181,6 +182,116 @@ def test_process_discovery_rejects_duplicate_pid_and_start_time(tmp_path: Path) 
             process_provider=lambda: (row, row),
             observed_at_utc=T0,
         )
+
+
+def test_installed_readonly_preflight_holds_before_com_without_exact_target() -> None:
+    intent = ETABSExpectedModelIntentV1(
+        allowed_access=ETABSAccessModeV1.ATTACHED_OBSERVE,
+    )
+
+    result = preflight_installed_etabs_readonly_v1(
+        intent,
+        selected_pid=None,
+        selected_start_time_utc=None,
+        process_provider=lambda: (),
+        observed_at_utc=T0,
+    )
+
+    assert result.disposition == "HOLD"
+    assert result.selected_process is None
+    assert result.runtime_fingerprint is None
+    assert set(result.blocked_reasons) == {
+        "EXACT_PROCESS_SELECTION_MISSING",
+        "EXPECTED_ETABS_VERSION_MISSING",
+        "EXPECTED_MODEL_NAME_MISSING",
+        "EXPECTED_MODEL_PATH_MISSING",
+        "NO_ETABS_PROCESS_RUNNING",
+    }
+
+
+def test_installed_readonly_preflight_binds_exact_process_runtime_and_model(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    executable = _write(tmp_path / "ETABS.exe", b"offline fake executable")
+    model = _write(tmp_path / "selected.edb", b"offline fake model")
+    type_library = _write(tmp_path / "ETABSv1.tlb", b"offline fake typelib")
+    wrapper = _write(tmp_path / "ETABSv1.py", b"offline fake wrapper")
+    installed_chm = _write(tmp_path / "ETABS.chm", b"offline fake help")
+    start = T0 - timedelta(hours=1)
+    monkeypatch.setattr(
+        "structural_lib.services.etabs_session_guard.importlib.metadata.version",
+        lambda _name: "1.4.16",
+    )
+    intent = ETABSExpectedModelIntentV1(
+        expected_model_path=str(model.resolve()),
+        expected_model_name=model.name,
+        expected_etabs_version="23.3.1",
+        allowed_access=ETABSAccessModeV1.ATTACHED_OBSERVE,
+    )
+
+    result = preflight_installed_etabs_readonly_v1(
+        intent,
+        selected_pid=4100,
+        selected_start_time_utc=start,
+        type_library_path=type_library,
+        generated_wrapper_path=wrapper,
+        installed_chm_path=installed_chm,
+        process_provider=lambda: (
+            ProcessObservationV1(
+                pid=4100,
+                start_time_utc=start,
+                executable_path=str(executable),
+                executable_version="23.3.1.4563",
+                architecture="x86_64",
+            ),
+        ),
+        observed_at_utc=T0,
+    )
+
+    assert result.disposition == "READY_FOR_GETTER_ONLY_ATTACH"
+    assert result.blocked_reasons == ()
+    assert result.selected_process is not None
+    assert result.runtime_fingerprint is not None
+    assert result.runtime_fingerprint.process_instance_sha256 == (
+        result.selected_process.instance_sha256
+    )
+    assert result.runtime_fingerprint.com_shape_runtime == "comtypes"
+
+
+def test_installed_readonly_preflight_rejects_pid_reuse_without_runtime_probe(
+    tmp_path: Path,
+) -> None:
+    executable = _write(tmp_path / "ETABS.exe", b"offline fake executable")
+    model = _write(tmp_path / "selected.edb", b"offline fake model")
+    current_start = T0 - timedelta(minutes=30)
+    intent = ETABSExpectedModelIntentV1(
+        expected_model_path=str(model.resolve()),
+        expected_model_name=model.name,
+        expected_etabs_version="23.3.1",
+        allowed_access=ETABSAccessModeV1.ATTACHED_OBSERVE,
+    )
+
+    result = preflight_installed_etabs_readonly_v1(
+        intent,
+        selected_pid=4100,
+        selected_start_time_utc=current_start - timedelta(hours=1),
+        process_provider=lambda: (
+            ProcessObservationV1(
+                pid=4100,
+                start_time_utc=current_start,
+                executable_path=str(executable),
+                executable_version="23.3.1.4563",
+                architecture="x86_64",
+            ),
+        ),
+        observed_at_utc=T0,
+    )
+
+    assert result.disposition == "HOLD"
+    assert result.blocked_reasons == ("SELECTED_PROCESS_START_TIME_MISMATCH",)
+    assert result.selected_process is None
+    assert result.runtime_fingerprint is None
 
 
 def test_runtime_fingerprint_is_measured_and_stable_across_reobservation(

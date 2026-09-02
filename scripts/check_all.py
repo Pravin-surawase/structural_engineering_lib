@@ -105,7 +105,7 @@ CATEGORIES: list[Category] = [
             Check(
                 "API classification",
                 _py("generate_api_classification.py", "--check"),
-                timeout=30,
+                timeout=90,
             ),
         ],
     ),

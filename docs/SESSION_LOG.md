@@ -5,6 +5,266 @@
 
 ---
 
+## 2026-09-02 — Session: W3 A1/C1 installed read-only evidence milestone
+
+**Agent:** Codex (`orchestrator`; sole writer; no implementation subagents).
+**Task:** `ETABS-W3-A1-C1-INSTALLED-READONLY`.
+**Branch:** `codex/w3-installed-readonly-evidence`.
+**Source:** accepted repository-hygiene PR #951 merge
+`827ea6786354481f8e2686bd31daee58ec2ae15c`.
+**Git handoff receipt:** docs/verification/etabs-w3-a1-c1-installed-evidence-git-handoff-receipt.json
+**Evidence:** `docs/verification/etabs-w3-a1-c1-preflight-hold-evidence.json`
+and `docs/verification/etabs-w3-a1-c1-installed-evidence.json`.
+**Focus:** Complete A1 getter-only acceptance and C1 installed schema inventory.
+**Boundary:** A1 is getter-only attachment. C1 additionally owns one exact
+bounded in-memory `DesignConcrete.StartDesign` call and a create-new operator-UI
+SQLite export under the owner's later explicit installed-work authorization.
+Run analysis, setters, save, unlock, model-input mutation, application exit,
+Excel automation, original-model changes, release and deployment are excluded.
+
+### Summary
+
+- Verified clean local `main` equals freshly fetched `origin/main` at `827ea678`
+  and created the isolated milestone branch/worktree. All retained historical
+  worktrees and branches remain untouched.
+- Reconciled the canonical W3 plan with accepted PRs #947/#950, the accepted
+  multiple-coherent-commits/one-PR cadence, the active A1/C1 authority and C2's
+  unchanged dependency on an accepted C1 schema artifact.
+- Added a no-COM preflight that fails closed unless PID, process start time,
+  model path/name/version, type library, generated wrapper and installed help
+  are exact and present. PID reuse and absent/ambiguous selection cannot reach
+  COM construction.
+- Added a supervised PID-specific read-only transport using
+  `cHelper.GetObjectProcess`. It revalidates the process/runtime inside the STA
+  worker immediately before attachment, uses the existing OS lease and bounded
+  broker, durably records each raw getter return, and brackets session/state/file
+  identity without exposing the underlying `SapModel` or any setter surface.
+- Added a time-independent normalized state-content digest for the operation
+  equality decision while retaining the two separately timestamped state
+  snapshots. Attached memory freshness and unavailable table-display selection
+  remain explicit holds; no baseline/comparison freshness is claimed.
+- Added C1 read-only immutable SQLite inspection. It verifies the frozen C0
+  manifest identity, WAL/SHM absence and SQLite integrity; inventories all
+  tables, columns, declared types, primary-key order and bounded row counts;
+  maps every requested field to its comparison row or an explicit rejection;
+  and binds the inventory to target/runtime/model/result-epoch/export hashes.
+  Parser support remains false for C2.
+- Measured installed ETABS 23.3.1/API 2.16.0 artifacts and statically proved
+  `GetObjectProcess` plus `GetRunCaseFlag` from the current generated wrapper.
+  The fresh process inventory contained no ETABS or Excel process, so the live
+  call counters are all zero and A1/C1 correctly stops at
+  `HOLD_NO_RUNNING_TARGET`.
+- After the operator opened the intended copied model, the exact no-COM
+  preflight and supervised A1 getter capture completed against one PID/start/
+  runtime/model identity. The operation ledger contains only reviewed getter
+  leaves, reports `VERIFIED_EQUAL`, preserves the saved file and lock, and does
+  not permit baseline/comparison freshness.
+- One predeclared concrete-design call returned CSI code 0 and changed only
+  in-memory design-result availability from false to true. Protected input/
+  analysis state and the saved model bytes remained exact; no analysis, save,
+  unlock, input change or exit call occurred.
+- The completed create-new SQLite export is 9,641,984 bytes with SHA-256
+  `d8315a63...2d116`, no WAL/SHM, integrity `ok`, 160 tables and 62,133 rows.
+  All 10 requested tables and 80 requested fields resolve. The installed IS 456
+  beam summary contains 3,502 rows; a getter-only API cross-check returned the
+  same 3,502 items across 153/153 beam frames.
+- The exact schema is locally accepted for C2 implementation. Exported values
+  remain a diagnostic `HOLD` because the result epoch lacks a current-session
+  analysis call, reviewed clean-memory evidence and accepted table-selection
+  getter evidence. No engineering/project approval is claimed.
+- Seven coherent implementation/planning commits precede this final evidence/
+  documentation checkpoint. Each commit ran only the three accepted mutation-
+  safety hooks; nothing was pushed and no PR or hosted validation cycle was
+  opened before the installed batch froze.
+
+### Issues encountered
+
+- The inherited integrated plan still described B1B/B2 as pending, prescribed
+  one milestone commit, and named the already accepted A0/B0/B1A/C0 batch as
+  the next action.
+- No ETABS process or exact model intent existed at either fresh installed
+  preflight.
+- The first PowerShell JSON-key inspection placed a pipe directly after a
+  `foreach` statement and failed to parse before reading the evidence.
+- The existing state snapshot digest includes `observed_at_utc`, while the
+  attached operation outcome requires an equality digest for pre/post state.
+- The first getter-surface test treated the substring `.Set` in
+  `Results.Setup` as a setter call.
+- The first bounded static pass found import-order/formatting differences and
+  five mypy inference failures in the new modules.
+- The API-classification generator refused to run while the new preflight
+  evidence document was untracked.
+- The first two preflight evidence replay commands passed serialized strict
+  lists/timestamps directly to Pydantic and were rejected before digest review.
+- The first bounded design-transaction attempt stopped before design because
+  the installed COM wrapper returned a list where the scratch decoder required
+  a tuple.
+- The first design-summary metadata count incorrectly reported zero after the
+  successful design call even though ETABS displayed reinforcing results.
+- The first broad SQLite export attempt reached the ETABS exporter but ended
+  with `miExportSqliteDatabase` and created no usable destination.
+- `Get-FileHash` could not open the successful SQLite artifact while ETABS
+  retained its shared handle.
+- The scratch A1 reporter printed `state_preserved=False` even though the
+  production outcome recorded identical pre/post state-content hashes and
+  `VERIFIED_EQUAL`.
+- A supplemental getter-only probe could not see the running ETABS object from
+  the restricted process context.
+- The first frozen focused pytest union could not create fixture/cache paths in
+  the sandboxed system temp and read-only linked worktree.
+- The maintained handoff-receipt generator could inspect the linked worktree
+  but could not create its output file from the restricted process context.
+- The first session-document check treated the Markdown code delimiter and
+  sentence period after the receipt path as part of the filename.
+- The one full 32-check PR-boundary cycle passed 31 checks but timed out API
+  classification after 53.8 seconds against its stale 30-second child limit.
+- The first repair Ruff command attempted to initialize its cache under the
+  read-only worktree and was denied before linting.
+
+### Root causes and resolutions
+
+- Confirmed root cause: plan status stopped before PRs #947/#950 and before PR
+  #949's reduced commit gate was exercised by PR #950. Resolution: update only
+  the canonical status, packet rows, commit cadence and exact next action, plus
+  the task/brief projections. Accepted predecessor claims remain unchanged.
+- Confirmed external precondition: the operator has not opened and selected an
+  ETABS model for this evidence session. Resolution: perform no COM/UI action,
+  freeze the exact installed identities and truthful HOLD, and continue only
+  after PID/start/path/name/version are available. Zero live calls prove the
+  boundary.
+- Confirmed root cause: PowerShell requires the `foreach` output to be assigned
+  or wrapped before piping. Resolution: collect the rows first and pipe the
+  collection; the three evidence documents were then inspected successfully.
+  ⚠️ TERMINAL ISSUE: invalid `foreach` pipeline stopped the read-only command
+  before execution -> collected rows, then formatted them.
+- Confirmed root cause: snapshot identity and state-content equality are two
+  different claims; timestamped snapshots should differ even when application
+  state is equal. Resolution: retain each snapshot hash and use a canonical
+  content digest excluding only observation time/snapshot identity for the
+  operation outcome. The focused test proves unequal snapshot hashes and equal
+  state content.
+- Confirmed root cause: `Setup` is an interface name, not a method verb.
+  Resolution: inspect the final method component and require every recorded
+  leaf to begin with `Get`. The complete ledger contains exactly the eleven
+  reviewed attach/getter operations and no setter.
+- Confirmed root cause: the initial source was behavior-complete but had not yet
+  received the batch's one formatter/type pass, and generic call decoding
+  returned `Any` at five strict boundaries. Resolution: add exact local
+  narrowing, replace default-argument lambdas with typed partial calls, organize
+  imports and run Black once. Ruff, Black and configured mypy then pass on the
+  complete changed Python surface.
+- Confirmed root cause: the classification generator intentionally scans only
+  tracked caller text. Resolution: review and stage only the task-owned evidence
+  file, then regenerate the classification and compatibility ledger. No
+  unrelated file was staged.
+- Confirmed root cause: repository `StrictPublicModel` validation requires the
+  declared Python tuple/datetime types and does not coerce the serialized JSON
+  list/time forms in either attempted entry point. Resolution: explicitly
+  reconstruct the strict tuple and timezone-aware datetime fields, then validate
+  the evidence model and canonical digest. The replay reports `preflight
+  evidence: valid`; the evidence bytes were not changed to weaken the contract.
+- Confirmed root cause: installed comtypes projected multi-output COM values as
+  lists, while the transaction's scratch `tuple_result` accepted tuples only.
+  Resolution: accept either sequence without coercing scalar failures; rerun the
+  same frozen transaction intent. The failed record proves no design call in the
+  first attempt, while the second records exactly one returned call with code 0.
+- Confirmed root cause: the transaction completed correctly, but its optional
+  metadata helper again converted only tuple returns. Resolution: use a separate
+  getter-only list-aware cross-check with no raw model values in Git. All 153
+  beam getters returned code 0 and 3,502 total items, exactly matching the
+  SQLite summary row count.
+- Confirmed root cause: the broad export selected the unrequested Design Forces
+  group in addition to the required model/analysis/design-definition/concrete-
+  output groups, and ETABS failed in its SQLite conversion stage. Resolution:
+  preserve that failed attempt externally, deselect only Design Forces and
+  retry to a new absent destination. The narrowed export completed and passed
+  immutable inventory/integrity checks.
+- Confirmed root cause: ETABS retained an open shared artifact handle that the
+  ordinary PowerShell hasher could not use. Resolution: finalize and hash with
+  the maintained acquisition service's share-compatible stable-file reader;
+  repeated size/time checks, no WAL/SHM and SQLite integrity all pass.
+- Confirmed root cause: timestamped state snapshots are intentionally unequal
+  even when their canonical state content matches. Resolution: repair only the
+  scratch reporter to read the production operation outcome. The authoritative
+  outcome before and after the installed work has equal content hash
+  `0f7f5cfb...ff968` and restoration `VERIFIED_EQUAL`.
+- Confirmed environment cause: the restricted probe process ran at a different
+  visibility/integrity boundary from the ETABS ROT registration. Resolution:
+  rerun the exact getter-only script in the already authorized host context.
+  It attached to PID 10556, returned all summaries, and preserved the locked
+  byte-identical model. ⚠️ TERMINAL ISSUE: restricted ROT lookup returned no
+  process -> the approved same-integrity host invocation completed.
+- Confirmed environment cause: pytest inherited a system temporary root outside
+  the writable task workspace and also attempted its optional worktree cache.
+  Resolution: disable only the optional cache provider and set an exact
+  workspace `--basetemp`; the unchanged focused selection then passed 27/27.
+  ⚠️ TERMINAL ISSUE: pytest fixture setup received WinError 5 -> redirected
+  ephemeral test writes to the task workspace without changing the candidate.
+- Confirmed environment cause: the isolated repository worktree is readable but
+  not writable inside the restricted command sandbox. Resolution: rerun the
+  exact maintained receipt command with the already approved worktree-write
+  permission. The receipt records the expected pre-commit `HOLD_DIRTY` state
+  against head `4dbd8d86`. ⚠️ TERMINAL ISSUE: receipt write received WinError 5
+  -> the same scoped generator completed in the approved host context.
+- Confirmed root cause: the session parser consumes the literal remainder of
+  the `Git handoff receipt` line as the path; Markdown backticks and punctuation
+  are not stripped. Resolution: keep the label and unadorned path on one line.
+  The repeated session-document check resolves the versioned receipt.
+- Confirmed root cause: API classification still had an exceptional 30-second
+  timeout while the generator's current installed/public surface takes longer
+  on this Windows worktree; process teardown made the visible timeout 53.8
+  seconds. Resolution: align this one generated-surface check with the existing
+  90-second slow-check ceiling and add a registry regression. The exact direct
+  classification check passed unchanged; the other 31 full-gate checks are not
+  repeated.
+- Confirmed environment cause: Ruff's default cache lives below the repository
+  root, which this command sandbox cannot write. Resolution: repeat with
+  `--no-cache`; the changed regression test passes. Black leaves both repair
+  files unchanged, and the imported `check_all` registry regression proves the
+  timeout value. ⚠️ TERMINAL ISSUE: Ruff cache initialization received WinError
+  5 -> the cache-free affected check completed.
+
+### Validation through installed evidence freeze
+
+- Focused union: `27 passed` across A0 session guards, A1 installed transport
+  and C0/C1 acquisition/inventory contracts after final formatting.
+- Changed Python surface: Ruff passes; Black leaves all six files unchanged;
+  configured mypy reports no issues in the three source modules.
+- Static installed boundary: ETABS `23.3.1.4563`, API assembly `2.16.0.0`, x64
+  type library, installed CHM, comtypes `1.4.16` and generated wrapper hashes are
+  recorded. The wrapper proves exact PID attachment and run-flag getter shapes;
+  the strict reconstructed preflight evidence model and digest validate.
+- Initial HOLD boundary: the pre-model preflight observed zero ETABS/Excel
+  processes and made zero application/COM calls. That historical evidence is
+  preserved separately from the later authorized installed run.
+- Broad local quick/full validation was not duplicated. Generated public API
+  artifacts are refreshed for the new symbols; their final freshness check and
+  comprehensive assurance remain the one PR-boundary cycle after live evidence
+  freezes.
+- Installed A1: two authoritative getter-only captures report `COMPLETED`,
+  `VERIFIED_EQUAL`, identical state-content hash and identical locked model-file
+  identity. A1 comparison-basis permission remains false as designed.
+- Installed C1: the one concrete-design call returned code 0; 153/153 direct
+  result getters returned 3,502 items; the create-new SQLite artifact has hash
+  `d8315a63...2d116`, integrity `ok`, 160 tables/62,133 rows and zero rejected
+  requested tables/fields. Schema support remains unclaimed until C2.
+- The proprietary export/raw observations remain outside Git. The versioned
+  evidence contains only installed/runtime/model/artifact hashes, schema/type/
+  count facts and explicit claim limitations.
+- One full `run.sh check` cycle passed 31/32; its sole failure was the stale API
+  classification timeout. The exact failed owner then passed directly, and the
+  timeout registry repair is covered by its focused governance regression. No
+  unchanged full-gate owner is rerun.
+
+### Next action
+
+Freeze the task-owned evidence/docs, run the affected focused union and one
+complete PR-boundary validation cycle, then push all logical commits in one
+A1/C1 PR. After the unchanged candidate passes hosted checks and is accepted,
+start C2 offline from the exact observed schema. Preserve the blocked result
+epoch and diagnostic-only boundary; do not interpret current exported values as
+fresh comparison truth. Keep ETABS open unless the owner asks to close it.
+
 ## 2026-09-02 — Session: Urgent repository performance and hygiene closeout
 
 **Agent:** Codex (`orchestrator`; sole writer; no implementation subagents).
