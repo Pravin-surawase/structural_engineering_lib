@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-02
-- Focus: Freeze one understandable six-phase goal and execution plan before further W3 implementation.
-- Git receipt: docs/verification/w3-beam-master-plan-git-handoff-receipt.json | sha256:cc822cd9e393e9e3828b4d9b5413190a533e2a113f7bf1b9cf854205cc4aaeb7 | HOLD
-- Git identity: codex/beam-optimization-master-plan@c29a468a7d6023e8be92feb534b9479977eac52f | upstream=origin/main@c29a468a7d6023e8be92feb534b9479977eac52f | base=origin/main@c29a468a7d6023e8be92feb534b9479977eac52f | tree=dirty | operation=none
+- Focus: Preserve the legacy VBA transient-data pattern and useful ETABS/Excel workflow lessons in the six-phase beam programme.
+- Git receipt: docs/verification/legacy-vba-dataflow-lessons-git-handoff-receipt.json | sha256:385a39db0780f7b5ebb1c96c7649e96963f93595ab4797e00d7408d881216228 | HOLD
+- Git identity: codex/legacy-vba-data-flow-lessons@a3487e02400cf65d4b8934f484ef4b3882e3a9d9 | upstream=origin/main@a3487e02400cf65d4b8934f484ef4b3882e3a9d9 | base=origin/main@a3487e02400cf65d4b8934f484ef4b3882e3a9d9 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->

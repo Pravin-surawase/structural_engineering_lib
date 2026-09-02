@@ -62,6 +62,9 @@ workbook, API/runtime, release or publication operation was performed.
 - The first final session check treated the punctuation after the wrapped Git
   handoff-receipt path as part of the filename and reported the committed
   receipt as missing.
+- After the path repair, the next final check correctly loaded the receipt but
+  found that the generated Latest Handoff block still named the preceding W3
+  plan receipt, so the new receipt identity was not yet propagated.
 
 ### Root causes and resolutions
 
@@ -82,9 +85,16 @@ workbook, API/runtime, release or publication operation was performed.
   and ended with a prose period, while the session parser expects the literal
   path without trailing punctuation. Resolution: use the maintained single-line
   receipt field without punctuation; the repeated final session check resolved
-  the committed receipt successfully. ⚠️ TERMINAL ISSUE: the first
+  the committed receipt path successfully. ⚠️ TERMINAL ISSUE: the first
   `./run.sh session end` misread the punctuated wrapped receipt path -> the
   canonical single-line field restored exact path resolution.
+- Confirmed cause: the documentation packet did not refresh the generated
+  Latest Handoff block before its first candidate freeze. Resolution: bind that
+  block to this task's already-versioned receipt path, local-state hash and Git
+  identity so the next read-only final session check can validate the match.
+  ⚠️ TERMINAL ISSUE: the second `./run.sh session end` compared the current
+  receipt with the stale predecessor handoff block -> the block was rebound to
+  the current receipt without changing any engineering or programme content.
 - Focused evidence before final consolidated validation: `scripts/check_docs.py`
   completed its maintained 5/5 checks, `scripts/check_links.py` found zero broken
   links across 537 Markdown files, and `git diff --check` passed. Existing
