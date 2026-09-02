@@ -5,6 +5,104 @@
 
 ---
 
+## 2026-09-02 — Session: Legacy VBA data-flow and workflow lessons
+
+**Agent:** Codex (`orchestrator`; sole writer; no subagents).
+**Task:** `ETABS-VBA-DATAFLOW-LESSONS`.
+**Branch:** `codex/legacy-vba-data-flow-lessons`.
+**Source:** current `origin/main` at PR #953 merge
+`a3487e02400cf65d4b8934f484ef4b3882e3a9d9`.
+**Git handoff receipt:** docs/verification/legacy-vba-dataflow-lessons-git-handoff-receipt.json
+**Focus:** Preserve the legacy VBA transient-data pattern and additional useful
+ETABS/Excel workflow ideas in the current six-phase beam programme.
+**Boundary:** Static source and current-library inspection plus documentation
+only. No Excel/ETABS process, model, analysis, design, result selection, unit,
+workbook, API/runtime, release or publication operation was performed.
+
+### Summary
+
+- Inspected the preserved 2019-2021 ETABS production VBA, later ETABS export
+  modules, structural-design VBA modules and workbook package under their exact
+  archive hashes. Kept historical production evidence separate from later
+  prototypes and from current engineering acceptance.
+- Confirmed the dominant working pattern: retrieve a bulk inventory or bounded
+  per-member result array, reduce it near the source, persist a small worksheet
+  summary and reuse/release the raw array. Recorded the exceptions: module-level
+  geometry/summary arrays and optional complete CSV force exports.
+- Added `legacy-vba-dataflow-and-workflow-lessons.md` with an adopted data-
+  lifetime model: durable target/result identity, reusable topology cache,
+  transient beam-line force/design batches, transient candidate scratch data,
+  minimal canonical decision evidence and explicit opt-in raw exports.
+- Required every governing value to retain its exact row, combination, station,
+  step, sign, physical face, concurrent actions and result epoch. A digest alone
+  does not make discarded data replayable, so a final claim must retain its
+  bounded replay slice or require fresh reacquisition before the epoch changes.
+- Recorded additional reusable ideas: story/direction scoping, beam-line
+  continuity, practical beam-family standardization, vertical column grouping,
+  model-native property catalogues, typed acquisition-detail modes, safe
+  progress/cancellation/checkpoints, multi-case gating, reinforcement zones,
+  BBS/DXF/quantity delivery and a compact ribbon/task-pane journey.
+- Recorded outcome-changing legacy patterns that cannot be ported, including
+  scalar maxima without provenance, lost shear sign, provider-order assumptions,
+  moment filters that can omit governing shear, fixed-percentage zones, hidden
+  defaults/sample fallbacks, unchecked gates marked safe, generic process attach,
+  attached-session setters, live-model mutation and broad error suppression.
+- Linked the note from the human-facing master plan, the maintained COM/VBA
+  safety plan and the planning index. Phase 1 remains the only active phase; no
+  new public function or later-phase implementation was activated.
+
+### Issues encountered
+
+- The initially focused primary checkout was clean but remained on the completed
+  `codex/etabs-analysis-foundation-audit` branch, 100 commits behind current
+  `origin/main`, and could not safely own this successor documentation.
+- The first governed session start was rejected because the shared usage log
+  retained an unmatched `W3-BEAM-MASTER-PLAN` start even though PR #953, the
+  completed session-log entry and a successful session-end event were present.
+- The first final session check treated the punctuation after the wrapped Git
+  handoff-receipt path as part of the filename and reported the committed
+  receipt as missing.
+- After the path repair, the next final check correctly loaded the receipt but
+  found that the generated Latest Handoff block still named the preceding W3
+  plan receipt, so the new receipt identity was not yet propagated.
+
+### Root causes and resolutions
+
+- Confirmed cause: the primary folder intentionally preserved its older
+  task-owned branch while later work merged. Resolution: fetched the live remote,
+  inspected relevant branches/open PRs and created the isolated
+  `codex/legacy-vba-data-flow-lessons` worktree from exact current main
+  `a3487e02`. The primary checkout and all sibling worktrees remained unchanged.
+- Confirmed cause: the preceding task recorded its start and session-end event
+  but omitted the matching usage closeout checkpoint. Resolution: verified the
+  exact active task, merged main commit and completed top session entry, recorded
+  an explicit `superseded` checkpoint without elapsed/integration claims, then
+  started `ETABS-VBA-DATAFLOW-LESSONS`; preflight passed with current-worktree
+  Python binding. ⚠️ TERMINAL ISSUE: `./run.sh session begin` stopped on the
+  stale unmatched predecessor checkpoint -> the exact maintained `superseded`
+  checkpoint closed it and the successor session began normally.
+- Confirmed cause: the receipt path was placed on the following Markdown line
+  and ended with a prose period, while the session parser expects the literal
+  path without trailing punctuation. Resolution: use the maintained single-line
+  receipt field without punctuation; the repeated final session check resolved
+  the committed receipt path successfully. ⚠️ TERMINAL ISSUE: the first
+  `./run.sh session end` misread the punctuated wrapped receipt path -> the
+  canonical single-line field restored exact path resolution.
+- Confirmed cause: the documentation packet did not refresh the generated
+  Latest Handoff block before its first candidate freeze. Resolution: bind that
+  block to this task's already-versioned receipt path, local-state hash and Git
+  identity so the next read-only final session check can validate the match.
+  ⚠️ TERMINAL ISSUE: the second `./run.sh session end` compared the current
+  receipt with the stale predecessor handoff block -> the block was rebound to
+  the current receipt without changing any engineering or programme content.
+- Focused evidence before final consolidated validation: `scripts/check_docs.py`
+  completed its maintained 5/5 checks, `scripts/check_links.py` found zero broken
+  links across 537 Markdown files, and `git diff --check` passed. Existing
+  repository-wide metadata warnings and the older `beam-line-calibration.md`
+  legacy-header findings were reported by the docs command and left untouched.
+  The final `./run.sh check --quick` passed 10/10 checks with one unchanged
+  import-validation result reused.
+
 ## 2026-09-02 — Session: Beam design and ETABS optimization master plan
 
 **Agent:** Codex (`PM`; sole writer; no subagents).

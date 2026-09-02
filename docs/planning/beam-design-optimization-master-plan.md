@@ -62,6 +62,23 @@ construction practice or whole-building response.
 - **The original ETABS model is never the optimization workspace.** Every
   candidate that reaches reanalysis uses a fresh, identified owned copy.
 
+### Working-data rule
+
+The normal workflow is not a whole-model force dump:
+
+```text
+bounded ETABS query -> transient batch -> typed reduction/evaluation
+                    -> durable decision evidence -> release unused raw rows
+```
+
+Geometry and topology may remain in a phase cache while their model identity is
+unchanged. Force/design arrays normally live only for the current beam line or
+bounded batch. Persist the exact governing rows and any bounded input slice
+required by the claimed replay; make a complete raw export an explicit
+diagnostic operation. See the
+[legacy VBA data-flow and workflow lessons](legacy-vba-dataflow-and-workflow-lessons.md)
+for the adopted retention model and additional reusable workflow ideas.
+
 ## Six-phase flow
 
 ```text
@@ -140,9 +157,12 @@ necessary.
 
 ### Output
 
-A **trusted ETABS baseline package** containing immutable raw evidence plus a
-typed normalized projection. The raw evidence supports audit; later phases
-consume the typed projection.
+A **trusted ETABS baseline package** containing bounded immutable source
+evidence plus a typed normalized projection. Raw API/table arrays are not
+automatically durable: retain the query/result identity, governing rows and the
+complete bounded input slice when the stated replay claim requires it. Unused
+rows may remain transient, and a complete whole-model raw dump is an explicit
+diagnostic artifact rather than the normal product path.
 
 ### Exit gate
 
