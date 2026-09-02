@@ -57,8 +57,9 @@ to replace missing project evidence with more solver complexity.
 - PR #947 accepted the fake-only A0/B0/B1A/C0 foundation at merge
   `16be0db796dc85f0462a3a49a5990dc0232ef0b4`. PR #949 then accepted the
   reduced three-hook commit lane at `e6c684a580803a27cea9fc6e8cd25b0888795a2`.
-  B1B/B2 therefore run as two internal commits on one offline milestone branch;
-  no installed application evidence is part of that branch.
+  PR #950 accepted the B1B/B2 evaluator/search milestone at merge
+  `742719dd3f6c1e30c023e7585e9ea00d13b60fc2`. No installed application
+  evidence was part of either offline milestone.
 - The [W3 COM/VBA/reanalysis plan](etabs-w3-com-vba-and-reanalysis-plan.md)
   remains the ETABS host, transaction and reanalysis owner.
 - The [professional API renewal plan](lib-pro-015-professional-api-and-documentation-renewal-plan.md)
@@ -233,9 +234,9 @@ declared before candidate inspection.
 | 4 | `ETABS-W3-A1-INSTALLED-READONLY-ACCEPTANCE` | Prove exact getter-only attachment on the Windows/ETABS authority | accepted A0 plus separate user authorization | Process instance, target observation, runtime fingerprint and model shown; no setter; pre/post state/file equal; unknown model/result freshness cannot become baseline/comparison proof | one bounded evidence session |
 | 5 | `ETABS-W3-B0-CANONICAL-PILOT` | Deprecate live-pilot calculation ownership and delegate to signed row-bound W3 audit | A0; installed run not required | Positive/negative M3 preserve physical face; missing face provenance holds; compatibility result declares delegation/limitations | accepted through PR #947 |
 | 6 | `ETABS-W3-B1A-PROJECT-CRITERIA-CATALOGUE` | Freeze criteria, permitted existing ETABS beam properties, materials/bar stock, reinforcement schedule scope, scenarios, objectives and digests | BEAM-S0, B0 and accepted W3A demand contracts | Strict canonical hashes and declaration chronology; no hidden fallback; any change invalidates downstream identities; actual instance may remain `HOLD` | accepted through PR #947 |
-| 7 | `ETABS-W3-B1B-CANDIDATE-EVALUATOR` | Freeze exact signed-action, row-bound, layer-aware candidate request/result and one feasibility owner | B1A | Effective depth is recomputed from serialized layers; every mandatory row/scenario/check is accepted or held; independent composition checks pass | integrated candidate; batched publication pending |
+| 7 | `ETABS-W3-B1B-CANDIDATE-EVALUATOR` | Freeze exact signed-action, row-bound, layer-aware candidate request/result and one feasibility owner | B1A | Effective depth is recomputed from serialized layers; every mandatory row/scenario/check is accepted or held; independent composition checks pass | accepted through PR #950 |
 | 8 | `LIB-PRO-015-D0-D1-BEAM` | Exact-wheel documentation gate and complete beam facade reference/examples | BEAM-S0 semantic freeze | Valid/invalid/FAIL/HOLD examples execute from built wheel; signatures, units, defaults, errors, limitations and provenance match runtime | 4-7 focused days |
-| 9 | `ETABS-W3-B2-OPTIMIZER-CONVERGENCE` | Route bar, cost and Pareto through B1B; freeze complete search and quantity/cost basis | B1B | One evaluation hash across routes; complete domain/counts/tie-breaks; incomplete search cannot claim optimum/Pareto/infeasible; exact serialized schedule owns quantities | integrated candidate; batched publication pending |
+| 9 | `ETABS-W3-B2-OPTIMIZER-CONVERGENCE` | Route bar, cost and Pareto through B1B; freeze complete search and quantity/cost basis | B1B | One evaluation hash across routes; complete domain/counts/tie-breaks; incomplete search cannot claim optimum/Pareto/infeasible; exact serialized schedule owns quantities | accepted through PR #950 |
 | 10 | `ETABS-W3-C0-OFFLINE-ACQUISITION-CONTRACT` | Freeze matched-design and export-manifest contracts plus generic bounded fixture/scaffolding; make no ETABS schema-support claim | A0 | Synthetic generic fixtures prove contract, limits and zero ETABS/UI call; exact ETABS tables/columns remain unresolved | accepted through PR #947 |
 | 11 | `ETABS-W3-C1-INSTALLED-DESIGN-EXPORT-INVENTORY` | Acquire one target/runtime/epoch-bound design snapshot, named export manifest and actual SQLite schema inventory | A1 and C0 plus separate authorization | Every requested field/table closes a named row or is rejected; acquisition mode explicit; artifact complete/hash-bound; state/file preservation passes | 3-5 focused days plus one evidence session |
 | 12 | `ETABS-W3-C2-OFFLINE-EXACT-SCHEMA-PARSER` | Implement the parser and matched comparison against the acquired exact schema | accepted C1 artifact | Frozen export passes integrity/schema/row bounds; canonical evidence and diagnostic comparison are reproducible; no ETABS/UI call | held pending separately authorized A1/C1 evidence |
@@ -589,10 +590,12 @@ internal unit, run only its affected focused tests or a narrow reproducer needed
 to guide a repair; do not run quick, hooks, push, PR or hosted CI at that
 checkpoint.
 
-Internal checkpoints are worktree/session/task checkpoints, not ordinary Git
-commits. Freeze one milestone commit after all units converge. This avoids
-rerunning mandatory commit hooks for intermediate snapshots while retaining one
-reviewable commit, one push and one PR for the safety boundary.
+Use coherent sequential Git commits for internal implementation units so review
+and recovery retain their logical boundaries. Each ordinary commit runs only
+the three accepted mutation-safety hooks; do not run broad validation, push, or
+open a PR for each unit. Freeze the complete milestone after all units converge,
+then run the union of affected focused evidence, push the commits together once,
+and use one PR validation cycle for the safety boundary.
 
 After the complete milestone content freezes, run exactly one publication
 sequence:
@@ -659,19 +662,19 @@ Stop the active packet when:
 
 ## Exact next action
 
-Publish the integrated `codex/w3-offline-etabs-foundations` A0/B0/B1A/C0
-candidate as one milestone commit and one PR from exact PR #946 merge
-`f2a5c6f158647a1d09fb4ff54f158d1734440fba`. The candidate remains
-fake/contract-only: ETABS and Excel stayed closed and no application, COM, UI,
-export or SQLite-parser call occurred.
+A0/B0/B1A/C0 is accepted through PR #947 and B1B/B2 through PR #950. The next
+branch is `codex/w3-installed-readonly-evidence` for A1 plus C1. The owner's
+2026-09-02 instruction to start the next work authorizes only this bounded
+getter-only installed observation and create-new operator-UI export milestone;
+it does not authorize setters, save, unlock, analysis/design, application exit,
+model mutation, Excel automation, or changes to the original model.
 
-After that milestone is accepted, the next branch is
-`codex/w3-installed-readonly-evidence` for A1 plus C1. It must not start without
-separate user authorization and a fresh target/runtime/application-absence
-preflight. Its attached path is getter-only; C1's export acquisition is
-explicitly operator-UI unless an exact installed API signature is proved.
-B1B/B2 follows only from accepted B1A contracts and cannot use authored fixture
-criteria as actual-project evidence.
+Refresh Git, installed runtime and running-process identity immediately before
+each installed step. Require one operator-selected PID plus start time and exact
+model intent. If that process/model is absent or ambiguous, stop at `HOLD`
+without constructing COM. C1 acquisition remains `OPERATOR_UI_EXPORT` unless a
+separate exact installed API signature is proved. C2 remains held until C1
+freezes an accepted complete hash-bound export and exact schema inventory.
 
 ## Long-term amendment sources
 
