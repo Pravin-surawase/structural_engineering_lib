@@ -956,19 +956,23 @@ def preflight_installed_etabs_readonly_v1(
     )
     reasons: list[str] = []
     selected: ETABSProcessInstanceV1 | None = None
+    normalized_selected_start = (
+        _utc(selected_start_time_utc, "selected_start_time_utc")
+        if selected_start_time_utc is not None
+        else None
+    )
 
     if not processes:
         reasons.append("NO_ETABS_PROCESS_RUNNING")
-    if selected_pid is None or selected_start_time_utc is None:
+    if selected_pid is None or normalized_selected_start is None:
         reasons.append("EXACT_PROCESS_SELECTION_MISSING")
     else:
-        selected_start = _utc(selected_start_time_utc, "selected_start_time_utc")
         selected = next(
             (
                 process
                 for process in processes
                 if process.pid == selected_pid
-                and process.start_time_utc == selected_start
+                and process.start_time_utc == normalized_selected_start
             ),
             None,
         )
@@ -995,10 +999,9 @@ def preflight_installed_etabs_readonly_v1(
     if expected_intent.expected_etabs_version is None:
         reasons.append("EXPECTED_ETABS_VERSION_MISSING")
 
-    blocked_reasons = tuple(sorted(set(reasons)))
     runtime: ETABSRuntimeFingerprintV1 | None = None
     disposition: Literal["READY_FOR_GETTER_ONLY_ATTACH", "HOLD"] = "HOLD"
-    if not blocked_reasons:
+    if not reasons:
         if selected is None:  # pragma: no cover - guarded by the reasons above
             raise RuntimeError("exact selected process was not resolved")
         runtime = build_etabs_runtime_fingerprint_v1(
@@ -1009,15 +1012,33 @@ def preflight_installed_etabs_readonly_v1(
             com_shape_runtime="comtypes",
             observed_at_utc=observed,
         )
+        required_artifacts = {
+            "ETABSV1_TYPE_LIBRARY",
+            "COMTYPES_GENERATED_WRAPPER",
+            "INSTALLED_CHM",
+        }
+        unavailable = {
+            artifact.name
+            for artifact in runtime.artifacts
+            if artifact.name in required_artifacts
+            and artifact.disposition != "PRESENT"
+        }
+        reasons.extend(
+            f"{name}_UNAVAILABLE" for name in sorted(unavailable)
+        )
+    blocked_reasons = tuple(sorted(set(reasons)))
+    if not blocked_reasons:
         disposition = "READY_FOR_GETTER_ONLY_ATTACH"
+    else:
+        runtime = None
 
     basis = {
         "schema_version": "etabs-installed-readonly-preflight/v1",
         "disposition": disposition,
         "selected_pid": selected_pid,
         "selected_start_time_utc": (
-            _json_time(selected_start_time_utc)
-            if selected_start_time_utc is not None
+            _json_time(normalized_selected_start)
+            if normalized_selected_start is not None
             else None
         ),
         "expected_intent": expected_intent.model_dump(mode="json"),
@@ -1038,7 +1059,7 @@ def preflight_installed_etabs_readonly_v1(
     return ETABSInstalledReadOnlyPreflightV1.model_validate(
         {
             **basis,
-            "selected_start_time_utc": selected_start_time_utc,
+            "selected_start_time_utc": normalized_selected_start,
             "expected_intent": expected_intent,
             "discovered_processes": processes,
             "selected_process": selected if not blocked_reasons else None,

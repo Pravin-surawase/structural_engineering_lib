@@ -216,6 +216,8 @@ def test_installed_readonly_preflight_binds_exact_process_runtime_and_model(
     executable = _write(tmp_path / "ETABS.exe", b"offline fake executable")
     model = _write(tmp_path / "selected.edb", b"offline fake model")
     type_library = _write(tmp_path / "ETABSv1.tlb", b"offline fake typelib")
+    wrapper = _write(tmp_path / "ETABSv1.py", b"offline fake wrapper")
+    installed_chm = _write(tmp_path / "ETABS.chm", b"offline fake help")
     start = T0 - timedelta(hours=1)
     monkeypatch.setattr(
         "structural_lib.services.etabs_session_guard.importlib.metadata.version",
@@ -233,6 +235,8 @@ def test_installed_readonly_preflight_binds_exact_process_runtime_and_model(
         selected_pid=4100,
         selected_start_time_utc=start,
         type_library_path=type_library,
+        generated_wrapper_path=wrapper,
+        installed_chm_path=installed_chm,
         process_provider=lambda: (
             ProcessObservationV1(
                 pid=4100,

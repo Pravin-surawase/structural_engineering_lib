@@ -461,6 +461,14 @@ from .services.etabs_catalogue_bridge import (
     ETABSLiveSelectionStateV1,
     run_etabs_live_catalogue_v1,
 )
+from .services.etabs_installed_readonly import (
+    ETABSInstalledReadOnlyCaptureV1,
+    ETABSInstalledReadOnlyReaderV1,
+    ETABSInstalledReadOnlyRunV1,
+    capture_etabs_installed_readonly_v1,
+    etabs_state_content_sha256_v1,
+    run_etabs_installed_readonly_v1,
+)
 from .services.etabs_operation_control import (
     ETABSArtifactIdentityV1,
     ETABSBrokerResultV1,
@@ -769,6 +777,12 @@ __all__ = [
     "build_etabs_concrete_design_basis_v1",
     "finalize_etabs_sqlite_export_manifest_v1",
     "inventory_etabs_sqlite_export_v1",
+    "ETABSInstalledReadOnlyCaptureV1",
+    "ETABSInstalledReadOnlyReaderV1",
+    "ETABSInstalledReadOnlyRunV1",
+    "capture_etabs_installed_readonly_v1",
+    "etabs_state_content_sha256_v1",
+    "run_etabs_installed_readonly_v1",
     "ETABSArtifactIdentityV1",
     "ETABSBrokerResultV1",
     "ETABSCallLedgerIdentityV1",
