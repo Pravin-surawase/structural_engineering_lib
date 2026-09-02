@@ -493,8 +493,13 @@ class ETABSInstalledReadOnlyPreflightV1(StrictPublicModel):
             raise ValueError("discovered process identities must be unique")
         if len(self.blocked_reasons) != len(set(self.blocked_reasons)):
             raise ValueError("blocked reasons must be unique")
-        if self.expected_intent.allowed_access is not ETABSAccessModeV1.ATTACHED_OBSERVE:
-            raise ValueError("installed read-only preflight requires attached observation")
+        if (
+            self.expected_intent.allowed_access
+            is not ETABSAccessModeV1.ATTACHED_OBSERVE
+        ):
+            raise ValueError(
+                "installed read-only preflight requires attached observation"
+            )
         if self.disposition == "READY_FOR_GETTER_ONLY_ATTACH":
             if self.blocked_reasons:
                 raise ValueError("ready preflight cannot carry blocked reasons")
@@ -504,7 +509,9 @@ class ETABSInstalledReadOnlyPreflightV1(StrictPublicModel):
                 or self.selected_process is None
                 or self.runtime_fingerprint is None
             ):
-                raise ValueError("ready preflight requires exact process/runtime identity")
+                raise ValueError(
+                    "ready preflight requires exact process/runtime identity"
+                )
             if (
                 self.expected_intent.expected_model_path is None
                 or self.expected_intent.expected_model_name is None
@@ -513,8 +520,7 @@ class ETABSInstalledReadOnlyPreflightV1(StrictPublicModel):
                 raise ValueError("ready preflight requires exact model intent")
             if (
                 self.selected_process.pid != self.selected_pid
-                or self.selected_process.start_time_utc
-                != self.selected_start_time_utc
+                or self.selected_process.start_time_utc != self.selected_start_time_utc
             ):
                 raise ValueError("selected process differs from the requested instance")
             if self.selected_process not in self.discovered_processes:
@@ -526,7 +532,10 @@ class ETABSInstalledReadOnlyPreflightV1(StrictPublicModel):
         else:
             if not self.blocked_reasons:
                 raise ValueError("held preflight requires blocked reasons")
-            if self.selected_process is not None or self.runtime_fingerprint is not None:
+            if (
+                self.selected_process is not None
+                or self.runtime_fingerprint is not None
+            ):
                 raise ValueError("held preflight cannot authorize a process/runtime")
         _require_digest(self, "preflight_sha256")
         return self
@@ -1020,12 +1029,9 @@ def preflight_installed_etabs_readonly_v1(
         unavailable = {
             artifact.name
             for artifact in runtime.artifacts
-            if artifact.name in required_artifacts
-            and artifact.disposition != "PRESENT"
+            if artifact.name in required_artifacts and artifact.disposition != "PRESENT"
         }
-        reasons.extend(
-            f"{name}_UNAVAILABLE" for name in sorted(unavailable)
-        )
+        reasons.extend(f"{name}_UNAVAILABLE" for name in sorted(unavailable))
     blocked_reasons = tuple(sorted(set(reasons)))
     if not blocked_reasons:
         disposition = "READY_FOR_GETTER_ONLY_ATTACH"

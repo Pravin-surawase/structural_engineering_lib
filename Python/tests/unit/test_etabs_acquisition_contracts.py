@@ -18,8 +18,8 @@ from structural_lib.services.etabs_acquisition_contracts import (
     ETABSExportBoundsV1,
     ETABSRequestedTableV1,
     ETABSSQLiteExportManifestDraftV1,
-    build_etabs_installed_sqlite_evidence_v1,
     build_etabs_concrete_design_basis_v1,
+    build_etabs_installed_sqlite_evidence_v1,
     finalize_etabs_sqlite_export_manifest_v1,
     inventory_etabs_sqlite_export_v1,
 )
@@ -296,8 +296,7 @@ def _installed_manifest(
             'PRIMARY KEY ("Frame", "Station"))'
         )
         connection.executemany(
-            'INSERT INTO "Beam Forces" ("Frame", "Station", "M3") '
-            "VALUES (?, ?, ?)",
+            'INSERT INTO "Beam Forces" ("Frame", "Station", "M3") ' "VALUES (?, ?, ?)",
             (("B1", 0.0, -12.5), ("B1", 1.0, 10.25)),
         )
         connection.execute('CREATE TABLE "Metadata" ("Name" TEXT, "Value" TEXT)')

@@ -14,6 +14,7 @@ import importlib
 import json
 from collections.abc import Callable, Mapping, Sequence
 from datetime import UTC, datetime, timedelta
+from functools import partial
 from pathlib import Path
 from typing import Any, Literal, Protocol, Self
 
@@ -165,7 +166,10 @@ class ETABSInstalledReadOnlyCaptureV1(StrictPublicModel):
             raise ValueError("installed read-only capture state changed")
         before_content = etabs_state_content_sha256_v1(self.state_before)
         after_content = etabs_state_content_sha256_v1(self.state_after)
-        if before_content != after_content or self.state_content_sha256 != before_content:
+        if (
+            before_content != after_content
+            or self.state_content_sha256 != before_content
+        ):
             raise ValueError("installed read-only state content digest differs")
         before_file = self.session_before.saved_file_identity
         after_file = self.session_after.saved_file_identity
@@ -202,7 +206,9 @@ class ETABSInstalledReadOnlyRunV1(StrictPublicModel):
             ):
                 raise ValueError("completed installed run requires closed evidence")
         elif self.capture is not None:
-            raise ValueError("non-completed installed run cannot expose partial capture")
+            raise ValueError(
+                "non-completed installed run cannot expose partial capture"
+            )
         if self.disposition == "RESTORATION_UNVERIFIED":
             if self.operation_outcome.disposition != "RESTORATION_UNVERIFIED":
                 raise ValueError("unverified run requires an unverified outcome")
@@ -299,7 +305,9 @@ def capture_etabs_installed_readonly_v1(
     freshness_file = file_identity_v1(file_before.canonical_path)
     if freshness_file != file_before:
         raise RuntimeError("ETABS_ATTACHED_MODEL_FILE_CHANGED_BEFORE_CAPTURE")
-    target_time = max(started, datetime.now(UTC)) if observed_at_utc is None else started
+    target_time = (
+        max(started, datetime.now(UTC)) if observed_at_utc is None else started
+    )
     freshness = classify_etabs_model_freshness_v1(
         session_identity=session_before,
         before_file=file_before,
@@ -354,6 +362,11 @@ def capture_etabs_installed_readonly_v1(
         required_cases=required_cases,
         required_combinations=required_combinations,
     )
+    limitations = (
+        "Attached-session memory freshness is unknown without a reviewed clean signal.",
+        "Table-display selection is unobserved because its installed getter is not accepted on this model/host.",
+        "A1 proves getter-only identity and preservation, not result validity or approval.",
+    )
     basis = {
         "schema_version": "etabs-installed-readonly-capture/v1",
         "disposition": "READONLY_ACCEPTED_WITH_FRESHNESS_HOLD",
@@ -367,11 +380,7 @@ def capture_etabs_installed_readonly_v1(
         "output_readiness": output_readiness,
         "comparison_basis_allowed": False,
         "no_setter_save_analysis_design_unlock_or_exit_call": True,
-        "limitations": [
-            "Attached-session memory freshness is unknown without a reviewed clean signal.",
-            "Table-display selection is unobserved because its installed getter is not accepted on this model/host.",
-            "A1 proves getter-only identity and preservation, not result validity or approval.",
-        ],
+        "limitations": list(limitations),
     }
     return ETABSInstalledReadOnlyCaptureV1.model_validate(
         {
@@ -381,7 +390,7 @@ def capture_etabs_installed_readonly_v1(
             "session_after": session_after,
             "state_before": state_before,
             "state_after": state_after,
-            "limitations": tuple(basis["limitations"]),
+            "limitations": limitations,
             "capture_sha256": _digest(basis),
         }
     )
@@ -509,7 +518,9 @@ class _ETABSPIDGetterOnlyReader:
         raw_names = outputs[1]
         if count < 0 or not isinstance(raw_names, (list, tuple)):
             raise RuntimeError(f"{owner}.GetNameList returned invalid names")
-        names = tuple(_decode_scalar_string(f"{owner}.GetNameList", item) for item in raw_names)
+        names = tuple(
+            _decode_scalar_string(f"{owner}.GetNameList", item) for item in raw_names
+        )
         if len(names) != count or len(names) != len(set(names)):
             raise RuntimeError(f"{owner}.GetNameList returned inconsistent names")
         return names
@@ -539,7 +550,9 @@ class _ETABSPIDGetterOnlyReader:
         try:
             float(version_outputs[1])
         except (TypeError, ValueError) as exc:
-            raise RuntimeError("SapModel.GetVersion returned an invalid number") from exc
+            raise RuntimeError(
+                "SapModel.GetVersion returned an invalid number"
+            ) from exc
         units = self.get_present_units()
         locked = self.get_model_locked()
         saved_file = file_identity_v1(model_path)
@@ -568,13 +581,14 @@ class _ETABSPIDGetterOnlyReader:
         return f"eUnits:{value}"
 
     def get_model_locked(self) -> bool:
-        return self._call(
+        value = self._call(
             method="SapModel.GetModelIsLocked",
             signature="GetModelIsLocked() -> bool",
             arguments={},
             invoke=self._sap_model.GetModelIsLocked,
             decode=lambda raw: _decode_scalar_bool("SapModel.GetModelIsLocked", raw),
         )
+        return _decode_scalar_bool("SapModel.GetModelIsLocked", value)
 
     def get_selected_output_cases(self) -> Sequence[str]:
         names = self._name_list("LoadCases", self._sap_model.LoadCases.GetNameList)
@@ -584,8 +598,9 @@ class _ETABSPIDGetterOnlyReader:
                 method="Results.Setup.GetCaseSelectedForOutput",
                 signature="GetCaseSelectedForOutput(Name) -> (Selected, ret)",
                 arguments={"name": name},
-                invoke=lambda name=name: (
-                    self._sap_model.Results.Setup.GetCaseSelectedForOutput(name)
+                invoke=partial(
+                    self._sap_model.Results.Setup.GetCaseSelectedForOutput,
+                    name,
                 ),
                 decode=lambda raw: _decode_outputs(
                     "Results.Setup.GetCaseSelectedForOutput",
@@ -605,8 +620,9 @@ class _ETABSPIDGetterOnlyReader:
                 method="Results.Setup.GetComboSelectedForOutput",
                 signature="GetComboSelectedForOutput(Name) -> (Selected, ret)",
                 arguments={"name": name},
-                invoke=lambda name=name: (
-                    self._sap_model.Results.Setup.GetComboSelectedForOutput(name)
+                invoke=partial(
+                    self._sap_model.Results.Setup.GetComboSelectedForOutput,
+                    name,
                 ),
                 decode=lambda raw: _decode_outputs(
                     "Results.Setup.GetComboSelectedForOutput",

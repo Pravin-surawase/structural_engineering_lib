@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: MIT
 """Offline acceptance for the PID-specific installed read-only transport."""
 
+# ruff: noqa: N802 - fakes intentionally mirror the installed COM method names.
+
 from __future__ import annotations
 
 import json
@@ -118,15 +120,18 @@ def _ready_preflight(
     installed_chm = tmp_path / "ETABS.chm"
     installed_chm.write_bytes(b"offline installed help")
     start = T0 - timedelta(hours=1)
-    provider = lambda: (
-        ProcessObservationV1(
-            pid=7300,
-            start_time_utc=start,
-            executable_path=str(executable),
-            executable_version="23.3.1.4563",
-            architecture="x86_64",
-        ),
-    )
+
+    def provider():
+        return (
+            ProcessObservationV1(
+                pid=7300,
+                start_time_utc=start,
+                executable_path=str(executable),
+                executable_version="23.3.1.4563",
+                architecture="x86_64",
+            ),
+        )
+
     monkeypatch.setattr(
         "structural_lib.services.etabs_session_guard.importlib.metadata.version",
         lambda _name: "1.4.16",

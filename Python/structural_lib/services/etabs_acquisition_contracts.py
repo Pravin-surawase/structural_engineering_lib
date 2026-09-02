@@ -416,7 +416,9 @@ class ETABSSQLiteRequestedTableResolutionV1(StrictPublicModel):
                 raise ValueError("found table requires one exact observed table")
         else:
             if self.observed_table_name is not None or not self.reason:
-                raise ValueError("rejected table requires a reason and no observed table")
+                raise ValueError(
+                    "rejected table requires a reason and no observed table"
+                )
             if any(field.disposition != "REJECTED" for field in self.fields):
                 raise ValueError("a rejected table cannot contain found fields")
         return self
@@ -488,8 +490,7 @@ class ETABSInstalledSQLiteEvidenceV1(StrictPublicModel):
         if (
             inventory.artifact_sha256 != manifest.artifact_sha256
             or inventory.artifact_size_bytes != manifest.artifact_size_bytes
-            or inventory.target_observation_sha256
-            != manifest.target_observation_sha256
+            or inventory.target_observation_sha256 != manifest.target_observation_sha256
             or inventory.runtime_fingerprint_sha256
             != manifest.runtime_fingerprint_sha256
             or inventory.model_identity_sha256 != manifest.model_identity_sha256
@@ -575,7 +576,7 @@ def inventory_etabs_sqlite_export_v1(
                 table_name = str(raw_table_name)
                 column_rows = tuple(
                     connection.execute(
-                        "SELECT cid, name, type, \"notnull\", pk, hidden "
+                        'SELECT cid, name, type, "notnull", pk, hidden '
                         "FROM pragma_table_xinfo(?) ORDER BY cid",
                         (table_name,),
                     )
@@ -595,7 +596,9 @@ def inventory_etabs_sqlite_export_v1(
                     )
                     for row in column_rows
                 )
-                count_sql = f"SELECT COUNT(*) FROM {_quote_sqlite_identifier(table_name)}"
+                count_sql = (
+                    f"SELECT COUNT(*) FROM {_quote_sqlite_identifier(table_name)}"
+                )
                 count_row = connection.execute(count_sql).fetchone()
                 if count_row is None:
                     raise RuntimeError("ETABS_SQLITE_ROW_COUNT_UNAVAILABLE")
@@ -672,12 +675,15 @@ def inventory_etabs_sqlite_export_v1(
     after_sha256 = _sha256_file(artifact)
     if wal.exists() or shm.exists():
         raise RuntimeError("ETABS_SQLITE_EXPORT_PENDING_WAL_OR_SHM")
-    if (
-        (before.st_size, before.st_mtime_ns) != (after.st_size, after.st_mtime_ns)
-        or after_sha256 != before_sha256
-    ):
+    if (before.st_size, before.st_mtime_ns) != (
+        after.st_size,
+        after.st_mtime_ns,
+    ) or after_sha256 != before_sha256:
         raise RuntimeError("ETABS_SQLITE_EXPORT_CHANGED_DURING_INVENTORY")
     inspected = _utc(inspected_at_utc or datetime.now(UTC), "inspected_at_utc")
+    limitations = (
+        "C1 records schema metadata and row counts only; C2 parser support is not claimed.",
+    )
     basis = {
         "schema_version": "etabs-sqlite-schema-inventory/v1",
         "inventory_status": "COMPLETE",
@@ -704,9 +710,7 @@ def inventory_etabs_sqlite_export_v1(
         "pending_wal_present": False,
         "pending_shm_present": False,
         "parser_support_claimed": False,
-        "limitations": [
-            "C1 records schema metadata and row counts only; C2 parser support is not claimed."
-        ],
+        "limitations": list(limitations),
     }
     return ETABSSQLiteSchemaInventoryV1.model_validate(
         {
@@ -714,7 +718,7 @@ def inventory_etabs_sqlite_export_v1(
             "tables": tuple(tables),
             "request_resolutions": tuple(resolutions),
             "inspected_at_utc": inspected,
-            "limitations": tuple(basis["limitations"]),
+            "limitations": limitations,
             "inventory_sha256": _digest(basis),
         }
     )
