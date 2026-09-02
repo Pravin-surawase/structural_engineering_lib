@@ -596,9 +596,10 @@ def inventory_etabs_sqlite_export_v1(
                     )
                     for row in column_rows
                 )
-                count_sql = (
-                    f"SELECT COUNT(*) FROM {_quote_sqlite_identifier(table_name)}"
-                )
+                # SQLite cannot bind identifiers. ``table_name`` is sourced only
+                # from sqlite_master above and the helper rejects null bytes and
+                # doubles every embedded quote before this immutable read.
+                count_sql = f"SELECT COUNT(*) FROM {_quote_sqlite_identifier(table_name)}"  # nosec B608
                 count_row = connection.execute(count_sql).fetchone()
                 if count_row is None:
                     raise RuntimeError("ETABS_SQLITE_ROW_COUNT_UNAVAILABLE")

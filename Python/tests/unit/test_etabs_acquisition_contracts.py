@@ -300,6 +300,9 @@ def _installed_manifest(
             (("B1", 0.0, -12.5), ("B1", 1.0, 10.25)),
         )
         connection.execute('CREATE TABLE "Metadata" ("Name" TEXT, "Value" TEXT)')
+        connection.execute(
+            'CREATE TABLE "Odd"" Name; DROP TABLE Metadata;--" ("Value" TEXT)'
+        )
     return finalize_etabs_sqlite_export_manifest_v1(
         draft,
         artifact_path=artifact,
@@ -325,6 +328,7 @@ def test_installed_inventory_binds_complete_schema_and_explicit_rejections(
     assert tuple(table.table_name for table in inventory.tables) == (
         "Beam Forces",
         "Metadata",
+        'Odd" Name; DROP TABLE Metadata;--',
     )
     beam_table = inventory.tables[0]
     assert beam_table.row_count == 2
@@ -347,6 +351,8 @@ def test_installed_inventory_binds_complete_schema_and_explicit_rejections(
     assert inventory.parser_support_claimed is False
     assert evidence.parser_support_claimed is False
     assert evidence.schema_inventory.inventory_sha256 == inventory.inventory_sha256
+    assert inventory.tables[1].table_name == "Metadata"
+    assert inventory.tables[2].row_count == 0
     assert (artifact.stat().st_size, artifact.stat().st_mtime_ns) == before
 
 
