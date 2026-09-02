@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-02
-- Focus: Complete urgent repository hygiene and record deferred performance work.
-- Git receipt: docs/verification/repository-hygiene-closeout-git-handoff-receipt.json | sha256:b70205b0e0e85bf8a842738af1e71ac555e280ada31b9b3705e374def75870bc | HOLD
-- Git identity: codex/repository-hygiene-closeout@30395bc1111aee72f3bfc385e4cff9c0e9479609 | upstream=origin/main@742719dd3f6c1e30c023e7585e9ea00d13b60fc2 | base=origin/main@742719dd3f6c1e30c023e7585e9ea00d13b60fc2 | tree=dirty | operation=none
+- Focus: Complete A1 getter-only acceptance and C1 installed schema inventory.
+- Git receipt: docs/verification/etabs-w3-a1-c1-installed-evidence-git-handoff-receipt.json | sha256:c2458cf5fc68d35cf830ffcfa4bce49216a7315a8c12a4310b38daa7c2c92325 | HOLD
+- Git identity: codex/w3-installed-readonly-evidence@4dbd8d861a569f9644ddad9046c2573a4cd885a3 | upstream=origin/main@827ea6786354481f8e2686bd31daee58ec2ae15c | base=origin/main@827ea6786354481f8e2686bd31daee58ec2ae15c | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
@@ -14,33 +14,33 @@
 ## Current boundary
 
 The offline B1B/B2 candidate-convergence batch is accepted through PR #950 at
-merge `742719dd`. The owner then authorized the next bounded A1/C1 milestone.
-Branch `codex/w3-installed-readonly-evidence` started from current
-`origin/main`; ETABS 23.3.1 and API 2.16.0 are installed, but no ETABS process
-was running at preflight, so live attachment/export truthfully remains `HOLD`.
-The exact-process A1 transport and C1 read-only SQLite schema inventory are now
-implemented and pass their focused fake/static checks; no COM object was made.
+merge `742719dd`. A1/C1 is now locally complete on branch
+`codex/w3-installed-readonly-evidence`. The supervised exact-process A1 capture
+proved getter-only state/file preservation. Under the later explicit installed-
+work authorization, one bounded in-memory concrete-design call completed with
+no analysis/save/unlock/input/exit operation, followed by a create-new UI SQLite
+export and getter-only result-count cross-check. ETABS remains open and locked;
+the model file is byte-identical.
 
 | State | Next action / claim boundary |
 |---|---|
-| **Current** | A1 exact-process preflight/supervised getter capture and C1 immutable SQLite schema inventory are implemented on `codex/w3-installed-readonly-evidence`. Focused tests, Ruff, Black and configured mypy pass; the installed preflight records zero application calls and `HOLD_NO_RUNNING_TARGET`. |
-| **Next** | Open the intended saved ETABS model, record its exact PID/start/path/version, refresh the preflight, then run one bounded getter-only A1 capture. If preservation passes, acquire the C1 create-new SQLite file through the operator UI and inventory it offline. |
+| **Current** | A1/C1 installed evidence is locally frozen: exact state-content equality, locked/unchanged model file, 9,641,984-byte immutable export, SQLite integrity `ok`, 160 tables/62,133 rows, 10/10 requested tables and 80/80 fields found. The 3,502 IS 456 beam-summary rows equal 3,502 direct getter items across 153/153 beams. |
+| **Next** | Finish the task-owned evidence/docs, run the focused union and one complete PR-boundary validation cycle, then publish and accept a single A1/C1 PR. Start C2 offline only after that merge. |
 | Commit lane | Exactly the three accepted mutation-safety hooks from PR #949; no broad gate is repeated per commit. |
 | PR lane | Formatting, linting, typing, security, tests, generated contracts, docs and API parity run once for the complete batch. |
-| W3 state | A0/B0/B1A/C0 is accepted through PR #947 and B1B/B2 through PR #950. A1/C1 is active under getter-only/create-new-export authority; its live evidence is not yet acquired. |
-| Held | C2 until C1 supplies the exact accepted schema; setters, save, unlock, analysis/design run, application exit, model mutation, Excel automation, original-model changes, release/publication, and unrelated worktree or branch cleanup. |
+| W3 state | A0/B0/B1A/C0 is accepted through PR #947 and B1B/B2 through PR #950. A1/C1 exact schema evidence is locally complete and awaiting its one PR. |
+| Held | C2 until the A1/C1 PR is accepted; C1 comparison values remain held by missing fresh-analysis/clean-memory/table-selection epoch evidence. Setters, save, unlock, further analysis/design, application exit, model input mutation, Excel automation, original-model changes, release/publication, and unrelated cleanup remain excluded. |
 
 ## Next decision order
 
-1. Have the operator open the intended saved ETABS model; do not launch or
-   select a model automatically.
-2. Re-run the no-COM process/runtime preflight immediately before installed
-   work and require exact PID, start time, model path/name and version.
-3. Run the supervised attached observation getter-only. Acquire C1 by operator
-   UI into a new
-   destination and prove pre/post model, file and state preservation.
-4. Do not start C2 until C1 supplies the complete accepted hash-bound export and
-   exact schema inventory.
+1. Review only the non-proprietary installed evidence record; keep the model,
+   SQLite artifact and raw model-bearing captures outside Git.
+2. Freeze this branch, run its focused test union and one complete PR-level
+   validation cycle, then push all logical commits together in one PR.
+3. Merge only when the unchanged reviewed head passes every required hosted
+   check; retain ETABS open unless the owner separately asks to close it.
+4. Start C2 from the accepted A1/C1 head. Implement only the observed schema
+   offline and preserve diagnostic `HOLD` for the blocked result epoch.
 
 ## Cleanup state
 

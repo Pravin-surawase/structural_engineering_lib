@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "task_id": "ETABS-W3-A1-C1-INSTALLED-EVIDENCE",
+  "observed_at_utc": "2026-09-02T12:30:54.8954101Z",
+  "verdict": "A1_ACCEPTED_C1_SCHEMA_ACCEPTED_COMPARISON_EPOCH_HELD",
+  "repository": {
+    "branch": "codex/w3-installed-readonly-evidence",
+    "evidence_source_head": "4dbd8d861a569f9644ddad9046c2573a4cd885a3",
+    "base": "origin/main@827ea6786354481f8e2686bd31daee58ec2ae15c",
+    "source_state": "COMMITTED_IMPLEMENTATION_HEAD_WITH_TASK_OWNED_EVIDENCE_AND_DOCUMENTATION_WRITES"
+  },
+  "authority": {
+    "a1": "PID-specific getter-only attached observation",
+    "c1": [
+      "one bounded in-memory concrete-design call",
+      "create-new operator-UI SQLite export",
+      "getter-only design-result metadata cross-check"
+    ],
+    "prohibited_and_not_called": [
+      "run analysis",
+      "save model",
+      "unlock model",
+      "change model input",
+      "exit ETABS",
+      "change original model file"
+    ]
+  },
+  "installed_identity": {
+    "etabs_version": "23.3.1.4563",
+    "api_assembly_version": "2.16.0.0",
+    "comtypes_version": "1.4.16",
+    "process_id": 10556,
+    "process_start_time_utc": "2026-09-02T10:52:32.875032Z",
+    "process_instance_sha256": "1e96a0f6168096eb02f008bd78daba94f47ce51aef4af1d59e300825fe7af5da",
+    "runtime_fingerprint_sha256": "c1e77a240389df4b791ced3845030142f7c166d140545cddbb27464dd92f29d0",
+    "target_observation_sha256": "cb56b01496cedf9a351672c64664749c1096ab252a21d304c7fcfa9c10f42ac8",
+    "model_identity_sha256": "92b3fa009f25b2228cc956cedb1b76268bb73414e16b361be334c0b3d81f6269",
+    "model_size_bytes": 702855,
+    "model_path_and_name_retained_outside_git": true
+  },
+  "a1_getter_only_acceptance": {
+    "before_run_sha256": "904e25b2a941347f5bceae7e4b7fa019ba4ea25c721533913ccc1b9c2e0db7c3",
+    "before_capture_sha256": "caed2b6c7c43b1e0a133b7fd6ac94b41722e28caca08393893ad03cb8d75557b",
+    "after_run_sha256": "8566d5456715b9d0cf427cbf8e5d9d989b244f2816858be3818237a8101f676a",
+    "after_capture_sha256": "6ab7d40ee845648b6801e8c2c78a2fbdcd29c146cea09576b83b9670c5417e31",
+    "state_content_before_sha256": "0f7f5cfb8c5f2fc6cd53d7625ef91a1aec443739aed36dd53137f6e5134ff968",
+    "state_content_after_sha256": "0f7f5cfb8c5f2fc6cd53d7625ef91a1aec443739aed36dd53137f6e5134ff968",
+    "restoration_outcome": "VERIFIED_EQUAL",
+    "model_file_preserved": true,
+    "model_locked": true,
+    "no_setter_save_analysis_design_unlock_or_exit_call": true,
+    "comparison_basis_allowed": false,
+    "limitations": [
+      "Attached-session memory freshness remains unknown without a reviewed clean signal.",
+      "A1 proves getter-only identity and preservation, not analysis/design-result validity or engineering approval."
+    ]
+  },
+  "c1_bounded_design_transaction": {
+    "call_id": "ETABS-W3-C1-CONCRETE-DESIGN-20260902-PID10556-01",
+    "method": "SapModel.DesignConcrete.StartDesign",
+    "call_count": 1,
+    "return_code": 0,
+    "results_available_before": false,
+    "results_available_after": true,
+    "protected_state_preserved": true,
+    "model_file_preserved": true,
+    "evidence_sha256": "0870509562ba40bb2dfc9dcd1fa270e619b73779cc2e315cd72b1d450818f549",
+    "claim_boundary": "The call made existing analysis-derived concrete-design results observable in memory; it did not establish a fresh analysis epoch or alter/save the model input."
+  },
+  "c1_sqlite_export": {
+    "acquisition_mode": "OPERATOR_UI_EXPORT",
+    "completion_status": "COMPLETED",
+    "artifact_scope": "INSTALLED_C1_EXPORT",
+    "artifact_size_bytes": 9641984,
+    "artifact_sha256": "d8315a6391cfc3aaa67ff4aa4b2af2d5a2e1a9f78d9cd2dae1d6a777ecb2d116",
+    "manifest_sha256": "2b8ef0a64b4f789cea05d9f5252f0674758a3d242a1d65beb1a37bcc919094b7",
+    "inventory_sha256": "ed395d15aa89edd13afb29fd9251c41c6dc01023268899bc54fa42d9dcfbd84f",
+    "installed_evidence_sha256": "0291cbf2e312f3952568938be60e4e0bf7b4e5f747f1c1d0905b1b5ab7b1c0af",
+    "source_stable_during_hash_and_inspection": true,
+    "pending_wal_present": false,
+    "pending_shm_present": false,
+    "integrity_check": "ok",
+    "sqlite_version": "3.53.1",
+    "table_count": 160,
+    "total_row_count": 62133,
+    "requested_table_count": 10,
+    "requested_field_count": 80,
+    "found_requested_table_count": 10,
+    "rejected_requested_table_count": 0,
+    "rejected_requested_field_count": 0,
+    "artifact_retention": "Proprietary SQLite bytes remain outside Git; only hashes and non-proprietary schema evidence are versioned."
+  },
+  "is456_beam_design_summary_schema": {
+    "table": "Concrete Beam Design Summary - IS 456-2000",
+    "row_count": 3502,
+    "column_count": 23,
+    "requested_field_count": 20,
+    "found_requested_field_count": 20,
+    "rejected_requested_field_count": 0,
+    "columns": [
+      ["Story", "TEXT"],
+      ["Label", "TEXT"],
+      ["UniqueName", "TEXT"],
+      ["DesignSect", "TEXT"],
+      ["Station", "DOUBLE"],
+      ["Status", "TEXT"],
+      ["AsTopCombo", "TEXT"],
+      ["AsMinTop", "DOUBLE"],
+      ["AsTop", "DOUBLE"],
+      ["AsBotCombo", "TEXT"],
+      ["AsMinBot", "DOUBLE"],
+      ["AsBot", "DOUBLE"],
+      ["VCombo", "TEXT"],
+      ["VRebar", "DOUBLE"],
+      ["TLngCombo", "TEXT"],
+      ["TLngRebar", "DOUBLE"],
+      ["TTrnCombo", "TEXT"],
+      ["TTrnRebar", "DOUBLE"],
+      ["AsTopTotal", "DOUBLE"],
+      ["AsBotTotal", "DOUBLE"],
+      ["AtTrnTotal", "DOUBLE"],
+      ["WarnMsg", "TEXT"],
+      ["ErrMsg", "TEXT"]
+    ],
+    "declared_primary_key_columns": [],
+    "schema_disposition": "ACCEPTED_FOR_C2_IMPLEMENTATION"
+  },
+  "direct_getter_cross_check": {
+    "method": "SapModel.DesignConcrete.GetSummaryResultsBeam_2",
+    "getter_calls_only": true,
+    "design_results_available": true,
+    "beam_frame_count": 153,
+    "successful_beam_frame_count": 153,
+    "total_result_items": 3502,
+    "sqlite_summary_row_count": 3502,
+    "counts_match": true,
+    "model_file_preserved": true,
+    "model_locked": true,
+    "evidence_sha256": "3364f5cd1f6bce6e8f760930a0ba3aafc27b9e1d7e7d8130542d5a18b41fcaca"
+  },
+  "result_epoch": {
+    "disposition": "BLOCKED",
+    "epoch_sha256": "fe989ad52b9624ffabc5a29b48dafa7ea5af06d564cca7cbf8d81aee063d7914",
+    "blocked_reasons": [
+      "ANALYSIS_CALL_EVIDENCE_MISSING",
+      "ATTACHED_MEMORY_FRESHNESS_UNKNOWN",
+      "TABLE_DISPLAY_SELECTION_NOT_GETTER_OBSERVED"
+    ],
+    "effect": "C2 may implement and test the exact offline parser against this accepted schema. Parsed comparison values must remain diagnostic HOLD until a fresh accepted result epoch and complete comparison basis exist."
+  },
+  "c1_parser_boundary": {
+    "exact_schema_observed": true,
+    "parser_support_claimed": false,
+    "c2_dependency_released": true,
+    "engineering_approval_claimed": false
+  },
+  "retained_outside_git_evidence_sha256": {
+    "a1_before_designed_export_json": "fe21dcc32e4de2b6365f4111b53fd7db144c0876219d04af0624755114719a11",
+    "c1_design_transaction_json": "0870509562ba40bb2dfc9dcd1fa270e619b73779cc2e315cd72b1d450818f549",
+    "c1_design_results_probe_json": "3364f5cd1f6bce6e8f760930a0ba3aafc27b9e1d7e7d8130542d5a18b41fcaca",
+    "a1_after_design_results_probe_json": "d56f90f9c81ed80ed050f53ab2687bc28f1709cc5594b115d1df1adb643ee341",
+    "c1_designed_export_manifest_json": "e5dd95823cf632e335cc615a072c4595396891956274d65b1e42565926acfc35",
+    "c1_designed_schema_inventory_json": "d86756bd98434d1daad7d81474c30f49c8eab2633b9a2f56f0973cf75dc03aba",
+    "c1_designed_installed_sqlite_evidence_json": "9744e3bf82266626b2adac4e8197c0a2d5be1ed4741fd658d158ad980352f6ad"
+  },
+  "limitations": [
+    "The accepted artifact proves the installed schema, field resolution, integrity and preservation boundary; it does not make the exported values a fresh comparison baseline.",
+    "The SQLite artifact and raw model-bearing observations are intentionally not committed.",
+    "This evidence is diagnostic software evidence and is not professional, design, construction or safety approval."
+  ],
+  "next_action": "Freeze and validate this A1/C1 batch in one PR. After acceptance, start C2 offline against the exact observed schema while preserving the result-epoch HOLD."
+}
