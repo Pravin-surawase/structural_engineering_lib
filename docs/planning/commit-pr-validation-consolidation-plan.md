@@ -34,14 +34,79 @@ formatter while working, but no broad local gate is mandatory per commit.
 
 ## Implementation status
 
-The plan is implemented as two coherent commits on one candidate branch. The
+The plan was implemented as two coherent commits on one candidate branch. The
 first establishes complete hosted ownership and its machine-readable 34-hook
 coverage map before any local control is removed. The second reduces ordinary
 commits to the exact three guards above, retains eight manual-stage integrity
 checks for PR Repository Validation, removes the duplicate `main`-push trigger,
-and updates executable topology tests and active guidance. Final acceptance is
-the unchanged batched PR head passing strict `PR Gate`; no second workflow run
-is expected for its merge push.
+and updates executable topology tests and active guidance. PR #949 accepted the
+unchanged batched head through strict `PR Gate`; its merge did not start a
+second `fast-checks.yml` run. PR #950 then exercised the policy on a real
+three-commit feature batch and merged through one required hosted cycle.
+
+## Post-implementation workflow and urgent hygiene record (2026-09-02)
+
+### Working decision
+
+- Keep multiple coherent commits on a milestone branch and publish them in one
+  PR only after the batch freezes. The commits preserve reviewable internal
+  history; the PR supplies the one required hosted assurance cycle.
+- Use squash merge as the normal repository default so `main` receives one
+  atomic milestone commit. Retain merge commits only for a future case that
+  genuinely needs branch topology. Changing the GitHub merge settings is not an
+  urgent performance action and remains deferred.
+- Keep formatting, linting, typing, security, generated-contract checks and
+  tests in the PR lane. Removing formatting would save little: PR #950 spent
+  about 12 seconds in Python format/lint inside an approximately 156-second
+  hosted cycle, while FastAPI was the longest job at about 132 seconds.
+- Do not replace Black with Ruff formatting as incidental cleanup. A direct
+  `ruff format --check Python` sample completed in 1.828 seconds but would
+  reformat 52 files, so any migration must be a deliberate, isolated batch.
+
+### Urgent work completed
+
+1. Revalidated all 45 registered worktrees against live Git status, operation
+   markers and GitHub PR state. Removed exactly 40 clean worktrees whose branch
+   had a merged PR by using normal `git worktree remove`; no force option was
+   used and all 40 local branch refs remained present. The retained baseline is
+   five worktrees: `main`, two dirty user-work lanes and two clean lanes without
+   merged-PR evidence. The short-lived documentation lane for this record is
+   excluded from that before/after count and must be removed after acceptance.
+2. Revalidated all GitHub Actions cache IDs against current PR state. Deleted
+   exactly 266 caches scoped to closed or merged PR refs, totaling
+   2,054,176,530 bytes in the deletion set. The converged live inventory fell
+   from 568 to 302 caches and now totals 8,491,048,437 bytes: 252 `main`, 32
+   open-PR and 18 other-branch caches. Zero closed/merged-PR caches remain.
+3. Fast-forwarded the clean local `main` checkout from `44ef7bc4` to current
+   `origin/main` at `742719dd`; the checkout remains clean.
+4. Rechecked background activity. No task-owned Python, pytest, dev-server,
+   Git, ETABS or Excel process needed cleanup. Codex/MCP helpers and Chrome
+   Remote Desktop were preserved because they are active platform/session
+   infrastructure, not stale project work.
+
+### Preserved boundary
+
+- No branch, open PR, dirty file, stash, user cache, artifact, dependency or
+  active desktop process was deleted.
+- No ETABS, Excel, COM, model, workbook, release or deployment action occurred.
+- Required `PR Gate`, strict branch protection and the three commit-safety hooks
+  remain unchanged.
+
+### Deferred optimization backlog
+
+1. Add a narrowly scoped Actions cleanup on PR close so merge-ref caches cannot
+   accumulate again; prove that `main` and open-PR caches are excluded.
+2. Optimize the FastAPI PR lane first: tighten maintained path ownership and
+   cheap-contract ordering, then reduce install/test fan-out without weakening
+   the strict final gate.
+3. Review changed-only repository-integrity routing, artifact retention and the
+   nine open Dependabot PRs as separate maintenance work.
+4. Remove tracked `.vite` cache-like files only in an explicit source-control
+   cleanup with link/build verification.
+5. Consider a dedicated Ruff-format migration and squash-only repository
+   setting later. Neither is required for the current performance outcome.
+6. Continue process hygiene by ownership proof only; never stop Codex/MCP or
+   remote-desktop infrastructure merely because it is long-lived.
 
 ## Why this supersedes the current task text
 
