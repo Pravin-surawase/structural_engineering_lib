@@ -116,6 +116,10 @@ Excel automation, original-model changes, release and deployment are excluded.
   but could not create its output file from the restricted process context.
 - The first session-document check treated the Markdown code delimiter and
   sentence period after the receipt path as part of the filename.
+- The one full 32-check PR-boundary cycle passed 31 checks but timed out API
+  classification after 53.8 seconds against its stale 30-second child limit.
+- The first repair Ruff command attempted to initialize its cache under the
+  read-only worktree and was denied before linting.
 
 ### Root causes and resolutions
 
@@ -206,6 +210,19 @@ Excel automation, original-model changes, release and deployment are excluded.
   the `Git handoff receipt` line as the path; Markdown backticks and punctuation
   are not stripped. Resolution: keep the label and unadorned path on one line.
   The repeated session-document check resolves the versioned receipt.
+- Confirmed root cause: API classification still had an exceptional 30-second
+  timeout while the generator's current installed/public surface takes longer
+  on this Windows worktree; process teardown made the visible timeout 53.8
+  seconds. Resolution: align this one generated-surface check with the existing
+  90-second slow-check ceiling and add a registry regression. The exact direct
+  classification check passed unchanged; the other 31 full-gate checks are not
+  repeated.
+- Confirmed environment cause: Ruff's default cache lives below the repository
+  root, which this command sandbox cannot write. Resolution: repeat with
+  `--no-cache`; the changed regression test passes. Black leaves both repair
+  files unchanged, and the imported `check_all` registry regression proves the
+  timeout value. ⚠️ TERMINAL ISSUE: Ruff cache initialization received WinError
+  5 -> the cache-free affected check completed.
 
 ### Validation through installed evidence freeze
 
@@ -234,6 +251,10 @@ Excel automation, original-model changes, release and deployment are excluded.
 - The proprietary export/raw observations remain outside Git. The versioned
   evidence contains only installed/runtime/model/artifact hashes, schema/type/
   count facts and explicit claim limitations.
+- One full `run.sh check` cycle passed 31/32; its sole failure was the stale API
+  classification timeout. The exact failed owner then passed directly, and the
+  timeout registry repair is covered by its focused governance regression. No
+  unchanged full-gate owner is rerun.
 
 ### Next action
 

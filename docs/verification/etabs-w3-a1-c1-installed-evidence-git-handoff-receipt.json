@@ -22,27 +22,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "c2458cf5fc68d35cf830ffcfa4bce49216a7315a8c12a4310b38daa7c2c92325",
+    "receipt_sha256": "39a59d8a92eaa36d4b2db2495b2358e986db6670163f5d3212409691e21d278f",
     "state": {
       "branch": "codex/w3-installed-readonly-evidence",
       "default_base": {
-        "ahead": 7,
+        "ahead": 8,
         "behind": 0,
         "ref": "origin/main",
         "sha": "827ea6786354481f8e2686bd31daee58ec2ae15c",
         "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 708.661,
+      "duration_ms": 835.65,
       "git_common_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git",
       "git_dir": "C:\\CodexWork\\structural_engineering_lib-main-evidence\\.git\\worktrees\\w3-installed-readonly-evidence",
-      "head_sha": "4dbd8d861a569f9644ddad9046c2573a4cd885a3",
+      "head_sha": "3b5e2b24ada0e57912771f6b0d591bbb75fa2c2d",
       "hold_reasons": [
-        "changed paths: 5"
+        "changed paths: 3"
       ],
       "linked_worktree": true,
       "locks": [],
-      "observed_at_utc": "2026-09-02T13:20:37.638835+00:00",
+      "observed_at_utc": "2026-09-02T15:14:39.288010+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -53,20 +53,17 @@
       "tree": {
         "clean": false,
         "conflicted_paths": [],
-        "dirty_count": 5,
+        "dirty_count": 3,
         "modified_paths": [
+          "Python/tests/test_agent_governance_automation.py",
           "docs/SESSION_LOG.md",
-          "docs/TASKS.md",
-          "docs/planning/next-session-brief.md",
-          "docs/planning/w3-beam-professional-integrated-execution-plan.md"
+          "scripts/check_all.py"
         ],
         "staged_paths": [],
-        "untracked_paths": [
-          "docs/verification/etabs-w3-a1-c1-installed-evidence.json"
-        ]
+        "untracked_paths": []
       },
       "upstream": {
-        "ahead": 7,
+        "ahead": 8,
         "behind": 0,
         "ref": "origin/main",
         "sha": "827ea6786354481f8e2686bd31daee58ec2ae15c",
@@ -75,9 +72,9 @@
       "worktree_root": "C:\\CodexWork\\worktrees\\w3-installed-readonly-evidence"
     }
   },
-  "local_state_receipt_hash": "sha256:c2458cf5fc68d35cf830ffcfa4bce49216a7315a8c12a4310b38daa7c2c92325",
+  "local_state_receipt_hash": "sha256:39a59d8a92eaa36d4b2db2495b2358e986db6670163f5d3212409691e21d278f",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-09-02T13:20:37.638835+00:00",
+  "observed_at_utc": "2026-09-02T15:14:39.288010+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"
@@ -109,6 +106,8 @@
       "Python/tests/unit/test_etabs_acquisition_contracts.py",
       "Python/tests/unit/test_etabs_installed_readonly.py",
       "Python/tests/unit/test_etabs_session_guard.py",
+      "Python/tests/test_agent_governance_automation.py",
+      "scripts/check_all.py",
       "docs/SESSION_LOG.md",
       "docs/TASKS.md",
       "docs/planning/next-session-brief.md",

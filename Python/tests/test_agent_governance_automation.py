@@ -392,6 +392,16 @@ def test_live_full_gate_count_matches_active_instructions():
         assert "32 checks" in path.read_text(encoding="utf-8"), path
 
 
+def test_api_classification_timeout_covers_the_generated_surface():
+    checks = {
+        check.name: check
+        for category in check_all.CATEGORIES
+        for check in category.checks
+    }
+
+    assert checks["API classification"].timeout >= 90
+
+
 def test_active_agent_instructions_use_worktree_safe_python_launcher():
     instruction_paths = [REPO_ROOT / "AGENTS.md"]
     instruction_paths.extend((REPO_ROOT / ".github" / "skills").glob("*/SKILL.md"))

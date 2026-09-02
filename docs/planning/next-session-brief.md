@@ -5,8 +5,8 @@
 <!-- HANDOFF:START -->
 - Date: 2026-09-02
 - Focus: Complete A1 getter-only acceptance and C1 installed schema inventory.
-- Git receipt: docs/verification/etabs-w3-a1-c1-installed-evidence-git-handoff-receipt.json | sha256:c2458cf5fc68d35cf830ffcfa4bce49216a7315a8c12a4310b38daa7c2c92325 | HOLD
-- Git identity: codex/w3-installed-readonly-evidence@4dbd8d861a569f9644ddad9046c2573a4cd885a3 | upstream=origin/main@827ea6786354481f8e2686bd31daee58ec2ae15c | base=origin/main@827ea6786354481f8e2686bd31daee58ec2ae15c | tree=dirty | operation=none
+- Git receipt: docs/verification/etabs-w3-a1-c1-installed-evidence-git-handoff-receipt.json | sha256:39a59d8a92eaa36d4b2db2495b2358e986db6670163f5d3212409691e21d278f | HOLD
+- Git identity: codex/w3-installed-readonly-evidence@3b5e2b24ada0e57912771f6b0d591bbb75fa2c2d | upstream=origin/main@827ea6786354481f8e2686bd31daee58ec2ae15c | base=origin/main@827ea6786354481f8e2686bd31daee58ec2ae15c | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
