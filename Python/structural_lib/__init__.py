@@ -448,8 +448,8 @@ from .services.etabs_acquisition_contracts import (
     ETABSSQLiteRequestedTableResolutionV1,
     ETABSSQLiteSchemaInventoryV1,
     ETABSSQLiteTableInventoryV1,
-    build_etabs_installed_sqlite_evidence_v1,
     build_etabs_concrete_design_basis_v1,
+    build_etabs_installed_sqlite_evidence_v1,
     finalize_etabs_sqlite_export_manifest_v1,
     inventory_etabs_sqlite_export_v1,
 )
