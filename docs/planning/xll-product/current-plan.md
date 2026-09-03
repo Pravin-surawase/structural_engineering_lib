@@ -3,23 +3,23 @@ owner: Main Agent
 status: active
 last_updated: 2026-09-03
 doc_type: guide
-complexity: intermediate
-tags: [excel-dna, xll, planning, research]
+complexity: advanced
 ---
 
 # StructAutomate — current plan
 
-Updated 3 September 2026 for the owner's request to implement the C# automation foundation. The first product workflow is standalone beam design in Windows Excel; the complete automation path includes ETABS forces, design/checking, candidate search, reanalysis, detailing and construction outputs.
+Updated 3 September 2026 for the owner's direction to complete the library definition before further implementation. The first product workflow is standalone beam design in Windows Excel; the complete automation path includes ETABS forces, design/checking, candidate search, reanalysis, detailing and construction outputs.
 
 **Use the original architecture's P0–P6 phase meanings.** My earlier v2 synthesis changed those meanings and compared the older optimizer roadmap instead of this document. That comparison is superseded.
 
 ## Read these in order
 
-1. [Automation requirements and delivery sequence](automation/README.md), with operation contracts, examples, source crosswalk and member/check schemas.
-2. [Working C# foundation](../../../CSharp/README.md), its exact build/test commands and implemented boundaries.
-3. [Reusable Python/.NET library research](reusable-library-research.md), covering proposed library boundaries, peer libraries, public signatures and ETABS result semantics. Its recommendations guide the next contract work; the current solution remains the executable API authority.
-4. [Requirements-first research](requirements-first/README.md), including the historical failure audit and three-project source inventory.
-5. [Original XLL architecture decision](../excel-dna-xll-product-architecture-decision.md) and [phase review](phase-review.md), retained for architectural history. [Source provenance](source-manifest.json) records the supplied and publication hashes.
+1. [Library definition programme PF0–PF11](library-definition/README.md), with machine-readable phase, capability, deliverable and decision controls. This is the current work authority.
+2. [Automation requirements and delivery sequence](automation/README.md), with operation contracts, examples, source crosswalk and member/check schemas.
+3. [Working C# foundation](../../../CSharp/README.md), its exact build/test commands and implemented boundaries. It is executable evidence, not permission to skip the definition programme.
+4. [Reusable Python/.NET library research](reusable-library-research.md), covering proposed library boundaries, peer libraries, public signatures and ETABS result semantics.
+5. [Requirements-first research](requirements-first/README.md), including the historical failure audit and three-project source inventory.
+6. [Original XLL architecture decision](../excel-dna-xll-product-architecture-decision.md) and [phase review](phase-review.md), retained for architectural history. [Source provenance](source-manifest.json) records the supplied and publication hashes.
 
 ## Original phases, retained
 
@@ -37,7 +37,7 @@ The original shell-only Windows P0 packet remains historical evidence of the fir
 
 The C# solution now provides typed force normalization, beam-line analysis, reinforcement geometry, bar-path quantities and candidate ranking, with an Excel-DNA x64 build. The automation specification defines full member checks, ETABS adapters, candidate evaluation, detailing and workbook/report delivery. Installed Excel and ETABS behavior is verified with the actual applications as those interfaces are implemented.
 
-The next engineering increment ports ordinary-beam strength checks with actual reinforcement, followed by serviceability and full detailing through the same contracts. Application increments connect ETABS intake and the workbook, then complete candidate generation/reanalysis and construction/report delivery. This does not change the original phase meanings or the separate library beam programme.
+Implementation sequencing now follows the blueprint produced by PF11. That blueprint must reconcile the reusable-library definition, the original P0–P6 XLL meanings and the separate six-phase beam programme. Until then, the existing implementations and the automation catalogue are evidence and inputs to planning rather than a default porting order.
 
 ## Learning and evidence status
 
@@ -51,4 +51,4 @@ The [v2 synthesis](history/foundation-and-delivery-plan-v2.md) and its unchanged
 
 The [engineering-depth assessment](research/engineering-depth.md) and [readiness audit](research/foundation-readiness.md) remain dated evidence. They establish neither a completed XLL nor independent engineering approval.
 
-The latest owner request authorizes this implementation and setup. Model operations use an identified application/model and the existing repository transaction workflow; package releases retain their per-release authorization process.
+The latest owner direction authorizes careful completion of PF0–PF11 before further implementation. Model operations will use an identified application/model and the existing repository transaction workflow; package releases retain their per-release authorization process.

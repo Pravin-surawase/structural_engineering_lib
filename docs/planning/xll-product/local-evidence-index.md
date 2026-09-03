@@ -13,6 +13,7 @@ These references came from the original Windows research workspace. They are ret
 
 | Shared document | Original label | Source locator | Status |
 | --- | --- | --- | --- |
+| library-definition/README.md | polished Word programme | `C:\CodexWork\artifacts\library-definition-programme-2026-09-03\Structural-Library-Definition-Programme.docx` | Local, not bundled |
 | current-plan.md | unchanged Word snapshot | `StructAutomate-Product-Foundation-and-Delivery-Plan-v2-2026-09-03.docx` | Local, not bundled |
 | README.md | machine assessment evidence | `assessment-evidence.json` | Local, not bundled |
 | foundation-readiness.md | public API | `structural_engineering_lib-main-evidence/Python/structural_lib/services/beam_api.py:1702` | Local, not bundled |

@@ -1,0 +1,138 @@
+{
+  "programme_id": "structural-library-definition-pf0-pf11",
+  "title": "Structural library definition programme",
+  "revision_date": "2026-09-03",
+  "scope": "Pre-implementation definition of reusable Python and .NET structural libraries and their Excel/ETABS application boundaries.",
+  "implementation_phase_prefix": "P",
+  "definition_phase_prefix": "PF",
+  "automation_operations": [
+    "AO01", "AO02", "AO03", "AO04", "AO05", "AO06", "AO07", "AO08", "AO09",
+    "AO10", "AO11", "AO12", "AO13", "AO14", "AO15", "AO16", "AO17", "AO18",
+    "AO19", "AO20", "AO21", "AO22", "AO23", "AO24", "AO25", "AO26"
+  ],
+  "capability_families": [
+    {"id": "CAP-FOUND", "name": "quantities, units, materials and geometry", "definition_phase": "PF4", "assurance_phase": "PF7", "application_phase": "PF8"},
+    {"id": "CAP-ANALYSIS", "name": "bounded beam analysis and action data", "definition_phase": "PF3", "assurance_phase": "PF7", "application_phase": "PF8"},
+    {"id": "CAP-FLEXURE", "name": "flexure and reinforcement selection", "definition_phase": "PF3", "assurance_phase": "PF7", "application_phase": "PF8"},
+    {"id": "CAP-SHEAR", "name": "shear and transverse reinforcement", "definition_phase": "PF3", "assurance_phase": "PF7", "application_phase": "PF8"},
+    {"id": "CAP-TORSION", "name": "torsion and interacting effects", "definition_phase": "PF3", "assurance_phase": "PF7", "application_phase": "PF8"},
+    {"id": "CAP-SLS", "name": "deflection, cracking and service action basis", "definition_phase": "PF3", "assurance_phase": "PF7", "application_phase": "PF8"},
+    {"id": "CAP-DETAIL", "name": "anchorage, curtailment, laps and seismic detailing", "definition_phase": "PF3", "assurance_phase": "PF7", "application_phase": "PF8"},
+    {"id": "CAP-CONSTRUCT", "name": "bar placement, layers, spacing and constructability", "definition_phase": "PF3", "assurance_phase": "PF7", "application_phase": "PF8"},
+    {"id": "CAP-FAB", "name": "bar paths, lengths, BBS and quantities", "definition_phase": "PF3", "assurance_phase": "PF7", "application_phase": "PF8"},
+    {"id": "CAP-COST", "name": "pricing and construction objectives", "definition_phase": "PF3", "assurance_phase": "PF7", "application_phase": "PF8"},
+    {"id": "CAP-FORMWORK", "name": "formwork contact-area measurement", "definition_phase": "PF3", "assurance_phase": "PF7", "application_phase": "PF8"},
+    {"id": "CAP-OPT", "name": "candidate generation, evaluation and optimization", "definition_phase": "PF3", "assurance_phase": "PF7", "application_phase": "PF8"},
+    {"id": "CAP-ETABS", "name": "ETABS acquisition, result semantics and transactions", "definition_phase": "PF8", "assurance_phase": "PF8", "application_phase": "PF8"},
+    {"id": "CAP-EXCEL", "name": "Excel functions, commands and workbook delivery", "definition_phase": "PF8", "assurance_phase": "PF8", "application_phase": "PF8"},
+    {"id": "CAP-REPORT", "name": "calculation records, reports and drawings", "definition_phase": "PF3", "assurance_phase": "PF7", "application_phase": "PF8"},
+    {"id": "CAP-PACKAGE", "name": "packaging, dependencies and deployment", "definition_phase": "PF9", "assurance_phase": "PF9", "application_phase": "PF9"},
+    {"id": "CAP-PERF", "name": "kernel, workbook and application performance", "definition_phase": "PF9", "assurance_phase": "PF9", "application_phase": "PF9"}
+  ],
+  "completion_definition": [
+    "Every automation operation and capability family is assigned to definition, assurance and application-boundary work.",
+    "Every public operation has a complete semantic contract, examples and compatibility decision.",
+    "Python and .NET parity is measurable through semantic IDs and conformance vectors.",
+    "Every engineering operation has a source and independent assurance plan.",
+    "Excel and ETABS remain adapters around reusable engineering services.",
+    "PF11 produces an ordered implementation blueprint with acceptance evidence."
+  ],
+  "phases": [
+    {
+      "id": "PF0",
+      "name": "Product and library charter",
+      "purpose": "Establish purpose, users, decision authority and measurable success.",
+      "depends_on": [],
+      "deliverables": ["PF0-D1-charter", "PF0-D2-owner-map", "PF0-D3-success-measures", "PF0-D4-glossary"],
+      "exit_criteria": ["The standalone Excel workflow and reusable-library purpose are both stated.", "Each outcome has a measure and owner.", "No implementation deliverable is included."]
+    },
+    {
+      "id": "PF1",
+      "name": "Users, workflows and information flow",
+      "purpose": "Describe real tasks, decisions, inputs and outputs without assuming current interfaces are correct.",
+      "depends_on": ["PF0"],
+      "deliverables": ["PF1-D1-workflow-catalogue", "PF1-D2-actor-matrix", "PF1-D3-information-inventory", "PF1-D4-scenario-set"],
+      "exit_criteria": ["Every proposed capability serves a workflow.", "Standalone use does not require ETABS.", "Construction outputs trace to resolved reinforcement and declared policies."]
+    },
+    {
+      "id": "PF2",
+      "name": "Evidence and existing-asset audit",
+      "purpose": "Classify existing code, contracts, examples, sources and historical evidence before reuse or migration.",
+      "depends_on": ["PF0"],
+      "deliverables": ["PF2-D1-asset-catalogue", "PF2-D2-public-surface-map", "PF2-D3-provenance-register", "PF2-D4-failure-prevention-register"],
+      "exit_criteria": ["Every existing public operation has a disposition candidate.", "Historical failures have prevention rules.", "Current behavior, proposals and live-application claims are distinguished."]
+    },
+    {
+      "id": "PF3",
+      "name": "Capability scope and library boundaries",
+      "purpose": "Place each responsibility in a reusable capability, application adapter or later extension.",
+      "depends_on": ["PF1", "PF2"],
+      "deliverables": ["PF3-D1-capability-map", "PF3-D2-responsibility-matrix", "PF3-D3-supported-profiles", "PF3-D4-ao01-ao26-crosswalk"],
+      "exit_criteria": ["AO01 through AO26 and all capability families are mapped.", "Reusable calculations have no application-state dependency.", "Unsupported behavior is visible and reasoned."]
+    },
+    {
+      "id": "PF4",
+      "name": "Engineering semantic model",
+      "purpose": "Define common physical, code, identity and result meanings for both languages and all adapters.",
+      "depends_on": ["PF3"],
+      "deliverables": ["PF4-D1-quantity-dictionary", "PF4-D2-unit-sign-axis-standard", "PF4-D3-optional-value-policy", "PF4-D4-provenance-identity-model", "PF4-D5-result-state-vocabulary"],
+      "exit_criteria": ["Legacy ambiguous terms have a new meaning or compatibility translation.", "Zero, blank, absent, default and derived values are distinct.", "Equivalent Python and .NET values can be compared without guessing."]
+    },
+    {
+      "id": "PF5",
+      "name": "Public operations and professional signatures",
+      "purpose": "Define discoverable semantic operations before projecting idiomatic Python and C# APIs.",
+      "depends_on": ["PF4"],
+      "deliverables": ["PF5-D1-operation-catalogue", "PF5-D2-request-result-schemas", "PF5-D3-language-projections", "PF5-D4-diagnostic-catalogue", "PF5-D5-workflow-traceability"],
+      "exit_criteria": ["Every operation has valid and non-success examples.", "Capacity, check, design and approval remain distinct.", "Equivalent effective inputs yield equivalent semantic outcomes."]
+    },
+    {
+      "id": "PF6",
+      "name": "Python/.NET parity and package strategy",
+      "purpose": "Define the maintained common set, language projections, schema ownership and drift controls.",
+      "depends_on": ["PF5"],
+      "deliverables": ["PF6-D1-common-capability-matrix", "PF6-D2-python-package-map", "PF6-D3-dotnet-package-map", "PF6-D4-schema-projection-rules", "PF6-D5-drift-detection-plan"],
+      "exit_criteria": ["Parity is measurable per operation.", "Schema generation cannot redefine handwritten domain meaning.", "Vendor details remain in adapter packages."]
+    },
+    {
+      "id": "PF7",
+      "name": "Engineering assurance and examples",
+      "purpose": "Define evidence for formulas, lookups, checks, member results and combined decisions.",
+      "depends_on": ["PF5"],
+      "deliverables": ["PF7-D1-assurance-matrix", "PF7-D2-example-taxonomy", "PF7-D3-conformance-corpus-plan", "PF7-D4-tolerance-policy", "PF7-D5-aggregation-rules"],
+      "exit_criteria": ["Every code operation has a source and assurance method.", "Lookups include node, interior and boundary cases.", "Required checks cannot disappear from aggregate outcomes."]
+    },
+    {
+      "id": "PF8",
+      "name": "Excel, ETABS and coupled-automation boundary",
+      "purpose": "Define application contracts, immutable snapshots and safe model/workbook commands.",
+      "depends_on": ["PF6", "PF7"],
+      "deliverables": ["PF8-D1-etabs-acquisition-contract", "PF8-D2-analysis-snapshot-contract", "PF8-D3-excel-function-command-catalogue", "PF8-D4-optimization-state-machine", "PF8-D5-installed-acceptance-plan"],
+      "exit_criteria": ["Worksheet calculations need no live COM call or workbook mutation.", "ETABS actions preserve source identity and semantic classification.", "Stiffness-changing candidates require new analysis evidence."]
+    },
+    {
+      "id": "PF9",
+      "name": "Packaging, dependencies, deployment and performance",
+      "purpose": "Specify supported runtimes, packaging, diagnostics and measurable non-functional behavior.",
+      "depends_on": ["PF8"],
+      "deliverables": ["PF9-D1-runtime-matrix", "PF9-D2-dependency-policy", "PF9-D3-packaging-layout", "PF9-D4-performance-budgets", "PF9-D5-benchmark-plan", "PF9-D6-release-evidence-plan"],
+      "exit_criteria": ["Pure libraries install without Excel or ETABS.", "Optional adapters fail with actionable diagnostics.", "Kernel, workbook and live-application benchmarks are distinct."]
+    },
+    {
+      "id": "PF10",
+      "name": "Migration, compatibility, versioning and documentation",
+      "purpose": "Plan adoption without retaining ambiguous behavior or abandoning existing users.",
+      "depends_on": ["PF9"],
+      "deliverables": ["PF10-D1-api-disposition-ledger", "PF10-D2-migration-matrix", "PF10-D3-versioning-policy", "PF10-D4-documentation-architecture", "PF10-D5-example-curriculum"],
+      "exit_criteria": ["Every existing public caller has a path or a reasoned unsupported outcome.", "Compatibility wrappers translate semantics.", "Users can find small, member, Excel and ETABS examples."]
+    },
+    {
+      "id": "PF11",
+      "name": "Integrated review and implementation blueprint",
+      "purpose": "Resolve the complete definition into ordered, bounded and reviewable implementation work.",
+      "depends_on": ["PF10"],
+      "deliverables": ["PF11-D1-integrated-baseline", "PF11-D2-traceability-report", "PF11-D3-implementation-backlog", "PF11-D4-effort-risk-estimate", "PF11-D5-acceptance-evidence-matrix", "PF11-D6-first-work-packet"],
+      "exit_criteria": ["Every work item traces to an operation and evidence requirement.", "No public semantic or application transaction is left to accidental invention during coding.", "The first packet is bounded and exercises the architecture."]
+    }
+  ]
+}
