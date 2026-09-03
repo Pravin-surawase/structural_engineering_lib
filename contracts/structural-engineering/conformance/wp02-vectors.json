@@ -1,0 +1,43 @@
+{
+  "schema_version": "structural-conformance/v1",
+  "work_packet": "WP02",
+  "tolerance": {"absolute": 1e-9, "relative": 1e-9},
+  "vectors": [
+    {
+      "id": "wp02-shear-capacity-v2",
+      "operation_semantic_id": "is456.beam.shear_capacity/v1",
+      "input": {"axis": "v2", "b_mm": 300, "d_mm": 450, "fck_n_per_mm2": 25, "ast_mm2": 942.4777960769379, "link": {"diameter_mm": 8, "legs_v2": 2, "spacing_mm": 100, "fy_n_per_mm2": 415}},
+      "expected": {"engineering": "pass", "tau_c_n_per_mm2": 0.5534021442552741, "tau_c_max_n_per_mm2": 3.1, "link_area_mm2": 100.53096491487338, "provided_capacity_kn": 238.04446144577966}
+    },
+    {
+      "id": "wp02-shear-both-axes",
+      "operation_semantic_id": "is456.beam.shear.check/v1",
+      "input": {"station_id": "S1", "v2_kn": -100, "v3_kn": 80, "capacity_vector": "wp02-shear-capacity-v2"},
+      "expected": {"engineering": "pass", "check_count": 2}
+    },
+    {
+      "id": "wp02-torsion-concurrent",
+      "operation_semantic_id": "is456.beam.torsion.check/v1",
+      "input": {"row_id": "R1", "station_id": "S1", "action_basis": "static_concurrent", "v2_kn": 50, "torsion_knm": 5, "m3_knm": 50},
+      "expected": {"engineering": "pass", "equivalent_shear_kn": 76.66666666666667, "torsion_moment_knm": 7.843137254901962, "required_link_area_per_spacing_mm": 0.3323639385126714, "maximum_spacing_mm": 162.5}
+    },
+    {
+      "id": "wp02-torsion-minor-axis-unsupported",
+      "operation_semantic_id": "is456.beam.torsion.check/v1",
+      "input": {"action_basis": "static_concurrent", "v2_kn": 50, "v3_kn": 4, "torsion_knm": 5, "m2_knm": 3, "m3_knm": 50},
+      "expected": {"execution": "completed", "applicability": "not_applicable", "diagnostic": "PROFILE.UNSUPPORTED"}
+    },
+    {
+      "id": "wp02-shear-link-missing",
+      "operation_semantic_id": "is456.beam.shear_capacity/v1",
+      "input": {"link": null},
+      "expected": {"execution": "completed", "engineering": "not_evaluated", "completeness": "partial", "diagnostic": "REINFORCEMENT.REQUIRED"}
+    },
+    {
+      "id": "wp02-torsion-component-envelope",
+      "operation_semantic_id": "is456.beam.torsion.check/v1",
+      "input": {"action_basis": "component_envelope"},
+      "expected": {"execution": "rejected_input", "diagnostic": "ACTION.CONCURRENCY"}
+    }
+  ]
+}

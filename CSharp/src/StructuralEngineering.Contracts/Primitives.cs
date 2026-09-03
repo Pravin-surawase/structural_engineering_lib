@@ -8,6 +8,8 @@ public enum FreshnessState { Current, Stale, Unbound }
 public enum ApprovalState { Unreviewed, Checked, Approved, Rejected }
 public enum Face { Top, Bottom }
 public enum SectionKind { Rectangular, TBeam, LBeam }
+public enum ShearAxis { V2, V3 }
+public enum ActionBasis { StaticConcurrent, StagedStep, ComponentEnvelope, DesignEnvelope }
 
 public sealed record Diagnostic(
     string Code,
@@ -142,3 +144,95 @@ public sealed record FlexureSignCheck(
 public sealed record FlexureCheckOutput(
     IReadOnlyList<FlexureSignCheck> Checks,
     double GoverningUtilization);
+
+public sealed record TransverseLink(
+    string LinkId,
+    double DiameterMm,
+    int LegsV2,
+    int LegsV3,
+    double SpacingMm,
+    double SteelYieldStrengthNPerMm2,
+    bool Closed,
+    double CentreWidthMm,
+    double CentreDepthMm);
+
+public sealed record ShearCapacityRequest(
+    string ProfileId,
+    ShearAxis Axis,
+    double ResistingWidthMm,
+    double EffectiveDepthMm,
+    double ConcreteStrengthNPerMm2,
+    double LongitudinalTensionAreaMm2,
+    TransverseLink? Link,
+    string CodeDataRevisionId = "is456-wp02-v1");
+
+public sealed record ShearCapacityOutput(
+    ShearAxis Axis,
+    double LongitudinalPercentageActual,
+    double LongitudinalPercentageTable,
+    double TauCNPerMm2,
+    double TauCMaxNPerMm2,
+    double LinkAreaMm2,
+    double LinkDesignStrengthNPerMm2,
+    double ConcreteCapacityKn,
+    double LinkCapacityKn,
+    double LimitingCapacityKn,
+    double ProvidedCapacityKn,
+    double MaximumSpacingMm,
+    bool SpacingPass,
+    bool MinimumLinkPass);
+
+public sealed record ShearDemand(string StationId, ShearAxis Axis, double ShearKn);
+public sealed record ShearCheckRequest(
+    IReadOnlyList<ShearCapacityRequest> Capacities,
+    IReadOnlyList<ShearDemand> Demands);
+public sealed record ShearStationCheck(
+    string StationId,
+    ShearAxis Axis,
+    double SignedDemandKn,
+    double CapacityKn,
+    double Utilization,
+    string CapacityResultId,
+    EngineeringState Engineering);
+public sealed record ShearCheckOutput(
+    IReadOnlyList<ShearStationCheck> Checks,
+    double GoverningUtilization);
+
+public sealed record ConcurrentActionRow(
+    string RowId,
+    string StationId,
+    ActionBasis ActionBasis,
+    double V2Kn,
+    double V3Kn,
+    double TorsionKnM,
+    double M2KnM,
+    double M3KnM,
+    string SourceIdentity);
+
+public sealed record TorsionCheckRequest(
+    string ProfileId,
+    ConcurrentActionRow Action,
+    FlexuralCapacityRequest FlexuralCapacity,
+    TransverseLink? Link,
+    IReadOnlyList<string> PerimeterBarIds,
+    string CodeDataRevisionId = "is456-wp02-v1");
+
+public sealed record TorsionCheckOutput(
+    string ActionRowId,
+    string StationId,
+    double EquivalentShearKn,
+    double TorsionMomentKnM,
+    double PrimaryEquivalentMomentKnM,
+    double OppositeEquivalentMomentKnM,
+    double TauVeNPerMm2,
+    double TauCNPerMm2,
+    double TauCMaxNPerMm2,
+    double RequiredLinkAreaPerSpacingMm,
+    double ProvidedLinkAreaPerSpacingMm,
+    double MaximumSpacingMm,
+    IReadOnlyList<string> PerimeterBarIds,
+    string FlexureResultId,
+    bool StressPass,
+    bool TransversePass,
+    bool LongitudinalPass,
+    bool PerimeterPass);

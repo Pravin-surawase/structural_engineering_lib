@@ -48,6 +48,15 @@ public static class ResultFactory
             ApplicabilityState.NotApplicable, EngineeringState.NotEvaluated,
             CompletenessState.CompleteForScope, FreshnessState.Current, diagnostics);
 
+    public static ResultEnvelope<TOutput> NotEvaluated<TOutput>(
+        string operation,
+        IReadOnlyDictionary<string, EffectiveValue> inputs,
+        Provenance provenance,
+        params Diagnostic[] diagnostics) =>
+        Build<TOutput>(operation, inputs, default, provenance, ExecutionState.Completed,
+            ApplicabilityState.Unknown, EngineeringState.NotEvaluated,
+            CompletenessState.Partial, FreshnessState.Current, diagnostics);
+
     public static string NormalizedInputId(object inputs) => Hash("normalized_input_id", inputs);
 
     public static string CalculationId(string operation, Provenance provenance, string normalizedInputId) =>

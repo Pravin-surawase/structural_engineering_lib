@@ -278,6 +278,30 @@ def not_applicable_result(
     )
 
 
+def not_evaluated_result(
+    operation_semantic_id: str,
+    inputs: Mapping[str, Any],
+    diagnostic: Diagnostic,
+    *,
+    provenance: Provenance,
+) -> OperationResult:
+    """Return a completed but incomplete result for missing required evidence."""
+
+    return _result(
+        operation_semantic_id,
+        inputs,
+        {},
+        execution=ExecutionState.COMPLETED,
+        applicability=ApplicabilityState.UNKNOWN,
+        engineering=EngineeringState.NOT_EVALUATED,
+        completeness=CompletenessState.PARTIAL,
+        freshness=FreshnessState.CURRENT,
+        diagnostics=(diagnostic,),
+        provenance=provenance,
+        engine_build="python-structural-engineering-v1",
+    )
+
+
 __all__ = [
     "ApprovalState",
     "ApplicabilityState",
@@ -293,6 +317,7 @@ __all__ = [
     "completed_result",
     "effective_inputs",
     "not_applicable_result",
+    "not_evaluated_result",
     "plain",
     "rejected_result",
     "semantic_hash",

@@ -19,4 +19,5 @@ The first implementation milestone is WP01-WP08:
 8. deterministic candidate ranking and optimization.
 
 See [Getting started](getting-started.md), [WP01 reference](reference/wp01-flexure.md),
-and [migration guidance](migration/python-and-dotnet.md).
+[WP02 reference](reference/wp02-shear-torsion.md), and
+[migration guidance](migration/python-and-dotnet.md).

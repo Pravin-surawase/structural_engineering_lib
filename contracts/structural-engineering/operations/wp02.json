@@ -1,0 +1,43 @@
+{
+  "schema_version": "structural-operation-manifest/v1",
+  "work_packet": "WP02",
+  "profile_id": "IS456-WP02",
+  "operations": [
+    {
+      "catalogue_id": "FO05",
+      "semantic_id": "is456.beam.shear_capacity/v1",
+      "kind": "capacity",
+      "purpose": "Calculate axis-qualified concrete, actual-link, and limiting shear capacities.",
+      "required_inputs": [{"name": "axis", "unit": "enum"}, {"name": "resisting_width_mm", "unit": "mm"}, {"name": "effective_depth_mm", "unit": "mm"}, {"name": "longitudinal_tension_area_mm2", "unit": "mm2"}, {"name": "link", "unit": "actual geometry"}],
+      "outputs": [{"name": "provided_capacity_kn", "unit": "kN"}, {"name": "tau_c_n_per_mm2", "unit": "N/mm2"}, {"name": "link_area_mm2", "unit": "mm2"}],
+      "python_projection": "structural_lib.beam.shear_capacity",
+      "dotnet_projection": "StructuralEngineering.Codes.IS456.Shear.Capacity",
+      "valid_example": "wp02-shear-capacity-v2",
+      "non_success_example": "wp02-shear-link-missing"
+    },
+    {
+      "catalogue_id": "AO07",
+      "semantic_id": "is456.beam.shear.check/v1",
+      "kind": "check",
+      "purpose": "Check stationwise signed shear on each supported axis against actual-link capacity.",
+      "required_inputs": [{"name": "capacities", "unit": "axis-qualified"}, {"name": "demands", "unit": "kN"}],
+      "outputs": [{"name": "checks", "unit": "per station and axis"}, {"name": "governing_utilization", "unit": "ratio"}],
+      "python_projection": "structural_lib.beam.check_shear",
+      "dotnet_projection": "StructuralEngineering.Beam.BeamOperations.CheckShear",
+      "valid_example": "wp02-shear-both-axes",
+      "non_success_example": "wp02-shear-capacity-missing"
+    },
+    {
+      "catalogue_id": "AO08",
+      "semantic_id": "is456.beam.torsion.check/v1",
+      "kind": "check",
+      "purpose": "Check concurrent torsion, shear, flexure, closed links, and actual perimeter bars.",
+      "required_inputs": [{"name": "action", "unit": "concurrent kN/kNm row"}, {"name": "flexural_capacity", "unit": "actual bars"}, {"name": "link", "unit": "actual closed geometry"}, {"name": "perimeter_bar_ids", "unit": "resolved ids"}],
+      "outputs": [{"name": "equivalent_shear_kn", "unit": "kN"}, {"name": "equivalent_moments", "unit": "kNm"}, {"name": "required_link_area_per_spacing_mm", "unit": "mm2/mm"}],
+      "python_projection": "structural_lib.beam.check_torsion",
+      "dotnet_projection": "StructuralEngineering.Beam.BeamOperations.CheckTorsion",
+      "valid_example": "wp02-torsion-concurrent",
+      "non_success_example": "wp02-torsion-component-envelope"
+    }
+  ]
+}
