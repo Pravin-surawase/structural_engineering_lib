@@ -57,7 +57,20 @@ public static class ResultFactory
             ApplicabilityState.Unknown, EngineeringState.NotEvaluated,
             CompletenessState.Partial, FreshnessState.Current, diagnostics);
 
+    public static ResultEnvelope<TOutput> Partial<TOutput>(
+        string operation,
+        IReadOnlyDictionary<string, EffectiveValue> inputs,
+        TOutput output,
+        Provenance provenance,
+        FreshnessState freshness = FreshnessState.Current,
+        params Diagnostic[] diagnostics) =>
+        Build(operation, inputs, output, provenance, ExecutionState.Completed,
+            ApplicabilityState.Applicable, EngineeringState.NotEvaluated,
+            CompletenessState.Partial, freshness, diagnostics);
+
     public static string NormalizedInputId(object inputs) => Hash("normalized_input_id", inputs);
+
+    public static string SemanticId(string kind, object value) => Hash(kind, value);
 
     public static string CalculationId(string operation, Provenance provenance, string normalizedInputId) =>
         Hash("calculation_id", new Dictionary<string, object?>

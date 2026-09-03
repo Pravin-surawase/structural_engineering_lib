@@ -224,3 +224,65 @@ WP06 plan update:
   role and layer, tangent straight segments, bend arcs, hooks, and exact start
   and end stations. Those paths feed AO11, AO12, and AO26 rather than assuming
   required steel continues for the full span.
+
+## WP06 review
+
+State: implemented and focused verification passing.
+
+Confirmed outcomes:
+
+- AO14 creates a deterministic immutable project basis from the project and
+  profile revisions, canonical units, code-data and catalogue revisions,
+  uniquely sourced criteria, required operations, topology scopes, and
+  profile-resolved seismic applicability.
+- AO17 derives every expected member leaf from the frozen profile and supplied
+  design-scope instances. It retains required, selected, supplied, failed,
+  missing, not-applicable, incomplete, stale, and unbound evidence separately
+  and requires actual-depth convergence against every current applicable leaf.
+- AO18 resolves each physical bar or link into ordered tangent straights and
+  circular bend arcs with exact endpoints, bend centre, radius, angle, plane
+  normal, sweep, developed centreline length, role, layer, detail references,
+  and fabrication mark.
+- Python and .NET agree on the canonical project-basis fixture, member result
+  states, open and closed path geometry, mark grouping, and stock feasibility.
+  The portable schema and conformance vectors publish the same semantic ids,
+  fields, enums, units, and optional-value rules.
+
+Corrections made during review:
+
+- Removed the application-supplied required-check list from whole-member
+  qualification. A caller cannot hide an SLS, detailing, seismic, or fit leaf
+  by submitting a shorter list.
+- Revalidate the complete project/profile request and its semantic identity at
+  the AO17 boundary. Changing criteria, rules, catalogues, units, or revisions
+  after AO14 now rejects the member request rather than using the old basis id.
+- Bound every topology scope instance to the current design-scope revision and
+  reserved the leaf-id separator so two rule/scope pairs cannot collide.
+- Excluded stale, unbound, partial, and otherwise unqualified evidence from the
+  governing-utilization selection while retaining it in the member output.
+- Required the final actual-depth iteration to reference exactly all current
+  applicable leaf results; expected not-applicable leaves remain visible but
+  do not masquerade as depth-dependent calculations.
+- Added the bend plane normal and sweep needed to reconstruct each 3D arc, and
+  made mark grouping compare the ordered relative bend planes so distinct 3D
+  shapes cannot share a fabrication mark. Stock-length feasibility remains
+  separate from the WP07 cutting and offcut plan.
+
+WP07 plan update:
+
+- AO19 will consume one current resolved reinforcement schedule and an explicit
+  shape and cutting-stock policy. It will reconcile mark dimensions, cut
+  lengths, counts, mass, stock pieces, cuts, reusable offcuts, and waste without
+  counting lap or cutting waste twice.
+- AO04 will calculate reinforcement, concrete, and formwork quantities from the
+  resolved paths, explicit net concrete segments, and named contact faces. It
+  will preserve overlap, deduction, waste, interface, and measurement policies
+  and will not invent rates when none are supplied.
+- AO20 will apply a separately versioned rate profile with currency, effective
+  date, geography, source, priced scope, labour, plant, waste, reuse, overhead,
+  and tax treatment to the reconciled quantities.
+- AO24 will create the reusable calculation-package semantic model containing
+  assumptions, revisions, source and calculation identities, every member leaf,
+  governing cases, paths, BBS, quantities, cost, drawing data, limitations, and
+  real prepared/checked/approved actions. File rendering remains an adapter and
+  formwork temporary-works design remains outside this packet.

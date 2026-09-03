@@ -45,6 +45,11 @@ EXPECTED_MANIFESTS = {
         "AO13": "is456.beam.seismic_detailing.check/v1",
         "AO26": "structural.reinforcement_arrangement.check/v1",
     },
+    "wp06": {
+        "AO14": "structural.beam_project.create/v1",
+        "AO17": "is456.beam_member.design/v1",
+        "AO18": "structural.reinforcement_paths.resolve/v1",
+    },
 }
 
 
@@ -229,6 +234,39 @@ def validate() -> None:
         - 940.234375
     ) > 1e-12:
         fail("WP05 development-length reference result changed")
+    project_vector = next(
+        item for item in all_vectors if item["id"] == "wp06-project-ordinary"
+    )
+    wp06_schema = load(CONTRACT_ROOT / "schemas" / "wp06.schema.json")
+    Draft202012Validator(
+        {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$ref": "#/$defs/beamProjectRequest",
+            "$defs": wp06_schema["$defs"],
+        }
+    ).validate(project_vector["input"])
+    if project_vector["expected"]["project_basis_id"] != (
+        "beam_project_basis_id:pf4-canonical-json-v1:"
+        "c112392e106832684e3eb9f948c1864093eb781ad1ee3e1a338a6b29bacd5edc"
+    ):
+        fail("WP06 project-basis canonical identity changed")
+    member_vector = next(
+        item for item in all_vectors if item["id"] == "wp06-member-complete"
+    )
+    if member_vector["expected"]["expected_leaf_ids"] != [
+        "flexure@B1",
+        "shear@S1",
+        "seismic@B1",
+    ]:
+        fail("WP06 profile-derived expected leaf set changed")
+    path_vector = next(
+        item for item in all_vectors if item["id"] == "wp06-bar-path-bend"
+    )
+    if abs(
+        path_vector["expected"]["developed_centreline_length_mm"]
+        - 1157.0796326794897
+    ) > 1e-12:
+        fail("WP06 tangent-and-arc path result changed")
     operations_with_vectors = {
         item["operation_semantic_id"]
         for item in all_vectors

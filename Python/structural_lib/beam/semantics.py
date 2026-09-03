@@ -302,6 +302,32 @@ def not_evaluated_result(
     )
 
 
+def partial_result(
+    operation_semantic_id: str,
+    inputs: Mapping[str, Any],
+    outputs: Mapping[str, Any],
+    diagnostics: Iterable[Diagnostic],
+    *,
+    provenance: Provenance,
+    freshness: FreshnessState = FreshnessState.CURRENT,
+) -> OperationResult:
+    """Return an applicable partial result while retaining evaluated evidence."""
+
+    return _result(
+        operation_semantic_id,
+        inputs,
+        outputs,
+        execution=ExecutionState.COMPLETED,
+        applicability=ApplicabilityState.APPLICABLE,
+        engineering=EngineeringState.NOT_EVALUATED,
+        completeness=CompletenessState.PARTIAL,
+        freshness=freshness,
+        diagnostics=diagnostics,
+        provenance=provenance,
+        engine_build="python-structural-engineering-v1",
+    )
+
+
 __all__ = [
     "ApprovalState",
     "ApplicabilityState",
@@ -318,6 +344,7 @@ __all__ = [
     "effective_inputs",
     "not_applicable_result",
     "not_evaluated_result",
+    "partial_result",
     "plain",
     "rejected_result",
     "semantic_hash",

@@ -22,5 +22,6 @@ See [Getting started](getting-started.md), [WP01 reference](reference/wp01-flexu
 [WP02 reference](reference/wp02-shear-torsion.md),
 [WP03 reference](reference/wp03-actions-analysis-topology.md),
 [WP04 reference](reference/wp04-serviceability.md),
-[WP05 reference](reference/wp05-detailing-constructability.md), and
+[WP05 reference](reference/wp05-detailing-constructability.md),
+[WP06 reference](reference/wp06-project-member-paths.md), and
 [migration guidance](migration/python-and-dotnet.md).

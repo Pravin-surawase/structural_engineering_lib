@@ -1,0 +1,107 @@
+{
+  "schema_version": "structural-conformance/v1",
+  "work_packet": "WP06",
+  "tolerance": {"absolute": 1e-9, "relative": 1e-9},
+  "vectors": [
+    {
+      "id": "wp06-project-ordinary",
+      "operation_semantic_id": "structural.beam_project.create/v1",
+      "input": {
+        "project": {"project_id": "PROJECT-1", "name": "Office beam design", "revision_id": "project-r1"},
+        "unit_basis": {"length_unit": "mm", "force_unit": "N", "moment_unit": "Nmm", "stress_unit": "N/mm2"},
+        "code_data_revisions": [{"binding_id": "is456", "revision_id": "is456-r1", "source_reference": "IS 456 project source"}],
+        "catalogue_revisions": [{"binding_id": "rebar", "revision_id": "rebar-r1", "source_reference": "project bar catalogue"}],
+        "profile": {
+          "profile_id": "PROFILE-1",
+          "revision_id": "profile-r1",
+          "design_code": "IS 456:2000",
+          "seismic_design_profile": "ordinary_is456",
+          "check_rules": [
+            {"rule_id": "flexure", "operation_semantic_id": "is456.beam.flexure.check/v1", "scope": "member", "expected_applicability": "applicable", "source_reference": "IS 456 flexure", "code_data_binding_id": "is456"},
+            {"rule_id": "shear", "operation_semantic_id": "is456.beam.shear.check/v1", "scope": "station", "expected_applicability": "applicable", "source_reference": "IS 456 shear", "code_data_binding_id": "is456"},
+            {"rule_id": "seismic", "operation_semantic_id": "is456.beam.seismic_detailing.check/v1", "scope": "member", "expected_applicability": "not_applicable", "source_reference": "ordinary frame profile", "code_data_binding_id": "is456"}
+          ],
+          "criteria": [{"criterion_id": "nominal-cover", "value": 25, "unit": "mm", "source_reference": "project durability basis"}]
+        }
+      },
+      "expected": {
+        "execution": "completed",
+        "engineering": "pass",
+        "project_basis_id": "beam_project_basis_id:pf4-canonical-json-v1:c112392e106832684e3eb9f948c1864093eb781ad1ee3e1a338a6b29bacd5edc"
+      }
+    },
+    {
+      "id": "wp06-project-seismic-conflict",
+      "operation_semantic_id": "structural.beam_project.create/v1",
+      "input": {"seismic_design_profile": "ordinary_is456", "seismic_rule_applicability": "applicable"},
+      "expected": {"execution": "rejected_input", "diagnostic": "PROFILE.SEISMIC_CONFLICT"}
+    },
+    {
+      "id": "wp06-member-complete",
+      "operation_semantic_id": "is456.beam_member.design/v1",
+      "input": {
+        "member_id": "B1",
+        "scope_instances": [{"scope": "station", "scope_id": "S1"}],
+        "profile_rules": ["flexure@member", "shear@station", "seismic@member:not_applicable"],
+        "depth_iterations": [{"iteration_number": 1, "reinforcement_revision_id": "reinforcement-r1", "effective_depth_mm": 450, "converged": true}],
+        "leaf_utilizations": {"flexure@B1": 0.7, "shear@S1": 0.6}
+      },
+      "expected": {
+        "execution": "completed",
+        "engineering": "pass",
+        "completeness": "complete_for_scope",
+        "expected_leaf_ids": ["flexure@B1", "shear@S1", "seismic@B1"],
+        "governing_leaf_id": "flexure@B1",
+        "governing_utilization": 0.7,
+        "qualified": true
+      }
+    },
+    {
+      "id": "wp06-member-stale-leaf",
+      "operation_semantic_id": "is456.beam_member.design/v1",
+      "input": {"leaf_id": "shear@S1", "freshness": "stale", "governing_utilization": 0.99},
+      "expected": {"execution": "completed", "engineering": "not_evaluated", "completeness": "partial", "diagnostic": "LEAF.STALE", "stale_leaf_can_govern": false}
+    },
+    {
+      "id": "wp06-bar-path-bend",
+      "operation_semantic_id": "structural.reinforcement_paths.resolve/v1",
+      "input": {
+        "bar_id": "BAR-1",
+        "bar_mark": "M1",
+        "diameter_mm": 20,
+        "nodes": [
+          {"station_x_mm": 0, "section_x_from_left_mm": 50, "section_y_from_top_mm": 50},
+          {"station_x_mm": 1000, "section_x_from_left_mm": 50, "section_y_from_top_mm": 50, "bend_radius_mm": 100, "bend_kind": "hook"},
+          {"station_x_mm": 1000, "section_x_from_left_mm": 50, "section_y_from_top_mm": 250}
+        ]
+      },
+      "expected": {
+        "execution": "completed",
+        "engineering": "pass",
+        "segment_kinds": ["tangent_straight", "bend_arc", "tangent_straight"],
+        "bend_centre_mm": [900, 50, 150],
+        "bend_plane_normal": [0, -1, 0],
+        "bend_sweep_degrees": 90,
+        "bend_arc_length_mm": 157.07963267948966,
+        "developed_centreline_length_mm": 1157.0796326794897
+      }
+    },
+    {
+      "id": "wp06-bar-path-stock-exceeded",
+      "operation_semantic_id": "structural.reinforcement_paths.resolve/v1",
+      "input": {"straight_path_length_mm": 1000, "stock_lengths_mm": [900]},
+      "expected": {"execution": "completed", "engineering": "fail", "diagnostic": "PATH.STOCK_LENGTH_EXCEEDED"}
+    },
+    {
+      "id": "wp06-bar-mark-plane-conflict",
+      "operation_semantic_id": "structural.reinforcement_paths.resolve/v1",
+      "input": {
+        "bar_mark": "M1",
+        "first_bend_normals": [[0, -1, 0], [0, 1, 0]],
+        "second_bend_normals": [[0, -1, 0], [-1, 0, 0]],
+        "equal_lengths_radii_angles_and_material": true
+      },
+      "expected": {"execution": "rejected_input", "diagnostic": "MARK.GEOMETRY_CONFLICT"}
+    }
+  ]
+}

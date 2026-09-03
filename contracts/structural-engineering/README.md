@@ -28,3 +28,9 @@ WP05 code data applies IS 456 Amendment 6 to epoxy-coated deformed bars and
 binds the seismic beam profile to IS 13920:2016 Amendment 2. Its source and
 scope decisions are documented in
 `docs/library/reference/wp05-detailing-constructability.md`.
+
+WP06 adds the immutable project/profile basis, profile-derived complete-member
+aggregation, and exact reinforcement centreline path contracts. It carries no
+new code table: every member leaf remains bound to the code-data revision of
+its originating operation. Its signatures and geometry rules are documented
+in `docs/library/reference/wp06-project-member-paths.md`.

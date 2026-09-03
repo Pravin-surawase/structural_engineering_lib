@@ -68,3 +68,10 @@ the arrangement operation receives every bar, link, obstacle, and conditional
 placement opening. See the
 [WP05 reference](reference/wp05-detailing-constructability.md) for the complete
 signatures, normalized source rules, and construction-fit behavior.
+
+WP06 freezes those decisions in a versioned project/profile, derives the
+complete expected member-check set from that profile and topology scope, and
+resolves physical reinforcement into marked tangent straights and bend arcs.
+See the [WP06 reference](reference/wp06-project-member-paths.md) for the public
+signatures, optional input rules, actual-depth convergence, and exact bar-path
+geometry.
