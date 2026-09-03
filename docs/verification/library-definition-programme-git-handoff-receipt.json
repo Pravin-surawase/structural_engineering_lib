@@ -22,27 +22,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "9c0811a4aa8e2c0988dc52b85cb4149980d4b3e03140582061af940a228475ad",
+    "receipt_sha256": "ea332c207fae39ec85096bf38d35089df86749144cc7c83d952af084ac34bf34",
     "state": {
       "branch": "codex/library-definition-programme",
       "default_base": {
-        "ahead": 0,
+        "ahead": 1,
         "behind": 0,
         "ref": "origin/main",
         "sha": "3e7c8ee7c2d6cae8babc60e6bb1c315b0e6b3d09",
-        "status": "equal"
+        "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 257.92,
+      "duration_ms": 245.863,
       "git_common_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
       "git_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
-      "head_sha": "3e7c8ee7c2d6cae8babc60e6bb1c315b0e6b3d09",
+      "head_sha": "124d41a080164377cbf66da1e9134f71c4db5dcf",
       "hold_reasons": [
-        "changed paths: 10"
+        "changed paths: 1"
       ],
       "linked_worktree": false,
       "locks": [],
-      "observed_at_utc": "2026-09-03T17:22:18.649644+00:00",
+      "observed_at_utc": "2026-09-03T17:24:04.116394+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -53,22 +53,12 @@
       "tree": {
         "clean": false,
         "conflicted_paths": [],
-        "dirty_count": 10,
+        "dirty_count": 1,
         "modified_paths": [
-          "docs/SESSION_LOG.md",
-          "docs/planning/next-session-brief.md",
-          "docs/planning/xll-product/current-plan.md",
-          "docs/planning/xll-product/local-evidence-index.md",
-          "docs/planning/xll-product/reusable-library-research.md"
+          "docs/SESSION_LOG.md"
         ],
         "staged_paths": [],
-        "untracked_paths": [
-          "docs/planning/xll-product/library-definition/README.md",
-          "docs/planning/xll-product/library-definition/decision-register.json",
-          "docs/planning/xll-product/library-definition/programme.json",
-          "docs/planning/xll-product/library-definition/validate_programme.py",
-          "docs/verification/library-definition-programme-git-handoff-receipt.json"
-        ]
+        "untracked_paths": []
       },
       "upstream": {
         "ahead": null,
@@ -80,9 +70,9 @@
       "worktree_root": "C:\\CodexWork\\structural_engineering_lib"
     }
   },
-  "local_state_receipt_hash": "sha256:9c0811a4aa8e2c0988dc52b85cb4149980d4b3e03140582061af940a228475ad",
+  "local_state_receipt_hash": "sha256:ea332c207fae39ec85096bf38d35089df86749144cc7c83d952af084ac34bf34",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-09-03T17:22:18.649644+00:00",
+  "observed_at_utc": "2026-09-03T17:24:04.116394+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"

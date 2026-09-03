@@ -5,8 +5,8 @@
 <!-- HANDOFF:START -->
 - Date: 2026-09-03
 - Focus: Define and document PF0–PF11 for the reusable Python/.NET libraries and their Excel/ETABS boundaries before further product implementation.
-- Git receipt: docs/verification/library-definition-programme-git-handoff-receipt.json | sha256:9c0811a4aa8e2c0988dc52b85cb4149980d4b3e03140582061af940a228475ad | HOLD
-- Git identity: codex/library-definition-programme@3e7c8ee7c2d6cae8babc60e6bb1c315b0e6b3d09 | upstream=NONE@UNKNOWN | base=origin/main@3e7c8ee7c2d6cae8babc60e6bb1c315b0e6b3d09 | tree=dirty | operation=none
+- Git receipt: docs/verification/library-definition-programme-git-handoff-receipt.json | sha256:ea332c207fae39ec85096bf38d35089df86749144cc7c83d952af084ac34bf34 | HOLD
+- Git identity: codex/library-definition-programme@124d41a080164377cbf66da1e9134f71c4db5dcf | upstream=NONE@UNKNOWN | base=origin/main@3e7c8ee7c2d6cae8babc60e6bb1c315b0e6b3d09 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->

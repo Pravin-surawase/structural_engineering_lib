@@ -13,6 +13,16 @@
 
 **Focus:** Define and document PF0–PF11 for the reusable Python/.NET libraries and their Excel/ETABS boundaries before further product implementation.
 
+### Summary
+
+- Defined PF0–PF11 as a pre-implementation programme with 58 deliverables, 23
+  consequential decisions, 17 capability families and complete AO01–AO26
+  coverage.
+- Added a machine-readable programme, decision register and structural validator;
+  reconciled the current plan and next-session briefing so PF0 is the next work.
+- Created and visually verified an accessible 11-page Word programme outside
+  Git. No calculation, package, Excel workbook or ETABS model was changed.
+
 ### Issues encountered
 
 - The current-plan wording still directed the next engineering increment to
@@ -36,6 +46,8 @@
   the preceding reusable-library research entry.
 - The regenerated handoff copied only the first line of the multi-line Focus
   field and retained an older implementation boundary below its automatic block.
+- The first immutable session-end audit found no completed items because this
+  entry had validation evidence but no explicit Summary heading.
 
 ### Root causes and resolutions
 
@@ -77,6 +89,10 @@
   line, while the maintained body of `next-session-brief.md` is not regenerated
   automatically. Resolution: keep the Focus on one line and replace the stale
   briefing body with the PF0–PF11 authority, boundary and reading order.
+- Confirmed root cause: the closeout parser uses the structured Summary section
+  to identify completed work. Resolution: add the three exact completed outcomes
+  above; the final immutable session-end audit is rerun on the clean repair
+  candidate before publication.
 
 ### Validation through content freeze
 
