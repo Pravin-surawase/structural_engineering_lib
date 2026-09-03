@@ -17,8 +17,9 @@ Updated 3 September 2026 for the owner's request to implement the C# automation 
 
 1. [Automation requirements and delivery sequence](automation/README.md), with operation contracts, examples, source crosswalk and member/check schemas.
 2. [Working C# foundation](../../../CSharp/README.md), its exact build/test commands and implemented boundaries.
-3. [Requirements-first research](requirements-first/README.md), including the historical failure audit and three-project source inventory.
-4. [Original XLL architecture decision](../excel-dna-xll-product-architecture-decision.md) and [phase review](phase-review.md), retained for architectural history. [Source provenance](source-manifest.json) records the supplied and publication hashes.
+3. [Reusable Python/.NET library research](reusable-library-research.md), covering proposed library boundaries, peer libraries, public signatures and ETABS result semantics. Its recommendations guide the next contract work; the current solution remains the executable API authority.
+4. [Requirements-first research](requirements-first/README.md), including the historical failure audit and three-project source inventory.
+5. [Original XLL architecture decision](../excel-dna-xll-product-architecture-decision.md) and [phase review](phase-review.md), retained for architectural history. [Source provenance](source-manifest.json) records the supplied and publication hashes.
 
 ## Original phases, retained
 
