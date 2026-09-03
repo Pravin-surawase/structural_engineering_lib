@@ -1,0 +1,150 @@
+{
+  "phase_id": "PF6",
+  "title": "Python/.NET parity and package strategy",
+  "revision_date": "2026-09-03",
+  "state": "complete",
+  "decision_ids": ["D12", "D13"],
+  "source_evidence": [
+    "../pf2/baseline.json",
+    "../pf3/baseline.json",
+    "../pf4/baseline.json",
+    "../pf5/baseline.json",
+    "../../reusable-library-research.md",
+    "../../../../../CSharp/README.md",
+    "../../../../../Python/pyproject.toml"
+  ],
+  "deliverables": [
+    {
+      "id": "PF6-D1-common-capability-matrix",
+      "parity_definition": "An operation has parity only when Python and .NET expose its semantic ID/profile, accept equivalent canonical effective inputs, produce the same result-state meaning and provenance, and match independently qualified expected values within PF7 tolerances. Internal algorithms and idiomatic names may differ.",
+      "capabilities": [
+        {"id": "CAP-FOUND", "mode": "native_both"},
+        {"id": "CAP-ANALYSIS", "mode": "native_both_with_vendor_input_adapters"},
+        {"id": "CAP-FLEXURE", "mode": "native_both"},
+        {"id": "CAP-SHEAR", "mode": "native_both"},
+        {"id": "CAP-TORSION", "mode": "native_both"},
+        {"id": "CAP-SLS", "mode": "native_both"},
+        {"id": "CAP-DETAIL", "mode": "native_both"},
+        {"id": "CAP-CONSTRUCT", "mode": "native_both"},
+        {"id": "CAP-FAB", "mode": "native_both"},
+        {"id": "CAP-COST", "mode": "native_both"},
+        {"id": "CAP-FORMWORK", "mode": "native_both"},
+        {"id": "CAP-OPT", "mode": "native_both"},
+        {"id": "CAP-ETABS", "mode": "shared_contract_dotnet_windows_adapter"},
+        {"id": "CAP-EXCEL", "mode": "shared_contract_dotnet_windows_adapter"},
+        {"id": "CAP-REPORT", "mode": "native_both_record_model_language_specific_renderers"},
+        {"id": "CAP-PACKAGE", "mode": "language_specific_delivery_common_compatibility_policy"},
+        {"id": "CAP-PERF", "mode": "common_workloads_language_and_application_measurements"}
+      ],
+      "operations": [
+        {"ids": ["FO01", "FO02", "FO03", "FO04", "FO05", "FO06", "FO07", "FO08"], "mode": "native_both", "parity_evidence": "common conformance vectors plus independent expected values"},
+        {"ids": ["AO01"], "mode": "native_both", "parity_evidence": "common raw-source fixture and normalized action snapshot; ETABS acquisition itself excluded"},
+        {"ids": ["AO02", "AO03", "AO04", "AO05", "AO06", "AO07", "AO08", "AO09", "AO10", "AO11", "AO12", "AO13", "AO14", "AO15"], "mode": "native_both", "parity_evidence": "operation-specific common vectors and states"},
+        {"ids": ["AO16"], "mode": "shared_contract_dotnet_windows_adapter", "parity_evidence": "portable captured snapshot replayed by both libraries; live installed evidence applies to adapter only"},
+        {"ids": ["AO17", "AO18", "AO19", "AO20", "AO21"], "mode": "native_both", "parity_evidence": "complete member/construction/search vectors with deterministic ordering"},
+        {"ids": ["AO22"], "mode": "shared_contract_dotnet_windows_adapter", "parity_evidence": "common transaction request/receipt schema plus installed .NET ETABS evidence"},
+        {"ids": ["AO23"], "mode": "dotnet_excel_adapter", "parity_evidence": "workbook rows replay common operations; installed Excel evidence proves the projection"},
+        {"ids": ["AO24"], "mode": "native_both_record_model_language_specific_renderers", "parity_evidence": "same calculation-package semantic data; rendered byte/layout equality is not required"},
+        {"ids": ["AO25"], "mode": "dotnet_excel_adapter", "parity_evidence": "versioned workload and installed Excel measurements"},
+        {"ids": ["AO26"], "mode": "native_both", "parity_evidence": "common full-arrangement geometry vectors"}
+      ],
+      "application_boundary_rule": "An Excel/ETABS command may be implemented only in the supported .NET Windows adapter while its immutable request, snapshot, receipt and reusable engineering results remain portable. Application-specific parity means contract/replay parity, not a Python COM clone."
+    },
+    {
+      "id": "PF6-D2-python-package-map",
+      "root_package": "structural_lib",
+      "namespaces": [
+        {"name": "structural_lib.core", "owns": ["quantities", "geometry", "materials", "contracts", "identities", "result states", "diagnostics"], "depends_on": []},
+        {"name": "structural_lib.codes.is456", "owns": ["normalized IS 456 data", "pure value/capacity/check rules", "applicability", "rule provenance"], "depends_on": ["structural_lib.core"]},
+        {"name": "structural_lib.analysis", "owns": ["vendor-neutral action snapshots", "bounded beam-line solver"], "depends_on": ["structural_lib.core"]},
+        {"name": "structural_lib.beam", "owns": ["section/member requests and results", "flexure/shear/torsion/SLS/detailing orchestration"], "depends_on": ["structural_lib.core", "structural_lib.codes.is456", "structural_lib.analysis"]},
+        {"name": "structural_lib.reinforcement", "owns": ["catalogues", "arrangements", "fit", "bar-path resolution"], "depends_on": ["structural_lib.core", "structural_lib.codes.is456"]},
+        {"name": "structural_lib.construction", "owns": ["BBS data", "concrete/formwork/steel quantities", "rates and direct cost"], "depends_on": ["structural_lib.core", "structural_lib.reinforcement"]},
+        {"name": "structural_lib.optimization", "owns": ["candidate generation", "evaluation coordination", "deterministic ranking", "search completeness"], "depends_on": ["structural_lib.beam", "structural_lib.reinforcement", "structural_lib.construction"]},
+        {"name": "structural_lib.reporting", "owns": ["calculation package semantic records", "report/drawing/schedule models"], "depends_on": ["structural_lib.beam", "structural_lib.construction"]},
+        {"name": "structural_lib.interchange", "owns": ["strict JSON transport", "schema/version negotiation", "fixture replay"], "depends_on": ["structural_lib.core"]},
+        {"name": "structural_lib.compat", "owns": ["published-name translations", "deprecation diagnostics"], "depends_on": ["all normative public packages but no adapter"]},
+        {"name": "structural_lib.adapters", "owns": ["optional import/export or captured-snapshot conveniences"], "depends_on": ["normative public packages"]}
+      ],
+      "projection_policy": "Existing structural_lib.services callers migrate through thin orchestration or compatibility modules. New pure domain work follows the namespace direction above and cannot import FastAPI, React, Excel, CSI COM or file-rendering state."
+    },
+    {
+      "id": "PF6-D3-dotnet-package-map",
+      "root_namespace": "StructuralEngineering",
+      "assemblies": [
+        {"name": "StructuralEngineering.Contracts", "owns": ["quantities", "immutable requests/results", "identities", "states", "diagnostics"], "depends_on": []},
+        {"name": "StructuralEngineering.Core", "owns": ["geometry", "materials", "catalogues", "canonicalization primitives"], "depends_on": ["StructuralEngineering.Contracts"]},
+        {"name": "StructuralEngineering.Codes.IS456", "owns": ["normalized data", "pure value/capacity/check rules", "applicability and provenance"], "depends_on": ["Contracts", "Core"]},
+        {"name": "StructuralEngineering.Analysis", "owns": ["action snapshots", "bounded beam-line solver"], "depends_on": ["Contracts", "Core"]},
+        {"name": "StructuralEngineering.Beam", "owns": ["complete section/member services"], "depends_on": ["Contracts", "Core", "Codes.IS456", "Analysis"]},
+        {"name": "StructuralEngineering.Reinforcement", "owns": ["arrangement", "fit", "bar paths"], "depends_on": ["Contracts", "Core", "Codes.IS456"]},
+        {"name": "StructuralEngineering.Construction", "owns": ["BBS", "quantities", "rates", "direct cost"], "depends_on": ["Contracts", "Core", "Reinforcement"]},
+        {"name": "StructuralEngineering.Optimization", "owns": ["candidate generation/evaluation/ranking"], "depends_on": ["Beam", "Reinforcement", "Construction"]},
+        {"name": "StructuralEngineering.Reporting", "owns": ["calculation-package semantic records and render interfaces"], "depends_on": ["Beam", "Construction"]},
+        {"name": "StructuralEngineering.Interchange", "owns": ["JSON/schema/version negotiation and fixture replay"], "depends_on": ["Contracts"]},
+        {"name": "StructuralEngineering.Compatibility", "owns": ["published StructAutomate translations and diagnostics"], "depends_on": ["normative public assemblies"]},
+        {"name": "StructuralEngineering.ExcelDna", "owns": ["XLL functions, ribbon/panel commands, bulk range conversion and workbook receipts"], "depends_on": ["normative public assemblies", "Excel-DNA"]},
+        {"name": "StructuralEngineering.Etabs", "owns": ["CSI interop, acquisition, source mapping and copied-model transaction"], "depends_on": ["Contracts", "Analysis", "Beam", "Optimization", "CSI API"]}
+      ],
+      "physical_packaging_note": "PF9 may combine related assemblies into a small number of NuGet packages, but it cannot merge namespace responsibilities or introduce reverse dependencies.",
+      "projection_policy": "The pure NuGet library graph loads without Excel-DNA or CSI assemblies. Windows adapter packages reference the pure graph; the pure graph never references adapters."
+    },
+    {
+      "id": "PF6-D4-schema-projection-rules",
+      "authored_authorities": [
+        {"artifact": "semantic operation manifests", "owns": "purpose, quantities, applicability, field obligations, result meanings, provenance and compatibility"},
+        {"artifact": "interchange JSON Schemas", "owns": "strict portable field structure, types, enum tokens and schema versions"},
+        {"artifact": "normalized code-data files", "owns": "approved tables/lookup nodes and source provenance within an operation scope"},
+        {"artifact": "conformance vectors", "owns": "canonical inputs, expected states/values, tolerance identifiers and evidence references"},
+        {"artifact": "language projection maps", "owns": "semantic ID to Python and .NET names/types"}
+      ],
+      "handwritten_language_artifacts": [
+        "immutable domain records and invariants",
+        "engineering algorithms and applicability decisions",
+        "idiomatic service interfaces",
+        "adapter implementations and application error translation"
+      ],
+      "generated_artifacts": [
+        "transport DTOs or serializers where generation is proven stable",
+        "JSON schema validators",
+        "catalogue/reference documentation tables",
+        "fixture bindings and data digests"
+      ],
+      "rules": [
+        "Generation flows from reviewed semantic/schema/data authorities; generated C# or Python code cannot become the only definition of meaning.",
+        "Generated output is reproducible and checked for an empty regeneration diff.",
+        "Strict calculation boundaries reject unknown major-version fields. A compatibility/migration layer may explicitly translate known older contracts.",
+        "Every exchange includes schema_version and operation_semantic_id; engineering work additionally binds profile_id and code_data_revision_id.",
+        "Equivalent payloads canonicalize through PF4-CANONICAL-JSON-V1 in both languages.",
+        "Binary rendered reports, internal object layouts and exception text are outside semantic parity."
+      ],
+      "version_negotiation": {
+        "major": "reject unless an explicit translator is registered",
+        "minor": "accept only when declared compatible and all unknown optional fields are outside engineering meaning",
+        "patch": "accept when field structure and semantics are unchanged",
+        "code_data": "exact revision required for calculation/result replay"
+      }
+    },
+    {
+      "id": "PF6-D5-drift-detection-plan",
+      "controls": [
+        {"id": "DRIFT-01", "control": "catalogue completeness", "evidence": "FO01-FO08 and AO01-AO26 each have one semantic manifest and language projection or explicit adapter-only disposition"},
+        {"id": "DRIFT-02", "control": "schema regeneration", "evidence": "generate maintained projections twice and require no diff"},
+        {"id": "DRIFT-03", "control": "schema fixtures", "evidence": "both languages accept every valid fixture and reject every invalid fixture with equivalent diagnostic codes"},
+        {"id": "DRIFT-04", "control": "canonical identity", "evidence": "both languages produce identical canonical bytes/digests for common effective inputs"},
+        {"id": "DRIFT-05", "control": "engineering conformance", "evidence": "both languages match independently qualified expected outcomes under PF7 tolerances"},
+        {"id": "DRIFT-06", "control": "code-data digest", "evidence": "both packaged artifacts expose the same normalized data revision and digest"},
+        {"id": "DRIFT-07", "control": "dependency direction", "evidence": "architecture checks reject pure-package references to Excel-DNA, CSI, UI or web layers"},
+        {"id": "DRIFT-08", "control": "compatibility replay", "evidence": "published legacy fixtures translate to the named semantic operation or a documented unsupported outcome"},
+        {"id": "DRIFT-09", "control": "application replay", "evidence": "captured ETABS snapshots and workbook tables replay through the common library without live hosts"},
+        {"id": "DRIFT-10", "control": "release bill of materials", "evidence": "Python wheel, NuGet packages and XLL receipt list semantic/schema/data/build versions"}
+      ],
+      "gate_rule": "A common operation cannot be released in one language as parity-complete while any applicable DRIFT-01 through DRIFT-06 control is missing or failing."
+    }
+  ],
+  "exit_evidence": [
+    {"criterion": "Parity is measurable per operation.", "evidence": ["PF6-D1 assigns FO01-FO08 and AO01-AO26 a parity mode/evidence, and defines parity by canonical inputs, semantic states and PF7 tolerances."]},
+    {"criterion": "Schema generation cannot redefine handwritten domain meaning.", "evidence": ["PF6-D4 separates authored semantic/schema/data authorities, handwritten algorithms and generated transport projections."]},
+    {"criterion": "Vendor details remain in adapter packages.", "evidence": ["PF6-D2/D3 isolate Excel-DNA and CSI dependencies; AO16/AO22/AO23/AO25 are adapter modes over portable contracts."]}
+  ]
+}

@@ -6,8 +6,8 @@
   "implementation_phase_prefix": "P",
   "definition_phase_prefix": "PF",
   "phase_progress": {
-    "completed": ["PF0", "PF1", "PF2", "PF3", "PF4", "PF5"],
-    "next": ["PF6", "PF7"]
+    "completed": ["PF0", "PF1", "PF2", "PF3", "PF4", "PF5", "PF6", "PF7", "PF8"],
+    "next": ["PF9"]
   },
   "automation_operations": [
     "AO01", "AO02", "AO03", "AO04", "AO05", "AO06", "AO07", "AO08", "AO09",
@@ -140,7 +140,13 @@
       "purpose": "Define the maintained common set, language projections, schema ownership and drift controls.",
       "depends_on": ["PF5"],
       "deliverables": ["PF6-D1-common-capability-matrix", "PF6-D2-python-package-map", "PF6-D3-dotnet-package-map", "PF6-D4-schema-projection-rules", "PF6-D5-drift-detection-plan"],
-      "exit_criteria": ["Parity is measurable per operation.", "Schema generation cannot redefine handwritten domain meaning.", "Vendor details remain in adapter packages."]
+      "exit_criteria": ["Parity is measurable per operation.", "Schema generation cannot redefine handwritten domain meaning.", "Vendor details remain in adapter packages."],
+      "completion": {
+        "state": "complete",
+        "completed_on": "2026-09-03",
+        "decision_ids": ["D12", "D13"],
+        "evidence_paths": ["pf6/README.md", "pf6/baseline.json"]
+      }
     },
     {
       "id": "PF7",
@@ -148,7 +154,13 @@
       "purpose": "Define evidence for formulas, lookups, checks, member results and combined decisions.",
       "depends_on": ["PF5"],
       "deliverables": ["PF7-D1-assurance-matrix", "PF7-D2-example-taxonomy", "PF7-D3-conformance-corpus-plan", "PF7-D4-tolerance-policy", "PF7-D5-aggregation-rules"],
-      "exit_criteria": ["Every code operation has a source and assurance method.", "Lookups include node, interior and boundary cases.", "Required checks cannot disappear from aggregate outcomes."]
+      "exit_criteria": ["Every code operation has a source and assurance method.", "Lookups include node, interior and boundary cases.", "Required checks cannot disappear from aggregate outcomes."],
+      "completion": {
+        "state": "complete",
+        "completed_on": "2026-09-03",
+        "decision_ids": ["D14", "D15"],
+        "evidence_paths": ["pf7/README.md", "pf7/baseline.json"]
+      }
     },
     {
       "id": "PF8",
@@ -156,7 +168,13 @@
       "purpose": "Define application contracts, immutable snapshots and safe model/workbook commands.",
       "depends_on": ["PF6", "PF7"],
       "deliverables": ["PF8-D1-etabs-acquisition-contract", "PF8-D2-analysis-snapshot-contract", "PF8-D3-excel-function-command-catalogue", "PF8-D4-optimization-state-machine", "PF8-D5-installed-acceptance-plan"],
-      "exit_criteria": ["Worksheet calculations need no live COM call or workbook mutation.", "ETABS actions preserve source identity and semantic classification.", "Stiffness-changing candidates require new analysis evidence."]
+      "exit_criteria": ["Worksheet calculations need no live COM call or workbook mutation.", "ETABS actions preserve source identity and semantic classification.", "Stiffness-changing candidates require new analysis evidence."],
+      "completion": {
+        "state": "complete",
+        "completed_on": "2026-09-03",
+        "decision_ids": ["D16", "D17", "D18"],
+        "evidence_paths": ["pf8/README.md", "pf8/baseline.json"]
+      }
     },
     {
       "id": "PF9",

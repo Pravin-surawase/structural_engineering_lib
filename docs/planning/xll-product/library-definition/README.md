@@ -91,11 +91,12 @@ PF1 and PF2 may gather evidence concurrently, but PF3 cannot close until both ar
 
 ## Programme progress
 
-PF0-PF5 are complete. The [charter](pf0/README.md),
+PF0-PF8 are complete. The [charter](pf0/README.md),
 [workflow baseline](pf1/README.md), [existing-asset audit](pf2/README.md),
 [capability boundary](pf3/README.md), [semantic model](pf4/README.md) and
-[operation catalogue](pf5/README.md) resolve D01-D11. PF6 parity/package
-strategy and PF7 engineering assurance are next and may proceed in parallel.
+[operation catalogue](pf5/README.md), [parity strategy](pf6/README.md),
+[assurance plan](pf7/README.md) and [application boundary](pf8/README.md)
+resolve D01-D18. PF9 packaging, deployment and performance is next.
 The machine-readable programme contains 60 deliverables across the 12 phases.
 
 ## PF0 — Product and library charter
