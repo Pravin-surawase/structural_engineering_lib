@@ -1,13 +1,13 @@
 {
   "programme_id": "structural-library-definition-pf0-pf11",
   "title": "Structural library definition programme",
-  "revision_date": "2026-09-03",
+  "revision_date": "2026-09-04",
   "scope": "Pre-implementation definition of reusable Python and .NET structural libraries and their Excel/ETABS application boundaries.",
   "implementation_phase_prefix": "P",
   "definition_phase_prefix": "PF",
   "phase_progress": {
-    "completed": ["PF0", "PF1", "PF2", "PF3", "PF4", "PF5", "PF6", "PF7", "PF8"],
-    "next": ["PF9"]
+    "completed": ["PF0", "PF1", "PF2", "PF3", "PF4", "PF5", "PF6", "PF7", "PF8", "PF9", "PF10", "PF11"],
+    "next": []
   },
   "automation_operations": [
     "AO01", "AO02", "AO03", "AO04", "AO05", "AO06", "AO07", "AO08", "AO09",
@@ -182,7 +182,13 @@
       "purpose": "Specify supported runtimes, packaging, diagnostics and measurable non-functional behavior.",
       "depends_on": ["PF8"],
       "deliverables": ["PF9-D1-runtime-matrix", "PF9-D2-dependency-policy", "PF9-D3-packaging-layout", "PF9-D4-performance-budgets", "PF9-D5-benchmark-plan", "PF9-D6-release-evidence-plan"],
-      "exit_criteria": ["Pure libraries install without Excel or ETABS.", "Optional adapters fail with actionable diagnostics.", "Kernel, workbook and live-application benchmarks are distinct."]
+      "exit_criteria": ["Pure libraries install without Excel or ETABS.", "Optional adapters fail with actionable diagnostics.", "Kernel, workbook and live-application benchmarks are distinct."],
+      "completion": {
+        "state": "complete",
+        "completed_on": "2026-09-04",
+        "decision_ids": ["D19", "D20"],
+        "evidence_paths": ["pf9/README.md", "pf9/baseline.json", "pf9/research-source.md"]
+      }
     },
     {
       "id": "PF10",
@@ -190,7 +196,13 @@
       "purpose": "Plan adoption without retaining ambiguous behavior or abandoning existing users.",
       "depends_on": ["PF9"],
       "deliverables": ["PF10-D1-api-disposition-ledger", "PF10-D2-migration-matrix", "PF10-D3-versioning-policy", "PF10-D4-documentation-architecture", "PF10-D5-example-curriculum"],
-      "exit_criteria": ["Every existing public caller has a path or a reasoned unsupported outcome.", "Compatibility wrappers translate semantics.", "Users can find small, member, Excel and ETABS examples."]
+      "exit_criteria": ["Every existing public caller has a path or a reasoned unsupported outcome.", "Compatibility wrappers translate semantics.", "Users can find small, member, Excel and ETABS examples."],
+      "completion": {
+        "state": "complete",
+        "completed_on": "2026-09-04",
+        "decision_ids": ["D21", "D22"],
+        "evidence_paths": ["pf10/README.md", "pf10/baseline.json"]
+      }
     },
     {
       "id": "PF11",
@@ -198,7 +210,13 @@
       "purpose": "Resolve the complete definition into ordered, bounded and reviewable implementation work.",
       "depends_on": ["PF10"],
       "deliverables": ["PF11-D1-integrated-baseline", "PF11-D2-traceability-report", "PF11-D3-implementation-backlog", "PF11-D4-effort-risk-estimate", "PF11-D5-acceptance-evidence-matrix", "PF11-D6-first-work-packet"],
-      "exit_criteria": ["Every work item traces to an operation and evidence requirement.", "No public semantic or application transaction is left to accidental invention during coding.", "The first packet is bounded and exercises the architecture."]
+      "exit_criteria": ["Every work item traces to an operation and evidence requirement.", "No public semantic or application transaction is left to accidental invention during coding.", "The first packet is bounded and exercises the architecture."],
+      "completion": {
+        "state": "complete",
+        "completed_on": "2026-09-04",
+        "decision_ids": ["D23"],
+        "evidence_paths": ["pf11/README.md", "pf11/baseline.json"]
+      }
     }
   ]
 }

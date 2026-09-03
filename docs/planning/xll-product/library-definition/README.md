@@ -1,20 +1,23 @@
 ---
 owner: Main Agent
-status: active
-last_updated: 2026-09-03
+status: complete
+last_updated: 2026-09-04
 doc_type: spec
 complexity: advanced
 ---
 
 # Structural library definition programme
 
-This is the required pre-implementation programme for the reusable structural-engineering libraries and the future Windows Excel/ETABS product. It is deliberately separate from the XLL implementation phases P0–P6. No new product implementation starts from this programme until PF0–PF11 have produced an approved implementation blueprint.
+This completed pre-implementation programme defines the reusable
+structural-engineering libraries and the future Windows Excel/ETABS product.
+It is separate from the XLL implementation phases P0–P6. PF0–PF11 now provide
+the implementation authority, traceability and first bounded work packet.
 
 The programme is necessary because a language port would otherwise preserve earlier ambiguity: application-specific contracts in common code, inconsistent meanings for cover and optional values, incomplete construction quantities, weak separation between capacity and member approval, and Python/.NET schemas that look similar without sharing one engineering definition. The purpose of this work is to make those decisions once, explicitly, and carry them into both languages.
 
 ## Programme outcome
 
-At the end of PF11, the project will have one reviewable definition of:
+PF0–PF11 provide one reviewable definition of:
 
 - who uses the libraries and the end-to-end workflows they must support;
 - the reusable calculations, design checks, member services and application adapters;
@@ -38,7 +41,10 @@ Read the planning set in this order:
 5. the [requirements-first evidence](../requirements-first/README.md), including the three-project inventory and historical failure register; and
 6. the original [XLL architecture decision](../../excel-dna-xll-product-architecture-decision.md), whose P0–P6 implementation meanings remain unchanged.
 
-PF0–PF11 define what should be built. P0–P6 describe how the Windows product is later delivered. The separate six-phase beam programme continues to govern the breadth and technical maturity of beam capabilities. PF11 must reconcile all three before proposing implementation work.
+PF0–PF11 define what should be built. P0–P6 describe how the Windows product
+is delivered. The separate six-phase beam programme governs the breadth and
+technical maturity of beam capabilities. PF11 reconciles all three into the
+twelve work packets and three milestone PRs.
 
 ## Working rules
 
@@ -91,12 +97,14 @@ PF1 and PF2 may gather evidence concurrently, but PF3 cannot close until both ar
 
 ## Programme progress
 
-PF0-PF8 are complete. The [charter](pf0/README.md),
+PF0-PF11 are complete. The [charter](pf0/README.md),
 [workflow baseline](pf1/README.md), [existing-asset audit](pf2/README.md),
 [capability boundary](pf3/README.md), [semantic model](pf4/README.md) and
 [operation catalogue](pf5/README.md), [parity strategy](pf6/README.md),
-[assurance plan](pf7/README.md) and [application boundary](pf8/README.md)
-resolve D01-D18. PF9 packaging, deployment and performance is next.
+[assurance plan](pf7/README.md), [application boundary](pf8/README.md),
+[runtime and performance plan](pf9/README.md),
+[migration plan](pf10/README.md) and
+[implementation blueprint](pf11/README.md) resolve D01-D23.
 The machine-readable programme contains 60 deliverables across the 12 phases.
 
 ## PF0 — Product and library charter
@@ -217,7 +225,7 @@ The machine-readable programme contains 60 deliverables across the 12 phases.
 
 **Outputs.** Integrated architecture and API baseline, traceability report, ordered implementation backlog, dependency graph, effort/risk estimate, acceptance-evidence matrix and first implementation packet.
 
-**Exit conditions.** Every implementation item traces to a defined operation and required evidence. No package boundary, public signature, effective-input rule or application transaction is left for accidental invention during coding. The first work packet is small enough for independent review and useful enough to exercise the architecture. Programme owners approve the blueprint before implementation begins.
+**Exit conditions.** Every implementation item traces to a defined operation and required evidence. No package boundary, public signature, effective-input rule or application transaction is left for accidental invention during coding. The first work packet is small enough for independent review and useful enough to exercise the architecture. The completed blueprint is the authority for WP01.
 
 ## Required registers and evidence
 
@@ -225,6 +233,7 @@ The machine-readable [programme](programme.json) is the structural control for p
 
 ```powershell
 ./scripts/python_runtime.sh docs/planning/xll-product/library-definition/validate_programme.py
+./scripts/python_runtime.sh docs/planning/xll-product/library-definition/validate_definition.py
 ```
 
 The validator checks structure and traceability only. It does not certify structural calculations.
@@ -254,7 +263,11 @@ PF0–PF11 are complete only when all of the following are true:
 - installation, performance and live-application acceptance environments are named; and
 - PF11 supplies an ordered, estimated, reviewable implementation blueprint.
 
-When these conditions are met, implementation can begin with controlled uncertainty. Until then, the current code remains valuable evidence and working software, but it cannot substitute for the missing library definition.
+These conditions are met by the completed PF0-PF11 artifacts. Implementation
+can begin with WP01 under the scope, evidence and stop rules in
+[PF11](pf11/README.md). The current code remains evidence and working software;
+future work adopts it only through the recorded dispositions and semantic
+translations.
 
 ## Decision path at a glance
 
