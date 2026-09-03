@@ -1,0 +1,133 @@
+{
+  "phase_id": "PF9",
+  "title": "Packaging, dependencies, deployment and performance",
+  "revision_date": "2026-09-04",
+  "state": "complete",
+  "decision_ids": ["D19", "D20"],
+  "source_evidence": [
+    "research-source.md",
+    "../pf6/baseline.json",
+    "../pf8/baseline.json",
+    "../../automation/requirements.json",
+    "../../../../../Python/pyproject.toml",
+    "../../../../../CSharp/global.json",
+    "../../../../../CSharp/Directory.Build.props",
+    "../../../../../CSharp/Directory.Packages.props",
+    "../../../../../docs/verification/etabs-w3b-installed-getter-signature-evidence.json",
+    "../../../../../docs/verification/etabs-w3h-independent-benchmark-evidence.json",
+    "../../../../../docs/verification/etabs-w3j-installed-review-evidence.json"
+  ],
+  "deliverables": [
+    {
+      "id": "PF9-D1-runtime-matrix",
+      "records": [
+        {"surface": "Python pure library", "target": "CPython 3.11, 3.12, 3.13 and 3.14 on supported x64 Windows/Linux/macOS", "current_evidence": "package advertises/tests 3.11-3.13; 3.14 is target pending release-matrix evidence", "support_rule": "latest patch for each maintained minor; remove a minor no earlier than upstream EOL through a major/minor package policy"},
+        {"surface": ".NET pure libraries", "target": ".NET 10 LTS, AnyCPU pure managed assemblies", "current_evidence": "SDK 10.0.400 and runtime 10.0.11 installed; current projects build net10.0", "support_rule": "pin SDK feature band, test and deploy latest supported .NET 10 runtime patch; support ends before 2028-11-14 only by explicit major plan"},
+        {"surface": "Excel XLL primary", "target": "Windows 11 x64, Microsoft 365 Excel 64-bit, Excel-DNA 1.9.0, net10.0-windows, current .NET 10 Desktop Runtime x64", "current_evidence": "foundation publishes a packed 64-bit XLL; existing installed Excel evidence is not final PF8 E5 acceptance", "support_rule": "each candidate records exact Windows/Excel/XLL/Desktop Runtime and other loaded CoreCLR add-ins"},
+        {"surface": "Excel XLL secondary", "target": "Windows 11 x64 and Office LTSC 2024 Excel 64-bit", "current_evidence": "official supported configuration only", "support_rule": "unsupported until a separate PF8 E5 installed packet passes"},
+        {"surface": "ETABS live adapter primary", "target": "ETABS 23.3.1.4563 x64, ETABSv1/CSiAPIv1 2.16.0.0, .NET 10 COM client", "current_evidence": "installed signatures and bounded live evidence exist", "support_rule": "exact tuple plus method/signature/return-shape and E5 workflow evidence; no broad 23.x claim"},
+        {"surface": "Portable ETABS snapshot", "target": "any producer conforming to structural.analysis_snapshot/v1", "current_evidence": "contract target", "support_rule": "strict schema/semantic/data versions; no live-host claim implied"},
+        {"surface": "Developer/build", "target": "Windows 11 x64, .NET SDK 10.0.400 latest patch roll-forward, locked NuGet/Python dependencies and repository-bound Python launcher", "current_evidence": "current local toolchain", "support_rule": "build receipt records exact SDK/runtime/package lock and source tree"}
+      ],
+      "excluded_initial_targets": ["32-bit Excel/XLL", "Windows 10 product support", "Office 2021 as a new certified target", "ARM64 Excel", "unqualified ETABS versions", "NativeAOT XLL", "web/server execution requiring Excel or ETABS"],
+      "runtime_conflict_rule": "Installer/preflight reports the .NET Desktop Runtime and any known CoreCLR add-in version conflict before loading; it never downloads a runtime from inside Excel."
+    },
+    {
+      "id": "PF9-D2-dependency-policy",
+      "rules": [
+        "Pure Python and .NET packages have no Excel, ETABS, COM, HTTP server, UI or rendering dependency.",
+        "Python retains Pydantic v2 as its sole base third-party runtime dependency for strict boundary models; NumPy, reports, PDF, DXF, CAD and ETABS remain extras.",
+        "The .NET contracts/core/code/member packages use the base class library and System.Text.Json; Math.NET is isolated to bounded analysis that needs it.",
+        "Excel-DNA exists only in StructuralEngineering.ExcelDna and CSI interop exists only in StructuralEngineering.Etabs.",
+        "Direct and transitive versions are locked for candidate builds; updates use a reviewed dependency packet with focused conformance/build/installed evidence by impact.",
+        "Each distributed artifact carries license inventory, SBOM, package-lock digest and known runtime prerequisites.",
+        "Optional adapter absence or version mismatch returns ADAPTER.UNAVAILABLE or VERSION.INCOMPATIBLE with detected/required versions and remediation.",
+        "No package performs runtime code download, implicit plugin discovery from untrusted folders or automatic host mutation."
+      ],
+      "python_extras": ["analysis", "report", "pdf", "dxf", "cad", "etabs-snapshot-tools", "dev", "docs"],
+      "dotnet_optional_packages": ["StructuralEngineering.Analysis", "StructuralEngineering.Reporting", "StructuralEngineering.ExcelDna", "StructuralEngineering.Etabs"]
+    },
+    {
+      "id": "PF9-D3-packaging-layout",
+      "python": [
+        {"artifact": "structural-lib-is456 wheel and sdist", "contains": "pure Python PF6 packages, semantic/data revisions and type marker", "excludes": "FastAPI/React/application adapters and generated evidence"},
+        {"artifact": "optional extras", "contains": "separately resolved reporting/DXF/PDF/CAD/snapshot tools", "excludes": "mandatory host dependency"}
+      ],
+      "dotnet": [
+        {"artifact": "StructuralEngineering.Core NuGet", "contains": "Contracts, Core and Codes.IS456 assemblies plus semantic/code data"},
+        {"artifact": "StructuralEngineering.Beam NuGet", "contains": "Analysis, Beam and Reinforcement public assemblies"},
+        {"artifact": "StructuralEngineering.Construction NuGet", "contains": "Construction, Optimization and calculation-record assemblies"},
+        {"artifact": "StructuralEngineering.Interchange NuGet", "contains": "strict JSON/schema/fixture support"},
+        {"artifact": "StructuralEngineering.ExcelDna win-x64 distribution", "contains": "packed 64-bit XLL, manifest, help, sample workbook, checksums and installer/preflight"},
+        {"artifact": "StructuralEngineering.Etabs win-x64 adapter", "contains": "version-bound CSI adapter, broker, signatures and diagnostics; CSI redistributables only when vendor terms permit"}
+      ],
+      "deployment": [
+        "The first XLL release is a signed per-user Windows installation with an offline/manual package option; both install exact immutable bytes and expose repair/uninstall.",
+        "Preflight checks Windows/Excel bitness, Excel product/build, .NET Desktop Runtime, XLL signature/hash, trusted-location policy, conflicting add-in runtime and ETABS adapter prerequisites.",
+        "Application adapters are installed separately from NuGet/Python packages and can be omitted without reducing pure-library functionality.",
+        "Machine-wide installation and managed enterprise deployment require a later separately accepted installer profile."
+      ],
+      "diagnostics": ["human-readable preflight report", "structured JSON receipt", "application event/log file with redacted paths", "copyable environment fingerprint", "no model/workbook content in telemetry by default"]
+    },
+    {
+      "id": "PF9-D4-performance-budgets",
+      "reference_floor": "Windows 11 x64, 4 physical/8 logical CPU threads, 16 GB RAM, SSD, current .NET 10 patch; application classes additionally use 64-bit Microsoft 365 Excel and exact ETABS target. Results always record actual hardware/runtime/power mode.",
+      "budgets": [
+        {"id": "PERF-SCALAR", "workload": "10,000 warmed FO01-FO08/value or one-section code-kernel calls per operation, no serialization/trace", "budget": "per-call p95 <= 1 ms and batch elapsed <= 2 s; cold first pure-library operation <= 500 ms", "memory": "no unbounded growth; allocations reported per operation"},
+        {"id": "PERF-MEMBER-BATCH", "workload": "1,000 ordinary rectangular section check sets and separately 100 complete ordinary single-span member evaluations, summary results", "budget": "section batch <= 1 s and complete-member batch <= 3 s in each native library", "memory": "incremental working set <= 256 MB"},
+        {"id": "PERF-CANDIDATE-SEARCH", "workload": "10,000 fixed-action candidates from a frozen catalogue/domain with complete required checks and summary results", "budget": "complete <= 5 s; first progress and cooperative cancellation acknowledgement <= 250 ms between non-interruptible kernels", "memory": "stream/prune summaries; incremental working set <= 512 MB"},
+        {"id": "PERF-SERIALIZATION", "workload": "10,000 action rows plus identities round-trip strict JSON and canonical digest", "budget": "serialize+deserialize+validate+digest <= 1 s", "memory": "peak incremental working set <= 4 times UTF-8 payload size plus 64 MB"},
+        {"id": "PERF-WORKBOOK", "workload": "typical 20-member/200-action-row standalone workbook calculation and controlled table write; separately cold XLL load", "budget": "warm command median <= 750 ms and p95 <= 1 s; cold XLL ready <= 3 s; progress/cancel response <= 250 ms", "memory": "Excel working-set delta <= 256 MB for workload"},
+        {"id": "PERF-ETABS-ACQUISITION", "workload": "small 100-member/10,000-row and medium 1,000-member/100,000-row getter, capture and offline normalization on the certified host", "budget": "small p95 <= 5 s and medium p95 <= 30 s; publish getter, transfer, normalization and persistence times separately", "memory": "incremental adapter working set <= 512 MB for medium workload"}
+      ],
+      "claim_rule": "A budget is a release acceptance target, not a measured current capability. Failure blocks that performance claim and triggers profiling/root-cause work; it never permits skipping correctness, completeness or reanalysis.",
+      "trace_policy": "Default operations return summaries and governing records. Full station traces, candidate tables, drawings and report rendering are requested explicitly and benchmarked separately."
+    },
+    {
+      "id": "PF9-D5-benchmark-plan",
+      "method": [
+        "Freeze workload JSON, semantic/profile/code-data revisions and correctness expectations before timing.",
+        "Run correctness/conformance first; discard no slow sample because its result differs.",
+        "Record machine, CPU/RAM/storage, power mode, OS, process architecture, Python/.NET/Excel/ETABS/XLL versions, source/artifact hashes and background-load policy.",
+        "Use at least 5 untimed warm-ups and 30 measured warm iterations for library/workbook workloads; report median, p95, maximum, allocation/working-set and raw samples.",
+        "Measure cold start in at least 10 fresh processes/Excel launches. ETABS live runs use enough repetitions to explain practical variation and retain each sample; they are never mixed with library timing.",
+        "Separate kernel, validation, serialization, COM transfer, workbook range I/O, rendering, save and ETABS analysis/acquisition times.",
+        "Compare Python and .NET on identical effective inputs, but report each against its own budget; language difference is not correctness evidence.",
+        "Check cancellation/progress with timestamped request/acknowledgement and identify any non-interruptible application call."
+      ],
+      "datasets": [
+        {"id": "BENCH-SCALAR-10K", "class": "PERF-SCALAR"},
+        {"id": "BENCH-SECTIONS-1K", "class": "PERF-MEMBER-BATCH"},
+        {"id": "BENCH-MEMBERS-100", "class": "PERF-MEMBER-BATCH"},
+        {"id": "BENCH-CANDIDATES-10K", "class": "PERF-CANDIDATE-SEARCH"},
+        {"id": "BENCH-ACTIONS-10K", "class": "PERF-SERIALIZATION"},
+        {"id": "BENCH-EXCEL-TYPICAL", "class": "PERF-WORKBOOK"},
+        {"id": "BENCH-ETABS-SMALL", "class": "PERF-ETABS-ACQUISITION"},
+        {"id": "BENCH-ETABS-MEDIUM", "class": "PERF-ETABS-ACQUISITION"}
+      ]
+    },
+    {
+      "id": "PF9-D6-release-evidence-plan",
+      "candidate_evidence": [
+        "source commit/tree and clean candidate",
+        "Python wheel/sdist metadata, hashes, install/import and dependency isolation",
+        "NuGet packages, locked restore, build/test/conformance and package hashes",
+        "packed x64 XLL, sample workbook, installer/preflight, Authenticode signature and malware scan",
+        "ETABS adapter exact signature/runtime matrix and PF8 installed scenarios",
+        "semantic/schema/profile/code-data/data-digest compatibility manifest",
+        "PF7 engineering evidence coverage and qualified review records",
+        "PF9 raw benchmark samples and budget verdicts",
+        "SBOM, dependency licenses, package-lock digests and known limitations",
+        "clean-machine install/load/calculate/save/reopen/repair/uninstall receipts"
+      ],
+      "artifact_identity": "Record pre-sign build hash, signed artifact hash, signature certificate/timestamp identity and distribution-package hash. Reproducibility applies to unsigned managed inputs; signing is verified rather than expected byte-identical.",
+      "publication_rule": "Package publication, GitHub Release and public XLL distribution still require the repository's per-release owner authorization and release gates. PF9 does not grant it.",
+      "support_diagnostics": "A support bundle contains versions, hashes, structured diagnostics and redacted receipts; source models, workbook business data and personal paths are opt-in only."
+    }
+  ],
+  "exit_evidence": [
+    {"criterion": "Pure libraries install without Excel or ETABS.", "evidence": ["PF9-D2/D3 isolate host dependencies in optional Windows adapter artifacts and define ordinary wheel/NuGet packages."]},
+    {"criterion": "Optional adapters fail with actionable diagnostics.", "evidence": ["PF9-D1/D2 require detected/required version, bitness/runtime conflict and remediation without runtime download or hidden mutation."]},
+    {"criterion": "Kernel, workbook and live-application benchmarks are distinct.", "evidence": ["PF9-D4/D5 define six performance classes, eight frozen datasets and separated timing/evidence methods."]}
+  ]
+}

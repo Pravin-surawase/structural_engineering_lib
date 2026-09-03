@@ -1,0 +1,140 @@
+{
+  "phase_id": "PF7",
+  "title": "Engineering assurance and examples",
+  "revision_date": "2026-09-03",
+  "state": "complete",
+  "decision_ids": ["D14", "D15"],
+  "source_evidence": [
+    "../pf2/baseline.json",
+    "../pf4/baseline.json",
+    "../pf5/baseline.json",
+    "../../automation/source-crosswalk.json",
+    "../../automation/examples.json",
+    "../../requirements-first/corpus-summary.json",
+    "../../requirements-first/failure-register.json"
+  ],
+  "deliverables": [
+    {
+      "id": "PF7-D1-assurance-matrix",
+      "rules": [
+        "E3 Python/.NET agreement accompanies portable operations but is correlation evidence, never an independent proof.",
+        "E1 schema/build evidence proves only structure or compilation and cannot qualify an engineering or installed-application claim.",
+        "An evidence level applies only to the recorded operation, profile, case, source/code-data revision and result fields.",
+        "A changed formula, lookup dataset, applicability branch or tolerance invalidates the affected evidence until replayed."
+      ],
+      "records": [
+        {"operation": "AO01", "minimum": "E4", "source_refs": ["AS02", "AS03", "AS04", "AS07"], "method": "unit/sign/axis conversion fixtures and concurrent-row identity replay", "independent_oracle": "dimensional hand calculation and immutable-row reconstruction"},
+        {"operation": "AO02", "minimum": "E4", "source_refs": ["AS08"], "method": "support, load, settlement, reaction, action and deflection cases", "independent_oracle": "closed-form structural-analysis solutions and equilibrium"},
+        {"operation": "AO03", "minimum": "E4", "source_refs": ["AS01", "AS15"], "method": "multi-layer, opposite-face, cover, spacing and fit cases", "independent_oracle": "coordinate geometry and area-weighted centroid calculation"},
+        {"operation": "AO04", "minimum": "E4", "source_refs": ["AS05", "AS09", "AS10"], "method": "resolved paths, bends, contact faces, waste and dated-rate scope", "independent_oracle": "manual quantity take-off and decimal cost arithmetic"},
+        {"operation": "AO05", "minimum": "E2", "source_refs": ["AS11", "AS22"], "method": "finite-domain truth table for required states, exclusions, determinism and completeness", "independent_oracle": "declarative ranking and aggregation specification"},
+        {"operation": "AO06", "minimum": "E4", "source_refs": ["AS01", "AS17", "AS18"], "method": "sourced flexure cases for both signs, section forms and reinforcement regimes", "independent_oracle": "independently reconstructed code calculation"},
+        {"operation": "AO07", "minimum": "E4", "source_refs": ["AS12", "AS13"], "method": "ordinary and concentrated-load shear, minima, limits and actual links", "independent_oracle": "independently reconstructed code calculation"},
+        {"operation": "AO08", "minimum": "E4", "source_refs": ["AS13", "AS15"], "method": "concurrent torsion/shear/flexure interaction and perimeter reinforcement", "independent_oracle": "independently reconstructed interaction calculation"},
+        {"operation": "AO09", "minimum": "E4", "source_refs": ["AS14"], "method": "screening and calculated short/long-term deflection cases", "independent_oracle": "sourced analytic/serviceability reconstruction"},
+        {"operation": "AO10", "minimum": "E4", "source_refs": ["AS14"], "method": "same steel area with varying spacing/cover and exposure limit", "independent_oracle": "independently reconstructed crack-width calculation"},
+        {"operation": "AO11", "minimum": "E4", "source_refs": ["AS15"], "method": "straight, bent, hooked endpoints and support-face cases", "independent_oracle": "independent development-length and path geometry"},
+        {"operation": "AO12", "minimum": "E4", "source_refs": ["AS15", "AS09"], "method": "station demand, lap, cutoff extension and prohibited-zone cases", "independent_oracle": "independent detailing-envelope reconstruction"},
+        {"operation": "AO13", "minimum": "E4", "source_refs": ["AS16", "AS15"], "method": "supported seismic system, joint, capacity-design and actual-detail cases", "independent_oracle": "qualified sourced seismic-detailing reconstruction"},
+        {"operation": "AO14", "minimum": "E2", "source_refs": ["AS06", "AS22"], "method": "strict project/profile/version/default-resolution fixtures", "independent_oracle": "schema and immutable-identity invariants"},
+        {"operation": "AO15", "minimum": "E4", "source_refs": ["AS06", "AS07"], "method": "physical faces, centreline/clear/effective/analysis spans and element mappings", "independent_oracle": "controlled topology and geometry calculation"},
+        {"operation": "AO16", "minimum": "E5", "source_refs": ["AS02", "AS03", "AS04", "AS07"], "method": "identified installed ETABS acquisition, selection and stale-analysis cases", "independent_oracle": "installed API observation reconciled to retained raw output"},
+        {"operation": "AO17", "minimum": "E4", "source_refs": ["AS06", "AS01", "AS12", "AS13", "AS14", "AS15"], "method": "whole-member composition fixture retaining every expected leaf", "independent_oracle": "deterministic aggregation specification plus qualified leaf oracles"},
+        {"operation": "AO18", "minimum": "E4", "source_refs": ["AS06", "AS09", "AS15"], "method": "multi-layer paths, hooks, laps, links, transitions and congestion", "independent_oracle": "independent coordinate/path geometry"},
+        {"operation": "AO19", "minimum": "E4", "source_refs": ["AS09", "AS05"], "method": "BBS from frozen paths, shapes, counts, cut lengths and stock", "independent_oracle": "independent schedule and stock arithmetic"},
+        {"operation": "AO20", "minimum": "E4", "source_refs": ["AS10", "AS09"], "method": "scope/rates/currency/date/geography applied to resolved quantities", "independent_oracle": "independent quantity and decimal cost arithmetic"},
+        {"operation": "AO21", "minimum": "E2", "source_refs": ["AS11", "AS04", "AS10"], "method": "exhaustive small-domain replay, cancellation and revision-change cases", "independent_oracle": "declared finite-domain enumeration specification"},
+        {"operation": "AO22", "minimum": "E5", "source_refs": ["AS03", "AS04"], "method": "identified ETABS copy, mutation receipt, reanalysis and comparison", "independent_oracle": "installed ETABS observation and readback"},
+        {"operation": "AO23", "minimum": "E5", "source_refs": ["AS19", "AS20", "AS22"], "method": "identified Excel/XLL/workbook clean-target journey and stale/invalid behavior", "independent_oracle": "installed Excel observation and workbook readback"},
+        {"operation": "AO24", "minimum": "E2+E4", "source_refs": ["AS09", "AS22"], "method": "replayed result-to-package trace; engineering content retains promoted leaf evidence", "independent_oracle": "immutable trace reconstruction plus E4 leaf calculations"},
+        {"operation": "AO25", "minimum": "E5", "source_refs": ["AS19", "AS20"], "method": "versioned workload, machine, Excel/XLL identity and cold/warm percentile samples", "independent_oracle": "installed performance measurement"},
+        {"operation": "AO26", "minimum": "E4", "source_refs": ["AS01", "AS15", "AS16"], "method": "all-bar/layer/link/cover/spacing/transition/joint-congestion fixtures", "independent_oracle": "independent arrangement-coordinate reconstruction"}
+      ],
+      "review_record": ["review_id", "reviewer_role", "competence_scope", "operation/profile/case scope", "source and code-data revisions", "input/result identities", "evidence manifest", "limitations", "decision", "signed_at_utc"]
+    },
+    {
+      "id": "PF7-D2-example-taxonomy",
+      "records": [
+        {"id": "EX-NODE", "requirement": "every discrete lookup node including first/last and branch-selection key"},
+        {"id": "EX-INTERIOR", "requirement": "one value strictly inside every interpolation interval and continuous formula regime"},
+        {"id": "EX-BOUNDARY", "requirement": "each inclusive/exclusive threshold at exact value and immediately on both sides, including zero/sign/support-face/layer/minimum/maximum cases"},
+        {"id": "EX-VALID", "requirement": "representative complete supported case per operation/profile"},
+        {"id": "EX-INVALID", "requirement": "bad unit, non-finite, missing conditional field, conflicting identity/topology or incompatible action basis; expect rejected_input"},
+        {"id": "EX-UNSUPPORTED", "requirement": "specific profile exclusion with completed applicability decision and retained result; never missing evidence"},
+        {"id": "EX-INCOMPLETE", "requirement": "required applicable leaf is not_evaluated, partial, stale or unbound"},
+        {"id": "EX-IDENTITY", "requirement": "change one effective dependency and prove the former result becomes stale/unbound"},
+        {"id": "EX-REGRESSION", "requirement": "confirmed historical root cause and corrected outcome, retaining the original failure state"},
+        {"id": "EX-CROSS-PROJECTION", "requirement": "canonical Python/.NET request/result fixture compared under its tolerance identifier"},
+        {"id": "EX-INSTALLED", "requirement": "candidate-bound Excel/ETABS evidence with environment, runtime, artifact and workload identities"}
+      ],
+      "lookup_minimum": ["first node", "each interior node", "one interior point per interval", "last node", "below-domain boundary", "above-domain boundary", "each policy cap/floor"],
+      "presentation_rule": "Examples publish unrounded semantic expected values and separately publish any display value/precision. A rounded display is never the calculation oracle."
+    },
+    {
+      "id": "PF7-D3-conformance-corpus-plan",
+      "sourcebook_baseline": {"total_records": 180, "numerical_candidates": 154, "other_records": 26, "initial_state": "SB-CANDIDATE", "initial_evidence": "E3"},
+      "promotion_rules": [
+        "Record immutable source/revision, route, units, scope/applicability, canonical inputs, expected unrounded outputs or stated source precision, code-data revision and an independent reconstruction.",
+        "Resolve amendment or dataset disagreement through the PF2 F10 migration ledger before promotion.",
+        "A qualified reviewer validates reconstruction and provenance before SB-PROMOTED-E4; E6 approval remains a separate scoped record.",
+        "Corrected, disputed, partial, unsupported and narrative-only records cannot be numerical oracle assertions, though they may remain diagnostic/taxonomy fixtures.",
+        "Promotion applies only to the declared operation/profile/case; one example cannot stand in for missing nodes, interiors, boundaries or invalid/unsupported paths.",
+        "Every fixture binds semantic operation, schema, profile, code-data, expected state/value, tolerance and evidence identifiers."
+      ],
+      "corpus_families": [
+        {"id": "CORPUS-FOUND", "covers": ["FO01-FO08", "AO01", "AO03", "AO14", "AO15"]},
+        {"id": "CORPUS-ANALYSIS", "covers": ["AO02"]},
+        {"id": "CORPUS-STRENGTH", "covers": ["AO06", "AO07", "AO08"]},
+        {"id": "CORPUS-SLS", "covers": ["AO09", "AO10"]},
+        {"id": "CORPUS-DETAIL", "covers": ["AO11", "AO12", "AO13", "AO18", "AO26"]},
+        {"id": "CORPUS-CONSTRUCTION", "covers": ["AO04", "AO19", "AO20"]},
+        {"id": "CORPUS-MEMBER", "covers": ["AO05", "AO17", "AO21", "AO24"]},
+        {"id": "CORPUS-INSTALLED", "covers": ["AO16", "AO22", "AO23", "AO25"]}
+      ],
+      "source_data_verification": "Normalize each approved table/figure only within an operation scope; dual-review source transcription, units, nodes, interpolation/cap rules and digest; replay all node/interior/boundary fixtures before the data revision can be used."
+    },
+    {
+      "id": "PF7-D4-tolerance-policy",
+      "comparison_formula": "abs(actual-expected) <= max(absolute_floor_for_quantity, relative_factor * max(abs(actual), abs(expected)))",
+      "classes": [
+        {"id": "T0-EXACT", "applies_to": ["semantic/schema/profile/code-data IDs", "hashes", "states and diagnostic codes", "lookup node/branch", "bar/catalogue choices", "counts", "ordering/tie breaks", "currency rounding rules"], "rule": "exact equality"},
+        {"id": "T1-KERNEL", "relative_factor": 1e-9, "absolute_floors": {"length_or_deflection_mm": 1e-6, "area_mm2": 1e-6, "force_kN": 1e-6, "moment_kNm": 1e-6, "stress_N_per_mm2": 1e-8, "mass_kg": 1e-6, "dimensionless": 1e-10}},
+        {"id": "T2-LARGE-DERIVED", "relative_factor": 1e-9, "absolute_floors": {"second_moment_mm4": 1e-3, "stiffness_N_mm2": 1e-6, "volume_m3": 1e-9, "total_in_declared_unit": 1e-6}},
+        {"id": "T3-PUBLISHED-SOURCE", "rule": "first compare the unrounded reconstructed value under T1/T2, then separately require agreement within half the least-significant source increment unless source uncertainty states otherwise"},
+        {"id": "T4-DECISION-BOUNDARY", "rule": "apply the exact code/construction comparison to raw values and test exact/inside/outside; tolerance may diagnose runtime drift but cannot turn fail into pass"},
+        {"id": "T5-MONEY", "rule": "use decimal arithmetic, explicit rate precision and named currency rounding stage; engineering floating tolerance cannot alter totals"}
+      ],
+      "method_specific_rule": "A numerical method may declare a tighter or different absolute floor only with an oracle-error analysis and stable tolerance ID; it cannot loosen a code or construction decision boundary.",
+      "parity_rule": "Report both independently expected error and Python/.NET difference. A small cross-language difference does not pass a case when both implementations miss the oracle."
+    },
+    {
+      "id": "PF7-D5-aggregation-rules",
+      "rules": [
+        {"id": "AGG-01", "rule": "Freeze expected_leaf_set from effective inputs, required-check profile, topology, code-data revision and applicability conditions before evaluation; each entry has stable required_check_id, requirement status, applicability predicate and identity."},
+        {"id": "AGG-02", "rule": "Retain one leaf result for every expected entry in member result, candidate, export and report. Omitted, failed or not-applicable leaves cannot disappear."},
+        {"id": "AGG-03", "rule": "Qualified requires every required leaf to be completed, applicable, pass, complete_for_scope and current, all bound to one effective member revision."},
+        {"id": "AGG-04", "rule": "A required not_evaluated leaf makes the result partial/unqualified and emits CHECK.REQUIRED_NOT_EVALUATED."},
+        {"id": "AGG-05", "rule": "A required not_applicable leaf remains visible and makes the result partial/unqualified. If genuinely outside scope, the profile/topology must exclude it before expected_leaf_set is frozen."},
+        {"id": "AGG-06", "rule": "A profile-excluded non-required leaf may be not_applicable only with a proven recorded predicate. Unknown applicability, stale/unbound, rejection, cancellation or software error never satisfies exclusion."},
+        {"id": "AGG-07", "rule": "Any required fail makes the member engineering fail. Any required invalid, incomplete, stale or unbound result makes it partial/unqualified. Approval cannot override calculation state."},
+        {"id": "AGG-08", "rule": "Optimization ranks only candidates satisfying AGG-03 and publishes all domain members with reason-coded exclusions, expected leaf set and completeness. Partial enumeration cannot claim optimum or total infeasibility."},
+        {"id": "AGG-09", "rule": "Selected and scheduled reinforcement are rechecked as separate supplied arrangements; required-area checks alone cannot qualify fabrication or construction outputs."},
+        {"id": "AGG-10", "rule": "The aggregate returns governing failures/locations and all non-success diagnostics without replacing leaf provenance or identities."}
+      ],
+      "current_foundation_disposition": "Current CandidateRanker correctly excludes required NotEvaluated and NotApplicable outcomes, but collapses missing and those two states into one unevaluated ID list and trusts an externally supplied required-check list. Before promotion beyond E2 it must consume the frozen expected_leaf_set and preserve reason/state evidence.",
+      "acceptance_cases": [
+        "required pass plus optional not_applicable qualifies only when the optional exclusion predicate is proven",
+        "required not_applicable is partial and unqualified",
+        "required missing/not_evaluated is partial and unqualified",
+        "additional explicit fail is infeasible even when omitted from required IDs",
+        "stale leaf invalidates current aggregate",
+        "partial search returns best-so-far wording only and no optimum claim"
+      ]
+    }
+  ],
+  "exit_evidence": [
+    {"criterion": "Every code operation has a source and assurance method.", "evidence": ["PF7-D1 maps AO01-AO26 to source references, minimum evidence, method and independent-oracle category."]},
+    {"criterion": "Lookups include node, interior and boundary cases.", "evidence": ["PF7-D2 defines mandatory node, interval, exact-limit and both-side coverage; PF7-D3 requires it during source-data promotion."]},
+    {"criterion": "Required checks cannot disappear from aggregate outcomes.", "evidence": ["PF7-D5 freezes and retains the expected leaf set, rejects required non-applicable/unevaluated/stale leaves and constrains ranking claims."]}
+  ]
+}

@@ -1,0 +1,1462 @@
+{
+  "phase_id": "PF11",
+  "title": "Integrated review and implementation blueprint",
+  "revision_date": "2026-09-04",
+  "state": "complete",
+  "decision_ids": [
+    "D23"
+  ],
+  "source_evidence": [
+    "../pf0/README.md",
+    "../pf1/baseline.json",
+    "../pf2/baseline.json",
+    "../pf3/baseline.json",
+    "../pf4/baseline.json",
+    "../pf5/baseline.json",
+    "../pf6/baseline.json",
+    "../pf7/baseline.json",
+    "../pf8/baseline.json",
+    "../pf9/baseline.json",
+    "../pf10/baseline.json",
+    "../../../excel-dna-xll-product-architecture-decision.md",
+    "../../../beam-design-optimization-master-plan.md"
+  ],
+  "deliverables": [
+    {
+      "id": "PF11-D1-integrated-baseline",
+      "architecture_invariants": [
+        {
+          "id": "INV-01",
+          "rule": "Python and .NET implement the deliberate common semantic operation set natively; parity means equivalent canonical inputs, states, provenance and independently qualified values, not shared source code."
+        },
+        {
+          "id": "INV-02",
+          "rule": "Dependencies flow from contracts/core to code rules, reusable services and then application adapters; no pure package imports Excel, ETABS, UI, web server or renderer state."
+        },
+        {
+          "id": "INV-03",
+          "rule": "Quantities, units, signs, axes, stations, action concurrency, optional values and identities follow PF4 in every language and adapter."
+        },
+        {
+          "id": "INV-04",
+          "rule": "Value, capacity, check, design, member service, adapter command and human approval remain different public operations/records."
+        },
+        {
+          "id": "INV-05",
+          "rule": "Every result returns effective inputs, independent execution/applicability/engineering/completeness/freshness/approval dimensions, diagnostics, provenance and calculation identity."
+        },
+        {
+          "id": "INV-06",
+          "rule": "Every required member leaf is frozen before evaluation and retained after it; required not_applicable, not_evaluated, stale or missing leaves cannot qualify or be ranked."
+        },
+        {
+          "id": "INV-07",
+          "rule": "Selected and scheduled reinforcement are actual arrangements with coordinates and paths; BBS, steel mass, formwork, cost and reports derive from the same current detail identity."
+        },
+        {
+          "id": "INV-08",
+          "rule": "Worksheet functions are pure over immutable inputs. Workbook writes, long design/search, ETABS access, file rendering and approval records are explicit commands."
+        },
+        {
+          "id": "INV-09",
+          "rule": "ETABS rows retain model/analysis/result/case/step/object/element/station/axis and same-row P/V2/V3/T/M2/M3; component envelopes do not become concurrent vectors."
+        },
+        {
+          "id": "INV-10",
+          "rule": "Only reinforcement/detail/cost/report changes may reuse fixed actions. Structural-response changes require an identified model copy, readback, reanalysis, new snapshot and comparison."
+        },
+        {
+          "id": "INV-11",
+          "rule": "Engineering claims require PF7 independent evidence; Python/.NET agreement is correlation and installed Excel/ETABS claims require PF8 E5 evidence."
+        },
+        {
+          "id": "INV-12",
+          "rule": "Package, semantic operation, schema, profile, code-data, corpus, workbook, adapter and report-template versions remain separately visible and replayable."
+        },
+        {
+          "id": "INV-13",
+          "rule": "Compatibility wrappers expose translation and refuse unresolved unsafe ambiguity; existing non-beam Python users retain their current supported route."
+        },
+        {
+          "id": "INV-14",
+          "rule": "Performance claims bind frozen workloads, exact artifacts/environments, correctness results and raw median/p95 samples; language choice alone proves no speedup."
+        },
+        {
+          "id": "INV-15",
+          "rule": "Software records prepared/checked/approved people and scope but never creates professional engineering approval or release authorization."
+        }
+      ],
+      "authoritative_future_paths": [
+        {
+          "path": "contracts/structural-engineering/operations",
+          "owns": "semantic operation manifests and projection maps"
+        },
+        {
+          "path": "contracts/structural-engineering/schemas",
+          "owns": "portable interchange JSON Schemas"
+        },
+        {
+          "path": "contracts/structural-engineering/code-data",
+          "owns": "normalized design-code data and provenance"
+        },
+        {
+          "path": "contracts/structural-engineering/conformance",
+          "owns": "independent expected examples and cross-language vectors"
+        },
+        {
+          "path": "Python/structural_lib",
+          "owns": "native Python implementation and compatibility"
+        },
+        {
+          "path": "CSharp/src/StructuralEngineering.*",
+          "owns": "native .NET implementation and Windows adapters"
+        },
+        {
+          "path": "docs/library",
+          "owns": "concept, API, cookbook, application, assurance and migration documentation"
+        }
+      ],
+      "definition_status": "PF0-PF11 planning complete. This baseline is ready to drive implementation when the owner starts an implementation packet; it is not itself implementation, installed acceptance, engineering approval or release permission."
+    },
+    {
+      "id": "PF11-D2-traceability-report",
+      "records": [
+        {
+          "operation": "AO01",
+          "semantic_id": "structural.action_snapshot.normalize/v1",
+          "capabilities": [
+            "CAP-ANALYSIS"
+          ],
+          "workflows": [
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-ETABS-AUTOMATION"
+          ],
+          "parity": "native_both",
+          "assurance": "E4+E3",
+          "application": "ETABS envelope only",
+          "package": "Analysis",
+          "migration": "ForceNormalizer compatibility",
+          "work_packet": "WP03"
+        },
+        {
+          "operation": "AO02",
+          "semantic_id": "structural.beam_line.solve/v1",
+          "capabilities": [
+            "CAP-ANALYSIS"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY"
+          ],
+          "parity": "native_both",
+          "assurance": "E4+E3",
+          "application": "pure bounded Excel projection",
+          "package": "Analysis",
+          "migration": "BeamLineSolver retain",
+          "work_packet": "WP03"
+        },
+        {
+          "operation": "AO03",
+          "semantic_id": "structural.reinforcement_geometry.evaluate/v1",
+          "capabilities": [
+            "CAP-FOUND",
+            "CAP-CONSTRUCT"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-CONSTRUCTION-OUTPUT"
+          ],
+          "parity": "native_both",
+          "assurance": "E4+E3",
+          "application": "pure Excel projection",
+          "package": "Reinforcement",
+          "migration": "ReinforcementGeometry extend",
+          "work_packet": "WP01"
+        },
+        {
+          "operation": "AO04",
+          "semantic_id": "structural.construction_quantities.calculate/v1",
+          "capabilities": [
+            "CAP-FAB",
+            "CAP-FORMWORK",
+            "CAP-COST"
+          ],
+          "workflows": [
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-CONSTRUCTION-OUTPUT"
+          ],
+          "parity": "native_both",
+          "assurance": "E4+E3",
+          "application": "bounded Excel projection",
+          "package": "Construction",
+          "migration": "QuantityCalculator resolved-input correction",
+          "work_packet": "WP07"
+        },
+        {
+          "operation": "AO05",
+          "semantic_id": "structural.candidate.rank/v1",
+          "capabilities": [
+            "CAP-OPT"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-REVIEW"
+          ],
+          "parity": "native_both",
+          "assurance": "E2+E3",
+          "application": "command for large domains",
+          "package": "Optimization",
+          "migration": "CandidateRanker expected-leaf correction",
+          "work_packet": "WP08"
+        },
+        {
+          "operation": "AO06",
+          "semantic_id": "is456.beam.flexure.check/v1",
+          "capabilities": [
+            "CAP-FLEXURE"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-ETABS-AUTOMATION",
+            "WF-REVIEW"
+          ],
+          "parity": "native_both",
+          "assurance": "E4+E3+E6",
+          "application": "pure Excel projection",
+          "package": "Codes.IS456/Beam",
+          "migration": "beam facade translation",
+          "work_packet": "WP01"
+        },
+        {
+          "operation": "AO07",
+          "semantic_id": "is456.beam.shear.check/v1",
+          "capabilities": [
+            "CAP-SHEAR"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-ETABS-AUTOMATION"
+          ],
+          "parity": "native_both",
+          "assurance": "E4+E3+E6",
+          "application": "pure Excel projection",
+          "package": "Codes.IS456/Beam",
+          "migration": "selective Python rule reuse",
+          "work_packet": "WP02"
+        },
+        {
+          "operation": "AO08",
+          "semantic_id": "is456.beam.torsion.check/v1",
+          "capabilities": [
+            "CAP-TORSION",
+            "CAP-SHEAR",
+            "CAP-FLEXURE"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-ETABS-AUTOMATION"
+          ],
+          "parity": "native_both",
+          "assurance": "E4+E3+E6",
+          "application": "pure Excel projection",
+          "package": "Codes.IS456/Beam",
+          "migration": "torsion facade translation",
+          "work_packet": "WP02"
+        },
+        {
+          "operation": "AO09",
+          "semantic_id": "is456.beam.deflection.check/v1",
+          "capabilities": [
+            "CAP-SLS"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-ETABS-AUTOMATION"
+          ],
+          "parity": "native_both",
+          "assurance": "E4+E3+E6",
+          "application": "pure Excel projection",
+          "package": "Codes.IS456/Beam",
+          "migration": "serviceability route correction",
+          "work_packet": "WP04"
+        },
+        {
+          "operation": "AO10",
+          "semantic_id": "is456.beam.crack_width.check/v1",
+          "capabilities": [
+            "CAP-SLS",
+            "CAP-CONSTRUCT"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-ETABS-AUTOMATION"
+          ],
+          "parity": "native_both",
+          "assurance": "E4+E3+E6",
+          "application": "pure Excel projection",
+          "package": "Codes.IS456/Beam",
+          "migration": "actual-arrangement serviceability",
+          "work_packet": "WP04"
+        },
+        {
+          "operation": "AO11",
+          "semantic_id": "is456.beam.anchorage.check/v1",
+          "capabilities": [
+            "CAP-DETAIL"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-ETABS-AUTOMATION",
+            "WF-CONSTRUCTION-OUTPUT"
+          ],
+          "parity": "native_both",
+          "assurance": "E4+E3+E6",
+          "application": "pure Excel projection",
+          "package": "Codes.IS456/Reinforcement",
+          "migration": "actual path/face translation",
+          "work_packet": "WP05"
+        },
+        {
+          "operation": "AO12",
+          "semantic_id": "is456.beam.lap_curtailment.check/v1",
+          "capabilities": [
+            "CAP-DETAIL",
+            "CAP-FAB"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-ETABS-AUTOMATION",
+            "WF-CONSTRUCTION-OUTPUT"
+          ],
+          "parity": "native_both",
+          "assurance": "E4+E3+E6",
+          "application": "pure Excel projection",
+          "package": "Codes.IS456/Reinforcement",
+          "migration": "station/path-based replacement",
+          "work_packet": "WP05"
+        },
+        {
+          "operation": "AO13",
+          "semantic_id": "is456.beam.seismic_detailing.check/v1",
+          "capabilities": [
+            "CAP-DETAIL",
+            "CAP-SHEAR"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-ETABS-AUTOMATION",
+            "WF-CONSTRUCTION-OUTPUT"
+          ],
+          "parity": "native_both",
+          "assurance": "E4+E3+E6",
+          "application": "pure Excel projection",
+          "package": "Codes.IS456/Reinforcement",
+          "migration": "context-complete seismic replacement",
+          "work_packet": "WP05"
+        },
+        {
+          "operation": "AO14",
+          "semantic_id": "structural.beam_project.create/v1",
+          "capabilities": [
+            "CAP-FOUND"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY"
+          ],
+          "parity": "native_both",
+          "assurance": "E2+E3",
+          "application": "project command",
+          "package": "Core/Beam",
+          "migration": "criteria/default translation",
+          "work_packet": "WP06"
+        },
+        {
+          "operation": "AO15",
+          "semantic_id": "structural.beam_topology.define/v1",
+          "capabilities": [
+            "CAP-FOUND",
+            "CAP-ANALYSIS"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-ETABS-AUTOMATION"
+          ],
+          "parity": "native_both",
+          "assurance": "E4+E3",
+          "application": "project command",
+          "package": "Analysis/Beam",
+          "migration": "explicit span mapping",
+          "work_packet": "WP03"
+        },
+        {
+          "operation": "AO16",
+          "semantic_id": "etabs.beam_snapshot.import/v1",
+          "capabilities": [
+            "CAP-ETABS",
+            "CAP-ANALYSIS"
+          ],
+          "workflows": [
+            "WF-ETABS-AUTOMATION"
+          ],
+          "parity": "shared_contract_dotnet_adapter",
+          "assurance": "E5",
+          "application": "getter-only/import command",
+          "package": "StructuralEngineering.Etabs",
+          "migration": "Python live bridge to portable snapshot",
+          "work_packet": "WP10"
+        },
+        {
+          "operation": "AO17",
+          "semantic_id": "is456.beam_member.design/v1",
+          "capabilities": [
+            "CAP-FLEXURE",
+            "CAP-SHEAR",
+            "CAP-TORSION",
+            "CAP-SLS",
+            "CAP-DETAIL",
+            "CAP-CONSTRUCT"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-ETABS-AUTOMATION",
+            "WF-REVIEW"
+          ],
+          "parity": "native_both",
+          "assurance": "E4+E3+E6",
+          "application": "workbook calculate command",
+          "package": "Beam",
+          "migration": "canonical beam facade replacement",
+          "work_packet": "WP06"
+        },
+        {
+          "operation": "AO18",
+          "semantic_id": "structural.reinforcement_paths.resolve/v1",
+          "capabilities": [
+            "CAP-DETAIL",
+            "CAP-CONSTRUCT",
+            "CAP-FAB"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-CONSTRUCTION-OUTPUT"
+          ],
+          "parity": "native_both",
+          "assurance": "E4+E3",
+          "application": "workbook calculate command",
+          "package": "Reinforcement",
+          "migration": "replace area/full-span assumptions",
+          "work_packet": "WP06"
+        },
+        {
+          "operation": "AO19",
+          "semantic_id": "structural.bbs.create/v1",
+          "capabilities": [
+            "CAP-FAB"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-CONSTRUCTION-OUTPUT"
+          ],
+          "parity": "native_both",
+          "assurance": "E4+E3",
+          "application": "command/result consumer",
+          "package": "Construction",
+          "migration": "BBS consumer translation",
+          "work_packet": "WP07"
+        },
+        {
+          "operation": "AO20",
+          "semantic_id": "structural.construction_cost.estimate/v1",
+          "capabilities": [
+            "CAP-COST",
+            "CAP-FORMWORK",
+            "CAP-FAB"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-CONSTRUCTION-OUTPUT"
+          ],
+          "parity": "native_both",
+          "assurance": "E4+E3",
+          "application": "command/result consumer",
+          "package": "Construction",
+          "migration": "costing scope correction",
+          "work_packet": "WP07"
+        },
+        {
+          "operation": "AO21",
+          "semantic_id": "structural.beam.optimize/v1",
+          "capabilities": [
+            "CAP-OPT"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-ETABS-AUTOMATION"
+          ],
+          "parity": "native_both",
+          "assurance": "E2+E3",
+          "application": "cancellable optimization command",
+          "package": "Optimization",
+          "migration": "optimizer completeness correction",
+          "work_packet": "WP08"
+        },
+        {
+          "operation": "AO22",
+          "semantic_id": "etabs.beam_candidate.apply_to_copy/v1",
+          "capabilities": [
+            "CAP-ETABS",
+            "CAP-OPT"
+          ],
+          "workflows": [
+            "WF-ETABS-AUTOMATION",
+            "WF-REVIEW"
+          ],
+          "parity": "shared_contract_dotnet_adapter",
+          "assurance": "E5",
+          "application": "owned-copy transaction command",
+          "package": "StructuralEngineering.Etabs",
+          "migration": "new controlled transaction",
+          "work_packet": "WP11"
+        },
+        {
+          "operation": "AO23",
+          "semantic_id": "excel.beam_workbook.calculate/v1",
+          "capabilities": [
+            "CAP-EXCEL"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-REVIEW"
+          ],
+          "parity": "dotnet_excel_adapter",
+          "assurance": "E5",
+          "application": "controlled workbook command",
+          "package": "StructuralEngineering.ExcelDna",
+          "migration": "workbook copy migration",
+          "work_packet": "WP09"
+        },
+        {
+          "operation": "AO24",
+          "semantic_id": "structural.calculation_package.create/v1",
+          "capabilities": [
+            "CAP-REPORT",
+            "CAP-FAB"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-ETABS-AUTOMATION",
+            "WF-CONSTRUCTION-OUTPUT",
+            "WF-REVIEW"
+          ],
+          "parity": "native_record_model",
+          "assurance": "E2+E4+E3",
+          "application": "render/export command",
+          "package": "Reporting",
+          "migration": "record retained/renderers replaced",
+          "work_packet": "WP07"
+        },
+        {
+          "operation": "AO25",
+          "semantic_id": "excel.beam_workbook.measure_performance/v1",
+          "capabilities": [
+            "CAP-PERF",
+            "CAP-EXCEL"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL"
+          ],
+          "parity": "dotnet_excel_adapter",
+          "assurance": "E5",
+          "application": "installed benchmark command",
+          "package": "StructuralEngineering.ExcelDna",
+          "migration": "new product evidence",
+          "work_packet": "WP09"
+        },
+        {
+          "operation": "AO26",
+          "semantic_id": "structural.reinforcement_arrangement.check/v1",
+          "capabilities": [
+            "CAP-CONSTRUCT",
+            "CAP-DETAIL"
+          ],
+          "workflows": [
+            "WF-STANDALONE-EXCEL",
+            "WF-PYTHON-LIBRARY",
+            "WF-DOTNET-LIBRARY",
+            "WF-ETABS-AUTOMATION",
+            "WF-CONSTRUCTION-OUTPUT",
+            "WF-REVIEW"
+          ],
+          "parity": "native_both",
+          "assurance": "E4+E3",
+          "application": "pure/check and workbook command",
+          "package": "Reinforcement",
+          "migration": "extend single-layer helper",
+          "work_packet": "WP05"
+        }
+      ],
+      "foundation_operation_packets": {
+        "FO01": "WP01",
+        "FO02": "WP01",
+        "FO03": "WP01",
+        "FO04": "WP01",
+        "FO05": "WP02",
+        "FO06": "WP05",
+        "FO07": "WP04",
+        "FO08": "WP04"
+      },
+      "trace_completion_rule": "Every AO record names semantic ID, capability, workflow, parity, assurance, application boundary, package, migration and one owning work packet; every FO has an owning packet."
+    },
+    {
+      "id": "PF11-D3-implementation-backlog",
+      "milestone_prs": [
+        {
+          "id": "IMP-M1",
+          "work_packets": [
+            "WP01",
+            "WP02",
+            "WP03",
+            "WP04",
+            "WP05",
+            "WP06",
+            "WP07",
+            "WP08"
+          ],
+          "policy": "one pure-library milestone branch/PR with multiple reviewed commits; freeze and run the union evidence after all packets"
+        },
+        {
+          "id": "IMP-M2",
+          "work_packets": [
+            "WP09"
+          ],
+          "policy": "one standalone Excel milestone branch/PR with function, command, workbook and installed-evidence commits"
+        },
+        {
+          "id": "IMP-M3",
+          "work_packets": [
+            "WP10",
+            "WP11",
+            "WP12"
+          ],
+          "policy": "one ETABS/coupled/release-readiness milestone branch/PR; live evidence and release authorization remain separate gates"
+        }
+      ],
+      "work_packets": [
+        {
+          "id": "WP01",
+          "name": "common contracts and flexure vertical slice",
+          "depends_on": [],
+          "operations": [
+            "FO01",
+            "FO02",
+            "FO03",
+            "FO04",
+            "AO03",
+            "AO06"
+          ],
+          "capabilities": [
+            "CAP-FOUND",
+            "CAP-FLEXURE",
+            "CAP-CONSTRUCT",
+            "CAP-PACKAGE"
+          ],
+          "outputs": [
+            "authored semantic/schema/data/vector authorities",
+            "Python and .NET core/IS456/reinforcement packages",
+            "rectangular singly/doubly and eligible flanged flexure both signs",
+            "current-call compatibility translations",
+            "independent and conformance examples"
+          ],
+          "non_goals": [
+            "Excel",
+            "ETABS",
+            "whole-member design",
+            "search",
+            "public release"
+          ]
+        },
+        {
+          "id": "WP02",
+          "name": "shear and torsion vertical slice",
+          "depends_on": [
+            "WP01"
+          ],
+          "operations": [
+            "FO05",
+            "AO07",
+            "AO08"
+          ],
+          "capabilities": [
+            "CAP-SHEAR",
+            "CAP-TORSION",
+            "CAP-FLEXURE",
+            "CAP-CONSTRUCT"
+          ],
+          "outputs": [
+            "both relevant axes",
+            "concurrent interaction",
+            "actual links/perimeter reinforcement",
+            "source/data/conformance cases"
+          ],
+          "non_goals": [
+            "member aggregation",
+            "ETABS acquisition"
+          ]
+        },
+        {
+          "id": "WP03",
+          "name": "actions, bounded analysis and topology",
+          "depends_on": [
+            "WP01"
+          ],
+          "operations": [
+            "AO01",
+            "AO02",
+            "AO15"
+          ],
+          "capabilities": [
+            "CAP-ANALYSIS",
+            "CAP-FOUND"
+          ],
+          "outputs": [
+            "vendor-neutral action snapshot",
+            "beam-line solver",
+            "physical/design/analysis span mapping",
+            "analytic/equilibrium oracles"
+          ],
+          "non_goals": [
+            "live ETABS",
+            "global building analysis"
+          ]
+        },
+        {
+          "id": "WP04",
+          "name": "serviceability",
+          "depends_on": [
+            "WP01",
+            "WP03"
+          ],
+          "operations": [
+            "FO07",
+            "FO08",
+            "AO09",
+            "AO10"
+          ],
+          "capabilities": [
+            "CAP-SLS",
+            "CAP-CONSTRUCT"
+          ],
+          "outputs": [
+            "explicit service bases",
+            "screening/calculated deflection",
+            "short/long-term components",
+            "actual-arrangement crack width",
+            "qualified examples"
+          ],
+          "non_goals": [
+            "undeclared ULS substitution",
+            "generic nonlinear analysis"
+          ]
+        },
+        {
+          "id": "WP05",
+          "name": "detailing, seismic context and full arrangement fit",
+          "depends_on": [
+            "WP01",
+            "WP02",
+            "WP03",
+            "WP04"
+          ],
+          "operations": [
+            "FO06",
+            "AO11",
+            "AO12",
+            "AO13",
+            "AO26"
+          ],
+          "capabilities": [
+            "CAP-DETAIL",
+            "CAP-CONSTRUCT",
+            "CAP-FAB"
+          ],
+          "outputs": [
+            "anchorage/lap/curtailment",
+            "continuity/seismic context",
+            "multi-layer/mixed-bar/link enclosure",
+            "congestion and placement evidence"
+          ],
+          "non_goals": [
+            "formwork temporary-works design"
+          ]
+        },
+        {
+          "id": "WP06",
+          "name": "project, member design and bar paths",
+          "depends_on": [
+            "WP01",
+            "WP02",
+            "WP03",
+            "WP04",
+            "WP05"
+          ],
+          "operations": [
+            "AO14",
+            "AO17",
+            "AO18"
+          ],
+          "capabilities": [
+            "CAP-FOUND",
+            "CAP-FLEXURE",
+            "CAP-SHEAR",
+            "CAP-TORSION",
+            "CAP-SLS",
+            "CAP-DETAIL",
+            "CAP-CONSTRUCT",
+            "CAP-FAB"
+          ],
+          "outputs": [
+            "versioned project/profile",
+            "expected leaf aggregation",
+            "required/selected/supplied checks",
+            "resolved bars/marks/paths"
+          ],
+          "non_goals": [
+            "Excel UI",
+            "ETABS transaction"
+          ]
+        },
+        {
+          "id": "WP07",
+          "name": "construction data and calculation package",
+          "depends_on": [
+            "WP06"
+          ],
+          "operations": [
+            "AO04",
+            "AO19",
+            "AO20",
+            "AO24"
+          ],
+          "capabilities": [
+            "CAP-FAB",
+            "CAP-COST",
+            "CAP-FORMWORK",
+            "CAP-REPORT"
+          ],
+          "outputs": [
+            "cutting/BBS",
+            "steel/concrete/formwork/waste",
+            "dated itemized direct cost",
+            "calculation/report/drawing semantic model and render interfaces"
+          ],
+          "non_goals": [
+            "temporary-works formwork design",
+            "automatic professional approval"
+          ]
+        },
+        {
+          "id": "WP08",
+          "name": "candidate generation, evaluation and ranking",
+          "depends_on": [
+            "WP06",
+            "WP07"
+          ],
+          "operations": [
+            "AO05",
+            "AO21"
+          ],
+          "capabilities": [
+            "CAP-OPT",
+            "CAP-PERF"
+          ],
+          "outputs": [
+            "profile-derived expected leaves",
+            "finite domains",
+            "deterministic objectives/ties",
+            "reason-coded exclusions",
+            "search completeness/cancellation/performance"
+          ],
+          "non_goals": [
+            "ETABS mutation",
+            "optimum claim from partial search"
+          ]
+        },
+        {
+          "id": "WP09",
+          "name": "standalone Windows Excel product",
+          "depends_on": [
+            "WP01",
+            "WP02",
+            "WP03",
+            "WP04",
+            "WP05",
+            "WP06",
+            "WP07",
+            "WP08"
+          ],
+          "operations": [
+            "AO23",
+            "AO25",
+            "PF8 worksheet projections and XL-CMD-01/03/04/06/07"
+          ],
+          "capabilities": [
+            "CAP-EXCEL",
+            "CAP-PACKAGE",
+            "CAP-PERF"
+          ],
+          "outputs": [
+            "signed packed x64 XLL",
+            "pure function families",
+            "versioned workbook tables",
+            "bulk commands",
+            "freshness/rollback",
+            "sample workbook",
+            "installed E5/performance evidence"
+          ],
+          "non_goals": [
+            "live ETABS",
+            "commercial release without authorization"
+          ]
+        },
+        {
+          "id": "WP10",
+          "name": "read-only ETABS snapshot adapter",
+          "depends_on": [
+            "WP03",
+            "WP06",
+            "WP09"
+          ],
+          "operations": [
+            "AO16",
+            "XL-CMD-02"
+          ],
+          "capabilities": [
+            "CAP-ETABS",
+            "CAP-ANALYSIS",
+            "CAP-EXCEL"
+          ],
+          "outputs": [
+            "exact 23.3.1 adapter",
+            "getter-only pre/post proof",
+            "raw acquisition",
+            "vendor-neutral immutable snapshot",
+            "Excel import command",
+            "captured offline replay and E5 evidence"
+          ],
+          "non_goals": [
+            "setter",
+            "analysis invocation on attached model",
+            "candidate application"
+          ]
+        },
+        {
+          "id": "WP11",
+          "name": "coupled copied-model candidate transaction",
+          "depends_on": [
+            "WP08",
+            "WP10"
+          ],
+          "operations": [
+            "AO22",
+            "XL-CMD-05"
+          ],
+          "capabilities": [
+            "CAP-ETABS",
+            "CAP-OPT",
+            "CAP-EXCEL"
+          ],
+          "outputs": [
+            "coupling classifier",
+            "owned-copy preflight/dry-run/readback",
+            "reanalysis/new epoch/snapshot",
+            "comparison",
+            "uncertain-copy quarantine",
+            "E5 transaction evidence"
+          ],
+          "non_goals": [
+            "mutation of source model",
+            "automatic replay of non-idempotent calls"
+          ]
+        },
+        {
+          "id": "WP12",
+          "name": "migration, performance and release readiness",
+          "depends_on": [
+            "WP09",
+            "WP10",
+            "WP11"
+          ],
+          "operations": [
+            "FO01-FO08",
+            "AO01-AO26"
+          ],
+          "capabilities": [
+            "CAP-PACKAGE",
+            "CAP-PERF",
+            "all operation capabilities"
+          ],
+          "outputs": [
+            "all compatibility/migration stages",
+            "Python/NuGet/XLL packages",
+            "documentation curriculum",
+            "six performance classes",
+            "clean-machine lifecycle",
+            "SBOM/licenses/signatures/support bundle",
+            "release preflight evidence"
+          ],
+          "non_goals": [
+            "package publication or GitHub Release without per-release owner authorization"
+          ]
+        }
+      ],
+      "programme_alignment": [
+        {
+          "programme": "XLL P0-P6",
+          "mapping": "P0 lifecycle/runtime -> WP09 foundation acceptance; P1 focused kernel -> WP01-WP05; P2 read-only ETABS -> WP10; P3 solver/optimizer -> WP03/WP08; P4 workbook/BBS/report -> WP07/WP09; P5 controlled transaction -> WP11; P6 hardening -> WP12",
+          "rule": "The original meanings remain; PF9 updates the evidenced runtime target to .NET 10 and standalone library work can precede application integration."
+        },
+        {
+          "programme": "six-phase beam/ETABS",
+          "mapping": "phases 1-3 acquisition/normalization/reconstruction -> WP10 plus WP03; phase 4 design gates -> WP01-WP07 integrated through WP06; phase 5 optimization -> WP08; phase 6 reanalysis -> WP11",
+          "rule": "Pure-operation completion does not close an ETABS programme phase until its source, topology and installed gates pass."
+        },
+        {
+          "programme": "standalone Excel first",
+          "mapping": "IMP-M1 establishes reusable libraries and IMP-M2 completes WP09 before coupled ETABS mutation",
+          "rule": "Excel can design from explicit standalone inputs/snapshots; ETABS is an optional later adapter."
+        }
+      ]
+    },
+    {
+      "id": "PF11-D4-effort-risk-estimate",
+      "basis": "Engineer-days for one experienced implementer with focused review access, reusing only PF2-approved assets. Ranges include implementation, focused tests, evidence and docs but exclude waiting for external approval/licensing and public release operations.",
+      "estimates": [
+        {
+          "work_packet": "WP01",
+          "engineer_days": "10-15",
+          "risk": "high",
+          "drivers": [
+            "semantic authorities",
+            "dual-language setup",
+            "flexure branches",
+            "independent examples"
+          ]
+        },
+        {
+          "work_packet": "WP02",
+          "engineer_days": "6-9",
+          "risk": "high",
+          "drivers": [
+            "torsion interaction",
+            "actual transverse/perimeter detail"
+          ]
+        },
+        {
+          "work_packet": "WP03",
+          "engineer_days": "8-12",
+          "risk": "medium",
+          "drivers": [
+            "solver parity",
+            "station discontinuities",
+            "topology meanings"
+          ]
+        },
+        {
+          "work_packet": "WP04",
+          "engineer_days": "8-12",
+          "risk": "high",
+          "drivers": [
+            "service combinations",
+            "cracking/creep assumptions",
+            "source reconstruction"
+          ]
+        },
+        {
+          "work_packet": "WP05",
+          "engineer_days": "10-15",
+          "risk": "high",
+          "drivers": [
+            "path geometry",
+            "laps/curtailment",
+            "seismic context",
+            "congestion"
+          ]
+        },
+        {
+          "work_packet": "WP06",
+          "engineer_days": "10-15",
+          "risk": "high",
+          "drivers": [
+            "iteration with actual depth",
+            "expected-leaf aggregation",
+            "bar-path selection"
+          ]
+        },
+        {
+          "work_packet": "WP07",
+          "engineer_days": "8-12",
+          "risk": "medium",
+          "drivers": [
+            "quantity reconciliation",
+            "cutting/waste",
+            "report trace"
+          ]
+        },
+        {
+          "work_packet": "WP08",
+          "engineer_days": "7-11",
+          "risk": "medium",
+          "drivers": [
+            "finite domain",
+            "completeness claims",
+            "performance/cancellation"
+          ]
+        },
+        {
+          "work_packet": "WP09",
+          "engineer_days": "12-18",
+          "risk": "high",
+          "drivers": [
+            "Excel lifecycle",
+            "bulk I/O/rollback",
+            "CoreCLR coexistence",
+            "installed performance"
+          ]
+        },
+        {
+          "work_packet": "WP10",
+          "engineer_days": "10-15",
+          "risk": "high",
+          "drivers": [
+            "COM signatures/state",
+            "result selection",
+            "row mapping",
+            "installed evidence"
+          ]
+        },
+        {
+          "work_packet": "WP11",
+          "engineer_days": "12-18",
+          "risk": "very_high",
+          "drivers": [
+            "non-idempotent mutation",
+            "reanalysis closure",
+            "recovery/quarantine",
+            "whole-model safeguards"
+          ]
+        },
+        {
+          "work_packet": "WP12",
+          "engineer_days": "8-12",
+          "risk": "medium",
+          "drivers": [
+            "489-export migration",
+            "multi-artifact packaging",
+            "clean-host lifecycle",
+            "release evidence"
+          ]
+        }
+      ],
+      "total_engineer_days": "109-164",
+      "critical_path": [
+        "WP01",
+        "WP03",
+        "WP04",
+        "WP05",
+        "WP06",
+        "WP08",
+        "WP09",
+        "WP10",
+        "WP11",
+        "WP12"
+      ],
+      "risk_controls": [
+        {
+          "risk": "wrong rule copied into both languages",
+          "control": "PF7 E4 oracle before parity claim"
+        },
+        {
+          "risk": "API or schema drift",
+          "control": "PF6 authored authorities and DRIFT-01 through DRIFT-10"
+        },
+        {
+          "risk": "partial member accepted",
+          "control": "PF7 frozen expected leaf set and reason-coded aggregation"
+        },
+        {
+          "risk": "required area mistaken for constructible detail",
+          "control": "WP05/WP06 actual coordinates/paths before WP07 quantities"
+        },
+        {
+          "risk": "serviceability assumptions remain implicit",
+          "control": "WP04 explicit basis/effective inputs and qualified cases"
+        },
+        {
+          "risk": "Excel add-in incompatibility",
+          "control": "PF9 exact runtime/bitness preflight and WP09 installed lifecycle"
+        },
+        {
+          "risk": "ETABS wrong/stale rows",
+          "control": "WP10 getter-only identity/result-epoch/row-ledger evidence"
+        },
+        {
+          "risk": "source model mutation or uncertain replay",
+          "control": "WP11 owned copy, single-use journal, readback and quarantine"
+        },
+        {
+          "risk": "performance work weakens correctness",
+          "control": "correctness precedes timing and budgets never relax PF7"
+        },
+        {
+          "risk": "migration scope overwhelms new library",
+          "control": "PF10 ordered group rules; non-beam Python remains supported outside initial parity"
+        }
+      ]
+    },
+    {
+      "id": "PF11-D5-acceptance-evidence-matrix",
+      "records": [
+        {
+          "work_packet": "WP01",
+          "required_evidence": [
+            "semantic/schema/data/vector authority validation",
+            "E4 flexure/geometry examples",
+            "E3 Python/.NET conformance",
+            "legacy translation replay",
+            "pure-package build/install"
+          ]
+        },
+        {
+          "work_packet": "WP02",
+          "required_evidence": [
+            "E4 shear/torsion source reconstruction",
+            "concurrent/non-concurrent cases",
+            "actual-link/perimeter fit",
+            "E3 conformance"
+          ]
+        },
+        {
+          "work_packet": "WP03",
+          "required_evidence": [
+            "closed-form/equilibrium solver cases",
+            "station jump/settlement/support cases",
+            "action canonical digest parity",
+            "unsupported analysis profiles"
+          ]
+        },
+        {
+          "work_packet": "WP04",
+          "required_evidence": [
+            "E4 screening/calculated SLS cases",
+            "short/long-term components",
+            "same-area different-arrangement crack cases",
+            "boundary/tolerance review"
+          ]
+        },
+        {
+          "work_packet": "WP05",
+          "required_evidence": [
+            "E4 anchorage/lap/curtailment/seismic cases",
+            "full arrangement coordinate oracle",
+            "constructability non-success",
+            "qualified engineering review"
+          ]
+        },
+        {
+          "work_packet": "WP06",
+          "required_evidence": [
+            "complete expected leaf fixtures",
+            "required non-applicable/not-evaluated/stale aggregation",
+            "actual-depth iteration",
+            "bar-path/mark reconciliation",
+            "E3 member conformance"
+          ]
+        },
+        {
+          "work_packet": "WP07",
+          "required_evidence": [
+            "independent BBS/quantity/cost arithmetic",
+            "formwork/contact-face reconciliation",
+            "report result-to-source trace",
+            "renderer cannot recalculate"
+          ]
+        },
+        {
+          "work_packet": "WP08",
+          "required_evidence": [
+            "exhaustive small-domain truth",
+            "deterministic tie/exclusion",
+            "cancelled/partial search claim",
+            "PERF-CANDIDATE-SEARCH"
+          ]
+        },
+        {
+          "work_packet": "WP09",
+          "required_evidence": [
+            "packed AMD64 XLL build",
+            "zero-host-call function instrumentation",
+            "controlled-write success/rollback",
+            "installed Excel E5 lifecycle",
+            "PERF-WORKBOOK",
+            "save/reopen sample workbook"
+          ]
+        },
+        {
+          "work_packet": "WP10",
+          "required_evidence": [
+            "installed signature/return-shape audit",
+            "PF8 E5-02 through E5-04",
+            "pre/post source state equality",
+            "portable snapshot replay",
+            "PERF-ETABS-ACQUISITION"
+          ]
+        },
+        {
+          "work_packet": "WP11",
+          "required_evidence": [
+            "coupling classifier cases",
+            "owned-copy dry-run/readback",
+            "fresh analysis/result/snapshot",
+            "original unchanged",
+            "failure/timeout quarantine",
+            "repeat from clean copy"
+          ]
+        },
+        {
+          "work_packet": "WP12",
+          "required_evidence": [
+            "PF10 surface/migration replay",
+            "all six performance budgets",
+            "Python/NuGet/XLL clean install",
+            "SBOM/licenses/signatures",
+            "complete docs curriculum",
+            "release preflight and separate owner authorization"
+          ]
+        }
+      ],
+      "gate_rule": "A work packet closes only on its listed evidence and unchanged scoped candidate. A milestone PR runs the union of its packets after content freeze; failures are root-caused and repaired before the required hosted gate."
+    },
+    {
+      "id": "PF11-D6-first-work-packet",
+      "packet_id": "WP01",
+      "objective": "Prove the full definition architecture with a useful host-free flexure slice implemented natively in Python and .NET.",
+      "scope": [
+        "Create authored semantic manifests, JSON Schemas, normalized IS 456 flexure data/provenance and conformance-vector layout under contracts/structural-engineering.",
+        "Implement PF4 quantity, optional/effective-input, result-state, diagnostic, identity and canonicalization primitives in both languages.",
+        "Implement FO01 bar area, FO02 mass per length, FO03 effective depth, FO04 flexural capacity, AO03 reinforcement geometry and AO06 flexure check.",
+        "Cover both bending signs, rectangular singly/doubly reinforced and eligible T/L compression-flange cases with actual reinforcement coordinates.",
+        "Return required/provided steel, neutral-axis/strain regime, capacity/utilization, minima/maxima, governing face/row, provenance and all PF4 states.",
+        "Add explicit compatibility projections only for audited current bar/flexure/geometry calls whose meaning can be recovered.",
+        "Publish Python and .NET quickstarts plus one valid, boundary, invalid and unsupported example per operation."
+      ],
+      "expected_paths": [
+        "contracts/structural-engineering/operations",
+        "contracts/structural-engineering/schemas",
+        "contracts/structural-engineering/code-data/is456",
+        "contracts/structural-engineering/conformance",
+        "Python/structural_lib/core",
+        "Python/structural_lib/codes/is456",
+        "Python/structural_lib/beam",
+        "CSharp/src/StructuralEngineering.Contracts",
+        "CSharp/src/StructuralEngineering.Core",
+        "CSharp/src/StructuralEngineering.Codes.IS456",
+        "CSharp/src/StructuralEngineering.Reinforcement",
+        "CSharp/src/StructuralEngineering.Beam",
+        "docs/library/getting-started",
+        "docs/library/reference/operations",
+        "docs/library/migration"
+      ],
+      "commit_sequence": [
+        "contracts/data/examples and validators",
+        "native Python operations and focused evidence",
+        "native .NET operations and focused evidence",
+        "cross-language conformance, compatibility and documentation"
+      ],
+      "acceptance": [
+        "Each operation matches its PF5 contract and has a unique semantic/version identity.",
+        "Canonical fixture bytes and normalized_input_id match between Python and .NET.",
+        "Each implementation independently matches PF7 E4 expected values and separately matches the other under T0-T4.",
+        "Exact nodes/boundaries and invalid/unsupported cases preserve PF4 states and diagnostics.",
+        "Changing any engineering input/profile/code-data revision changes the bound identity and stales prior results.",
+        "No Python/.NET pure project references Excel-DNA, CSI, FastAPI, React, workbook, COM or renderer code.",
+        "Compatibility wrappers expose effective translations and reject ambiguous span/cover/steel meanings.",
+        "The package builds/installs in the declared Python and .NET matrix; focused checks and milestone union evidence are recorded."
+      ],
+      "non_goals": [
+        "Excel functions or XLL changes",
+        "ETABS acquisition or model access",
+        "shear/torsion/serviceability",
+        "whole-member design/optimization",
+        "BBS/cost/report rendering",
+        "package publication or release"
+      ],
+      "estimate_engineer_days": "10-15",
+      "reviewers": [
+        "ROLE-ENGINEERING for source/applicability/E4",
+        "ROLE-PYTHON",
+        "ROLE-DOTNET",
+        "ROLE-ASSURANCE"
+      ],
+      "stop_rule": "Do not broaden the packet to another check family or application. If the semantic contract, source evidence or independent expected result cannot be resolved, correct the owning PF artefact before implementing that branch."
+    }
+  ],
+  "exit_evidence": [
+    {
+      "criterion": "Every work item traces to an operation and evidence requirement.",
+      "evidence": [
+        "PF11-D2 maps AO01-AO26 and FO01-FO08; PF11-D3/D5 bind each WP01-WP12 packet to operations, capabilities and acceptance evidence."
+      ]
+    },
+    {
+      "criterion": "No public semantic or application transaction is left to accidental invention during coding.",
+      "evidence": [
+        "PF11-D1 freezes 15 invariants/authority paths; PF11-D3 maps application phases; PF11-D6 fixes the first packet contract, paths, commits, evidence and exclusions."
+      ]
+    },
+    {
+      "criterion": "The first packet is bounded and exercises the architecture.",
+      "evidence": [
+        "WP01 implements six host-free operations in both languages with semantic/schema/data authorities, E4/E3 evidence, compatibility and docs while excluding all application and later engineering scope."
+      ]
+    }
+  ]
+}

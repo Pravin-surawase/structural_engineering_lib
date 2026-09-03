@@ -1,0 +1,160 @@
+{
+  "phase_id": "PF10",
+  "title": "Migration, compatibility, versioning and documentation",
+  "revision_date": "2026-09-04",
+  "state": "complete",
+  "decision_ids": ["D21", "D22"],
+  "source_evidence": [
+    "../pf1/baseline.json",
+    "../pf2/baseline.json",
+    "../pf4/baseline.json",
+    "../pf5/baseline.json",
+    "../pf6/baseline.json",
+    "../pf9/baseline.json",
+    "../../../../../Python/structural_lib/data/advertised_entry_points_v1.json",
+    "../../../../../Python/structural_lib/services/family_facade_registry.py",
+    "../../../../../CSharp/README.md"
+  ],
+  "deliverables": [
+    {
+      "id": "PF10-D1-api-disposition-ledger",
+      "coverage_baseline": {
+        "python_root_exports": 489,
+        "python_root_callable_exports": 466,
+        "python_services_api_exports": 245,
+        "advertised_cli_entries": 15,
+        "advertised_family_facades": 13,
+        "csharp_working_operations": 5,
+        "csharp_excel_functions": 4,
+        "coverage_validator": "../pf2/audit_public_surfaces.py"
+      },
+      "python_module_groups": [
+        {"id": "PY-G01", "matches": ["structural_lib.services.etabs", "structural_lib.services.contracts.etabs"], "final_disposition": "compatibility_wrap_then_replace_adapter", "target": "portable structural.analysis_snapshot/v1 plus optional Python captured-snapshot tools; live product adapter is StructuralEngineering.Etabs", "reason": "preserve source/identity workflows without putting vendor fields in the common kernel"},
+        {"id": "PY-G02", "matches": ["structural_lib.visualization", "structural_lib.services.dxf", "structural_lib.services.excel"], "final_disposition": "retain_optional_adapter", "target": "structural_lib.reporting/adapters and application packages", "reason": "rendering and spreadsheet I/O remain useful outside the common calculation set"},
+        {"id": "PY-G03", "matches": ["structural_lib.services.column", "structural_lib.services.slab", "structural_lib.services.wall", "structural_lib.services.staircase", "structural_lib.services.deep_beam", "structural_lib.services.flat_slab", "structural_lib.services.footing", "structural_lib.services.combined_footing", "structural_lib.services.strap_footing", "structural_lib.services.gravity", "structural_lib.core.building_gravity", "structural_lib.core.gravity"], "final_disposition": "retain_python_supported_surface_outside_initial_common_set", "target": "current typed Python facade plus later separately approved parity profiles", "reason": "existing users retain supported behavior; no automatic C# port without workflow and assurance scope"},
+        {"id": "PY-G04", "matches": ["structural_lib.services.optimization", "structural_lib.services.multi_objective_optimizer", "structural_lib.services.costing", "structural_lib.services.beam_candidate"], "final_disposition": "correct_and_migrate", "target": "AO04/AO05/AO20/AO21 with PF7 expected-leaf and search-completeness rules", "reason": "current decomposition is useful but old meanings cannot remain authoritative"},
+        {"id": "PY-G05", "matches": ["structural_lib.services.calculation_report", "structural_lib.services.calculation_dossier", "structural_lib.core.calculation_dossier"], "final_disposition": "retain_record_translate_renderer", "target": "AO24 common calculation-package record plus optional renderers", "reason": "engineering content is reusable while file layout is an adapter"},
+        {"id": "PY-G06", "matches": ["structural_lib.codes.is456"], "final_disposition": "selective_reuse_after_pf7_promotion", "target": "FO01-FO08 and AO06-AO13 under structural_lib.codes.is456", "reason": "source/applicability/evidence decide reuse operation by operation"},
+        {"id": "PY-G07", "matches": ["structural_lib.core"], "final_disposition": "migrate_to_pf4_contracts_with_compatibility", "target": "structural_lib.core quantities/geometry/materials/identity/state", "reason": "core names are retained only where their physical meaning matches PF4"},
+        {"id": "PY-G08", "matches": ["structural_lib.services"], "final_disposition": "selective_service_migration_and_thin_compatibility", "target": "PF6 beam/analysis/reinforcement/construction/optimization/reporting namespaces", "reason": "service callers keep a path while new code uses operation-level APIs"},
+        {"id": "PY-G09", "matches": ["typing"], "final_disposition": "omit_non_domain_reexport", "target": "Python standard typing import", "reason": "not a structural-engineering public capability"}
+      ],
+      "advertised_groups": [
+        {"id": "ADV-G01", "entries": ["install-preflight", "capabilities", "validate", "mark-diff"], "disposition": "retain compatibility diagnostics and point to new package/application receipts"},
+        {"id": "ADV-G02", "entries": ["beam-v1", "design", "job"], "disposition": "route through AO14/AO15/AO17 and common result envelopes"},
+        {"id": "ADV-G03", "entries": ["bbs", "detail", "dxf", "report", "critical"], "disposition": "accept current result fixture, translate to AO18/AO19/AO24 consumers and report limitations"},
+        {"id": "ADV-G04", "entries": ["gravity-v1", "excel-v1"], "disposition": "preserve existing Python workflow outside the first beam parity set; migrate Excel product users to XL-CMD-01 through XL-CMD-07"},
+        {"id": "ADV-G05", "entries": ["smart"], "disposition": "retain optional legacy preview during deprecation; omit from normative library documentation"},
+        {"id": "ADV-G06", "entries": ["is456.beam.design/v1", "is456.torsion.design/v1"], "disposition": "migrate to AO06/AO08/AO17 with explicit semantic translation"},
+        {"id": "ADV-G07", "entries": ["is456.column.supplied-steel-check/v1", "is456.slab.one-way/v1", "is456.slab.continuous-one-way/v1", "is456.slab.two-way/v1", "is456.wall.braced-axial/v1", "is456.staircase.straight-flight/v1", "is456.deep-beam.simply-supported/v1", "is456.flat-slab.regular-interior/v1", "is456.isolated-footing.concentric/v1", "is456.combined-footing.symmetric/v1", "is456.strap-footing.property-line/v1"], "disposition": "retain current Python facade/support contract; no initial .NET parity claim"}
+      ],
+      "csharp_groups": [
+        {"current": "ForceNormalizer.Normalize", "disposition": "compatibility wrapper", "target": "AO01 NormalizeActionSnapshot plus StructuralEngineering.Etabs source envelope"},
+        {"current": "BeamLineSolver.Solve", "disposition": "retain/migrate", "target": "AO02 SolveBeamLine"},
+        {"current": "ReinforcementGeometry.Evaluate", "disposition": "retain/extend", "target": "AO03 and AO26"},
+        {"current": "QuantityCalculator.Calculate", "disposition": "retain/correct input", "target": "AO04 over resolved paths/contact faces"},
+        {"current": "CandidateRanker.Rank", "disposition": "retain/correct result detail", "target": "AO05 with profile-derived expected leaves and reason-coded exclusions"},
+        {"current": "Functions.Version", "disposition": "compatibility", "target": "STR.INFO/version manifest"},
+        {"current": "Functions.BarMass", "disposition": "compatibility", "target": "FO02"},
+        {"current": "Functions.RebarGeometry", "disposition": "compatibility", "target": "AO03"},
+        {"current": "Functions.SimplySupportedUdl", "disposition": "compatibility", "target": "AO02 bounded convenience projection"},
+        {"current": "ContractJson, ContractSchemas, InputValidationException, Require", "disposition": "retain patterns and replace meaning/version contract", "target": "PF4-PF6 result, diagnostic, schema and canonicalization authorities"},
+        {"current": "public StructAutomate records/enums", "disposition": "translate then deprecate", "target": "PF5 domain/result records with explicit semantic IDs"}
+      ],
+      "coverage_rule": "The ordered PY-G01 through PY-G09 prefixes classify every callable counted by the PF2 audit. Advertised and C# groups are exact enumerations. Any new public surface fails the ledger validator until classified."
+    },
+    {
+      "id": "PF10-D2-migration-matrix",
+      "semantic_translations": [
+        {"legacy": "span/span_mm", "new": "centreline_span_mm, clear_span_mm, effective_span_mm or analysis_length_mm", "behavior": "wrapper resolves only from explicit context and returns COMPAT.TRANSLATED; otherwise rejects ambiguity"},
+        {"legacy": "cover_mm", "new": "nominal_cover_mm plus reinforcement_surface", "behavior": "no assumed bar/link surface"},
+        {"legacy": "steel area", "new": "required/provided/selected/scheduled steel area", "behavior": "state travels separately through every result"},
+        {"legacy": "bar length", "new": "bar_path_length_mm or fabrication_cut_length_mm", "behavior": "bend/allowance policy required for cut length"},
+        {"legacy": "cost", "new": "itemized quantity/rate/currency/date/geography/scope and direct cost", "behavior": "no default rates"},
+        {"legacy": "None/blank/zero default", "new": "PF4 optional-value states", "behavior": "wrapper records whether supplied/defaulted/derived or rejects"},
+        {"legacy": "exception or Boolean pass", "new": "PF4 independent result dimensions and PF5 diagnostics", "behavior": "application maps structured outcome; approval stays separate"},
+        {"legacy": "EtabsForceBatch common contract", "new": "RawActionSnapshot plus adapter envelope and NormalizedActionSnapshotResult", "behavior": "preserve all provenance while removing vendor dependence from AO01"},
+        {"legacy": "component max/min design row", "new": "classified concurrent/response/component/design action basis", "behavior": "interaction checks refuse non-concurrent input unless method explicitly supports it"},
+        {"legacy": "required check ID list", "new": "profile-derived expected_leaf_set", "behavior": "ranker retains reason/state for every exclusion"}
+      ],
+      "adoption_stages": [
+        {"id": "M0", "name": "introduce", "rule": "add new semantic contracts/packages and replay fixtures without changing existing callers"},
+        {"id": "M1", "name": "translate", "rule": "route selected old calls through one compatibility wrapper and compare effective inputs/results"},
+        {"id": "M2", "name": "document", "rule": "publish migration mapping/cookbook and make new APIs primary in generated reference"},
+        {"id": "M3", "name": "deprecate", "rule": "emit structured runtime/static warnings, collect opt-in usage evidence and preserve old result fixtures"},
+        {"id": "M4", "name": "remove_or_freeze", "rule": "remove only at an announced major version after the compatibility period; freeze unsafe ambiguous calls as explicit rejections earlier"}
+      ],
+      "consumer_paths": [
+        {"consumer": "ordinary Python import", "path": "install the new wheel version; use structural_lib core/code/beam operations; legacy root/services imports continue through M1-M3"},
+        {"consumer": "Python CLI or family facade", "path": "same command/journey accepts versioned old request, returns translation diagnostics and offers the new request/result contract"},
+        {"consumer": ".NET/NuGet", "path": "replace StructAutomate namespaces progressively with StructuralEngineering packages; compatibility package supplies published recoverable names"},
+        {"consumer": "existing XLL function", "path": "old four functions delegate to PF8 function families and display a migration/help link without altering the result"},
+        {"consumer": "serialized JSON/schema", "path": "explicit major-version translator produces canonical new request plus migration receipt; unknown/ambiguous fields reject"},
+        {"consumer": "Excel workbook", "path": "template migration command reads named old tables, previews changes, writes a copy, recalculates and reconciles current/stale outputs"},
+        {"consumer": "ETABS snapshot", "path": "adapter migrates supported captured source to structural.analysis_snapshot/v1; source bytes and old identity remain linked"},
+        {"consumer": "non-beam Python facade", "path": "remains on its current documented Python contract until its own parity programme is approved"}
+      ]
+    },
+    {
+      "id": "PF10-D3-versioning-policy",
+      "version_axes": [
+        {"axis": "package_version", "owner": "Python/NuGet/XLL release", "breaking_when": "public source/binary compatibility or supported runtime changes"},
+        {"axis": "operation_semantic_version", "owner": "each PF5 semantic operation", "breaking_when": "meaning, applicability, quantity/unit/sign, required input/check or outcome meaning changes"},
+        {"axis": "schema_version", "owner": "interchange contract", "breaking_when": "required/typed structure or unknown-field compatibility changes"},
+        {"axis": "profile_version", "owner": "supported engineering scope and defaults", "breaking_when": "expected leaf set, applicability or named default changes"},
+        {"axis": "code_data_revision", "owner": "normalized design-code data/rules", "breaking_when": "source edition/amendment, table node, interpolation/cap or rule implementation changes"},
+        {"axis": "corpus_revision", "owner": "assurance fixtures", "breaking_when": "promoted expected value/source/tolerance/evidence changes"},
+        {"axis": "workbook_template_version", "owner": "Excel table/function/command contract", "breaking_when": "controlled tables, names, calculation/migration behavior or required add-in changes"},
+        {"axis": "adapter_version", "owner": "Excel/ETABS adapter", "breaking_when": "host method/return shape, transaction, receipt or supported host tuple changes"},
+        {"axis": "calculation_package_template_version", "owner": "report renderer", "breaking_when": "issued package structure/presentation changes without changing semantic calculation data"}
+      ],
+      "rules": [
+        "Results and receipts record every version axis that can affect their meaning or replay.",
+        "Package SemVer does not hide code-data/profile/schema changes; compatibility matrix declares accepted combinations.",
+        "Compatible additions are optional, have no engineering default effect and preserve canonical old effective inputs/results.",
+        "A corrected unsafe ambiguity receives a new semantic major and the legacy wrapper rejects unresolved use; compatibility never recreates a known wrong result.",
+        "Deprecation lasts at least two published minor releases and six months before major removal unless continuing behavior is unsafe; removal dates and alternatives are published at first warning.",
+        "Reproducible past calculations retain exact old code-data/profile/schema artifacts or return a clear non-replayable state; they are never recalculated silently with new rules."
+      ]
+    },
+    {
+      "id": "PF10-D4-documentation-architecture",
+      "sections": [
+        {"path": "docs/library/getting-started", "content": ["install Python", "install .NET", "first small value", "first member", "choose direct library or Excel"]},
+        {"path": "docs/library/concepts", "content": ["capability/profile scope", "quantities and units", "actions/axes/stations", "optional values", "result states", "identity/provenance", "approval"]},
+        {"path": "docs/library/reference/operations", "content": ["FO01-FO08", "AO01-AO26", "request/result fields", "applicability", "diagnostics", "versions", "examples"]},
+        {"path": "docs/library/reference/python", "content": ["idiomatic signatures", "types", "exceptions/programmer errors", "package extras"]},
+        {"path": "docs/library/reference/dotnet", "content": ["idiomatic signatures", "records", "async/cancellation", "NuGet assemblies"]},
+        {"path": "docs/library/cookbook", "content": ["small values", "section capacity/check", "complete member", "construction/BBS", "batch", "custom catalogues", "snapshot replay"]},
+        {"path": "docs/library/excel", "content": ["install/preflight", "function catalogue", "workbook tables", "commands", "diagnostics", "migration", "performance"]},
+        {"path": "docs/library/etabs", "content": ["supported host matrix", "snapshot acquisition", "action meaning", "identity/freshness", "copied-model reanalysis", "recovery"]},
+        {"path": "docs/library/assurance", "content": ["sources/code data", "evidence levels", "examples/corpus", "tolerances", "qualified review", "limitations"]},
+        {"path": "docs/library/migration", "content": ["version matrix", "Python mapping", ".NET mapping", "JSON/workbook migration", "deprecations", "corrected semantics"]},
+        {"path": "docs/library/releases", "content": ["changelog by semantic operation", "artifact/runtime matrix", "known limitations", "support bundle", "replay policy"]}
+      ],
+      "generation": "Operation signatures/fields, diagnostic codes, version matrices and example indexes are generated/checkable projections from PF5-PF10 authorities. Engineering explanations, applicability rationale and migration guidance are reviewed prose.",
+      "discoverability": ["one canonical page per semantic operation", "cross-links from Python/.NET/Excel names to semantic operation", "searchable diagnostic-code pages", "copyable complete examples", "visible supported/unsupported profile and evidence state"]
+    },
+    {
+      "id": "PF10-D5-example-curriculum",
+      "levels": [
+        {"id": "CUR-00", "title": "quantities and small values", "operations": ["FO01", "FO02", "FO03"], "interfaces": ["Python", ".NET", "Excel"], "teaches": "explicit units, effective inputs and unrounded/display values"},
+        {"id": "CUR-01", "title": "capacity versus check", "operations": ["FO04", "FO05", "AO06", "AO07"], "interfaces": ["Python", ".NET", "Excel"], "teaches": "capacity, demand check, required/provided steel and non-success"},
+        {"id": "CUR-02", "title": "ordinary standalone member", "operations": ["AO14", "AO15", "AO17", "AO26"], "interfaces": ["Python", ".NET", "Excel"], "teaches": "project/profile, topology, expected checks, complete member result"},
+        {"id": "CUR-03", "title": "continuous, torsion and serviceability", "operations": ["AO02", "AO08", "AO09", "AO10", "AO11", "AO12"], "interfaces": ["Python", ".NET", "Excel"], "teaches": "stations, concurrent actions, both faces, long-term basis and detailing"},
+        {"id": "CUR-04", "title": "resolved construction output", "operations": ["AO03", "AO04", "AO18", "AO19", "AO20", "AO24", "AO26"], "interfaces": ["Python", ".NET", "Excel"], "teaches": "layers, paths, BBS, formwork, cost and calculation package"},
+        {"id": "CUR-05", "title": "standalone Excel workflow", "operations": ["AO14", "AO15", "AO17", "AO18", "AO21", "AO23", "AO24", "AO25", "AO26"], "interfaces": ["Excel"], "teaches": "functions vs commands, tables, freshness, optimization, export and performance"},
+        {"id": "CUR-06", "title": "ETABS snapshot and replay", "operations": ["AO01", "AO16", "AO17", "AO24"], "interfaces": [".NET adapter", "Python replay", "Excel command"], "teaches": "preflight, signed rows, source identity, offline calculation and limitations"},
+        {"id": "CUR-07", "title": "fixed-action and coupled optimization", "operations": ["AO05", "AO21", "AO22"], "interfaces": [".NET", "Excel", "ETABS copy"], "teaches": "candidate completeness, reanalysis classifier, copied-model transaction and comparison"},
+        {"id": "CUR-08", "title": "review and correction", "operations": ["AO06-AO26", "approval_record"], "interfaces": ["Python", ".NET", "Excel", "calculation package"], "teaches": "leaf provenance, issue correction, stale invalidation, checked/approved record"}
+      ],
+      "example_contract": ["purpose and supported profile", "complete request in canonical units", "effective inputs and origins", "unrounded expected outputs and tolerance", "states/diagnostics/provenance/identities", "one meaningful non-success branch", "equivalent Python/.NET projection where common", "links to source and evidence record"],
+      "learning_rule": "A user can complete CUR-00 through CUR-04 without Excel or ETABS. Excel and ETABS examples reuse the same operation fixtures rather than teach separate formulas."
+    }
+  ],
+  "exit_evidence": [
+    {"criterion": "Every existing public caller has a path or a reasoned unsupported outcome.", "evidence": ["PF10-D1 covers all PF2-counted Python exports/CLI/facades and current C# operations/functions; PF10-D2 provides eight consumer paths."]},
+    {"criterion": "Compatibility wrappers translate semantics.", "evidence": ["PF10-D2 defines ten semantic translations, five adoption stages and explicit rejection for unresolved unsafe ambiguity."]},
+    {"criterion": "Users can find small, member, Excel and ETABS examples.", "evidence": ["PF10-D4 defines eleven documentation areas and PF10-D5 defines nine progressive curricula across all four routes."]}
+  ]
+}

@@ -15,14 +15,21 @@ This is the shared entry point for the XLL product planning and beginner learnin
 
 ## Read in this order
 
-**New owner-selected workflow:** [Standalone Excel beam requirements and contract proposal](requirements-first/README.md) records the 3 September requirements-first research across all three projects. It supplements this plan; its proposed delivery packets do not rename P0–P6 or change the Windows shell exercise.
+**Completed library definition:** the
+[PF0–PF11 structural library definition programme](library-definition/README.md)
+reconciles the existing Python library, C# foundation, three-project evidence,
+standalone Excel workflow and later ETABS automation into twelve implementation
+packets. Its PF11 blueprint is the authority for new library work.
 
-1. [Original XLL architecture](../excel-dna-xll-product-architecture-decision.md): what was actually proposed.
-2. [Current plan](current-plan.md): the source hierarchy and present scope.
-3. [Phase comparison and improvements](phase-review.md): original meanings, proposed refinements and the broad POC versus shell-packet distinction.
-4. [Windows P0 task](windows-p0-task.txt): the controlling first exercise.
-5. [Research map](research/README.md): studies, costs, requirements, acceptance examples and unfinished questions.
-6. [Learning record](learning/README.md): the last observed result and the next exercise.
+**Owner-selected workflow:** [Standalone Excel beam requirements and contract proposal](requirements-first/README.md) records the 3 September requirements-first research across all three projects. It supplements this plan; its proposed delivery packets do not rename P0–P6 or change the Windows shell exercise.
+
+1. [PF0–PF11 library definition](library-definition/README.md): the complete requirements, semantics, APIs, assurance, boundaries and implementation blueprint.
+2. [Original XLL architecture](../excel-dna-xll-product-architecture-decision.md): what was actually proposed.
+3. [Current plan](current-plan.md): the source hierarchy and present scope.
+4. [Phase comparison and improvements](phase-review.md): original meanings, proposed refinements and the broad POC versus shell-packet distinction.
+5. [Windows P0 task](windows-p0-task.txt): the controlling first exercise.
+6. [Research map](research/README.md): studies, costs, requirements, acceptance examples and unfinished questions.
+7. [Learning record](learning/README.md): the last observed result and the next exercise.
 
 ## Original phase meanings
 

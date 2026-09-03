@@ -1,0 +1,159 @@
+{
+  "phase_id": "PF8",
+  "title": "Excel, ETABS and coupled-automation boundary",
+  "revision_date": "2026-09-03",
+  "state": "complete",
+  "decision_ids": ["D16", "D17", "D18"],
+  "source_evidence": [
+    "../pf1/baseline.json",
+    "../pf4/baseline.json",
+    "../pf5/baseline.json",
+    "../pf6/baseline.json",
+    "../pf7/baseline.json",
+    "../../automation/operations.json",
+    "../../../excel-etabs-beam-next-phase-plan.md",
+    "../../../../../docs/guides/etabs-api-integration.md",
+    "../../../../../docs/verification/etabs-w3h-access-recovery-evidence.json",
+    "../../../../../docs/verification/etabs-w3j-excel-review-evidence.json",
+    "../../../../../docs/verification/etabs-w3j-installed-review-evidence.json"
+  ],
+  "deliverables": [
+    {
+      "id": "PF8-D1-etabs-acquisition-contract",
+      "semantic_id": "etabs.boundary.acquire_snapshot/v1",
+      "modes": [
+        {"id": "attached_observe", "permissions": "getter-only acquisition from an identified existing process/model; no selection, unit, lock, analysis, save or exit mutation"},
+        {"id": "owned_copy_export", "permissions": "open an identified disposable copy and perform only the declared acquisition preparation/export"},
+        {"id": "owned_copy_mutate", "permissions": "apply one declared transaction to an identified disposable copy and reanalyse under AO22"}
+      ],
+      "stages": [
+        {"id": "ET-01-PREFLIGHT", "required_fields": ["operation_id", "mode", "capability_id", "lease_id", "process_id_and_start_time", "runtime_fingerprint", "model_identity", "saved_checkpoint_identity", "access_policy", "pre_state_identity", "result_epoch_identity", "result_selection", "present_units", "requested_scope", "deadline_utc"], "acceptance": "Target, runtime, model, capability, lease, completed analysis epoch and selected results are exact and current before the first result getter. Attached mode requires no setter capability."},
+        {"id": "ET-02-ACQUIRE-RAW", "required_fields": ["hash_chained_call_ledger", "method_signature_authority", "argument_digest", "return_code", "raw_return_shape", "model_and_session_state", "units", "locks_and_status", "object_element_mapping", "geometry", "sections_materials_modifiers_offsets_releases_axes", "raw_result_rows"], "acceptance": "Each call has a proved signature, successful return code, bounded shape and equal parallel-array lengths. Raw source-row identity is retained and partial canonical output is forbidden."},
+        {"id": "ET-03-NORMALIZE-OFFLINE", "required_fields": ["raw_artifact_id", "acquisition_id", "model_revision_id", "analysis_revision_id", "source_units_and_conversion", "right_handed_axes", "object_and_element_stations", "station_side", "case_combination_step", "signed_P_V2_V3_T_M2_M3", "row_disposition"], "acceptance": "Convert once to PF4 units, retain six components from the same row, keep object/element identities separate and resolve physical face only from geometry/axis evidence."},
+        {"id": "ET-04-POSTFLIGHT", "required_fields": ["post_state_identity", "post_target_runtime_model_result_observation", "ledger_head_count_hash", "artifact_hashes", "restoration_status", "fence_status"], "acceptance": "Attached pre/post observed state is equal without issuing restore setters. Owned-copy work restores temporary state or returns restoration_unverified."},
+        {"id": "ET-05-CLOSE", "required_fields": ["snapshot_id_or_typed_non_success", "evidence_manifest_hash", "limitations", "diagnostics"], "acceptance": "Timeout, broker loss, decode failure, state drift, lease loss or unmatched started call produces not_run, fenced, transaction_uncertain or restoration_unverified and prohibits automatic reconnect/replay."}
+      ],
+      "states": ["preflight_pending", "preflight_accepted", "acquiring", "normalizing", "postflight_verifying", "completed", "preflight_rejected", "fenced", "restoration_unverified", "transaction_uncertain", "cancelled"],
+      "no_side_effect_rule": "An attached target can never be promoted to owned within an operation. The original model is never a candidate mutation target."
+    },
+    {
+      "id": "PF8-D2-analysis-snapshot-contract",
+      "semantic_id": "structural.analysis_snapshot/v1",
+      "required_fields": {
+        "identity": ["schema_version", "snapshot_id", "snapshot_sha256", "created_at_utc", "source_system", "adapter_semantic_id", "adapter_build_id"],
+        "source_identity": ["raw_artifact_id", "acquisition_id", "model_revision_id", "analysis_revision_id", "result_epoch_id", "source_byte_hashes", "source_version", "runtime_fingerprint", "process_identity_when_live"],
+        "scope": ["project", "physical_member", "source_object", "analysis_element", "object_station", "element_station", "station_side", "result_selection", "output_case", "step_type", "step_number"],
+        "units_and_transform": ["original_units", "conversion_factors", "right_handed_local_axes", "source_to_common_transform", "face_resolution_evidence"],
+        "model_facts": ["geometry", "topology_mapping", "section", "material", "stiffness_modifiers", "offsets", "releases", "auto_select_state", "limitations"],
+        "action_rows": ["row_id", "all_scope_identities", "P_kN", "V2_kN", "V3_kN", "T_kNm", "M2_kNm", "M3_kNm", "action_basis"],
+        "control": ["row_ledger", "normalization_rule_and_version", "diagnostics", "freshness", "provenance", "limitations", "evidence_manifest_sha256"]
+      },
+      "row_dispositions": ["accepted", "approved_exclusion", "blocked"],
+      "acceptance_rules": [
+        "A component envelope never substitutes for a concurrent interaction vector.",
+        "Complete_for_scope is impossible with a blocked row, unmatched exclusion approval, unresolved object/element mapping, unresolved axis/face, invalid unit conversion or stale/missing analysis epoch.",
+        "The snapshot digest covers all engineering-bearing fields, source evidence, row ledger, exclusions, mappings and normalized payload; only its own digest and presentation-only fields are excluded.",
+        "Consumers calculate, rank, report and replay without COM, ETABS, workbook mutation or source-model access.",
+        "Action rows declare static_concurrent, staged_step, response_result, component_envelope or design_envelope and operations enforce their accepted bases."
+      ]
+    },
+    {
+      "id": "PF8-D3-excel-function-command-catalogue",
+      "worksheet_functions": [
+        {"family": "STR.INFO", "operations": ["version", "semantic/schema/code-data revisions"], "return_shape": "scalar/spill diagnostic"},
+        {"family": "STR.REBAR", "operations": ["FO01", "FO02", "FO03", "AO03", "AO26"], "return_shape": "scalar or bounded spill"},
+        {"family": "STR.IS456.FLEXURE", "operations": ["FO04", "AO06"], "return_shape": "scalar capacity/utilization or bounded diagnostic spill"},
+        {"family": "STR.IS456.SHEAR", "operations": ["FO05", "AO07"], "return_shape": "scalar capacity/utilization or bounded diagnostic spill"},
+        {"family": "STR.IS456.TORSION", "operations": ["AO08"], "return_shape": "bounded check spill"},
+        {"family": "STR.IS456.SLS", "operations": ["FO07", "FO08", "AO09", "AO10"], "return_shape": "scalar value/utilization or bounded check spill"},
+        {"family": "STR.IS456.DETAIL", "operations": ["FO06", "AO11", "AO12", "AO13"], "return_shape": "scalar required value or bounded check spill"},
+        {"family": "STR.BEAM.LINE", "operations": ["AO02"], "return_shape": "bounded station/result spill from explicit immutable input"},
+        {"family": "STR.CONSTRUCTION", "operations": ["AO04", "AO19", "AO20"], "return_shape": "bounded quantity/schedule summary from resolved current details"}
+      ],
+      "function_rules": [
+        "A function is pure and deterministic over fully supplied scalar/range/serialized immutable input.",
+        "Thread-safe registration is allowed only when no Excel object model, COM, mutable static state, file, network, clock or ETABS process is touched.",
+        "Blank, zero, null and absent are converted according to PF4 before calculation.",
+        "Functions return semantic operation ID, input-cell/path mapping, result states, calculation identity and structured diagnostic code in scalar or spill form.",
+        "Functions cannot select an ETABS result, acquire COM data, write ranges, save/export files, start processes, mutate models, run long candidate search or record approval/currentness.",
+        "Large member design, optimization, reporting and application work run as commands with progress and cancellation rather than repeated cell calls."
+      ],
+      "commands": [
+        {"id": "XL-CMD-01", "name": "Create/validate beam project", "owns": ["AO14", "AO15"], "receipt": "project/topology revisions and row-field diagnostics"},
+        {"id": "XL-CMD-02", "name": "Import ETABS snapshot", "owns": ["AO16"], "receipt": "snapshot, acquisition/analysis identities, artifact hashes and limitations"},
+        {"id": "XL-CMD-03", "name": "Calculate workbook", "owns": ["AO17", "AO18", "AO23", "AO26"], "receipt": "input-table revision, controlled-range preimage, output revision, freshness ledger and row diagnostics"},
+        {"id": "XL-CMD-04", "name": "Optimize beam", "owns": ["AO05", "AO21"], "receipt": "domain/criteria/catalogue digests, explored count, cancellation/completeness and ranking"},
+        {"id": "XL-CMD-05", "name": "Apply candidate to ETABS copy", "owns": ["AO22"], "receipt": "transaction, copy identity, dry-run digest, stage and reanalysis evidence"},
+        {"id": "XL-CMD-06", "name": "Export calculation package", "owns": ["AO24"], "receipt": "result/detail/report IDs and output artifact hashes"},
+        {"id": "XL-CMD-07", "name": "Measure/diagnose workbook", "owns": ["AO25"], "receipt": "workbook/XLL/runtime/machine IDs, samples, percentiles and workload revision"}
+      ],
+      "command_rules": [
+        "Commands execute outside worksheet recalculation, use bulk table I/O and provide progress/cancellation.",
+        "Every controlled range write has preimage, write, readback and rollback evidence; failure cannot leave stale output marked current.",
+        "Only declared controlled tables are changed; user formulas, comments and unrelated sheets remain outside the command scope."
+      ],
+      "diagnostic_mapping": [
+        {"condition": "blank/invalid field", "codes": ["INPUT.REQUIRED", "INPUT.RANGE", "INPUT.CONFLICT"], "outcome": "rejected_input"},
+        {"condition": "function requests host effect", "codes": ["EXCEL.UDF.SIDE_EFFECT_FORBIDDEN"], "outcome": "software_error"},
+        {"condition": "ETABS identity/result/selection drift", "codes": ["ETABS.IDENTITY_DRIFT", "ETABS.RESULT_EPOCH_INVALID", "ETABS.SELECTION_UNPROVED"], "outcome": "not_run"},
+        {"condition": "invalid ETABS arrays/shape", "codes": ["ETABS.DECODE_INVALID"], "outcome": "not_run and no partial snapshot"},
+        {"condition": "axis or object/element mapping unresolved", "codes": ["AXIS.UNRESOLVED", "ETABS.MAPPING_UNRESOLVED"], "outcome": "not_evaluated and blocked snapshot"},
+        {"condition": "ledger/lease/broker uncertainty", "codes": ["ETABS.LEDGER_UNFINALIZED", "ETABS.LEASE_LOST", "ETABS.BROKER_UNCERTAIN"], "outcome": "fenced or transaction_uncertain"},
+        {"condition": "restore/readback failure", "codes": ["ETABS.RESTORATION_UNVERIFIED", "EXCEL.ROLLBACK_UNVERIFIED"], "outcome": "restoration_unverified"},
+        {"condition": "incomplete search", "codes": ["SEARCH.INCOMPLETE"], "outcome": "best-so-far only; no optimum or total-infeasibility claim"}
+      ]
+    },
+    {
+      "id": "PF8-D4-optimization-state-machine",
+      "candidate_classifier": {
+        "semantic_id": "structural.beam_candidate.classify_coupling/v1",
+        "required_fields": ["candidate_id", "candidate_definition_sha256", "baseline_snapshot_id", "baseline_analysis_revision_id", "changed_objects", "old_and_new_values", "change_categories", "coupling_reasons", "reanalysis_decision", "classifier_rule_version", "criteria_authority"],
+        "classes": [
+          {"id": "fixed_action", "changes": ["actual bars", "detailing", "bar paths", "BBS", "rates/cost", "report options"], "consequence": "reuse one immutable analysis revision but evaluate every required check"},
+          {"id": "reanalysis_required", "changes": ["section dimensions/property", "material/stiffness modifiers", "releases", "offsets", "mass/self-weight", "applied load", "load case/combination", "support/restraint", "meshing", "analysis settings"], "consequence": "owned copy, new model/analysis revision, authorized dependency closure, new snapshot and comparison"},
+          {"id": "unresolved", "changes": ["unknown impact", "auto-select ambiguity", "missing mapping", "incomplete project basis"], "consequence": "not_run; resolve classification before evaluation or mutation"}
+        ]
+      },
+      "states": ["baseline_bound", "candidate_classified", "fixed_action_evaluated", "copy_preflight_valid", "dry_run_valid", "setters_applied", "readback_valid", "analysis_started", "analysis_finished", "result_epoch_accepted", "snapshot_accepted", "candidate_evaluated", "ranked", "selected", "closed", "preflight_rejected", "transaction_uncertain", "copy_quarantined", "cancelled"],
+      "transitions": [
+        "baseline_bound -> candidate_classified",
+        "candidate_classified(fixed_action) -> fixed_action_evaluated -> candidate_evaluated -> ranked",
+        "candidate_classified(reanalysis_required) -> copy_preflight_valid -> dry_run_valid -> setters_applied -> readback_valid -> analysis_started -> analysis_finished -> result_epoch_accepted -> snapshot_accepted -> candidate_evaluated -> ranked",
+        "candidate_classified(unresolved) -> preflight_rejected",
+        "any pre-effect state -> cancelled",
+        "interruption after a non-idempotent effect -> transaction_uncertain -> copy_quarantined",
+        "ranked -> selected -> closed"
+      ],
+      "transaction_rules": [
+        "The mutation transaction is single-use and non-idempotent; interruption records the latest durable stage and never automatically replays setter, analysis, save or exit.",
+        "Every setter has a dry-run old/new digest and readback before analysis.",
+        "The original model, attached process and immutable baseline remain untouched.",
+        "Selection requires PF7-qualified candidates; an incomplete candidate domain cannot produce an optimum claim."
+      ]
+    },
+    {
+      "id": "PF8-D5-installed-acceptance-plan",
+      "evidence_level": "E5",
+      "claim_boundary": "Installed software behavior on the identified candidate/environment; not independent engineering proof, professional approval or release authorization.",
+      "scenarios": [
+        {"id": "E5-01", "scenario": "Excel function recalculation while ETABS is available", "pass": "call ledger proves zero ETABS/COM/model/workbook-write/file calls; identical immutable input returns the same calculation identity/result"},
+        {"id": "E5-02", "scenario": "attached getter-only snapshot acquisition", "pass": "process/runtime/model/result selection/unit/lock pre/post equality; signed rows reconcile to raw evidence; no setter/save/unlock/analysis/design/exit"},
+        {"id": "E5-03", "scenario": "result selection or freshness absent/drifted", "pass": "operation stops before force getter or returns not_run; source state is unchanged and no selection setter is hidden"},
+        {"id": "E5-04", "scenario": "unit, array, mapping or axis failure", "pass": "offline normalizer rejects the complete snapshot and emits no partial canonical member result"},
+        {"id": "E5-05", "scenario": "controlled workbook command succeeds", "pass": "installed workbook/XLL/runtime identity, range preimage, saved/reopened readback, canonical reconstruction and freshness markers reconcile"},
+        {"id": "E5-06", "scenario": "controlled workbook command fails during write", "pass": "existing ranges restore exactly or new controlled sheets are removed; unrelated user content remains; rollback receipt is retained"},
+        {"id": "E5-07", "scenario": "fixed-action candidate", "pass": "candidate/check/ranking receipt binds the baseline analysis revision, no model mutation occurs and completeness semantics are correct"},
+        {"id": "E5-08", "scenario": "stiffness-changing candidate on owned copy", "pass": "original/copy identities, old/new readback and original unchanged evidence; copy receives new result epoch/snapshot before comparison"},
+        {"id": "E5-09", "scenario": "timeout or COM failure during owned-copy transaction", "pass": "durable journal identifies interrupted stage, copy is quarantined, no automatic replay occurs and original remains unchanged"},
+        {"id": "E5-10", "scenario": "restart or runtime fingerprint drift", "pass": "prior live evidence is not reused; new preflight must establish target/runtime/source/revision"}
+      ],
+      "evidence_packet_fields": ["reviewed source commit/tree", "Windows/Excel/ETABS/XLL/runtime fingerprints", "target/copy artifact identities", "pre/post state", "ledger manifest", "retained external evidence hashes", "scenario verdicts", "claim boundary and limitations"],
+      "fake_host_rule": "Mocks and fake Office hosts remain E1/E2 software evidence. They cannot satisfy any E5 scenario."
+    }
+  ],
+  "exit_evidence": [
+    {"criterion": "Worksheet calculations need no live COM call or workbook mutation.", "evidence": ["PF8-D3 limits functions to immutable inputs and pure operations; all host effects are explicit commands with receipts."]},
+    {"criterion": "ETABS actions preserve source identity and semantic classification.", "evidence": ["PF8-D1/D2 retain acquisition/model/analysis/result, axes, object/element station, case/step, row identity and action basis through normalization."]},
+    {"criterion": "Stiffness-changing candidates require new analysis evidence.", "evidence": ["PF8-D4 classifies coupled changes and requires owned-copy readback, reanalysis, a new result epoch and new snapshot before comparison."]}
+  ]
+}

@@ -5,6 +5,128 @@
 
 ---
 
+## 2026-09-04 — Session: Complete structural library definition PF1–PF11
+
+**Agent:** Codex (`MAIN`) with bounded read-only PF7 and PF8 review packets.
+
+**Task:** `LIBRARY-DEFINITION-COMPLETION`.
+
+**Branch:** `codex/library-definition-completion`.
+
+**Focus:** Complete the pre-implementation definition of the native Python and
+.NET structural libraries, standalone Windows Excel product and later ETABS
+automation, using the current libraries, three-project evidence, recorded
+failures and official runtime/vendor sources.
+
+### Summary
+
+- Completed PF1–PF11 on top of the merged PF0 charter. The definition now has
+  60 deliverables, 23 resolved decisions, 17 capability families, FO01–FO08,
+  AO01–AO26, 37 quantity meanings and twelve implementation work packets.
+- Defined workflows, current-asset dispositions, package/application
+  boundaries, engineering semantics, professional operation signatures,
+  Python/.NET parity, assurance, Excel/ETABS command contracts, packaging,
+  performance, migration, versioning and documentation.
+- Selected CPython 3.11–3.14 and .NET 10 LTS, with Python 3.14 support claimed
+  only after its matrix passes. The primary XLL target is Windows 11 x64,
+  64-bit Microsoft 365 Excel, Excel-DNA 1.9.0 and the matching .NET 10 Desktop
+  Runtime. Live ETABS qualification starts from executable 23.3.1.4563 and API
+  2.16.0.0 as one exact installed tuple.
+- Split performance into six measurable classes and defined a warm typical
+  20-member workbook p95 budget of at most one second plus 250 ms
+  progress/cancellation response.
+- Produced the PF11 backlog as three milestone PRs with multiple commits:
+  WP01–WP08 for the pure dual-language libraries, WP09 for standalone Excel,
+  and WP10–WP12 for ETABS, coupled reanalysis, migration and release readiness.
+  WP01 is the first bounded contracts-and-flexure packet.
+- Added an integrated validator that checks all phase evidence, decisions,
+  semantic operations, performance classes, migration counts, trace records,
+  work packets and acceptance evidence. No calculation, library, XLL, workbook
+  or ETABS model implementation changed in this definition session.
+
+### Issues encountered
+
+- A read-only reviewer could not start a second repository session timer while
+  the parent task timer was active.
+- One review message reported that required `NotApplicable` checks could win
+  ranking, which conflicted with the current C# implementation and test.
+- PF6 initially contained a relative source-evidence path with one too few
+  parent traversals.
+- PowerShell parsed an inline expression containing a pipe differently than
+  intended, and an `rg` glob over exact Windows paths did not match.
+- An intermediate PF6 assertion compared the flattened semantic-operation
+  count with the number of parity groups.
+- A large PF11 patch response was truncated, leaving the mutation result
+  uncertain until the written files were inspected.
+- The first integrated-validator run treated all source evidence as files even
+  though PF2 intentionally cites source directories. Later runs also exposed
+  overly strict assumptions about PF11 roll-up tokens and the `packet_id` field.
+- Strict documentation validation found both generated API ledgers one UTC day
+  behind the generator even though no API surface or classification changed.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the session store permits one active task-bound timer
+  in the shared worktree. Resolution: `MAIN` retained the single timer and the
+  bounded reviewers returned read-only findings without opening competing
+  repository sessions.
+- The initial ranker claim was unconfirmed. Direct inspection of
+  `CandidateRanker.cs` and
+  `RequiredCheckCannotBeWaivedWithNotApplicable` proved that missing,
+  `NotEvaluated` and `NotApplicable` checks are excluded. The actual gap is
+  narrower: the current ranker collapses their exclusion reasons and trusts a
+  caller-supplied required-ID list instead of a profile-derived expected leaf
+  set. PF7/PF10/PF11 now specify that correction and its acceptance evidence.
+- Confirmed root cause: the PF6 path was counted from the wrong phase-folder
+  depth. Resolution: corrected the traversal and validated every PF1–PF11
+  local source-evidence path.
+- Confirmed root cause: shell parsing and path-glob syntax were mixed into
+  commands that needed exact-path reads. Resolution: used single-quoted script
+  content and exact `Get-Content`/`rg` paths. The intended source inspections
+  completed.
+  ⚠️ TERMINAL ISSUE: an inline PowerShell pipe and an invalid `rg` path glob
+  failed to express the intended reads → used quoted scripts and exact paths.
+- Confirmed root cause: the diagnostic asserted a group count rather than
+  expanding each group's `ids`. Resolution: compare the flattened parity set
+  with FO01–FO08 plus AO01–AO26; the corrected check passes.
+- Confirmed root cause: the PF11 patch exceeded the tool-output budget.
+  Resolution: inspected both written artifacts, parsed the full JSON and added
+  the integrated structural validator; no content was missing.
+- Confirmed root cause: the new validator guessed evidence and schema shapes
+  more narrowly than the authored baselines. Resolution: source inventories
+  now accept existing files or directories, exact AO/FO assignment comes from
+  PF11 trace records while backlog coverage permits named command/roll-up
+  entries, and the first packet is read from its authored `packet_id`. The
+  complete integrated validation passes.
+- Confirmed root cause: the API registry generator records the current UTC date
+  and the candidate crossed a date boundary after the prior generated files.
+  Resolution: regenerated both maintained API ledgers; their only diffs are the
+  `generated` date, and the generator check plus API documentation check pass.
+
+### Validation through content freeze
+
+- PF0 validator: 6 user groups, 6 workflows, 9 roles, 14 success measures, 29
+  glossary terms and 12 phase-authority records validated.
+- Programme validator: 12 phases, 60 deliverables, 23 decisions, 17 capability
+  families and AO01–AO26 validated.
+- Integrated definition validator: 12 complete phases, 23 resolved decisions,
+  34 semantic operations, six performance classes and twelve work packets.
+- PF2 live surface audit: 489 root exports/466 callable, 245 service exports,
+  15 CLI entries and 13 family facades.
+- Link checker: 573 maintained Markdown files, 1,428 local links, six images and
+  zero broken references.
+- `run.sh check --quick`: all 10 checks passed, with one import result reused.
+- `run.sh context validate`: 10 areas, six authorities, three retained
+  index-named surfaces and zero generated folder indexes passed.
+- `run.sh efficiency check`: token-efficiency policy passed.
+- API classification generator check and API documentation check: passed; all
+  1,221 compatibility projections remain exactly reconciled.
+- `git diff --check`: no whitespace errors.
+
+**Git handoff receipt:** docs/verification/library-definition-doc-ledger-repair-git-handoff-receipt.json
+
+---
+
 ## 2026-09-03 — Session: PF0 product and library charter
 
 **Agent:** Codex (MAIN, sole writer)
