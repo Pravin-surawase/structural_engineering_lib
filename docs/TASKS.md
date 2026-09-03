@@ -495,6 +495,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| XLL-PLAN-HANDOFF | Preserve the supplied XLL architecture, corrected phase plan, completed research and portable Mac/Windows learning handoff | MAIN | DOCUMENTATION CANDIDATE PREPARED — [shared entry point](planning/xll-product/README.md); local audit and hosted closeout are subsequent observations; no XLL lesson, engineering or release acceptance claimed |
 | INDIA-3-IS13920-M0 | Cumulatively accept the repaired bounded IS 13920 source, benchmark, unsafe-case, cross-surface, capability, package, and qualified-review boundary | Main Agent | ✅ LOCAL COMPLETE — 7,024 broad Python and 498 FastAPI cases pass after one cumulative metadata/test repair; exact source-free wheel and 29-case UAT pass; quick/full/hooks/immutable candidate/hosted checks/unchanged merge/tree equality remain required; no successor packet started |
 | INDIA-3-COLUMN-R1 | Repair the G0-bounded IS 13920 column applicability, actual/provided confinement, amended formulas, result meaning, and cross-surface clause contract | Main Agent | ✅ COMPLETE ON UNCHANGED GREEN MERGE — PR #868 merged at `306e2a46`, tree `cbe0f8d9`; `INDIA-3-IS13920-M0` started only afterward |
 | INDIA-3-BEAM-R1 | Repair the G0-bounded IS 13920 beam amendment, geometry, finite-intake, result-meaning, and cross-surface clause contract | Main Agent | ✅ COMPLETE ON UNCHANGED GREEN MERGE — PR #867 merged at `cfe29f89`, tree `a0a095e0`; `INDIA-3-COLUMN-R1` started only afterward |

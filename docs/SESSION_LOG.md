@@ -5,6 +5,95 @@
 
 ---
 
+## 2026-09-03 — Session: Preserve XLL planning and Mac/Windows handoff
+
+**Agent:** Codex (`MAIN`; sole writer; one bounded read-only publication reviewer).
+**Task:** `XLL-PLAN-HANDOFF`.
+**Branch:** `codex/xll-plan-research-handoff`.
+**Source:** fetched `origin/main` at `0589f7cbc81c40b2cac1499524844057c3ceacda`.
+**Git handoff receipt:** docs/verification/xll-plan-research-handoff-git-handoff-receipt.json
+**Focus:** Put the supplied XLL architecture, corrected plan, completed research
+and learning record in the existing library repository with a portable entry
+point and exact intake provenance.
+**Boundary:** Documentation and repository setup only. No product implementation,
+Excel/ETABS operations, engineering acceptance, price refresh or release.
+
+### Summary
+
+- Imported 16 authored source documents/ledgers. The shared entry point is
+  [the XLL planning hub](planning/xll-product/README.md); the original architecture
+  retains its requested repository-relative path. Exact source archives and
+  separate source/publication hashes distinguish original bytes from normalized
+  copies with portable links.
+- Preserved the original P0–P6 meanings and narrower Windows shell packet.
+  Historical phase proposals carry their own warnings; the library's separate
+  six-phase beam programme remains authoritative for that programme.
+- Preserved proposed requirements R01–R13 and parked research B01–B23. Missing
+  machine-local evidence is explicitly indexed; raw publications, private
+  catalogs and installed application evidence were not imported.
+- Added repository entry links and an actual-directory/remote check to the
+  existing Git workflow. The legacy OneDrive intake remains preserved; this
+  existing task uses the verified checkout explicitly because its original
+  working directory did not change with the saved app project folder.
+- Inspected the retained E1 branch and sibling worktrees before this side
+  packet. No active task-owned predecessor candidate was identified. Existing
+  branches/worktrees remain intact; unavailable Mac-only work is not claimed
+  to be synchronized.
+- Publication is a subsequent external observation. This versioned entry and
+  its pre-commit receipt do not claim a future PR, merge or installed result.
+
+### Issues encountered
+
+- An older optimizer roadmap had been interpreted as the original XLL plan,
+  changing the phase comparison and intended first exercise.
+- Changing the saved project path did not relocate this existing task. The
+  legacy research folder had neither shared commits nor a GitHub remote.
+- The existing library clone initially fetched only the E1 task branch and
+  lacked local `main` and `origin/main` refs for this documentation handoff.
+- Governed session startup reported a missing standard pre-commit hook.
+- The first staged whitespace check interpreted the archived Windows packet's
+  original CRLF terminators as trailing whitespace.
+
+### Root causes and resolutions
+
+- The actual architecture was previously identified only by an unavailable Mac
+  worktree path. The user supplied its contents; the corrected publication now
+  links that exact archived source, its normalized copy and a phase-by-phase
+  comparison. A separate read-only review found no outcome-changing issue in
+  the source hierarchy, phase meanings, shell boundary or evidence labels.
+  The older Mac commit was not retrieved and is explicitly unverified.
+- App project configuration and an already-created task's working directory
+  are distinct state. Verified the saved project path and actual command
+  directory separately, bound all repository commands/edits to
+  `C:\CodexWork\structural_engineering_lib`, and documented root/remote/commit
+  checks plus a legacy-folder pointer. No app database or Git directory was
+  replaced; a second independent research repository was not created.
+- The clone's fetch configuration named only its E1 branch. Earlier setup
+  preserved that refspec, added an exact main refspec and created local `main`
+  tracking the fetched ref. Remote `ls-remote` and local main both identified
+  `0589f7cb`; this branch starts from that same commit.
+- Inspected the missing `.git/hooks/pre-commit` and absence of a custom
+  `core.hooksPath`. Installed the repository's existing hook with
+  `./scripts/python_runtime.sh -m pre_commit install`; the repeated
+  `./run.sh preflight --environment-only --json` passed, including source/runtime
+  binding and the active hook. No hook was bypassed or custom hook overwritten.
+- The original packet intentionally retains CRLF while normal publication
+  copies use LF. Declared CR as a line terminator for the two exact archive
+  paths in `.gitattributes`, retaining the normal blank/tab whitespace checks
+  and byte-preservation rule. The repeated staged check passed without changing
+  either source archive or weakening checks for other paths.
+
+### Focused evidence before candidate freeze
+
+- One-time source verification passed: all 16 original/publication hashes, both
+  exact archive copies, LF publication bytes, portable link targets and the
+  complete R01–R13/B01–B23 inventory.
+- `scripts/check_links.py`: 553 maintained Markdown files, 1,337 local links,
+  six images and zero broken targets.
+- `./run.sh context validate` and `scripts/check_instruction_drift.py` passed.
+- `scripts/check_governance.py --compliance` passed without errors; two existing
+  redirect-stub warnings in getting-started documents remain outside this scope.
+
 ## 2026-09-02 — Session: Legacy VBA data-flow and workflow lessons
 
 **Agent:** Codex (`orchestrator`; sole writer; no subagents).

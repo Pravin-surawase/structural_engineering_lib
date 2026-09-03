@@ -19,6 +19,7 @@ Internal planning documents and research notes.
 |----------|---------|
 | [Next Session Brief](next-session-brief.md) | What to work on next |
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
+| [Excel-DNA XLL Plan and Research Handoff](xll-product/README.md) | Separate XLL planning/learning track: original P0–P6, shell-only Windows packet, research/cost map and portable handoff; no implementation acceptance implied |
 | [Beam Design and ETABS Optimization Master Plan](beam-design-optimization-master-plan.md) | Human-facing six-phase programme from trusted ETABS acquisition through owned-copy reanalysis and convergence |
 | [Legacy VBA Data-flow and Workflow Lessons](legacy-vba-dataflow-and-workflow-lessons.md) | Adopted transient-data policy, minimal durable evidence and reusable ETABS/Excel workflow ideas from the preserved VBA |
 | [Commit and PR Validation Consolidation Plan](commit-pr-validation-consolidation-plan.md) | Reduce ordinary commits to three safety hooks, move complete assurance to one batched PR, and remove duplicate post-merge validation |

@@ -3,10 +3,10 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-09-02
-- Focus: Preserve the legacy VBA transient-data pattern and useful ETABS/Excel workflow lessons in the six-phase beam programme.
-- Git receipt: docs/verification/legacy-vba-dataflow-lessons-git-handoff-receipt.json | sha256:385a39db0780f7b5ebb1c96c7649e96963f93595ab4797e00d7408d881216228 | HOLD
-- Git identity: codex/legacy-vba-data-flow-lessons@a3487e02400cf65d4b8934f484ef4b3882e3a9d9 | upstream=origin/main@a3487e02400cf65d4b8934f484ef4b3882e3a9d9 | base=origin/main@a3487e02400cf65d4b8934f484ef4b3882e3a9d9 | tree=dirty | operation=none
+- Date: 2026-09-03
+- Focus: Put the supplied XLL architecture, corrected plan, completed research
+- Git receipt: docs/verification/xll-plan-research-handoff-git-handoff-receipt.json | sha256:b1d67eae8f1d4a735e6248465db4a03f72f8c57542965a73f163b353084d3ee7 | HOLD
+- Git identity: codex/xll-plan-research-handoff@0589f7cbc81c40b2cac1499524844057c3ceacda | upstream=NONE@UNKNOWN | base=origin/main@0589f7cbc81c40b2cac1499524844057c3ceacda | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->

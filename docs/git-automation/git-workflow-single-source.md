@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-29
+last_updated: 2026-09-03
 doc_type: guide
 complexity: intermediate
 tags: [git, github, codex, workflow]
@@ -88,7 +88,18 @@ Use this handoff sequence:
 
 At the start of work on each device:
 
+First verify the actual command working directory, repository root and remote.
+A saved app project folder or display label can differ from an existing task's
+working directory. In the September XLL handoff, changing the project folder
+left the running task in its old OneDrive workspace. Select the verified
+checkout explicitly for commands and edits, or reopen the task there; do not
+initialize another repository or infer identity from a folder name. A local
+intake folder is not shared history until its intended documents are committed
+and the exact remote branch is verified.
+
 ```bash
+git rev-parse --show-toplevel
+git remote get-url origin
 git fetch origin
 ./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 ```

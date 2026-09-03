@@ -1,0 +1,55 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-09-03
+doc_type: guide
+complexity: intermediate
+tags: [excel-dna, xll, planning, handoff]
+---
+
+# Excel-DNA XLL plan and research handoff
+
+This is the shared entry point for the XLL product planning and beginner learning track. It preserves the supplied architecture, the corrected phase comparison and the completed competitor/engineering research in the library repository.
+
+**This track does not replace the maintained library workbench or the [six-phase beam/ETABS programme](../beam-design-optimization-master-plan.md).** The original XLL document is a research decision, even though its preserved metadata says active/spec. Its phases do not themselves authorize implementation, installed application activity, engineering approval or release.
+
+## Read in this order
+
+1. [Original XLL architecture](../excel-dna-xll-product-architecture-decision.md): what was actually proposed.
+2. [Current plan](current-plan.md): the source hierarchy and present scope.
+3. [Phase comparison and improvements](phase-review.md): original meanings, proposed refinements and the broad POC versus shell-packet distinction.
+4. [Windows P0 task](windows-p0-task.txt): the controlling first exercise.
+5. [Research map](research/README.md): studies, costs, requirements, acceptance examples and unfinished questions.
+6. [Learning record](learning/README.md): the last observed result and the next exercise.
+
+## Original phase meanings
+
+| Phase | Purpose |
+| --- | --- |
+| P0 | Packaging/runtime spike |
+| P1 | Focused C# kernel |
+| P2 | Read-only ETABS |
+| P3 | Bounded solver and optimizer |
+| P4 | Workbook delivery |
+| P5 | Controlled ETABS transaction on a model copy |
+| P6 | Commercial hardening |
+
+Earlier blueprint/v2 phase numbers are historical. Optional AI has no assigned original phase. The current Windows P0 packet is a narrower shell exercise: no CSI references/calls, structural calculations or solver. Passing it cannot establish completion of the architecture's programme-level acceptance matrix.
+
+## Evidence and learning status
+
+- No installed XLL acceptance or completed user lesson observation is established by this handoff.
+- The user implements the product; the assistant explains and reviews actual results.
+- Broad market research remains paused. R01–R13 are proposed requirements and B01–B23 remain parked under their recorded reopening conditions.
+- Costs and vendor claims retain their original 3 September research dates and limitations; this intake performs no price refresh.
+- Software tests, inspected source, installed behaviour, independent reference work and engineering approval remain distinct evidence.
+
+## What was preserved
+
+The [source manifest](source-manifest.json) binds each imported file to the original workspace bytes and its published copy. Published Markdown uses LF and portable links. The [intake archive](../../_archive/xll-product-intake-2026-09-03/README.md) preserves the exact supplied architecture and Windows packet bytes, including their original line endings. Those hashes do not establish the earlier unverified Mac commit.
+
+Authored studies, the two source ledgers, R/B registers, depth/readiness summaries, historical phase proposals and Lesson 1 are included. Word renderings, downloaded publications/transcripts/screenshots, raw application/test logs, private catalogs and supporting code checkouts remain outside this bundle. [Local evidence references](local-evidence-index.md) make that distinction explicit. Already-published commit links in the studies remain available; local paths have not been turned into guessed public URLs.
+
+## Continue on either computer
+
+Use the [Mac/Windows handoff](handoff.md) and the repository's [canonical Git workflow](../../git-automation/git-workflow-single-source.md). Identify this material by repository URL, full commit ID and this relative path, not a machine-specific folder. Fetch the shared revision before continuing. A local commit, pushed branch and merged default branch are separate states.

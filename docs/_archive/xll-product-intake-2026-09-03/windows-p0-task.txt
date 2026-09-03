@@ -1,0 +1,105 @@
+Task: XLL-P0-WINDOWS-PACKAGING-RUNTIME-SPIKE
+
+Objective
+
+Create and prove the smallest viable commercial Excel-DNA XLL for StructAutomate on Windows.
+
+The intended product is one x64 XLL loaded into desktop Excel. It creates a native StructAutomate Ribbon tab and runs product C# code inside Excel. No companion host, Python installation, Node server, WebView2, installer, ETABS connection, solver or engineering-function migration is permitted in this P0 task.
+
+Authority and preservation
+
+1. First inspect:
+   - C:\CodexWork\StructAutomate.EtabsOptimizer
+   - C:\Users\P\Pravin2025\Projects\structautomate_excel\excel_addin_etabs_nightly
+   - C:\CodexWork\StructAutomate.Xll, if it already exists
+2. Record exact paths, Git state, branches, commits, ownership and dirty files.
+3. Do not overwrite or restructure either existing project.
+4. Treat the existing optimizer project and starter kits as reference evidence only.
+5. If C:\CodexWork\StructAutomate.Xll already exists or contains files, stop before writing and report its exact state.
+6. Do not modify structural_engineering_lib.
+7. Do not connect to ETABS, call the CSI API, open/change/save a model, run analysis/design, or reference ETABSv1.dll in this packet.
+
+Environment inventory
+
+Record without exposing secrets:
+
+- Windows edition and architecture
+- Desktop Excel version and 32/64-bit status
+- installed .NET Framework 4.8 targeting/runtime availability
+- dotnet --info and installed SDK/Desktop Runtime list
+- Visual Studio/MSBuild availability
+- Excel-DNA/NuGet access
+- signtool availability
+- whether a suitable code-signing certificate exists; do not create or install one
+- relevant Trust Center or enterprise restrictions visible to the user
+
+Implementation
+
+1. Create C:\CodexWork\StructAutomate.Xll as a new Git repository only after the preservation checks pass.
+2. Use a clean SDK-style C# solution.
+3. Use stable ExcelDna.AddIn 1.9.0.
+4. Build x64 only; disable 32-bit output.
+5. Primary target: .NET Framework 4.8.
+6. If the required tools and Desktop Runtime are already installed, create a separate net8.0-windows comparison build without changing the net48 baseline.
+7. Produce a packed Release XLL.
+8. Add a Ribbon tab named “StructAutomate” containing:
+   - About
+   - Diagnostics
+   - Open Panel
+9. Add one registration-free WinForms task pane or diagnostic dialog showing:
+   - product version
+   - Excel version/bitness
+   - target runtime
+   - XLL path
+   - loaded status
+10. Add two pure test UDFs:
+   - =SA_HELLO()
+   - =SA_ADD(number1, number2)
+11. UDFs must be deterministic and must not access Excel COM, files, network, ETABS or mutable global state.
+12. Handle every Ribbon callback exception so an error cannot escape and disable the add-in.
+13. Add unit tests for the pure functions and diagnostic formatting.
+
+Installed Excel verification
+
+Using a disposable workbook:
+
+1. Load the packed x64 XLL manually through Excel.
+2. Confirm the StructAutomate tab appears.
+3. Run every Ribbon button.
+4. Open and close the panel/dialog repeatedly.
+5. Verify SA_HELLO and SA_ADD during normal and full recalculation.
+6. Confirm F9 performs no file, network or ETABS operation.
+7. Close Excel completely and test loading again.
+8. Test unload/reload and disabled-add-in recovery.
+9. Record whether administrator access or registration was required.
+10. If net8 is built, compare its load behavior and prerequisite/runtime report with net48.
+11. Do not create or install a signing certificate. If none exists, record SIGNING_HELD_NO_CERT rather than weakening security.
+
+Evidence
+
+Create a machine-readable P0 receipt containing:
+
+- repository path, branch and commit
+- Windows/Excel/runtime identities
+- Excel-DNA package version
+- target framework and architecture
+- packed XLL path, byte size and SHA-256
+- build/test commands and exit codes
+- Ribbon, panel and UDF outcomes
+- manual-load, restart and unload/reload outcomes
+- whether admin/installer/runtime installation was required
+- confirmation that ETABS calls = 0
+- confirmation that existing projects changed paths = 0
+- every warning, failure, root cause and resolution
+
+Acceptance disposition
+
+Finish with exactly one:
+
+- ACCEPTED_XLL_NET48_P0
+- ACCEPTED_XLL_NET8_RUNTIME_REQUIRED_P0
+- HELD_TOOLCHAIN_OR_EXCEL
+- HELD_TRUST_OR_SIGNING
+- REJECTED_XLL_P0
+
+Do not continue into ETABS integration, structural functions, solver, optimizer, licensing, updater or installer work. Return the exact evidence and recommended P1 only after P0 is complete.

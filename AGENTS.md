@@ -11,6 +11,11 @@ Open-source IS 456 RC beam design library. Full stack:
 - **FastAPI backend** (`fastapi_app/`) — 93 OpenAPI HTTP operations across 28 router modules, plus a WebSocket route
 - **React 19 frontend** (`react_app/`) — R3F 3D visualization + Tailwind
 
+The separate Excel-DNA XLL planning/learning track starts at
+[docs/planning/xll-product/README.md](docs/planning/xll-product/README.md).
+Read its original architecture and narrower Windows packet before interpreting
+its P0–P6 phases; it does not replace the library's six-phase beam programme.
+
 ## Owner Decision — Required IS Code Content and Distribution (2026-08-10/11)
 
 - The owner authorizes direct implementation of any IS code content needed for
@@ -118,6 +123,9 @@ recreate that lifecycle in repository scripts. The canonical process is
 [docs/git-automation/git-workflow-single-source.md](docs/git-automation/git-workflow-single-source.md).
 
 - Inspect the branch, upstream, worktree, diff, and current PR before mutation.
+- Verify the actual command working directory and repository remote; a saved
+  app project folder can differ from an existing task's working directory.
+  Follow the multi-device checks in the canonical Git workflow before writes.
 - Use `./scripts/python_runtime.sh scripts/git_state.py --json` for current-lane
   evidence and add `--worktrees` for bounded sibling inspection. This is the
   sole read-only Git-state authority; `NOT_CHECKED` remote freshness must not be
