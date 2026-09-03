@@ -1,0 +1,17 @@
+{
+  "verifiedOn": "2026-09-03",
+  "sdk": {"version": "10.0.400", "installed": true, "source": "https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core", "purpose": "C# compiler and .NET 10 LTS baseline"},
+  "packages": [
+    {"id": "ExcelDna.AddIn", "version": "1.9.0", "license": "Zlib", "source": "https://www.nuget.org/packages/ExcelDna.AddIn/1.9.0", "purpose": "Pack Windows Excel x64 XLL and register pure functions"},
+    {"id": "MathNet.Numerics", "version": "5.0.0", "license": "MIT", "source": "https://numerics.mathdotnet.com/License", "purpose": "Managed linear algebra for the beam-line solver"},
+    {"id": "xunit.v3", "version": "4.0.0", "license": "Apache-2.0", "source": "https://www.nuget.org/packages/xunit.v3/4.0.0", "purpose": "Numerical, contract and Excel conversion tests"}
+  ],
+  "decisions": [
+    "Locked restore in CI; review versions and transitive package hashes when upgrading.",
+    "Use .NET 10 Desktop Runtime matching Excel bitness. Existing add-ins and the target ETABS API need host compatibility tests.",
+    "CSI assemblies come from the supported installed product/API SDK when its adapter is implemented; none are redistributed here.",
+    "System.Text.Json supplies strict contracts and generated schemas.",
+    "Use explicit finite candidate evaluation before adding an optimization package.",
+    "Repository permission already covers approved normalized IS data distribution; migration retains rule/table/example provenance."
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "xMm": {
+            "type": "number"
+          },
+          "prescribedDisplacementMm": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "default": null
+          },
+          "prescribedRotationRad": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "default": null
+          },
+          "verticalSpringNPerMm": {
+            "type": "number",
+            "default": 0
+          },
+          "rotationalSpringNmmPerRad": {
+            "type": "number",
+            "default": 0
+          },
+          "forceKn": {
+            "type": "number",
+            "default": 0
+          },
+          "momentKnM": {
+            "type": "number",
+            "default": 0
+          }
+        },
+        "required": [
+          "id",
+          "xMm"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "elements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "startNodeId": {
+            "type": "string"
+          },
+          "endNodeId": {
+            "type": "string"
+          },
+          "elasticModulusMpa": {
+            "type": "number"
+          },
+          "secondMomentMm4": {
+            "type": "number"
+          },
+          "uniformLoadKnPerM": {
+            "type": "number"
+          },
+          "stationsFromStartMm": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "startNodeId",
+          "endNodeId",
+          "elasticModulusMpa",
+          "secondMomentMm4",
+          "uniformLoadKnPerM",
+          "stationsFromStartMm"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "nodes",
+    "elements"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BeamLineRequest"
+}

@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-03
-- Focus: Establish the owner-selected standalone Excel beam workflow, requirements,
-- Git receipt: docs/verification/beam-product-requirements-research-git-handoff-receipt.json | sha256:9cb54f178b052b83e67c525260bb404cff282c9d03dd13912c32596188658d8a | HOLD
-- Git identity: codex/beam-product-requirements-research@47e7c90d58294fed9e6de86d5558ccab67883a4b | upstream=NONE@UNKNOWN | base=origin/main@7e2d620eb6e1dd7286192dd0de3b6976d7f87260 | tree=dirty | operation=none
+- Focus: Complete ETABS/Excel/solver/detailing/construction requirements and implement a usable, tested C# foundation with its dependencies and workflow skill.
+- Git receipt: docs/verification/beam-automation-foundation-git-handoff-receipt.json | sha256:04f01eb2f37fdb776b8ce483f387288771a6905a2bb9929a5e05ade339456a74 | HOLD
+- Git identity: codex/beam-automation-foundation@f877bd10c03866789081ec32b8225416070806f8 | upstream=NONE@UNKNOWN | base=origin/main@4e4d7eedbe40f0c21fee6bb65c5e098a6431d68c | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->

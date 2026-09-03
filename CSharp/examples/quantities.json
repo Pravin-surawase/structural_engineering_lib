@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0.0", "steelDensityKgPerM3": 7850,
+  "bars": [
+    { "mark": "LONG", "diameterMm": 20, "count": 4,
+      "straights": [{ "purpose": "resolved cut length", "tangentLengthMm": 6000 }], "bends": [] }
+  ],
+  "concrete": [{ "id": "B1", "netAreaMm2": 150000, "physicalLengthMm": 6000 }],
+  "formwork": [{ "id": "B1", "physicalLengthMm": 6000, "soffitContactWidthMm": 300,
+    "leftContactHeightMm": 500, "rightContactHeightMm": 500, "endBulkheadAreaMm2": 0, "deductionAreaMm2": 0 }],
+  "rates": { "currency": "INR", "priceDate": "2026-09-03", "source": "illustrative rates, not market quotation",
+    "steelPerKg": 60, "concretePerM3": 6000, "formworkPerM2": 500 }
+}

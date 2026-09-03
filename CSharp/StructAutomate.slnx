@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/StructAutomate.Contracts/StructAutomate.Contracts.csproj" />
+    <Project Path="src/StructAutomate.Engineering/StructAutomate.Engineering.csproj" />
+    <Project Path="src/StructAutomate.Application/StructAutomate.Application.csproj" />
+    <Project Path="src/StructAutomate.Excel/StructAutomate.Excel.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/StructAutomate.Tests/StructAutomate.Tests.csproj" />
+  </Folder>
+  <Folder Name="/tools/"><Project Path="tools/StructAutomate.Examples/StructAutomate.Examples.csproj" /></Folder>
+</Solution>

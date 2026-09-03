@@ -1,0 +1,2705 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Beam member engineering request",
+  "description": "Versioned member and leaf-check wire schemas. Geometry, code applicability and identity are also validated semantically.",
+  "$ref": "#/$defs/CheckRequest",
+  "$defs": {
+    "RuleSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "IS456",
+            "IS13920"
+          ]
+        },
+        "edition": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "amendments": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 0
+        },
+        "datasetSha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        }
+      },
+      "required": [
+        "code",
+        "edition",
+        "amendments",
+        "datasetSha256"
+      ]
+    },
+    "Project": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RuleSet"
+          },
+          "minItems": 1
+        },
+        "designProfile": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "ordinary",
+            "seismic"
+          ]
+        },
+        "barCatalogueId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "barCatalogueSha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "reportUnits": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "mm-kN-MPa"
+          ]
+        },
+        "exposure": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "fireResistanceMinutes": {
+          "type": "number",
+          "description": "",
+          "x-unit": "min",
+          "minimum": 0
+        },
+        "currency": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        }
+      },
+      "required": [
+        "id",
+        "revision",
+        "rules",
+        "designProfile",
+        "barCatalogueId",
+        "barCatalogueSha256",
+        "reportUnits",
+        "exposure",
+        "fireResistanceMinutes",
+        "currency"
+      ]
+    },
+    "Concrete": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "gradeId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "fckMpa": {
+          "type": "number",
+          "description": "",
+          "x-unit": "MPa",
+          "exclusiveMinimum": 0
+        },
+        "densityKgPerM3": {
+          "type": "number",
+          "description": "",
+          "x-unit": "kg/m3",
+          "exclusiveMinimum": 0
+        },
+        "elasticModulusMpa": {
+          "anyOf": [
+            {
+              "type": "number",
+              "description": "",
+              "x-unit": "MPa",
+              "exclusiveMinimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Null derives E from the selected material method; resolved E and method are returned."
+        },
+        "maximumAggregateMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "materialMethod": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        }
+      },
+      "required": [
+        "gradeId",
+        "fckMpa",
+        "densityKgPerM3",
+        "maximumAggregateMm",
+        "materialMethod"
+      ]
+    },
+    "Steel": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "gradeId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "fyMpa": {
+          "type": "number",
+          "description": "",
+          "x-unit": "MPa",
+          "exclusiveMinimum": 0
+        },
+        "elasticModulusMpa": {
+          "type": "number",
+          "description": "",
+          "x-unit": "MPa",
+          "exclusiveMinimum": 0
+        },
+        "densityKgPerM3": {
+          "type": "number",
+          "description": "",
+          "x-unit": "kg/m3",
+          "exclusiveMinimum": 0
+        },
+        "barType": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "deformed",
+            "plain"
+          ]
+        },
+        "ductilityClass": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "coating": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "bondCondition": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        }
+      },
+      "required": [
+        "gradeId",
+        "fyMpa",
+        "elasticModulusMpa",
+        "densityKgPerM3",
+        "barType",
+        "ductilityClass",
+        "coating",
+        "bondCondition"
+      ]
+    },
+    "Flange": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "side": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "left",
+            "right",
+            "both"
+          ]
+        },
+        "slabThicknessMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "physicalWidthMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "effectiveWidthMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "effectiveWidthMethod": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "monolithic": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "side",
+        "slabThicknessMm",
+        "physicalWidthMm",
+        "effectiveWidthMm",
+        "effectiveWidthMethod",
+        "monolithic"
+      ]
+    },
+    "Section": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "shape": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "rectangular",
+            "T",
+            "L"
+          ]
+        },
+        "webWidthMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "overallDepthMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "nominalCoverMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "minimum": 0
+        },
+        "flange": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Flange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Required for T/L; null for rectangular."
+        },
+        "concrete": {
+          "$ref": "#/$defs/Concrete"
+        },
+        "steel": {
+          "$ref": "#/$defs/Steel"
+        }
+      },
+      "required": [
+        "id",
+        "shape",
+        "webWidthMm",
+        "overallDepthMm",
+        "nominalCoverMm",
+        "concrete",
+        "steel"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "shape": {
+                "enum": [
+                  "T",
+                  "L"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "flange"
+            ],
+            "properties": {
+              "flange": {
+                "$ref": "#/$defs/Flange"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "shape": {
+                "const": "rectangular"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "flange": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Support": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "centreXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "leftFaceXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "rightFaceXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "bearingWidthMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "pin",
+            "roller",
+            "fixed",
+            "elastic",
+            "joint"
+          ]
+        },
+        "verticalSpringKnPerMm": {
+          "anyOf": [
+            {
+              "type": "number",
+              "description": "",
+              "x-unit": "kN/mm",
+              "exclusiveMinimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Required for an elastic support."
+        },
+        "rotationalSpringKnMPerRad": {
+          "anyOf": [
+            {
+              "type": "number",
+              "description": "",
+              "x-unit": "kNm/rad",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Optional rotational support spring; null means none."
+        },
+        "settlementMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "jointId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "description": ""
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Required for a frame joint used by seismic checks."
+        }
+      },
+      "required": [
+        "id",
+        "centreXMm",
+        "leftFaceXMm",
+        "rightFaceXMm",
+        "bearingWidthMm",
+        "type",
+        "settlementMm"
+      ]
+    },
+    "Span": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "leftSupportId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "rightSupportId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "centrelineLengthMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "clearLengthMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "effectiveDesignLengthMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "effectiveLengthMethod": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "flexibleAnalysisLengthMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "physicalQuantityLengthMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "leftOffsetMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "minimum": 0
+        },
+        "rightOffsetMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "minimum": 0
+        },
+        "sectionId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        }
+      },
+      "required": [
+        "id",
+        "leftSupportId",
+        "rightSupportId",
+        "centrelineLengthMm",
+        "clearLengthMm",
+        "effectiveDesignLengthMm",
+        "effectiveLengthMethod",
+        "flexibleAnalysisLengthMm",
+        "physicalQuantityLengthMm",
+        "leftOffsetMm",
+        "rightOffsetMm",
+        "sectionId"
+      ]
+    },
+    "AxisMapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sourceBasisId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "beamLongitudinalAxis": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "local1"
+          ]
+        },
+        "majorBendingComponent": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "M2",
+            "M3"
+          ]
+        },
+        "positiveMomentTensionFace": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "top",
+            "bottom"
+          ]
+        },
+        "minorBendingComponent": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "M2",
+            "M3"
+          ]
+        },
+        "verticalShearComponent": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "V2",
+            "V3"
+          ]
+        },
+        "mappingVerificationId": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Records the physical section orientation and sign verification example."
+        }
+      },
+      "required": [
+        "sourceBasisId",
+        "beamLongitudinalAxis",
+        "majorBendingComponent",
+        "positiveMomentTensionFace",
+        "minorBendingComponent",
+        "verticalShearComponent",
+        "mappingVerificationId"
+      ]
+    },
+    "Member": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "supports": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Support"
+          },
+          "minItems": 2
+        },
+        "spans": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Span"
+          },
+          "minItems": 1
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Section"
+          },
+          "minItems": 1
+        },
+        "axisMapping": {
+          "$ref": "#/$defs/AxisMapping"
+        },
+        "openings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Opening geometry/detail reference; no silent ordinary-beam treatment."
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "id",
+        "revision",
+        "supports",
+        "spans",
+        "sections",
+        "axisMapping",
+        "openings"
+      ]
+    },
+    "CombinationTerm": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "caseId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "factor": {
+          "type": "number",
+          "description": "",
+          "x-unit": "dimensionless"
+        }
+      },
+      "required": [
+        "caseId",
+        "factor"
+      ]
+    },
+    "Selection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "case",
+            "combination"
+          ]
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "ULS",
+            "SLS-total",
+            "SLS-sustained",
+            "SLS-transient"
+          ]
+        },
+        "factorState": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "service",
+            "factored"
+          ]
+        },
+        "selfWeightIncluded": {
+          "type": "boolean"
+        },
+        "origin": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "terms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CombinationTerm"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "purpose",
+        "factorState",
+        "selfWeightIncluded",
+        "origin",
+        "terms"
+      ]
+    },
+    "ActionSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "modelRevision": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "analysisRevision": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "ETABS",
+            "beam-line",
+            "manual"
+          ]
+        },
+        "selectionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "rowIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "axisMappingId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "acquiredAtUtc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "analysisGeometrySha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "sourceExportSha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        }
+      },
+      "required": [
+        "id",
+        "sha256",
+        "modelRevision",
+        "analysisRevision",
+        "source",
+        "selectionIds",
+        "rowIds",
+        "axisMappingId",
+        "acquiredAtUtc",
+        "analysisGeometrySha256",
+        "sourceExportSha256"
+      ]
+    },
+    "Bar": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "layerId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "face": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "top",
+            "bottom",
+            "left",
+            "right",
+            "corner"
+          ]
+        },
+        "diameterMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "xFromLeftMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "yFromTopMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "steelGradeId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "pathId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        }
+      },
+      "required": [
+        "id",
+        "layerId",
+        "face",
+        "diameterMm",
+        "xFromLeftMm",
+        "yFromTopMm",
+        "steelGradeId",
+        "pathId"
+      ]
+    },
+    "LinkZone": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "startXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "endXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "diameterMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "legs": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "spacingMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "firstLinkXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "lastLinkXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "closed": {
+          "type": "boolean"
+        },
+        "hookAngleDegrees": {
+          "type": "number",
+          "description": "",
+          "x-unit": "degree",
+          "exclusiveMinimum": 0
+        },
+        "hookExtensionMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "minimum": 0
+        },
+        "internalBendRadiusMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "pathMark": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        }
+      },
+      "required": [
+        "id",
+        "startXMm",
+        "endXMm",
+        "diameterMm",
+        "legs",
+        "spacingMm",
+        "firstLinkXMm",
+        "lastLinkXMm",
+        "closed",
+        "hookAngleDegrees",
+        "hookExtensionMm",
+        "internalBendRadiusMm",
+        "pathMark"
+      ]
+    },
+    "Reinforcement": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "stationXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "bars": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Bar"
+          },
+          "minItems": 1
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LinkZone"
+          },
+          "minItems": 1
+        },
+        "minimumHorizontalClearSpacingMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "minimum": 0
+        },
+        "minimumVerticalClearSpacingMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "minimum": 0
+        },
+        "spacingRuleId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "layerEnclosureRuleId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "sideFaceRuleId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        }
+      },
+      "required": [
+        "stationXMm",
+        "bars",
+        "links",
+        "minimumHorizontalClearSpacingMm",
+        "minimumVerticalClearSpacingMm",
+        "spacingRuleId",
+        "layerEnclosureRuleId",
+        "sideFaceRuleId"
+      ]
+    },
+    "LongTerm": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "concreteAgeAtLoadingDays": {
+          "type": "number",
+          "description": "",
+          "x-unit": "day",
+          "exclusiveMinimum": 0
+        },
+        "ageAtAssessmentDays": {
+          "type": "number",
+          "description": "",
+          "x-unit": "day",
+          "exclusiveMinimum": 0
+        },
+        "relativeHumidityPercent": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "x-unit": "percent"
+        },
+        "notionalSizeMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "sustainedSelectionId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "durationDays": {
+          "type": "number",
+          "description": "",
+          "x-unit": "day",
+          "minimum": 0
+        },
+        "shrinkageStrain": {
+          "type": "number",
+          "description": "",
+          "x-unit": "strain",
+          "minimum": 0
+        },
+        "creepCoefficient": {
+          "anyOf": [
+            {
+              "type": "number",
+              "description": "",
+              "x-unit": "dimensionless",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Null derives creep from the selected validated model and age/humidity inputs."
+        },
+        "creepMethod": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "shrinkageMethod": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "constructionSequenceId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        }
+      },
+      "required": [
+        "method",
+        "concreteAgeAtLoadingDays",
+        "ageAtAssessmentDays",
+        "relativeHumidityPercent",
+        "notionalSizeMm",
+        "sustainedSelectionId",
+        "durationDays",
+        "shrinkageStrain",
+        "creepMethod",
+        "shrinkageMethod",
+        "constructionSequenceId"
+      ]
+    },
+    "Serviceability": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "route": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "screening",
+            "calculated-short-term",
+            "calculated-long-term"
+          ]
+        },
+        "totalSelectionId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "sustainedSelectionId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "description": ""
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Required for long-term calculation."
+        },
+        "deflectionLimitMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "postFinishIncrementLimitMm": {
+          "anyOf": [
+            {
+              "type": "number",
+              "description": "",
+              "x-unit": "mm",
+              "exclusiveMinimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Required when checking damage to finishes/partitions."
+        },
+        "finishesInstalledAtDays": {
+          "anyOf": [
+            {
+              "type": "number",
+              "description": "",
+              "x-unit": "day",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Required for incremental deflection after finishes."
+        },
+        "crackWidthLimitMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "stiffnessMethod": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "tensionStiffeningMethod": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "longTerm": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LongTerm"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Required for calculated-long-term; not inferred from ULS loads."
+        }
+      },
+      "required": [
+        "route",
+        "totalSelectionId",
+        "deflectionLimitMm",
+        "crackWidthLimitMm",
+        "stiffnessMethod",
+        "tensionStiffeningMethod"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "route": {
+                "const": "calculated-long-term"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "longTerm",
+              "sustainedSelectionId"
+            ],
+            "properties": {
+              "longTerm": {
+                "$ref": "#/$defs/LongTerm"
+              },
+              "sustainedSelectionId": {
+                "type": "string",
+                "minLength": 1,
+                "description": ""
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "postFinishIncrementLimitMm"
+            ],
+            "properties": {
+              "postFinishIncrementLimitMm": {
+                "type": "number"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "finishesInstalledAtDays"
+            ],
+            "properties": {
+              "finishesInstalledAtDays": {
+                "type": "number",
+                "description": "",
+                "x-unit": "day",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Anchorage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "barId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "end": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "start",
+            "end"
+          ]
+        },
+        "stressState": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "tension",
+            "compression"
+          ]
+        },
+        "barStressMpa": {
+          "type": "number",
+          "description": "",
+          "x-unit": "MPa",
+          "minimum": 0
+        },
+        "availableStraightLengthMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "minimum": 0
+        },
+        "bendAngleDegrees": {
+          "type": "number",
+          "description": "",
+          "x-unit": "degree",
+          "minimum": 0
+        },
+        "internalBendRadiusMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "minimum": 0
+        },
+        "hookExtensionMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "minimum": 0
+        },
+        "supportFaceXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "bondMethod": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "bearingContextId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "confinementContextId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        }
+      },
+      "required": [
+        "barId",
+        "end",
+        "stressState",
+        "barStressMpa",
+        "availableStraightLengthMm",
+        "bendAngleDegrees",
+        "internalBendRadiusMm",
+        "hookExtensionMm",
+        "supportFaceXMm",
+        "bondMethod",
+        "bearingContextId",
+        "confinementContextId"
+      ]
+    },
+    "Splice": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "barIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "startXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "endXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "lap",
+            "coupler"
+          ]
+        },
+        "stressState": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "tension",
+            "compression"
+          ]
+        },
+        "percentageSplicedAtSection": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "x-unit": "percent"
+        },
+        "couplerProductId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "description": ""
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Required for a coupler; includes qualified strength and installation basis."
+        },
+        "staggerDistanceMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "minimum": 0
+        },
+        "ruleId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        }
+      },
+      "required": [
+        "id",
+        "barIds",
+        "startXMm",
+        "endXMm",
+        "type",
+        "stressState",
+        "percentageSplicedAtSection",
+        "staggerDistanceMm",
+        "ruleId"
+      ]
+    },
+    "Seismic": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "systemId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "ductilityProfile": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "jointIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "gravitySelectionId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "capacityDesignShearMethod": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "probableEndMomentKnM": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "description": "",
+            "x-unit": "kNm"
+          },
+          "minItems": 2
+        },
+        "confinementZoneLengthsMm": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "description": "",
+            "x-unit": "mm",
+            "exclusiveMinimum": 0
+          },
+          "minItems": 2
+        },
+        "jointColumnDimensionsMm": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "description": "",
+            "x-unit": "mm",
+            "exclusiveMinimum": 0
+          },
+          "minItems": 2
+        },
+        "columnLongitudinalBarDiameterMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "jointShearDemandKn": {
+          "type": "number",
+          "description": "",
+          "x-unit": "kN"
+        },
+        "jointCheckReference": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        }
+      },
+      "required": [
+        "systemId",
+        "ductilityProfile",
+        "jointIds",
+        "gravitySelectionId",
+        "capacityDesignShearMethod",
+        "probableEndMomentKnM",
+        "confinementZoneLengthsMm",
+        "jointColumnDimensionsMm",
+        "columnLongitudinalBarDiameterMm",
+        "jointShearDemandKn",
+        "jointCheckReference"
+      ]
+    },
+    "DesignContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "project": {
+          "$ref": "#/$defs/Project"
+        },
+        "member": {
+          "$ref": "#/$defs/Member"
+        },
+        "actions": {
+          "$ref": "#/$defs/ActionSnapshot"
+        },
+        "selections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Selection"
+          },
+          "minItems": 1
+        },
+        "reinforcement": {
+          "$ref": "#/$defs/Reinforcement"
+        },
+        "serviceability": {
+          "$ref": "#/$defs/Serviceability"
+        },
+        "seismic": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Seismic"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Required when project.designProfile is seismic."
+        }
+      },
+      "required": [
+        "project",
+        "member",
+        "actions",
+        "selections",
+        "reinforcement",
+        "serviceability"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "project": {
+                "properties": {
+                  "designProfile": {
+                    "const": "seismic"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "seismic"
+            ],
+            "properties": {
+              "seismic": {
+                "$ref": "#/$defs/Seismic"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "CheckRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "context": {
+          "$ref": "#/$defs/DesignContext"
+        },
+        "actionRowIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "stationXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "sectionId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "requiredCheckIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "requestId",
+        "context",
+        "actionRowIds",
+        "stationXMm",
+        "sectionId",
+        "requiredCheckIds"
+      ]
+    },
+    "CheckRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "outcome": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "pass",
+            "fail",
+            "notApplicable",
+            "notEvaluated"
+          ]
+        },
+        "demand": {
+          "anyOf": [
+            {
+              "type": "number",
+              "description": "",
+              "x-unit": "declared by unit"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Null for logical or incomplete checks."
+        },
+        "capacity": {
+          "anyOf": [
+            {
+              "type": "number",
+              "description": "",
+              "x-unit": "declared by unit"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Null for logical or incomplete checks."
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "description": ""
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Null for a logical check."
+        },
+        "utilization": {
+          "anyOf": [
+            {
+              "type": "number",
+              "description": "",
+              "x-unit": "dimensionless"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Null where a ratio is not mathematically meaningful; zero capacity never becomes zero utilisation."
+        },
+        "governingActionRowId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "description": ""
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Required for action-dependent checks."
+        },
+        "sourceRuleIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "effectiveInputsSha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        }
+      },
+      "required": [
+        "id",
+        "outcome",
+        "sourceRuleIds",
+        "effectiveInputsSha256",
+        "explanation"
+      ]
+    },
+    "Message": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "field": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        }
+      },
+      "required": [
+        "code",
+        "field",
+        "message"
+      ]
+    },
+    "CheckResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "execution": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "completed",
+            "invalidInput",
+            "calculationError"
+          ]
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CheckRecord"
+          },
+          "minItems": 0
+        },
+        "evaluatedCheckIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 0
+        },
+        "remainingCheckIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 0
+        },
+        "isCurrent": {
+          "type": "boolean"
+        },
+        "effectiveInputsSha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "engineVersion": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "datasetSha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "messages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Message"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "requestId",
+        "execution",
+        "checks",
+        "evaluatedCheckIds",
+        "remainingCheckIds",
+        "isCurrent",
+        "effectiveInputsSha256",
+        "engineVersion",
+        "datasetSha256",
+        "messages"
+      ]
+    },
+    "ConcentratedLoadContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "loadType": {
+          "const": "concentrated"
+        },
+        "supportFaceXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "loadXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "avMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm",
+          "exclusiveMinimum": 0
+        },
+        "loadKn": {
+          "type": "number",
+          "description": "",
+          "x-unit": "kN"
+        },
+        "ruleId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        }
+      },
+      "required": [
+        "loadType",
+        "supportFaceXMm",
+        "loadXMm",
+        "avMm",
+        "loadKn",
+        "ruleId"
+      ]
+    },
+    "SectionSurfacePoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "face": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "top",
+            "bottom",
+            "left",
+            "right"
+          ]
+        },
+        "xFromLeftMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "yFromTopMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        }
+      },
+      "required": [
+        "face",
+        "xFromLeftMm",
+        "yFromTopMm"
+      ]
+    },
+    "StationSteelDemand": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "stationXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "requiredAreaMm2": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm2",
+          "minimum": 0
+        },
+        "tensionFace": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "top",
+            "bottom"
+          ]
+        },
+        "actionRowId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        }
+      },
+      "required": [
+        "stationXMm",
+        "requiredAreaMm2",
+        "tensionFace",
+        "actionRowId"
+      ]
+    },
+    "CheckFlexureRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "context": {
+          "$ref": "#/$defs/DesignContext"
+        },
+        "actionRowIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "stationXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "sectionId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "requiredCheckIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "tensionFace": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "top",
+            "bottom"
+          ]
+        },
+        "interactionMethod": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "description": "Method must explicitly cover the retained P/M2/M3 domain; no silent component discard."
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Any axial or biaxial action outside selected pure-flexure applicability; Method must explicitly cover the retained P/M2/M3 domain; no silent component discard."
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "requestId",
+        "context",
+        "actionRowIds",
+        "stationXMm",
+        "sectionId",
+        "requiredCheckIds",
+        "tensionFace"
+      ]
+    },
+    "CheckShearRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "context": {
+          "$ref": "#/$defs/DesignContext"
+        },
+        "actionRowIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "stationXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "sectionId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "requiredCheckIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "shearAxis": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "V2",
+            "V3"
+          ]
+        },
+        "supportEnhancement": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ConcentratedLoadContext"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Selected near-support concentrated-load enhancement; Provide load type, support face, load position/av, load magnitude and rule ID; no UDL enhancement."
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "requestId",
+        "context",
+        "actionRowIds",
+        "stationXMm",
+        "sectionId",
+        "requiredCheckIds",
+        "shearAxis"
+      ]
+    },
+    "CheckTorsionRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "context": {
+          "$ref": "#/$defs/DesignContext"
+        },
+        "actionRowIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "stationXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "sectionId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "requiredCheckIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "torsionNature": {
+          "type": "string",
+          "minLength": 1,
+          "description": "",
+          "enum": [
+            "equilibrium",
+            "compatibility"
+          ]
+        },
+        "redistributionBasis": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "description": "A structural analysis/design basis is required; never set T to zero merely because it is inconvenient."
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Compatibility torsion redistribution selected; A structural analysis/design basis is required; never set T to zero merely because it is inconvenient."
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "requestId",
+        "context",
+        "actionRowIds",
+        "stationXMm",
+        "sectionId",
+        "requiredCheckIds",
+        "torsionNature"
+      ]
+    },
+    "CheckDeflectionRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "context": {
+          "$ref": "#/$defs/DesignContext"
+        },
+        "actionRowIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "stationXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "sectionId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "requiredCheckIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "serviceability": {
+          "$ref": "#/$defs/Serviceability"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "requestId",
+        "context",
+        "actionRowIds",
+        "stationXMm",
+        "sectionId",
+        "requiredCheckIds",
+        "serviceability"
+      ]
+    },
+    "CheckCrackWidthRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "context": {
+          "$ref": "#/$defs/DesignContext"
+        },
+        "actionRowIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "stationXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "sectionId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "requiredCheckIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "surfacePoint": {
+          "$ref": "#/$defs/SectionSurfacePoint"
+        },
+        "crackMethod": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Validate against the referenced schema and domain rules."
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "requestId",
+        "context",
+        "actionRowIds",
+        "stationXMm",
+        "sectionId",
+        "requiredCheckIds",
+        "surfacePoint",
+        "crackMethod"
+      ]
+    },
+    "CheckAnchorageRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "context": {
+          "$ref": "#/$defs/DesignContext"
+        },
+        "actionRowIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "stationXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "sectionId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "requiredCheckIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "anchorages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Anchorage"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "requestId",
+        "context",
+        "actionRowIds",
+        "stationXMm",
+        "sectionId",
+        "requiredCheckIds",
+        "anchorages"
+      ]
+    },
+    "CheckLapsCurtailmentRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "context": {
+          "$ref": "#/$defs/DesignContext"
+        },
+        "actionRowIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "stationXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "sectionId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "requiredCheckIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "splices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Splice"
+          },
+          "minItems": 0
+        },
+        "cutoffStationsMm": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "description": "",
+            "x-unit": "mm"
+          },
+          "minItems": 0
+        },
+        "requiredSteelEnvelope": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/StationSteelDemand"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "requestId",
+        "context",
+        "actionRowIds",
+        "stationXMm",
+        "sectionId",
+        "requiredCheckIds",
+        "splices",
+        "cutoffStationsMm",
+        "requiredSteelEnvelope"
+      ]
+    },
+    "CheckSeismicDetailingRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "context": {
+          "$ref": "#/$defs/DesignContext"
+        },
+        "actionRowIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "stationXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "sectionId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "requiredCheckIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "seismic": {
+          "$ref": "#/$defs/Seismic"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "requestId",
+        "context",
+        "actionRowIds",
+        "stationXMm",
+        "sectionId",
+        "requiredCheckIds",
+        "seismic"
+      ]
+    },
+    "CheckReinforcementFitRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "context": {
+          "$ref": "#/$defs/DesignContext"
+        },
+        "actionRowIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "stationXMm": {
+          "type": "number",
+          "description": "",
+          "x-unit": "mm"
+        },
+        "sectionId": {
+          "type": "string",
+          "minLength": 1,
+          "description": ""
+        },
+        "requiredCheckIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": ""
+          },
+          "minItems": 1
+        },
+        "arrangement": {
+          "$ref": "#/$defs/Reinforcement"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "requestId",
+        "context",
+        "actionRowIds",
+        "stationXMm",
+        "sectionId",
+        "requiredCheckIds",
+        "arrangement"
+      ]
+    }
+  }
+}

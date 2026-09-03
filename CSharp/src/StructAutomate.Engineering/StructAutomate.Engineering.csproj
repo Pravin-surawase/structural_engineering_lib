@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../StructAutomate.Contracts/StructAutomate.Contracts.csproj" />
+    <PackageReference Include="MathNet.Numerics" />
+  </ItemGroup>
+</Project>

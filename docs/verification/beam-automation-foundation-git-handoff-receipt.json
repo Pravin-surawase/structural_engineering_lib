@@ -1,0 +1,129 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "04f01eb2f37fdb776b8ce483f387288771a6905a2bb9929a5e05ade339456a74",
+    "state": {
+      "branch": "codex/beam-automation-foundation",
+      "default_base": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "4e4d7eedbe40f0c21fee6bb65c5e098a6431d68c",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 248.5,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
+      "head_sha": "f877bd10c03866789081ec32b8225416070806f8",
+      "hold_reasons": [
+        "changed paths: 9"
+      ],
+      "linked_worktree": false,
+      "locks": [],
+      "observed_at_utc": "2026-09-03T14:54:51.521892+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 9,
+        "modified_paths": [
+          "CSharp/src/StructAutomate.Application/packages.lock.json",
+          "CSharp/src/StructAutomate.Contracts/packages.lock.json",
+          "CSharp/src/StructAutomate.Engineering/packages.lock.json",
+          "CSharp/src/StructAutomate.Excel/packages.lock.json",
+          "CSharp/tests/StructAutomate.Tests/packages.lock.json",
+          "CSharp/tools/StructAutomate.Examples/packages.lock.json",
+          "Python/tests/test_session_automation.py",
+          "Python/tests/test_verification_control.py",
+          "docs/SESSION_LOG.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "C:\\CodexWork\\structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:04f01eb2f37fdb776b8ce483f387288771a6905a2bb9929a5e05ade339456a74",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-09-03T14:54:51.521892+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [],
+    "integration_owner": "MAIN",
+    "owned_paths": [
+      "CSharp",
+      "docs/planning/xll-product/automation",
+      "docs/SESSION_LOG.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "shared_paths": [
+      ".github/workflows/fast-checks.yml",
+      ".github/skills",
+      "agents/agent_registry.json",
+      "scripts/verification.py",
+      "scripts/verification-manifest.json",
+      "Python/tests/test_ci_workflow_contract.py",
+      "Python/tests/test_verification_control.py",
+      "Python/tests/test_session_automation.py"
+    ],
+    "task_id": "BEAM-AUTOMATION-FOUNDATION"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

@@ -1,0 +1,251 @@
+{
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "modelId": {
+          "type": "string"
+        },
+        "modelRevision": {
+          "type": "string"
+        },
+        "analysisRevision": {
+          "type": "string"
+        },
+        "exportSha256": {
+          "type": "string"
+        },
+        "etabsVersion": {
+          "type": "string"
+        },
+        "acquiredAtUtc": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "modelId",
+        "modelRevision",
+        "analysisRevision",
+        "exportSha256",
+        "etabsVersion",
+        "acquiredAtUtc"
+      ],
+      "additionalProperties": false
+    },
+    "isAnalysisCurrent": {
+      "type": "boolean"
+    },
+    "forceUnit": {
+      "enum": [
+        "newton",
+        "kilonewton",
+        "poundForce"
+      ]
+    },
+    "lengthUnit": {
+      "enum": [
+        "millimetre",
+        "metre",
+        "inch"
+      ]
+    },
+    "momentUnit": {
+      "enum": [
+        "newtonMillimetre",
+        "newtonMetre",
+        "kilonewtonMillimetre",
+        "kilonewtonMetre",
+        "poundForceInch",
+        "poundForceFoot"
+      ]
+    },
+    "objectAxes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "local1": {
+            "type": "object",
+            "properties": {
+              "x": {
+                "type": "number"
+              },
+              "y": {
+                "type": "number"
+              },
+              "z": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "x",
+              "y",
+              "z"
+            ],
+            "additionalProperties": false
+          },
+          "local2": {
+            "type": "object",
+            "properties": {
+              "x": {
+                "type": "number"
+              },
+              "y": {
+                "type": "number"
+              },
+              "z": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "x",
+              "y",
+              "z"
+            ],
+            "additionalProperties": false
+          },
+          "local3": {
+            "type": "object",
+            "properties": {
+              "x": {
+                "type": "number"
+              },
+              "y": {
+                "type": "number"
+              },
+              "z": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "x",
+              "y",
+              "z"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "local1",
+          "local2",
+          "local3"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "rowIndex": {
+            "type": "integer"
+          },
+          "memberId": {
+            "type": "string"
+          },
+          "objectId": {
+            "type": "string"
+          },
+          "objectStation": {
+            "type": "number"
+          },
+          "elementId": {
+            "type": "string"
+          },
+          "elementStation": {
+            "type": "number"
+          },
+          "selection": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "kind": {
+                "enum": [
+                  "case",
+                  "combination"
+                ]
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "outputCaseName": {
+            "type": "string"
+          },
+          "stepType": {
+            "type": "string"
+          },
+          "stepNumber": {
+            "type": "number"
+          },
+          "p": {
+            "type": "number"
+          },
+          "v2": {
+            "type": "number"
+          },
+          "v3": {
+            "type": "number"
+          },
+          "t": {
+            "type": "number"
+          },
+          "m2": {
+            "type": "number"
+          },
+          "m3": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "rowIndex",
+          "memberId",
+          "objectId",
+          "objectStation",
+          "elementId",
+          "elementStation",
+          "selection",
+          "outputCaseName",
+          "stepType",
+          "stepNumber",
+          "p",
+          "v2",
+          "v3",
+          "t",
+          "m2",
+          "m3"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "source",
+    "isAnalysisCurrent",
+    "forceUnit",
+    "lengthUnit",
+    "momentUnit",
+    "objectAxes",
+    "rows"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EtabsForceBatch"
+}

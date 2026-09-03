@@ -1,0 +1,325 @@
+[
+  {
+    "id": "AX01",
+    "operation": "AO01",
+    "scenario": "Two combinations at one object/element station with different signs.",
+    "assertions": [
+      "Both source stations survive conversion to mm.",
+      "N and Nmm become kN and kNm without changing signs.",
+      "Different rows, axes or analysis revisions have different identities."
+    ],
+    "kind": "executable-foundation",
+    "test_path": "CSharp/tests/StructAutomate.Tests/ForceAndRankingTests.cs"
+  },
+  {
+    "id": "AX02",
+    "operation": "AO02",
+    "scenario": "6 m simply supported beam: q=10 kN/m, E=25000 MPa, I=3125000000 mm4.",
+    "assertions": [
+      "Each upward reaction is 30 kN; midpoint moment 45 kNm and downward deflection 2.16 mm.",
+      "Point loads retain both sides of the shear jump.",
+      "Continuous support hogging moments and settlements match independent formulas."
+    ],
+    "kind": "executable-foundation",
+    "test_path": "CSharp/tests/StructAutomate.Tests/BeamLineTests.cs"
+  },
+  {
+    "id": "AX03",
+    "operation": "AO03",
+    "scenario": "Two 20 mm bars at y=450 mm and one 16 mm bar at y=390 mm in a 500 mm-deep section.",
+    "assertions": [
+      "Area is 829.38046055 mm2 and bottom-face effective depth 435.45454545 mm.",
+      "Top-face depth is measured from the opposite compression face.",
+      "Cover and spacing failures retain their bar identifiers."
+    ],
+    "kind": "executable-foundation",
+    "test_path": "CSharp/tests/StructAutomate.Tests/GeometryQuantityTests.cs"
+  },
+  {
+    "id": "AX04",
+    "operation": "AO04",
+    "scenario": "Four 20 mm bars 6000 mm long; 300x500x6000 mm concrete; soffit plus two sides.",
+    "assertions": [
+      "At 7850 kg/m3 steel mass is 59.18760559 kg; concrete 0.9 m3; formwork 7.8 m2.",
+      "A 90-degree bend on a 16 mm bar with 32 mm internal radius adds 62.83185307 mm to tangent lengths.",
+      "Omitted rates return no cost, never default prices."
+    ],
+    "kind": "executable-foundation",
+    "test_path": "CSharp/tests/StructAutomate.Tests/GeometryQuantityTests.cs"
+  },
+  {
+    "id": "AX05",
+    "operation": "AO05",
+    "scenario": "Cheapest candidate omits SLS, second fails SLS, third passes all required checks.",
+    "assertions": [
+      "Only the third candidate is feasible.",
+      "An incomplete domain cannot claim complete enumeration.",
+      "Required checks cannot be waived through notApplicable."
+    ],
+    "kind": "executable-foundation",
+    "test_path": "CSharp/tests/StructAutomate.Tests/ForceAndRankingTests.cs"
+  },
+  {
+    "id": "AX06",
+    "operation": "AO06",
+    "scenario": "Sagging midspan, hogging support, neutral axis below flange and doubly reinforced alternatives.",
+    "assertions": [
+      "Actual d and compression-steel depth come from selected bars.",
+      "Return required/provided steel, neutral axis/strain regime, moment resistance, minimum/maximum steel and governing row.",
+      "Flange contributes only on its applicable compression side.",
+      "Axial/biaxial actions need a covered interaction method before member completion."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX07",
+    "operation": "AO07",
+    "scenario": "Same support-adjacent demand under a concentrated load and a UDL.",
+    "assertions": [
+      "Evaluate design shear stress, concrete contribution, maximum stress, required/provided links, minimum links and maximum spacing.",
+      "Enhancement applies only to its covered concentrated-load case.",
+      "Concurrent torsion routes through combined demand before selecting final links."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX08",
+    "operation": "AO08",
+    "scenario": "Nonzero T concurrent with V and M at a support station.",
+    "assertions": [
+      "Use one concurrent action vector per interaction check.",
+      "Return equivalent shear/moments and transverse plus longitudinal demands.",
+      "Check closed links, corner/side bars, perimeter spacing and development, not only total longitudinal area.",
+      "Zero T still runs applicable ordinary shear/link rules."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX09",
+    "operation": "AO09",
+    "scenario": "Same geometry with different sustained load, age, humidity and finish-installation date.",
+    "assertions": [
+      "Screening is identified separately from calculated deflection.",
+      "Service combinations never substitute factored ULS forces.",
+      "Report instantaneous, creep/shrinkage and incremental-after-finishes components and limits.",
+      "Method-specific creep, cracking and stiffness assumptions are returned."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX10",
+    "operation": "AO10",
+    "scenario": "Equal steel area with different bar spacing and cover.",
+    "assertions": [
+      "Return steel stress/strain, effective tension region, cover/spacing terms, calculated width, limit and governing service row.",
+      "Different arrangements can give different crack widths despite equal steel area."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX11",
+    "operation": "AO11",
+    "scenario": "Straight, hooked and bent bar endings at an end support.",
+    "assertions": [
+      "Development demand depends on stress state, grade/bar type and bond conditions.",
+      "Available length uses the correct reference face and explicit bend/hook credit convention.",
+      "Simple-support anchorage conditions are evaluated where applicable."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX12",
+    "operation": "AO12",
+    "scenario": "Support top bars curtailed toward midspan; bottom bars spliced outside a prohibited zone.",
+    "assertions": [
+      "Check minimum extension past theoretical cutoff and anchorage at actual termination.",
+      "Check remaining bars and extra links at cutoffs where required.",
+      "Laps respect tension/compression rules, spliced percentage, staggering and zone restrictions.",
+      "Couplers are counted and carry qualification/installation references."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX13",
+    "operation": "AO13",
+    "scenario": "Beam ends with capacity-design shear, confinement zones and joint development.",
+    "assertions": [
+      "Geometry-only IS13920 checks do not constitute complete seismic detailing.",
+      "Evaluate top/bottom continuity, proportions, hoops, hooks, zone lengths and splice placement.",
+      "Capacity-based shear can govern over imported elastic-analysis shear.",
+      "Dependent joint/system checks retain their engineering result references."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX14",
+    "operation": "AO14",
+    "scenario": "Change code dataset or a required-check profile.",
+    "assertions": [
+      "Inputs and results carry new identities; prior results are marked as needing recalculation.",
+      "Normalized IS source distribution permission is already recorded in the repository."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX15",
+    "operation": "AO15",
+    "scenario": "Two continuous spans with support widths, offsets and T-section slab.",
+    "assertions": [
+      "Store centreline, clear, effective design, flexible analysis and physical quantity lengths separately.",
+      "Support faces, point loads, section changes, reinforcement changes and extrema become check stations."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX16",
+    "operation": "AO16",
+    "scenario": "Selected multi-element frame with two ULS and two SLS combinations.",
+    "assertions": [
+      "Check all CSI return codes and equal result-array lengths.",
+      "Acquire units, local axes, sections/materials/modifiers/releases/offsets, analysis state and all raw rows.",
+      "No blanket component maxima create fictional simultaneous actions.",
+      "Normalization is implemented; COM acquisition is the next adapter operation."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX17",
+    "operation": "AO17",
+    "scenario": "Ordinary continuous beam with top/bottom regions, torsion and service cases.",
+    "assertions": [
+      "Iterate bar arrangement and actual depth before final checks.",
+      "Aggregate all applicable ULS, SLS, detailing and construction results without a partial pass.",
+      "Retain governing row/station/face and requirement IDs for every result."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX18",
+    "operation": "AO18",
+    "scenario": "Multi-layer mixed bars, end hooks, laps and varying link spacing.",
+    "assertions": [
+      "Each mark has tangent straights, bend centreline arcs, start/end stations and count.",
+      "Bar intersections/layer enclosure and congestion use actual geometry.",
+      "No full-span-bar assumption is substituted for a curtailed or lapped path."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX19",
+    "operation": "AO19",
+    "scenario": "Same schedule exported to workbook and shop schedule.",
+    "assertions": [
+      "Marks/shape dimensions/counts/cut lengths/mass reconcile to the same detail identity.",
+      "Stock cutting, laps, waste and offcuts are distinct; no waste double counting.",
+      "Link count uses first/last positions and zone-end inclusion conventions."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX20",
+    "operation": "AO20",
+    "scenario": "Compare isolated rectangular beam and beam monolithic with slab.",
+    "assertions": [
+      "Concrete uses explicit net segments and overlap/deduction policy.",
+      "Soffit, exposed sides, end bulkheads and slab/support interfaces are itemized.",
+      "Actual links, anchorage, laps and side bars contribute to steel.",
+      "Direct cost foundation is callable; labour/overhead/tax/waste model extends it explicitly."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX21",
+    "operation": "AO21",
+    "scenario": "Partial candidate search then changed-depth coupled candidate.",
+    "assertions": [
+      "All required ULS/SLS/detailing checks precede ranking.",
+      "Best among evaluated candidates is distinct from a proven optimum of a fully enumerated domain.",
+      "Changes to stiffness, section, releases, offsets, self weight or loads require fresh analysis for coupled results.",
+      "Fixed-action comparisons explicitly retain their common force assumption."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX22",
+    "operation": "AO22",
+    "scenario": "Change one beam property on a copy and reacquire the same selections.",
+    "assertions": [
+      "Verify target copy/model/property identity before writes.",
+      "Record every changed property, CSI return code, saved copy and new analysis identity.",
+      "Reimport and recheck resulting forces before comparison or report.",
+      "No live model operation is executed by this foundation setup."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX23",
+    "operation": "AO23",
+    "scenario": "Blank cell, pasted invalid row, manual mode, save/reopen and missing add-in.",
+    "assertions": [
+      "Use separate project/member/sections/actions/reinforcement/checks/BBS/quantities sheets with stable table columns.",
+      "Blank, zero, omitted and invalid text remain distinct.",
+      "Changed inputs invalidate associated results immediately.",
+      "Pure UDFs calculate; commands perform import, optimization, save and export.",
+      "Rows report exact cell/field/action identity and actionable input errors."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX24",
+    "operation": "AO24",
+    "scenario": "Report with governing checks, section/elevation, BBS and quantities.",
+    "assertions": [
+      "Include input assumptions, code/rule references, formulas/normalized substitutions, required/provided values, utilization and governing cases.",
+      "Retain project/member/revision/engine/dataset and input/result hashes.",
+      "Prepared/checked/approved fields refer to real people and recorded actions; do not invent professional signatures.",
+      "Exports use one current complete member result and resolved schedule."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX25",
+    "operation": "AO25",
+    "scenario": "Scalar UDF, 1000-beam batch, force-table import and cancellable candidate search.",
+    "assertions": [
+      "Record cold start, warm median/p95, allocations, memory, Excel bitness/build/runtime and machine.",
+      "Separate calculation from COM transfer, rendering and workbook save.",
+      "Use bulk reads/writes and avoid volatile per-cell ETABS calls.",
+      "Initial UX targets: typical recalculation under 1 s and responsive cancellation/progress within 250 ms; validate on a named reference machine before claiming them."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  },
+  {
+    "id": "AX26",
+    "operation": "AO26",
+    "scenario": "Mixed diameters and three layers with side bars, rounded link corners and a joint congestion zone.",
+    "assertions": [
+      "Check pairwise horizontal/vertical clearance, aggregate passage, cover to the correct steel surface and link-bend enclosure.",
+      "Compute each tension/compression group centroid separately; never mix top and bottom groups into one effective depth.",
+      "Construction fit includes insertion/placement sequence and joint clashes where selected.",
+      "The current geometry helper evaluates one tension group inside a clear rectangle; full-member fit extends this."
+    ],
+    "kind": "acceptance-scenario",
+    "test_path": null
+  }
+]

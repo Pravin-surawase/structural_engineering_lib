@@ -1,0 +1,178 @@
+[
+  {
+    "id": "AS01",
+    "title": "Existing IS 456 numerical owners",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/blob/4e4d7eedbe40f0c21fee6bb65c5e098a6431d68c/Python/structural_lib/codes/is456/beam/flexure.py",
+    "path": "Python/structural_lib/codes/is456/beam/flexure.py",
+    "accessed": "2026-09-03",
+    "reuse": "Flexure and multi-layer centroid; port numerical branches with independent vectors."
+  },
+  {
+    "id": "AS02",
+    "title": "CSI FrameForce API",
+    "url": "https://docs.csiamerica.com/help-files/etabs-api-2016/html/87689f3e-4175-1627-618b-c4ebae5e89b5.htm",
+    "path": null,
+    "accessed": "2026-09-03",
+    "reuse": "Historical API field contract; installed ETABS compatibility is tested against its shipped API."
+  },
+  {
+    "id": "AS03",
+    "title": "CSI developer API",
+    "url": "https://www.csiamerica.com/developer",
+    "path": null,
+    "accessed": "2026-09-03",
+    "reuse": "Version-dependent ETABS integration."
+  },
+  {
+    "id": "AS04",
+    "title": "CSI model locking",
+    "url": "https://docs.csiamerica.com/help-files/etabs/Menus/Analyze/Lock_Model.htm",
+    "path": null,
+    "accessed": "2026-09-03",
+    "reuse": "Unlocking deletes analysis results; require reanalysis for changed models."
+  },
+  {
+    "id": "AS05",
+    "title": "IIT Guwahati construction material",
+    "url": "https://archive.nptel.ac.in/content/storage2/courses/105103093/pdf/concrete_uc.pdf",
+    "path": null,
+    "accessed": "2026-09-03",
+    "reuse": "Reinforcement placement and construction deliverables."
+  },
+  {
+    "id": "AS06",
+    "title": "Python project criteria and schedule",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/blob/4e4d7eedbe40f0c21fee6bb65c5e098a6431d68c/Python/structural_lib/services/beam_project_contracts.py",
+    "path": "Python/structural_lib/services/beam_project_contracts.py",
+    "accessed": "2026-09-03",
+    "reuse": "Reuse identity/catalogue/criteria; extend one-layer full-span schedule to actual paths."
+  },
+  {
+    "id": "AS07",
+    "title": "Force identity contract",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/blob/4e4d7eedbe40f0c21fee6bb65c5e098a6431d68c/Python/structural_lib/core/analysis_contracts.py",
+    "path": "Python/structural_lib/core/analysis_contracts.py",
+    "accessed": "2026-09-03",
+    "reuse": "All six signed components and row/selection provenance."
+  },
+  {
+    "id": "AS08",
+    "title": "Python beam-line solver",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/blob/4e4d7eedbe40f0c21fee6bb65c5e098a6431d68c/Python/structural_lib/services/beam_line.py",
+    "path": "Python/structural_lib/services/beam_line.py",
+    "accessed": "2026-09-03",
+    "reuse": "Use existing bounded analysis cases as migration comparisons, with closed-form oracles."
+  },
+  {
+    "id": "AS09",
+    "title": "Python detailing and BBS",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/blob/4e4d7eedbe40f0c21fee6bb65c5e098a6431d68c/Python/structural_lib/services/bbs.py",
+    "path": "Python/structural_lib/services/bbs.py",
+    "accessed": "2026-09-03",
+    "reuse": "Reuse BBS terminology and shape calculations; derive lengths from resolved paths."
+  },
+  {
+    "id": "AS10",
+    "title": "Python quantity/cost model",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/blob/4e4d7eedbe40f0c21fee6bb65c5e098a6431d68c/Python/structural_lib/services/costing.py",
+    "path": "Python/structural_lib/services/costing.py",
+    "accessed": "2026-09-03",
+    "reuse": "Replace required-Ast steel approximation with selected bars and links."
+  },
+  {
+    "id": "AS11",
+    "title": "Python candidate search",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/blob/4e4d7eedbe40f0c21fee6bb65c5e098a6431d68c/Python/structural_lib/services/beam_candidate_search.py",
+    "path": "Python/structural_lib/services/beam_candidate_search.py",
+    "accessed": "2026-09-03",
+    "reuse": "Reuse finite-domain, budget and deterministic completeness semantics."
+  },
+  {
+    "id": "AS12",
+    "title": "Python shear",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/blob/4e4d7eedbe40f0c21fee6bb65c5e098a6431d68c/Python/structural_lib/codes/is456/beam/shear.py",
+    "path": "Python/structural_lib/codes/is456/beam/shear.py",
+    "accessed": "2026-09-03",
+    "reuse": "Separate concentrated-load enhancement from ordinary shear and torsion interaction."
+  },
+  {
+    "id": "AS13",
+    "title": "Python torsion",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/blob/4e4d7eedbe40f0c21fee6bb65c5e098a6431d68c/Python/structural_lib/codes/is456/beam/torsion.py",
+    "path": "Python/structural_lib/codes/is456/beam/torsion.py",
+    "accessed": "2026-09-03",
+    "reuse": "Reuse equivalent action logic; add actual perimeter reinforcement checks."
+  },
+  {
+    "id": "AS14",
+    "title": "Python serviceability",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/blob/4e4d7eedbe40f0c21fee6bb65c5e098a6431d68c/Python/structural_lib/codes/is456/beam/serviceability.py",
+    "path": "Python/structural_lib/codes/is456/beam/serviceability.py",
+    "accessed": "2026-09-03",
+    "reuse": "Distinct screening, short/long-term and crack-width routes."
+  },
+  {
+    "id": "AS15",
+    "title": "Python anchorage and detailing",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/blob/4e4d7eedbe40f0c21fee6bb65c5e098a6431d68c/Python/structural_lib/codes/is456/beam/detailing.py",
+    "path": "Python/structural_lib/codes/is456/beam/detailing.py",
+    "accessed": "2026-09-03",
+    "reuse": "Reuse development/lap/support anchorage; add stationwise cutoff and joint context."
+  },
+  {
+    "id": "AS16",
+    "title": "Python seismic beam rules",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/blob/4e4d7eedbe40f0c21fee6bb65c5e098a6431d68c/Python/structural_lib/codes/is13920/beam.py",
+    "path": "Python/structural_lib/codes/is13920/beam.py",
+    "accessed": "2026-09-03",
+    "reuse": "Existing geometry rules are not complete provided-link/joint compliance."
+  },
+  {
+    "id": "AS17",
+    "title": "StructProof reference snapshot",
+    "url": "https://github.com/Pravin-surawase/structproof/tree/280829fc4d8fc5186235c97042e029c3a83df7f6",
+    "path": null,
+    "accessed": "2026-09-03",
+    "reuse": "Reuse explicit case expectations and traceability; repository requires access."
+  },
+  {
+    "id": "AS18",
+    "title": "Sourcebook reference snapshot",
+    "url": "https://github.com/Pravin-surawase/structural-engineering-design-examples-sourcebook/tree/0b8ffeefa93a5772e0a9e15a532cdef534e0686b",
+    "path": null,
+    "accessed": "2026-09-03",
+    "reuse": "180 indexed records: 154 numerical and 26 other. Reconcile its version with StructProof; raw private records remain outside this repository."
+  },
+  {
+    "id": "AS19",
+    "title": "Excel-DNA runtime support",
+    "url": "https://excel-dna.net/docs/guides-basic/dotnet-runtime-support/",
+    "path": null,
+    "accessed": "2026-09-03",
+    "reuse": "Modern .NET runtime and host bitness constraints."
+  },
+  {
+    "id": "AS20",
+    "title": "Excel multithreaded recalculation",
+    "url": "https://learn.microsoft.com/en-us/office/client-developer/excel/multithreaded-recalculation-in-excel",
+    "path": null,
+    "accessed": "2026-09-03",
+    "reuse": "Pure UDFs and command-bound Excel/COM actions."
+  },
+  {
+    "id": "AS21",
+    "title": ".NET support policy",
+    "url": "https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core",
+    "path": null,
+    "accessed": "2026-09-03",
+    "reuse": ".NET 10 LTS choice; verify lifecycle at release."
+  },
+  {
+    "id": "AS22",
+    "title": "Previous failure research",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/blob/4e4d7eedbe40f0c21fee6bb65c5e098a6431d68c/docs/planning/xll-product/requirements-first/failure-register.json",
+    "path": "docs/planning/xll-product/requirements-first/failure-register.json",
+    "accessed": "2026-09-03",
+    "reuse": "20 source-backed historical/observed/inferred failure patterns; preserve evidence distinctions."
+  }
+]

@@ -1,0 +1,132 @@
+{
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "analysisRevision": {
+      "type": "string"
+    },
+    "requiredCheckIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "domainCandidateIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "definitionSha256": {
+            "type": "string"
+          },
+          "analysisRevision": {
+            "type": "string"
+          },
+          "objectiveValue": {
+            "type": "number"
+          },
+          "checks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "checkId": {
+                  "type": "string"
+                },
+                "outcome": {
+                  "enum": [
+                    "pass",
+                    "fail",
+                    "notApplicable",
+                    "notEvaluated"
+                  ]
+                },
+                "basis": {
+                  "type": "string"
+                },
+                "governingActionRowId": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "demand": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "capacity": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "utilization": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "sourceReferences": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "checkId",
+                "outcome",
+                "basis",
+                "governingActionRowId",
+                "demand",
+                "capacity",
+                "unit",
+                "utilization",
+                "sourceReferences"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "definitionSha256",
+          "analysisRevision",
+          "objectiveValue",
+          "checks"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "analysisRevision",
+    "requiredCheckIds",
+    "domainCandidateIds",
+    "candidates"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CandidateRankingRequest"
+}

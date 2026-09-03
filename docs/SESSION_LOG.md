@@ -5,6 +5,98 @@
 
 ---
 
+## 2026-09-03 — Session: Beam automation requirements and C# foundation
+
+**Agent:** Codex (`MAIN`, with two bounded research/specification and CI/review agents).
+**Task:** `BEAM-AUTOMATION-FOUNDATION`.
+**Branch:** `codex/beam-automation-foundation`.
+**Source:** fetched `origin/main` at `4e4d7eedbe40f0c21fee6bb65c5e098a6431d68c`, after integrating the accepted requirements research.
+**Git handoff receipt:** docs/verification/beam-automation-foundation-git-handoff-receipt.json
+**Focus:** Complete ETABS/Excel/solver/detailing/construction requirements and implement a usable, tested C# foundation with its dependencies and workflow skill.
+
+### Summary
+
+- Added a .NET 10.0.400 solution with Contracts, Engineering, Application, Excel,
+  tests and an example/benchmark runner. Pinned Excel-DNA 1.9.0, Math.NET Numerics
+  5.0.0 and xUnit v3 4.0.0 with locked restores and Microsoft.Testing.Platform.
+- Implemented signed concurrent six-component force normalization, source/axis
+  identity, actual tension-group centroids and fit, resolved bar-path quantities,
+  explicit formwork/direct cost, planar Euler–Bernoulli beam analysis and
+  deterministic ranking of complete feasible candidate evaluations.
+- Built the packed AMD64 XLL with four pure worksheet functions. Excel scalar
+  inputs preserve blank versus entered zero; no ETABS/model/workbook operations
+  execute during worksheet recalculation. Full IS-code member checks and live
+  ETABS/workbook interfaces are specified subsequent implementations.
+- Completed 26 operation/requirement/example groups, 22 source/reuse records,
+  38 shared/member/check schema types and five schemas generated from compiled
+  C# requests. Parent reconciled the initial agent catalogue against actual APIs.
+- Used the existing Python math, serviceability, detailing, analysis, project,
+  BBS/cost and candidate owners; retained sourcebook/StructProof version and
+  access distinctions and the preceding source-backed failure register.
+- Installed the shared beam-automation skill locally through a junction to its
+  maintained repository source. Updated current-plan authority and hosted CI
+  routing with a required Windows .NET job and documentation schema validation.
+- Verification: Release build without warnings; 25 C# tests passed; focused
+  workflow/routing tests passed; schemas/traceability, Ruff, maintained links,
+  skill metadata and efficiency checks passed. The actual packed PE assertion
+  ran successfully. Numerical tests include closed-form UDL/point-load,
+  continuous-span, settlement and spring cases, actual quantities and input errors.
+- Created and inspected a 12-page Word/PDF report outside Git. The artifact
+  package includes the specification, source, compiled XLL and local evidence.
+  A reproducible 1000-sample library benchmark records runtime/machine scope;
+  it does not claim finished Excel/ETABS performance or a Python speedup.
+- Explicit main fetch and bounded sibling inspection found no active task-owned
+  predecessor. Existing detached evidence worktrees were clean. Hosted/merge
+  facts are recorded externally after candidate freeze.
+
+### Issues encountered
+
+- The first delegated catalogue retained broad pseudo-fields and stale operation
+  associations; it did not yet establish the requested professional contracts.
+- Modern xUnit used Microsoft.Testing.Platform while the initial command invoked
+  legacy VSTest. Schema export initially lacked an explicit type-info resolver.
+- Initial scalar Excel double parameters could coerce blanks to zero, and a
+  required candidate check could be treated as resolved through notApplicable.
+- The new CI domain was missing from the existing PR Gate test fixture; the first
+  packed-artifact assertion confused the loader with the deliverable, and its PE
+  signature comparison contained one null byte rather than two.
+- Adding the skill exposed a required registry-count update. A rounded centroid
+  oracle landed on a decimal rounding boundary despite a numerically correct result.
+- The shared parent session was already active when a subagent attempted another
+  start. Windows literal globs and guessed auxiliary file names did not resolve.
+- The first hosted candidate exposed three integration mismatches: Black's
+  formatting of the expanded routing case, a fixed 14-skill assertion in the
+  discovery test, and NuGet lockfiles generated without the required final newline.
+
+### Root causes and resolutions
+
+- Parent replaced the broad catalogue with exact compiled foundation schemas,
+  structured operation fields, shared member/check schemas and reciprocal
+  requirement/example/source validation. `validate_spec.py` passes all current
+  links, schema definitions and executable foundation fixtures.
+- Configured the .NET 10 test runner in `global.json`, used `dotnet test --project`
+  from CSharp, removed redundant VSTest packages and supplied the JSON type-info
+  resolver. Schema export and all 25 tests now run successfully.
+- Changed Excel numeric entry points to validate object values before conversion;
+  blank-versus-zero tests pass. Required notApplicable checks now remain
+  unevaluated; the candidate regression test proves they cannot win.
+- Extended PR Gate fixture inputs and failure cases for the new domain. Targeted
+  the publish XLL, corrected its four-byte PE signature check, and executed the
+  exact hosted assertion locally against the AMD64 artifact. Focused workflow
+  and routing tests now pass without changing required-check semantics.
+- Updated the canonical skill count from 14 to 15; skill validation passes. Used
+  an explicit absolute tolerance for the independently derived repeating centroid
+  value, preserving its numerical acceptance rather than rounding both sides.
+- Kept one parent task/session record. Used discovered owners and supported paths.
+  ⚠️ TERMINAL ISSUE: literal wildcard paths and guessed filenames failed on
+  PowerShell; targeted `rg --files`/exact paths worked. The existing Word renderer
+  exported the report successfully because LibreOffice is absent on this host.
+- The hosted repair applies Black to the changed routing fixture, compares
+  discovered skill identities with the canonical catalogue rather than a fixed
+  count, and normalizes the six lockfile endings. The affected discovery test,
+  formatting and locked-restore evidence are rerun for this repair candidate;
+  the C# calculations and product contracts are unchanged.
+
 ## 2026-09-03 — Session: Standalone Excel beam requirements before C# migration
 
 **Agent:** Codex (`MAIN`; sole writer; two bounded read-only research/review agents).

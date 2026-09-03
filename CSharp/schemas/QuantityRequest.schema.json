@@ -1,0 +1,188 @@
+{
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "steelDensityKgPerM3": {
+      "type": "number"
+    },
+    "bars": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "mark": {
+            "type": "string"
+          },
+          "diameterMm": {
+            "type": "number"
+          },
+          "count": {
+            "type": "integer"
+          },
+          "straights": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "purpose": {
+                  "type": "string"
+                },
+                "tangentLengthMm": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "purpose",
+                "tangentLengthMm"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "bends": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "purpose": {
+                  "type": "string"
+                },
+                "angleDegrees": {
+                  "type": "number"
+                },
+                "internalRadiusMm": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "purpose",
+                "angleDegrees",
+                "internalRadiusMm"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "mark",
+          "diameterMm",
+          "count",
+          "straights",
+          "bends"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "concrete": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "netAreaMm2": {
+            "type": "number"
+          },
+          "physicalLengthMm": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "netAreaMm2",
+          "physicalLengthMm"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "formwork": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "physicalLengthMm": {
+            "type": "number"
+          },
+          "soffitContactWidthMm": {
+            "type": "number"
+          },
+          "leftContactHeightMm": {
+            "type": "number"
+          },
+          "rightContactHeightMm": {
+            "type": "number"
+          },
+          "endBulkheadAreaMm2": {
+            "type": "number"
+          },
+          "deductionAreaMm2": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "physicalLengthMm",
+          "soffitContactWidthMm",
+          "leftContactHeightMm",
+          "rightContactHeightMm",
+          "endBulkheadAreaMm2",
+          "deductionAreaMm2"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "rates": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "currency": {
+          "type": "string"
+        },
+        "priceDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "source": {
+          "type": "string"
+        },
+        "steelPerKg": {
+          "type": "number"
+        },
+        "concretePerM3": {
+          "type": "number"
+        },
+        "formworkPerM2": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "currency",
+        "priceDate",
+        "source",
+        "steelPerKg",
+        "concretePerM3",
+        "formworkPerM2"
+      ],
+      "additionalProperties": false,
+      "default": null
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "steelDensityKgPerM3",
+    "bars",
+    "concrete",
+    "formwork"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "QuantityRequest"
+}

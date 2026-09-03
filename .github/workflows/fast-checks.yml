@@ -20,6 +20,7 @@ jobs:
       fastapi: ${{ steps.impact.outputs.fastapi }}
       react: ${{ steps.impact.outputs.react }}
       excel: ${{ steps.impact.outputs.excel }}
+      dotnet: ${{ steps.impact.outputs.dotnet }}
       control_plane: ${{ steps.impact.outputs.control_plane }}
       docs: ${{ steps.impact.outputs.docs }}
       repository: ${{ steps.impact.outputs.repository }}
@@ -293,6 +294,63 @@ jobs:
             --runtime-file "$RUNNER_TEMP/excel-runtime.txt" \
             --receipt "$RUNNER_TEMP/verification-evidence/excel.json"
 
+  dotnet-validation:
+    name: .NET Beam Automation Validation
+    needs: changes
+    if: needs.changes.outputs.dotnet == 'true'
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: CSharp/global.json
+
+      - name: Restore locked solution
+        working-directory: CSharp
+        run: dotnet restore StructAutomate.slnx --locked-mode
+
+      - name: Build Release solution
+        working-directory: CSharp
+        run: dotnet build StructAutomate.slnx -c Release --no-restore
+
+      - name: Run C# tests
+        working-directory: CSharp
+        run: dotnet test --project tests/StructAutomate.Tests/StructAutomate.Tests.csproj -c Release --no-build
+
+      - name: Assert packed x64 XLL artifact
+        shell: pwsh
+        run: |
+          [xml]$project = Get-Content CSharp/src/StructAutomate.Excel/StructAutomate.Excel.csproj
+          $properties = $project.Project.PropertyGroup
+          if ($properties.ExcelDnaPack -ne 'true' -or $properties.ExcelDnaCreate64BitAddIn -ne 'true' -or $properties.ExcelDnaCreate32BitAddIn -ne 'false') {
+            throw 'Excel project must pack a 64-bit-only XLL artifact.'
+          }
+          $publish = 'CSharp/src/StructAutomate.Excel/bin/Release/net10.0-windows/publish'
+          $xll = Join-Path $publish 'StructAutomate.Excel-AddIn64-packed.xll'
+          if (-not (Test-Path -LiteralPath $xll -PathType Leaf)) {
+            throw "Packed x64 XLL artifact is missing: $xll"
+          }
+          $artifact = Get-Item -LiteralPath $xll
+          if ($artifact.Length -le 0) {
+            throw "Packed XLL artifact is empty: $xll"
+          }
+          if (Get-ChildItem -LiteralPath $publish -File -Filter '*32*.xll') {
+            throw 'A 32-bit packed XLL artifact was produced.'
+          }
+          $bytes = [System.IO.File]::ReadAllBytes($xll)
+          $peOffset = [BitConverter]::ToInt32($bytes, 0x3c)
+          if ($bytes.Length -lt ($peOffset + 6) -or [Text.Encoding]::ASCII.GetString($bytes, $peOffset, 4) -ne ("PE" + [char]0 + [char]0)) {
+            throw "Packed XLL artifact is not a PE file: $xll"
+          }
+          $machine = [BitConverter]::ToUInt16($bytes, $peOffset + 4)
+          if ($machine -ne 0x8664) {
+            throw ("Packed XLL PE machine must be AMD64 (0x8664), found 0x{0:X4}." -f $machine)
+          }
+
   control-plane-validation:
     name: Control Plane Validation
     needs: changes
@@ -375,7 +433,7 @@ jobs:
       - name: Install documentation dependencies
         run: |
           python -m pip install "mkdocs-material>=9.5,<10" "mkdocstrings[python]>=0.25,<1"
-          python -m pip install -e Python/
+          python -m pip install -e 'Python/[validation]'
 
       - name: Probe exact documentation PASS evidence
         id: evidence
@@ -391,6 +449,7 @@ jobs:
         if: steps.evidence.outputs.valid != 'true'
         run: |
           python scripts/check_doc_versions.py --ci
+          python docs/planning/xll-product/automation/validate_spec.py
           python scripts/check_tasks_format.py
           python scripts/check_docs.py --index
           python scripts/check_docs.py --index-links
@@ -488,6 +547,7 @@ jobs:
       - fastapi-validation
       - react-validation
       - excel-validation
+      - dotnet-validation
       - control-plane-validation
       - documentation-validation
       - repository-validation
@@ -504,6 +564,8 @@ jobs:
           REACT_RESULT: ${{ needs.react-validation.result }}
           EXCEL_CHANGED: ${{ needs.changes.outputs.excel }}
           EXCEL_RESULT: ${{ needs.excel-validation.result }}
+          DOTNET_CHANGED: ${{ needs.changes.outputs.dotnet }}
+          DOTNET_RESULT: ${{ needs.dotnet-validation.result }}
           CONTROL_PLANE_CHANGED: ${{ needs.changes.outputs.control_plane }}
           CONTROL_PLANE_RESULT: ${{ needs.control-plane-validation.result }}
           DOCS_CHANGED: ${{ needs.changes.outputs.docs }}
@@ -547,7 +609,7 @@ jobs:
             if [[ "$FAIL_CLOSED" == 'true' ]]; then
               for changed in \
                 "$PYTHON_CHANGED" "$FASTAPI_CHANGED" "$REACT_CHANGED" \
-                "$EXCEL_CHANGED" "$CONTROL_PLANE_CHANGED" "$DOCS_CHANGED" \
+                "$EXCEL_CHANGED" "$DOTNET_CHANGED" "$CONTROL_PLANE_CHANGED" "$DOCS_CHANGED" \
                 "$REPOSITORY_CHANGED"; do
                 if [[ "$changed" != 'true' ]]; then
                   echo 'ERROR: unknown impact did not select every validation domain'
@@ -564,6 +626,7 @@ jobs:
           require_component 'FastAPI Validation' "$FASTAPI_CHANGED" "$FASTAPI_RESULT"
           require_component 'React Validation' "$REACT_CHANGED" "$REACT_RESULT"
           require_component 'Excel Add-in Validation' "$EXCEL_CHANGED" "$EXCEL_RESULT"
+          require_component '.NET Beam Automation Validation' "$DOTNET_CHANGED" "$DOTNET_RESULT"
           require_component 'Control Plane Validation' "$CONTROL_PLANE_CHANGED" "$CONTROL_PLANE_RESULT"
           require_component 'Documentation Validation' "$DOCS_CHANGED" "$DOCS_RESULT"
           require_component 'Repository Validation' "$REPOSITORY_CHANGED" "$REPOSITORY_RESULT"
