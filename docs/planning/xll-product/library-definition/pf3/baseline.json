@@ -1,0 +1,99 @@
+{
+  "phase_id": "PF3",
+  "title": "Capability scope and library-boundary baseline",
+  "revision_date": "2026-09-03",
+  "state": "complete",
+  "decision_ids": ["D04", "D05"],
+  "source_evidence": ["../pf1/baseline.json", "../pf2/baseline.json", "../../automation/operations.json", "../../automation/member-inputs.schema.json", "../../reusable-library-research.md"],
+  "deliverables": [
+    {
+      "id": "PF3-D1-capability-map",
+      "records": [
+        {"id": "CAP-FOUND", "responsibility": "quantities, units, materials, section/support geometry and catalogues", "kind": "reusable-foundation", "depends_on": [], "workflow_ids": ["WF-STANDALONE-EXCEL", "WF-PYTHON-LIBRARY", "WF-DOTNET-LIBRARY", "WF-ETABS-AUTOMATION", "WF-CONSTRUCTION-OUTPUT"]},
+        {"id": "CAP-ANALYSIS", "responsibility": "vendor-neutral action snapshots and bounded beam-line analysis", "kind": "reusable-service", "depends_on": ["CAP-FOUND"], "workflow_ids": ["WF-STANDALONE-EXCEL", "WF-PYTHON-LIBRARY", "WF-DOTNET-LIBRARY", "WF-ETABS-AUTOMATION"]},
+        {"id": "CAP-FLEXURE", "responsibility": "section response, flexural demand checks and reinforcement selection for declared profiles", "kind": "design-code", "depends_on": ["CAP-FOUND", "CAP-ANALYSIS"], "workflow_ids": ["WF-STANDALONE-EXCEL", "WF-PYTHON-LIBRARY", "WF-DOTNET-LIBRARY", "WF-ETABS-AUTOMATION"]},
+        {"id": "CAP-SHEAR", "responsibility": "shear demand/capacity and transverse reinforcement", "kind": "design-code", "depends_on": ["CAP-FOUND", "CAP-ANALYSIS"], "workflow_ids": ["WF-STANDALONE-EXCEL", "WF-PYTHON-LIBRARY", "WF-DOTNET-LIBRARY", "WF-ETABS-AUTOMATION"]},
+        {"id": "CAP-TORSION", "responsibility": "torsion interaction and perimeter reinforcement", "kind": "design-code", "depends_on": ["CAP-FLEXURE", "CAP-SHEAR"], "workflow_ids": ["WF-STANDALONE-EXCEL", "WF-PYTHON-LIBRARY", "WF-DOTNET-LIBRARY", "WF-ETABS-AUTOMATION"]},
+        {"id": "CAP-SLS", "responsibility": "screening and calculated deflection/crack checks from an explicit service basis", "kind": "design-code", "depends_on": ["CAP-FOUND", "CAP-ANALYSIS"], "workflow_ids": ["WF-STANDALONE-EXCEL", "WF-PYTHON-LIBRARY", "WF-DOTNET-LIBRARY", "WF-ETABS-AUTOMATION"]},
+        {"id": "CAP-DETAIL", "responsibility": "development, anchorage, laps, curtailment, continuity and selected seismic rules", "kind": "design-code", "depends_on": ["CAP-FLEXURE", "CAP-SHEAR", "CAP-TORSION", "CAP-SLS"], "workflow_ids": ["WF-STANDALONE-EXCEL", "WF-PYTHON-LIBRARY", "WF-DOTNET-LIBRARY", "WF-ETABS-AUTOMATION", "WF-CONSTRUCTION-OUTPUT"]},
+        {"id": "CAP-CONSTRUCT", "responsibility": "actual bar placement, layers, clear spacing, link enclosure and congestion", "kind": "reusable-engineering", "depends_on": ["CAP-FOUND", "CAP-DETAIL"], "workflow_ids": ["WF-STANDALONE-EXCEL", "WF-PYTHON-LIBRARY", "WF-DOTNET-LIBRARY", "WF-CONSTRUCTION-OUTPUT"]},
+        {"id": "CAP-FAB", "responsibility": "resolved bar paths, marks, cut lengths, BBS, stock and offcut data", "kind": "reusable-service", "depends_on": ["CAP-CONSTRUCT", "CAP-DETAIL"], "workflow_ids": ["WF-STANDALONE-EXCEL", "WF-PYTHON-LIBRARY", "WF-DOTNET-LIBRARY", "WF-CONSTRUCTION-OUTPUT"]},
+        {"id": "CAP-COST", "responsibility": "dated direct rates and declared construction objectives applied to actual quantities", "kind": "reusable-service", "depends_on": ["CAP-FAB", "CAP-FORMWORK"], "workflow_ids": ["WF-PYTHON-LIBRARY", "WF-DOTNET-LIBRARY", "WF-CONSTRUCTION-OUTPUT"]},
+        {"id": "CAP-FORMWORK", "responsibility": "concrete contact-face measurement, interfaces and deductions", "kind": "reusable-service", "depends_on": ["CAP-FOUND"], "workflow_ids": ["WF-PYTHON-LIBRARY", "WF-DOTNET-LIBRARY", "WF-CONSTRUCTION-OUTPUT"]},
+        {"id": "CAP-OPT", "responsibility": "candidate generation, complete evaluation, reanalysis classification and deterministic ranking", "kind": "reusable-service", "depends_on": ["CAP-ANALYSIS", "CAP-FLEXURE", "CAP-SHEAR", "CAP-TORSION", "CAP-SLS", "CAP-DETAIL", "CAP-CONSTRUCT", "CAP-COST"], "workflow_ids": ["WF-STANDALONE-EXCEL", "WF-PYTHON-LIBRARY", "WF-DOTNET-LIBRARY", "WF-ETABS-AUTOMATION"]},
+        {"id": "CAP-ETABS", "responsibility": "live CSI acquisition, source mapping, model-copy transactions and reanalysis", "kind": "application-adapter", "depends_on": ["CAP-ANALYSIS", "CAP-OPT"], "workflow_ids": ["WF-ETABS-AUTOMATION"]},
+        {"id": "CAP-EXCEL", "responsibility": "Excel argument/table conversion, pure UDF registration and explicit workbook commands", "kind": "application-adapter", "depends_on": ["CAP-FOUND", "CAP-ANALYSIS", "CAP-FLEXURE", "CAP-SHEAR", "CAP-TORSION", "CAP-SLS", "CAP-DETAIL", "CAP-CONSTRUCT", "CAP-FAB", "CAP-OPT", "CAP-REPORT"], "workflow_ids": ["WF-STANDALONE-EXCEL", "WF-REVIEW"]},
+        {"id": "CAP-REPORT", "responsibility": "calculation-record data, review trace, schedules and drawing models; rendering remains adapter work", "kind": "reusable-service", "depends_on": ["CAP-FLEXURE", "CAP-SHEAR", "CAP-TORSION", "CAP-SLS", "CAP-DETAIL", "CAP-FAB"], "workflow_ids": ["WF-STANDALONE-EXCEL", "WF-PYTHON-LIBRARY", "WF-DOTNET-LIBRARY", "WF-CONSTRUCTION-OUTPUT", "WF-REVIEW"]},
+        {"id": "CAP-PACKAGE", "responsibility": "host-free packages, optional adapters, diagnostics and reproducible deployment", "kind": "delivery", "depends_on": ["CAP-ETABS", "CAP-EXCEL"], "workflow_ids": ["WF-PYTHON-LIBRARY", "WF-DOTNET-LIBRARY", "WF-STANDALONE-EXCEL", "WF-ETABS-AUTOMATION"]},
+        {"id": "CAP-PERF", "responsibility": "separate kernel, batch, search, serialization, workbook and live-adapter performance", "kind": "quality", "depends_on": ["CAP-PACKAGE"], "workflow_ids": ["WF-PYTHON-LIBRARY", "WF-DOTNET-LIBRARY", "WF-STANDALONE-EXCEL", "WF-ETABS-AUTOMATION"]}
+      ]
+    },
+    {
+      "id": "PF3-D2-responsibility-matrix",
+      "dependency_direction": "core quantities/contracts -> design-code calculations -> reusable services -> application adapters",
+      "records": [
+        {"owner": "core", "may_contain": ["quantities", "geometry", "materials", "identity primitives", "diagnostics"], "forbidden": ["IS 456 rules", "Excel", "ETABS", "file rendering"]},
+        {"owner": "codes.is456", "may_contain": ["pure code formulas", "normalized lookups", "applicability", "rule provenance"], "forbidden": ["workbook cells", "COM objects", "HTTP", "file paths", "model sessions"]},
+        {"owner": "services", "may_contain": ["member orchestration", "analysis snapshots", "bar resolution", "BBS data", "quantities", "search", "calculation records"], "forbidden": ["required running host", "duplicated formulas in adapters"]},
+        {"owner": "adapters.excel", "may_contain": ["range conversion", "UDF registration", "ribbon/panel commands", "bulk workbook I/O"], "forbidden": ["independent engineering formulas", "live ETABS calls during recalculation"]},
+        {"owner": "adapters.etabs", "may_contain": ["CSI interop", "return/array validation", "selection/unit restoration", "model-copy commands"], "forbidden": ["design-code formulas", "worksheet dependencies"]},
+        {"owner": "presentation", "may_contain": ["HTML/PDF/DXF/workbook rendering"], "forbidden": ["recalculation of engineering quantities"]},
+        {"owner": "compatibility", "may_contain": ["old-name/shape translation", "deprecation diagnostics"], "forbidden": ["silent legacy semantics", "new engineering defaults"]}
+      ]
+    },
+    {
+      "id": "PF3-D3-supported-profiles",
+      "profiles": [
+        {"id": "PROFILE-FOUNDATION-V1", "scope": "explicit quantities, material/bar catalogues, section/support geometry, actual bar coordinates and vendor-neutral action records", "initial": true},
+        {"id": "PROFILE-BEAM-LINE-PLANAR-V1", "scope": "linear Euler-Bernoulli planar bending over ordered prismatic elements with declared supports, springs, settlements, UDL and nodal actions", "initial": true, "limits": ["no global-building effects", "no shear deformation", "no material/geometric nonlinearity", "no hidden self weight"]},
+        {"id": "PROFILE-RC-SECTION-IS456-V1", "scope": "ordinary rectangular singly/doubly reinforced and eligible T/L sections, both bending signs, relevant shear and torsion checks using declared concurrent action semantics", "initial": true, "limits": ["nonzero axial/minor-axis interaction requires a separately supported method", "flange eligibility and compression-zone assumptions are explicit"]},
+        {"id": "PROFILE-RC-BEAM-MEMBER-IS456-V1", "scope": "one or more collinear spans with physical support faces, positive/negative regions, ULS and SLS actions, complete flexure/shear/torsion/SLS/detailing/fit checks, resolved reinforcement and construction data", "initial": true, "limits": ["required-check profile is versioned", "all stations/discontinuity sides needed by the checks are present"]},
+        {"id": "PROFILE-RC-BEAM-SEISMIC-DETAIL-V1", "scope": "ordinary beam member plus selected system/joint/capacity-design context, continuity, confinement, hook and splice requirements", "initial": "after ordinary member slice", "limits": ["geometry-only seismic checks are insufficient"]},
+        {"id": "PROFILE-RC-BEAM-ETABS-V1", "scope": "the ordinary/seismic member profile fed by an identified immutable ETABS snapshot and controlled copied-model reanalysis", "initial": "after standalone Excel workflow", "limits": ["supported installed ETABS/runtime matrix is set in PF9"]}
+      ],
+      "explicit_exclusions": [
+        {"scope": "deep, curved, prestressed, post-tensioned, hollow, composite and other special beams", "reason": "need separate analysis/design profiles and assurance", "decision_owner": "ROLE-ENGINEERING"},
+        {"scope": "full 2D/3D frame, diaphragm, wall, slab, foundation or soil-structure analysis", "reason": "outside bounded beam analysis and first product", "decision_owner": "ROLE-PRODUCT"},
+        {"scope": "other code families and automatic parity for existing non-beam Python APIs", "reason": "require separately approved common-set extension", "decision_owner": "ROLE-PRODUCT"},
+        {"scope": "temporary-works design of formwork systems", "reason": "CAP-FORMWORK measures contact area only", "decision_owner": "ROLE-ENGINEERING"},
+        {"scope": "professional approval generated by software", "reason": "approval is a human recorded action", "decision_owner": "ROLE-ENGINEERING"}
+      ]
+    },
+    {
+      "id": "PF3-D4-ao01-ao26-crosswalk",
+      "records": [
+        {"operation": "AO01", "capabilities": ["CAP-ANALYSIS"], "owner": "reusable normalization service; ETABS acquisition envelope stays in adapter"},
+        {"operation": "AO02", "capabilities": ["CAP-ANALYSIS"], "owner": "reusable analysis service"},
+        {"operation": "AO03", "capabilities": ["CAP-FOUND", "CAP-CONSTRUCT"], "owner": "reusable geometry service"},
+        {"operation": "AO04", "capabilities": ["CAP-FAB", "CAP-FORMWORK", "CAP-COST"], "owner": "reusable quantity/cost service"},
+        {"operation": "AO05", "capabilities": ["CAP-OPT"], "owner": "reusable deterministic ranking service"},
+        {"operation": "AO06", "capabilities": ["CAP-FLEXURE"], "owner": "IS 456 code check"},
+        {"operation": "AO07", "capabilities": ["CAP-SHEAR"], "owner": "IS 456 code check"},
+        {"operation": "AO08", "capabilities": ["CAP-TORSION", "CAP-SHEAR", "CAP-FLEXURE"], "owner": "IS 456 combined code check"},
+        {"operation": "AO09", "capabilities": ["CAP-SLS"], "owner": "IS 456 serviceability check"},
+        {"operation": "AO10", "capabilities": ["CAP-SLS", "CAP-CONSTRUCT"], "owner": "IS 456 serviceability/arrangement check"},
+        {"operation": "AO11", "capabilities": ["CAP-DETAIL"], "owner": "IS 456 detailing check"},
+        {"operation": "AO12", "capabilities": ["CAP-DETAIL", "CAP-FAB"], "owner": "IS 456/member detailing service"},
+        {"operation": "AO13", "capabilities": ["CAP-DETAIL", "CAP-SHEAR"], "owner": "IS 456 seismic detailing check"},
+        {"operation": "AO14", "capabilities": ["CAP-FOUND"], "owner": "reusable project/criteria service"},
+        {"operation": "AO15", "capabilities": ["CAP-FOUND", "CAP-ANALYSIS"], "owner": "reusable topology service"},
+        {"operation": "AO16", "capabilities": ["CAP-ETABS", "CAP-ANALYSIS"], "owner": "ETABS adapter command producing common snapshot"},
+        {"operation": "AO17", "capabilities": ["CAP-FLEXURE", "CAP-SHEAR", "CAP-TORSION", "CAP-SLS", "CAP-DETAIL", "CAP-CONSTRUCT"], "owner": "reusable whole-member service"},
+        {"operation": "AO18", "capabilities": ["CAP-DETAIL", "CAP-CONSTRUCT", "CAP-FAB"], "owner": "reusable reinforcement resolution service"},
+        {"operation": "AO19", "capabilities": ["CAP-FAB"], "owner": "reusable BBS/cutting-data service"},
+        {"operation": "AO20", "capabilities": ["CAP-COST", "CAP-FORMWORK", "CAP-FAB"], "owner": "reusable construction quantity/cost service"},
+        {"operation": "AO21", "capabilities": ["CAP-OPT"], "owner": "reusable candidate generation/evaluation service"},
+        {"operation": "AO22", "capabilities": ["CAP-ETABS", "CAP-OPT"], "owner": "explicit ETABS copied-model command"},
+        {"operation": "AO23", "capabilities": ["CAP-EXCEL"], "owner": "explicit Excel application command over reusable services"},
+        {"operation": "AO24", "capabilities": ["CAP-REPORT", "CAP-FAB"], "owner": "reusable calculation-record model plus presentation renderer"},
+        {"operation": "AO25", "capabilities": ["CAP-PERF", "CAP-EXCEL"], "owner": "installed Excel benchmark command"},
+        {"operation": "AO26", "capabilities": ["CAP-CONSTRUCT", "CAP-DETAIL"], "owner": "reusable full-arrangement check"}
+      ]
+    }
+  ],
+  "exit_evidence": [
+    {"criterion": "AO01 through AO26 and all capability families are mapped.", "evidence": ["PF3-D1 contains all 17 programme capabilities and PF3-D4 contains exactly AO01-AO26."]},
+    {"criterion": "Reusable calculations have no application-state dependency.", "evidence": ["PF3-D2 dependency direction and forbidden-dependency rules isolate Excel, ETABS and rendering."]},
+    {"criterion": "Unsupported behavior is visible and reasoned.", "evidence": ["PF3-D3 names six profiles, limits, five explicit exclusions and decision owners."]}
+  ]
+}

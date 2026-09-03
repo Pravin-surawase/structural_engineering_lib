@@ -1,0 +1,155 @@
+{
+  "phase_id": "PF5",
+  "title": "Public operations and professional signatures",
+  "revision_date": "2026-09-03",
+  "state": "complete",
+  "decision_ids": ["D10", "D11"],
+  "source_evidence": [
+    "../pf1/baseline.json",
+    "../pf2/baseline.json",
+    "../pf3/baseline.json",
+    "../pf4/baseline.json",
+    "../../automation/operations.json",
+    "../../automation/examples.json",
+    "../../requirements-first/operations.json"
+  ],
+  "deliverables": [
+    {
+      "id": "PF5-D1-operation-catalogue",
+      "semantic_version_rule": "A semantic identifier changes major version when applicability, effective input meaning, unit/sign convention, required checks or outcome meaning changes.",
+      "foundation_operations": [
+        {"id": "FO01", "semantic_id": "structural.reinforcement.bar_area/v1", "kind": "value", "purpose": "Calculate nominal circular bar area without selecting reinforcement.", "valid_example": "diameter 16 mm returns an unrounded area in mm2 with effective input", "non_success_example": "zero diameter returns rejected_input and INPUT.RANGE"},
+        {"id": "FO02", "semantic_id": "structural.reinforcement.mass_per_length/v1", "kind": "value", "purpose": "Calculate reinforcement mass per length from diameter and declared density.", "valid_example": "diameter 16 mm and density 7850 kg/m3 returns kg/m", "non_success_example": "absent density with no profile returns rejected_input and INPUT.REQUIRED"},
+        {"id": "FO03", "semantic_id": "structural.reinforcement.effective_depth/v1", "kind": "value", "purpose": "Resolve effective depth from actual bar coordinates and compression face.", "valid_example": "two tension layers return area-weighted centroid and effective depth", "non_success_example": "unresolved physical face returns rejected_input and AXIS.UNRESOLVED"},
+        {"id": "FO04", "semantic_id": "is456.beam.flexural_capacity/v1", "kind": "capacity", "purpose": "Calculate declared-profile flexural capacity without deciding a demand check or selecting steel.", "valid_example": "eligible rectangular section returns capacity, neutral-axis state and rule provenance", "non_success_example": "unsupported axial interaction returns completed, not_applicable and PROFILE.UNSUPPORTED"},
+        {"id": "FO05", "semantic_id": "is456.beam.shear_capacity/v1", "kind": "capacity", "purpose": "Calculate declared-profile shear capacities for supplied longitudinal and transverse steel.", "valid_example": "valid section and actual links return concrete, steel and limiting capacities", "non_success_example": "missing actual link provision for a provided-capacity request returns rejected_input"},
+        {"id": "FO06", "semantic_id": "is456.reinforcement.development_length/v1", "kind": "value", "purpose": "Calculate required development length for explicit bar, stress state, bond condition and material grades.", "valid_example": "tension deformed bar returns required length and all modifiers", "non_success_example": "blank bond condition returns rejected_input rather than assuming tension"},
+        {"id": "FO07", "semantic_id": "is456.beam.deflection_limit/v1", "kind": "value", "purpose": "Resolve the applicable deflection limit from span, use and declared criterion.", "valid_example": "explicit total-deflection criterion returns its limit in mm", "non_success_example": "ambiguous bare span returns rejected_input and INPUT.CONFLICT"},
+        {"id": "FO08", "semantic_id": "is456.beam.crack_width_limit/v1", "kind": "value", "purpose": "Resolve the applicable crack-width limit from exposure and declared requirement.", "valid_example": "declared exposure/profile returns limit and code-data revision", "non_success_example": "conflicting project and supplied limits return rejected_input until precedence is explicit"}
+      ],
+      "operations": [
+        {"id": "AO01", "semantic_id": "structural.action_snapshot.normalize/v1", "name": "NormalizeActionSnapshot", "kind": "service", "request": "RawActionSnapshot", "result": "NormalizedActionSnapshotResult", "purpose": "Convert a declared source snapshot into unit-normalized, signed, concurrent action rows while preserving source identity.", "valid_example": "six ETABS components in kN and kNm become common action rows with unchanged concurrency", "non_success_example": "component arrays of unequal length return rejected_input and no partial snapshot"},
+        {"id": "AO02", "semantic_id": "structural.beam_line.solve/v1", "name": "SolveBeamLine", "kind": "analysis", "request": "BeamLineRequest", "result": "BeamLineResult", "purpose": "Solve one bounded planar elastic beam-line profile.", "valid_example": "simply supported UDL model returns reactions, stations, actions and deflection", "non_success_example": "unstable topology returns rejected_input with stability diagnostics"},
+        {"id": "AO03", "semantic_id": "structural.reinforcement_geometry.evaluate/v1", "name": "EvaluateReinforcementGeometry", "kind": "service", "request": "ReinforcementGeometryRequest", "result": "ReinforcementGeometryResult", "purpose": "Evaluate actual steel areas, centroids, effective depths, cover, spacing and geometric fit.", "valid_example": "two-layer top and bottom arrangements return coordinates and governing clear spacing", "non_success_example": "overlapping bars complete with engineering fail and location diagnostics"},
+        {"id": "AO04", "semantic_id": "structural.construction_quantities.calculate/v1", "name": "CalculateConstructionQuantities", "kind": "service", "request": "ConstructionQuantityRequest", "result": "ConstructionQuantityResult", "purpose": "Calculate steel, concrete, formwork, waste and optional direct cost from resolved detail data.", "valid_example": "resolved bar paths/contact faces return reconciled quantities and priced scope", "non_success_example": "area-only required steel returns rejected_input because no fabrication path exists"},
+        {"id": "AO05", "semantic_id": "structural.candidate.rank/v1", "name": "RankEvaluatedCandidates", "kind": "selection", "request": "CandidateRankingRequest", "result": "CandidateRankingResult", "purpose": "Filter and deterministically rank already evaluated candidates for one fixed analysis revision.", "valid_example": "two complete feasible candidates are ordered by declared objectives and tie breakers", "non_success_example": "a candidate with a required not_applicable check is excluded as incomplete for the selected profile"},
+        {"id": "AO06", "semantic_id": "is456.beam.flexure.check/v1", "name": "CheckFlexure", "kind": "check", "request": "FlexureCheckRequest", "result": "FlexureCheckResult", "purpose": "Check both relevant bending signs for supported rectangular and eligible flanged sections using actual reinforcement.", "valid_example": "negative support moment checks the physical top arrangement and reports demand/capacity", "non_success_example": "unsupported axial interaction returns not_applicable and cannot pass the member"},
+        {"id": "AO07", "semantic_id": "is456.beam.shear.check/v1", "name": "CheckShear", "kind": "check", "request": "ShearCheckRequest", "result": "ShearCheckResult", "purpose": "Check supported shear axes, concrete contribution, limits and actual transverse reinforcement.", "valid_example": "stationwise demand and actual two-leg links return governing utilization", "non_success_example": "missing provided-link geometry returns not_evaluated for a required supplied-member check"},
+        {"id": "AO08", "semantic_id": "is456.beam.torsion.check/v1", "name": "CheckTorsion", "kind": "check", "request": "TorsionCheckRequest", "result": "TorsionCheckResult", "purpose": "Check concurrent torsion, shear and flexure and the resulting longitudinal/perimeter reinforcement.", "valid_example": "one concurrent action row returns equivalent actions and both reinforcement checks", "non_success_example": "component-only envelope is rejected for an interaction requiring concurrency"},
+        {"id": "AO09", "semantic_id": "is456.beam.deflection.check/v1", "name": "CheckDeflection", "kind": "check", "request": "DeflectionCheckRequest", "result": "DeflectionCheckResult", "purpose": "Check screening or calculated short/long-term deflection for an explicit service basis.", "valid_example": "declared sustained/transient service combinations return component and total deflections", "non_success_example": "missing load duration leaves a required calculated check not_evaluated"},
+        {"id": "AO10", "semantic_id": "is456.beam.crack_width.check/v1", "name": "CheckCrackWidth", "kind": "check", "request": "CrackWidthCheckRequest", "result": "CrackWidthCheckResult", "purpose": "Calculate and check crack width from service action and actual bar geometry.", "valid_example": "service action and resolved tension bars return crack width and limit", "non_success_example": "required check with only required steel area remains not_evaluated"},
+        {"id": "AO11", "semantic_id": "is456.beam.anchorage.check/v1", "name": "CheckAnchorage", "kind": "check", "request": "AnchorageCheckRequest", "result": "AnchorageCheckResult", "purpose": "Compare required and available development at actual bar ends, supports and discontinuities.", "valid_example": "resolved support face and hook path return available length and governing deficit", "non_success_example": "centreline span without support-face geometry returns rejected_input"},
+        {"id": "AO12", "semantic_id": "is456.beam.lap_curtailment.check/v1", "name": "CheckLapsAndCurtailment", "kind": "check", "request": "LapCurtailmentCheckRequest", "result": "LapCurtailmentCheckResult", "purpose": "Check lap zones and bar termination against demand, extension and continuity rules.", "valid_example": "resolved bar marks and station envelope return each termination decision", "non_success_example": "unidentified governing demand revision returns stale/unbound rather than pass"},
+        {"id": "AO13", "semantic_id": "is456.beam.seismic_detailing.check/v1", "name": "CheckSeismicDetailing", "kind": "check", "request": "SeismicDetailingCheckRequest", "result": "SeismicDetailingCheckResult", "purpose": "Check the selected seismic member, joint and capacity-design context against actual detail.", "valid_example": "supported frame context returns continuity, confinement, lap and capacity-design checks", "non_success_example": "geometry-only input returns not_evaluated for missing system/joint context"},
+        {"id": "AO14", "semantic_id": "structural.beam_project.create/v1", "name": "CreateBeamProject", "kind": "service", "request": "BeamProjectRequest", "result": "BeamProjectResult", "purpose": "Create a versioned project with units, code data, catalogues, criteria and required-check profile.", "valid_example": "complete project basis returns immutable project and criteria revisions", "non_success_example": "conflicting default/material values return field diagnostics without a project"},
+        {"id": "AO15", "semantic_id": "structural.beam_topology.define/v1", "name": "DefineBeamTopology", "kind": "service", "request": "BeamTopologyRequest", "result": "BeamTopologyResult", "purpose": "Define physical supports, spans, analysis elements, section regions and their mappings.", "valid_example": "two-span beam maps support faces, centrelines, clear/effective spans and analysis nodes", "non_success_example": "overlapping physical spans return rejected_input"},
+        {"id": "AO16", "semantic_id": "etabs.beam_snapshot.import/v1", "name": "ImportEtabsSnapshot", "kind": "adapter_command", "request": "EtabsImportRequest", "result": "EtabsSnapshotResult", "purpose": "Acquire and persist an immutable ETABS model, mapping and force snapshot after preflight.", "valid_example": "supported current model produces raw artifact, acquisition, model and analysis identities", "non_success_example": "stale analysis returns not_run until the user authorizes analysis"},
+        {"id": "AO17", "semantic_id": "is456.beam_member.design/v1", "name": "DesignMember", "kind": "design", "request": "MemberDesignRequest", "result": "MemberDesignResult", "purpose": "Design or check a complete member through every required strength, serviceability, detail and fit operation.", "valid_example": "multi-span member returns required and selected reinforcement, leaf checks and aggregate qualification", "non_success_example": "one required unevaluated SLS check makes the member partial and not qualified"},
+        {"id": "AO18", "semantic_id": "structural.reinforcement_paths.resolve/v1", "name": "ResolveBarPaths", "kind": "design", "request": "BarPathRequest", "result": "MemberReinforcementSchedule", "purpose": "Resolve constructible longitudinal, side, torsion and transverse bar paths and marks.", "valid_example": "member demand and catalogues produce exact paths, layers, hooks and marks", "non_success_example": "no feasible layer arrangement returns engineering fail with congestion diagnostics"},
+        {"id": "AO19", "semantic_id": "structural.bbs.create/v1", "name": "CreateBarBendingSchedule", "kind": "service", "request": "BarBendingScheduleRequest", "result": "BarBendingScheduleResult", "purpose": "Create fabrication and cutting schedules from a current resolved reinforcement revision.", "valid_example": "resolved marks return shapes, cut lengths, counts, mass and stock plan", "non_success_example": "stale detail revision returns stale and no issue-ready schedule"},
+        {"id": "AO20", "semantic_id": "structural.construction_cost.estimate/v1", "name": "EstimateConstructionCost", "kind": "service", "request": "ConstructionCostRequest", "result": "ConstructionCostResult", "purpose": "Apply dated rates and scope rules to resolved quantities.", "valid_example": "current BBS, formwork faces, concrete volumes and rates return itemized direct cost", "non_success_example": "rate without currency/date/geography is rejected rather than silently applied"},
+        {"id": "AO21", "semantic_id": "structural.beam.optimize/v1", "name": "OptimizeBeam", "kind": "design", "request": "BeamOptimizationRequest", "result": "BeamOptimizationResult", "purpose": "Generate, fully evaluate and rank constructible alternatives with declared search completeness.", "valid_example": "finite search completes and returns feasible frontier, exclusions and selected candidate", "non_success_example": "cancelled search returns explored domain and incomplete status without claiming optimum"},
+        {"id": "AO22", "semantic_id": "etabs.beam_candidate.apply_to_copy/v1", "name": "ApplyCandidateToEtabsCopy", "kind": "adapter_command", "request": "EtabsCandidateTransactionRequest", "result": "EtabsCandidateReceipt", "purpose": "Apply one selected candidate to an identified model copy, reanalyse when required and compare results.", "valid_example": "section/stiffness change creates a copy, new analysis revision and comparison receipt", "non_success_example": "source model revision mismatch rejects before mutation"},
+        {"id": "AO23", "semantic_id": "excel.beam_workbook.calculate/v1", "name": "CalculateWorkbook", "kind": "adapter_command", "request": "WorkbookCalculationRequest", "result": "WorkbookCalculationResult", "purpose": "Validate input tables, run bulk library calculations and write result tables with freshness.", "valid_example": "valid standalone beam table writes current values/checks/design summary and diagnostics", "non_success_example": "one invalid row is reported by row/field while no stale result is shown as current"},
+        {"id": "AO24", "semantic_id": "structural.calculation_package.create/v1", "name": "CreateCalculationPackage", "kind": "service", "request": "CalculationPackageRequest", "result": "CalculationPackageResult", "purpose": "Create a reusable calculation-record model and adapter-rendered report, drawing and schedule package.", "valid_example": "approved current results render a traceable package with source and limitations", "non_success_example": "missing required leaf result yields a partial draft package, never an approved issue"},
+        {"id": "AO25", "semantic_id": "excel.beam_workbook.measure_performance/v1", "name": "MeasureWorkbookPerformance", "kind": "adapter_command", "request": "WorkbookPerformanceRequest", "result": "WorkbookPerformanceResult", "purpose": "Measure installed Excel/XLL latency and scaling against versioned workloads.", "valid_example": "identified machine, XLL and workbook report warm/cold samples and percentiles", "non_success_example": "in-process unit timing alone returns insufficient_evidence for the workbook class"},
+        {"id": "AO26", "semantic_id": "structural.reinforcement_arrangement.check/v1", "name": "CheckReinforcementArrangement", "kind": "check", "request": "ReinforcementArrangementCheckRequest", "result": "ReinforcementArrangementCheckResult", "purpose": "Check all bars, layers, covers, spacing, link enclosure, transitions and construction fit together.", "valid_example": "full support and span arrangements pass every required geometric rule", "non_success_example": "checking only the tension layer remains partial and cannot qualify issued detail"}
+      ]
+    },
+    {
+      "id": "PF5-D2-request-result-schemas",
+      "public_api_levels": [
+        {"level": "value", "meaning": "calculate one physical or code value; does not compare demand or select a design"},
+        {"level": "capacity", "meaning": "calculate resistance/applicability for supplied geometry and material; does not declare a demand check"},
+        {"level": "check", "meaning": "compare declared demand and supplied condition; returns independent result-state dimensions"},
+        {"level": "design", "meaning": "generate or select a supplied condition, then evaluate every required check"},
+        {"level": "member_service", "meaning": "orchestrate explicit operations across stations/spans without hiding leaf results"},
+        {"level": "adapter_command", "meaning": "perform application I/O or mutation outside worksheet recalculation and engineering kernels"},
+        {"level": "approval_record", "meaning": "record a qualified human action bound to exact result/detail identities; never calculated"}
+      ],
+      "request_envelope": {
+        "required": ["schema_version", "operation_semantic_id", "profile_id", "engineering_inputs"],
+        "conditional": ["project_revision_id", "source_snapshot_id", "analysis_revision_id", "options"],
+        "rules": ["reject unknown fields at a strict typed boundary", "each field declares semantic quantity, unit, obligation, condition and validation", "a caller may request an approved profile default but cannot request an unnamed automatic default"]
+      },
+      "result_envelope": {
+        "required": ["schema_version", "operation_semantic_id", "execution", "applicability", "engineering", "completeness", "freshness", "effective_inputs", "outputs", "diagnostics", "provenance", "calculation_id"],
+        "check_additions": ["demands", "capacities", "utilizations", "governing_location", "required_check_id"],
+        "design_additions": ["generated_domain", "evaluated_candidates", "selected_candidate", "selection_basis", "search_completeness", "leaf_results"],
+        "command_additions": ["environment", "before_identity", "after_identity", "receipt", "restoration_status"]
+      },
+      "failure_contract": "Expected invalid, unsupported, inapplicable, incomplete, stale and engineering-fail outcomes use the result envelope. Language exceptions are reserved for programmer misuse or unexpected infrastructure failure and are translated at adapter boundaries."
+    },
+    {
+      "id": "PF5-D3-language-projections",
+      "python": {
+        "rules": ["snake_case functions and fields", "keyword-only parameters after the main request/value", "frozen dataclasses or equivalent immutable domain records", "typed enums instead of free text", "explicit unit suffixes for scalar conveniences", "Result records for expected non-success outcomes"],
+        "examples": [
+          "check_flexure(request: FlexureCheckRequest, *, profile: DesignProfile) -> FlexureCheckResult",
+          "bar_area(*, diameter_mm: float) -> ValueResult[float]",
+          "design_member(request: MemberDesignRequest, *, cancellation: CancellationToken | None = None) -> MemberDesignResult"
+        ]
+      },
+      "dotnet": {
+        "rules": ["PascalCase public types/methods and camelCase parameters", "immutable sealed records for transport/domain values", "readonly collections returned to callers", "CancellationToken for bounded long work", "async only for I/O, application calls or long cooperative workflows", "Result records for expected non-success outcomes"],
+        "examples": [
+          "FlexureCheckResult CheckFlexure(FlexureCheckRequest request, DesignProfile profile)",
+          "ValueResult<double> BarArea(double diameterMm)",
+          "Task<MemberDesignResult> DesignMemberAsync(MemberDesignRequest request, CancellationToken cancellationToken = default)"
+        ]
+      },
+      "cross_language_rules": [
+        "Python and .NET names may be idiomatic projections, but both publish the same operation_semantic_id and schema version.",
+        "Equivalent canonical effective inputs, profile and code-data revision must produce equivalent semantic state and values within PF7 tolerances.",
+        "Positional convenience overloads cannot introduce a different default or meaning.",
+        "Excel functions and commands are additional projections defined in PF8, not a third engineering implementation."
+      ],
+      "compatibility": "Published recoverable names may wrap one normative operation, emit a structured compatibility diagnostic and expose the effective translation. A wrapper cannot preserve an unsafe or ambiguous result silently."
+    },
+    {
+      "id": "PF5-D4-diagnostic-catalogue",
+      "records": [
+        {"code": "INPUT.REQUIRED", "default_severity": "error", "meaning": "required or conditionally required input is absent"},
+        {"code": "INPUT.NULL", "default_severity": "error", "meaning": "explicit null is not permitted for this field"},
+        {"code": "INPUT.BLANK", "default_severity": "error", "meaning": "blank application value cannot resolve the typed field"},
+        {"code": "INPUT.NON_FINITE", "default_severity": "error", "meaning": "NaN or infinity is present"},
+        {"code": "INPUT.RANGE", "default_severity": "error", "meaning": "value is outside its declared numerical/domain range"},
+        {"code": "INPUT.CONFLICT", "default_severity": "error", "meaning": "authoritative inputs disagree without a precedence rule"},
+        {"code": "UNIT.UNKNOWN", "default_severity": "error", "meaning": "unit cannot be converted to the normative quantity"},
+        {"code": "AXIS.UNRESOLVED", "default_severity": "error", "meaning": "source axes or physical face mapping is incomplete"},
+        {"code": "ACTION.NONCONCURRENT", "default_severity": "error", "meaning": "operation requires concurrent components but received an incompatible envelope"},
+        {"code": "PROFILE.UNSUPPORTED", "default_severity": "error", "meaning": "input lies outside the selected supported profile"},
+        {"code": "CHECK.NOT_APPLICABLE", "default_severity": "information", "meaning": "a proven applicability rule excludes the leaf check"},
+        {"code": "CHECK.REQUIRED_NOT_EVALUATED", "default_severity": "error", "meaning": "a required check has no qualified outcome"},
+        {"code": "SOURCE.STALE", "default_severity": "error", "meaning": "source/model/analysis identity is not current"},
+        {"code": "RESULT.STALE", "default_severity": "error", "meaning": "result dependencies differ from the active state"},
+        {"code": "SEARCH.INCOMPLETE", "default_severity": "warning", "meaning": "candidate domain was only partly explored"},
+        {"code": "ADAPTER.UNAVAILABLE", "default_severity": "error", "meaning": "required application/runtime/version is unavailable"},
+        {"code": "ADAPTER.CALL_FAILED", "default_severity": "error", "meaning": "identified application call failed or returned inconsistent data"},
+        {"code": "VERSION.INCOMPATIBLE", "default_severity": "error", "meaning": "schema, semantic operation, profile or code-data version cannot be negotiated"},
+        {"code": "COMPAT.TRANSLATED", "default_severity": "information", "meaning": "a legacy name/value was explicitly translated"},
+        {"code": "SOFTWARE.UNEXPECTED", "default_severity": "error", "meaning": "unexpected implementation or infrastructure failure"},
+        {"code": "APPROVAL.MISSING", "default_severity": "information", "meaning": "qualified human approval is not recorded for the exact result scope"}
+      ],
+      "required_fields": ["code", "severity", "message", "operation_semantic_id", "field_or_location", "source", "remediation"],
+      "message_rule": "Messages explain the concrete field/location and recovery; callers branch on code and state, never message text."
+    },
+    {
+      "id": "PF5-D5-workflow-traceability",
+      "records": [
+        {"workflow": "WF-STANDALONE-EXCEL", "operations": ["AO14", "AO15", "AO17", "AO18", "AO19", "AO20", "AO21", "AO23", "AO24", "AO25", "AO26"]},
+        {"workflow": "WF-PYTHON-LIBRARY", "operations": ["FO01-FO08", "AO01-AO15", "AO17-AO21", "AO24", "AO26"]},
+        {"workflow": "WF-DOTNET-LIBRARY", "operations": ["FO01-FO08", "AO01-AO15", "AO17-AO21", "AO24", "AO26"]},
+        {"workflow": "WF-ETABS-AUTOMATION", "operations": ["AO01", "AO06-AO18", "AO21", "AO22", "AO24", "AO26"]},
+        {"workflow": "WF-CONSTRUCTION-OUTPUT", "operations": ["AO03", "AO04", "AO11-AO13", "AO17-AO20", "AO24", "AO26"]},
+        {"workflow": "WF-REVIEW", "operations": ["AO05-AO13", "AO17-AO24", "AO26", "approval_record"]}
+      ],
+      "trace_rule": "A range is inclusive. PF11 expands ranges to operation-by-operation implementation and assurance traceability."
+    }
+  ],
+  "exit_evidence": [
+    {"criterion": "Every operation has valid and non-success examples.", "evidence": ["PF5-D1 defines examples for FO01-FO08 and every AO01-AO26 operation."]},
+    {"criterion": "Capacity, check, design and approval remain distinct.", "evidence": ["PF5-D2 defines seven public levels; approval is a human record and capacity never implies a demand check."]},
+    {"criterion": "Equivalent effective inputs yield equivalent semantic outcomes.", "evidence": ["PF5-D3 binds idiomatic projections to common semantic IDs, effective inputs, code data, states and PF7 tolerances."]}
+  ]
+}

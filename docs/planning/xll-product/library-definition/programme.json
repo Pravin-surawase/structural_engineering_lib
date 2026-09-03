@@ -6,8 +6,8 @@
   "implementation_phase_prefix": "P",
   "definition_phase_prefix": "PF",
   "phase_progress": {
-    "completed": ["PF0", "PF1", "PF2"],
-    "next": ["PF3"]
+    "completed": ["PF0", "PF1", "PF2", "PF3", "PF4", "PF5"],
+    "next": ["PF6", "PF7"]
   },
   "automation_operations": [
     "AO01", "AO02", "AO03", "AO04", "AO05", "AO06", "AO07", "AO08", "AO09",
@@ -98,7 +98,13 @@
       "purpose": "Place each responsibility in a reusable capability, application adapter or later extension.",
       "depends_on": ["PF1", "PF2"],
       "deliverables": ["PF3-D1-capability-map", "PF3-D2-responsibility-matrix", "PF3-D3-supported-profiles", "PF3-D4-ao01-ao26-crosswalk"],
-      "exit_criteria": ["AO01 through AO26 and all capability families are mapped.", "Reusable calculations have no application-state dependency.", "Unsupported behavior is visible and reasoned."]
+      "exit_criteria": ["AO01 through AO26 and all capability families are mapped.", "Reusable calculations have no application-state dependency.", "Unsupported behavior is visible and reasoned."],
+      "completion": {
+        "state": "complete",
+        "completed_on": "2026-09-03",
+        "decision_ids": ["D04", "D05"],
+        "evidence_paths": ["pf3/README.md", "pf3/baseline.json"]
+      }
     },
     {
       "id": "PF4",
@@ -106,7 +112,13 @@
       "purpose": "Define common physical, code, identity and result meanings for both languages and all adapters.",
       "depends_on": ["PF3"],
       "deliverables": ["PF4-D1-quantity-dictionary", "PF4-D2-unit-sign-axis-standard", "PF4-D3-optional-value-policy", "PF4-D4-provenance-identity-model", "PF4-D5-result-state-vocabulary"],
-      "exit_criteria": ["Legacy ambiguous terms have a new meaning or compatibility translation.", "Zero, blank, absent, default and derived values are distinct.", "Equivalent Python and .NET values can be compared without guessing."]
+      "exit_criteria": ["Legacy ambiguous terms have a new meaning or compatibility translation.", "Zero, blank, absent, default and derived values are distinct.", "Equivalent Python and .NET values can be compared without guessing."],
+      "completion": {
+        "state": "complete",
+        "completed_on": "2026-09-03",
+        "decision_ids": ["D06", "D07", "D08", "D09"],
+        "evidence_paths": ["pf4/README.md", "pf4/baseline.json"]
+      }
     },
     {
       "id": "PF5",
@@ -114,7 +126,13 @@
       "purpose": "Define discoverable semantic operations before projecting idiomatic Python and C# APIs.",
       "depends_on": ["PF4"],
       "deliverables": ["PF5-D1-operation-catalogue", "PF5-D2-request-result-schemas", "PF5-D3-language-projections", "PF5-D4-diagnostic-catalogue", "PF5-D5-workflow-traceability"],
-      "exit_criteria": ["Every operation has valid and non-success examples.", "Capacity, check, design and approval remain distinct.", "Equivalent effective inputs yield equivalent semantic outcomes."]
+      "exit_criteria": ["Every operation has valid and non-success examples.", "Capacity, check, design and approval remain distinct.", "Equivalent effective inputs yield equivalent semantic outcomes."],
+      "completion": {
+        "state": "complete",
+        "completed_on": "2026-09-03",
+        "decision_ids": ["D10", "D11"],
+        "evidence_paths": ["pf5/README.md", "pf5/baseline.json"]
+      }
     },
     {
       "id": "PF6",

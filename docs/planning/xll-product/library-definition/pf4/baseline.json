@@ -1,0 +1,198 @@
+{
+  "phase_id": "PF4",
+  "title": "Engineering semantic model",
+  "revision_date": "2026-09-03",
+  "state": "complete",
+  "decision_ids": ["D06", "D07", "D08", "D09"],
+  "source_evidence": [
+    "../pf1/baseline.json",
+    "../pf2/baseline.json",
+    "../pf3/baseline.json",
+    "../../automation/member-inputs.schema.json",
+    "../../requirements-first/failure-register.json"
+  ],
+  "deliverables": [
+    {
+      "id": "PF4-D1-quantity-dictionary",
+      "rules": [
+        "Every public numerical field uses a semantic quantity identifier and an explicit boundary unit.",
+        "A calculated value retains full finite binary64 precision; rounding belongs to presentation or an explicitly named construction rule.",
+        "Required, provided, selected and scheduled reinforcement are different quantities and cannot overwrite one another."
+      ],
+      "records": [
+        {"id": "Q-LENGTH-CENTRELINE", "dimension": "length", "boundary_unit": "mm", "meaning": "distance between declared support centrelines"},
+        {"id": "Q-LENGTH-CLEAR", "dimension": "length", "boundary_unit": "mm", "meaning": "physical clear distance between declared support faces"},
+        {"id": "Q-LENGTH-EFFECTIVE-SPAN", "dimension": "length", "boundary_unit": "mm", "meaning": "code-rule span resolved from centreline, clear span and support/member geometry"},
+        {"id": "Q-LENGTH-ANALYSIS", "dimension": "length", "boundary_unit": "mm", "meaning": "distance used by the declared analysis model"},
+        {"id": "Q-LENGTH-BAR-PATH", "dimension": "length", "boundary_unit": "mm", "meaning": "resolved three-dimensional bar centreline including bends and anchorage"},
+        {"id": "Q-LENGTH-CUT", "dimension": "length", "boundary_unit": "mm", "meaning": "fabrication cut length after the declared bend and allowance policy"},
+        {"id": "Q-SECTION-WIDTH", "dimension": "length", "boundary_unit": "mm", "meaning": "declared concrete section width at the evaluated station"},
+        {"id": "Q-SECTION-DEPTH", "dimension": "length", "boundary_unit": "mm", "meaning": "declared overall concrete section depth at the evaluated station"},
+        {"id": "Q-COVER-NOMINAL", "dimension": "length", "boundary_unit": "mm", "meaning": "specified nominal cover to the declared reinforcement surface"},
+        {"id": "Q-DEPTH-EFFECTIVE", "dimension": "length", "boundary_unit": "mm", "meaning": "distance from compression face to centroid of the actual tension steel"},
+        {"id": "Q-BAR-DIAMETER", "dimension": "length", "boundary_unit": "mm", "meaning": "nominal reinforcement diameter from the selected catalogue"},
+        {"id": "Q-BAR-SPACING-CLEAR", "dimension": "length", "boundary_unit": "mm", "meaning": "shortest clear distance between resolved reinforcement surfaces"},
+        {"id": "Q-CONCRETE-STRENGTH", "dimension": "stress", "boundary_unit": "N/mm2", "meaning": "declared characteristic concrete compressive strength"},
+        {"id": "Q-STEEL-STRENGTH", "dimension": "stress", "boundary_unit": "N/mm2", "meaning": "declared characteristic reinforcement yield strength"},
+        {"id": "Q-ELASTIC-MODULUS", "dimension": "stress", "boundary_unit": "N/mm2", "meaning": "declared elastic modulus associated with a material and analysis basis"},
+        {"id": "Q-DENSITY-MASS", "dimension": "mass-per-volume", "boundary_unit": "kg/m3", "meaning": "declared material mass density"},
+        {"id": "Q-ACTION-P", "dimension": "force", "boundary_unit": "kN", "meaning": "signed local-axis axial action for one concurrent action row"},
+        {"id": "Q-ACTION-V2", "dimension": "force", "boundary_unit": "kN", "meaning": "signed local-2 shear action for one concurrent action row"},
+        {"id": "Q-ACTION-V3", "dimension": "force", "boundary_unit": "kN", "meaning": "signed local-3 shear action for one concurrent action row"},
+        {"id": "Q-ACTION-T", "dimension": "moment", "boundary_unit": "kNm", "meaning": "signed torsional action about local axis 1 for one concurrent action row"},
+        {"id": "Q-ACTION-M2", "dimension": "moment", "boundary_unit": "kNm", "meaning": "signed bending action about local axis 2 for one concurrent action row"},
+        {"id": "Q-ACTION-M3", "dimension": "moment", "boundary_unit": "kNm", "meaning": "signed bending action about local axis 3 for one concurrent action row"},
+        {"id": "Q-LOAD-LINE", "dimension": "force-per-length", "boundary_unit": "kN/m", "meaning": "signed distributed line action with an explicit load shape and basis"},
+        {"id": "Q-STEEL-AREA-REQUIRED", "dimension": "area", "boundary_unit": "mm2", "meaning": "calculated minimum area needed to satisfy the declared design operation"},
+        {"id": "Q-STEEL-AREA-PROVIDED", "dimension": "area", "boundary_unit": "mm2", "meaning": "area explicitly present in supplied reinforcement"},
+        {"id": "Q-STEEL-AREA-SELECTED", "dimension": "area", "boundary_unit": "mm2", "meaning": "area of the candidate arrangement selected by a design operation"},
+        {"id": "Q-STEEL-AREA-SCHEDULED", "dimension": "area", "boundary_unit": "mm2", "meaning": "area represented by the issued bar schedule at the evaluated region"},
+        {"id": "Q-DEFLECTION", "dimension": "length", "boundary_unit": "mm", "meaning": "signed displacement for an explicit load, duration, cracking and reference basis"},
+        {"id": "Q-CRACK-WIDTH", "dimension": "length", "boundary_unit": "mm", "meaning": "calculated surface crack width for a declared service combination and method"},
+        {"id": "Q-TIME-AGE", "dimension": "time", "boundary_unit": "day", "meaning": "material or loading age on an explicit time origin"},
+        {"id": "Q-HUMIDITY", "dimension": "ratio", "boundary_unit": "percent", "meaning": "relative humidity expressed from 0 through 100"},
+        {"id": "Q-CONCRETE-VOLUME", "dimension": "volume", "boundary_unit": "m3", "meaning": "resolved concrete volume after declared interfaces and deductions"},
+        {"id": "Q-FORMWORK-AREA", "dimension": "area", "boundary_unit": "m2", "meaning": "measured concrete contact-face area; it is not temporary-works design"},
+        {"id": "Q-STEEL-MASS", "dimension": "mass", "boundary_unit": "kg", "meaning": "mass derived from resolved bar paths and declared density"},
+        {"id": "Q-WASTE-RATIO", "dimension": "ratio", "boundary_unit": "percent", "meaning": "declared or optimized offcut/waste ratio from 0 through 100"},
+        {"id": "Q-UNIT-RATE", "dimension": "currency-per-quantity", "boundary_unit": "declared", "meaning": "dated rate with currency, quantity basis, geography and source"},
+        {"id": "Q-DIRECT-COST", "dimension": "currency", "boundary_unit": "declared", "meaning": "sum of priced in-scope quantities without an undeclared markup"}
+      ],
+      "legacy_translations": [
+        {"term": "span", "rule": "reject as ambiguous unless a compatibility wrapper resolves centreline, clear, effective or analysis length and returns that choice"},
+        {"term": "steel area", "rule": "resolve required, provided, selected or scheduled before calculation"},
+        {"term": "cover", "rule": "resolve nominal cover, clear cover and target reinforcement surface"},
+        {"term": "bar length", "rule": "resolve geometric path length or fabrication cut length"},
+        {"term": "cost", "rule": "return scope, quantity bases, rates, currency and valuation date"}
+      ]
+    },
+    {
+      "id": "PF4-D2-unit-sign-axis-standard",
+      "canonical_boundary_units": {
+        "length": "mm",
+        "area": "mm2",
+        "second_moment_of_area": "mm4",
+        "stress": "N/mm2",
+        "force": "kN",
+        "moment": "kNm",
+        "force_per_length": "kN/m",
+        "mass": "kg",
+        "mass_per_volume": "kg/m3",
+        "volume": "m3",
+        "construction_area": "m2",
+        "angle": "degree",
+        "time": "day",
+        "ratio": "dimensionless or explicitly percent"
+      },
+      "rules": [
+        "Public fields include a unit suffix or carry a typed quantity whose schema declares the unit.",
+        "Conversions occur once at an adapter or public boundary and are recorded in effective inputs.",
+        "All numerical inputs and outputs must be finite; NaN and infinity are invalid input or software error, never engineering results.",
+        "Local axes form a right-handed system: local 1 follows increasing member station; local 2 and local 3 are stored with the source orientation.",
+        "P, V2, V3, T, M2 and M3 retain source signs and concurrency. Physical top, bottom, left and right faces are resolved by geometry plus axes rather than inferred from moment sign alone.",
+        "An adapter must return its source-to-common axis transform and unit conversion; it cannot rewrite signs without that transform.",
+        "A station contains physical member/span identity, distance from physical start, normalized ratio, and before/after side at a discontinuity.",
+        "Object and analysis-element stations remain separately traceable when an application subdivides a physical member."
+      ],
+      "action_bases": [
+        {"id": "static_concurrent", "meaning": "all six components belong to one identified static output row"},
+        {"id": "staged_step", "meaning": "all components belong to one case, stage and step"},
+        {"id": "response_result", "meaning": "response-spectrum or modal result with its combination/recovery rule"},
+        {"id": "component_envelope", "meaning": "component extrema may come from different rows and therefore are not concurrent"},
+        {"id": "design_envelope", "meaning": "governing design values created by a declared, provenance-carrying rule"}
+      ],
+      "concurrency_rule": "An operation declares accepted action bases. A component envelope cannot silently satisfy an interaction check that requires concurrent components."
+    },
+    {
+      "id": "PF4-D3-optional-value-policy",
+      "field_obligations": [
+        {"id": "required", "meaning": "caller supplies a valid value"},
+        {"id": "conditional", "meaning": "caller supplies a value when the named condition is true"},
+        {"id": "profile_resolved", "meaning": "a versioned profile supplies the value and the result returns its origin"},
+        {"id": "optional_cosmetic", "meaning": "may be omitted without changing engineering meaning"}
+      ],
+      "input_states": [
+        {"id": "absent", "meaning": "field/key was not supplied"},
+        {"id": "null", "meaning": "caller explicitly supplied no value; allowed only where the schema names that state"},
+        {"id": "blank", "meaning": "Excel cell or text was blank before typed conversion; never automatically numerical zero"},
+        {"id": "zero", "meaning": "caller supplied numerical zero and normal range/applicability rules apply"},
+        {"id": "supplied", "meaning": "caller supplied the effective engineering value"},
+        {"id": "defaulted", "meaning": "a named, versioned default supplied the effective value"},
+        {"id": "derived", "meaning": "the value was calculated from identified upstream values and a named rule"},
+        {"id": "conflicting", "meaning": "two authoritative inputs disagree and the operation cannot choose silently"}
+      ],
+      "resolution_rules": [
+        "Required absent, null or blank input is invalid.",
+        "Conditional input is resolved only after its condition is evaluated and recorded.",
+        "Defaulting is allowed only when the signature names the default source and version.",
+        "Derived values return their dependency identifiers and derivation rule.",
+        "Conflicting values require an explicit precedence policy or produce a field diagnostic.",
+        "Every result returns effective engineering inputs with state and origin so Python, .NET and Excel can replay the same calculation."
+      ]
+    },
+    {
+      "id": "PF4-D4-provenance-identity-model",
+      "identities": [
+        {"id": "raw_artifact_id", "binds": "immutable source bytes or a lossless captured response plus source system", "changes_when": "the captured artifact changes"},
+        {"id": "acquisition_id", "binds": "raw artifact, acquisition method/version, source model and acquisition time", "changes_when": "the acquisition event changes"},
+        {"id": "model_revision_id", "binds": "physical model revision and source-system identity", "changes_when": "model-affecting state changes"},
+        {"id": "analysis_revision_id", "binds": "model revision, analysis settings/status and completed run", "changes_when": "the analysis basis or run changes"},
+        {"id": "normalized_input_id", "binds": "canonical effective engineering input only", "changes_when": "any effective engineering input changes"},
+        {"id": "calculation_id", "binds": "normalized input, operation semantic version, code-data revision and engine build", "changes_when": "an input or calculation dependency changes"},
+        {"id": "result_id", "binds": "calculation identity and complete semantic outcome", "changes_when": "the outcome changes"},
+        {"id": "detail_revision_id", "binds": "selected reinforcement/detail arrangement and its source results", "changes_when": "issued geometry or selection changes"},
+        {"id": "report_id", "binds": "result/detail identities, template version and render options", "changes_when": "content or presentation contract changes"},
+        {"id": "code_data_revision_id", "binds": "normalized code tables, formula/rule implementation and source provenance", "changes_when": "approved code data or rule implementation changes"}
+      ],
+      "canonicalization": {
+        "algorithm": "PF4-CANONICAL-JSON-V1",
+        "rules": [
+          "Use UTF-8 JSON with lexicographically ordered object keys, preserved array order and canonical enum strings.",
+          "Represent finite binary64 numbers using the shortest round-trip decimal; distinguish integers only where the schema defines integer semantics.",
+          "Exclude acquisition time, display labels and presentation rounding from normalized_input_id unless they are declared engineering inputs.",
+          "Normalize units to PF4 canonical boundary units before hashing and include every effective value plus its semantic field identifier.",
+          "Use SHA-256 over the canonical bytes and prefix the digest with the identity kind and canonicalization version."
+        ]
+      },
+      "freshness_rule": "A result is current only when every bound upstream identity matches the active project state; a serializer-dependent object hash is never accepted as this proof."
+    },
+    {
+      "id": "PF4-D5-result-state-vocabulary",
+      "dimensions": {
+        "execution": ["completed", "rejected_input", "not_run", "software_error", "cancelled"],
+        "applicability": ["applicable", "not_applicable", "unknown"],
+        "engineering": ["pass", "fail", "not_evaluated"],
+        "completeness": ["complete_for_scope", "partial"],
+        "freshness": ["current", "stale", "unbound"],
+        "approval": ["unreviewed", "checked", "approved", "rejected"]
+      },
+      "rules": [
+        "The dimensions are independent and must not be compressed into one pass/fail boolean.",
+        "Input rejection and software error are execution outcomes, not engineering failures.",
+        "Not applicable names a proven applicability decision; unknown or missing evidence remains not evaluated.",
+        "Approval is a human record with actor, time, scope and bound result identity; calculation never creates approval.",
+        "A partial or stale result cannot be represented as complete or approved for the active scope.",
+        "PF7 defines deterministic aggregation from leaf results without weakening these states."
+      ],
+      "minimum_result_fields": [
+        "schema_version",
+        "operation_semantic_id",
+        "execution",
+        "applicability",
+        "engineering",
+        "completeness",
+        "freshness",
+        "effective_inputs",
+        "outputs",
+        "diagnostics",
+        "provenance",
+        "calculation_id"
+      ]
+    }
+  ],
+  "exit_evidence": [
+    {"criterion": "Legacy ambiguous terms have a new meaning or compatibility translation.", "evidence": ["PF4-D1 defines 37 quantity meanings and explicit translations for span, steel area, cover, bar length and cost."]},
+    {"criterion": "Zero, blank, absent, default and derived values are distinct.", "evidence": ["PF4-D3 defines eight input states, four field obligations and resolution rules."]},
+    {"criterion": "Equivalent Python and .NET values can be compared without guessing.", "evidence": ["PF4-D2 fixes units/axes/concurrency and PF4-D4 defines cross-language canonical input and calculation identities."]}
+  ]
+}
