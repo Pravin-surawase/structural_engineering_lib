@@ -49,6 +49,10 @@ def main() -> None:
     require(phase_ids == EXPECTED_PHASES, f"Expected ordered phases {EXPECTED_PHASES}; found {phase_ids}")
     require(programme["automation_operations"] == EXPECTED_OPERATIONS, "AO01-AO26 coverage is incomplete or out of order")
     require(programme["definition_phase_prefix"] != programme["implementation_phase_prefix"], "Definition and implementation phase prefixes must differ")
+    completed_phase_ids = programme["phase_progress"]["completed"]
+    next_phase_ids = programme["phase_progress"]["next"]
+    require(set(completed_phase_ids) <= set(phase_ids), "Completed phase list contains an unknown phase")
+    require(set(next_phase_ids) <= set(phase_ids), "Next phase list contains an unknown phase")
 
     seen_deliverables: set[str] = set()
     for index, phase in enumerate(phases):
@@ -61,6 +65,13 @@ def main() -> None:
             require(deliverable.startswith(f"{phase['id']}-D"), f"{deliverable} is not owned by {phase['id']}")
             require(deliverable not in seen_deliverables, f"Duplicate deliverable {deliverable}")
             seen_deliverables.add(deliverable)
+        if phase["id"] in completed_phase_ids:
+            completion = phase.get("completion", {})
+            require(completion.get("state") == "complete", f"{phase['id']} lacks a complete phase record")
+            require(completion.get("decision_ids"), f"{phase['id']} lacks resolved decision IDs")
+            require(completion.get("evidence_paths"), f"{phase['id']} lacks completion evidence")
+            for evidence_path in completion["evidence_paths"]:
+                require((ROOT / evidence_path).is_file(), f"{phase['id']} evidence is missing: {evidence_path}")
 
     capability_ids = {capability["id"] for capability in programme["capability_families"]}
     require(capability_ids == REQUIRED_CAPABILITIES, f"Capability coverage differs: {sorted(capability_ids ^ REQUIRED_CAPABILITIES)}")
@@ -78,6 +89,11 @@ def main() -> None:
         require(decision["question"].strip(), f"{decision['id']} has no question")
         require(decision["current_direction"].strip(), f"{decision['id']} has no current direction")
         require(decision["required_evidence"], f"{decision['id']} has no required evidence")
+        if decision.get("state") == "resolved":
+            record = decision.get("decision_record", {})
+            require(record.get("selected_direction", "").strip(), f"{decision['id']} has no selected direction")
+            require(record.get("evidence_paths"), f"{decision['id']} has no resolution evidence")
+            require(record.get("downstream_effects"), f"{decision['id']} has no downstream effects")
         covered_resolution_phases.add(decision["resolution_phase"])
 
     require(covered_resolution_phases == set(phase_ids), "Every phase must own at least one consequential decision")

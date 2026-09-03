@@ -3,7 +3,38 @@
   "revision_date": "2026-09-03",
   "instructions": "Resolve each decision in its assigned phase using the required evidence. Record the selected decision and affected downstream artefacts in the phase review.",
   "decisions": [
-    {"id": "D01", "question": "Which users, workflows and outcomes define success for the library and Windows product?", "current_direction": "Standalone beam design in Excel is first; reusable Python and .NET use and later ETABS automation are required.", "required_evidence": ["owner charter", "workflow interviews/scenarios", "measurable outcome definitions"], "resolution_phase": "PF0"},
+    {
+      "id": "D01",
+      "question": "Which users, workflows and outcomes define success for the library and Windows product?",
+      "current_direction": "Standalone beam design in Excel is first; reusable Python and .NET use and later ETABS automation are required.",
+      "required_evidence": ["owner charter", "workflow interviews/scenarios", "measurable outcome definitions"],
+      "resolution_phase": "PF0",
+      "state": "resolved",
+      "decision_record": {
+        "resolved_on": "2026-09-03",
+        "selected_direction": "Maintain native Python and native .NET libraries for a deliberately selected common semantic capability set. Deliver standalone IS 456 reinforced-concrete beam design in Windows Excel first, while preserving normal library use. Add the ETABS snapshot, checking, candidate search, controlled reanalysis and construction-output loop around the same reusable services.",
+        "evidence_paths": [
+          "pf0/charter.md",
+          "pf0/owner-map.json",
+          "pf0/success-measures.json",
+          "pf0/glossary.json",
+          "pf0/scope-authority.json",
+          "../automation/README.md",
+          "../reusable-library-research.md",
+          "../requirements-first/README.md",
+          "../../../../CSharp/README.md",
+          "../../../../Python/structural_lib/README.md"
+        ],
+        "downstream_effects": [
+          "PF1 must detail standalone Excel, direct Python, direct .NET, ETABS automation, construction-output and review journeys.",
+          "PF2 must classify existing Python and C# surfaces before reuse or migration.",
+          "PF3-PF7 must define complete engineering scope, meaning, professional operations and assurance before new API implementation.",
+          "PF8 keeps Excel and ETABS as application adapters around immutable library contracts.",
+          "PF9 establishes numeric runtime and performance budgets rather than inferring performance from C#.",
+          "PF11 produces the first bounded implementation packet only after all definition evidence is integrated."
+        ]
+      }
+    },
     {"id": "D02", "question": "Which real workflows and information handoffs must the system support?", "current_direction": "Cover standalone design, ordinary library use, ETABS intake, coupled redesign, fabrication and reporting.", "required_evidence": ["workflow narratives", "input/output inventory", "actor responsibility map"], "resolution_phase": "PF1"},
     {"id": "D03", "question": "Which existing functions and contracts should be retained, corrected, wrapped, replaced or omitted?", "current_direction": "Reuse only after semantic and evidence review; do not port by existence alone.", "required_evidence": ["Python/C# public surface inventory", "caller analysis", "failure history", "source/test strength"], "resolution_phase": "PF2"},
     {"id": "D04", "question": "What is the maintained capability set and where is each boundary?", "current_direction": "Keep pure calculations and reusable member/fabrication/search services in libraries; keep application state and rendering in adapters.", "required_evidence": ["AO01-AO26 crosswalk", "beam capability map", "dependency analysis"], "resolution_phase": "PF3"},

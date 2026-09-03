@@ -10,6 +10,13 @@ complexity: advanced
 
 Updated 3 September 2026 for the owner's direction to complete the library definition before further implementation. The first product workflow is standalone beam design in Windows Excel; the complete automation path includes ETABS forces, design/checking, candidate search, reanalysis, detailing and construction outputs.
 
+[PF0's product and library charter](library-definition/pf0/README.md) is
+complete. It selects native Python and native .NET libraries for a deliberately
+maintained common semantic set, fixes the standalone Excel workflow as the
+first product journey, and assigns measurable outcomes and decision owners.
+PF1 workflow discovery and PF2 existing-asset audit are the next definition
+work.
+
 **Use the original architecture's P0–P6 phase meanings.** My earlier v2 synthesis changed those meanings and compared the older optimizer roadmap instead of this document. That comparison is superseded.
 
 ## Read these in order

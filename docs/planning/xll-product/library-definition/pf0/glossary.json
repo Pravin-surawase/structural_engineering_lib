@@ -1,0 +1,153 @@
+{
+  "phase_id": "PF0",
+  "deliverable_id": "PF0-D4-glossary",
+  "title": "PF0 programme glossary",
+  "revision_date": "2026-09-03",
+  "terms": [
+    {
+      "term": "Application adapter",
+      "definition": "Code that translates a host or vendor interface, such as Excel or ETABS, to and from reusable library contracts without owning duplicate engineering formulas.",
+      "detail_owner_phase": "PF3"
+    },
+    {
+      "term": "Application command",
+      "definition": "An explicit operation that may access COM, mutate a workbook or model, run analysis, or create a file and therefore is outside a pure calculation.",
+      "detail_owner_phase": "PF8"
+    },
+    {
+      "term": "Application acceptance",
+      "definition": "Evidence from the supported installed application and exact candidate; a successful library test or compiled XLL does not establish it.",
+      "detail_owner_phase": "PF9"
+    },
+    {
+      "term": "Applicability",
+      "definition": "The declared conditions under which an engineering method or result is valid for the supplied geometry, actions, materials, code profile and context.",
+      "detail_owner_phase": "PF4"
+    },
+    {
+      "term": "Approval",
+      "definition": "A recorded decision by an authorized person; it is distinct from calculation execution, an engineering pass and result completeness.",
+      "detail_owner_phase": "PF4"
+    },
+    {
+      "term": "Capacity",
+      "definition": "A resistance or response limit calculated for a declared section and basis; it is not by itself a demand check or whole-member approval.",
+      "detail_owner_phase": "PF4"
+    },
+    {
+      "term": "Check",
+      "definition": "Comparison of declared demand and resistance or rule criteria, with applicability, evidence and an engineering outcome.",
+      "detail_owner_phase": "PF5"
+    },
+    {
+      "term": "Common capability set",
+      "definition": "The semantic operations deliberately maintained in both native Python and native .NET implementations.",
+      "detail_owner_phase": "PF6"
+    },
+    {
+      "term": "Completeness",
+      "definition": "Whether all checks required by the declared workflow profile were evaluated with acceptable applicability; it is separate from pass or fail.",
+      "detail_owner_phase": "PF4"
+    },
+    {
+      "term": "Concurrent action vector",
+      "definition": "Force and moment components that belong to the same source case, step, station and result row and may be used together when the target check supports that action basis.",
+      "detail_owner_phase": "PF4"
+    },
+    {
+      "term": "Conformance vector",
+      "definition": "A versioned input and expected semantic outcome replayed across implementations, including valid, invalid, boundary and unsupported cases.",
+      "detail_owner_phase": "PF7"
+    },
+    {
+      "term": "Construction output",
+      "definition": "Detail, bar path, BBS, quantity, price or formwork-measurement data derived from resolved member geometry and declared fabrication or measurement policies.",
+      "detail_owner_phase": "PF3"
+    },
+    {
+      "term": "Design",
+      "definition": "An operation that determines a required or selected engineering solution under a declared scope; it remains distinct from checking supplied details and from approval.",
+      "detail_owner_phase": "PF5"
+    },
+    {
+      "term": "Effective inputs",
+      "definition": "The normalized values actually used by a calculation, including the origin of profile-resolved or derived values.",
+      "detail_owner_phase": "PF4"
+    },
+    {
+      "term": "Engineering authority",
+      "definition": "The qualified role accountable for design-code interpretation, supported applicability and engineering assurance acceptance.",
+      "detail_owner_phase": "PF0"
+    },
+    {
+      "term": "Engineering outcome",
+      "definition": "The result of an applicable calculation or check, such as pass or fail, kept separate from software execution, completeness, freshness and approval.",
+      "detail_owner_phase": "PF4"
+    },
+    {
+      "term": "Execution state",
+      "definition": "Whether software completed, rejected or did not run an operation; successful execution does not imply an engineering pass.",
+      "detail_owner_phase": "PF4"
+    },
+    {
+      "term": "Freshness",
+      "definition": "Whether a result remains bound to the current effective inputs, source/model state and calculation basis.",
+      "detail_owner_phase": "PF4"
+    },
+    {
+      "term": "Library service",
+      "definition": "A callable calculation or substantial workflow that operates on explicit data without requiring a running Excel, ETABS, HTTP or UI process.",
+      "detail_owner_phase": "PF3"
+    },
+    {
+      "term": "Normalized action snapshot",
+      "definition": "An immutable, unit-normalized and source-identified representation of analysis actions suitable for replay without a live ETABS session.",
+      "detail_owner_phase": "PF8"
+    },
+    {
+      "term": "Operation semantic ID",
+      "definition": "A stable language-neutral identifier for one engineering or application operation whose Python and C# projections preserve the same meaning.",
+      "detail_owner_phase": "PF5"
+    },
+    {
+      "term": "Optional input",
+      "definition": "A value whose absence has a declared meaning and resolution rule; null, blank, zero, defaulted and derived states are not interchangeable.",
+      "detail_owner_phase": "PF4"
+    },
+    {
+      "term": "Professional signature",
+      "definition": "A documented public function or method contract with purpose, applicability, explicit inputs and units, outputs, diagnostics, provenance, compatibility and linked examples; it is not a person's engineering signature.",
+      "detail_owner_phase": "PF5"
+    },
+    {
+      "term": "Reanalysis",
+      "definition": "A new analysis execution and action snapshot required when a candidate changes geometry, stiffness, releases, offsets, self weight, loads or other model inputs that affect demand.",
+      "detail_owner_phase": "PF8"
+    },
+    {
+      "term": "Reusable library",
+      "definition": "The Python or .NET package surface usable directly by ordinary callers, with engineering behavior independent of Excel and ETABS host state.",
+      "detail_owner_phase": "PF3"
+    },
+    {
+      "term": "Scope profile",
+      "definition": "A versioned declaration of supported member forms, action bases, checks, methods and required inputs used to judge applicability and completeness.",
+      "detail_owner_phase": "PF3"
+    },
+    {
+      "term": "Source provenance",
+      "definition": "Structured identity for the code rule, table, worked example, data revision or acquired artifact supporting a result.",
+      "detail_owner_phase": "PF4"
+    },
+    {
+      "term": "Standalone workflow",
+      "definition": "A complete beam-design journey whose inputs can be entered or loaded without ETABS and whose engineering calculations use the same reusable library as later automation.",
+      "detail_owner_phase": "PF1"
+    },
+    {
+      "term": "Worksheet function",
+      "definition": "A pure, deterministic Excel-callable calculation over supplied values that performs no live COM call, workbook mutation, model mutation or file creation.",
+      "detail_owner_phase": "PF8"
+    }
+  ]
+}

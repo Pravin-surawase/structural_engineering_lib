@@ -5,6 +5,10 @@
   "scope": "Pre-implementation definition of reusable Python and .NET structural libraries and their Excel/ETABS application boundaries.",
   "implementation_phase_prefix": "P",
   "definition_phase_prefix": "PF",
+  "phase_progress": {
+    "completed": ["PF0"],
+    "next": ["PF1", "PF2"]
+  },
   "automation_operations": [
     "AO01", "AO02", "AO03", "AO04", "AO05", "AO06", "AO07", "AO08", "AO09",
     "AO10", "AO11", "AO12", "AO13", "AO14", "AO15", "AO16", "AO17", "AO18",
@@ -43,8 +47,22 @@
       "name": "Product and library charter",
       "purpose": "Establish purpose, users, decision authority and measurable success.",
       "depends_on": [],
-      "deliverables": ["PF0-D1-charter", "PF0-D2-owner-map", "PF0-D3-success-measures", "PF0-D4-glossary"],
-      "exit_criteria": ["The standalone Excel workflow and reusable-library purpose are both stated.", "Each outcome has a measure and owner.", "No implementation deliverable is included."]
+      "deliverables": ["PF0-D1-charter", "PF0-D2-owner-map", "PF0-D3-success-measures", "PF0-D4-glossary", "PF0-D5-scope-authority"],
+      "exit_criteria": ["The standalone Excel workflow and reusable-library purpose are both stated.", "Each outcome has a measure and owner.", "No implementation deliverable is included."],
+      "completion": {
+        "state": "complete",
+        "completed_on": "2026-09-03",
+        "decision_ids": ["D01"],
+        "evidence_paths": [
+          "pf0/charter.md",
+          "pf0/owner-map.json",
+          "pf0/success-measures.json",
+          "pf0/glossary.json",
+          "pf0/scope-authority.json",
+          "pf0/README.md",
+          "pf0/validate_pf0.py"
+        ]
+      }
     },
     {
       "id": "PF1",

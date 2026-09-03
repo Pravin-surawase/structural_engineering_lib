@@ -1,0 +1,237 @@
+{
+  "phase_id": "PF0",
+  "deliverable_id": "PF0-D2-owner-map",
+  "title": "PF0 user and decision-owner map",
+  "revision_date": "2026-09-03",
+  "ownership_rule": "Each consequential decision has one accountable role. One person may fill several roles in a small team, but the responsibilities and evidence remain distinct.",
+  "roles": [
+    {
+      "id": "ROLE-PRODUCT",
+      "name": "Product owner",
+      "accountability": "Purpose, user priority, commercial scope, product acceptance and release authorization.",
+      "current_assignment": "Repository owner"
+    },
+    {
+      "id": "ROLE-ENGINEERING",
+      "name": "Structural engineering authority",
+      "accountability": "Design-code interpretation, engineering applicability and acceptance of engineering assurance.",
+      "current_assignment": "Named qualified structural engineer before an engineering claim is approved"
+    },
+    {
+      "id": "ROLE-ARCHITECTURE",
+      "name": "Library architecture owner",
+      "accountability": "Shared semantic contracts, dependency boundaries, public API policy and Python/.NET parity.",
+      "current_assignment": "Repository maintainers"
+    },
+    {
+      "id": "ROLE-PYTHON",
+      "name": "Python library maintainer",
+      "accountability": "Idiomatic Python projection, compatibility paths and Python package quality.",
+      "current_assignment": "Repository maintainers"
+    },
+    {
+      "id": "ROLE-DOTNET",
+      "name": ".NET library maintainer",
+      "accountability": "Idiomatic .NET projection, C# implementation quality and package diagnostics.",
+      "current_assignment": "Repository maintainers"
+    },
+    {
+      "id": "ROLE-EXCEL",
+      "name": "Excel product maintainer",
+      "accountability": "Excel-DNA adapter, workbook contracts, UDF/command separation and installed Excel acceptance.",
+      "current_assignment": "Windows product team"
+    },
+    {
+      "id": "ROLE-ETABS",
+      "name": "ETABS integration maintainer",
+      "accountability": "CSI adapter, source/model/result identity, axis and action mapping, and controlled model transactions.",
+      "current_assignment": "Windows product team"
+    },
+    {
+      "id": "ROLE-ASSURANCE",
+      "name": "Independent assurance reviewer",
+      "accountability": "Independent examples, boundary cases, conformance review and evidence classification.",
+      "current_assignment": "Reviewer independent of the calculation implementation for the accepted operation"
+    },
+    {
+      "id": "ROLE-RELEASE",
+      "name": "Release owner",
+      "accountability": "Candidate identity, required software evidence, packaging checks and release execution.",
+      "current_assignment": "Repository release maintainer"
+    }
+  ],
+  "users": [
+    {
+      "id": "USER-EXCEL-ENGINEER",
+      "name": "Structural engineer working in Excel",
+      "priority": "primary",
+      "needs": [
+        "standalone beam definition, design and checking",
+        "visible missing inputs and governing cases",
+        "resolved reinforcement and an understandable calculation record"
+      ],
+      "primary_workflows": ["WF-STANDALONE-EXCEL", "WF-REVIEW"]
+    },
+    {
+      "id": "USER-ANALYST",
+      "name": "Structural analyst using ETABS",
+      "priority": "primary-later-product",
+      "needs": [
+        "traceable force acquisition",
+        "member checking and candidate comparison",
+        "reanalysis when a candidate changes the analysis model"
+      ],
+      "primary_workflows": ["WF-ETABS-AUTOMATION", "WF-REVIEW"]
+    },
+    {
+      "id": "USER-PYTHON",
+      "name": "Python engineer or researcher",
+      "priority": "primary-library",
+      "needs": [
+        "small calculations and whole-member services without Excel",
+        "typed, explicit and source-aware results",
+        "stable migration paths from the existing package"
+      ],
+      "primary_workflows": ["WF-PYTHON-LIBRARY", "WF-REVIEW"]
+    },
+    {
+      "id": "USER-DOTNET",
+      "name": ".NET application or add-in developer",
+      "priority": "primary-library",
+      "needs": [
+        "ordinary .NET packages without an Excel dependency",
+        "idiomatic C# contracts that preserve shared engineering meaning",
+        "batch and application composition services"
+      ],
+      "primary_workflows": ["WF-DOTNET-LIBRARY", "WF-STANDALONE-EXCEL"]
+    },
+    {
+      "id": "USER-DETAILING",
+      "name": "Detailer, estimator or construction-output consumer",
+      "priority": "downstream",
+      "needs": [
+        "actual bar marks, layers and resolved lengths",
+        "reconciled BBS, quantities, formwork measurements and priced scope",
+        "traceability back to the checked member"
+      ],
+      "primary_workflows": ["WF-CONSTRUCTION-OUTPUT"]
+    },
+    {
+      "id": "USER-REVIEWER",
+      "name": "Checker or engineering reviewer",
+      "priority": "primary-assurance",
+      "needs": [
+        "effective inputs, applicability and source evidence",
+        "distinct execution, engineering, completeness and freshness states",
+        "reproducible results and recorded corrections"
+      ],
+      "primary_workflows": ["WF-REVIEW"]
+    }
+  ],
+  "workflows": [
+    {
+      "id": "WF-STANDALONE-EXCEL",
+      "name": "Standalone beam design in Windows Excel",
+      "product_order": 1,
+      "outcome_owner": "ROLE-PRODUCT",
+      "trigger": "An engineer has a project basis and beam data or standalone loading but no ETABS dependency.",
+      "completed_outcome": "Current complete member checks, resolved reinforcement and a reviewable saved calculation/construction record."
+    },
+    {
+      "id": "WF-PYTHON-LIBRARY",
+      "name": "Direct use from a Python script, notebook or service",
+      "product_order": 2,
+      "outcome_owner": "ROLE-PYTHON",
+      "trigger": "A Python caller needs a small calculation, code check, member service or candidate evaluation.",
+      "completed_outcome": "A typed result with explicit scope, effective inputs, engineering outcome and appropriate evidence, with no application host."
+    },
+    {
+      "id": "WF-DOTNET-LIBRARY",
+      "name": "Direct use from a .NET application or service",
+      "product_order": 2,
+      "outcome_owner": "ROLE-DOTNET",
+      "trigger": "A .NET caller needs the common calculation or member capability outside Excel.",
+      "completed_outcome": "An idiomatic C# result equivalent in engineering meaning to the maintained Python operation, with no Excel dependency."
+    },
+    {
+      "id": "WF-ETABS-AUTOMATION",
+      "name": "ETABS snapshot, design/check, candidate search, controlled reanalysis and comparison",
+      "product_order": 3,
+      "outcome_owner": "ROLE-ETABS",
+      "trigger": "An analyst selects an identified ETABS model and result state for beam checking or redesign.",
+      "completed_outcome": "Compared candidates use current source-identified actions; model-changing choices have a new analysis snapshot from an identified copy."
+    },
+    {
+      "id": "WF-CONSTRUCTION-OUTPUT",
+      "name": "Detailing, BBS, bar lengths, quantities, pricing, formwork measurement and reports",
+      "product_order": 3,
+      "outcome_owner": "ROLE-ENGINEERING",
+      "trigger": "A checked member has resolved reinforcement and declared fabrication, measurement and pricing policies.",
+      "completed_outcome": "All marks, lengths, quantities, prices and report items reconcile to the checked member and actual resolved geometry."
+    },
+    {
+      "id": "WF-REVIEW",
+      "name": "Reproduce, review, correct and approve an engineering record",
+      "product_order": 1,
+      "outcome_owner": "ROLE-ENGINEERING",
+      "trigger": "A checker receives a calculation or construction record.",
+      "completed_outcome": "The checker can reproduce the effective basis, see every required outcome, record corrections and distinguish engineering approval from software status."
+    }
+  ],
+  "decision_ownership": [
+    {
+      "decision_area": "Product purpose, user priority and desired outcomes",
+      "accountable": "ROLE-PRODUCT",
+      "responsible": ["ROLE-ARCHITECTURE"],
+      "consulted": ["ROLE-ENGINEERING", "ROLE-EXCEL", "ROLE-ETABS"]
+    },
+    {
+      "decision_area": "Design-code meaning, supported applicability and engineering acceptance",
+      "accountable": "ROLE-ENGINEERING",
+      "responsible": ["ROLE-PYTHON", "ROLE-DOTNET"],
+      "consulted": ["ROLE-ASSURANCE", "ROLE-ARCHITECTURE"]
+    },
+    {
+      "decision_area": "Shared semantic operations, public API policy and maintained common set",
+      "accountable": "ROLE-ARCHITECTURE",
+      "responsible": ["ROLE-PYTHON", "ROLE-DOTNET"],
+      "consulted": ["ROLE-ENGINEERING", "ROLE-EXCEL", "ROLE-ETABS"]
+    },
+    {
+      "decision_area": "Python projection and legacy compatibility",
+      "accountable": "ROLE-PYTHON",
+      "responsible": ["ROLE-PYTHON"],
+      "consulted": ["ROLE-ARCHITECTURE", "ROLE-ASSURANCE"]
+    },
+    {
+      "decision_area": ".NET projection and reusable C# packages",
+      "accountable": "ROLE-DOTNET",
+      "responsible": ["ROLE-DOTNET"],
+      "consulted": ["ROLE-ARCHITECTURE", "ROLE-EXCEL", "ROLE-ASSURANCE"]
+    },
+    {
+      "decision_area": "Excel workbook behavior and installed acceptance",
+      "accountable": "ROLE-PRODUCT",
+      "responsible": ["ROLE-EXCEL"],
+      "consulted": ["ROLE-ENGINEERING", "ROLE-DOTNET", "ROLE-ASSURANCE"]
+    },
+    {
+      "decision_area": "ETABS acquisition, model transaction and reanalysis policy",
+      "accountable": "ROLE-ENGINEERING",
+      "responsible": ["ROLE-ETABS"],
+      "consulted": ["ROLE-PRODUCT", "ROLE-ARCHITECTURE", "ROLE-ASSURANCE"]
+    },
+    {
+      "decision_area": "Independent calculation and cross-language assurance",
+      "accountable": "ROLE-ASSURANCE",
+      "responsible": ["ROLE-ASSURANCE"],
+      "consulted": ["ROLE-ENGINEERING", "ROLE-PYTHON", "ROLE-DOTNET"]
+    },
+    {
+      "decision_area": "Package publication and product release",
+      "accountable": "ROLE-PRODUCT",
+      "responsible": ["ROLE-RELEASE"],
+      "consulted": ["ROLE-ENGINEERING", "ROLE-ASSURANCE", "ROLE-EXCEL", "ROLE-ETABS"]
+    }
+  ]
+}
