@@ -52,3 +52,10 @@ assert response.execution == "completed"
 The same request can include prescribed support displacement, point loads, and
 station intervals. See the [WP03 reference](reference/wp03-actions-analysis-topology.md)
 for signs, limits, topology mapping, and excluded analysis profiles.
+
+WP04 keeps span/depth screening separate from calculated deflection. A service
+check that lacks load-history or stiffness evidence returns `not_evaluated`
+instead of converting the screen into a displacement. Crack-width checks use
+the actual tension-face bar coordinates, diameters, and supplied service strain.
+See the [WP04 reference](reference/wp04-serviceability.md) for limits, component
+aggregation, Annex F geometry, and result-state rules.

@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://structural-engineering.dev/schemas/wp04/v1",
+  "title": "WP04 portable serviceability requests",
+  "$defs": {
+    "limitSource": {
+      "enum": ["code", "project", "supplied"]
+    },
+    "deflectionLimitRequest": {
+      "type": "object",
+      "required": ["profile_id", "span_mm", "criterion", "selected_source", "code_data_revision_id"],
+      "properties": {
+        "profile_id": {"type": "string", "minLength": 1},
+        "span_mm": {"type": "number", "exclusiveMinimum": 0},
+        "criterion": {"enum": ["total_final", "after_finishes"]},
+        "selected_source": {"$ref": "#/$defs/limitSource"},
+        "project_limit_mm": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "supplied_limit_mm": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "code_data_revision_id": {"const": "is456-wp04-v1"}
+      },
+      "additionalProperties": false
+    },
+    "crackWidthLimitRequest": {
+      "type": "object",
+      "required": ["profile_id", "exposure_class", "cracking_harmful", "selected_source", "code_data_revision_id"],
+      "properties": {
+        "profile_id": {"type": "string", "minLength": 1},
+        "exposure_class": {"enum": ["mild", "moderate", "severe", "very_severe", "extreme"]},
+        "cracking_harmful": {"type": "boolean"},
+        "selected_source": {"$ref": "#/$defs/limitSource"},
+        "project_limit_mm": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "supplied_limit_mm": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "code_data_revision_id": {"const": "is456-wp04-v1"}
+      },
+      "additionalProperties": false
+    },
+    "screeningBasis": {
+      "type": "object",
+      "required": ["effective_span_mm", "effective_depth_mm", "support_condition", "tension_steel_modification_factor", "compression_steel_modification_factor", "flanged_section_modification_factor", "span_support_reference", "modification_factors_reference"],
+      "properties": {
+        "effective_span_mm": {"type": "number", "exclusiveMinimum": 0, "maximum": 10000},
+        "effective_depth_mm": {"type": "number", "exclusiveMinimum": 0},
+        "support_condition": {"enum": ["cantilever", "simply_supported", "continuous"]},
+        "tension_steel_modification_factor": {"type": "number", "exclusiveMinimum": 0},
+        "compression_steel_modification_factor": {"type": "number", "exclusiveMinimum": 0},
+        "flanged_section_modification_factor": {"type": "number", "exclusiveMinimum": 0},
+        "span_support_reference": {"type": "string", "minLength": 1},
+        "modification_factors_reference": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "calculatedBasis": {
+      "type": "object",
+      "required": ["service_action_snapshot_id", "total_service_action_row_ids", "sustained_service_action_row_ids", "analysis_result_id", "reinforcement_revision_id", "effective_span_mm", "instantaneous_total_deflection_mm", "instantaneous_sustained_deflection_mm", "creep_multiplier", "shrinkage_deflection_mm", "finish_installation_age_days", "deflection_at_finish_installation_mm", "age_at_loading_days", "assessment_age_days", "sustained_duration_days", "relative_humidity_percent", "notional_size_mm", "stiffness_method", "cracking_method", "creep_method", "shrinkage_method"],
+      "properties": {
+        "service_action_snapshot_id": {"type": "string", "minLength": 1},
+        "total_service_action_row_ids": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "sustained_service_action_row_ids": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "analysis_result_id": {"type": "string", "minLength": 1},
+        "reinforcement_revision_id": {"type": "string", "minLength": 1},
+        "effective_span_mm": {"type": "number", "exclusiveMinimum": 0},
+        "instantaneous_total_deflection_mm": {"type": "number", "minimum": 0},
+        "instantaneous_sustained_deflection_mm": {"type": "number", "minimum": 0},
+        "creep_multiplier": {"type": "number", "minimum": 0},
+        "shrinkage_deflection_mm": {"type": "number", "minimum": 0},
+        "finish_installation_age_days": {"type": ["number", "null"], "minimum": 0},
+        "deflection_at_finish_installation_mm": {"type": ["number", "null"], "minimum": 0},
+        "age_at_loading_days": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "assessment_age_days": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "sustained_duration_days": {"type": ["number", "null"], "minimum": 0},
+        "relative_humidity_percent": {"type": ["number", "null"], "exclusiveMinimum": 0, "maximum": 100},
+        "notional_size_mm": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "stiffness_method": {"type": ["string", "null"], "minLength": 1},
+        "cracking_method": {"type": ["string", "null"], "minLength": 1},
+        "creep_method": {"type": ["string", "null"], "minLength": 1},
+        "shrinkage_method": {"type": ["string", "null"], "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "deflectionCheckRequest": {
+      "type": "object",
+      "required": ["profile_id", "method", "code_data_revision_id"],
+      "properties": {
+        "profile_id": {"type": "string", "minLength": 1},
+        "method": {"enum": ["span_depth_screening", "calculated_components"]},
+        "screening": {"oneOf": [{"$ref": "#/$defs/screeningBasis"}, {"type": "null"}]},
+        "calculated": {"oneOf": [{"$ref": "#/$defs/calculatedBasis"}, {"type": "null"}]},
+        "total_limit": {"oneOf": [{"$ref": "#/$defs/deflectionLimitRequest"}, {"type": "null"}]},
+        "after_finishes_limit": {"oneOf": [{"$ref": "#/$defs/deflectionLimitRequest"}, {"type": "null"}]},
+        "code_data_revision_id": {"const": "is456-wp04-v1"}
+      },
+      "additionalProperties": false
+    },
+    "barPosition": {
+      "type": "object",
+      "required": ["bar_id", "diameter_mm", "x_from_left_mm", "y_from_top_mm", "face", "layer"],
+      "properties": {
+        "bar_id": {"type": "string", "minLength": 1},
+        "diameter_mm": {"type": "number", "exclusiveMinimum": 0},
+        "x_from_left_mm": {"type": "number"},
+        "y_from_top_mm": {"type": "number"},
+        "face": {"enum": ["top", "bottom", "left", "right"]},
+        "layer": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "crackWidthCheckRequest": {
+      "type": "object",
+      "required": ["profile_id", "member_id", "station_id", "service_action_row_id", "reinforcement_revision_id", "section_width_mm", "section_depth_mm", "neutral_axis_depth_from_compression_face_mm", "tension_face", "bars", "surface_point_x_from_left_mm", "service_steel_stress_n_per_mm2", "steel_yield_strength_n_per_mm2", "steel_modulus_n_per_mm2", "mean_strain_at_tension_surface", "limit", "code_data_revision_id"],
+      "properties": {
+        "profile_id": {"type": "string", "minLength": 1},
+        "member_id": {"type": "string", "minLength": 1},
+        "station_id": {"type": "string", "minLength": 1},
+        "service_action_row_id": {"type": "string", "minLength": 1},
+        "reinforcement_revision_id": {"type": "string", "minLength": 1},
+        "section_width_mm": {"type": "number", "exclusiveMinimum": 0},
+        "section_depth_mm": {"type": "number", "exclusiveMinimum": 0},
+        "neutral_axis_depth_from_compression_face_mm": {"type": "number", "exclusiveMinimum": 0},
+        "tension_face": {"enum": ["top", "bottom"]},
+        "bars": {"type": "array", "items": {"$ref": "#/$defs/barPosition"}},
+        "surface_point_x_from_left_mm": {"type": "number"},
+        "service_steel_stress_n_per_mm2": {"type": "number", "minimum": 0},
+        "steel_yield_strength_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "steel_modulus_n_per_mm2": {"type": "number", "exclusiveMinimum": 0},
+        "mean_strain_at_tension_surface": {"type": ["number", "null"], "minimum": 0},
+        "limit": {"$ref": "#/$defs/crackWidthLimitRequest"},
+        "code_data_revision_id": {"const": "is456-wp04-v1"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

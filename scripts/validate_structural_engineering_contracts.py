@@ -32,6 +32,12 @@ EXPECTED_MANIFESTS = {
         "AO02": "structural.beam_line.solve/v1",
         "AO15": "structural.beam_topology.define/v1",
     },
+    "wp04": {
+        "FO07": "is456.beam.deflection_limit/v1",
+        "FO08": "is456.beam.crack_width_limit/v1",
+        "AO09": "is456.beam.deflection.check/v1",
+        "AO10": "is456.beam.crack_width.check/v1",
+    },
 }
 
 
@@ -118,6 +124,24 @@ def validate() -> None:
     }:
         fail("WP03 bounded analysis limits changed")
 
+    serviceability_data = load(
+        CONTRACT_ROOT / "code-data" / "is456" / "serviceability-v1.json"
+    )
+    if serviceability_data["code_data_revision_id"] != "is456-wp04-v1":
+        fail("WP04 code-data revision mismatch")
+    if serviceability_data["deflection"]["basic_span_depth_ratios"] != {
+        "cantilever": 7,
+        "simply_supported": 20,
+        "continuous": 26,
+    }:
+        fail("WP04 basic span-depth ratios changed")
+    if serviceability_data["crack_width"]["ceilings_mm"] != {
+        "non_harmful_mild": 0.3,
+        "harmful_or_weather_or_moderate_severe": 0.2,
+        "very_severe_extreme": 0.1,
+    }:
+        fail("WP04 crack-width ceilings changed")
+
     all_vectors = []
     for packet in EXPECTED_MANIFESTS:
         conformance = load(
@@ -143,6 +167,14 @@ def validate() -> None:
         "2667bdfe26231eea46cf6f1ad5bfaf585b42470997ef6a2427a76e29c6f14c38"
     ):
         fail("WP03 action-row canonical identity changed")
+    crack_vector = next(
+        item for item in all_vectors if item["id"] == "wp04-annex-f-actual-bars"
+    )
+    if abs(
+        crack_vector["expected"]["calculated_crack_width_mm"]
+        - 0.11379830508373975
+    ) > 1e-15:
+        fail("WP04 Annex F reference result changed")
     operations_with_vectors = {
         item["operation_semantic_id"]
         for item in all_vectors

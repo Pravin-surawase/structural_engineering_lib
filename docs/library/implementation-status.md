@@ -111,3 +111,58 @@ WP04 plan update:
 - Serviceability operations will preserve missing evidence as `not_evaluated`
   and unsupported methods as `not_applicable`; neither can qualify the later
   complete-member result.
+
+## WP04 review
+
+State: implemented and focused verification passing.
+
+Confirmed outcomes:
+
+- FO07 resolves separate total-final and after-finishes limits with an explicit
+  code, project, or supplied source. An override can be stricter but cannot
+  weaken the applicable code limit.
+- FO08 maps harmful cracking and exposure to 0.3, 0.2, or 0.1 mm ceilings and
+  applies the same explicit-source rule.
+- AO09 keeps the bounded span/depth screen separate from calculated component
+  aggregation. The calculated branch retains total and sustained service rows,
+  analysis and reinforcement identities, short/long-term components, load and
+  finish chronology, environmental values, and named calculation methods.
+- AO10 evaluates Annex F flexural crack width from the physical tension face,
+  area-weighted effective depth, minimum clear cover, supplied mean strain, and
+  distance from the checked surface point to the nearest actual bar surface.
+- Python and .NET match the exact component-aggregation and arrangement-sensitive
+  Annex F vectors. Missing calculation history, actual bars, or mean strain is
+  `not_evaluated`; a valid limit exceedance is an engineering failure.
+
+Corrections made during review:
+
+- Replaced the first .NET-specific bar record with the shared `BarCoordinate`
+  contract and restored member, station, service-row, reinforcement-revision,
+  and physical-face identity.
+- Added the omitted effective depth and actual L/d evaluation to the .NET
+  screening branch, and replaced method labels with the required numeric load,
+  finish, duration, humidity, and notional-size evidence.
+- Corrected effective depth to an area-weighted distance from the compression
+  face and corrected `acr` to measure to the nearest bar surface rather than its
+  centre.
+- Populated every calculated deflection component in the .NET result and added
+  validation for source, support, tension-face, and bar-face enum values.
+- Rejected branch-specific displacement limits on a screening request and
+  rejected invalid bar-face identity instead of retaining ignored inputs.
+- Replaced the compact initial .NET draft with readable public contracts,
+  operations, and tests.
+
+WP05 plan update:
+
+- AO11 anchorage will check the actual available bar path from a named critical
+  section through support faces, bends, hooks, bond conditions, bar stress, and
+  diameter. Required development length alone will not qualify a bar.
+- AO12 lap and curtailment will retain each bar mark, physical face, start/end
+  stations, splice zone, stagger group, continued steel, and shear demand near
+  cutoffs. It will not assume that required area exists along the full span.
+- AO13 seismic detailing will require an explicit IS 13920 applicability and
+  context profile. Ordinary IS 456 members remain visibly not applicable to a
+  seismic-only rule rather than silently passing it.
+- AO26 arrangement checks will use actual coordinates, layers, cover, clear
+  spacing, link/core geometry, bend space, and support-zone congestion. Area
+  equivalence alone cannot establish constructability.
