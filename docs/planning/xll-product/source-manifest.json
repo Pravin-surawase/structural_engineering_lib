@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-03",
+  "repository": "https://github.com/Pravin-surawase/structural_engineering_lib",
+  "base_commit": "0589f7cbc81c40b2cac1499524844057c3ceacda",
+  "intake_basis": "User supplied the original XLL architecture text and requested preservation of the corrected plan and completed research in this repository.",
+  "original_git_provenance": "The earlier Mac worktree commit was not independently retrieved. These hashes bind supplied bytes, not a claim about that earlier commit.",
+  "canonical_start": "docs/planning/xll-product/README.md",
+  "original_phase_meanings": {
+    "P0": "Packaging/runtime spike",
+    "P1": "Focused C# kernel",
+    "P2": "Read-only ETABS",
+    "P3": "Bounded solver and optimizer",
+    "P4": "Workbook delivery",
+    "P5": "Controlled ETABS transaction",
+    "P6": "Commercial hardening"
+  },
+  "active_learning_packet": "docs/planning/xll-product/windows-p0-task.txt",
+  "acceptance_status": "No installed XLL acceptance or completed user lesson observation established by this handoff.",
+  "research_status": "Paused; B01-B23 remain parked.",
+  "files": [
+    {
+      "source_workspace_relative_path": "planning/source/excel-dna-xll-product-architecture-decision.md",
+      "source_sha256": "ff2f49109546a71313423cff59a253ddf9c95d5ac97a0b859e9de6a0796c1b06",
+      "published_path": "docs/planning/excel-dna-xll-product-architecture-decision.md",
+      "published_sha256": "ff2f49109546a71313423cff59a253ddf9c95d5ac97a0b859e9de6a0796c1b06",
+      "transformations": [
+        "UTF-8/LF publication copy",
+        "Portable relative links; unresolved machine references explicitly labelled"
+      ],
+      "exact_original_archive": "docs/_archive/xll-product-intake-2026-09-03/excel-dna-xll-product-architecture-decision.md"
+    },
+    {
+      "source_workspace_relative_path": "STRUCTAUTOMATE-PLAN.md",
+      "source_sha256": "cb9c8c692259fae6d4f1eded925abeee0f054facb7543425572ce6f46ca3e0a1",
+      "published_path": "docs/planning/xll-product/current-plan.md",
+      "published_sha256": "67fd45dee131c0ac035578bbe7af650f4945c829f800c6fd88735c8b1d6cd8a7",
+      "transformations": [
+        "UTF-8/LF publication copy",
+        "Portable relative links; unresolved machine references explicitly labelled"
+      ]
+    },
+    {
+      "source_workspace_relative_path": "PLAN-PHASE-CROSSWALK.md",
+      "source_sha256": "91c4463632f3ffb90492300460f1f959978b6b5b53b3dd4254c8451a4371c04d",
+      "published_path": "docs/planning/xll-product/phase-review.md",
+      "published_sha256": "29d7fcbbef27b12312e24119896c71a8bbc3b88d236042658d2d76c69d884497",
+      "transformations": [
+        "UTF-8/LF publication copy",
+        "Portable relative links; unresolved machine references explicitly labelled"
+      ]
+    },
+    {
+      "source_workspace_relative_path": "XLL-P0-TASK.txt",
+      "source_sha256": "15ab3fe949082f9da8cf6e3efef5000f9693ef78c5fd40b19d572c58389ab693",
+      "published_path": "docs/planning/xll-product/windows-p0-task.txt",
+      "published_sha256": "3c9879bb10858af06e2abe600b9390ec437f8439f529b07e5ff634edc4ed25dc",
+      "transformations": [
+        "UTF-8/LF publication copy"
+      ],
+      "exact_original_archive": "docs/_archive/xll-product-intake-2026-09-03/windows-p0-task.txt"
+    },
+    {
+      "source_workspace_relative_path": "XLL-P0-READINESS.md",
+      "source_sha256": "dc320a453f6611a5076c30e8b27a0c77c9423dd0748e99ea5388bbe35c46d892",
+      "published_path": "docs/planning/xll-product/history/windows-p0-readiness.md",
+      "published_sha256": "5d8bd57d7b60974bf03a0306da2ca203ef74472c9d3212b88b3a2f5c424aa18c",
+      "transformations": [
+        "UTF-8/LF publication copy",
+        "Portable relative links; unresolved machine references explicitly labelled"
+      ]
+    },
+    {
+      "source_workspace_relative_path": "learning/README.md",
+      "source_sha256": "856c583eb762cedd571388b0b652dfca141757f8afe4b120ecb6c9a901e09c08",
+      "published_path": "docs/planning/xll-product/learning/README.md",
+      "published_sha256": "9b4ace629c2bc5531c6ceb2e5efc0b87402a6b605d04d40bd4284e690c8ec311",
+      "transformations": [
+        "UTF-8/LF publication copy",
+        "Portable relative links; unresolved machine references explicitly labelled"
+      ]
+    },
+    {
+      "source_workspace_relative_path": "learning/01-excel-xll-foundations.md",
+      "source_sha256": "4398d1bf5f923210865b25ecaec8e18bd5d25a96255120a5b6b2241af8d73fb3",
+      "published_path": "docs/planning/xll-product/learning/01-excel-xll-foundations.md",
+      "published_sha256": "3085126226e1c2b90b265fc49b427a89d642505f7206255d951fe2247129fad1",
+      "transformations": [
+        "UTF-8/LF publication copy",
+        "Portable relative links; unresolved machine references explicitly labelled"
+      ]
+    },
+    {
+      "source_workspace_relative_path": "market-research/RESEARCH-MAP.md",
+      "source_sha256": "e3c2186e821071d92c13d7292d6e17e3f90fc1e0e3333817b83f60ed918fad2c",
+      "published_path": "docs/planning/xll-product/research/README.md",
+      "published_sha256": "51a7a9f50ca7a256df8662a7d4eda06c3ef9a35a4c2257c5ebdcd50c02e00496",
+      "transformations": [
+        "UTF-8/LF publication copy",
+        "Portable relative links; unresolved machine references explicitly labelled"
+      ]
+    },
+    {
+      "source_workspace_relative_path": "market-research/internal/report-source.md",
+      "source_sha256": "8cf51efa04607fdbbd36d79dce427158dce271f85a1856215971eb6b379d5191",
+      "published_path": "docs/planning/xll-product/research/market-study.md",
+      "published_sha256": "24ffe57ceb4f3089a0ea9c90e9faa15223ae85a74dd323939cbbd6af18ab3f72",
+      "transformations": [
+        "UTF-8/LF publication copy",
+        "Portable relative links; unresolved machine references explicitly labelled"
+      ]
+    },
+    {
+      "source_workspace_relative_path": "market-research/internal/product-blueprint-source.md",
+      "source_sha256": "426be1d7209215c92347e72a350f846da4b38e8c416f54f1dffa1a26eff2e85b",
+      "published_path": "docs/planning/xll-product/research/requirements-and-parked-work.md",
+      "published_sha256": "fc4ab00d5264e02a7d8565d16af9a7f1883e8c3e244afc732ac4df4e03ff8c88",
+      "transformations": [
+        "UTF-8/LF publication copy",
+        "Portable relative links; unresolved machine references explicitly labelled"
+      ]
+    },
+    {
+      "source_workspace_relative_path": "market-research/StructAutomate-Foundation-Readiness-2026-09-03.md",
+      "source_sha256": "a3fbce4d8ab624ac30782ac8b47e90743ab66cfeaa4119733bc2a5a39f5154a3",
+      "published_path": "docs/planning/xll-product/research/foundation-readiness.md",
+      "published_sha256": "c8ae92d99bac82e2cbeb937e72233ff1428607cf56a7a071eae8fa2f00f93e37",
+      "transformations": [
+        "UTF-8/LF publication copy",
+        "Portable relative links; unresolved machine references explicitly labelled"
+      ]
+    },
+    {
+      "source_workspace_relative_path": "market-research/StructAutomate-Engineering-Depth-and-Product-Strength-2026-09-03.md",
+      "source_sha256": "3efa0f81e56b187f681500332ffd3e45f99e71e95174115e2aa11c28fee8fb64",
+      "published_path": "docs/planning/xll-product/research/engineering-depth.md",
+      "published_sha256": "443f59ec48f23c7cecd4f29c017111289ee819be0e1f43e1521e806afb9a20a0",
+      "transformations": [
+        "UTF-8/LF publication copy",
+        "Portable relative links; unresolved machine references explicitly labelled"
+      ]
+    },
+    {
+      "source_workspace_relative_path": "market-research/StructAutomate-Product-Foundation-and-Delivery-Plan-v2-2026-09-03.md",
+      "source_sha256": "7fae19e04697191fcfbc0ab1f173fde7898ee91c75c29f33c054fd6b124e8b58",
+      "published_path": "docs/planning/xll-product/history/foundation-and-delivery-plan-v2.md",
+      "published_sha256": "4c473059976ac0c08b65895050486a12bdb0c15e346fa8ad40834ac18709d0b8",
+      "transformations": [
+        "UTF-8/LF publication copy",
+        "Portable relative links; unresolved machine references explicitly labelled"
+      ]
+    },
+    {
+      "source_workspace_relative_path": "market-research/internal/history/optimizer-to-provisional-xll-crosswalk-2026-09-03.md",
+      "source_sha256": "8b63667f7e67c05383d839030eda255486eb1a2056322b92a4ec25c6a4b6d62d",
+      "published_path": "docs/planning/xll-product/history/optimizer-to-provisional-crosswalk.md",
+      "published_sha256": "5c7043ea2650646e2de3304b6078345cc4f814683ee68d101d3173cdb76126b4",
+      "transformations": [
+        "UTF-8/LF publication copy",
+        "Portable relative links; unresolved machine references explicitly labelled"
+      ]
+    },
+    {
+      "source_workspace_relative_path": "market-research/internal/source-ledger.json",
+      "source_sha256": "d2bdfdb2457c32bce8dd92a484876c3cc054993782a2462235fbd6fb13dd59d5",
+      "published_path": "docs/planning/xll-product/research/source-ledger.json",
+      "published_sha256": "596646a41c2830ba957bc1879d2885e6fad59ff3da0e098f4e16b1438202a0bc",
+      "transformations": [
+        "UTF-8/LF publication copy",
+        "Removed conversation-only web reference IDs; retained source URLs, dates and limitations"
+      ]
+    },
+    {
+      "source_workspace_relative_path": "market-research/internal/product-blueprint-ledger.json",
+      "source_sha256": "feb3b74bc06abe0dd90b14bd537559ed7fb0fd792ea4a898156ab9a2b4abd5e4",
+      "published_path": "docs/planning/xll-product/research/requirements-source-ledger.json",
+      "published_sha256": "3bd70a4cf6c3f4069e2ff81f12ecbe23da058a92d944533496ba4e3d17ef6294",
+      "transformations": [
+        "UTF-8/LF publication copy",
+        "Removed conversation-only web reference IDs; retained source URLs, dates and limitations"
+      ]
+    }
+  ],
+  "local_only": [
+    "Authored Word renderings and their visual QA images",
+    "Downloaded vendor publications, transcripts and screenshots",
+    "Raw installed-application or cached-test logs",
+    "Local/source repository clones and private-source catalogs",
+    "Original workspace provenance/QA records containing machine-specific paths"
+  ]
+}

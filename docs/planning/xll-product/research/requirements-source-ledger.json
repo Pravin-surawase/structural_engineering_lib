@@ -1,0 +1,610 @@
+{
+  "https://www.structprollc.com/p/tutorial.html": {
+    "source_id": "S008",
+    "publisher": "StructPro LLC",
+    "title": "StructPro Tutorial catalogue (fourteen embedded lessons)",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Lead read live browser catalogue and mapped fourteen visible iframe sources to lesson labels. Seven complete auto-caption transcripts reviewed across two research passes; not all fourteen lessons watched.",
+    "claim_contexts": [
+      "The official catalogue contains fourteen lessons. Across this and the previous pass, we read complete auto-generated transcripts for installation, CSI interaction, CalcPro, property, database, beam and column commands, and sampled selected frames. We did not watch every lesson frame by frame or execute the software. Tutorial narration can establish the demonstrated sequence, but cannot prove the current build behaves identically. [Official tutorial catalogue](https://www.structprollc.com/p/tutorial.html)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://excelcrib.com/downloads/spreadsheets/ETABS-Sidekick.html": {
+    "source_id": "S024",
+    "publisher": "Excelcrib",
+    "title": "ETABS SideKick (Excel Add-in)",
+    "date": "Undated page; latest listed release 17 April 2024, v2.0.0",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Lead read live www-domain page through web; agent independently checked canonical page. Requirements ETABS18-21, AutoCAD2018-24 and VBA Enabler. Advertised $149 currency not explicit. Product capabilities distinguished from separate linked tools. Browser main page initially empty/time-out; linked video and order page available.",
+    "claim_contexts": [
+      "**SideKick close study: a direct competitor for repeated Excel/ETABS operations, with a clearer public purchase path than StructPro.** The product advertises selection, geometry/force retrieval, load assignment, section/object creation and AutoCAD exchange. These commands overlap our early integration ambitions. They do not establish a complete Indian RC design-and-revision product. [SideKick product record](https://excelcrib.com/downloads/spreadsheets/ETABS-Sidekick.html).",
+      "The main page advertises $149 but does not itself identify USD. Our earlier unqualified US$149 comparison is therefore replaced with the directly observed Indian offer. [Product price](https://excelcrib.com/downloads/spreadsheets/ETABS-Sidekick.html). For the pre-tax cost table, subtracting displayed GST gives ₹14,894.92. One perpetual purchase remains the same software fee over one or three years under the stated entitlement; ongoing service and host costs remain separate.",
+      "The latest listed release remains 2.0.0, 17 April 2024: ETABS 18–21, AutoCAD 2018–2024 and VBA Enabler. Office version/bitness and ETABS 22/23 compatibility remain unestablished. The video's helper workbooks and the AutoCAD dependency do not prove an Excel-DNA/C#/XLL architecture. [Published requirements](https://excelcrib.com/downloads/spreadsheets/ETABS-Sidekick.html)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://excelcrib.com/downloads/Plug-ins/ETABS-to-Prokon-GenCol.html": {
+    "source_id": "S036",
+    "publisher": "Excelcrib",
+    "title": "ETABS to Prokon GenCol Plugin",
+    "date": "Latest listed release 22 August 2020, v1.2.2.0",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Lead and agent read primary text. Geometry/material/factored-load transfer to separately installed GenCol; Indian Standard label has no edition. Displayed$95/year currency unspecified. Historical missing-end-force fix retained as evaluation context, not current defect. No verified current writeback/reanalysis.",
+    "claim_contexts": [
+      "| ETABS-to-Prokon GenCol | Generates column inputs for a separately installed design program; lists Indian Standard without edition | $95/year; ETABS2016–21 and GenCol3+. [Bridge](https://excelcrib.com/downloads/Plug-ins/ETABS-to-Prokon-GenCol.html) |",
+      "Reviewed official integration material did not establish a sufficiently specific modern ETABS read/write workflow. Excelcrib's separate bridge advertises ETABS2016–21 to GenCol3+ at$95/year, without identifying the dollar currency. GenCol's own specification names IS456:2000; a validated current Indian-code transfer, write-back and reanalysis sequence remains unestablished. The SideKick close study explains the engine/bridge distinction. [Excelcrib bridge](https://excelcrib.com/downloads/Plug-ins/ETABS-to-Prokon-GenCol.html), [GenCol code list](https://read.prokon.com/view/730985369/3/). **Fit:** modular office calculations and detailing alongside analysis software."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://bentleysystems.service-now.com/sys_attachment.do?sys_id=b0bdb7d197118b540b8af4f3a253af74": {
+    "source_id": "S070",
+    "publisher": "Bentley Systems",
+    "title": "RCDC (SACD) V11.04 release notes",
+    "date": "RCDC v11.04; PDF creation metadata 11 July 2022",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Original public PDF, HTTP200. Lead read pp.2–4 and8, visually inspected p.8. Agent independently reviewed update workflow. Historical generic RCDC evidence, not current ETABS-specific test.",
+    "claim_contexts": [
+      "The v11.04 note, with July 2022 metadata, extends the workflow to beams. It describes level mapping, retained grouping where possible, geometry validation for regrouped levels and settings for new widths. Its column/wall change report lists additions/removals, level mapping, location/size changes and reinforcement changes. **Competitive implication:** preservation of accepted work and a change report already exist. Public notes do not fully disclose object-matching tolerances or guarantee rename/split/merge handling in current ETABS workflows. [Beam update, pp. 2–4; column change report, p. 8](https://bentleysystems.service-now.com/sys_attachment.do?sys_id=b0bdb7d197118b540b8af4f3a253af74)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://bentleysystems.service-now.com/community?id=kb_article_view&sysparm_article=KB0110823": {
+    "source_id": "S054",
+    "publisher": "Bentley Systems",
+    "title": "Indian validation index",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "Bentley's overview names IS 456:2000 and IS 13920:2016, plus DXF drawings/BBS and HTML calculation reports. The Indian validation index contains worked examples for ductile columns, joints, boundary-element walls and other checks. This is reviewable engineering evidence, though we have not independently recalculated every example. [RCDC overview](https://bentleysystems.service-now.com/community?id=kb_article_view&sysparm_article=KB0115950), [Indian validation index](https://bentleysystems.service-now.com/community?id=kb_article_view&sysparm_article=KB0110823)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.etabsmate.com/File/ETABS%20MATE%20Quick%20Start_EN.pdf": {
+    "source_id": "S082",
+    "publisher": "FARASA Engineering Group",
+    "title": "ETABS MATE Quick Start EN610, document EN2607216103",
+    "date": "Copyright2026; PDF created15June2026, modified16June2026; not a product release date",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Lead normal-HTTPS200 download4211559bytes;66physicalpages. Read import/material/envelope/revision instructions, visually inspected physicalpp10/38. Printed pages one below physical. Exact retained file evidence/mate-quick-start-en.pdf.",
+    "claim_contexts": [
+      "ETABS performs the initial analysis and design. The Quick Start imports geometry from an **e2k file** and frame/wall design results from **Access or XML tables**, using **kgf and cm**. Additional result files can envelope requirements where element names agree. This combines demands; it is not evidence of replacing an old revision. Material strengths populate automatically only from materials named **CONC, REBAR and TIE**; otherwise defaults appear and require correction. Following model changes, the guide directs relabelling, reanalysis/redesign and fresh exports; derivative models must retain corresponding names. [Quick Start EN610, printed pp.3–13 and37](https://www.etabsmate.com/File/ETABS%20MATE%20Quick%20Start_EN.pdf)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.etabsmate.com/File/ETABS%20MATE%20Update%201.3.610.pdf": {
+    "source_id": "S085",
+    "publisher": "FARASA Engineering Group",
+    "title": "ETABS MATE1.3.610 release note, document26040714",
+    "date": "Copyright2026; PDF created3May2026, modified29July2026; not independently established release date",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Current official news-page link. Lead normal-HTTPS200 download2079181bytes,30physicalpages,SHA256fdad8c108f9183ab4d0c138abf17c48739a2dccd2fd9b0cee232a217e7633860. Read relevant Persian text and visually inspected physicalp8 showing Reset Ties Details of All Sections. Top list mentions610/611; no611binary claimed. File evidence/mate-release-1.3.610.pdf.",
+    "claim_contexts": [
+      "The1.3.610 release note supports ETABS23 imports and describes directional column-tie design. It adjusts spacing, cross-ties, double ties and diameter within configured limits. The command **Reset Ties Details of All Sections** explicitly discards user edits to column sections and regenerates calculated details. Separate commands regenerate or recheck secondary sections. These are internal detailing operations; their names do not establish changes written into ETABS. [Release note, printed pp.1,4–7](https://www.etabsmate.com/File/ETABS%20MATE%20Update%201.3.610.pdf)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://etabsmate.com/File/ETABS%20MATE%20Catalog_EN.pdf": {
+    "source_id": "S083",
+    "publisher": "FARASA Engineering Group",
+    "title": "ETABS MATE Software Catalog, documentEN260721610",
+    "date": "PDF created/modified27May2026; not a software release date",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Agent visually inspected physicalp15; parent normal-HTTPS200 download4692418bytes,41physicalpages,SHA256241a561c85f4f2bb2ef047e8813bf9b67f092a88fd25923a6a33ff13e46163df and independently readp15. Catalogue describes BBS fields and Excel/text export, not a verified cutting plan. File evidence/mate-catalogue-en.pdf.",
+    "claim_contexts": [
+      "The catalogue describes bar bending schedules with position, diameter, shape, length, quantity and weight, organized by floor and element type, plus Excel/text export. Here Excel is an output destination; that does not establish an Excel-hosted add-in or XLL architecture. [2026 catalogue, printed p.14](https://etabsmate.com/File/ETABS%20MATE%20Catalog_EN.pdf)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.aceocp.com/wp-down/html/ACE_OCP_ETABS2016_Guide/files/assets/common/downloads/publication.pdf": {
+    "source_id": "S104",
+    "publisher": "ACE-Hellas",
+    "title": "ACE OCP2017 User's Guide for ETABS",
+    "date": "January2017 (document title/date)",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "92physical-page original PDF text inspected by agent; lead independently checked candidate paths, infeasible-reference percentage note and Run/Reset/convergence text. Relevant physicalpp55-72, requirementsp37. PDF screenshots failed; ordinary local download403, no bypass. Historical guide, current runtime unverified.",
+    "claim_contexts": [
+      "The January 2017 ETABS guide documents dimension bounds/locks and section grouping. Its RC objective includes concrete plus longitudinal and transverse reinforcement. Candidate EDB files go into a configurable project folder. Convergence controls limit non-improving cycles and analysis count. Two operational details matter: an infeasible reference can make the progress percentage differ from the results-form percentage; Run deletes earlier generated files while retaining parameters, whereas Reset removes both. Comparison outputs include feasibility, quantities and section changes. These are historical instructions, not verified behavior of a current build. [ETABS guide, physical pp.55–72](https://www.aceocp.com/wp-down/html/ACE_OCP_ETABS2016_Guide/files/assets/common/downloads/publication.pdf)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.linkedin.com/in/afrasayab": {
+    "source_id": "S122",
+    "publisher": "Afrasayab Mahsud, ConGro founder (LinkedIn primary statement)",
+    "title": "Afrasayab Mahsud: indexed v0.60.8-beta demonstration account and optimizer clarification",
+    "date": "Undated indexed activity; exact dates of v0.60.8 post and reply unresolved",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Lead and agent independently retrieved complete relevant primary activity text through search index. Lead turn207search0 contains founder reply to Serra Cimilli-Erkmen separating agent and manual optimizer; turn211search0 contains v0.60.8 demo account and explicit lack of engineering validation. Direct profile returned429/999; no original reply permalink recovered. Exact dates and full video unverified; no personal employment/education details used.",
+    "claim_contexts": [
+      "In an attributable reply to Serra Cimilli-Erkmen, the founder says the chat agent handles modelling/analysis while the user separately triggers an optimizer applying coded engineering rules. The agent cannot initiate or operate that optimizer. His v0.60.8-beta demonstration account reports a mixed-material model, 61 calls, five completed analysis cases and four recovered errors, while explicitly excluding engineering validation. Both were read as indexed primary text; the original reply permalink and full video were unavailable. [Founder activity and clarification](https://www.linkedin.com/in/afrasayab)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.linkedin.com/posts/afrasayab_congro-ai-ai-for-structural-engineering-activity-7467302402027769856-BAg_": {
+    "source_id": "S125",
+    "publisher": "Afrasayab Mahsud, ConGro founder (LinkedIn primary statement)",
+    "title": "ConGro AI v0.49.3-beta founder release disclosure",
+    "date": "1 June 2026 (public HTML datePublished verified by research agent)",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Lead independently read original post through web retrieval; agent inspected public HTML datePublished. Vendor disclosure of four historical answer-affecting fixes, not a current defect finding or verified regression run. Unrelated recommended posts were excluded.",
+    "claim_contexts": [
+      "A founder post announcing v0.49.3-beta describes four corrections affecting engineering answers: seismic drift amplification, wall strength-reduction calculations, wind forces assigned to disconnected joints, and steel-deflection checks accepting members they could not verify. These are vendor-disclosed historical fixes. They are neither proof of current defects nor independently verified regression results. No accompanying reference models and expected outputs were established. [Founder release post, 1 June 2026](https://www.linkedin.com/posts/afrasayab_congro-ai-ai-for-structural-engineering-activity-7467302402027769856-BAg_)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://civilai.arpitkhandelwal.com/": {
+    "source_id": "S047",
+    "publisher": "CivilAI",
+    "title": "CivilAI",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "CivilAI's homepage explicitly describes an early custom operation with no off-the-shelf product. An audit of all eleven sitemap pages found no linked installer, manual, release history, sample workbook/model, calculation report or recorded demonstration. This is a bounded public-evidence finding; private customer deliverables may exist. It is sufficient reason to withdraw the earlier “closest overall product” label. [CivilAI](https://civilai.arpitkhandelwal.com/), [audited sitemap](https://civilai.arpitkhandelwal.com/sitemap.xml).",
+      "Its detailed ETABS page advertises versions 19–22, file-based EDB/E2K integration, extraction into Excel, revised section assignments returned to the model and revision/approval records. It says ETABS performs analysis. These are proposed service capabilities without an inspectable execution trace; Excel exchange does not establish an Excel-hosted XLL. [ETABS automation](https://civilai.arpitkhandelwal.com/etabs-automation).",
+      "The structural-engineering example ends by asking for a rerun, without showing automatic analysis, completion checking or fresh verification. It names IS 456, IS 875, IS 1893, IS 800 and IS 13920, but provides no reviewed edition-by-element validation matrix. Review before client delivery is also different from an enforced approval gate before model modification. [Structural-engineering workflow](https://civilai.arpitkhandelwal.com/ai-for-structural-engineers).",
+      "Published build fees are ₹50,000 for one workflow, ₹2 lakh for connected workflows and ₹5 lakh for a custom pipeline, with 30-day, 90-day and six-month support respectively. Lifetime use and no seat fees are advertised, but source/IP ownership, redistribution, post-support maintenance and exact acceptance criteria are not established. All audited Privacy, Terms and Support footer anchors point to page placeholders. **₹5 lakh is not a quotation for building and selling our specified product.** [CivilAI pricing](https://civilai.arpitkhandelwal.com/pricing).",
+      "| CivilAI | ₹50,000 one workflow; ₹2,00,000 connected workflows; ₹5,00,000 end-to-end | Advertised one-time custom service, with different support periods; delivery claims need demonstration. [Pricing](https://civilai.arpitkhandelwal.com/pricing) |"
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://civilai.arpitkhandelwal.com/pricing": {
+    "source_id": "S051",
+    "publisher": "CivilAI",
+    "title": "Pricing",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "Published build fees are ₹50,000 for one workflow, ₹2 lakh for connected workflows and ₹5 lakh for a custom pipeline, with 30-day, 90-day and six-month support respectively. Lifetime use and no seat fees are advertised, but source/IP ownership, redistribution, post-support maintenance and exact acceptance criteria are not established. All audited Privacy, Terms and Support footer anchors point to page placeholders. **₹5 lakh is not a quotation for building and selling our specified product.** [CivilAI pricing](https://civilai.arpitkhandelwal.com/pricing).",
+      "| CivilAI | ₹50,000 one workflow; ₹2,00,000 connected workflows; ₹5,00,000 end-to-end | Advertised one-time custom service, with different support periods; delivery claims need demonstration. [Pricing](https://civilai.arpitkhandelwal.com/pricing) |"
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.csiamerica.com/products/etabs/features": {
+    "source_id": "S001",
+    "publisher": "Computers and Structures, Inc.",
+    "title": "ETABS Features",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "- **The incumbent is a strong competitor.** ETABS already provides design, member selection/optimization facilities, editable tables and reporting. Its API allows external programs to create or modify models, run analysis and retrieve results. Existing licenses plus internal spreadsheets/scripts are a credible substitute. [ETABS features](https://www.csiamerica.com/products/etabs/features), [CSI Developer](https://www.csiamerica.com/developer)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.csiamerica.com/developer": {
+    "source_id": "S002",
+    "publisher": "Computers and Structures, Inc.",
+    "title": "Developer",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "- **The incumbent is a strong competitor.** ETABS already provides design, member selection/optimization facilities, editable tables and reporting. Its API allows external programs to create or modify models, run analysis and retrieve results. Existing licenses plus internal spreadsheets/scripts are a credible substitute. [ETABS features](https://www.csiamerica.com/products/etabs/features), [CSI Developer](https://www.csiamerica.com/developer)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.csiamerica.com/sales": {
+    "source_id": "S147",
+    "publisher": "Computers and Structures, Inc.",
+    "title": "Sales: Software Prices",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "| ETABS | Plus US$7,439; Nonlinear US$11,903; Ultimate US$17,855 perpetual | Annual maintenance separately listed; Ultimate three-month lease US$2,289. The host license is additional to most add-ins. [CSI sales](https://www.csiamerica.com/sales) |"
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.csiamerica.com/products/csixcad": {
+    "source_id": "S006",
+    "publisher": "Computers and Structures, Inc.",
+    "title": "CSiXCAD",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "CSiXCAD generates structural drawings in supported CAD hosts and incorporates changes imported from ETABS/SAP2000/SAFE while retaining drawing edits. This competes for drawing-production work. Its documented direction is analysis-model changes flowing into CAD; it is not evidence of an ETABS optimization loop. [CSiXCAD](https://www.csiamerica.com/products/csixcad)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.calctree.com/blog/desktop-connection-nodes-launch": {
+    "source_id": "S045",
+    "publisher": "CalcTree",
+    "title": "Introducing Connection Nodes: a live link between your desktop tools and CalcTree",
+    "date": "22 June 2026",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "CalcTree's June 2026 Connection Nodes announcement describes typed, unit-aware connections among ETABS, Excel and calculations/reports. These desktop connections are enterprise deployments set up with customers. The examples establish results-to-checks/reporting positioning; the complete ETABS model-write command set is not enumerated. [Introducing Connection Nodes](https://www.calctree.com/blog/desktop-connection-nodes-launch)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.siemens.com/en-us/products/simcenter/mechanical-simulation/s-frame/concrete/": {
+    "source_id": "S079",
+    "publisher": "Siemens",
+    "title": "Simcenter S-Frame Concrete software",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official indexed content; direct body unavailable",
+    "claim_contexts": [
+      "Now marketed by Siemens as Simcenter S-Frame Concrete, this product designs/checks beams, columns and walls, provides intermediate calculations and clause-based reports, and offers iterative section sizing. Multistory Designer imports ETABS forces for batch section design. Siemens explicitly lists IS 456 while stating that availability varies by element and release. [Simcenter S-Frame Concrete](https://www.siemens.com/en-us/products/simcenter/mechanical-simulation/s-frame/concrete/)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.vis-concretedesign.com/wp-content/uploads/2026/01/User_Manual_1900.pdf": {
+    "source_id": "S098",
+    "publisher": "CSI Italia / VIS",
+    "title": "VIS User Manual 19.0",
+    "date": "January 2026",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "The January 2026 manual describes reimporting revised analysis models and transferring reinforcement where appropriate. Combinator can write load combinations into ETABS; that should not be confused with writing redesigned concrete members upstream. Reviewed codes did not establish IS 456/13920 support. [VIS User Manual 19.0](https://www.vis-concretedesign.com/wp-content/uploads/2026/01/User_Manual_1900.pdf)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.ideastatica.com/bim-links/supported-integrations/etabsconcrete": {
+    "source_id": "S099",
+    "publisher": "IDEA StatiCa",
+    "title": "ETABS concrete integration",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "The ETABS concrete integration imports selected geometry, sections and forces into Detail, Member or Beam workflows. It is useful for specialist local engineering rather than automatically replacing an entire RC building-design office process. [ETABS concrete integration](https://www.ideastatica.com/bim-links/supported-integrations/etabsconcrete)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://prokon.com/concrete/": {
+    "source_id": "S101",
+    "publisher": "PROKON Software",
+    "title": "PROKON Concrete",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "PROKON offers concrete-member modules, calculation sheets with code references and reinforcement schedules. Its rectangular slab and rectangular column code lists include IS 456:2000; module coverage differs, and suite-wide IS 13920 support was not established. [PROKON Concrete](https://prokon.com/concrete/)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://read.prokon.com/view/730985369/3/": {
+    "source_id": "S039",
+    "publisher": "PROKON",
+    "title": "C13 General Column - Product Spec Sheet: Supported Design Codes",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Lead independently read page3 listingIS456:2000. Does not establish IS13920 detailing or verified Indian Excelcrib transfer.",
+    "claim_contexts": [
+      "PROKON's own General Column specification describes checking provided bars or determining bar size, and explicitly lists IS 456:2000. This is evidence for the external engine; it does not validate Excelcrib's Indian-code transfer or establish IS 13920 detailing. [GenCol specification](https://read.prokon.com/view/730985369/), [code list](https://read.prokon.com/view/730985369/3/).",
+      "Reviewed official integration material did not establish a sufficiently specific modern ETABS read/write workflow. Excelcrib's separate bridge advertises ETABS2016–21 to GenCol3+ at$95/year, without identifying the dollar currency. GenCol's own specification names IS456:2000; a validated current Indian-code transfer, write-back and reanalysis sequence remains unestablished. The SideKick close study explains the engine/bridge distinction. [Excelcrib bridge](https://excelcrib.com/downloads/Plug-ins/ETABS-to-Prokon-GenCol.html), [GenCol code list](https://read.prokon.com/view/730985369/3/). **Fit:** modular office calculations and detailing alongside analysis software."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.tekla.com/in/products/tekla-structural-designer": {
+    "source_id": "S133",
+    "publisher": "Trimble",
+    "title": "Tekla Structural Designer (India)",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "Tekla combines analysis/design, model-linked reports and Indian-code support in its own environment. It offers a 30-day trial. [Tekla Structural Designer India](https://www.tekla.com/in/products/tekla-structural-designer).",
+      "| Tekla Structural Designer | ₹2,31,105/year plus tax | India page snapshot; dynamic prices varied between captures, so obtain a current quote. [India product page](https://www.tekla.com/in/products/tekla-structural-designer) |",
+      "| Tekla Structural Designer — annual | ₹2,31,105 | ₹6,93,315 | Three annual payments at the displayed rate; tax excluded. [Tekla India](https://www.tekla.com/in/products/tekla-structural-designer) |"
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://protasoftware.com/community/blog/prota-structure-suite-2027-new-features/": {
+    "source_id": "S135",
+    "publisher": "Prota Software",
+    "title": "ProtaStructure Suite 2027 announcement",
+    "date": "15 June 2026",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "Prota's June 2026 announcement for Suite 2027 describes ETABS v13–23 import/export through files, Excel table exports and new Indian seismic-code support. These are vendor release claims; exchange completeness and applicability to a project need testing. [ProtaStructure Suite 2027 announcement](https://protasoftware.com/community/blog/prota-structure-suite-2027-new-features/)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://info.cype.com/en/product/cypecad-options-in-the-analyse-menu-on-the-beam-input-tab/": {
+    "source_id": "S003",
+    "publisher": "CYPE",
+    "title": "CYPECAD analysis options",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "For example, reducing a column size in a spreadsheet is a proposed change. Exporting that size to ETABS applies it. Running ETABS again produces new forces and displacements. Rechecking the revised building establishes whether the proposal remains acceptable. A report based only on the earlier forces cannot demonstrate the whole revised workflow. CYPE's own documentation explicitly distinguishes reinforcement redesign using previous forces from full reanalysis after stiffness-changing edits. [CYPECAD analysis options](https://info.cype.com/en/product/cypecad-options-in-the-analyse-menu-on-the-beam-input-tab/)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://gocalcsoft.somee.com/": {
+    "source_id": "S130",
+    "publisher": "GoCalc",
+    "title": "GoCalc",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "GoCalc advertises separate AI and Excel add-in products. Its AI documentation describes live ETABS 20+ model actions and selectable AI providers. The public website contains unfinished template language, so commercial/support maturity remains uncertain. [GoCalc](https://gocalcsoft.somee.com/), [GoCalc AI for ETABS](https://gocalcsoft.somee.com/gocalcai_Etabs.html).",
+      "| GoCalc | US$49 for one year, separately for AI and Excel add-in | Provider costs may be additional for AI use. Early-product evidence caveats apply. [Products](https://gocalcsoft.somee.com/) |"
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://structon.ai/": {
+    "source_id": "S132",
+    "publisher": "Structon.AI",
+    "title": "Structon.AI",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official indexed content; direct body unavailable",
+    "claim_contexts": [
+      "Official indexed text for Structon.AI describes an experimental, invitation-only service with design/automation claims; ETABS appears in its higher plan. Direct retrieval produced a JavaScript shell. It remains a discovery lead, not a purchase recommendation or verified price benchmark. [Structon.AI](https://structon.ai/)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://excel-dna.net/docs/introduction/": {
+    "source_id": "S140",
+    "publisher": "Excel-DNA",
+    "title": "Introduction to Excel-DNA",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "| Excel-DNA | .NET-based Excel/XLL add-in development | Free framework; we still own the engineering, interface, installer and support. [Introduction](https://excel-dna.net/docs/introduction/) |"
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.pyxll.com/pricing.html": {
+    "source_id": "S141",
+    "publisher": "PyXLL",
+    "title": "PyXLL pricing",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "| PyXLL | Python integration in desktop Excel | US$35/user/month or US$349/user/year; end users also require licenses. [PyXLL pricing](https://www.pyxll.com/pricing.html) |",
+      "| PyXLL — annual developer platform | US$349 | US$1,047 | One user's integration-platform license; no structural engineering application included. [PyXLL pricing](https://www.pyxll.com/pricing.html) |"
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.xlwings.org/pricing": {
+    "source_id": "S142",
+    "publisher": "xlwings",
+    "title": "xlwings pricing",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "| xlwings | Excel/Python automation with free and paid offerings | Free local open-source use; Business is advertised at US$6,000/year for additional capabilities. [xlwings pricing](https://www.xlwings.org/pricing) |"
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://github.com/BHoM/ETABS_Toolkit": {
+    "source_id": "S143",
+    "publisher": "BHoM (public GitHub repository)",
+    "title": "BHoM / ETABS_Toolkit",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Public repository",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "| BHoM ETABS Toolkit | Open-source ETABS model/results integration | Useful integration foundation; supported versions and license obligations need matching to the intended distribution. [ETABS Toolkit](https://github.com/BHoM/ETABS_Toolkit) |"
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://github.com/Anhbq1298/ExcelCSIToolBoxAddIn": {
+    "source_id": "S144",
+    "publisher": "Anhbq1298 (public GitHub repository)",
+    "title": "Anhbq1298 / ExcelCSIToolBoxAddIn",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Public repository",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "| ExcelCSIToolBoxAddIn | Public Excel/CSI add-in project | A learning/reference comparator; public code alone does not establish a supported commercial engineering product. [Repository](https://github.com/Anhbq1298/ExcelCSIToolBoxAddIn) |"
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://github.com/mdvaleed7/ETABS-mcp": {
+    "source_id": "S145",
+    "publisher": "mdvaleed7 (public GitHub repository)",
+    "title": "mdvaleed7 / ETABS-mcp",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Public repository",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "| ETABS-mcp | Public AI-tool interface for ETABS actions | README claims broad actions and Indian-code presets. A clear reuse license and validated design scope were not established. [Repository](https://github.com/mdvaleed7/ETABS-mcp) |"
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://support.microsoft.com/en-us/excel/python/data-security-and-python-in-excel": {
+    "source_id": "S146",
+    "publisher": "Microsoft",
+    "title": "Data security and Python in Excel",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "Python in Excel is a different product: Microsoft's cloud execution restrictions prevent treating it as a direct controller of a local ETABS session. Desktop automation packages should be assessed separately. [Data security and Python in Excel](https://support.microsoft.com/en-us/excel/python/data-security-and-python-in-excel)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://excelcrib.onfastspring.com/ETABS-Sidekick-Perpetual": {
+    "source_id": "S042",
+    "publisher": "FastSpring, authorized reseller and merchant of record / Excelcrib",
+    "title": "Excel Crib Checkout: ETABS Sidekick (Perpetual License), India",
+    "date": "Live offer observed 3 September 2026",
+    "accessed": "2026-09-03",
+    "source_class": "Product-specific public order display",
+    "retrieval": "Lead inspected visible product/quantity1/India totalINR17576 including18%GST2681.08 and screenshot. Agent independently read ordinary public HTML with matching values and pre-tax14894.92. No form details, customer data, quantity edits, payment or submission. Web extractor failed while browser and normal agent GET worked. Not a final invoice or proof of fulfillment.",
+    "claim_contexts": [
+      "On 3 September 2026, the linked FastSpring page showed one SideKick perpetual licence at **₹17,576 including 18% GST of ₹2,681.08**. The lead checked the visible page and screenshot; an agent independently checked its public response. No customer details or payment were entered. This is an observed offer, not a personalized invoice or completed delivery. [India order display](https://excelcrib.onfastspring.com/ETABS-Sidekick-Perpetual).",
+      "| SideKick | India display ₹17,576 including GST; perpetual | One licence; current host support/delivery unverified. [Observed order display](https://excelcrib.onfastspring.com/ETABS-Sidekick-Perpetual) |",
+      "| SideKick — perpetual, pre-tax | ₹14,894.92 | ₹14,894.92 | Displayed ₹17,576 less GST₹2,681.08; one purchase. [India offer](https://excelcrib.onfastspring.com/ETABS-Sidekick-Perpetual) |"
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.bentley.com/products/staad-pro/": {
+    "source_id": "S078",
+    "publisher": "Bentley Systems",
+    "title": "Bentley India packages",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "The observed annual starting prices put Structural WorkSuite **₹11,121 above STAAD.Pro Advanced**, a calculated difference of about 6.41%. That may matter if an office needs other included tools; it does not prove the broader bundle is economical for an RCDC-only user. Both are whole-package prices. Current standalone RCDC pricing, specific entitlement and applicable tax still need a matching quotation. [Bentley India packages](https://www.bentley.com/products/staad-pro/).",
+      "| RCDC | Standalone India price unknown; included in STAAD.Pro Advanced, starting ₹1,73,563/year, or Structural WorkSuite, starting ₹1,84,684/year | These are whole-package, 12-month, one-license prices. Basic STAAD.Pro at ₹97,887 has restricted RCDC functions. [Bentley India prices](https://www.bentley.com/products/staad-pro/), [current RCDC entitlement](https://bentleysystems.service-now.com/community?id=kb_article_view&sysparm_article=KB0050365) |",
+      "| STAAD.Pro Advanced — annual package including RCDC | ₹1,73,563 | ₹5,20,689 | Whole package at current starting price, not a standalone RCDC price. [Bentley India pricing](https://www.bentley.com/products/staad-pro/) |"
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.etabsmate.com/price_en.htm": {
+    "source_id": "S093",
+    "publisher": "FARASA Engineering Group",
+    "title": "FARASA English USD activation prices",
+    "date": "Undated;checked3September2026",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Lead and agent reviewed explicitUSD special prices:MATE1600,FOUNDA1000,both2200,NICA300,all2300. International payment depends on customer-service arrangement. Persianrial prices not converted into an India quote. No invoice/order submitted.",
+    "claim_contexts": [
+      "[Published USD activation offers](https://www.etabsmate.com/price_en.htm). Standalone FOUNDA isUS$1,000; buying it with MATE separately totalsUS$2,600. TheUS$2,200 bundle savesUS$400 against those current individual offers. This is our price arithmetic, not measured engineering value. Country-specific payment arrangements, taxes and an Indian invoice remain unconfirmed.",
+      "| ETABS MATE | US$1,600 activation; MATE/FOUNDA bundle US$2,200 | Unlimited use on registered hardware; updates free one year, service period three years. Transfer/update fees and client-use permission unresolved. [Price](https://www.etabsmate.com/price_en.htm), [Agreement](https://www.etabsmate.com/LicenseAgreement.htm) |",
+      "| ETABS MATE — original hardware, no paid updates/transfers | US$1,600 | US$1,600 | Conditional base activation outlay, not full ownership cost or confirmed client-use quotation. [Price](https://www.etabsmate.com/price_en.htm), [Licence](https://www.etabsmate.com/LicenseAgreement.htm) |"
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.ace-hellas.gr/shop/product/ace-ocp-gia-etabs/": {
+    "source_id": "S114",
+    "publisher": "ACE-Hellas",
+    "title": "ACE OCP for ETABS: Greek shop licence options",
+    "date": "Undated; selections and public variant data checked3September2026",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Lead clicked three/six/twelve-month and Permanent licence options in visible UI;3/6/12 display215/363/659EUR. Permanent option selected aperioristo but price659. Agent public HTML named permanent variant261363 has1480;12month261362 has blank attribute. Plausible wildcard explanation is inference. Neither permanent number is checkout-confirmed. No cart/purchase or tax assumption.",
+    "claim_contexts": [
+      "On 3 September 2026, the shop's rental selections agreed with its variant data; Permanent did not. [ACE-Hellas shop](https://www.ace-hellas.gr/shop/product/ace-ocp-gia-etabs/).",
+      "| ACE OCP for ETABS | €215/3 months; €363/6 months; €659/12 months | Permanent price unresolved: display €659 versus configured €1,480. Modern compatibility, tax and regional terms unconfirmed. [Official shop](https://www.ace-hellas.gr/shop/product/ace-ocp-gia-etabs/) |"
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://congro.ai/": {
+    "source_id": "S152",
+    "publisher": "ConGro AI / Oddly Effective LLC",
+    "title": "ConGro AI: plans and credits",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "The founder's April description explains a desktop application that generates Python to control an open ETABS session through CSI OAPI, reads execution errors and retries. April's public launch establishes a product chronology, not validated engineering performance. This is a different interface architecture from our intended Excel-hosted XLL. [Founder description, 15 April 2026](https://congro.ai/blog/why-congro-ai/), [public launch, 28 April](https://congro.ai/blog/congro-ai-public-launch/).",
+      "The catalogue describes at most four rounds, ordered Walls → Steel/HSS → Concrete → Drift → Slabs, with reanalysis after changes. It stops below 2% change in a DEAD+SDL reaction-based weight measure. RC resizing uses ACI 318-14/19 and native ETABS Check mode, increasing reinforcement before dimensions; the drift search uses steel W-sections. Indian-code optimization was not established. [ETABS catalogue, operations 146–151](https://congro.ai/software/etabs/).",
+      "The same catalogue describes identity checks, selected backups and analysis-completion checks, but operation 152 saves the active model in place. It also gives differing visible/hidden-window advice and wall-rebar availability descriptions. Their conditions need clarification; they do not establish blanket rollback or universal API failures. Its version label remains 0.50.1-beta. [Operations 001–019, 117–118, 133–150 and 152](https://congro.ai/software/etabs/).",
+      "The July Agent Mode announcement promises confirmation before destructive actions, overwriting or discarding analysis results. That is useful, but does not establish approval before every write. It also describes per-action metering and a budget stop; those concern operation and expenditure, separately from engineering acceptance. [Agent Mode, 26 July 2026](https://congro.ai/blog/congro-ai-agent-mode-update/).",
+      "The previously resolved 0.60.8-beta Windows installer remained accessible through an ordinary HTTPS header request in this pass: HTTP 200, 558,709,708 bytes, upload timestamp 31 July 2026. The executable body was not downloaded. The latest download redirect could not be revalidated because normal certificate checks failed; earlier resolution and current artifact existence are separate observations. Neither identifies a supported ETABS/Windows version matrix or proves installation/signing. [Versioned installer artifact](https://f005.backblazeb2.com/file/congro-ai-releases/ConGro%20AI%20Setup%200.60.8-beta.exe), [official download route](https://congro.ai/download).",
+      "The terms require a separate subscription for each person and do not promise an SLA or default code compliance. They restrict using the service or outputs to develop a competing product; intended evaluation rights would need clarification before any such experimentation. This study used public evidence and did not run the service. [Terms, 17 April 2026](https://congro.ai/terms/).",
+      "The privacy policy lists cloud chat processing and retention, but says model files/geometry/results are not collected beyond material explicitly pasted into chat. It does not clearly explain automatically retrieved model context. The optional diagnostic-upload statement must not be generalized to ordinary chat. Neither all-local operation nor undisclosed model uploading was established. [Privacy policy](https://congro.ai/privacy/).",
+      "| ConGro AI | US$25/month for 1,500 credits; US$100/month for 7,500 | Annual website plan data lists US$250/US$1,000, with a conflicting discount banner; see below. No free trial advertised. [Plans and credits](https://congro.ai/) |",
+      "| ConGro Foundation — monthly billing | US$300 | US$900 | US$25 × 12 or 36; top-ups excluded. [Published plan data](https://congro.ai/assets/index-BvpOl7Dt.js) |",
+      "| ConGro Structure — monthly billing | US$1,200 | US$3,600 | US$100 × 12 or 36; top-ups excluded. [Published plan data](https://congro.ai/assets/index-BvpOl7Dt.js) |",
+      "**ConGro annual-price correction:** the earlier US$240/US$960 figures are withdrawn. The earlier successful same-day website-data extraction lists **US$250/year for Foundation and US$1,000/year for Structure**, with monthly allowances. Three unchanged annual payments total US$750/US$3,000; savings are 16.67%, conflicting with the 20% banner. Later certificate failures prevented rechecking the configuration. These remain published-data observations, not checkout quotations. [Pricing configuration and FAQ](https://congro.ai/assets/index-BvpOl7Dt.js).",
+      "The same earlier configuration lists credit packs of 600/1,500/3,300/7,000 for US$10/25/50/100. Packs require an active subscription; monthly credits are used first, with a rolling one-year pack expiry. Post-cancellation access and the pack exception to broad no-rollover policy wording remain unresolved. [Pack configuration](https://congro.ai/assets/index-BvpOl7Dt.js), [credit policy](https://congro.ai/terms/).",
+      "ConGro's ETABS meter charges 6 credits per message, 3 per read and 6 per change. Two reads and two changes therefore cost **24 credits**, excluding extras. Optimization lists 45 credits, with refunds of 22 for cancellation/failure, 45 for fatal abort and none for partial convergence. Nested action charges remain unclear. [Usage schedule](https://congro.ai/).",
+      "Money refunds are separate from restored usage credits. Ordinary cancellation preserves access through the paid period without a prorated refund. The policy excludes dissatisfaction with AI output; it lists limited exceptions for billing errors, accidental annual renewal reported within seven days, qualifying outages and unauthorized charges. [Refund policy](https://congro.ai/refund-policy/)."
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  },
+  "https://www.structprollc.com/p/purchase.html": {
+    "source_id": "S022",
+    "publisher": "StructPro LLC",
+    "title": "Purchase",
+    "date": "Undated",
+    "accessed": "2026-09-03",
+    "source_class": "Official vendor documentation or offer",
+    "retrieval": "Official source reviewed by lead researcher or assigned research agent",
+    "claim_contexts": [
+      "**There is no verified public numeric price.** The purchase page advertises internet-dependent floating access, concurrent-computer limits, a seven-day trial and subscription renewal for continued use. It does not supply the price, subscription length or included slot count. Its 1.5-hour slot-release delay after an offline exit must not be mistaken for permission to work offline. [Purchase terms](https://www.structprollc.com/p/purchase.html).",
+      "| StructPro | Quote required; no verified numeric price | Floating access advertised, but EULA user/device terms need reconciliation; internet required; seven-day trial advertised; public installer link broken. [Purchase](https://www.structprollc.com/p/purchase.html), [EULA](https://www.structprollc.com/p/eula.html) |"
+    ],
+    "evidence_limit": "Supports published claim or offer; no runtime test, procurement confirmation, independent accuracy validation or customer interview performed",
+    "synthesis_use": "Reused existing reviewed source; no fresh network retrieval in this synthesis."
+  }
+}

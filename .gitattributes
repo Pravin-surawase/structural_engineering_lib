@@ -33,3 +33,7 @@
 *.ttf binary
 *.eot binary
 *.dxf binary
+
+# Preserve the exact user-supplied XLL intake bytes; published copies use LF.
+docs/_archive/xll-product-intake-2026-09-03/excel-dna-xll-product-architecture-decision.md -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/_archive/xll-product-intake-2026-09-03/windows-p0-task.txt -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
