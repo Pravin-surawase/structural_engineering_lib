@@ -56,6 +56,8 @@ engineering implementation, numerical qualification, Excel/ETABS acceptance or r
   and optional Python packages differed between the bundled and repo runtimes.
 - Initial Word rendering showed a long command outside the content width, an
   unnecessarily split table row, and bullets interpreted as continuing numbers.
+- The first clean-commit session closeout found the previous task's receipt in
+  the generated latest-handoff block.
 
 ### Root causes and resolutions
 
@@ -80,6 +82,12 @@ engineering implementation, numerical qualification, Excel/ETABS acceptance or r
   command, preserved short rows and corrected element ordering. Word rerender
   confirmed the corrected command, whole row and actual bullets. These changes
   affect only the authored artifact and its command formatting.
+- The parent created the new receipt but omitted the corresponding
+  `session handoff` projection before the first local commit. Updated that
+  generated block from this session and refreshed the pre-publication receipt;
+  inspected its task/path/hash binding before the final read-only closeout.
+  A guessed handoff filename and PowerShell glob initially failed; the maintained
+  `session.py` path and `run.sh session handoff` command resolved the owner.
 
 ## 2026-09-03 — Session: Preserve XLL planning and Mac/Windows handoff
 

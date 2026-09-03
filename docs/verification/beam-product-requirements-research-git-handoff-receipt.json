@@ -22,27 +22,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "4e42b8123b1ae9fec9d78fd266ac310c6020ddcacfcf6b8949b0ea978b7408e0",
+    "receipt_sha256": "9cb54f178b052b83e67c525260bb404cff282c9d03dd13912c32596188658d8a",
     "state": {
       "branch": "codex/beam-product-requirements-research",
       "default_base": {
-        "ahead": 0,
+        "ahead": 1,
         "behind": 0,
         "ref": "origin/main",
         "sha": "7e2d620eb6e1dd7286192dd0de3b6976d7f87260",
-        "status": "equal"
+        "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 242.383,
+      "duration_ms": 300.208,
       "git_common_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
       "git_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
-      "head_sha": "7e2d620eb6e1dd7286192dd0de3b6976d7f87260",
+      "head_sha": "47e7c90d58294fed9e6de86d5558ccab67883a4b",
       "hold_reasons": [
-        "changed paths: 22"
+        "changed paths: 1"
       ],
       "linked_worktree": false,
       "locks": [],
-      "observed_at_utc": "2026-09-03T13:40:46.410421+00:00",
+      "observed_at_utc": "2026-09-03T13:44:23.345863+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -53,34 +53,12 @@
       "tree": {
         "clean": false,
         "conflicted_paths": [],
-        "dirty_count": 22,
+        "dirty_count": 1,
         "modified_paths": [
-          "docs/SESSION_LOG.md",
-          "docs/planning/xll-product/README.md"
+          "docs/SESSION_LOG.md"
         ],
         "staged_paths": [],
-        "untracked_paths": [
-          "docs/planning/xll-product/requirements-first/README.md",
-          "docs/planning/xll-product/requirements-first/corpus-summary.json",
-          "docs/planning/xll-product/requirements-first/example-index.json",
-          "docs/planning/xll-product/requirements-first/examples/check-section.json",
-          "docs/planning/xll-product/requirements-first/examples/design-section.json",
-          "docs/planning/xll-product/requirements-first/examples/not-run-result.json",
-          "docs/planning/xll-product/requirements-first/examples/reject-impossible-depth.json",
-          "docs/planning/xll-product/requirements-first/examples/reject-missing-steel.json",
-          "docs/planning/xll-product/requirements-first/examples/reject-placeholder-provenance.json",
-          "docs/planning/xll-product/requirements-first/examples/validation-not-run.json",
-          "docs/planning/xll-product/requirements-first/failure-register.json",
-          "docs/planning/xll-product/requirements-first/operations.json",
-          "docs/planning/xll-product/requirements-first/requirements.csv",
-          "docs/planning/xll-product/requirements-first/requirements.json",
-          "docs/planning/xll-product/requirements-first/section-request.schema.json",
-          "docs/planning/xll-product/requirements-first/section-result.schema.json",
-          "docs/planning/xll-product/requirements-first/sources.json",
-          "docs/planning/xll-product/requirements-first/validate_contract.py",
-          "docs/planning/xll-product/requirements-first/validation-cases.json",
-          "docs/planning/xll-product/requirements-first/validation-result.schema.json"
-        ]
+        "untracked_paths": []
       },
       "upstream": {
         "ahead": null,
@@ -92,9 +70,9 @@
       "worktree_root": "C:\\CodexWork\\structural_engineering_lib"
     }
   },
-  "local_state_receipt_hash": "sha256:4e42b8123b1ae9fec9d78fd266ac310c6020ddcacfcf6b8949b0ea978b7408e0",
+  "local_state_receipt_hash": "sha256:9cb54f178b052b83e67c525260bb404cff282c9d03dd13912c32596188658d8a",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-09-03T13:40:46.410421+00:00",
+  "observed_at_utc": "2026-09-03T13:44:23.345863+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"
@@ -123,7 +101,8 @@
     ],
     "shared_paths": [
       "docs/planning/xll-product/README.md",
-      "docs/SESSION_LOG.md"
+      "docs/SESSION_LOG.md",
+      "docs/planning/next-session-brief.md"
     ],
     "task_id": "BEAM-PRODUCT-REQUIREMENTS-RESEARCH"
   },
