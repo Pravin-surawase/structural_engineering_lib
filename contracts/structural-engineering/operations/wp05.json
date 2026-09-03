@@ -1,0 +1,67 @@
+{
+  "schema_version": "structural-operation-manifest/v1",
+  "work_packet": "WP05",
+  "profile_id": "IS456-IS13920-WP05",
+  "operations": [
+    {
+      "catalogue_id": "FO06",
+      "semantic_id": "is456.reinforcement.development_length/v1",
+      "kind": "value",
+      "purpose": "Calculate required development length from explicit bar stress, grade, diameter, surface, stress state, and bundle size.",
+      "required_inputs": [{"name": "bar_diameter_mm", "unit": "mm"}, {"name": "bar_stress_n_per_mm2", "unit": "N/mm2"}, {"name": "steel_yield_strength_n_per_mm2", "unit": "N/mm2"}, {"name": "concrete_grade_n_per_mm2", "unit": "N/mm2"}, {"name": "bar_surface", "unit": "enum"}, {"name": "stress_state", "unit": "enum"}, {"name": "bundle_size", "unit": "count"}],
+      "outputs": [{"name": "design_bond_stress_n_per_mm2", "unit": "N/mm2"}, {"name": "required_development_length_mm", "unit": "mm"}, {"name": "surface/stress/bundle modifiers", "unit": "ratio"}],
+      "python_projection": "structural_lib.beam.development_length",
+      "dotnet_projection": "StructuralEngineering.Codes.IS456.Detailing.DevelopmentLength",
+      "valid_example": "wp05-development-deformed-tension",
+      "non_success_example": "wp05-development-overstress"
+    },
+    {
+      "catalogue_id": "AO11",
+      "semantic_id": "is456.beam.anchorage.check/v1",
+      "kind": "check",
+      "purpose": "Check actual straight paths and scheduled bends from named critical sections, including the simple-support moment/shear condition.",
+      "required_inputs": [{"name": "member_id/reinforcement_revision_id", "unit": "identity"}, {"name": "paths", "unit": "actual bar geometry"}, {"name": "support face/centre", "unit": "mm"}, {"name": "development basis", "unit": "typed request"}],
+      "outputs": [{"name": "per-bar required/straight/bend/available lengths", "unit": "mm"}, {"name": "governing_utilization", "unit": "ratio"}, {"name": "passed", "unit": "boolean"}],
+      "python_projection": "structural_lib.beam.check_anchorage",
+      "dotnet_projection": "StructuralEngineering.Codes.IS456.Detailing.CheckAnchorage",
+      "valid_example": "wp05-simple-support-anchorage",
+      "non_success_example": "wp05-support-face-required"
+    },
+    {
+      "catalogue_id": "AO12",
+      "semantic_id": "is456.beam.lap_curtailment.check/v1",
+      "kind": "check",
+      "purpose": "Check actual laps, mechanical splices, and curtailments against station demand and qualified anchorage/shear evidence.",
+      "required_inputs": [{"name": "demand/reinforcement/span revisions", "unit": "identity"}, {"name": "bars/demands/splices/curtailments", "unit": "typed schedules"}, {"name": "prohibited_splice_zones", "unit": "mm intervals"}, {"name": "qualified cutoff checks", "unit": "result references"}],
+      "outputs": [{"name": "splice_checks", "unit": "per splice"}, {"name": "curtailment_checks", "unit": "per cutoff"}, {"name": "passed", "unit": "boolean"}],
+      "python_projection": "structural_lib.beam.check_laps_and_curtailment",
+      "dotnet_projection": "StructuralEngineering.Codes.IS456.Detailing.CheckLapsAndCurtailment",
+      "valid_example": "wp05-lap-curtailment-pass",
+      "non_success_example": "wp05-lap-prohibited-zone"
+    },
+    {
+      "catalogue_id": "AO13",
+      "semantic_id": "is456.beam.seismic_detailing.check/v1",
+      "kind": "check",
+      "purpose": "Evaluate actual beam reinforcement, joints, close-link zones, splices, anchorage, and capacity shear for the selected IS 13920 profile.",
+      "required_inputs": [{"name": "applicability", "unit": "enum"}, {"name": "system/member/joint context", "unit": "identity and geometry"}, {"name": "actual bars/link zones/splices", "unit": "typed detail"}, {"name": "probable moments/imported shear/provided capacity", "unit": "Nmm/N"}, {"name": "face-bound anchorage, named-joint, and shear checks", "unit": "qualified result references"}],
+      "outputs": [{"name": "geometry/steel/continuity/link/splice rules", "unit": "per rule"}, {"name": "capacity-design shear cases", "unit": "N"}, {"name": "passed", "unit": "boolean"}],
+      "python_projection": "structural_lib.beam.check_seismic_detailing",
+      "dotnet_projection": "StructuralEngineering.Codes.IS456.Detailing.CheckSeismicDetailing",
+      "valid_example": "wp05-seismic-complete",
+      "non_success_example": "wp05-seismic-geometry-only"
+    },
+    {
+      "catalogue_id": "AO26",
+      "semantic_id": "structural.reinforcement_arrangement.check/v1",
+      "kind": "check",
+      "purpose": "Check all actual bars and links together for cover, enclosure, horizontal and vertical clearance, centroid separation, clashes, and placement fit.",
+      "required_inputs": [{"name": "member/station/reinforcement revision", "unit": "identity"}, {"name": "section/cover/aggregate", "unit": "mm"}, {"name": "all bars/links/required roles", "unit": "coordinate geometry"}, {"name": "obstacles and conditional placement opening", "unit": "coordinate geometry"}],
+      "outputs": [{"name": "link/enclosure/pair/spacing/clash checks", "unit": "per item"}, {"name": "role_centroids", "unit": "mm and mm2"}, {"name": "placement_check", "unit": "mm"}, {"name": "passed", "unit": "boolean"}],
+      "python_projection": "structural_lib.beam.check_reinforcement_arrangement",
+      "dotnet_projection": "StructuralEngineering.Codes.IS456.Detailing.CheckReinforcementArrangement",
+      "valid_example": "wp05-arrangement-complete",
+      "non_success_example": "wp05-arrangement-tension-only"
+    }
+  ]
+}

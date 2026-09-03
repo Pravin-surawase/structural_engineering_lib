@@ -21,5 +21,6 @@ The first implementation milestone is WP01-WP08:
 See [Getting started](getting-started.md), [WP01 reference](reference/wp01-flexure.md),
 [WP02 reference](reference/wp02-shear-torsion.md),
 [WP03 reference](reference/wp03-actions-analysis-topology.md),
-[WP04 reference](reference/wp04-serviceability.md), and
+[WP04 reference](reference/wp04-serviceability.md),
+[WP05 reference](reference/wp05-detailing-constructability.md), and
 [migration guidance](migration/python-and-dotnet.md).

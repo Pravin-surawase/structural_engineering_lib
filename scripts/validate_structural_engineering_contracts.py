@@ -38,6 +38,13 @@ EXPECTED_MANIFESTS = {
         "AO09": "is456.beam.deflection.check/v1",
         "AO10": "is456.beam.crack_width.check/v1",
     },
+    "wp05": {
+        "FO06": "is456.reinforcement.development_length/v1",
+        "AO11": "is456.beam.anchorage.check/v1",
+        "AO12": "is456.beam.lap_curtailment.check/v1",
+        "AO13": "is456.beam.seismic_detailing.check/v1",
+        "AO26": "structural.reinforcement_arrangement.check/v1",
+    },
 }
 
 
@@ -142,6 +149,43 @@ def validate() -> None:
     }:
         fail("WP04 crack-width ceilings changed")
 
+    detailing_data = load(
+        CONTRACT_ROOT / "code-data" / "is456" / "detailing-v1.json"
+    )
+    if detailing_data["code_data_revision_id"] != "is456-amd6-wp05-v1":
+        fail("WP05 IS 456 code-data revision mismatch")
+    if (
+        detailing_data["seismic_code_data_revision_id"]
+        != "is13920-2016-amd2-wp05-v1"
+    ):
+        fail("WP05 IS 13920 code-data revision mismatch")
+    if detailing_data["development_length"][
+        "plain_bar_tension_bond_stress_n_per_mm2"
+    ] != {"20": 1.2, "25": 1.4, "30": 1.5, "35": 1.7, "40_or_higher": 1.9}:
+        fail("WP05 design-bond-stress table changed")
+    if detailing_data["development_length"][
+        "fusion_bonded_epoxy_factor_relative_to_deformed"
+    ] != 0.8:
+        fail("WP05 Amendment 6 epoxy factor changed")
+    if detailing_data["seismic_beam"]["capacity_shear_factor"] != 1.4:
+        fail("WP05 IS 13920 capacity-shear factor changed")
+    wp05_schema = load(CONTRACT_ROOT / "schemas" / "wp05.schema.json")
+    seismic_properties = wp05_schema["$defs"]["seismicBeamContext"]["properties"]
+    if seismic_properties["anchorage_checks"] != {
+        "type": "array",
+        "minItems": 4,
+        "maxItems": 4,
+        "items": {"$ref": "#/$defs/seismicAnchorageCheck"},
+    }:
+        fail("WP05 seismic anchorage bindings changed")
+    if seismic_properties["dependent_joint_checks"] != {
+        "type": "array",
+        "minItems": 2,
+        "maxItems": 2,
+        "items": {"$ref": "#/$defs/dependentJointCheck"},
+    }:
+        fail("WP05 dependent joint bindings changed")
+
     all_vectors = []
     for packet in EXPECTED_MANIFESTS:
         conformance = load(
@@ -175,6 +219,16 @@ def validate() -> None:
         - 0.11379830508373975
     ) > 1e-15:
         fail("WP04 Annex F reference result changed")
+    development_vector = next(
+        item
+        for item in all_vectors
+        if item["id"] == "wp05-development-deformed-tension"
+    )
+    if abs(
+        development_vector["expected"]["required_development_length_mm"]
+        - 940.234375
+    ) > 1e-12:
+        fail("WP05 development-length reference result changed")
     operations_with_vectors = {
         item["operation_semantic_id"]
         for item in all_vectors

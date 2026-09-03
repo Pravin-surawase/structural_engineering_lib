@@ -23,3 +23,8 @@ Folders have one purpose:
 
 Run `./scripts/python_runtime.sh scripts/validate_structural_engineering_contracts.py`
 after changing any contract artifact.
+
+WP05 code data applies IS 456 Amendment 6 to epoxy-coated deformed bars and
+binds the seismic beam profile to IS 13920:2016 Amendment 2. Its source and
+scope decisions are documented in
+`docs/library/reference/wp05-detailing-constructability.md`.

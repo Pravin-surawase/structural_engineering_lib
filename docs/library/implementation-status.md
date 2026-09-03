@@ -166,3 +166,61 @@ WP05 plan update:
 - AO26 arrangement checks will use actual coordinates, layers, cover, clear
   spacing, link/core geometry, bend space, and support-zone congestion. Area
   equivalence alone cannot establish constructability.
+
+## WP05 review
+
+State: implemented and focused verification passing.
+
+Confirmed outcomes:
+
+- FO06 calculates development length from the actual bar diameter and stress,
+  concrete grade, bar surface, stress state, and bundle size. The normalized
+  Amendment 6 epoxy modifier is explicit in the result and code-data revision.
+- AO11 checks usable straight bar path and credited scheduled bends from a
+  named critical section. Simple supports use the separate near face and
+  centreline evidence required for the moment/shear-plus-Lo criterion.
+- AO12 checks actual splice zones, lap or qualified-coupler evidence, percentage
+  spliced, stagger group, termination extension, continuing steel at the demand
+  station, anchorage, shear at cutoff, and any explicitly required extra links.
+- AO13 makes the IS 13920 applicability decision visible and requires the full
+  member, joint, bar, link-zone, anchorage, dependent-joint, and capacity-shear
+  evidence for the supported seismic profile.
+- AO26 evaluates the complete physical arrangement: section and link cover,
+  cage closure and bend fit, bar enclosure, all bar collisions, aligned-row and
+  physical-layer clearances, role centroids, obstacles against bars and each
+  numbered cage segment, and the declared placement opening.
+- Python and .NET publish matching typed requests and results, operation
+  identities, optional inputs, code-data revisions, and conformance examples.
+
+Corrections made during review:
+
+- Replaced the legacy simplified schedule assumptions with actual bar paths,
+  faces, station demands, splice and cutoff records, and qualified dependent
+  result references.
+- Kept the 36 mm restriction specific to lap splices; a larger bar can use a
+  qualified coupler with installation evidence.
+- Made extra-link evidence conditional on the detail declaring that it is
+  required, and made that decision an explicit required field in both language
+  contracts.
+- Required exact operation identities for anchorage and shear dependencies so
+  an unrelated passing result cannot qualify a curtailment or seismic check;
+  seismic anchorage and joint results are also bound to their exact face and
+  joint so duplicate evidence cannot qualify missing locations.
+- Ordered physical layers from actual coordinates instead of trusting user
+  layer numbers, and included link segments in obstacle checks.
+- Aligned .NET link-segment numbering and optional prohibited-zone input with
+  the Python and JSON wire contracts.
+
+WP06 plan update:
+
+- AO14 will create an immutable versioned project and design profile containing
+  selected code-data revisions, required operations, criteria, accepted action
+  bases, material and detailing rules, and catalogue identities.
+- AO17 will compose existing leaf results without repeating their formulas. A
+  member qualifies only when every profile-expected leaf is present, current,
+  complete, applicable where required, and passing; rejected, partial, stale,
+  or unqualified `not_applicable` evidence remains visible and disqualifying.
+- AO18 will resolve each selected bar into a mark, count, diameter, physical
+  role and layer, tangent straight segments, bend arcs, hooks, and exact start
+  and end stations. Those paths feed AO11, AO12, and AO26 rather than assuming
+  required steel continues for the full span.

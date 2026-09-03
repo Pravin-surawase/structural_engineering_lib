@@ -59,3 +59,12 @@ instead of converting the screen into a displacement. Crack-width checks use
 the actual tension-face bar coordinates, diameters, and supplied service strain.
 See the [WP04 reference](reference/wp04-serviceability.md) for limits, component
 aggregation, Annex F geometry, and result-state rules.
+
+WP05 turns calculated requirements into checks of physical reinforcement. An
+anchorage request carries the actual bar path and separate support face/centre;
+a lap and curtailment request carries the station demand and continuing bar ids;
+the seismic operation carries both joints and qualified upstream results; and
+the arrangement operation receives every bar, link, obstacle, and conditional
+placement opening. See the
+[WP05 reference](reference/wp05-detailing-constructability.md) for the complete
+signatures, normalized source rules, and construction-fit behavior.
