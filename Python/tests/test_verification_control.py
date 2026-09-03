@@ -215,7 +215,10 @@ def test_manifest_rejects_duplicate_keys_and_unknown_fields(tmp_path):
         ("fastapi_app/main.py", {"fastapi", "repository"}),
         ("react_app/src/App.tsx", {"react", "fastapi", "repository"}),
         ("excel_addin/taskpane.mjs", {"excel", "repository"}),
-        ("CSharp/src/StructAutomate.Contracts/Forces.cs", {"dotnet", "docs", "repository"}),
+        (
+            "CSharp/src/StructAutomate.Contracts/Forces.cs",
+            {"dotnet", "docs", "repository"},
+        ),
         ("docs/contributing/testing-strategy.md", {"docs", "repository"}),
         ("mkdocs.yml", {"docs", "repository"}),
         ("scripts/check_all.py", set(verification.REQUIRED_DOMAINS)),

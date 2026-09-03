@@ -1442,7 +1442,15 @@ def test_tool_registry_discovers_all_copilot_skills():
     registry = tool_registry.load_registry()
     skill_names = {name for name in registry if name.startswith("skill:")}
 
-    assert len(skill_names) == 14
+    catalog = json.loads(
+        (REPO_ROOT / ".github/skills/skill_tiers.json").read_text(encoding="utf-8")
+    )
+    expected = {
+        f"skill:{entry['name']}"
+        for tier in ("core", "specialist", "experimental")
+        for entry in catalog[tier]
+    }
+    assert skill_names == expected
     assert "skill:quality-gate" in skill_names
     assert "skill:release-preflight" in skill_names
     assert "skill:user-acceptance-test" in skill_names

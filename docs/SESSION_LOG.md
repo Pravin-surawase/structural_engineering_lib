@@ -64,6 +64,9 @@
   oracle landed on a decimal rounding boundary despite a numerically correct result.
 - The shared parent session was already active when a subagent attempted another
   start. Windows literal globs and guessed auxiliary file names did not resolve.
+- The first hosted candidate exposed three integration mismatches: Black's
+  formatting of the expanded routing case, a fixed 14-skill assertion in the
+  discovery test, and NuGet lockfiles generated without the required final newline.
 
 ### Root causes and resolutions
 
@@ -88,6 +91,11 @@
   ⚠️ TERMINAL ISSUE: literal wildcard paths and guessed filenames failed on
   PowerShell; targeted `rg --files`/exact paths worked. The existing Word renderer
   exported the report successfully because LibreOffice is absent on this host.
+- The hosted repair applies Black to the changed routing fixture, compares
+  discovered skill identities with the canonical catalogue rather than a fixed
+  count, and normalizes the six lockfile endings. The affected discovery test,
+  formatting and locked-restore evidence are rerun for this repair candidate;
+  the C# calculations and product contracts are unchanged.
 
 ## 2026-09-03 — Session: Standalone Excel beam requirements before C# migration
 

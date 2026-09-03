@@ -5,8 +5,8 @@
 <!-- HANDOFF:START -->
 - Date: 2026-09-03
 - Focus: Complete ETABS/Excel/solver/detailing/construction requirements and implement a usable, tested C# foundation with its dependencies and workflow skill.
-- Git receipt: docs/verification/beam-automation-foundation-git-handoff-receipt.json | sha256:1e29e4eeb675cb085227b37ec113ae8ea597b40e6c3b3ede85a03d34731a34ff | HOLD
-- Git identity: codex/beam-automation-foundation@4e4d7eedbe40f0c21fee6bb65c5e098a6431d68c | upstream=NONE@UNKNOWN | base=origin/main@4e4d7eedbe40f0c21fee6bb65c5e098a6431d68c | tree=dirty | operation=none
+- Git receipt: docs/verification/beam-automation-foundation-git-handoff-receipt.json | sha256:04f01eb2f37fdb776b8ce483f387288771a6905a2bb9929a5e05ade339456a74 | HOLD
+- Git identity: codex/beam-automation-foundation@f877bd10c03866789081ec32b8225416070806f8 | upstream=NONE@UNKNOWN | base=origin/main@4e4d7eedbe40f0c21fee6bb65c5e098a6431d68c | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->
