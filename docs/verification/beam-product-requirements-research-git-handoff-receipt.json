@@ -1,0 +1,134 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "4e42b8123b1ae9fec9d78fd266ac310c6020ddcacfcf6b8949b0ea978b7408e0",
+    "state": {
+      "branch": "codex/beam-product-requirements-research",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "7e2d620eb6e1dd7286192dd0de3b6976d7f87260",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 242.383,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
+      "head_sha": "7e2d620eb6e1dd7286192dd0de3b6976d7f87260",
+      "hold_reasons": [
+        "changed paths: 22"
+      ],
+      "linked_worktree": false,
+      "locks": [],
+      "observed_at_utc": "2026-09-03T13:40:46.410421+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 22,
+        "modified_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/planning/xll-product/README.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/planning/xll-product/requirements-first/README.md",
+          "docs/planning/xll-product/requirements-first/corpus-summary.json",
+          "docs/planning/xll-product/requirements-first/example-index.json",
+          "docs/planning/xll-product/requirements-first/examples/check-section.json",
+          "docs/planning/xll-product/requirements-first/examples/design-section.json",
+          "docs/planning/xll-product/requirements-first/examples/not-run-result.json",
+          "docs/planning/xll-product/requirements-first/examples/reject-impossible-depth.json",
+          "docs/planning/xll-product/requirements-first/examples/reject-missing-steel.json",
+          "docs/planning/xll-product/requirements-first/examples/reject-placeholder-provenance.json",
+          "docs/planning/xll-product/requirements-first/examples/validation-not-run.json",
+          "docs/planning/xll-product/requirements-first/failure-register.json",
+          "docs/planning/xll-product/requirements-first/operations.json",
+          "docs/planning/xll-product/requirements-first/requirements.csv",
+          "docs/planning/xll-product/requirements-first/requirements.json",
+          "docs/planning/xll-product/requirements-first/section-request.schema.json",
+          "docs/planning/xll-product/requirements-first/section-result.schema.json",
+          "docs/planning/xll-product/requirements-first/sources.json",
+          "docs/planning/xll-product/requirements-first/validate_contract.py",
+          "docs/planning/xll-product/requirements-first/validation-cases.json",
+          "docs/planning/xll-product/requirements-first/validation-result.schema.json"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "C:\\CodexWork\\structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:4e42b8123b1ae9fec9d78fd266ac310c6020ddcacfcf6b8949b0ea978b7408e0",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-09-03T13:40:46.410421+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [],
+    "integration_owner": "Codex",
+    "owned_paths": [
+      "docs/planning/xll-product/requirements-first"
+    ],
+    "shared_paths": [
+      "docs/planning/xll-product/README.md",
+      "docs/SESSION_LOG.md"
+    ],
+    "task_id": "BEAM-PRODUCT-REQUIREMENTS-RESEARCH"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

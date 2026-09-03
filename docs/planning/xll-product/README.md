@@ -15,6 +15,8 @@ This is the shared entry point for the XLL product planning and beginner learnin
 
 ## Read in this order
 
+**New owner-selected workflow:** [Standalone Excel beam requirements and contract proposal](requirements-first/README.md) records the 3 September requirements-first research across all three projects. It supplements this plan; its proposed delivery packets do not rename P0–P6 or change the Windows shell exercise.
+
 1. [Original XLL architecture](../excel-dna-xll-product-architecture-decision.md): what was actually proposed.
 2. [Current plan](current-plan.md): the source hierarchy and present scope.
 3. [Phase comparison and improvements](phase-review.md): original meanings, proposed refinements and the broad POC versus shell-packet distinction.

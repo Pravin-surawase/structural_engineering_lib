@@ -1,0 +1,74 @@
+{
+  "as_of": "2026-09-03",
+  "repositories": [
+    {
+      "name": "structural_engineering_lib",
+      "revision": "7e2d620eb6e1dd7286192dd0de3b6976d7f87260",
+      "github_issue_records": 150,
+      "repeated_automation_title_matches": 137
+    },
+    {
+      "name": "structproof",
+      "revision": "280829fc4d8fc5186235c97042e029c3a83df7f6",
+      "github_issue_records": 47,
+      "visibility": "private"
+    },
+    {
+      "name": "structural-engineering-design-examples-sourcebook",
+      "revision": "0b8ffeefa93a5772e0a9e15a532cdef534e0686b",
+      "issues_enabled": false,
+      "beam_routes": 9,
+      "numerical_case_records": 154,
+      "other_case_records": 26,
+      "visibility": "private"
+    }
+  ],
+  "coverage": "All 197 returned GitHub issue records indexed; focused source, correction, contract and session-history audit. No assertion that all PR reviews, CI logs or latent defects were exhaustively inspected. Issue states are observations, not verification verdicts. Matrix records can contain multiple scenarios.",
+  "case_inventory": [
+    {
+      "route": "BEAM-RFLEX",
+      "numerical_records": 29,
+      "other_records": 4
+    },
+    {
+      "route": "BEAM-FDESIGN",
+      "numerical_records": 14,
+      "other_records": 2
+    },
+    {
+      "route": "BEAM-SHEAR",
+      "numerical_records": 9,
+      "other_records": 2
+    },
+    {
+      "route": "BEAM-TORSION",
+      "numerical_records": 12,
+      "other_records": 4
+    },
+    {
+      "route": "BEAM-SERVICE",
+      "numerical_records": 21,
+      "other_records": 4
+    },
+    {
+      "route": "BEAM-DETAIL",
+      "numerical_records": 37,
+      "other_records": 4
+    },
+    {
+      "route": "BEAM-DEEP",
+      "numerical_records": 8,
+      "other_records": 2
+    },
+    {
+      "route": "BEAM-CURTAIL",
+      "numerical_records": 14,
+      "other_records": 2
+    },
+    {
+      "route": "BEAM-DEEP-CONTINUOUS",
+      "numerical_records": 10,
+      "other_records": 2
+    }
+  ]
+}

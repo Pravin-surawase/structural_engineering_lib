@@ -5,6 +5,82 @@
 
 ---
 
+## 2026-09-03 — Session: Standalone Excel beam requirements before C# migration
+
+**Agent:** Codex (`MAIN`; sole writer; two bounded read-only research/review agents).
+**Task:** `BEAM-PRODUCT-REQUIREMENTS-RESEARCH`.
+**Branch:** `codex/beam-product-requirements-research`.
+**Source:** fetched `origin/main` at `7e2d620eb6e1dd7286192dd0de3b6976d7f87260`.
+**Git handoff receipt:** docs/verification/beam-product-requirements-research-git-handoff-receipt.json
+**Focus:** Establish the owner-selected standalone Excel beam workflow, requirements,
+public signatures, example/schema conventions and outcome-changing lessons before
+beginning a C# migration.
+**Boundary:** Research, proposed specifications and contract fixtures only. No
+engineering implementation, numerical qualification, Excel/ETABS acceptance or release.
+
+### Summary
+
+- Added the requirements-first packet linked from the XLL hub: 52 proposed
+  requirements, 20 labeled failure families, eight proposed signatures with
+  examples, three draft wire schemas, provenance and a focused contract audit.
+  The five member/application signatures remain scenario contracts; OP01–OP03
+  have machine-checkable payloads. All numerical illustrations remain not run.
+- Indexed 150 library and 47 StructProof GitHub issues. Grouped the 137 repeated
+  library automation-alert titles without claiming their underlying CI causes.
+  Sourcebook correction/contract files supplement its disabled issue tracker.
+  Preserved exact repository revisions and the nine-route/180-record inventory;
+  matrix records and reference examples are not equated with passed tests.
+- Defined supplied-actions and bounded loads-to-analysis routes, actual bar-depth
+  consistency, scope-specific completion, defaults, result freshness and report
+  issuance. Preserved P0–P6 meanings and the standing source-data permission.
+- Authored an 11-page editable report and companion technical packet outside Git.
+  Microsoft Word rendered the document; all pages were visually inspected and
+  affected pages rechecked after layout repairs. Raw private repositories, issue
+  bodies and source documents remain outside the public packet.
+- Focused evidence passed: three schemas; seven shape fixtures, four semantic
+  fixtures, four unresolved-source fixtures, six contract counterexamples and
+  eight provenance/state checks; ID traceability and CSV projection consistency;
+  Ruff; maintained local links; whitespace; repository efficiency policy.
+- Inspected the clean detached sibling evidence worktrees and current open PRs;
+  no active task-owned predecessor candidate was identified. Main remained at
+  the fetched source revision. Publication/hosted facts are subsequent external
+  observations, not claims made by this pre-commit record.
+
+### Issues encountered
+
+- The initial draft did not make self-weight/combination provenance or nominal
+  maximum aggregate size explicit enough in the canonical requirement register.
+- Rejected/unevaluated result states and source-reference resolution needed
+  tighter contracts before the draft could prevent the identified failure family.
+- The standard DOCX renderer could not launch LibreOffice; PDF text utilities
+  and optional Python packages differed between the bundled and repo runtimes.
+- Initial Word rendering showed a long command outside the content width, an
+  unnecessarily split table row, and bullets interpreted as continuing numbers.
+
+### Root causes and resolutions
+
+- Independently written narrative and register fields left two consequential
+  inputs implicit. B04 now binds action/factor/self-weight/combination origin;
+  B20 requires provenance-bound aggregate size or uncovered constructibility.
+  Parent inspected both reviewer findings and the final register/CSV projection.
+- The first result schema required valid effective inputs even for rejected
+  requests and allowed complete/not-evaluated combinations. Rejection now accepts
+  a submitted-input digest; state constraints and expected quantity fields are
+  explicit. Source matching has separate synthetic positive/mismatch/missing
+  evidence and is not presented as numerical execution or full readiness.
+  `validate_contract.py` passes the affected state and provenance checks.
+- ⚠️ TERMINAL ISSUE: `render_docx.py` failed because `soffice` was absent;
+  installed Word exported the authored DOCX to PDF, then `pdftoppm` rendered pages.
+  Bundled `jsonschema` was absent, so schema checks used the governed repo runtime.
+  `pdftotext`/`fitz` were unavailable; bundled `pypdf` verified PDF text instead.
+  Earlier PowerShell JSON case-sensitive keys/interpolation were handled with
+  `-AsHashtable` and explicit braced variables. No source/runtime was replaced.
+- The command was too wide; short table rows allowed splitting; OOXML abstract
+  numbering definitions were appended after numbering instances. Wrapped the
+  command, preserved short rows and corrected element ordering. Word rerender
+  confirmed the corrected command, whole row and actual bullets. These changes
+  affect only the authored artifact and its command formatting.
+
 ## 2026-09-03 — Session: Preserve XLL planning and Mac/Windows handoff
 
 **Agent:** Codex (`MAIN`; sole writer; one bounded read-only publication reviewer).

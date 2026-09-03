@@ -1,0 +1,272 @@
+[
+  {
+    "id": "S01",
+    "title": "Library beam pipeline",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/blob/7e2d620eb6e1dd7286192dd0de3b6976d7f87260/Python/structural_lib/services/beam_pipeline.py",
+    "support": "Repository snapshot; pure/service boundary and optional checks",
+    "visibility": "public",
+    "source_date": "2026-09-03 snapshot",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S02",
+    "title": "Library August session history",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/blob/7e2d620eb6e1dd7286192dd0de3b6976d7f87260/docs/_archive/session-logs/2026-08.md",
+    "support": "Historical repairs: defaults, status, stale identity, manifest and runtime drift",
+    "visibility": "public",
+    "source_date": "August 2026",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S03",
+    "title": "Library April session history",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/blob/7e2d620eb6e1dd7286192dd0de3b6976d7f87260/docs/_archive/session-logs/2026-04.md",
+    "support": "Historical API response envelope mismatch",
+    "visibility": "public",
+    "source_date": "April 2026",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S04",
+    "title": "Library beam programme",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/blob/7e2d620eb6e1dd7286192dd0de3b6976d7f87260/docs/planning/beam-design-optimization-master-plan.md",
+    "support": "Member coverage, detailing, delivery and ETABS boundaries",
+    "visibility": "public",
+    "source_date": "2026-09-03 snapshot",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S05",
+    "title": "Sourcebook assurance corrections",
+    "url": "https://github.com/Pravin-surawase/structural-engineering-design-examples-sourcebook/blob/0b8ffeefa93a5772e0a9e15a532cdef534e0686b/docs/sourcebook_phase2a_to_phase2f_assurance_corrections_20260827.md",
+    "support": "Formula/applicability corrections; selected high-impact rows inspected",
+    "visibility": "private",
+    "source_date": "2026-08-27",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S06",
+    "title": "Sourcebook amendment consistency",
+    "url": "https://github.com/Pravin-surawase/structural-engineering-design-examples-sourcebook/blob/0b8ffeefa93a5772e0a9e15a532cdef534e0686b/docs/sourcebook_beam_amendment_consistency_20260828.md",
+    "support": "Amendment and sibling-route reconciliation",
+    "visibility": "private",
+    "source_date": "2026-08-28",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S07",
+    "title": "Sourcebook flexural design proof contract",
+    "url": "https://github.com/Pravin-surawase/structural-engineering-design-examples-sourcebook/blob/0b8ffeefa93a5772e0a9e15a532cdef534e0686b/docs/beam_fdesign_blind_proof_contract.md",
+    "support": "Area-only design does not establish bar fit or detailing",
+    "visibility": "private",
+    "source_date": "2026-09-03 snapshot",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S08",
+    "title": "Sourcebook rectangular flexure cases",
+    "url": "https://github.com/Pravin-surawase/structural-engineering-design-examples-sourcebook/blob/0b8ffeefa93a5772e0a9e15a532cdef534e0686b/sourcebook/routes/beam_rectangular_flexure/cases.json",
+    "support": "Reference case IDs and submitted inputs; no claim of a new C# execution",
+    "visibility": "private",
+    "source_date": "2026-09-03 snapshot",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S09",
+    "title": "StructProof README",
+    "url": "https://github.com/Pravin-surawase/structproof/blob/280829fc4d8fc5186235c97042e029c3a83df7f6/README.md",
+    "support": "Bounded scope, evidence states, older pinned Sourcebook revision",
+    "visibility": "private",
+    "source_date": "2026-09-03 snapshot",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S10",
+    "title": "StructProof source identity issue",
+    "url": "https://github.com/Pravin-surawase/structproof/issues/86",
+    "support": "Historical source-content identity repair requirement; closed issue is not new proof",
+    "visibility": "private",
+    "source_date": "2026-09-03 snapshot",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S11",
+    "title": "StructProof evidence-state issue",
+    "url": "https://github.com/Pravin-surawase/structproof/issues/88",
+    "support": "Accepted/candidate/internal/blocked evidence separated",
+    "visibility": "private",
+    "source_date": "2026-09-03 snapshot",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S12",
+    "title": "Microsoft parameter design",
+    "url": "https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/parameter-design",
+    "support": "Names, validation, comprehensible parameter lists; older guidance used selectively",
+    "visibility": "public",
+    "source_date": "Page based on 2008 framework guidelines",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S13",
+    "title": "Microsoft library compatibility rules",
+    "url": "https://learn.microsoft.com/en-us/dotnet/core/compatibility/library-change-rules",
+    "support": "Public names/types/order and behavior can affect compatibility",
+    "visibility": "public",
+    "source_date": "Living documentation",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S14",
+    "title": "JSON Schema object constraints",
+    "url": "https://json-schema.org/understanding-json-schema/reference/object",
+    "support": "Required fields and additionalProperties are explicit",
+    "visibility": "public",
+    "source_date": "Living documentation",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S15",
+    "title": "JSON Schema annotations",
+    "url": "https://json-schema.org/understanding-json-schema/reference/annotations",
+    "support": "Default is an annotation; validation does not fill missing values",
+    "visibility": "public",
+    "source_date": "Living documentation",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S16",
+    "title": "CSI concrete frame design procedure",
+    "url": "https://docs.csiamerica.com/help-files/etabs/Getting_Started/Concrete_Frame_Design_Procedure.htm",
+    "support": "Analysis/design/check/reanalysis/report sequence; workflow precedent, not IS clause authority",
+    "visibility": "public",
+    "source_date": "Living documentation",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S17",
+    "title": "CSI frame output stations",
+    "url": "https://docs.csiamerica.com/help-files/etabs/Menus/Assign/Frame/Frame_Output_Stations.htm",
+    "support": "Point loads, stations and end offsets affect design/result locations",
+    "visibility": "public",
+    "source_date": "Living documentation",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S18",
+    "title": "Oasys AdSec section definition",
+    "url": "https://docs.oasys-software.com/structural/adsec/tutorials/section-definition/",
+    "support": "Reinforcement placement, cover and layers as explicit product inputs",
+    "visibility": "public",
+    "source_date": "Living documentation",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S19",
+    "title": "IIT Kharagpur NPTEL deflection lesson",
+    "url": "https://archive.nptel.ac.in/content/storage2/courses/105105104/pdf/m7l17.pdf",
+    "support": "Separate serviceability and short/long-term deflection concerns; educational, not amendment authority",
+    "visibility": "public",
+    "source_date": "Undated teaching PDF",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S20",
+    "title": "Excel-DNA runtime support",
+    "url": "https://excel-dna.net/docs/guides-basic/dotnet-runtime-support/",
+    "support": "Desktop runtime/Excel bitness and same-process runtime coexistence constraints",
+    "visibility": "public",
+    "source_date": "Living documentation",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S21",
+    "title": "Microsoft .NET support policy",
+    "url": "https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core",
+    "support": "Current LTS support dates",
+    "visibility": "public",
+    "source_date": "Accessed 2026-09-03",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S22",
+    "title": "Excel-DNA 1.9 release notes",
+    "url": "https://excel-dna.net/docs/release-notes-1-9/",
+    "support": "Support for .NET 10 and registration features",
+    "visibility": "public",
+    "source_date": "v1.9.0",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S23",
+    "title": "Microsoft Excel multithreaded recalculation",
+    "url": "https://learn.microsoft.com/en-us/office/client-developer/excel/multithreaded-recalculation-in-excel",
+    "support": "Thread-safe registration and restrictions on C API/COM calls",
+    "visibility": "public",
+    "source_date": "2022-01-24",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S24",
+    "title": "Library report issues",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/issues/142",
+    "support": "Recorded reporting/determinism requirements; historical targets are not current benchmark results",
+    "visibility": "public",
+    "source_date": "2026-09-03 snapshot",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S25",
+    "title": "StructProof verification cadence issue",
+    "url": "https://github.com/Pravin-surawase/structproof/issues/94",
+    "support": "Recorded repeated broad-gate cost and risk-based cadence decision",
+    "visibility": "private",
+    "source_date": "2026-09-03 snapshot",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S26",
+    "title": "XLL current plan",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/blob/7e2d620eb6e1dd7286192dd0de3b6976d7f87260/docs/planning/xll-product/current-plan.md",
+    "support": "Existing P0 shell and P0–P6 meanings remain separate",
+    "visibility": "public",
+    "source_date": "2026-09-03 snapshot",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S27",
+    "title": "OpenAPI 3.1.1",
+    "url": "https://spec.openapis.org/oas/v3.1.1.html",
+    "support": "Future HTTP projection can reuse JSON Schema; HTTP is not required by the XLL",
+    "visibility": "public",
+    "source_date": "3.1.1",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S28",
+    "title": "Microsoft XML documentation tags",
+    "url": "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/recommended-tags",
+    "support": "Parameter, return, exception and worked-example documentation",
+    "visibility": "public",
+    "source_date": "Living documentation",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S29",
+    "title": "Indexed GitHub issue corpus",
+    "url": "corpus-summary.json",
+    "support": "Parent-authored counts from all returned GitHub issue records; automation-title classification, not root-cause proof",
+    "visibility": "public",
+    "source_date": "2026-09-03 snapshot",
+    "accessed": "2026-09-03"
+  },
+  {
+    "id": "S30",
+    "title": "Standing IS 456 distribution permission",
+    "url": "https://github.com/Pravin-surawase/structural_engineering_lib/blob/7e2d620eb6e1dd7286192dd0de3b6976d7f87260/docs/verification/is456-public-distribution-permission.json",
+    "support": "Owner permission already passed for approved normalized data; does not grant release authority",
+    "visibility": "public",
+    "source_date": "2026-09-03 snapshot",
+    "accessed": "2026-09-03"
+  }
+]

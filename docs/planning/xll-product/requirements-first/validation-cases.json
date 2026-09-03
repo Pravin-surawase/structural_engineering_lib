@@ -1,0 +1,45 @@
+[
+  {
+    "file": "examples/check-section.json",
+    "schema": "section-request.schema.json",
+    "schema_valid": true,
+    "semantic_valid": true,
+    "source_identity_resolved": false
+  },
+  {
+    "file": "examples/design-section.json",
+    "schema": "section-request.schema.json",
+    "schema_valid": true,
+    "semantic_valid": true,
+    "source_identity_resolved": false
+  },
+  {
+    "file": "examples/reject-missing-steel.json",
+    "schema": "section-request.schema.json",
+    "schema_valid": false
+  },
+  {
+    "file": "examples/reject-impossible-depth.json",
+    "schema": "section-request.schema.json",
+    "schema_valid": true,
+    "semantic_valid": false,
+    "source_identity_resolved": false
+  },
+  {
+    "file": "examples/reject-placeholder-provenance.json",
+    "schema": "section-request.schema.json",
+    "schema_valid": true,
+    "semantic_valid": true,
+    "source_identity_resolved": false
+  },
+  {
+    "file": "examples/not-run-result.json",
+    "schema": "section-result.schema.json",
+    "schema_valid": true
+  },
+  {
+    "file": "examples/validation-not-run.json",
+    "schema": "validation-result.schema.json",
+    "schema_valid": true
+  }
+]

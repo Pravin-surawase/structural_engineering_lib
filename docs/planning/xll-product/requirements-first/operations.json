@@ -1,0 +1,246 @@
+[
+  {
+    "id": "OP01",
+    "name": "ValidateSection",
+    "csharp_signature": "ValidationReport ValidateSection(SectionRequest request)",
+    "stage": "first-section",
+    "contract_state": "specified-wire",
+    "request_schema": "section-request.schema.json",
+    "result_schema": "validation-result.schema.json",
+    "example_ids": [
+      "EX01",
+      "EX03"
+    ],
+    "requirement_ids": [
+      "B03",
+      "B09",
+      "B10",
+      "B26",
+      "B27",
+      "B28",
+      "B29",
+      "B30",
+      "B33",
+      "B44",
+      "B50"
+    ],
+    "purpose": "Validate syntax, required fields, semantic geometry and supported scope; no structural pass.",
+    "implementation_state": "not-implemented-by-this-packet"
+  },
+  {
+    "id": "OP02",
+    "name": "DesignSection",
+    "csharp_signature": "SectionResult DesignSection(SectionDesignRequest request)",
+    "stage": "first-section",
+    "contract_state": "specified-wire",
+    "request_schema": "section-request.schema.json",
+    "result_schema": "section-result.schema.json",
+    "example_ids": [
+      "EX02"
+    ],
+    "requirement_ids": [
+      "B02",
+      "B03",
+      "B09",
+      "B10",
+      "B13",
+      "B26",
+      "B27",
+      "B28",
+      "B29",
+      "B30",
+      "B31",
+      "B32",
+      "B33",
+      "B34",
+      "B41",
+      "B44",
+      "B50"
+    ],
+    "purpose": "Required tension steel for the declared rectangular flexure scope; no bar fit or member pass.",
+    "implementation_state": "not-implemented-by-this-packet"
+  },
+  {
+    "id": "OP03",
+    "name": "CheckSection",
+    "csharp_signature": "SectionResult CheckSection(SectionCheckRequest request)",
+    "stage": "first-section",
+    "contract_state": "specified-wire",
+    "request_schema": "section-request.schema.json",
+    "result_schema": "section-result.schema.json",
+    "example_ids": [
+      "EX01"
+    ],
+    "requirement_ids": [
+      "B02",
+      "B03",
+      "B09",
+      "B10",
+      "B13",
+      "B26",
+      "B27",
+      "B29",
+      "B30",
+      "B31",
+      "B32",
+      "B33",
+      "B34",
+      "B41",
+      "B44",
+      "B50"
+    ],
+    "purpose": "Check supplied tension steel for a named ULS flexure action; preserve the supplied arrangement.",
+    "implementation_state": "not-implemented-by-this-packet"
+  },
+  {
+    "id": "OP04",
+    "name": "AnalyzeMember",
+    "csharp_signature": "AnalysisResult AnalyzeMember(MemberAnalysisRequest request)",
+    "stage": "first-member",
+    "contract_state": "scenario-only",
+    "request_schema": null,
+    "result_schema": null,
+    "example_ids": [
+      "EX04"
+    ],
+    "requirement_ids": [
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B26",
+      "B29",
+      "B31",
+      "B32",
+      "B49"
+    ],
+    "purpose": "Loads to concurrent station actions for the supported analysis model.",
+    "implementation_state": "not-implemented-by-this-packet"
+  },
+  {
+    "id": "OP05",
+    "name": "DesignMember",
+    "csharp_signature": "MemberResult DesignMember(MemberDesignRequest request)",
+    "stage": "first-member",
+    "contract_state": "scenario-only",
+    "request_schema": null,
+    "result_schema": null,
+    "example_ids": [
+      "EX05"
+    ],
+    "requirement_ids": [
+      "B01",
+      "B02",
+      "B03",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B09",
+      "B11",
+      "B12",
+      "B15",
+      "B17",
+      "B19",
+      "B20",
+      "B26",
+      "B28",
+      "B29",
+      "B30",
+      "B31",
+      "B32"
+    ],
+    "purpose": "Select reinforcement and run the profile-required member checks with final centroid consistency.",
+    "implementation_state": "not-implemented-by-this-packet"
+  },
+  {
+    "id": "OP06",
+    "name": "CheckMember",
+    "csharp_signature": "MemberResult CheckMember(MemberCheckRequest request)",
+    "stage": "first-member",
+    "contract_state": "scenario-only",
+    "request_schema": null,
+    "result_schema": null,
+    "example_ids": [
+      "EX06"
+    ],
+    "requirement_ids": [
+      "B01",
+      "B02",
+      "B03",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B09",
+      "B11",
+      "B12",
+      "B15",
+      "B17",
+      "B19",
+      "B20",
+      "B26",
+      "B28",
+      "B29",
+      "B30",
+      "B31",
+      "B32"
+    ],
+    "purpose": "Check an existing arrangement without redesigning it; identify governing cases and uncovered scope.",
+    "implementation_state": "not-implemented-by-this-packet"
+  },
+  {
+    "id": "OP07",
+    "name": "DetailMember",
+    "csharp_signature": "DetailResult DetailMember(MemberDetailRequest request)",
+    "stage": "first-member",
+    "contract_state": "scenario-only",
+    "request_schema": null,
+    "result_schema": null,
+    "example_ids": [
+      "EX07"
+    ],
+    "requirement_ids": [
+      "B11",
+      "B12",
+      "B20",
+      "B21",
+      "B23",
+      "B26",
+      "B29",
+      "B30",
+      "B31",
+      "B32",
+      "B40"
+    ],
+    "purpose": "Resolve bars, anchorage, links, marks and schedule from actual geometry and checked design.",
+    "implementation_state": "not-implemented-by-this-packet"
+  },
+  {
+    "id": "OP08",
+    "name": "CreateReport",
+    "csharp_signature": "Task<ReportArtifact> CreateReportAsync(ReportRequest request, CancellationToken cancellationToken)",
+    "stage": "first-member",
+    "contract_state": "scenario-only",
+    "request_schema": null,
+    "result_schema": null,
+    "example_ids": [
+      "EX08"
+    ],
+    "requirement_ids": [
+      "B01",
+      "B29",
+      "B30",
+      "B31",
+      "B32",
+      "B36",
+      "B37",
+      "B39",
+      "B40",
+      "B43"
+    ],
+    "purpose": "Application-boundary report/file operation with draft and issued-complete policies.",
+    "implementation_state": "not-implemented-by-this-packet"
+  }
+]

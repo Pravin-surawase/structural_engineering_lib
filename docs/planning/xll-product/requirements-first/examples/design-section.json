@@ -1,0 +1,37 @@
+{
+  "contract_version": "0.1.0-draft",
+  "operation": "design_section",
+  "scope": "rectangular_singly_reinforced_flexure_only",
+  "code_basis": {
+    "standard": "IS 456:2000",
+    "amendments": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "ruleset_id": "illustrative-unresolved-ruleset",
+    "dataset_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "section": {
+    "width_mm": 300,
+    "overall_depth_mm": 500,
+    "effective_depth_mm": 450,
+    "depth_basis": "supplied_section_depth",
+    "tension_face": "bottom"
+  },
+  "materials": {
+    "concrete_strength_n_mm2": 25,
+    "steel_yield_strength_n_mm2": 415
+  },
+  "action": {
+    "case_id": "ULS-01",
+    "basis": "factored_uls",
+    "moment_knm": 130,
+    "axial_force_kn": 0,
+    "torsion_knm": 0,
+    "origin": "authored contract illustration"
+  }
+}
