@@ -5,8 +5,8 @@
 <!-- HANDOFF:START -->
 - Date: 2026-09-04
 - Focus: Complete the pre-implementation definition of the native Python and
-- Git receipt: docs/verification/library-definition-completion-git-handoff-receipt.json | sha256:3fd330296ccdc0864b9ef7d3c84df7ffa90f5e90ad0a5ebf781defaec44c35d7 | HOLD
-- Git identity: codex/library-definition-completion@b554cea2eece6266459216fb8257ea19deea4c38 | upstream=NONE@UNKNOWN | base=origin/main@7b0eacd43545b2b4914d6d7b7113fe274dbbbec6 | tree=dirty | operation=none
+- Git receipt: docs/verification/library-definition-doc-ledger-repair-git-handoff-receipt.json | sha256:af6ae249df4863cbf3e3903e8c1a683923d14ba765d066cf766f9d612d009bb6 | HOLD
+- Git identity: codex/library-definition-completion@533309decd97027b23e0338760dfd08730c6d5b7 | upstream=NONE@UNKNOWN | base=origin/main@7b0eacd43545b2b4914d6d7b7113fe274dbbbec6 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->

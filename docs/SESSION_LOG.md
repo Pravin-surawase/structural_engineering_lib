@@ -61,6 +61,8 @@ failures and official runtime/vendor sources.
 - The first integrated-validator run treated all source evidence as files even
   though PF2 intentionally cites source directories. Later runs also exposed
   overly strict assumptions about PF11 roll-up tokens and the `packet_id` field.
+- Strict documentation validation found both generated API ledgers one UTC day
+  behind the generator even though no API surface or classification changed.
 
 ### Root causes and resolutions
 
@@ -96,6 +98,10 @@ failures and official runtime/vendor sources.
   PF11 trace records while backlog coverage permits named command/roll-up
   entries, and the first packet is read from its authored `packet_id`. The
   complete integrated validation passes.
+- Confirmed root cause: the API registry generator records the current UTC date
+  and the candidate crossed a date boundary after the prior generated files.
+  Resolution: regenerated both maintained API ledgers; their only diffs are the
+  `generated` date, and the generator check plus API documentation check pass.
 
 ### Validation through content freeze
 
@@ -113,9 +119,11 @@ failures and official runtime/vendor sources.
 - `run.sh context validate`: 10 areas, six authorities, three retained
   index-named surfaces and zero generated folder indexes passed.
 - `run.sh efficiency check`: token-efficiency policy passed.
+- API classification generator check and API documentation check: passed; all
+  1,221 compatibility projections remain exactly reconciled.
 - `git diff --check`: no whitespace errors.
 
-**Git handoff receipt:** docs/verification/library-definition-completion-git-handoff-receipt.json
+**Git handoff receipt:** docs/verification/library-definition-doc-ledger-repair-git-handoff-receipt.json
 
 ---
 

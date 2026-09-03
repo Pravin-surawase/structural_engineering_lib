@@ -1,0 +1,117 @@
+{
+  "authorization": {
+    "authorized_actions": [],
+    "next_action": "HOLD_FOR_EXACT_EVIDENCE",
+    "prohibited_actions": [],
+    "status": "UNKNOWN"
+  },
+  "holds": [
+    "AUTHORIZATION_PROVENANCE_UNKNOWN",
+    "AUTHORIZATION_TARGET_BINDING_UNKNOWN",
+    "AUTHORIZATION_UNKNOWN",
+    "INTEGRATION_NOT_CHECKED",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "RETENTION_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "af6ae249df4863cbf3e3903e8c1a683923d14ba765d066cf766f9d612d009bb6",
+    "state": {
+      "branch": "codex/library-definition-completion",
+      "default_base": {
+        "ahead": 4,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "7b0eacd43545b2b4914d6d7b7113fe274dbbbec6",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 364.552,
+      "git_common_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
+      "git_dir": "C:\\CodexWork\\structural_engineering_lib\\.git",
+      "head_sha": "533309decd97027b23e0338760dfd08730c6d5b7",
+      "hold_reasons": [
+        "changed paths: 3"
+      ],
+      "linked_worktree": false,
+      "locks": [],
+      "observed_at_utc": "2026-09-03T19:01:22.277629+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "C:\\CodexWork\\structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 3,
+        "modified_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/reference/api-classification.json",
+          "docs/reference/api-compatibility-ledger.json"
+        ],
+        "staged_paths": [],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "C:\\CodexWork\\structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:af6ae249df4863cbf3e3903e8c1a683923d14ba765d066cf766f9d612d009bb6",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-09-03T19:01:22.278101+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [],
+    "integration_owner": "MAIN",
+    "owned_paths": [
+      "docs/planning/xll-product/library-definition",
+      "docs/planning/xll-product/README.md",
+      "docs/planning/next-session-brief.md",
+      "docs/reference/api-classification.json",
+      "docs/reference/api-compatibility-ledger.json",
+      "docs/SESSION_LOG.md",
+      "docs/verification/library-definition-doc-ledger-repair-git-handoff-receipt.json"
+    ],
+    "shared_paths": [],
+    "task_id": "LIBRARY-DEFINITION-COMPLETION"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
