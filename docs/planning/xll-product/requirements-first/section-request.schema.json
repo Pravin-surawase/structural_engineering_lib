@@ -1,0 +1,197 @@
+{
+  "type": "object",
+  "properties": {
+    "contract_version": {
+      "const": "0.1.0-draft"
+    },
+    "operation": {
+      "type": "string",
+      "enum": [
+        "design_section",
+        "check_section"
+      ]
+    },
+    "scope": {
+      "const": "rectangular_singly_reinforced_flexure_only"
+    },
+    "code_basis": {
+      "type": "object",
+      "properties": {
+        "standard": {
+          "const": "IS 456:2000"
+        },
+        "amendments": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "uniqueItems": true
+        },
+        "ruleset_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dataset_digest": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "standard",
+        "amendments",
+        "ruleset_id",
+        "dataset_digest"
+      ],
+      "additionalProperties": false
+    },
+    "section": {
+      "type": "object",
+      "properties": {
+        "width_mm": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "overall_depth_mm": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "effective_depth_mm": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "depth_basis": {
+          "const": "supplied_section_depth"
+        },
+        "tension_face": {
+          "type": "string",
+          "enum": [
+            "top",
+            "bottom"
+          ]
+        }
+      },
+      "required": [
+        "width_mm",
+        "overall_depth_mm",
+        "effective_depth_mm",
+        "depth_basis",
+        "tension_face"
+      ],
+      "additionalProperties": false
+    },
+    "materials": {
+      "type": "object",
+      "properties": {
+        "concrete_strength_n_mm2": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "steel_yield_strength_n_mm2": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "concrete_strength_n_mm2",
+        "steel_yield_strength_n_mm2"
+      ],
+      "additionalProperties": false
+    },
+    "action": {
+      "type": "object",
+      "properties": {
+        "case_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "basis": {
+          "const": "factored_uls"
+        },
+        "moment_knm": {
+          "type": "number",
+          "minimum": 0
+        },
+        "axial_force_kn": {
+          "const": 0
+        },
+        "torsion_knm": {
+          "const": 0
+        },
+        "origin": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "case_id",
+        "basis",
+        "moment_knm",
+        "axial_force_kn",
+        "torsion_knm",
+        "origin"
+      ],
+      "additionalProperties": false
+    },
+    "provided_tension_steel_mm2": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "display": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "decimal_places": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 6
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "contract_version",
+    "operation",
+    "scope",
+    "code_basis",
+    "section",
+    "materials",
+    "action"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Section request — draft, flexure only",
+  "description": "Wire constraints only. Semantic and engineering checks remain required. No defaults are supplied by this schema.",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "operation": {
+            "const": "check_section"
+          }
+        },
+        "required": [
+          "operation"
+        ]
+      },
+      "then": {
+        "required": [
+          "provided_tension_steel_mm2"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "provided_tension_steel_mm2"
+          ]
+        }
+      }
+    }
+  ]
+}

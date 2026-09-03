@@ -1,0 +1,106 @@
+{
+  "type": "object",
+  "properties": {
+    "contract_version": {
+      "const": "0.1.0-draft"
+    },
+    "execution": {
+      "type": "string",
+      "enum": [
+        "completed",
+        "not_run"
+      ]
+    },
+    "validation": {
+      "type": "string",
+      "enum": [
+        "valid",
+        "invalid",
+        "unsupported",
+        "not_evaluated"
+      ]
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1
+          },
+          "field_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "error",
+              "warning",
+              "info"
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "field_path",
+          "message",
+          "severity"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "contract_version",
+    "execution",
+    "validation",
+    "diagnostics"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Validation result — no engineering verdict",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "execution": {
+            "const": "not_run"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "validation": {
+            "const": "not_evaluated"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "validation": {
+            "type": "string",
+            "enum": [
+              "invalid",
+              "unsupported"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "diagnostics": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}

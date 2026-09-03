@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-09-03
-- Focus: Put the supplied XLL architecture, corrected plan, completed research
-- Git receipt: docs/verification/xll-plan-research-handoff-git-handoff-receipt.json | sha256:b1d67eae8f1d4a735e6248465db4a03f72f8c57542965a73f163b353084d3ee7 | HOLD
-- Git identity: codex/xll-plan-research-handoff@0589f7cbc81c40b2cac1499524844057c3ceacda | upstream=NONE@UNKNOWN | base=origin/main@0589f7cbc81c40b2cac1499524844057c3ceacda | tree=dirty | operation=none
+- Focus: Establish the owner-selected standalone Excel beam workflow, requirements,
+- Git receipt: docs/verification/beam-product-requirements-research-git-handoff-receipt.json | sha256:9cb54f178b052b83e67c525260bb404cff282c9d03dd13912c32596188658d8a | HOLD
+- Git identity: codex/beam-product-requirements-research@47e7c90d58294fed9e6de86d5558ccab67883a4b | upstream=NONE@UNKNOWN | base=origin/main@7e2d620eb6e1dd7286192dd0de3b6976d7f87260 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=NOT_CHECKED
 - Next action: HOLD_FOR_EXACT_EVIDENCE
 <!-- HANDOFF:END -->

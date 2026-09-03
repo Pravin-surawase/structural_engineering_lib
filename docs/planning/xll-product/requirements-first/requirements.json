@@ -1,0 +1,622 @@
+[
+  {
+    "id": "B01",
+    "area": "product",
+    "stage": "first-member",
+    "title": "Standalone Excel is the primary workflow",
+    "acceptance": "Create, save, reopen and recompute a beam without ETABS or an HTTP service.",
+    "source_ids": [
+      "S04",
+      "S26"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B02",
+    "area": "product",
+    "stage": "first-section",
+    "title": "Separate design, check and detailing",
+    "acceptance": "Check mode preserves supplied bars; design mode returns required steel; neither claims fabricated detail.",
+    "source_ids": [
+      "S07",
+      "S18"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B03",
+    "area": "product",
+    "stage": "first-section",
+    "title": "Expose supported scope before calculation",
+    "acceptance": "A flexure-only result labels its scope; axial/torsional/deep/flanged branches outside support return unsupported.",
+    "source_ids": [
+      "S07",
+      "S09"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B04",
+    "area": "analysis",
+    "stage": "first-member",
+    "title": "Provide supplied-actions and loads modes",
+    "acceptance": "Supplied actions retain case/combination ID, factor state, self-weight inclusion or exclusion, source/origin and either combination constituents or an explicit externally governed combination declaration; report these effective values. Loads mode uses a separately verified bounded solver.",
+    "source_ids": [
+      "S16",
+      "S17"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B05",
+    "area": "actions",
+    "stage": "first-member",
+    "title": "Keep concurrent case vectors",
+    "acceptance": "Moment, shear, torsion and axial actions retain station, combination and sign; component maxima are never invented as one case.",
+    "source_ids": [
+      "S04",
+      "S17"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B06",
+    "area": "actions",
+    "stage": "first-member",
+    "title": "Define ULS and SLS bases",
+    "acceptance": "Factored actions are never factored twice; service actions require service combinations and sustained-load data when used.",
+    "source_ids": [
+      "S19"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B07",
+    "area": "analysis",
+    "stage": "first-member",
+    "title": "Define supports and coordinates",
+    "acceptance": "Clear span, support faces, offsets, restraints, local axes and positive signs are visible and round-trip unchanged.",
+    "source_ids": [
+      "S17"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B08",
+    "area": "analysis",
+    "stage": "first-member",
+    "title": "Resolve critical stations",
+    "acceptance": "Point loads, action extrema, discontinuities and support faces are covered; endpoints plus midpoint alone cannot establish member coverage.",
+    "source_ids": [
+      "S17"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B09",
+    "area": "materials",
+    "stage": "first-section",
+    "title": "Bind engineering rule and data revisions",
+    "acceptance": "Each run records code edition, amendments, dataset digest and engine version; no silent latest-code substitution.",
+    "source_ids": [
+      "S06",
+      "S10"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B10",
+    "area": "geometry",
+    "stage": "first-section",
+    "title": "Make dimensions and effective depth explicit",
+    "acceptance": "Reject nonfinite or impossible geometry; section d is measured from compression face and is less than overall depth.",
+    "source_ids": [
+      "S01",
+      "S18"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B11",
+    "area": "geometry",
+    "stage": "first-member",
+    "title": "Reconcile depth with selected bars",
+    "acceptance": "Recompute centroids after bar/layer selection; strength and SLS use the final arrangement or a named provisional result.",
+    "source_ids": [
+      "S07",
+      "S18"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B12",
+    "area": "materials",
+    "stage": "first-member",
+    "title": "Record cover convention and durability inputs",
+    "acceptance": "Cover is explicitly to the defined steel surface; exposure/fire requirements and chosen nominal cover remain traceable.",
+    "source_ids": [
+      "S18"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B13",
+    "area": "flexure",
+    "stage": "first-section",
+    "title": "Verify ordinary rectangular flexure",
+    "acceptance": "Pass/fail and limiting branches replay named source cases with unrounded decisions and metric-specific tolerances.",
+    "source_ids": [
+      "S05",
+      "S08"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B14",
+    "area": "flexure",
+    "stage": "extension",
+    "title": "Add compression steel and flanges explicitly",
+    "acceptance": "Compression-steel stress and flange applicability have separate examples; unsupported branches cannot reuse a rectangular approximation silently.",
+    "source_ids": [
+      "S05"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B15",
+    "area": "shear",
+    "stage": "first-member",
+    "title": "Check and select links",
+    "acceptance": "Shear resistance, maximum stress, minimum reinforcement, link geometry and spacing are checked for all required stations.",
+    "source_ids": [
+      "S01",
+      "S04"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B16",
+    "area": "torsion",
+    "stage": "extension",
+    "title": "Define torsion interaction support",
+    "acceptance": "Nonzero torsion blocks an ordinary no-torsion profile; enabled torsion checks both equivalent moment and shear with applicability.",
+    "source_ids": [
+      "S05"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B17",
+    "area": "serviceability",
+    "stage": "first-member",
+    "title": "Distinguish screening from calculated deflection",
+    "acceptance": "Span-depth screening is labeled screening; a missing detailed deflection check never appears as a detailed SLS pass.",
+    "source_ids": [
+      "S01",
+      "S19"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B18",
+    "area": "serviceability",
+    "stage": "extension",
+    "title": "Model detailed short and long-term SLS",
+    "acceptance": "Elastic coefficient/load shape, cracking, creep, shrinkage and sustained history are explicit; reference comparisons match assumptions.",
+    "source_ids": [
+      "S05",
+      "S19"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B19",
+    "area": "serviceability",
+    "stage": "first-member",
+    "title": "Select a declared crack-control route",
+    "acceptance": "A profile names its deemed-to-satisfy or calculated route; missing inputs yield incomplete scope, not a blank green cell.",
+    "source_ids": [
+      "S19"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B20",
+    "area": "detailing",
+    "stage": "first-member",
+    "title": "Verify constructible longitudinal bars",
+    "acceptance": "Minimum/maximum reinforcement, clear spacing, layers and link enclosure use actual bar positions. Nominal maximum aggregate size is supplied or resolved by a named versioned profile and bound to effective-input identity; missing size leaves constructibility uncovered.",
+    "source_ids": [
+      "S07",
+      "S18"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B21",
+    "area": "detailing",
+    "stage": "first-member",
+    "title": "Resolve development, anchorage and laps",
+    "acceptance": "Bar ends and lap locations bind to actual support/member geometry, material basis and applicable restrictions.",
+    "source_ids": [
+      "S06",
+      "S04"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B22",
+    "area": "detailing",
+    "stage": "extension",
+    "title": "Verify curtailment and redistribution branches",
+    "acceptance": "Curtailment uses demand envelopes and anchorage beyond cutoff; redistribution is only enabled with its own eligibility and analysis proof.",
+    "source_ids": [
+      "S04",
+      "S06"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B23",
+    "area": "detailing",
+    "stage": "first-member",
+    "title": "Keep BBS tied to resolved detail",
+    "acceptance": "Marks, shapes, bend convention, lengths and quantities derive from one arrangement; unresolved geometry prevents issued BBS.",
+    "source_ids": [
+      "S04"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B24",
+    "area": "seismic",
+    "stage": "extension",
+    "title": "Require a separate seismic profile",
+    "acceptance": "System, joint, capacity-design and detailing context is required before seismic compliance can be claimed.",
+    "source_ids": [
+      "S04"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B25",
+    "area": "scope",
+    "stage": "extension",
+    "title": "Gate advanced beam families",
+    "acceptance": "Deep/continuous-deep, openings, dapped, curved, prestressed and nonprismatic beams each need explicit capability and reference suites.",
+    "source_ids": [
+      "S06",
+      "S09"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B26",
+    "area": "contract",
+    "stage": "first-section",
+    "title": "Use one versioned input/result contract",
+    "acceptance": "C# DTOs, worksheet mapping, documentation and future HTTP projections validate against the same named schema.",
+    "source_ids": [
+      "S03",
+      "S13",
+      "S14"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B27",
+    "area": "contract",
+    "stage": "first-section",
+    "title": "Classify every optional input",
+    "acceptance": "Fields are required, conditional, profile-resolved or cosmetic; absence, null and zero have different meanings.",
+    "source_ids": [
+      "S01",
+      "S15"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B28",
+    "area": "contract",
+    "stage": "first-section",
+    "title": "Make defaults effective and auditable",
+    "acceptance": "A named profile resolves engineering defaults before hashing; returned effective inputs show values and origins.",
+    "source_ids": [
+      "S01",
+      "S15"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B29",
+    "area": "contract",
+    "stage": "first-section",
+    "title": "Publish example-linked signatures",
+    "acceptance": "Every public operation lists purpose, input/output types, units, errors, support and at least one worked scenario.",
+    "source_ids": [
+      "S12",
+      "S28"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B30",
+    "area": "contract",
+    "stage": "first-section",
+    "title": "Separate status dimensions",
+    "acceptance": "Execution, engineering outcome, scope completeness and freshness are separate; missing checks cannot collapse to PASS.",
+    "source_ids": [
+      "S02",
+      "S11"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B31",
+    "area": "identity",
+    "stage": "first-section",
+    "title": "Bind results to numerical inputs and rules",
+    "acceptance": "Any changed engineering input or source data digest invalidates the prior result; report styling has a separate identity.",
+    "source_ids": [
+      "S02",
+      "S10"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B32",
+    "area": "evidence",
+    "stage": "first-section",
+    "title": "Preserve calculation provenance",
+    "acceptance": "Per-check source/clause/table/case identifiers, applied branch, intermediate quantities and tolerances are recoverable.",
+    "source_ids": [
+      "S05",
+      "S06"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B33",
+    "area": "evidence",
+    "stage": "first-section",
+    "title": "Separate schema examples from numerical proofs",
+    "acceptance": "A schema-valid payload is not a passed calculation; expected reference values never become fabricated C# results.",
+    "source_ids": [
+      "S08",
+      "S11"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B34",
+    "area": "evidence",
+    "stage": "first-section",
+    "title": "Reconcile disagreements before porting",
+    "acceptance": "Compare sourcebook, library and StructProof by exact revision and assumptions; resolve outcome differences before adopting a formula.",
+    "source_ids": [
+      "S05",
+      "S06",
+      "S09"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B35",
+    "area": "excel",
+    "stage": "first-section",
+    "title": "Expose usable worksheet inputs",
+    "acceptance": "Named input tables show units, required fields and permitted choices; errors identify the affected cell/field.",
+    "source_ids": [
+      "S12",
+      "S14"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B36",
+    "area": "excel",
+    "stage": "first-member",
+    "title": "Use commands for workflow effects",
+    "acceptance": "Calculation functions are deterministic; report/file/workbook writes run through explicit application commands.",
+    "source_ids": [
+      "S23"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B37",
+    "area": "excel",
+    "stage": "first-member",
+    "title": "Prove calculation freshness in Excel",
+    "acceptance": "Editing a dependency, reopening, manual calculation mode and missing add-in cannot leave an apparently current issued result.",
+    "source_ids": [
+      "S02",
+      "S23"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B38",
+    "area": "excel",
+    "stage": "first-member",
+    "title": "Handle ranges and batch results consistently",
+    "acceptance": "Blank/error/text/mixed-unit cells have specified errors; rows retain beam/case identity and partial-batch failures.",
+    "source_ids": [
+      "S03",
+      "S14"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B39",
+    "area": "report",
+    "stage": "first-member",
+    "title": "Deliver an understandable calculation report",
+    "acceptance": "Report lists effective inputs, assumptions, scope, checks, governing cases, source revisions and drawings; units persist in export.",
+    "source_ids": [
+      "S24",
+      "S04"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B40",
+    "area": "report",
+    "stage": "first-member",
+    "title": "Allow diagnostics but gate issued packages",
+    "acceptance": "Draft reports can show failed/incomplete results; issued complete-design/BBS exports require current complete passing required checks.",
+    "source_ids": [
+      "S02",
+      "S04"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B41",
+    "area": "performance",
+    "stage": "first-section",
+    "title": "Measure kernel and Excel costs separately",
+    "acceptance": "Benchmark cold/warm calls, allocation, batch sizes and Excel recalculation on a recorded machine; do not promise a language speedup.",
+    "source_ids": [
+      "S23"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B42",
+    "area": "platform",
+    "stage": "first-section",
+    "title": "Qualify runtime and add-in coexistence",
+    "acceptance": "Pin SDK/runtime/package; prove x64 Excel load, missing-runtime behavior and coexistence with required add-ins.",
+    "source_ids": [
+      "S20",
+      "S21",
+      "S22"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B43",
+    "area": "platform",
+    "stage": "first-member",
+    "title": "Provide install, help and recovery",
+    "acceptance": "A clean target machine can install, open the example workbook, find help and recover from a failed run without losing inputs.",
+    "source_ids": [
+      "S20",
+      "S26"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B44",
+    "area": "compatibility",
+    "stage": "first-section",
+    "title": "Version public behavior deliberately",
+    "acceptance": "Breaking field/name/unit/status/default changes require a contract migration; strict unknown-field rejection is negotiated by schema version.",
+    "source_ids": [
+      "S13",
+      "S14"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B45",
+    "area": "etabs",
+    "stage": "later-integration",
+    "title": "Keep ETABS behind a separate adapter",
+    "acceptance": "Import binds model/results revision, units, axes, station offsets and case identity; no COM calls enter pure calculation functions.",
+    "source_ids": [
+      "S16",
+      "S17",
+      "S23"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B46",
+    "area": "delivery",
+    "stage": "first-section",
+    "title": "Ship one verified vertical workflow at a time",
+    "acceptance": "A milestone includes input, calculation, example, result and user output; module count or closed issues do not establish completion.",
+    "source_ids": [
+      "S07",
+      "S09",
+      "S26"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B47",
+    "area": "quality",
+    "stage": "first-section",
+    "title": "Use failure families to prevent repeat work",
+    "acceptance": "Every material defect links symptom, root cause, prevention requirement and acceptance evidence; repeated alerts are grouped.",
+    "source_ids": [
+      "S02",
+      "S03",
+      "S25"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B48",
+    "area": "quality",
+    "stage": "first-section",
+    "title": "Bind assurance to the delivered candidate",
+    "acceptance": "Installed/benchmark/schema evidence records exact candidate and scope; focused repair checks precede the named cumulative gate.",
+    "source_ids": [
+      "S11",
+      "S25",
+      "S26"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B49",
+    "area": "analysis",
+    "stage": "first-member",
+    "title": "Prove the first loads-to-actions solver",
+    "acceptance": "Start with one prismatic simply supported span, point loads and full-span UDL; verify reactions/equilibrium/extrema and reject unsupported restraints.",
+    "source_ids": [
+      "S16",
+      "S17"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B50",
+    "area": "numerics",
+    "stage": "first-section",
+    "title": "Specify numerical decision policy",
+    "acceptance": "Use binary64, finite inputs, explicit tolerances and unrounded comparisons; formatting never changes the pass/fail decision.",
+    "source_ids": [
+      "S07",
+      "S08"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B51",
+    "area": "product",
+    "stage": "later-members",
+    "title": "Reuse foundations beyond beams",
+    "acceptance": "Share quantities, materials, code basis, result/issues and provenance; keep slab/column/footing models distinct until their workflows are specified.",
+    "source_ids": [
+      "S04",
+      "S09"
+    ],
+    "state": "proposed"
+  },
+  {
+    "id": "B52",
+    "area": "governance",
+    "stage": "first-section",
+    "title": "Preserve existing scope and source permission",
+    "acceptance": "This proposal neither replaces old phase authority nor reopens granted normalized-IS-data distribution permission; no release follows from research.",
+    "source_ids": [
+      "S26",
+      "S30"
+    ],
+    "state": "proposed"
+  }
+]

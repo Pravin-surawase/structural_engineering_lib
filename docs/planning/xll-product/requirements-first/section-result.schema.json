@@ -1,0 +1,450 @@
+{
+  "type": "object",
+  "properties": {
+    "contract_version": {
+      "const": "0.1.0-draft"
+    },
+    "operation": {
+      "type": "string",
+      "enum": [
+        "design_section",
+        "check_section"
+      ]
+    },
+    "scope": {
+      "const": "rectangular_singly_reinforced_flexure_only"
+    },
+    "execution": {
+      "type": "string",
+      "enum": [
+        "completed",
+        "rejected",
+        "not_run"
+      ]
+    },
+    "engineering": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail",
+        "unsupported",
+        "not_evaluated"
+      ]
+    },
+    "completeness": {
+      "type": "string",
+      "enum": [
+        "complete_for_declared_scope",
+        "partial"
+      ]
+    },
+    "freshness": {
+      "type": "string",
+      "enum": [
+        "current",
+        "stale",
+        "unbound"
+      ]
+    },
+    "effective_input": {
+      "$ref": "section-request.schema.json"
+    },
+    "engine_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "calculation_digest": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "check_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail",
+              "unsupported",
+              "not_evaluated"
+            ]
+          },
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1
+          },
+          "explanation": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "check_id",
+          "outcome",
+          "source_ids",
+          "explanation"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "quantities": {
+      "type": "object",
+      "properties": {
+        "required_tension_steel_mm2": {
+          "type": "number",
+          "minimum": 0
+        },
+        "moment_resistance_knm": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1
+          },
+          "field_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "error",
+              "warning",
+              "info"
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "field_path",
+          "message",
+          "severity"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "submitted_input_digest": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "contract_version",
+    "operation",
+    "scope",
+    "execution",
+    "engineering",
+    "completeness",
+    "freshness",
+    "checks",
+    "diagnostics"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Section result — scope-limited, not member approval",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "execution": {
+            "const": "rejected"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "submitted_input_digest"
+        ]
+      },
+      "else": {
+        "required": [
+          "effective_input"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "engineering": {
+            "type": "string",
+            "enum": [
+              "not_evaluated",
+              "unsupported"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "completeness": {
+            "const": "partial"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "engineering": {
+            "const": "fail"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "execution": {
+            "const": "completed"
+          },
+          "checks": {
+            "contains": {
+              "properties": {
+                "outcome": {
+                  "const": "fail"
+                }
+              },
+              "required": [
+                "outcome"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution": {
+            "const": "completed"
+          },
+          "engineering": {
+            "const": "pass"
+          },
+          "operation": {
+            "const": "design_section"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "quantities": {
+            "required": [
+              "required_tension_steel_mm2"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution": {
+            "const": "completed"
+          },
+          "engineering": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          },
+          "operation": {
+            "const": "check_section"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "quantities": {
+            "required": [
+              "moment_resistance_knm"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "completeness": {
+            "const": "complete_for_declared_scope"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "execution": {
+            "const": "completed"
+          },
+          "engineering": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          },
+          "checks": {
+            "minItems": 1,
+            "items": {
+              "properties": {
+                "outcome": {
+                  "type": "string",
+                  "enum": [
+                    "pass",
+                    "fail"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution": {
+            "type": "string",
+            "enum": [
+              "not_run",
+              "rejected"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "engineering": {
+            "type": "string",
+            "enum": [
+              "not_evaluated",
+              "unsupported"
+            ]
+          },
+          "completeness": {
+            "const": "partial"
+          },
+          "freshness": {
+            "const": "unbound"
+          },
+          "checks": {
+            "maxItems": 0
+          }
+        },
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "quantities"
+              ]
+            },
+            {
+              "required": [
+                "calculation_digest"
+              ]
+            },
+            {
+              "required": [
+                "engine_version"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution": {
+            "const": "completed"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "engine_version",
+          "calculation_digest",
+          "quantities"
+        ],
+        "properties": {
+          "checks": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "engineering": {
+            "const": "pass"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "execution": {
+            "const": "completed"
+          },
+          "completeness": {
+            "const": "complete_for_declared_scope"
+          },
+          "freshness": {
+            "const": "current"
+          },
+          "checks": {
+            "minItems": 1,
+            "items": {
+              "properties": {
+                "outcome": {
+                  "const": "pass"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution": {
+            "const": "rejected"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "diagnostics": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,300 @@
+[
+  {
+    "id": "F01",
+    "state": "historical-repaired",
+    "symptom": "Partial checks could produce an overall safe/export decision",
+    "root_cause": "Aggregation omitted missing or held checks",
+    "source_ids": [
+      "S02"
+    ],
+    "prevention_requirements": [
+      "B03",
+      "B30",
+      "B40"
+    ],
+    "acceptance": "Inject an omitted required check and prove issued output is blocked."
+  },
+  {
+    "id": "F02",
+    "state": "current-observed-contract-risk",
+    "symptom": "Pipeline defaults can fill links, spacings and optional checks",
+    "root_cause": "Service defaults mix convenience with engineering assumptions",
+    "source_ids": [
+      "S01"
+    ],
+    "prevention_requirements": [
+      "B02",
+      "B27",
+      "B28"
+    ],
+    "acceptance": "Reject unresolved structural inputs or return all profile-resolved values."
+  },
+  {
+    "id": "F03",
+    "state": "historical-repaired",
+    "symptom": "Edited actions/material/depth left prior result associations",
+    "root_cause": "Result binding did not fully follow effective inputs",
+    "source_ids": [
+      "S02"
+    ],
+    "prevention_requirements": [
+      "B31",
+      "B37"
+    ],
+    "acceptance": "Change each dependency and prove the old result becomes stale."
+  },
+  {
+    "id": "F04",
+    "state": "historical-repaired",
+    "symptom": "API envelope and frontend result expectations diverged",
+    "root_cause": "Independently maintained transport contracts",
+    "source_ids": [
+      "S03"
+    ],
+    "prevention_requirements": [
+      "B26",
+      "B38"
+    ],
+    "acceptance": "Replay one generated contract fixture through both producer and consumer."
+  },
+  {
+    "id": "F05",
+    "state": "historical-repaired",
+    "symptom": "Duplicate editable fields and UI calculations diverged",
+    "root_cause": "Multiple owners for the same engineering quantity",
+    "source_ids": [
+      "S02"
+    ],
+    "prevention_requirements": [
+      "B11",
+      "B26",
+      "B35"
+    ],
+    "acceptance": "One input owner and one kernel produce every displayed/exported quantity."
+  },
+  {
+    "id": "F06",
+    "state": "historical-corrected-reference",
+    "symptom": "Compression-steel interpolation branch changed outcomes",
+    "root_cause": "Stress/strain interpolation omitted required branch terms",
+    "source_ids": [
+      "S05"
+    ],
+    "prevention_requirements": [
+      "B13",
+      "B14",
+      "B34"
+    ],
+    "acceptance": "Replay corrected boundary and interior compression-steel cases."
+  },
+  {
+    "id": "F07",
+    "state": "historical-corrected-reference",
+    "symptom": "Deflection depended on an overgeneral support coefficient",
+    "root_cause": "A label substituted for explicit analysis/load-shape assumptions",
+    "source_ids": [
+      "S05"
+    ],
+    "prevention_requirements": [
+      "B17",
+      "B18",
+      "B49"
+    ],
+    "acceptance": "Different load shapes retain different justified deflection coefficients."
+  },
+  {
+    "id": "F08",
+    "state": "historical-corrected-reference",
+    "symptom": "Flange, lap and torsion applicability produced incorrect outcomes",
+    "root_cause": "Missing eligibility/minimum checks or capacity capping",
+    "source_ids": [
+      "S05",
+      "S06"
+    ],
+    "prevention_requirements": [
+      "B14",
+      "B16",
+      "B21"
+    ],
+    "acceptance": "Compare supported, limiting and unsupported branches without clamping failures to pass."
+  },
+  {
+    "id": "F09",
+    "state": "historical-corrected-reference",
+    "symptom": "Continuous deep-beam steel distribution used the wrong steel basis",
+    "root_cause": "Required steel substituted for total provided steel",
+    "source_ids": [
+      "S05"
+    ],
+    "prevention_requirements": [
+      "B25",
+      "B34"
+    ],
+    "acceptance": "Preserve required/provided quantities separately in route-specific cases."
+  },
+  {
+    "id": "F10",
+    "state": "current-observed-reconciliation",
+    "symptom": "Sibling routes and consumers bind different source/amendment states",
+    "root_cause": "Revision ownership is distributed across projects",
+    "source_ids": [
+      "S06",
+      "S09"
+    ],
+    "prevention_requirements": [
+      "B09",
+      "B31",
+      "B34"
+    ],
+    "acceptance": "A migration ledger resolves every differing rule/dataset before promotion."
+  },
+  {
+    "id": "F11",
+    "state": "current-observed-product-gap",
+    "symptom": "Area-only bar selection cannot establish buildable detailing",
+    "root_cause": "The source route intentionally excludes fit and member detailing",
+    "source_ids": [
+      "S07"
+    ],
+    "prevention_requirements": [
+      "B02",
+      "B11",
+      "B20",
+      "B23"
+    ],
+    "acceptance": "Check actual bar coordinates, spacing and anchorage before issued detailing."
+  },
+  {
+    "id": "F12",
+    "state": "current-observed-product-gap",
+    "symptom": "A broad architecture and shell plan do not establish installed product behavior",
+    "root_cause": "Planning, software and installed acceptance are different evidence",
+    "source_ids": [
+      "S26"
+    ],
+    "prevention_requirements": [
+      "B42",
+      "B43",
+      "B46",
+      "B48"
+    ],
+    "acceptance": "Load the exact XLL and complete the workbook journey on a clean target."
+  },
+  {
+    "id": "F13",
+    "state": "historical-repaired",
+    "symptom": "Tests ran with stale runtime/source binding",
+    "root_cause": "Interpreter and current worktree were not aligned",
+    "source_ids": [
+      "S02"
+    ],
+    "prevention_requirements": [
+      "B48"
+    ],
+    "acceptance": "Record runtime path, imported source path and delivered candidate identity."
+  },
+  {
+    "id": "F14",
+    "state": "historical-repaired",
+    "symptom": "Generated catalog/manifests omitted changed contracts",
+    "root_cause": "Hand-maintained projections were not checked with the producer",
+    "source_ids": [
+      "S02"
+    ],
+    "prevention_requirements": [
+      "B26",
+      "B29",
+      "B44"
+    ],
+    "acceptance": "Generate/check projections from the same schema and replay consumers."
+  },
+  {
+    "id": "F15",
+    "state": "historical-recorded-planning-error",
+    "symptom": "Phase labels and current checkout were misinterpreted",
+    "root_cause": "Similar plans and machine-local paths were treated as authority",
+    "source_ids": [
+      "S26"
+    ],
+    "prevention_requirements": [
+      "B46",
+      "B52"
+    ],
+    "acceptance": "Link the controlling packet, repository and revision in each milestone."
+  },
+  {
+    "id": "F16",
+    "state": "current-evidence-limitation",
+    "symptom": "Cross-project agreement can overstate independent verification",
+    "root_cause": "Implementations may share assumptions, examples or source derivations",
+    "source_ids": [
+      "S07",
+      "S09",
+      "S11"
+    ],
+    "prevention_requirements": [
+      "B33",
+      "B34",
+      "B48"
+    ],
+    "acceptance": "Classify internal parity separately from independent reference evidence."
+  },
+  {
+    "id": "F17",
+    "state": "future-integration-risk",
+    "symptom": "An ETABS read can be mistaken for current design evidence",
+    "root_cause": "Model, analysis and selected case identity can be decoupled",
+    "source_ids": [
+      "S16",
+      "S17"
+    ],
+    "prevention_requirements": [
+      "B05",
+      "B31",
+      "B45"
+    ],
+    "acceptance": "Bind model and result state; require reanalysis after a relevant section change."
+  },
+  {
+    "id": "F18",
+    "state": "historical-process-correction",
+    "symptom": "Repeated full gates consumed effort without completing new outcomes",
+    "root_cause": "Verification cadence was too coarse for bounded changes",
+    "source_ids": [
+      "S25"
+    ],
+    "prevention_requirements": [
+      "B46",
+      "B48"
+    ],
+    "acceptance": "Focused evidence per change; cumulative assurance once at the named candidate gate."
+  },
+  {
+    "id": "F19",
+    "state": "observed-tracker-pattern-root-unconfirmed",
+    "symptom": "137 library issue titles are repeated automation-alert titles",
+    "root_cause": "Underlying job causes were not established by the issue index",
+    "source_ids": [
+      "S29"
+    ],
+    "prevention_requirements": [
+      "B47"
+    ],
+    "acceptance": "Group alerts by verified cause and link the fixing candidate; investigate logs before claiming a cause."
+  },
+  {
+    "id": "F20",
+    "state": "inferred-future-contract-risk",
+    "symptom": "Strict schemas may reject supposedly compatible added fields",
+    "root_cause": "Version policy and unknown-field handling can disagree",
+    "source_ids": [
+      "S13",
+      "S14"
+    ],
+    "prevention_requirements": [
+      "B26",
+      "B44"
+    ],
+    "acceptance": "Run old/new consumer fixtures and require version negotiation for incompatible payloads."
+  }
+]

@@ -1,0 +1,107 @@
+[
+  {
+    "id": "EX01",
+    "operation_ids": [
+      "OP01",
+      "OP03"
+    ],
+    "title": "Check a supplied rectangular section",
+    "file": "examples/check-section.json",
+    "source_id": "S08",
+    "reference_case_id": "BEAM-RFLEX-001",
+    "scenario": "The dimensions and supplied steel illustrate the same section as the linked reference case. Resolve rule/data identity before execution. Reference expected PASS is not a new C# result.",
+    "numerical_execution": "not_run",
+    "kind": "wire-illustration"
+  },
+  {
+    "id": "EX02",
+    "operation_ids": [
+      "OP02"
+    ],
+    "title": "Design required steel",
+    "file": "examples/design-section.json",
+    "source_id": "S07",
+    "reference_case_id": null,
+    "scenario": "Design an ordinary section for the supplied 130 kNm ULS moment. Report required area; bar fit remains outside this first schema.",
+    "numerical_execution": "not_run",
+    "kind": "wire-illustration"
+  },
+  {
+    "id": "EX03",
+    "operation_ids": [
+      "OP01"
+    ],
+    "title": "Reject a missing or impossible structural input",
+    "file": "examples/reject-missing-steel.json",
+    "source_id": "S14",
+    "reference_case_id": null,
+    "scenario": "Check mode without supplied steel fails schema validation; d greater than D fails semantic validation.",
+    "numerical_execution": "not_run",
+    "kind": "wire-illustration"
+  },
+  {
+    "id": "EX04",
+    "operation_ids": [
+      "OP04"
+    ],
+    "title": "Analyze a simply supported span",
+    "file": null,
+    "source_id": "S17",
+    "reference_case_id": null,
+    "scenario": "A 6000 mm prismatic span has a full-span 12 kN/m characteristic UDL, with self-weight explicitly included by the user. Derive selected ULS/SLS combinations, reactions and station vectors using a separately verified solver. No numeric result is asserted here.",
+    "numerical_execution": "not_run",
+    "kind": "workflow-scenario"
+  },
+  {
+    "id": "EX05",
+    "operation_ids": [
+      "OP05"
+    ],
+    "title": "Design a complete ordinary member",
+    "file": null,
+    "source_id": "S04",
+    "reference_case_id": null,
+    "scenario": "Use the concurrent actions from EX04, declared material/cover/bar catalogue and service profile. Select bars and links, recompute depths and check every required station. Iterate or report no feasible arrangement.",
+    "numerical_execution": "not_run",
+    "kind": "workflow-scenario"
+  },
+  {
+    "id": "EX06",
+    "operation_ids": [
+      "OP06"
+    ],
+    "title": "Check an existing member",
+    "file": null,
+    "source_id": "S18",
+    "reference_case_id": null,
+    "scenario": "Supply actual bar coordinates, diameters, links, supports and actions. Preserve bars even when capacity fails; show suggested redesign only as a separate operation.",
+    "numerical_execution": "not_run",
+    "kind": "workflow-scenario"
+  },
+  {
+    "id": "EX07",
+    "operation_ids": [
+      "OP07"
+    ],
+    "title": "Produce a resolved arrangement",
+    "file": null,
+    "source_id": "S04",
+    "reference_case_id": null,
+    "scenario": "Take a current member result and actual support geometry. Resolve anchorage/laps, marks and link zones; unresolved cutoff or support details prevent an issued BBS.",
+    "numerical_execution": "not_run",
+    "kind": "workflow-scenario"
+  },
+  {
+    "id": "EX08",
+    "operation_ids": [
+      "OP08"
+    ],
+    "title": "Export a diagnostic and issued report",
+    "file": null,
+    "source_id": "S24",
+    "reference_case_id": null,
+    "scenario": "An incomplete run can produce a labeled draft report. An issued complete-design package requires all profile-required checks, current identity and resolved drawings/schedule.",
+    "numerical_execution": "not_run",
+    "kind": "workflow-scenario"
+  }
+]
