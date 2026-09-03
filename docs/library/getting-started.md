@@ -32,3 +32,23 @@ Coordinates use the physical section: x is measured from the left face and y
 from the top face in millimetres. Each bar carries its physical face and layer.
 This permits positive and negative bending to use actual bottom and top
 arrangements without inferring geometry from the sign alone.
+
+WP03 analysis uses a separate explicit N/mm boundary. A simply supported beam
+with a downward 10 N/mm uniform load can be solved without Excel or ETABS:
+
+```python
+from structural_lib.beam import BeamElement, BeamLineRequest, BeamNode, solve_beam_line
+
+request = BeamLineRequest(
+    "model-1",
+    "service-case-1",
+    (BeamNode("A", 0, True, False), BeamNode("B", 5000, True, False)),
+    (BeamElement("E1", "span-1", "A", "B", 200_000, 1_000_000_000, -10),),
+)
+response = solve_beam_line(request)
+assert response.execution == "completed"
+```
+
+The same request can include prescribed support displacement, point loads, and
+station intervals. See the [WP03 reference](reference/wp03-actions-analysis-topology.md)
+for signs, limits, topology mapping, and excluded analysis profiles.

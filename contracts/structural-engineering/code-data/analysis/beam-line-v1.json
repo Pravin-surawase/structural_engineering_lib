@@ -1,0 +1,13 @@
+{
+  "schema_version": "structural-analysis-method/v1",
+  "method_revision_id": "structural-analysis-wp03-v1",
+  "solver_identity": "euler_bernoulli_direct_stiffness_v1",
+  "profile": "bounded_planar_major_axis",
+  "unit_basis": {"length": "mm", "force": "N", "moment": "Nmm", "stress": "N/mm2", "rotation": "rad"},
+  "sign_convention": {"x": "local e1 increasing", "v2_force": "positive upward", "v2_displacement": "positive upward", "rotation_m3": "positive counterclockwise", "m3": "positive sagging"},
+  "degrees_of_freedom_per_node": ["v2_displacement_mm", "rotation_m3_rad"],
+  "supported": ["ordered straight beam line", "prismatic Euler-Bernoulli elements", "vertical and rotational restraints", "prescribed support displacement and rotation", "nodal force and moment", "uniform element load", "strictly interior point load"],
+  "limits": {"minimum_nodes": 2, "maximum_nodes": 20, "minimum_station_intervals": 2, "maximum_station_intervals": 100},
+  "excluded": ["axial response", "minor-axis response", "torsion", "shear deformation", "geometric or material nonlinearity", "global frame or building analysis", "ETABS equivalence"],
+  "reference": "Euler-Bernoulli beam finite-element direct-stiffness formulation; independently checked by closed-form response and equilibrium vectors"
+}

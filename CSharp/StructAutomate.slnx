@@ -9,6 +9,7 @@
     <Project Path="src/StructuralEngineering.Reinforcement/StructuralEngineering.Reinforcement.csproj" />
     <Project Path="src/StructuralEngineering.Codes.IS456/StructuralEngineering.Codes.IS456.csproj" />
     <Project Path="src/StructuralEngineering.Beam/StructuralEngineering.Beam.csproj" />
+    <Project Path="src/StructuralEngineering.Analysis/StructuralEngineering.Analysis.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/StructAutomate.Tests/StructAutomate.Tests.csproj" />

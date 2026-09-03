@@ -27,6 +27,11 @@ EXPECTED_MANIFESTS = {
         "AO07": "is456.beam.shear.check/v1",
         "AO08": "is456.beam.torsion.check/v1",
     },
+    "wp03": {
+        "AO01": "structural.action_snapshot.normalize/v1",
+        "AO02": "structural.beam_line.solve/v1",
+        "AO15": "structural.beam_topology.define/v1",
+    },
 }
 
 
@@ -47,9 +52,10 @@ def validate() -> None:
         load(path)
 
     result_schema = load(CONTRACT_ROOT / "schemas" / "operation-result.schema.json")
-    request_schema = load(CONTRACT_ROOT / "schemas" / "wp01.schema.json")
     Draft202012Validator.check_schema(result_schema)
-    Draft202012Validator.check_schema(request_schema)
+    for packet in EXPECTED_MANIFESTS:
+        request_schema = load(CONTRACT_ROOT / "schemas" / f"{packet}.schema.json")
+        Draft202012Validator.check_schema(request_schema)
 
     for packet, expected in EXPECTED_MANIFESTS.items():
         manifest = load(CONTRACT_ROOT / "operations" / f"{packet}.json")
@@ -94,6 +100,24 @@ def validate() -> None:
     }:
         fail("WP02 Table 19 grade columns are incomplete")
 
+    analysis_data = load(
+        CONTRACT_ROOT / "code-data" / "analysis" / "beam-line-v1.json"
+    )
+    if analysis_data["method_revision_id"] != "structural-analysis-wp03-v1":
+        fail("WP03 analysis-method revision mismatch")
+    if analysis_data["degrees_of_freedom_per_node"] != [
+        "v2_displacement_mm",
+        "rotation_m3_rad",
+    ]:
+        fail("WP03 bounded beam degrees of freedom changed")
+    if analysis_data["limits"] != {
+        "minimum_nodes": 2,
+        "maximum_nodes": 20,
+        "minimum_station_intervals": 2,
+        "maximum_station_intervals": 100,
+    }:
+        fail("WP03 bounded analysis limits changed")
+
     all_vectors = []
     for packet in EXPECTED_MANIFESTS:
         conformance = load(
@@ -102,7 +126,7 @@ def validate() -> None:
         all_vectors.extend(conformance["vectors"])
     vector_ids = [item["id"] for item in all_vectors]
     if len(vector_ids) != len(set(vector_ids)):
-        fail("duplicate WP01 conformance vector id")
+        fail("duplicate structural-engineering conformance vector id")
     canonical = next(
         item for item in all_vectors if item["id"] == "wp01-canonical-object"
     )
@@ -111,6 +135,14 @@ def validate() -> None:
     expected_id = f"normalized_input_id:pf4-canonical-json-v1:{digest}"
     if canonical["expected_normalized_input_id"] != expected_id:
         fail("canonical fixture digest does not match its bytes")
+    action_vector = next(
+        item for item in all_vectors if item["id"] == "wp03-action-six-components"
+    )
+    if action_vector["expected"]["row_id"] != (
+        "action_row_id:pf4-canonical-json-v1:"
+        "2667bdfe26231eea46cf6f1ad5bfaf585b42470997ef6a2427a76e29c6f14c38"
+    ):
+        fail("WP03 action-row canonical identity changed")
     operations_with_vectors = {
         item["operation_semantic_id"]
         for item in all_vectors

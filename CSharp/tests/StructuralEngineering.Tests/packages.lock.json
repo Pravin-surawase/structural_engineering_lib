@@ -129,6 +129,13 @@
           "xunit.v3.runner.common": "[4.0.0]"
         }
       },
+      "structuralengineering.analysis": {
+        "type": "Project",
+        "dependencies": {
+          "StructuralEngineering.Contracts": "[0.1.0, )",
+          "StructuralEngineering.Core": "[0.1.0, )"
+        }
+      },
       "structuralengineering.beam": {
         "type": "Project",
         "dependencies": {
